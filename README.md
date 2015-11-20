@@ -1,0 +1,1 @@
+# crx-saladict
