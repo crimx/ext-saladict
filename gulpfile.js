@@ -6,6 +6,7 @@ var buffer = require('vinyl-buffer')
 var del = require('del')
 var gulp = require('gulp')
 var gulpLoadPlugins = require('gulp-load-plugins')
+var Server = require('karma').Server
 var source = require('vinyl-source-stream')
 var watchify = require('watchify')
 
@@ -82,4 +83,10 @@ gulp.task('default', [
   'js-content',
   'js-background',
   'watch'
-  ])
+])
+
+gulp.task('test', function (done) {
+  new Server({
+    configFile: __dirname + '/karma.conf.js'
+  }, done).start()
+})
