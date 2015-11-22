@@ -11,6 +11,17 @@ var source = require('vinyl-source-stream')
 var watchify = require('watchify')
 
 var $ = gulpLoadPlugins()
+var pkg = require('./package.json')
+
+var banner = ['/**',
+  ' * <%= pkg.name %> - <%= pkg.description %>',
+  ' * @version v<%= pkg.version %>',
+  ' * @link <%= pkg.homepage %>',
+  ' * @license <%= pkg.license %>',
+  ' */',
+  ''].join('\n')
+
+
 
 // Clean output directory
 gulp.task('clean', function() {
@@ -63,6 +74,7 @@ var browserifyTaskGen = function(appNames, dependencies) {
             .pipe($.uglify())
             .on('error', $.util.log)
         .pipe($.sourcemaps.write('./')) // './'
+        .pipe($.header(banner, {pkg: pkg}))
         .pipe(gulp.dest('./dist/js/')) // './dist/js/'
     }
   })
@@ -85,8 +97,56 @@ gulp.task('default', [
   'watch'
 ])
 
-gulp.task('test', function (done) {
+// test popup script
+gulp.task('test-popup', function (done) {
   new Server({
-    configFile: __dirname + '/karma.conf.js'
+    configFile: __dirname + '/karma.conf.js',
+    exclude: [
+      'test/unit/specs/background/**/*',
+      'test/unit/specs/content/**/*'
+    ],
+    'preprocessors': {
+      'test/unit/specs/popup/**/*spec.js': ['browserify'],
+      'test/unit/*.js': ['browserify']
+    },
+    browsers: ['Chrome']
   }, done).start()
 })
+
+// test content script
+gulp.task('test-content', function (done) {
+  new Server({
+    configFile: __dirname + '/karma.conf.js',
+    exclude: [
+      'test/unit/specs/background/**/*',
+      'test/unit/specs/popup/**/*'
+    ],
+    'preprocessors': {
+      'test/unit/specs/content/**/*spec.js': ['browserify'],
+      'test/unit/*.js': ['browserify']
+    },
+    browsers: ['Chrome']
+  }, done).start()
+})
+
+// test background script, disable web security for cross domain xhr
+gulp.task('test-background', function (done) {
+  new Server({
+    configFile: __dirname + '/karma.conf.js',
+    exclude: [
+      'test/unit/specs/content/**/*',
+      'test/unit/specs/popup/**/*'
+    ],
+    'preprocessors': {
+      'test/unit/specs/background/**/*spec.js': ['browserify'],
+      'test/unit/*.js': ['browserify']
+    },
+    browsers: ['PhantomJS_without_security']
+  }, done).start()
+})
+
+gulp.task('test', [
+  'test-background',
+  'test-content',
+  'test-popup'
+])
