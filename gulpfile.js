@@ -32,12 +32,20 @@ gulp.task('clean', function() {
 gulp.task('copy', function() {
   gulp.src([
     'src/**/*',
-    '!src/js/**/*'
+    '!src/js/**/*',
+    '!src/manifest.json'
   ], {
     dot: true
   }).pipe($.changed('dist'))
     .pipe(gulp.dest('dist'))
     .pipe($.size({title: 'copy'}))
+})
+
+// pass manifest.json
+gulp.task('manifest', function() {
+  gulp.src('src/manifest.json', {dot: true})
+    .pipe($.jsonEditor({version: pkg.version}))
+    .pipe(gulp.dest('dist'))
 })
 
 gulp.task('js-lint', function() {
@@ -85,12 +93,14 @@ browserifyTaskGen(['popup', 'content', 'background'], ['js-lint'])
 // configure which files to watch and what tasks to use on file changes
 gulp.task('watch', function() {
   gulp.watch(['src/js/**/*.js', 'test/**/*.js'], ['js-lint'])
-  gulp.watch(['src/**/*', '!src/js/**/*'], ['copy'])
+  gulp.watch(['src/**/*', '!src/js/**/*', '!src/manifest.json'], ['copy'])
+  gulp.watch(['src/manifest.json'], ['manifest'])
 });
 
 gulp.task('default', [
   'clean',
   'copy',
+  'manifest',
   'js-popup',
   'js-content',
   'js-background',
