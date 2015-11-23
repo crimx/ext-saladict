@@ -44,7 +44,12 @@ gulp.task('copy', function() {
 // pass manifest.json
 gulp.task('manifest', function() {
   gulp.src('src/manifest.json', {dot: true})
-    .pipe($.jsonEditor({version: pkg.version}))
+    .pipe($.jsonEditor({
+      version: pkg.version,
+      background: {
+        persistent: true
+      }
+    }))
     .pipe(gulp.dest('dist'))
 })
 
@@ -82,7 +87,6 @@ var browserifyTaskGen = function(appNames, dependencies) {
             .pipe($.uglify())
             .on('error', $.util.log)
         .pipe($.sourcemaps.write('./')) // './'
-        .pipe($.header(banner, {pkg: pkg}))
         .pipe(gulp.dest('./dist/js/')) // './dist/js/'
     }
   })
@@ -151,7 +155,7 @@ gulp.task('test-background', function (done) {
       'test/unit/specs/background/**/*spec.js': ['browserify'],
       'test/unit/*.js': ['browserify']
     },
-    browsers: ['PhantomJS_without_security']
+    browsers: ['Chrome_without_security']
   }, done).start()
 })
 
