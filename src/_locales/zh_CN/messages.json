@@ -1,0 +1,21 @@
+{
+   "extension_name": {
+      "description": "Extension name",
+      "message": "沙拉查词"
+   },
+
+   "extension_short_name": {
+      "description": "Extension short name",
+      "message": "Saladict"
+   },
+
+   "extension_description": {
+      "description": "Description of extension",
+      "message": "网页划词翻译，混合各种词典的结果"
+   },
+
+   "engine_bing": {
+      "description": "Engine Name",
+      "message": "必应词典"
+   }
+}
