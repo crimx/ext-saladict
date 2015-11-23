@@ -6,6 +6,7 @@ module.exports = function(config) {
     frameworks: ['jasmine', 'browserify'],
     files: [
       'test/unit/**/*.js',
+      'node_modules/babel-polyfill/dist/polyfill.js'
     ],
     reporters: ['spec', 'coverage'],
     'browserify': {
