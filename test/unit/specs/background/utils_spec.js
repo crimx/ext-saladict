@@ -31,22 +31,24 @@ describe('background utils test', function() {
       reject = jasmine.createSpy('reject')
     })
 
-    it('should invoke resolve callback(request /success)', function() {
+    it('should invoke resolve callback(request /success)', function(done) {
       utils.get('/success')
         .then(resolve, reject)
         .then(function() {
           expect(resolve).toHaveBeenCalled()
           expect(reject).not.toHaveBeenCalled()
         })
+        .then(done)
     })
 
-    it('should invoke reject  callback(request /faild)', function() {
+    it('should invoke reject  callback(request /faild)', function(done) {
       utils.get('/faild')
         .then(resolve, reject)
         .then(function() {
           expect(resolve).not.toHaveBeenCalled()
           expect(reject).toHaveBeenCalled()
         })
+        .then(done)
     })
   })
 })
