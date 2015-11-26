@@ -42,6 +42,10 @@ module.exports = function(config) {
       PhantomJS_without_security: {
         base: 'PhantomJS',
         flags: ['--web-security=no']
+      },
+      Chrome_travis_ci: {
+        base: 'Chrome',
+        flags: ['--no-sandbox', '--disable-web-security']
       }
     },
     singleRun: false

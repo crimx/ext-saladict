@@ -162,8 +162,13 @@ gulp.task('test-background', function (done) {
   }, done).start()
 })
 
-gulp.task('test', [
-  'test-background',
-  'test-content',
-  'test-popup'
-])
+gulp.task('travis', function(done) {
+  new Server({
+    configFile: __dirname + '/karma.conf.js',
+    'preprocessors': {
+      'test/unit/**/*spec.js': ['browserify']
+    },
+    browsers: ['Chrome_travis_ci'],
+    singleRun: true
+  }, done).start()
+})
