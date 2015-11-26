@@ -2,7 +2,7 @@
 
 'use strict'
 
-var utils = require('../utils')
+var utils = require('../../utils')
 
 module.exports = function(text, sendResponse) {
   var LEX_LINK = 'http://dict.bing.com.cn/api/http/v3/0003462a56234cee982be652b8ea1e5f/en-us/zh-cn/lexicon?format=application/json&q='
