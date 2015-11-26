@@ -124,7 +124,7 @@ gulp.task('test-popup', function (done) {
     ],
     'preprocessors': {
       'test/unit/specs/popup/**/*spec.js': ['browserify'],
-      'test/unit/*.js': ['browserify']
+      'test/unit/specs/*spec.js': ['browserify']
     },
     browsers: ['Chrome']
   }, done).start()
@@ -140,7 +140,7 @@ gulp.task('test-content', function (done) {
     ],
     'preprocessors': {
       'test/unit/specs/content/**/*spec.js': ['browserify'],
-      'test/unit/*.js': ['browserify']
+      'test/unit/specs/*spec.js': ['browserify']
     },
     browsers: ['Chrome']
   }, done).start()
@@ -156,7 +156,7 @@ gulp.task('test-background', function (done) {
     ],
     'preprocessors': {
       'test/unit/specs/background/**/*spec.js': ['browserify'],
-      'test/unit/*.js': ['browserify']
+      'test/unit/specs/*spec.js': ['browserify']
     },
     browsers: ['Chrome_without_security']
   }, done).start()

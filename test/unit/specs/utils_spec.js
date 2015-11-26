@@ -1,6 +1,6 @@
 'use strict'
 
-var utils = require('../../../../src/js/utils')
+var utils = require('../../../src/js/utils')
 require('jasmine-ajax')
 
 describe('background utils test', function() {
@@ -74,6 +74,7 @@ describe('background utils test', function() {
 
   describe('utils.sendMessage test', function() {
     var resolve, reject
+    var sendMessage = chrome.runtime.sendMessage
 
     beforeEach(function(done) {
       resolve = jasmine.createSpy('resolve')
@@ -89,6 +90,10 @@ describe('background utils test', function() {
         .then(done)
     })
 
+    afterEach(function() {
+      chrome.runtime.sendMessage = sendMessage
+    })
+
     it('should invoke resolve', function() {
       expect(resolve).toHaveBeenCalled()
       expect(reject).not.toHaveBeenCalled()
@@ -97,6 +102,7 @@ describe('background utils test', function() {
 
   describe('utils.sendMessage test', function() {
     var resolve, reject
+    var sendMessage = chrome.runtime.sendMessage
 
     beforeEach(function(done) {
       resolve = jasmine.createSpy('resolve')
@@ -110,6 +116,10 @@ describe('background utils test', function() {
       utils.sendMessage({})
         .then(resolve, reject)
         .then(done)
+    })
+
+    afterEach(function() {
+      chrome.runtime.sendMessage = sendMessage
     })
 
     it('should invoke resolve', function() {
