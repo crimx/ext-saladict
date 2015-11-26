@@ -6,6 +6,7 @@ var buffer = require('vinyl-buffer')
 var del = require('del')
 var gulp = require('gulp')
 var gulpLoadPlugins = require('gulp-load-plugins')
+var runSequence = require('run-sequence')
 var Server = require('karma').Server
 var source = require('vinyl-source-stream')
 var watchify = require('watchify')
@@ -101,15 +102,17 @@ gulp.task('watch', function() {
   gulp.watch(['src/manifest.json'], ['manifest'])
 });
 
-gulp.task('default', [
-  'clean',
-  'copy',
-  'manifest',
-  'js-popup',
-  'js-content',
-  'js-background',
-  'watch'
-])
+gulp.task('default', function() {
+  runSequence(
+    'clean',
+    ['copy',
+      'manifest',
+      'js-popup',
+      'js-content',
+      'js-background'],
+    'watch'
+  )
+})
 
 // test popup script
 gulp.task('test-popup', function (done) {

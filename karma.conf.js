@@ -1,19 +1,27 @@
 'use strict'
 
+var proxyquire = require('proxyquireify')
+
 module.exports = function(config) {
   config.set({
     basePath: '',
-    frameworks: ['jasmine', 'browserify'],
+    frameworks: ['jasmine', 'browserify', 'sinon-chrome'],
     files: [
       'test/unit/**/*.js'
     ],
-    reporters: ['spec', 'coverage'],
+    reporters: ['nyan', 'coverage'],
     'browserify': {
       'debug': true,
-      'transform': [
-        // 'browserify-shim',
-        'browserify-istanbul'
-      ]
+      // 'transform': [
+      //   // 'browserify-shim',
+      //   'browserify-istanbul'
+      // ],
+      configure: function(bundle) {
+        bundle
+          .transform('browserify-istanbul')
+          .plugin(proxyquire.plugin)
+          // .require(require.resolve('./test/unit/'), { entry: true })
+      }
     },
     'coverageReporter': {
       'reporters': [
@@ -36,6 +44,6 @@ module.exports = function(config) {
         flags: ['--web-security=no']
       }
     },
-    singleRun: true
+    singleRun: false
   })
 }
