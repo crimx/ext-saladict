@@ -18,3 +18,16 @@ exports.get = function (url) {
     xhr.send()
   })
 }
+
+// Simple Promise Chrome sendMessage Request
+exports.sendMessage = function(msgObj) {
+  return new Promise(function (resolve, reject) {
+    chrome.runtime.sendMessage(msgObj, function (response) {
+      if (response && response.msg) {
+        resolve(response)
+      } else {
+        reject(msgObj)
+      }
+    })
+  })
+}
