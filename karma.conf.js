@@ -7,7 +7,8 @@ module.exports = function(config) {
     basePath: '',
     frameworks: ['jasmine', 'browserify', 'sinon-chrome'],
     files: [
-      'test/unit/**/*.js'
+      'test/unit/**/*.js',
+      'node_modules/jasmine-sinon/lib/jasmine-sinon.js'
     ],
     reporters: ['nyan', 'coverage'],
     'browserify': {
