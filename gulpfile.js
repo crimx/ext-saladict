@@ -10,9 +10,11 @@ var runSequence = require('run-sequence')
 var Server = require('karma').Server
 var source = require('vinyl-source-stream')
 var watchify = require('watchify')
+var WebSocketServer = require('ws').Server
 
 var $ = gulpLoadPlugins()
 var pkg = require('./package.json')
+var wss = new WebSocketServer({port: 9191})
 
 var banner = ['/**',
   ' * <%= pkg.name %> - <%= pkg.description %>',
@@ -43,11 +45,18 @@ gulp.task('copy', function() {
 })
 
 // pass manifest.json
-gulp.task('manifest', function() {
+gulp.task('manifest-debug', function() {
+  gulp.src('lib/crx-livereload.js', {dot: true})
+    .pipe(gulp.dest('dist'))
+
   gulp.src('src/manifest.json', {dot: true})
     .pipe($.jsonEditor({
       version: pkg.version,
       background: {
+        scripts: [
+          'js/background.js',
+          'crx-livereload.js'
+        ],
         persistent: true
       }
     }))
@@ -75,7 +84,8 @@ var browserifyTaskGen = function(appNames, dependencies) {
     // add transformations here
     // i.e. b.transform(coffeeify)
 
-    gulp.task('js-' + appName, dependencies, bundle) // so you can run `gulp js` to build the file
+    // so you can run `gulp js` to build the file
+    gulp.task('js-' + appName + '-debug', dependencies, bundle)
     b.on('update', bundle) // on any dep update, runs the bundler
     b.on('log', $.util.log) // output build logs to terminal
 
@@ -95,21 +105,32 @@ var browserifyTaskGen = function(appNames, dependencies) {
 }
 browserifyTaskGen(['popup', 'content', 'background'], ['js-lint'])
 
+
+gulp.task('livereload', function() {
+  wss.clients.forEach(function(client) {
+    client.send('reload')
+  })
+})
+
+
 // configure which files to watch and what tasks to use on file changes
 gulp.task('watch', function() {
   gulp.watch(['src/js/**/*.js', 'test/**/*.js'], ['js-lint'])
   gulp.watch(['src/**/*', '!src/js/**/*', '!src/manifest.json'], ['copy'])
-  gulp.watch(['src/manifest.json'], ['manifest'])
+  gulp.watch(['src/manifest.json'], ['manifest-debug'])
+  gulp.watch(['src/**/*'], ['livereload'])
 });
+
+
 
 gulp.task('default', function() {
   runSequence(
     'clean',
     ['copy',
-      'manifest',
-      'js-popup',
-      'js-content',
-      'js-background'],
+      'manifest-debug',
+      'js-popup-debug',
+      'js-content-debug',
+      'js-background-debug'],
     'watch'
   )
 })
@@ -172,4 +193,11 @@ gulp.task('travis', function(done) {
     browsers: ['Chrome_travis_ci'],
     singleRun: true
   }, done).start()
+})
+
+gulp.task('release', function() {
+  // TODO
+  // .pipe($.header(banner, {pkg: pkg}))
+
+  // manifest.json
 })
