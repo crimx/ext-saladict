@@ -25,10 +25,13 @@ module.exports = function(config) {
       }
     },
     'coverageReporter': {
-      'reporters': [
-        {'type': 'html'},
-        {'type': 'text-summary'}
-      ]
+      'reporters': [{
+        'type': 'lcov', 
+        'dir': 'coverage',
+        'subdir': '.'
+      },{
+        'type': 'text-summary'
+      }]
     },
     port: 9876,
     colors: true,

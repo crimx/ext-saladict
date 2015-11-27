@@ -168,7 +168,7 @@ gulp.task('travis', function(done) {
     'preprocessors': {
       'test/unit/**/*spec.js': ['browserify']
     },
-    reporters: ['spec', 'coverage'],
+    reporters: ['spec', 'coverage', 'coveralls'],
     browsers: ['Chrome_travis_ci'],
     singleRun: true
   }, done).start()
