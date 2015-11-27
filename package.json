@@ -27,6 +27,7 @@
     "karma-browserify": "^4.4.0",
     "karma-chrome-launcher": "^0.2.1",
     "karma-coverage": "^0.5.3",
+    "karma-coveralls": "^1.1.2",
     "karma-jasmine": "^0.3.6",
     "karma-nyan-reporter": "^0.2.2",
     "karma-sinon-chrome": "0.0.4",
