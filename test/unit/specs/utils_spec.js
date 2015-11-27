@@ -94,7 +94,7 @@ describe('background utils test', function() {
       chrome.runtime.sendMessage = sendMessage
     })
 
-    it('should invoke resolve', function() {
+    it('send valid message', function() {
       expect(resolve).toHaveBeenCalled()
       expect(reject).not.toHaveBeenCalled()
     })
@@ -122,7 +122,7 @@ describe('background utils test', function() {
       chrome.runtime.sendMessage = sendMessage
     })
 
-    it('should invoke resolve', function() {
+    it('send null message', function() {
       expect(resolve).not.toHaveBeenCalled()
       expect(reject).toHaveBeenCalled()
     })
