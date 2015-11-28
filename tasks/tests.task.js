@@ -7,7 +7,7 @@ var $ = require('gulp-load-plugins')()
 // test popup script
 gulp.task('test-popup', function (done) {
   new Server({
-    configFile: __dirname + '/karma.conf.js',
+    configFile: __dirname + '/../karma.conf.js',
     exclude: [
       'test/unit/specs/background/**/*',
       'test/unit/specs/content/**/*'
@@ -24,7 +24,7 @@ gulp.task('test-popup', function (done) {
 // test content script
 gulp.task('test-content', function (done) {
   new Server({
-    configFile: __dirname + '/karma.conf.js',
+    configFile: __dirname + '/../karma.conf.js',
     exclude: [
       'test/unit/specs/background/**/*',
       'test/unit/specs/popup/**/*'
@@ -41,7 +41,7 @@ gulp.task('test-content', function (done) {
 // test background script, disable web security for cross domain xhr
 gulp.task('test-background', function (done) {
   new Server({
-    configFile: __dirname + '/karma.conf.js',
+    configFile: __dirname + '/../karma.conf.js',
     exclude: [
       'test/unit/specs/content/**/*',
       'test/unit/specs/popup/**/*'
@@ -58,7 +58,7 @@ gulp.task('test-background', function (done) {
 // for travis CI
 gulp.task('travis', function(done) {
   new Server({
-    configFile: __dirname + '/karma.conf.js',
+    configFile: __dirname + '/../karma.conf.js',
     'preprocessors': {
       'test/unit/**/*spec.js': ['browserify']
     },
