@@ -6,6 +6,7 @@
   "description": "Chrome extension, inline translator powered by mutiple online dictionaries",
   "homepage": "http://www.crimx.com/crx-saladict/",
   "devDependencies": {
+    "autoprefixer": "^6.1.1",
     "browserify": "^12.0.1",
     "browserify-istanbul": "^0.2.1",
     "del": "^2.1.0",
@@ -16,6 +17,9 @@
     "gulp-header": "^1.7.1",
     "gulp-json-editor": "^2.2.1",
     "gulp-load-plugins": "^1.1.0",
+    "gulp-postcss": "^6.0.1",
+    "gulp-sass": "^2.1.0",
+    "gulp-sass-lint": "^1.1.0",
     "gulp-size": "^2.0.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.1",
@@ -33,12 +37,18 @@
     "karma-sinon-chrome": "0.0.4",
     "karma-spec-reporter": "0.0.22",
     "lodash.assign": "^3.2.0",
+    "node-sass": "^3.4.2",
+    "postcss": "^5.0.12",
     "proxyquireify": "^3.0.0",
+    "require-dir": "^0.3.0",
     "run-sequence": "^1.1.5",
     "sinon-chrome": "^1.0.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.6.1",
     "ws": "^0.8.0"
+  },
+  "dependencies": {
+    "vue": "^1.0.10"
   }
 }
