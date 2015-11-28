@@ -38,6 +38,7 @@
     "karma-spec-reporter": "0.0.22",
     "lodash.assign": "^3.2.0",
     "node-sass": "^3.4.2",
+    "partialify": "^3.1.5",
     "postcss": "^5.0.12",
     "proxyquireify": "^3.0.0",
     "require-dir": "^0.3.0",

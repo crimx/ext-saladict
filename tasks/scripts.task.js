@@ -47,6 +47,7 @@ gulp.task('sass-debug', function () {
 var assign = require('lodash.assign')
 var browserify = require('browserify')
 var buffer = require('vinyl-buffer')
+var partialify = require('partialify')
 var source = require('vinyl-source-stream')
 var watchify = require('watchify')
 
@@ -67,6 +68,8 @@ var browserifyTaskGen = function(appNames, dependencies) {
     }
     var opts = assign({}, watchify.args, customOpts)
     var b = watchify(browserify(opts)) 
+
+    b.transform(partialify)
 
     // so you can run `gulp js-name-debug` to build the file
     gulp.task('js-' + appName + '-debug', dependencies, bundle)

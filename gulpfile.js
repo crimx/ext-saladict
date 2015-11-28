@@ -25,8 +25,8 @@ gulp.task('watch', function() {
 gulp.task('default', function() {
   runSequence(
     'clean',
-    ['copy',
-      'manifest-debug',
+    'copy',
+    ['manifest-debug',
       'sass-debug',
       'js-popup-debug',
       'js-content-debug',
