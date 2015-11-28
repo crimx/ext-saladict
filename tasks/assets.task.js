@@ -48,12 +48,17 @@ gulp.task('manifest-debug', function() {
 
 // extension live reload
 var WebSocketServer = require('ws').Server
-var wss = new WebSocketServer({port: 9191})
+var wss
+gulp.task('createWebSocketServer', function() {
+  wss = new WebSocketServer({port: 9191})
+})
 
 gulp.task('livereload', function() {
-  setTimeout(function() {
-    wss.clients.forEach(function(client) {
-      client.send('reload')
-    })
-  }, 500)
+  if (wss) {
+    setTimeout(function() {
+      wss.clients.forEach(function(client) {
+        client.send('reload')
+      })
+    }, 500)
+  }
 })

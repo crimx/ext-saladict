@@ -30,7 +30,8 @@ gulp.task('default', function() {
       'sass-debug',
       'js-popup-debug',
       'js-content-debug',
-      'js-background-debug'],
+      'js-background-debug',
+      'createWebSocketServer'],
     'watch'
   )
 })
