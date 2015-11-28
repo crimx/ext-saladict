@@ -107,9 +107,11 @@ browserifyTaskGen(['popup', 'content', 'background'], ['js-lint'])
 
 
 gulp.task('livereload', function() {
-  wss.clients.forEach(function(client) {
-    client.send('reload')
-  })
+  setTimeout(function() {
+    wss.clients.forEach(function(client) {
+      client.send('reload')
+    })
+  }, 500)
 })
 
 
