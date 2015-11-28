@@ -75,7 +75,7 @@ var msgOpts = {
         // broadcast app state
         chrome.runtime.sendMessage({
           msg: 'appStateChanged',
-          items: Object.keys(items)
+          data: items
         })
         sendResponse({msg: 'success'})
       })
@@ -105,9 +105,6 @@ chrome.notifications.onClicked.addListener(function() {
 // first time setup
 chrome.runtime.onInstalled.addListener(function(details) {
   if (details.reason === 'install' || details.reason === 'update') {
-
-    // activate app
-    msgOpts.save({items:{appActive: true}}, null, function() {})
 
     // update notification
     var title = chrome.i18n.getMessage('update_title')

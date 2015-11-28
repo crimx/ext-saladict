@@ -1,6 +1,6 @@
 'use strict'
 
-var engine = require('../../../../../src/js/background/engines/bing')
+var engine = require('../../../../../src/component/background/engines/bing')
 
 require('jasmine-ajax')
 

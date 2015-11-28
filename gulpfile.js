@@ -9,15 +9,15 @@ require('require-dir')('./tasks')
 
 
 gulp.task('watch', function() {
-  gulp.watch(['src/js/**/*.js', 'test/**/*.js'], ['js-lint'])
-  gulp.watch(['src/sass/**/*.scss'], ['sass-debug'])
+  gulp.watch(['src/component/**/*.js', 'test/**/*.js'], ['js-lint'])
+  gulp.watch(['src/component/**/*.scss'], ['sass-debug'])
   gulp.watch(['src/manifest.json'], ['manifest-debug'])
   gulp.watch(['src/**/*'], ['livereload'])
   gulp.watch([
-    'src/**/*',
-    '!src/js/**/*',
-    '!src/manifest.json',
-    '!src/sass/**/*'
+    'src/lib/**/*',
+    'src/css/**/*',
+    'src/images/**/*',
+    'src/_locales/**/*'
   ], ['copy'])
 });
 
@@ -28,9 +28,7 @@ gulp.task('default', function() {
     'copy',
     ['manifest-debug',
       'sass-debug',
-      'js-popup-debug',
-      'js-content-debug',
-      'js-background-debug',
+      'js-debug',
       'createWebSocketServer'],
     'watch'
   )

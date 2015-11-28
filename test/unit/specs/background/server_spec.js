@@ -10,7 +10,7 @@ chrome.runtime.onMessage.addListener = function(fn) {
 
 // proxy dependencies
 var bingEngine = jasmine.createSpy('bingEngine')
-var server = proxyquire('../../../../src/js/background/entry', {
+var server = proxyquire('../../../../src/component/background', {
   './engines/bing' : bingEngine
 })
 
@@ -39,8 +39,6 @@ describe('background server test', function() {
 
     afterEach(function() {
       chrome.tabs.create.reset()
-      chrome.storage.local.set.reset()
-      chrome.storage.sync.set.reset()
       chrome.notifications.create.reset()
     })
 
@@ -68,8 +66,6 @@ describe('background server test', function() {
       chrome.storage.local.set.callsArg(1)
       chrome.runtime.onInstalled.addListener.yield({reason: 'update'})
 
-      expect(chrome.storage.local.set).toHaveBeenCalled()
-      expect(chrome.storage.sync.set).toHaveBeenCalledWith({appActive: true})
       expect(chrome.notifications.create).toHaveBeenCalled()
 
       chrome.i18n.getMessage = getMessage
@@ -77,8 +73,6 @@ describe('background server test', function() {
 
     it('faild create notification on installed', function() {
       chrome.runtime.onInstalled.addListener.yield({reason: 'Wrong Reason'})
-      expect(chrome.storage.local.set).not.toHaveBeenCalled()
-      expect(chrome.storage.sync.set).not.toHaveBeenCalled()
       expect(chrome.notifications.create).not.toHaveBeenCalled()
     })
 
@@ -224,7 +218,7 @@ describe('background server test', function() {
       expect(chrome.storage.sync.set).toHaveBeenCalledWith(items)
       expect(chrome.runtime.sendMessage).toHaveBeenCalledWith({
         msg: 'appStateChanged',
-        items: Object.keys(items)
+        data: items
       })
       expect(sendResponse).toHaveBeenCalledWith({msg: 'success'})
     })

@@ -7,22 +7,20 @@ var $ = require('gulp-load-plugins')()
 // Clean dist directory
 var del = require('del')
 gulp.task('clean', function() {
-  del(['dist/*'], {dot: true})
+  del(['dist/*'])
 })
 
 
 // copy everything except script files
 gulp.task('copy', function() {
   gulp.src([
-    'src/**/*',
-    '!src/js/**/*',
-    '!src/sass/**/*',
-    '!src/sass',
-    '!src/manifest.json'
+    'src/lib/**/*',
+    'src/css/**/*',
+    'src/images/**/*',
+    'src/_locales/**/*'
   ], {
-    dot: true
-  }).pipe($.changed('dist'))
-    .pipe(gulp.dest('dist'))
+    base: 'src'
+  }).pipe(gulp.dest('dist'))
     .pipe($.size({title: 'copy'}))
 })
 

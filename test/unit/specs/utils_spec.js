@@ -1,6 +1,6 @@
 'use strict'
 
-var utils = require('../../../src/js/utils')
+var utils = require('../../../src/component/utils')
 require('jasmine-ajax')
 
 describe('background utils test', function() {
