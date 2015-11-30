@@ -54,26 +54,47 @@ describe('background server test', function() {
       expect(chrome.tabs.create).toHaveBeenCalled()
     })
 
-    it('create notification on installed', function() {
-      expect(chrome.runtime.onInstalled.addListener).toHaveBeenCalled()
-
+    describe('on installed', function() {
       var getMessage = chrome.i18n.getMessage
-      // stub.returns won't work here(for-loop)
-      var i = 3
-      chrome.i18n.getMessage = function() {
-        return i--
-      }
-      chrome.storage.local.set.callsArg(1)
-      chrome.runtime.onInstalled.addListener.yield({reason: 'update'})
+      beforeEach(function() {
+        // stub.returns didn't work here(for-loop)
+        var i = 3
+        chrome.i18n.getMessage = function() {
+          return i--
+        }
+      })
 
-      expect(chrome.notifications.create).toHaveBeenCalled()
+      afterAll(function() {
+        chrome.i18n.getMessage = getMessage
+      })
 
-      chrome.i18n.getMessage = getMessage
-    })
+      it('create notification on installed', function() {
+        expect(chrome.runtime.onInstalled.addListener).toHaveBeenCalled()
 
-    it('faild create notification on installed', function() {
-      chrome.runtime.onInstalled.addListener.yield({reason: 'Wrong Reason'})
-      expect(chrome.notifications.create).not.toHaveBeenCalled()
+        chrome.storage.local.set.callsArg(1)
+        chrome.storage.local.get.callsArgWith(1, {appActive: true})
+        chrome.runtime.onInstalled.addListener.yield({reason: 'update'})
+
+        expect(chrome.notifications.create).toHaveBeenCalled()
+      })
+
+      it('save default settings on installed', function() {
+        chrome.storage.local.get.callsArgWith(1, {})
+        chrome.runtime.onInstalled.addListener.yield({reason: 'update'})
+        expect(chrome.storage.local.set).toHaveBeenCalledWith({
+          appActive: true,
+          iconMode: true,
+          ctrlMode: false,
+          directMode: false,
+          chineseMode: true,
+          englishMode: true
+        })
+      })
+
+      it('faild create notification on installed', function() {
+        chrome.runtime.onInstalled.addListener.yield({reason: 'Wrong Reason'})
+        expect(chrome.notifications.create).not.toHaveBeenCalled()
+      })
     })
 
     it('create notification on update available', function() {
