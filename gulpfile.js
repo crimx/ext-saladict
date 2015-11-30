@@ -21,6 +21,15 @@ gulp.task('watch', function() {
   ], ['copy'])
 });
 
+gulp.task('webserver', function() {
+  gulp.src('./')
+    .pipe($.webserver({
+      fallback: 'index.html',
+      livereload: true,
+      directoryListing: true,
+      open: true
+    }));
+})
 
 gulp.task('default', function() {
   runSequence(
@@ -30,6 +39,7 @@ gulp.task('default', function() {
       'sass-debug',
       'js-debug',
       'createWebSocketServer'],
+    'webserver',
     'watch'
   )
 })
