@@ -1,6 +1,7 @@
 'use strict'
 
 var proxyquire = require('proxyquireify')
+var partialify = require('partialify')
 
 module.exports = function(config) {
   config.set({
@@ -19,6 +20,7 @@ module.exports = function(config) {
       // ],
       configure: function(bundle) {
         bundle
+          .transform(partialify)
           .transform('browserify-istanbul')
           .plugin(proxyquire.plugin)
           // .require(require.resolve('./test/unit/'), { entry: true })
