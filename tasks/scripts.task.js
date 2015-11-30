@@ -25,7 +25,7 @@ var addImportant = postcss.plugin('postcss-addImportant',
 
 gulp.task('sass-debug', function () {
   ;['content', 'popup'].forEach(function(viewName) {
-    gulp.src('./src/component/' + viewName + '/**/*.scss')
+    gulp.src('./src/component/' + viewName + '/' + viewName + '.scss')
       // .pipe($.sassLint())
       // .pipe($.sassLint.format())
       // .pipe($.sassLint.failOnError())
@@ -35,7 +35,6 @@ gulp.task('sass-debug', function () {
           autoprefixer({browsers: ['last 1 version']}),
           addImportant
         ]))
-        .pipe($.concat(viewName + '.css'))
         .pipe($.minifyCss())
       .pipe($.sourcemaps.write('./'))
       .pipe(gulp.dest('./dist/css/'))
@@ -85,6 +84,10 @@ gulp.task('js-debug', function() {
       return b.bundle()
         .pipe(source(appName + '.js')) // 'app.js'
         .pipe($.buffer())
+        .pipe($.stripCode({
+          start_comment: 'start-test-block',
+          end_comment: 'end-test-block'
+        }))
         .pipe($.sourcemaps.init({loadMaps: true}))
             // Add transformation tasks to the pipeline here.
             .pipe($.uglify())
