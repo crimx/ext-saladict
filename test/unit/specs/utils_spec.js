@@ -1,10 +1,10 @@
 'use strict'
 
-var utils = require('../../../src/component/utils')
-require('jasmine-ajax')
-
 describe('background utils test', function() {
 
+  var utils = require('../../../src/component/utils')
+  require('jasmine-ajax')
+  
   var resolve, reject
 
   beforeAll(function() {
@@ -21,6 +21,8 @@ describe('background utils test', function() {
   })
 
   afterAll(function() {
+    chrome.reset()
+    chrome.flush()
     jasmine.Ajax.uninstall()
   })
 

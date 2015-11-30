@@ -1,35 +1,32 @@
 'use strict'
 
-var proxyquire = require('proxyquireify')(require)
-
-
-chrome.runtime.sendMessage.callsArgWith(1, {
-  msg: 'success',
-  data: {
-    grab: 'grabResult'
-  }
-})
-
-
-// proxy dependencies
-var Vue = jasmine.createSpy('Vue')
-var panel = jasmine.createSpy('panel')
-var icon = jasmine.createSpy('icon')
-var content = proxyquire('../../../../src/component/content', {
-  'vue': Vue,
-  './panel': panel,
-  './icon': icon
-})
-
-
 describe('content script test', function() {
 
-  var config = content.config
-  var pageStatus = content.pageStatus
+  var proxyquire = require('proxyquireify')(require)
 
+  var content
+  var config
+  var pageStatus
   var windowSelection
+
   beforeAll(function() {
     windowSelection =  window.getSelection
+
+    chrome.runtime.sendMessage.callsArgWith(1, {
+      msg: 'success',
+      data: {
+        grab: 'grabResult'
+      }
+    })
+
+    content = proxyquire('../../../../src/component/content', {
+      'vue': jasmine.createSpy('Vue'),
+      './panel': jasmine.createSpy('panel'),
+      './icon': jasmine.createSpy('icon')
+    })
+
+    config = content.config
+    pageStatus = content.pageStatus
   })
 
   afterAll(function() {
@@ -114,11 +111,6 @@ describe('content script test', function() {
         }
       })
       expect(config.state).toEqual('appStateChangedResult')
-    })
-
-    it('grab message', function() {
-      expect(chrome.runtime.sendMessage).toHaveBeenCalled()
-      expect(config.grab).toEqual('grabResult')
     })
   })
 })

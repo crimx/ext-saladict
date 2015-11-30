@@ -1,22 +1,22 @@
 'use strict'
 
-var proxyquire = require('proxyquireify')(require)
-
-// catch the addListener callback function
-var msgListener
-chrome.runtime.onMessage.addListener = function(fn) {
-  msgListener = fn
-}
-
-// proxy dependencies
-var bingEngine = jasmine.createSpy('bingEngine')
-var server = proxyquire('../../../../src/component/background', {
-  './engines/bing' : bingEngine
-})
-
 describe('background server test', function() {
 
   var sendResponse = jasmine.createSpy('sendResponse')
+
+  var proxyquire = require('proxyquireify')(require)
+
+  // catch the addListener callback function
+  var msgListener
+  chrome.runtime.onMessage.addListener = function(fn) {
+    msgListener = fn
+  }
+
+  // proxy dependencies
+  var bingEngine = jasmine.createSpy('bingEngine')
+  var server = proxyquire('../../../../src/component/background', {
+    './engines/bing' : bingEngine
+  })
 
   beforeEach(function() {
     sendResponse.calls.reset()
