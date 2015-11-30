@@ -25,6 +25,7 @@ var content = proxyquire('../../../../src/component/content', {
 describe('content script test', function() {
 
   var config = content.config
+  var pageStatus = content.pageStatus
 
   var windowSelection
   beforeAll(function() {
@@ -56,41 +57,41 @@ describe('content script test', function() {
   describe('mouse event handler', function() {
 
     it('click inside the saladict panel', function() {
-      config.userClicked = 'origin'
-      config.selection = 'origin'
-      config.clientX = 'origin'
-      config.clientY = 'origin'
+      pageStatus.userClicked = 'origin'
+      pageStatus.selection = 'origin'
+      pageStatus.clientX = 'origin'
+      pageStatus.clientY = 'origin'
       content.mouseupEventHandler({
         target: {
-          id: '',
+          className: '',
           parentNode: {
-            id: 'saladict-panel'
+            className: 'saladict otherClassName'
           }
         }
       })
-      expect(config.userClicked).toBe('origin')
-      expect(config.selection).toBe('origin')
-      expect(config.clientX).toBe('origin')
-      expect(config.clientY).toBe('origin')
+      expect(pageStatus.userClicked).toBe('origin')
+      expect(pageStatus.selection).toBe('origin')
+      expect(pageStatus.clientX).toBe('origin')
+      expect(pageStatus.clientY).toBe('origin')
     })
 
     it('click outside the saladict panel', function() {
       window.getSelection = function() {
         return 'selection'
       }
-      config.userClicked = 'origin'
-      config.selection = 'origin'
-      config.clientX = 'origin'
-      config.clientY = 'origin'
+      pageStatus.userClicked = 'origin'
+      pageStatus.selection = 'origin'
+      pageStatus.clientX = 'origin'
+      pageStatus.clientY = 'origin'
       content.mouseupEventHandler({
         target: {},
         clientY: 'Y',
         clientX: 'X'
       })
-      expect(config.userClicked).toBe(true)
-      expect(config.selection).toBe('selection')
-      expect(config.clientX).toBe('X')
-      expect(config.clientY).toBe('Y')
+      expect(pageStatus.userClicked).toBe(true)
+      expect(pageStatus.selection).toBe('selection')
+      expect(pageStatus.clientX).toBe('X')
+      expect(pageStatus.clientY).toBe('Y')
     })
   })
 

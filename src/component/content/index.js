@@ -6,7 +6,6 @@ var Vue = require('vue')
 // default config
 var config = {
   appActive: true,
-  userClicked: false,
 
   iconMode: true,
   ctrlMode: false, // TODO
@@ -14,10 +13,16 @@ var config = {
 
   chineseMode: true,
   englishMode: true,
+}
 
+var pageStatus = {
   clientX: 0,
   clientY: 0,
-  selection: ''
+  selection: '',
+  userClicked: false,
+
+  iconMouseEnter: false,
+  panelHide: false
 }
 
 // get user config
@@ -46,12 +51,14 @@ var injectPanel  = document.createElement('div')
 injectPanel.id = 'saladict-panel'
 var panelTemplate = require('./panel')
 panelTemplate.data.config = config
+panelTemplate.data.pageStatus = pageStatus
 
 // icon component
 var injectIcon  = document.createElement('div')
 injectIcon.id = 'saladict-icon'
 var iconTemplate = require('./icon')
 iconTemplate.data.config = config
+iconTemplate.data.pageStatus = pageStatus
 
 // inject vue
 document.body.insertBefore(injectPanel, document.body.firstChild)
@@ -68,16 +75,16 @@ function mouseupEventHandler(evt) {
 
   // check if inside the panel
   do {
-    if (el.id === 'saladict-panel') {
+    if ((' ' + el.className + ' ').indexOf(' saladict ') > -1) {
       return
     }
     el = el.parentNode
   } while (el)
 
-  config.userClicked = true
-  config.selection = window.getSelection().toString()
-  config.clientX = evt.clientX
-  config.clientY = evt.clientY
+  pageStatus.userClicked = true
+  pageStatus.selection = window.getSelection().toString()
+  pageStatus.clientX = evt.clientX
+  pageStatus.clientY = evt.clientY
 }
 
 function setConfig(response) {
@@ -92,6 +99,7 @@ function setConfig(response) {
 module.exports = {
   mouseupEventHandler: mouseupEventHandler,
   setConfig: setConfig,
-  config: config
+  config: config,
+  pageStatus: pageStatus
 }
 /* end-test-block */
