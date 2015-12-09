@@ -14,8 +14,6 @@ gulp.task('clean', function() {
 // copy everything except script files
 gulp.task('copy', function() {
   gulp.src([
-    'src/lib/**/*',
-    'src/css/**/*',
     'src/images/**/*',
     'src/_locales/**/*'
   ], {

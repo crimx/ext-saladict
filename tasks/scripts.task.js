@@ -29,14 +29,15 @@ gulp.task('sass-debug', function () {
       // .pipe($.sassLint())
       // .pipe($.sassLint.format())
       // .pipe($.sassLint.failOnError())
-      .pipe($.sourcemaps.init({loadMaps: true}))
+      
+      // .pipe($.sourcemaps.init({loadMaps: true}))
         .pipe($.sass().on('error', $.sass.logError))
         .pipe($.postcss([
           autoprefixer({browsers: ['last 1 version']}),
           addImportant
         ]))
-        .pipe($.minifyCss())
-      .pipe($.sourcemaps.write('./'))
+        // .pipe($.minifyCss())
+      // .pipe($.sourcemaps.write('./'))
       .pipe(gulp.dest('./dist/css/'))
       .pipe($.size({title: 'sass'}))
   })
@@ -90,11 +91,11 @@ gulp.task('js-debug', function() {
         }))
         .pipe($.sourcemaps.init({loadMaps: true}))
             // Add transformation tasks to the pipeline here.
-            .pipe($.uglify())
+            // .pipe($.uglify())
             .on('error', $.util.log)
         .pipe($.sourcemaps.write('./')) // './'
         .pipe(gulp.dest('./dist/js/')) // './dist/js/'
-        .pipe($.size({title: 'browserify'}))
+        .pipe($.size({title: 'browserify ' + appName}))
     }
 
     bundle()

@@ -63,7 +63,7 @@ rules:
   no-debug: 1
   no-duplicate-properties: 0
   no-empty-rulesets: 1
-  no-ids: 1
+  no-ids: 0
   no-invalid-hex: 1
   no-mergeable-selectors: 0
   no-misspelled-properties:

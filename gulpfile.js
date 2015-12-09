@@ -14,8 +14,6 @@ gulp.task('watch', function() {
   gulp.watch(['src/manifest.json'], ['manifest-debug'])
   gulp.watch(['src/**/*'], ['livereload'])
   gulp.watch([
-    'src/lib/**/*',
-    'src/css/**/*',
     'src/images/**/*',
     'src/_locales/**/*'
   ], ['copy'])

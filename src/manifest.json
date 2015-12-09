@@ -25,7 +25,7 @@
 
   "content_scripts": [ {
     "js": ["js/content.js"],
-    "css": ["css/cleanslate.css", "css/content.css"],
+    "css": ["css/content.css"],
     "matches": [ "<all_urls>" ]
   } ],
 
