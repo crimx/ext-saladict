@@ -25,10 +25,9 @@ module.exports = function(text, sendResponse) {
    *   title[string]: search title
    *   phsym[array]: phonetic symbols
    *     [object]
-   *       - L[string]: language('UK'|'US'|'PY')
-   *       - V[string]: Phonetic Alphabet
-   *   pron[object]: audio url
-   *     - 'UK'|'US'|'PY'[string]: url
+   *       - lang[string]: language('UK'|'US'|'PY')
+   *       - al[string]: Phonetic Alphabet
+   *       - pron[string]: pronunciation
    *   cdef[array]: common definitions
    *     [object]
    *       - 'pos'[string] part of speech
@@ -54,13 +53,23 @@ module.exports = function(text, sendResponse) {
       engine: engineInfo.engine,
       href: engineInfo.href,
       title: data.QD.HW.V || data.Q,
-      phsym: data.QD.PRON,
-      pron: {
-        'US': PRON_LINK + 'en-us/' + data.QD.HW.SIG + '.mp3',
-        'UK': PRON_LINK + 'en-gb/' + data.QD.HW.SIG + '.mp3'
-      },
+      phsym: [],
       cdef: []
     }
+
+    data.QD.PRON.forEach(function(p) {
+      var obj = {}
+      obj.lang = chrome.i18n.getMessage(p.L)
+      obj.al = '[' + p.V + ']'
+      if (data.QD.HW.SIG) {
+        if (p.L === 'US') {
+          obj.pron = PRON_LINK + 'en-us/' + data.QD.HW.SIG + '.mp3'
+        } else if (p.L === 'UK') {
+          obj.pron = PRON_LINK + 'en-gb/' + data.QD.HW.SIG + '.mp3'
+        }
+      }
+      result.phsym.push(obj)
+    })
 
     data.QD.C_DEF.forEach(function(d) {
       result.cdef.push({
@@ -68,6 +77,7 @@ module.exports = function(text, sendResponse) {
         'def': d.SEN[0].D
       })
     })
+    
     sendResponse(result)
   }
 
@@ -127,6 +137,14 @@ module.exports = function(text, sendResponse) {
       .then(machChecker, noResult)
   }
 
-  // begin
-  goLex()
+  /* ******* *\
+      begin
+  \* ******* */
+  // check how many words in `text`, 3 spaces means 4 words. 
+  var spaces = text.match(/\ +/g)
+  if (!spaces || spaces.length < 4) {
+    goLex()
+  } else {
+    goMachine()
+  }
 }

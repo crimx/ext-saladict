@@ -11,24 +11,34 @@ var WEB_PAGE = 'http://cn.bing.com/dict/search?q='
 // add task here
 var ajaxMocks = [{
   title: 'lex success',
+  text: 'lex success0',
   lexResopnse: LexResopnseFactory(),
   expectResult: expectLexResult
 }, {
   title: 'lex success(no data.QD.HW.V)',
+  text: 'lex success2',
   lexResopnse: LexResopnseFactory('noQD.HW.V'),
   expectResult: expectLexResult
 }, {
+  title: 'lex success(no data.QD.HW.SIG)',
+  text: 'lex success3',
+  lexResopnse: LexResopnseFactory('noQD.HW.SIG'),
+  expectResult: expectLexResultNoPron
+}, {
   title: 'lex faild(no data.Q) & mach success',
+  text: 'lex faild0',
   lexResopnse: LexResopnseFactory('noQ'),
   machResopnse: machResopnseFactory(),
   expectResult: expectMachResult
 }, {
   title: 'lex faild(no JSON) & mach faild(no JSON)',
+  text: 'lex faild1',
   lexResopnse: 'invalid JSON',
   machResopnse: 'invalid JSON',
   expectResult: expectNoResult
 }, {
-  title: 'lex faild(no JSON) & mach faild(no data.MT.T)',
+  title: 'lex skipped(text too long) & mach faild(no data.MT.T)',
+  text: 'this is a very long text',
   lexResopnse: 'invalid JSON',
   machResopnse: machResopnseFactory('noMT.T'),
   expectResult: expectNoResult
@@ -42,21 +52,19 @@ describe('background engine bing test', function() {
 
     jasmine.Ajax.install()
 
-    var key = 0 // unique id for each spec
     // stub ajax requests
     ajaxMocks.forEach(function(aMock) {
-      aMock.key = key++
-      aMock.expectResult = aMock.expectResult(aMock.key)
+      aMock.expectResult = aMock.expectResult(aMock.text)
 
       // lexical search request
-      jasmine.Ajax.stubRequest(LEX_LINK + aMock.key).andReturn({
+      jasmine.Ajax.stubRequest(LEX_LINK + aMock.text).andReturn({
         status: typeof aMock.lexResopnse !== 'undefined' ? 200: 404,
         contentType: 'text/plain',
         responseText: aMock.lexResopnse
       })
 
       // machine search request
-      jasmine.Ajax.stubRequest(MACH_LINK + aMock.key).andReturn({
+      jasmine.Ajax.stubRequest(MACH_LINK + aMock.text).andReturn({
         status: typeof aMock.machResopnse !== 'undefined' ? 200: 404,
         contentType: 'text/plain',
         responseText: aMock.machResopnse
@@ -75,7 +83,7 @@ describe('background engine bing test', function() {
       var result
 
       beforeEach(function(done) {
-        engine(aMock.key, function(res) {
+        engine(aMock.text, function(res) {
           result = res
           done()
         })
@@ -121,6 +129,9 @@ function LexResopnseFactory() {
       }, {
         'L': 'UK',
         'V': 'hələʊ'
+      }, {
+        'L': 'PY',
+        'V': 'nihao'
       }]
     }
   }
@@ -135,6 +146,9 @@ function LexResopnseFactory() {
       break
     case 'noQD.HW.V':
       obj.QD.HW.V = null
+      break
+    case 'noQD.HW.SIG':
+      obj.QD.HW.SIG = null
       break
     default:
       break
@@ -178,16 +192,47 @@ function expectLexResult(key) {
     'href': WEB_PAGE + key,
     'title': 'hello',
     'phsym': [{
-      'L': 'US',
-      'V': 'heˈləʊ'
+      lang: 'US',
+      al: '[heˈləʊ]',
+      pron: 'http://media.engkoo.com:8129/en-us/BFB1169AD46D18FDC9145E494EF4D22B.mp3'
     }, {
-      'L': 'UK',
-      'V': 'hələʊ'
+      lang: 'UK', 
+      al: '[hələʊ]',
+      pron: 'http://media.engkoo.com:8129/en-gb/BFB1169AD46D18FDC9145E494EF4D22B.mp3'
+    }, {
+      lang: 'PY',
+      al: '[nihao]'
     }],
-    'pron': {
-      'US': 'http://media.engkoo.com:8129/en-us/BFB1169AD46D18FDC9145E494EF4D22B.mp3',
-      'UK': 'http://media.engkoo.com:8129/en-gb/BFB1169AD46D18FDC9145E494EF4D22B.mp3'
-    },
+    'cdef': [{
+      'pos': 'int',
+      'def': '你好；喂；您好；哈喽'
+    }, {
+      'pos': 'n',
+      'def': '你好；嘿；（表示惊讶）嘿'
+    }, {
+      'pos': 'web',
+      'def': '哈罗；哈啰；大家好'
+    }]
+  }
+}
+
+function expectLexResultNoPron(key) {
+  return {
+    'msg': 'lex',
+    'id': 'bing',
+    'engine': '必应词典',
+    'href': WEB_PAGE + key,
+    'title': 'hello',
+    'phsym': [{
+      lang: 'US',
+      al: '[heˈləʊ]'
+    }, {
+      lang: 'UK', 
+      al: '[hələʊ]'
+    }, {
+      lang: 'PY',
+      al: '[nihao]'
+    }],
     'cdef': [{
       'pos': 'int',
       'def': '你好；喂；您好；哈喽'
