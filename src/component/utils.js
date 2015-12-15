@@ -26,7 +26,7 @@ exports.sendMessage = function(msgObj) {
       if (response && response.msg) {
         resolve(response)
       } else {
-        reject(msgObj)
+        reject(response)
       }
     })
   })
