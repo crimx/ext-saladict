@@ -10,17 +10,7 @@ var $ = require('gulp-load-plugins')()
 
 var autoprefixer = require('autoprefixer')
 var postcss = require('postcss')
-
-// tiny postcss plugin for appending important to each declaration
-var addImportant = postcss.plugin('postcss-addImportant',
-  function(options) {
-    options = options || {}
-    return function(css) {
-      css.walkDecls(function(d) {
-        d.important = true
-      })
-    }
-  })
+var safeImportant = require('postcss-safe-important')
 
 
 gulp.task('sass-debug', function () {
@@ -34,7 +24,7 @@ gulp.task('sass-debug', function () {
         .pipe($.sass().on('error', $.sass.logError))
         .pipe($.postcss([
           autoprefixer({browsers: ['last 1 version']}),
-          addImportant
+          safeImportant()
         ]))
         // .pipe($.minifyCss())
       // .pipe($.sourcemaps.write('./'))
