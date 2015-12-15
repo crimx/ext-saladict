@@ -1,6 +1,7 @@
 language: node_js
 node_js:
-  - "0.10"
+  - stable
+  - "4.0"
 
 before_install:
   - export CHROME_BIN=chromium-browser
