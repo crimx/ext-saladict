@@ -78,7 +78,7 @@ rules:
   no-url-protocols: 0
   placeholder-in-extend: 1
   placeholder-name-format:
-    - 1
+    - 0
     - allow-leading-underscore: true
       convention: hyphenatedlowercase
   property-sort-order: 0
