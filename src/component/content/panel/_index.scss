@@ -1,6 +1,18 @@
 .saladict-panel {
   position: fixed;
-  width: 200px;
-  height: 200px;
-  background: #ffa500;
+  z-index: $z-index;
+  overflow: hidden;
+
+  width: $panel-width;
+  min-height: $engine-max-height / 2;
+
+  font-size: $font-size;
+  line-height: $line-height;
+  font-family: $font-family;
+  
+  background-color: $color-background;
+  box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.2);
 }
+
+
+@import '../engines/factory/index';

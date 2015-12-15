@@ -2,27 +2,24 @@
 
 var utils = require('../utils')
 var Vue = require('vue')
+Vue.config.silent = true
+
+/* start-debug-block */
+Vue.config.silent = false
+Vue.config.debug = true
+/* end-debug-block */
 
 // default config
 var config = {
   appActive: true,
 
-  iconMode: true,
-  ctrlMode: false, // TODO
-  directMode: false, // TODO
-
+  mode: 'icon',
+  // icon: show pop icon first
+  // direct: show panel directly
+  // ctrl: TODO show panel when double click ctrl + selection not empty
+  
   chineseMode: true,
-  englishMode: true,
-}
-
-var pageStatus = {
-  clientX: 0,
-  clientY: 0,
-  selection: '',
-  userClicked: false,
-
-  iconMouseEnter: false,
-  panelHide: false
+  englishMode: true
 }
 
 // get user config
@@ -46,34 +43,25 @@ chrome.runtime.onMessage.addListener(
     }
   })
 
-// panel component
-var injectPanel  = document.createElement('div')
-injectPanel.id = 'saladict-panel'
-var panelTemplate = require('./panel')
-panelTemplate.data.config = config
-panelTemplate.data.pageStatus = pageStatus
 
-// icon component
-var injectIcon  = document.createElement('div')
-injectIcon.id = 'saladict-icon'
-var iconTemplate = require('./icon')
-iconTemplate.data.config = config
-iconTemplate.data.pageStatus = pageStatus
-
-// inject vue
-document.body.insertBefore(injectPanel, document.body.firstChild)
-document.body.insertBefore(injectIcon, document.body.firstChild)
-var panel = new Vue(panelTemplate)
-var icon = new Vue(iconTemplate)
-
+// inject component
+var content = new Vue(require('./main'))
+content.$mount().$before(document.body.firstChild)
 
 // listen to click
 document.body.addEventListener('mouseup', mouseupEventHandler)
 
 function mouseupEventHandler(evt) {
   var el = evt.target
+  var newSelection = window.getSelection().toString()
 
-  // check if inside the panel
+  // app shutdown
+  if (!config.appActive) {
+    content.isShow = false
+    return
+  }
+
+  // if clicking inside the panel then do nothing
   do {
     if ((' ' + el.className + ' ').indexOf(' saladict ') > -1) {
       return
@@ -81,10 +69,41 @@ function mouseupEventHandler(evt) {
     el = el.parentNode
   } while (el)
 
-  pageStatus.userClicked = true
-  pageStatus.selection = window.getSelection().toString()
-  pageStatus.clientX = evt.clientX
-  pageStatus.clientY = evt.clientY
+  // empty selection
+  if (!newSelection) {
+    content.isShow = false
+    return
+  }
+
+  // Chinese or English Only options
+  if ((config.chineseMode && !isContainChinese(newSelection)) &&
+      (config.englishMode && !isContainEnglish(newSelection))) {
+    content.isShow = false
+    return
+  }
+
+  // update status, shared
+  content.pageStatus.selection = newSelection
+  content.pageStatus.clientX = evt.clientX
+  content.pageStatus.clientY = evt.clientY
+
+  // show main panel
+  content.isShow = true
+
+  // show icon & panel accordingly
+  var isIconHidden = true
+  var isPanelHidden = true
+  if (config.mode === 'icon') {
+    isIconHidden = false
+  } else if (config.mode === 'direct') {
+    isPanelHidden = false
+  } else if (config.mode === 'ctrl') {
+    // TODO
+  }
+  content.$nextTick(function() {
+    content.$broadcast('icon-hide', isIconHidden)
+    content.$broadcast('panel-hide', isPanelHidden)
+  })
 }
 
 function setConfig(response) {
@@ -93,6 +112,14 @@ function setConfig(response) {
       config[k] = response[k]
     }
   })
+}
+
+function isContainChinese(text) {
+  return /[\u4e00-\u9fa5]/.test(text)
+}
+
+function isContainEnglish(text) {
+  return /[a-z,A-Z]/.test(text)
 }
 
 /* start-test-block */

@@ -1,7 +1,10 @@
 .saladict-icon {
   position: fixed;
-  z-index: 2000000000;
-  height: 24px;
-  width: 24px;
-  background: #ffa500;
+  z-index: $z-index;
+}
+
+.saladict-icon img {
+  height: $icon-len;
+  width: $icon-len;
+  vertical-align: middle;
 }

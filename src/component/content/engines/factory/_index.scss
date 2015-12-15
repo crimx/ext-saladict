@@ -1,0 +1,111 @@
+.saladict-engine {
+  position: relative;
+  overflow: hidden;
+  padding: $engine-vertical-padding $engine-horizontal-padding 0;
+
+  // draw lines between blocks
+  &::after {
+    content: '';
+    display: block;
+    border-bottom: 1px solid rgb(245, 245, 245);
+    margin-top: $engine-vertical-padding;
+  }
+
+  &:last-child {
+    &::after {
+      border-bottom: 0;
+    }
+  }
+}
+
+/* aside */
+.saladict-engine__aside {
+  position: absolute;
+  top: 0;
+  right: $engine-horizontal-padding;
+}
+
+/* description */
+%saladict-engine__description {
+  max-height: $engine-max-height;
+  overflow-y: scroll;
+  // hide scroll bar
+  margin-right: -($panel-width + 10px);
+  padding-right: $panel-width;
+}
+
+.saladict-engine__description--article {
+  @extend %saladict-engine__description;
+
+  & > p {
+    text-indent: $article-indent;
+    text-align: justify;
+  }
+}
+
+.saladict-engine__description--list {
+  @extend %saladict-engine__description;
+  padding-right: $panel-width * 1.3;
+  margin-bottom: 1rem;
+}
+
+
+/* logo */
+.saladict-engine__logo {
+  & > figcaption {
+    border-top: 1rem solid $color-gray;
+    font-size: $font-size-small;
+  }
+
+  & > img {
+    height: $engine-logo-len;
+    width: $engine-logo-len;
+    margin-right: 2px;
+  }
+}
+
+/* description list */
+.saladict-engine__pron {
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+
+.saladict-engine__phsym {
+  font-size: 0.5rem;
+}
+
+.saladict-engine__voice {
+  display: inline-block;
+  width: $engine-voicelogo-len;
+  height: $engine-voicelogo-len;
+  margin: 0 1rem 0 0.3rem;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/voice.gif');
+
+  &:hover {
+    background-position: -24px 0;
+  }
+}
+
+.saladict-engine__linebreak {
+  margin: 0.3rem 0;
+}
+
+.saladict-engine__cdef {
+  & > li {
+    list-style-type: none;
+    display: table;
+  }
+}
+
+.saladict-engine__pos {
+  display: table-cell;
+  width: 2.5rem;
+  height: 1.5rem;
+  text-align: right;
+  font-weight: bold;
+}
+
+.saladict-engine__def {
+  display: table-cell;
+  padding-left: 1rem;
+}

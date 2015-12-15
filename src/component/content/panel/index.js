@@ -1,21 +1,48 @@
 'use strict'
 
+var engineFactory = require('../engines/factory')
+
 module.exports = {
-  el: '#saladict-panel',
   template: require('./template.html'),
   replace: true,
-  data: {
-    
+  data: function() {
+    return {
+      isHidden: true,
+      engineStatus: {
+        total: 1,
+        loaded: 0,
+        faild: 0
+      }
+    }
+  },
+  props: ['pageStatus'],
+  components: {
+    bing: engineFactory('bing')
   },
   methods: {
     mouseleave: function() {
       var that = this
       this.hideTimeout = setTimeout(function() {
-        that.pageStatus.panelHide = true
+        that.isHidden = true
       }, 2500)
     },
     mouseenter: function() {
       clearTimeout(this.hideTimeout)
+    }
+  },
+  events: {
+    'panel-hide': function(flag) {
+      // panel ready to show, request engines searching
+      if (!flag) {
+        this.engineStatus.loaded = 0
+        this.engineStatus.faild = 0
+        this.$broadcast('search', this.pageStatus.selection)
+      }
+      this.isHidden = flag
+    },
+    'engine-status': function(flag) {
+      if (flag) this.engineStatus.loaded += 1
+      else this.engineStatus.faild += 1
     }
   },
   computed: {
@@ -24,13 +51,15 @@ module.exports = {
       var y = this.pageStatus.clientY
       var ww = window.innerWidth
       var wh = window.innerHeight
-      //                  ________
-      //                 |       |
-      //                 |  LOGO | 24px
-      //            40px |_______|
-      //          _ _ _ _|  24px
-      //        /|  30px
-      // cursor//
+      //             +-----+
+      //             |     |
+      //             |     |24px
+      //        40px +-----+
+      //             | 24px
+      //             |
+      //       30px  |
+      //     +-------+
+      // cursor
       var iconLeft = ww - x > 54 ? x + 30 : x - 30
       var iconTop = y > 40 ? y - 40 : y + 20
 
@@ -41,28 +70,11 @@ module.exports = {
         result.right = ww - (iconLeft + 24) + 'px!important'
       }
       if (y < wh / 2) {
-        result.top = iconTop + 34 + 'px!important'
+        result.top = iconTop + 24 + 50 + 'px!important'
       } else {
-        result.bottom = wh - (iconTop - 10) + 'px!important'
+        result.bottom = wh - (iconTop - 50) + 'px!important'
       }
 
-      return result
-    },
-    panelShow: function() {
-      var pageStatus = this.pageStatus
-      var result = false
-
-      if (pageStatus.iconMouseEnter) {
-        pageStatus.iconMouseEnter = false
-        result = true
-      }
-
-      if (pageStatus.panelHide) {
-        pageStatus.panelHide = false
-        result  = false     
-      }
-
-      // default
       return result
     }
   }

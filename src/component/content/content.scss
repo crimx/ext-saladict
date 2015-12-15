@@ -1,0 +1,30 @@
+/* global settings */
+$font-size: 12px;
+$font-size-small: 9px;
+$line-height: 1.5;
+$font-family: 'helvetica neue', tahoma, 'hiragino sans gb', stheiti, 'wenquanyi micro hei', \5FAE\8F6F\96C5\9ED1, \5B8B\4F53, sans-serif;
+$z-index: 2000000000;
+
+$panel-width: 400px;
+
+$engine-max-height: 150px;
+$engine-horizontal-padding: 1.2rem;
+$engine-vertical-padding: 0.5rem;
+$article-indent: 1.5rem;
+
+$icon-len: 24px;
+$engine-logo-len: 16px;
+$engine-voicelogo-len: 15px;
+
+$color-gray: #98b4a3;
+$color-green: #5caf9e;
+
+$color-background: #fff;
+
+
+/* reset */
+@import '../../lib/cleanslate';
+
+
+/* app */
+@import './main/index';

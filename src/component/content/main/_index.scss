@@ -1,0 +1,27 @@
+#saladict-app {
+  /* base */
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  article {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  /* libs */
+  @import '../../lib/loading';
+
+  /* components */
+  @import 'icon/index';
+  @import 'panel/index';
+
+  /* helpers & states */
+  @import '../utils';
+}
