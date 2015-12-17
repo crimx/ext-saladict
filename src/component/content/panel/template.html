@@ -16,7 +16,7 @@
     </div>
     <aside class="saladict-panel__aside">
       <!-- <i class="saladict-iconfont saladict-panel__pin">&#xe62c;</i> -->
-      <i class="saladict-iconfont saladict-icon__chart"></i>
+      <i class="saladict-iconfont" :class="{'saladict-icon__chart': isChartHidden, 'saladict-icon__chart--clicked': !isChartHidden}" @click="clickChart"></i>
       <i class="saladict-iconfont saladict-icon__close" @click="clickClose"></i>
     </aside>
   </header>
@@ -29,5 +29,6 @@
     <bing></bing>
     <ud></ud>
     <howjsay></howjsay>
+    <dictcn></dictcn>
   </div>
 </div>

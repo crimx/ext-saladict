@@ -6,7 +6,8 @@ var pkg = require('../../../package.json')
 var engines = {
   bing: require('./engines/bing'),
   ud: require('./engines/ud'),
-  howjsay: require('./engines/howjsay')
+  howjsay: require('./engines/howjsay'),
+  dictcn: require('./engines/dictcn')
 }
 
 // request format as follows:

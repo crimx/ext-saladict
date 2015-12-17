@@ -15,7 +15,8 @@ module.exports = {
         loaded: 0,
         faild: 0
       },
-      styleObj: {}
+      styleObj: {},
+      isChartHidden: true
     }
   },
   props: ['pageStatus'],
@@ -23,7 +24,8 @@ module.exports = {
     titlebar: require('../titlebar'),
     bing: engineFactory('bing'),
     ud: engineFactory('ud'),
-    howjsay: require('../engines/howjsay')
+    howjsay: require('../engines/howjsay'),
+    dictcn: require('../engines/dictcn')
   },
   methods: {
     mouseleave: function() {
@@ -114,6 +116,10 @@ module.exports = {
     },
     clickClose: function() {
       this.isHidden = true
+    },
+    clickChart: function() {
+      this.isChartHidden = !this.isChartHidden
+      this.$broadcast('chart-hide', this.isChartHidden)
     }
   },
   events: {

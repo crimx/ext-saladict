@@ -13,6 +13,10 @@
   box-shadow: 0 3px 2px 1px rgba(0, 0, 0, 0.2);
 }
 
+.saladict-engines {
+  position: relative;
+}
+
 .saladict-loader-wrapper {
   height: $engine-max-height / 2;
 }
@@ -64,15 +68,15 @@
   top: 0;
 }
 
-
-.saladict-icon__chart,
-.saladict-icon__close {
-  display: inline-block;
-  width: $font-size-icon;
-  height: $font-size-icon;
-  color: $color-white;
-  line-height: $panel-header-height;
-  margin-right: 5px;
+.saladict-panel__aside {
+  .saladict-iconfont {
+    display: inline-block;
+    width: $font-size-icon;
+    height: $font-size-icon;
+    color: $color-white;
+    line-height: $panel-header-height;
+    margin-right: 5px;
+  }
 }
 
 @import '../engines/index';
