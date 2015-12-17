@@ -35,8 +35,8 @@ gulp.task('default', function() {
     'copy',
     ['manifest-debug',
       'sass-debug',
-      'js-debug',
-      'createWebSocketServer'],
+      'js-debug'],
+    'createWebSocketServer',
     'webserver',
     'watch'
   )
