@@ -2,11 +2,14 @@
 <div 
     class="cleanslate saladict-panel saladict saladict-transition-fade" 
     :class="{'saladict-is-hidden': isHidden}" 
-    :style="styleObj" 
+    :style="styleComputed" 
     @mouseleave="mouseleave" 
     @mouseenter="mouseenter" 
+    @mousemove="mousemove" 
+    @mousedown="mousedown" 
+    @mouseup="mouseup" 
     >
-  <header class="saladict-panel__header">
+  <header class="saladict-panel__header" @mousemove="mousemove">
     <div class="saladict-panel__search">
       <input type="text" value="{{pageStatus.selection}}" @input="searchInput" v-model="pageStatus.selection" class="saladict-panel__title">
       <i class="saladict-iconfont saladict-icon__search"></i>

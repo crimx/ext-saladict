@@ -1,6 +1,7 @@
 'use strict'
 
 var engineFactory = require('../engines')
+var utils = require('../../utils')
 
 module.exports = {
   template: require('./template.html'),
@@ -12,7 +13,8 @@ module.exports = {
         total: 1,
         loaded: 0,
         faild: 0
-      }
+      },
+      styleObj: {}
     }
   },
   props: ['pageStatus'],
@@ -32,6 +34,36 @@ module.exports = {
     mouseenter: function() {
       clearTimeout(this.hideTimeout)
     },
+    mousedown: function(e) {
+      this.isMousedown = true
+      this.mouseX = e.clientX
+      this.mouseY = e.clientY
+
+      var styleObjOrigin = {}
+      var styleObj = this.styleObj
+      Object.keys(styleObj).forEach(function(k) {
+        styleObjOrigin[k] = styleObj[k]
+      })
+      this.styleObjOrigin = styleObjOrigin
+    },
+    mouseup: function() {
+      this.isMousedown = false
+    },
+    mousemove: function(e) {
+      if (!this.isMousedown) return
+      if (e.target !== e.currentTarget) return
+
+      var result = {}
+      if (!utils.isUndefined(this.styleObjOrigin.top))
+        result.top = this.styleObjOrigin.top + e.clientY - this.mouseY
+      if (!utils.isUndefined(this.styleObjOrigin.bottom))
+        result.bottom = this.styleObjOrigin.bottom + this.mouseY - e.clientY
+      if (!utils.isUndefined(this.styleObjOrigin.left))
+        result.left = this.styleObjOrigin.left + e.clientX - this.mouseX
+      if (!utils.isUndefined(this.styleObjOrigin.right))
+        result.right = this.styleObjOrigin.right + this.mouseX - e.clientX
+      this.styleObj = result
+    },
     searchInput: function() {
       var that = this
       clearTimeout(this.searchInputTimeout)
@@ -43,23 +75,8 @@ module.exports = {
       this.engineStatus.loaded = 0
       this.engineStatus.faild = 0
       this.$broadcast('search', this.pageStatus.selection)
-    }
-  },
-  events: {
-    'panel-hide': function(flag) {
-      // panel ready to show, request engines searching
-      if (!flag) {
-        this.goSearch()
-      }
-      this.isHidden = flag
     },
-    'engine-status': function(flag) {
-      if (flag) this.engineStatus.loaded += 1
-      else this.engineStatus.faild += 1
-    }
-  },
-  computed: {
-    styleObj: function() {
+    setInitPosition: function() {
       var x = this.pageStatus.clientX
       var y = this.pageStatus.clientY
       var ww = window.innerWidth
@@ -78,16 +95,39 @@ module.exports = {
 
       var result = {}
       if (x < ww / 2) {
-        result.Left = iconLeft + 24 + 10 + 'px!important'
+        result.left = iconLeft + 24 + 10
       } else {
-        result.right = ww - (iconLeft - 10) + 'px!important'
+        result.right = ww - (iconLeft - 10)
       }
       if (y < wh / 2) {
-        result.top = iconTop + 'px!important'
+        result.top = iconTop
       } else {
-        result.bottom = 50 + 'px!important'
+        result.bottom = 50
       }
-
+      this.styleObj = result
+    }
+  },
+  events: {
+    'panel-hide': function(flag) {
+      // panel ready to show, request engines searching
+      if (!flag) {
+        this.setInitPosition()
+        this.goSearch()
+      }
+      this.isHidden = flag
+    },
+    'engine-status': function(flag) {
+      if (flag) this.engineStatus.loaded += 1
+      else this.engineStatus.faild += 1
+    }
+  },
+  computed: {
+    styleComputed: function() {
+      var styleObj = this.styleObj
+      var result = {}
+      Object.keys(styleObj).forEach(function(k) {
+        result[k] = styleObj[k] + 'px!important'
+      })
       return result
     }
   }
