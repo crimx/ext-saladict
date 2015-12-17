@@ -8,6 +8,7 @@ module.exports = {
   replace: true,
   data: function() {
     return {
+      keepAlive: false,
       isHidden: true,
       engineStatus: {
         total: 1,
@@ -27,9 +28,11 @@ module.exports = {
   methods: {
     mouseleave: function() {
       var that = this
-      this.hideTimeout = setTimeout(function() {
-        that.isHidden = true
-      }, 2500)
+      if (!this.keepAlive) {
+        this.hideTimeout = setTimeout(function() {
+          that.isHidden = true
+        }, 2500)
+      }
     },
     mouseenter: function() {
       clearTimeout(this.hideTimeout)
@@ -53,6 +56,9 @@ module.exports = {
       if (!this.isMousedown) return
       if (e.target !== e.currentTarget) return
 
+      this.keepAlive = true
+
+      // calculate offset
       var result = {}
       if (!utils.isUndefined(this.styleObjOrigin.top))
         result.top = this.styleObjOrigin.top + e.clientY - this.mouseY
@@ -105,12 +111,16 @@ module.exports = {
         result.bottom = 50
       }
       this.styleObj = result
+    },
+    clickClose: function() {
+      this.isHidden = true
     }
   },
   events: {
     'panel-hide': function(flag) {
       // panel ready to show, request engines searching
       if (!flag) {
+        this.pinned = false
         this.setInitPosition()
         this.goSearch()
       }
