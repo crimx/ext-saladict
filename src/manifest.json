@@ -30,7 +30,13 @@
   } ],
 
   "web_accessible_resources": [
-    "images/icon-24.png"
+    "images/iconfont.woff",
+    "images/iconfont.ttf",
+    "images/icon-pop.png",
+    "images/voice.gif",
+    "images/engines/bing.ico",
+    "images/engines/ud.ico",
+    "images/engines/howjsay.ico"
     ],
 
   "browser_action": {

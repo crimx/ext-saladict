@@ -4,7 +4,9 @@ var pkg = require('../../../package.json')
 
 // load engines
 var engines = {
-  bing: require('./engines/bing')
+  bing: require('./engines/bing'),
+  ud: require('./engines/ud'),
+  howjsay: require('./engines/howjsay')
 }
 
 // request format as follows:
@@ -89,7 +91,7 @@ var msgOpts = {
 // listen request event
 chrome.runtime.onMessage.addListener(
   function (request, sender, sendResponse) {    
-    if (msgOpts.hasOwnProperty(request.msg)) {
+    if (request.msg in msgOpts && msgOpts.hasOwnProperty(request.msg)) {
       msgOpts[request.msg](request, sender, sendResponse)
       return true // Let sender keep the channel open until sendResponse is called
     } else {
