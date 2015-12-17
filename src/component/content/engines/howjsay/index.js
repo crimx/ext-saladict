@@ -2,8 +2,6 @@
 
 // generate engines 
 
-var utils = require('../../../utils')
-
 var template = require('../')('howjsay')
 
 
