@@ -1,0 +1,25 @@
+<section class="saladict-engine saladict-transition-fade" :class="{'saladict-is-hidden': isHidden}">
+  <aside class="saladict-engine__aside">
+    <a :href="data.href" target="_blank">
+      <figure class="saladict-engine__logo">
+        <img :src="logo" alt="bing logo">
+        <figcaption>{{data.engine}}</figcaption>
+      </figure>
+    </a>
+  </aside>
+  <article class="saladict-engine__description--article" v-if="data.phsym">
+    <p class="saladict-engine__more--pron" v-if="data.phsym.before">
+      <template v-for="d in data.phsym.before">
+        <a href="{{d.href}}" target="_blank" @click="voicePlay(d.pron)" @mouseenter="readyVoicePlay(d.pron)" @mouseleave="cancelVoicePlay" >{{d.text}}</a><template v-if="$index !== data.phsym.before.length-1">, </template>
+      </template>
+    </p>
+    <p class="saladict-engine__mt">
+      {{data.phsym.text}}<a href="javascript:void(0);" class="saladict-engine__voice" @click="voicePlay(data.phsym.pron)" @mouseenter="readyVoicePlay(data.phsym.pron)" @mouseleave="cancelVoicePlay"></a>
+    </p>
+    <p class="saladict-engine__more--pron" v-if="data.phsym.after">
+      <template v-for="d in data.phsym.after">
+        <a href="{{d.href}}" target="_blank" @click="voicePlay(d.pron)" @mouseenter="readyVoicePlay(d.pron)" @mouseleave="cancelVoicePlay" >{{d.text}}</a><template v-if="$index !== data.phsym.after.length-1">, </template>
+      </template>
+    </p>
+  </article>
+</section>
