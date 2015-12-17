@@ -76,7 +76,7 @@ rules:
       allow-element-with-id: false
   no-trailing-zero: 1
   no-url-protocols: 0
-  placeholder-in-extend: 1
+  placeholder-in-extend: 0
   placeholder-name-format:
     - 0
     - allow-leading-underscore: true
