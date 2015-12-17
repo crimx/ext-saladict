@@ -42,7 +42,7 @@
     "node-sass": "^3.4.2",
     "partialify": "^3.1.5",
     "postcss": "^5.0.12",
-    "postcss-safe-important": "^1.0.1",
+    "postcss-safe-important": "^1.0.4",
     "proxyquireify": "^3.0.0",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.5",
