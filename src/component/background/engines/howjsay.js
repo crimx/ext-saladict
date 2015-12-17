@@ -1,6 +1,6 @@
-// howjsay pronunciation
-
 'use strict'
+
+// howjsay pronunciation
 
 var utils = require('../../utils')
 
@@ -38,7 +38,7 @@ module.exports = function(text, sendResponse) {
     // no result
     if (/Our nearest entry is/i.test(response)) {
       // get nearest result
-      let newText = /word=(.+?)\&/i.exec(response)
+      var newText = /word=(.+?)\&/i.exec(response)
       if (newText) {
         utils.get(WEBPAGE + newText[1])
           .then(checker, noResult)
