@@ -31,3 +31,8 @@ exports.sendMessage = function(msgObj) {
     })
   })
 }
+
+
+exports.isUndefined = function(e) {
+  return typeof e === 'undefined'
+}
