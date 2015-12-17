@@ -1,5 +1,16 @@
 /* helpers & states */
 
-.is-hidden {
-  display: none;
+.saladict-is-hidden {
+  opacity: 0;
+  height: 0;
+}
+
+.saladict-is-invisible {
+  visibility: hidden;
+}
+
+
+/* transitions */
+.saladict-transition-fade {
+  transition: opacity 1.5s ease, height 1.5s ease;
 }
