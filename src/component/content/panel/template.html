@@ -1,16 +1,30 @@
+
 <div 
-    class="cleanslate saladict-panel saladict" 
-    :class="{'is-hidden': isHidden}" 
+    class="cleanslate saladict-panel saladict saladict-transition-fade" 
+    :class="{'saladict-is-hidden': isHidden}" 
     :style="styleObj" 
     @mouseleave="mouseleave" 
     @mouseenter="mouseenter" 
     >
-  <header>
-  </header>
-  <div class="saladict-engines">
-    <div class="saladict-loader" v-if="engineStatus.loaded === 0">
-      <div></div><div></div><div></div><div></div><div></div>
+  <header class="saladict-panel__header">
+    <div class="saladict-panel__search">
+      <input type="text" value="{{pageStatus.selection}}" @input="searchInput" v-model="pageStatus.selection" class="saladict-panel__title">
+      <i class="saladict-iconfont saladict-icon__search"></i>
     </div>
+    <aside class="saladict-panel__aside">
+      <!-- <i class="saladict-iconfont saladict-panel__pin">&#xe62c;</i> -->
+      <i class="saladict-iconfont saladict-icon__chart"></i>
+      <i class="saladict-iconfont saladict-icon__close"></i>
+    </aside>
+  </header>
+  <div class="saladict-engines saladict-transition-fade">
+    <section class="saladict-loader-wrapper saladict-transition-fade" v-if="engineStatus.loaded === 0">
+      <div class="saladict-loader">
+        <div></div><div></div><div></div><div></div><div></div>
+      </div>
+    </section>
     <bing></bing>
+    <ud></ud>
+    <howjsay></howjsay>
   </div>
 </div>

@@ -1,6 +1,6 @@
 'use strict'
 
-var engineFactory = require('../engines/factory')
+var engineFactory = require('../engines')
 
 module.exports = {
   template: require('./template.html'),
@@ -17,7 +17,10 @@ module.exports = {
   },
   props: ['pageStatus'],
   components: {
-    bing: engineFactory('bing')
+    titlebar: require('../titlebar'),
+    bing: engineFactory('bing'),
+    ud: engineFactory('ud'),
+    howjsay: require('../engines/howjsay')
   },
   methods: {
     mouseleave: function() {
@@ -28,15 +31,25 @@ module.exports = {
     },
     mouseenter: function() {
       clearTimeout(this.hideTimeout)
+    },
+    searchInput: function() {
+      var that = this
+      clearTimeout(this.searchInputTimeout)
+      this.searchInputTimeout = setTimeout(function() {
+        that.goSearch()
+      }, 1000)
+    },
+    goSearch: function() {
+      this.engineStatus.loaded = 0
+      this.engineStatus.faild = 0
+      this.$broadcast('search', this.pageStatus.selection)
     }
   },
   events: {
     'panel-hide': function(flag) {
       // panel ready to show, request engines searching
       if (!flag) {
-        this.engineStatus.loaded = 0
-        this.engineStatus.faild = 0
-        this.$broadcast('search', this.pageStatus.selection)
+        this.goSearch()
       }
       this.isHidden = flag
     },
@@ -65,14 +78,14 @@ module.exports = {
 
       var result = {}
       if (x < ww / 2) {
-        result.Left = iconLeft + 'px!important'
+        result.Left = iconLeft + 24 + 10 + 'px!important'
       } else {
-        result.right = ww - (iconLeft + 24) + 'px!important'
+        result.right = ww - (iconLeft - 10) + 'px!important'
       }
       if (y < wh / 2) {
-        result.top = iconTop + 24 + 50 + 'px!important'
+        result.top = iconTop + 'px!important'
       } else {
-        result.bottom = wh - (iconTop - 50) + 'px!important'
+        result.bottom = 50 + 'px!important'
       }
 
       return result
