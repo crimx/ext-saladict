@@ -14,7 +14,7 @@
       </template>
     </p>
     <p class="saladict-engine__mt">
-      {{data.phsym.text}}<a href="javascript:void(0);" class="saladict-engine__voice" @click="voicePlay(data.phsym.pron)" @mouseenter="readyVoicePlay(data.phsym.pron)" @mouseleave="cancelVoicePlay"></a>
+      {{data.phsym.text}}<i class="saladict-iconfont saladict-icon__voice" @click="voicePlay(data.phsym.pron)" @mouseenter="readyVoicePlay(data.phsym.pron)" @mouseleave="cancelVoicePlay"></i>
     </p>
     <p class="saladict-engine__more--pron" v-if="data.phsym.after">
       <template v-for="d in data.phsym.after">

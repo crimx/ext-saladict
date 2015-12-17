@@ -31,14 +31,24 @@
   }
 
   .saladict-icon__close:hover:before {
-    content: '\e604';
-    font-weight: bold;
+    animation: saladict-spin 1s infinite linear;
+  }
+
+  @keyframes saladict-spin {
+    from {
+      transform: rotate(0deg);
+    }
+
+    to {
+      transform: rotate(360deg);
+    }
   }
 
   .saladict-icon__pin:before {
     content: '\e605';
   }
 
+  .saladict-icon__pin--clicked:before,
   .saladict-icon__pin:hover:before {
     content: '\e606';
   }

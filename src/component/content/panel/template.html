@@ -9,14 +9,14 @@
     @mousedown="mousedown" 
     @mouseup="mouseup" 
     >
-  <header class="saladict-panel__header" @mousemove="mousemove">
+  <header class="saladict-panel__header" :class="{'-saladict-grabbing': isGrabbing}" @mousemove="mousemove">
     <div class="saladict-panel__search">
       <input type="text" value="{{pageStatus.selection}}" @input="searchInput" v-model="pageStatus.selection" class="saladict-panel__title">
       <i class="saladict-iconfont saladict-icon__search"></i>
     </div>
     <aside class="saladict-panel__aside">
-      <!-- <i class="saladict-iconfont saladict-panel__pin">&#xe62c;</i> -->
       <i class="saladict-iconfont" :class="{'saladict-icon__chart': isChartHidden, 'saladict-icon__chart--clicked': !isChartHidden}" @click="clickChart"></i>
+      <i class="saladict-iconfont" :class="{'saladict-icon__pin--clicked': isPinned, 'saladict-icon__pin': !isPinned}" @click="clickPin"></i>
       <i class="saladict-iconfont saladict-icon__close" @click="clickClose"></i>
     </aside>
   </header>

@@ -11,17 +11,18 @@ module.exports = {
       keepAlive: false,
       isHidden: true,
       engineStatus: {
-        total: 1,
+        total: 4,
         loaded: 0,
         faild: 0
       },
       styleObj: {},
-      isChartHidden: true
+      isChartHidden: true,
+      isPinned: false,
+      isGrabbing: false
     }
   },
   props: ['pageStatus'],
   components: {
-    titlebar: require('../titlebar'),
     bing: engineFactory('bing'),
     ud: engineFactory('ud'),
     howjsay: require('../engines/howjsay'),
@@ -30,7 +31,7 @@ module.exports = {
   methods: {
     mouseleave: function() {
       var that = this
-      if (!this.keepAlive) {
+      if (!this.keepAlive && !this.isPinned) {
         this.hideTimeout = setTimeout(function() {
           that.isHidden = true
         }, 2500)
@@ -43,41 +44,43 @@ module.exports = {
       this.isMousedown = true
       this.mouseX = e.clientX
       this.mouseY = e.clientY
-
-      var styleObjOrigin = {}
-      var styleObj = this.styleObj
-      Object.keys(styleObj).forEach(function(k) {
-        styleObjOrigin[k] = styleObj[k]
-      })
-      this.styleObjOrigin = styleObjOrigin
+      var result = this.$el.getBoundingClientRect()
+      this.styleObjOrigin = {
+        top: result.top,
+        left: result.left
+      }
     },
     mouseup: function() {
       this.isMousedown = false
+      this.isGrabbing = false
     },
     mousemove: function(e) {
       if (!this.isMousedown) return
       if (e.target !== e.currentTarget) return
 
-      this.keepAlive = true
+      if (!this.isGrabbing) {
+        this.$dispatch('icon-hide', true)
+      }
 
-      // calculate offset
-      var result = {}
-      if (!utils.isUndefined(this.styleObjOrigin.top))
-        result.top = this.styleObjOrigin.top + e.clientY - this.mouseY
-      if (!utils.isUndefined(this.styleObjOrigin.bottom))
-        result.bottom = this.styleObjOrigin.bottom + this.mouseY - e.clientY
-      if (!utils.isUndefined(this.styleObjOrigin.left))
-        result.left = this.styleObjOrigin.left + e.clientX - this.mouseX
-      if (!utils.isUndefined(this.styleObjOrigin.right))
-        result.right = this.styleObjOrigin.right + this.mouseX - e.clientX
-      this.styleObj = result
+      this.keepAlive = true
+      this.isGrabbing = true
+
+      // just in case...
+      if (this.isMousedown) {
+        this.styleObj = {
+          top: this.styleObjOrigin.top + e.clientY - this.mouseY,
+          left: this.styleObjOrigin.left + e.clientX - this.mouseX
+        }
+      }
     },
     searchInput: function() {
       var that = this
       clearTimeout(this.searchInputTimeout)
-      this.searchInputTimeout = setTimeout(function() {
-        that.goSearch()
-      }, 1000)
+      if (this.pageStatus.selection) {
+        this.searchInputTimeout = setTimeout(function() {
+          that.goSearch()
+        }, 1500)
+      }
     },
     goSearch: function() {
       this.engineStatus.loaded = 0
@@ -116,17 +119,28 @@ module.exports = {
     },
     clickClose: function() {
       this.isHidden = true
+      this.isPinned = false
+      this.$dispatch('panel-pinned', false)
     },
     clickChart: function() {
       this.isChartHidden = !this.isChartHidden
       this.$broadcast('chart-hide', this.isChartHidden)
+    },
+    clickPin: function() {
+      this.isPinned = !this.isPinned
+      this.$dispatch('panel-pinned', this.isPinned)
+      // hide icon
+      if (this.isPinned) {
+        this.$dispatch('icon-hide', true)
+      }
     }
   },
   events: {
     'panel-hide': function(flag) {
       // panel ready to show, request engines searching
       if (!flag) {
-        this.pinned = false
+        this.isChartHidden = true
+        this.isPinned = false
         this.setInitPosition()
         this.goSearch()
       }
@@ -135,6 +149,10 @@ module.exports = {
     'engine-status': function(flag) {
       if (flag) this.engineStatus.loaded += 1
       else this.engineStatus.faild += 1
+    },
+    'search': function() {
+      // intercept search
+      this.goSearch()
     }
   },
   computed: {

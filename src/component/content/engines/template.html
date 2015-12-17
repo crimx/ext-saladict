@@ -9,7 +9,7 @@
   </aside>
   <div class="saladict-engine__pron" :class="{'saladict-is-invisible': !data.phsym}">
       <template v-for="p in data.phsym">
-        <span class="saladict-engine__phsym">{{p.lang}}: {{p.al}}</span><a href="javascript:void(0);" class="saladict-engine__voice" @click="voicePlay(p.pron)" @mouseenter="readyVoicePlay(p.pron)" @mouseleave="cancelVoicePlay" v-if="p.pron"></a> 
+        <span class="saladict-engine__phsym">{{p.lang}}: {{p.al}}</span><i class="saladict-iconfont saladict-icon__voice" @click="voicePlay(p.pron)" @mouseenter="readyVoicePlay(p.pron)" @mouseleave="cancelVoicePlay" v-if="p.pron"></i> 
       </template>
       <hr class="saladict-engine__linebreak">
   </div>

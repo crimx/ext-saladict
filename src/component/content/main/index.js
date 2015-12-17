@@ -4,6 +4,7 @@ module.exports = {
   data: function() {
     return {
       isShow: false,
+      isPinned: false,
       pageStatus: {
         clientX: 0,
         clientY: 0,
@@ -20,6 +21,12 @@ module.exports = {
   events: {
     'panel-hide': function(flag) {
       this.$broadcast('panel-hide', flag)
+    },
+    'icon-hide': function(flag) {
+      this.$broadcast('icon-hide', flag)
+    },
+    'panel-pinned': function(flag) {
+      this.isPinned = flag
     }
   }
 }
