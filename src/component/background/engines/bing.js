@@ -53,30 +53,36 @@ module.exports = function(text, sendResponse) {
       engine: engineInfo.engine,
       href: engineInfo.href,
       title: data.QD.HW.V || data.Q,
-      phsym: [],
-      cdef: []
     }
 
-    data.QD.PRON.forEach(function(p) {
-      var obj = {}
-      obj.lang = chrome.i18n.getMessage(p.L)
-      obj.al = '[' + p.V + ']'
-      if (data.QD.HW.SIG) {
-        if (p.L === 'US') {
-          obj.pron = PRON_LINK + 'en-us/' + data.QD.HW.SIG + '.mp3'
-        } else if (p.L === 'UK') {
-          obj.pron = PRON_LINK + 'en-gb/' + data.QD.HW.SIG + '.mp3'
-        }
-      }
-      result.phsym.push(obj)
-    })
+    if (data.QD.PRON) {
+      result.phsym = []
 
-    data.QD.C_DEF.forEach(function(d) {
-      result.cdef.push({
-        'pos': d.POS,
-        'def': d.SEN[0].D
+      data.QD.PRON.forEach(function(p) {
+        var obj = {}
+        obj.lang = chrome.i18n.getMessage(p.L)
+        obj.al = '[' + p.V + ']'
+        if (data.QD.HW.SIG) {
+          if (p.L === 'US') {
+            obj.pron = PRON_LINK + 'en-us/' + data.QD.HW.SIG + '.mp3'
+          } else if (p.L === 'UK') {
+            obj.pron = PRON_LINK + 'en-gb/' + data.QD.HW.SIG + '.mp3'
+          }
+        }
+        result.phsym.push(obj)
       })
-    })
+    }
+
+    if (data.QD.C_DEF) {
+      result.cdef = []
+
+      data.QD.C_DEF.forEach(function(d) {
+        result.cdef.push({
+          'pos': d.POS,
+          'def': d.SEN[0].D
+        })
+      })
+    }
     
     sendResponse(result)
   }
