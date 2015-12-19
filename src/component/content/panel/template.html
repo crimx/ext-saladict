@@ -38,10 +38,15 @@
   <div class="saladict-engines saladict-transition-fade">
     <section 
       class="saladict-loader-wrapper saladict-transition-fade" 
-      v-if="engineStatus.loaded === 0">
+      v-if="engineStatus.loaded === 0 && engineStatus.faild !== engineStatus.total">
       <div class="saladict-loader">
         <div></div><div></div><div></div><div></div><div></div>
       </div>
+    </section>
+    <section 
+      class="saladict-errorpage saladict-transition-fade" 
+      v-if="engineStatus.faild === engineStatus.total">
+      {{errorMessage}}
     </section>
     <bing></bing>
     <vocabulary></vocabulary>

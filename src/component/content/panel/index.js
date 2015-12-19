@@ -8,16 +8,23 @@ module.exports = {
   replace: true,
   data: function() {
     return {
+      errorMessage: chrome.i18n.getMessage('engine_error_msg'),
+      // keep panel on top till next click
       keepAlive: false,
+
       isHidden: true,
       engineStatus: {
-        total: 4,
+        total: 4, // bing, vocabulary, urban dictionary, howjsay
         loaded: 0,
         faild: 0
       },
+      // handle top/bottom/right/left style
       styleObj: {},
+      // dictcn chart
       isChartHidden: true,
+      // pin will keep panel on top forever till close button is clicked
       isPinned: false,
+      // if panel moving
       isGrabbing: false
     }
   },
@@ -66,12 +73,9 @@ module.exports = {
       this.keepAlive = true
       this.isGrabbing = true
 
-      // just in case...
-      if (this.isMousedown) {
-        this.styleObj = {
-          top: this.styleObjOrigin.top + e.clientY - this.mouseY,
-          left: this.styleObjOrigin.left + e.clientX - this.mouseX
-        }
+      this.styleObj = {
+        top: this.styleObjOrigin.top + e.clientY - this.mouseY,
+        left: this.styleObjOrigin.left + e.clientX - this.mouseX
       }
     },
     searchInput: function() {

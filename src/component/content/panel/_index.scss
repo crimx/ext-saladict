@@ -21,6 +21,14 @@
   height: $engine-max-height / 2;
 }
 
+.saladict-errorpage {
+  height: $engine-max-height / 2;
+  line-height: $engine-max-height / 2;
+  text-align: center;
+  letter-spacing: 1em;
+  font-size: $font-size-large;
+}
+
 .saladict-panel__header {
   position: relative;
   height: $panel-header-height;

@@ -54,6 +54,11 @@
       "message": "拼"
    },
 
+   "engine_error_msg": {
+      "description": "Search Faild",
+      "message": "无结果"
+   },
+
    "update_available": {
       "description": "Update vailable",
       "message": "沙拉查词有新版本啦！点击更新。"
