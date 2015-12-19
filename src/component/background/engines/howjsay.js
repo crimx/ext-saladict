@@ -34,7 +34,13 @@ module.exports = function(text, sendResponse) {
    *             - pron[string]: pronunciation
    *             - href[string]: word link
    */
+  var searchCount = 0
   function checker(response) {
+    // prevent dead loop
+    if (searchCount++ > 3) {
+      noResult()
+      return
+    }
     // no result
     if (/Our nearest entry is/i.test(response)) {
       // get nearest result
