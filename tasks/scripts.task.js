@@ -48,7 +48,7 @@ var source = require('vinyl-source-stream')
 var watchify = require('watchify')
 
 gulp.task('js-lint', function() {
-  gulp.src(['src/component/**/*.js', 'test/**/*.js'])
+  return gulp.src(['src/component/**/*.js', 'test/**/*.js'])
     .pipe($.eslint())
     .pipe($.eslint.format())
     .pipe($.eslint.failAfterError())

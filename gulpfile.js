@@ -20,7 +20,7 @@ gulp.task('watch', function() {
 });
 
 gulp.task('webserver', function() {
-  gulp.src('./')
+  return gulp.src('./')
     .pipe($.webserver({
       fallback: 'index.html',
       livereload: true,
@@ -32,10 +32,10 @@ gulp.task('webserver', function() {
 gulp.task('default', function() {
   runSequence(
     'clean',
-    'copy',
     ['manifest-debug',
       'sass-debug',
-      'js-debug'],
+      'js-debug',
+      'copy'],
     'createWebSocketServer',
     'webserver',
     'watch'

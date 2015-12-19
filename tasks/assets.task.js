@@ -7,13 +7,13 @@ var $ = require('gulp-load-plugins')()
 // Clean dist directory
 var del = require('del')
 gulp.task('clean', function() {
-  del(['dist/*'])
+  return del(['dist/*'])
 })
 
 
 // copy everything except script files
 gulp.task('copy', function() {
-  gulp.src([
+  return gulp.src([
     'src/images/**/*',
     'src/_locales/**/*'
   ], {
@@ -28,7 +28,7 @@ gulp.task('manifest-debug', function() {
   gulp.src('lib/crx-livereload.js', {dot: true})
     .pipe(gulp.dest('dist'))
 
-  gulp.src('src/manifest.json', {dot: true})
+  return gulp.src('src/manifest.json', {dot: true})
     .pipe($.jsonEditor({
       background: {
         scripts: [
