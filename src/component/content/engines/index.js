@@ -14,7 +14,8 @@ module.exports = function (engineID) {
         // logo src
         logo: chrome.extension.getURL('images/engines/' + engineID + '.ico'),
         // data from background engine
-        data: {}
+        data: {},
+        isFaild: true
       }
     },
     methods: {
@@ -48,8 +49,15 @@ module.exports = function (engineID) {
     events: {
       search: function(selection) {
         this.isHidden = true
+
+        if (!selection) {
+          this.isFaild = true
+          this.hide()
+          return
+        }
+
         // same selection, no need for searching
-        if (this.selection === selection) {
+        if (this.selection === selection && !this.isFaild) {
           this.show()
           return
         }
@@ -74,10 +82,12 @@ module.exports = function (engineID) {
           }
           that.data = data
           that.show()
+          that.isFaild = false
         }
 
         function faild() {
           that.hide()
+          that.isFaild = true
         }
       }
     }

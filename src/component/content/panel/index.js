@@ -24,6 +24,7 @@ module.exports = {
   props: ['pageStatus'],
   components: {
     bing: engineFactory('bing'),
+    vocabulary: engineFactory('vocabulary'),
     ud: engineFactory('ud'),
     howjsay: require('../engines/howjsay'),
     dictcn: require('../engines/dictcn')
@@ -139,6 +140,9 @@ module.exports = {
     'panel-hide': function(flag) {
       // panel ready to show, request engines searching
       if (!flag) {
+        // panel already showed
+        if (!this.isHidden) return
+        
         this.isChartHidden = true
         this.isPinned = false
         this.setInitPosition()
