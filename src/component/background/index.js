@@ -5,6 +5,7 @@ var pkg = require('../../../package.json')
 // load engines
 var engines = {
   bing: require('./engines/bing'),
+  vocabulary: require('./engines/vocabulary'),
   ud: require('./engines/ud'),
   howjsay: require('./engines/howjsay'),
   dictcn: require('./engines/dictcn')

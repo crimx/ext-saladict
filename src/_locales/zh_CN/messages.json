@@ -29,6 +29,16 @@
       "message": "Howjsay"
    },
 
+   "engine_dictcn": {
+      "description": "Engine Name",
+      "message": "dict.cn"
+   },
+
+   "engine_vocabulary": {
+      "description": "Engine Name",
+      "message": "Vocabulary.com"
+   },
+
    "US": {
       "description": "United State",
       "message": "美"
