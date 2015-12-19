@@ -1,27 +1,44 @@
 
 <div 
-    class="cleanslate saladict-panel saladict saladict-transition-fade" 
-    :class="{'saladict-is-hidden': isHidden}" 
-    :style="styleComputed" 
-    @mouseleave="mouseleave" 
-    @mouseenter="mouseenter" 
-    @mousemove="mousemove" 
-    @mousedown="mousedown" 
-    @mouseup="mouseup" 
-    >
-  <header class="saladict-panel__header" :class="{'-saladict-grabbing': isGrabbing}" @mousemove="mousemove">
+  class="cleanslate saladict-panel saladict saladict-transition-fade" 
+  :class="{'saladict-is-hidden': isHidden}" 
+  :style="styleComputed" 
+  @mouseleave="mouseleave" 
+  @mouseenter="mouseenter" 
+  @mousemove="mousemove" 
+  @mousedown="mousedown" 
+  @mouseup="mouseup">
+  <header 
+    class="saladict-panel__header" 
+    :class="{'-saladict-grabbing': isGrabbing}" 
+    @mousemove="mousemove">
     <div class="saladict-panel__search">
-      <input type="text" value="{{pageStatus.selection}}" @input="searchInput" v-model="pageStatus.selection" class="saladict-panel__title">
+      <input 
+        type="text" 
+        value="{{pageStatus.selection}}" 
+        @input="searchInput" 
+        v-model="pageStatus.selection" 
+        class="saladict-panel__title">
       <i class="saladict-iconfont saladict-icon__search"></i>
     </div>
     <aside class="saladict-panel__aside">
-      <i class="saladict-iconfont" :class="{'saladict-icon__chart': isChartHidden, 'saladict-icon__chart--clicked': !isChartHidden}" @click="clickChart"></i>
-      <i class="saladict-iconfont" :class="{'saladict-icon__pin--clicked': isPinned, 'saladict-icon__pin': !isPinned}" @click="clickPin"></i>
-      <i class="saladict-iconfont saladict-icon__close" @click="clickClose"></i>
+      <i 
+        class="saladict-iconfont" 
+        @click="clickChart" 
+        :class="{'saladict-icon__chart': isChartHidden, 'saladict-icon__chart--clicked': !isChartHidden}"></i>
+      <i 
+        class="saladict-iconfont" 
+        @click="clickPin" 
+        :class="{'saladict-icon__pin--clicked': isPinned, 'saladict-icon__pin': !isPinned}"></i>
+      <i 
+        class="saladict-iconfont saladict-icon__close" 
+        @click="clickClose"></i>
     </aside>
   </header>
   <div class="saladict-engines saladict-transition-fade">
-    <section class="saladict-loader-wrapper saladict-transition-fade" v-if="engineStatus.loaded === 0">
+    <section 
+      class="saladict-loader-wrapper saladict-transition-fade" 
+      v-if="engineStatus.loaded === 0">
       <div class="saladict-loader">
         <div></div><div></div><div></div><div></div><div></div>
       </div>
