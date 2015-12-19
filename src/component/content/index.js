@@ -17,6 +17,9 @@ var config = {
   // icon: show pop icon first
   // direct: show panel directly
   // ctrl: TODO show panel when double click ctrl + selection not empty
+
+  // show panel when triple press ctrl
+  tripleCtrl: true,
   
   chineseMode: true,
   englishMode: true
@@ -50,6 +53,10 @@ content.$mount().$before(document.body.firstChild)
 
 // listen to click
 document.body.addEventListener('mouseup', mouseupEventHandler)
+
+// listen to triple ctrl keypress
+var tripleCtrlCount = 0
+document.body.addEventListener('keyup', tripleCtrlHandler)
 
 function mouseupEventHandler(evt) {
   var el = evt.target
@@ -112,6 +119,28 @@ function mouseupEventHandler(evt) {
     content.$broadcast('icon-hide', isIconHidden)
     content.$broadcast('panel-hide', isPanelHidden)
   })
+}
+
+var tripleCtrlTimeout
+function tripleCtrlHandler(e) {
+  if (e.keyCode === 17) {
+    if (++tripleCtrlCount >= 3) {
+      // triple!
+      content.pageStatus.selection = window.getSelection().toString()
+      content.pageStatus.clientX = (window.innerWidth - 400) / 2 - 40
+      content.pageStatus.clientY = window.innerHeight / 3
+      content.isShow = true
+      content.$nextTick(function() {
+        content.$broadcast('icon-hide', true)
+        content.$broadcast('panel-hide', false)
+      })
+    } else {
+      clearTimeout(tripleCtrlTimeout)
+      tripleCtrlTimeout = setTimeout(function() {
+        tripleCtrlCount = 0
+      }, 500)
+    }
+  }
 }
 
 function setConfig(response) {

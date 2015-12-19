@@ -38,7 +38,7 @@
   <div class="saladict-engines saladict-transition-fade">
     <section 
       class="saladict-loader-wrapper saladict-transition-fade" 
-      v-if="engineStatus.loaded === 0 && engineStatus.faild !== engineStatus.total">
+      v-if="engineStatus.loaded === 0 && engineStatus.faild !== engineStatus.total && pageStatus.selection">
       <div class="saladict-loader">
         <div></div><div></div><div></div><div></div><div></div>
       </div>

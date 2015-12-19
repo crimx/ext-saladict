@@ -150,7 +150,9 @@ module.exports = {
         this.isChartHidden = true
         this.isPinned = false
         this.setInitPosition()
-        this.goSearch()
+        if (this.pageStatus.selection) {
+          this.goSearch()
+        }
       }
       this.isHidden = flag
     },
