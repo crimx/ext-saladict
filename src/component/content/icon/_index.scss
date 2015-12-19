@@ -1,10 +1,136 @@
+$icon-len: 40px;
+$tomato-size-ratio: 0.6;
+$orange-size-ratio: 0.6;
+$leaf-size-ratio: 0.6;
+
+$tomato-rotate: 45deg;
+$leaf-rotate: 30deg;
+
 .saladict-icon {
   position: fixed;
   z-index: $z-index;
+  height: $icon-len;
+  width: $icon-len;
 }
 
 .saladict-icon img {
-  height: $icon-len;
-  width: $icon-len;
+  
   vertical-align: middle;
+}
+
+.saladict-icon__leaf {
+  position: absolute;
+  z-index: 1;
+  top: 50 * $icon-len / 1024;
+  left: 600 * $icon-len / 1024;
+  width: $icon-len * 729 / 1024 * $leaf-size-ratio;
+  height: $icon-len * $leaf-size-ratio;
+  background-repeat: no-repeat;
+  background-size: auto $icon-len * $leaf-size-ratio;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/leaf.png');
+  transform: rotate($leaf-rotate);
+}
+
+.saladict-icon__orange {
+  position: absolute;
+  z-index: 2;
+  top: 0 * $icon-len / 1024;
+  left: 195 * $icon-len / 1024;
+  width: $icon-len * $orange-size-ratio;
+  height: $icon-len * $orange-size-ratio;
+  background-repeat: no-repeat;
+  background-size: $icon-len * $orange-size-ratio;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/orange.png');
+}
+
+.saladict-icon__tomato {
+  position: absolute;
+  z-index: 3;
+  top: 250 * $icon-len / 1024;
+  left: -117 * $icon-len / 1024;
+  width: $icon-len * $tomato-size-ratio;
+  height: $icon-len * 513 / 1024 * $tomato-size-ratio;
+  background-repeat: no-repeat;
+  background-size: $icon-len * $tomato-size-ratio;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/tomato.png');
+  transform: rotate($tomato-rotate);
+}
+
+.saladict-icon__bowl {
+  position: absolute;
+  z-index: 4;
+  bottom: 0;
+  left: 0;
+  width: $icon-len;
+  height: $icon-len * 530 / 1024;
+  background-repeat: no-repeat;
+  background-size: $icon-len;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/bowl.png');
+}
+
+.saladict-icon__leaf--animate {
+  @extend .saladict-icon__leaf;
+  animation: saladict-leaf-shake 1s infinite linear;
+}
+
+.saladict-icon__orange--animate {
+  @extend .saladict-icon__orange;
+  animation: saladict-spin 1s infinite linear;
+}
+
+.saladict-icon__tomato--animate {
+  @extend .saladict-icon__tomato;
+  animation: saladict-tomato-shake 0.7s infinite linear;
+}
+
+@keyframes saladict-leaf-shake {
+  0% {
+    transform: translate(2px, 1px) rotate($leaf-rotate + 0deg); }
+
+  10% {
+    transform: translate(-1px, -2px) rotate($leaf-rotate - 1deg); }
+
+  20% {
+    transform: translate(-2px, 0) rotate($leaf-rotate + 1deg); }
+
+  30% {
+    transform: translate(0, 2px) rotate($leaf-rotate + 0deg); }
+
+  40% {
+    transform: translate(1px, -1px) rotate($leaf-rotate + 1deg); }
+
+  50% {
+    transform: translate(-1px, 2px) rotate($leaf-rotate - 1deg); }
+
+  60% {
+    transform: translate(-2px, 1px) rotate($leaf-rotate + 0deg); }
+
+  70% {
+    transform: translate(2px, 1px) rotate($leaf-rotate - 1deg); }
+
+  80% {
+    transform: translate(-1px, -1px) rotate($leaf-rotate + 1deg); }
+
+  90% {
+    transform: translate(2px, 2px) rotate($leaf-rotate + 0deg); }
+
+  100% {
+    transform: translate(1px, -2px) rotate($leaf-rotate - 1deg); }
+}
+
+@keyframes saladict-tomato-shake {
+  0% {
+    transform: rotate($tomato-rotate - 10deg); }
+
+  30% {
+    transform: rotate($tomato-rotate + 0deg); }
+
+  60% {
+    transform: rotate($tomato-rotate + 10deg); }
+
+  90% {
+    transform: rotate($tomato-rotate + 0deg); }
+
+  100% {
+    transform: rotate($tomato-rotate - 5deg); }
 }

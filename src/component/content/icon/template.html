@@ -1,8 +1,13 @@
 <div 
-    class="cleanslate saladict-icon saladict" 
+    class="cleanslate saladict-icon saladict saladict-transition-fade" 
     v-if="!isHidden" 
     :style="styleObj" 
-    @mouseenter="mouseenter"
+    @mouseenter="mouseenter" 
+    @mouseleave="mouseleave"
     >
-  <img :src="logoSrc" alt="saladict logo">
+  <!-- <img :src="logoSrc" alt="saladict logo"> -->
+  <div class="saladict-icon__leaf{{isAnimate ? '--animate' : ''}}"></div>
+  <div class="saladict-icon__orange{{isAnimate ? '--animate' : ''}}"></div>
+  <div class="saladict-icon__tomato{{isAnimate ? '--animate' : ''}}"></div>
+  <div class="saladict-icon__bowl"></div>
 </div>

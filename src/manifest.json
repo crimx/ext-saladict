@@ -32,8 +32,10 @@
   "web_accessible_resources": [
     "images/iconfont.woff",
     "images/iconfont.ttf",
-    "images/icon-pop.png",
-    "images/voice.gif",
+    "images/leaf.png",
+    "images/orange.png",
+    "images/tomato.png",
+    "images/bowl.png",
     "images/engines/bing.ico",
     "images/engines/vocabulary.ico",
     "images/engines/ud.ico",

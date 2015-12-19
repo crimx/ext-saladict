@@ -111,7 +111,7 @@ module.exports = {
 
       var result = {}
       if (x < ww / 2) {
-        result.left = iconLeft + 24 + 10
+        result.left = iconLeft + 40 + 10
       } else {
         result.right = ww - (iconLeft - 10)
       }

@@ -6,7 +6,7 @@ module.exports = {
   data: function() {
     return {
       isHidden: true,
-      logoSrc: chrome.extension.getURL('images/icon-pop.png')
+      isAnimate: false
     }
   },
   props: ['pageStatus'],
@@ -14,6 +14,11 @@ module.exports = {
     mouseenter: function() {
       // show panel
       this.$dispatch('panel-hide', false)
+      // animate icon
+      this.isAnimate = true
+    },
+    mouseleave: function() {
+      this.isAnimate = false
     }
   },
   events: {
