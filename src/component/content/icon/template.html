@@ -1,6 +1,6 @@
 <div 
     class="cleanslate saladict-icon saladict" 
-    :class="{'saladict-is-hidden': isHidden}" 
+    v-if="!isHidden" 
     :style="styleObj" 
     @mouseenter="mouseenter"
     >
