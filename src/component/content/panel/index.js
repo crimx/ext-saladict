@@ -144,6 +144,7 @@ module.exports = {
     'panel-hide': function(flag) {
       // panel ready to show, request engines searching
       if (!flag) {
+        clearTimeout(this.hideTimeout)
         // panel already showed
         if (!this.isHidden) return
         
