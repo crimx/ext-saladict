@@ -20,11 +20,10 @@ module.exports = function (engineID) {
     },
     methods: {
       voicePlay: function(url) {
-        if (this.audio) {
-          this.audio.pause()
-        }
-        this.audio = new Audio(url)
-        this.audio.play()
+        utils.sendMessage({
+          msg: 'audioPlay',
+          url: url
+        })
       },
       // mouse enter
       readyVoicePlay: function(url) {

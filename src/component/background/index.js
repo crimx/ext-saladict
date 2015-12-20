@@ -11,8 +11,30 @@ var engines = {
   dictcn: require('./engines/dictcn')
 }
 
+var audioPlay
+
 // request format as follows:
 var msgOpts = {
+  /* 
+   * request audio play:
+   *   msg[string]: 'audioPlay'
+   *   url[string]: audio src
+   */
+  audioPlay: function(request, sender, sendResponse) {
+    if (typeof request.url !== 'string') {
+      sendResponse({msg: null})
+      return
+    }
+    if (audioPlay) {
+      audioPlay.pause()
+    }
+    audioPlay = new Audio(request.url)
+    audioPlay.play()
+    sendResponse({
+      msg: 'success',
+      url: request.url
+    })
+  },
   /* 
    * request translated result:
    *   msg[string]: 'translate'
