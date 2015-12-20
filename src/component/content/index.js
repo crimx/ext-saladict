@@ -68,14 +68,6 @@ function mouseupEventHandler(evt) {
     return
   }
 
-  if (content.isPinned) {
-    if (newSelection) {
-      content.pageStatus.selection = newSelection
-      content.$broadcast('search', newSelection)
-    }
-    return
-  }
-
   // if clicking inside the panel then do nothing
   do {
     if ((' ' + el.className + ' ').indexOf(' saladict ') > -1) {
@@ -83,6 +75,14 @@ function mouseupEventHandler(evt) {
     }
     el = el.parentNode
   } while (el)
+
+  if (content.isPinned) {
+    if (newSelection) {
+      content.pageStatus.selection = newSelection
+      content.$broadcast('search', newSelection)
+    }
+    return
+  }
 
   // empty selection
   if (!newSelection) {
