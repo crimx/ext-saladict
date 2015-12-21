@@ -141,12 +141,12 @@ function tripleCtrlHandler(e) {
     if (++tripleCtrlCount >= 3) {
       // triple!
       content.pageStatus.selection = window.getSelection().toString()
-      content.pageStatus.clientX = (window.innerWidth - 400) / 2 - 40
-      content.pageStatus.clientY = window.innerHeight / 3
+      content.pageStatus.iconLeft = (window.innerWidth - 400) / 2 - 40
+      content.pageStatus.iconTop = window.innerHeight / 3
       content.isShow = true
       content.$nextTick(function() {
         content.$broadcast('icon-hide', true)
-        content.$broadcast('panel-hide', false)
+        content.$broadcast('panel-hide', false, 'focus')
       })
     } else {
       clearTimeout(tripleCtrlTimeout)
