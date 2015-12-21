@@ -93,29 +93,18 @@ module.exports = {
       this.$broadcast('search', this.pageStatus.selection)
     },
     setInitPosition: function() {
-      var x = this.pageStatus.clientX
-      var y = this.pageStatus.clientY
       var ww = window.innerWidth
       var wh = window.innerHeight
-      //             +-----+
-      //             |     |
-      //             |     |24px
-      //        40px +-----+
-      //             | 24px
-      //             |
-      //       30px  |
-      //     +-------+
-      // cursor
-      var iconLeft = ww - x > 54 ? x + 30 : x - 30
-      var iconTop = y > 40 ? y - 40 : y + 20
+      var iconLeft = this.pageStatus.iconLeft
+      var iconTop = this.pageStatus.iconTop
 
       var result = {}
-      if (x < ww / 2) {
+      if (iconLeft < ww / 2) {
         result.left = iconLeft + 40 + 10
       } else {
         result.right = ww - (iconLeft - 10)
       }
-      if (y < wh / 2) {
+      if (iconTop < wh / 2) {
         result.top = iconTop
       } else {
         result.bottom = 50

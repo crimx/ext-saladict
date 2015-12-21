@@ -99,8 +99,22 @@ function mouseupEventHandler(evt) {
 
   // update status, shared
   content.pageStatus.selection = newSelection
-  content.pageStatus.clientX = evt.clientX
-  content.pageStatus.clientY = evt.clientY
+  // calculate popup icon position
+  var x = evt.clientX
+  var y = evt.clientY
+  var ww = window.innerWidth
+  var wh = window.innerHeight
+  //             +-----+
+  //             |     |
+  //             |     |30px
+  //        60px +-----+
+  //             | 30px
+  //             |
+  //       40px  |
+  //     +-------+
+  // cursor
+  content.pageStatus.iconLeft = ww - x > 40 + 30 ? x + 40 : x - 50
+  content.pageStatus.iconTop = y > 60 ? y - 60 : y + 40
 
   // show main panel
   content.isShow = true
