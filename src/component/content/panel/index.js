@@ -130,7 +130,7 @@ module.exports = {
     }
   },
   events: {
-    'panel-hide': function(flag) {
+    'panel-hide': function(flag, focus) {
       // panel ready to show, request engines searching
       if (!flag) {
         clearTimeout(this.hideTimeout)
@@ -145,6 +145,10 @@ module.exports = {
         }
       }
       this.isHidden = flag
+      // triple ctrl popup, focus on title input
+      if (focus === 'focus') {
+        this.$els.inputTitle.focus()
+      }
     },
     'engine-status': function(flag) {
       if (flag) this.engineStatus.loaded += 1

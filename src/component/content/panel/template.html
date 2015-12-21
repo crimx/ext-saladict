@@ -14,8 +14,8 @@
     @mousemove="mousemove">
     <div class="saladict-panel__search">
       <input 
+        v-el:input-title 
         type="text" 
-        value="{{pageStatus.selection}}" 
         @input="searchInput" 
         v-model="pageStatus.selection" 
         class="saladict-panel__title">
