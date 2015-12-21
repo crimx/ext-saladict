@@ -1,18 +1,18 @@
 /* helpers & states */
 
-.saladict-is-hidden {
+.is-hidden {
   opacity: 0;
   height: 0;
   margin: 0;
   padding: 0;
 }
 
-.saladict-is-invisible {
+.is-invisible {
   visibility: hidden;
 }
 
 
 /* transitions */
-.saladict-transition-fade {
+.a-fade {
   transition: opacity 1.5s ease, height 1.5s ease;
 }

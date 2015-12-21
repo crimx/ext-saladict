@@ -20,10 +20,10 @@
 /* == BLANKET RESET RULES == */
 
 /* HTML 4.01 */
-.cleanslate, .cleanslate h1, .cleanslate h2, .cleanslate h3, .cleanslate h4, .cleanslate h5, .cleanslate h6, .cleanslate p, .cleanslate td, .cleanslate dl, .cleanslate tr, .cleanslate dt, .cleanslate ol, .cleanslate form, .cleanslate select, .cleanslate option, .cleanslate pre, .cleanslate div, .cleanslate table,  .cleanslate th, .cleanslate tbody, .cleanslate tfoot, .cleanslate caption, .cleanslate thead, .cleanslate ul, .cleanslate li, .cleanslate address, .cleanslate blockquote, .cleanslate dd, .cleanslate fieldset, .cleanslate li, .cleanslate iframe, .cleanslate strong, .cleanslate legend, .cleanslate em, .cleanslate summary, .cleanslate cite, .cleanslate span, .cleanslate input, .cleanslate sup, .cleanslate label, .cleanslate dfn, .cleanslate object, .cleanslate big, .cleanslate q, .cleanslate samp, .cleanslate acronym, .cleanslate small, .cleanslate img, .cleanslate strike, .cleanslate code, .cleanslate sub, .cleanslate ins, .cleanslate textarea, .cleanslate button, .cleanslate var, .cleanslate a, .cleanslate abbr, .cleanslate applet, .cleanslate del, .cleanslate kbd, .cleanslate tt, .cleanslate b, .cleanslate i, .cleanslate hr,
+.saladict-cleanslate, .saladict-cleanslate h1, .saladict-cleanslate h2, .saladict-cleanslate h3, .saladict-cleanslate h4, .saladict-cleanslate h5, .saladict-cleanslate h6, .saladict-cleanslate p, .saladict-cleanslate td, .saladict-cleanslate dl, .saladict-cleanslate tr, .saladict-cleanslate dt, .saladict-cleanslate ol, .saladict-cleanslate form, .saladict-cleanslate select, .saladict-cleanslate option, .saladict-cleanslate pre, .saladict-cleanslate div, .saladict-cleanslate table,  .saladict-cleanslate th, .saladict-cleanslate tbody, .saladict-cleanslate tfoot, .saladict-cleanslate caption, .saladict-cleanslate thead, .saladict-cleanslate ul, .saladict-cleanslate li, .saladict-cleanslate address, .saladict-cleanslate blockquote, .saladict-cleanslate dd, .saladict-cleanslate fieldset, .saladict-cleanslate li, .saladict-cleanslate iframe, .saladict-cleanslate strong, .saladict-cleanslate legend, .saladict-cleanslate em, .saladict-cleanslate summary, .saladict-cleanslate cite, .saladict-cleanslate span, .saladict-cleanslate input, .saladict-cleanslate sup, .saladict-cleanslate label, .saladict-cleanslate dfn, .saladict-cleanslate object, .saladict-cleanslate big, .saladict-cleanslate q, .saladict-cleanslate samp, .saladict-cleanslate acronym, .saladict-cleanslate small, .saladict-cleanslate img, .saladict-cleanslate strike, .saladict-cleanslate code, .saladict-cleanslate sub, .saladict-cleanslate ins, .saladict-cleanslate textarea, .saladict-cleanslate button, .saladict-cleanslate var, .saladict-cleanslate a, .saladict-cleanslate abbr, .saladict-cleanslate applet, .saladict-cleanslate del, .saladict-cleanslate kbd, .saladict-cleanslate tt, .saladict-cleanslate b, .saladict-cleanslate i, .saladict-cleanslate hr,
 
 /* HTML5 - Sept 2013 taken from MDN https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/HTML5_element_list */
-.cleanslate article, .cleanslate aside, .cleanslate figure, .cleanslate figcaption, .cleanslate footer, .cleanslate header, .cleanslate menu, .cleanslate nav, .cleanslate section, .cleanslate time, .cleanslate mark, .cleanslate audio, .cleanslate video, .cleanslate abbr, .cleanslate address, .cleanslate area, .cleanslate blockquote, .cleanslate canvas, .cleanslate caption, .cleanslate cite, .cleanslate code, .cleanslate colgroup, .cleanslate col, .cleanslate datalist, .cleanslate fieldset, .cleanslate main, .cleanslate map, .cleanslate meta, .cleanslate optgroup, .cleanslate output, .cleanslate progress {
+.saladict-cleanslate article, .saladict-cleanslate aside, .saladict-cleanslate figure, .saladict-cleanslate figcaption, .saladict-cleanslate footer, .saladict-cleanslate header, .saladict-cleanslate menu, .saladict-cleanslate nav, .saladict-cleanslate section, .saladict-cleanslate time, .saladict-cleanslate mark, .saladict-cleanslate audio, .saladict-cleanslate video, .saladict-cleanslate abbr, .saladict-cleanslate address, .saladict-cleanslate area, .saladict-cleanslate blockquote, .saladict-cleanslate canvas, .saladict-cleanslate caption, .saladict-cleanslate cite, .saladict-cleanslate code, .saladict-cleanslate colgroup, .saladict-cleanslate col, .saladict-cleanslate datalist, .saladict-cleanslate fieldset, .saladict-cleanslate main, .saladict-cleanslate map, .saladict-cleanslate meta, .saladict-cleanslate optgroup, .saladict-cleanslate output, .saladict-cleanslate progress {
     background-attachment:scroll !important;
     background-color:transparent !important;
     background-image:none !important; /* This rule affects the use of pngfix JavaScript http://dillerdesign.com/experiment/DD_BelatedPNG for IE6, which is used to force the browser to recognise alpha-transparent PNGs files that replace the IE6 lack of PNG transparency. (The rule overrides the VML image that is used to replace the given CSS background-image). If you don't know what that means, then you probably haven't used the pngfix script, and this comment may be ignored :) */
@@ -164,113 +164,113 @@
 /* == BLOCK-LEVEL == */
 /* Actually, some of these should be inline-block and other values, but block works fine (TODO: rigorously verify this) */
 /* HTML 4.01 */
-.cleanslate, .cleanslate h3, .cleanslate h5, .cleanslate p, .cleanslate h1, .cleanslate dl, .cleanslate dt, .cleanslate h6, .cleanslate ol, .cleanslate form, .cleanslate option, .cleanslate pre, .cleanslate div, .cleanslate h2, .cleanslate caption, .cleanslate h4, .cleanslate ul, .cleanslate address, .cleanslate blockquote, .cleanslate dd, .cleanslate fieldset, .cleanslate hr,
+.saladict-cleanslate, .saladict-cleanslate h3, .saladict-cleanslate h5, .saladict-cleanslate p, .saladict-cleanslate h1, .saladict-cleanslate dl, .saladict-cleanslate dt, .saladict-cleanslate h6, .saladict-cleanslate ol, .saladict-cleanslate form, .saladict-cleanslate option, .saladict-cleanslate pre, .saladict-cleanslate div, .saladict-cleanslate h2, .saladict-cleanslate caption, .saladict-cleanslate h4, .saladict-cleanslate ul, .saladict-cleanslate address, .saladict-cleanslate blockquote, .saladict-cleanslate dd, .saladict-cleanslate fieldset, .saladict-cleanslate hr,
 
 /* HTML5 new elements */
-.cleanslate article, .cleanslate dialog, .cleanslate figure, .cleanslate footer, .cleanslate header, .cleanslate hgroup, .cleanslate menu, .cleanslate nav, .cleanslate section, .cleanslate audio, .cleanslate video, .cleanslate address, .cleanslate blockquote, .cleanslate colgroup, .cleanslate main, .cleanslate progress, .cleanslate summary {
+.saladict-cleanslate article, .saladict-cleanslate dialog, .saladict-cleanslate figure, .saladict-cleanslate footer, .saladict-cleanslate header, .saladict-cleanslate hgroup, .saladict-cleanslate menu, .saladict-cleanslate nav, .saladict-cleanslate section, .saladict-cleanslate audio, .saladict-cleanslate video, .saladict-cleanslate address, .saladict-cleanslate blockquote, .saladict-cleanslate colgroup, .saladict-cleanslate main, .saladict-cleanslate progress, .saladict-cleanslate summary {
     display:block !important; 
 }
-.cleanslate h1, .cleanslate h2, .cleanslate h3, .cleanslate h4, .cleanslate h5, .cleanslate h6 {
+.saladict-cleanslate h1, .saladict-cleanslate h2, .saladict-cleanslate h3, .saladict-cleanslate h4, .saladict-cleanslate h5, .saladict-cleanslate h6 {
     font-weight: bold !important;
 }
-.cleanslate h1 {
+.saladict-cleanslate h1 {
     font-size: 2em !important;
     padding: .67em 0 !important;
 }
-.cleanslate h2 {
+.saladict-cleanslate h2 {
     font-size: 1.5em !important;
     padding: .83em 0 !important;
 }
-.cleanslate h3 {
+.saladict-cleanslate h3 {
     font-size: 1.17em !important;
     padding: .83em 0 !important;
 }
-.cleanslate h4 {
+.saladict-cleanslate h4 {
     font-size: 1em !important;
 }
-.cleanslate h5 {
+.saladict-cleanslate h5 {
     font-size: .83em !important;
 }
-.cleanslate p {
+.saladict-cleanslate p {
     margin: 1em 0 !important;
 }
-.cleanslate table {
+.saladict-cleanslate table {
     display: table !important;
 }
-.cleanslate thead {
+.saladict-cleanslate thead {
     display: table-header-group !important;
 }
-.cleanslate tbody {
+.saladict-cleanslate tbody {
     display: table-row-group !important;
 }
-.cleanslate tfoot {
+.saladict-cleanslate tfoot {
     display: table-footer-group !important;
 }
-.cleanslate tr {
+.saladict-cleanslate tr {
     display: table-row !important;
 }
-.cleanslate th, .cleanslate td {
+.saladict-cleanslate th, .saladict-cleanslate td {
     display: table-cell !important;
     padding: 2px !important;
 }
 
 /* == SPECIFIC ELEMENTS == */
 /* Some of these are browser defaults; some are just useful resets */
-.cleanslate ol, .cleanslate ul {
+.saladict-cleanslate ol, .saladict-cleanslate ul {
     margin: 1em 0 !important;
 }
-.cleanslate ul li, .cleanslate ul ul li, .cleanslate ul ul ul li, .cleanslate ol li, .cleanslate ol ol li, .cleanslate ol ol ol li, .cleanslate ul ol ol li, .cleanslate ul ul ol li, .cleanslate ol ul ul li, .cleanslate ol ol ul li {
+.saladict-cleanslate ul li, .saladict-cleanslate ul ul li, .saladict-cleanslate ul ul ul li, .saladict-cleanslate ol li, .saladict-cleanslate ol ol li, .saladict-cleanslate ol ol ol li, .saladict-cleanslate ul ol ol li, .saladict-cleanslate ul ul ol li, .saladict-cleanslate ol ul ul li, .saladict-cleanslate ol ol ul li {
     list-style-position: inside !important;
     margin-top: .08em !important;
 }
-.cleanslate ol ol, .cleanslate ol ol ol, .cleanslate ul ul, .cleanslate ul ul ul, .cleanslate ol ul, .cleanslate ol ul ul, .cleanslate ol ol ul, .cleanslate ul ol, .cleanslate ul ol ol, .cleanslate ul ul ol {
+.saladict-cleanslate ol ol, .saladict-cleanslate ol ol ol, .saladict-cleanslate ul ul, .saladict-cleanslate ul ul ul, .saladict-cleanslate ol ul, .saladict-cleanslate ol ul ul, .saladict-cleanslate ol ol ul, .saladict-cleanslate ul ol, .saladict-cleanslate ul ol ol, .saladict-cleanslate ul ul ol {
     padding-left: 40px !important;
     margin: 0 !important;
 }
 /* helper for general navigation */
-.cleanslate nav ul, .cleanslate nav ol {
+.saladict-cleanslate nav ul, .saladict-cleanslate nav ol {
     list-style-type:none !important;
 
 }
-.cleanslate ul, .cleanslate menu {
+.saladict-cleanslate ul, .saladict-cleanslate menu {
     list-style-type:disc !important;
 }
-.cleanslate ol {
+.saladict-cleanslate ol {
     list-style-type:decimal !important;
 }
-.cleanslate ol ul, .cleanslate ul ul, .cleanslate menu ul, .cleanslate ol menu, .cleanslate ul menu, .cleanslate menu menu {
+.saladict-cleanslate ol ul, .saladict-cleanslate ul ul, .saladict-cleanslate menu ul, .saladict-cleanslate ol menu, .saladict-cleanslate ul menu, .saladict-cleanslate menu menu {
     list-style-type:circle !important;
 }
-.cleanslate ol ol ul, .cleanslate ol ul ul, .cleanslate ol menu ul, .cleanslate ol ol menu, .cleanslate ol ul menu, .cleanslate ol menu menu, .cleanslate ul ol ul, .cleanslate ul ul ul, .cleanslate ul menu ul, .cleanslate ul ol menu, .cleanslate ul ul menu, .cleanslate ul menu menu, .cleanslate menu ol ul, .cleanslate menu ul ul, .cleanslate menu menu ul, .cleanslate menu ol menu, .cleanslate menu ul menu, .cleanslate menu menu menu {
+.saladict-cleanslate ol ol ul, .saladict-cleanslate ol ul ul, .saladict-cleanslate ol menu ul, .saladict-cleanslate ol ol menu, .saladict-cleanslate ol ul menu, .saladict-cleanslate ol menu menu, .saladict-cleanslate ul ol ul, .saladict-cleanslate ul ul ul, .saladict-cleanslate ul menu ul, .saladict-cleanslate ul ol menu, .saladict-cleanslate ul ul menu, .saladict-cleanslate ul menu menu, .saladict-cleanslate menu ol ul, .saladict-cleanslate menu ul ul, .saladict-cleanslate menu menu ul, .saladict-cleanslate menu ol menu, .saladict-cleanslate menu ul menu, .saladict-cleanslate menu menu menu {
     list-style-type:square !important;
 }
-.cleanslate li {    
+.saladict-cleanslate li {    
     display:list-item !important;
     /* Fixes IE7 issue with positioning of nested bullets */
     min-height:auto !important;
     min-width:auto !important;
     padding-left: 20px !important; /* replace -webkit-padding-start: 40px; */
 }
-.cleanslate strong {
+.saladict-cleanslate strong {
     font-weight:bold !important;
 }
-.cleanslate em {
+.saladict-cleanslate em {
     font-style:italic !important;
 }
-.cleanslate kbd, .cleanslate samp, .cleanslate code, .cleanslate pre {
+.saladict-cleanslate kbd, .saladict-cleanslate samp, .saladict-cleanslate code, .saladict-cleanslate pre {
   font-family:monospace !important;
 }
-.cleanslate a {
+.saladict-cleanslate a {
     color: blue !important;
     text-decoration: underline !important;
 }
-.cleanslate a:visited {
+.saladict-cleanslate a:visited {
     color: #529 !important;
 }
-.cleanslate a, .cleanslate a *, .cleanslate input[type=submit], .cleanslate input[type=radio], .cleanslate input[type=checkbox], .cleanslate select {
+.saladict-cleanslate a, .saladict-cleanslate a *, .saladict-cleanslate input[type=submit], .saladict-cleanslate input[type=radio], .saladict-cleanslate input[type=checkbox], .saladict-cleanslate select {
     cursor:pointer !important;
 }
-.cleanslate button, .cleanslate input[type=submit] {
+.saladict-cleanslate button, .saladict-cleanslate input[type=submit] {
     text-align: center !important;
     padding: 2px 6px 3px !important;
     border-radius: 4px !important;
@@ -296,15 +296,15 @@
             box-shadow: 1px 1px 0px #eee !important;
     outline: initial !important;
 }
-.cleanslate button {
+.saladict-cleanslate button {
     padding: 1px 6px 2px 6px !important;
     margin-right: 5px !important;
 }
-.cleanslate input[type=hidden] {
+.saladict-cleanslate input[type=hidden] {
     display:none !important;
 }
 /* restore form defaults */
-.cleanslate textarea {
+.saladict-cleanslate textarea {
     -webkit-appearance: textarea !important;
     background: white !important;
     padding: 2px !important;
@@ -316,35 +316,35 @@
     line-height: 13px !important;
     resize: both !important;
 }
-.cleanslate select, .cleanslate textarea, .cleanslate input {
+.saladict-cleanslate select, .saladict-cleanslate textarea, .saladict-cleanslate input {
     border:1px solid #ccc !important;
 }
-.cleanslate select {
+.saladict-cleanslate select {
     font-size: 11px !important;
     font-family: helvetica, arial, sans-serif !important;
     display: inline-block;
 }
-.cleanslate textarea:focus, .cleanslate input:focus {
+.saladict-cleanslate textarea:focus, .saladict-cleanslate input:focus {
     outline: auto 5px -webkit-focus-ring-color !important;
     outline: initial !important;
 }
-.cleanslate input[type=text] {
+.saladict-cleanslate input[type=text] {
     background: white !important;
     padding: 1px !important;
     font-family: initial !important;
     font-size: small !important;
 }
-.cleanslate input[type=checkbox], .cleanslate input[type=radio] {
+.saladict-cleanslate input[type=checkbox], .saladict-cleanslate input[type=radio] {
     border: 1px #2b2b2b solid !important;
     border-radius: 4px !important;
 }
-.cleanslate input[type=checkbox], .cleanslate input[type=radio] {
+.saladict-cleanslate input[type=checkbox], .saladict-cleanslate input[type=radio] {
     outline: intial !important;
 }
-.cleanslate input[type=radio] {
+.saladict-cleanslate input[type=radio] {
     margin: 2px 2px 3px 2px !important;
 }
-.cleanslate input[type=submit]:active, .cleanslate button:active {
+.saladict-cleanslate input[type=submit]:active, .saladict-cleanslate button:active {
     background: rgb(59,103,158) !important; /* Old browsers */
     background: -moz-linear-gradient(top, rgba(59,103,158,1) 0%, rgba(43,136,217,1) 50%, rgba(32,124,202,1) 51%, rgba(125,185,232,1) 100%) !important; /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(59,103,158,1)), color-stop(50%,rgba(43,136,217,1)), color-stop(51%,rgba(32,124,202,1)), color-stop(100%,rgba(125,185,232,1))) !important; /* Chrome,Safari4+ */
@@ -354,87 +354,87 @@
     background: linear-gradient(to bottom, rgba(59,103,158,1) 0%,rgba(43,136,217,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%) !important; /* W3C */
     border-color: #5259b0 !important;
 }
-.cleanslate abbr[title], .cleanslate acronym[title], .cleanslate dfn[title] {
+.saladict-cleanslate abbr[title], .saladict-cleanslate acronym[title], .saladict-cleanslate dfn[title] {
     cursor:help !important;
     border-bottom-width:1px !important;
     border-bottom-style:dotted !important;
 }
-.cleanslate ins {
+.saladict-cleanslate ins {
     background-color:#ff9 !important;
     color:black !important;
 }
-.cleanslate del {
+.saladict-cleanslate del {
     text-decoration: line-through !important;
 }
-.cleanslate blockquote, .cleanslate q  {
+.saladict-cleanslate blockquote, .saladict-cleanslate q  {
     quotes:none !important; /* HTML5 */
 }
-.cleanslate blockquote:before, .cleanslate blockquote:after, .cleanslate q:before, .cleanslate q:after, .cleanslate li:before, .cleanslate li:after  {
+.saladict-cleanslate blockquote:before, .saladict-cleanslate blockquote:after, .saladict-cleanslate q:before, .saladict-cleanslate q:after, .saladict-cleanslate li:before, .saladict-cleanslate li:after  {
     content:"" !important;
 }
-.cleanslate input, .cleanslate select {
+.saladict-cleanslate input, .saladict-cleanslate select {
     vertical-align:middle !important;
 }
 
-.cleanslate table {
+.saladict-cleanslate table {
     border-collapse:collapse !important;
     border-spacing:0 !important;
 }
-.cleanslate hr {
+.saladict-cleanslate hr {
     display:block !important;
     height:1px !important;
     border:0 !important;
     border-top:1px solid #ccc !important;
     margin:1em 0 !important;
 }
-.cleanslate *[dir=rtl] {
+.saladict-cleanslate *[dir=rtl] {
     direction: rtl !important;
 }
-.cleanslate mark {
+.saladict-cleanslate mark {
     background-color:#ff9 !important;
     color:black !important;
     font-style:italic !important;
     font-weight:bold !important;
 }
-.cleanslate menu {
+.saladict-cleanslate menu {
     padding-left: 40px !important;
     padding-top: 8px !important;
 }
 
 /* additional helpers */
-.cleanslate [hidden],
-.cleanslate template {
+.saladict-cleanslate [hidden],
+.saladict-cleanslate template {
     display: none !important;
 }
-.cleanslate abbr[title] {
+.saladict-cleanslate abbr[title] {
     border-bottom: 1px dotted !important;
 }
-.cleanslate sub, .cleanslate sup {
+.saladict-cleanslate sub, .saladict-cleanslate sup {
     font-size: 75% !important;
     line-height: 0 !important;
     position: relative !important;
     vertical-align: baseline !important;
 }
-.cleanslate sup {
+.saladict-cleanslate sup {
     top: -0.5em !important;
 }
-.cleanslate sub {
+.saladict-cleanslate sub {
     bottom: -0.25em !important;
 }
-.cleanslate img {
+.saladict-cleanslate img {
     border: 0 !important;
 }
-.cleanslate figure {
+.saladict-cleanslate figure {
     margin: 0 !important;
 }
-.cleanslate textarea {
+.saladict-cleanslate textarea {
     overflow: auto !important;
     vertical-align: top !important;
 }
 
 /* == ROOT CONTAINER ELEMENT == */
 /* This contains default values for child elements to inherit  */
-.cleanslate {
+.saladict-cleanslate {
     font-size: medium !important;
     line-height: 1 !important;
     direction:ltr !important;
@@ -448,6 +448,6 @@
     list-style-type:disc !important;
 }
 
-.cleanslate pre {
+.saladict-cleanslate pre {
     white-space:pre !important;
 }

@@ -1,4 +1,4 @@
-<section class="saladict-engine saladict-transition-fade" :class="{'saladict-is-hidden': isHidden}">
+<section class="saladict-engine a-fade" :class="{'is-hidden': isHidden}">
   <aside class="saladict-engine__aside">
     <a :href="data.href" target="_blank">
       <figure class="saladict-engine__logo">
@@ -7,7 +7,7 @@
       </figure>
     </a>
   </aside>
-  <div class="saladict-engine__pron" :class="{'saladict-is-invisible': !data.phsym}">
+  <div class="saladict-engine__pron" :class="{'is-invisible': !data.phsym}">
       <template v-for="p in data.phsym">
         <span class="saladict-engine__phsym">{{p.lang}}: {{p.al}}</span><i class="saladict-iconfont saladict-icon__voice" @click="voicePlay(p.pron)" @mouseenter="readyVoicePlay(p.pron)" @mouseleave="cancelVoicePlay" v-if="p.pron"></i> 
       </template>

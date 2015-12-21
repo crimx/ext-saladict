@@ -1,4 +1,4 @@
-$icon-len: 40px;
+$icon-len: 30px;
 $tomato-size-ratio: 0.6;
 $orange-size-ratio: 0.6;
 $leaf-size-ratio: 0.6;
@@ -11,11 +11,6 @@ $leaf-rotate: 30deg;
   z-index: $z-index;
   height: $icon-len;
   width: $icon-len;
-}
-
-.saladict-icon img {
-  
-  vertical-align: middle;
 }
 
 .saladict-icon__leaf {

@@ -70,7 +70,7 @@ function mouseupEventHandler(evt) {
 
   // if clicking inside the panel then do nothing
   do {
-    if ((' ' + el.className + ' ').indexOf(' saladict ') > -1) {
+    if ((' ' + el.className + ' ').indexOf(' saladict-panel ') > -1) {
       return
     }
     el = el.parentNode

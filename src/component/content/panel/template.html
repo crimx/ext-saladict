@@ -1,7 +1,7 @@
 
 <div 
-  class="cleanslate saladict-panel saladict saladict-transition-fade" 
-  :class="{'saladict-is-hidden': isHidden}" 
+  class="saladict-cleanslate saladict-panel a-fade" 
+  :class="{'is-hidden': isHidden}" 
   :style="styleComputed" 
   @mouseleave="mouseleave" 
   @mouseenter="mouseenter" 
@@ -35,16 +35,16 @@
         @click="clickClose"></i>
     </aside>
   </header>
-  <div class="saladict-engines saladict-transition-fade">
+  <div class="saladict-engines a-fade">
     <section 
-      class="saladict-loader-wrapper saladict-transition-fade" 
+      class="saladict-loader-wrapper a-fade" 
       v-if="engineStatus.loaded === 0 && engineStatus.faild !== engineStatus.total && pageStatus.selection">
       <div class="saladict-loader">
         <div></div><div></div><div></div><div></div><div></div>
       </div>
     </section>
     <section 
-      class="saladict-errorpage saladict-transition-fade" 
+      class="saladict-errorpage a-fade" 
       v-if="engineStatus.faild === engineStatus.total">
       {{errorMessage}}
     </section>
