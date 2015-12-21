@@ -6,7 +6,9 @@ module.exports = {
   data: function() {
     return {
       isHidden: true,
-      isAnimate: false
+      isAnimate: false,
+      top: 0,
+      left: 0
     }
   },
   props: ['pageStatus'],
@@ -24,6 +26,10 @@ module.exports = {
   events: {
     'icon-hide': function(flag) {
       this.isHidden = flag
+      // icon position won't update when using props directly
+      // because the object pageStatus didn't change
+      this.top = this.pageStatus.iconTop +'px!important'
+      this.left = this.pageStatus.iconLeft +'px!important'
     }
   }
 }
