@@ -77,22 +77,14 @@ function mouseupEventHandler(evt) {
   } while (el)
 
   if (content.isPinned) {
-    if (newSelection) {
+    if (isValid(newSelection)) {
       content.pageStatus.selection = newSelection
       content.$broadcast('search', newSelection)
     }
     return
   }
 
-  // empty selection
-  if (!newSelection) {
-    content.isShow = false
-    return
-  }
-
-  // Chinese or English Only options
-  if ((config.chineseMode && !isContainChinese(newSelection)) &&
-      (config.englishMode && !isContainEnglish(newSelection))) {
+  if (!isValid(newSelection)) {
     content.isShow = false
     return
   }
@@ -140,7 +132,12 @@ function tripleCtrlHandler(e) {
   if (e.keyCode === 17) {
     if (++tripleCtrlCount >= 3) {
       // triple!
-      content.pageStatus.selection = window.getSelection().toString()
+      var newSelection = window.getSelection().toString()
+      if (isValid(newSelection)) {
+        content.pageStatus.selection = newSelection
+      } else {
+        content.pageStatus.selection = ''
+      }
       content.pageStatus.iconLeft = (window.innerWidth - 400) / 2 - 40
       content.pageStatus.iconTop = window.innerHeight / 3
       content.isShow = true
@@ -170,7 +167,18 @@ function isContainChinese(text) {
 }
 
 function isContainEnglish(text) {
-  return /[a-z,A-Z]/.test(text)
+  return /[a-zA-Z]/.test(text)
+}
+
+function isValid(text) {
+  // empty selection
+  if (!text) return false
+
+  // Chinese or English Only options
+  if (config.chineseMode && isContainChinese(text)) return true
+  if (config.englishMode && isContainEnglish(text)) return true
+
+  return false
 }
 
 /* start-test-block */
