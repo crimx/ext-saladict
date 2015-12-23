@@ -16,7 +16,7 @@ var config = {
   mode: 'icon',
   // icon: show pop icon first
   // direct: show panel directly
-  // ctrl: TODO show panel when double click ctrl + selection not empty
+  // ctrl: show panel when double click ctrl + selection not empty
 
   // show panel when triple press ctrl
   tripleCtrl: true,
@@ -119,7 +119,9 @@ function onClick(evt) {
   } else if (config.mode === 'direct') {
     isPanelHidden = false
   } else if (config.mode === 'ctrl') {
-    // TODO
+    if (evt.ctrlKey) {
+      isPanelHidden = false
+    }
   }
   content.$nextTick(function() {
     content.$broadcast('icon-hide', isIconHidden)
