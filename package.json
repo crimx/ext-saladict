@@ -53,6 +53,7 @@
     "ws": "^0.8.0"
   },
   "dependencies": {
+    "arale-qrcode": "^3.0.5",
     "highcharts": "^4.2.0",
     "vue": "^1.0.10"
   }

@@ -6,9 +6,12 @@
 </head>
 <body>
 
-  <header class="header">
+  <header class="header" @mouseenter="showQrcode" @mouseleave="hideQrcode">
     <h1 class="title">{{title}}</h1>
   </header>
+  <div transition="qrcode" v-el:qrcode v-show="qrcode.isShow">
+    <h1>{{qrcode.title}}</h1>
+  </div>
 
   <ul class="config-list">
     <li class="config-item">
@@ -101,6 +104,12 @@
       </li>
     </fieldset>
   </ul>
+
+  <footer class="footer">
+    <section class="author">StrayBugs</section>
+    <section class="bmac">Buy me a Coffee!</section>
+    <div class="bmac__wechat" v-el:wechat-qrcode></div>
+  </footer>
 
   <script src="../js/popup.js"></script>
 </body>

@@ -1,4 +1,5 @@
 var Vue = require('vue')
+var AraleQrcode = require('arale-qrcode')
 var utils = require('../utils')
 
 new Vue({
@@ -32,6 +33,10 @@ new Vue({
         description: chrome.i18n.getMessage('opt_language_mode_description'),
         value: true
       }
+    },
+    qrcode: {
+      title: '',
+      isShow: false
     }
   },
   methods: {
@@ -54,6 +59,17 @@ new Vue({
           this.opts[k].value = data[k]
         }
       }, this)
+    },
+    showQrcode: function() {
+      var that = this
+      clearTimeout(this.showQrcodeTimeout)
+      this.showQrcodeTimeout = setTimeout(function() {
+        that.qrcode.isShow = true
+      }, 1000)
+    },
+    hideQrcode: function() {
+      clearTimeout(this.showQrcodeTimeout)
+      this.qrcode.isShow = false
     }
   },
   created: function() {
@@ -67,7 +83,31 @@ new Vue({
       .then(function(response) {
         if (response.msg === 'success') {
           setConfig(response.data)
-        }console.log(response.data)
+        }
       })
+  },
+  compiled: function() {
+    var that = this
+    chrome.tabs.getSelected(null, function(tab) {
+      that.qrcode.title = tab.title
+
+      that.$els.qrcode.appendChild(new AraleQrcode({
+        render: 'canvas',
+        text: tab.url,
+        size: 200,
+        background: '#ffffff',
+        foreground: '#000000'
+      }))
+    })
+
+    // wechat qrcode
+    that.$els.wechatQrcode.appendChild(new AraleQrcode({
+      render: 'canvas',
+      text: 'https://wx.tenpay.com/f2f?t=AQAAAIHebVnYzZ079RQRBsX%2F5To%3D',
+      size: 120,
+      background: '#ffffff',
+      foreground: '#000000',
+      image: '../images/wechat.png'
+    }))
   }
 })

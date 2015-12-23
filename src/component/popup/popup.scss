@@ -12,12 +12,14 @@ $switch-button-height: 37px;
 }
 
 body {
+  position: relative;
   width: $list-width;
   font-family: 'helvetica neue', Arial, 'Microsoft Yahei', sans-serif;
   background-color: #f1f0f8;
 }
 
 .header {
+  position: relative;
   height: 80px;
   font-size: 24px;
   font-weight: bold;
@@ -27,6 +29,80 @@ body {
   border-bottom: 1px solid #a7a6ae;
   background-color: #f7f7f7;
 }
+
+/*--------------------*\
+     website qrcode
+\*--------------------*/
+
+.qrcode-transition {
+  position: absolute;
+  z-index: 1;
+  width: 200px + 20px * 2;
+  top: 80px + $item-padding;
+  margin: 0 auto;
+  left: 0;
+  right: 0;
+  padding: 20px;
+  text-align: center;
+  line-height: 1.8;
+  background-color: #fff;
+  box-shadow: 0 3px 2px 1px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.qrcode-enter,
+.qrcode-leave {
+  height: 0;
+  opacity: 0;
+}
+
+/*--------------------*\
+       footer
+\*--------------------*/
+
+.footer {
+  height: 44px;
+  text-align: right;
+  font-size: 14px;
+  color: #999;
+}
+
+.author {
+  position: absolute;
+  right: 5px;
+  bottom: 20px;
+}
+
+.bmac {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.bmac__wechat {
+  position: absolute;
+  right: 5px;
+  bottom: 40px;
+  width: 120px + 5px * 2;
+  height: 120px + 5px * 2;
+  padding: 5px;
+  background-color: #fff;
+  box-shadow: 0 2px 2px 1px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  display: none;
+}
+
+.bmac:hover + .bmac__wechat {
+  display: block;
+}
+
+
+/*--------------------*\
+       list item
+\*--------------------*/
 
 .config-item {
   border-top: 1px solid #c7c7c8;
