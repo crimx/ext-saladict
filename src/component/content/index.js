@@ -129,6 +129,8 @@ function mouseupEventHandler(evt) {
 
 var tripleCtrlTimeout
 function tripleCtrlHandler(e) {
+  if (!tripleCtrl) return
+
   if (e.keyCode === 17) {
     if (++tripleCtrlCount >= 3) {
       // triple!
