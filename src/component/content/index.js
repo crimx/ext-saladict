@@ -52,13 +52,13 @@ var content = new Vue(require('./main'))
 content.$mount().$before(document.body.firstChild)
 
 // listen to click
-document.body.addEventListener('mouseup', mouseupEventHandler)
+document.body.addEventListener('click', onClick)
 
 // listen to triple ctrl keypress
 var tripleCtrlCount = 0
 document.body.addEventListener('keyup', tripleCtrlHandler)
 
-function mouseupEventHandler(evt) {
+function onClick(evt) {
   var el = evt.target
   var newSelection = window.getSelection().toString()
 
@@ -129,7 +129,7 @@ function mouseupEventHandler(evt) {
 
 var tripleCtrlTimeout
 function tripleCtrlHandler(e) {
-  if (!tripleCtrl) return
+  if (!config.tripleCtrl) return
 
   if (e.keyCode === 17) {
     if (++tripleCtrlCount >= 3) {
@@ -182,12 +182,3 @@ function isValid(text) {
 
   return false
 }
-
-/* start-test-block */
-module.exports = {
-  mouseupEventHandler: mouseupEventHandler,
-  setConfig: setConfig,
-  config: config,
-  pageStatus: pageStatus
-}
-/* end-test-block */
