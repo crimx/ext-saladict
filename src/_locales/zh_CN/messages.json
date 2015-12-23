@@ -59,6 +59,56 @@
       "message": "无结果"
    },
 
+   "opt_app_active_title": {
+      "description": "popup option title",
+      "message": "开启查词"
+   },
+
+   "opt_icon_mode_title": {
+      "description": "popup option title",
+      "message": "显示图标"
+   },
+
+   "opt_direct_mode_title": {
+      "description": "popup option title",
+      "message": "直接搜索"
+   },
+
+   "opt_ctrl_mode_title": {
+      "description": "popup option title",
+      "message": "按住Ctrl"
+   },
+
+   "opt_mode_description": {
+      "description": "popup option description",
+      "message": "当用鼠标在网页上选择了一段文本，“显示图标”会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；“直接搜索”则不显示图标，直接显示词典面板；“按住 Ctrl”在选择文本时需同时按住 `ctrl` 键才显示词典面板。"
+   },
+
+   "opt_triple_ctrl_title": {
+      "description": "popup option title",
+      "message": "快捷搜索"
+   },
+
+   "opt_triple_ctrl_description": {
+      "description": "popup option description",
+      "message": "连续按三次 ctrl 键将弹出词典搜索界面。"
+   },
+
+   "opt_chinese_mode_title": {
+      "description": "popup option title",
+      "message": "中文查词"
+   },
+
+   "opt_english_mode_title": {
+      "description": "popup option title",
+      "message": "英文查词"
+   },
+
+   "opt_language_mode_description": {
+      "description": "popup option description",
+      "message": "当选中的文字包含相应的语言时才进行查找。"
+   },
+
    "update_available": {
       "description": "Update vailable",
       "message": "沙拉查词有新版本啦！点击更新。"
