@@ -138,23 +138,6 @@ chrome.notifications.onClicked.addListener(function() {
 // first time setup
 chrome.runtime.onInstalled.addListener(function(details) {
   if (details.reason === 'install' || details.reason === 'update') {
-
-    chrome.storage.local.get('appActive', function(response) {
-      if (response && response.appActive === void(0)) {
-        // default settings
-        msgOpts.save({
-          items: {
-            appActive: true,
-            iconMode: true,
-            ctrlMode: false,
-            directMode: false,
-            chineseMode: true,
-            englishMode: true
-          }
-        }, null, function() {})
-      }
-    })
-
     // update notification
     var title = chrome.i18n.getMessage('update_title')
     var opt = {

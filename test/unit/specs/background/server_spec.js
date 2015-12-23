@@ -78,19 +78,6 @@ describe('background server test', function() {
         expect(chrome.notifications.create).toHaveBeenCalled()
       })
 
-      it('save default settings on installed', function() {
-        chrome.storage.local.get.callsArgWith(1, {})
-        chrome.runtime.onInstalled.addListener.yield({reason: 'update'})
-        expect(chrome.storage.local.set).toHaveBeenCalledWith({
-          appActive: true,
-          iconMode: true,
-          ctrlMode: false,
-          directMode: false,
-          chineseMode: true,
-          englishMode: true
-        })
-      })
-
       it('faild create notification on installed', function() {
         chrome.runtime.onInstalled.addListener.yield({reason: 'Wrong Reason'})
         expect(chrome.notifications.create).not.toHaveBeenCalled()
