@@ -98,10 +98,17 @@ var msgOpts = {
     var items = request.items
     if (items) {
       chrome.storage.local.set(items, function () {
-        // broadcast app state
-        chrome.runtime.sendMessage({
+        var data = {
           msg: 'appStateChanged',
           data: items
+        }
+        // broadcast app state
+        chrome.runtime.sendMessage(data)
+        // send to content srcipt
+        chrome.tabs.query({/* get all the tabs */}, function(tabs) {
+          tabs.forEach(function(tab) {
+            chrome.tabs.sendMessage(tab.id, data)
+          })
         })
         sendResponse({msg: 'success'})
       })
