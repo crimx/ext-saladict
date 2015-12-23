@@ -13,6 +13,10 @@ gulp.task('clean', function() {
 
 // copy everything except script files
 gulp.task('copy', function() {
+  gulp.src('src/component/popup/popup.html', {
+    base: 'src/component/popup'
+  }).pipe(gulp.dest('dist/html'))
+
   return gulp.src([
     'src/images/**/*',
     'src/_locales/**/*'

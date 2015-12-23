@@ -15,7 +15,8 @@ gulp.task('watch', function() {
   gulp.watch(['src/**/*'], ['livereload'])
   gulp.watch([
     'src/images/**/*',
-    'src/_locales/**/*'
+    'src/_locales/**/*',
+    'src/component/popup/popup.html'
   ], ['copy'])
 });
 

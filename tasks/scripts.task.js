@@ -14,23 +14,36 @@ var safeImportant = require('postcss-safe-important')
 
 
 gulp.task('sass-debug', function () {
-  ;['content', 'popup'].forEach(function(viewName) {
-    gulp.src('./src/component/' + viewName + '/' + viewName + '.scss')
-      // .pipe($.sassLint())
-      // .pipe($.sassLint.format())
-      // .pipe($.sassLint.failOnError())
-      
-      // .pipe($.sourcemaps.init({loadMaps: true}))
-        .pipe($.sass().on('error', $.sass.logError))
-        .pipe($.postcss([
-          autoprefixer({browsers: ['last 1 version']}),
-          safeImportant()
-        ]))
-        // .pipe($.minifyCss())
-      // .pipe($.sourcemaps.write('./'))
-      .pipe(gulp.dest('./dist/css/'))
-      .pipe($.size({title: 'sass'}))
-  })
+  gulp.src('./src/component/content/content.scss')
+    // .pipe($.sassLint())
+    // .pipe($.sassLint.format())
+    // .pipe($.sassLint.failOnError())
+    
+    // .pipe($.sourcemaps.init({loadMaps: true}))
+      .pipe($.sass().on('error', $.sass.logError))
+      .pipe($.postcss([
+        autoprefixer({browsers: ['last 1 version']}),
+        safeImportant()
+      ]))
+      // .pipe($.minifyCss())
+    // .pipe($.sourcemaps.write('./'))
+    .pipe(gulp.dest('./dist/css/'))
+    .pipe($.size({title: 'sass'}))
+
+  return gulp.src('./src/component/popup/popup.scss')
+    // .pipe($.sassLint())
+    // .pipe($.sassLint.format())
+    // .pipe($.sassLint.failOnError())
+    
+    // .pipe($.sourcemaps.init({loadMaps: true}))
+      .pipe($.sass().on('error', $.sass.logError))
+      .pipe($.postcss([
+        autoprefixer({browsers: ['last 1 version']})
+      ]))
+      // .pipe($.minifyCss())
+    // .pipe($.sourcemaps.write('./'))
+    .pipe(gulp.dest('./dist/css/'))
+    .pipe($.size({title: 'sass'}))
 })
 
 
