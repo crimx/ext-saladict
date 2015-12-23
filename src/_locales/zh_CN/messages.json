@@ -121,6 +121,26 @@
 
    "update_message1": {
       "description": "Update messages",
-      "message": "全新重写"
+      "message": "全新重写，你们提的要求都实现啦"
+   },
+
+   "update_message2": {
+      "description": "Update messages",
+      "message": "加入新词典，加入右键查词"
+   },
+
+   "update_message3": {
+      "description": "Update messages",
+      "message": "新增三种划词模式，连续按三次ctrl还可以直接查词"
+   },
+
+   "update_message4": {
+      "description": "Update messages",
+      "message": "词典界面可以固定在网页上"
+   },
+
+   "update_message5": {
+      "description": "Update messages",
+      "message": "更多功能慢慢发现吧;D"
    }
 }
