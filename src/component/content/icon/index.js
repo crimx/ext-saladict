@@ -14,12 +14,17 @@ module.exports = {
   props: ['pageStatus'],
   methods: {
     mouseenter: function() {
-      // show panel
-      this.$dispatch('panel-hide', false)
+      var that = this
+      clearTimeout(this.showPanelTimeout)
+      this.showPanelTimeout = setTimeout(function() {
+        // show panel
+        that.$dispatch('panel-hide', false)
+      }, 1000)
       // animate icon
       this.isAnimate = true
     },
     mouseleave: function() {
+      clearTimeout(this.showPanelTimeout)
       this.isAnimate = false
     }
   },
