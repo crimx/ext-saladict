@@ -1,0 +1,18 @@
+/* helpers & states */
+
+.is-hidden {
+  opacity: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.is-invisible {
+  visibility: hidden;
+}
+
+
+/* transitions */
+.a-fade {
+  transition: opacity 1.5s ease, height 1.5s ease;
+}

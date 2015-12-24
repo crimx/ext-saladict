@@ -1,0 +1,453 @@
+/*!
+* CleanSlate
+*   github.com/premasagar/cleanslate
+*
+*//*
+    An extreme CSS reset stylesheet, for normalising the styling of a container element and its children.
+
+    by Premasagar Rose
+        dharmafly.com
+
+    license
+        opensource.org/licenses/mit-license.php
+
+    **
+        
+    v0.9.3
+        
+*/
+
+/* == BLANKET RESET RULES == */
+
+/* HTML 4.01 */
+.saladict-cleanslate, .saladict-cleanslate h1, .saladict-cleanslate h2, .saladict-cleanslate h3, .saladict-cleanslate h4, .saladict-cleanslate h5, .saladict-cleanslate h6, .saladict-cleanslate p, .saladict-cleanslate td, .saladict-cleanslate dl, .saladict-cleanslate tr, .saladict-cleanslate dt, .saladict-cleanslate ol, .saladict-cleanslate form, .saladict-cleanslate select, .saladict-cleanslate option, .saladict-cleanslate pre, .saladict-cleanslate div, .saladict-cleanslate table,  .saladict-cleanslate th, .saladict-cleanslate tbody, .saladict-cleanslate tfoot, .saladict-cleanslate caption, .saladict-cleanslate thead, .saladict-cleanslate ul, .saladict-cleanslate li, .saladict-cleanslate address, .saladict-cleanslate blockquote, .saladict-cleanslate dd, .saladict-cleanslate fieldset, .saladict-cleanslate li, .saladict-cleanslate iframe, .saladict-cleanslate strong, .saladict-cleanslate legend, .saladict-cleanslate em, .saladict-cleanslate summary, .saladict-cleanslate cite, .saladict-cleanslate span, .saladict-cleanslate input, .saladict-cleanslate sup, .saladict-cleanslate label, .saladict-cleanslate dfn, .saladict-cleanslate object, .saladict-cleanslate big, .saladict-cleanslate q, .saladict-cleanslate samp, .saladict-cleanslate acronym, .saladict-cleanslate small, .saladict-cleanslate img, .saladict-cleanslate strike, .saladict-cleanslate code, .saladict-cleanslate sub, .saladict-cleanslate ins, .saladict-cleanslate textarea, .saladict-cleanslate button, .saladict-cleanslate var, .saladict-cleanslate a, .saladict-cleanslate abbr, .saladict-cleanslate applet, .saladict-cleanslate del, .saladict-cleanslate kbd, .saladict-cleanslate tt, .saladict-cleanslate b, .saladict-cleanslate i, .saladict-cleanslate hr,
+
+/* HTML5 - Sept 2013 taken from MDN https://developer.mozilla.org/en-US/docs/Web/Guide/HTML/HTML5/HTML5_element_list */
+.saladict-cleanslate article, .saladict-cleanslate aside, .saladict-cleanslate figure, .saladict-cleanslate figcaption, .saladict-cleanslate footer, .saladict-cleanslate header, .saladict-cleanslate menu, .saladict-cleanslate nav, .saladict-cleanslate section, .saladict-cleanslate time, .saladict-cleanslate mark, .saladict-cleanslate audio, .saladict-cleanslate video, .saladict-cleanslate abbr, .saladict-cleanslate address, .saladict-cleanslate area, .saladict-cleanslate blockquote, .saladict-cleanslate canvas, .saladict-cleanslate caption, .saladict-cleanslate cite, .saladict-cleanslate code, .saladict-cleanslate colgroup, .saladict-cleanslate col, .saladict-cleanslate datalist, .saladict-cleanslate fieldset, .saladict-cleanslate main, .saladict-cleanslate map, .saladict-cleanslate meta, .saladict-cleanslate optgroup, .saladict-cleanslate output, .saladict-cleanslate progress {
+    background-attachment:scroll !important;
+    background-color:transparent !important;
+    background-image:none !important; /* This rule affects the use of pngfix JavaScript http://dillerdesign.com/experiment/DD_BelatedPNG for IE6, which is used to force the browser to recognise alpha-transparent PNGs files that replace the IE6 lack of PNG transparency. (The rule overrides the VML image that is used to replace the given CSS background-image). If you don't know what that means, then you probably haven't used the pngfix script, and this comment may be ignored :) */
+    background-position:0 0 !important;
+    background-repeat:repeat !important;
+    border-color:black !important;
+    border-color:currentColor !important; /* `border-color` should match font color. Modern browsers (incl. IE9) allow the use of "currentColor" to match the current font 'color' value <http://www.w3.org/TR/css3-color/#currentcolor>. For older browsers, a default of 'black' is given before this rule. Guideline to support older browsers: if you haven't already declared a border-color for an element, be sure to do so, e.g. when you first declare the border-width. */
+    border-radius:0 !important;
+    border-style:none !important;
+    border-width:medium !important;
+    bottom:auto !important;
+    clear:none !important;
+    clip:auto !important;
+    color:inherit !important;
+    counter-increment:none !important;
+    counter-reset:none !important;
+    cursor:auto !important;
+    direction:inherit !important;
+    display:inline !important;
+    float:none !important;
+    font-family: inherit !important; /* As with other inherit values, this needs to be set on the root container element */
+    font-size: inherit !important;
+    font-style:inherit !important;
+    font-variant:normal !important;
+    font-weight:inherit !important;
+    height:auto !important;
+    left:auto !important;
+    letter-spacing:normal !important;
+    line-height:inherit !important;
+    list-style-type: inherit !important; /* Could set list-style-type to none */
+    list-style-position: outside !important;
+    list-style-image: none !important;
+    margin:0 !important;
+    max-height:none !important;
+    max-width:none !important;
+    min-height:0 !important;
+    min-width:0 !important;
+    opacity:1;
+    outline:invert none medium !important;
+    overflow:visible !important;
+    padding:0 !important;
+    position:static !important;
+    quotes: "" "" !important;
+    right:auto !important;
+    table-layout:auto !important;
+    text-align:inherit !important;
+    text-decoration:inherit !important;
+    text-indent:0 !important;
+    text-transform:none !important;
+    top:auto !important;
+    unicode-bidi:normal !important;
+    vertical-align:baseline !important;
+    visibility:inherit !important;
+    white-space:normal !important;
+    width:auto !important;
+    word-spacing:normal !important;
+    z-index:auto !important;
+    
+    /* CSS3 */
+    /* Including all prefixes according to http://caniuse.com/ */
+    /* CSS Animations don't cascade, so don't require resetting */
+    -webkit-background-origin: padding-box !important;
+            background-origin: padding-box !important;
+    -webkit-background-clip: border-box !important;
+            background-clip: border-box !important;
+    -webkit-background-size: auto !important;
+       -moz-background-size: auto !important;
+            background-size: auto !important;
+    -webkit-border-image: none !important;
+       -moz-border-image: none !important;
+         -o-border-image: none !important;
+            border-image: none !important;
+    -webkit-border-radius:0 !important;
+       -moz-border-radius:0 !important;
+            border-radius: 0 !important;
+    -webkit-box-shadow: none !important;
+            box-shadow: none !important;
+    -webkit-box-sizing: content-box !important;
+       -moz-box-sizing: content-box !important;
+            box-sizing: content-box !important;
+    -webkit-column-count: auto !important;
+       -moz-column-count: auto !important;
+            column-count: auto !important;
+    -webkit-column-gap: normal !important;
+       -moz-column-gap: normal !important;
+            column-gap: normal !important;
+    -webkit-column-rule: medium none black !important;
+       -moz-column-rule: medium none black !important;
+            column-rule: medium none black !important;
+    -webkit-column-span: 1 !important;
+       -moz-column-span: 1 !important; /* doesn't exist yet but probably will */
+            column-span: 1 !important;
+    -webkit-column-width: auto !important;
+       -moz-column-width: auto !important;
+            column-width: auto !important;
+    font-feature-settings: normal !important;
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    -webkit-hyphens: manual !important;
+       -moz-hyphens: manual !important;
+            hyphens: manual !important;
+    -webkit-perspective: none !important;
+       -moz-perspective: none !important;
+        -ms-perspective: none !important;
+         -o-perspective: none !important;
+            perspective: none !important;
+    -webkit-perspective-origin: 50% 50% !important;
+       -moz-perspective-origin: 50% 50% !important;
+        -ms-perspective-origin: 50% 50% !important;
+         -o-perspective-origin: 50% 50% !important;
+            perspective-origin: 50% 50% !important;
+    -webkit-backface-visibility: visible !important;
+       -moz-backface-visibility: visible !important;
+        -ms-backface-visibility: visible !important;
+         -o-backface-visibility: visible !important;
+            backface-visibility: visible !important;
+    text-shadow: none !important;
+    -webkit-transition: all 0s ease 0s !important;
+            transition: all 0s ease 0s !important;
+    -webkit-transform: none !important;
+       -moz-transform: none !important;
+        -ms-transform: none !important;
+         -o-transform: none !important;
+            transform: none !important;
+    -webkit-transform-origin: 50% 50% !important;
+       -moz-transform-origin: 50% 50% !important;
+        -ms-transform-origin: 50% 50% !important;
+         -o-transform-origin: 50% 50% !important;
+            transform-origin: 50% 50% !important;
+    -webkit-transform-style: flat !important;
+       -moz-transform-style: flat !important;
+        -ms-transform-style: flat !important;
+         -o-transform-style: flat !important;
+            transform-style: flat !important;
+    word-break: normal !important;
+}
+
+/* == BLOCK-LEVEL == */
+/* Actually, some of these should be inline-block and other values, but block works fine (TODO: rigorously verify this) */
+/* HTML 4.01 */
+.saladict-cleanslate, .saladict-cleanslate h3, .saladict-cleanslate h5, .saladict-cleanslate p, .saladict-cleanslate h1, .saladict-cleanslate dl, .saladict-cleanslate dt, .saladict-cleanslate h6, .saladict-cleanslate ol, .saladict-cleanslate form, .saladict-cleanslate option, .saladict-cleanslate pre, .saladict-cleanslate div, .saladict-cleanslate h2, .saladict-cleanslate caption, .saladict-cleanslate h4, .saladict-cleanslate ul, .saladict-cleanslate address, .saladict-cleanslate blockquote, .saladict-cleanslate dd, .saladict-cleanslate fieldset, .saladict-cleanslate hr,
+
+/* HTML5 new elements */
+.saladict-cleanslate article, .saladict-cleanslate dialog, .saladict-cleanslate figure, .saladict-cleanslate footer, .saladict-cleanslate header, .saladict-cleanslate hgroup, .saladict-cleanslate menu, .saladict-cleanslate nav, .saladict-cleanslate section, .saladict-cleanslate audio, .saladict-cleanslate video, .saladict-cleanslate address, .saladict-cleanslate blockquote, .saladict-cleanslate colgroup, .saladict-cleanslate main, .saladict-cleanslate progress, .saladict-cleanslate summary {
+    display:block !important; 
+}
+.saladict-cleanslate h1, .saladict-cleanslate h2, .saladict-cleanslate h3, .saladict-cleanslate h4, .saladict-cleanslate h5, .saladict-cleanslate h6 {
+    font-weight: bold !important;
+}
+.saladict-cleanslate h1 {
+    font-size: 2em !important;
+    padding: .67em 0 !important;
+}
+.saladict-cleanslate h2 {
+    font-size: 1.5em !important;
+    padding: .83em 0 !important;
+}
+.saladict-cleanslate h3 {
+    font-size: 1.17em !important;
+    padding: .83em 0 !important;
+}
+.saladict-cleanslate h4 {
+    font-size: 1em !important;
+}
+.saladict-cleanslate h5 {
+    font-size: .83em !important;
+}
+.saladict-cleanslate p {
+    margin: 1em 0 !important;
+}
+.saladict-cleanslate table {
+    display: table !important;
+}
+.saladict-cleanslate thead {
+    display: table-header-group !important;
+}
+.saladict-cleanslate tbody {
+    display: table-row-group !important;
+}
+.saladict-cleanslate tfoot {
+    display: table-footer-group !important;
+}
+.saladict-cleanslate tr {
+    display: table-row !important;
+}
+.saladict-cleanslate th, .saladict-cleanslate td {
+    display: table-cell !important;
+    padding: 2px !important;
+}
+
+/* == SPECIFIC ELEMENTS == */
+/* Some of these are browser defaults; some are just useful resets */
+.saladict-cleanslate ol, .saladict-cleanslate ul {
+    margin: 1em 0 !important;
+}
+.saladict-cleanslate ul li, .saladict-cleanslate ul ul li, .saladict-cleanslate ul ul ul li, .saladict-cleanslate ol li, .saladict-cleanslate ol ol li, .saladict-cleanslate ol ol ol li, .saladict-cleanslate ul ol ol li, .saladict-cleanslate ul ul ol li, .saladict-cleanslate ol ul ul li, .saladict-cleanslate ol ol ul li {
+    list-style-position: inside !important;
+    margin-top: .08em !important;
+}
+.saladict-cleanslate ol ol, .saladict-cleanslate ol ol ol, .saladict-cleanslate ul ul, .saladict-cleanslate ul ul ul, .saladict-cleanslate ol ul, .saladict-cleanslate ol ul ul, .saladict-cleanslate ol ol ul, .saladict-cleanslate ul ol, .saladict-cleanslate ul ol ol, .saladict-cleanslate ul ul ol {
+    padding-left: 40px !important;
+    margin: 0 !important;
+}
+/* helper for general navigation */
+.saladict-cleanslate nav ul, .saladict-cleanslate nav ol {
+    list-style-type:none !important;
+
+}
+.saladict-cleanslate ul, .saladict-cleanslate menu {
+    list-style-type:disc !important;
+}
+.saladict-cleanslate ol {
+    list-style-type:decimal !important;
+}
+.saladict-cleanslate ol ul, .saladict-cleanslate ul ul, .saladict-cleanslate menu ul, .saladict-cleanslate ol menu, .saladict-cleanslate ul menu, .saladict-cleanslate menu menu {
+    list-style-type:circle !important;
+}
+.saladict-cleanslate ol ol ul, .saladict-cleanslate ol ul ul, .saladict-cleanslate ol menu ul, .saladict-cleanslate ol ol menu, .saladict-cleanslate ol ul menu, .saladict-cleanslate ol menu menu, .saladict-cleanslate ul ol ul, .saladict-cleanslate ul ul ul, .saladict-cleanslate ul menu ul, .saladict-cleanslate ul ol menu, .saladict-cleanslate ul ul menu, .saladict-cleanslate ul menu menu, .saladict-cleanslate menu ol ul, .saladict-cleanslate menu ul ul, .saladict-cleanslate menu menu ul, .saladict-cleanslate menu ol menu, .saladict-cleanslate menu ul menu, .saladict-cleanslate menu menu menu {
+    list-style-type:square !important;
+}
+.saladict-cleanslate li {    
+    display:list-item !important;
+    /* Fixes IE7 issue with positioning of nested bullets */
+    min-height:auto !important;
+    min-width:auto !important;
+    padding-left: 20px !important; /* replace -webkit-padding-start: 40px; */
+}
+.saladict-cleanslate strong {
+    font-weight:bold !important;
+}
+.saladict-cleanslate em {
+    font-style:italic !important;
+}
+.saladict-cleanslate kbd, .saladict-cleanslate samp, .saladict-cleanslate code, .saladict-cleanslate pre {
+  font-family:monospace !important;
+}
+.saladict-cleanslate a {
+    color: blue !important;
+    text-decoration: underline !important;
+}
+.saladict-cleanslate a:visited {
+    color: #529 !important;
+}
+.saladict-cleanslate a, .saladict-cleanslate a *, .saladict-cleanslate input[type=submit], .saladict-cleanslate input[type=radio], .saladict-cleanslate input[type=checkbox], .saladict-cleanslate select {
+    cursor:pointer !important;
+}
+.saladict-cleanslate button, .saladict-cleanslate input[type=submit] {
+    text-align: center !important;
+    padding: 2px 6px 3px !important;
+    border-radius: 4px !important;
+    text-decoration: none !important;
+    font-family: arial, helvetica, sans-serif !important;
+    font-size: small !important;
+    background: white !important;
+    -webkit-appearance: push-button !important;
+    color: buttontext !important;
+    border: 1px #a6a6a6 solid !important;
+    background: lightgrey !important; /* Old browsers */
+    background: rgb(255,255,255); /* Old browsers */
+    background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(221,221,221,1) 100%, rgba(209,209,209,1) 100%, rgba(221,221,221,1) 100%) !important; /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(221,221,221,1)), color-stop(100%,rgba(209,209,209,1)), color-stop(100%,rgba(221,221,221,1))) !important; /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(221,221,221,1) 100%,rgba(209,209,209,1) 100%,rgba(221,221,221,1) 100%) !important; /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(221,221,221,1) 100%,rgba(209,209,209,1) 100%,rgba(221,221,221,1) 100%) !important; /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(221,221,221,1) 100%,rgba(209,209,209,1) 100%,rgba(221,221,221,1) 100%) !important; /* IE10+ */
+    background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(221,221,221,1) 100%,rgba(209,209,209,1) 100%,rgba(221,221,221,1) 100%) !important; /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#dddddd',GradientType=0 ) !important; /* IE6-9 */
+    -webkit-box-shadow: 1px 1px 0px #eee !important;
+       -moz-box-shadow: 1px 1px 0px #eee !important;
+         -o-box-shadow: 1px 1px 0px #eee !important;
+            box-shadow: 1px 1px 0px #eee !important;
+    outline: initial !important;
+}
+.saladict-cleanslate button {
+    padding: 1px 6px 2px 6px !important;
+    margin-right: 5px !important;
+}
+.saladict-cleanslate input[type=hidden] {
+    display:none !important;
+}
+/* restore form defaults */
+.saladict-cleanslate textarea {
+    -webkit-appearance: textarea !important;
+    background: white !important;
+    padding: 2px !important;
+    margin-left: 4px !important;
+    word-wrap: break-word !important;
+    white-space: pre-wrap !important;
+    font-size: 11px !important;
+    font-family: arial, helvetica, sans-serif !important;
+    line-height: 13px !important;
+    resize: both !important;
+}
+.saladict-cleanslate select, .saladict-cleanslate textarea, .saladict-cleanslate input {
+    border:1px solid #ccc !important;
+}
+.saladict-cleanslate select {
+    font-size: 11px !important;
+    font-family: helvetica, arial, sans-serif !important;
+    display: inline-block;
+}
+.saladict-cleanslate textarea:focus, .saladict-cleanslate input:focus {
+    outline: auto 5px -webkit-focus-ring-color !important;
+    outline: initial !important;
+}
+.saladict-cleanslate input[type=text] {
+    background: white !important;
+    padding: 1px !important;
+    font-family: initial !important;
+    font-size: small !important;
+}
+.saladict-cleanslate input[type=checkbox], .saladict-cleanslate input[type=radio] {
+    border: 1px #2b2b2b solid !important;
+    border-radius: 4px !important;
+}
+.saladict-cleanslate input[type=checkbox], .saladict-cleanslate input[type=radio] {
+    outline: intial !important;
+}
+.saladict-cleanslate input[type=radio] {
+    margin: 2px 2px 3px 2px !important;
+}
+.saladict-cleanslate input[type=submit]:active, .saladict-cleanslate button:active {
+    background: rgb(59,103,158) !important; /* Old browsers */
+    background: -moz-linear-gradient(top, rgba(59,103,158,1) 0%, rgba(43,136,217,1) 50%, rgba(32,124,202,1) 51%, rgba(125,185,232,1) 100%) !important; /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(59,103,158,1)), color-stop(50%,rgba(43,136,217,1)), color-stop(51%,rgba(32,124,202,1)), color-stop(100%,rgba(125,185,232,1))) !important; /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, rgba(59,103,158,1) 0%,rgba(43,136,217,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%) !important; /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, rgba(59,103,158,1) 0%,rgba(43,136,217,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%) !important; /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, rgba(59,103,158,1) 0%,rgba(43,136,217,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%) !important; /* IE10+ */
+    background: linear-gradient(to bottom, rgba(59,103,158,1) 0%,rgba(43,136,217,1) 50%,rgba(32,124,202,1) 51%,rgba(125,185,232,1) 100%) !important; /* W3C */
+    border-color: #5259b0 !important;
+}
+.saladict-cleanslate abbr[title], .saladict-cleanslate acronym[title], .saladict-cleanslate dfn[title] {
+    cursor:help !important;
+    border-bottom-width:1px !important;
+    border-bottom-style:dotted !important;
+}
+.saladict-cleanslate ins {
+    background-color:#ff9 !important;
+    color:black !important;
+}
+.saladict-cleanslate del {
+    text-decoration: line-through !important;
+}
+.saladict-cleanslate blockquote, .saladict-cleanslate q  {
+    quotes:none !important; /* HTML5 */
+}
+.saladict-cleanslate blockquote:before, .saladict-cleanslate blockquote:after, .saladict-cleanslate q:before, .saladict-cleanslate q:after, .saladict-cleanslate li:before, .saladict-cleanslate li:after  {
+    content:"" !important;
+}
+.saladict-cleanslate input, .saladict-cleanslate select {
+    vertical-align:middle !important;
+}
+
+.saladict-cleanslate table {
+    border-collapse:collapse !important;
+    border-spacing:0 !important;
+}
+.saladict-cleanslate hr {
+    display:block !important;
+    height:1px !important;
+    border:0 !important;
+    border-top:1px solid #ccc !important;
+    margin:1em 0 !important;
+}
+.saladict-cleanslate *[dir=rtl] {
+    direction: rtl !important;
+}
+.saladict-cleanslate mark {
+    background-color:#ff9 !important;
+    color:black !important;
+    font-style:italic !important;
+    font-weight:bold !important;
+}
+.saladict-cleanslate menu {
+    padding-left: 40px !important;
+    padding-top: 8px !important;
+}
+
+/* additional helpers */
+.saladict-cleanslate [hidden],
+.saladict-cleanslate template {
+    display: none !important;
+}
+.saladict-cleanslate abbr[title] {
+    border-bottom: 1px dotted !important;
+}
+.saladict-cleanslate sub, .saladict-cleanslate sup {
+    font-size: 75% !important;
+    line-height: 0 !important;
+    position: relative !important;
+    vertical-align: baseline !important;
+}
+.saladict-cleanslate sup {
+    top: -0.5em !important;
+}
+.saladict-cleanslate sub {
+    bottom: -0.25em !important;
+}
+.saladict-cleanslate img {
+    border: 0 !important;
+}
+.saladict-cleanslate figure {
+    margin: 0 !important;
+}
+.saladict-cleanslate textarea {
+    overflow: auto !important;
+    vertical-align: top !important;
+}
+
+/* == ROOT CONTAINER ELEMENT == */
+/* This contains default values for child elements to inherit  */
+.saladict-cleanslate {
+    font-size: medium !important;
+    line-height: 1 !important;
+    direction:ltr !important;
+    text-align: left !important; /* for IE, Opera */
+    text-align: start !important; /* recommended W3C Spec */
+    font-family: "Times New Roman", Times, serif !important; /* Override this with whatever font-family is required */
+    color: black !important;
+    font-style:normal !important;
+    font-weight:normal !important;
+    text-decoration:none !important;
+    list-style-type:disc !important;
+}
+
+.saladict-cleanslate pre {
+    white-space:pre !important;
+}

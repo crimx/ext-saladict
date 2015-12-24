@@ -1,25 +1,39 @@
 'use strict'
 
+var proxyquire = require('proxyquireify')
+var partialify = require('partialify')
+
 module.exports = function(config) {
   config.set({
     basePath: '',
-    frameworks: ['jasmine', 'browserify'],
+    frameworks: ['jasmine', 'browserify', 'sinon-chrome'],
     files: [
-      'test/unit/**/*.js'
+      'test/unit/**/*.js',
+      'node_modules/jasmine-sinon/lib/jasmine-sinon.js'
     ],
-    reporters: ['spec', 'coverage'],
+    reporters: ['nyan', 'coverage'],
     'browserify': {
       'debug': true,
-      'transform': [
-        // 'browserify-shim',
-        'browserify-istanbul'
-      ]
+      // 'transform': [
+      //   // 'browserify-shim',
+      //   'browserify-istanbul'
+      // ],
+      configure: function(bundle) {
+        bundle
+          .transform(partialify)
+          .transform('browserify-istanbul')
+          .plugin(proxyquire.plugin)
+          // .require(require.resolve('./test/unit/'), { entry: true })
+      }
     },
     'coverageReporter': {
-      'reporters': [
-        {'type': 'html'},
-        {'type': 'text-summary'}
-      ]
+      'reporters': [{
+        'type': 'lcov', 
+        'dir': 'coverage',
+        'subdir': '.'
+      },{
+        'type': 'text-summary'
+      }]
     },
     port: 9876,
     colors: true,
@@ -34,8 +48,12 @@ module.exports = function(config) {
       PhantomJS_without_security: {
         base: 'PhantomJS',
         flags: ['--web-security=no']
+      },
+      Chrome_travis_ci: {
+        base: 'Chrome',
+        flags: ['--no-sandbox', '--disable-web-security']
       }
     },
-    singleRun: true
+    singleRun: false
   })
 }

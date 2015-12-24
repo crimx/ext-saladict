@@ -1,0 +1,126 @@
+{
+   "extension_name": {
+      "description": "Extension name",
+      "message": "Saladict"
+   },
+
+   "extension_short_name": {
+      "description": "Extension short name",
+      "message": "Saladict"
+   },
+
+   "extension_description": {
+      "description": "Description of extension",
+      "message": "Inline translator powered by mutiple online dictionaries"
+   },
+
+   "engine_bing": {
+      "description": "Engine Name",
+      "message": "Bing dict"
+   },
+
+   "engine_ud": {
+      "description": "Engine Name",
+      "message": "Urban Dictionary"
+   },
+
+   "engine_howjsay": {
+      "description": "Engine Name",
+      "message": "Howjsay"
+   },
+
+   "engine_dictcn": {
+      "description": "Engine Name",
+      "message": "dict.cn"
+   },
+
+   "engine_vocabulary": {
+      "description": "Engine Name",
+      "message": "Vocabulary.com"
+   },
+
+   "US": {
+      "description": "United State",
+      "message": "US"
+   },
+
+   "UK": {
+      "description": "United Kindom",
+      "message": "UK"
+   },
+
+   "PY": {
+      "description": "Pinyin, Mandarin Chinese",
+      "message": "PY"
+   },
+
+   "engine_error_msg": {
+      "description": "Search Faild",
+      "message": "No Result"
+   },
+
+   "opt_app_active_title": {
+      "description": "popup option title",
+      "message": "Enable Saladict"
+   },
+
+   "opt_icon_mode_title": {
+      "description": "popup option title",
+      "message": "Show Popup Icon"
+   },
+
+   "opt_direct_mode_title": {
+      "description": "popup option title",
+      "message": "Show Panel Directly"
+   },
+
+   "opt_ctrl_mode_title": {
+      "description": "popup option title",
+      "message": "Show Panel With Ctrl"
+   },
+
+   "opt_mode_description": {
+      "description": "popup option description",
+      "message": "When a text selection is made, and if 'Show Popup Icon' is enabled, a cute little icon would popup nearby the cursor; similarly, 'Show Panel Directly' means a dictionary panel will pop right after a text selection is made; and 'With Ctrl' simply means the 'control' key has to be down when the selection is made."
+   },
+
+   "opt_triple_ctrl_title": {
+      "description": "popup option title",
+      "message": "Qucick Search"
+   },
+
+   "opt_triple_ctrl_description": {
+      "description": "popup option description",
+      "message": "Triple Press 'control' key, a search panel will popup"
+   },
+
+   "opt_chinese_mode_title": {
+      "description": "popup option title",
+      "message": "Enable Chinese"
+   },
+
+   "opt_english_mode_title": {
+      "description": "popup option title",
+      "message": "Enable English"
+   },
+
+   "opt_language_mode_description": {
+      "description": "popup option description",
+      "message": "A search request would be fired only if the selection is part of the specific languages."
+   },
+
+   "update_available": {
+      "description": "Update vailable",
+      "message": "New Version Available!"
+   },
+
+   "update_title": {
+      "description": "Update message title",
+      "message": "Saladict has updated to v"
+   },
+
+   "update_message1": {
+      "description": "Update messages",
+      "message": "Bunch of new features waiting for explored."
+   }
+}

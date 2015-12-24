@@ -1,0 +1,146 @@
+{
+   "extension_name": {
+      "description": "Extension name",
+      "message": "沙拉查词"
+   },
+
+   "extension_short_name": {
+      "description": "Extension short name",
+      "message": "Saladict"
+   },
+
+   "extension_description": {
+      "description": "Description of extension",
+      "message": "网页划词翻译，混合各种词典的结果"
+   },
+
+   "engine_bing": {
+      "description": "Engine Name",
+      "message": "必应词典"
+   },
+
+   "engine_ud": {
+      "description": "Engine Name",
+      "message": "Urban Dictionary"
+   },
+
+   "engine_howjsay": {
+      "description": "Engine Name",
+      "message": "Howjsay"
+   },
+
+   "engine_dictcn": {
+      "description": "Engine Name",
+      "message": "dict.cn"
+   },
+
+   "engine_vocabulary": {
+      "description": "Engine Name",
+      "message": "Vocabulary.com"
+   },
+
+   "US": {
+      "description": "United State",
+      "message": "美"
+   },
+
+   "UK": {
+      "description": "United Kindom",
+      "message": "英"
+   },
+
+   "PY": {
+      "description": "Pinyin, Mandarin Chinese",
+      "message": "拼"
+   },
+
+   "engine_error_msg": {
+      "description": "Search Faild",
+      "message": "无结果"
+   },
+
+   "opt_app_active_title": {
+      "description": "popup option title",
+      "message": "开启查词"
+   },
+
+   "opt_icon_mode_title": {
+      "description": "popup option title",
+      "message": "显示图标"
+   },
+
+   "opt_direct_mode_title": {
+      "description": "popup option title",
+      "message": "直接搜索"
+   },
+
+   "opt_ctrl_mode_title": {
+      "description": "popup option title",
+      "message": "按住Ctrl"
+   },
+
+   "opt_mode_description": {
+      "description": "popup option description",
+      "message": "当用鼠标在网页上选择了一段文本，“显示图标”会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；“直接搜索”则不显示图标，直接显示词典面板；“按住 Ctrl”在选择文本时需同时按住 `ctrl` 键才显示词典面板。"
+   },
+
+   "opt_triple_ctrl_title": {
+      "description": "popup option title",
+      "message": "快捷搜索"
+   },
+
+   "opt_triple_ctrl_description": {
+      "description": "popup option description",
+      "message": "连续按三次 ctrl 键将弹出词典搜索界面。"
+   },
+
+   "opt_chinese_mode_title": {
+      "description": "popup option title",
+      "message": "中文查词"
+   },
+
+   "opt_english_mode_title": {
+      "description": "popup option title",
+      "message": "英文查词"
+   },
+
+   "opt_language_mode_description": {
+      "description": "popup option description",
+      "message": "当选中的文字包含相应的语言时才进行查找。"
+   },
+
+   "update_available": {
+      "description": "Update vailable",
+      "message": "沙拉查词有新版本啦！点击更新。"
+   },
+
+   "update_title": {
+      "description": "Update message title",
+      "message": "沙拉查词已更新到 v"
+   },
+
+   "update_message1": {
+      "description": "Update messages",
+      "message": "全新重写，你们提的要求都实现啦"
+   },
+
+   "update_message2": {
+      "description": "Update messages",
+      "message": "加入新词典，加入右键查词"
+   },
+
+   "update_message3": {
+      "description": "Update messages",
+      "message": "新增三种划词模式，连续按三次ctrl还可以直接查词"
+   },
+
+   "update_message4": {
+      "description": "Update messages",
+      "message": "词典界面可以固定在网页上"
+   },
+
+   "update_message5": {
+      "description": "Update messages",
+      "message": "更多功能慢慢发现吧;D"
+   }
+}

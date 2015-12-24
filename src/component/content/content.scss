@@ -1,0 +1,43 @@
+/* global settings */
+$font-size: 12px;
+$font-size-large: 16px;
+$font-size-icon: 16px;
+$line-height: 1.5;
+$font-family: 'helvetica neue', tahoma, 'hiragino sans gb', stheiti, 'wenquanyi micro hei', \5FAE\8F6F\96C5\9ED1, \5B8B\4F53, sans-serif;
+$z-index: 2000000000;
+
+$panel-width: 400px;
+$panel-header-height: 30px;
+
+$engine-max-height: 110px;
+$engine-horizontal-padding: $font-size * 1.2;
+$engine-vertical-padding: $font-size * 0.5;
+$article-indent: $font-size * 1.5;
+
+$engine-logo-len: 16px;
+$engine-voicelogo-len: 15px;
+
+$color-white: #fff;
+$color-gray: #98b4a3;
+$color-green: #5caf9e; // #6fc394
+$color-orange: #f35d0f;
+$font-color: #000;
+
+$color-background: #fff;
+
+/* font */
+@font-face {
+  font-family: 'saladict iconfont';
+  src: url('chrome-extension://__MSG_@@extension_id__/images/iconfont.woff') format('woff'),
+  url('chrome-extension://__MSG_@@extension_id__/images/iconfont.ttf') format('truetype');
+}
+
+/* reset */
+@import '../../lib/cleanslate';
+
+
+/* app */
+@import './main/index';
+
+
+

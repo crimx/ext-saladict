@@ -1,0 +1,61 @@
+{
+  "manifest_version": 2,
+
+  "name": "__MSG_extension_name__",
+  "short_name": "__MSG_extension_short_name__",
+  "description": "__MSG_extension_description__",
+
+  "version": "0.0.0",
+  "update_url": "https://clients2.google.com/service/update2/crx",
+
+  "default_locale": "zh_CN",
+
+  "icons": {
+    "16": "images/icon-16.png",
+    "48": "images/icon-48.png",
+    "128": "images/icon-128.png"
+  },
+
+  "background": {
+    "scripts": [
+      "js/background.js"
+    ],
+    "persistent": false
+  },
+
+  "content_scripts": [ {
+    "js": ["js/content.js"],
+    "css": ["css/content.css"],
+    "matches": [ "<all_urls>" ]
+  } ],
+
+  "web_accessible_resources": [
+    "images/iconfont.woff",
+    "images/iconfont.ttf",
+    "images/leaf.png",
+    "images/orange.png",
+    "images/tomato.png",
+    "images/bowl.png",
+    "images/engines/bing.ico",
+    "images/engines/vocabulary.ico",
+    "images/engines/ud.ico",
+    "images/engines/howjsay.ico"
+    ],
+
+  "browser_action": {
+    "default_icon": {
+      "19": "images/icon-19.png",
+      "38": "images/icon-38.png"
+    },
+    "default_popup": "html/popup.html"
+  },
+
+  "permissions": [
+    "storage",
+    "tabs",
+    "notifications"
+  ],
+
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+
+}
