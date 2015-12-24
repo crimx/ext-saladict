@@ -21,5 +21,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Crimx/crx-saladict/releases/download/4.0.0/saladict.crx" target="_blank">直接下载安装包</a>
+  <a href="https://github.com/Crimx/crx-saladict/releases/download/v4.0.0/saladict.crx" target="_blank">直接下载安装包</a>
 </p>
+
+<br>
