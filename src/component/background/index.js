@@ -167,3 +167,32 @@ chrome.runtime.onUpdateAvailable.addListener(function() {
     iconUrl: 'images/icon-128.png'
   })
 })
+
+// create context menu
+chrome.contextMenus.create({
+  id: 'saladict_oxford',
+  title: 'Oxford Dictionary',
+  contexts: ['selection']
+})
+
+chrome.contextMenus.create({
+  id: 'saladict_bing',
+  title: 'Bing Dict',
+  contexts: ['selection']
+})
+
+chrome.contextMenus.create({
+  id: 'saladict_google',
+  title: 'Google Translate',
+  contexts: ['selection']
+})
+
+chrome.contextMenus.onClicked.addListener(function(info) {
+  if (info.menuItemId === 'saladict_oxford') {
+    chrome.tabs.create({url: 'http://www.oxforddictionaries.com/us/definition/english/' + info.selectionText})
+  } else if (info.menuItemId === 'saladict_google') {
+    chrome.tabs.create({url: 'https://translate.google.com/#auto/zh-CN/' + info.selectionText})
+  } else if (info.menuItemId === 'saladict_bing') {
+    chrome.tabs.create({url: 'http://cn.bing.com/dict/?q=' + info.selectionText})
+  }
+})
