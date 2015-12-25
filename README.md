@@ -21,5 +21,13 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Crimx/crx-saladict/releases/download/4.0.0/saladict.crx" target="_blank">直接下载安装包</a>
+  <a href="https://github.com/Crimx/crx-saladict/releases/download/v4.0.1/saladict.crx" target="_blank">直接下载安装包</a>
 </p>
+
+<br>
+
+<p align="center">
+  <a href="https://chrome.google.com/webstore/detail/%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="screenshot.jpg" /></a>
+</p>
+
+<br>

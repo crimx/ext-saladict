@@ -5,6 +5,10 @@ var $ = require('gulp-load-plugins')()
 var runSequence = require('run-sequence')
 var pkg = require('../package.json')
 
+
+process.env.NODE_ENV = 'production'
+
+
 var banner = ['/*!',
   ' * <%= pkg.name %> - <%= pkg.description %>',
   ' * @version v<%= pkg.version %>',
@@ -97,6 +101,7 @@ var browserify = require('browserify')
 var buffer = require('vinyl-buffer')
 var partialify = require('partialify')
 var source = require('vinyl-source-stream')
+var envify = require('envify/custom')
 
 gulp.task('js', function() {
   ;['popup', 'content', 'background'].forEach(function(appName) {
@@ -106,6 +111,11 @@ gulp.task('js', function() {
       debug: false,
       transform: [partialify]
     })
+
+    b.transform(envify({
+      _: 'purge',
+      NODE_ENV: 'production'
+    }))
 
     return b.bundle()
       .pipe(source(appName + '.js'))
