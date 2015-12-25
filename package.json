@@ -1,6 +1,6 @@
 {
   "name": "saladict",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "author": "Jack Wong <straybugs@gmail.com>",
   "license": "MIT",
   "description": "Chrome extension, inline translator powered by mutiple online dictionaries",
