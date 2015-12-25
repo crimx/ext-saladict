@@ -10,6 +10,7 @@
     "browserify": "^12.0.1",
     "browserify-istanbul": "^0.2.1",
     "del": "^2.1.0",
+    "envify": "^3.4.0",
     "gulp": "^3.9.0",
     "gulp-buffer": "0.0.2",
     "gulp-eslint": "^1.1.0",
