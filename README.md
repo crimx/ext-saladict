@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://chrome.google.com/webstore/detail/%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="saladict.jpg" /></a>
+  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="saladict.jpg" /></a>
 </p>
 
 <p align="center">
@@ -17,7 +17,7 @@
 <br>
 
 <p align="center">
-  <a href="https://chrome.google.com/webstore/detail/%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank">Chrome Web Store</a>
+  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank">Chrome Web Store</a>
 </p>
 
 <p align="center">
@@ -27,7 +27,11 @@
 <br>
 
 <p align="center">
-  <a href="https://chrome.google.com/webstore/detail/%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="screenshot.jpg" /></a>
+  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="screenshot.jpg" /></a>
+</p>
+
+<p align="center">
+  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="screenshot.gif" /></a>
 </p>
 
 <br>
