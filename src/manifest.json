@@ -51,6 +51,7 @@
   },
 
   "permissions": [
+    "contextMenus",
     "storage",
     "tabs",
     "notifications"

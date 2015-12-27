@@ -169,30 +169,44 @@ chrome.runtime.onUpdateAvailable.addListener(function() {
 })
 
 // create context menu
-chrome.contextMenus.create({
-  id: 'saladict_oxford',
+var contextMenus = [{
   title: 'Oxford Dictionary',
-  contexts: ['selection']
-})
-
-chrome.contextMenus.create({
-  id: 'saladict_bing',
+  url: 'http://www.oxforddictionaries.com/us/definition/english/'
+}, {
+  title: 'Merriam Webster',
+  url: 'http://www.merriam-webster.com/dictionary/'
+}, {
+  title: 'Etymonline',
+  url: 'http://www.etymonline.com/index.php?search='
+}, {
   title: 'Bing Dict',
-  contexts: ['selection']
-})
-
-chrome.contextMenus.create({
-  id: 'saladict_google',
+  url: 'http://cn.bing.com/dict/?q='
+}, {
   title: 'Google Translate',
-  contexts: ['selection']
+  url: 'https://translate.google.com/#auto/zh-CN/'
+}, {
+  title: 'Baidu Search',
+  url: 'https://www.baidu.com/s?ie=utf-8&wd='
+}, {
+  title: 'Google Search',
+  url: 'https://www.google.com/#newwindow=1&q='
+}]
+
+// register
+var contextMenusURLs = {}
+contextMenus.forEach(function(item) {
+  var id = 'saladict_' + item.title.replace(/ +/g, '_').toLowerCase()
+  contextMenusURLs[id] = item.url
+  chrome.contextMenus.create({
+    id: id,
+    title: item.title,
+    contexts: ['selection']
+  })
 })
 
 chrome.contextMenus.onClicked.addListener(function(info) {
-  if (info.menuItemId === 'saladict_oxford') {
-    chrome.tabs.create({url: 'http://www.oxforddictionaries.com/us/definition/english/' + info.selectionText})
-  } else if (info.menuItemId === 'saladict_google') {
-    chrome.tabs.create({url: 'https://translate.google.com/#auto/zh-CN/' + info.selectionText})
-  } else if (info.menuItemId === 'saladict_bing') {
-    chrome.tabs.create({url: 'http://cn.bing.com/dict/?q=' + info.selectionText})
+  if (info.menuItemId.indexOf('saladict') > -1 &&
+      contextMenusURLs[info.menuItemId]) {
+    chrome.tabs.create({url: contextMenusURLs[info.menuItemId] + info.selectionText})
   }
 })
