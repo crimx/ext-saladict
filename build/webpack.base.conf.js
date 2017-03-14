@@ -1,0 +1,54 @@
+const path = require('path')
+
+module.exports = {
+  entry: {
+    background: './src/background/main.js',
+    content: './src/content/main.js',
+    popup: './src/popup/main.js',
+    options: './src/options/main.js'
+  },
+  output: {
+    path: path.resolve(__dirname, '../dist'),
+    publicPath: '/',
+    filename: '[name].js'
+  },
+  module: {
+    noParse: [
+      /codebird/i
+    ],
+    rules: [
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: 'assets/[name].[ext]'
+        }
+      },
+      {
+        test: /\.(png|jpg|gif|svg)$/,
+        loader: 'url-loader',
+        options: {
+          limit: 10000,
+          name: 'assets/[name].[ext]'
+        }
+      }
+    ]
+  },
+  resolve: {
+    extensions: ['.*', '.js', '.vue', '.json'],
+    alias: {
+      'vue$': 'vue/dist/vue.common.js',
+      'test': path.resolve(__dirname, '../test'),
+      'src': path.resolve(__dirname, '../src')
+    }
+  },
+  devServer: {
+    historyApiFallback: true,
+    noInfo: true
+  },
+  performance: {
+    hints: false
+  },
+  devtool: '#eval-source-map'
+}
