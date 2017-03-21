@@ -3,7 +3,11 @@ const path = require('path')
 module.exports = {
   entry: {
     background: './src/background/main.js',
-    content: './src/content/main.js',
+
+    content: './src/content/page/container.js',
+    selection: './src/content/page/selection-listener.js',
+    panel: './src/content/panel/main.js',
+
     popup: './src/popup/main.js',
     options: './src/options/main.js'
   },
@@ -38,7 +42,6 @@ module.exports = {
   resolve: {
     extensions: ['.*', '.js', '.vue', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.common.js',
       'test': path.resolve(__dirname, '../test'),
       'src': path.resolve(__dirname, '../src')
     }

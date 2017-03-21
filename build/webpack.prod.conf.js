@@ -19,7 +19,12 @@ var webpackConfig = merge(baseWebpackConfig, {
             }),
             'scss': ExtractTextPlugin.extract({
               fallback: 'vue-style-loader',
-              use: ['css-loader', 'sass-loader']
+              use: ['css-loader', 'postcss-loader', 'sass-loader', {
+                loader: 'sass-resources-loader',
+                options: {
+                  resources: ['src/sass-global/**/*.scss']
+                }
+              }]
             })
           }
         }
@@ -40,7 +45,12 @@ var webpackConfig = merge(baseWebpackConfig, {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: ['css-loader', 'postcss-loader', 'sass-loader']
+          use: ['css-loader', 'postcss-loader', 'sass-loader', {
+            loader: 'sass-resources-loader',
+            options: {
+              resources: ['src/sass-global/**/*.scss']
+            }
+          }]
         })
       }
     ]
@@ -83,6 +93,18 @@ webpackConfig = merge(webpackConfig, {
         // https://github.com/kangax/html-minifier#options-quick-reference
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+      chunksSortMode: 'dependency'
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'panel.html',
+      template: 'src/template.html',
+      chunks: ['panel'],
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      },
       chunksSortMode: 'dependency'
     }),
     new HtmlWebpackPlugin({
