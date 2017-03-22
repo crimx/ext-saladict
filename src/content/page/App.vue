@@ -12,12 +12,14 @@
       <img class="saladict-icon__tomato" src="../../assets/tomato.svg">
       <img class="saladict-icon__bowl" src="../../assets/bowl.svg">
     </div>
+  </transition>
+  <transition name="saladict-jelly">
     <iframe class="saladict-frame"
       v-if="isShowFrame"
       key="saladict-frame"
       name="saladict-frame"
       :src="frameSource"
-      :style="{top: frameTop + 'px !important', left: frameLeft + 'px !important'}"
+      :style="{top: frameTop + 'px !important', left: frameLeft + 'px !important', height: panelHeight + 'px !important'}"
     ></iframe>
   </transition>
 </div>
@@ -53,7 +55,7 @@ export default {
   },
   methods: {
     iconMouseover () {
-
+      this.isShowFrame = true
     },
     setIconPosition () {
       //             +-----+
@@ -79,9 +81,28 @@ export default {
     },
     setFramePosition () {
       // based on icon position
-      const ww = window.innerWidth
-      const wh = window.innerHeight
+      let prefferedLeft = this.iconLeft + 30 + 10
+      let prefferedTop = this.iconTop
 
+      if (prefferedLeft + 400 > window.innerWidth) {
+        this.frameLeft = this.iconLeft - 10 - 400
+      } else {
+        this.frameLeft = prefferedLeft
+      }
+
+      if (prefferedTop + this.panelHeight > window.innerHeight - 5) {
+        this.frameTop = window.innerHeight - 5 - this.panelHeight
+      } else {
+        this.frameTop = prefferedTop
+      }
+    }
+  },
+  computed: {
+    panelHeight () {
+      // header + each dictionary
+      const preferredHeight = 30 + 110 * this.config.dicts.length
+      const maxHeight = window.innerHeight * 2 / 3
+      return preferredHeight > maxHeight ? maxHeight : preferredHeight
     }
   },
   created () {
@@ -98,26 +119,33 @@ export default {
   mounted () {
     // receive signals from page and all frames
     message.on('SELECTION', (data, sender, sendResponse) => {
-      this.setIconPosition()
-      this.setFramePosition()
-
-      if (data.text) {
-        switch (this.config.mode) {
-          case 'icon':
-            this.isShowIcon = true
-            break
-          case 'direct':
-            this.isShowFrame = true
-            break
-          case 'ctrl':
-            if (data.ctrlKey) {
-              this.isShowFrame = true
-            }
-            break
-        }
+      if (this.isShowIcon || this.isShowFrame) {
+        this.isShowIcon = false
+        this.isShowFrame = false
+        this.$nextTick(show)
       } else {
-        if (this.isShowIcon) { this.isShowIcon = false }
-        if (this.isShowFrame) { this.isShowFrame = false }
+        show.call(this)
+      }
+
+      function show () {
+        this.setIconPosition()
+        this.setFramePosition()
+
+        if (data.text) {
+          switch (this.config.mode) {
+            case 'icon':
+              this.isShowIcon = true
+              break
+            case 'direct':
+              this.isShowFrame = true
+              break
+            case 'ctrl':
+              if (data.ctrlKey) {
+                this.isShowFrame = true
+              }
+              break
+          }
+        }
       }
     })
   },
@@ -230,6 +258,8 @@ iframe.saladict-frame {
   z-index: $global-zindex-tooltip;
   overflow: hidden;
   width: 400px;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
 }
 
 $icon-width: 30px;
@@ -291,7 +321,11 @@ img.saladict-icon__bowl {
     States
 \*-----------------------------------------------*/
 .saladict-jelly-enter-active {
-  animation: saladict-jelly 1000ms linear both;
+  animation: saladict-jelly 1000ms linear;
+}
+
+.saladict-jelly-leave-active {
+  animation: saladict-jelly 1000ms reverse linear;
 }
 
 .saladict-icon:hover {
