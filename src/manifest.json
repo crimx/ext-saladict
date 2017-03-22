@@ -11,46 +11,47 @@
   "default_locale": "zh_CN",
 
   "icons": {
-    "16": "images/icon-16.png",
-    "48": "images/icon-48.png",
-    "128": "images/icon-128.png"
+    "16": "assets/icon-16.png",
+    "48": "assets/icon-48.png",
+    "128": "assets/icon-128.png"
   },
 
   "background": {
     "scripts": [
-      "js/background.js"
+      "background.js"
     ],
     "persistent": false
   },
 
-  "content_scripts": [ {
-    "js": ["js/content.js"],
-    "css": ["css/content.css"],
-    "matches": [ "<all_urls>" ]
-  } ],
+  "content_scripts": [
+    {
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "matches": ["<all_urls>"]
+    },
+    {
+      "js": ["selection.js"],
+      "matches": ["<all_urls>"],
+      "all_frames": true
+    }
+  ],
 
   "web_accessible_resources": [
-    "images/iconfont.woff",
-    "images/iconfont.ttf",
-    "images/leaf.png",
-    "images/orange.png",
-    "images/tomato.png",
-    "images/bowl.png",
-    "images/engines/bing.ico",
-    "images/engines/vocabulary.ico",
-    "images/engines/ud.ico",
-    "images/engines/howjsay.ico"
-    ],
+    "panel.html",
+    "panel.js",
+    "panel.css"
+  ],
 
   "browser_action": {
     "default_icon": {
-      "19": "images/icon-19.png",
-      "38": "images/icon-38.png"
+      "19": "assets/icon-19.png",
+      "38": "assets/icon-38.png"
     },
-    "default_popup": "html/popup.html"
+    "default_popup": "popup.html"
   },
 
   "permissions": [
+    "<all_urls>",
     "contextMenus",
     "storage",
     "tabs",
