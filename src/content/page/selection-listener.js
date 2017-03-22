@@ -9,10 +9,21 @@ document.addEventListener('mouseup', evt => {
   if (window.name === 'saladict-frame') { return }
 
   let text = window.getSelection().toString()
-  // fire anyway, even with no selection
-  message.send({
-    msg: 'SELECTION',
-    text,
-    ctrlKey: evt.ctrlKey
-  })
+  if (!text) {
+    // empty message
+    message.send({msg: 'SELECTION'})
+  } else {
+    // if user click on a selected text,
+    // getSelection would reture the text before it disappears
+    // delay to wait for selection get cleared
+    setTimeout(() => {
+      let text = window.getSelection().toString()
+      // fire anyway, even with no selection
+      message.send({
+        msg: 'SELECTION',
+        text,
+        ctrlKey: evt.ctrlKey
+      })
+    }, 0)
+  }
 }, true)
