@@ -11,7 +11,7 @@ document.addEventListener('mouseup', evt => {
   let text = window.getSelection().toString()
   if (!text) {
     // empty message
-    message.send({msg: 'SELECTION'})
+    message.send({msg: 'SELECTION', self: true})
   } else {
     // if user click on a selected text,
     // getSelection would reture the text before it disappears
@@ -21,6 +21,7 @@ document.addEventListener('mouseup', evt => {
       // fire anyway, even with no selection
       message.send({
         msg: 'SELECTION',
+        self: true,
         text,
         ctrlKey: evt.ctrlKey
       })

@@ -1,0 +1,182 @@
+<template>
+<div class="panel-container">
+  <header class="panel-header">
+    <input type="text" class="search-input"
+      v-model="text"
+      @keyup.enter="seachText"
+    >
+    <svg class="icon-search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966"
+      @click="seachText"
+    >
+      <path d="M51.704 51.273L36.844 35.82c3.79-3.8 6.14-9.04 6.14-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.082 0 9.747-1.817 13.383-4.832l14.895 15.49c.196.206.458.308.72.308.25 0 .5-.093.694-.28.398-.382.41-1.015.028-1.413zM21.984 40c-10.478 0-19-8.523-19-19s8.522-19 19-19 19 8.523 19 19-8.525 19-19 19z"/>
+    </svg>
+    <div class="dragarea"></div>
+    <svg class="icon-pin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 53.011 53.011"
+      :class="{'icon-pin--pinned': isPinned}"
+      @click="pinPanel"
+    >
+      <path d="M52.963 21.297c-.068-.33-.297-.603-.61-.727-8.573-3.416-16.172-.665-18.36.288L19.113 8.2C19.634 3.632 17.17.508 17.06.372c-.18-.22-.442-.356-.725-.372-.282-.006-.56.09-.76.292L.32 15.546c-.202.2-.308.48-.29.765.015.285.152.55.375.727 2.775 2.202 6.35 2.167 7.726 2.055l12.722 14.953c-.868 2.23-3.52 10.27-.307 18.337.124.313.397.54.727.61.067.013.135.02.202.02.263 0 .518-.104.707-.293l14.57-14.57 13.57 13.57c.196.194.452.292.708.292s.512-.098.707-.293c.39-.392.39-1.024 0-1.415l-13.57-13.57 14.527-14.528c.237-.238.34-.58.27-.91zm-17.65 15.458L21.89 50.18c-2.437-8.005.993-15.827 1.03-15.91.158-.352.1-.764-.15-1.058L9.31 17.39c-.19-.225-.473-.352-.764-.352-.05 0-.103.004-.154.013-.036.007-3.173.473-5.794-.954l13.5-13.5c.604 1.156 1.39 3.26.964 5.848-.058.346.07.697.338.924l15.785 13.43c.31.262.748.31 1.105.128.077-.04 7.378-3.695 15.87-1.017L35.313 36.754z"/>
+    </svg>
+    <svg class="icon-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 31.112 31.112"
+      @click="closePanel"
+    >
+      <path d="M31.112 1.414L29.698 0 15.556 14.142 1.414 0 0 1.414l14.142 14.142L0 29.698l1.414 1.414L15.556 16.97l14.142 14.142 1.414-1.414L16.97 15.556"/>
+    </svg>
+  </header>
+  <template v-for="dict in config.dicts">
+    <component :is="dict.name"></component>
+  </template>
+</div>
+</template>
+
+<script>
+import defaultConfig from 'src/app-config'
+import {storage, message} from 'src/helpers/chrome-api'
+
+let vm = {
+  name: 'dictionary-panel',
+  data () {
+    return {
+      config: defaultConfig,
+
+      text: '',
+
+      isPinned: false
+    }
+  },
+  methods: {
+    seachText () {
+      message.send({msg: 'SEARCH_TEXT', text: this.text})
+    },
+    closePanel () {
+      message.send({msg: 'CLOSE_PANEL', self: true})
+    },
+    pinPanel () {
+      this.isPinned = !this.isPinned
+      message.send({msg: 'PIN_PANEL', self: true, flag: this.isPinned})
+    }
+  },
+  created () {
+    storage.sync.get('config').then(result => {
+      if (result.config) {
+        this.config = result.config
+      }
+    })
+    storage.listen('config', changes => {
+      this.config = changes.config.newValue
+    })
+  },
+  components: {}
+}
+
+// dynamic require components
+const compReq = require.context('./components', true, /\.vue$/i)
+const nameChecker = /\/(\S+)\.vue$/i
+compReq.keys().forEach(path => {
+  let name = nameChecker.exec(path)
+  if (!name) { return }
+  name = name[1]
+  vm.components[name.toLowerCase()] = compReq(path)
+})
+
+export default vm
+</script>
+
+<style src="normalize.css/normalize.css"></style>
+
+<style>
+/*-----------------------------------------------*\
+    Global Styles
+\*-----------------------------------------------*/
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  height: 100%;
+  background-color: #fff;
+  font-size: 14px;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+</style>
+
+<style lang="scss" scoped>
+.panel-container {
+  height: 100%;
+  padding: 0 10px;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  margin: 0 (-10px) 10px (-10px);
+  padding-left: 6px;
+  background-color: rgb(92, 175, 158);
+  cursor: grab;
+}
+
+.dragarea {
+  flex: 1.5;
+  height: 100%;
+  cursor: grab;
+}
+
+.search-input {
+  flex: 1;
+  width: 0;
+  padding: 0 5px;
+  border: 0 none;
+  outline: 0 none;
+  color: #fff;
+  background-color: rgba(225, 225, 225, 0.1);
+  transition: flex 1s;
+
+  &:focus {
+    flex: 8;
+  }
+}
+
+%icon {
+  width: 30px;
+  height: 30px;
+  padding: 8px;
+  fill: #fff;
+  cursor: pointer;
+}
+
+.icon-search {
+  @extend %icon;
+}
+
+.icon-pin {
+  @extend %icon;
+  transition: transform 400ms;
+}
+
+.icon-close {
+  @extend %icon;
+
+  &:hover {
+    animation: spin 400ms linear infinite;
+  }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/*-----------------------------------------------*\
+    States
+\*-----------------------------------------------*/
+.icon-pin--pinned {
+  transform: rotate(45deg);
+}
+</style>

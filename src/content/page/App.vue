@@ -50,7 +50,10 @@ export default {
 
       isShowFrame: false,
       frameTop: 0,
-      frameLeft: 0
+      frameLeft: 0,
+
+      // pin the panel
+      isStayVisiable: false
     }
   },
   methods: {
@@ -119,6 +122,11 @@ export default {
   mounted () {
     // receive signals from page and all frames
     message.on('SELECTION', (data, sender, sendResponse) => {
+      if (this.isStayVisiable) {
+        this.isShowIcon = false
+        return
+      }
+
       if (this.isShowIcon || this.isShowFrame) {
         this.isShowIcon = false
         this.isShowFrame = false
@@ -147,6 +155,16 @@ export default {
           }
         }
       }
+    })
+
+    message.on('CLOSE_PANEL', () => {
+      this.isStayVisiable = false
+      this.isShowFrame = false
+      this.isShowIcon = false
+    })
+
+    message.on('PIN_PANEL', (data) => {
+      this.isStayVisiable = data.flag
     })
   },
   destroyed () {
@@ -258,7 +276,6 @@ iframe.saladict-frame {
   z-index: $global-zindex-tooltip;
   overflow: hidden;
   width: 400px;
-  border-radius: 5px;
   box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
 }
 

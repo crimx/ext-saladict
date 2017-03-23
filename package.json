@@ -75,6 +75,7 @@
   },
   "dependencies": {
     "highcharts": "^5.0.9",
+    "normalize.css": "^5.0.0",
     "vue": "^2.2.4",
     "vuex": "^2.2.1"
   }

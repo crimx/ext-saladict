@@ -1,8 +1,10 @@
 import {message} from 'src/helpers/chrome-api'
 
-// receive signals from page and all frames
-message.on('SELECTION', (data, sender, sendResponse) => {
-  message.send(sender.tab.id, data)
+// background script as transfer station
+message.listen((data, sender, sendResponse) => {
+  if (data.self) {
+    message.send(sender.tab.id, data)
+  }
 })
 
 chrome.runtime.onInstalled.addListener(() => {
