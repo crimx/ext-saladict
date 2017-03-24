@@ -18,13 +18,69 @@ document.addEventListener('mouseup', evt => {
     // delay to wait for selection get cleared
     setTimeout(() => {
       let text = window.getSelection().toString()
-      // fire anyway, even with no selection
-      message.send({
-        msg: 'SELECTION',
-        self: true,
-        text,
-        ctrlKey: evt.ctrlKey
-      })
+      if (!text) {
+        // empty message
+        message.send({msg: 'SELECTION', self: true})
+      } else if (window.parent === window) {
+        // top
+        message.send({
+          msg: 'SELECTION',
+          self: true,
+          text,
+          mouseX: evt.clientX,
+          mouseY: evt.clientY,
+          ctrlKey: evt.ctrlKey
+        })
+      } else {
+        // post to upper frames/window
+        window.parent.postMessage({
+          msg: 'SALADICT_SELECTION',
+          text,
+          mouseX: evt.clientX,
+          mouseY: evt.clientY,
+          ctrlKey: evt.ctrlKey
+        }, '*')
+      }
     }, 0)
   }
 }, true)
+
+window.addEventListener('message', evt => {
+  if (evt.data.msg !== 'SALADICT_SELECTION') { return }
+
+  // get the souce iframe
+  var iframe
+  Array.from(document.querySelectorAll('iframe'))
+    .some(f => {
+      if (f.contentWindow === evt.source) {
+        iframe = f
+      }
+    })
+  if (!iframe) { return }
+
+  let {text, mouseX, mouseY, ctrlKey} = evt.data
+  let pos = iframe.getBoundingClientRect()
+  mouseX += pos.left
+  mouseY += pos.top
+
+  if (window.parent === window) {
+    // top
+    message.send({
+      msg: 'SELECTION',
+      self: true,
+      text,
+      mouseX,
+      mouseY,
+      ctrlKey
+    })
+  } else {
+    // post to upper frames/window
+    window.parent.postMessage({
+      msg: 'SALADICT_SELECTION',
+      text,
+      mouseX,
+      mouseY,
+      ctrlKey
+    }, '*')
+  }
+}, false)
