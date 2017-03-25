@@ -31,7 +31,7 @@
 
 <script>
 import defaultConfig from 'src/app-config'
-import {storage, message} from 'src/helpers/iframe-chrome-api-frame'
+import {storage, message} from 'src/helpers/chrome-api'
 
 let vm = {
   name: 'dictionary-panel',
@@ -61,6 +61,27 @@ let vm = {
         mouseX: evt.clientX,
         mouseY: evt.clientY
       }, '*')
+
+      document.addEventListener('mouseup', this.handleDragEnd, true)
+      document.addEventListener('mousemove', this.handleMousemove, true)
+    },
+    handleMousemove (evt) {
+      window.parent.postMessage({
+        msg: 'SALADICT_DRAG_MOUSEMOVE',
+        mouseX: evt.clientX,
+        mouseY: evt.clientY
+      }, '*')
+    },
+    handleDragEnd () {
+      window.parent.postMessage({
+        msg: 'SALADICT_DRAG_END'
+      }, '*')
+
+      document.removeEventListener('mouseup', this.handleDragEnd, true)
+      document.removeEventListener('mousemove', this.handleMousemove, true)
+    },
+    handleStorageChange (changes) {
+      this.config = changes.config.newValue
     }
   },
   created () {
@@ -69,9 +90,10 @@ let vm = {
         this.config = result.config
       }
     })
-    storage.listen('config', changes => {
-      this.config = changes.config.newValue
-    })
+    storage.listen('config', this.handleStorageChange)
+  },
+  destroyed () {
+    storage.off(this.handleStorageChange)
   },
   components: {}
 }

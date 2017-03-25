@@ -14,13 +14,13 @@
     </div>
   </transition>
   <transition name="saladict-jelly">
-    <panel-frame
+    <iframe class="saladict-frame"
       v-if="isShowFrame"
       key="saladict-frame"
-      :config="config"
-      :icon-top="iconTop"
-      :icon-left="iconLeft"
-    ></panel-frame>
+      name="saladict-frame"
+      :src="frameSource"
+      :style="{top: frameTop + 'px !important', left: frameLeft + 'px !important', height: panelHeight + 'px !important'}"
+    ></iframe>
   </transition>
 </div>
 </template>
@@ -43,6 +43,8 @@ export default {
       iconLeft: 0,
 
       isShowFrame: false,
+      frameTop: 0,
+      frameLeft: 0,
 
       // pin the panel
       isStayVisiable: false
@@ -73,6 +75,64 @@ export default {
       } else {
         this.iconTop = mouseY + 60 - 30
       }
+    },
+    setFramePosition () {
+      // based on icon position
+      let prefferedLeft = this.iconLeft + 30 + 10
+      let prefferedTop = this.iconTop
+
+      if (prefferedLeft + 400 > window.innerWidth) {
+        this.frameLeft = this.iconLeft - 10 - 400
+      } else {
+        this.frameLeft = prefferedLeft
+      }
+
+      if (prefferedTop + this.panelHeight > window.innerHeight - 5) {
+        this.frameTop = window.innerHeight - 5 - this.panelHeight
+      } else {
+        this.frameTop = prefferedTop
+      }
+    },
+    handleDragStart (mouseX, mouseY) {
+      this.frameMouseX = mouseX
+      this.frameMouseY = mouseY
+      this.pageMouseX = this.frameLeft + mouseX
+      this.pageMouseY = this.frameTop + mouseY
+
+      // attach dragging listeners
+      document.addEventListener('mouseup', this.handleDragEnd, true)
+      document.addEventListener('mousemove', this.handlePageMousemove, true)
+    },
+    handleDragEnd () {
+      document.removeEventListener('mouseup', this.handleDragEnd, true)
+      document.removeEventListener('mousemove', this.handlePageMousemove, true)
+    },
+    handleFrameMousemove (mouseX, mouseY) {
+      let offsetX = mouseX - this.frameMouseX
+      let offsetY = mouseY - this.frameMouseY
+
+      this.frameTop += offsetY
+      this.frameLeft += offsetX
+      this.$forceUpdate()
+
+      this.pageMouseX += offsetX
+      this.pageMouseY += offsetY
+    },
+    handlePageMousemove (evt) {
+      this.frameTop += evt.clientX - this.pageMouseX
+      this.frameLeft += evt.clientY - this.pageMouseY
+      this.$forceUpdate()
+
+      this.pageMouseX = evt.clientX
+      this.pageMouseY = evt.clientY
+    }
+  },
+  computed: {
+    panelHeight () {
+      // header + each dictionary
+      const preferredHeight = 30 + 110 * this.config.dicts.length
+      const maxHeight = window.innerHeight * 2 / 3
+      return preferredHeight > maxHeight ? maxHeight : preferredHeight
     }
   },
   components: {
@@ -96,7 +156,6 @@ export default {
         return
       }
 
-      // So that the icon would dance a little bit
       if (this.isShowIcon || this.isShowFrame) {
         this.isShowIcon = false
         this.isShowFrame = false
@@ -107,6 +166,7 @@ export default {
 
       function show () {
         this.setIconPosition(data.mouseX, data.mouseY)
+        this.setFramePosition()
 
         if (data.text) {
           switch (this.config.mode) {
@@ -135,6 +195,26 @@ export default {
     message.on('PIN_PANEL', (data) => {
       this.isStayVisiable = data.flag
     })
+
+    window.addEventListener('message', evt => {
+      let data = evt.data
+      switch (data.msg) {
+        case 'SALADICT_DRAG_START':
+          this.handleDragStart(data.mouseX, data.mouseY)
+          break
+        case 'SALADICT_DRAG_MOUSEMOVE':
+          this.handleFrameMousemove(data.mouseX, data.mouseY)
+          break
+        case 'SALADICT_DRAG_END':
+          this.handleDragEnd()
+          break
+      }
+    })
+  },
+  destroyed () {
+    document.removeEventListener('mouseup', this.handleDragEnd, true)
+    document.removeEventListener('mousemove', this.handlePageMousemove, true)
+    window.removeEventListener('message', this.handleDragStart)
   }
 }
 </script>

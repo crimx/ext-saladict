@@ -13,7 +13,10 @@ export const storage = {
   },
   listen: storageListen,
   addListener: storageListen,
-  on: storageListen
+  on: storageListen,
+
+  off: storageStopListen,
+  removeListener: storageStopListen
 }
 
 /**
@@ -27,7 +30,10 @@ export const message = {
 
   listen: messageListen,
   addListener: messageListen,
-  on: messageListen
+  on: messageListen,
+
+  off: messageStopListen,
+  removeListener: messageStopListen
 }
 
 export default {
@@ -108,6 +114,16 @@ function storageListen (key, cb) {
 }
 
 /**
+ * remove listener
+ * @param {function} listener listener function
+ */
+function storageStopListen (listener) {
+  if (typeof listener === 'function') {
+    chrome.storage.onChanged.removeListener(listener)
+  }
+}
+
+/**
  * @param {number|string} [tabId] send to a specific tab
  * @param {object} message should be a JSON-ifiable object
  * @param {function} [cb] response callback
@@ -157,5 +173,15 @@ function messageListen (msg, cb) {
         return cb(message, sender, sendResponse)
       }
     })
+  }
+}
+
+/**
+ * remove listener
+ * @param {function} listener listener function
+ */
+function messageStopListen (listener) {
+  if (typeof listener === 'function') {
+    chrome.runtime.onMessage.removeListener(listener)
   }
 }
