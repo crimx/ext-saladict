@@ -10,7 +10,7 @@
     >
       <path d="M51.704 51.273L36.844 35.82c3.79-3.8 6.14-9.04 6.14-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.082 0 9.747-1.817 13.383-4.832l14.895 15.49c.196.206.458.308.72.308.25 0 .5-.093.694-.28.398-.382.41-1.015.028-1.413zM21.984 40c-10.478 0-19-8.523-19-19s8.522-19 19-19 19 8.523 19 19-8.525 19-19 19z"/>
     </svg>
-    <div class="dragarea"></div>
+    <div class="dragarea" @mousedown.stop="handleDragStart"></div>
     <svg class="icon-pin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 53.011 53.011"
       :class="{'icon-pin--pinned': isPinned}"
       @click="pinPanel"
@@ -31,7 +31,7 @@
 
 <script>
 import defaultConfig from 'src/app-config'
-import {storage, message} from 'src/helpers/chrome-api'
+import {storage, message} from 'src/helpers/iframe-chrome-api-frame'
 
 let vm = {
   name: 'dictionary-panel',
@@ -54,6 +54,13 @@ let vm = {
     pinPanel () {
       this.isPinned = !this.isPinned
       message.send({msg: 'PIN_PANEL', self: true, flag: this.isPinned})
+    },
+    handleDragStart (evt) {
+      window.parent.postMessage({
+        msg: 'SALADICT_DRAG_START',
+        mouseX: evt.clientX,
+        mouseY: evt.clientY
+      }, '*')
     }
   },
   created () {
@@ -119,18 +126,17 @@ body {
   margin: 0 (-10px) 10px (-10px);
   padding-left: 6px;
   background-color: rgb(92, 175, 158);
-  cursor: grab;
 }
 
 .dragarea {
   flex: 1.5;
   height: 100%;
-  cursor: grab;
+  cursor: move;
 }
 
 .search-input {
   flex: 1;
-  width: 0;
+  width: 5rem;
   padding: 0 5px;
   border: 0 none;
   outline: 0 none;

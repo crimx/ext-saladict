@@ -14,13 +14,13 @@
     </div>
   </transition>
   <transition name="saladict-jelly">
-    <iframe class="saladict-frame"
+    <panel-frame
       v-if="isShowFrame"
       key="saladict-frame"
-      name="saladict-frame"
-      :src="frameSource"
-      :style="{top: frameTop + 'px !important', left: frameLeft + 'px !important', height: panelHeight + 'px !important'}"
-    ></iframe>
+      :config="config"
+      :icon-top="iconTop"
+      :icon-left="iconLeft"
+    ></panel-frame>
   </transition>
 </div>
 </template>
@@ -28,13 +28,7 @@
 <script>
 import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
-
-var mouseX = 0
-var mouseY = 0
-function trackMousePosition (evt) {
-  mouseX = evt.clientX
-  mouseY = evt.clientY
-}
+import PanelFrame from '../panel/PanelFrame'
 
 export default {
   name: 'saladict-container',
@@ -49,8 +43,6 @@ export default {
       iconLeft: 0,
 
       isShowFrame: false,
-      frameTop: 0,
-      frameLeft: 0,
 
       // pin the panel
       isStayVisiable: false
@@ -60,7 +52,7 @@ export default {
     iconMouseover () {
       this.isShowFrame = true
     },
-    setIconPosition () {
+    setIconPosition (mouseX, mouseY) {
       //             +-----+
       //             |     |
       //             |     | 30px
@@ -81,35 +73,12 @@ export default {
       } else {
         this.iconTop = mouseY + 60 - 30
       }
-    },
-    setFramePosition () {
-      // based on icon position
-      let prefferedLeft = this.iconLeft + 30 + 10
-      let prefferedTop = this.iconTop
-
-      if (prefferedLeft + 400 > window.innerWidth) {
-        this.frameLeft = this.iconLeft - 10 - 400
-      } else {
-        this.frameLeft = prefferedLeft
-      }
-
-      if (prefferedTop + this.panelHeight > window.innerHeight - 5) {
-        this.frameTop = window.innerHeight - 5 - this.panelHeight
-      } else {
-        this.frameTop = prefferedTop
-      }
     }
   },
-  computed: {
-    panelHeight () {
-      // header + each dictionary
-      const preferredHeight = 30 + 110 * this.config.dicts.length
-      const maxHeight = window.innerHeight * 2 / 3
-      return preferredHeight > maxHeight ? maxHeight : preferredHeight
-    }
+  components: {
+    PanelFrame
   },
   created () {
-    document.addEventListener('mousemove', trackMousePosition)
     storage.sync.get('config').then(result => {
       if (result.config) {
         this.config = result.config
@@ -127,6 +96,7 @@ export default {
         return
       }
 
+      // So that the icon would dance a little bit
       if (this.isShowIcon || this.isShowFrame) {
         this.isShowIcon = false
         this.isShowFrame = false
@@ -136,8 +106,7 @@ export default {
       }
 
       function show () {
-        this.setIconPosition()
-        this.setFramePosition()
+        this.setIconPosition(data.mouseX, data.mouseY)
 
         if (data.text) {
           switch (this.config.mode) {
@@ -166,14 +135,11 @@ export default {
     message.on('PIN_PANEL', (data) => {
       this.isStayVisiable = data.flag
     })
-  },
-  destroyed () {
-    document.removeEventListener('mousemove', trackMousePosition)
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 /*-----------------------------------------------*\
     Extreme reset, based on Cleanslate css
 \*-----------------------------------------------*/
