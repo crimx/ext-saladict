@@ -43,7 +43,10 @@ function storageGet (storageArea) {
    * @see https://developer.chrome.com/extensions/storage#type-StorageArea
    */
   return function get (keys, cb) {
-    if (typeof cb === 'function') {
+    if (typeof keys === 'function') {
+      cb = keys
+      return chrome.storage[storageArea].get(cb)
+    } else if (typeof cb === 'function') {
       return chrome.storage[storageArea].get(keys, cb)
     } else {
       return new Promise((resolve, reject) => {
