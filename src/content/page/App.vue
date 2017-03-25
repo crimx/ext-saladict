@@ -28,7 +28,6 @@
 <script>
 import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
-import PanelFrame from '../panel/PanelFrame'
 
 export default {
   name: 'saladict-container',
@@ -94,6 +93,7 @@ export default {
       }
     },
     handleDragStart (mouseX, mouseY) {
+      // these four vars are not observable, for better performance
       this.frameMouseX = mouseX
       this.frameMouseY = mouseY
       this.pageMouseX = this.frameLeft + mouseX
@@ -134,9 +134,6 @@ export default {
       const maxHeight = window.innerHeight * 2 / 3
       return preferredHeight > maxHeight ? maxHeight : preferredHeight
     }
-  },
-  components: {
-    PanelFrame
   },
   created () {
     storage.sync.get('config').then(result => {
