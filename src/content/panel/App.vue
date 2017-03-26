@@ -24,7 +24,7 @@
     </svg>
   </header>
   <template v-for="dict in config.dicts">
-    <component :is="dict.name"></component>
+    <component :is="dict.id" :result="searchResults[dict.id]"></component>
   </template>
 </div>
 </template>
@@ -35,18 +35,29 @@ import {storage, message} from 'src/helpers/chrome-api'
 
 let vm = {
   name: 'dictionary-panel',
-  data () {
-    return {
-      config: defaultConfig,
+  data: { // WILL be changed into a function, see below
+    config: defaultConfig,
 
-      text: '',
+    searchResults: {},
 
-      isPinned: false
-    }
+    text: '',
+
+    isPinned: false
   },
   methods: {
     seachText () {
-      message.send({msg: 'SEARCH_TEXT', text: this.text})
+      let text = this.text
+      let searchResults = this.searchResults
+
+      this.config.dicts.forEach(({id}) => {
+        searchResults[id] = null // clear the results
+        message.send({msg: 'SEARCH_TEXT', text, dict: id}, response => {
+          if (!response) { return }
+          if (response.error) { return console.error(response.error) }
+
+          searchResults[id] = response.result
+        })
+      })
     },
     closePanel () {
       message.send({msg: 'CLOSE_PANEL', self: true})
@@ -85,12 +96,21 @@ let vm = {
     }
   },
   created () {
+    // get the lastest config
     storage.sync.get('config').then(result => {
       if (result.config) {
         this.config = result.config
       }
     })
     storage.listen('config', this.handleStorageChange)
+
+    // get selected text
+    message.send({msg: 'SELECTED_TEXT', self: true}, response => {
+      if (response && !response.error) {
+        this.text = response.text
+        this.seachText()
+      }
+    })
   },
   destroyed () {
     storage.off(this.handleStorageChange)
@@ -98,15 +118,33 @@ let vm = {
   components: {}
 }
 
-// dynamic require components
-const compReq = require.context('./components', true, /\.vue$/i)
-const nameChecker = /\/(\S+)\.vue$/i
+/**
+ * dynamically require dictionary components, these properties are added
+ * {
+ *   searchResults: {
+ *     [id]: null
+ *     ...
+ *   }
+ *   components: {
+ *     [id]
+ *     ...
+ *   }
+ * }
+ */
+const vmData = vm.data
+const compReq = require.context('./components/dicts', true, /\.vue$/i)
+const idChecker = /\/(\S+)\.vue$/i
 compReq.keys().forEach(path => {
-  let name = nameChecker.exec(path)
-  if (!name) { return }
-  name = name[1]
-  vm.components[name.toLowerCase()] = compReq(path)
+  let id = idChecker.exec(path)
+  if (!id) { return }
+  id = id[1].toLowerCase()
+
+  vmData.searchResults[id] = null
+  vm.components[id] = compReq(path)
 })
+
+
+vm.data = function data () { return Object.assign({}, vmData) }
 
 export default vm
 </script>

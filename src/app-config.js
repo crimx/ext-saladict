@@ -1,22 +1,22 @@
 var config = () => {
   const allDicts = {
     wordreference: {
-      name: 'wordreference'
+      id: 'wordreference'
     },
     bing: {
-      name: 'bing'
+      id: 'bing'
     },
     iciba: {
-      name: 'iciba'
+      id: 'iciba'
     },
     urban: {
-      name: 'urban'
+      id: 'urban'
     },
     vocabulary: {
-      name: 'vocabulary'
+      id: 'vocabulary'
     },
     dictcn: {
-      name: 'dictcn'
+      id: 'dictcn'
     }
   }
 
@@ -31,6 +31,7 @@ var config = () => {
     // show panel when triple press ctrl
     tripleCtrl: true,
 
+    // default selected dictionaries
     dicts: [
       allDicts.bing,
       allDicts.iciba,

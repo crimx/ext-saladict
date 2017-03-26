@@ -45,6 +45,8 @@ export default {
       frameTop: 0,
       frameLeft: 0,
 
+      selectedText: '',
+
       // pin the panel
       isStayVisiable: false
     }
@@ -53,7 +55,8 @@ export default {
     iconMouseover () {
       this.isShowFrame = true
     },
-    setIconPosition (mouseX, mouseY) {
+    setPosition (mouseX, mouseY) {
+      // icon position
       //             +-----+
       //             |     |
       //             |     | 30px
@@ -74,9 +77,8 @@ export default {
       } else {
         this.iconTop = mouseY + 60 - 30
       }
-    },
-    setFramePosition () {
-      // based on icon position
+
+      // frame position based on icon position
       let prefferedLeft = this.iconLeft + 30 + 10
       let prefferedTop = this.iconTop
 
@@ -86,8 +88,8 @@ export default {
         this.frameLeft = prefferedLeft
       }
 
-      if (prefferedTop + this.panelHeight > window.innerHeight - 5) {
-        this.frameTop = window.innerHeight - 5 - this.panelHeight
+      if (prefferedTop + this.panelHeight > window.innerHeight - 15) {
+        this.frameTop = window.innerHeight - 15 - this.panelHeight
       } else {
         this.frameTop = prefferedTop
       }
@@ -162,10 +164,10 @@ export default {
       }
 
       function show () {
-        this.setIconPosition(data.mouseX, data.mouseY)
-        this.setFramePosition()
+        this.setPosition(data.mouseX, data.mouseY)
 
         if (data.text) {
+          this.selectedText = data.text
           switch (this.config.mode) {
             case 'icon':
               this.isShowIcon = true
@@ -191,6 +193,10 @@ export default {
 
     message.on('PIN_PANEL', (data) => {
       this.isStayVisiable = data.flag
+    })
+
+    message.on('SELECTED_TEXT', (data, sender, sendResponse) => {
+      sendResponse({text: this.selectedText})
     })
 
     window.addEventListener('message', evt => {
