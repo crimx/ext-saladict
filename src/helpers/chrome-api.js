@@ -4,10 +4,14 @@
 
 export const storage = {
   sync: {
+    clear: storageClear('sync'),
+    remove: storageRemove('sync'),
     get: storageGet('sync'),
     set: storageSet('sync')
   },
   local: {
+    clear: storageClear('local'),
+    remove: storageRemove('local'),
     get: storageGet('local'),
     set: storageSet('local')
   },
@@ -46,7 +50,7 @@ function storageGet (storageArea) {
    * @param {string|array|Object|null} [keys] keys to get values
    * @param {function} [cb] callback with storage items or on failure
    * @returns {Promise|undefined} returns a promise with the result if callback is missed
-   * @see https://developer.chrome.com/extensions/storage#type-StorageArea
+   * @see https://developer.chrome.com/extensions/storage#method-StorageArea-get
    */
   return function get (keys, cb) {
     if (typeof keys === 'function') {
@@ -75,7 +79,7 @@ function storageSet (storageArea) {
    * @param {object} items items to set
    * @param {function} [cb] Callback on success, or on failure
    * @returns {Promise|undefined} returns a promise if callback is missed
-   * @see https://developer.chrome.com/extensions/storage#type-StorageArea
+   * @see https://developer.chrome.com/extensions/storage#method-StorageArea-set
    */
   return function set (items, cb) {
     if (typeof cb === 'function') {
@@ -120,6 +124,53 @@ function storageListen (key, cb) {
 function storageStopListen (listener) {
   if (typeof listener === 'function') {
     chrome.storage.onChanged.removeListener(listener)
+  }
+}
+
+function storageClear (storageArea) {
+  /**
+   * @param {function} [cb] Callback on success, or on failure
+   * @returns {Promise|undefined} returns a promise if callback is missed
+   * @see https://developer.chrome.com/extensions/storage#method-StorageArea-clear
+   */
+  return function clear (cb) {
+    if (typeof cb === 'function') {
+      return chrome.storage[storageArea].clear()
+    } else {
+      return new Promise((resolve, reject) => {
+        chrome.storage[storageArea].clear(() => {
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError.message)
+          } else {
+            resolve()
+          }
+        })
+      })
+    }
+  }
+}
+
+function storageRemove (storageArea) {
+  /**
+   * @param {string|array|Object|null} keys keys to get values
+   * @param {function} [cb] callback with storage items or on failure
+   * @returns {Promise|undefined} returns a promise with the result if callback is missed
+   * @see https://developer.chrome.com/extensions/storage#method-StorageArea-remove
+   */
+  return function remove (keys, cb) {
+    if (typeof cb === 'function') {
+      return chrome.storage[storageArea].remove(keys, cb)
+    } else {
+      return new Promise((resolve, reject) => {
+        chrome.storage[storageArea].remove(keys, () => {
+          if (chrome.runtime.lastError) {
+            reject(chrome.runtime.lastError.message)
+          } else {
+            resolve()
+          }
+        })
+      })
+    }
   }
 }
 
