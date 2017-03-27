@@ -3,10 +3,23 @@
  * Apply to all frames
  */
 
-import {message} from 'src/helpers/chrome-api'
+import {message, storage} from 'src/helpers/chrome-api'
+import defaultConfig from 'src/app-config'
+
+let config = defaultConfig
+
+storage.sync.get('config', data => {
+  if (data.config) {
+    config = data.config
+  }
+})
+
+storage.listen('config', changes => {
+  config = changes.config.newValue
+})
 
 document.addEventListener('mouseup', evt => {
-  if (window.name === 'saladict-frame') { return }
+  if (!config.active || window.name === 'saladict-frame') { return }
 
   let text = window.getSelection().toString()
   if (!text) {
@@ -54,6 +67,7 @@ window.addEventListener('message', evt => {
     .some(f => {
       if (f.contentWindow === evt.source) {
         iframe = f
+        return true
       }
     })
   if (!iframe) { return }
