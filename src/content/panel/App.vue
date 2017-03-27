@@ -52,7 +52,7 @@
         :class="{'dict-item-body--show': dicts[id].height > 0}"
         :style="{height: dicts[id].height + 'px'}"
       >
-        <component :is="id" :result="dicts[id].result" @ready="handleDictRenderReady(id, i)"></component>
+        <component :is="id" :result="dicts[id].result"></component>
         <transition name="fade">
           <div class="semi-unfold-mask"
             v-if="dicts[id].height > 0 && dicts[id].height !== dicts[id].offsetHeight"
@@ -89,16 +89,30 @@ let vm = {
       let text = this.text
       let dicts = this.dicts
 
-      this.config.dicts.selected.forEach(id => {
-        dicts[id].height = 0
-        dicts[id].isSearching = true
-        dicts[id].result = null // clear the results
-        message.send({msg: 'SEARCH_TEXT', text, dict: id}, response => {
-          if (!response) { return }
-          if (response.error) { return console.error(response.error) }
+      this.config.dicts.selected.forEach((id, i) => {
+        let dict = dicts[id]
+        dict.height = 0
+        dict.isSearching = true
+        dict.result = null // clear the results
 
-          dicts[id].result = response.result
+        let timer = new Promise((resolve, reject) => {
+          setTimeout(resolve, 10000)
         })
+
+        Promise.race([timer, message.send({msg: 'SEARCH_TEXT', text, dict: id})])
+          .then(response => {
+            dict.isSearching = false
+
+            if (!response) { return }
+            if (response.error) { return console.error(response.error) }
+
+            dict.result = response.result
+
+            this.$nextTick(() => {
+              dict.offsetHeight = this.$refs.dict[i].firstChild.offsetHeight
+              this.unfoldDict(id, i)
+            })
+          })
       })
     },
     closePanel () {
@@ -111,12 +125,6 @@ let vm = {
     unfoldDict (id, i) {
       let dict = this.dicts[id]
       dict.height = dict.offsetHeight < dict.preferredHeight ? dict.offsetHeight : dict.preferredHeight
-    },
-    handleDictRenderReady (id, i) {
-      let dict = this.dicts[id]
-      dict.isSearching = false
-      dict.offsetHeight = this.$refs.dict[i].firstChild.offsetHeight
-      this.unfoldDict(id, i)
     },
     handleDictPage (id) {
       chrome.tabs.create({url: this.config.dicts.all[id].page.replace('%s', this.text)})
