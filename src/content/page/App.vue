@@ -146,8 +146,15 @@ export default {
   },
   computed: {
     panelHeight () {
+      const allDicts = this.config.dicts.all
       // header + each dictionary
-      const preferredHeight = 30 + 110 * this.config.dicts.length
+      const preferredHeight = 30 + this.config.dicts.selected.reduce((sum, id) => {
+        let minHeight = 110
+        if (allDicts[id] && allDicts[id].minHeight) {
+          minHeight = allDicts[id].minHeight
+        }
+        return sum + minHeight
+      }, 0)
       const maxHeight = window.innerHeight * 2 / 3
       return preferredHeight > maxHeight ? maxHeight : preferredHeight
     }

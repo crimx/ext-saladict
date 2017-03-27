@@ -23,9 +23,49 @@
       <path d="M31.112 1.414L29.698 0 15.556 14.142 1.414 0 0 1.414l14.142 14.142L0 29.698l1.414 1.414L15.556 16.97l14.142 14.142 1.414-1.414L16.97 15.556"/>
     </svg>
   </header>
-  <template v-for="dict in config.dicts">
-    <component :is="dict.id" :result="searchResults[dict.id]"></component>
-  </template>
+  <div class="dicts">
+    <section class="dict-item" v-for="(id, i) in config.dicts.selected">
+      <header class="dict-item-header">
+        <img class="dict-item-logo" :src="dicts[id].favicon" @click="handleDictPage(id)">
+        <h1 class="dict-item-name" @click="handleDictPage(id)">{{ dicts[id].name }}</h1>
+        <div class="loader">
+          <transition name="fade">
+            <svg viewBox="0 0 120 10" xmlns="http://www.w3.org/2000/svg" width="120" height="10"
+              v-if="dicts[id].isSearching"
+            >
+              <circle class="loader-item" cx="5" cy="5" r="5"/>
+              <circle class="loader-item" cx="5" cy="5" r="5" style="animation-delay: -0.4s"/>
+              <circle class="loader-item" cx="5" cy="5" r="5" style="animation-delay: -0.8s"/>
+              <circle class="loader-item" cx="5" cy="5" r="5" style="animation-delay: -1.2s"/>
+              <circle class="loader-item" cx="5" cy="5" r="5" style="animation-delay: -1.6s"/>
+            </svg>
+          </transition>
+        </div>
+        <svg class="fold-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59.414 59.414"
+          :class="{'fold-arrow--unfold': dicts[id].height > 0}"
+          @click="dicts[id].height > 0 ? dicts[id].height = 0 : unfoldDict(id, i)"
+        >
+          <path d="M43.854 59.414L14.146 29.707 43.854 0l1.414 1.414-28.293 28.293L45.268 58"/>
+        </svg>
+      </header>
+      <div ref="dict" class="dict-item-body"
+        :class="{'dict-item-body--show': dicts[id].height > 0}"
+        :style="{height: dicts[id].height + 'px'}"
+      >
+        <component :is="id" :result="dicts[id].result" @ready="handleDictRenderReady(id, i)"></component>
+        <transition name="fade">
+          <div class="semi-unfold-mask"
+            v-if="dicts[id].height > 0 && dicts[id].height !== dicts[id].offsetHeight"
+            @click="dicts[id].height = dicts[id].offsetHeight"
+          >
+            <svg class="semi-unfold-mask-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59.414 59.414">
+              <path d="M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56"/>
+            </svg>
+          </div>
+        </transition>
+      </div>
+    </section>
+  </div>
 </div>
 </template>
 
@@ -38,7 +78,7 @@ let vm = {
   data: { // WILL be changed into a function, see below
     config: defaultConfig,
 
-    searchResults: {},
+    dicts: {},
 
     text: '',
 
@@ -47,15 +87,17 @@ let vm = {
   methods: {
     seachText () {
       let text = this.text
-      let searchResults = this.searchResults
+      let dicts = this.dicts
 
-      this.config.dicts.forEach(({id}) => {
-        searchResults[id] = null // clear the results
+      this.config.dicts.selected.forEach(id => {
+        dicts[id].height = 0
+        dicts[id].isSearching = true
+        dicts[id].result = null // clear the results
         message.send({msg: 'SEARCH_TEXT', text, dict: id}, response => {
           if (!response) { return }
           if (response.error) { return console.error(response.error) }
 
-          searchResults[id] = response.result
+          dicts[id].result = response.result
         })
       })
     },
@@ -65,6 +107,19 @@ let vm = {
     pinPanel () {
       this.isPinned = !this.isPinned
       message.send({msg: 'PIN_PANEL', self: true, flag: this.isPinned})
+    },
+    unfoldDict (id, i) {
+      let dict = this.dicts[id]
+      dict.height = dict.offsetHeight < dict.preferredHeight ? dict.offsetHeight : dict.preferredHeight
+    },
+    handleDictRenderReady (id, i) {
+      let dict = this.dicts[id]
+      dict.isSearching = false
+      dict.offsetHeight = this.$refs.dict[i].firstChild.offsetHeight
+      this.unfoldDict(id, i)
+    },
+    handleDictPage (id) {
+      chrome.tabs.create({url: this.config.dicts.all[id].page.replace('%s', this.text)})
     },
     handleDragStart (evt) {
       window.parent.postMessage({
@@ -134,8 +189,16 @@ let vm = {
 /**
  * dynamically require dictionary components, these properties are added
  * {
- *   searchResults: {
- *     [id]: null
+ *   dicts: {
+ *     [id]: {
+ *      result: null,
+ *      height: 0,
+ *      preferredHeight = config.dicts.all[id].preferredHeight,
+ *      offsetHeight: 0,
+ *      favicon: [full src],
+ *      name: [locale],
+ *      isSearching: false
+ *    }
  *     ...
  *   }
  *   components: {
@@ -147,15 +210,24 @@ let vm = {
 const vmData = vm.data
 const compReq = require.context('./components/dicts', true, /\.vue$/i)
 const idChecker = /\/(\S+)\.vue$/i
+const allDicts = defaultConfig.dicts.all
 compReq.keys().forEach(path => {
   let id = idChecker.exec(path)
   if (!id) { return }
   id = id[1].toLowerCase()
+  if (!allDicts[id]) { return }
 
-  vmData.searchResults[id] = null
+  vmData.dicts[id] = {
+    result: null,
+    height: 0,
+    preferredHeight: defaultConfig.dicts.all[id].preferredHeight,
+    offsetHeight: 0,
+    favicon: chrome.runtime.getURL('assets/dicts/' + allDicts[id].favicon),
+    name: chrome.i18n.getMessage('dict_' + id),
+    isSearching: false
+  }
   vm.components[id] = compReq(path)
 })
-
 
 vm.data = function data () { return Object.assign({}, vmData) }
 
@@ -188,15 +260,14 @@ body {
 <style lang="scss" scoped>
 .panel-container {
   height: 100%;
-  padding: 0 10px;
   overflow: hidden;
 }
 
 .panel-header {
   display: flex;
   align-items: center;
+  position: relative;
   height: 30px;
-  margin: 0 (-10px) 10px (-10px);
   padding-left: 6px;
   background-color: rgb(92, 175, 158);
 }
@@ -252,10 +323,136 @@ body {
   to { transform: rotate(360deg); }
 }
 
+.dicts {
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 100%;
+  padding: 0 10px;
+}
+
+.dict-item {
+  position: relative;
+}
+
+.dict-item-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  border-top: 1px #ddd solid;
+}
+
+.dict-item-logo {
+  align-self: flex-start;
+  width: 19px;
+  height: 19px;
+  margin-top: -1px;
+  cursor: pointer;
+}
+
+.dict-item-name {
+  margin: 0;
+  padding: 3px;
+  font-size: 12px;
+  font-weight: normal;
+  color: #444;
+  cursor: pointer;
+}
+
+.dict-item-body {
+  visibility: hidden;
+  opacity: 0;
+  overflow: hidden;
+  margin-bottom: 5px;
+  transition: all 1s;
+}
+
+.loader {
+  flex: 1;
+}
+
+.loader-item {
+  fill: #2196f3;
+  animation: dict-loader-shift 2s linear infinite;
+  transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+@keyframes dict-loader-shift {
+    0% { transform: translateX(    0); opacity: 0; fill: #ff0; }
+   10% { transform: translateX( 30px); opacity: 1; }
+   90% { transform: translateX( 80px); opacity: 1; }
+  100% { transform: translateX(110px); opacity: 0; fill: #f00; }
+}
+
+.fold-arrow {
+  fill: #000;
+  width: 11px;
+  height: 11px;
+  transition: transform 400ms;
+  cursor: pointer;
+}
+
+.semi-unfold-mask {
+  position: absolute;
+  bottom: -10px;
+  left: -10px;
+  right: -10px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  // width: 100%;
+  height: 50%;
+  max-height: 50px;
+  margin: auto;
+  background: linear-gradient(transparent 40%, rgba(255, 255, 255, .5) 60%, rgb(255, 255, 255) 100%);
+  cursor: pointer;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent 40%, rgba(225, 225, 225, .2) 60%, rgba(225, 225, 225, .7) 100%);
+    opacity: 0;
+    transition: opacify 400ms;
+  }
+
+  &:hover::after {
+    opacity: 1;
+  }
+}
+
+.semi-unfold-mask-arrow {
+  position: relative;
+  z-index: 10;
+  width: 15px;
+  height: 15px;
+  fill: #000;
+}
+
 /*-----------------------------------------------*\
     States
 \*-----------------------------------------------*/
 .icon-pin--pinned {
   transform: rotate(45deg);
+}
+
+.dict-item-body--show {
+  visibility: visible;
+  opacity: 1;
+  margin-bottom: 10px;
+}
+
+.fold-arrow--unfold {
+  transform: rotate(-90deg);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0
 }
 </style>

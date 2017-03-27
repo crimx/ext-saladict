@@ -1,25 +1,4 @@
 var config = () => {
-  const allDicts = {
-    wordreference: {
-      id: 'wordreference'
-    },
-    bing: {
-      id: 'bing'
-    },
-    iciba: {
-      id: 'iciba'
-    },
-    urban: {
-      id: 'urban'
-    },
-    vocabulary: {
-      id: 'vocabulary'
-    },
-    dictcn: {
-      id: 'dictcn'
-    }
-  }
-
   return {
     active: true,
 
@@ -31,16 +10,48 @@ var config = () => {
     // show panel when triple press ctrl
     tripleCtrl: true,
 
-    // default selected dictionaries
-    dicts: [
-      allDicts.bing,
-      allDicts.iciba,
-      allDicts.urban,
-      allDicts.vocabulary,
-      allDicts.dictcn
-    ],
-
-    allDicts: allDicts,
+    dicts: {
+      // default selected dictionaries
+      selected: ['bing', 'iciba', 'urban', 'vocabulary', 'dictcn'],
+      all: {
+        bing: {
+          id: 'bing',
+          favicon: 'bing.ico',
+          page: 'https://cn.bing.com/dict/search?q=%s',
+          preferredHeight: 110
+        },
+        iciba: {
+          id: 'iciba',
+          favicon: 'iciba.ico',
+          page: '',
+          preferredHeight: 110
+        },
+        urban: {
+          id: 'urban',
+          favicon: 'urban.png',
+          page: '',
+          preferredHeight: 110
+        },
+        vocabulary: {
+          id: 'vocabulary',
+          favicon: 'vocabulary.png',
+          page: '',
+          preferredHeight: 110
+        },
+        dictcn: {
+          id: 'dictcn',
+          favicon: 'dictcn.png',
+          page: '',
+          preferredHeight: 110
+        },
+        wordreference: {
+          id: 'wordreference',
+          favicon: 'wordreference.png',
+          page: '',
+          preferredHeight: 110
+        }
+      }
+    },
 
     language: {
       chinese: true,

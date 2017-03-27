@@ -19,6 +19,7 @@ _compReq.keys().forEach(path => {
   let id = _idChecker.exec(path)
   if (!id) { return }
   id = id[1].toLowerCase()
+  if (!defaultConfig.dicts.all[id]) { return }
 
   let search = _compReq(path)
   if (typeof search !== 'function') {

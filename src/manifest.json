@@ -39,7 +39,8 @@
   "web_accessible_resources": [
     "panel.html",
     "panel.js",
-    "panel.css"
+    "panel.css",
+    "assets/*"
   ],
 
   "browser_action": {

@@ -14,28 +14,28 @@
       "message": "网页划词翻译，混合各种词典的结果"
    },
 
-   "engine_bing": {
-      "description": "Engine Name",
+   "dict_bing": {
+      "description": "Dictionary Name",
       "message": "必应词典"
    },
 
-   "engine_ud": {
-      "description": "Engine Name",
+   "dict_ud": {
+      "description": "Dictionary Name",
       "message": "Urban Dictionary"
    },
 
-   "engine_howjsay": {
-      "description": "Engine Name",
+   "dict_howjsay": {
+      "description": "Dictionary Name",
       "message": "Howjsay"
    },
 
-   "engine_dictcn": {
-      "description": "Engine Name",
+   "dict_dictcn": {
+      "description": "Dictionary Name",
       "message": "dict.cn"
    },
 
-   "engine_vocabulary": {
-      "description": "Engine Name",
+   "dict_vocabulary": {
+      "description": "Dictionary Name",
       "message": "Vocabulary.com"
    },
 
@@ -54,7 +54,7 @@
       "message": "拼"
    },
 
-   "engine_error_msg": {
+   "dict_error_msg": {
       "description": "Search Faild",
       "message": "无结果"
    },
