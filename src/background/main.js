@@ -1,8 +1,6 @@
 import {storage, message} from 'src/helpers/chrome-api'
 import defaultConfig from 'src/app-config'
 
-var config = defaultConfig
-
 // background script as transfer station
 message.listen((data, sender, sendResponse) => {
   if (data.self) {
@@ -13,49 +11,43 @@ message.listen((data, sender, sendResponse) => {
   return true
 })
 
-const dicts = {}
+const _dicts = {}
 // dynamic load components
-const compReq = require.context('./dicts', true, /\.js$/i)
-const idChecker = /\/(\S+)\.js$/i
-compReq.keys().forEach(path => {
-  let id = idChecker.exec(path)
+const _compReq = require.context('./dicts', true, /\.js$/i)
+const _idChecker = /\/(\S+)\.js$/i
+_compReq.keys().forEach(path => {
+  let id = _idChecker.exec(path)
   if (!id) { return }
   id = id[1].toLowerCase()
 
-  let search = compReq(path)
+  let search = _compReq(path)
   if (typeof search !== 'function') {
     search = search.default
   }
-  dicts[id] = {
+  _dicts[id] = {
     search,
     config: JSON.parse(JSON.stringify(defaultConfig))
   }
 })
 
 function setConfigs (config) {
-  Object.keys(dicts).forEach(id => {
-    dicts[id].config = JSON.parse(JSON.stringify(defaultConfig))
+  Object.keys(_dicts).forEach(id => {
+    _dicts[id].config = JSON.parse(JSON.stringify(defaultConfig))
   })
 }
 
 storage.sync.get('config', data => {
   if (data.config) {
-    config = data.config
-    setConfigs(config)
-  } else {
-    storage.local.clear()
-    storage.sync.clear()
-      .then(() => storage.sync.set({config}))
+    setConfigs(data.config)
   }
 })
 
 storage.listen('config', changes => {
-  config = changes.config.newValue
-  setConfigs(config)
+  setConfigs(changes.config.newValue)
 })
 
 message.on('SEARCH_TEXT', (data, sender, sendResponse) => {
-  let dict = dicts[data.dict]
+  let dict = _dicts[data.dict]
   if (!dict) {
     sendResponse({error: 'Missing Dictionary!'})
     return
@@ -75,4 +67,18 @@ message.on('SEARCH_TEXT', (data, sender, sendResponse) => {
 
   // keep the channel alive
   return true
+})
+
+// merge config on installed
+chrome.runtime.onInstalled.addListener(({previousVersion}) => {
+  let config = defaultConfig
+  let [major, minor, patch] = previousVersion.split('.').map(n => Number(n))
+  if (major <= 4) {
+    storage.local.clear()
+    storage.sync.clear()
+      .then(() => {
+        storage.sync.set({config})
+        setConfigs(config)
+      })
+  }
 })
