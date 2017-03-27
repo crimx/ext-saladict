@@ -137,7 +137,7 @@ let vm = {
       }
     },
     handleDictPage (id) {
-      chrome.tabs.create({url: this.config.dicts.all[id].page.replace('%s', this.text)})
+      message.send({msg: 'CREATE_TAB', url: this.config.dicts.all[id].page.replace('%s', this.text)})
     },
     handleDragStart (evt) {
       window.parent.postMessage({

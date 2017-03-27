@@ -7,8 +7,14 @@ message.listen((data, sender, sendResponse) => {
     message.send(sender.tab.id, data, response => {
       sendResponse(response)
     })
+    return true
   }
-  return true
+
+  switch (data.msg) {
+    case 'CREATE_TAB':
+      chrome.tabs.create({url: data.url})
+      break
+  }
 })
 
 const _dicts = {}
