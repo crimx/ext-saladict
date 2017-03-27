@@ -24,7 +24,7 @@
     </svg>
   </header>
   <div class="dicts">
-    <section class="dict-item" v-for="(id, i) in config.dicts.selected">
+    <section class="dict-item" v-for="id in config.dicts.selected">
       <header class="dict-item-header">
         <img class="dict-item-logo" :src="dicts[id].favicon" @click="handleDictPage(id)">
         <h1 class="dict-item-name" @click="handleDictPage(id)">{{ dicts[id].name }}</h1>
@@ -42,8 +42,8 @@
           </transition>
         </div>
         <svg class="fold-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59.414 59.414"
-          :class="{'fold-arrow--unfold': dicts[id].height > 0}"
-          @click="dicts[id].height > 0 ? dicts[id].height = 0 : unfoldDict(id, i)"
+          :class="{'fold-arrow--unfold': dicts[id].isUnfolded}"
+          @click="handleUnfold(id)"
         >
           <path d="M43.854 59.414L14.146 29.707 43.854 0l1.414 1.414-28.293 28.293L45.268 58"/>
         </svg>
@@ -122,9 +122,19 @@ let vm = {
       this.isPinned = !this.isPinned
       message.send({msg: 'PIN_PANEL', self: true, flag: this.isPinned})
     },
-    unfoldDict (id, i) {
+    unfoldDict (id) {
       let dict = this.dicts[id]
+      dict.isUnfolded = true
       dict.height = dict.offsetHeight < dict.preferredHeight ? dict.offsetHeight : dict.preferredHeight
+    },
+    handleUnfold (id) {
+      let dict = this.dicts[id]
+      if (dict.isUnfolded) {
+        dict.height = 0
+        dict.isUnfolded = false
+      } else {
+        this.unfoldDict(id)
+      }
     },
     handleDictPage (id) {
       chrome.tabs.create({url: this.config.dicts.all[id].page.replace('%s', this.text)})
@@ -205,6 +215,7 @@ let vm = {
  *      offsetHeight: 0,
  *      favicon: [full src],
  *      name: [locale],
+ *      isUnfolded: false,
  *      isSearching: false
  *    }
  *     ...
@@ -232,6 +243,7 @@ compReq.keys().forEach(path => {
     offsetHeight: 0,
     favicon: chrome.runtime.getURL('assets/dicts/' + allDicts[id].favicon),
     name: chrome.i18n.getMessage('dict_' + id),
+    isUnfolded: false,
     isSearching: false
   }
   vm.components[id] = compReq(path)
@@ -394,8 +406,9 @@ body {
 
 .fold-arrow {
   fill: #000;
-  width: 11px;
-  height: 11px;
+  width: 18px;
+  height: 18px;
+  padding: 3px;
   transition: transform 400ms;
   cursor: pointer;
 }
