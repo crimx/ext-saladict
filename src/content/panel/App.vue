@@ -93,6 +93,18 @@ let vm = {
     },
     handleStorageChange (changes) {
       this.config = changes.config.newValue
+    },
+    handleSearchText (data) {
+      if (data.text) {
+        this.text = data.text
+        this.seachText()
+      }
+    },
+    handleDestroy (__, ___, sendResponse) {
+      storage.off(this.handleStorageChange)
+      message.off(this.handleSearchText)
+      sendResponse(true)
+      message.off(this.handleDestroy)
     }
   },
   created () {
@@ -105,15 +117,16 @@ let vm = {
     storage.listen('config', this.handleStorageChange)
 
     // get selected text
-    message.send({msg: 'SELECTED_TEXT', self: true}, response => {
-      if (response && !response.error) {
+    message.send({msg: 'GET_SELECTED_TEXT', self: true}, response => {
+      if (response && !response.error && response.text) {
         this.text = response.text
         this.seachText()
       }
     })
-  },
-  destroyed () {
-    storage.off(this.handleStorageChange)
+
+    message.on('SEARCH_TEXT', this.handleSearchText)
+
+    message.on('DESTROY_PANEL', this.handleDestroy)
   },
   components: {}
 }

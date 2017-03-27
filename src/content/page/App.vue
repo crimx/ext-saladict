@@ -53,7 +53,10 @@ export default {
   },
   methods: {
     iconMouseover () {
-      this.isShowFrame = true
+      // icon hiding takes 1s due to animation
+      if (this.isShowIcon) {
+        this.isShowFrame = true
+      }
     },
     setPosition (mouseX, mouseY) {
       // icon position
@@ -127,6 +130,18 @@ export default {
 
       this.pageMouseX = evt.clientX
       this.pageMouseY = evt.clientY
+    },
+    destroyPanel () {
+      return new Promise((resolve, reject) => {
+        // to prevent listeners binding leaks
+        // vue can't trigger destroyed when the iframe is destroyed by force
+        message.send({msg: 'DESTROY_PANEL', self: true}, response => {
+          if (response) {
+            this.isShowFrame = false
+            resolve()
+          }
+        })
+      })
     }
   },
   computed: {
@@ -151,14 +166,16 @@ export default {
     // receive signals from page and all frames
     message.on('SELECTION', (data, sender, sendResponse) => {
       if (this.isStayVisiable) {
-        this.isShowIcon = false
+        if (data.text) {
+          message.send({msg: 'SEARCH_TEXT', self: true, text: data.text})
+        }
         return
       }
 
       if (this.isShowIcon || this.isShowFrame) {
         this.isShowIcon = false
-        this.isShowFrame = false
-        this.$nextTick(show)
+        this.destroyPanel()
+          .then(() => this.$nextTick(show))
       } else {
         show.call(this)
       }
@@ -187,15 +204,16 @@ export default {
 
     message.on('CLOSE_PANEL', () => {
       this.isStayVisiable = false
-      this.isShowFrame = false
+      this.destroyPanel()
       this.isShowIcon = false
     })
 
     message.on('PIN_PANEL', (data) => {
       this.isStayVisiable = data.flag
+      this.isShowIcon = false
     })
 
-    message.on('SELECTED_TEXT', (data, sender, sendResponse) => {
+    message.on('GET_SELECTED_TEXT', (data, sender, sendResponse) => {
       sendResponse({text: this.selectedText})
     })
 
@@ -204,6 +222,7 @@ export default {
       switch (data.msg) {
         case 'SALADICT_DRAG_START':
           this.handleDragStart(data.mouseX, data.mouseY)
+          this.isShowIcon = false
           break
         case 'SALADICT_DRAG_MOUSEMOVE':
           this.handleFrameMousemove(data.mouseX, data.mouseY)
