@@ -91,7 +91,7 @@ let vm = {
 
       this.config.dicts.selected.forEach((id, i) => {
         let dict = dicts[id]
-        dict.height = 0
+        this.foldDict(id)
         dict.isSearching = true
         dict.result = null // clear the results
 
@@ -127,14 +127,14 @@ let vm = {
       dict.isUnfolded = true
       dict.height = dict.offsetHeight < dict.preferredHeight ? dict.offsetHeight : dict.preferredHeight
     },
+    foldDict (id) {
+      let dict = this.dicts[id]
+      dict.height = 0
+      dict.isUnfolded = false
+    },
     handleUnfold (id) {
       let dict = this.dicts[id]
-      if (dict.isUnfolded) {
-        dict.height = 0
-        dict.isUnfolded = false
-      } else {
-        this.unfoldDict(id)
-      }
+      dict.isUnfolded ? this.foldDict(id) : this.unfoldDict(id)
     },
     handleDictPage (id) {
       message.send({msg: 'CREATE_TAB', url: this.config.dicts.all[id].page.replace('%s', this.text)})
@@ -408,6 +408,7 @@ body {
   fill: #000;
   width: 18px;
   height: 18px;
+  margin-right: -5px;
   padding: 3px;
   transition: transform 400ms;
   cursor: pointer;
@@ -437,7 +438,7 @@ body {
     right: 0;
     background: linear-gradient(transparent 40%, rgba(225, 225, 225, .2) 60%, rgba(225, 225, 225, .7) 100%);
     opacity: 0;
-    transition: opacify 400ms;
+    transition: opacity 400ms;
   }
 
   &:hover::after {
