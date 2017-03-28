@@ -30,7 +30,7 @@ document.addEventListener('mouseup', evt => {
     // getSelection would reture the text before it disappears
     // delay to wait for selection get cleared
     setTimeout(() => {
-      let text = window.getSelection().toString()
+      let text = window.getSelection().toString().trim()
       if (!text) {
         // empty message
         message.send({msg: 'SELECTION', self: true})
