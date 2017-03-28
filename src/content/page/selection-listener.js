@@ -4,6 +4,7 @@
  */
 
 import {message, storage} from 'src/helpers/chrome-api'
+import {isContainChinese, isContainEnglish} from 'src/helpers/lang-check'
 import defaultConfig from 'src/app-config'
 
 let config = defaultConfig
@@ -21,7 +22,7 @@ storage.listen('config', changes => {
 document.addEventListener('mouseup', evt => {
   if (!config.active || window.name === 'saladict-frame') { return }
 
-  let text = window.getSelection().toString()
+  let text = window.getSelection().toString().trim()
   if (!text) {
     // empty message
     message.send({msg: 'SELECTION', self: true})
@@ -33,26 +34,31 @@ document.addEventListener('mouseup', evt => {
       let text = window.getSelection().toString().trim()
       if (!text) {
         // empty message
-        message.send({msg: 'SELECTION', self: true})
-      } else if (window.parent === window) {
-        // top
-        message.send({
-          msg: 'SELECTION',
-          self: true,
-          text,
-          mouseX: evt.clientX,
-          mouseY: evt.clientY,
-          ctrlKey: evt.ctrlKey
-        })
-      } else {
-        // post to upper frames/window
-        window.parent.postMessage({
-          msg: 'SALADICT_SELECTION',
-          text,
-          mouseX: evt.clientX,
-          mouseY: evt.clientY,
-          ctrlKey: evt.ctrlKey
-        }, '*')
+        return message.send({msg: 'SELECTION', self: true})
+      }
+
+      if ((config.language.english && isContainEnglish(text)) ||
+          (config.language.chinese && isContainChinese(text))) {
+        if (window.parent === window) {
+          // top
+          message.send({
+            msg: 'SELECTION',
+            self: true,
+            text,
+            mouseX: evt.clientX,
+            mouseY: evt.clientY,
+            ctrlKey: evt.ctrlKey
+          })
+        } else {
+          // post to upper frames/window
+          window.parent.postMessage({
+            msg: 'SALADICT_SELECTION',
+            text,
+            mouseX: evt.clientX,
+            mouseY: evt.clientY,
+            ctrlKey: evt.ctrlKey
+          }, '*')
+        }
       }
     }, 0)
   }

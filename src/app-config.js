@@ -16,13 +16,13 @@ var config = () => {
       all: {
         bing: {
           id: 'bing',
-          favicon: 'bing.ico',
+          favicon: 'bing.png',
           page: 'https://cn.bing.com/dict/search?q=%s',
           preferredHeight: 110
         },
         iciba: {
           id: 'iciba',
-          favicon: 'iciba.ico',
+          favicon: 'iciba.png',
           page: '',
           preferredHeight: 110
         },
@@ -53,9 +53,10 @@ var config = () => {
       }
     },
 
+    // source language
     language: {
-      chinese: true,
-      english: false
+      chinese: false,
+      english: true
     }
   }
 }
