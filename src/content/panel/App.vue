@@ -357,7 +357,6 @@ body {
 .dict-item-header {
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
   border-top: 1px #ddd solid;
 }
 
@@ -382,7 +381,7 @@ body {
   visibility: hidden;
   opacity: 0;
   overflow: hidden;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   transition: all 1s;
 }
 
@@ -416,17 +415,16 @@ body {
 
 .semi-unfold-mask {
   position: absolute;
-  bottom: -10px;
+  bottom: 0;
   left: -10px;
   right: -10px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  // width: 100%;
   height: 50%;
   max-height: 50px;
   margin: auto;
-  background: linear-gradient(transparent 40%, rgba(255, 255, 255, .5) 60%, rgb(255, 255, 255) 100%);
+  background: linear-gradient(transparent 40%, rgba(255, 255, 255, 0.3) 60%, rgba(255, 255, 255, 0.9) 100%);
   cursor: pointer;
 
   &::after {
@@ -464,7 +462,7 @@ body {
 .dict-item-body--show {
   visibility: visible;
   opacity: 1;
-  margin-bottom: 10px;
+  margin-bottom: 0;
 }
 
 .fold-arrow--unfold {
