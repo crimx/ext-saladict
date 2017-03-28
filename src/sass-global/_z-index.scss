@@ -2,12 +2,12 @@
   z-index
 \*------------------------------------*/
 
-$global-zindex-dropdown-backdrop:  9900 !default;
-$global-zindex-navbar:            10000 !default;
-$global-zindex-dropdown:          10000 !default;
-$global-zindex-fixed:             10300 !default;
-$global-zindex-sticky:            10300 !default;
-$global-zindex-modal-backdrop:    10400 !default;
-$global-zindex-modal:             10500 !default;
-$global-zindex-popover:           10600 !default;
-$global-zindex-tooltip:           10700 !default;
+$global-zindex-dropdown-backdrop:  990000000 !default;
+$global-zindex-navbar:            1000000000 !default;
+$global-zindex-dropdown:          1000000000 !default;
+$global-zindex-fixed:             1030000000 !default;
+$global-zindex-sticky:            1030000000 !default;
+$global-zindex-modal-backdrop:    1040000000 !default;
+$global-zindex-modal:             1050000000 !default;
+$global-zindex-popover:           1060000000 !default;
+$global-zindex-tooltip:           1070000000 !default;
