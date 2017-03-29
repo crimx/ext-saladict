@@ -20,6 +20,10 @@ module.exports = merge(baseWebpackConfig, {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
+          'js': [{
+            loader: 'babel-loader',
+            options: {presets: ['es2016']}
+          }],
           loaders: {
             'css': ['vue-style-loader', 'css-loader', 'postcss-loader'],
             'scss': ['vue-style-loader', 'css-loader', 'postcss-loader', 'sass-loader', {
