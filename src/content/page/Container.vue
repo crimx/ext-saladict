@@ -224,6 +224,17 @@ export default {
       sendResponse({text: this.selectedText})
     })
 
+    message.on('TRIPLE_CTRL', () => {
+      // show panel
+      this.isShowIcon = false
+      this.isShowFrame = false
+      this.$nextTick(() => {
+        this.frameLeft = window.innerWidth / 2 - 400 / 2
+        this.frameTop = window.innerHeight / 2 - this.panelHeight / 2
+        this.isShowFrame = true
+      })
+    })
+
     window.addEventListener('message', evt => {
       let data = evt.data
       switch (data.msg) {

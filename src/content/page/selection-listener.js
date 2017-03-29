@@ -8,16 +8,47 @@ import {isContainChinese, isContainEnglish} from 'src/helpers/lang-check'
 import defaultConfig from 'src/app-config'
 
 let config = defaultConfig
+let numCtrlKeydown = 0
+let ctrlTimeout = null
 
 storage.sync.get('config', data => {
   if (data.config) {
     config = data.config
   }
+
+  if (config.tripleCtrl) {
+    document.addEventListener('keydown', handleCtrlKeydown)
+  }
 })
 
 storage.listen('config', changes => {
   config = changes.config.newValue
+
+  if (config.tripleCtrl) {
+    if (!changes.config.oldValue.tripleCtrl) {
+      document.addEventListener('keydown', handleCtrlKeydown)
+    }
+  } else {
+    if (changes.config.oldValue.tripleCtrl) {
+      document.removeEventListener('keydown', handleCtrlKeydown)
+    }
+  }
 })
+
+function handleCtrlKeydown (evt) {
+  if (evt.ctrlKey || evt.metaKey) {
+    if (++numCtrlKeydown === 3) {
+      if (!config.tripleCtrl) { return }
+      message.send({msg: 'TRIPLE_CTRL', self: true})
+    } else {
+      if (ctrlTimeout) { clearTimeout(ctrlTimeout) }
+      ctrlTimeout = setTimeout(() => {
+        numCtrlKeydown = 0
+        ctrlTimeout = null
+      }, 500)
+    }
+  }
+}
 
 document.addEventListener('mouseup', evt => {
   if (!config.active || window.name === 'saladict-frame') { return }
@@ -104,3 +135,4 @@ window.addEventListener('message', evt => {
     }, '*')
   }
 }, false)
+
