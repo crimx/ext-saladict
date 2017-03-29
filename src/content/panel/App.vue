@@ -28,10 +28,11 @@
       <header class="dict-item-header">
         <img class="dict-item-logo" :src="dicts[id].favicon" @click="handleDictPage(id)">
         <h1 class="dict-item-name" @click="handleDictPage(id)">{{ dicts[id].name }}</h1>
-        <div class="loader">
+        <div class="loader-wrap">
           <transition name="fade">
             <svg viewBox="0 0 120 10" xmlns="http://www.w3.org/2000/svg" width="120" height="10"
               v-if="dicts[id].isSearching"
+              class="loader"
             >
               <circle class="loader-item" cx="5" cy="5" r="5"/>
               <circle class="loader-item" cx="5" cy="5" r="5" style="animation-delay: -0.4s"/>
@@ -385,14 +386,21 @@ body {
   transition: all 1s;
 }
 
-.loader {
+.loader-wrap {
   flex: 1;
+  position: relative;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
 }
 
 .loader-item {
   fill: #2196f3;
   animation: dict-loader-shift 2s linear infinite;
-  transform: translateZ(0);
   transform: translateZ(0);
 }
 
