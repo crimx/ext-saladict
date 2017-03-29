@@ -74,9 +74,11 @@
     "webpack-merge": "^2.6.1"
   },
   "dependencies": {
+    "bootstrap-sass": "^3.3.7",
     "highcharts": "^5.0.9",
     "normalize.css": "^5.0.0",
     "vue": "^2.2.4",
+    "vuedraggable": "^2.9.0",
     "vuex": "^2.2.1"
   }
 }

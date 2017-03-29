@@ -19,9 +19,14 @@
       "message": "必应词典"
    },
 
-   "dict_ud": {
+   "dict_urban": {
       "description": "Dictionary Name",
       "message": "Urban Dictionary"
+   },
+
+   "dict_iciba": {
+      "description": "Dictionary Name",
+      "message": "金山词霸"
    },
 
    "dict_howjsay": {
@@ -37,6 +42,11 @@
    "dict_vocabulary": {
       "description": "Dictionary Name",
       "message": "Vocabulary.com"
+   },
+
+   "dict_wordreference": {
+      "description": "Dictionary Name",
+      "message": "Wordreference"
    },
 
    "US": {
@@ -59,88 +69,103 @@
       "message": "无结果"
    },
 
+   "opt_title": {
+      "description": "设置页面标题",
+      "message": "Saladict 设置"
+   },
+
    "opt_app_active_title": {
-      "description": "popup option title",
+      "description": "option title",
       "message": "开启查词"
    },
 
-   "opt_icon_mode_title": {
-      "description": "popup option title",
+   "opt_app_active": {
+      "description": "option",
+      "message": "启用划词翻译"
+   },
+
+   "opt_app_active_description": {
+      "description": "option description",
+      "message": "关闭后划词翻译功能将关闭，快捷查词功能依然可用。"
+   },
+
+   "opt_mode_title": {
+      "description": "option title",
+      "message": "查词模式"
+   },
+
+   "opt_mode_icon": {
+      "description": "option",
       "message": "显示图标"
    },
 
-   "opt_direct_mode_title": {
-      "description": "popup option title",
+   "opt_mode_direct": {
+      "description": "option",
       "message": "直接搜索"
    },
 
-   "opt_ctrl_mode_title": {
-      "description": "popup option title",
-      "message": "按住Ctrl"
+   "opt_mode_ctrl": {
+      "description": "option",
+      "message": "按住Ctrl/⌘"
    },
 
    "opt_mode_description": {
-      "description": "popup option description",
-      "message": "当用鼠标在网页上选择了一段文本，“显示图标”会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；“直接搜索”则不显示图标，直接显示词典面板；“按住 Ctrl”在选择文本时需同时按住 `ctrl` 键才显示词典面板。"
+      "description": "option description",
+      "message": "当用鼠标在网页上选择了一段文本，<strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；<strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；<strong>“按住 Ctrl”</strong>在选择文本时需同时按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键才显示词典面板。"
    },
 
    "opt_triple_ctrl_title": {
-      "description": "popup option title",
-      "message": "快捷搜索"
+      "description": "option title",
+      "message": "快捷查词"
+   },
+
+   "opt_triple_ctrl": {
+      "description": "option title",
+      "message": "启用快捷查词"
    },
 
    "opt_triple_ctrl_description": {
-      "description": "popup option description",
-      "message": "连续按三次 ctrl 键将弹出词典搜索界面。"
+      "description": "option description",
+      "message": "连续按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键将弹出词典界面。"
    },
 
-   "opt_chinese_mode_title": {
-      "description": "popup option title",
+   "opt_language_title": {
+      "description": "option title",
+      "message": "语言支持"
+   },
+
+   "opt_language_chinese": {
+      "description": "Chinese",
       "message": "中文查词"
    },
 
-   "opt_english_mode_title": {
-      "description": "popup option title",
+   "opt_language_english": {
+      "description": "English",
       "message": "英文查词"
    },
 
    "opt_language_mode_description": {
-      "description": "popup option description",
+      "description": "option description",
       "message": "当选中的文字包含相应的语言时才进行查找。"
    },
 
-   "update_available": {
-      "description": "Update vailable",
-      "message": "沙拉查词有新版本啦！点击更新。"
+   "opt_dicts_title": {
+      "description": "option title",
+      "message": "词典设置"
    },
 
-   "update_title": {
-      "description": "Update message title",
-      "message": "沙拉查词已更新到 v"
+   "opt_dicts_description": {
+      "description": "option description",
+      "message": "配置各个词典。拖动词典标题排序。"
    },
 
-   "update_message1": {
-      "description": "Update messages",
-      "message": "全新重写，你们提的要求都实现啦"
+   "opt_dicts_btn_add": {
+      "description": "option button",
+      "message": "添加"
    },
 
-   "update_message2": {
-      "description": "Update messages",
-      "message": "加入新词典，加入右键查词"
-   },
-
-   "update_message3": {
-      "description": "Update messages",
-      "message": "新增三种划词模式，连续按三次ctrl还可以直接查词"
-   },
-
-   "update_message4": {
-      "description": "Update messages",
-      "message": "词典界面可以固定在网页上"
-   },
-
-   "update_message5": {
-      "description": "Update messages",
-      "message": "更多功能慢慢发现吧;D"
+   "opt_dicts_add_panel_title": {
+      "description": "option title",
+      "message": "添加词典"
    }
 }
