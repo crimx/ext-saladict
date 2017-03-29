@@ -47,7 +47,7 @@ document.addEventListener('mouseup', evt => {
             text,
             mouseX: evt.clientX,
             mouseY: evt.clientY,
-            ctrlKey: evt.ctrlKey
+            ctrlKey: evt.ctrlKey || evt.metaKey
           })
         } else {
           // post to upper frames/window
@@ -56,7 +56,7 @@ document.addEventListener('mouseup', evt => {
             text,
             mouseX: evt.clientX,
             mouseY: evt.clientY,
-            ctrlKey: evt.ctrlKey
+            ctrlKey: evt.ctrlKey || evt.metaKey
           }, '*')
         }
       }
