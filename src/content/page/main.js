@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import App from './App'
+import App from './Container'
 import defaultConfig from 'src/app-config'
-import {storage, message} from 'src/helpers/chrome-api'
+import {storage} from 'src/helpers/chrome-api'
 
 Vue.config.productionTip = false
 

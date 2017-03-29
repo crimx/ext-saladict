@@ -4,7 +4,7 @@ module.exports = {
   entry: {
     background: './src/background/main.js',
 
-    content: './src/content/page/container.js',
+    content: './src/content/page/main.js',
     selection: './src/content/page/selection-listener.js',
     panel: './src/content/panel/main.js',
 
@@ -17,9 +17,6 @@ module.exports = {
     filename: '[name].js'
   },
   module: {
-    noParse: [
-      /codebird/i
-    ],
     rules: [
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
