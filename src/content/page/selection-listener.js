@@ -10,6 +10,7 @@ import defaultConfig from 'src/app-config'
 let config = defaultConfig
 let numCtrlKeydown = 0
 let ctrlTimeout = null
+let isCtrlKeyDown = false
 
 storage.sync.get('config', data => {
   if (data.config) {
@@ -18,6 +19,7 @@ storage.sync.get('config', data => {
 
   if (config.tripleCtrl) {
     document.addEventListener('keydown', handleCtrlKeydown)
+    document.addEventListener('keyup', handleCtrlKeyup)
   }
 })
 
@@ -27,16 +29,25 @@ storage.listen('config', changes => {
   if (config.tripleCtrl) {
     if (!changes.config.oldValue.tripleCtrl) {
       document.addEventListener('keydown', handleCtrlKeydown)
+      document.addEventListener('keyup', handleCtrlKeyup)
     }
   } else {
     if (changes.config.oldValue.tripleCtrl) {
       document.removeEventListener('keydown', handleCtrlKeydown)
+      document.removeEventListener('keyup', handleCtrlKeyup)
     }
   }
 })
 
 function handleCtrlKeydown (evt) {
   if (evt.ctrlKey || evt.metaKey) {
+    isCtrlKeyDown = true
+  }
+}
+
+function handleCtrlKeyup (evt) {
+  if (isCtrlKeyDown) {
+    isCtrlKeyDown = false
     if (++numCtrlKeydown === 3) {
       if (!config.tripleCtrl) { return }
       message.send({msg: 'TRIPLE_CTRL', self: true})
