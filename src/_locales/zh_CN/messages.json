@@ -69,6 +69,11 @@
       "message": "无结果"
    },
 
+   "opt_storage_updated": {
+      "description": "when storage is updated",
+      "message": "设置已更新"
+   },
+
    "opt_title": {
       "description": "设置页面标题",
       "message": "Saladict 设置"
@@ -167,5 +172,10 @@
    "opt_dicts_add_panel_title": {
       "description": "option title",
       "message": "添加词典"
+   },
+
+   "opt_dict_default_height": {
+      "description": "词典的默认高度",
+      "message": "默认高度"
    }
 }

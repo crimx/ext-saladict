@@ -1,5 +1,10 @@
 <template>
 <div>
+  <transition name="dropdown">
+    <div class="config-updated" v-if="isShowConfigUpdated">
+      {{ i18n('opt_storage_updated') }}
+    </div>
+  </transition>
   <div class="opt-container">
     <h1 class="page-header">{{ i18n('opt_title') }}</h1>
 
@@ -102,6 +107,7 @@
                           :key="id"
                         >
                           <div class="dict-panel__header" @click="handleAddDict(id)">
+                            <img class="dict-panel__icon" :src="dicts[id].favicon">
                             <strong class="dict-panel__title">{{ i18n('dict_' + id) }}</strong>
                             <button type="button" class="close">&#10004;</button>
                           </div>
@@ -126,6 +132,7 @@
                 :key="id"
               >
                 <div class="dict-panel__header" @click="handlePanelHeadClick(id, i)">
+                  <img class="dict-panel__icon" :src="dicts[id].favicon">
                   <strong class="dict-panel__title">{{ i18n('dict_' + id) }}</strong>
                   <button type="button" class="close" @click.stop="config.dicts.selected.splice(i, 1)">&times;</button>
                 </div>
@@ -133,7 +140,11 @@
                   ref="dict"
                   :style="{height: dicts[id].height + 'px'}"
                 ><div class="panel-body">
-
+                  <div class="input-group">
+                    <div class="input-group-addon">{{ i18n('opt_dict_default_height') }}</div>
+                    <input type="number" class="form-control" v-model="config.dicts.all[id].preferredHeight">
+                    <div class="input-group-addon">px</div>
+                  </div>
                 </div></div>
               </div>
               <div key='___'></div><!--An empty div to fix a tricky bug on draggable-->
@@ -169,6 +180,9 @@ export default {
       config: defaultConfig,
       dicts: {},
 
+      isShowConfigUpdated: false,
+      showConfigUpdatedTimeout: null,
+
       isShowAddDictsPanel: false
     }
   },
@@ -198,9 +212,15 @@ export default {
     config: {
       deep: true,
       handler () {
-        // update storage
-        // show flag
-        console.log('updated')
+        storage.sync.set({config: this.config})
+          .then(() => {
+            this.isShowConfigUpdated = true
+            if (this.showConfigUpdatedTimeout) { clearTimeout(this.showConfigUpdatedTimeout) }
+            this.showConfigUpdatedTimeout = setTimeout(() => {
+              this.isShowConfigUpdated = false
+              this.showConfigUpdatedTimeout = null
+            }, 1500)
+          })
       }
     }
   },
@@ -236,9 +256,11 @@ export default {
     })
   },
   created () {
+    let allDicts = this.config.dicts.all
     let dicts = {}
-    Object.keys(this.config.dicts.all).forEach(id => {
+    Object.keys(allDicts).forEach(id => {
       dicts[id] = {
+        favicon: chrome.runtime.getURL('assets/dicts/' + allDicts[id].favicon),
         height: 0
       }
     })
@@ -274,6 +296,7 @@ export default {
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/input-groups";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/panels";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/close";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/alerts";
 
 // Components w/ JavaScript
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/modals";
@@ -312,6 +335,19 @@ kbd {
 /*------------------------------------*\
    Components
 \*------------------------------------*/
+.config-updated {
+  @extend .alert-success;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: $global-zindex-popover;
+  padding: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+}
+
 .opt-container {
   margin-right: 500px;
   padding: 0 15px;
@@ -356,6 +392,12 @@ kbd {
 .opt-dict__header {
   text-align: right;
   margin: 15px 0;
+}
+
+.dict-panel__icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
 }
 
 .dict-panel__title {
@@ -420,6 +462,13 @@ kbd {
 }
 .fade-enter, .fade-leave-active {
   opacity: 0;
+}
+
+.dropdown-enter-active, .dropdown-leave-active {
+  transition: transform 500ms;
+}
+.dropdown-enter, .dropdown-leave-active {
+  transform: translateY(-100%);
 }
 
 @media (max-width: 860px) {

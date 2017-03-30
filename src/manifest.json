@@ -16,6 +16,8 @@
     "128": "assets/icon-128.png"
   },
 
+  "options_page": "options.html",
+
   "background": {
     "scripts": [
       "background.js"
