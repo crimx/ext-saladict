@@ -190,17 +190,10 @@ let vm = {
     })
     storage.listen('config', this.handleStorageChange)
 
-    // get selected text
-    message.send({msg: 'GET_SELECTED_TEXT_SELF'}, response => {
-      if (response && !response.error && response.text) {
-        this.text = response.text
-        this.seachText()
-      }
-    })
-
     message.on('SEARCH_TEXT', this.handleSearchText)
-
     message.on('DESTROY_PANEL', this.handleDestroy)
+
+    message.send({msg: 'PANEL_READY_SELF'})
   },
   components: {}
 }

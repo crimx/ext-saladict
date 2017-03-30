@@ -173,6 +173,8 @@ export default {
   mounted () {
     // receive signals from page and all frames
     message.on('SELECTION', (data, sender, sendResponse) => {
+      this.selectedText = data.text || ''
+
       if (this.isStayVisiable) {
         if (data.text) {
           message.send({msg: 'SEARCH_TEXT_SELF', text: data.text})
@@ -192,7 +194,6 @@ export default {
         this.setPosition(data.mouseX, data.mouseY)
 
         if (data.text) {
-          this.selectedText = data.text
           switch (this.config.mode) {
             case 'icon':
               this.isShowIcon = true
@@ -221,8 +222,10 @@ export default {
       this.isShowIcon = false
     })
 
-    message.on('GET_SELECTED_TEXT', (data, sender, sendResponse) => {
-      sendResponse({text: this.selectedText})
+    message.on('PANEL_READY', () => {
+      if (this.selectedText) {
+        message.send({msg: 'SEARCH_TEXT_SELF', text: this.selectedText})
+      }
     })
 
     message.on('TRIPLE_CTRL', () => {

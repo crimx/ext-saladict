@@ -183,6 +183,8 @@ export default {
       config: defaultConfig,
       dicts: {},
 
+      text: 'salad',
+
       frameSource: chrome.runtime.getURL('panel.html'),
 
       isShowConfigUpdated: false,
@@ -232,6 +234,12 @@ export default {
               this.showConfigUpdatedTimeout = null
             }, 1500)
           })
+      }
+    },
+    'config.dicts': {
+      deep: true,
+      handler () {
+        message.send({msg: 'SEARCH_TEXT_SELF', text: this.text})
       }
     }
   },
@@ -283,8 +291,20 @@ export default {
       this.handlePanelHeadClick(this.config.dicts.selected[0], 0)
     }, 1000)
 
-    message.on('GET_SELECTED_TEXT', (__, ___, sendResponse) => {
-      sendResponse({text: 'salad'})
+    message.on('PANEL_READY', () => {
+      message.send({msg: 'SEARCH_TEXT_SELF', text: this.text})
+    })
+
+    let currentTabID
+    chrome.tabs.getCurrent(tab => {
+      currentTabID = tab.id
+
+      // monitor search text
+      message.on('FETCH_DICT_RESULT', (data, sender) => {
+        if (currentTabID === sender.tab.id) {
+          this.text = data.text
+        }
+      })
     })
   }
 }
@@ -470,7 +490,8 @@ kbd {
   right: 15px;
 }
 
-.sortable-drag {
+.sortable-drag,
+.sortable-ghost {
   opacity: 0;
 }
 
