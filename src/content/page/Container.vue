@@ -136,7 +136,7 @@ export default {
       return new Promise((resolve, reject) => {
         // to prevent listeners binding leaks
         // vue can't trigger destroyed when the iframe is destroyed by force
-        message.send({msg: 'DESTROY_PANEL', self: true}, response => {
+        message.send({msg: 'DESTROY_PANEL_SELF'}, response => {
           if (response) {
             this.isShowFrame = false
             resolve()
@@ -175,7 +175,7 @@ export default {
     message.on('SELECTION', (data, sender, sendResponse) => {
       if (this.isStayVisiable) {
         if (data.text) {
-          message.send({msg: 'SEARCH_TEXT', self: true, text: data.text})
+          message.send({msg: 'SEARCH_TEXT_SELF', text: data.text})
         }
         return
       }

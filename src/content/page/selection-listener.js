@@ -50,7 +50,7 @@ function handleCtrlKeyup (evt) {
     isCtrlKeyDown = false
     if (++numCtrlKeydown === 3) {
       if (!config.tripleCtrl) { return }
-      message.send({msg: 'TRIPLE_CTRL', self: true})
+      message.send({msg: 'TRIPLE_CTRL_SELF'})
     } else {
       if (ctrlTimeout) { clearTimeout(ctrlTimeout) }
       ctrlTimeout = setTimeout(() => {
@@ -67,7 +67,7 @@ document.addEventListener('mouseup', evt => {
   let text = window.getSelection().toString().trim()
   if (!text) {
     // empty message
-    message.send({msg: 'SELECTION', self: true})
+    message.send({msg: 'SELECTION_SELF'})
   } else {
     // if user click on a selected text,
     // getSelection would reture the text before it disappears
@@ -76,7 +76,7 @@ document.addEventListener('mouseup', evt => {
       let text = window.getSelection().toString().trim()
       if (!text) {
         // empty message
-        return message.send({msg: 'SELECTION', self: true})
+        return message.send({msg: 'SELECTION_SELF'})
       }
 
       if ((config.language.english && isContainEnglish(text)) ||
@@ -84,8 +84,7 @@ document.addEventListener('mouseup', evt => {
         if (window.parent === window) {
           // top
           message.send({
-            msg: 'SELECTION',
-            self: true,
+            msg: 'SELECTION_SELF',
             text,
             mouseX: evt.clientX,
             mouseY: evt.clientY,
@@ -128,8 +127,7 @@ window.addEventListener('message', evt => {
   if (window.parent === window) {
     // top
     message.send({
-      msg: 'SELECTION',
-      self: true,
+      msg: 'SELECTION_SELF',
       text,
       mouseX,
       mouseY,

@@ -100,7 +100,7 @@ let vm = {
           setTimeout(resolve, 10000)
         })
 
-        Promise.race([timer, message.send({msg: 'SEARCH_TEXT', text, dict: id})])
+        Promise.race([timer, message.send({msg: 'FETCH_DICT_RESULT', text, dict: id})])
           .then(response => {
             dict.isSearching = false
 
@@ -117,11 +117,11 @@ let vm = {
       })
     },
     closePanel () {
-      message.send({msg: 'CLOSE_PANEL', self: true})
+      message.send({msg: 'CLOSE_PANEL_SELF'})
     },
     pinPanel () {
       this.isPinned = !this.isPinned
-      message.send({msg: 'PIN_PANEL', self: true, flag: this.isPinned})
+      message.send({msg: 'PIN_PANEL_SELF', flag: this.isPinned})
     },
     unfoldDict (id) {
       let dict = this.dicts[id]
@@ -191,7 +191,7 @@ let vm = {
     storage.listen('config', this.handleStorageChange)
 
     // get selected text
-    message.send({msg: 'GET_SELECTED_TEXT', self: true}, response => {
+    message.send({msg: 'GET_SELECTED_TEXT_SELF'}, response => {
       if (response && !response.error && response.text) {
         this.text = response.text
         this.seachText()

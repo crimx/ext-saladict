@@ -2,8 +2,10 @@ import {storage, message} from 'src/helpers/chrome-api'
 import defaultConfig from 'src/app-config'
 
 // background script as transfer station
+const msgChecker = /_SELF$/
 message.listen((data, sender, sendResponse) => {
-  if (data.self) {
+  if (msgChecker.test(data.msg)) {
+    data.msg = data.msg.slice(0, -5)
     message.send(sender.tab.id, data, response => {
       sendResponse(response)
     })
@@ -53,7 +55,7 @@ storage.listen('config', changes => {
   setConfigs(changes.config.newValue)
 })
 
-message.on('SEARCH_TEXT', (data, sender, sendResponse) => {
+message.on('FETCH_DICT_RESULT', (data, sender, sendResponse) => {
   let dict = _dicts[data.dict]
   if (!dict) {
     sendResponse({error: 'Missing Dictionary!'})
