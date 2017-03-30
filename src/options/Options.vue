@@ -158,13 +158,16 @@
     </div><!-- opt-item -->
 
   </div>
-  <div class="frame-container">
-    <div class="saladict-frame"
-      name="saladict-frame"
-      src=""
-      :style="{height: panelHeight + 'px'}"
-    ></div>
-  </div>
+  <transition appear name="popup">
+    <div class="frame-container">
+      <iframe class="saladict-frame"
+        name="saladict-frame"
+        frameBorder="0"
+        :src="frameSource"
+        :style="{height: panelHeight + 'px'}"
+      ></iframe>
+    </div>
+  </transition>
 </div>
 </template>
 
@@ -180,8 +183,10 @@ export default {
       config: defaultConfig,
       dicts: {},
 
+      frameSource: chrome.runtime.getURL('panel.html'),
+
       isShowConfigUpdated: false,
-      showConfigUpdatedTimeout: null,
+      showConfigUpdatedTimeout: undefined,
 
       isShowAddDictsPanel: false
     }
@@ -212,6 +217,12 @@ export default {
     config: {
       deep: true,
       handler () {
+        // ignore the first auto update
+        if (this.showConfigUpdatedTimeout === undefined) {
+          this.showConfigUpdatedTimeout = null
+          return
+        }
+
         storage.sync.set({config: this.config})
           .then(() => {
             this.isShowConfigUpdated = true
@@ -248,12 +259,6 @@ export default {
   },
   beforeCreate () {
     document.title = 'Saladict Options'
-
-    storage.sync.get('config', result => {
-      if (result.config) {
-        this.config = result.config
-      }
-    })
   },
   created () {
     let allDicts = this.config.dicts.all
@@ -265,11 +270,22 @@ export default {
       }
     })
     this.dicts = dicts
+
+    storage.sync.get('config', result => {
+      if (result.config) {
+        this.config = result.config
+      }
+    })
   },
   mounted () {
+    // unfold the fisrt dictionary
     setTimeout(() => {
       this.handlePanelHeadClick(this.config.dicts.selected[0], 0)
     }, 1000)
+
+    message.on('GET_SELECTED_TEXT', (__, ___, sendResponse) => {
+      sendResponse({text: 'salad'})
+    })
   }
 }
 </script>
@@ -429,6 +445,7 @@ kbd {
   transform: translate(-50%, -50%);
   width: 400px;
   overflow: hidden;
+  border: 0 none;
   box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
   transition: all 1s;
 }
@@ -462,6 +479,14 @@ kbd {
 }
 .fade-enter, .fade-leave-active {
   opacity: 0;
+}
+
+.popup-enter-active {
+  transition: all 1.5s 1s;
+}
+.popup-enter {
+  opacity: 0;
+  transform: translate3d(0px, 40px, 0px);
 }
 
 .dropdown-enter-active, .dropdown-leave-active {

@@ -18,6 +18,7 @@
       v-if="isShowFrame"
       key="saladict-frame"
       name="saladict-frame"
+      frameBorder="0"
       :src="frameSource"
       :style="{top: frameTop + 'px !important', left: frameLeft + 'px !important', height: panelHeight + 'px !important'}"
     ></iframe>
