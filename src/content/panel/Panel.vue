@@ -11,6 +11,9 @@
       <path d="M51.704 51.273L36.844 35.82c3.79-3.8 6.14-9.04 6.14-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.082 0 9.747-1.817 13.383-4.832l14.895 15.49c.196.206.458.308.72.308.25 0 .5-.093.694-.28.398-.382.41-1.015.028-1.413zM21.984 40c-10.478 0-19-8.523-19-19s8.522-19 19-19 19 8.523 19 19-8.525 19-19 19z"/>
     </svg>
     <div class="dragarea" @mousedown.stop="handleDragStart"></div>
+    <svg class="icon-options" @click="openOptionsPage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
+      <path d="M0 97.92v24.48h612V97.92H0zm0 220.32h612v-24.48H0v24.48zm0 195.84h612V489.6H0v24.48z"/>
+    </svg>
     <svg class="icon-pin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 53.011 53.011"
       :class="{'icon-pin--pinned': isPinned}"
       @click="pinPanel"
@@ -122,6 +125,9 @@ let vm = {
     pinPanel () {
       this.isPinned = !this.isPinned
       message.send({msg: 'PIN_PANEL_SELF', flag: this.isPinned})
+    },
+    openOptionsPage () {
+      message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('options.html')})
     },
     unfoldDict (id) {
       let dict = this.dicts[id]
@@ -316,6 +322,10 @@ body {
 }
 
 .icon-search {
+  @extend %icon;
+}
+
+.icon-options {
   @extend %icon;
 }
 
