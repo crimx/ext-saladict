@@ -432,7 +432,7 @@ img.saladict-icon__bowl {
 }
 
 .saladict-jelly-leave-active {
-  animation: saladict-jelly 1000ms reverse linear;
+  animation: saladict-jelly 900ms reverse ease-in;
 }
 
 .saladict-icon:hover {
