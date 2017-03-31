@@ -222,13 +222,19 @@ export default {
       this.isShowIcon = false
     })
 
-    message.on('PANEL_READY', () => {
+    message.on('PANEL_READY', (__, ___, sendResponse) => {
+      if (this.isTripleCtrl) {
+        this.isTripleCtrl = false
+        return sendResponse({ctrl: true})
+      }
+
       if (this.selectedText) {
         message.send({msg: 'SEARCH_TEXT_SELF', text: this.selectedText})
       }
     })
 
     message.on('TRIPLE_CTRL', () => {
+      this.isTripleCtrl = true
       // show panel
       this.isShowIcon = false
       this.isShowFrame = false

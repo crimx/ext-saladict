@@ -2,6 +2,7 @@
 <div class="panel-container">
   <header class="panel-header">
     <input type="text" class="search-input"
+      ref="searchbox"
       v-model="text"
       @keyup.enter="seachText"
     >
@@ -199,7 +200,11 @@ let vm = {
     message.on('SEARCH_TEXT', this.handleSearchText)
     message.on('DESTROY_PANEL', this.handleDestroy)
 
-    message.send({msg: 'PANEL_READY_SELF'})
+    message.send({msg: 'PANEL_READY_SELF'}, response => {
+      if (response && response.ctrl) {
+        this.$refs.searchbox.focus()
+      }
+    })
   },
   components: {}
 }
