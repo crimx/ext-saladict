@@ -16,6 +16,20 @@ message.listen((data, sender, sendResponse) => {
     case 'CREATE_TAB':
       chrome.tabs.create({url: data.url})
       break
+    case 'AUDIO_PLAY':
+      let audio = new Audio(data.src)
+      let timer = setTimeout(() => {
+        timer = null
+        sendResponse()
+      }, 4000)
+      audio.addEventListener('ended', () => {
+        if (timer) {
+          clearTimeout(timer)
+          sendResponse()
+        }
+      })
+      audio.play()
+      return true
   }
 })
 
