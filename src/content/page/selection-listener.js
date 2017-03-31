@@ -52,7 +52,7 @@ function handleCtrlKeyup (evt) {
 }
 
 document.addEventListener('mouseup', evt => {
-  if (!config.active || window.name === 'saladict-frame') { return }
+  if (evt.button !== 0 || !config.active || window.name === 'saladict-frame') { return }
 
   let text = window.getSelection().toString().trim()
   if (!text) {
