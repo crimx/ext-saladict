@@ -23,8 +23,9 @@ const getConfig = () => ({
         id: 'bing',
         favicon: 'bing.png',
         page: 'https://cn.bing.com/dict/search?q=%s',
-        preferredHeight: 140,
+        preferredHeight: 160,
         options: {
+          tense: true,
           phsym: true,
           cdef: true
         }

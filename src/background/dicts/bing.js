@@ -41,6 +41,7 @@ export default function search (text, config) {
     * @property {Object[]} cdef - common definitions
     * @property {string} cdef[].pos - part of speech
     * @property {string} cdef[].def - definition
+    * @property {Object} inf - infinitive
     */
 
     /**
@@ -54,6 +55,7 @@ export default function search (text, config) {
         type: 'lex'
       }
 
+      // pronunciation
       if (data.QD.PRON && options.phsym) {
         result.phsym = data.QD.PRON.reduce((phsym, pron) => {
           var obj = {
@@ -72,11 +74,20 @@ export default function search (text, config) {
         }, [])
       }
 
+      // definitions
       if (data.QD.C_DEF && options.cdef) {
         result.cdef = data.QD.C_DEF.map(d => ({
           'pos': d.POS,
           'def': d.SEN[0].D
         }))
+      }
+
+      // tense
+      if (data.QD.INF && options.tense) {
+        result.inf = {}
+        data.QD.INF.forEach(inf => {
+          result.inf[inf.T] = inf.IE
+        })
       }
 
       return Promise.resolve(result)

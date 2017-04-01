@@ -19,6 +19,11 @@
       "message": "必应词典"
    },
 
+   "dict_bing_tense": {
+      "description": "Dictionary option",
+      "message": "显示单词时态"
+   },
+
    "dict_bing_phsym": {
       "description": "Dictionary option",
       "message": "显示单词发音"
@@ -72,6 +77,31 @@
    "PY": {
       "description": "Pinyin, Mandarin Chinese",
       "message": "拼"
+   },
+
+   "inf_pl": {
+      "description": "plurality",
+      "message": "复数"
+   },
+
+   "inf_pp": {
+      "description": "past participle",
+      "message": "过去分词"
+   },
+
+   "inf_prp": {
+      "description": "presentparticiple",
+      "message": "现在分词"
+   },
+
+   "inf_3pps": {
+      "description": "third-person singular",
+      "message": "第三人称单数"
+   },
+
+   "inf_pt": {
+      "description": "past tense",
+      "message": "过去式"
    },
 
    "dict_error_msg": {
