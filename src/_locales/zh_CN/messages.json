@@ -19,6 +19,16 @@
       "message": "必应词典"
    },
 
+   "dict_bing_phsym": {
+      "description": "Dictionary option",
+      "message": "显示单词发音"
+   },
+
+   "dict_bing_cdef": {
+      "description": "Dictionary option",
+      "message": "显示单词解释"
+   },
+
    "dict_urban": {
       "description": "Dictionary Name",
       "message": "Urban Dictionary"

@@ -25,7 +25,8 @@ const getConfig = () => ({
         page: 'https://cn.bing.com/dict/search?q=%s',
         preferredHeight: 140,
         options: {
-
+          phsym: true,
+          cdef: true
         }
       },
       iciba: {

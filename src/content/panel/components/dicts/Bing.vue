@@ -28,11 +28,6 @@ import Speaker from '../Speaker'
 export default {
   name: 'Bing',
   props: ['result'],
-  data () {
-    return {
-      something: 'false'
-    }
-  },
   computed: {
     phsym () {
       if (this.result.phsym) {
@@ -55,11 +50,12 @@ export default {
   padding: 10px;
   font-size: 14px;
   line-height: 1.6;
+  color: #333;
 }
 
 .phsym {
   display: flex;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .phsym-item {
@@ -72,7 +68,7 @@ export default {
 
 .cdef-item-pos {
   display: table-cell;
-  width: 30px;
+  width: 3em;
   font-weight: bold;
   text-align: right;
 }

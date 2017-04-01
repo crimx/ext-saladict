@@ -145,6 +145,11 @@
                     <input type="number" class="form-control" v-model="config.dicts.all[id].preferredHeight">
                     <div class="input-group-addon">px</div>
                   </div>
+                  <div class="checkbox">
+                    <label class="checkbox-inline" v-for="(__, optKey) in config.dicts.all[id].options">
+                      <input type="checkbox" v-model="config.dicts.all[id].options[optKey]"> {{ i18n(`dict_${id}_${optKey}`) }}
+                    </label>
+                  </div>
                 </div></div>
               </div>
               <div key='___'></div><!--An empty div to fix a tricky bug on draggable-->

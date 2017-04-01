@@ -3,6 +3,7 @@ export default function search (text, config) {
     const LEX_LINK = 'http://dict.bing.com.cn/api/http/v3/0003462a56234cee982be652b8ea1e5f/en-us/zh-cn/lexicon?format=application/json&q='
     const MACHINE_LINK = 'http://dict.bing.com.cn/api/http/v3/0003462a56234cee982be652b8ea1e5f/en-us/zh-cn/translation?format=application/json&q='
     const PRONUNCIATION_LINK = 'http://media.engkoo.com:8129/'
+    const options = config.dicts.all.bing.options
 
     searchLex()
       .then(passResolve, searchMachine)
@@ -53,7 +54,7 @@ export default function search (text, config) {
         type: 'lex'
       }
 
-      if (data.QD.PRON) {
+      if (data.QD.PRON && options.phsym) {
         result.phsym = data.QD.PRON.reduce((phsym, pron) => {
           var obj = {
             lang: pron.L,
@@ -71,7 +72,7 @@ export default function search (text, config) {
         }, [])
       }
 
-      if (data.QD.C_DEF) {
+      if (data.QD.C_DEF && options.cdef) {
         result.cdef = data.QD.C_DEF.map(d => ({
           'pos': d.POS,
           'def': d.SEN[0].D
