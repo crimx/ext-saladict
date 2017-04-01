@@ -55,7 +55,7 @@ _compReq.keys().forEach(path => {
 
 function setConfigs (config) {
   Object.keys(_dicts).forEach(id => {
-    _dicts[id].config = JSON.parse(JSON.stringify(defaultConfig))
+    _dicts[id].config = JSON.parse(JSON.stringify(config))
   })
 }
 
