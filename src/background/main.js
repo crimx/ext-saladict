@@ -66,7 +66,9 @@ storage.sync.get('config', data => {
 })
 
 storage.listen('config', changes => {
-  setConfigs(changes.config.newValue)
+  if (changes.config.newValue) {
+    setConfigs(changes.config.newValue)
+  }
 })
 
 message.on('FETCH_DICT_RESULT', (data, sender, sendResponse) => {
