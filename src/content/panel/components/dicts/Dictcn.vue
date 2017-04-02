@@ -92,9 +92,6 @@ export default {
 <style scoped>
 .dict-dictcn {
   padding: 10px;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #333;
 }
 
 .chart {

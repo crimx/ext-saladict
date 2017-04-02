@@ -48,7 +48,7 @@ export default {
 
 <style lang="scss" scoped>
 .icon-speaker {
-  vertical-align: middle;
+  vertical-align: text-bottom;
   cursor: pointer;
 }
 

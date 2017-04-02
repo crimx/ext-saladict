@@ -390,9 +390,12 @@ body {
 
 .dict-item-body {
   visibility: hidden;
-  opacity: 0;
   overflow: hidden;
   margin-bottom: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #333;
+  opacity: 0;
   transition: all 1s;
 }
 

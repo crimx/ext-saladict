@@ -5,7 +5,7 @@
       <div class="phsym" v-if="phsym">
         <div class="phsym-item" v-for="p in phsym">
           {{ `${p.lang}: ${p.al}` }}
-          <speaker :src="p.pron" :width="18" :height="18"></speaker>
+          <speaker :src="p.pron"></speaker>
         </div>
       </div> <!--phsym-->
 
@@ -82,9 +82,6 @@ export default {
 <style lang="scss" scoped>
 .dict-bing {
   padding: 10px;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #333;
 }
 
 .phsym {
