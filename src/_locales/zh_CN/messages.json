@@ -54,6 +54,16 @@
       "message": "dict.cn"
    },
 
+   "dict_dictcn_chart": {
+      "description": "Dictionary option",
+      "message": "显示海词统计"
+   },
+
+   "dict_dictcn_etym": {
+      "description": "Dictionary option",
+      "message": "显示词源"
+   },
+
    "dict_vocabulary": {
       "description": "Dictionary Name",
       "message": "Vocabulary.com"

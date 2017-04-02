@@ -51,8 +51,12 @@ const getConfig = () => ({
       dictcn: {
         id: 'dictcn',
         favicon: 'dictcn.png',
-        page: '',
-        preferredHeight: 110
+        page: 'http://dict.cn/%s',
+        preferredHeight: 265,
+        options: {
+          chart: true,
+          etym: true
+        }
       },
       wordreference: {
         id: 'wordreference',
