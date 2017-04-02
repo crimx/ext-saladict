@@ -211,7 +211,7 @@
 
    "opt_dicts_description": {
       "description": "option description",
-      "message": "配置各个词典。拖动词典标题排序。"
+      "message": "配置各个词典，建议按个人需求裁减到最少。拖动词典标题可以进行排序。词典失效请及时向作者反馈，微博 @盒装柠檬水 。"
    },
 
    "opt_dicts_btn_add": {
