@@ -284,6 +284,8 @@ body {
 
 <style lang="scss" scoped>
 .panel-container {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   overflow: hidden;
 }
@@ -353,9 +355,9 @@ body {
 }
 
 .dicts {
+  flex: 1;
   overflow-y: scroll;
   overflow-x: hidden;
-  height: 100%;
   padding: 0 10px;
 }
 
