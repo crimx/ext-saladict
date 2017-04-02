@@ -27,6 +27,10 @@ export default function search (text, config) {
         }
       }
 
+      if (Object.keys(result).length <= 0) {
+        return Promise.reject('no result')
+      }
+
       return Promise.resolve(result)
     }
   })
