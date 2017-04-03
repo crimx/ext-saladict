@@ -9,6 +9,17 @@ export default function search (text, config) {
       .then(resolve, reject)
       .catch(reject)
 
+    /**
+    * @typedef {Object} DictcnResult
+    * @property {string} title - keyword
+    * @property {Object} chart - for highcharts options
+    * @property {string[]} etym - etymology
+    */
+
+    /**
+     * @async
+     * @returns {Promise.<DictcnResult>} A promise with the result to send back
+     */
     function handleDom (doc) {
       let result = {}
 
