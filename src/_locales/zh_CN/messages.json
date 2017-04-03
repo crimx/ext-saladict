@@ -84,6 +84,16 @@
       "message": "Wordreference"
    },
 
+   "dict_wordreference_etym": {
+      "description": "Dictionary option",
+      "message": "显示词源"
+   },
+
+   "dict_wordreference_idiom": {
+      "description": "Dictionary option",
+      "message": "显示惯用法"
+   },
+
    "US": {
       "description": "United State",
       "message": "美"

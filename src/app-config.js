@@ -17,7 +17,7 @@ const getConfig = () => ({
 
   dicts: {
     // default selected dictionaries
-    selected: ['bing', 'iciba', 'urban', 'vocabulary', 'dictcn'],
+    selected: ['bing', 'urban', 'vocabulary', 'dictcn'],
     all: {
       bing: {
         id: 'bing',
@@ -64,8 +64,12 @@ const getConfig = () => ({
       wordreference: {
         id: 'wordreference',
         favicon: 'wordreference.png',
-        page: '',
-        preferredHeight: 110
+        page: 'http://www.wordreference.com/definition/%s',
+        preferredHeight: 180,
+        options: {
+          etym: true,
+          idiom: true
+        }
       }
     }
   }
