@@ -78,6 +78,7 @@
     "normalize.css": "^5.0.0",
     "vue": "^2.2.4",
     "vue-highcharts": "0.0.9",
+    "vue-qrious": "0.0.3",
     "vuedraggable": "^2.9.0",
     "vuex": "^2.2.1"
   }

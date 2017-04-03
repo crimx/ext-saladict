@@ -282,5 +282,15 @@
    "opt_dict_default_height": {
       "description": "词典的默认高度",
       "message": "默认高度"
+   },
+
+   "popup_tab_title": {
+      "description": "二维码标题",
+      "message": "当前页面二维码"
+   },
+
+   "popup_enter_options": {
+      "description": "进入设置页面的按钮",
+      "message": "进入详细设置"
    }
 }
