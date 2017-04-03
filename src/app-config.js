@@ -30,10 +30,10 @@ const getConfig = () => ({
           cdef: true
         }
       },
-      iciba: {
-        id: 'iciba',
-        favicon: 'iciba.png',
-        page: '',
+      google: {
+        id: 'google',
+        favicon: 'google.png',
+        page: 'https://translate.google.com/#auto/zh-CN/%s',
         preferredHeight: 110
       },
       urban: {

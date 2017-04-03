@@ -54,6 +54,11 @@
       "message": "金山词霸"
    },
 
+   "dict_google": {
+      "description": "Dictionary Name",
+      "message": "谷歌翻译"
+   },
+
    "dict_howjsay": {
       "description": "Dictionary Name",
       "message": "Howjsay"
@@ -61,7 +66,7 @@
 
    "dict_dictcn": {
       "description": "Dictionary Name",
-      "message": "dict.cn"
+      "message": "海词词典"
    },
 
    "dict_dictcn_chart": {
@@ -241,7 +246,7 @@
 
    "opt_dicts_description": {
       "description": "option description",
-      "message": "配置各个词典，建议按个人需求裁减到最少。拖动词典标题可以进行排序。词典失效请及时向作者反馈，微博 @盒装柠檬水 。"
+      "message": "配置各个词典，建议按个人需求裁减到最少。拖动词典标题可以进行排序。有任何问题请联系作者，微博 @盒装柠檬水 。"
    },
 
    "opt_dicts_btn_add": {
