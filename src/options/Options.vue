@@ -418,16 +418,23 @@ kbd {
 
   &:hover + .opt-item__description-wrap {
     opacity: 1;
+    z-index: 100;
   }
 }
 
 .opt-item__description-wrap {
   @extend .col-sm-4;
   position: absolute;
+  z-index: -1;
   right: 0;
   padding-left: 15px;
   opacity: 0;
-  transition: opacity 400ms;
+  transition: all 400ms;
+
+  &:hover {
+    opacity: 1;
+    z-index: 100;
+  }
 }
 
 .opt-item__description {
