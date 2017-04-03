@@ -89,6 +89,11 @@
       "message": "拼"
    },
 
+   "inf_s": {
+      "description": "simple",
+      "message": "原型"
+   },
+
    "inf_pl": {
       "description": "plurality",
       "message": "复数"

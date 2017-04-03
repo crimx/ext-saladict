@@ -12,6 +12,12 @@ export default function search (text, config) {
     function handleDom (doc) {
       let result = {}
 
+      // title
+      let $title = doc.querySelector('.keyword')
+      if ($title) {
+        result.title = $title.innerText
+      }
+
       if (options.chart) {
         // chart
         try {
@@ -27,7 +33,7 @@ export default function search (text, config) {
         }
       }
 
-      if (Object.keys(result).length <= 0) {
+      if (Object.keys(result).length <= 1) {
         return Promise.reject('no result')
       }
 

@@ -17,6 +17,9 @@
       </div> <!--cdef-->
 
       <div class="inf" v-if="result.inf">
+        <div class="inf-item" v-if="inf.s">
+          {{ inf.s.tense }}: {{ inf.s.word }}
+        </div>
         <div class="inf-item" v-if="inf.pl">
           {{ inf.pl.tense }}: {{ inf.pl.word }}
         </div>

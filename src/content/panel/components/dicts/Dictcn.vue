@@ -33,7 +33,7 @@ export default {
           }
         },
         title: {
-          text: '释义常用度分布图',
+          text: this.result.title + ' 释义常用度分布图',
           align: 'center',
           verticalAlign: 'bottom',
           margin: 20,
