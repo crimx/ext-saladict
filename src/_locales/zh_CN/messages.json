@@ -14,6 +14,26 @@
       "message": "网页划词翻译，混合各种词典的结果"
    },
 
+   "wechat": {
+      "description": "微信",
+      "message": "微信"
+   },
+
+   "alipay": {
+      "description": "支付宝",
+      "message": "支付宝"
+   },
+
+   "bitcoin": {
+      "description": "比特币",
+      "message": "比特币"
+   },
+
+   "buy_me_a_coffee": {
+      "description": "支持一下",
+      "message": "觉得好用的话欢迎支持一下我买杯咖啡哦~"
+   },
+
    "dict_bing": {
       "description": "Dictionary Name",
       "message": "必应词典"

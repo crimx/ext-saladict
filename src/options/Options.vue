@@ -182,6 +182,7 @@
       ></iframe>
     </div>
   </transition>
+  <coffee></coffee>
 </div>
 </template>
 
@@ -189,6 +190,7 @@
 import {storage, message} from 'src/helpers/chrome-api'
 import defaultConfig from 'src/app-config'
 import Draggable from 'vuedraggable'
+import Coffee from './Coffee'
 
 export default {
   name: 'options',
@@ -296,6 +298,7 @@ export default {
     }
   },
   components: {
+    Coffee,
     Draggable
   },
   beforeCreate () {
