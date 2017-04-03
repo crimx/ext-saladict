@@ -91,7 +91,8 @@ let vm = {
   },
   methods: {
     seachText () {
-      let text = this.text
+      let text = this.text.trim()
+      this.text = text
       let dicts = this.dicts
 
       this.config.dicts.selected.forEach((id, i) => {
@@ -203,6 +204,10 @@ let vm = {
     message.send({msg: 'PANEL_READY_SELF'}, response => {
       if (response && response.ctrl) {
         this.$refs.searchbox.focus()
+        document.execCommand('paste')
+        if (this.text.length) {
+          this.seachText()
+        }
       }
     })
   },
