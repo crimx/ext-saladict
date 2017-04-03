@@ -144,6 +144,11 @@
       "message": "Saladict 设置"
    },
 
+   "opt_new_version": {
+      "description": "New Version",
+      "message": "(请更新版本!)"
+   },
+
    "opt_app_active_title": {
       "description": "option title",
       "message": "开启查词"

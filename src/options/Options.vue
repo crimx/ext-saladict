@@ -6,7 +6,9 @@
     </div>
   </transition>
   <div class="opt-container">
-    <h1 class="page-header">{{ i18n('opt_title') }}</h1>
+    <h1 class="page-header">{{ i18n('opt_title') }}
+      <a class="new-version" v-if="isNewVersion" href="http://www.crimx.com/crx-saladict/" target="_blank">{{ i18n('opt_new_version') }}</a>
+    </h1>
 
     <div class="opt-item">
       <div class="opt-item__header">
@@ -195,6 +197,8 @@ export default {
       config: defaultConfig,
       dicts: {},
 
+      isNewVersion: false,
+
       text: 'salad',
 
       frameSource: chrome.runtime.getURL('panel.html'),
@@ -225,6 +229,23 @@ export default {
       if (Object.keys(this.config.dicts.all).length === selected.length) {
         this.isShowAddDictsPanel = false
       }
+    },
+    checkVersion () {
+      fetch('https://api.github.com/repos/crimx/crx-saladict/releases/latest')
+        .then(r => r.json())
+        .then(data => {
+          if (data && data.tag_name) {
+            let vGithub = /\d+\.\d+\.\d+/.exec(data.tag_name)
+            if (!vGithub) { return }
+            vGithub = vGithub[0]
+
+            let vManifest = chrome.runtime.getManifest().version
+
+            if (vGithub !== vManifest) {
+              this.isNewVersion = true
+            }
+          }
+        })
     }
   },
   watch: {
@@ -296,6 +317,8 @@ export default {
         this.config = result.config
       }
     })
+
+    this.checkVersion()
   },
   mounted () {
     // unfold the fisrt dictionary
@@ -399,6 +422,11 @@ kbd {
 .opt-container {
   margin-right: 500px;
   padding: 0 15px;
+}
+
+.new-version {
+  text-decoration: none;
+  color: #16a085;
 }
 
 .opt-item {
