@@ -39,8 +39,11 @@ const getConfig = () => ({
       urban: {
         id: 'urban',
         favicon: 'urban.png',
-        page: '',
-        preferredHeight: 110
+        page: 'http://www.urbandictionary.com/define.php?term=%s',
+        preferredHeight: 180,
+        options: {
+          resultnum: 1
+        }
       },
       vocabulary: {
         id: 'vocabulary',

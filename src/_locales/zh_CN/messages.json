@@ -39,6 +39,16 @@
       "message": "Urban Dictionary"
    },
 
+   "dict_urban_resultnum": {
+      "description": "Dictionary option",
+      "message": "结果数量"
+   },
+
+   "dict_urban_resultnum_unit": {
+      "description": "Dictionary option",
+      "message": "个"
+   },
+
    "dict_iciba": {
       "description": "Dictionary Name",
       "message": "金山词霸"
