@@ -142,13 +142,20 @@
                 ><div class="panel-body">
                   <div class="input-group">
                     <div class="input-group-addon">{{ i18n('opt_dict_default_height') }}</div>
-                    <input type="number" class="form-control" v-model="config.dicts.all[id].preferredHeight">
+                    <input type="number" min="1" class="form-control" v-model="config.dicts.all[id].preferredHeight">
                     <div class="input-group-addon">px</div>
                   </div>
                   <div class="checkbox">
-                    <label class="checkbox-inline" v-for="(__, optKey) in config.dicts.all[id].options">
-                      <input type="checkbox" v-model="config.dicts.all[id].options[optKey]"> {{ i18n(`dict_${id}_${optKey}`) }}
-                    </label>
+                    <template v-for="(__, optKey) in config.dicts.all[id].options">
+                      <label class="checkbox-inline" v-if="typeof config.dicts.all[id].options[optKey] === 'boolean'">
+                        <input type="checkbox" v-model="config.dicts.all[id].options[optKey]"> {{ i18n(`dict_${id}_${optKey}`) }}
+                      </label>
+                      <div class="input-group" v-else>
+                        <div class="input-group-addon">{{ i18n(`dict_${id}_${optKey}`) }}</div>
+                        <input type="number" min="1" class="form-control" v-model="config.dicts.all[id].options[optKey]">
+                        <div class="input-group-addon">{{ i18n(`dict_${id}_${optKey}_unit`)  }}</div>
+                      </div>
+                    </template>
                   </div>
                 </div></div>
               </div>
