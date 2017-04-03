@@ -42,14 +42,14 @@ const getConfig = () => ({
         page: 'http://www.urbandictionary.com/define.php?term=%s',
         preferredHeight: 180,
         options: {
-          resultnum: 1
+          resultnum: 2
         }
       },
       vocabulary: {
         id: 'vocabulary',
         favicon: 'vocabulary.png',
-        page: '',
-        preferredHeight: 110
+        page: 'https://www.vocabulary.com/dictionary/%s',
+        preferredHeight: 180
       },
       dictcn: {
         id: 'dictcn',
