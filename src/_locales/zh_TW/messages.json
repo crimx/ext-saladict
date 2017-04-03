@@ -1,7 +1,7 @@
 {
    "extension_name": {
       "description": "Extension name",
-      "message": "沙拉查詞"
+      "message": "沙拉查詞-網頁劃詞翻譯"
    },
 
    "extension_short_name": {
@@ -11,32 +11,112 @@
 
    "extension_description": {
       "description": "Description of extension",
-      "message": "網頁劃詞翻譯，混合各種詞典的結果"
+      "message": "網頁劃詞翻譯。沙拉查詞5.0，全新重寫，好用得停不下來"
    },
 
-   "engine_bing": {
-      "description": "Engine Name",
+   "wechat": {
+      "description": "微信",
+      "message": "微信"
+   },
+
+   "alipay": {
+      "description": "支付寶",
+      "message": "支付寶"
+   },
+
+   "bitcoin": {
+      "description": "比特幣",
+      "message": "比特幣"
+   },
+
+   "buy_me_a_coffee": {
+      "description": "支持一下",
+      "message": "覺得好用的話歡迎支持一下我買杯咖啡哦~"
+   },
+
+   "dict_bing": {
+      "description": "Dictionary Name",
       "message": "必應詞典"
    },
 
-   "engine_ud": {
-      "description": "Engine Name",
+   "dict_bing_tense": {
+      "description": "Dictionary option",
+      "message": "顯示單詞時態"
+   },
+
+   "dict_bing_phsym": {
+      "description": "Dictionary option",
+      "message": "顯示單詞發音"
+   },
+
+   "dict_bing_cdef": {
+      "description": "Dictionary option",
+      "message": "顯示單詞解釋"
+   },
+
+   "dict_urban": {
+      "description": "Dictionary Name",
       "message": "Urban Dictionary"
    },
 
-   "engine_howjsay": {
-      "description": "Engine Name",
+   "dict_urban_resultnum": {
+      "description": "Dictionary option",
+      "message": "結果數量"
+   },
+
+   "dict_urban_resultnum_unit": {
+      "description": "Dictionary option",
+      "message": "個"
+   },
+
+   "dict_iciba": {
+      "description": "Dictionary Name",
+      "message": "金山詞霸"
+   },
+
+   "dict_google": {
+      "description": "Dictionary Name",
+      "message": "谷歌翻譯"
+   },
+
+   "dict_howjsay": {
+      "description": "Dictionary Name",
       "message": "Howjsay"
    },
 
-   "engine_dictcn": {
-      "description": "Engine Name",
-      "message": "dict.cn"
+   "dict_dictcn": {
+      "description": "Dictionary Name",
+      "message": "海詞詞典"
    },
 
-   "engine_vocabulary": {
-      "description": "Engine Name",
+   "dict_dictcn_chart": {
+      "description": "Dictionary option",
+      "message": "顯示海詞統計"
+   },
+
+   "dict_dictcn_etym": {
+      "description": "Dictionary option",
+      "message": "顯示詞源"
+   },
+
+   "dict_vocabulary": {
+      "description": "Dictionary Name",
       "message": "Vocabulary.com"
+   },
+
+   "dict_wordreference": {
+      "description": "Dictionary Name",
+      "message": "Wordreference"
+   },
+
+   "dict_wordreference_etym": {
+      "description": "Dictionary option",
+      "message": "顯示詞源"
+   },
+
+   "dict_wordreference_idiom": {
+      "description": "Dictionary option",
+      "message": "顯示慣用法"
    },
 
    "US": {
@@ -54,93 +134,163 @@
       "message": "拼"
    },
 
-   "engine_error_msg": {
+   "inf_s": {
+      "description": "simple",
+      "message": "原型"
+   },
+
+   "inf_pl": {
+      "description": "plurality",
+      "message": "覆數"
+   },
+
+   "inf_pp": {
+      "description": "past participle",
+      "message": "過去分詞"
+   },
+
+   "inf_prp": {
+      "description": "presentparticiple",
+      "message": "現在分詞"
+   },
+
+   "inf_3pps": {
+      "description": "third-person singular",
+      "message": "第三人稱單數"
+   },
+
+   "inf_pt": {
+      "description": "past tense",
+      "message": "過去式"
+   },
+
+   "dict_error_msg": {
       "description": "Search Faild",
       "message": "無結果"
    },
 
-   "opt_app_active_title": {
-      "description": "popup option title",
-      "message": "開啓查詞"
+   "opt_storage_updated": {
+      "description": "when storage is updated",
+      "message": "設置已更新"
    },
 
-   "opt_icon_mode_title": {
-      "description": "popup option title",
+   "opt_title": {
+      "description": "設置頁面標題",
+      "message": "Saladict 設置"
+   },
+
+   "opt_new_version": {
+      "description": "New Version",
+      "message": "(請更新版本!)"
+   },
+
+   "opt_app_active_title": {
+      "description": "option title",
+      "message": "開啟查詞"
+   },
+
+   "opt_app_active": {
+      "description": "option",
+      "message": "啟用劃詞翻譯"
+   },
+
+   "opt_app_active_description": {
+      "description": "option description",
+      "message": "關閉後劃詞翻譯功能將關閉，快捷查詞功能依然可用。"
+   },
+
+   "opt_mode_title": {
+      "description": "option title",
+      "message": "查詞模式"
+   },
+
+   "opt_mode_icon": {
+      "description": "option",
       "message": "顯示圖標"
    },
 
-   "opt_direct_mode_title": {
-      "description": "popup option title",
+   "opt_mode_direct": {
+      "description": "option",
       "message": "直接搜索"
    },
 
-   "opt_ctrl_mode_title": {
-      "description": "popup option title",
-      "message": "按住Ctrl"
+   "opt_mode_ctrl": {
+      "description": "option",
+      "message": "按住Ctrl/⌘"
    },
 
    "opt_mode_description": {
-      "description": "popup option description",
-      "message": "當用鼠標在網頁上選擇了壹段文本，“顯示圖標”會先在鼠標附近顯示壹個圖標，鼠標移上去後才顯示詞典面板；“直接搜索”則不顯示圖標，直接顯示詞典面板；“按住 Ctrl”在選擇文本時需同時按住 `ctrl` 鍵才顯示詞典面板。"
+      "description": "option description",
+      "message": "當用鼠標在網頁上選擇了一段文本，<strong>“顯示圖標”</strong>會先在鼠標附近顯示一個圖標，鼠標移上去後才顯示詞典面板；<strong>“直接搜索”</strong>則不顯示圖標，直接顯示詞典面板；<strong>“按住 Ctrl”</strong>在選擇文本時需同時按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵才顯示詞典面板。"
    },
 
    "opt_triple_ctrl_title": {
-      "description": "popup option title",
-      "message": "快捷搜索"
+      "description": "option title",
+      "message": "快捷查詞"
+   },
+
+   "opt_triple_ctrl": {
+      "description": "option title",
+      "message": "啟用快捷查詞"
    },
 
    "opt_triple_ctrl_description": {
-      "description": "popup option description",
-      "message": "連續按三次 ctrl 鍵將彈出詞典搜索界面。"
+      "description": "option description",
+      "message": "連續按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵將彈出詞典界面。"
    },
 
-   "opt_chinese_mode_title": {
-      "description": "popup option title",
+   "opt_language_title": {
+      "description": "option title",
+      "message": "語言支持"
+   },
+
+   "opt_language_chinese": {
+      "description": "Chinese",
       "message": "中文查詞"
    },
 
-   "opt_english_mode_title": {
-      "description": "popup option title",
+   "opt_language_english": {
+      "description": "English",
       "message": "英文查詞"
    },
 
    "opt_language_mode_description": {
-      "description": "popup option description",
+      "description": "option description",
       "message": "當選中的文字包含相應的語言時才進行查找。"
    },
 
-   "update_available": {
-      "description": "Update vailable",
-      "message": "沙拉查詞有新版本啦！點擊更新。"
+   "opt_dicts_title": {
+      "description": "option title",
+      "message": "詞典設置"
    },
 
-   "update_title": {
-      "description": "Update message title",
-      "message": "沙拉查詞已更新到 v"
+   "opt_dicts_description": {
+      "description": "option description",
+      "message": "配置各個詞典，建議按個人需求裁減到最少。拖動詞典標題可以進行排序。有任何問題請聯系作者，微博 @盒裝檸檬水 。"
    },
 
-   "update_message1": {
-      "description": "Update messages",
-      "message": "全新重寫，你們提的要求都實現啦"
+   "opt_dicts_btn_add": {
+      "description": "option button",
+      "message": "添加"
    },
 
-   "update_message2": {
-      "description": "Update messages",
-      "message": "加入新詞典，加入右鍵查詞"
+   "opt_dicts_add_panel_title": {
+      "description": "option title",
+      "message": "添加詞典"
    },
 
-   "update_message3": {
-      "description": "Update messages",
-      "message": "新增三種劃詞模式，連續按三次ctrl還可以直接查詞"
+   "opt_dict_default_height": {
+      "description": "詞典的默認高度",
+      "message": "默認高度"
    },
 
-   "update_message4": {
-      "description": "Update messages",
-      "message": "詞典界面可以固定在網頁上"
+   "popup_tab_title": {
+      "description": "二維碼標題",
+      "message": "當前頁面二維碼"
    },
 
-   "update_message5": {
-      "description": "Update messages",
-      "message": "更多功能慢慢發現吧;D"
+   "popup_enter_options": {
+      "description": "進入設置頁面的按鈕",
+      "message": "進入詳細設置"
    }
 }

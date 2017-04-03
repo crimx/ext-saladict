@@ -14,29 +14,109 @@
       "message": "Inline translator powered by mutiple online dictionaries"
    },
 
-   "engine_bing": {
-      "description": "Engine Name",
-      "message": "Bing dict"
+   "wechat": {
+      "description": "微信",
+      "message": "Wechat"
    },
 
-   "engine_ud": {
-      "description": "Engine Name",
+   "alipay": {
+      "description": "支付宝",
+      "message": "Alipay"
+   },
+
+   "bitcoin": {
+      "description": "比特币",
+      "message": "Bitcoin"
+   },
+
+   "buy_me_a_coffee": {
+      "description": "支持一下",
+      "message": "Enjoy the Extension? Buy me a coffee~"
+   },
+
+   "dict_bing": {
+      "description": "Dictionary Name",
+      "message": "Bing Dict"
+   },
+
+   "dict_bing_tense": {
+      "description": "Dictionary option",
+      "message": "Show sense"
+   },
+
+   "dict_bing_phsym": {
+      "description": "Dictionary option",
+      "message": "Show pronunciation"
+   },
+
+   "dict_bing_cdef": {
+      "description": "Dictionary option",
+      "message": "Show definitions"
+   },
+
+   "dict_urban": {
+      "description": "Dictionary Name",
       "message": "Urban Dictionary"
    },
 
-   "engine_howjsay": {
-      "description": "Engine Name",
+   "dict_urban_resultnum": {
+      "description": "Dictionary option",
+      "message": "Shwo"
+   },
+
+   "dict_urban_resultnum_unit": {
+      "description": "Dictionary option",
+      "message": "results"
+   },
+
+   "dict_iciba": {
+      "description": "Dictionary Name",
+      "message": "iCIBA"
+   },
+
+   "dict_google": {
+      "description": "Dictionary Name",
+      "message": "Google Translation"
+   },
+
+   "dict_howjsay": {
+      "description": "Dictionary Name",
       "message": "Howjsay"
    },
 
-   "engine_dictcn": {
-      "description": "Engine Name",
-      "message": "dict.cn"
+   "dict_dictcn": {
+      "description": "Dictionary Name",
+      "message": "Dict.cn"
    },
 
-   "engine_vocabulary": {
-      "description": "Engine Name",
+   "dict_dictcn_chart": {
+      "description": "Dictionary option",
+      "message": "Show statistics"
+   },
+
+   "dict_dictcn_etym": {
+      "description": "Dictionary option",
+      "message": "Show etymology"
+   },
+
+   "dict_vocabulary": {
+      "description": "Dictionary Name",
       "message": "Vocabulary.com"
+   },
+
+   "dict_wordreference": {
+      "description": "Dictionary Name",
+      "message": "Wordreference"
+   },
+
+   "dict_wordreference_etym": {
+      "description": "Dictionary option",
+      "message": "Show etymology"
+   },
+
+   "dict_wordreference_idiom": {
+      "description": "Dictionary option",
+      "message": "Show idioms"
    },
 
    "US": {
@@ -51,76 +131,166 @@
 
    "PY": {
       "description": "Pinyin, Mandarin Chinese",
-      "message": "PY"
+      "message": "PinYin"
    },
 
-   "engine_error_msg": {
+   "inf_s": {
+      "description": "simple",
+      "message": "s"
+   },
+
+   "inf_pl": {
+      "description": "plurality",
+      "message": "pl"
+   },
+
+   "inf_pp": {
+      "description": "past participle",
+      "message": "pp"
+   },
+
+   "inf_prp": {
+      "description": "presentparticiple",
+      "message": "prp"
+   },
+
+   "inf_3pps": {
+      "description": "third-person singular",
+      "message": "3pps"
+   },
+
+   "inf_pt": {
+      "description": "past tense",
+      "message": "pt"
+   },
+
+   "dict_error_msg": {
       "description": "Search Faild",
-      "message": "No Result"
+      "message": "No result"
+   },
+
+   "opt_storage_updated": {
+      "description": "when storage is updated",
+      "message": "Options updated"
+   },
+
+   "opt_title": {
+      "description": "设置页面标题",
+      "message": "Saladict Options"
+   },
+
+   "opt_new_version": {
+      "description": "New Version",
+      "message": "(New Version Available!)"
    },
 
    "opt_app_active_title": {
-      "description": "popup option title",
+      "description": "option title",
       "message": "Enable Saladict"
    },
 
-   "opt_icon_mode_title": {
-      "description": "popup option title",
-      "message": "Show Popup Icon"
+   "opt_app_active": {
+      "description": "option",
+      "message": "Enable inline translator"
    },
 
-   "opt_direct_mode_title": {
-      "description": "popup option title",
-      "message": "Show Panel Directly"
+   "opt_app_active_description": {
+      "description": "option description",
+      "message": "Inline translation would be shut down when it is turned off. Quick Search is still available."
    },
 
-   "opt_ctrl_mode_title": {
-      "description": "popup option title",
-      "message": "Show Panel With Ctrl"
+   "opt_mode_title": {
+      "description": "option title",
+      "message": "Search Mode"
+   },
+
+   "opt_mode_icon": {
+      "description": "option",
+      "message": "Show Icon"
+   },
+
+   "opt_mode_direct": {
+      "description": "option",
+      "message": "Direct Search"
+   },
+
+   "opt_mode_ctrl": {
+      "description": "option",
+      "message": "Hold Ctrl/⌘"
    },
 
    "opt_mode_description": {
-      "description": "popup option description",
-      "message": "When a text selection is made, and if 'Show Popup Icon' is enabled, a cute little icon would popup nearby the cursor; similarly, 'Show Panel Directly' means a dictionary panel will pop right after a text selection is made; and 'With Ctrl' simply means the 'control' key has to be down when the selection is made."
+      "description": "option description",
+      "message": "When a text selection is made and <strong>'Show Icon'</strong> mode is enabled, a cute little icon would popup nearby the cursor; while in <strong>'Directly Search'</strong> mode the dictionary panel shows up insted; <strong>'Hold Ctrl/⌘'</strong> mode means the <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key must be pressed when the selection is made."
    },
 
    "opt_triple_ctrl_title": {
-      "description": "popup option title",
-      "message": "Qucick Search"
+      "description": "option title",
+      "message": "Quick Search"
+   },
+
+   "opt_triple_ctrl": {
+      "description": "option title",
+      "message": "Enable Quick Search"
    },
 
    "opt_triple_ctrl_description": {
-      "description": "popup option description",
-      "message": "Triple Press 'control' key, a search panel will popup"
+      "description": "option description",
+      "message": "Press <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key three times a dictionary panel shows up"
    },
 
-   "opt_chinese_mode_title": {
-      "description": "popup option title",
-      "message": "Enable Chinese"
+   "opt_language_title": {
+      "description": "option title",
+      "message": "Language"
    },
 
-   "opt_english_mode_title": {
-      "description": "popup option title",
-      "message": "Enable English"
+   "opt_language_chinese": {
+      "description": "Chinese",
+      "message": "Search Chinese"
+   },
+
+   "opt_language_english": {
+      "description": "English",
+      "message": "Search English"
    },
 
    "opt_language_mode_description": {
-      "description": "popup option description",
-      "message": "A search request would be fired only if the selection is part of the specific languages."
+      "description": "option description",
+      "message": "Only start searching when selection contains the selected languages."
    },
 
-   "update_available": {
-      "description": "Update vailable",
-      "message": "New Version Available!"
+   "opt_dicts_title": {
+      "description": "option title",
+      "message": "Dict Options"
    },
 
-   "update_title": {
-      "description": "Update message title",
-      "message": "Saladict has updated to v"
+   "opt_dicts_description": {
+      "description": "option description",
+      "message": "Drag titles to sort."
    },
 
-   "update_message1": {
-      "description": "Update messages",
-      "message": "Bunch of new features waiting for explored."
+   "opt_dicts_btn_add": {
+      "description": "option button",
+      "message": "Add"
+   },
+
+   "opt_dicts_add_panel_title": {
+      "description": "option title",
+      "message": "Add dicts"
+   },
+
+   "opt_dict_default_height": {
+      "description": "词典的默认高度",
+      "message": "Default height"
+   },
+
+   "popup_tab_title": {
+      "description": "二维码标题",
+      "message": "Qrcode of current page"
+   },
+
+   "popup_enter_options": {
+      "description": "进入设置页面的按钮",
+      "message": "More Options"
    }
 }

@@ -1,7 +1,7 @@
 {
    "extension_name": {
       "description": "Extension name",
-      "message": "沙拉查词"
+      "message": "沙拉查词-网页划词翻译"
    },
 
    "extension_short_name": {
@@ -11,7 +11,7 @@
 
    "extension_description": {
       "description": "Description of extension",
-      "message": "网页划词翻译，混合各种词典的结果"
+      "message": "网页划词翻译。沙拉查词5.0，全新重写，好用得停不下来"
    },
 
    "wechat": {
