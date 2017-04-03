@@ -33,8 +33,8 @@ export default function search (text, config) {
         return Promise.reject('no result')
       }
 
-      defPanels.every(($panel, i) => {
-        if (i >= options.resultnum) { return false }
+      defPanels.every($panel => {
+        if (result.length >= options.resultnum) { return false }
 
         let resultItem = {}
 
@@ -51,6 +51,9 @@ export default function search (text, config) {
         let $meaning = $panel.querySelector('.meaning')
         if ($meaning) {
           resultItem.meaning = $meaning.innerText
+          if (/There aren't any definitions for/i.test(resultItem.meaning)) {
+            return true
+          }
         }
 
         let $example = $panel.querySelector('.example')
