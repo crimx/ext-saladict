@@ -13,16 +13,14 @@
       <img class="saladict-icon__bowl" src="../../assets/bowl.svg">
     </div>
   </transition>
-  <transition name="saladict-jelly">
-    <iframe class="saladict-frame"
-      v-if="isShowFrame"
-      key="saladict-frame"
-      name="saladict-frame"
-      frameBorder="0"
-      :src="frameSource"
-      :style="{top: frameTop + 'px !important', left: frameLeft + 'px !important', height: panelHeight + 'px !important'}"
-    ></iframe>
-  </transition>
+  <iframe class="saladict-frame"
+    v-if="isShowFrame"
+    key="saladict-frame"
+    name="saladict-frame"
+    frameBorder="0"
+    :src="frameSource"
+    :style="{top: frameTop + 'px !important', left: frameLeft + 'px !important', height: panelHeight + 'px !important'}"
+  ></iframe>
 </div>
 </template>
 
@@ -133,16 +131,16 @@ export default {
       this.pageMouseY = evt.clientY
     },
     destroyPanel () {
-      return new Promise((resolve, reject) => {
-        // to prevent listeners binding leaks
-        // vue can't trigger destroyed when the iframe is destroyed by force
-        message.send({msg: 'DESTROY_PANEL_SELF'}, response => {
-          if (response) {
-            this.isShowFrame = false
-            resolve()
-          }
-        })
-      })
+      // return new Promise((resolve, reject) => {
+      //   // to prevent listeners binding leaks
+      //   // vue can't trigger destroyed when the iframe is destroyed by force
+      //   message.send({msg: 'DESTROY_PANEL_SELF'}, response => {
+      //     if (response) {
+      //       this.isShowFrame = false
+      //       resolve()
+      //     }
+      //   })
+      // })
     }
   },
   computed: {
@@ -184,36 +182,32 @@ export default {
 
       if (this.isShowIcon || this.isShowFrame) {
         this.isShowIcon = false
-        this.destroyPanel()
-          .then(() => this.$nextTick(show))
-      } else {
-        show.call(this)
+        this.isShowFrame = false
+        this.$forceUpdate()
       }
 
-      function show () {
-        this.setPosition(data.mouseX, data.mouseY)
+      this.setPosition(data.mouseX, data.mouseY)
 
-        if (data.text) {
-          switch (this.config.mode) {
-            case 'icon':
-              this.isShowIcon = true
-              break
-            case 'direct':
+      if (data.text) {
+        switch (this.config.mode) {
+          case 'icon':
+            this.isShowIcon = true
+            break
+          case 'direct':
+            this.isShowFrame = true
+            break
+          case 'ctrl':
+            if (data.ctrlKey) {
               this.isShowFrame = true
-              break
-            case 'ctrl':
-              if (data.ctrlKey) {
-                this.isShowFrame = true
-              }
-              break
-          }
+            }
+            break
         }
       }
     })
 
     message.on('CLOSE_PANEL', () => {
       this.isStayVisiable = false
-      this.destroyPanel()
+      this.isShowFrame = false
       this.isShowIcon = false
     })
 
@@ -435,10 +429,6 @@ img.saladict-icon__bowl {
 \*-----------------------------------------------*/
 .saladict-jelly-enter-active {
   animation: saladict-jelly 1000ms linear;
-}
-
-.saladict-jelly-leave-active {
-  animation: saladict-jelly 900ms reverse ease-in;
 }
 
 .saladict-icon:hover {
