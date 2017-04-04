@@ -16,14 +16,8 @@ storage.listen('config', changes => {
 storage.sync.get('config').then(result => {
   if (result.config && result.config.active) {
     activate()
-  } else {
-    handleNoConfig()
   }
-}, handleNoConfig)
-
-function handleNoConfig () {
-  storage.sync.set({config: defaultConfig})
-}
+})
 
 function activate () {
   vm = new Vue({
