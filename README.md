@@ -62,22 +62,25 @@ Clone 库并 `$ npm install`
 `src/app-config.js` 在 `dicts/all` 注册词典并添加相关设置。
 
 ```javascript
-dicts: {
-  // default selected dictionaries
-  selected: ['bing', 'urban', 'vocabulary', 'dictcn'],
-  all: {
-    // ...
-    bing: {
-      id: 'bing',
-      favicon: 'bing.png',
-      page: 'https://cn.bing.com/dict/search?q=%s',
-      preferredHeight: 160,
-      options: {
-        tense: true,
-        phsym: true,
-        cdef: true
+{
+  dicts: {
+    // default selected dictionaries
+    selected: ['bing', 'urban', 'vocabulary', 'dictcn'],
+    all: {
+      // ...
+      bing: {
+        id: 'bing',
+        favicon: 'bing.png',
+        page: 'https://cn.bing.com/dict/search?q=%s',
+        preferredHeight: 160,
+        options: {
+          tense: true,
+          phsym: true,
+          cdef: true
+        }
       }
-    },
+      // ...
+    }
   }
 }
 ```
