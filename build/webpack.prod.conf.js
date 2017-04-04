@@ -14,17 +14,60 @@ var webpackConfig = merge(baseWebpackConfig, {
         options: {
           loaders: {
             'css': ExtractTextPlugin.extract({
-              fallback: 'vue-style-loader',
-              use: ['css-loader']
+              fallback: {
+                loader: 'vue-style-loader',
+                options: {
+                  sourceMap: false
+                }
+              },
+              use: [
+                {
+                  loader: 'css-loader',
+                  options: {
+                    sourceMap: false
+                  }
+                },
+                {
+                  loader: 'postcss-loader',
+                  options: {
+                    sourceMap: false
+                  }
+                }
+              ]
             }),
             'scss': ExtractTextPlugin.extract({
-              fallback: 'vue-style-loader',
-              use: ['css-loader', 'postcss-loader', 'sass-loader', {
-                loader: 'sass-resources-loader',
+              fallback: {
+                loader: 'vue-style-loader',
                 options: {
-                  resources: ['src/sass-global/**/*.scss']
+                  sourceMap: false
                 }
-              }]
+              },
+              use: [
+                {
+                  loader: 'css-loader',
+                  options: {
+                    sourceMap: false
+                  }
+                },
+                {
+                  loader: 'postcss-loader',
+                  options: {
+                    sourceMap: false
+                  }
+                },
+                {
+                  loader: 'sass-loader',
+                  options: {
+                    sourceMap: false
+                  }
+                },
+                {
+                  loader: 'sass-resources-loader',
+                  options: {
+                    resources: ['src/sass-global/**/*.scss']
+                  }
+                }
+              ]
             })
           }
         }
@@ -37,28 +80,72 @@ var webpackConfig = merge(baseWebpackConfig, {
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'postcss-loader']
+          fallback: {
+            loader: 'vue-style-loader',
+            options: {
+              sourceMap: false
+            }
+          },
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: false
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap: false
+              }
+            }
+          ]
         })
       },
       {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'postcss-loader', 'sass-loader', {
-            loader: 'sass-resources-loader',
+          fallback: {
+            loader: 'vue-style-loader',
             options: {
-              resources: ['src/sass-global/**/*.scss']
+              sourceMap: false
             }
-          }]
+          },
+          use: [
+            {
+              loader: 'css-loader',
+              options: {
+                sourceMap: false
+              }
+            },
+            {
+              loader: 'postcss-loader',
+              options: {
+                sourceMap: false
+              }
+            },
+            {
+              loader: 'sass-loader',
+              options: {
+                sourceMap: false
+              }
+            },
+            {
+              loader: 'sass-resources-loader',
+              options: {
+                resources: ['src/sass-global/**/*.scss']
+              }
+            }
+          ]
         })
       }
     ]
-  }
+  },
+  devtool: false
 })
 
 webpackConfig = merge(webpackConfig, {
-  devtool: '#source-map',
+  devtool: false,
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
