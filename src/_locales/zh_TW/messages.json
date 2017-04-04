@@ -141,7 +141,7 @@
 
    "inf_pl": {
       "description": "plurality",
-      "message": "覆數"
+      "message": "複數"
    },
 
    "inf_pp": {
@@ -186,12 +186,12 @@
 
    "opt_app_active_title": {
       "description": "option title",
-      "message": "開啟查詞"
+      "message": "開啓查詞"
    },
 
    "opt_app_active": {
       "description": "option",
-      "message": "啟用劃詞翻譯"
+      "message": "啓用劃詞翻譯"
    },
 
    "opt_app_active_description": {
@@ -231,7 +231,7 @@
 
    "opt_triple_ctrl": {
       "description": "option title",
-      "message": "啟用快捷查詞"
+      "message": "啓用快捷查詞"
    },
 
    "opt_triple_ctrl_description": {
@@ -292,5 +292,65 @@
    "popup_enter_options": {
       "description": "進入設置頁面的按鈕",
       "message": "進入詳細設置"
+   },
+
+   "opt_context_title": {
+      "description": "option title",
+      "message": "右鍵菜單"
+   },
+
+   "opt_context_add_panel_title": {
+      "description": "option title",
+      "message": "添加右鍵菜單"
+   },
+
+   "opt_context_description": {
+      "description": "option description",
+      "message": "選擇單詞之後可以通過右鍵查找或者搜索。拖動標題可以進行排序。"
+   },
+
+   "context_google_search": {
+      "description": "context menu",
+      "message": "谷歌搜索"
+   },
+
+   "context_baidu_search": {
+      "description": "context menu",
+      "message": "百度搜索"
+   },
+
+   "context_bing_search": {
+      "description": "context menu",
+      "message": "必應搜索"
+   },
+
+   "context_google_translate": {
+      "description": "context menu",
+      "message": "谷歌翻譯"
+   },
+
+   "context_etymonline": {
+      "description": "context menu",
+      "message": "培根詞源"
+   },
+
+   "context_merriam_webster": {
+      "description": "context menu",
+      "message": "韋氏詞典"
+   },
+
+   "context_oxford": {
+      "description": "context menu",
+      "message": "牛津詞典"
+   },
+
+   "context_cambridge": {
+      "description": "context menu",
+      "message": "劍橋詞典"
+   },
+
+   "context_bing_dict": {
+      "description": "context menu",
+      "message": "必應詞典"
    }
 }

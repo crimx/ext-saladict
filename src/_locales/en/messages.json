@@ -292,5 +292,65 @@
    "popup_enter_options": {
       "description": "进入设置页面的按钮",
       "message": "More Options"
+   },
+
+   "opt_context_title": {
+      "description": "option title",
+      "message": "Context Menu"
+   },
+
+   "opt_context_add_panel_title": {
+      "description": "option title",
+      "message": "Add Context Menu"
+   },
+
+   "opt_context_description": {
+      "description": "option description",
+      "message": "Right click selection shows context menu. Drag to sort."
+   },
+
+   "context_google_search": {
+      "description": "context menu",
+      "message": "Google Search"
+   },
+
+   "context_baidu_search": {
+      "description": "context menu",
+      "message": "Baidu Search"
+   },
+
+   "context_bing_search": {
+      "description": "context menu",
+      "message": "Bing Search"
+   },
+
+   "context_google_translate": {
+      "description": "context menu",
+      "message": "Google Translate"
+   },
+
+   "context_etymonline": {
+      "description": "context menu",
+      "message": "Etymonline"
+   },
+
+   "context_merriam_webster": {
+      "description": "context menu",
+      "message": "Merriam Webster"
+   },
+
+   "context_oxford": {
+      "description": "context menu",
+      "message": "Oxford"
+   },
+
+   "context_cambridge": {
+      "description": "context menu",
+      "message": "Cambridge"
+   },
+
+   "context_bing_dict": {
+      "description": "context menu",
+      "message": "Bing Dict"
    }
 }
