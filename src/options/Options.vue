@@ -39,6 +39,9 @@
             <input type="radio" value="direct" v-model="config.mode"> {{ i18n('opt_mode_direct') }}
           </label>
           <label class="radio-inline">
+            <input type="radio" value="double" v-model="config.mode"> {{ i18n('opt_mode_double') }}
+          </label>
+          <label class="radio-inline">
             <input type="radio" value="ctrl" v-model="config.mode"> {{ i18n('opt_mode_ctrl') }}
           </label>
         </div>

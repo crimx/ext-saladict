@@ -3,6 +3,7 @@ const getConfig = () => ({
 
   // icon: show pop icon first
   // direct: show panel directly
+  // double: double click
   // ctrl: show panel when double click ctrl + selection not empty
   mode: 'icon',
 

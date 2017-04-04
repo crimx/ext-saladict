@@ -214,6 +214,11 @@
       "message": "直接搜索"
    },
 
+    "opt_mode_double": {
+      "description": "option",
+      "message": "雙擊搜索"
+   },
+
    "opt_mode_ctrl": {
       "description": "option",
       "message": "按住Ctrl/⌘"
@@ -221,7 +226,7 @@
 
    "opt_mode_description": {
       "description": "option description",
-      "message": "當用鼠標在網頁上選擇了一段文本，<strong>“顯示圖標”</strong>會先在鼠標附近顯示一個圖標，鼠標移上去後才顯示詞典面板；<strong>“直接搜索”</strong>則不顯示圖標，直接顯示詞典面板；<strong>“按住 Ctrl”</strong>在選擇文本時需同時按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵才顯示詞典面板。"
+      "message": "當用鼠標在網頁上選擇了一段文本，<strong>“顯示圖標”</strong>會先在鼠標附近顯示一個圖標，鼠標移上去後才顯示詞典面板；<strong>“直接搜索”</strong>則不顯示圖標，直接顯示詞典面板；<strong>“雙擊搜索”</strong>雙擊選擇文本之後直接顯示詞典面板；<strong>“按住 Ctrl”</strong>在選擇文本時需同時按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵才顯示詞典面板。"
    },
 
    "opt_triple_ctrl_title": {
