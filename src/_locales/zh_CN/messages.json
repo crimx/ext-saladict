@@ -1,7 +1,7 @@
 {
    "extension_name": {
       "description": "Extension name",
-      "message": "沙拉查词"
+      "message": "沙拉查词-网页划词翻译"
    },
 
    "extension_short_name": {
@@ -11,32 +11,112 @@
 
    "extension_description": {
       "description": "Description of extension",
-      "message": "网页划词翻译，混合各种词典的结果"
+      "message": "网页划词翻译。沙拉查词5.0，全新重写，好用得停不下来"
    },
 
-   "engine_bing": {
-      "description": "Engine Name",
+   "wechat": {
+      "description": "微信",
+      "message": "微信"
+   },
+
+   "alipay": {
+      "description": "支付宝",
+      "message": "支付宝"
+   },
+
+   "bitcoin": {
+      "description": "比特币",
+      "message": "比特币"
+   },
+
+   "buy_me_a_coffee": {
+      "description": "支持一下",
+      "message": "觉得好用的话欢迎支持一下我买杯咖啡哦~"
+   },
+
+   "dict_bing": {
+      "description": "Dictionary Name",
       "message": "必应词典"
    },
 
-   "engine_ud": {
-      "description": "Engine Name",
+   "dict_bing_tense": {
+      "description": "Dictionary option",
+      "message": "显示单词时态"
+   },
+
+   "dict_bing_phsym": {
+      "description": "Dictionary option",
+      "message": "显示单词发音"
+   },
+
+   "dict_bing_cdef": {
+      "description": "Dictionary option",
+      "message": "显示单词解释"
+   },
+
+   "dict_urban": {
+      "description": "Dictionary Name",
       "message": "Urban Dictionary"
    },
 
-   "engine_howjsay": {
-      "description": "Engine Name",
+   "dict_urban_resultnum": {
+      "description": "Dictionary option",
+      "message": "结果数量"
+   },
+
+   "dict_urban_resultnum_unit": {
+      "description": "Dictionary option",
+      "message": "个"
+   },
+
+   "dict_iciba": {
+      "description": "Dictionary Name",
+      "message": "金山词霸"
+   },
+
+   "dict_google": {
+      "description": "Dictionary Name",
+      "message": "谷歌翻译"
+   },
+
+   "dict_howjsay": {
+      "description": "Dictionary Name",
       "message": "Howjsay"
    },
 
-   "engine_dictcn": {
-      "description": "Engine Name",
-      "message": "dict.cn"
+   "dict_dictcn": {
+      "description": "Dictionary Name",
+      "message": "海词词典"
    },
 
-   "engine_vocabulary": {
-      "description": "Engine Name",
+   "dict_dictcn_chart": {
+      "description": "Dictionary option",
+      "message": "显示海词统计"
+   },
+
+   "dict_dictcn_etym": {
+      "description": "Dictionary option",
+      "message": "显示词源"
+   },
+
+   "dict_vocabulary": {
+      "description": "Dictionary Name",
       "message": "Vocabulary.com"
+   },
+
+   "dict_wordreference": {
+      "description": "Dictionary Name",
+      "message": "Wordreference"
+   },
+
+   "dict_wordreference_etym": {
+      "description": "Dictionary option",
+      "message": "显示词源"
+   },
+
+   "dict_wordreference_idiom": {
+      "description": "Dictionary option",
+      "message": "显示惯用法"
    },
 
    "US": {
@@ -54,93 +134,223 @@
       "message": "拼"
    },
 
-   "engine_error_msg": {
+   "inf_s": {
+      "description": "simple",
+      "message": "原型"
+   },
+
+   "inf_pl": {
+      "description": "plurality",
+      "message": "复数"
+   },
+
+   "inf_pp": {
+      "description": "past participle",
+      "message": "过去分词"
+   },
+
+   "inf_prp": {
+      "description": "presentparticiple",
+      "message": "现在分词"
+   },
+
+   "inf_3pps": {
+      "description": "third-person singular",
+      "message": "第三人称单数"
+   },
+
+   "inf_pt": {
+      "description": "past tense",
+      "message": "过去式"
+   },
+
+   "dict_error_msg": {
       "description": "Search Faild",
       "message": "无结果"
    },
 
+   "opt_storage_updated": {
+      "description": "when storage is updated",
+      "message": "设置已更新"
+   },
+
+   "opt_title": {
+      "description": "设置页面标题",
+      "message": "Saladict 设置"
+   },
+
+   "opt_new_version": {
+      "description": "New Version",
+      "message": "(请更新版本!)"
+   },
+
    "opt_app_active_title": {
-      "description": "popup option title",
+      "description": "option title",
       "message": "开启查词"
    },
 
-   "opt_icon_mode_title": {
-      "description": "popup option title",
+   "opt_app_active": {
+      "description": "option",
+      "message": "启用划词翻译"
+   },
+
+   "opt_app_active_description": {
+      "description": "option description",
+      "message": "关闭后划词翻译功能将关闭，快捷查词功能依然可用。"
+   },
+
+   "opt_mode_title": {
+      "description": "option title",
+      "message": "查词模式"
+   },
+
+   "opt_mode_icon": {
+      "description": "option",
       "message": "显示图标"
    },
 
-   "opt_direct_mode_title": {
-      "description": "popup option title",
+   "opt_mode_direct": {
+      "description": "option",
       "message": "直接搜索"
    },
 
-   "opt_ctrl_mode_title": {
-      "description": "popup option title",
-      "message": "按住Ctrl"
+   "opt_mode_ctrl": {
+      "description": "option",
+      "message": "按住Ctrl/⌘"
    },
 
    "opt_mode_description": {
-      "description": "popup option description",
-      "message": "当用鼠标在网页上选择了一段文本，“显示图标”会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；“直接搜索”则不显示图标，直接显示词典面板；“按住 Ctrl”在选择文本时需同时按住 `ctrl` 键才显示词典面板。"
+      "description": "option description",
+      "message": "当用鼠标在网页上选择了一段文本，<strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；<strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；<strong>“按住 Ctrl”</strong>在选择文本时需同时按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键才显示词典面板。"
    },
 
    "opt_triple_ctrl_title": {
-      "description": "popup option title",
-      "message": "快捷搜索"
+      "description": "option title",
+      "message": "快捷查词"
+   },
+
+   "opt_triple_ctrl": {
+      "description": "option title",
+      "message": "启用快捷查词"
    },
 
    "opt_triple_ctrl_description": {
-      "description": "popup option description",
-      "message": "连续按三次 ctrl 键将弹出词典搜索界面。"
+      "description": "option description",
+      "message": "连续按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键将弹出词典界面。"
    },
 
-   "opt_chinese_mode_title": {
-      "description": "popup option title",
+   "opt_language_title": {
+      "description": "option title",
+      "message": "语言支持"
+   },
+
+   "opt_language_chinese": {
+      "description": "Chinese",
       "message": "中文查词"
    },
 
-   "opt_english_mode_title": {
-      "description": "popup option title",
+   "opt_language_english": {
+      "description": "English",
       "message": "英文查词"
    },
 
    "opt_language_mode_description": {
-      "description": "popup option description",
+      "description": "option description",
       "message": "当选中的文字包含相应的语言时才进行查找。"
    },
 
-   "update_available": {
-      "description": "Update vailable",
-      "message": "沙拉查词有新版本啦！点击更新。"
+   "opt_dicts_title": {
+      "description": "option title",
+      "message": "词典设置"
    },
 
-   "update_title": {
-      "description": "Update message title",
-      "message": "沙拉查词已更新到 v"
+   "opt_dicts_description": {
+      "description": "option description",
+      "message": "配置各个词典，建议按个人需求裁减到最少。拖动词典标题可以进行排序。有任何问题请联系作者，微博 @盒装柠檬水 。"
    },
 
-   "update_message1": {
-      "description": "Update messages",
-      "message": "全新重写，你们提的要求都实现啦"
+   "opt_dicts_btn_add": {
+      "description": "option button",
+      "message": "添加"
    },
 
-   "update_message2": {
-      "description": "Update messages",
-      "message": "加入新词典，加入右键查词"
+   "opt_dicts_add_panel_title": {
+      "description": "option title",
+      "message": "添加词典"
    },
 
-   "update_message3": {
-      "description": "Update messages",
-      "message": "新增三种划词模式，连续按三次ctrl还可以直接查词"
+   "opt_dict_default_height": {
+      "description": "词典的默认高度",
+      "message": "默认高度"
    },
 
-   "update_message4": {
-      "description": "Update messages",
-      "message": "词典界面可以固定在网页上"
+   "popup_tab_title": {
+      "description": "二维码标题",
+      "message": "当前页面二维码"
    },
 
-   "update_message5": {
-      "description": "Update messages",
-      "message": "更多功能慢慢发现吧;D"
+   "popup_enter_options": {
+      "description": "进入设置页面的按钮",
+      "message": "进入详细设置"
+   },
+
+   "opt_context_title": {
+      "description": "option title",
+      "message": "右键菜单"
+   },
+
+   "opt_context_add_panel_title": {
+      "description": "option title",
+      "message": "添加右键菜单"
+   },
+
+   "opt_context_description": {
+      "description": "option description",
+      "message": "选择单词之后可以通过右键查找或者搜索。拖动标题可以进行排序。"
+   },
+
+   "context_google_search": {
+      "description": "context menu",
+      "message": "谷歌搜索"
+   },
+
+   "context_baidu_search": {
+      "description": "context menu",
+      "message": "百度搜索"
+   },
+
+   "context_bing_search": {
+      "description": "context menu",
+      "message": "必应搜索"
+   },
+
+   "context_google_translate": {
+      "description": "context menu",
+      "message": "谷歌翻译"
+   },
+
+   "context_etymonline": {
+      "description": "context menu",
+      "message": "培根词源"
+   },
+
+   "context_merriam_webster": {
+      "description": "context menu",
+      "message": "韦氏词典"
+   },
+
+   "context_oxford": {
+      "description": "context menu",
+      "message": "牛津词典"
+   },
+
+   "context_cambridge": {
+      "description": "context menu",
+      "message": "剑桥词典"
+   },
+
+   "context_bing_dict": {
+      "description": "context menu",
+      "message": "必应词典"
    }
 }
