@@ -214,6 +214,11 @@
       "message": "Direct Search"
    },
 
+   "opt_mode_double": {
+      "description": "option",
+      "message": "Double Click"
+   },
+
    "opt_mode_ctrl": {
       "description": "option",
       "message": "Hold Ctrl/⌘"
@@ -221,7 +226,7 @@
 
    "opt_mode_description": {
       "description": "option description",
-      "message": "When a text selection is made and <strong>'Show Icon'</strong> mode is enabled, a cute little icon would popup nearby the cursor; while in <strong>'Directly Search'</strong> mode the dictionary panel shows up insted; <strong>'Hold Ctrl/⌘'</strong> mode means the <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key must be pressed when the selection is made."
+      "message": "When a text selection is made and <strong>'Show Icon'</strong> mode is enabled, a cute little icon would popup nearby the cursor; while in <strong>'Directly Search'</strong> mode the dictionary panel shows up insted; <strong>'Double Click'</strong> mode shows dictionary panel after double click selection; <strong>'Hold Ctrl/⌘'</strong> mode means the <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key must be pressed when the selection is made."
    },
 
    "opt_triple_ctrl_title": {

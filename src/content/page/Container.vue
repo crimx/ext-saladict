@@ -46,6 +46,8 @@ export default {
 
       selectedText: '',
 
+      firstClickOfDoubleClick: false,
+
       // pin the panel
       isStayVisiable: false
     }
@@ -130,6 +132,9 @@ export default {
       this.pageMouseX = evt.clientX
       this.pageMouseY = evt.clientY
     },
+    clearDoubleClick () {
+      this.firstClickOfDoubleClick = false
+    },
     destroyPanel () {
       // return new Promise((resolve, reject) => {
       //   // to prevent listeners binding leaks
@@ -186,6 +191,17 @@ export default {
         this.$forceUpdate()
       }
 
+      // check double click
+      if (this.config.mode === 'double') {
+        if (!this.firstClickOfDoubleClick) {
+          this.firstClickOfDoubleClick = true
+          setTimeout(this.clearDoubleClick, 200)
+          return
+        } else {
+          this.firstClickOfDoubleClick = false
+        }
+      }
+
       this.setPosition(data.mouseX, data.mouseY)
 
       if (data.text) {
@@ -200,6 +216,9 @@ export default {
             if (data.ctrlKey) {
               this.isShowFrame = true
             }
+            break
+          case 'double':
+            this.isShowFrame = true
             break
         }
       }
