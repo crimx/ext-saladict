@@ -171,6 +171,69 @@
       </div>
     </div><!-- opt-item -->
 
+    <div class="opt-item">
+      <div class="opt-item__header">
+        <strong>{{ i18n('opt_context_title') }}</strong>
+      </div>
+      <div class="opt-item__body">
+        <header class="opt-dict__header">
+          <button type="button" class="btn btn-default btn-xs"
+            v-if="contextUnselected.length > 0"
+            @click="isShowAddContextPanel = true"
+          >{{ i18n('opt_dicts_btn_add') }}</button>
+          <transition name="fade">
+            <div class="modal show text-left" v-if="isShowAddContextPanel">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" @click="isShowAddContextPanel = false">&times;</button>
+                    <h4 class="modal-title">{{ i18n('opt_context_add_panel_title') }}</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div class="panel-group">
+                      <transition-group name="dict-panel-list">
+                        <div class="panel panel-default dict-panel"
+                          v-for="(id, i) in contextUnselected"
+                          :key="id"
+                        >
+                          <div class="dict-panel__header" @click="handleAddContext(id)">
+                            <strong class="dict-panel__title">{{ i18n('context_' + id) }}</strong>
+                            <button type="button" class="close">&#10004;</button>
+                          </div>
+                        </div>
+                      </transition-group>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div> <!--modal-->
+          </transition>
+        </header>
+        <div class="panel-group">
+          <draggable
+            v-model="config.contextMenu.selected"
+            :options="{animation: 200}"
+          >
+            <transition-group name="dict-panel-list">
+              <div class="panel panel-default dict-panel"
+                v-for="(id, i) in config.contextMenu.selected"
+                :key="id"
+              >
+                <div class="dict-panel__header">
+                  <strong class="dict-panel__title">{{ i18n('context_' + id) }}</strong>
+                  <button type="button" class="close" @click.stop="config.contextMenu.selected.splice(i, 1)">&times;</button>
+                </div>
+              </div>
+              <div key='___'></div><!--An empty div to fix a tricky bug on draggable-->
+            </transition-group>
+          </draggable>
+        </div>
+      </div>
+      <div class="opt-item__description-wrap">
+        <p class="opt-item__description" v-html="i18n('opt_context_description')"></p>
+      </div>
+    </div><!-- opt-item -->
+
   </div>
   <transition appear name="popup">
     <div class="frame-container">
@@ -208,6 +271,7 @@ export default {
       isShowConfigUpdated: false,
       showConfigUpdatedTimeout: undefined,
 
+      isShowAddContextPanel: false,
       isShowAddDictsPanel: false
     }
   },
@@ -230,6 +294,13 @@ export default {
       selected.push(id)
       if (Object.keys(this.config.dicts.all).length === selected.length) {
         this.isShowAddDictsPanel = false
+      }
+    },
+    handleAddContext (id) {
+      let selected = this.config.contextMenu.selected
+      selected.push(id)
+      if (Object.keys(this.config.contextMenu.all).length === selected.length) {
+        this.isShowAddContextPanel = false
       }
     },
     checkVersion () {
@@ -295,6 +366,10 @@ export default {
     dictsUnselected () {
       let selected = this.config.dicts.selected
       return Object.keys(this.config.dicts.all).filter(d1 => !selected.some(d2 => d1 === d2))
+    },
+    contextUnselected () {
+      let selected = this.config.contextMenu.selected
+      return Object.keys(this.config.contextMenu.all).filter(d1 => !selected.some(d2 => d1 === d2))
     }
   },
   components: {
@@ -423,6 +498,7 @@ kbd {
 }
 
 .opt-container {
+  min-width: 800px;
   margin-right: 500px;
   padding: 0 15px;
 }

@@ -59,15 +59,40 @@ function setConfigs (config) {
   })
 }
 
+function setContextMenu (config) {
+  chrome.contextMenus.removeAll()
+
+  config.contextMenu.selected.forEach(id => {
+    chrome.contextMenus.create({
+      id,
+      title: chrome.i18n.getMessage('context_' + id),
+      contexts: ['selection']
+    })
+  })
+}
+
 storage.sync.get('config', data => {
-  if (data.config) {
-    setConfigs(data.config)
+  let config = data.config
+
+  if (config) {
+    setConfigs(config)
+    setContextMenu(config)
+
+    // listen context menu
+    chrome.contextMenus.onClicked.addListener(({menuItemId, selectionText}) => {
+      let url = config.contextMenu.all[menuItemId]
+      if (url) {
+        chrome.tabs.create({url: url.replace('%s', selectionText)})
+      }
+    })
   }
 })
 
 storage.listen('config', changes => {
-  if (changes.config.newValue) {
-    setConfigs(changes.config.newValue)
+  let config = changes.config.newValue
+  if (config) {
+    setConfigs(config)
+    setContextMenu(config)
   }
 })
 
