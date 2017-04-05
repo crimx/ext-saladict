@@ -8,8 +8,9 @@ import {isContainChinese, isContainEnglish} from 'src/helpers/lang-check'
 import defaultConfig from 'src/app-config'
 
 let config = defaultConfig
-let numCtrlKeydown = 0
-let ctrlTimeout = null
+let numTripleCtrl = 0
+let tripleCtrlTimeout = null
+let isCtrlKeydown = false
 
 storage.sync.get('config', data => {
   if (data.config) {
@@ -17,7 +18,7 @@ storage.sync.get('config', data => {
   }
 
   if (config.tripleCtrl) {
-    document.addEventListener('keyup', handleCtrlKeyup)
+    document.addEventListener('keyup', handleTripleCtrlKeyup)
   }
 })
 
@@ -26,30 +27,59 @@ storage.listen('config', changes => {
 
   if (config.tripleCtrl) {
     if (!changes.config.oldValue.tripleCtrl) {
-      document.addEventListener('keyup', handleCtrlKeyup)
+      document.addEventListener('keyup', handleTripleCtrlKeyup)
     }
   } else {
     if (changes.config.oldValue.tripleCtrl) {
-      document.removeEventListener('keyup', handleCtrlKeyup)
+      document.removeEventListener('keyup', handleTripleCtrlKeyup)
     }
   }
 })
 
-function handleCtrlKeyup (evt) {
+function isCtrl (evt) {
   // ctrl & command(mac)
-  if (evt.keyCode === 17 || evt.keyCode === 91 || evt.keyCode === 93) {
-    if (++numCtrlKeydown === 3) {
+  if (evt.keyCode) {
+    if (evt.keyCode === 17 || evt.keyCode === 91 || evt.keyCode === 93) {
+      return true
+    }
+  }
+
+  if (evt.key) {
+    if (evt.key === 'Control' || evt.key === 'Meta') {
+      return true
+    }
+  }
+
+  return false
+}
+
+function handleTripleCtrlKeyup (evt) {
+  // ctrl & command(mac)
+  if (isCtrl(evt)) {
+    if (++numTripleCtrl === 3) {
       if (!config.tripleCtrl) { return }
       message.send({msg: 'TRIPLE_CTRL_SELF'})
     } else {
-      if (ctrlTimeout) { clearTimeout(ctrlTimeout) }
-      ctrlTimeout = setTimeout(() => {
-        numCtrlKeydown = 0
-        ctrlTimeout = null
+      if (tripleCtrlTimeout) { clearTimeout(tripleCtrlTimeout) }
+      tripleCtrlTimeout = setTimeout(() => {
+        numTripleCtrl = 0
+        tripleCtrlTimeout = null
       }, 500)
     }
   }
 }
+
+document.addEventListener('keydown', evt => {
+  if (isCtrl(evt)) {
+    isCtrlKeydown = true
+  }
+})
+
+document.addEventListener('keyup', evt => {
+  if (isCtrl(evt)) {
+    isCtrlKeydown = false
+  }
+})
 
 document.addEventListener('mouseup', evt => {
   if (evt.button !== 0 || !config.active || window.name === 'saladict-frame') { return }
@@ -78,7 +108,7 @@ document.addEventListener('mouseup', evt => {
             text,
             mouseX: evt.clientX,
             mouseY: evt.clientY,
-            ctrlKey: evt.ctrlKey || evt.metaKey
+            ctrlKey: isCtrlKeydown
           })
         } else {
           // post to upper frames/window
@@ -87,7 +117,7 @@ document.addEventListener('mouseup', evt => {
             text,
             mouseX: evt.clientX,
             mouseY: evt.clientY,
-            ctrlKey: evt.ctrlKey || evt.metaKey
+            ctrlKey: isCtrlKeydown
           }, '*')
         }
       }
