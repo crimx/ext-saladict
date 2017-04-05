@@ -122,7 +122,7 @@ message.on('FETCH_DICT_RESULT', (data, sender, sendResponse) => {
 // merge config on installed
 chrome.runtime.onInstalled.addListener(({previousVersion}) => {
   let config = defaultConfig
-  let [major, minor, patch] = previousVersion.split('.').map(n => Number(n))
+  let [major, minor, patch] = previousVersion ? previousVersion.split('.').map(n => Number(n)) : [0, 0, 0]
   if (major <= 4) {
     storage.local.clear()
     storage.sync.clear()
