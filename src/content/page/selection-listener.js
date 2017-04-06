@@ -42,6 +42,7 @@ function isCtrl (evt) {
     if (evt.keyCode === 17 || evt.keyCode === 91 || evt.keyCode === 93) {
       return true
     }
+    return false
   }
 
   if (evt.key) {
@@ -76,9 +77,7 @@ document.addEventListener('keydown', evt => {
 })
 
 document.addEventListener('keyup', evt => {
-  if (isCtrl(evt)) {
-    isCtrlKeydown = false
-  }
+  isCtrlKeydown = false
 })
 
 document.addEventListener('mouseup', evt => {
