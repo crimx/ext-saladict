@@ -133,8 +133,9 @@ let vm = {
     },
     unfoldDict (id) {
       let dict = this.dicts[id]
+      let preferredHeight = Number(this.config.dicts.all[id].preferredHeight)
       dict.isUnfolded = true
-      dict.height = dict.offsetHeight < dict.preferredHeight ? dict.offsetHeight : dict.preferredHeight
+      dict.height = dict.offsetHeight < preferredHeight ? dict.offsetHeight : preferredHeight
     },
     foldDict (id) {
       let dict = this.dicts[id]
@@ -221,7 +222,6 @@ let vm = {
  *     [id]: {
  *      result: null,
  *      height: 0,
- *      preferredHeight = config.dicts.all[id].preferredHeight,
  *      offsetHeight: 0,
  *      favicon: [full src],
  *      name: [locale],
@@ -249,7 +249,6 @@ compReq.keys().forEach(path => {
   vmData.dicts[id] = {
     result: null,
     height: 0,
-    preferredHeight: defaultConfig.dicts.all[id].preferredHeight,
     offsetHeight: 0,
     favicon: chrome.runtime.getURL('assets/dicts/' + allDicts[id].favicon),
     name: chrome.i18n.getMessage('dict_' + id),

@@ -566,12 +566,12 @@ kbd {
 }
 
 .dict-panel__title {
-  cursor: pointer;
+  cursor: move;
 }
 
 .dict-panel__header {
   @extend .panel-heading;
-  cursor: pointer;
+  cursor: move;
 }
 
 .dict-panel__body {
