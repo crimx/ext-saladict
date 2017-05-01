@@ -5,7 +5,8 @@
       v-if="isShowIcon"
       key="saladict-icon"
       :style="{top: iconTop + 'px !important', left: iconLeft + 'px !important'}"
-      @mouseover="iconMouseover"
+      @mouseenter="iconMouseenter"
+      @mouseleave="iconMouseLeave"
     >
       <img class="saladict-icon__leaf" src="../../assets/leaf.svg">
       <img class="saladict-icon__orange" src="../../assets/orange.svg">
@@ -43,6 +44,7 @@ export default {
       isShowFrame: false,
       frameTop: 0,
       frameLeft: 0,
+      showFrameTimeout: null,
 
       selectedText: '',
 
@@ -53,11 +55,16 @@ export default {
     }
   },
   methods: {
-    iconMouseover () {
+    iconMouseenter () {
       // icon hiding takes 1s due to animation
       if (this.isShowIcon) {
-        this.isShowFrame = true
+        this.showFrameTimeout = setTimeout(() => {
+          this.isShowFrame = true
+        }, 300)
       }
+    },
+    iconMouseLeave () {
+      clearTimeout(this.showFrameTimeout)
     },
     setPosition (mouseX, mouseY) {
       // icon position
