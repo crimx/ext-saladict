@@ -361,13 +361,13 @@ export default {
       const allDicts = this.config.dicts.all
       // header + each dictionary
       const preferredHeight = 30 + this.config.dicts.selected.reduce((sum, id) => {
-        let minHeight = 110
-        if (allDicts[id] && allDicts[id].minHeight) {
-          minHeight = allDicts[id].minHeight
+        let preferredHeight = 110
+        if (allDicts[id] && allDicts[id].preferredHeight) {
+          preferredHeight = allDicts[id].preferredHeight
         }
-        return sum + minHeight
+        return sum + preferredHeight
       }, 0)
-      const maxHeight = window.innerHeight * 2 / 3
+      const maxHeight = window.innerHeight * 0.78
       return preferredHeight > maxHeight ? maxHeight : preferredHeight
     },
     dictsUnselected () {
