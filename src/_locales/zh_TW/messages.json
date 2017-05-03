@@ -54,6 +54,16 @@
       "message": "顯示單詞解釋"
    },
 
+   "dict_howjsay": {
+      "description": "Dictionary Name",
+      "message": "Howjsay"
+   },
+
+   "dict_howjsay_related": {
+      "description": "Dictionary option",
+      "message": "展示相關詞語"
+   },
+
    "dict_urban": {
       "description": "Dictionary Name",
       "message": "Urban Dictionary"

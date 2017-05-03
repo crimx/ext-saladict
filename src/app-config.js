@@ -62,6 +62,15 @@ const getConfig = () => ({
           etym: true
         }
       },
+      howjsay: {
+        id: 'howjsay',
+        favicon: 'howjsay.png',
+        page: 'http://www.howjsay.com/index.php?word=%s',
+        preferredHeight: 265,
+        options: {
+          related: true
+        }
+      },
       wordreference: {
         id: 'wordreference',
         favicon: 'wordreference.png',
