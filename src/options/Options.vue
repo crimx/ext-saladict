@@ -8,6 +8,7 @@
   <div class="opt-container">
     <h1 class="page-header">{{ i18n('opt_title') }}
       <a class="new-version" v-if="isNewVersion" href="http://www.crimx.com/crx-saladict/" target="_blank">{{ i18n('opt_new_version') }}</a>
+      <button type="button" class="btn btn-default btn-reset" @click="handleReset">{{ i18n('opt_reset') }}</button>
     </h1>
 
     <div class="opt-item">
@@ -287,6 +288,9 @@ export default {
         this.dicts[id].height = 0
       })
     },
+    handleReset () {
+      storage.sync.set({config: defaultConfig})
+    },
     handlePanelHeadClick (id, i) {
       let height = this.dicts[id].height > 0 ? 0 : this.$refs.dict[i].firstChild.offsetHeight
       this.clearDictsHeight()
@@ -516,6 +520,16 @@ kbd {
 .new-version {
   text-decoration: none;
   color: #16a085;
+}
+
+.page-header {
+  position: relative;
+}
+
+.btn-reset {
+  position: absolute;
+  bottom: 8px;
+  right: 0;
 }
 
 .opt-item {
