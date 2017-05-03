@@ -109,8 +109,7 @@ let vm = {
           .then(response => {
             dict.isSearching = false
 
-            if (!response) { return }
-            if (response.error) { return console.error(response.error) }
+            if (!response || response.error) { return }
 
             dict.result = response.result
 

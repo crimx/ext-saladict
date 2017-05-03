@@ -54,6 +54,16 @@
       "message": "顯示單詞解釋"
    },
 
+   "dict_howjsay": {
+      "description": "Dictionary Name",
+      "message": "Howjsay"
+   },
+
+   "dict_howjsay_related": {
+      "description": "Dictionary option",
+      "message": "展示相關詞語"
+   },
+
    "dict_urban": {
       "description": "Dictionary Name",
       "message": "Urban Dictionary"
@@ -172,6 +182,11 @@
    "opt_storage_updated": {
       "description": "when storage is updated",
       "message": "設置已更新"
+   },
+
+   "opt_reset": {
+      "description": "reset button",
+      "message": "重置"
    },
 
    "opt_title": {

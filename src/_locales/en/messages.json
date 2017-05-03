@@ -54,6 +54,16 @@
       "message": "Show definitions"
    },
 
+   "dict_howjsay": {
+      "description": "Dictionary Name",
+      "message": "Howjsay"
+   },
+
+   "dict_howjsay_related": {
+      "description": "Dictionary option",
+      "message": "Show related words"
+   },
+
    "dict_urban": {
       "description": "Dictionary Name",
       "message": "Urban Dictionary"
@@ -172,6 +182,11 @@
    "opt_storage_updated": {
       "description": "when storage is updated",
       "message": "Options updated"
+   },
+
+   "opt_reset": {
+      "description": "reset button",
+      "message": "Reset"
    },
 
    "opt_title": {
