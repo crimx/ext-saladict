@@ -397,6 +397,13 @@ export default {
       if (result.config) {
         this.config = result.config
       }
+
+      storage.listen('config', changes => {
+        let config = changes.config.newValue
+        if (config) {
+          this.config = config
+        }
+      })
     })
 
     this.checkVersion()
