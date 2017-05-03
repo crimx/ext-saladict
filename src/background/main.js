@@ -130,5 +130,21 @@ chrome.runtime.onInstalled.addListener(({previousVersion}) => {
         storage.sync.set({config})
         setConfigs(config)
       })
+  } else if (major === 5) {
+    storage.sync.get('config', data => {
+      let config = data.config
+
+      if (config) {
+        if (minor < 3) {
+          // 5.3 added
+          config.dicts.all.howjsay = defaultConfig.dicts.all.howjsay
+        }
+      } else {
+        config = defaultConfig
+      }
+
+      storage.sync.set({config})
+      setConfigs(config)
+    })
   }
 })
