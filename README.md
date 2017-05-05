@@ -6,7 +6,11 @@ Chrome 浏览器插件，网页划词翻译。
   <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="saladict.jpg" /></a>
 </p>
 
-理论上支持所有 Chrome 系浏览器。
+理论上支持所有 Chrome 系浏览器。效果图：
+
+<p align="center">
+  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="screen.gif" /></a>
+</p>
 
 # 下载
 
