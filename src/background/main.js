@@ -150,6 +150,9 @@ chrome.runtime.onInstalled.addListener(({previousVersion}) => {
           // 5.3 added
           config.dicts.all.howjsay = defaultConfig.dicts.all.howjsay
         }
+        if (minor < 5) {
+          config.dicts.all.eudic = defaultConfig.dicts.all.eudic
+        }
       } else {
         config = defaultConfig
       }
