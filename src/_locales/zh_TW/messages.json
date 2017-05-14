@@ -89,11 +89,6 @@
       "message": "谷歌翻譯"
    },
 
-   "dict_howjsay": {
-      "description": "Dictionary Name",
-      "message": "Howjsay"
-   },
-
    "dict_dictcn": {
       "description": "Dictionary Name",
       "message": "海詞詞典"
@@ -347,6 +342,11 @@
    "context_google_translate": {
       "description": "context menu",
       "message": "谷歌翻譯"
+   },
+
+   "context_google_page_translate": {
+      "description": "context menu",
+      "message": "網頁翻譯"
    },
 
    "context_etymonline": {
