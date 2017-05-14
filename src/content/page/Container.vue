@@ -160,9 +160,10 @@ export default {
       const allDicts = this.config.dicts.all
       // header + each dictionary
       const preferredHeight = 30 + this.config.dicts.selected.reduce((sum, id) => {
-        let preferredHeight = 110
+        let preferredHeight = 0
         if (allDicts[id] && allDicts[id].preferredHeight) {
-          preferredHeight = allDicts[id].preferredHeight
+          // header 20px
+          preferredHeight = Number(allDicts[id].preferredHeight) + 20
         }
         return sum + preferredHeight
       }, 0)
