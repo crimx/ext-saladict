@@ -109,6 +109,11 @@
       "message": "Vocabulary.com"
    },
 
+   "dict_eudic": {
+      "description": "Dictionary Name",
+      "message": "Eudic"
+   },
+
    "dict_wordreference": {
       "description": "Dictionary Name",
       "message": "Wordreference"

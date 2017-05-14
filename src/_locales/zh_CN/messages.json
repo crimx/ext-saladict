@@ -109,6 +109,11 @@
       "message": "Vocabulary.com"
    },
 
+   "dict_eudic": {
+      "description": "Dictionary Name",
+      "message": "双语例句"
+   },
+
    "dict_wordreference": {
       "description": "Dictionary Name",
       "message": "Wordreference"

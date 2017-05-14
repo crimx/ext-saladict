@@ -62,6 +62,12 @@ const getConfig = () => ({
           etym: true
         }
       },
+      eudic: {
+        id: 'eudic',
+        favicon: 'eudic.png',
+        page: 'https://dict.eudic.net/dicts/en/%s',
+        preferredHeight: 265
+      },
       howjsay: {
         id: 'howjsay',
         favicon: 'howjsay.png',
