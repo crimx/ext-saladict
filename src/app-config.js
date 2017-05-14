@@ -89,7 +89,7 @@ const getConfig = () => ({
       google_search: 'https://www.google.com/#newwindow=1&q=%s',
       baidu_search: 'https://www.baidu.com/s?ie=utf-8&wd=%s',
       bing_search: 'https://www.bing.com/search?q=%s',
-      google_translate: 'https://translate.google.com/#auto/zh-CN/%s',
+      google_translate: 'https://translate.google.cn/#auto/zh-CN/%s',
       etymonline: 'http://www.etymonline.com/index.php?search=%s',
       merriam_webster: 'http://www.merriam-webster.com/dictionary/%s',
       oxford: 'http://www.oxforddictionaries.com/us/definition/english/%s',
