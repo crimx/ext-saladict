@@ -69,6 +69,12 @@ function setContextMenu (config) {
       contexts: ['selection']
     })
   })
+
+  chrome.contextMenus.create({
+    id: 'google_page_translate',
+    title: chrome.i18n.getMessage('context_google_page_translate'),
+    contexts: ['all']
+  })
 }
 
 storage.sync.get('config', data => {
@@ -79,7 +85,12 @@ storage.sync.get('config', data => {
     setContextMenu(config)
 
     // listen context menu
-    chrome.contextMenus.onClicked.addListener(({menuItemId, selectionText}) => {
+    chrome.contextMenus.onClicked.addListener(({menuItemId, selectionText, pageUrl}) => {
+      if (menuItemId === 'google_page_translate') {
+        chrome.tabs.create({url: `https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${pageUrl}&edit-text=&act=url`})
+        return
+      }
+
       let url = config.contextMenu.all[menuItemId]
       if (url) {
         chrome.tabs.create({url: url.replace('%s', selectionText)})
@@ -138,6 +149,9 @@ chrome.runtime.onInstalled.addListener(({previousVersion}) => {
         if (minor < 3) {
           // 5.3 added
           config.dicts.all.howjsay = defaultConfig.dicts.all.howjsay
+        }
+        if (minor < 5) {
+          config.dicts.all.eudic = defaultConfig.dicts.all.eudic
         }
       } else {
         config = defaultConfig

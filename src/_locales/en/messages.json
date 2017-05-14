@@ -89,11 +89,6 @@
       "message": "Google Translation"
    },
 
-   "dict_howjsay": {
-      "description": "Dictionary Name",
-      "message": "Howjsay"
-   },
-
    "dict_dictcn": {
       "description": "Dictionary Name",
       "message": "Dict.cn"
@@ -112,6 +107,11 @@
    "dict_vocabulary": {
       "description": "Dictionary Name",
       "message": "Vocabulary.com"
+   },
+
+   "dict_eudic": {
+      "description": "Dictionary Name",
+      "message": "Eudic"
    },
 
    "dict_wordreference": {
@@ -347,6 +347,11 @@
    "context_google_translate": {
       "description": "context menu",
       "message": "Google Translate"
+   },
+
+   "context_google_page_translate": {
+      "description": "context menu",
+      "message": "Page Translate"
    },
 
    "context_etymonline": {

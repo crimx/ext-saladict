@@ -5,7 +5,7 @@
       <div class="phsym" v-if="phsym">
         <div class="phsym-item" v-for="p in phsym">
           {{ `${p.lang}: ${p.al}` }}
-          <speaker :src="p.pron"></speaker>
+          <speaker v-if="p.pron" :src="p.pron"></speaker>
         </div>
       </div> <!--phsym-->
 
