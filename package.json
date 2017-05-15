@@ -1,6 +1,6 @@
 {
   "name": "saladict",
-  "version": "5.5.12",
+  "version": "5.5.13",
   "author": "CRIMX <straybugs@gmail.com>",
   "license": "MIT",
   "description": "Chrome extension, inline translator powered by mutiple online dictionaries",
