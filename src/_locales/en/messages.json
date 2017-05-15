@@ -304,6 +304,11 @@
       "message": "Default height"
    },
 
+   "opt_dict_default_unfold": {
+      "description": "词典是否默认展开",
+      "message": "Default Unfold"
+   },
+
    "popup_tab_title": {
       "description": "二维码标题",
       "message": "Qrcode of current page"

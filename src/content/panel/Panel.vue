@@ -4,10 +4,10 @@
     <input type="text" class="search-input"
       ref="searchbox"
       v-model="text"
-      @keyup.enter="seachText"
+      @keyup.enter="handleSearchText()"
     >
     <svg class="icon-search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966"
-      @click="seachText"
+      @click="handleSearchText()"
     >
       <path d="M51.704 51.273L36.844 35.82c3.79-3.8 6.14-9.04 6.14-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.082 0 9.747-1.817 13.383-4.832l14.895 15.49c.196.206.458.308.72.308.25 0 .5-.093.694-.28.398-.382.41-1.015.028-1.413zM21.984 40c-10.478 0-19-8.523-19-19s8.522-19 19-19 19 8.523 19 19-8.525 19-19 19z"/>
     </svg>
@@ -90,12 +90,15 @@ let vm = {
     isPinned: false
   },
   methods: {
-    seachText () {
+    seachText (selectedDicts) {
+      if (!Array.isArray(selectedDicts)) {
+        selectedDicts = [selectedDicts]
+      }
       let text = this.text.trim()
       this.text = text
       let dicts = this.dicts
 
-      this.config.dicts.selected.forEach((id, i) => {
+      selectedDicts.forEach((id) => {
         let dict = dicts[id]
         this.foldDict(id)
         dict.isSearching = true
@@ -109,11 +112,15 @@ let vm = {
           .then(response => {
             dict.isSearching = false
 
-            if (!response || response.error) { return }
+            if (!response || response.error) {
+              dict.isUnfolded = true
+              return
+            }
 
             dict.result = response.result
 
             this.$nextTick(() => {
+              let i = this.config.dicts.selected.indexOf(id)
               dict.offsetHeight = this.$refs.dict[i].firstChild.offsetHeight
               this.unfoldDict(id, i)
             })
@@ -132,8 +139,14 @@ let vm = {
     },
     unfoldDict (id) {
       let dict = this.dicts[id]
-      let preferredHeight = Number(this.config.dicts.all[id].preferredHeight)
       dict.isUnfolded = true
+
+      if (!dict.result) {
+        this.seachText(id)
+        return
+      }
+
+      let preferredHeight = Number(this.config.dicts.all[id].preferredHeight)
       dict.height = dict.offsetHeight < preferredHeight ? dict.offsetHeight : preferredHeight
     },
     foldDict (id) {
@@ -177,10 +190,14 @@ let vm = {
       this.config = changes.config.newValue
     },
     handleSearchText (data) {
-      if (data.text) {
+      if (data && data.text) {
         this.text = data.text
-        this.seachText()
       }
+      this.config.dicts.selected.forEach((id) => {
+        this.foldDict(id)
+        this.dicts[id].result = null // clear all results
+      })
+      this.seachText(this.defaultUnfoldList)
     },
     handleDestroy (__, ___, sendResponse) {
       storage.off(this.handleStorageChange)
@@ -206,10 +223,16 @@ let vm = {
         this.$refs.searchbox.focus()
         document.execCommand('paste')
         if (this.text.length) {
-          this.seachText()
+          this.handleSearchText()
         }
       }
     })
+  },
+  computed: {
+    defaultUnfoldList () {
+      let allDicts = this.config.dicts.all
+      return this.config.dicts.selected.filter(id => allDicts[id].defaultUnfold)
+    }
   },
   components: {}
 }

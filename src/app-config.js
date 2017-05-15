@@ -24,6 +24,7 @@ const getConfig = () => ({
         id: 'bing',
         favicon: 'bing.png',
         page: 'https://cn.bing.com/dict/search?q=%s',
+        defaultUnfold: true,
         preferredHeight: 160,
         options: {
           tense: true,
@@ -35,12 +36,14 @@ const getConfig = () => ({
         id: 'google',
         favicon: 'google.png',
         page: 'https://translate.google.com/#auto/zh-CN/%s',
+        defaultUnfold: true,
         preferredHeight: 110
       },
       urban: {
         id: 'urban',
         favicon: 'urban.png',
         page: 'http://www.urbandictionary.com/define.php?term=%s',
+        defaultUnfold: true,
         preferredHeight: 180,
         options: {
           resultnum: 2
@@ -50,12 +53,14 @@ const getConfig = () => ({
         id: 'vocabulary',
         favicon: 'vocabulary.png',
         page: 'https://www.vocabulary.com/dictionary/%s',
+        defaultUnfold: true,
         preferredHeight: 180
       },
       dictcn: {
         id: 'dictcn',
         favicon: 'dictcn.png',
         page: 'http://dict.cn/%s',
+        defaultUnfold: true,
         preferredHeight: 265,
         options: {
           chart: true,
@@ -66,12 +71,14 @@ const getConfig = () => ({
         id: 'eudic',
         favicon: 'eudic.png',
         page: 'https://dict.eudic.net/dicts/en/%s',
+        defaultUnfold: true,
         preferredHeight: 265
       },
       howjsay: {
         id: 'howjsay',
         favicon: 'howjsay.png',
         page: 'http://www.howjsay.com/index.php?word=%s',
+        defaultUnfold: true,
         preferredHeight: 265,
         options: {
           related: true
@@ -81,6 +88,7 @@ const getConfig = () => ({
         id: 'wordreference',
         favicon: 'wordreference.png',
         page: 'http://www.wordreference.com/definition/%s',
+        defaultUnfold: true,
         preferredHeight: 180,
         options: {
           etym: true,

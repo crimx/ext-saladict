@@ -304,6 +304,11 @@
       "message": "默認高度"
    },
 
+   "opt_dict_default_unfold": {
+      "description": "詞典是否默認展開",
+      "message": "默認展開"
+   },
+
    "popup_tab_title": {
       "description": "二維碼標題",
       "message": "當前頁面二維碼"
