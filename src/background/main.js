@@ -153,9 +153,9 @@ chrome.runtime.onInstalled.addListener(({previousVersion}) => {
         if (minor < 5) {
           config.dicts.all.eudic = defaultConfig.dicts.all.eudic
         }
-        if (minor < 5 || (minor === 5 && patch < 13)) {
-          config.dicts.all.forEach(dict => {
-            dict.defaultUnfold = true
+        if (minor < 5 || (minor === 5 && patch < 14)) {
+          Object.keys(config.dicts.all).forEach(id => {
+            config.dicts.all[id].defaultUnfold = true
           })
         }
       } else {
