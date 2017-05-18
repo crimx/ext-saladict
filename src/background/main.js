@@ -131,10 +131,12 @@ message.on('FETCH_DICT_RESULT', (data, sender, sendResponse) => {
 })
 
 // merge config on installed
-chrome.runtime.onInstalled.addListener(({previousVersion}) => {
+chrome.runtime.onInstalled.addListener(({reason, previousVersion}) => {
+  if (reason !== 'install' && reason !== 'update') { return }
+
   let config = defaultConfig
   let [major, minor, patch] = previousVersion ? previousVersion.split('.').map(n => Number(n)) : [0, 0, 0]
-  if (major <= 4) {
+  if (reason === 'install' || major <= 4) {
     storage.local.clear()
     storage.sync.clear()
       .then(() => {
