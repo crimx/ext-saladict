@@ -85,9 +85,13 @@ storage.sync.get('config', data => {
     setContextMenu(config)
 
     // listen context menu
-    chrome.contextMenus.onClicked.addListener(({menuItemId, selectionText, pageUrl}) => {
+    chrome.contextMenus.onClicked.addListener(({menuItemId, selectionText}) => {
       if (menuItemId === 'google_page_translate') {
-        chrome.tabs.create({url: `https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${pageUrl}&edit-text=&act=url`})
+        chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+          if (tabs && tabs[0]) {
+            chrome.tabs.create({url: `https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`})
+          }
+        })
         return
       }
 
@@ -131,10 +135,12 @@ message.on('FETCH_DICT_RESULT', (data, sender, sendResponse) => {
 })
 
 // merge config on installed
-chrome.runtime.onInstalled.addListener(({previousVersion}) => {
+chrome.runtime.onInstalled.addListener(({reason, previousVersion}) => {
+  if (reason !== 'install' && reason !== 'update') { return }
+
   let config = defaultConfig
   let [major, minor, patch] = previousVersion ? previousVersion.split('.').map(n => Number(n)) : [0, 0, 0]
-  if (major <= 4) {
+  if (reason === 'install' || major <= 4) {
     storage.local.clear()
     storage.sync.clear()
       .then(() => {

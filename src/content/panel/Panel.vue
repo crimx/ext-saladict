@@ -78,16 +78,45 @@
 import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 
-let vm = {
+const components = {}
+const compReq = require.context('./components/dicts', true, /\.vue$/i)
+const idChecker = /\/(\S+)\.vue$/i
+const allDicts = defaultConfig.dicts.all
+compReq.keys().forEach(path => {
+  let id = idChecker.exec(path)
+  if (!id) { return }
+  id = id[1].toLowerCase()
+  if (!allDicts[id]) { return }
+
+  components[id] = compReq(path)
+})
+
+export default {
   name: 'dictionary-panel',
-  data: { // WILL be changed into a function, see below
-    config: defaultConfig,
+  data () {
+    let dicts = {}
 
-    dicts: {},
+    Object.keys(defaultConfig.dicts.all).forEach(id => {
+      dicts[id] = {
+        result: null,
+        height: 0,
+        offsetHeight: 0,
+        favicon: chrome.runtime.getURL('assets/dicts/' + allDicts[id].favicon),
+        name: chrome.i18n.getMessage('dict_' + id),
+        isUnfolded: false,
+        isSearching: false
+      }
+    })
 
-    text: '',
+    return {
+      config: defaultConfig,
 
-    isPinned: false
+      dicts,
+
+      text: '',
+
+      isPinned: false
+    }
   },
   methods: {
     seachText (selectedDicts) {
@@ -234,55 +263,8 @@ let vm = {
       return this.config.dicts.selected.filter(id => allDicts[id].defaultUnfold)
     }
   },
-  components: {}
+  components
 }
-
-/**
- * dynamically require dictionary components, these properties are added
- * {
- *   dicts: {
- *     [id]: {
- *      result: null,
- *      height: 0,
- *      offsetHeight: 0,
- *      favicon: [full src],
- *      name: [locale],
- *      isUnfolded: false,
- *      isSearching: false
- *    }
- *     ...
- *   }
- *   components: {
- *     [id]
- *     ...
- *   }
- * }
- */
-const vmData = vm.data
-const compReq = require.context('./components/dicts', true, /\.vue$/i)
-const idChecker = /\/(\S+)\.vue$/i
-const allDicts = defaultConfig.dicts.all
-compReq.keys().forEach(path => {
-  let id = idChecker.exec(path)
-  if (!id) { return }
-  id = id[1].toLowerCase()
-  if (!allDicts[id]) { return }
-
-  vmData.dicts[id] = {
-    result: null,
-    height: 0,
-    offsetHeight: 0,
-    favicon: chrome.runtime.getURL('assets/dicts/' + allDicts[id].favicon),
-    name: chrome.i18n.getMessage('dict_' + id),
-    isUnfolded: false,
-    isSearching: false
-  }
-  vm.components[id] = compReq(path)
-})
-
-vm.data = function data () { return Object.assign({}, vmData) }
-
-export default vm
 </script>
 
 <style src="normalize.css/normalize.css"></style>
