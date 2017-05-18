@@ -85,9 +85,13 @@ storage.sync.get('config', data => {
     setContextMenu(config)
 
     // listen context menu
-    chrome.contextMenus.onClicked.addListener(({menuItemId, selectionText, pageUrl}) => {
+    chrome.contextMenus.onClicked.addListener(({menuItemId, selectionText}) => {
       if (menuItemId === 'google_page_translate') {
-        chrome.tabs.create({url: `https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${pageUrl}&edit-text=&act=url`})
+        chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+          if (tabs && tabs[0]) {
+            chrome.tabs.create({url: `https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`})
+          }
+        })
         return
       }
 
