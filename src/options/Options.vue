@@ -344,20 +344,23 @@ export default {
         }
 
         storage.sync.set({config: this.config})
-          .then(() => {
-            this.isShowConfigUpdated = true
-            if (this.showConfigUpdatedTimeout) { clearTimeout(this.showConfigUpdatedTimeout) }
-            this.showConfigUpdatedTimeout = setTimeout(() => {
-              this.isShowConfigUpdated = false
-              this.showConfigUpdatedTimeout = null
-            }, 1500)
-          })
+        .then(() => {
+          this.isShowConfigUpdated = true
+          if (this.showConfigUpdatedTimeout) { clearTimeout(this.showConfigUpdatedTimeout) }
+          this.showConfigUpdatedTimeout = setTimeout(() => {
+            this.isShowConfigUpdated = false
+            this.showConfigUpdatedTimeout = null
+          }, 1500)
+        })
       }
     },
     'config.dicts': {
       deep: true,
       handler () {
-        message.send({msg: 'SEARCH_TEXT_SELF', text: this.text})
+        clearTimeout(this.searchTextTimeout)
+        this.searchTextTimeout = setTimeout(() => {
+          message.send({msg: 'SEARCH_TEXT_SELF', text: this.text})
+        }, 1500)
       }
     }
   },
@@ -410,7 +413,8 @@ export default {
       storage.listen('config', changes => {
         let config = changes.config.newValue
         if (config) {
-          this.config = config
+          // only listen to active setting in popup panel
+          this.config.active = config.active
         }
       })
     })
