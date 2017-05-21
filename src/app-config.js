@@ -74,6 +74,16 @@ const getConfig = () => ({
         defaultUnfold: true,
         preferredHeight: 265
       },
+      etymonline: {
+        id: 'etymonline',
+        favicon: 'etymonline.png',
+        page: 'http://www.etymonline.com/index.php?search=%s',
+        defaultUnfold: true,
+        preferredHeight: 265,
+        options: {
+          resultnum: 2
+        }
+      },
       howjsay: {
         id: 'howjsay',
         favicon: 'howjsay.png',
@@ -107,7 +117,10 @@ const getConfig = () => ({
       etymonline: 'http://www.etymonline.com/index.php?search=%s',
       merriam_webster: 'http://www.merriam-webster.com/dictionary/%s',
       oxford: 'http://www.oxforddictionaries.com/us/definition/english/%s',
-      cambridge: 'http://dictionary.cambridge.org/dictionary/english-chinese-simplified/%s',
+      cambridge: 'http://dictionary.cambridge.org/spellcheck/english-chinese-simplified/?q=%s',
+      youdao: 'http://dict.youdao.com/w/%s',
+      dictcn: 'https://dict.eudic.net/dicts/en/%s',
+      iciba: 'http://www.iciba.com/%s',
       bing_dict: 'https://cn.bing.com/dict/?q=%s'
     }
   }
