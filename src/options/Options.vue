@@ -153,7 +153,7 @@
                   </div>
                   <div class="input-group">
                     <div class="input-group-addon">{{ i18n('opt_dict_default_height') }}</div>
-                    <input type="number" min="1" class="form-control" v-model="config.dicts.all[id].preferredHeight">
+                    <input type="number" min="1" class="form-control" v-model.number="config.dicts.all[id].preferredHeight">
                     <div class="input-group-addon">px</div>
                   </div>
                   <div class="checkbox" v-if="config.dicts.all[id].options">
@@ -163,7 +163,7 @@
                       </label>
                       <div class="input-group" v-else>
                         <div class="input-group-addon">{{ i18n(`dict_${id}_${optKey}`) }}</div>
-                        <input type="number" min="1" class="form-control" v-model="config.dicts.all[id].options[optKey]">
+                        <input type="number" min="1" class="form-control" v-model.number="config.dicts.all[id].options[optKey]">
                         <div class="input-group-addon">{{ i18n(`dict_${id}_${optKey}_unit`)  }}</div>
                       </div>
                     </template>
@@ -371,7 +371,7 @@ export default {
       const preferredHeight = 30 + this.config.dicts.selected.reduce((sum, id) => {
         let preferredHeight = 0
         if (allDicts[id] && allDicts[id].preferredHeight) {
-          preferredHeight = Number(allDicts[id].preferredHeight) + 20
+          preferredHeight = allDicts[id].preferredHeight + 20
         }
         return sum + preferredHeight
       }, 0)
