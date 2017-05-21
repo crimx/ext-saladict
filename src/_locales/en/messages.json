@@ -394,6 +394,21 @@
       "message": "Cambridge"
    },
 
+   "context_youdao": {
+      "description": "context menu",
+      "message": "Youdao"
+   },
+
+   "context_dictcn": {
+      "description": "context menu",
+      "message": "Dictcn"
+   },
+
+   "context_iciba": {
+      "description": "context menu",
+      "message": "iciba"
+   },
+
    "context_bing_dict": {
       "description": "context menu",
       "message": "Bing Dict"
