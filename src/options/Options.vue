@@ -294,7 +294,17 @@ export default {
       })
     },
     handleReset () {
-      storage.sync.set({config: defaultConfig})
+      storage.sync.set({config: defaultConfig}).then(() => {
+        storage.sync.get('config', ({config}) => {
+          if (config) {
+            this.config = config
+          } else {
+            storage.sync.set({config: defaultConfig})
+            this.config = JSON.parse(JSON.stringify(defaultConfig))
+          }
+        })
+      })
+
     },
     handlePanelHeadClick (id, i) {
       let height = this.dicts[id].height > 0 ? 0 : this.$refs.dict[i].firstChild.offsetHeight

@@ -394,6 +394,21 @@
       "message": "剑桥词典"
    },
 
+   "context_youdao": {
+      "description": "context menu",
+      "message": "有道词典"
+   },
+
+   "context_dictcn": {
+      "description": "context menu",
+      "message": "海词词典"
+   },
+
+   "context_iciba": {
+      "description": "context menu",
+      "message": "金山词霸"
+   },
+
    "context_bing_dict": {
       "description": "context menu",
       "message": "必应词典"
