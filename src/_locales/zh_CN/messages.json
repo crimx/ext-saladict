@@ -114,6 +114,21 @@
       "message": "双语例句"
    },
 
+   "dict_etymonline": {
+      "description": "Dictionary Name",
+      "message": "Etymonline"
+   },
+
+   "dict_etymonline_resultnum": {
+      "description": "Dictionary option",
+      "message": "结果数量"
+   },
+
+   "dict_etymonline_resultnum_unit": {
+      "description": "Dictionary option",
+      "message": "个"
+   },
+
    "dict_wordreference": {
       "description": "Dictionary Name",
       "message": "Wordreference"

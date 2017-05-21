@@ -23,7 +23,7 @@ export default function search (text, config) {
 
     /**
      * @async
-     * @returns {Promise.<UrbanResult>} A promise with the result to send back
+     * @returns {Promise.<UrbanResult[]>} A promise with the result to send back
      */
     function handleDom (doc) {
       let result = []

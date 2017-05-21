@@ -1,5 +1,6 @@
 import {storage, message} from 'src/helpers/chrome-api'
 import defaultConfig from 'src/app-config'
+import deepmerge from 'deepmerge'
 
 // background script as transfer station
 const msgChecker = /_SELF$/
@@ -135,41 +136,27 @@ message.on('FETCH_DICT_RESULT', (data, sender, sendResponse) => {
 })
 
 // merge config on installed
-chrome.runtime.onInstalled.addListener(({reason, previousVersion}) => {
-  if (reason !== 'install' && reason !== 'update') { return }
-
-  let config = defaultConfig
-  let [major, minor, patch] = previousVersion ? previousVersion.split('.').map(n => Number(n)) : [0, 0, 0]
-  if (reason === 'install' || major <= 4) {
-    storage.local.clear()
-    storage.sync.clear()
-      .then(() => {
-        storage.sync.set({config})
-        setConfigs(config)
+chrome.runtime.onInstalled.addListener(() => {
+  storage.sync.get('config', ({config}) => {
+    if (config && config.dicts && config.dicts.all) {
+      // got the correct version of config
+      config = deepmerge(defaultConfig, config, {
+        clone: true,
+        arrayMerge: (destinationArray, sourceArray) => sourceArray
       })
-  } else if (major === 5) {
-    storage.sync.get('config', data => {
-      let config = data.config
+    } else {
+      storage.local.clear()
+      storage.sync.clear()
+      config = defaultConfig
+    }
 
-      if (config) {
-        if (minor < 3) {
-          // 5.3 added
-          config.dicts.all.howjsay = defaultConfig.dicts.all.howjsay
-        }
-        if (minor < 5) {
-          config.dicts.all.eudic = defaultConfig.dicts.all.eudic
-        }
-        if (minor < 5 || (minor === 5 && patch < 14)) {
-          Object.keys(config.dicts.all).forEach(id => {
-            config.dicts.all[id].defaultUnfold = true
-          })
-        }
-      } else {
-        config = defaultConfig
-      }
-
-      storage.sync.set({config})
-      setConfigs(config)
+    // fix historical problems
+    Object.keys(config.dicts.all).forEach(id => {
+      config.dicts.all[id].preferredHeight = Number(config.dicts.all[id].preferredHeight)
     })
-  }
+    config.dicts.all.urban.options.resultnum = Number(config.dicts.all.urban.options.resultnum)
+
+    storage.sync.set({config})
+    setConfigs(config)
+  })
 })

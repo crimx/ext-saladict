@@ -71,7 +71,7 @@
 
    "dict_urban_resultnum": {
       "description": "Dictionary option",
-      "message": "Shwo"
+      "message": "Show"
    },
 
    "dict_urban_resultnum_unit": {
@@ -112,6 +112,21 @@
    "dict_eudic": {
       "description": "Dictionary Name",
       "message": "Eudic"
+   },
+
+   "dict_etymonline": {
+      "description": "Dictionary Name",
+      "message": "Etymonline"
+   },
+
+   "dict_etymonline_resultnum": {
+      "description": "Dictionary option",
+      "message": "Show"
+   },
+
+   "dict_etymonline_resultnum_unit": {
+      "description": "Dictionary option",
+      "message": "results"
    },
 
    "dict_wordreference": {

@@ -3,7 +3,7 @@
   <header class="panel-header">
     <input type="text" class="search-input"
       ref="searchbox"
-      v-model="text"
+      v-model.trim="text"
       @keyup.enter="handleSearchText()"
     >
     <svg class="icon-search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966"
@@ -175,7 +175,7 @@ export default {
         return
       }
 
-      let preferredHeight = Number(this.config.dicts.all[id].preferredHeight)
+      let preferredHeight = this.config.dicts.all[id].preferredHeight
       dict.height = dict.offsetHeight < preferredHeight ? dict.offsetHeight : preferredHeight
     },
     foldDict (id) {
