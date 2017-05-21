@@ -150,6 +150,12 @@ chrome.runtime.onInstalled.addListener(() => {
       config = defaultConfig
     }
 
+    // fix historical problems
+    Object.keys(config.dicts.all).forEach(id => {
+      config.dicts.all[id].preferredHeight = Number(config.dicts.all[id].preferredHeight)
+    })
+    config.dicts.all.urban.options.resultnum = Number(config.dicts.all.urban.options.resultnum)
+
     storage.sync.set({config})
     setConfigs(config)
   })
