@@ -1,5 +1,5 @@
 <template>
-<div class="panel-container">
+<div class="panel-container" :class="{'no-user-select': isDragging}">
   <header class="panel-header">
     <input type="text" class="search-input"
       ref="searchbox"
@@ -27,7 +27,7 @@
       <path d="M31.112 1.414L29.698 0 15.556 14.142 1.414 0 0 1.414l14.142 14.142L0 29.698l1.414 1.414L15.556 16.97l14.142 14.142 1.414-1.414L16.97 15.556"/>
     </svg>
   </header>
-  <div class="dicts">
+  <div class="dicts" @click="handleDictsPanelClick">
     <section class="dict-item" v-for="id in config.dicts.selected">
       <header class="dict-item-header">
         <img class="dict-item-logo" :src="dicts[id].favicon" @click="handleDictPage(id)">
@@ -115,6 +115,8 @@ export default {
 
       text: '',
 
+      isDragging: false,
+
       isPinned: false
     }
   },
@@ -191,6 +193,8 @@ export default {
       message.send({msg: 'CREATE_TAB', url: this.config.dicts.all[id].page.replace('%s', this.text)})
     },
     handleDragStart (evt) {
+      this.isDragging = true
+
       window.parent.postMessage({
         msg: 'SALADICT_DRAG_START',
         mouseX: evt.clientX,
@@ -208,6 +212,8 @@ export default {
       }, '*')
     },
     handleDragEnd () {
+      this.isDragging = false
+
       window.parent.postMessage({
         msg: 'SALADICT_DRAG_END'
       }, '*')
@@ -217,6 +223,15 @@ export default {
     },
     handleStorageChange (changes) {
       this.config = changes.config.newValue
+    },
+    handleDictsPanelClick (evt) {
+      for (let target = evt.target; target !== evt.currentTarget; target = target.parentNode) {
+        if (target.href) {
+          chrome.runtime.sendMessage({msg: 'CREATE_TAB', url: target.href})
+          evt.preventDefault()
+          return
+        }
+      }
     },
     handleSearchText (data) {
       if (data && data.text) {
@@ -484,6 +499,10 @@ body {
 /*-----------------------------------------------*\
     States
 \*-----------------------------------------------*/
+.no-user-select {
+  user-select: none;
+}
+
 .icon-pin--pinned {
   transform: rotate(45deg);
 }

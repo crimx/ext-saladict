@@ -2,15 +2,15 @@
 <section>
   <div class="howjsay-result" v-if="result">
     <div class="current-word">
-      <a href="javascript:void()"
+      <a :href="`http://www.howjsay.com/index.php?word=${result.currentWord.title}`"
        @mouseenter="play(result.currentWord)"
        @mouseleave="stop(result.currentWord)"
       >{{ result.currentWord.title }}</a>
       <speaker :src="result.currentWord.mp3"></speaker>
     </div>
     <div class="related-words" v-if="result.relatedWords">
-      <a href="javascript:void()"
-       v-for="word in result.relatedWords"
+      <a v-for="word in result.relatedWords"
+       :href="`http://www.howjsay.com/index.php?word=${word.title}`"
        @mouseenter="play(word)"
        @mouseleave="stop(word)"
       >{{ word.title }}</a>

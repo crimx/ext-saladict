@@ -9,7 +9,7 @@
       <div class="meaning" v-if="def.meaning">{{ def.meaning }}</div>
       <div class="example" v-if="def.example">{{ def.example }}</div>
       <div class="tags" v-if="def.tags">
-        <a class="tags-item" v-for="tag in def.tags" href="javascript:void(0);" @click="tagClick(tag)">#{{ tag }}</a>
+        <a class="tags-item" v-for="tag in def.tags" :href="`http://www.urbandictionary.com/tags.php?tag=${tag}`">#{{ tag }}</a>
       </div>
       <footer class="footer">
         <span class="contributor">{{ def.contributor }}</span>
@@ -37,11 +37,6 @@ import Speaker from '../Speaker'
 export default {
   name: 'Urban',
   props: ['result'],
-  methods: {
-    tagClick (tag) {
-      chrome.runtime.sendMessage({msg: 'CREATE_TAB', url: 'http://www.urbandictionary.com/tags.php?tag=' + tag})
-    }
-  },
   components: {
     Speaker
   }
