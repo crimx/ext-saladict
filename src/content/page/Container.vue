@@ -385,6 +385,8 @@ export default {
 div.saladict-container {
   @extend %reset;
   display: block;
+  position: relative;
+  z-index: $global-zindex-tooltip;
 }
 
 iframe.saladict-frame {
