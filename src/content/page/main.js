@@ -25,5 +25,5 @@ function activate () {
   })
   .$mount()
 
-  document.body.insertBefore(vm.$el, document.body.childNodes[0])
+  document.body.appendChild(vm.$el)
 }
