@@ -382,75 +382,77 @@ export default {
   word-break: normal;
 }
 
-div.saladict-container {
-  @extend %reset;
-  display: block;
-  position: relative;
-  z-index: $global-zindex-tooltip;
-}
-
-iframe.saladict-frame {
-  @extend %reset;
-  position: fixed;
-  z-index: $global-zindex-tooltip;
-  overflow: hidden;
-  width: 400px;
-  box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
-}
-
 $icon-width: 30px;
-div.saladict-icon {
-  @extend %reset;
-  position: fixed;
-  z-index: $global-zindex-tooltip;
-  overflow: hidden;
-  width: $icon-width;
-  height: $icon-width;
-}
-
 $tomato-rotate: 45deg;
 $leaf-rotate: 30deg;
 
-img.saladict-icon__leaf {
-  @extend %reset;
-  position: absolute;
-  z-index: 1;
-  top: 50 * $icon-width / 1024;
-  left: 600 * $icon-width / 1024;
-  width: $icon-width * 729 / 1024 * 0.6;
-  height: $icon-width * 0.6;
-  transform: rotate($leaf-rotate);
-}
+:root:root:root:root:root {
+  div.saladict-container {
+    @extend %reset;
+    display: block;
+    position: relative;
+    z-index: $global-zindex-tooltip;
+  }
 
-img.saladict-icon__orange {
-  @extend %reset;
-  position: absolute;
-  z-index: 2;
-  top: 0 * $icon-width / 1024;
-  left: 195 * $icon-width / 1024;
-  width: $icon-width * 0.6;
-  height: $icon-width * 0.6;
-}
+  iframe.saladict-frame {
+    @extend %reset;
+    position: fixed;
+    z-index: $global-zindex-tooltip;
+    overflow: hidden;
+    width: 400px;
+    box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
+  }
 
-img.saladict-icon__tomato {
-  @extend %reset;
-  position: absolute;
-  z-index: 3;
-  top: 250 * $icon-width / 1024;
-  left: -117 * $icon-width / 1024;
-  width: $icon-width * 0.6;
-  height: $icon-width * 513 / 1024 * 0.6;
-  transform: rotate($tomato-rotate);
-}
+  div.saladict-icon {
+    @extend %reset;
+    position: fixed;
+    z-index: $global-zindex-tooltip;
+    overflow: hidden;
+    width: $icon-width;
+    height: $icon-width;
+  }
 
-img.saladict-icon__bowl {
-  @extend %reset;
-  position: absolute;
-  z-index: 4;
-  bottom: 0;
-  left: 0;
-  width: $icon-width;
-  height: $icon-width * 530 / 1024;
+  img.saladict-icon__leaf {
+    @extend %reset;
+    position: absolute;
+    z-index: 1;
+    top: 50 * $icon-width / 1024;
+    left: 600 * $icon-width / 1024;
+    width: $icon-width * 729 / 1024 * 0.6;
+    height: $icon-width * 0.6;
+    transform: rotate($leaf-rotate);
+  }
+
+  img.saladict-icon__orange {
+    @extend %reset;
+    position: absolute;
+    z-index: 2;
+    top: 0 * $icon-width / 1024;
+    left: 195 * $icon-width / 1024;
+    width: $icon-width * 0.6;
+    height: $icon-width * 0.6;
+  }
+
+  img.saladict-icon__tomato {
+    @extend %reset;
+    position: absolute;
+    z-index: 3;
+    top: 250 * $icon-width / 1024;
+    left: -117 * $icon-width / 1024;
+    width: $icon-width * 0.6;
+    height: $icon-width * 513 / 1024 * 0.6;
+    transform: rotate($tomato-rotate);
+  }
+
+  img.saladict-icon__bowl {
+    @extend %reset;
+    position: absolute;
+    z-index: 4;
+    bottom: 0;
+    left: 0;
+    width: $icon-width;
+    height: $icon-width * 530 / 1024;
+  }
 }
 
 /*-----------------------------------------------*\
