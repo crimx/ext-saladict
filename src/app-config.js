@@ -94,6 +94,20 @@ const getConfig = () => ({
           related: true
         }
       },
+      guoyu: {
+        id: 'guoyu',
+        favicon: 'moedict.png',
+        page: 'https://www.moedict.tw/%s',
+        defaultUnfold: true,
+        preferredHeight: 265
+      },
+      liangan: {
+        id: 'liangan',
+        favicon: 'moedict.png',
+        page: 'https://www.moedict.tw/~%s',
+        defaultUnfold: true,
+        preferredHeight: 265
+      },
       wordreference: {
         id: 'wordreference',
         favicon: 'wordreference.png',
@@ -121,6 +135,8 @@ const getConfig = () => ({
       youdao: 'http://dict.youdao.com/w/%s',
       dictcn: 'https://dict.eudic.net/dicts/en/%s',
       iciba: 'http://www.iciba.com/%s',
+      liangan: 'https://www.moedict.tw/~%s',
+      guoyu: 'https://www.moedict.tw/%s',
       bing_dict: 'https://cn.bing.com/dict/?q=%s'
     }
   }
