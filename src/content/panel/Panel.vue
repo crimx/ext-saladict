@@ -12,6 +12,15 @@
       <path d="M51.704 51.273L36.844 35.82c3.79-3.8 6.14-9.04 6.14-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.082 0 9.747-1.817 13.383-4.832l14.895 15.49c.196.206.458.308.72.308.25 0 .5-.093.694-.28.398-.382.41-1.015.028-1.413zM21.984 40c-10.478 0-19-8.523-19-19s8.522-19 19-19 19 8.523 19 19-8.525 19-19 19z"/>
     </svg>
     <div class="dragarea" @mousedown.stop="handleDragStart"></div>
+    <svg class="icon-qrcode" @mouseenter="showQRcode" @mouseleave="currentTabUrl = ''"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
+      <path d="M0 225v25h250v-25H0zM0 25h250V0H0v25z"/>
+      <path d="M0 250h25V0H0v250zm225 0h25V0h-25v250zM87.5 162.5h75v-75h-75v75zM362 587v25h80v-25h-80zm0-200h80v-25h-80v25z"/>
+      <path d="M362 612h25V362h-25v250zm190-250v25h60v-25h-60zm-77.5 87.5v25h50v-25h-50z"/>
+      <path d="M432 497.958v-25h-70v25h70zM474.5 387h50v-25h-50v25zM362 225v25h250v-25H362zm0-200h250V0H362v25z"/>
+      <path d="M362 250h25V0h-25v250zm225 0h25V0h-25v250zm-137.5-87.5h75v-75h-75v75zM0 587v25h250v-25H0zm0-200h250v-25H0v25z"/>
+      <path d="M0 612h25V362H0v250zm225 0h25V362h-25v250zM87.5 524.5h75v-75h-75v75zM587 612h25V441h-25v171zM474.5 499.5v25h50v-25h-50z"/>
+      <path d="M474.5 449.5v75h25v-75h-25zM562 587v25h50v-25h-50z"/>
+    </svg>
     <svg class="icon-options" @click="openOptionsPage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
       <path d="M0 97.92v24.48h612V97.92H0zm0 220.32h612v-24.48H0v24.48zm0 195.84h612V489.6H0v24.48z"/>
     </svg>
@@ -71,14 +80,21 @@
       </div>
     </section>
   </div>
+  <transition name="fade">
+    <div class="qrcode-panel" v-if="currentTabUrl">
+      <qrcode :value="currentTabUrl" :size="250"></qrcode>
+      <p class="qrcode-panel-title">{{ i18n('popup_tab_title') }}</p>
+    </div>
+  </transition>
 </div>
 </template>
 
 <script>
 import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
+import Qrcode from 'vue-qrious'
 
-const components = {}
+const components = {Qrcode}
 const compReq = require.context('./components/dicts', true, /\.vue$/i)
 const idChecker = /\/(\S+)\.vue$/i
 const allDicts = defaultConfig.dicts.all
@@ -117,10 +133,15 @@ export default {
 
       isDragging: false,
 
+      currentTabUrl: '',
+
       isPinned: false
     }
   },
   methods: {
+    i18n (key) {
+      return chrome.i18n.getMessage(key)
+    },
     seachText (selectedDicts) {
       if (!Array.isArray(selectedDicts)) {
         selectedDicts = [selectedDicts]
@@ -164,6 +185,13 @@ export default {
     pinPanel () {
       this.isPinned = !this.isPinned
       message.send({msg: 'PIN_PANEL_SELF', flag: this.isPinned})
+    },
+    showQRcode () {
+      chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+        if (tabs.length > 0) {
+          this.currentTabUrl = tabs[0].url
+        }
+      })
     },
     openOptionsPage () {
       message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('options.html')})
@@ -355,6 +383,10 @@ body {
   @extend %icon;
 }
 
+.icon-qrcode {
+  @extend %icon;
+}
+
 .icon-options {
   @extend %icon;
 }
@@ -494,6 +526,21 @@ body {
   width: 15px;
   height: 15px;
   fill: #000;
+}
+
+.qrcode-panel {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
+}
+
+.qrcode-panel-title {
+  text-align: center;
+  margin: 5px 0 0 0;
 }
 
 /*-----------------------------------------------*\
