@@ -7,9 +7,15 @@ const msgChecker = /_SELF$/
 message.listen((data, sender, sendResponse) => {
   if (msgChecker.test(data.msg)) {
     data.msg = data.msg.slice(0, -5)
-    message.send(sender.tab.id, data, response => {
-      sendResponse(response)
-    })
+    if (sender.tab) {
+      message.send(sender.tab.id, data, response => {
+        sendResponse(response)
+      })
+    } else {
+      message.send(data, response => {
+        sendResponse(response)
+      })
+    }
     return true
   }
 
