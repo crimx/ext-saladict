@@ -1,10 +1,11 @@
 <template>
 <div class="popup-container">
-  <button type="button" class="btn btn-success btn-lg btn-block btn-options" @click="openOptions">{{ i18n('popup_enter_options') }}</button>
-  <div class="qrcode" @click="openOptions">
-    <qrcode :value="tabsUrl" v-if="tabsUrl" :size="250"></qrcode>
-    <div class="tab-title">{{ i18n('popup_tab_title') }}</div>
-  </div>
+  <iframe class="saladict-frame"
+    name="saladict-frame"
+    frameBorder="0"
+    :src="frameSource"
+    :style="{height: panelHeight + 'px'}"
+  ></iframe>
   <div class="active-switch">
     <span class="switch-title">{{ i18n('opt_app_active_title') }}</span>
     <input type="checkbox" id="opt-active" class="btn-switch" v-model="config.active">
@@ -14,7 +15,6 @@
 </template>
 
 <script>
-import Qrcode from 'vue-qrious'
 import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 
@@ -22,9 +22,8 @@ export default {
   name: 'Popup',
   data () {
     return {
-      config: defaultConfig,
-      tabsUrl: '',
-      tabsTitle: ''
+      frameSource: chrome.runtime.getURL('panel.html'),
+      config: defaultConfig
     }
   },
   watch: {
@@ -38,20 +37,24 @@ export default {
   methods: {
     i18n (key) {
       return chrome.i18n.getMessage(key)
-    },
-    openOptions () {
-      message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('options.html')})
+    }
+  },
+  computed: {
+    panelHeight () {
+      const allDicts = this.config.dicts.all
+      // header + each dictionary
+      const preferredHeight = 30 + this.config.dicts.selected.reduce((sum, id) => {
+        let preferredHeight = 0
+        if (allDicts[id] && allDicts[id].preferredHeight) {
+          preferredHeight = allDicts[id].preferredHeight + 20
+        }
+        return sum + preferredHeight
+      }, 0)
+      const maxHeight = 400
+      return preferredHeight > maxHeight ? maxHeight : preferredHeight
     }
   },
   created () {
-    chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-      if (tabs && tabs[0]) {
-        let tab = tabs[0]
-        this.tabsUrl = tab.url
-        this.tabsTitle = tab.title
-      }
-    })
-
     storage.sync.get('config').then(result => {
       if (result.config) {
         this.config = result.config
@@ -60,81 +63,35 @@ export default {
     storage.listen('config', changes => {
       this.config = changes.config.newValue
     })
-  },
-  components: {
-    Qrcode
+    message.on('PANEL_READY', (__, ___, sendResponse) => {
+      // trigger the paste command
+      sendResponse({ctrl: true})
+    })
   }
 }
 </script>
 
 <style lang="scss">
 /*------------------------------------*\
-   Bootstrap
-\*------------------------------------*/
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/variables";
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/mixins";
-
-// Reset and dependencies
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/normalize";
-
-// Core CSS
-@import "~bootstrap-sass/assets/stylesheets/bootstrap/buttons";
-
-/*------------------------------------*\
    Base
 \*------------------------------------*/
 html {
+  margin: 0;
+  padding: 0;
   overflow-y: scroll;
 }
 
 body {
+  margin: 0;
+  padding: 0;
   font-size: 14px;
   font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
 
-/*------------------------------------*\
-   Components
-\*------------------------------------*/
-.popup-container {
-  width: 300px;
-  padding: 20px 10px 0 10px;
-  text-align: center;
-  color: #333;
-}
-
-.btn-options {
-  position: relative;
-
-  &::before {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 100%;
-    left: 2px;
-    width: 100px;
-    height: 100px;
-    background: #87d37c;
-    transform: skewX(50deg);
-    transform-origin: top;
-  }
-
-  &::after {
-    content: '';
-    display: block;
-    position: absolute;
-    top: 100%;
-    right: 2px;
-    width: 100px;
-    height: 100px;
-    background: #87d37c;
-    transform: skewX(-50deg);
-    transform-origin: top;
-  }
-}
-
-.qrcode {
-  position: relative;
-  cursor: pointer;
+.saladict-frame {
+  width: 400px;
+  overflow: hidden;
+  border: 0 none;
 }
 
 .active-switch {
@@ -142,7 +99,6 @@ body {
   align-items: center;
   position: relative;
   height: 56px;
-  margin: 20px -10px 0 -10px;
   padding: 0 20px;
   background: #f9f9f9;
   box-shadow: inset 0 10px 6px -6px rgba(0,0,0,.13);
