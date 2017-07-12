@@ -11,7 +11,7 @@
 
    "extension_description": {
       "description": "Description of extension",
-      "message": "網頁劃詞翻譯。沙拉查詞5，全新重寫，好用得停不下來"
+      "message": "詞典豐富的網頁劃詞翻譯，提供清爽舒適的個性化劃詞體驗"
    },
 
    "wechat": {
@@ -127,6 +127,16 @@
    "dict_etymonline_resultnum_unit": {
       "description": "Dictionary option",
       "message": "個"
+   },
+
+   "dict_liangan": {
+      "description": "Dictionary Name",
+      "message": "兩岸詞典"
+   },
+
+   "dict_guoyu": {
+      "description": "Dictionary Name",
+      "message": "國語辭典"
    },
 
    "dict_wordreference": {
@@ -407,6 +417,16 @@
    "context_iciba": {
       "description": "context menu",
       "message": "金山詞霸"
+   },
+
+   "context_liangan": {
+      "description": "context menu",
+      "message": "兩岸詞典"
+   },
+
+   "context_guoyu": {
+      "description": "context menu",
+      "message": "國語辭典"
    },
 
    "context_bing_dict": {

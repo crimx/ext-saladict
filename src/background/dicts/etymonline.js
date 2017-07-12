@@ -25,6 +25,14 @@ export default function search (text, config) {
       // strip script tags, just in case
       dictionary.querySelectorAll('script').forEach(el => el.parentNode.removeChild(el))
 
+      // resolve href
+      dictionary.querySelectorAll('a').forEach(el => {
+        let href = el.getAttribute('href')
+        if (href && href[0] === '/') {
+          el.setAttribute('href', el.href)
+        }
+      })
+
       let titles = dictionary.querySelectorAll('dt')
       let defs = dictionary.querySelectorAll('dd')
 

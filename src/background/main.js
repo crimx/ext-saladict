@@ -7,9 +7,15 @@ const msgChecker = /_SELF$/
 message.listen((data, sender, sendResponse) => {
   if (msgChecker.test(data.msg)) {
     data.msg = data.msg.slice(0, -5)
-    message.send(sender.tab.id, data, response => {
-      sendResponse(response)
-    })
+    if (sender.tab) {
+      message.send(sender.tab.id, data, response => {
+        sendResponse(response)
+      })
+    } else {
+      message.send(data, response => {
+        sendResponse(response)
+      })
+    }
     return true
   }
 
@@ -66,14 +72,14 @@ function setContextMenu (config) {
   config.contextMenu.selected.forEach(id => {
     chrome.contextMenus.create({
       id,
-      title: chrome.i18n.getMessage('context_' + id),
+      title: chrome.i18n.getMessage('context_' + id) || id,
       contexts: ['selection']
     })
   })
 
   chrome.contextMenus.create({
     id: 'google_page_translate',
-    title: chrome.i18n.getMessage('context_google_page_translate'),
+    title: chrome.i18n.getMessage('context_google_page_translate') || 'Google Page Translate',
     contexts: ['all']
   })
 }

@@ -56,7 +56,7 @@ export default {
     phsym () {
       if (this.result.phsym) {
         return this.result.phsym.map(p => {
-          p.lang = chrome.i18n.getMessage(p.lang)
+          p.lang = chrome.i18n.getMessage(p.lang) || p.lang
           return p
         })
       }

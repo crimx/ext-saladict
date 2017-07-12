@@ -437,10 +437,6 @@ export default {
       this.handlePanelHeadClick(this.config.dicts.selected[0], 0)
     }, 1000)
 
-    message.on('PANEL_READY', () => {
-      message.send({msg: 'SEARCH_TEXT_SELF', text: this.text})
-    })
-
     let currentTabID
     chrome.tabs.getCurrent(tab => {
       currentTabID = tab.id

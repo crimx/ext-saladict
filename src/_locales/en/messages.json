@@ -129,6 +129,16 @@
       "message": "results"
    },
 
+   "dict_liangan": {
+      "description": "Dictionary Name",
+      "message": "兩岸詞典"
+   },
+
+   "dict_guoyu": {
+      "description": "Dictionary Name",
+      "message": "國語辭典"
+   },
+
    "dict_wordreference": {
       "description": "Dictionary Name",
       "message": "Wordreference"
@@ -407,6 +417,16 @@
    "context_iciba": {
       "description": "context menu",
       "message": "iciba"
+   },
+
+   "context_liangan": {
+      "description": "context menu",
+      "message": "兩岸詞典"
+   },
+
+   "context_guoyu": {
+      "description": "context menu",
+      "message": "國語辭典"
    },
 
    "context_bing_dict": {

@@ -1,5 +1,5 @@
 <template>
-<div class="panel-container">
+<div class="panel-container" :class="{'no-user-select': isDragging}">
   <header class="panel-header">
     <input type="text" class="search-input"
       ref="searchbox"
@@ -15,6 +15,19 @@
     <svg class="icon-options" @click="openOptionsPage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
       <path d="M0 97.92v24.48h612V97.92H0zm0 220.32h612v-24.48H0v24.48zm0 195.84h612V489.6H0v24.48z"/>
     </svg>
+    <svg class="icon-qrcode" @mouseenter="showQRcode" @mouseleave="currentTabUrl = ''"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
+      <path d="M0 225v25h250v-25H0zM0 25h250V0H0v25z"/>
+      <path d="M0 250h25V0H0v250zm225 0h25V0h-25v250zM87.5 162.5h75v-75h-75v75zM362 587v25h80v-25h-80zm0-200h80v-25h-80v25z"/>
+      <path d="M362 612h25V362h-25v250zm190-250v25h60v-25h-60zm-77.5 87.5v25h50v-25h-50z"/>
+      <path d="M432 497.958v-25h-70v25h70zM474.5 387h50v-25h-50v25zM362 225v25h250v-25H362zm0-200h250V0H362v25z"/>
+      <path d="M362 250h25V0h-25v250zm225 0h25V0h-25v250zm-137.5-87.5h75v-75h-75v75zM0 587v25h250v-25H0zm0-200h250v-25H0v25z"/>
+      <path d="M0 612h25V362H0v250zm225 0h25V362h-25v250zM87.5 524.5h75v-75h-75v75zM587 612h25V441h-25v171zM474.5 499.5v25h50v-25h-50z"/>
+      <path d="M474.5 449.5v75h25v-75h-25zM562 587v25h50v-25h-50z"/>
+    </svg>
+    <svg class="icon-share" @click="openShareimgPage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 58.999 58.999">
+      <path d="M19.48 12.02c.255 0 .51-.1.706-.294L28.5 3.413V39c0 .552.446 1 1 1s1-.448 1-1V3.412l8.27 8.272c.392.39 1.024.39 1.415 0s.39-1.023 0-1.414L30.207.294C30.115.2 30.004.127 29.88.076c-.244-.1-.52-.1-.764 0-.123.05-.234.125-.326.217l-10.018 10.02c-.39.39-.39 1.022 0 1.413.195.196.45.293.707.293z"/>
+      <path d="M36.5 16c-.554 0-1 .446-1 1s.446 1 1 1h13v39h-40V18h13c.552 0 1-.448 1-1s-.448-1-1-1h-15v43h44V16h-15z"/>
+    </svg>
     <svg class="icon-pin" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 53.011 53.011"
       :class="{'icon-pin--pinned': isPinned}"
       @click="pinPanel"
@@ -27,7 +40,7 @@
       <path d="M31.112 1.414L29.698 0 15.556 14.142 1.414 0 0 1.414l14.142 14.142L0 29.698l1.414 1.414L15.556 16.97l14.142 14.142 1.414-1.414L16.97 15.556"/>
     </svg>
   </header>
-  <div class="dicts">
+  <div class="dicts" @click="handleDictsPanelClick">
     <section class="dict-item" v-for="id in config.dicts.selected">
       <header class="dict-item-header">
         <img class="dict-item-logo" :src="dicts[id].favicon" @click="handleDictPage(id)">
@@ -71,14 +84,21 @@
       </div>
     </section>
   </div>
+  <transition name="fade">
+    <div class="qrcode-panel" v-if="currentTabUrl">
+      <qrcode :value="currentTabUrl" :size="250"></qrcode>
+      <p class="qrcode-panel-title">{{ i18n('popup_tab_title') || 'Tab Title' }}</p>
+    </div>
+  </transition>
 </div>
 </template>
 
 <script>
 import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
+import Qrcode from 'vue-qrious'
 
-const components = {}
+const components = {Qrcode}
 const compReq = require.context('./components/dicts', true, /\.vue$/i)
 const idChecker = /\/(\S+)\.vue$/i
 const allDicts = defaultConfig.dicts.all
@@ -102,7 +122,7 @@ export default {
         height: 0,
         offsetHeight: 0,
         favicon: chrome.runtime.getURL('assets/dicts/' + allDicts[id].favicon),
-        name: chrome.i18n.getMessage('dict_' + id),
+        name: chrome.i18n.getMessage('dict_' + id) || id,
         isUnfolded: false,
         isSearching: false
       }
@@ -115,10 +135,17 @@ export default {
 
       text: '',
 
+      isDragging: false,
+
+      currentTabUrl: '',
+
       isPinned: false
     }
   },
   methods: {
+    i18n (key) {
+      return chrome.i18n.getMessage(key) || key
+    },
     seachText (selectedDicts) {
       if (!Array.isArray(selectedDicts)) {
         selectedDicts = [selectedDicts]
@@ -163,8 +190,29 @@ export default {
       this.isPinned = !this.isPinned
       message.send({msg: 'PIN_PANEL_SELF', flag: this.isPinned})
     },
+    showQRcode () {
+      chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+        if (tabs.length > 0) {
+          this.currentTabUrl = tabs[0].url
+        }
+      })
+    },
     openOptionsPage () {
       message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('options.html')})
+    },
+    openShareimgPage () {
+      var dicts = this.config.dicts.selected.map(id => {
+        var result = this.dicts[id].result
+        if (result && this.dicts[id].isUnfolded) {
+          return {id, result}
+        }
+        return null
+      })
+      .filter(d => d)
+
+      storage.local.set({paneldata: {text: this.text, dicts}}, () => {
+        message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('shareimg.html')})
+      })
     },
     unfoldDict (id) {
       let dict = this.dicts[id]
@@ -191,6 +239,8 @@ export default {
       message.send({msg: 'CREATE_TAB', url: this.config.dicts.all[id].page.replace('%s', this.text)})
     },
     handleDragStart (evt) {
+      this.isDragging = true
+
       window.parent.postMessage({
         msg: 'SALADICT_DRAG_START',
         mouseX: evt.clientX,
@@ -208,6 +258,8 @@ export default {
       }, '*')
     },
     handleDragEnd () {
+      this.isDragging = false
+
       window.parent.postMessage({
         msg: 'SALADICT_DRAG_END'
       }, '*')
@@ -217,6 +269,15 @@ export default {
     },
     handleStorageChange (changes) {
       this.config = changes.config.newValue
+    },
+    handleDictsPanelClick (evt) {
+      for (let target = evt.target; target !== evt.currentTarget; target = target.parentNode) {
+        if (target.href) {
+          chrome.runtime.sendMessage({msg: 'CREATE_TAB', url: target.href})
+          evt.preventDefault()
+          return
+        }
+      }
     },
     handleSearchText (data) {
       if (data && data.text) {
@@ -283,6 +344,7 @@ html {
 }
 
 body {
+  overflow: hidden;
   height: 100%;
   background-color: #fff;
   font-size: 14px;
@@ -340,7 +402,15 @@ body {
   @extend %icon;
 }
 
+.icon-qrcode {
+  @extend %icon;
+}
+
 .icon-options {
+  @extend %icon;
+}
+
+.icon-share {
   @extend %icon;
 }
 
@@ -481,9 +551,28 @@ body {
   fill: #000;
 }
 
+.qrcode-panel {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
+}
+
+.qrcode-panel-title {
+  text-align: center;
+  margin: 5px 0 0 0;
+}
+
 /*-----------------------------------------------*\
     States
 \*-----------------------------------------------*/
+.no-user-select {
+  user-select: none;
+}
+
 .icon-pin--pinned {
   transform: rotate(45deg);
 }

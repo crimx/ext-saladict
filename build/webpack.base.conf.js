@@ -9,6 +9,7 @@ module.exports = {
     panel: './src/content/panel/main.js',
 
     popup: './src/popup/main.js',
+    shareimg: './src/shareimg/main.js',
     options: './src/options/main.js'
   },
   output: {

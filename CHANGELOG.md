@@ -1,0 +1,92 @@
+# Changelog
+
+## [Unreleased]
+
+## [5.11.23] - 2017-07-13
+### Added
+- 增加两岸词典与国语辞典
+- 增加点击图标弹出查词面板
+- 查词结果可以导出图片，在绿色工具栏上可以看到
+
+### Changed
+- 二维码功能移到工具栏上
+
+### Fixed
+- i18n 带 fallback
+- svg 属性迁就 html2canvas
+- 设置页面开始连查两遍的问题
+- 通过 `:root:root:root:root:root` 进一步增加元素权值
+- 改为插到 body 末尾
+
+## [5.7.20] - 2017-05-21
+### Added
+- 添加词源词典
+- 右键添加有道词典、海词词典和金山词霸
+
+### Security
+- 增强稳定性
+
+## [5.5.14] - 2017-05-15
+### Changed
+- 词典可默认不展开
+
+## [5.5.12] - 2017-05-15
+### Added
+- 增加右键谷歌网页翻译
+- 增加双语例句
+
+## [5.3.9] - 2017-05-03
+### Added
+- 添加重置按钮
+- 增加 Howjsay 发音
+
+### Fixed
+- 降低查词图标敏感度
+
+## [5.1.6] - 2017-04-06
+### Added
+- 增加双击查词
+
+### Fixed
+- 减少动画加快显示
+- 修复无法关闭
+- 修复设置时高度不更新
+
+## [5.0.0] - 2017-04-04
+### Changed
+- 全新重写，全面优化，性能大幅度提高。
+- 词典可以增删排序。
+- 新增多个词典。
+- 右键支持更多词典搜索。
+- 保留了置顶与拖动功能。
+- 更好用的配置界面。
+- 更多变化使用中发现吧。
+
+## [4.1.1] - 2015-12-27
+### Changed
+- 在必应词典和 Urban Dictionary 基础上增加 Vocabulary.com 海词统计和 Howjsay ，释义发音更详细。
+- 右键查词，选词后右键可直达牛津词典、韦氏词典、词源、谷歌翻译等等。
+- 新增三种划词模式，适合各种强迫症。
+- 连续按三次ctrl还可以直接查词，随时查词，无需再另开词典占内存啦。
+- 词典界面可以拖动，还可以固定在网页上，看论文利器啊。
+- 延迟响应时间，不容易误按，手残党福利。
+- 保留了显示当前页面二维码功能（设置界面，鼠标悬停在 “Saladict”标题上）。
+- 更多功能慢慢发现吧;D
+
+## 3.0.1
+### Changed
+- 增加了划译开关
+- 增加了 urban 词典的例子
+- 增加了必应搜索图标
+- 搜索图标右击可以变成翻译搜索
+- 修复了几处错误并加速了结果显示
+
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.11.23...HEAD
+[5.11.23]: https://github.com/crimx/crx-saladict/compare/v5.7.20...v5.11.23
+[5.7.20]: https://github.com/crimx/crx-saladict/compare/v5.5.14...v5.7.20
+[5.5.14]: https://github.com/crimx/crx-saladict/compare/v5.5.12...v5.5.14
+[5.5.12]: https://github.com/crimx/crx-saladict/compare/v5.3.9...v5.5.12
+[5.3.9]: https://github.com/crimx/crx-saladict/compare/v5.1.6...v5.3.9
+[5.1.6]: https://github.com/crimx/crx-saladict/compare/v5.0.0...v5.1.6
+[5.0.0]: https://github.com/crimx/crx-saladict/compare/v4.1.1...v5.0.0
+[4.1.1]: https://github.com/crimx/crx-saladict/tree/v4.1.1
