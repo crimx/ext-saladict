@@ -52,6 +52,9 @@ export default {
           }
         },
         plotOptions: {
+          series: {
+            animation: this.result.animate !== false
+          },
           pie: {
             allowPointSelect: true,
             cursor: 'pointer',
