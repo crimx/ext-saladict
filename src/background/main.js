@@ -72,14 +72,14 @@ function setContextMenu (config) {
   config.contextMenu.selected.forEach(id => {
     chrome.contextMenus.create({
       id,
-      title: chrome.i18n.getMessage('context_' + id),
+      title: chrome.i18n.getMessage('context_' + id) || id,
       contexts: ['selection']
     })
   })
 
   chrome.contextMenus.create({
     id: 'google_page_translate',
-    title: chrome.i18n.getMessage('context_google_page_translate'),
+    title: chrome.i18n.getMessage('context_google_page_translate') || 'Google Page Translate',
     contexts: ['all']
   })
 }

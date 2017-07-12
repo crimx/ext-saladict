@@ -112,6 +112,21 @@ webpackConfig = merge(webpackConfig, {
       chunksSortMode: 'dependency'
     }),
     new HtmlWebpackPlugin({
+      filename: 'shareimg.html',
+      template: 'src/template.html',
+      chunks: ['shareimg'],
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+        // more options:
+        // https://github.com/kangax/html-minifier#options-quick-reference
+      },
+      // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+      chunksSortMode: 'dependency'
+    }),
+    new HtmlWebpackPlugin({
       filename: 'options.html',
       template: 'src/template.html',
       chunks: ['options'],

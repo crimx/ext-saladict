@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     i18n (key) {
-      return chrome.i18n.getMessage(key)
+      return chrome.i18n.getMessage(key) || key
     }
   },
   computed: {
