@@ -6,6 +6,18 @@ Chrome 浏览器插件，网页划词翻译。
   <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="saladict.jpg" /></a>
 </p>
 
+功能一览：
+
+- [x] 多词典支持，英汉、英英、俚语、词源、权威例句、汉语、释义分布图、谷歌翻译**全包**。
+- [x] 支持**四种**划词方式，支持 iframe 划词。
+- [x] 支持三按 ctrl 快速查词。
+- [x] 也可点击图标快速查词。
+- [x] 右键支持谷歌网页翻译，支持更多词典页面直达。
+- [x] 各个词典面板支持个性化调整。
+- [x] 查词面板可钉住可拖动可输入。
+- [x] 查词结果支持导出图片。
+- [x] 可显示当前页面二维码。
+
 理论上支持所有 Chrome 系浏览器。效果图：
 
 <p align="center">
