@@ -271,8 +271,6 @@ export default {
       config: defaultConfig,
       dicts: {},
 
-      oldSelectedList: [],
-
       isNewVersion: false,
 
       text: 'salad',
@@ -365,19 +363,13 @@ export default {
         })
       }
     },
-    'config.dicts.selected': {
+    'config.dicts': {
       deep: true,
       handler () {
-        var newList = JSON.parse(JSON.stringify(this.config.dicts.selected))
-        var oldSet = new Set(this.oldSelectedList)
-        this.oldSelectedList = newList
-
-        if (newList.every(id => oldSet.has(id))) { return } // no new dict being added
-
         clearTimeout(this.searchTextTimeout)
         this.searchTextTimeout = setTimeout(() => {
           message.send({msg: 'SEARCH_TEXT_SELF', text: this.text})
-        }, 1500)
+        }, 2000)
       }
     }
   },

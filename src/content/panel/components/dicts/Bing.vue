@@ -2,8 +2,8 @@
 <section>
   <div class="dict-bing" v-if="result">
     <div class="lex-result" v-if="result.type === 'lex'">
-      <div class="phsym" v-if="phsym">
-        <div class="phsym-item" v-for="p in phsym">
+      <div class="phsym" v-if="result.phsym">
+        <div class="phsym-item" v-for="p in result.phsym">
           {{ `${p.lang}: ${p.al}` }}
           <speaker v-if="p.pron" :src="p.pron"></speaker>
         </div>
@@ -17,23 +17,8 @@
       </div> <!--cdef-->
 
       <div class="inf" v-if="result.inf">
-        <div class="inf-item" v-if="inf.s">
-          {{ inf.s.tense }}: {{ inf.s.word }}
-        </div>
-        <div class="inf-item" v-if="inf.pl">
-          {{ inf.pl.tense }}: {{ inf.pl.word }}
-        </div>
-        <div class="inf-item" v-if="inf.pt">
-          {{ inf.pt.tense }}: {{ inf.pt.word }}
-        </div>
-        <div class="inf-item" v-if="inf.pp">
-          {{ inf.pp.tense }}: {{ inf.pp.word }}
-        </div>
-        <div class="inf-item" v-if="inf.prp">
-          {{ inf.prp.tense }}: {{ inf.prp.word }}
-        </div>
-        <div class="inf-item" v-if="inf['3pps']">
-          {{ inf['3pps'].tense }}: {{ inf['3pps'].word }}
+        <div class="inf-item" v-for="f in ['s', 'pl', 'pt', 'pp', 'prp', '3pps']" v-if="result.inf[f]">
+          {{ result.inf[f].tense }}: {{ result.inf[f].word }}
         </div>
       </div>
     </div> <!--lex-->
@@ -52,30 +37,6 @@ import Speaker from '../Speaker'
 export default {
   name: 'Bing',
   props: ['result'],
-  computed: {
-    phsym () {
-      if (this.result.phsym) {
-        return this.result.phsym.map(p => {
-          p.lang = chrome.i18n.getMessage(p.lang) || p.lang
-          return p
-        })
-      }
-      return null
-    },
-    inf () {
-      if (this.result.inf) {
-        let inf = this.result.inf
-        let result = {}
-        Object.keys(inf).forEach(i => {
-          result[i] = {
-            word: inf[i],
-            tense: chrome.i18n.getMessage('inf_' + i)
-          }
-        })
-        return result
-      }
-    }
-  },
   components: {
     Speaker
   }
