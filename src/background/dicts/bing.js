@@ -2,7 +2,7 @@ export default function search (text, config) {
   return new Promise((resolve, reject) => {
     const LEX_LINK = 'http://dict.bing.com.cn/api/http/v3/0003462a56234cee982be652b8ea1e5f/en-us/zh-cn/lexicon?format=application/json&q='
     const MACHINE_LINK = 'http://dict.bing.com.cn/api/http/v3/0003462a56234cee982be652b8ea1e5f/en-us/zh-cn/translation?format=application/json&q='
-    const PRONUNCIATION_LINK = 'http://media.engkoo.com:8129/'
+    const PRONUNCIATION_LINK = 'https://dictionary.blob.core.chinacloudapi.cn/media/audio/'
     const options = config.dicts.all.bing.options
 
     searchLex()
@@ -63,10 +63,13 @@ export default function search (text, config) {
             al: `[${pron.V}]`
           }
           if (data.QD.HW.SIG) {
+            let sig = data.QD.HW.SIG
+            let sig1 = sig.slice(0, 2).toLowerCase()
+            let sig2 = sig.slice(2, 4).toLowerCase()
             if (pron.L === 'US') {
-              obj.pron = PRONUNCIATION_LINK + 'en-us/' + data.QD.HW.SIG + '.mp3'
+              obj.pron = `${PRONUNCIATION_LINK}tom/${sig1}/${sig2}/${sig}.mp3`
             } else if (pron.L === 'UK') {
-              obj.pron = PRONUNCIATION_LINK + 'en-gb/' + data.QD.HW.SIG + '.mp3'
+              obj.pron = `${PRONUNCIATION_LINK}george/${sig1}/${sig2}/${sig}.mp3`
             }
           }
           phsym.push(obj)
