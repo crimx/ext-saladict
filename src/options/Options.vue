@@ -271,6 +271,8 @@ export default {
       config: defaultConfig,
       dicts: {},
 
+      oldSelectedList: [],
+
       isNewVersion: false,
 
       text: 'salad',
@@ -304,7 +306,6 @@ export default {
           }
         })
       })
-
     },
     handlePanelHeadClick (id, i) {
       let height = this.dicts[id].height > 0 ? 0 : this.$refs.dict[i].firstChild.offsetHeight
@@ -364,9 +365,15 @@ export default {
         })
       }
     },
-    'config.dicts': {
+    'config.dicts.selected': {
       deep: true,
       handler () {
+        var newList = JSON.parse(JSON.stringify(this.config.dicts.selected))
+        var oldSet = new Set(this.oldSelectedList)
+        this.oldSelectedList = newList
+
+        if (newList.every(id => oldSet.has(id))) { return } // no new dict being added
+
         clearTimeout(this.searchTextTimeout)
         this.searchTextTimeout = setTimeout(() => {
           message.send({msg: 'SEARCH_TEXT_SELF', text: this.text})
