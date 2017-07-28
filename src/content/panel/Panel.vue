@@ -96,19 +96,17 @@
 <script>
 import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
-import Qrcode from 'vue-qrious'
 
-const components = {Qrcode}
+// Dynamically & asynchronously loads components
+const components = {Qrcode: () => Promise.resolve(require('vue-qrious'))}
 const compReq = require.context('./components/dicts', true, /\.vue$/i)
 const idChecker = /\/(\S+)\.vue$/i
 const allDicts = defaultConfig.dicts.all
 compReq.keys().forEach(path => {
-  let id = idChecker.exec(path)
-  if (!id) { return }
-  id = id[1].toLowerCase()
-  if (!allDicts[id]) { return }
-
-  components[id] = compReq(path)
+  let id = (idChecker.exec(path) || ['', ''])[1].toLowerCase()
+  if (id && allDicts[id]) {
+    components[id] = () => Promise.resolve(compReq(path))
+  }
 })
 
 export default {
