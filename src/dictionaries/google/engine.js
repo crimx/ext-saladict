@@ -1,5 +1,11 @@
 import {isContainChinese, isContainEnglish} from 'src/helpers/lang-check'
 
+/**
+ * Search text and give back result
+ * @param {string} text - Search text
+ * @param {object} config - app config
+ * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
+ */
 export default function search (text, config) {
   // auto -> zh-CN
   let url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=zh-CN&dt=t&q='
@@ -15,7 +21,6 @@ export default function search (text, config) {
   return fetch(url + text)
     .then(r => r.text())
     .then(handleText)
-    .catch(e => Promise.reject(e))
 }
 
 /**

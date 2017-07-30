@@ -1,436 +1,254 @@
 {
-   "extension_name": {
-      "description": "Extension name",
-      "message": "Saladict"
-   },
-
-   "extension_short_name": {
-      "description": "Extension short name",
-      "message": "Saladict"
-   },
-
-   "extension_description": {
-      "description": "Description of extension",
-      "message": "Inline translator powered by mutiple online dictionaries"
-   },
-
-   "wechat": {
-      "description": "微信",
-      "message": "Wechat"
-   },
-
-   "alipay": {
-      "description": "支付宝",
-      "message": "Alipay"
-   },
-
-   "bitcoin": {
-      "description": "比特币",
-      "message": "Bitcoin"
-   },
-
-   "buy_me_a_coffee": {
-      "description": "支持一下",
-      "message": "Enjoy the Extension? Buy me a coffee~"
-   },
-
-   "dict_bing": {
-      "description": "Dictionary Name",
-      "message": "Bing Dict"
-   },
-
-   "dict_bing_tense": {
-      "description": "Dictionary option",
-      "message": "Show sense"
-   },
-
-   "dict_bing_phsym": {
-      "description": "Dictionary option",
-      "message": "Show pronunciation"
-   },
-
-   "dict_bing_cdef": {
-      "description": "Dictionary option",
-      "message": "Show definitions"
-   },
-
-   "dict_howjsay": {
-      "description": "Dictionary Name",
-      "message": "Howjsay"
-   },
-
-   "dict_howjsay_related": {
-      "description": "Dictionary option",
-      "message": "Show related words"
-   },
-
-   "dict_urban": {
-      "description": "Dictionary Name",
-      "message": "Urban Dictionary"
-   },
-
-   "dict_urban_resultnum": {
-      "description": "Dictionary option",
-      "message": "Show"
-   },
-
-   "dict_urban_resultnum_unit": {
-      "description": "Dictionary option",
-      "message": "results"
-   },
-
-   "dict_iciba": {
-      "description": "Dictionary Name",
-      "message": "iCIBA"
-   },
-
-   "dict_google": {
-      "description": "Dictionary Name",
-      "message": "Google Translation"
-   },
-
-   "dict_dictcn": {
-      "description": "Dictionary Name",
-      "message": "Dict.cn"
-   },
-
-   "dict_dictcn_chart": {
-      "description": "Dictionary option",
-      "message": "Show statistics"
-   },
-
-   "dict_dictcn_etym": {
-      "description": "Dictionary option",
-      "message": "Show etymology"
-   },
-
-   "dict_vocabulary": {
-      "description": "Dictionary Name",
-      "message": "Vocabulary.com"
-   },
-
-   "dict_eudic": {
-      "description": "Dictionary Name",
-      "message": "Eudic"
-   },
-
-   "dict_etymonline": {
-      "description": "Dictionary Name",
-      "message": "Etymonline"
-   },
-
-   "dict_etymonline_resultnum": {
-      "description": "Dictionary option",
-      "message": "Show"
-   },
-
-   "dict_etymonline_resultnum_unit": {
-      "description": "Dictionary option",
-      "message": "results"
-   },
-
-   "dict_liangan": {
-      "description": "Dictionary Name",
-      "message": "兩岸詞典"
-   },
-
-   "dict_guoyu": {
-      "description": "Dictionary Name",
-      "message": "國語辭典"
-   },
-
-   "dict_wordreference": {
-      "description": "Dictionary Name",
-      "message": "Wordreference"
-   },
-
-   "dict_wordreference_etym": {
-      "description": "Dictionary option",
-      "message": "Show etymology"
-   },
-
-   "dict_wordreference_idiom": {
-      "description": "Dictionary option",
-      "message": "Show idioms"
-   },
-
-   "US": {
-      "description": "United State",
-      "message": "US"
-   },
-
-   "UK": {
-      "description": "United Kindom",
-      "message": "UK"
-   },
-
-   "PY": {
-      "description": "Pinyin, Mandarin Chinese",
-      "message": "PinYin"
-   },
-
-   "inf_s": {
-      "description": "simple",
-      "message": "s"
-   },
-
-   "inf_pl": {
-      "description": "plurality",
-      "message": "pl"
-   },
-
-   "inf_pp": {
-      "description": "past participle",
-      "message": "pp"
-   },
-
-   "inf_prp": {
-      "description": "presentparticiple",
-      "message": "prp"
-   },
-
-   "inf_3pps": {
-      "description": "third-person singular",
-      "message": "3pps"
-   },
-
-   "inf_pt": {
-      "description": "past tense",
-      "message": "pt"
-   },
-
-   "dict_error_msg": {
-      "description": "Search Faild",
-      "message": "No result"
-   },
-
-   "opt_storage_updated": {
-      "description": "when storage is updated",
-      "message": "Options updated"
-   },
-
-   "opt_reset": {
-      "description": "reset button",
-      "message": "Reset"
-   },
-
-   "opt_title": {
-      "description": "设置页面标题",
-      "message": "Saladict Options"
-   },
-
-   "opt_new_version": {
-      "description": "New Version",
-      "message": "(New Version Available!)"
-   },
-
-   "opt_app_active_title": {
-      "description": "option title",
-      "message": "Enable Saladict"
-   },
-
-   "opt_app_active": {
-      "description": "option",
-      "message": "Enable inline translator"
-   },
-
-   "opt_app_active_description": {
-      "description": "option description",
-      "message": "Inline translation would be shut down when it is turned off. Quick Search is still available."
-   },
-
-   "opt_mode_title": {
-      "description": "option title",
-      "message": "Search Mode"
-   },
-
-   "opt_mode_icon": {
-      "description": "option",
-      "message": "Show Icon"
-   },
-
-   "opt_mode_direct": {
-      "description": "option",
-      "message": "Direct Search"
-   },
-
-   "opt_mode_double": {
-      "description": "option",
-      "message": "Double Click"
-   },
-
-   "opt_mode_ctrl": {
-      "description": "option",
-      "message": "Hold Ctrl/⌘"
-   },
-
-   "opt_mode_description": {
-      "description": "option description",
-      "message": "When a text selection is made and <strong>'Show Icon'</strong> mode is enabled, a cute little icon would popup nearby the cursor; while in <strong>'Directly Search'</strong> mode the dictionary panel shows up insted; <strong>'Double Click'</strong> mode shows dictionary panel after double click selection; <strong>'Hold Ctrl/⌘'</strong> mode means the <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key must be pressed when the selection is made."
-   },
-
-   "opt_triple_ctrl_title": {
-      "description": "option title",
-      "message": "Quick Search"
-   },
-
-   "opt_triple_ctrl": {
-      "description": "option title",
-      "message": "Enable Quick Search"
-   },
-
-   "opt_triple_ctrl_description": {
-      "description": "option description",
-      "message": "Press <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key three times a dictionary panel shows up"
-   },
-
-   "opt_language_title": {
-      "description": "option title",
-      "message": "Language"
-   },
-
-   "opt_language_chinese": {
-      "description": "Chinese",
-      "message": "Search Chinese"
-   },
-
-   "opt_language_english": {
-      "description": "English",
-      "message": "Search English"
-   },
-
-   "opt_language_mode_description": {
-      "description": "option description",
-      "message": "Only start searching when selection contains the selected languages."
-   },
-
-   "opt_dicts_title": {
-      "description": "option title",
-      "message": "Dict Options"
-   },
-
-   "opt_dicts_description": {
-      "description": "option description",
-      "message": "Drag titles to sort."
-   },
-
-   "opt_dicts_btn_add": {
-      "description": "option button",
-      "message": "Add"
-   },
-
-   "opt_dicts_add_panel_title": {
-      "description": "option title",
-      "message": "Add dicts"
-   },
-
-   "opt_dict_default_height": {
-      "description": "词典的默认高度",
-      "message": "Default height"
-   },
-
-   "opt_dict_default_unfold": {
-      "description": "词典是否默认展开",
-      "message": "Default Unfold"
-   },
-
-   "popup_tab_title": {
-      "description": "二维码标题",
-      "message": "Qrcode of current page"
-   },
-
-   "popup_enter_options": {
-      "description": "进入设置页面的按钮",
-      "message": "More Options"
-   },
-
-   "opt_context_title": {
-      "description": "option title",
-      "message": "Context Menu"
-   },
-
-   "opt_context_add_panel_title": {
-      "description": "option title",
-      "message": "Add Context Menu"
-   },
-
-   "opt_context_description": {
-      "description": "option description",
-      "message": "Right click selection shows context menu. Drag to sort."
-   },
-
-   "context_google_search": {
-      "description": "context menu",
-      "message": "Google Search"
-   },
-
-   "context_baidu_search": {
-      "description": "context menu",
-      "message": "Baidu Search"
-   },
-
-   "context_bing_search": {
-      "description": "context menu",
-      "message": "Bing Search"
-   },
-
-   "context_google_translate": {
-      "description": "context menu",
-      "message": "Google Translate"
-   },
-
-   "context_google_page_translate": {
-      "description": "context menu",
-      "message": "Page Translate"
-   },
-
-   "context_etymonline": {
-      "description": "context menu",
-      "message": "Etymonline"
-   },
-
-   "context_merriam_webster": {
-      "description": "context menu",
-      "message": "Merriam Webster"
-   },
-
-   "context_oxford": {
-      "description": "context menu",
-      "message": "Oxford"
-   },
-
-   "context_cambridge": {
-      "description": "context menu",
-      "message": "Cambridge"
-   },
-
-   "context_youdao": {
-      "description": "context menu",
-      "message": "Youdao"
-   },
-
-   "context_dictcn": {
-      "description": "context menu",
-      "message": "Dictcn"
-   },
-
-   "context_iciba": {
-      "description": "context menu",
-      "message": "iciba"
-   },
-
-   "context_liangan": {
-      "description": "context menu",
-      "message": "兩岸詞典"
-   },
-
-   "context_guoyu": {
-      "description": "context menu",
-      "message": "國語辭典"
-   },
-
-   "context_bing_dict": {
-      "description": "context menu",
-      "message": "Bing Dict"
-   }
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict"
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Inline translator powered by mutiple online dictionaries"
+  },
+  "wechat": {
+    "description": "微信",
+    "message": "Wechat"
+  },
+  "alipay": {
+    "description": "支付宝",
+    "message": "Alipay"
+  },
+  "bitcoin": {
+    "description": "比特币",
+    "message": "Bitcoin"
+  },
+  "buy_me_a_coffee": {
+    "description": "支持一下",
+    "message": "Enjoy the Extension? Buy me a coffee~"
+  },
+  "US": {
+    "description": "United State",
+    "message": "US"
+  },
+  "UK": {
+    "description": "United Kindom",
+    "message": "UK"
+  },
+  "PY": {
+    "description": "Pinyin, Mandarin Chinese",
+    "message": "PinYin"
+  },
+  "inf_s": {
+    "description": "simple",
+    "message": "s"
+  },
+  "inf_pl": {
+    "description": "plurality",
+    "message": "pl"
+  },
+  "inf_pp": {
+    "description": "past participle",
+    "message": "pp"
+  },
+  "inf_prp": {
+    "description": "presentparticiple",
+    "message": "prp"
+  },
+  "inf_3pps": {
+    "description": "third-person singular",
+    "message": "3pps"
+  },
+  "inf_pt": {
+    "description": "past tense",
+    "message": "pt"
+  },
+  "dict_error_msg": {
+    "description": "Search Faild",
+    "message": "No result"
+  },
+  "opt_storage_updated": {
+    "description": "when storage is updated",
+    "message": "Options updated"
+  },
+  "opt_reset": {
+    "description": "reset button",
+    "message": "Reset"
+  },
+  "opt_title": {
+    "description": "设置页面标题",
+    "message": "Saladict Options"
+  },
+  "opt_new_version": {
+    "description": "New Version",
+    "message": "(New Version Available!)"
+  },
+  "opt_app_active_title": {
+    "description": "option title",
+    "message": "Enable Saladict"
+  },
+  "opt_app_active": {
+    "description": "option",
+    "message": "Enable inline translator"
+  },
+  "opt_app_active_description": {
+    "description": "option description",
+    "message": "Inline translation would be shut down when it is turned off. Quick Search is still available."
+  },
+  "opt_mode_title": {
+    "description": "option title",
+    "message": "Search Mode"
+  },
+  "opt_mode_icon": {
+    "description": "option",
+    "message": "Show Icon"
+  },
+  "opt_mode_direct": {
+    "description": "option",
+    "message": "Direct Search"
+  },
+  "opt_mode_double": {
+    "description": "option",
+    "message": "Double Click"
+  },
+  "opt_mode_ctrl": {
+    "description": "option",
+    "message": "Hold Ctrl/⌘"
+  },
+  "opt_mode_description": {
+    "description": "option description",
+    "message": "When a text selection is made and <strong>'Show Icon'</strong> mode is enabled, a cute little icon would popup nearby the cursor; while in <strong>'Directly Search'</strong> mode the dictionary panel shows up insted; <strong>'Double Click'</strong> mode shows dictionary panel after double click selection; <strong>'Hold Ctrl/⌘'</strong> mode means the <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key must be pressed when the selection is made."
+  },
+  "opt_triple_ctrl_title": {
+    "description": "option title",
+    "message": "Quick Search"
+  },
+  "opt_triple_ctrl": {
+    "description": "option title",
+    "message": "Enable Quick Search"
+  },
+  "opt_triple_ctrl_description": {
+    "description": "option description",
+    "message": "Press <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key three times a dictionary panel shows up"
+  },
+  "opt_language_title": {
+    "description": "option title",
+    "message": "Language"
+  },
+  "opt_language_chinese": {
+    "description": "Chinese",
+    "message": "Search Chinese"
+  },
+  "opt_language_english": {
+    "description": "English",
+    "message": "Search English"
+  },
+  "opt_language_mode_description": {
+    "description": "option description",
+    "message": "Only start searching when selection contains the selected languages."
+  },
+  "opt_dicts_title": {
+    "description": "option title",
+    "message": "Dict Options"
+  },
+  "opt_dicts_description": {
+    "description": "option description",
+    "message": "Drag titles to sort."
+  },
+  "opt_dicts_btn_add": {
+    "description": "option button",
+    "message": "Add"
+  },
+  "opt_dicts_add_panel_title": {
+    "description": "option title",
+    "message": "Add dicts"
+  },
+  "opt_dict_default_height": {
+    "description": "词典的默认高度",
+    "message": "Default height"
+  },
+  "opt_dict_default_unfold": {
+    "description": "词典是否默认展开",
+    "message": "Default Unfold"
+  },
+  "popup_tab_title": {
+    "description": "二维码标题",
+    "message": "Qrcode of current page"
+  },
+  "popup_enter_options": {
+    "description": "进入设置页面的按钮",
+    "message": "More Options"
+  },
+  "opt_context_title": {
+    "description": "option title",
+    "message": "Context Menu"
+  },
+  "opt_context_add_panel_title": {
+    "description": "option title",
+    "message": "Add Context Menu"
+  },
+  "opt_context_description": {
+    "description": "option description",
+    "message": "Right click selection shows context menu. Drag to sort."
+  },
+  "context_google_search": {
+    "description": "context menu",
+    "message": "Google Search"
+  },
+  "context_baidu_search": {
+    "description": "context menu",
+    "message": "Baidu Search"
+  },
+  "context_bing_search": {
+    "description": "context menu",
+    "message": "Bing Search"
+  },
+  "context_google_translate": {
+    "description": "context menu",
+    "message": "Google Translate"
+  },
+  "context_google_page_translate": {
+    "description": "context menu",
+    "message": "Page Translate"
+  },
+  "context_etymonline": {
+    "description": "context menu",
+    "message": "Etymonline"
+  },
+  "context_merriam_webster": {
+    "description": "context menu",
+    "message": "Merriam Webster"
+  },
+  "context_oxford": {
+    "description": "context menu",
+    "message": "Oxford"
+  },
+  "context_cambridge": {
+    "description": "context menu",
+    "message": "Cambridge"
+  },
+  "context_youdao": {
+    "description": "context menu",
+    "message": "Youdao"
+  },
+  "context_dictcn": {
+    "description": "context menu",
+    "message": "Dictcn"
+  },
+  "context_iciba": {
+    "description": "context menu",
+    "message": "iciba"
+  },
+  "context_liangan": {
+    "description": "context menu",
+    "message": "兩岸詞典"
+  },
+  "context_guoyu": {
+    "description": "context menu",
+    "message": "國語辭典"
+  },
+  "context_bing_dict": {
+    "description": "context menu",
+    "message": "Bing Dict"
+  }
 }

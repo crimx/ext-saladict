@@ -1,6 +1,12 @@
 import fetchDom from 'src/helpers/fetch-dom'
 const MP3URI = 'http://www.howjsay.com/mp3/'
 
+/**
+ * Search text and give back result
+ * @param {string} text - Search text
+ * @param {object} config - app config
+ * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
+ */
 export default function search (text, config) {
   const options = config.dicts.all.howjsay.options
 
@@ -11,7 +17,6 @@ export default function search (text, config) {
 
   return fetchDom('http://www.howjsay.com/index.php?word=' + text)
     .then(doc => handleDom(doc, text, options))
-    .catch(e => Promise.reject(e))
 }
 
 /**

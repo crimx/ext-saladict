@@ -1,6 +1,12 @@
 import fetchDom from 'src/helpers/fetch-dom'
 const MP3URI = 'https://fs-gateway.eudic.net/store_main/sentencemp3/'
 
+/**
+ * Search text and give back result
+ * @param {string} text - Search text
+ * @param {object} config - app config
+ * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
+ */
 export default function search (text, config) {
   let words = text.trim().split(/ +/)
   if (words.length > 2) {
@@ -9,7 +15,6 @@ export default function search (text, config) {
 
   return fetchDom('https://dict.eudic.net/dicts/en/' + text)
     .then(handleDom)
-    .catch(e => Promise.reject(e))
 }
 
 /**

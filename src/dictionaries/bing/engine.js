@@ -2,12 +2,17 @@ const LEX_LINK = 'http://dict.bing.com.cn/api/http/v3/0003462a56234cee982be652b8
 const MACHINE_LINK = 'http://dict.bing.com.cn/api/http/v3/0003462a56234cee982be652b8ea1e5f/en-us/zh-cn/translation?format=application/json&q='
 const PRONUNCIATION_LINK = 'https://dictionary.blob.core.chinacloudapi.cn/media/audio/'
 
+/**
+ * Search text and give back result
+ * @param {string} text - Search text
+ * @param {object} config - app config
+ * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
+ */
 export default function search (text, config) {
   const options = config.dicts.all.bing.options
 
   return searchLex(text, options)
     .then(null, () => searchMachine(text, options))
-    .catch(e => Promise.reject(e))
 }
 
 function searchLex (text, options) {

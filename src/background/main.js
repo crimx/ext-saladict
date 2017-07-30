@@ -42,20 +42,17 @@ message.listen((data, sender, sendResponse) => {
 
 const _dicts = {}
 // dynamic load components
-const _compReq = require.context('./dicts', true, /\.js$/i)
-const _idChecker = /\/(\S+)\.js$/i
-_compReq.keys().forEach(path => {
-  let id = _idChecker.exec(path)
-  if (!id) { return }
-  id = id[1].toLowerCase()
-  if (!defaultConfig.dicts.all[id]) { return }
-
-  let search = _compReq(path)
-  if (typeof search !== 'function') {
-    search = search.default
-  }
+const _compReq = require.context('src/dictionaries', true, /\/engine\.js$/i)
+Object.keys(defaultConfig.dicts.all).forEach(id => {
   _dicts[id] = {
-    search,
+    // lazy load
+    search (...args) {
+      this.search = _compReq(`./${id}/engine.js`)
+      if (typeof this.search !== 'function') {
+        this.search = this.search.default
+      }
+      return this.search(...args)
+    },
     config: JSON.parse(JSON.stringify(defaultConfig))
   }
 })
@@ -134,7 +131,7 @@ message.on('FETCH_DICT_RESULT', (data, sender, sendResponse) => {
   }
 
   dict.search(data.text, dict.config)
-    .then(handleSuccess, handleError)
+    .then(handleSuccess)
     .catch(handleError)
 
   // keep the channel alive

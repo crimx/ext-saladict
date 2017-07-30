@@ -1,9 +1,14 @@
 import fetchDom from 'src/helpers/fetch-dom'
 
+/**
+ * Search text and give back result
+ * @param {string} text - Search text
+ * @param {object} config - app config
+ * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
+ */
 export default function search (text, config) {
   return fetchDom('https://www.vocabulary.com/dictionary/' + text)
     .then(handleDom)
-    .catch(e => Promise.reject(e))
 }
 
 /**

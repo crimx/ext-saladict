@@ -1,0 +1,19 @@
+{
+  "name": {
+    "en": "Urban Dictionary",
+    "zh_CN": "Urban Dictionary",
+    "zh_TW": "Urban Dictionary"
+  },
+  "options": {
+    "resultnum": {
+      "en": "Show",
+      "zh_CN": "结果数量",
+      "zh_TW": "結果數量"
+    },
+    "resultnum_unit": {
+      "en": "results",
+      "zh_CN": "个",
+      "zh_TW": "個"
+    }
+  }
+}

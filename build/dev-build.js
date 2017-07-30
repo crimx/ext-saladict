@@ -3,6 +3,8 @@
 const shell = require('shelljs')
 shell.env.NODE_ENV = 'production'
 
+const glob = require('glob')
+const fs = require('fs')
 var path = require('path')
 var ora = require('ora')
 var webpack = require('webpack')
@@ -160,8 +162,18 @@ shell.mkdir('-p', distPath)
 // shell.rm('-rf', assetsPath)
 shell.mkdir('-p', assetsPath)
 shell.cp('-R', 'assets/static/*', assetsPath)
-// shell.cp('-R', 'src/_locales/*', distPath)
-shell.cp('-R', 'src/_locales', distPath)
+shell.mkdir('-p', path.join(assetsPath, 'dicts'))
+glob(path.join(__dirname, '../src/dictionaries/**/favicon.png'), (err, files) => {
+  if (err) { console.error(err) }
+  files.forEach(file => {
+    fs.readFile(file, (err, data) => {
+      if (err) { console.error(err) }
+      fs.writeFile(path.join(assetsPath, 'dicts', `${path.basename(path.dirname(file))}.png`), data)
+    })
+  })
+})
+require('./dicts/_locales.js')
+// shell.cp('-R', 'src/_locales', distPath)
 shell.cp('src/manifest.json', distPath)
 
 webpack(webpackConfig, function (err, stats) {
