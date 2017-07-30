@@ -1,6 +1,5 @@
 import {storage, message} from 'src/helpers/chrome-api'
 import defaultConfig from 'src/app-config'
-import deepmerge from 'deepmerge'
 
 // background script as transfer station
 const msgChecker = /_SELF$/
@@ -143,10 +142,7 @@ chrome.runtime.onInstalled.addListener(() => {
   storage.sync.get('config', ({config}) => {
     if (config && config.dicts && config.dicts.all) {
       // got the correct version of config
-      config = deepmerge(defaultConfig, config, {
-        clone: true,
-        arrayMerge: (destinationArray, sourceArray) => sourceArray
-      })
+      config = mergeConfig(config)
     } else {
       storage.local.clear()
       storage.sync.clear()
@@ -161,5 +157,52 @@ chrome.runtime.onInstalled.addListener(() => {
 
     storage.sync.set({config})
     setConfigs(config)
+
+    function mergeConfig (config) {
+      var base = JSON.parse(JSON.stringify(defaultConfig))
+      if (config.active !== undefined) { base.active = Boolean(config.active) }
+      if (/^(icon|direct|double|ctrl)$/i.test(config.mode)) { base.mode = config.mode.toLowerCase() }
+      if (config.tripleCtrl !== undefined) { base.tripleCtrl = Boolean(config.tripleCtrl) }
+      if (config.language) {
+        Object.keys(base.language).forEach(k => {
+          if (config.language[k] !== undefined) { base.language[k] = Boolean(config.language[k]) }
+        })
+      }
+
+      if (config.dicts) {
+        if (Array.isArray(config.dicts.selected)) {
+          let selected = config.dicts.selected.filter(id => base.dicts.all[id])
+          if (selected.length > 0) { base.dicts.selected = selected }
+        }
+        if (config.dicts.all) {
+          Object.keys(base.dicts.all).forEach(id => {
+            let dict = config.dicts.all[id]
+            if (!dict) { return }
+            let baseDict = base.dicts.all[id]
+            if (!String(dict.page)) { baseDict.page = String(dict.page) }
+            if (dict.defaultUnfold !== undefined) { baseDict.defaultUnfold = Boolean(dict.defaultUnfold) }
+            if (!isNaN(Number(dict.preferredHeight))) { baseDict.preferredHeight = Number(dict.preferredHeight) }
+            if (dict.options) {
+              Object.keys(baseDict.options).forEach(opt => {
+                if (typeof dict.options[opt] === 'boolean') {
+                  if (dict.options[opt] !== undefined) { baseDict.options[opt] = Boolean(dict.options[opt]) }
+                } else if (typeof dict.options[opt] === 'number') {
+                  if (!isNaN(dict.options[opt])) { baseDict.options[opt] = Number(dict.options[opt]) }
+                }
+              })
+            }
+          })
+        }
+      }
+
+      if (config.contextMenu) {
+        if (Array.isArray(config.contextMenu.selected)) {
+          let selected = config.contextMenu.selected.filter(id => base.contextMenu.all[id])
+          if (selected.length > 0) { base.contextMenu.selected = selected }
+        }
+      }
+
+      return base
+    }
   })
 })
