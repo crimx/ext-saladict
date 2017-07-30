@@ -4,6 +4,7 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -229,7 +230,8 @@ webpackConfig = merge(webpackConfig, {
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
-    })
+    }),
+    new BundleAnalyzerPlugin()
     // split vendor js into its own file
     // new webpack.optimize.CommonsChunkPlugin({
     //   name: 'vendor',
