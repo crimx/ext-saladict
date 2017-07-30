@@ -1,3 +1,9 @@
+/**
+ * Search text and give back result
+ * @param {string} text - Search text
+ * @param {object} config - app config
+ * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
+ */
 export default function search (text, config) {
   // https://github.com/audreyt/moedict-webkit#7-兩岸詞典-c
   return fetch(`https://www.moedict.tw/c/${text}.json`)
@@ -11,5 +17,4 @@ export default function search (text, config) {
       })
       return data
     })
-    .catch(e => Promise.reject(e))
 }
