@@ -408,7 +408,7 @@ export default {
     let dicts = {}
     Object.keys(allDicts).forEach(id => {
       dicts[id] = {
-        favicon: chrome.runtime.getURL('assets/dicts/' + allDicts[id].favicon),
+        favicon: chrome.runtime.getURL(`assets/dicts/${id}.png`),
         height: 0
       }
     })
