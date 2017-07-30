@@ -44,21 +44,15 @@
 
 <script>
 import html2canvas from 'html2canvas'
-import Loader from './Loader'
+import Loader from 'src/components/Loader'
 import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 
+// Dynamically & asynchronously loads components
 const components = {Loader}
-const compReq = require.context('src/content/panel/components/dicts', true, /\.vue$/i)
-const idChecker = /\/(\S+)\.vue$/i
-const allDicts = defaultConfig.dicts.all
-compReq.keys().forEach(path => {
-  let id = idChecker.exec(path)
-  if (!id) { return }
-  id = id[1].toLowerCase()
-  if (!allDicts[id]) { return }
-
-  components[id] = compReq(path)
+const compReq = require.context('src/dictionaries', true, /\/view\.vue$/i)
+Object.keys(defaultConfig.dicts.all).forEach(id => {
+  components[id] = () => Promise.resolve(compReq(`./${id}/view.vue`))
 })
 
 export default {
@@ -67,7 +61,7 @@ export default {
     let dicts = Object.keys(defaultConfig.dicts.all).reduce((dicts, id) => {
       dicts[id] = {
         result: null,
-        favicon: chrome.runtime.getURL('assets/dicts/' + allDicts[id].favicon),
+        favicon: chrome.runtime.getURL(`assets/dicts/${id}.png`),
         name: chrome.i18n.getMessage('dict_' + id) || id
       }
       return dicts

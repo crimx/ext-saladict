@@ -1,0 +1,19 @@
+{
+  "name": {
+    "en": "Etymonline",
+    "zh_CN": "Etymonline",
+    "zh_TW": "Etymonline"
+  },
+  "options": {
+    "resultnum": {
+      "en": "Show",
+      "zh_CN": "结果数量",
+      "zh_TW": "結果數量"
+    },
+    "resultnum_unit": {
+      "en": "results",
+      "zh_CN": "个",
+      "zh_TW": "個"
+    }
+  }
+}

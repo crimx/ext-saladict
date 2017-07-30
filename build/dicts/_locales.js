@@ -9,8 +9,8 @@ const locales = langs.reduce((locales, lang) => {
   return locales
 }, {})
 
-glob(path.join(__dirname, '../../src/components/**/_locales.@(json|js)'), (err, files) => {
-  if (err || files.length <= 0) { console.error(err) }
+glob(path.join(__dirname, '../../src/dictionaries/**/_locales.@(json|js)'), (err, files) => {
+  if (err || files.length <= 0) { console.error('no locale') }
   files.forEach(file => appendLocale(file))
   writeLocales()
 })
@@ -28,6 +28,9 @@ function appendLocale (localePath) {
 
 function appendKey (key, messages, description) {
   langs.forEach(lang => {
+    if (messages[lang] === undefined) {
+      throw new Error(`locale missing: ${key}/${lang}`)
+    }
     locales[lang][key] = {
       description,
       message: messages[lang]

@@ -1,0 +1,14 @@
+{
+  "name": {
+    "en": "Howjsay",
+    "zh_CN": "Howjsay",
+    "zh_TW": "Howjsay"
+  },
+  "options": {
+    "related": {
+      "en": "Show related words",
+      "zh_CN": "显示相关词汇",
+      "zh_TW": "展示相關詞語"
+    }
+  }
+}
