@@ -7,7 +7,7 @@
         <path d="M51.704 51.273L36.844 35.82c3.79-3.8 6.14-9.04 6.14-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.082 0 9.747-1.817 13.383-4.832l14.895 15.49c.196.206.458.308.72.308.25 0 .5-.093.694-.28.398-.382.41-1.015.028-1.413zM21.984 40c-10.478 0-19-8.523-19-19s8.522-19 19-19 19 8.523 19 19-8.525 19-19 19z"/>
       </svg>
       <div class="placeholder"></div>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" width="17" height="17" opacity="0.9">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" width="21" height="21" opacity="0.85">
         <path fill="#6BBC57" d="M577.557 184.258C560.417 140.85 519.54 59.214 519.54 59.214l.003-.01s-82.64 38.422-123.102 61.674c-30.27 17.396-41.46 48.877-44.22 56.743-3.22 9.23-12.33 51.19 6.12 90.86 23.93 51.44 50.86 106.04 50.86 106.04v.01s55.31-25.83 106.09-51.13c39.16-19.51 58.3-57.96 61.53-67.18 2.75-7.865 13.577-39.475.753-71.95z"/>
         <path fill="#BDE9B7" d="M501.052 102.162l6.466 2.263L426.69 335.38l-6.466-2.263z"/>
         <circle cx="299.756" cy="198.246" r="178.613" fill="#FFB30D"/>
@@ -19,7 +19,10 @@
         <path fill="#2D97B7" d="M30.857 311.46c0 118.41 74.514 219.34 179.01 258.06v19.68h191.12v-20.3c102.608-38.786 175.9-137.698 177.323-253.993l10.886-18.937H22.804l8.063 14.028c-.002.49-.01.973-.01 1.46z"/>
         <path fill="#FFF" d="M540.565 321.42c.02 1.167.03 2.335.03 3.507 0 81.014-43.082 151.957-107.58 191.195l4.163 7.195c66.974-40.677 111.717-114.308 111.717-198.39 0-1.172-.01-2.34-.03-3.508zm-140.68 211.26c-11.587 4.63-23.648 8.322-36.092 10.974v.796l1.178 7.443c13.51-2.844 26.58-6.875 39.11-11.958z"/>
       </svg>
-      <span class="brand">Saladict 沙拉查词</span>
+      <div class="brand">
+        <div class="brand-saladict">Saladict</div>
+        <div>沙拉查词</div>
+      </div>
     </header>
     <div class="dicts">
       <section class="dict-item" v-for="id in selected">
@@ -83,38 +86,29 @@ export default {
     }
   },
   mounted () {
-    var renderImg = storage.local.get('paneldata')
+    storage.local.get('paneldata')
       .then(({paneldata}) => {
-        paneldata.dicts.forEach(dict => {
-          this.text = paneldata.text
-          this.selected.push(dict.id)
-          this.dicts[dict.id].result = dict.result
-          if (dict.id === 'dictcn') {
-            dict.result.animate = false
-          }
+        return new Promise((resolve, reject) => {
+          paneldata.dicts.forEach(dict => {
+            this.text = paneldata.text
+            this.selected.push(dict.id)
+            this.dicts[dict.id].result = dict.result
+            if (dict.id === 'dictcn') {
+              dict.result.animate = false
+            }
+          })
+          setTimeout(resolve, 1500)
         })
       })
       .then(() => {
-        return new Promise((resolve, reject) => {
-          this.$nextTick(() => {
-            html2canvas(document.querySelector('.panel-container')).then(canvas => {
-              if (canvas) {
-                return resolve(canvas.toDataURL('image/png'))
-              }
-              reject('dom to canvas faild')
-            })
-          })
+        html2canvas(document.querySelector('.panel-container')).then(canvas => {
+          if (canvas) {
+            this.imgsrc = canvas.toDataURL('image/png')
+          } else {
+            console.error('dom to canvas faild')
+          }
         })
       })
-
-    // slow things down deliberately
-    var timer = new Promise((resolve, reject) => {
-      setTimeout(() => resolve(null), 2000)
-    })
-
-    Promise.all([renderImg, timer]).then(([src, __]) => {
-      this.imgsrc = src
-    })
   },
   components
 }
@@ -193,10 +187,16 @@ body {
 }
 
 .brand {
-  color: rgba(255, 255, 255, 0.8);
-  margin-left: 3px;
+  color: rgba(255, 255, 255, 0.75);
   margin-right: 6px;
   font-size: 12px;
+  transform: scale(0.88);
+}
+
+.brand-saladict {
+  text-align: center;
+  transform: scale(1.11);
+  transform-origin: bottom;
 }
 
 .dicts {
