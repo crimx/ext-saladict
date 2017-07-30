@@ -162,6 +162,12 @@ webpackConfig = merge(webpackConfig, {
       }
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'commons',
+      filename: 'commons.js',
+      chunks: ['popup', 'panel', 'options', 'shareimg'],
+      minChunks: 2
+    }),
     // extract css into its own file
     new ExtractTextPlugin('[name].css'),
     // generate dist index.html with correct asset hash for caching.
@@ -170,7 +176,7 @@ webpackConfig = merge(webpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'popup.html',
       template: 'src/template.html',
-      chunks: ['popup'],
+      chunks: ['commons', 'popup'],
       inject: true,
       minify: {
         removeComments: true,
@@ -185,7 +191,7 @@ webpackConfig = merge(webpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'panel.html',
       template: 'src/template.html',
-      chunks: ['panel'],
+      chunks: ['commons', 'panel'],
       inject: true,
       minify: {
         removeComments: true,
@@ -197,7 +203,7 @@ webpackConfig = merge(webpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'shareimg.html',
       template: 'src/template.html',
-      chunks: ['shareimg'],
+      chunks: ['commons', 'shareimg'],
       inject: true,
       minify: {
         removeComments: true,
@@ -212,7 +218,7 @@ webpackConfig = merge(webpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'options.html',
       template: 'src/template.html',
-      chunks: ['options'],
+      chunks: ['commons', 'options'],
       inject: true,
       minify: {
         removeComments: true,
