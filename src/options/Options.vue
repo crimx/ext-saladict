@@ -331,13 +331,10 @@ export default {
           if (data && data.tag_name) {
             let vGithub = /\d+\.\d+\.\d+/.exec(data.tag_name)
             if (!vGithub) { return }
-            vGithub = vGithub[0]
-
-            let vManifest = chrome.runtime.getManifest().version
-
-            if (vGithub !== vManifest) {
-              this.isNewVersion = true
-            }
+            let gits = vGithub[0].split('.').map(v => Number(v))
+            let curs = chrome.runtime.getManifest().version.split('.').map(v => Number(v))
+            this.isNewVersion = gits[0] !== curs[0] ? gits[0] > curs[0] :
+               gits[1] !== curs[1] ? gits[1] > curs[1] : gits[2] > curs[2]
           }
         })
     }
