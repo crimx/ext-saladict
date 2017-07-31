@@ -98,6 +98,12 @@ const getConfig = () => ({
         defaultUnfold: true,
         preferredHeight: 265
       },
+      business: {
+        id: 'business',
+        page: 'http://www.ldoceonline.com/search/?q=%s',
+        defaultUnfold: true,
+        preferredHeight: 265
+      },
       wordreference: {
         id: 'wordreference',
         page: 'http://www.wordreference.com/definition/%s',
