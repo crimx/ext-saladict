@@ -76,7 +76,6 @@ export default {
   a:visited,
   a:hover,
   a:active {
-    margin-right: 0.5em;
     text-decoration: none;
     outline: none;
     color: #f9690e;
