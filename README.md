@@ -11,11 +11,11 @@ Chrome 浏览器插件，网页划词翻译。
 - [x] 多词典支持，英汉、英英、俚语、词源、权威例句、汉语、释义分布图、谷歌翻译**全包**。
 - [x] 支持**四种**划词方式，支持 iframe 划词。
 - [x] 支持三按 ctrl 快速查词。
-- [x] 也可点击图标快速查词。
-- [x] 右键支持谷歌网页翻译，支持更多词典页面直达。
+- [x] 也可**点击图标**快速查词。
+- [x] 右键支持谷歌**网页翻译**，支持更多词典页面直达。
 - [x] 各个词典面板支持个性化调整。
 - [x] 查词面板可钉住可拖动可输入。
-- [x] 查词结果支持导出图片。
+- [x] 查词结果支持**导出图片**。
 - [x] 可显示当前页面二维码。
 
 理论上支持所有 Chrome 系浏览器。效果图：
@@ -41,12 +41,11 @@ Chrome 浏览器插件，网页划词翻译。
 
 # 更新
 
-【5.11.23】
-1. 增加两岸词典与国语辞典
-2. 增加点击图标弹出查词面板（太多人提这个要求了，都是从其它扩展带来的习惯）
-3. 查词结果可以导出图片，在绿色工具栏上可以看到
-4. 二维码功能移到工具栏上
-5. 其它 bug 修复、性能优化
+【5.12.8】
+1. 增加 Longman Business 词典；
+2. 只对剪贴板单个单词自动查词，多个单词会自动粘贴，但不开始查找，需要再按一下回车；
+3. 修复 Bing 发音问题；
+4. 性能大幅度优化，体积减少；
 
 查看[更新历史](./CHANGELOG.md)。
 
@@ -63,13 +62,10 @@ Clone 库并 `$ npm install`
 ```javascript
 {
   dicts: {
-    // default selected dictionaries
-    selected: ['bing', 'urban', 'vocabulary', 'dictcn'],
     all: {
       // ...
       bing: {
         id: 'bing',
-        favicon: 'bing.png',
         page: 'https://cn.bing.com/dict/search?q=%s',
         preferredHeight: 160,
         options: {
@@ -85,94 +81,60 @@ Clone 库并 `$ npm install`
 ```
 
 - `id` 为每个词典的标识符；
-- `favicon` 在 `assets/static/dicts/` 下，为 32×32 图片；
 - `page`为点击标题是跳转的链接，`%s`会替换成关键字；
 - `preferredHeight` 为词典默认高度，超过默认高度的内容会先隐藏起来并显示下箭头；
 - 词典本身的设置放在 `options` 下，只能是 `boolean` 或者 `number`，会自动在设置页面生成相应选项。
 
-## 添加多语言
+## 添加模块
 
-在 `src/_locales/` 的每个语言里添加词典需要的文字。如 `src/_locales/zh_CN/messages.json`：
+在 `src/dictionaries/` 下以词典 id 命名新建文件夹，放置以下文件（可从其它词典复制过来修改），如 bing：
 
-```json
-{
-  "dict_bing": {
-    "description": "Dictionary Name",
-    "message": "必应词典"
+```
+bing
+├─ favicon.png
+├─ _locales.json
+├─ engine.js
+└─ view.vue
+```
+
+- favicon.png 为 32×32 图片；
+- _locales.json 中添加多语言，`name` 为词典名，`options` 下为自定义的设置；
+- engine.js 负责抓取结果，输出一个函数，返回一个 Promise 包含自定义的结果，最终会被传到 view.vue 上作为 `result` props；
+  ```javascript
+  /**
+  * Search text and give back result
+  * @param {string} text - Search text
+  * @param {object} config - app config
+  * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
+  */
+  export default function search (text, config) {
+    return new Promise((resolve, reject) => {
+      // ...
+    })
   }
-}
-```
+  ```
+- view.vue 负责渲染结果，如 bing；
+  ```html
+  <template>
+  <section>
+    <div class="bing-result" v-if="result">
+      <!-- content -->
+    </div>
+  </section>
+  </template>
 
-上面注册时添加了三个设置，分别补上说明，命名为 `dict_[id]_[option]`：
-
-```json
-{
-  "dict_bing_tense": {
-     "description": "Dictionary option",
-     "message": "显示单词时态"
-  },
-
-  "dict_bing_phsym": {
-     "description": "Dictionary option",
-     "message": "显示单词发音"
-  },
-
-  "dict_bing_cdef": {
-     "description": "Dictionary option",
-     "message": "显示单词解释"
+  <script>
+  export default {
+    name: 'Bing',
+    props: ['result']
   }
-}
-```
+  </script>
 
-## 解析模块
+  <style scoped>
+  .bing-result {
+    padding: 10px;
+  }
+  </style>
+  ```
 
-解析模块负责从词典服务器获得结果并提取需要的信息。
-
-`src/background/dicts/` 下新建文件。命名为 `[id].js` ，需跟词典 ID 一致，大小写不敏感。
-
-如 `bing.js`：
-
-```javascript
-export default function search (text, config) {
-  return new Promise((resolve, reject) => {
-
-  })
-}
-```
-
-导出一个 `search` 函数，接受关键字 `text` 和只读的配置 `config`，返回 `Promise` ，resolve 的数据为任何可序列化的数据。
-
-（可通过 `config.dicts.all.bing.options` 获得自身的设置）
-
-## 添加组件
-
-最后一步为添加试图组件，显示结果。
-
-`src/content/panel/components/dicts/` 下添加 Vue 组件，`[id].vue`，大小写不敏感。
-
-如 `Bing.vue`：
-
-```html
-<template>
-<section>
-  <div class="bing-result" v-if="result">
-    <!-- content -->
-  </div>
-</section>
-</template>
-
-<script>
-export default {
-  name: 'Bing',
-  props: ['result']
-}
-</script>
-
-<style scoped>
-.bing-result {
-  padding: 10px;
-}
-</style>
-```
-
-解析模块 resolve 的数据最终会传到 `result`。直接根据 `result` 显示结果就行。
+具体使用可参考其它词典。
