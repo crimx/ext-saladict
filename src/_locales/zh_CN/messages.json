@@ -247,6 +247,10 @@
     "description": "context menu",
     "message": "国语辞典"
   },
+  "context_longman_business": {
+    "description": "context menu",
+    "message": "朗文商务"
+  },
   "context_bing_dict": {
     "description": "context menu",
     "message": "必应词典"

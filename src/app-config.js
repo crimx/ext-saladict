@@ -132,6 +132,7 @@ const getConfig = () => ({
       iciba: 'http://www.iciba.com/%s',
       liangan: 'https://www.moedict.tw/~%s',
       guoyu: 'https://www.moedict.tw/%s',
+      longman_business: 'http://www.ldoceonline.com/search/?q=%s',
       bing_dict: 'https://cn.bing.com/dict/?q=%s'
     }
   }
