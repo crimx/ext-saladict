@@ -305,7 +305,7 @@ export default {
       if (response && response.ctrl) {
         this.$refs.searchbox.focus()
         document.execCommand('paste')
-        if (this.text.length) {
+        if (this.text.length && !/\s/.test(this.text)) {
           this.handleSearchText()
         }
       }
