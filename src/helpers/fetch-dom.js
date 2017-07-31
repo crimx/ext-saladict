@@ -7,6 +7,8 @@ export default function fetchDom (url, options) {
     throw new TypeError('argument 1 has to be string')
   }
 
+  url = encodeURI(url.replace('\n', ' '))
+
   if (options && /^post$/i.test(options.method)) {
     return postHandler(url, options.body)
   }
