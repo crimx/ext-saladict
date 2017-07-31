@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import Speaker from '../Speaker'
+import Speaker from 'src/components/Speaker'
 
 export default {
   name: 'Eudic',

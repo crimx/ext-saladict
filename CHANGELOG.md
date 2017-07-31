@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+[5.12.8] - 2017-07-31
+### Added
+-  增加 Longman Business 词典
+
+### Changed
+- 只对剪贴板单个单词自动查词，多个单词会自动粘贴，但不开始查找，需要再按一下回车
+- 使用懒加载性能大幅度优化，提取公共模块体积减少
+- 更紧凑的架构设计，添加词典更简单
+
+### Fixed
+- 修复 Bing 发音问题
+
 ## [5.11.23] - 2017-07-13
 ### Added
 - 增加两岸词典与国语辞典
@@ -81,7 +93,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.11.23...HEAD
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.12.8...HEAD
+[5.12.8]: https://github.com/crimx/crx-saladict/compare/v5.11.23...v5.12.8
 [5.11.23]: https://github.com/crimx/crx-saladict/compare/v5.7.20...v5.11.23
 [5.7.20]: https://github.com/crimx/crx-saladict/compare/v5.5.14...v5.7.20
 [5.5.14]: https://github.com/crimx/crx-saladict/compare/v5.5.12...v5.5.14

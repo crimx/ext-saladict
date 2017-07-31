@@ -3,6 +3,8 @@
 const shell = require('shelljs')
 shell.env.NODE_ENV = 'production'
 
+const glob = require('glob')
+const fs = require('fs')
 var path = require('path')
 var ora = require('ora')
 var webpack = require('webpack')
@@ -10,6 +12,7 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: [
@@ -82,6 +85,12 @@ webpackConfig = merge(webpackConfig, {
       }
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'commons',
+      filename: 'commons.js',
+      chunks: ['popup', 'panel', 'options', 'shareimg'],
+      minChunks: 2
+    }),
     // extract css into its own file
     new ExtractTextPlugin('[name].css'),
     // generate dist index.html with correct asset hash for caching.
@@ -90,7 +99,7 @@ webpackConfig = merge(webpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'popup.html',
       template: 'src/template.html',
-      chunks: ['popup'],
+      chunks: ['commons', 'popup'],
       inject: true,
       minify: {
         removeComments: true,
@@ -102,7 +111,7 @@ webpackConfig = merge(webpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'panel.html',
       template: 'src/template.html',
-      chunks: ['panel'],
+      chunks: ['commons', 'panel'],
       inject: true,
       minify: {
         removeComments: true,
@@ -114,7 +123,7 @@ webpackConfig = merge(webpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'shareimg.html',
       template: 'src/template.html',
-      chunks: ['shareimg'],
+      chunks: ['commons', 'shareimg'],
       inject: true,
       minify: {
         removeComments: true,
@@ -129,7 +138,7 @@ webpackConfig = merge(webpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'options.html',
       template: 'src/template.html',
-      chunks: ['options'],
+      chunks: ['commons', 'options'],
       inject: true,
       minify: {
         removeComments: true,
@@ -140,7 +149,8 @@ webpackConfig = merge(webpackConfig, {
       },
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
-    })
+    }),
+    new BundleAnalyzerPlugin()
   ]
 })
 
@@ -160,8 +170,18 @@ shell.mkdir('-p', distPath)
 // shell.rm('-rf', assetsPath)
 shell.mkdir('-p', assetsPath)
 shell.cp('-R', 'assets/static/*', assetsPath)
-// shell.cp('-R', 'src/_locales/*', distPath)
-shell.cp('-R', 'src/_locales', distPath)
+shell.mkdir('-p', path.join(assetsPath, 'dicts'))
+glob(path.join(__dirname, '../src/dictionaries/**/favicon.png'), (err, files) => {
+  if (err) { console.error(err) }
+  files.forEach(file => {
+    fs.readFile(file, (err, data) => {
+      if (err) { console.error(err) }
+      fs.writeFile(path.join(assetsPath, 'dicts', `${path.basename(path.dirname(file))}.png`), data)
+    })
+  })
+})
+require('./dicts/_locales.js')
+// shell.cp('-R', 'src/_locales', distPath)
 shell.cp('src/manifest.json', distPath)
 
 webpack(webpackConfig, function (err, stats) {

@@ -1,436 +1,258 @@
 {
-   "extension_name": {
-      "description": "Extension name",
-      "message": "沙拉查詞-網頁劃詞翻譯"
-   },
-
-   "extension_short_name": {
-      "description": "Extension short name",
-      "message": "Saladict"
-   },
-
-   "extension_description": {
-      "description": "Description of extension",
-      "message": "詞典豐富的網頁劃詞翻譯，提供清爽舒適的個性化劃詞體驗"
-   },
-
-   "wechat": {
-      "description": "微信",
-      "message": "微信"
-   },
-
-   "alipay": {
-      "description": "支付寶",
-      "message": "支付寶"
-   },
-
-   "bitcoin": {
-      "description": "比特幣",
-      "message": "比特幣"
-   },
-
-   "buy_me_a_coffee": {
-      "description": "支持一下",
-      "message": "覺得好用的話歡迎支持一下我買杯咖啡哦~"
-   },
-
-   "dict_bing": {
-      "description": "Dictionary Name",
-      "message": "必應詞典"
-   },
-
-   "dict_bing_tense": {
-      "description": "Dictionary option",
-      "message": "顯示單詞時態"
-   },
-
-   "dict_bing_phsym": {
-      "description": "Dictionary option",
-      "message": "顯示單詞發音"
-   },
-
-   "dict_bing_cdef": {
-      "description": "Dictionary option",
-      "message": "顯示單詞解釋"
-   },
-
-   "dict_howjsay": {
-      "description": "Dictionary Name",
-      "message": "Howjsay"
-   },
-
-   "dict_howjsay_related": {
-      "description": "Dictionary option",
-      "message": "展示相關詞語"
-   },
-
-   "dict_urban": {
-      "description": "Dictionary Name",
-      "message": "Urban Dictionary"
-   },
-
-   "dict_urban_resultnum": {
-      "description": "Dictionary option",
-      "message": "結果數量"
-   },
-
-   "dict_urban_resultnum_unit": {
-      "description": "Dictionary option",
-      "message": "個"
-   },
-
-   "dict_iciba": {
-      "description": "Dictionary Name",
-      "message": "金山詞霸"
-   },
-
-   "dict_google": {
-      "description": "Dictionary Name",
-      "message": "谷歌翻譯"
-   },
-
-   "dict_dictcn": {
-      "description": "Dictionary Name",
-      "message": "海詞詞典"
-   },
-
-   "dict_dictcn_chart": {
-      "description": "Dictionary option",
-      "message": "顯示海詞統計"
-   },
-
-   "dict_dictcn_etym": {
-      "description": "Dictionary option",
-      "message": "顯示詞源"
-   },
-
-   "dict_vocabulary": {
-      "description": "Dictionary Name",
-      "message": "Vocabulary.com"
-   },
-
-   "dict_eudic": {
-      "description": "Dictionary Name",
-      "message": "雙語例句"
-   },
-
-   "dict_etymonline": {
-      "description": "Dictionary Name",
-      "message": "Etymonline"
-   },
-
-   "dict_etymonline_resultnum": {
-      "description": "Dictionary option",
-      "message": "結果數量"
-   },
-
-   "dict_etymonline_resultnum_unit": {
-      "description": "Dictionary option",
-      "message": "個"
-   },
-
-   "dict_liangan": {
-      "description": "Dictionary Name",
-      "message": "兩岸詞典"
-   },
-
-   "dict_guoyu": {
-      "description": "Dictionary Name",
-      "message": "國語辭典"
-   },
-
-   "dict_wordreference": {
-      "description": "Dictionary Name",
-      "message": "Wordreference"
-   },
-
-   "dict_wordreference_etym": {
-      "description": "Dictionary option",
-      "message": "顯示詞源"
-   },
-
-   "dict_wordreference_idiom": {
-      "description": "Dictionary option",
-      "message": "顯示慣用法"
-   },
-
-   "US": {
-      "description": "United State",
-      "message": "美"
-   },
-
-   "UK": {
-      "description": "United Kindom",
-      "message": "英"
-   },
-
-   "PY": {
-      "description": "Pinyin, Mandarin Chinese",
-      "message": "拼"
-   },
-
-   "inf_s": {
-      "description": "simple",
-      "message": "原型"
-   },
-
-   "inf_pl": {
-      "description": "plurality",
-      "message": "複數"
-   },
-
-   "inf_pp": {
-      "description": "past participle",
-      "message": "過去分詞"
-   },
-
-   "inf_prp": {
-      "description": "presentparticiple",
-      "message": "現在分詞"
-   },
-
-   "inf_3pps": {
-      "description": "third-person singular",
-      "message": "第三人稱單數"
-   },
-
-   "inf_pt": {
-      "description": "past tense",
-      "message": "過去式"
-   },
-
-   "dict_error_msg": {
-      "description": "Search Faild",
-      "message": "無結果"
-   },
-
-   "opt_storage_updated": {
-      "description": "when storage is updated",
-      "message": "設置已更新"
-   },
-
-   "opt_reset": {
-      "description": "reset button",
-      "message": "重置"
-   },
-
-   "opt_title": {
-      "description": "設置頁面標題",
-      "message": "Saladict 設置"
-   },
-
-   "opt_new_version": {
-      "description": "New Version",
-      "message": "(請更新版本!)"
-   },
-
-   "opt_app_active_title": {
-      "description": "option title",
-      "message": "開啓查詞"
-   },
-
-   "opt_app_active": {
-      "description": "option",
-      "message": "啓用劃詞翻譯"
-   },
-
-   "opt_app_active_description": {
-      "description": "option description",
-      "message": "關閉後劃詞翻譯功能將關閉，快捷查詞功能依然可用。"
-   },
-
-   "opt_mode_title": {
-      "description": "option title",
-      "message": "查詞模式"
-   },
-
-   "opt_mode_icon": {
-      "description": "option",
-      "message": "顯示圖標"
-   },
-
-   "opt_mode_direct": {
-      "description": "option",
-      "message": "直接搜索"
-   },
-
-    "opt_mode_double": {
-      "description": "option",
-      "message": "雙擊搜索"
-   },
-
-   "opt_mode_ctrl": {
-      "description": "option",
-      "message": "按住Ctrl/⌘"
-   },
-
-   "opt_mode_description": {
-      "description": "option description",
-      "message": "當用鼠標在網頁上選擇了一段文本，<strong>“顯示圖標”</strong>會先在鼠標附近顯示一個圖標，鼠標移上去後才顯示詞典面板；<strong>“直接搜索”</strong>則不顯示圖標，直接顯示詞典面板；<strong>“雙擊搜索”</strong>雙擊選擇文本之後直接顯示詞典面板；<strong>“按住 Ctrl”</strong>在選擇文本時需同時按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵才顯示詞典面板。"
-   },
-
-   "opt_triple_ctrl_title": {
-      "description": "option title",
-      "message": "快捷查詞"
-   },
-
-   "opt_triple_ctrl": {
-      "description": "option title",
-      "message": "啓用快捷查詞"
-   },
-
-   "opt_triple_ctrl_description": {
-      "description": "option description",
-      "message": "連續按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵將彈出詞典界面。"
-   },
-
-   "opt_language_title": {
-      "description": "option title",
-      "message": "語言支持"
-   },
-
-   "opt_language_chinese": {
-      "description": "Chinese",
-      "message": "中文查詞"
-   },
-
-   "opt_language_english": {
-      "description": "English",
-      "message": "英文查詞"
-   },
-
-   "opt_language_mode_description": {
-      "description": "option description",
-      "message": "當選中的文字包含相應的語言時才進行查找。"
-   },
-
-   "opt_dicts_title": {
-      "description": "option title",
-      "message": "詞典設置"
-   },
-
-   "opt_dicts_description": {
-      "description": "option description",
-      "message": "配置各個詞典，建議按個人需求裁減到最少。拖動詞典標題可以進行排序。有任何問題請聯系作者，微博 @盒裝檸檬水 。"
-   },
-
-   "opt_dicts_btn_add": {
-      "description": "option button",
-      "message": "添加"
-   },
-
-   "opt_dicts_add_panel_title": {
-      "description": "option title",
-      "message": "添加詞典"
-   },
-
-   "opt_dict_default_height": {
-      "description": "詞典的默認高度",
-      "message": "默認高度"
-   },
-
-   "opt_dict_default_unfold": {
-      "description": "詞典是否默認展開",
-      "message": "默認展開"
-   },
-
-   "popup_tab_title": {
-      "description": "二維碼標題",
-      "message": "當前頁面二維碼"
-   },
-
-   "popup_enter_options": {
-      "description": "進入設置頁面的按鈕",
-      "message": "進入詳細設置"
-   },
-
-   "opt_context_title": {
-      "description": "option title",
-      "message": "右鍵菜單"
-   },
-
-   "opt_context_add_panel_title": {
-      "description": "option title",
-      "message": "添加右鍵菜單"
-   },
-
-   "opt_context_description": {
-      "description": "option description",
-      "message": "選擇單詞之後可以通過右鍵查找或者搜索。拖動標題可以進行排序。"
-   },
-
-   "context_google_search": {
-      "description": "context menu",
-      "message": "谷歌搜索"
-   },
-
-   "context_baidu_search": {
-      "description": "context menu",
-      "message": "百度搜索"
-   },
-
-   "context_bing_search": {
-      "description": "context menu",
-      "message": "必應搜索"
-   },
-
-   "context_google_translate": {
-      "description": "context menu",
-      "message": "谷歌翻譯"
-   },
-
-   "context_google_page_translate": {
-      "description": "context menu",
-      "message": "網頁翻譯"
-   },
-
-   "context_etymonline": {
-      "description": "context menu",
-      "message": "培根詞源"
-   },
-
-   "context_merriam_webster": {
-      "description": "context menu",
-      "message": "韋氏詞典"
-   },
-
-   "context_oxford": {
-      "description": "context menu",
-      "message": "牛津詞典"
-   },
-
-   "context_cambridge": {
-      "description": "context menu",
-      "message": "劍橋詞典"
-   },
-
-   "context_youdao": {
-      "description": "context menu",
-      "message": "有道詞典"
-   },
-
-   "context_dictcn": {
-      "description": "context menu",
-      "message": "海詞詞典"
-   },
-
-   "context_iciba": {
-      "description": "context menu",
-      "message": "金山詞霸"
-   },
-
-   "context_liangan": {
-      "description": "context menu",
-      "message": "兩岸詞典"
-   },
-
-   "context_guoyu": {
-      "description": "context menu",
-      "message": "國語辭典"
-   },
-
-   "context_bing_dict": {
-      "description": "context menu",
-      "message": "必應詞典"
-   }
+  "extension_name": {
+    "description": "Extension name",
+    "message": "沙拉查詞-網頁劃詞翻譯"
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "詞典豐富的網頁劃詞翻譯，提供清爽舒適的個性化劃詞體驗"
+  },
+  "wechat": {
+    "description": "微信",
+    "message": "微信"
+  },
+  "alipay": {
+    "description": "支付寶",
+    "message": "支付寶"
+  },
+  "bitcoin": {
+    "description": "比特幣",
+    "message": "比特幣"
+  },
+  "buy_me_a_coffee": {
+    "description": "支持一下",
+    "message": "覺得好用的話歡迎支持一下我買杯咖啡哦~"
+  },
+  "US": {
+    "description": "United State",
+    "message": "美"
+  },
+  "UK": {
+    "description": "United Kindom",
+    "message": "英"
+  },
+  "PY": {
+    "description": "Pinyin, Mandarin Chinese",
+    "message": "拼"
+  },
+  "inf_s": {
+    "description": "simple",
+    "message": "原型"
+  },
+  "inf_pl": {
+    "description": "plurality",
+    "message": "複數"
+  },
+  "inf_pp": {
+    "description": "past participle",
+    "message": "過去分詞"
+  },
+  "inf_prp": {
+    "description": "presentparticiple",
+    "message": "現在分詞"
+  },
+  "inf_3pps": {
+    "description": "third-person singular",
+    "message": "第三人稱單數"
+  },
+  "inf_pt": {
+    "description": "past tense",
+    "message": "過去式"
+  },
+  "dict_error_msg": {
+    "description": "Search Faild",
+    "message": "無結果"
+  },
+  "opt_storage_updated": {
+    "description": "when storage is updated",
+    "message": "設置已更新"
+  },
+  "opt_reset": {
+    "description": "reset button",
+    "message": "重置"
+  },
+  "opt_title": {
+    "description": "設置頁面標題",
+    "message": "Saladict 設置"
+  },
+  "opt_new_version": {
+    "description": "New Version",
+    "message": "(請更新版本!)"
+  },
+  "opt_app_active_title": {
+    "description": "option title",
+    "message": "開啓查詞"
+  },
+  "opt_app_active": {
+    "description": "option",
+    "message": "啓用劃詞翻譯"
+  },
+  "opt_app_active_description": {
+    "description": "option description",
+    "message": "關閉後劃詞翻譯功能將關閉，快捷查詞功能依然可用。"
+  },
+  "opt_mode_title": {
+    "description": "option title",
+    "message": "查詞模式"
+  },
+  "opt_mode_icon": {
+    "description": "option",
+    "message": "顯示圖標"
+  },
+  "opt_mode_direct": {
+    "description": "option",
+    "message": "直接搜索"
+  },
+  "opt_mode_double": {
+    "description": "option",
+    "message": "雙擊搜索"
+  },
+  "opt_mode_ctrl": {
+    "description": "option",
+    "message": "按住Ctrl/⌘"
+  },
+  "opt_mode_description": {
+    "description": "option description",
+    "message": "當用鼠標在網頁上選擇了一段文本，<strong>“顯示圖標”</strong>會先在鼠標附近顯示一個圖標，鼠標移上去後才顯示詞典面板；<strong>“直接搜索”</strong>則不顯示圖標，直接顯示詞典面板；<strong>“雙擊搜索”</strong>雙擊選擇文本之後直接顯示詞典面板；<strong>“按住 Ctrl”</strong>在選擇文本時需同時按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵才顯示詞典面板。"
+  },
+  "opt_triple_ctrl_title": {
+    "description": "option title",
+    "message": "快捷查詞"
+  },
+  "opt_triple_ctrl": {
+    "description": "option title",
+    "message": "啓用快捷查詞"
+  },
+  "opt_triple_ctrl_description": {
+    "description": "option description",
+    "message": "連續按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵將彈出詞典界面。"
+  },
+  "opt_language_title": {
+    "description": "option title",
+    "message": "語言支持"
+  },
+  "opt_language_chinese": {
+    "description": "Chinese",
+    "message": "中文查詞"
+  },
+  "opt_language_english": {
+    "description": "English",
+    "message": "英文查詞"
+  },
+  "opt_language_mode_description": {
+    "description": "option description",
+    "message": "當選中的文字包含相應的語言時才進行查找。"
+  },
+  "opt_dicts_title": {
+    "description": "option title",
+    "message": "詞典設置"
+  },
+  "opt_dicts_description": {
+    "description": "option description",
+    "message": "配置各個詞典，建議按個人需求裁減到最少。拖動詞典標題可以進行排序。有任何問題請聯系作者，微博 @盒裝檸檬水 。"
+  },
+  "opt_dicts_btn_add": {
+    "description": "option button",
+    "message": "添加"
+  },
+  "opt_dicts_add_panel_title": {
+    "description": "option title",
+    "message": "添加詞典"
+  },
+  "opt_dict_default_height": {
+    "description": "詞典的默認高度",
+    "message": "默認高度"
+  },
+  "opt_dict_default_unfold": {
+    "description": "詞典是否默認展開",
+    "message": "默認展開"
+  },
+  "popup_tab_title": {
+    "description": "二維碼標題",
+    "message": "當前頁面二維碼"
+  },
+  "popup_enter_options": {
+    "description": "進入設置頁面的按鈕",
+    "message": "進入詳細設置"
+  },
+  "opt_context_title": {
+    "description": "option title",
+    "message": "右鍵菜單"
+  },
+  "opt_context_add_panel_title": {
+    "description": "option title",
+    "message": "添加右鍵菜單"
+  },
+  "opt_context_description": {
+    "description": "option description",
+    "message": "選擇單詞之後可以通過右鍵查找或者搜索。拖動標題可以進行排序。"
+  },
+  "context_google_search": {
+    "description": "context menu",
+    "message": "谷歌搜索"
+  },
+  "context_baidu_search": {
+    "description": "context menu",
+    "message": "百度搜索"
+  },
+  "context_bing_search": {
+    "description": "context menu",
+    "message": "必應搜索"
+  },
+  "context_google_translate": {
+    "description": "context menu",
+    "message": "谷歌翻譯"
+  },
+  "context_google_page_translate": {
+    "description": "context menu",
+    "message": "網頁翻譯"
+  },
+  "context_etymonline": {
+    "description": "context menu",
+    "message": "培根詞源"
+  },
+  "context_merriam_webster": {
+    "description": "context menu",
+    "message": "韋氏詞典"
+  },
+  "context_oxford": {
+    "description": "context menu",
+    "message": "牛津詞典"
+  },
+  "context_cambridge": {
+    "description": "context menu",
+    "message": "劍橋詞典"
+  },
+  "context_youdao": {
+    "description": "context menu",
+    "message": "有道詞典"
+  },
+  "context_dictcn": {
+    "description": "context menu",
+    "message": "海詞詞典"
+  },
+  "context_iciba": {
+    "description": "context menu",
+    "message": "金山詞霸"
+  },
+  "context_liangan": {
+    "description": "context menu",
+    "message": "兩岸詞典"
+  },
+  "context_guoyu": {
+    "description": "context menu",
+    "message": "國語辭典"
+  },
+  "context_longman_business": {
+    "description": "context menu",
+    "message": "朗文商務"
+  },
+  "context_bing_dict": {
+    "description": "context menu",
+    "message": "必應詞典"
+  }
 }

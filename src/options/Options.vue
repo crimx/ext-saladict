@@ -304,7 +304,6 @@ export default {
           }
         })
       })
-
     },
     handlePanelHeadClick (id, i) {
       let height = this.dicts[id].height > 0 ? 0 : this.$refs.dict[i].firstChild.offsetHeight
@@ -332,13 +331,10 @@ export default {
           if (data && data.tag_name) {
             let vGithub = /\d+\.\d+\.\d+/.exec(data.tag_name)
             if (!vGithub) { return }
-            vGithub = vGithub[0]
-
-            let vManifest = chrome.runtime.getManifest().version
-
-            if (vGithub !== vManifest) {
-              this.isNewVersion = true
-            }
+            let gits = vGithub[0].split('.').map(v => Number(v))
+            let curs = chrome.runtime.getManifest().version.split('.').map(v => Number(v))
+            this.isNewVersion = gits[0] !== curs[0] ? gits[0] > curs[0] :
+               gits[1] !== curs[1] ? gits[1] > curs[1] : gits[2] > curs[2]
           }
         })
     }
@@ -370,7 +366,7 @@ export default {
         clearTimeout(this.searchTextTimeout)
         this.searchTextTimeout = setTimeout(() => {
           message.send({msg: 'SEARCH_TEXT_SELF', text: this.text})
-        }, 1500)
+        }, 2000)
       }
     }
   },
@@ -409,7 +405,7 @@ export default {
     let dicts = {}
     Object.keys(allDicts).forEach(id => {
       dicts[id] = {
-        favicon: chrome.runtime.getURL('assets/dicts/' + allDicts[id].favicon),
+        favicon: chrome.runtime.getURL(`assets/dicts/${id}.png`),
         height: 0
       }
     })

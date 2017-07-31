@@ -96,19 +96,12 @@
 <script>
 import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
-import Qrcode from 'vue-qrious'
 
-const components = {Qrcode}
-const compReq = require.context('./components/dicts', true, /\.vue$/i)
-const idChecker = /\/(\S+)\.vue$/i
-const allDicts = defaultConfig.dicts.all
-compReq.keys().forEach(path => {
-  let id = idChecker.exec(path)
-  if (!id) { return }
-  id = id[1].toLowerCase()
-  if (!allDicts[id]) { return }
-
-  components[id] = compReq(path)
+// Dynamically & asynchronously loads components
+const components = {Qrcode: () => Promise.resolve(require('vue-qrious'))}
+const compReq = require.context('src/dictionaries', true, /\/view\.vue$/i)
+Object.keys(defaultConfig.dicts.all).forEach(id => {
+  components[id] = () => Promise.resolve(compReq(`./${id}/view.vue`))
 })
 
 export default {
@@ -121,7 +114,7 @@ export default {
         result: null,
         height: 0,
         offsetHeight: 0,
-        favicon: chrome.runtime.getURL('assets/dicts/' + allDicts[id].favicon),
+        favicon: chrome.runtime.getURL(`assets/dicts/${id}.png`),
         name: chrome.i18n.getMessage('dict_' + id) || id,
         isUnfolded: false,
         isSearching: false
@@ -312,7 +305,7 @@ export default {
       if (response && response.ctrl) {
         this.$refs.searchbox.focus()
         document.execCommand('paste')
-        if (this.text.length) {
+        if (this.text.length && !/\s/.test(this.text)) {
           this.handleSearchText()
         }
       }
