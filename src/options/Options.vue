@@ -273,6 +273,8 @@ export default {
 
       isNewVersion: false,
 
+      unlock: false,
+
       text: 'salad',
 
       frameSource: chrome.runtime.getURL('panel.html'),
@@ -385,12 +387,17 @@ export default {
       return preferredHeight > maxHeight ? maxHeight : preferredHeight
     },
     dictsUnselected () {
-      let selected = this.config.dicts.selected
-      return Object.keys(this.config.dicts.all).filter(d1 => !selected.some(d2 => d1 === d2))
+      let selected = new Set(this.config.dicts.selected)
+      let all = this.config.dicts.all
+      let ids = Object.keys(all)
+      if (!this.unlock) {
+        ids = ids.filter(id => !all[id].secret)
+      }
+      return ids.filter(id => !selected.has(id))
     },
     contextUnselected () {
-      let selected = this.config.contextMenu.selected
-      return Object.keys(this.config.contextMenu.all).filter(d1 => !selected.some(d2 => d1 === d2))
+      let selected = new Set(this.config.contextMenu.selected)
+      return Object.keys(this.config.contextMenu.all).filter(id => !selected.has(id))
     }
   },
   components: {
@@ -411,10 +418,12 @@ export default {
     })
     this.dicts = dicts
 
-    storage.sync.get('config', result => {
+    storage.sync.get(['config', 'unlock'], result => {
       if (result.config) {
         this.config = result.config
       }
+
+      this.unlock = Boolean(result.unlock)
 
       storage.listen('config', changes => {
         let config = changes.config.newValue
@@ -422,6 +431,10 @@ export default {
           // only listen to active setting in popup panel
           this.config.active = config.active
         }
+      })
+
+      storage.listen('unlock', changes => {
+        this.unlock = changes.unlock.newValue
       })
     })
 
