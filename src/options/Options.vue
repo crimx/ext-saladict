@@ -418,12 +418,10 @@ export default {
     })
     this.dicts = dicts
 
-    storage.sync.get(['config', 'unlock'], result => {
+    storage.sync.get('config', result => {
       if (result.config) {
         this.config = result.config
       }
-
-      this.unlock = Boolean(result.unlock)
 
       storage.listen('config', changes => {
         let config = changes.config.newValue
@@ -432,7 +430,10 @@ export default {
           this.config.active = config.active
         }
       })
+    })
 
+    storage.local.get('unlock', result => {
+      this.unlock = Boolean(result.unlock)
       storage.listen('unlock', changes => {
         this.unlock = changes.unlock.newValue
       })
