@@ -104,6 +104,13 @@ const getConfig = () => ({
         defaultUnfold: true,
         preferredHeight: 265
       },
+      cobuild: {
+        id: 'cobuild',
+        page: 'https://www.collinsdictionary.com/dictionary/%s',
+        secret: true,
+        defaultUnfold: true,
+        preferredHeight: 300
+      },
       wordreference: {
         id: 'wordreference',
         page: 'http://www.wordreference.com/definition/%s',
