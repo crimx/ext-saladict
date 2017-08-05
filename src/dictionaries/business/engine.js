@@ -7,8 +7,8 @@ import fetchDom from 'src/helpers/fetch-dom'
  * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
  */
 export default function search (text, config) {
-  return fetchDom('http://www.ldoceonline.com/dictionary/' + text.replace(/[^A-Za-z0-9]/g, '-'))
-    .then(doc => handleDom(doc))
+  return fetchDom('http://www.ldoceonline.com/dictionary/' + text.replace(/[^A-Za-z0-9]+/g, '-'))
+    .then(handleDom)
     .then(null, () => trySuggestion(text))
 }
 

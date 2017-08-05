@@ -8,7 +8,7 @@ import fetchDom from 'src/helpers/fetch-dom'
  */
 export default function search (text, config) {
   return fetchDom('http://www.iciba.com/' + text)
-    .then(doc => handleDom(doc))
+    .then(handleDom)
 }
 
 /**
