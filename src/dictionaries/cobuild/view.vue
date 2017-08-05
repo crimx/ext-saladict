@@ -7,8 +7,8 @@
         v-for="pron in result.prons"
       >{{ pron.phsym }} <speaker v-if="pron.audio" :src="pron.audio"></speaker></span>
     </div>
-    <div class="cobuild-rate">
-      <star-rates :rate="result.star || 0" :width="15" :gutter="4"></star-rates>
+    <div class="cobuild-rate" v-if="result.star >= 0 || result.level">
+      <star-rates :rate="result.star" :width="15" :gutter="4"></star-rates>
       <span class="cobuild-level">{{ result.level }}</span>
     </div>
     <ol class="cobuild-defs" v-if="result.defs">
