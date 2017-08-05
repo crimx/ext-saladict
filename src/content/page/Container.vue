@@ -106,59 +106,46 @@ export default {
         this.frameTop = prefferedTop
       }
     },
-    handleDragStart (mouseX, mouseY) {
-      // these four vars are not observable, for better performance
-      this.frameMouseX = mouseX
-      this.frameMouseY = mouseY
-      this.pageMouseX = mouseX
-      this.pageMouseY = mouseY
-      this.translateX = 0
-      this.translateY = 0
+    handleDragStart ({mouseX, mouseY}) {
+      this.pageMouseX = this.frameLeft + mouseX
+      this.pageMouseY = this.frameTop + mouseY
 
-      this.$refs.frame.style.setProperty('will-change', 'transform')
+      this.isDragging = true
+
+      this.$refs.frame.style.setProperty('will-change', 'top, left')
 
       // attach dragging listeners
-      document.addEventListener('mouseup', this.handleDragEnd, true)
-      document.addEventListener('mousemove', this.handlePageMousemove, true)
+      document.addEventListener('mouseup', this.handleDragEnd)
+      document.addEventListener('mousemove', this.handlePageMousemove)
     },
     handleDragEnd () {
       this.$refs.frame.style.removeProperty('will-change')
-      document.removeEventListener('mouseup', this.handleDragEnd, true)
-      document.removeEventListener('mousemove', this.handlePageMousemove, true)
-    },
-    handleFrameMousemove (mouseX, mouseY) {
-      let offsetX = mouseX - this.frameMouseX
-      let offsetY = mouseY - this.frameMouseY
+      document.removeEventListener('mouseup', this.handleDragEnd)
+      document.removeEventListener('mousemove', this.handlePageMousemove)
+      this.isDragging = false
 
-      this.translateY += offsetY
-      this.translateX += offsetX
-      this.$refs.frame.style.setProperty('transform', `translate(${this.translateX}px, ${this.translateY}px)`, 'important')
+      this.$refs.frame.contentWindow.postMessage({
+        msg: 'SALADICT_DRAG_END'
+      }, '*')
+    },
+    handleFrameMousemove ({offsetX, offsetY}) {
+      this.frameLeft += offsetX
+      this.frameTop += offsetY
+      this.$forceUpdate()
 
       this.pageMouseX += offsetX
       this.pageMouseY += offsetY
     },
-    handlePageMousemove (evt) {
-      this.translateX += evt.clientX - this.pageMouseX
-      this.translateY += evt.clientY - this.pageMouseY
-      this.$refs.frame.style.setProperty('transform', `translate(${this.translateX}px, ${this.translateY}px)`, 'important')
+    handlePageMousemove ({clientX, clientY}) {
+      this.frameLeft += clientX - this.pageMouseX
+      this.frameTop += clientY - this.pageMouseY
+      this.$forceUpdate()
 
-      this.pageMouseX = evt.clientX
-      this.pageMouseY = evt.clientY
+      this.pageMouseX = clientX
+      this.pageMouseY = clientY
     },
     clearDoubleClick () {
       this.firstClickOfDoubleClick = false
-    },
-    destroyPanel () {
-      // return new Promise((resolve, reject) => {
-      //   // to prevent listeners binding leaks
-      //   // vue can't trigger destroyed when the iframe is destroyed by force
-      //   message.send({msg: 'DESTROY_PANEL_SELF'}, response => {
-      //     if (response) {
-      //       this.isShowFrame = false
-      //       resolve()
-      //     }
-      //   })
-      // })
     }
   },
   computed: {
@@ -276,14 +263,16 @@ export default {
       let data = evt.data
       switch (data.msg) {
         case 'SALADICT_DRAG_START':
-          this.handleDragStart(data.mouseX, data.mouseY)
+          this.handleDragStart(data)
           this.isShowIcon = false
           break
         case 'SALADICT_DRAG_MOUSEMOVE':
-          this.handleFrameMousemove(data.mouseX, data.mouseY)
+          this.handleFrameMousemove(data)
           break
         case 'SALADICT_DRAG_END':
-          this.handleDragEnd()
+          if (this.isDragging) {
+            this.handleDragEnd()
+          }
           break
       }
     })

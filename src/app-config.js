@@ -56,7 +56,7 @@ const getConfig = () => ({
         id: 'dictcn',
         page: 'http://dict.cn/%s',
         defaultUnfold: true,
-        preferredHeight: 265,
+        preferredHeight: 300,
         options: {
           chart: true,
           etym: true
@@ -101,6 +101,19 @@ const getConfig = () => ({
       business: {
         id: 'business',
         page: 'http://www.ldoceonline.com/search/?q=%s',
+        defaultUnfold: true,
+        preferredHeight: 265
+      },
+      cobuild: {
+        id: 'cobuild',
+        page: 'https://www.collinsdictionary.com/dictionary/%s',
+        secret: true,
+        defaultUnfold: true,
+        preferredHeight: 300
+      },
+      macmillan: {
+        id: 'macmillan',
+        page: 'http://www.macmillandictionary.com/dictionary/british/%s',
         defaultUnfold: true,
         preferredHeight: 265
       },

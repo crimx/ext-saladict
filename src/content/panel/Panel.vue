@@ -231,23 +231,25 @@ export default {
     handleDictPage (id) {
       message.send({msg: 'CREATE_TAB', url: this.config.dicts.all[id].page.replace('%s', this.text)})
     },
-    handleDragStart (evt) {
+    handleDragStart ({clientX, clientY}) {
       this.isDragging = true
+      this.dragMouseX = clientX
+      this.dragMouseY = clientY
 
       window.parent.postMessage({
         msg: 'SALADICT_DRAG_START',
-        mouseX: evt.clientX,
-        mouseY: evt.clientY
+        mouseX: clientX,
+        mouseY: clientY
       }, '*')
 
-      document.addEventListener('mouseup', this.handleDragEnd, true)
-      document.addEventListener('mousemove', this.handleMousemove, true)
+      document.addEventListener('mouseup', this.handleDragEnd)
+      document.addEventListener('mousemove', this.handleMousemove)
     },
-    handleMousemove (evt) {
+    handleMousemove ({clientX, clientY}) {
       window.parent.postMessage({
         msg: 'SALADICT_DRAG_MOUSEMOVE',
-        mouseX: evt.clientX,
-        mouseY: evt.clientY
+        offsetX: clientX - this.dragMouseX,
+        offsetY: clientY - this.dragMouseY
       }, '*')
     },
     handleDragEnd () {
@@ -257,8 +259,8 @@ export default {
         msg: 'SALADICT_DRAG_END'
       }, '*')
 
-      document.removeEventListener('mouseup', this.handleDragEnd, true)
-      document.removeEventListener('mousemove', this.handleMousemove, true)
+      document.removeEventListener('mouseup', this.handleDragEnd)
+      document.removeEventListener('mousemove', this.handleMousemove)
     },
     handleStorageChange (changes) {
       this.config = changes.config.newValue
@@ -308,6 +310,17 @@ export default {
         if (this.text.length && !/\s/.test(this.text)) {
           this.handleSearchText()
         }
+      }
+    })
+
+    window.addEventListener('message', evt => {
+      let data = evt.data
+      switch (data.msg) {
+        case 'SALADICT_DRAG_END':
+          if (this.isDragging) {
+            this.handleDragEnd()
+          }
+          break
       }
     })
   },

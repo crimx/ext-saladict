@@ -31,6 +31,21 @@
         </transition>
       </div>
       <div class="payment-title">
+        <div class="easter-egg" title="Unlock secrets" @click="eggClicked">
+          <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+            <path fill="#AF9CE6" d="M407.64 135.93l-.05-.1C373 53.93 313.1 0 256 0c-57.15 0-117.04 53.96-151.63 135.93l19.7 32.25L256 182.88l131.94-14.7 19.7-32.25z"/>
+            <path fill="#FFA0C1" d="M437.16 285.64c0-37.54-5.2-73.24-14.28-105.87L256 182.87l-166.88-3.1c-9.08 32.63-14.28 68.33-14.28 105.87 0 21.26 1.65 40.86 4.72 58.88l.13.7 37.4 36.1L256 402.54l138.9-21.22 37.4-36.1c3.16-18.22 4.86-38.05 4.86-59.58z"/>
+            <path fill="#AF9CE6" d="M256 402.54H96.27l.07.15C128.9 478.6 193.58 512 256 512c62.43 0 127.12-33.4 159.68-109.35l.05-.1H256z"/>
+            <path fill="#ABEB8A" d="M425.37 375.5c.68-2.36 1.34-4.74 1.97-7.16 0-.06.03-.12.05-.18 1.9-7.35 3.5-15 4.9-22.95-41.8 21.2-103.2 36.2-176.3 36.2s-134.6-14.9-176.3-36.1c1.3 8 3 15.6 4.9 23v.2c.6 2.5 1.3 4.8 1.9 7.2 2 7.1 4.4 13.9 6.9 20.4l.2.5c.8 2.1 1.6 4.2 2.5 6.24C142.5 419.2 197.9 428 255.8 428s113.3-8.82 159.72-25.2c.86-2.03 1.7-4.1 2.54-6.2.06-.14.1-.3.17-.44 2.55-6.5 4.86-13.3 6.93-20.4z"/>
+            <ellipse cx="256" cy="293.14" fill="#61CCFF" rx="34.58" ry="44.41"/>
+            <g fill="#FFDF96">
+              <ellipse cx="140.06" cy="272.58" rx="32.69" ry="41.97"/>
+              <ellipse cx="371.94" cy="272.58" rx="32.69" ry="41.97"/>
+            </g>
+            <path fill="#ABEB8A" d="M422.88 179.77v-.05c-.87-3.1-1.78-6.15-2.7-9.2l-.75-2.4c-.37-1.2-.75-2.35-1.13-3.5-.26-.8-.5-1.6-.78-2.4l-1.2-3.5c-.25-.77-.5-1.53-.78-2.3-.4-1.18-.84-2.36-1.27-3.54l-.76-2.1-1.3-3.65-.7-1.85-1.5-3.8-.6-1.42-1.7-4.13c-39.8 15.22-91.8 25.22-151.6 25.22s-111.8-10-151.6-25.22l-1.7 4.12-.6 1.43-1.5 3.8-.7 1.85-1.3 3.65-.7 2.1-1.25 3.55-.8 2.28c-.4 1.2-.8 2.4-1.17 3.6l-.8 2.4c-.34 1.2-.72 2.3-1.1 3.5l-.72 2.4c-.92 3.1-1.82 6.1-2.7 9.2v.1c47.8 18.1 105.94 27.8 166.88 27.8s119.1-9.7 166.9-27.8z"/>
+            <path d="M164.34 422.95c-9.3-16.5-16.87-35.46-22.27-57-5.9-23.6-9.2-50.32-9.2-80.3 0-43.92 7.12-85.28 19.24-122.2 9.5-28.9 22.1-55.07 36.7-77.58 27.1-41.64 61.3-70.73 96.3-81.38-9.7-3-19.4-4.5-29-4.5-44.5 0-90.6 32.7-125.2 85.8-14.6 22.5-27.2 48.6-36.7 77.6-12.2 36.9-19.3 78.3-19.3 122.2 0 30 3.3 56.7 9.2 80.3 5.4 21.5 13 40.5 22.3 57C141 484.6 199.5 512 256 512c9.66 0 19.37-.82 29-2.45-46.8-7.94-91.9-35.5-120.66-86.6z" opacity=".1"/>
+          </svg>
+        </div>
         <p>BUY ME A</p>
         <p>COFFEE <svg class="icon-heart" viewBox="0 0 32 32"><path d="M23.6 2c-3.363 0-6.258 2.736-7.599 5.594-1.342-2.858-4.237-5.594-7.601-5.594-4.637 0-8.4 3.764-8.4 8.401 0 9.433 9.516 11.906 16.001 21.232 6.13-9.268 15.999-12.1 15.999-21.232 0-4.637-3.763-8.401-8.4-8.401z"/></svg></p>
       </div>
@@ -43,6 +58,7 @@
 export default {
   data () {
     return {
+      eggCount: 0,
       showPayment: false,
       active: 'wechat'
     }
@@ -50,6 +66,15 @@ export default {
   methods: {
     coffeeMouseover () {
       this.showPayment = true
+    },
+    eggClicked () {
+      if (++this.eggCount === 2) {
+        chrome.storage.local.set({unlock: true})
+      } else {
+        setTimeout(() => {
+          this.eggCount = 0
+        }, 400)
+      }
     },
     i18n (key) {
       return chrome.i18n.getMessage(key) || key
@@ -106,6 +131,19 @@ $coffee-width: 100px;
     margin-bottom: 0;
     font-weight: bold;
     font-family: 'shadows-into-light', -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+}
+
+.easter-egg {
+  margin-left: 4px;
+  margin-bottom: 6px;
+  cursor: pointer;
+
+  &:hover {
+    animation-name: shake;
+    animation-duration: 100ms;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite
   }
 }
 
@@ -184,6 +222,59 @@ $coffee-width: 100px;
   0%   { stroke-dashoffset:  20; opacity: 0; transform: translate(0, 0); }
   10%  { stroke-dashoffset:   0; opacity: 1; }
   100% { stroke-dashoffset: -20; opacity: 0; transform: translate(5px, -4px); }
+}
+
+@keyframes shake {
+   2% { transform: translate(-.5px, .5px) rotate(-.5deg) }
+   4% { transform: translate(2.5px, .5px) rotate(-.5deg) }
+   6% { transform: translate(-.5px, 1.5px) rotate(1.5deg) }
+   8% { transform: translate(.5px, .5px) rotate(-.5deg) }
+  10% { transform: translate(-.5px, -1.5px) rotate(-.5deg) }
+  12% { transform: translate(.5px, -.5px) rotate(1.5deg) }
+  14% { transform: translate(1.5px, 2.5px) rotate(-.5deg) }
+  16% { transform: translate(-.5px, -.5px) rotate(.5deg) }
+  18% { transform: translate(2.5px, .5px) rotate(.5deg) }
+  20% { transform: translate(.5px, -1.5px) rotate(-.5deg) }
+  22% { transform: translate(2.5px, 2.5px) rotate(-.5deg) }
+  24% { transform: translate(2.5px, 1.5px) rotate(1.5deg) }
+  26% { transform: translate(.5px, 1.5px) rotate(-.5deg) }
+  28% { transform: translate(1.5px, .5px) rotate(.5deg) }
+  30% { transform: translate(-1.5px, 2.5px) rotate(1.5deg) }
+  32% { transform: translate(.5px, .5px) rotate(.5deg) }
+  34% { transform: translate(.5px, 1.5px) rotate(1.5deg) }
+  36% { transform: translate(2.5px, -.5px) rotate(1.5deg) }
+  38% { transform: translate(.5px, 1.5px) rotate(1.5deg) }
+  40% { transform: translate(2.5px, 1.5px) rotate(1.5deg) }
+  42% { transform: translate(2.5px, -1.5px) rotate(.5deg) }
+  44% { transform: translate(.5px, -.5px) rotate(.5deg) }
+  46% { transform: translate(1.5px, -1.5px) rotate(.5deg) }
+  48% { transform: translate(-1.5px, -.5px) rotate(.5deg) }
+  50% { transform: translate(2.5px, -1.5px) rotate(1.5deg) }
+  52% { transform: translate(.5px, 1.5px) rotate(.5deg) }
+  54% { transform: translate(2.5px, -.5px) rotate(.5deg) }
+  56% { transform: translate(2.5px, 2.5px) rotate(.5deg) }
+  58% { transform: translate(2.5px, 1.5px) rotate(-.5deg) }
+  60% { transform: translate(1.5px, 1.5px) rotate(-.5deg) }
+  62% { transform: translate(-.5px, .5px) rotate(-.5deg) }
+  64% { transform: translate(2.5px, 1.5px) rotate(-.5deg) }
+  66% { transform: translate(-1.5px, .5px) rotate(1.5deg) }
+  68% { transform: translate(1.5px, -1.5px) rotate(.5deg) }
+  70% { transform: translate(.5px, .5px) rotate(-.5deg) }
+  72% { transform: translate(-.5px, 1.5px) rotate(1.5deg) }
+  74% { transform: translate(-1.5px, 1.5px) rotate(1.5deg) }
+  76% { transform: translate(2.5px, -.5px) rotate(.5deg) }
+  78% { transform: translate(2.5px, 2.5px) rotate(.5deg) }
+  80% { transform: translate(-1.5px, 2.5px) rotate(.5deg) }
+  82% { transform: translate(-1.5px, -.5px) rotate(.5deg) }
+  84% { transform: translate(.5px, 1.5px) rotate(-.5deg) }
+  86% { transform: translate(-.5px, 2.5px) rotate(.5deg) }
+  88% { transform: translate(2.5px, 2.5px) rotate(1.5deg) }
+  90% { transform: translate(-.5px, -1.5px) rotate(-.5deg) }
+  92% { transform: translate(1.5px, .5px) rotate(.5deg) }
+  94% { transform: translate(-.5px, -.5px) rotate(.5deg) }
+  96% { transform: translate(1.5px, .5px) rotate(1.5deg) }
+  98% { transform: translate(.5px, -.5px) rotate(1.5deg) }
+  0%,100% { transform: translate(0, 0) rotate(0) }
 }
 
 .fade-enter-active, .fade-leave-active {
