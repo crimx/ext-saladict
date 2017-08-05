@@ -1,6 +1,16 @@
 # Changelog
 
-## [Unreleased]
+[Unreleased]
+
+[5.15.2] - 2017-08-06
+### Added
+- Macmillan 词典
+- 海词词频分级
+- 彩蛋
+
+### Fixed
+- 拖动问题
+- 其它小修正
 
 [5.12.8] - 2017-07-31
 ### Added
@@ -93,7 +103,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.12.8...HEAD
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.15.2...HEAD
+[5.15.2]: https://github.com/crimx/crx-saladict/compare/v5.12.8...v5.15.2
 [5.12.8]: https://github.com/crimx/crx-saladict/compare/v5.11.23...v5.12.8
 [5.11.23]: https://github.com/crimx/crx-saladict/compare/v5.7.20...v5.11.23
 [5.7.20]: https://github.com/crimx/crx-saladict/compare/v5.5.14...v5.7.20
