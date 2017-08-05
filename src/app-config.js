@@ -111,6 +111,12 @@ const getConfig = () => ({
         defaultUnfold: true,
         preferredHeight: 300
       },
+      macmillan: {
+        id: 'macmillan',
+        page: 'http://www.macmillandictionary.com/dictionary/british/%s',
+        defaultUnfold: true,
+        preferredHeight: 265
+      },
       wordreference: {
         id: 'wordreference',
         page: 'http://www.wordreference.com/definition/%s',
