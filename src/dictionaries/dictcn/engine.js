@@ -1,4 +1,5 @@
 import fetchDom from 'src/helpers/fetch-dom'
+const mp3link = 'http://audio.dict.cn/'
 
 /**
  * Search text and give back result
@@ -16,6 +17,11 @@ export default function search (text, config) {
 /**
 * @typedef {Object} DictcnResult
 * @property {string} title - keyword
+* @property {string} level
+* @property {number} star
+* @property {Object[]} prons
+* @property {string} prons[].phsym
+* @property {string[]} prons[].audio - male & female
 * @property {Object} chart - for highcharts options
 * @property {string[]} etym - etymology
 */
@@ -31,6 +37,22 @@ function handleDom (doc, options) {
   let $title = doc.querySelector('.keyword')
   if ($title) {
     result.title = $title.innerText
+  }
+
+  let $level = doc.querySelector('.level-title')
+  if ($level) { result.level = $level.getAttribute('level') }
+
+  let $star = doc.querySelector('[class^="level_"]')
+  if ($star) { result.star = Number($star.className.replace('level_', '')) }
+
+  let $phonetic = doc.querySelector('.phonetic')
+  if ($phonetic) {
+    result.prons = Array.from($phonetic.children)
+      .map(el => ({
+        phsym: el.innerText.replace(/\s+/gm, ' ').trim(),
+        audio: Array.from(el.querySelectorAll('.sound'))
+          .map(x => mp3link + x.getAttribute('naudio'))
+      }))
   }
 
   if (options.chart) {

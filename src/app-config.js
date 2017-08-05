@@ -56,7 +56,7 @@ const getConfig = () => ({
         id: 'dictcn',
         page: 'http://dict.cn/%s',
         defaultUnfold: true,
-        preferredHeight: 265,
+        preferredHeight: 300,
         options: {
           chart: true,
           etym: true

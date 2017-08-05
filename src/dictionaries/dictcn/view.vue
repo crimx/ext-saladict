@@ -1,6 +1,16 @@
 <template>
 <section>
   <div class="dict-dictcn" v-if="result">
+    <div class="dictcn-rate" v-if="result.star >= 0 || result.level">
+      <star-rates :rate="result.star" :width="15" :gutter="4"></star-rates>
+      <span class="dictcn-level">{{ result.level }}</span>
+    </div>
+    <div class="dictcn-pron">
+      <span class="dictcn-pron-item"
+        v-if="result.prons"
+        v-for="pron in result.prons"
+      >{{ pron.phsym }} <speaker v-for="au in pron.audio" :src="au"></speaker></span>
+    </div>
     <div class="chart" v-if="result.chart">
       <highcharts :options="chartOpt"></highcharts>
     </div>
@@ -12,9 +22,16 @@
 </template>
 
 <script>
+import Speaker from 'src/components/Speaker'
+import StarRates from 'src/components/StarRates'
+
 export default {
   name: 'Dictcn',
   props: ['result'],
+  components: {
+    StarRates,
+    Speaker
+  },
   computed: {
     chartOpt () {
       let chartData = this.result.chart
@@ -95,6 +112,24 @@ export default {
 <style scoped>
 .dict-dictcn {
   padding: 10px;
+}
+
+.dictcn-rate {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.dictcn-level {
+  margin-left: 10px;
+  color: #aaa;
+}
+
+.dictcn-pron {
+  margin-bottom: 5px;
+}
+
+.dictcn-pron-item {
+  margin-right: 5px;
 }
 
 .chart {
