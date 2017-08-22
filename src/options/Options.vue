@@ -158,14 +158,18 @@
                   </div>
                   <div class="checkbox" v-if="config.dicts.all[id].options">
                     <template v-for="(__, optKey) in config.dicts.all[id].options">
+                      <div class="checkbox" v-if="typeof config.dicts.all[id].options[optKey] !== 'boolean'">
+                        <div class="input-group">
+                          <div class="input-group-addon">{{ i18n(`dict_${id}_${optKey}`) }}</div>
+                          <input type="number" min="1" class="form-control" v-model.number="config.dicts.all[id].options[optKey]">
+                          <div class="input-group-addon">{{ i18n(`dict_${id}_${optKey}_unit`)  }}</div>
+                        </div>
+                      </div>
+                    </template>
+                    <template v-for="(__, optKey) in config.dicts.all[id].options">
                       <label class="checkbox-inline" v-if="typeof config.dicts.all[id].options[optKey] === 'boolean'">
                         <input type="checkbox" v-model="config.dicts.all[id].options[optKey]"> {{ i18n(`dict_${id}_${optKey}`) }}
                       </label>
-                      <div class="input-group" v-else>
-                        <div class="input-group-addon">{{ i18n(`dict_${id}_${optKey}`) }}</div>
-                        <input type="number" min="1" class="form-control" v-model.number="config.dicts.all[id].options[optKey]">
-                        <div class="input-group-addon">{{ i18n(`dict_${id}_${optKey}_unit`)  }}</div>
-                      </div>
                     </template>
                   </div>
                 </div></div>
