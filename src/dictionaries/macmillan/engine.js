@@ -52,6 +52,7 @@ function handleAllDom (docs) {
 
 /**
 * @typedef {Object} MacmillanResult
+* @property {string} title
 * @property {string} pos - part of speech
 * @property {string} sc - syntax coding
 * @property {string} phsym
@@ -65,6 +66,9 @@ function handleAllDom (docs) {
  */
 function handleDom (doc) {
   let def = {}
+
+  let $title = doc.querySelector('.redword .BASE')
+  if ($title) { def.title = $title.innerText }
 
   let $headbar = doc.querySelector('#headbar')
 

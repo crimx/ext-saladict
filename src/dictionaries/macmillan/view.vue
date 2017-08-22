@@ -1,7 +1,8 @@
 <template>
 <section>
-  <div class="dict-macmillan" v-if="result">
+  <div class="dict-macmillan" v-if="result" @click="handleClick">
     <div v-for="res in result">
+      <div class="macmillan-title" v-if="res.title">{{ res.title }}</div>
       <div class="macmillan-head">
         <star-rates :rate="res.star || 0" :width="15" :gutter="4"></star-rates>
         <span class="macmillan-head-info">{{ res.phsym }} <speaker v-if="res.audio" :src="res.audio"></speaker> {{ res.pos.toUpperCase() }} {{ res.sc }}</span>
@@ -21,6 +22,14 @@ import StarRates from 'src/components/StarRates'
 export default {
   name: 'Macmillan',
   props: ['result'],
+  methods: {
+    handleClick ({target}) {
+      let mp3 = target.dataset.srcMp3
+      if (mp3) {
+        chrome.runtime.sendMessage({msg: 'AUDIO_PLAY', src: mp3})
+      }
+    }
+  },
   components: {
     StarRates,
     Speaker
@@ -41,6 +50,11 @@ export default {
 .macmillan-head-info {
   margin-left: 10px;
   color: #aaa;
+}
+
+.macmillan-title {
+  font-size: 1.3em;
+  font-weight: bold;
 }
 
 .macmillan-defs {
@@ -67,7 +81,15 @@ export default {
     border-bottom: thin dotted #16a085;
   }
 
-  .SENSE-NUM {
+  .SENSE-VARIANT,
+  h3.SENSE-ENTRY,
+  h2.MULTIWORD,
+  h2.PHRASE-VARIANT {
+    display: inline;
+  }
+
+  .SENSE-NUM,
+  .foldimage {
     display: none;
   }
 
@@ -117,6 +139,10 @@ export default {
     margin-left: 10px;
   }
 
+  .SYNTAX-CODING {
+    margin-right: 0.5em;
+  }
+
   .h2 {
     margin-right: 3px;
     font-weight: bold;
@@ -136,10 +162,6 @@ export default {
     }
   }
 
-  .foldimage {
-    display: none;
-  }
-
   .ONEBOX-HEAD {
     font-weight: bold;
     color: #f9690e;
@@ -151,6 +173,13 @@ export default {
 
   .SUB-SENSES {
     padding-left: 16px;
+  }
+
+  .sound,
+  .audio_play_button {
+    width: 16px;
+    vertical-align: text-bottom;
+    cursor: pointer;
   }
 }
 </style>
