@@ -139,6 +139,7 @@ message.on('FETCH_DICT_RESULT', (data, sender, sendResponse) => {
 
 // merge config on installed
 chrome.runtime.onInstalled.addListener(() => {
+  let isNew = false
   storage.sync.get('config', ({config}) => {
     if (config && config.dicts && config.dicts.all) {
       // got the correct version of config
@@ -147,6 +148,7 @@ chrome.runtime.onInstalled.addListener(() => {
       storage.local.clear()
       storage.sync.clear()
       config = defaultConfig
+      isNew = true
     }
 
     // fix historical problems
@@ -156,6 +158,7 @@ chrome.runtime.onInstalled.addListener(() => {
     config.dicts.all.urban.options.resultnum = Number(config.dicts.all.urban.options.resultnum)
 
     storage.sync.set({config})
+      .then(() => isNew && chrome.tabs.create({url: chrome.runtime.getURL('options.html')}))
     setConfigs(config)
 
     function mergeConfig (config) {

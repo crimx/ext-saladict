@@ -1,6 +1,7 @@
 <template>
 <section>
   <div class="dict-cobuild" v-if="result">
+    <div class="cobuild-title" v-if="result.title">{{ result.title }}</div>
     <div class="cobuild-pron">
       <span class="cobuild-pron-item"
         v-if="result.prons"
@@ -35,6 +36,11 @@ export default {
 <style lang="scss">
 .dict-cobuild {
   padding: 10px;
+}
+
+.cobuild-title {
+  font-size: 1.3em;
+  font-weight: bold;
 }
 
 .cobuild-pron {

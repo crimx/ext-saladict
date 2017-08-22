@@ -15,10 +15,10 @@ export default function search (text, config) {
 }
 
 function checkResult (doc) {
-  if (doc.querySelector('.redword')) {
+  if (doc.querySelector('.senses .SENSE')) {
     return doc
   } else {
-    let alternative = document.querySelector('#search-results li a')
+    let alternative = doc.querySelector('#search-results li a')
     if (alternative) {
       return fetchDom(alternative.href)
     }
@@ -27,7 +27,7 @@ function checkResult (doc) {
 }
 
 function addRelated (doc) {
-  let $link = document.querySelector('[rel="canonical"]')
+  let $link = doc.querySelector('[rel="canonical"]')
   if (!$link) { return [doc] }
 
   let keyword = (/[^/]+(?=_\d+$)/.exec($link.href) || [''])[0]
@@ -52,6 +52,7 @@ function handleAllDom (docs) {
 
 /**
 * @typedef {Object} MacmillanResult
+* @property {string} title
 * @property {string} pos - part of speech
 * @property {string} sc - syntax coding
 * @property {string} phsym
@@ -65,6 +66,9 @@ function handleAllDom (docs) {
  */
 function handleDom (doc) {
   let def = {}
+
+  let $title = doc.querySelector('.redword .BASE')
+  if ($title) { def.title = $title.innerText }
 
   let $headbar = doc.querySelector('#headbar')
 

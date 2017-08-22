@@ -22,14 +22,14 @@ export default {
 
   a:link,
   a:visited {
-    color: #16a085;
+    color: #f9690e;
     text-decoration: none;
   }
 
   a:hover,
   a:active,
   a:focus {
-    color: #16a085;
+    color: #f9690e;
     text-decoration: underline;
   }
 
@@ -37,7 +37,7 @@ export default {
     margin: 0.5em 0;
     padding: 0 1em;
     font-style: italic;
-    border-left: 2px solid #16a085;
+    border-left: 2px solid #f9690e;
   }
 
   .foreign {

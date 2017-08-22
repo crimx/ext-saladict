@@ -2,6 +2,20 @@
 
 [Unreleased]
 
+[5.15.9] - 2017-08-23
+### Fixed
+- 更新必应词典
+- 修复拖动抖动问题
+- 样式修补
+
+### Changed
+- 第一次安装时打开设置页面
+
+[5.15.4] - 2017-08-10
+### Fixed
+- 词典样式
+- 麦克米伦检测问题
+
 [5.15.2] - 2017-08-06
 ### Added
 - Macmillan 词典
@@ -103,7 +117,9 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.15.2...HEAD
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.15.9...HEAD
+[5.15.9]: https://github.com/crimx/crx-saladict/compare/v5.15.4...v5.15.9
+[5.15.4]: https://github.com/crimx/crx-saladict/compare/v5.15.2...v5.15.4
 [5.15.2]: https://github.com/crimx/crx-saladict/compare/v5.12.8...v5.15.2
 [5.12.8]: https://github.com/crimx/crx-saladict/compare/v5.11.23...v5.12.8
 [5.11.23]: https://github.com/crimx/crx-saladict/compare/v5.7.20...v5.11.23
