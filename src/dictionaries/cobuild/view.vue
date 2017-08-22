@@ -1,15 +1,16 @@
 <template>
 <section>
   <div class="dict-cobuild" v-if="result">
-    <div class="cobuild-rate" v-if="result.star >= 0 || result.level">
-      <star-rates :rate="result.star" :width="15" :gutter="4"></star-rates>
-      <span class="cobuild-level">{{ result.level }}</span>
-    </div>
+    <div class="cobuild-title" v-if="result.title">{{ result.title }}</div>
     <div class="cobuild-pron">
       <span class="cobuild-pron-item"
         v-if="result.prons"
         v-for="pron in result.prons"
       >{{ pron.phsym }} <speaker v-if="pron.audio" :src="pron.audio"></speaker></span>
+    </div>
+    <div class="cobuild-rate" v-if="result.star >= 0 || result.level">
+      <star-rates :rate="result.star" :width="15" :gutter="4"></star-rates>
+      <span class="cobuild-level">{{ result.level }}</span>
     </div>
     <ol class="cobuild-defs" v-if="result.defs">
       <li class="cobuild-def" v-for="def in result.defs" v-html="def"></li>
@@ -35,6 +36,11 @@ export default {
 <style lang="scss">
 .dict-cobuild {
   padding: 10px;
+}
+
+.cobuild-title {
+  font-size: 1.3em;
+  font-weight: bold;
 }
 
 .cobuild-pron {
