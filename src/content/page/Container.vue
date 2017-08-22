@@ -23,6 +23,11 @@
     :src="frameSource"
     :style="{top: frameTop + 'px !important', left: frameLeft + 'px !important', height: panelHeight + 'px !important'}"
   ></iframe>
+  <div class="saladict-drag"
+    v-if="isShowFrame"
+    @mousedown="handleDragStart"
+    :style="dragStyle"
+  ></div>
 </div>
 </template>
 
@@ -50,6 +55,10 @@ export default {
       selectedText: '',
 
       firstClickOfDoubleClick: false,
+
+      isDragging: false,
+      dragLeft: 0,
+      dragWidth: 0,
 
       // pin the panel
       isStayVisiable: false
@@ -106,9 +115,9 @@ export default {
         this.frameTop = prefferedTop
       }
     },
-    handleDragStart ({mouseX, mouseY}) {
-      this.pageMouseX = this.frameLeft + mouseX
-      this.pageMouseY = this.frameTop + mouseY
+    handleDragStart ({clientX, clientY}) {
+      this.pageMouseX = clientX
+      this.pageMouseY = clientY
 
       this.isDragging = true
 
@@ -123,18 +132,6 @@ export default {
       document.removeEventListener('mouseup', this.handleDragEnd)
       document.removeEventListener('mousemove', this.handlePageMousemove)
       this.isDragging = false
-
-      this.$refs.frame.contentWindow.postMessage({
-        msg: 'SALADICT_DRAG_END'
-      }, '*')
-    },
-    handleFrameMousemove ({offsetX, offsetY}) {
-      this.frameLeft += offsetX
-      this.frameTop += offsetY
-      this.$forceUpdate()
-
-      this.pageMouseX += offsetX
-      this.pageMouseY += offsetY
     },
     handlePageMousemove ({clientX, clientY}) {
       this.frameLeft += clientX - this.pageMouseX
@@ -162,6 +159,22 @@ export default {
       }, 0)
       const maxHeight = window.innerHeight * 0.78
       return preferredHeight > maxHeight ? maxHeight : preferredHeight
+    },
+    dragStyle () {
+      if (this.isDragging) {
+        return {
+          top: this.frameTop + 'px !important',
+          left: this.frameLeft + 'px !important',
+          width: '400px !important',
+          height: this.panelHeight + 'px !important'
+        }
+      }
+      return {
+        top: this.frameTop + 'px !important',
+        left: this.frameLeft + this.dragLeft + 'px !important',
+        width: this.dragWidth + 'px !important',
+        height: '30px !important'
+      }
     }
   },
   created () {
@@ -259,22 +272,9 @@ export default {
       })
     })
 
-    window.addEventListener('message', evt => {
-      let data = evt.data
-      switch (data.msg) {
-        case 'SALADICT_DRAG_START':
-          this.handleDragStart(data)
-          this.isShowIcon = false
-          break
-        case 'SALADICT_DRAG_MOUSEMOVE':
-          this.handleFrameMousemove(data)
-          break
-        case 'SALADICT_DRAG_END':
-          if (this.isDragging) {
-            this.handleDragEnd()
-          }
-          break
-      }
+    message.on('DRAG_AREA', ({left, width}) => {
+      this.dragLeft = left
+      this.dragWidth = width
     })
   },
   destroyed () {
@@ -396,6 +396,15 @@ $leaf-rotate: 30deg;
     overflow: hidden;
     width: 400px;
     box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
+  }
+
+  div.saladict-drag {
+    @extend %reset;
+    position: fixed;
+    z-index: $global-zindex-tooltip + 1;
+    height: 30px;
+    cursor: move;
+    background: rgba(92, 175, 158, 0.01); // mouse event over iframe won't work without bg color, tricky
   }
 
   div.saladict-icon {

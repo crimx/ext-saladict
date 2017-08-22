@@ -81,7 +81,13 @@ document.addEventListener('keyup', evt => {
 })
 
 document.addEventListener('mouseup', evt => {
-  if (evt.button !== 0 || !config.active || window.name === 'saladict-frame') { return }
+  if (evt.button !== 0 ||
+      !config.active ||
+      window.name === 'saladict-frame' ||
+      evt.target.className.startsWith('saladict-')
+  ) {
+    return
+  }
 
   let text = window.getSelection().toString().trim()
   if (!text) {

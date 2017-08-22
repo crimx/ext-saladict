@@ -4,6 +4,7 @@
     <input type="text" class="search-input"
       ref="searchbox"
       v-model.trim="text"
+      @transitionend="updateDragAreaCoord"
       @keyup.enter="handleSearchText()"
     >
     <svg class="icon-search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966"
@@ -11,7 +12,7 @@
     >
       <path d="M51.704 51.273L36.844 35.82c3.79-3.8 6.14-9.04 6.14-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.082 0 9.747-1.817 13.383-4.832l14.895 15.49c.196.206.458.308.72.308.25 0 .5-.093.694-.28.398-.382.41-1.015.028-1.413zM21.984 40c-10.478 0-19-8.523-19-19s8.522-19 19-19 19 8.523 19 19-8.525 19-19 19z"/>
     </svg>
-    <div class="dragarea" @mousedown.stop="handleDragStart"></div>
+    <div class="dragarea" ref="dragarea"></div>
     <svg class="icon-options" @click="openOptionsPage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
       <path d="M0 97.92v24.48h612V97.92H0zm0 220.32h612v-24.48H0v24.48zm0 195.84h612V489.6H0v24.48z"/>
     </svg>
@@ -176,6 +177,10 @@ export default {
           })
       })
     },
+    updateDragAreaCoord () {
+      var $da = this.$refs.dragarea
+      message.send({msg: 'DRAG_AREA_SELF', left: $da.offsetLeft, width: $da.offsetWidth})
+    },
     closePanel () {
       message.send({msg: 'CLOSE_PANEL_SELF'})
     },
@@ -231,37 +236,6 @@ export default {
     handleDictPage (id) {
       message.send({msg: 'CREATE_TAB', url: this.config.dicts.all[id].page.replace('%s', this.text)})
     },
-    handleDragStart ({clientX, clientY}) {
-      this.isDragging = true
-      this.dragMouseX = clientX
-      this.dragMouseY = clientY
-
-      window.parent.postMessage({
-        msg: 'SALADICT_DRAG_START',
-        mouseX: clientX,
-        mouseY: clientY
-      }, '*')
-
-      document.addEventListener('mouseup', this.handleDragEnd)
-      document.addEventListener('mousemove', this.handleMousemove)
-    },
-    handleMousemove ({clientX, clientY}) {
-      window.parent.postMessage({
-        msg: 'SALADICT_DRAG_MOUSEMOVE',
-        offsetX: clientX - this.dragMouseX,
-        offsetY: clientY - this.dragMouseY
-      }, '*')
-    },
-    handleDragEnd () {
-      this.isDragging = false
-
-      window.parent.postMessage({
-        msg: 'SALADICT_DRAG_END'
-      }, '*')
-
-      document.removeEventListener('mouseup', this.handleDragEnd)
-      document.removeEventListener('mousemove', this.handleMousemove)
-    },
     handleStorageChange (changes) {
       this.config = changes.config.newValue
     },
@@ -312,17 +286,9 @@ export default {
         }
       }
     })
-
-    window.addEventListener('message', evt => {
-      let data = evt.data
-      switch (data.msg) {
-        case 'SALADICT_DRAG_END':
-          if (this.isDragging) {
-            this.handleDragEnd()
-          }
-          break
-      }
-    })
+  },
+  mounted () {
+    setTimeout(() => this.updateDragAreaCoord(), 1000)
   },
   computed: {
     defaultUnfoldList () {
