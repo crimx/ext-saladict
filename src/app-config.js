@@ -28,7 +28,8 @@ const getConfig = () => ({
         options: {
           tense: true,
           phsym: true,
-          cdef: true
+          cdef: true,
+          sentence: 4
         }
       },
       google: {

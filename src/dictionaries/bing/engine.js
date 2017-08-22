@@ -1,6 +1,4 @@
-const LEX_LINK = 'http://dict.bing.com.cn/api/http/v3/0003462a56234cee982be652b8ea1e5f/en-us/zh-cn/lexicon?format=application/json&q='
-const MACHINE_LINK = 'http://dict.bing.com.cn/api/http/v3/0003462a56234cee982be652b8ea1e5f/en-us/zh-cn/translation?format=application/json&q='
-const PRONUNCIATION_LINK = 'https://dictionary.blob.core.chinacloudapi.cn/media/audio/'
+import fetchDom from 'src/helpers/fetch-dom'
 
 /**
  * Search text and give back result
@@ -10,90 +8,117 @@ const PRONUNCIATION_LINK = 'https://dictionary.blob.core.chinacloudapi.cn/media/
  */
 export default function search (text, config) {
   const options = config.dicts.all.bing.options
+  const DICT_LINK = 'https://cn.bing.com/dict/clientsearch?mkt=zh-CN&setLang=zh&form=BDVEHC&ClientVer=BDDTV3.5.1.4320&q='
 
-  return searchLex(text, options)
-    .then(null, () => searchMachine(text, options))
+  return fetchDom(DICT_LINK + text)
+    .then(doc => handleDom(doc, options))
 }
 
-function searchLex (text, options) {
-  return fetch(LEX_LINK + text)
-    .then(res => res.json())
-    .then(data => handleLexResult(data, options))
-}
+function handleDom (doc, options) {
+  if (doc.querySelector('.client_def_hd_hd')) {
+    return handleLexResult(doc, options)
+  }
 
-function searchMachine (text, options) {
-  return fetch(MACHINE_LINK + text)
-    .then(res => res.json())
-    .then(data => handleMachineResult(data, options))
+  if (doc.querySelector('.client_trans_head')) {
+    return handleMachineResult(doc, options)
+  }
+
+  return Promise.reject('no result')
 }
 
 /**
 * Lex search result
 * @typedef {Object} BingLex
 * @property {string} type - Resutl type, 'lex'
+* @property {string} title
 * @property {Object[]} phsym - phonetic symbols
-* @property {string} phsym[].lang - language('UK'|'US'|'PY')
-* @property {string} phsym[].al - Phonetic Alphabet
+* @property {string} phsym[].lang - language('UK'|'US'|'PY') Phonetic Alphabet
 * @property {string} phsym[].pron - pronunciation
 * @property {Object[]} cdef - common definitions
 * @property {string} cdef[].pos - part of speech
 * @property {string} cdef[].def - definition
-* @property {Object} inf - infinitive
+* @property {string[]} infs - infinitive
+* @property {Object[]} sentences
+* @property {string} sentences[].en
+* @property {string} sentences[].chs
+* @property {string} sentences[].source
+* @property {string} sentences[].mp3
 */
 
 /**
  * @async
  * @returns {Promise.<BingLex>} A promise with the result to send back
  */
-function handleLexResult (data, options) {
-  if (!data.Q || !data.QD) { return Promise.reject('Bing Lex Error.') }
-
-  var result = {
-    type: 'lex'
+function handleLexResult (doc, options) {
+  let result = {
+    type: 'lex',
+    title: getText(doc, '.client_def_hd_hd')
   }
 
   // pronunciation
-  if (data.QD.PRON && options.phsym) {
-    result.phsym = data.QD.PRON.reduce((phsym, pron) => {
-      var obj = {
-        lang: chrome.i18n.getMessage(pron.L) || pron.L,
-        al: `[${pron.V}]`
-      }
-      if (data.QD.HW.SIG) {
-        let sig = data.QD.HW.SIG
-        let sig1 = sig.slice(0, 2).toLowerCase()
-        let sig2 = sig.slice(2, 4).toLowerCase()
-        if (pron.L === 'US') {
-          obj.pron = `${PRONUNCIATION_LINK}tom/${sig1}/${sig2}/${sig}.mp3`
-        } else if (pron.L === 'UK') {
-          obj.pron = `${PRONUNCIATION_LINK}george/${sig1}/${sig2}/${sig}.mp3`
+  if (options.phsym) {
+    let $prons = Array.from(doc.querySelectorAll('.client_def_hd_pn_list'))
+    if ($prons.length > 0) {
+      result.phsym = $prons.map(el => {
+        let pron = ''
+        let $audio = el.querySelector('.client_aud_o')
+        if ($audio) {
+          pron = (($audio.getAttribute('onclick') || '').match(/https.*\.mp3/) || [''])[0]
         }
-      }
-      phsym.push(obj)
-      return phsym
-    }, [])
+        return {
+          lang: getText(el, '.client_def_hd_pn'),
+          pron
+        }
+      })
+    }
   }
 
   // definitions
-  if (data.QD.C_DEF && options.cdef) {
-    result.cdef = data.QD.C_DEF.map(d => ({
-      'pos': d.POS,
-      'def': d.SEN[0].D
-    }))
+  if (options.cdef) {
+    let $container = doc.querySelector('.client_def_container')
+    if ($container) {
+      let $defs = Array.from($container.querySelectorAll('.client_def_bar'))
+      if ($defs.length > 0) {
+        result.cdef = $defs.map(el => ({
+          'pos': getText(el, '.client_def_title_bar'),
+          'def': getText(el, '.client_def_list')
+        }))
+      }
+    }
   }
 
   // tense
-  if (data.QD.INF && options.tense) {
-    result.inf = {}
-    data.QD.INF.forEach(inf => {
-      result.inf[inf.T] = {
-        word: inf.IE,
-        tense: chrome.i18n.getMessage('inf_' + inf.T) || inf.T
-      }
-    })
+  if (options.tense) {
+    let $infs = Array.from(doc.querySelectorAll('.client_word_change_word'))
+    if ($infs.length > 0) {
+      result.infs = $infs.map(el => el.innerText.trim())
+    }
   }
 
-  return result
+  if (options.sentence > 0) {
+    let $sens = Array.from(doc.querySelectorAll('.client_sentence_list'))
+    if ($sens.length > 0) {
+      result.sentences = $sens.map(el => {
+        let mp3 = ''
+        let $audio = el.querySelector('.client_aud_o')
+        if ($audio) {
+          mp3 = (($audio.getAttribute('onclick') || '').match(/https.*\.mp3/) || [''])[0]
+        }
+        return {
+          en: getText(el, '.client_sen_en'),
+          chs: getText(el, '.client_sen_cn'),
+          source: getText(el, '.client_sentence_list_link'),
+          mp3
+        }
+      })
+      .slice(0, options.sentence)
+    }
+  }
+
+  if (Object.keys(result).length > 0) {
+    return result
+  }
+  return Promise.reject('no result')
 }
 
 /**
@@ -107,11 +132,17 @@ function handleLexResult (data, options) {
  * @async
  * @returns {Promise.<BingMachine>} A promise with the result to send back
  */
-function handleMachineResult (data, options) {
-  if (!data.MT || !data.MT.T) { return Promise.reject('Bing Machine Error.') }
-
+function handleMachineResult (doc, options) {
   return {
     type: 'machine',
-    mt: data.MT.T.replace(/(\{\d*#)|(\$\d*\})/g, '')
+    mt: getText(doc, '.client_sen_cn')
   }
+}
+
+function getText (el, childSelector) {
+  var child = el.querySelector(childSelector)
+  if (child) {
+    return child.innerText.trim()
+  }
+  return ''
 }

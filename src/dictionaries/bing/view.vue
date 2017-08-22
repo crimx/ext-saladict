@@ -2,23 +2,37 @@
 <section>
   <div class="dict-bing" v-if="result">
     <div class="lex-result" v-if="result.type === 'lex'">
+      <div class="title">{{ result.title }}</div>
       <div class="phsym" v-if="result.phsym">
         <div class="phsym-item" v-for="p in result.phsym">
-          {{ `${p.lang}: ${p.al}` }}
+          {{ p.lang }}
           <speaker v-if="p.pron" :src="p.pron"></speaker>
         </div>
       </div> <!--phsym-->
 
       <div class="cdef" v-if="result.cdef">
         <div class="cdef-item" v-for="d in result.cdef">
-          <div class="cdef-item-pos">{{ d.pos + '.' }}</div>
+          <div class="cdef-item-pos">{{ d.pos }}</div>
           <div class="cdef-item-def">{{ d.def }}</div>
         </div>
       </div> <!--cdef-->
 
-      <div class="inf" v-if="result.inf">
-        <div class="inf-item" v-for="f in ['s', 'pl', 'pt', 'pp', 'prp', '3pps']" v-if="result.inf[f]">
-          {{ result.inf[f].tense }}: {{ result.inf[f].word }}
+      <div class="inf" v-if="result.infs">
+        词形：
+        <div class="inf-item" v-for="inf in result.infs">
+          {{ inf }}
+        </div>
+      </div>
+
+      <div class="sentence">
+        <div class="sentence-item" v-for="sen in result.sentences">
+          <div class="sentence-body">
+            <p v-if="sen.en">{{ sen.en }} <speaker v-if="sen.mp3" :src="sen.mp3"></speaker></p>
+            <p v-if="sen.chs">{{ sen.chs }}</p>
+          </div>
+          <footer class="sentence-source" v-if="sen.source">
+            {{ sen.source }}
+          </footer>
         </div>
       </div>
     </div> <!--lex-->
@@ -46,6 +60,11 @@ export default {
 <style lang="scss" scoped>
 .dict-bing {
   padding: 10px;
+}
+
+.title {
+  font-size: 1.3em;
+  font-weight: bold;
 }
 
 .phsym {
@@ -80,11 +99,24 @@ export default {
 .inf {
   display: flex;
   flex-wrap: wrap;
+  margin-bottom: 5px;
   font-size: 12px;
   color: #777;
 }
 
 .inf-item {
   margin-right: 1em;
+}
+
+.sentence-item {
+  margin-bottom: 10px;
+}
+
+.sentence-body p {
+  margin: 0;
+}
+
+.sentence-source {
+  color: #999;
 }
 </style>
