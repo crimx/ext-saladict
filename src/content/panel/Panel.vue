@@ -43,9 +43,9 @@
   </header>
   <div class="dicts" @click="handleDictsPanelClick">
     <section class="dict-item" v-for="id in config.dicts.selected">
-      <header class="dict-item-header">
-        <img class="dict-item-logo" :src="dicts[id].favicon" @click="handleDictPage(id)">
-        <h1 class="dict-item-name" @click="handleDictPage(id)">{{ dicts[id].name }}</h1>
+      <header class="dict-item-header" @click="handleUnfold(id)">
+        <img class="dict-item-logo" :src="dicts[id].favicon" @click.stop="handleDictPage(id)">
+        <h1 class="dict-item-name" @click.stop="handleDictPage(id)">{{ dicts[id].name }}</h1>
         <div class="loader-wrap">
           <transition name="fade">
             <svg viewBox="0 0 120 10" xmlns="http://www.w3.org/2000/svg" width="120" height="10"
