@@ -67,7 +67,7 @@ function handleAllDom (docs) {
 function handleDom (doc) {
   let def = {}
 
-  let $title = doc.querySelector('.redword .BASE')
+  let $title = doc.querySelector('#headword .BASE')
   if ($title) { def.title = $title.innerText }
 
   let $headbar = doc.querySelector('#headbar')
