@@ -62,7 +62,7 @@
         </div>
         <svg class="fold-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59.414 59.414"
           :class="{'fold-arrow--unfold': dicts[id].isUnfolded}"
-          @click="handleUnfold(id)"
+          @click.stop="handleUnfold(id)"
         >
           <path d="M43.854 59.414L14.146 29.707 43.854 0l1.414 1.414-28.293 28.293L45.268 58"/>
         </svg>
@@ -281,9 +281,10 @@ export default {
       if (response && response.ctrl) {
         this.$refs.searchbox.focus()
         document.execCommand('paste')
-        if (this.text.length && !/\s/.test(this.text)) {
-          this.handleSearchText()
-        }
+        // No auto search
+        // if (this.text.length && !/\s/.test(this.text)) {
+        //   this.handleSearchText()
+        // }
       }
     })
   },
