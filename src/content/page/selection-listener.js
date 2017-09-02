@@ -80,6 +80,11 @@ document.addEventListener('keyup', evt => {
   isCtrlKeydown = false
 })
 
+// Reset state when user switching window with ctrl/meta key
+window.addEventListener('blur', () => {
+  isCtrlKeydown = false
+})
+
 document.addEventListener('mouseup', evt => {
   if (evt.button !== 0 ||
       !config.active ||
