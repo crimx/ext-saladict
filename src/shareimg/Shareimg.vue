@@ -2,12 +2,15 @@
 <div class="page-container">
   <div class="panel-container">
     <header class="panel-header">
-      <input type="text" class="search-input" readonly="readonly" :value="text">
+      <div class="search-input" :style="{width: textWidth + 'px'}">
+        <span class="input-text" ref="inputspan">{{ text }}</span>
+        <span class="ellipsis" v-if="isShowEllipsis">......</span>
+      </div>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966" width="14" height="14" fill="#fff">
         <path d="M51.704 51.273L36.844 35.82c3.79-3.8 6.14-9.04 6.14-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.082 0 9.747-1.817 13.383-4.832l14.895 15.49c.196.206.458.308.72.308.25 0 .5-.093.694-.28.398-.382.41-1.015.028-1.413zM21.984 40c-10.478 0-19-8.523-19-19s8.522-19 19-19 19 8.523 19 19-8.525 19-19 19z"/>
       </svg>
       <div class="placeholder"></div>
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" width="21" height="21" opacity="0.85">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612" width="16" height="16" opacity="0.85">
         <path fill="#6BBC57" d="M577.557 184.258C560.417 140.85 519.54 59.214 519.54 59.214l.003-.01s-82.64 38.422-123.102 61.674c-30.27 17.396-41.46 48.877-44.22 56.743-3.22 9.23-12.33 51.19 6.12 90.86 23.93 51.44 50.86 106.04 50.86 106.04v.01s55.31-25.83 106.09-51.13c39.16-19.51 58.3-57.96 61.53-67.18 2.75-7.865 13.577-39.475.753-71.95z"/>
         <path fill="#BDE9B7" d="M501.052 102.162l6.466 2.263L426.69 335.38l-6.466-2.263z"/>
         <circle cx="299.756" cy="198.246" r="178.613" fill="#FFB30D"/>
@@ -21,7 +24,6 @@
       </svg>
       <div class="brand">
         <div class="brand-saladict">Saladict</div>
-        <div>沙拉查词</div>
       </div>
     </header>
     <div class="dicts">
@@ -73,6 +75,8 @@ export default {
     return {
       imgsrc: '',
       text: '',
+      textWidth: 84,
+      isShowEllipsis: false, // html2canvas doesn't support text overflow: ellipsis
       selected: [],
       dicts
     }
@@ -89,12 +93,26 @@ export default {
     storage.local.get('paneldata')
       .then(({paneldata}) => {
         return new Promise((resolve, reject) => {
+          this.text = paneldata.text
           paneldata.dicts.forEach(dict => {
-            this.text = paneldata.text
             this.selected.push(dict.id)
             this.dicts[dict.id].result = dict.result
             if (dict.id === 'dictcn') {
               dict.result.animate = false
+            }
+          })
+
+          this.$nextTick(() => {
+            // get text width
+            let textWidth = this.$refs.inputspan.getBoundingClientRect().width
+            console.log(textWidth)
+            if (textWidth > this.textWidth) {
+              if (textWidth <= 270) {
+                this.textWidth = textWidth
+              } else {
+                this.textWidth = 270
+                this.isShowEllipsis = true
+              }
             }
           })
           setTimeout(resolve, 1500)
@@ -140,12 +158,13 @@ body {
 .panel-mask {
   display: flex;
   justify-content: center;
-  align-items: center;
   position: absolute;
+  z-index: 9999;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
+  padding-top: 10%;
   background: rgba(0, 0, 0, 0.7);
 }
 
@@ -159,6 +178,7 @@ body {
 
 .panel-container {
   display: flex;
+  position: relative;
   flex-direction: column;
   background: #fff;
 }
@@ -166,20 +186,47 @@ body {
 .panel-header {
   display: flex;
   align-items: center;
-  position: relative;
   height: 30px;
   padding-left: 6px;
   background-color: rgb(92, 175, 158);
 }
 
+.hidden-input {
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  padding: 0 5px;
+}
+
 .search-input {
+  position: relative;
   width: 6em;
+  height: 18px;
   margin-right: 8px;
   padding: 0 5px;
   color: #fff;
-  border: 0 none;
-  outline: 0 none;
+  overflow: hidden;
   background-color: rgba(225, 225, 225, 0.1);
+  transition: all 0.4s;
+}
+
+.input-text {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  padding: 0 5px;
+  white-space: nowrap;
+}
+
+.ellipsis {
+  position: absolute;
+  z-index: 2;
+  top: 0;
+  right: 0;
+  padding-right: 5px;
+  background-color: #6ab4a5;
 }
 
 .placeholder {
@@ -187,16 +234,12 @@ body {
 }
 
 .brand {
-  color: rgba(255, 255, 255, 0.75);
-  margin-right: 6px;
-  font-size: 12px;
-  transform: scale(0.88);
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0 6px 0 2px;
 }
 
 .brand-saladict {
   text-align: center;
-  transform: scale(1.11);
-  transform-origin: bottom;
 }
 
 .dicts {
@@ -214,6 +257,10 @@ body {
   display: flex;
   align-items: center;
   border-top: 1px #ddd solid;
+}
+
+.dict-item:first-child .dict-item-header {
+  border: none;
 }
 
 .dict-item-logo {
