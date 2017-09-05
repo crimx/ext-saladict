@@ -281,10 +281,7 @@ export default {
       if (response && response.ctrl) {
         this.$refs.searchbox.focus()
         document.execCommand('paste')
-        // No auto search
-        // if (this.text.length && !/\s/.test(this.text)) {
-        //   this.handleSearchText()
-        // }
+        this.$refs.searchbox.select()
       }
     })
   },
