@@ -2,7 +2,12 @@
 
 [Unreleased]
 
-[5.15.12] - 2017-9-2
+[5.15.14] - 2017-09-05
+### Changed
+- 弹出查词框时自动选中所有剪贴板内容
+- 查词结构导出图片样式调整
+
+[5.15.12] - 2017-09-02
 ### Fixed
 - 修复 ctrl/⌘ 模式时切换窗口的问题
 - 麦克米伦标题修复
@@ -125,7 +130,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.15.12...HEAD
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.15.14...HEAD
+[5.15.14]: https://github.com/crimx/crx-saladict/compare/v5.15.12...v5.15.14
 [5.15.12]: https://github.com/crimx/crx-saladict/compare/v5.15.9...v5.15.12
 [5.15.9]: https://github.com/crimx/crx-saladict/compare/v5.15.4...v5.15.9
 [5.15.4]: https://github.com/crimx/crx-saladict/compare/v5.15.2...v5.15.4
