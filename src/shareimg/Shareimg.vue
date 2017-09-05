@@ -158,13 +158,13 @@ body {
 .panel-mask {
   display: flex;
   justify-content: center;
-  align-items: center;
   position: absolute;
   z-index: 9999;
   top: 0;
   left: 0;
   bottom: 0;
   right: 0;
+  padding-top: 10%;
   background: rgba(0, 0, 0, 0.7);
 }
 
@@ -257,6 +257,10 @@ body {
   display: flex;
   align-items: center;
   border-top: 1px #ddd solid;
+}
+
+.dict-item:first-child .dict-item-header {
+  border: none;
 }
 
 .dict-item-logo {
