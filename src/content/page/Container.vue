@@ -183,13 +183,14 @@ export default {
         this.config = result.config
       }
     })
-    storage.listen('config', changes => {
+    this.onStorageconfig = changes => {
       this.config = changes.config.newValue
-    })
+    }
+    storage.on('config', this.onStorageconfig)
   },
   mounted () {
     // receive signals from page and all frames
-    message.on('SELECTION', (data, sender, sendResponse) => {
+    this.onMessageSELECTION = (data, sender, sendResponse) => {
       this.selectedText = data.text || ''
 
       if (this.isStayVisiable) {
@@ -236,20 +237,23 @@ export default {
             break
         }
       }
-    })
+      sendResponse()
+    }
 
-    message.on('CLOSE_PANEL', () => {
+    this.onMessageCLOSE_PANEL = (data, sender, sendResponse) => {
       this.isStayVisiable = false
       this.isShowFrame = false
       this.isShowIcon = false
-    })
+      sendResponse()
+    }
 
-    message.on('PIN_PANEL', (data) => {
+    this.onMessagePIN_PANEL = (data, sender, sendResponse) => {
       this.isStayVisiable = data.flag
       this.isShowIcon = false
-    })
+      sendResponse()
+    }
 
-    message.on('PANEL_READY', (__, ___, sendResponse) => {
+    this.onMessagePANEL_READY = (data, sender, sendResponse) => {
       if (this.isTripleCtrl) {
         this.isTripleCtrl = false
         return sendResponse({ctrl: true})
@@ -258,9 +262,11 @@ export default {
       if (this.selectedText) {
         message.send({msg: 'SEARCH_TEXT_SELF', text: this.selectedText})
       }
-    })
 
-    message.on('TRIPLE_CTRL', () => {
+      sendResponse()
+    }
+
+    this.onMessageTRIPLE_CTRL = (data, sender, sendResponse) => {
       this.isTripleCtrl = true
       // show panel
       this.isShowIcon = false
@@ -270,17 +276,34 @@ export default {
         this.frameTop = window.innerHeight / 2 - this.panelHeight / 2
         this.isShowFrame = true
       })
-    })
+      sendResponse()
+    }
 
-    message.on('DRAG_AREA', ({left, width}) => {
+    this.onMessageDRAG_AREA = ({left, width}, sender, sendResponse) => {
       this.dragLeft = left
       this.dragWidth = width
-    })
+      sendResponse()
+    }
+
+    message.on('SELECTION', this.onMessageSELECTION)
+    message.on('CLOSE_PANEL', this.onMessageCLOSE_PANEL)
+    message.on('PIN_PANEL', this.onMessagePIN_PANEL)
+    message.on('PANEL_READY', this.onMessagePANEL_READY)
+    message.on('TRIPLE_CTRL', this.onMessageTRIPLE_CTRL)
+    message.on('DRAG_AREA', this.onMessageDRAG_AREA)
   },
   destroyed () {
     document.removeEventListener('mouseup', this.handleDragEnd, true)
     document.removeEventListener('mousemove', this.handlePageMousemove, true)
     window.removeEventListener('message', this.handleDragStart)
+    storage.off(this.onStorageconfig)
+    message.off(this.onMessageSELECTION)
+    message.off(this.onMessageCLOSE_PANEL)
+    message.off(this.onMessagePIN_PANEL)
+    message.off(this.onMessagePANEL_READY)
+    message.off(this.onMessageTRIPLE_CTRL)
+    message.off(this.onMessageDRAG_AREA)
+    message.send({msg: 'DESTROY_PANEL_SELF'})
   }
 }
 </script>

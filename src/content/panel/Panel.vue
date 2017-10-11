@@ -236,9 +236,6 @@ export default {
     handleDictPage (id) {
       message.send({msg: 'CREATE_TAB', url: this.config.dicts.all[id].page.replace('%s', this.text)})
     },
-    handleStorageChange (changes) {
-      this.config = changes.config.newValue
-    },
     handleDictsPanelClick (evt) {
       for (let target = evt.target; target !== evt.currentTarget; target = target.parentNode) {
         if (target.href) {
@@ -257,12 +254,6 @@ export default {
         this.dicts[id].result = null // clear all results
       })
       this.seachText(this.defaultUnfoldList)
-    },
-    handleDestroy (__, ___, sendResponse) {
-      storage.off(this.handleStorageChange)
-      message.off(this.handleSearchText)
-      sendResponse(true)
-      message.off(this.handleDestroy)
     }
   },
   created () {
@@ -272,10 +263,17 @@ export default {
         this.config = result.config
       }
     })
-    storage.listen('config', this.handleStorageChange)
 
-    message.on('SEARCH_TEXT', this.handleSearchText)
-    message.on('DESTROY_PANEL', this.handleDestroy)
+    this.onStorageconfig = changes => {
+      this.config = changes.config.newValue
+    }
+    storage.on('config', this.onStorageconfig)
+
+    this.onMessageSEARCH_TEXT = (data, sender, sendResponse) => {
+      this.handleSearchText(data)
+      sendResponse()
+    }
+    message.on('SEARCH_TEXT', this.onMessageSEARCH_TEXT)
 
     message.send({msg: 'PANEL_READY_SELF'}, response => {
       if (response && response.ctrl) {
@@ -293,6 +291,10 @@ export default {
       let allDicts = this.config.dicts.all
       return this.config.dicts.selected.filter(id => allDicts[id].defaultUnfold)
     }
+  },
+  destroyed () {
+    storage.off(this.onStorageconfig)
+    message.off(this.onMessageSEARCH_TEXT)
   },
   components
 }
