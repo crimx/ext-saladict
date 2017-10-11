@@ -122,9 +122,7 @@ function storageListen (key, cb) {
  * @param {function} listener listener function
  */
 function storageStopListen (listener) {
-  if (typeof listener === 'function') {
-    chrome.storage.onChanged.removeListener(listener)
-  }
+  return chrome.storage.onChanged.removeListener(listener)
 }
 
 function storageClear (storageArea) {
@@ -182,10 +180,9 @@ function storageRemove (storageArea) {
  * @see https://developer.chrome.com/extensions/runtime#method-sendMessage
  * @see https://developer.chrome.com/extensions/tabs#method-sendMessage
  */
-function messageSend (tabId, message, cb) {
-  if (tabId === Object(tabId)) {
-    cb = message
-    message = tabId
+function messageSend (...args) {
+  if (args[0] === Object(args[0])) {
+    let [message, cb] = args
     if (typeof cb === 'function') {
       return chrome.runtime.sendMessage(message, cb)
     } else {
@@ -197,6 +194,7 @@ function messageSend (tabId, message, cb) {
     }
   }
 
+  let [tabId, message, cb] = args
   if (typeof cb === 'function') {
     return chrome.tabs.sendMessage(tabId, message, cb)
   } else {
@@ -214,17 +212,16 @@ function messageSend (tabId, message, cb) {
  * @param {function} cb callback function
  * @see https://developer.chrome.com/extensions/runtime#event-onMessage
  */
-function messageListen (msg, cb) {
-  if (typeof msg === 'function') {
-    cb = msg
-    chrome.runtime.onMessage.addListener(cb)
-  } else if (typeof cb === 'function') {
-    chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-      if (message && message.msg === msg) {
-        return cb(message, sender, sendResponse)
-      }
-    })
+function messageListen (...args) {
+  if (args.length < 2) {
+    return chrome.runtime.onMessage.addListener(args[0])
   }
+
+  return chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message && message.msg === args[0]) {
+      return args[1](message, sender, sendResponse)
+    }
+  })
 }
 
 /**
@@ -232,7 +229,5 @@ function messageListen (msg, cb) {
  * @param {function} listener listener function
  */
 function messageStopListen (listener) {
-  if (typeof listener === 'function') {
-    chrome.runtime.onMessage.removeListener(listener)
-  }
+  return chrome.runtime.onMessage.removeListener(listener)
 }
