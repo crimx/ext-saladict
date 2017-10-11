@@ -2,6 +2,16 @@
 
 [Unreleased]
 
+[5.15.19] - 2017-10-11
+### Changed
+- 重构事件监听
+- 重构 chrome api wrap
+
+### Fixed
+- 点击发音
+- 自动恢复 dom 挂载
+- 更新 etymonline 词典
+
 [5.15.14] - 2017-09-05
 ### Changed
 - 弹出查词框时自动选中所有剪贴板内容
@@ -130,7 +140,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.15.14...HEAD
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.15.19...HEAD
+[5.15.19]: https://github.com/crimx/crx-saladict/compare/v5.15.14...v5.15.19
 [5.15.14]: https://github.com/crimx/crx-saladict/compare/v5.15.12...v5.15.14
 [5.15.12]: https://github.com/crimx/crx-saladict/compare/v5.15.9...v5.15.12
 [5.15.9]: https://github.com/crimx/crx-saladict/compare/v5.15.4...v5.15.9
