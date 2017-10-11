@@ -9,7 +9,7 @@ import fetchDom from 'src/helpers/fetch-dom'
 export default function search (text, config) {
   const options = config.dicts.all.etymonline.options
 
-  return fetchDom('http://www.etymonline.com/index.php?search=' + text)
+  return fetchDom('http://www.etymonline.com/search?q=' + text)
     .then(doc => handleDom(doc, options))
 }
 
@@ -24,28 +24,38 @@ export default function search (text, config) {
  * @returns {Promise.<EymonlineResult[]>} A promise with the result to send back
  */
 function handleDom (doc, {resultnum}) {
-  let dictionary = doc.querySelector('#dictionary dl')
+  const result = Array.from(doc.querySelectorAll('[class^="word--"]'))
+    .slice(0, resultnum)
+    .map(el => {
+      let href = el.getAttribute('href') || ''
+      if (href[0] === '/') {
+        href = 'http://www.etymonline.com' + href
+      }
 
-  // strip script tags, just in case
-  dictionary.querySelectorAll('script').forEach(el => el.parentNode.removeChild(el))
+      let title
+      let $title = el.querySelector('[class^="word__name--"]')
+      if ($title) {
+        title = $title.innerText.trim()
+      }
 
-  // resolve href
-  dictionary.querySelectorAll('a').forEach(el => {
-    let href = el.getAttribute('href')
-    if (href && href[0] === '/') {
-      el.setAttribute('href', el.href)
-    }
-  })
+      let def = ''
+      let $def = el.querySelector('[class^="word__defination--"]>object')
+      if ($def) {
+        $def.querySelectorAll('.crossreference').forEach($cf => {
+          let word = $cf.innerText.trim()
+          $cf.innerHTML = `<a href="http://www.etymonline.com/word/${word}" target="_blank">${word}</a>`
+        })
+        def = $def.innerHTML
+      }
 
-  let titles = dictionary.querySelectorAll('dt')
-  let defs = dictionary.querySelectorAll('dd')
-
-  let result = Array.from(titles).map((title, i) => ({
-    title: title.firstElementChild.outerHTML,
-    def: defs[i].innerHTML.replace(/<br>[\s\S]?<br>/, '<div class="line-break"></div>')
-  }))
-
-  result = result.slice(0, resultnum)
+      if (title && def) {
+        return {
+          title: `<a href="${href}" target="_blank">${title}</a>`,
+          def
+        }
+      }
+    })
+    .filter(r => r)
 
   if (result.length > 0) {
     return result

@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './Container'
-import defaultConfig from 'src/app-config'
-import {storage} from 'src/helpers/chrome-api'
+import {storage, message} from 'src/helpers/chrome-api'
 
 Vue.config.productionTip = false
 
@@ -16,6 +15,14 @@ storage.listen('config', changes => {
 storage.sync.get('config').then(result => {
   if (result.config && result.config.active) {
     activate()
+  }
+})
+
+message.on('SELECTION', (data, sender, sendResponse) => {
+  // check if dom element being removed
+  if (vm && vm.$el && !document.querySelector('.saladict-container')) {
+    document.body.appendChild(vm.$el)
+    sendResponse()
   }
 })
 

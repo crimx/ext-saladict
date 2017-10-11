@@ -24,6 +24,24 @@ Chrome 浏览器插件，网页划词翻译。
   <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="screen.gif" /></a>
 </p>
 
+# 用户评价
+
+> “我用过的最好的查词插件，UI美观大方，查词功能也很强，还有多词源对照，真的很棒！身边同学已经全被我安利换成这个插件了。就目前来说还是有些难以找到*比*这款优秀的查词插件。”
+
+> “非常好用，支持快速查词和划词查询，而且可以添加多个翻译工具。”
+
+> “查词很快，重要的是多个词典对照，还有urban dictionary~ 赞”
+
+> “好喜欢这个软件，界面设计的美观，查询源也丰富”
+
+> “很满意，速度非常快，该有的都有，简洁全面！”
+
+> “非常棒啊，就是这种不用别的操作的词典”
+
+> “哎哟，不错哦！小巧，方便，够用！”
+
+> “只有一个棒字可以形容！！！”
+
 # 下载
 
 - Chrome Web Store: <https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg>
@@ -41,9 +59,10 @@ Chrome 浏览器插件，网页划词翻译。
 
 # 更新
 
-【5.15.14】
-1. 弹出查词框时自动选中所有剪贴板内容
-2. 查词结构导出图片样式调整
+【5.15.19】
+1. 修复百度搜索页面被吞掉
+2. 点击发音
+3. 更新 etymonline 词典
 
 查看[更新历史](./CHANGELOG.md)。
 

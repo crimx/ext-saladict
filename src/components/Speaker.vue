@@ -2,7 +2,8 @@
   <svg class="icon-speaker" viewBox="0 0 58 58" xmlns="http://www.w3.org/2000/svg"
     :width="width" :height="height"
     :class="{'icon-speaker--playing': isPlaying}"
-    @mouseenter="handleMouseover"
+    @mouseenter="playAudio"
+    @click="playAudio"
   >
     <path class="icon-speaker__body" d="M14.35 20.237H5.77c-1.2 0-2.17.97-2.17 2.17v13.188c0 1.196.97 2.168 2.17 2.168h8.58c.387 0 .766.103 1.1.3l13.748 12.8c1.445.85 3.268-.192 3.268-1.87V9.006c0-1.677-1.823-2.72-3.268-1.87l-13.747 12.8c-.334.196-.713.3-1.1.3z" fill="#F9690E"/>
     <path class="icon-speaker__wave" d="M36.772 39.98c-.31 0-.62-.118-.856-.355-.476-.475-.476-1.243 0-1.716 5.212-5.216 5.212-13.702 0-18.916-.476-.473-.476-1.24 0-1.716.473-.474 1.24-.474 1.715 0 6.162 6.16 6.162 16.185 0 22.347-.234.237-.546.356-.858.356z" fill="#EFCE4A"/>
@@ -33,7 +34,7 @@ export default {
     }
   },
   methods: {
-    handleMouseover () {
+    playAudio () {
       if (this.isPlaying) { return }
 
       this.isPlaying = true

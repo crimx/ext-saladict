@@ -71,7 +71,7 @@ const getConfig = () => ({
       },
       etymonline: {
         id: 'etymonline',
-        page: 'http://www.etymonline.com/index.php?search=%s',
+        page: 'http://www.etymonline.com/search?q=%s',
         defaultUnfold: true,
         preferredHeight: 265,
         options: {
