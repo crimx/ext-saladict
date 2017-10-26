@@ -98,13 +98,6 @@
 import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 
-// Dynamically & asynchronously loads components
-const components = {Qrcode: () => Promise.resolve(require('vue-qrious'))}
-const compReq = require.context('src/dictionaries', true, /\/view\.vue$/i)
-Object.keys(defaultConfig.dicts.all).forEach(id => {
-  components[id] = () => Promise.resolve(compReq(`./${id}/view.vue`))
-})
-
 export default {
   name: 'dictionary-panel',
   data () {
@@ -296,7 +289,14 @@ export default {
     storage.off(this.onStorageconfig)
     message.off(this.onMessageSEARCH_TEXT)
   },
-  components
+  components: (() => {
+    // Dynamically & asynchronously loads components
+    const components = {Qrcode: () => Promise.resolve(require('vue-qrious'))}
+    Object.keys(defaultConfig.dicts.all).forEach(id => {
+      components[id] = () => Promise.resolve(require('src/dictionaries/' + id + '/view.vue'))
+    })
+    return components
+  })()
 }
 </script>
 
