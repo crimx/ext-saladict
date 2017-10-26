@@ -138,7 +138,7 @@ message.on('FETCH_DICT_RESULT', (data, sender, sendResponse) => {
 })
 
 // merge config on installed
-chrome.runtime.onInstalled.addListener(() => {
+chrome.runtime.onInstalled.addListener(({OnInstalledReason}) => {
   let isNew = false
   storage.sync.get('config', ({config}) => {
     if (config && config.dicts && config.dicts.all) {
@@ -164,18 +164,20 @@ chrome.runtime.onInstalled.addListener(() => {
   })
 
   function showNews () {
-    chrome.notifications.create({
-      requireInteraction: true,
-      type: 'basic',
-      iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
-      title: '沙拉查词 Saladict',
-      message: (
-        '已更新到【5.15.19】\n' +
-        '1. 修复百度搜索页面被吞掉\n' +
-        '2. 点击发音\n' +
-        '3. 更新 etymonline 词典'
-      )
-    })
+    if (OnInstalledReason === 'update') {
+      chrome.notifications.create({
+        requireInteraction: true,
+        type: 'basic',
+        iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
+        title: '沙拉查词 Saladict',
+        message: (
+          '已更新到【5.15.19】\n' +
+          '1. 修复百度搜索页面被吞掉\n' +
+          '2. 点击发音\n' +
+          '3. 更新 etymonline 词典'
+        )
+      })
+    }
   }
 
   function mergeConfig (config) {
