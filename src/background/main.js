@@ -77,7 +77,7 @@ storage.listen('config', ({config: {newValue, oldValue}}) => {
 })
 
 // merge config on installed
-chrome.runtime.onInstalled.addListener(({OnInstalledReason}) => {
+chrome.runtime.onInstalled.addListener(({reason}) => {
   let isNew = false
   storage.sync.get('config', ({config}) => {
     if (config && config.dicts && config.dicts.all) {
@@ -100,7 +100,7 @@ chrome.runtime.onInstalled.addListener(({OnInstalledReason}) => {
       .then(() => {
         if (isNew) {
           chrome.tabs.create({url: chrome.runtime.getURL('options.html')})
-        } else if (OnInstalledReason === 'update') {
+        } else if (reason === 'update') {
           showNews()
         }
         setContextMenu(config)
