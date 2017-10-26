@@ -19,8 +19,8 @@
       <ul class="payment-tabs">
         <li class="payment-item" :class="{active: active === 'wechat'}" @mouseover="active = 'wechat'"><img class="payment-icon icon-wechat" src="./assets/wechat.svg">{{ i18n('wechat') }}</li>
         <li class="payment-item" :class="{active: active === 'alipay'}" @mouseover="active = 'alipay'"><img class="payment-icon icon-alipay" src="./assets/alipay.svg">{{ i18n('alipay') }}</li>
-        <li class="payment-item" :class="{active: active === 'paypal'}" @mouseover="active = 'paypal'"><img class="payment-icon icon-paypal" src="./assets/paypal.svg">PayPal</li>
-        <li class="payment-item" :class="{active: active === 'bitcoin'}" @mouseover="active = 'bitcoin'"><img class="payment-icon icon-bitcoin" src="./assets/bitcoin.svg">{{ i18n('bitcoin') }}</li>
+        <li class="payment-item disabled"><img class="payment-icon icon-paypal" src="./assets/paypal.svg">PayPal</li>
+        <li class="payment-item disabled"><img class="payment-icon icon-bitcoin" src="./assets/bitcoin.svg">{{ i18n('bitcoin') }}</li>
       </ul>
       <div class="payment-content">
         <transition name="fade">
@@ -165,6 +165,11 @@ $coffee-width: 100px;
 
   &.active {
     background-color: darken(#fff, 10%);
+  }
+
+  &.disabled {
+    filter: grayscale(100%);
+    color: #aaa;
   }
 }
 

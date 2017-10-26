@@ -131,8 +131,9 @@ const getConfig = () => ({
     }
   },
   contextMenu: {
-    selected: ['oxford', 'etymonline', 'google_translate', 'merriam_webster', 'cambridge', 'google_search'],
+    selected: ['oxford', 'etymonline', 'google_translate', 'merriam_webster', 'cambridge', 'google_search', 'google_page_translate'],
     all: {
+      google_page_translate: '',
       google_search: 'https://www.google.com/#newwindow=1&q=%s',
       baidu_search: 'https://www.baidu.com/s?ie=utf-8&wd=%s',
       bing_search: 'https://www.bing.com/search?q=%s',

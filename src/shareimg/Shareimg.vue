@@ -51,14 +51,7 @@
 import html2canvas from 'html2canvas'
 import Loader from 'src/components/Loader'
 import defaultConfig from 'src/app-config'
-import {storage, message} from 'src/helpers/chrome-api'
-
-// Dynamically & asynchronously loads components
-const components = {Loader}
-const compReq = require.context('src/dictionaries', true, /\/view\.vue$/i)
-Object.keys(defaultConfig.dicts.all).forEach(id => {
-  components[id] = () => Promise.resolve(compReq(`./${id}/view.vue`))
-})
+import {storage} from 'src/helpers/chrome-api'
 
 export default {
   name: 'share-img',
@@ -128,7 +121,14 @@ export default {
         })
       })
   },
-  components
+  components: (() => {
+    // Dynamically & asynchronously loads components
+    const components = {Loader}
+    Object.keys(defaultConfig.dicts.all).forEach(id => {
+      components[id] = () => Promise.resolve(require('src/dictionaries/' + id + '/view.vue'))
+    })
+    return components
+  })()
 }
 </script>
 

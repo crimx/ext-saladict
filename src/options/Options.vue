@@ -527,6 +527,11 @@ kbd {
 /*------------------------------------*\
    Components
 \*------------------------------------*/
+.modal-body {
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
 .config-updated {
   @extend .alert-success;
   position: fixed;
