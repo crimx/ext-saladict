@@ -2,6 +2,15 @@
 
 [Unreleased]
 
+[5.15.21] - 2017-10-26
+### Changed
+- 全不选时右键菜单隐藏
+
+### Fixed
+- 更新时才弹出通知
+- 重构 event page，顶层只保留监听，加快加载速度
+- 去掉 require.context，webpack 会自动生成路径
+
 [5.15.19] - 2017-10-11
 ### Changed
 - 重构事件监听
@@ -140,7 +149,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.15.19...HEAD
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.15.21...HEAD
+[5.15.21]: https://github.com/crimx/crx-saladict/compare/v5.15.19...v5.15.21
 [5.15.19]: https://github.com/crimx/crx-saladict/compare/v5.15.14...v5.15.19
 [5.15.14]: https://github.com/crimx/crx-saladict/compare/v5.15.12...v5.15.14
 [5.15.12]: https://github.com/crimx/crx-saladict/compare/v5.15.9...v5.15.12

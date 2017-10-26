@@ -144,10 +144,9 @@ function showNews () {
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
     title: '沙拉查词 Saladict',
     message: (
-      '已更新到【5.15.19】\n' +
-      '1. 修复百度搜索页面被吞掉\n' +
-      '2. 点击发音\n' +
-      '3. 更新 etymonline 词典'
+      '已更新到【5.15.21】\n' +
+      '1. 全不选时右键菜单隐藏\n' +
+      '2. 优化性能，减少资源占用'
     )
   })
 }
