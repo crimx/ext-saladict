@@ -2,6 +2,10 @@
 
 [Unreleased]
 
+[5.16.0] - 2017-10-26
+### Added
+- 添加 PDF 支持
+
 [5.15.21] - 2017-10-26
 ### Changed
 - 全不选时右键菜单隐藏
@@ -149,7 +153,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.15.21...HEAD
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.16.0...HEAD
+[5.16.0]: https://github.com/crimx/crx-saladict/compare/v5.15.21...v5.16.0
 [5.15.21]: https://github.com/crimx/crx-saladict/compare/v5.15.19...v5.15.21
 [5.15.19]: https://github.com/crimx/crx-saladict/compare/v5.15.14...v5.15.19
 [5.15.14]: https://github.com/crimx/crx-saladict/compare/v5.15.12...v5.15.14

@@ -41,22 +41,36 @@ message.listen((data, sender, sendResponse) => {
 })
 
 // listen context menu
-chrome.contextMenus.onClicked.addListener(({menuItemId, selectionText}) => {
+chrome.contextMenus.onClicked.addListener(({menuItemId, selectionText, linkUrl}) => {
   if (menuItemId === 'google_page_translate') {
     chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-      if (tabs && tabs[0]) {
+      if (tabs.length > 0) {
         chrome.tabs.create({url: `https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`})
       }
     })
-    return
-  }
-
-  storage.sync.get('config', ({config}) => {
-    const url = config.contextMenu.all[menuItemId]
-    if (url) {
-      chrome.tabs.create({url: url.replace('%s', selectionText)})
+  } else if (menuItemId === 'view_as_pdf') {
+    var url = chrome.runtime.getURL('assets/pdf/web/viewer.html')
+    if (linkUrl) {
+      // open link as pdf
+      chrome.tabs.create({url: url + '?file=' + linkUrl})
+    } else {
+      chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+        // if it is a pdf page
+        if (tabs.length > 0 && /\.pdf$/i.test(tabs[0].url)) {
+          chrome.tabs.create({url: url + '?file=' + tabs[0].url})
+        } else {
+          chrome.tabs.create({url})
+        }
+      })
     }
-  })
+  } else {
+    storage.sync.get('config', ({config}) => {
+      const url = config.contextMenu.all[menuItemId]
+      if (url) {
+        chrome.tabs.create({url: url.replace('%s', selectionText)})
+      }
+    })
+  }
 })
 
 storage.listen('config', ({config: {newValue, oldValue}}) => {
@@ -110,12 +124,34 @@ chrome.runtime.onInstalled.addListener(({reason}) => {
 
 function setContextMenu (config) {
   chrome.contextMenus.removeAll(() => {
+    var hasGooglePageTranslate = false
     config.contextMenu.selected.forEach(id => {
+      var contexts = ['selection']
+      if (id === 'google_page_translate') {
+        hasGooglePageTranslate = true
+        contexts = ['all']
+      }
       chrome.contextMenus.create({
         id,
         title: chrome.i18n.getMessage('context_' + id) || id,
-        contexts: [id === 'google_page_translate' ? 'all' : 'selection']
+        contexts
       })
+    })
+
+    // Only for browser action
+    if (!hasGooglePageTranslate) {
+      chrome.contextMenus.create({
+        id: 'google_page_translate',
+        title: chrome.i18n.getMessage('context_google_page_translate') || 'google_page_translate',
+        contexts: ['browser_action']
+      })
+    }
+
+    // pdf
+    chrome.contextMenus.create({
+      id: 'view_as_pdf',
+      title: chrome.i18n.getMessage('context_view_as_pdf') || 'view_as_pdf',
+      contexts: ['link', 'browser_action']
     })
   })
 }
@@ -138,16 +174,30 @@ function fetchDictResult (data, sender, sendResponse) {
 }
 
 function showNews () {
-  chrome.notifications.create({
-    requireInteraction: true,
-    type: 'basic',
-    iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
-    title: '沙拉查词 Saladict',
-    message: (
-      '已更新到【5.15.21】\n' +
-      '1. 全不选时右键菜单隐藏\n' +
-      '2. 优化性能，减少资源占用'
-    )
+  const notificationId = 'saladict-news'
+  chrome.notifications.create(
+    notificationId,
+    {
+      requireInteraction: true,
+      type: 'basic',
+      iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
+      title: '沙拉查词 Saladict',
+      message: (
+        '已更新到【5.16.0】\n' +
+        '1. 添加 PDF 支持！\n' +
+        '2. 克服懒癌撰写了使用说明'
+      ),
+      buttons: [{title: '点击了解使用方式'}]
+    }
+  )
+
+  chrome.notifications.onButtonClicked.addListener(() => {
+    chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki#%E6%94%AF%E6%8C%81-pdf-%E5%88%92%E8%AF%8D'})
+    chrome.notifications.clear(notificationId)
+  })
+  chrome.notifications.onClicked.addListener(() => {
+    chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki'})
+    chrome.notifications.clear(notificationId)
   })
 }
 

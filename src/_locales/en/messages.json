@@ -254,5 +254,9 @@
   "context_bing_dict": {
     "description": "context menu",
     "message": "Bing Dict"
+  },
+  "context_view_as_pdf": {
+    "description": "context menu",
+    "message": "View as PDF"
   }
 }
