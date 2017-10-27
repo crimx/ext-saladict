@@ -254,5 +254,9 @@
   "context_bing_dict": {
     "description": "context menu",
     "message": "必應詞典"
+  },
+  "context_view_as_pdf": {
+    "description": "context menu",
+    "message": "打開為 PDF"
   }
 }
