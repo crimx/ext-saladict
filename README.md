@@ -6,10 +6,13 @@ Chrome 浏览器插件，网页划词翻译。
   <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="saladict.jpg" /></a>
 </p>
 
+[**【详细使用说明】**](https://github.com/crimx/crx-saladict/wiki)
+
 功能一览：
 
 - 多词典支持，英汉、英英、俚语、词源、权威例句、汉语、释义分布图、谷歌翻译**全包**。
 - 支持**四种**划词方式，支持 iframe 划词。
+- **支持 PDF 划词**。
 - 支持三按 ctrl 快速查词。
 - 也可**点击图标**快速查词。
 - 右键支持谷歌**网页翻译**，支持更多词典页面直达。
@@ -59,9 +62,9 @@ Chrome 浏览器插件，网页划词翻译。
 
 # 更新
 
-【5.15.21】
-1. 全不选时右键菜单隐藏
-2. 优化性能，减少资源占用
+【5.16.0】
+1. 添加 PDF 支持！
+2. 克服懒癌撰写了[使用说明](https://github.com/crimx/crx-saladict/wiki)
 
 查看[更新历史](./CHANGELOG.md)。
 
