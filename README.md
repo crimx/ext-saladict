@@ -62,9 +62,10 @@ Chrome 浏览器插件，网页划词翻译。
 
 # 更新
 
-【5.16.0】
+【5.16.1】
 1. 添加 PDF 支持！
 2. 克服懒癌撰写了[使用说明](https://github.com/crimx/crx-saladict/wiki)
+3. 修复通知框点击
 
 查看[更新历史](./CHANGELOG.md)。
 

@@ -2,7 +2,11 @@
 
 [Unreleased]
 
-[5.16.0] - 2017-10-26
+[5.16.1] - 2017-10-28
+### Fixed
+- 修复通知框点击
+
+[5.16.0] - 2017-10-27
 ### Added
 - 添加 PDF 支持
 
@@ -153,7 +157,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.16.0...HEAD
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.16.1...HEAD
+[5.16.1]: https://github.com/crimx/crx-saladict/compare/v5.16.0...v5.16.1
 [5.16.0]: https://github.com/crimx/crx-saladict/compare/v5.15.21...v5.16.0
 [5.15.21]: https://github.com/crimx/crx-saladict/compare/v5.15.19...v5.15.21
 [5.15.19]: https://github.com/crimx/crx-saladict/compare/v5.15.14...v5.15.19
