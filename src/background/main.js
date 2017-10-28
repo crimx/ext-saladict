@@ -113,12 +113,26 @@ chrome.runtime.onInstalled.addListener(({reason}) => {
     storage.sync.set({config})
       .then(() => {
         if (isNew) {
-          chrome.tabs.create({url: chrome.runtime.getURL('options.html')})
+          chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki'})
         } else if (reason === 'update') {
           showNews()
         }
         setContextMenu(config)
       })
+  })
+})
+
+chrome.notifications.onButtonClicked.addListener(() => {
+  chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki#%E6%94%AF%E6%8C%81-pdf-%E5%88%92%E8%AF%8D'})
+  chrome.notifications.getAll(notifications => {
+    Object.keys(notifications).forEach(id => chrome.notifications.clear(id))
+  })
+})
+
+chrome.notifications.onClicked.addListener(() => {
+  chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki'})
+  chrome.notifications.getAll(notifications => {
+    Object.keys(notifications).forEach(id => chrome.notifications.clear(id))
   })
 })
 
@@ -174,30 +188,18 @@ function fetchDictResult (data, sender, sendResponse) {
 }
 
 function showNews () {
-  const notificationId = 'saladict-news'
-  chrome.notifications.create(
-    notificationId,
-    {
-      requireInteraction: true,
-      type: 'basic',
-      iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
-      title: '沙拉查词 Saladict',
-      message: (
-        '已更新到【5.16.0】\n' +
-        '1. 添加 PDF 支持！\n' +
-        '2. 克服懒癌撰写了使用说明'
-      ),
-      buttons: [{title: '点击了解使用方式'}]
-    }
-  )
-
-  chrome.notifications.onButtonClicked.addListener(() => {
-    chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki#%E6%94%AF%E6%8C%81-pdf-%E5%88%92%E8%AF%8D'})
-    chrome.notifications.clear(notificationId)
-  })
-  chrome.notifications.onClicked.addListener(() => {
-    chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki'})
-    chrome.notifications.clear(notificationId)
+  chrome.notifications.create({
+    requireInteraction: true,
+    type: 'basic',
+    iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
+    title: '沙拉查词 Saladict',
+    message: (
+      '已更新到【5.16.1】\n' +
+      '1. 添加 PDF 支持！\n' +
+      '2. 克服懒癌撰写了使用说明\n'+
+      '3. 修复通知框点击'
+    ),
+    buttons: [{title: '点击了解使用方式'}]
   })
 }
 
