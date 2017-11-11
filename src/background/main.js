@@ -194,10 +194,9 @@ function showNews () {
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
     title: '沙拉查词 Saladict',
     message: (
-      '已更新到【5.16.1】\n' +
-      '1. 添加 PDF 支持！\n' +
-      '2. 克服懒癌撰写了使用说明\n'+
-      '3. 修复通知框点击'
+      '已更新到【5.17.0】\n' +
+      '1. 可配置词典只在某种语言下显示\n' +
+      '2. '
     ),
     buttons: [{title: '点击了解使用方式'}]
   })
@@ -227,12 +226,19 @@ function mergeConfig (config) {
         if (!String(dict.page)) { baseDict.page = String(dict.page) }
         if (dict.defaultUnfold !== undefined) { baseDict.defaultUnfold = Boolean(dict.defaultUnfold) }
         if (!isNaN(Number(dict.preferredHeight))) { baseDict.preferredHeight = Number(dict.preferredHeight) }
+        if (dict.showWhenLang) {
+          Object.keys(baseDict.showWhenLang).forEach(opt => {
+            if (typeof dict.showWhenLang[opt] === 'boolean') {
+              baseDict.showWhenLang[opt] = dict.showWhenLang[opt]
+            }
+          })
+        }
         if (dict.options) {
           Object.keys(baseDict.options).forEach(opt => {
             if (typeof dict.options[opt] === 'boolean') {
-              if (dict.options[opt] !== undefined) { baseDict.options[opt] = Boolean(dict.options[opt]) }
-            } else if (typeof dict.options[opt] === 'number') {
-              if (!isNaN(dict.options[opt])) { baseDict.options[opt] = Number(dict.options[opt]) }
+              baseDict.options[opt] = dict.options[opt]
+            } else if (typeof dict.options[opt] === 'number' && !isNaN(dict.options[opt])) {
+              baseDict.options[opt] = Number(dict.options[opt])
             }
           })
         }

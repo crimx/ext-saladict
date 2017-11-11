@@ -86,6 +86,10 @@ Clone 库并 `$ npm install`
         id: 'bing',
         page: 'https://cn.bing.com/dict/search?q=%s',
         preferredHeight: 160,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        },
         options: {
           tense: true,
           phsym: true,
@@ -101,6 +105,7 @@ Clone 库并 `$ npm install`
 - `id` 为每个词典的标识符；
 - `page`为点击标题是跳转的链接，`%s`会替换成关键字；
 - `preferredHeight` 为词典默认高度，超过默认高度的内容会先隐藏起来并显示下箭头；
+- `showWhenLang` 配置词典在查词包含某种语言时显示，一般默认为 `true`；
 - 词典本身的设置放在 `options` 下，只能是 `boolean` 或者 `number`，会自动在设置页面生成相应选项。
 
 ## 添加模块

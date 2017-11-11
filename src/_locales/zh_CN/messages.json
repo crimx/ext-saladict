@@ -171,6 +171,14 @@
     "description": "词典是否默认展开",
     "message": "默认展开"
   },
+  "opt_dict_show_when_chs": {
+    "description": "在包含中文的时候显示",
+    "message": "查中文时显示"
+  },
+  "opt_dict_show_when_eng": {
+    "description": "在包含英文的时候显示",
+    "message": "查英文时显示"
+  },
   "popup_tab_title": {
     "description": "二维码标题",
     "message": "当前页面二维码"
