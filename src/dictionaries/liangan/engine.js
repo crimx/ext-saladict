@@ -1,3 +1,5 @@
+import chsToChz from 'src/helpers/chs-to-chz'
+
 /**
  * Search text and give back result
  * @param {string} text - Search text
@@ -6,7 +8,7 @@
  */
 export default function search (text, config) {
   // https://github.com/audreyt/moedict-webkit#7-兩岸詞典-c
-  return fetch(`https://www.moedict.tw/c/${text}.json`)
+  return fetch(`https://www.moedict.tw/c/${chsToChz(text)}.json`)
     .then(res => res.json())
     .then(data => {
       if (!data) { return Promise.reject('no result') }

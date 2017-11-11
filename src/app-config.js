@@ -121,7 +121,7 @@ const getConfig = () => ({
       },
       guoyu: {
         id: 'guoyu',
-        page: 'https://www.moedict.tw/%s',
+        page: 'https://www.moedict.tw/%z',
         defaultUnfold: true,
         preferredHeight: 265,
         showWhenLang: {
@@ -131,7 +131,7 @@ const getConfig = () => ({
       },
       liangan: {
         id: 'liangan',
-        page: 'https://www.moedict.tw/~%s',
+        page: 'https://www.moedict.tw/~%z',
         defaultUnfold: true,
         preferredHeight: 265,
         showWhenLang: {

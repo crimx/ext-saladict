@@ -98,6 +98,7 @@
 import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 import {isContainChinese, isContainEnglish} from 'src/helpers/lang-check'
+import chsToChz from 'src/helpers/chs-to-chz'
 
 export default {
   name: 'dictionary-panel',
@@ -237,7 +238,12 @@ export default {
       dict.isUnfolded ? this.foldDict(id) : this.unfoldDict(id)
     },
     handleDictPage (id) {
-      message.send({msg: 'CREATE_TAB', url: this.config.dicts.all[id].page.replace('%s', this.text)})
+      message.send({
+        msg: 'CREATE_TAB',
+        url: this.config.dicts.all[id].page
+          .replace('%s', this.text)
+          .replace('%z', chsToChz(this.text))
+      })
     },
     handleDictsPanelClick (evt) {
       for (let target = evt.target; target !== evt.currentTarget; target = target.parentNode) {
