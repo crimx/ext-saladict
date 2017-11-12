@@ -123,7 +123,7 @@ chrome.runtime.onInstalled.addListener(({reason}) => {
 })
 
 chrome.notifications.onButtonClicked.addListener(() => {
-  chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki#%E6%94%AF%E6%8C%81-pdf-%E5%88%92%E8%AF%8D'})
+  chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki#%E5%90%84%E4%B8%AA%E8%AF%8D%E5%85%B8%E9%9D%A2%E6%9D%BF%E6%94%AF%E6%8C%81%E4%B8%AA%E6%80%A7%E5%8C%96%E8%B0%83%E6%95%B4'})
   chrome.notifications.getAll(notifications => {
     Object.keys(notifications).forEach(id => chrome.notifications.clear(id))
   })
@@ -194,10 +194,10 @@ function showNews () {
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
     title: '沙拉查词 Saladict',
     message: (
-      '已更新到【5.16.1】\n' +
-      '1. 添加 PDF 支持！\n' +
-      '2. 克服懒癌撰写了使用说明\n'+
-      '3. 修复通知框点击'
+      '已更新到【5.18.1】\n' +
+      '1. 可配置词典只在某种语言下显示\n' +
+      '2. 修复繁体词典不能查简体字问题\n' +
+      '3. 增加汉典'
     ),
     buttons: [{title: '点击了解使用方式'}]
   })
@@ -227,12 +227,19 @@ function mergeConfig (config) {
         if (!String(dict.page)) { baseDict.page = String(dict.page) }
         if (dict.defaultUnfold !== undefined) { baseDict.defaultUnfold = Boolean(dict.defaultUnfold) }
         if (!isNaN(Number(dict.preferredHeight))) { baseDict.preferredHeight = Number(dict.preferredHeight) }
+        if (dict.showWhenLang) {
+          Object.keys(baseDict.showWhenLang).forEach(opt => {
+            if (typeof dict.showWhenLang[opt] === 'boolean') {
+              baseDict.showWhenLang[opt] = dict.showWhenLang[opt]
+            }
+          })
+        }
         if (dict.options) {
           Object.keys(baseDict.options).forEach(opt => {
             if (typeof dict.options[opt] === 'boolean') {
-              if (dict.options[opt] !== undefined) { baseDict.options[opt] = Boolean(dict.options[opt]) }
-            } else if (typeof dict.options[opt] === 'number') {
-              if (!isNaN(dict.options[opt])) { baseDict.options[opt] = Number(dict.options[opt]) }
+              baseDict.options[opt] = dict.options[opt]
+            } else if (typeof dict.options[opt] === 'number' && !isNaN(dict.options[opt])) {
+              baseDict.options[opt] = Number(dict.options[opt])
             }
           })
         }

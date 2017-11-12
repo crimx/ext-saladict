@@ -25,6 +25,10 @@ const getConfig = () => ({
         page: 'https://cn.bing.com/dict/search?q=%s',
         defaultUnfold: true,
         preferredHeight: 160,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        },
         options: {
           tense: true,
           phsym: true,
@@ -36,13 +40,21 @@ const getConfig = () => ({
         id: 'google',
         page: 'https://translate.google.com/#auto/zh-CN/%s',
         defaultUnfold: true,
-        preferredHeight: 110
+        preferredHeight: 110,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        }
       },
       urban: {
         id: 'urban',
         page: 'http://www.urbandictionary.com/define.php?term=%s',
         defaultUnfold: true,
         preferredHeight: 180,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        },
         options: {
           resultnum: 2
         }
@@ -51,13 +63,21 @@ const getConfig = () => ({
         id: 'vocabulary',
         page: 'https://www.vocabulary.com/dictionary/%s',
         defaultUnfold: true,
-        preferredHeight: 180
+        preferredHeight: 180,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        }
       },
       dictcn: {
         id: 'dictcn',
         page: 'http://dict.cn/%s',
         defaultUnfold: true,
         preferredHeight: 300,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        },
         options: {
           chart: true,
           etym: true
@@ -67,13 +87,21 @@ const getConfig = () => ({
         id: 'eudic',
         page: 'https://dict.eudic.net/dicts/en/%s',
         defaultUnfold: true,
-        preferredHeight: 265
+        preferredHeight: 265,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        }
       },
       etymonline: {
         id: 'etymonline',
         page: 'http://www.etymonline.com/search?q=%s',
         defaultUnfold: true,
         preferredHeight: 265,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        },
         options: {
           resultnum: 2
         }
@@ -83,46 +111,84 @@ const getConfig = () => ({
         page: 'http://www.howjsay.com/index.php?word=%s',
         defaultUnfold: true,
         preferredHeight: 265,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        },
         options: {
           related: true
         }
       },
       guoyu: {
         id: 'guoyu',
-        page: 'https://www.moedict.tw/%s',
+        page: 'https://www.moedict.tw/%z',
         defaultUnfold: true,
-        preferredHeight: 265
+        preferredHeight: 265,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        }
       },
       liangan: {
         id: 'liangan',
-        page: 'https://www.moedict.tw/~%s',
+        page: 'https://www.moedict.tw/~%z',
         defaultUnfold: true,
-        preferredHeight: 265
+        preferredHeight: 265,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        }
+      },
+      zdic: {
+        id: 'zdic',
+        page: 'http://www.zdic.net/search/?c=1&q=%s',
+        defaultUnfold: true,
+        preferredHeight: 400,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        }
       },
       business: {
         id: 'business',
         page: 'http://www.ldoceonline.com/search/?q=%s',
         defaultUnfold: true,
-        preferredHeight: 265
+        preferredHeight: 265,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        }
       },
       cobuild: {
         id: 'cobuild',
         page: 'https://www.collinsdictionary.com/dictionary/%s',
         secret: true,
         defaultUnfold: true,
-        preferredHeight: 300
+        preferredHeight: 300,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        }
       },
       macmillan: {
         id: 'macmillan',
         page: 'http://www.macmillandictionary.com/dictionary/british/%s',
         defaultUnfold: true,
-        preferredHeight: 265
+        preferredHeight: 265,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        }
       },
       wordreference: {
         id: 'wordreference',
         page: 'http://www.wordreference.com/definition/%s',
         defaultUnfold: true,
         preferredHeight: 180,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        },
         options: {
           etym: true,
           idiom: true

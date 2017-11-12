@@ -150,6 +150,12 @@
                     <label class="checkbox-inline">
                       <input type="checkbox" v-model="config.dicts.all[id].defaultUnfold"> {{ i18n('opt_dict_default_unfold') }}
                     </label>
+                    <label class="checkbox-inline">
+                      <input type="checkbox" v-model="config.dicts.all[id].showWhenLang.chs"> {{ i18n('opt_dict_show_when_chs') }}
+                    </label>
+                    <label class="checkbox-inline">
+                      <input type="checkbox" v-model="config.dicts.all[id].showWhenLang.eng"> {{ i18n('opt_dict_show_when_eng') }}
+                    </label>
                   </div>
                   <div class="input-group">
                     <div class="input-group-addon">{{ i18n('opt_dict_default_height') }}</div>

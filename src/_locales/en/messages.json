@@ -171,6 +171,14 @@
     "description": "词典是否默认展开",
     "message": "Default Unfold"
   },
+  "opt_dict_show_when_chs": {
+    "description": "在包含中文的时候显示",
+    "message": "Search Chinese"
+  },
+  "opt_dict_show_when_eng": {
+    "description": "在包含英文的时候显示",
+    "message": "Search English"
+  },
   "popup_tab_title": {
     "description": "二维码标题",
     "message": "Qrcode of current page"

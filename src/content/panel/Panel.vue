@@ -42,7 +42,7 @@
     </svg>
   </header>
   <div class="dicts" @click="handleDictsPanelClick">
-    <section class="dict-item" v-for="id in config.dicts.selected">
+    <section class="dict-item" v-for="id in config.dicts.selected" v-show="dicts[id].isShow">
       <header class="dict-item-header" @click="handleUnfold(id)">
         <img class="dict-item-logo" :src="dicts[id].favicon" @click.stop="handleDictPage(id)">
         <h1 class="dict-item-name" @click.stop="handleDictPage(id)">{{ dicts[id].name }}</h1>
@@ -97,11 +97,13 @@
 <script>
 import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
+import {isContainChinese, isContainEnglish} from 'src/helpers/lang-check'
+import chsToChz from 'src/helpers/chs-to-chz'
 
 export default {
   name: 'dictionary-panel',
   data () {
-    let dicts = {}
+    const dicts = {}
 
     Object.keys(defaultConfig.dicts.all).forEach(id => {
       dicts[id] = {
@@ -110,6 +112,7 @@ export default {
         offsetHeight: 0,
         favicon: chrome.runtime.getURL(`assets/dicts/${id}.png`),
         name: chrome.i18n.getMessage('dict_' + id) || id,
+        isShow: true,
         isUnfolded: false,
         isSearching: false
       }
@@ -137,17 +140,25 @@ export default {
       if (!Array.isArray(selectedDicts)) {
         selectedDicts = [selectedDicts]
       }
-      let text = this.text.trim()
+      const text = this.text.trim()
       this.text = text
-      let dicts = this.dicts
+      const dicts = this.dicts
+      const allDicts = this.config.dicts.all
 
       selectedDicts.forEach((id) => {
-        let dict = dicts[id]
+        const dict = dicts[id]
+
+        const isEng = isContainEnglish(this.text)
+        dict.isShow = (allDicts[id].showWhenLang.eng && isEng) ||
+          (allDicts[id].showWhenLang.chs && !isEng)
+
+        if (!dict.isShow) { return }
+
         this.foldDict(id)
         dict.isSearching = true
         dict.result = null // clear the results
 
-        let timer = new Promise((resolve, reject) => {
+        const timer = new Promise((resolve, reject) => {
           setTimeout(resolve, 10000)
         })
 
@@ -171,7 +182,7 @@ export default {
       })
     },
     updateDragAreaCoord () {
-      var $da = this.$refs.dragarea
+      const $da = this.$refs.dragarea
       message.send({msg: 'DRAG_AREA_SELF', left: $da.offsetLeft, width: $da.offsetWidth})
     },
     closePanel () {
@@ -192,8 +203,8 @@ export default {
       message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('options.html')})
     },
     openShareimgPage () {
-      var dicts = this.config.dicts.selected.map(id => {
-        var result = this.dicts[id].result
+      const dicts = this.config.dicts.selected.map(id => {
+        const result = this.dicts[id].result
         if (result && this.dicts[id].isUnfolded) {
           return {id, result}
         }
@@ -214,20 +225,25 @@ export default {
         return
       }
 
-      let preferredHeight = this.config.dicts.all[id].preferredHeight
+      const preferredHeight = this.config.dicts.all[id].preferredHeight
       dict.height = dict.offsetHeight < preferredHeight ? dict.offsetHeight : preferredHeight
     },
     foldDict (id) {
-      let dict = this.dicts[id]
+      const dict = this.dicts[id]
       dict.height = 0
       dict.isUnfolded = false
     },
     handleUnfold (id) {
-      let dict = this.dicts[id]
+      const dict = this.dicts[id]
       dict.isUnfolded ? this.foldDict(id) : this.unfoldDict(id)
     },
     handleDictPage (id) {
-      message.send({msg: 'CREATE_TAB', url: this.config.dicts.all[id].page.replace('%s', this.text)})
+      message.send({
+        msg: 'CREATE_TAB',
+        url: this.config.dicts.all[id].page
+          .replace('%s', this.text)
+          .replace('%z', chsToChz(this.text))
+      })
     },
     handleDictsPanelClick (evt) {
       for (let target = evt.target; target !== evt.currentTarget; target = target.parentNode) {
@@ -281,7 +297,7 @@ export default {
   },
   computed: {
     defaultUnfoldList () {
-      let allDicts = this.config.dicts.all
+      const allDicts = this.config.dicts.all
       return this.config.dicts.selected.filter(id => allDicts[id].defaultUnfold)
     }
   },

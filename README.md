@@ -8,7 +8,7 @@ Chrome 浏览器插件，网页划词翻译。
 
 [功能一览：](https://github.com/crimx/crx-saladict/wiki)
 
-- [多词典支持，英汉、英英、俚语、词源、权威例句、汉语、释义分布图、谷歌翻译**全包**](https://github.com/crimx/crx-saladict/wiki#%E5%A4%9A%E8%AF%8D%E5%85%B8%E6%94%AF%E6%8C%81%E8%8B%B1%E6%B1%89%E8%8B%B1%E8%8B%B1%E4%BF%9A%E8%AF%AD%E8%AF%8D%E6%BA%90%E6%9D%83%E5%A8%81%E4%BE%8B%E5%8F%A5%E6%B1%89%E8%AF%AD%E9%87%8A%E4%B9%89%E5%88%86%E5%B8%83%E5%9B%BE%E8%B0%B7%E6%AD%8C%E7%BF%BB%E8%AF%91)
+- [多词典支持，英汉、英英、俚语、词源、权威例句、汉语（繁简）、释义分布图、谷歌翻译**全包**](https://github.com/crimx/crx-saladict/wiki#%E5%A4%9A%E8%AF%8D%E5%85%B8%E6%94%AF%E6%8C%81%E8%8B%B1%E6%B1%89%E8%8B%B1%E8%8B%B1%E4%BF%9A%E8%AF%AD%E8%AF%8D%E6%BA%90%E6%9D%83%E5%A8%81%E4%BE%8B%E5%8F%A5%E6%B1%89%E8%AF%AD%E9%87%8A%E4%B9%89%E5%88%86%E5%B8%83%E5%9B%BE%E8%B0%B7%E6%AD%8C%E7%BF%BB%E8%AF%91)
 - [支持**四种**划词方式，支持 iframe 划词](https://github.com/crimx/crx-saladict/wiki#%E6%94%AF%E6%8C%81%E5%9B%9B%E7%A7%8D%E5%88%92%E8%AF%8D%E6%96%B9%E5%BC%8F%E6%94%AF%E6%8C%81-iframe-%E5%88%92%E8%AF%8D)
 - [支持 **PDF** 划词](https://github.com/crimx/crx-saladict/wiki#%E6%94%AF%E6%8C%81-pdf-%E5%88%92%E8%AF%8D)
 - [支持三按 ctrl 快速查词](https://github.com/crimx/crx-saladict/wiki#%E6%94%AF%E6%8C%81%E4%B8%89%E6%8C%89-ctrl-%E5%BF%AB%E9%80%9F%E6%9F%A5%E8%AF%8D)
@@ -60,10 +60,10 @@ Chrome 浏览器插件，网页划词翻译。
 
 # 更新
 
-【5.16.1】
-1. 添加 PDF 支持！
-2. 克服懒癌撰写了[使用说明](https://github.com/crimx/crx-saladict/wiki)
-3. 修复通知框点击
+【5.18.1】
+1. 可配置词典只在某种语言下显示
+2. 修复繁体词典不能查简体字问题
+3. 增加汉典
 
 查看[更新历史](./CHANGELOG.md)。
 
@@ -86,6 +86,10 @@ Clone 库并 `$ npm install`
         id: 'bing',
         page: 'https://cn.bing.com/dict/search?q=%s',
         preferredHeight: 160,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        },
         options: {
           tense: true,
           phsym: true,
@@ -99,8 +103,9 @@ Clone 库并 `$ npm install`
 ```
 
 - `id` 为每个词典的标识符；
-- `page`为点击标题是跳转的链接，`%s`会替换成关键字；
+- `page`为点击标题是跳转的链接，`%s`会替换成关键字，`%z`会替换成繁体字；
 - `preferredHeight` 为词典默认高度，超过默认高度的内容会先隐藏起来并显示下箭头；
+- `showWhenLang` 配置词典在查词包含某种语言时显示，一般默认为 `true`；
 - 词典本身的设置放在 `options` 下，只能是 `boolean` 或者 `number`，会自动在设置页面生成相应选项。
 
 ## 添加模块
