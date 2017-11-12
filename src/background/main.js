@@ -123,7 +123,7 @@ chrome.runtime.onInstalled.addListener(({reason}) => {
 })
 
 chrome.notifications.onButtonClicked.addListener(() => {
-  chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki#%E6%94%AF%E6%8C%81-pdf-%E5%88%92%E8%AF%8D'})
+  chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki#%E5%90%84%E4%B8%AA%E8%AF%8D%E5%85%B8%E9%9D%A2%E6%9D%BF%E6%94%AF%E6%8C%81%E4%B8%AA%E6%80%A7%E5%8C%96%E8%B0%83%E6%95%B4'})
   chrome.notifications.getAll(notifications => {
     Object.keys(notifications).forEach(id => chrome.notifications.clear(id))
   })
@@ -194,9 +194,10 @@ function showNews () {
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
     title: '沙拉查词 Saladict',
     message: (
-      '已更新到【5.17.0】\n' +
+      '已更新到【5.18.1】\n' +
       '1. 可配置词典只在某种语言下显示\n' +
-      '2. '
+      '2. 修复繁体词典不能查简体字问题\n' +
+      '3. 增加汉典'
     ),
     buttons: [{title: '点击了解使用方式'}]
   })
