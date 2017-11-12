@@ -139,6 +139,16 @@ const getConfig = () => ({
           chs: true
         }
       },
+      zdic: {
+        id: 'zdic',
+        page: 'http://www.zdic.net/search/?c=1&q=%s',
+        defaultUnfold: true,
+        preferredHeight: 400,
+        showWhenLang: {
+          eng: true,
+          chs: true
+        }
+      },
       business: {
         id: 'business',
         page: 'http://www.ldoceonline.com/search/?q=%s',
