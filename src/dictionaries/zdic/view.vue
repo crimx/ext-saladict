@@ -20,9 +20,6 @@ export default {
   props: ['result'],
   components: {
     Speaker
-  },
-  mounted () {
-    console.log(JSON.stringify(this.result, null, '  '))
   }
 }
 </script>
