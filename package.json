@@ -1,6 +1,6 @@
 {
   "name": "saladict",
-  "version": "5.18.1",
+  "version": "5.18.2",
   "author": "CRIMX <straybugs@gmail.com>",
   "license": "MIT",
   "description": "Chrome extension, inline translator powered by mutiple online dictionaries",
@@ -85,6 +85,6 @@
     "vue": "^2.2.4",
     "vue-highcharts": "0.0.9",
     "vue-qrious": "0.0.3",
-    "vuedraggable": "^2.9.0"
+    "vuedraggable": "^2.15.0"
   }
 }
