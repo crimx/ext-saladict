@@ -2,13 +2,17 @@
 
 [Unreleased]
 
-[5.18.1] - 2017-11-12
+[5.18.5] - 2017-11-13
 ### Added
 - 增加汉典
 - 可配置词典只在某种语言下显示
 
 ### Fixed
 - 修复繁体词典不能查简体字问题
+- 修复默认收起的词典不能隐藏
+- 更新 vuedraggable 修复拖动问题
+- 延迟音频播放避免误触
+- 每次查词滚动到顶端
 
 [5.16.1] - 2017-10-28
 ### Added
@@ -164,8 +168,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.18.1...HEAD
-[5.18.1]: https://github.com/crimx/crx-saladict/compare/v5.16.1...v5.18.1
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.18.5...HEAD
+[5.18.5]: https://github.com/crimx/crx-saladict/compare/v5.16.1...v5.18.5
 [5.16.1]: https://github.com/crimx/crx-saladict/compare/v5.15.21...v5.16.1
 [5.15.21]: https://github.com/crimx/crx-saladict/compare/v5.15.19...v5.15.21
 [5.15.19]: https://github.com/crimx/crx-saladict/compare/v5.15.14...v5.15.19
