@@ -194,10 +194,11 @@ function showNews () {
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
     title: '沙拉查词 Saladict',
     message: (
-      '已更新到【5.18.1】\n' +
+      '已更新到【5.18.5】\n' +
       '1. 可配置词典只在某种语言下显示\n' +
       '2. 修复繁体词典不能查简体字问题\n' +
-      '3. 增加汉典'
+      '3. 增加汉典\n' +
+      '4. 细节优化以及其它问题修复'
     ),
     buttons: [{title: '点击了解使用方式'}]
   })

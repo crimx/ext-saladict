@@ -41,7 +41,7 @@
       <path d="M31.112 1.414L29.698 0 15.556 14.142 1.414 0 0 1.414l14.142 14.142L0 29.698l1.414 1.414L15.556 16.97l14.142 14.142 1.414-1.414L16.97 15.556"/>
     </svg>
   </header>
-  <div class="dicts" @click="handleDictsPanelClick">
+  <div ref="scrollContainer" class="dicts" @click="handleDictsPanelClick">
     <section class="dict-item" v-for="id in config.dicts.selected" v-show="dicts[id].isShow">
       <header class="dict-item-header" @click="handleUnfold(id)">
         <img class="dict-item-logo" :src="dicts[id].favicon" @click.stop="handleDictPage(id)">
@@ -100,6 +100,8 @@ import {storage, message} from 'src/helpers/chrome-api'
 import {isContainChinese, isContainEnglish} from 'src/helpers/lang-check'
 import chsToChz from 'src/helpers/chs-to-chz'
 
+const isSmoothScrollSupported = 'scrollBehavior' in document.documentElement.style
+
 export default {
   name: 'dictionary-panel',
   data () {
@@ -136,22 +138,18 @@ export default {
     i18n (key) {
       return chrome.i18n.getMessage(key) || key
     },
-    seachText (selectedDicts) {
-      if (!Array.isArray(selectedDicts)) {
-        selectedDicts = [selectedDicts]
+    seachText (activeDicts) {
+      if (!Array.isArray(activeDicts)) {
+        activeDicts = [activeDicts]
       }
       const text = this.text.trim()
       this.text = text
       const dicts = this.dicts
-      const allDicts = this.config.dicts.all
 
-      selectedDicts.forEach((id) => {
+      this.checkSelectionLang()
+
+      activeDicts.forEach((id) => {
         const dict = dicts[id]
-
-        const isEng = isContainEnglish(this.text)
-        dict.isShow = (allDicts[id].showWhenLang.eng && isEng) ||
-          (allDicts[id].showWhenLang.chs && !isEng)
-
         if (!dict.isShow) { return }
 
         this.foldDict(id)
@@ -179,6 +177,21 @@ export default {
               this.unfoldDict(id, i)
             })
           })
+      })
+
+      // scroll to top after all the dicts are folded
+      if (isSmoothScrollSupported) {
+        this.$refs.scrollContainer.scrollTo({top: 0, left: 0, behavior: 'smooth'})
+      } else {
+        this.$refs.scrollContainer.scrollTo(0, 0)
+      }
+    },
+    checkSelectionLang () {
+      const allDicts = this.config.dicts.all
+      const isEng = isContainEnglish(this.text)
+      this.config.dicts.selected.forEach(id => {
+        this.dicts[id].isShow = (allDicts[id].showWhenLang.eng && isEng) ||
+          (allDicts[id].showWhenLang.chs && !isEng)
       })
     },
     updateDragAreaCoord () {
