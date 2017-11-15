@@ -2,6 +2,13 @@
 
 [Unreleased]
 
+[5.19.1] - 2017-11-15
+### Added
+- 可配置双击时长
+
+### Fixed
+- 默认不显示词典以避免闪现
+
 [5.18.5] - 2017-11-13
 ### Added
 - 增加汉典
@@ -168,7 +175,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.18.5...HEAD
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.19.1...HEAD
+[5.19.1]: https://github.com/crimx/crx-saladict/compare/v5.18.5...v5.19.1
 [5.18.5]: https://github.com/crimx/crx-saladict/compare/v5.16.1...v5.18.5
 [5.16.1]: https://github.com/crimx/crx-saladict/compare/v5.15.21...v5.16.1
 [5.15.21]: https://github.com/crimx/crx-saladict/compare/v5.15.19...v5.15.21

@@ -123,7 +123,7 @@ chrome.runtime.onInstalled.addListener(({reason}) => {
 })
 
 chrome.notifications.onButtonClicked.addListener(() => {
-  chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki#%E5%90%84%E4%B8%AA%E8%AF%8D%E5%85%B8%E9%9D%A2%E6%9D%BF%E6%94%AF%E6%8C%81%E4%B8%AA%E6%80%A7%E5%8C%96%E8%B0%83%E6%95%B4'})
+  chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki#%E6%94%AF%E6%8C%81%E5%9B%9B%E7%A7%8D%E5%88%92%E8%AF%8D%E6%96%B9%E5%BC%8F%E6%94%AF%E6%8C%81-iframe-%E5%88%92%E8%AF%8D'})
   chrome.notifications.getAll(notifications => {
     Object.keys(notifications).forEach(id => chrome.notifications.clear(id))
   })
@@ -194,11 +194,9 @@ function showNews () {
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
     title: '沙拉查词 Saladict',
     message: (
-      '已更新到【5.18.5】\n' +
-      '1. 可配置词典只在某种语言下显示\n' +
-      '2. 修复繁体词典不能查简体字问题\n' +
-      '3. 增加汉典\n' +
-      '4. 细节优化以及其它问题修复'
+      '已更新到【5.19.1】\n' +
+      '1. 可配置双击时长\n' +
+      '2. 细节优化'
     ),
     buttons: [{title: '点击了解使用方式'}]
   })
@@ -208,6 +206,9 @@ function mergeConfig (config) {
   var base = JSON.parse(JSON.stringify(defaultConfig))
   if (config.active !== undefined) { base.active = Boolean(config.active) }
   if (/^(icon|direct|double|ctrl)$/i.test(config.mode)) { base.mode = config.mode.toLowerCase() }
+  if (typeof config.doubleClickDelay === 'number' && !isNaN(config.doubleClickDelay)) {
+    base.doubleClickDelay = config.doubleClickDelay
+  }
   if (config.tripleCtrl !== undefined) { base.tripleCtrl = Boolean(config.tripleCtrl) }
   if (config.language) {
     Object.keys(base.language).forEach(k => {
