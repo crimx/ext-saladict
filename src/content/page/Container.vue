@@ -210,7 +210,7 @@ export default {
       if (this.config.mode === 'double') {
         if (!this.firstClickOfDoubleClick) {
           this.firstClickOfDoubleClick = true
-          setTimeout(this.clearDoubleClick, 200)
+          setTimeout(this.clearDoubleClick, this.config.doubleClickDelay)
           return
         } else {
           this.firstClickOfDoubleClick = false

@@ -25,7 +25,7 @@
       <div class="opt-item__description-wrap">
         <p class="opt-item__description" v-html="i18n('opt_app_active_description')"></p>
       </div>
-    </div><!-- opt-item -->
+    </div><!-- 开启查词 -->
 
     <div class="opt-item">
       <div class="opt-item__header">
@@ -46,11 +46,18 @@
             <input type="radio" value="ctrl" v-model="config.mode"> {{ i18n('opt_mode_ctrl') }}
           </label>
         </div>
+        <div class="double-click-delay" :style="{height: optDoubleClickDelayHeight}">
+          <div class="input-group">
+            <div class="input-group-addon">{{ i18n('opt_mode_double_click_delay') }}</div>
+            <input type="number" min="1" class="form-control" v-model.number="config.doubleClickDelay">
+            <div class="input-group-addon">{{ i18n('opt_unit_ms') }}</div>
+          </div>
+        </div>
       </div>
       <div class="opt-item__description-wrap">
         <p class="opt-item__description" v-html="i18n('opt_mode_description')"></p>
       </div>
-    </div><!-- opt-item -->
+    </div><!-- 查词模式-->
 
     <div class="opt-item">
       <div class="opt-item__header">
@@ -66,7 +73,7 @@
       <div class="opt-item__description-wrap">
         <p class="opt-item__description" v-html="i18n('opt_triple_ctrl_description')"></p>
       </div>
-    </div><!-- opt-item -->
+    </div><!-- 快捷查词 -->
 
     <div class="opt-item">
       <div class="opt-item__header">
@@ -85,7 +92,7 @@
       <div class="opt-item__description-wrap">
         <p class="opt-item__description" v-html="i18n('opt_language_mode_description')"></p>
       </div>
-    </div><!-- opt-item -->
+    </div><!-- 语言支持 -->
 
     <div class="opt-item">
       <div class="opt-item__header">
@@ -188,7 +195,7 @@
       <div class="opt-item__description-wrap">
         <p class="opt-item__description" v-html="i18n('opt_dicts_description')"></p>
       </div>
-    </div><!-- opt-item -->
+    </div><!-- 词典设置 -->
 
     <div class="opt-item">
       <div class="opt-item__header">
@@ -251,7 +258,7 @@
       <div class="opt-item__description-wrap">
         <p class="opt-item__description" v-html="i18n('opt_context_description')"></p>
       </div>
-    </div><!-- opt-item -->
+    </div><!-- 右键菜单 -->
 
   </div>
   <transition appear name="popup">
@@ -383,6 +390,9 @@ export default {
     }
   },
   computed: {
+    optDoubleClickDelayHeight () {
+      return this.config.mode === 'double' ? '34px' : '0'
+    },
     panelHeight () {
       const allDicts = this.config.dicts.all
       // header + each dictionary
@@ -570,6 +580,13 @@ kbd {
   position: absolute;
   bottom: 8px;
   right: 0;
+}
+
+.double-click-delay {
+  overflow: hidden;
+  margin-bottom: 10px;
+  height: 0;
+  transition: height 400ms;
 }
 
 .opt-item {

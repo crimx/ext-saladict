@@ -7,6 +7,9 @@ const getConfig = () => ({
   // ctrl: show panel when double click ctrl + selection not empty
   mode: 'icon',
 
+  // for double click, in ms
+  doubleClickDelay: 450,
+
   // show panel when triple press ctrl
   tripleCtrl: true,
 
