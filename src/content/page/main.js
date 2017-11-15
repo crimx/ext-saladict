@@ -1,8 +1,17 @@
 import Vue from 'vue'
 import App from './Container'
 import {storage, message} from 'src/helpers/chrome-api'
+import youdaoPage from './fanyi.youdao.2.0'
 
 Vue.config.productionTip = false
+
+/**
+ * Inject any script to page
+ */
+message.on('LOAD-YOUDAO-PAGE', (data, sender, sendResponse) => {
+  youdaoPage.load()
+  sendResponse()
+})
 
 var vm
 

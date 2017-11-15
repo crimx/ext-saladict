@@ -48,6 +48,12 @@ chrome.contextMenus.onClicked.addListener(({menuItemId, selectionText, linkUrl})
         chrome.tabs.create({url: `https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`})
       }
     })
+  } else if (menuItemId === 'youdao_page_translate') {
+    chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+      if (tabs.length > 0) {
+        message.send(tabs[0].id, {msg: 'LOAD-YOUDAO-PAGE'})
+      }
+    })
   } else if (menuItemId === 'view_as_pdf') {
     var url = chrome.runtime.getURL('assets/pdf/web/viewer.html')
     if (linkUrl) {
@@ -138,11 +144,22 @@ chrome.notifications.onClicked.addListener(() => {
 
 function setContextMenu (config) {
   chrome.contextMenus.removeAll(() => {
+    // pdf
+    chrome.contextMenus.create({
+      id: 'view_as_pdf',
+      title: chrome.i18n.getMessage('context_view_as_pdf') || 'view_as_pdf',
+      contexts: ['link', 'browser_action']
+    })
+
     var hasGooglePageTranslate = false
+    var hasYoudaoPageTranslate = false
     config.contextMenu.selected.forEach(id => {
       var contexts = ['selection']
       if (id === 'google_page_translate') {
         hasGooglePageTranslate = true
+        contexts = ['all']
+      } else if (id === 'youdao_page_translate') {
+        hasYoudaoPageTranslate = true
         contexts = ['all']
       }
       chrome.contextMenus.create({
@@ -160,13 +177,13 @@ function setContextMenu (config) {
         contexts: ['browser_action']
       })
     }
-
-    // pdf
-    chrome.contextMenus.create({
-      id: 'view_as_pdf',
-      title: chrome.i18n.getMessage('context_view_as_pdf') || 'view_as_pdf',
-      contexts: ['link', 'browser_action']
-    })
+    if (!hasYoudaoPageTranslate) {
+      chrome.contextMenus.create({
+        id: 'youdao_page_translate',
+        title: chrome.i18n.getMessage('context_youdao_page_translate') || 'youdao_page_translate',
+        contexts: ['browser_action']
+      })
+    }
   })
 }
 
@@ -194,9 +211,9 @@ function showNews () {
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
     title: '沙拉查词 Saladict',
     message: (
-      '已更新到【5.19.1】\n' +
-      '1. 可配置双击时长\n' +
-      '2. 细节优化'
+      '已更新到【5.20.0】\n' +
+      '1. 增加有道网页翻译2.0（支持 HTTPS）\n' +
+      '2. '
     ),
     buttons: [{title: '点击了解使用方式'}]
   })

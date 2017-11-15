@@ -225,7 +225,11 @@
   },
   "context_google_page_translate": {
     "description": "context menu",
-    "message": "網頁翻譯"
+    "message": "谷歌網頁翻譯"
+  },
+  "context_youdao_page_translate": {
+    "description": "context menu",
+    "message": "有道網頁翻譯"
   },
   "context_etymonline": {
     "description": "context menu",
