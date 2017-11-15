@@ -97,7 +97,7 @@
 <script>
 import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
-import {isContainChinese, isContainEnglish} from 'src/helpers/lang-check'
+import {isContainEnglish} from 'src/helpers/lang-check'
 import chsToChz from 'src/helpers/chs-to-chz'
 
 const isSmoothScrollSupported = 'scrollBehavior' in document.documentElement.style
@@ -114,7 +114,7 @@ export default {
         offsetHeight: 0,
         favicon: chrome.runtime.getURL(`assets/dicts/${id}.png`),
         name: chrome.i18n.getMessage('dict_' + id) || id,
-        isShow: true,
+        isShow: false,
         isUnfolded: false,
         isSearching: false
       }
