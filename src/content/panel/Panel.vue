@@ -41,7 +41,7 @@
       <path d="M31.112 1.414L29.698 0 15.556 14.142 1.414 0 0 1.414l14.142 14.142L0 29.698l1.414 1.414L15.556 16.97l14.142 14.142 1.414-1.414L16.97 15.556"/>
     </svg>
   </header>
-  <div ref="scrollContainer" class="dicts" @click="handleDictsPanelClick">
+  <div ref="scrollContainer" class="dicts" @click="handleDictsPanelClick" @dblclick="handleDictsPanelDbClick">
     <section class="dict-item" v-for="id in config.dicts.selected" v-show="dicts[id].isShow">
       <header class="dict-item-header" @click="handleUnfold(id)">
         <img class="dict-item-logo" :src="dicts[id].favicon" @click.stop="handleDictPage(id)">
@@ -71,7 +71,7 @@
         :class="{'dict-item-body--show': dicts[id].height > 0}"
         :style="{height: dicts[id].height + 'px'}"
       >
-        <component :is="id" :result="dicts[id].result"></component>
+        <component :is="id" :result="dicts[id].result" @search="handleSearchText"></component>
         <transition name="fade">
           <div class="semi-unfold-mask"
             v-if="dicts[id].height > 0 && dicts[id].height !== dicts[id].offsetHeight"
@@ -263,10 +263,22 @@ export default {
     handleDictsPanelClick (evt) {
       for (let target = evt.target; target !== evt.currentTarget; target = target.parentNode) {
         if (target.href) {
-          chrome.runtime.sendMessage({msg: 'CREATE_TAB', url: target.href})
+          const text = target.innerText.trim()
+          if (/\s/.test(text)) {
+            // more than one word
+            chrome.runtime.sendMessage({msg: 'CREATE_TAB', url: target.href})
+          } else {
+            this.handleSearchText({text})
+          }
           evt.preventDefault()
           return
         }
+      }
+    },
+    handleDictsPanelDbClick (evt) {
+      const text = window.getSelection().toString().trim()
+      if (text) {
+        this.handleSearchText({text})
       }
     },
     handleSearchText (data) {
