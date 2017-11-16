@@ -1,4 +1,5 @@
 import fetchDom from 'src/helpers/fetch-dom'
+import stripScript from 'src/helpers/strip-script'
 import {reflect} from 'src/helpers/promise-more'
 
 /**
@@ -93,7 +94,7 @@ function handleDom (doc) {
 
   let $senses = doc.querySelectorAll('.senses .SENSE')
   if ($senses.length > 0) {
-    def.senses = Array.from($senses).map(el => el.innerHTML)
+    def.senses = Array.from($senses).map(el => stripScript(el).innerHTML)
   }
 
   if (Object.keys(def).length > 0) {

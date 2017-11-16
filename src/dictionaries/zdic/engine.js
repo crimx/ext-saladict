@@ -1,4 +1,5 @@
 import fetchDom from 'src/helpers/fetch-dom'
+import stripScript from 'src/helpers/strip-script'
 
 /**
  * Search text and give back result
@@ -60,7 +61,7 @@ function handleWord (doc, options) {
   $content.querySelectorAll('.dichr').forEach($hr => {
     $hr.previousElementSibling.classList.add('zdic-header')
   })
-  result.html = $content.innerHTML
+  result.html = stripScript($content).innerHTML
 
   return result
 }
@@ -93,7 +94,7 @@ function handlePhrase (doc, options) {
     }
     el.remove()
   })
-  result.html = $cdnr.innerHTML
+  result.html = stripScript($cdnr).innerHTML
   return result
 }
 

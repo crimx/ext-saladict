@@ -1,4 +1,5 @@
 import fetchDom from 'src/helpers/fetch-dom'
+import stripScript from 'src/helpers/strip-script'
 
 /**
  * Search text and give back result
@@ -45,7 +46,9 @@ function handleDom (doc, {resultnum}) {
           let word = $cf.innerText.trim()
           $cf.innerHTML = `<a href="http://www.etymonline.com/word/${word}" target="_blank">${word}</a>`
         })
-        def = $def.innerHTML
+        const $cleanDef = doc.createElement('div')
+        $cleanDef.innerHTML = $def.innerHTML
+        def = stripScript($cleanDef).innerHTML
       }
 
       if (title && def) {

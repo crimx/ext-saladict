@@ -1,4 +1,5 @@
 import fetchDom from 'src/helpers/fetch-dom'
+import stripScript from 'src/helpers/strip-script'
 
 /**
  * Search text and give back result
@@ -19,7 +20,7 @@ export default function search (text, config) {
 function handleDom (doc) {
   let $entry = doc.querySelector('.bussdictEntry')
   if (!$entry) { return Promise.reject('no result') }
-  return $entry.innerHTML
+  return stripScript($entry).innerHTML
 }
 
 /**
