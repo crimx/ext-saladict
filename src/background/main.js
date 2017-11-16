@@ -37,6 +37,8 @@ message.listen((data, sender, sendResponse) => {
       return true
     case 'FETCH_DICT_RESULT':
       return fetchDictResult(data, sender, sendResponse)
+    case 'PAGE_ID':
+      return sendResponse(getPageId(sender))
   }
 })
 
@@ -219,6 +221,14 @@ function showNews () {
   })
 }
 
+function getPageId (sender) {
+  if (sender.tab) {
+    return sender.tab.id
+  } else {
+    return 'popup'
+  }
+}
+
 function mergeConfig (config) {
   var base = JSON.parse(JSON.stringify(defaultConfig))
   if (config.active !== undefined) { base.active = Boolean(config.active) }
@@ -274,6 +284,11 @@ function mergeConfig (config) {
         let selected = config.contextMenu.selected.filter(id => base.contextMenu.all[id])
         if (selected.length > 0) { base.contextMenu.selected = selected }
       }
+    }
+
+    // added at v5.20.0, enable by default
+    if (!config.contextMenu.all['youdao_page_translate']) {
+      base.contextMenu.selected.push('youdao_page_translate')
     }
   }
 

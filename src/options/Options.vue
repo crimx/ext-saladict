@@ -288,6 +288,8 @@ export default {
       config: defaultConfig,
       dicts: {},
 
+      pageId: -1,
+
       isNewVersion: false,
 
       unlock: false,
@@ -384,7 +386,7 @@ export default {
       handler () {
         clearTimeout(this.searchTextTimeout)
         this.searchTextTimeout = setTimeout(() => {
-          message.send({msg: 'SEARCH_TEXT_SELF', text: this.text})
+          message.send({msg: 'SEARCH_TEXT_SELF', text: this.text, page: this.pageId})
         }, 2000)
       }
     }
@@ -428,6 +430,12 @@ export default {
     document.title = 'Saladict Options'
   },
   created () {
+    message.send({msg: 'PAGE_ID'}, pageId => {
+      if (pageId) {
+        this.pageId = pageId
+      }
+    })
+
     let allDicts = this.config.dicts.all
     let dicts = {}
     Object.keys(allDicts).forEach(id => {
@@ -467,16 +475,11 @@ export default {
       this.handlePanelHeadClick(this.config.dicts.selected[0], 0)
     }, 1000)
 
-    let currentTabID
-    chrome.tabs.getCurrent(tab => {
-      currentTabID = tab.id
-
-      // monitor search text
-      message.on('FETCH_DICT_RESULT', (data, sender) => {
-        if (currentTabID === sender.tab.id) {
-          this.text = data.text
-        }
-      })
+    // monitor search text
+    message.on('FETCH_DICT_RESULT', (data, sender) => {
+      if (this.pageId === sender.tab.id) {
+        this.text = data.text
+      }
     })
   }
 }

@@ -123,6 +123,8 @@ export default {
     return {
       config: defaultConfig,
 
+      pageId: -1,
+
       dicts,
 
       text: '',
@@ -196,14 +198,14 @@ export default {
     },
     updateDragAreaCoord () {
       const $da = this.$refs.dragarea
-      message.send({msg: 'DRAG_AREA_SELF', left: $da.offsetLeft, width: $da.offsetWidth})
+      message.send({msg: 'DRAG_AREA_SELF', left: $da.offsetLeft, width: $da.offsetWidth, page: this.pageId})
     },
     closePanel () {
-      message.send({msg: 'CLOSE_PANEL_SELF'})
+      message.send({msg: 'CLOSE_PANEL_SELF', page: this.pageId})
     },
     pinPanel () {
       this.isPinned = !this.isPinned
-      message.send({msg: 'PIN_PANEL_SELF', flag: this.isPinned})
+      message.send({msg: 'PIN_PANEL_SELF', flag: this.isPinned, page: this.pageId})
     },
     showQRcode () {
       chrome.tabs.query({active: true, currentWindow: true}, tabs => {
@@ -279,6 +281,20 @@ export default {
     }
   },
   created () {
+    message.send({msg: 'PAGE_ID'}, pageId => {
+      if (pageId) {
+        this.pageId = pageId
+      }
+
+      message.send({msg: 'PANEL_READY_SELF', page: this.pageId}, response => {
+        if (response && response.ctrl) {
+          this.$refs.searchbox.focus()
+          document.execCommand('paste')
+          this.$refs.searchbox.select()
+        }
+      })
+    })
+
     // get the lastest config
     storage.sync.get('config').then(result => {
       if (result.config) {
@@ -292,18 +308,11 @@ export default {
     storage.on('config', this.onStorageconfig)
 
     this.onMessageSEARCH_TEXT = (data, sender, sendResponse) => {
+      if (this.pageId !== -1 && this.pageId !== data.page) { return }
       this.handleSearchText(data)
       sendResponse()
     }
     message.on('SEARCH_TEXT', this.onMessageSEARCH_TEXT)
-
-    message.send({msg: 'PANEL_READY_SELF'}, response => {
-      if (response && response.ctrl) {
-        this.$refs.searchbox.focus()
-        document.execCommand('paste')
-        this.$refs.searchbox.select()
-      }
-    })
   },
   mounted () {
     setTimeout(() => this.updateDragAreaCoord(), 1000)

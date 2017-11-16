@@ -12,6 +12,13 @@ let numTripleCtrl = 0
 let tripleCtrlTimeout = null
 let isCtrlKeydown = false
 
+var pageId = -1
+message.send({msg: 'PAGE_ID'}, id => {
+  if (id) {
+    pageId = id
+  }
+})
+
 storage.sync.get('config', data => {
   if (data.config) {
     config = data.config
@@ -59,7 +66,7 @@ function handleTripleCtrlKeyup (evt) {
   if (isCtrl(evt)) {
     if (++numTripleCtrl === 3) {
       if (!config.tripleCtrl) { return }
-      message.send({msg: 'TRIPLE_CTRL_SELF'})
+      message.send({msg: 'TRIPLE_CTRL_SELF', page: pageId})
     } else {
       if (tripleCtrlTimeout) { clearTimeout(tripleCtrlTimeout) }
       tripleCtrlTimeout = setTimeout(() => {
@@ -97,7 +104,7 @@ document.addEventListener('mouseup', evt => {
   let text = window.getSelection().toString().trim()
   if (!text) {
     // empty message
-    message.send({msg: 'SELECTION_SELF'})
+    message.send({msg: 'SELECTION_SELF', page: pageId})
   } else {
     // if user click on a selected text,
     // getSelection would reture the text before it disappears
@@ -106,7 +113,7 @@ document.addEventListener('mouseup', evt => {
       let text = window.getSelection().toString().trim()
       if (!text) {
         // empty message
-        return message.send({msg: 'SELECTION_SELF'})
+        return message.send({msg: 'SELECTION_SELF', page: pageId})
       }
 
       if ((config.language.english && isContainEnglish(text)) ||
@@ -115,6 +122,7 @@ document.addEventListener('mouseup', evt => {
           // top
           message.send({
             msg: 'SELECTION_SELF',
+            page: pageId,
             text,
             mouseX: evt.clientX,
             mouseY: evt.clientY,
@@ -158,6 +166,7 @@ window.addEventListener('message', evt => {
     // top
     message.send({
       msg: 'SELECTION_SELF',
+      page: pageId,
       text,
       mouseX,
       mouseY,

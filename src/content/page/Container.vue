@@ -43,6 +43,8 @@ export default {
 
       frameSource: chrome.runtime.getURL('panel.html'),
 
+      pageId: -1,
+
       isShowIcon: false,
       iconTop: 0,
       iconLeft: 0,
@@ -178,6 +180,12 @@ export default {
     }
   },
   created () {
+    message.send({msg: 'PAGE_ID'}, pageId => {
+      if (pageId) {
+        this.pageId = pageId
+      }
+    })
+
     storage.sync.get('config').then(result => {
       if (result.config) {
         this.config = result.config
@@ -191,11 +199,13 @@ export default {
   mounted () {
     // receive signals from page and all frames
     this.onMessageSELECTION = (data, sender, sendResponse) => {
+      if (this.pageId !== -1 && this.pageId !== data.page) { return }
+
       this.selectedText = data.text || ''
 
       if (this.isStayVisiable) {
         if (data.text) {
-          message.send({msg: 'SEARCH_TEXT_SELF', text: data.text})
+          message.send({msg: 'SEARCH_TEXT_SELF', text: data.text, page: this.pageId})
         }
         return
       }
@@ -241,6 +251,8 @@ export default {
     }
 
     this.onMessageCLOSE_PANEL = (data, sender, sendResponse) => {
+      if (this.pageId !== -1 && this.pageId !== data.page) { return }
+
       this.isStayVisiable = false
       this.isShowFrame = false
       this.isShowIcon = false
@@ -248,25 +260,31 @@ export default {
     }
 
     this.onMessagePIN_PANEL = (data, sender, sendResponse) => {
+      if (this.pageId !== -1 && this.pageId !== data.page) { return }
+
       this.isStayVisiable = data.flag
       this.isShowIcon = false
       sendResponse()
     }
 
     this.onMessagePANEL_READY = (data, sender, sendResponse) => {
+      if (this.pageId !== -1 && this.pageId !== data.page) { return }
+
       if (this.isTripleCtrl) {
         this.isTripleCtrl = false
         return sendResponse({ctrl: true})
       }
 
       if (this.selectedText) {
-        message.send({msg: 'SEARCH_TEXT_SELF', text: this.selectedText})
+        message.send({msg: 'SEARCH_TEXT_SELF', text: this.selectedText, page: this.pageId})
       }
 
       sendResponse()
     }
 
     this.onMessageTRIPLE_CTRL = (data, sender, sendResponse) => {
+      if (this.pageId !== -1 && this.pageId !== data.page) { return }
+
       this.isTripleCtrl = true
       // show panel
       this.isShowIcon = false
@@ -279,7 +297,8 @@ export default {
       sendResponse()
     }
 
-    this.onMessageDRAG_AREA = ({left, width}, sender, sendResponse) => {
+    this.onMessageDRAG_AREA = ({left, width, page}, sender, sendResponse) => {
+      if (this.pageId !== -1 && this.pageId !== page) { return }
       this.dragLeft = left
       this.dragWidth = width
       sendResponse()
@@ -303,7 +322,6 @@ export default {
     message.off(this.onMessagePANEL_READY)
     message.off(this.onMessageTRIPLE_CTRL)
     message.off(this.onMessageDRAG_AREA)
-    message.send({msg: 'DESTROY_PANEL_SELF'})
   }
 }
 </script>

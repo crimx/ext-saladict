@@ -5,6 +5,13 @@ import youdaoPage from './fanyi.youdao.2.0'
 
 Vue.config.productionTip = false
 
+var pageId = -1
+message.send({msg: 'PAGE_ID'}, id => {
+  if (id) {
+    pageId = id
+  }
+})
+
 /**
  * Inject any script to page
  */
@@ -28,6 +35,8 @@ storage.sync.get('config').then(result => {
 })
 
 message.on('SELECTION', (data, sender, sendResponse) => {
+  if (pageId !== -1 && pageId !== data.page) { return }
+
   // check if dom element being removed
   if (vm && vm.$el && !document.querySelector('.saladict-container')) {
     document.body.appendChild(vm.$el)
