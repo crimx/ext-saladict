@@ -141,7 +141,8 @@ export default {
       return chrome.i18n.getMessage(key) || key
     },
     seachText (activeDicts) {
-      if (!Array.isArray(activeDicts)) {
+      const isOneActiveDict = !Array.isArray(activeDicts)
+      if (isOneActiveDict) {
         activeDicts = [activeDicts]
       }
       const text = this.text.trim()
@@ -181,11 +182,13 @@ export default {
           })
       })
 
-      // scroll to top after all the dicts are folded
-      if (isSmoothScrollSupported) {
-        this.$refs.scrollContainer.scrollTo({top: 0, left: 0, behavior: 'smooth'})
-      } else {
-        this.$refs.scrollContainer.scrollTo(0, 0)
+      if (!isOneActiveDict) {
+        // scroll to top after all the dicts are folded
+        if (isSmoothScrollSupported) {
+          this.$refs.scrollContainer.scrollTo({top: 0, left: 0, behavior: 'smooth'})
+        } else {
+          this.$refs.scrollContainer.scrollTo(0, 0)
+        }
       }
     },
     checkSelectionLang () {
