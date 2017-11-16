@@ -37,9 +37,20 @@
       </div>
     </div> <!--lex-->
 
-    <div class="machine-result" v-if="result.type === 'machine'">
+    <div class="machine-result" v-else-if="result.type === 'machine'">
       {{ result.mt }}
-    </div>
+    </div> <!--machine-->
+
+    <div class="related-result" v-else-if="result.type === 'related'">
+      <h2 class="related-title">{{ result.title }}</h2>
+      <template v-for="def in result.defs">
+        <h2 class="def-title">{{ def.title }}</h2>
+        <div class="meaning-list" v-for="meaning in def.meanings">
+          <div class="meaning-word" @click="$emit('search', {text: meaning.word})">{{ meaning.word }}</div>
+          <div class="meaning-def">{{ meaning.def }}</div>
+        </div>
+      </template>
+    </div> <!--machine-->
 
   </div>
 </section>
@@ -118,5 +129,33 @@ export default {
 
 .sentence-source {
   color: #999;
+}
+
+.related-title {
+  font-size: 1em;
+  margin: 5px 0;
+}
+
+.def-title {
+  font-size: 1.2em;
+  margin: 5px 0 0 0;
+}
+
+.meaning-list {
+  display: table;
+  margin-bottom: 2px;
+}
+
+.meaning-word {
+  display: table-cell;
+  width: 5em;
+  text-align: right;
+  color: #16a085;
+  cursor: pointer;
+}
+
+.meaning-def {
+  display: table-cell;
+  padding: 0 12px;
 }
 </style>

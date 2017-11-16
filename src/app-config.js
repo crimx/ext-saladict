@@ -27,7 +27,7 @@ const getConfig = () => ({
         id: 'bing',
         page: 'https://cn.bing.com/dict/search?q=%s',
         defaultUnfold: true,
-        preferredHeight: 160,
+        preferredHeight: 240,
         showWhenLang: {
           eng: true,
           chs: true
@@ -36,6 +36,7 @@ const getConfig = () => ({
           tense: true,
           phsym: true,
           cdef: true,
+          related: true,
           sentence: 4
         }
       },

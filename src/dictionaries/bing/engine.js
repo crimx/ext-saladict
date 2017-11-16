@@ -7,20 +7,27 @@ import fetchDom from 'src/helpers/fetch-dom'
  * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
  */
 export default function search (text, config) {
-  const options = config.dicts.all.bing.options
   const DICT_LINK = 'https://cn.bing.com/dict/clientsearch?mkt=zh-CN&setLang=zh&form=BDVEHC&ClientVer=BDDTV3.5.1.4320&q='
 
   return fetchDom(DICT_LINK + text)
-    .then(doc => handleDom(doc, options))
+    .then(doc => handleDom(doc, config))
 }
 
-function handleDom (doc, options) {
+function handleDom (doc, config) {
+  const options = config.dicts.all.bing.options
+
   if (doc.querySelector('.client_def_hd_hd')) {
     return handleLexResult(doc, options)
   }
 
   if (doc.querySelector('.client_trans_head')) {
     return handleMachineResult(doc, options)
+  }
+
+  if (options.related) {
+    if (doc.querySelector('.client_do_you_mean_title_bar')) {
+      return handleRelatedResult(doc, config.dicts.all.bing)
+    }
   }
 
   return Promise.reject('no result')
@@ -137,6 +144,50 @@ function handleMachineResult (doc, options) {
     type: 'machine',
     mt: getText(doc, '.client_sen_cn')
   }
+}
+
+/**
+* Machine related result
+* @typedef {Object} BingRelated
+* @property {string} type - Resutl type, 'related'
+* @property {string} title
+* @property {object[]} defs
+* @property {string} defs[].title
+* @property {objhect[]} defs[].meaning
+* @property {string} defs[].meanings[].href
+* @property {string} defs[].meanings[].word
+* @property {string} defs[].meaning[].def
+*/
+
+/**
+ * @async
+ * @returns {Promise.<BingRelated>} A promise with the result to send back
+ */
+function handleRelatedResult (doc, bingConfig) {
+  const result = {
+    type: 'related',
+    title: getText(doc, '.client_do_you_mean_title_bar'),
+    defs: []
+  }
+
+  doc.querySelectorAll('.client_do_you_mean_area').forEach($area => {
+    const $defsList = $area.querySelectorAll('.client_do_you_mean_list')
+    if ($defsList.length > 0) {
+      result.defs.push({
+        title: getText($area, '.client_do_you_mean_title'),
+        meanings: Array.from($defsList).map($list => {
+          const word = getText($list, '.client_do_you_mean_list_word')
+          return {
+            href: bingConfig.page.replace('%s', word),
+            word,
+            def: getText($list, '.client_do_you_mean_list_def')
+          }
+        })
+      })
+    }
+  })
+
+  return result
 }
 
 function getText (el, childSelector) {
