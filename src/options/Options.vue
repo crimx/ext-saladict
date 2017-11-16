@@ -152,7 +152,7 @@
                 <div class="dict-panel__body"
                   ref="dict"
                   :style="{height: dicts[id].height + 'px'}"
-                ><div class="panel-body">
+                ><div class="panel-body" :id="`dict-${id}`">
                   <div class="checkbox">
                     <label class="checkbox-inline">
                       <input type="checkbox" v-model="config.dicts.all[id].defaultUnfold"> {{ i18n('opt_dict_default_unfold') }}
@@ -284,9 +284,17 @@ import Coffee from './Coffee'
 export default {
   name: 'options',
   data () {
+    let dicts = {}
+    Object.keys(defaultConfig.dicts.all).forEach(id => {
+      dicts[id] = {
+        favicon: chrome.runtime.getURL(`assets/dicts/${id}.png`),
+        height: 0
+      }
+    })
+
     return {
       config: defaultConfig,
-      dicts: {},
+      dicts,
 
       pageId: -1,
 
@@ -327,7 +335,7 @@ export default {
       })
     },
     handlePanelHeadClick (id, i) {
-      let height = this.dicts[id].height > 0 ? 0 : this.$refs.dict[i].firstChild.offsetHeight
+      let height = this.dicts[id].height > 0 ? 0 : document.querySelector(`#dict-${id}`).offsetHeight
       this.clearDictsHeight()
       this.dicts[id].height = height
     },
@@ -354,8 +362,9 @@ export default {
             if (!vGithub) { return }
             let gits = vGithub[0].split('.').map(v => Number(v))
             let curs = chrome.runtime.getManifest().version.split('.').map(v => Number(v))
-            this.isNewVersion = gits[0] !== curs[0] ? gits[0] > curs[0] :
-               gits[1] !== curs[1] ? gits[1] > curs[1] : gits[2] > curs[2]
+            this.isNewVersion = gits[0] !== curs[0]
+              ? gits[0] > curs[0]
+              : gits[1] !== curs[1] ? gits[1] > curs[1] : gits[2] > curs[2]
           }
         })
     }
@@ -435,16 +444,6 @@ export default {
         this.pageId = pageId
       }
     })
-
-    let allDicts = this.config.dicts.all
-    let dicts = {}
-    Object.keys(allDicts).forEach(id => {
-      dicts[id] = {
-        favicon: chrome.runtime.getURL(`assets/dicts/${id}.png`),
-        height: 0
-      }
-    })
-    this.dicts = dicts
 
     storage.sync.get('config', result => {
       if (result.config) {
