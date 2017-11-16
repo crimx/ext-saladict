@@ -11,7 +11,7 @@
       <button type="button" class="btn btn-default btn-reset" @click="handleReset">{{ i18n('opt_reset') }}</button>
     </h1>
 
-    <div class="opt-item">
+    <div class="opt-item"><!-- 开启查词 -->
       <div class="opt-item__header">
         <strong>{{ i18n('opt_app_active_title') }}</strong>
       </div>
@@ -27,7 +27,7 @@
       </div>
     </div><!-- 开启查词 -->
 
-    <div class="opt-item">
+    <div class="opt-item"><!-- 查词模式-->
       <div class="opt-item__header">
         <strong>{{ i18n('opt_mode_title') }}</strong>
       </div>
@@ -59,7 +59,7 @@
       </div>
     </div><!-- 查词模式-->
 
-    <div class="opt-item">
+    <div class="opt-item"><!-- 快捷查词 -->
       <div class="opt-item__header">
         <strong>{{ i18n('opt_triple_ctrl_title') }}</strong>
       </div>
@@ -75,7 +75,7 @@
       </div>
     </div><!-- 快捷查词 -->
 
-    <div class="opt-item">
+    <div class="opt-item"><!-- 语言支持 -->
       <div class="opt-item__header">
         <strong>{{ i18n('opt_language_title') }}</strong>
       </div>
@@ -94,7 +94,42 @@
       </div>
     </div><!-- 语言支持 -->
 
-    <div class="opt-item">
+    <div class="opt-item"><!-- 自动发音 -->
+      <div class="opt-item__header">
+        <strong>{{ i18n('opt_autopron_title') }}</strong>
+      </div>
+      <div class="opt-item__body">
+         <div class="autopron-container">
+            <label class="autopron-item">
+              <span class="autopron-label">{{ i18n('opt_autopron_cn') }}</span>
+              <select class="form-control" v-model="config.autopron.cn.dict">
+                <option value="">{{ i18n('opt_autopron_none') }}</option>
+                <option v-for="id in config.autopron.cn.list" :value="id">{{ i18n('dict_' + id) }}</option>
+              </select>
+            </label>
+            <label class="autopron-item">
+              <span class="autopron-label">{{ i18n('opt_autopron_en') }}</span>
+              <select class="form-control" v-model="config.autopron.en.dict">
+                <option value="">{{ i18n('opt_autopron_none') }}</option>
+                <option v-for="id in config.autopron.en.list" :value="id">{{ i18n('dict_' + id) }}</option>
+              </select>
+            </label>
+            <span :style="{transition: 'opacity 0.4s', opacity: config.autopron.en.dict ? '1' : '0'}">
+              <label class="radio-inline">
+                <input type="radio" value="uk" v-model="config.autopron.en.accent"> {{ i18n('opt_autopron_uk') }}
+              </label>
+              <label class="radio-inline">
+                <input type="radio" value="us" v-model="config.autopron.en.accent"> {{ i18n('opt_autopron_us') }}
+              </label>
+            </span>
+         </div>
+      </div>
+      <div class="opt-item__description-wrap">
+        <p class="opt-item__description" v-html="i18n('opt_autopron_description')"></p>
+      </div>
+    </div><!-- 自动发音 -->
+
+    <div class="opt-item"><!-- 词典设置 -->
       <div class="opt-item__header">
         <strong>{{ i18n('opt_dicts_title') }}</strong>
       </div>
@@ -197,7 +232,7 @@
       </div>
     </div><!-- 词典设置 -->
 
-    <div class="opt-item">
+    <div class="opt-item"><!-- 右键菜单 -->
       <div class="opt-item__header">
         <strong>{{ i18n('opt_context_title') }}</strong>
       </div>
@@ -367,6 +402,12 @@ export default {
               : gits[1] !== curs[1] ? gits[1] > curs[1] : gits[2] > curs[2]
           }
         })
+    },
+    searchText () {
+      clearTimeout(this.searchTextTimeout)
+      this.searchTextTimeout = setTimeout(() => {
+        message.send({msg: 'SEARCH_TEXT_SELF', text: this.text, page: this.pageId})
+      }, 2000)
     }
   },
   watch: {
@@ -392,12 +433,11 @@ export default {
     },
     'config.dicts': {
       deep: true,
-      handler () {
-        clearTimeout(this.searchTextTimeout)
-        this.searchTextTimeout = setTimeout(() => {
-          message.send({msg: 'SEARCH_TEXT_SELF', text: this.text, page: this.pageId})
-        }, 2000)
-      }
+      handler () { this.searchText() }
+    },
+    'config.autopron': {
+      deep: true,
+      handler () { this.searchText() }
     }
   },
   computed: {
@@ -689,6 +729,18 @@ kbd {
   border: 0 none;
   box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
   transition: all 1s;
+}
+
+.autopron-container {
+  margin: 10px 0;
+}
+
+.autopron-item {
+  margin-right: 10px;
+}
+
+.autopron-label {
+  padding-left: 5px;
 }
 
 /*------------------------------------*\

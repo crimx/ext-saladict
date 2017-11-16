@@ -5,9 +5,10 @@ const MP3URI = 'http://www.howjsay.com/mp3/'
  * Search text and give back result
  * @param {string} text - Search text
  * @param {object} config - app config
+ * @param {object} helpers - helper functions
  * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
  */
-export default function search (text, config) {
+export default function search (text, config, {AUDIO}) {
   const options = config.dicts.all.howjsay.options
 
   let words = text.trim().split(/ +/)
@@ -17,6 +18,14 @@ export default function search (text, config) {
 
   return fetchDom('http://www.howjsay.com/index.php?word=' + text)
     .then(doc => handleDom(doc, text, options))
+    .then(result => {
+      if (config.autopron.en.dict === 'howjsay') {
+        setTimeout(() => {
+          AUDIO.play(result.currentWord.mp3)
+        }, 0)
+      }
+      return result
+    })
 }
 
 /**

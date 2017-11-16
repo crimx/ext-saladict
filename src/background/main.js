@@ -1,6 +1,28 @@
 import {storage, message} from 'src/helpers/chrome-api'
 import defaultConfig from 'src/app-config'
 
+const AUDIO = (function () {
+  var audio = new Audio()
+
+  function load (src) {
+    audio.pause()
+    audio.currentTime = 0
+    audio.src = ''
+    audio = new Audio(src)
+  }
+
+  function play (src) {
+    if (src) { load(src) }
+    audio.play()
+  }
+
+  function listen (...args) {
+    return audio.addEventListener(...args)
+  }
+
+  return { load, play, listen }
+})()
+
 // background script as transfer station
 message.listen((data, sender, sendResponse) => {
   if (/_SELF$/.test(data.msg)) {
@@ -22,18 +44,18 @@ message.listen((data, sender, sendResponse) => {
       chrome.tabs.create({url: data.url})
       break
     case 'AUDIO_PLAY':
-      let audio = new Audio(data.src)
+      AUDIO.load(data.src)
       let timer = setTimeout(() => {
         timer = null
         sendResponse()
       }, 4000)
-      audio.addEventListener('ended', () => {
+      AUDIO.listen('ended', () => {
         if (timer) {
           clearTimeout(timer)
           sendResponse()
         }
       })
-      audio.play()
+      AUDIO.play()
       return true
     case 'FETCH_DICT_RESULT':
       return fetchDictResult(data, sender, sendResponse)
@@ -197,7 +219,7 @@ function fetchDictResult (data, sender, sendResponse) {
   }
 
   storage.sync.get('config', ({config}) => {
-    search(data.text, config)
+    search(data.text, config, {AUDIO})
       .then(result => sendResponse({result, dict: data.dict}))
       .catch(error => sendResponse({error, dict: data.dict}))
   })
@@ -241,6 +263,24 @@ function mergeConfig (config) {
     Object.keys(base.language).forEach(k => {
       if (config.language[k] !== undefined) { base.language[k] = Boolean(config.language[k]) }
     })
+  }
+
+  if (config.autopron) {
+    if (config.autopron.cn) {
+      const id = config.autopron.cn.dict
+      if (base.dicts.all[id]) {
+        base.autopron.cn.dict = id
+      }
+    }
+    if (config.autopron.en) {
+      const id = config.autopron.en.dict
+      if (base.dicts.all[id]) {
+        base.autopron.en.dict = id
+      }
+      if (/^(uk|us)$/i.test(config.autopron.en.accent)) {
+        base.autopron.en.accent = config.autopron.en.accent.toLowerCase()
+      }
+    }
   }
 
   if (config.dicts) {

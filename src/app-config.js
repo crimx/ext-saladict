@@ -19,6 +19,20 @@ const getConfig = () => ({
     english: true
   },
 
+  // auto pronounce
+  autopron: {
+    cn: {
+      dict: '',
+      list: ['zdic', 'guoyu']
+    },
+    en: {
+      dict: '',
+      list: ['bing', 'dictcn', 'howjsay', 'macmillan', 'eudic', 'urban'],
+      // us / uk
+      accent: 'uk'
+    }
+  },
+
   dicts: {
     // default selected dictionaries
     selected: ['bing', 'urban', 'vocabulary', 'dictcn'],

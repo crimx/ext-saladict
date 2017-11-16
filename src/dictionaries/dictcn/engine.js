@@ -5,13 +5,22 @@ const mp3link = 'http://audio.dict.cn/'
  * Search text and give back result
  * @param {string} text - Search text
  * @param {object} config - app config
+ * @param {object} helpers - helper functions
  * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
  */
-export default function search (text, config) {
+export default function search (text, config, {AUDIO}) {
   const options = config.dicts.all.dictcn.options
 
   return fetchDom('http://dict.cn/' + text)
     .then(doc => handleDom(doc, options))
+    .then(result => {
+      if (config.autopron.en.dict === 'dictcn') {
+        setTimeout(() => {
+          playAudio(result, config, AUDIO)
+        }, 0)
+      }
+      return result
+    })
 }
 
 /**
@@ -75,4 +84,29 @@ function handleDom (doc, options) {
   }
 
   return result
+}
+
+function playAudio (result, config, AUDIO) {
+  if (result.prons) {
+    const accentMap = {
+      us: '美',
+      uk: '英'
+    }
+    const accentTester = new RegExp(accentMap[config.autopron.en.accent], 'i')
+    const isMatched = result.prons.some(({phsym, audio}) => {
+      if (accentTester.test(phsym) && audio && audio[0]) {
+        AUDIO.play(audio[0])
+        return true
+      }
+    })
+
+    if (!isMatched) {
+      result.prons.some(({audio}) => {
+        if (audio && audio[0]) {
+          AUDIO.play(audio[0])
+          return true
+        }
+      })
+    }
+  }
 }

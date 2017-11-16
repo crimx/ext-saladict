@@ -155,6 +155,34 @@
     "description": "option description",
     "message": "Only start searching when selection contains the selected languages."
   },
+  "opt_autopron_title": {
+    "description": "option description",
+    "message": "auto pronounce"
+  },
+  "opt_autopron_cn": {
+    "description": "option description",
+    "message": "Chinese"
+  },
+  "opt_autopron_en": {
+    "description": "option description",
+    "message": "English"
+  },
+  "opt_autopron_none": {
+    "description": "option description",
+    "message": "None"
+  },
+  "opt_autopron_us": {
+    "description": "option description",
+    "message": "US"
+  },
+  "opt_autopron_uk": {
+    "description": "option description",
+    "message": "UK"
+  },
+  "opt_autopron_description": {
+    "description": "option description",
+    "message": "To fully enable auto pronunciation, selected dicts need to be activated. \"Default Unfold\" and language match should be checked. See below."
+  },
   "opt_dicts_title": {
     "description": "option title",
     "message": "Dict Options"

@@ -4,13 +4,22 @@ import fetchDom from 'src/helpers/fetch-dom'
  * Search text and give back result
  * @param {string} text - Search text
  * @param {object} config - app config
+ * @param {object} helpers - helper functions
  * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
  */
-export default function search (text, config) {
+export default function search (text, config, {AUDIO}) {
   const DICT_LINK = 'https://cn.bing.com/dict/clientsearch?mkt=zh-CN&setLang=zh&form=BDVEHC&ClientVer=BDDTV3.5.1.4320&q='
 
   return fetchDom(DICT_LINK + text)
     .then(doc => handleDom(doc, config))
+    .then(result => {
+      if (config.autopron.en.dict === 'bing') {
+        setTimeout(() => {
+          playAudio(result, config, AUDIO)
+        }, 0)
+      }
+      return result
+    })
 }
 
 function handleDom (doc, config) {
@@ -196,4 +205,24 @@ function getText (el, childSelector) {
     return child.innerText.trim()
   }
   return ''
+}
+
+function playAudio (result, config, AUDIO) {
+  if (result.phsym) {
+    const accentTester = new RegExp(config.autopron.en.accent, 'i')
+    const isMatched = result.phsym.some(({lang, pron}) => {
+      if (accentTester.test(lang) && pron) {
+        AUDIO.play(pron)
+        return true
+      }
+    })
+    if (!isMatched) {
+      result.phsym.some(({pron}) => {
+        if (pron) {
+          AUDIO.play(pron)
+          return true
+        }
+      })
+    }
+  }
 }
