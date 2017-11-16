@@ -511,6 +511,18 @@ export default {
 // Components w/ JavaScript
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/modals";
 
+.checkbox-inline {
+  margin-right: 10px;
+
+  + .checkbox-inline {
+    margin-left: 0;
+  }
+
+  :last-child {
+    margin-right: 0;
+  }
+}
+
 /*------------------------------------*\
    Base
 \*------------------------------------*/
