@@ -148,7 +148,7 @@ export default {
 
 .meaning-word {
   display: table-cell;
-  width: 5em;
+  width: 8em;
   text-align: right;
   color: #16a085;
   cursor: pointer;
