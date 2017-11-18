@@ -63,8 +63,6 @@ function storageGet (storageArea) {
         chrome.storage[storageArea].get(keys, data => {
           if (chrome.runtime.lastError) {
             reject(chrome.runtime.lastError.message)
-          } else if (!data || Object.keys(data).length < 1) {
-            reject({})
           } else {
             resolve(data)
           }
