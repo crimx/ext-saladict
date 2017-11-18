@@ -15,7 +15,8 @@ export default class AudioManager {
 
   play (src) {
     if (src) { this.load(src) }
-    this.audio.play()
+    // ignore interruption error
+    this.audio.play().catch(() => {})
   }
 
   listen (...args) {
