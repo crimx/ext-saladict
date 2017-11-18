@@ -154,6 +154,8 @@ webpackConfig = merge(webpackConfig, {
         NODE_ENV: '"production"'
       }
     }),
+    // tailor locales
+    new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /^\.\/(en|zh-cn|zh-tw|zh-hk)$/),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
@@ -193,6 +195,18 @@ webpackConfig = merge(webpackConfig, {
       filename: 'panel.html',
       template: 'src/template.html',
       chunks: ['commons', 'panel'],
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      },
+      chunksSortMode: 'dependency'
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'history.html',
+      template: 'src/template.html',
+      chunks: ['history'],
       inject: true,
       minify: {
         removeComments: true,

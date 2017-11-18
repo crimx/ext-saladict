@@ -182,6 +182,8 @@ export default {
           })
       })
 
+      message.send({msg: 'ADD_HISTORY', text})
+
       if (!isOneActiveDict) {
         // scroll to top after all the dicts are folded
         if (isSmoothScrollSupported) {

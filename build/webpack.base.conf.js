@@ -10,6 +10,7 @@ module.exports = {
 
     popup: './src/popup/main.js',
     shareimg: './src/shareimg/main.js',
+    history: './src/history/main.js',
     options: './src/options/main.js'
   },
   output: {

@@ -81,6 +81,7 @@
     "bootstrap-sass": "^3.3.7",
     "highcharts": "^5.0.12",
     "html2canvas": "^0.5.0-beta4",
+    "moment": "^2.19.2",
     "normalize.css": "^5.0.0",
     "vue": "^2.2.4",
     "vue-highcharts": "0.0.9",
