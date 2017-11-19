@@ -35,7 +35,7 @@ module.exports = function (config) {
     //    http://karma-runner.github.io/0.13/config/browsers.html
     // 2. add it to the `browsers` array below.
     browsers: ['Chrome'],
-    frameworks: ['mocha', 'sinon-chai'],
+    frameworks: ['mocha', 'sinon-chai', 'sinon-chrome'],
     reporters: ['spec', 'coverage'],
     files: ['./index.js'],
     preprocessors: {
