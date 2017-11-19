@@ -1,5 +1,5 @@
 /**
- * Like Promise.all but is always successful.
+ * Like Promise.all but always resolves.
  * @param {Array|Object} iterable
  * @returns {Promise} A promise with an array of all the resolved/rejected results. null for rejection.
  */
@@ -12,7 +12,7 @@ export const reflect = function reflect (iterable) {
 }
 
 /**
- * Like Promise.all but only resolves if there is at least one resolution.
+ * Like Promise.all but only rejects when all are rejected/error.
  * @param {Array|Object} iterable
  * @returns {Promise} A promise with an array.
  *  If resolved, the array consists of all the resolved/rejected results. null for rejection.
@@ -41,7 +41,7 @@ export const any = function any (iterable) {
 }
 
 /**
- * Returns the first resolved value and only fails when all are rejected.
+ * Returns the first resolved value as soon as it is resolved and fails when all are rejected/error.
  * @param {Array|Object} iterable
  * @returns {Promise} If resovled, returns a promise with the first resolved result.
  *  Otherwise returns a promise with all the rejected reasons.
