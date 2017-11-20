@@ -1,5 +1,4 @@
 import {storage} from 'src/helpers/chrome-api'
-import moment from 'moment'
 
 /**
 * @typedef {Object} HistoryItem
@@ -62,10 +61,23 @@ function getlatestCol ({historyCatalog}) {
     })
 }
 
+/**
+ * @returns {Promise<HistoryItem[]>} A promise with the result to send back
+ */
+export function clear () {
+  return storage.local.get('historyCatalog')
+    .then(({historyCatalog}) => {
+      if (historyCatalog) {
+        return storage.local.remove(historyCatalog)
+      }
+    })
+}
+
 function appendItem ({historyCatalog, latestCol}, text) {
-  const today = moment().format('MMDDYYYY')
+  // MMDDYYYY
+  const today = getToday()
   const latestItem = latestCol.data[latestCol.data.length - 1]
-  if (latestItem && today === latestItem.date) {
+  if (latestCol.data.length > 0 && today === latestItem.date) {
     latestItem.words.push(text)
   } else {
     latestCol.data.push({
@@ -75,16 +87,20 @@ function appendItem ({historyCatalog, latestCol}, text) {
   }
   latestCol.wordCount += 1
 
-  storage.local.set({[latestCol.id]: latestCol})
+  let p1 = storage.local.set({[latestCol.id]: latestCol})
 
-  // maintaining 10000 words
-  if (latestCol.wordCount > 1000) {
+  let p2 = Promise.resolve()
+  let p3 = Promise.resolve()
+  // maintaining ~10000 words
+  if (latestCol.wordCount >= 1000 && today !== latestItem.date) {
     historyCatalog.unshift(Date.now().toString())
-    if (historyCatalog.length > 15) {
-      storage.local.remove(historyCatalog.pop())
+    if (historyCatalog.length >= 10) {
+      p2 = storage.local.remove(historyCatalog.pop())
     }
-    storage.local.set({historyCatalog})
+    p3 = storage.local.set({historyCatalog})
   }
+
+  return Promise.all([p1, p2, p3]).then(() => {})
 }
 
 function mergeCols ({historyCatalog}) {
@@ -97,14 +113,24 @@ function mergeCols ({historyCatalog}) {
       var result = []
       historyCatalog.forEach(id => {
         if (cols[id]) {
-          result = result.concat(cols[id].data)
+          cols[id].data.forEach(item => item.words.reverse())
+          result = result.concat(cols[id].data.reverse())
         }
       })
       return result
     })
 }
 
+function getToday () {
+  const d = new Date()
+  const month = d.getMonth() + 1
+  const date = d.getDate()
+  const year = d.getFullYear()
+  return (month < 10 ? '0' : '') + month + (date < 10 ? '0' : '') + date + year
+}
+
 export default {
   add,
+  clear,
   getAll
 }

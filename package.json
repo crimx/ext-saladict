@@ -91,6 +91,7 @@
     "vue": "^2.5.6",
     "vue-highcharts": "^0.0.10",
     "vue-qriously": "^1.1.1",
+    "vue-virtual-scroller": "^0.10.6",
     "vuedraggable": "^2.15.0"
   }
 }
