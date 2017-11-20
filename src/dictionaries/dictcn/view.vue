@@ -9,7 +9,7 @@
       <span class="dictcn-pron-item"
         v-if="result.prons"
         v-for="pron in result.prons"
-      >{{ pron.phsym }} <speaker v-for="au in pron.audio" :src="au"></speaker></span>
+      >{{ pron.phsym }} <speaker v-for="(au, i) in pron.audio" :src="au" :key="i"></speaker></span>
     </div>
     <div class="chart" v-if="result.chart">
       <highcharts :options="chartOpt"></highcharts>
