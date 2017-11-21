@@ -43,7 +43,7 @@ export default {
           spacingRight: 0,
           spacingBottom: 20,
           spacingLeft: 0,
-          width: 270,
+          width: 340,
           height: 200,
           style: {
             fontFamily: '"Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif'
