@@ -22,40 +22,47 @@ storage.sync.listen('config', ({config: {newValue, oldValue}}) => {
 })
 
 function contextMenuOnClick ({menuItemId, selectionText, linkUrl}) {
-  if (menuItemId === 'google_page_translate') {
-    chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-      if (tabs.length > 0) {
-        chrome.tabs.create({url: `https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`})
-      }
-    })
-  } else if (menuItemId === 'youdao_page_translate') {
-    chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-      if (tabs.length > 0) {
-        message.send(tabs[0].id, {msg: 'LOAD-YOUDAO-PAGE'})
-      }
-    })
-  } else if (menuItemId === 'view_as_pdf') {
-    var url = chrome.runtime.getURL('assets/pdf/web/viewer.html')
-    if (linkUrl) {
-      // open link as pdf
-      chrome.tabs.create({url: url + '?file=' + linkUrl})
-    } else {
+  switch (menuItemId) {
+    case 'google_page_translate':
       chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-        // if it is a pdf page
-        if (tabs.length > 0 && /\.pdf$/i.test(tabs[0].url)) {
-          chrome.tabs.create({url: url + '?file=' + tabs[0].url})
-        } else {
-          chrome.tabs.create({url})
+        if (tabs.length > 0) {
+          chrome.tabs.create({url: `https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`})
         }
       })
-    }
-  } else {
-    storage.sync.get('config', ({config}) => {
-      const url = config.contextMenu.all[menuItemId]
-      if (url) {
-        chrome.tabs.create({url: url.replace('%s', selectionText)})
+      break
+    case 'youdao_page_translate':
+      chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+        if (tabs.length > 0) {
+          message.send(tabs[0].id, {msg: 'LOAD-YOUDAO-PAGE'})
+        }
+      })
+      break
+    case 'view_as_pdf':
+      var pdfURL = chrome.runtime.getURL('assets/pdf/web/viewer.html')
+      if (linkUrl) {
+        // open link as pdf
+        chrome.tabs.create({url: pdfURL + '?file=' + linkUrl})
+      } else {
+        chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+          // if it is a pdf page
+          if (tabs.length > 0 && /\.pdf$/i.test(tabs[0].url)) {
+            chrome.tabs.create({url: pdfURL + '?file=' + tabs[0].url})
+          } else {
+            chrome.tabs.create({url: pdfURL})
+          }
+        })
       }
-    })
+      break
+    case 'search_history':
+      chrome.tabs.create({url: chrome.runtime.getURL('history.html')})
+      break
+    default:
+      storage.sync.get('config', ({config}) => {
+        const url = config.contextMenu.all[menuItemId]
+        if (url) {
+          chrome.tabs.create({url: url.replace('%s', selectionText)})
+        }
+      })
   }
 }
 
@@ -68,7 +75,7 @@ export function setContextMenu (config) {
     // pdf
     chrome.contextMenus.create({
       id: 'view_as_pdf',
-      title: chrome.i18n.getMessage('context_view_as_pdf') || 'view_as_pdf',
+      title: chrome.i18n.getMessage('context_view_as_pdf') || 'View As PDF',
       contexts: ['link', 'browser_action']
     })
 
@@ -105,5 +112,12 @@ export function setContextMenu (config) {
         contexts: ['browser_action']
       })
     }
+
+    // search history
+    chrome.contextMenus.create({
+      id: 'search_history',
+      title: chrome.i18n.getMessage('history_title') || 'Search History',
+      contexts: ['browser_action']
+    })
   })
 }
