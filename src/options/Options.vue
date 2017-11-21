@@ -421,14 +421,14 @@ export default {
         }
 
         storage.sync.set({config: this.config})
-        .then(() => {
-          this.isShowConfigUpdated = true
-          if (this.showConfigUpdatedTimeout) { clearTimeout(this.showConfigUpdatedTimeout) }
-          this.showConfigUpdatedTimeout = setTimeout(() => {
-            this.isShowConfigUpdated = false
-            this.showConfigUpdatedTimeout = null
-          }, 1500)
-        })
+          .then(() => {
+            this.isShowConfigUpdated = true
+            if (this.showConfigUpdatedTimeout) { clearTimeout(this.showConfigUpdatedTimeout) }
+            this.showConfigUpdatedTimeout = setTimeout(() => {
+              this.isShowConfigUpdated = false
+              this.showConfigUpdatedTimeout = null
+            }, 1500)
+          })
       }
     },
     'config.dicts': {
