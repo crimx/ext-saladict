@@ -118,11 +118,11 @@ function appendRecord (folderCatalog, text) {
 
   if (today !== latestFolderId) {
     // new date
-    const p = folderCatalog.wordCount >= 3
+    const p = folderCatalog.wordCount >= 1000
       ? gatherFolders(folderCatalog)
-      : Promise.resolve()
+      : Promise.resolve(folderCatalog)
 
-    return p.then(() => {
+    return p.then(folderCatalog => {
       const todayFolder = {
         date: today,
         data: [text]
@@ -183,18 +183,22 @@ function gatherFolders (folderCatalog) {
       collectionCatalog.unshift(collection.id)
 
       const removelist = folderCatalog.data
-      if (collectionCatalog.length >= 3) {
+      if (collectionCatalog.length >= 10) {
         removelist.push(collectionCatalog.pop())
       }
+
+      // Keep the pointer and change back
+      folderCatalog.data = []
+      folderCatalog.wordCount = 0
 
       return Promise.all([
         storage.local.remove(removelist),
         storage.local.set({
-          folderCatalog: {data: [], wordCount: 0},
+          folderCatalog,
           collectionCatalog,
           [collection.id]: collection
         })
-      ])
+      ]).then(() => folderCatalog)
     })
 }
 
@@ -208,14 +212,14 @@ function mergeCollections ({folderCatalog, collectionCatalog, response}) {
       ? collectionCatalog
         .map(id => response[id].data)
       : [[]]
-  )
+  ).filter(Boolean)
 }
 
 function getToday () {
   const d = new Date()
   const month = d.getMonth() + 1
   const date = d.getDate()
-  const year = d.getFullYear() + 1
+  const year = d.getFullYear()
   return (month < 10 ? '0' : '') + month + (date < 10 ? '0' : '') + date + year
 }
 
