@@ -27,6 +27,18 @@
     "description": "支持一下",
     "message": "Enjoy the Extension? Buy me a coffee~"
   },
+  "confirm": {
+    "description": "confirm",
+    "message": "Confirm"
+  },
+  "cancel": {
+    "description": "cancel",
+    "message": "Cancel"
+  },
+  "copy": {
+    "description": "copy",
+    "message": "Copy"
+  },
   "US": {
     "description": "United State",
     "message": "US"
@@ -306,5 +318,53 @@
   "context_view_as_pdf": {
     "description": "context menu",
     "message": "View as PDF"
+  },
+  "history_title": {
+    "description": "history page",
+    "message": "Search History"
+  },
+  "history_plain_modal_title": {
+    "description": "history page",
+    "message": "Plain Text - You can copy and paste"
+  },
+  "history_no_result": {
+    "description": "history page",
+    "message": "No result. Search a few words and come back."
+  },
+  "history_wordcount": {
+    "description": "history page",
+    "message": "Total %s records，Saladict will track approximately 10,000 most recent results."
+  },
+  "history_clear": {
+    "description": "history page",
+    "message": "Clear Records"
+  },
+  "history_savefile": {
+    "description": "history page",
+    "message": "Save File"
+  },
+  "history_plaintext": {
+    "description": "history page",
+    "message": "View Plain Text"
+  },
+  "history_copy_success": {
+    "description": "history page",
+    "message": "Copy Success!"
+  },
+  "history_copu_failed": {
+    "description": "history page",
+    "message": "Copy faild. You can copy manually."
+  },
+  "history_clear_modal_title": {
+    "description": "history page",
+    "message": "Clear Search History"
+  },
+  "history_clear_modal_content": {
+    "description": "history page",
+    "message": "All records will be deleted，confirm？"
+  },
+  "history_clear_success": {
+    "description": "history page",
+    "message": "Clear Success!"
   }
 }

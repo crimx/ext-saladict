@@ -62,15 +62,24 @@ function getlatestCol ({historyCatalog}) {
 }
 
 /**
- * @returns {Promise<HistoryItem[]>} A promise with the result to send back
+ * @returns {Promise}
  */
 export function clear () {
   return storage.local.get('historyCatalog')
     .then(({historyCatalog}) => {
       if (historyCatalog) {
-        return storage.local.remove(historyCatalog)
+        return storage.local.remove(historyCatalog.concat(['historyCatalog']))
       }
     })
+}
+
+/**
+ * @returns {Promise}
+ */
+export function listen (cb) {
+  if (typeof cb === 'function') {
+    storage.listen('historyCatalog', cb)
+  }
 }
 
 function appendItem ({historyCatalog, latestCol}, text) {

@@ -151,7 +151,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'history.html',
       template: 'src/template.html',
-      chunks: ['history', 'selection', 'content'],
+      chunks: ['history'],
       inject: true,
       minify: {
         removeComments: true,
