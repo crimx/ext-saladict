@@ -101,6 +101,7 @@ const webpackConfig = merge(baseWebpackConfig, {
           uglifyOptions: {
             ie8: false,
             ecma: 6,
+            drop_console: true,
             output: {
               comments: false,
               beautify: false
