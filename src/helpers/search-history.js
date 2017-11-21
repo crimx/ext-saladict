@@ -114,7 +114,7 @@ function appendRecord (folderCatalog, text) {
       .then(() => ({folderCatalog, todayFolder}))
   }
 
-  const latestFolderId = folderCatalog.data[folderCatalog.data.length - 1]
+  const latestFolderId = folderCatalog.data[0]
 
   if (today !== latestFolderId) {
     // new date
