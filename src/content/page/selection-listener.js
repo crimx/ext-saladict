@@ -29,7 +29,7 @@ storage.sync.get('config', data => {
   }
 })
 
-storage.listen('config', changes => {
+storage.sync.listen('config', changes => {
   config = changes.config.newValue
 
   if (config.tripleCtrl) {

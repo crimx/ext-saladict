@@ -60,7 +60,7 @@ export default {
         this.config = result.config
       }
     })
-    storage.listen('config', changes => {
+    storage.sync.listen('config', changes => {
       this.config = changes.config.newValue
     })
     message.on('PANEL_READY', (__, ___, sendResponse) => {

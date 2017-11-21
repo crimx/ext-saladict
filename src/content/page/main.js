@@ -22,7 +22,7 @@ message.on('LOAD-YOUDAO-PAGE', (data, sender, sendResponse) => {
 
 var vm
 
-storage.listen('config', changes => {
+storage.sync.listen('config', changes => {
   if (changes.config.newValue.active && !vm) {
     activate()
   }

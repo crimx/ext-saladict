@@ -1,12 +1,10 @@
 import {storage, message} from 'src/helpers/chrome-api'
 
-console.log('context menus loaded')
-
 // listen context menu
 chrome.contextMenus.onClicked.addListener(contextMenuOnClick)
 
 // when config changes
-storage.listen('config', ({config: {newValue, oldValue}}) => {
+storage.sync.listen('config', ({config: {newValue, oldValue}}) => {
   if (!oldValue) {
     return setContextMenu(newValue)
   }

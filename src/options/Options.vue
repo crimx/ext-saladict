@@ -490,7 +490,7 @@ export default {
         this.config = result.config
       }
 
-      storage.listen('config', changes => {
+      storage.sync.listen('config', changes => {
         let config = changes.config.newValue
         if (config) {
           // only listen to active setting in popup panel
@@ -501,7 +501,7 @@ export default {
 
     storage.local.get('unlock', result => {
       this.unlock = Boolean(result.unlock)
-      storage.listen('unlock', changes => {
+      storage.sync.listen('unlock', changes => {
         this.unlock = changes.unlock.newValue
       })
     })
