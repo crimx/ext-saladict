@@ -1,7 +1,6 @@
 import {storage, message} from 'src/helpers/chrome-api'
 import './oninstall'
 import './context-menus'
-import searchHistory from './search-history'
 import AudioManager from './audio-manager'
 const AUDIO = new AudioManager()
 
@@ -43,9 +42,6 @@ message.listen((data, sender, sendResponse) => {
       return fetchDictResult(data, sender, sendResponse)
     case 'PAGE_ID':
       return sendResponse(getPageId(sender))
-    case 'ADD_HISTORY':
-      searchHistory.add(data.text)
-      return sendResponse()
   }
 })
 

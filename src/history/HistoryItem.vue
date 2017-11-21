@@ -6,7 +6,7 @@
     <div class="col-sm-6">
       <table class="table table-hover table-striped word-table">
         <tbody>
-          <tr v-for="(word, i) in props.item.words" :key="i">
+          <tr v-for="(word, i) in props.item.data" :key="i">
             <td class="text-center">{{ word }}</td>
           </tr>
         </tbody>

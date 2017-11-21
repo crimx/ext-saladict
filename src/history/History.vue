@@ -25,13 +25,13 @@
       </div>
     </div>
     <div class="col-sm-7 history-list-wrap"
-      v-if="historyItems.length > 0"
+      v-if="historyFolders.length > 0"
       @mouseup="handleListMouseup"
     >
       <virtual-scroller
         page-mode
         :itemHeight="null"
-        :items="historyItems"
+        :items="historyFolders"
         :renderers="renderers"
         type-field="type"
         key-field="date"
@@ -95,7 +95,7 @@
 <script>
 import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
-import searchHistory from 'src/background/search-history'
+import searchHistory from 'src/helpers/search-history'
 import HistoryItem from './HistoryItem'
 import { VirtualScroller } from 'vue-virtual-scroller'
 import moment from 'moment'
@@ -113,10 +113,10 @@ export default {
       pageId: -1,
 
       wordCount: 0,
-      historyItems: [],
+      historyFolders: [],
 
       renderers: {
-        item: HistoryItem
+        folder: HistoryItem
       },
 
       text: '',
@@ -154,25 +154,25 @@ export default {
     },
     fetchAllHistory () {
       let wordCount = 0
-      return searchHistory.getAll().then(items => {
-        items.forEach(item => {
-          wordCount += item.words.length
-          item.localeDate = moment(item.date, 'MMDDYYYY').format('dddd LL')
-          item.height = item.words.length * 36
-          item.type = 'item'
+      return searchHistory.getAll().then(folders => {
+        folders.forEach(folder => {
+          wordCount += folder.data.length
+          folder.localeDate = moment(folder.date, 'MMDDYYYY').format('dddd LL')
+          folder.height = folder.data.length * 36
+          folder.type = 'folder'
         })
-        this.historyItems = items
+        this.historyFolders = folders
         this.wordCount = wordCount
       })
     },
     getPlainText () {
       if (this.plainText) { return this.plainText }
-      this.plainText = this.historyItems.map(item => item.words.join('\n')).join('\n')
+      this.plainText = this.historyFolders.map(folder => folder.data.join('\n')).join('\n')
       return this.plainText
     },
     getPlainTextWin () {
       if (this.plainTextWin) { return this.plainTextWin }
-      this.plainTextWin = this.historyItems.map(item => item.words.join('\r\n')).join('\r\n')
+      this.plainTextWin = this.historyFolders.map(folder => folder.data.join('\r\n')).join('\r\n')
       return this.plainTextWin
     },
     saveAsFile () {
@@ -274,7 +274,7 @@ export default {
         this.config = config
       }
 
-      storage.listen('config', ({config}) => {
+      storage.sync.listen('config', ({config}) => {
         if (config.newValue) {
           this.config = config.newValue
         }

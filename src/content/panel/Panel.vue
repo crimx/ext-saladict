@@ -99,6 +99,7 @@ import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 import {isContainEnglish} from 'src/helpers/lang-check'
 import chsToChz from 'src/helpers/chs-to-chz'
+import {addSearchHistory} from 'src/helpers/search-history'
 
 const isSmoothScrollSupported = 'scrollBehavior' in document.documentElement.style
 
@@ -182,7 +183,7 @@ export default {
           })
       })
 
-      message.send({msg: 'ADD_HISTORY', text})
+      addSearchHistory(text)
 
       if (!isOneActiveDict) {
         // scroll to top after all the dicts are folded
@@ -230,7 +231,7 @@ export default {
         }
         return null
       })
-      .filter(d => d)
+        .filter(d => d)
 
       storage.local.set({paneldata: {text: this.text, dicts}}, () => {
         message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('shareimg.html')})
@@ -346,7 +347,7 @@ export default {
   },
   components: (() => {
     // Dynamically & asynchronously loads components
-    const components = {Qrcode: () => Promise.resolve(require('vue-qrious'))}
+    const components = {Qrcode: () => Promise.resolve(require('vue-qriously'))}
     Object.keys(defaultConfig.dicts.all).forEach(id => {
       components[id] = () => Promise.resolve(require('src/dictionaries/' + id + '/view.vue'))
     })
