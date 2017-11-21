@@ -125,6 +125,7 @@ export default {
       config: defaultConfig,
 
       pageId: -1,
+      historyPage: false,
 
       dicts,
 
@@ -183,7 +184,9 @@ export default {
           })
       })
 
-      addSearchHistory(text)
+      if (!this.historyPage) {
+        addSearchHistory(text)
+      }
 
       if (!isOneActiveDict) {
         // scroll to top after all the dicts are folded
@@ -305,10 +308,14 @@ export default {
       }
 
       message.send({msg: 'PANEL_READY_SELF', page: this.pageId}, response => {
-        if (response && response.ctrl) {
+        if (!response) { return }
+        if (response.ctrl) {
           this.$refs.searchbox.focus()
           document.execCommand('paste')
           this.$refs.searchbox.select()
+        }
+        if (response.historyPage) {
+          this.historyPage = true
         }
       })
     })

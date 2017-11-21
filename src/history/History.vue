@@ -26,7 +26,7 @@
     </div>
     <div class="col-sm-7 history-list-wrap"
       v-if="historyFolders.length > 0"
-      @mouseup="handleListMouseup"
+      @click="handleListClick"
     >
       <virtual-scroller
         page-mode
@@ -211,7 +211,7 @@ export default {
         }
       })
     },
-    handleListMouseup () {
+    handleListClick () {
       if (window.getSelection().toString().trim()) {
         // if user click on a selected text,
         // getSelection would return the text before it disappears
@@ -287,6 +287,11 @@ export default {
           this.fetchAllHistory()
         })
       })
+
+    message.on('PANEL_READY', (__, ___, sendResponse) => {
+      // trigger the paste command
+      sendResponse({historyPage: true})
+    })
   },
   components: {
     'virtual-scroller': VirtualScroller
@@ -408,7 +413,7 @@ body {
 }
 
 .right-aside-row {
-  margin: 15px 0;
+  margin-top: 15px;
 }
 
 .dict-panel-wrap {
