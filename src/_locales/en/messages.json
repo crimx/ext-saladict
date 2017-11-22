@@ -323,6 +323,10 @@
     "description": "history page",
     "message": "Search History"
   },
+  "history_only_english": {
+    "description": "history page",
+    "message": "Display Only English Words"
+  },
   "history_plain_modal_title": {
     "description": "history page",
     "message": "Plain Text - You can copy and paste"

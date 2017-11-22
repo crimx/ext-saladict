@@ -2,7 +2,10 @@
 <div class="container-fluid">
   <div class="history-page-nav">
     <h1 class="history-page-header">{{ i18n('history_title') }}</h1>
-    <div>
+    <div class="btn-group">
+      <label class="btn btn-default" :class="{active: isOnlyEng}">{{ i18n('history_only_english') }}
+        <input type="checkbox" v-model="isOnlyEng" class="hide" autocomplete="off">
+      </label>
       <button type="button" class="btn btn-default" @click="isShowPlainTextPanel = true">{{ i18n('history_plaintext') }}</button>
       <button type="button" class="btn btn-default" @click="saveAsFile">{{ i18n('history_savefile') }}</button>
       <button type="button" class="btn btn-danger" @click="clearHistory">{{ i18n('history_clear') }}</button>
@@ -112,8 +115,7 @@ export default {
       config: defaultConfig,
       pageId: -1,
 
-      wordCount: 0,
-      historyFolders: [],
+      rawHistoryFolders: [],
 
       renderers: {
         folder: HistoryItem
@@ -121,6 +123,8 @@ export default {
 
       text: '',
       frameSource: chrome.runtime.getURL('panel.html'),
+
+      isOnlyEng: false,
 
       isShowAlertPanel: false,
       alertPanelTitle: '',
@@ -134,6 +138,40 @@ export default {
     }
   },
   computed: {
+    historyFolders () {
+      if (this.isOnlyEng) {
+        return this.rawHistoryFolders
+          .map(folder => {
+            return {
+              // ...folder
+              date: folder.date,
+              localeDate: folder.localeDate,
+              height: folder.height,
+              type: folder.type,
+              data: folder.data
+                .map(word => {
+                  return word
+                    .replace(/[^- .a-z]/ig, ' ') // replace anything other than " ", "-", "." and letters
+                    .replace(/(^[- .]+)|([- ]+$)/, '') // no leading " ", "-", "." and tailing " ", "-"
+                    .replace(/ +/g, ' ') // shrink multiple spaces into one
+                    .replace(/^[- .]+$/, '') // if only " ", "-" or "." left, clear them
+                })
+                .filter(Boolean)
+            }
+          })
+          .filter(folder => folder.data.length > 0)
+      } else {
+        return this.rawHistoryFolders
+      }
+    },
+    wordCount () {
+      let count = 0
+      const folders = this.historyFolders
+      for (let i = 0; i < folders.length; i += 1) {
+        count += folders[i].data.length
+      }
+      return count
+    },
     panelHeight () {
       const allDicts = this.config.dicts.all
       // header + each dictionary
@@ -153,16 +191,14 @@ export default {
       return chrome.i18n.getMessage(key)
     },
     fetchAllHistory () {
-      let wordCount = 0
       return searchHistory.getAll().then(folders => {
-        folders.forEach(folder => {
-          wordCount += folder.data.length
+        for (let i = 0; i < folders.length; i += 1) {
+          const folder = folders[i]
           folder.localeDate = moment(folder.date, 'MMDDYYYY').format('dddd LL')
           folder.height = folder.data.length * 36
           folder.type = 'folder'
-        })
-        this.historyFolders = folders
-        this.wordCount = wordCount
+        }
+        this.rawHistoryFolders = folders
       })
     },
     getPlainText () {
@@ -334,9 +370,30 @@ $history-nav-height: 50px;
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/panels";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/close";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/alerts";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/button-groups";
 
 // Components w/ JavaScript
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/modals";
+
+// fancy checkbox
+.form-group input[type="checkbox"] {
+    display: none;
+}
+.form-group input[type="checkbox"] + .btn-group > label span {
+    width: 20px;
+}
+.form-group input[type="checkbox"] + .btn-group > label span:first-child {
+    display: none;
+}
+.form-group input[type="checkbox"] + .btn-group > label span:last-child {
+    display: inline-block;
+}
+.form-group input[type="checkbox"]:checked + .btn-group > label span:first-child {
+    display: inline-block;
+}
+.form-group input[type="checkbox"]:checked + .btn-group > label span:last-child {
+    display: none;
+}
 
 /*------------------------------------*\
    Base
@@ -376,6 +433,7 @@ body {
 
 .history-page-header {
   font-size: 1.4em;
+  margin: 10px 0;
 }
 
 .history-list-wrap {

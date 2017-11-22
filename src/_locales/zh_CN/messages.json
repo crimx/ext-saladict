@@ -323,6 +323,10 @@
     "description": "history page",
     "message": "查词历史记录"
   },
+  "history_only_english": {
+    "description": "history page",
+    "message": "只显示英文记录"
+  },
   "history_plain_modal_title": {
     "description": "history page",
     "message": "纯文本 - 可复制粘贴"
