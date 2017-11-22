@@ -59,7 +59,7 @@ import OptContextMenu from './OptContextMenu'
 
 export default {
   name: 'options',
-  store: ['config', 'pageId', 'unlock', 'newVersionAvailable', 'i18n'],
+  store: ['config', 'pageId', 'newVersionAvailable', 'i18n'],
   data () {
     return {
       text: 'salad',

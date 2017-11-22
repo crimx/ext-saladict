@@ -110,7 +110,8 @@ export default {
   store: {
     dicts: 'config.dicts',
     allDicts: 'config.dicts.all',
-    i18n: 'i18n'
+    i18n: 'i18n',
+    unlock: 'unlock'
   },
   data () {
     const dictsPanelInfo = {}
