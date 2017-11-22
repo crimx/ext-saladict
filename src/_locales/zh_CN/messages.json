@@ -9,7 +9,7 @@
   },
   "extension_description": {
     "description": "Description of extension",
-    "message": "全能网页划词翻译，功能丰富、众多词典、清爽快速、个性化设置"
+    "message": "全能网页划词翻译，开放源码、功能丰富、超多词典、清爽快速、支持个性化设置"
   },
   "wechat": {
     "description": "微信",
@@ -346,6 +346,10 @@
   "context_view_as_pdf": {
     "description": "context menu",
     "message": "打开为 PDF"
+  },
+  "context_manual_title": {
+    "description": "context menu",
+    "message": "详细使用说明"
   },
   "history_title": {
     "description": "history page",

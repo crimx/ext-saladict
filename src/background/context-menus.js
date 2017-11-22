@@ -56,6 +56,9 @@ function contextMenuOnClick ({menuItemId, selectionText, linkUrl}) {
     case 'search_history':
       chrome.tabs.create({url: chrome.runtime.getURL('history.html')})
       break
+    case 'app_manual':
+      chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki'})
+      break
     default:
       storage.sync.get('config', ({config}) => {
         const url = config.contextMenu.all[menuItemId]
@@ -113,10 +116,23 @@ export function setContextMenu (config) {
       })
     }
 
+    chrome.contextMenus.create({
+      type: 'separator',
+      id: Date.now().toString(),
+      contexts: ['browser_action']
+    })
+
     // search history
     chrome.contextMenus.create({
       id: 'search_history',
       title: chrome.i18n.getMessage('history_title') || 'Search History',
+      contexts: ['browser_action']
+    })
+
+    // Manual
+    chrome.contextMenus.create({
+      id: 'app_manual',
+      title: chrome.i18n.getMessage('context_manual_title') || 'Manual',
       contexts: ['browser_action']
     })
   })

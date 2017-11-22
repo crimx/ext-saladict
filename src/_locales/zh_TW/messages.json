@@ -9,7 +9,7 @@
   },
   "extension_description": {
     "description": "Description of extension",
-    "message": "全能網頁劃詞翻譯，功能豐富、眾多詞典、清爽快速、個性化設置"
+    "message": "全能網頁劃詞翻譯，開放源碼、功能豐富、超多詞典、清爽快速、支持個性化設置"
   },
   "wechat": {
     "description": "微信",
@@ -346,6 +346,10 @@
   "context_view_as_pdf": {
     "description": "context menu",
     "message": "打開為 PDF"
+  },
+  "context_manual_title": {
+    "description": "context menu",
+    "message": "詳細使用說明"
   },
   "history_title": {
     "description": "history page",
