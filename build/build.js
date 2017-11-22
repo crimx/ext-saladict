@@ -37,7 +37,9 @@ glob(path.join(__dirname, '../src/dictionaries/**/favicon.png'), (err, files) =>
 require('./dicts/_locales.js')
 
 const manifest = require(path.join(__dirname, '../src/manifest.json'))
-manifest.version = packageConfig.version
+if (process.env.BUILD_ENV !== 'devproduction') {
+  manifest.version = packageConfig.version
+}
 fs.writeFile(
   path.join(distPath, 'manifest.json'),
   JSON.stringify(manifest, null, '\t'),
