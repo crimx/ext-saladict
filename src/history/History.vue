@@ -40,7 +40,7 @@
         key-field="date"
       />
     </div>
-    <div v-else class="col-sm-7 history-list-wrap no-history">
+    <div v-if="isReady && historyFolders.length <= 0" class="col-sm-7 history-list-wrap no-history">
       <h1 class="no-history-title">{{ i18n('history_no_result') }}</h1>
     </div>
   </div>
@@ -78,8 +78,7 @@
 </template>
 
 <script>
-import AppConfig from 'src/app-config'
-import {storage, message} from 'src/helpers/chrome-api'
+import {message} from 'src/helpers/chrome-api'
 import searchHistory from 'src/helpers/search-history'
 import HistoryItem from './HistoryItem'
 import AlertModal from 'src/components/AlertModal'
@@ -93,11 +92,9 @@ if (!/^(en|zh-cn|zh-tw|zh-hk)$/.test(lang)) {
 moment.locale(lang)
 
 export default {
+  props: ['pageId', 'config', 'i18n'],
   data () {
     return {
-      config: new AppConfig(),
-      pageId: -1,
-
       rawHistoryFolders: [],
 
       renderers: {
@@ -108,6 +105,8 @@ export default {
       frameSource: chrome.runtime.getURL('panel.html'),
 
       isOnlyEng: false,
+
+      isReady: false, // prevent blink
 
       isShowPlainTextPanel: false,
       isPopUp: false,
@@ -164,9 +163,6 @@ export default {
     }
   },
   methods: {
-    i18n (key) {
-      return chrome.i18n.getMessage(key)
-    },
     fetchAllHistory () {
       return searchHistory.getAll().then(folders => {
         for (let i = 0; i < folders.length; i += 1) {
@@ -255,40 +251,14 @@ export default {
       }
     }
   },
-  beforeCreate () {
-    document.title = chrome.i18n.getMessage('history_title')
-  },
   created () {
-    message.send({msg: 'PAGE_ID'}, pageId => {
-      if (pageId) {
-        this.pageId = pageId
-      }
-    })
-
-    storage.sync.get('config', ({config}) => {
-      if (config) {
-        this.config = config
-      }
-
-      storage.sync.listen('config', ({config}) => {
-        if (config.newValue) {
-          this.config = config.newValue
-        }
-      })
-    })
-
     this.fetchAllHistory()
       .then(() => {
+        this.isReady = true
         searchHistory.listen(() => {
           this.fetchAllHistory()
         })
       })
-
-    message.on('PANEL_READY', (data, sender, sendResponse) => {
-      if (this.pageId !== -1 && this.pageId !== data.page) { return }
-      // trigger the paste command
-      sendResponse({historyPage: true})
-    })
   },
   components: {
     VirtualScroller,
