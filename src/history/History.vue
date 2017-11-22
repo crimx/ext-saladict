@@ -284,7 +284,8 @@ export default {
         })
       })
 
-    message.on('PANEL_READY', (__, ___, sendResponse) => {
+    message.on('PANEL_READY', (data, sender, sendResponse) => {
+      if (this.pageId !== -1 && this.pageId !== data.page) { return }
       // trigger the paste command
       sendResponse({historyPage: true})
     })

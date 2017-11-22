@@ -148,16 +148,19 @@ function appendRecord (folderCatalog, text) {
         }
       }
 
-      // ignore same words
-      if (text !== todayFolder.data[0]) {
-        todayFolder.data.unshift(text)
+      const index = todayFolder.data.indexOf(text)
+      if (index === -1) {
         folderCatalog.wordCount += 1
-
-        return storage.local.set({
-          folderCatalog,
-          [today]: todayFolder
-        })
+      } else {
+        // delete older same word
+        todayFolder.data.splice(index, 1)
       }
+      todayFolder.data.unshift(text)
+
+      return storage.local.set({
+        folderCatalog,
+        [today]: todayFolder
+      })
     })
 }
 

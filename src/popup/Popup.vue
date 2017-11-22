@@ -30,15 +30,14 @@
 </template>
 
 <script>
-import AppConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 
 export default {
   name: 'Popup',
+  store: ['config', 'pageId', 'i18n'],
   data () {
     return {
       frameSource: chrome.runtime.getURL('panel.html'),
-      config: new AppConfig(),
       currentTabUrl: ''
     }
   },
@@ -51,9 +50,6 @@ export default {
     }
   },
   methods: {
-    i18n (key) {
-      return chrome.i18n.getMessage(key) || key
-    },
     showQRcode () {
       chrome.tabs.query({active: true, currentWindow: true}, tabs => {
         if (tabs.length > 0) {
@@ -78,15 +74,8 @@ export default {
     }
   },
   created () {
-    storage.sync.get('config').then(result => {
-      if (result.config) {
-        this.config = result.config
-      }
-    })
-    storage.sync.listen('config', changes => {
-      this.config = changes.config.newValue
-    })
-    message.on('PANEL_READY', (__, ___, sendResponse) => {
+    message.on('PANEL_READY', (data, sender, sendResponse) => {
+      if (this.pageId !== -1 && this.pageId !== data.page) { return }
       // trigger the paste command
       sendResponse({ctrl: true})
     })
