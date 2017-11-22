@@ -1,9 +1,11 @@
 import Vue from 'vue'
 import App from './Popup'
+import VueQriously from 'vue-qriously'
 import VueStash from 'vue-stash'
 import {storage, message} from 'src/helpers/chrome-api'
 import AppConfig from 'src/app-config'
 
+Vue.use(VueQriously)
 Vue.use(VueStash)
 Vue.config.productionTip = false
 
