@@ -69,7 +69,7 @@ export default {
     },
     eggClicked () {
       if (++this.eggCount === 2) {
-        chrome.storage.local.set({unlock: true})
+        chrome.storage.sync.set({unlock: true})
       } else {
         setTimeout(() => {
           this.eggCount = 0

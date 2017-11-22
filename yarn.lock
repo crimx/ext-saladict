@@ -6116,6 +6116,10 @@ vue-resize@^0.4.2:
   version "0.4.3"
   resolved "http://registry.npm.taobao.org/vue-resize/download/vue-resize-0.4.3.tgz#5bdfd1cd60eb2bf1ebc08dff1517754af69e4886"
 
+vue-stash@^2.0.1-beta:
+  version "2.0.1-beta"
+  resolved "http://registry.npm.taobao.org/vue-stash/download/vue-stash-2.0.1-beta.tgz#3b46ccab3670e1eddfda8aa711247e6f887691de"
+
 vue-style-loader@^3.0.0, vue-style-loader@^3.0.3:
   version "3.0.3"
   resolved "http://registry.npm.taobao.org/vue-style-loader/download/vue-style-loader-3.0.3.tgz#623658f81506aef9d121cdc113a4f5c9cac32df7"
