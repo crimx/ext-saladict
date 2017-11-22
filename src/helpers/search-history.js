@@ -23,7 +23,7 @@ import {storage} from 'src/helpers/chrome-api'
 * Latest -> Oldest
 * @typedef {Object} Collection
 * @property {string} id - unique string
-* @property {string[]} wordCount - the amount of Records in the collection
+* @property {number} wordCount - the amount of Records in the collection
 * @property {Folder[]} data - Folder list
 */
 
@@ -32,7 +32,8 @@ import {storage} from 'src/helpers/chrome-api'
  * Latest -> Oldest
 * @typedef {Object} FolderCatalog
 * @property {string[]} data - Folder dates
-* @property {string[]} wordCount - the amount of all ungathered Records
+* @property {number} wordCount - the amount of all ungathered Records
+* @property {string} timestamp - let storage listener be notified
 */
 
 /**
@@ -104,7 +105,8 @@ function appendRecord (folderCatalog, text) {
 
     folderCatalog = {
       data: [today],
-      wordCount: 1
+      wordCount: 1,
+      timestamp: Date.now()
     }
 
     return storage.local.set({
@@ -129,6 +131,8 @@ function appendRecord (folderCatalog, text) {
       }
       folderCatalog.wordCount += 1
       folderCatalog.data.unshift(today)
+      folderCatalog.timestamp = Date.now()
+
       return storage.local.set({
         folderCatalog,
         [today]: todayFolder
@@ -157,6 +161,7 @@ function appendRecord (folderCatalog, text) {
       }
       todayFolder.data.unshift(text)
 
+      folderCatalog.timestamp = Date.now()
       return storage.local.set({
         folderCatalog,
         [today]: todayFolder
