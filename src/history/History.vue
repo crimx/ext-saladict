@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import defaultConfig from 'src/app-config'
+import AppConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 import searchHistory from 'src/helpers/search-history'
 import HistoryItem from './HistoryItem'
@@ -112,7 +112,7 @@ moment.locale(lang)
 export default {
   data () {
     return {
-      config: defaultConfig,
+      config: new AppConfig(),
       pageId: -1,
 
       rawHistoryFolders: [],

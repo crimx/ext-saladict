@@ -32,14 +32,14 @@
 </template>
 
 <script>
-import defaultConfig from 'src/app-config'
+import AppConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 
 export default {
   name: 'saladict-container',
   data () {
     return {
-      config: defaultConfig,
+      config: new AppConfig(),
 
       frameSource: chrome.runtime.getURL('panel.html'),
 

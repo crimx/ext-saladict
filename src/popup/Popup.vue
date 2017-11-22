@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import defaultConfig from 'src/app-config'
+import AppConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 
 export default {
@@ -38,7 +38,7 @@ export default {
   data () {
     return {
       frameSource: chrome.runtime.getURL('panel.html'),
-      config: defaultConfig,
+      config: new AppConfig(),
       currentTabUrl: ''
     }
   },

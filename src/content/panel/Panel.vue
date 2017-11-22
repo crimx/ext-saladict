@@ -84,7 +84,7 @@
 </template>
 
 <script>
-import defaultConfig from 'src/app-config'
+import AppConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 import {isContainEnglish} from 'src/helpers/lang-check'
 import chsToChz from 'src/helpers/chs-to-chz'
@@ -96,8 +96,9 @@ export default {
   name: 'dictionary-panel',
   data () {
     const dicts = {}
+    const config = new AppConfig()
 
-    Object.keys(defaultConfig.dicts.all).forEach(id => {
+    Object.keys(config.dicts.all).forEach(id => {
       dicts[id] = {
         result: null,
         height: 0,
@@ -111,7 +112,7 @@ export default {
     })
 
     return {
-      config: defaultConfig,
+      config,
 
       pageId: -1,
       historyPage: false,
@@ -340,7 +341,7 @@ export default {
   components: (() => {
     // Dynamically & asynchronously loads components
     const components = {}
-    Object.keys(defaultConfig.dicts.all).forEach(id => {
+    Object.keys(new AppConfig().dicts.all).forEach(id => {
       components[id] = () => Promise.resolve(require('src/dictionaries/' + id + '/view.vue'))
     })
     return components

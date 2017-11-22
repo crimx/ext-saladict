@@ -1,11 +1,11 @@
-import defaultConfig from 'src/app-config'
+import AppConfig from 'src/app-config'
 
 /**
  * @param {object} config - old config befroe extension update
  * @return {object} old config merged into default config
  */
 export default function mergeConfig (config) {
-  var base = JSON.parse(JSON.stringify(defaultConfig))
+  var base = new AppConfig()
   if (config.active !== undefined) { base.active = Boolean(config.active) }
   if (/^(icon|direct|double|ctrl)$/i.test(config.mode)) { base.mode = config.mode.toLowerCase() }
   if (typeof config.doubleClickDelay === 'number' && !isNaN(config.doubleClickDelay)) {

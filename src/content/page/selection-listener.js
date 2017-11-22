@@ -5,9 +5,9 @@
 
 import {message, storage} from 'src/helpers/chrome-api'
 import {isContainChinese, isContainEnglish} from 'src/helpers/lang-check'
-import defaultConfig from 'src/app-config'
+import AppConfig from 'src/app-config'
 
-let config = defaultConfig
+let config = new AppConfig()
 let numTripleCtrl = 0
 let tripleCtrlTimeout = null
 let isCtrlKeydown = false

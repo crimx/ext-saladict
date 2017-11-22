@@ -1,5 +1,5 @@
 import {storage} from 'src/helpers/chrome-api'
-import defaultConfig from 'src/app-config'
+import AppConfig from 'src/app-config'
 import mergeConfig from './merge-config'
 import {setContextMenu} from './context-menus'
 
@@ -13,7 +13,7 @@ chrome.runtime.onInstalled.addListener(({reason}) => {
     } else {
       storage.local.clear()
       storage.sync.clear()
-      config = JSON.parse(JSON.stringify(defaultConfig))
+      config = new AppConfig()
       isNew = true
     }
 
