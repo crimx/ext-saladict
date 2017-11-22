@@ -33,6 +33,9 @@
     </div>
   </transition><!--查词面板-->
 
+  <!--Alert Modal-->
+  <alert-modal ref="alert" />
+
   <!--赏杯咖啡呗-->
   <coffee />
 </div>
@@ -42,6 +45,7 @@
 import {storage, message} from 'src/helpers/chrome-api'
 import AppConfig from 'src/app-config'
 import Coffee from './Coffee'
+import AlertModal from 'src/components/AlertModal'
 
 import OptAppActive from './OptAppActive'
 import OptSearchHistory from './OptSearchHistory'
@@ -71,18 +75,24 @@ export default {
       }, 2000)
     },
     handleReset () {
-      storage.sync.set({config: new AppConfig()})
-        .then(() => storage.sync.get('config'))
-        .then(({config}) => {
-          if (config) {
-            this.config = config
-          } else {
-            // something wrong with the sync storage, use default config without syncing
-            const defaultConfig = new AppConfig()
-            storage.sync.set({config: defaultConfig})
-            this.config = defaultConfig
-          }
-        })
+      this.$refs.alert.$emit('show', {
+        title: chrome.i18n.getMessage('opt_reset_modal_title'),
+        content: chrome.i18n.getMessage('opt_reset_modal_content'),
+        onConfirm: () => {
+          storage.sync.set({config: new AppConfig()})
+            .then(() => storage.sync.get('config'))
+            .then(({config}) => {
+              if (config) {
+                this.config = config
+              } else {
+                // something wrong with the sync storage, use default config without syncing
+                const defaultConfig = new AppConfig()
+                storage.sync.set({config: defaultConfig})
+                this.config = defaultConfig
+              }
+            })
+        }
+      })
     }
   },
   watch: {
@@ -133,7 +143,8 @@ export default {
     OptAutopron,
     OptDicts,
     OptContextMenu,
-    Coffee
+    Coffee,
+    AlertModal
   },
   created () {
     message.on('PANEL_READY', (__, ___, sendResponse) => {

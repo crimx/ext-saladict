@@ -67,25 +67,7 @@
   </transition> <!--modal-->
 
   <!--Alert Modal-->
-  <transition name="fade">
-    <div class="modal show text-left" v-if="isShowAlertPanel">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" @click="cancelAlertPanel">&times;</button>
-            <h4 class="modal-title">{{ alertPanelTitle }}</h4>
-          </div>
-          <div class="modal-body">
-            <p>{{ alertPanelContent }}</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" @click="cancelAlertPanel">{{ i18n('cancel') }}</button>
-            <button type="button" class="btn btn-danger" @click="confirmAlertPanel">{{ i18n('confirm') }}</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </transition> <!--modal-->
+  <alert-modal ref="alert" />
 
   <transition name="popup">
     <div class="popup-msg" :class="[popupType]" v-if="isPopUp">
@@ -100,6 +82,7 @@ import AppConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 import searchHistory from 'src/helpers/search-history'
 import HistoryItem from './HistoryItem'
+import AlertModal from 'src/components/AlertModal'
 import { VirtualScroller } from 'vue-virtual-scroller'
 import moment from 'moment'
 
@@ -125,12 +108,6 @@ export default {
       frameSource: chrome.runtime.getURL('panel.html'),
 
       isOnlyEng: false,
-
-      isShowAlertPanel: false,
-      alertPanelTitle: '',
-      alertPanelContent: '',
-      alertPanelOnConfirm: () => {},
-      alertPanelOnCancel: () => {},
 
       isShowPlainTextPanel: false,
       isPopUp: false,
@@ -237,7 +214,7 @@ export default {
       })
     },
     clearHistory () {
-      this.showAlertPanel({
+      this.$refs.alert.$emit('show', {
         title: chrome.i18n.getMessage('history_clear_modal_title'),
         content: chrome.i18n.getMessage('history_clear_modal_content'),
         onConfirm: () => {
@@ -259,23 +236,6 @@ export default {
           }
         }, 0)
       }
-    },
-    showAlertPanel ({title, content, onConfirm, onCancel}) {
-      if (title) { this.alertPanelTitle = title }
-      if (content) { this.alertPanelContent = content }
-      if (typeof onConfirm === 'function') { this.alertPanelOnConfirm = onConfirm }
-      if (typeof onCancel === 'function') { this.alertPanelOnCancel = onCancel }
-      this.isShowAlertPanel = true
-    },
-    confirmAlertPanel () {
-      this.alertPanelOnConfirm()
-      this.alertPanelOnConfirm = () => {}
-      this.isShowAlertPanel = false
-    },
-    cancelAlertPanel () {
-      this.alertPanelOnCancel()
-      this.alertPanelOnCancel = () => {}
-      this.isShowAlertPanel = false
     },
     popup (msg, type) {
       if (msg) {
@@ -330,7 +290,8 @@ export default {
     })
   },
   components: {
-    'virtual-scroller': VirtualScroller
+    VirtualScroller,
+    AlertModal
   },
   directives: {
     focus: {

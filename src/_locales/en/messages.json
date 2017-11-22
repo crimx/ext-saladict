@@ -87,6 +87,14 @@
     "description": "reset button",
     "message": "Reset"
   },
+  "opt_reset_modal_title": {
+    "description": "reset alert",
+    "message": "Reset Config"
+  },
+  "opt_reset_modal_content": {
+    "description": "reset alert",
+    "message": "Reset to default config, confirm？"
+  },
   "opt_title": {
     "description": "设置页面标题",
     "message": "Saladict Options"
