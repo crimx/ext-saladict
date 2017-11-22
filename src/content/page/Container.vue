@@ -143,6 +143,24 @@ export default {
       this.pageMouseX = clientX
       this.pageMouseY = clientY
     },
+    handlePinModeSelection (data) {
+      // check double click
+      if (this.config.pinMode === 'double') {
+        if (!this.firstClickOfDoubleClick) {
+          this.firstClickOfDoubleClick = true
+          setTimeout(this.clearDoubleClick, this.config.doubleClickDelay)
+          return
+        } else {
+          this.firstClickOfDoubleClick = false
+        }
+      }
+
+      if (this.config.pinMode === 'ctrl' && !data.ctrlKey) {
+        return
+      }
+
+      message.send({msg: 'SEARCH_TEXT_SELF', text: this.selectedText, page: this.pageId})
+    },
     clearDoubleClick () {
       this.firstClickOfDoubleClick = false
     }
@@ -204,10 +222,11 @@ export default {
       this.selectedText = data.text || ''
 
       if (this.isStayVisiable) {
-        if (data.text) {
-          message.send({msg: 'SEARCH_TEXT_SELF', text: data.text, page: this.pageId})
+        // pinned
+        if (this.selectedText) {
+          this.handlePinModeSelection(data)
         }
-        return
+        return sendResponse()
       }
 
       if (this.isShowIcon || this.isShowFrame) {
@@ -221,7 +240,7 @@ export default {
         if (!this.firstClickOfDoubleClick) {
           this.firstClickOfDoubleClick = true
           setTimeout(this.clearDoubleClick, this.config.doubleClickDelay)
-          return
+          return sendResponse()
         } else {
           this.firstClickOfDoubleClick = false
         }

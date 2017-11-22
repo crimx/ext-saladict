@@ -151,6 +151,14 @@
     "description": "option description",
     "message": "When a text selection is made and <strong>'Show Icon'</strong> mode is enabled, a cute little icon would popup nearby the cursor; while in <strong>'Directly Search'</strong> mode the dictionary panel shows up insted; <strong>'Double Click'</strong> mode shows dictionary panel after double click selection; <strong>'Hold Ctrl/⌘'</strong> mode means the <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key must be pressed when the selection is made."
   },
+  "opt_pinmode_title": {
+    "description": "option title",
+    "message": "Pinned Search Mode"
+  },
+  "opt_pinmode_description": {
+    "description": "option description",
+    "message": "When Dictionary Panel is pinned."
+  },
   "opt_triple_ctrl_title": {
     "description": "option title",
     "message": "Quick Search"

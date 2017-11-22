@@ -13,6 +13,7 @@
     <opt-app-active />
     <opt-search-history />
     <opt-mode />
+    <opt-pin-mode />
     <opt-triple-ctrl />
     <opt-language />
     <opt-autopron />
@@ -45,6 +46,7 @@ import Coffee from './Coffee'
 import OptAppActive from './OptAppActive'
 import OptSearchHistory from './OptSearchHistory'
 import OptMode from './OptMode'
+import OptPinMode from './OptPinMode'
 import OptTripleCtrl from './OptTripleCtrl'
 import OptLanguage from './OptLanguage'
 import OptAutopron from './OptAutopron'
@@ -125,6 +127,7 @@ export default {
     OptAppActive,
     OptSearchHistory,
     OptMode,
+    OptPinMode,
     OptTripleCtrl,
     OptLanguage,
     OptAutopron,
@@ -351,6 +354,12 @@ kbd {
 .panel-list__body {
   transition: height 600ms;
   overflow: hidden;
+}
+
+.double-click-delay {
+  overflow: hidden;
+  height: 0;
+  transition: height 400ms;
 }
 
 /*------------------------------------*\

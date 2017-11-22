@@ -7,7 +7,9 @@ import AppConfig from 'src/app-config'
 export default function mergeConfig (config) {
   var base = new AppConfig()
   if (config.active !== undefined) { base.active = Boolean(config.active) }
+  if (config.searhHistory !== undefined) { base.searhHistory = Boolean(config.searhHistory) }
   if (/^(icon|direct|double|ctrl)$/i.test(config.mode)) { base.mode = config.mode.toLowerCase() }
+  if (/^(direct|double|ctrl)$/i.test(config.pinMode)) { base.pinMode = config.pinMode.toLowerCase() }
   if (typeof config.doubleClickDelay === 'number' && !isNaN(config.doubleClickDelay)) {
     base.doubleClickDelay = config.doubleClickDelay
   }

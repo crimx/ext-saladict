@@ -151,6 +151,14 @@
     "description": "option description",
     "message": "当用鼠标在网页上选择了一段文本，<strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；<strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；<strong>“双击搜索”</strong>双击选择文本之后直接显示词典面板；<strong>“按住 Ctrl”</strong>在选择文本时需同时按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键才显示词典面板。"
   },
+  "opt_pinmode_title": {
+    "description": "option title",
+    "message": "钉住查词"
+  },
+  "opt_pinmode_description": {
+    "description": "option description",
+    "message": "当面板被钉住时的查词模式。"
+  },
   "opt_triple_ctrl_title": {
     "description": "option title",
     "message": "快捷查词"
