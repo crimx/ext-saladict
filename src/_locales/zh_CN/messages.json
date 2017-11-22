@@ -107,6 +107,18 @@
     "description": "option description",
     "message": "关闭后划词翻译功能将关闭，快捷查词功能依然可用。"
   },
+  "opt_search_history_title": {
+    "description": "option title",
+    "message": "查词历史"
+  },
+  "opt_search_history": {
+    "description": "option",
+    "message": "记录查词历史"
+  },
+  "opt_search_history_description": {
+    "description": "option description",
+    "message": "关闭后不再记录查词历史，先前的记录依然保留，可在查词历史页面手动清空。"
+  },
   "opt_mode_title": {
     "description": "option title",
     "message": "查词模式"

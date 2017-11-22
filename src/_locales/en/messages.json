@@ -107,6 +107,18 @@
     "description": "option description",
     "message": "Inline translation would be shut down when it is turned off. Quick Search is still available."
   },
+  "opt_search_history_title": {
+    "description": "option title",
+    "message": "Search History"
+  },
+  "opt_search_history": {
+    "description": "option",
+    "message": "Track search history"
+  },
+  "opt_search_history_description": {
+    "description": "option description",
+    "message": "You can clear previous records on Search History Page."
+  },
   "opt_mode_title": {
     "description": "option title",
     "message": "Search Mode"

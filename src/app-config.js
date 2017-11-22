@@ -2,6 +2,9 @@ export default function AppConfig () {
   return {
     active: true,
 
+    // track search history
+    searhHistory: true,
+
     // icon: show pop icon first
     // direct: show panel directly
     // double: double click

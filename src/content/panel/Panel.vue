@@ -174,7 +174,7 @@ export default {
           })
       })
 
-      if (!this.historyPage) {
+      if (!this.historyPage && this.config.searhHistory) {
         addSearchHistory(text)
       }
 

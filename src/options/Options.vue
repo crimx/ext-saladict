@@ -11,6 +11,7 @@
       <button type="button" class="btn btn-default btn-reset" @click="handleReset">{{ i18n('opt_reset') }}</button>
     </h1>
     <opt-app-active />
+    <opt-search-history />
     <opt-mode />
     <opt-triple-ctrl />
     <opt-language />
@@ -42,6 +43,7 @@ import AppConfig from 'src/app-config'
 import Coffee from './Coffee'
 
 import OptAppActive from './OptAppActive'
+import OptSearchHistory from './OptSearchHistory'
 import OptMode from './OptMode'
 import OptTripleCtrl from './OptTripleCtrl'
 import OptLanguage from './OptLanguage'
@@ -121,6 +123,7 @@ export default {
   },
   components: {
     OptAppActive,
+    OptSearchHistory,
     OptMode,
     OptTripleCtrl,
     OptLanguage,
