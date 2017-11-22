@@ -149,8 +149,8 @@ export default {
   created () {
     message.on('PANEL_READY', (data, sender, sendResponse) => {
       if (this.pageId !== -1 && this.pageId !== data.page) { return }
-      this.searchText()
-      sendResponse()
+      sendResponse({noSearchHistory: true})
+      setTimeout(() => this.searchText(), 0)
     })
   },
   mounted () {

@@ -39,6 +39,6 @@ Promise.all([message.send({msg: 'PAGE_ID'}), storage.sync.get('config')])
     message.on('PANEL_READY', (data, sender, sendResponse) => {
       if (pageId !== -1 && pageId !== data.page) { return }
       // trigger the paste command
-      sendResponse({historyPage: true})
+      sendResponse({noSearchHistory: true})
     })
   })

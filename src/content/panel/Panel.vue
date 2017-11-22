@@ -115,7 +115,7 @@ export default {
       config,
 
       pageId: -1,
-      historyPage: false,
+      noSearchHistory: false,
 
       dicts,
 
@@ -174,7 +174,7 @@ export default {
           })
       })
 
-      if (!this.historyPage && this.config.searhHistory) {
+      if (!this.noSearchHistory && this.config.searhHistory) {
         addSearchHistory(text)
       }
 
@@ -300,8 +300,8 @@ export default {
           document.execCommand('paste')
           this.$refs.searchbox.select()
         }
-        if (response.historyPage) {
-          this.historyPage = true
+        if (response.noSearchHistory) {
+          this.noSearchHistory = true
         }
       })
     })
