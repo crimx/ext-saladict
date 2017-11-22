@@ -148,13 +148,16 @@ function appendRecord (folderCatalog, text) {
         }
       }
 
-      todayFolder.data.unshift(text)
-      folderCatalog.wordCount += 1
+      // ignore same words
+      if (text !== todayFolder.data[0]) {
+        todayFolder.data.unshift(text)
+        folderCatalog.wordCount += 1
 
-      return storage.local.set({
-        folderCatalog,
-        [today]: todayFolder
-      })
+        return storage.local.set({
+          folderCatalog,
+          [today]: todayFolder
+        })
+      }
     })
 }
 
