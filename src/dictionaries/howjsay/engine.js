@@ -59,13 +59,14 @@ function handleDom (doc, text, options) {
   }
 
   if (options.related) {
-    let relatedWordChecker = /pronunciation-of/
-    result.relatedWords = Array.from(doc.querySelectorAll('.subtitle'))
-      .filter(el => relatedWordChecker.test(el.innerHTML))
-      .map(el => ({
-        title: el.innerText,
-        mp3: MP3URI + el.innerText + '.mp3'
-      }))
+    result.relatedWords = Array.from(doc.querySelectorAll('.linksres'))
+      .map(el => {
+        const title = el.innerText.trim()
+        return {
+          title,
+          mp3: MP3URI + title + '.mp3'
+        }
+      })
   }
 
   if (result.currentWord.mp3) {
