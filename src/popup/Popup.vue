@@ -7,23 +7,38 @@
     :style="{height: panelHeight + 'px'}"
   ></iframe>
   <div class="active-switch">
+    <svg class="icon-qrcode" @mouseenter="showQRcode" @mouseleave="currentTabUrl = ''"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
+      <path d="M0 225v25h250v-25H0zM0 25h250V0H0v25z"/>
+      <path d="M0 250h25V0H0v250zm225 0h25V0h-25v250zM87.5 162.5h75v-75h-75v75zM362 587v25h80v-25h-80zm0-200h80v-25h-80v25z"/>
+      <path d="M362 612h25V362h-25v250zm190-250v25h60v-25h-60zm-77.5 87.5v25h50v-25h-50z"/>
+      <path d="M432 497.958v-25h-70v25h70zM474.5 387h50v-25h-50v25zM362 225v25h250v-25H362zm0-200h250V0H362v25z"/>
+      <path d="M362 250h25V0h-25v250zm225 0h25V0h-25v250zm-137.5-87.5h75v-75h-75v75zM0 587v25h250v-25H0zm0-200h250v-25H0v25z"/>
+      <path d="M0 612h25V362H0v250zm225 0h25V362h-25v250zM87.5 524.5h75v-75h-75v75zM587 612h25V441h-25v171zM474.5 499.5v25h50v-25h-50z"/>
+      <path d="M474.5 449.5v75h25v-75h-25zM562 587v25h50v-25h-50z"/>
+    </svg>
     <span class="switch-title">{{ i18n('opt_app_active_title') }}</span>
     <input type="checkbox" id="opt-active" class="btn-switch" v-model="config.active">
     <label for="opt-active"></label>
   </div>
+  <transition name="fade">
+    <div class="qrcode-panel" v-if="currentTabUrl">
+      <qriously :value="currentTabUrl" :size="250" />
+      <p class="qrcode-panel-title">{{ i18n('popup_tab_title') }}</p>
+    </div>
+  </transition>
 </div>
 </template>
 
 <script>
-import defaultConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 
 export default {
   name: 'Popup',
+  store: ['config', 'pageId', 'i18n'],
   data () {
     return {
       frameSource: chrome.runtime.getURL('panel.html'),
-      config: defaultConfig
+      currentTabUrl: ''
     }
   },
   watch: {
@@ -35,8 +50,12 @@ export default {
     }
   },
   methods: {
-    i18n (key) {
-      return chrome.i18n.getMessage(key) || key
+    showQRcode () {
+      chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+        if (tabs.length > 0) {
+          this.currentTabUrl = tabs[0].url
+        }
+      })
     }
   },
   computed: {
@@ -55,15 +74,8 @@ export default {
     }
   },
   created () {
-    storage.sync.get('config').then(result => {
-      if (result.config) {
-        this.config = result.config
-      }
-    })
-    storage.listen('config', changes => {
-      this.config = changes.config.newValue
-    })
-    message.on('PANEL_READY', (__, ___, sendResponse) => {
+    message.on('PANEL_READY', (data, sender, sendResponse) => {
+      if (this.pageId !== -1 && this.pageId !== data.page) { return }
       // trigger the paste command
       sendResponse({ctrl: true})
     })
@@ -94,6 +106,21 @@ body {
   border: 0 none;
 }
 
+.qrcode-panel {
+  position: fixed;
+  bottom: 50px;
+  left: 25px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
+}
+
+.qrcode-panel-title {
+  text-align: center;
+  margin: 5px 0 0 0;
+}
+
 .active-switch {
   display: flex;
   align-items: center;
@@ -102,11 +129,18 @@ body {
   padding: 0 20px;
   background: #f9f9f9;
   box-shadow: inset 0 10px 6px -6px rgba(0,0,0,.13);
+  user-select: none;
+}
+
+.icon-qrcode {
+  width: 23px;
+  margin-top: 3px;
+  margin-right: 11px;
 }
 
 .switch-title {
   flex: 1;
-  font-size: 1.2em;
+  font-size: 1.5em;
   font-weight: bold;
   text-align: left;
   color: #333;
@@ -165,5 +199,12 @@ $switch-button-height: 37px;
   &:checked + label:after {
     margin-left: $switch-button-width - $switch-button-height + 2px;
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0
 }
 </style>

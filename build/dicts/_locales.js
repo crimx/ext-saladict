@@ -43,7 +43,11 @@ function writeLocales () {
   langs.forEach(lang => {
     mkdirp(path.join(LocalesPath, lang), err => {
       if (err) { console.error(err) }
-      fs.writeFile(path.join(LocalesPath, lang, 'messages.json'), JSON.stringify(locales[lang]))
+      fs.writeFile(
+        path.join(LocalesPath, lang, 'messages.json'),
+        JSON.stringify(locales[lang]),
+        err => err && console.error(err)
+      )
     })
   })
 }

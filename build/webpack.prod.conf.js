@@ -1,12 +1,16 @@
 // var path = require('path')
-var webpack = require('webpack')
-var merge = require('webpack-merge')
-var baseWebpackConfig = require('./webpack.base.conf')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const webpack = require('webpack')
+const merge = require('webpack-merge')
+const baseWebpackConfig = require('./webpack.base.conf')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-var webpackConfig = merge(baseWebpackConfig, {
+const isDevBuild = process.env.BUILD_ENV === 'devproduction'
+
+const webpackConfig = merge(baseWebpackConfig, {
+  devtool: isDevBuild ? '#source-map' : false,
   module: {
     rules: [
       {
@@ -16,55 +20,24 @@ var webpackConfig = merge(baseWebpackConfig, {
           loaders: {
             'css': ExtractTextPlugin.extract({
               fallback: {
-                loader: 'vue-style-loader',
-                options: {
-                  sourceMap: false
-                }
+                loader: 'vue-style-loader', options: { sourceMap: isDevBuild }
               },
               use: [
-                {
-                  loader: 'css-loader',
-                  options: {
-                    sourceMap: false
-                  }
-                },
-                {
-                  loader: 'postcss-loader',
-                  options: {
-                    sourceMap: false
-                  }
-                }
+                { loader: 'css-loader', options: { sourceMap: isDevBuild } },
+                { loader: 'postcss-loader', options: { sourceMap: isDevBuild } }
               ]
             }),
             'scss': ExtractTextPlugin.extract({
               fallback: {
-                loader: 'vue-style-loader',
-                options: {
-                  sourceMap: false
-                }
+                loader: 'vue-style-loader', options: { sourceMap: isDevBuild }
               },
               use: [
-                {
-                  loader: 'css-loader',
+                { loader: 'css-loader', options: { sourceMap: isDevBuild } },
+                { loader: 'postcss-loader', options: { sourceMap: isDevBuild } },
+                { loader: 'sass-loader', options: { sourceMap: isDevBuild } },
+                { loader: 'sass-resources-loader',
                   options: {
-                    sourceMap: false
-                  }
-                },
-                {
-                  loader: 'postcss-loader',
-                  options: {
-                    sourceMap: false
-                  }
-                },
-                {
-                  loader: 'sass-loader',
-                  options: {
-                    sourceMap: false
-                  }
-                },
-                {
-                  loader: 'sass-resources-loader',
-                  options: {
+                    sourceMap: isDevBuild,
                     resources: ['src/sass-global/**/*.scss']
                   }
                 }
@@ -76,29 +49,17 @@ var webpackConfig = merge(baseWebpackConfig, {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        exclude: /node_modules\/(?!(get-stream|url-regex)\/).*/
+        exclude: /node_modules/
       },
       {
         test: /\.css$/,
         use: ExtractTextPlugin.extract({
           fallback: {
-            loader: 'vue-style-loader',
-            options: {
-              sourceMap: false
-            }
+            loader: 'vue-style-loader', options: { sourceMap: isDevBuild }
           },
           use: [
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: false
-              }
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                sourceMap: false
-              }
+            { loader: 'css-loader', options: { sourceMap: isDevBuild } },
+            { loader: 'postcss-loader', options: { sourceMap: isDevBuild }
             }
           ]
         })
@@ -107,33 +68,15 @@ var webpackConfig = merge(baseWebpackConfig, {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
           fallback: {
-            loader: 'vue-style-loader',
-            options: {
-              sourceMap: false
-            }
+            loader: 'vue-style-loader', options: { sourceMap: isDevBuild }
           },
           use: [
-            {
-              loader: 'css-loader',
+            { loader: 'css-loader', options: { sourceMap: isDevBuild } },
+            { loader: 'postcss-loader', options: { sourceMap: isDevBuild } },
+            { loader: 'sass-loader', options: { sourceMap: isDevBuild } },
+            { loader: 'sass-resources-loader',
               options: {
-                sourceMap: false
-              }
-            },
-            {
-              loader: 'postcss-loader',
-              options: {
-                sourceMap: false
-              }
-            },
-            {
-              loader: 'sass-loader',
-              options: {
-                sourceMap: false
-              }
-            },
-            {
-              loader: 'sass-resources-loader',
-              options: {
+                sourceMap: isDevBuild,
                 resources: ['src/sass-global/**/*.scss']
               }
             }
@@ -142,26 +85,31 @@ var webpackConfig = merge(baseWebpackConfig, {
       }
     ]
   },
-  devtool: false
-})
-
-webpackConfig = merge(webpackConfig, {
-  devtool: false,
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: '"production"'
+        NODE_ENV: isDevBuild ? '"development"' : '"production"'
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
-      },
-      output: {
-        comments: false
-      }
-    }),
+    // tailor locales
+    new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /^\.\/(en|zh-cn|zh-tw|zh-hk)$/),
+    (
+      isDevBuild
+        ? null
+        : new UglifyJsPlugin({
+          uglifyOptions: {
+            ie8: false,
+            ecma: 6,
+            drop_console: true,
+            output: {
+              comments: false,
+              beautify: false
+            },
+            warnings: false
+          }
+        })
+    ),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'commons',
@@ -202,6 +150,18 @@ webpackConfig = merge(webpackConfig, {
       chunksSortMode: 'dependency'
     }),
     new HtmlWebpackPlugin({
+      filename: 'history.html',
+      template: 'src/template.html',
+      chunks: ['history'],
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      },
+      chunksSortMode: 'dependency'
+    }),
+    new HtmlWebpackPlugin({
       filename: 'shareimg.html',
       template: 'src/template.html',
       chunks: ['commons', 'shareimg'],
@@ -232,45 +192,7 @@ webpackConfig = merge(webpackConfig, {
       chunksSortMode: 'dependency'
     }),
     new BundleAnalyzerPlugin()
-    // split vendor js into its own file
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'vendor',
-    //   minChunks: function (module, count) {
-    //     // any required modules inside node_modules are extracted to vendor
-    //     return (
-    //       module.resource &&
-    //       /\.js$/.test(module.resource) &&
-    //       module.resource.indexOf(
-    //         path.join(__dirname, '../node_modules')
-    //       ) === 0
-    //     )
-    //   }
-    // }),
-    // extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'manifest',
-    //   chunks: ['vendor']
-    // })
-  ]
+  ].filter(Boolean)
 })
-
-// if (config.build.productionGzip) {
-//   var CompressionWebpackPlugin = require('compression-webpack-plugin')
-
-//   webpackConfig.plugins.push(
-//     new CompressionWebpackPlugin({
-//       asset: '[path].gz[query]',
-//       algorithm: 'gzip',
-//       test: new RegExp(
-//         '\\.(' +
-//         config.build.productionGzipExtensions.join('|') +
-//         ')$'
-//       ),
-//       threshold: 10240,
-//       minRatio: 0.8
-//     })
-//   )
-// }
 
 module.exports = webpackConfig

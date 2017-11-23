@@ -50,8 +50,10 @@
 <script>
 import html2canvas from 'html2canvas'
 import Loader from 'src/components/Loader'
-import defaultConfig from 'src/app-config'
+import AppConfig from 'src/app-config'
 import {storage} from 'src/helpers/chrome-api'
+
+const defaultConfig = new AppConfig()
 
 export default {
   name: 'share-img',

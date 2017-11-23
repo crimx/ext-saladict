@@ -1,9 +1,11 @@
 import fetchDom from 'src/helpers/fetch-dom'
+import stripScript from 'src/helpers/strip-script'
 
 /**
  * Search text and give back result
  * @param {string} text - Search text
  * @param {object} config - app config
+ * @param {object} helpers - helper functions
  * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
  */
 export default function search (text, config) {
@@ -19,7 +21,7 @@ export default function search (text, config) {
 function handleDom (doc) {
   let $entry = doc.querySelector('.bussdictEntry')
   if (!$entry) { return Promise.reject('no result') }
-  return $entry.innerHTML
+  return stripScript($entry).innerHTML
 }
 
 /**

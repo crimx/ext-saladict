@@ -7,17 +7,23 @@ export const storage = {
     clear: storageClear('sync'),
     remove: storageRemove('sync'),
     get: storageGet('sync'),
-    set: storageSet('sync')
+    set: storageSet('sync'),
+    listen: storageListen('sync'),
+    addListener: storageListen('sync'),
+    on: storageListen('sync')
   },
   local: {
     clear: storageClear('local'),
     remove: storageRemove('local'),
     get: storageGet('local'),
-    set: storageSet('local')
+    set: storageSet('local'),
+    listen: storageListen('local'),
+    addListener: storageListen('local'),
+    on: storageListen('local')
   },
-  listen: storageListen,
-  addListener: storageListen,
-  on: storageListen,
+  listen: storageListen(),
+  addListener: storageListen(),
+  on: storageListen(),
 
   off: storageStopListen,
   removeListener: storageStopListen
@@ -63,8 +69,6 @@ function storageGet (storageArea) {
         chrome.storage[storageArea].get(keys, data => {
           if (chrome.runtime.lastError) {
             reject(chrome.runtime.lastError.message)
-          } else if (!data || Object.keys(data).length < 1) {
-            reject({})
           } else {
             resolve(data)
           }
@@ -98,22 +102,27 @@ function storageSet (storageArea) {
   }
 }
 
-/**
- * Listens to a specific key or uses the generic addListener
- * @param {string|number} [key] key to listen to
- * @param {function} cb callback function
- * @see https://developer.chrome.com/extensions/storage#event-onChanged
- */
-function storageListen (key, cb) {
-  if (typeof key === 'function') {
-    cb = key
-    chrome.storage.onChanged.addListener(cb)
-  } else if (typeof cb === 'function') {
-    chrome.storage.onChanged.addListener((changes, areaName) => {
-      if (changes[key]) {
-        cb(changes, areaName)
-      }
-    })
+function storageListen (storageArea) {
+  /**
+   * Listens to a specific key or uses the generic addListener
+   * @param {string|number} [key] key to listen to
+   * @param {function} cb callback function
+   * @see https://developer.chrome.com/extensions/storage#event-onChanged
+   */
+  return function listen (key, cb) {
+    if (typeof key === 'function') {
+      cb = key
+      chrome.storage.onChanged.addListener(cb)
+    } else if (typeof cb === 'function') {
+      chrome.storage.onChanged.addListener((changes, areaName) => {
+        if (storageArea && areaName !== storageArea) {
+          return
+        }
+        if (changes[key]) {
+          cb(changes, areaName)
+        }
+      })
+    }
   }
 }
 

@@ -25,28 +25,55 @@ module.exports = merge(baseWebpackConfig, {
             options: {presets: ['es2016']}
           }],
           loaders: {
-            'css': ['vue-style-loader', 'css-loader', 'postcss-loader'],
-            'scss': ['vue-style-loader', 'css-loader', 'postcss-loader', 'sass-loader', {
-              loader: 'sass-resources-loader',
-              options: {
-                resources: ['src/sass-global/**/*.scss']
+            'css': [
+              { loader: 'vue-style-loader', options: { sourceMap: true } },
+              { loader: 'css-loader', options: { sourceMap: true } },
+              { loader: 'postcss-loader', options: { sourceMap: true } }
+            ],
+            'scss': [
+              { loader: 'vue-style-loader', options: { sourceMap: true } },
+              { loader: 'css-loader', options: { sourceMap: true } },
+              { loader: 'postcss-loader', options: { sourceMap: true } },
+              { loader: 'sass-loader', options: { sourceMap: true } },
+              { loader: 'sass-resources-loader',
+                options: {
+                  sourceMap: true,
+                  resources: ['src/sass-global/**/*.scss']
+                }
               }
-            }]
+            ]
           }
         }
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader']
+        use: [
+          { loader: 'vue-style-loader', options: { sourceMap: true } },
+          { loader: 'css-loader', options: { sourceMap: true } },
+          { loader: 'postcss-loader', options: { sourceMap: true } },
+          { loader: 'sass-loader', options: { sourceMap: true } },
+          { loader: 'sass-resources-loader',
+            options: {
+              sourceMap: true,
+              resources: ['src/sass-global/**/*.scss']
+            }
+          }
+        ]
       },
       {
         test: /\.scss$/,
-        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader', {
-          loader: 'sass-resources-loader',
-          options: {
-            resources: ['src/sass-global/**/*.scss']
+        use: [
+          { loader: 'vue-style-loader', options: { sourceMap: true } },
+          { loader: 'css-loader', options: { sourceMap: true } },
+          { loader: 'postcss-loader', options: { sourceMap: true } },
+          { loader: 'sass-loader', options: { sourceMap: true } },
+          { loader: 'sass-resources-loader',
+            options: {
+              sourceMap: true,
+              resources: ['src/sass-global/**/*.scss']
+            }
           }
-        }]
+        ]
       },
       {
         test: /\.js$/,

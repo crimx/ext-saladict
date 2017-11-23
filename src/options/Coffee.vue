@@ -31,7 +31,7 @@
         </transition>
       </div>
       <div class="payment-title">
-        <div class="easter-egg" title="Unlock secrets" @click="eggClicked">
+        <div class="easter-egg" title="Unlock secrets" @dblclick="eggClicked">
           <svg width="30" height="30" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
             <path fill="#AF9CE6" d="M407.64 135.93l-.05-.1C373 53.93 313.1 0 256 0c-57.15 0-117.04 53.96-151.63 135.93l19.7 32.25L256 182.88l131.94-14.7 19.7-32.25z"/>
             <path fill="#FFA0C1" d="M437.16 285.64c0-37.54-5.2-73.24-14.28-105.87L256 182.87l-166.88-3.1c-9.08 32.63-14.28 68.33-14.28 105.87 0 21.26 1.65 40.86 4.72 58.88l.13.7 37.4 36.1L256 402.54l138.9-21.22 37.4-36.1c3.16-18.22 4.86-38.05 4.86-59.58z"/>
@@ -58,7 +58,6 @@
 export default {
   data () {
     return {
-      eggCount: 0,
       showPayment: false,
       active: 'wechat'
     }
@@ -68,13 +67,7 @@ export default {
       this.showPayment = true
     },
     eggClicked () {
-      if (++this.eggCount === 2) {
-        chrome.storage.local.set({unlock: true})
-      } else {
-        setTimeout(() => {
-          this.eggCount = 0
-        }, 400)
-      }
+      chrome.storage.sync.set({unlock: true})
     },
     i18n (key) {
       return chrome.i18n.getMessage(key) || key

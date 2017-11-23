@@ -7,260 +7,21 @@
   </transition>
   <div class="opt-container">
     <h1 class="page-header">{{ i18n('opt_title') }}
-      <a class="new-version" v-if="isNewVersion" href="http://www.crimx.com/crx-saladict/" target="_blank">{{ i18n('opt_new_version') }}</a>
+      <a class="new-version" v-if="newVersionAvailable" href="http://www.crimx.com/crx-saladict/" target="_blank">{{ i18n('opt_new_version') }}</a>
       <button type="button" class="btn btn-default btn-reset" @click="handleReset">{{ i18n('opt_reset') }}</button>
     </h1>
-
-    <div class="opt-item">
-      <div class="opt-item__header">
-        <strong>{{ i18n('opt_app_active_title') }}</strong>
-      </div>
-      <div class="opt-item__body">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" v-model="config.active"> {{ i18n('opt_app_active') }}
-          </label>
-        </div>
-      </div>
-      <div class="opt-item__description-wrap">
-        <p class="opt-item__description" v-html="i18n('opt_app_active_description')"></p>
-      </div>
-    </div><!-- 开启查词 -->
-
-    <div class="opt-item">
-      <div class="opt-item__header">
-        <strong>{{ i18n('opt_mode_title') }}</strong>
-      </div>
-      <div class="opt-item__body">
-        <div class="radio">
-          <label class="radio-inline">
-            <input type="radio" value="icon" v-model="config.mode"> {{ i18n('opt_mode_icon') }}
-          </label>
-          <label class="radio-inline">
-            <input type="radio" value="direct" v-model="config.mode"> {{ i18n('opt_mode_direct') }}
-          </label>
-          <label class="radio-inline">
-            <input type="radio" value="double" v-model="config.mode"> {{ i18n('opt_mode_double') }}
-          </label>
-          <label class="radio-inline">
-            <input type="radio" value="ctrl" v-model="config.mode"> {{ i18n('opt_mode_ctrl') }}
-          </label>
-        </div>
-        <div class="double-click-delay" :style="{height: optDoubleClickDelayHeight}">
-          <div class="input-group">
-            <div class="input-group-addon">{{ i18n('opt_mode_double_click_delay') }}</div>
-            <input type="number" min="1" class="form-control" v-model.number="config.doubleClickDelay">
-            <div class="input-group-addon">{{ i18n('opt_unit_ms') }}</div>
-          </div>
-        </div>
-      </div>
-      <div class="opt-item__description-wrap">
-        <p class="opt-item__description" v-html="i18n('opt_mode_description')"></p>
-      </div>
-    </div><!-- 查词模式-->
-
-    <div class="opt-item">
-      <div class="opt-item__header">
-        <strong>{{ i18n('opt_triple_ctrl_title') }}</strong>
-      </div>
-      <div class="opt-item__body">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" v-model="config.tripleCtrl"> {{ i18n('opt_triple_ctrl') }}
-          </label>
-        </div>
-      </div>
-      <div class="opt-item__description-wrap">
-        <p class="opt-item__description" v-html="i18n('opt_triple_ctrl_description')"></p>
-      </div>
-    </div><!-- 快捷查词 -->
-
-    <div class="opt-item">
-      <div class="opt-item__header">
-        <strong>{{ i18n('opt_language_title') }}</strong>
-      </div>
-      <div class="opt-item__body">
-        <div class="checkbox">
-          <label class="checkbox-inline">
-            <input type="checkbox" v-model="config.language.chinese"> {{ i18n('opt_language_chinese') }}
-          </label>
-          <label class="checkbox-inline">
-            <input type="checkbox" v-model="config.language.english"> {{ i18n('opt_language_english') }}
-          </label>
-        </div>
-      </div>
-      <div class="opt-item__description-wrap">
-        <p class="opt-item__description" v-html="i18n('opt_language_mode_description')"></p>
-      </div>
-    </div><!-- 语言支持 -->
-
-    <div class="opt-item">
-      <div class="opt-item__header">
-        <strong>{{ i18n('opt_dicts_title') }}</strong>
-      </div>
-      <div class="opt-item__body">
-        <header class="opt-dict__header">
-          <button type="button" class="btn btn-default btn-xs"
-            v-if="dictsUnselected.length > 0"
-            @click="isShowAddDictsPanel = true"
-          >{{ i18n('opt_dicts_btn_add') }}</button>
-          <transition name="fade">
-            <div class="modal show text-left" v-if="isShowAddDictsPanel">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" @click="isShowAddDictsPanel = false">&times;</button>
-                    <h4 class="modal-title">{{ i18n('opt_dicts_add_panel_title') }}</h4>
-                  </div>
-                  <div class="modal-body">
-                    <div class="panel-group">
-                      <transition-group name="dict-panel-list">
-                        <div class="panel panel-default dict-panel"
-                          v-for="(id, i) in dictsUnselected"
-                          :key="id"
-                        >
-                          <div class="dict-panel__header" @click="handleAddDict(id)">
-                            <img class="dict-panel__icon" :src="dicts[id].favicon">
-                            <strong class="dict-panel__title">{{ i18n('dict_' + id) }}</strong>
-                            <button type="button" class="close">&#10004;</button>
-                          </div>
-                        </div>
-                      </transition-group>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> <!--modal-->
-          </transition>
-        </header>
-        <div class="panel-group">
-          <draggable
-            v-model="config.dicts.selected"
-            :options="{animation: 200}"
-            @start="clearDictsHeight"
-          >
-            <transition-group name="dict-panel-list">
-              <div class="panel panel-default dict-panel"
-                v-for="(id, i) in config.dicts.selected"
-                :key="id"
-              >
-                <div class="dict-panel__header" @click="handlePanelHeadClick(id, i)">
-                  <img class="dict-panel__icon" :src="dicts[id].favicon">
-                  <strong class="dict-panel__title">{{ i18n('dict_' + id) }}</strong>
-                  <button type="button" class="close" @click.stop="config.dicts.selected.splice(i, 1)">&times;</button>
-                </div>
-                <div class="dict-panel__body"
-                  ref="dict"
-                  :style="{height: dicts[id].height + 'px'}"
-                ><div class="panel-body">
-                  <div class="checkbox">
-                    <label class="checkbox-inline">
-                      <input type="checkbox" v-model="config.dicts.all[id].defaultUnfold"> {{ i18n('opt_dict_default_unfold') }}
-                    </label>
-                    <label class="checkbox-inline">
-                      <input type="checkbox" v-model="config.dicts.all[id].showWhenLang.chs"> {{ i18n('opt_dict_show_when_chs') }}
-                    </label>
-                    <label class="checkbox-inline">
-                      <input type="checkbox" v-model="config.dicts.all[id].showWhenLang.eng"> {{ i18n('opt_dict_show_when_eng') }}
-                    </label>
-                  </div>
-                  <div class="input-group">
-                    <div class="input-group-addon">{{ i18n('opt_dict_default_height') }}</div>
-                    <input type="number" min="1" class="form-control" v-model.number="config.dicts.all[id].preferredHeight">
-                    <div class="input-group-addon">px</div>
-                  </div>
-                  <div class="checkbox" v-if="config.dicts.all[id].options">
-                    <template v-for="(__, optKey) in config.dicts.all[id].options">
-                      <div class="checkbox" v-if="typeof config.dicts.all[id].options[optKey] !== 'boolean'">
-                        <div class="input-group">
-                          <div class="input-group-addon">{{ i18n(`dict_${id}_${optKey}`) }}</div>
-                          <input type="number" min="1" class="form-control" v-model.number="config.dicts.all[id].options[optKey]">
-                          <div class="input-group-addon">{{ i18n(`dict_${id}_${optKey}_unit`)  }}</div>
-                        </div>
-                      </div>
-                    </template>
-                    <template v-for="(__, optKey) in config.dicts.all[id].options">
-                      <label class="checkbox-inline" v-if="typeof config.dicts.all[id].options[optKey] === 'boolean'">
-                        <input type="checkbox" v-model="config.dicts.all[id].options[optKey]"> {{ i18n(`dict_${id}_${optKey}`) }}
-                      </label>
-                    </template>
-                  </div>
-                </div></div>
-              </div>
-              <div key='___'></div><!--An empty div to fix a tricky bug on draggable-->
-            </transition-group>
-          </draggable>
-        </div>
-      </div>
-      <div class="opt-item__description-wrap">
-        <p class="opt-item__description" v-html="i18n('opt_dicts_description')"></p>
-      </div>
-    </div><!-- 词典设置 -->
-
-    <div class="opt-item">
-      <div class="opt-item__header">
-        <strong>{{ i18n('opt_context_title') }}</strong>
-      </div>
-      <div class="opt-item__body">
-        <header class="opt-dict__header">
-          <button type="button" class="btn btn-default btn-xs"
-            v-if="contextUnselected.length > 0"
-            @click="isShowAddContextPanel = true"
-          >{{ i18n('opt_dicts_btn_add') }}</button>
-          <transition name="fade">
-            <div class="modal show text-left" v-if="isShowAddContextPanel">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" @click="isShowAddContextPanel = false">&times;</button>
-                    <h4 class="modal-title">{{ i18n('opt_context_add_panel_title') }}</h4>
-                  </div>
-                  <div class="modal-body">
-                    <div class="panel-group">
-                      <transition-group name="dict-panel-list">
-                        <div class="panel panel-default dict-panel"
-                          v-for="(id, i) in contextUnselected"
-                          :key="id"
-                        >
-                          <div class="dict-panel__header" @click="handleAddContext(id)">
-                            <strong class="dict-panel__title">{{ i18n('context_' + id) }}</strong>
-                            <button type="button" class="close">&#10004;</button>
-                          </div>
-                        </div>
-                      </transition-group>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> <!--modal-->
-          </transition>
-        </header>
-        <div class="panel-group">
-          <draggable
-            v-model="config.contextMenu.selected"
-            :options="{animation: 200}"
-          >
-            <transition-group name="dict-panel-list">
-              <div class="panel panel-default dict-panel"
-                v-for="(id, i) in config.contextMenu.selected"
-                :key="id"
-              >
-                <div class="dict-panel__header">
-                  <strong class="dict-panel__title">{{ i18n('context_' + id) }}</strong>
-                  <button type="button" class="close" @click.stop="config.contextMenu.selected.splice(i, 1)">&times;</button>
-                </div>
-              </div>
-              <div key='___'></div><!--An empty div to fix a tricky bug on draggable-->
-            </transition-group>
-          </draggable>
-        </div>
-      </div>
-      <div class="opt-item__description-wrap">
-        <p class="opt-item__description" v-html="i18n('opt_context_description')"></p>
-      </div>
-    </div><!-- 右键菜单 -->
-
+    <opt-app-active />
+    <opt-search-history />
+    <opt-mode />
+    <opt-pin-mode />
+    <opt-triple-ctrl />
+    <opt-language />
+    <opt-autopron />
+    <opt-dicts />
+    <opt-context-menu />
   </div>
+
+  <!--查词面板-->
   <transition appear name="popup">
     <div class="frame-container">
       <iframe class="saladict-frame"
@@ -270,129 +31,94 @@
         :style="{height: panelHeight + 'px'}"
       ></iframe>
     </div>
-  </transition>
-  <coffee></coffee>
+  </transition><!--查词面板-->
+
+  <!--Alert Modal-->
+  <alert-modal ref="alert" />
+
+  <!--赏杯咖啡呗-->
+  <coffee />
 </div>
 </template>
 
 <script>
 import {storage, message} from 'src/helpers/chrome-api'
-import defaultConfig from 'src/app-config'
-import Draggable from 'vuedraggable'
+import AppConfig from 'src/app-config'
 import Coffee from './Coffee'
+import AlertModal from 'src/components/AlertModal'
+
+import OptAppActive from './OptAppActive'
+import OptSearchHistory from './OptSearchHistory'
+import OptMode from './OptMode'
+import OptPinMode from './OptPinMode'
+import OptTripleCtrl from './OptTripleCtrl'
+import OptLanguage from './OptLanguage'
+import OptAutopron from './OptAutopron'
+import OptDicts from './OptDicts'
+import OptContextMenu from './OptContextMenu'
 
 export default {
   name: 'options',
+  store: ['config', 'pageId', 'newVersionAvailable', 'i18n'],
   data () {
     return {
-      config: defaultConfig,
-      dicts: {},
-
-      isNewVersion: false,
-
-      unlock: false,
-
       text: 'salad',
-
       frameSource: chrome.runtime.getURL('panel.html'),
-
-      isShowConfigUpdated: false,
-      showConfigUpdatedTimeout: undefined,
-
-      isShowAddContextPanel: false,
-      isShowAddDictsPanel: false
+      isShowConfigUpdated: false
     }
   },
   methods: {
-    i18n (key) {
-      return chrome.i18n.getMessage(key)
-    },
-    clearDictsHeight () {
-      this.config.dicts.selected.forEach(id => {
-        this.dicts[id].height = 0
-      })
+    searchText () {
+      clearTimeout(this.searchTextTimeout)
+      this.searchTextTimeout = setTimeout(() => {
+        message.send({msg: 'SEARCH_TEXT_SELF', text: this.text, page: this.pageId})
+      }, 2000)
     },
     handleReset () {
-      storage.sync.set({config: defaultConfig}).then(() => {
-        storage.sync.get('config', ({config}) => {
-          if (config) {
-            this.config = config
-          } else {
-            storage.sync.set({config: defaultConfig})
-            this.config = JSON.parse(JSON.stringify(defaultConfig))
-          }
-        })
+      this.$refs.alert.$emit('show', {
+        title: chrome.i18n.getMessage('opt_reset_modal_title'),
+        content: chrome.i18n.getMessage('opt_reset_modal_content'),
+        onConfirm: () => {
+          storage.sync.set({config: new AppConfig()})
+            .then(() => storage.sync.get('config'))
+            .then(({config}) => {
+              if (config) {
+                this.config = config
+              } else {
+                // something wrong with the sync storage, use default config without syncing
+                const defaultConfig = new AppConfig()
+                storage.sync.set({config: defaultConfig})
+                this.config = defaultConfig
+              }
+            })
+        }
       })
-    },
-    handlePanelHeadClick (id, i) {
-      let height = this.dicts[id].height > 0 ? 0 : this.$refs.dict[i].firstChild.offsetHeight
-      this.clearDictsHeight()
-      this.dicts[id].height = height
-    },
-    handleAddDict (id) {
-      let selected = this.config.dicts.selected
-      selected.push(id)
-      if (Object.keys(this.config.dicts.all).length === selected.length) {
-        this.isShowAddDictsPanel = false
-      }
-    },
-    handleAddContext (id) {
-      let selected = this.config.contextMenu.selected
-      selected.push(id)
-      if (Object.keys(this.config.contextMenu.all).length === selected.length) {
-        this.isShowAddContextPanel = false
-      }
-    },
-    checkVersion () {
-      fetch('https://api.github.com/repos/crimx/crx-saladict/releases/latest')
-        .then(r => r.json())
-        .then(data => {
-          if (data && data.tag_name) {
-            let vGithub = /\d+\.\d+\.\d+/.exec(data.tag_name)
-            if (!vGithub) { return }
-            let gits = vGithub[0].split('.').map(v => Number(v))
-            let curs = chrome.runtime.getManifest().version.split('.').map(v => Number(v))
-            this.isNewVersion = gits[0] !== curs[0] ? gits[0] > curs[0] :
-               gits[1] !== curs[1] ? gits[1] > curs[1] : gits[2] > curs[2]
-          }
-        })
     }
   },
   watch: {
     config: {
       deep: true,
       handler () {
-        // ignore the first auto update
-        if (this.showConfigUpdatedTimeout === undefined) {
-          this.showConfigUpdatedTimeout = null
-          return
-        }
-
         storage.sync.set({config: this.config})
-        .then(() => {
-          this.isShowConfigUpdated = true
-          if (this.showConfigUpdatedTimeout) { clearTimeout(this.showConfigUpdatedTimeout) }
-          this.showConfigUpdatedTimeout = setTimeout(() => {
-            this.isShowConfigUpdated = false
-            this.showConfigUpdatedTimeout = null
-          }, 1500)
-        })
+          .then(() => {
+            this.isShowConfigUpdated = true
+            clearTimeout(this.showConfigUpdatedTimeout)
+            this.showConfigUpdatedTimeout = setTimeout(() => {
+              this.isShowConfigUpdated = false
+            }, 1500)
+          })
       }
     },
     'config.dicts': {
       deep: true,
-      handler () {
-        clearTimeout(this.searchTextTimeout)
-        this.searchTextTimeout = setTimeout(() => {
-          message.send({msg: 'SEARCH_TEXT_SELF', text: this.text})
-        }, 2000)
-      }
+      handler () { this.searchText() }
+    },
+    'config.autopron': {
+      deep: true,
+      handler () { this.searchText() }
     }
   },
   computed: {
-    optDoubleClickDelayHeight () {
-      return this.config.mode === 'double' ? '34px' : '0'
-    },
     panelHeight () {
       const allDicts = this.config.dicts.all
       // header + each dictionary
@@ -405,78 +131,34 @@ export default {
       }, 0)
       const maxHeight = window.innerHeight * 0.78
       return preferredHeight > maxHeight ? maxHeight : preferredHeight
-    },
-    dictsUnselected () {
-      let selected = new Set(this.config.dicts.selected)
-      let all = this.config.dicts.all
-      let ids = Object.keys(all)
-      if (!this.unlock) {
-        ids = ids.filter(id => !all[id].secret)
-      }
-      return ids.filter(id => !selected.has(id))
-    },
-    contextUnselected () {
-      let selected = new Set(this.config.contextMenu.selected)
-      return Object.keys(this.config.contextMenu.all).filter(id => !selected.has(id))
     }
   },
   components: {
+    OptAppActive,
+    OptSearchHistory,
+    OptMode,
+    OptPinMode,
+    OptTripleCtrl,
+    OptLanguage,
+    OptAutopron,
+    OptDicts,
+    OptContextMenu,
     Coffee,
-    Draggable
-  },
-  beforeCreate () {
-    document.title = 'Saladict Options'
+    AlertModal
   },
   created () {
-    let allDicts = this.config.dicts.all
-    let dicts = {}
-    Object.keys(allDicts).forEach(id => {
-      dicts[id] = {
-        favicon: chrome.runtime.getURL(`assets/dicts/${id}.png`),
-        height: 0
-      }
+    message.on('PANEL_READY', (data, sender, sendResponse) => {
+      if (this.pageId !== -1 && this.pageId !== data.page) { return }
+      sendResponse({noSearchHistory: true})
+      setTimeout(() => this.searchText(), 0)
     })
-    this.dicts = dicts
-
-    storage.sync.get('config', result => {
-      if (result.config) {
-        this.config = result.config
-      }
-
-      storage.listen('config', changes => {
-        let config = changes.config.newValue
-        if (config) {
-          // only listen to active setting in popup panel
-          this.config.active = config.active
-        }
-      })
-    })
-
-    storage.local.get('unlock', result => {
-      this.unlock = Boolean(result.unlock)
-      storage.listen('unlock', changes => {
-        this.unlock = changes.unlock.newValue
-      })
-    })
-
-    this.checkVersion()
   },
   mounted () {
-    // unfold the fisrt dictionary
-    setTimeout(() => {
-      this.handlePanelHeadClick(this.config.dicts.selected[0], 0)
-    }, 1000)
-
-    let currentTabID
-    chrome.tabs.getCurrent(tab => {
-      currentTabID = tab.id
-
-      // monitor search text
-      message.on('FETCH_DICT_RESULT', (data, sender) => {
-        if (currentTabID === sender.tab.id) {
-          this.text = data.text
-        }
-      })
+    // monitor search text
+    message.on('FETCH_DICT_RESULT', (data, sender) => {
+      if (this.pageId === sender.tab.id) {
+        this.text = data.text
+      }
     })
   }
 }
@@ -508,6 +190,18 @@ export default {
 
 // Components w/ JavaScript
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/modals";
+
+.checkbox-inline {
+  margin-right: 10px;
+
+  + .checkbox-inline {
+    margin-left: 0;
+  }
+
+  :last-child {
+    margin-right: 0;
+  }
+}
 
 /*------------------------------------*\
    Base
@@ -582,13 +276,6 @@ kbd {
   right: 0;
 }
 
-.double-click-delay {
-  overflow: hidden;
-  margin-bottom: 10px;
-  height: 0;
-  transition: height 400ms;
-}
-
 .opt-item {
   @extend .row;
   position: relative;
@@ -632,31 +319,6 @@ kbd {
   color: #666;
 }
 
-.opt-dict__header {
-  text-align: right;
-  margin: 15px 0;
-}
-
-.dict-panel__icon {
-  width: 16px;
-  height: 16px;
-  vertical-align: text-bottom;
-}
-
-.dict-panel__title {
-  cursor: move;
-}
-
-.dict-panel__header {
-  @extend .panel-heading;
-  cursor: move;
-}
-
-.dict-panel__body {
-  transition: height 600ms;
-  overflow: hidden;
-}
-
 .frame-container {
   position: fixed;
   top: 0;
@@ -677,21 +339,56 @@ kbd {
   transition: all 1s;
 }
 
+.panel-list__add {
+  text-align: right;
+  margin: 15px 0;
+}
+
+.panel-list__header {
+  @extend .panel-heading;
+  cursor: pointer;
+}
+
+.panel-list__title {
+  cursor: move;
+}
+
+.panel-list__header {
+  cursor: move;
+}
+
+.panel-list__icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
+}
+
+.panel-list__body {
+  transition: height 600ms;
+  overflow: hidden;
+}
+
+.double-click-delay {
+  overflow: hidden;
+  height: 0;
+  transition: height 400ms;
+}
+
 /*------------------------------------*\
    States
 \*------------------------------------*/
 // Utility classes
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/utilities";
 
-.dict-panel {
+.panel-list {
   transition: all 600ms;
 }
 
-.dict-panel-list-enter, .dict-panel-list-leave-to {
+.panel-list-enter, .panel-list-leave-to {
   opacity: 0;
 }
 
-.dict-panel-list-leave-active {
+.panel-list-leave-active {
   position: absolute;
   left: 15px;
   right: 15px;

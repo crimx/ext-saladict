@@ -9,7 +9,7 @@
   },
   "extension_description": {
     "description": "Description of extension",
-    "message": "全能网页划词翻译，功能丰富、众多词典、清爽快速、个性化设置"
+    "message": "全能网页划词翻译，开放源码、功能丰富、超多词典、清爽快速、支持个性化设置"
   },
   "wechat": {
     "description": "微信",
@@ -26,6 +26,18 @@
   "buy_me_a_coffee": {
     "description": "支持一下",
     "message": "觉得好用的话欢迎支持一下我买杯咖啡哦~"
+  },
+  "confirm": {
+    "description": "confirm",
+    "message": "确认"
+  },
+  "cancel": {
+    "description": "cancel",
+    "message": "取消"
+  },
+  "copy": {
+    "description": "copy",
+    "message": "复制"
   },
   "US": {
     "description": "United State",
@@ -75,6 +87,14 @@
     "description": "reset button",
     "message": "重置"
   },
+  "opt_reset_modal_title": {
+    "description": "reset alert",
+    "message": "重置设定"
+  },
+  "opt_reset_modal_content": {
+    "description": "reset alert",
+    "message": "所有设定将还原到默认值，确定？"
+  },
   "opt_title": {
     "description": "设置页面标题",
     "message": "Saladict 设置"
@@ -94,6 +114,18 @@
   "opt_app_active_description": {
     "description": "option description",
     "message": "关闭后划词翻译功能将关闭，快捷查词功能依然可用。"
+  },
+  "opt_search_history_title": {
+    "description": "option title",
+    "message": "查词历史"
+  },
+  "opt_search_history": {
+    "description": "option",
+    "message": "记录查词历史"
+  },
+  "opt_search_history_description": {
+    "description": "option description",
+    "message": "关闭后不再记录查词历史，先前的记录依然保留，可在查词历史页面手动清空。"
   },
   "opt_mode_title": {
     "description": "option title",
@@ -127,6 +159,14 @@
     "description": "option description",
     "message": "当用鼠标在网页上选择了一段文本，<strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；<strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；<strong>“双击搜索”</strong>双击选择文本之后直接显示词典面板；<strong>“按住 Ctrl”</strong>在选择文本时需同时按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键才显示词典面板。"
   },
+  "opt_pinmode_title": {
+    "description": "option title",
+    "message": "钉住查词"
+  },
+  "opt_pinmode_description": {
+    "description": "option description",
+    "message": "当面板被钉住时的查词模式。"
+  },
   "opt_triple_ctrl_title": {
     "description": "option title",
     "message": "快捷查词"
@@ -154,6 +194,34 @@
   "opt_language_mode_description": {
     "description": "option description",
     "message": "当选中的文字包含相应的语言时才进行查找。"
+  },
+  "opt_autopron_title": {
+    "description": "option description",
+    "message": "自动发音"
+  },
+  "opt_autopron_cn": {
+    "description": "option description",
+    "message": "中文"
+  },
+  "opt_autopron_en": {
+    "description": "option description",
+    "message": "英文"
+  },
+  "opt_autopron_none": {
+    "description": "option description",
+    "message": "无"
+  },
+  "opt_autopron_us": {
+    "description": "option description",
+    "message": "美音"
+  },
+  "opt_autopron_uk": {
+    "description": "option description",
+    "message": "英音"
+  },
+  "opt_autopron_description": {
+    "description": "option description",
+    "message": "下拉列表的项目为支持自动发音的词典，开启功能还必须启用词典，见下方“词典配置”。“默认展开”与相应的语言显示须要勾选。"
   },
   "opt_dicts_title": {
     "description": "option title",
@@ -225,7 +293,11 @@
   },
   "context_google_page_translate": {
     "description": "context menu",
-    "message": "网页翻译"
+    "message": "谷歌网页翻译"
+  },
+  "context_youdao_page_translate": {
+    "description": "context menu",
+    "message": "有道网页翻译"
   },
   "context_etymonline": {
     "description": "context menu",
@@ -274,5 +346,65 @@
   "context_view_as_pdf": {
     "description": "context menu",
     "message": "打开为 PDF"
+  },
+  "context_manual_title": {
+    "description": "context menu",
+    "message": "详细使用说明"
+  },
+  "history_title": {
+    "description": "history page",
+    "message": "查词历史记录"
+  },
+  "history_only_english": {
+    "description": "history page",
+    "message": "只显示英文记录"
+  },
+  "history_plain_modal_title": {
+    "description": "history page",
+    "message": "纯文本 - 可复制粘贴"
+  },
+  "history_no_result": {
+    "description": "history page",
+    "message": "无历史记录，查词后再查看"
+  },
+  "history_wordcount": {
+    "description": "history page",
+    "message": "共 %s 条记录，本扩展会保存约 10,000 条最近查词历史"
+  },
+  "history_clear": {
+    "description": "history page",
+    "message": "清空记录"
+  },
+  "history_savefile": {
+    "description": "history page",
+    "message": "导出文件"
+  },
+  "history_plaintext": {
+    "description": "history page",
+    "message": "查看纯文本"
+  },
+  "history_copy_success": {
+    "description": "history page",
+    "message": "复制成功！"
+  },
+  "history_copu_failed": {
+    "description": "history page",
+    "message": "复制失败，请手动复制"
+  },
+  "history_clear_modal_title": {
+    "description": "history page",
+    "message": "清空查词历史"
+  },
+  "history_clear_modal_content": {
+    "description": "history page",
+    "message": "所有查词历史记录将被清除，确定？"
+  },
+  "history_clear_success": {
+    "description": "history page",
+    "message": "清除成功！"
+  },
+  "notification_youdao_err": {
+    "description": "notifications message",
+    "message": "有道网页翻译2.0 加载无响应，\n可能扩展无权访问该页面，\n如加载成功请忽略本消息。"
   }
 }

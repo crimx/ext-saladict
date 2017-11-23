@@ -9,7 +9,7 @@
       <span class="dictcn-pron-item"
         v-if="result.prons"
         v-for="pron in result.prons"
-      >{{ pron.phsym }} <speaker v-for="au in pron.audio" :src="au"></speaker></span>
+      >{{ pron.phsym }} <speaker v-for="(au, i) in pron.audio" :src="au" :key="i"></speaker></span>
     </div>
     <div class="chart" v-if="result.chart">
       <highcharts :options="chartOpt"></highcharts>
@@ -43,7 +43,7 @@ export default {
           spacingRight: 0,
           spacingBottom: 20,
           spacingLeft: 0,
-          width: 270,
+          width: 340,
           height: 200,
           style: {
             fontFamily: '"Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif'

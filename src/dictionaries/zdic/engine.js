@@ -1,12 +1,14 @@
 import fetchDom from 'src/helpers/fetch-dom'
+import stripScript from 'src/helpers/strip-script'
 
 /**
  * Search text and give back result
  * @param {string} text - Search text
  * @param {object} config - app config
+ * @param {object} helpers - helper functions
  * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
  */
-export default function search (text, config) {
+export default function search (text, config, {AUDIO}) {
   const options = config.dicts.all.bing.options
   const SEARCH_LINK = 'http://www.zdic.net/search/?c=3&q='
   text = text.trim()
@@ -19,6 +21,16 @@ export default function search (text, config) {
       } else {
         return handlePhrase(doc, options)
       }
+    })
+    .then(result => {
+      if (config.autopron.cn.dict === 'zdic') {
+        setTimeout(() => {
+          if (result.phsym && result.phsym[0] && result.phsym[0].pron) {
+            AUDIO.play(result.phsym[0].pron)
+          }
+        }, 0)
+      }
+      return result
     })
 }
 
@@ -60,7 +72,7 @@ function handleWord (doc, options) {
   $content.querySelectorAll('.dichr').forEach($hr => {
     $hr.previousElementSibling.classList.add('zdic-header')
   })
-  result.html = $content.innerHTML
+  result.html = stripScript($content).innerHTML
 
   return result
 }
@@ -93,7 +105,7 @@ function handlePhrase (doc, options) {
     }
     el.remove()
   })
-  result.html = $cdnr.innerHTML
+  result.html = stripScript($cdnr).innerHTML
   return result
 }
 

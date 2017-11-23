@@ -1,17 +1,35 @@
 import fetchDom from 'src/helpers/fetch-dom'
+import stripScript from 'src/helpers/strip-script'
 import {reflect} from 'src/helpers/promise-more'
 
 /**
  * Search text and give back result
  * @param {string} text - Search text
  * @param {object} config - app config
+ * @param {object} helpers - helper functions
  * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
  */
-export default function search (text, config) {
+export default function search (text, config, {AUDIO}) {
   return fetchDom('http://www.macmillandictionary.com/dictionary/british/' + text.replace(/[^A-Za-z0-9]+/g, '-'))
     .then(checkResult)
     .then(addRelated)
     .then(handleAllDom)
+    .then(result => {
+      if (config.autopron.en.dict === 'macmillan') {
+        setTimeout(() => {
+          if (result.audio) {
+            AUDIO.play(result.audio)
+          } else {
+            result.some(({audio}) => {
+              if (audio) {
+                AUDIO.play(audio)
+              }
+            })
+          }
+        }, 0)
+      }
+      return result
+    })
 }
 
 function checkResult (doc) {
@@ -42,6 +60,9 @@ function addRelated (doc) {
     .then(docs => [doc].concat(docs.filter(d => d)))
 }
 
+/**
+ * @returns {Promise.<MacmillanResult[]>} A promise with the result to send back
+ */
 function handleAllDom (docs) {
   let result = docs.map(handleDom).filter(x => x)
   if (result.length > 0) {
@@ -93,7 +114,7 @@ function handleDom (doc) {
 
   let $senses = doc.querySelectorAll('.senses .SENSE')
   if ($senses.length > 0) {
-    def.senses = Array.from($senses).map(el => el.innerHTML)
+    def.senses = Array.from($senses).map(el => stripScript(el).innerHTML)
   }
 
   if (Object.keys(def).length > 0) {

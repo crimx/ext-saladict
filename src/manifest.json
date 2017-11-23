@@ -1,6 +1,8 @@
 {
   "manifest_version": 2,
 
+  "minimum_chrome_version": "55",
+
   "name": "__MSG_extension_name__",
   "short_name": "__MSG_extension_short_name__",
   "description": "__MSG_extension_description__",
@@ -60,6 +62,10 @@
     "tabs",
     "clipboardRead",
     "notifications"
+  ],
+
+  "optional_permissions": [
+    "clipboardWrite"
   ],
 
   "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"

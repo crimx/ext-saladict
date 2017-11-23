@@ -20,10 +20,20 @@
       "zh_CN": "显示单词解释",
       "zh_TW": "展示單詞解釋"
     },
+    "related": {
+      "en": "Show related results",
+      "zh_CN": "失败时显示备选",
+      "zh_TW": "失敗時顯示備選"
+    },
     "sentence": {
       "en": "Show sentences",
       "zh_CN": "显示例句",
       "zh_TW": "展示例句"
+    },
+    "sentence_unit": {
+      "en": "results",
+      "zh_CN": "个",
+      "zh_TW": "個"
     }
   }
 }

@@ -16,14 +16,9 @@
     <svg class="icon-options" @click="openOptionsPage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
       <path d="M0 97.92v24.48h612V97.92H0zm0 220.32h612v-24.48H0v24.48zm0 195.84h612V489.6H0v24.48z"/>
     </svg>
-    <svg class="icon-qrcode" @mouseenter="showQRcode" @mouseleave="currentTabUrl = ''"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-      <path d="M0 225v25h250v-25H0zM0 25h250V0H0v25z"/>
-      <path d="M0 250h25V0H0v250zm225 0h25V0h-25v250zM87.5 162.5h75v-75h-75v75zM362 587v25h80v-25h-80zm0-200h80v-25h-80v25z"/>
-      <path d="M362 612h25V362h-25v250zm190-250v25h60v-25h-60zm-77.5 87.5v25h50v-25h-50z"/>
-      <path d="M432 497.958v-25h-70v25h70zM474.5 387h50v-25h-50v25zM362 225v25h250v-25H362zm0-200h250V0H362v25z"/>
-      <path d="M362 250h25V0h-25v250zm225 0h25V0h-25v250zm-137.5-87.5h75v-75h-75v75zM0 587v25h250v-25H0zm0-200h250v-25H0v25z"/>
-      <path d="M0 612h25V362H0v250zm225 0h25V362h-25v250zM87.5 524.5h75v-75h-75v75zM587 612h25V441h-25v171zM474.5 499.5v25h50v-25h-50z"/>
-      <path d="M474.5 449.5v75h25v-75h-25zM562 587v25h50v-25h-50z"/>
+    <svg class="icon-history "@click="openHistoryPage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+      <path d="M34.688 3.315c-15.887 0-28.812 12.924-28.81 28.73-.012.25-.157 4.434 1.034 8.94l-3.88-2.262c-.965-.56-2.193-.235-2.76.727-.557.96-.233 2.195.728 2.755l9.095 5.302c.02.01.038.013.056.022.1.05.2.09.31.12.07.02.14.05.21.07.09.02.176.02.265.03.06.003.124.022.186.022.036 0 .07-.01.105-.015.034 0 .063.007.097.004.05-.003.097-.024.146-.032.097-.017.19-.038.28-.068.08-.028.157-.06.23-.095.086-.04.165-.085.24-.137.074-.046.14-.096.206-.15.07-.06.135-.125.198-.195.06-.067.11-.135.16-.207.026-.04.062-.07.086-.11.017-.03.017-.067.032-.1.03-.053.07-.1.096-.16l3.62-8.96c.417-1.03-.08-2.205-1.112-2.622-1.033-.413-2.207.083-2.624 1.115l-1.86 4.6c-1.24-4.145-1.1-8.406-1.093-8.523C9.92 18.455 21.04 7.34 34.7 7.34c13.663 0 24.78 11.116 24.78 24.78S48.357 56.9 34.694 56.9c-1.114 0-2.016.902-2.016 2.015s.9 2.02 2.012 2.02c15.89 0 28.81-12.925 28.81-28.81 0-15.89-12.923-28.814-28.81-28.814z"/>
+      <path d="M33.916 36.002c.203.084.417.114.634.13.045.002.09.026.134.026.236 0 .465-.054.684-.134.06-.022.118-.054.177-.083.167-.08.32-.18.463-.3.03-.023.072-.033.103-.07L48.7 22.98c.788-.79.788-2.064 0-2.852-.787-.788-2.062-.788-2.85 0l-11.633 11.63-10.44-4.37c-1.032-.432-2.208.052-2.64 1.08-.43 1.027.056 2.208 1.08 2.638L33.907 36c.002 0 .006 0 .01.002z"/>
     </svg>
     <svg class="icon-share" @click="openShareimgPage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 58.999 58.999">
       <path d="M19.48 12.02c.255 0 .51-.1.706-.294L28.5 3.413V39c0 .552.446 1 1 1s1-.448 1-1V3.412l8.27 8.272c.392.39 1.024.39 1.415 0s.39-1.023 0-1.414L30.207.294C30.115.2 30.004.127 29.88.076c-.244-.1-.52-.1-.764 0-.123.05-.234.125-.326.217l-10.018 10.02c-.39.39-.39 1.022 0 1.413.195.196.45.293.707.293z"/>
@@ -41,7 +36,7 @@
       <path d="M31.112 1.414L29.698 0 15.556 14.142 1.414 0 0 1.414l14.142 14.142L0 29.698l1.414 1.414L15.556 16.97l14.142 14.142 1.414-1.414L16.97 15.556"/>
     </svg>
   </header>
-  <div ref="scrollContainer" class="dicts" @click="handleDictsPanelClick">
+  <div ref="scrollContainer" class="dicts" @click="handleDictsPanelClick" @dblclick="handleDictsPanelDbClick">
     <section class="dict-item" v-for="id in config.dicts.selected" v-show="dicts[id].isShow">
       <header class="dict-item-header" @click="handleUnfold(id)">
         <img class="dict-item-logo" :src="dicts[id].favicon" @click.stop="handleDictPage(id)">
@@ -71,7 +66,7 @@
         :class="{'dict-item-body--show': dicts[id].height > 0}"
         :style="{height: dicts[id].height + 'px'}"
       >
-        <component :is="id" :result="dicts[id].result"></component>
+        <component :is="id" :result="dicts[id].result" @search="handleSearchText"></component>
         <transition name="fade">
           <div class="semi-unfold-mask"
             v-if="dicts[id].height > 0 && dicts[id].height !== dicts[id].offsetHeight"
@@ -85,20 +80,15 @@
       </div>
     </section>
   </div>
-  <transition name="fade">
-    <div class="qrcode-panel" v-if="currentTabUrl">
-      <qrcode :value="currentTabUrl" :size="250"></qrcode>
-      <p class="qrcode-panel-title">{{ i18n('popup_tab_title') || 'Tab Title' }}</p>
-    </div>
-  </transition>
 </div>
 </template>
 
 <script>
-import defaultConfig from 'src/app-config'
+import AppConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 import {isContainEnglish} from 'src/helpers/lang-check'
 import chsToChz from 'src/helpers/chs-to-chz'
+import {addSearchHistory} from 'src/helpers/search-history'
 
 const isSmoothScrollSupported = 'scrollBehavior' in document.documentElement.style
 
@@ -106,8 +96,9 @@ export default {
   name: 'dictionary-panel',
   data () {
     const dicts = {}
+    const config = new AppConfig()
 
-    Object.keys(defaultConfig.dicts.all).forEach(id => {
+    Object.keys(config.dicts.all).forEach(id => {
       dicts[id] = {
         result: null,
         height: 0,
@@ -121,7 +112,10 @@ export default {
     })
 
     return {
-      config: defaultConfig,
+      config,
+
+      pageId: -1,
+      noSearchHistory: false,
 
       dicts,
 
@@ -139,7 +133,8 @@ export default {
       return chrome.i18n.getMessage(key) || key
     },
     seachText (activeDicts) {
-      if (!Array.isArray(activeDicts)) {
+      const isOneActiveDict = !Array.isArray(activeDicts)
+      if (isOneActiveDict) {
         activeDicts = [activeDicts]
       }
       const text = this.text.trim()
@@ -179,11 +174,17 @@ export default {
           })
       })
 
-      // scroll to top after all the dicts are folded
-      if (isSmoothScrollSupported) {
-        this.$refs.scrollContainer.scrollTo({top: 0, left: 0, behavior: 'smooth'})
-      } else {
-        this.$refs.scrollContainer.scrollTo(0, 0)
+      if (!this.noSearchHistory && this.config.searhHistory) {
+        addSearchHistory(text)
+      }
+
+      if (!isOneActiveDict) {
+        // scroll to top after all the dicts are folded
+        if (isSmoothScrollSupported) {
+          this.$refs.scrollContainer.scrollTo({top: 0, left: 0, behavior: 'smooth'})
+        } else {
+          this.$refs.scrollContainer.scrollTo(0, 0)
+        }
       }
     },
     checkSelectionLang () {
@@ -196,21 +197,14 @@ export default {
     },
     updateDragAreaCoord () {
       const $da = this.$refs.dragarea
-      message.send({msg: 'DRAG_AREA_SELF', left: $da.offsetLeft, width: $da.offsetWidth})
+      message.send({msg: 'DRAG_AREA_SELF', left: $da.offsetLeft, width: $da.offsetWidth, page: this.pageId})
     },
     closePanel () {
-      message.send({msg: 'CLOSE_PANEL_SELF'})
+      message.send({msg: 'CLOSE_PANEL_SELF', page: this.pageId})
     },
     pinPanel () {
       this.isPinned = !this.isPinned
-      message.send({msg: 'PIN_PANEL_SELF', flag: this.isPinned})
-    },
-    showQRcode () {
-      chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-        if (tabs.length > 0) {
-          this.currentTabUrl = tabs[0].url
-        }
-      })
+      message.send({msg: 'PIN_PANEL_SELF', flag: this.isPinned, page: this.pageId})
     },
     openOptionsPage () {
       message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('options.html')})
@@ -223,11 +217,14 @@ export default {
         }
         return null
       })
-      .filter(d => d)
+        .filter(d => d)
 
       storage.local.set({paneldata: {text: this.text, dicts}}, () => {
         message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('shareimg.html')})
       })
+    },
+    openHistoryPage () {
+      message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('history.html')})
     },
     unfoldDict (id) {
       let dict = this.dicts[id]
@@ -261,10 +258,22 @@ export default {
     handleDictsPanelClick (evt) {
       for (let target = evt.target; target !== evt.currentTarget; target = target.parentNode) {
         if (target.href) {
-          chrome.runtime.sendMessage({msg: 'CREATE_TAB', url: target.href})
+          const text = target.innerText.trim()
+          if (/\s/.test(text)) {
+            // more than one word
+            chrome.runtime.sendMessage({msg: 'CREATE_TAB', url: target.href})
+          } else {
+            this.handleSearchText({text})
+          }
           evt.preventDefault()
           return
         }
+      }
+    },
+    handleDictsPanelDbClick (evt) {
+      const text = window.getSelection().toString().trim()
+      if (text) {
+        this.handleSearchText({text})
       }
     },
     handleSearchText (data) {
@@ -279,6 +288,24 @@ export default {
     }
   },
   created () {
+    message.send({msg: 'PAGE_ID'}, pageId => {
+      if (pageId) {
+        this.pageId = pageId
+      }
+
+      message.send({msg: 'PANEL_READY_SELF', page: this.pageId}, response => {
+        if (!response) { return }
+        if (response.ctrl) {
+          this.$refs.searchbox.focus()
+          document.execCommand('paste')
+          this.$refs.searchbox.select()
+        }
+        if (response.noSearchHistory) {
+          this.noSearchHistory = true
+        }
+      })
+    })
+
     // get the lastest config
     storage.sync.get('config').then(result => {
       if (result.config) {
@@ -292,18 +319,11 @@ export default {
     storage.on('config', this.onStorageconfig)
 
     this.onMessageSEARCH_TEXT = (data, sender, sendResponse) => {
+      if (this.pageId !== -1 && this.pageId !== data.page) { return }
       this.handleSearchText(data)
       sendResponse()
     }
     message.on('SEARCH_TEXT', this.onMessageSEARCH_TEXT)
-
-    message.send({msg: 'PANEL_READY_SELF'}, response => {
-      if (response && response.ctrl) {
-        this.$refs.searchbox.focus()
-        document.execCommand('paste')
-        this.$refs.searchbox.select()
-      }
-    })
   },
   mounted () {
     setTimeout(() => this.updateDragAreaCoord(), 1000)
@@ -320,8 +340,8 @@ export default {
   },
   components: (() => {
     // Dynamically & asynchronously loads components
-    const components = {Qrcode: () => Promise.resolve(require('vue-qrious'))}
-    Object.keys(defaultConfig.dicts.all).forEach(id => {
+    const components = {}
+    Object.keys(new AppConfig().dicts.all).forEach(id => {
       components[id] = () => Promise.resolve(require('src/dictionaries/' + id + '/view.vue'))
     })
     return components
@@ -403,8 +423,9 @@ body {
   @extend %icon;
 }
 
-.icon-qrcode {
+.icon-history {
   @extend %icon;
+  fill-opacity: 0.8;
 }
 
 .icon-options {
@@ -550,21 +571,6 @@ body {
   width: 15px;
   height: 15px;
   fill: #000;
-}
-
-.qrcode-panel {
-  position: absolute;
-  top: 40px;
-  right: 40px;
-  padding: 10px;
-  background: #fff;
-  border-radius: 10px;
-  box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
-}
-
-.qrcode-panel-title {
-  text-align: center;
-  margin: 5px 0 0 0;
 }
 
 /*-----------------------------------------------*\

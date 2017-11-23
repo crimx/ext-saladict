@@ -4,9 +4,10 @@ import chsToChz from 'src/helpers/chs-to-chz'
  * Search text and give back result
  * @param {string} text - Search text
  * @param {object} config - app config
+ * @param {object} helpers - helper functions
  * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
  */
-export default function search (text, config) {
+export default function search (text, config, {AUDIO}) {
   // https://github.com/audreyt/moedict-webkit#4-國語-a
   return fetch(`https://www.moedict.tw/a/${chsToChz(text)}.json`)
     .then(res => res.json())
@@ -18,6 +19,19 @@ export default function search (text, config) {
         }
       })
       return data
+    })
+    .then(result => {
+      if (config.autopron.cn.dict === 'guoyu') {
+        setTimeout(() => {
+          result.h.some(h => {
+            if (h['=']) {
+              AUDIO.play(h['='])
+              return true
+            }
+          })
+        }, 0)
+      }
+      return result
     })
 }
 

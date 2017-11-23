@@ -4,13 +4,27 @@ import fetchDom from 'src/helpers/fetch-dom'
  * Search text and give back result
  * @param {string} text - Search text
  * @param {object} config - app config
+ * @param {object} helpers - helper functions
  * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
  */
-export default function search (text, config) {
+export default function search (text, config, {AUDIO}) {
   const options = config.dicts.all.urban.options
 
   return fetchDom('http://www.urbandictionary.com/define.php?term=' + text)
     .then(doc => handleDom(doc, options))
+    .then(result => {
+      if (config.autopron.en.dict === 'urban') {
+        setTimeout(() => {
+          result.some(({pron}) => {
+            if (pron) {
+              AUDIO.play(pron)
+              return true
+            }
+          })
+        }, 0)
+      }
+      return result
+    })
 }
 
 /**

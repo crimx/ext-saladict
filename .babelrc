@@ -1,9 +1,9 @@
 {
   "presets": [
-    ["es2015", {
-      "es2015": {
-        "loose": true,
-        "modules": false
+    ["env", {
+      "modules": false,
+      "targets": {
+        "chrome": "55"
       }
     }]
   ],

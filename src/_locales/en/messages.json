@@ -27,6 +27,18 @@
     "description": "支持一下",
     "message": "Enjoy the Extension? Buy me a coffee~"
   },
+  "confirm": {
+    "description": "confirm",
+    "message": "Confirm"
+  },
+  "cancel": {
+    "description": "cancel",
+    "message": "Cancel"
+  },
+  "copy": {
+    "description": "copy",
+    "message": "Copy"
+  },
   "US": {
     "description": "United State",
     "message": "US"
@@ -75,6 +87,14 @@
     "description": "reset button",
     "message": "Reset"
   },
+  "opt_reset_modal_title": {
+    "description": "reset alert",
+    "message": "Reset Config"
+  },
+  "opt_reset_modal_content": {
+    "description": "reset alert",
+    "message": "Reset to default config, confirm？"
+  },
   "opt_title": {
     "description": "设置页面标题",
     "message": "Saladict Options"
@@ -94,6 +114,18 @@
   "opt_app_active_description": {
     "description": "option description",
     "message": "Inline translation would be shut down when it is turned off. Quick Search is still available."
+  },
+  "opt_search_history_title": {
+    "description": "option title",
+    "message": "Search History"
+  },
+  "opt_search_history": {
+    "description": "option",
+    "message": "Track search history"
+  },
+  "opt_search_history_description": {
+    "description": "option description",
+    "message": "You can clear previous records on Search History Page."
   },
   "opt_mode_title": {
     "description": "option title",
@@ -127,6 +159,14 @@
     "description": "option description",
     "message": "When a text selection is made and <strong>'Show Icon'</strong> mode is enabled, a cute little icon would popup nearby the cursor; while in <strong>'Directly Search'</strong> mode the dictionary panel shows up insted; <strong>'Double Click'</strong> mode shows dictionary panel after double click selection; <strong>'Hold Ctrl/⌘'</strong> mode means the <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key must be pressed when the selection is made."
   },
+  "opt_pinmode_title": {
+    "description": "option title",
+    "message": "Pinned Search Mode"
+  },
+  "opt_pinmode_description": {
+    "description": "option description",
+    "message": "When Dictionary Panel is pinned."
+  },
   "opt_triple_ctrl_title": {
     "description": "option title",
     "message": "Quick Search"
@@ -154,6 +194,34 @@
   "opt_language_mode_description": {
     "description": "option description",
     "message": "Only start searching when selection contains the selected languages."
+  },
+  "opt_autopron_title": {
+    "description": "option description",
+    "message": "auto pronounce"
+  },
+  "opt_autopron_cn": {
+    "description": "option description",
+    "message": "Chinese"
+  },
+  "opt_autopron_en": {
+    "description": "option description",
+    "message": "English"
+  },
+  "opt_autopron_none": {
+    "description": "option description",
+    "message": "None"
+  },
+  "opt_autopron_us": {
+    "description": "option description",
+    "message": "US"
+  },
+  "opt_autopron_uk": {
+    "description": "option description",
+    "message": "UK"
+  },
+  "opt_autopron_description": {
+    "description": "option description",
+    "message": "To fully enable auto pronunciation, selected dicts need to be activated. \"Default Unfold\" and language match should be checked. See below."
   },
   "opt_dicts_title": {
     "description": "option title",
@@ -225,7 +293,11 @@
   },
   "context_google_page_translate": {
     "description": "context menu",
-    "message": "Page Translate"
+    "message": "Google Page Translate"
+  },
+  "context_youdao_page_translate": {
+    "description": "context menu",
+    "message": "Youdao Page Translate"
   },
   "context_etymonline": {
     "description": "context menu",
@@ -274,5 +346,65 @@
   "context_view_as_pdf": {
     "description": "context menu",
     "message": "View as PDF"
+  },
+  "context_manual_title": {
+    "description": "context menu",
+    "message": "Manual"
+  },
+  "history_title": {
+    "description": "history page",
+    "message": "Search History"
+  },
+  "history_only_english": {
+    "description": "history page",
+    "message": "Display Only English Words"
+  },
+  "history_plain_modal_title": {
+    "description": "history page",
+    "message": "Plain Text - You can copy and paste"
+  },
+  "history_no_result": {
+    "description": "history page",
+    "message": "No result. Search a few words and come back."
+  },
+  "history_wordcount": {
+    "description": "history page",
+    "message": "Total %s records，Saladict will track approximately 10,000 most recent results."
+  },
+  "history_clear": {
+    "description": "history page",
+    "message": "Clear Records"
+  },
+  "history_savefile": {
+    "description": "history page",
+    "message": "Save File"
+  },
+  "history_plaintext": {
+    "description": "history page",
+    "message": "View Plain Text"
+  },
+  "history_copy_success": {
+    "description": "history page",
+    "message": "Copy Success!"
+  },
+  "history_copu_failed": {
+    "description": "history page",
+    "message": "Copy faild. You can copy manually."
+  },
+  "history_clear_modal_title": {
+    "description": "history page",
+    "message": "Clear Search History"
+  },
+  "history_clear_modal_content": {
+    "description": "history page",
+    "message": "All records will be deleted，confirm？"
+  },
+  "history_clear_success": {
+    "description": "history page",
+    "message": "Clear Success!"
+  },
+  "notification_youdao_err": {
+    "description": "notifications message",
+    "message": "Youdao Page Translation 2.0 not responding.\nSaladict might not have permission to access this page.\nIgnore this message if Youdao panal is shown."
   }
 }

@@ -1,9 +1,11 @@
 import fetchDom from 'src/helpers/fetch-dom'
+import stripScript from 'src/helpers/strip-script'
 
 /**
  * Search text and give back result
  * @param {string} text - Search text
  * @param {object} config - app config
+ * @param {object} helpers - helper functions
  * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
  */
 export default function search (text, config) {
@@ -44,12 +46,15 @@ function handleDom (doc) {
   if ($pron) {
     result.prons = Array.from($pron.children).map(el => ({
       phsym: el.innerText.trim(),
-      audio: (/http\S+.mp3/.exec(el.innerHTML) || [''])[0]
+      audio: (/http\S+.mp3/.exec(el.innerText) || [''])[0]
     }))
   }
 
   let $article = Array.from(doc.querySelectorAll('.info-article')).find(x => /柯林斯高阶英汉双解学习词典/.test(x.innerText))
-  if ($article) { result.defs = Array.from($article.querySelectorAll('.prep-order')).map(x => x.innerHTML) }
+  if ($article) {
+    result.defs = Array.from($article.querySelectorAll('.prep-order'))
+      .map(x => stripScript(x).innerHTML)
+  }
 
   if (Object.keys(result).length > 0) {
     return result
