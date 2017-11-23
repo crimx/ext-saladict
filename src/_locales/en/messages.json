@@ -402,5 +402,9 @@
   "history_clear_success": {
     "description": "history page",
     "message": "Clear Success!"
+  },
+  "notification_youdao_err": {
+    "description": "notifications message",
+    "message": "Youdao Page Translation 2.0 not responding.\nSaladict might not have permission to access this page.\nIgnore this message if Youdao panal is shown."
   }
 }

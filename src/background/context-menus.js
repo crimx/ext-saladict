@@ -31,11 +31,22 @@ function contextMenuOnClick ({menuItemId, selectionText, linkUrl}) {
       })
       break
     case 'youdao_page_translate':
-      chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-        if (tabs.length > 0) {
-          message.send(tabs[0].id, {msg: 'LOAD-YOUDAO-PAGE'})
+      // inject youdao script, defaults to the active tab of the current window.
+      chrome.tabs.executeScript(
+        {file: 'assets/fanyi.youdao.2.0/main.js'},
+        result => {
+          if (chrome.runtime.lastError || !result || (result !== 1 && result[0] !== 1)) {
+            // error msg
+            chrome.notifications.create({
+              type: 'basic',
+              eventTime: Date.now() + 4000,
+              iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
+              title: 'Saladict',
+              message: chrome.i18n.getMessage('notification_youdao_err')
+            })
+          }
         }
-      })
+      )
       break
     case 'view_as_pdf':
       var pdfURL = chrome.runtime.getURL('assets/pdf/web/viewer.html')
