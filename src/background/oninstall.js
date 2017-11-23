@@ -39,7 +39,7 @@ chrome.notifications.onClicked.addListener(id => {
 
 chrome.notifications.onButtonClicked.addListener(id => {
   if (id !== 'oninstall') { return }
-  chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki#%E6%94%AF%E6%8C%81%E5%9B%9B%E7%A7%8D%E5%88%92%E8%AF%8D%E6%96%B9%E5%BC%8F%E6%94%AF%E6%8C%81-iframe-%E5%88%92%E8%AF%8D'})
+  chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/releases'})
   chrome.notifications.getAll(notifications => {
     Object.keys(notifications).forEach(id => chrome.notifications.clear(id))
   })

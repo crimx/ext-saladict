@@ -2,6 +2,28 @@
 
 [Unreleased]
 
+[5.27.3] - 2017-11-23
+### Added
+- 增加有道分级网页翻译2.0（支持 HTTPS）
+- 增加自动发音
+- 增加查词历史记录
+- 面板钉住时支持多种查词模式
+- 必应词典无结果时增加相关词语
+- 词带内部双击查词，点击单词链接也能直接查词
+- 对抓取页面筛选节点以增强安全性
+- 自身页面通信增加 page id 以解决冲突问题
+
+### Changed
+- 查看页面二维码移到地址栏旁的图标中
+- Chrome 最低版本支持提升为 55 以提升性能与减少大小
+- 重构代码以分散复杂度
+- 二维码生成改用 vue-qriously 更轻盈
+
+### Fixed
+- 修复打开 PDF 时弹出框查词自动粘贴失效
+- 修复 howjsay 相关词语获取
+- 修复查词滚动错误
+
 [5.19.1] - 2017-11-15
 ### Added
 - 可配置双击时长
@@ -175,7 +197,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.19.1...HEAD
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.27.3...HEAD
+[5.27.3]: https://github.com/crimx/crx-saladict/compare/v5.19.1...v5.27.3
 [5.19.1]: https://github.com/crimx/crx-saladict/compare/v5.18.5...v5.19.1
 [5.18.5]: https://github.com/crimx/crx-saladict/compare/v5.16.1...v5.18.5
 [5.16.1]: https://github.com/crimx/crx-saladict/compare/v5.15.21...v5.16.1
