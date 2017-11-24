@@ -11,7 +11,9 @@ var debugStorage = debug('storage')
  * key: {string} user's callback function
  * values: {Map} listeners, key: msg, values: generated or user's callback functions
  */
-const listenerMap = new Map()
+const messageListeners = new Map()
+
+const storageListeners = new Map()
 
 export const storage = {
   sync: {
@@ -138,26 +140,60 @@ function storageListen (storageArea) {
   return function listen (key, cb) {
     if (typeof key === 'function') {
       cb = key
-      chrome.storage.onChanged.addListener(cb)
-    } else if (typeof cb === 'function') {
-      chrome.storage.onChanged.addListener((changes, areaName) => {
+      key = ''
+    }
+    if (typeof key !== 'string') {
+      throw new TypeError('Argument 1 should be string when argument 2 is a function.')
+    }
+    if (typeof cb !== 'function') {
+      throw new TypeError('Callback should be a function.')
+    }
+
+    let listeners = storageListeners.get(cb)
+    if (!listeners) {
+      listeners = new Map()
+      storageListeners.set(cb, listeners)
+    }
+    let callback = listeners.get(key)
+    if (!callback) {
+      callback = (changes, areaName) => {
         if (storageArea && areaName !== storageArea) {
           return
         }
-        if (changes[key]) {
+        if (!key || changes[key]) {
           cb(changes, areaName)
         }
-      })
+      }
+      listeners.set(key, callback)
     }
+    return chrome.storage.onChanged.addListener(callback)
   }
 }
 
 /**
  * remove listener
  * @param {function} listener listener function
+ * @param {string} [key] key that listens to
  */
-function storageStopListen (listener) {
-  return chrome.storage.onChanged.removeListener(listener)
+function storageStopListen (listener, key) {
+  const listeners = storageListeners.get(listener)
+  if (listeners) {
+    if (typeof key === 'string') {
+      const callback = listeners.get(key)
+      if (callback) {
+        listeners.delete(key)
+        if (listeners.size <= 0) { storageListeners.delete(listener) }
+        return chrome.storage.onChanged.removeListener(callback)
+      }
+    } else {
+      Array.from(listeners.values()).forEach(callback => {
+        chrome.storage.onChanged.removeListener(callback)
+      })
+      storageListeners.delete(listener)
+    }
+  } else {
+    return chrome.storage.onChanged.removeListener(listener)
+  }
 }
 
 function storageClear (storageArea) {
@@ -259,10 +295,10 @@ function messageListen (msg, cb) {
     throw new TypeError('Callback should be a function.')
   }
 
-  let listeners = listenerMap.get(cb)
+  let listeners = messageListeners.get(cb)
   if (!listeners) {
     listeners = new Map()
-    listenerMap.set(cb, listeners)
+    messageListeners.set(cb, listeners)
   }
   let callback = listeners.get(msg)
   if (!callback) {
@@ -281,20 +317,23 @@ function messageListen (msg, cb) {
 /**
  * remove listener, whether it was added by this helper
  * @param {function} listener listener function
- * @param {string} [msg] listener function
+ * @param {string} [msg] msg that listens to
  */
 function messageStopListen (listener, msg) {
-  const listeners = listenerMap.get(listener)
+  const listeners = messageListeners.get(listener)
   if (listeners) {
     if (typeof msg === 'string') {
       const callback = listeners.get(msg)
       if (callback) {
+        listeners.delete(msg)
+        if (listeners.size <= 0) { messageListeners.delete(listener) }
         return chrome.runtime.onMessage.removeListener(callback)
       }
     } else {
       Array.from(listeners.values()).forEach(callback => {
         chrome.runtime.onMessage.removeListener(callback)
       })
+      messageListeners.delete(listener)
     }
   } else {
     return chrome.runtime.onMessage.removeListener(listener)
@@ -372,10 +411,10 @@ function messageListenSelf (msg, cb) {
     throw new TypeError('Callback should be a function.')
   }
 
-  let listeners = listenerMap.get(cb)
+  let listeners = messageListeners.get(cb)
   if (!listeners) {
     listeners = new Map()
-    listenerMap.set(cb, listeners)
+    messageListeners.set(cb, listeners)
   }
   let callback = listeners.get(msg)
   if (!callback) {
