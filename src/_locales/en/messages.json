@@ -87,6 +87,10 @@
     "description": "reset button",
     "message": "Reset"
   },
+  "opt_autopron_none": {
+    "description": "option description",
+    "message": "None"
+  },
   "opt_reset_modal_title": {
     "description": "reset alert",
     "message": "Reset Config"
@@ -167,6 +171,22 @@
     "description": "option description",
     "message": "When Dictionary Panel is pinned."
   },
+  "opt_preload": {
+    "description": "option select title, preload",
+    "message": "Preload"
+  },
+  "opt_preload_clipboard": {
+    "description": "option description",
+    "message": "Clipboard"
+  },
+  "opt_preload_selection": {
+    "description": "option description",
+    "message": "Selection"
+  },
+  "opt_preload_auto": {
+    "description": "option description",
+    "message": "Auto search"
+  },
   "opt_triple_ctrl_title": {
     "description": "option title",
     "message": "Quick Search"
@@ -177,7 +197,15 @@
   },
   "opt_triple_ctrl_description": {
     "description": "option description",
-    "message": "Press <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key three times a dictionary panel shows up"
+    "message": "Press <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key three times a dictionary panel shows up. Preload content will be inserted into input box. Enable auto search to search automatically."
+  },
+  "opt_popup_title": {
+    "description": "option title",
+    "message": "Browser Action"
+  },
+  "opt_popup_description": {
+    "description": "option description",
+    "message": "Preload content will be inserted into input box. Enable auto search to search automatically."
   },
   "opt_language_title": {
     "description": "option title",
@@ -206,10 +234,6 @@
   "opt_autopron_en": {
     "description": "option description",
     "message": "English"
-  },
-  "opt_autopron_none": {
-    "description": "option description",
-    "message": "None"
   },
   "opt_autopron_us": {
     "description": "option description",

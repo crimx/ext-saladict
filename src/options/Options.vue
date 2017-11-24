@@ -14,8 +14,9 @@
     <opt-search-history />
     <opt-mode />
     <opt-pin-mode />
-    <opt-triple-ctrl />
     <opt-language />
+    <opt-popup />
+    <opt-triple-ctrl />
     <opt-autopron />
     <opt-dicts />
     <opt-context-menu />
@@ -51,6 +52,7 @@ import OptAppActive from './OptAppActive'
 import OptSearchHistory from './OptSearchHistory'
 import OptMode from './OptMode'
 import OptPinMode from './OptPinMode'
+import OptPopup from './OptPopup'
 import OptTripleCtrl from './OptTripleCtrl'
 import OptLanguage from './OptLanguage'
 import OptAutopron from './OptAutopron'
@@ -138,6 +140,7 @@ export default {
     OptSearchHistory,
     OptMode,
     OptPinMode,
+    OptPopup,
     OptTripleCtrl,
     OptLanguage,
     OptAutopron,
@@ -369,6 +372,19 @@ kbd {
   overflow: hidden;
   height: 0;
   transition: height 400ms;
+}
+
+.select-box-container {
+  margin: 10px 0;
+}
+
+.select-box {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.select-label {
+  padding-left: 5px;
 }
 
 /*------------------------------------*\

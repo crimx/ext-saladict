@@ -12,26 +12,36 @@ message.server()
 message.listen((data, sender, sendResponse) => {
   switch (data.msg) {
     case 'CREATE_TAB':
-      chrome.tabs.create({
-        url: data.escape
-          ? data.url
-            .replace('%s', this.text)
-            .replace('%z', chsToChz(this.text))
-          : data.url
-      })
-      break
+      return createTab(data, sender, sendResponse)
     case 'AUDIO_PLAY':
-      AUDIO.load(data.src)
-      Promise.race([
-        promiseTimer(4000),
-        new Promise(resolve => AUDIO.listen('ended', resolve))
-      ]).then(sendResponse)
-      AUDIO.play()
-      return true
+      return playAudio(data, sender, sendResponse)
     case 'FETCH_DICT_RESULT':
       return fetchDictResult(data, sender, sendResponse)
+    case 'PRELOAD_SELECTION':
+      return preloadSelection(data, sender, sendResponse)
   }
 })
+
+function createTab (data, sender, sendResponse) {
+  chrome.tabs.create({
+    url: data.escape
+      ? data.url
+        .replace('%s', this.text)
+        .replace('%z', chsToChz(this.text))
+      : data.url
+  })
+  sendResponse()
+}
+
+function playAudio (data, sender, sendResponse) {
+  AUDIO.load(data.src)
+  Promise.race([
+    promiseTimer(4000),
+    new Promise(resolve => AUDIO.listen('ended', resolve))
+  ]).then(sendResponse)
+  AUDIO.play()
+  return true
+}
 
 function fetchDictResult (data, sender, sendResponse) {
   const search = require('src/dictionaries/' + data.dict + '/engine.js').default
@@ -47,5 +57,18 @@ function fetchDictResult (data, sender, sendResponse) {
   })
 
   // keep the channel alive
+  return true
+}
+
+function preloadSelection (data, sender, sendResponse) {
+  chrome.tabs.query({active: true, currentWindow: true}, tabs => {
+    if (tabs.length > 0) {
+      message.send(tabs[0].id, {msg: '__PRELOAD_SELECTION__'}, text => {
+        sendResponse(text || '')
+      })
+    } else {
+      sendResponse('')
+    }
+  })
   return true
 }

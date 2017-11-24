@@ -278,11 +278,31 @@ export default {
 
     message.self.send({msg: 'PANEL_READY'}, response => {
       if (!response) { return }
-      if (response.ctrl) {
+      if (response.preload === 'clipboard') {
         this.$refs.searchbox.focus()
         document.execCommand('paste')
-        this.$refs.searchbox.select()
+        if (response.autoSearch) {
+          this.handleSearchText({text: this.$refs.searchbox.value})
+        } else {
+          this.$refs.searchbox.select()
+        }
+      } else if (response.preload === 'selection') {
+        message.send({msg: 'PRELOAD_SELECTION'}, text => {
+          if (!text) { return }
+          if (response.autoSearch) {
+            this.handleSearchText({text})
+          } else {
+            this.text = text
+            this.$nextTick(() => {
+              this.$refs.searchbox.focus()
+              this.$refs.searchbox.select()
+            })
+          }
+        })
+      } else {
+        this.$refs.searchbox.focus()
       }
+
       if (response.noSearchHistory) {
         this.noSearchHistory = true
       }

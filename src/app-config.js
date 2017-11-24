@@ -22,6 +22,20 @@ export default function AppConfig () {
 
     // show panel when triple press ctrl
     tripleCtrl: true,
+    // '': no preload
+    // 'clipboard'
+    // 'selection'
+    tripleCtrlPreload: 'clipboard',
+    // auto search
+    tripleCtrlAuto: false,
+
+    // browser action
+    // '': no preload
+    // 'clipboard'
+    // 'selection'
+    baPreload: 'clipboard',
+    // auto search
+    baAuto: false,
 
     // source language
     language: {

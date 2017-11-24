@@ -11,6 +11,7 @@ let config = new AppConfig()
 let numTripleCtrl = 0
 let tripleCtrlTimeout = null
 let isCtrlKeydown = false
+let selectionText = ''
 
 storage.sync.get('config', data => {
   if (data.config) {
@@ -53,6 +54,10 @@ document.addEventListener('mouseup', handleMouseup, true)
 
 window.addEventListener('message', handleFrameMsg, false)
 
+message.on('__PRELOAD_SELECTION__', (data, sender, sendResponse) => {
+  sendResponse(selectionText)
+})
+
 /**
  * send when hits ctrl button three times
  * @param {MouseEvent} evt
@@ -88,6 +93,7 @@ function handleMouseup ({button, target, clientX, clientY}) {
 
   if (!window.getSelection().toString().trim()) {
     // empty message
+    selectionText = ''
     return message.self.send({msg: 'SELECTION'})
   }
 
@@ -98,8 +104,11 @@ function handleMouseup ({button, target, clientX, clientY}) {
     let text = window.getSelection().toString().trim()
     if (!text) {
       // empty message
+      selectionText = ''
       return message.self.send({msg: 'SELECTION'})
     }
+
+    selectionText = text
 
     if ((config.language.english && isContainEnglish(text)) ||
         (config.language.chinese && isContainChinese(text))) {

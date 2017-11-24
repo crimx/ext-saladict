@@ -262,7 +262,7 @@ export default {
     message.self.on('PANEL_READY', (data, sender, sendResponse) => {
       if (this.isTripleCtrl) {
         this.isTripleCtrl = false
-        return sendResponse({ctrl: true})
+        return sendResponse({preload: this.config.tripleCtrlPreload, autoSearch: this.config.tripleCtrlAuto})
       }
 
       if (this.selectedText) {

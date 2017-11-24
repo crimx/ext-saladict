@@ -87,6 +87,10 @@
     "description": "reset button",
     "message": "重置"
   },
+  "opt_none": {
+    "description": "option description",
+    "message": "无"
+  },
   "opt_reset_modal_title": {
     "description": "reset alert",
     "message": "重置设定"
@@ -167,6 +171,22 @@
     "description": "option description",
     "message": "当面板被钉住时的查词模式。"
   },
+  "opt_preload": {
+    "description": "option select title, preload",
+    "message": "预先加载"
+  },
+  "opt_preload_clipboard": {
+    "description": "option description",
+    "message": "剪贴板"
+  },
+  "opt_preload_selection": {
+    "description": "option description",
+    "message": "页面划词"
+  },
+  "opt_preload_auto": {
+    "description": "option description",
+    "message": "自动开始查词"
+  },
   "opt_triple_ctrl_title": {
     "description": "option title",
     "message": "快捷查词"
@@ -177,7 +197,15 @@
   },
   "opt_triple_ctrl_description": {
     "description": "option description",
-    "message": "连续按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键将弹出词典界面。"
+    "message": "连续按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键将弹出词典界面。选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。"
+  },
+  "opt_popup_title": {
+    "description": "option title",
+    "message": "右上弹框"
+  },
+  "opt_popup_description": {
+    "description": "option description",
+    "message": "选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。"
   },
   "opt_language_title": {
     "description": "option title",
@@ -206,10 +234,6 @@
   "opt_autopron_en": {
     "description": "option description",
     "message": "英文"
-  },
-  "opt_autopron_none": {
-    "description": "option description",
-    "message": "无"
   },
   "opt_autopron_us": {
     "description": "option description",

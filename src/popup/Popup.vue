@@ -76,7 +76,7 @@ export default {
   beforeCreate () {
     message.self.on('PANEL_READY', (data, sender, sendResponse) => {
       // trigger the paste command
-      sendResponse({ctrl: true})
+      sendResponse({preload: this.config.baPreload, autoSearch: this.config.baAuto})
     })
   }
 }

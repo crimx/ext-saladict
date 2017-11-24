@@ -14,6 +14,24 @@ export default function mergeConfig (config) {
     base.doubleClickDelay = config.doubleClickDelay
   }
   if (config.tripleCtrl !== undefined) { base.tripleCtrl = Boolean(config.tripleCtrl) }
+  if (typeof config.tripleCtrlPreload === 'string') {
+    if (/^clipboard|selection$/.test(config.tripleCtrlPreload)) {
+      base.tripleCtrlPreload = config.tripleCtrlPreload
+    } else {
+      base.tripleCtrlPreload = ''
+    }
+  }
+  if (config.tripleCtrlAuto !== undefined) { base.tripleCtrlAuto = Boolean(config.tripleCtrlAuto) }
+
+  if (typeof config.baPreload === 'string') {
+    if (/^clipboard|selection$/.test(config.baPreload)) {
+      base.baPreload = config.baPreload
+    } else {
+      base.baPreload = ''
+    }
+  }
+  if (config.baAuto !== undefined) { base.baAuto = Boolean(config.baAuto) }
+
   if (config.language) {
     Object.keys(base.language).forEach(k => {
       if (config.language[k] !== undefined) { base.language[k] = Boolean(config.language[k]) }
