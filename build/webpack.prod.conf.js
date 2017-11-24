@@ -7,6 +7,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
+const argv = require('minimist')(process.argv.slice(2))
+
 const isDevBuild = process.env.BUILD_ENV === 'devproduction'
 
 const webpackConfig = merge(baseWebpackConfig, {
@@ -98,7 +100,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: isDevBuild ? '"development"' : '"production"',
-        DEBUG: '"*"'
+        DEBUG: `"${argv.debug || ''}"`
       }
     }),
     // tailor locales
