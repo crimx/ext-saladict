@@ -34,7 +34,7 @@ import {storage, message} from 'src/helpers/chrome-api'
 
 export default {
   name: 'Popup',
-  store: ['config', 'pageId', 'i18n'],
+  store: ['config', 'i18n'],
   data () {
     return {
       frameSource: chrome.runtime.getURL('panel.html'),
@@ -73,9 +73,8 @@ export default {
       return preferredHeight > maxHeight ? maxHeight : preferredHeight
     }
   },
-  created () {
-    message.on('PANEL_READY', (data, sender, sendResponse) => {
-      if (this.pageId !== -1 && this.pageId !== data.page) { return }
+  beforeCreate () {
+    message.self.on('PANEL_READY', (data, sender, sendResponse) => {
       // trigger the paste command
       sendResponse({ctrl: true})
     })

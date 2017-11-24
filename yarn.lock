@@ -511,6 +511,10 @@ babel-plugin-istanbul@^4.1.5:
     istanbul-lib-instrument "^1.7.5"
     test-exclude "^4.1.1"
 
+babel-plugin-strip-function-call@^1.0.2:
+  version "1.0.2"
+  resolved "http://registry.npm.taobao.org/babel-plugin-strip-function-call/download/babel-plugin-strip-function-call-1.0.2.tgz#374a68b5648e16e2b6d1effd280c3abc88648e3a"
+
 babel-plugin-syntax-async-functions@^6.8.0:
   version "6.13.0"
   resolved "http://registry.npm.taobao.org/babel-plugin-syntax-async-functions/download/babel-plugin-syntax-async-functions-6.13.0.tgz#cad9cad1191b5ad634bf30ae0872391e0647be95"
@@ -1677,7 +1681,7 @@ debug@2.6.9, debug@^2.2.0, debug@^2.6.8:
   dependencies:
     ms "2.0.0"
 
-debug@3.1.0, debug@^3.0.1:
+debug@3.1.0, debug@^3.0.1, debug@^3.1.0:
   version "3.1.0"
   resolved "http://registry.npm.taobao.org/debug/download/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
   dependencies:
@@ -1896,6 +1900,10 @@ elliptic@^6.0.0:
 emojis-list@^2.0.0:
   version "2.1.0"
   resolved "http://registry.npm.taobao.org/emojis-list/download/emojis-list-2.1.0.tgz#4daa4d9db00f9819880c79fa457ae5b09a1fd389"
+
+empty-module-loader@^0.1.1:
+  version "0.1.1"
+  resolved "http://registry.npm.taobao.org/empty-module-loader/download/empty-module-loader-0.1.1.tgz#0bb9c25dde4b224cbef493de1da89bb9be81b958"
 
 encodeurl@~1.0.1:
   version "1.0.1"

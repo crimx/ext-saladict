@@ -4,17 +4,17 @@ import {storage, message} from 'src/helpers/chrome-api'
 import AppConfig from 'src/app-config'
 
 Vue.config.productionTip = false
+Vue.config.devtools = false
 
 document.title = chrome.i18n.getMessage('history_title')
 
-Promise.all([message.send({msg: 'PAGE_ID'}), storage.sync.get('config')])
-  .then(([pageId, {config}]) => {
+storage.sync.get('config')
+  .then(({config}) => {
     new Vue({ // eslint-disable-line no-new
       el: '#app',
       render (createElement) {
         return createElement(App, {
           props: {
-            pageId: this.pageId,
             config: this.config,
             i18n: key => chrome.i18n.getMessage(key)
           }
@@ -22,7 +22,6 @@ Promise.all([message.send({msg: 'PAGE_ID'}), storage.sync.get('config')])
       },
       data () {
         return {
-          pageId: pageId || -1,
           config: config || new AppConfig()
         }
       },
@@ -36,8 +35,7 @@ Promise.all([message.send({msg: 'PAGE_ID'}), storage.sync.get('config')])
       }
     })
 
-    message.on('PANEL_READY', (data, sender, sendResponse) => {
-      if (pageId !== -1 && pageId !== data.page) { return }
+    message.self.on('PANEL_READY', (data, sender, sendResponse) => {
       // trigger the paste command
       sendResponse({noSearchHistory: true})
     })

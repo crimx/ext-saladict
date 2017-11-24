@@ -2,17 +2,17 @@ import Vue from 'vue'
 import App from './Popup'
 import VueQriously from 'vue-qriously'
 import VueStash from 'vue-stash'
-import {storage, message} from 'src/helpers/chrome-api'
+import {storage} from 'src/helpers/chrome-api'
 import AppConfig from 'src/app-config'
 
 Vue.use(VueQriously)
 Vue.use(VueStash)
 Vue.config.productionTip = false
+Vue.config.devtools = false
 
-Promise.all([message.send({msg: 'PAGE_ID'}), storage.sync.get('config')])
-  .then(([pageId, {config}]) => {
+storage.sync.get('config')
+  .then(({config}) => {
     const store = {
-      pageId: pageId || -1,
       config: config || new AppConfig(),
       i18n: key => chrome.i18n.getMessage(key)
     }

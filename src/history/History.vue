@@ -92,7 +92,7 @@ if (!/^(en|zh-cn|zh-tw|zh-hk)$/.test(lang)) {
 moment.locale(lang)
 
 export default {
-  props: ['pageId', 'config', 'i18n'],
+  props: ['config', 'i18n'],
   data () {
     return {
       rawHistoryFolders: [],
@@ -228,7 +228,7 @@ export default {
         setTimeout(() => {
           const text = window.getSelection().toString().trim()
           if (text) {
-            message.send({msg: 'SEARCH_TEXT_SELF', text, page: this.pageId})
+            message.self.send({msg: 'SEARCH_TEXT', text})
           }
         }, 0)
       }

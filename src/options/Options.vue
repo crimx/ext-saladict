@@ -59,7 +59,7 @@ import OptContextMenu from './OptContextMenu'
 
 export default {
   name: 'options',
-  store: ['config', 'pageId', 'newVersionAvailable', 'i18n'],
+  store: ['config', 'newVersionAvailable', 'i18n'],
   data () {
     return {
       text: 'salad',
@@ -71,7 +71,7 @@ export default {
     searchText () {
       clearTimeout(this.searchTextTimeout)
       this.searchTextTimeout = setTimeout(() => {
-        message.send({msg: 'SEARCH_TEXT_SELF', text: this.text, page: this.pageId})
+        message.self.send({msg: 'SEARCH_TEXT', text: this.text})
       }, 2000)
     },
     handleReset () {
@@ -146,20 +146,17 @@ export default {
     Coffee,
     AlertModal
   },
-  created () {
-    message.on('PANEL_READY', (data, sender, sendResponse) => {
-      if (this.pageId !== -1 && this.pageId !== data.page) { return }
+  beforeCreate () {
+    message.self.on('PANEL_READY', (data, sender, sendResponse) => {
       sendResponse({noSearchHistory: true})
-      setTimeout(() => this.searchText(), 0)
     })
   },
   mounted () {
     // monitor search text
-    message.on('FETCH_DICT_RESULT', (data, sender) => {
-      if (this.pageId === sender.tab.id) {
-        this.text = data.text
-      }
+    message.self.on('FETCH_DICT_RESULT', (data, sender) => {
+      this.text = data.text
     })
+    setTimeout(() => this.searchText(), 0)
   }
 }
 </script>

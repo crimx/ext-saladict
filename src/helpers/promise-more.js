@@ -3,7 +3,7 @@
  * @param {Array|Object} iterable
  * @returns {Promise} A promise with an array of all the resolved/rejected results. null for rejection.
  */
-export const reflect = function reflect (iterable) {
+export const promiseReflect = function promiseReflect (iterable) {
   if (!Array.isArray(iterable)) {
     iterable = Array.from(iterable)
   }
@@ -18,7 +18,7 @@ export const reflect = function reflect (iterable) {
  *  If resolved, the array consists of all the resolved/rejected results. null for rejection.
  *  Otherwise the array consists of all the rejected reasons.
  */
-export const any = function any (iterable) {
+export const promiseAny = function promiseAny (iterable) {
   if (!Array.isArray(iterable)) {
     iterable = Array.from(iterable)
   }
@@ -46,7 +46,7 @@ export const any = function any (iterable) {
  * @returns {Promise} If resovled, returns a promise with the first resolved result.
  *  Otherwise returns a promise with all the rejected reasons.
  */
-export const first = function first (iterable) {
+export const promiseFirst = function promiseFirst (iterable) {
   if (!Array.isArray(iterable)) {
     iterable = Array.from(iterable)
   }
@@ -68,7 +68,7 @@ export const first = function first (iterable) {
  * @param {number} [delay=0]
  * @returns {Promise} A promise with the timeoutID
  */
-export const timer = function timer (delay = 0) {
+export const promiseTimer = function promiseTimer (delay = 0) {
   return new Promise(resolve => {
     var id = setTimeout(() => resolve(id), Number(delay) || 0)
   })
@@ -80,20 +80,20 @@ export const timer = function timer (delay = 0) {
  * @param {number} [delay=0] Zero means no timeout
  * @returns {Promise} A promise with the resolved/rejected result or rejected with the reason 'timeout'
  */
-export const timeout = function timeout (pr, delay = 0) {
+export const promiseTimeout = function promiseTimeout (pr, delay = 0) {
   delay = Number(delay)
   return new Promise((resolve, reject) => {
     Promise.resolve(pr).then(resolve, reject)
     if (delay > 0) {
-      timer(delay).then(() => { reject('timeout') })
+      promiseTimer(delay).then(() => { reject(new Error(`timeout ${delay}ms`)) })
     }
   })
 }
 
 export default {
-  reflect,
-  any,
-  first,
-  timer,
-  timeout
+  reflect: promiseReflect,
+  any: promiseAny,
+  first: promiseFirst,
+  timer: promiseTimer,
+  timeout: promiseTimeout
 }

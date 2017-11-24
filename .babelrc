@@ -11,6 +11,13 @@
   "env": {
     "test": {
       "plugins": [ "istanbul" ]
+    },
+    "production": {
+      "plugins": [
+        ["strip-function-call", {
+          "strip": ["debug", "debugMsg", "debugStorage"]
+        }]
+      ]
     }
   }
 }

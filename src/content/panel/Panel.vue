@@ -114,7 +114,6 @@ export default {
     return {
       config,
 
-      pageId: -1,
       noSearchHistory: false,
 
       dicts,
@@ -197,14 +196,14 @@ export default {
     },
     updateDragAreaCoord () {
       const $da = this.$refs.dragarea
-      message.send({msg: 'DRAG_AREA_SELF', left: $da.offsetLeft, width: $da.offsetWidth, page: this.pageId})
+      message.self.send({msg: 'DRAG_AREA', left: $da.offsetLeft, width: $da.offsetWidth})
     },
     closePanel () {
-      message.send({msg: 'CLOSE_PANEL_SELF', page: this.pageId})
+      message.self.send({msg: 'CLOSE_PANEL'})
     },
     pinPanel () {
       this.isPinned = !this.isPinned
-      message.send({msg: 'PIN_PANEL_SELF', flag: this.isPinned, page: this.pageId})
+      message.self.send({msg: 'PIN_PANEL', flag: this.isPinned})
     },
     openOptionsPage () {
       message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('options.html')})
@@ -288,24 +287,6 @@ export default {
     }
   },
   created () {
-    message.send({msg: 'PAGE_ID'}, pageId => {
-      if (pageId) {
-        this.pageId = pageId
-      }
-
-      message.send({msg: 'PANEL_READY_SELF', page: this.pageId}, response => {
-        if (!response) { return }
-        if (response.ctrl) {
-          this.$refs.searchbox.focus()
-          document.execCommand('paste')
-          this.$refs.searchbox.select()
-        }
-        if (response.noSearchHistory) {
-          this.noSearchHistory = true
-        }
-      })
-    })
-
     // get the lastest config
     storage.sync.get('config').then(result => {
       if (result.config) {
@@ -319,11 +300,22 @@ export default {
     storage.on('config', this.onStorageconfig)
 
     this.onMessageSEARCH_TEXT = (data, sender, sendResponse) => {
-      if (this.pageId !== -1 && this.pageId !== data.page) { return }
       this.handleSearchText(data)
       sendResponse()
     }
-    message.on('SEARCH_TEXT', this.onMessageSEARCH_TEXT)
+    message.self.on('SEARCH_TEXT', this.onMessageSEARCH_TEXT)
+
+    message.self.send({msg: 'PANEL_READY'}, response => {
+      if (!response) { return }
+      if (response.ctrl) {
+        this.$refs.searchbox.focus()
+        document.execCommand('paste')
+        this.$refs.searchbox.select()
+      }
+      if (response.noSearchHistory) {
+        this.noSearchHistory = true
+      }
+    })
   },
   mounted () {
     setTimeout(() => this.updateDragAreaCoord(), 1000)

@@ -13,6 +13,14 @@ const webpackConfig = merge(baseWebpackConfig, {
   devtool: isDevBuild ? '#source-map' : false,
   module: {
     rules: [
+      (
+        isDevBuild
+          ? null
+          : {
+            test: /node_modules[\\/]debug[\\/]/,
+            loader: 'empty-module-loader'
+          }
+      ),
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -83,13 +91,14 @@ const webpackConfig = merge(baseWebpackConfig, {
           ]
         })
       }
-    ]
+    ].filter(Boolean)
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: isDevBuild ? '"development"' : '"production"'
+        NODE_ENV: isDevBuild ? '"development"' : '"production"',
+        DEBUG: '"*"'
       }
     }),
     // tailor locales

@@ -1,18 +1,18 @@
 import Vue from 'vue'
 import App from './Options'
 import VueStash from 'vue-stash'
-import {storage, message} from 'src/helpers/chrome-api'
+import {storage} from 'src/helpers/chrome-api'
 import AppConfig from 'src/app-config'
 
 Vue.use(VueStash)
 Vue.config.productionTip = false
+Vue.config.devtools = false
 
 document.title = chrome.i18n.getMessage('opt_title')
 
-Promise.all([message.send({msg: 'PAGE_ID'}), storage.sync.get('config')])
-  .then(([pageId, {config}]) => {
+storage.sync.get('config')
+  .then(({config}) => {
     const store = {
-      pageId: pageId || -1,
       config: config || new AppConfig(),
       unlock: false,
       newVersionAvailable: false,
