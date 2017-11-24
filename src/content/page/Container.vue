@@ -2,7 +2,7 @@
 <div class="saladict-container">
   <transition name="saladict-jelly">
     <div class="saladict-icon"
-      v-if="isShowIcon"
+      v-if="isShowIcon && config.active"
       key="saladict-icon"
       :style="{top: iconTop + 'px !important', left: iconLeft + 'px !important'}"
       @mouseenter="iconMouseenter"
@@ -15,7 +15,7 @@
     </div>
   </transition>
   <iframe class="saladict-frame"
-    v-if="isShowFrame"
+    v-if="isShowFrame && config.active"
     ref="frame"
     key="saladict-frame"
     name="saladict-frame"
@@ -24,7 +24,7 @@
     :style="{top: frameTop + 'px !important', left: frameLeft + 'px !important', height: panelHeight + 'px !important'}"
   ></iframe>
   <div class="saladict-drag"
-    v-if="isShowFrame"
+    v-if="isShowFrame && config.active"
     @mousedown="handleDragStart"
     :style="dragStyle"
   ></div>
@@ -32,15 +32,13 @@
 </template>
 
 <script>
-import AppConfig from 'src/app-config'
-import {storage, message} from 'src/helpers/chrome-api'
+import {message} from 'src/helpers/chrome-api'
 
 export default {
   name: 'saladict-container',
+  props: ['config'],
   data () {
     return {
-      config: new AppConfig(),
-
       frameSource: chrome.runtime.getURL('panel.html'),
 
       isShowIcon: false,
@@ -195,20 +193,9 @@ export default {
       }
     }
   },
-  created () {
-    storage.sync.get('config').then(result => {
-      if (result.config) {
-        this.config = result.config
-      }
-    })
-    this.onStorageconfig = changes => {
-      this.config = changes.config.newValue
-    }
-    storage.on('config', this.onStorageconfig)
-  },
   mounted () {
     // receive signals from page and all frames
-    this.onMessageSELECTION = (data, sender, sendResponse) => {
+    message.self.on('SELECTION', (data, sender, sendResponse) => {
       this.selectedText = data.text || ''
 
       if (this.isStayVisiable) {
@@ -257,22 +244,22 @@ export default {
         }
       }
       sendResponse()
-    }
+    })
 
-    this.onMessageCLOSE_PANEL = (data, sender, sendResponse) => {
+    message.self.on('CLOSE_PANEL', (data, sender, sendResponse) => {
       this.isStayVisiable = false
       this.isShowFrame = false
       this.isShowIcon = false
       sendResponse()
-    }
+    })
 
-    this.onMessagePIN_PANEL = (data, sender, sendResponse) => {
+    message.self.on('PIN_PANEL', (data, sender, sendResponse) => {
       this.isStayVisiable = data.flag
       this.isShowIcon = false
       sendResponse()
-    }
+    })
 
-    this.onMessagePANEL_READY = (data, sender, sendResponse) => {
+    message.self.on('PANEL_READY', (data, sender, sendResponse) => {
       if (this.isTripleCtrl) {
         this.isTripleCtrl = false
         return sendResponse({ctrl: true})
@@ -283,9 +270,9 @@ export default {
       }
 
       sendResponse()
-    }
+    })
 
-    this.onMessageTRIPLE_CTRL = (data, sender, sendResponse) => {
+    message.self.on('TRIPLE_CTRL', (data, sender, sendResponse) => {
       this.isTripleCtrl = true
       // show panel
       this.isShowIcon = false
@@ -296,32 +283,13 @@ export default {
         this.isShowFrame = true
       })
       sendResponse()
-    }
+    })
 
-    this.onMessageDRAG_AREA = ({left, width, page}, sender, sendResponse) => {
+    message.self.on('DRAG_AREA', ({left, width, page}, sender, sendResponse) => {
       this.dragLeft = left
       this.dragWidth = width
       sendResponse()
-    }
-
-    message.self.on('SELECTION', this.onMessageSELECTION)
-    message.self.on('CLOSE_PANEL', this.onMessageCLOSE_PANEL)
-    message.self.on('PIN_PANEL', this.onMessagePIN_PANEL)
-    message.self.on('PANEL_READY', this.onMessagePANEL_READY)
-    message.self.on('TRIPLE_CTRL', this.onMessageTRIPLE_CTRL)
-    message.self.on('DRAG_AREA', this.onMessageDRAG_AREA)
-  },
-  destroyed () {
-    document.removeEventListener('mouseup', this.handleDragEnd, true)
-    document.removeEventListener('mousemove', this.handlePageMousemove, true)
-    window.removeEventListener('message', this.handleDragStart)
-    storage.off(this.onStorageconfig)
-    message.off(this.onMessageSELECTION)
-    message.off(this.onMessageCLOSE_PANEL)
-    message.off(this.onMessagePIN_PANEL)
-    message.off(this.onMessagePANEL_READY)
-    message.off(this.onMessageTRIPLE_CTRL)
-    message.off(this.onMessageDRAG_AREA)
+    })
   }
 }
 </script>

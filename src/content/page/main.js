@@ -7,29 +7,41 @@ Vue.config.devtools = false
 
 var vm
 
-storage.sync.listen('config', changes => {
-  if (changes.config.newValue.active && !vm) {
-    activate()
+storage.sync.get('config').then(({config}) => {
+  if (config && config.active) {
+    activate(config)
   }
+
+  storage.sync.listen('config', changes => {
+    const newConfig = changes.config.newValue
+    if (vm) {
+      vm.config = newConfig
+    } else {
+      if (newConfig.active) {
+        activate(newConfig)
+      }
+    }
+  })
 })
 
-storage.sync.get('config').then(result => {
-  if (result.config && result.config.active) {
-    activate()
-  }
-})
-
-message.self.on('SELECTION', (data, sender, sendResponse) => {
-  // check if dom element being removed
-  if (vm && vm.$el && !document.querySelector('.saladict-container')) {
-    document.body.appendChild(vm.$el)
-  }
-})
-
-function activate () {
+function activate (config) {
   vm = new Vue({
-    render: h => h(App)
+    data: {config},
+    render (createElement) {
+      return createElement(App, {
+        props: {
+          config: this.config
+        }
+      })
+    }
   }).$mount()
 
   document.body.appendChild(vm.$el)
+
+  message.self.on('SELECTION', (data, sender, sendResponse) => {
+    // eavesdropping, check if dom element being removed
+    if (!document.querySelector('.saladict-container')) {
+      document.body.appendChild(vm.$el)
+    }
+  })
 }
