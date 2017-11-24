@@ -89,48 +89,38 @@ import {storage, message} from 'src/helpers/chrome-api'
 import {isContainEnglish} from 'src/helpers/lang-check'
 import chsToChz from 'src/helpers/chs-to-chz'
 import {addSearchHistory} from 'src/helpers/search-history'
+import {promiseTimer} from 'src/helpers/promise-more'
 
 const isSmoothScrollSupported = 'scrollBehavior' in document.documentElement.style
 
 export default {
   name: 'dictionary-panel',
+  props: ['config', 'i18n'],
   data () {
-    const dicts = {}
-    const config = new AppConfig()
-
-    Object.keys(config.dicts.all).forEach(id => {
-      dicts[id] = {
-        result: null,
-        height: 0,
-        offsetHeight: 0,
-        favicon: chrome.runtime.getURL(`assets/dicts/${id}.png`),
-        name: chrome.i18n.getMessage('dict_' + id) || id,
-        isShow: false,
-        isUnfolded: false,
-        isSearching: false
-      }
-    })
-
     return {
-      config,
-
-      noSearchHistory: false,
-
-      dicts,
+      dicts: Object.keys(this.config.dicts.all)
+        .reduce((dicts, id) => {
+          dicts[id] = {
+            result: null,
+            height: 0,
+            offsetHeight: 0,
+            favicon: chrome.runtime.getURL(`assets/dicts/${id}.png`),
+            name: chrome.i18n.getMessage('dict_' + id) || id,
+            isShow: false,
+            isUnfolded: false,
+            isSearching: false
+          }
+          return dicts
+        }, {}),
 
       text: '',
 
+      noSearchHistory: false,
       isDragging: false,
-
-      currentTabUrl: '',
-
       isPinned: false
     }
   },
   methods: {
-    i18n (key) {
-      return chrome.i18n.getMessage(key) || key
-    },
     seachText (activeDicts) {
       const isOneActiveDict = !Array.isArray(activeDicts)
       if (isOneActiveDict) {
@@ -150,27 +140,25 @@ export default {
         dict.isSearching = true
         dict.result = null // clear the results
 
-        const timer = new Promise((resolve, reject) => {
-          setTimeout(resolve, 10000)
-        })
+        Promise.race([
+          promiseTimer(10000),
+          message.send({msg: 'FETCH_DICT_RESULT', text, dict: id})
+        ]).then(response => {
+          dict.isSearching = false
 
-        Promise.race([timer, message.send({msg: 'FETCH_DICT_RESULT', text, dict: id})])
-          .then(response => {
-            dict.isSearching = false
+          if (!response || response.error) {
+            dict.isUnfolded = true
+            return
+          }
 
-            if (!response || response.error) {
-              dict.isUnfolded = true
-              return
-            }
+          dict.result = response.result
 
-            dict.result = response.result
-
-            this.$nextTick(() => {
-              let i = this.config.dicts.selected.indexOf(id)
-              dict.offsetHeight = this.$refs.dict[i].firstChild.offsetHeight
-              this.unfoldDict(id, i)
-            })
+          this.$nextTick(() => {
+            let i = this.config.dicts.selected.indexOf(id)
+            dict.offsetHeight = this.$refs.dict[i].firstChild.offsetHeight
+            this.unfoldDict(id, i)
           })
+        })
       })
 
       if (!this.noSearchHistory && this.config.searhHistory) {
@@ -215,8 +203,7 @@ export default {
           return {id, result}
         }
         return null
-      })
-        .filter(d => d)
+      }).filter(Boolean)
 
       storage.local.set({paneldata: {text: this.text, dicts}}, () => {
         message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('shareimg.html')})
@@ -287,23 +274,10 @@ export default {
     }
   },
   created () {
-    // get the lastest config
-    storage.sync.get('config').then(result => {
-      if (result.config) {
-        this.config = result.config
-      }
-    })
-
-    this.onStorageconfig = changes => {
-      this.config = changes.config.newValue
-    }
-    storage.on('config', this.onStorageconfig)
-
-    this.onMessageSEARCH_TEXT = (data, sender, sendResponse) => {
+    message.self.on('SEARCH_TEXT', (data, sender, sendResponse) => {
       this.handleSearchText(data)
       sendResponse()
-    }
-    message.self.on('SEARCH_TEXT', this.onMessageSEARCH_TEXT)
+    })
 
     message.self.send({msg: 'PANEL_READY'}, response => {
       if (!response) { return }
@@ -325,19 +299,7 @@ export default {
       const allDicts = this.config.dicts.all
       return this.config.dicts.selected.filter(id => allDicts[id].defaultUnfold)
     }
-  },
-  destroyed () {
-    storage.off(this.onStorageconfig)
-    message.off(this.onMessageSEARCH_TEXT)
-  },
-  components: (() => {
-    // Dynamically & asynchronously loads components
-    const components = {}
-    Object.keys(new AppConfig().dicts.all).forEach(id => {
-      components[id] = () => Promise.resolve(require('src/dictionaries/' + id + '/view.vue'))
-    })
-    return components
-  })()
+  }
 }
 </script>
 

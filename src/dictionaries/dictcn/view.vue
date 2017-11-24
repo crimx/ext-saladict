@@ -24,6 +24,9 @@
 <script>
 import Speaker from 'src/components/Speaker'
 import StarRates from 'src/components/StarRates'
+import VueHighcharts from 'vue-highcharts'
+import Vue from 'vue'
+Vue.use(VueHighcharts)
 
 export default {
   name: 'Dictcn',
