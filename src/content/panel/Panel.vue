@@ -84,10 +84,8 @@
 </template>
 
 <script>
-import AppConfig from 'src/app-config'
 import {storage, message} from 'src/helpers/chrome-api'
 import {isContainEnglish} from 'src/helpers/lang-check'
-import chsToChz from 'src/helpers/chs-to-chz'
 import {addSearchHistory} from 'src/helpers/search-history'
 import {promiseTimer} from 'src/helpers/promise-more'
 
@@ -236,9 +234,8 @@ export default {
     handleDictPage (id) {
       message.send({
         msg: 'CREATE_TAB',
+        escape: true,
         url: this.config.dicts.all[id].page
-          .replace('%s', this.text)
-          .replace('%z', chsToChz(this.text))
       })
     },
     handleDictsPanelClick (evt) {

@@ -3,6 +3,7 @@ import {promiseTimer} from 'src/helpers/promise-more'
 import './oninstall'
 import './context-menus'
 import AudioManager from './audio-manager'
+import chsToChz from 'src/helpers/chs-to-chz'
 const AUDIO = new AudioManager()
 
 message.server()
@@ -11,7 +12,13 @@ message.server()
 message.listen((data, sender, sendResponse) => {
   switch (data.msg) {
     case 'CREATE_TAB':
-      chrome.tabs.create({url: data.url})
+      chrome.tabs.create({
+        url: data.escape
+          ? data.url
+            .replace('%s', this.text)
+            .replace('%z', chsToChz(this.text))
+          : data.url
+      })
       break
     case 'AUDIO_PLAY':
       AUDIO.load(data.src)
