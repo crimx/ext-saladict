@@ -4,6 +4,8 @@ export default function AppConfig () {
 
     // track search history
     searhHistory: true,
+    // play sound
+    newWordSound: true,
 
     // icon: show pop icon first
     // direct: show panel directly

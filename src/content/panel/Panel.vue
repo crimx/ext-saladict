@@ -16,7 +16,10 @@
     <svg class="icon-options" @click="openOptionsPage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
       <path d="M0 97.92v24.48h612V97.92H0zm0 220.32h612v-24.48H0v24.48zm0 195.84h612V489.6H0v24.48z"/>
     </svg>
-    <svg class="icon-history "@click="openHistoryPage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+    <svg class="icon-notebook" @click.left="addNewWord" @click.right.prevent="openNoteBook" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+      <path d="M448 0H85.333c-17.643 0-32 14.357-32 32v53.333H42.667C36.78 85.333 32 90.113 32 96s4.78 10.667 10.667 10.667h10.667V192H42.667C36.78 192 32 196.78 32 202.667s4.78 10.667 10.667 10.667h10.667v85.333H42.667c-5.888 0-10.667 4.78-10.667 10.667S36.78 320 42.667 320h10.667v85.333H42.667C36.78 405.333 32 410.113 32 416c0 5.888 4.78 10.667 10.667 10.667h10.667V480c0 17.643 14.357 32 32 32H448c17.643 0 32-14.357 32-32V32c0-17.643-14.357-32-32-32zm10.667 480c0 5.888-4.8 10.667-10.667 10.667H85.333c-5.867 0-10.667-4.78-10.667-10.667v-53.333h23.296C102.38 439.06 114.112 448 128 448c17.643 0 32-14.357 32-32s-14.357-32-32-32c-13.888 0-25.62 8.94-30.037 21.333H74.667V320h23.296c4.416 12.395 16.15 21.333 30.037 21.333 17.643 0 32-14.357 32-32s-14.357-32-32-32c-13.888 0-25.62 8.94-30.037 21.333H74.667v-85.333h23.296c4.416 12.395 16.15 21.333 30.037 21.333 17.643 0 32-14.357 32-32s-14.357-32-32-32c-13.888 0-25.62 8.94-30.037 21.333H74.667v-85.335h23.296C102.38 119.06 114.113 128 128 128c17.643 0 32-14.357 32-32s-14.357-32-32-32c-13.888 0-25.62 8.94-30.037 21.333H74.667V32c0-5.888 4.8-10.667 10.667-10.667H448c5.867 0 10.667 4.78 10.667 10.667v448zm-341.334-64c0-5.888 4.8-10.667 10.667-10.667s10.667 4.78 10.667 10.667c0 5.888-4.8 10.667-10.667 10.667s-10.667-4.78-10.667-10.667zm0-106.667c0-5.888 4.8-10.667 10.667-10.667s10.667 4.78 10.667 10.667S133.867 320 128 320s-10.667-4.78-10.667-10.667zm0-106.666c0-5.888 4.8-10.667 10.667-10.667s10.667 4.78 10.667 10.667-4.8 10.667-10.667 10.667-10.667-4.78-10.667-10.667zm0-106.667c0-5.888 4.8-10.667 10.667-10.667s10.667 4.78 10.667 10.667-4.8 10.667-10.667 10.667-10.667-4.78-10.667-10.667z"/>
+    </svg>
+    <svg class="icon-history" @click="openHistoryPage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
       <path d="M34.688 3.315c-15.887 0-28.812 12.924-28.81 28.73-.012.25-.157 4.434 1.034 8.94l-3.88-2.262c-.965-.56-2.193-.235-2.76.727-.557.96-.233 2.195.728 2.755l9.095 5.302c.02.01.038.013.056.022.1.05.2.09.31.12.07.02.14.05.21.07.09.02.176.02.265.03.06.003.124.022.186.022.036 0 .07-.01.105-.015.034 0 .063.007.097.004.05-.003.097-.024.146-.032.097-.017.19-.038.28-.068.08-.028.157-.06.23-.095.086-.04.165-.085.24-.137.074-.046.14-.096.206-.15.07-.06.135-.125.198-.195.06-.067.11-.135.16-.207.026-.04.062-.07.086-.11.017-.03.017-.067.032-.1.03-.053.07-.1.096-.16l3.62-8.96c.417-1.03-.08-2.205-1.112-2.622-1.033-.413-2.207.083-2.624 1.115l-1.86 4.6c-1.24-4.145-1.1-8.406-1.093-8.523C9.92 18.455 21.04 7.34 34.7 7.34c13.663 0 24.78 11.116 24.78 24.78S48.357 56.9 34.694 56.9c-1.114 0-2.016.902-2.016 2.015s.9 2.02 2.012 2.02c15.89 0 28.81-12.925 28.81-28.81 0-15.89-12.923-28.814-28.81-28.814z"/>
       <path d="M33.916 36.002c.203.084.417.114.634.13.045.002.09.026.134.026.236 0 .465-.054.684-.134.06-.022.118-.054.177-.083.167-.08.32-.18.463-.3.03-.023.072-.033.103-.07L48.7 22.98c.788-.79.788-2.064 0-2.852-.787-.788-2.062-.788-2.85 0l-11.633 11.63-10.44-4.37c-1.032-.432-2.208.052-2.64 1.08-.43 1.027.056 2.208 1.08 2.638L33.907 36c.002 0 .006 0 .01.002z"/>
     </svg>
@@ -80,13 +83,18 @@
       </div>
     </section>
   </div>
+  <transition appear name="popup" v-if="isShowNewWordCard" @after-enter="isShowNewWordCard = false">
+    <div class="new-word-card">
+      <h1>{{ text }}</h1>
+    </div>
+  </transition>
 </div>
 </template>
 
 <script>
 import {storage, message} from 'src/helpers/chrome-api'
 import {isContainEnglish} from 'src/helpers/lang-check'
-import {addSearchHistory} from 'src/helpers/search-history'
+import {addRecord} from 'src/helpers/storage-records'
 import {promiseTimer} from 'src/helpers/promise-more'
 
 const isSmoothScrollSupported = 'scrollBehavior' in document.documentElement.style
@@ -113,6 +121,7 @@ export default {
 
       text: '',
 
+      isShowNewWordCard: false,
       noSearchHistory: false,
       isDragging: false,
       isPinned: false
@@ -160,7 +169,7 @@ export default {
       })
 
       if (!this.noSearchHistory && this.config.searhHistory) {
-        addSearchHistory(text)
+        addRecord('history', text)
       }
 
       if (!isOneActiveDict) {
@@ -209,6 +218,16 @@ export default {
     },
     openHistoryPage () {
       message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('history.html')})
+    },
+    openNoteBook () {
+      message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('notebook.html')})
+    },
+    addNewWord () {
+      if (this.config.newWordSound) {
+        new Audio(chrome.runtime.getURL('assets/notification.mp3')).play()
+      }
+      this.isShowNewWordCard = true
+      addRecord('notebook', this.text)
     },
     unfoldDict (id) {
       let dict = this.dicts[id]
@@ -378,7 +397,7 @@ body {
   transition: flex 1s;
 
   &:focus {
-    flex: 8;
+    flex: 7;
   }
 }
 
@@ -397,6 +416,10 @@ body {
 .icon-history {
   @extend %icon;
   fill-opacity: 0.8;
+}
+
+.icon-notebook {
+  @extend %icon;
 }
 
 .icon-options {
@@ -544,6 +567,20 @@ body {
   fill: #000;
 }
 
+.new-word-card {
+  position: absolute;
+  z-index: $global-zindex-tooltip;
+  top: 40%;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 380px;
+  padding: 0 20px;
+  word-wrap: break-word;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 3px 4px 31px -8px rgba(0,0,0,0.8);
+}
+
 /*-----------------------------------------------*\
     States
 \*-----------------------------------------------*/
@@ -570,5 +607,17 @@ body {
 }
 .fade-enter, .fade-leave-active {
   opacity: 0
+}
+
+.popup-enter-active,
+.popup-leave-active {
+  transition: transform 1s, opacity 0.5s;
+}
+.popup-enter {
+  opacity: 0;
+  transform: translate3d(-50%, 40px, 0px);
+}
+.popup-leave-to {
+  opacity: 0;
 }
 </style>

@@ -5,6 +5,7 @@ import {setContextMenu} from './context-menus'
 
 // merge config on installed
 chrome.runtime.onInstalled.addListener(({reason}) => {
+  clearHistory()
   let isNew = false
   storage.sync.get('config', ({config}) => {
     if (config && config.dicts && config.dicts.all) {
@@ -57,4 +58,20 @@ function showNews () {
     ),
     buttons: [{title: '太多实在塞不下啦 ~ 点击查看完整介绍'}]
   })
+}
+
+/**
+ * Old version
+ */
+function clearHistory () {
+  storage.local.get(['folderCatalog', 'collectionCatalog'])
+    .then(({folderCatalog, collectionCatalog}) => {
+      return storage.local.remove(
+        ['folderCatalog', 'collectionCatalog']
+          .concat(
+            folderCatalog ? folderCatalog.data : [],
+            collectionCatalog || []
+          )
+      )
+    })
 }
