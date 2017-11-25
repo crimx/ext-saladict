@@ -54,7 +54,7 @@ export function clearRecords (area) {
     .then(res => {
       const catalog = res[catName]
       if (catalog) {
-        return storage.local.remove(catalog.data)
+        return storage.local.remove(catalog.data.concat(catName))
       }
       return Promise.resolve()
     })
@@ -83,9 +83,9 @@ export function getAllWords (area) {
         .then(allSets => {
           var result = []
           for (let i = 0; i < setIds.length; i++) {
-            const items = allSets[setIds[i]].data
-            for (let j = 0; j < items; j++) {
-              result = result.concat(items[j].data)
+            const records = allSets[setIds[i]].data
+            for (let j = 0; j < records.length; j++) {
+              result = result.concat(records[j].data)
             }
           }
           return result
@@ -103,20 +103,37 @@ export function removeWord (area, setId, recordDate, word) {
       const recordSet = res[setId]
       if (!recordSet) { return Promise.reject('no set to delete word') }
 
-      const record = recordSet.data.find(r => r.date === recordDate)
-      if (!record) { return Promise.reject('no record to delete word') }
+      const iRecord = recordSet.data.findIndex(r => r.date === recordDate)
+      if (iRecord === -1) { return Promise.reject('no record to delete word') }
+      const record = recordSet.data[iRecord]
 
-      const index = record.data.indexOf(word)
-      if (index === -1) { return Promise.reject('no word to delete') }
+      const iWord = record.data.indexOf(word)
+      if (iWord === -1) { return Promise.reject('no word to delete') }
 
-      record.data.splice(index, 1)
+      record.data.splice(iWord, 1)
       recordSet.wordCount -= 1
+      if (record.data.length <= 0) {
+        // empty record
+        recordSet.data.splice(iRecord, 1)
+      }
       return storage.local.get(catName)
         .then(res => {
-          res[catName].wordCount -= 1
-          res[catName].timestamp = Date.now()
+          const catalog = res[catName]
+          catalog.wordCount -= 1
+          catalog.timestamp = Date.now()
+          if (recordSet.data.length <= 0) {
+            // empty set
+            const iSet = catalog.data.indexOf(setId)
+            if (iSet !== -1) {
+              catalog.data.splice(iSet, 1)
+            }
+            return storage.local.remove(setId)
+              .then(() => {
+                storage.local.set({[catName]: catalog})
+              })
+          }
           return storage.local.set({
-            [catName]: res[catName],
+            [catName]: catalog,
             [setId]: recordSet
           })
         })
@@ -260,12 +277,14 @@ function getToday () {
   return (month < 10 ? '0' : '') + month + (date < 10 ? '0' : '') + date + year
 }
 
-export default {
-  addRecord,
-  clearRecords,
-  listenRecord,
-  getRecordSet,
-  getAllWords,
-  removeWord,
-  getWordCount
+export default function init (area) {
+  return {
+    addRecord: (...args) => addRecord(area, ...args),
+    clearRecords: (...args) => clearRecords(area, ...args),
+    listenRecord: (...args) => listenRecord(area, ...args),
+    getRecordSet: (...args) => getRecordSet(area, ...args),
+    getAllWords: (...args) => getAllWords(area, ...args),
+    removeWord: (...args) => removeWord(area, ...args),
+    getWordCount: (...args) => getWordCount(area, ...args)
+  }
 }
