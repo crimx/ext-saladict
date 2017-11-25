@@ -5,6 +5,7 @@ export function clearRecords (...args) { return storageRecord.clearRecords('hist
 export function listenRecord (...args) { return storageRecord.listenRecord('history', ...args) }
 export function getRecordSet (...args) { return storageRecord.getRecordSet('history', ...args) }
 export function getAllWords (...args) { return storageRecord.getAllWords('history', ...args) }
+export function removeWord (...args) { return storageRecord.removeWord('history', ...args) }
 export function getWordCount (...args) { return storageRecord.getWordCount('history', ...args) }
 
 export default {
@@ -13,5 +14,6 @@ export default {
   listenRecord,
   getRecordSet,
   getAllWords,
+  removeWord,
   getWordCount
 }

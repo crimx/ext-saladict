@@ -28,15 +28,17 @@
       </div>
     </div>
     <div class="col-sm-7 wordpage-list-wrap" v-if="records.length > 0">
-      <div class="row" v-for="record in records" :key="record.date">
+      <div class="row" v-for="(record, iRecord) in records" :key="record.date">
         <div class="col-sm-6 text-right">
           <p class="wordpage-item-title">{{ record.localeDate }}</p>
         </div>
         <div class="col-sm-6">
           <table class="table table-hover word-table" @click="handleListClick">
             <tbody>
-              <tr v-for="(word, i) in record.data" :key="word">
-                <td class="text-center">{{ word }}</td>
+              <tr v-for="(word, iWord) in record.data" :key="word">
+                <td class="text-center">{{ word }}
+                  <button type="button" class="close" @click="removeWord(record.setId, record.date, word, iRecord, iWord)">×</button>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -101,7 +103,6 @@
 
 <script>
 import {message} from 'src/helpers/chrome-api'
-import WordPageItem from './WordPageItem'
 import AlertModal from 'src/components/AlertModal'
 import moment from 'moment'
 
@@ -123,10 +124,6 @@ export default {
     return {
       rawRecords: [],
       wordCount: 0,
-
-      renderers: {
-        r: WordPageItem
-      },
 
       text: '',
       frameSource: chrome.runtime.getURL('panel.html'),
@@ -205,6 +202,7 @@ export default {
           if (!recordSet) { return }
           const rawRecords = recordSet.data
           rawRecords.forEach(record => {
+            record.setId = recordSet.id
             record.localeDate = moment(record.date, 'MMDDYYYY').format('dddd LL')
           })
           if (requestIndex === 0 && recordSet.wordCount < 50 && pageCount >= 2) {
@@ -214,6 +212,7 @@ export default {
               .then(({recordSet, pageCount}) => {
                 if (!recordSet) { return }
                 recordSet.data.forEach(record => {
+                  record.setId = recordSet.id
                   record.localeDate = moment(record.date, 'MMDDYYYY').format('dddd LL')
                 })
                 this.rawRecords = rawRecords.concat(recordSet.data)
@@ -284,6 +283,12 @@ export default {
             .then(() => this.popup(chrome.i18n.getMessage('wordpage_clear_success'), 'alert-success'))
         }
       })
+    },
+    removeWord (setId, recordDate, word, iRecord, iWord) {
+      this.recordManager.removeWord(setId, recordDate, word)
+        .then(() => {
+          this.rawRecords[iRecord].data.splice(iWord, 1)
+        })
     },
     handleListClick () {
       if (window.getSelection().toString().trim()) {
@@ -474,6 +479,14 @@ body {
 
 .word-table {
   margin-bottom: 0;
+
+  .close {
+    opacity: 0;
+  }
+
+  tr:hover .close {
+    opacity: 0.2;
+  }
 }
 
 .word-td {

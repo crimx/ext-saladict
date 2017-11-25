@@ -94,6 +94,36 @@ export function getAllWords (area) {
 }
 
 /**
+ * @returns {Promise}
+ */
+export function removeWord (area, setId, recordDate, word) {
+  const catName = area + 'Cat'
+  return storage.local.get(setId)
+    .then(res => {
+      const recordSet = res[setId]
+      if (!recordSet) { return Promise.reject('no set to delete word') }
+
+      const record = recordSet.data.find(r => r.date === recordDate)
+      if (!record) { return Promise.reject('no record to delete word') }
+
+      const index = record.data.indexOf(word)
+      if (index === -1) { return Promise.reject('no word to delete') }
+
+      record.data.splice(index, 1)
+      recordSet.wordCount -= 1
+      return storage.local.get(catName)
+        .then(res => {
+          res[catName].wordCount -= 1
+          res[catName].timestamp = Date.now()
+          return storage.local.set({
+            [catName]: res[catName],
+            [setId]: recordSet
+          })
+        })
+    })
+}
+
+/**
  * @param {number} index
  * @return promsie with the record set, or undefined
  */
@@ -236,5 +266,6 @@ export default {
   listenRecord,
   getRecordSet,
   getAllWords,
+  removeWord,
   getWordCount
 }
