@@ -1,7 +1,8 @@
 import Vue from 'vue'
-import App from './History'
+import App from 'src/components/WordPage'
 import {storage, message} from 'src/helpers/chrome-api'
 import AppConfig from 'src/app-config'
+import searchHistory from 'src/history/storage'
 
 Vue.config.productionTip = false
 Vue.config.devtools = false
@@ -16,8 +17,11 @@ storage.sync.get('config')
       render (createElement) {
         return createElement(App, {
           props: {
+            id: 'history',
             config: this.config,
-            i18n: key => chrome.i18n.getMessage(key)
+            downloadFileName: 'search-history.txt',
+            i18n: key => chrome.i18n.getMessage(key),
+            recordManager: searchHistory
           }
         })
       }

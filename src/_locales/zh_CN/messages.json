@@ -408,45 +408,49 @@
     "description": "context menu",
     "message": "详细使用说明"
   },
+  "wordpage_only_english": {
+    "description": "word page",
+    "message": "只显示英文记录"
+  },
+  "wordpage_plain_modal_title": {
+    "description": "word page",
+    "message": "纯文本 - 可复制粘贴"
+  },
+  "wordpage_clear": {
+    "description": "word page",
+    "message": "清空记录"
+  },
+  "wordpage_savefile": {
+    "description": "word page",
+    "message": "导出文件"
+  },
+  "wordpage_plaintext": {
+    "description": "word page",
+    "message": "查看纯文本"
+  },
+  "wordpage_copy_success": {
+    "description": "word page",
+    "message": "复制成功！"
+  },
+  "wordpage_copu_failed": {
+    "description": "word page",
+    "message": "复制失败，请手动复制"
+  },
+  "wordpage_clear_success": {
+    "description": "word page",
+    "message": "清除成功！"
+  },
   "history_title": {
     "description": "history page",
     "message": "查词历史记录"
-  },
-  "history_only_english": {
-    "description": "history page",
-    "message": "只显示英文记录"
-  },
-  "history_plain_modal_title": {
-    "description": "history page",
-    "message": "纯文本 - 可复制粘贴"
-  },
-  "history_no_result": {
-    "description": "history page",
-    "message": "无历史记录，查词后再查看"
   },
   "history_wordcount": {
     "description": "history page",
     "message": "共 %s 条记录，本扩展会保存约 10,000 条最近查词历史"
   },
-  "history_clear": {
+  "history_no_result": {
     "description": "history page",
-    "message": "清空记录"
-  },
-  "history_savefile": {
-    "description": "history page",
-    "message": "导出文件"
-  },
-  "history_plaintext": {
-    "description": "history page",
-    "message": "查看纯文本"
-  },
-  "history_copy_success": {
-    "description": "history page",
-    "message": "复制成功！"
-  },
-  "history_copu_failed": {
-    "description": "history page",
-    "message": "复制失败，请手动复制"
+    "message": "无历史记录，查词后再查看"
   },
   "history_clear_modal_title": {
     "description": "history page",
@@ -456,9 +460,9 @@
     "description": "history page",
     "message": "所有查词历史记录将被清除，确定？"
   },
-  "history_clear_success": {
-    "description": "history page",
-    "message": "清除成功！"
+  "notebook_title": {
+    "description": "notebook page",
+    "message": "生词本"
   },
   "notification_youdao_err": {
     "description": "notifications message",
