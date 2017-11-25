@@ -195,6 +195,39 @@
     "description": "option title",
     "message": "Enable Quick Search"
   },
+  "opt_triple_ctrl_loc_title": {
+    "description": "option option",
+    "message": "Location"
+  },
+  "opt_triple_ctrl_loc_0": {
+    "description": "option option",
+    "message": "Center"
+  },
+  "opt_triple_ctrl_loc_1": {
+    "description": "option option",
+    "message": "Top"
+  },"opt_triple_ctrl_loc_2": {
+    "description": "option option",
+    "message": "Right"
+  },"opt_triple_ctrl_loc_3": {
+    "description": "option option",
+    "message": "Bottom"
+  },"opt_triple_ctrl_loc_4": {
+    "description": "option option",
+    "message": "Left"
+  },"opt_triple_ctrl_loc_5": {
+    "description": "option option",
+    "message": "Top Left"
+  },"opt_triple_ctrl_loc_6": {
+    "description": "option option",
+    "message": "Top Right"
+  },"opt_triple_ctrl_loc_7": {
+    "description": "option option",
+    "message": "Bottom Left"
+  },"opt_triple_ctrl_loc_8": {
+    "description": "option option",
+    "message": "Bottom Right"
+  },
   "opt_triple_ctrl_description": {
     "description": "option description",
     "message": "Press <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key three times a dictionary panel shows up. Preload content will be inserted into input box. Enable auto search to search automatically."

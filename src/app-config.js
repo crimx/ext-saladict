@@ -28,6 +28,16 @@ export default function AppConfig () {
     tripleCtrlPreload: 'clipboard',
     // auto search
     tripleCtrlAuto: false,
+    // 0: center
+    // 1: top
+    // 2: right
+    // 3: bottom
+    // 4: left
+    // 5: top left
+    // 6: top right
+    // 7: bottom left
+    // 8: bottom right
+    tripleCtrlLocation: 0,
 
     // browser action
     // '': no preload

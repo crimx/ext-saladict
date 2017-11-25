@@ -278,8 +278,44 @@ export default {
       this.isShowIcon = false
       this.isShowFrame = false
       this.$nextTick(() => {
-        this.frameLeft = window.innerWidth / 2 - 400 / 2
-        this.frameTop = window.innerHeight / 2 - this.panelHeight / 2
+        switch (this.config.tripleCtrlLocation) {
+          case 0: // center
+            this.frameTop = window.innerHeight / 2 - this.panelHeight / 2
+            this.frameLeft = window.innerWidth / 2 - 400 / 2
+            break
+          case 1: // top
+            this.frameTop = 10
+            this.frameLeft = window.innerWidth / 2 - 400 / 2
+            break
+          case 2: // right
+            this.frameTop = window.innerHeight / 2 - this.panelHeight / 2
+            this.frameLeft = window.innerWidth - 400 - 20
+            break
+          case 3: // bottom
+            this.frameTop = window.innerHeight - this.panelHeight - 10
+            this.frameLeft = window.innerWidth / 2 - 400 / 2
+            break
+          case 4: // left
+            this.frameTop = window.innerHeight / 2 - this.panelHeight / 2
+            this.frameLeft = 10
+            break
+          case 5: // top left
+            this.frameTop = 10
+            this.frameLeft = 10
+            break
+          case 6: // top right
+            this.frameTop = 10
+            this.frameLeft = window.innerWidth - 400 - 20
+            break
+          case 7: // bottom left
+            this.frameTop = window.innerHeight - this.panelHeight - 10
+            this.frameLeft = 10
+            break
+          case 8: // bottom right
+            this.frameTop = window.innerHeight - this.panelHeight - 10
+            this.frameLeft = window.innerWidth - 400 - 20
+            break
+        }
         this.isShowFrame = true
       })
       sendResponse()

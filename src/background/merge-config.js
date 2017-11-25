@@ -22,6 +22,9 @@ export default function mergeConfig (config) {
     }
   }
   if (config.tripleCtrlAuto !== undefined) { base.tripleCtrlAuto = Boolean(config.tripleCtrlAuto) }
+  if (config.tripleCtrlLocation >= 0 && config.tripleCtrlLocation <= 8) {
+    base.tripleCtrlLocation = config.tripleCtrlLocation
+  }
 
   if (typeof config.baPreload === 'string') {
     if (/^clipboard|selection$/.test(config.baPreload)) {
