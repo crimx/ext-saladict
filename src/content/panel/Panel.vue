@@ -94,7 +94,7 @@
 <script>
 import {storage, message} from 'src/helpers/chrome-api'
 import {isContainEnglish} from 'src/helpers/lang-check'
-import {addRecord} from 'src/helpers/storage-records'
+import {addRecord} from 'src/helpers/record-manager'
 import {promiseTimer} from 'src/helpers/promise-more'
 
 const isSmoothScrollSupported = 'scrollBehavior' in document.documentElement.style

@@ -11,7 +11,7 @@
       <button type="button" class="btn btn-default btn-reset" @click="handleReset">{{ i18n('opt_reset') }}</button>
     </h1>
     <opt-app-active />
-    <opt-search-history />
+    <opt-word-list />
     <opt-mode />
     <opt-pin-mode />
     <opt-language />
@@ -49,7 +49,7 @@ import Coffee from './Coffee'
 import AlertModal from 'src/components/AlertModal'
 
 import OptAppActive from './OptAppActive'
-import OptSearchHistory from './OptSearchHistory'
+import OptWordList from './OptWordList'
 import OptMode from './OptMode'
 import OptPinMode from './OptPinMode'
 import OptPopup from './OptPopup'
@@ -137,7 +137,7 @@ export default {
   },
   components: {
     OptAppActive,
-    OptSearchHistory,
+    OptWordList,
     OptMode,
     OptPinMode,
     OptPopup,

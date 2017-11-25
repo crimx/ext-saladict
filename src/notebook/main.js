@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from 'src/components/WordPage'
 import {storage, message} from 'src/helpers/chrome-api'
 import AppConfig from 'src/app-config'
-import RecordManager from 'src/helpers/storage-records'
+import RecordManager from 'src/helpers/record-manager'
 
 Vue.config.productionTip = false
 Vue.config.devtools = false
