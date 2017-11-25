@@ -128,6 +128,12 @@ const webpackConfig = merge(baseWebpackConfig, {
       chunks: ['popup', 'panel', 'options', 'shareimg'],
       minChunks: 2
     }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'recordmanager',
+      filename: 'recordmanager.js',
+      chunks: ['notebook', 'history'],
+      minChunks: 2
+    }),
     // extract css into its own file
     new ExtractTextPlugin('[name].css'),
     // generate dist index.html with correct asset hash for caching.
@@ -163,7 +169,19 @@ const webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'history.html',
       template: 'src/template.html',
-      chunks: ['history'],
+      chunks: ['recordmanager', 'history'],
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      },
+      chunksSortMode: 'dependency'
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'notebook.html',
+      template: 'src/template.html',
+      chunks: ['recordmanager', 'notebook'],
       inject: true,
       minify: {
         removeComments: true,

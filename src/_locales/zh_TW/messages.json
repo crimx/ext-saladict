@@ -119,17 +119,21 @@
     "description": "option description",
     "message": "關閉後劃詞翻譯功能將關閉，快捷查詞功能依然可用。"
   },
-  "opt_search_history_title": {
+  "opt_word_list_title": {
     "description": "option title",
-    "message": "查詞歷史"
+    "message": "單詞列表"
   },
-  "opt_search_history": {
+  "opt_word_list_history": {
     "description": "option",
     "message": "記錄查詞歷史"
   },
-  "opt_search_history_description": {
+  "opt_word_list_notebook": {
+    "description": "option",
+    "message": "添加生詞時播放聲音"
+  },
+  "opt_word_list_description": {
     "description": "option description",
-    "message": "關閉後不再記錄查詞歷史，先前的記錄依然保留，可在查詞歷史頁面手動清空。"
+    "message": "關閉記錄查詞歷史後先前的記錄依然保留，可在查詞歷史頁面手動清空。"
   },
   "opt_mode_title": {
     "description": "option title",
@@ -404,6 +408,10 @@
     "description": "context menu",
     "message": "詳細使用說明"
   },
+  "context_notebook_title": {
+    "description": "context menu",
+    "message": "生詞本"
+  },
   "wordpage_only_english": {
     "description": "word page",
     "message": "只顯示英文記錄"
@@ -455,6 +463,22 @@
   "history_clear_modal_content": {
     "description": "history page",
     "message": "所有查詞歷史記錄將被清除，確定？"
+  },
+  "notebook_wordcount": {
+    "description": "notebook page",
+    "message": "共 %s 條記錄，生詞本數據不同步，注意導出"
+  },
+  "notebook_no_result": {
+    "description": "notebook page",
+    "message": "無生詞記錄，添加後再查看"
+  },
+  "notebook_clear_modal_title": {
+    "description": "notebook page",
+    "message": "清空生詞本"
+  },
+  "notebook_clear_modal_content": {
+    "description": "notebook page",
+    "message": "生詞本所有記錄將被清除，確定？"
   },
   "notification_youdao_err": {
     "description": "notifications message",

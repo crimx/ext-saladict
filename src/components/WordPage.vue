@@ -199,7 +199,10 @@ export default {
       let requestIndex = this.isMergeFirstTwo ? this.pageIndex + 1 : this.pageIndex
       return this.recordManager.getRecordSet(requestIndex)
         .then(({recordSet, pageCount}) => {
-          if (!recordSet) { return }
+          if (!recordSet) {
+            this.rawRecords = []
+            return
+          }
           const rawRecords = recordSet.data
           rawRecords.forEach(record => {
             record.setId = recordSet.id
@@ -231,11 +234,11 @@ export default {
         })
     },
     getPlainText () {
-      this.recordManager.getAllWords()
+      return this.recordManager.getAllWords()
         .then(records => records.join('\n'))
     },
     getPlainTextWin () {
-      this.recordManager.getAllWords()
+      return this.recordManager.getAllWords()
         .then(records => records.join('\r\n'))
     },
     showPlainTextPanel () {
