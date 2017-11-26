@@ -15,7 +15,7 @@
     "production": {
       "plugins": [
         ["strip-function-call", {
-          "strip": ["debug", "debugMsg", "debugStorage"]
+          "strip": ["debug", "debugMsg"]
         }]
       ]
     }
