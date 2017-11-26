@@ -1,7 +1,5 @@
 import {storage, message, openURL} from 'src/helpers/chrome-api'
 import {promiseTimer} from 'src/helpers/promise-more'
-import './oninstall'
-import './context-menus'
 import AudioManager from './audio-manager'
 import chsToChz from 'src/helpers/chs-to-chz'
 const AUDIO = new AudioManager()
