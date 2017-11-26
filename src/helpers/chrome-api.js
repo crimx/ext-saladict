@@ -2,6 +2,18 @@
  * Wraps chrome extension apis
  */
 
+import debug from 'debug'
+
+var debugMsg = debug('message')
+
+/**
+ * key: {string} user's callback function
+ * values: {Map} listeners, key: msg, values: generated or user's callback functions
+ */
+const messageListeners = new Map()
+
+const storageListeners = new Map()
+
 export const storage = {
   sync: {
     clear: storageClear('sync'),
@@ -43,10 +55,43 @@ export const message = {
   on: messageListen,
 
   off: messageStopListen,
-  removeListener: messageStopListen
+  removeListener: messageStopListen,
+
+  server: initServer,
+
+  self: {
+    send: messageSendSelf,
+    fire: messageSendSelf,
+    emit: messageSendSelf,
+
+    listen: messageListenSelf,
+    addListener: messageListenSelf,
+    on: messageListenSelf,
+
+    off: messageStopListen,
+    removeListener: messageStopListen
+  }
+}
+
+/**
+ * create new tab or highlight existing tab
+ * @param {string} url
+ * @param {Function} [callback]
+ * @return undefined if callback is passed, otherwise a Promise
+ */
+export function openURL (url, callback) {
+  if (typeof url !== 'string') {
+    throw new TypeError('arg 1 should be a string')
+  }
+  if (callback) {
+    return _openURL(url, callback)
+  } else {
+    return new Promise(resolve => _openURL(url, resolve))
+  }
 }
 
 export default {
+  openURL,
   storage,
   message
 }
@@ -112,26 +157,60 @@ function storageListen (storageArea) {
   return function listen (key, cb) {
     if (typeof key === 'function') {
       cb = key
-      chrome.storage.onChanged.addListener(cb)
-    } else if (typeof cb === 'function') {
-      chrome.storage.onChanged.addListener((changes, areaName) => {
+      key = ''
+    }
+    if (typeof key !== 'string') {
+      throw new TypeError('Argument 1 should be string when argument 2 is a function.')
+    }
+    if (typeof cb !== 'function') {
+      throw new TypeError('Callback should be a function.')
+    }
+
+    let listeners = storageListeners.get(cb)
+    if (!listeners) {
+      listeners = new Map()
+      storageListeners.set(cb, listeners)
+    }
+    let callback = listeners.get(key)
+    if (!callback) {
+      callback = (changes, areaName) => {
         if (storageArea && areaName !== storageArea) {
           return
         }
-        if (changes[key]) {
+        if (!key || changes[key]) {
           cb(changes, areaName)
         }
-      })
+      }
+      listeners.set(key, callback)
     }
+    return chrome.storage.onChanged.addListener(callback)
   }
 }
 
 /**
  * remove listener
  * @param {function} listener listener function
+ * @param {string} [key] key that listens to
  */
-function storageStopListen (listener) {
-  return chrome.storage.onChanged.removeListener(listener)
+function storageStopListen (listener, key) {
+  const listeners = storageListeners.get(listener)
+  if (listeners) {
+    if (typeof key === 'string') {
+      const callback = listeners.get(key)
+      if (callback) {
+        listeners.delete(key)
+        if (listeners.size <= 0) { storageListeners.delete(listener) }
+        return chrome.storage.onChanged.removeListener(callback)
+      }
+    } else {
+      Array.from(listeners.values()).forEach(callback => {
+        chrome.storage.onChanged.removeListener(callback)
+      })
+      storageListeners.delete(listener)
+    }
+  } else {
+    return chrome.storage.onChanged.removeListener(listener)
+  }
 }
 
 function storageClear (storageArea) {
@@ -217,26 +296,210 @@ function messageSend (...args) {
 
 /**
  * Listens to a specific message or uses the generic onMessage.addListener
+ * @param {string} [msg] message to listen to
+ * @param {function} cb callback function
+ * @see https://developer.chrome.com/extensions/runtime#event-onMessage
+ */
+function messageListen (msg, cb) {
+  if (typeof msg === 'function') {
+    cb = msg
+    msg = ''
+  }
+  if (typeof msg !== 'string') {
+    throw new TypeError('Argument 1 should be string when argument 2 is a function.')
+  }
+  if (typeof cb !== 'function') {
+    throw new TypeError('Callback should be a function.')
+  }
+
+  let listeners = messageListeners.get(cb)
+  if (!listeners) {
+    listeners = new Map()
+    messageListeners.set(cb, listeners)
+  }
+  let callback = listeners.get(msg)
+  if (!callback) {
+    callback = msg
+      ? (message, sender, sendResponse) => {
+        if (message && message.msg === msg) {
+          return cb(message, sender, sendResponse)
+        }
+      }
+      : cb
+    listeners.set(msg, callback)
+  }
+  return chrome.runtime.onMessage.addListener(callback)
+}
+
+/**
+ * remove listener, whether it was added by this helper
+ * @param {function} listener listener function
+ * @param {string} [msg] msg that listens to
+ */
+function messageStopListen (listener, msg) {
+  const listeners = messageListeners.get(listener)
+  if (listeners) {
+    if (typeof msg === 'string') {
+      const callback = listeners.get(msg)
+      if (callback) {
+        listeners.delete(msg)
+        if (listeners.size <= 0) { messageListeners.delete(listener) }
+        return chrome.runtime.onMessage.removeListener(callback)
+      }
+    } else {
+      Array.from(listeners.values()).forEach(callback => {
+        chrome.runtime.onMessage.removeListener(callback)
+      })
+      messageListeners.delete(listener)
+    }
+  } else {
+    return chrome.runtime.onMessage.removeListener(listener)
+  }
+}
+
+/**
+ * Self page communication
+ * @param {object} message should be a JSON-ifiable object
+ * @param {function} [cb] response callback
+ * @returns {Promise|undefined} returns a promise with the response if callback is missed
+ * @see https://developer.chrome.com/extensions/runtime#method-sendMessage
+ * @see https://developer.chrome.com/extensions/tabs#method-sendMessage
+ */
+function messageSendSelf (message, cb) {
+  if (message !== Object(message)) {
+    throw new TypeError('arg 1 should be an object')
+  }
+
+  message.msg = `_&_${message.msg}_&_`
+  if (typeof cb === 'function') {
+    // callback mode
+    if (typeof window.pageId === 'undefined') {
+      return chrome.runtime.sendMessage({msg: '__PAGE_ID__'}, pageId => {
+        window.pageId = pageId
+        message.__pageId__ = pageId
+        debugMsg('SELF send %s on %s (request page id)', message.msg, window.pageId)
+        chrome.runtime.sendMessage(message, cb)
+      })
+    } else {
+      message.__pageId__ = window.pageId
+      debugMsg('SELF send %s on %s', message.msg, window.pageId)
+      return chrome.runtime.sendMessage(message, cb)
+    }
+  } else {
+    // Promise mode
+    if (typeof window.pageId === 'undefined') {
+      return messageSend({msg: '__PAGE_ID__'})
+        .then(pageId => {
+          window.pageId = pageId
+          message.__pageId__ = pageId
+          debugMsg('SELF send %s on %s (request page id)', message.msg, window.pageId)
+          return messageSend(message)
+        })
+    } else {
+      message.__pageId__ = window.pageId
+      debugMsg('SELF send %s on %s', message.msg, window.pageId)
+      return messageSend(message)
+    }
+  }
+}
+
+/**
+ * Self page communication
+ * Listens to a specific message or uses the generic onMessage.addListener
  * @param {string|number} [msg] message to listen to
  * @param {function} cb callback function
  * @see https://developer.chrome.com/extensions/runtime#event-onMessage
  */
-function messageListen (...args) {
-  if (args.length < 2) {
-    return chrome.runtime.onMessage.addListener(args[0])
+function messageListenSelf (msg, cb) {
+  if (typeof window.pageId === 'undefined') {
+    chrome.runtime.sendMessage({msg: '__PAGE_ID__'}, pageId => {
+      window.pageId = pageId
+    })
   }
 
-  return chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    if (message && message.msg === args[0]) {
-      return args[1](message, sender, sendResponse)
+  if (typeof msg === 'function') {
+    cb = msg
+    msg = ''
+  }
+  if (typeof msg !== 'string') {
+    throw new TypeError('Argument 1 should be string when argument 2 is a function.')
+  }
+  if (typeof cb !== 'function') {
+    throw new TypeError('Callback should be a function.')
+  }
+
+  let listeners = messageListeners.get(cb)
+  if (!listeners) {
+    listeners = new Map()
+    messageListeners.set(cb, listeners)
+  }
+  let callback = listeners.get(msg)
+  if (!callback) {
+    callback = (message, sender, sendResponse) => {
+      if (message && window.pageId === message.__pageId__) {
+        if (!msg || message.msg === msg) {
+          debugMsg('SELF Received %s on %s', msg, window.pageId)
+          return cb(message, sender, sendResponse)
+        }
+      }
+    }
+    listeners.set(msg, callback)
+  }
+  debugMsg('SELF Listening to %s on %s', msg, window.pageId)
+  return chrome.runtime.onMessage.addListener(callback)
+}
+
+const selfMsgTester = /^_&_(.+)_&_$/
+/**
+ * For self page messaging
+ */
+function initServer () {
+  window.pageId = 'background page'
+  chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (!message) { return }
+
+    const selfMsg = selfMsgTester.exec(message.msg)
+    if (selfMsg) {
+      debugMsg('SELF Received %s from %s', message.msg, getPageId(sender))
+      message.msg = selfMsg[1]
+      if (sender.tab) {
+        messageSend(sender.tab.id, message, response => {
+          sendResponse(response)
+        })
+      } else {
+        messageSend(message, response => {
+          sendResponse(response)
+        })
+      }
+
+      return true
+    }
+
+    switch (message.msg) {
+      case '__PAGE_ID__':
+        sendResponse(getPageId(sender))
+        break
+      default:
+        break
     }
   })
 }
 
-/**
- * remove listener
- * @param {function} listener listener function
- */
-function messageStopListen (listener) {
-  return chrome.runtime.onMessage.removeListener(listener)
+function getPageId (sender) {
+  if (sender.tab) {
+    return sender.tab.id
+  } else {
+    // FRAGILE: Assume only browser action page is tabless
+    return 'popup'
+  }
+}
+
+function _openURL (url, callback) {
+  chrome.tabs.query({url}, tabs => {
+    if (tabs.length > 0) {
+      chrome.tabs.highlight({tabs: tabs[0].index}, callback)
+    } else {
+      chrome.tabs.create({url}, callback)
+    }
+  })
 }

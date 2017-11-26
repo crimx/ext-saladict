@@ -7,7 +7,7 @@ import RecordManager from 'src/helpers/record-manager'
 Vue.config.productionTip = false
 Vue.config.devtools = false
 
-document.title = chrome.i18n.getMessage('history_title')
+document.title = chrome.i18n.getMessage('notebook_title')
 
 storage.sync.get('config')
   .then(({config = new AppConfig()}) => {
@@ -17,11 +17,11 @@ storage.sync.get('config')
       render (createElement) {
         return createElement(App, {
           props: {
-            id: 'history',
+            id: 'notebook',
             config: this.config,
-            downloadFileName: 'search-history.txt',
+            downloadFileName: 'new-words.txt',
             i18n: key => chrome.i18n.getMessage(key),
-            recordManager: new RecordManager('history')
+            recordManager: new RecordManager('notebook')
           }
         })
       }

@@ -4,6 +4,8 @@ export default function AppConfig () {
 
     // track search history
     searhHistory: true,
+    // play sound
+    newWordSound: true,
 
     // icon: show pop icon first
     // direct: show panel directly
@@ -22,6 +24,30 @@ export default function AppConfig () {
 
     // show panel when triple press ctrl
     tripleCtrl: true,
+    // '': no preload
+    // 'clipboard'
+    // 'selection'
+    tripleCtrlPreload: 'clipboard',
+    // auto search
+    tripleCtrlAuto: false,
+    // 0: center
+    // 1: top
+    // 2: right
+    // 3: bottom
+    // 4: left
+    // 5: top left
+    // 6: top right
+    // 7: bottom left
+    // 8: bottom right
+    tripleCtrlLocation: 0,
+
+    // browser action
+    // '': no preload
+    // 'clipboard'
+    // 'selection'
+    baPreload: 'clipboard',
+    // auto search
+    baAuto: false,
 
     // source language
     language: {

@@ -10,10 +10,10 @@ Chrome 浏览器插件，网页划词翻译。
 
 - [多词典支持，英汉、英英、俚语、词源、权威例句、汉语（繁简）、释义分布图、谷歌翻译](https://github.com/crimx/crx-saladict/wiki#dicts)
 - [支持四种划词方式，支持 iframe 划词](https://github.com/crimx/crx-saladict/wiki#mode)
-- [支持**谷歌**和有道**分级**网页翻译](https://github.com/crimx/crx-saladict/wiki#page-trans)
+- [支持谷歌和有道分级网页翻译](https://github.com/crimx/crx-saladict/wiki#page-trans)
 - [查词面板可钉住可拖动可输入](https://github.com/crimx/crx-saladict/wiki#pin)
 - [支持自动发音](https://github.com/crimx/crx-saladict/wiki#autopron)
-- [支持查看最近 10,000 条查词记录](https://github.com/crimx/crx-saladict/wiki#search-history)
+- [支持添加生词与记录查词历史](https://github.com/crimx/crx-saladict/wiki#search-history)
 - [支持 PDF 划词](https://github.com/crimx/crx-saladict/wiki#pdf)
 - [各个词典面板支持个性化调整](https://github.com/crimx/crx-saladict/wiki#dict-settings)
 - [三按 ctrl 快速查词](https://github.com/crimx/crx-saladict/wiki#triple-ctrl)
@@ -58,10 +58,15 @@ Chrome 浏览器插件，网页划词翻译。
 除此以外本扩展不收集任何资料，第三方下载请注意对比扩展 ID `cdonnmffkdaoajfknoeeecmchibpmkmg`。
 
 <p align="center">
-  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="screenshot.jpg" /></a>
+  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="https://github.com/crimx/crx-saladict/wiki/images/screen-config.png" /></a>
 </p>
 
 # 更新
+
+【5.28.1】
+1. 增加生词本！
+2. 可配置预加载内容（剪贴板或页面选中词）与自动开始查词，快捷查词可设置出现的位置
+3. 增强系统稳定性
 
 【5.27.3】
 1. 增加有道分级网页翻译2.0（支持 HTTPS）
@@ -77,11 +82,20 @@ Chrome 浏览器插件，网页划词翻译。
 
 查看[更新历史](./CHANGELOG.md)。
 
+# 支持开发
+
+觉得好用的话欢迎给作者买杯咖啡支持开发哦~♥
+
+<div align="center">
+  <img width="250" height="250" src="https://github.com/crimx/crx-saladict/wiki/images/wechat.png">
+  <img width="250" height="250" src="https://github.com/crimx/crx-saladict/wiki/images/alipay.png">
+</div>
+
 # 开发
 
 添加词典很简单，以 bing 为例
 
-Clone 库并 `$ npm install`
+Clone 库并 `$ yarn install`
 
 ## 注册词典
 
@@ -139,9 +153,10 @@ bing
   * Search text and give back result
   * @param {string} text - Search text
   * @param {object} config - app config
+  * @param {object} helpers - helper functions
   * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
   */
-  export default function search (text, config) {
+  export default function search (text, config, {AUDIO}) {
     return new Promise((resolve, reject) => {
       // ...
     })

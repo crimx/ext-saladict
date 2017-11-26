@@ -1,6 +1,6 @@
 // https://github.com/shelljs/shelljs
 const shell = require('shelljs')
-shell.env.NODE_ENV = 'production'
+shell.env.NODE_ENV = process.env.BUILD_ENV === 'devproduction' ? 'development' : 'production'
 
 const glob = require('glob')
 const fs = require('fs')

@@ -7,12 +7,22 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
+const argv = require('minimist')(process.argv.slice(2))
+
 const isDevBuild = process.env.BUILD_ENV === 'devproduction'
 
 const webpackConfig = merge(baseWebpackConfig, {
   devtool: isDevBuild ? '#source-map' : false,
   module: {
     rules: [
+      (
+        isDevBuild
+          ? null
+          : {
+            test: /node_modules[\\/]debug[\\/]/,
+            loader: 'empty-module-loader'
+          }
+      ),
       {
         test: /\.vue$/,
         loader: 'vue-loader',
@@ -83,13 +93,14 @@ const webpackConfig = merge(baseWebpackConfig, {
           ]
         })
       }
-    ]
+    ].filter(Boolean)
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': {
-        NODE_ENV: isDevBuild ? '"development"' : '"production"'
+        NODE_ENV: isDevBuild ? '"development"' : '"production"',
+        DEBUG: `"${argv.debug || ''}"`
       }
     }),
     // tailor locales
@@ -115,6 +126,12 @@ const webpackConfig = merge(baseWebpackConfig, {
       name: 'commons',
       filename: 'commons.js',
       chunks: ['popup', 'panel', 'options', 'shareimg'],
+      minChunks: 2
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'recordmanager',
+      filename: 'recordmanager.js',
+      chunks: ['notebook', 'history'],
       minChunks: 2
     }),
     // extract css into its own file
@@ -152,7 +169,19 @@ const webpackConfig = merge(baseWebpackConfig, {
     new HtmlWebpackPlugin({
       filename: 'history.html',
       template: 'src/template.html',
-      chunks: ['history'],
+      chunks: ['recordmanager', 'history'],
+      inject: true,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeAttributeQuotes: true
+      },
+      chunksSortMode: 'dependency'
+    }),
+    new HtmlWebpackPlugin({
+      filename: 'notebook.html',
+      template: 'src/template.html',
+      chunks: ['recordmanager', 'notebook'],
       inject: true,
       minify: {
         removeComments: true,

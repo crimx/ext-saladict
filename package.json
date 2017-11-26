@@ -1,6 +1,6 @@
 {
   "name": "saladict",
-  "version": "5.27.3",
+  "version": "5.28.1",
   "author": "CRIMX <straybugs@gmail.com>",
   "license": "MIT",
   "description": "Chrome extension, inline translator powered by mutiple online dictionaries",
@@ -22,6 +22,7 @@
     "babel-eslint": "^8.0.2",
     "babel-loader": "^7.1.2",
     "babel-plugin-istanbul": "^4.1.5",
+    "babel-plugin-strip-function-call": "^1.0.2",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-env": "^1.6.1",
     "babel-register": "^6.26.0",
@@ -29,6 +30,8 @@
     "connect-history-api-fallback": "^1.5.0",
     "cross-env": "^5.1.1",
     "css-loader": "^0.28.7",
+    "debug": "^3.1.0",
+    "empty-module-loader": "^0.1.1",
     "eslint": "^4.11.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-friendly-formatter": "^3.0.0",
@@ -57,6 +60,7 @@
     "karma-webpack": "^2.0.6",
     "lodash": "^4.17.4",
     "lolex": "^2.3.0",
+    "minimist": "^1.2.0",
     "mkdirp": "^0.5.1",
     "mocha": "^4.0.1",
     "node-sass": "^4.7.1",
@@ -92,7 +96,6 @@
     "vue-highcharts": "^0.0.10",
     "vue-qriously": "^1.1.1",
     "vue-stash": "^2.0.1-beta",
-    "vue-virtual-scroller": "^0.10.6",
     "vuedraggable": "^2.15.0"
   }
 }

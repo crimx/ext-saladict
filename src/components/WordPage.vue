@@ -1,19 +1,19 @@
 <template>
 <div class="container-fluid">
-  <div class="history-page-nav">
-    <h1 class="history-page-header">{{ i18n('history_title') }}</h1>
+  <div class="word-page-nav">
+    <h1 class="word-page-header">{{ i18n(`${id}_title`) }}</h1>
     <div class="btn-group">
-      <label class="btn btn-default" :class="{active: isOnlyEng}">{{ i18n('history_only_english') }}
+      <label class="btn btn-default" :class="{active: isOnlyEng}">{{ i18n('wordpage_only_english') }}
         <input type="checkbox" v-model="isOnlyEng" class="hide" autocomplete="off">
       </label>
-      <button type="button" class="btn btn-default" @click="isShowPlainTextPanel = true">{{ i18n('history_plaintext') }}</button>
-      <button type="button" class="btn btn-default" @click="saveAsFile">{{ i18n('history_savefile') }}</button>
-      <button type="button" class="btn btn-danger" @click="clearHistory">{{ i18n('history_clear') }}</button>
+      <button type="button" class="btn btn-default" @click="showPlainTextPanel">{{ i18n('wordpage_plaintext') }}</button>
+      <button type="button" class="btn btn-default" @click="saveAsFile">{{ i18n('wordpage_savefile') }}</button>
+      <button type="button" class="btn btn-danger" @click="clearRecords">{{ i18n('wordpage_clear') }}</button>
     </div>
   </div>
   <div class="row">
     <div class="right-aside">
-      <p class="text-center right-aside-row">{{ i18n('history_wordcount').replace('%s', wordCount) }}</p>
+      <p class="text-center right-aside-row">{{ i18n(`${id}_wordcount`).replace('%s', wordCount) }}</p>
       <div class="dict-panel-wrap">
         <transition appear name="fadeup">
           <div class="dict-panel">
@@ -27,21 +27,45 @@
         </transition>
       </div>
     </div>
-    <div class="col-sm-7 history-list-wrap"
-      v-if="historyFolders.length > 0"
-      @click="handleListClick"
-    >
-      <virtual-scroller
-        page-mode
-        :itemHeight="null"
-        :items="historyFolders"
-        :renderers="renderers"
-        type-field="type"
-        key-field="date"
-      />
+    <div class="col-sm-7 wordpage-list-wrap" v-if="records.length > 0">
+      <div class="row" v-for="(record, iRecord) in records" :key="record.date">
+        <div class="col-sm-6 text-right">
+          <p class="wordpage-item-title">{{ record.localeDate }}</p>
+        </div>
+        <div class="col-sm-6">
+          <table class="table table-hover word-table" @click="handleListClick">
+            <tbody>
+              <tr v-for="(word, iWord) in record.data" :key="word">
+                <td class="text-center">{{ word }}
+                  <button type="button" class="close" @click="removeWord(record.setId, record.date, word, iRecord, iWord)">×</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row" v-if="pageCount > 0">
+        <nav class="col-sm-6 col-sm-offset-6 text-center">
+          <ul class="pagination">
+            <li
+              :class="{disabled: pageIndex === 0}"
+              @click.prevent="pageIndex !== 0 && getPage(pageIndex - 1)"
+            ><a href="#"><span>&laquo;</span></a></li>
+            <li
+              v-for="p in pageNumbers"
+              :class="{active: p === pageIndex}"
+              @click.prevent="p !== pageIndex && getPage(p)"
+            ><a href="#">{{ p + 1 }}</a></li>
+            <li
+              :class="{disabled: pageIndex === pageCount - 1}"
+              @click.prevent="pageIndex !== pageCount - 1 && getPage(pageIndex + 1)"
+            ><a href="#"><span>&raquo;</span></a></li>
+          </ul>
+        </nav>
+      </div>
     </div>
-    <div v-if="isReady && historyFolders.length <= 0" class="col-sm-7 history-list-wrap no-history">
-      <h1 class="no-history-title">{{ i18n('history_no_result') }}</h1>
+    <div v-if="isReady && records.length <= 0" class="col-sm-7 wordpage-list-wrap no-record">
+      <h1 class="no-wordpage-title">{{ i18n(`${id}_no_result`) }}</h1>
     </div>
   </div>
 
@@ -52,10 +76,10 @@
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" @click="isShowPlainTextPanel = false">&times;</button>
-            <h4 class="modal-title">{{ i18n('history_plain_modal_title') }}</h4>
+            <h4 class="modal-title">{{ i18n('wordpage_plain_modal_title') }}</h4>
           </div>
           <div class="modal-body">
-            <textarea v-focus class="form-control plain-text-modal">{{ getPlainText() }}</textarea>
+            <textarea v-focus class="form-control plain-text-modal">{{ plainText }}</textarea>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" @click="isShowPlainTextPanel = false">{{ i18n('cancel') }}</button>
@@ -79,10 +103,7 @@
 
 <script>
 import {message} from 'src/helpers/chrome-api'
-import searchHistory from 'src/helpers/search-history'
-import HistoryItem from './HistoryItem'
 import AlertModal from 'src/components/AlertModal'
-import { VirtualScroller } from 'vue-virtual-scroller'
 import moment from 'moment'
 
 let lang = chrome.i18n.getUILanguage().toLowerCase()
@@ -92,61 +113,66 @@ if (!/^(en|zh-cn|zh-tw|zh-hk)$/.test(lang)) {
 moment.locale(lang)
 
 export default {
-  props: ['pageId', 'config', 'i18n'],
+  props: {
+    id: {type: String, require: true},
+    config: {type: Object, require: true},
+    downloadFileName: {type: String, require: true},
+    i18n: {type: Function, required: true},
+    recordManager: {type: Object, require: true}
+  },
   data () {
     return {
-      rawHistoryFolders: [],
-
-      renderers: {
-        folder: HistoryItem
-      },
+      rawRecords: [],
+      wordCount: 0,
 
       text: '',
       frameSource: chrome.runtime.getURL('panel.html'),
+
+      pageIndex: 0,
+      pageCount: 0,
+      isMergeFirstTwo: false, // if the first page is too short, merge with the second one
 
       isOnlyEng: false,
 
       isReady: false, // prevent blink
 
+      plainText: '',
       isShowPlainTextPanel: false,
       isPopUp: false,
       popupMessage: ''
     }
   },
   computed: {
-    historyFolders () {
-      if (this.isOnlyEng) {
-        return this.rawHistoryFolders
-          .map(folder => {
-            return {
-              // ...folder
-              date: folder.date,
-              localeDate: folder.localeDate,
-              height: folder.height,
-              type: folder.type,
-              data: folder.data
-                .map(word => {
-                  return word
-                    .replace(/[^- .a-z]/ig, ' ') // replace anything other than " ", "-", "." and letters
-                    .replace(/(^[- .]+)|([- ]+$)/, '') // no leading " ", "-", "." and tailing " ", "-"
-                    .replace(/ +/g, ' ') // shrink multiple spaces into one
-                    .replace(/^[- .]+$/, '') // if only " ", "-" or "." left, clear them
-                })
-                .filter(Boolean)
-            }
-          })
-          .filter(folder => folder.data.length > 0)
-      } else {
-        return this.rawHistoryFolders
-      }
+    records () {
+      return this.isOnlyEng
+        ? this.rawRecords
+          .map(record => ({
+            // ...folder
+            date: record.date,
+            localeDate: record.localeDate,
+            data: record.data
+              .map(word => word
+                .replace(/[^- .a-z]/ig, ' ') // replace anything other than " ", "-", "." and letters
+                .replace(/(^[- .]+)|([- ]+$)/, '') // no leading " ", "-", "." and tailing " ", "-"
+                .replace(/ +/g, ' ') // shrink multiple spaces into one
+                .replace(/^[- .]+$/, '') // if only " ", "-" or "." left, clear them
+              )
+              .filter(Boolean)
+          }))
+          .filter(record => record.data.length > 0)
+        : this.rawRecords
     },
-    wordCount () {
-      let count = 0
-      const folders = this.historyFolders
-      for (let i = 0; i < folders.length; i += 1) {
-        count += folders[i].data.length
+    pageNumbers () {
+      if (!this.pageCount) { return [] }
+      if (this.pageCount < 5) {
+        // near left end
+        return Array.from(Array(this.pageCount)).map((x, i) => i)
       }
-      return count
+      if (this.pageCount - this.pageIndex < 5) {
+        // near right end
+        return Array.from(Array(5)).map((x, i) => this.pageCount - 5 + i)
+      }
+      return Array.from(Array(5)).map((x, i) => this.pageIndex + i)
     },
     panelHeight () {
       const allDicts = this.config.dicts.all
@@ -163,35 +189,81 @@ export default {
     }
   },
   methods: {
-    fetchAllHistory () {
-      return searchHistory.getAll().then(folders => {
-        for (let i = 0; i < folders.length; i += 1) {
-          const folder = folders[i]
-          folder.localeDate = moment(folder.date, 'MMDDYYYY').format('dddd LL')
-          folder.height = folder.data.length * 36
-          folder.type = 'folder'
-        }
-        this.rawHistoryFolders = folders
-      })
+    getPage (index) {
+      if (typeof index === 'number') {
+        this.pageIndex = index
+      } else {
+        this.pageIndex += 1
+      }
+
+      let requestIndex = this.pageIndex
+      if (requestIndex === 0) {
+        this.isMergeFirstTwo = false
+      } else if (this.isMergeFirstTwo) {
+        requestIndex = this.pageIndex + 1
+      }
+      return this.recordManager.getRecordSet(requestIndex)
+        .then(({recordSet, pageCount}) => {
+          if (!recordSet) {
+            this.rawRecords = []
+            return
+          }
+          const rawRecords = recordSet.data
+          rawRecords.forEach(record => {
+            record.setId = recordSet.id
+            record.localeDate = moment(record.date, 'MMDDYYYY').format('dddd LL')
+          })
+          if (requestIndex === 0 && recordSet.wordCount < 50 && pageCount >= 2) {
+            this.isMergeFirstTwo = true
+            // merge with the second set
+            this.recordManager.getRecordSet(requestIndex + 1)
+              .then(({recordSet, pageCount}) => {
+                if (!recordSet) { return }
+                recordSet.data.forEach(record => {
+                  record.setId = recordSet.id
+                  record.localeDate = moment(record.date, 'MMDDYYYY').format('dddd LL')
+                })
+                this.rawRecords = rawRecords.concat(recordSet.data)
+                this.pageCount = pageCount - 1
+              })
+          } else {
+            this.rawRecords = rawRecords
+            this.pageCount = this.isMergeFirstTwo ? pageCount - 1 : pageCount
+          }
+        })
+    },
+    getWordCount () {
+      this.recordManager.getWordCount()
+        .then(wordCount => {
+          this.wordCount = wordCount
+        })
     },
     getPlainText () {
-      if (this.plainText) { return this.plainText }
-      this.plainText = this.historyFolders.map(folder => folder.data.join('\n')).join('\n')
-      return this.plainText
+      return this.recordManager.getAllWords()
+        .then(records => records.join('\n'))
     },
     getPlainTextWin () {
-      if (this.plainTextWin) { return this.plainTextWin }
-      this.plainTextWin = this.historyFolders.map(folder => folder.data.join('\r\n')).join('\r\n')
-      return this.plainTextWin
+      return this.recordManager.getAllWords()
+        .then(records => records.join('\r\n'))
+    },
+    showPlainTextPanel () {
+      this.plainText = ''
+      this.getPlainText()
+        .then(text => {
+          this.plainText = text
+          this.isShowPlainTextPanel = true
+        })
     },
     saveAsFile () {
       const a = document.createElement('a')
       chrome.runtime.getPlatformInfo(({os}) => {
-        const text = os === 'win' ? this.getPlainTextWin() : this.getPlainText()
-        const file = new Blob([text], {type: 'text/plain;charset=utf-8'})
-        a.href = URL.createObjectURL(file)
-        a.download = 'search-history.txt'
-        a.click()
+        (os === 'win' ? this.getPlainTextWin() : this.getPlainText())
+          .then(text => {
+            const file = new Blob([text], {type: 'text/plain;charset=utf-8'})
+            a.href = URL.createObjectURL(file)
+            a.download = this.downloadFileName
+            a.click()
+          })
       })
     },
     copyToClipBoard () {
@@ -203,22 +275,28 @@ export default {
           isSuccess = document.execCommand('copy')
         }
         if (isSuccess) {
-          this.popup(chrome.i18n.getMessage('history_copy_success'), 'alert-success')
+          this.popup(chrome.i18n.getMessage('wordpage_copy_success'), 'alert-success')
         } else {
-          this.popup(chrome.i18n.getMessage('history_copu_failed'), 'alert-danger')
+          this.popup(chrome.i18n.getMessage('wordpage_copu_failed'), 'alert-danger')
         }
       })
     },
-    clearHistory () {
+    clearRecords () {
       this.$refs.alert.$emit('show', {
-        title: chrome.i18n.getMessage('history_clear_modal_title'),
-        content: chrome.i18n.getMessage('history_clear_modal_content'),
+        title: chrome.i18n.getMessage(`${this.id}_clear_modal_title`),
+        content: chrome.i18n.getMessage(`${this.id}_clear_modal_content`),
         onConfirm: () => {
-          searchHistory.clear()
-            .then(this.fetchAllHistory)
-            .then(() => this.popup(chrome.i18n.getMessage('history_clear_success'), 'alert-success'))
+          this.recordManager.clearRecords()
+            .then(() => this.getPage(0))
+            .then(() => this.popup(chrome.i18n.getMessage('wordpage_clear_success'), 'alert-success'))
         }
       })
+    },
+    removeWord (setId, recordDate, word, iRecord, iWord) {
+      this.recordManager.removeWord(setId, recordDate, word)
+        .then(() => {
+          this.rawRecords[iRecord].data.splice(iWord, 1)
+        })
     },
     handleListClick () {
       if (window.getSelection().toString().trim()) {
@@ -228,7 +306,7 @@ export default {
         setTimeout(() => {
           const text = window.getSelection().toString().trim()
           if (text) {
-            message.send({msg: 'SEARCH_TEXT_SELF', text, page: this.pageId})
+            message.self.send({msg: 'SEARCH_TEXT', text})
           }
         }, 0)
       }
@@ -252,16 +330,17 @@ export default {
     }
   },
   created () {
-    this.fetchAllHistory()
+    this.getWordCount()
+    this.getPage(0)
       .then(() => {
         this.isReady = true
-        searchHistory.listen(() => {
-          this.fetchAllHistory()
+        this.recordManager.listenRecord(() => {
+          this.getPage(0)
+          this.getWordCount()
         })
       })
   },
   components: {
-    VirtualScroller,
     AlertModal
   },
   directives: {
@@ -279,7 +358,7 @@ export default {
 /*------------------------------------*\
    Vars
 \*------------------------------------*/
-$history-nav-height: 50px;
+$wordpage-nav-height: 50px;
 
 /*------------------------------------*\
    Bootstrap
@@ -300,32 +379,13 @@ $history-nav-height: 50px;
 
 // Components
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/panels";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/pagination";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/close";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/alerts";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/button-groups";
 
 // Components w/ JavaScript
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/modals";
-
-// fancy checkbox
-.form-group input[type="checkbox"] {
-    display: none;
-}
-.form-group input[type="checkbox"] + .btn-group > label span {
-    width: 20px;
-}
-.form-group input[type="checkbox"] + .btn-group > label span:first-child {
-    display: none;
-}
-.form-group input[type="checkbox"] + .btn-group > label span:last-child {
-    display: inline-block;
-}
-.form-group input[type="checkbox"]:checked + .btn-group > label span:first-child {
-    display: inline-block;
-}
-.form-group input[type="checkbox"]:checked + .btn-group > label span:last-child {
-    display: none;
-}
 
 /*------------------------------------*\
    Base
@@ -348,7 +408,7 @@ body {
 /*------------------------------------*\
    Components
 \*------------------------------------*/
-.history-page-nav {
+.word-page-nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -357,37 +417,37 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  height: $history-nav-height;
+  height: $wordpage-nav-height;
   padding: 0 10%;
   border-bottom: 1px #ddd solid;
   background-image: linear-gradient(white, white 30%, rgba(255, 255, 255, 0.82));
 }
 
-.history-page-header {
+.word-page-header {
   font-size: 1.4em;
   margin: 10px 0;
 }
 
-.history-list-wrap {
-  padding-top: $history-nav-height;
+.wordpage-list-wrap {
+  padding-top: $wordpage-nav-height;
 }
 
-.history-list {
+.wordpage-list {
   overflow-x: hidden;
 }
 
-.history-item-title {
+.wordpage-item-title {
   padding-top: 5px;
 }
 
-.no-history {
+.no-record {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
 
-.no-history-title {
+.no-wordpage-title {
   font-size: 1.5em;
 }
 
@@ -399,7 +459,7 @@ body {
   flex-direction: column;
   width: percentage(5/12);
   height: 100%;
-  padding: $history-nav-height 15px 0;
+  padding: $wordpage-nav-height 15px 0;
 }
 
 .right-aside-row {
@@ -427,6 +487,14 @@ body {
 
 .word-table {
   margin-bottom: 0;
+
+  .close {
+    opacity: 0;
+  }
+
+  tr:hover .close {
+    opacity: 0.2;
+  }
 }
 
 .word-td {

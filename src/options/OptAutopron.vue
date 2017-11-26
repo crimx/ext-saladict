@@ -4,18 +4,18 @@
       <strong>{{ i18n('opt_autopron_title') }}</strong>
     </div>
     <div class="opt-item__body">
-       <div class="autopron-container">
-          <label class="autopron-item">
-            <span class="autopron-label">{{ i18n('opt_autopron_cn') }}</span>
+       <div class="select-box-container">
+          <label class="select-box">
+            <span class="select-label">{{ i18n('opt_autopron_cn') }}</span>
             <select class="form-control" v-model="autopron.cn.dict">
-              <option value="">{{ i18n('opt_autopron_none') }}</option>
+              <option value="">{{ i18n('opt_none') }}</option>
               <option v-for="id in autopron.cn.list" :value="id">{{ i18n('dict_' + id) }}</option>
             </select>
           </label>
-          <label class="autopron-item">
-            <span class="autopron-label">{{ i18n('opt_autopron_en') }}</span>
+          <label class="select-box">
+            <span class="select-label">{{ i18n('opt_autopron_en') }}</span>
             <select class="form-control" v-model="autopron.en.dict">
-              <option value="">{{ i18n('opt_autopron_none') }}</option>
+              <option value="">{{ i18n('opt_none') }}</option>
               <option v-for="id in autopron.en.list" :value="id">{{ i18n('dict_' + id) }}</option>
             </select>
           </label>
@@ -43,17 +43,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.autopron-container {
-  margin: 10px 0;
-}
-
-.autopron-item {
-  margin-right: 10px;
-}
-
-.autopron-label {
-  padding-left: 5px;
-}
-</style>

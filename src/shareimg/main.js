@@ -5,6 +5,7 @@ import VueHighcharts from 'vue-highcharts'
 Vue.use(VueHighcharts)
 
 Vue.config.productionTip = false
+Vue.config.devtools = false
 
 new Vue({ // eslint-disable-line no-new
   el: '#app',

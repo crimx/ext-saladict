@@ -1,4 +1,5 @@
-import {storage, message} from 'src/helpers/chrome-api'
+import {storage, openURL} from 'src/helpers/chrome-api'
+import setContextMenu from './set-context-menus'
 
 // listen context menu
 chrome.contextMenus.onClicked.addListener(contextMenuOnClick)
@@ -26,7 +27,7 @@ function contextMenuOnClick ({menuItemId, selectionText, linkUrl}) {
     case 'google_page_translate':
       chrome.tabs.query({active: true, currentWindow: true}, tabs => {
         if (tabs.length > 0) {
-          chrome.tabs.create({url: `https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`})
+          openURL(`https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`)
         }
       })
       break
@@ -52,99 +53,30 @@ function contextMenuOnClick ({menuItemId, selectionText, linkUrl}) {
       var pdfURL = chrome.runtime.getURL('assets/pdf/web/viewer.html')
       if (linkUrl) {
         // open link as pdf
-        chrome.tabs.create({url: pdfURL + '?file=' + linkUrl})
+        openURL(pdfURL + '?file=' + linkUrl)
       } else {
         chrome.tabs.query({active: true, currentWindow: true}, tabs => {
           // if it is a pdf page
           if (tabs.length > 0 && /\.pdf$/i.test(tabs[0].url)) {
-            chrome.tabs.create({url: pdfURL + '?file=' + tabs[0].url})
+            openURL(pdfURL + '?file=' + tabs[0].url)
           } else {
-            chrome.tabs.create({url: pdfURL})
+            openURL(pdfURL)
           }
         })
       }
       break
     case 'search_history':
-      chrome.tabs.create({url: chrome.runtime.getURL('history.html')})
+      openURL(chrome.runtime.getURL('history.html'))
       break
-    case 'app_manual':
-      chrome.tabs.create({url: 'https://github.com/crimx/crx-saladict/wiki'})
+    case 'notebook':
+      openURL(chrome.runtime.getURL('notebook.html'))
       break
     default:
       storage.sync.get('config', ({config}) => {
         const url = config.contextMenu.all[menuItemId]
         if (url) {
-          chrome.tabs.create({url: url.replace('%s', selectionText)})
+          openURL(url.replace('%s', selectionText))
         }
       })
   }
-}
-
-/**
- * generate context menu items
- * @param {object} config
- */
-export function setContextMenu (config) {
-  chrome.contextMenus.removeAll(() => {
-    // pdf
-    chrome.contextMenus.create({
-      id: 'view_as_pdf',
-      title: chrome.i18n.getMessage('context_view_as_pdf') || 'View As PDF',
-      contexts: ['link', 'browser_action']
-    })
-
-    var hasGooglePageTranslate = false
-    var hasYoudaoPageTranslate = false
-    config.contextMenu.selected.forEach(id => {
-      var contexts = ['selection']
-      if (id === 'google_page_translate') {
-        hasGooglePageTranslate = true
-        contexts = ['all']
-      } else if (id === 'youdao_page_translate') {
-        hasYoudaoPageTranslate = true
-        contexts = ['all']
-      }
-      chrome.contextMenus.create({
-        id,
-        title: chrome.i18n.getMessage('context_' + id) || id,
-        contexts
-      })
-    })
-
-    // Only for browser action
-    if (!hasGooglePageTranslate) {
-      chrome.contextMenus.create({
-        id: 'google_page_translate',
-        title: chrome.i18n.getMessage('context_google_page_translate') || 'google_page_translate',
-        contexts: ['browser_action']
-      })
-    }
-    if (!hasYoudaoPageTranslate) {
-      chrome.contextMenus.create({
-        id: 'youdao_page_translate',
-        title: chrome.i18n.getMessage('context_youdao_page_translate') || 'youdao_page_translate',
-        contexts: ['browser_action']
-      })
-    }
-
-    chrome.contextMenus.create({
-      type: 'separator',
-      id: Date.now().toString(),
-      contexts: ['browser_action']
-    })
-
-    // search history
-    chrome.contextMenus.create({
-      id: 'search_history',
-      title: chrome.i18n.getMessage('history_title') || 'Search History',
-      contexts: ['browser_action']
-    })
-
-    // Manual
-    chrome.contextMenus.create({
-      id: 'app_manual',
-      title: chrome.i18n.getMessage('context_manual_title') || 'Manual',
-      contexts: ['browser_action']
-    })
-  })
 }

@@ -11,11 +11,12 @@
       <button type="button" class="btn btn-default btn-reset" @click="handleReset">{{ i18n('opt_reset') }}</button>
     </h1>
     <opt-app-active />
-    <opt-search-history />
+    <opt-word-list />
     <opt-mode />
     <opt-pin-mode />
-    <opt-triple-ctrl />
     <opt-language />
+    <opt-popup />
+    <opt-triple-ctrl />
     <opt-autopron />
     <opt-dicts />
     <opt-context-menu />
@@ -48,9 +49,10 @@ import Coffee from './Coffee'
 import AlertModal from 'src/components/AlertModal'
 
 import OptAppActive from './OptAppActive'
-import OptSearchHistory from './OptSearchHistory'
+import OptWordList from './OptWordList'
 import OptMode from './OptMode'
 import OptPinMode from './OptPinMode'
+import OptPopup from './OptPopup'
 import OptTripleCtrl from './OptTripleCtrl'
 import OptLanguage from './OptLanguage'
 import OptAutopron from './OptAutopron'
@@ -59,7 +61,7 @@ import OptContextMenu from './OptContextMenu'
 
 export default {
   name: 'options',
-  store: ['config', 'pageId', 'newVersionAvailable', 'i18n'],
+  store: ['config', 'newVersionAvailable', 'i18n'],
   data () {
     return {
       text: 'salad',
@@ -71,7 +73,7 @@ export default {
     searchText () {
       clearTimeout(this.searchTextTimeout)
       this.searchTextTimeout = setTimeout(() => {
-        message.send({msg: 'SEARCH_TEXT_SELF', text: this.text, page: this.pageId})
+        message.self.send({msg: 'SEARCH_TEXT', text: this.text})
       }, 2000)
     },
     handleReset () {
@@ -135,9 +137,10 @@ export default {
   },
   components: {
     OptAppActive,
-    OptSearchHistory,
+    OptWordList,
     OptMode,
     OptPinMode,
+    OptPopup,
     OptTripleCtrl,
     OptLanguage,
     OptAutopron,
@@ -146,20 +149,17 @@ export default {
     Coffee,
     AlertModal
   },
-  created () {
-    message.on('PANEL_READY', (data, sender, sendResponse) => {
-      if (this.pageId !== -1 && this.pageId !== data.page) { return }
+  beforeCreate () {
+    message.self.on('PANEL_READY', (data, sender, sendResponse) => {
       sendResponse({noSearchHistory: true})
-      setTimeout(() => this.searchText(), 0)
     })
   },
   mounted () {
     // monitor search text
-    message.on('FETCH_DICT_RESULT', (data, sender) => {
-      if (this.pageId === sender.tab.id) {
-        this.text = data.text
-      }
+    message.self.on('FETCH_DICT_RESULT', (data, sender) => {
+      this.text = data.text
     })
+    setTimeout(() => this.searchText(), 0)
   }
 }
 </script>
@@ -372,6 +372,19 @@ kbd {
   overflow: hidden;
   height: 0;
   transition: height 400ms;
+}
+
+.select-box-container {
+  margin: 10px 0;
+}
+
+.select-box {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.select-label {
+  padding-left: 5px;
 }
 
 /*------------------------------------*\

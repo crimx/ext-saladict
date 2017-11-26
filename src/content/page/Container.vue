@@ -2,7 +2,7 @@
 <div class="saladict-container">
   <transition name="saladict-jelly">
     <div class="saladict-icon"
-      v-if="isShowIcon"
+      v-if="isShowIcon && config.active"
       key="saladict-icon"
       :style="{top: iconTop + 'px !important', left: iconLeft + 'px !important'}"
       @mouseenter="iconMouseenter"
@@ -15,7 +15,7 @@
     </div>
   </transition>
   <iframe class="saladict-frame"
-    v-if="isShowFrame"
+    v-if="isShowFrame && config.active"
     ref="frame"
     key="saladict-frame"
     name="saladict-frame"
@@ -24,7 +24,7 @@
     :style="{top: frameTop + 'px !important', left: frameLeft + 'px !important', height: panelHeight + 'px !important'}"
   ></iframe>
   <div class="saladict-drag"
-    v-if="isShowFrame"
+    v-if="isShowFrame && config.active"
     @mousedown="handleDragStart"
     :style="dragStyle"
   ></div>
@@ -32,18 +32,14 @@
 </template>
 
 <script>
-import AppConfig from 'src/app-config'
-import {storage, message} from 'src/helpers/chrome-api'
+import {message} from 'src/helpers/chrome-api'
 
 export default {
   name: 'saladict-container',
+  props: ['config'],
   data () {
     return {
-      config: new AppConfig(),
-
       frameSource: chrome.runtime.getURL('panel.html'),
-
-      pageId: -1,
 
       isShowIcon: false,
       iconTop: 0,
@@ -159,7 +155,7 @@ export default {
         return
       }
 
-      message.send({msg: 'SEARCH_TEXT_SELF', text: this.selectedText, page: this.pageId})
+      message.self.send({msg: 'SEARCH_TEXT', text: this.selectedText})
     },
     clearDoubleClick () {
       this.firstClickOfDoubleClick = false
@@ -197,28 +193,9 @@ export default {
       }
     }
   },
-  created () {
-    message.send({msg: 'PAGE_ID'}, pageId => {
-      if (pageId) {
-        this.pageId = pageId
-      }
-    })
-
-    storage.sync.get('config').then(result => {
-      if (result.config) {
-        this.config = result.config
-      }
-    })
-    this.onStorageconfig = changes => {
-      this.config = changes.config.newValue
-    }
-    storage.on('config', this.onStorageconfig)
-  },
   mounted () {
     // receive signals from page and all frames
-    this.onMessageSELECTION = (data, sender, sendResponse) => {
-      if (this.pageId !== -1 && this.pageId !== data.page) { return }
-
+    message.self.on('SELECTION', (data, sender, sendResponse) => {
       this.selectedText = data.text || ''
 
       if (this.isStayVisiable) {
@@ -267,80 +244,88 @@ export default {
         }
       }
       sendResponse()
-    }
+    })
 
-    this.onMessageCLOSE_PANEL = (data, sender, sendResponse) => {
-      if (this.pageId !== -1 && this.pageId !== data.page) { return }
-
+    message.self.on('CLOSE_PANEL', (data, sender, sendResponse) => {
       this.isStayVisiable = false
       this.isShowFrame = false
       this.isShowIcon = false
       sendResponse()
-    }
+    })
 
-    this.onMessagePIN_PANEL = (data, sender, sendResponse) => {
-      if (this.pageId !== -1 && this.pageId !== data.page) { return }
-
+    message.self.on('PIN_PANEL', (data, sender, sendResponse) => {
       this.isStayVisiable = data.flag
       this.isShowIcon = false
       sendResponse()
-    }
+    })
 
-    this.onMessagePANEL_READY = (data, sender, sendResponse) => {
-      if (this.pageId !== -1 && this.pageId !== data.page) { return }
-
+    message.self.on('PANEL_READY', (data, sender, sendResponse) => {
       if (this.isTripleCtrl) {
         this.isTripleCtrl = false
-        return sendResponse({ctrl: true})
+        return sendResponse({preload: this.config.tripleCtrlPreload, autoSearch: this.config.tripleCtrlAuto})
       }
 
       if (this.selectedText) {
-        message.send({msg: 'SEARCH_TEXT_SELF', text: this.selectedText, page: this.pageId})
+        message.self.send({msg: 'SEARCH_TEXT', text: this.selectedText})
       }
 
       sendResponse()
-    }
+    })
 
-    this.onMessageTRIPLE_CTRL = (data, sender, sendResponse) => {
-      if (this.pageId !== -1 && this.pageId !== data.page) { return }
-
+    message.self.on('TRIPLE_CTRL', (data, sender, sendResponse) => {
       this.isTripleCtrl = true
       // show panel
       this.isShowIcon = false
       this.isShowFrame = false
       this.$nextTick(() => {
-        this.frameLeft = window.innerWidth / 2 - 400 / 2
-        this.frameTop = window.innerHeight / 2 - this.panelHeight / 2
+        switch (this.config.tripleCtrlLocation) {
+          case 0: // center
+            this.frameTop = window.innerHeight / 2 - this.panelHeight / 2
+            this.frameLeft = window.innerWidth / 2 - 400 / 2
+            break
+          case 1: // top
+            this.frameTop = 10
+            this.frameLeft = window.innerWidth / 2 - 400 / 2
+            break
+          case 2: // right
+            this.frameTop = window.innerHeight / 2 - this.panelHeight / 2
+            this.frameLeft = window.innerWidth - 400 - 20
+            break
+          case 3: // bottom
+            this.frameTop = window.innerHeight - this.panelHeight - 10
+            this.frameLeft = window.innerWidth / 2 - 400 / 2
+            break
+          case 4: // left
+            this.frameTop = window.innerHeight / 2 - this.panelHeight / 2
+            this.frameLeft = 10
+            break
+          case 5: // top left
+            this.frameTop = 10
+            this.frameLeft = 10
+            break
+          case 6: // top right
+            this.frameTop = 10
+            this.frameLeft = window.innerWidth - 400 - 20
+            break
+          case 7: // bottom left
+            this.frameTop = window.innerHeight - this.panelHeight - 10
+            this.frameLeft = 10
+            break
+          case 8: // bottom right
+            this.frameTop = window.innerHeight - this.panelHeight - 10
+            this.frameLeft = window.innerWidth - 400 - 20
+            break
+        }
         this.isShowFrame = true
       })
       sendResponse()
-    }
+    })
 
-    this.onMessageDRAG_AREA = ({left, width, page}, sender, sendResponse) => {
-      if (this.pageId !== -1 && this.pageId !== page) { return }
+    message.self.on('DRAG_AREA', ({left, width, page}, sender, sendResponse) => {
       this.dragLeft = left
       this.dragWidth = width
       sendResponse()
-    }
-
-    message.on('SELECTION', this.onMessageSELECTION)
-    message.on('CLOSE_PANEL', this.onMessageCLOSE_PANEL)
-    message.on('PIN_PANEL', this.onMessagePIN_PANEL)
-    message.on('PANEL_READY', this.onMessagePANEL_READY)
-    message.on('TRIPLE_CTRL', this.onMessageTRIPLE_CTRL)
-    message.on('DRAG_AREA', this.onMessageDRAG_AREA)
-  },
-  destroyed () {
-    document.removeEventListener('mouseup', this.handleDragEnd, true)
-    document.removeEventListener('mousemove', this.handlePageMousemove, true)
-    window.removeEventListener('message', this.handleDragStart)
-    storage.off(this.onStorageconfig)
-    message.off(this.onMessageSELECTION)
-    message.off(this.onMessageCLOSE_PANEL)
-    message.off(this.onMessagePIN_PANEL)
-    message.off(this.onMessagePANEL_READY)
-    message.off(this.onMessageTRIPLE_CTRL)
-    message.off(this.onMessageDRAG_AREA)
+    })
   }
 }
 </script>

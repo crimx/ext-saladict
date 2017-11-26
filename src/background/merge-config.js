@@ -8,12 +8,34 @@ export default function mergeConfig (config) {
   var base = new AppConfig()
   if (config.active !== undefined) { base.active = Boolean(config.active) }
   if (config.searhHistory !== undefined) { base.searhHistory = Boolean(config.searhHistory) }
+  if (config.newWordSound !== undefined) { base.newWordSound = Boolean(config.newWordSound) }
   if (/^(icon|direct|double|ctrl)$/i.test(config.mode)) { base.mode = config.mode.toLowerCase() }
   if (/^(direct|double|ctrl)$/i.test(config.pinMode)) { base.pinMode = config.pinMode.toLowerCase() }
   if (typeof config.doubleClickDelay === 'number' && !isNaN(config.doubleClickDelay)) {
     base.doubleClickDelay = config.doubleClickDelay
   }
   if (config.tripleCtrl !== undefined) { base.tripleCtrl = Boolean(config.tripleCtrl) }
+  if (typeof config.tripleCtrlPreload === 'string') {
+    if (/^clipboard|selection$/.test(config.tripleCtrlPreload)) {
+      base.tripleCtrlPreload = config.tripleCtrlPreload
+    } else {
+      base.tripleCtrlPreload = ''
+    }
+  }
+  if (config.tripleCtrlAuto !== undefined) { base.tripleCtrlAuto = Boolean(config.tripleCtrlAuto) }
+  if (config.tripleCtrlLocation >= 0 && config.tripleCtrlLocation <= 8) {
+    base.tripleCtrlLocation = config.tripleCtrlLocation
+  }
+
+  if (typeof config.baPreload === 'string') {
+    if (/^clipboard|selection$/.test(config.baPreload)) {
+      base.baPreload = config.baPreload
+    } else {
+      base.baPreload = ''
+    }
+  }
+  if (config.baAuto !== undefined) { base.baAuto = Boolean(config.baAuto) }
+
   if (config.language) {
     Object.keys(base.language).forEach(k => {
       if (config.language[k] !== undefined) { base.language[k] = Boolean(config.language[k]) }

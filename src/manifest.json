@@ -22,7 +22,9 @@
 
   "background": {
     "scripts": [
-      "background.js"
+      "initialization.js",
+      "context.js",
+      "server.js"
     ],
     "persistent": false
   },

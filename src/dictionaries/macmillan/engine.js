@@ -1,6 +1,6 @@
 import fetchDom from 'src/helpers/fetch-dom'
 import stripScript from 'src/helpers/strip-script'
-import {reflect} from 'src/helpers/promise-more'
+import {promiseReflect} from 'src/helpers/promise-more'
 
 /**
  * Search text and give back result
@@ -56,7 +56,7 @@ function addRelated (doc) {
     .filter(a => keywordTester.test(a.href))
   if ($related.length <= 0) { return [doc] }
 
-  return reflect($related.map(a => fetchDom(a.href)))
+  return promiseReflect($related.map(a => fetchDom(a.href)))
     .then(docs => [doc].concat(docs.filter(d => d)))
 }
 

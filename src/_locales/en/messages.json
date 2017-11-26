@@ -87,6 +87,10 @@
     "description": "reset button",
     "message": "Reset"
   },
+  "opt_autopron_none": {
+    "description": "option description",
+    "message": "None"
+  },
   "opt_reset_modal_title": {
     "description": "reset alert",
     "message": "Reset Config"
@@ -115,15 +119,19 @@
     "description": "option description",
     "message": "Inline translation would be shut down when it is turned off. Quick Search is still available."
   },
-  "opt_search_history_title": {
+  "opt_word_list_title": {
     "description": "option title",
-    "message": "Search History"
+    "message": "Word List"
   },
-  "opt_search_history": {
+  "opt_word_list_history": {
     "description": "option",
     "message": "Track search history"
   },
-  "opt_search_history_description": {
+  "opt_word_list_notebook": {
+    "description": "option",
+    "message": "Play sound when adding new words"
+  },
+  "opt_word_list_description": {
     "description": "option description",
     "message": "You can clear previous records on Search History Page."
   },
@@ -167,6 +175,22 @@
     "description": "option description",
     "message": "When Dictionary Panel is pinned."
   },
+  "opt_preload": {
+    "description": "option select title, preload",
+    "message": "Preload"
+  },
+  "opt_preload_clipboard": {
+    "description": "option description",
+    "message": "Clipboard"
+  },
+  "opt_preload_selection": {
+    "description": "option description",
+    "message": "Selection"
+  },
+  "opt_preload_auto": {
+    "description": "option description",
+    "message": "Auto search"
+  },
   "opt_triple_ctrl_title": {
     "description": "option title",
     "message": "Quick Search"
@@ -175,9 +199,50 @@
     "description": "option title",
     "message": "Enable Quick Search"
   },
+  "opt_triple_ctrl_loc_title": {
+    "description": "option option",
+    "message": "Location"
+  },
+  "opt_triple_ctrl_loc_0": {
+    "description": "option option",
+    "message": "Center"
+  },
+  "opt_triple_ctrl_loc_1": {
+    "description": "option option",
+    "message": "Top"
+  },"opt_triple_ctrl_loc_2": {
+    "description": "option option",
+    "message": "Right"
+  },"opt_triple_ctrl_loc_3": {
+    "description": "option option",
+    "message": "Bottom"
+  },"opt_triple_ctrl_loc_4": {
+    "description": "option option",
+    "message": "Left"
+  },"opt_triple_ctrl_loc_5": {
+    "description": "option option",
+    "message": "Top Left"
+  },"opt_triple_ctrl_loc_6": {
+    "description": "option option",
+    "message": "Top Right"
+  },"opt_triple_ctrl_loc_7": {
+    "description": "option option",
+    "message": "Bottom Left"
+  },"opt_triple_ctrl_loc_8": {
+    "description": "option option",
+    "message": "Bottom Right"
+  },
   "opt_triple_ctrl_description": {
     "description": "option description",
-    "message": "Press <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key three times a dictionary panel shows up"
+    "message": "Press <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key three times a dictionary panel shows up. Preload content will be inserted into input box. Enable auto search to search automatically."
+  },
+  "opt_popup_title": {
+    "description": "option title",
+    "message": "Browser Action"
+  },
+  "opt_popup_description": {
+    "description": "option description",
+    "message": "Preload content will be inserted into input box. Enable auto search to search automatically."
   },
   "opt_language_title": {
     "description": "option title",
@@ -206,10 +271,6 @@
   "opt_autopron_en": {
     "description": "option description",
     "message": "English"
-  },
-  "opt_autopron_none": {
-    "description": "option description",
-    "message": "None"
   },
   "opt_autopron_us": {
     "description": "option description",
@@ -351,45 +412,53 @@
     "description": "context menu",
     "message": "Manual"
   },
+  "context_notebook_title": {
+    "description": "context menu",
+    "message": "New Word List"
+  },
+  "wordpage_only_english": {
+    "description": "word page",
+    "message": "Display Only English Words"
+  },
+  "wordpage_plain_modal_title": {
+    "description": "word page",
+    "message": "Plain Text - You can copy and paste"
+  },
+  "wordpage_clear": {
+    "description": "word page",
+    "message": "Clear Records"
+  },
+  "wordpage_savefile": {
+    "description": "word page",
+    "message": "Save File"
+  },
+  "wordpage_plaintext": {
+    "description": "word page",
+    "message": "View Plain Text"
+  },
+  "wordpage_copy_success": {
+    "description": "word page",
+    "message": "Copy Success!"
+  },
+  "wordpage_copu_failed": {
+    "description": "word page",
+    "message": "Copy faild. You can copy manually."
+  },
+  "wordpage_clear_success": {
+    "description": "word page",
+    "message": "Clear Success!"
+  },
   "history_title": {
     "description": "history page",
     "message": "Search History"
   },
-  "history_only_english": {
+  "history_wordcount": {
     "description": "history page",
-    "message": "Display Only English Words"
-  },
-  "history_plain_modal_title": {
-    "description": "history page",
-    "message": "Plain Text - You can copy and paste"
+    "message": "Total %s records, Saladict will track approximately 10,000 most recent results."
   },
   "history_no_result": {
     "description": "history page",
     "message": "No result. Search a few words and come back."
-  },
-  "history_wordcount": {
-    "description": "history page",
-    "message": "Total %s records，Saladict will track approximately 10,000 most recent results."
-  },
-  "history_clear": {
-    "description": "history page",
-    "message": "Clear Records"
-  },
-  "history_savefile": {
-    "description": "history page",
-    "message": "Save File"
-  },
-  "history_plaintext": {
-    "description": "history page",
-    "message": "View Plain Text"
-  },
-  "history_copy_success": {
-    "description": "history page",
-    "message": "Copy Success!"
-  },
-  "history_copu_failed": {
-    "description": "history page",
-    "message": "Copy faild. You can copy manually."
   },
   "history_clear_modal_title": {
     "description": "history page",
@@ -399,9 +468,21 @@
     "description": "history page",
     "message": "All records will be deleted，confirm？"
   },
-  "history_clear_success": {
-    "description": "history page",
-    "message": "Clear Success!"
+  "notebook_wordcount": {
+    "description": "notebook page",
+    "message": "Total %s records, beware that new-word data is not syncing"
+  },
+  "notebook_no_result": {
+    "description": "notebook page",
+    "message": "No result. Open dict panel to add new words."
+  },
+  "notebook_clear_modal_title": {
+    "description": "notebook page",
+    "message": "Clear New Words"
+  },
+  "notebook_clear_modal_content": {
+    "description": "notebook page",
+    "message": "All records will be deleted，confirm？"
   },
   "notification_youdao_err": {
     "description": "notifications message",

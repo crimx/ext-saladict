@@ -87,6 +87,10 @@
     "description": "reset button",
     "message": "重置"
   },
+  "opt_none": {
+    "description": "option description",
+    "message": "无"
+  },
   "opt_reset_modal_title": {
     "description": "reset alert",
     "message": "重置设定"
@@ -115,17 +119,21 @@
     "description": "option description",
     "message": "关闭后划词翻译功能将关闭，快捷查词功能依然可用。"
   },
-  "opt_search_history_title": {
+  "opt_word_list_title": {
     "description": "option title",
-    "message": "查词历史"
+    "message": "单词列表"
   },
-  "opt_search_history": {
+  "opt_word_list_history": {
     "description": "option",
     "message": "记录查词历史"
   },
-  "opt_search_history_description": {
+  "opt_word_list_notebook": {
+    "description": "option",
+    "message": "添加生词时播放声音"
+  },
+  "opt_word_list_description": {
     "description": "option description",
-    "message": "关闭后不再记录查词历史，先前的记录依然保留，可在查词历史页面手动清空。"
+    "message": "关闭记录查词历史后先前的记录依然保留，可在查词历史页面手动清空。"
   },
   "opt_mode_title": {
     "description": "option title",
@@ -167,17 +175,74 @@
     "description": "option description",
     "message": "当面板被钉住时的查词模式。"
   },
+  "opt_preload": {
+    "description": "option select title, preload",
+    "message": "预先加载"
+  },
+  "opt_preload_clipboard": {
+    "description": "option description",
+    "message": "剪贴板"
+  },
+  "opt_preload_selection": {
+    "description": "option description",
+    "message": "页面划词"
+  },
+  "opt_preload_auto": {
+    "description": "option description",
+    "message": "自动查词"
+  },
   "opt_triple_ctrl_title": {
     "description": "option title",
     "message": "快捷查词"
   },
   "opt_triple_ctrl": {
-    "description": "option title",
-    "message": "启用快捷查词"
+    "description": "option option",
+    "message": "开启"
+  },
+  "opt_triple_ctrl_loc_title": {
+    "description": "option option",
+    "message": "出现位置"
+  },
+  "opt_triple_ctrl_loc_0": {
+    "description": "option option",
+    "message": "居中"
+  },
+  "opt_triple_ctrl_loc_1": {
+    "description": "option option",
+    "message": "上方"
+  },"opt_triple_ctrl_loc_2": {
+    "description": "option option",
+    "message": "右方"
+  },"opt_triple_ctrl_loc_3": {
+    "description": "option option",
+    "message": "下方"
+  },"opt_triple_ctrl_loc_4": {
+    "description": "option option",
+    "message": "左方"
+  },"opt_triple_ctrl_loc_5": {
+    "description": "option option",
+    "message": "左上"
+  },"opt_triple_ctrl_loc_6": {
+    "description": "option option",
+    "message": "右上"
+  },"opt_triple_ctrl_loc_7": {
+    "description": "option option",
+    "message": "左下"
+  },"opt_triple_ctrl_loc_8": {
+    "description": "option option",
+    "message": "右下"
   },
   "opt_triple_ctrl_description": {
     "description": "option description",
-    "message": "连续按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键将弹出词典界面。"
+    "message": "连续按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键将弹出词典界面。选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。"
+  },
+  "opt_popup_title": {
+    "description": "option title",
+    "message": "右上弹框"
+  },
+  "opt_popup_description": {
+    "description": "option description",
+    "message": "点击右上方地址栏旁图标弹出的窗口。选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。"
   },
   "opt_language_title": {
     "description": "option title",
@@ -206,10 +271,6 @@
   "opt_autopron_en": {
     "description": "option description",
     "message": "英文"
-  },
-  "opt_autopron_none": {
-    "description": "option description",
-    "message": "无"
   },
   "opt_autopron_us": {
     "description": "option description",
@@ -351,45 +412,53 @@
     "description": "context menu",
     "message": "详细使用说明"
   },
+  "context_notebook_title": {
+    "description": "context menu",
+    "message": "生词本"
+  },
+  "wordpage_only_english": {
+    "description": "word page",
+    "message": "只显示英文记录"
+  },
+  "wordpage_plain_modal_title": {
+    "description": "word page",
+    "message": "纯文本 - 可复制粘贴"
+  },
+  "wordpage_clear": {
+    "description": "word page",
+    "message": "清空记录"
+  },
+  "wordpage_savefile": {
+    "description": "word page",
+    "message": "导出文件"
+  },
+  "wordpage_plaintext": {
+    "description": "word page",
+    "message": "查看纯文本"
+  },
+  "wordpage_copy_success": {
+    "description": "word page",
+    "message": "复制成功！"
+  },
+  "wordpage_copu_failed": {
+    "description": "word page",
+    "message": "复制失败，请手动复制"
+  },
+  "wordpage_clear_success": {
+    "description": "word page",
+    "message": "清除成功！"
+  },
   "history_title": {
     "description": "history page",
     "message": "查词历史记录"
-  },
-  "history_only_english": {
-    "description": "history page",
-    "message": "只显示英文记录"
-  },
-  "history_plain_modal_title": {
-    "description": "history page",
-    "message": "纯文本 - 可复制粘贴"
-  },
-  "history_no_result": {
-    "description": "history page",
-    "message": "无历史记录，查词后再查看"
   },
   "history_wordcount": {
     "description": "history page",
     "message": "共 %s 条记录，本扩展会保存约 10,000 条最近查词历史"
   },
-  "history_clear": {
+  "history_no_result": {
     "description": "history page",
-    "message": "清空记录"
-  },
-  "history_savefile": {
-    "description": "history page",
-    "message": "导出文件"
-  },
-  "history_plaintext": {
-    "description": "history page",
-    "message": "查看纯文本"
-  },
-  "history_copy_success": {
-    "description": "history page",
-    "message": "复制成功！"
-  },
-  "history_copu_failed": {
-    "description": "history page",
-    "message": "复制失败，请手动复制"
+    "message": "无历史记录，查词后再查看"
   },
   "history_clear_modal_title": {
     "description": "history page",
@@ -399,9 +468,25 @@
     "description": "history page",
     "message": "所有查词历史记录将被清除，确定？"
   },
-  "history_clear_success": {
-    "description": "history page",
-    "message": "清除成功！"
+  "notebook_title": {
+    "description": "notebook page",
+    "message": "生词本"
+  },
+  "notebook_wordcount": {
+    "description": "notebook page",
+    "message": "共 %s 条记录，生词本数据不同步，注意导出"
+  },
+  "notebook_no_result": {
+    "description": "notebook page",
+    "message": "无生词记录，添加后再查看"
+  },
+  "notebook_clear_modal_title": {
+    "description": "notebook page",
+    "message": "清空生词本"
+  },
+  "notebook_clear_modal_content": {
+    "description": "notebook page",
+    "message": "生词本所有记录将被清除，确定？"
   },
   "notification_youdao_err": {
     "description": "notifications message",

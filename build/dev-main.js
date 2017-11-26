@@ -6,6 +6,7 @@
 
 
 import locale from 'src/_locales/zh_CN/messages.json'
+import AppConfig from 'src/app-config'
 
 import 'normalize.css/normalize.css'
 import Vue from 'vue'
@@ -22,26 +23,34 @@ Vue.config.productionTip = false
 // dictCobuild()
 // dictMacmillan()
 // dictZdic()
-// panel()
-history()
+panel()
+// history()
 
 function panel () {
-  const App = require('src/content/panel/main')
-  new Vue({ // eslint-disable-line no-new
+  const App = require('src/content/panel/Panel').default
+  new Vue({
     el: '#app',
-    render: h => h('div', {}, [
-      h(App),
-      h('style', {
-        domProps: {
-          innerHTML: `
-            body {
-              height: 410px;
-              width: 400px;
-            }
-          `
-        }
-      })
-    ])
+    data: {config: new AppConfig()},
+    render (createElement) {
+      return createElement('div', {}, [
+        createElement(App, {
+          props: {
+            config: this.config,
+            i18n: key => chrome.i18n.getMessage(key)
+          }
+        }),
+        createElement('style', {
+          domProps: {
+            innerHTML: `
+              body {
+                height: 410px;
+                width: 400px;
+              }
+            `
+          }
+        })
+      ])
+    }
   })
 }
 

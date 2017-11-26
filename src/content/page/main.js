@@ -3,43 +3,45 @@ import App from './Container'
 import {storage, message} from 'src/helpers/chrome-api'
 
 Vue.config.productionTip = false
-
-var pageId = -1
-message.send({msg: 'PAGE_ID'}, id => {
-  if (id) {
-    pageId = id
-  }
-})
+Vue.config.devtools = false
 
 var vm
 
-storage.sync.listen('config', changes => {
-  if (changes.config.newValue.active && !vm) {
-    activate()
+storage.sync.get('config').then(({config}) => {
+  if (config && config.active) {
+    activate(config)
   }
-})
 
-storage.sync.get('config').then(result => {
-  if (result.config && result.config.active) {
-    activate()
-  }
-})
-
-message.on('SELECTION', (data, sender, sendResponse) => {
-  if (pageId !== -1 && pageId !== data.page) { return }
-
-  // check if dom element being removed
-  if (vm && vm.$el && !document.querySelector('.saladict-container')) {
-    document.body.appendChild(vm.$el)
-    sendResponse()
-  }
-})
-
-function activate () {
-  vm = new Vue({
-    render: h => h(App)
+  storage.sync.listen('config', changes => {
+    const newConfig = changes.config.newValue
+    if (vm) {
+      vm.config = newConfig
+    } else {
+      if (newConfig.active) {
+        activate(newConfig)
+      }
+    }
   })
-  .$mount()
+})
+
+function activate (config) {
+  vm = new Vue({
+    data: {config},
+    render (createElement) {
+      return createElement(App, {
+        props: {
+          config: this.config
+        }
+      })
+    }
+  }).$mount()
 
   document.body.appendChild(vm.$el)
+
+  message.self.on('SELECTION', (data, sender, sendResponse) => {
+    // eavesdropping, check if dom element being removed
+    if (!document.querySelector('.saladict-container')) {
+      document.body.appendChild(vm.$el)
+    }
+  })
 }
