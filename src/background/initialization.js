@@ -2,7 +2,7 @@ import {storage, openURL} from 'src/helpers/chrome-api'
 import checkUpdate from 'src/helpers/check-update'
 import AppConfig from 'src/app-config'
 import mergeConfig from './merge-config'
-import {setContextMenu} from './context-menus'
+import setContextMenu from './set-context-menus'
 
 chrome.runtime.onInstalled.addListener(onInstalled)
 chrome.runtime.onStartup.addListener(onStartup)
@@ -24,7 +24,7 @@ function onInstalled ({reason}) {
       isNew = true
     }
 
-    storage.sync.set({config})
+    storage.sync.set({config, lastCheckUpdate: Date.now()})
       .then(() => {
         if (isNew) {
           openURL('https://github.com/crimx/crx-saladict/wiki')
@@ -34,8 +34,6 @@ function onInstalled ({reason}) {
         setContextMenu(config)
       })
   })
-
-  // storage.local.set({lastCheckUpdate: Date.now()})
 }
 
 function onStartup () {
@@ -84,9 +82,8 @@ function showNews () {
     requireInteraction: true,
     type: 'basic',
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
-    title: '沙拉查词',
+    title: '沙拉查词 Saladict【5.28.1】',
     message: (`
-      【5.28.1】
       1. 增加生词本！
       2. 可配置预加载内容（剪贴板或页面选中词）与自动开始查词，快捷查词可设置出现的位置
       3. 增强系统稳定性
