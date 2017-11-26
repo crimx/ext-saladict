@@ -571,7 +571,7 @@ body {
 .new-word-card {
   position: absolute;
   z-index: $global-zindex-tooltip;
-  top: 40%;
+  top: 25%;
   left: 50%;
   transform: translateX(-50%);
   max-width: 380px;
