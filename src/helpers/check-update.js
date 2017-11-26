@@ -11,16 +11,19 @@ export default function checkUpdate () {
         if (!vGithub) { return }
         let gits = vGithub[0].split('.').map(v => Number(v))
         let curs = chrome.runtime.getManifest().version.split('.').map(v => Number(v))
-        return gits[0] !== curs[0]
-          ? gits[0] > curs[0]
-          : gits[1] !== curs[1]
-            ? gits[1] > curs[1]
-            : gits[2] > curs[2]
+        return {
+          info: data,
+          isAvailable: gits[0] !== curs[0]
+            ? gits[0] > curs[0]
+            : gits[1] !== curs[1]
+              ? gits[1] > curs[1]
+              : gits[2] > curs[2]
+        }
       }
-      return false
+      return {isAvailable: false}
     })
     .catch(() => {
       console.warn('version check failed')
-      return false
+      return {isAvailable: false}
     })
 }

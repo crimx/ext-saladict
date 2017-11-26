@@ -40,7 +40,7 @@ storage.sync.get('config')
           })
         })
 
-        checkUpdate().then(isAvailable => {
+        checkUpdate().then(({isAvailable}) => {
           this.store.newVersionAvailable = isAvailable
         })
       }

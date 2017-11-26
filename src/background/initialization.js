@@ -1,11 +1,17 @@
 import {storage, openURL} from 'src/helpers/chrome-api'
+import checkUpdate from 'src/helpers/check-update'
 import AppConfig from 'src/app-config'
 import mergeConfig from './merge-config'
 import {setContextMenu} from './context-menus'
 
-// merge config on installed
-chrome.runtime.onInstalled.addListener(({reason}) => {
+chrome.runtime.onInstalled.addListener(onInstalled)
+chrome.runtime.onStartup.addListener(onStartup)
+chrome.notifications.onClicked.addListener(clickListener)
+chrome.notifications.onButtonClicked.addListener(btnClickListener)
+
+function onInstalled ({reason}) {
   clearHistory()
+  // merge config on installed
   let isNew = false
   storage.sync.get('config', ({config}) => {
     if (config && config.dicts && config.dicts.all) {
@@ -28,29 +34,49 @@ chrome.runtime.onInstalled.addListener(({reason}) => {
         setContextMenu(config)
       })
   })
-})
 
-chrome.notifications.onClicked.addListener(clickListener)
-chrome.notifications.onButtonClicked.addListener(btnClickListener)
+  // storage.local.set({lastCheckUpdate: Date.now()})
+}
+
+function onStartup () {
+  // check update every month
+  storage.local.get('lastCheckUpdate')
+    .then(({lastCheckUpdate}) => {
+      const today = Date.now()
+      if (lastCheckUpdate && today - lastCheckUpdate < 30 * 24 * 60 * 60 * 1000) {
+        return
+      }
+      checkUpdate().then(({info, isAvailable}) => {
+        storage.local.set({lastCheckUpdate: today})
+        if (isAvailable) {
+          chrome.notifications.create('update', {
+            requireInteraction: true,
+            type: 'basic',
+            iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
+            title: '沙拉查词',
+            message: (`可更新至【${info.tag_name}】`
+            ),
+            buttons: [{title: '查看更新'}]
+          })
+        }
+      })
+    })
+}
 
 function clickListener (id) {
-  if (id !== 'oninstall') { return }
+  if (!/^(oninstall|update)$/.test(id)) { return }
   openURL('https://github.com/crimx/crx-saladict/wiki')
   chrome.notifications.getAll(notifications => {
     Object.keys(notifications).forEach(id => chrome.notifications.clear(id))
   })
-  chrome.notifications.onClicked.removeListener(clickListener)
-  chrome.notifications.onButtonClicked.removeListener(btnClickListener)
 }
 
 function btnClickListener (id) {
-  if (id !== 'oninstall') { return }
+  if (!/^(oninstall|update)$/.test(id)) { return }
   openURL('https://github.com/crimx/crx-saladict/releases')
   chrome.notifications.getAll(notifications => {
     Object.keys(notifications).forEach(id => chrome.notifications.clear(id))
   })
-  chrome.notifications.onClicked.removeListener(clickListener)
-  chrome.notifications.onButtonClicked.removeListener(btnClickListener)
 }
 
 function showNews () {
