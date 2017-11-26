@@ -6112,17 +6112,9 @@ vue-loader@^13.5.0:
     vue-style-loader "^3.0.0"
     vue-template-es2015-compiler "^1.6.0"
 
-vue-observe-visibility@^0.3.1:
-  version "0.3.1"
-  resolved "http://registry.npm.taobao.org/vue-observe-visibility/download/vue-observe-visibility-0.3.1.tgz#e7cad37893da42858c086196da9acdb0fd85340b"
-
 vue-qriously@^1.1.1:
   version "1.1.1"
   resolved "http://registry.npm.taobao.org/vue-qriously/download/vue-qriously-1.1.1.tgz#b3a84b05280cb1edfd153bbc003f031995ea7ce7"
-
-vue-resize@^0.4.2:
-  version "0.4.3"
-  resolved "http://registry.npm.taobao.org/vue-resize/download/vue-resize-0.4.3.tgz#5bdfd1cd60eb2bf1ebc08dff1517754af69e4886"
 
 vue-stash@^2.0.1-beta:
   version "2.0.1-beta"
@@ -6145,13 +6137,6 @@ vue-template-compiler@^2.5.6:
 vue-template-es2015-compiler@^1.6.0:
   version "1.6.0"
   resolved "http://registry.npm.taobao.org/vue-template-es2015-compiler/download/vue-template-es2015-compiler-1.6.0.tgz#dc42697133302ce3017524356a6c61b7b69b4a18"
-
-vue-virtual-scroller@^0.10.6:
-  version "0.10.6"
-  resolved "http://registry.npm.taobao.org/vue-virtual-scroller/download/vue-virtual-scroller-0.10.6.tgz#d9a219177744e1536d9ada305b2e56427f30adcb"
-  dependencies:
-    vue-observe-visibility "^0.3.1"
-    vue-resize "^0.4.2"
 
 vue@^2.5.6:
   version "2.5.6"
