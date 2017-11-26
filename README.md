@@ -13,7 +13,7 @@ Chrome 浏览器插件，网页划词翻译。
 - [支持谷歌和有道分级网页翻译](https://github.com/crimx/crx-saladict/wiki#page-trans)
 - [查词面板可钉住可拖动可输入](https://github.com/crimx/crx-saladict/wiki#pin)
 - [支持自动发音](https://github.com/crimx/crx-saladict/wiki#autopron)
-- [支持查看最近 10,000 条查词记录](https://github.com/crimx/crx-saladict/wiki#search-history)
+- [支持添加生词与记录查词历史](https://github.com/crimx/crx-saladict/wiki#search-history)
 - [支持 PDF 划词](https://github.com/crimx/crx-saladict/wiki#pdf)
 - [各个词典面板支持个性化调整](https://github.com/crimx/crx-saladict/wiki#dict-settings)
 - [三按 ctrl 快速查词](https://github.com/crimx/crx-saladict/wiki#triple-ctrl)
