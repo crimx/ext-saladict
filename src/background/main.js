@@ -1,4 +1,4 @@
-import {storage, message} from 'src/helpers/chrome-api'
+import {storage, message, openURL} from 'src/helpers/chrome-api'
 import {promiseTimer} from 'src/helpers/promise-more'
 import './oninstall'
 import './context-menus'
@@ -11,7 +11,7 @@ message.server()
 // background script as transfer station
 message.listen((data, sender, sendResponse) => {
   switch (data.msg) {
-    case 'CREATE_TAB':
+    case 'OPEN_URL':
       return createTab(data, sender, sendResponse)
     case 'AUDIO_PLAY':
       return playAudio(data, sender, sendResponse)
@@ -23,13 +23,13 @@ message.listen((data, sender, sendResponse) => {
 })
 
 function createTab (data, sender, sendResponse) {
-  chrome.tabs.create({
-    url: data.escape
+  openURL(
+    data.escape
       ? data.url
         .replace('%s', this.text)
         .replace('%z', chsToChz(this.text))
       : data.url
-  })
+  )
   sendResponse()
 }
 

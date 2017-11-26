@@ -1,4 +1,4 @@
-import {storage, message} from 'src/helpers/chrome-api'
+import {storage, openURL} from 'src/helpers/chrome-api'
 
 // listen context menu
 chrome.contextMenus.onClicked.addListener(contextMenuOnClick)
@@ -26,7 +26,7 @@ function contextMenuOnClick ({menuItemId, selectionText, linkUrl}) {
     case 'google_page_translate':
       chrome.tabs.query({active: true, currentWindow: true}, tabs => {
         if (tabs.length > 0) {
-          chrome.tabs.create({url: `https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`})
+          openURL(`https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`)
         }
       })
       break
@@ -52,29 +52,29 @@ function contextMenuOnClick ({menuItemId, selectionText, linkUrl}) {
       var pdfURL = chrome.runtime.getURL('assets/pdf/web/viewer.html')
       if (linkUrl) {
         // open link as pdf
-        chrome.tabs.create({url: pdfURL + '?file=' + linkUrl})
+        openURL(pdfURL + '?file=' + linkUrl)
       } else {
         chrome.tabs.query({active: true, currentWindow: true}, tabs => {
           // if it is a pdf page
           if (tabs.length > 0 && /\.pdf$/i.test(tabs[0].url)) {
-            chrome.tabs.create({url: pdfURL + '?file=' + tabs[0].url})
+            openURL(pdfURL + '?file=' + tabs[0].url)
           } else {
-            chrome.tabs.create({url: pdfURL})
+            openURL(pdfURL)
           }
         })
       }
       break
     case 'search_history':
-      chrome.tabs.create({url: chrome.runtime.getURL('history.html')})
+      openURL(chrome.runtime.getURL('history.html'))
       break
     case 'notebook':
-      chrome.tabs.create({url: chrome.runtime.getURL('notebook.html')})
+      openURL(chrome.runtime.getURL('notebook.html'))
       break
     default:
       storage.sync.get('config', ({config}) => {
         const url = config.contextMenu.all[menuItemId]
         if (url) {
-          chrome.tabs.create({url: url.replace('%s', selectionText)})
+          openURL(url.replace('%s', selectionText))
         }
       })
   }

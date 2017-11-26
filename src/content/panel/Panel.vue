@@ -201,7 +201,7 @@ export default {
       message.self.send({msg: 'PIN_PANEL', flag: this.isPinned})
     },
     openOptionsPage () {
-      message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('options.html')})
+      message.send({msg: 'OPEN_URL', url: chrome.runtime.getURL('options.html')})
     },
     openShareimgPage () {
       const dicts = this.config.dicts.selected.map(id => {
@@ -213,16 +213,17 @@ export default {
       }).filter(Boolean)
 
       storage.local.set({paneldata: {text: this.text, dicts}}, () => {
-        message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('shareimg.html')})
+        message.send({msg: 'OPEN_URL', url: chrome.runtime.getURL('shareimg.html')})
       })
     },
     openHistoryPage () {
-      message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('history.html')})
+      message.send({msg: 'OPEN_URL', url: chrome.runtime.getURL('history.html')})
     },
     openNoteBook () {
-      message.send({msg: 'CREATE_TAB', url: chrome.runtime.getURL('notebook.html')})
+      message.send({msg: 'OPEN_URL', url: chrome.runtime.getURL('notebook.html')})
     },
     addNewWord () {
+      if (!this.text) { return }
       if (this.config.newWordSound) {
         new Audio(chrome.runtime.getURL('assets/notification.mp3')).play()
       }
@@ -252,7 +253,7 @@ export default {
     },
     handleDictPage (id) {
       message.send({
-        msg: 'CREATE_TAB',
+        msg: 'OPEN_URL',
         escape: true,
         url: this.config.dicts.all[id].page
       })
@@ -263,7 +264,7 @@ export default {
           const text = target.innerText.trim()
           if (/\s/.test(text)) {
             // more than one word
-            chrome.runtime.sendMessage({msg: 'CREATE_TAB', url: target.href})
+            chrome.runtime.sendMessage({msg: 'OPEN_URL', url: target.href})
           } else {
             this.handleSearchText({text})
           }

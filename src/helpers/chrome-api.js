@@ -5,7 +5,6 @@
 import debug from 'debug'
 
 var debugMsg = debug('message')
-var debugStorage = debug('storage')
 
 /**
  * key: {string} user's callback function
@@ -74,7 +73,25 @@ export const message = {
   }
 }
 
+/**
+ * create new tab or highlight existing tab
+ * @param {string} url
+ * @param {Function} [callback]
+ * @return undefined if callback is passed, otherwise a Promise
+ */
+export function openURL (url, callback) {
+  if (typeof url !== 'string') {
+    throw new TypeError('arg 1 should be a string')
+  }
+  if (callback) {
+    return _openURL(url, callback)
+  } else {
+    return new Promise(resolve => _openURL(url, resolve))
+  }
+}
+
 export default {
+  openURL,
   storage,
   message
 }
@@ -475,4 +492,14 @@ function getPageId (sender) {
     // FRAGILE: Assume only browser action page is tabless
     return 'popup'
   }
+}
+
+function _openURL (url, callback) {
+  chrome.tabs.query({url}, tabs => {
+    if (tabs.length > 0) {
+      chrome.tabs.highlight({tabs: tabs[0].index}, callback)
+    } else {
+      chrome.tabs.create({url}, callback)
+    }
+  })
 }
