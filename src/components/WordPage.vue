@@ -196,7 +196,12 @@ export default {
         this.pageIndex += 1
       }
 
-      let requestIndex = this.isMergeFirstTwo ? this.pageIndex + 1 : this.pageIndex
+      let requestIndex = this.pageIndex
+      if (requestIndex === 0) {
+        this.isMergeFirstTwo = false
+      } else if (this.isMergeFirstTwo) {
+        requestIndex = this.pageIndex + 1
+      }
       return this.recordManager.getRecordSet(requestIndex)
         .then(({recordSet, pageCount}) => {
           if (!recordSet) {
