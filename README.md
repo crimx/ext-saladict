@@ -63,6 +63,11 @@ Chrome 浏览器插件，网页划词翻译。
 
 # 更新
 
+【5.28.1】
+1. 增加生词本！
+2. 可配置预加载内容（剪贴板或页面选中词）与自动开始查词，快捷查词可设置出现的位置
+3. 增强系统稳定性
+
 【5.27.3】
 1. 增加有道分级网页翻译2.0（支持 HTTPS）
 2. 增加自动发音
@@ -76,6 +81,15 @@ Chrome 浏览器插件，网页划词翻译。
 10. 提升安全性、细节优化以及其它问题修复
 
 查看[更新历史](./CHANGELOG.md)。
+
+# 支持开发
+
+觉得好用的话欢迎给作者买杯咖啡支持开发哦~♥
+
+<div align="center">
+  <img width="250" height="250" src="https://github.com/crimx/crx-saladict/wiki/images/wechat.png">
+  <img width="250" height="250" src="https://github.com/crimx/crx-saladict/wiki/images/alipay.png">
+</div>
 
 # 开发
 
