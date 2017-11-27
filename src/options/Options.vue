@@ -73,7 +73,16 @@ export default {
     searchText () {
       clearTimeout(this.searchTextTimeout)
       this.searchTextTimeout = setTimeout(() => {
-        message.self.send({msg: 'SEARCH_TEXT', text: this.text})
+        message.self.send({
+          msg: 'SEARCH_TEXT',
+          selectedInfo: {
+            text: this.text,
+            sentence: '',
+            title: document.title,
+            url: document.URL,
+            favicon: chrome.runtime.getURL('assets/icon-16.png')
+          }
+        })
       }, 2000)
     },
     handleReset () {

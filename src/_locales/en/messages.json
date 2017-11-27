@@ -487,5 +487,9 @@
   "notification_youdao_err": {
     "description": "notifications message",
     "message": "Youdao Page Translation 2.0 not responding.\nSaladict might not have permission to access this page.\nIgnore this message if Youdao panal is shown."
+  },
+  "from_saladict_panel": {
+    "description": "From Saladict Panel",
+    "message": "From Saladict Panel"
   }
 }

@@ -4,19 +4,24 @@
 
 import {storage} from 'src/helpers/chrome-api'
 
-/** @typedef {string} Word */
+const catVersion = 2
+
+/**
+ * @typedef {object} Word
+ * @property {string} text
+ */
 
 /**
  * Gathered by date.
  * Latest -> Oldest
- * @typedef {Object} Record
+ * @typedef {object} Record
  * @property {string} date - time in MMDDYYYY format
  * @property {Word[]} data - word list
  */
 
 /**
  * Latest -> Oldest
- * @typedef {Object} RecordSet
+ * @typedef {object} RecordSet
  * @property {string} id - unique id
  * @property {Record[]} data - Record list
  * @property {number} wordCount - the amount of words of all item in the set ~500 max
@@ -25,7 +30,7 @@ import {storage} from 'src/helpers/chrome-api'
 /**
  * Catalog of trvotf set
  * Latest -> Oldest
- * @typedef {Object} RecordCat
+ * @typedef {object} RecordCat
  * @property {string[]} data - record set ids
  * @property {number} wordCount - the amount of all record items
  * @property {string} timestamp - let storage listener be notified
@@ -34,15 +39,15 @@ import {storage} from 'src/helpers/chrome-api'
 /**
  * record a item
  * @param {string} area - namespace
- * @param {string} text
+ * @param {Word} word
  * @returns {Promise}
  */
-export function addRecord (area, text) {
+export function addRecord (area, word) {
   const catName = area + 'Cat'
   return storage.local.get(catName)
     .then(res => getLatestSet(res[catName]))
     .then(getTodayItem)
-    .then(res => appendAndSave(res, text, catName))
+    .then(res => appendAndSave(res, word, catName))
 }
 
 /**
@@ -96,7 +101,7 @@ export function getAllWords (area) {
 /**
  * @returns {Promise}
  */
-export function removeWord (area, setId, recordDate, word) {
+export function removeWord (area, setId, recordDate, text) {
   const catName = area + 'Cat'
   return storage.local.get(setId)
     .then(res => {
@@ -107,7 +112,7 @@ export function removeWord (area, setId, recordDate, word) {
       if (iRecord === -1) { return Promise.reject('no record to delete word') }
       const record = recordSet.data[iRecord]
 
-      const iWord = record.data.indexOf(word)
+      const iWord = record.data.findIndex(word => word.text === text)
       if (iWord === -1) { return Promise.reject('no word to delete') }
 
       record.data.splice(iWord, 1)
@@ -184,6 +189,7 @@ function getLatestSet (catalog) {
       wordCount: 0
     }
     catalog = {
+      version: catVersion,
       data: [latestSet.id],
       wordCount: 0
     }
@@ -238,7 +244,7 @@ function getTodayItem ({catalog, latestSet}) {
       wordCount: 0
     }
     catalog.data.unshift(latestSet.id)
-    if (catalog.data.length > 20) {
+    if (catalog.data.length > 50) {
       // remove one set
       const oldestSet = catalog.data.pop()
       catalog.wordCount -= oldestSet.wordCount
@@ -250,8 +256,8 @@ function getTodayItem ({catalog, latestSet}) {
   return {catalog, latestSet, todayItem}
 }
 
-function appendAndSave ({catalog, latestSet, todayItem}, text, catName) {
-  const index = todayItem.data.indexOf(text)
+function appendAndSave ({catalog, latestSet, todayItem}, word, catName) {
+  const index = todayItem.data.findIndex(w => w.text === word.text)
   if (index === -1) {
     // new word
     latestSet.wordCount += 1
@@ -260,7 +266,7 @@ function appendAndSave ({catalog, latestSet, todayItem}, text, catName) {
     // remove old one
     todayItem.data.splice(index, 1)
   }
-  todayItem.data.unshift(text)
+  todayItem.data.unshift(word)
   catalog.timestamp = Date.now()
 
   return storage.local.set({

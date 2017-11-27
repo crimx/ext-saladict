@@ -374,8 +374,11 @@ function messageSendSelf (message, cb) {
   if (typeof cb === 'function') {
     // callback mode
     if (typeof window.pageId === 'undefined') {
-      return chrome.runtime.sendMessage({msg: '__PAGE_ID__'}, pageId => {
+      return chrome.runtime.sendMessage({msg: '__PAGE_INFO__'}, ({pageId, faviconURL, pageTitle, pageURL}) => {
         window.pageId = pageId
+        window.faviconURL = faviconURL
+        if (pageTitle) { window.pageTitle = pageTitle }
+        if (pageURL) { window.pageURL = pageURL }
         message.__pageId__ = pageId
         debugMsg('SELF send %s on %s (request page id)', message.msg, window.pageId)
         chrome.runtime.sendMessage(message, cb)
@@ -388,9 +391,12 @@ function messageSendSelf (message, cb) {
   } else {
     // Promise mode
     if (typeof window.pageId === 'undefined') {
-      return messageSend({msg: '__PAGE_ID__'})
-        .then(pageId => {
+      return messageSend({msg: '__PAGE_INFO__'})
+        .then(({pageId, faviconURL, pageTitle, pageURL}) => {
           window.pageId = pageId
+          window.faviconURL = faviconURL
+          if (pageTitle) { window.pageTitle = pageTitle }
+          if (pageURL) { window.pageURL = pageURL }
           message.__pageId__ = pageId
           debugMsg('SELF send %s on %s (request page id)', message.msg, window.pageId)
           return messageSend(message)
@@ -412,8 +418,11 @@ function messageSendSelf (message, cb) {
  */
 function messageListenSelf (msg, cb) {
   if (typeof window.pageId === 'undefined') {
-    chrome.runtime.sendMessage({msg: '__PAGE_ID__'}, pageId => {
+    chrome.runtime.sendMessage({msg: '__PAGE_INFO__'}, ({pageId, faviconURL, pageTitle, pageURL}) => {
       window.pageId = pageId
+      window.faviconURL = faviconURL
+      if (pageTitle) { window.pageTitle = pageTitle }
+      if (pageURL) { window.pageURL = pageURL }
     })
   }
 
@@ -476,8 +485,8 @@ function initServer () {
     }
 
     switch (message.msg) {
-      case '__PAGE_ID__':
-        sendResponse(getPageId(sender))
+      case '__PAGE_INFO__':
+        sendResponse(getPageInfo(sender))
         break
       default:
         break
@@ -485,13 +494,24 @@ function initServer () {
   })
 }
 
-function getPageId (sender) {
-  if (sender.tab) {
-    return sender.tab.id
+function getPageInfo (sender) {
+  const result = {
+    faviconURL: ''
+  }
+  const tab = sender.tab
+  if (tab) {
+    result.pageId = tab.id
+    if (tab.favIconUrl) { result.faviconURL = tab.favIconUrl }
+    if (tab.url) { result.pageURL = tab.url }
+    if (tab.title) { result.pageTitle = tab.title }
   } else {
     // FRAGILE: Assume only browser action page is tabless
-    return 'popup'
+    result.pageId = 'popup'
+    if (sender.url && sender.url.startsWith('chrome')) {
+      result.favIconUrl = chrome.runtime.getURL('assets/icon-16.png')
+    }
   }
+  return result
 }
 
 function _openURL (url, callback) {

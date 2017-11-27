@@ -35,9 +35,9 @@
         <div class="col-sm-6">
           <table class="table table-hover word-table" @click="handleListClick">
             <tbody>
-              <tr v-for="(word, iWord) in record.data" :key="word">
-                <td class="text-center">{{ word }}
-                  <button type="button" class="close" @click="removeWord(record.setId, record.date, word, iRecord, iWord)">×</button>
+              <tr v-for="(word, iWord) in record.data" :key="word.text">
+                <td class="text-center">{{ word.text }}
+                  <button type="button" class="close" @click="removeWord(record.setId, record.date, word.text, iRecord, iWord)">×</button>
                 </td>
               </tr>
             </tbody>
@@ -239,10 +239,12 @@ export default {
         })
     },
     getPlainText () {
+      // TODO pattern
       return this.recordManager.getAllWords()
         .then(records => records.join('\n'))
     },
     getPlainTextWin () {
+      // TODO pattern
       return this.recordManager.getAllWords()
         .then(records => records.join('\r\n'))
     },
@@ -292,8 +294,8 @@ export default {
         }
       })
     },
-    removeWord (setId, recordDate, word, iRecord, iWord) {
-      this.recordManager.removeWord(setId, recordDate, word)
+    removeWord (setId, recordDate, text, iRecord, iWord) {
+      this.recordManager.removeWord(setId, recordDate, text)
         .then(() => {
           this.rawRecords[iRecord].data.splice(iWord, 1)
         })
@@ -306,7 +308,16 @@ export default {
         setTimeout(() => {
           const text = window.getSelection().toString().trim()
           if (text) {
-            message.self.send({msg: 'SEARCH_TEXT', text})
+            message.self.send({
+              msg: 'SEARCH_TEXT',
+              selectedInfo: {
+                text,
+                sentence: '',
+                title: document.title,
+                url: document.URL,
+                favicon: chrome.runtime.getURL('assets/icon-16.png')
+              }
+            })
           }
         }, 0)
       }

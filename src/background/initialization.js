@@ -11,6 +11,8 @@ chrome.notifications.onButtonClicked.addListener(btnClickListener)
 
 function onInstalled ({reason}) {
   clearHistory()
+  mergeRecords('history')
+  mergeRecords('notebook')
   // merge config on installed
   let isNew = false
   storage.sync.get('config', ({config}) => {
@@ -106,5 +108,32 @@ function clearHistory () {
             collectionCatalog || []
           )
       )
+    })
+}
+
+// ['historyCat', 'notebookCat']
+function mergeRecords (area) {
+  const catName = area + 'Cat'
+  storage.local.get(catName)
+    .then(response => {
+      const catalog = response[catName]
+      if (!catalog || catalog.version === 2) { return }
+      storage.local.get(catalog.data)
+        .then(allSet => {
+          catalog.data.forEach((id, i) => {
+            const recordSet = allSet[id]
+            if (recordSet) {
+              recordSet.data.forEach(records => {
+                records.data = records.data.map(text => ({text}))
+              })
+              storage.local.set({[id]: recordSet})
+            } else {
+              catalog[i] = null
+            }
+          })
+          catalog.version = 2
+          catalog.data = catalog.data.filter(Boolean)
+          storage.local.set({[catName]: catalog})
+        })
     })
 }

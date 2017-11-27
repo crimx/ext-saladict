@@ -120,6 +120,7 @@ export default {
         }, {}),
 
       text: '',
+      selectionInfo: {},
 
       isShowNewWordCard: false,
       noSearchHistory: false,
@@ -169,7 +170,7 @@ export default {
       })
 
       if (!this.noSearchHistory && this.config.searhHistory) {
-        addRecord('history', text)
+        addRecord('history', this.selectionInfo)
       }
 
       if (!isOneActiveDict) {
@@ -228,7 +229,7 @@ export default {
         new Audio(chrome.runtime.getURL('assets/notification.mp3')).play()
       }
       this.isShowNewWordCard = true
-      addRecord('notebook', this.text)
+      addRecord('notebook', this.selectionInfo)
     },
     unfoldDict (id) {
       let dict = this.dicts[id]
@@ -280,8 +281,14 @@ export default {
       }
     },
     handleSearchText (data) {
-      if (data && data.text) {
-        this.text = data.text
+      data = data || {}
+      if (data.text) { this.text = data.text }
+      this.selectionInfo = data.selectionInfo || {
+        text: this.text,
+        sentence: '',
+        title: chrome.i18n.getMessage('from_saladict_panel'),
+        url: '#',
+        faviconURL: chrome.runtime.getURL('assets/icon-16.png')
       }
       this.config.dicts.selected.forEach((id) => {
         this.foldDict(id)
@@ -292,7 +299,7 @@ export default {
   },
   created () {
     message.self.on('SEARCH_TEXT', (data, sender, sendResponse) => {
-      this.handleSearchText(data)
+      this.handleSearchText({text: data.selectionInfo.text, selectionInfo: data.selectionInfo})
       sendResponse()
     })
 
@@ -307,7 +314,9 @@ export default {
           this.$refs.searchbox.select()
         }
       } else if (response.preload === 'selection') {
-        message.send({msg: 'PRELOAD_SELECTION'}, text => {
+        message.send({msg: 'PRELOAD_SELECTION'}, selectionInfo => {
+          this.selectionInfo = selectionInfo
+          const text = selectionInfo.text
           if (!text) { return }
           if (response.autoSearch) {
             this.handleSearchText({text})

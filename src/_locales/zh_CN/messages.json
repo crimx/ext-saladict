@@ -491,5 +491,9 @@
   "notification_youdao_err": {
     "description": "notifications message",
     "message": "有道网页翻译2.0 加载无响应，\n可能扩展无权访问该页面，\n如加载成功请忽略本消息。"
+  },
+  "from_saladict_panel": {
+    "description": "From Saladict Panel",
+    "message": "来自沙拉查词面板"
   }
 }

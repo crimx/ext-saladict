@@ -61,6 +61,7 @@
     "<all_urls>",
     "contextMenus",
     "storage",
+    "unlimitedStorage",
     "tabs",
     "clipboardRead",
     "notifications"

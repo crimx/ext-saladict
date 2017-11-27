@@ -483,5 +483,9 @@
   "notification_youdao_err": {
     "description": "notifications message",
     "message": "有道網頁翻譯2.0 載入無響應，\n可能擴展無權訪問該頁面，\n如載入成功請忽略本消息。"
+  },
+  "from_saladict_panel": {
+    "description": "From Saladict Panel",
+    "message": "來自沙拉查詞面板"
   }
 }
