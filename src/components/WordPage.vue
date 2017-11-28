@@ -27,15 +27,15 @@
         </transition>
       </div>
     </div>
-    <div class="col-sm-7 wordpage-list-wrap" v-if="records.length > 0">
+    <div class="col-sm-7 wordpage-list-wrap" v-if="records.length > 0" ref="wordListWrap">
       <div class="row" v-for="(record, iRecord) in records" :key="record.date">
-        <div class="col-sm-6 text-right">
+        <div class="col-sm-4 text-right">
           <p class="wordpage-item-title">{{ record.localeDate }}</p>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
           <table class="table table-hover word-table" @click="handleListClick">
             <tbody>
-              <tr v-for="(word, iWord) in record.data" :key="word.text">
+              <tr v-for="(word, iWord) in record.data" :key="word.text" @mouseover="relocateWordAside($event, word, iRecord, iWord)">
                 <td class="text-center">{{ word.text }}
                   <button type="button" class="close" @click="removeWord(record.setId, record.date, word.text, iRecord, iWord)">×</button>
                 </td>
@@ -44,7 +44,7 @@
           </table>
         </div>
       </div>
-      <div class="row" v-if="pageCount > 0">
+      <div class="row" v-if="pageCount > 1">
         <nav class="col-sm-6 col-sm-offset-6 text-center">
           <ul class="pagination">
             <li
@@ -62,6 +62,20 @@
             ><a href="#"><span>&raquo;</span></a></li>
           </ul>
         </nav>
+      </div>
+      <div class="word-list-aside" v-if="wordAsideData" :style="{top: wordAsideTop + 'px'}">
+        <svg class="icon-edit" @click="editNote" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60">
+          <path d="M36.72 22h-25c-.553 0-1 .448-1 1s.447 1 1 1h25c.55 0 1-.448 1-1s-.45-1-1-1zm-25-6h10c.55 0 1-.448 1-1s-.45-1-1-1h-10c-.553 0-1 .448-1 1s.447 1 1 1zm25 14h-25c-.553 0-1 .448-1 1s.447 1 1 1h25c.55 0 1-.448 1-1s-.45-1-1-1zm-8 8h-17c-.553 0-1 .448-1 1s.447 1 1 1h17c.55 0 1-.448 1-1s-.45-1-1-1zm-3 10c.55 0 1-.448 1-1s-.45-1-1-1h-14c-.553 0-1 .448-1 1s.447 1 1 1h14z"/>
+          <path d="M2.72 2h29v14h14v18h2V14.586L33.132 0H.72v60h29v-2h-27V2zm31 1.414L44.304 14H33.72V3.414z"/>
+          <path d="M58.407 37.162l-2.85-2.85c-1.127-1.128-3.093-1.128-4.22 0l-15.392 15.39-2.12 7.78-.52.518c-.388.388-.39 1.014-.006 1.405l-.008.02.02-.005c.194.19.446.287.698.287.257 0 .513-.098.708-.293l.518-.52 7.78-2.12 15.39-15.39c.563-.565.874-1.314.874-2.112s-.31-1.547-.875-2.11zm-20.153 13.06L48.497 39.98l4.243 4.242-10.243 10.243-4.243-4.243zm-.903 1.925l3.22 3.22-4.424 1.207 1.207-4.427zM56.996 39.97l-2.84 2.838-4.242-4.243 2.84-2.84c.372-.37 1.02-.372 1.393 0l2.85 2.85c.186.187.29.434.29.697-.002.263-.104.51-.29.697z"/>
+        </svg>
+        <p class="word-list-aside-sen">{{ wordAsideData.sentence }}</p>
+        <hr>
+        <footer>
+          <a class="word-list-aside-title" href="#" @click.prevent="openURL(wordAsideData.url)">{{ wordAsideData.title }}
+            <img :src="wordAsideData.faviconURL" v-if="wordAsideData.faviconURL" class="word-list-aside-favicon">
+          </a>
+        </footer>
       </div>
     </div>
     <div v-if="isReady && records.length <= 0" class="col-sm-7 wordpage-list-wrap no-record">
@@ -131,6 +145,11 @@ export default {
       pageIndex: 0,
       pageCount: 0,
       isMergeFirstTwo: false, // if the first page is too short, merge with the second one
+
+      wordAsideTop: 0,
+      wordAsideData: null,
+      iActiveRecord: 0,
+      iActiveWord: 0,
 
       isOnlyEng: false,
 
@@ -322,6 +341,24 @@ export default {
         }, 0)
       }
     },
+    relocateWordAside (event, word, iRecord, iWord) {
+      const wordListWrap = this.$refs.wordListWrap
+      var top = 0
+      for (let node = event.currentTarget; node && node !== wordListWrap; node = node.offsetParent) {
+        top += node.offsetTop
+      }
+      this.wordAsideTop = top
+      this.iActiveRecord = iRecord
+      this.iActiveWord = iWord
+      this.wordAsideData = word
+    },
+    editNote () {
+
+    },
+    openURL (url) {
+      if (url.startsWith('#')) { return }
+      message.send({msg: 'OPEN_URL', url})
+    },
     popup (msg, type) {
       if (msg) {
         clearTimeout(this.popupTimeout)
@@ -337,6 +374,12 @@ export default {
         this.popupTimeout = setTimeout(() => {
           this.isPopUp = false
         }, 2000)
+      }
+    },
+    records (newVal, oldVal) {
+      // init wordAsideData
+      if (newVal.length > 0 && oldVal.length <= 0) {
+        this.wordAsideData = newVal[0].data[0]
       }
     }
   },
@@ -440,7 +483,9 @@ body {
 }
 
 .wordpage-list-wrap {
-  padding-top: $wordpage-nav-height;
+  position: relative;
+  margin-top: $wordpage-nav-height;
+  margin-bottom: 100vh;
 }
 
 .wordpage-list {
@@ -449,6 +494,75 @@ body {
 
 .wordpage-item-title {
   padding-top: 5px;
+}
+
+.word-list-aside {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: percentage(4/12);
+  margin-top: 8px;
+  padding: 30px 10px 10px;
+  word-break: break-all;
+  color: #8a6d3b;
+  border: 1px #faebcc solid;
+  border-radius: 20px;
+  border-top-left-radius: 0;
+  background: #fcf8e3;
+  transition: all 0.05s;
+
+  &::before {
+    content: '“';
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    height: 50px;
+    font-size: 50px;
+    font-weight: bold;
+    font-family: "Times New Roman", Georgia, Serif;
+  }
+
+  hr {
+    margin: 8px 0;
+    border-color: #faebcc;
+  }
+}
+
+.icon-edit {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 18px;
+  height: 18px;
+  fill: #8a6d3b;
+  cursor: pointer;
+}
+
+.word-list-aside-sen {
+  margin: 10px;
+}
+
+.word-list-aside-favicon {
+  position: absolute;
+  top: 0;
+  left: 10px;
+  width: 14px;
+  height: 14px;
+}
+
+.word-list-aside-title {
+  display: block;
+  position: relative;
+  padding-left: 30px;
+  font-size: 12px;
+
+  &:link,
+  &:visited,
+  &:hover,
+  &:active {
+    color: #c39f5f;
+    text-decoration: none;
+  }
 }
 
 .no-record {
