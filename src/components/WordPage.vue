@@ -77,8 +77,8 @@
           <p>{{ wordAsideData.trans }}</p>
         </section>
         <section class="wordcard-section" v-if="wordAsideData.sentence">
-          <svg class="wordcard-sec-sen-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 95.333 95.332">
-            <path d="M30.512 43.94c-2.348-.677-4.696-1.02-6.98-1.02-3.527 0-6.47.806-8.752 1.793 2.2-8.054 7.485-21.95 18.013-23.516.975-.145 1.774-.85 2.04-1.8l2.3-8.23c.195-.695.08-1.44-.317-2.044s-1.035-1.007-1.75-1.105c-.777-.106-1.57-.16-2.354-.16-12.637 0-25.152 13.19-30.433 32.076-3.1 11.08-4.01 27.738 3.62 38.223 4.27 5.867 10.504 9 18.53 9.313l.094.002c9.9 0 18.675-6.666 21.345-16.21 1.595-5.704.874-11.687-2.03-16.85-2.876-5.105-7.61-8.826-13.335-10.473zM92.47 54.413c-2.874-5.106-7.61-8.827-13.333-10.474-2.348-.68-4.696-1.02-6.98-1.02-3.526 0-6.47.8-8.752 1.79 2.2-8.06 7.485-21.95 18.014-23.52.97-.147 1.77-.85 2.04-1.8l2.3-8.23c.19-.697.08-1.44-.32-2.046-.4-.604-1.04-1.007-1.75-1.105-.78-.106-1.57-.16-2.36-.16-12.638 0-25.15 13.19-30.435 32.076-3.1 11.08-4.008 27.74 3.63 38.225 4.27 5.866 10.506 9 18.527 9.31.033.003.065.004.1.004 9.896 0 18.674-6.666 21.344-16.21 1.593-5.704.87-11.688-2.034-16.85z"/>
+          <svg class="wordcard-section-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 95.333 95.332">
+            <path d="M 36.587 45.263 C 35.07 44.825 33.553 44.605 32.078 44.605 C 29.799 44.605 27.898 45.125 26.423 45.763 C 27.844 40.559 31.259 31.582 38.061 30.57 C 38.69 30.476 39.207 30.021 39.379 29.408 L 40.864 24.09 C 40.99 23.641 40.916 23.16 40.66 22.77 C 40.403 22.38 39.991 22.119 39.529 22.056 C 39.027 21.987 38.515 21.952 38.009 21.952 C 29.844 21.952 21.759 30.474 18.347 42.675 C 16.344 49.833 15.757 60.595 20.686 67.369 C 23.445 71.16 27.472 73.183 32.657 73.385 L 32.717 73.386 C 39.114 73.386 44.783 69.079 46.508 62.915 C 47.538 59.229 47.073 55.364 45.196 52.029 C 43.338 48.731 40.28 46.327 36.581 45.263 Z M 76.615 52.029 C 74.758 48.731 71.699 46.327 68.002 45.263 C 66.484 44.823 64.968 44.604 63.492 44.604 C 61.214 44.604 59.311 45.121 57.838 45.76 C 59.259 40.553 62.673 31.579 69.475 30.564 C 70.102 30.47 70.619 30.016 70.793 29.402 L 72.28 24.085 C 72.403 23.635 72.332 23.155 72.073 22.764 C 71.814 22.373 71.401 22.113 70.942 22.049 C 70.438 21.981 69.928 21.946 69.417 21.946 C 61.253 21.946 53.169 30.467 49.755 42.669 C 47.752 49.827 47.166 60.59 52.101 67.364 C 54.858 71.153 58.887 73.178 64.069 73.379 C 64.091 73.38 64.111 73.381 64.134 73.381 C 70.527 73.381 76.198 69.074 77.923 62.908 C 78.953 59.224 78.485 55.358 76.609 52.022 Z" style=""/>
           </svg>
           <p>{{ wordAsideData.sentence }}</p>
         </section>
@@ -136,32 +136,32 @@
             <form>
               <div class="form-group">
                 <div class="form-group">
-                  <label for="note-word-text">单词</label>
+                  <label for="note-word-text">{{ i18n('edit_note_word') }}</label>
                   <input class="form-control" placeholder="Word" id="note-word-text" v-model="wordAsideData.text">
                 </div>
               </div>
               <div class="form-group">
-                <label for="note-word-trans">翻译</label>
+                <label for="note-word-trans">{{ i18n('edit_note_trans') }}</label>
                 <textarea v-focus class="form-control" row="5" placeholder="Translation" id="note-word-trans" v-model="wordAsideData.trans"></textarea>
               </div>
               <div class="form-group">
-                <label for="note-word-note">笔记</label>
+                <label for="note-word-note">{{ i18n('edit_note_note') }}</label>
                 <textarea class="form-control" row="5" placeholder="Notes" id="note-word-note" v-model="wordAsideData.note"></textarea>
               </div>
               <div class="form-group">
-                <label for="note-word-context">上下文</label>
+                <label for="note-word-context">{{ i18n('edit_note_context') }}</label>
                 <textarea class="form-control" row="5" placeholder="Context" id="note-word-context" v-model="wordAsideData.sentence"></textarea>
               </div>
               <div class="form-group">
-                <label for="note-source-title">来源标题</label>
+                <label for="note-source-title">{{ i18n('edit_note_src_title') }}</label>
                 <input class="form-control" placeholder="Source" id="note-source-title" v-model="wordAsideData.title">
               </div>
               <div class="form-group">
-                <label for="note-source-url">来源链接</label>
+                <label for="note-source-url">{{ i18n('edit_note_src_url') }}</label>
                 <input class="form-control" placeholder="Source URL" id="note-source-url" v-model="wordAsideData.url">
               </div>
               <div class="form-group">
-                <label for="note-source-favicon">来源图标<img class="favicon-note-source" :src="wordAsideData.faviconURL" v-if="wordAsideData.faviconURL"></label>
+                <label for="note-source-favicon">{{ i18n('edit_note_src_favicon') }}<img class="favicon-note-source" :src="wordAsideData.faviconURL" v-if="wordAsideData.faviconURL"></label>
                 <input class="form-control" placeholder="Source Favicon" id="note-source-favicon" v-model="wordAsideData.faviconURL">
               </div>
             </form>
@@ -648,11 +648,6 @@ body {
   position: relative;
   margin: 10px 0;
   padding: 0 10px 0 25px;
-}
-
-.wordcard-sec-sen-icon {
-  @extend .wordcard-section-icon;
-  fill-opacity: 0.85;
 }
 
 .wordcard-sec-note-content {
