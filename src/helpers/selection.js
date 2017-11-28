@@ -20,7 +20,9 @@ export function hasSelection () {
 * @returns {string}
 */
 export function getSelectionText () {
-  return window.getSelection().toString().trim()
+  return window.getSelection().toString()
+    .replace(/(^\s+)|(\s+$)/gm, '\n') // allow one empty line & trim each line
+    .replace(/(^\s+)|(\s+$)/g, '') // remove heading or tailing \n
 }
 
 // match head                 a.b is ok    chars that ends a sentence
@@ -87,7 +89,9 @@ export function getSelectionSentence () {
     sentenceTail = (tailingText.match(sentenceTailTester) || [''])[0]
   }
 
-  return (sentenceHead + selectedText + sentenceTail).trim()
+  return (sentenceHead + selectedText + sentenceTail)
+    .replace(/(^\s+)|(\s+$)/gm, '\n') // allow one empty line & trim each line
+    .replace(/(^\s+)|(\s+$)/g, '') // remove heading or tailing \n
 }
 
 /**
@@ -96,7 +100,9 @@ export function getSelectionSentence () {
  * @property {string} sentence - sentence that contains the text
  * @property {string} title - page title
  * @property {string} url - page url
- * @property {string} summary - first dictionary result.summary
+ * @property {string} [faviconURL] - favicon url
+ * @property {string} [trans] - use-inputted translation
+ * @property {string} [note] - use-inputted note
  */
 
 /**
