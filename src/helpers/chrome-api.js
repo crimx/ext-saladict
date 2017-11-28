@@ -469,7 +469,7 @@ function initServer () {
 
     const selfMsg = selfMsgTester.exec(message.msg)
     if (selfMsg) {
-      debugMsg('SELF Received %s from %s', message.msg, getPageId(sender))
+      debugMsg('SELF Received %s from %s', message.msg, getPageInfo(sender).pageId)
       message.msg = selfMsg[1]
       if (sender.tab) {
         messageSend(sender.tab.id, message, response => {
