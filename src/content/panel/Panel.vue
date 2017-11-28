@@ -288,7 +288,9 @@ export default {
         sentence: '',
         title: chrome.i18n.getMessage('from_saladict_panel'),
         url: '#',
-        faviconURL: chrome.runtime.getURL('assets/icon-16.png')
+        faviconURL: chrome.runtime.getURL('assets/icon-16.png'),
+        trans: '',
+        note: ''
       }
       this.config.dicts.selected.forEach((id) => {
         this.foldDict(id)

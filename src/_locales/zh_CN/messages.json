@@ -27,6 +27,10 @@
     "description": "支持一下",
     "message": "觉得好用的话欢迎支持一下我买杯咖啡哦~"
   },
+  "save": {
+    "description": "save",
+    "message": "保存"
+  },
   "confirm": {
     "description": "confirm",
     "message": "确认"
@@ -420,6 +424,10 @@
     "description": "word page",
     "message": "只显示英文记录"
   },
+  "wordpage_editnote_modal_title": {
+    "description": "word page",
+    "message": "编辑笔记"
+  },
   "wordpage_plain_modal_title": {
     "description": "word page",
     "message": "纯文本 - 可复制粘贴"
@@ -440,13 +448,25 @@
     "description": "word page",
     "message": "复制成功！"
   },
-  "wordpage_copu_failed": {
+  "wordpage_copy_failed": {
     "description": "word page",
     "message": "复制失败，请手动复制"
+  },
+  "wordpage_save_success": {
+    "description": "word page",
+    "message": "保存成功！"
+  },
+  "wordpage_save_faild": {
+    "description": "word page",
+    "message": "保存失败"
   },
   "wordpage_clear_success": {
     "description": "word page",
     "message": "清除成功！"
+  },
+  "save_to_notebook": {
+    "description": "word page",
+    "message": "保存到生词本"
   },
   "history_title": {
     "description": "history page",

@@ -75,7 +75,7 @@ export default {
       this.searchTextTimeout = setTimeout(() => {
         message.self.send({
           msg: 'SEARCH_TEXT',
-          selectedInfo: {
+          selectionInfo: {
             text: this.text,
             sentence: '',
             title: document.title,

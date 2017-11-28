@@ -101,7 +101,9 @@ function handleMouseup ({button, target, clientX, clientY}) {
         title: window.pageTitle || document.title,
         url: window.pageURL || document.URL,
         // set by chrome-api helper
-        faviconURL: window.faviconURL || ''
+        faviconURL: window.faviconURL || '',
+        trans: '',
+        note: ''
       }
     })
   }
@@ -123,7 +125,9 @@ function handleMouseup ({button, target, clientX, clientY}) {
         sentence: getSelectionSentence(),
         title: window.pageTitle || document.title,
         url: window.pageURL || document.URL,
-        faviconURL: window.faviconURL || ''
+        faviconURL: window.faviconURL || '',
+        trans: '',
+        note: ''
       }
 
       if (window.parent === window) {
@@ -154,7 +158,9 @@ function handleMouseup ({button, target, clientX, clientY}) {
           sentence: '',
           title: window.pageTitle || document.title,
           url: window.pageURL || document.URL,
-          faviconURL: window.faviconURL || ''
+          faviconURL: window.faviconURL || '',
+          trans: '',
+          note: ''
         }
       })
     }

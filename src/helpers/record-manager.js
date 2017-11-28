@@ -146,6 +146,26 @@ export function removeWord (area, setId, recordDate, text) {
 }
 
 /**
+ * @returns {Promise}
+ */
+export function saveWord (area, {setId, iRecord, iWord, word}) {
+  return storage.local.get(setId)
+    .then(res => {
+      const recordSet = res[setId]
+      if (!recordSet) { return Promise.reject('no set to save word') }
+
+      if (iRecord >= recordSet.data.length) { return Promise.reject('no record to save word') }
+      const record = recordSet.data[iRecord]
+
+      if (iWord >= record.data.length) { return Promise.reject('no word to save') }
+
+      record.data[iWord] = word
+
+      return storage.local.set({[setId]: recordSet})
+    })
+}
+
+/**
  * @param {number} index
  * @return promsie with the record set, or undefined
  */
@@ -258,8 +278,8 @@ function getTodayItem ({catalog, latestSet}) {
 
 function appendAndSave ({catalog, latestSet, todayItem}, word, catName) {
   const index = todayItem.data.findIndex(w => w.text === word.text)
-  if (index === -1) {
-    // new word
+  if (index === -1 || todayItem.data[index].sentence !== word.sentence) {
+    // new Word, same text but different context is also considered a new Word
     latestSet.wordCount += 1
     catalog.wordCount += 1
   } else {
@@ -290,6 +310,7 @@ export default function init (area) {
     listenRecord: (...args) => listenRecord(area, ...args),
     getRecordSet: (...args) => getRecordSet(area, ...args),
     getAllWords: (...args) => getAllWords(area, ...args),
+    saveWord: (...args) => saveWord(area, ...args),
     removeWord: (...args) => removeWord(area, ...args),
     getWordCount: (...args) => getWordCount(area, ...args)
   }

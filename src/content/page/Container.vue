@@ -55,7 +55,9 @@ export default {
         sentence: '',
         title: window.pageTitle || document.title,
         url: window.pageURL || document.URL,
-        faviconURL: window.faviconURL || ''
+        faviconURL: window.faviconURL || '',
+        trans: '',
+        note: ''
       },
 
       firstClickOfDoubleClick: false,

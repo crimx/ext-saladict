@@ -100,9 +100,9 @@ export function getSelectionSentence () {
  * @property {string} sentence - sentence that contains the text
  * @property {string} title - page title
  * @property {string} url - page url
- * @property {string} [faviconURL] - favicon url
- * @property {string} [trans] - use-inputted translation
- * @property {string} [note] - use-inputted note
+ * @property {string} faviconURL - favicon url
+ * @property {string} trans - use-inputted translation
+ * @property {string} note - use-inputted note
  */
 
 /**
@@ -115,7 +115,9 @@ export function getSelectionInfo () {
     title: window.pageTitle || document.title,
     url: window.pageURL || document.URL,
     // set by chrome-api helper
-    faviconURL: window.faviconURL || ''
+    faviconURL: window.faviconURL || '',
+    trans: '',
+    note: ''
   }
 }
 

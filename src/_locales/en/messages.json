@@ -27,6 +27,10 @@
     "description": "支持一下",
     "message": "Enjoy the Extension? Buy me a coffee~"
   },
+  "save": {
+    "description": "save",
+    "message": "Save"
+  },
   "confirm": {
     "description": "confirm",
     "message": "Confirm"
@@ -420,6 +424,10 @@
     "description": "word page",
     "message": "Display Only English Words"
   },
+  "wordpage_editnote_modal_title": {
+    "description": "word page",
+    "message": "Edit Note"
+  },
   "wordpage_plain_modal_title": {
     "description": "word page",
     "message": "Plain Text - You can copy and paste"
@@ -440,13 +448,25 @@
     "description": "word page",
     "message": "Copy Success!"
   },
-  "wordpage_copu_failed": {
+  "wordpage_copy_failed": {
     "description": "word page",
     "message": "Copy faild. You can copy manually."
+  },
+  "wordpage_save_success": {
+    "description": "word page",
+    "message": "Save Success！"
+  },
+  "wordpage_save_faild": {
+    "description": "word page",
+    "message": "Save faild"
   },
   "wordpage_clear_success": {
     "description": "word page",
     "message": "Clear Success!"
+  },
+  "save_to_notebook": {
+    "description": "word page",
+    "message": "Save to new word list"
   },
   "history_title": {
     "description": "history page",
