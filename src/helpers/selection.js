@@ -97,10 +97,10 @@ export function getSelectionSentence () {
 /**
  * @typedef {Object} SelectionInfo
  * @property {string} text - selection text
- * @property {string} sentence - sentence that contains the text
+ * @property {string} context - sentence that contains the text
  * @property {string} title - page title
  * @property {string} url - page url
- * @property {string} faviconURL - favicon url
+ * @property {string} favicon - favicon url
  * @property {string} trans - use-inputted translation
  * @property {string} note - use-inputted note
  */
@@ -111,11 +111,11 @@ export function getSelectionSentence () {
 export function getSelectionInfo () {
   return {
     text: getSelectionText(),
-    sentence: getSelectionSentence(),
+    context: getSelectionSentence(),
     title: window.pageTitle || document.title,
     url: window.pageURL || document.URL,
     // set by chrome-api helper
-    faviconURL: window.faviconURL || '',
+    favicon: window.faviconURL || '',
     trans: '',
     note: ''
   }

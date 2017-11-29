@@ -97,11 +97,11 @@ function handleMouseup ({button, target, clientX, clientY}) {
       msg: 'SELECTION',
       selectionInfo: {
         text: '',
-        sentence: '',
+        context: '',
         title: window.pageTitle || document.title,
         url: window.pageURL || document.URL,
         // set by chrome-api helper
-        faviconURL: window.faviconURL || '',
+        favicon: window.faviconURL || '',
         trans: '',
         note: ''
       }
@@ -122,10 +122,10 @@ function handleMouseup ({button, target, clientX, clientY}) {
     ) {
       const selectionInfo = {
         text,
-        sentence: getSelectionSentence(),
+        context: getSelectionSentence(),
         title: window.pageTitle || document.title,
         url: window.pageURL || document.URL,
-        faviconURL: window.faviconURL || '',
+        favicon: window.faviconURL || '',
         trans: '',
         note: ''
       }
@@ -155,10 +155,10 @@ function handleMouseup ({button, target, clientX, clientY}) {
         msg: 'SELECTION',
         selectionInfo: {
           text: '',
-          sentence: '',
+          context: '',
           title: window.pageTitle || document.title,
           url: window.pageURL || document.URL,
-          faviconURL: window.faviconURL || '',
+          favicon: window.faviconURL || '',
           trans: '',
           note: ''
         }

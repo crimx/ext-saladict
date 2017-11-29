@@ -52,10 +52,10 @@ export default {
 
       selectionInfo: {
         text: '',
-        sentence: '',
+        context: '',
         title: window.pageTitle || document.title,
         url: window.pageURL || document.URL,
-        faviconURL: window.faviconURL || '',
+        favicon: window.faviconURL || '',
         trans: '',
         note: ''
       },

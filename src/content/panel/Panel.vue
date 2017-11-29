@@ -285,10 +285,10 @@ export default {
       if (data.text) { this.text = data.text }
       this.selectionInfo = data.selectionInfo || {
         text: this.text,
-        sentence: '',
+        context: '',
         title: chrome.i18n.getMessage('from_saladict_panel'),
         url: '#',
-        faviconURL: chrome.runtime.getURL('assets/icon-16.png'),
+        favicon: chrome.runtime.getURL('assets/icon-16.png'),
         trans: '',
         note: ''
       }

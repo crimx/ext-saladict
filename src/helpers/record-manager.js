@@ -278,7 +278,7 @@ function getTodayItem ({catalog, latestSet}) {
 
 function appendAndSave ({catalog, latestSet, todayItem}, word, catName) {
   const index = todayItem.data.findIndex(w => w.text === word.text)
-  if (index === -1 || todayItem.data[index].sentence !== word.sentence) {
+  if (index === -1 || todayItem.data[index].context !== word.context) {
     // new Word, same text but different context is also considered a new Word
     latestSet.wordCount += 1
     catalog.wordCount += 1

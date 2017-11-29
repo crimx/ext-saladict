@@ -77,7 +77,7 @@ export default {
           msg: 'SEARCH_TEXT',
           selectionInfo: {
             text: this.text,
-            sentence: '',
+            context: '',
             title: document.title,
             url: document.URL,
             favicon: chrome.runtime.getURL('assets/icon-16.png')
