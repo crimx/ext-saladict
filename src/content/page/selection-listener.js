@@ -116,7 +116,7 @@ function handleMouseup ({button, target, clientX, clientY}) {
     if (
       text &&
       (
-        (config.language.english && isContainEnglish(text)) ||
+        (config.language.english && isContainEnglish(text) && !isContainChinese(text)) ||
         (config.language.chinese && isContainChinese(text))
       )
     ) {
