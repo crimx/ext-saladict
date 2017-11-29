@@ -80,7 +80,9 @@ export default {
             context: '',
             title: document.title,
             url: document.URL,
-            favicon: chrome.runtime.getURL('assets/icon-16.png')
+            favicon: chrome.runtime.getURL('assets/icon-16.png'),
+            trans: '',
+            note: ''
           }
         })
       }, 2000)
