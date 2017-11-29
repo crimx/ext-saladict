@@ -27,6 +27,10 @@
     "description": "支持一下",
     "message": "Enjoy the Extension? Buy me a coffee~"
   },
+  "save": {
+    "description": "save",
+    "message": "Save"
+  },
   "confirm": {
     "description": "confirm",
     "message": "Confirm"
@@ -420,9 +424,9 @@
     "description": "word page",
     "message": "Display Only English Words"
   },
-  "wordpage_plain_modal_title": {
+  "wordpage_editnote_modal_title": {
     "description": "word page",
-    "message": "Plain Text - You can copy and paste"
+    "message": "Edit Note"
   },
   "wordpage_clear": {
     "description": "word page",
@@ -430,23 +434,51 @@
   },
   "wordpage_savefile": {
     "description": "word page",
-    "message": "Save File"
+    "message": "Save As File"
   },
-  "wordpage_plaintext": {
+  "wordpage_export": {
     "description": "word page",
-    "message": "View Plain Text"
+    "message": "Export Text"
   },
   "wordpage_copy_success": {
     "description": "word page",
     "message": "Copy Success!"
   },
-  "wordpage_copu_failed": {
+  "wordpage_copy_failed": {
     "description": "word page",
     "message": "Copy faild. You can copy manually."
+  },
+  "wordpage_save_success": {
+    "description": "word page",
+    "message": "Save Success！"
+  },
+  "wordpage_save_faild": {
+    "description": "word page",
+    "message": "Save faild"
   },
   "wordpage_clear_success": {
     "description": "word page",
     "message": "Clear Success!"
+  },
+  "wordpage_exp_modal_title": {
+    "description": "word page",
+    "message": "Export Text"
+  },
+  "wordpage_exp_description": {
+    "description": "word page",
+    "message": "Describe what each record should look like："
+  },
+  "wordpage_exp_placeholder": {
+    "description": "word page",
+    "message": "Placeholder"
+  },
+  "wordpage_exp_gencontent": {
+    "description": "word page",
+    "message": "Generated Content"
+  },
+  "save_to_notebook": {
+    "description": "word page",
+    "message": "Save to new word list"
   },
   "history_title": {
     "description": "history page",
@@ -454,7 +486,7 @@
   },
   "history_wordcount": {
     "description": "history page",
-    "message": "Total %s records, Saladict will track approximately 10,000 most recent results."
+    "message": "Total %s records. Beware that history data is not syncing"
   },
   "history_no_result": {
     "description": "history page",
@@ -484,8 +516,40 @@
     "description": "notebook page",
     "message": "All records will be deleted，confirm？"
   },
+  "edit_note_word": {
+    "description": "notebook page",
+    "message": "Word"
+  },
+  "edit_note_trans": {
+    "description": "notebook page",
+    "message": "Translation"
+  },
+  "edit_note_note": {
+    "description": "notebook page",
+    "message": "Notes"
+  },
+  "edit_note_context": {
+    "description": "notebook page",
+    "message": "Context"
+  },
+  "edit_note_src_title": {
+    "description": "notebook page",
+    "message": "Source Title"
+  },
+  "edit_note_src_url": {
+    "description": "notebook page",
+    "message": "Source URL"
+  },
+  "edit_note_src_favicon": {
+    "description": "notebook page",
+    "message": "Source Favicon"
+  },
   "notification_youdao_err": {
     "description": "notifications message",
     "message": "Youdao Page Translation 2.0 not responding.\nSaladict might not have permission to access this page.\nIgnore this message if Youdao panal is shown."
+  },
+  "from_saladict_panel": {
+    "description": "From Saladict Panel",
+    "message": "From Saladict Panel"
   }
 }

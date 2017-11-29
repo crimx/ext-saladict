@@ -11,6 +11,8 @@ chrome.notifications.onButtonClicked.addListener(btnClickListener)
 
 function onInstalled ({reason}) {
   clearHistory()
+  mergeRecords('history')
+  mergeRecords('notebook')
   // merge config on installed
   let isNew = false
   storage.sync.get('config', ({config}) => {
@@ -24,7 +26,7 @@ function onInstalled ({reason}) {
       isNew = true
     }
 
-    storage.sync.set({config, lastCheckUpdate: Date.now()})
+    storage.sync.set({config})
       .then(() => {
         if (isNew) {
           openURL('https://github.com/crimx/crx-saladict/wiki')
@@ -33,6 +35,7 @@ function onInstalled ({reason}) {
         }
         setContextMenu(config)
       })
+    storage.local.set({lastCheckUpdate: Date.now()})
   })
 }
 
@@ -82,11 +85,12 @@ function showNews () {
     requireInteraction: true,
     type: 'basic',
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
-    title: '沙拉查词 Saladict【5.28.1】',
+    title: '沙拉查词 Saladict【5.29.1】',
     message: (`
-      1. 增加生词本！
-      2. 可配置预加载内容（剪贴板或页面选中词）与自动开始查词，快捷查词可设置出现的位置
-      3. 增强系统稳定性
+      1. 单词记录同时保存来源，且可编辑
+      2. 可自定义导出模板
+      3. 扩大了容量（新权限申请）
+      _. 本次更新在♫ King Of The North - Down to the Devil 伴随下完成
       `.trim().replace(/\s*\n\s*/g, '\n') // remove leading&tailing spaces of each line
     ),
     buttons: [{title: '查看更新'}]
@@ -106,5 +110,32 @@ function clearHistory () {
             collectionCatalog || []
           )
       )
+    })
+}
+
+// ['historyCat', 'notebookCat']
+function mergeRecords (area) {
+  const catName = area + 'Cat'
+  storage.local.get(catName)
+    .then(response => {
+      const catalog = response[catName]
+      if (!catalog || catalog.version === 2) { return }
+      storage.local.get(catalog.data)
+        .then(allSet => {
+          catalog.data.forEach((id, i) => {
+            const recordSet = allSet[id]
+            if (recordSet) {
+              recordSet.data.forEach(records => {
+                records.data = records.data.map(text => ({text}))
+              })
+              storage.local.set({[id]: recordSet})
+            } else {
+              catalog[i] = null
+            }
+          })
+          catalog.version = 2
+          catalog.data = catalog.data.filter(Boolean)
+          storage.local.set({[catName]: catalog})
+        })
     })
 }

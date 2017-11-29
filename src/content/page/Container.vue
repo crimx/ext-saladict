@@ -50,7 +50,15 @@ export default {
       frameLeft: 0,
       showFrameTimeout: null,
 
-      selectedText: '',
+      selectionInfo: {
+        text: '',
+        context: '',
+        title: window.pageTitle || document.title,
+        url: window.pageURL || document.URL,
+        favicon: window.faviconURL || '',
+        trans: '',
+        note: ''
+      },
 
       firstClickOfDoubleClick: false,
 
@@ -155,7 +163,7 @@ export default {
         return
       }
 
-      message.self.send({msg: 'SEARCH_TEXT', text: this.selectedText})
+      message.self.send({msg: 'SEARCH_TEXT', selectionInfo: this.selectionInfo})
     },
     clearDoubleClick () {
       this.firstClickOfDoubleClick = false
@@ -196,11 +204,11 @@ export default {
   mounted () {
     // receive signals from page and all frames
     message.self.on('SELECTION', (data, sender, sendResponse) => {
-      this.selectedText = data.text || ''
+      this.selectionInfo = data.selectionInfo
 
       if (this.isStayVisiable) {
         // pinned
-        if (this.selectedText) {
+        if (this.selectionInfo.text) {
           this.handlePinModeSelection(data)
         }
         return sendResponse()
@@ -225,7 +233,7 @@ export default {
 
       this.setPosition(data.mouseX, data.mouseY)
 
-      if (data.text) {
+      if (this.selectionInfo.text) {
         switch (this.config.mode) {
           case 'icon':
             this.isShowIcon = true
@@ -265,8 +273,8 @@ export default {
         return sendResponse({preload: this.config.tripleCtrlPreload, autoSearch: this.config.tripleCtrlAuto})
       }
 
-      if (this.selectedText) {
-        message.self.send({msg: 'SEARCH_TEXT', text: this.selectedText})
+      if (this.selectionInfo.text) {
+        message.self.send({msg: 'SEARCH_TEXT', selectionInfo: this.selectionInfo})
       }
 
       sendResponse()

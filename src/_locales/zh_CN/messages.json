@@ -27,6 +27,10 @@
     "description": "支持一下",
     "message": "觉得好用的话欢迎支持一下我买杯咖啡哦~"
   },
+  "save": {
+    "description": "save",
+    "message": "保存"
+  },
   "confirm": {
     "description": "confirm",
     "message": "确认"
@@ -420,9 +424,9 @@
     "description": "word page",
     "message": "只显示英文记录"
   },
-  "wordpage_plain_modal_title": {
+  "wordpage_editnote_modal_title": {
     "description": "word page",
-    "message": "纯文本 - 可复制粘贴"
+    "message": "编辑笔记"
   },
   "wordpage_clear": {
     "description": "word page",
@@ -430,23 +434,51 @@
   },
   "wordpage_savefile": {
     "description": "word page",
-    "message": "导出文件"
+    "message": "保存为文件"
   },
-  "wordpage_plaintext": {
+  "wordpage_export": {
     "description": "word page",
-    "message": "查看纯文本"
+    "message": "导出文本"
   },
   "wordpage_copy_success": {
     "description": "word page",
     "message": "复制成功！"
   },
-  "wordpage_copu_failed": {
+  "wordpage_copy_failed": {
     "description": "word page",
     "message": "复制失败，请手动复制"
+  },
+  "wordpage_save_success": {
+    "description": "word page",
+    "message": "保存成功！"
+  },
+  "wordpage_save_faild": {
+    "description": "word page",
+    "message": "保存失败"
   },
   "wordpage_clear_success": {
     "description": "word page",
     "message": "清除成功！"
+  },
+  "wordpage_exp_modal_title": {
+    "description": "word page",
+    "message": "导出文本"
+  },
+  "wordpage_exp_description": {
+    "description": "word page",
+    "message": "编写生成模板，描述每条记录生成的样子："
+  },
+  "wordpage_exp_placeholder": {
+    "description": "word page",
+    "message": "替换符"
+  },
+  "wordpage_exp_gencontent": {
+    "description": "word page",
+    "message": "代表的内容"
+  },
+  "save_to_notebook": {
+    "description": "word page",
+    "message": "保存到生词本"
   },
   "history_title": {
     "description": "history page",
@@ -454,7 +486,7 @@
   },
   "history_wordcount": {
     "description": "history page",
-    "message": "共 %s 条记录，本扩展会保存约 10,000 条最近查词历史"
+    "message": "共 %s 条记录，注意历史记录不同步"
   },
   "history_no_result": {
     "description": "history page",
@@ -488,8 +520,40 @@
     "description": "notebook page",
     "message": "生词本所有记录将被清除，确定？"
   },
+  "edit_note_word": {
+    "description": "notebook page",
+    "message": "单词"
+  },
+  "edit_note_trans": {
+    "description": "notebook page",
+    "message": "翻译"
+  },
+  "edit_note_note": {
+    "description": "notebook page",
+    "message": "笔记"
+  },
+  "edit_note_context": {
+    "description": "notebook page",
+    "message": "上下文"
+  },
+  "edit_note_src_title": {
+    "description": "notebook page",
+    "message": "来源标题"
+  },
+  "edit_note_src_url": {
+    "description": "notebook page",
+    "message": "来源链接"
+  },
+  "edit_note_src_favicon": {
+    "description": "notebook page",
+    "message": "来源图标"
+  },
   "notification_youdao_err": {
     "description": "notifications message",
     "message": "有道网页翻译2.0 加载无响应，\n可能扩展无权访问该页面，\n如加载成功请忽略本消息。"
+  },
+  "from_saladict_panel": {
+    "description": "From Saladict Panel",
+    "message": "来自沙拉查词面板"
   }
 }

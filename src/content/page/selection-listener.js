@@ -5,13 +5,13 @@
 
 import {message, storage} from 'src/helpers/chrome-api'
 import {isContainChinese, isContainEnglish} from 'src/helpers/lang-check'
+import {hasSelection, getSelectionText, getSelectionSentence, getSelectionInfo} from 'src/helpers/selection'
 import AppConfig from 'src/app-config'
 
 let config = new AppConfig()
 let numTripleCtrl = 0
 let tripleCtrlTimeout = null
 let isCtrlKeydown = false
-let selectionText = ''
 
 storage.sync.get('config', data => {
   if (data.config) {
@@ -55,7 +55,7 @@ document.addEventListener('mouseup', handleMouseup, true)
 window.addEventListener('message', handleFrameMsg, false)
 
 message.on('__PRELOAD_SELECTION__', (data, sender, sendResponse) => {
-  sendResponse(selectionText)
+  sendResponse(getSelectionInfo())
 })
 
 /**
@@ -91,32 +91,50 @@ function handleMouseup ({button, target, clientX, clientY}) {
     return // ignore mouse events on dict panal
   }
 
-  if (!window.getSelection().toString().trim()) {
+  if (!hasSelection()) {
     // empty message
-    selectionText = ''
-    return message.self.send({msg: 'SELECTION'})
+    return message.self.send({
+      msg: 'SELECTION',
+      selectionInfo: {
+        text: '',
+        context: '',
+        title: window.pageTitle || document.title,
+        url: window.pageURL || document.URL,
+        // set by chrome-api helper
+        favicon: window.faviconURL || '',
+        trans: '',
+        note: ''
+      }
+    })
   }
 
   // if user click on a selected text,
   // getSelection would reture the text before it disappears
   // delay to wait for selection get cleared
   setTimeout(() => {
-    let text = window.getSelection().toString().trim()
-    if (!text) {
-      // empty message
-      selectionText = ''
-      return message.self.send({msg: 'SELECTION'})
-    }
+    const text = getSelectionText()
+    if (
+      text &&
+      (
+        (config.language.english && isContainEnglish(text) && !isContainChinese(text)) ||
+        (config.language.chinese && isContainChinese(text))
+      )
+    ) {
+      const selectionInfo = {
+        text,
+        context: getSelectionSentence(),
+        title: window.pageTitle || document.title,
+        url: window.pageURL || document.URL,
+        favicon: window.faviconURL || '',
+        trans: '',
+        note: ''
+      }
 
-    selectionText = text
-
-    if ((config.language.english && isContainEnglish(text)) ||
-        (config.language.chinese && isContainChinese(text))) {
       if (window.parent === window) {
         // top
         message.self.send({
           msg: 'SELECTION',
-          text,
+          selectionInfo,
           mouseX: clientX,
           mouseY: clientY,
           ctrlKey: isCtrlKeydown
@@ -125,12 +143,26 @@ function handleMouseup ({button, target, clientX, clientY}) {
         // post to upper frames/window
         window.parent.postMessage({
           msg: 'SALADICT_SELECTION',
-          text,
+          selectionInfo,
           mouseX: clientX,
           mouseY: clientY,
           ctrlKey: isCtrlKeydown
         }, '*')
       }
+    } else {
+      // empty message
+      return message.self.send({
+        msg: 'SELECTION',
+        selectionInfo: {
+          text: '',
+          context: '',
+          title: window.pageTitle || document.title,
+          url: window.pageURL || document.URL,
+          favicon: window.faviconURL || '',
+          trans: '',
+          note: ''
+        }
+      })
     }
   }, 0)
 }
@@ -147,7 +179,7 @@ function handleFrameMsg ({data, source}) {
     .find(({contentWindow}) => contentWindow === source)
   if (!iframe) { return }
 
-  let {text, mouseX, mouseY, ctrlKey} = data
+  let {selectionInfo, mouseX, mouseY, ctrlKey} = data
   let {left, top} = iframe.getBoundingClientRect()
   mouseX += left
   mouseY += top
@@ -156,7 +188,7 @@ function handleFrameMsg ({data, source}) {
     // top
     message.self.send({
       msg: 'SELECTION',
-      text,
+      selectionInfo,
       mouseX,
       mouseY,
       ctrlKey
@@ -165,7 +197,7 @@ function handleFrameMsg ({data, source}) {
     // post to upper frames/window
     window.parent.postMessage({
       msg: 'SALADICT_SELECTION',
-      text,
+      selectionInfo,
       mouseX,
       mouseY,
       ctrlKey
