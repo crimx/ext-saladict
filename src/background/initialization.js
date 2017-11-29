@@ -26,7 +26,7 @@ function onInstalled ({reason}) {
       isNew = true
     }
 
-    storage.sync.set({config, lastCheckUpdate: Date.now()})
+    storage.sync.set({config})
       .then(() => {
         if (isNew) {
           openURL('https://github.com/crimx/crx-saladict/wiki')
@@ -35,6 +35,7 @@ function onInstalled ({reason}) {
         }
         setContextMenu(config)
       })
+    storage.local.set({lastCheckUpdate: Date.now()})
   })
 }
 
