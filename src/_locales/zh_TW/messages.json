@@ -434,11 +434,11 @@
   },
   "wordpage_savefile": {
     "description": "word page",
-    "message": "導出文件"
+    "message": "保存為文檔"
   },
-  "wordpage_plaintext": {
+  "wordpage_export": {
     "description": "word page",
-    "message": "查看純文本"
+    "message": "導出文本"
   },
   "wordpage_copy_success": {
     "description": "word page",
@@ -459,6 +459,18 @@
   "wordpage_clear_success": {
     "description": "word page",
     "message": "清除成功！"
+  },
+  "wordpage_exp_description": {
+    "description": "word page",
+    "message": "編寫生成模板，描述每條記錄生成的樣子："
+  },
+  "wordpage_exp_placeholder": {
+    "description": "word page",
+    "message": "替換符"
+  },
+  "wordpage_exp_gencontent": {
+    "description": "word page",
+    "message": "代表的內容"
   },
   "save_to_notebook": {
     "description": "word page",

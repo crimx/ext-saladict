@@ -6,8 +6,7 @@
       <label class="btn btn-default" :class="{active: isOnlyEng}">{{ i18n('wordpage_only_english') }}
         <input type="checkbox" v-model="isOnlyEng" class="hide" autocomplete="off">
       </label>
-      <button type="button" class="btn btn-default" @click="showPlainTextPanel">{{ i18n('wordpage_plaintext') }}</button>
-      <button type="button" class="btn btn-default" @click="saveAsFile">{{ i18n('wordpage_savefile') }}</button>
+      <button type="button" class="btn btn-default" @click="showExportPanel">{{ i18n('wordpage_export') }}</button>
       <button type="button" class="btn btn-danger" @click="clearRecords">{{ i18n('wordpage_clear') }}</button>
     </div>
   </div>
@@ -79,11 +78,11 @@
           </section>
         </div>
         <div class="wordcard-section-wrap":style="{height: wordcardSenHeight + 'px'}">
-          <section class="wordcard-section" ref="wordcardSen" v-if="wordcardData.sentence">
+          <section class="wordcard-section" ref="wordcardSen" v-if="wordcardData.context">
             <svg class="wordcard-section-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 95.333 95.332">
               <path d="M 36.587 45.263 C 35.07 44.825 33.553 44.605 32.078 44.605 C 29.799 44.605 27.898 45.125 26.423 45.763 C 27.844 40.559 31.259 31.582 38.061 30.57 C 38.69 30.476 39.207 30.021 39.379 29.408 L 40.864 24.09 C 40.99 23.641 40.916 23.16 40.66 22.77 C 40.403 22.38 39.991 22.119 39.529 22.056 C 39.027 21.987 38.515 21.952 38.009 21.952 C 29.844 21.952 21.759 30.474 18.347 42.675 C 16.344 49.833 15.757 60.595 20.686 67.369 C 23.445 71.16 27.472 73.183 32.657 73.385 L 32.717 73.386 C 39.114 73.386 44.783 69.079 46.508 62.915 C 47.538 59.229 47.073 55.364 45.196 52.029 C 43.338 48.731 40.28 46.327 36.581 45.263 Z M 76.615 52.029 C 74.758 48.731 71.699 46.327 68.002 45.263 C 66.484 44.823 64.968 44.604 63.492 44.604 C 61.214 44.604 59.311 45.121 57.838 45.76 C 59.259 40.553 62.673 31.579 69.475 30.564 C 70.102 30.47 70.619 30.016 70.793 29.402 L 72.28 24.085 C 72.403 23.635 72.332 23.155 72.073 22.764 C 71.814 22.373 71.401 22.113 70.942 22.049 C 70.438 21.981 69.928 21.946 69.417 21.946 C 61.253 21.946 53.169 30.467 49.755 42.669 C 47.752 49.827 47.166 60.59 52.101 67.364 C 54.858 71.153 58.887 73.178 64.069 73.379 C 64.091 73.38 64.111 73.381 64.134 73.381 C 70.527 73.381 76.198 69.074 77.923 62.908 C 78.953 59.224 78.485 55.358 76.609 52.022 Z" style=""/>
             </svg>
-            <p>{{ wordcardData.sentence }}</p>
+            <p>{{ wordcardData.context }}</p>
           </section>
         </div>
         <div class="wordcard-section-wrap":style="{height: wordcardNoteHeight + 'px'}">
@@ -96,7 +95,7 @@
         </div>
         <hr>
         <footer class="wordcard-footer">
-            <img :src="wordcardData.faviconURL" v-if="wordcardData.faviconURL" class="wordcard-favicon">
+            <img :src="wordcardData.favicon" v-if="wordcardData.favicon" class="wordcard-favicon">
           <p class="wordcard-title">
             <a :href="wordcardData.url" @click.prevent="openURL(wordcardData.url)">{{ wordcardData.title }}</a>
           </p>
@@ -108,21 +107,68 @@
     </div>
   </div>
 
-  <!--Plain text-->
+  <!--Export text-->
   <transition name="fade">
-    <div class="modal show text-left" v-if="isShowPlainTextPanel">
-      <div class="modal-dialog">
+    <div class="modal show text-left" v-if="isShowExportPanel">
+      <div class="modal-dialog exp-panel">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" @click="isShowPlainTextPanel = false">&times;</button>
+            <button type="button" class="close" @click="isShowExportPanel = false">&times;</button>
             <h4 class="modal-title">{{ i18n('wordpage_plain_modal_title') }}</h4>
           </div>
-          <div class="modal-body">
-            <textarea v-focus class="form-control plain-text-modal">{{ plainText }}</textarea>
+          <div class="modal-body exp-panel-body">
+            <div class="exp-panel-pattern">
+              <p>{{ i18n('wordpage_exp_description') }}</p>
+              <table class="table table-bordered table-striped table-condensed">
+                <colgroup>
+                  <col class="col-xs-1">
+                  <col class="col-xs-5">
+                  <col class="col-xs-1">
+                  <col class="col-xs-5">
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th class="text-center">{{ i18n('wordpage_exp_placeholder') }}</th>
+                    <th>{{ i18n('wordpage_exp_gencontent') }}</th>
+                    <th class="text-center">{{ i18n('wordpage_exp_placeholder') }}</th>
+                    <th>{{ i18n('wordpage_exp_gencontent') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="text-center"><code>%text%</code></td>
+                    <td>{{ i18n('edit_note_word') }}</td>
+                    <td class="text-center"><code>%title%</code></td>
+                    <td>{{ i18n('edit_note_src_title') }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center"><code>%context%</code></td>
+                    <td>{{ i18n('edit_note_context') }}</td>
+                    <td class="text-center"><code>%url%</code></td>
+                    <td>{{ i18n('edit_note_src_url') }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center"><code>%note%</code></td>
+                    <td>{{ i18n('edit_note_note') }}</td>
+                    <td class="text-center"><code>%favicon%</code></td>
+                    <td>{{ i18n('edit_note_src_favicon') }}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-center"><code>%trans%</code></td>
+                    <td>{{ i18n('edit_note_trans') }}</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+              <textarea v-focus class="form-control exp-panel-pattern-textarea " v-model="expPattern"></textarea>
+            </div>
+            <textarea ref="exptext" class="form-control" readonly>{{ expText }}</textarea>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" @click="isShowPlainTextPanel = false">{{ i18n('cancel') }}</button>
+            <button type="button" class="btn btn-default" @click="isShowExportPanel = false">{{ i18n('cancel') }}</button>
             <button type="button" class="btn btn-primary" @click="copyToClipBoard">{{ i18n('copy') }}</button>
+            <button type="button" class="btn btn-success" @click="saveAsFile">{{ i18n('wordpage_savefile') }}</button>
           </div>
         </div>
       </div>
@@ -156,7 +202,7 @@
               </div>
               <div class="form-group">
                 <label for="note-word-context">{{ i18n('edit_note_context') }}</label>
-                <textarea class="form-control" row="5" placeholder="Context" id="note-word-context" v-model="wordcardData.sentence"></textarea>
+                <textarea class="form-control" row="5" placeholder="Context" id="note-word-context" v-model="wordcardData.context"></textarea>
               </div>
               <div class="form-group">
                 <label for="note-source-title">{{ i18n('edit_note_src_title') }}</label>
@@ -167,8 +213,8 @@
                 <input class="form-control" placeholder="Source URL" id="note-source-url" v-model="wordcardData.url">
               </div>
               <div class="form-group">
-                <label for="note-source-favicon">{{ i18n('edit_note_src_favicon') }}<img class="favicon-note-source" :src="wordcardData.faviconURL" v-if="wordcardData.faviconURL"></label>
-                <input class="form-control" placeholder="Source Favicon" id="note-source-favicon" v-model="wordcardData.faviconURL">
+                <label for="note-source-favicon">{{ i18n('edit_note_src_favicon') }}<img class="favicon-note-source" :src="wordcardData.favicon" v-if="wordcardData.favicon"></label>
+                <input class="form-control" placeholder="Source Favicon" id="note-source-favicon" v-model="wordcardData.favicon">
               </div>
             </form>
           </div>
@@ -194,7 +240,7 @@
 </template>
 
 <script>
-import {message} from 'src/helpers/chrome-api'
+import {storage, message} from 'src/helpers/chrome-api'
 import AlertModal from 'src/components/AlertModal'
 import {addRecord} from 'src/helpers/record-manager'
 import moment from 'moment'
@@ -238,8 +284,10 @@ export default {
 
       isReady: false, // prevent blink
 
-      plainText: '',
-      isShowPlainTextPanel: false,
+      rawAllwords: [],
+      expPattern: '%text%',
+
+      isShowExportPanel: false,
       isShowEditNotePanel: false,
       isPopUp: false,
       popupMessage: ''
@@ -276,6 +324,15 @@ export default {
         return Array.from(Array(5)).map((x, i) => this.pageCount - 5 + i)
       }
       return Array.from(Array(5)).map((x, i) => this.pageIndex + i)
+    },
+    expText () {
+      const pattern = this.expPattern
+      return this.rawAllwords
+        .map(word =>
+          pattern.replace(/%(\S+)%/g, (match, k) =>
+            typeof word[k] === 'string' ? word[k] : match)
+        )
+        .join('\n')
     },
     panelHeight () {
       const allDicts = this.config.dicts.all
@@ -341,35 +398,23 @@ export default {
           this.wordCount = wordCount
         })
     },
-    getPlainText () {
-      // TODO pattern
-      return this.recordManager.getAllWords()
-        .then(records => records.join('\n'))
-    },
-    getPlainTextWin () {
-      // TODO pattern
-      return this.recordManager.getAllWords()
-        .then(records => records.join('\r\n'))
-    },
-    showPlainTextPanel () {
-      this.plainText = ''
-      this.getPlainText()
-        .then(text => {
-          this.plainText = text
-          this.isShowPlainTextPanel = true
+    showExportPanel () {
+      this.rawAllwords = []
+      this.recordManager.getAllWords()
+        .then(words => {
+          this.rawAllwords = words
+          this.isShowExportPanel = true
         })
     },
     saveAsFile () {
+      const content = window.isWin
+        ? this.expText.replace(/\r\n|\n/g, '\r\n')
+        : this.expText
       const a = document.createElement('a')
-      chrome.runtime.getPlatformInfo(({os}) => {
-        (os === 'win' ? this.getPlainTextWin() : this.getPlainText())
-          .then(text => {
-            const file = new Blob([text], {type: 'text/plain;charset=utf-8'})
-            a.href = URL.createObjectURL(file)
-            a.download = this.downloadFileName
-            a.click()
-          })
-      })
+      const file = new Blob([content], {type: 'text/plain;charset=utf-8'})
+      a.href = URL.createObjectURL(file)
+      a.download = this.downloadFileName
+      a.click()
     },
     copyToClipBoard () {
       chrome.permissions.request({
@@ -377,7 +422,9 @@ export default {
       }, granted => {
         var isSuccess = false
         if (granted) {
+          this.$refs.exptext.select()
           isSuccess = document.execCommand('copy')
+          this.$refs.exptext.blur()
         }
         if (isSuccess) {
           this.popup(chrome.i18n.getMessage('wordpage_copy_success'), 'alert-success')
@@ -420,10 +467,12 @@ export default {
               msg: 'SEARCH_TEXT',
               selectionInfo: {
                 text,
-                sentence: '',
+                context: '',
                 title: document.title,
                 url: document.URL,
-                favicon: chrome.runtime.getURL('assets/icon-16.png')
+                favicon: chrome.runtime.getURL('assets/icon-16.png'),
+                trans: '',
+                note: ''
               }
             })
           }
@@ -513,7 +562,15 @@ export default {
           ? this.$refs.wordcardNote.offsetHeight
           : 0
       })
+    },
+    expPattern (expPattern) {
+      storage.sync.set({expPattern})
     }
+  },
+  beforeCreate () {
+    chrome.runtime.getPlatformInfo(({os}) => {
+      window.isWin = os === 'win'
+    })
   },
   created () {
     this.getWordCount()
@@ -525,6 +582,13 @@ export default {
           this.getWordCount()
         })
       })
+
+    storage.sync.get('expPattern')
+      .then(({expPattern}) => {
+        if (expPattern) {
+          this.expPattern = expPattern
+        }
+      })
   },
   components: {
     AlertModal
@@ -533,7 +597,6 @@ export default {
     focus: {
       inserted: function (el) {
         el.focus()
-        el.select()
       }
     }
   }
@@ -558,6 +621,7 @@ $wordpage-nav-height: 50px;
 // Core CSS
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/scaffolding";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/type";
+@import "~bootstrap-sass/assets/stylesheets/bootstrap/code";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/grid";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/tables";
 @import "~bootstrap-sass/assets/stylesheets/bootstrap/forms";
@@ -773,8 +837,23 @@ body {
   padding-left: 15px 0 5px;
 }
 
-textarea.plain-text-modal {
+.exp-panel-body {
+  display: flex;
   height: 55vh;
+
+  > * {
+    flex: 1;
+  }
+}
+
+.exp-panel-pattern {
+  margin-right: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.exp-panel-pattern-textarea {
+  flex: 1;
 }
 
 .popup-msg {
@@ -794,6 +873,11 @@ textarea.plain-text-modal {
   height: 16px;
   margin-left: 5px;
   vertical-align: text-bottom;
+}
+
+.exp-panel {
+  width: 88%;
+  max-width: 1200px;
 }
 
 /*------------------------------------*\

@@ -438,11 +438,11 @@
   },
   "wordpage_savefile": {
     "description": "word page",
-    "message": "Save File"
+    "message": "Save As File"
   },
-  "wordpage_plaintext": {
+  "wordpage_export": {
     "description": "word page",
-    "message": "View Plain Text"
+    "message": "Export Text"
   },
   "wordpage_copy_success": {
     "description": "word page",
@@ -463,6 +463,18 @@
   "wordpage_clear_success": {
     "description": "word page",
     "message": "Clear Success!"
+  },
+  "wordpage_exp_description": {
+    "description": "word page",
+    "message": "Describe what each record should look like："
+  },
+  "wordpage_exp_placeholder": {
+    "description": "word page",
+    "message": "Placeholder"
+  },
+  "wordpage_exp_gencontent": {
+    "description": "word page",
+    "message": "Generated Content"
   },
   "save_to_notebook": {
     "description": "word page",
