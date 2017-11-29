@@ -85,11 +85,12 @@ function showNews () {
     requireInteraction: true,
     type: 'basic',
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
-    title: '沙拉查词 Saladict【5.28.1】',
+    title: '沙拉查词 Saladict【5.29.1】',
     message: (`
-      1. 增加生词本！
-      2. 可配置预加载内容（剪贴板或页面选中词）与自动开始查词，快捷查词可设置出现的位置
-      3. 增强系统稳定性
+      1. 单词记录同时保存来源，且可编辑
+      2. 可自定义导出模板
+      3. 扩大了容量（新权限申请）
+      _. 本次更新在♫ King Of The North - Down to the Devil 伴随下完成
       `.trim().replace(/\s*\n\s*/g, '\n') // remove leading&tailing spaces of each line
     ),
     buttons: [{title: '查看更新'}]
