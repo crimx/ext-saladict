@@ -2,7 +2,7 @@
 
 [Unreleased]
 
-[5.29.1] - 2017-11-29
+[5.29.2] - 2017-11-29
 ### Added
 - 单词记录同时保存上下文和来源
 - 可编辑单词记录，可添加翻译和注释笔记
@@ -10,6 +10,9 @@
 
 ### Changed
 - 使用无限容量权限
+
+### Fixed
+- 编辑完后卡片响应
 
 [5.28.1] - 2017-11-26
 ### Added
@@ -216,8 +219,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.29.1...HEAD
-[5.29.1]: https://github.com/crimx/crx-saladict/compare/v5.28.1...v5.29.1
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.29.2...HEAD
+[5.29.2]: https://github.com/crimx/crx-saladict/compare/v5.28.1...v5.29.2
 [5.28.1]: https://github.com/crimx/crx-saladict/compare/v5.27.3...v5.28.1
 [5.27.3]: https://github.com/crimx/crx-saladict/compare/v5.19.1...v5.27.3
 [5.19.1]: https://github.com/crimx/crx-saladict/compare/v5.18.5...v5.19.1

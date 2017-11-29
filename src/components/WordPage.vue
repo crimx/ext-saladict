@@ -100,11 +100,15 @@
           </transition>
         </div>
         <hr>
-        <footer class="wordcard-footer">
-            <img :src="wordcardData.favicon" v-if="wordcardData.favicon" class="wordcard-favicon">
-          <p class="wordcard-title">
-            <a :href="wordcardData.url" @click.prevent="openURL(wordcardData.url)">{{ wordcardData.title }}</a>
-          </p>
+        <footer class="wordcard-footer-wrap" :style="{height: wordcardFooterHeight + 'px'}">
+          <transition name="fade">
+            <div class="wordcard-footer" ref="wordcardFooter" v-if="wordcardData.title">
+              <img :src="wordcardData.favicon" v-if="wordcardData.favicon" class="wordcard-favicon">
+              <p class="wordcard-title">
+                <a :href="wordcardData.url" @click.prevent="openURL(wordcardData.url)">{{ wordcardData.title }}</a>
+              </p>
+            </div>
+          </transition>
         </footer>
       </div>
     </div>
@@ -286,6 +290,7 @@ export default {
       wordcardTransHeight: 0,
       wordcardSenHeight: 0,
       wordcardNoteHeight: 0,
+      wordcardFooterHeight: 0,
 
       isOnlyEng: false,
 
@@ -552,19 +557,25 @@ export default {
         this.wordcardData = newVal[0].data[0]
       }
     },
-    wordcardData (val) {
-      if (!val) { return }
-      this.$nextTick(() => {
-        this.wordcardTransHeight = this.$refs.wordcardTrans
-          ? this.$refs.wordcardTrans.offsetHeight
-          : 0
-        this.wordcardSenHeight = this.$refs.wordcardSen
-          ? this.$refs.wordcardSen.offsetHeight
-          : 0
-        this.wordcardNoteHeight = this.$refs.wordcardNote
-          ? this.$refs.wordcardNote.offsetHeight
-          : 0
-      })
+    wordcardData: {
+      deep: true,
+      handler () {
+        if (!this.wordcardData) { return }
+        this.$nextTick(() => {
+          this.wordcardTransHeight = this.$refs.wordcardTrans
+            ? this.$refs.wordcardTrans.offsetHeight
+            : 0
+          this.wordcardSenHeight = this.$refs.wordcardSen
+            ? this.$refs.wordcardSen.offsetHeight
+            : 0
+          this.wordcardNoteHeight = this.$refs.wordcardNote
+            ? this.$refs.wordcardNote.offsetHeight
+            : 0
+          this.wordcardFooterHeight = this.$refs.wordcardFooter
+            ? this.$refs.wordcardFooter.offsetHeight
+            : 0
+        })
+      }
     },
     expPattern (expPattern) {
       storage.sync.set({expPattern})
@@ -752,6 +763,11 @@ body {
 .wordcard-sec-note-content {
   padding: 10px;
   border: 1px dashed;
+}
+
+.wordcard-footer-wrap {
+  overflow: hidden;
+  transition: all 0.4s;
 }
 
 .wordcard-footer {
