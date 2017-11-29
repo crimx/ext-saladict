@@ -428,10 +428,6 @@
     "description": "word page",
     "message": "编辑笔记"
   },
-  "wordpage_plain_modal_title": {
-    "description": "word page",
-    "message": "纯文本 - 可复制粘贴"
-  },
   "wordpage_clear": {
     "description": "word page",
     "message": "清空记录"
@@ -463,6 +459,10 @@
   "wordpage_clear_success": {
     "description": "word page",
     "message": "清除成功！"
+  },
+  "wordpage_exp_modal_title": {
+    "description": "word page",
+    "message": "导出文本"
   },
   "wordpage_exp_description": {
     "description": "word page",

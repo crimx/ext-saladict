@@ -428,10 +428,6 @@
     "description": "word page",
     "message": "Edit Note"
   },
-  "wordpage_plain_modal_title": {
-    "description": "word page",
-    "message": "Plain Text - You can copy and paste"
-  },
   "wordpage_clear": {
     "description": "word page",
     "message": "Clear Records"
@@ -463,6 +459,10 @@
   "wordpage_clear_success": {
     "description": "word page",
     "message": "Clear Success!"
+  },
+  "wordpage_exp_modal_title": {
+    "description": "word page",
+    "message": "Export Text"
   },
   "wordpage_exp_description": {
     "description": "word page",
