@@ -46,7 +46,7 @@
       <template v-for="def in result.defs">
         <h2 class="def-title">{{ def.title }}</h2>
         <div class="meaning-list" v-for="meaning in def.meanings">
-          <div class="meaning-word" @click="$emit('search', {text: meaning.word})">{{ meaning.word }}</div>
+          <div class="meaning-word">{{ meaning.word }}</div>
           <div class="meaning-def">{{ meaning.def }}</div>
         </div>
       </template>

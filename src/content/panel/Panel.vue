@@ -3,12 +3,13 @@
   <header class="panel-header">
     <input type="text" class="search-input"
       ref="searchbox"
-      v-model.trim="text"
+      :value="selectionInfo.text"
+      @input="handleSearchboxInput"
       @transitionend="updateDragAreaCoord"
-      @keyup.enter="handleSearchText()"
+      @keyup.enter="handleSearchText"
     >
     <svg class="icon-search" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52.966 52.966"
-      @click="handleSearchText()"
+      @click="handleSearchText"
     >
       <path d="M51.704 51.273L36.844 35.82c3.79-3.8 6.14-9.04 6.14-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.082 0 9.747-1.817 13.383-4.832l14.895 15.49c.196.206.458.308.72.308.25 0 .5-.093.694-.28.398-.382.41-1.015.028-1.413zM21.984 40c-10.478 0-19-8.523-19-19s8.522-19 19-19 19 8.523 19 19-8.525 19-19 19z"/>
     </svg>
@@ -69,7 +70,7 @@
         :class="{'dict-item-body--show': dicts[id].height > 0}"
         :style="{height: dicts[id].height + 'px'}"
       >
-        <component :is="id" :result="dicts[id].result" @search="handleSearchText"></component>
+        <component :is="id" :result="dicts[id].result"></component>
         <transition name="fade">
           <div class="semi-unfold-mask"
             v-if="dicts[id].height > 0 && dicts[id].height !== dicts[id].offsetHeight"
@@ -85,7 +86,7 @@
   </div>
   <transition appear name="popup" v-if="isShowNewWordCard" @after-enter="isShowNewWordCard = false">
     <div class="new-word-card">
-      <h1>{{ text }}</h1>
+      <h1>{{ selectionInfo.text }}</h1>
     </div>
   </transition>
 </div>
@@ -119,7 +120,6 @@ export default {
           return dicts
         }, {}),
 
-      text: '',
       selectionInfo: {},
 
       isShowNewWordCard: false,
@@ -134,8 +134,7 @@ export default {
       if (isOneActiveDict) {
         activeDicts = [activeDicts]
       }
-      const text = this.text.trim()
-      this.text = text
+      const text = this.selectionInfo.text
       const dicts = this.dicts
 
       this.checkSelectionLang()
@@ -184,7 +183,7 @@ export default {
     },
     checkSelectionLang () {
       const allDicts = this.config.dicts.all
-      const isEng = isContainEnglish(this.text)
+      const isEng = isContainEnglish(this.selectionInfo.text)
       this.config.dicts.selected.forEach(id => {
         this.dicts[id].isShow = (allDicts[id].showWhenLang.eng && isEng) ||
           (allDicts[id].showWhenLang.chs && !isEng)
@@ -213,7 +212,7 @@ export default {
         return null
       }).filter(Boolean)
 
-      storage.local.set({paneldata: {text: this.text, dicts}}, () => {
+      storage.local.set({paneldata: {text: this.selectionInfo.text, dicts}}, () => {
         message.send({msg: 'OPEN_URL', url: chrome.runtime.getURL('shareimg.html')})
       })
     },
@@ -224,7 +223,7 @@ export default {
       message.send({msg: 'OPEN_URL', url: chrome.runtime.getURL('notebook.html')})
     },
     addNewWord () {
-      if (!this.text) { return }
+      if (!this.selectionInfo.text) { return }
       if (this.config.newWordSound) {
         new Audio(chrome.runtime.getURL('assets/notification.mp3')).play()
       }
@@ -267,7 +266,16 @@ export default {
             // more than one word
             chrome.runtime.sendMessage({msg: 'OPEN_URL', url: target.href})
           } else {
-            this.handleSearchText({text})
+            this.selectionInfo = {
+              text,
+              context: '',
+              title: chrome.i18n.getMessage('from_saladict_panel'),
+              url: '#',
+              favicon: chrome.runtime.getURL('assets/icon-16.png'),
+              trans: '',
+              note: ''
+            }
+            this.handleSearchText()
           }
           evt.preventDefault()
           return
@@ -277,21 +285,35 @@ export default {
     handleDictsPanelDbClick (evt) {
       const text = window.getSelection().toString().trim()
       if (text) {
-        this.handleSearchText({text})
+        this.selectionInfo = {
+          text,
+          context: '',
+          title: chrome.i18n.getMessage('from_saladict_panel'),
+          url: '#',
+          favicon: chrome.runtime.getURL('assets/icon-16.png'),
+          trans: '',
+          note: ''
+        }
+        this.handleSearchText()
       }
     },
-    handleSearchText (data) {
-      data = data || {}
-      if (data.text) { this.text = data.text }
-      this.selectionInfo = data.selectionInfo || {
-        text: this.text,
-        context: '',
-        title: chrome.i18n.getMessage('from_saladict_panel'),
-        url: '#',
-        favicon: chrome.runtime.getURL('assets/icon-16.png'),
-        trans: '',
-        note: ''
+    handleSearchboxInput (event) {
+      // reset selectionInfo
+      if (this.selectionInfo.url === '#') {
+        this.selectionInfo.text = event.target.value.trim()
+      } else {
+        this.selectionInfo = {
+          text: event.target.value.trim(),
+          context: '',
+          title: chrome.i18n.getMessage('from_saladict_panel'),
+          url: '#',
+          favicon: chrome.runtime.getURL('assets/icon-16.png'),
+          trans: '',
+          note: ''
+        }
       }
+    },
+    handleSearchText () {
       this.config.dicts.selected.forEach((id) => {
         this.foldDict(id)
         this.dicts[id].result = null // clear all results
@@ -301,7 +323,8 @@ export default {
   },
   created () {
     message.self.on('SEARCH_TEXT', (data, sender, sendResponse) => {
-      this.handleSearchText({text: data.selectionInfo.text, selectionInfo: data.selectionInfo})
+      this.selectionInfo = data.selectionInfo
+      this.handleSearchText()
       sendResponse()
     })
 
@@ -310,20 +333,19 @@ export default {
       if (response.preload === 'clipboard') {
         this.$refs.searchbox.focus()
         document.execCommand('paste')
+        this.selectionInfo.text = this.$refs.searchbox.value
         if (response.autoSearch) {
-          this.handleSearchText({text: this.$refs.searchbox.value})
+          this.handleSearchText()
         } else {
           this.$refs.searchbox.select()
         }
       } else if (response.preload === 'selection') {
         message.send({msg: 'PRELOAD_SELECTION'}, selectionInfo => {
           this.selectionInfo = selectionInfo
-          const text = selectionInfo.text
-          if (!text) { return }
+          if (!selectionInfo.text) { return }
           if (response.autoSearch) {
-            this.handleSearchText({text})
+            this.handleSearchText()
           } else {
-            this.text = text
             this.$nextTick(() => {
               this.$refs.searchbox.focus()
               this.$refs.searchbox.select()
