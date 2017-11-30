@@ -125,7 +125,15 @@ function mergeRecords (area) {
             const recordSet = allSet[id]
             if (recordSet) {
               recordSet.data.forEach(records => {
-                records.data = records.data.map(text => ({text}))
+                records.data = records.data.map(text => ({
+                  text,
+                  context: '',
+                  title: chrome.i18n.getMessage('from_saladict_old'),
+                  url: '#',
+                  favicon: chrome.runtime.getURL('assets/icon-16.png'),
+                  trans: '',
+                  note: ''
+                }))
               })
               storage.local.set({[id]: recordSet})
             } else {

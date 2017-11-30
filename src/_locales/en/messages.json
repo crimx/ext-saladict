@@ -551,5 +551,9 @@
   "from_saladict_panel": {
     "description": "From Saladict Panel",
     "message": "From Saladict Panel"
+  },
+  "from_saladict_old": {
+    "description": "From Saladict Panel",
+    "message": "From Saladict Old Record"
   }
 }
