@@ -24,8 +24,8 @@ function createTab (data, sender, sendResponse) {
   openURL(
     data.escape
       ? data.url
-        .replace('%s', this.text)
-        .replace('%z', chsToChz(this.text))
+        .replace(/%s/g, data.text)
+        .replace(/%z/g, chsToChz(data.text))
       : data.url
   )
   sendResponse()

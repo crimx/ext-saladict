@@ -255,6 +255,7 @@ export default {
       message.send({
         msg: 'OPEN_URL',
         escape: true,
+        text: this.selectionInfo.text,
         url: this.config.dicts.all[id].page
       })
     },
