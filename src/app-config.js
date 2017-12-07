@@ -23,7 +23,7 @@ export default function AppConfig () {
     // double: double click
     // ctrl: search when double click ctrl + selection not empty
     pinMode: {
-      direct: false,
+      direct: true,
       double: false,
       ctrl: false
     },
