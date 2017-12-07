@@ -2,6 +2,14 @@
 
 [Unreleased]
 
+[5.30.0] - 2017-12-08
+### Changed
+- 可同时选择多个划词模式
+- 工具栏“选项”按钮改为词典目录
+
+### Fixed
+- 修复词典标题点击跳转
+
 [5.29.3] - 2017-11-29
 ### Added
 - 单词记录同时保存上下文和来源
@@ -220,7 +228,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.29.3...HEAD
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.30.0...HEAD
+[5.30.0]: https://github.com/crimx/crx-saladict/compare/v5.28.3...v5.30.0
 [5.29.3]: https://github.com/crimx/crx-saladict/compare/v5.28.1...v5.29.3
 [5.28.1]: https://github.com/crimx/crx-saladict/compare/v5.27.3...v5.28.1
 [5.27.3]: https://github.com/crimx/crx-saladict/compare/v5.19.1...v5.27.3
