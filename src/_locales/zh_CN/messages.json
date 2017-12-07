@@ -555,5 +555,9 @@
   "from_saladict_panel": {
     "description": "From Saladict Panel",
     "message": "来自沙拉查词面板"
+  },
+  "from_saladict_old": {
+    "description": "From Saladict Panel",
+    "message": "来自沙拉查词旧记录"
   }
 }

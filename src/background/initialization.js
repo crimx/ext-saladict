@@ -85,11 +85,11 @@ function showNews () {
     requireInteraction: true,
     type: 'basic',
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
-    title: '沙拉查词 Saladict【5.29.2】',
+    title: '沙拉查词 Saladict【5.30.0】',
     message: (`
-      1. 单词记录同时保存来源，且可编辑
-      2. 可自定义导出模板
-      3. 扩大了容量（新权限申请）
+      1. 可同时选择多个划词模式
+      2. 工具栏“选项”按钮改为词典目录
+      3. 修复词典标题点击跳转
       `.trim().replace(/\s*\n\s*/g, '\n') // remove leading&tailing spaces of each line
     ),
     buttons: [{title: '查看更新'}]
@@ -125,7 +125,15 @@ function mergeRecords (area) {
             const recordSet = allSet[id]
             if (recordSet) {
               recordSet.data.forEach(records => {
-                records.data = records.data.map(text => ({text}))
+                records.data = records.data.map(text => ({
+                  text,
+                  context: '',
+                  title: chrome.i18n.getMessage('from_saladict_old'),
+                  url: '#',
+                  favicon: chrome.runtime.getURL('assets/icon-16.png'),
+                  trans: '',
+                  note: ''
+                }))
               })
               storage.local.set({[id]: recordSet})
             } else {

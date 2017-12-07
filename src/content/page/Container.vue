@@ -149,21 +149,25 @@ export default {
     },
     handlePinModeSelection (data) {
       // check double click
-      if (this.config.pinMode === 'double') {
+      if (this.config.pinMode.double) {
         if (!this.firstClickOfDoubleClick) {
           this.firstClickOfDoubleClick = true
           setTimeout(this.clearDoubleClick, this.config.doubleClickDelay)
-          return
         } else {
           this.firstClickOfDoubleClick = false
+          if (this.selectionInfo.text) {
+            message.self.send({msg: 'SEARCH_TEXT', selectionInfo: this.selectionInfo})
+            return
+          }
         }
       }
 
-      if (this.config.pinMode === 'ctrl' && !data.ctrlKey) {
-        return
+      if (this.selectionInfo.text) {
+        if (this.config.pinMode.direct || (this.config.pinMode.ctrl && data.ctrlKey)) {
+          this.firstClickOfDoubleClick = false
+          message.self.send({msg: 'SEARCH_TEXT', selectionInfo: this.selectionInfo})
+        }
       }
-
-      message.self.send({msg: 'SEARCH_TEXT', selectionInfo: this.selectionInfo})
     },
     clearDoubleClick () {
       this.firstClickOfDoubleClick = false
@@ -208,9 +212,7 @@ export default {
 
       if (this.isStayVisiable) {
         // pinned
-        if (this.selectionInfo.text) {
-          this.handlePinModeSelection(data)
-        }
+        this.handlePinModeSelection(data)
         return sendResponse()
       }
 
@@ -220,35 +222,35 @@ export default {
         this.$forceUpdate()
       }
 
+      this.setPosition(data.mouseX, data.mouseY)
+
       // check double click
-      if (this.config.mode === 'double') {
+      if (this.config.mode.double) {
         if (!this.firstClickOfDoubleClick) {
           this.firstClickOfDoubleClick = true
           setTimeout(this.clearDoubleClick, this.config.doubleClickDelay)
-          return sendResponse()
         } else {
           this.firstClickOfDoubleClick = false
+          if (this.selectionInfo.text) {
+            this.isShowFrame = true
+            return sendResponse()
+          }
         }
       }
 
-      this.setPosition(data.mouseX, data.mouseY)
-
       if (this.selectionInfo.text) {
-        switch (this.config.mode) {
-          case 'icon':
-            this.isShowIcon = true
-            break
-          case 'direct':
+        const {direct, ctrl, icon} = this.config.mode
+        if (direct) {
+          this.isShowFrame = true
+          this.firstClickOfDoubleClick = false
+        } else if (ctrl && data.ctrlKey) {
+          if (data.ctrlKey) {
             this.isShowFrame = true
-            break
-          case 'ctrl':
-            if (data.ctrlKey) {
-              this.isShowFrame = true
-            }
-            break
-          case 'double':
-            this.isShowFrame = true
-            break
+            this.firstClickOfDoubleClick = false
+          }
+        } else if (icon) {
+          this.isShowIcon = true
+          this.firstClickOfDoubleClick = false
         }
       }
       sendResponse()

@@ -11,13 +11,22 @@ export default function AppConfig () {
     // direct: show panel directly
     // double: double click
     // ctrl: show panel when double click ctrl + selection not empty
-    mode: 'icon',
+    mode: {
+      icon: true,
+      direct: false,
+      double: false,
+      ctrl: false
+    },
 
     // when the panel is pinned
     // direct: on mouseup
     // double: double click
     // ctrl: search when double click ctrl + selection not empty
-    pinMode: 'direct',
+    pinMode: {
+      direct: true,
+      double: false,
+      ctrl: false
+    },
 
     // for double click, in ms
     doubleClickDelay: 450,
