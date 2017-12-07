@@ -14,7 +14,7 @@
       <path d="M51.704 51.273L36.844 35.82c3.79-3.8 6.14-9.04 6.14-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.082 0 9.747-1.817 13.383-4.832l14.895 15.49c.196.206.458.308.72.308.25 0 .5-.093.694-.28.398-.382.41-1.015.028-1.413zM21.984 40c-10.478 0-19-8.523-19-19s8.522-19 19-19 19 8.523 19 19-8.525 19-19 19z"/>
     </svg>
     <div class="dragarea" ref="dragarea"></div>
-    <svg class="icon-options" @click="openOptionsPage" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
+    <svg class="icon-options" @click="isShowCatalog = true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
       <path d="M0 97.92v24.48h612V97.92H0zm0 220.32h612v-24.48H0v24.48zm0 195.84h612V489.6H0v24.48z"/>
     </svg>
     <svg class="icon-notebook" @click.left="addNewWord" @click.right.prevent="openNoteBook" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -41,7 +41,7 @@
     </svg>
   </header>
   <div ref="scrollContainer" class="dicts" @click="handleDictsPanelClick" @dblclick="handleDictsPanelDbClick">
-    <section class="dict-item" v-for="id in config.dicts.selected" v-show="dicts[id].isShow">
+    <section class="dict-item" v-for="id in config.dicts.selected" v-show="dicts[id].isShow" :id="id">
       <header class="dict-item-header" @click="handleUnfold(id)">
         <img class="dict-item-logo" :src="dicts[id].favicon" @click.stop="handleDictPage(id)">
         <h1 class="dict-item-name" @click.stop="handleDictPage(id)">{{ dicts[id].name }}</h1>
@@ -89,6 +89,19 @@
       <h1>{{ selectionInfo.text }}</h1>
     </div>
   </transition>
+  <transition name="fade" v-if="isShowCatalog">
+    <div class="dict-catalog" @mouseleave="isShowCatalog = false">
+      <a class="dict-catalog-item"
+        v-for="id in config.dicts.selected"
+        v-show="dicts[id].isShow"
+        :href="`#${id}`"
+        @click="dicts[id].isUnfolded || unfoldDict(id)"
+      >
+        <img class="dict-catalog-logo" :src="dicts[id].favicon">
+        <h1 class="dict-catalog-name">{{ dicts[id].name }}</h1>
+      </a>
+    </div>
+  </transition>
 </div>
 </template>
 
@@ -122,6 +135,7 @@ export default {
 
       selectionInfo: {},
 
+      isShowCatalog: false,
       isShowNewWordCard: false,
       noSearchHistory: false,
       isDragging: false,
@@ -199,9 +213,6 @@ export default {
     pinPanel () {
       this.isPinned = !this.isPinned
       message.self.send({msg: 'PIN_PANEL', flag: this.isPinned})
-    },
-    openOptionsPage () {
-      message.send({msg: 'OPEN_URL', url: chrome.runtime.getURL('options.html')})
     },
     openShareimgPage () {
       const dicts = this.config.dicts.selected.map(id => {
@@ -398,7 +409,7 @@ body {
 }
 </style>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .panel-container {
   display: flex;
   flex-direction: column;
@@ -614,6 +625,51 @@ body {
   background: #fff;
   border-radius: 15px;
   box-shadow: 3px 4px 31px -8px rgba(0,0,0,0.8);
+}
+
+.dict-catalog {
+  position: absolute;
+  top: 40px;
+  right: 30px;
+  width: 165px;
+  padding: 10px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
+}
+
+.dict-catalog-item {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+
+  &:link,
+  &:visited {
+    text-decoration: none;
+  }
+
+  &:hover,
+  &:active {
+    text-decoration: none;
+    background: rgba(240, 240, 240, 0.8);
+  }
+}
+
+.dict-catalog-logo {
+  align-self: flex-start;
+  width: 19px;
+  height: 19px;
+  margin-top: -1px;
+  cursor: pointer;
+}
+
+.dict-catalog-name {
+  margin: 0;
+  padding: 3px;
+  font-size: 12px;
+  font-weight: normal;
+  color: #444;
+  cursor: pointer;
 }
 
 /*-----------------------------------------------*\
