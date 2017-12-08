@@ -27,6 +27,14 @@
     "description": "支持一下",
     "message": "觉得好用的话欢迎支持一下我买杯咖啡哦~"
   },
+  "cantact_author": {
+    "description": "Contact Author",
+    "message": "联系作者"
+  },
+  "report_issue": {
+    "description": "Report Issue",
+    "message": "反馈问题"
+  },
   "save": {
     "description": "save",
     "message": "保存"

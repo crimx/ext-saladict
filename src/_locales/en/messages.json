@@ -27,6 +27,14 @@
     "description": "支持一下",
     "message": "Enjoy the Extension? Buy me a coffee~"
   },
+  "cantact_author": {
+    "description": "Contact Author",
+    "message": "Contact Author"
+  },
+  "report_issue": {
+    "description": "Report Issue",
+    "message": "Report Issue"
+  },
   "save": {
     "description": "save",
     "message": "Save"
