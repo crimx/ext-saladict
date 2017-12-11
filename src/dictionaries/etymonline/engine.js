@@ -11,7 +11,7 @@ import stripScript from 'src/helpers/strip-script'
 export default function search (text, config) {
   const options = config.dicts.all.etymonline.options
 
-  return fetchDom('http://www.etymonline.com/search?q=' + text)
+  return fetchDom('https://www.etymonline.com/search?q=' + text)
     .then(doc => handleDom(doc, options))
 }
 
@@ -31,7 +31,7 @@ function handleDom (doc, {resultnum}) {
     .map(el => {
       let href = el.getAttribute('href') || ''
       if (href[0] === '/') {
-        href = 'http://www.etymonline.com' + href
+        href = 'https://www.etymonline.com' + href
       }
 
       let title
@@ -45,7 +45,7 @@ function handleDom (doc, {resultnum}) {
       if ($def) {
         $def.querySelectorAll('.crossreference').forEach($cf => {
           let word = $cf.innerText.trim()
-          $cf.innerHTML = `<a href="http://www.etymonline.com/word/${word}" target="_blank">${word}</a>`
+          $cf.innerHTML = `<a href="https://www.etymonline.com/word/${word}" target="_blank">${word}</a>`
         })
         const $cleanDef = doc.createElement('div')
         $cleanDef.innerHTML = $def.innerHTML
