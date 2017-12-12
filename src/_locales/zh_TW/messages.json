@@ -298,7 +298,7 @@
   },
   "opt_dicts_description": {
     "description": "option description",
-    "message": "配置各個詞典，建議按個人需求裁減到最少。拖動詞典標題可以進行排序。有任何問題請聯系作者，微博 @盒裝檸檬水 。"
+    "message": "配置各個詞典，建議按個人需求裁減到最少。拖動詞典標題可以進行排序。"
   },
   "opt_dicts_btn_add": {
     "description": "option button",

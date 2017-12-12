@@ -24,17 +24,12 @@
           <li class="payment-item disabled"><img class="payment-icon icon-bitcoin" src="./assets/bitcoin.svg">{{ i18n('bitcoin') }}</li>
         </ul>
         <div>
-          <p class="social-media-wrap">
+          <p class="coffee-social-media-wrap">
             <a href="mailto:straybugs@gmail.com" @mouseover="isShowSocial = true" @click.prevent="void 0">{{ i18n('cantact_author') }}</a>
             <transition name="fade">
-              <ul class="social-media" v-if="isShowSocial" @mouseleave="isShowSocial = false">
-                <li class="social-media-icon" v-for="media in socialMedia">
-                  <a :href="media.url" :title="media.title" target="_blank" rel="noopener"></a>
-                  <svg>
-                    <use :xlink:href="'./assets/symbol-defs.svg#' + media.icon" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
-                  </svg>
-                </li>
-              </ul>
+              <div class="coffee-social-media" v-if="isShowSocial" @mouseleave="isShowSocial = false">
+                <social-media />
+              </div>
             </transition>
           </p>
           <p><a href="https://github.com/crimx/crx-saladict/issues" target="_blank" rel="noopener">{{ i18n('report_issue') }}</a></p>
@@ -75,37 +70,13 @@
 </template>
 
 <script>
+import SocialMedia from './SocialMedia'
 export default {
   data () {
     return {
       showPayment: false,
       active: 'wechat',
-      isShowSocial: false,
-      socialMedia: [{
-        title: 'email',
-        icon: 'icon-mail-circle',
-        url: 'mailto:straybugs@gmail.com'
-      }, {
-        title: '豆瓣',
-        icon: 'icon-douban-circle',
-        url: 'https://www.douban.com/people/jaward'
-      }, {
-        title: '网易云音乐',
-        icon: 'icon-netease-music-circle',
-        url: 'https://music.163.com/djradio/3480003'
-      }, {
-        title: '知乎',
-        icon: 'icon-zhihu-circle',
-        url: 'https://www.zhihu.com/people/straybugs/answers'
-      }, {
-        title: '微博',
-        icon: 'icon-weibo-circle',
-        url: 'https://www.weibo.com/bananajaward'
-      }, {
-        title: 'Github',
-        icon: 'icon-github-circle',
-        url: 'https://github.com/crimx'
-      }]
+      isShowSocial: false
     }
   },
   methods: {
@@ -118,6 +89,9 @@ export default {
     i18n (key) {
       return chrome.i18n.getMessage(key) || key
     }
+  },
+  components: {
+    SocialMedia
   }
 }
 </script>
@@ -241,46 +215,15 @@ $coffee-width: 100px;
   }
 }
 
-.social-media-wrap {
+.coffee-social-media-wrap {
   position: relative;
 }
 
-.social-media {
+.coffee-social-media {
   position: absolute;
   z-index: 10;
-  left: 60px;
-  bottom: 0;
-  display: flex;
-  padding: 8px;
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 3px 4px 31px -8px rgba(0,0,0,0.8);
-}
-
-.social-media-icon {
-  position: relative;
-  width: 42px;
-  height: 42px;
-  margin: 5px;
-  list-style-type: none;
-
-  svg {
-    max-width: 100%;
-    max-height: 100%;
-  }
-
-  a {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    border-radius: 50%;
-
-    &:hover {
-      background: rgba(0,0,0,.1)
-    }
-  }
+  left: 80%;
+  bottom: -100%;
 }
 
 .coffee-steam1,
