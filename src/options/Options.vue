@@ -11,6 +11,7 @@
         <a class="new-version" v-if="newVersionAvailable" href="http://www.crimx.com/crx-saladict/" target="_blank">{{ i18n('opt_new_version') }}</a>
       </h1>
       <div class="page-header-info">
+        <p><a href="https://github.com/crimx/crx-saladict/wiki" target="_blank" rel="noopener">{{ i18n('instructions') }}</a></p>
         <p class="page-header-social-media-wrap">
           <a href="mailto:straybugs@gmail.com" @mouseover="isShowSocial = true" @click.prevent="void 0">{{ i18n('cantact_author') }}</a>
           <transition name="fade">
@@ -313,7 +314,7 @@ kbd {
 
 .page-header-social-media {
   position: absolute;
-  z-index: 10;
+  z-index: 99999;
   top: 150%;
   left: 0;
 }

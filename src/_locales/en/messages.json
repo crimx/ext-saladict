@@ -35,6 +35,10 @@
     "description": "Report Issue",
     "message": "Report Issue"
   },
+  "instructions": {
+    "description": "Report Issue",
+    "message": "Instructions"
+  },
   "save": {
     "description": "save",
     "message": "Save"

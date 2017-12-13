@@ -35,6 +35,10 @@
     "description": "Report Issue",
     "message": "報告問題"
   },
+  "instructions": {
+    "description": "Report Issue",
+    "message": "使用說明"
+  },
   "save": {
     "description": "save",
     "message": "保存"
