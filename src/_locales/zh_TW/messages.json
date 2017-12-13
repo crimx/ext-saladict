@@ -127,9 +127,13 @@
     "description": "option",
     "message": "啓用劃詞翻譯"
   },
+  "opt_pdf_sniff": {
+    "description": "option",
+    "message": "默認用本擴展瀏覽 PDF"
+  },
   "opt_app_active_description": {
     "description": "option description",
-    "message": "關閉後劃詞翻譯功能將關閉，快捷查詞功能依然可用。"
+    "message": "關閉後劃詞翻譯功能將關閉，快捷查詞功能依然可用。開啟默認 PDF 瀏覽所有 PDF 鏈接將自動跳轉到本擴展打開（包括本地）。"
   },
   "opt_word_list_title": {
     "description": "option title",

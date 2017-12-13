@@ -22,11 +22,9 @@
 
   "background": {
     "scripts": [
-      "initialization.js",
-      "context.js",
-      "server.js"
+      "background.js"
     ],
-    "persistent": false
+    "persistent": true
   },
 
   "content_scripts": [
@@ -59,6 +57,8 @@
 
   "permissions": [
     "<all_urls>",
+    "webRequest",
+    "webRequestBlocking",
     "contextMenus",
     "storage",
     "unlimitedStorage",

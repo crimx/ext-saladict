@@ -127,9 +127,13 @@
     "description": "option",
     "message": "Enable inline translator"
   },
+  "opt_pdf_sniff": {
+    "description": "option",
+    "message": "Default PDF Viewer"
+  },
   "opt_app_active_description": {
     "description": "option description",
-    "message": "Inline translation would be shut down when it is turned off. Quick Search is still available."
+    "message": "Quick Search is still available if Inline translation is turned off. PDF link will be opened automatically by this extension if it is the default PDF viewer."
   },
   "opt_word_list_title": {
     "description": "option title",

@@ -127,9 +127,13 @@
     "description": "option",
     "message": "启用划词翻译"
   },
+  "opt_pdf_sniff": {
+    "description": "option",
+    "message": "默认用本扩展浏览 PDF"
+  },
   "opt_app_active_description": {
     "description": "option description",
-    "message": "关闭后划词翻译功能将关闭，快捷查词功能依然可用。"
+    "message": "关闭后划词翻译功能将关闭，快捷查词功能依然可用。开启默认 PDF 浏览所有 PDF 链接将自动跳转到本扩展打开（包括本地）。"
   },
   "opt_word_list_title": {
     "description": "option title",
