@@ -11,7 +11,7 @@ storage.sync.get('config', ({config}) => {
 })
 
 storage.sync.listen('config', ({config: {newValue, oldValue}}) => {
-  if (newValue.pdfSniff !== oldValue.pdfSniff) {
+  if (!oldValue || newValue.pdfSniff !== oldValue.pdfSniff) {
     if (newValue.pdfSniff) {
       startListening()
     } else {
