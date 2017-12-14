@@ -2,6 +2,14 @@
 
 [Unreleased]
 
+[5.31.3] - 2017-12-14
+### Added
+- 使用 webRequest 拦截 PDF 请求
+
+### Changed
+- 钉住时快速查询不移动窗口
+- 设置页面增加反馈链接
+
 [5.30.0] - 2017-12-08
 ### Changed
 - 可同时选择多个划词模式
@@ -228,7 +236,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.30.0...HEAD
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.31.3...HEAD
+[5.31.3]: https://github.com/crimx/crx-saladict/compare/v5.30.0...v5.31.3
 [5.30.0]: https://github.com/crimx/crx-saladict/compare/v5.28.3...v5.30.0
 [5.29.3]: https://github.com/crimx/crx-saladict/compare/v5.28.1...v5.29.3
 [5.28.1]: https://github.com/crimx/crx-saladict/compare/v5.27.3...v5.28.1
