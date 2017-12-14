@@ -283,6 +283,9 @@ export default {
     })
 
     message.self.on('TRIPLE_CTRL', (data, sender, sendResponse) => {
+      // ignore when pinned
+      if (this.isStayVisiable) { return }
+
       this.isTripleCtrl = true
       // show panel
       this.isShowIcon = false

@@ -7,6 +7,7 @@ import AppConfig from 'src/app-config'
 export default function mergeConfig (config) {
   var base = new AppConfig()
   if (config.active !== undefined) { base.active = Boolean(config.active) }
+  if (config.pdfSniff !== undefined) { base.pdfSniff = Boolean(config.pdfSniff) }
   if (config.searhHistory !== undefined) { base.searhHistory = Boolean(config.searhHistory) }
   if (config.newWordSound !== undefined) { base.newWordSound = Boolean(config.newWordSound) }
 

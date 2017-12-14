@@ -2,9 +2,7 @@ const path = require('path')
 
 module.exports = {
   entry: {
-    initialization: './src/background/initialization.js',
-    context: './src/background/context-menus.js',
-    server: './src/background/server.js',
+    background: './src/background/main.js',
 
     content: './src/content/page/main.js',
     selection: './src/content/page/selection-listener.js',

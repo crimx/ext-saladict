@@ -2,6 +2,9 @@ export default function AppConfig () {
   return {
     active: true,
 
+    // sniff pdf request
+    pdfSniff: true,
+
     // track search history
     searhHistory: true,
     // play sound

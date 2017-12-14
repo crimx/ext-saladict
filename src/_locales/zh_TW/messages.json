@@ -27,6 +27,18 @@
     "description": "支持一下",
     "message": "覺得好用的話歡迎支持一下我買杯咖啡哦~"
   },
+  "cantact_author": {
+    "description": "Contact Author",
+    "message": "聯繫作者"
+  },
+  "report_issue": {
+    "description": "Report Issue",
+    "message": "報告問題"
+  },
+  "instructions": {
+    "description": "Report Issue",
+    "message": "使用說明"
+  },
   "save": {
     "description": "save",
     "message": "保存"
@@ -119,9 +131,13 @@
     "description": "option",
     "message": "啓用劃詞翻譯"
   },
+  "opt_pdf_sniff": {
+    "description": "option",
+    "message": "默認用本擴展瀏覽 PDF"
+  },
   "opt_app_active_description": {
     "description": "option description",
-    "message": "關閉後劃詞翻譯功能將關閉，快捷查詞功能依然可用。"
+    "message": "關閉後劃詞翻譯功能將關閉，快捷查詞功能依然可用。開啟默認 PDF 瀏覽所有 PDF 鏈接將自動跳轉到本擴展打開（包括本地）。"
   },
   "opt_word_list_title": {
     "description": "option title",
@@ -290,7 +306,7 @@
   },
   "opt_dicts_description": {
     "description": "option description",
-    "message": "配置各個詞典，建議按個人需求裁減到最少。拖動詞典標題可以進行排序。有任何問題請聯系作者，微博 @盒裝檸檬水 。"
+    "message": "配置各個詞典，建議按個人需求裁減到最少。拖動詞典標題可以進行排序。"
   },
   "opt_dicts_btn_add": {
     "description": "option button",

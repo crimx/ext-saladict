@@ -27,6 +27,18 @@
     "description": "支持一下",
     "message": "Enjoy the Extension? Buy me a coffee~"
   },
+  "cantact_author": {
+    "description": "Contact Author",
+    "message": "Contact Author"
+  },
+  "report_issue": {
+    "description": "Report Issue",
+    "message": "Report Issue"
+  },
+  "instructions": {
+    "description": "Report Issue",
+    "message": "Instructions"
+  },
   "save": {
     "description": "save",
     "message": "Save"
@@ -119,9 +131,13 @@
     "description": "option",
     "message": "Enable inline translator"
   },
+  "opt_pdf_sniff": {
+    "description": "option",
+    "message": "Default PDF Viewer"
+  },
   "opt_app_active_description": {
     "description": "option description",
-    "message": "Inline translation would be shut down when it is turned off. Quick Search is still available."
+    "message": "Quick Search is still available if Inline translation is turned off. PDF link will be opened automatically by this extension if it is the default PDF viewer."
   },
   "opt_word_list_title": {
     "description": "option title",

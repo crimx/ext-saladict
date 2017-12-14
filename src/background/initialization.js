@@ -29,7 +29,7 @@ function onInstalled ({reason}) {
     storage.sync.set({config})
       .then(() => {
         if (isNew) {
-          openURL('https://github.com/crimx/crx-saladict/wiki')
+          openURL('https://github.com/crimx/crx-saladict/wiki/Instructions')
         } else if (reason === 'update') {
           showNews()
         }
@@ -85,11 +85,11 @@ function showNews () {
     requireInteraction: true,
     type: 'basic',
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
-    title: '沙拉查词 Saladict【5.30.0】',
+    title: '沙拉查词 Saladict【5.31.2】',
     message: (`
-      1. 可同时选择多个划词模式
-      2. 工具栏“选项”按钮改为词典目录
-      3. 修复词典标题点击跳转
+      1. 可以直接点击 PDF 链接打开了！
+      2. 钉住时快速查询不移动窗口
+      3. 设置页面增加反馈链接（用赞赏来反馈问题的朋友看这里，赞赏没法回复的。在第三方下载注意对比 ID）
       `.trim().replace(/\s*\n\s*/g, '\n') // remove leading&tailing spaces of each line
     ),
     buttons: [{title: '查看更新'}]

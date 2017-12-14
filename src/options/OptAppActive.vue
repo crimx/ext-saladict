@@ -5,8 +5,11 @@
     </div>
     <div class="opt-item__body">
       <div class="checkbox">
-        <label>
+        <label class="checkbox-inline">
           <input type="checkbox" v-model="active"> {{ i18n('opt_app_active') }}
+        </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" v-model="pdfSniff"> {{ i18n('opt_pdf_sniff') }}
         </label>
       </div>
     </div>
@@ -20,6 +23,7 @@
 export default {
   store: {
     active: 'config.active',
+    pdfSniff: 'config.pdfSniff',
     i18n: 'i18n'
   }
 }
