@@ -127,7 +127,7 @@ function handleLexResult (doc, options) {
           mp3
         }
       })
-      .slice(0, options.sentence)
+        .slice(0, options.sentence)
     }
   }
 
