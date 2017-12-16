@@ -2,7 +2,7 @@ import {storage, openURL} from 'src/helpers/chrome-api'
 import checkUpdate from 'src/helpers/check-update'
 import AppConfig from 'src/app-config'
 import mergeConfig from './merge-config'
-import setContextMenu from './set-context-menus'
+import {initContextMenuListener, setContextMenu} from './context-menus'
 
 chrome.runtime.onInstalled.addListener(onInstalled)
 chrome.runtime.onStartup.addListener(onStartup)
@@ -31,12 +31,13 @@ function onInstalled ({reason, previousVersion}) {
         if (isNew) {
           openURL('https://github.com/crimx/crx-saladict/wiki/Instructions')
         } else if (reason === 'update') {
-          // ignore minor updates
+          // ignore patch updates
           if (!previousVersion || previousVersion.replace(/[^.]*$/, '') !== chrome.runtime.getManifest().version.replace(/[^.]*$/, '')) {
             showNews()
           }
         }
         setContextMenu(config)
+        initContextMenuListener()
       })
     storage.local.set({lastCheckUpdate: Date.now()})
   })
@@ -88,7 +89,7 @@ function showNews () {
     requireInteraction: true,
     type: 'basic',
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
-    title: '沙拉查词 Saladict【5.31.3】',
+    title: '沙拉查词 Saladict【5.31.5】',
     message: (`
       1. 可以直接点击 PDF 链接打开了！
       2. 钉住时快速查询不移动窗口

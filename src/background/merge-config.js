@@ -20,7 +20,7 @@ export default function mergeConfig (config) {
     }
     base.mode[config.mode] = true
   } else if (config.mode) {
-    ['icon', 'direct', 'double', 'ctrl'].forEach(k => {
+    Object.keys(base.mode).forEach(k => {
       if (typeof config.mode[k] === 'boolean') {
         base.mode[k] = config.mode[k]
       }
@@ -35,7 +35,7 @@ export default function mergeConfig (config) {
     }
     base.pinMode[config.pinMode] = true
   } else if (config.pinMode) {
-    ['direct', 'double', 'ctrl'].forEach(k => {
+    Object.keys(base.pinMode).forEach(k => {
       if (typeof config.pinMode[k] === 'boolean') {
         base.pinMode[k] = config.pinMode[k]
       }
@@ -93,7 +93,7 @@ export default function mergeConfig (config) {
 
   if (config.dicts) {
     if (Array.isArray(config.dicts.selected)) {
-      let selected = config.dicts.selected.filter(id => base.dicts.all[id])
+      let selected = Array.from(new Set(config.dicts.selected)).filter(id => base.dicts.all[id])
       if (selected.length > 0) { base.dicts.selected = selected }
     }
     if (config.dicts.all) {
@@ -129,7 +129,7 @@ export default function mergeConfig (config) {
       if (config.contextMenu.selected.length <= 0) {
         base.contextMenu.selected = []
       } else {
-        let selected = config.contextMenu.selected.filter(id => base.contextMenu.all[id])
+        let selected = Array.from(new Set(config.contextMenu.selected)).filter(id => base.contextMenu.all[id])
         if (selected.length > 0) { base.contextMenu.selected = selected }
       }
     }
