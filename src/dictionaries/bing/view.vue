@@ -46,8 +46,8 @@
       <template v-for="def in result.defs">
         <h2 class="def-title">{{ def.title }}</h2>
         <div class="meaning-list" v-for="meaning in def.meanings">
-          <div class="meaning-word">{{ meaning.word }}</div>
-          <div class="meaning-def">{{ meaning.def }}</div>
+          <a class="meaning-word" :href="meaning.href">{{ meaning.word }}</a>
+          <span class="meaning-def">{{ meaning.def }}</span>
         </div>
       </template>
     </div> <!--machine-->
@@ -150,8 +150,9 @@ export default {
   display: table-cell;
   width: 8em;
   text-align: right;
-  color: #16a085;
   cursor: pointer;
+  text-decoration: none;
+  color: #16a085 !important;
 }
 
 .meaning-def {
