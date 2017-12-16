@@ -88,7 +88,7 @@ function showNews () {
     requireInteraction: true,
     type: 'basic',
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
-    title: '沙拉查词 Saladict【5.31.5】',
+    title: '沙拉查词 Saladict【5.31.6】',
     message: (`
       1. 可以直接点击 PDF 链接打开了！
       2. 钉住时快速查询不移动窗口
