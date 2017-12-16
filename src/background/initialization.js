@@ -2,7 +2,7 @@ import {storage, openURL} from 'src/helpers/chrome-api'
 import checkUpdate from 'src/helpers/check-update'
 import AppConfig from 'src/app-config'
 import mergeConfig from './merge-config'
-import {initContextMenuListener, setContextMenu} from './context-menus'
+import {setContextMenu} from './context-menus'
 
 chrome.runtime.onInstalled.addListener(onInstalled)
 chrome.runtime.onStartup.addListener(onStartup)
@@ -37,7 +37,6 @@ function onInstalled ({reason, previousVersion}) {
           }
         }
         setContextMenu(config)
-        initContextMenuListener()
       })
     storage.local.set({lastCheckUpdate: Date.now()})
   })

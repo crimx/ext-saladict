@@ -59,28 +59,32 @@ function contextMenuOnClick ({menuItemId, selectionText, linkUrl}) {
   }
 }
 
-export function initContextMenuListener () {
-  // listen context menu
-  chrome.contextMenus.onClicked.addListener(contextMenuOnClick)
+// listen context menu
+chrome.contextMenus.onClicked.addListener(contextMenuOnClick)
 
-  // when config changes
-  storage.sync.listen('config', ({config: {newValue, oldValue}}) => {
-    if (!oldValue) {
+// when config changes
+storage.sync.listen('config', ({config: {newValue, oldValue}}) => {
+  if (!oldValue) {
+    return setContextMenu(newValue)
+  }
+
+  const oldSelected = oldValue.contextMenu.selected
+  const newSelected = newValue.contextMenu.selected
+  if (oldSelected.length !== newSelected.length) {
+    return setContextMenu(newValue)
+  }
+  for (let i = 0; i < oldSelected.length; i += 1) {
+    if (oldSelected[i] !== newSelected[i]) {
       return setContextMenu(newValue)
     }
+  }
+})
 
-    const oldSelected = oldValue.contextMenu.selected
-    const newSelected = newValue.contextMenu.selected
-    if (oldSelected.length !== newSelected.length) {
-      return setContextMenu(newValue)
-    }
-    for (let i = 0; i < oldSelected.length; i += 1) {
-      if (oldSelected[i] !== newSelected[i]) {
-        return setContextMenu(newValue)
-      }
-    }
-  })
-}
+storage.sync.get('config', ({config}) => {
+  if (config) {
+    setContextMenu(config)
+  }
+})
 
 /**
  * generate context menu items
