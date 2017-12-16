@@ -2,7 +2,7 @@
 
 [Unreleased]
 
-[5.31.5] - 2017-12-16
+[5.31.6] - 2017-12-16
 ### Added
 - 使用 webRequest 拦截 PDF 请求
 
@@ -11,7 +11,7 @@
 - 设置页面增加反馈链接
 
 ### Fixed
-- 右键菜单不显示
+- 第二次打开浏览器右键菜单不显示
 - 必应词典相关单词可点击
 
 [5.30.0] - 2017-12-08
@@ -240,8 +240,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.31.5...HEAD
-[5.31.5]: https://github.com/crimx/crx-saladict/compare/v5.30.0...v5.31.5
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.31.6...HEAD
+[5.31.6]: https://github.com/crimx/crx-saladict/compare/v5.30.0...v5.31.6
 [5.30.0]: https://github.com/crimx/crx-saladict/compare/v5.28.3...v5.30.0
 [5.29.3]: https://github.com/crimx/crx-saladict/compare/v5.28.1...v5.29.3
 [5.28.1]: https://github.com/crimx/crx-saladict/compare/v5.27.3...v5.28.1

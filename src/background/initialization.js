@@ -2,7 +2,7 @@ import {storage, openURL} from 'src/helpers/chrome-api'
 import checkUpdate from 'src/helpers/check-update'
 import AppConfig from 'src/app-config'
 import mergeConfig from './merge-config'
-import {initContextMenuListener, setContextMenu} from './context-menus'
+import {setContextMenu} from './context-menus'
 
 chrome.runtime.onInstalled.addListener(onInstalled)
 chrome.runtime.onStartup.addListener(onStartup)
@@ -37,7 +37,6 @@ function onInstalled ({reason, previousVersion}) {
           }
         }
         setContextMenu(config)
-        initContextMenuListener()
       })
     storage.local.set({lastCheckUpdate: Date.now()})
   })
@@ -89,7 +88,7 @@ function showNews () {
     requireInteraction: true,
     type: 'basic',
     iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
-    title: '沙拉查词 Saladict【5.31.5】',
+    title: '沙拉查词 Saladict【5.31.6】',
     message: (`
       1. 可以直接点击 PDF 链接打开了！
       2. 钉住时快速查询不移动窗口
