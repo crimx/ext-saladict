@@ -2,7 +2,7 @@
 
 [Unreleased]
 
-[5.31.6] - 2017-12-16
+[5.31.7] - 2017-12-18
 ### Added
 - 使用 webRequest 拦截 PDF 请求
 
@@ -240,8 +240,8 @@
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.31.6...HEAD
-[5.31.6]: https://github.com/crimx/crx-saladict/compare/v5.30.0...v5.31.6
+[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.31.7...HEAD
+[5.31.7]: https://github.com/crimx/crx-saladict/compare/v5.30.0...v5.31.7
 [5.30.0]: https://github.com/crimx/crx-saladict/compare/v5.28.3...v5.30.0
 [5.29.3]: https://github.com/crimx/crx-saladict/compare/v5.28.1...v5.29.3
 [5.28.1]: https://github.com/crimx/crx-saladict/compare/v5.27.3...v5.28.1
