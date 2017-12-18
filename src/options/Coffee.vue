@@ -20,7 +20,7 @@
         <ul class="payment-tabs">
           <li class="payment-item" :class="{active: active === 'wechat'}" @mouseover="active = 'wechat'"><img class="payment-icon icon-wechat" src="./assets/wechat.svg">{{ i18n('wechat') }}</li>
           <li class="payment-item" :class="{active: active === 'alipay'}" @mouseover="active = 'alipay'"><img class="payment-icon icon-alipay" src="./assets/alipay.svg">{{ i18n('alipay') }}</li>
-          <li class="payment-item disabled"><img class="payment-icon icon-paypal" src="./assets/paypal.svg">PayPal</li>
+          <li class="payment-item" :class="{active: active === 'paypal'}" @mouseover="active = 'paypal'"><img class="payment-icon icon-paypal" src="./assets/ko-fi.svg">PayPal</li>
           <li class="payment-item disabled"><img class="payment-icon icon-bitcoin" src="./assets/bitcoin.svg">{{ i18n('bitcoin') }}</li>
         </ul>
         <div>
@@ -60,7 +60,7 @@
         <transition name="fade">
           <div class="payment-pane" key="wechat"      v-if="active === 'wechat'"><img src="./assets/qrcode/wechat.png" alt="wechat qrcode"><p><small>{{ i18n('buy_me_a_coffee') }}</small></p></div>
           <div class="payment-pane" key="alipay" v-else-if="active === 'alipay'"><img src="./assets/qrcode/alipay.png" alt="alipay qrcode"><p> </p></div>
-          <div class="payment-pane" key="paypal" v-else-if="active === 'paypal'"><img src="./assets/qrcode/paypal.png" alt="paypal qrcode"><p><a href="https://www.paypal.me/crimx" target="_blank">https://www.paypal.me/crimx</a></p></div>
+          <div class="payment-pane" key="paypal" v-else-if="active === 'paypal'"><img src="./assets/qrcode/ko-fi.png" alt="ko-fi qrcode"><p><a href="https://ko-fi.com/crimxcoffee" target="_blank">https://ko-fi.com/crimxcoffee</a></p></div>
           <div class="payment-pane" key="bitcoin" v-else-if="active === 'bitcoin'"><img src="./assets/qrcode/bitcoin.png" alt="bitcoin qrcode"><p><small>1LkSPTYg3xFTZp39XxQJHqA77rskkENDyX</small></p></div>
         </transition>
       </div>
