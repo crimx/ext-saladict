@@ -5,7 +5,7 @@
 Chrome 浏览器插件，网页划词翻译。
 
 <p align="center">
-  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="https://github.com/crimx/crx-saladict/blob/master/saladict.jpg" /></a>
+  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="saladict.jpg" /></a>
 </p>
 
 [功能一览：](https://github.com/crimx/crx-saladict/wiki)
@@ -27,7 +27,7 @@ Chrome 浏览器插件，网页划词翻译。
 理论上支持所有 Chrome 系浏览器。效果图：
 
 <p align="center">
-  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="https://github.com/crimx/crx-saladict/blob/master/screen.gif" /></a>
+  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="screen.gif" /></a>
 </p>
 
 # 用户评价
