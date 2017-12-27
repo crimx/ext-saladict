@@ -5,7 +5,7 @@ Chrome extension, feature-rich inline translator powered with mutiple online dic
 [【中文】](https://www.crimx.com/crx-saladict/)Chrome 浏览器插件，网页划词翻译。
 
 <p align="center">
-  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="saladict.jpg" /></a>
+  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="docs/saladict.jpg" /></a>
 </p>
 
 - Chrome Web Store: <https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg>
