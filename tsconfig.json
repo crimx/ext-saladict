@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "module": "commonjs",
+    "target": "es6",
+    "jsx": "react",
+    "lib": ["es6", "dom"],
+    "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
+  },
+  "include": [
+    "./src/**/*"
+  ]
+}

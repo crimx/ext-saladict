@@ -1,0 +1,7 @@
+{
+  "extends": ["tslint-config-standard"],
+  "rules": {
+    "trailing-comma": false
+  },
+  "defaultSeverity": "warning"
+}

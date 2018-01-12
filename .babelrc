@@ -1,22 +1,48 @@
 {
-  "presets": [
-    ["env", {
-      "modules": false,
-      "targets": {
-        "chrome": "55"
-      }
-    }]
-  ],
-  "comments": false,
   "env": {
     "test": {
-      "plugins": [ "istanbul" ]
+      "presets": [
+        ["env", {
+          "modules": "commonjs",
+          "targets": {
+            "chrome": "55",
+            "firefox": "56"
+          }
+        }],
+        "react"
+      ],
+      "plugins": [
+        ["transform-object-rest-spread", { "useBuiltIns": true }]
+      ]
+    },
+    "development": {
+      "presets": [
+        ["env", {
+          "modules": false,
+          "targets": {
+            "chrome": "55",
+            "firefox": "56"
+          }
+        }],
+        "react"
+      ],
+      "plugins": [
+        ["transform-object-rest-spread", { "useBuiltIns": true }]
+      ]
     },
     "production": {
+      "presets": [
+        ["env", {
+          "modules": false,
+          "targets": {
+            "chrome": "55",
+            "firefox": "56"
+          }
+        }],
+        "react"
+      ],
       "plugins": [
-        ["strip-function-call", {
-          "strip": ["debug", "debugMsg"]
-        }]
+        ["transform-object-rest-spread", { "useBuiltIns": true }]
       ]
     }
   }
