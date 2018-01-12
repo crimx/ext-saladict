@@ -1,44 +1,53 @@
 /**
- * Wraps chrome extension apis
+ * @file Wraps some of the extension apis
  */
 
-import debug from 'debug'
+type StorageArea = 'all' | 'local' | 'sync'
 
-var debugMsg = debug('message')
+type StorageListenerCb = (
+  changes: browser.storage.ChangeDict,
+  areaName: browser.storage.StorageName
+) => void
+
+function noop () { /* do nothing */ }
 
 /**
- * key: {string} user's callback function
+ * key: {function} user's callback function
  * values: {Map} listeners, key: msg, values: generated or user's callback functions
  */
-const messageListeners = new Map()
+const messageListeners: Map<Function, Map<string, Function>> = new Map()
 
-const storageListeners = new Map()
+/**
+ * key: {function} user's callback function
+ * values: {Map} listeners, key: msg, values: generated or user's callback functions
+ */
+const storageListeners: Map<StorageListenerCb, Map<string, StorageListenerCb>> = new Map()
 
 export const storage = {
   sync: {
-    clear: storageClear('sync'),
-    remove: storageRemove('sync'),
-    get: storageGet('sync'),
-    set: storageSet('sync'),
-    listen: storageListen('sync'),
-    addListener: storageListen('sync'),
-    on: storageListen('sync')
+    clear: _storageClear('sync') as typeof browser.storage.sync.clear,
+    remove: _storageRemove('sync') as typeof browser.storage.sync.remove,
+    get: _storageGet('sync') as typeof browser.storage.sync.get,
+    set: _storageSet('sync') as typeof browser.storage.sync.set,
+    /** Only for sync area */
+    addListener: _storageAddListener('sync') as typeof browser.storage.onChanged.addListener,
+    /** Only for sync area */
+    removeListener: _storageRemoveListener('sync') as typeof browser.storage.onChanged.removeListener,
   },
   local: {
-    clear: storageClear('local'),
-    remove: storageRemove('local'),
-    get: storageGet('local'),
-    set: storageSet('local'),
-    listen: storageListen('local'),
-    addListener: storageListen('local'),
-    on: storageListen('local')
+    clear: _storageClear('local') as typeof browser.storage.local.clear,
+    remove: _storageRemove('local') as typeof browser.storage.local.remove,
+    get: _storageGet('local') as typeof browser.storage.local.get,
+    set: _storageSet('local') as typeof browser.storage.local.set,
+    /** Only for local area */
+    addListener: _storageAddListener('local') as typeof browser.storage.onChanged.addListener,
+    /** Only for local area */
+    removeListener: _storageRemoveListener('sync') as typeof browser.storage.onChanged.removeListener,
   },
-  listen: storageListen(),
-  addListener: storageListen(),
-  on: storageListen(),
-
-  off: storageStopListen,
-  removeListener: storageStopListen
+  /** Clear all area */
+  clear: _storageClear('all') as typeof browser.storage.sync.clear,
+  addListener: _storageAddListener('all') as typeof browser.storage.onChanged.addListener,
+  removeListener: _storageRemoveListener('all') as typeof browser.storage.onChanged.removeListener,
 }
 
 /**
@@ -46,48 +55,28 @@ export const storage = {
  * Does not warp cross extension messaging!
  */
 export const message = {
-  send: messageSend,
-  fire: messageSend,
-  emit: messageSend,
-
-  listen: messageListen,
-  addListener: messageListen,
-  on: messageListen,
-
-  off: messageStopListen,
-  removeListener: messageStopListen,
-
+  send: messageSend as typeof browser.runtime.sendMessage,
+  addListener: messageListen as typeof browser.runtime.onMessage.addListener,
+  removeListener: messageStopListen as typeof browser.runtime.onMessage.removeListener,
   server: initServer,
 
   self: {
     send: messageSendSelf,
-    fire: messageSendSelf,
-    emit: messageSendSelf,
-
-    listen: messageListenSelf,
     addListener: messageListenSelf,
-    on: messageListenSelf,
-
-    off: messageStopListen,
     removeListener: messageStopListen
   }
 }
 
 /**
- * create new tab or highlight existing tab
- * @param {string} url
- * @param {Function} [callback]
- * @return undefined if callback is passed, otherwise a Promise
+ * Open a url on new tab or highlight a existing tab if already opened
  */
-export function openURL (url, callback) {
-  if (typeof url !== 'string') {
-    throw new TypeError('arg 1 should be a string')
-  }
-  if (callback) {
-    return _openURL(url, callback)
-  } else {
-    return new Promise(resolve => _openURL(url, resolve))
-  }
+export function openURL (url: string): Promise<browser.tabs.Tab[]> {
+  return browser.tabs.query({ url })
+    // Only Chrome supports tab.highlight for now
+    .then(tabs => (tabs.length > 0 && typeof browser.tabs['highlight'] === 'function')
+      ? browser.tabs['highlight']({ tabs: tabs[0].index })
+      : browser.tabs.create({ url })
+    )
 }
 
 export default {
@@ -96,167 +85,72 @@ export default {
   message
 }
 
-function storageGet (storageArea) {
-  /**
-   * @param {string|array|Object|null} [keys] keys to get values
-   * @param {function} [cb] callback with storage items or on failure
-   * @returns {Promise|undefined} returns a promise with the result if callback is missed
-   * @see https://developer.chrome.com/extensions/storage#method-StorageArea-get
-   */
-  return function get (keys, cb) {
-    if (typeof keys === 'function') {
-      cb = keys
-      return chrome.storage[storageArea].get(cb)
-    } else if (typeof cb === 'function') {
-      return chrome.storage[storageArea].get(keys, cb)
-    } else {
-      return new Promise((resolve, reject) => {
-        chrome.storage[storageArea].get(keys, data => {
-          if (chrome.runtime.lastError) {
-            reject(chrome.runtime.lastError.message)
-          } else {
-            resolve(data)
-          }
-        })
-      })
-    }
+function _storageClear (storageArea: StorageArea) {
+  return function storageClear (...args): Promise<void> {
+    return storageArea === 'all'
+      ? Promise.all([
+        browser.storage.local.clear(...args),
+        browser.storage.sync.clear(...args),
+      ]).then(noop)
+      : browser.storage[storageArea].clear(...args)
   }
 }
 
-function storageSet (storageArea) {
-  /**
-   * @param {object} items items to set
-   * @param {function} [cb] Callback on success, or on failure
-   * @returns {Promise|undefined} returns a promise if callback is missed
-   * @see https://developer.chrome.com/extensions/storage#method-StorageArea-set
-   */
-  return function set (items, cb) {
-    if (typeof cb === 'function') {
-      return chrome.storage[storageArea].set(items, cb)
-    } else {
-      return new Promise((resolve, reject) => {
-        chrome.storage[storageArea].set(items, () => {
-          if (chrome.runtime.lastError) {
-            reject(chrome.runtime.lastError.message)
-          } else {
-            resolve()
-          }
-        })
-      })
-    }
+function _storageRemove (storageArea: 'sync' | 'local') {
+  return function storageRemove (keys: string | string[], ...args) {
+    return browser.storage[storageArea].remove(keys, ...args)
   }
 }
 
-function storageListen (storageArea) {
-  /**
-   * Listens to a specific key or uses the generic addListener
-   * @param {string|number} [key] key to listen to
-   * @param {function} cb callback function
-   * @see https://developer.chrome.com/extensions/storage#event-onChanged
-   */
-  return function listen (key, cb) {
-    if (typeof key === 'function') {
-      cb = key
-      key = ''
-    }
-    if (typeof key !== 'string') {
-      throw new TypeError('Argument 1 should be string when argument 2 is a function.')
-    }
-    if (typeof cb !== 'function') {
-      throw new TypeError('Callback should be a function.')
-    }
+function _storageGet (storageArea: 'sync' | 'local') {
+  return function storageGet (...args) {
+    return browser.storage[storageArea].get(...args)
+  }
+}
 
+function _storageSet (storageArea: 'sync' | 'local') {
+  return function storageSet (keys: browser.storage.StorageObject, ...args) {
+    return browser.storage[storageArea].set(keys, ...args)
+  }
+}
+
+function _storageAddListener (storageArea: StorageArea) {
+  return function storageAddListener (cb: StorageListenerCb, ...args): void {
     let listeners = storageListeners.get(cb)
     if (!listeners) {
       listeners = new Map()
       storageListeners.set(cb, listeners)
     }
-    let callback = listeners.get(key)
-    if (!callback) {
-      callback = (changes, areaName) => {
-        if (storageArea && areaName !== storageArea) {
-          return
-        }
-        if (!key || changes[key]) {
-          cb(changes, areaName)
-        }
-      }
-      listeners.set(key, callback)
-    }
-    return chrome.storage.onChanged.addListener(callback)
-  }
-}
-
-/**
- * remove listener
- * @param {function} listener listener function
- * @param {string} [key] key that listens to
- */
-function storageStopListen (listener, key) {
-  const listeners = storageListeners.get(listener)
-  if (listeners) {
-    if (typeof key === 'string') {
-      const callback = listeners.get(key)
-      if (callback) {
-        listeners.delete(key)
-        if (listeners.size <= 0) { storageListeners.delete(listener) }
-        return chrome.storage.onChanged.removeListener(callback)
-      }
-    } else {
-      Array.from(listeners.values()).forEach(callback => {
-        chrome.storage.onChanged.removeListener(callback)
-      })
-      storageListeners.delete(listener)
-    }
-  } else {
-    return chrome.storage.onChanged.removeListener(listener)
-  }
-}
-
-function storageClear (storageArea) {
-  /**
-   * @param {function} [cb] Callback on success, or on failure
-   * @returns {Promise|undefined} returns a promise if callback is missed
-   * @see https://developer.chrome.com/extensions/storage#method-StorageArea-clear
-   */
-  return function clear (cb) {
-    if (typeof cb === 'function') {
-      return chrome.storage[storageArea].clear()
-    } else {
-      return new Promise((resolve, reject) => {
-        chrome.storage[storageArea].clear(() => {
-          if (chrome.runtime.lastError) {
-            reject(chrome.runtime.lastError.message)
-          } else {
-            resolve()
+    let listener = listeners.get(storageArea)
+    if (!listener) {
+      listener = storageArea === 'all'
+        ? cb
+        : (changes, areaName) => {
+          if (areaName === storageArea) {
+            cb(changes, areaName)
           }
-        })
-      })
+        }
+      listeners.set(storageArea, listener)
     }
+    return browser.storage.onChanged.addListener(listener, ...args)
   }
 }
 
-function storageRemove (storageArea) {
-  /**
-   * @param {string|array|Object|null} keys keys to get values
-   * @param {function} [cb] callback with storage items or on failure
-   * @returns {Promise|undefined} returns a promise with the result if callback is missed
-   * @see https://developer.chrome.com/extensions/storage#method-StorageArea-remove
-   */
-  return function remove (keys, cb) {
-    if (typeof cb === 'function') {
-      return chrome.storage[storageArea].remove(keys, cb)
-    } else {
-      return new Promise((resolve, reject) => {
-        chrome.storage[storageArea].remove(keys, () => {
-          if (chrome.runtime.lastError) {
-            reject(chrome.runtime.lastError.message)
-          } else {
-            resolve()
-          }
-        })
-      })
+function _storageRemoveListener (storageArea: StorageArea) {
+  return function storageRemoveListener (cb: StorageListenerCb, ...args): void {
+    const listeners = storageListeners.get(cb)
+    if (listeners) {
+      const listener = listeners.get(storageArea)
+      if (listener) {
+        browser.storage.onChanged.removeListener(listener, ...args)
+        listeners.delete(storageArea)
+        if (listeners.size <= 0) {
+          storageListeners.delete(cb)
+        }
+        return
+      }
     }
+    browser.storage.onChanged.removeListener(cb, ...args)
   }
 }
 
