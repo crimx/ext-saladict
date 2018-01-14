@@ -1,5 +1,7 @@
 # Saladict 沙拉查词 5
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/crimx/ext-saladict.svg)](https://greenkeeper.io/)
+
 Chrome extension, feature-rich inline translator powered with mutiple online dictionaries.
 
 [【中文】](https://www.crimx.com/crx-saladict/)Chrome 浏览器插件，网页划词翻译。
