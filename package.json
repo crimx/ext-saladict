@@ -1,7 +1,7 @@
 {
-  "name": "create-react-typescript-sass-webextension",
+  "name": "saladict",
   "version": "0.1.0",
-  "description": "Boilerplate for building webextension targeting Chrome & Firefox with react, typescript and sass",
+  "description": "Chrome extension and Firefox WebExtension, inline translator powered by mutiple online dictionaries",
   "private": true,
   "scripts": {
     "start": "node scripts/start.js",
@@ -15,9 +15,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/crimx/create-react-typescript-sass-webextension"
+    "url": "https://github.com/crimx/ext-saladict"
   },
-  "homepage": "https://github.com/crimx/create-react-typescript-sass-webextension",
+  "homepage": "https://github.com/crimx/ext-saladict",
   "license": "MIT",
   "readmeFilename": "README.md",
   "bugs": {
