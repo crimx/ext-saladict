@@ -62,7 +62,7 @@
     "fs-extra": "^5.0.0",
     "generate-json-webpack-plugin": "^0.2.2",
     "html-webpack-plugin": "2.30.1",
-    "jest": "^22.0.4",
+    "jest": "^22.0.6",
     "jest-webextension-mock": "^3.1.0",
     "lodash": "^4.17.4",
     "minimist": "^1.2.0",
@@ -74,6 +74,7 @@
     "react-dev-utils": "^5.0.0",
     "sass-loader": "^6.0.6",
     "semver": "^5.4.1",
+    "sinon-chrome": "^2.2.2",
     "style-loader": "0.19.1",
     "text-transform-loader": "^2.0.0",
     "ts-jest": "^22.0.0",
@@ -97,7 +98,6 @@
       "src/**/*.{ts,tsx}"
     ],
     "setupFiles": [
-      "jest-webextension-mock",
       "<rootDir>/config/polyfills.js"
     ],
     "testMatch": [
