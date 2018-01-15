@@ -45,7 +45,7 @@
     "@types/jest": "^22.0.1",
     "autoprefixer": "7.2.5",
     "babel-core": "6.26.0",
-    "babel-jest": "22.0.6",
+    "babel-jest": "22.1.0",
     "babel-loader": "7.1.2",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
