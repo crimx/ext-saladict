@@ -90,15 +90,15 @@ export const storage = {
  */
 export const message = {
   send: messageSend,
-  addListener: messageAddListener,
-  removeListener: messageRemoveListener,
+  addListener: _messageAddListener(false),
+  removeListener: _messageRemoveListener(false),
 
   self: {
     initClient,
     initServer,
     send: messageSendSelf,
-    addListener: messageAddListenerSelf,
-    removeListener: messageRemoveListenerSelf,
+    addListener: _messageAddListener(true),
+    removeListener: _messageRemoveListener(true),
   }
 }
 
@@ -215,61 +215,6 @@ function messageSend (...args): Promise<any> {
   }
 }
 
-function messageAddListener (messageType: string, cb: browser.runtime.onMessageEvent): void
-function messageAddListener (cb: browser.runtime.onMessageEvent): void
-function messageAddListener (...args): void {
-  if (args.length === 1) {
-    return browser.runtime.onMessage.addListener(args[0])
-  }
-
-  const messageType = args[0]
-  const cb = args[1]
-  let listeners = messageListeners.get(cb)
-  if (!listeners) {
-    listeners = new Map()
-    messageListeners.set(cb, listeners)
-  }
-  let listener = listeners.get(messageType)
-  if (!listener) {
-    listener = (
-      (message, sender, sendResponse) => {
-        if (message && message.type === messageType) {
-          return cb(message, sender, sendResponse)
-        }
-      }
-    ) as browser.runtime.onMessageEvent
-    listeners.set(messageType, listener)
-  }
-  return browser.runtime.onMessage.addListener(listener)
-}
-
-function messageRemoveListener (messageType: string, cb: browser.runtime.onMessageEvent): void
-function messageRemoveListener (cb: browser.runtime.onMessageEvent): void
-function messageRemoveListener (...args): void {
-  const messageType = args.length === 1 ? undefined : args[0]
-  const cb = args.length === 1 ? args[0] : args[1]
-  const listeners = messageListeners.get(cb)
-  if (listeners) {
-    if (messageType) {
-      const listener = listeners.get(messageType)
-      if (listener) {
-        browser.runtime.onMessage.removeListener(listener)
-        listeners.delete(messageType)
-        if (listeners.size <= 0) {
-          messageListeners.delete(cb)
-        }
-        return
-      }
-    } else {
-      // delete all cb related callbacks
-      listeners.forEach(listener => browser.runtime.onMessage.removeListener(listener))
-      messageListeners.delete(cb)
-      return
-    }
-  }
-  browser.runtime.onMessage.removeListener(cb)
-}
-
 function messageSendSelf (message: Message): Promise<any> {
   return browser.runtime.sendMessage(Object.assign({}, message, {
     __pageId__: window.pageId,
@@ -277,57 +222,67 @@ function messageSendSelf (message: Message): Promise<any> {
   }))
 }
 
-function messageAddListenerSelf (messageType: string, cb: browser.runtime.onMessageEvent): void
-function messageAddListenerSelf (cb: browser.runtime.onMessageEvent): void
-function messageAddListenerSelf (...args): void {
-  const messageType = args.length === 1 ? undefined : args[0]
-  const cb = args.length === 1 ? args[0] : args[1]
-  let listeners = messageSelfListeners.get(cb)
-  if (!listeners) {
-    listeners = new Map()
-    messageSelfListeners.set(cb, listeners)
-  }
-  let listener = listeners.get(messageType || '_&_MSG_DEFAULT_&_')
-  if (!listener) {
-    listener = (
-      (message, sender, sendResponse) => {
-        if (message && window.pageId === message.__pageId__) {
-          if (!messageType || message.type === messageType) {
-            return cb(message, sender, sendResponse)
+function _messageAddListener (self: boolean) {
+  const allListeners = self ? messageSelfListeners : messageListeners
+  return messageAddListener
+
+  function messageAddListener (messageType: string, cb: browser.runtime.onMessageEvent): void
+  function messageAddListener (cb: browser.runtime.onMessageEvent): void
+  function messageAddListener (...args): void {
+    const messageType = args.length === 1 ? undefined : args[0]
+    const cb = args.length === 1 ? args[0] : args[1]
+    let listeners = allListeners.get(cb)
+    if (!listeners) {
+      listeners = new Map()
+      allListeners.set(cb, listeners)
+    }
+    let listener = listeners.get(messageType || '_&_MSG_DEFAULT_&_')
+    if (!listener) {
+      listener = (
+        (message, sender, sendResponse) => {
+          if (message && (self ? window.pageId === message.__pageId__ : !message.__pageId__)) {
+            if (!messageType || message.type === messageType) {
+              return cb(message, sender, sendResponse)
+            }
           }
         }
-      }
-    ) as browser.runtime.onMessageEvent
-    listeners.set(messageType, listener)
+      ) as browser.runtime.onMessageEvent
+      listeners.set(messageType, listener)
+    }
+    return browser.runtime.onMessage.addListener(listener)
   }
-  return browser.runtime.onMessage.addListener(listener)
 }
 
-function messageRemoveListenerSelf (messageType: string, cb: browser.runtime.onMessageEvent): void
-function messageRemoveListenerSelf (cb: browser.runtime.onMessageEvent): void
-function messageRemoveListenerSelf (...args): void {
-  const messageType = args.length === 1 ? undefined : args[0]
-  const cb = args.length === 1 ? args[0] : args[1]
-  const listeners = messageSelfListeners.get(cb)
-  if (listeners) {
-    if (messageType) {
-      const listener = listeners.get(messageType)
-      if (listener) {
-        browser.runtime.onMessage.removeListener(listener)
-        listeners.delete(messageType)
-        if (listeners.size <= 0) {
-          messageSelfListeners.delete(cb)
+function _messageRemoveListener (self: boolean) {
+  const allListeners = self ? messageSelfListeners : messageListeners
+  return messageRemoveListener
+
+  function messageRemoveListener (messageType: string, cb: browser.runtime.onMessageEvent): void
+  function messageRemoveListener (cb: browser.runtime.onMessageEvent): void
+  function messageRemoveListener (...args): void {
+    const messageType = args.length === 1 ? undefined : args[0]
+    const cb = args.length === 1 ? args[0] : args[1]
+    const listeners = allListeners.get(cb)
+    if (listeners) {
+      if (messageType) {
+        const listener = listeners.get(messageType)
+        if (listener) {
+          browser.runtime.onMessage.removeListener(listener)
+          listeners.delete(messageType)
+          if (listeners.size <= 0) {
+            allListeners.delete(cb)
+          }
+          return
         }
+      } else {
+        // delete all cb related callbacks
+        listeners.forEach(listener => browser.runtime.onMessage.removeListener(listener))
+        allListeners.delete(cb)
         return
       }
-    } else {
-      // delete all cb related callbacks
-      listeners.forEach(listener => browser.runtime.onMessage.removeListener(listener))
-      messageSelfListeners.delete(cb)
-      return
     }
+    browser.runtime.onMessage.removeListener(cb)
   }
-  browser.runtime.onMessage.removeListener(cb)
 }
 
 /**
@@ -337,7 +292,7 @@ function messageRemoveListenerSelf (...args): void {
  */
 function initClient (): Promise<typeof window.pageId> {
   if (window.pageId === undefined) {
-    return browser.runtime.sendMessage({ msg: '__PAGE_INFO__' })
+    return browser.runtime.sendMessage({ type: '__PAGE_INFO__' })
       .then(({ pageId, faviconURL, pageTitle, pageURL }) => {
         window.pageId = pageId
         window.faviconURL = faviconURL
