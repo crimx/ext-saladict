@@ -71,7 +71,7 @@
     "postcss-loader": "2.0.10",
     "postcss-safe-important": "^1.1.0",
     "raf": "3.4.0",
-    "react-dev-utils": "^4.2.1",
+    "react-dev-utils": "^5.0.0",
     "sass-loader": "^6.0.6",
     "semver": "^5.4.1",
     "style-loader": "0.19.1",
