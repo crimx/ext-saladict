@@ -4041,10 +4041,6 @@ jest-validate@^22.0.6:
     leven "^2.1.0"
     pretty-format "^22.0.6"
 
-jest-webextension-mock@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.npmjs.org/jest-webextension-mock/-/jest-webextension-mock-3.1.0.tgz#949650efd51f13248f121550bdf80d409a7baf48"
-
 jest-worker@^22.0.6:
   version "22.0.6"
   resolved "https://registry.npmjs.org/jest-worker/-/jest-worker-22.0.6.tgz#1998ac7ab24a6eee4deddec76efe7742f2651504"
@@ -7020,8 +7016,8 @@ type-check@~0.3.2:
     prelude-ls "~1.1.2"
 
 type-detect@^4.0.0:
-  version "4.0.5"
-  resolved "https://registry.npmjs.org/type-detect/-/type-detect-4.0.5.tgz#d70e5bc81db6de2a381bcaca0c6e0cbdc7635de2"
+  version "4.0.6"
+  resolved "https://registry.npmjs.org/type-detect/-/type-detect-4.0.6.tgz#88cbce3d13bc675a63f840b3225c180f870786d7"
 
 type-is@~1.6.15:
   version "1.6.15"
