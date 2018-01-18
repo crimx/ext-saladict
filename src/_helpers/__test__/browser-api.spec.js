@@ -1,5 +1,4 @@
 import { message, storage, openURL, __META__ } from '../browser-api'
-import _ from 'lodash'
 
 beforeEach(() => {
   browser.flush()
@@ -47,7 +46,7 @@ describe('Browser API Wapper', () => {
       })
     })
 
-    it.skip(`storage.clear`, () => {
+    it(`storage.clear`, () => {
       storage.clear()
       expect(browser.storage.sync.clear.calledOnce).toBeTruthy()
       expect(browser.storage.local.clear.calledOnce).toBeTruthy()
