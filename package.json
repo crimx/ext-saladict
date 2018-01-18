@@ -89,8 +89,7 @@
     "vue-style-loader": "^3.0.3",
     "vue-template-compiler": "^2.5.13",
     "webpack": "3.10.0",
-    "webpack-dev-server": "2.11.0",
-    "xhr-mock": "^2.0.3"
+    "webpack-dev-server": "2.11.0"
   },
   "jest": {
     "collectCoverageFrom": [
