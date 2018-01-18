@@ -73,7 +73,7 @@
     "react-dev-utils": "^5.0.0",
     "sass-loader": "^6.0.6",
     "semver": "^5.4.1",
-    "sinon-chrome": "^2.2.2",
+    "sinon-chrome": "^2.2.4",
     "style-loader": "0.19.1",
     "text-transform-loader": "^2.0.0",
     "ts-jest": "^22.0.0",
@@ -89,10 +89,10 @@
     "vue-style-loader": "^3.0.3",
     "vue-template-compiler": "^2.5.13",
     "webpack": "3.10.0",
-    "webpack-dev-server": "2.11.0"
+    "webpack-dev-server": "2.11.0",
+    "xhr-mock": "^2.0.3"
   },
   "jest": {
-    "mapCoverage": true,
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}"
     ],
