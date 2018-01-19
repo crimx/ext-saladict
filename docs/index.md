@@ -84,6 +84,8 @@ Chrome 浏览器插件，网页划词翻译。
 
 # 开发
 
+（dev 分支在重构中，请切换到 vue 分支）
+
 添加词典很简单，以 bing 为例
 
 Clone 库并 `$ yarn install`

@@ -1,5 +1,6 @@
 # Saladict 沙拉查词 5
 
+[![Build Status](https://travis-ci.org/crimx/ext-saladict.svg)](https://travis-ci.org/crimx/ext-saladict)
 [![Greenkeeper badge](https://badges.greenkeeper.io/crimx/ext-saladict.svg)](https://greenkeeper.io/)
 
 Chrome extension, feature-rich inline translator powered with mutiple online dictionaries.
@@ -15,7 +16,7 @@ Chrome extension, feature-rich inline translator powered with mutiple online dic
 
 Saladict 6 is a complete rewrite for both Chrome & Firefox, built for speed, stability and customization.
 
-:construction:Work in progress. 5 is pretty stable though.
+:construction:Work in progress. 5 is pretty stable though. Checkout `vue` branch to view 5 source.
 
 [CHANGELOG](./CHANGELOG.md)。
 
