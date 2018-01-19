@@ -66,7 +66,7 @@
     "lodash": "^4.17.4",
     "minimist": "^1.2.0",
     "node-sass": "^4.7.2",
-    "postcss-flexbugs-fixes": "3.2.0",
+    "postcss-flexbugs-fixes": "3.3.0",
     "postcss-loader": "2.0.10",
     "postcss-safe-important": "^1.1.0",
     "raf": "3.4.0",
