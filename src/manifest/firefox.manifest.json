@@ -1,0 +1,8 @@
+{
+  "applications": {
+    "gecko": {
+      "id": "saladict@crimx.com",
+      "strict_min_version": "56.0"
+    }
+  }
+}
