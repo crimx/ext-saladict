@@ -6,6 +6,7 @@
     "noImplicitAny": false,
     "module": "commonjs",
     "target": "es6",
+    "allowSyntheticDefaultImports": true,
     "jsx": "react",
     "lib": ["es6", "dom"],
     "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]

@@ -10,6 +10,22 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
+"@types/chrome@*":
+  version "0.0.58"
+  resolved "https://registry.npmjs.org/@types/chrome/-/chrome-0.0.58.tgz#adf75cecfd29cd2923b019315bc2ea2ac1b49962"
+  dependencies:
+    "@types/filesystem" "*"
+
+"@types/filesystem@*":
+  version "0.0.28"
+  resolved "https://registry.npmjs.org/@types/filesystem/-/filesystem-0.0.28.tgz#3fd7735830f2c7413cb5ac45780bc45904697b0e"
+  dependencies:
+    "@types/filewriter" "*"
+
+"@types/filewriter@*":
+  version "0.0.28"
+  resolved "https://registry.npmjs.org/@types/filewriter/-/filewriter-0.0.28.tgz#c054e8af4d9dd75db4e63abc76f885168714d4b3"
+
 "@types/jest@^22.0.1":
   version "22.0.1"
   resolved "https://registry.npmjs.org/@types/jest/-/jest-22.0.1.tgz#6370a6d60cce3845e4cd5d00bf65f654264685bc"
@@ -28,6 +44,17 @@
 "@types/react@*", "@types/react@^16.0.34":
   version "16.0.34"
   resolved "https://registry.npmjs.org/@types/react/-/react-16.0.34.tgz#7a8f795afd8a404a9c4af9539b24c75d3996914e"
+
+"@types/sinon-chrome@^0.2.29":
+  version "0.2.29"
+  resolved "https://registry.npmjs.org/@types/sinon-chrome/-/sinon-chrome-0.2.29.tgz#246b2bdb4f66290aa1c5f72e65e067371ef6ce7d"
+  dependencies:
+    "@types/chrome" "*"
+    "@types/sinon" "*"
+
+"@types/sinon@*":
+  version "4.1.3"
+  resolved "https://registry.npmjs.org/@types/sinon/-/sinon-4.1.3.tgz#2ee25e0e302f31e78a945650a60029e08878eaf8"
 
 "@types/strip-bom@^3.0.0":
   version "3.0.0"
@@ -3724,7 +3751,7 @@ isobject@^3.0.0, isobject@^3.0.1:
   version "3.0.1"
   resolved "https://registry.npmjs.org/isobject/-/isobject-3.0.1.tgz#4e431e92b11a9731636aa1f9c8d1ccbcfdab78df"
 
-isomorphic-fetch@^2.1.1:
+isomorphic-fetch@^2.1.1, isomorphic-fetch@^2.2.1:
   version "2.2.1"
   resolved "https://registry.npmjs.org/isomorphic-fetch/-/isomorphic-fetch-2.2.1.tgz#611ae1acf14f5e81f729507472819fe9733558a9"
   dependencies:
@@ -3887,6 +3914,12 @@ jest-environment-node@^22.1.2:
   dependencies:
     jest-mock "^22.1.0"
     jest-util "^22.1.2"
+
+jest-fetch-mock@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.npmjs.org/jest-fetch-mock/-/jest-fetch-mock-1.4.0.tgz#ca4e0e911cdc6f7b5b4e4bd707296b66f82d5a21"
+  dependencies:
+    isomorphic-fetch "^2.2.1"
 
 jest-get-type@^22.1.0:
   version "22.1.0"
@@ -7344,10 +7377,6 @@ wbuf@^1.1.0, wbuf@^1.7.2:
   resolved "https://registry.npmjs.org/wbuf/-/wbuf-1.7.2.tgz#d697b99f1f59512df2751be42769c1580b5801fe"
   dependencies:
     minimalistic-assert "^1.0.0"
-
-web-ext-types@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.npmjs.org/web-ext-types/-/web-ext-types-2.0.1.tgz#eb311a15a922b459155aa7fef249cf6acf6ca402"
 
 web-ext-types@crimx/web-ext-types:
   version "1.1.2"

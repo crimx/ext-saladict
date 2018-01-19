@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "@types/jest": "^22.0.1",
+    "@types/sinon-chrome": "^0.2.29",
     "autoprefixer": "7.2.5",
     "babel-core": "6.26.0",
     "babel-jest": "22.1.0",
@@ -63,6 +64,7 @@
     "generate-json-webpack-plugin": "^0.2.2",
     "html-webpack-plugin": "2.30.1",
     "jest": "^22.0.6",
+    "jest-fetch-mock": "^1.4.0",
     "lodash": "^4.17.4",
     "minimist": "^1.2.0",
     "node-sass": "^4.7.2",
@@ -92,6 +94,11 @@
     "webpack-dev-server": "2.11.0"
   },
   "jest": {
+    "globals": {
+      "ts-jest": {
+        "useBabelrc": true
+      }
+    },
     "collectCoverageFrom": [
       "src/**/*.{ts,tsx}"
     ],
@@ -99,6 +106,7 @@
       "<rootDir>/config/polyfills.js"
     ],
     "testMatch": [
+      "<rootDir>/test/unit/**/*.{ts,tsx,js,jsx}",
       "<rootDir>/src/**/__tests__/**/*.{ts,tsx,js,jsx}",
       "<rootDir>/src/**/?(*.)(spec|test).{ts,tsx,js,jsx}"
     ],
@@ -112,7 +120,7 @@
       "^(?!.*\\.(ts|tsx|vue|js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
     "transformIgnorePatterns": [
-      "[/\\\\]node_modules[/\\\\].+\\.(ts|tsx|vue|js|jsx)$"
+      "[/\\\\]node_modules[/\\\\].+\\.js$"
     ],
     "moduleNameMapper": {
       "^react-native$": "react-native-web"
