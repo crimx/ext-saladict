@@ -105,13 +105,14 @@ export const message = {
 /**
  * Open a url on new tab or highlight a existing tab if already opened
  */
-export function openURL (url: string): Promise<browser.tabs.Tab[]> {
+export function openURL (url: string): Promise<void> {
   return browser.tabs.query({ url })
     // Only Chrome supports tab.highlight for now
-    .then(tabs => (tabs.length > 0 && typeof browser.tabs['highlight'] === 'function')
-      ? browser.tabs['highlight']({ tabs: tabs[0].index })
-      : browser.tabs.create({ url })
+    .then(tabs => (tabs.length > 0 && typeof browser.tabs.highlight === 'function')
+      ? (browser.tabs.highlight({ tabs: tabs[0].index }) as Promise<any>)
+      : (browser.tabs.create({ url }) as Promise<any>)
     )
+    .then(noop)
 }
 
 export default {
@@ -119,14 +120,6 @@ export default {
   storage,
   message
 }
-
-export const __META__ = process.env.NODE_ENV === 'test'
-  ? {
-    messageListeners,
-    messageSelfListeners,
-    storageListeners
-  }
-  : null
 
 /* --------------------------------------- *\
  * #Storage
