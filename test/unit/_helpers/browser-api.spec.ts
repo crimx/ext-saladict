@@ -1,4 +1,4 @@
-import { message, storage, openURL, __META__ } from '../browser-api'
+import { message, storage, openURL } from '../../../src/_helpers/browser-api'
 
 beforeEach(() => {
   browser.flush()
@@ -10,7 +10,8 @@ beforeEach(() => {
 
 describe('Browser API Wapper', () => {
   describe('Storage', () => {
-    ['sync', 'local'].forEach(area => {
+    const storageArea: ['sync', 'local'] = ['sync', 'local']
+    storageArea.forEach(area => {
       it(`storage.${area}.clear`, () => {
         storage[area].clear()
         expect(browser.storage[area].clear.calledOnce).toBeTruthy()
@@ -34,14 +35,12 @@ describe('Browser API Wapper', () => {
         const cb = () => {}
         storage[area].addListener(cb)
         expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
-        expect(typeof __META__.storageListeners.get(cb).get(area)).toBe('function')
       })
       it(`storage.${area}.removeListener`, () => {
         const cb = jest.fn()
         storage[area].addListener(cb)
         storage[area].removeListener(cb)
         expect(browser.storage.onChanged.removeListener.calledOnce).toBeTruthy()
-        expect(__META__.storageListeners.get(cb)).toBeUndefined()
         expect(cb).toHaveBeenCalledTimes(0)
       })
     })
@@ -55,7 +54,6 @@ describe('Browser API Wapper', () => {
       const cb = jest.fn()
       storage.addListener(cb)
       expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
-      expect(typeof __META__.storageListeners.get(cb).get('all')).toBe('function')
       expect(cb).toHaveBeenCalledTimes(0)
     })
     it(`storage.removeListener`, () => {
@@ -63,7 +61,6 @@ describe('Browser API Wapper', () => {
       storage.addListener(cb)
       storage.removeListener(cb)
       expect(browser.storage.onChanged.removeListener.calledOnce).toBeTruthy()
-      expect(__META__.storageListeners.get(cb)).toBeUndefined()
       expect(cb).toHaveBeenCalledTimes(0)
     })
   })
@@ -71,7 +68,7 @@ describe('Browser API Wapper', () => {
   describe('Message', () => {
     it('message.send', () => {
       const tabId = 1
-      const msg = {}
+      const msg = { type: 'TYPE_1' }
 
       message.send(msg)
       expect(browser.runtime.sendMessage.calledWith(msg)).toBeTruthy()
@@ -94,8 +91,6 @@ describe('Browser API Wapper', () => {
       expect(browser.runtime.onMessage.addListener.calledTwice).toBeTruthy()
       expect(cb1).toHaveBeenCalledTimes(cb1Call)
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
-      expect(__META__.messageListeners.get(cb1)).toBeTruthy()
-      expect(__META__.messageListeners.get(cb2)).toBeTruthy()
 
       browser.runtime.onMessage.dispatch({ type: 'MSG_2' })
       expect(cb1).toHaveBeenCalledTimes(++cb1Call)
@@ -119,8 +114,6 @@ describe('Browser API Wapper', () => {
       message.removeListener('MSG_x', cb1)
       message.removeListener(cb2)
       expect(browser.runtime.onMessage.removeListener.calledTwice).toBeTruthy()
-      expect(__META__.messageListeners.get(cb1)).toBeTruthy()
-      expect(__META__.messageListeners.get(cb2)).toBeUndefined()
 
       browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
       browser.runtime.onMessage.dispatch({ type: 'MSG_2' })
@@ -128,7 +121,6 @@ describe('Browser API Wapper', () => {
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
 
       message.removeListener('MSG_1', cb1)
-      expect(__META__.messageListeners.get(cb1)).toBeUndefined()
       browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
       expect(cb1).toHaveBeenCalledTimes(cb1Call)
     })
@@ -220,8 +212,6 @@ describe('Browser API Wapper', () => {
       expect(browser.runtime.onMessage.addListener.calledTwice).toBeTruthy()
       expect(cb1).toHaveBeenCalledTimes(cb1Call)
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
-      expect(__META__.messageSelfListeners.get(cb1)).toBeTruthy()
-      expect(__META__.messageListeners.get(cb2)).toBeTruthy()
 
       browser.runtime.onMessage.dispatch({ type: 'MSG_1', __pageId__: window.pageId })
       expect(cb1).toHaveBeenCalledTimes(++cb1Call)
@@ -245,7 +235,6 @@ describe('Browser API Wapper', () => {
 
       message.self.removeListener(cb1)
       expect(browser.runtime.onMessage.removeListener.calledOnce).toBeTruthy()
-      expect(__META__.messageListeners.get(cb1)).toBeUndefined()
 
       browser.runtime.onMessage.dispatch({ __pageId__: window.pageId })
       expect(cb1).toHaveBeenCalledTimes(cb1Call)

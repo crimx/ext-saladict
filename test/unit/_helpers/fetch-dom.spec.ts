@@ -1,12 +1,26 @@
-import fetchDom from '../fetch-dom'
+import fetchDom from '../../../src/_helpers/fetch-dom'
 
 class XMLHttpRequestMock {
+  static queue: XMLHttpRequestMock[] = []
+  static lastXhr: XMLHttpRequestMock
+
+  status: number
+  responseType: string
+  responseXML: Document
+  onload: Function
+  onerror: Function
+  send = jest.fn(() => {
+    XMLHttpRequestMock.queue.push(this)
+    XMLHttpRequestMock.lastXhr = this
+  })
+  open = jest.fn()
+
   static response (isSuccess, res) {
     if (isSuccess) {
       XMLHttpRequestMock.queue.forEach(xhr => {
         xhr.status = res.status
         if (res.body) {
-          xhr.responseXML = document.implementation.createHTMLDocument()
+          xhr.responseXML = document.implementation.createHTMLDocument('')
           xhr.responseXML.body.innerHTML = res.body
         }
         xhr.onload()
@@ -21,26 +35,15 @@ class XMLHttpRequestMock {
   static flush () {
     XMLHttpRequestMock.queue = []
   }
-
-  constructor () {
-    this.send = jest.fn(() => {
-      XMLHttpRequestMock.queue.push(this)
-      XMLHttpRequestMock.lastXhr = this
-    })
-    this.open = jest.fn()
-  }
 }
 
-XMLHttpRequestMock.queue = []
-XMLHttpRequestMock.lastXhr = {}
-
 describe('Fetch DOM', () => {
-  const bakXMLHttpRequest = window.XMLHttpRequest
+  const bakXMLHttpRequest = (window as any).XMLHttpRequest
   beforeAll(() => {
-    window.XMLHttpRequest = XMLHttpRequestMock
+    (window as any).XMLHttpRequest = XMLHttpRequestMock
   })
   afterAll(() => {
-    window.XMLHttpRequest = bakXMLHttpRequest
+    (window as any).XMLHttpRequest = bakXMLHttpRequest
   })
   beforeEach(() => {
     XMLHttpRequestMock.flush()

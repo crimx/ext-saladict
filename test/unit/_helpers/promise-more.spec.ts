@@ -1,4 +1,4 @@
-import * as pm from '../promise-more'
+import * as pm from '../../../src/_helpers/promise-more'
 
 describe('Promise More', () => {
   beforeAll(() => {
@@ -26,7 +26,7 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.reflect([1, 2, Promise.reject()])
+      return pm.reflect([1, 2, Promise.reject(null)])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -39,7 +39,7 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.reflect([Promise.reject(), Promise.reject(), Promise.reject()])
+      return pm.reflect([Promise.reject(null), Promise.reject(null), Promise.reject(null)])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -68,7 +68,7 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.any([1, 2, Promise.reject()])
+      return pm.any([1, 2, Promise.reject(null)])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -81,7 +81,7 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.any([Promise.reject(), Promise.reject(), Promise.reject()])
+      return pm.any([Promise.reject(null), Promise.reject(null), Promise.reject(null)])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -110,7 +110,7 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.first([Promise.reject(), 2, 3])
+      return pm.first([Promise.reject(null), 2, 3])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -123,7 +123,7 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.first([Promise.reject(), Promise.reject(), Promise.reject()])
+      return pm.first([Promise.reject(null), Promise.reject(null), Promise.reject(null)])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
