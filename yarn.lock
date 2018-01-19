@@ -5282,9 +5282,9 @@ postcss-filter-plugins@^2.0.0:
     postcss "^5.0.4"
     uniqid "^4.0.0"
 
-postcss-flexbugs-fixes@3.2.0:
-  version "3.2.0"
-  resolved "https://registry.npmjs.org/postcss-flexbugs-fixes/-/postcss-flexbugs-fixes-3.2.0.tgz#9b8b932c53f9cf13ba0f61875303e447c33dcc51"
+postcss-flexbugs-fixes@3.3.0:
+  version "3.3.0"
+  resolved "https://registry.npmjs.org/postcss-flexbugs-fixes/-/postcss-flexbugs-fixes-3.3.0.tgz#e00849b536063749da50a0d410ba5d9ee65e27b8"
   dependencies:
     postcss "^6.0.1"
 
@@ -7348,6 +7348,10 @@ wbuf@^1.1.0, wbuf@^1.7.2:
 web-ext-types@^2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/web-ext-types/-/web-ext-types-2.0.1.tgz#eb311a15a922b459155aa7fef249cf6acf6ca402"
+
+web-ext-types@crimx/web-ext-types:
+  version "1.1.2"
+  resolved "https://codeload.github.com/crimx/web-ext-types/tar.gz/00a8403ae7278104724a936d2fdeb7c4850aef6b"
 
 webextension-polyfill@^0.2.1:
   version "0.2.1"

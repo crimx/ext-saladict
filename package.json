@@ -38,7 +38,7 @@
     "vue-qriously": "^1.1.1",
     "vue-stash": "^2.0.1-beta",
     "vuedraggable": "^2.16.0",
-    "web-ext-types": "^2.0.1",
+    "web-ext-types": "crimx/web-ext-types",
     "webextension-polyfill": "^0.2.1"
   },
   "devDependencies": {
