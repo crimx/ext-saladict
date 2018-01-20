@@ -1,11 +1,3 @@
-/**
- * Allow tags: see beblow
- * Allow attributes: class, id, src/href starts with https/http
- * @param {Node} node - DOM Node
- * @param {Set} [allowTags]
- * @returns {Node} Node without javascript and style
- */
-
 export const ALLOW_TAGS = new Set([
   // Main root
   // 'html',
@@ -61,40 +53,52 @@ export const ALLOW_TAGS = new Set([
   // 'plaintext', 'shadow', 'spacer', 'strike', 'tt', 'xmp'
 ])
 
-export default function stripScript (node, allowTags = ALLOW_TAGS) {
-  if (!node) { return null }
-  if (node.nodeType === Node.TEXT_NODE) { return node.cloneNode() }
-  if (node.nodeType !== Node.ELEMENT_NODE) { return null }
+/**
+ * Sanitize html.
+ * Allow attributes: class, id, src/href starts with https/http
+ * @param {Node} node - DOM Node
+ * @param {Set} [allowTags]
+ * @returns {Node} Node without javascript and style
+ */
+export default function stripScript (el: HTMLElement, allowTags = ALLOW_TAGS): HTMLElement | null {
+  if (!el) { return null }
+  if (el.nodeType === Node.TEXT_NODE) { return el.cloneNode() as HTMLElement }
+  if (el.nodeType !== Node.ELEMENT_NODE) { return null }
 
-  const tagName = node.tagName.toLowerCase()
+  const tagName = el.tagName.toLowerCase()
 
   if (!allowTags.has(tagName)) { return null }
 
-  const newNode = document.createElement(tagName)
+  const newHTMLElm = document.createElement(tagName)
   if (tagName === 'img') {
-    if (/^(https?:)?\/\//.test(node.src)) {
-      newNode.setAttribute('src', node.scr)
+    if (/^(https?:)?\/\//.test((el as HTMLImageElement).src)) {
+      newHTMLElm.setAttribute('src', (el as HTMLImageElement).src)
+      if ((el as HTMLImageElement).alt) {
+        newHTMLElm.setAttribute('alt', (el as HTMLImageElement).alt)
+      }
     } else {
       return null
     }
   } else if (tagName === 'a') {
-    if (/^(https?:)?\/\//.test(node.href)) {
-      newNode.setAttribute('href', node.href)
-      newNode.setAttribute('target', '_blank')
+    if (/^(https?:)?\/\//.test((el as HTMLAnchorElement).href)) {
+      newHTMLElm.setAttribute('href', (el as HTMLAnchorElement).href)
+      newHTMLElm.setAttribute('target', '_blank')
     } else {
       return null
     }
   }
 
-  if (node.className) { newNode.className = node.className }
-  if (node.id) { newNode.id = node.id }
+  if (el.className) { newHTMLElm.className = el.className }
+  if (el.id) { newHTMLElm.id = el.id }
 
-  node.childNodes.forEach(childNode => {
-    const newChildNode = stripScript(childNode, allowTags)
-    if (newChildNode != null) {
-      newNode.appendChild(newChildNode)
+  Array.from(el.children).forEach(childElm => {
+    if (childElm instanceof HTMLElement) {
+      const newChildElm = stripScript(childElm, allowTags)
+      if (newChildElm != null) {
+        newHTMLElm.appendChild(newChildElm)
+      }
     }
   })
 
-  return newNode
+  return newHTMLElm
 }
