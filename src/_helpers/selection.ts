@@ -9,20 +9,12 @@ const INLINE_TAGS = new Set([
   'span', 'strong', 'sub', 'sup', 'time', 'u', 'var', 'wbr'
 ])
 
-/**
-* @returns {boolean}
-*/
-export function hasSelection () {
+export function hasSelection (): boolean {
   return Boolean(window.getSelection().toString().trim())
 }
 
-/**
-* @returns {string}
-*/
-export function getSelectionText () {
-  return window.getSelection().toString()
-    .replace(/(^\s+)|(\s+$)/gm, '\n') // allow one empty line & trim each line
-    .replace(/(^\s+)|(\s+$)/g, '') // remove heading or tailing \n
+export function getSelectionText (): string {
+  return cleanText(window.getSelection().toString())
 }
 
 // match head                 a.b is ok    chars that ends a sentence
@@ -30,25 +22,26 @@ const sentenceHeadTester = /((\.(?![ .]))|[^.?!。？！…\r\n])+$/
 // match tail                                                    for "..."
 const sentenceTailTester = /^((\.(?![ .]))|[^.?!。？！…\r\n])+(.)\3{0,2}/
 
-/**
-* @returns {string}
-*/
-export function getSelectionSentence () {
+/** Returns the sentence containing the selection text */
+export function getSelectionSentence (): string {
   const selection = window.getSelection()
   const selectedText = selection.toString()
   if (!selectedText.trim()) { return '' }
 
-  var sentenceHead = ''
-  var sentenceTail = ''
+  let sentenceHead = ''
+  let sentenceTail = ''
 
   const anchorNode = selection.anchorNode
   if (anchorNode.nodeType === Node.TEXT_NODE) {
-    let leadingText = anchorNode.textContent.slice(0, selection.anchorOffset)
+    let leadingText = anchorNode.textContent || ''
+    if (leadingText) {
+      leadingText = leadingText.slice(0, selection.anchorOffset)
+    }
     for (let node = anchorNode.previousSibling; node; node = node.previousSibling) {
       if (node.nodeType === Node.TEXT_NODE) {
         leadingText = node.textContent + leadingText
       } else if (node.nodeType === Node.ELEMENT_NODE) {
-        leadingText = node.innerText + leadingText
+        leadingText = (node as HTMLElement).innerText + leadingText
       }
     }
 
@@ -58,7 +51,7 @@ export function getSelectionSentence () {
       element = element.parentElement
     ) {
       for (let el = element.previousElementSibling; el; el = el.previousElementSibling) {
-        leadingText = el.innerText + leadingText
+        leadingText = (el as HTMLElement).innerText + leadingText
       }
     }
 
@@ -67,12 +60,15 @@ export function getSelectionSentence () {
 
   const focusNode = selection.focusNode
   if (selection.focusNode.nodeType === Node.TEXT_NODE) {
-    let tailingText = selection.focusNode.textContent.slice(selection.focusOffset)
+    let tailingText = selection.focusNode.textContent || ''
+    if (tailingText) {
+      tailingText = tailingText.slice(selection.focusOffset)
+    }
     for (let node = focusNode.nextSibling; node; node = node.nextSibling) {
       if (node.nodeType === Node.TEXT_NODE) {
         tailingText += node.textContent
       } else if (node.nodeType === Node.ELEMENT_NODE) {
-        tailingText += node.innerText
+        tailingText += (node as HTMLElement).innerText
       }
     }
 
@@ -82,20 +78,17 @@ export function getSelectionSentence () {
       element = element.parentElement
     ) {
       for (let el = element.nextElementSibling; el; el = el.nextElementSibling) {
-        tailingText += el.innerText
+        tailingText += (el as HTMLElement).innerText
       }
     }
 
     sentenceTail = (tailingText.match(sentenceTailTester) || [''])[0]
   }
 
-  return (sentenceHead + selectedText + sentenceTail)
-    .replace(/(^\s+)|(\s+$)/gm, '\n') // allow one empty line & trim each line
-    .replace(/(^\s+)|(\s+$)/g, '') // remove heading or tailing \n
+  return cleanText(sentenceHead + selectedText + sentenceTail)
 }
 
 /**
- * @typedef {Object} SelectionInfo
  * @property {string} text - selection text
  * @property {string} context - sentence that contains the text
  * @property {string} title - page title
@@ -104,11 +97,17 @@ export function getSelectionSentence () {
  * @property {string} trans - use-inputted translation
  * @property {string} note - use-inputted note
  */
+interface SelectionInfo {
+  text: string
+  context: string
+  title: string
+  url: string
+  favicon: string
+  trans: string
+  note: string
+}
 
-/**
-* @returns {SelectionInfo}
-*/
-export function getSelectionInfo () {
+export function getSelectionInfo (): SelectionInfo {
   return {
     text: getSelectionText(),
     context: getSelectionSentence(),
@@ -117,7 +116,7 @@ export function getSelectionInfo () {
     // set by chrome-api helper
     favicon: window.faviconURL || '',
     trans: '',
-    note: ''
+    note: '',
   }
 }
 
@@ -126,4 +125,13 @@ export default {
   getSelectionText,
   getSelectionSentence,
   getSelectionInfo
+}
+
+function cleanText (text: string): string {
+  return text
+    .replace(/^\s+\n/gm, '\n') // compress multiple \n to two
+    .trim()
+    .split('\n')
+    .map(line => line.trim())
+    .join('\n')
 }
