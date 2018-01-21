@@ -1,23 +1,24 @@
 import Vue from 'vue'
 import App from './Options'
+import i18n from 'vue-plugin-webextension-i18n'
 import VueStash from 'vue-stash'
-import {storage} from 'src/helpers/chrome-api'
-import checkUpdate from 'src/helpers/check-update'
+import {storage} from 'src/_helpers/browser-api'
+import checkUpdate from 'src/_helpers/check-update'
 import AppConfig from 'src/app-config'
 
 Vue.use(VueStash)
+Vue.use(i18n)
 Vue.config.productionTip = false
 Vue.config.devtools = false
 
-document.title = chrome.i18n.getMessage('opt_title')
+document.title = browser.i18n.getMessage('opt_title')
 
 storage.sync.get('config')
   .then(({config}) => {
     const store = {
       config: config || new AppConfig(),
       unlock: false,
-      newVersionAvailable: false,
-      i18n: key => chrome.i18n.getMessage(key)
+      newVersionAvailable: false
     }
 
     new Vue({ // eslint-disable-line no-new

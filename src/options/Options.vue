@@ -2,26 +2,26 @@
 <div>
   <transition name="dropdown">
     <div class="config-updated" v-if="isShowConfigUpdated">
-      {{ i18n('opt_storage_updated') }}
+      {{ $i18n('opt_storage_updated') }}
     </div>
   </transition>
   <div class="opt-container">
     <div class="page-header">
-      <h1>{{ i18n('opt_title') }}
-        <a class="new-version" v-if="newVersionAvailable" href="http://www.crimx.com/crx-saladict/" target="_blank">{{ i18n('opt_new_version') }}</a>
+      <h1>{{ $i18n('opt_title') }}
+        <a class="new-version" v-if="newVersionAvailable" href="http://www.crimx.com/crx-saladict/" target="_blank">{{ $i18n('opt_new_version') }}</a>
       </h1>
       <div class="page-header-info">
-        <p><a href="https://github.com/crimx/crx-saladict/wiki" target="_blank" rel="noopener">{{ i18n('instructions') }}</a></p>
+        <p><a href="https://github.com/crimx/crx-saladict/wiki" target="_blank" rel="noopener">{{ $i18n('instructions') }}</a></p>
         <p class="page-header-social-media-wrap">
-          <a href="mailto:straybugs@gmail.com" @mouseover="isShowSocial = true" @click.prevent="void 0">{{ i18n('cantact_author') }}</a>
+          <a href="mailto:straybugs@gmail.com" @mouseover="isShowSocial = true" @click.prevent="void 0">{{ $i18n('cantact_author') }}</a>
           <transition name="fade">
             <div class="page-header-social-media" v-if="isShowSocial" @mouseleave="isShowSocial = false">
               <social-media />
             </div>
           </transition>
         </p>
-        <p><a href="https://github.com/crimx/crx-saladict/issues" target="_blank" rel="noopener">{{ i18n('report_issue') }}</a></p>
-        <button type="button" class="btn btn-default btn-reset" @click="handleReset">{{ i18n('opt_reset') }}</button>
+        <p><a href="https://github.com/crimx/crx-saladict/issues" target="_blank" rel="noopener">{{ $i18n('report_issue') }}</a></p>
+        <button type="button" class="btn btn-default btn-reset" @click="handleReset">{{ $i18n('opt_reset') }}</button>
       </div>
     </div>
     <opt-app-active />
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import {storage, message} from 'src/helpers/chrome-api'
+import {storage, message} from 'src/_helpers/browser-api'
 import AppConfig from 'src/app-config'
 import Coffee from './Coffee'
 import SocialMedia from './SocialMedia'
@@ -76,11 +76,11 @@ import OptContextMenu from './OptContextMenu'
 
 export default {
   name: 'options',
-  store: ['config', 'newVersionAvailable', 'i18n'],
+  store: ['config', 'newVersionAvailable'],
   data () {
     return {
       text: 'salad',
-      frameSource: chrome.runtime.getURL('panel.html'),
+      frameSource: browser.runtime.getURL('panel.html'),
       isShowConfigUpdated: false,
       isShowSocial: false
     }
@@ -90,13 +90,13 @@ export default {
       clearTimeout(this.searchTextTimeout)
       this.searchTextTimeout = setTimeout(() => {
         message.self.send({
-          msg: 'SEARCH_TEXT',
+          type: 'SEARCH_TEXT',
           selectionInfo: {
             text: this.text,
             context: '',
             title: document.title,
             url: document.URL,
-            favicon: chrome.runtime.getURL('assets/icon-16.png'),
+            favicon: browser.runtime.getURL('assets/icon-16.png'),
             trans: '',
             note: ''
           }
@@ -105,8 +105,8 @@ export default {
     },
     handleReset () {
       this.$refs.alert.$emit('show', {
-        title: chrome.i18n.getMessage('opt_reset_modal_title'),
-        content: chrome.i18n.getMessage('opt_reset_modal_content'),
+        title: this.$i18n('opt_reset_modal_title'),
+        content: this.$i18n('opt_reset_modal_content'),
         onConfirm: () => {
           storage.sync.set({config: new AppConfig()})
             .then(() => storage.sync.get('config'))
@@ -178,13 +178,13 @@ export default {
     AlertModal
   },
   beforeCreate () {
-    message.self.on('PANEL_READY', (data, sender, sendResponse) => {
+    message.self.addListener('PANEL_READY', (data, sender, sendResponse) => {
       sendResponse({noSearchHistory: true})
     })
   },
   mounted () {
     // monitor search text
-    message.self.on('FETCH_DICT_RESULT', (data, sender) => {
+    message.self.addListener('FETCH_DICT_RESULT', (data, sender) => {
       this.text = data.text
     })
     setTimeout(() => this.searchText(), 0)
@@ -193,6 +193,7 @@ export default {
 </script>
 
 <style lang="scss">
+@import "src/_sass_global/z-index";
 /*------------------------------------*\
    Bootstrap
 \*------------------------------------*/

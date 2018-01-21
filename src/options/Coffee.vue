@@ -84,10 +84,10 @@ export default {
       this.showPayment = true
     },
     eggClicked () {
-      chrome.storage.sync.set({unlock: true})
+      browser.storage.sync.set({unlock: true})
     },
     i18n (key) {
-      return chrome.i18n.getMessage(key) || key
+      return browser.i18n.getMessage(key) || key
     }
   },
   components: {
