@@ -9,10 +9,10 @@
 /** For self page messaging */
 declare global {
   interface Window {
-    pageId: number | string
-    faviconURL: string
-    pageTitle: string
-    pageURL: string
+    pageId?: number | string
+    faviconURL?: string
+    pageTitle?: string
+    pageURL?: string
   }
 }
 
