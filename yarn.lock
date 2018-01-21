@@ -8117,6 +8117,10 @@ vue-parser@^1.1.5:
   dependencies:
     parse5 "^3.0.3"
 
+vue-plugin-webextension-i18n@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.npmjs.org/vue-plugin-webextension-i18n/-/vue-plugin-webextension-i18n-0.1.0.tgz#b3d4be737727b76ddcd823a9da088a4634577d63"
+
 vue-qriously@^1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/vue-qriously/-/vue-qriously-1.1.1.tgz#b3a84b05280cb1edfd153bbc003f031995ea7ce7"
