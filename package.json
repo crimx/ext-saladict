@@ -1,13 +1,17 @@
 {
   "name": "saladict",
-  "version": "0.1.0",
+  "version": "6.0.0",
   "description": "Chrome extension and Firefox WebExtension, inline translator powered by mutiple online dictionaries",
   "private": true,
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "devbuild": "node scripts/build.js --devbuild",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "commit": "git-cz",
+    "release": "standard-version",
+
+    "commitmsg": "commitlint -e $GIT_PARAMS"
   },
   "engines": {
     "node": ">= 8.0.0",
@@ -22,6 +26,11 @@
   "readmeFilename": "README.md",
   "bugs": {
     "url": "https://github.com/crimx/create-react-typescript-sass-webextension/issues"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   },
   "dependencies": {
     "@types/node": "^9.3.0",
@@ -42,6 +51,8 @@
     "webextension-polyfill": "^0.2.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^6.0.2",
+    "@commitlint/config-conventional": "^6.0.2",
     "@types/jest": "^22.0.1",
     "@types/sinon-chrome": "^0.2.29",
     "autoprefixer": "7.2.5",
@@ -54,8 +65,10 @@
     "babel-runtime": "6.26.0",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
     "chalk": "2.3.0",
+    "commitizen": "^2.9.6",
     "copy-webpack-plugin": "^4.3.1",
     "css-loader": "0.28.9",
+    "cz-conventional-changelog": "^2.1.0",
     "dotenv": "4.0.0",
     "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "1.1.6",
@@ -63,6 +76,7 @@
     "fs-extra": "^5.0.0",
     "generate-json-webpack-plugin": "^0.2.2",
     "html-webpack-plugin": "2.30.1",
+    "husky": "^0.14.3",
     "jest": "^22.0.6",
     "jest-fetch-mock": "^1.4.0",
     "lodash": "^4.17.4",
@@ -76,6 +90,7 @@
     "sass-loader": "^6.0.6",
     "semver": "^5.4.1",
     "sinon-chrome": "^2.2.4",
+    "standard-version": "^4.3.0",
     "style-loader": "0.19.1",
     "text-transform-loader": "^2.0.0",
     "ts-jest": "^22.0.0",

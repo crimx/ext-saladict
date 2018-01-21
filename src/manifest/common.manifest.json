@@ -7,7 +7,6 @@
   "short_name": "__MSG_extension_short_name__",
   "description": "__MSG_extension_description__",
 
-  "version": "0.0.0",
   "update_url": "https://clients2.google.com/service/update2/crx",
 
   "default_locale": "zh_CN",

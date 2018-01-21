@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/crimx/ext-saladict.svg)](https://travis-ci.org/crimx/ext-saladict)
 [![Greenkeeper badge](https://badges.greenkeeper.io/crimx/ext-saladict.svg)](https://greenkeeper.io/)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 Chrome extension, feature-rich inline translator powered with mutiple online dictionaries.
 
