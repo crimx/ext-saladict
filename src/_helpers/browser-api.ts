@@ -36,20 +36,20 @@ function noop () { /* do nothing */ }
 
 /**
  * key: {function} user's callback function
- * values: {Map} listeners, key: msg, values: generated or user's callback functions
+ * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
 const messageListeners: Map<browser.runtime.onMessageEvent, Map<string, browser.runtime.onMessageEvent>> = new Map()
 
 /**
  * For self page messaging
  * key: {function} user's callback function
- * values: {Map} listeners, key: msg, values: generated or user's callback functions
+ * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
 const messageSelfListeners: Map<browser.runtime.onMessageEvent, Map<string, browser.runtime.onMessageEvent>> = new Map()
 
 /**
  * key: {function} user's callback function
- * values: {Map} listeners, key: msg, values: generated or user's callback functions
+ * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
 const storageListeners: Map<StorageListenerCb, Map<string, StorageListenerCb>> = new Map()
 
