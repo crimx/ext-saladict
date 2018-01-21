@@ -16,14 +16,14 @@ declare global {
   }
 }
 
-type StorageArea = 'all' | 'local' | 'sync'
+export type StorageArea = 'all' | 'local' | 'sync'
 
-type StorageListenerCb = (
+export type StorageListenerCb = (
   changes: browser.storage.ChangeDict,
   areaName: browser.storage.StorageName,
 ) => void
 
-interface Message {
+export interface Message {
   type: string
   [propName: string]: any
 }
@@ -32,7 +32,7 @@ interface Message {
  * #Globals
 \* --------------------------------------- */
 
-function noop () { /* do nothing */ }
+const noop = () => { /* do nothing */ }
 
 /**
  * key: {function} user's callback function
@@ -64,7 +64,7 @@ export const storage = {
     get: _storageGet('sync') as typeof browser.storage.sync.get,
     set: _storageSet('sync') as typeof browser.storage.sync.set,
     /** Only for sync area */
-    addListener: _storageAddListener('sync') as typeof browser.storage.onChanged.addListener,
+    addListener: _storageAddListener('sync'),
     /** Only for sync area */
     removeListener: _storageRemoveListener('sync') as typeof browser.storage.onChanged.removeListener,
   },
@@ -74,13 +74,13 @@ export const storage = {
     get: _storageGet('local') as typeof browser.storage.local.get,
     set: _storageSet('local') as typeof browser.storage.local.set,
     /** Only for local area */
-    addListener: _storageAddListener('local') as typeof browser.storage.onChanged.addListener,
+    addListener: _storageAddListener('local'),
     /** Only for local area */
     removeListener: _storageRemoveListener('local') as typeof browser.storage.onChanged.removeListener,
   },
   /** Clear all area */
   clear: _storageClear('all') as typeof browser.storage.sync.clear,
-  addListener: _storageAddListener('all') as typeof browser.storage.onChanged.addListener,
+  addListener: _storageAddListener('all'),
   removeListener: _storageRemoveListener('all') as typeof browser.storage.onChanged.removeListener,
 }
 
@@ -155,38 +155,80 @@ function _storageSet (storageArea: 'sync' | 'local') {
 }
 
 function _storageAddListener (storageArea: StorageArea) {
-  return function storageAddListener (cb: StorageListenerCb): void {
+  return storageAddListener
+
+  function storageAddListener (cb: StorageListenerCb): void
+  function storageAddListener (key: string, cb: StorageListenerCb): void
+  function storageAddListener (...args): void {
+    let key: string
+    let cb: StorageListenerCb
+    if (typeof args[0] === 'function') {
+      key = ''
+      cb = args[0]
+    } else if (typeof args[0] === 'string' && typeof args[1] === 'function') {
+      key = args[0]
+      cb = args[1]
+    } else {
+      throw new Error('wrong arguments type')
+    }
+
     let listeners = storageListeners.get(cb)
     if (!listeners) {
       listeners = new Map()
       storageListeners.set(cb, listeners)
     }
-    let listener = listeners.get(storageArea)
+    const listenerKey = storageArea + key
+    let listener = listeners.get(listenerKey)
     if (!listener) {
-      listener = storageArea === 'all'
-        ? cb
-        : (changes, areaName) => {
-          if (areaName === storageArea) {
-            cb(changes, areaName)
-          }
+      listener = (changes, areaName) => {
+        if ((storageArea === 'all' || areaName === storageArea) && (!key || changes[key])) {
+          cb(changes, areaName)
         }
-      listeners.set(storageArea, listener)
+      }
+      listeners.set(listenerKey, listener)
     }
     return browser.storage.onChanged.addListener(listener)
   }
 }
 
 function _storageRemoveListener (storageArea: StorageArea) {
-  return function storageRemoveListener (cb: StorageListenerCb): void {
+  return storageRemoveListener
+
+  function storageRemoveListener (key: string, cb: StorageListenerCb): void
+  function storageRemoveListener (cb: StorageListenerCb): void
+  function storageRemoveListener (...args): void {
+    let key: string
+    let cb: StorageListenerCb
+    if (typeof args[0] === 'function') {
+      key = ''
+      cb = args[0]
+    } else if (typeof args[0] === 'string' && typeof args[1] === 'function') {
+      key = args[0]
+      cb = args[1]
+    } else {
+      throw new Error('wrong arguments type')
+    }
+
     const listeners = storageListeners.get(cb)
     if (listeners) {
-      const listener = listeners.get(storageArea)
-      if (listener) {
-        browser.storage.onChanged.removeListener(listener)
-        listeners.delete(storageArea)
-        if (listeners.size <= 0) {
-          storageListeners.delete(cb)
+      if (key) {
+        // remove 'cb' listeners with 'key' under 'storageArea'
+        const listenerKey = storageArea + key
+        const listener = listeners.get(listenerKey)
+        if (listener) {
+          browser.storage.onChanged.removeListener(listener)
+          listeners.delete(listenerKey)
+          if (listeners.size <= 0) {
+            storageListeners.delete(cb)
+          }
+          return
         }
+      } else {
+        // remove all 'cb' listeners under 'storageArea'
+        listeners.forEach(listener => {
+          browser.storage.onChanged.removeListener(listener)
+        })
+        storageListeners.delete(cb)
         return
       }
     }

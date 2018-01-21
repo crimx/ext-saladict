@@ -31,37 +31,213 @@ describe('Browser API Wapper', () => {
         storage[area].set(key)
         expect(browser.storage[area].set.calledWith(key)).toBeTruthy()
       })
-      it(`storage.${area}.addListener`, () => {
-        const cb = () => {}
-        storage[area].addListener(cb)
-        expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
+      describe(`storage.${area}.addListener`, () => {
+        const changes = { key: 'value' }
+        const otherArea = storageArea.find(x => x !== area)
+
+        it('with cb', () => {
+          const cb = jest.fn()
+          let cbCall = 0
+          storage[area].addListener(cb)
+          expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
+
+          const changes = { key: 'value' }
+          const otherArea = storageArea.find(x => x !== area)
+
+          browser.storage.onChanged.dispatch(changes, otherArea)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(++cbCall)
+          expect(cb).toBeCalledWith(changes, area)
+        })
+        it('with key and cb', () => {
+          const cb = jest.fn()
+          let cbCall = 0
+          storage[area].addListener('key', cb)
+          expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
+
+          browser.storage.onChanged.dispatch(changes, otherArea)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+
+          browser.storage.onChanged.dispatch({ badKey: 'value' }, area)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(++cbCall)
+          expect(cb).toBeCalledWith(changes, area)
+        })
       })
-      it(`storage.${area}.removeListener`, () => {
-        const cb = jest.fn()
-        storage[area].addListener(cb)
-        storage[area].removeListener(cb)
-        expect(browser.storage.onChanged.removeListener.calledOnce).toBeTruthy()
-        expect(cb).toHaveBeenCalledTimes(0)
+      describe(`storage.${area}.removeListener`, () => {
+        const changes = { key: 'value' }
+        const otherArea = storageArea.find(x => x !== area)
+
+        it('with cb remove addListener with cb', () => {
+          const cb = jest.fn()
+          let cbCall = 0
+          storage[area].addListener(cb)
+
+          // won't affect cb
+          storage[area].removeListener('key', cb)
+          expect(browser.storage.onChanged.removeListener.calledOnce).toBeTruthy()
+
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(++cbCall)
+          expect(cb).toBeCalledWith(changes, area)
+
+          storage[area].removeListener(cb)
+          expect(browser.storage.onChanged.removeListener.calledTwice).toBeTruthy()
+
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+
+          browser.storage.onChanged.dispatch({ badKey: 'value' }, area)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+        })
+
+        it('with cb, remove addListener with key and cb', () => {
+          const cb = jest.fn()
+          let cbCall = 0
+          storage[area].addListener('key', cb)
+
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(++cbCall)
+          expect(cb).toBeCalledWith(changes, area)
+
+          storage[area].removeListener(cb)
+          expect(browser.storage.onChanged.removeListener.calledOnce).toBeTruthy()
+
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+
+          browser.storage.onChanged.dispatch({ badKey: 'value' }, area)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+        })
+
+        it('with key and cb', () => {
+          const cb = jest.fn()
+          let cbCall = 0
+          storage[area].addListener('key', cb)
+
+          // won't affect key + cb
+          storage[area].removeListener('badkey', cb)
+          expect(browser.storage.onChanged.removeListener.calledOnce).toBeTruthy()
+
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(++cbCall)
+          expect(cb).toBeCalledWith(changes, area)
+
+          storage[area].removeListener('key', cb)
+          expect(browser.storage.onChanged.removeListener.calledTwice).toBeTruthy()
+
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+
+          browser.storage.onChanged.dispatch({ badKey: 'value' }, area)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+        })
       })
     })
 
-    it(`storage.clear`, () => {
+    it('storage.clear', () => {
       storage.clear()
       expect(browser.storage.sync.clear.calledOnce).toBeTruthy()
       expect(browser.storage.local.clear.calledOnce).toBeTruthy()
     })
-    it(`storage.addListener`, () => {
-      const cb = jest.fn()
-      storage.addListener(cb)
-      expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
-      expect(cb).toHaveBeenCalledTimes(0)
+    describe('storage.addListener', () => {
+      const changes = { key: 'value' }
+      const otherChanges = { otherKey: 'other value' }
+
+      it('with cb', () => {
+        const cb = jest.fn()
+        let cbCall = 0
+        storage.addListener(cb)
+        expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
+        expect(cb).toHaveBeenCalledTimes(cbCall)
+
+        storageArea.forEach(area => {
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(++cbCall)
+          browser.storage.onChanged.dispatch(otherChanges, area)
+          expect(cb).toHaveBeenCalledTimes(++cbCall)
+        })
+      })
+      it('with key and cb', () => {
+        const cb = jest.fn()
+        let cbCall = 0
+        storage.addListener('key', cb)
+        expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
+        expect(cb).toHaveBeenCalledTimes(cbCall)
+
+        const changes = { key: 'value' }
+        const otherChanges = { otherKey: 'other value' }
+        storageArea.forEach(area => {
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(++cbCall)
+          browser.storage.onChanged.dispatch(otherChanges, area)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+        })
+      })
     })
-    it(`storage.removeListener`, () => {
-      const cb = jest.fn()
-      storage.addListener(cb)
-      storage.removeListener(cb)
-      expect(browser.storage.onChanged.removeListener.calledOnce).toBeTruthy()
-      expect(cb).toHaveBeenCalledTimes(0)
+    describe('storage.removeListener', () => {
+      const changes = { key: 'value' }
+      const otherChanges = { otherKey: 'other value' }
+
+      it('with cb', () => {
+        const cb = jest.fn()
+        let cbCall = 0
+        storage.addListener(cb)
+
+        storageArea.forEach(area => {
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(++cbCall)
+          browser.storage.onChanged.dispatch(otherChanges, area)
+          expect(cb).toHaveBeenCalledTimes(++cbCall)
+        })
+
+        storage.removeListener(cb)
+        expect(browser.storage.onChanged.removeListener.calledOnce).toBeTruthy()
+
+        storageArea.forEach(area => {
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+          browser.storage.onChanged.dispatch(otherChanges, area)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+        })
+      })
+
+      it('with key and cb', () => {
+        const cb = jest.fn()
+        let cbCall = 0
+        storage.addListener('key', cb)
+
+        storageArea.forEach(area => {
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(++cbCall)
+          browser.storage.onChanged.dispatch(otherChanges, area)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+        })
+
+        storage.removeListener('otherKey', cb)
+        expect(browser.storage.onChanged.removeListener.calledOnce).toBeTruthy()
+
+        storageArea.forEach(area => {
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(++cbCall)
+          browser.storage.onChanged.dispatch(otherChanges, area)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+        })
+
+        storage.removeListener('key', cb)
+        expect(browser.storage.onChanged.removeListener.calledTwice).toBeTruthy()
+
+        storageArea.forEach(area => {
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+          browser.storage.onChanged.dispatch(otherChanges, area)
+          expect(cb).toHaveBeenCalledTimes(cbCall)
+        })
+      })
     })
   })
 
