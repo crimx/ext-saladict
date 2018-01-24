@@ -54,7 +54,7 @@
     "@commitlint/cli": "^6.0.2",
     "@commitlint/config-conventional": "^6.0.2",
     "@types/jest": "^22.0.1",
-    "@types/sinon-chrome": "^0.2.29",
+    "@types/sinon-chrome": "^2.2.0",
     "autoprefixer": "7.2.5",
     "babel-core": "6.26.0",
     "babel-jest": "22.1.0",

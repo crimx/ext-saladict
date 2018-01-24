@@ -153,9 +153,9 @@
   version "16.0.34"
   resolved "https://registry.npmjs.org/@types/react/-/react-16.0.34.tgz#7a8f795afd8a404a9c4af9539b24c75d3996914e"
 
-"@types/sinon-chrome@^0.2.29":
-  version "0.2.29"
-  resolved "https://registry.npmjs.org/@types/sinon-chrome/-/sinon-chrome-0.2.29.tgz#246b2bdb4f66290aa1c5f72e65e067371ef6ce7d"
+"@types/sinon-chrome@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@types/sinon-chrome/-/sinon-chrome-2.2.0.tgz#272b569deabc8116532368014ea14a55dd1d184e"
   dependencies:
     "@types/chrome" "*"
     "@types/sinon" "*"
