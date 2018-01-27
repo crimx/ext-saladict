@@ -66,7 +66,7 @@ export const storage = {
     /** Only for sync area */
     addListener: _storageAddListener('sync'),
     /** Only for sync area */
-    removeListener: _storageRemoveListener('sync') as typeof browser.storage.onChanged.removeListener,
+    removeListener: _storageRemoveListener('sync'),
   },
   local: {
     clear: _storageClear('local') as typeof browser.storage.local.clear,
@@ -76,12 +76,12 @@ export const storage = {
     /** Only for local area */
     addListener: _storageAddListener('local'),
     /** Only for local area */
-    removeListener: _storageRemoveListener('local') as typeof browser.storage.onChanged.removeListener,
+    removeListener: _storageRemoveListener('local'),
   },
   /** Clear all area */
   clear: _storageClear('all') as typeof browser.storage.sync.clear,
   addListener: _storageAddListener('all'),
-  removeListener: _storageRemoveListener('all') as typeof browser.storage.onChanged.removeListener,
+  removeListener: _storageRemoveListener('all'),
 }
 
 /**
