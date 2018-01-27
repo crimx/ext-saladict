@@ -1,156 +1,211 @@
-import {storage, openURL} from 'src/helpers/chrome-api'
+import { storage, openURL } from '../_helpers/browser-api'
+import { AppConfig } from '../app-config'
 
-function contextMenuOnClick ({menuItemId, selectionText, linkUrl}) {
+import { Observable } from 'rxjs/Observable'
+import { fromPromise } from 'rxjs/Observable/fromPromise'
+import { NextObserver } from 'rxjs/Observer'
+import { TeardownLogic } from 'rxjs/Subscription'
+import { audit, mapTo, mergeMap, share, startWith } from 'rxjs/operators'
+
+type ContextMenusConfig = AppConfig['contextMenus']
+
+interface CreateMenuOptions {
+  type?: browser.contextMenus.ItemType,
+  id?: string
+  title?: string
+  contexts?: browser.contextMenus.ContextType[]
+}
+
+browser.contextMenus.onClicked.addListener(info => {
+  const menuItemId = info.menuItemId
+  const selectionText = info.selectionText || ''
+  const linkUrl = info.linkUrl || ''
   switch (menuItemId) {
     case 'google_page_translate':
-      chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-        if (tabs.length > 0) {
-          openURL(`https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`)
-        }
-      })
+      browser.tabs.query({active: true, currentWindow: true})
+        .then(tabs => {
+          if (tabs.length > 0) {
+            openURL(`https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`)
+          }
+        })
       break
     case 'youdao_page_translate':
       // inject youdao script, defaults to the active tab of the current window.
-      chrome.tabs.executeScript(
-        {file: 'assets/fanyi.youdao.2.0/main.js'},
-        result => {
-          if (chrome.runtime.lastError || !result || (result !== 1 && result[0] !== 1)) {
-            // error msg
-            chrome.notifications.create({
-              type: 'basic',
-              eventTime: Date.now() + 4000,
-              iconUrl: chrome.runtime.getURL(`assets/icon-128.png`),
-              title: 'Saladict',
-              message: chrome.i18n.getMessage('notification_youdao_err')
-            })
+      browser.tabs.executeScript({ file: '/assets/fanyi.youdao.2.0/main.js' })
+        .then(result => {
+          if (!result || (result as any !== 1 && result[0] !== 1)) {
+            throw new Error()
           }
-        }
-      )
+        })
+        .catch(() => {
+          // error msg
+          browser.notifications.create({
+            type: 'basic',
+            eventTime: Date.now() + 4000,
+            iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
+            title: 'Saladict',
+            message: browser.i18n.getMessage('notification_youdao_err')
+          })
+        })
       break
     case 'view_as_pdf':
-      var pdfURL = chrome.runtime.getURL('assets/pdf/web/viewer.html')
+      const pdfURL = browser.runtime.getURL('assets/pdf/web/viewer.html')
       if (linkUrl) {
         // open link as pdf
         openURL(pdfURL + '?file=' + linkUrl)
       } else {
-        chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-          // if it is a pdf page
-          if (tabs.length > 0 && /\.pdf$/i.test(tabs[0].url)) {
-            openURL(pdfURL + '?file=' + tabs[0].url)
-          } else {
-            openURL(pdfURL)
-          }
-        })
+        browser.tabs.query({ active: true, currentWindow: true })
+          .then(tabs => {
+            // if it is a pdf page
+            if (tabs.length > 0 && /\.pdf$/i.test(tabs[0].url || '')) {
+              openURL(pdfURL + '?file=' + tabs[0].url)
+            } else {
+              openURL(pdfURL)
+            }
+          })
       }
       break
     case 'search_history':
-      openURL(chrome.runtime.getURL('history.html'))
+      openURL(browser.runtime.getURL('history.html'))
       break
     case 'notebook':
-      openURL(chrome.runtime.getURL('notebook.html'))
+      openURL(browser.runtime.getURL('notebook.html'))
       break
     default:
-      storage.sync.get('config', ({config}) => {
-        const url = config.contextMenu.all[menuItemId]
-        if (url) {
-          openURL(url.replace('%s', selectionText))
-        }
-      })
+      storage.sync.get('config')
+        .then(result => {
+          const config = result.config as AppConfig
+          const url = config.contextMenus.all[menuItemId]
+          if (url) {
+            openURL(url.replace('%s', selectionText))
+          }
+        })
   }
+})
+
+export function setupListener (initConfig: ContextMenusConfig): void {
+  // when context menus config changes
+  const contextMenusChanged$: Observable<ContextMenusConfig> = Observable.create(
+    (observer: NextObserver<ContextMenusConfig>): TeardownLogic => {
+      storage.sync.addListener('config', handler)
+
+      return () => {
+        storage.sync.removeListener('config', handler)
+      }
+
+      function handler ({ config }: any) {
+        const oldValue = config.oldValue as AppConfig
+        const newValue = config.newValue as AppConfig
+        if (!oldValue) {
+          return observer.next(newValue.contextMenus)
+        }
+
+        const oldSelected = oldValue.contextMenus.selected
+        const newSelected = newValue.contextMenus.selected
+        if (oldSelected.length !== newSelected.length) {
+          return observer.next(newValue.contextMenus)
+        }
+        for (let i = 0; i < oldSelected.length; i += 1) {
+          if (oldSelected[i] !== newSelected[i]) {
+            return observer.next(newValue.contextMenus)
+          }
+        }
+      }
+    }
+  )
+
+  let signal$: Observable<boolean>
+
+  const setMenus$ = contextMenusChanged$.pipe(
+    startWith(initConfig),
+    // ignore values while setContextMenus is running
+    // if source emits any value during setContextMenus,
+    // retrieve the latest after setContextMenus is completed
+    audit(() => signal$),
+    mergeMap((value: ContextMenusConfig) => fromPromise(setContextMenus(value))),
+    share(),
+  )
+
+  signal$ = setMenus$.pipe(
+    mapTo(true), // last setContextMenus is completed
+    startWith(true),
+  )
+
+  setMenus$.subscribe()
 }
 
-// listen context menu
-chrome.contextMenus.onClicked.addListener(contextMenuOnClick)
+function setContextMenus (contextMenus: ContextMenusConfig): Promise<void> {
+  return browser.contextMenus.removeAll()
+    .then(() => {
+      const optionList: CreateMenuOptions[] = []
 
-// when config changes
-storage.sync.listen('config', ({config: {newValue, oldValue}}) => {
-  if (!oldValue) {
-    return setContextMenu(newValue)
-  }
+      // pdf
+      optionList.push({
+        id: 'view_as_pdf',
+        title: browser.i18n.getMessage('context_view_as_pdf') || 'View As PDF',
+        contexts: ['link', 'browser_action']
+      })
 
-  const oldSelected = oldValue.contextMenu.selected
-  const newSelected = newValue.contextMenu.selected
-  if (oldSelected.length !== newSelected.length) {
-    return setContextMenu(newValue)
-  }
-  for (let i = 0; i < oldSelected.length; i += 1) {
-    if (oldSelected[i] !== newSelected[i]) {
-      return setContextMenu(newValue)
-    }
-  }
-})
+      let hasGooglePageTranslate = false
+      let hasYoudaoPageTranslate = false
+      contextMenus.selected.forEach(id => {
+        let contexts: browser.contextMenus.ContextType[] = ['selection']
+        if (id === 'google_page_translate') {
+          hasGooglePageTranslate = true
+          contexts = ['all']
+        } else if (id === 'youdao_page_translate') {
+          hasYoudaoPageTranslate = true
+          contexts = ['all']
+        }
+        optionList.push({
+          id,
+          title: browser.i18n.getMessage('context_' + id) || id,
+          contexts
+        })
+      })
 
-storage.sync.get('config', ({config}) => {
-  if (config) {
-    setContextMenu(config)
-  }
-})
-
-/**
- * generate context menu items
- * @param {object} config
- */
-export function setContextMenu (config) {
-  chrome.contextMenus.removeAll(() => {
-    // pdf
-    chrome.contextMenus.create({
-      id: 'view_as_pdf',
-      title: chrome.i18n.getMessage('context_view_as_pdf') || 'View As PDF',
-      contexts: ['link', 'browser_action']
-    })
-
-    var hasGooglePageTranslate = false
-    var hasYoudaoPageTranslate = false
-    config.contextMenu.selected.forEach(id => {
-      var contexts = ['selection']
-      if (id === 'google_page_translate') {
-        hasGooglePageTranslate = true
-        contexts = ['all']
-      } else if (id === 'youdao_page_translate') {
-        hasYoudaoPageTranslate = true
-        contexts = ['all']
+      // Only for browser action
+      if (!hasGooglePageTranslate) {
+        optionList.push({
+          id: 'google_page_translate',
+          title: browser.i18n.getMessage('context_google_page_translate') || 'google_page_translate',
+          contexts: ['browser_action']
+        })
       }
-      chrome.contextMenus.create({
-        id,
-        title: chrome.i18n.getMessage('context_' + id) || id,
-        contexts
-      })
-    })
+      if (!hasYoudaoPageTranslate) {
+        optionList.push({
+          id: 'youdao_page_translate',
+          title: browser.i18n.getMessage('context_youdao_page_translate') || 'youdao_page_translate',
+          contexts: ['browser_action']
+        })
+      }
 
-    // Only for browser action
-    if (!hasGooglePageTranslate) {
-      chrome.contextMenus.create({
-        id: 'google_page_translate',
-        title: chrome.i18n.getMessage('context_google_page_translate') || 'google_page_translate',
+      optionList.push({
+        type: 'separator',
+        id: Date.now().toString(),
         contexts: ['browser_action']
       })
-    }
-    if (!hasYoudaoPageTranslate) {
-      chrome.contextMenus.create({
-        id: 'youdao_page_translate',
-        title: chrome.i18n.getMessage('context_youdao_page_translate') || 'youdao_page_translate',
+
+      // search history
+      optionList.push({
+        id: 'search_history',
+        title: browser.i18n.getMessage('history_title') || 'Search History',
         contexts: ['browser_action']
       })
-    }
 
-    chrome.contextMenus.create({
-      type: 'separator',
-      id: Date.now().toString(),
-      contexts: ['browser_action']
-    })
+      // Manual
+      optionList.push({
+        id: 'notebook',
+        title: browser.i18n.getMessage('context_notebook_title') || 'New Word List',
+        contexts: ['browser_action']
+      })
 
-    // search history
-    chrome.contextMenus.create({
-      id: 'search_history',
-      title: chrome.i18n.getMessage('history_title') || 'Search History',
-      contexts: ['browser_action']
+      return Promise.all(
+        optionList.map(option =>
+        new Promise(resolve => {
+          browser.contextMenus.create(option, resolve)
+        })
+      ))
     })
-
-    // Manual
-    chrome.contextMenus.create({
-      id: 'notebook',
-      title: chrome.i18n.getMessage('context_notebook_title') || 'New Word List',
-      contexts: ['browser_action']
-    })
-  })
+    .then(() => { /* noop */ })
 }
