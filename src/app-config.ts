@@ -1,19 +1,163 @@
-export default function AppConfig () {
+export type DictID =
+  'bing' |
+  'business' |
+  'cobuild' |
+  'dictcn' |
+  'etymonline' |
+  'eudic' |
+  'google' |
+  'guoyu' |
+  'howjsay' |
+  'liangan' |
+  'macmillan' |
+  'urban' |
+  'vocabulary' |
+  'wordreference' |
+  'zdic'
+
+export type ContextMenuDictID =
+  'baidu_search' |
+  'bing_dict' |
+  'bing_search' |
+  'cambridge' |
+  'dictcn' |
+  'etymonline' |
+  'google_page_translate' |
+  'google_search' |
+  'google_translate' |
+  'guoyu' |
+  'iciba' |
+  'liangan' |
+  'longman_business' |
+  'merriam_webster' |
+  'oxford' |
+  'youdao_page_translate' |
+  'youdao'
+
+export enum TCDirection {
+  center,
+  top,
+  right,
+  bottom,
+  left,
+  topLeft,
+  topRight,
+  bottomLeft,
+  bottomRight,
+}
+
+/** '' means no preload */
+export type PreloadSource = '' | 'clipboard' | 'selection'
+
+export interface DictConfig {
+  page: string
+  defaultUnfold: boolean
+  preferredHeight: number
+  selectionLang: {
+    eng: boolean
+    chs: boolean
+  }
+  options: {
+    [option: string]: number | boolean
+  }
+}
+
+export interface AppConfig {
+  /** activate app, won't affect triple-ctrl setting */
+  active: boolean
+
+  /** sniff pdf request */
+  pdfSniff: boolean
+
+  /** track search history */
+  searhHistory: boolean
+  /** play sound */
+  newWordSound: boolean
+
+  /** when and how to search text */
+  mode: {
+    /** show pop icon first */
+    icon: boolean
+    /** how panel directly */
+    direct: boolean
+    /** double click */
+    double: boolean
+    /** show panel when double click ctrl + selection not empty */
+    ctrl: boolean
+  },
+
+  /** when and how to search text if the panel is pinned */
+  pinMode: {
+    /** direct: on mouseup */
+    direct: boolean
+    /** double: double click */
+    double: boolean
+    /** ctrl: search when double click ctrl + selection not empty */
+    ctrl: boolean
+  },
+
+  /** double click delay, in ms */
+  doubleClickDelay: number
+
+  /** show panel when triple press ctrl */
+  tripleCtrl: boolean
+
+  /** preload source */
+  tripleCtrlPreload: PreloadSource
+
+  /** auto search when triple hit ctrl */
+  tripleCtrlAuto: boolean
+
+  /** where should the dict appears */
+  tripleCtrlLocation: TCDirection
+
+  /** browser action preload source */
+  baPreload: PreloadSource
+
+  /** auto search when browser action triggered */
+  baAuto: boolean
+
+  /** start searching when source containing the languages */
+  language: {
+    chinese: boolean
+    english: boolean
+  }
+
+  /** auto pronunciation */
+  autopron: {
+    cn: {
+      dict: DictID | '',
+      readonly list: DictID[]
+    }
+    en: {
+      dict: DictID | '',
+      readonly list: DictID[]
+      accent: 'us' | 'uk'
+    }
+  }
+
+  dicts: {
+    /** default selected dictionaries */
+    selected: DictID[]
+    // settings of each dict will be auto-generated
+    // all: {}
+  }
+  contextMenus: {
+    selected: ContextMenuDictID[]
+    readonly all: {
+      readonly [id in ContextMenuDictID]: string
+    }
+  }
+}
+
+export default appConfigFactory
+
+export function appConfigFactory (): AppConfig {
   return {
     active: true,
-
-    // sniff pdf request
     pdfSniff: true,
-
-    // track search history
     searhHistory: true,
-    // play sound
     newWordSound: true,
-
-    // icon: show pop icon first
-    // direct: show panel directly
-    // double: double click
-    // ctrl: show panel when double click ctrl + selection not empty
     mode: {
       icon: true,
       direct: false,
@@ -21,53 +165,31 @@ export default function AppConfig () {
       ctrl: false
     },
 
-    // when the panel is pinned
-    // direct: on mouseup
-    // double: double click
-    // ctrl: search when double click ctrl + selection not empty
     pinMode: {
       direct: true,
       double: false,
       ctrl: false
     },
 
-    // for double click, in ms
     doubleClickDelay: 450,
 
-    // show panel when triple press ctrl
     tripleCtrl: true,
-    // '': no preload
-    // 'clipboard'
-    // 'selection'
-    tripleCtrlPreload: 'clipboard',
-    // auto search
-    tripleCtrlAuto: false,
-    // 0: center
-    // 1: top
-    // 2: right
-    // 3: bottom
-    // 4: left
-    // 5: top left
-    // 6: top right
-    // 7: bottom left
-    // 8: bottom right
-    tripleCtrlLocation: 0,
 
-    // browser action
-    // '': no preload
-    // 'clipboard'
-    // 'selection'
-    baPreload: 'clipboard',
-    // auto search
+    tripleCtrlPreload: 'clipboard' as PreloadSource,
+
+    tripleCtrlAuto: false,
+
+    tripleCtrlLocation: TCDirection.center,
+
+    baPreload: 'clipboard' as PreloadSource,
+
     baAuto: false,
 
-    // source language
     language: {
       chinese: true,
       english: true
     },
 
-    // auto pronounce
     autopron: {
       cn: {
         dict: '',
@@ -76,193 +198,15 @@ export default function AppConfig () {
       en: {
         dict: '',
         list: ['bing', 'dictcn', 'howjsay', 'macmillan', 'eudic', 'urban'],
-        // us / uk
-        accent: 'uk'
+        accent: 'uk' as ('us' | 'uk')
       }
     },
 
     dicts: {
-      // default selected dictionaries
       selected: ['bing', 'urban', 'vocabulary', 'dictcn'],
-      all: {
-        bing: {
-          id: 'bing',
-          page: 'https://cn.bing.com/dict/search?q=%s',
-          defaultUnfold: true,
-          preferredHeight: 240,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          },
-          options: {
-            tense: true,
-            phsym: true,
-            cdef: true,
-            related: true,
-            sentence: 4
-          }
-        },
-        google: {
-          id: 'google',
-          page: 'https://translate.google.com/#auto/zh-CN/%s',
-          defaultUnfold: true,
-          preferredHeight: 110,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          }
-        },
-        urban: {
-          id: 'urban',
-          page: 'http://www.urbandictionary.com/define.php?term=%s',
-          defaultUnfold: true,
-          preferredHeight: 180,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          },
-          options: {
-            resultnum: 2
-          }
-        },
-        vocabulary: {
-          id: 'vocabulary',
-          page: 'https://www.vocabulary.com/dictionary/%s',
-          defaultUnfold: true,
-          preferredHeight: 180,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          }
-        },
-        dictcn: {
-          id: 'dictcn',
-          page: 'http://dict.cn/%s',
-          defaultUnfold: true,
-          preferredHeight: 300,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          },
-          options: {
-            chart: true,
-            etym: true
-          }
-        },
-        eudic: {
-          id: 'eudic',
-          page: 'https://dict.eudic.net/dicts/en/%s',
-          defaultUnfold: true,
-          preferredHeight: 265,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          }
-        },
-        etymonline: {
-          id: 'etymonline',
-          page: 'http://www.etymonline.com/search?q=%s',
-          defaultUnfold: true,
-          preferredHeight: 265,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          },
-          options: {
-            resultnum: 2
-          }
-        },
-        howjsay: {
-          id: 'howjsay',
-          page: 'http://www.howjsay.com/index.php?word=%s',
-          defaultUnfold: true,
-          preferredHeight: 265,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          },
-          options: {
-            related: true
-          }
-        },
-        guoyu: {
-          id: 'guoyu',
-          page: 'https://www.moedict.tw/%z',
-          defaultUnfold: true,
-          preferredHeight: 265,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          }
-        },
-        liangan: {
-          id: 'liangan',
-          page: 'https://www.moedict.tw/~%z',
-          defaultUnfold: true,
-          preferredHeight: 265,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          }
-        },
-        zdic: {
-          id: 'zdic',
-          page: 'http://www.zdic.net/search/?c=1&q=%s',
-          defaultUnfold: true,
-          preferredHeight: 400,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          }
-        },
-        business: {
-          id: 'business',
-          page: 'http://www.ldoceonline.com/search/?q=%s',
-          defaultUnfold: true,
-          preferredHeight: 265,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          }
-        },
-        cobuild: {
-          id: 'cobuild',
-          page: 'https://www.collinsdictionary.com/dictionary/%s',
-          secret: true,
-          defaultUnfold: true,
-          preferredHeight: 300,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          }
-        },
-        macmillan: {
-          id: 'macmillan',
-          page: 'http://www.macmillandictionary.com/dictionary/british/%s',
-          defaultUnfold: true,
-          preferredHeight: 265,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          }
-        },
-        wordreference: {
-          id: 'wordreference',
-          page: 'http://www.wordreference.com/definition/%s',
-          defaultUnfold: true,
-          preferredHeight: 180,
-          showWhenLang: {
-            eng: true,
-            chs: true
-          },
-          options: {
-            etym: true,
-            idiom: true
-          }
-        }
-      }
+      // settings of each dict will be auto-generated
     },
-    contextMenu: {
+    contextMenus: {
       selected: ['oxford', 'google_translate', 'merriam_webster', 'cambridge', 'google_search', 'google_page_translate', 'youdao_page_translate'],
       all: {
         google_page_translate: '',
