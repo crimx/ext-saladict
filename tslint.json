@@ -1,7 +1,13 @@
 {
-  "extends": ["tslint-config-standard"],
+  "extends": ["tslint-config-standard", "rxjs-tslint-rules"],
   "rules": {
-    "trailing-comma": false
+    "trailing-comma": false,
+
+    "rxjs-finnish": { "severity": "error" },
+    "rxjs-no-add": { "severity": "error" },
+    "rxjs-no-operator": { "severity": "error" },
+    "rxjs-no-patched": { "severity": "error" },
+    "rxjs-no-wholesale": { "severity": "error" }
   },
   "defaultSeverity": "warning"
 }

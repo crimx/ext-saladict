@@ -13,7 +13,7 @@
     "commitmsg": "commitlint -e $GIT_PARAMS"
   },
   "engines": {
-    "node": ">= 8.0.0",
+    "node": ">= 8.9.4",
     "npm": ">= 5.6.0"
   },
   "repository": {
@@ -42,6 +42,7 @@
     "normalize.css": "^7.0.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "rxjs": "^5.5.6",
     "vue": "^2.5.13",
     "vue-plugin-webextension-i18n": "^0.1.0",
     "vue-qriously": "^1.1.1",
@@ -87,6 +88,7 @@
     "postcss-safe-important": "^1.1.0",
     "raf": "3.4.0",
     "react-dev-utils": "^5.0.0",
+    "rxjs-tslint-rules": "^3.6.0",
     "sass-loader": "^6.0.6",
     "semver": "^5.4.1",
     "sinon-chrome": "^2.2.4",
