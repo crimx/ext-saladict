@@ -101,7 +101,7 @@
     "typescript": "^2.6.2",
     "uglifyjs-webpack-plugin": "^1.1.6",
     "url-loader": "0.6.2",
-    "vue-jest": "^1.4.0",
+    "vue-jest": "^2.0.0",
     "vue-loader": "^13.6.2",
     "vue-style-loader": "^3.0.3",
     "vue-template-compiler": "^2.5.13",
