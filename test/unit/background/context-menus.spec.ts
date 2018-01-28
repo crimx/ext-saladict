@@ -9,13 +9,82 @@ function specialConfig () {
 }
 
 describe('Context Menus', () => {
-  beforeEach(() => browser.flush())
   afterAll(() => browser.flush())
+
+  describe('Context Menus Click', () => {
+    beforeEach(() => {
+      browser.tabs.create.flush()
+      browser.tabs.query.flush()
+      browser.runtime.getURL.callsFake(s => s)
+      browser.tabs.query
+        .onFirstCall().returns(Promise.resolve([{ url: 'test-url' }]))
+        .onSecondCall().returns(Promise.resolve([]))
+    })
+
+    it('init', () => {
+      expect(browser.contextMenus.onClicked.addListener.calledOnce).toBeTruthy()
+    })
+
+    it('google_page_translate', done => {
+      browser.contextMenus.onClicked.dispatch({ menuItemId: 'google_page_translate' })
+
+      setTimeout(() => {
+        expect(browser.tabs.query.called).toBeTruthy()
+        expect(browser.tabs.create.calledWith({ url: sinon.match('google') })).toBeTruthy()
+        expect(browser.tabs.create.calledWith({ url: sinon.match('test-url') })).toBeTruthy()
+        done()
+      }, 0)
+    })
+    it('youdao_page_translate', () => {
+      browser.tabs.executeScript.flush()
+      browser.tabs.executeScript.callsFake(() => Promise.resolve())
+      browser.contextMenus.onClicked.dispatch({ menuItemId: 'youdao_page_translate' })
+      expect(browser.tabs.executeScript.calledWith({ file: sinon.match('youdao') })).toBeTruthy()
+    })
+    it('view_as_pdf', done => {
+      browser.contextMenus.onClicked.dispatch({ menuItemId: 'view_as_pdf' })
+      setTimeout(() => {
+        expect(browser.tabs.query.called).toBeTruthy()
+        expect(browser.tabs.create.calledWith({ url: sinon.match('pdf') })).toBeTruthy()
+        done()
+      }, 0)
+    })
+    it('search_history', done => {
+      browser.tabs.query.onFirstCall().returns(Promise.resolve([]))
+      browser.contextMenus.onClicked.dispatch({ menuItemId: 'search_history' })
+      setTimeout(() => {
+        expect(browser.tabs.query.called).toBeTruthy()
+        expect(browser.tabs.create.calledWith({ url: sinon.match('history') })).toBeTruthy()
+        done()
+      }, 0)
+    })
+    it('notebook', done => {
+      browser.tabs.query.onFirstCall().returns(Promise.resolve([]))
+      browser.contextMenus.onClicked.dispatch({ menuItemId: 'notebook' })
+      setTimeout(() => {
+        expect(browser.tabs.query.called).toBeTruthy()
+        expect(browser.tabs.create.calledWith({ url: sinon.match('notebook') })).toBeTruthy()
+        done()
+      }, 0)
+    })
+    it('default', done => {
+      browser.tabs.query.onFirstCall().returns(Promise.resolve([]))
+      browser.storage.sync.get.callsFake(() => Promise.resolve({ config: appConfigFactory() }))
+      browser.contextMenus.onClicked.dispatch({ menuItemId: 'bing_dict' })
+      setTimeout(() => {
+        expect(browser.storage.sync.get.calledWith('config')).toBeTruthy()
+        expect(browser.tabs.query.called).toBeTruthy()
+        expect(browser.tabs.create.calledWith({ url: sinon.match('bing') })).toBeTruthy()
+        done()
+      }, 0)
+    })
+  })
 
   describe('initListener', () => {
     let config: AppConfig
 
     beforeEach(() => {
+      browser.flush()
       browser.contextMenus.removeAll.callsFake(() => Promise.resolve())
       browser.contextMenus.create.callsFake((_, cb) => cb())
       config = specialConfig()
@@ -127,12 +196,6 @@ describe('Context Menus', () => {
         expect(browser.contextMenus.create.calledWithMatch({ id: 'oxford' }, sinon.match.func)).toBeTruthy()
         done()
       }, 0)
-    })
-  })
-
-  describe('Context Menus Click', () => {
-    it('init', () => {
-
     })
   })
 })
