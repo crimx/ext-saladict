@@ -2,7 +2,7 @@ import { storage, openURL } from '../_helpers/browser-api'
 import { AppConfig } from '../app-config'
 
 import { Observable } from 'rxjs/Observable'
-import { fromPromise } from 'rxjs/Observable/fromPromise'
+import { fromPromise } from 'rxjs/observable/fromPromise'
 import { NextObserver } from 'rxjs/Observer'
 import { TeardownLogic } from 'rxjs/Subscription'
 import { audit, mapTo, mergeMap, share, startWith } from 'rxjs/operators'
@@ -22,7 +22,7 @@ browser.contextMenus.onClicked.addListener(info => {
   const linkUrl = info.linkUrl || ''
   switch (menuItemId) {
     case 'google_page_translate':
-      browser.tabs.query({active: true, currentWindow: true})
+      browser.tabs.query({ active: true, currentWindow: true })
         .then(tabs => {
           if (tabs.length > 0) {
             openURL(`https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`)
