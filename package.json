@@ -104,7 +104,7 @@
     "uglifyjs-webpack-plugin": "^1.1.6",
     "url-loader": "0.6.2",
     "vue-jest": "^2.0.0",
-    "vue-loader": "^13.6.2",
+    "vue-loader": "^14.0.0",
     "vue-style-loader": "^4.0.0",
     "vue-template-compiler": "^2.5.13",
     "webpack": "3.10.0",
