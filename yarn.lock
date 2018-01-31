@@ -8118,9 +8118,16 @@ vue-stash@^2.0.1-beta:
   version "2.0.1-beta"
   resolved "https://registry.npmjs.org/vue-stash/-/vue-stash-2.0.1-beta.tgz#3b46ccab3670e1eddfda8aa711247e6f887691de"
 
-vue-style-loader@^3.0.0, vue-style-loader@^3.0.3:
+vue-style-loader@^3.0.0:
   version "3.0.3"
   resolved "https://registry.npmjs.org/vue-style-loader/-/vue-style-loader-3.0.3.tgz#623658f81506aef9d121cdc113a4f5c9cac32df7"
+  dependencies:
+    hash-sum "^1.0.2"
+    loader-utils "^1.0.2"
+
+vue-style-loader@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/vue-style-loader/-/vue-style-loader-4.0.0.tgz#df10da3fd899531ee18359a979abc21a45513e7a"
   dependencies:
     hash-sum "^1.0.2"
     loader-utils "^1.0.2"
