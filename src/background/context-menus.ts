@@ -16,6 +16,9 @@ interface CreateMenuOptions {
   contexts?: browser.contextMenus.ContextType[]
 }
 
+// singleton
+let contextMenusChanged$: Observable<ContextMenusConfig>
+
 browser.contextMenus.onClicked.addListener(info => {
   const menuItemId = info.menuItemId
   const selectionText = info.selectionText || ''
@@ -84,8 +87,9 @@ browser.contextMenus.onClicked.addListener(info => {
 })
 
 export function setupListener (initConfig: ContextMenusConfig): void {
+  if (contextMenusChanged$) { return }
   // when context menus config changes
-  const contextMenusChanged$: Observable<ContextMenusConfig> = Observable.create(
+  contextMenusChanged$ = Observable.create(
     (observer: NextObserver<ContextMenusConfig>): TeardownLogic => {
       storage.sync.addListener('config', handler)
 

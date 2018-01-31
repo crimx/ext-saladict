@@ -1,4 +1,3 @@
-import { setupListener } from '../../../src/background/context-menus'
 import { appConfigFactory, AppConfig } from '../../../src/app-config'
 import sinon from 'sinon'
 
@@ -9,6 +8,11 @@ function specialConfig () {
 }
 
 describe('Context Menus', () => {
+  beforeAll(() => {
+    browser.flush()
+    jest.resetModules()
+    require('../../../src/background/context-menus')
+  })
   afterAll(() => browser.flush())
 
   describe('Context Menus Click', () => {
@@ -88,6 +92,8 @@ describe('Context Menus', () => {
       browser.contextMenus.removeAll.callsFake(() => Promise.resolve())
       browser.contextMenus.create.callsFake((_, cb) => cb())
       config = specialConfig()
+      jest.resetModules()
+      const { setupListener } = require('../../../src/background/context-menus')
       setupListener(config.contextMenus)
     })
 
@@ -99,6 +105,16 @@ describe('Context Menus', () => {
         expect(browser.contextMenus.create.calledWithMatch({ id: 'dictcn' }, sinon.match.func)).toBeTruthy()
         done()
       }, 0)
+    })
+
+    it('should not init setup when called multiple times', () => {
+      expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
+
+      const { setupListener } = require('../../../src/background/context-menus')
+      setupListener(config.contextMenus)
+      setupListener(config.contextMenus)
+
+      expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
     })
 
     it('should do nothing when contex menus config didn\'t change',done => {
