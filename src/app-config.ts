@@ -1,19 +1,22 @@
-export type DictID =
-  'bing' |
-  'business' |
-  'cobuild' |
-  'dictcn' |
-  'etymonline' |
-  'eudic' |
-  'google' |
-  'guoyu' |
-  'howjsay' |
-  'liangan' |
-  'macmillan' |
-  'urban' |
-  'vocabulary' |
-  'wordreference' |
-  'zdic'
+const allDicts = {
+  bing: true,
+  business: true,
+  cobuild: true,
+  dictcn: true,
+  etymonline: true,
+  eudic: true,
+  google: true,
+  guoyu: true,
+  howjsay: true,
+  liangan: true,
+  macmillan: true,
+  urban: true,
+  vocabulary: true,
+  wordreference: true,
+  zdic: true,
+}
+
+export type DictID = keyof typeof allDicts
 
 export type ContextMenuDictID =
   'baidu_search' |
@@ -63,6 +66,7 @@ export interface DictConfig {
 }
 
 export interface AppConfig {
+  version: number,
   /** activate app, won't affect triple-ctrl setting */
   active: boolean
 
@@ -140,7 +144,9 @@ export interface AppConfig {
     /** default selected dictionaries */
     selected: DictID[]
     // settings of each dict will be auto-generated
-    // all: {}
+    readonly all: {
+      readonly [id in DictID]: true
+    }
   }
   contextMenus: {
     selected: ContextMenuDictID[]
@@ -154,6 +160,7 @@ export default appConfigFactory
 
 export function appConfigFactory (): AppConfig {
   return {
+    version: 6,
     active: true,
     pdfSniff: true,
     searhHistory: true,
@@ -205,6 +212,7 @@ export function appConfigFactory (): AppConfig {
     dicts: {
       selected: ['bing', 'urban', 'vocabulary', 'dictcn'],
       // settings of each dict will be auto-generated
+      all: Object.assign({}, allDicts) as AppConfig['dicts']['all']
     },
     contextMenus: {
       selected: ['oxford', 'google_translate', 'merriam_webster', 'cambridge', 'google_search', 'google_page_translate', 'youdao_page_translate'],
