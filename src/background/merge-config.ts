@@ -1,144 +1,108 @@
-import AppConfig from 'src/app-config'
+import { appConfigFactory, AppConfig } from '../app-config'
+import _ from 'lodash'
 
 /**
  * @param {object} config - old config befroe extension update
  * @return {object} old config merged into default config
  */
-export default function mergeConfig (config) {
-  var base = new AppConfig()
-  if (config.active !== undefined) { base.active = Boolean(config.active) }
-  if (config.pdfSniff !== undefined) { base.pdfSniff = Boolean(config.pdfSniff) }
-  if (config.searhHistory !== undefined) { base.searhHistory = Boolean(config.searhHistory) }
-  if (config.newWordSound !== undefined) { base.newWordSound = Boolean(config.newWordSound) }
-
-  if (typeof config.mode === 'string' && /^(icon|direct|double|ctrl)$/.test(config.mode)) {
-    base.mode = {
-      icon: false,
-      direct: false,
-      double: false,
-      ctrl: false
-    }
-    base.mode[config.mode] = true
-  } else if (config.mode) {
-    Object.keys(base.mode).forEach(k => {
-      if (typeof config.mode[k] === 'boolean') {
-        base.mode[k] = config.mode[k]
-      }
-    })
+export function mergeConfig (config?): Promise<AppConfig> {
+  if (!config) {
+    return initConfig()
   }
 
-  if (typeof config.pinMode === 'string' && /^(direct|double|ctrl)$/.test(config.pinMode)) {
-    base.pinMode = {
-      direct: false,
-      double: false,
-      ctrl: false
-    }
-    base.pinMode[config.pinMode] = true
-  } else if (config.pinMode) {
-    Object.keys(base.pinMode).forEach(k => {
-      if (typeof config.pinMode[k] === 'boolean') {
-        base.pinMode[k] = config.pinMode[k]
-      }
-    })
+  switch(config.version) {
+    case 6:
+      return browser.storage.sync.set({ config })
+        .then(() => config)
+    default: return mergeHistorical(config)
   }
+}
 
-  if (typeof config.doubleClickDelay === 'number' && !isNaN(config.doubleClickDelay)) {
-    base.doubleClickDelay = config.doubleClickDelay
-  }
-  if (config.tripleCtrl !== undefined) { base.tripleCtrl = Boolean(config.tripleCtrl) }
-  if (typeof config.tripleCtrlPreload === 'string') {
-    if (/^clipboard|selection$/.test(config.tripleCtrlPreload)) {
-      base.tripleCtrlPreload = config.tripleCtrlPreload
-    } else {
-      base.tripleCtrlPreload = ''
-    }
-  }
-  if (config.tripleCtrlAuto !== undefined) { base.tripleCtrlAuto = Boolean(config.tripleCtrlAuto) }
-  if (config.tripleCtrlLocation >= 0 && config.tripleCtrlLocation <= 8) {
-    base.tripleCtrlLocation = config.tripleCtrlLocation
-  }
+export default mergeConfig
 
-  if (typeof config.baPreload === 'string') {
-    if (/^clipboard|selection$/.test(config.baPreload)) {
-      base.baPreload = config.baPreload
-    } else {
-      base.baPreload = ''
-    }
-  }
-  if (config.baAuto !== undefined) { base.baAuto = Boolean(config.baAuto) }
+function initConfig (): Promise<AppConfig> {
+  const storageObj = { config: appConfigFactory() }
 
-  if (config.language) {
-    Object.keys(base.language).forEach(k => {
-      if (config.language[k] !== undefined) { base.language[k] = Boolean(config.language[k]) }
-    })
-  }
+  Object.keys(storageObj.config.dicts.all).forEach(id => {
+    storageObj[id] = require('../components/dictionaries/' + id + '/config')
+  })
 
-  if (config.autopron) {
-    if (config.autopron.cn) {
-      const id = config.autopron.cn.dict
-      if (base.dicts.all[id]) {
-        base.autopron.cn.dict = id
-      }
-    }
-    if (config.autopron.en) {
-      const id = config.autopron.en.dict
-      if (base.dicts.all[id]) {
-        base.autopron.en.dict = id
-      }
-      if (/^(uk|us)$/i.test(config.autopron.en.accent)) {
-        base.autopron.en.accent = config.autopron.en.accent.toLowerCase()
+  return browser.storage.sync.set(storageObj)
+    .then(() => storageObj.config)
+}
+
+function mergeHistorical (config): Promise<AppConfig> {
+  const base = appConfigFactory()
+
+  ;[
+    'active',
+    'pdfSniff',
+    'searhHistory',
+    'newWordSound',
+    'mode.icon',
+    'mode.direct',
+    'mode.double',
+    'mode.ctrl',
+    'pinMode.direct',
+    'pinMode.double',
+    'pinMode.ctrl',
+  ].forEach(mergeBoolean)
+
+  mergeNumber('doubleClickDelay')
+
+  mergeBoolean('tripleCtrl')
+  merge('tripleCtrlPreload', val => val === '' || val === 'clipboard' || val === 'selection')
+  mergeBoolean('tripleCtrlAuto')
+  merge('tripleCtrlLocation', val => val >= 0 && val <= 8)
+
+  merge('baPreload', val => val === '' || val === 'clipboard' || val === 'selection')
+  mergeBoolean('baAuto')
+
+  mergeBoolean('language.chinese')
+  mergeBoolean('language.english')
+
+  merge('autopron.cn.dict', id => base.dicts.all[id])
+  merge('autopron.en.dict', id => base.dicts.all[id])
+  merge('autopron.en.accent', val => val === 'us' || val === 'uk')
+
+  mergeSelectedDicts('dicts')
+  mergeSelectedDicts('contextMenus')
+
+  const storageObj = { config: base }
+  Object.keys(base.dicts.all).forEach(id => {
+    storageObj[id] = config.dicts.all[id] || require('../components/dictionaries/' + id + '/config')
+  })
+
+  return browser.storage.sync.set(storageObj)
+    .then(() => base)
+
+  function mergeSelectedDicts (path: string): void {
+    const selected = _.get(config, [path, 'selected'])
+    if (Array.isArray(selected)) {
+      const allDict = _.get(base, [path, 'all'])
+      const arr = selected.filter(id => allDict[id])
+      if (arr.length > 0) {
+        _.set(base, [path, 'selected'], arr)
       }
     }
   }
 
-  if (config.dicts) {
-    if (Array.isArray(config.dicts.selected)) {
-      let selected = Array.from(new Set(config.dicts.selected)).filter(id => base.dicts.all[id])
-      if (selected.length > 0) { base.dicts.selected = selected }
-    }
-    if (config.dicts.all) {
-      Object.keys(base.dicts.all).forEach(id => {
-        let dict = config.dicts.all[id]
-        if (!dict) { return }
-        let baseDict = base.dicts.all[id]
-        if (!String(dict.page)) { baseDict.page = String(dict.page) }
-        if (dict.defaultUnfold !== undefined) { baseDict.defaultUnfold = Boolean(dict.defaultUnfold) }
-        if (!isNaN(Number(dict.preferredHeight))) { baseDict.preferredHeight = Number(dict.preferredHeight) }
-        if (dict.showWhenLang) {
-          Object.keys(baseDict.showWhenLang).forEach(opt => {
-            if (typeof dict.showWhenLang[opt] === 'boolean') {
-              baseDict.showWhenLang[opt] = dict.showWhenLang[opt]
-            }
-          })
-        }
-        if (dict.options) {
-          Object.keys(baseDict.options).forEach(opt => {
-            if (typeof dict.options[opt] === 'boolean') {
-              baseDict.options[opt] = dict.options[opt]
-            } else if (!isNaN(dict.options[opt])) {
-              baseDict.options[opt] = Number(dict.options[opt])
-            }
-          })
-        }
-      })
-    }
+  function mergeNumber (path: string): void {
+    return merge(path, _.isNumber)
   }
 
-  if (config.contextMenu) {
-    if (Array.isArray(config.contextMenu.selected)) {
-      if (config.contextMenu.selected.length <= 0) {
-        base.contextMenu.selected = []
-      } else {
-        let selected = Array.from(new Set(config.contextMenu.selected)).filter(id => base.contextMenu.all[id])
-        if (selected.length > 0) { base.contextMenu.selected = selected }
-      }
-    }
-
-    // added at v5.20.0, enable by default
-    if (!config.contextMenu.all['youdao_page_translate']) {
-      base.contextMenu.selected.push('youdao_page_translate')
-    }
+  function mergeString (path: string): void {
+    return merge(path, _.isString)
   }
 
-  return base
+  function mergeBoolean (path: string): void {
+    return merge(path, _.isBoolean)
+  }
+
+  function merge (path: string, predicate: (val) => boolean): void {
+    const val = _.get(config, path)
+    if (predicate(val)) {
+      _.set(base, path, val)
+    }
+  }
 }
