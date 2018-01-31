@@ -13,6 +13,7 @@ const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const paths = require('./paths')
 const getClientEnvironment = require('./env')
 const argv = require('minimist')(process.argv.slice(2))
+const rxPaths = require('rxjs/_esm2015/path-mapping')
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -110,6 +111,7 @@ module.exports = {
       // For the origin vue project
       'src': path.resolve(__dirname, '../src'),
       'vue$': 'vue/dist/vue.runtime.esm.js',
+      ...rxPaths(),
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -145,7 +147,17 @@ module.exports = {
           {
             test: /\.tsx?$/,
             include: paths.appSrc,
-            loader: require.resolve('ts-loader'),
+            use: [
+              {
+                loader: require.resolve('babel-loader'),
+                options: {
+                  compact: true,
+                },
+              },
+              {
+                loader: require.resolve('ts-loader'),
+              }
+            ],
           },
           // Process JS with Babel.
           {
@@ -241,6 +253,10 @@ module.exports = {
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
     new webpack.DefinePlugin(env.stringified),
+    // RxJs https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md
+    argv.devbuild
+    ? null
+    : new webpack.optimize.ModuleConcatenationPlugin(),
     // Minify the code.
     argv.devbuild
     ? null
