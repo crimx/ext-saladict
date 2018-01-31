@@ -8218,8 +8218,8 @@ wbuf@^1.1.0, wbuf@^1.7.2:
     minimalistic-assert "^1.0.0"
 
 web-ext-types@crimx/web-ext-types:
-  version "1.1.5"
-  resolved "https://codeload.github.com/crimx/web-ext-types/tar.gz/b32c41844fae062f7c601f9377eff1582a94ff48"
+  version "1.1.7"
+  resolved "https://codeload.github.com/crimx/web-ext-types/tar.gz/f43910e7cb71d6d5dca3616027c8024887af9b6b"
 
 webextension-polyfill@^0.2.1:
   version "0.2.1"
