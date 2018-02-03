@@ -86,7 +86,7 @@ browser.contextMenus.onClicked.addListener(info => {
   }
 })
 
-export function setupListener (initConfig: ContextMenusConfig): void {
+export function init (initConfig: ContextMenusConfig): void {
   if (contextMenusChanged$) { return }
   // when context menus config changes
   contextMenusChanged$ = Observable.create(

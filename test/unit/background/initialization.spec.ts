@@ -5,7 +5,8 @@ import sinon from 'sinon'
 describe('Initialization', () => {
   const bakFetch = window.fetch
   const openURL = jest.fn(() => Promise.resolve())
-  const setupListener = jest.fn(() => Promise.resolve())
+  const initMenus = jest.fn(() => Promise.resolve())
+  const initPdf = jest.fn()
   const mergeConfig = jest.fn()
   const checkUpdate = jest.fn().mockReturnValue(Promise.resolve())
 
@@ -24,7 +25,10 @@ describe('Initialization', () => {
       }
     })
     jest.doMock('../../../src/background/context-menus', () => {
-      return { setupListener }
+      return { init: initMenus }
+    })
+    jest.doMock('../../../src/background/pdf-sniffer', () => {
+      return { init: initPdf }
     })
     jest.doMock('../../../src/_helpers/check-update', () => {
       return checkUpdate
@@ -49,7 +53,8 @@ describe('Initialization', () => {
 
   beforeEach(() => {
     openURL.mockReset()
-    setupListener.mockReset()
+    initMenus.mockReset()
+    initPdf.mockReset()
     mergeConfig.mockReset()
     fetchMock.resetMocks()
 
@@ -87,7 +92,8 @@ describe('Initialization', () => {
         expect(openURL).toHaveBeenCalledTimes(1)
         expect(mergeConfig).toHaveBeenCalledTimes(1)
         expect(mergeConfig).toHaveBeenCalledWith(undefined)
-        expect(setupListener).toHaveBeenCalledTimes(1)
+        expect(initMenus).toHaveBeenCalledTimes(1)
+        expect(initPdf).toHaveBeenCalledTimes(1)
         expect(browser.storage.local.set.calledWithMatch({
           lastCheckUpdate: sinon.match.number
         })).toBeTruthy()
@@ -119,7 +125,8 @@ describe('Initialization', () => {
             message: '1. one.\n2. two',
           }
         )).toBeTruthy()
-        expect(setupListener).toHaveBeenCalledTimes(1)
+        expect(initMenus).toHaveBeenCalledTimes(1)
+        expect(initPdf).toHaveBeenCalledTimes(1)
         expect(browser.storage.local.set.calledWithMatch({
           lastCheckUpdate: sinon.match.number
         })).toBeTruthy()
@@ -139,7 +146,8 @@ describe('Initialization', () => {
       }))
       browser.runtime.onStartup.dispatch()
       setTimeout(() => {
-        expect(setupListener).toHaveBeenCalledTimes(1)
+        expect(initMenus).toHaveBeenCalledTimes(1)
+        expect(initPdf).toHaveBeenCalledTimes(1)
         expect(checkUpdate).toHaveBeenCalledTimes(0)
         done()
       }, 0)
@@ -155,7 +163,8 @@ describe('Initialization', () => {
       checkUpdate.mockReturnValueOnce(Promise.resolve({ isAvailable: true, info: {} }))
       browser.runtime.onStartup.dispatch()
       setTimeout(() => {
-        expect(setupListener).toHaveBeenCalledTimes(1)
+        expect(initMenus).toHaveBeenCalledTimes(1)
+        expect(initPdf).toHaveBeenCalledTimes(1)
         expect(checkUpdate).toHaveBeenCalledTimes(1)
         expect(browser.storage.sync.set.notCalled).toBeTruthy()
         expect(browser.storage.local.set.calledWith({

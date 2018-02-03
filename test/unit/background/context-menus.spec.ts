@@ -93,8 +93,8 @@ describe('Context Menus', () => {
       browser.contextMenus.create.callsFake((_, cb) => cb())
       config = specialConfig()
       jest.resetModules()
-      const { setupListener } = require('../../../src/background/context-menus')
-      setupListener(config.contextMenus)
+      const { init } = require('../../../src/background/context-menus')
+      init(config.contextMenus)
     })
 
     it('should set menus on init', done => {
@@ -110,9 +110,9 @@ describe('Context Menus', () => {
     it('should not init setup when called multiple times', () => {
       expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
 
-      const { setupListener } = require('../../../src/background/context-menus')
-      setupListener(config.contextMenus)
-      setupListener(config.contextMenus)
+      const { init } = require('../../../src/background/context-menus')
+      init(config.contextMenus)
+      init(config.contextMenus)
 
       expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
     })

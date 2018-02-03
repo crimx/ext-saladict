@@ -2,7 +2,8 @@ import { storage, openURL } from '../_helpers/browser-api'
 import checkUpdate from '../_helpers/check-update'
 import { AppConfig } from '../app-config'
 import { mergeConfig } from './merge-config'
-import { setupListener } from './context-menus'
+import { init as initMenus } from './context-menus'
+import { init as initPdf } from './pdf-sniffer'
 
 browser.runtime.onInstalled.addListener(onInstalled)
 browser.runtime.onStartup.addListener(onStartup)
@@ -33,7 +34,8 @@ function onInstalled ({ reason, previousVersion }: { reason: string, previousVer
           showNews()
         }
       }
-      setupListener(config.contextMenus)
+      initMenus(config.contextMenus)
+      initPdf(config.pdfSniff)
       storage.local.set({ lastCheckUpdate: Date.now() })
     })
 }
@@ -42,7 +44,8 @@ function onStartup (): void {
   // check update every month
   Promise.all([storage.local.get('lastCheckUpdate'), storage.sync.get('config')])
     .then(([{ lastCheckUpdate }, { config }]: [{ lastCheckUpdate: number }, { config: AppConfig }]) => {
-      setupListener(config.contextMenus)
+      initMenus(config.contextMenus)
+      initPdf(config.pdfSniff)
       const today = Date.now()
       if (!lastCheckUpdate || !(today - lastCheckUpdate < 7 * 24 * 60 * 60 * 1000)) {
         checkUpdate().then(({ info, isAvailable }) => {
