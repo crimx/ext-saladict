@@ -168,7 +168,17 @@ module.exports = {
           {
             test: /\.tsx?$/,
             include: paths.appSrc,
-            loader: require.resolve('ts-loader'),
+            use: [
+              {
+                loader: require.resolve('babel-loader'),
+                options: {
+                  cacheDirectory: true,
+                },
+              },
+              {
+                loader: require.resolve('ts-loader'),
+              }
+            ],
           },
           // Process JS with Babel.
           {

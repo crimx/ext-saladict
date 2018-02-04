@@ -4,6 +4,7 @@
  * I faked a subset of common apis by hand to mimic the behaviours.
  */
 import _ from 'lodash'
+import locales from '../../src/_locales/messages.json'
 
 const platform = navigator.userAgent.indexOf('Chrome') !== -1 ? 'chrome' : 'firefox'
 
@@ -19,8 +20,17 @@ window.browser = {
     getBadgeText (x, cb) { cb(Date.now().toString()) },
     setBadgeBackgroundColor () {},
   },
+  contextMenus: {
+    onClicked: {
+      addListener () {},
+      hasListener () {},
+      removeListener () {},
+    },
+    removeAll () { return Promise.resolve() },
+    create () { return Promise.resolve() },
+  },
   i18n: {
-    getMessage () { return 'xxx' }
+    getMessage (k) { return locales[k] && locales[k].message.zh_CN }
   },
   notifications: {
     create: _.partial(console.log, 'create notifications:'),
@@ -39,12 +49,26 @@ window.browser = {
         // ... add other info accordingly
       })
     },
+    query () { return Promise.resolve([]) },
+    highlight () { return Promise.resolve() },
     // No other tab to receive anyway
     sendMessage () { return Promise.resolve() }
   },
+  webRequest: {
+    onBeforeRequest: {
+      addListener () {},
+      hasListener () {},
+      removeListener () {},
+    },
+    onHeadersReceived: {
+      addListener () {},
+      hasListener () {},
+      removeListener () {},
+    },
+  },
   runtime: {
     id: 'mdidnbkkjainbfbcenphabdajogedcnx',
-    getURL (name) { return '/' + name },
+    getURL (name) { return 'x' },
     getManifest () {
       return _.assign(
         {},
@@ -57,7 +81,7 @@ window.browser = {
       addListener (listener) {
         if (!_.isFunction(listener)) { throw new TypeError('Wrong argument type') }
         // delay startup calls
-        settimeout(listener, 0)
+        setTimeout(listener, 0)
       }
     },
     onInstalled: {

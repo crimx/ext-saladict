@@ -1,14 +1,14 @@
 {
   "compilerOptions": {
-    "strict": true,
-    "outDir": "./dist/",
-    "sourceMap": true,
-    "noImplicitAny": false,
-    "module": "commonjs",
-    "target": "es6",
     "allowSyntheticDefaultImports": true,
     "jsx": "react",
     "lib": ["es6", "dom"],
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "outDir": "./dist/",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es6",
     "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
   },
   "include": [
