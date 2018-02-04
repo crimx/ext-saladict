@@ -1,4 +1,4 @@
-import { appConfigFactory, AppConfig } from '../../../src/app-config'
+import { appConfigFactory, AppConfig, AppConfigMutable } from '../../../src/app-config'
 import mergeConfig from '../../../src/background/merge-config'
 import sinon from 'sinon'
 
@@ -24,7 +24,8 @@ describe('Merge Config', () => {
       })
   })
   it('should merge config version < 6', () => {
-    const oldConfig = appConfigFactory()
+    const oldConfig = appConfigFactory() as AppConfigMutable
+    // @ts-ignore
     delete oldConfig.version
     Object.keys(oldConfig.dicts.all).forEach(id => {
       oldConfig.dicts.all[id] = { id }
@@ -34,13 +35,12 @@ describe('Merge Config', () => {
     return mergeConfig(oldConfig)
       .then(config => {
         const defaultStorageObj = { config: appConfigFactory() }
-        const expectStorageObj = { config: appConfigFactory() }
+        const expectStorageObj = { config: appConfigFactory() as AppConfigMutable }
         expectStorageObj.config.dicts.selected = ['bing']
 
         Object.keys(oldConfig.dicts.all).forEach(id => {
           defaultStorageObj[id] = sinon.match.object
           expectStorageObj[id] = sinon.match.object
-          expectStorageObj.config.dicts.all[id] = true
         })
 
         expect(config).toEqual(expectStorageObj.config)
