@@ -2,11 +2,15 @@
  * To make sure only one audio plays at a time
  */
 
+import { timeout } from '../_helpers/promise-more'
+
 declare global {
   interface Window {
     __audio_manager__?: HTMLAudioElement
   }
 }
+
+function noop () {/* empty */}
 
 export function load (src: string): HTMLAudioElement {
   if (window.__audio_manager__) {
@@ -18,9 +22,28 @@ export function load (src: string): HTMLAudioElement {
   return window.__audio_manager__
 }
 
-export function play (src: string): Promise<void> {
+export function play (src?: string): Promise<void> {
   // ignore interruption error
-  return load(src).play().catch(() => {})
+  let p: Promise<void>
+  if (src) {
+    p = load(src).play()
+  } else if (window.__audio_manager__) {
+    p = window.__audio_manager__.play()
+  } else {
+    return Promise.resolve()
+  }
+
+  const onEnd = new Promise(resolve => {
+    const audio = window.__audio_manager__ as HTMLAudioElement
+    function handler () {
+      audio.removeEventListener('ended', handler)
+      resolve()
+    }
+    audio.addEventListener('ended', handler)
+  })
+
+  return p.then(() => timeout(onEnd, 4000))
+    .catch(noop)
 }
 
 export function addListener<K extends keyof HTMLMediaElementEventMap> (
