@@ -2638,11 +2638,10 @@ const charMap = {
   '龟': '龜'
 }
 
-export default function chsToChz (text: string): string {
-  text = String(text)
-  const res: string[] = []
-  for (let i = 0; i < text.length; i += 1) {
-    res.push(charMap[text[i]] || text[i])
-  }
-  return res.join('')
+export function chsToChz (text: string): string {
+  return text.split('')
+    .map(c => charMap[c] || c)
+    .join('')
 }
+
+export default chsToChz
