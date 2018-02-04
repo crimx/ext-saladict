@@ -91,7 +91,7 @@ measureFileSizesBeforeBuild(paths.appBuild)
   .then(generateByBrowser)
 
 // Create the production build and print the deployment instructions.
-function build(previousFileSizes) {
+function build (previousFileSizes) {
   console.log('Creating an optimized production build...')
 
   let compiler = webpack(config)
@@ -139,6 +139,8 @@ function generateByBrowser () {
   const files = fs.readdirSync(paths.appBuild)
     .map(name => ({name, path: path.join(paths.appBuild, name)}))
 
+  const localesJSON = genLocales()
+
   return Promise.all(browsers.map(browser => {
     const dest = path.join(paths.appBuild, browser)
     if (!fs.existsSync(dest)){ fs.mkdirSync(dest) }
@@ -152,6 +154,8 @@ function generateByBrowser () {
         Object.assign({}, commonManifest, browserManifest, version),
         { spaces: 2 },
       ),
+      // locales
+      writeLocales(path.join(dest, '_locales'), localesJSON),
       // public assets
       fs.copy(paths.appPublic, dest, {
         dereference: true,
@@ -165,4 +169,54 @@ function generateByBrowser () {
     // clean up files
     fs.remove(file.path)
   )))
+}
+
+function genLocales () {
+  const msgJSON = require('../src/_locales/messages.json')
+  const msgKeys = Object.keys(msgJSON)
+  const langs = Object.keys(msgJSON[msgKeys[0]].message)
+
+  const dictIDs = fs.readdirSync(path.join(__dirname, '../src/components/dictionaries'))
+  const dicts = langs.reduce((json, lang) => {
+    json[lang] = {}
+    dictIDs.forEach(id => {
+      const dictJSON = require('../src/components/dictionaries/' + id + '/_locales.json')
+      json[lang][`dict_${id}`] = {
+        description: 'Dictionary Name',
+        message: dictJSON.name[lang],
+      }
+      if (dictJSON.options) {
+        Object.keys(dictJSON.options).forEach(opt => {
+          json[lang][`dict_${id}_${opt}`] = {
+            description: 'Dictionary option',
+            message: dictJSON.options[opt][lang],
+          }
+        })
+      }
+    })
+    return json
+  }, {})
+
+  return langs.reduce((json, lang) => {
+    json[lang] = { ...dicts[lang] }
+    msgKeys.forEach(k => {
+      json[lang][k] = {
+        description: msgJSON[k].description,
+        message: msgJSON[k].message[lang],
+      }
+    })
+    return json
+  }, {})
+}
+
+function writeLocales (localesPath, localesJSON) {
+  const locales = Object.keys(localesJSON)
+  return fs.mkdir(localesPath)
+  .then(() =>
+    Promise.all(locales.map(lang => {
+      const langPath = path.join(localesPath, lang)
+      return fs.mkdir(langPath)
+      .then(() => fs.writeFile(path.join(langPath, 'messages.json'), JSON.stringify(localesJSON[lang], null, '  ')))
+    }))
+  )
 }
