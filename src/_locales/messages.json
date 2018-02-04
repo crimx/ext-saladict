@@ -1,579 +1,1170 @@
 {
   "extension_name": {
     "description": "Extension name",
-    "message": "沙拉查词-网页划词翻译"
+    "message": {
+      "zh_CN": "沙拉查词-网页划词翻译",
+      "zh_TW": "沙拉查詞-網頁劃詞翻譯",
+      "en": "Saladict"
+    }
   },
   "extension_short_name": {
     "description": "Extension short name",
-    "message": "Saladict"
+    "message": {
+      "zh_CN": "Saladict",
+      "zh_TW": "Saladict",
+      "en": "Saladict"
+    }
   },
   "extension_description": {
     "description": "Description of extension",
-    "message": "全能网页划词翻译，开放源码、功能丰富、超多词典、清爽快速、支持个性化设置"
+    "message": {
+      "zh_CN": "全能网页划词翻译，开放源码、功能丰富、超多词典、清爽快速、支持个性化设置",
+      "zh_TW": "全能網頁劃詞翻譯，開放源碼、功能豐富、超多詞典、清爽快速、支持個性化設置",
+      "en": "Feature-rich inline translator powered with mutiple online dictionaries"
+    }
   },
   "wechat": {
     "description": "微信",
-    "message": "微信"
+    "message": {
+      "zh_CN": "微信",
+      "zh_TW": "微信",
+      "en": "微信"
+    }
   },
   "alipay": {
     "description": "支付宝",
-    "message": "支付宝"
+    "message": {
+      "zh_CN": "支付宝",
+      "zh_TW": "支付寶",
+      "en": "支付宝"
+    }
   },
   "bitcoin": {
     "description": "比特币",
-    "message": "比特币"
+    "message": {
+      "zh_CN": "比特币",
+      "zh_TW": "比特幣",
+      "en": "比特币"
+    }
   },
   "buy_me_a_coffee": {
     "description": "支持一下",
-    "message": "觉得好用的话欢迎支持一下我买杯咖啡哦~"
+    "message": {
+      "zh_CN": "觉得好用的话欢迎支持一下我买杯咖啡哦~",
+      "zh_TW": "覺得好用的話歡迎支持一下我買杯咖啡哦~",
+      "en": "觉得好用的话欢迎支持一下我买杯咖啡哦~"
+    }
   },
   "cantact_author": {
     "description": "Contact Author",
-    "message": "联系作者"
+    "message": {
+      "zh_CN": "联系作者",
+      "zh_TW": "聯繫作者",
+      "en": "联系作者"
+    }
   },
   "report_issue": {
     "description": "Report Issue",
-    "message": "反馈问题"
+    "message": {
+      "zh_CN": "反馈问题",
+      "zh_TW": "反饋問題",
+      "en": "反馈问题"
+    }
   },
   "instructions": {
     "description": "Report Issue",
-    "message": "使用说明"
+    "message": {
+      "zh_CN": "使用说明",
+      "zh_TW": "使用說明",
+      "en": "使用说明"
+    }
   },
   "save": {
     "description": "save",
-    "message": "保存"
+    "message": {
+      "zh_CN": "保存",
+      "zh_TW": "保存",
+      "en": "保存"
+    }
   },
   "confirm": {
     "description": "confirm",
-    "message": "确认"
+    "message": {
+      "zh_CN": "确认",
+      "zh_TW": "確認",
+      "en": "确认"
+    }
   },
   "cancel": {
     "description": "cancel",
-    "message": "取消"
+    "message": {
+      "zh_CN": "取消",
+      "zh_TW": "取消",
+      "en": "取消"
+    }
   },
   "copy": {
     "description": "copy",
-    "message": "复制"
+    "message": {
+      "zh_CN": "复制",
+      "zh_TW": "複製",
+      "en": "复制"
+    }
   },
   "US": {
     "description": "United State",
-    "message": "美"
+    "message": {
+      "zh_CN": "美",
+      "zh_TW": "美",
+      "en": "美"
+    }
   },
   "UK": {
     "description": "United Kindom",
-    "message": "英"
+    "message": {
+      "zh_CN": "英",
+      "zh_TW": "英",
+      "en": "英"
+    }
   },
   "PY": {
     "description": "Pinyin, Mandarin Chinese",
-    "message": "拼"
+    "message": {
+      "zh_CN": "拼",
+      "zh_TW": "拼",
+      "en": "拼"
+    }
   },
   "inf_s": {
     "description": "simple",
-    "message": "原型"
+    "message": {
+      "zh_CN": "原型",
+      "zh_TW": "原型",
+      "en": "原型"
+    }
   },
   "inf_pl": {
     "description": "plurality",
-    "message": "复数"
+    "message": {
+      "zh_CN": "复数",
+      "zh_TW": "複數",
+      "en": "复数"
+    }
   },
   "inf_pp": {
     "description": "past participle",
-    "message": "过去分词"
+    "message": {
+      "zh_CN": "过去分词",
+      "zh_TW": "過去分詞",
+      "en": "过去分词"
+    }
   },
   "inf_prp": {
     "description": "presentparticiple",
-    "message": "现在分词"
+    "message": {
+      "zh_CN": "现在分词",
+      "zh_TW": "現在分詞",
+      "en": "现在分词"
+    }
   },
   "inf_3pps": {
     "description": "third-person singular",
-    "message": "第三人称单数"
+    "message": {
+      "zh_CN": "第三人称单数",
+      "zh_TW": "第三人稱單數",
+      "en": "第三人称单数"
+    }
   },
   "inf_pt": {
     "description": "past tense",
-    "message": "过去式"
+    "message": {
+      "zh_CN": "过去式",
+      "zh_TW": "過去式",
+      "en": "过去式"
+    }
   },
   "dict_error_msg": {
     "description": "Search Faild",
-    "message": "无结果"
+    "message": {
+      "zh_CN": "无结果",
+      "zh_TW": "無結果",
+      "en": "无结果"
+    }
   },
   "opt_storage_updated": {
     "description": "when storage is updated",
-    "message": "设置已更新"
+    "message": {
+      "zh_CN": "设置已更新",
+      "zh_TW": "設置已更新",
+      "en": "设置已更新"
+    }
   },
   "opt_reset": {
     "description": "reset button",
-    "message": "重置"
+    "message": {
+      "zh_CN": "重置",
+      "zh_TW": "重置",
+      "en": "重置"
+    }
   },
   "opt_none": {
     "description": "option description",
-    "message": "无"
+    "message": {
+      "zh_CN": "无",
+      "zh_TW": "無",
+      "en": "无"
+    }
   },
   "opt_reset_modal_title": {
     "description": "reset alert",
-    "message": "重置设定"
+    "message": {
+      "zh_CN": "重置设定",
+      "zh_TW": "重置設定",
+      "en": "重置设定"
+    }
   },
   "opt_reset_modal_content": {
     "description": "reset alert",
-    "message": "所有设定将还原到默认值，确定？"
+    "message": {
+      "zh_CN": "所有设定将还原到默认值，确定？",
+      "zh_TW": "所有設定將還原到默認值，確定？",
+      "en": "所有设定将还原到默认值，确定？"
+    }
   },
   "opt_title": {
     "description": "设置页面标题",
-    "message": "Saladict 设置"
+    "message": {
+      "zh_CN": "Saladict 设置",
+      "zh_TW": "Saladict 設置",
+      "en": "Saladict 设置"
+    }
   },
   "opt_new_version": {
     "description": "New Version",
-    "message": "(请更新版本!)"
+    "message": {
+      "zh_CN": "(请更新版本!)",
+      "zh_TW": "(請更新版本!)",
+      "en": "(请更新版本!)"
+    }
   },
   "opt_app_active_title": {
     "description": "option title",
-    "message": "开启查词"
+    "message": {
+      "zh_CN": "开启查词",
+      "zh_TW": "開啟查詞",
+      "en": "开启查词"
+    }
   },
   "opt_app_active": {
     "description": "option",
-    "message": "启用划词翻译"
+    "message": {
+      "zh_CN": "启用划词翻译",
+      "zh_TW": "啟用劃詞翻譯",
+      "en": "启用划词翻译"
+    }
   },
   "opt_pdf_sniff": {
     "description": "option",
-    "message": "默认用本扩展浏览 PDF"
+    "message": {
+      "zh_CN": "默认用本扩展浏览 PDF",
+      "zh_TW": "默認用本擴展瀏覽 PDF",
+      "en": "默认用本扩展浏览 PDF"
+    }
   },
   "opt_app_active_description": {
     "description": "option description",
-    "message": "关闭后划词翻译功能将关闭，快捷查词功能依然可用。开启默认 PDF 浏览所有 PDF 链接将自动跳转到本扩展打开（包括本地）。"
+    "message": {
+      "zh_CN": "关闭后划词翻译功能将关闭，快捷查词功能依然可用。开启默认 PDF 浏览所有 PDF 链接将自动跳转到本扩展打开（包括本地）。",
+      "zh_TW": "關閉後劃詞翻譯功能將關閉，快捷查詞功能依然可用。開啟默認 PDF 瀏覽所有 PDF 鏈接將自動跳轉到本擴展打開（包括本地）。",
+      "en": "关闭后划词翻译功能将关闭，快捷查词功能依然可用。开启默认 PDF 浏览所有 PDF 链接将自动跳转到本扩展打开（包括本地）。"
+    }
   },
   "opt_word_list_title": {
     "description": "option title",
-    "message": "单词列表"
+    "message": {
+      "zh_CN": "单词列表",
+      "zh_TW": "單詞列表",
+      "en": "单词列表"
+    }
   },
   "opt_word_list_history": {
     "description": "option",
-    "message": "记录查词历史"
+    "message": {
+      "zh_CN": "记录查词历史",
+      "zh_TW": "記錄查詞歷史",
+      "en": "记录查词历史"
+    }
   },
   "opt_word_list_notebook": {
     "description": "option",
-    "message": "添加生词时播放声音"
+    "message": {
+      "zh_CN": "添加生词时播放声音",
+      "zh_TW": "添加生詞時播放聲音",
+      "en": "添加生词时播放声音"
+    }
   },
   "opt_word_list_description": {
     "description": "option description",
-    "message": "关闭记录查词历史后先前的记录依然保留，可在查词历史页面手动清空。"
+    "message": {
+      "zh_CN": "关闭记录查词历史后先前的记录依然保留，可在查词历史页面手动清空。",
+      "zh_TW": "關閉記錄查詞歷史後先前的記錄依然保留，可在查詞歷史頁面手動清空。",
+      "en": "关闭记录查词历史后先前的记录依然保留，可在查词历史页面手动清空。"
+    }
   },
   "opt_mode_title": {
     "description": "option title",
-    "message": "查词模式"
+    "message": {
+      "zh_CN": "查词模式",
+      "zh_TW": "查詞模式",
+      "en": "查词模式"
+    }
   },
   "opt_mode_icon": {
     "description": "option",
-    "message": "显示图标"
+    "message": {
+      "zh_CN": "显示图标",
+      "zh_TW": "顯示圖標",
+      "en": "显示图标"
+    }
   },
   "opt_mode_direct": {
     "description": "option",
-    "message": "直接搜索"
+    "message": {
+      "zh_CN": "直接搜索",
+      "zh_TW": "直接搜索",
+      "en": "直接搜索"
+    }
   },
   "opt_mode_double": {
     "description": "option",
-    "message": "双击搜索"
+    "message": {
+      "zh_CN": "双击搜索",
+      "zh_TW": "雙擊搜索",
+      "en": "双击搜索"
+    }
   },
   "opt_mode_ctrl": {
     "description": "option",
-    "message": "按住Ctrl/⌘"
+    "message": {
+      "zh_CN": "按住Ctrl/⌘",
+      "zh_TW": "按住Ctrl/⌘",
+      "en": "按住Ctrl/⌘"
+    }
   },
   "opt_mode_double_click_delay": {
     "description": "double click delay",
-    "message": "双击间隔"
+    "message": {
+      "zh_CN": "双击间隔",
+      "zh_TW": "雙擊間隔",
+      "en": "双击间隔"
+    }
   },
   "opt_unit_ms": {
     "description": "millisecond",
-    "message": "毫秒"
+    "message": {
+      "zh_CN": "毫秒",
+      "zh_TW": "毫秒",
+      "en": "毫秒"
+    }
   },
   "opt_mode_description": {
     "description": "option description",
-    "message": "当用鼠标在网页上选择了一段文本，<strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；<strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；<strong>“双击搜索”</strong>双击选择文本之后直接显示词典面板；<strong>“按住 Ctrl”</strong>在选择文本时需同时按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键才显示词典面板。"
+    "message": {
+      "zh_CN": "当用鼠标在网页上选择了一段文本，<strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；<strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；<strong>“双击搜索”</strong>双击选择文本之后直接显示词典面板；<strong>“按住 Ctrl”</strong>在选择文本时需同时按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键才显示词典面板。",
+      "zh_TW": "當用滑鼠在網頁上選擇了一段文本，<strong>「顯示圖標」</strong>會先在滑鼠附近顯示一個圖標，滑鼠移上去後才顯示詞典面板；<strong>「直接搜索」</strong>則不顯示圖標，直接顯示詞典面板；<strong>「雙擊搜索」</strong>雙擊選擇文本之後直接顯示詞典面板；<strong>「按住 Ctrl」</strong>在選擇文本時需同時按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵才顯示詞典面板。",
+      "en": "当用鼠标在网页上选择了一段文本，<strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；<strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；<strong>“双击搜索”</strong>双击选择文本之后直接显示词典面板；<strong>“按住 Ctrl”</strong>在选择文本时需同时按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键才显示词典面板。"
+    }
   },
   "opt_pinmode_title": {
     "description": "option title",
-    "message": "钉住查词"
+    "message": {
+      "zh_CN": "钉住查词",
+      "zh_TW": "釘住查詞",
+      "en": "钉住查词"
+    }
   },
   "opt_pinmode_description": {
     "description": "option description",
-    "message": "当面板被钉住时的查词模式。"
+    "message": {
+      "zh_CN": "当面板被钉住时的查词模式。",
+      "zh_TW": "當面板被釘住時的查詞模式。",
+      "en": "当面板被钉住时的查词模式。"
+    }
   },
   "opt_preload": {
     "description": "option select title, preload",
-    "message": "预先加载"
+    "message": {
+      "zh_CN": "预先加载",
+      "zh_TW": "預先載入",
+      "en": "预先加载"
+    }
   },
   "opt_preload_clipboard": {
     "description": "option description",
-    "message": "剪贴板"
+    "message": {
+      "zh_CN": "剪贴板",
+      "zh_TW": "剪貼板",
+      "en": "剪贴板"
+    }
   },
   "opt_preload_selection": {
     "description": "option description",
-    "message": "页面划词"
+    "message": {
+      "zh_CN": "页面划词",
+      "zh_TW": "頁面劃詞",
+      "en": "页面划词"
+    }
   },
   "opt_preload_auto": {
     "description": "option description",
-    "message": "自动查词"
+    "message": {
+      "zh_CN": "自动查词",
+      "zh_TW": "自動查詞",
+      "en": "自动查词"
+    }
   },
   "opt_triple_ctrl_title": {
     "description": "option title",
-    "message": "快捷查词"
+    "message": {
+      "zh_CN": "快捷查词",
+      "zh_TW": "快捷查詞",
+      "en": "快捷查词"
+    }
   },
   "opt_triple_ctrl": {
     "description": "option option",
-    "message": "开启"
+    "message": {
+      "zh_CN": "开启",
+      "zh_TW": "開啟",
+      "en": "开启"
+    }
   },
   "opt_triple_ctrl_loc_title": {
     "description": "option option",
-    "message": "出现位置"
+    "message": {
+      "zh_CN": "出现位置",
+      "zh_TW": "出現位置",
+      "en": "出现位置"
+    }
   },
   "opt_triple_ctrl_loc_0": {
     "description": "option option",
-    "message": "居中"
+    "message": {
+      "zh_CN": "居中",
+      "zh_TW": "居中",
+      "en": "居中"
+    }
   },
   "opt_triple_ctrl_loc_1": {
     "description": "option option",
-    "message": "上方"
-  },"opt_triple_ctrl_loc_2": {
+    "message": {
+      "zh_CN": "上方",
+      "zh_TW": "上方",
+      "en": "上方"
+    }
+  },
+  "opt_triple_ctrl_loc_2": {
     "description": "option option",
-    "message": "右方"
-  },"opt_triple_ctrl_loc_3": {
+    "message": {
+      "zh_CN": "右方",
+      "zh_TW": "右方",
+      "en": "右方"
+    }
+  },
+  "opt_triple_ctrl_loc_3": {
     "description": "option option",
-    "message": "下方"
-  },"opt_triple_ctrl_loc_4": {
+    "message": {
+      "zh_CN": "下方",
+      "zh_TW": "下方",
+      "en": "下方"
+    }
+  },
+  "opt_triple_ctrl_loc_4": {
     "description": "option option",
-    "message": "左方"
-  },"opt_triple_ctrl_loc_5": {
+    "message": {
+      "zh_CN": "左方",
+      "zh_TW": "左方",
+      "en": "左方"
+    }
+  },
+  "opt_triple_ctrl_loc_5": {
     "description": "option option",
-    "message": "左上"
-  },"opt_triple_ctrl_loc_6": {
+    "message": {
+      "zh_CN": "左上",
+      "zh_TW": "左上",
+      "en": "左上"
+    }
+  },
+  "opt_triple_ctrl_loc_6": {
     "description": "option option",
-    "message": "右上"
-  },"opt_triple_ctrl_loc_7": {
+    "message": {
+      "zh_CN": "右上",
+      "zh_TW": "右上",
+      "en": "右上"
+    }
+  },
+  "opt_triple_ctrl_loc_7": {
     "description": "option option",
-    "message": "左下"
-  },"opt_triple_ctrl_loc_8": {
+    "message": {
+      "zh_CN": "左下",
+      "zh_TW": "左下",
+      "en": "左下"
+    }
+  },
+  "opt_triple_ctrl_loc_8": {
     "description": "option option",
-    "message": "右下"
+    "message": {
+      "zh_CN": "右下",
+      "zh_TW": "右下",
+      "en": "右下"
+    }
   },
   "opt_triple_ctrl_description": {
     "description": "option description",
-    "message": "连续按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键将弹出词典界面。选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。"
+    "message": {
+      "zh_CN": "连续按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键将弹出词典界面。选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。",
+      "zh_TW": "連續按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵將彈出詞典界面。選擇預先載入內容會顯示在輸入框里。啟動自動查詞將在面板出現之後自動開始查詞。",
+      "en": "连续按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键将弹出词典界面。选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。"
+    }
   },
   "opt_popup_title": {
     "description": "option title",
-    "message": "右上弹框"
+    "message": {
+      "zh_CN": "右上弹框",
+      "zh_TW": "右上彈框",
+      "en": "右上弹框"
+    }
   },
   "opt_popup_description": {
     "description": "option description",
-    "message": "点击右上方地址栏旁图标弹出的窗口。选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。"
+    "message": {
+      "zh_CN": "点击右上方地址栏旁图标弹出的窗口。选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。",
+      "zh_TW": "點擊右上方地址欄旁圖標彈出的窗口。選擇預先載入內容會顯示在輸入框里。啟動自動查詞將在面板出現之後自動開始查詞。",
+      "en": "点击右上方地址栏旁图标弹出的窗口。选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。"
+    }
   },
   "opt_language_title": {
     "description": "option title",
-    "message": "语言支持"
+    "message": {
+      "zh_CN": "语言支持",
+      "zh_TW": "語言支持",
+      "en": "语言支持"
+    }
   },
   "opt_language_chinese": {
     "description": "Chinese",
-    "message": "中文查词"
+    "message": {
+      "zh_CN": "中文查词",
+      "zh_TW": "中文查詞",
+      "en": "中文查词"
+    }
   },
   "opt_language_english": {
     "description": "English",
-    "message": "英文查词"
+    "message": {
+      "zh_CN": "英文查词",
+      "zh_TW": "英文查詞",
+      "en": "英文查词"
+    }
   },
   "opt_language_mode_description": {
     "description": "option description",
-    "message": "当选中的文字包含相应的语言时才进行查找。"
+    "message": {
+      "zh_CN": "当选中的文字包含相应的语言时才进行查找。",
+      "zh_TW": "當選中的文字包含相應的語言時才進行查找。",
+      "en": "当选中的文字包含相应的语言时才进行查找。"
+    }
   },
   "opt_autopron_title": {
     "description": "option description",
-    "message": "自动发音"
+    "message": {
+      "zh_CN": "自动发音",
+      "zh_TW": "自動發音",
+      "en": "自动发音"
+    }
   },
   "opt_autopron_cn": {
     "description": "option description",
-    "message": "中文"
+    "message": {
+      "zh_CN": "中文",
+      "zh_TW": "中文",
+      "en": "中文"
+    }
   },
   "opt_autopron_en": {
     "description": "option description",
-    "message": "英文"
+    "message": {
+      "zh_CN": "英文",
+      "zh_TW": "英文",
+      "en": "英文"
+    }
   },
   "opt_autopron_us": {
     "description": "option description",
-    "message": "美音"
+    "message": {
+      "zh_CN": "美音",
+      "zh_TW": "美音",
+      "en": "美音"
+    }
   },
   "opt_autopron_uk": {
     "description": "option description",
-    "message": "英音"
+    "message": {
+      "zh_CN": "英音",
+      "zh_TW": "英音",
+      "en": "英音"
+    }
   },
   "opt_autopron_description": {
     "description": "option description",
-    "message": "下拉列表的项目为支持自动发音的词典，开启功能还必须启用词典，见下方“词典配置”。“默认展开”与相应的语言显示须要勾选。"
+    "message": {
+      "zh_CN": "下拉列表的项目为支持自动发音的词典，开启功能还必须启用词典，见下方“词典配置”。“默认展开”与相应的语言显示须要勾选。",
+      "zh_TW": "下拉列表的項目為支持自動發音的詞典，開啟功能還必須啟用詞典，見下方「詞典配置」。「默認展開」與相應的語言顯示須要勾選。",
+      "en": "下拉列表的项目为支持自动发音的词典，开启功能还必须启用词典，见下方“词典配置”。“默认展开”与相应的语言显示须要勾选。"
+    }
   },
   "opt_dicts_title": {
     "description": "option title",
-    "message": "词典设置"
+    "message": {
+      "zh_CN": "词典设置",
+      "zh_TW": "詞典設置",
+      "en": "词典设置"
+    }
   },
   "opt_dicts_description": {
     "description": "option description",
-    "message": "配置各个词典，建议按个人需求裁减到最少。拖动词典标题可以进行排序。"
+    "message": {
+      "zh_CN": "配置各个词典，建议按个人需求裁减到最少。拖动词典标题可以进行排序。",
+      "zh_TW": "配置各個詞典，建議按個人需求裁減到最少。拖動詞典標題可以進行排序。",
+      "en": "配置各个词典，建议按个人需求裁减到最少。拖动词典标题可以进行排序。"
+    }
   },
   "opt_dicts_btn_add": {
     "description": "option button",
-    "message": "添加"
+    "message": {
+      "zh_CN": "添加",
+      "zh_TW": "添加",
+      "en": "添加"
+    }
   },
   "opt_dicts_add_panel_title": {
     "description": "option title",
-    "message": "添加词典"
+    "message": {
+      "zh_CN": "添加词典",
+      "zh_TW": "添加詞典",
+      "en": "添加词典"
+    }
   },
   "opt_dict_default_height": {
     "description": "词典的默认高度",
-    "message": "默认高度"
+    "message": {
+      "zh_CN": "默认高度",
+      "zh_TW": "默認高度",
+      "en": "默认高度"
+    }
   },
   "opt_dict_default_unfold": {
     "description": "词典是否默认展开",
-    "message": "默认展开"
+    "message": {
+      "zh_CN": "默认展开",
+      "zh_TW": "默認展開",
+      "en": "默认展开"
+    }
   },
   "opt_dict_show_when_chs": {
     "description": "在包含中文的时候显示",
-    "message": "查中文时显示"
+    "message": {
+      "zh_CN": "查中文时显示",
+      "zh_TW": "查中文時顯示",
+      "en": "查中文时显示"
+    }
   },
   "opt_dict_show_when_eng": {
     "description": "在包含英文的时候显示",
-    "message": "查英文时显示"
+    "message": {
+      "zh_CN": "查英文时显示",
+      "zh_TW": "查英文時顯示",
+      "en": "查英文时显示"
+    }
   },
   "popup_tab_title": {
     "description": "二维码标题",
-    "message": "当前页面二维码"
+    "message": {
+      "zh_CN": "当前页面二维码",
+      "zh_TW": "當前頁面二維碼",
+      "en": "当前页面二维码"
+    }
   },
   "popup_enter_options": {
     "description": "进入设置页面的按钮",
-    "message": "进入详细设置"
+    "message": {
+      "zh_CN": "进入详细设置",
+      "zh_TW": "進入詳細設置",
+      "en": "进入详细设置"
+    }
   },
   "opt_context_title": {
     "description": "option title",
-    "message": "右键菜单"
+    "message": {
+      "zh_CN": "右键菜单",
+      "zh_TW": "右鍵菜單",
+      "en": "右键菜单"
+    }
   },
   "opt_context_add_panel_title": {
     "description": "option title",
-    "message": "添加右键菜单"
+    "message": {
+      "zh_CN": "添加右键菜单",
+      "zh_TW": "添加右鍵菜單",
+      "en": "添加右键菜单"
+    }
   },
   "opt_context_description": {
     "description": "option description",
-    "message": "选择单词之后可以通过右键查找或者搜索。拖动标题可以进行排序。"
+    "message": {
+      "zh_CN": "选择单词之后可以通过右键查找或者搜索。拖动标题可以进行排序。",
+      "zh_TW": "選擇單詞之後可以通過右鍵查找或者搜索。拖動標題可以進行排序。",
+      "en": "选择单词之后可以通过右键查找或者搜索。拖动标题可以进行排序。"
+    }
   },
   "context_google_search": {
     "description": "context menu",
-    "message": "谷歌搜索"
+    "message": {
+      "zh_CN": "谷歌搜索",
+      "zh_TW": "谷歌搜索",
+      "en": "谷歌搜索"
+    }
   },
   "context_baidu_search": {
     "description": "context menu",
-    "message": "百度搜索"
+    "message": {
+      "zh_CN": "百度搜索",
+      "zh_TW": "百度搜索",
+      "en": "百度搜索"
+    }
   },
   "context_bing_search": {
     "description": "context menu",
-    "message": "必应搜索"
+    "message": {
+      "zh_CN": "必应搜索",
+      "zh_TW": "必應搜索",
+      "en": "必应搜索"
+    }
   },
   "context_google_translate": {
     "description": "context menu",
-    "message": "谷歌翻译"
+    "message": {
+      "zh_CN": "谷歌翻译",
+      "zh_TW": "谷歌翻譯",
+      "en": "谷歌翻译"
+    }
   },
   "context_google_page_translate": {
     "description": "context menu",
-    "message": "谷歌网页翻译"
+    "message": {
+      "zh_CN": "谷歌网页翻译",
+      "zh_TW": "谷歌網頁翻譯",
+      "en": "谷歌网页翻译"
+    }
   },
   "context_youdao_page_translate": {
     "description": "context menu",
-    "message": "有道网页翻译"
+    "message": {
+      "zh_CN": "有道网页翻译",
+      "zh_TW": "有道網頁翻譯",
+      "en": "有道网页翻译"
+    }
   },
   "context_etymonline": {
     "description": "context menu",
-    "message": "培根词源"
+    "message": {
+      "zh_CN": "培根词源",
+      "zh_TW": "培根詞源",
+      "en": "培根词源"
+    }
   },
   "context_merriam_webster": {
     "description": "context menu",
-    "message": "韦氏词典"
+    "message": {
+      "zh_CN": "韦氏词典",
+      "zh_TW": "韋氏詞典",
+      "en": "韦氏词典"
+    }
   },
   "context_oxford": {
     "description": "context menu",
-    "message": "牛津词典"
+    "message": {
+      "zh_CN": "牛津词典",
+      "zh_TW": "牛津詞典",
+      "en": "牛津词典"
+    }
   },
   "context_cambridge": {
     "description": "context menu",
-    "message": "剑桥词典"
+    "message": {
+      "zh_CN": "剑桥词典",
+      "zh_TW": "劍橋詞典",
+      "en": "剑桥词典"
+    }
   },
   "context_youdao": {
     "description": "context menu",
-    "message": "有道词典"
+    "message": {
+      "zh_CN": "有道词典",
+      "zh_TW": "有道詞典",
+      "en": "有道词典"
+    }
   },
   "context_dictcn": {
     "description": "context menu",
-    "message": "海词词典"
+    "message": {
+      "zh_CN": "海词词典",
+      "zh_TW": "海詞詞典",
+      "en": "海词词典"
+    }
   },
   "context_iciba": {
     "description": "context menu",
-    "message": "金山词霸"
+    "message": {
+      "zh_CN": "金山词霸",
+      "zh_TW": "金山詞霸",
+      "en": "金山词霸"
+    }
   },
   "context_liangan": {
     "description": "context menu",
-    "message": "两岸词典"
+    "message": {
+      "zh_CN": "两岸词典",
+      "zh_TW": "兩岸詞典",
+      "en": "两岸词典"
+    }
   },
   "context_guoyu": {
     "description": "context menu",
-    "message": "国语辞典"
+    "message": {
+      "zh_CN": "国语辞典",
+      "zh_TW": "國語辭典",
+      "en": "国语辞典"
+    }
   },
   "context_longman_business": {
     "description": "context menu",
-    "message": "朗文商务"
+    "message": {
+      "zh_CN": "朗文商务",
+      "zh_TW": "朗文商務",
+      "en": "朗文商务"
+    }
   },
   "context_bing_dict": {
     "description": "context menu",
-    "message": "必应词典"
+    "message": {
+      "zh_CN": "必应词典",
+      "zh_TW": "必應詞典",
+      "en": "必应词典"
+    }
   },
   "context_view_as_pdf": {
     "description": "context menu",
-    "message": "打开为 PDF"
+    "message": {
+      "zh_CN": "打开为 PDF",
+      "zh_TW": "打開為 PDF",
+      "en": "打开为 PDF"
+    }
   },
   "context_manual_title": {
     "description": "context menu",
-    "message": "详细使用说明"
+    "message": {
+      "zh_CN": "详细使用说明",
+      "zh_TW": "詳細使用說明",
+      "en": "详细使用说明"
+    }
   },
   "context_notebook_title": {
     "description": "context menu",
-    "message": "生词本"
+    "message": {
+      "zh_CN": "生词本",
+      "zh_TW": "生詞本",
+      "en": "生词本"
+    }
   },
   "wordpage_only_english": {
     "description": "word page",
-    "message": "只显示英文记录"
+    "message": {
+      "zh_CN": "只显示英文记录",
+      "zh_TW": "只顯示英文記錄",
+      "en": "只显示英文记录"
+    }
   },
   "wordpage_editnote_modal_title": {
     "description": "word page",
-    "message": "编辑笔记"
+    "message": {
+      "zh_CN": "编辑笔记",
+      "zh_TW": "編輯筆記",
+      "en": "编辑笔记"
+    }
   },
   "wordpage_clear": {
     "description": "word page",
-    "message": "清空记录"
+    "message": {
+      "zh_CN": "清空记录",
+      "zh_TW": "清空記錄",
+      "en": "清空记录"
+    }
   },
   "wordpage_savefile": {
     "description": "word page",
-    "message": "保存为文件"
+    "message": {
+      "zh_CN": "保存为文件",
+      "zh_TW": "保存為文件",
+      "en": "保存为文件"
+    }
   },
   "wordpage_export": {
     "description": "word page",
-    "message": "导出文本"
+    "message": {
+      "zh_CN": "导出文本",
+      "zh_TW": "導出文本",
+      "en": "导出文本"
+    }
   },
   "wordpage_copy_success": {
     "description": "word page",
-    "message": "复制成功！"
+    "message": {
+      "zh_CN": "复制成功！",
+      "zh_TW": "複製成功！",
+      "en": "复制成功！"
+    }
   },
   "wordpage_copy_failed": {
     "description": "word page",
-    "message": "复制失败，请手动复制"
+    "message": {
+      "zh_CN": "复制失败，请手动复制",
+      "zh_TW": "複製失敗，請手動複製",
+      "en": "复制失败，请手动复制"
+    }
   },
   "wordpage_save_success": {
     "description": "word page",
-    "message": "保存成功！"
+    "message": {
+      "zh_CN": "保存成功！",
+      "zh_TW": "保存成功！",
+      "en": "保存成功！"
+    }
   },
   "wordpage_save_faild": {
     "description": "word page",
-    "message": "保存失败"
+    "message": {
+      "zh_CN": "保存失败",
+      "zh_TW": "保存失敗",
+      "en": "保存失败"
+    }
   },
   "wordpage_clear_success": {
     "description": "word page",
-    "message": "清除成功！"
+    "message": {
+      "zh_CN": "清除成功！",
+      "zh_TW": "清除成功！",
+      "en": "清除成功！"
+    }
   },
   "wordpage_exp_modal_title": {
     "description": "word page",
-    "message": "导出文本"
+    "message": {
+      "zh_CN": "导出文本",
+      "zh_TW": "導出文本",
+      "en": "导出文本"
+    }
   },
   "wordpage_exp_description": {
     "description": "word page",
-    "message": "编写生成模板，描述每条记录生成的样子："
+    "message": {
+      "zh_CN": "编写生成模板，描述每条记录生成的样子：",
+      "zh_TW": "編寫生成模板，描述每條記錄生成的樣子：",
+      "en": "编写生成模板，描述每条记录生成的样子："
+    }
   },
   "wordpage_exp_placeholder": {
     "description": "word page",
-    "message": "替换符"
+    "message": {
+      "zh_CN": "替换符",
+      "zh_TW": "替換符",
+      "en": "替换符"
+    }
   },
   "wordpage_exp_gencontent": {
     "description": "word page",
-    "message": "代表的内容"
+    "message": {
+      "zh_CN": "代表的内容",
+      "zh_TW": "代表的內容",
+      "en": "代表的内容"
+    }
   },
   "save_to_notebook": {
     "description": "word page",
-    "message": "保存到生词本"
+    "message": {
+      "zh_CN": "保存到生词本",
+      "zh_TW": "保存到生詞本",
+      "en": "保存到生词本"
+    }
   },
   "history_title": {
     "description": "history page",
-    "message": "查词历史记录"
+    "message": {
+      "zh_CN": "查词历史记录",
+      "zh_TW": "查詞歷史記錄",
+      "en": "查词历史记录"
+    }
   },
   "history_wordcount": {
     "description": "history page",
-    "message": "共 %s 条记录，注意历史记录不同步"
+    "message": {
+      "zh_CN": "共 %s 条记录，注意历史记录不同步",
+      "zh_TW": "共 %s 條記錄，注意歷史記錄不同步",
+      "en": "共 %s 条记录，注意历史记录不同步"
+    }
   },
   "history_no_result": {
     "description": "history page",
-    "message": "无历史记录，查词后再查看"
+    "message": {
+      "zh_CN": "无历史记录，查词后再查看",
+      "zh_TW": "無歷史記錄，查詞後再查看",
+      "en": "无历史记录，查词后再查看"
+    }
   },
   "history_clear_modal_title": {
     "description": "history page",
-    "message": "清空查词历史"
+    "message": {
+      "zh_CN": "清空查词历史",
+      "zh_TW": "清空查詞歷史",
+      "en": "清空查词历史"
+    }
   },
   "history_clear_modal_content": {
     "description": "history page",
-    "message": "所有查词历史记录将被清除，确定？"
+    "message": {
+      "zh_CN": "所有查词历史记录将被清除，确定？",
+      "zh_TW": "所有查詞歷史記錄將被清除，確定？",
+      "en": "所有查词历史记录将被清除，确定？"
+    }
   },
   "notebook_title": {
     "description": "notebook page",
-    "message": "生词本"
+    "message": {
+      "zh_CN": "生词本",
+      "zh_TW": "生詞本",
+      "en": "生词本"
+    }
   },
   "notebook_wordcount": {
     "description": "notebook page",
-    "message": "共 %s 条记录，生词本数据不同步，注意导出"
+    "message": {
+      "zh_CN": "共 %s 条记录，生词本数据不同步，注意导出",
+      "zh_TW": "共 %s 條記錄，生詞本數據不同步，注意導出",
+      "en": "共 %s 条记录，生词本数据不同步，注意导出"
+    }
   },
   "notebook_no_result": {
     "description": "notebook page",
-    "message": "无生词记录，添加后再查看"
+    "message": {
+      "zh_CN": "无生词记录，添加后再查看",
+      "zh_TW": "無生詞記錄，添加後再查看",
+      "en": "无生词记录，添加后再查看"
+    }
   },
   "notebook_clear_modal_title": {
     "description": "notebook page",
-    "message": "清空生词本"
+    "message": {
+      "zh_CN": "清空生词本",
+      "zh_TW": "清空生詞本",
+      "en": "清空生词本"
+    }
   },
   "notebook_clear_modal_content": {
     "description": "notebook page",
-    "message": "生词本所有记录将被清除，确定？"
+    "message": {
+      "zh_CN": "生词本所有记录将被清除，确定？",
+      "zh_TW": "生詞本所有記錄將被清除，確定？",
+      "en": "生词本所有记录将被清除，确定？"
+    }
   },
   "edit_note_word": {
     "description": "notebook page",
-    "message": "单词"
+    "message": {
+      "zh_CN": "单词",
+      "zh_TW": "單詞",
+      "en": "单词"
+    }
   },
   "edit_note_trans": {
     "description": "notebook page",
-    "message": "翻译"
+    "message": {
+      "zh_CN": "翻译",
+      "zh_TW": "翻譯",
+      "en": "翻译"
+    }
   },
   "edit_note_note": {
     "description": "notebook page",
-    "message": "笔记"
+    "message": {
+      "zh_CN": "笔记",
+      "zh_TW": "筆記",
+      "en": "笔记"
+    }
   },
   "edit_note_context": {
     "description": "notebook page",
-    "message": "上下文"
+    "message": {
+      "zh_CN": "上下文",
+      "zh_TW": "上下文",
+      "en": "上下文"
+    }
   },
   "edit_note_src_title": {
     "description": "notebook page",
-    "message": "来源标题"
+    "message": {
+      "zh_CN": "来源标题",
+      "zh_TW": "來源標題",
+      "en": "来源标题"
+    }
   },
   "edit_note_src_url": {
     "description": "notebook page",
-    "message": "来源链接"
+    "message": {
+      "zh_CN": "来源链接",
+      "zh_TW": "來源鏈接",
+      "en": "来源链接"
+    }
   },
   "edit_note_src_favicon": {
     "description": "notebook page",
-    "message": "来源图标"
+    "message": {
+      "zh_CN": "来源图标",
+      "zh_TW": "來源圖標",
+      "en": "来源图标"
+    }
   },
   "notification_youdao_err": {
     "description": "notifications message",
-    "message": "有道网页翻译2.0 加载无响应，\n可能扩展无权访问该页面，\n如加载成功请忽略本消息。"
+    "message": {
+      "zh_CN": "有道网页翻译2.0 加载无响应，\n可能扩展无权访问该页面，\n如加载成功请忽略本消息。",
+      "zh_TW": "有道網頁翻譯2.0 載入無響應，\n可能擴展無權訪問該頁面，\n如載入成功請忽略本消息。",
+      "en": "有道网页翻译2.0 加载无响应，\n可能扩展无权访问该页面，\n如加载成功请忽略本消息。"
+    }
   },
   "from_saladict_panel": {
     "description": "From Saladict Panel",
-    "message": "来自沙拉查词面板"
+    "message": {
+      "zh_CN": "来自沙拉查词面板",
+      "zh_TW": "來自沙拉查詞面板",
+      "en": "来自沙拉查词面板"
+    }
   },
   "from_saladict_old": {
     "description": "From Saladict Panel",
-    "message": "来自沙拉查词旧记录"
+    "message": {
+      "zh_CN": "来自沙拉查词旧记录",
+      "zh_TW": "來自沙拉查詞舊記錄",
+      "en": "来自沙拉查词旧记录"
+    }
   }
 }
