@@ -10,7 +10,7 @@ export function mergeConfig (config?): Promise<AppConfig> {
     return initConfig()
   }
 
-  switch(config.version) {
+  switch (config.version) {
     case 6:
       return browser.storage.sync.set({ config })
         .then(() => config)
@@ -89,10 +89,6 @@ function mergeHistorical (config): Promise<AppConfig> {
 
   function mergeNumber (path: string): void {
     return merge(path, _.isNumber)
-  }
-
-  function mergeString (path: string): void {
-    return merge(path, _.isString)
   }
 
   function mergeBoolean (path: string): void {

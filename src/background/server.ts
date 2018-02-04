@@ -1,5 +1,5 @@
-import { DictID, AppConfig } from '../app-config'
-import { storage, message, openURL, Message } from '../_helpers/browser-api'
+import { DictID } from '../app-config'
+import { message, openURL } from '../_helpers/browser-api'
 import { play } from './audio-manager'
 import { chsToChz } from '../_helpers/chs-to-chz'
 

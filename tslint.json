@@ -2,6 +2,9 @@
   "extends": ["tslint-config-standard", "rxjs-tslint-rules"],
   "rules": {
     "trailing-comma": false,
+    "return-undefined": false,
+    "strict-type-predicates": false,
+    "no-floating-promises": false,
 
     "rxjs-finnish": { "severity": "error" },
     "rxjs-no-add": { "severity": "error" },

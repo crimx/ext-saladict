@@ -43,7 +43,9 @@ function onInstalled ({ reason, previousVersion }: { reason: string, previousVer
 function onStartup (): void {
   // check update every month
   Promise.all([storage.local.get('lastCheckUpdate'), storage.sync.get('config')])
-    .then(([{ lastCheckUpdate }, { config }]: [{ lastCheckUpdate: number }, { config: AppConfig }]) => {
+    .then(([r1, r2]) => {
+      const lastCheckUpdate = r1.lastCheckUpdate as number
+      const config = r2.config as AppConfig
       initMenus(config.contextMenus)
       initPdf(config.pdfSniff)
       const today = Date.now()
