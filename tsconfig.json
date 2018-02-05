@@ -1,11 +1,15 @@
 {
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "baseUrl": "./",
     "jsx": "react",
     "lib": ["es6", "dom"],
     "moduleResolution": "node",
     "noImplicitAny": false,
     "outDir": "./dist/",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "sourceMap": true,
     "strict": true,
     "target": "es6",

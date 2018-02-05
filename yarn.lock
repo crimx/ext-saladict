@@ -2328,6 +2328,10 @@ deep-is@~0.1.3:
   version "0.1.3"
   resolved "https://registry.npmjs.org/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
 
+deepmerge@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.npmjs.org/deepmerge/-/deepmerge-2.0.1.tgz#25c1c24f110fb914f80001b925264dd77f3f4312"
+
 default-require-extensions@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/default-require-extensions/-/default-require-extensions-1.0.0.tgz#f37ea15d3e13ffd9b437d33e1a75b5fb97874cb8"
@@ -4672,6 +4676,12 @@ jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.npmjs.org/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
 
+jsconfig-paths-webpack-plugin@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.npmjs.org/jsconfig-paths-webpack-plugin/-/jsconfig-paths-webpack-plugin-0.1.3.tgz#fdeb718b7dc39cd4fa89c6df76015428ba4a51b8"
+  dependencies:
+    path "^0.12.7"
+
 jsdom@^11.5.1:
   version "11.5.1"
   resolved "https://registry.npmjs.org/jsdom/-/jsdom-11.5.1.tgz#5df753b8d0bca20142ce21f4f6c039f99a992929"
@@ -5865,6 +5875,13 @@ path-type@^3.0.0:
   dependencies:
     pify "^3.0.0"
 
+path@^0.12.7:
+  version "0.12.7"
+  resolved "https://registry.npmjs.org/path/-/path-0.12.7.tgz#d4dc2a506c4ce2197eb481ebfcd5b36c0140b10f"
+  dependencies:
+    process "^0.11.1"
+    util "^0.10.3"
+
 pbkdf2@^3.0.3:
   version "3.0.14"
   resolved "https://registry.npmjs.org/pbkdf2/-/pbkdf2-3.0.14.tgz#a35e13c64799b06ce15320f459c230e68e73bade"
@@ -6251,7 +6268,7 @@ process-nextick-args@~1.0.6:
   version "1.0.7"
   resolved "https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-1.0.7.tgz#150e20b756590ad3f91093f25a4f2ad8bff30ba3"
 
-process@^0.11.10:
+process@^0.11.1, process@^0.11.10:
   version "0.11.10"
   resolved "https://registry.npmjs.org/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
 
@@ -7525,7 +7542,7 @@ strip-indent@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/strip-indent/-/strip-indent-2.0.0.tgz#5ef8db295d01e6ed6cbf7aab96998d7822527b68"
 
-strip-json-comments@2.0.1, strip-json-comments@^2.0.0, strip-json-comments@~2.0.1:
+strip-json-comments@2.0.1, strip-json-comments@^2.0.0, strip-json-comments@^2.0.1, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
@@ -7785,6 +7802,21 @@ ts-loader@^3.2.0:
     enhanced-resolve "^3.0.0"
     loader-utils "^1.0.2"
     semver "^5.0.1"
+
+tsconfig-paths-webpack-plugin@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/tsconfig-paths-webpack-plugin/-/tsconfig-paths-webpack-plugin-2.0.0.tgz#7652dc684bb3206c8e7e446831ca01cbf4d11772"
+  dependencies:
+    chalk "^2.3.0"
+    tsconfig-paths "^3.1.1"
+
+tsconfig-paths@^3.1.1:
+  version "3.1.1"
+  resolved "https://registry.npmjs.org/tsconfig-paths/-/tsconfig-paths-3.1.1.tgz#368478faed54a247f2c8e59e44cb81418b2ae515"
+  dependencies:
+    deepmerge "^2.0.1"
+    strip-bom "^3.0.0"
+    strip-json-comments "^2.0.1"
 
 tsconfig@^7.0.0:
   version "7.0.0"

@@ -13,6 +13,8 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin')
 const getClientEnvironment = require('./env')
 const paths = require('./paths')
 const argv = require('minimist')(process.argv.slice(2))
+const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
+const JsConfigPathsPlugin = require('jsconfig-paths-webpack-plugin')
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -118,8 +120,6 @@ module.exports = {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
-      // For the origin vue project
-      'src': path.resolve(__dirname, '../src'),
       'vue$': 'vue/dist/vue.runtime.esm.js',
     },
     plugins: [
@@ -129,6 +129,8 @@ module.exports = {
       // please link the files into your node_modules/ and let module-resolution kick in.
       // Make sure your source files are compiled, as they will not be processed in any way.
       new ModuleScopePlugin(paths.appSrc, [paths.appPackageJson]),
+      new JsConfigPathsPlugin(),
+      new TsConfigPathsPlugin(),
     ],
   },
   module: {
