@@ -1,4 +1,4 @@
-import chsToChz from '../../../src/_helpers/chs-to-chz'
+import chsToChz from '@/_helpers/chs-to-chz'
 
 describe('Chs to Chz', () => {
   it('should convert chs to chz', () => {

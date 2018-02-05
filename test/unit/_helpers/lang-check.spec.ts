@@ -1,4 +1,4 @@
-import { isContainChinese, isContainEnglish } from '../../../src/_helpers/lang-check'
+import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 
 describe('Language Check', () => {
   it('isContainChinese should return ture if text contains Chinese', () => {

@@ -1,4 +1,4 @@
-import fetchDom from '../../../src/_helpers/fetch-dom'
+import fetchDom from '@/_helpers/fetch-dom'
 
 class XMLHttpRequestMock {
   static queue: XMLHttpRequestMock[] = []

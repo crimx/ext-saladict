@@ -1,4 +1,4 @@
-import * as pm from '../../../src/_helpers/promise-more'
+import * as pm from '@/_helpers/promise-more'
 
 describe('Promise More', () => {
   beforeAll(() => {

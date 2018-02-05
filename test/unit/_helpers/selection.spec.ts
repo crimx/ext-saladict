@@ -1,4 +1,4 @@
-import selection from '../../../src/_helpers/selection'
+import selection from '@/_helpers/selection'
 
 describe('Selection', () => {
   const bakSelection = window.getSelection

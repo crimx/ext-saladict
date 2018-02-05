@@ -2,8 +2,8 @@
  * Open pdf link directly
  */
 
-import { storage } from '../_helpers/browser-api'
-import { AppConfig } from '../app-config'
+import { storage } from '@/_helpers/browser-api'
+import { AppConfig } from '@/app-config'
 
 export function init (pdfSniff: boolean) {
   if (browser.webRequest.onBeforeRequest.hasListener(otherPdfListener)) {

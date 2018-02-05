@@ -1,5 +1,5 @@
-import { storage, openURL } from '../_helpers/browser-api'
-import { AppConfig } from '../app-config'
+import { storage, openURL } from '@/_helpers/browser-api'
+import { AppConfig } from '@/app-config'
 
 import { Observable } from 'rxjs/Observable'
 import { fromPromise } from 'rxjs/observable/fromPromise'

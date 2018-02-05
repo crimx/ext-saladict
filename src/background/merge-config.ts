@@ -1,4 +1,4 @@
-import { appConfigFactory, AppConfig } from '../app-config'
+import { appConfigFactory, AppConfig } from '@/app-config'
 import _ from 'lodash'
 
 /**
@@ -24,7 +24,7 @@ function initConfig (): Promise<AppConfig> {
   const storageObj = { config: appConfigFactory() }
 
   Object.keys(storageObj.config.dicts.all).forEach(id => {
-    storageObj[id] = require('../components/dictionaries/' + id + '/config')
+    storageObj[id] = require('@/components/dictionaries/' + id + '/config')
   })
 
   return browser.storage.sync.set(storageObj)
@@ -70,7 +70,7 @@ function mergeHistorical (config): Promise<AppConfig> {
 
   const storageObj = { config: base }
   Object.keys(base.dicts.all).forEach(id => {
-    storageObj[id] = config.dicts.all[id] || require('../components/dictionaries/' + id + '/config')
+    storageObj[id] = config.dicts.all[id] || require('@/components/dictionaries/' + id + '/config')
   })
 
   return browser.storage.sync.set(storageObj)

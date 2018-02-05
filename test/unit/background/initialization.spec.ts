@@ -1,4 +1,4 @@
-import { appConfigFactory, AppConfig } from '../../../src/app-config'
+import { appConfigFactory, AppConfig } from '@/app-config'
 import fetchMock from 'jest-fetch-mock'
 import sinon from 'sinon'
 
@@ -11,12 +11,12 @@ describe('Initialization', () => {
   const checkUpdate = jest.fn().mockReturnValue(Promise.resolve())
 
   beforeAll(() => {
-    const { message, storage } = require('../../../src/_helpers/browser-api')
+    const { message, storage } = require('@/_helpers/browser-api')
     window.fetch = fetchMock
 
     browser.flush()
     jest.resetModules()
-    jest.doMock('../../../src/background/merge-config', () => {
+    jest.doMock('@/background/merge-config', () => {
       return {
         mergeConfig (config) {
           mergeConfig(config)
@@ -24,16 +24,16 @@ describe('Initialization', () => {
         }
       }
     })
-    jest.doMock('../../../src/background/context-menus', () => {
+    jest.doMock('@/background/context-menus', () => {
       return { init: initMenus }
     })
-    jest.doMock('../../../src/background/pdf-sniffer', () => {
+    jest.doMock('@/background/pdf-sniffer', () => {
       return { init: initPdf }
     })
-    jest.doMock('../../../src/_helpers/check-update', () => {
+    jest.doMock('@/_helpers/check-update', () => {
       return checkUpdate
     })
-    jest.doMock('../../../src/_helpers/browser-api', () => {
+    jest.doMock('@/_helpers/browser-api', () => {
       return {
         message,
         storage,
@@ -41,13 +41,13 @@ describe('Initialization', () => {
       }
     })
 
-    require('../../../src/background/initialization')
+    require('@/background/initialization')
   })
   afterAll(() => {
     browser.flush()
-    jest.dontMock('../../../src/background/merge-config')
-    jest.dontMock('../../../src/background/context-menus')
-    jest.dontMock('../../../src/_helpers/browser-api')
+    jest.dontMock('@/background/merge-config')
+    jest.dontMock('@/background/context-menus')
+    jest.dontMock('@/_helpers/browser-api')
     window.fetch = bakFetch
   })
 

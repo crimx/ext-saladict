@@ -1,4 +1,4 @@
-import { appConfigFactory, AppConfig } from '../../../src/app-config'
+import { appConfigFactory, AppConfig } from '@/app-config'
 import sinon from 'sinon'
 
 function specialConfig () {
@@ -11,7 +11,7 @@ describe('Context Menus', () => {
   beforeAll(() => {
     browser.flush()
     jest.resetModules()
-    require('../../../src/background/context-menus')
+    require('@/background/context-menus')
   })
   afterAll(() => browser.flush())
 
@@ -93,7 +93,7 @@ describe('Context Menus', () => {
       browser.contextMenus.create.callsFake((_, cb) => cb())
       config = specialConfig()
       jest.resetModules()
-      const { init } = require('../../../src/background/context-menus')
+      const { init } = require('@/background/context-menus')
       init(config.contextMenus)
     })
 
@@ -110,7 +110,7 @@ describe('Context Menus', () => {
     it('should not init setup when called multiple times', () => {
       expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
 
-      const { init } = require('../../../src/background/context-menus')
+      const { init } = require('@/background/context-menus')
       init(config.contextMenus)
       init(config.contextMenus)
 

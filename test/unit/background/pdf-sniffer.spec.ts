@@ -1,5 +1,5 @@
-import { appConfigFactory, AppConfig } from '../../../src/app-config'
-import { init as initPdf } from '../../../src/background/pdf-sniffer'
+import { appConfigFactory, AppConfig } from '@/app-config'
+import { init as initPdf } from '@/background/pdf-sniffer'
 import sinon from 'sinon'
 
 function hasListenerPatch (fn) {

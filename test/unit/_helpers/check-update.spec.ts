@@ -1,4 +1,4 @@
-import checkUpdate from '../../../src/_helpers/check-update'
+import checkUpdate from '@/_helpers/check-update'
 import fetchMock from 'jest-fetch-mock'
 
 describe('Check Update', () => {

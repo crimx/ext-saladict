@@ -1,4 +1,4 @@
-import { message, storage, openURL } from '../../../src/_helpers/browser-api'
+import { message, storage, openURL } from '@/_helpers/browser-api'
 
 beforeEach(() => {
   browser.flush()

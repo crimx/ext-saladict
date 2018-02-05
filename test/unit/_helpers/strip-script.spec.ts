@@ -1,4 +1,4 @@
-import stripScript from '../../../src/_helpers/strip-script'
+import stripScript from '@/_helpers/strip-script'
 
 describe('Strip Script', () => {
   const expectedEl = document.createElement('div') as HTMLDivElement

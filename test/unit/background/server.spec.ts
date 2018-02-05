@@ -1,5 +1,5 @@
-import { appConfigFactory, AppConfig } from '../../../src/app-config'
-import * as browserWrap from '../../../src/_helpers/browser-api'
+import { appConfigFactory, AppConfig } from '@/app-config'
+import * as browserWrap from '@/_helpers/browser-api'
 import sinon from 'sinon'
 
 describe('Server', () => {
@@ -13,26 +13,26 @@ describe('Server', () => {
   browserWrap.openURL = openURL
 
   beforeAll(() => {
-    jest.doMock('../../../src/_helpers/chs-to-chz', () => {
+    jest.doMock('@/_helpers/chs-to-chz', () => {
       return { chsToChz }
     })
-    jest.doMock('../../../src/background/audio-manager', () => {
+    jest.doMock('@/background/audio-manager', () => {
       return { play }
     })
-    jest.doMock('../../../src/_helpers/browser-api', () => {
+    jest.doMock('@/_helpers/browser-api', () => {
       return browserWrap
     })
-    jest.doMock('../../../src/components/dictionaries/bing/engine.js', () => {
+    jest.doMock('@/components/dictionaries/bing/engine.js', () => {
       return bingSearch
     })
   })
 
   afterAll(() => {
     browser.flush()
-    jest.dontMock('../../../src/_helpers/chs-to-chz')
-    jest.dontMock('../../../src/background/audio-manager')
-    jest.dontMock('../../../src/_helpers/browser-api')
-    jest.dontMock('../../../src/components/dictionaries/bing/engine.js')
+    jest.dontMock('@/_helpers/chs-to-chz')
+    jest.dontMock('@/background/audio-manager')
+    jest.dontMock('@/_helpers/browser-api')
+    jest.dontMock('@/components/dictionaries/bing/engine.js')
   })
 
   beforeEach(() => {
@@ -46,7 +46,7 @@ describe('Server', () => {
     bingSearch.mockReset()
     bingSearch.mockImplementation(() => Promise.resolve())
     jest.resetModules()
-    require('../../../src/background/server')
+    require('@/background/server')
   })
 
   it('should properly init', () => {

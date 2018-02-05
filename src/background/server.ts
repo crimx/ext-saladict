@@ -1,7 +1,7 @@
-import { DictID } from '../app-config'
-import { message, openURL } from '../_helpers/browser-api'
+import { DictID } from '@/app-config'
+import { message, openURL } from '@/_helpers/browser-api'
 import { play } from './audio-manager'
-import { chsToChz } from '../_helpers/chs-to-chz'
+import { chsToChz } from '@/_helpers/chs-to-chz'
 
 interface MessageOpenUrlWithEscape {
   type: 'OPEN_URL'
@@ -63,7 +63,7 @@ function fetchDictResult (data: MessageFetchDictResult): Promise<void> {
   let search
 
   try {
-    search = require('../components/dictionaries/' + data.dict + '/engine.js')
+    search = require('@/components/dictionaries/' + data.dict + '/engine.js')
   } catch (err) {
     return Promise.reject(err)
   }

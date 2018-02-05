@@ -2,7 +2,7 @@
  * To make sure only one audio plays at a time
  */
 
-import { timeout } from '../_helpers/promise-more'
+import { timeout } from '@/_helpers/promise-more'
 
 declare global {
   interface Window {

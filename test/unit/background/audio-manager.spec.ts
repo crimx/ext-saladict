@@ -1,4 +1,4 @@
-import audio from '../../../src/background/audio-manager'
+import audio from '@/background/audio-manager'
 
 describe('Audio Manager', () => {
   const bakAudio = (window as any).Audio
