@@ -4,6 +4,7 @@
     "baseUrl": "./",
     "jsx": "react",
     "lib": ["es6", "dom"],
+    "module": "es2015",
     "moduleResolution": "node",
     "noImplicitAny": false,
     "outDir": "./dist/",
