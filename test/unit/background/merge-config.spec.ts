@@ -14,38 +14,25 @@ describe('Merge Config', () => {
   it('should init config when there is no previous config', () => {
     return mergeConfig()
       .then(config => {
-        const defaultConfig = appConfigFactory()
-        const storageObj = { config: defaultConfig }
-        Object.keys(defaultConfig.dicts.all).forEach(id => {
-          storageObj[id] = sinon.match.object
-        })
-        expect(config).toEqual(defaultConfig)
-        expect(browser.storage.sync.set.calledWithMatch(storageObj)).toBeTruthy()
+        expect(config).toEqual(appConfigFactory())
       })
   })
   it('should merge config version < 6', () => {
     const oldConfig = appConfigFactory() as AppConfigMutable
     // @ts-ignore
     delete oldConfig.version
-    Object.keys(oldConfig.dicts.all).forEach(id => {
-      oldConfig.dicts.all[id] = { id }
-    })
     oldConfig.dicts.selected = ['bing']
+    oldConfig.dicts.all.bing.defaultUnfold = !oldConfig.dicts.all.bing.defaultUnfold
+    oldConfig.dicts.all.bing.preferredHeight = 1000
 
     return mergeConfig(oldConfig)
       .then(config => {
         const defaultStorageObj = { config: appConfigFactory() }
         const expectStorageObj = { config: appConfigFactory() as AppConfigMutable }
         expectStorageObj.config.dicts.selected = ['bing']
-
-        Object.keys(oldConfig.dicts.all).forEach(id => {
-          defaultStorageObj[id] = sinon.match.object
-          expectStorageObj[id] = sinon.match.object
-        })
-
+        expectStorageObj.config.dicts.all.bing.defaultUnfold = !expectStorageObj.config.dicts.all.bing.defaultUnfold
+        expectStorageObj.config.dicts.all.bing.preferredHeight = 1000
         expect(config).toEqual(expectStorageObj.config)
-        expect(browser.storage.sync.set.calledWithMatch(expectStorageObj)).toBeTruthy()
-        expect(browser.storage.sync.set.calledWithMatch(defaultStorageObj)).toBeFalsy()
       })
   })
   it('should only update config for version 6', () => {
@@ -53,19 +40,9 @@ describe('Merge Config', () => {
 
     return mergeConfig(userConfig)
       .then(config => {
-        const defaultStorageObj1 = { config: appConfigFactory() }
-        const defaultStorageObj2 = { config: userConfig }
         const expectStorageObj = { config: userConfig }
-
-        Object.keys(userConfig.dicts.all).forEach(id => {
-          defaultStorageObj1[id] = sinon.match.object
-          defaultStorageObj2[id] = sinon.match.object
-        })
-
         expect(config).toEqual(userConfig)
         expect(browser.storage.sync.set.calledWithMatch(expectStorageObj)).toBeTruthy()
-        expect(browser.storage.sync.set.calledWithMatch(defaultStorageObj1)).toBeFalsy()
-        expect(browser.storage.sync.set.calledWithMatch(defaultStorageObj2)).toBeFalsy()
       })
   })
 })

@@ -23,10 +23,6 @@ export default mergeConfig
 function initConfig (): Promise<AppConfig> {
   const storageObj = { config: appConfigFactory() }
 
-  Object.keys(storageObj.config.dicts.all).forEach(id => {
-    storageObj[id] = require('@/components/dictionaries/' + id + '/config')
-  })
-
   return browser.storage.sync.set(storageObj)
     .then(() => storageObj.config)
 }
@@ -68,12 +64,21 @@ function mergeHistorical (config): Promise<AppConfig> {
   mergeSelectedDicts('dicts')
   mergeSelectedDicts('contextMenus')
 
-  const storageObj = { config: base }
-  Object.keys(base.dicts.all).forEach(id => {
-    storageObj[id] = config.dicts.all[id] || require('@/components/dictionaries/' + id + '/config')
+  _.forEach(base.dicts.all, (dict, id) => {
+    mergeBoolean(`dicts.all.${id}.defaultUnfold`)
+    mergeNumber(`dicts.all.${id}.preferredHeight`)
+    mergeBoolean(`dicts.all.${id}.selectionLang.eng`)
+    mergeBoolean(`dicts.all.${id}.selectionLang.chs`)
+    _.forEach(dict.options, (value, opt) => {
+      if (_.isNumber(value)) {
+        mergeNumber(`dicts.all.${id}.options.${opt}`)
+      } else if (_.isBoolean(value)) {
+        mergeBoolean(`dicts.all.${id}.options.${opt}`)
+      }
+    })
   })
 
-  return browser.storage.sync.set(storageObj)
+  return browser.storage.sync.set({ config: base })
     .then(() => base)
 
   function mergeSelectedDicts (path: string): void {
