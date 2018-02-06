@@ -6,7 +6,6 @@
     "strict-type-predicates": false,
     "no-floating-promises": false,
 
-    "rxjs-finnish": { "severity": "error" },
     "rxjs-no-add": { "severity": "error" },
     "rxjs-no-operator": { "severity": "error" },
     "rxjs-no-patched": { "severity": "error" },
