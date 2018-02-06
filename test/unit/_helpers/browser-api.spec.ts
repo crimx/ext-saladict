@@ -1,4 +1,6 @@
 import { message, storage, openURL } from '@/_helpers/browser-api'
+import { AppConfig } from '@/app-config'
+import { take } from 'rxjs/operators/take'
 
 beforeEach(() => {
   browser.flush()
@@ -32,7 +34,7 @@ describe('Browser API Wapper', () => {
         expect(browser.storage[area].set.calledWith(key)).toBeTruthy()
       })
       describe(`storage.${area}.addListener`, () => {
-        const changes = { key: 'value' }
+        const changes = { key: { newValue: 'new value', oldValue: 'old value' } }
         const otherArea = storageArea.find(x => x !== area)
 
         it('with cb', () => {
@@ -40,9 +42,6 @@ describe('Browser API Wapper', () => {
           let cbCall = 0
           storage[area].addListener(cb)
           expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
-
-          const changes = { key: 'value' }
-          const otherArea = storageArea.find(x => x !== area)
 
           browser.storage.onChanged.dispatch(changes, otherArea)
           expect(cb).toHaveBeenCalledTimes(cbCall)
@@ -69,7 +68,7 @@ describe('Browser API Wapper', () => {
         })
       })
       describe(`storage.${area}.removeListener`, () => {
-        const changes = { key: 'value' }
+        const changes = { key: { newValue: 'new value', oldValue: 'old value' } }
         const otherArea = storageArea.find(x => x !== area)
 
         it('with cb remove addListener with cb', () => {
@@ -137,6 +136,112 @@ describe('Browser API Wapper', () => {
           expect(cb).toHaveBeenCalledTimes(cbCall)
         })
       })
+      describe(`storage.${area}.createStream`, () => {
+        const changes = { key: { newValue: 'new value', oldValue: 'old value' } }
+        const otherArea = storageArea.find(x => x !== area)
+
+        it('without argument', () => {
+          const nextStub = jest.fn()
+          const errorStub = jest.fn()
+          const completeStub = jest.fn()
+          const configChanged$ = storage[area].createStream<typeof changes>()
+            .pipe(take(1))
+            .subscribe(nextStub, errorStub, completeStub)
+          expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
+          expect(nextStub).toHaveBeenCalledTimes(0)
+          expect(errorStub).toHaveBeenCalledTimes(0)
+          expect(completeStub).toHaveBeenCalledTimes(0)
+
+          browser.storage.onChanged.dispatch(changes, otherArea)
+          expect(nextStub).toHaveBeenCalledTimes(0)
+          expect(errorStub).toHaveBeenCalledTimes(0)
+          expect(completeStub).toHaveBeenCalledTimes(0)
+
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(nextStub).toHaveBeenCalledTimes(1)
+          expect(errorStub).toHaveBeenCalledTimes(0)
+          expect(completeStub).toHaveBeenCalledTimes(1)
+          expect(nextStub).toBeCalledWith(changes)
+        })
+
+        it('with key', () => {
+          const nextStub = jest.fn()
+          const errorStub = jest.fn()
+          const completeStub = jest.fn()
+          const configChanged$ = storage[area].createStream<typeof changes>('key')
+            .pipe(take(1))
+            .subscribe(nextStub, errorStub, completeStub)
+          expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
+          expect(nextStub).toHaveBeenCalledTimes(0)
+          expect(errorStub).toHaveBeenCalledTimes(0)
+          expect(completeStub).toHaveBeenCalledTimes(0)
+
+          browser.storage.onChanged.dispatch(changes, otherArea)
+          expect(nextStub).toHaveBeenCalledTimes(0)
+          expect(errorStub).toHaveBeenCalledTimes(0)
+          expect(completeStub).toHaveBeenCalledTimes(0)
+
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(nextStub).toHaveBeenCalledTimes(1)
+          expect(errorStub).toHaveBeenCalledTimes(0)
+          expect(completeStub).toHaveBeenCalledTimes(1)
+          expect(nextStub).toBeCalledWith(changes)
+        })
+        it('with selector', () => {
+          const nextStub = jest.fn()
+          const errorStub = jest.fn()
+          const completeStub = jest.fn()
+          const configChanged$ = storage[area].createStream<typeof changes>(({ key: { newValue } }) => newValue)
+            .pipe(take(1))
+            .subscribe(nextStub, errorStub, completeStub)
+          expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
+          expect(nextStub).toHaveBeenCalledTimes(0)
+          expect(errorStub).toHaveBeenCalledTimes(0)
+          expect(completeStub).toHaveBeenCalledTimes(0)
+
+          browser.storage.onChanged.dispatch(changes, otherArea)
+          expect(nextStub).toHaveBeenCalledTimes(0)
+          expect(errorStub).toHaveBeenCalledTimes(0)
+          expect(completeStub).toHaveBeenCalledTimes(0)
+
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(nextStub).toHaveBeenCalledTimes(1)
+          expect(errorStub).toHaveBeenCalledTimes(0)
+          expect(completeStub).toHaveBeenCalledTimes(1)
+          expect(nextStub).toBeCalledWith(changes.key.newValue)
+        })
+        it('with key and selector', () => {
+          const nextStub = jest.fn()
+          const errorStub = jest.fn()
+          const completeStub = jest.fn()
+          const configChanged$ = storage[area].createStream<typeof changes>(
+            'key',
+            ({ key: { oldValue } }) => oldValue
+          )
+            .pipe(take(1))
+            .subscribe(nextStub, errorStub, completeStub)
+          expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
+          expect(nextStub).toHaveBeenCalledTimes(0)
+          expect(errorStub).toHaveBeenCalledTimes(0)
+          expect(completeStub).toHaveBeenCalledTimes(0)
+
+          browser.storage.onChanged.dispatch(changes, otherArea)
+          expect(nextStub).toHaveBeenCalledTimes(0)
+          expect(errorStub).toHaveBeenCalledTimes(0)
+          expect(completeStub).toHaveBeenCalledTimes(0)
+
+          browser.storage.onChanged.dispatch({ otherKey: changes.key }, area)
+          expect(nextStub).toHaveBeenCalledTimes(0)
+          expect(errorStub).toHaveBeenCalledTimes(0)
+          expect(completeStub).toHaveBeenCalledTimes(0)
+
+          browser.storage.onChanged.dispatch(changes, area)
+          expect(nextStub).toHaveBeenCalledTimes(1)
+          expect(errorStub).toHaveBeenCalledTimes(0)
+          expect(completeStub).toHaveBeenCalledTimes(1)
+          expect(nextStub).toBeCalledWith(changes.key.oldValue)
+        })
+      })
     })
 
     it('storage.clear', () => {
@@ -145,7 +250,7 @@ describe('Browser API Wapper', () => {
       expect(browser.storage.local.clear.calledOnce).toBeTruthy()
     })
     describe('storage.addListener', () => {
-      const changes = { key: 'value' }
+      const changes = { key: { newValue: 'new value', oldValue: 'old value' } }
       const otherChanges = { otherKey: 'other value' }
 
       it('with cb', () => {
@@ -169,7 +274,7 @@ describe('Browser API Wapper', () => {
         expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
         expect(cb).toHaveBeenCalledTimes(cbCall)
 
-        const changes = { key: 'value' }
+        const changes = { key: { newValue: 'new value', oldValue: 'old value' } }
         const otherChanges = { otherKey: 'other value' }
         storageArea.forEach(area => {
           browser.storage.onChanged.dispatch(changes, area)
@@ -180,7 +285,7 @@ describe('Browser API Wapper', () => {
       })
     })
     describe('storage.removeListener', () => {
-      const changes = { key: 'value' }
+      const changes = { key: { newValue: 'new value', oldValue: 'old value' } }
       const otherChanges = { otherKey: 'other value' }
 
       it('with cb', () => {
@@ -237,6 +342,109 @@ describe('Browser API Wapper', () => {
           browser.storage.onChanged.dispatch(otherChanges, area)
           expect(cb).toHaveBeenCalledTimes(cbCall)
         })
+      })
+    })
+    describe(`storage.createStream`, () => {
+      const changes1 = { key1: { newValue: 'new value', oldValue: 'old value' } }
+      const changes2 = { key2: { newValue: 'new value', oldValue: 'old value' } }
+
+      it('without argument', () => {
+        const nextStub = jest.fn()
+        const errorStub = jest.fn()
+        const completeStub = jest.fn()
+        const configChanged$ = storage.createStream()
+          .pipe(take(2))
+          .subscribe(nextStub, errorStub, completeStub)
+        expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.storage.onChanged.dispatch(changes1, 'sync')
+        expect(nextStub).toHaveBeenCalledTimes(1)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+        expect(nextStub).toBeCalledWith(changes1)
+
+        browser.storage.onChanged.dispatch(changes2, 'local')
+        expect(nextStub).toHaveBeenCalledTimes(2)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(1)
+        expect(nextStub).toBeCalledWith(changes2)
+      })
+
+      it('with key', () => {
+        const nextStub = jest.fn()
+        const errorStub = jest.fn()
+        const completeStub = jest.fn()
+        const configChanged$ = storage.createStream<typeof changes2>('key2')
+          .pipe(take(1))
+          .subscribe(nextStub, errorStub, completeStub)
+        expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.storage.onChanged.dispatch(changes1, 'local')
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.storage.onChanged.dispatch(changes2, 'sync')
+        expect(nextStub).toHaveBeenCalledTimes(1)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(1)
+        expect(nextStub).toBeCalledWith(changes2)
+      })
+      it('with selector', () => {
+        const nextStub = jest.fn()
+        const errorStub = jest.fn()
+        const completeStub = jest.fn()
+        const configChanged$ = storage.createStream(x => (x.key1 || x.key2).newValue)
+          .pipe(take(2))
+          .subscribe(nextStub, errorStub, completeStub)
+        expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.storage.onChanged.dispatch(changes2, 'local')
+        expect(nextStub).toHaveBeenCalledTimes(1)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+        expect(nextStub).toBeCalledWith(changes2.key2.newValue)
+
+        browser.storage.onChanged.dispatch(changes1, 'local')
+        expect(nextStub).toHaveBeenCalledTimes(2)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(1)
+        expect(nextStub).toBeCalledWith(changes1.key1.newValue)
+      })
+      it('with key and selector', () => {
+        const nextStub = jest.fn()
+        const errorStub = jest.fn()
+        const completeStub = jest.fn()
+        const configChanged$ = storage.createStream<typeof changes1>(
+          'key1',
+          x => (x.key1 || x.key2).oldValue
+        )
+          .pipe(take(1))
+          .subscribe(nextStub, errorStub, completeStub)
+        expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.storage.onChanged.dispatch(changes2, 'sync')
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.storage.onChanged.dispatch(changes1, 'sync')
+        expect(nextStub).toHaveBeenCalledTimes(1)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(1)
+        expect(nextStub).toBeCalledWith(changes1.key1.oldValue)
       })
     })
   })
@@ -299,6 +507,103 @@ describe('Browser API Wapper', () => {
       message.removeListener('MSG_1', cb1)
       browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
       expect(cb1).toHaveBeenCalledTimes(cb1Call)
+    })
+    describe('message.createStream', () => {
+      it('without argument', () => {
+        const nextStub = jest.fn()
+        const errorStub = jest.fn()
+        const completeStub = jest.fn()
+        const configChanged$ = message.createStream()
+          .pipe(take(2))
+          .subscribe(nextStub, errorStub, completeStub)
+        expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
+        expect(nextStub).toHaveBeenCalledTimes(1)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+        expect(nextStub).toBeCalledWith({ type: 'MSG_1' })
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_2' })
+        expect(nextStub).toHaveBeenCalledTimes(2)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(1)
+        expect(nextStub).toBeCalledWith({ type: 'MSG_2' })
+      })
+
+      it('with message type', () => {
+        const nextStub = jest.fn()
+        const errorStub = jest.fn()
+        const completeStub = jest.fn()
+        const configChanged$ = message.createStream('MSG_1')
+          .pipe(take(1))
+          .subscribe(nextStub, errorStub, completeStub)
+        expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_2' })
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
+        expect(nextStub).toHaveBeenCalledTimes(1)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(1)
+        expect(nextStub).toBeCalledWith({ type: 'MSG_1' })
+      })
+      it('with selector', () => {
+        const nextStub = jest.fn()
+        const errorStub = jest.fn()
+        const completeStub = jest.fn()
+        const configChanged$ = message.createStream(x => x.type)
+          .pipe(take(2))
+          .subscribe(nextStub, errorStub, completeStub)
+        expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_2' })
+        expect(nextStub).toHaveBeenCalledTimes(1)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+        expect(nextStub).toBeCalledWith('MSG_2')
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
+        expect(nextStub).toHaveBeenCalledTimes(2)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(1)
+        expect(nextStub).toBeCalledWith('MSG_1')
+      })
+      it('with message type and selector', () => {
+        const nextStub = jest.fn()
+        const errorStub = jest.fn()
+        const completeStub = jest.fn()
+        const configChanged$ = message.createStream('MSG_1', x => x.type)
+          .pipe(take(1))
+          .subscribe(nextStub, errorStub, completeStub)
+        expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_2' })
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
+        expect(nextStub).toHaveBeenCalledTimes(1)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(1)
+        expect(nextStub).toBeCalledWith('MSG_1')
+      })
     })
 
     it('message.self.initClient', () => {
@@ -414,6 +719,107 @@ describe('Browser API Wapper', () => {
 
       browser.runtime.onMessage.dispatch({ __pageId__: window.pageId })
       expect(cb1).toHaveBeenCalledTimes(cb1Call)
+    })
+    describe('message.self.createStream', () => {
+      it('without argument', () => {
+        window.pageId = 1
+        const nextStub = jest.fn()
+        const errorStub = jest.fn()
+        const completeStub = jest.fn()
+        const configChanged$ = message.self.createStream()
+          .pipe(take(2))
+          .subscribe(nextStub, errorStub, completeStub)
+        expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_1', __pageId__: window.pageId })
+        expect(nextStub).toHaveBeenCalledTimes(1)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+        expect(nextStub).toBeCalledWith({ type: 'MSG_1', __pageId__: window.pageId })
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_2', __pageId__: window.pageId })
+        expect(nextStub).toHaveBeenCalledTimes(2)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(1)
+        expect(nextStub).toBeCalledWith({ type: 'MSG_2', __pageId__: window.pageId })
+      })
+
+      it('with message type', () => {
+        window.pageId = 1
+        const nextStub = jest.fn()
+        const errorStub = jest.fn()
+        const completeStub = jest.fn()
+        const configChanged$ = message.self.createStream('MSG_1')
+          .pipe(take(1))
+          .subscribe(nextStub, errorStub, completeStub)
+        expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_2', __pageId__: window.pageId })
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_1', __pageId__: window.pageId })
+        expect(nextStub).toHaveBeenCalledTimes(1)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(1)
+        expect(nextStub).toBeCalledWith({ type: 'MSG_1', __pageId__: window.pageId })
+      })
+      it('with selector', () => {
+        window.pageId = 1
+        const nextStub = jest.fn()
+        const errorStub = jest.fn()
+        const completeStub = jest.fn()
+        const configChanged$ = message.self.createStream(x => x.type)
+          .pipe(take(2))
+          .subscribe(nextStub, errorStub, completeStub)
+        expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_2', __pageId__: window.pageId })
+        expect(nextStub).toHaveBeenCalledTimes(1)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+        expect(nextStub).toBeCalledWith('MSG_2')
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_1', __pageId__: window.pageId })
+        expect(nextStub).toHaveBeenCalledTimes(2)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(1)
+        expect(nextStub).toBeCalledWith('MSG_1')
+      })
+      it('with message type and selector', () => {
+        window.pageId = 1
+        const nextStub = jest.fn()
+        const errorStub = jest.fn()
+        const completeStub = jest.fn()
+        const configChanged$ = message.self.createStream('MSG_1', x => x.type)
+          .pipe(take(1))
+          .subscribe(nextStub, errorStub, completeStub)
+        expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_2', __pageId__: window.pageId })
+        expect(nextStub).toHaveBeenCalledTimes(0)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(0)
+
+        browser.runtime.onMessage.dispatch({ type: 'MSG_1', __pageId__: window.pageId })
+        expect(nextStub).toHaveBeenCalledTimes(1)
+        expect(errorStub).toHaveBeenCalledTimes(0)
+        expect(completeStub).toHaveBeenCalledTimes(1)
+        expect(nextStub).toBeCalledWith('MSG_1')
+      })
     })
   })
   describe('openURL', () => {

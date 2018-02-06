@@ -2,6 +2,9 @@
  * @file Wraps some of the extension apis
  */
 
+import { Observable } from 'rxjs/Observable'
+import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
+
 /* --------------------------------------- *\
  * #Types
 \* --------------------------------------- */
@@ -59,29 +62,35 @@ const storageListeners: Map<StorageListenerCb, Map<string, StorageListenerCb>> =
 
 export const storage = {
   sync: {
-    clear: _storageClear('sync') as typeof browser.storage.sync.clear,
-    remove: _storageRemove('sync') as typeof browser.storage.sync.remove,
-    get: _storageGet('sync') as typeof browser.storage.sync.get,
-    set: _storageSet('sync') as typeof browser.storage.sync.set,
+    clear: storageClear,
+    remove: storageRemove,
+    get: storageGet,
+    set: storageSet,
     /** Only for sync area */
-    addListener: _storageAddListener('sync'),
+    addListener: storageAddListener,
     /** Only for sync area */
-    removeListener: _storageRemoveListener('sync'),
+    removeListener: storageRemoveListener,
+    createStream: storageCreateStream,
+    get __storageArea__ (): 'sync' { return 'sync' },
   },
   local: {
-    clear: _storageClear('local') as typeof browser.storage.local.clear,
-    remove: _storageRemove('local') as typeof browser.storage.local.remove,
-    get: _storageGet('local') as typeof browser.storage.local.get,
-    set: _storageSet('local') as typeof browser.storage.local.set,
+    clear: storageClear,
+    remove: storageRemove,
+    get: storageGet,
+    set: storageSet,
     /** Only for local area */
-    addListener: _storageAddListener('local'),
+    addListener: storageAddListener,
     /** Only for local area */
-    removeListener: _storageRemoveListener('local'),
+    removeListener: storageRemoveListener,
+    createStream: storageCreateStream,
+    get __storageArea__ (): 'local' { return 'local' },
   },
   /** Clear all area */
-  clear: _storageClear('all') as typeof browser.storage.sync.clear,
-  addListener: _storageAddListener('all'),
-  removeListener: _storageRemoveListener('all'),
+  clear: storageClear,
+  addListener: storageAddListener,
+  removeListener: storageRemoveListener,
+  createStream: storageCreateStream,
+  get __storageArea__ (): 'all' { return 'all' },
 }
 
 /**
@@ -90,15 +99,19 @@ export const storage = {
  */
 export const message = {
   send: messageSend,
-  addListener: _messageAddListener(false),
-  removeListener: _messageRemoveListener(false),
+  addListener: messageAddListener,
+  removeListener: messageRemoveListener,
+  createStream: messageCreateStream,
+  get __self__ (): false { return false },
 
   self: {
     initClient,
     initServer,
     send: messageSendSelf,
-    addListener: _messageAddListener(true),
-    removeListener: _messageRemoveListener(true),
+    addListener: messageAddListener,
+    removeListener: messageRemoveListener,
+    createStream: messageCreateStream,
+    get __self__ (): true { return true },
   }
 }
 
@@ -124,121 +137,139 @@ export default {
 /* --------------------------------------- *\
  * #Storage
 \* --------------------------------------- */
+type StorageThisTwo = typeof storage.sync | typeof storage.local
+type StorageThisThree = StorageThisTwo | typeof storage
 
-function _storageClear (storageArea: StorageArea) {
-  return function storageClear (): Promise<void> {
-    return storageArea === 'all'
-      ? Promise.all([
-        browser.storage.local.clear(),
-        browser.storage.sync.clear(),
-      ]).then(noop)
-      : browser.storage[storageArea].clear()
-  }
+function storageClear (this: StorageThisThree): Promise<void> {
+  return this.__storageArea__ === 'all'
+    ? Promise.all([
+      browser.storage.local.clear(),
+      browser.storage.sync.clear(),
+    ]).then(noop)
+    : browser.storage[this.__storageArea__].clear()
 }
 
-function _storageRemove (storageArea: 'sync' | 'local') {
-  return function storageRemove (keys: string | string[]) {
-    return browser.storage[storageArea].remove(keys)
-  }
+function storageRemove (this: StorageThisTwo, keys: string | string[]): Promise<void> {
+  return browser.storage[this.__storageArea__].remove(keys)
 }
 
-function _storageGet (storageArea: 'sync' | 'local') {
-  return function storageGet (...args) {
-    return browser.storage[storageArea].get(...args)
-  }
+function storageGet<T = any> (key?: string | string[] | null): Promise<T>
+function storageGet<T extends Object> (key: T | any): Promise<T>
+function storageGet<T = any> (this: StorageThisTwo, ...args): Promise<T> {
+  return browser.storage[this.__storageArea__].get(...args)
 }
 
-function _storageSet (storageArea: 'sync' | 'local') {
-  return function storageSet (keys: browser.storage.StorageObject) {
-    return browser.storage[storageArea].set(keys)
-  }
+function storageSet (this: StorageThisTwo, keys: any): Promise<void> {
+  return browser.storage[this.__storageArea__].set(keys)
 }
 
-function _storageAddListener (storageArea: StorageArea) {
-  return storageAddListener
+function storageAddListener (cb: StorageListenerCb): void
+function storageAddListener (key: string, cb: StorageListenerCb): void
+function storageAddListener (this: StorageThisThree, ...args): void {
+  let key: string
+  let cb: StorageListenerCb
+  if (typeof args[0] === 'function') {
+    key = ''
+    cb = args[0]
+  } else if (typeof args[0] === 'string' && typeof args[1] === 'function') {
+    key = args[0]
+    cb = args[1]
+  } else {
+    throw new Error('wrong arguments type')
+  }
 
-  function storageAddListener (cb: StorageListenerCb): void
-  function storageAddListener (key: string, cb: StorageListenerCb): void
-  function storageAddListener (...args): void {
-    let key: string
-    let cb: StorageListenerCb
-    if (typeof args[0] === 'function') {
-      key = ''
-      cb = args[0]
-    } else if (typeof args[0] === 'string' && typeof args[1] === 'function') {
-      key = args[0]
-      cb = args[1]
-    } else {
-      throw new Error('wrong arguments type')
-    }
-
-    let listeners = storageListeners.get(cb)
-    if (!listeners) {
-      listeners = new Map()
-      storageListeners.set(cb, listeners)
-    }
-    const listenerKey = storageArea + key
-    let listener = listeners.get(listenerKey)
-    if (!listener) {
-      listener = (changes, areaName) => {
-        if ((storageArea === 'all' || areaName === storageArea) && (!key || changes[key])) {
-          cb(changes, areaName)
-        }
+  let listeners = storageListeners.get(cb)
+  if (!listeners) {
+    listeners = new Map()
+    storageListeners.set(cb, listeners)
+  }
+  const listenerKey = this.__storageArea__ + key
+  let listener = listeners.get(listenerKey)
+  if (!listener) {
+    listener = (changes, areaName) => {
+      if ((this.__storageArea__ === 'all' || areaName === this.__storageArea__) && (!key || changes[key])) {
+        cb(changes, areaName)
       }
-      listeners.set(listenerKey, listener)
     }
-    return browser.storage.onChanged.addListener(listener)
+    listeners.set(listenerKey, listener)
   }
+  return browser.storage.onChanged.addListener(listener)
 }
 
-function _storageRemoveListener (storageArea: StorageArea) {
-  return storageRemoveListener
+function storageRemoveListener (key: string, cb: StorageListenerCb): void
+function storageRemoveListener (cb: StorageListenerCb): void
+function storageRemoveListener (this: StorageThisThree, ...args): void {
+  let key: string
+  let cb: StorageListenerCb
+  if (typeof args[0] === 'function') {
+    key = ''
+    cb = args[0]
+  } else if (typeof args[0] === 'string' && typeof args[1] === 'function') {
+    key = args[0]
+    cb = args[1]
+  } else {
+    throw new Error('wrong arguments type')
+  }
 
-  function storageRemoveListener (key: string, cb: StorageListenerCb): void
-  function storageRemoveListener (cb: StorageListenerCb): void
-  function storageRemoveListener (...args): void {
-    let key: string
-    let cb: StorageListenerCb
-    if (typeof args[0] === 'function') {
-      key = ''
-      cb = args[0]
-    } else if (typeof args[0] === 'string' && typeof args[1] === 'function') {
-      key = args[0]
-      cb = args[1]
-    } else {
-      throw new Error('wrong arguments type')
-    }
-
-    const listeners = storageListeners.get(cb)
-    if (listeners) {
-      if (key) {
-        // remove 'cb' listeners with 'key' under 'storageArea'
-        const listenerKey = storageArea + key
-        const listener = listeners.get(listenerKey)
-        if (listener) {
-          browser.storage.onChanged.removeListener(listener)
-          listeners.delete(listenerKey)
-          if (listeners.size <= 0) {
-            storageListeners.delete(cb)
-          }
-          return
+  const listeners = storageListeners.get(cb)
+  if (listeners) {
+    if (key) {
+      // remove 'cb' listeners with 'key' under 'storageArea'
+      const listenerKey = this.__storageArea__ + key
+      const listener = listeners.get(listenerKey)
+      if (listener) {
+        browser.storage.onChanged.removeListener(listener)
+        listeners.delete(listenerKey)
+        if (listeners.size <= 0) {
+          storageListeners.delete(cb)
         }
-      } else {
-        // remove all 'cb' listeners under 'storageArea'
-        listeners.forEach(listener => {
-          browser.storage.onChanged.removeListener(listener)
-        })
-        storageListeners.delete(cb)
         return
       }
+    } else {
+      // remove all 'cb' listeners under 'storageArea'
+      listeners.forEach(listener => {
+        browser.storage.onChanged.removeListener(listener)
+      })
+      storageListeners.delete(cb)
+      return
     }
-    browser.storage.onChanged.removeListener(cb)
+  }
+  browser.storage.onChanged.removeListener(cb)
+}
+
+function storageCreateStream<T> (selector?: (...args) => T): Observable<T>
+function storageCreateStream<T> (key: string, selector?: (...args) => T): Observable<T>
+function storageCreateStream (this: StorageThisThree, ...args) {
+  let key = ''
+  let selector = x => x
+
+  if (typeof args[0] === 'function') {
+    selector = args[0]
+  } else {
+    key = args[0]
+    selector = args[1]
+  }
+
+  if (key) {
+    return fromEventPattern(
+      handler => this.addListener(key, handler as StorageListenerCb),
+      handler => this.removeListener(key, handler as StorageListenerCb),
+      selector,
+    )
+  } else {
+    return fromEventPattern(
+      handler => this.addListener(handler as StorageListenerCb),
+      handler => this.removeListener(handler as StorageListenerCb),
+      selector,
+    )
   }
 }
+
 
 /* --------------------------------------- *\
  * #Message
 \* --------------------------------------- */
+type MessageThis = typeof message | typeof message.self
 
 function messageSend (tabId: number, message: Message): Promise<any>
 function messageSend (message: Message): Promise<any>
@@ -251,79 +282,101 @@ function messageSend (...args): Promise<any> {
 }
 
 function messageSendSelf (message: Message): Promise<any> {
+  if (window.pageId === undefined) {
+    return initClient().then(() => messageSendSelf(message))
+  }
   return browser.runtime.sendMessage(Object.assign({}, message, {
     __pageId__: window.pageId,
     type: `_&_${message.type}_&_`
   }))
 }
 
-function _messageAddListener (self: boolean) {
-  const allListeners = self ? messageSelfListeners : messageListeners
-  return messageAddListener
-
-  function messageAddListener (messageType: string, cb: browser.runtime.onMessageEvent): void
-  function messageAddListener (cb: browser.runtime.onMessageEvent): void
-  function messageAddListener (...args): void {
-    const messageType = args.length === 1 ? undefined : args[0]
-    const cb = args.length === 1 ? args[0] : args[1]
-    let listeners = allListeners.get(cb)
-    if (!listeners) {
-      listeners = new Map()
-      allListeners.set(cb, listeners)
-    }
-    let listener = listeners.get(messageType || '_&_MSG_DEFAULT_&_')
-    if (!listener) {
-      listener = (
-        (message, sender, sendResponse) => {
-          if (message && (self ? window.pageId === message.__pageId__ : !message.__pageId__)) {
-            if (!messageType || message.type === messageType) {
-              return cb(message, sender, sendResponse)
-            }
+function messageAddListener (messageType: string, cb: browser.runtime.onMessageEvent): void
+function messageAddListener (cb: browser.runtime.onMessageEvent): void
+function messageAddListener (this: MessageThis, ...args): void {
+  const allListeners = this.__self__ ? messageSelfListeners : messageListeners
+  const messageType = args.length === 1 ? undefined : args[0]
+  const cb = args.length === 1 ? args[0] : args[1]
+  let listeners = allListeners.get(cb)
+  if (!listeners) {
+    listeners = new Map()
+    allListeners.set(cb, listeners)
+  }
+  let listener = listeners.get(messageType || '_&_MSG_DEFAULT_&_')
+  if (!listener) {
+    listener = (
+      (message, sender, sendResponse) => {
+        if (message && (this.__self__ ? window.pageId === message.__pageId__ : !message.__pageId__)) {
+          if (!messageType || message.type === messageType) {
+            return cb(message, sender, sendResponse)
           }
         }
-      ) as browser.runtime.onMessageEvent
-      listeners.set(messageType, listener)
-    }
-    return browser.runtime.onMessage.addListener(listener)
+      }
+    ) as browser.runtime.onMessageEvent
+    listeners.set(messageType, listener)
   }
+  return browser.runtime.onMessage.addListener(listener)
 }
 
-function _messageRemoveListener (self: boolean) {
-  const allListeners = self ? messageSelfListeners : messageListeners
-  return messageRemoveListener
-
-  function messageRemoveListener (messageType: string, cb: browser.runtime.onMessageEvent): void
-  function messageRemoveListener (cb: browser.runtime.onMessageEvent): void
-  function messageRemoveListener (...args): void {
-    const messageType = args.length === 1 ? undefined : args[0]
-    const cb = args.length === 1 ? args[0] : args[1]
-    const listeners = allListeners.get(cb)
-    if (listeners) {
-      if (messageType) {
-        const listener = listeners.get(messageType)
-        if (listener) {
-          browser.runtime.onMessage.removeListener(listener)
-          listeners.delete(messageType)
-          if (listeners.size <= 0) {
-            allListeners.delete(cb)
-          }
-          return
+function messageRemoveListener (messageType: string, cb: browser.runtime.onMessageEvent): void
+function messageRemoveListener (cb: browser.runtime.onMessageEvent): void
+function messageRemoveListener (this: MessageThis, ...args): void {
+  const allListeners = this.__self__ ? messageSelfListeners : messageListeners
+  const messageType = args.length === 1 ? undefined : args[0]
+  const cb = args.length === 1 ? args[0] : args[1]
+  const listeners = allListeners.get(cb)
+  if (listeners) {
+    if (messageType) {
+      const listener = listeners.get(messageType)
+      if (listener) {
+        browser.runtime.onMessage.removeListener(listener)
+        listeners.delete(messageType)
+        if (listeners.size <= 0) {
+          allListeners.delete(cb)
         }
-      } else {
-        // delete all cb related callbacks
-        listeners.forEach(listener => browser.runtime.onMessage.removeListener(listener))
-        allListeners.delete(cb)
         return
       }
+    } else {
+      // delete all cb related callbacks
+      listeners.forEach(listener => browser.runtime.onMessage.removeListener(listener))
+      allListeners.delete(cb)
+      return
     }
-    browser.runtime.onMessage.removeListener(cb)
+  }
+  browser.runtime.onMessage.removeListener(cb)
+}
+
+function messageCreateStream<T> (selector?: (...args) => T): Observable<T>
+function messageCreateStream<T> (messageType: string, selector?: (...args) => T): Observable<T>
+function messageCreateStream (this: MessageThis, ...args) {
+  let messageType = ''
+  let selector = x => x
+
+  if (typeof args[0] === 'function') {
+    selector = args[0]
+  } else {
+    messageType = args[0]
+    selector = args[1]
+  }
+
+  if (messageType) {
+    return fromEventPattern(
+      handler => this.addListener(messageType, handler as browser.runtime.onMessageEvent),
+      handler => this.removeListener(messageType, handler as browser.runtime.onMessageEvent),
+      selector,
+    )
+  } else {
+    return fromEventPattern(
+      handler => this.addListener(handler as browser.runtime.onMessageEvent),
+      handler => this.removeListener(handler as browser.runtime.onMessageEvent),
+      selector,
+    )
   }
 }
 
 /**
  * Deploy client side
- * This method should be invoked in every page except background script,
- * before other self messaging api is used
+ * This method is called on the first sendMessage
  */
 function initClient (): Promise<typeof window.pageId> {
   if (window.pageId === undefined) {
