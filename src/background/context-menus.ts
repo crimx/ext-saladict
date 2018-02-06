@@ -1,11 +1,16 @@
-import { storage, openURL } from '@/_helpers/browser-api'
+import { storage, openURL, StorageListenerCb } from '@/_helpers/browser-api'
 import { AppConfig } from '@/app-config'
 
 import { Observable } from 'rxjs/Observable'
 import { fromPromise } from 'rxjs/observable/fromPromise'
-import { NextObserver } from 'rxjs/Observer'
-import { TeardownLogic } from 'rxjs/Subscription'
-import { audit, mapTo, mergeMap, share, startWith } from 'rxjs/operators'
+import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
+import { filter } from 'rxjs/operators/filter'
+import { map } from 'rxjs/operators/map'
+import { audit } from 'rxjs/operators/audit'
+import { mapTo } from 'rxjs/operators/mapTo'
+import { mergeMap } from 'rxjs/operators/mergeMap'
+import { share } from 'rxjs/operators/share'
+import { startWith } from 'rxjs/operators/startWith'
 
 type ContextMenusConfig = AppConfig['contextMenus']
 
@@ -89,33 +94,26 @@ browser.contextMenus.onClicked.addListener(info => {
 export function init (initConfig: ContextMenusConfig): void {
   if (contextMenusChanged$) { return }
   // when context menus config changes
-  contextMenusChanged$ = Observable.create(
-    (observer: NextObserver<ContextMenusConfig>): TeardownLogic => {
-      storage.sync.addListener('config', handler)
-
-      return () => {
-        storage.sync.removeListener('config', handler)
+  contextMenusChanged$ = storage.createStream<{ config: { newValue: AppConfig, oldValue: AppConfig } }>('config')
+  .pipe(
+    filter(({ config: { newValue, oldValue } }) => {
+      if (!oldValue) {
+        return true
       }
 
-      function handler ({ config }: any) {
-        const oldValue = config.oldValue as AppConfig
-        const newValue = config.newValue as AppConfig
-        if (!oldValue) {
-          return observer.next(newValue.contextMenus)
-        }
-
-        const oldSelected = oldValue.contextMenus.selected
-        const newSelected = newValue.contextMenus.selected
-        if (oldSelected.length !== newSelected.length) {
-          return observer.next(newValue.contextMenus)
-        }
-        for (let i = 0; i < oldSelected.length; i += 1) {
-          if (oldSelected[i] !== newSelected[i]) {
-            return observer.next(newValue.contextMenus)
-          }
+      const oldSelected = oldValue.contextMenus.selected
+      const newSelected = newValue.contextMenus.selected
+      if (oldSelected.length !== newSelected.length) {
+        return true
+      }
+      for (let i = 0; i < oldSelected.length; i += 1) {
+        if (oldSelected[i] !== newSelected[i]) {
+          return true
         }
       }
-    }
+      return false
+    }),
+    map(({ config }) => config.newValue.contextMenus),
   )
 
   let signal$: Observable<boolean>
