@@ -42,29 +42,30 @@ function onInstalled ({ reason, previousVersion }: { reason: string, previousVer
 
 function onStartup (): void {
   // check update every month
-  Promise.all([storage.local.get('lastCheckUpdate'), storage.sync.get('config')])
-    .then(([r1, r2]) => {
-      const lastCheckUpdate = r1.lastCheckUpdate as number
-      const config = r2.config as AppConfig
-      initMenus(config.contextMenus)
-      initPdf(config.pdfSniff)
-      const today = Date.now()
-      if (!lastCheckUpdate || !(today - lastCheckUpdate < 7 * 24 * 60 * 60 * 1000)) {
-        checkUpdate().then(({ info, isAvailable }) => {
-          storage.local.set({ lastCheckUpdate: today })
-          if (isAvailable) {
-            browser.notifications.create('update', {
-              type: 'basic',
-              iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
-              title: '沙拉查词',
-              message: (`可更新至【${info.tag_name}】`
-              ),
-              buttons: [{ title: '查看更新' }],
-            })
-          }
-        })
-      }
-    })
+  Promise.all([
+    storage.local.get<{ lastCheckUpdate: number }>('lastCheckUpdate'),
+    storage.sync.get<{ config: AppConfig }>('config'),
+  ])
+  .then(([{ lastCheckUpdate }, { config }]) => {
+    initMenus(config.contextMenus)
+    initPdf(config.pdfSniff)
+    const today = Date.now()
+    if (!lastCheckUpdate || !(today - lastCheckUpdate < 7 * 24 * 60 * 60 * 1000)) {
+      checkUpdate().then(({ info, isAvailable }) => {
+        storage.local.set({ lastCheckUpdate: today })
+        if (isAvailable) {
+          browser.notifications.create('update', {
+            type: 'basic',
+            iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
+            title: '沙拉查词',
+            message: (`可更新至【${info.tag_name}】`
+            ),
+            buttons: [{ title: '查看更新' }],
+          })
+        }
+      })
+    }
+  })
 }
 
 function genClickListener (url: string) {
