@@ -97,7 +97,7 @@ export function getSelectionSentence (): string {
  * @property {string} trans - use-inputted translation
  * @property {string} note - use-inputted note
  */
-interface SelectionInfo {
+export interface SelectionInfo {
   text: string
   context: string
   title: string
