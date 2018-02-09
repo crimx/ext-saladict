@@ -6,12 +6,11 @@ import * as selection from '@/_helpers/selection'
 import { MsgSALADICT_SELECTION, MsgSELECTION } from '@/_typings/message'
 
 import { Observable } from 'rxjs/Observable'
-import { fromPromise } from 'rxjs/observable/fromPromise'
 import { of } from 'rxjs/observable/of'
-import { map, distinctUntilChanged, filter, withLatestFrom, buffer, debounceTime, partition, observeOn } from 'rxjs/operators'
+import { map, filter, withLatestFrom, buffer, debounceTime, observeOn } from 'rxjs/operators'
 import { fromEvent } from 'rxjs/observable/fromEvent'
 import { merge } from 'rxjs/observable/merge'
-import { async } from 'rxjs/scheduler/async.js'
+import { async } from 'rxjs/scheduler/async'
 
 message.addListener('__PRELOAD_SELECTION__', (data, sender, sendResponse) => {
   sendResponse(selection.getSelectionInfo())
@@ -28,49 +27,29 @@ window.addEventListener('message', ({ data, source }: { data: MsgSALADICT_SELECT
   const { selectionInfo, mouseX, mouseY, ctrlKey } = data
   const { left, top } = iframe.getBoundingClientRect()
 
-  if (window.parent === window) {
-    // top
-    message.self.send({
-      type: 'SELECTION',
-      selectionInfo,
-      mouseX: mouseX + left,
-      mouseY: mouseY + top,
-      ctrlKey
-    } as MsgSELECTION)
-  } else {
-    // post to upper frames/window
-    window.parent.postMessage({
-      type: 'SALADICT_SELECTION',
-      selectionInfo,
-      mouseX: mouseX + left,
-      mouseY: mouseY + top,
-      ctrlKey
-    } as MsgSALADICT_SELECTION, '*')
-  }
+  sendMessage(
+    mouseX + left,
+    mouseY + top,
+    ctrlKey,
+    selectionInfo
+  )
 })
 
 const appConfig$: Observable<AppConfig> = createAppConfigStream()
-
-const isConfigActive$: Observable<boolean> = appConfig$.pipe(
-  map(config => config.active),
-)
-
-const isConfigTripleCtrl$: Observable<boolean> = appConfig$.pipe(
-  map(config => config.tripleCtrl),
-)
 
 const configLanguage$: Observable<AppConfig['language']> = appConfig$.pipe(
   map(config => config.language),
 )
 
 const isCtrlPressed$: Observable<boolean> = merge(
+  of(false),
   fromEvent(window, 'keydown', true, e => isCtrlKey(e)),
   fromEvent(window, 'keyup', true, e => false),
   fromEvent(window, 'blur', true, e => false),
 )
 
 const ctrlPressed$ = isCtrlPressed$.pipe(
-  withLatestFrom(isConfigTripleCtrl$, (isCtrlPressed, isConfig) => isConfig && isCtrlPressed),
+  withLatestFrom(appConfig$, (isCtrlPressed, config) => config.active && isCtrlPressed),
   filter(isCtrlPressed => isCtrlPressed),
 )
 
@@ -80,49 +59,58 @@ const tripleCtrlPressed$ = ctrlPressed$.pipe(
   filter(x => x >= 3),
 )
 
-const mouseup$: Observable<MouseEvent> = fromEvent<MouseEvent>(window, 'mouseup', true).pipe(
-  withLatestFrom(isConfigActive$),
-  filter(([ e, isConfigActive ]) => {
-    if (!isConfigActive || window.name === 'saladict-frame') { return false }
+const mouseup$ = fromEvent<MouseEvent>(window, 'mouseup', true).pipe(
+  withLatestFrom(appConfig$, isCtrlPressed$),
+  filter(([ e, config ]) => {
+    if (!config.active || window.name === 'saladict-frame') { return false }
     if ((e.target as Element).className && ((e.target as Element).className.startsWith('saladict-'))) {
       return false
     }
     return true
   }),
-  map(([ e ]) => e),
   // if user click on a selected text,
   // getSelection would reture the text before the highlight disappears
   // delay to wait for selection get cleared
   observeOn(async),
 )
 
-const [ goodSelection$, badSelection$ ] = partition<[MouseEvent, string, AppConfig['language'], boolean]>(
-  ([ e, text, lang ]) => {
-    if (!selection.hasSelection()) { return false }
-    return (
-      (lang.english && isContainEnglish(text) && !isContainChinese(text)) ||
-      (lang.chinese && isContainChinese(text))
-    )
-  }
-)(mouseup$.pipe(
-  withLatestFrom(of(selection.getSelectionText()), configLanguage$, isCtrlPressed$)
-))
-
 tripleCtrlPressed$.subscribe(() => {
   message.self.send({ type: 'TRIPLE_CTRL' })
 })
 
-goodSelection$.subscribe(([ { button, target, clientX, clientY }, text, lang, isCtrlPressed ]) => {
-  const selectionInfo = {
-    text,
-    context: selection.getSelectionSentence(),
-    title: window.pageTitle || document.title,
-    url: window.pageURL || document.URL,
-    favicon: window.faviconURL || '',
-    trans: '',
-    note: ''
+mouseup$.subscribe(([ evt, config, ctrlKey ]) => {
+  const text = selection.getSelectionText()
+  if (
+    text && (
+      (config.language.english && isContainEnglish(text) && !isContainChinese(text)) ||
+      (config.language.chinese && isContainChinese(text))
+    )
+  ) {
+    sendMessage(
+      evt.clientX,
+      evt.clientY,
+      ctrlKey,
+      {
+        text: selection.getSelectionText(),
+        context: selection.getSelectionSentence(),
+        title: window.pageTitle || document.title,
+        url: window.pageURL || document.URL,
+        favicon: window.faviconURL || '',
+        trans: '',
+        note: ''
+      },
+    )
+  } else {
+    sendEmptyMessage()
   }
+})
 
+function sendMessage (
+  clientX: number,
+  clientY: number,
+  isCtrlPressed: boolean,
+  selectionInfo: selection.SelectionInfo
+) {
   if (window.parent === window) {
     // top
     message.self.send({
@@ -142,9 +130,9 @@ goodSelection$.subscribe(([ { button, target, clientX, clientY }, text, lang, is
       ctrlKey: isCtrlPressed,
     } as MsgSALADICT_SELECTION, '*')
   }
-})
+}
 
-badSelection$.subscribe(() => {
+function sendEmptyMessage () {
   // empty message
   message.self.send({
     type: 'SELECTION',
@@ -159,7 +147,7 @@ badSelection$.subscribe(() => {
       note: ''
     }
   } as MsgSELECTION)
-})
+}
 
 /**
  * Is ctrl/command button pressed
