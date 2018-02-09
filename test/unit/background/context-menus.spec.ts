@@ -1,8 +1,8 @@
-import { appConfigFactory, AppConfig } from '@/app-config'
+import { appConfigFactory, AppConfig, AppConfigMutable } from '@/app-config'
 import sinon from 'sinon'
 
 function specialConfig () {
-  const config = appConfigFactory()
+  const config = appConfigFactory() as AppConfigMutable
   config.contextMenus.selected = ['youdao', 'dictcn']
   return config
 }

@@ -265,7 +265,6 @@ function storageCreateStream (this: StorageThisThree, ...args) {
   }
 }
 
-
 /* --------------------------------------- *\
  * #Message
 \* --------------------------------------- */

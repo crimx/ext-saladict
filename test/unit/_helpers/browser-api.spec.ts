@@ -2,15 +2,15 @@ import { message, storage, openURL } from '@/_helpers/browser-api'
 import { AppConfig } from '@/app-config'
 import { take } from 'rxjs/operators/take'
 
-beforeEach(() => {
-  browser.flush()
-  delete window.pageId
-  delete window.faviconURL
-  delete window.pageTitle
-  delete window.pageURL
-})
-
 describe('Browser API Wapper', () => {
+  beforeEach(() => {
+    browser.flush()
+    delete window.pageId
+    delete window.faviconURL
+    delete window.pageTitle
+    delete window.pageURL
+  })
+
   describe('Storage', () => {
     const storageArea: ['sync', 'local'] = ['sync', 'local']
     storageArea.forEach(area => {
