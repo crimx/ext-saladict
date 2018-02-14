@@ -51,11 +51,11 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
   : {}
 
 // Every folder in app src would generate a entry
-// except 'manifest', 'assets','components' and name starts with '_'
+// except 'manifest', 'assets','components', 'typings' and name starts with '_'
 const entries = fs.readdirSync(paths.appSrc)
   .filter(name => !name.startsWith('_'))
   .map(name => ({name, dirPath: path.join(paths.appSrc, name)}))
-  .filter(({name, dirPath}) => !/^assets|components|manifest$/.test(name) && fs.lstatSync(dirPath).isDirectory())
+  .filter(({name, dirPath}) => !/^assets|components|manifest|typings$/.test(name) && fs.lstatSync(dirPath).isDirectory())
 
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.

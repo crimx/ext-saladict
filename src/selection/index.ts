@@ -3,7 +3,7 @@ import { message, storage } from '@/_helpers/browser-api'
 import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 import { createAppConfigStream } from '@/_helpers/config-manager'
 import * as selection from '@/_helpers/selection'
-import { MsgSALADICT_SELECTION, MsgSELECTION } from '@/_typings/message'
+import { MsgSALADICT_SELECTION, MsgSELECTION } from '@/typings/message'
 
 import { Observable } from 'rxjs/Observable'
 import { of } from 'rxjs/observable/of'
