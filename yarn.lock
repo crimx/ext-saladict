@@ -484,12 +484,12 @@ atob@~1.1.0:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/atob/-/atob-1.1.3.tgz#95f13629b12c3a51a5d215abdce2aa9f32f80773"
 
-autoprefixer@7.2.6:
-  version "7.2.6"
-  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-7.2.6.tgz#256672f86f7c735da849c4f07d008abb056067dc"
+autoprefixer@8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-8.0.0.tgz#c19e480f061013127c373df0b01cf46919943f74"
   dependencies:
-    browserslist "^2.11.3"
-    caniuse-lite "^1.0.30000805"
+    browserslist "^3.0.0"
+    caniuse-lite "^1.0.30000808"
     normalize-range "^0.1.2"
     num2fraction "^1.2.2"
     postcss "^6.0.17"
@@ -1356,12 +1356,19 @@ browserslist@^1.3.6, browserslist@^1.5.2, browserslist@^1.7.6:
     caniuse-db "^1.0.30000639"
     electron-to-chromium "^1.2.7"
 
-browserslist@^2.1.2, browserslist@^2.11.3:
+browserslist@^2.1.2:
   version "2.11.3"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-2.11.3.tgz#fe36167aed1bbcde4827ebfe71347a2cc70b99b2"
   dependencies:
     caniuse-lite "^1.0.30000792"
     electron-to-chromium "^1.3.30"
+
+browserslist@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-3.0.0.tgz#5b41520c1a5ce6d0d2fe7c44bdf30e526b650403"
+  dependencies:
+    caniuse-lite "^1.0.30000807"
+    electron-to-chromium "^1.3.33"
 
 bser@^2.0.0:
   version "2.0.0"
@@ -1496,9 +1503,9 @@ caniuse-lite@^1.0.30000792:
   version "1.0.30000792"
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30000792.tgz#d0cea981f8118f3961471afbb43c9a1e5bbf0332"
 
-caniuse-lite@^1.0.30000805:
-  version "1.0.30000805"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000805.tgz#83a5f21ead01486e67bccca6fae5dca7cde496de"
+caniuse-lite@^1.0.30000807, caniuse-lite@^1.0.30000808:
+  version "1.0.30000808"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000808.tgz#7d759b5518529ea08b6705a19e70dbf401628ffc"
 
 case-sensitive-paths-webpack-plugin@2.1.1:
   version "2.1.1"
@@ -1536,6 +1543,14 @@ chalk@2.3.0, chalk@^2.0.0, chalk@^2.0.1, chalk@^2.1.0, chalk@^2.3.0:
     ansi-styles "^3.1.0"
     escape-string-regexp "^1.0.5"
     supports-color "^4.0.0"
+
+chalk@2.3.1:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/chalk/-/chalk-2.3.1.tgz#523fe2678aec7b04e8041909292fe8b17059b796"
+  dependencies:
+    ansi-styles "^3.2.0"
+    escape-string-regexp "^1.0.5"
+    supports-color "^5.2.0"
 
 chardet@^0.4.0:
   version "0.4.2"
@@ -2609,6 +2624,10 @@ electron-to-chromium@^1.2.7, electron-to-chromium@^1.3.30:
   version "1.3.31"
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.3.31.tgz#00d832cba9fe2358652b0c48a8816c8e3a037e9f"
 
+electron-to-chromium@^1.3.33:
+  version "1.3.33"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.33.tgz#bf00703d62a7c65238136578c352d6c5c042a545"
+
 elliptic@^6.0.0:
   version "6.4.0"
   resolved "https://registry.npmjs.org/elliptic/-/elliptic-6.4.0.tgz#cac9af8762c85836187003c8dfe193e5e2eae5df"
@@ -3664,6 +3683,10 @@ has-flag@^1.0.0:
 has-flag@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/has-flag/-/has-flag-2.0.0.tgz#e8207af1cc7b30d446cc70b734b5e8be18f88d51"
+
+has-flag@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-3.0.0.tgz#b5d454dc2199ae225699f3467e5a07f3b955bafd"
 
 has-unicode@^2.0.0:
   version "2.0.1"
@@ -7588,9 +7611,9 @@ strip-json-comments@2.0.1, strip-json-comments@^2.0.0, strip-json-comments@^2.0.
   version "2.0.1"
   resolved "https://registry.npmjs.org/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-style-loader@0.20.0:
-  version "0.20.0"
-  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.20.0.tgz#394ecb2a8e1008b0dca5f55a44fabc195e7c11bb"
+style-loader@0.20.2:
+  version "0.20.2"
+  resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.20.2.tgz#851b373c187890331776e9cde359eea9c95ecd00"
   dependencies:
     loader-utils "^1.1.0"
     schema-utils "^0.4.3"
@@ -7622,6 +7645,12 @@ supports-color@^5.1.0:
   resolved "https://registry.npmjs.org/supports-color/-/supports-color-5.1.0.tgz#058a021d1b619f7ddf3980d712ea3590ce7de3d5"
   dependencies:
     has-flag "^2.0.0"
+
+supports-color@^5.2.0:
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.2.0.tgz#b0d5333b1184dd3666cbe5aa0b45c5ac7ac17a4a"
+  dependencies:
+    has-flag "^3.0.0"
 
 svgo@^0.7.0:
   version "0.7.2"
