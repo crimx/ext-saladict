@@ -7,7 +7,7 @@ import { MsgSALADICT_SELECTION, MsgSELECTION } from '@/typings/message'
 
 import { Observable } from 'rxjs/Observable'
 import { of } from 'rxjs/observable/of'
-import { map, filter, withLatestFrom, buffer, debounceTime, observeOn } from 'rxjs/operators'
+import { map, filter, withLatestFrom, buffer, debounceTime, observeOn, share , startWith } from 'rxjs/operators'
 import { fromEvent } from 'rxjs/observable/fromEvent'
 import { merge } from 'rxjs/observable/merge'
 import { async } from 'rxjs/scheduler/async'
@@ -35,22 +35,23 @@ window.addEventListener('message', ({ data, source }: { data: MsgSALADICT_SELECT
   )
 })
 
-const appConfig$: Observable<AppConfig> = createAppConfigStream()
-
-const configLanguage$: Observable<AppConfig['language']> = appConfig$.pipe(
-  map(config => config.language),
+const appConfig$: Observable<AppConfig> = createAppConfigStream().pipe(
+  share(),
 )
 
 const isCtrlPressed$: Observable<boolean> = merge(
-  of(false),
   fromEvent(window, 'keydown', true, e => isCtrlKey(e)),
   fromEvent(window, 'keyup', true, e => false),
   fromEvent(window, 'blur', true, e => false),
+).pipe(
+  share(),
+  startWith(false),
 )
 
 const ctrlPressed$ = isCtrlPressed$.pipe(
   withLatestFrom(appConfig$, (isCtrlPressed, config) => config.active && isCtrlPressed),
   filter(isCtrlPressed => isCtrlPressed),
+  share(),
 )
 
 const tripleCtrlPressed$ = ctrlPressed$.pipe(
