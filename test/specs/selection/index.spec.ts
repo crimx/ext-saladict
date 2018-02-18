@@ -154,7 +154,7 @@ describe('Selection', () => {
     }, 0)
   })
 
-  it.skip('ctrlKey should be true if ctrl key is pressed while clicking', done => {
+  it('ctrlKey should be true if ctrl key is pressed while clicking', done => {
     window.dispatchEvent(new KeyboardEvent('keydown', {
       key: 'Control',
     }))
@@ -176,7 +176,7 @@ describe('Selection', () => {
     }, 0)
   })
 
-  it.skip('ctrlKey should be false if not released while clicking', done => {
+  it('ctrlKey should be false if not released while clicking', done => {
     window.dispatchEvent(new KeyboardEvent('keydown', {
       key: 'k',
     }))
@@ -198,7 +198,7 @@ describe('Selection', () => {
     }, 0)
   })
 
-  it.skip('ctrlKey should be false if ctrl key is released while clicking', done => {
+  it('ctrlKey should be false if ctrl key is released while clicking', done => {
     window.dispatchEvent(new KeyboardEvent('keydown', {
       key: 'Control',
     }))
