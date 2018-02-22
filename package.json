@@ -71,7 +71,7 @@
     "chalk": "2.3.1",
     "commitizen": "^2.9.6",
     "copy-webpack-plugin": "^4.3.1",
-    "css-loader": "0.28.9",
+    "css-loader": "0.28.10",
     "cz-conventional-changelog": "^2.1.0",
     "dotenv": "5.0.0",
     "extract-text-webpack-plugin": "3.0.2",
