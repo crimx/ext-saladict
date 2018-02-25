@@ -112,7 +112,7 @@
     "vue-style-loader": "^4.0.0",
     "vue-template-compiler": "^2.5.13",
     "webpack": "4.0.0",
-    "webpack-dev-server": "2.11.1"
+    "webpack-dev-server": "3.0.0"
   },
   "jest": {
     "globals": {
