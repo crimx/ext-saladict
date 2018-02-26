@@ -87,7 +87,7 @@
     "minimist": "^1.2.0",
     "node-sass": "^4.7.2",
     "postcss-flexbugs-fixes": "3.3.0",
-    "postcss-loader": "2.1.0",
+    "postcss-loader": "2.1.1",
     "postcss-safe-important": "^1.1.0",
     "raf": "3.4.0",
     "react-dev-utils": "^5.0.0",
