@@ -8152,9 +8152,9 @@ url-join@^2.0.2:
   version "2.0.5"
   resolved "https://registry.yarnpkg.com/url-join/-/url-join-2.0.5.tgz#5af22f18c052a000a48d7b82c5e9c2e2feeda728"
 
-url-loader@1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/url-loader/-/url-loader-1.0.0.tgz#77732f6604fadcf81de46e0533dc3876dc552319"
+url-loader@1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/url-loader/-/url-loader-1.0.1.tgz#61bc53f1f184d7343da2728a1289ef8722ea45ee"
   dependencies:
     loader-utils "^1.1.0"
     mime "^2.0.3"
