@@ -96,7 +96,7 @@
     "semver": "^5.4.1",
     "sinon-chrome": "^2.2.4",
     "standard-version": "^4.3.0",
-    "style-loader": "0.20.2",
+    "style-loader": "0.20.3",
     "text-transform-loader": "^2.0.0",
     "ts-jest": "^22.0.0",
     "ts-lint": "^4.5.1",
