@@ -414,7 +414,7 @@ function initServer (): void {
     const selfMsg = selfMsgTester.exec(message.type)
     if (selfMsg) {
       message.type = selfMsg[1]
-      if (sender.tab) {
+      if (sender.tab && sender.tab.id) {
         return messageSend(sender.tab.id, message)
       } else {
         return messageSend(message)
