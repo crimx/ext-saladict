@@ -4,6 +4,6 @@
     "typeRoots": ["../node_modules/@types", "./typings"]
   },
   "include": [
-    "./unit/**/*"
+    "./specs/**/*"
   ]
 }

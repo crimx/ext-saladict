@@ -37,7 +37,7 @@ const entries = ['background', argv.main || 'popup']
       name,
       dirPath,
       indexJS: names.find(name => /index\.((t|j)sx?)$/.test(name)),
-      indexHTML: names.find(name => name === 'index.html'),
+      indexHTML: names.find(name => name === 'index.html') || '__mocks__/index.html',
     }
   })
 
@@ -47,7 +47,7 @@ if (!entries[1].dirPath) {
 if (!entries[1].indexJS) {
   throw new Error(`Missing entry file for ${entries[1].dirPath}`)
 }
-if (!entries[1].indexHTML) {
+if (!fs.existsSync(path.join(entries[1].dirPath, entries[1].indexHTML))) {
   throw new Error(`Missing entry HTML for ${entries[1].dirPath}`)
 }
 
