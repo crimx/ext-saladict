@@ -4,6 +4,7 @@ import * as BrowserApiMock from '@/_helpers/__mocks__/browser-api'
 import { SelectionMock } from '@/_helpers/__mocks__/selection'
 import * as ConfigManagerMock from '@/_helpers/__mocks__/config-manager'
 import '@/selection'
+import { MsgType } from '@/typings/message'
 
 jest.mock('@/_helpers/browser-api')
 jest.mock('@/_helpers/config-manager')
@@ -20,7 +21,7 @@ const { dispatchAppConfigEvent }: {
   dispatchAppConfigEvent: typeof ConfigManagerMock.dispatchAppConfigEvent
 } = require('@/_helpers/config-manager')
 
-describe('Selection', () => {
+describe('Message Selection', () => {
   beforeEach(() => {
     browser.flush()
     window.name = ''
@@ -42,7 +43,7 @@ describe('Selection', () => {
     setTimeout(() => {
       expect(message.self.send).toHaveBeenCalledTimes(1)
       expect(message.self.send).toBeCalledWith({
-        type: 'SELECTION',
+        type: MsgType.Selection,
         selectionInfo: expect.objectContaining({ text: '' }),
       })
       done()
@@ -64,7 +65,7 @@ describe('Selection', () => {
     setTimeout(() => {
       expect(message.self.send).toHaveBeenCalledTimes(1)
       expect(message.self.send).toBeCalledWith({
-        type: 'SELECTION',
+        type: MsgType.Selection,
         selectionInfo: expect.objectContaining({ text: '' }),
       })
       done()
@@ -88,7 +89,7 @@ describe('Selection', () => {
     setTimeout(() => {
       expect(message.self.send).toHaveBeenCalledTimes(1)
       expect(message.self.send).toBeCalledWith({
-        type: 'SELECTION',
+        type: MsgType.Selection,
         selectionInfo: expect.objectContaining({ text: '' }),
       })
       done()
@@ -105,7 +106,7 @@ describe('Selection', () => {
     setTimeout(() => {
       expect(message.self.send).toHaveBeenCalledTimes(1)
       expect(message.self.send).toBeCalledWith({
-        type: 'SELECTION',
+        type: MsgType.Selection,
         mouseX: 10,
         mouseY: 10,
         ctrlKey: false,
@@ -235,7 +236,7 @@ describe('Selection', () => {
     }
     setTimeout(() => {
       expect(message.self.send).toHaveBeenCalledTimes(1)
-      expect(message.self.send).toBeCalledWith({ type: 'TRIPLE_CTRL' })
+      expect(message.self.send).toBeCalledWith({ type: MsgType.TripleCtrl })
       done()
     }, 510)
   })

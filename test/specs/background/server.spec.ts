@@ -1,6 +1,7 @@
 import { appConfigFactory, AppConfig } from '@/app-config'
 import * as browserWrap from '@/_helpers/browser-api'
 import sinon from 'sinon'
+import { MsgType } from '@/typings/message'
 
 describe('Server', () => {
   const chsToChz = jest.fn()
@@ -57,7 +58,7 @@ describe('Server', () => {
   describe('Create Tab', () => {
     it('called with escape', () => {
       browser.runtime.onMessage.dispatch({
-        type: 'OPEN_URL',
+        type: MsgType.OpenURL,
         url: 'https://test.com/%s%z',
         escape: true,
         text: 'test',
@@ -70,7 +71,7 @@ describe('Server', () => {
 
     it('called without escape', () => {
       browser.runtime.onMessage.dispatch({
-        type: 'OPEN_URL',
+        type: MsgType.OpenURL,
         url: 'https://test.com/',
         text: 'test',
       })
@@ -82,7 +83,7 @@ describe('Server', () => {
 
   it('Audio Play', () => {
     browser.runtime.onMessage.dispatch({
-      type: 'AUDIO_PLAY',
+      type: MsgType.PlayAudio,
       src: 'https://test.com/a.mp3',
     })
     expect(play).toHaveBeenCalledTimes(1)
@@ -95,7 +96,7 @@ describe('Server', () => {
       const rejectStub = jest.fn()
       browser.runtime.onMessage['_listeners'].forEach(f =>
         f({
-          type: 'FETCH_DICT_RESULT',
+          type: MsgType.FetchDictResult,
           text: 'test',
         })
         .then(resolveStub, rejectStub)
@@ -110,7 +111,7 @@ describe('Server', () => {
 
     it('should search text', () => {
       browser.runtime.onMessage.dispatch({
-        type: 'FETCH_DICT_RESULT',
+        type: MsgType.FetchDictResult,
         dict: 'bing',
         text: 'test',
       })
@@ -125,16 +126,16 @@ describe('Server', () => {
     const queryStub = jest.fn(() => Promise.resolve([{ id: 100 }]))
     browser.tabs.query.callsFake(queryStub)
     browser.tabs.sendMessage.callsFake(() => 'test')
-    browser.runtime.onMessage.dispatch({ type: 'PRELOAD_SELECTION' })
+    browser.runtime.onMessage.dispatch({ type: MsgType.PreloadSelection })
     browser.runtime.onMessage['_listeners'].forEach(f =>
-      f({ type: 'PRELOAD_SELECTION' })
+      f({ type: MsgType.PreloadSelection })
       .then(resolveStub, rejectStub)
     )
     setTimeout(() => {
       expect(resolveStub).toHaveBeenCalledTimes(1)
       expect(resolveStub).toHaveBeenCalledWith('test')
       expect(rejectStub).toHaveBeenCalledTimes(0)
-      expect(browser.tabs.sendMessage.calledWith(100, { type: '__PRELOAD_SELECTION__' })).toBeTruthy()
+      expect(browser.tabs.sendMessage.calledWith(100, { type: MsgType.__PreloadSelection__ })).toBeTruthy()
       done()
     }, 0)
   })

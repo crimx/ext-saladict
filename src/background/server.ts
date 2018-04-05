@@ -2,29 +2,30 @@ import { DictID } from '@/app-config'
 import { message, openURL } from '@/_helpers/browser-api'
 import { play } from './audio-manager'
 import { chsToChz } from '@/_helpers/chs-to-chz'
+import { MsgType } from '@/typings/message'
 
-interface MessageOpenUrlWithEscape {
-  type: 'OPEN_URL'
+interface MsgOpenUrlWithEscape {
+  type: MsgType.OpenURL
   url: string
   escape: true
   text: string
 }
 
-interface MessageOpenUrlWithoutEscape {
-  type: 'OPEN_URL'
+interface MsgOpenUrlWithoutEscape {
+  type: MsgType.OpenURL
   url: string
   escape?: false
 }
 
-type MessageOpenUrl = MessageOpenUrlWithoutEscape | MessageOpenUrlWithEscape
+type MsgOpenUrl = MsgOpenUrlWithoutEscape | MsgOpenUrlWithEscape
 
-interface MessageAudioPlay {
-  type: 'AUDIO_PLAY'
+interface MsgAudioPlay {
+  type: MsgType.PlayAudio
   src: string
 }
 
-interface MessageFetchDictResult {
-  type: 'FETCH_DICT_RESULT'
+interface MsgFetchDictResult {
+  type: MsgType.FetchDictResult
   dict: DictID
   text: string
 }
@@ -34,18 +35,18 @@ message.self.initServer()
 // background script as transfer station
 message.addListener((data, sender: browser.runtime.MessageSender): Promise<void> | undefined => {
   switch (data.type) {
-    case 'OPEN_URL':
-      return createTab(data)
-    case 'AUDIO_PLAY':
-      return playAudio(data)
-    case 'FETCH_DICT_RESULT':
-      return fetchDictResult(data)
-    case 'PRELOAD_SELECTION':
+    case MsgType.OpenURL:
+      return createTab(data as MsgOpenUrl)
+    case MsgType.PlayAudio:
+      return playAudio(data as MsgAudioPlay)
+    case MsgType.FetchDictResult:
+      return fetchDictResult(data as MsgFetchDictResult)
+    case MsgType.PreloadSelection:
       return preloadSelection()
   }
 })
 
-function createTab (data: MessageOpenUrl): Promise<void> {
+function createTab (data: MsgOpenUrl): Promise<void> {
   return openURL(
     data.escape
       ? data.url
@@ -55,11 +56,11 @@ function createTab (data: MessageOpenUrl): Promise<void> {
   )
 }
 
-function playAudio (data: MessageAudioPlay): Promise<void> {
+function playAudio (data: MsgAudioPlay): Promise<void> {
   return play(data.src)
 }
 
-function fetchDictResult (data: MessageFetchDictResult): Promise<void> {
+function fetchDictResult (data: MsgFetchDictResult): Promise<void> {
   let search
 
   try {
@@ -76,7 +77,7 @@ function preloadSelection (): Promise<void> {
   return browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].id != null) {
-        return message.send(tabs[0].id as number, { type: '__PRELOAD_SELECTION__' })
+        return message.send(tabs[0].id as number, { type: MsgType.__PreloadSelection__ })
       }
     })
     .then(text => text || '')

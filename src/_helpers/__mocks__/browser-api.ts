@@ -5,6 +5,7 @@
 import { Observable } from 'rxjs/Observable'
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
 import _ from 'lodash'
+import { MsgType } from '@/typings/message'
 
 /* --------------------------------------- *\
  * #Types
@@ -28,9 +29,15 @@ export type StorageListenerCb = (
 ) => void
 
 export interface Message {
-  type: string
+  type: number
   [propName: string]: any
 }
+
+type onMessageEvent = (
+  message: Message,
+  sender: browser.runtime.MessageSender,
+  sendResponse: Function
+) => Promise<any> | boolean | void
 
 /* --------------------------------------- *\
  * #Globals
@@ -42,14 +49,14 @@ const noop = () => { /* do nothing */ }
  * key: {function} user's callback function
  * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
-const messageListeners: Map<browser.runtime.onMessageEvent, Map<string, browser.runtime.onMessageEvent>> = new Map()
+const messageListeners: Map<onMessageEvent, Map<Message['type'], onMessageEvent>> = new Map()
 
 /**
  * For self page messaging
  * key: {function} user's callback function
  * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
-const messageSelfListeners: Map<browser.runtime.onMessageEvent, Map<string, browser.runtime.onMessageEvent>> = new Map()
+const messageSelfListeners: Map<onMessageEvent, Map<Message['type'], onMessageEvent>> = new Map()
 
 /**
  * key: {function} user's callback function
@@ -335,8 +342,8 @@ function _messageSend (self: boolean) {
 function _messageAddListener (self: boolean) {
   return jest.fn(messageAddListener)
 
-  function messageAddListener (messageType: string, cb: browser.runtime.onMessageEvent): void
-  function messageAddListener (cb: browser.runtime.onMessageEvent): void
+  function messageAddListener (messageType: Message['type'], cb: onMessageEvent): void
+  function messageAddListener (cb: onMessageEvent): void
   function messageAddListener (...args): void {
     const allListeners = self ? messageSelfListeners : messageListeners
     const messageType = args.length === 1 ? undefined : args[0]
@@ -346,7 +353,7 @@ function _messageAddListener (self: boolean) {
       listeners = new Map()
       allListeners.set(cb, listeners)
     }
-    let listener = listeners.get(messageType || '_&_MSG_DEFAULT_&_')
+    let listener = listeners.get(messageType || MsgType.Default)
     if (!listener) {
       listener = (
         (message, sender, sendResponse) => {
@@ -356,7 +363,7 @@ function _messageAddListener (self: boolean) {
             }
           }
         }
-      ) as browser.runtime.onMessageEvent
+      ) as onMessageEvent
       listeners.set(messageType, listener)
     }
   }
@@ -365,8 +372,8 @@ function _messageAddListener (self: boolean) {
 function _messageRemoveListener (self: boolean) {
   return jest.fn(messageRemoveListener)
 
-  function messageRemoveListener (messageType: string, cb: browser.runtime.onMessageEvent): void
-  function messageRemoveListener (cb: browser.runtime.onMessageEvent): void
+  function messageRemoveListener (messageType: Message['type'], cb: onMessageEvent): void
+  function messageRemoveListener (cb: onMessageEvent): void
   function messageRemoveListener (...args): void {
     const allListeners = self ? messageSelfListeners : messageListeners
     const messageType = args.length === 1 ? undefined : args[0]
@@ -395,9 +402,9 @@ function _messageCreateStream (self: boolean) {
   return jest.fn(messageCreateStream)
 
   function messageCreateStream<T> (selector?: (...args) => T): Observable<T>
-  function messageCreateStream<T> (messageType: string, selector?: (...args) => T): Observable<T>
+  function messageCreateStream<T> (messageType: Message['type'], selector?: (...args) => T): Observable<T>
   function messageCreateStream (...args) {
-    let messageType = ''
+    let messageType: Message['type'] = MsgType.Null
     let selector = x => x
 
     if (typeof args[0] === 'function') {
@@ -408,16 +415,16 @@ function _messageCreateStream (self: boolean) {
     }
 
     const obj = _.get(message, self ? 'self' : '')
-    if (messageType) {
+    if (messageType !== MsgType.Null) {
       return fromEventPattern(
-        handler => obj.addListener(messageType, handler as browser.runtime.onMessageEvent),
-        handler => obj.removeListener(messageType, handler as browser.runtime.onMessageEvent),
+        handler => obj.addListener(messageType, handler as onMessageEvent),
+        handler => obj.removeListener(messageType, handler as onMessageEvent),
         selector,
       )
     } else {
       return fromEventPattern(
-        handler => obj.addListener(handler as browser.runtime.onMessageEvent),
-        handler => obj.removeListener(handler as browser.runtime.onMessageEvent),
+        handler => obj.addListener(handler as onMessageEvent),
+        handler => obj.removeListener(handler as onMessageEvent),
         selector,
       )
     }

@@ -3,7 +3,7 @@ import { message, storage } from '@/_helpers/browser-api'
 import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 import { createAppConfigStream } from '@/_helpers/config-manager'
 import * as selection from '@/_helpers/selection'
-import { MsgSALADICT_SELECTION, MsgSELECTION } from '@/typings/message'
+import { MsgType, MsgSALADICT_SELECTION, MsgSELECTION } from '@/typings/message'
 
 import { Observable } from 'rxjs/Observable'
 import { of } from 'rxjs/observable/of'
@@ -12,12 +12,12 @@ import { fromEvent } from 'rxjs/observable/fromEvent'
 import { merge } from 'rxjs/observable/merge'
 import { async } from 'rxjs/scheduler/async'
 
-message.addListener('__PRELOAD_SELECTION__', (data, sender, sendResponse) => {
+message.addListener(MsgType.__PreloadSelection__, (data, sender, sendResponse) => {
   sendResponse(selection.getSelectionInfo())
 })
 
 window.addEventListener('message', ({ data, source }: { data: MsgSALADICT_SELECTION, source: Window }) => {
-  if (data.type !== 'SALADICT_SELECTION') { return }
+  if (data.type !== MsgType.SaladictSelection) { return }
 
   // get the souce iframe
   const iframe = Array.from(document.querySelectorAll('iframe'))
@@ -76,7 +76,7 @@ const mouseup$ = fromEvent<MouseEvent>(window, 'mouseup', true).pipe(
 )
 
 tripleCtrlPressed$.subscribe(() => {
-  message.self.send({ type: 'TRIPLE_CTRL' })
+  message.self.send({ type: MsgType.TripleCtrl })
 })
 
 mouseup$.subscribe(([ evt, config, ctrlKey ]) => {
@@ -115,7 +115,7 @@ function sendMessage (
   if (window.parent === window) {
     // top
     message.self.send({
-      type: 'SELECTION',
+      type: MsgType.Selection,
       selectionInfo,
       mouseX: clientX,
       mouseY: clientY,
@@ -124,7 +124,7 @@ function sendMessage (
   } else {
     // post to upper frames/window
     window.parent.postMessage({
-      type: 'SALADICT_SELECTION',
+      type: MsgType.SaladictSelection,
       selectionInfo,
       mouseX: clientX,
       mouseY: clientY,
@@ -136,7 +136,7 @@ function sendMessage (
 function sendEmptyMessage () {
   // empty message
   message.self.send({
-    type: 'SELECTION',
+    type: MsgType.Selection,
     selectionInfo: {
       text: '',
       context: '',

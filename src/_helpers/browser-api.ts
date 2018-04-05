@@ -4,6 +4,7 @@
 
 import { Observable } from 'rxjs/Observable'
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
+import { MsgType } from '@/typings/message'
 
 /* --------------------------------------- *\
  * #Types
@@ -27,9 +28,15 @@ export type StorageListenerCb = (
 ) => void
 
 export interface Message {
-  type: string
+  type: number
   [propName: string]: any
 }
+
+type onMessageEvent = (
+  message: Message,
+  sender: browser.runtime.MessageSender,
+  sendResponse: Function
+) => Promise<any> | boolean | void
 
 /* --------------------------------------- *\
  * #Globals
@@ -41,14 +48,14 @@ const noop = () => { /* do nothing */ }
  * key: {function} user's callback function
  * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
-const messageListeners: Map<browser.runtime.onMessageEvent, Map<string, browser.runtime.onMessageEvent>> = new Map()
+const messageListeners: Map<onMessageEvent, Map<Message['type'], onMessageEvent>> = new Map()
 
 /**
  * For self page messaging
  * key: {function} user's callback function
  * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
-const messageSelfListeners: Map<browser.runtime.onMessageEvent, Map<string, browser.runtime.onMessageEvent>> = new Map()
+const messageSelfListeners: Map<onMessageEvent, Map<Message['type'], onMessageEvent>> = new Map()
 
 /**
  * key: {function} user's callback function
@@ -286,12 +293,12 @@ function messageSendSelf (message: Message): Promise<any> {
   }
   return browser.runtime.sendMessage(Object.assign({}, message, {
     __pageId__: window.pageId,
-    type: `_&_${message.type}_&_`
+    type: `[[${message.type}]]`
   }))
 }
 
-function messageAddListener (messageType: string, cb: browser.runtime.onMessageEvent): void
-function messageAddListener (cb: browser.runtime.onMessageEvent): void
+function messageAddListener (messageType: Message['type'], cb: onMessageEvent): void
+function messageAddListener (cb: onMessageEvent): void
 function messageAddListener (this: MessageThis, ...args): void {
   const allListeners = this.__self__ ? messageSelfListeners : messageListeners
   const messageType = args.length === 1 ? undefined : args[0]
@@ -301,7 +308,7 @@ function messageAddListener (this: MessageThis, ...args): void {
     listeners = new Map()
     allListeners.set(cb, listeners)
   }
-  let listener = listeners.get(messageType || '_&_MSG_DEFAULT_&_')
+  let listener = listeners.get(messageType || MsgType.Default)
   if (!listener) {
     listener = (
       (message, sender, sendResponse) => {
@@ -311,14 +318,14 @@ function messageAddListener (this: MessageThis, ...args): void {
           }
         }
       }
-    ) as browser.runtime.onMessageEvent
+    ) as onMessageEvent
     listeners.set(messageType, listener)
   }
   return browser.runtime.onMessage.addListener(listener)
 }
 
-function messageRemoveListener (messageType: string, cb: browser.runtime.onMessageEvent): void
-function messageRemoveListener (cb: browser.runtime.onMessageEvent): void
+function messageRemoveListener (messageType: Message['type'], cb: onMessageEvent): void
+function messageRemoveListener (cb: onMessageEvent): void
 function messageRemoveListener (this: MessageThis, ...args): void {
   const allListeners = this.__self__ ? messageSelfListeners : messageListeners
   const messageType = args.length === 1 ? undefined : args[0]
@@ -346,9 +353,9 @@ function messageRemoveListener (this: MessageThis, ...args): void {
 }
 
 function messageCreateStream<T> (selector?: (...args) => T): Observable<T>
-function messageCreateStream<T> (messageType: string, selector?: (...args) => T): Observable<T>
+function messageCreateStream<T> (messageType: Message['type'], selector?: (...args) => T): Observable<T>
 function messageCreateStream (this: MessageThis, ...args) {
-  let messageType = ''
+  let messageType: Message['type'] = MsgType.Null
   let selector = x => x
 
   if (typeof args[0] === 'function') {
@@ -358,28 +365,28 @@ function messageCreateStream (this: MessageThis, ...args) {
     selector = args[1]
   }
 
-  if (messageType) {
+  if (messageType !== MsgType.Null) {
     return fromEventPattern(
-      handler => this.addListener(messageType, handler as browser.runtime.onMessageEvent),
-      handler => this.removeListener(messageType, handler as browser.runtime.onMessageEvent),
+      handler => this.addListener(messageType, handler as onMessageEvent),
+      handler => this.removeListener(messageType, handler as onMessageEvent),
       selector,
     )
   } else {
     return fromEventPattern(
-      handler => this.addListener(handler as browser.runtime.onMessageEvent),
-      handler => this.removeListener(handler as browser.runtime.onMessageEvent),
+      handler => this.addListener(handler as onMessageEvent),
+      handler => this.removeListener(handler as onMessageEvent),
       selector,
     )
   }
 }
 
 /**
- * Deploy client side
+ * Deploy page script for self-messaging
  * This method is called on the first sendMessage
  */
 function initClient (): Promise<typeof window.pageId> {
   if (window.pageId === undefined) {
-    return browser.runtime.sendMessage({ type: '__PAGE_INFO__' })
+    return browser.runtime.sendMessage({ type: MsgType.__PageInfo__ })
       .then(({ pageId, faviconURL, pageTitle, pageURL }) => {
         window.pageId = pageId
         window.faviconURL = faviconURL
@@ -393,18 +400,18 @@ function initClient (): Promise<typeof window.pageId> {
 }
 
 /**
- * Deploy server side
+ * Deploy background proxy for self-messaging
  * This method should be invoked in background script
  */
 function initServer (): void {
   window.pageId = 'background page'
-  const selfMsgTester = /^_&_(.+)_&_$/
+  const selfMsgTester = /^\[\[(.+)\]\]$/
 
   browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (!message) { return }
 
     switch (message.type) {
-      case '__PAGE_INFO__':
+      case MsgType.__PageInfo__:
         sendResponse(_getPageInfo(sender))
         break
       default:
@@ -413,7 +420,7 @@ function initServer (): void {
 
     const selfMsg = selfMsgTester.exec(message.type)
     if (selfMsg) {
-      message.type = selfMsg[1]
+      message.type = Number(selfMsg[1])
       if (sender.tab && sender.tab.id) {
         return messageSend(sender.tab.id, message)
       } else {

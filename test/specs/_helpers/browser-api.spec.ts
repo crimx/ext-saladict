@@ -1,6 +1,7 @@
 import { message, storage, openURL } from '@/_helpers/browser-api'
 import { AppConfig } from '@/app-config'
 import { take } from 'rxjs/operators/take'
+import { MsgType } from '@/typings/message'
 
 describe('Browser API Wapper', () => {
   beforeEach(() => {
@@ -452,7 +453,7 @@ describe('Browser API Wapper', () => {
   describe('Message', () => {
     it('message.send', () => {
       const tabId = 1
-      const msg = { type: 'TYPE_1' }
+      const msg = { type: 1 }
 
       message.send(msg)
       expect(browser.runtime.sendMessage.calledWith(msg)).toBeTruthy()
@@ -471,16 +472,16 @@ describe('Browser API Wapper', () => {
       let cb1Call = 0
       let cb2Call = 0
       message.addListener(cb1)
-      message.addListener('MSG_1', cb2)
+      message.addListener(1, cb2)
       expect(browser.runtime.onMessage.addListener.calledTwice).toBeTruthy()
       expect(cb1).toHaveBeenCalledTimes(cb1Call)
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
 
-      browser.runtime.onMessage.dispatch({ type: 'MSG_2' })
+      browser.runtime.onMessage.dispatch({ type: 2 })
       expect(cb1).toHaveBeenCalledTimes(++cb1Call)
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
 
-      browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
+      browser.runtime.onMessage.dispatch({ type: 1 })
       expect(cb1).toHaveBeenCalledTimes(++cb1Call)
       expect(cb2).toHaveBeenCalledTimes(++cb2Call)
     })
@@ -489,23 +490,23 @@ describe('Browser API Wapper', () => {
       const cb2 = jest.fn()
       let cb1Call = 0
       let cb2Call = 0
-      message.addListener('MSG_1', cb1)
-      message.addListener('MSG_2', cb2)
-      browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
+      message.addListener(1, cb1)
+      message.addListener(2, cb2)
+      browser.runtime.onMessage.dispatch({ type: 1 })
       expect(cb1).toHaveBeenCalledTimes(++cb1Call)
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
 
-      message.removeListener('MSG_x', cb1)
+      message.removeListener(-1, cb1)
       message.removeListener(cb2)
       expect(browser.runtime.onMessage.removeListener.calledTwice).toBeTruthy()
 
-      browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
-      browser.runtime.onMessage.dispatch({ type: 'MSG_2' })
+      browser.runtime.onMessage.dispatch({ type: 1 })
+      browser.runtime.onMessage.dispatch({ type: 2 })
       expect(cb1).toHaveBeenCalledTimes(++cb1Call)
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
 
-      message.removeListener('MSG_1', cb1)
-      browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
+      message.removeListener(1, cb1)
+      browser.runtime.onMessage.dispatch({ type: 1 })
       expect(cb1).toHaveBeenCalledTimes(cb1Call)
     })
     describe('message.createStream', () => {
@@ -521,24 +522,24 @@ describe('Browser API Wapper', () => {
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
+        browser.runtime.onMessage.dispatch({ type: 1 })
         expect(nextStub).toHaveBeenCalledTimes(1)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
-        expect(nextStub).toBeCalledWith({ type: 'MSG_1' })
+        expect(nextStub).toBeCalledWith({ type: 1 })
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_2' })
+        browser.runtime.onMessage.dispatch({ type: 2 })
         expect(nextStub).toHaveBeenCalledTimes(2)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(1)
-        expect(nextStub).toBeCalledWith({ type: 'MSG_2' })
+        expect(nextStub).toBeCalledWith({ type: 2 })
       })
 
       it('with message type', () => {
         const nextStub = jest.fn()
         const errorStub = jest.fn()
         const completeStub = jest.fn()
-        message.createStream('MSG_1')
+        message.createStream(1)
           .pipe(take(1))
           .subscribe(nextStub, errorStub, completeStub)
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
@@ -546,16 +547,16 @@ describe('Browser API Wapper', () => {
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_2' })
+        browser.runtime.onMessage.dispatch({ type: 2 })
         expect(nextStub).toHaveBeenCalledTimes(0)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
+        browser.runtime.onMessage.dispatch({ type: 1 })
         expect(nextStub).toHaveBeenCalledTimes(1)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(1)
-        expect(nextStub).toBeCalledWith({ type: 'MSG_1' })
+        expect(nextStub).toBeCalledWith({ type: 1 })
       })
       it('with selector', () => {
         const nextStub = jest.fn()
@@ -569,23 +570,23 @@ describe('Browser API Wapper', () => {
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_2' })
+        browser.runtime.onMessage.dispatch({ type: 2 })
         expect(nextStub).toHaveBeenCalledTimes(1)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
-        expect(nextStub).toBeCalledWith('MSG_2')
+        expect(nextStub).toBeCalledWith(2)
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
+        browser.runtime.onMessage.dispatch({ type: 1 })
         expect(nextStub).toHaveBeenCalledTimes(2)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(1)
-        expect(nextStub).toBeCalledWith('MSG_1')
+        expect(nextStub).toBeCalledWith(1)
       })
       it('with message type and selector', () => {
         const nextStub = jest.fn()
         const errorStub = jest.fn()
         const completeStub = jest.fn()
-        message.createStream('MSG_1', x => x.type)
+        message.createStream(1, x => x.type)
           .pipe(take(1))
           .subscribe(nextStub, errorStub, completeStub)
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
@@ -593,22 +594,22 @@ describe('Browser API Wapper', () => {
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_2' })
+        browser.runtime.onMessage.dispatch({ type: 2 })
         expect(nextStub).toHaveBeenCalledTimes(0)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
+        browser.runtime.onMessage.dispatch({ type: 1 })
         expect(nextStub).toHaveBeenCalledTimes(1)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(1)
-        expect(nextStub).toBeCalledWith('MSG_1')
+        expect(nextStub).toBeCalledWith(1)
       })
     })
 
     it('message.self.initClient', () => {
       browser.runtime.sendMessage
-        .withArgs({ type: '__PAGE_INFO__' })
+        .withArgs({ type: MsgType.__PageInfo__ })
         .returns(Promise.resolve({
           pageId: 'pageId',
           faviconURL: 'faviconURL',
@@ -617,7 +618,7 @@ describe('Browser API Wapper', () => {
         }))
       return message.self.initClient()
         .then(() => {
-          expect(browser.runtime.sendMessage.calledWith({ type: '__PAGE_INFO__' })).toBeTruthy()
+          expect(browser.runtime.sendMessage.calledWith({ type: MsgType.__PageInfo__ })).toBeTruthy()
           expect(window.pageId).toBe('pageId')
           expect(window.faviconURL).toBe('faviconURL')
           expect(window.pageTitle).toBe('pageTitle')
@@ -637,7 +638,7 @@ describe('Browser API Wapper', () => {
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
 
         const sendResponse = jest.fn()
-        browser.runtime.onMessage.dispatch({ type: '__PAGE_INFO__' }, { tab }, sendResponse)
+        browser.runtime.onMessage.dispatch({ type: MsgType.__PageInfo__ }, { tab }, sendResponse)
         expect(sendResponse).toBeCalledWith(({
           pageId: tab.id,
           faviconURL: tab.favIconUrl,
@@ -651,7 +652,7 @@ describe('Browser API Wapper', () => {
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
 
         const sendResponse = jest.fn()
-        browser.runtime.onMessage.dispatch({ type: '__PAGE_INFO__' }, {}, sendResponse)
+        browser.runtime.onMessage.dispatch({ type: MsgType.__PageInfo__ }, {}, sendResponse)
         expect(sendResponse).toBeCalledWith(
           expect.objectContaining({
             pageId: 'popup',
@@ -663,21 +664,21 @@ describe('Browser API Wapper', () => {
         message.self.initServer()
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
 
-        browser.runtime.onMessage.dispatch({ type: '_&_MSG_1_&_', __pageId__: 1 }, {})
-        expect(browser.runtime.sendMessage.calledWith({ type: 'MSG_1', __pageId__: 1 })).toBeTruthy()
+        browser.runtime.onMessage.dispatch({ type: '[[1]]', __pageId__: 1 }, {})
+        expect(browser.runtime.sendMessage.calledWith({ type: 1, __pageId__: 1 })).toBeTruthy()
 
-        browser.runtime.onMessage.dispatch({ type: '_&_MSG_1_&_', __pageId__: 1 }, { tab })
-        expect(browser.tabs.sendMessage.calledWith(tab.id, { type: 'MSG_1', __pageId__: 1 })).toBeTruthy()
+        browser.runtime.onMessage.dispatch({ type: '[[1]]', __pageId__: 1 }, { tab })
+        expect(browser.tabs.sendMessage.calledWith(tab.id, { type: 1, __pageId__: 1 })).toBeTruthy()
       })
     })
     it('message.self.send', () => {
       window.pageId = 1
       message.self.send({
-        type: 'MSG_1',
+        type: 1,
         prop: 'value',
       })
       expect(browser.runtime.sendMessage.calledWith({
-        type: '_&_MSG_1_&_',
+        type: '[[1]]',
         __pageId__: window.pageId,
         prop: 'value',
       })).toBeTruthy()
@@ -694,15 +695,15 @@ describe('Browser API Wapper', () => {
       expect(cb1).toHaveBeenCalledTimes(cb1Call)
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
 
-      browser.runtime.onMessage.dispatch({ type: 'MSG_1', __pageId__: window.pageId })
+      browser.runtime.onMessage.dispatch({ type: 1, __pageId__: window.pageId })
       expect(cb1).toHaveBeenCalledTimes(++cb1Call)
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
 
-      browser.runtime.onMessage.dispatch({ type: 'MSG_1' })
+      browser.runtime.onMessage.dispatch({ type: 1 })
       expect(cb1).toHaveBeenCalledTimes(cb1Call)
       expect(cb2).toHaveBeenCalledTimes(++cb2Call)
 
-      browser.runtime.onMessage.dispatch({ type: 'MSG_1', __pageId__: window.pageId + 2 })
+      browser.runtime.onMessage.dispatch({ type: 1, __pageId__: window.pageId + 2 })
       expect(cb1).toHaveBeenCalledTimes(cb1Call)
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
     })
@@ -734,17 +735,17 @@ describe('Browser API Wapper', () => {
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_1', __pageId__: window.pageId })
+        browser.runtime.onMessage.dispatch({ type: 1, __pageId__: window.pageId })
         expect(nextStub).toHaveBeenCalledTimes(1)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
-        expect(nextStub).toBeCalledWith({ type: 'MSG_1', __pageId__: window.pageId })
+        expect(nextStub).toBeCalledWith({ type: 1, __pageId__: window.pageId })
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_2', __pageId__: window.pageId })
+        browser.runtime.onMessage.dispatch({ type: 2, __pageId__: window.pageId })
         expect(nextStub).toHaveBeenCalledTimes(2)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(1)
-        expect(nextStub).toBeCalledWith({ type: 'MSG_2', __pageId__: window.pageId })
+        expect(nextStub).toBeCalledWith({ type: 2, __pageId__: window.pageId })
       })
 
       it('with message type', () => {
@@ -752,7 +753,7 @@ describe('Browser API Wapper', () => {
         const nextStub = jest.fn()
         const errorStub = jest.fn()
         const completeStub = jest.fn()
-        message.self.createStream('MSG_1')
+        message.self.createStream(1)
           .pipe(take(1))
           .subscribe(nextStub, errorStub, completeStub)
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
@@ -760,16 +761,16 @@ describe('Browser API Wapper', () => {
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_2', __pageId__: window.pageId })
+        browser.runtime.onMessage.dispatch({ type: 2, __pageId__: window.pageId })
         expect(nextStub).toHaveBeenCalledTimes(0)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_1', __pageId__: window.pageId })
+        browser.runtime.onMessage.dispatch({ type: 1, __pageId__: window.pageId })
         expect(nextStub).toHaveBeenCalledTimes(1)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(1)
-        expect(nextStub).toBeCalledWith({ type: 'MSG_1', __pageId__: window.pageId })
+        expect(nextStub).toBeCalledWith({ type: 1, __pageId__: window.pageId })
       })
       it('with selector', () => {
         window.pageId = 1
@@ -784,24 +785,24 @@ describe('Browser API Wapper', () => {
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_2', __pageId__: window.pageId })
+        browser.runtime.onMessage.dispatch({ type: 2, __pageId__: window.pageId })
         expect(nextStub).toHaveBeenCalledTimes(1)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
-        expect(nextStub).toBeCalledWith('MSG_2')
+        expect(nextStub).toBeCalledWith(2)
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_1', __pageId__: window.pageId })
+        browser.runtime.onMessage.dispatch({ type: 1, __pageId__: window.pageId })
         expect(nextStub).toHaveBeenCalledTimes(2)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(1)
-        expect(nextStub).toBeCalledWith('MSG_1')
+        expect(nextStub).toBeCalledWith(1)
       })
       it('with message type and selector', () => {
         window.pageId = 1
         const nextStub = jest.fn()
         const errorStub = jest.fn()
         const completeStub = jest.fn()
-        message.self.createStream('MSG_1', x => x.type)
+        message.self.createStream(1, x => x.type)
           .pipe(take(1))
           .subscribe(nextStub, errorStub, completeStub)
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
@@ -809,16 +810,16 @@ describe('Browser API Wapper', () => {
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_2', __pageId__: window.pageId })
+        browser.runtime.onMessage.dispatch({ type: 2, __pageId__: window.pageId })
         expect(nextStub).toHaveBeenCalledTimes(0)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 'MSG_1', __pageId__: window.pageId })
+        browser.runtime.onMessage.dispatch({ type: 1, __pageId__: window.pageId })
         expect(nextStub).toHaveBeenCalledTimes(1)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(1)
-        expect(nextStub).toBeCalledWith('MSG_1')
+        expect(nextStub).toBeCalledWith(1)
       })
     })
   })
