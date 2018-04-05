@@ -3,7 +3,7 @@ import { message, storage } from '@/_helpers/browser-api'
 import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 import { createAppConfigStream } from '@/_helpers/config-manager'
 import * as selection from '@/_helpers/selection'
-import { MsgType, MsgSALADICT_SELECTION, MsgSELECTION } from '@/typings/message'
+import { MsgType, MsgSaladictSelection, MsgSelection } from '@/typings/message'
 
 import { Observable } from 'rxjs/Observable'
 import { of } from 'rxjs/observable/of'
@@ -16,7 +16,7 @@ message.addListener(MsgType.__PreloadSelection__, (data, sender, sendResponse) =
   sendResponse(selection.getSelectionInfo())
 })
 
-window.addEventListener('message', ({ data, source }: { data: MsgSALADICT_SELECTION, source: Window }) => {
+window.addEventListener('message', ({ data, source }: { data: MsgSaladictSelection, source: Window }) => {
   if (data.type !== MsgType.SaladictSelection) { return }
 
   // get the souce iframe
@@ -120,7 +120,7 @@ function sendMessage (
       mouseX: clientX,
       mouseY: clientY,
       ctrlKey: isCtrlPressed,
-    } as MsgSELECTION)
+    } as MsgSelection)
   } else {
     // post to upper frames/window
     window.parent.postMessage({
@@ -129,7 +129,7 @@ function sendMessage (
       mouseX: clientX,
       mouseY: clientY,
       ctrlKey: isCtrlPressed,
-    } as MsgSALADICT_SELECTION, '*')
+    } as MsgSaladictSelection, '*')
   }
 }
 
@@ -147,7 +147,7 @@ function sendEmptyMessage () {
       trans: '',
       note: ''
     }
-  } as MsgSELECTION)
+  } as MsgSelection)
 }
 
 /**

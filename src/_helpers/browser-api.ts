@@ -28,7 +28,7 @@ export type StorageListenerCb = (
 ) => void
 
 export interface Message {
-  type: number
+  type: MsgType
   [propName: string]: any
 }
 
@@ -420,7 +420,7 @@ function initServer (): void {
 
     const selfMsg = selfMsgTester.exec(message.type)
     if (selfMsg) {
-      message.type = Number(selfMsg[1])
+      message.type = Number(selfMsg[1]) as MsgType
       if (sender.tab && sender.tab.id) {
         return messageSend(sender.tab.id, message)
       } else {

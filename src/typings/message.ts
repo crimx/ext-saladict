@@ -1,7 +1,5 @@
 import { SelectionInfo } from '@/_helpers/selection'
 
-/* tslint:disable:class-name */
-
 export enum MsgType {
   /** Nothing */
   Null,
@@ -35,7 +33,7 @@ export enum MsgType {
   __PreloadSelection__,
 }
 
-export interface MsgSELECTION {
+export interface MsgSelection {
   type: MsgType.Selection
   selectionInfo: SelectionInfo
   mouseX?: number
@@ -43,7 +41,7 @@ export interface MsgSELECTION {
   ctrlKey?: boolean
 }
 
-export interface MsgSALADICT_SELECTION {
+export interface MsgSaladictSelection {
   type: MsgType.SaladictSelection
   selectionInfo: SelectionInfo
   mouseX: number
