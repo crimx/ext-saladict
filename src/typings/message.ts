@@ -6,10 +6,8 @@ export enum MsgType {
   /** Default */
   Default,
 
-  /** Any type of mouse down */
+  /** Mouse down, selection maybe empty */
   Selection,
-  /** Mouse down with valid selection */
-  SaladictSelection,
 
   /** Ctrl/Command has been hit 3 times */
   TripleCtrl,
@@ -33,6 +31,11 @@ export enum MsgType {
   __PreloadSelection__,
 }
 
+/** iframe messaging */
+export enum PostMsgType {
+  Selection = 'SALADICT_SELECTION',
+}
+
 export interface MsgSelection {
   type: MsgType.Selection
   selectionInfo: SelectionInfo
@@ -41,8 +44,8 @@ export interface MsgSelection {
   ctrlKey?: boolean
 }
 
-export interface MsgSaladictSelection {
-  type: MsgType.SaladictSelection
+export interface PostMsgSelection {
+  type: PostMsgType.Selection
   selectionInfo: SelectionInfo
   mouseX: number
   mouseY: number

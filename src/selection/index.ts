@@ -3,7 +3,7 @@ import { message, storage } from '@/_helpers/browser-api'
 import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 import { createAppConfigStream } from '@/_helpers/config-manager'
 import * as selection from '@/_helpers/selection'
-import { MsgType, MsgSaladictSelection, MsgSelection } from '@/typings/message'
+import { MsgType, PostMsgType, PostMsgSelection, MsgSelection } from '@/typings/message'
 
 import { Observable } from 'rxjs/Observable'
 import { of } from 'rxjs/observable/of'
@@ -16,8 +16,8 @@ message.addListener(MsgType.__PreloadSelection__, (data, sender, sendResponse) =
   sendResponse(selection.getSelectionInfo())
 })
 
-window.addEventListener('message', ({ data, source }: { data: MsgSaladictSelection, source: Window }) => {
-  if (data.type !== MsgType.SaladictSelection) { return }
+window.addEventListener('message', ({ data, source }: { data: PostMsgSelection, source: Window }) => {
+  if (data.type !== PostMsgType.Selection) { return }
 
   // get the souce iframe
   const iframe = Array.from(document.querySelectorAll('iframe'))
@@ -35,11 +35,11 @@ window.addEventListener('message', ({ data, source }: { data: MsgSaladictSelecti
   )
 })
 
-const appConfig$: Observable<AppConfig> = createAppConfigStream().pipe(
+const appConfig$$: Observable<AppConfig> = createAppConfigStream().pipe(
   share(),
 )
 
-const isCtrlPressed$: Observable<boolean> = merge(
+const isCtrlPressed$$: Observable<boolean> = merge(
   fromEvent(window, 'keydown', true, e => isCtrlKey(e)),
   fromEvent(window, 'keyup', true, e => false),
   fromEvent(window, 'blur', true, e => false),
@@ -48,8 +48,8 @@ const isCtrlPressed$: Observable<boolean> = merge(
   startWith(false),
 )
 
-const ctrlPressed$ = isCtrlPressed$.pipe(
-  withLatestFrom(appConfig$, (isCtrlPressed, config) => config.active && isCtrlPressed),
+const ctrlPressed$ = isCtrlPressed$$.pipe(
+  withLatestFrom(appConfig$$, (isCtrlPressed, config) => config.active && isCtrlPressed),
   filter(isCtrlPressed => isCtrlPressed),
   share(),
 )
@@ -61,7 +61,7 @@ const tripleCtrlPressed$ = ctrlPressed$.pipe(
 )
 
 const mouseup$ = fromEvent<MouseEvent>(window, 'mouseup', true).pipe(
-  withLatestFrom(appConfig$, isCtrlPressed$),
+  withLatestFrom(appConfig$$, isCtrlPressed$$),
   filter(([ e, config ]) => {
     if (!config.active || window.name === 'saladict-frame') { return false }
     if ((e.target as Element).className && ((e.target as Element).className.startsWith('saladict-'))) {
@@ -124,12 +124,12 @@ function sendMessage (
   } else {
     // post to upper frames/window
     window.parent.postMessage({
-      type: MsgType.SaladictSelection,
+      type: PostMsgType.Selection,
       selectionInfo,
       mouseX: clientX,
       mouseY: clientY,
       ctrlKey: isCtrlPressed,
-    } as MsgSaladictSelection, '*')
+    } as PostMsgSelection, '*')
   }
 }
 
