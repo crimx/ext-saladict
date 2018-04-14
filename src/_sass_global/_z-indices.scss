@@ -1,13 +1,11 @@
-/*------------------------------------*\
-  z-index
-\*------------------------------------*/
+// Max 2^31 − 1 = 2147483647
 
-$global-zindex-dropdown-backdrop: 99999999999999999999999999999999999999999999999991 !default;
-$global-zindex-navbar:            99999999999999999999999999999999999999999999999992 !default;
-$global-zindex-dropdown:          99999999999999999999999999999999999999999999999993 !default;
-$global-zindex-fixed:             99999999999999999999999999999999999999999999999994 !default;
-$global-zindex-sticky:            99999999999999999999999999999999999999999999999995 !default;
-$global-zindex-modal-backdrop:    99999999999999999999999999999999999999999999999996 !default;
-$global-zindex-modal:             99999999999999999999999999999999999999999999999997 !default;
-$global-zindex-popover:           99999999999999999999999999999999999999999999999998 !default;
-$global-zindex-tooltip:           99999999999999999999999999999999999999999999999999 !default;
+$global-zindex-dropdown-backdrop: 2147483639 !default;
+$global-zindex-navbar:            2147483640 !default;
+$global-zindex-dropdown:          2147483641 !default;
+$global-zindex-fixed:             2147483642 !default;
+$global-zindex-sticky:            2147483643 !default;
+$global-zindex-modal-backdrop:    2147483644 !default;
+$global-zindex-modal:             2147483645 !default;
+$global-zindex-popover:           2147483646 !default;
+$global-zindex-tooltip:           2147483647 !default;

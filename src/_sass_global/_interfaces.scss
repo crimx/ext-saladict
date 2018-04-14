@@ -1,0 +1,91 @@
+/*-----------------------------------------------*\
+    Tailored for exposed components
+\*-----------------------------------------------*/
+
+%reset-important {
+  background-attachment: scroll !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  background-position: 0 0 !important;
+  background-repeat: repeat !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  border-style: none !important;
+  border-width: 0 !important;
+  bottom: auto !important;
+  clear: none !important;
+  clip: auto !important;
+  color: inherit !important;
+  counter-increment: none !important;
+  counter-reset: none !important;
+  cursor: auto !important;
+  direction: inherit !important;
+  display: inline !important;
+  float: none !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-style: inherit !important;
+  font-variant: normal !important;
+  font-weight: inherit !important;
+  height: auto !important;
+  left: auto !important;
+  letter-spacing: normal !important;
+  line-height: inherit !important;
+  list-style-type:  inherit !important;
+  list-style-position:  outside !important;
+  list-style-image:  none !important;
+  margin: 0 !important;
+  max-height: none !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  min-width: 0 !important;
+  opacity: 1 !important;
+  outline: invert none medium !important;
+  overflow: visible !important;
+  padding: 0 !important;
+  position: static !important;
+  quotes:  "" "" !important;
+  right: auto !important;
+  table-layout: auto !important;
+  text-align: inherit !important;
+  text-decoration: inherit !important;
+  text-indent: 0 !important;
+  text-transform: none !important;
+  top: auto !important;
+  unicode-bidi: normal !important;
+  vertical-align: baseline !important;
+  visibility: inherit !important;
+  white-space: normal !important;
+  width: auto !important;
+  word-spacing: normal !important;
+  z-index: auto !important;
+
+  /* CSS3 */
+  /* Including all prefixes according to http://caniuse.com/ */
+  /* CSS Animations don't cascade, so don't require resetting */
+  background-origin: padding-box !important;
+  background-clip: border-box !important;
+  background-size: auto !important;
+  border-image: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  box-sizing: content-box !important;
+  column-count: auto !important;
+  column-gap: normal !important;
+  column-rule: medium none black !important;
+  column-span: 1 !important;
+  column-width: auto !important;
+  font-feature-settings: normal !important;
+  overflow-x: visible !important;
+  overflow-y: visible !important;
+  hyphens: manual !important;
+  perspective: none !important;
+  perspective-origin: 50% 50% !important;
+  backface-visibility: visible !important;
+  text-shadow: none !important;
+  transition: all 0s ease 0s !important;
+  transform: none; // React (shockingly) doesn't support !important
+  transform-origin: 50% 50% !important;
+  transform-style: flat !important;
+  word-break: normal !important;
+}
