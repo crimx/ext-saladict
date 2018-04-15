@@ -1,6 +1,6 @@
 import { SelectionInfo } from '@/_helpers/selection'
 
-export enum MsgType {
+export const enum MsgType {
   /** Nothing */
   Null,
   /** Default */
@@ -32,7 +32,7 @@ export enum MsgType {
 }
 
 /** iframe messaging */
-export enum PostMsgType {
+export const enum PostMsgType {
   Selection = 'SALADICT_SELECTION',
 }
 
