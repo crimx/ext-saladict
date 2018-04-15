@@ -34,7 +34,7 @@
   "dependencies": {
     "@types/lodash": "^4.14.98",
     "@types/node": "^9.3.0",
-    "@types/react": "^16.0.34",
+    "@types/react": "^16.3.10",
     "@types/react-dom": "^16.0.3",
     "@types/react-motion": "^0.0.25",
     "bootstrap-sass": "^3.3.7",
@@ -61,6 +61,7 @@
   "devDependencies": {
     "@commitlint/cli": "^6.0.2",
     "@commitlint/config-conventional": "^6.0.2",
+    "@types/enzyme": "^3.1.9",
     "@types/jest": "^22.0.1",
     "@types/sinon-chrome": "^2.2.0",
     "autoprefixer": "8.1.0",
@@ -79,6 +80,8 @@
     "css-loader": "0.28.10",
     "cz-conventional-changelog": "^2.1.0",
     "dotenv": "5.0.1",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
     "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "1.1.11",
     "fork-ts-checker-webpack-plugin": "^0.4.0",
@@ -131,6 +134,7 @@
     "setupFiles": [
       "<rootDir>/config/polyfills.js"
     ],
+    "setupTestFrameworkScriptFile": "<rootDir>/config/jest/setupTests.js",
     "testMatch": [
       "<rootDir>/test/specs/**/*.{ts,tsx,js,jsx}",
       "<rootDir>/src/**/__tests__/**/*.{ts,tsx,js,jsx}",
