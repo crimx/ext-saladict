@@ -1,9 +1,8 @@
-import { storage, openURL, StorageListenerCb } from '@/_helpers/browser-api'
+import { storage, openURL } from '@/_helpers/browser-api'
 import { AppConfig } from '@/app-config'
 
 import { Observable } from 'rxjs/Observable'
 import { fromPromise } from 'rxjs/observable/fromPromise'
-import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
 import { filter } from 'rxjs/operators/filter'
 import { map } from 'rxjs/operators/map'
 import { audit } from 'rxjs/operators/audit'

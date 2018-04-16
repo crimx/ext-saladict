@@ -1,5 +1,5 @@
 import { AppConfig, appConfigFactory } from '@/app-config'
-import { StorageListenerCb, storage } from '@/_helpers/browser-api'
+import { StorageListenerCb } from '@/_helpers/browser-api'
 import { map } from 'rxjs/operators'
 import { Observable } from 'rxjs/Observable'
 import { concat } from 'rxjs/observable/concat'

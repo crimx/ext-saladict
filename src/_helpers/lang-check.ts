@@ -1,9 +1,12 @@
+const testerChinese = /[\u4e00-\u9fa5]/
+const testerEnglish = /[a-zA-Z]/
+
 export function isContainChinese (text: string): boolean {
-  return /[\u4e00-\u9fa5]/.test(text)
+  return testerChinese.test(text)
 }
 
 export function isContainEnglish (text: string): boolean {
-  return /[a-zA-Z]/.test(text)
+  return testerEnglish.test(text)
 }
 
 export default {
