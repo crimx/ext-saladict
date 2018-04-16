@@ -1,13 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { shallow, mount, render } from 'enzyme'
-import SaladBowlContainer from '@/content/containers/SaladBowlContainer'
-import Motion from 'react-motion'
+import { shallow } from 'enzyme'
+import SaladBowlPortal from '@/content/components/SaladBowlPortal'
 
 jest.mock('react-dom')
 const createPortal = ReactDOM.createPortal as jest.Mock<typeof ReactDOM.createPortal>
 
-describe('Component/content/SaladBowl', () => {
+describe('Component/content/SaladBowlPortal', () => {
   beforeEach(() => {
     browser.flush()
     createPortal.mockClear()
@@ -19,7 +18,7 @@ describe('Component/content/SaladBowl', () => {
       mouseX: 0,
       mouseY: 0,
     }
-    const portalBowl = shallow(<SaladBowlContainer {...props} />)
+    const portalBowl = shallow(<SaladBowlPortal {...props} />)
 
     expect(createPortal).toHaveBeenCalledTimes(1)
 
@@ -35,7 +34,7 @@ describe('Component/content/SaladBowl', () => {
       mouseX: 0,
       mouseY: 0,
     }
-    const portalBowl = shallow(<SaladBowlContainer {...props} />)
+    const portalBowl = shallow(<SaladBowlPortal {...props} />)
 
     portalBowl.setProps({ shouldShow: true, mouseX: window.innerWidth, mouseY: 0 })
     portalBowl.setProps({ shouldShow: true, mouseX: window.innerWidth, mouseY: window.innerHeight })

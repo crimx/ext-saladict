@@ -1,15 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { spring, presets, OpaqueConfig } from 'react-motion'
-import SaladBowl from '../components/SaladBowl'
+import SaladBowl from './SaladBowl'
 
-interface SaladBowlContainerProps {
+interface SaladBowlPortalProps {
   shouldShow: boolean
   mouseX: number
   mouseY: number
 }
 
-export default class SaladBowlContainer extends React.Component<SaladBowlContainerProps, any> {
+export default class SaladBowlPortal extends React.Component<SaladBowlPortalProps, any> {
   root = document.body
   el = document.createElement('div')
   isMount = false
