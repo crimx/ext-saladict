@@ -41,6 +41,7 @@ export interface MsgSelection {
   selectionInfo: SelectionInfo
   mouseX?: number
   mouseY?: number
+  dbClick: boolean
   ctrlKey?: boolean
 }
 
@@ -49,5 +50,6 @@ export interface PostMsgSelection {
   selectionInfo: SelectionInfo
   mouseX: number
   mouseY: number
+  dbClick: boolean
   ctrlKey: boolean
 }
