@@ -7,9 +7,12 @@ $leaf-rotate: 30deg;
     @extend %reset-important;
     position: fixed !important;
     z-index: $global-zindex-tooltip !important;
+    left: 0 !important;
+    top: 0 !important;
     overflow: hidden !important;
     width: $bowl-width !important;
     height: $bowl-width !important;
+    user-select: none !important;
   }
 
   .saladict-SaladBowl_Leaf {
