@@ -12,7 +12,7 @@ describe('Initialization', () => {
 
   beforeAll(() => {
     const { message, storage } = require('@/_helpers/browser-api')
-    window.fetch = fetchMock
+    window.fetch = fetchMock as any
 
     browser.flush()
     jest.resetModules()
