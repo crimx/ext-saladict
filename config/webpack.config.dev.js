@@ -15,6 +15,9 @@ const paths = require('./paths')
 const argv = require('minimist')(process.argv.slice(2))
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const JsConfigPathsPlugin = require('jsconfig-paths-webpack-plugin')
+const WrapperPlugin = require('wrapper-webpack-plugin')
+
+const fackBgEnv = fs.readFileSync(require.resolve('./fake-env/webextension-background.js'), 'utf8')
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -26,34 +29,52 @@ const publicUrl = ''
 // Get environment variables to inject into our app.
 const env = getClientEnvironment(publicUrl)
 
-const entries = ['background', argv.main || 'popup']
+const [entryBg, entryPage] = ['background', argv.main || 'popup']
   .map(name => {
     const dirPath = path.join(paths.appSrc, name)
     if (!fs.existsSync(dirPath) || !fs.lstatSync(dirPath).isDirectory()) {
       return {name, dirPath: ''}
     }
-    const names = fs.readdirSync(dirPath)
+
+    let indexJS = ''
+    let indexHTML = ''
+
+    const fakeDirPath = path.join(dirPath, '__fake__')
+    if (fs.existsSync(fakeDirPath) && fs.lstatSync(fakeDirPath).isDirectory()) {
+      const fakeFiles = fs.readdirSync(fakeDirPath)
+      indexJS = fakeFiles.find(name => /index\.((t|j)sx?)$/.test(name))
+      indexHTML = fakeFiles.find(name => name === 'index.html')
+      if (indexJS) { indexJS = path.join('__fake__', indexJS) }
+      if (indexHTML) { indexHTML = path.join('__fake__', indexHTML) }
+    }
+
+    if (!indexJS || !indexHTML) {
+      const names = fs.readdirSync(dirPath)
+      if (!indexJS) {
+        indexJS = names.find(name => /index\.((t|j)sx?)$/.test(name))
+      }
+      if (!indexHTML) {
+        indexHTML = names.find(name => name === 'index.html')
+      }
+    }
+
     return {
       name,
       dirPath,
-      indexJS: names.find(name => /index\.((t|j)sx?)$/.test(name)),
-      indexHTML: names.find(name => name === 'index.html') || '__mocks__/index.html',
+      indexJS,
+      indexHTML,
     }
   })
 
-if (!entries[1].dirPath) {
-  throw new Error(`No folder ${path.join(paths.appSrc, entries[1].name)}`)
+if (!entryPage.dirPath) {
+  throw new Error(`No folder ${path.join(paths.appSrc, entryPage.name)}`)
 }
-if (!entries[1].indexJS) {
-  throw new Error(`Missing entry file for ${entries[1].dirPath}`)
+if (!entryPage.indexJS) {
+  throw new Error(`Missing entry file for ${entryPage.dirPath}`)
 }
-if (!fs.existsSync(path.join(entries[1].dirPath, entries[1].indexHTML))) {
-  throw new Error(`Missing entry HTML for ${entries[1].dirPath}`)
-}
-
-if (!entries[0].dirPath || !entries[0].indexJS) {
-  // remove empty background entry
-  entries.shift()
+console.log(path.join(entryPage.dirPath, entryPage.indexHTML))
+if (!fs.existsSync(path.join(entryPage.dirPath, entryPage.indexHTML))) {
+  throw new Error(`Missing entry HTML for ${entryPage.dirPath}`)
 }
 
 // This is the development configuration.
@@ -66,32 +87,37 @@ module.exports = {
   // These are the "entry points" to our application.
   // This means they will be the "root" imports that are included in JS bundle.
   // The first two entry points enable "hot" CSS and auto-refreshes for JS.
-  entry: [
-    require.resolve('./fake-env/webextension-page.js'),
-    require.resolve('./fake-env/fake-ajax.js'),
-    // Include an alternative client for WebpackDevServer. A client's job is to
-    // connect to WebpackDevServer by a socket and get notified about changes.
-    // When you save a file, the client will either apply hot updates (in case
-    // of CSS changes), or refresh the page (in case of JS changes). When you
-    // make a syntax error, this client will display a syntax error overlay.
-    // Note: instead of the default WebpackDevServer client, we use a custom one
-    // to bring better experience for Create React App users. You can replace
-    // the line below with these two lines if you prefer the stock client:
-    // require.resolve('webpack-dev-server/client') + '?/',
-    // require.resolve('webpack/hot/dev-server'),
-    require.resolve('react-dev-utils/webpackHotDevClient'),
-    // Finally, this is your app's code.
-    // We include the app code last so that if there is a runtime error during
-    // initialization, it doesn't blow up the WebpackDevServer client, and
-    // changing JS code would still trigger a refresh.
-  ].concat(entries.map(x => path.join(x.dirPath, x.indexJS))),
+  entry: {
+    page: [
+      require.resolve('./fake-env/webextension-page.js'),
+      require.resolve('./fake-env/fake-ajax.js'),
+      // Include an alternative client for WebpackDevServer. A client's job is to
+      // connect to WebpackDevServer by a socket and get notified about changes.
+      // When you save a file, the client will either apply hot updates (in case
+      // of CSS changes), or refresh the page (in case of JS changes). When you
+      // make a syntax error, this client will display a syntax error overlay.
+      // Note: instead of the default WebpackDevServer client, we use a custom one
+      // to bring better experience for Create React App users. You can replace
+      // the line below with these two lines if you prefer the stock client:
+      // require.resolve('webpack-dev-server/client') + '?/',
+      // require.resolve('webpack/hot/dev-server'),
+      require.resolve('react-dev-utils/webpackHotDevClient'),
+      // Finally, this is your app's code.
+      // We include the app code last so that if there is a runtime error during
+      // initialization, it doesn't blow up the WebpackDevServer client, and
+      // changing JS code would still trigger a refresh.
+      path.join(entryPage.dirPath, entryPage.indexJS)
+    ],
+    background: path.join(entryBg.dirPath, entryBg.indexJS)
+  },
+  // ].concat(entries.map(x => path.join(x.dirPath, x.indexJS))),
   output: {
     // Add /* filename */ comments to generated require()s in the output.
     pathinfo: true,
     // This does not produce a real file. It's just the virtual path that is
     // served by WebpackDevServer in development. This is the JS bundle
     // containing code from all our entry points, and the Webpack runtime.
-    filename: 'static/js/bundle.js',
+    filename: 'static/js/[name].js',
     // There are also additional JS chunk files if you use code splitting.
     chunkFilename: 'static/js/[name].chunk.js',
     // This is the URL that app is served from. We use "/" in development.
@@ -139,18 +165,6 @@ module.exports = {
       // TODO: Disable require.ensure as it's not a standard language feature.
       // We are waiting for https://github.com/facebookincubator/create-react-app/issues/2176.
       // { parser: { requireEnsure: false } },
-
-      // inject fake browser to background script
-      {
-        test: /[\\\/]+background[\\\/]+index\.(t|j)sx?$/,
-        include: paths.appSrc,
-        use: {
-          loader: require.resolve('text-transform-loader'),
-          options: {
-            prependText: fs.readFileSync(require.resolve('./fake-env/webextension-background.js'), 'utf8'),
-          },
-        },
-      },
       {
         // "oneOf" will traverse all following loaders until one will
         // match the requirements. When no loader matches it will fall
@@ -256,7 +270,7 @@ module.exports = {
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
       inject: true,
-      template: path.join(entries[entries.length - 1].dirPath, entries[entries.length - 1].indexHTML),
+      template: path.join(entryPage.dirPath, entryPage.indexHTML),
     }),
     // Add module names to factory functions so they appear in browser profiler.
     new webpack.NamedModulesPlugin(),
@@ -276,6 +290,11 @@ module.exports = {
     new WatchMissingNodeModulesPlugin(paths.appNodeModules),
     // Tailor locales
     new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /^\.\/(en|zh-cn|zh-tw)$/),
+    new WrapperPlugin({
+      test: /background\.js$/,
+      header: ';(function () {\n' + fackBgEnv + '\n',
+      footer: '\n})();'
+    })
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
