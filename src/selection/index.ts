@@ -1,14 +1,15 @@
-import { appConfigFactory, AppConfig } from 'src/app-config'
-import { message, storage } from '@/_helpers/browser-api'
+import { AppConfig, appConfigFactory } from '@/app-config'
+import { message } from '@/_helpers/browser-api'
 import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 import { createAppConfigStream } from '@/_helpers/config-manager'
 import * as selection from '@/_helpers/selection'
 import { MsgType, PostMsgType, PostMsgSelection, MsgSelection } from '@/typings/message'
 
 import { Observable } from 'rxjs/Observable'
-import { of } from 'rxjs/observable/of'
-import { map, filter, withLatestFrom, buffer, debounceTime, observeOn, share , startWith } from 'rxjs/operators'
+import { map, mapTo, scan, filter, take, switchMap, buffer, debounceTime, observeOn, share , startWith } from 'rxjs/operators'
 import { fromEvent } from 'rxjs/observable/fromEvent'
+import { timer } from 'rxjs/observable/timer'
+import { of } from 'rxjs/observable/of'
 import { merge } from 'rxjs/observable/merge'
 import { async } from 'rxjs/scheduler/async'
 
@@ -16,7 +17,8 @@ message.addListener(MsgType.__PreloadSelection__, (data, sender, sendResponse) =
   sendResponse(selection.getSelectionInfo())
 })
 
-window.addEventListener('message', ({ data, source }: { data: PostMsgSelection, source: Window }) => {
+/** Pass through message from iframes */
+window.addEventListener('message', ({ data, source }: { data: PostMsgSelection, source: Window | null }) => {
   if (data.type !== PostMsgType.Selection) { return }
 
   // get the souce iframe
@@ -24,62 +26,70 @@ window.addEventListener('message', ({ data, source }: { data: PostMsgSelection, 
     .find(({ contentWindow }) => contentWindow === source)
   if (!iframe) { return }
 
-  const { selectionInfo, mouseX, mouseY, ctrlKey } = data
+  const { selectionInfo, mouseX, mouseY, ctrlKey, dbClick } = data
   const { left, top } = iframe.getBoundingClientRect()
 
   sendMessage(
     mouseX + left,
     mouseY + top,
+    dbClick,
     ctrlKey,
     selectionInfo
   )
 })
 
-const appConfig$$: Observable<AppConfig> = createAppConfigStream().pipe(
-  share(),
-)
+let config = appConfigFactory()
+let isCtrlPressed = false
+let clickPeriodCount = 0
 
-const isCtrlPressed$$: Observable<boolean> = merge(
+const isCtrlPressed$: Observable<boolean> = merge(
   fromEvent(window, 'keydown', true, e => isCtrlKey(e)),
   fromEvent(window, 'keyup', true, e => false),
   fromEvent(window, 'blur', true, e => false),
-).pipe(
-  share(),
-  startWith(false),
+  of(false)
 )
 
-const ctrlPressed$ = isCtrlPressed$$.pipe(
-  withLatestFrom(appConfig$$, (isCtrlPressed, config) => config.active && isCtrlPressed),
-  filter(isCtrlPressed => isCtrlPressed),
+const validCtrlPressed$$ = isCtrlPressed$.pipe(
+  filter(isCtrlPressed => config.active && isCtrlPressed),
   share(),
 )
 
-const tripleCtrlPressed$ = ctrlPressed$.pipe(
-  buffer(ctrlPressed$.pipe(debounceTime(500))),
-  map(group => group.length),
-  filter(x => x >= 3),
+const tripleCtrlPressed$ = validCtrlPressed$$.pipe(
+  buffer(debounceTime(500)(validCtrlPressed$$)),
+  filter(group => group.length >= 3),
 )
 
-const mouseup$ = fromEvent<MouseEvent>(window, 'mouseup', true).pipe(
-  withLatestFrom(appConfig$$, isCtrlPressed$$),
-  filter(([ e, config ]) => {
-    if (!config.active || window.name === 'saladict-frame') { return false }
-    if ((e.target as Element).className && ((e.target as Element).className.startsWith('saladict-'))) {
-      return false
-    }
-    return true
-  }),
+const validMouseup$$ = fromEvent<MouseEvent>(window, 'mouseup', true).pipe(
+  filter(({ target }) => (
+    config.active &&
+    window.name !== 'saladict-frame' &&
+    (!target || !target['className'] || !target['className'].startsWith('saladict-'))
+  )),
   // if user click on a selected text,
   // getSelection would reture the text before the highlight disappears
   // delay to wait for selection get cleared
   observeOn(async),
+  share(),
 )
+
+const clickPeriodCount$ = merge(
+  mapTo(true)(validMouseup$$),
+  switchMap(() => timer(config.doubleClickDelay).pipe(take(1), mapTo(false)))(validMouseup$$)
+).pipe(
+  scan((sum: number, flag: boolean) => flag ? sum + 1 : 0, 0)
+)
+
+createAppConfigStream().subscribe(newConfig => config = newConfig)
+
+isCtrlPressed$.subscribe(flag => isCtrlPressed = flag)
+
+clickPeriodCount$.subscribe(count => clickPeriodCount = count)
 
 tripleCtrlPressed$.subscribe(() => {
   message.self.send({ type: MsgType.TripleCtrl })
 })
 
-mouseup$.subscribe(([ evt, config, ctrlKey ]) => {
+validMouseup$$.subscribe(({ clientX, clientY }) => {
   const text = selection.getSelectionText()
   if (
     text && (
@@ -88,9 +98,10 @@ mouseup$.subscribe(([ evt, config, ctrlKey ]) => {
     )
   ) {
     sendMessage(
-      evt.clientX,
-      evt.clientY,
-      ctrlKey,
+      clientX,
+      clientY,
+      clickPeriodCount >= 2,
+      isCtrlPressed,
       {
         text: selection.getSelectionText(),
         context: selection.getSelectionSentence(),
@@ -109,6 +120,7 @@ mouseup$.subscribe(([ evt, config, ctrlKey ]) => {
 function sendMessage (
   clientX: number,
   clientY: number,
+  dbClick: boolean,
   isCtrlPressed: boolean,
   selectionInfo: selection.SelectionInfo
 ) {
@@ -119,6 +131,7 @@ function sendMessage (
       selectionInfo,
       mouseX: clientX,
       mouseY: clientY,
+      dbClick,
       ctrlKey: isCtrlPressed,
     } as MsgSelection)
   } else {
@@ -128,6 +141,7 @@ function sendMessage (
       selectionInfo,
       mouseX: clientX,
       mouseY: clientY,
+      dbClick,
       ctrlKey: isCtrlPressed,
     } as PostMsgSelection, '*')
   }

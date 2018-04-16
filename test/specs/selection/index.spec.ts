@@ -21,6 +21,13 @@ const { dispatchAppConfigEvent }: {
   dispatchAppConfigEvent: typeof ConfigManagerMock.dispatchAppConfigEvent
 } = require('@/_helpers/config-manager')
 
+// speed up
+const mockAppConfigFactory = () => {
+  const config = appConfigFactory() as AppConfigMutable
+  config.doubleClickDelay = 0
+  return config
+}
+
 describe('Message Selection', () => {
   beforeEach(() => {
     browser.flush()
@@ -28,7 +35,7 @@ describe('Message Selection', () => {
     message.self.send.mockClear()
     selection.getSelectionText.mockReturnValue('test')
     selection.getSelectionSentence.mockReturnValue('This is a test.')
-    dispatchAppConfigEvent(appConfigFactory())
+    dispatchAppConfigEvent(mockAppConfigFactory())
   })
 
   it('should send empty message when mouseup and no selection', done => {
@@ -51,7 +58,7 @@ describe('Message Selection', () => {
   })
 
   it('should send empty message if the selection language does not match (Chinese)', done => {
-    const config = appConfigFactory() as AppConfigMutable
+    const config = mockAppConfigFactory()
     config.language.chinese = true
     config.language.english = false
     dispatchAppConfigEvent(config)
@@ -75,7 +82,7 @@ describe('Message Selection', () => {
   it('should send empty message if the selection language does not match (English)', done => {
     selection.getSelectionText.mockReturnValue('你好')
     selection.getSelectionSentence.mockReturnValue('你好')
-    const config = appConfigFactory() as AppConfigMutable
+    const config = mockAppConfigFactory()
     config.language.chinese = false
     config.language.english = true
     dispatchAppConfigEvent(config)
@@ -109,6 +116,7 @@ describe('Message Selection', () => {
         type: MsgType.Selection,
         mouseX: 10,
         mouseY: 10,
+        dbClick: false,
         ctrlKey: false,
         selectionInfo: expect.objectContaining({
           text: 'test',
@@ -139,7 +147,7 @@ describe('Message Selection', () => {
   })
 
   it('should do nothing if conifg.active is off', done => {
-    const config = appConfigFactory() as AppConfigMutable
+    const config = mockAppConfigFactory()
     config.active = false
     dispatchAppConfigEvent(config)
 
@@ -239,5 +247,65 @@ describe('Message Selection', () => {
       expect(message.self.send).toBeCalledWith({ type: MsgType.TripleCtrl })
       done()
     }, 510)
+  })
+
+  it('should not trigger double click if the interval is too long', done => {
+    const config = mockAppConfigFactory()
+    config.doubleClickDelay = 100
+    dispatchAppConfigEvent(config)
+
+    window.dispatchEvent(new MouseEvent('mouseup', {
+      button: 0,
+      clientX: 10,
+      clientY: 10,
+    }))
+
+    setTimeout(() => {
+      window.dispatchEvent(new MouseEvent('mouseup', {
+        button: 0,
+        clientX: 20,
+        clientY: 20,
+      }))
+
+      setTimeout(() => {
+        expect(message.self.send).toHaveBeenCalledTimes(2)
+        expect(message.self.send).toBeCalledWith(
+          expect.objectContaining({
+            dbClick: false,
+          }),
+        )
+        done()
+      }, 0)
+    }, 200)
+  })
+
+  it('should trigger double click if the interval is within delay', done => {
+    const config = mockAppConfigFactory()
+    config.doubleClickDelay = 100
+    dispatchAppConfigEvent(config)
+
+    window.dispatchEvent(new MouseEvent('mouseup', {
+      button: 0,
+      clientX: 10,
+      clientY: 10,
+    }))
+
+    setTimeout(() => {
+      window.dispatchEvent(new MouseEvent('mouseup', {
+        button: 0,
+        clientX: 20,
+        clientY: 20,
+      }))
+
+      setTimeout(() => {
+        expect(message.self.send).toHaveBeenCalledTimes(2)
+        expect(message.self.send).toBeCalledWith(
+          expect.objectContaining({
+            dbClick: true,
+          }),
+        )
+        done()
+      }, 0)
+    }, 50)
   })
 })
