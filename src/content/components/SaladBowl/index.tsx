@@ -7,21 +7,31 @@ export type SaladBowlProps = {
   scale: number | OpaqueConfig
 }
 
-const Bowl = params => {
-  const style = {
-    transform: `translate3d(${params.x}px, ${params.y}px, 0) scale(${params.scale})`
+export default class SaladBowl extends React.Component<SaladBowlProps> {
+  bowlRef = React.createRef<HTMLDivElement>()
+
+  motionBowl = style => {
+    const el = this.bowlRef.current
+    if (el) {
+      const { x, y, scale } = style
+      el.style.setProperty(
+        'transform',
+        `translate3d(${x}px, ${y}px, 0) scale(${scale})`,
+        'important',
+      )
+    }
+
+    return (
+      <div className='saladict-SaladBowl' ref={this.bowlRef}>
+        <img className='saladict-SaladBowl_Leaf' src={require('@/assets/leaf.svg')} />
+        <img className='saladict-SaladBowl_Orange' src={require('@/assets/orange.svg')} />
+        <img className='saladict-SaladBowl_Tomato' src={require('@/assets/tomato.svg')} />
+        <img className='saladict-SaladBowl_Bowl' src={require('@/assets/bowl.svg')} />
+      </div>
+    )
   }
 
-  return (
-    <div className='saladict-SaladBowl' style={style}>
-      <img className='saladict-SaladBowl_Leaf' src={require('@/assets/leaf.svg')} />
-      <img className='saladict-SaladBowl_Orange' src={require('@/assets/orange.svg')} />
-      <img className='saladict-SaladBowl_Tomato' src={require('@/assets/tomato.svg')} />
-      <img className='saladict-SaladBowl_Bowl' src={require('@/assets/bowl.svg')} />
-    </div>
-  )
-}
-
-export default function SaladBowl (props) {
-  return <Motion style={props}>{Bowl}</Motion>
+  render () {
+    return <Motion style={this.props}>{this.motionBowl}</Motion>
+  }
 }
