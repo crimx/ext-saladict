@@ -1,0 +1,88 @@
+.panel-MenuBar {
+  display: flex;
+  align-items: center;
+  position: relative;
+  height: 30px;
+  padding-left: 6px;
+  font-size: 14px;
+  background-color: rgb(92, 175, 158);
+}
+
+.panel-MenuBar_DragArea {
+  flex: 1.5;
+}
+
+.panel-MenuBar_SearchBox {
+  flex: 1;
+  width: 5em;
+  padding: 0 5px;
+  border: 0 none;
+  outline: 0 none;
+  color: #fff;
+  background-color: rgba(225, 225, 225, 0.1);
+  transition: flex 1s;
+
+  &:focus {
+    flex: 7;
+  }
+}
+
+%panel-MenuBar_Icon {
+  width: 30px;
+  height: 30px;
+  padding: 8px;
+  fill: #fff;
+  cursor: pointer;
+  user-select: none;
+}
+
+.panel-MenuBar_IconSearch {
+  @extend %panel-MenuBar_Icon;
+}
+
+.panel-MenuBar_IconHistory {
+  @extend %panel-MenuBar_Icon;
+  fill-opacity: 0.8;
+}
+
+.panel-MenuBar_IconFav {
+  @extend %panel-MenuBar_Icon;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+
+  &.is-Active {
+    fill: #dd4b39;
+    stroke-width: 0;
+  }
+}
+
+.panel-MenuBar_IconSettings {
+  @extend %panel-MenuBar_Icon;
+}
+
+.panel-MenuBar_IconShare {
+  @extend %panel-MenuBar_Icon;
+}
+
+.panel-MenuBar_IconPin {
+  @extend %panel-MenuBar_Icon;
+  transition: transform 400ms;
+
+  &.is-Active {
+    transform: rotate(45deg);
+  }
+}
+
+.panel-MenuBar_IconClose {
+  @extend %panel-MenuBar_Icon;
+
+  &:hover {
+    animation: panel-MenuBar_Spin 400ms linear infinite;
+  }
+}
+
+@keyframes panel-MenuBar_Spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
