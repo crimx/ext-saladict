@@ -63,7 +63,7 @@ const validMouseup$$ = fromEvent<MouseEvent>(window, 'mouseup', true).pipe(
   filter(({ target }) => (
     config.active &&
     window.name !== 'saladict-frame' &&
-    (!target || !target['className'] || !target['className'].startsWith('saladict-'))
+    (!target || typeof target['className'] !== 'string' || !target['className'].startsWith('saladict-'))
   )),
   // if user click on a selected text,
   // getSelection would reture the text before the highlight disappears
