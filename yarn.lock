@@ -211,6 +211,12 @@
     "@types/react" "*"
     redux "^3.6.0"
 
+"@types/react@*":
+  version "16.3.11"
+  resolved "https://registry.npmjs.org/@types/react/-/react-16.3.11.tgz#345a17f1c96420f10b9f0dc696c31091ff9d66ea"
+  dependencies:
+    csstype "^2.2.0"
+
 "@types/react@^16.3.10":
   version "16.3.10"
   resolved "https://registry.npmjs.org/@types/react/-/react-16.3.10.tgz#2f25eef83f7c7f6c51cea4c02660f727c75d3b33"
@@ -6888,6 +6894,10 @@ react-is@^16.3.1:
   version "16.3.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.3.1.tgz#ee66e6d8283224a83b3030e110056798488359ba"
 
+react-is@^16.3.2:
+  version "16.3.2"
+  resolved "https://registry.npmjs.org/react-is/-/react-is-16.3.2.tgz#f4d3d0e2f5fbb6ac46450641eb2e25bf05d36b22"
+
 react-motion@^0.5.2:
   version "0.5.2"
   resolved "https://registry.npmjs.org/react-motion/-/react-motion-0.5.2.tgz#0dd3a69e411316567927917c6626551ba0607316"
@@ -6924,6 +6934,15 @@ react-test-renderer@^16.0.0-0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
     react-is "^16.3.1"
+
+react-test-renderer@^16.3.2:
+  version "16.3.2"
+  resolved "https://registry.npmjs.org/react-test-renderer/-/react-test-renderer-16.3.2.tgz#3d1ed74fda8db42521fdf03328e933312214749a"
+  dependencies:
+    fbjs "^0.8.16"
+    object-assign "^4.1.1"
+    prop-types "^15.6.0"
+    react-is "^16.3.2"
 
 react@^16.3.1:
   version "16.3.1"
