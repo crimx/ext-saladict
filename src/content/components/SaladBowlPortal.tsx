@@ -14,10 +14,11 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
   el = document.createElement('div')
   isMount = false
 
-  /** reusable tuple */
-  _calcPositionShell: [number, number] = [0, 0]
+  componentWillUnmount () {
+    this.root.removeChild(this.el)
+  }
 
-  calcPosition (mouseX: number, mouseY: number): [number, number] {
+  render () {
     // icon position
     //             +-------+
     //             |       |
@@ -28,20 +29,9 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
     //       40px  |
     //     +-------+
     // cursor
-    const tuple = this._calcPositionShell
-    tuple[0] = mouseX + 40 + 30 > window.innerWidth ? mouseX - 40 - 30 : mouseX + 40
-    tuple[1] = mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30
-    return tuple
-  }
-
-  componentWillUnmount () {
-    if (this.el) {
-      this.root.removeChild(this.el)
-    }
-  }
-
-  render () {
-    let [x, y]: (number | OpaqueConfig)[] = this.calcPosition(this.props.mouseX, this.props.mouseY)
+    const { mouseX, mouseY } = this.props
+    let x: number | OpaqueConfig = mouseX + 70 > window.innerWidth ? mouseX - 70 : mouseX + 40
+    let y: number | OpaqueConfig = mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30
     let scale: number | OpaqueConfig = 0
 
     if (this.props.shouldShow) {
