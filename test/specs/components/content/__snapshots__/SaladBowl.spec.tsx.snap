@@ -1,24 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component/content/SaladBowl should render correctly 1`] = `
-<div
-  className="saladict-SaladBowl"
->
-  <img
-    className="saladict-SaladBowl_Leaf"
-    src="leaf.svg"
-  />
-  <img
-    className="saladict-SaladBowl_Orange"
-    src="orange.svg"
-  />
-  <img
-    className="saladict-SaladBowl_Tomato"
-    src="tomato.svg"
-  />
-  <img
-    className="saladict-SaladBowl_Bowl"
-    src="bowl.svg"
-  />
-</div>
+<Motion
+  style={
+    Object {
+      "scale": 1,
+      "x": 0,
+      "y": 0,
+    }
+  }
+/>
 `;

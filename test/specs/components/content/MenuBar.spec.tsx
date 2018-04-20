@@ -1,5 +1,5 @@
 import React from 'react'
-import renderer from 'react-test-renderer'
+import { shallow } from 'enzyme'
 
 import { MenuBar } from '@/content/components/MenuBar'
 
@@ -20,8 +20,7 @@ describe('Component/content/MenuBar', () => {
       pinPanel: noop,
       closePanel: noop,
     }
-    const tree = renderer.create(<MenuBar {...props} />).toJSON()
-    expect(tree).toMatchSnapshot()
+    expect(shallow(<MenuBar {...props}/>)).toMatchSnapshot()
   })
 
   it('should render correctly with fav and pin', () => {
@@ -40,7 +39,6 @@ describe('Component/content/MenuBar', () => {
       pinPanel: noop,
       closePanel: noop,
     }
-    const tree = renderer.create(<MenuBar {...props} />).toJSON()
-    expect(tree).toMatchSnapshot()
+    expect(shallow(<MenuBar {...props}/>)).toMatchSnapshot()
   })
 })

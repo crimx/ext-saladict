@@ -1,5 +1,5 @@
 import React from 'react'
-import renderer from 'react-test-renderer'
+import { shallow } from 'enzyme'
 
 import SaladBowl from '@/content/components/SaladBowl'
 
@@ -10,7 +10,6 @@ describe('Component/content/SaladBowl', () => {
       y: 0,
       scale: 1,
     }
-    const tree = renderer.create(<SaladBowl {...props}/>).toJSON()
-    expect(tree).toMatchSnapshot()
+    expect(shallow(<SaladBowl {...props}/>)).toMatchSnapshot()
   })
 })
