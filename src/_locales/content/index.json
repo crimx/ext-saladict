@@ -1,0 +1,42 @@
+{
+  "tipSearchText": {
+    "zh_CN": "查单词",
+    "zh_TW": "查單字",
+    "en": "Search text"
+  },
+  "tipOpenSettings": {
+    "zh_CN": "打开设置",
+    "zh_TW": "查看設定",
+    "en": "Open Settings"
+  },
+  "tipAddToNotebook": {
+    "zh_CN": "保存到生词本",
+    "zh_TW": "保存到單字本",
+    "en": "Add to Notebook"
+  },
+  "tipOpenNotebook": {
+    "zh_CN": "打开生词本",
+    "zh_TW": "打開單字本",
+    "en": "Open Notebook"
+  },
+  "tipOpenHistory": {
+    "zh_CN": "打开查词记录",
+    "zh_TW": "打開查單字記錄",
+    "en": "Open History"
+  },
+  "tipShareImg": {
+    "zh_CN": "以图片方式分享查词结果",
+    "zh_TW": "以圖片方式分享查單字結果",
+    "en": "Share as image"
+  },
+  "tipPinPanel": {
+    "zh_CN": "钉住查词面板",
+    "zh_TW": "釘住字典視窗",
+    "en": "Pin the panel"
+  },
+  "tipClosePanel": {
+    "zh_CN": "关闭查词面板",
+    "zh_TW": "關閉字典視窗",
+    "en": "Close the panel"
+  }
+}
