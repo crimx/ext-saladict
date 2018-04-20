@@ -51,7 +51,7 @@
   stroke: #fff;
   stroke-width: 2;
 
-  &.is-Active {
+  &.isActive {
     fill: #dd4b39;
     stroke-width: 0;
   }
@@ -69,7 +69,7 @@
   @extend %panel-MenuBar_Icon;
   transition: transform 400ms;
 
-  &.is-Active {
+  &.isActive {
     transform: rotate(45deg);
   }
 }
