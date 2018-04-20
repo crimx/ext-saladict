@@ -5,7 +5,7 @@ import { MsgSelection, MsgType } from '@/typings/message'
     Actions
 \*-----------------------------------------------*/
 
-const enum Actions {
+export const enum Actions {
   NEW_SELECTION = 'selection/NEW_SELECTION'
 }
 
@@ -32,7 +32,7 @@ const initState: SelectionState = {
   ctrlKey: false,
 }
 
-export default function reducer (state = initState, action) {
+export default function reducer (state = initState, action): SelectionState {
   switch (action.type) {
     case Actions.NEW_SELECTION:
       return action.payload

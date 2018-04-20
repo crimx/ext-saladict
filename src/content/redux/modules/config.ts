@@ -5,7 +5,7 @@ import { addAppConfigListener } from '@/_helpers/config-manager'
     Actions
 \*-----------------------------------------------*/
 
-const enum Actions {
+export const enum Actions {
   NEW_CONFIG = 'configs/NEW_CONFIG'
 }
 
@@ -15,7 +15,7 @@ const enum Actions {
 
 export type ConfigState = AppConfig
 
-export default function reducer (state = appConfigFactory(), action) {
+export default function reducer (state = appConfigFactory(), action): ConfigState {
   switch (action.type) {
     case Actions.NEW_CONFIG:
       return action.payload
