@@ -29,6 +29,7 @@ describe('Component/content/DictItem', () => {
       preferredHeight: 100,
       panelWidth: 400,
       searchStatus: SearchStatus.OnHold,
+      updateItemHeight: _.noop,
       requestSearchText: _.noop
     }
     expect(mount(<DictItem {...props} />)).toMatchSnapshot()
@@ -44,6 +45,7 @@ describe('Component/content/DictItem', () => {
       preferredHeight: 100,
       panelWidth: 400,
       searchStatus: SearchStatus.Searching,
+      updateItemHeight: _.noop,
       requestSearchText: _.noop
     }
     const mounted = mount(<DictItem {...props} />)
@@ -68,6 +70,7 @@ describe('Component/content/DictItem', () => {
       preferredHeight: 100,
       panelWidth: 400,
       searchStatus: SearchStatus.Searching,
+      updateItemHeight: _.noop,
       requestSearchText: jest.fn()
     }
     const shallowed = shallow(<DictItem {...props} />)

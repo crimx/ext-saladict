@@ -4,12 +4,12 @@
 
 .panel-DictItem_Header {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  height: 20px;
   border-top: 1px #ddd solid;
 }
 
 .panel-DictItem_Logo {
-  align-self: flex-start;
   width: 19px;
   height: 19px;
   margin-top: -1px;
@@ -21,20 +21,23 @@
   padding: 3px;
   font-size: 12px;
   font-weight: normal;
-  color: #444;
-  text-decoration: none;
+
+  a {
+    color: #444;
+    text-decoration: none;
+  }
 }
 
 .panel-DictItem_Body {
   overflow: hidden;
   position: relative;
-  margin-bottom: 10px;
   font-size: 12px;
   line-height: 1.6;
   color: #333;
 }
 
 .panel-DictItem_Loader {
+  align-self: center;
   position: relative;
   overflow: hidden;
   width: 120px;

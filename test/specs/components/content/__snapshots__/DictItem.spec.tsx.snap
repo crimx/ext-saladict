@@ -11,6 +11,7 @@ exports[`Component/content/DictItem should render pending correctly 1`] = `
   searchResult={null}
   searchStatus={0}
   t={[Function]}
+  updateItemHeight={[Function]}
 >
   <section
     className="panel-DictItem"
@@ -28,7 +29,6 @@ exports[`Component/content/DictItem should render pending correctly 1`] = `
         className="panel-DictItem_Title"
       >
         <a
-          className="panel-DictItem_Title"
           href="https://google.com"
           onClick={[Function]}
         >
@@ -55,7 +55,7 @@ exports[`Component/content/DictItem should render pending correctly 1`] = `
     <Motion
       defaultStyle={
         Object {
-          "height": 0,
+          "height": 10,
           "opacity": 0,
         }
       }
@@ -65,7 +65,7 @@ exports[`Component/content/DictItem should render pending correctly 1`] = `
             "damping": 26,
             "precision": 0.01,
             "stiffness": 170,
-            "val": 0,
+            "val": 10,
           },
           "opacity": Object {
             "damping": 26,
@@ -81,7 +81,7 @@ exports[`Component/content/DictItem should render pending correctly 1`] = `
         style={
           Object {
             "fontSize": 14,
-            "height": 0,
+            "height": 10,
           }
         }
       >
@@ -129,6 +129,7 @@ exports[`Component/content/DictItem should render result correctly 1`] = `
   searchResult={null}
   searchStatus={1}
   t={[Function]}
+  updateItemHeight={[Function]}
 >
   <section
     className="panel-DictItem"
@@ -146,7 +147,6 @@ exports[`Component/content/DictItem should render result correctly 1`] = `
         className="panel-DictItem_Title"
       >
         <a
-          className="panel-DictItem_Title"
           href="https://google.com"
           onClick={[Function]}
         >
@@ -192,7 +192,7 @@ exports[`Component/content/DictItem should render result correctly 1`] = `
     <Motion
       defaultStyle={
         Object {
-          "height": 0,
+          "height": 10,
           "opacity": 0,
         }
       }
@@ -202,7 +202,7 @@ exports[`Component/content/DictItem should render result correctly 1`] = `
             "damping": 26,
             "precision": 0.01,
             "stiffness": 170,
-            "val": 0,
+            "val": 10,
           },
           "opacity": Object {
             "damping": 26,
@@ -218,7 +218,7 @@ exports[`Component/content/DictItem should render result correctly 1`] = `
         style={
           Object {
             "fontSize": 14,
-            "height": 0,
+            "height": 10,
           }
         }
       >
@@ -266,6 +266,7 @@ exports[`Component/content/DictItem should render result correctly 2`] = `
   searchResult="result1"
   searchStatus={2}
   t={[Function]}
+  updateItemHeight={[Function]}
 >
   <section
     className="panel-DictItem"
@@ -283,7 +284,6 @@ exports[`Component/content/DictItem should render result correctly 2`] = `
         className="panel-DictItem_Title"
       >
         <a
-          className="panel-DictItem_Title"
           href="https://google.com"
           onClick={[Function]}
         >
@@ -310,7 +310,7 @@ exports[`Component/content/DictItem should render result correctly 2`] = `
     <Motion
       defaultStyle={
         Object {
-          "height": 0,
+          "height": 10,
           "opacity": 0,
         }
       }
@@ -320,7 +320,7 @@ exports[`Component/content/DictItem should render result correctly 2`] = `
             "damping": 26,
             "precision": 0.01,
             "stiffness": 170,
-            "val": 0,
+            "val": 10,
           },
           "opacity": Object {
             "damping": 26,
@@ -336,7 +336,7 @@ exports[`Component/content/DictItem should render result correctly 2`] = `
         style={
           Object {
             "fontSize": 14,
-            "height": 0,
+            "height": 10,
           }
         }
       >

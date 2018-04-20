@@ -17,6 +17,7 @@ export type DictItemProps = {
   searchStatus: SearchStatus
   searchResult: any
   requestSearchText: () => any
+  updateItemHeight: ({ id, height }: { id: DictID, height: number }) => any
 }
 
 export type DictItemState = {
@@ -28,11 +29,12 @@ export type DictItemState = {
 
 export class DictItem extends React.PureComponent<DictItemProps & { t: TranslationFunction }, DictItemState> {
   bodyRef = React.createRef<HTMLElement>()
+  prevItemHeight = 0
 
   state = {
     copySearchStatus: null,
-    bodyHeight: 0,
-    displayHeight: 0,
+    bodyHeight: 10,
+    displayHeight: 10,
     isUnfold: false,
   }
 
@@ -67,7 +69,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
 
   calcBodyHeight (force?: boolean): Partial<DictItemState> | null {
     if (this.bodyRef.current) {
-      const bodyHeight = this.bodyRef.current.offsetHeight || 0
+      const bodyHeight = Math.max(this.bodyRef.current.offsetHeight, 10) || 10
       if (force || this.state.bodyHeight !== bodyHeight) {
         return { bodyHeight, displayHeight: Math.min(bodyHeight, this.props.preferredHeight) }
       }
@@ -125,6 +127,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       preferredHeight,
       searchStatus,
       searchResult,
+      updateItemHeight,
     } = this.props
 
     const {
@@ -133,12 +136,21 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       isUnfold,
     } = this.state
 
+    const finalBodyHeight = isUnfold ? displayHeight : 10
+
+    // plus header
+    const itemHeight = finalBodyHeight + 20
+    if (itemHeight !== this.prevItemHeight) {
+      this.prevItemHeight = itemHeight
+      updateItemHeight({ id, height: itemHeight })
+    }
+
     return (
       <section className='panel-DictItem'>
         <header className='panel-DictItem_Header' onClick={this.toggleFolding}>
           <img className='panel-DictItem_Logo' src={require('@/components/dictionaries/' + id + '/favicon.png')} alt='dict logo' />
           <h1 className='panel-DictItem_Title'>
-            <a className='panel-DictItem_Title' href={dictURL} onClick={this.openDictURL}>{t(`dict_${id}`)}</a>
+            <a href={dictURL} onClick={this.openDictURL}>{t(`dict_${id}`)}</a>
           </h1>
           { searchStatus === SearchStatus.Searching &&
             <div className='panel-DictItem_Loader'>
@@ -155,8 +167,8 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
             </svg>
           </button>
         </header>
-        <Motion defaultStyle={{ height: 0, opacity: 0 }}
-          style={{ height: spring(isUnfold ? displayHeight : 0), opacity: spring(isUnfold ? 1 : 0) }}
+        <Motion defaultStyle={{ height: 10, opacity: 0 }}
+          style={{ height: spring(finalBodyHeight), opacity: spring(isUnfold ? 1 : 0) }}
         >
           {({ height, opacity }) => (
             <div className='panel-DictItem_Body'
