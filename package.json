@@ -44,7 +44,6 @@
     "highcharts": "^6.0.4",
     "html2canvas": "^1.0.0-alpha.9",
     "i18next": "^11.2.2",
-    "i18next-xhr-backend": "^1.5.1",
     "immer": "^1.2.1",
     "lodash": "^4.17.4",
     "moment": "^2.20.1",

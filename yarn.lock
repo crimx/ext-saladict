@@ -4141,10 +4141,6 @@ husky@^0.14.3:
     normalize-path "^1.0.0"
     strip-indent "^2.0.0"
 
-i18next-xhr-backend@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.npmjs.org/i18next-xhr-backend/-/i18next-xhr-backend-1.5.1.tgz#50282610780c6a696d880dfa7f4ac1d01e8c3ad5"
-
 i18next@^11.2.2:
   version "11.2.2"
   resolved "https://registry.npmjs.org/i18next/-/i18next-11.2.2.tgz#88b88bda08789841faa9c32b5266be63777be0cd"

@@ -1,9 +1,17 @@
 import i18n from 'i18next'
-import XHR from 'i18next-xhr-backend'
 import mapValues from 'lodash/mapValues'
+import { appConfigFactory } from '@/app-config'
+
+const dictLocales = Object.keys(appConfigFactory().dicts.all)
+  .reduce((result, id) => {
+    const locale = require('@/components/dictionaries/' + id + '/_locales')
+    result['dict_' + id] = locale.name
+    return result
+  }, {})
+
+const locales = { ...require('@/_locales/content'), ...dictLocales }
 
 const instance = (i18n as any)
-  .use(XHR)
   .init({
     lng: browser.i18n.getUILanguage(),
     fallbackLng: 'en',
@@ -18,12 +26,17 @@ const instance = (i18n as any)
       escapeValue: false, // not needed for react!!
     },
 
-    backend: {
-      loadPath: browser.runtime.getURL('_locales') + '/{{lng}}/messages.json',
-      addPath: browser.runtime.getURL(''),
-      parse: (chromeLocales: string) => mapValues(JSON.parse(chromeLocales), x => x.message),
-      crossDomain: true,
-    }
+    resources: {
+      zh_CN: {
+        translation: mapValues(locales, x => x.zh_CN)
+      },
+      zh_TW: {
+        translation: mapValues(locales, x => x.zh_TW)
+      },
+      en: {
+        translation: mapValues(locales, x => x.en)
+      },
+    },
   })
 
 export default instance
