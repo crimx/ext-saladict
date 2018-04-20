@@ -22,19 +22,19 @@ export type DictItemProps = {
 
 export type DictItemState = {
   copySearchStatus: SearchStatus | null
-  bodyHeight: number
-  displayHeight: number
+  offsetHeight: number
+  visibleHeight: number
   isUnfold: boolean
 }
 
 export class DictItem extends React.PureComponent<DictItemProps & { t: TranslationFunction }, DictItemState> {
   bodyRef = React.createRef<HTMLElement>()
-  prevItemHeight = 0
+  prevItemHeight = 30
 
   state = {
     copySearchStatus: null,
-    bodyHeight: 10,
-    displayHeight: 10,
+    offsetHeight: 10,
+    visibleHeight: 10,
     isUnfold: false,
   }
 
@@ -53,7 +53,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     switch (nextProps.searchStatus) {
       case SearchStatus.Searching:
         newState.isUnfold = false
-        newState.bodyHeight = 0
+        newState.offsetHeight = 0
         break
       case SearchStatus.Finished:
         newState.isUnfold = true
@@ -69,9 +69,9 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
 
   calcBodyHeight (force?: boolean): Partial<DictItemState> | null {
     if (this.bodyRef.current) {
-      const bodyHeight = Math.max(this.bodyRef.current.offsetHeight, 10) || 10
-      if (force || this.state.bodyHeight !== bodyHeight) {
-        return { bodyHeight, displayHeight: Math.min(bodyHeight, this.props.preferredHeight) }
+      const offsetHeight = Math.max(this.bodyRef.current.offsetHeight, 10) || 10
+      if (force || this.state.offsetHeight !== offsetHeight) {
+        return { offsetHeight, visibleHeight: Math.min(offsetHeight, this.props.preferredHeight) }
       }
     }
     return null
@@ -100,7 +100,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
   }
 
   showFull = e => {
-    this.setState(state => ({ displayHeight: state.bodyHeight }))
+    this.setState(state => ({ visibleHeight: state.offsetHeight }))
     e.currentTarget.blur()
   }
 
@@ -131,15 +131,15 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     } = this.props
 
     const {
-      bodyHeight,
-      displayHeight,
+      offsetHeight,
+      visibleHeight,
       isUnfold,
     } = this.state
 
-    const finalBodyHeight = isUnfold ? displayHeight : 10
+    const displayHeight = isUnfold ? visibleHeight : 10
 
     // plus header
-    const itemHeight = finalBodyHeight + 20
+    const itemHeight = displayHeight + 20
     if (itemHeight !== this.prevItemHeight) {
       this.prevItemHeight = itemHeight
       updateItemHeight({ id, height: itemHeight })
@@ -168,7 +168,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
           </button>
         </header>
         <Motion defaultStyle={{ height: 10, opacity: 0 }}
-          style={{ height: spring(finalBodyHeight), opacity: spring(isUnfold ? 1 : 0) }}
+          style={{ height: spring(displayHeight), opacity: spring(isUnfold ? 1 : 0) }}
         >
           {({ height, opacity }) => (
             <div className='panel-DictItem_Body'
@@ -176,7 +176,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
             >
               <article ref={this.bodyRef} style={{ opacity }}>
                 {React.createElement(require('@/components/dictionaries/' + id + '/View.tsx').default, { result: searchResult })}
-                <button className={`panel-DictItem_FoldMask ${displayHeight < bodyHeight ? 'isActive' : ''}`} onClick={this.showFull}>
+                <button className={`panel-DictItem_FoldMask ${visibleHeight < offsetHeight ? 'isActive' : ''}`} onClick={this.showFull}>
                   <svg className='panel-DictItem_FoldMaskArrow' width='15' height='15' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'>
                     <path d='M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56' />
                   </svg>
