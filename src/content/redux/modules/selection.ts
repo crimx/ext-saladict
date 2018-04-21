@@ -1,5 +1,6 @@
 import { message } from '@/_helpers/browser-api'
 import { MsgSelection, MsgType } from '@/typings/message'
+import { getDefaultSelectionInfo } from '@/_helpers/selection'
 
 /*-----------------------------------------------*\
     Actions
@@ -17,15 +18,7 @@ export type SelectionState = MsgSelection
 
 const initState: SelectionState = {
   type: MsgType.Selection,
-  selectionInfo: {
-    text: '',
-    context: '',
-    title: '',
-    url: '',
-    favicon: '',
-    trans: '',
-    note: '',
-  },
+  selectionInfo: getDefaultSelectionInfo(),
   mouseX: 0,
   mouseY: 0,
   dbClick: false,

@@ -1,9 +1,20 @@
-import selection from '@/_helpers/selection'
+import * as selection from '@/_helpers/selection'
 
 describe('Selection', () => {
   const bakSelection = window.getSelection
   afterAll(() => {
     window.getSelection = bakSelection
+  })
+
+  describe('getDefaultSelectionInfo', () => {
+    it('should return empty selection', () => {
+      const info = selection.getDefaultSelectionInfo()
+      expect(Object.keys(info).every(k => info[k] === '')).toBeTruthy()
+    })
+    it('should merge extra info', () => {
+      const info = selection.getDefaultSelectionInfo({ text: 'hello' })
+      expect(Object.keys(info).every(k => info[k] === (k === 'text' ? 'hello' : ''))).toBeTruthy()
+    })
   })
 
   describe('hasSelection', () => {
