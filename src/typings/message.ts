@@ -56,32 +56,32 @@ export interface PostMsgSelection {
 }
 
 interface MsgOpenUrlWithPlaceholder {
-  type: MsgType.OpenURL
-  url: string
-  placeholder: true
+  readonly type: MsgType.OpenURL
+  readonly url: string
+  readonly placeholder: true
   /** text to replace the placeholder */
-  text: string
+  readonly text: string
   /** use browser.runtime.getURL? */
-  self?: boolean
+  readonly self?: boolean
 }
 
 interface MsgOpenUrlWithoutPlaceholder {
-  type: MsgType.OpenURL
-  url: string
-  placeholder?: false
+  readonly type: MsgType.OpenURL
+  readonly url: string
+  readonly placeholder?: false
   /** use browser.runtime.getURL? */
-  self?: boolean
+  readonly self?: boolean
 }
 
 export type MsgOpenUrl = MsgOpenUrlWithoutPlaceholder | MsgOpenUrlWithPlaceholder
 
 export interface MsgAudioPlay {
-  type: MsgType.PlayAudio
-  src: string
+  readonly type: MsgType.PlayAudio
+  readonly src: string
 }
 
 export interface MsgFetchDictResult {
-  type: MsgType.FetchDictResult
-  dict: DictID
-  text: string
+  readonly type: MsgType.FetchDictResult
+  readonly id: DictID
+  readonly text: string
 }

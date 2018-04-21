@@ -1,5 +1,4 @@
 import * as recordManager from '@/_helpers/record-manager'
-import { SelectionInfo } from '@/_helpers/selection'
 import { StoreState } from './index'
 
 /*-----------------------------------------------*\
@@ -16,13 +15,13 @@ export const enum Actions {
 \*-----------------------------------------------*/
 
 export type WidgetState = {
-  isPinned: boolean
-  isFav: boolean
+  readonly isPinned: boolean
+  readonly isFav: boolean
 }
 
 const initState: WidgetState = {
   isPinned: false,
-  isFav: false
+  isFav: false,
 }
 
 export default function reducer (state = initState, action): WidgetState {
@@ -63,14 +62,14 @@ type Dispatcher = (
 
 export function addToNotebook (): Dispatcher {
   return (dispatch, getState) => {
-    return recordManager.addToNotebook(getState().selection.selectionInfo)
+    return recordManager.addToNotebook(getState().dictionaries.lastSearchInfo)
       .then(() => dispatch(favWord(true)))
   }
 }
 
 export function removeFromNotebook (): Dispatcher {
   return (dispatch, getState) => {
-    return recordManager.removeFromNotebook(getState().selection.selectionInfo)
+    return recordManager.removeFromNotebook(getState().dictionaries.lastSearchInfo)
       .then(() => dispatch(favWord(false)))
   }
 }
@@ -78,7 +77,7 @@ export function removeFromNotebook (): Dispatcher {
 /** Fire when panel is loaded */
 export function updateFaveInfo (): Dispatcher {
   return (dispatch, getState) => {
-    return recordManager.isInNotebook(getState().selection.selectionInfo)
+    return recordManager.isInNotebook(getState().dictionaries.lastSearchInfo)
       .then(flag => dispatch(favWord(flag)))
   }
 }
