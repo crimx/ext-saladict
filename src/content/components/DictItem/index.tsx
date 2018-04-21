@@ -1,5 +1,5 @@
 import './_style.scss'
-import React, { KeyboardEvent, MouseEvent } from 'react'
+import React from 'react'
 import { DictID } from '@/app-config'
 import { translate } from 'react-i18next'
 import { TranslationFunction } from 'i18next'
@@ -9,22 +9,22 @@ import { openURL } from '@/_helpers/browser-api'
 import { SearchStatus } from '@/content/redux/modules/dictionaries'
 
 export type DictItemProps = {
-  id: DictID
-  dictURL: string
-  fontSize: number
-  preferredHeight: number
-  panelWidth: number
-  searchStatus: SearchStatus
-  searchResult: any
-  requestSearchText: () => any
-  updateItemHeight: ({ id, height }: { id: DictID, height: number }) => any
+  readonly id: DictID
+  readonly dictURL: string
+  readonly fontSize: number
+  readonly preferredHeight: number
+  readonly panelWidth: number
+  readonly searchStatus: SearchStatus
+  readonly searchResult: any
+  readonly searchText: () => any
+  readonly updateItemHeight: ({ id, height }: { id: DictID, height: number }) => any
 }
 
 export type DictItemState = {
-  copySearchStatus: SearchStatus | null
-  offsetHeight: number
-  visibleHeight: number
-  isUnfold: boolean
+  readonly copySearchStatus: SearchStatus | null
+  readonly offsetHeight: number
+  readonly visibleHeight: number
+  readonly isUnfold: boolean
 }
 
 export class DictItem extends React.PureComponent<DictItemProps & { t: TranslationFunction }, DictItemState> {
@@ -46,28 +46,28 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       return null
     }
 
-    const newState: Partial<DictItemState> = {
-      copySearchStatus: nextProps.searchStatus
-    }
-
     switch (nextProps.searchStatus) {
       case SearchStatus.Searching:
-        newState.isUnfold = false
-        newState.offsetHeight = 0
-        break
+        return {
+          copySearchStatus: nextProps.searchStatus,
+          isUnfold: false,
+          offsetHeight: 0,
+        }
       case SearchStatus.Finished:
-        newState.isUnfold = true
-        break
+        return {
+          copySearchStatus: nextProps.searchStatus,
+          isUnfold: true,
+        }
     }
 
-    return newState
+    return { copySearchStatus: nextProps.searchStatus }
   }
 
   blurAfterClick (e) {
     e.currentTarget.blur()
   }
 
-  calcBodyHeight (force?: boolean): Partial<DictItemState> | null {
+  calcBodyHeight (force?: boolean) {
     if (this.bodyRef.current) {
       const offsetHeight = Math.max(this.bodyRef.current.offsetHeight, 10) || 10
       if (force || this.state.offsetHeight !== offsetHeight) {
@@ -88,13 +88,13 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       if (this.props.searchResult) {
         const update = this.calcBodyHeight(true)
         if (update) {
-          update.isUnfold = true
-          this.setState(update as any)
+          update['isUnfold'] = true
+          this.setState(update)
         } else {
           this.setState({ isUnfold: true })
         }
       } else {
-        this.props.requestSearchText()
+        this.props.searchText()
       }
     }
   }
@@ -124,7 +124,6 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       id,
       dictURL,
       fontSize,
-      preferredHeight,
       searchStatus,
       searchResult,
       updateItemHeight,

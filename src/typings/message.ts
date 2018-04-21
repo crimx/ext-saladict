@@ -1,4 +1,5 @@
 import { SelectionInfo } from '@/_helpers/selection'
+import { DictID } from '@/app-config'
 
 export const enum MsgType {
   /** Nothing */
@@ -52,4 +53,35 @@ export interface PostMsgSelection {
   readonly mouseY: number
   readonly dbClick: boolean
   readonly ctrlKey: boolean
+}
+
+interface MsgOpenUrlWithPlaceholder {
+  type: MsgType.OpenURL
+  url: string
+  placeholder: true
+  /** text to replace the placeholder */
+  text: string
+  /** use browser.runtime.getURL? */
+  self?: boolean
+}
+
+interface MsgOpenUrlWithoutPlaceholder {
+  type: MsgType.OpenURL
+  url: string
+  placeholder?: false
+  /** use browser.runtime.getURL? */
+  self?: boolean
+}
+
+export type MsgOpenUrl = MsgOpenUrlWithoutPlaceholder | MsgOpenUrlWithPlaceholder
+
+export interface MsgAudioPlay {
+  type: MsgType.PlayAudio
+  src: string
+}
+
+export interface MsgFetchDictResult {
+  type: MsgType.FetchDictResult
+  dict: DictID
+  text: string
 }

@@ -2,33 +2,7 @@ import { DictID } from '@/app-config'
 import { message, openURL } from '@/_helpers/browser-api'
 import { play } from './audio-manager'
 import { chsToChz } from '@/_helpers/chs-to-chz'
-import { MsgType } from '@/typings/message'
-
-interface MsgOpenUrlWithEscape {
-  type: MsgType.OpenURL
-  url: string
-  escape: true
-  text: string
-}
-
-interface MsgOpenUrlWithoutEscape {
-  type: MsgType.OpenURL
-  url: string
-  escape?: false
-}
-
-type MsgOpenUrl = MsgOpenUrlWithoutEscape | MsgOpenUrlWithEscape
-
-interface MsgAudioPlay {
-  type: MsgType.PlayAudio
-  src: string
-}
-
-interface MsgFetchDictResult {
-  type: MsgType.FetchDictResult
-  dict: DictID
-  text: string
-}
+import { MsgType, MsgOpenUrl, MsgAudioPlay, MsgFetchDictResult } from '@/typings/message'
 
 message.self.initServer()
 
@@ -48,11 +22,12 @@ message.addListener((data, sender: browser.runtime.MessageSender): Promise<void>
 
 function createTab (data: MsgOpenUrl): Promise<void> {
   return openURL(
-    data.escape
+    data.placeholder
       ? data.url
         .replace(/%s/g, data.text)
         .replace(/%z/g, chsToChz(data.text))
-      : data.url
+      : data.url,
+    data.self
   )
 }
 

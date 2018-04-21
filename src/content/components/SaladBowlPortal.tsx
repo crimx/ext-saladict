@@ -4,9 +4,9 @@ import { spring, presets, OpaqueConfig } from 'react-motion'
 import SaladBowl from './SaladBowl'
 
 interface SaladBowlPortalProps {
-  shouldShow: boolean
-  mouseX: number
-  mouseY: number
+  readonly shouldShow: boolean
+  readonly mouseX: number
+  readonly mouseY: number
 }
 
 export default class SaladBowlPortal extends React.Component<SaladBowlPortalProps, any> {

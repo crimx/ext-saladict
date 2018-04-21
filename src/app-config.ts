@@ -1,4 +1,5 @@
 import cloneDeep from 'lodash/cloneDeep'
+import { DeepReadonly } from './typings/helpers'
 
 const allDicts = {
   bing: {
@@ -195,7 +196,7 @@ allContextMenus as { [id: string]: string }
 
 export type ContextMenuDictID = keyof typeof allContextMenus
 
-export enum TCDirection {
+export const enum TCDirection {
   center,
   top,
   right,
@@ -210,141 +211,38 @@ export enum TCDirection {
 /** '' means no preload */
 export type PreloadSource = '' | 'clipboard' | 'selection'
 
-export interface DictConfig {
-  /** url for the complete result */
-  readonly page: string
-  /** lazy load */
-  readonly defaultUnfold: boolean
-  /** content below the preferrred height will be hidden by default */
-  readonly preferredHeight: number
-  /** only search when the selection contains the language */
-  readonly selectionLang: {
-    readonly eng: boolean
-    readonly chs: boolean
-  }
-  /** other options */
-  readonly options?: {
-    readonly [option: string]: number | boolean
-  }
-}
+export type DictConfig = DeepReadonly<DictConfigMutable>
+
+export type DictConfigs = { [id in DictID]: DictConfig }
 
 export interface DictConfigMutable {
+  /** url for the complete result */
   page: string
+  /** lazy load */
   defaultUnfold: boolean
+  /** content below the preferrred height will be hidden by default */
   preferredHeight: number
+  /** only search when the selection contains the language */
   selectionLang: {
     eng: boolean
     chs: boolean
   }
+  /** other options */
   options?: {
     [option: string]: number | boolean
   }
 }
 
-export interface AppConfig {
-  readonly version: number,
-  /** activate app, won't affect triple-ctrl setting */
-  readonly active: boolean
-
-  /** panel width */
-  readonly width: number
-
-  /** panel font-size */
-  readonly fontSize: number
-
-  /** sniff pdf request */
-  readonly pdfSniff: boolean
-
-  /** track search history */
-  readonly searhHistory: boolean
-  /** play sound */
-  readonly newWordSound: boolean
-
-  /** when and how to search text */
-  readonly mode: {
-    /** show pop icon first */
-    readonly icon: boolean
-    /** how panel directly */
-    readonly direct: boolean
-    /** double click */
-    readonly double: boolean
-    /** show panel when double click ctrl + selection not empty */
-    readonly ctrl: boolean
-  },
-
-  /** when and how to search text if the panel is pinned */
-  readonly pinMode: {
-    /** direct: on mouseup */
-    readonly direct: boolean
-    /** double: double click */
-    readonly double: boolean
-    /** ctrl: search when double click ctrl + selection not empty */
-    readonly ctrl: boolean
-  },
-
-  /** double click delay, in ms */
-  readonly doubleClickDelay: number
-
-  /** show panel when triple press ctrl */
-  readonly tripleCtrl: boolean
-
-  /** preload source */
-  readonly tripleCtrlPreload: PreloadSource
-
-  /** auto search when triple hit ctrl */
-  readonly tripleCtrlAuto: boolean
-
-  /** where should the dict appears */
-  readonly tripleCtrlLocation: TCDirection
-
-  /** browser action preload source */
-  readonly baPreload: PreloadSource
-
-  /** auto search when browser action triggered */
-  readonly baAuto: boolean
-
-  /** start searching when source containing the languages */
-  readonly language: {
-    readonly chinese: boolean
-    readonly english: boolean
-  }
-
-  /** auto pronunciation */
-  readonly autopron: {
-    readonly cn: {
-      readonly dict: DictID | '',
-      readonly list: DictID[]
-    }
-    readonly en: {
-      readonly dict: DictID | '',
-      readonly list: DictID[]
-      readonly accent: 'us' | 'uk'
-    }
-  }
-
-  readonly dicts: {
-    /** default selected dictionaries */
-    readonly selected: DictID[]
-    // settings of each dict will be auto-generated
-    readonly all: {
-      readonly [id in DictID]: DictConfig
-    }
-  }
-  readonly contextMenus: {
-    readonly selected: ContextMenuDictID[]
-    readonly all: {
-      readonly [id in ContextMenuDictID]: string
-    }
-  }
-}
+export type AppConfig = DeepReadonly<AppConfigMutable>
 
 export interface AppConfigMutable {
   readonly version: number,
+
   /** activate app, won't affect triple-ctrl setting */
   active: boolean
 
   /** panel width */
-  width: number
+  panelWidth: number
 
   /** panel font-size */
   fontSize: number
@@ -354,6 +252,7 @@ export interface AppConfigMutable {
 
   /** track search history */
   searhHistory: boolean
+
   /** play sound */
   newWordSound: boolean
 
@@ -443,7 +342,7 @@ export function appConfigFactory (): AppConfig {
 
     active: true,
 
-    width: 400,
+    panelWidth: 400,
 
     fontSize: 12,
 

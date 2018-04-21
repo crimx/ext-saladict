@@ -12,8 +12,8 @@ export default combineReducers({
 })
 
 export type StoreState = {
-  config: ConfigState
-  selection: SelectionState
-  dictionaries: DictionariesState
-  widget: WidgetState
+  readonly config: ConfigState
+  readonly selection: SelectionState
+  readonly dictionaries: DictionariesState
+  readonly widget: WidgetState
 }

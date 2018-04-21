@@ -2,9 +2,9 @@ import React from 'react'
 import { Motion, OpaqueConfig } from 'react-motion'
 
 export type SaladBowlProps = {
-  x: number | OpaqueConfig
-  y: number | OpaqueConfig
-  scale: number | OpaqueConfig
+  readonly x: number | OpaqueConfig
+  readonly y: number | OpaqueConfig
+  readonly scale: number | OpaqueConfig
 }
 
 export default class SaladBowl extends React.Component<SaladBowlProps> {

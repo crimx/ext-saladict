@@ -2,28 +2,42 @@ import './_style.scss'
 import React, { KeyboardEvent, MouseEvent } from 'react'
 import { translate } from 'react-i18next'
 import { TranslationFunction } from 'i18next'
-import { SelectionInfo } from '@/_helpers/selection'
-import { openURL } from '@/_helpers/browser-api'
+import { MsgType, MsgOpenUrl } from '@/typings/message'
+import { message } from '@/_helpers/browser-api'
 
 export type MenuBarProps = {
-  isFav: boolean
-  isPinned: boolean
-  updateDragArea: ({ left, width }: { left: number, width: number }) => any
-  searchText: (text: string) => any
-  addToNotebook: () => any
-  removeFromNotebook: () => any
-  shareImg: () => any
-  pinPanel: () => any
-  closePanel: () => any
+  readonly isFav: boolean
+  readonly isPinned: boolean
+  readonly updateDragArea: ({ left, width }: { left: number, width: number }) => any
+  readonly searchText: (text: string) => any
+  readonly addToNotebook: () => any
+  readonly removeFromNotebook: () => any
+  readonly shareImg: () => any
+  readonly pinPanel: () => any
+  readonly closePanel: () => any
 }
 
 export class MenuBar extends React.PureComponent<MenuBarProps & { t: TranslationFunction }> {
   dragAreaRef = React.createRef<HTMLDivElement>()
   text = ''
 
-  openSettings () { openURL('options.html', true) }
+  openSettings () {
+    const msg: MsgOpenUrl = {
+      type: MsgType.OpenURL,
+      url: 'options.html',
+      self: true,
+    }
+    message.send(msg)
+  }
 
-  openHistory () { openURL('history.html', true) }
+  openHistory () {
+    const msg: MsgOpenUrl = {
+      type: MsgType.OpenURL,
+      url: 'history.html',
+      self: true,
+    }
+    message.send(msg)
+  }
 
   updateDragArea = () => {
     const el = this.dragAreaRef.current
@@ -57,9 +71,15 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
           this.props.addToNotebook()
         }
         break
-      case 2: // secondary button
-        openURL('notebook.html', true)
+      case 2: { // secondary button
+        const msg: MsgOpenUrl = {
+          type: MsgType.OpenURL,
+          url: 'notebook.html',
+          self: true,
+        }
+        message.send(msg)
         break
+      }
     }
   }
 
