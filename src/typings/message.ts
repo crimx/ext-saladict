@@ -37,19 +37,19 @@ export const enum PostMsgType {
 }
 
 export interface MsgSelection {
-  type: MsgType.Selection
-  selectionInfo: SelectionInfo
-  mouseX?: number
-  mouseY?: number
-  dbClick: boolean
-  ctrlKey?: boolean
+  readonly type: MsgType.Selection
+  readonly selectionInfo: SelectionInfo
+  readonly mouseX?: number
+  readonly mouseY?: number
+  readonly dbClick: boolean
+  readonly ctrlKey?: boolean
 }
 
 export interface PostMsgSelection {
-  type: PostMsgType.Selection
-  selectionInfo: SelectionInfo
-  mouseX: number
-  mouseY: number
-  dbClick: boolean
-  ctrlKey: boolean
+  readonly type: PostMsgType.Selection
+  readonly selectionInfo: SelectionInfo
+  readonly mouseX: number
+  readonly mouseY: number
+  readonly dbClick: boolean
+  readonly ctrlKey: boolean
 }
