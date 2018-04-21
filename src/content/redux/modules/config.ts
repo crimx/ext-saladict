@@ -1,5 +1,5 @@
 import { appConfigFactory, AppConfig } from '@/app-config'
-import { addAppConfigListener } from '@/_helpers/config-manager'
+import { createAppConfigStream } from '@/_helpers/config-manager'
 
 /*-----------------------------------------------*\
     Actions
@@ -31,7 +31,7 @@ export default function reducer (state = appConfigFactory(), action): ConfigStat
 type Action = { type: Actions, payload?: any }
 
 /** When app config is updated */
-export function newConfig (config): Action {
+export function newConfig (config: AppConfig): Action {
   return { type: Actions.NEW_CONFIG, payload: config }
 }
 
@@ -45,6 +45,6 @@ type Dispatcher = (
 
 export function listenConfig (): Dispatcher {
   return dispatch => {
-    addAppConfigListener(({ config }) => dispatch(newConfig(config)))
+    createAppConfigStream().subscribe(config => dispatch(newConfig(config)))
   }
 }
