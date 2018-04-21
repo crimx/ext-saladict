@@ -56,20 +56,20 @@ describe('Server', () => {
   })
 
   describe('Create Tab', () => {
-    it('called with escape', () => {
+    it('called with placeholder', () => {
       browser.runtime.onMessage.dispatch({
         type: MsgType.OpenURL,
         url: 'https://test.com/%s%z',
-        escape: true,
+        placeholder: true,
         text: 'test',
       })
       expect(chsToChz).toHaveBeenCalledTimes(1)
       expect(chsToChz).toHaveBeenCalledWith('test')
       expect(openURL).toHaveBeenCalledTimes(1)
-      expect(openURL).toHaveBeenCalledWith('https://test.com/testtest')
+      expect(openURL).toHaveBeenCalledWith('https://test.com/testtest', undefined)
     })
 
-    it('called without escape', () => {
+    it('called without pattern', () => {
       browser.runtime.onMessage.dispatch({
         type: MsgType.OpenURL,
         url: 'https://test.com/',
@@ -77,7 +77,7 @@ describe('Server', () => {
       })
       expect(chsToChz).toHaveBeenCalledTimes(0)
       expect(openURL).toHaveBeenCalledTimes(1)
-      expect(openURL).toHaveBeenCalledWith('https://test.com/')
+      expect(openURL).toHaveBeenCalledWith('https://test.com/', undefined)
     })
   })
 
@@ -112,7 +112,7 @@ describe('Server', () => {
     it('should search text', () => {
       browser.runtime.onMessage.dispatch({
         type: MsgType.FetchDictResult,
-        dict: 'bing',
+        id: 'bing',
         text: 'test',
       })
       expect(bingSearch).toHaveBeenCalledTimes(1)

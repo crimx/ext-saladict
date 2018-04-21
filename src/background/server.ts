@@ -1,4 +1,3 @@
-import { DictID } from '@/app-config'
 import { message, openURL } from '@/_helpers/browser-api'
 import { play } from './audio-manager'
 import { chsToChz } from '@/_helpers/chs-to-chz'
@@ -7,7 +6,7 @@ import { MsgType, MsgOpenUrl, MsgAudioPlay, MsgFetchDictResult } from '@/typings
 message.self.initServer()
 
 // background script as transfer station
-message.addListener((data, sender: browser.runtime.MessageSender): Promise<void> | undefined => {
+message.addListener((data, sender: browser.runtime.MessageSender) => {
   switch (data.type) {
     case MsgType.OpenURL:
       return createTab(data as MsgOpenUrl)
@@ -35,17 +34,20 @@ function playAudio (data: MsgAudioPlay): Promise<void> {
   return play(data.src)
 }
 
-function fetchDictResult (data: MsgFetchDictResult): Promise<void> {
+function fetchDictResult (data: MsgFetchDictResult): Promise<{ result: any, id: typeof data.id }> {
   let search
 
   try {
-    search = require('@/components/dictionaries/' + data.dict + '/engine.js')
+    search = require('@/components/dictionaries/' + data.id + '/engine')
+    if (typeof search !== 'function') {
+      search = search.default
+    }
   } catch (err) {
     return Promise.reject(err)
   }
 
   return search(data.text)
-    .then(result => ({ result, dict: data.dict }))
+    .then(result => ({ result, id: data.id }))
 }
 
 function preloadSelection (): Promise<void> {
