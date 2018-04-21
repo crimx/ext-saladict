@@ -30,7 +30,7 @@ describe('Component/content/DictItem', () => {
       panelWidth: 400,
       searchStatus: SearchStatus.OnHold,
       updateItemHeight: _.noop,
-      requestSearchText: _.noop
+      searchText: _.noop
     }
     expect(mount(<DictItem {...props} />)).toMatchSnapshot()
   })
@@ -46,7 +46,7 @@ describe('Component/content/DictItem', () => {
       panelWidth: 400,
       searchStatus: SearchStatus.Searching,
       updateItemHeight: _.noop,
-      requestSearchText: _.noop
+      searchText: _.noop
     }
     const mounted = mount(<DictItem {...props} />)
     expect(mounted).toMatchSnapshot()
@@ -71,7 +71,7 @@ describe('Component/content/DictItem', () => {
       panelWidth: 400,
       searchStatus: SearchStatus.Searching,
       updateItemHeight: _.noop,
-      requestSearchText: jest.fn()
+      searchText: jest.fn()
     }
     const shallowed = shallow(<DictItem {...props} />)
     expect(shallowed.state('isUnfold')).toBe(false)
@@ -83,9 +83,9 @@ describe('Component/content/DictItem', () => {
     expect(shallowed.state('isUnfold')).toBe(false)
 
     // request searching
-    expect(props.requestSearchText).toHaveBeenCalledTimes(0)
+    expect(props.searchText).toHaveBeenCalledTimes(0)
     shallowed.find('header').simulate('click')
     expect(shallowed.state('isUnfold')).toBe(false)
-    expect(props.requestSearchText).toHaveBeenCalledTimes(1)
+    expect(props.searchText).toHaveBeenCalledTimes(1)
   })
 })

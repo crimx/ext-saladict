@@ -7,9 +7,9 @@ exports[`Component/content/DictItem should render pending correctly 1`] = `
   id="bing"
   panelWidth={400}
   preferredHeight={100}
-  requestSearchText={[Function]}
   searchResult={null}
   searchStatus={0}
+  searchText={[Function]}
   t={[Function]}
   updateItemHeight={[Function]}
 >
@@ -125,9 +125,9 @@ exports[`Component/content/DictItem should render result correctly 1`] = `
   id="bing"
   panelWidth={400}
   preferredHeight={100}
-  requestSearchText={[Function]}
   searchResult={null}
   searchStatus={1}
+  searchText={[Function]}
   t={[Function]}
   updateItemHeight={[Function]}
 >
@@ -262,9 +262,9 @@ exports[`Component/content/DictItem should render result correctly 2`] = `
   id="bing"
   panelWidth={400}
   preferredHeight={100}
-  requestSearchText={[Function]}
   searchResult="result1"
   searchStatus={2}
+  searchText={[Function]}
   t={[Function]}
   updateItemHeight={[Function]}
 >
