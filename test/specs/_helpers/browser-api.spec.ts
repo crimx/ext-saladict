@@ -848,5 +848,14 @@ describe('Browser API Wapper', () => {
           expect(browser.tabs.create.calledWith({ url })).toBeTruthy()
         })
     })
+    it('Concat extension base url', () => {
+      browser.tabs.query.returns(Promise.resolve([]))
+      browser.runtime.getURL.returns('test')
+      return openURL(url, true)
+        .then(() => {
+          expect(browser.runtime.getURL.calledWith(url)).toBeTruthy()
+          expect(browser.tabs.create.calledWith({ url: 'test' })).toBeTruthy()
+        })
+    })
   })
 })

@@ -125,7 +125,8 @@ export const message = {
 /**
  * Open a url on new tab or highlight a existing tab if already opened
  */
-export function openURL (url: string): Promise<void> {
+export function openURL (url: string, self?: boolean): Promise<void> {
+  if (self) { url = browser.runtime.getURL(url) }
   return browser.tabs.query({ url })
     // Only Chrome supports tab.highlight for now
     .then(tabs => (tabs.length > 0 && typeof browser.tabs.highlight === 'function')
