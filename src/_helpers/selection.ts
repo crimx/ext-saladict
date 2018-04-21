@@ -88,22 +88,22 @@ export function getSelectionSentence (): string {
   return cleanText(sentenceHead + selectedText + sentenceTail)
 }
 
-/**
- * @property {string} text - selection text
- * @property {string} context - sentence that contains the text
- * @property {string} title - page title
- * @property {string} url - page url
- * @property {string} favicon - favicon url
- * @property {string} trans - use-inputted translation
- * @property {string} note - use-inputted note
- */
-export interface SelectionInfo {
+export type SelectionInfo = Readonly<SelectionInfoMutable>
+
+export interface SelectionInfoMutable {
+  /** selection text */
   text: string
+  /** the sentence where the text string is located */
   context: string
+  /** page title */
   title: string
+  /** page url */
   url: string
+  /** favicon url */
   favicon: string
+  /** translation */
   trans: string
+  /** custom note */
   note: string
 }
 
