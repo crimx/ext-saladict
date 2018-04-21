@@ -107,6 +107,23 @@ export interface SelectionInfoMutable {
   note: string
 }
 
+export function getDefaultSelectionInfo (extra: Partial<SelectionInfo> = {}): SelectionInfo {
+  return {
+    text: '',
+    context: '',
+    title: '',
+    url: '',
+    favicon: '',
+    trans: '',
+    note: '',
+    ...extra,
+  }
+}
+
+export function isSameSelection (a: SelectionInfo, b: SelectionInfo) {
+  return a.text === b.text && a.context === b.context
+}
+
 export function getSelectionInfo (): SelectionInfo {
   return {
     text: getSelectionText(),
@@ -118,13 +135,6 @@ export function getSelectionInfo (): SelectionInfo {
     trans: '',
     note: '',
   }
-}
-
-export default {
-  hasSelection,
-  getSelectionText,
-  getSelectionSentence,
-  getSelectionInfo
 }
 
 function cleanText (text: string): string {
