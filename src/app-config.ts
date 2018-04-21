@@ -211,13 +211,18 @@ export enum TCDirection {
 export type PreloadSource = '' | 'clipboard' | 'selection'
 
 export interface DictConfig {
+  /** url for the complete result */
   readonly page: string
+  /** lazy load */
   readonly defaultUnfold: boolean
+  /** content below the preferrred height will be hidden by default */
   readonly preferredHeight: number
+  /** only search when the selection contains the language */
   readonly selectionLang: {
     readonly eng: boolean
     readonly chs: boolean
   }
+  /** other options */
   readonly options?: {
     readonly [option: string]: number | boolean
   }
@@ -240,6 +245,12 @@ export interface AppConfig {
   readonly version: number,
   /** activate app, won't affect triple-ctrl setting */
   readonly active: boolean
+
+  /** panel width */
+  readonly width: number
+
+  /** panel font-size */
+  readonly fontSize: number
 
   /** sniff pdf request */
   readonly pdfSniff: boolean
@@ -332,6 +343,12 @@ export interface AppConfigMutable {
   /** activate app, won't affect triple-ctrl setting */
   active: boolean
 
+  /** panel width */
+  width: number
+
+  /** panel font-size */
+  fontSize: number
+
   /** sniff pdf request */
   pdfSniff: boolean
 
@@ -423,10 +440,19 @@ export default appConfigFactory
 export function appConfigFactory (): AppConfig {
   return {
     version: 6,
+
     active: true,
+
+    width: 400,
+
+    fontSize: 12,
+
     pdfSniff: true,
+
     searhHistory: true,
+
     newWordSound: true,
+
     mode: {
       icon: true,
       direct: false,
