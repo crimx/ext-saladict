@@ -2,25 +2,28 @@ import './_style.scss'
 import React, { KeyboardEvent, MouseEvent } from 'react'
 import { translate } from 'react-i18next'
 import { TranslationFunction } from 'i18next'
+import { SelectionInfo } from '@/_helpers/selection'
+import { openURL } from '@/_helpers/browser-api'
 
 export type MenuBarProps = {
-  t: TranslationFunction
   isFav: boolean
   isPinned: boolean
   updateDragArea: ({ left, width }: { left: number, width: number }) => any
   searchText: (text: string) => any
-  openSettings: () => any
   addToNotebook: () => any
-  openNotebook: () => any
-  openHistory: () => any
+  removeFromNotebook: () => any
   shareImg: () => any
   pinPanel: () => any
   closePanel: () => any
 }
 
-export class MenuBar extends React.PureComponent<MenuBarProps> {
+export class MenuBar extends React.PureComponent<MenuBarProps & { t: TranslationFunction }> {
   dragAreaRef = React.createRef<HTMLDivElement>()
   text = ''
+
+  openSettings () { openURL('options.html', true) }
+
+  openHistory () { openURL('history.html', true) }
 
   updateDragArea = () => {
     const el = this.dragAreaRef.current
@@ -48,10 +51,14 @@ export class MenuBar extends React.PureComponent<MenuBarProps> {
   handleIconFavClick = (e: MouseEvent<SVGElement>) => {
     switch (e.button) {
       case 0: // main button
-        this.props.addToNotebook()
+        if (this.props.isFav) {
+          this.props.removeFromNotebook()
+        } else {
+          this.props.addToNotebook()
+        }
         break
       case 2: // secondary button
-        this.props.openNotebook()
+        openURL('notebook.html', true)
         break
     }
   }
@@ -61,8 +68,6 @@ export class MenuBar extends React.PureComponent<MenuBarProps> {
       t,
       isFav,
       isPinned,
-      openSettings,
-      openHistory,
       shareImg,
       pinPanel,
       closePanel,
@@ -91,7 +96,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps> {
         <svg
           className='panel-MenuBar_IconSettings'
           width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 612 612'
-          onClick={openSettings}
+          onClick={this.openSettings}
         >
           <title>{t('tipOpenSettings')}</title>
           <path d='M0 97.92v24.48h612V97.92H0zm0 220.32h612v-24.48H0v24.48zm0 195.84h612V489.6H0v24.48z'/>
@@ -109,7 +114,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps> {
         <svg
           className='panel-MenuBar_IconHistory'
           width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'
-          onClick={openHistory}
+          onClick={this.openHistory}
         >
           <title>{t('tipOpenHistory')}</title>
           <path d='M34.688 3.315c-15.887 0-28.812 12.924-28.81 28.73-.012.25-.157 4.434 1.034 8.94l-3.88-2.262c-.965-.56-2.193-.235-2.76.727-.557.96-.233 2.195.728 2.755l9.095 5.302c.02.01.038.013.056.022.1.05.2.09.31.12.07.02.14.05.21.07.09.02.176.02.265.03.06.003.124.022.186.022.036 0 .07-.01.105-.015.034 0 .063.007.097.004.05-.003.097-.024.146-.032.097-.017.19-.038.28-.068.08-.028.157-.06.23-.095.086-.04.165-.085.24-.137.074-.046.14-.096.206-.15.07-.06.135-.125.198-.195.06-.067.11-.135.16-.207.026-.04.062-.07.086-.11.017-.03.017-.067.032-.1.03-.053.07-.1.096-.16l3.62-8.96c.417-1.03-.08-2.205-1.112-2.622-1.033-.413-2.207.083-2.624 1.115l-1.86 4.6c-1.24-4.145-1.1-8.406-1.093-8.523C9.92 18.455 21.04 7.34 34.7 7.34c13.663 0 24.78 11.116 24.78 24.78S48.357 56.9 34.694 56.9c-1.114 0-2.016.902-2.016 2.015s.9 2.02 2.012 2.02c15.89 0 28.81-12.925 28.81-28.81 0-15.89-12.923-28.814-28.81-28.814z'/>
