@@ -45,14 +45,22 @@ export default function reducer (state = initState, action): SelectionState {
     Action Creators
 \*-----------------------------------------------*/
 
+type Action = { type: Actions, payload?: any }
+
 /** When new selection is made */
-export const newSelection = selection => ({ type: Actions.NEW_SELECTION, payload: selection })
+export function newSelection (selection): Action {
+  return { type: Actions.NEW_SELECTION, payload: selection }
+}
 
 /*-----------------------------------------------*\
     Side Effects
 \*-----------------------------------------------*/
 
-export function listenSelection () {
+type Dispatcher = (
+  dispatch: (action: Action) => any,
+) => any
+
+export function listenSelection (): Dispatcher {
   return dispatch => {
     message.self.addListener(MsgType.Selection, message => dispatch(newSelection(message)))
   }

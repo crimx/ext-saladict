@@ -6,7 +6,7 @@ import { Actions as ConfigActions } from './config'
 \*-----------------------------------------------*/
 
 export const enum Actions {
-  UPDATE_HEIGHT = 'dicts/UPDATE_HEIGHT'
+  UPDATE_HEIGHT = 'dicts/UPDATE_HEIGHT',
 }
 
 /*-----------------------------------------------*\
@@ -49,10 +49,10 @@ export default function reducer (state = initState, action): DictionariesState {
           }
           return newState
         }, {})
-    case Actions.UPDATE_HEIGHT:
-      const newState = {...state}
-      newState[action.payload.id].height = action.payload.height
-      return newState
+    case Actions.UPDATE_HEIGHT: {
+      const { id, height } = action.payload
+      return { ...state, [id]: { ...state[id], height } }
+    }
     default:
       return state
   }
@@ -62,7 +62,9 @@ export default function reducer (state = initState, action): DictionariesState {
     Action Creators
 \*-----------------------------------------------*/
 
-export function newItemHeight (payload: { id: DictID, height: number }) {
+type Action = { type: Actions, payload?: any }
+
+export function newItemHeight (payload: { id: DictID, height: number }): Action {
   return ({ type: Actions.UPDATE_HEIGHT, payload })
 }
 

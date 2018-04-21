@@ -28,14 +28,22 @@ export default function reducer (state = appConfigFactory(), action): ConfigStat
     Action Creators
 \*-----------------------------------------------*/
 
+type Action = { type: Actions, payload?: any }
+
 /** When app config is updated */
-export const newConfig = config => ({ type: Actions.NEW_CONFIG, payload: config })
+export function newConfig (config): Action {
+  return { type: Actions.NEW_CONFIG, payload: config }
+}
 
 /*-----------------------------------------------*\
     Side Effects
 \*-----------------------------------------------*/
 
-export function listenConfig () {
+type Dispatcher = (
+  dispatch: (action: Action) => any,
+) => any
+
+export function listenConfig (): Dispatcher {
   return dispatch => {
     addAppConfigListener(({ config }) => dispatch(newConfig(config)))
   }
