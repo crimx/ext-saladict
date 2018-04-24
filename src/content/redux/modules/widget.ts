@@ -8,6 +8,7 @@ import { StoreState } from './index'
 export const enum Actions {
   PIN = 'widget/PIN',
   FAV_WORD = 'dicts/FAV_WORD',
+  MOUSE_ON_BOWL = 'disct/MOUSE_ON_BOWL'
 }
 
 /*-----------------------------------------------*\
@@ -17,11 +18,13 @@ export const enum Actions {
 export type WidgetState = {
   readonly isPinned: boolean
   readonly isFav: boolean
+  readonly isMouseOnBowl: boolean
 }
 
 const initState: WidgetState = {
   isPinned: false,
   isFav: false,
+  isMouseOnBowl: false,
 }
 
 export default function reducer (state = initState, action): WidgetState {
@@ -32,6 +35,10 @@ export default function reducer (state = initState, action): WidgetState {
       return state.isFav === action.payload
         ? state
         : { ...state, isFav: action.payload }
+    case Actions.MOUSE_ON_BOWL:
+      return state.isMouseOnBowl === action.payload
+        ? state
+        : { ...state, isMouseOnBowl: action.payload }
     default:
       return state
   }
@@ -49,6 +56,10 @@ export function pinPanel (): Action {
 
 export function favWord (payload: boolean): Action {
   return ({ type: Actions.FAV_WORD, payload })
+}
+
+export function mouseOnBowl (payload: boolean): Action {
+  return ({ type: Actions.MOUSE_ON_BOWL, payload })
 }
 
 /*-----------------------------------------------*\

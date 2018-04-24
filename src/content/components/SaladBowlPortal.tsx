@@ -7,6 +7,8 @@ interface SaladBowlPortalProps {
   readonly shouldShow: boolean
   readonly mouseX: number
   readonly mouseY: number
+  readonly mouseOnBowl: (flag: boolean) => any
+  readonly searchText: () => any
 }
 
 export default class SaladBowlPortal extends React.Component<SaladBowlPortalProps, any> {
@@ -29,7 +31,7 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
     //       40px  |
     //     +-------+
     // cursor
-    const { mouseX, mouseY } = this.props
+    const { mouseX, mouseY, mouseOnBowl, searchText } = this.props
     let x: number | OpaqueConfig = mouseX + 70 > window.innerWidth ? mouseX - 70 : mouseX + 40
     let y: number | OpaqueConfig = mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30
     let scale: number | OpaqueConfig = 0
@@ -53,7 +55,7 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
     }
 
     return ReactDOM.createPortal(
-      React.createElement(SaladBowl, { x, y, scale }),
+      React.createElement(SaladBowl, { x, y, scale, mouseOnBowl, searchText }),
       this.el,
     )
   }
