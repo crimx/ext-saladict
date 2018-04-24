@@ -40,10 +40,10 @@ export const enum PostMsgType {
 export interface MsgSelection {
   readonly type: MsgType.Selection
   readonly selectionInfo: SelectionInfo
-  readonly mouseX?: number
-  readonly mouseY?: number
+  readonly mouseX: number
+  readonly mouseY: number
   readonly dbClick: boolean
-  readonly ctrlKey?: boolean
+  readonly ctrlKey: boolean
 }
 
 export interface PostMsgSelection {

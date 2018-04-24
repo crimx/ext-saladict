@@ -1,3 +1,9 @@
+interface DeepReadonlyArray<T> extends ReadonlyArray<DeepReadonly<T>> {}
+
+type DeepReadonlyObject<T> = {
+    readonly [P in keyof T]: DeepReadonly<T[P]>
+}
+
 export type DeepReadonly<T> =
     T extends (infer R)[]
       ? DeepReadonlyArray<R>
@@ -7,8 +13,6 @@ export type DeepReadonly<T> =
           ? DeepReadonlyObject<T>
           : T
 
-interface DeepReadonlyArray<T> extends ReadonlyArray<DeepReadonly<T>> {}
+export type Diff<T extends string, U extends string> = ({[P in T]: P } & {[P in U]: never } & { [x: string]: never })[T]
 
-type DeepReadonlyObject<T> = {
-    readonly [P in keyof T]: DeepReadonly<T[P]>
-}
+export type Omit<T, K extends keyof T> = Pick<T, Diff<keyof T, K>>
