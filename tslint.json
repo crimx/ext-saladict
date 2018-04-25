@@ -6,10 +6,9 @@
     "strict-type-predicates": false,
     "no-floating-promises": false,
 
-    "rxjs-no-add": { "severity": "error" },
-    "rxjs-no-operator": { "severity": "error" },
-    "rxjs-no-patched": { "severity": "error" },
-    "rxjs-no-wholesale": { "severity": "error" }
+    "rxjs-ban-observables": { "severity": "error" },
+    "rxjs-ban-operators": { "severity": "error" },
+    "rxjs-no-internal": { "severity": "error" }
   },
   "defaultSeverity": "warning"
 }

@@ -3,7 +3,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "jsx": "react",
-    "lib": ["es6", "dom"],
+    "lib": ["es6", "dom", "dom.iterable"],
     "module": "es2015",
     "moduleResolution": "node",
     "noImplicitAny": false,
