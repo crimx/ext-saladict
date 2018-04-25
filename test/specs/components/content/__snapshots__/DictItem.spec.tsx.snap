@@ -52,32 +52,35 @@ exports[`Component/content/DictItem should render pending correctly 1`] = `
         </svg>
       </button>
     </header>
-    <Motion
-      defaultStyle={
+    <Spring
+      config={
+        Object {
+          "friction": 26,
+          "tension": 170,
+        }
+      }
+      from={
         Object {
           "height": 10,
           "opacity": 0,
         }
       }
-      style={
+      hold={false}
+      immediate={false}
+      impl={[Function]}
+      inject={[Function]}
+      native={false}
+      reset={false}
+      to={
         Object {
-          "height": Object {
-            "damping": 26,
-            "precision": 0.01,
-            "stiffness": 170,
-            "val": 10,
-          },
-          "opacity": Object {
-            "damping": 26,
-            "precision": 0.01,
-            "stiffness": 170,
-            "val": 0,
-          },
+          "height": 10,
+          "opacity": 0,
         }
       }
     >
       <div
         className="panel-DictItem_Body"
+        key="bing"
         style={
           Object {
             "fontSize": 14,
@@ -113,7 +116,7 @@ exports[`Component/content/DictItem should render pending correctly 1`] = `
           </button>
         </article>
       </div>
-    </Motion>
+    </Spring>
   </section>
 </DictItem>
 `;
@@ -189,32 +192,35 @@ exports[`Component/content/DictItem should render result correctly 1`] = `
         </svg>
       </button>
     </header>
-    <Motion
-      defaultStyle={
+    <Spring
+      config={
+        Object {
+          "friction": 26,
+          "tension": 170,
+        }
+      }
+      from={
         Object {
           "height": 10,
           "opacity": 0,
         }
       }
-      style={
+      hold={false}
+      immediate={false}
+      impl={[Function]}
+      inject={[Function]}
+      native={false}
+      reset={false}
+      to={
         Object {
-          "height": Object {
-            "damping": 26,
-            "precision": 0.01,
-            "stiffness": 170,
-            "val": 10,
-          },
-          "opacity": Object {
-            "damping": 26,
-            "precision": 0.01,
-            "stiffness": 170,
-            "val": 0,
-          },
+          "height": 10,
+          "opacity": 0,
         }
       }
     >
       <div
         className="panel-DictItem_Body"
+        key="bing"
         style={
           Object {
             "fontSize": 14,
@@ -250,7 +256,7 @@ exports[`Component/content/DictItem should render result correctly 1`] = `
           </button>
         </article>
       </div>
-    </Motion>
+    </Spring>
   </section>
 </DictItem>
 `;
@@ -307,32 +313,35 @@ exports[`Component/content/DictItem should render result correctly 2`] = `
         </svg>
       </button>
     </header>
-    <Motion
-      defaultStyle={
+    <Spring
+      config={
+        Object {
+          "friction": 26,
+          "tension": 170,
+        }
+      }
+      from={
         Object {
           "height": 10,
           "opacity": 0,
         }
       }
-      style={
+      hold={false}
+      immediate={false}
+      impl={[Function]}
+      inject={[Function]}
+      native={false}
+      reset={false}
+      to={
         Object {
-          "height": Object {
-            "damping": 26,
-            "precision": 0.01,
-            "stiffness": 170,
-            "val": 10,
-          },
-          "opacity": Object {
-            "damping": 26,
-            "precision": 0.01,
-            "stiffness": 170,
-            "val": 1,
-          },
+          "height": 10,
+          "opacity": 1,
         }
       }
     >
       <div
         className="panel-DictItem_Body"
+        key="bing"
         style={
           Object {
             "fontSize": 14,
@@ -370,7 +379,7 @@ exports[`Component/content/DictItem should render result correctly 2`] = `
           </button>
         </article>
       </div>
-    </Motion>
+    </Spring>
   </section>
 </DictItem>
 `;
