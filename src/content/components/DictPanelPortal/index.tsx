@@ -11,7 +11,9 @@ import { Omit } from '@/typings/helpers'
 export type DictPanelPortalDispatchers = Omit<
   DictPanelDispatchers,
   'updateItemHeight' | 'updateDragArea'
->
+> & {
+  showPanel: (flag: boolean) => any
+}
 
 export interface DictPanelPortalProps extends DictPanelPortalDispatchers {
   readonly isFav: boolean
@@ -23,7 +25,10 @@ export interface DictPanelPortalProps extends DictPanelPortalDispatchers {
 }
 
 type DictPanelState= {
+  /** copy current props to compare with the next props */
   readonly propsSelection: SelectionState | null
+
+  readonly isNewSelection: boolean
   readonly x: number
   readonly y: number
   readonly height: number
@@ -38,6 +43,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
   state = {
     propsSelection: null,
+
+    isNewSelection: false,
     x: 0,
     y: 0,
     height: 30
@@ -50,7 +57,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     const newSelection = nextProps.selection
     if (newSelection !== prevState.propsSelection) {
       // only re-calculate position when new selection is made
-      const newState = { propsSelection: newSelection }
+      const newState = { propsSelection: newSelection, isNewSelection: true }
 
       if (newSelection.selectionInfo.text && !nextProps.isPinned) {
         // restore height
@@ -91,7 +98,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       return newState
     }
 
-    return null
+    return { isNewSelection: false }
   }
 
   frameDidMount = (frame: HTMLIFrameElement) => {
@@ -101,11 +108,13 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   mountEL = () => {
     this.root.appendChild(this.el)
     this.isMount = true
+    this.props.showPanel(true)
   }
 
   unmountEL = () => {
     this.root.removeChild(this.el)
     this.isMount = false
+    this.props.showPanel(false)
   }
 
   frameWillUnmount = () => {
@@ -131,25 +140,23 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
     const { selection, config, isPinned, isMouseOnBowl } = this.props
 
-    const { x, y, height } = this.state
+    const { x, y, height, isNewSelection } = this.state
 
     const { direct, ctrl, icon, double } = config.mode
-    const shouldShow: boolean = Boolean(
-      this.isMount
-        ? isPinned || selection.selectionInfo.text
-        : isMouseOnBowl || (
-          selection.selectionInfo.text && (
-            direct ||
-            (double && selection.dbClick) ||
-            (ctrl && selection.ctrlKey)
-          )
+    const shouldShow = (
+      (this.isMount && !isNewSelection) ||
+      isPinned ||
+      isMouseOnBowl ||
+      (selection.selectionInfo.text && (
+          direct ||
+          (double && selection.dbClick) ||
+          (ctrl && selection.ctrlKey)
         )
+      )
     )
 
-    if (shouldShow) {
-      if (!this.isMount) {
-        this.mountEL()
-      }
+    if (shouldShow && !this.isMount) {
+      this.mountEL()
     }
 
     return ReactDOM.createPortal(

@@ -2,7 +2,7 @@ import { connect } from 'react-redux'
 import DictPanelPortal, { DictPanelPortalProps, DictPanelPortalDispatchers } from '../components/DictPanelPortal'
 import { StoreState } from '../redux/modules'
 import { searchText } from '../redux/modules/dictionaries'
-import { addToNotebook, removeFromNotebook, pinPanel } from '../redux/modules/widget'
+import { addToNotebook, removeFromNotebook, pinPanel, showPanel } from '../redux/modules/widget'
 
 export const mapStateToProps = ({
   config,
@@ -21,6 +21,7 @@ export const mapStateToProps = ({
 }
 
 export const mapDispatchToProps: { [k in keyof DictPanelPortalDispatchers]: Function } = {
+  showPanel,
   searchText,
 
   addToNotebook,
