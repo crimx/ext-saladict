@@ -5,13 +5,8 @@ import { createAppConfigStream } from '@/_helpers/config-manager'
 import * as selection from '@/_helpers/selection'
 import { MsgType, PostMsgType, PostMsgSelection, MsgSelection } from '@/typings/message'
 
-import { Observable } from 'rxjs/Observable'
-import { mapTo, scan, filter, take, switchMap, buffer, debounceTime, observeOn, share } from 'rxjs/operators'
-import { fromEvent } from 'rxjs/observable/fromEvent'
-import { timer } from 'rxjs/observable/timer'
-import { of } from 'rxjs/observable/of'
-import { merge } from 'rxjs/observable/merge'
-import { async } from 'rxjs/scheduler/async'
+import { Observable, fromEvent, timer, merge, of, asyncScheduler } from 'rxjs'
+import { map, mapTo, scan, filter, take, switchMap, buffer, debounceTime, observeOn, share } from 'rxjs/operators'
 
 message.addListener(MsgType.__PreloadSelection__, (data, sender, sendResponse) => {
   sendResponse(selection.getSelectionInfo())
@@ -43,9 +38,9 @@ let isCtrlPressed = false
 let clickPeriodCount = 0
 
 const isCtrlPressed$: Observable<boolean> = merge(
-  fromEvent(window, 'keydown', true, e => isCtrlKey(e)),
-  fromEvent(window, 'keyup', true, e => false),
-  fromEvent(window, 'blur', true, e => false),
+  map(isCtrlKey)(fromEvent<KeyboardEvent>(window, 'keydown', { capture: true })),
+  mapTo(false)(fromEvent(window, 'keyup', { capture: true })),
+  mapTo(false)(fromEvent(window, 'blur', { capture: true })),
   of(false)
 )
 
@@ -59,7 +54,7 @@ const tripleCtrlPressed$ = validCtrlPressed$$.pipe(
   filter(group => group.length >= 3),
 )
 
-const validMouseup$$ = fromEvent<MouseEvent>(window, 'mouseup', true).pipe(
+const validMouseup$$ = fromEvent<MouseEvent>(window, 'mouseup', { capture: true }).pipe(
   filter(({ target }) => (
     config.active &&
     window.name !== 'saladict-frame' &&
@@ -68,7 +63,7 @@ const validMouseup$$ = fromEvent<MouseEvent>(window, 'mouseup', true).pipe(
   // if user click on a selected text,
   // getSelection would reture the text before the highlight disappears
   // delay to wait for selection get cleared
-  observeOn(async),
+  observeOn(asyncScheduler),
   share(),
 )
 
@@ -126,14 +121,20 @@ function sendMessage (
 ) {
   if (window.parent === window) {
     // top
-    message.self.send({
+    const msg: MsgSelection = {
       type: MsgType.Selection,
       selectionInfo,
       mouseX: clientX,
       mouseY: clientY,
       dbClick,
       ctrlKey: isCtrlPressed,
-    } as MsgSelection)
+    }
+
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('New selection', msg)
+    }
+
+    message.self.send(msg)
   } else {
     // post to upper frames/window
     window.parent.postMessage({
@@ -149,7 +150,7 @@ function sendMessage (
 
 function sendEmptyMessage () {
   // empty message
-  message.self.send({
+  const msg: MsgSelection = {
     type: MsgType.Selection,
     selectionInfo: {
       text: '',
@@ -160,8 +161,18 @@ function sendEmptyMessage () {
       favicon: window.faviconURL || '',
       trans: '',
       note: ''
-    }
-  } as MsgSelection)
+    },
+    mouseX: 0,
+    mouseY: 0,
+    dbClick: false,
+    ctrlKey: false,
+  }
+
+  if (process.env.NODE_ENV !== 'production') {
+    console.log('New selection', msg)
+  }
+
+  message.self.send(msg)
 }
 
 /**

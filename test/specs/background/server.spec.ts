@@ -23,7 +23,7 @@ describe('Server', () => {
     jest.doMock('@/_helpers/browser-api', () => {
       return browserWrap
     })
-    jest.doMock('@/components/dictionaries/bing/engine.js', () => {
+    jest.doMock('@/components/dictionaries/bing/engine', () => {
       return bingSearch
     })
   })
@@ -33,7 +33,7 @@ describe('Server', () => {
     jest.dontMock('@/_helpers/chs-to-chz')
     jest.dontMock('@/background/audio-manager')
     jest.dontMock('@/_helpers/browser-api')
-    jest.dontMock('@/components/dictionaries/bing/engine.js')
+    jest.dontMock('@/components/dictionaries/bing/engine')
   })
 
   beforeEach(() => {

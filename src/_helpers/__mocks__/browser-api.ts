@@ -2,8 +2,8 @@
  * @file Wraps some of the extension apis
  */
 
-import { Observable } from 'rxjs/Observable'
-import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
+import { Observable, fromEventPattern } from 'rxjs'
+import { map } from 'rxjs/operators'
 import _ from 'lodash'
 import { MsgType } from '@/typings/message'
 
@@ -259,33 +259,15 @@ function _storageRemoveListener (area: string) {
 function _storageCreateStream (area: string) {
   return jest.fn(storageCreateStream)
 
-  function storageCreateStream<T> (selector?: (...args) => T): Observable<T>
-  function storageCreateStream<T> (key: string, selector?: (...args) => T): Observable<T>
-  function storageCreateStream (...args) {
-    let key = ''
-    let selector = x => x
-
-    if (typeof args[0] === 'function') {
-      selector = args[0]
-    } else {
-      key = args[0]
-      selector = args[1]
-    }
+  function storageCreateStream (key: string) {
 
     const obj = _.get(storage, area === 'all' ? '' : area)
-    if (key) {
-      return fromEventPattern(
-        handler => obj.addListener(key, handler as StorageListenerCb),
-        handler => obj.removeListener(key, handler as StorageListenerCb),
-        selector,
-      )
-    } else {
-      return fromEventPattern(
-        handler => obj.addListener(handler as StorageListenerCb),
-        handler => obj.removeListener(handler as StorageListenerCb),
-        selector,
-      )
-    }
+    return fromEventPattern(
+      handler => obj.addListener(key, handler as StorageListenerCb),
+      handler => obj.removeListener(key, handler as StorageListenerCb),
+    ).pipe(
+      map(change => change[key])
+    )
   }
 }
 

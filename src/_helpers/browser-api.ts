@@ -2,8 +2,8 @@
  * @file Wraps some of the extension apis
  */
 
-import { Observable } from 'rxjs/Observable'
-import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
+import { Observable, fromEventPattern } from 'rxjs'
+import { map } from 'rxjs/operators'
 import { MsgType } from '@/typings/message'
 
 /* --------------------------------------- *\
@@ -22,9 +22,21 @@ declare global {
 
 export type StorageArea = 'all' | 'local' | 'sync'
 
-export type StorageListenerCb = (
-  changes: browser.storage.ChangeDict,
-  areaName: browser.storage.StorageName,
+export type StorageChange<T> = {
+  oldValue?: T,
+  newValue?: T,
+}
+
+export type StorageUpdate<T> = {
+  oldValue?: T,
+  newValue: T,
+}
+
+export type StorageListenerCb<T = any, K extends string = string> = (
+  changes: {
+    [field in K]: StorageChange<T>
+  },
+  areaName: 'sync' | 'local',
 ) => void
 
 export interface Message {
@@ -32,8 +44,8 @@ export interface Message {
   [propName: string]: any
 }
 
-type onMessageEvent = (
-  message: Message,
+type onMessageEvent<T extends Message = Message> = (
+  message: T,
   sender: browser.runtime.MessageSender,
   sendResponse: Function
 ) => Promise<any> | boolean | void
@@ -171,8 +183,8 @@ function storageSet (this: StorageThisTwo, keys: any): Promise<void> {
   return browser.storage[this.__storageArea__].set(keys)
 }
 
-function storageAddListener (cb: StorageListenerCb): void
-function storageAddListener (key: string, cb: StorageListenerCb): void
+function storageAddListener<T = any> (cb: StorageListenerCb<T>): void
+function storageAddListener<T = any, K extends string = string> (key: K, cb: StorageListenerCb<T, K>): void
 function storageAddListener (this: StorageThisThree, ...args): void {
   let key: string
   let cb: StorageListenerCb
@@ -245,32 +257,15 @@ function storageRemoveListener (this: StorageThisThree, ...args): void {
   browser.storage.onChanged.removeListener(cb)
 }
 
-function storageCreateStream<T> (selector?: (...args) => T): Observable<T>
-function storageCreateStream<T> (key: string, selector?: (...args) => T): Observable<T>
-function storageCreateStream (this: StorageThisThree, ...args) {
-  let key = ''
-  let selector = x => x
-
-  if (typeof args[0] === 'function') {
-    selector = args[0]
-  } else {
-    key = args[0]
-    selector = args[1]
-  }
-
-  if (key) {
-    return fromEventPattern(
-      handler => this.addListener(key, handler as StorageListenerCb),
-      handler => this.removeListener(key, handler as StorageListenerCb),
-      selector,
-    )
-  } else {
-    return fromEventPattern(
-      handler => this.addListener(handler as StorageListenerCb),
-      handler => this.removeListener(handler as StorageListenerCb),
-      selector,
-    )
-  }
+function storageCreateStream<T = any> (key: string): Observable<StorageChange<T>>
+function storageCreateStream (this: StorageThisThree, key: string) {
+  if (!key) { throw new Error('Missing key') }
+  return fromEventPattern(
+    handler => this.addListener(key, handler as StorageListenerCb),
+    handler => this.removeListener(key, handler as StorageListenerCb),
+  ).pipe(
+    map(change => change[key])
+  )
 }
 
 /* --------------------------------------- *\
@@ -278,8 +273,8 @@ function storageCreateStream (this: StorageThisThree, ...args) {
 \* --------------------------------------- */
 type MessageThis = typeof message | typeof message.self
 
-function messageSend (tabId: number, message: Message): Promise<any>
-function messageSend (message: Message): Promise<any>
+function messageSend<T extends Message> (tabId: number, message: T): Promise<any>
+function messageSend<T extends Message> (message: T): Promise<any>
 function messageSend (...args): Promise<any> {
   if (args.length === 1) {
     return browser.runtime.sendMessage(args[0])
@@ -288,7 +283,7 @@ function messageSend (...args): Promise<any> {
   }
 }
 
-function messageSendSelf (message: Message): Promise<any> {
+function messageSendSelf<T extends Message> (message: T): Promise<any> {
   if (window.pageId === undefined) {
     return initClient().then(() => messageSendSelf(message))
   }
@@ -298,8 +293,8 @@ function messageSendSelf (message: Message): Promise<any> {
   }))
 }
 
-function messageAddListener (messageType: Message['type'], cb: onMessageEvent): void
-function messageAddListener (cb: onMessageEvent): void
+function messageAddListener<T extends Message = Message> (messageType: Message['type'], cb: onMessageEvent<T>): void
+function messageAddListener<T extends Message = Message> (cb: onMessageEvent<T>): void
 function messageAddListener (this: MessageThis, ...args): void {
   const allListeners = this.__self__ ? messageSelfListeners : messageListeners
   const messageType = args.length === 1 ? undefined : args[0]
@@ -353,30 +348,17 @@ function messageRemoveListener (this: MessageThis, ...args): void {
   browser.runtime.onMessage.removeListener(cb)
 }
 
-function messageCreateStream<T> (selector?: (...args) => T): Observable<T>
-function messageCreateStream<T> (messageType: Message['type'], selector?: (...args) => T): Observable<T>
-function messageCreateStream (this: MessageThis, ...args) {
-  let messageType: Message['type'] = MsgType.Null
-  let selector = x => x
-
-  if (typeof args[0] === 'function') {
-    selector = args[0]
-  } else {
-    messageType = args[0]
-    selector = args[1]
-  }
-
+function messageCreateStream<T = any> (messageType?: Message['type']): Observable<T>
+function messageCreateStream (this: MessageThis, messageType = MsgType.Null) {
   if (messageType !== MsgType.Null) {
     return fromEventPattern(
       handler => this.addListener(messageType, handler as onMessageEvent),
       handler => this.removeListener(messageType, handler as onMessageEvent),
-      selector,
     )
   } else {
     return fromEventPattern(
       handler => this.addListener(handler as onMessageEvent),
       handler => this.removeListener(handler as onMessageEvent),
-      selector,
     )
   }
 }

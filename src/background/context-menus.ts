@@ -1,15 +1,8 @@
-import { storage, openURL } from '@/_helpers/browser-api'
+import { storage, openURL, StorageListenerCb, StorageUpdate } from '@/_helpers/browser-api'
 import { AppConfig } from '@/app-config'
 
-import { Observable } from 'rxjs/Observable'
-import { fromPromise } from 'rxjs/observable/fromPromise'
-import { filter } from 'rxjs/operators/filter'
-import { map } from 'rxjs/operators/map'
-import { audit } from 'rxjs/operators/audit'
-import { mapTo } from 'rxjs/operators/mapTo'
-import { mergeMap } from 'rxjs/operators/mergeMap'
-import { share } from 'rxjs/operators/share'
-import { startWith } from 'rxjs/operators/startWith'
+import { Observable } from 'rxjs'
+import { mergeMap, filter, map, audit, mapTo, share, startWith } from 'rxjs/operators'
 
 type ContextMenusConfig = AppConfig['contextMenus']
 
@@ -93,12 +86,11 @@ browser.contextMenus.onClicked.addListener(info => {
 export function init (initConfig: ContextMenusConfig): void {
   if (contextMenusChanged$) { return }
   // when context menus config changes
-  contextMenusChanged$ = storage.createStream<{ config: { newValue: AppConfig, oldValue: AppConfig } }>('config')
-  .pipe(
-    filter(({ config: { newValue, oldValue } }) => {
-      if (!oldValue) {
-        return true
-      }
+  contextMenusChanged$ = storage.createStream<AppConfig>('config').pipe(
+    filter((config): config is StorageUpdate<AppConfig> => {
+      const { newValue, oldValue } = config
+      if (!newValue) { return false }
+      if (!oldValue) { return true }
 
       const oldSelected = oldValue.contextMenus.selected
       const newSelected = newValue.contextMenus.selected
@@ -112,7 +104,7 @@ export function init (initConfig: ContextMenusConfig): void {
       }
       return false
     }),
-    map(({ config }) => config.newValue.contextMenus),
+    map(({ newValue }) => newValue.contextMenus),
   )
 
   let signal$: Observable<boolean>
@@ -123,7 +115,7 @@ export function init (initConfig: ContextMenusConfig): void {
     // if source emits any value during setContextMenus,
     // retrieve the latest after setContextMenus is completed
     audit(() => signal$),
-    mergeMap((value: ContextMenusConfig) => fromPromise(setContextMenus(value))),
+    mergeMap((value: ContextMenusConfig) => setContextMenus(value)),
     share(),
   )
 
