@@ -3,7 +3,7 @@ import React from 'react'
 import { DictID } from '@/app-config'
 import { translate } from 'react-i18next'
 import { TranslationFunction } from 'i18next'
-import { Motion, spring } from 'react-motion'
+import { Spring } from 'react-spring'
 import { openURL } from '@/_helpers/browser-api'
 
 import { SearchStatus } from '@/content/redux/modules/dictionaries'
@@ -33,6 +33,7 @@ export type DictItemState = {
 export class DictItem extends React.PureComponent<DictItemProps & { t: TranslationFunction }, DictItemState> {
   bodyRef = React.createRef<HTMLElement>()
   prevItemHeight = 30
+  initStyle = { height: 10, opacity: 0 }
 
   state = {
     copySearchStatus: null,
@@ -169,9 +170,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
             </svg>
           </button>
         </header>
-        <Motion defaultStyle={{ height: 10, opacity: 0 }}
-          style={{ height: spring(displayHeight), opacity: spring(isUnfold ? 1 : 0) }}
-        >
+        <Spring from={this.initStyle} to={{ height: displayHeight, opacity: isUnfold ? 1 : 0 }}>
           {({ height, opacity }) => (
             <div className='panel-DictItem_Body'
               key={id}
@@ -187,7 +186,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
               </article>
             </div>
           )}
-        </Motion>
+        </Spring>
       </section>
     )
   }
