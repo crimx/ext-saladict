@@ -85,13 +85,19 @@ export default function reducer (state = initState, action): DictionariesState {
         }
     }
     case Actions.SEARCH_START: {
-      const { info }: { info: SelectionInfo } = action.payload
+      const { id, info }: { id?: DictID, info: SelectionInfo } = action.payload
       return {
         ...state,
         lastSearchInfo: info,
         dicts: mapValues<typeof state.dicts, DictState>(
           state.dicts,
-          dict => ({ ...dict, searchStatus: SearchStatus.Searching, searchResult: null }) as DictState
+          (dictInfo, dictID) => {
+            return (
+              !id || dictID === id
+                ? { ...dictInfo, searchStatus: SearchStatus.Searching, searchResult: null }
+                : dictInfo
+            ) as DictState
+          }
         ),
       }
     }
@@ -122,7 +128,8 @@ export function newItemHeight (payload: { id: DictID, height: number }): Action 
   return ({ type: Actions.UPDATE_HEIGHT, payload })
 }
 
-export function searchStart (payload: { info: SelectionInfo }): Action {
+/** Search all selected dicts if id is not provided */
+export function searchStart (payload: { id?: DictID, info: SelectionInfo }): Action {
   return ({ type: Actions.SEARCH_START, payload })
 }
 
@@ -139,18 +146,26 @@ type Dispatcher = (
   getState: () => StoreState,
 ) => any
 
-export function searchText (arg?: SelectionInfo | string): Dispatcher {
+/**
+ * Search all selected dicts if id is not provided.
+ * Use last selection if info is not provided.
+ */
+export function searchText (arg?: { id?: DictID, info?: SelectionInfo | string }): Dispatcher {
   return (dispatch, getState) => {
     const state = getState()
     const info = arg
-      ? typeof arg === 'string'
-        ? getDefaultSelectionInfo({ text: arg })
-        : arg
+      ? typeof arg.info === 'string'
+        ? getDefaultSelectionInfo({ text: arg.info })
+        : arg.info || state.dictionaries.lastSearchInfo
       : state.dictionaries.lastSearchInfo
 
-    dispatch(searchStart({ info }))
+    const id = arg && arg.id
 
-    state.config.dicts.selected.forEach(id => {
+    dispatch(searchStart({ id, info }))
+
+    const dicts = id ? [id] : state.config.dicts.selected
+
+    dicts.forEach(id => {
       const msg: MsgFetchDictResult = {
         type: MsgType.FetchDictResult,
         id,
