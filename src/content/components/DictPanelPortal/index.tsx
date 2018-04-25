@@ -137,7 +137,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       const iframeStyle = this.frame.style
       iframeStyle.setProperty('width', width + 'px', 'important')
       iframeStyle.setProperty('height', height + 'px', 'important')
-      iframeStyle.setProperty('transform', `translate3d(${x}px, ${y}px, 0)`, 'important')
+      iframeStyle.setProperty('transform', `translate(${x}px, ${y}px)`, 'important')
       iframeStyle.setProperty('opacity', opacity, 'important')
     }
     return null
@@ -147,9 +147,19 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     const dictHeights = this.state.mutableArea.dictHeights
     if (dictHeights[id] !== height) {
       dictHeights[id] = height
-      const newHeight = 30 + this.props.config.dicts.selected
-        .reduce((sum, id) => sum + (dictHeights[id] || 30), 0)
-      this.setState({ height: newHeight })
+
+      const winHeight = window.innerHeight
+      const newHeight = Math.min(
+        winHeight * this.props.config.panelMaxHeightRatio,
+        30 + this.props.config.dicts.selected
+          .reduce((sum, id) => sum + (dictHeights[id] || 30), 0),
+      )
+
+      if (this.state.y + newHeight + 10 > winHeight) {
+        this.setState({ height: newHeight, y: winHeight - 10 - newHeight })
+      } else {
+        this.setState({ height: newHeight })
+      }
     }
   }
 

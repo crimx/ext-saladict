@@ -244,6 +244,9 @@ export interface AppConfigMutable {
   /** panel width */
   panelWidth: number
 
+  /** panel max height */
+  panelMaxHeightRatio: number
+
   /** panel font-size */
   fontSize: number
 
@@ -343,6 +346,8 @@ export function appConfigFactory (): AppConfig {
     active: true,
 
     panelWidth: 400,
+
+    panelMaxHeightRatio: 0.8,
 
     fontSize: 12,
 
