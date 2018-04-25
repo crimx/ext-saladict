@@ -1,9 +1,13 @@
+@import '@/_sass_global/variables';
+@import '@/_sass_global/z-indices';
+@import '@/_sass_global/interfaces';
+
 $bowl-width: 30px;
 $tomato-rotate: 45deg;
 $leaf-rotate: 30deg;
 
 :root:root:root:root:root {
-  .saladict-SaladBowl{
+  .saladict-SaladBowl {
     @extend %reset-important;
     position: fixed !important;
     z-index: $global-zindex-tooltip !important;

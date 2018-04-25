@@ -1,6 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { spring, presets, OpaqueConfig } from 'react-motion'
+import { config as springConfig, SpringConfig } from 'react-spring'
 import SaladBowl from './SaladBowl'
 
 interface SaladBowlPortalProps {
@@ -15,6 +15,31 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
   root = document.body
   el = document.createElement('div')
   isMount = false
+  isAppeare = false
+
+  springImmediateCtrl = (key: string): boolean => {
+    switch (key) {
+      case 'x':
+      case 'y':
+        return !this.isMount || this.isAppeare
+      case 'scale':
+        return !this.isAppeare
+      default:
+        return false
+    }
+  }
+
+  springConfigCtrl = (key: string): SpringConfig => {
+    switch (key) {
+      case 'x':
+      case 'y':
+        return springConfig.gentle
+      case 'scale':
+        return springConfig.wobbly
+      default:
+        return springConfig.default
+    }
+  }
 
   componentWillUnmount () {
     this.root.removeChild(this.el)
@@ -31,21 +56,18 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
     //       40px  |
     //     +-------+
     // cursor
-    const { mouseX, mouseY, mouseOnBowl, searchText } = this.props
-    let x: number | OpaqueConfig = mouseX + 70 > window.innerWidth ? mouseX - 70 : mouseX + 40
-    let y: number | OpaqueConfig = mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30
-    let scale: number | OpaqueConfig = 0
+    const { springConfigCtrl, springImmediateCtrl } = this
+    const { mouseX, mouseY, mouseOnBowl, searchText, shouldShow } = this.props
+    const x: number = mouseX + 70 > window.innerWidth ? mouseX - 70 : mouseX + 40
+    const y: number = mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30
+    const scale: number = shouldShow ? 1 : 0
 
-    if (this.props.shouldShow) {
+    this.isAppeare = false
+    if (shouldShow) {
       if (!this.isMount) {
         this.root.appendChild(this.el)
         this.isMount = true
-        scale = spring(1, presets.wobbly)
-      } else {
-        // only animate position when the bowl is already visible
-        x = spring(x, presets.gentle)
-        y = spring(y, presets.gentle)
-        scale = 1
+        this.isAppeare = true
       }
     } else {
       if (this.isMount) {
@@ -55,7 +77,13 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
     }
 
     return ReactDOM.createPortal(
-      React.createElement(SaladBowl, { x, y, scale, mouseOnBowl, searchText }),
+      React.createElement(SaladBowl, {
+        x, y, scale,
+        springImmediateCtrl,
+        springConfigCtrl,
+        mouseOnBowl,
+        searchText,
+      }),
       this.el,
     )
   }
