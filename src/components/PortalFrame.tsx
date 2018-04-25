@@ -84,7 +84,6 @@ const EVENTS = [
 export type PortalFrameProps = {
   head?: string
   name?: string
-  importantStyle?: { [k: string]: string }
   frameDidMount?: (ref: HTMLIFrameElement) => any
   frameDidLoad?: (ref: HTMLIFrameElement) => any
   frameWillUnmount?: () => any
@@ -121,22 +120,11 @@ export default class PortalFrame extends React.PureComponent<PortalFrameProps, P
     })
   }
 
-  _applyImportantStyle () {
-    const importantStyle = this.props.importantStyle
-    if (importantStyle && this.frame) {
-      const iframeStyle = this.frame.style
-      Object.keys(importantStyle).forEach(key => {
-        iframeStyle.setProperty(key, importantStyle[key], 'important')
-      })
-    }
-  }
-
   componentDidMount () {
     const frame = this.frame as HTMLIFrameElement
     if (this.props.frameDidMount) {
       this.props.frameDidMount(frame)
     }
-    this._applyImportantStyle()
     frame && frame.addEventListener('load', this._handleLoad, true)
   }
 
@@ -149,10 +137,6 @@ export default class PortalFrame extends React.PureComponent<PortalFrameProps, P
     this.frame = null
     // just in case
     this.state['root'] = null
-  }
-
-  componentDidUpdate () {
-    this._applyImportantStyle()
   }
 
   render () {
