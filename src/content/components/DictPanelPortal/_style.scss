@@ -1,0 +1,15 @@
+@import '@/_sass_global/variables';
+@import '@/_sass_global/z-indices';
+@import '@/_sass_global/interfaces';
+
+:root:root:root:root:root {
+  .saladict-DictPanel {
+    @extend %reset-important;
+    position: fixed !important;
+    z-index: $global-zindex-tooltip !important;
+    left: 0 !important;
+    top: 0 !important;
+    overflow: hidden !important;
+    box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px !important;
+  }
+}

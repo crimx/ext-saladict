@@ -1,15 +1,13 @@
 import './_style.scss'
 import React, { KeyboardEvent, MouseEvent } from 'react'
 import { translate } from 'react-i18next'
+import { message } from '@/_helpers/browser-api'
 import { TranslationFunction } from 'i18next'
 import { MsgType, MsgOpenUrl } from '@/typings/message'
-import { message } from '@/_helpers/browser-api'
 
-export type MenuBarProps = {
-  readonly isFav: boolean
-  readonly isPinned: boolean
+export interface MenuBarDispatchers {
   readonly updateDragArea: ({ left, width }: { left: number, width: number }) => any
-  readonly searchText: (text: string) => any
+  readonly searchText: ({ info }: { info: string }) => any
   readonly addToNotebook: () => any
   readonly removeFromNotebook: () => any
   readonly shareImg: () => any
@@ -17,7 +15,13 @@ export type MenuBarProps = {
   readonly closePanel: () => any
 }
 
+export interface MenuBarProps extends MenuBarDispatchers {
+  readonly isFav: boolean
+  readonly isPinned: boolean
+}
+
 export class MenuBar extends React.PureComponent<MenuBarProps & { t: TranslationFunction }> {
+  inputRef = React.createRef<HTMLInputElement>()
   dragAreaRef = React.createRef<HTMLDivElement>()
   text = ''
 
@@ -52,13 +56,13 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
   handleSearchBoxKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
     if (this.text && e.key === 'Enter') {
-      this.props.searchText(this.text)
+      this.props.searchText({ info: this.text })
     }
   }
 
   handleIconSearchClick = (e: MouseEvent<SVGElement>) => {
     if (this.text) {
-      this.props.searchText(this.text)
+      this.props.searchText({ info: this.text })
     }
   }
 
@@ -83,6 +87,12 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     }
   }
 
+  componentDidMount () {
+    if (this.inputRef.current) {
+      this.inputRef.current.focus()
+    }
+  }
+
   render () {
     const {
       t,
@@ -97,6 +107,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
       <header className='panel-MenuBar'>
         <input type='text'
           className='panel-MenuBar_SearchBox'
+          ref={this.inputRef}
           onInput={this.handleSearchBoxInput}
           onKeyUp={this.handleSearchBoxKeyUp}
           onTransitionEnd={this.updateDragArea}

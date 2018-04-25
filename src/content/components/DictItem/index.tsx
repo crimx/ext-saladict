@@ -8,7 +8,12 @@ import { openURL } from '@/_helpers/browser-api'
 
 import { SearchStatus } from '@/content/redux/modules/dictionaries'
 
-export type DictItemProps = {
+export interface DictItemDispatchers {
+  readonly searchText: () => any
+  readonly updateItemHeight: ({ id, height }: { id: DictID, height: number }) => any
+}
+
+export interface DictItemProps extends DictItemDispatchers {
   readonly id: DictID
   readonly dictURL: string
   readonly fontSize: number
@@ -16,8 +21,6 @@ export type DictItemProps = {
   readonly panelWidth: number
   readonly searchStatus: SearchStatus
   readonly searchResult: any
-  readonly searchText: () => any
-  readonly updateItemHeight: ({ id, height }: { id: DictID, height: number }) => any
 }
 
 export type DictItemState = {
@@ -171,6 +174,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
         >
           {({ height, opacity }) => (
             <div className='panel-DictItem_Body'
+              key={id}
               style={{ fontSize, height }}
             >
               <article ref={this.bodyRef} style={{ opacity }}>

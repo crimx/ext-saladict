@@ -1,0 +1,39 @@
+/*-----------------------------------------------*\
+    Libs
+\*-----------------------------------------------*/
+@import '~normalize.css';
+
+/*-----------------------------------------------*\
+    Base
+\*-----------------------------------------------*/
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  font-size: 14px;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+
+.panel-Root {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+}
+
+.panel-DictContainer {
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
