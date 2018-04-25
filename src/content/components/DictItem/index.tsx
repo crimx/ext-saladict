@@ -37,7 +37,9 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
 
   state = {
     copySearchStatus: null,
+    /** real height of the body */
     offsetHeight: 10,
+    /** final height, takes unfold and mask into account */
     visibleHeight: 10,
     isUnfold: false,
   }
@@ -87,7 +89,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     }
 
     if (this.state.isUnfold) {
-      this.setState({ isUnfold: false })
+      this.setState({ isUnfold: false, visibleHeight: 10 })
     } else {
       if (this.props.searchResult) {
         const update = this.calcBodyHeight(true)
@@ -120,6 +122,11 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       const update = this.calcBodyHeight()
       if (update) { this.setState(update as any) }
     }
+
+    this.props.updateItemHeight({
+      id: this.props.id,
+      height: this.state.visibleHeight + 20,
+    })
   }
 
   render () {
@@ -138,15 +145,6 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       visibleHeight,
       isUnfold,
     } = this.state
-
-    const displayHeight = isUnfold ? visibleHeight : 10
-
-    // plus header
-    const itemHeight = displayHeight + 20
-    if (itemHeight !== this.prevItemHeight) {
-      this.prevItemHeight = itemHeight
-      updateItemHeight({ id, height: itemHeight })
-    }
 
     return (
       <section className='panel-DictItem'>
@@ -170,7 +168,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
             </svg>
           </button>
         </header>
-        <Spring from={this.initStyle} to={{ height: displayHeight, opacity: isUnfold ? 1 : 0 }}>
+        <Spring from={this.initStyle} to={{ height: visibleHeight, opacity: isUnfold ? 1 : 0 }}>
           {({ height, opacity }) => (
             <div className='panel-DictItem_Body'
               key={id}

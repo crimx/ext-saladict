@@ -7,6 +7,7 @@ import { WidgetState } from '../../redux/modules/widget'
 import { SelectionInfo } from '@/_helpers/selection'
 import { SelectionState } from '@/content/redux/modules/selection'
 import { Omit } from '@/typings/helpers'
+import { DictID } from '@/app-config'
 
 export type DictPanelPortalDispatchers = Omit<
   DictPanelDispatchers,
@@ -25,8 +26,11 @@ export interface DictPanelPortalProps extends DictPanelPortalDispatchers {
 }
 
 type DictPanelState= {
-  /** copy current props to compare with the next props */
-  readonly propsSelection: SelectionState | null
+  /** hack to reduce the overhead ceremony introduced by gDSFP */
+  readonly mutableArea: {
+    propsSelection: SelectionState | null
+    dictHeights: { [k in DictID]?: number }
+  }
 
   readonly isNewSelection: boolean
   readonly x: number
@@ -42,7 +46,10 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   initStyle = { x: 0, y: 0, height: 30, width: 400, opacity: 0 }
 
   state = {
-    propsSelection: null,
+    mutableArea: {
+      propsSelection: null,
+      dictHeights: {},
+    },
 
     isNewSelection: false,
     x: 0,
@@ -55,15 +62,18 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     prevState: DictPanelState
   ): Partial<DictPanelState> | null {
     const newSelection = nextProps.selection
-    if (newSelection !== prevState.propsSelection) {
+    const mutableArea = prevState.mutableArea
+    if (newSelection !== mutableArea.propsSelection) {
+      mutableArea.propsSelection = newSelection
       // only re-calculate position when new selection is made
-      const newState = { propsSelection: newSelection, isNewSelection: true }
+      const newState = { isNewSelection: true }
 
       if (newSelection.selectionInfo.text && !nextProps.isPinned) {
         // restore height
         const panelWidth = nextProps.config.panelWidth
         const panelHeight = 30 + nextProps.config.dicts.selected.length * 30
         newState['height'] = panelHeight
+        mutableArea.dictHeights = {}
 
         // icon position           10px  panel position
         //             +-------+         +------------------------+
@@ -126,16 +136,25 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     if (this.frame) {
       const iframeStyle = this.frame.style
       iframeStyle.setProperty('width', width + 'px', 'important')
-      iframeStyle.setProperty('hegiht', height + 'px', 'important')
+      iframeStyle.setProperty('height', height + 'px', 'important')
       iframeStyle.setProperty('transform', `translate3d(${x}px, ${y}px, 0)`, 'important')
       iframeStyle.setProperty('opacity', opacity, 'important')
     }
     return null
   }
 
+  updateItemHeight = ({ id, height }: { id: DictID, height: number }) => {
+    const dictHeights = this.state.mutableArea.dictHeights
+    if (dictHeights[id] !== height) {
+      dictHeights[id] = height
+      const newHeight = 30 + this.props.config.dicts.selected
+        .reduce((sum, id) => sum + (dictHeights[id] || 30), 0)
+      this.setState({ height: newHeight })
+    }
+  }
+
   render () {
     /** @todo */
-    const updateItemHeight = () => console.log('updateItemHeight')
     const updateDragArea = () => console.log('updateDragArea')
 
     const { selection, config, isPinned, isMouseOnBowl } = this.props
@@ -165,7 +184,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
           ? <DictPanel
               {...this.props}
               shouldShow={shouldShow}
-              updateItemHeight={updateItemHeight}
+              updateItemHeight={this.updateItemHeight}
               updateDragArea={updateDragArea}
               frameDidMount={this.frameDidMount}
               frameWillUnmount={this.frameWillUnmount}
