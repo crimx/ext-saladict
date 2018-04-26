@@ -11,7 +11,7 @@ import { DictID } from '@/app-config'
 
 export type DictPanelPortalDispatchers = Omit<
   DictPanelDispatchers,
-  'updateItemHeight' | 'updateDragArea'
+  'updateItemHeight' | 'handleDragStart'
 > & {
   showPanel: (flag: boolean) => any
 }
@@ -32,6 +32,7 @@ type DictPanelState= {
     dictHeights: { [k in DictID]?: number }
   }
 
+  readonly isDragging: boolean
   readonly isNewSelection: boolean
   readonly x: number
   readonly y: number
@@ -44,6 +45,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   el = document.createElement('div')
   frame: HTMLIFrameElement | null = null
   initStyle = { x: 0, y: 0, height: 30, width: 400, opacity: 0 }
+  lastMouseX = 0
+  lastMouseY = 0
 
   state = {
     mutableArea: {
@@ -51,6 +54,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       dictHeights: {},
     },
 
+    isDragging: false,
     isNewSelection: false,
     x: 0,
     y: 0,
@@ -139,6 +143,11 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       iframeStyle.setProperty('height', height + 'px', 'important')
       iframeStyle.setProperty('transform', `translate(${x}px, ${y}px)`, 'important')
       iframeStyle.setProperty('opacity', opacity, 'important')
+      if (this.state.isDragging) {
+        iframeStyle.setProperty('will-change', 'transform', 'important')
+      } else {
+        iframeStyle.removeProperty('will-change')
+      }
     }
     return null
   }
@@ -163,13 +172,47 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     }
   }
 
-  render () {
-    /** @todo */
-    const updateDragArea = () => console.log('updateDragArea')
+  handleDragStart = (e: React.MouseEvent<HTMLDivElement>) => {
+    // prevent mousedown dragging
+    e.preventDefault()
+    // e is from iframe, so there is offset
+    this.lastMouseX = e.clientX + this.state.x
+    this.lastMouseY = e.clientY + this.state.y
+    this.setState({ isDragging: true })
+    window.addEventListener('mousemove', this.handleWindowMouseMove)
+    window.addEventListener('mouseup', this.handleDragEnd)
+  }
 
+  handleDragEnd = () => {
+    this.setState({ isDragging: false })
+    window.removeEventListener('mousemove', this.handleWindowMouseMove)
+    window.removeEventListener('mouseup', this.handleDragEnd)
+  }
+
+  handleWindowMouseMove = (e: MouseEvent) => {
+    const { x, y } = this.state
+    this.setState({
+      x: x + e.clientX - this.lastMouseX,
+      y: y + e.clientY - this.lastMouseY,
+    })
+    this.lastMouseX = e.clientX
+    this.lastMouseY = e.clientY
+  }
+
+  handleFrameMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { x, y } = this.state
+    this.setState({
+      x: x + x + e.clientX - this.lastMouseX,
+      y: y + y + e.clientY - this.lastMouseY,
+    })
+    this.lastMouseX = e.clientX + x
+    this.lastMouseY = e.clientY + y
+  }
+
+  render () {
     const { selection, config, isPinned, isMouseOnBowl } = this.props
 
-    const { x, y, height, isNewSelection } = this.state
+    const { x, y, height, isNewSelection, isDragging } = this.state
 
     const { direct, ctrl, icon, double } = config.mode
     const shouldShow = (
@@ -189,13 +232,16 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     }
 
     return ReactDOM.createPortal(
-      <>
+      <div
+        onMouseMove={isDragging ? this.handleFrameMouseMove : undefined}
+        onMouseUp={isDragging ? this.handleDragEnd : undefined}
+      >
         {shouldShow
           ? <DictPanel
               {...this.props}
               shouldShow={shouldShow}
               updateItemHeight={this.updateItemHeight}
-              updateDragArea={updateDragArea}
+              handleDragStart={this.handleDragStart}
               frameDidMount={this.frameDidMount}
               frameWillUnmount={this.frameWillUnmount}
             />
@@ -208,9 +254,9 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
             width: this.props.config.panelWidth,
             opacity: shouldShow ? 1 : 0
           }}
-          immediate={!shouldShow}
+          immediate={!shouldShow || isDragging}
         >{this.animateFrame}</Spring>
-      </>,
+      </div>,
       this.el,
     )
   }

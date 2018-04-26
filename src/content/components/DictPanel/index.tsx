@@ -37,7 +37,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
     const {
       isFav,
       isPinned,
-      updateDragArea,
+      handleDragStart,
       searchText,
       addToNotebook,
       removeFromNotebook,
@@ -66,7 +66,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
         {React.createElement(MenuBar, {
           isFav,
           isPinned,
-          updateDragArea,
+          handleDragStart,
           searchText,
           addToNotebook,
           removeFromNotebook,

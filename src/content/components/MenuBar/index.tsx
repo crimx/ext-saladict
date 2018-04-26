@@ -6,7 +6,7 @@ import { TranslationFunction } from 'i18next'
 import { MsgType, MsgOpenUrl } from '@/typings/message'
 
 export interface MenuBarDispatchers {
-  readonly updateDragArea: ({ left, width }: { left: number, width: number }) => any
+  readonly handleDragStart: (e: MouseEvent<HTMLDivElement>) => any
   readonly searchText: ({ info }: { info: string }) => any
   readonly addToNotebook: () => any
   readonly removeFromNotebook: () => any
@@ -41,13 +41,6 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
       self: true,
     }
     message.send(msg)
-  }
-
-  updateDragArea = () => {
-    const el = this.dragAreaRef.current
-    if (el) {
-      this.props.updateDragArea({ left: el.offsetLeft, width: el.offsetWidth })
-    }
   }
 
   handleSearchBoxInput = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -110,7 +103,6 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
           ref={this.inputRef}
           onInput={this.handleSearchBoxInput}
           onKeyUp={this.handleSearchBoxKeyUp}
-          onTransitionEnd={this.updateDragArea}
         />
 
         <svg
@@ -122,7 +114,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
           <path d='M51.704 51.273L36.844 35.82c3.79-3.8 6.14-9.04 6.14-14.82 0-11.58-9.42-21-21-21s-21 9.42-21 21 9.42 21 21 21c5.082 0 9.747-1.817 13.383-4.832l14.895 15.49c.196.206.458.308.72.308.25 0 .5-.093.694-.28.398-.382.41-1.015.028-1.413zM21.984 40c-10.478 0-19-8.523-19-19s8.522-19 19-19 19 8.523 19 19-8.525 19-19 19z'/>
         </svg>
 
-        <div className='panel-MenuBar_DragArea' />
+        <div className='panel-MenuBar_DragArea' onMouseDown={this.props.handleDragStart} />
 
         <svg
           className='panel-MenuBar_IconSettings'

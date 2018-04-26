@@ -10,6 +10,9 @@
 
 .panel-MenuBar_DragArea {
   flex: 1.5;
+  align-self: stretch;
+  cursor: move;
+  user-select: none;
 }
 
 .panel-MenuBar_SearchBox {
