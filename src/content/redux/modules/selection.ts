@@ -41,7 +41,7 @@ export default function reducer (state = initState, action): SelectionState {
 type Action = { type: Actions, payload?: any }
 
 /** When new selection is made */
-export function newSelection (selection): Action {
+export function newSelection (selection: MsgSelection): Action {
   return { type: Actions.NEW_SELECTION, payload: selection }
 }
 
@@ -55,6 +55,20 @@ type Dispatcher = (
 
 export function listenSelection (): Dispatcher {
   return dispatch => {
-    message.self.addListener(MsgType.Selection, message => dispatch(newSelection(message)))
+    message.self.addListener<MsgSelection>(
+      MsgType.Selection,
+      message => dispatch(newSelection(message)),
+    )
   }
+}
+
+export function sendEmptySelection (): Dispatcher {
+  return dispatch => dispatch(newSelection({
+    type: MsgType.Selection,
+    selectionInfo: getDefaultSelectionInfo(),
+    mouseX: 0,
+    mouseY: 0,
+    dbClick: false,
+    ctrlKey: false,
+  }))
 }

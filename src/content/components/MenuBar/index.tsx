@@ -43,6 +43,12 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     message.send(msg)
   }
 
+  closePanel = () => {
+    const { closePanel, isPinned, pinPanel } = this.props
+    closePanel()
+    if (isPinned) { pinPanel() }
+  }
+
   handleSearchBoxInput = (e: KeyboardEvent<HTMLInputElement>) => {
     this.text = e.currentTarget.value
   }
@@ -166,7 +172,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
         <svg
           className='panel-MenuBar_IconClose'
           width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 31.112 31.112'
-          onClick={closePanel}
+          onClick={this.closePanel}
         >
           <title>{t('tipClosePanel')}</title>
           <path d='M31.112 1.414L29.698 0 15.556 14.142 1.414 0 0 1.414l14.142 14.142L0 29.698l1.414 1.414L15.556 16.97l14.142 14.142 1.414-1.414L16.97 15.556'/>

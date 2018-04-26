@@ -175,21 +175,23 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   handleDragStart = (e: React.MouseEvent<HTMLDivElement>) => {
     // prevent mousedown dragging
     e.preventDefault()
+    e.stopPropagation()
     // e is from iframe, so there is offset
     this.lastMouseX = e.clientX + this.state.x
     this.lastMouseY = e.clientY + this.state.y
     this.setState({ isDragging: true })
-    window.addEventListener('mousemove', this.handleWindowMouseMove)
-    window.addEventListener('mouseup', this.handleDragEnd)
+    window.addEventListener('mousemove', this.handleWindowMouseMove, { capture: true })
+    window.addEventListener('mouseup', this.handleDragEnd, { capture: true })
   }
 
   handleDragEnd = () => {
     this.setState({ isDragging: false })
-    window.removeEventListener('mousemove', this.handleWindowMouseMove)
-    window.removeEventListener('mouseup', this.handleDragEnd)
+    window.removeEventListener('mousemove', this.handleWindowMouseMove, { capture: true })
+    window.removeEventListener('mouseup', this.handleDragEnd, { capture: true })
   }
 
   handleWindowMouseMove = (e: MouseEvent) => {
+    e.stopPropagation()
     const { x, y } = this.state
     this.setState({
       x: x + e.clientX - this.lastMouseX,
@@ -200,6 +202,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   }
 
   handleFrameMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation()
     const { x, y } = this.state
     this.setState({
       x: x + x + e.clientX - this.lastMouseX,
@@ -207,6 +210,12 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     })
     this.lastMouseX = e.clientX + x
     this.lastMouseY = e.clientY + y
+  }
+
+  handleFrameKeyUp = ({ key }: React.KeyboardEvent<HTMLDivElement>) => {
+    if (key === 'Escape') {
+      this.props.closePanel()
+    }
   }
 
   render () {
@@ -233,8 +242,9 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
     return ReactDOM.createPortal(
       <div
-        onMouseMove={isDragging ? this.handleFrameMouseMove : undefined}
-        onMouseUp={isDragging ? this.handleDragEnd : undefined}
+        onMouseMoveCapture={isDragging ? this.handleFrameMouseMove : undefined}
+        onMouseUpCapture={isDragging ? this.handleDragEnd : undefined}
+        onKeyUp={this.handleFrameKeyUp}
       >
         {shouldShow
           ? <DictPanel
