@@ -3,7 +3,7 @@ import React, { KeyboardEvent, MouseEvent } from 'react'
 import { translate } from 'react-i18next'
 import { message } from '@/_helpers/browser-api'
 import { TranslationFunction } from 'i18next'
-import { MsgType, MsgOpenUrl } from '@/typings/message'
+import { MsgType, MsgOpenUrl, MsgSelection } from '@/typings/message'
 
 export interface MenuBarDispatchers {
   readonly handleDragStart: (e: MouseEvent<HTMLDivElement>) => any
@@ -18,12 +18,39 @@ export interface MenuBarDispatchers {
 export interface MenuBarProps extends MenuBarDispatchers {
   readonly isFav: boolean
   readonly isPinned: boolean
+  readonly selection: MsgSelection
 }
 
-export class MenuBar extends React.PureComponent<MenuBarProps & { t: TranslationFunction }> {
+type MenuBarState = {
+  // same as props
+  propsSelection: MsgSelection | null
+
+  text: string
+}
+
+export class MenuBar extends React.PureComponent<MenuBarProps & { t: TranslationFunction }, MenuBarState> {
   inputRef = React.createRef<HTMLInputElement>()
   dragAreaRef = React.createRef<HTMLDivElement>()
-  text = ''
+
+  state = {
+    propsSelection: null,
+
+    text: ''
+  }
+
+  static getDerivedStateFromProps (
+    nextProps: MenuBarProps,
+    prevState: MenuBarState
+  ): Partial<MenuBarState> | null {
+    // only overwrite text when new selection is made
+    const nextSelection = nextProps.selection
+    return prevState.propsSelection === nextSelection
+      ? null
+      : {
+        propsSelection: nextSelection,
+        text: nextSelection.selectionInfo.text || prevState.text,
+      }
+  }
 
   openSettings () {
     const msg: MsgOpenUrl = {
@@ -49,19 +76,19 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     if (isPinned) { pinPanel() }
   }
 
-  handleSearchBoxInput = (e: KeyboardEvent<HTMLInputElement>) => {
-    this.text = e.currentTarget.value
+  handleSearchBoxInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.setState({ text: e.currentTarget.value })
   }
 
   handleSearchBoxKeyUp = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (this.text && e.key === 'Enter') {
-      this.props.searchText({ info: this.text })
+    if (this.state.text && e.key === 'Enter') {
+      this.props.searchText({ info: this.state.text })
     }
   }
 
   handleIconSearchClick = (e: MouseEvent<SVGElement>) => {
-    if (this.text) {
-      this.props.searchText({ info: this.text })
+    if (this.state.text) {
+      this.props.searchText({ info: this.state.text })
     }
   }
 
@@ -87,8 +114,10 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
   }
 
   componentDidMount () {
-    if (this.inputRef.current) {
-      this.inputRef.current.focus()
+    const input = this.inputRef.current
+    if (input) {
+      input.focus()
+      input.select()
     }
   }
 
@@ -107,8 +136,9 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
         <input type='text'
           className='panel-MenuBar_SearchBox'
           ref={this.inputRef}
-          onInput={this.handleSearchBoxInput}
+          onChange={this.handleSearchBoxInput}
           onKeyUp={this.handleSearchBoxKeyUp}
+          value={this.state.text}
         />
 
         <svg

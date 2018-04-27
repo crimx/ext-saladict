@@ -3,6 +3,7 @@ import React from 'react'
 import { DictionariesState } from '../../redux/modules/dictionaries'
 import { AppConfig, DictID } from '@/app-config'
 import { SelectionInfo } from '@/_helpers/selection'
+import { MsgSelection } from '@/typings/message'
 import PortalFrame from '@/components/PortalFrame'
 
 import MenuBar, { MenuBarDispatchers } from '../MenuBar'
@@ -17,6 +18,7 @@ export interface DictPanelProps extends DictPanelDispatchers {
   readonly isPinned: boolean
   readonly dictsInfo: DictionariesState['dicts']
   readonly config: AppConfig
+  readonly selection: MsgSelection
 
   readonly frameDidMount: (frame: HTMLIFrameElement) => any
   readonly frameWillUnmount: () => any
@@ -44,6 +46,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
       shareImg,
       pinPanel,
       closePanel,
+      selection,
 
       dictsInfo,
       config,
@@ -66,6 +69,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
         {React.createElement(MenuBar, {
           isFav,
           isPinned,
+          selection,
           handleDragStart,
           searchText,
           addToNotebook,

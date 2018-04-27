@@ -5,7 +5,7 @@ import { Spring, config as springConfig, SpringConfig } from 'react-spring'
 import DictPanel, { DictPanelDispatchers, DictPanelProps } from '../DictPanel'
 import { WidgetState } from '../../redux/modules/widget'
 import { SelectionInfo } from '@/_helpers/selection'
-import { SelectionState } from '@/content/redux/modules/selection'
+import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
 import { DictID } from '@/app-config'
 
@@ -22,13 +22,13 @@ export interface DictPanelPortalProps extends DictPanelPortalDispatchers {
   readonly isMouseOnBowl: boolean
   readonly dictsInfo: DictPanelProps['dictsInfo']
   readonly config: DictPanelProps['config']
-  readonly selection: SelectionState
+  readonly selection: MsgSelection
 }
 
 type DictPanelState= {
   /** hack to reduce the overhead ceremony introduced by gDSFP */
   readonly mutableArea: {
-    propsSelection: SelectionState | null
+    propsSelection: MsgSelection | null
     dictHeights: { [k in DictID]?: number }
   }
 
