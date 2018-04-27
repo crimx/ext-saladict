@@ -31,7 +31,6 @@ export const enum SearchStatus {
 type DictState = {
   readonly searchStatus: SearchStatus
   readonly searchResult: any
-  readonly height: number
 }
 
 export type DictionariesState = {
@@ -72,31 +71,30 @@ export default function reducer (state = initState, action): DictionariesState {
           }, {})
         }
     }
-    case Actions.UPDATE_HEIGHT: {
-      const { id, height }: { id: DictID, height: number } = action.payload
-      return height === state[id].height
-        ? state
-        : {
-          ...state,
-          dicts: {
-            ...state.dicts,
-            [id]: { ...state[id], height }
-          }
-        }
-    }
     case Actions.SEARCH_START: {
-      const { id, info }: { id?: DictID, info: SelectionInfo } = action.payload
+      const toOnhold: Set<string> = new Set(action.payload.toOnhold)
+      const toStart: Set<string> = new Set(action.payload.toStart)
       return {
         ...state,
-        lastSearchInfo: info,
+        lastSearchInfo: action.payload.info,
         dicts: mapValues<typeof state.dicts, DictState>(
           state.dicts,
           (dictInfo, dictID) => {
-            return (
-              !id || dictID === id
-                ? { ...dictInfo, searchStatus: SearchStatus.Searching, searchResult: null }
-                : dictInfo
-            ) as DictState
+            if (toStart.has(dictID)) {
+              return {
+                ...dictInfo,
+                searchStatus: SearchStatus.Searching,
+                searchResult: null,
+              }
+            } else if (toOnhold.has(dictID)) {
+              return {
+                ...dictInfo,
+                searchStatus: SearchStatus.OnHold,
+                searchResult: null,
+              }
+            }
+
+            return dictInfo as DictState
           }
         ),
       }
@@ -124,12 +122,10 @@ export default function reducer (state = initState, action): DictionariesState {
 
 type Action = { type: Actions, payload?: any }
 
-export function newItemHeight (payload: { id: DictID, height: number }): Action {
-  return ({ type: Actions.UPDATE_HEIGHT, payload })
-}
-
 /** Search all selected dicts if id is not provided */
-export function searchStart (payload: { id?: DictID, info: SelectionInfo }): Action {
+export function searchStart (
+  payload: {toOnhold: DictID[], toStart: DictID[], info: SelectionInfo }
+): Action {
   return ({ type: Actions.SEARCH_START, payload })
 }
 
@@ -159,13 +155,31 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo | string }
         : arg.info || state.dictionaries.lastSearchInfo
       : state.dictionaries.lastSearchInfo
 
-    const id = arg && arg.id
+    const requestID = arg && arg.id
 
-    dispatch(searchStart({ id, info }))
+    // search one dict
+    if (requestID) {
+      dispatch(searchStart({ toStart: [requestID], toOnhold: [], info }))
+      doSearch(requestID)
+      return
+    }
 
-    const dicts = id ? [id] : state.config.dicts.selected
+    // search all, except the onholded
+    const { selected: selectedDicts, all: allDicts } = state.config.dicts
+    const toStart: DictID[] = []
+    const toOnhold: DictID[] = []
+    selectedDicts.forEach(id => {
+      if (allDicts[id].defaultUnfold) {
+        toStart.push(id)
+      } else {
+        toOnhold.push(id)
+      }
+    })
 
-    dicts.forEach(id => {
+    dispatch(searchStart({ toStart, toOnhold, info }))
+    toStart.forEach(doSearch)
+
+    function doSearch (id: DictID) {
       const msg: MsgFetchDictResult = {
         type: MsgType.FetchDictResult,
         id,
@@ -178,6 +192,6 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo | string }
         .catch(() => {
           dispatch(searchEnd({ id, info , result: null }))
         })
-    })
+    }
   }
 }

@@ -24,7 +24,8 @@ export interface DictItemProps extends DictItemDispatchers {
 }
 
 export type DictItemState = {
-  readonly copySearchStatus: SearchStatus | null
+  readonly propsSearchStatus: SearchStatus | null
+  readonly propsSearchResult: any
   readonly offsetHeight: number
   readonly visibleHeight: number
   readonly isUnfold: boolean
@@ -36,7 +37,9 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
   initStyle = { height: 10, opacity: 0 }
 
   state = {
-    copySearchStatus: null,
+    /** same as pros */
+    propsSearchStatus: null,
+    propsSearchResult: null,
     /** real height of the body */
     offsetHeight: 10,
     /** final height, takes unfold and mask into account */
@@ -48,26 +51,38 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     nextProps: DictItemProps,
     prevState: DictItemState,
   ): Partial<DictItemState> | null {
-    if (prevState.copySearchStatus === nextProps.searchStatus) {
+    const {
+      propsSearchResult: lastResult,
+      propsSearchStatus: lastStatus,
+    } = prevState
+    const {
+      searchResult: nextResult,
+      searchStatus: nextStatus,
+    } = nextProps
+
+    if (lastResult === nextResult && lastStatus === nextStatus) {
       return null
     }
 
-    switch (nextProps.searchStatus) {
+    switch (nextStatus) {
+      case SearchStatus.OnHold:
       case SearchStatus.Searching:
         return {
-          copySearchStatus: nextProps.searchStatus,
+          propsSearchStatus: nextStatus,
+          propsSearchResult: nextResult,
           isUnfold: false,
           offsetHeight: 0,
           visibleHeight: 10,
         }
       case SearchStatus.Finished:
         return {
-          copySearchStatus: nextProps.searchStatus,
+          propsSearchStatus: nextStatus,
+          propsSearchResult: nextResult,
           isUnfold: true,
         }
     }
 
-    return { copySearchStatus: nextProps.searchStatus }
+    return { propsSearchStatus: nextStatus, propsSearchResult: nextResult }
   }
 
   blurAfterClick (e) {
