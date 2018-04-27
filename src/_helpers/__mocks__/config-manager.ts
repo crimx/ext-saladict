@@ -1,6 +1,6 @@
 import { AppConfig, appConfigFactory } from '@/app-config'
 import { StorageListenerCb, StorageChange } from '@/_helpers/browser-api'
-import { map, filter, tap } from 'rxjs/operators'
+import { map } from 'rxjs/operators'
 import { Observable, fromEventPattern, of, concat } from 'rxjs'
 const listeners = new Set()
 

@@ -1,4 +1,4 @@
-import { storage, openURL, StorageListenerCb, StorageUpdate } from '@/_helpers/browser-api'
+import { storage, openURL, StorageUpdate } from '@/_helpers/browser-api'
 import { AppConfig } from '@/app-config'
 
 import { Observable } from 'rxjs'
