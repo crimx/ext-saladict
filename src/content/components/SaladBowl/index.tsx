@@ -26,7 +26,7 @@ export default class SaladBowl extends React.PureComponent<SaladBowlProps> {
     this.mouseOnBowlTimeout = setTimeout(() => {
       this.props.mouseOnBowl(true)
       this.props.searchText()
-    }, 800)
+    }, 500)
   }
 
   handleMouseLeave = () => {
