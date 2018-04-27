@@ -139,19 +139,19 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
       <header className='panel-MenuBar'>
         <button className='panel-MenuBar_Btn' onClick={this.blurAfterClick}>
           <svg
-            className='panel-MenuBar_IconBack'
-            width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 477.175 477.175'
+            className='panel-MenuBar_Icon'
+            width='30' height='30' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'
           >
-            <path d='M145.188 238.575l215.5-215.5c5.3-5.3 5.3-13.8 0-19.1s-13.8-5.3-19.1 0l-225.1 225.1c-5.3 5.3-5.3 13.8 0 19.1l225.1 225c2.6 2.6 6.1 4 9.5 4s6.9-1.3 9.5-4c5.3-5.3 5.3-13.8 0-19.1l-215.4-215.5z'/>
+          <path d='M 5.191 15.999 L 19.643 1.548 C 19.998 1.192 19.998 0.622 19.643 0.267 C 19.288 -0.089 18.718 -0.089 18.362 0.267 L 3.267 15.362 C 2.911 15.718 2.911 16.288 3.267 16.643 L 18.362 31.732 C 18.537 31.906 18.771 32 18.999 32 C 19.227 32 19.462 31.913 19.636 31.732 C 19.992 31.377 19.992 30.807 19.636 30.451 L 5.191 15.999 Z' />
           </svg>
         </button>
 
         <button className='panel-MenuBar_Btn' onClick={this.blurAfterClick}>
           <svg
-            className='panel-MenuBar_IconNext'
-            width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 477.175 477.175'
+            className='panel-MenuBar_Icon'
+            width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'
           >
-            <path d='M360.731 229.075l-225.1-225.1c-5.3-5.3-13.8-5.3-19.1 0s-5.3 13.8 0 19.1l215.5 215.5-215.5 215.5c-5.3 5.3-5.3 13.8 0 19.1 2.6 2.6 6.1 4 9.5 4 3.4 0 6.9-1.3 9.5-4l225.1-225.1c5.3-5.2 5.3-13.8.1-19z'/>
+            <path d='M 26.643 15.362 L 11.547 0.267 C 11.192 -0.089 10.622 -0.089 10.267 0.267 C 9.911 0.622 9.911 1.192 10.267 1.547 L 24.718 15.999 L 10.267 30.451 C 9.911 30.806 9.911 31.376 10.267 31.732 C 10.441 31.906 10.676 32 10.904 32 C 11.132 32 11.366 31.913 11.541 31.732 L 26.636 16.636 C 26.992 16.288 26.992 15.711 26.643 15.362 Z'/>
           </svg>
         </button>
 
@@ -165,7 +165,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
         <button className='panel-MenuBar_Btn' onClick={this.blurAfterClick}>
           <svg
-            className='panel-MenuBar_IconSearch'
+            className='panel-MenuBar_Icon'
             width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 52.966 52.966'
             onClick={this.handleIconSearchClick}
           >
@@ -178,7 +178,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
         <button className='panel-MenuBar_Btn' onClick={this.blurAfterClick}>
           <svg
-            className='panel-MenuBar_IconSettings'
+            className='panel-MenuBar_Icon'
             width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 612 612'
             onClick={this.openSettings}
           >
@@ -189,7 +189,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
         <button className='panel-MenuBar_Btn' onClick={this.blurAfterClick}>
           <svg
-            className={`panel-MenuBar_IconFav ${isFav ? 'isActive' : ''}`}
+            className={`panel-MenuBar_Icon-fav ${isFav ? 'isActive' : ''}`}
             width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'
             onClick={this.handleIconFavClick}
           >
@@ -200,7 +200,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
         <button className='panel-MenuBar_Btn' onClick={this.blurAfterClick}>
           <svg
-            className='panel-MenuBar_IconHistory'
+            className='panel-MenuBar_Icon-history'
             width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'
             onClick={this.openHistory}
           >
@@ -212,7 +212,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
         <button className='panel-MenuBar_Btn' onClick={this.blurAfterClick}>
           <svg
-            className='panel-MenuBar_IconShare'
+            className='panel-MenuBar_Icon'
             width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 58.999 58.999'
             onClick={shareImg}
           >
@@ -224,7 +224,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
         <button className='panel-MenuBar_Btn' onClick={this.blurAfterClick}>
           <svg
-            className={`panel-MenuBar_IconPin ${isPinned ? 'isActive' : ''}`}
+            className={`panel-MenuBar_Icon-pin ${isPinned ? 'isActive' : ''}`}
             width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 53.011 53.011'
             onClick={pinPanel}
           >
@@ -235,7 +235,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
         <button className='panel-MenuBar_Btn' onClick={this.blurAfterClick}>
           <svg
-            className='panel-MenuBar_IconClose'
+            className='panel-MenuBar_Icon-close'
             width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 31.112 31.112'
             onClick={this.closePanel}
           >
