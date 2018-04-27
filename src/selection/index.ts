@@ -130,7 +130,7 @@ function sendMessage (
       ctrlKey: isCtrlPressed,
     }
 
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.NODE_ENV === 'development') {
       console.log('New selection', msg)
     }
 
@@ -168,7 +168,7 @@ function sendEmptyMessage () {
     ctrlKey: false,
   }
 
-  if (process.env.NODE_ENV !== 'production') {
+  if (process.env.NODE_ENV === 'development') {
     console.log('New selection', msg)
   }
 
