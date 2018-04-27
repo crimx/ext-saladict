@@ -153,7 +153,6 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       fontSize,
       searchStatus,
       searchResult,
-      updateItemHeight,
     } = this.props
 
     const {

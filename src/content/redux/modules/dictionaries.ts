@@ -37,7 +37,7 @@ export type DictionariesState = {
   readonly dicts: {
     readonly [k in DictID]?: DictState
   }
-  readonly lastSearchInfo: SelectionInfo
+  readonly searchHistory: SelectionInfo[]
 }
 
 const initState: DictionariesState = {
@@ -50,7 +50,7 @@ const initState: DictionariesState = {
       }
       return state
     }, {}),
-  lastSearchInfo: getDefaultSelectionInfo()
+  searchHistory: [],
 }
 
 export default function reducer (state = initState, action): DictionariesState {
@@ -74,9 +74,11 @@ export default function reducer (state = initState, action): DictionariesState {
     case Actions.SEARCH_START: {
       const toOnhold: Set<string> = new Set(action.payload.toOnhold)
       const toStart: Set<string> = new Set(action.payload.toStart)
+      const info = action.payload.info
+      const history = state.searchHistory
       return {
         ...state,
-        lastSearchInfo: action.payload.info,
+        searchHistory: info === history[0] ? history : [info, ...history].slice(0, 20),
         dicts: mapValues<typeof state.dicts, DictState>(
           state.dicts,
           (dictInfo, dictID) => {
@@ -101,7 +103,7 @@ export default function reducer (state = initState, action): DictionariesState {
     }
     case Actions.SEARCH_END: {
       const { id, info, result }: { id: DictID, info: SelectionInfo, result: any } = action.payload
-      return isSameSelection(info, state.lastSearchInfo)
+      return isSameSelection(info, state.searchHistory[0])
         ? {
           ...state,
           dicts: {
@@ -152,8 +154,8 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo | string }
     const info = arg
       ? typeof arg.info === 'string'
         ? getDefaultSelectionInfo({ text: arg.info })
-        : arg.info || state.dictionaries.lastSearchInfo
-      : state.dictionaries.lastSearchInfo
+        : arg.info || state.dictionaries.searchHistory[0]
+      : state.dictionaries.searchHistory[0]
 
     const requestID = arg && arg.id
 

@@ -18,7 +18,7 @@ export interface DictPanelProps extends DictPanelDispatchers {
   readonly isMouseOnBowl: boolean
   readonly isFav: boolean
   readonly isPinned: boolean
-  readonly dictsInfo: DictionariesState['dicts']
+  readonly dictionaries: DictionariesState
   readonly config: AppConfig
   readonly selection: MsgSelection
 
@@ -83,12 +83,13 @@ export default class DictPanel extends React.Component<DictPanelProps> {
       closePanel,
       selection,
 
-      dictsInfo,
+      dictionaries,
       config,
       updateItemHeight,
     } = this.props
 
     const allDictsConfig = config.dicts.all
+    const dictsInfo = dictionaries.dicts
 
     // wrap iframe into DictPanel so that react
     // can release memory correctly after removed from DOM
@@ -105,6 +106,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
           isFav,
           isPinned,
           selection,
+          searchHistory: dictionaries.searchHistory,
           handleDragStart,
           searchText,
           addToNotebook,
@@ -116,7 +118,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
         <div className='panel-DictContainer'>
           {config.dicts.selected.map(id => React.createElement(DictItem, {
             key: id,
-            id: id as DictID,
+            id,
             dictURL: allDictsConfig[id].page,
             fontSize: config.fontSize,
             preferredHeight: allDictsConfig[id].preferredHeight,

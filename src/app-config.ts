@@ -345,7 +345,7 @@ export function appConfigFactory (): AppConfig {
 
     active: true,
 
-    panelWidth: 400,
+    panelWidth: 450,
 
     panelMaxHeightRatio: 0.8,
 

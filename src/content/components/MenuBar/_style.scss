@@ -17,6 +17,7 @@
   user-select: none;
   transition: background 0.2s;
 
+  &:focus,
   &:hover {
     outline: none;
     background: rgba(0, 0, 0, 0.05);
@@ -24,7 +25,7 @@
 
   &:disabled {
     svg {
-      fill: #80d0bf;
+      fill: #9accc1;
     }
 
     &:hover {
@@ -32,6 +33,12 @@
       background: transparent;
     }
   }
+}
+
+.panel-MenuBar_Btn-dir {
+  @extend .panel-MenuBar_Btn;
+  width: 22px;
+  padding: 4px;
 }
 
 .panel-MenuBar_DragArea {
@@ -56,31 +63,19 @@
   }
 }
 
-%panel-MenuBar_Icon {
+.panel-MenuBar_Icon {
   width: 100%;
   height: 100%;
   fill: #fff;
 }
 
-.panel-MenuBar_IconBack {
-  @extend %panel-MenuBar_Icon;
-}
-
-.panel-MenuBar_IconNext {
-  @extend %panel-MenuBar_Icon;
-}
-
-.panel-MenuBar_IconSearch {
-  @extend %panel-MenuBar_Icon;
-}
-
-.panel-MenuBar_IconHistory {
-  @extend %panel-MenuBar_Icon;
+.panel-MenuBar_Icon-history {
+  @extend .panel-MenuBar_Icon;
   fill-opacity: 0.8;
 }
 
-.panel-MenuBar_IconFav {
-  @extend %panel-MenuBar_Icon;
+.panel-MenuBar_Icon-fav {
+  @extend .panel-MenuBar_Icon;
   fill: none;
   stroke: #fff;
   stroke-width: 2;
@@ -91,16 +86,8 @@
   }
 }
 
-.panel-MenuBar_IconSettings {
-  @extend %panel-MenuBar_Icon;
-}
-
-.panel-MenuBar_IconShare {
-  @extend %panel-MenuBar_Icon;
-}
-
-.panel-MenuBar_IconPin {
-  @extend %panel-MenuBar_Icon;
+.panel-MenuBar_Icon-pin {
+  @extend .panel-MenuBar_Icon;
   transition: transform 400ms;
 
   &.isActive {
@@ -108,8 +95,8 @@
   }
 }
 
-.panel-MenuBar_IconClose {
-  @extend %panel-MenuBar_Icon;
+.panel-MenuBar_Icon-close {
+  @extend .panel-MenuBar_Icon;
 
   &:hover {
     animation: panel-MenuBar_Spin 400ms linear infinite;

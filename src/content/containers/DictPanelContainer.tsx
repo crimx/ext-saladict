@@ -1,5 +1,5 @@
 import { connect } from 'react-redux'
-import DictPanelPortal, { DictPanelPortalProps, DictPanelPortalDispatchers } from '../components/DictPanelPortal'
+import DictPanelPortal, { DictPanelPortalDispatchers } from '../components/DictPanelPortal'
 import { StoreState } from '../redux/modules'
 import { searchText } from '../redux/modules/dictionaries'
 import { sendEmptySelection } from '../redux/modules/selection'
@@ -17,7 +17,7 @@ export const mapStateToProps = ({
     isFav: widget.isFav,
     isPinned: widget.isPinned,
     isMouseOnBowl: widget.isMouseOnBowl,
-    dictsInfo: dictionaries.dicts,
+    dictionaries: dictionaries,
   }
 }
 

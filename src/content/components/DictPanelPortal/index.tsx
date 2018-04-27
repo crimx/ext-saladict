@@ -1,10 +1,8 @@
 import './_style.scss'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Spring, config as springConfig, SpringConfig } from 'react-spring'
+import { Spring } from 'react-spring'
 import DictPanel, { DictPanelDispatchers, DictPanelProps } from '../DictPanel'
-import { WidgetState } from '../../redux/modules/widget'
-import { SelectionInfo } from '@/_helpers/selection'
 import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
 import { DictID } from '@/app-config'
@@ -20,7 +18,7 @@ export interface DictPanelPortalProps extends DictPanelPortalDispatchers {
   readonly isFav: boolean
   readonly isPinned: boolean
   readonly isMouseOnBowl: boolean
-  readonly dictsInfo: DictPanelProps['dictsInfo']
+  readonly dictionaries: DictPanelProps['dictionaries']
   readonly config: DictPanelProps['config']
   readonly selection: MsgSelection
 }
@@ -235,7 +233,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
     const { x, y, height, isNewSelection, isDragging } = this.state
 
-    const { direct, ctrl, icon, double } = config.mode
+    const { direct, ctrl, double } = config.mode
     this.shouldShow = Boolean(
       (this.isMount && !isNewSelection) ||
       isPinned ||

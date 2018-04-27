@@ -84,14 +84,14 @@ type Dispatcher = (
 
 export function addToNotebook (): Dispatcher {
   return (dispatch, getState) => {
-    return recordManager.addToNotebook(getState().dictionaries.lastSearchInfo)
+    return recordManager.addToNotebook(getState().dictionaries.searchHistory[0])
       .then(() => dispatch(favWord(true)))
   }
 }
 
 export function removeFromNotebook (): Dispatcher {
   return (dispatch, getState) => {
-    return recordManager.removeFromNotebook(getState().dictionaries.lastSearchInfo)
+    return recordManager.removeFromNotebook(getState().dictionaries.searchHistory[0])
       .then(() => dispatch(favWord(false)))
   }
 }
@@ -99,7 +99,7 @@ export function removeFromNotebook (): Dispatcher {
 /** Fire when panel is loaded */
 export function updateFaveInfo (): Dispatcher {
   return (dispatch, getState) => {
-    return recordManager.isInNotebook(getState().dictionaries.lastSearchInfo)
+    return recordManager.isInNotebook(getState().dictionaries.searchHistory[0])
       .then(flag => dispatch(favWord(flag)))
   }
 }
