@@ -3,9 +3,35 @@
   align-items: center;
   position: relative;
   height: 30px;
-  padding-left: 6px;
   font-size: 14px;
   background-color: rgb(92, 175, 158);
+}
+
+.panel-MenuBar_Btn {
+  width: 30px;
+  height: 30px;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.2s;
+
+  &:hover {
+    outline: none;
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  &:disabled {
+    svg {
+      fill: #80d0bf;
+    }
+
+    &:hover {
+      cursor: unset;
+      background: transparent;
+    }
+  }
 }
 
 .panel-MenuBar_DragArea {
@@ -31,12 +57,17 @@
 }
 
 %panel-MenuBar_Icon {
-  width: 30px;
-  height: 30px;
-  padding: 8px;
+  width: 100%;
+  height: 100%;
   fill: #fff;
-  cursor: pointer;
-  user-select: none;
+}
+
+.panel-MenuBar_IconBack {
+  @extend %panel-MenuBar_Icon;
+}
+
+.panel-MenuBar_IconNext {
+  @extend %panel-MenuBar_Icon;
 }
 
 .panel-MenuBar_IconSearch {
