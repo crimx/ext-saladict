@@ -20,13 +20,17 @@ export type SaladBowlProps = {
 export default class SaladBowl extends React.PureComponent<SaladBowlProps> {
   readonly bowlRef = React.createRef<HTMLDivElement>()
   initStyle = { x: 0, y: 0, scale: 0 }
+  mouseOnBowlTimeout: any
 
   handleMouseEnter = () => {
-    this.props.mouseOnBowl(true)
-    this.props.searchText()
+    this.mouseOnBowlTimeout = setTimeout(() => {
+      this.props.mouseOnBowl(true)
+      this.props.searchText()
+    }, 800)
   }
 
   handleMouseLeave = () => {
+    clearTimeout(this.mouseOnBowlTimeout)
     this.props.mouseOnBowl(false)
   }
 
