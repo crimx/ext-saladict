@@ -58,6 +58,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
           copySearchStatus: nextProps.searchStatus,
           isUnfold: false,
           offsetHeight: 0,
+          visibleHeight: 10,
         }
       case SearchStatus.Finished:
         return {
