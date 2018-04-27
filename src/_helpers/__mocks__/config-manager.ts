@@ -1,6 +1,6 @@
 import { AppConfig, appConfigFactory } from '@/app-config'
 import { StorageListenerCb, StorageChange } from '@/_helpers/browser-api'
-import { map } from 'rxjs/operators'
+import { map, filter, tap } from 'rxjs/operators'
 import { Observable, fromEventPattern, of, concat } from 'rxjs'
 const listeners = new Set()
 
@@ -23,13 +23,15 @@ export const removeAppConfigListener = jest.fn((cb: StorageListenerCb) => {
 /**
  * Get AppConfig and create a stream listening config changing
  */
-export const createAppConfigStream = jest.fn((): Observable<StorageChange<AppConfig>> => {
-  return concat<StorageChange<AppConfig>>(
-    of({ newValue: appConfigFactory() }),
+export const createAppConfigStream = jest.fn((): Observable<AppConfig> => {
+  return concat<AppConfig>(
+    of(appConfigFactory()),
     fromEventPattern<AppConfigChanged>(
       handler => addAppConfigListener(handler),
       handler => removeAppConfigListener(handler),
-    ).pipe(map(x => x.config))
+    ).pipe(
+      map(args => args[0].config.newValue)
+    )
   )
 })
 

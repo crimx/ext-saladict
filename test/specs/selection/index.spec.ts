@@ -49,10 +49,12 @@ describe('Message Selection', () => {
 
     setTimeout(() => {
       expect(message.self.send).toHaveBeenCalledTimes(1)
-      expect(message.self.send).toBeCalledWith({
-        type: MsgType.Selection,
-        selectionInfo: expect.objectContaining({ text: '' }),
-      })
+      expect(message.self.send).toBeCalledWith(
+        expect.objectContaining({
+          type: MsgType.Selection,
+          selectionInfo: expect.objectContaining({ text: '' }),
+        })
+      )
       done()
     }, 0)
   })
@@ -71,10 +73,12 @@ describe('Message Selection', () => {
 
     setTimeout(() => {
       expect(message.self.send).toHaveBeenCalledTimes(1)
-      expect(message.self.send).toBeCalledWith({
-        type: MsgType.Selection,
-        selectionInfo: expect.objectContaining({ text: '' }),
-      })
+      expect(message.self.send).toBeCalledWith(
+        expect.objectContaining({
+          type: MsgType.Selection,
+          selectionInfo: expect.objectContaining({ text: '' }),
+        })
+      )
       done()
     }, 0)
   })
@@ -95,10 +99,12 @@ describe('Message Selection', () => {
 
     setTimeout(() => {
       expect(message.self.send).toHaveBeenCalledTimes(1)
-      expect(message.self.send).toBeCalledWith({
-        type: MsgType.Selection,
-        selectionInfo: expect.objectContaining({ text: '' }),
-      })
+      expect(message.self.send).toBeCalledWith(
+        expect.objectContaining({
+          type: MsgType.Selection,
+          selectionInfo: expect.objectContaining({ text: '' }),
+        })
+      )
       done()
     }, 0)
   })

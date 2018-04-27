@@ -1,13 +1,55 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component/content/SaladBowl should render correctly 1`] = `
-<Motion
-  style={
-    Object {
-      "scale": 1,
-      "x": 0,
-      "y": 0,
+<div
+  className="saladict-SaladBowl"
+  key="saladict-SaladBowl"
+  onMouseEnter={[Function]}
+  onMouseLeave={[Function]}
+>
+  <Spring
+    config={
+      Object {
+        "friction": 26,
+        "tension": 170,
+      }
     }
-  }
-/>
+    from={
+      Object {
+        "scale": 0,
+        "x": 0,
+        "y": 0,
+      }
+    }
+    hold={false}
+    immediate={false}
+    impl={[Function]}
+    inject={[Function]}
+    native={false}
+    reset={false}
+    to={
+      Object {
+        "scale": 1,
+        "x": 0,
+        "y": 0,
+      }
+    }
+  />
+  <img
+    className="saladict-SaladBowl_Leaf"
+    src="leaf.svg"
+  />
+  <img
+    className="saladict-SaladBowl_Orange"
+    src="orange.svg"
+  />
+  <img
+    className="saladict-SaladBowl_Tomato"
+    src="tomato.svg"
+  />
+  <img
+    className="saladict-SaladBowl_Bowl"
+    src="bowl.svg"
+  />
+</div>
 `;

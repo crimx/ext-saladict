@@ -8,7 +8,6 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
     className="panel-MenuBar_SearchBox"
     onInput={[Function]}
     onKeyUp={[Function]}
-    onTransitionEnd={[Function]}
     type="text"
   />
   <svg
@@ -136,7 +135,6 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
     className="panel-MenuBar_SearchBox"
     onInput={[Function]}
     onKeyUp={[Function]}
-    onTransitionEnd={[Function]}
     type="text"
   />
   <svg

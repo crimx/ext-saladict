@@ -266,7 +266,7 @@ function _storageCreateStream (area: string) {
       handler => obj.addListener(key, handler as StorageListenerCb),
       handler => obj.removeListener(key, handler as StorageListenerCb),
     ).pipe(
-      map(change => change[key])
+      map(args => Array.isArray(args) ? args[0][key] : args[key])
     )
   }
 }
@@ -383,33 +383,19 @@ function _messageRemoveListener (self: boolean) {
 function _messageCreateStream (self: boolean) {
   return jest.fn(messageCreateStream)
 
-  function messageCreateStream<T> (selector?: (...args) => T): Observable<T>
-  function messageCreateStream<T> (messageType: Message['type'], selector?: (...args) => T): Observable<T>
-  function messageCreateStream (...args) {
-    let messageType: Message['type'] = MsgType.Null
-    let selector = x => x
-
-    if (typeof args[0] === 'function') {
-      selector = args[0]
-    } else {
-      messageType = args[0]
-      selector = args[1]
-    }
-
+  function messageCreateStream<T> (messageType = MsgType.Null): Observable<T> {
     const obj = _.get(message, self ? 'self' : '')
-    if (messageType !== MsgType.Null) {
-      return fromEventPattern(
+    const pattern$ = messageType !== MsgType.Null
+      ? fromEventPattern(
         handler => obj.addListener(messageType, handler as onMessageEvent),
         handler => obj.removeListener(messageType, handler as onMessageEvent),
-        selector,
       )
-    } else {
-      return fromEventPattern(
+      : fromEventPattern(
         handler => obj.addListener(handler as onMessageEvent),
         handler => obj.removeListener(handler as onMessageEvent),
-        selector,
       )
-    }
+
+    return pattern$.pipe(map(args => Array.isArray(args) ? args[0] : args))
   }
 }
 

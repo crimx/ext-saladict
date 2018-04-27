@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { shallow } from 'enzyme'
 import SaladBowlPortal from '@/content/components/SaladBowlPortal'
+import noop from 'lodash/noop'
 
 jest.mock('react-dom')
 const createPortal = ReactDOM.createPortal as jest.Mock<typeof ReactDOM.createPortal>
@@ -17,6 +18,10 @@ describe('Component/content/SaladBowlPortal', () => {
       shouldShow: true,
       mouseX: 0,
       mouseY: 0,
+      isMount: true,
+      isAppear: false,
+      mouseOnBowl: noop,
+      searchText: noop,
     }
     const portalBowl = shallow(<SaladBowlPortal {...props} />)
 
@@ -25,7 +30,7 @@ describe('Component/content/SaladBowlPortal', () => {
     const bowlProps = createPortal.mock.calls[0][0].props
     expect(bowlProps.x).toBeGreaterThan(0)
     expect(bowlProps.y).toBeGreaterThan(0)
-    expect(bowlProps.scale.val).toBe(1)
+    expect(bowlProps.scale).toBe(1)
   })
 
   it('should always within viewport', () => {
@@ -33,6 +38,10 @@ describe('Component/content/SaladBowlPortal', () => {
       shouldShow: true,
       mouseX: 0,
       mouseY: 0,
+      isMount: true,
+      isAppear: false,
+      mouseOnBowl: noop,
+      searchText: noop,
     }
     const portalBowl = shallow(<SaladBowlPortal {...props} />)
 
@@ -44,10 +53,10 @@ describe('Component/content/SaladBowlPortal', () => {
 
     for (let i = 1; i < 4; i++) {
       const bowlProps = createPortal.mock.calls[i][0].props
-      expect(bowlProps.x.val).toBeGreaterThan(0)
-      expect(bowlProps.x.val).toBeLessThan(window.innerWidth)
-      expect(bowlProps.y.val).toBeGreaterThan(0)
-      expect(bowlProps.y.val).toBeLessThan(window.innerHeight)
+      expect(bowlProps.x).toBeGreaterThan(0)
+      expect(bowlProps.x).toBeLessThan(window.innerWidth)
+      expect(bowlProps.y).toBeGreaterThan(0)
+      expect(bowlProps.y).toBeLessThan(window.innerHeight)
       expect(bowlProps.scale).toBe(1)
     }
   })
