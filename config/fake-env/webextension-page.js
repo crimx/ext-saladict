@@ -30,7 +30,8 @@ window.browser = {
     create () { return Promise.resolve() },
   },
   i18n: {
-    getMessage (k) { return locales[k] && locales[k].message.zh_CN }
+    getMessage (k) { return locales[k] && locales[k].message.zh_CN },
+    getUILanguage () { return 'zh_CN' },
   },
   notifications: {
     create: _.partial(console.log, 'create notifications:'),
@@ -68,7 +69,7 @@ window.browser = {
   },
   runtime: {
     id: 'mdidnbkkjainbfbcenphabdajogedcnx',
-    getURL (name) { return 'x' },
+    getURL (name) { return name },
     getManifest () {
       return _.assign(
         {},
@@ -127,7 +128,7 @@ function sendMessage (extensionId, message) {
       if (isClosed) { return reject(new Error('Attempt to response a closed channel')) }
       try {
         // deep clone & check data
-        response = JSON.parse(JSON.stringify(response))
+        response = response && JSON.parse(JSON.stringify(response))
       } catch (err) {
         return reject(new TypeError('Response data not serializable'))
       }
@@ -156,7 +157,7 @@ function sendMessage (extensionId, message) {
  * For both sync and local
  */
 function genStorageApis () {
-  const storageData = {
+  window['storageData'] = {
     local: {},
     sync: {},
     listeners: [],
@@ -232,7 +233,7 @@ function genStorageApis () {
             }
             return x
           }, {})
-        if (changes.length > 0) {
+        if (Object.keys(changes).length > 0) {
           setTimeout(() => alertListeners(changes, area), 0)
         }
         storageData[area] = newData
