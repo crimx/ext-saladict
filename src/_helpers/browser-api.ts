@@ -264,7 +264,7 @@ function storageCreateStream (this: StorageThisThree, key: string) {
     handler => this.addListener(key, handler as StorageListenerCb),
     handler => this.removeListener(key, handler as StorageListenerCb),
   ).pipe(
-    map(change => change[key])
+    map(args => Array.isArray(args) ? args[0][key] : args[key])
   )
 }
 
@@ -350,17 +350,17 @@ function messageRemoveListener (this: MessageThis, ...args): void {
 
 function messageCreateStream<T = any> (messageType?: Message['type']): Observable<T>
 function messageCreateStream (this: MessageThis, messageType = MsgType.Null) {
-  if (messageType !== MsgType.Null) {
-    return fromEventPattern(
+  const pattern$ = messageType !== MsgType.Null
+    ? fromEventPattern(
       handler => this.addListener(messageType, handler as onMessageEvent),
       handler => this.removeListener(messageType, handler as onMessageEvent),
     )
-  } else {
-    return fromEventPattern(
+    : fromEventPattern(
       handler => this.addListener(handler as onMessageEvent),
       handler => this.removeListener(handler as onMessageEvent),
     )
-  }
+
+  return pattern$.pipe(map(args => Array.isArray(args) ? args[0] : args))
 }
 
 /**

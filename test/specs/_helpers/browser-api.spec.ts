@@ -570,7 +570,7 @@ describe('Browser API Wapper', () => {
         expect(nextStub).toHaveBeenCalledTimes(1)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(1)
-        expect(nextStub).toBeCalledWith({ type: 1, __pageId__: window.pageId })
+        expect(nextStub.mock.calls[0][0]).toEqual({ type: 1, __pageId__: window.pageId })
       })
     })
   })
