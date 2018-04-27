@@ -8,7 +8,6 @@ interface SaladBowlPortalProps {
   readonly mouseX: number
   readonly mouseY: number
   readonly mouseOnBowl: (flag: boolean) => any
-  readonly searchText: () => any
 }
 
 export default class SaladBowlPortal extends React.Component<SaladBowlPortalProps, any> {
@@ -57,7 +56,7 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
     //     +-------+
     // cursor
     const { springConfigCtrl, springImmediateCtrl } = this
-    const { mouseX, mouseY, mouseOnBowl, searchText, shouldShow } = this.props
+    const { mouseX, mouseY, mouseOnBowl, shouldShow } = this.props
     const x: number = mouseX + 70 > window.innerWidth ? mouseX - 70 : mouseX + 40
     const y: number = mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30
     const scale: number = shouldShow ? 1 : 0
@@ -82,7 +81,6 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
         springImmediateCtrl,
         springConfigCtrl,
         mouseOnBowl,
-        searchText,
       }),
       this.el,
     )

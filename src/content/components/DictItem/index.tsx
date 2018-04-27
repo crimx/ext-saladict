@@ -9,7 +9,7 @@ import { openURL } from '@/_helpers/browser-api'
 import { SearchStatus } from '@/content/redux/modules/dictionaries'
 
 export interface DictItemDispatchers {
-  readonly searchText: () => any
+  readonly searchText: ({ id: DictID }) => any
   readonly updateItemHeight: ({ id, height }: { id: DictID, height: number }) => any
 }
 
@@ -116,7 +116,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
           this.setState({ isUnfold: true })
         }
       } else {
-        this.props.searchText()
+        this.props.searchText({ id: this.props.id })
       }
     }
   }

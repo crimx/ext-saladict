@@ -41,6 +41,8 @@ type DictPanelState= {
 
 export default class DictPanelPortal extends React.Component<DictPanelPortalProps, DictPanelState> {
   isMount = false
+  isAppear = false
+  shouldShow = false
   root = document.body
   el = document.createElement('div')
   frame: HTMLIFrameElement | null = null
@@ -218,13 +220,23 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     }
   }
 
+  springImmediateCtrl = (key: string) => {
+    switch (key) {
+      case 'x':
+      case 'y':
+        return !this.shouldShow || this.state.isDragging || this.isAppear
+      default:
+        return !this.shouldShow || this.state.isDragging
+    }
+  }
+
   render () {
     const { selection, config, isPinned, isMouseOnBowl } = this.props
 
     const { x, y, height, isNewSelection, isDragging } = this.state
 
     const { direct, ctrl, icon, double } = config.mode
-    const shouldShow = (
+    this.shouldShow = Boolean(
       (this.isMount && !isNewSelection) ||
       isPinned ||
       isMouseOnBowl ||
@@ -236,7 +248,9 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       )
     )
 
-    if (shouldShow && !this.isMount) {
+    this.isAppear = false
+    if (this.shouldShow && !this.isMount) {
+      this.isAppear = true
       this.mountEL()
     }
 
@@ -246,10 +260,10 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
         onMouseUpCapture={isDragging ? this.handleDragEnd : undefined}
         onKeyUp={this.handleFrameKeyUp}
       >
-        {shouldShow
+        {this.shouldShow
           ? <DictPanel
               {...this.props}
-              shouldShow={shouldShow}
+              isNewSelection={this.state.isNewSelection}
               updateItemHeight={this.updateItemHeight}
               handleDragStart={this.handleDragStart}
               frameDidMount={this.frameDidMount}
@@ -262,9 +276,9 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
           to={{
             x, y, height,
             width: this.props.config.panelWidth,
-            opacity: shouldShow ? 1 : 0
+            opacity: this.shouldShow ? 1 : 0
           }}
-          immediate={!shouldShow || isDragging}
+          immediate={this.springImmediateCtrl}
         >{this.animateFrame}</Spring>
       </div>,
       this.el,

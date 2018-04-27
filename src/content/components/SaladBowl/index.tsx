@@ -14,7 +14,6 @@ export type SaladBowlProps = {
   readonly springImmediateCtrl: (key: string) => boolean
   readonly springConfigCtrl: (key: string) => SpringConfig
   readonly mouseOnBowl: (flag: boolean) => any
-  readonly searchText: () => any
 }
 
 export default class SaladBowl extends React.PureComponent<SaladBowlProps> {
@@ -25,7 +24,6 @@ export default class SaladBowl extends React.PureComponent<SaladBowlProps> {
   handleMouseEnter = () => {
     this.mouseOnBowlTimeout = setTimeout(() => {
       this.props.mouseOnBowl(true)
-      this.props.searchText()
     }, 500)
   }
 

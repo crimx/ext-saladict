@@ -2,7 +2,6 @@ import { connect } from 'react-redux'
 import SaladBowlPortal from '../components/SaladBowlPortal'
 import { StoreState } from '../redux/modules'
 import { mouseOnBowl } from '../redux/modules/widget'
-import { searchText } from '../redux/modules/dictionaries'
 
 export const mapStateToProps = ({ config, selection, widget }: StoreState) => {
   const { direct, ctrl, icon, double } = config.mode
@@ -26,7 +25,6 @@ export const mapStateToProps = ({ config, selection, widget }: StoreState) => {
 
 export const mapDispatchToProps = {
   mouseOnBowl,
-  searchText,
 }
 
 export default connect(
