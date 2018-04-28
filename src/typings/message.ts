@@ -24,6 +24,8 @@ export const enum MsgType {
   FetchDictResult,
   /** Request background proxy for current selection */
   PreloadSelection,
+  /** Get clipboard content */
+  GetClipboard,
 
   /**
    * Background proxy sends back underlyingly
@@ -44,6 +46,8 @@ export interface MsgSelection {
   readonly mouseY: number
   readonly dbClick: boolean
   readonly ctrlKey: boolean
+  /** force panel to skip reconciling position */
+  readonly force?: boolean
 }
 
 export interface PostMsgSelection {

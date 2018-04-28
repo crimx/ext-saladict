@@ -14,6 +14,7 @@ import { MsgType, MsgFetchDictResult } from '@/typings/message'
 export const enum Actions {
   SEARCH_START = 'dicts/SEARCH_START',
   SEARCH_END = 'dicts/SEARCH_END',
+  RESTORE = 'dicts/RESTORE',
 }
 
 /*-----------------------------------------------*\
@@ -44,7 +45,6 @@ const initState: DictionariesState = {
       state[id] = {
         searchStatus: SearchStatus.OnHold,
         searchResult: null,
-        height: 30,
       }
       return state
     }, {}),
@@ -53,6 +53,20 @@ const initState: DictionariesState = {
 
 export default function reducer (state = initState, action): DictionariesState {
   switch (action.type) {
+    case Actions.RESTORE:
+      return {
+        ...state,
+        dicts: Object.keys(state.dicts).reduce((newDicts, id) => {
+          newDicts[id] =
+            state.dicts[id].searchStatus === SearchStatus.OnHold
+              ? state.dicts[id]
+              : {
+                searchStatus: SearchStatus.OnHold,
+                searchResult: null,
+              }
+          return newDicts
+        }, {})
+      }
     case ConfigActions.NEW_CONFIG: {
       const { selected }: { selected: DictID[] } = action.payload.dicts
       return isEqual(selected, Object.keys(state))
@@ -63,7 +77,6 @@ export default function reducer (state = initState, action): DictionariesState {
             newState[id] = state[id] || {
               searchStatus: SearchStatus.OnHold,
               searchResult: null,
-              height: 10,
             }
             return newState
           }, {})
@@ -121,6 +134,10 @@ export default function reducer (state = initState, action): DictionariesState {
 \*-----------------------------------------------*/
 
 type Action = { type: Actions, payload?: any }
+
+export function restoreDicts (): Action {
+  return ({ type: Actions.RESTORE })
+}
 
 /** Search all selected dicts if id is not provided */
 export function searchStart (

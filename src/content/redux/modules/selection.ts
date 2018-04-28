@@ -23,6 +23,7 @@ const initState: SelectionState = {
   mouseY: 0,
   dbClick: false,
   ctrlKey: false,
+  force: false,
 }
 
 export default function reducer (state = initState, action): SelectionState {

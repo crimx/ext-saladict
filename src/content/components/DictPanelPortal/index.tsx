@@ -66,7 +66,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     if (newSelection !== mutableArea.propsSelection) {
       mutableArea.propsSelection = newSelection
       // only re-calculate position when new selection is made
-      if (newSelection.selectionInfo.text && !nextProps.isPinned) {
+      if (newSelection.force || (newSelection.selectionInfo.text && !nextProps.isPinned)) {
         // restore height
         const panelWidth = nextProps.config.panelWidth
         const panelHeight = 30 + nextProps.config.dicts.selected.length * 30
@@ -82,20 +82,24 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
         //       40px  |                 |                        |
         //     +-------+                 |                        |
         // cursor
-        const { mouseX, mouseY } = newSelection
+        const { mouseX, mouseY, force } = newSelection
         const wWidth = window.innerWidth
         const wHeight = window.innerHeight
 
-        let x = mouseX + panelWidth + 80 <= wWidth
-          ? mouseX + 80
-          : mouseX - panelWidth - 80
-        if (x < 0) { x = 5 } // too left
+        let x = force
+          ? mouseX
+          : mouseX + panelWidth + 80 <= wWidth
+            ? mouseX + 80
+            : mouseX - panelWidth - 80
+        if (x < 0) { x = 10 } // too left
 
-        let y = mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30
+        let y = force
+          ? mouseY
+          : mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30
         if (y + panelHeight >= wHeight) {
           // too down
           // panel's max height is guaranteed to be 80% so it's safe to do this
-          y = wHeight - panelHeight - 5
+          y = wHeight - panelHeight - 10
         }
 
         return { x, y, height: panelHeight }

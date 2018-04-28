@@ -34,7 +34,7 @@ export type DictItemState = {
 export class DictItem extends React.PureComponent<DictItemProps & { t: TranslationFunction }, DictItemState> {
   bodyRef = React.createRef<HTMLElement>()
   prevItemHeight = 30
-  initStyle = { height: 10, opacity: 0 }
+  initStyle = { height: 30, opacity: 0 }
 
   state = {
     /** same as pros */
@@ -139,6 +139,13 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       if (update) { this.setState(update as any) }
     }
 
+    this.props.updateItemHeight({
+      id: this.props.id,
+      height: this.state.visibleHeight + 20,
+    })
+  }
+
+  componentDidMount () {
     this.props.updateItemHeight({
       id: this.props.id,
       height: this.state.visibleHeight + 20,

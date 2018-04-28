@@ -16,6 +16,8 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return fetchDictResult(data as MsgFetchDictResult)
     case MsgType.PreloadSelection:
       return preloadSelection()
+    case MsgType.GetClipboard:
+      return getClipboard()
   }
 })
 
@@ -46,6 +48,11 @@ function fetchDictResult (data: MsgFetchDictResult): Promise<{ result: any, id: 
     return Promise.reject(err)
   }
 
+  if (process.env.NODE_ENV === 'development') {
+    console.log(`search ${data.text}`)
+    search = () => new Promise(resolve => setTimeout(() => resolve({ result: 'yeyeye' }), Math.random() * 5000 + 1000))
+  }
+
   return search(data.text)
     .then(result => ({ result, id: data.id }))
 }
@@ -59,4 +66,17 @@ function preloadSelection (): Promise<void> {
     })
     .then(text => text || '')
     .catch(() => '')
+}
+
+function getClipboard (): Promise<string> {
+  if (process.env.NODE_ENV === 'development') {
+    return Promise.resolve('clipboard content')
+  } else {
+    const el = document.createElement('input')
+    document.body.appendChild(el)
+    el.focus()
+    document.execCommand('paste')
+    el.remove()
+    return Promise.resolve(el.value || '')
+  }
 }
