@@ -1,4 +1,14 @@
 {
+  "tipSearchHistoryBack": {
+    "zh_CN": "上一个查词记录",
+    "zh_TW": "上一個查單字記錄",
+    "en": "Previous search history"
+  },
+  "tipSearchHistoryNext": {
+    "zh_CN": "下一个查词记录",
+    "zh_TW": "下一個查單字記錄",
+    "en": "Next search history"
+  },
   "tipSearchText": {
     "zh_CN": "查单词",
     "zh_TW": "查單字",
