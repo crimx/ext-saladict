@@ -10,14 +10,13 @@ import { DictID } from '@/app-config'
 export type DictPanelPortalDispatchers = Omit<
   DictPanelDispatchers,
   'updateItemHeight' | 'handleDragStart'
-> & {
-  showPanel: (flag: boolean) => any
-}
+>
 
 export interface DictPanelPortalProps extends DictPanelPortalDispatchers {
   readonly isFav: boolean
   readonly isPinned: boolean
-  readonly isMouseOnBowl: boolean
+  readonly isPanelAppear: boolean
+  readonly shouldPanelShow: boolean
   readonly dictionaries: DictPanelProps['dictionaries']
   readonly config: DictPanelProps['config']
   readonly selection: MsgSelection
@@ -31,7 +30,6 @@ type DictPanelState= {
   }
 
   readonly isDragging: boolean
-  readonly isNewSelection: boolean
   readonly x: number
   readonly y: number
   readonly height: number
@@ -39,8 +37,6 @@ type DictPanelState= {
 
 export default class DictPanelPortal extends React.Component<DictPanelPortalProps, DictPanelState> {
   isMount = false
-  isAppear = false
-  shouldShow = false
   root = document.body
   el = document.createElement('div')
   frame: HTMLIFrameElement | null = null
@@ -70,13 +66,10 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     if (newSelection !== mutableArea.propsSelection) {
       mutableArea.propsSelection = newSelection
       // only re-calculate position when new selection is made
-      const newState = { isNewSelection: true }
-
       if (newSelection.selectionInfo.text && !nextProps.isPinned) {
         // restore height
         const panelWidth = nextProps.config.panelWidth
         const panelHeight = 30 + nextProps.config.dicts.selected.length * 30
-        newState['height'] = panelHeight
         mutableArea.dictHeights = {}
 
         // icon position           10px  panel position
@@ -105,14 +98,11 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
           y = wHeight - panelHeight - 5
         }
 
-        newState['x'] = x
-        newState['y'] = y
+        return { x, y, height: panelHeight }
       }
-
-      return newState
     }
 
-    return { isNewSelection: false }
+    return null
   }
 
   frameDidMount = (frame: HTMLIFrameElement) => {
@@ -122,13 +112,11 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   mountEL = () => {
     this.root.appendChild(this.el)
     this.isMount = true
-    this.props.showPanel(true)
   }
 
   unmountEL = () => {
     this.root.removeChild(this.el)
     this.isMount = false
-    this.props.showPanel(false)
   }
 
   frameWillUnmount = () => {
@@ -218,37 +206,19 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     }
   }
 
-  springImmediateCtrl = (key: string) => {
-    switch (key) {
-      case 'x':
-      case 'y':
-        return !this.shouldShow || this.state.isDragging || this.isAppear
-      default:
-        return !this.shouldShow || this.state.isDragging
-    }
-  }
-
   render () {
-    const { selection, config, isPinned, isMouseOnBowl } = this.props
+    const {
+      selection,
+      config,
+      isPinned,
+      shouldPanelShow,
+    } = this.props
 
-    const { x, y, height, isNewSelection, isDragging } = this.state
+    const { x, y, height, isDragging } = this.state
 
     const { direct, ctrl, double } = config.mode
-    this.shouldShow = Boolean(
-      (this.isMount && !isNewSelection) ||
-      isPinned ||
-      isMouseOnBowl ||
-      (selection.selectionInfo.text && (
-          direct ||
-          (double && selection.dbClick) ||
-          (ctrl && selection.ctrlKey)
-        )
-      )
-    )
 
-    this.isAppear = false
-    if (this.shouldShow && !this.isMount) {
-      this.isAppear = true
+    if (shouldPanelShow && !this.isMount) {
       this.mountEL()
     }
 
@@ -258,10 +228,9 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
         onMouseUpCapture={isDragging ? this.handleDragEnd : undefined}
         onKeyUp={this.handleFrameKeyUp}
       >
-        {this.shouldShow
+        {shouldPanelShow
           ? <DictPanel
               {...this.props}
-              isNewSelection={this.state.isNewSelection}
               updateItemHeight={this.updateItemHeight}
               handleDragStart={this.handleDragStart}
               frameDidMount={this.frameDidMount}
@@ -274,9 +243,9 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
           to={{
             x, y, height,
             width: this.props.config.panelWidth,
-            opacity: this.shouldShow ? 1 : 0
+            opacity: shouldPanelShow ? 1 : 0
           }}
-          immediate={this.springImmediateCtrl}
+          immediate={!shouldPanelShow || isDragging}
         >{this.animateFrame}</Spring>
       </div>,
       this.el,

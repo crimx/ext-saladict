@@ -43,7 +43,8 @@ type Dispatcher = (
   dispatch: (action: Action) => any,
 ) => any
 
-export function listenConfig (): Dispatcher {
+/** Listen to config change and update config */
+export function startUpAction (): Dispatcher {
   return dispatch => {
     createAppConfigStream().subscribe(config => dispatch(newConfig(config)))
   }

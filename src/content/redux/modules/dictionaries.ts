@@ -12,8 +12,6 @@ import { MsgType, MsgFetchDictResult } from '@/typings/message'
 \*-----------------------------------------------*/
 
 export const enum Actions {
-  UPDATE_HEIGHT = 'dicts/UPDATE_HEIGHT',
-  UPDATE_RESULT = 'dicts/UPDATE_RESULT',
   SEARCH_START = 'dicts/SEARCH_START',
   SEARCH_END = 'dicts/SEARCH_END',
 }

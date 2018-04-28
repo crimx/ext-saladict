@@ -2,8 +2,9 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from './modules'
 
-import { listenConfig } from './modules/config'
-import { listenSelection } from './modules/selection'
+import { startUpAction as configStartUp } from './modules/config'
+import { startUpAction as selectionStartUp } from './modules/selection'
+import { startUpAction as widgetStartUp } from './modules/widget'
 
 export default () => {
   const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
@@ -13,8 +14,9 @@ export default () => {
     composeEnhancers(applyMiddleware(thunk))
   )
 
-  store.dispatch(listenConfig())
-  store.dispatch(listenSelection())
+  store.dispatch<any>(configStartUp())
+  store.dispatch<any>(selectionStartUp())
+  store.dispatch<any>(widgetStartUp())
 
   return store
 }

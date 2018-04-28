@@ -12,7 +12,7 @@ export interface MenuBarDispatchers {
   readonly addToNotebook: () => any
   readonly removeFromNotebook: () => any
   readonly shareImg: () => any
-  readonly pinPanel: () => any
+  readonly panelPinSwitch: () => any
   readonly closePanel: () => any
 }
 
@@ -59,6 +59,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     }
 
     if (propsSearchHistory !== searchHistory) {
+      // restore history
       result.propsSearchHistory = searchHistory
       result.iSearchHistory = 0
     }
@@ -154,16 +155,16 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
   handleIconPinClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
-    this.props.pinPanel()
+    this.props.panelPinSwitch()
   }
 
   /** close panel, even when pinned */
   handleIconCloseClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
-    const { closePanel, isPinned, pinPanel } = this.props
+    const { closePanel, isPinned, panelPinSwitch } = this.props
     closePanel()
     // remove pin
-    if (isPinned) { pinPanel() }
+    if (isPinned) { panelPinSwitch() }
   }
 
   componentDidMount () {

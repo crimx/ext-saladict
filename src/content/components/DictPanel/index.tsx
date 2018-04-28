@@ -14,8 +14,6 @@ export type DictPanelDispatchers = DictItemDispatchers & MenuBarDispatchers & {
 }
 
 export interface DictPanelProps extends DictPanelDispatchers {
-  readonly isNewSelection: boolean
-  readonly isMouseOnBowl: boolean
   readonly isFav: boolean
   readonly isPinned: boolean
   readonly dictionaries: DictionariesState
@@ -35,41 +33,6 @@ export default class DictPanel extends React.Component<DictPanelProps> {
         .join('\n')
   )
 
-  readyToSearchText () {
-    const { config, selection, isPinned, isMouseOnBowl, searchText } = this.props
-    if (isMouseOnBowl) {
-      searchText({ info: selection.selectionInfo })
-    } else if (isPinned) {
-      if (selection.selectionInfo.text && (
-          config.pinMode.direct ||
-          (config.pinMode.double && selection.dbClick) ||
-          (config.pinMode.ctrl && selection.ctrlKey)
-        )
-      ) {
-        searchText({ info: selection.selectionInfo })
-      }
-    } else {
-      if (selection.selectionInfo.text && (
-          config.mode.direct ||
-          (config.mode.double && selection.dbClick) ||
-          (config.mode.ctrl && selection.ctrlKey)
-        )
-      ) {
-        searchText({ info: selection.selectionInfo })
-      }
-    }
-  }
-
-  componentDidMount () {
-    this.readyToSearchText()
-  }
-
-  componentDidUpdate () {
-    if (this.props.isNewSelection) {
-      this.readyToSearchText()
-    }
-  }
-
   render () {
     const {
       isFav,
@@ -79,7 +42,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
       addToNotebook,
       removeFromNotebook,
       shareImg,
-      pinPanel,
+      panelPinSwitch,
       closePanel,
       selection,
 
@@ -112,7 +75,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
           addToNotebook,
           removeFromNotebook,
           shareImg,
-          pinPanel,
+          panelPinSwitch,
           closePanel,
         })}
         <div className='panel-DictContainer'>

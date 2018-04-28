@@ -45,6 +45,17 @@ export function newSelection (selection: MsgSelection): Action {
   return { type: Actions.NEW_SELECTION, payload: selection }
 }
 
+export function sendEmptySelection (): Action {
+  return { type: Actions.NEW_SELECTION, payload: {
+    type: MsgType.Selection,
+    selectionInfo: getDefaultSelectionInfo(),
+    mouseX: 0,
+    mouseY: 0,
+    dbClick: false,
+    ctrlKey: false,
+  }}
+}
+
 /*-----------------------------------------------*\
     Side Effects
 \*-----------------------------------------------*/
@@ -53,22 +64,12 @@ type Dispatcher = (
   dispatch: (action: Action) => any,
 ) => any
 
-export function listenSelection (): Dispatcher {
+/** Listen to selection change and update selection */
+export function startUpAction (): Dispatcher {
   return dispatch => {
     message.self.addListener<MsgSelection>(
       MsgType.Selection,
       message => dispatch(newSelection(message)),
     )
   }
-}
-
-export function sendEmptySelection (): Dispatcher {
-  return dispatch => dispatch(newSelection({
-    type: MsgType.Selection,
-    selectionInfo: getDefaultSelectionInfo(),
-    mouseX: 0,
-    mouseY: 0,
-    dbClick: false,
-    ctrlKey: false,
-  }))
 }

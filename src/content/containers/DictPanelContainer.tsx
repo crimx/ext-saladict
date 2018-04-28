@@ -2,8 +2,7 @@ import { connect } from 'react-redux'
 import DictPanelPortal, { DictPanelPortalDispatchers } from '../components/DictPanelPortal'
 import { StoreState } from '../redux/modules'
 import { searchText } from '../redux/modules/dictionaries'
-import { sendEmptySelection } from '../redux/modules/selection'
-import { addToNotebook, removeFromNotebook, pinPanel, showPanel } from '../redux/modules/widget'
+import { addToNotebook, removeFromNotebook, panelPinSwitch, closePanel } from '../redux/modules/widget'
 
 export const mapStateToProps = ({
   config,
@@ -16,21 +15,21 @@ export const mapStateToProps = ({
     selection,
     isFav: widget.isFav,
     isPinned: widget.isPinned,
-    isMouseOnBowl: widget.isMouseOnBowl,
+    isPanelAppear: widget.isPanelAppear,
+    shouldPanelShow: widget.shouldPanelShow,
     dictionaries: dictionaries,
   }
 }
 
 export const mapDispatchToProps: { [k in keyof DictPanelPortalDispatchers]: Function } = {
-  showPanel,
   searchText,
 
   addToNotebook,
   removeFromNotebook,
-  pinPanel,
+  panelPinSwitch,
 
   shareImg: () => {/** @todo */},
-  closePanel: sendEmptySelection,
+  closePanel: closePanel,
 }
 
 export default connect(
