@@ -32,7 +32,7 @@ describe('Component/content/DictItem', () => {
       updateItemHeight: _.noop,
       searchText: _.noop
     }
-    expect(mount(<DictItem {...props} />)).toMatchSnapshot()
+    expect(shallow(<DictItem {...props} />)).toMatchSnapshot()
   })
 
   it('should render result correctly', () => {
@@ -49,11 +49,9 @@ describe('Component/content/DictItem', () => {
       searchText: _.noop
     }
     const mounted = mount(<DictItem {...props} />)
-    expect(mounted).toMatchSnapshot()
     expect(mounted.state('isUnfold')).toBe(false)
 
     mounted.setProps({ ...props, searchResult: 'result1', searchStatus: SearchStatus.Finished })
-    expect(mounted).toMatchSnapshot()
     expect(mounted.state('isUnfold')).toBe(true)
     setTimeout(() => {
       expect(mockDict).toHaveBeenCalledWith(expect.objectContaining({ result: 'result1' }))

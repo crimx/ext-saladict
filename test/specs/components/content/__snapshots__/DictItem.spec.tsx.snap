@@ -1,385 +1,70 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Component/content/DictItem should render pending correctly 1`] = `
-<DictItem
-  dictURL="https://google.com"
-  fontSize={14}
-  id="bing"
-  panelWidth={400}
-  preferredHeight={100}
-  searchResult={null}
-  searchStatus={0}
-  searchText={[Function]}
-  t={[Function]}
-  updateItemHeight={[Function]}
+<section
+  className="panel-DictItem"
 >
-  <section
-    className="panel-DictItem"
+  <header
+    className="panel-DictItem_Header"
+    onClick={[Function]}
   >
-    <header
-      className="panel-DictItem_Header"
-      onClick={[Function]}
+    <img
+      alt="dict logo"
+      className="panel-DictItem_Logo"
+      src="favicon.png"
+    />
+    <h1
+      className="panel-DictItem_Title"
     >
-      <img
-        alt="dict logo"
-        className="panel-DictItem_Logo"
-        src="favicon.png"
-      />
-      <h1
-        className="panel-DictItem_Title"
-      >
-        <a
-          href="https://google.com"
-          onClick={[Function]}
-        >
-          dict_bing
-        </a>
-      </h1>
-      <button
-        className="panel-DictItem_FoldArrowBtn"
+      <a
+        href="https://google.com"
         onClick={[Function]}
       >
-        <svg
-          className="panel-DictItem_FoldArrow "
-          height="18"
-          viewBox="0 0 59.414 59.414"
-          width="18"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M43.854 59.414L14.146 29.707 43.854 0l1.414 1.414-28.293 28.293L45.268 58"
-          />
-        </svg>
-      </button>
-    </header>
-    <Spring
-      config={
-        Object {
-          "friction": 26,
-          "tension": 170,
-        }
-      }
-      from={
-        Object {
-          "height": 30,
-          "opacity": 0,
-        }
-      }
-      hold={false}
-      immediate={false}
-      impl={[Function]}
-      inject={[Function]}
-      native={false}
-      reset={false}
-      to={
-        Object {
-          "height": 10,
-          "opacity": 0,
-        }
-      }
-    >
-      <div
-        className="panel-DictItem_Body"
-        key="bing"
-        style={
-          Object {
-            "fontSize": 14,
-            "height": 29.78710447905422,
-          }
-        }
-      >
-        <article
-          style={
-            Object {
-              "opacity": 0,
-            }
-          }
-        >
-          <mockConstructor
-            result={null}
-          />
-          <button
-            className="panel-DictItem_FoldMask "
-            onClick={[Function]}
-          >
-            <svg
-              className="panel-DictItem_FoldMaskArrow"
-              height="15"
-              viewBox="0 0 59.414 59.414"
-              width="15"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56"
-              />
-            </svg>
-          </button>
-        </article>
-      </div>
-    </Spring>
-  </section>
-</DictItem>
-`;
-
-exports[`Component/content/DictItem should render result correctly 1`] = `
-<DictItem
-  dictURL="https://google.com"
-  fontSize={14}
-  id="bing"
-  panelWidth={400}
-  preferredHeight={100}
-  searchResult={null}
-  searchStatus={1}
-  searchText={[Function]}
-  t={[Function]}
-  updateItemHeight={[Function]}
->
-  <section
-    className="panel-DictItem"
-  >
-    <header
-      className="panel-DictItem_Header"
+        dict_bing
+      </a>
+    </h1>
+    <button
+      className="panel-DictItem_FoldArrowBtn"
       onClick={[Function]}
     >
-      <img
-        alt="dict logo"
-        className="panel-DictItem_Logo"
-        src="favicon.png"
-      />
-      <h1
-        className="panel-DictItem_Title"
+      <svg
+        className="panel-DictItem_FoldArrow "
+        height="18"
+        viewBox="0 0 59.414 59.414"
+        width="18"
+        xmlns="http://www.w3.org/2000/svg"
       >
-        <a
-          href="https://google.com"
-          onClick={[Function]}
-        >
-          dict_bing
-        </a>
-      </h1>
-      <div
-        className="panel-DictItem_Loader"
-      >
-        <div
-          className="panel-DictItem_Loader_Ball"
+        <path
+          d="M43.854 59.414L14.146 29.707 43.854 0l1.414 1.414-28.293 28.293L45.268 58"
         />
-        <div
-          className="panel-DictItem_Loader_Ball"
-        />
-        <div
-          className="panel-DictItem_Loader_Ball"
-        />
-        <div
-          className="panel-DictItem_Loader_Ball"
-        />
-        <div
-          className="panel-DictItem_Loader_Ball"
-        />
-      </div>
-      <button
-        className="panel-DictItem_FoldArrowBtn"
-        onClick={[Function]}
-      >
-        <svg
-          className="panel-DictItem_FoldArrow "
-          height="18"
-          viewBox="0 0 59.414 59.414"
-          width="18"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M43.854 59.414L14.146 29.707 43.854 0l1.414 1.414-28.293 28.293L45.268 58"
-          />
-        </svg>
-      </button>
-    </header>
-    <Spring
-      config={
-        Object {
-          "friction": 26,
-          "tension": 170,
-        }
+      </svg>
+    </button>
+  </header>
+  <Spring
+    config={
+      Object {
+        "friction": 26,
+        "tension": 170,
       }
-      from={
-        Object {
-          "height": 30,
-          "opacity": 0,
-        }
+    }
+    from={
+      Object {
+        "height": 30,
+        "opacity": 0,
       }
-      hold={false}
-      immediate={false}
-      impl={[Function]}
-      inject={[Function]}
-      native={false}
-      reset={false}
-      to={
-        Object {
-          "height": 10,
-          "opacity": 0,
-        }
+    }
+    hold={false}
+    immediate={false}
+    impl={[Function]}
+    inject={[Function]}
+    native={false}
+    reset={false}
+    to={
+      Object {
+        "height": 10,
+        "opacity": 0,
       }
-    >
-      <div
-        className="panel-DictItem_Body"
-        key="bing"
-        style={
-          Object {
-            "fontSize": 14,
-            "height": 29.97538155927077,
-          }
-        }
-      >
-        <article
-          style={
-            Object {
-              "opacity": 0,
-            }
-          }
-        >
-          <mockConstructor
-            result={null}
-          />
-          <button
-            className="panel-DictItem_FoldMask "
-            onClick={[Function]}
-          >
-            <svg
-              className="panel-DictItem_FoldMaskArrow"
-              height="15"
-              viewBox="0 0 59.414 59.414"
-              width="15"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56"
-              />
-            </svg>
-          </button>
-        </article>
-      </div>
-    </Spring>
-  </section>
-</DictItem>
-`;
-
-exports[`Component/content/DictItem should render result correctly 2`] = `
-<DictItem
-  dictURL="https://google.com"
-  fontSize={14}
-  id="bing"
-  panelWidth={400}
-  preferredHeight={100}
-  searchResult="result1"
-  searchStatus={2}
-  searchText={[Function]}
-  t={[Function]}
-  updateItemHeight={[Function]}
->
-  <section
-    className="panel-DictItem"
-  >
-    <header
-      className="panel-DictItem_Header"
-      onClick={[Function]}
-    >
-      <img
-        alt="dict logo"
-        className="panel-DictItem_Logo"
-        src="favicon.png"
-      />
-      <h1
-        className="panel-DictItem_Title"
-      >
-        <a
-          href="https://google.com"
-          onClick={[Function]}
-        >
-          dict_bing
-        </a>
-      </h1>
-      <button
-        className="panel-DictItem_FoldArrowBtn"
-        onClick={[Function]}
-      >
-        <svg
-          className="panel-DictItem_FoldArrow isActive"
-          height="18"
-          viewBox="0 0 59.414 59.414"
-          width="18"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M43.854 59.414L14.146 29.707 43.854 0l1.414 1.414-28.293 28.293L45.268 58"
-          />
-        </svg>
-      </button>
-    </header>
-    <Spring
-      config={
-        Object {
-          "friction": 26,
-          "tension": 170,
-        }
-      }
-      from={
-        Object {
-          "height": 30,
-          "opacity": 0,
-        }
-      }
-      hold={false}
-      immediate={false}
-      impl={[Function]}
-      inject={[Function]}
-      native={false}
-      reset={false}
-      to={
-        Object {
-          "height": 10,
-          "opacity": 1,
-        }
-      }
-    >
-      <div
-        className="panel-DictItem_Body"
-        key="bing"
-        style={
-          Object {
-            "fontSize": 14,
-            "height": 29.97538155927077,
-          }
-        }
-      >
-        <article
-          style={
-            Object {
-              "opacity": 0,
-            }
-          }
-        >
-          <mockConstructor
-            result="result1"
-          >
-            rendered
-          </mockConstructor>
-          <button
-            className="panel-DictItem_FoldMask "
-            onClick={[Function]}
-          >
-            <svg
-              className="panel-DictItem_FoldMaskArrow"
-              height="15"
-              viewBox="0 0 59.414 59.414"
-              width="15"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56"
-              />
-            </svg>
-          </button>
-        </article>
-      </div>
-    </Spring>
-  </section>
-</DictItem>
+    }
+  />
+</section>
 `;
