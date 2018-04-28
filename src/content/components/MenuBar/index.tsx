@@ -161,10 +161,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
   /** close panel, even when pinned */
   handleIconCloseClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
-    const { closePanel, isPinned, panelPinSwitch } = this.props
-    closePanel()
-    // remove pin
-    if (isPinned) { panelPinSwitch() }
+    this.props.closePanel()
   }
 
   componentDidMount () {
