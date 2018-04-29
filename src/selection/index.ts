@@ -6,7 +6,7 @@ import * as selection from '@/_helpers/selection'
 import { MsgType, PostMsgType, PostMsgSelection, MsgSelection } from '@/typings/message'
 
 import { Observable, fromEvent, timer, merge, of, asyncScheduler } from 'rxjs'
-import { map, mapTo, scan, filter, take, switchMap, buffer, debounceTime, observeOn, share } from 'rxjs/operators'
+import { map, mapTo, scan, filter, take, switchMap, buffer, debounceTime, observeOn, share, distinctUntilChanged } from 'rxjs/operators'
 
 message.addListener(MsgType.__PreloadSelection__, (data, sender) => {
   return Promise.resolve(selection.getSelectionInfo())
@@ -42,6 +42,8 @@ const isCtrlPressed$: Observable<boolean> = merge(
   mapTo(false)(fromEvent(window, 'keyup', { capture: true })),
   mapTo(false)(fromEvent(window, 'blur', { capture: true })),
   of(false)
+).pipe(
+  distinctUntilChanged()
 )
 
 const validCtrlPressed$$ = isCtrlPressed$.pipe(
