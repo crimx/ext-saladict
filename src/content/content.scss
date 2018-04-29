@@ -4,3 +4,9 @@
 @import '../_sass_global/variables';
 @import '../_sass_global/z-indices';
 @import '../_sass_global/interfaces';
+
+/*-----------------------------------------------*\
+    Components
+\*-----------------------------------------------*/
+@import './components/SaladBowl/style';
+@import './components/DictPanelPortal/style';

@@ -1,4 +1,3 @@
-import './panel.scss'
 import React from 'react'
 import { DictionariesState } from '../../redux/modules/dictionaries'
 import { AppConfig, DictID } from '@/app-config'
@@ -27,7 +26,7 @@ export interface DictPanelProps extends DictPanelDispatchers {
 export default class DictPanel extends React.Component<DictPanelProps> {
   frameHead = '<meta name="viewport" content="width=device-width, initial-scale=1">\n' + (
     process.env.NODE_ENV === 'production'
-      ? `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('content.css')}" />`
+      ? `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('panel.css')}" />`
       : Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
         .map(link => link.outerHTML)
         .join('\n')

@@ -1,4 +1,3 @@
-import './_style.scss'
 import React from 'react'
 import { DictID } from '@/app-config'
 import { translate } from 'react-i18next'

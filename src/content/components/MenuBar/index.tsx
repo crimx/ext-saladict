@@ -1,4 +1,3 @@
-import './_style.scss'
 import React from 'react'
 import { translate } from 'react-i18next'
 import { message } from '@/_helpers/browser-api'

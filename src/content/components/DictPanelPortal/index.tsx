@@ -1,4 +1,3 @@
-import './_style.scss'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Spring } from 'react-spring'
@@ -212,15 +211,10 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
   render () {
     const {
-      selection,
-      config,
-      isPinned,
       shouldPanelShow,
     } = this.props
 
     const { x, y, height, isDragging } = this.state
-
-    const { direct, ctrl, double } = config.mode
 
     if (shouldPanelShow && !this.isMount) {
       this.mountEL()

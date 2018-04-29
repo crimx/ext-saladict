@@ -1,4 +1,3 @@
-import './_style.scss'
 import React from 'react'
 import { Spring, SpringConfig } from 'react-spring'
 
