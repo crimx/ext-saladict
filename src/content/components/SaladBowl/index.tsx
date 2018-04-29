@@ -37,7 +37,7 @@ export default class SaladBowl extends React.PureComponent<SaladBowlProps> {
       const { x, y, scale } = style
       el.style.setProperty(
         'transform',
-        `translate3d(${x}px, ${y}px, 0) scale(${scale})`,
+        `translate(${x}px, ${y}px) scale(${scale})`,
         'important',
       )
     }

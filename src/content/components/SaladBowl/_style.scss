@@ -13,6 +13,7 @@ $leaf-rotate: 30deg;
     width: $bowl-width !important;
     height: $bowl-width !important;
     user-select: none !important;
+    will-change: transform !important;
   }
 
   .saladict-SaladBowl_Leaf {
