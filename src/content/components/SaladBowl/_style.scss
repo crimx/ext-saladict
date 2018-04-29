@@ -24,7 +24,11 @@ $leaf-rotate: 30deg;
     left: 600 * $bowl-width / 1024 !important;
     width: $bowl-width * 729 / 1024 * 0.6 !important;
     height: $bowl-width * 0.6 !important;
-    transform: rotate($leaf-rotate) !important;
+    transform: rotate($leaf-rotate);
+    // In Firefox @keyframes doesn't override !important
+    @media screen and (-webkit-min-device-pixel-ratio:0) {
+      & { transform: rotate($leaf-rotate) !important; }
+    }
   }
 
   .saladict-SaladBowl_Orange {
@@ -45,7 +49,11 @@ $leaf-rotate: 30deg;
     left: -117 * $bowl-width / 1024 !important;
     width: $bowl-width * 0.6 !important;
     height: $bowl-width * 513 / 1024 * 0.6 !important;
-    transform: rotate($tomato-rotate) !important;
+    transform: rotate($tomato-rotate);
+    // In Firefox @keyframes doesn't override !important
+    @media screen and (-webkit-min-device-pixel-ratio:0) {
+      & { transform: rotate($tomato-rotate) !important; }
+    }
   }
 
   .saladict-SaladBowl_Bowl {

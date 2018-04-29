@@ -84,7 +84,7 @@
   backface-visibility: visible !important;
   text-shadow: none !important;
   transition: all 0s ease 0s !important;
-  transform: none !important;
+  transform: none; // In Firefox @keyframes doesn't override !important
   transform-origin: 50% 50% !important;
   transform-style: flat !important;
   word-break: normal !important;
