@@ -433,31 +433,33 @@ describe('Browser API Wapper', () => {
         title: 'title',
       }
 
-      it('From tab', () => {
+      it('From tab', done => {
         message.self.initServer()
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
 
         const sendResponse = jest.fn()
-        browser.runtime.onMessage.dispatch({ type: MsgType.__PageInfo__ }, { tab }, sendResponse)
-        expect(sendResponse).toBeCalledWith(({
-          pageId: tab.id,
-          faviconURL: tab.favIconUrl,
-          pageTitle: tab.title,
-          pageURL: tab.url,
-        }))
+        browser.runtime.onMessage['_listeners'][0]({ type: MsgType.__PageInfo__ }, { tab })
+          .then(response => {
+            expect(response).toEqual(({
+              pageId: tab.id,
+              faviconURL: tab.favIconUrl,
+              pageTitle: tab.title,
+              pageURL: tab.url,
+            }))
+            done()
+          })
       })
 
-      it('From browser action page', () => {
+      it('From browser action page', done => {
         message.self.initServer()
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
 
         const sendResponse = jest.fn()
-        browser.runtime.onMessage.dispatch({ type: MsgType.__PageInfo__ }, {}, sendResponse)
-        expect(sendResponse).toBeCalledWith(
-          expect.objectContaining({
-            pageId: 'popup',
-          })
-        )
+        browser.runtime.onMessage['_listeners'][0]({ type: MsgType.__PageInfo__ }, {}, sendResponse)
+        .then(response => {
+          expect(response).toHaveProperty('pageId', 'popup')
+          done()
+        })
       })
 
       it('Self page message transmission', () => {

@@ -47,7 +47,6 @@ export interface Message {
 type onMessageEvent<T extends Message = Message> = (
   message: T,
   sender: browser.runtime.MessageSender,
-  sendResponse: Function
 ) => Promise<any> | boolean | void
 
 /* --------------------------------------- *\
@@ -307,10 +306,10 @@ function messageAddListener (this: MessageThis, ...args): void {
   let listener = listeners.get(messageType || MsgType.Default)
   if (!listener) {
     listener = (
-      (message, sender, sendResponse) => {
+      (message, sender) => {
         if (message && (this.__self__ ? window.pageId === message.__pageId__ : !message.__pageId__)) {
           if (!messageType || message.type === messageType) {
-            return cb(message, sender, sendResponse)
+            return cb(message, sender)
           }
         }
       }
@@ -390,13 +389,12 @@ function initServer (): void {
   window.pageId = 'background page'
   const selfMsgTester = /^\[\[(.+)\]\]$/
 
-  browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  browser.runtime.onMessage.addListener((message, sender) => {
     if (!message) { return }
 
     switch (message.type) {
       case MsgType.__PageInfo__:
-        sendResponse(_getPageInfo(sender))
-        break
+        return Promise.resolve(_getPageInfo(sender))
       default:
         break
     }

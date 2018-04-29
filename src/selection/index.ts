@@ -8,8 +8,8 @@ import { MsgType, PostMsgType, PostMsgSelection, MsgSelection } from '@/typings/
 import { Observable, fromEvent, timer, merge, of, asyncScheduler } from 'rxjs'
 import { map, mapTo, scan, filter, take, switchMap, buffer, debounceTime, observeOn, share } from 'rxjs/operators'
 
-message.addListener(MsgType.__PreloadSelection__, (data, sender, sendResponse) => {
-  sendResponse(selection.getSelectionInfo())
+message.addListener(MsgType.__PreloadSelection__, (data, sender) => {
+  return Promise.resolve(selection.getSelectionInfo())
 })
 
 /** Pass through message from iframes */
