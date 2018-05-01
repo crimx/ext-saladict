@@ -1,5 +1,6 @@
 import { SelectionInfo } from '@/_helpers/selection'
 import { DictID } from '@/app-config'
+import { Word, Area as DBArea } from '@/background/database'
 
 export const enum MsgType {
   /** Nothing */
@@ -26,6 +27,12 @@ export const enum MsgType {
   PreloadSelection,
   /** Get clipboard content */
   GetClipboard,
+
+  IsInNotebook,
+  SaveWord,
+  DeleteWord,
+  GetWordsByText,
+  GetAllWords,
 
   /**
    * Background proxy sends back underlyingly
@@ -88,4 +95,34 @@ export interface MsgFetchDictResult {
   readonly type: MsgType.FetchDictResult
   readonly id: DictID
   readonly text: string
+}
+
+export interface MsgIsInNotebook {
+  readonly type: MsgType.IsInNotebook
+  readonly info: SelectionInfo
+}
+
+export interface MsgSaveWord {
+  readonly type: MsgType.SaveWord
+  readonly area: DBArea
+  readonly info: SelectionInfo
+}
+
+export interface MsgDeleteWord {
+  readonly type: MsgType.DeleteWord
+  readonly area: DBArea
+  readonly word: Word
+}
+
+export interface MsgGetWordsByText {
+  readonly type: MsgType.GetWordsByText
+  readonly area: DBArea
+  readonly text: string
+}
+
+export interface MsgGetAllWords {
+  readonly type: MsgType.GetAllWords
+  readonly area: DBArea
+  readonly itemsPerPage: number
+  readonly pageNum: number
 }

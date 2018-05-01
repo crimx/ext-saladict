@@ -1,7 +1,18 @@
 import { message, openURL } from '@/_helpers/browser-api'
 import { play } from './audio-manager'
+import { isInNotebook, saveWord, deleteWord, getWordsByText, getAllWords } from './database'
 import { chsToChz } from '@/_helpers/chs-to-chz'
-import { MsgType, MsgOpenUrl, MsgAudioPlay, MsgFetchDictResult } from '@/typings/message'
+import {
+  MsgType,
+  MsgOpenUrl,
+  MsgAudioPlay,
+  MsgFetchDictResult,
+  MsgIsInNotebook,
+  MsgSaveWord,
+  MsgDeleteWord,
+  MsgGetWordsByText,
+  MsgGetAllWords,
+} from '@/typings/message'
 
 message.self.initServer()
 
@@ -18,6 +29,17 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return preloadSelection()
     case MsgType.GetClipboard:
       return getClipboard()
+
+    case MsgType.IsInNotebook:
+      return isInNotebook(data as MsgIsInNotebook)
+    case MsgType.SaveWord:
+      return saveWord(data as MsgSaveWord)
+    case MsgType.DeleteWord:
+      return deleteWord(data as MsgDeleteWord)
+    case MsgType.GetWordsByText:
+      return getWordsByText(data as MsgGetWordsByText)
+    case MsgType.GetAllWords:
+      return getAllWords(data as MsgGetAllWords)
   }
 })
 

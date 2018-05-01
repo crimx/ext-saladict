@@ -9,7 +9,7 @@ browser.runtime.onInstalled.addListener(onInstalled)
 browser.runtime.onStartup.addListener(onStartup)
 browser.notifications.onClicked.addListener(genClickListener('https://github.com/crimx/crx-saladict/wiki'))
 if (browser.notifications.onButtonClicked) {
-  // Firefox don't support
+  // Firefox doesn't support
   browser.notifications.onButtonClicked.addListener(genClickListener('https://github.com/crimx/crx-saladict/releases'))
 }
 
@@ -21,7 +21,7 @@ function onInstalled ({ reason, previousVersion }: { reason: string, previousVer
         // got previous config
         return mergeConfig(config)
       }
-      return Promise.all([storage.local.clear(), storage.sync.clear()])
+      return storage.sync.clear() // local get cleared by database
         .then(() => {
           openURL('https://github.com/crimx/crx-saladict/wiki/Instructions')
           return mergeConfig()
