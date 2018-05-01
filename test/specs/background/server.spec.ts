@@ -3,6 +3,8 @@ import * as browserWrap from '@/_helpers/browser-api'
 import sinon from 'sinon'
 import { MsgType } from '@/typings/message'
 
+jest.mock('@/background/database')
+
 describe('Server', () => {
   const chsToChz = jest.fn()
   const play = jest.fn()
