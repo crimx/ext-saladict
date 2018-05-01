@@ -272,8 +272,8 @@ function storageCreateStream (this: StorageThisThree, key: string) {
 \* --------------------------------------- */
 type MessageThis = typeof message | typeof message.self
 
-function messageSend<T extends Message> (tabId: number, message: T): Promise<any>
-function messageSend<T extends Message> (message: T): Promise<any>
+function messageSend<T extends Message, U = any> (tabId: number, message: T): Promise<U>
+function messageSend<T extends Message, U = any> (message: T): Promise<U>
 function messageSend (...args): Promise<any> {
   if (args.length === 1) {
     return browser.runtime.sendMessage(args[0])
@@ -282,7 +282,7 @@ function messageSend (...args): Promise<any> {
   }
 }
 
-function messageSendSelf<T extends Message> (message: T): Promise<any> {
+function messageSendSelf<T extends Message, U = any> (message: T): Promise<U> {
   if (window.pageId === undefined) {
     return initClient().then(() => messageSendSelf(message))
   }
