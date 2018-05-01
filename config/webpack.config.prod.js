@@ -16,6 +16,7 @@ const argv = require('minimist')(process.argv.slice(2))
 const rxPaths = require('rxjs/_esm2015/path-mapping')
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const JsConfigPathsPlugin = require('jsconfig-paths-webpack-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -292,6 +293,9 @@ module.exports = {
     }),
     // Tailor locales
     new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /^\.\/(en|zh-cn|zh-tw)$/),
+    argv.analyze
+    ? new BundleAnalyzerPlugin()
+    : null,
   ].filter(Boolean),
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

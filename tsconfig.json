@@ -3,7 +3,7 @@
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
     "jsx": "react",
-    "lib": ["es6", "dom", "dom.iterable"],
+    "lib": ["es2017", "dom"],
     "module": "es2015",
     "moduleResolution": "node",
     "noImplicitAny": false,
@@ -11,9 +11,10 @@
     "paths": {
       "@/*": ["src/*"]
     },
+    "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es6",
+    "target": "es2017",
     "typeRoots": ["node_modules/@types", "node_modules/web-ext-types"]
   },
   "include": [
