@@ -12,9 +12,9 @@
   "default_locale": "zh_CN",
 
   "icons": {
-    "16": "assets/icon-16.png",
-    "48": "assets/icon-48.png",
-    "128": "assets/icon-128.png"
+    "16": "static/icon-16.png",
+    "48": "static/icon-48.png",
+    "128": "static/icon-128.png"
   },
 
   "options_page": "options.html",
@@ -43,13 +43,13 @@
     "panel.html",
     "panel.js",
     "panel.css",
-    "assets/*"
+    "static/*"
   ],
 
   "browser_action": {
     "default_icon": {
-      "19": "assets/icon-19.png",
-      "38": "assets/icon-38.png"
+      "19": "static/icon-19.png",
+      "38": "static/icon-38.png"
     },
     "default_popup": "popup.html"
   },
