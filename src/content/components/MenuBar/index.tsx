@@ -8,8 +8,7 @@ import { SelectionInfo } from '@/_helpers/selection'
 export interface MenuBarDispatchers {
   readonly handleDragStart: (e: React.MouseEvent<HTMLDivElement>) => any
   readonly searchText: ({ info }: { info: string }) => any
-  readonly addToNotebook: () => any
-  readonly removeFromNotebook: () => any
+  readonly openWordEditor: () => any
   readonly shareImg: () => any
   readonly panelPinSwitch: () => any
   readonly closePanel: () => any
@@ -118,11 +117,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     e.currentTarget.blur()
     switch (e.button) {
       case 0: // main button
-        if (this.props.isFav) {
-          this.props.removeFromNotebook()
-        } else {
-          this.props.addToNotebook()
-        }
+        this.props.openWordEditor()
         break
       case 2: { // secondary button
         const msg: MsgOpenUrl = {
@@ -247,7 +242,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
             className={`panel-MenuBar_Icon-fav ${isFav ? 'isActive' : ''}`}
             width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'
           >
-            <title>{t('tipAddToNotebook')}</title>
+            <title>{t(isFav ? 'tipOpenNotebook' : 'tipAddToNotebook')}</title>
             <path d='M23.6 2c-3.363 0-6.258 2.736-7.599 5.594-1.342-2.858-4.237-5.594-7.601-5.594-4.637 0-8.4 3.764-8.4 8.401 0 9.433 9.516 11.906 16.001 21.232 6.13-9.268 15.999-12.1 15.999-21.232 0-4.637-3.763-8.401-8.4-8.401z'></path>
           </svg>
         </button>

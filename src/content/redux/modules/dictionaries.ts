@@ -3,9 +3,10 @@ import { DictID, appConfigFactory } from '@/app-config'
 import { Actions as ConfigActions } from './config'
 import isEqual from 'lodash/isEqual'
 import mapValues from 'lodash/mapValues'
-import { StoreState } from './index'
 import { SelectionInfo, getDefaultSelectionInfo, isSameSelection } from '@/_helpers/selection'
 import { MsgType, MsgFetchDictResult } from '@/typings/message'
+import { StoreState } from './index'
+import { isInNotebook } from './widget'
 
 /*-----------------------------------------------*\
     Actions
@@ -167,10 +168,12 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo | string }
   return (dispatch, getState) => {
     const state = getState()
     const info = arg
-      ? typeof arg.info === 'string'
-        ? getDefaultSelectionInfo({ text: arg.info })
-        : arg.info || state.dictionaries.searchHistory[0]
-      : state.dictionaries.searchHistory[0]
+    ? typeof arg.info === 'string'
+      ? getDefaultSelectionInfo({ text: arg.info })
+      : arg.info || state.dictionaries.searchHistory[0]
+    : state.dictionaries.searchHistory[0]
+
+    dispatch(isInNotebook(info) as any)
 
     const requestID = arg && arg.id
 

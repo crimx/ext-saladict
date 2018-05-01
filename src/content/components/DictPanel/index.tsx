@@ -8,6 +8,10 @@ import PortalFrame from '@/components/PortalFrame'
 import MenuBar, { MenuBarDispatchers } from '../MenuBar'
 import DictItem, { DictItemDispatchers } from '../DictItem'
 
+if (process.env.NODE_ENV === 'development') {
+  require('@/panel')
+}
+
 export type DictPanelDispatchers = DictItemDispatchers & MenuBarDispatchers & {
   searchText: (arg?: { id?: DictID, info?: SelectionInfo | string }) => any
 }
@@ -38,8 +42,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
       isPinned,
       handleDragStart,
       searchText,
-      addToNotebook,
-      removeFromNotebook,
+      openWordEditor,
       shareImg,
       panelPinSwitch,
       closePanel,
@@ -71,8 +74,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
           searchHistory: dictionaries.searchHistory,
           handleDragStart,
           searchText,
-          addToNotebook,
-          removeFromNotebook,
+          openWordEditor,
           shareImg,
           panelPinSwitch,
           closePanel,

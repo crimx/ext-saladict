@@ -5,7 +5,7 @@ import { message } from '@/_helpers/browser-api'
 import { MsgSelection, MsgType } from '@/typings/message'
 import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
 import { sendEmptySelection, newSelection } from '@/content/redux/modules/selection'
-import { getDefaultSelectionInfo } from '@/_helpers/selection'
+import { getDefaultSelectionInfo, SelectionInfo } from '@/_helpers/selection'
 
 /*-----------------------------------------------*\
     Actions
@@ -113,6 +113,13 @@ export function startUpAction (): Dispatcher {
   return (dispatch, getState) => {
     listenNewSelection(dispatch, getState)
     listenTripleCtrl(dispatch, getState)
+
+    // close panel on esc
+    window.addEventListener('keyup', e => {
+      if (e.key === 'Escape') {
+        dispatch(closePanel() as any)
+      }
+    }, { capture: true })
   }
 }
 
@@ -139,17 +146,48 @@ export function closePanel (): Dispatcher {
   }
 }
 
-export function addToNotebook (): Dispatcher {
+export function isInNotebook (info: SelectionInfo): Dispatcher {
   return (dispatch, getState) => {
-    return recordManager.addToNotebook(getState().dictionaries.searchHistory[0])
-      .then(() => dispatch(favWord(true)))
+    return recordManager.isInNotebook(info)
+      .then(isInNotebook => dispatch(favWord(isInNotebook)))
+      .catch(err => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error(err)
+        }
+        dispatch(favWord(false))
+      })
   }
 }
 
-export function removeFromNotebook (): Dispatcher {
+export function openWordEditor (): Dispatcher {
   return (dispatch, getState) => {
-    return recordManager.removeFromNotebook(getState().dictionaries.searchHistory[0])
+    /** @todo */
+  }
+}
+
+export function addToNotebook (info: SelectionInfo): Dispatcher {
+  return (dispatch, getState) => {
+    return recordManager.saveWord('notebook', info)
+      .then(() => dispatch(favWord(true)))
+      .catch(err => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error(err)
+        }
+        dispatch(favWord(false))
+      })
+  }
+}
+
+export function removeFromNotebook (word: recordManager.Word): Dispatcher {
+  return (dispatch, getState) => {
+    return recordManager.deleteWord('notebook', word)
       .then(() => dispatch(favWord(false)))
+      .catch(err => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error(err)
+        }
+        dispatch(favWord(false))
+      })
   }
 }
 
@@ -178,7 +216,6 @@ function listenNewSelection (
     const { selectionInfo, dbClick, ctrlKey } = message
     const {
       isPinned,
-      isFav,
       shouldPanelShow: lastShouldPanelShow,
       isPanelAppear: lastIsPanelAppear,
       shouldBowlShow: lastShouldBowlShow,
@@ -253,8 +290,6 @@ function listenTripleCtrl (
 ) {
   message.self.addListener(MsgType.TripleCtrl, () => {
     const state = getState()
-    const winWidth = window.innerWidth
-    const winHeight = window.innerHeight
 
     const {
       panelWidth,
