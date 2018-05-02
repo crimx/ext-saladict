@@ -88,8 +88,8 @@ module.exports = {
   // This means they will be the "root" imports that are included in JS bundle.
   // The first two entry points enable "hot" CSS and auto-refreshes for JS.
   entry: {
+    env: require.resolve('./fake-env/webextension-page.js'),
     page: [
-      require.resolve('./fake-env/webextension-page.js'),
       require.resolve('./fake-env/fake-ajax.js'),
       // Include an alternative client for WebpackDevServer. A client's job is to
       // connect to WebpackDevServer by a socket and get notified about changes.
@@ -271,6 +271,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       inject: true,
       template: path.join(entryPage.dirPath, entryPage.indexHTML),
+      chunks: ['env', 'background', 'page'],
+      chunksSortMode: 'manual',
     }),
     // Add module names to factory functions so they appear in browser profiler.
     new webpack.NamedModulesPlugin(),
@@ -291,9 +293,8 @@ module.exports = {
     // Tailor locales
     new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /^\.\/(en|zh-cn|zh-tw)$/),
     new WrapperPlugin({
-      test: /background\.js$/,
-      header: ';(function () {\n' + fackBgEnv + '\n',
-      footer: '\n})();'
+      test: /webextension-page\.js$/,
+      footer: ';(function () {\n' + fackBgEnv + '\n})();'
     })
   ],
   // Some libraries import Node modules but don't use them in the browser.
