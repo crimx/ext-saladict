@@ -105,7 +105,7 @@ export interface MsgIsInNotebook {
 export interface MsgSaveWord {
   readonly type: MsgType.SaveWord
   readonly area: DBArea
-  readonly info: SelectionInfo
+  readonly info: SelectionInfo & { readonly date?: number }
 }
 
 export interface MsgDeleteWord {

@@ -63,7 +63,7 @@ export function isInNotebook ({ info }: MsgIsInNotebook) {
 export function saveWord ({ area, info }: MsgSaveWord) {
   return db[area].put({
     ...info,
-    date: Date.now()
+    date: info.date || Date.now()
   })
 }
 
