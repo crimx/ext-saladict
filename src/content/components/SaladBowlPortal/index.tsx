@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { config as springConfig, SpringConfig } from 'react-spring'
-import SaladBowl from './SaladBowl'
+import SaladBowl from '../SaladBowl'
 
 interface SaladBowlPortalProps {
   readonly shouldShow: boolean
