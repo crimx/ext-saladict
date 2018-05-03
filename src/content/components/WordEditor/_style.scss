@@ -70,9 +70,7 @@ textarea {
     Components
 \*-----------------------------------------------*/
 .wordEditor-Container {
-  width: 85vw;
-  min-width: 600px;
-  max-width: 1000px;
+  width: 800px;
   border-radius: 6px;
   background: #fff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
@@ -115,7 +113,7 @@ textarea {
 }
 
 .wordEditor-Note {
-  flex: 2;
+  flex: 1;
   padding: 15px;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -125,20 +123,6 @@ textarea {
   height: 16px;
   margin-left: 5px;
   vertical-align: text-bottom;
-}
-
-.wordEditor-DictPanel {
-  flex: 1;
-  padding: 15px;
-  overflow-x: hidden;
-  overflow-y: scroll;
-}
-
-.wordEditor-WordCards {
-  flex: 1;
-  padding: 15px;
-  overflow-x: hidden;
-  overflow-y: scroll;
 }
 
 .wordEditor-Footer {
@@ -215,3 +199,5 @@ textarea {
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
   }
 }
+
+@import '../WordCards/style'

@@ -3,46 +3,57 @@ import { translate } from 'react-i18next'
 import { TranslationFunction } from 'i18next'
 import { SelectionInfo } from '@/_helpers/selection'
 import { Word } from '@/background/database'
+import WordCards from '../WordCards'
 
 export interface WordEditorDispatchers {
   saveToNotebook: (info: SelectionInfo) => void
   getWordsByText: (text: string) => Promise<Word[]>
+  closeDictPanel: () => void
   closeModal: () => void
 }
 
 export interface WordEditorProps extends WordEditorDispatchers {
+  dictPanelWidth: number
   info: SelectionInfo
 }
 
 interface WordEditorState {
-  words: Array<SelectionInfo & { readonly date?: number }>
-  untaintedWords: Array<SelectionInfo & { readonly date?: number }>
-  index: number
-  isFoundOnNotebook: boolean
+  info: SelectionInfo
+  relatedWords: Word[]
+  width: number
+  leftOffset: number
 }
 
 export class WordEditor extends React.PureComponent<WordEditorProps & { t: TranslationFunction }, WordEditorState> {
   constructor (props: WordEditorProps & { t: TranslationFunction }) {
     super(props)
+
+    const winWidth = window.innerWidth
+    const width = Math.min(800, Math.max(600, winWidth - props.dictPanelWidth - 100))
+    const preferredLeft = props.dictPanelWidth + 60
+    const currentLeft = (winWidth - width) / 2
+    let leftOffset = preferredLeft - currentLeft
+    if (preferredLeft + width / 2 >= winWidth) {
+      // not enough space, close dict panel and mvoe to the left
+      leftOffset = 10 - currentLeft
+      this.props.closeDictPanel()
+    }
+
     this.state = {
-      words: [props.info],
-      untaintedWords: [props.info],
-      index: 0,
-      isFoundOnNotebook: false
+      info: props.info,
+      relatedWords: [],
+      width,
+      leftOffset,
     }
   }
 
   mapValueToState = ({ currentTarget }) => {
-    const name = currentTarget.name
-    const newWOrds = [...this.state.words]
-    const i = this.state.index
-    newWOrds[i] = { ...newWOrds[i], [name]: currentTarget.value }
-    this.setState({ words: newWOrds })
+    this.setState({ info: { ...this.state.info, [currentTarget.name]: currentTarget.value } })
   }
 
   saveToNotebook = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
-    this.state.words.forEach(this.props.saveToNotebook)
+    this.props.saveToNotebook(this.state.info)
   }
 
   closeModal = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -51,19 +62,18 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
   }
 
   getRelatedWords = () => {
-    const curWord = this.state.words[this.state.index]
-    this.props.getWordsByText(curWord.text)
+    const text = this.state.info.text
+    if (!text) { return }
+    this.props.getWordsByText(text)
       .then(words => {
-        const i = words.findIndex(word =>
-          word.text === curWord.text && word.context === curWord.context
-        )
-        if (i >= 0) {
-          /** @todo */
+        if (words.length > 0) {
+          this.setState({ relatedWords: words })
         }
-        this.setState({
-          isFoundOnNotebook: i >= 0,
-        })
       })
+  }
+
+  componentDidMount () {
+    this.getRelatedWords()
   }
 
   render () {
@@ -73,10 +83,15 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
       closeModal,
     } = this.props
 
-    const info = this.state.words[this.state.index]
+    const {
+      info,
+      relatedWords,
+      width,
+      leftOffset,
+    } = this.state
 
     return (
-      <div className='wordEditor-Container'>
+      <div className='wordEditor-Container' style={{ width, transform: `translateX(${leftOffset}px)` }}>
         <header className='wordEditor-Header'>
           <h1 className='wordEditor-Title'>{t('wordEditorTitle')}</h1>
           <button type='button'
@@ -85,9 +100,6 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
           >×</button>
         </header>
         <div className='wordEditor-Main'>
-          <aside className='wordEditor-DictPanel'>
-
-          </aside>
           <form className='wordEditor-Note'>
             <label htmlFor='wordEditor-Note_Word'>{t('wordEditorNoteWord')}</label>
             <input type='text'
@@ -148,11 +160,7 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
               onChange={this.mapValueToState}
             />
           </form>
-          {this.state.words.length > 1 &&
-            <aside className='wordEditor-WordCards'>
-
-            </aside>
-          }
+          {relatedWords.length > 0 && <WordCards words={relatedWords} /> }
         </div>
         <footer className='wordEditor-Footer'>
           <button type='button'
