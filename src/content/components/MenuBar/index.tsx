@@ -279,9 +279,9 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
           </svg>
         </button>
 
-        <button className='panel-MenuBar_Btn' onClick={this.handleIconCloseClick}>
+        <button className='panel-MenuBar_Btn-close' onClick={this.handleIconCloseClick}>
           <svg
-            className='panel-MenuBar_Icon-close'
+            className='panel-MenuBar_Icon'
             width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 31.112 31.112'
           >
             <title>{t('tipClosePanel')}</title>

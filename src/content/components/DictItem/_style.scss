@@ -76,6 +76,8 @@
   border: none;
   margin: 0 0 0 auto;
   padding: 0;
+  cursor: pointer;
+  user-select: none;
 
   &:hover {
     outline: none;
@@ -88,8 +90,6 @@
   height: 18px;
   padding: 3px;
   transition: transform 400ms;
-  cursor: pointer;
-  user-select: none;
 
   &.isActive {
     transform: rotate(-90deg);
@@ -153,4 +153,3 @@
    90% { transform: translateX( 80px); opacity: 1; }
   100% { transform: translateX(110px); opacity: 0; }
 }
-

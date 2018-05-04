@@ -8,10 +8,6 @@ import PortalFrame from '@/components/PortalFrame'
 import MenuBar, { MenuBarDispatchers } from '../MenuBar'
 import DictItem, { DictItemDispatchers } from '../DictItem'
 
-if (process.env.NODE_ENV === 'development') {
-  require('@/panel')
-}
-
 export type DictPanelDispatchers = DictItemDispatchers & MenuBarDispatchers & {
   searchText: (arg?: { id?: DictID, info?: SelectionInfo | string }) => any
 }
@@ -31,9 +27,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
   frameHead = '<meta name="viewport" content="width=device-width, initial-scale=1">\n' + (
     process.env.NODE_ENV === 'production'
       ? `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('panel.css')}" />`
-      : Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
-        .map(link => link.outerHTML)
-        .join('\n')
+      : Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))[0].outerHTML
   )
 
   render () {
