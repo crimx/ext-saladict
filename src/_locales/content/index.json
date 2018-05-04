@@ -30,9 +30,9 @@
     "en": "Open Settings"
   },
   "tipAddToNotebook": {
-    "zh_CN": "保存到生词本",
-    "zh_TW": "保存到單字本",
-    "en": "Add to Notebook"
+    "zh_CN": "保存到生词本，右键打开生词本",
+    "zh_TW": "保存到單字本，右擊打開單字本",
+    "en": "Add to Notebook. Right click to open Notebook"
   },
   "tipOpenNotebook": {
     "zh_CN": "打开生词本",
