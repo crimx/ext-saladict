@@ -14,10 +14,11 @@ import { getDefaultSelectionInfo, SelectionInfo } from '@/_helpers/selection'
 export const enum Actions {
   RESTORE = 'widget/RESTORE',
   PIN = 'widget/PIN',
-  FAV_WORD = 'dicts/FAV_WORD',
-  BOWL_SHOW = 'disct/BOWL_SHOW',
-  PANEL_SHOW = 'disct/PANEL_SHOW',
-  PANEL_APPEAR = 'disct/PANEL_APPEAR',
+  FAV_WORD = 'widget/FAV_WORD',
+  BOWL_SHOW = 'widget/BOWL_SHOW',
+  PANEL_SHOW = 'widget/PANEL_SHOW',
+  PANEL_APPEAR = 'widget/PANEL_APPEAR',
+  WORD_EDITOR_SHOW = 'widget/WORD_EDITOR_SHOW',
 }
 
 /*-----------------------------------------------*\
@@ -30,6 +31,7 @@ export type WidgetState = {
   readonly shouldBowlShow: boolean
   readonly isPanelAppear: boolean
   readonly shouldPanelShow: boolean
+  readonly shouldWordEditorShow: boolean
 }
 
 const initState: WidgetState = {
@@ -38,6 +40,7 @@ const initState: WidgetState = {
   shouldBowlShow: false,
   isPanelAppear: false,
   shouldPanelShow: false,
+  shouldWordEditorShow: false,
 }
 
 export default function reducer (state = initState, action): WidgetState {
@@ -62,6 +65,17 @@ export default function reducer (state = initState, action): WidgetState {
       return { ...state, shouldBowlShow: action.payload }
     case Actions.PANEL_APPEAR:
       return { ...state, isPanelAppear: action.payload }
+    case Actions.WORD_EDITOR_SHOW:
+      return state.shouldWordEditorShow === action.payload &&
+          state.isPinned === action.payload &&
+          state.shouldPanelShow === action.payload
+        ? state
+        : {
+          ...state,
+          shouldWordEditorShow: action.payload,
+          isPinned: action.payload,
+          shouldPanelShow: action.payload
+        }
     default:
       return state
   }
@@ -95,6 +109,10 @@ export function panelAppear (payload: boolean): Action {
 
 export function bowlShouldShow (payload: boolean): Action {
   return ({ type: Actions.BOWL_SHOW, payload })
+}
+
+export function wordEditorShouldShow (payload: boolean): Action {
+  return ({ type: Actions.WORD_EDITOR_SHOW, payload })
 }
 
 /*-----------------------------------------------*\
@@ -161,7 +179,23 @@ export function isInNotebook (info: SelectionInfo): Dispatcher {
 
 export function openWordEditor (): Dispatcher {
   return (dispatch, getState) => {
-    /** @todo */
+    const state = getState()
+    dispatch(wordEditorShouldShow(true))
+    dispatch(newSelection({
+      type: MsgType.Selection,
+      selectionInfo: state.dictionaries.searchHistory[0],
+      mouseX: 40,
+      mouseY: (1 - state.config.panelMaxHeightRatio) * window.innerHeight / 2,
+      dbClick: false,
+      ctrlKey: false,
+      force: true,
+    }) as any)
+  }
+}
+
+export function closeWordEditor (): Dispatcher {
+  return (dispatch, getState) => {
+    dispatch(wordEditorShouldShow(false))
   }
 }
 

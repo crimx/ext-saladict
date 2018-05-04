@@ -62,14 +62,18 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   ): Partial<DictPanelState> | null {
     const newSelection = nextProps.selection
     const mutableArea = prevState.mutableArea
-    if (newSelection !== mutableArea.propsSelection) {
+    const oldSelection = mutableArea.propsSelection
+    if (newSelection !== oldSelection) {
       mutableArea.propsSelection = newSelection
+      const newText = newSelection.selectionInfo.text
       // only re-calculate position when new selection is made
-      if (newSelection.force || (newSelection.selectionInfo.text && !nextProps.isPinned)) {
+      if (newSelection.force || (newText && !nextProps.isPinned)) {
         // restore height
+        // when word editor shows up, only relocate the panel
+        const isWordEditorMsg = newSelection.force && oldSelection && newText === oldSelection.selectionInfo.text
         const panelWidth = nextProps.config.panelWidth
-        const panelHeight = 30 + nextProps.config.dicts.selected.length * 30
-        mutableArea.dictHeights = {}
+        const panelHeight = isWordEditorMsg ? prevState.height : 30 + nextProps.config.dicts.selected.length * 30
+        if (!isWordEditorMsg) { mutableArea.dictHeights = {} }
 
         // icon position           10px  panel position
         //             +-------+         +------------------------+

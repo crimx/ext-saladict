@@ -58,6 +58,7 @@
 }
 
 .wordCards-CardFooter {
+  position: relative;
   border-top: 1px solid #faebcc;
   padding: 8px 0;
   overflow: hidden;
@@ -66,13 +67,15 @@
 }
 
 .wordCards-Favicon {
+  position: absolute;
+  top: 8px;
+  left: 3px;
   width: 14px;
   height: 14px;
-  margin-right: 5px;
-  vertical-align: bottom;
 }
 
 .wordCards-URL {
+  padding: 0 0 0 25px;
   color: inherit;
   font-size: 12px;
 }

@@ -6,10 +6,10 @@ import { Word } from '@/background/database'
 import WordCards from '../WordCards'
 
 export interface WordEditorDispatchers {
-  saveToNotebook: (info: SelectionInfo) => void
+  saveToNotebook: (info: SelectionInfo) => Promise<void>
   getWordsByText: (text: string) => Promise<Word[]>
-  closeDictPanel: () => void
-  closeModal: () => void
+  closeDictPanel: () => any
+  closeModal: () => any
 }
 
 export interface WordEditorProps extends WordEditorDispatchers {
@@ -58,7 +58,12 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
 
   closeModal = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
-    this.props.closeModal()
+    const originInfo = this.props.info
+    const currentInfo = this.state.info
+    const isChanged = Object.keys(currentInfo).some(k => originInfo[k] !== currentInfo[k])
+    if (!isChanged || confirm(this.props.t('wordEditorCloseConfirm'))) {
+      this.props.closeModal()
+    }
   }
 
   getRelatedWords = () => {
