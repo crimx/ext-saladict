@@ -293,8 +293,9 @@ module.exports = {
     // Tailor locales
     new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /^\.\/(en|zh-cn|zh-tw)$/),
     new WrapperPlugin({
-      test: /webextension-page\.js$/,
-      footer: ';(function () {\n' + fackBgEnv + '\n})();'
+      test: /background\.js$/,
+      header: ';(function () {\n' + fackBgEnv + '\n',
+      footer: '\n})();'
     })
   ],
   // Some libraries import Node modules but don't use them in the browser.
