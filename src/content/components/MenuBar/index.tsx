@@ -3,11 +3,11 @@ import { translate } from 'react-i18next'
 import { message } from '@/_helpers/browser-api'
 import { TranslationFunction } from 'i18next'
 import { MsgType, MsgOpenUrl, MsgSelection } from '@/typings/message'
-import { SelectionInfo } from '@/_helpers/selection'
+import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 
 export interface MenuBarDispatchers {
   readonly handleDragStart: (e: React.MouseEvent<HTMLDivElement>) => any
-  readonly searchText: ({ info }: { info: string }) => any
+  readonly searchText: (arg: { info: SelectionInfo }) => any
   readonly openWordEditor: () => any
   readonly shareImg: () => any
   readonly panelPinSwitch: () => any
@@ -65,6 +65,16 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     return Object.keys(result).length > 0 ? result : null
   }
 
+  searchText = () => {
+    return this.props.searchText({
+      info: getDefaultSelectionInfo({
+        text: this.state.text,
+        title: this.props.t('fromSaladict'),
+        favicon: 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
+      }),
+    })
+  }
+
   /** previous search history */
   handleIconBackClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
@@ -91,14 +101,14 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
   handleSearchBoxKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (this.state.text && e.key === 'Enter') {
-      this.props.searchText({ info: this.state.text })
+      this.searchText()
     }
   }
 
   handleIconSearchClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
     if (this.state.text) {
-      this.props.searchText({ info: this.state.text })
+      this.searchText()
     }
   }
 

@@ -164,13 +164,11 @@ type Dispatcher = (
  * Search all selected dicts if id is not provided.
  * Use last selection if info is not provided.
  */
-export function searchText (arg?: { id?: DictID, info?: SelectionInfo | string }): Dispatcher {
+export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispatcher {
   return (dispatch, getState) => {
     const state = getState()
     const info = arg
-    ? typeof arg.info === 'string'
-      ? getDefaultSelectionInfo({ text: arg.info })
-      : arg.info || state.dictionaries.searchHistory[0]
+    ? arg.info || state.dictionaries.searchHistory[0]
     : state.dictionaries.searchHistory[0]
 
     dispatch(isInNotebook(info) as any)

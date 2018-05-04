@@ -115,7 +115,12 @@ db.on('ready', () => {
           text: oldWord.text || '',
           context: oldWord.context || '',
           title: oldWord.title || '',
-          favicon: (oldWord.favicon && !oldWord.favicon.startsWith('chrome')) ? oldWord.favicon : '',
+          /** @todo use icon from github */
+          favicon: oldWord.favicon
+            ? oldWord.favicon.startsWith('chrome')
+              ? 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
+              : oldWord.favicon
+            : '',
           url: oldWord.url || '',
           trans: oldWord.trans || '',
           note: oldWord.note || '',
