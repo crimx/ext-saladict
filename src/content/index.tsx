@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom'
 import { Provider as ProviderRedux } from 'react-redux'
 import SaladBowlContainer from './containers/SaladBowlContainer'
 import DictPanelContainer from './containers/DictPanelContainer'
+import WordEditorContainer from './containers/WordEditorContainer'
 import createStore from './redux/create'
 
 import { I18nextProvider as ProviderI18next } from 'react-i18next'
@@ -19,6 +20,7 @@ const App = () => (
     <div>
       <SaladBowlContainer />
       <DictPanelContainer />
+      <WordEditorContainer />
     </div>
   </ProviderI18next>
   </ProviderRedux>
