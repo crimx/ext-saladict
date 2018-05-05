@@ -55,7 +55,6 @@
   border-radius: 50%;
   background: orange;
   animation: panel-DictItem_Loader-shift 2s linear infinite;
-  will-change: transform, opacity;
 
   &:nth-child(2) {
     animation-delay: -0.4s;
@@ -147,9 +146,13 @@
   fill: #000;
 }
 
+/**
+ * remove GPU acceleration which might casue iframe flickering in Chrome 66
+ * @todo add back after Chrome 68
+ */
 @keyframes panel-DictItem_Loader-shift {
-    0% { transform: translateX(  0  ); opacity: 0; }
-   10% { transform: translateX( 30px); opacity: 1; }
-   90% { transform: translateX( 80px); opacity: 1; }
-  100% { transform: translateX(110px); opacity: 0; }
+    0% { left:   0  ; background-color: rgba(255, 165, 0, 0); }
+   10% { left:  30px; background-color: rgba(255, 165, 0, 1); }
+   90% { left:  80px; background-color: rgba(255, 165, 0, 1); }
+  100% { left: 110px; background-color: rgba(255, 165, 0, 0); }
 }
