@@ -172,7 +172,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
         <header className='panel-DictItem_Header' onClick={this.toggleFolding}>
           <img className='panel-DictItem_Logo' src={require('@/components/dictionaries/' + id + '/favicon.png')} alt='dict logo' />
           <h1 className='panel-DictItem_Title'>
-            <a href={dictURL} onClick={this.openDictURL}>{t(`dict_${id}`)}</a>
+            <a href={dictURL} onClick={this.openDictURL}>{t(`dict:${id}`)}</a>
           </h1>
           { searchStatus === SearchStatus.Searching &&
             <div className='panel-DictItem_Loader'>
