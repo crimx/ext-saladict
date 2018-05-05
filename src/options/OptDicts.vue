@@ -1,14 +1,14 @@
 <template>
   <div class="opt-item"><!-- 词典设置 -->
     <div class="opt-item__header">
-      <strong>{{ $i18n('opt_dicts_title') }}</strong>
+      <strong>{{ $t('opt:dicts_title') }}</strong>
     </div>
     <div class="opt-item__body">
       <header class="panel-list__add">
         <button type="button" class="btn btn-default btn-xs"
           v-if="dictsUnselected.length > 0"
           @click="isShowAddDictsPanel = true"
-        >{{ $i18n('opt_dicts_btn_add') }}</button>
+        >{{ $t('opt:dicts_btn_add') }}</button>
 
         <!--Modal 未选择词典列表-->
         <transition name="fade">
@@ -17,7 +17,7 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <button type="button" class="close" @click="isShowAddDictsPanel = false">&times;</button>
-                  <h4 class="modal-title">{{ $i18n('opt_dicts_add_panel_title') }}</h4>
+                  <h4 class="modal-title">{{ $t('opt:dicts_add_panel_title') }}</h4>
                 </div>
                 <div class="modal-body">
                   <div class="panel-group">
@@ -25,7 +25,7 @@
                       <div class="panel panel-default panel-list" v-for="(id, i) in dictsUnselected" :key="id">
                         <div class="panel-list__header" @click="handleAddDict(id)">
                           <img class="panel-list__icon" :src="dictsPanelInfo[id].favicon">
-                          <strong class="panel-list__title">{{ $i18n('dict_' + id) }}</strong>
+                          <strong class="panel-list__title">{{ $t('dict:' + id) }}</strong>
                           <button type="button" class="close">&#10004;</button>
                         </div>
                       </div>
@@ -46,7 +46,7 @@
               <!--词典名字与图标-->
               <div class="panel-list__header" @click="handlePanelHeadClick(id, i)">
                 <img class="panel-list__icon" :src="dictsPanelInfo[id].favicon">
-                <strong class="panel-list__title">{{ $i18n('dict_' + id) }}</strong>
+                <strong class="panel-list__title">{{ $t('dict:' + id) }}</strong>
                 <button type="button" class="close" @click.stop="dicts.selected.splice(i, 1)">&times;</button>
               </div><!--词典名字与图标-->
               <div class="panel-list__body" ref="dict" :style="{height: dictsPanelInfo[id].height + 'px'}">
@@ -54,19 +54,19 @@
                   <!--词典语言选项-->
                   <div class="checkbox">
                     <label class="checkbox-inline">
-                      <input type="checkbox" v-model="allDicts[id].defaultUnfold"> {{ $i18n('opt_dict_default_unfold') }}
+                      <input type="checkbox" v-model="allDicts[id].defaultUnfold"> {{ $t('opt:dict_default_unfold') }}
                     </label>
                     <label class="checkbox-inline">
-                      <input type="checkbox" v-model="allDicts[id].showWhenLang.chs"> {{ $i18n('opt_dict_show_when_chs') }}
+                      <input type="checkbox" v-model="allDicts[id].selectionLang.chs"> {{ $t('opt:dict_show_when_chs') }}
                     </label>
                     <label class="checkbox-inline">
-                      <input type="checkbox" v-model="allDicts[id].showWhenLang.eng"> {{ $i18n('opt_dict_show_when_eng') }}
+                      <input type="checkbox" v-model="allDicts[id].selectionLang.eng"> {{ $t('opt:dict_show_when_eng') }}
                     </label>
                   </div><!--词典语言选项-->
 
                   <!--词典默认高度选项-->
                   <div class="input-group">
-                    <div class="input-group-addon">{{ $i18n('opt_dict_default_height') }}</div>
+                    <div class="input-group-addon">{{ $t('opt:dict_default_height') }}</div>
                     <input type="number" min="1" class="form-control" v-model.number="allDicts[id].preferredHeight">
                     <div class="input-group-addon">px</div>
                   </div><!--词典默认高度选项-->
@@ -76,15 +76,15 @@
                     <template v-for="(__, optKey) in allDicts[id].options">
                       <div class="checkbox" v-if="typeof allDicts[id].options[optKey] !== 'boolean'">
                         <div class="input-group">
-                          <div class="input-group-addon">{{ $i18n(`dict_${id}_${optKey}`) }}</div>
+                          <div class="input-group-addon">{{ $t(`dict:${id}_${optKey}`) }}</div>
                           <input type="number" min="1" class="form-control" v-model.number="allDicts[id].options[optKey]">
-                          <div class="input-group-addon">{{ $i18n(`dict_${id}_${optKey}_unit`)  }}</div>
+                          <div class="input-group-addon">{{ $t(`dict:${id}_${optKey}_unit`)  }}</div>
                         </div>
                       </div>
                     </template>
                     <template v-for="(__, optKey) in allDicts[id].options">
                       <label class="checkbox-inline" v-if="typeof allDicts[id].options[optKey] === 'boolean'">
-                        <input type="checkbox" v-model="allDicts[id].options[optKey]"> {{ $i18n(`dict_${id}_${optKey}`) }}
+                        <input type="checkbox" v-model="allDicts[id].options[optKey]"> {{ $t(`dict:${id}_${optKey}`) }}
                       </label>
                     </template>
                   </div><!--词典自定义选项-->
@@ -97,14 +97,14 @@
       </div><!--已选择词典列表-->
     </div>
     <div class="opt-item__description-wrap">
-      <p class="opt-item__description" v-html="$i18n('opt_dicts_description')"></p>
+      <p class="opt-item__description" v-html="$t('opt:dicts_description')"></p>
     </div>
   </div><!-- 词典设置 -->
 </template>
 
 <script>
 import Draggable from 'vuedraggable'
-import AppConfig from 'src/app-config'
+import AppConfig from '@/app-config'
 
 export default {
   store: {
@@ -151,7 +151,8 @@ export default {
       }
     },
     handlePanelHeadClick (id, i) {
-      let height = this.dictsPanelInfo[id].height > 0 ? 0 : document.querySelector(`#dict-${id}`).offsetHeight
+      const el = document.querySelector(`#dict-${id}`)
+      let height = this.dictsPanelInfo[id].height <= 0 && el ? el.offsetHeight : 0
       this.clearDictsHeight()
       this.dictsPanelInfo[id].height = height
     }

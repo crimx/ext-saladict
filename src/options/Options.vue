@@ -2,26 +2,26 @@
 <div>
   <transition name="dropdown">
     <div class="config-updated" v-if="isShowConfigUpdated">
-      {{ $i18n('opt_storage_updated') }}
+      {{ $t('opt:storage_updated') }}
     </div>
   </transition>
   <div class="opt-container">
     <div class="page-header">
-      <h1>{{ $i18n('opt_title') }}
-        <a class="new-version" v-if="newVersionAvailable" href="http://www.crimx.com/crx-saladict/" target="_blank">{{ $i18n('opt_new_version') }}</a>
+      <h1>{{ $t('opt:title') }}
+        <a class="new-version" v-if="newVersionAvailable" href="http://www.crimx.com/crx-saladict/" target="_blank">{{ $t('opt:new_version') }}</a>
       </h1>
       <div class="page-header-info">
-        <p><a href="https://github.com/crimx/crx-saladict/wiki" target="_blank" rel="noopener">{{ $i18n('instructions') }}</a></p>
+        <p><a href="https://github.com/crimx/crx-saladict/wiki" target="_blank" rel="noopener">{{ $t('opt:instructions') }}</a></p>
         <p class="page-header-social-media-wrap">
-          <a href="mailto:straybugs@gmail.com" @mouseover="isShowSocial = true" @click.prevent="void 0">{{ $i18n('cantact_author') }}</a>
+          <a href="mailto:straybugs@gmail.com" @mouseover="isShowSocial = true" @click.prevent="void 0">{{ $t('opt:contact_author') }}</a>
           <transition name="fade">
             <div class="page-header-social-media" v-if="isShowSocial" @mouseleave="isShowSocial = false">
               <social-media />
             </div>
           </transition>
         </p>
-        <p><a href="https://github.com/crimx/crx-saladict/issues" target="_blank" rel="noopener">{{ $i18n('report_issue') }}</a></p>
-        <button type="button" class="btn btn-default btn-reset" @click="handleReset">{{ $i18n('opt_reset') }}</button>
+        <p><a href="https://github.com/crimx/crx-saladict/issues" target="_blank" rel="noopener">{{ $t('opt:report_issue') }}</a></p>
+        <button type="button" class="btn btn-default btn-reset" @click="handleReset">{{ $t('opt:reset') }}</button>
       </div>
     </div>
     <opt-app-active />
@@ -57,11 +57,11 @@
 </template>
 
 <script>
-import {storage, message} from 'src/_helpers/browser-api'
-import AppConfig from 'src/app-config'
+import {storage, message} from '@/_helpers/browser-api'
+import AppConfig from '@/app-config'
 import Coffee from './Coffee'
 import SocialMedia from './SocialMedia'
-import AlertModal from 'src/components/AlertModal'
+import AlertModal from '@/components/AlertModal'
 
 import OptAppActive from './OptAppActive'
 import OptWordList from './OptWordList'
@@ -105,8 +105,8 @@ export default {
     },
     handleReset () {
       this.$refs.alert.$emit('show', {
-        title: this.$i18n('opt_reset_modal_title'),
-        content: this.$i18n('opt_reset_modal_content'),
+        title: this.$t('opt:reset_modal_title'),
+        content: this.$t('opt:reset_modal_content'),
         onConfirm: () => {
           storage.sync.set({config: new AppConfig()})
             .then(() => storage.sync.get('config'))
@@ -193,7 +193,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "src/_sass_global/z-index";
+@import "src/_sass_global/z-indices";
 /*------------------------------------*\
    Bootstrap
 \*------------------------------------*/

@@ -1,32 +1,48 @@
 import Vue from 'vue'
-import App from './Options'
-import i18n from 'vue-plugin-webextension-i18n'
+import VueI18Next from '@panter/vue-i18next'
 import VueStash from 'vue-stash'
-import {storage} from 'src/_helpers/browser-api'
-import checkUpdate from 'src/_helpers/check-update'
-import AppConfig from 'src/app-config'
+import App from './Options'
+import { storage } from '../_helpers/browser-api'
+import checkUpdate from '../_helpers/check-update'
+import { appConfigFactory } from '../app-config'
+
+import i18next from 'i18next'
+import i18nLoader from '@/_helpers/i18n'
+import commonLocles from '@/_locales/common'
+import dictsLocles from '@/_locales/dicts'
+import optionsLocles from '@/_locales/options'
+import contextLocles from '@/_locales/context'
 
 Vue.use(VueStash)
-Vue.use(i18n)
+Vue.use(VueI18Next)
 Vue.config.productionTip = false
-Vue.config.devtools = false
 
-document.title = browser.i18n.getMessage('opt_title')
+// Vue.use(VueI18Next) before loading
+const i18n = new VueI18Next(i18nLoader({
+  common: commonLocles,
+  opt: optionsLocles,
+  dict: dictsLocles,
+  ctx: contextLocles,
+}, 'common'))
+
+console.log('sddddddffffff')
 
 storage.sync.get('config')
-  .then(({config}) => {
+  .then(({ config }) => {
+    console.log('x')
     const store = {
-      config: config || new AppConfig(),
+      config: config || appConfigFactory(),
       unlock: false,
       newVersionAvailable: false
     }
 
-    new Vue({ // eslint-disable-line no-new
+    new Vue({
       el: '#app',
+      i18n,
       render: h => h(App),
-      data: {store},
+      data: { store },
       created () {
-        storage.sync.listen('config', changes => {
+        storage.sync.addListener('config', changes => {
           let config = changes.config.newValue
           if (config) {
             // only listen to active setting in popup panel
@@ -34,14 +50,14 @@ storage.sync.get('config')
           }
         })
 
-        storage.sync.get('unlock', ({unlock}) => {
+        storage.sync.get('unlock', ({ unlock }) => {
           this.store.unlock = Boolean(unlock)
-          storage.sync.listen('unlock', changes => {
+          storage.sync.addListener('unlock', changes => {
             this.store.unlock = changes.unlock.newValue
           })
         })
 
-        checkUpdate().then(({isAvailable}) => {
+        checkUpdate().then(({ isAvailable }) => {
           this.store.newVersionAvailable = isAvailable
         })
       }
