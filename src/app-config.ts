@@ -1,6 +1,10 @@
 import cloneDeep from 'lodash/cloneDeep'
 import { DeepReadonly } from './typings/helpers'
 
+const langCode = /^zh_CN|zh_TW|en$/.test(browser.i18n.getUILanguage())
+  ? browser.i18n.getUILanguage()
+  : 'en'
+
 const allDicts = {
   bing: {
     page: 'https://cn.bing.com/dict/search?q=%s',
@@ -241,10 +245,13 @@ export interface AppConfigMutable {
   /** activate app, won't affect triple-ctrl setting */
   active: boolean
 
+  /** language code for locales */
+  langCode: string
+
   /** panel width */
   panelWidth: number
 
-  /** panel max height */
+  /** panel max height, 0 < n < 1 */
   panelMaxHeightRatio: number
 
   /** panel font-size */
@@ -344,6 +351,8 @@ export function appConfigFactory (): AppConfig {
     version: 6,
 
     active: true,
+
+    langCode,
 
     panelWidth: 450,
 

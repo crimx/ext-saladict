@@ -1,0 +1,17 @@
+{
+  "save": {
+    "zh_CN": "保存",
+    "zh_TW": "保存",
+    "en": "Save"
+  },
+  "cancel": {
+    "zh_CN": "取消",
+    "zh_TW": "取消",
+    "en": "Cancel"
+  },
+  "confirm": {
+    "zh_CN": "确认",
+    "zh_TW": "確認",
+    "en": "Confirm"
+  }
+}

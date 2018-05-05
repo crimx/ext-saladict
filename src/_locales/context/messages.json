@@ -1,0 +1,102 @@
+{
+  "baidu_search": {
+    "zh_CN": "百度搜索",
+    "zh_TW": "百度搜尋",
+    "en": "Baidu Search"
+  },
+  "bing_dict": {
+    "zh_CN": "必应词典",
+    "zh_TW": "必應字典",
+    "en": "Bing Dict"
+  },
+  "bing_search": {
+    "zh_CN": "必应搜索",
+    "zh_TW": "必應搜尋",
+    "en": "Bing Search"
+  },
+  "cambridge": {
+    "zh_CN": "剑桥词典",
+    "zh_TW": "劍橋字典",
+    "en": "Cambridge"
+  },
+  "dictcn": {
+    "zh_CN": "海词词典",
+    "zh_TW": "海詞字典",
+    "en": "Dictcn"
+  },
+  "etymonline": {
+    "zh_CN": "培根词源",
+    "zh_TW": "培根字根",
+    "en": "Etymonline"
+  },
+  "google_page_translate": {
+    "zh_CN": "谷歌网页翻译",
+    "zh_TW": "谷歌網頁翻譯",
+    "en": "Google Page Translate"
+  },
+  "google_search": {
+    "zh_CN": "谷歌搜索",
+    "zh_TW": "谷歌搜尋",
+    "en": "Google Search"
+  },
+  "google_translate": {
+    "zh_CN": "谷歌翻译",
+    "zh_TW": "谷歌翻譯",
+    "en": "Google Translate"
+  },
+  "guoyu": {
+    "zh_CN": "国语辞典",
+    "zh_TW": "國語字典",
+    "en": "國語辭典"
+  },
+  "iciba": {
+    "zh_CN": "金山词霸",
+    "zh_TW": "金山詞霸",
+    "en": "iciba"
+  },
+  "liangan": {
+    "zh_CN": "两岸词典",
+    "zh_TW": "兩岸字典",
+    "en": "兩岸詞典"
+  },
+  "longman_business": {
+    "zh_CN": "朗文商务",
+    "zh_TW": "朗文商務",
+    "en": "Longman Business"
+  },
+  "manual_title": {
+    "zh_CN": "详细使用说明",
+    "zh_TW": "詳細使用說明",
+    "en": "Manual"
+  },
+  "merriam_webster": {
+    "zh_CN": "韦氏词典",
+    "zh_TW": "韋氏字典",
+    "en": "Merriam Webster"
+  },
+  "notebook_title": {
+    "zh_CN": "生词本",
+    "zh_TW": "生字本",
+    "en": "New Word List"
+  },
+  "oxford": {
+    "zh_CN": "牛津词典",
+    "zh_TW": "牛津字典",
+    "en": "Oxford"
+  },
+  "view_as_pdf": {
+    "zh_CN": "打开为 PDF",
+    "zh_TW": "打開為 PDF",
+    "en": "View as PDF"
+  },
+  "youdao": {
+    "zh_CN": "有道词典",
+    "zh_TW": "有道字典",
+    "en": "Youdao"
+  },
+  "youdao_page_translate": {
+    "zh_CN": "有道网页翻译",
+    "zh_TW": "有道網頁翻譯",
+    "en": "Youdao Page Translate"
+  }
+}

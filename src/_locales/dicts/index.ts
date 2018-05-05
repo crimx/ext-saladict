@@ -13,7 +13,7 @@ export const dictsLocales: RawLocales = Object.keys(appConfigFactory().dicts.all
     const options = locale.options
     if (options) {
       Object.keys(options).forEach(opt => {
-        result[`${id}.${opt}`] = options[opt]
+        result[`${id}_${opt}`] = options[opt]
       })
     }
     return result
