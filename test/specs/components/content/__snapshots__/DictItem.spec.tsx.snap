@@ -20,7 +20,7 @@ exports[`Component/content/DictItem should render pending correctly 1`] = `
         href="https://google.com"
         onClick={[Function]}
       >
-        dict_bing
+        dict:bing
       </a>
     </h1>
     <button
