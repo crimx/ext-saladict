@@ -1,8 +1,11 @@
 import cloneDeep from 'lodash/cloneDeep'
 import { DeepReadonly } from './typings/helpers'
 
-const langCode = /^zh_CN|zh_TW|en$/.test(browser.i18n.getUILanguage())
-  ? browser.i18n.getUILanguage()
+const langUI = browser.i18n.getUILanguage().replace('-', '_')
+const langCode = /^zh_CN|zh_TW|en$/.test(langUI)
+  ? langUI === 'zh_HK'
+    ? 'zh_TW'
+    : langUI
   : 'en'
 
 const allDicts = {
