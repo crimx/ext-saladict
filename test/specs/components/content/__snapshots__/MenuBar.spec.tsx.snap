@@ -76,6 +76,7 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
   />
   <button
     className="panel-MenuBar_Btn"
+    disabled={false}
     onClick={[Function]}
   >
     <svg
@@ -95,6 +96,7 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
   </button>
   <button
     className="panel-MenuBar_Btn"
+    disabled={false}
     onClick={[Function]}
   >
     <svg
@@ -158,6 +160,7 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
   </button>
   <button
     className="panel-MenuBar_Btn"
+    disabled={false}
     onClick={[Function]}
   >
     <svg
@@ -177,6 +180,7 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
   </button>
   <button
     className="panel-MenuBar_Btn-close"
+    disabled={false}
     onClick={[Function]}
   >
     <svg
@@ -273,6 +277,7 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
   />
   <button
     className="panel-MenuBar_Btn"
+    disabled={false}
     onClick={[Function]}
   >
     <svg
@@ -292,6 +297,7 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
   </button>
   <button
     className="panel-MenuBar_Btn"
+    disabled={false}
     onClick={[Function]}
   >
     <svg
@@ -355,6 +361,7 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
   </button>
   <button
     className="panel-MenuBar_Btn"
+    disabled={false}
     onClick={[Function]}
   >
     <svg
@@ -374,6 +381,7 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
   </button>
   <button
     className="panel-MenuBar_Btn-close"
+    disabled={false}
     onClick={[Function]}
   >
     <svg
