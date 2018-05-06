@@ -7,6 +7,8 @@ import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
 import { sendEmptySelection, newSelection } from '@/content/redux/modules/selection'
 import { getDefaultSelectionInfo, SelectionInfo } from '@/_helpers/selection'
 
+const isSaladictOptionsPage = Boolean(window['__SALADICT_OPTIONS_PAGE__'])
+
 /*-----------------------------------------------*\
     Actions
 \*-----------------------------------------------*/
@@ -159,8 +161,10 @@ export function mouseOnBowl (payload: boolean): Dispatcher {
 
 export function closePanel (): Dispatcher {
   return (dispatch, getState) => {
-    dispatch(restoreWidget())
-    dispatch(sendEmptySelection() as any)
+    if (!isSaladictOptionsPage) {
+      dispatch(restoreWidget())
+      dispatch(sendEmptySelection() as any)
+    }
   }
 }
 
@@ -256,6 +260,7 @@ function listenNewSelection (
     } = state.widget
 
     const shouldPanelShow = Boolean(
+      isSaladictOptionsPage ||
       isPinned ||
       (selectionInfo.text && (
         lastShouldPanelShow ||
@@ -268,6 +273,7 @@ function listenNewSelection (
     const isPanelAppear = shouldPanelShow && !lastShouldPanelShow
 
     const shouldBowlShow = Boolean(
+      !isSaladictOptionsPage &&
       selectionInfo.text &&
       icon &&
       !shouldPanelShow &&
@@ -297,7 +303,8 @@ function listenNewSelection (
 
     // should search text?
     const { pinMode } = state.config
-    if (isPanelAppear || (
+    if (isSaladictOptionsPage ||
+        isPanelAppear || (
         shouldPanelShow && selectionInfo.text && (
           !isPinned ||
           pinMode.direct ||

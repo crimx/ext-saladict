@@ -5,6 +5,8 @@ import { TranslationFunction } from 'i18next'
 import { MsgType, MsgOpenUrl, MsgSelection } from '@/typings/message'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 
+const isSaladictOptionsPage = Boolean(window['__SALADICT_OPTIONS_PAGE__'])
+
 export interface MenuBarDispatchers {
   readonly handleDragStart: (e: React.MouseEvent<HTMLDivElement>) => any
   readonly searchText: (arg: { info: SelectionInfo }) => any
@@ -237,7 +239,10 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
         <div className='panel-MenuBar_DragArea' onMouseDown={handleDragStart} />
 
-        <button className='panel-MenuBar_Btn' onClick={this.handleIconSettingsClick}>
+        <button className='panel-MenuBar_Btn'
+          onClick={this.handleIconSettingsClick}
+          disabled={isSaladictOptionsPage}
+        >
           <svg
             className='panel-MenuBar_Icon'
             width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 612 612'
@@ -247,7 +252,10 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
           </svg>
         </button>
 
-        <button className='panel-MenuBar_Btn' onClick={this.handleIconFavClick}>
+        <button className='panel-MenuBar_Btn'
+          onClick={this.handleIconFavClick}
+          disabled={isSaladictOptionsPage}
+        >
           <svg
             className={`panel-MenuBar_Icon-fav ${isFav ? 'isActive' : ''}`}
             width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'
@@ -279,7 +287,10 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
           </svg>
         </button>
 
-        <button className='panel-MenuBar_Btn' onClick={this.handleIconPinClick}>
+        <button className='panel-MenuBar_Btn'
+          onClick={this.handleIconPinClick}
+          disabled={isSaladictOptionsPage}
+        >
           <svg
             className={`panel-MenuBar_Icon-pin ${isPinned ? 'isActive' : ''}`}
             width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 53.011 53.011'
@@ -289,7 +300,10 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
           </svg>
         </button>
 
-        <button className='panel-MenuBar_Btn-close' onClick={this.handleIconCloseClick}>
+        <button className='panel-MenuBar_Btn-close'
+          onClick={this.handleIconCloseClick}
+          disabled={isSaladictOptionsPage}
+        >
           <svg
             className='panel-MenuBar_Icon'
             width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 31.112 31.112'

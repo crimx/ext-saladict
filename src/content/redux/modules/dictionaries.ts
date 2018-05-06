@@ -3,10 +3,13 @@ import { DictID, appConfigFactory } from '@/app-config'
 import { Actions as ConfigActions } from './config'
 import isEqual from 'lodash/isEqual'
 import mapValues from 'lodash/mapValues'
+import { saveWord } from '@/_helpers/record-manager'
 import { SelectionInfo, getDefaultSelectionInfo, isSameSelection } from '@/_helpers/selection'
 import { MsgType, MsgFetchDictResult } from '@/typings/message'
 import { StoreState } from './index'
 import { isInNotebook } from './widget'
+
+const isSaladictInternalPage = Boolean(window['__SALADICT_INTERNAL_PAGE__'])
 
 /*-----------------------------------------------*\
     Actions
@@ -196,6 +199,10 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
 
     dispatch(searchStart({ toStart, toOnhold, info }))
     toStart.forEach(doSearch)
+
+    if (!isSaladictInternalPage && state.config.searhHistory) {
+      saveWord('history', info)
+    }
 
     function doSearch (id: DictID) {
       const msg: MsgFetchDictResult = {
