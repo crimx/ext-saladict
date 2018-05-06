@@ -54,10 +54,20 @@
     "zh_TW": "使用本應用程式瀏覽 PDF",
     "en": "Enable PDF Viewer"
   },
+  "word_list_history": {
+    "zh_CN": "记录查词历史",
+    "zh_TW": "記錄查字歷史",
+    "en": "Keep search history"
+  },
+  "animation": {
+    "zh_CN": "开启动画过渡",
+    "zh_TW": "啓用轉換動畫",
+    "en": "Use animation transitions"
+  },
   "app_active_description": {
-    "zh_CN": "关闭后划词翻译功能将关闭，快捷查词功能依然可用。开启默认 PDF 浏览所有 PDF 链接将自动跳转到本扩展打开（包括本地）。",
-    "zh_TW": "關閉後，滑鼠劃字和句子翻譯功能將關閉，迅速查單字和句子的功能依然可以用。開啟確認鍵後， PDF 瀏覽功能可以運作使用。所有 PDF 鏈接，將自動跳轉到本延伸擴展視窗介面，打開後，可以查看（包括本地）。",
-    "en": "Quick Search is still available even if Inline translation is turned off. PDF links will be automatically captured if the sniffer is turned on."
+    "zh_CN": "划词翻译功能关闭后快捷查词功能依然可用。开启默认 PDF 浏览所有 PDF 链接将自动跳转到本扩展打开（包括本地）。关闭记录查词历史后先前的记录依然保留，可在查词历史页面手动清空。",
+    "zh_TW": "滑鼠劃字和句子翻譯功能關閉後，迅速查單字和句子的功能依然可以用。開啟 PDF 瀏覽功能後，所有 PDF 鏈接將自動跳轉到本延伸擴展視窗介面打開（包括本地）。關閉查字歷史記錄後，先前的記錄依然保存，可以在查字歷史視窗介面裡手動清空。",
+    "en": "Quick Search is still available even if Inline translation is turned off. PDF links will be automatically captured if the sniffer is turned on. Previous records can be cleared on Search History Page."
   },
   "dict_panel_title": {
     "zh_CN": "查词面板",
@@ -83,21 +93,6 @@
     "zh_CN": "词典内容字体大小",
     "zh_TW": "字典内容字體大小",
     "en": "Font size for search reasults"
-  },
-  "word_list_title": {
-    "zh_CN": "单词列表",
-    "zh_TW": "單字和例句列表",
-    "en": "Word List"
-  },
-  "word_list_history": {
-    "zh_CN": "记录查词历史",
-    "zh_TW": "記錄查字歷史",
-    "en": "Keep search history"
-  },
-  "word_list_description": {
-    "zh_CN": "关闭记录查词历史后先前的记录依然保留，可在查词历史页面手动清空。",
-    "zh_TW": "關閉查字歷史記錄後，先前的記錄依然保存，可以在查字歷史視窗介面裡手動清空。",
-    "en": "Previous records can be cleared on Search History Page."
   },
   "mode_title": {
     "zh_CN": "查词模式",
