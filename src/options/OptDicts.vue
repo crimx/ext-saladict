@@ -111,6 +111,13 @@ export default {
     dicts: 'config.dicts',
     allDicts: 'config.dicts.all',
     unlock: 'unlock',
+    searchText: 'searchText',
+  },
+  watch: {
+    dicts: {
+      deep: true,
+      handler () { this.searchText() },
+    },
   },
   data () {
     const dictsPanelInfo = {}

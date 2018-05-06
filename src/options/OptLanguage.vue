@@ -33,6 +33,10 @@ export default {
     chinese: 'config.language.chinese',
     english: 'config.language.english',
     langCode: 'config.langCode',
-  }
+    searchText: 'searchText'
+  },
+  watch: {
+    langCode: function () { this.searchText() },
+  },
 }
 </script>

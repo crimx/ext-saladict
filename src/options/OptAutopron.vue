@@ -39,6 +39,13 @@
 export default {
   store: {
     autopron: 'config.autopron',
-  }
+    searchText: 'searchText',
+  },
+  watch: {
+    autopron: {
+      deep: true,
+      handler () { this.searchText() },
+    },
+  },
 }
 </script>

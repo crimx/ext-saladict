@@ -47,6 +47,11 @@ export default {
     panelWidth: 'config.panelWidth',
     panelMaxHeightRatio: 'config.panelMaxHeightRatio',
     fontSize: 'config.fontSize',
+    searchText: 'searchText',
+  },
+  watch: {
+    panelMaxHeightRatio: function () { this.searchText() },
+    fontSize: function () { this.searchText() },
   },
   methods: {
     handleNumChange (target, min, max, value) {

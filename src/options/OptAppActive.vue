@@ -32,7 +32,11 @@ export default {
     pdfSniff: 'config.pdfSniff',
     searhHistory: 'config.searhHistory',
     animation: 'config.animation',
-  }
+    searchText: 'searchText',
+  },
+  watch: {
+    animation: function () { this.searchText() },
+  },
 }
 </script>
 

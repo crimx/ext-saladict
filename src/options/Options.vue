@@ -64,8 +64,7 @@ import OptContextMenu from './OptContextMenu'
 
 export default {
   name: 'options',
-  store: ['config', 'newVersionAvailable'],
-  props: ['searchText'],
+  store: ['config', 'newVersionAvailable', 'searchText'],
   data () {
     return {
       text: 'salad',
@@ -118,10 +117,6 @@ export default {
               this.isShowConfigUpdated = false
             }, 1500)
           })
-          .then(() => {
-            clearTimeout(this.__searchTextTimeout)
-            this.__searchTextTimeout = setTimeout(() => this.searchText(), 2000)
-          })
       }
     },
   },
@@ -141,7 +136,7 @@ export default {
     AlertModal
   },
   mounted () {
-    setTimeout(() => this.searchText(), 1000)
+    this.searchText()
   }
 }
 </script>

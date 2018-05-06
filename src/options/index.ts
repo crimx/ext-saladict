@@ -35,23 +35,47 @@ const i18n = new VueI18Next(i18nLoader({
 
 storage.sync.get('config')
   .then(({ config }) => {
-    const store = {
-      config: (config || appConfigFactory()) as AppConfigMutable,
-      unlock: false,
-      newVersionAvailable: false
-    }
-
     // tslint:disable
     new Vue({
       el: '#app',
       i18n,
-      render (h) {
-        return h(App, {
-          // @ts-ignore
-          props: { searchText: this.searchText }
-        })
+      render: h => h(App),
+      data: {
+        store: {
+          config: (config || appConfigFactory()) as AppConfigMutable,
+          unlock: false,
+          newVersionAvailable: false,
+          searchText () {
+            clearTimeout(this['__searchTextTimeout'])
+            if (window.innerWidth > 1024) {
+              this['__searchTextTimeout'] = setTimeout(() => {
+                message.self.send<MsgSelection>({
+                  type: MsgType.Selection,
+                  selectionInfo: getDefaultSelectionInfo({
+                    text: window['__SALADICT_LAST_SEARCH__']
+                  }),
+                  mouseX: window.innerWidth - this.$store.config.panelWidth - 110,
+                  mouseY: window.innerHeight * (1 - this.$store.config.panelMaxHeightRatio) / 2 + 50,
+                  dbClick: false,
+                  ctrlKey: false,
+                })
+                if (process.env.NODE_ENV === 'development') {
+                  console.log({
+                    type: MsgType.Selection,
+                    selectionInfo: getDefaultSelectionInfo({
+                      text: window['__SALADICT_LAST_SEARCH__']
+                    }),
+                    mouseX: window.innerWidth - this.$store.config.panelWidth - 110,
+                    mouseY: window.innerHeight * (1 - this.$store.config.panelMaxHeightRatio) / 2 + 50,
+                    dbClick: false,
+                    ctrlKey: false,
+                  })
+                }
+              }, 2000)
+            }
+          }
+        }
       },
-      data: { store },
       created () {
         storage.sync.addListener('config', changes => {
           let config = changes.config.newValue
@@ -73,22 +97,6 @@ storage.sync.get('config')
           this.store.newVersionAvailable = isAvailable
         })
       },
-      methods: {
-        searchText () {
-          if (window.innerWidth > 1024) {
-            message.self.send<MsgSelection>({
-              type: MsgType.Selection,
-              selectionInfo: getDefaultSelectionInfo({
-                text: window['__SALADICT_LAST_SEARCH__']
-              }),
-              mouseX: window.innerWidth - this.store.config.panelWidth - 110,
-              mouseY: window.innerHeight * (1 - this.store.config.panelMaxHeightRatio) / 2 + 50,
-              dbClick: false,
-              ctrlKey: false,
-            })
-          }
-        }
-      }
     })
   })
 
