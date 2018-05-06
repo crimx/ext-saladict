@@ -11,8 +11,8 @@
             <p>{{ content }}</p>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-default" @click="handleCancel">{{ i18n('cancel') }}</button>
-            <button type="button" class="btn btn-danger" @click="handleConfirm">{{ i18n('confirm') }}</button>
+            <button type="button" class="btn btn-default" @click="handleCancel">{{ $t('cancel') }}</button>
+            <button type="button" class="btn btn-danger" @click="handleConfirm">{{ $t('confirm') }}</button>
           </div>
         </div>
       </div>
@@ -31,9 +31,6 @@ export default {
     }
   },
   methods: {
-    i18n (key) {
-      return chrome.i18n.getMessage(key)
-    },
     handleConfirm () {
       if (typeof this.onConfirm === 'function') {
         this.onConfirm()
