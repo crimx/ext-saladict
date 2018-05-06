@@ -36,18 +36,6 @@
     <opt-context-menu />
   </div>
 
-  <!--查词面板-->
-  <transition appear name="popup">
-    <div class="frame-container">
-      <!-- <iframe class="saladict-frame"
-        name="saladict-frame"
-        frameBorder="0"
-        :src="frameSource"
-        :style="{height: panelHeight + 'px'}"
-      ></iframe> -->
-    </div>
-  </transition><!--查词面板-->
-
   <!--Alert Modal-->
   <alert-modal ref="alert" />
 
@@ -136,21 +124,6 @@ export default {
           })
       }
     },
-  },
-  computed: {
-    panelHeight () {
-      const allDicts = this.config.dicts.all
-      // header + each dictionary
-      const preferredHeight = 30 + this.config.dicts.selected.reduce((sum, id) => {
-        let preferredHeight = 0
-        if (allDicts[id] && allDicts[id].preferredHeight) {
-          preferredHeight = allDicts[id].preferredHeight + 20
-        }
-        return sum + preferredHeight
-      }, 0)
-      const maxHeight = window.innerHeight * 0.78
-      return preferredHeight > maxHeight ? maxHeight : preferredHeight
-    }
   },
   components: {
     OptAppActive,
