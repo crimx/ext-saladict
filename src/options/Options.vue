@@ -27,7 +27,6 @@
     <opt-app-active />
     <opt-language />
     <opt-dict-panel />
-    <opt-word-list />
     <opt-mode />
     <opt-pin-mode />
     <opt-popup />
@@ -66,7 +65,6 @@ import AlertModal from '@/components/AlertModal'
 
 import OptAppActive from './OptAppActive'
 import OptDictPanel from './OptDictPanel'
-import OptWordList from './OptWordList'
 import OptMode from './OptMode'
 import OptPinMode from './OptPinMode'
 import OptPopup from './OptPopup'
@@ -157,7 +155,6 @@ export default {
   components: {
     OptAppActive,
     OptDictPanel,
-    OptWordList,
     OptMode,
     OptPinMode,
     OptPopup,

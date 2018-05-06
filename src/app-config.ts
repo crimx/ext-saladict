@@ -248,6 +248,9 @@ export interface AppConfigMutable {
   /** activate app, won't affect triple-ctrl setting */
   active: boolean
 
+  /** use animation for transition */
+  animation: boolean
+
   /** language code for locales */
   langCode: string
 
@@ -354,6 +357,8 @@ export function appConfigFactory (): AppConfig {
     version: 6,
 
     active: true,
+
+    animation: true,
 
     langCode,
 

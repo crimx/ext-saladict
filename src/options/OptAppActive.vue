@@ -9,6 +9,12 @@
           <input type="checkbox" v-model="active"> {{ $t('opt:app_active') }}
         </label>
         <label class="checkbox-inline">
+          <input type="checkbox" v-model="animation"> {{ $t('opt:animation') }}
+        </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" v-model="searhHistory"> {{ $t('opt:word_list_history') }}
+        </label>
+        <label class="checkbox-inline">
           <input type="checkbox" v-model="pdfSniff"> {{ $t('opt:pdf_sniff') }}
         </label>
       </div>
@@ -24,6 +30,8 @@ export default {
   store: {
     active: 'config.active',
     pdfSniff: 'config.pdfSniff',
+    searhHistory: 'config.searhHistory',
+    animation: 'config.animation',
   }
 }
 </script>
