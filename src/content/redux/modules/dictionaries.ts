@@ -1,5 +1,5 @@
 import { message } from '@/_helpers/browser-api'
-import { DictID, appConfigFactory } from '@/app-config'
+import { DictID, appConfigFactory, AppConfig } from '@/app-config'
 import { Actions as ConfigActions } from './config'
 import isEqual from 'lodash/isEqual'
 import mapValues from 'lodash/mapValues'
@@ -37,14 +37,18 @@ type DictState = {
 }
 
 export type DictionariesState = {
+  readonly selected: AppConfig['dicts']['selected']
   readonly dicts: {
     readonly [k in DictID]?: DictState
   }
   readonly searchHistory: SelectionInfo[]
 }
 
+const initConfig = appConfigFactory()
+
 const initState: DictionariesState = {
-  dicts: appConfigFactory().dicts.selected
+  selected: initConfig.dicts.selected,
+  dicts: initConfig.dicts.selected
     .reduce((state, id) => {
       state[id] = {
         searchStatus: SearchStatus.OnHold,
@@ -73,12 +77,13 @@ export default function reducer (state = initState, action): DictionariesState {
       }
     case ConfigActions.NEW_CONFIG: {
       const { selected }: { selected: DictID[] } = action.payload.dicts
-      return isEqual(selected, Object.keys(state))
+      return isEqual(selected, state.selected)
         ? state
         : {
           ...state,
+          selected,
           dicts: selected.reduce((newState, id) => {
-            newState[id] = state[id] || {
+            newState[id] = state.dicts[id] || {
               searchStatus: SearchStatus.OnHold,
               searchResult: null,
             }
