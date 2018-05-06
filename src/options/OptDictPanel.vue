@@ -61,12 +61,15 @@ export default {
       }
     },
     handleRatioChange (target, min, max, value) {
-      return this.handleNumChange(
-        target,
-        min / 100,
-        max / 100,
-        Number(value) / 100,
-      )
+      value = Number(value)
+      // trigger update
+      this[target] = value / 100
+
+      if (value < min) {
+        this[target] = min / 100
+      } else if (value > max) {
+        this[target] = max / 100
+      }
     }
   },
 }
