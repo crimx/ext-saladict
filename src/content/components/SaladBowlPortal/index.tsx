@@ -5,6 +5,7 @@ import SaladBowl from '../SaladBowl'
 
 interface SaladBowlPortalProps {
   readonly shouldShow: boolean
+  readonly isAnimation: boolean
   readonly mouseX: number
   readonly mouseY: number
   readonly mouseOnBowl: (flag: boolean) => any
@@ -17,6 +18,10 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
   isAppeare = false
 
   springImmediateCtrl = (key: string): boolean => {
+    if (!this.props.isAnimation) {
+      return true
+    }
+
     switch (key) {
       case 'x':
       case 'y':

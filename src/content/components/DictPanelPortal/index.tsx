@@ -218,6 +218,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       shouldPanelShow,
     } = this.props
 
+    const isAnimation = this.props.config.animation
+
     const { x, y, height, isDragging } = this.state
 
     if (shouldPanelShow && !this.isMount) {
@@ -247,7 +249,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
             width: this.props.config.panelWidth,
             opacity: shouldPanelShow ? 1 : 0
           }}
-          immediate={!shouldPanelShow || isDragging}
+          immediate={!isAnimation || !shouldPanelShow || isDragging}
         >{this.animateFrame}</Spring>
       </div>,
       this.el,

@@ -54,20 +54,6 @@
   height: 10px;
   border-radius: 50%;
   background: orange;
-  animation: panel-DictItem_Loader-shift 2s linear infinite;
-
-  &:nth-child(2) {
-    animation-delay: -0.4s;
-  }
-  &:nth-child(3) {
-    animation-delay: -0.8s;
-  }
-  &:nth-child(4) {
-    animation-delay: -1.2s;
-  }
-  &:nth-child(5) {
-    animation-delay: -1.6s;
-  }
 }
 
 .panel-DictItem_FoldArrowBtn {
@@ -88,7 +74,6 @@
   width: 18px;
   height: 18px;
   padding: 3px;
-  transition: transform 400ms;
 
   &.isActive {
     transform: rotate(-90deg);
@@ -113,20 +98,23 @@
   &::after {
     content: '';
     position: absolute;
-    top: 0;
-    bottom: 0;
+    top: 100%;
     left: 0;
-    right: 0;
+    width: 100%;
+    height: 100%;
     background: linear-gradient(transparent 40%, rgba(225, 225, 225, .2) 60%, rgba(225, 225, 225, .7) 100%);
-    opacity: 0;
-    transition: opacity 400ms;
   }
 
   &:hover {
     outline: none;
 
     &::after {
-      opacity: 1;
+      /**
+       * use top instead of opacity to avoid GUP acceleration
+       * which might casue iframe flickering in Chrome 66
+       * @todo add back after Chrome 68
+       */
+      top: 0;
     }
   }
 
@@ -144,6 +132,37 @@
   height: 15px;
   transform: translateX(-50%);
   fill: #000;
+}
+
+/*-----------------------------------------------*\
+    States
+\*-----------------------------------------------*/
+
+.isAnimate {
+  .panel-DictItem_Loader_Ball {
+    animation: panel-DictItem_Loader-shift 2s linear infinite;
+
+    &:nth-child(2) {
+      animation-delay: -0.4s;
+    }
+    &:nth-child(3) {
+      animation-delay: -0.8s;
+    }
+    &:nth-child(4) {
+      animation-delay: -1.2s;
+    }
+    &:nth-child(5) {
+      animation-delay: -1.6s;
+    }
+  }
+
+  .panel-DictItem_FoldArrow {
+    transition: transform 400ms;
+  }
+
+  .panel-DictItem_FoldMask::after {
+    transition: top 400ms;
+  }
 }
 
 /**

@@ -300,7 +300,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
           </svg>
         </button>
 
-        <button className='panel-MenuBar_Btn-close'
+        <button className='panel-MenuBar_Btn'
           onClick={this.handleIconCloseClick}
           disabled={isSaladictOptionsPage}
         >

@@ -8,6 +8,7 @@ import { SelectionInfo } from '@/_helpers/selection'
 export const mapStateToProps = ({ config, dictionaries, widget }: StoreState) => {
   return {
     shouldWordEditorShow: widget.shouldWordEditorShow,
+    isAnimation: config.animation,
     dictPanelWidth: config.panelWidth,
     info: dictionaries.searchHistory[0],
   }

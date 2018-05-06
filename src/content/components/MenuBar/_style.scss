@@ -46,13 +46,6 @@
   padding: 4px;
 }
 
-.panel-MenuBar_Btn-close {
-  @extend .panel-MenuBar_Btn;
-  &:hover > svg {
-    animation: panel-MenuBar_Spin 400ms linear infinite;
-  }
-}
-
 .panel-MenuBar_DragArea {
   flex: 1.5;
   align-self: stretch;
@@ -105,9 +98,4 @@
   &.isActive {
     transform: rotate(45deg);
   }
-}
-
-@keyframes panel-MenuBar_Spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
 }

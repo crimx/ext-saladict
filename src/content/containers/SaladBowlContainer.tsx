@@ -6,6 +6,7 @@ import { mouseOnBowl } from '../redux/modules/widget'
 export const mapStateToProps = ({ config, selection, widget }: StoreState) => {
   return {
     shouldShow: widget.shouldBowlShow,
+    isAnimation: config.animation,
     mouseX: selection.mouseX,
     mouseY: selection.mouseY,
   }

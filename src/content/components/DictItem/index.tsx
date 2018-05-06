@@ -20,6 +20,7 @@ export interface DictItemProps extends DictItemDispatchers {
   readonly panelWidth: number
   readonly searchStatus: SearchStatus
   readonly searchResult: any
+  readonly isAnimation: boolean
 }
 
 export type DictItemState = {
@@ -159,6 +160,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       fontSize,
       searchStatus,
       searchResult,
+      isAnimation,
     } = this.props
 
     const {
@@ -189,7 +191,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
             </svg>
           </button>
         </header>
-        <Spring from={this.initStyle} to={{ height: visibleHeight, opacity: isUnfold ? 1 : 0 }}>
+        <Spring from={this.initStyle} to={{ height: visibleHeight, opacity: isUnfold ? 1 : 0 }} immediate={!isAnimation}>
           {({ height, opacity }) => (
             <div className='panel-DictItem_Body'
               key={id}

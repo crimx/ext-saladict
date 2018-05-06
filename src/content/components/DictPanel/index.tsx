@@ -73,7 +73,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
           panelPinSwitch,
           closePanel,
         })}
-        <div className='panel-DictContainer'>
+        <div className={`panel-DictContainer${config.animation ? ' isAnimate' : ''}`}>
           {config.dicts.selected.map(id => React.createElement(DictItem, {
             key: id,
             id,
@@ -81,6 +81,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
             fontSize: config.fontSize,
             preferredHeight: allDictsConfig[id].preferredHeight,
             panelWidth: config.panelWidth,
+            isAnimation: config.animation,
             searchStatus: (dictsInfo[id] as any).searchStatus,
             searchResult: (dictsInfo[id] as any).searchResult,
             searchText,

@@ -15,6 +15,7 @@ export interface WordEditorPortalProps extends Omit<
   'saveToNotebook' | 'getWordsByText'
 > {
   shouldWordEditorShow: boolean
+  isAnimation: boolean
 }
 
 export default class WordEditorPortal extends React.Component<WordEditorPortalProps> {
@@ -61,6 +62,7 @@ export default class WordEditorPortal extends React.Component<WordEditorPortalPr
   render () {
     const {
       shouldWordEditorShow,
+      isAnimation,
       ...restProps,
     } = this.props
 
@@ -86,7 +88,7 @@ export default class WordEditorPortal extends React.Component<WordEditorPortalPr
                 getWordsByText: getWordsByTextFromNotebook,
               })}
             </PortalFrame>
-            <Spring from={{ opacity: 0 }} to={{ opacity: 1 }} render={this.animateFrame} />
+            <Spring from={{ opacity: 0 }} to={{ opacity: 1 }} render={this.animateFrame} immediate={!isAnimation} />
           </>
         )
         : null,
