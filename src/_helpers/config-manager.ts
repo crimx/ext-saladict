@@ -1,7 +1,7 @@
 import { AppConfig, appConfigFactory } from '@/app-config'
 import { storage, StorageListenerCb, StorageUpdate } from './browser-api'
 import { map, filter } from 'rxjs/operators'
-import { Observable } from 'rxjs'
+import { Observable, from, concat } from 'rxjs'
 
 export type AppConfigChanged = {
   config: {
@@ -32,9 +32,12 @@ export function addAppConfigListener (cb: StorageListenerCb): void {
  * Get AppConfig and create a stream listening config changing
  */
 export function createAppConfigStream (): Observable<AppConfig> {
-  return storage.createStream<AppConfig>('config').pipe(
-    filter((config): config is StorageUpdate<AppConfig> => Boolean(config.newValue)),
-    map(config => config.newValue),
+  return concat(
+    from(getAppConfig()),
+    storage.createStream<AppConfig>('config').pipe(
+      filter((config): config is StorageUpdate<AppConfig> => Boolean(config.newValue)),
+      map(config => config.newValue),
+    ),
   )
 }
 
