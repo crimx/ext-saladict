@@ -116,7 +116,7 @@ export default {
     const dictsPanelInfo = {}
     Object.keys(appConfigFactory().dicts.all).forEach(id => {
       dictsPanelInfo[id] = {
-        favicon: browser.runtime.getURL(`assets/dicts/${id}.png`),
+        favicon: require('@/components/dictionaries/' + id + '/favicon.png'),
         height: 0
       }
     })

@@ -79,6 +79,7 @@ import OptContextMenu from './OptContextMenu'
 export default {
   name: 'options',
   store: ['config', 'newVersionAvailable'],
+  props: ['searchText'],
   data () {
     return {
       text: 'salad',
@@ -97,23 +98,6 @@ export default {
           this.isShowSocial = false
         }, 400)
       }
-    },
-    searchText () {
-      clearTimeout(this.searchTextTimeout)
-      this.searchTextTimeout = setTimeout(() => {
-        message.self.send({
-          type: 'SEARCH_TEXT',
-          selectionInfo: {
-            text: this.text,
-            context: '',
-            title: document.title,
-            url: document.URL,
-            favicon: browser.runtime.getURL('assets/icon-16.png'),
-            trans: '',
-            note: ''
-          }
-        })
-      }, 2000)
     },
     handleReset () {
       this.$refs.alert.$emit('show', {
@@ -148,16 +132,12 @@ export default {
               this.isShowConfigUpdated = false
             }, 1500)
           })
+          .then(() => {
+            clearTimeout(this.__searchTextTimeout)
+            this.__searchTextTimeout = setTimeout(() => this.searchText(), 2000)
+          })
       }
     },
-    'config.dicts': {
-      deep: true,
-      handler () { this.searchText() }
-    },
-    'config.autopron': {
-      deep: true,
-      handler () { this.searchText() }
-    }
   },
   computed: {
     panelHeight () {
@@ -190,17 +170,8 @@ export default {
     SocialMedia,
     AlertModal
   },
-  beforeCreate () {
-    message.self.addListener('PANEL_READY', (data, sender, sendResponse) => {
-      sendResponse({noSearchHistory: true})
-    })
-  },
   mounted () {
-    // monitor search text
-    message.self.addListener('FETCH_DICT_RESULT', (data, sender) => {
-      this.text = data.text
-    })
-    setTimeout(() => this.searchText(), 0)
+    setTimeout(() => this.searchText(), 1000)
   }
 }
 </script>
