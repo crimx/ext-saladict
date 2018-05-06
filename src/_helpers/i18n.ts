@@ -18,6 +18,7 @@ export function i18nLoader (
   locales: { [namespace: string]: RawLocales },
   defaultNS?: string,
 ): i18n.i18n {
+  const namespaces = Object.keys(locales)
   const instance = i18n
     .init({
       lng: browser.i18n.getUILanguage(),
@@ -26,7 +27,7 @@ export function i18nLoader (
       saveMissing: false,
       load: 'currentOnly',
 
-      defaultNS: defaultNS || 'translation',
+      defaultNS: defaultNS || namespaces[0] || 'translation',
 
       whitelist: ['en', 'zh_CN', 'zh_TW'],
 
@@ -34,7 +35,7 @@ export function i18nLoader (
         escapeValue: false, // not needed for react!!
       },
 
-      resources: Object.keys(locales).reduce((res, ns) => {
+      resources: namespaces.reduce((res, ns) => {
         res.zh_CN[ns] = mapValues(locales[ns], x => x.zh_CN)
         res.zh_TW[ns] = mapValues(locales[ns], x => x.zh_TW)
         res.en[ns] = mapValues(locales[ns], x => x.en)
