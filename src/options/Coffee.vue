@@ -25,9 +25,9 @@
         </ul>
         <div>
           <p class="coffee-social-media-wrap">
-            <a href="mailto:straybugs@gmail.com" @mouseover="isShowSocial = true" @click.prevent="void 0">{{ $t('opt:contact_author') }}</a>
+            <a href="mailto:straybugs@gmail.com" @mouseenter="showSocialMedia(true)" @mouseleave="showSocialMedia(false)" @click.prevent="void 0">{{ $t('opt:contact_author') }}</a>
             <transition name="fade">
-              <div class="coffee-social-media" v-if="isShowSocial" @mouseleave="isShowSocial = false">
+              <div class="coffee-social-media" v-if="isShowSocial" @mouseenter="showSocialMedia(true)" @mouseleave="showSocialMedia(false)">
                 <social-media />
               </div>
             </transition>
@@ -80,6 +80,16 @@ export default {
     }
   },
   methods: {
+    showSocialMedia (flag) {
+      clearTimeout(this.__showSocialMediaTimeout)
+      if (flag) {
+        this.isShowSocial = true
+      } else {
+        this.__showSocialMediaTimeout = setTimeout(() => {
+          this.isShowSocial = false
+        }, 400)
+      }
+    },
     coffeeMouseover () {
       this.showPayment = true
     },

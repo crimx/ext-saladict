@@ -4,7 +4,15 @@
       <strong>{{ $t('opt:language_title') }}</strong>
     </div>
     <div class="opt-item__body">
-      <div class="checkbox">
+      <div class="select-box-container">
+        <label class="select-box">
+          <span class="select-label">{{ $t('opt:language') }}</span>
+          <select class="form-control" v-model="langCode">
+            <option value="zh_CN">简体中文</option>
+            <option value="zh_TW">繁體中文</option>
+            <option value="en">English</option>
+          </select>
+        </label>
         <label class="checkbox-inline">
           <input type="checkbox" v-model="chinese"> {{ $t('opt:language_chinese') }}
         </label>
@@ -24,6 +32,7 @@ export default {
   store: {
     chinese: 'config.language.chinese',
     english: 'config.language.english',
+    langCode: 'config.langCode',
   }
 }
 </script>

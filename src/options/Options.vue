@@ -13,9 +13,9 @@
       <div class="page-header-info">
         <p><a href="https://github.com/crimx/crx-saladict/wiki" target="_blank" rel="noopener">{{ $t('opt:instructions') }}</a></p>
         <p class="page-header-social-media-wrap">
-          <a href="mailto:straybugs@gmail.com" @mouseover="isShowSocial = true" @click.prevent="void 0">{{ $t('opt:contact_author') }}</a>
+          <a href="mailto:straybugs@gmail.com" @mouseenter="showSocialMedia(true)" @mouseleave="showSocialMedia(false)" @click.prevent="void 0">{{ $t('opt:contact_author') }}</a>
           <transition name="fade">
-            <div class="page-header-social-media" v-if="isShowSocial" @mouseleave="isShowSocial = false">
+            <div class="page-header-social-media" v-if="isShowSocial" @mouseenter="showSocialMedia(true)"  @mouseleave="showSocialMedia(false)">
               <social-media />
             </div>
           </transition>
@@ -25,10 +25,11 @@
       </div>
     </div>
     <opt-app-active />
+    <opt-language />
+    <opt-dict-panel />
     <opt-word-list />
     <opt-mode />
     <opt-pin-mode />
-    <opt-language />
     <opt-popup />
     <opt-triple-ctrl />
     <opt-autopron />
@@ -39,12 +40,12 @@
   <!--查词面板-->
   <transition appear name="popup">
     <div class="frame-container">
-      <iframe class="saladict-frame"
+      <!-- <iframe class="saladict-frame"
         name="saladict-frame"
         frameBorder="0"
         :src="frameSource"
         :style="{height: panelHeight + 'px'}"
-      ></iframe>
+      ></iframe> -->
     </div>
   </transition><!--查词面板-->
 
@@ -58,12 +59,13 @@
 
 <script>
 import {storage, message} from '@/_helpers/browser-api'
-import AppConfig from '@/app-config'
+import appConfigFactory from '@/app-config'
 import Coffee from './Coffee'
 import SocialMedia from './SocialMedia'
 import AlertModal from '@/components/AlertModal'
 
 import OptAppActive from './OptAppActive'
+import OptDictPanel from './OptDictPanel'
 import OptWordList from './OptWordList'
 import OptMode from './OptMode'
 import OptPinMode from './OptPinMode'
@@ -80,12 +82,22 @@ export default {
   data () {
     return {
       text: 'salad',
-      frameSource: browser.runtime.getURL('panel.html'),
+      frameSource: 'https://baidu.com',
       isShowConfigUpdated: false,
       isShowSocial: false
     }
   },
   methods: {
+    showSocialMedia (flag) {
+      clearTimeout(this.__showSocialMediaTimeout)
+      if (flag) {
+        this.isShowSocial = true
+      } else {
+        this.__showSocialMediaTimeout = setTimeout(() => {
+          this.isShowSocial = false
+        }, 400)
+      }
+    },
     searchText () {
       clearTimeout(this.searchTextTimeout)
       this.searchTextTimeout = setTimeout(() => {
@@ -108,14 +120,14 @@ export default {
         title: this.$t('opt:reset_modal_title'),
         content: this.$t('opt:reset_modal_content'),
         onConfirm: () => {
-          storage.sync.set({config: new AppConfig()})
+          storage.sync.set({config: appConfigFactory()})
             .then(() => storage.sync.get('config'))
             .then(({config}) => {
               if (config) {
                 this.config = config
               } else {
                 // something wrong with the sync storage, use default config without syncing
-                const defaultConfig = new AppConfig()
+                const defaultConfig = appConfigFactory()
                 storage.sync.set({config: defaultConfig})
                 this.config = defaultConfig
               }
@@ -164,6 +176,7 @@ export default {
   },
   components: {
     OptAppActive,
+    OptDictPanel,
     OptWordList,
     OptMode,
     OptPinMode,
@@ -286,7 +299,7 @@ kbd {
 
 .opt-container {
   min-width: 800px;
-  margin-right: 500px;
+  margin-right: 470px;
   padding: 0 15px;
 }
 
@@ -328,11 +341,13 @@ kbd {
 
 .opt-item__header {
   @extend .col-xs-2;
+  width: percentage(2/12);
   text-align: right;
 }
 
 .opt-item__body {
   @extend .col-xs-6;
+  width: percentage(6.5/12);
   background-color: #fafafa;
 
   &:hover + .opt-item__description-wrap {
@@ -343,6 +358,7 @@ kbd {
 
 .opt-item__description-wrap {
   @extend .col-xs-4;
+   width: percentage(3.5/12);
   position: absolute;
   z-index: -1;
   right: 0;
@@ -368,7 +384,7 @@ kbd {
   top: 0;
   right: 0;
   height: 100%;
-  width: 500px;
+  width: 470px;
 }
 
 .saladict-frame {

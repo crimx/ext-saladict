@@ -67,7 +67,7 @@
                   <!--词典默认高度选项-->
                   <div class="input-group">
                     <div class="input-group-addon">{{ $t('opt:dict_default_height') }}</div>
-                    <input type="number" min="1" class="form-control" v-model.number="allDicts[id].preferredHeight">
+                    <input type="number" min="1" class="form-control" v-model.number.lazy="allDicts[id].preferredHeight">
                     <div class="input-group-addon">px</div>
                   </div><!--词典默认高度选项-->
 
@@ -77,7 +77,7 @@
                       <div class="checkbox" v-if="typeof allDicts[id].options[optKey] !== 'boolean'">
                         <div class="input-group">
                           <div class="input-group-addon">{{ $t(`dict:${id}_${optKey}`) }}</div>
-                          <input type="number" min="1" class="form-control" v-model.number="allDicts[id].options[optKey]">
+                          <input type="number" min="1" class="form-control" v-model.number.lazy="allDicts[id].options[optKey]">
                           <div class="input-group-addon">{{ $t(`dict:${id}_${optKey}_unit`)  }}</div>
                         </div>
                       </div>
@@ -104,7 +104,7 @@
 
 <script>
 import Draggable from 'vuedraggable'
-import AppConfig from '@/app-config'
+import appConfigFactory from '@/app-config'
 
 export default {
   store: {
@@ -114,7 +114,7 @@ export default {
   },
   data () {
     const dictsPanelInfo = {}
-    Object.keys(new AppConfig().dicts.all).forEach(id => {
+    Object.keys(appConfigFactory().dicts.all).forEach(id => {
       dictsPanelInfo[id] = {
         favicon: browser.runtime.getURL(`assets/dicts/${id}.png`),
         height: 0
