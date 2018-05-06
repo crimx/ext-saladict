@@ -32,6 +32,7 @@
     }
   },
   "dependencies": {
+    "@panter/vue-i18next": "^0.9.1",
     "@types/i18next": "^8.4.3",
     "@types/lodash": "^4.14.98",
     "@types/node": "^9.3.0",
@@ -54,12 +55,11 @@
     "react-dom": "^16.3.2",
     "react-i18next": "^7.6.0",
     "react-redux": "^5.0.7",
-    "react-spring": "^5.0.1",
+    "react-spring": "^5.1.1",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "rxjs": "^6.0.0",
     "vue": "^2.5.13",
-    "vue-plugin-webextension-i18n": "^0.1.0",
     "vue-qriously": "^1.1.1",
     "vue-stash": "^2.0.1-beta",
     "vuedraggable": "^2.16.0",
@@ -139,7 +139,11 @@
       }
     },
     "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}"
+      "<rootDir>/src/content/**/*.{ts,tsx}",
+      "<rootDir>/src/background/**/*.{ts,tsx}",
+      "<rootDir>/src/selection/**/*.{ts,tsx}",
+      "<rootDir>/src/components/**/*.{ts,tsx}",
+      "<rootDir>/src/_helpers/**/*.{ts,tsx}"
     ],
     "setupFiles": [
       "<rootDir>/config/polyfills.js"
@@ -172,7 +176,6 @@
     "moduleFileExtensions": [
       "ts",
       "tsx",
-      "vue",
       "js",
       "json",
       "jsx",

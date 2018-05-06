@@ -16,7 +16,7 @@
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-"@babel/runtime@^7.0.0-beta.44":
+"@babel/runtime@^7.0.0-beta.46":
   version "7.0.0-beta.46"
   resolved "https://registry.npmjs.org/@babel/runtime/-/runtime-7.0.0-beta.46.tgz#466a9c0498f6d12d054a185981eef742d59d4871"
   dependencies:
@@ -152,6 +152,12 @@
     graceful-fs "^4.1.3"
     mkdirp "^0.5.1"
     rimraf "^2.5.2"
+
+"@panter/vue-i18next@^0.9.1":
+  version "0.9.1"
+  resolved "https://registry.npmjs.org/@panter/vue-i18next/-/vue-i18next-0.9.1.tgz#a24694d37b7e2f54f67ac8a485f634203660e98d"
+  dependencies:
+    deepmerge "^2.0.0"
 
 "@sinonjs/formatio@^2.0.0":
   version "2.0.0"
@@ -2513,7 +2519,7 @@ deep-is@~0.1.3:
   version "0.1.3"
   resolved "https://registry.npmjs.org/deep-is/-/deep-is-0.1.3.tgz#b369d6fb5dbc13eecf524f91b070feedc357cf34"
 
-deepmerge@^2.0.1:
+deepmerge@^2.0.0, deepmerge@^2.0.1:
   version "2.1.0"
   resolved "https://registry.npmjs.org/deepmerge/-/deepmerge-2.1.0.tgz#511a54fff405fc346f0240bb270a3e9533a31102"
 
@@ -6999,11 +7005,11 @@ react-redux@^5.0.7:
     loose-envify "^1.1.0"
     prop-types "^15.6.0"
 
-react-spring@^5.0.1:
-  version "5.0.1"
-  resolved "https://registry.npmjs.org/react-spring/-/react-spring-5.0.1.tgz#cf45795842febda8f72a60884e927f04c920c870"
+react-spring@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.npmjs.org/react-spring/-/react-spring-5.1.1.tgz#6d8425e6bccf7472e4daaa51431ca328e0c505ef"
   dependencies:
-    "@babel/runtime" "^7.0.0-beta.44"
+    "@babel/runtime" "^7.0.0-beta.46"
 
 react-test-renderer@^16.0.0-0:
   version "16.3.1"
@@ -8782,10 +8788,6 @@ vue-parser@^1.1.5:
   resolved "https://registry.npmjs.org/vue-parser/-/vue-parser-1.1.6.tgz#3063c8431795664ebe429c23b5506899706e6355"
   dependencies:
     parse5 "^3.0.3"
-
-vue-plugin-webextension-i18n@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/vue-plugin-webextension-i18n/-/vue-plugin-webextension-i18n-0.1.0.tgz#b3d4be737727b76ddcd823a9da088a4634577d63"
 
 vue-qriously@^1.1.1:
   version "1.1.1"
