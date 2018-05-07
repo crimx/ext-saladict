@@ -54,7 +54,7 @@ exports[`Component/content/DictItem should render pending correctly 1`] = `
       }
     }
     hold={false}
-    immediate={false}
+    immediate={true}
     impl={[Function]}
     inject={[Function]}
     native={false}
