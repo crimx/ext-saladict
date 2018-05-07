@@ -173,7 +173,25 @@ const allDicts = {
 
 // Just for type check. Keys in allDicts are useful so no actual assertion
 // tslint:disable-next-line:no-unused-expression
-allDicts as { [id: string]: DictConfig }
+allDicts as {
+  [id: string]: {
+    /** url for the complete result */
+    page: string
+    /** lazy load */
+    defaultUnfold: boolean
+    /** content below the preferrred height will be hidden by default */
+    preferredHeight: number
+    /** only search when the selection contains the language */
+    selectionLang: {
+      eng: boolean
+      chs: boolean
+    }
+    /** other options */
+    options?: {
+      [option: string]: number | boolean
+    }
+  }
+}
 
 export type DictID = keyof typeof allDicts
 
@@ -218,27 +236,9 @@ export const enum TCDirection {
 /** '' means no preload */
 export type PreloadSource = '' | 'clipboard' | 'selection'
 
-export type DictConfig = DeepReadonly<DictConfigMutable>
+export type DictConfigs = DeepReadonly<DictConfigsMutable>
 
-export type DictConfigs = { [id in DictID]: DictConfig }
-
-export interface DictConfigMutable {
-  /** url for the complete result */
-  page: string
-  /** lazy load */
-  defaultUnfold: boolean
-  /** content below the preferrred height will be hidden by default */
-  preferredHeight: number
-  /** only search when the selection contains the language */
-  selectionLang: {
-    eng: boolean
-    chs: boolean
-  }
-  /** other options */
-  options?: {
-    [option: string]: number | boolean
-  }
-}
+export type DictConfigsMutable = typeof allDicts
 
 export type AppConfig = DeepReadonly<AppConfigMutable>
 
@@ -338,9 +338,7 @@ export interface AppConfigMutable {
     /** default selected dictionaries */
     selected: DictID[]
     // settings of each dict will be auto-generated
-    readonly all: {
-      readonly [id in DictID]: DictConfigMutable
-    }
+    readonly all: DictConfigsMutable
   }
   contextMenus: {
     selected: ContextMenuDictID[]
