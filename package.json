@@ -124,7 +124,6 @@
     "typescript": "^2.8.1",
     "uglifyjs-webpack-plugin": "^1.1.6",
     "url-loader": "1.0.1",
-    "vue-jest": "^2.0.0",
     "vue-loader": "^14.0.0",
     "vue-style-loader": "^4.0.0",
     "vue-template-compiler": "^2.5.13",
@@ -154,18 +153,15 @@
       "enzyme-to-json/serializer"
     ],
     "testMatch": [
-      "<rootDir>/test/specs/**/*.{ts,tsx,js,jsx}",
-      "<rootDir>/src/**/__tests__/**/*.{ts,tsx,js,jsx}",
-      "<rootDir>/src/**/?(*.)(spec|test).{ts,tsx,js,jsx}"
+      "<rootDir>/test/specs/**/*.{ts,tsx,js,jsx}"
     ],
     "testEnvironment": "node",
     "testURL": "http://localhost",
     "transform": {
       "^.+\\.jsx?$": "<rootDir>/node_modules/babel-jest",
       "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest",
-      "^.+\\.(vue)$": "<rootDir>/node_modules/vue-jest",
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
-      "^(?!.*\\.(ts|tsx|vue|js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+      "^(?!.*\\.(ts|tsx|js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.js$"
