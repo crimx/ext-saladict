@@ -1,4 +1,4 @@
-import fetchDom from '../../../_helpers/fetch-dom'
+import fetchDOM from '../../../_helpers/fetch-dom'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -61,7 +61,7 @@ export default function search (
   text: string,
   config: BingConfig
 ): Promise<DictSearchResult<BingResult>> {
-  return fetchDom(DICT_LINK + text)
+  return fetchDOM(DICT_LINK + text)
     .then(doc => {
       if (doc.querySelector('.client_def_hd_hd')) {
         return handleLexResult(doc, config.options)

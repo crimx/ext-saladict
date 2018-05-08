@@ -1,14 +1,14 @@
-import fetchDom from '@/_helpers/fetch-dom'
+import fetchDOM from '@/_helpers/fetch-dom'
 
 class XMLHttpRequestMock {
   static queue: XMLHttpRequestMock[] = []
   static lastXhr: XMLHttpRequestMock
 
-  status: number
-  responseType: string
-  responseXML: Document
-  onload: Function
-  onerror: Function
+  status?: number
+  responseType?: string
+  responseXML?: Document
+  onload?: Function
+  onerror?: Function
   send = jest.fn(() => {
     XMLHttpRequestMock.queue.push(this)
     XMLHttpRequestMock.lastXhr = this
@@ -23,11 +23,11 @@ class XMLHttpRequestMock {
           xhr.responseXML = document.implementation.createHTMLDocument('')
           xhr.responseXML.body.innerHTML = res.body
         }
-        xhr.onload()
+        xhr.onload && xhr.onload()
       })
     } else {
       XMLHttpRequestMock.queue.forEach(xhr => {
-        xhr.onerror(new Error(res))
+        xhr.onerror && xhr.onerror(new Error(res))
       })
     }
     XMLHttpRequestMock.queue = []
@@ -58,7 +58,7 @@ describe('Fetch DOM', () => {
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
 
-      const p = fetchDom(url)
+      const p = fetchDOM(url)
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -84,7 +84,7 @@ describe('Fetch DOM', () => {
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
 
-      const p = fetchDom(url)
+      const p = fetchDOM(url)
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -114,7 +114,7 @@ describe('Fetch DOM', () => {
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
 
-      const p = fetchDom(url, { method: 'post', body: 'request body' })
+      const p = fetchDOM(url, { method: 'post', body: 'request body' })
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -142,7 +142,7 @@ describe('Fetch DOM', () => {
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
 
-      const p = fetchDom(url, { method: 'post'})
+      const p = fetchDOM(url, { method: 'post' })
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {

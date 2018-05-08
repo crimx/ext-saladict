@@ -3,7 +3,7 @@ type Options = {
   body?: null | Document | Blob | BufferSource | FormData | URLSearchParams | ReadableStream | USVString
 }
 
-export default function fetchDom (url: string, options?: Options): Promise<Document> {
+export default function fetchDOM (url: string, options?: Options): Promise<Document> {
   url = encodeURI(url.replace('\n', ' '))
 
   const method = (options && options.method && options.method.toLowerCase() === 'post') ? 'POST' : 'GET'
