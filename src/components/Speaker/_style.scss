@@ -1,0 +1,41 @@
+$speaker-duration: 1.5s !default;
+
+.icon-Speaker {
+  padding: 0;
+  vertical-align: text-bottom;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+
+  &:hover {
+    outline: none;
+  }
+}
+
+.icon-Speaker_Body {
+  fill: #f9690e;
+}
+
+.icon-Speaker_Wave {
+  fill: #f9690e;
+  opacity: 0;
+}
+
+.icon-Speaker.isActive {
+  .icon-Speaker_Wave {
+    animation: icon-Speaker-playing $speaker-duration infinite;
+
+    &:nth-child(3) {
+      animation-delay: $speaker-duration / 6;
+    }
+
+    &:nth-child(4) {
+      animation-delay: $speaker-duration / 6 * 2;
+    }
+  }
+}
+
+@keyframes icon-Speaker-playing {
+  33% { opacity: 1; }
+  66% { opacity: 0; }
+}
