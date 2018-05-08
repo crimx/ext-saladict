@@ -69,13 +69,15 @@ function mergeHistorical (config): Promise<AppConfig> {
     mergeNumber(`dicts.all.${id}.preferredHeight`)
     mergeBoolean(`dicts.all.${id}.selectionLang.eng`)
     mergeBoolean(`dicts.all.${id}.selectionLang.chs`)
-    _.forEach(dict.options, (value, opt) => {
-      if (_.isNumber(value)) {
-        mergeNumber(`dicts.all.${id}.options.${opt}`)
-      } else if (_.isBoolean(value)) {
-        mergeBoolean(`dicts.all.${id}.options.${opt}`)
-      }
-    })
+    if (dict['options']) {
+      _.forEach(dict['options'], (value, opt) => {
+        if (_.isNumber(value)) {
+          mergeNumber(`dicts.all.${id}.options.${opt}`)
+        } else if (_.isBoolean(value)) {
+          mergeBoolean(`dicts.all.${id}.options.${opt}`)
+        }
+      })
+    }
   })
 
   return browser.storage.sync.set({ config: base })

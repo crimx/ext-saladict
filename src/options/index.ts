@@ -7,7 +7,6 @@ import checkUpdate from '@/_helpers/check-update'
 import { getDefaultSelectionInfo } from '@/_helpers/selection'
 import { appConfigFactory, AppConfigMutable } from '@/app-config'
 
-import i18next from 'i18next'
 import i18nLoader from '@/_helpers/i18n'
 import commonLocles from '@/_locales/common'
 import dictsLocles from '@/_locales/dicts'

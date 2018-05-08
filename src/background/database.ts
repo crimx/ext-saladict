@@ -1,6 +1,5 @@
 import Dexie from 'dexie'
 import { storage } from '@/_helpers/browser-api'
-import { SelectionInfo } from '@/_helpers/selection'
 import {
   MsgIsInNotebook,
   MsgSaveWord,

@@ -1,4 +1,4 @@
-import React, { ButtonHTMLAttributes } from 'react'
+import React from 'react'
 import { translate } from 'react-i18next'
 import { TranslationFunction } from 'i18next'
 import { SelectionInfo } from '@/_helpers/selection'
@@ -84,8 +84,6 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
   render () {
     const {
       t,
-      saveToNotebook,
-      closeModal,
     } = this.props
 
     const {
