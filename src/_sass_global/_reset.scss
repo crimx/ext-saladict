@@ -1,0 +1,23 @@
+/*-----------------------------------------------*\
+    Custom reset
+\*-----------------------------------------------*/
+
+@import '~normalize.css';
+
+h1, h2, h3, h4, ul, li, button {
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+button {
+  background: transparent;
+  border: none;
+
+  &:hover {
+    outline: none;
+  }
+}

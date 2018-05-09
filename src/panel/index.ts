@@ -1,1 +1,1 @@
-import '@/content/components/DictPanel/panel.scss'
+import './panel.scss'
