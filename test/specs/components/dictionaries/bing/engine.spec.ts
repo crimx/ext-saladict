@@ -1,5 +1,5 @@
 import search, { BingResultLex, BingResultMachine, BingResultRelated } from '@/components/dictionaries/bing/engine'
-import { appConfigFactory, DictConfigs, AppConfigMutable } from '@/app-config'
+import { appConfigFactory, AppConfigMutable } from '@/app-config'
 
 jest.mock('@/_helpers/fetch-dom', () => {
   return jest.fn((url: string) => new Promise((resolve, reject) => {
@@ -8,9 +8,9 @@ jest.mock('@/_helpers/fetch-dom', () => {
     const { JSDOM } = require('jsdom')
     const { URL } = require('url')
     const response = {
-      lex: fs.readFileSync('test/specs/components/dictionaries/bing/response/lex.html'),
-      machine: fs.readFileSync('test/specs/components/dictionaries/bing/response/machine.html'),
-      related: fs.readFileSync('test/specs/components/dictionaries/bing/response/related.html'),
+      lex: fs.readFileSync('test/specs/components/dictionaries/bing/response/lex.html', 'utf8'),
+      machine: fs.readFileSync('test/specs/components/dictionaries/bing/response/machine.html', 'utf8'),
+      related: fs.readFileSync('test/specs/components/dictionaries/bing/response/related.html', 'utf8'),
     }
     const searchURL = new URL(url)
     const searchText = searchURL.searchParams.get('q')
@@ -68,10 +68,3 @@ describe('Dict/Bing/engine', () => {
       })
   })
 })
-
-function genBingConfig (source: Partial<DictConfigs['bing']> = {}): DictConfigs['bing'] {
-  return {
-    ...appConfigFactory().dicts.all['bing'],
-    ...source,
-  }
-}
