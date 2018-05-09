@@ -250,7 +250,9 @@ module.exports = {
             // it's runtime that would otherwise processed through "file" loader.
             // Also exclude `html` and `json` extensions so they get processed
             // by webpacks internal loaders.
-            exclude: [/\.js$/, /\.html$/, /\.json$/],
+            //
+            // Also exclude files under test for fake dev env
+            exclude: [/\.js$/, /\.html$/, /\.json$/, /test/],
             loader: require.resolve('file-loader'),
             options: {
               name: 'static/media/[name].[ext]',
