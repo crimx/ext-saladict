@@ -1,45 +1,46 @@
-import {isContainChinese, isContainEnglish} from 'src/helpers/lang-check'
+import { AppConfig } from '@/app-config'
+import { DictSearchResult } from '@/typings/server'
+import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 
-/**
- * Search text and give back result
- * @param {string} text - Search text
- * @param {object} config - app config
- * @param {object} helpers - helper functions
- * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
- */
-export default function search (text, config) {
-  // auto -> zh-CN
-  let url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=zh-CN&dt=t&q='
+export type GoogleResult = string
 
+export default function search (
+  text: string,
+  config: AppConfig,
+): Promise<DictSearchResult<GoogleResult>> {
+  const chCode = config.langCode === 'zh_TW' ? 'zh-TW' : 'zh-CN'
+  let sl = 'auto'
+  let tl = chCode
   if (isContainChinese(text)) {
-    // zh-CN -> en
-    url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=zh-CN&tl=en&dt=t&q='
+    sl = chCode
+    tl = 'en'
   } else if (isContainEnglish(text)) {
-    // en -> zh-CN
-    url = 'https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=zh-CN&dt=t&q='
+    sl = 'en'
+    tl = chCode
   }
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${encodeURIComponent(text)}`
 
-  return fetch(url + text)
+  return fetch(url)
     .then(r => r.text())
     .then(handleText)
 }
 
-/**
- * @async
- * @returns {Promise.<string>} A promise with the result to send back
- */
-function handleText (text) {
-  let json = JSON.parse(text.replace(/,+/g, ','))
+function handleText (text: string): DictSearchResult<GoogleResult> {
+  const json = JSON.parse(text.replace(/,+/g, ','))
 
   if (!json[0] || json[0].length <= 0) {
-    return Promise.reject('no result')
+    return handleNoResult()
   }
 
-  let result = json[0].map(item => item[0]).join(' ')
+  const result: string = json[0].map(item => item[0]).join(' ')
 
   if (result.length > 0) {
-    return result
-  } else {
-    return Promise.reject('no result')
+    return { result }
   }
+
+  return handleNoResult()
+}
+
+function handleNoResult (): any {
+  return Promise.reject(new Error('No result'))
 }
