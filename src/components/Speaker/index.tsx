@@ -3,7 +3,8 @@ import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgAudioPlay } from '@/typings/message'
 
 export interface SpeakerProps {
-  readonly src: string
+  /** render nothing when no src */
+  readonly src?: string
   /** @default 16 */
   readonly width?: number
   /** @default 16 */
@@ -45,13 +46,17 @@ export default class Speaker extends React.PureComponent<SpeakerProps, SpeakerSt
     if (this.state.isPlaying) { return }
     this.setState({ isPlaying: true })
 
-    message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src: this.props.src })
+    const src = this.props.src as string
+
+    message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
       .then(() => this.setState({ isPlaying: false }))
   }
 
   render () {
     const width = this.props.width || this.props.height || '1.2em'
     const height = this.props.height || width
+
+    if (!this.props.src) { return null }
 
     return (
       <button
