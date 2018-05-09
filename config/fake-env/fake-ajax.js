@@ -4,7 +4,7 @@
  */
 
  // bing search result example
-const fakeData = [
+const fakeXHRData = [
   {
     test: {
       method: /.*/,
@@ -17,8 +17,47 @@ const fakeData = [
         'text/html'
       )
     },
-  }
+  },
 ]
+
+const fakeFetchData = [
+  {
+    test: {
+      method: /.*/,
+      url: /translate\.googleapis\.com/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/google/response/f.txt')
+    },
+  },
+]
+
+/*-----------------------------------------------*\
+    Fake fetch
+\*-----------------------------------------------*/
+const fetch = window.fetch
+
+window.fetch = (url, ...args) => {
+  const data = fakeFetchData.find(data => {
+    return data.test.url.test(url)
+  })
+
+  console.log(data.response.text())
+
+  if (data) {
+    if (data.error) {
+      return Promise.reject(data.error)
+    } else {
+      return Promise.resolve(data.response)
+    }
+  }
+
+  return fetch(url, ...args)
+}
+
+/*-----------------------------------------------*\
+    Fake XHR
+\*-----------------------------------------------*/
 
 const XMLHttpRequest = window.XMLHttpRequest
 
@@ -27,7 +66,7 @@ function FakeXMLHttpRequest (...args) {
     get (target, propKey) {
       if (propKey === 'open') {
         return function (method, url) {
-          const data = fakeData.find(data => {
+          const data = fakeXHRData.find(data => {
             return data.test.method.test(method) && data.test.url.test(url)
           })
 
