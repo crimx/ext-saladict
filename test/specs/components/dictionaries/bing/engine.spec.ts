@@ -1,5 +1,5 @@
 import search, { BingResultLex, BingResultMachine, BingResultRelated } from '@/components/dictionaries/bing/engine'
-import { appConfigFactory, DictConfigs } from '@/app-config'
+import { appConfigFactory, DictConfigs, AppConfigMutable } from '@/app-config'
 
 jest.mock('@/_helpers/fetch-dom', () => {
   return jest.fn((url: string) => new Promise((resolve, reject) => {
@@ -23,15 +23,15 @@ jest.mock('@/_helpers/fetch-dom', () => {
 
 describe('Dict/Bing/engine', () => {
   it('should parse lex result correctly', () => {
-    return search('lex', genBingConfig({
-      options: {
-        tense: true,
-        phsym: true,
-        cdef: true,
-        related: true,
-        sentence: 4
-      }
-    }))
+    const config = appConfigFactory() as AppConfigMutable
+    config.dicts.all.bing.options = {
+      tense: true,
+      phsym: true,
+      cdef: true,
+      related: true,
+      sentence: 4
+    }
+    return search('lex', config)
       .then(searchResult => {
         expect(searchResult.audio).toHaveProperty('us', expect.stringContaining('mp3'))
         expect(searchResult.audio).toHaveProperty('uk', expect.stringContaining('mp3'))
@@ -46,7 +46,7 @@ describe('Dict/Bing/engine', () => {
   })
 
   it('should parse machine result correctly', () => {
-    return search('machine', genBingConfig())
+    return search('machine', appConfigFactory())
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 
@@ -58,7 +58,7 @@ describe('Dict/Bing/engine', () => {
   })
 
   it('should parse related result correctly', () => {
-    return search('related', genBingConfig())
+    return search('related', appConfigFactory())
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 

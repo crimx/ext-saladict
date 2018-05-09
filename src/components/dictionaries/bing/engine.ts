@@ -1,5 +1,5 @@
 import fetchDOM from '../../../_helpers/fetch-dom'
-import { DictConfigs } from '@/app-config'
+import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
 const DICT_LINK = 'https://cn.bing.com/dict/clientsearch?mkt=zh-CN&setLang=zh&form=BDVEHC&ClientVer=BDDTV3.5.1.4320&q='
@@ -59,21 +59,23 @@ type BingConfig = DictConfigs['bing']
 
 export default function search (
   text: string,
-  config: BingConfig
+  config: AppConfig
 ): Promise<DictSearchResult<BingResult>> {
+  const bingConfig = config.dicts.all.bing
+
   return fetchDOM(DICT_LINK + text)
     .then(doc => {
       if (doc.querySelector('.client_def_hd_hd')) {
-        return handleLexResult(doc, config.options)
+        return handleLexResult(doc, bingConfig.options)
       }
 
       if (doc.querySelector('.client_trans_head')) {
         return handleMachineResult(doc)
       }
 
-      if (config.options.related) {
+      if (bingConfig.options.related) {
         if (doc.querySelector('.client_do_you_mean_title_bar')) {
-          return handleRelatedResult(doc, config)
+          return handleRelatedResult(doc, bingConfig)
         }
       }
 
