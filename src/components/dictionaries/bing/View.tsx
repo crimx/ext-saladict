@@ -1,3 +1,98 @@
-export default function DictBing ({ result }) {
-  return result ? 'Lorem ipsum dolor sit amet consectetur, adipisicing elit. Quas quasi, quo porro, dolore minus, fugiat itaque sint voluptatum error velit recusandae. Quod repudiandae commodi optio sunt quae reprehenderit necessitatibus, nulla praesentium nostrum adipisci? In sequi ullam officiis autem nihil dicta officia, repellat consequatur, est similique ab aliquid modi animi vero iste. Placeat omnis aliquam, id quisquam sed iste laudantium quos atque fuga sunt modi debitis dignissimos assumenda ullam deleniti nesciunt, amet at temporibus ducimus velit tempora cupiditate incidunt ipsa? Tenetur corrupti veniam perferendis natus obcaecati error dolores, tempora aut exercitationem minus. Id iste vel repudiandae iure voluptas illum harum commodi.' : null
+import React from 'react'
+import Speaker from '@/components/Speaker'
+import { BingResult, BingResultLex, BingResultMachine, BingResultRelated } from './engine'
+
+export default class DictBing extends React.PureComponent<{ result: BingResult }> {
+  renderLex () {
+    const result = this.props.result as BingResultLex
+    return (
+      <>
+        <h1 className='dictBing-Title'>{result.title}</h1>
+
+        {result.phsym &&
+          <ul className='dictBing-Phsym'>
+            {result.phsym.map(p => (
+              <li className='dictBing-PhsymItem' key={p.pron}>
+                {p.lang} <Speaker src={p.pron} />
+              </li>
+            ))}
+          </ul>
+        }
+
+        {result.cdef &&
+          <ul className='dictBing-Cdef'>
+            {result.cdef.map(d => (
+              <li className='dictBing-CdefItem' key={d.pos}>
+                <span className='dictBing-CdefItem_Pos'>{d.pos}</span>
+                <span className='dictBing-CdefItem_Def'>{d.def}</span>
+              </li>
+            ))}
+          </ul>
+        }
+
+        {result.infs &&
+          <ul className='dictBing-Inf'>
+            词形：
+            {result.infs.map(inf => (
+              <li className='dictBing-InfItem' key={inf}>
+                {inf}
+              </li>
+            ))}
+          </ul>
+        }
+
+        {result.sentences &&
+          <ul className='dictBing-SentenceList'>
+            {result.sentences.map(sen => (
+              <li className='dictBing-SentenceItem' key={sen.en}>
+                {sen.en && <p>{sen.en} <Speaker src={sen.mp3}></Speaker></p>}
+                {sen.chs && <p>{sen.chs}</p>}
+                {sen.source && <footer className='dictBing-SentenceSource'>{sen.source}</footer>}
+              </li>
+            ))}
+          </ul>
+        }
+      </>
+    )
+  }
+
+  renderMachine () {
+    const result = this.props.result as BingResultMachine
+    return result.mt
+  }
+
+  renderRelated () {
+    const result = this.props.result as BingResultRelated
+    return (
+      <>
+        <h1 className='dictBing-Related_Title'>{result.title}</h1>
+        {result.defs.map(def => (
+          <React.Fragment key={def.title}>
+            <h2 className='dictBing-Related_Title'>{def.title}</h2>
+            <ul>
+              {def.meanings.map(meaning => (
+                <li className='dictBing-Related_Meaning' key={meaning.word}>
+                  <a className='dictBing-Related_Meaning_Word' href={meaning.href}>{meaning.word}</a>
+                  <span className='dictBing-Related_Meaning_Def'>{meaning.def}</span>
+                </li>
+              ))}
+            </ul>
+          </React.Fragment>
+        ))}
+      </>
+    )
+  }
+
+  render () {
+    switch (this.props.result.type) {
+      case 'lex':
+        return this.renderLex()
+      case 'machine':
+        return this.renderMachine()
+      case 'related':
+        return this.renderRelated()
+      default:
+        return null
+    }
+  }
 }

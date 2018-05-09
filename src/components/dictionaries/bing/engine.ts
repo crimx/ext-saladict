@@ -25,10 +25,10 @@ export interface BingResultLex {
   /** infinitive */
   infs?: string[]
   sentences?: Array<{
-    en: string
-    chs: string
-    source: string
-    mp3: string
+    en?: string
+    chs?: string
+    source?: string
+    mp3?: string
   }>
 }
 
