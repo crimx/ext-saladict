@@ -37,6 +37,14 @@
   color: #333;
 }
 
+.panel-DictItem_BodyMesure {
+  overflow: hidden;
+
+  > article {
+    margin: 10px 0;
+  }
+}
+
 .panel-DictItem_Loader {
   align-self: center;
   position: relative;
