@@ -1,4 +1,4 @@
-import audio from '@/background/audio-manager'
+import * as audio from '@/background/audio-manager'
 
 describe('Audio Manager', () => {
   const bakAudio = (window as any).Audio
@@ -50,14 +50,5 @@ describe('Audio Manager', () => {
     expect(mockAudioInstances[0].pause).toHaveBeenCalledTimes(1)
     expect(mockAudioInstances[1].play).toHaveBeenCalledTimes(1)
     expect(mockAudioInstances[1].pause).toHaveBeenCalledTimes(0)
-  })
-
-  it('listen', () => {
-    const url = 'https://e.b/play.mp3'
-    expect(audio.load(url)).toBe(mockAudioInstances[0])
-    expect(mockAudio).toBeCalledWith(url)
-    const listener = () => {}
-    audio.addListener('play', listener)
-    expect(mockAudioInstances[0].addEventListener).toBeCalledWith('play', listener)
   })
 })
