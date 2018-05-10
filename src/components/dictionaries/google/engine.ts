@@ -1,13 +1,16 @@
+import { handleNoResult } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 
 export type GoogleResult = string
 
+type GoogleSearchResult = DictSearchResult<GoogleResult>
+
 export default function search (
   text: string,
   config: AppConfig,
-): Promise<DictSearchResult<GoogleResult>> {
+): Promise<GoogleSearchResult> {
   const chCode = config.langCode === 'zh_TW' ? 'zh-TW' : 'zh-CN'
   let sl = 'auto'
   let tl = chCode
@@ -25,7 +28,9 @@ export default function search (
     .then(handleText)
 }
 
-function handleText (text: string): DictSearchResult<GoogleResult> {
+function handleText (
+  text: string
+): GoogleSearchResult | Promise<GoogleSearchResult> {
   const json = JSON.parse(text.replace(/,+/g, ','))
 
   if (!json[0] || json[0].length <= 0) {
@@ -39,8 +44,4 @@ function handleText (text: string): DictSearchResult<GoogleResult> {
   }
 
   return handleNoResult()
-}
-
-function handleNoResult (): any {
-  return Promise.reject(new Error('No result'))
 }

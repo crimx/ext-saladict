@@ -1,4 +1,5 @@
 import fetchDOM from '../../../_helpers/fetch-dom'
+import { handleNoResult } from '../helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -57,6 +58,10 @@ export type BingResult = BingResultLex | BingResultMachine | BingResultRelated
 
 type BingConfig = DictConfigs['bing']
 
+type BingSearchResultLex = DictSearchResult<BingResultLex>
+type BingSearchResultMachine = DictSearchResult<BingResultMachine>
+type BingSearchResultRelated = DictSearchResult<BingResultRelated>
+
 export default function search (
   text: string,
   config: AppConfig
@@ -79,14 +84,14 @@ export default function search (
         }
       }
 
-      return handleNoResult()
+      return handleNoResult<DictSearchResult<BingResult>>()
     })
 }
 
 function handleLexResult (
   doc: Document,
   options: BingConfig['options'],
-): DictSearchResult<BingResultLex> {
+): BingSearchResultLex | Promise<BingSearchResultLex> {
   let searchResult: DictSearchResult<BingResultLex> = {
     result: {
       type: 'lex',
@@ -173,19 +178,25 @@ function handleLexResult (
 
 function handleMachineResult (
   doc: Document,
-): DictSearchResult<BingResultMachine> {
-  return {
-    result: {
-      type: 'machine',
-      mt: getText(doc, '.client_sen_cn')
+): BingSearchResultMachine | Promise<BingSearchResultMachine> {
+  const mt = getText(doc, '.client_sen_cn')
+
+  if (mt) {
+    return {
+      result: {
+        type: 'machine',
+        mt,
+      }
     }
   }
+
+  return handleNoResult()
 }
 
 function handleRelatedResult (
   doc: Document,
   config: BingConfig,
-): DictSearchResult<BingResultRelated> {
+): BingSearchResultRelated | Promise<BingSearchResultRelated> {
   const searchResult: DictSearchResult<BingResultRelated> = {
     result: {
       type: 'related',
@@ -215,10 +226,6 @@ function handleRelatedResult (
     return searchResult
   }
   return handleNoResult()
-}
-
-function handleNoResult (): any {
-  return Promise.reject(new Error('No result'))
 }
 
 function getText (el: ParentNode, childSelector: string): string {
