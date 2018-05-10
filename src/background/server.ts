@@ -2,6 +2,9 @@ import { message, openURL } from '@/_helpers/browser-api'
 import { play } from './audio-manager'
 import { isInNotebook, saveWord, deleteWord, getWordsByText, getAllWords } from './database'
 import { chsToChz } from '@/_helpers/chs-to-chz'
+import appConfigFactory, { AppConfig } from '@/app-config'
+import { createAppConfigStream } from '@/_helpers/config-manager'
+import { DictSearchResult } from '@/typings/server'
 import {
   MsgType,
   MsgOpenUrl,
@@ -13,6 +16,10 @@ import {
   MsgGetWordsByText,
   MsgGetAllWords,
 } from '@/typings/message'
+
+let config = appConfigFactory()
+
+createAppConfigStream().subscribe(newConfig => config = newConfig)
 
 message.self.initServer()
 
@@ -58,25 +65,36 @@ function playAudio (data: MsgAudioPlay): Promise<void> {
   return play(data.src)
 }
 
-function fetchDictResult (data: MsgFetchDictResult): Promise<{ result: any, id: typeof data.id }> {
-  let search
+function fetchDictResult (
+  data: MsgFetchDictResult
+): Promise<any> {
+  let search: (
+    text: string,
+    config: AppConfig
+  ) => Promise<DictSearchResult<any>>
 
   try {
-    search = require('@/components/dictionaries/' + data.id + '/engine')
-    if (typeof search !== 'function') {
-      search = search.default
-    }
+    search = require('@/components/dictionaries/' + data.id + '/engine').default
   } catch (err) {
     return Promise.reject(err)
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    console.log(`search ${data.text}`)
-    search = () => new Promise(resolve => setTimeout(() => resolve({ result: 'yeyeye' }), Math.random() * 5000 + 1000))
-  }
-
-  return search(data.text)
-    .then(result => ({ result, id: data.id }))
+  return search(data.text, config)
+    .then(({ result, audio }) => {
+      if (audio) {
+        const { cn, en } = config.autopron
+        if (audio.py && cn.dict === data.id) {
+          play(audio.py)
+        } else if (en.dict === data.id) {
+          if (audio.uk && en.accent === 'uk') {
+            play(audio.uk)
+          } else if (audio.us && en.accent === 'us') {
+            play(audio.us)
+          }
+        }
+      }
+      return result
+    })
 }
 
 function preloadSelection (): Promise<void> {

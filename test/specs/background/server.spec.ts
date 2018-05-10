@@ -5,6 +5,8 @@ import { MsgType } from '@/typings/message'
 
 jest.mock('@/background/database')
 
+const config = appConfigFactory()
+
 describe('Server', () => {
   const chsToChz = jest.fn()
   const play = jest.fn()
@@ -12,6 +14,7 @@ describe('Server', () => {
   const openURL = jest.fn()
   const bingSearch = jest.fn()
   browserWrap.message.self.initServer = initServer
+  browserWrap.storage.sync.get = jest.fn(() => Promise.resolve({ config }))
   // @ts-ignore
   browserWrap.openURL = openURL
 
@@ -26,7 +29,9 @@ describe('Server', () => {
       return browserWrap
     })
     jest.doMock('@/components/dictionaries/bing/engine', () => {
-      return bingSearch
+      return {
+        default: bingSearch
+      }
     })
   })
 
@@ -47,7 +52,7 @@ describe('Server', () => {
     initServer.mockReset()
     openURL.mockReset()
     bingSearch.mockReset()
-    bingSearch.mockImplementation(() => Promise.resolve())
+    bingSearch.mockImplementation(() => Promise.resolve({ result: '' }))
     jest.resetModules()
     require('@/background/server')
   })
@@ -118,7 +123,7 @@ describe('Server', () => {
         text: 'test',
       })
       expect(bingSearch).toHaveBeenCalledTimes(1)
-      expect(bingSearch).toHaveBeenCalledWith('test')
+      expect(bingSearch).toHaveBeenCalledWith('test', config)
     })
   })
 
