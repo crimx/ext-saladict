@@ -37,16 +37,9 @@ let config = appConfigFactory()
 let isCtrlPressed = false
 let clickPeriodCount = 0
 
-const isCtrlPressed$: Observable<boolean> = merge(
-  map(isCtrlKey)(fromEvent<KeyboardEvent>(window, 'keydown', { capture: true })),
-  mapTo(false)(fromEvent(window, 'keyup', { capture: true })),
-  mapTo(false)(fromEvent(window, 'blur', { capture: true })),
-  of(false)
-).pipe(
-  distinctUntilChanged()
-)
+const isCtrlPressed$$ = share<boolean>()(isKeyPressed(isCtrlKey))
 
-const validCtrlPressed$$ = isCtrlPressed$.pipe(
+const validCtrlPressed$$ = isCtrlPressed$$.pipe(
   filter(isCtrlPressed => config.active && isCtrlPressed),
   share(),
 )
@@ -78,7 +71,13 @@ const clickPeriodCount$ = merge(
 
 createAppConfigStream().subscribe(newConfig => config = newConfig)
 
-isCtrlPressed$.subscribe(flag => isCtrlPressed = flag)
+isCtrlPressed$$.subscribe(flag => isCtrlPressed = flag)
+
+isKeyPressed(isEscapeKey).subscribe(flag => {
+  if (flag) {
+    message.self.send({ type: MsgType.EscapeKey })
+  }
+})
 
 clickPeriodCount$.subscribe(count => clickPeriodCount = count)
 
@@ -181,19 +180,23 @@ function sendEmptyMessage () {
  * Is ctrl/command button pressed
  */
 function isCtrlKey (evt: KeyboardEvent): boolean {
-  // ctrl & command(mac)
-  if (evt.keyCode) {
-    if (evt.keyCode === 17 || evt.keyCode === 91 || evt.keyCode === 93) {
-      return true
-    }
-    return false
-  }
+  return evt.key === 'Control' || evt.key === 'Meta'
+}
 
-  if (evt.key) {
-    if (evt.key === 'Control' || evt.key === 'Meta') {
-      return true
-    }
-  }
+/**
+ * Is esc button pressed
+ */
+function isEscapeKey (evt: KeyboardEvent): boolean {
+  return evt.key === 'Escape'
+}
 
-  return false
+function isKeyPressed (keySelectior: (e: KeyboardEvent) => boolean): Observable<boolean> {
+  return distinctUntilChanged<boolean>()(
+    merge(
+      map(keySelectior)(fromEvent<KeyboardEvent>(window, 'keydown', { capture: true })),
+      mapTo(false)(fromEvent(window, 'keyup', { capture: true })),
+      mapTo(false)(fromEvent(window, 'blur', { capture: true })),
+      of(false)
+    )
+  )
 }

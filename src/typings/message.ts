@@ -14,6 +14,9 @@ export const enum MsgType {
   /** Ctrl/Command has been hit 3 times */
   TripleCtrl,
 
+  /** Escape key is pressed */
+  EscapeKey,
+
   /** Response the pageInfo of a page */
   PageInfo,
 
@@ -88,6 +91,7 @@ export type MsgOpenUrl = MsgOpenUrlWithoutPlaceholder | MsgOpenUrlWithPlaceholde
 
 export interface MsgAudioPlay {
   readonly type: MsgType.PlayAudio
+  /** empty string for stoping */
   readonly src: string
 }
 

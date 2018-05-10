@@ -169,6 +169,18 @@ describe('Message Selection', () => {
     }, 0)
   })
 
+  it('should detect esc key being pressed', done => {
+    window.dispatchEvent(new KeyboardEvent('keydown', {
+      key: 'Escape',
+    }))
+
+    setTimeout(() => {
+      expect(message.self.send).toHaveBeenCalledTimes(1)
+      expect(message.self.send).toBeCalledWith({ type: MsgType.EscapeKey })
+      done()
+    }, 0)
+  })
+
   it('ctrlKey should be true if ctrl key is pressed while clicking', done => {
     window.dispatchEvent(new KeyboardEvent('keydown', {
       key: 'Control',

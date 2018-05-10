@@ -135,11 +135,9 @@ export function startUpAction (): Dispatcher {
     listenTripleCtrl(dispatch, getState)
 
     // close panel on esc
-    window.addEventListener('keyup', e => {
-      if (e.key === 'Escape') {
-        dispatch(closePanel() as any)
-      }
-    }, { capture: true })
+    message.self.addListener(MsgType.EscapeKey, () => {
+      dispatch(closePanel() as any)
+    })
   }
 }
 
@@ -165,6 +163,7 @@ export function closePanel (): Dispatcher {
       dispatch(restoreWidget())
       dispatch(sendEmptySelection() as any)
     }
+    message.send({ type: MsgType.PlayAudio, src: '' })
   }
 }
 
