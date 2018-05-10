@@ -3,7 +3,7 @@ import { appConfigFactory } from '@/app-config'
 
 const fetchbak = window.fetch
 
-describe('Dict/Google/engine', () => {
+describe('Dict/GuoYu/engine', () => {
   beforeAll(() => {
     window.fetch = jest.fn((url: string) => Promise.resolve({
       json: () => require('./response/愛.json')
