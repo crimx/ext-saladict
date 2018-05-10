@@ -1,40 +1,50 @@
-import fetchDom from 'src/helpers/fetch-dom'
-import stripScript from 'src/helpers/strip-script'
+import DOMPurify from 'dompurify'
+import fetchDOM from '@/_helpers/fetch-dom'
+import { handleNoResult } from '../helpers'
+import { AppConfig, DictConfigs } from '@/app-config'
+import { DictSearchResult } from '@/typings/server'
 
-/**
- * Search text and give back result
- * @param {string} text - Search text
- * @param {object} config - app config
- * @param {object} helpers - helper functions
- * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
- */
-export default function search (text, config) {
-  return fetchDom('http://www.iciba.com/' + text)
-    .then(handleDom)
+export interface COBUILDResult {
+  title: string
+  defs: string[]
+  level?: string
+  star?: number
+  prons?: Array<{
+    phsym: string
+    audio: string
+  }>
 }
 
-/**
-* @typedef {Object} CobuildResult
-* @property {string} title
-* @property {string} level
-* @property {number} star
-* @property {Object[]} prons
-* @property {string} prons[].phsym
-* @property {string} prons[].audio
-* @property {string[]} defs
-*/
+type COBUILDSearchResult = DictSearchResult<COBUILDResult>
 
-/**
- * @returns {Promise.<CobuildResult>} A promise with the result to send back
- */
-function handleDom (doc) {
-  let result = {}
+export default function search (
+  text: string,
+  config: AppConfig
+): Promise<COBUILDSearchResult> {
+  return fetchDOM('https://www.iciba.com/' + text)
+    .then(doc => handleDom(doc, config.dicts.all.cobuild.options))
+    .catch(() => {
+      return fetchDOM('http://www.iciba.com/' + text)
+        .then(doc => handleDom(doc, config.dicts.all.cobuild.options))
+    })
+}
+
+function handleDom (
+  doc: Document,
+  options: DictConfigs['cobuild']['options']
+): COBUILDSearchResult | Promise<COBUILDSearchResult> {
+  const result: Partial<COBUILDResult> = {}
+  const audio: { uk?: string, us?: string } = {}
 
   let $title = doc.querySelector('.keyword')
-  if ($title) { result.title = $title.innerText.trim() }
+  if ($title && $title.textContent) {
+    result.title = $title.textContent.trim()
+  }
 
   let $level = doc.querySelector('.base-level')
-  if ($level) { result.level = $level.innerText.trim() }
+  if ($level && $level.textContent) {
+    result.level = $level.textContent.trim()
+  }
 
   let $star = doc.querySelector('.word-rate [class^="star"]')
   if ($star) {
@@ -44,20 +54,36 @@ function handleDom (doc) {
 
   let $pron = doc.querySelector('.base-speak')
   if ($pron) {
-    result.prons = Array.from($pron.children).map(el => ({
-      phsym: el.innerText.trim(),
-      audio: (/http\S+.mp3/.exec(el.innerText) || [''])[0]
-    }))
+    result.prons = Array.from($pron.children).map(el => {
+      const phsym = (el.textContent || '').trim()
+      const mp3 = (/http\S+.mp3/.exec(el.innerHTML) || [''])[0]
+
+      if (phsym.indexOf('英') !== -1) {
+        audio.uk = mp3
+      } else if (phsym.indexOf('美') !== -1) {
+        audio.us = mp3
+      }
+
+      return {
+        phsym,
+        audio: mp3,
+      }
+    })
   }
 
-  let $article = Array.from(doc.querySelectorAll('.info-article')).find(x => /柯林斯高阶英汉双解学习词典/.test(x.innerText))
+  let $article = Array.from(doc.querySelectorAll('.info-article'))
+    .find(x => /柯林斯高阶英汉双解学习词典/.test(x.textContent || ''))
   if ($article) {
     result.defs = Array.from($article.querySelectorAll('.prep-order'))
-      .map(x => stripScript(x).innerHTML)
+      .slice(0, options.sentence)
+      .map(d => DOMPurify.sanitize(d.outerHTML))
   }
 
-  if (Object.keys(result).length > 0) {
-    return result
+  console.log(doc)
+
+  if (result.title && result.defs && result.defs.length > 0) {
+    return { result, audio } as COBUILDSearchResult
   }
-  return Promise.reject('no result')
+
+  return handleNoResult()
 }

@@ -42,6 +42,9 @@ const allDicts = {
     selectionLang: {
       eng: true,
       chs: true
+    },
+    options: {
+      sentence: 4
     }
   },
   dictcn: {

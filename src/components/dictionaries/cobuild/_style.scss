@@ -1,0 +1,60 @@
+.dictCOBUILD-Title {
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.dictCOBUILD-Pron {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.dictCOBUILD-PronItem {
+  margin-right: 1em;
+
+  .icon-Speaker {
+    margin-left: 2px;
+  }
+}
+
+.dictCOBUILD-Rate {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.dictCOBUILD-Level {
+  margin-left: 10px;
+  color: #aaa;
+}
+
+.dictCOBUILD-Defs {
+  margin: 0;
+  padding-left: 15px;
+}
+
+.dictCOBUILD-Def {
+  p {
+    margin: 0;
+  }
+
+  b {
+    color: #f9690e;
+  }
+
+  .prep-en {
+    display: block;
+    color: #777;
+    margin-bottom: 5px;
+  }
+
+  .text-sentence {
+    padding-left: 10px;
+    padding-bottom: 5px;
+    color: #333;
+    border-left: #ddd solid 2px;
+
+    &:last-child {
+      padding-bottom: 0;
+      margin-bottom: 10px;
+    }
+  }
+}

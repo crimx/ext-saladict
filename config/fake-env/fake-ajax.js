@@ -17,6 +17,19 @@ const fakeXHRData = [
       )
     },
   },
+  {
+    test: {
+      method: /.*/,
+      url: /\.iciba\.com/,
+    },
+    response: {
+      status: 200,
+      responseXML: new DOMParser().parseFromString(
+        require('raw-loader!../../test/specs/components/dictionaries/cobuild/response/love.html'),
+        'text/html'
+      )
+    },
+  },
 ]
 
 const fakeFetchData = [
