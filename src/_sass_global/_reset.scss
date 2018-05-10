@@ -9,7 +9,7 @@ h1, h2, h3, h4, ul, li, button {
   padding: 0;
 }
 
-li {
+ul li {
   list-style-type: none;
 }
 
@@ -19,5 +19,14 @@ button {
 
   &:hover {
     outline: none;
+  }
+}
+
+a {
+  color: #16a085;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
   }
 }
