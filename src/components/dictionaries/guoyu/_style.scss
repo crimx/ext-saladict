@@ -1,0 +1,57 @@
+.dictMoe-H {
+  margin-bottom: 10px;
+}
+
+.dictMoe-Title {
+  display: inline;
+  font-size: 1.6em;
+  font-weight: normal;
+  margin: 0 0.2em;
+}
+
+.dictMoe-Defs {
+  margin: 0 0 10px;
+  padding-left: 1.5em;
+}
+
+.dictMoe-Defs_F {
+  margin: 0;
+}
+
+.dictMoe-Defs_E {
+  margin: 0;
+  color: #999;
+}
+
+.dictMoe-Trans {
+  display: table;
+}
+
+.dictMoe-Trans_Pos {
+  display: table-cell;
+  width: 2em;
+  font-weight: bold;
+  text-align: right;
+}
+
+.dictMoe-Trans_Def {
+  display: table-cell;
+  padding: 0 12px;
+}
+
+.dictMoe-Link {
+  &:link,
+  &:visited,
+  &:hover,
+  &:active {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &:focus,
+  &:hover {
+    background: #16a085;
+    outline: 3px solid #16a085;
+    color: #fff;
+  }
+}
