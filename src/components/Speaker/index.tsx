@@ -17,6 +17,7 @@ export interface SpeakerState {
 
 export default class Speaker extends React.PureComponent<SpeakerProps, SpeakerState> {
   _playTimeout: any
+  isUnmount = false
 
   constructor (props) {
     super(props)
@@ -49,7 +50,11 @@ export default class Speaker extends React.PureComponent<SpeakerProps, SpeakerSt
     const src = this.props.src as string
 
     message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
-      .then(() => this.setState({ isPlaying: false }))
+      .then(() => !this.isUnmount && this.setState({ isPlaying: false }))
+  }
+
+  componentWillUnmount () {
+    this.isUnmount = true
   }
 
   render () {
