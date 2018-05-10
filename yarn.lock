@@ -175,6 +175,10 @@
   dependencies:
     "@types/filesystem" "*"
 
+"@types/dompurify@^0.0.31":
+  version "0.0.31"
+  resolved "https://registry.npmjs.org/@types/dompurify/-/dompurify-0.0.31.tgz#f152d5a81f2b5625e29f11eb016cd9b301d0d4b4"
+
 "@types/enzyme@^3.1.9":
   version "3.1.9"
   resolved "https://registry.npmjs.org/@types/enzyme/-/enzyme-3.1.9.tgz#fbd97f3beb7cad76fc9c6f04c97d77f4834522ef"
@@ -2689,6 +2693,10 @@ domhandler@^2.3.0:
   resolved "https://registry.npmjs.org/domhandler/-/domhandler-2.4.1.tgz#892e47000a99be55bbf3774ffea0561d8879c259"
   dependencies:
     domelementtype "1"
+
+dompurify@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.npmjs.org/dompurify/-/dompurify-1.0.4.tgz#b0655d07856c1ef76fd27ae18e8ab1174ed18819"
 
 domutils@1.1:
   version "1.1.6"

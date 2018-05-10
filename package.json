@@ -33,6 +33,7 @@
   },
   "dependencies": {
     "@panter/vue-i18next": "^0.9.1",
+    "@types/dompurify": "^0.0.31",
     "@types/i18next": "^8.4.3",
     "@types/lodash": "^4.14.98",
     "@types/node": "^9.3.0",
@@ -43,6 +44,7 @@
     "@types/react-redux": "^5.0.16",
     "bootstrap-sass": "^3.3.7",
     "dexie": "^2.0.3",
+    "dompurify": "^1.0.4",
     "highcharts": "^6.0.4",
     "html2canvas": "^1.0.0-alpha.9",
     "i18next": "^11.2.2",
