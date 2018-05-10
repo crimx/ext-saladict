@@ -3,7 +3,6 @@
  * You can use libraries like 'mork-fetch', 'faker'
  */
 
- // bing search result example
 const fakeXHRData = [
   {
     test: {
@@ -30,6 +29,15 @@ const fakeFetchData = [
       text: () => require('raw-loader!../../test/specs/components/dictionaries/google/response/f.txt')
     },
   },
+  {
+    test: {
+      method: /.*/,
+      url: /moedict\.tw/,
+    },
+    response: {
+      json: () => JSON.parse(require('raw-loader!../../test/specs/components/dictionaries/guoyu/response/愛.json'))
+    },
+  },
 ]
 
 /*-----------------------------------------------*\
@@ -42,13 +50,14 @@ window.fetch = (url, ...args) => {
     return data.test.url.test(url)
   })
 
-  console.log(data.response.text())
-
   if (data) {
     if (data.error) {
       return Promise.reject(data.error)
     } else {
-      return Promise.resolve(data.response)
+      // return Promise.resolve(data.response)
+      return new Promise(resolve => setTimeout(() =>
+        resolve(data.response), 1000 + Math.random() * 3000)
+      )
     }
   }
 
@@ -89,7 +98,10 @@ function FakeXMLHttpRequest (...args) {
             }
 
             if (target.onload) {
-              target.onload()
+              // target.onload()
+              setTimeout(() => {
+                target.onload()
+              }, 1000 + Math.random() * 3000);
             }
           } else {
             return target.send(...args)
