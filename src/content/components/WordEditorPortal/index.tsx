@@ -26,7 +26,27 @@ export default class WordEditorPortal extends React.Component<WordEditorPortalPr
   frameHead = '<meta name="viewport" content="width=device-width, initial-scale=1">\n' + (
     process.env.NODE_ENV === 'production'
       ? `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('wordeditor.css')}" />`
-      : document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]')[1].outerHTML
+      : Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
+        .map(link => link.outerHTML)
+        .join('\n')
+        + `
+        <script>
+          document.querySelectorAll('link')
+            .forEach(link => {
+              return fetch(link.href)
+                .then(r => r.blob())
+                .then(b => {
+                  var reader = new FileReader();
+                  reader.onload = function() {
+                    if (reader.result.indexOf('wordEditor') === -1) {
+                      link.remove()
+                    }
+                  }
+                  reader.readAsText(b)
+                })
+            })
+        </script>
+        `
   )
 
   mountEL = () => {

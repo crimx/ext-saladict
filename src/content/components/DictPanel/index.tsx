@@ -27,7 +27,27 @@ export default class DictPanel extends React.Component<DictPanelProps> {
   frameHead = '<meta name="viewport" content="width=device-width, initial-scale=1">\n' + (
     process.env.NODE_ENV === 'production'
       ? `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('panel.css')}" />`
-      : Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))[0].outerHTML
+      : Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
+        .map(link => link.outerHTML)
+        .join('\n')
+        + `
+        <script>
+          document.querySelectorAll('link')
+            .forEach(link => {
+              return fetch(link.href)
+                .then(r => r.blob())
+                .then(b => {
+                  var reader = new FileReader();
+                  reader.onload = function() {
+                    if (reader.result.indexOf('wordEditor') !== -1) {
+                      link.remove()
+                    }
+                  }
+                  reader.readAsText(b)
+                })
+            })
+        </script>
+        `
   )
 
   render () {
