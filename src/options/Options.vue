@@ -25,6 +25,8 @@
       </div>
     </div>
     <opt-app-active />
+    <opt-preference />
+    <opt-privacy />
     <opt-language />
     <opt-dict-panel />
     <opt-mode />
@@ -52,6 +54,8 @@ import SocialMedia from './SocialMedia'
 import AlertModal from '@/components/AlertModal'
 
 import OptAppActive from './OptAppActive'
+import OptPreference from './OptPreference'
+import OptPrivacy from './OptPrivacy'
 import OptDictPanel from './OptDictPanel'
 import OptMode from './OptMode'
 import OptPinMode from './OptPinMode'
@@ -122,6 +126,8 @@ export default {
   },
   components: {
     OptAppActive,
+    OptPreference,
+    OptPrivacy,
     OptDictPanel,
     OptMode,
     OptPinMode,
@@ -176,9 +182,23 @@ export default {
     margin-left: 0;
   }
 
-  :last-child {
+  &:last-child {
     margin-right: 0;
   }
+}
+
+.modal {
+  // leave space for the dict panel
+  padding-right: 470px;
+}
+
+.modal-body {
+  overflow-y: auto;
+  max-height: 80vh;
+}
+
+.input-group {
+  margin: 10px 0;
 }
 
 /*------------------------------------*\
@@ -215,11 +235,6 @@ kbd {
 /*------------------------------------*\
    Components
 \*------------------------------------*/
-.modal-body {
-  overflow-y: auto;
-  max-height: 80vh;
-}
-
 .config-updated {
   @extend .alert-success;
   position: fixed;

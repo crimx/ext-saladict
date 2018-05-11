@@ -77,7 +77,7 @@
                       <div class="checkbox" v-if="typeof allDicts[id].options[optKey] !== 'boolean'">
                         <div class="input-group">
                           <div class="input-group-addon">{{ $t(`dict:${id}_${optKey}`) }}</div>
-                          <input type="number" min="1" class="form-control" v-model.number.lazy="allDicts[id].options[optKey]">
+                          <input type="number" min="0" class="form-control" v-model.number.lazy="allDicts[id].options[optKey]">
                           <div class="input-group-addon">{{ $t(`dict:${id}_${optKey}_unit`)  }}</div>
                         </div>
                       </div>
