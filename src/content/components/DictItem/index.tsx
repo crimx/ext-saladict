@@ -3,17 +3,20 @@ import { DictID } from '@/app-config'
 import { translate } from 'react-i18next'
 import { TranslationFunction } from 'i18next'
 import { Spring } from 'react-spring'
-import { openURL } from '@/_helpers/browser-api'
+import { message } from '@/_helpers/browser-api'
+import { MsgType, MsgOpenUrl } from '@/typings/message'
 
 import { SearchStatus } from '@/content/redux/modules/dictionaries'
+import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 
 export interface DictItemDispatchers {
-  readonly searchText: ({ id: DictID }) => any
+  readonly searchText: (arg: { id: DictID } | { info: SelectionInfo }) => any
   readonly updateItemHeight: ({ id, height }: { id: DictID, height: number }) => any
 }
 
 export interface DictItemProps extends DictItemDispatchers {
   readonly id: DictID
+  readonly text: string
   readonly dictURL: string
   readonly fontSize: number
   readonly preferredHeight: number
@@ -126,10 +129,29 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     e.currentTarget.blur()
   }
 
-  openDictURL = e => {
-    openURL(this.props.dictURL)
-    e.preventDefault()
+  handleDictItemClick = (e: React.MouseEvent<HTMLElement>) => {
+    // use background script to open new page
+    if (e.target['tagName'] === 'A') {
+      e.preventDefault()
+      this.props.searchText({
+        info: getDefaultSelectionInfo({
+          text: e.target['textContent'] || '',
+          title: this.props.t('fromSaladict'),
+          favicon: 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
+        }),
+      })
+    }
+  }
+
+  handleDictURLClick = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation()
+    e.preventDefault()
+    message.send<MsgOpenUrl>({
+      type: MsgType.OpenURL,
+      url: this.props.dictURL,
+      placeholder: true,
+      text: this.props.text,
+    })
   }
 
   componentDidUpdate (prevProps: DictItemProps) {
@@ -170,11 +192,11 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     } = this.state
 
     return (
-      <section className='panel-DictItem'>
+      <section className='panel-DictItem' onClick={this.handleDictItemClick}>
         <header className='panel-DictItem_Header' onClick={this.toggleFolding}>
           <img className='panel-DictItem_Logo' src={require('@/components/dictionaries/' + id + '/favicon.png')} alt='dict logo' />
           <h1 className='panel-DictItem_Title'>
-            <a href={dictURL} onClick={this.openDictURL}>{t(`dict:${id}`)}</a>
+            <a href={dictURL} onClick={this.handleDictURLClick}>{t(`dict:${id}`)}</a>
           </h1>
           { searchStatus === SearchStatus.Searching &&
             <div className='panel-DictItem_Loader'>
@@ -198,18 +220,18 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
               style={{ fontSize, height }}
             >
               <article ref={this.bodyRef} className='panel-DictItem_BodyMesure' style={{ opacity }}>
-                  {searchResult && React.createElement(require('@/components/dictionaries/' + id + '/View.tsx').default, { result: searchResult })}
+                {searchResult && React.createElement(require('@/components/dictionaries/' + id + '/View.tsx').default, { result: searchResult })}
               </article>
               {isUnfold && searchResult && visibleHeight < offsetHeight &&
-                    <button
+                <button
                   className={'panel-DictItem_FoldMask'}
-                      onClick={this.showFull}
-                    >
-                      <svg className='panel-DictItem_FoldMaskArrow' width='15' height='15' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'>
-                        <path d='M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56' />
-                      </svg>
-                    </button>
-                  }
+                  onClick={this.showFull}
+                >
+                  <svg className='panel-DictItem_FoldMaskArrow' width='15' height='15' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56' />
+                  </svg>
+                </button>
+              }
             </div>
           )}
         </Spring>

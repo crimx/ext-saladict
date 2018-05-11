@@ -97,6 +97,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
           {config.dicts.selected.map(id => React.createElement(DictItem, {
             key: id,
             id,
+            text: (dictionaries.searchHistory[0] || selection.selectionInfo).text,
             dictURL: allDictsConfig[id].page,
             fontSize: config.fontSize,
             preferredHeight: allDictsConfig[id].preferredHeight,
