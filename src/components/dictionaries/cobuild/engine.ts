@@ -79,8 +79,6 @@ function handleDom (
       .map(d => DOMPurify.sanitize(d.outerHTML))
   }
 
-  console.log(doc)
-
   if (result.title && result.defs && result.defs.length > 0) {
     return { result, audio } as COBUILDSearchResult
   }
