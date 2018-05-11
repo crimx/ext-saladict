@@ -30,6 +30,19 @@ const fakeXHRData = [
       )
     },
   },
+  {
+    test: {
+      method: /.*/,
+      url: /\.etymonline\.com/,
+    },
+    response: {
+      status: 200,
+      responseXML: new DOMParser().parseFromString(
+        require('raw-loader!../../test/specs/components/dictionaries/etymonline/response/love.html'),
+        'text/html'
+      )
+    },
+  },
 ]
 
 const fakeFetchData = [

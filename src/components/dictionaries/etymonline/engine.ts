@@ -1,69 +1,66 @@
-import fetchDom from 'src/helpers/fetch-dom'
-import stripScript from 'src/helpers/strip-script'
+import DOMPurify from 'dompurify'
+import fetchDOM from '@/_helpers/fetch-dom'
+import { handleNoResult } from '../helpers'
+import { AppConfig } from '@/app-config'
+import { DictSearchResult } from '@/typings/server'
 
-/**
- * Search text and give back result
- * @param {string} text - Search text
- * @param {object} config - app config
- * @param {object} helpers - helper functions
- * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
- */
-export default function search (text, config) {
+type EtymonlineResultItem = {
+  title: string
+  href: string
+  def: string
+}
+
+export type EtymonlineResult = EtymonlineResultItem[]
+
+type EtymonlineSearchResult = DictSearchResult<EtymonlineResult>
+
+export default function search (
+  text: string,
+  config: AppConfig,
+): Promise<EtymonlineSearchResult> {
   const options = config.dicts.all.etymonline.options
 
-  return fetchDom('https://www.etymonline.com/search?q=' + text)
+  return fetchDOM('https://www.etymonline.com/search?q=' + text)
     .then(doc => handleDom(doc, options))
 }
 
-/**
-* @typedef {Object} EymonlineResult
-* @property {string} title - keyword
-* @property {string} def - definition
-*/
-
-/**
- * @async
- * @returns {Promise.<EymonlineResult[]>} A promise with the result to send back
- */
-function handleDom (doc, {resultnum}) {
+function handleDom (
+  doc: Document,
+  { resultnum }: { resultnum: number },
+): EtymonlineSearchResult | Promise<EtymonlineSearchResult> {
   const result = Array.from(doc.querySelectorAll('[class^="word--"]'))
     .slice(0, resultnum)
-    .map(el => {
+    .map<EtymonlineResultItem | undefined>(el => {
       let href = el.getAttribute('href') || ''
       if (href[0] === '/') {
         href = 'https://www.etymonline.com' + href
       }
 
-      let title
-      let $title = el.querySelector('[class^="word__name--"]')
+      let title = ''
+      const $title = el.querySelector('[class^="word__name--"]')
       if ($title) {
-        title = $title.innerText.trim()
+        title = ($title.textContent || '').trim()
       }
 
       let def = ''
-      let $def = el.querySelector('[class^="word__defination--"]>object')
+      const $def = el.querySelector('[class^="word__defination--"]>object')
       if ($def) {
         $def.querySelectorAll('.crossreference').forEach($cf => {
-          let word = $cf.innerText.trim()
-          $cf.innerHTML = `<a href="https://www.etymonline.com/word/${word}" target="_blank">${word}</a>`
+          let word = ($cf.textContent || '').trim()
+          $cf.outerHTML = `<a href="https://www.etymonline.com/word/${word}" target="_blank">${word}</a>`
         })
-        const $cleanDef = doc.createElement('div')
-        $cleanDef.innerHTML = $def.innerHTML
-        def = stripScript($cleanDef).innerHTML
+        def = DOMPurify.sanitize($def.outerHTML)
       }
 
       if (title && def) {
-        return {
-          title: `<a href="${href}" target="_blank">${title}</a>`,
-          def
-        }
+        return { title, href, def }
       }
     })
-    .filter(r => r)
+    .filter((r): r is EtymonlineResultItem => r as any as boolean)
 
   if (result.length > 0) {
-    return result
-  } else {
-    return Promise.reject('no result')
+    return { result }
   }
+
+  return handleNoResult()
 }
