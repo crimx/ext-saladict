@@ -85,6 +85,8 @@ tripleCtrlPressed$.subscribe(() => {
   message.self.send({ type: MsgType.TripleCtrl })
 })
 
+let lastText: string
+let lastContext: string
 validMouseup$$.subscribe(({ clientX, clientY }) => {
   const text = selection.getSelectionText()
   if (
@@ -93,6 +95,16 @@ validMouseup$$.subscribe(({ clientX, clientY }) => {
       (config.language.chinese && isContainChinese(text))
     )
   ) {
+    const context = selection.getSelectionSentence()
+    if (text === lastText && context === lastContext) {
+      // Same selection. This could be caused by other widget on the page
+      // that uses preventDefault which stops selection being cleared when clicked.
+      // Ignore it so that the panel won't follow.
+      return
+    }
+    lastText = text
+    lastContext = context
+
     sendMessage(
       clientX,
       clientY,
@@ -100,7 +112,7 @@ validMouseup$$.subscribe(({ clientX, clientY }) => {
       isCtrlPressed,
       {
         text: selection.getSelectionText(),
-        context: selection.getSelectionSentence(),
+        context,
         title: window.pageTitle || document.title,
         url: window.pageURL || document.URL,
         favicon: window.faviconURL || '',
