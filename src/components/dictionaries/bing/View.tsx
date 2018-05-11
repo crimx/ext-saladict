@@ -42,7 +42,7 @@ export default class DictBing extends React.PureComponent<{ result: BingResult }
         }
 
         {result.sentences &&
-          <ul className='dictBing-SentenceList'>
+          <ol className='dictBing-SentenceList'>
             {result.sentences.map(sen => (
               <li className='dictBing-SentenceItem' key={sen.en}>
                 {sen.en && <p>{sen.en} <Speaker src={sen.mp3}></Speaker></p>}
@@ -50,7 +50,7 @@ export default class DictBing extends React.PureComponent<{ result: BingResult }
                 {sen.source && <footer className='dictBing-SentenceSource'>{sen.source}</footer>}
               </li>
             ))}
-          </ul>
+          </ol>
         }
       </>
     )
