@@ -197,12 +197,12 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
               key={id}
               style={{ fontSize, height }}
             >
-              <div ref={this.bodyRef} className='panel-DictItem_BodyMesure'>
-                <article style={{ opacity }}>
+              <article ref={this.bodyRef} className='panel-DictItem_BodyMesure' style={{ opacity }}>
                   {searchResult && React.createElement(require('@/components/dictionaries/' + id + '/View.tsx').default, { result: searchResult })}
-                  {isUnfold &&
+              </article>
+              {isUnfold && searchResult && visibleHeight < offsetHeight &&
                     <button
-                      className={`panel-DictItem_FoldMask ${visibleHeight < offsetHeight ? 'isActive' : ''}`}
+                  className={'panel-DictItem_FoldMask'}
                       onClick={this.showFull}
                     >
                       <svg className='panel-DictItem_FoldMaskArrow' width='15' height='15' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'>
@@ -210,8 +210,6 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
                       </svg>
                     </button>
                   }
-                </article>
-              </div>
             </div>
           )}
         </Spring>

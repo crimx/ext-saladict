@@ -42,6 +42,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   initStyle = { x: 0, y: 0, height: 30, width: 400, opacity: 0 }
   lastMouseX = 0
   lastMouseY = 0
+  isAnimating = false
 
   state = {
     mutableArea: {
@@ -134,17 +135,32 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   animateFrame = ({ x, y, height, width, opacity }) => {
     if (this.frame) {
       const iframeStyle = this.frame.style
+      if (!this.isAnimating) {
+        this.isAnimating = true
+        iframeStyle.setProperty('left', '0', 'important')
+        iframeStyle.setProperty('top', '0', 'important')
+        iframeStyle.setProperty('will-change', 'transform', 'important')
+      }
       iframeStyle.setProperty('width', width + 'px', 'important')
       iframeStyle.setProperty('height', height + 'px', 'important')
-      iframeStyle.setProperty('transform', `translate(${x}px, ${y}px)`, 'important')
       iframeStyle.setProperty('opacity', opacity, 'important')
-      if (this.state.isDragging) {
-        iframeStyle.setProperty('will-change', 'transform', 'important')
-      } else {
-        iframeStyle.removeProperty('will-change')
-      }
+      iframeStyle.setProperty('transform', `translate(${x}px, ${y}px)`, 'important')
     }
     return null
+  }
+
+  onFrameAnimationEnd = () => {
+    this.isAnimating = false
+    if (this.frame) {
+      // remove hardware acceleration to prevent blurry font
+      const iframeStyle = this.frame.style
+      const { x, y } = this.state
+      iframeStyle.setProperty('left', x + 'px', 'important')
+      iframeStyle.setProperty('top', y + 'px', 'important')
+      iframeStyle.removeProperty('transform')
+      iframeStyle.removeProperty('opacity')
+      iframeStyle.removeProperty('will-change')
+    }
   }
 
   updateItemHeight = ({ id, height }: { id: DictID, height: number }) => {
@@ -250,6 +266,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
             opacity: shouldPanelShow ? 1 : 0
           }}
           immediate={!isAnimation || !shouldPanelShow || isDragging}
+          onRest={this.onFrameAnimationEnd}
         >{this.animateFrame}</Spring>
       </div>,
       this.el,
