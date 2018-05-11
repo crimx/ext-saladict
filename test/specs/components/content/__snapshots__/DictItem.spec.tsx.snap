@@ -3,6 +3,7 @@
 exports[`Component/content/DictItem should render pending correctly 1`] = `
 <section
   className="panel-DictItem"
+  onClick={[Function]}
 >
   <header
     className="panel-DictItem_Header"
