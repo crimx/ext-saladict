@@ -95,6 +95,10 @@ function fetchDictResult (
       }
       return result
     })
+    .catch(err => {
+      console.warn(err)
+      return null
+    })
 }
 
 function preloadSelection (): Promise<void> {
