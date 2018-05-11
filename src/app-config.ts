@@ -251,6 +251,9 @@ export interface AppConfigMutable {
   /** activate app, won't affect triple-ctrl setting */
   active: boolean
 
+  /** disable selection on type fields, like input and textarea */
+  noTypeField: boolean
+
   /** use animation for transition */
   animation: boolean
 
@@ -358,6 +361,8 @@ export function appConfigFactory (): AppConfig {
     version: 6,
 
     active: true,
+
+    noTypeField: false,
 
     animation: true,
 

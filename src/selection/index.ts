@@ -50,11 +50,36 @@ const tripleCtrlPressed$ = validCtrlPressed$$.pipe(
 )
 
 const validMouseup$$ = fromEvent<MouseEvent>(window, 'mouseup', { capture: true }).pipe(
-  filter(({ target }) => (
-    config.active &&
-    window.name !== 'saladict-frame' &&
-    (!target || typeof target['className'] !== 'string' || !target['className'].startsWith('saladict-'))
-  )),
+  filter(({ target }) => {
+    if (!config.active || window.name === 'saladict-frame') {
+      return false
+    }
+
+    if (!target) { return true }
+
+    if (typeof target['className'] === 'string' && target['className'].startsWith('saladict-')) {
+      return false
+    }
+
+    if (config.noTypeField) {
+      if (target['tagName'] === 'INPUT' || target['tagName'] === 'TEXTAREA') {
+        return false
+      }
+
+      if (!target['classList'] || !target['parentElement']) {
+        return true
+      }
+
+      // Popular code editors CodeMirror and ACE
+      for (let el = target as Element | null; el; el = el.parentElement) {
+        if (el.classList.contains('CodeMirror') || el.classList.contains('ace_editor')) {
+          return false
+        }
+      }
+    }
+
+    return true
+  }),
   // if user click on a selected text,
   // getSelection would reture the text before the highlight disappears
   // delay to wait for selection get cleared
