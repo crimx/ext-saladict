@@ -84,10 +84,6 @@ export default class DictBing extends React.PureComponent<{ result: BingResult }
   }
 
   render () {
-    if (!this.props.result) {
-      return null
-    }
-
     switch (this.props.result.type) {
       case 'lex':
         return this.renderLex()
