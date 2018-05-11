@@ -20,7 +20,8 @@ export default function search (
 ): Promise<EtymonlineSearchResult> {
   const options = config.dicts.all.etymonline.options
 
-  return fetchDOM('https://www.etymonline.com/search?q=' + text)
+  // http to bypass the referer checking
+  return fetchDOM('http://www.etymonline.com/search?q=' + text)
     .then(doc => handleDom(doc, options))
 }
 
