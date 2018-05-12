@@ -179,6 +179,9 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
     ? arg.info || state.dictionaries.searchHistory[0]
     : state.dictionaries.searchHistory[0]
 
+    // try to unfold a dict when the panel first popup
+    if (!info) { return }
+
     dispatch(isInNotebook(info) as any)
 
     const requestID = arg && arg.id
