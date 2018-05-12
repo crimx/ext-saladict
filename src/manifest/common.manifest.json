@@ -43,6 +43,9 @@
     "panel.html",
     "panel.js",
     "panel.css",
+    "wordeditor.html",
+    "wordeditor.js",
+    "wordeditor.css",
     "static/*"
   ],
 
