@@ -5,6 +5,7 @@ import { chsToChz } from '@/_helpers/chs-to-chz'
 import appConfigFactory, { AppConfig } from '@/app-config'
 import { createAppConfigStream } from '@/_helpers/config-manager'
 import { DictSearchResult } from '@/typings/server'
+import { timeout } from '@/_helpers/promise-more'
 import {
   MsgType,
   MsgOpenUrl,
@@ -79,7 +80,7 @@ function fetchDictResult (
     return Promise.reject(err)
   }
 
-  return search(data.text, config)
+  const pSearch = search(data.text, config)
     .then(({ result, audio }) => {
       if (audio) {
         const { cn, en } = config.autopron
@@ -95,8 +96,10 @@ function fetchDictResult (
       }
       return result
     })
+
+  return timeout(pSearch, 10000)
     .catch(err => {
-      console.warn(err)
+      console.warn(data.id, err)
       return null
     })
 }
