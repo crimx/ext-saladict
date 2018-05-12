@@ -420,6 +420,10 @@ kbd {
   overflow: hidden;
   height: 0;
   transition: height 400ms;
+
+  > .input-group {
+    margin: 0;
+  }
 }
 
 .select-box-container {
