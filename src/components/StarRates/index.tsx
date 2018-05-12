@@ -18,7 +18,7 @@ export default class StarRates extends React.PureComponent<StarRatesProps> {
       <div className={className}>
         {Array.from(Array(5)).map((_, i) => (
           <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 426.67 426.67'
-            key={i}
+            key={i + rate}
             width={width}
             style={{ marginRight: i === 4 ? '' : gutter }}
           >
