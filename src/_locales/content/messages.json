@@ -60,6 +60,12 @@
     "en": "Close the panel"
   },
 
+  "fromSaladict": {
+    "zh_CN": "来自沙拉查词面板",
+    "zh_TW": "来自沙拉查詞介面",
+    "en": "From Saladict Panel"
+  },
+
   "wordEditorTitle": {
     "zh_CN": "保存到生词本",
     "zh_TW": "保存到單字本",
