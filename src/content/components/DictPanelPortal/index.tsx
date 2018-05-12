@@ -47,6 +47,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   lastMouseX = 0
   lastMouseY = 0
   isAnimating = false
+  _frameAnimationEndTimeout: any
 
   state = {
     mutableArea: {
@@ -162,17 +163,25 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   }
 
   onFrameAnimationEnd = () => {
-    this.isAnimating = false
-    if (this.frame) {
-      // remove hardware acceleration to prevent blurry font
-      const iframeStyle = this.frame.style
-      const { x, y } = this.state
-      iframeStyle.setProperty('left', x + 'px', 'important')
-      iframeStyle.setProperty('top', y + 'px', 'important')
-      iframeStyle.removeProperty('transform')
-      iframeStyle.removeProperty('opacity')
-      iframeStyle.removeProperty('will-change')
+    clearTimeout(this._frameAnimationEndTimeout)
+
+    if (!this.props.shouldPanelShow || this.state.isDragging) {
+      return
     }
+
+    this._frameAnimationEndTimeout = setTimeout(() => {
+      if (this.frame) {
+        this.isAnimating = false
+        // remove hardware acceleration to prevent blurry font
+        const iframeStyle = this.frame.style
+        const { x, y } = this.state
+        iframeStyle.setProperty('left', x + 'px', 'important')
+        iframeStyle.setProperty('top', y + 'px', 'important')
+        iframeStyle.removeProperty('transform')
+        iframeStyle.removeProperty('opacity')
+        iframeStyle.removeProperty('will-change')
+      }
+    }, 100)
   }
 
   updateItemHeight = ({ id, height }: { id: DictID, height: number }) => {
