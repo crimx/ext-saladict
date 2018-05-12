@@ -1,6 +1,4 @@
 import React from 'react'
-import Speaker from '@/components/Speaker'
-import StarRates from '@/components/StarRates'
 import { EtymonlineResult } from './engine'
 
 export default class DictEtymonline extends React.PureComponent<{ result: EtymonlineResult }> {
