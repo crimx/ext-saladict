@@ -162,6 +162,24 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     return null
   }
 
+  panelImmediateCtrl = (key: string) => {
+    if (!this.props.config.animation || !this.props.shouldPanelShow) {
+      return true
+    }
+
+    if (this.state.isDragging) {
+      switch (key) {
+        case 'x':
+        case 'y':
+          return true
+        default:
+          break
+      }
+    }
+
+    return false
+  }
+
   onFrameAnimationEnd = () => {
     clearTimeout(this._frameAnimationEndTimeout)
 
@@ -259,8 +277,6 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       shouldPanelShow,
     } = this.props
 
-    const isAnimation = this.props.config.animation
-
     const { x, y, height, isDragging } = this.state
 
     const width = isSaladictPopupPage
@@ -293,7 +309,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
             x, y, height, width,
             opacity: shouldPanelShow ? 1 : 0
           }}
-          immediate={!isAnimation || !shouldPanelShow || isDragging}
+          immediate={this.panelImmediateCtrl}
           onRest={this.onFrameAnimationEnd}
         >{this.animateFrame}</Spring>
       </div>,
