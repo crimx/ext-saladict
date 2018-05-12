@@ -1,0 +1,12 @@
+{
+  "app_active_title": {
+    "zh_CN": "对当前页暂时关闭划词",
+    "zh_TW": "對當前網頁暫時關閉鼠標滑字",
+    "en": "Temporary disable Saladict to the page"
+  },
+  "qrcode_title": {
+    "zh_CN": "当前页面二维码",
+    "zh_TW": "當前頁面二維碼",
+    "en": "Qrcode of the page"
+  }
+}

@@ -1,33 +1,31 @@
 import Vue from 'vue'
 import App from './Popup'
 import VueQriously from 'vue-qriously'
-import VueStash from 'vue-stash'
-import {storage} from 'src/helpers/chrome-api'
-import AppConfig from 'src/app-config'
+import VueI18Next from '@panter/vue-i18next'
+import i18nLoader from '@/_helpers/i18n'
+import popupLocles from '@/_locales/popup'
+
+window['__SALADICT_INTERNAL_PAGE__'] = true
+window['__SALADICT_POPUP_PAGE__'] = true
+injectPanel() // inject panel AFTER flags are set
 
 Vue.use(VueQriously)
-Vue.use(VueStash)
+Vue.use(VueI18Next)
 Vue.config.productionTip = false
-Vue.config.devtools = false
 
-storage.sync.get('config')
-  .then(({config}) => {
-    const store = {
-      config: config || new AppConfig(),
-      i18n: key => chrome.i18n.getMessage(key)
-    }
+// Vue.use(VueI18Next) before loading
+const i18n = new VueI18Next(i18nLoader({ popup: popupLocles }, 'popup'))
 
-    new Vue({ // eslint-disable-line no-new
-      el: '#app',
-      render: h => h(App),
-      data: {store},
-      created () {
-        storage.sync.listen('config', changes => {
-          let config = changes.config.newValue
-          if (config) {
-            this.store.config = config
-          }
-        })
-      }
-    })
-  })
+new Vue({ // eslint-disable-line no-new
+  el: '#root',
+  i18n,
+  render: h => h(App),
+})
+
+function injectPanel () {
+  const $script = document.createElement('script')
+  $script.src = './content.js'
+  $script.type = 'text/javascript'
+
+  document.body.appendChild($script)
+}
