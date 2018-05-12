@@ -38,16 +38,16 @@
 }
 
 .panel-DictItem_BodyMesure {
-  padding: 10px 0;
-
   // clear margin collapsing which seems to causing flickering
   // when changing the parent height
+  overflow: hidden;
+
   > *:first-child {
-    margin-top: 0 !important;
+    margin-top: 10px !important;
   }
 
   > *:last-child {
-    margin-bottom: 0 !important;
+    margin-bottom: 10px !important;
   }
 }
 
