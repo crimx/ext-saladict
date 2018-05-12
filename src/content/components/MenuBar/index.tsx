@@ -6,6 +6,7 @@ import { MsgType, MsgOpenUrl, MsgSelection } from '@/typings/message'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 
 const isSaladictOptionsPage = Boolean(window['__SALADICT_OPTIONS_PAGE__'])
+const isSaladictPopupPage = Boolean(window['__SALADICT_POPUP_PAGE__'])
 
 export interface MenuBarDispatchers {
   readonly handleDragStart: (e: React.MouseEvent<HTMLDivElement>) => any
@@ -124,6 +125,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     message.send(msg)
   }
 
+  /** @todo handle popup page */
   /** add/remove current search word into/from notebook */
   handleIconFavClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
@@ -254,7 +256,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
         <button className='panel-MenuBar_Btn'
           onClick={this.handleIconFavClick}
-          disabled={isSaladictOptionsPage}
+          disabled={isSaladictOptionsPage || isSaladictPopupPage}
         >
           <svg
             className={`panel-MenuBar_Icon-fav ${isFav ? 'isActive' : ''}`}
@@ -289,7 +291,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
         <button className='panel-MenuBar_Btn'
           onClick={this.handleIconPinClick}
-          disabled={isSaladictOptionsPage}
+          disabled={isSaladictOptionsPage || isSaladictPopupPage}
         >
           <svg
             className={`panel-MenuBar_Icon-pin ${isPinned ? 'isActive' : ''}`}
@@ -302,7 +304,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
         <button className='panel-MenuBar_Btn'
           onClick={this.handleIconCloseClick}
-          disabled={isSaladictOptionsPage}
+          disabled={isSaladictOptionsPage || isSaladictPopupPage}
         >
           <svg
             className='panel-MenuBar_Icon'
