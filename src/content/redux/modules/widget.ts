@@ -61,7 +61,8 @@ export default function reducer (state = initState, action): WidgetState {
         isPinned: false,
         shouldPanelShow: false,
         shouldBowlShow: false,
-        isPanelAppear: false
+        isPanelAppear: false,
+        shouldWordEditorShow: false,
       }
     case Actions.PIN:
       return { ...state, isPinned: !state.isPinned }
@@ -155,7 +156,7 @@ export function startUpAction (): Dispatcher {
       popupPageInit(dispatch, getState)
     }
 
-    // close panel on esc
+    // close panel and word editor on esc
     message.self.addListener(MsgType.EscapeKey, () => {
       dispatch(closePanel() as any)
     })
