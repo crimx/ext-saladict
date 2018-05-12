@@ -369,6 +369,16 @@
     "zh_TW": "選擇單字和句子後可以按滑鼠右鍵查尋或者搜尋。使用滑鼠拖動標題可以進行排列。",
     "en": "Context menu shows up when right clicking a text selection. Drag items to sort."
   },
+  "acknowledgement": {
+    "zh_CN": "特别鸣谢",
+    "zh_TW": "特別鳴謝",
+    "en": "Acknowledgement "
+  },
+  "acknowledgement_trans_tw": {
+    "zh_CN": "提供繁体中文翻译",
+    "zh_TW": "提供繁體中文翻譯",
+    "en": "for traditional Chinese translation"
+  },
   "contact_author": {
     "zh_CN": "联系作者",
     "zh_TW": "聯絡作者",

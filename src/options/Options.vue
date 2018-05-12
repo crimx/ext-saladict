@@ -11,6 +11,16 @@
         <a class="new-version" v-if="newVersionAvailable" href="http://www.crimx.com/crx-saladict/" target="_blank">{{ $t('opt:new_version') }}</a>
       </h1>
       <div class="page-header-info">
+        <p class="page-header-acknowledgement-wrap">
+          <a href="https://github.com/crimx/crx-saladict/wiki#acknowledgement" @mouseenter="showAcknowledgement(true)" @mouseleave="showAcknowledgement(false)" @click.prevent="void 0">{{ $t('opt:acknowledgement') }}</a>
+          <transition name="fade">
+            <div class="page-header-acknowledgement" v-if="isShowAcknowledgement" @mouseenter="showAcknowledgement(true)"  @mouseleave="showAcknowledgement(false)">
+              <ol>
+                <li><a href="https://github.com/stockyman" rel="nofollow" target="_blank">stockyman</a> {{ $t('opt:acknowledgement_trans_tw') }}</li>
+              </ol>
+            </div>
+          </transition>
+        </p>
         <p><a href="https://github.com/crimx/crx-saladict/wiki" target="_blank" rel="noopener">{{ $t('opt:instructions') }}</a></p>
         <p class="page-header-social-media-wrap">
           <a href="mailto:straybugs@gmail.com" @mouseenter="showSocialMedia(true)" @mouseleave="showSocialMedia(false)" @click.prevent="void 0">{{ $t('opt:contact_author') }}</a>
@@ -74,7 +84,8 @@ export default {
       text: 'salad',
       frameSource: 'https://baidu.com',
       isShowConfigUpdated: false,
-      isShowSocial: false
+      isShowSocial: false,
+      isShowAcknowledgement: false,
     }
   },
   methods: {
@@ -85,6 +96,16 @@ export default {
       } else {
         this.__showSocialMediaTimeout = setTimeout(() => {
           this.isShowSocial = false
+        }, 400)
+      }
+    },
+    showAcknowledgement (flag) {
+      clearTimeout(this.__showAcknowledgementTimeout)
+      if (flag) {
+        this.isShowAcknowledgement = true
+      } else {
+        this.__showAcknowledgementTimeout = setTimeout(() => {
+          this.isShowAcknowledgement = false
         }, 400)
       }
     },
@@ -271,6 +292,22 @@ kbd {
   & > * {
     margin: 0 0 0 8px;
   }
+}
+
+.page-header-acknowledgement-wrap {
+  position: relative;
+}
+
+.page-header-acknowledgement {
+  position: absolute;
+  z-index: 99999;
+  top: 150%;
+  left: 0;
+  width: 300px;
+  padding: 20px 8px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 3px 4px 31px -8px rgba(0,0,0,0.8);
 }
 
 .page-header-social-media-wrap {
