@@ -6,6 +6,8 @@ import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
 import { DictID } from '@/app-config'
 
+const isSaladictPopupPage = Boolean(window['__SALADICT_POPUP_PAGE__'])
+
 export type DictPanelPortalDispatchers = Omit<
   DictPanelDispatchers,
   'updateItemHeight' | 'handleDragStart'
@@ -36,7 +38,9 @@ type DictPanelState= {
 
 export default class DictPanelPortal extends React.Component<DictPanelPortalProps, DictPanelState> {
   isMount = false
-  root = document.body
+  root = isSaladictPopupPage
+    ? document.getElementById('frame-root') as HTMLDivElement
+    : document.body
   el = document.createElement('div')
   frame: HTMLIFrameElement | null = null
   initStyle = { x: 0, y: 0, height: 30, width: 400, opacity: 0 }
@@ -61,6 +65,10 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     nextProps: DictPanelPortalProps,
     prevState: DictPanelState
   ): Partial<DictPanelState> | null {
+    if (isSaladictPopupPage) {
+      return { height: 400, x: 0, y: 0 }
+    }
+
     const newSelection = nextProps.selection
     const mutableArea = prevState.mutableArea
     const oldSelection = mutableArea.propsSelection
@@ -141,10 +149,14 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
         iframeStyle.setProperty('top', '0', 'important')
         iframeStyle.setProperty('will-change', 'transform', 'important')
       }
+
       iframeStyle.setProperty('width', width + 'px', 'important')
       iframeStyle.setProperty('height', height + 'px', 'important')
-      iframeStyle.setProperty('opacity', opacity, 'important')
-      iframeStyle.setProperty('transform', `translate(${x}px, ${y}px)`, 'important')
+
+      if (!isSaladictPopupPage) {
+        iframeStyle.setProperty('opacity', opacity, 'important')
+        iframeStyle.setProperty('transform', `translate(${x}px, ${y}px)`, 'important')
+      }
     }
     return null
   }
@@ -164,6 +176,10 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   }
 
   updateItemHeight = ({ id, height }: { id: DictID, height: number }) => {
+    if (isSaladictPopupPage) {
+      return
+    }
+
     const dictHeights = this.state.mutableArea.dictHeights
     if (dictHeights[id] !== height) {
       dictHeights[id] = height
@@ -238,6 +254,10 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
     const { x, y, height, isDragging } = this.state
 
+    const width = isSaladictPopupPage
+      ? Math.min(this.props.config.panelWidth, 800)
+      : this.props.config.panelWidth
+
     if (shouldPanelShow && !this.isMount) {
       this.mountEL()
     }
@@ -261,8 +281,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
         <Spring
           from={this.initStyle}
           to={{
-            x, y, height,
-            width: this.props.config.panelWidth,
+            x, y, height, width,
             opacity: shouldPanelShow ? 1 : 0
           }}
           immediate={!isAnimation || !shouldPanelShow || isDragging}

@@ -1,13 +1,15 @@
 import * as recordManager from '@/_helpers/record-manager'
 import { StoreState } from './index'
-import { TCDirection } from '@/app-config'
-import { message } from '@/_helpers/browser-api'
+import { TCDirection, AppConfig } from '@/app-config'
+import { message, storage } from '@/_helpers/browser-api'
 import { MsgSelection, MsgType } from '@/typings/message'
 import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
 import { sendEmptySelection, newSelection } from '@/content/redux/modules/selection'
 import { getDefaultSelectionInfo, SelectionInfo } from '@/_helpers/selection'
 
 const isSaladictOptionsPage = Boolean(window['__SALADICT_OPTIONS_PAGE__'])
+const isSaladictInternalPage = Boolean(window['__SALADICT_INTERNAL_PAGE__'])
+const isSaladictPopupPage = Boolean(window['__SALADICT_POPUP_PAGE__'])
 
 /*-----------------------------------------------*\
     Actions
@@ -132,7 +134,15 @@ let panelSearchTimeout
 export function startUpAction (): Dispatcher {
   return (dispatch, getState) => {
     listenNewSelection(dispatch, getState)
-    listenTripleCtrl(dispatch, getState)
+
+    if (!isSaladictInternalPage) {
+      listenNewConfig(dispatch, getState)
+      listenTripleCtrl(dispatch, getState)
+    }
+
+    if (isSaladictPopupPage) {
+      popupPageInit(dispatch, getState)
+    }
 
     // close panel on esc
     message.self.addListener(MsgType.EscapeKey, () => {
@@ -240,6 +250,17 @@ export function updateFaveInfo (): Dispatcher {
     Helpers
 \*-----------------------------------------------*/
 
+function listenNewConfig (
+  dispatch: (action: Action) => any,
+  getState: () => StoreState,
+) {
+  storage.addListener<AppConfig>('config', ({ config }) => {
+    if (config.newValue && !config.newValue.active) {
+      dispatch(restoreWidget())
+    }
+  })
+}
+
 function listenNewSelection (
   dispatch: (action: any) => any,
   getState: () => StoreState,
@@ -249,6 +270,11 @@ function listenNewSelection (
     clearTimeout(panelSearchTimeout)
 
     const state = getState()
+
+    if (!isSaladictInternalPage && !state.config.active) {
+      return
+    }
+
     const { direct, ctrl, double, icon } = state.config.mode
     const { selectionInfo, dbClick, ctrlKey } = message
     const {
@@ -259,26 +285,28 @@ function listenNewSelection (
     } = state.widget
 
     const shouldPanelShow = Boolean(
-      isSaladictOptionsPage ||
       isPinned ||
       (selectionInfo.text && (
         lastShouldPanelShow ||
         direct ||
         (double && dbClick) ||
         (ctrl && ctrlKey)
-      ))
+      )) ||
+      isSaladictOptionsPage ||
+      isSaladictPopupPage
     )
 
     const isPanelAppear = shouldPanelShow && !lastShouldPanelShow
 
     const shouldBowlShow = Boolean(
-      !isSaladictOptionsPage &&
       selectionInfo.text &&
       icon &&
       !shouldPanelShow &&
       !direct &&
       !(double && dbClick) &&
-      !(ctrl && ctrlKey)
+      !(ctrl && ctrlKey) &&
+      !isSaladictOptionsPage &&
+      !isSaladictPopupPage
     )
 
     if (isPanelAppear !== lastIsPanelAppear) {
@@ -302,15 +330,15 @@ function listenNewSelection (
 
     // should search text?
     const { pinMode } = state.config
-    if (isSaladictOptionsPage ||
-        isPanelAppear || (
-        shouldPanelShow && selectionInfo.text && (
-          !isPinned ||
-          pinMode.direct ||
-          (pinMode.double && dbClick) ||
-          (pinMode.ctrl && ctrlKey)
-        )
-      )
+    if (isPanelAppear || (
+          shouldPanelShow && selectionInfo.text && (
+            !isPinned ||
+            pinMode.direct ||
+            (pinMode.double && dbClick) ||
+            (pinMode.ctrl && ctrlKey)
+          )
+        ) ||
+        isSaladictOptionsPage
     ) {
       if (dbClick) { // already double click
         dispatch(searchText({ info: selectionInfo }) as any)
@@ -411,4 +439,42 @@ function listenTripleCtrl (
       }
     })
   })
+}
+
+function popupPageInit (
+  dispatch: (action: any) => any,
+  getState: () => StoreState,
+) {
+  const state = getState()
+  const {
+    baAuto,
+    baPreload,
+  } = state.config
+
+  if (baPreload) {
+    const fetchInfo = (
+      baPreload === 'selection'
+      ? message.send({ type: MsgType.__PreloadSelection__ })
+      : message.send({ type: MsgType.GetClipboard })
+    )
+    .then(text => {
+      const info = getDefaultSelectionInfo({ text })
+      dispatch(newSelection({
+        type: MsgType.Selection,
+        selectionInfo: info,
+        mouseX: 0,
+        mouseY: 0,
+        dbClick: false,
+        ctrlKey: false,
+        force: true,
+      }))
+      dispatch(panelShouldShow(true))
+
+      if (baAuto && info.text) {
+        dispatch(searchText({ info }))
+      } else {
+        dispatch(restoreDicts())
+      }
+    })
+  }
 }
