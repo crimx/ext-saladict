@@ -58,32 +58,12 @@ storage.sync.get('config')
                   dbClick: false,
                   ctrlKey: false,
                 })
-                if (process.env.NODE_ENV === 'development') {
-                  console.log({
-                    type: MsgType.Selection,
-                    selectionInfo: getDefaultSelectionInfo({
-                      text: window['__SALADICT_LAST_SEARCH__']
-                    }),
-                    mouseX: window.innerWidth - this.$store.config.panelWidth - 110,
-                    mouseY: window.innerHeight * (1 - this.$store.config.panelMaxHeightRatio) / 2 + 50,
-                    dbClick: false,
-                    ctrlKey: false,
-                  })
-                }
               }, 2000)
             }
           }
         }
       },
       created () {
-        storage.sync.addListener('config', changes => {
-          let config = changes.config.newValue
-          if (config) {
-            // only listen to active setting in popup panel
-            this.store.config.active = config.active
-          }
-        })
-
         storage.sync.get('unlock')
           .then(({ unlock }) => {
             this.store.unlock = Boolean(unlock)
