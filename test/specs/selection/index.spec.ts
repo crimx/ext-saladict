@@ -33,13 +33,20 @@ describe('Message Selection', () => {
     browser.flush()
     window.name = ''
     message.self.send.mockClear()
-    selection.getSelectionText.mockReturnValue('test')
-    selection.getSelectionSentence.mockReturnValue('This is a test.')
+    const randomText = 'test' + Date.now()
+    selection.getSelectionText.mockReturnValue(randomText)
+    selection.getSelectionSentence.mockReturnValue(`This is a ${randomText}.`)
     dispatchAppConfigEvent(mockAppConfigFactory())
   })
 
   it('should send empty message when mouseup and no selection', done => {
     selection.getSelectionText.mockReturnValue('')
+
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
+    }))
 
     window.dispatchEvent(new MouseEvent('mouseup', {
       button: 0,
@@ -64,6 +71,12 @@ describe('Message Selection', () => {
     config.language.chinese = true
     config.language.english = false
     dispatchAppConfigEvent(config)
+
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
+    }))
 
     window.dispatchEvent(new MouseEvent('mouseup', {
       button: 0,
@@ -91,6 +104,12 @@ describe('Message Selection', () => {
     config.language.english = true
     dispatchAppConfigEvent(config)
 
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
+    }))
+
     window.dispatchEvent(new MouseEvent('mouseup', {
       button: 0,
       clientX: 10,
@@ -110,6 +129,12 @@ describe('Message Selection', () => {
   })
 
   it('should collect selection info and send back', done => {
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
+    }))
+
     window.dispatchEvent(new MouseEvent('mouseup', {
       button: 0,
       clientX: 10,
@@ -125,10 +150,39 @@ describe('Message Selection', () => {
         dbClick: false,
         ctrlKey: false,
         selectionInfo: expect.objectContaining({
-          text: 'test',
-          context: 'This is a test.'
+          text: expect.stringMatching(/^test\d+/),
+          context: expect.stringMatching(/^This is a test\d+/)
         }),
       })
+      done()
+    }, 0)
+  })
+
+  it('should send empty message if the selection is made inside a input box', done => {
+    const $input = document.createElement('input')
+    document.body.appendChild($input)
+
+    $input.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
+    }))
+
+    // mouse can bu moved to other elements when mouseup
+    window.dispatchEvent(new MouseEvent('mouseup', {
+      button: 0,
+      clientX: 10,
+      clientY: 10,
+    }))
+
+    setTimeout(() => {
+      expect(message.self.send).toHaveBeenCalledTimes(1)
+      expect(message.self.send).toBeCalledWith(
+        expect.objectContaining({
+          type: MsgType.Selection,
+          selectionInfo: expect.objectContaining({ text: '' }),
+        })
+      )
       done()
     }, 0)
   })
@@ -139,6 +193,12 @@ describe('Message Selection', () => {
 
   it('should do nothing if clicking the dict panel frame', done => {
     window.name = 'saladict-frame'
+
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
+    }))
 
     window.dispatchEvent(new MouseEvent('mouseup', {
       button: 0,
@@ -156,6 +216,12 @@ describe('Message Selection', () => {
     const config = mockAppConfigFactory()
     config.active = false
     dispatchAppConfigEvent(config)
+
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
+    }))
 
     window.dispatchEvent(new MouseEvent('mouseup', {
       button: 0,
@@ -182,6 +248,12 @@ describe('Message Selection', () => {
   })
 
   it('ctrlKey should be true if ctrl key is pressed while clicking', done => {
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
+    }))
+
     window.dispatchEvent(new KeyboardEvent('keydown', {
       key: 'Control',
     }))
@@ -204,6 +276,12 @@ describe('Message Selection', () => {
   })
 
   it('ctrlKey should be false if not released while clicking', done => {
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
+    }))
+
     window.dispatchEvent(new KeyboardEvent('keydown', {
       key: 'k',
     }))
@@ -226,6 +304,12 @@ describe('Message Selection', () => {
   })
 
   it('ctrlKey should be false if ctrl key is released while clicking', done => {
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
+    }))
+
     window.dispatchEvent(new KeyboardEvent('keydown', {
       key: 'Control',
     }))
@@ -272,10 +356,22 @@ describe('Message Selection', () => {
     config.doubleClickDelay = 100
     dispatchAppConfigEvent(config)
 
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
+    }))
+
     window.dispatchEvent(new MouseEvent('mouseup', {
       button: 0,
       clientX: 10,
       clientY: 10,
+    }))
+
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
     }))
 
     setTimeout(() => {
@@ -286,7 +382,9 @@ describe('Message Selection', () => {
       }))
 
       setTimeout(() => {
-        expect(message.self.send).toHaveBeenCalledTimes(2)
+        // only called one time because it's the same selection
+        // and not a double click selection
+        expect(message.self.send).toHaveBeenCalledTimes(1)
         expect(message.self.send).toBeCalledWith(
           expect.objectContaining({
             dbClick: false,
@@ -302,10 +400,22 @@ describe('Message Selection', () => {
     config.doubleClickDelay = 100
     dispatchAppConfigEvent(config)
 
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
+    }))
+
     window.dispatchEvent(new MouseEvent('mouseup', {
       button: 0,
       clientX: 10,
       clientY: 10,
+    }))
+
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
     }))
 
     setTimeout(() => {
