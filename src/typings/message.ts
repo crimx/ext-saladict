@@ -37,6 +37,9 @@ export const enum MsgType {
   GetWordsByText,
   GetAllWords,
 
+  /** Popup page */
+  TempDisabledState,
+
   /**
    * Background proxy sends back underlyingly
    */
@@ -129,4 +132,13 @@ export interface MsgGetAllWords {
   readonly area: DBArea
   readonly itemsPerPage: number
   readonly pageNum: number
+}
+
+export type MsgTempDisabledState = {
+  readonly type: MsgType.TempDisabledState
+  readonly op: 'get'
+} | {
+  readonly type: MsgType.TempDisabledState
+  readonly op: 'set'
+  readonly value: boolean
 }

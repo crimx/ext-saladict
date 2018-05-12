@@ -1,8 +1,9 @@
 import * as recordManager from '@/_helpers/record-manager'
 import { StoreState } from './index'
 import { TCDirection, AppConfig } from '@/app-config'
-import { message, storage } from '@/_helpers/browser-api'
-import { MsgSelection, MsgType } from '@/typings/message'
+import { message } from '@/_helpers/browser-api'
+import { createAppConfigStream } from '@/_helpers/config-manager'
+import { MsgSelection, MsgType, MsgTempDisabledState } from '@/typings/message'
 import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
 import { sendEmptySelection, newSelection } from '@/content/redux/modules/selection'
 import { getDefaultSelectionInfo, SelectionInfo } from '@/_helpers/selection'
@@ -23,6 +24,7 @@ export const enum Actions {
   PANEL_SHOW = 'widget/PANEL_SHOW',
   PANEL_APPEAR = 'widget/PANEL_APPEAR',
   WORD_EDITOR_SHOW = 'widget/WORD_EDITOR_SHOW',
+  TEMP_DISABLED = 'widget/TEMP_DISABLED',
 }
 
 /*-----------------------------------------------*\
@@ -30,6 +32,7 @@ export const enum Actions {
 \*-----------------------------------------------*/
 
 export type WidgetState = {
+  readonly isTempDisabled: boolean
   readonly isPinned: boolean
   readonly isFav: boolean
   readonly shouldBowlShow: boolean
@@ -39,6 +42,7 @@ export type WidgetState = {
 }
 
 const initState: WidgetState = {
+  isTempDisabled: false,
   isPinned: false,
   isFav: false,
   shouldBowlShow: false,
@@ -49,6 +53,8 @@ const initState: WidgetState = {
 
 export default function reducer (state = initState, action): WidgetState {
   switch (action.type) {
+    case Actions.TEMP_DISABLED:
+      return { ...state, isTempDisabled: action.payload }
     case Actions.RESTORE:
       return {
         ...state,
@@ -90,6 +96,10 @@ export default function reducer (state = initState, action): WidgetState {
 \*-----------------------------------------------*/
 
 type Action = { type: Actions, payload?: any }
+
+export function tempDisable (payload: boolean): Action {
+  return ({ type: Actions.TEMP_DISABLED, payload })
+}
 
 export function restoreWidget (): Action {
   return ({ type: Actions.RESTORE })
@@ -134,6 +144,7 @@ let panelSearchTimeout
 export function startUpAction (): Dispatcher {
   return (dispatch, getState) => {
     listenNewSelection(dispatch, getState)
+    listenTempDisable(dispatch, getState)
 
     if (!isSaladictInternalPage) {
       listenNewConfig(dispatch, getState)
@@ -254,8 +265,8 @@ function listenNewConfig (
   dispatch: (action: Action) => any,
   getState: () => StoreState,
 ) {
-  storage.addListener<AppConfig>('config', ({ config }) => {
-    if (config.newValue && !config.newValue.active) {
+  createAppConfigStream().subscribe(config => {
+    if (!config.active) {
       dispatch(restoreWidget())
     }
   })
@@ -271,7 +282,7 @@ function listenNewSelection (
 
     const state = getState()
 
-    if (!isSaladictInternalPage && !state.config.active) {
+    if (!isSaladictInternalPage && (!state.config.active || state.widget.isTempDisabled)) {
       return
     }
 
@@ -477,4 +488,25 @@ function popupPageInit (
       }
     })
   }
+}
+
+/** From popup page */
+function listenTempDisable (
+  dispatch: (action: Action) => any,
+  getState: () => StoreState,
+) {
+  message.addListener<MsgTempDisabledState>(MsgType.TempDisabledState, msg => {
+    switch (msg.op) {
+      case 'get':
+        return Promise.resolve(getState().widget.isTempDisabled)
+      case 'set':
+        if (msg.value) {
+          dispatch(restoreWidget())
+        }
+        dispatch(tempDisable(msg.value))
+        return Promise.resolve(true)
+      default:
+        break
+    }
+  })
 }

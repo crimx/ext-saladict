@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import App from './Popup'
+import App from './Popup.vue'
 import VueQriously from 'vue-qriously'
 import VueI18Next from '@panter/vue-i18next'
 import i18nLoader from '@/_helpers/i18n'
@@ -16,6 +16,7 @@ Vue.config.productionTip = false
 // Vue.use(VueI18Next) before loading
 const i18n = new VueI18Next(i18nLoader({ popup: popupLocles }, 'popup'))
 
+// tslint:disable-next-line: no-unused-expression
 new Vue({ // eslint-disable-line no-new
   el: '#root',
   i18n,

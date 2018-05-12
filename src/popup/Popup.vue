@@ -11,7 +11,7 @@
       <path d="M474.5 449.5v75h25v-75h-25zM562 587v25h50v-25h-50z"/>
     </svg>
     <span class="switch-title">{{ $t('app_active_title') }}</span>
-    <input type="checkbox" id="opt-active" class="btn-switch" v-model="tempOff">
+    <input type="checkbox" id="opt-active" class="btn-switch" v-model="tempOff" @click.prevent="changeTempOff">
     <label for="opt-active"></label>
   </div>
   <transition name="fade">
@@ -20,32 +20,92 @@
       <p class="qrcode-panel-title">{{ $t('qrcode_title') }}</p>
     </div>
   </transition>
+  <transition name="fade">
+    <div class="page-no-response-panel" v-if="showPageNoResponse">
+      <p class="page-no-response-title">{{ $t('page_no_response') }}</p>
+    </div>
+  </transition>
 </div>
 </template>
 
-<script>
-import { storage } from '@/_helpers/browser-api'
+<script lang="ts">
+import Vue from 'vue'
+import { message, storage } from '@/_helpers/browser-api'
+import { MsgType, MsgTempDisabledState } from '@/typings/message'
 import { appConfigFactory } from '@/app-config'
 
-export default {
+export default Vue.extend({
   name: 'Popup',
   data () {
     return {
       config: appConfigFactory(),
       currentTabUrl: '',
       tempOff: false,
+      showPageNoResponse: false,
+    }
+  },
+  watch: {
+    showPageNoResponse (val) {
+      if (val) {
+        clearTimeout(this['__pageNoResponseTimeout'])
+        this['__pageNoResponseTimeout'] = setTimeout(() => {
+          this.showPageNoResponse = false
+        }, 2000)
+      }
     }
   },
   methods: {
+    changeTempOff () {
+      const newTempOff = !this.tempOff
+
+      browser.tabs.query({ active: true, currentWindow: true })
+        .then(tabs => {
+          if (tabs.length > 0 && tabs[0].id != null) {
+            return message.send<MsgTempDisabledState>(
+              tabs[0].id as number,
+              {
+                type: MsgType.TempDisabledState,
+                op: 'set',
+                value: newTempOff,
+              },
+            )
+          }
+        })
+        .then(isSuccess => {
+          if (isSuccess) {
+            this.tempOff = newTempOff
+          } else {
+            return Promise.reject(new Error('Set tempOff failed')) as Promise<any>
+          }
+        })
+        .catch(() => this.showPageNoResponse = true)
+    },
     showQRcode () {
       chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-        if (tabs.length > 0) {
-          this.currentTabUrl = tabs[0].url
+        if (tabs.length > 0 && tabs[0].url) {
+          this.currentTabUrl = tabs[0].url as string
         }
       })
     }
   },
-}
+  created () {
+    browser.tabs.query({ active: true, currentWindow: true })
+      .then(tabs => {
+        if (tabs.length > 0 && tabs[0].id != null) {
+          return message.send<MsgTempDisabledState>(
+            tabs[0].id as number,
+            {
+              type: MsgType.TempDisabledState,
+              op: 'get',
+            },
+          ).then(flag => {
+            this.tempOff = flag
+          })
+        }
+      })
+      .catch(err => console.warn('Error when receiving MsgTempDisabled response', err))
+  },
+})
 </script>
 
 <style lang="scss">
@@ -83,6 +143,16 @@ body {
 .qrcode-panel-title {
   text-align: center;
   margin: 5px 0 0 0;
+}
+
+.page-no-response-panel {
+  position: fixed;
+  bottom: 60px;
+  right: 25px;
+  padding: 0 10px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
 }
 
 .active-switch {

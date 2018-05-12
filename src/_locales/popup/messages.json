@@ -8,5 +8,10 @@
     "zh_CN": "当前页面二维码",
     "zh_TW": "當前頁面二維碼",
     "en": "Qrcode of the page"
+  },
+  "page_no_response": {
+    "zh_CN": "页面无响应",
+    "zh_TW": "頁面無回應",
+    "en": "Page no response"
   }
 }
