@@ -36,6 +36,7 @@ window.addEventListener('message', ({ data, source }: { data: PostMsgSelection, 
 let config = appConfigFactory()
 let isCtrlPressed = false
 let clickPeriodCount = 0
+let lastMousedownTarget: EventTarget | null
 
 const isCtrlPressed$$ = share<boolean>()(isKeyPressed(isCtrlKey))
 
@@ -49,32 +50,19 @@ const tripleCtrlPressed$ = validCtrlPressed$$.pipe(
   filter(group => group.length >= 3),
 )
 
+window.addEventListener('mousedown', e => {
+  lastMousedownTarget = e.target
+}, { capture: true })
+
 const validMouseup$$ = fromEvent<MouseEvent>(window, 'mouseup', { capture: true }).pipe(
   filter(({ target }) => {
     if (!config.active || window.name === 'saladict-frame') {
       return false
     }
 
-    if (!target) { return true }
-
-    if (typeof target['className'] === 'string' && target['className'].startsWith('saladict-')) {
-      return false
-    }
-
-    if (config.noTypeField) {
-      if (target['tagName'] === 'INPUT' || target['tagName'] === 'TEXTAREA') {
+    if (target) {
+      if (typeof target['className'] === 'string' && target['className'].startsWith('saladict-')) {
         return false
-      }
-
-      if (!target['classList'] || !target['parentElement']) {
-        return true
-      }
-
-      // Popular code editors CodeMirror and ACE
-      for (let el = target as Element | null; el; el = el.parentElement) {
-        if (el.classList.contains('CodeMirror') || el.classList.contains('ace_editor')) {
-          return false
-        }
       }
     }
 
@@ -113,6 +101,11 @@ tripleCtrlPressed$.subscribe(() => {
 let lastText: string
 let lastContext: string
 validMouseup$$.subscribe(({ clientX, clientY }) => {
+  if (config.noTypeField && isTypeField(lastMousedownTarget)) {
+    sendEmptyMessage()
+    return
+  }
+
   const text = selection.getSelectionText()
   if (
     text && (
@@ -236,4 +229,23 @@ function isKeyPressed (keySelectior: (e: KeyboardEvent) => boolean): Observable<
       of(false)
     )
   )
+}
+
+function isTypeField (traget: EventTarget | null): boolean {
+  if (traget) {
+    if (traget['tagName'] === 'INPUT' || traget['tagName'] === 'TEXTAREA') {
+      return true
+    }
+
+    if (traget['classList'] && traget['parentElement']) {
+      // Popular code editors CodeMirror and ACE
+      for (let el = traget as Element | null; el; el = el.parentElement) {
+        if (el.classList.contains('CodeMirror') || el.classList.contains('ace_editor')) {
+          return true
+        }
+      }
+    }
+  }
+
+  return false
 }
