@@ -36,7 +36,6 @@ const allDicts = {
   },
   cobuild: {
     page: 'https://www.collinsdictionary.com/dictionary/%s',
-    secret: true,
     defaultUnfold: true,
     preferredHeight: 300,
     selectionLang: {
@@ -362,7 +361,7 @@ export function appConfigFactory (): AppConfig {
 
     active: true,
 
-    noTypeField: false,
+    noTypeField: true,
 
     animation: true,
 
