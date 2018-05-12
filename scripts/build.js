@@ -176,29 +176,8 @@ function genLocales () {
   const msgKeys = Object.keys(msgJSON)
   const langs = Object.keys(msgJSON[msgKeys[0]].message)
 
-  const dictIDs = fs.readdirSync(path.join(__dirname, '../src/components/dictionaries'))
-  const dicts = langs.reduce((json, lang) => {
-    json[lang] = {}
-    dictIDs.forEach(id => {
-      const dictJSON = require('../src/components/dictionaries/' + id + '/_locales.json')
-      json[lang][`dict_${id}`] = {
-        description: 'Dictionary Name',
-        message: dictJSON.name[lang],
-      }
-      if (dictJSON.options) {
-        Object.keys(dictJSON.options).forEach(opt => {
-          json[lang][`dict_${id}_${opt}`] = {
-            description: 'Dictionary option',
-            message: dictJSON.options[opt][lang],
-          }
-        })
-      }
-    })
-    return json
-  }, {})
-
   return langs.reduce((json, lang) => {
-    json[lang] = { ...dicts[lang] }
+    json[lang] = {}
     msgKeys.forEach(k => {
       json[lang][k] = {
         description: msgJSON[k].description,
