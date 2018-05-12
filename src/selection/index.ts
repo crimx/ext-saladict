@@ -114,7 +114,8 @@ validMouseup$$.subscribe(({ clientX, clientY }) => {
     )
   ) {
     const context = selection.getSelectionSentence()
-    if (text === lastText && context === lastContext) {
+    if (text === lastText && context === lastContext && clickPeriodCount < 2) {
+      // Ignore this rule if it is a double click.
       // Same selection. This could be caused by other widget on the page
       // that uses preventDefault which stops selection being cleared when clicked.
       // Ignore it so that the panel won't follow.
