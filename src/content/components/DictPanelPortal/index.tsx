@@ -4,36 +4,41 @@ import { Spring } from 'react-spring'
 import DictPanel, { DictPanelDispatchers, DictPanelProps } from '../DictPanel'
 import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
-import { DictID } from '@/app-config'
+import { DictID, DictConfigs } from '@/app-config'
 
 const isSaladictPopupPage = Boolean(window['__SALADICT_POPUP_PAGE__'])
 
 export type DictPanelPortalDispatchers = Omit<
   DictPanelDispatchers,
-  'updateItemHeight' | 'handleDragStart'
->
+  'handleDragStart'
+> & {
+  panelOnDrag: (x: number, y: number) => any
+}
 
 export interface DictPanelPortalProps extends DictPanelPortalDispatchers {
+  readonly isAnimation: boolean
+  readonly allDictsConfig: DictConfigs
+  readonly selectedDicts: DictID[]
+  readonly fontSize: number
+
   readonly isFav: boolean
   readonly isPinned: boolean
   readonly isPanelAppear: boolean
   readonly shouldPanelShow: boolean
+  readonly panelRect: {
+    x: number
+    y: number
+    width: number
+    height: number
+  }
+
   readonly dictionaries: DictPanelProps['dictionaries']
-  readonly config: DictPanelProps['config']
+
   readonly selection: MsgSelection
 }
 
 type DictPanelState= {
-  /** hack to reduce the overhead ceremony introduced by gDSFP */
-  readonly mutableArea: {
-    propsSelection: MsgSelection | null
-    dictHeights: { [k in DictID]?: number }
-  }
-
   readonly isDragging: boolean
-  readonly x: number
-  readonly y: number
-  readonly height: number
 }
 
 export default class DictPanelPortal extends React.Component<DictPanelPortalProps, DictPanelState> {
@@ -50,76 +55,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   _frameAnimationEndTimeout: any
 
   state = {
-    mutableArea: {
-      propsSelection: null,
-      dictHeights: {},
-    },
-
     isDragging: false,
-    isNewSelection: false,
-    x: 0,
-    y: 0,
-    height: 30
-  }
-
-  static getDerivedStateFromProps (
-    nextProps: DictPanelPortalProps,
-    prevState: DictPanelState
-  ): Partial<DictPanelState> | null {
-    if (isSaladictPopupPage) {
-      return { height: 400, x: 0, y: 0 }
-    }
-
-    const newSelection = nextProps.selection
-    const mutableArea = prevState.mutableArea
-    const oldSelection = mutableArea.propsSelection
-    if (newSelection !== oldSelection) {
-      mutableArea.propsSelection = newSelection
-      const newText = newSelection.selectionInfo.text
-      // only re-calculate position when new selection is made
-      if (newSelection.force || (newText && !nextProps.isPinned)) {
-        // restore height
-        // when word editor shows up, only relocate the panel
-        const isWordEditorMsg = newSelection.force && oldSelection && newText === oldSelection.selectionInfo.text
-        const panelWidth = nextProps.config.panelWidth
-        const panelHeight = isWordEditorMsg ? prevState.height : 30 + nextProps.config.dicts.selected.length * 30
-        if (!isWordEditorMsg) { mutableArea.dictHeights = {} }
-
-        // icon position           10px  panel position
-        //             +-------+         +------------------------+
-        //             |       |         |                        |
-        //             |       | 30px    |                        |
-        //        60px +-------+         |                        |
-        //             |  30px           |                        |
-        //             |                 |                        |
-        //       40px  |                 |                        |
-        //     +-------+                 |                        |
-        // cursor
-        const { mouseX, mouseY, force } = newSelection
-        const wWidth = window.innerWidth
-        const wHeight = window.innerHeight
-
-        let x = force
-          ? mouseX
-          : mouseX + panelWidth + 80 <= wWidth
-            ? mouseX + 80
-            : mouseX - panelWidth - 80
-        if (x < 0) { x = 10 } // too left
-
-        let y = force
-          ? mouseY
-          : mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30
-        if (y + panelHeight >= wHeight) {
-          // too down
-          // panel's max height is guaranteed to be 80% so it's safe to do this
-          y = wHeight - panelHeight - 10
-        }
-
-        return { x, y, height: panelHeight }
-      }
-    }
-
-    return null
   }
 
   frameDidMount = (frame: HTMLIFrameElement) => {
@@ -159,11 +95,15 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
         iframeStyle.setProperty('transform', `translate(${x}px, ${y}px)`, 'important')
       }
     }
+    this.debouncedFrameAnimationEnd()
     return null
   }
 
   panelImmediateCtrl = (key: string) => {
-    if (!this.props.config.animation || !this.props.shouldPanelShow) {
+    if (!this.props.isAnimation ||
+        !this.props.shouldPanelShow ||
+        this.props.isPanelAppear
+    ) {
       return true
     }
 
@@ -180,49 +120,25 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     return false
   }
 
-  onFrameAnimationEnd = () => {
+  debouncedFrameAnimationEnd = () => {
     clearTimeout(this._frameAnimationEndTimeout)
-
     if (!this.props.shouldPanelShow || this.state.isDragging) {
       return
     }
-
-    this._frameAnimationEndTimeout = setTimeout(() => {
-      if (this.frame) {
-        this.isAnimating = false
-        // remove hardware acceleration to prevent blurry font
-        const iframeStyle = this.frame.style
-        const { x, y } = this.state
-        iframeStyle.setProperty('left', x + 'px', 'important')
-        iframeStyle.setProperty('top', y + 'px', 'important')
-        iframeStyle.removeProperty('transform')
-        iframeStyle.removeProperty('opacity')
-        iframeStyle.removeProperty('will-change')
-      }
-    }, 100)
+    this._frameAnimationEndTimeout = setTimeout(this.onFrameAnimationEnd, 100)
   }
 
-  updateItemHeight = ({ id, height }: { id: DictID, height: number }) => {
-    if (isSaladictPopupPage) {
-      return
-    }
-
-    const dictHeights = this.state.mutableArea.dictHeights
-    if (dictHeights[id] !== height) {
-      dictHeights[id] = height
-
-      const winHeight = window.innerHeight
-      const newHeight = Math.min(
-        winHeight * this.props.config.panelMaxHeightRatio,
-        30 + this.props.config.dicts.selected
-          .reduce((sum, id) => sum + (dictHeights[id] || 30), 0),
-      )
-
-      if (this.state.y + newHeight + 10 > winHeight) {
-        this.setState({ height: newHeight, y: winHeight - 10 - newHeight })
-      } else {
-        this.setState({ height: newHeight })
-      }
+  onFrameAnimationEnd = () => {
+    if (this.frame) {
+      this.isAnimating = false
+      // remove hardware acceleration to prevent blurry font
+      const iframeStyle = this.frame.style
+      const { x, y } = this.props.panelRect
+      iframeStyle.setProperty('left', x + 'px', 'important')
+      iframeStyle.setProperty('top', y + 'px', 'important')
+      iframeStyle.removeProperty('transform')
+      iframeStyle.removeProperty('opacity')
+      iframeStyle.removeProperty('will-change')
     }
   }
 
@@ -231,8 +147,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     e.preventDefault()
     e.stopPropagation()
     // e is from iframe, so there is offset
-    this.lastMouseX = e.clientX + this.state.x
-    this.lastMouseY = e.clientY + this.state.y
+    this.lastMouseX = e.clientX + this.props.panelRect.x
+    this.lastMouseY = e.clientY + this.props.panelRect.y
     this.setState({ isDragging: true })
     window.addEventListener('mousemove', this.handleWindowMouseMove, { capture: true })
     window.addEventListener('mouseup', this.handleDragEnd, { capture: true })
@@ -246,22 +162,22 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
   handleWindowMouseMove = (e: MouseEvent) => {
     e.stopPropagation()
-    const { x, y } = this.state
-    this.setState({
-      x: x + e.clientX - this.lastMouseX,
-      y: y + e.clientY - this.lastMouseY,
-    })
+    const { x, y } = this.props.panelRect
+    this.props.panelOnDrag(
+      x + e.clientX - this.lastMouseX,
+      y + e.clientY - this.lastMouseY,
+    )
     this.lastMouseX = e.clientX
     this.lastMouseY = e.clientY
   }
 
   handleFrameMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation()
-    const { x, y } = this.state
-    this.setState({
-      x: x + x + e.clientX - this.lastMouseX,
-      y: y + y + e.clientY - this.lastMouseY,
-    })
+    const { x, y } = this.props.panelRect
+    this.props.panelOnDrag(
+      x + x + e.clientX - this.lastMouseX,
+      y + y + e.clientY - this.lastMouseY,
+    )
     this.lastMouseX = e.clientX + x
     this.lastMouseY = e.clientY + y
   }
@@ -277,11 +193,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       shouldPanelShow,
     } = this.props
 
-    const { x, y, height, isDragging } = this.state
-
-    const width = isSaladictPopupPage
-      ? Math.min(this.props.config.panelWidth, 800)
-      : this.props.config.panelWidth
+    const { isDragging } = this.state
+    const { x, y, width, height } = this.props.panelRect
 
     if (shouldPanelShow && !this.isMount) {
       this.mountEL()
@@ -296,7 +209,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
         {shouldPanelShow
           ? <DictPanel
               {...this.props}
-              updateItemHeight={this.updateItemHeight}
+              panelWidth={width}
               handleDragStart={this.handleDragStart}
               frameDidMount={this.frameDidMount}
               frameWillUnmount={this.frameWillUnmount}
@@ -310,7 +223,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
             opacity: shouldPanelShow ? 1 : 0
           }}
           immediate={this.panelImmediateCtrl}
-          onRest={this.onFrameAnimationEnd}
+          onRest={this.debouncedFrameAnimationEnd}
         >{this.animateFrame}</Spring>
       </div>,
       this.el,

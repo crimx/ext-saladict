@@ -2,7 +2,13 @@ import { connect } from 'react-redux'
 import DictPanelPortal, { DictPanelPortalDispatchers } from '../components/DictPanelPortal'
 import { StoreState } from '../redux/modules'
 import { searchText } from '../redux/modules/dictionaries'
-import { openWordEditor, panelPinSwitch, closePanel } from '../redux/modules/widget'
+import {
+  openWordEditor,
+  panelPinSwitch,
+  closePanel,
+  updateItemHeight,
+  panelOnDrag,
+} from '../redux/modules/widget'
 
 export const mapStateToProps = ({
   config,
@@ -11,13 +17,20 @@ export const mapStateToProps = ({
   dictionaries,
 }: StoreState) => {
   return {
-    config,
+    isAnimation: config.animation,
+    allDictsConfig: config.dicts.all,
+    selectedDicts: config.dicts.selected,
+    fontSize: config.fontSize,
+
     selection,
+
     isFav: widget.isFav,
     isPinned: widget.isPinned,
     isPanelAppear: widget.isPanelAppear,
     shouldPanelShow: widget.shouldPanelShow,
-    dictionaries: dictionaries,
+    panelRect: widget.panelRect,
+
+    dictionaries,
   }
 }
 
@@ -26,6 +39,8 @@ export const mapDispatchToProps: { [k in keyof DictPanelPortalDispatchers]: Func
 
   openWordEditor,
   panelPinSwitch,
+  updateItemHeight,
+  panelOnDrag,
 
   shareImg: () => {/** @todo */},
   closePanel: closePanel,

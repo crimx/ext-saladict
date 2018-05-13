@@ -1,53 +1,76 @@
 import { message } from '@/_helpers/browser-api'
 import { MsgSelection, MsgType } from '@/typings/message'
 import { getDefaultSelectionInfo } from '@/_helpers/selection'
+import { StoreState, DispatcherThunk } from './index'
 
 /*-----------------------------------------------*\
-    Actions
+    Action Type
 \*-----------------------------------------------*/
 
-export const enum Actions {
+export const enum ActionType {
   NEW_SELECTION = 'selection/NEW_SELECTION'
+}
+
+/*-----------------------------------------------*\
+    Payload
+\*-----------------------------------------------*/
+
+interface SelectionPayload {
+  [ActionType.NEW_SELECTION]: MsgSelection
 }
 
 /*-----------------------------------------------*\
     State
 \*-----------------------------------------------*/
 
-export type SelectionState = MsgSelection
-
-const initState: SelectionState = {
-  type: MsgType.Selection,
-  selectionInfo: getDefaultSelectionInfo(),
-  mouseX: 0,
-  mouseY: 0,
-  dbClick: false,
-  ctrlKey: false,
-  force: false,
+export type SelectionState = {
+  readonly selection: MsgSelection
 }
 
-export default function reducer (state = initState, action): SelectionState {
-  switch (action.type) {
-    case Actions.NEW_SELECTION:
-      return action.payload
-    default:
-      return state
+export const initState: SelectionState = {
+  selection: {
+    type: MsgType.Selection,
+    selectionInfo: getDefaultSelectionInfo(),
+    mouseX: 0,
+    mouseY: 0,
+    dbClick: false,
+    ctrlKey: false,
+    force: false,
   }
 }
+
+/*-----------------------------------------------*\
+    Reducer Object
+\*-----------------------------------------------*/
+
+type SelectionReducer = {
+  [k in ActionType]: (state: StoreState, payload: SelectionPayload[k]) => StoreState
+}
+
+export const reducer: SelectionReducer = {
+  [ActionType.NEW_SELECTION] (state, selection) {
+    return { ...state, selection }
+  }
+}
+
+export default reducer
 
 /*-----------------------------------------------*\
     Action Creators
 \*-----------------------------------------------*/
 
-type Action = { type: Actions, payload?: any }
-
-/** When new selection is made */
-export function newSelection (selection: MsgSelection): Action {
-  return { type: Actions.NEW_SELECTION, payload: selection }
+interface Action<T extends ActionType> {
+  type: ActionType,
+  payload?: SelectionPayload[T]
 }
 
-export function sendEmptySelection (): Action {
-  return { type: Actions.NEW_SELECTION, payload: {
+/** When new selection is made */
+export function newSelection (selection: MsgSelection): Action<ActionType.NEW_SELECTION> {
+  return { type: ActionType.NEW_SELECTION, payload: selection }
+}
+
+export function sendEmptySelection (): Action<ActionType.NEW_SELECTION> {
+  return { type: ActionType.NEW_SELECTION, payload: {
     type: MsgType.Selection,
     selectionInfo: getDefaultSelectionInfo(),
     mouseX: 0,
@@ -61,12 +84,8 @@ export function sendEmptySelection (): Action {
     Side Effects
 \*-----------------------------------------------*/
 
-type Dispatcher = (
-  dispatch: (action: Action) => any,
-) => any
-
 /** Listen to selection change and update selection */
-export function startUpAction (): Dispatcher {
+export function startUpAction (): DispatcherThunk {
   return dispatch => {
     message.self.addListener<MsgSelection>(
       MsgType.Selection,

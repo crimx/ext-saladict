@@ -1,50 +1,71 @@
 import { appConfigFactory, AppConfig } from '@/app-config'
 import { createAppConfigStream } from '@/_helpers/config-manager'
+import { StoreState, Dispatcher, DispatcherThunk } from './index'
 
 /*-----------------------------------------------*\
-    Actions
+    Action Type
 \*-----------------------------------------------*/
 
-export const enum Actions {
-  NEW_CONFIG = 'configs/NEW_CONFIG'
+export const enum ActionType {
+  NEW_CONFIG = 'configs/NEW_CONFIG',
+}
+
+/*-----------------------------------------------*\
+    Payload
+\*-----------------------------------------------*/
+
+interface ConfigPayload {
+  [ActionType.NEW_CONFIG]: AppConfig
 }
 
 /*-----------------------------------------------*\
     State
 \*-----------------------------------------------*/
 
-export type ConfigState = AppConfig
+export interface ConfigState {
+  readonly config: AppConfig
+}
 
-export default function reducer (state = appConfigFactory(), action): ConfigState {
-  switch (action.type) {
-    case Actions.NEW_CONFIG:
-      return action.payload
-    default:
-      return state
+export const initState: ConfigState = {
+  config: appConfigFactory()
+}
+
+/*-----------------------------------------------*\
+    Reducer Object
+\*-----------------------------------------------*/
+
+type ConfigReducer = {
+  [k in ActionType]: (state: StoreState, payload: ConfigPayload[k]) => StoreState
+}
+
+export const reducer: ConfigReducer = {
+  [ActionType.NEW_CONFIG] (state, config) {
+    return { ...state, config }
   }
 }
+
+export default reducer
 
 /*-----------------------------------------------*\
     Action Creators
 \*-----------------------------------------------*/
 
-type Action = { type: Actions, payload?: any }
+interface Action<T extends ActionType> {
+  type: ActionType,
+  payload?: ConfigPayload[T]
+}
 
 /** When app config is updated */
-export function newConfig (config: AppConfig): Action {
-  return { type: Actions.NEW_CONFIG, payload: config }
+export function newConfig (config: AppConfig): Action<ActionType.NEW_CONFIG> {
+  return { type: ActionType.NEW_CONFIG, payload: config }
 }
 
 /*-----------------------------------------------*\
     Side Effects
 \*-----------------------------------------------*/
 
-type Dispatcher = (
-  dispatch: (action: Action) => any,
-) => any
-
 /** Listen to config change and update config */
-export function startUpAction (): Dispatcher {
+export function startUpAction (): DispatcherThunk {
   return dispatch => {
     createAppConfigStream().subscribe(config => dispatch(newConfig(config)))
   }

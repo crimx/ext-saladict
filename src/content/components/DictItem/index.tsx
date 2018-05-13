@@ -11,7 +11,7 @@ import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 
 export interface DictItemDispatchers {
   readonly searchText: (arg: { id: DictID } | { info: SelectionInfo }) => any
-  readonly updateItemHeight: ({ id, height }: { id: DictID, height: number }) => any
+  readonly updateItemHeight: (id: DictID, height: number) => any
 }
 
 export interface DictItemProps extends DictItemDispatchers {
@@ -161,17 +161,17 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       if (update) { this.setState(update as any) }
     }
 
-    this.props.updateItemHeight({
-      id: this.props.id,
-      height: this.state.visibleHeight + 20,
-    })
+    this.props.updateItemHeight(
+      this.props.id,
+      this.state.visibleHeight + 20,
+    )
   }
 
   componentDidMount () {
-    this.props.updateItemHeight({
-      id: this.props.id,
-      height: this.state.visibleHeight + 20,
-    })
+    this.props.updateItemHeight(
+      this.props.id,
+      this.state.visibleHeight + 20,
+    )
   }
 
   render () {
