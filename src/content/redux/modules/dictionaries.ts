@@ -1,24 +1,45 @@
 import { message } from '@/_helpers/browser-api'
 import { DictID, appConfigFactory, AppConfig } from '@/app-config'
-import { Actions as ConfigActions } from './config'
 import isEqual from 'lodash/isEqual'
-import mapValues from 'lodash/mapValues'
 import { saveWord } from '@/_helpers/record-manager'
-import { SelectionInfo, isSameSelection } from '@/_helpers/selection'
+import { getDefaultSelectionInfo, SelectionInfo, isSameSelection } from '@/_helpers/selection'
+import { createAppConfigStream } from '@/_helpers/config-manager'
 import { MsgType, MsgFetchDictResult } from '@/typings/message'
-import { StoreState } from './index'
+import { StoreState, DispatcherThunk, Dispatcher } from './index'
 import { isInNotebook } from './widget'
 
+const isSaladictOptionsPage = Boolean(window['__SALADICT_OPTIONS_PAGE__'])
 const isSaladictInternalPage = Boolean(window['__SALADICT_INTERNAL_PAGE__'])
+const isSaladictPopupPage = Boolean(window['__SALADICT_POPUP_PAGE__'])
 
 /*-----------------------------------------------*\
-    Actions
+    Action Type
 \*-----------------------------------------------*/
 
-export const enum Actions {
+export const enum ActionType {
+  NEW_CONFIG = 'dicts/NEW_CONFIG',
   SEARCH_START = 'dicts/SEARCH_START',
   SEARCH_END = 'dicts/SEARCH_END',
   RESTORE = 'dicts/RESTORE',
+}
+
+/*-----------------------------------------------*\
+    Payload
+\*-----------------------------------------------*/
+
+interface DictionariesPayload {
+  [ActionType.NEW_CONFIG]: AppConfig
+  [ActionType.RESTORE]: undefined
+  [ActionType.SEARCH_START]: {
+    toOnhold: DictID[]
+    toStart: DictID[]
+    info: SelectionInfo
+  }
+  [ActionType.SEARCH_END]: {
+    id: DictID
+    info: SelectionInfo
+    result: any
+  }
 }
 
 /*-----------------------------------------------*\
@@ -37,37 +58,74 @@ type DictState = {
 }
 
 export type DictionariesState = {
-  readonly selected: AppConfig['dicts']['selected']
-  readonly dicts: {
-    readonly [k in DictID]?: DictState
+  readonly dictionaries: {
+    readonly selected: AppConfig['dicts']['selected']
+    readonly dicts: {
+      readonly [k in DictID]?: DictState
+    }
+    readonly searchHistory: SelectionInfo[]
   }
-  readonly searchHistory: SelectionInfo[]
 }
 
 const initConfig = appConfigFactory()
 
-const initState: DictionariesState = {
-  selected: initConfig.dicts.selected,
-  dicts: initConfig.dicts.selected
-    .reduce((state, id) => {
-      state[id] = {
-        searchStatus: SearchStatus.OnHold,
-        searchResult: null,
-      }
-      return state
-    }, {}),
-  searchHistory: [],
+export const initState: DictionariesState = {
+  dictionaries: {
+    selected: initConfig.dicts.selected,
+    dicts: initConfig.dicts.selected
+      .reduce((state, id) => {
+        state[id] = {
+          searchStatus: SearchStatus.OnHold,
+          searchResult: null,
+        }
+        return state
+      }, {}),
+    searchHistory: [],
+  }
 }
 
-export default function reducer (state = initState, action): DictionariesState {
-  switch (action.type) {
-    case Actions.RESTORE:
-      return {
-        ...state,
-        dicts: Object.keys(state.dicts).reduce((newDicts, id) => {
+/*-----------------------------------------------*\
+    Reducer Object
+\*-----------------------------------------------*/
+
+type DictsReducer = {
+  [k in ActionType]: (state: StoreState, payload: DictionariesPayload[k]) => StoreState
+}
+
+export const reducer: DictsReducer = {
+  [ActionType.NEW_CONFIG] (state, config) {
+    const { dictionaries } = state
+    const { selected } = config.dicts
+
+    if (isEqual(selected, dictionaries.selected)) {
+      return state
+    }
+
+    return {
+      ...state,
+      dictionaries: {
+        ...dictionaries,
+        selected,
+        dicts: selected.reduce((newState, id) => {
+          newState[id] = dictionaries.dicts[id] || {
+            searchStatus: SearchStatus.OnHold,
+            searchResult: null,
+          }
+          return newState
+        }, {}),
+      }
+    }
+  },
+  [ActionType.RESTORE] (state) {
+    const { dictionaries } = state
+    return {
+      ...state,
+      dictionaries: {
+        ...dictionaries,
+        dicts: Object.keys(dictionaries.dicts).reduce((newDicts, id) => {
           newDicts[id] =
-            state.dicts[id].searchStatus === SearchStatus.OnHold
-              ? state.dicts[id]
+            dictionaries.dicts[id].searchStatus === SearchStatus.OnHold
+              ? dictionaries.dicts[id]
               : {
                 searchStatus: SearchStatus.OnHold,
                 searchResult: null,
@@ -75,104 +133,116 @@ export default function reducer (state = initState, action): DictionariesState {
           return newDicts
         }, {})
       }
-    case ConfigActions.NEW_CONFIG: {
-      const { selected }: { selected: DictID[] } = action.payload.dicts
-      return isEqual(selected, state.selected)
-        ? state
-        : {
-          ...state,
-          selected,
-          dicts: selected.reduce((newState, id) => {
-            newState[id] = state.dicts[id] || {
-              searchStatus: SearchStatus.OnHold,
-              searchResult: null,
-            }
-            return newState
-          }, {})
-        }
     }
-    case Actions.SEARCH_START: {
-      const toOnhold: Set<string> = new Set(action.payload.toOnhold)
-      const toStart: Set<string> = new Set(action.payload.toStart)
-      const info = action.payload.info
-      const history = state.searchHistory
-      return {
-        ...state,
-        searchHistory: info === history[0] ? history : [info, ...history].slice(0, 20),
-        dicts: mapValues<typeof state.dicts, DictState>(
-          state.dicts,
-          (dictInfo, dictID) => {
-            if (toStart.has(dictID)) {
-              return {
-                ...dictInfo,
-                searchStatus: SearchStatus.Searching,
-                searchResult: null,
-              }
-            } else if (toOnhold.has(dictID)) {
-              return {
-                ...dictInfo,
-                searchStatus: SearchStatus.OnHold,
-                searchResult: null,
-              }
-            }
+  },
+  [ActionType.SEARCH_START] (state, { toStart, toOnhold, info }) {
+    const { dictionaries } = state
+    const history = dictionaries.searchHistory
 
-            return dictInfo as DictState
-          }
-        ),
+    const dicts = { ...dictionaries.dicts }
+    toOnhold.forEach(id => {
+      if (dicts[id]) {
+        dicts[id] = {
+          ...dicts[id],
+          searchStatus: SearchStatus.OnHold,
+          searchResult: null,
+        }
+      }
+    })
+    toStart.forEach(id => {
+      if (dicts[id]) {
+        dicts[id] = {
+          ...dicts[id],
+          searchStatus: SearchStatus.Searching,
+          searchResult: null,
+        }
+      }
+    })
+
+    return {
+      ...state,
+      dictionaries: {
+        ...dictionaries,
+        // don't create history for same info
+        searchHistory: info === history[0] ? history : [info, ...history].slice(0, 20),
+        dicts,
       }
     }
-    case Actions.SEARCH_END: {
-      const { id, info, result }: { id: DictID, info: SelectionInfo, result: any } = action.payload
-      return isSameSelection(info, state.searchHistory[0])
-        ? {
-          ...state,
-          dicts: {
-            ...state.dicts,
-            [id]: { ...state[id], searchStatus: SearchStatus.Finished, searchResult: result }
-          }
-        }
-        : state // ignore the outdated selection
-    }
-    default:
+  },
+  [ActionType.SEARCH_END] (state, { id, info, result }) {
+    const { dictionaries } = state
+
+    if (!isSameSelection(info, dictionaries.searchHistory[0])) {
+      // ignore the outdated selection
       return state
-  }
+    }
+
+    return {
+      ...state,
+      dictionaries: {
+        ...dictionaries,
+        dicts: {
+          ...dictionaries.dicts,
+          [id]: { ...dictionaries[id], searchStatus: SearchStatus.Finished, searchResult: result }
+        }
+      }
+    }
+  },
 }
 
 /*-----------------------------------------------*\
     Action Creators
 \*-----------------------------------------------*/
 
-type Action = { type: Actions, payload?: any }
+interface Action<T extends ActionType> {
+  type: ActionType,
+  payload?: DictionariesPayload[T]
+}
 
-export function restoreDicts (): Action {
-  return ({ type: Actions.RESTORE })
+export function newConfig (config: AppConfig): Action<ActionType.NEW_CONFIG> {
+  return ({ type: ActionType.NEW_CONFIG, payload: config })
+}
+
+export function restoreDicts (): Action<ActionType.RESTORE> {
+  return ({ type: ActionType.RESTORE })
 }
 
 /** Search all selected dicts if id is not provided */
 export function searchStart (
-  payload: {toOnhold: DictID[], toStart: DictID[], info: SelectionInfo }
-): Action {
-  return ({ type: Actions.SEARCH_START, payload })
+  payload: DictionariesPayload[ActionType.SEARCH_START]
+): Action<ActionType.SEARCH_START> {
+  return ({ type: ActionType.SEARCH_START, payload })
 }
 
-export function searchEnd (payload: { id: DictID, info: SelectionInfo, result: any }): Action {
-  return ({ type: Actions.SEARCH_END, payload })
+export function searchEnd (
+  payload: DictionariesPayload[ActionType.SEARCH_END]
+): Action<ActionType.SEARCH_END> {
+  return ({ type: ActionType.SEARCH_END, payload })
 }
 
 /*-----------------------------------------------*\
     Side Effects
 \*-----------------------------------------------*/
 
-type Dispatcher = (
-  dispatch: (action: Action) => any,
-  getState: () => StoreState,
-) => any
+export function startUpAction (): DispatcherThunk {
+  return (dispatch, getState) => {
+    createAppConfigStream().subscribe(config => {
+      dispatch(newConfig(config))
+    })
+
+    if (isSaladictPopupPage) {
+      popupPageInit(dispatch, getState)
+    } else {
+      listenTrpleCtrl(dispatch, getState)
+    }
+  }
+}
 
 /**
  * Search all selected dicts if id is not provided.
  * Use last selection if info is not provided.
  */
-export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispatcher {
+export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): DispatcherThunk {
   return (dispatch, getState) => {
     const state = getState()
     const info = arg
@@ -182,7 +252,7 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
     // try to unfold a dict when the panel first popup
     if (!info) { return }
 
-    dispatch(isInNotebook(info) as any)
+    dispatch(isInNotebook(info))
 
     const requestID = arg && arg.id
 
@@ -226,5 +296,58 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
           dispatch(searchEnd({ id, info , result: null }))
         })
     }
+  }
+}
+
+function listenTrpleCtrl (
+  dispatch: Dispatcher,
+  getState: () => StoreState,
+) {
+  message.self.addListener(MsgType.TripleCtrl, () => {
+    const state = getState()
+    const { tripleCtrlPreload, tripleCtrlAuto } = state.config
+
+    const fetchInfo = tripleCtrlPreload === 'selection'
+      ? Promise.resolve({ ...state.selection.selectionInfo })
+      : tripleCtrlPreload === 'clipboard'
+        ? message.send({ type: MsgType.GetClipboard })
+            .then(text => getDefaultSelectionInfo({ text }))
+        : Promise.resolve(getDefaultSelectionInfo())
+
+    fetchInfo.then(info => {
+      if (tripleCtrlAuto && info.text) {
+        dispatch(searchText({ info }))
+      } else {
+        dispatch(restoreDicts())
+      }
+    })
+  })
+}
+
+function popupPageInit (
+  dispatch: Dispatcher,
+  getState: () => StoreState,
+) {
+  const state = getState()
+  const {
+    baAuto,
+    baPreload,
+  } = state.config
+
+  if (baPreload) {
+    const fetchInfo = (
+      baPreload === 'selection'
+        ? message.send({ type: MsgType.__PreloadSelection__ })
+        : message.send({ type: MsgType.GetClipboard })
+    )
+    .then(text => {
+      const info = getDefaultSelectionInfo({ text })
+
+      if (baAuto && info.text) {
+        dispatch(searchText({ info }))
+      } else {
+        dispatch(restoreDicts())
+      }
+    })
   }
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import { DictionariesState } from '../../redux/modules/dictionaries'
-import { AppConfig, DictID } from '@/app-config'
+import { AppConfig, DictID, DictConfigs } from '@/app-config'
 import { SelectionInfo } from '@/_helpers/selection'
 import { MsgSelection } from '@/typings/message'
 import PortalFrame from '@/components/PortalFrame'
@@ -15,8 +15,12 @@ export type DictPanelDispatchers = DictItemDispatchers & MenuBarDispatchers & {
 export interface DictPanelProps extends DictPanelDispatchers {
   readonly isFav: boolean
   readonly isPinned: boolean
-  readonly dictionaries: DictionariesState
-  readonly config: AppConfig
+  readonly dictionaries: DictionariesState['dictionaries']
+  readonly allDictsConfig: DictConfigs
+  readonly selectedDicts: DictID[]
+  readonly fontSize: number
+  readonly panelWidth: number
+  readonly isAnimation: boolean
   readonly selection: MsgSelection
 
   readonly frameDidMount: (frame: HTMLIFrameElement) => any
@@ -63,11 +67,16 @@ export default class DictPanel extends React.Component<DictPanelProps> {
       selection,
 
       dictionaries,
-      config,
+
+      allDictsConfig,
+      selectedDicts,
+      panelWidth,
+      fontSize,
+      isAnimation,
+
       updateItemHeight,
     } = this.props
 
-    const allDictsConfig = config.dicts.all
     const dictsInfo = dictionaries.dicts
 
     // wrap iframe into DictPanel so that react
@@ -93,16 +102,16 @@ export default class DictPanel extends React.Component<DictPanelProps> {
           panelPinSwitch,
           closePanel,
         })}
-        <div className={`panel-DictContainer${config.animation ? ' isAnimate' : ''}`}>
-          {config.dicts.selected.map(id => React.createElement(DictItem, {
+        <div className={`panel-DictContainer${isAnimation ? ' isAnimate' : ''}`}>
+          {selectedDicts.map(id => React.createElement(DictItem, {
             key: id,
             id,
             text: (dictionaries.searchHistory[0] || selection.selectionInfo).text,
             dictURL: allDictsConfig[id].page,
-            fontSize: config.fontSize,
+            fontSize,
             preferredHeight: allDictsConfig[id].preferredHeight,
-            panelWidth: config.panelWidth,
-            isAnimation: config.animation,
+            panelWidth,
+            isAnimation,
             searchStatus: (dictsInfo[id] as any).searchStatus,
             searchResult: (dictsInfo[id] as any).searchResult,
             searchText,
