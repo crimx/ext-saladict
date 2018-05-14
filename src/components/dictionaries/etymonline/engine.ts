@@ -1,5 +1,4 @@
-import DOMPurify from 'dompurify'
-import fetchDOM from '@/_helpers/fetch-dom'
+import { fetchDOM } from '@/_helpers/fetch-dom'
 import { handleNoResult } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
@@ -50,7 +49,7 @@ function handleDom (
           let word = ($cf.textContent || '').trim()
           $cf.outerHTML = `<a href="https://www.etymonline.com/word/${word}" target="_blank">${word}</a>`
         })
-        def = DOMPurify.sanitize($def.outerHTML)
+        def = $def.outerHTML
       }
 
       if (title && def) {

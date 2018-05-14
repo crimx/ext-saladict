@@ -1,5 +1,4 @@
-import DOMPurify from 'dompurify'
-import fetchDOM from '@/_helpers/fetch-dom'
+import { fetchDOM } from '@/_helpers/fetch-dom'
 import { handleNoResult } from '../helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
@@ -76,7 +75,7 @@ function handleDom (
   if ($article) {
     result.defs = Array.from($article.querySelectorAll('.prep-order'))
       .slice(0, options.sentence)
-      .map(d => DOMPurify.sanitize(d.outerHTML))
+      .map(d => d.outerHTML)
   }
 
   if (result.title && result.defs && result.defs.length > 0) {
