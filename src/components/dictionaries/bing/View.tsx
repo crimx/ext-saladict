@@ -12,7 +12,7 @@ export default class DictBing extends React.PureComponent<{ result: BingResult }
         {result.phsym &&
           <ul className='dictBing-Phsym'>
             {result.phsym.map(p => (
-              <li className='dictBing-PhsymItem' key={p.pron}>
+              <li className='dictBing-PhsymItem' key={p.lang + p.pron}>
                 {p.lang} <Speaker src={p.pron} />
               </li>
             ))}
