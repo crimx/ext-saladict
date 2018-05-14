@@ -548,15 +548,17 @@ function listenNewSelection (
       shouldBowlShow,
     }
 
-    if (shouldPanelShow === lastShouldPanelShow || shouldPanelShow) {
-      // don't calculate on hiding to prevent moving animation
-      dictHeights = {}
-      newWidgetPartial.panelRect = _getPanelRectFromEvent(
-        mouseX,
-        mouseY,
-        lastPanelRect.width,
-        30 + state.config.dicts.selected.length * 30,
-      )
+    if (!isPinned) {
+      if (shouldPanelShow === lastShouldPanelShow || shouldPanelShow) {
+        // don't calculate on hiding to prevent moving animation
+        dictHeights = {}
+        newWidgetPartial.panelRect = _getPanelRectFromEvent(
+          mouseX,
+          mouseY,
+          lastPanelRect.width,
+          30 + state.config.dicts.selected.length * 30,
+        )
+      }
     }
 
     if (shouldPanelShow !== lastShouldPanelShow) {
