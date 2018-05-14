@@ -4,6 +4,7 @@ import isEqual from 'lodash/isEqual'
 import { saveWord } from '@/_helpers/record-manager'
 import { getDefaultSelectionInfo, SelectionInfo, isSameSelection } from '@/_helpers/selection'
 import { createAppConfigStream } from '@/_helpers/config-manager'
+import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 import { MsgType, MsgFetchDictResult } from '@/typings/message'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
 import { isInNotebook } from './widget'
@@ -250,28 +251,33 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
     : state.dictionaries.searchHistory[0]
 
     // try to unfold a dict when the panel first popup
-    if (!info) { return }
+    if (!info || !info.text) { return }
 
     dispatch(isInNotebook(info))
 
     const requestID = arg && arg.id
 
-    // search one dict
+    // search one dict, when user clicks the unfold arrow
     if (requestID) {
       dispatch(searchStart({ toStart: [requestID], toOnhold: [], info }))
       doSearch(requestID)
       return
     }
 
-    // search all, except the onholded
+    // search all, except the default onholded
+    // and those who don't match the selection language
     const { selected: selectedDicts, all: allDicts } = state.config.dicts
     const toStart: DictID[] = []
     const toOnhold: DictID[] = []
     selectedDicts.forEach(id => {
-      if (allDicts[id].defaultUnfold) {
-        toStart.push(id)
-      } else {
+      if (
+        !allDicts[id].defaultUnfold ||
+        (!allDicts[id].selectionLang.chs && isContainChinese(info.text)) ||
+        (!allDicts[id].selectionLang.eng && isContainEnglish(info.text))
+      ) {
         toOnhold.push(id)
+      } else {
+        toStart.push(id)
       }
     })
 
