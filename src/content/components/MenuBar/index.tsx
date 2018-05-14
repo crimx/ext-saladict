@@ -25,8 +25,6 @@ export interface MenuBarProps extends MenuBarDispatchers {
 }
 
 type MenuBarState = {
-  // same as props
-  propsSelection: MsgSelection | null
   propsSearchHistory: SelectionInfo[] | null
 
   iSearchHistory: number
@@ -38,7 +36,6 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
   dragAreaRef = React.createRef<HTMLDivElement>()
 
   state = {
-    propsSelection: null,
     propsSearchHistory: null,
 
     iSearchHistory: 0,
@@ -49,23 +46,20 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     nextProps: MenuBarProps,
     prevState: MenuBarState
   ): Partial<MenuBarState> | null {
-    // only overwrite text when new selection is made
-    const result: Partial<MenuBarState> = {}
-
-    const { selection, searchHistory } = nextProps
-    const { propsSelection, propsSearchHistory, text } = prevState
-    if (propsSelection !== selection) {
-      result.propsSelection = selection
-      result.text = selection.selectionInfo.text || text
-    }
-
+    // only overwrite text when new search is made
+    const { searchHistory } = nextProps
+    const { propsSearchHistory } = prevState
     if (propsSearchHistory !== searchHistory) {
+      const latestSearch = searchHistory[0]
       // restore history
-      result.propsSearchHistory = searchHistory
-      result.iSearchHistory = 0
+      return {
+        propsSearchHistory: searchHistory,
+        iSearchHistory: 0,
+        text: latestSearch && latestSearch.text || '',
+      }
     }
 
-    return Object.keys(result).length > 0 ? result : null
+    return null
   }
 
   searchText = () => {

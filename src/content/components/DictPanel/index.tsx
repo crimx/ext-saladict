@@ -93,7 +93,6 @@ export default class DictPanel extends React.Component<DictPanelProps> {
         {React.createElement(MenuBar, {
           isFav,
           isPinned,
-          selection,
           searchHistory: dictionaries.searchHistory,
           handleDragStart,
           searchText,
