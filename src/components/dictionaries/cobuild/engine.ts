@@ -1,4 +1,5 @@
-import { fetchDOM } from '@/_helpers/fetch-dom'
+import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
+import DOMPurify from 'dompurify'
 import { handleNoResult } from '../helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
@@ -20,10 +21,10 @@ export default function search (
   text: string,
   config: AppConfig
 ): Promise<COBUILDSearchResult> {
-  return fetchDOM('https://www.iciba.com/' + text)
+  return fetchDirtyDOM('https://www.iciba.com/' + text)
     .then(doc => handleDom(doc, config.dicts.all.cobuild.options))
     .catch(() => {
-      return fetchDOM('http://www.iciba.com/' + text)
+      return fetchDirtyDOM('http://www.iciba.com/' + text)
         .then(doc => handleDom(doc, config.dicts.all.cobuild.options))
     })
 }
@@ -75,7 +76,7 @@ function handleDom (
   if ($article) {
     result.defs = Array.from($article.querySelectorAll('.prep-order'))
       .slice(0, options.sentence)
-      .map(d => d.outerHTML)
+      .map(d => DOMPurify.sanitize(d.outerHTML))
   }
 
   if (result.title && result.defs && result.defs.length > 0) {

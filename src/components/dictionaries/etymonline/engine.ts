@@ -1,4 +1,5 @@
-import { fetchDOM } from '@/_helpers/fetch-dom'
+import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
+import DOMPurify from 'dompurify'
 import { handleNoResult } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
@@ -20,7 +21,7 @@ export default function search (
   const options = config.dicts.all.etymonline.options
 
   // http to bypass the referer checking
-  return fetchDOM('http://www.etymonline.com/search?q=' + text)
+  return fetchDirtyDOM('http://www.etymonline.com/search?q=' + text)
     .then(doc => handleDom(doc, options))
 }
 
@@ -49,7 +50,7 @@ function handleDom (
           let word = ($cf.textContent || '').trim()
           $cf.outerHTML = `<a href="https://www.etymonline.com/word/${word}" target="_blank">${word}</a>`
         })
-        def = $def.outerHTML
+        def = DOMPurify.sanitize($def.outerHTML)
       }
 
       if (title && def) {
