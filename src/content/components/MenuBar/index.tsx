@@ -20,7 +20,6 @@ export interface MenuBarDispatchers {
 export interface MenuBarProps extends MenuBarDispatchers {
   readonly isFav: boolean
   readonly isPinned: boolean
-  readonly selection: MsgSelection
   readonly searchHistory: SelectionInfo[]
 }
 
