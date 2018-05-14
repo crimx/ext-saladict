@@ -1,27 +1,32 @@
 import search, { BingResultLex, BingResultMachine, BingResultRelated } from '@/components/dictionaries/bing/engine'
 import { appConfigFactory, AppConfigMutable } from '@/app-config'
+import fs from 'fs'
+import path from 'path'
+import JSDOM from 'jsdom'
+import { URL } from 'url'
 
-jest.mock('@/_helpers/fetch-dom', () => {
-  return jest.fn((url: string) => new Promise((resolve, reject) => {
-    const fs = require('fs')
-    const path = require('path')
-    const { JSDOM } = require('jsdom')
-    const { URL } = require('url')
-    const response = {
-      lex: fs.readFileSync('test/specs/components/dictionaries/bing/response/lex.html', 'utf8'),
-      machine: fs.readFileSync('test/specs/components/dictionaries/bing/response/machine.html', 'utf8'),
-      related: fs.readFileSync('test/specs/components/dictionaries/bing/response/related.html', 'utf8'),
-    }
-    const searchURL = new URL(url)
-    const searchText = searchURL.searchParams.get('q')
-    if (searchText && response[searchText]) {
-      return resolve(new JSDOM(response[searchText]).window.document)
-    }
-    return reject(new Error(`Missing Response file for ${searchText}`))
-  }))
-})
+// return resolve(new JSDOM(response[searchText]).window.document)
 
 describe('Dict/Bing/engine', () => {
+  beforeAll(() => {
+    const response = {
+      lex: fs.readFileSync(path.join(__dirname, 'response/lex.html'), 'utf8'),
+      machine: fs.readFileSync(path.join(__dirname, 'response/machine.html'), 'utf8'),
+      related: fs.readFileSync(path.join(__dirname, 'response/related.html'), 'utf8'),
+    }
+
+    window.fetch = jest.fn((url: string) => {
+      const searchURL = new URL(url)
+      const searchText = searchURL.searchParams.get('q')
+      if (searchText && response[searchText]) {
+        return Promise.resolve({
+          text: () => response[searchText]
+        })
+      }
+      return Promise.reject(new Error(`Missing Response file for ${searchText}`))
+    })
+  })
+
   it('should parse lex result correctly', () => {
     const config = appConfigFactory() as AppConfigMutable
     config.dicts.all.bing.options = {

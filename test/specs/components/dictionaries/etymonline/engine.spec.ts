@@ -1,19 +1,16 @@
 import search from '@/components/dictionaries/etymonline/engine'
 import { appConfigFactory, AppConfigMutable } from '@/app-config'
-
-jest.mock('@/_helpers/fetch-dom', () => {
-  return jest.fn((url: string) => new Promise((resolve, reject) => {
-    const fs = require('fs')
-    const { JSDOM } = require('jsdom')
-    const response = fs.readFileSync(
-      'test/specs/components/dictionaries/etymonline/response/love.html',
-      'utf8',
-    )
-    return resolve(new JSDOM(response).window.document)
-  }))
-})
+import fs from 'fs'
+import path from 'path'
 
 describe('Dict/Etymonline/engine', () => {
+  beforeAll(() => {
+    const response = fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8')
+    window.fetch = jest.fn((url: string) => Promise.resolve({
+      text: () => response
+    }))
+  })
+
   it('should parse result correctly', () => {
     const config = appConfigFactory() as AppConfigMutable
     config.dicts.all.etymonline.options = {
