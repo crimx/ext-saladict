@@ -1,0 +1,60 @@
+.dictUrban-Title {
+  font-size: 1.2em;
+}
+
+.dictUrban-Item {
+  margin-bottom: 10px;
+}
+
+.dictUrban-Meaning {
+  margin: 0 0 8px 0;
+}
+
+.dictUrban-Example {
+  margin: 0 0 8px 0;
+  padding-left: 5px;
+  color: #444;
+  border-left: 1px solid #333;
+}
+
+.dictUrban-Gif {
+  text-align: center;
+
+  > img {
+    max-width: 80%;
+    max-height: 200px;
+  }
+}
+
+.dictUrban-TagItem {
+  margin-right: 0.5em;
+  text-decoration: none;
+  color: #16a085;
+}
+
+.dictUrban-Footer {
+  color: #666;
+}
+
+.dictUrban-Contributor {
+  margin-right: 1em;
+}
+
+.dictUrban-Thumbs {
+  margin-right: 5px;
+}
+
+.dictUrban-IconThumbsUp {
+  width: 0.9em;
+  height: 0.9em;
+  fill: #666;
+  margin-right: 2px;
+}
+
+.dictUrban-IconThumbsDown {
+  width: 0.95em;
+  height: 0.95em;
+  fill: #666;
+  vertical-align: middle;
+  margin-right: 2px;
+}

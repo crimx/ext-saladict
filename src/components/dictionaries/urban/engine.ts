@@ -1,114 +1,131 @@
-import fetchDom from 'src/helpers/fetch-dom'
+import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
+import DOMPurify from 'dompurify'
+import { handleNoResult } from '../helpers'
+import { AppConfig } from '@/app-config'
+import { DictSearchResult } from '@/typings/server'
 
-/**
- * Search text and give back result
- * @param {string} text - Search text
- * @param {object} config - app config
- * @param {object} helpers - helper functions
- * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
- */
-export default function search (text, config, {AUDIO}) {
-  const options = config.dicts.all.urban.options
-
-  return fetchDom('http://www.urbandictionary.com/define.php?term=' + text)
-    .then(doc => handleDom(doc, options))
-    .then(result => {
-      if (config.autopron.en.dict === 'urban') {
-        setTimeout(() => {
-          result.some(({pron}) => {
-            if (pron) {
-              AUDIO.play(pron)
-              return true
-            }
-          })
-        }, 0)
-      }
-      return result
-    })
+interface UrbanResultItem {
+  /** keyword */
+  title: string
+  /** pronunciation */
+  pron?: string
+  meaning?: string
+  example?: string
+  gif?: {
+    src: string
+    attr: string
+  }
+  tags?: string[]
+  /** who write this explanation */
+  contributor?: string
+  /** numbers of thumbs up */
+  thumbsUp?: string
+  /** numbers of thumbs down */
+  thumbsDown?: string
 }
 
-/**
-* @typedef {Object} UrbanResult
-* @property {string} title - keyword
-* @property {string} pron - pronunciation
-* @property {string} meaning
-* @property {string} example
-* @property {string[]} tags
-* @property {string} contributor - who write this explanation
-* @property {string} thumbsUp - numbers of thumbs up
-* @property {string} thumbsDwon - numbers of thumbs down
-*/
+export type UrbanResult = UrbanResultItem[]
 
-/**
- * @async
- * @returns {Promise.<UrbanResult[]>} A promise with the result to send back
- */
-function handleDom (doc, {resultnum}) {
-  let result = []
+type UrbanSearchResult = DictSearchResult<UrbanResult>
+
+export default function search (
+  text: string,
+  config: AppConfig,
+): Promise<UrbanSearchResult> {
+  const options = config.dicts.all.urban.options
+
+  return fetchDirtyDOM('http://www.urbandictionary.com/define.php?term=' + text)
+    .then(doc => handleDom(doc, options))
+}
+
+function handleDom (
+  doc: Document,
+  { resultnum }: { resultnum: number }
+): UrbanSearchResult | Promise<UrbanSearchResult> {
+  let result: UrbanResult = []
+  let audio: { us?: string } = {}
+
   let defPanels = Array.from(doc.querySelectorAll('.def-panel'))
 
   if (defPanels.length <= 0) {
-    return Promise.reject('no result')
+    return handleNoResult()
   }
 
-  defPanels.every($panel => {
-    if (result.length >= resultnum) { return false }
+  for (let i = 0; i < defPanels.length && result.length < resultnum; i++) {
+    const $panel = defPanels[i]
 
-    let resultItem = {}
+    let resultItem: UrbanResultItem = { title: '' }
 
     let $title = $panel.querySelector('.word')
     if ($title) {
-      resultItem.title = $title.innerText
+      resultItem.title = $title.textContent || ''
     }
 
-    let $pron = $panel.querySelector('.play-sound')
-    if ($pron) {
-      resultItem.pron = JSON.parse($pron.dataset.urls)[0]
+    if (!resultItem.title) {
+      continue
+    }
+
+    let $pron = $panel.querySelector('.play-sound') as HTMLElement
+    if ($pron && $pron.dataset.urls) {
+      try {
+        const pron = JSON.parse($pron.dataset.urls)[0]
+        if (pron) {
+          resultItem.pron = pron
+          audio.us = pron
+        }
+      } catch (error) {/* ignore */}
     }
 
     let $meaning = $panel.querySelector('.meaning')
     if ($meaning) {
-      resultItem.meaning = $meaning.innerText
+      resultItem.meaning = DOMPurify.sanitize($meaning.innerHTML)
+        .replace(/href="\//g, 'href="https://www.urbandictionary.com/')
       if (/There aren't any definitions for/i.test(resultItem.meaning)) {
-        return true
+        continue
       }
     }
 
     let $example = $panel.querySelector('.example')
     if ($example) {
-      resultItem.example = $example.innerText
+      resultItem.example = DOMPurify.sanitize($example.innerHTML)
+        .replace(/href="\//g, 'href="https://www.urbandictionary.com/')
+    }
+
+    let $gif = $panel.querySelector('.gif > img') as HTMLImageElement
+    if ($gif) {
+      const $attr = $gif.nextElementSibling
+      resultItem.gif = {
+        src: $gif.src,
+        attr: $attr && $attr.textContent || ''
+      }
     }
 
     let $tags = Array.from($panel.querySelectorAll('.tags a'))
     if ($tags && $tags.length > 0) {
-      resultItem.tags = $tags.map($tag => $tag.innerText.slice(1))
+      resultItem.tags = $tags.map($tag => ($tag.textContent || ' ').slice(1))
     }
 
     let $contributor = $panel.querySelector('.contributor')
     if ($contributor) {
-      resultItem.contributor = $contributor.innerText
+      resultItem.contributor = $contributor.textContent || ''
     }
 
     let $thumbsUp = $panel.querySelector('.thumbs .up .count')
     if ($thumbsUp) {
-      resultItem.thumbsUp = $thumbsUp.innerText
+      resultItem.thumbsUp = $thumbsUp.textContent || ''
     }
 
     let $thumbsDown = $panel.querySelector('.thumbs .down .count')
     if ($thumbsDown) {
-      resultItem.thumbsDown = $thumbsDown.innerText
+      resultItem.thumbsDown = $thumbsDown.textContent || ''
     }
 
-    if (Object.keys(resultItem).length > 0) {
-      result.push(resultItem)
-    }
-
-    return true
-  })
+    result.push(resultItem)
+  }
 
   if (result.length > 0) {
-    return result
+    return { result, audio }
   } else {
-    return Promise.reject('no result')
+    return handleNoResult()
   }
 }

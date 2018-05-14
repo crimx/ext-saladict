@@ -137,7 +137,7 @@ const allDicts = {
       chs: true
     },
     options: {
-      resultnum: 2
+      resultnum: 4
     }
   },
   vocabulary: {
