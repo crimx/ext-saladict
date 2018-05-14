@@ -8,6 +8,7 @@ import { MsgType, MsgOpenUrl } from '@/typings/message'
 
 import { SearchStatus } from '@/content/redux/modules/dictionaries'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
+import { Mutable } from '@/typings/helpers'
 
 export interface DictItemDispatchers {
   readonly searchText: (arg: { id: DictID } | { info: SelectionInfo }) => any
@@ -32,6 +33,7 @@ export type DictItemState = {
   readonly offsetHeight: number
   readonly visibleHeight: number
   readonly isUnfold: boolean
+  readonly hasError: boolean
 }
 
 export class DictItem extends React.PureComponent<DictItemProps & { t: TranslationFunction }, DictItemState> {
@@ -48,6 +50,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     /** final height, takes unfold and mask into account */
     visibleHeight: 10,
     isUnfold: false,
+    hasError: false,
   }
 
   static getDerivedStateFromProps (
@@ -67,32 +70,32 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       return null
     }
 
+    const result: Mutable<Partial<DictItemState>> = {
+      propsSearchStatus: nextStatus,
+      propsSearchResult: nextResult,
+      hasError: false,
+    }
+
     switch (nextStatus) {
       case SearchStatus.OnHold:
       case SearchStatus.Searching:
-        return {
-          propsSearchStatus: nextStatus,
-          propsSearchResult: nextResult,
-          isUnfold: false,
-          offsetHeight: 0,
-          visibleHeight: 10,
-        }
+        result.isUnfold = false
+        result.offsetHeight = 0
+        result.visibleHeight = 10
+        break
       case SearchStatus.Finished:
-        return {
-          propsSearchStatus: nextStatus,
-          propsSearchResult: nextResult,
-          isUnfold: true,
-        }
+        result.isUnfold = true
+        break
     }
 
-    return { propsSearchStatus: nextStatus, propsSearchResult: nextResult }
+    return result
   }
 
   blurAfterClick (e) {
     e.currentTarget.blur()
   }
 
-  calcBodyHeight (force?: boolean) {
+  calcBodyHeight (force?: boolean): Mutable<Partial<DictItemState>> | null {
     if (this.bodyRef.current) {
       const offsetHeight = Math.max(this.bodyRef.current.offsetHeight, 10) || 10
       if (force || this.state.offsetHeight !== offsetHeight) {
@@ -113,10 +116,11 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       if (this.props.searchResult) {
         const update = this.calcBodyHeight(true)
         if (update) {
-          update['isUnfold'] = true
-          this.setState(update)
+          update.isUnfold = true
+          update.hasError = false
+          this.setState(update as DictItemState)
         } else {
-          this.setState({ isUnfold: true })
+          this.setState({ isUnfold: true, hasError: false })
         }
       } else {
         this.props.searchText({ id: this.props.id })
@@ -174,6 +178,17 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     )
   }
 
+  componentDidCatch (error, info) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn(`Dict Component ${this.props.id} has error: `, error, info)
+    }
+    this.setState({
+      isUnfold: false,
+      visibleHeight: 10,
+      hasError: true,
+    })
+  }
+
   render () {
     const {
       t,
@@ -189,6 +204,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       offsetHeight,
       visibleHeight,
       isUnfold,
+      hasError,
     } = this.state
 
     return (
@@ -198,7 +214,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
           <h1 className='panel-DictItem_Title'>
             <a href={dictURL} onClick={this.handleDictURLClick}>{t(`dict:${id}`)}</a>
           </h1>
-          { searchStatus === SearchStatus.Searching &&
+          { searchStatus === SearchStatus.Searching && !hasError &&
             <div className='panel-DictItem_Loader'>
               <div className='panel-DictItem_Loader_Ball' />
               <div className='panel-DictItem_Loader_Ball' />
@@ -220,7 +236,9 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
               style={{ fontSize, height }}
             >
               <article ref={this.bodyRef} className='panel-DictItem_BodyMesure' style={{ opacity }}>
-                {searchResult && React.createElement(require('@/components/dictionaries/' + id + '/View.tsx').default, { result: searchResult })}
+                {searchResult && !hasError &&
+                  React.createElement(require('@/components/dictionaries/' + id + '/View.tsx').default, { result: searchResult })
+                }
               </article>
               {isUnfold && searchResult && visibleHeight < offsetHeight &&
                 <button
