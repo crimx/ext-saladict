@@ -4,17 +4,16 @@
  */
 
 const fakeXHRData = [
+]
+
+const fakeFetchData = [
   {
     test: {
       method: /.*/,
       url: /bing\.com/,
     },
     response: {
-      status: 200,
-      responseXML: new DOMParser().parseFromString(
-        require('raw-loader!../../test/specs/components/dictionaries/bing/response/lex.html'),
-        'text/html'
-      )
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/bing/response/lex.html'),
     },
   },
   {
@@ -23,11 +22,7 @@ const fakeXHRData = [
       url: /\.iciba\.com/,
     },
     response: {
-      status: 200,
-      responseXML: new DOMParser().parseFromString(
-        require('raw-loader!../../test/specs/components/dictionaries/cobuild/response/love.html'),
-        'text/html'
-      )
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/cobuild/response/love.html'),
     },
   },
   {
@@ -36,16 +31,9 @@ const fakeXHRData = [
       url: /\.etymonline\.com/,
     },
     response: {
-      status: 200,
-      responseXML: new DOMParser().parseFromString(
-        require('raw-loader!../../test/specs/components/dictionaries/etymonline/response/love.html'),
-        'text/html'
-      )
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/etymonline/response/love.html'),
     },
   },
-]
-
-const fakeFetchData = [
   {
     test: {
       method: /.*/,
@@ -62,6 +50,15 @@ const fakeFetchData = [
     },
     response: {
       json: () => JSON.parse(require('raw-loader!../../test/specs/components/dictionaries/guoyu/response/愛.json'))
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /urbandictionary\.com/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/urban/response/test.html')
     },
   },
 ]
@@ -82,7 +79,7 @@ window.fetch = (url, ...args) => {
     } else {
       // return Promise.resolve(data.response)
       return new Promise(resolve => setTimeout(() =>
-        resolve(data.response), 1000 + Math.random() * 3000)
+        resolve(data.response), 100 + Math.random() * 3000)
       )
     }
   }

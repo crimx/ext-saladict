@@ -13,6 +13,7 @@ document.body.style.margin = '0 auto'
 document.body.style.width = '450px'
 document.body.style.background = '#ccc'
 root.style.background = '#fff'
+root.style.overflowY = 'scroll'
 
 export default function setupEnv (dict: DictID, style = true) {
   const search = require('../dictionaries/' + dict + '/engine').default
@@ -36,7 +37,9 @@ export default function setupEnv (dict: DictID, style = true) {
             </button>
           </header>
           <div className='panel-DictItem_Body'>
-            <View {...result} />
+            <article className='panel-DictItem_BodyMesure'>
+              <View {...result} />
+            </article>
           </div>
         </div>,
         root,
