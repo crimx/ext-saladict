@@ -90,8 +90,8 @@
     "en": "Keep search history"
   },
   "privacy_description": {
-    "zh_CN": "查词记录可能会泄漏您的浏览痕迹。另外因同步容量有限，_生词本_和查词记录均没有同步，请注意定期导出。",
-    "zh_TW": "查字典記錄可能會泄漏您的瀏覽痕跡。另外因同步容量有限，_生子本_和查詞典記錄都沒有同步，請注意定期輸出。",
+    "zh_CN": "查词记录可能会泄漏您的浏览痕迹。另外因同步容量有限，_生词本_和查词记录均没有同步。在使用系统垃圾清理工具时，数据可能会被一并清除。请注意定期导出。",
+    "zh_TW": "查字典記錄可能會泄漏您的瀏覽痕跡。另外因同步容量有限，_生字本_和查詞典記錄都沒有同步。在使用電腦垃圾清理工具時，資料可能會被一併清除。請注意定期輸出。",
     "en": "Search histry might reveal your browsing history unintentionally. Also, duo to limited syncing capacity, _Notebook_ and Search history would not be synced. Please export the data regularly."
   },
   "dict_panel_title": {
