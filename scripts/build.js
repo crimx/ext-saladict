@@ -7,6 +7,7 @@ process.env.PUBLIC_URL = './'
 
 const argv = require('minimist')(process.argv.slice(2))
 if (argv.debug) { process.env.DEBUG_MODE = true }
+if (argv.devbuild) { process.env.DEV_BUILD = true }
 
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will

@@ -17,13 +17,17 @@ function onInstalled ({ reason, previousVersion }: { reason: string, previousVer
   // merge config on installed
   storage.sync.get('config')
     .then(({ config }: { config: AppConfig }) => {
-      if (config && config.dicts) {
-        // got previous config
-        return mergeConfig(config)
+      if (!process.env.DEV_BUILD) {
+        if (config && config.dicts) {
+          // got previous config
+          return mergeConfig(config)
+        }
       }
       return storage.sync.clear() // local get cleared by database
         .then(() => {
-          openURL('https://github.com/crimx/crx-saladict/wiki/Instructions')
+          if (!process.env.DEV_BUILD) {
+            openURL('https://github.com/crimx/crx-saladict/wiki/Instructions')
+          }
           return mergeConfig()
         })
     })
