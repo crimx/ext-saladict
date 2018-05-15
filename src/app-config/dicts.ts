@@ -39,6 +39,39 @@ export function getALlDicts () {
         sentence: 4
       }
     },
+    eudic: {
+      /**
+       * Full content page to jump to when user clicks the title.
+       * %s will be replaced with the current word.
+       * %z will be replaced with the traditional Chinese version of the current word.
+       */
+      page: 'https://dict.eudic.net/dicts/en/%s',
+      /**
+       * If set to true, the dict start searching automatically.
+       * Otherwise it'll only start seaching when user clicks the unfold button.
+       * Default MUST be true and let user decide.
+       */
+      defaultUnfold: true,
+      /**
+       * This is the default height when the dict first renders the result.
+       * If the content height is greater than the preferred height,
+       * the preferred height is used and a mask with a view-more button is shown.
+       * Otherwise the content height is used.
+       */
+      preferredHeight: 240,
+      /**
+       * Only start searching if the selection contains the language.
+       * Better set default to true and let user decide.
+       */
+      selectionLang: {
+        eng: true,
+        chs: true
+      },
+      /** Optional dict custom options. Can only be boolean or number. */
+      options: {
+        resultnum: 10
+      }
+    },
     business: {
       /**
        * Full content page to jump to when user clicks the title.

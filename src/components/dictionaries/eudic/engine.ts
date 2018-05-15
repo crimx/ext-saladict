@@ -1,110 +1,91 @@
-import fetchDom from 'src/helpers/fetch-dom'
-const MP3URI = 'https://fs-gateway.eudic.net/store_main/sentencemp3/'
+import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
+import DOMPurify from 'dompurify'
+import { handleNoResult } from '../helpers'
+import { AppConfig } from '@/app-config'
+import { DictSearchResult } from '@/typings/server'
 
-/**
- * Search text and give back result
- * @param {string} text - Search text
- * @param {object} config - app config
- * @param {object} helpers - helper functions
- * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
- */
-export default function search (text, config, {AUDIO}) {
-  let words = text.trim().split(/ +/)
-  if (words.length > 2) {
-    text = words.slice(0, 2).join(' ')
-  }
+interface EudicResultItem {
+  chs: string
+  eng: string
+  mp3?: string
+  channel?: string
+}
 
-  return fetchDom('https://dict.eudic.net/dicts/en/' + text)
-    .then(handleDom)
-    .then(result => {
-      if (config.autopron.en.dict === 'eudic') {
-        setTimeout(() => {
-          result.some(({mp3}) => {
-            if (mp3) {
-              AUDIO.play(mp3)
-              return true
-            }
-          })
-        }, 0)
+export type EudicResult = EudicResultItem[]
+
+type EudicSearchResult = DictSearchResult<EudicResult>
+
+export default function search (
+  text: string,
+  config: AppConfig,
+): Promise<EudicSearchResult> {
+  text = text.split(/\s+/).slice(0, 2).join(' ')
+  const options = config.dicts.all.eudic.options
+
+  return fetchDirtyDOM('https://dict.eudic.net/dicts/en/' + text)
+    .then(validator)
+    .then(doc => handleDom(doc, options))
+}
+
+function handleDom (
+  doc: Document,
+  { resultnum }: { resultnum: number },
+): EudicSearchResult | Promise<EudicSearchResult> {
+  const result: EudicResult = []
+  const audio: { uk?: string, us?: string } = {}
+
+  const $items = Array.from(doc.querySelectorAll('#lj_ting .lj_item'))
+  for (let i = 0; i < $items.length && result.length < resultnum; i++) {
+    const $item = $items[i]
+    const item: EudicResultItem = { chs: '', eng: '' }
+
+    const $chs = $item.querySelector('.exp')
+    if ($chs) { item.chs = $chs.textContent || '' }
+    if (!item.chs) { continue }
+
+    const $eng = $item.querySelector('.line')
+    if ($eng) { item.eng = $eng.textContent || '' }
+    if (!item.eng) { continue }
+
+    const $channel = $item.querySelector('.channel_title')
+    if ($channel) { item.channel = $channel.textContent || '' }
+
+    const audioID = $item.getAttribute('source')
+    if (audioID) {
+      const mp3 = 'https://fs-gateway.eudic.net/store_main/sentencemp3/' + audioID + '.mp3'
+      item.mp3 = mp3
+      if (!audio.us) {
+        audio.us = mp3
+        audio.uk = mp3
       }
-      return result
-    })
-}
-
-/**
-* @typedef {Object} EudicResult
-* @property {string} cover
-* @property {string} channel
-* @property {string} mp3
-* @property {string} en
-* @property {string} chs
-*/
-
-/**
- * @async
- * @returns {Promise.<EudicResult[]>} A promise with the result to send back
- */
-function handleDom (doc) {
-  if (doc.querySelector('#TingLiju')) {
-    return getResult(doc)
-  }
-
-  let status = doc.querySelector('#page-status')
-  if (!status || !status.value) { return Promise.reject('no result') }
-
-  let formData = new FormData()
-  formData.append('status', status.value)
-
-  return fetchDom('https://dict.eudic.net/Dicts/en/tab-detail/-12', {method: 'POST', body: formData})
-    .then(getResult)
-}
-
-/**
- * @async
- * @returns {Promise.<EudicResult[]>} A promise with the result to send back
- */
-function getResult (doc) {
-  let result = []
-
-  let items = doc.querySelectorAll('#lj_ting .lj_item')
-
-  items.forEach(item => {
-    let obj = {}
-
-    let cover = item.querySelector('.channel img')
-    if (cover) { obj.cover = cover.src }
-    // if (cover) {
-    //   let xhr = new XMLHttpRequest()
-    //   xhr.open('GET', cover.src, false)
-    //   xhr.responseType = 'blob'
-    //   xhr.onload = function () {
-    //     if (this.status === 200) {
-    //       obj.cover = window.btoa(this.response)
-    //     }
-    //   }
-    //   xhr.send()
-    // }
-
-    let channel = item.querySelector('.channel_title')
-    if (channel) { obj.channel = channel.innerText }
-
-    let audio = item.getAttribute('source')
-    if (audio) { obj.mp3 = MP3URI + audio + '.mp3' }
-
-    let en = item.querySelector('.line')
-    if (en) { obj.en = en.innerText }
-
-    let chs = item.querySelector('.exp')
-    if (chs) { obj.chs = chs.innerText }
-
-    if (Object.keys(obj).length > 0) {
-      result.push(obj)
     }
-  })
+
+    result.push(item)
+  }
 
   if (result.length > 0) {
-    return result
-  } else {
-    return Promise.reject('no result')
+    return { result, audio }
   }
+
+  return handleNoResult()
+}
+
+function validator (doc: Document): Document | Promise<Document> {
+  if (doc.querySelector('#TingLiju')) {
+    return doc
+  }
+
+  const status = doc.querySelector('#page-status') as HTMLInputElement
+  if (!status || !status.value) { return handleNoResult() }
+
+  const formData = new FormData()
+  formData.append('status', status.value)
+
+  return fetchDirtyDOM(
+    'https://dict.eudic.net/Dicts/en/tab-detail/-12',
+    {
+      method: 'POST',
+      body: formData
+    }
+  )
 }

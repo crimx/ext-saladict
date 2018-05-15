@@ -1,0 +1,19 @@
+.dictEudic-Item {
+  margin-bottom: 10px;
+
+  p {
+    margin: 0;
+  }
+}
+
+.dictEudic-Channel {
+  color: #999;
+
+  &::before {
+    content: '《'
+  }
+
+  &::after {
+    content: '》'
+  }
+}
