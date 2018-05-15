@@ -47,15 +47,15 @@
 }
 
 .panel-MenuBar_DragArea {
-  flex: 1.5;
+  flex-grow: 3;
   align-self: stretch;
   cursor: move;
   user-select: none;
 }
 
 .panel-MenuBar_SearchBox {
-  flex: 1;
-  width: 5em;
+  flex-grow: 1;
+  width: 4em;
   padding: 0 5px;
   border: 0 none;
   outline: 0 none;
@@ -64,7 +64,7 @@
   transition: flex 1s;
 
   &:focus {
-    flex: 7;
+    flex-grow: 7;
   }
 }
 
