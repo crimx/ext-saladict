@@ -1,7 +1,11 @@
 import { storage, openURL, StorageUpdate } from '@/_helpers/browser-api'
 import { AppConfig } from '@/app-config'
+import i18nLoader from '@/_helpers/i18n'
+import { TranslationFunction } from 'i18next'
+import contextLocles from '@/_locales/context'
+import isEqual from 'lodash/isequal'
 
-import { Observable } from 'rxjs'
+import { Observable, ReplaySubject, combineLatest } from 'rxjs'
 import { mergeMap, filter, map, audit, mapTo, share, startWith } from 'rxjs/operators'
 
 type ContextMenusConfig = AppConfig['contextMenus']
@@ -14,7 +18,11 @@ interface CreateMenuOptions {
 }
 
 // singleton
-let contextMenusChanged$: Observable<ContextMenusConfig>
+let setMenus$$: Observable<void>
+
+const i18n$$ = new ReplaySubject<TranslationFunction>(1)
+const i18n = i18nLoader({ context: contextLocles }, 'context')
+i18n.on('languageChanged', () => i18n$$.next(i18n.t.bind(i18n)))
 
 browser.contextMenus.onClicked.addListener(info => {
   const menuItemId = info.menuItemId
@@ -31,7 +39,7 @@ browser.contextMenus.onClicked.addListener(info => {
       break
     case 'youdao_page_translate':
       // inject youdao script, defaults to the active tab of the current window.
-      browser.tabs.executeScript({ file: '/assets/fanyi.youdao.2.0/main.js' })
+      browser.tabs.executeScript({ file: browser.runtime.getURL('static/fanyi.youdao.2.0/main.js') })
         .then(result => {
           if (!result || (result as any !== 1 && result[0] !== 1)) {
             throw new Error()
@@ -42,14 +50,14 @@ browser.contextMenus.onClicked.addListener(info => {
           browser.notifications.create({
             type: 'basic',
             eventTime: Date.now() + 4000,
-            iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
+            iconUrl: browser.runtime.getURL(`static/icon-128.png`),
             title: 'Saladict',
-            message: browser.i18n.getMessage('notification_youdao_err')
+            message: i18n.t('notification_youdao_err')
           })
         })
       break
     case 'view_as_pdf':
-      const pdfURL = browser.runtime.getURL('assets/pdf/web/viewer.html')
+      const pdfURL = browser.runtime.getURL('static/pdf/web/viewer.html')
       if (linkUrl) {
         // open link as pdf
         openURL(pdfURL + '?file=' + linkUrl)
@@ -83,51 +91,52 @@ browser.contextMenus.onClicked.addListener(info => {
   }
 })
 
-export function init (initConfig: ContextMenusConfig): void {
-  if (contextMenusChanged$) { return }
+export function init (initConfig: ContextMenusConfig): Observable<void> {
+  if (setMenus$$) { return setMenus$$ }
   // when context menus config changes
-  contextMenusChanged$ = storage.createStream<AppConfig>('config').pipe(
+  const contextMenusChanged$ = storage.createStream<AppConfig>('config').pipe(
     filter((config): config is StorageUpdate<AppConfig> => {
       const { newValue, oldValue } = config
       if (!newValue) { return false }
       if (!oldValue) { return true }
 
-      const oldSelected = oldValue.contextMenus.selected
-      const newSelected = newValue.contextMenus.selected
-      if (oldSelected.length !== newSelected.length) {
-        return true
-      }
-      for (let i = 0; i < oldSelected.length; i += 1) {
-        if (oldSelected[i] !== newSelected[i]) {
-          return true
-        }
-      }
-      return false
+      return !isEqual(
+        oldValue.contextMenus.selected,
+        newValue.contextMenus.selected,
+      )
     }),
     map(({ newValue }) => newValue.contextMenus),
+    startWith(initConfig),
   )
 
   let signal$: Observable<boolean>
 
-  const setMenus$ = contextMenusChanged$.pipe(
-    startWith(initConfig),
+  setMenus$$ = combineLatest(
+    contextMenusChanged$,
+    i18n$$,
+  ).pipe(
     // ignore values while setContextMenus is running
     // if source emits any value during setContextMenus,
     // retrieve the latest after setContextMenus is completed
     audit(() => signal$),
-    mergeMap((value: ContextMenusConfig) => setContextMenus(value)),
+    mergeMap(([contextMenus, t]) => setContextMenus(contextMenus, t)),
     share(),
   )
 
-  signal$ = setMenus$.pipe(
+  signal$ = setMenus$$.pipe(
     mapTo(true), // last setContextMenus is completed
     startWith(true),
   )
 
-  setMenus$.subscribe()
+  setMenus$$.subscribe()
+
+  return setMenus$$
 }
 
-function setContextMenus (contextMenus: ContextMenusConfig): Promise<void> {
+function setContextMenus (
+  contextMenus: ContextMenusConfig,
+  t: TranslationFunction
+): Promise<void> {
   return browser.contextMenus.removeAll()
     .then(() => {
       const optionList: CreateMenuOptions[] = []
@@ -135,7 +144,7 @@ function setContextMenus (contextMenus: ContextMenusConfig): Promise<void> {
       // pdf
       optionList.push({
         id: 'view_as_pdf',
-        title: browser.i18n.getMessage('context_view_as_pdf') || 'View As PDF',
+        title: t('view_as_pdf'),
         contexts: ['link', 'browser_action']
       })
 
@@ -152,7 +161,7 @@ function setContextMenus (contextMenus: ContextMenusConfig): Promise<void> {
         }
         optionList.push({
           id,
-          title: browser.i18n.getMessage('context_' + id) || id,
+          title: t(id),
           contexts
         })
       })
@@ -161,14 +170,14 @@ function setContextMenus (contextMenus: ContextMenusConfig): Promise<void> {
       if (!hasGooglePageTranslate) {
         optionList.push({
           id: 'google_page_translate',
-          title: browser.i18n.getMessage('context_google_page_translate') || 'google_page_translate',
+          title: t('google_page_translate'),
           contexts: ['browser_action']
         })
       }
       if (!hasYoudaoPageTranslate) {
         optionList.push({
           id: 'youdao_page_translate',
-          title: browser.i18n.getMessage('context_youdao_page_translate') || 'youdao_page_translate',
+          title: t('youdao_page_translate'),
           contexts: ['browser_action']
         })
       }
@@ -182,14 +191,14 @@ function setContextMenus (contextMenus: ContextMenusConfig): Promise<void> {
       // search history
       optionList.push({
         id: 'search_history',
-        title: browser.i18n.getMessage('history_title') || 'Search History',
+        title: t('history_title'),
         contexts: ['browser_action']
       })
 
       // Manual
       optionList.push({
         id: 'notebook',
-        title: browser.i18n.getMessage('context_notebook_title') || 'New Word List',
+        title: t('notebook_title'),
         contexts: ['browser_action']
       })
 

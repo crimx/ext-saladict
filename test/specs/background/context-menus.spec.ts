@@ -1,5 +1,6 @@
 import { appConfigFactory, AppConfig, AppConfigMutable } from '@/app-config'
 import sinon from 'sinon'
+import { take } from 'rxjs/operators'
 
 function specialConfig () {
   const config = appConfigFactory() as AppConfigMutable
@@ -9,8 +10,12 @@ function specialConfig () {
 
 describe('Context Menus', () => {
   beforeAll(() => {
-    browser.flush()
     jest.resetModules()
+    browser.flush()
+    browser.i18n.getUILanguage.returns('zh-CN')
+    browser.storage.sync.get.callsFake(() => Promise.resolve({
+      config: specialConfig()
+    }))
     require('@/background/context-menus')
   })
   afterAll(() => browser.flush())
@@ -73,7 +78,9 @@ describe('Context Menus', () => {
     })
     it('default', done => {
       browser.tabs.query.onFirstCall().returns(Promise.resolve([]))
-      browser.storage.sync.get.callsFake(() => Promise.resolve({ config: appConfigFactory() }))
+      browser.storage.sync.get.callsFake(() => Promise.resolve({
+        config: specialConfig()
+      }))
       browser.contextMenus.onClicked.dispatch({ menuItemId: 'bing_dict' })
       setTimeout(() => {
         expect(browser.storage.sync.get.calledWith('config')).toBeTruthy()
@@ -88,130 +95,148 @@ describe('Context Menus', () => {
     let config: AppConfig
 
     beforeEach(() => {
+      jest.resetModules()
+      config = specialConfig()
       browser.flush()
+      browser.i18n.getUILanguage.returns('zh-CN')
+      browser.storage.sync.get.callsFake(() => Promise.resolve({
+        config: specialConfig()
+      }))
       browser.contextMenus.removeAll.callsFake(() => Promise.resolve())
       browser.contextMenus.create.callsFake((_, cb) => cb())
-      config = specialConfig()
-      jest.resetModules()
-      const { init } = require('@/background/context-menus')
-      init(config.contextMenus)
     })
 
     it('should set menus on init', done => {
-      expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
-      setTimeout(() => {
+      const { init } = require('@/background/context-menus')
+      take(1)(init(config.contextMenus)).subscribe(() => {
         expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
         expect(browser.contextMenus.create.calledWithMatch({ id: 'youdao' }, sinon.match.func)).toBeTruthy()
         expect(browser.contextMenus.create.calledWithMatch({ id: 'dictcn' }, sinon.match.func)).toBeTruthy()
         done()
-      }, 0)
+      })
     })
 
-    it('should not init setup when called multiple times', () => {
-      expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
-
+    it('should not init setup when called multiple times', done => {
       const { init } = require('@/background/context-menus')
-      init(config.contextMenus)
-      init(config.contextMenus)
+      take(1)(init(config.contextMenus)).subscribe(() => {
+        expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
 
-      expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
+        const setMenus2$$ = init(config.contextMenus)
+        const setMenus3$$ = init(config.contextMenus)
+
+        expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
+        expect(setMenus2$$).toBe(setMenus3$$)
+
+        done()
+      })
     })
 
-    it('should do nothing when contex menus config didn\'t change',done => {
+    it('should do nothing when contex menus config didn\'t change', done => {
       const newConfig = specialConfig()
       newConfig.active = !newConfig.active
 
-      browser.storage.onChanged.dispatch({
-        config: {
-          newValue: newConfig,
-          oldValue: config,
-        }
-      },
-      'sync')
-      expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
-      setTimeout(() => {
+      const { init } = require('@/background/context-menus')
+      take(1)(init(config.contextMenus)).subscribe(() => {
         expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
-        done()
-      }, 0)
+        browser.storage.onChanged.dispatch({
+          config: {
+            newValue: newConfig,
+            oldValue: config,
+          }
+        },
+        'sync')
+        setTimeout(() => {
+          expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
+          done()
+        }, 0)
+      })
     })
 
     it('should set menus at first time change', done => {
-      expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
-
       const newConfig = specialConfig()
       newConfig.contextMenus.selected.pop()
 
-      browser.storage.onChanged.dispatch({
-        config: {
-          newValue: newConfig,
-        }
-      },
-      'sync')
-      setTimeout(() => {
-        expect(browser.contextMenus.removeAll.calledTwice).toBeTruthy()
-        done()
-      }, 0)
+      const { init } = require('@/background/context-menus')
+      take(1)(init(config.contextMenus)).subscribe(() => {
+        expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
+        browser.storage.onChanged.dispatch({
+          config: {
+            newValue: newConfig,
+          }
+        },
+        'sync')
+        setTimeout(() => {
+          expect(browser.contextMenus.removeAll.calledTwice).toBeTruthy()
+          done()
+        }, 0)
+      })
     })
 
     it('should set menus when contex menus config changed', done => {
-      expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
-
       const newConfig = specialConfig()
       newConfig.contextMenus.selected.pop()
 
-      browser.storage.onChanged.dispatch({
-        config: {
-          newValue: newConfig,
-          oldValue: config,
-        }
-      },
-      'sync')
-      setTimeout(() => {
-        expect(browser.contextMenus.removeAll.calledTwice).toBeTruthy()
-        done()
-      }, 0)
+      const { init } = require('@/background/context-menus')
+      take(1)(init(config.contextMenus)).subscribe(() => {
+        expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
+        browser.storage.onChanged.dispatch({
+          config: {
+            newValue: newConfig,
+            oldValue: config,
+          }
+        },
+        'sync')
+        setTimeout(() => {
+          expect(browser.contextMenus.removeAll.calledTwice).toBeTruthy()
+          done()
+        }, 0)
+      })
     })
 
     it('should only set twice if source emits values during the first setting', done => {
-      expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
+      const { init } = require('@/background/context-menus')
+      take(1)(init(config.contextMenus)).subscribe(() => {
+        expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
 
-      const newConfig1 = specialConfig()
-      newConfig1.contextMenus.selected = ['bing_dict']
+        const newConfig1 = specialConfig()
+        newConfig1.contextMenus.selected = ['bing_dict']
 
-      const newConfig2 = specialConfig()
-      newConfig2.contextMenus.selected = ['iciba']
+        const newConfig2 = specialConfig()
+        newConfig2.contextMenus.selected = ['iciba']
 
-      const newConfig3 = specialConfig()
-      newConfig3.contextMenus.selected = ['oxford']
+        const newConfig3 = specialConfig()
+        newConfig3.contextMenus.selected = ['oxford']
 
-      browser.storage.onChanged.dispatch({
-        config: {
-          newValue: newConfig1,
-          oldValue: config,
-        }
-      },
-      'sync')
-      browser.storage.onChanged.dispatch({
-        config: {
-          newValue: newConfig2,
-          oldValue: newConfig1,
-        }
-      },
-      'sync')
-      browser.storage.onChanged.dispatch({
-        config: {
-          newValue: newConfig3,
-          oldValue: newConfig2,
-        }
-      },
-      'sync')
-      setTimeout(() => {
-        expect(browser.contextMenus.removeAll.calledTwice).toBeTruthy()
-        expect(browser.contextMenus.create.calledWithMatch({ id: 'bing_dict' }, sinon.match.func)).toBeFalsy()
-        expect(browser.contextMenus.create.calledWithMatch({ id: 'iciba' }, sinon.match.func)).toBeFalsy()
-        expect(browser.contextMenus.create.calledWithMatch({ id: 'oxford' }, sinon.match.func)).toBeTruthy()
-        done()
-      }, 0)
+        browser.storage.onChanged.dispatch({
+          config: {
+            newValue: newConfig1,
+            oldValue: config,
+          }
+        },
+        'sync')
+        browser.storage.onChanged.dispatch({
+          config: {
+            newValue: newConfig2,
+            oldValue: newConfig1,
+          }
+        },
+        'sync')
+        browser.storage.onChanged.dispatch({
+          config: {
+            newValue: newConfig3,
+            oldValue: newConfig2,
+          }
+        },
+        'sync')
+        setTimeout(() => {
+          expect(browser.contextMenus.removeAll.calledTwice).toBeTruthy()
+          expect(browser.contextMenus.create.calledWithMatch({ id: 'bing_dict' }, sinon.match.func)).toBeFalsy()
+          expect(browser.contextMenus.create.calledWithMatch({ id: 'iciba' }, sinon.match.func)).toBeFalsy()
+          expect(browser.contextMenus.create.calledWithMatch({ id: 'oxford' }, sinon.match.func)).toBeTruthy()
+          done()
+        }, 0)
+
+      })
     })
   })
 })
