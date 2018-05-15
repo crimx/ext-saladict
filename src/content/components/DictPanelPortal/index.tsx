@@ -142,7 +142,9 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   }
 
   handleDragStart = (e: React.MouseEvent<HTMLDivElement>) => {
-    // prevent mousedown dragging
+    const activeElement = document.activeElement as any
+    if (activeElement) { activeElement.blur() }
+    // prevent mousedown default dragging
     e.preventDefault()
     e.stopPropagation()
     // e is from iframe, so there is offset
