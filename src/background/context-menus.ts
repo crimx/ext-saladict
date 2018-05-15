@@ -39,7 +39,7 @@ browser.contextMenus.onClicked.addListener(info => {
       break
     case 'youdao_page_translate':
       // inject youdao script, defaults to the active tab of the current window.
-      browser.tabs.executeScript({ file: browser.runtime.getURL('static/fanyi.youdao.2.0/main.js') })
+      browser.tabs.executeScript({ file: '/static/fanyi.youdao.2.0/main.js' })
         .then(result => {
           if (!result || (result as any !== 1 && result[0] !== 1)) {
             throw new Error()

@@ -297,25 +297,32 @@ window.onload = function() {
            * @param request 请求数据
            */
           translate : function(request) {
-              var xhr = createXMLHttpObject();
-              xhr.onreadystatechange = function(event) {
-                  if (xhr.readyState == 4) {
-                      var data = xhr.status == 200 ? xhr.responseText : null;
-                      Response.sendMessage({
-                          'handler': BACKFLAG,
-                          'response': data,
-                          'index': request.index
-                      });
-                  }
-              };
-              xhr.open(request.type, request.url, true);
+              browser.runtime.sendMessage({ type: 'youdao_translate_ajax', request })
+                .then(response => {
+                  Response.sendMessage({
+                    ...response,
+                    'handler': BACKFLAG,
+                  })
+                })
+              // var xhr = createXMLHttpObject();
+              // xhr.onreadystatechange = function(event) {
+              //     if (xhr.readyState == 4) {
+              //         var data = xhr.status == 200 ? xhr.responseText : null;
+              //         Response.sendMessage({
+              //             'handler': BACKFLAG,
+              //             'response': data,
+              //             'index': request.index
+              //         });
+              //     }
+              // };
+              // xhr.open(request.type, request.url, true);
 
-              if (request.type === 'POST') {
-                  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                  xhr.send(request.data);
-              } else {
-                  xhr.send(null);
-              }
+              // if (request.type === 'POST') {
+              //     xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+              //     xhr.send(request.data);
+              // } else {
+              //     xhr.send(null);
+              // }
           },
           /**
            * 本地存储
