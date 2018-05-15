@@ -32,35 +32,38 @@ function handleDom (
   doc: Document,
   { resultnum }: { resultnum: number },
 ): EtymonlineSearchResult | Promise<EtymonlineSearchResult> {
-  const result = Array.from(doc.querySelectorAll('[class^="word--"]'))
-    .slice(0, resultnum)
-    .map<EtymonlineResultItem | undefined>(el => {
-      let href = el.getAttribute('href') || ''
-      if (href[0] === '/') {
-        href = 'https://www.etymonline.com' + href
-      }
+  const result: EtymonlineResult = []
+  const $items = Array.from(doc.querySelectorAll('[class^="word--"]'))
 
-      let title = ''
-      const $title = el.querySelector('[class^="word__name--"]')
-      if ($title) {
-        title = ($title.textContent || '').trim()
-      }
+  for (let i = 0; i < $items.length && result.length < resultnum; i++) {
+    const $item = $items[i]
 
-      let def = ''
-      const $def = el.querySelector('[class^="word__defination--"]>object')
-      if ($def) {
-        $def.querySelectorAll('.crossreference').forEach($cf => {
-          let word = ($cf.textContent || '').trim()
-          $cf.outerHTML = `<a href="https://www.etymonline.com/word/${word}" target="_blank">${word}</a>`
-        })
-        def = DOMPurify.sanitize($def.innerHTML)
-      }
+    let href = $item.getAttribute('href') || ''
+    if (href[0] === '/') {
+      href = 'https://www.etymonline.com' + href
+    }
+    if (!href) { continue }
 
-      if (title && def) {
-        return { title, href, def }
-      }
-    })
-    .filter((r): r is EtymonlineResultItem => r as any as boolean)
+    let title = ''
+    const $title = $item.querySelector('[class^="word__name--"]')
+    if ($title) {
+      title = ($title.textContent || '').trim()
+    }
+    if (!title) { continue }
+
+    let def = ''
+    const $def = $item.querySelector('[class^="word__defination--"]>object')
+    if ($def) {
+      $def.querySelectorAll('.crossreference').forEach($cf => {
+        let word = ($cf.textContent || '').trim()
+        $cf.outerHTML = `<a href="https://www.etymonline.com/word/${word}" target="_blank">${word}</a>`
+      })
+      def = DOMPurify.sanitize($def.innerHTML)
+    }
+    if (!def) { continue }
+
+    result.push({ href, title, def })
+  }
 
   if (result.length > 0) {
     return { result }
