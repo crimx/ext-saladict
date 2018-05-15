@@ -56,7 +56,7 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
 const entries = fs.readdirSync(paths.appSrc)
   .filter(name => !name.startsWith('_'))
   .map(name => ({name, dirPath: path.join(paths.appSrc, name)}))
-  .filter(({name, dirPath}) => !/^assets|components|manifest|typings$/.test(name) && fs.lstatSync(dirPath).isDirectory())
+  .filter(({name, dirPath}) => !/^assets|components|manifest|typings|app-config$/.test(name) && fs.lstatSync(dirPath).isDirectory())
 
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.

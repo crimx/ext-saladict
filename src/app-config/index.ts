@@ -1,5 +1,6 @@
-import cloneDeep from 'lodash/cloneDeep'
-import { DeepReadonly } from './typings/helpers'
+import { DeepReadonly } from '@/typings/helpers'
+import { getALlDicts } from './dicts'
+import { getAllContextMenus } from './context-menus'
 
 const langUI = (browser.i18n.getUILanguage() || 'en').replace('-', '_')
 const langCode = /^zh_CN|zh_TW|en$/.test(langUI)
@@ -8,220 +9,11 @@ const langCode = /^zh_CN|zh_TW|en$/.test(langUI)
     : langUI
   : 'en'
 
-const allDicts = {
-  bing: {
-    page: 'https://cn.bing.com/dict/search?q=%s',
-    defaultUnfold: true,
-    preferredHeight: 240,
-    selectionLang: {
-      eng: true,
-      chs: true
-    },
-    options: {
-      tense: true,
-      phsym: true,
-      cdef: true,
-      related: true,
-      sentence: 4
-    }
-  },
-  business: {
-    page: 'http://www.ldoceonline.com/search/?q=%s',
-    defaultUnfold: true,
-    preferredHeight: 265,
-    selectionLang: {
-      eng: true,
-      chs: true
-    }
-  },
-  cobuild: {
-    page: 'https://www.collinsdictionary.com/dictionary/%s',
-    defaultUnfold: true,
-    preferredHeight: 300,
-    selectionLang: {
-      eng: true,
-      chs: true
-    },
-    options: {
-      sentence: 4
-    }
-  },
-  dictcn: {
-    page: 'http://dict.cn/%s',
-    defaultUnfold: true,
-    preferredHeight: 300,
-    selectionLang: {
-      eng: true,
-      chs: true
-    },
-    options: {
-      chart: true,
-      etym: true
-    }
-  },
-  etymonline: {
-    page: 'http://www.etymonline.com/search?q=%s',
-    defaultUnfold: true,
-    preferredHeight: 265,
-    selectionLang: {
-      eng: true,
-      chs: true
-    },
-    options: {
-      resultnum: 2
-    }
-  },
-  eudic: {
-    page: 'https://dict.eudic.net/dicts/en/%s',
-    defaultUnfold: true,
-    preferredHeight: 265,
-    selectionLang: {
-      eng: true,
-      chs: true
-    }
-  },
-  google: {
-    page: 'https://translate.google.com/#auto/zh-CN/%s',
-    defaultUnfold: true,
-    preferredHeight: 110,
-    selectionLang: {
-      eng: true,
-      chs: true
-    }
-  },
-  guoyu: {
-    page: 'https://www.moedict.tw/%z',
-    defaultUnfold: true,
-    preferredHeight: 265,
-    selectionLang: {
-      eng: true,
-      chs: true
-    }
-  },
-  howjsay: {
-    page: 'http://www.howjsay.com/index.php?word=%s',
-    defaultUnfold: true,
-    preferredHeight: 265,
-    selectionLang: {
-      eng: true,
-      chs: true
-    },
-    options: {
-      related: true
-    }
-  },
-  liangan: {
-    page: 'https://www.moedict.tw/~%z',
-    defaultUnfold: true,
-    preferredHeight: 265,
-    selectionLang: {
-      eng: true,
-      chs: true
-    }
-  },
-  macmillan: {
-    page: 'http://www.macmillandictionary.com/dictionary/british/%s',
-    defaultUnfold: true,
-    preferredHeight: 265,
-    selectionLang: {
-      eng: true,
-      chs: true
-    }
-  },
-  urban: {
-    page: 'http://www.urbandictionary.com/define.php?term=%s',
-    defaultUnfold: true,
-    preferredHeight: 180,
-    selectionLang: {
-      eng: true,
-      chs: true
-    },
-    options: {
-      resultnum: 4
-    }
-  },
-  vocabulary: {
-    page: 'https://www.vocabulary.com/dictionary/%s',
-    defaultUnfold: true,
-    preferredHeight: 180,
-    selectionLang: {
-      eng: true,
-      chs: true
-    }
-  },
-  wordreference: {
-    page: 'http://www.wordreference.com/definition/%s',
-    defaultUnfold: true,
-    preferredHeight: 180,
-    selectionLang: {
-      eng: true,
-      chs: true
-    },
-    options: {
-      etym: true,
-      idiom: true
-    }
-  },
-  zdic: {
-    page: 'http://www.zdic.net/search/?c=1&q=%s',
-    defaultUnfold: true,
-    preferredHeight: 400,
-    selectionLang: {
-      eng: true,
-      chs: true
-    }
-  },
-}
+export type DictConfigsMutable = ReturnType<typeof getALlDicts>
+export type DictConfigs = DeepReadonly<DictConfigsMutable>
+export type DictID = keyof DictConfigsMutable
 
-// Just for type check. Keys in allDicts are useful so no actual assertion
-// tslint:disable-next-line:no-unused-expression
-allDicts as {
-  [id: string]: {
-    /** url for the complete result */
-    page: string
-    /** lazy load */
-    defaultUnfold: boolean
-    /** content below the preferrred height will be hidden by default */
-    preferredHeight: number
-    /** only search when the selection contains the language */
-    selectionLang: {
-      eng: boolean
-      chs: boolean
-    }
-    /** other options */
-    options?: {
-      [option: string]: number | boolean
-    }
-  }
-}
-
-export type DictID = keyof typeof allDicts
-
-const allContextMenus = {
-  google_page_translate: 'x',
-  youdao_page_translate: 'x',
-  google_search: 'https://www.google.com/#newwindow=1&q=%s',
-  baidu_search: 'https://www.baidu.com/s?ie=utf-8&wd=%s',
-  bing_search: 'https://www.bing.com/search?q=%s',
-  google_translate: 'https://translate.google.cn/#auto/zh-CN/%s',
-  etymonline: 'http://www.etymonline.com/index.php?search=%s',
-  merriam_webster: 'http://www.merriam-webster.com/dictionary/%s',
-  oxford: 'http://www.oxforddictionaries.com/us/definition/english/%s',
-  cambridge: 'http://dictionary.cambridge.org/spellcheck/english-chinese-simplified/?q=%s',
-  youdao: 'http://dict.youdao.com/w/%s',
-  dictcn: 'https://dict.eudic.net/dicts/en/%s',
-  iciba: 'http://www.iciba.com/%s',
-  liangan: 'https://www.moedict.tw/~%s',
-  guoyu: 'https://www.moedict.tw/%s',
-  longman_business: 'http://www.ldoceonline.com/search/?q=%s',
-  bing_dict: 'https://cn.bing.com/dict/?q=%s'
-}
-
-// Just for type check. Keys in allContextMenus are useful so no actual assertion
-// tslint:disable-next-line:no-unused-expression
-allContextMenus as { [id: string]: string }
-
-export type ContextMenuDictID = keyof typeof allContextMenus
+export type ContextMenuDictID = keyof ReturnType<typeof getAllContextMenus>
 
 export const enum TCDirection {
   center,
@@ -237,10 +29,6 @@ export const enum TCDirection {
 
 /** '' means no preload */
 export type PreloadSource = '' | 'clipboard' | 'selection'
-
-export type DictConfigs = DeepReadonly<DictConfigsMutable>
-
-export type DictConfigsMutable = typeof allDicts
 
 export type AppConfig = DeepReadonly<AppConfigMutable>
 
@@ -418,7 +206,7 @@ export function appConfigFactory (): AppConfig {
       },
       en: {
         dict: '',
-        list: ['bing', 'dictcn', 'howjsay', 'macmillan', 'eudic', 'urban'],
+        list: ['bing', 'dictcn', 'macmillan', 'urban'],
         accent: 'uk' as ('us' | 'uk')
       }
     },
@@ -426,11 +214,11 @@ export function appConfigFactory (): AppConfig {
     dicts: {
       selected: ['bing', 'urban', 'vocabulary', 'dictcn'],
       // settings of each dict will be auto-generated
-      all: cloneDeep(allDicts)
+      all: getALlDicts()
     },
     contextMenus: {
       selected: ['oxford', 'google_translate', 'merriam_webster', 'cambridge', 'google_search', 'google_page_translate', 'youdao_page_translate'],
-      all: cloneDeep(allContextMenus)
+      all: getAllContextMenus()
     }
   }
 }
