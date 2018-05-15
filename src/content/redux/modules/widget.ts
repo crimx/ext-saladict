@@ -1,6 +1,6 @@
 import * as recordManager from '@/_helpers/record-manager'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
-import { TCDirection, AppConfig, DictID } from '@/app-config'
+import appConfigFactory, { TCDirection, AppConfig, DictID } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
 import { createAppConfigStream } from '@/_helpers/config-manager'
 import { MsgSelection, MsgType, MsgTempDisabledState } from '@/typings/message'
@@ -70,6 +70,8 @@ export type WidgetState = {
   }
 }
 
+const _initConfig = appConfigFactory()
+
 export const initState: WidgetState = {
   widget: {
     isTempDisabled: false,
@@ -81,8 +83,12 @@ export const initState: WidgetState = {
     panelRect: {
       x: 0,
       y: 0,
-      width: 450,
-      height: window.innerHeight * 0.8,
+      width: isSaladictPopupPage
+        ? Math.min(750, _initConfig.panelWidth)
+        : _initConfig.panelWidth,
+      height: isSaladictPopupPage
+        ? 400
+        : 30 + _initConfig.dicts.selected.length * 30,
     },
     shouldWordEditorShow: false,
   }
@@ -275,6 +281,7 @@ export const reducer: WidgetReducer = {
       ...state,
       widget: {
         ...state.widget,
+        isPanelAppear: false,
         panelRect: _reconcilePanelRect(
           x,
           y,
@@ -639,15 +646,6 @@ function _reconcilePanelRect (
 ): WidgetState['widget']['panelRect'] {
   width = width | 0
   height = height | 0
-
-  if (isSaladictPopupPage) {
-    return {
-      x: 0,
-      y: 0,
-      width: Math.min(750, width),
-      height: 400,
-    }
-  }
 
   const winWidth = window.innerWidth
   const winHeight = window.innerHeight
