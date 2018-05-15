@@ -49,6 +49,11 @@
     "zh_CN": "国语辞典",
     "zh_TW": "國語字典"
   },
+  "history_title": {
+    "en": "Search History",
+    "zh_CN": "查词历史记录",
+    "zh_TW": "查單字歷史記錄"
+  },
   "iciba": {
     "en": "iciba",
     "zh_CN": "金山词霸",
@@ -78,6 +83,11 @@
     "en": "New Word List",
     "zh_CN": "生词本",
     "zh_TW": "生字本"
+  },
+  "notification_youdao_err": {
+    "en": "Youdao Page Translation 2.0 not responding.\nSaladict might not have permission to access this page.\nIgnore this message if Youdao panal is shown.",
+    "zh_CN": "有道网页翻译2.0 加载无响应，\n可能扩展无权访问该页面，\n如加载成功请忽略本消息。",
+    "zh_TW": "有道網頁翻譯2.0 下載後無反應，\n可能新視窗網頁無權訪問該網站，\n如果下載成功後，請忽略本訊息。"
   },
   "oxford": {
     "en": "Oxford",
