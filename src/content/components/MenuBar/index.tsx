@@ -149,10 +149,10 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     message.send(msg)
   }
 
-  handleIconShareImgClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.currentTarget.blur()
-    this.props.shareImg()
-  }
+  // handleIconShareImgClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   e.currentTarget.blur()
+  //   this.props.shareImg()
+  // }
 
   handleIconPinClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
@@ -271,6 +271,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
           </svg>
         </button>
 
+        {/*
         <button className='panel-MenuBar_Btn' onClick={this.handleIconShareImgClick}>
           <svg
             className='panel-MenuBar_Icon'
@@ -281,6 +282,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
             <path d='M36.5 16c-.554 0-1 .446-1 1s.446 1 1 1h13v39h-40V18h13c.552 0 1-.448 1-1s-.448-1-1-1h-15v43h44V16h-15z'/>
           </svg>
         </button>
+        */}
 
         <button className='panel-MenuBar_Btn'
           onClick={this.handleIconPinClick}

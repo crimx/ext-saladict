@@ -155,7 +155,7 @@ export function appConfigFactory (): AppConfig {
 
     langCode,
 
-    panelWidth: 450,
+    panelWidth: 400,
 
     panelMaxHeightRatio: 0.8,
 
