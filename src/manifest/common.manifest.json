@@ -21,6 +21,7 @@
 
   "background": {
     "scripts": [
+      "static/browser-polyfill.min.js",
       "background.js"
     ],
     "persistent": true
@@ -28,12 +29,18 @@
 
   "content_scripts": [
     {
-      "js": ["content.js"],
+      "js": [
+        "static/browser-polyfill.min.js",
+        "content.js"
+      ],
       "css": ["content.css"],
       "matches": ["<all_urls>"]
     },
     {
-      "js": ["selection.js"],
+      "js": [
+        "static/browser-polyfill.min.js",
+        "selection.js"
+      ],
       "matches": ["<all_urls>"],
       "all_frames": true
     }
