@@ -107,7 +107,7 @@ export function getALlDicts () {
        * %s will be replaced with the current word.
        * %z will be replaced with the traditional Chinese version of the current word
        */
-      page: 'https://www.collinsdictionary.com/dictionary/%s',
+      page: 'https://www.collinsdictionary.com/dictionary/english/%s',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
