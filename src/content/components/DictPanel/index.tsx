@@ -17,7 +17,6 @@ export interface DictPanelProps extends DictPanelDispatchers {
   readonly isPinned: boolean
   readonly dictionaries: DictionariesState['dictionaries']
   readonly allDictsConfig: DictConfigs
-  readonly selectedDicts: DictID[]
   readonly fontSize: number
   readonly panelWidth: number
   readonly isAnimation: boolean
@@ -69,7 +68,6 @@ export default class DictPanel extends React.Component<DictPanelProps> {
       dictionaries,
 
       allDictsConfig,
-      selectedDicts,
       panelWidth,
       fontSize,
       isAnimation,
@@ -77,7 +75,10 @@ export default class DictPanel extends React.Component<DictPanelProps> {
       updateItemHeight,
     } = this.props
 
-    const dictsInfo = dictionaries.dicts
+    const {
+      dicts: dictsInfo,
+      selected: selectedDicts,
+    } = dictionaries
 
     // wrap iframe into DictPanel so that react
     // can release memory correctly after removed from DOM

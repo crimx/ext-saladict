@@ -18,7 +18,6 @@ export type DictPanelPortalDispatchers = Omit<
 export interface DictPanelPortalProps extends DictPanelPortalDispatchers {
   readonly isAnimation: boolean
   readonly allDictsConfig: DictConfigs
-  readonly selectedDicts: DictID[]
   readonly fontSize: number
 
   readonly isFav: boolean
@@ -129,8 +128,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   }
 
   onFrameAnimationEnd = () => {
+    this.isAnimating = false
     if (this.frame) {
-      this.isAnimating = false
       // remove hardware acceleration to prevent blurry font
       const iframeStyle = this.frame.style
       const { x, y } = this.props.panelRect

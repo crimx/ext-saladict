@@ -19,7 +19,6 @@ export const mapStateToProps = ({
   return {
     isAnimation: config.animation,
     allDictsConfig: config.dicts.all,
-    selectedDicts: config.dicts.selected,
     fontSize: config.fontSize,
 
     selection,
