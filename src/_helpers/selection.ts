@@ -142,6 +142,6 @@ function cleanText (text: string): string {
     .replace(/^\s+\n/gm, '\n') // compress multiple \n to two
     .trim()
     .split('\n')
-    .map(line => line.trim())
+    .map(line => line.replace(/\s+/g, ' ').trim())
     .join('\n')
 }
