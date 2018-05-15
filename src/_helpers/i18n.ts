@@ -15,7 +15,8 @@ export interface RawLocales {
 export default i18nLoader
 export function i18nLoader (
   locales: { [namespace: string]: RawLocales },
-  defaultNS?: string,
+  defaultNS: string,
+  cb?: i18n.Callback
 ): i18n.i18n {
   const namespaces = Object.keys(locales)
   const instance = i18n
@@ -41,7 +42,7 @@ export function i18nLoader (
         return res
       }, { zh_CN: {}, zh_TW: {}, en: {} }),
 
-    }, undefined)
+    }, cb)
 
   createAppConfigStream().subscribe(config => {
     if (instance.language !== config.langCode) {
