@@ -3,7 +3,7 @@ import { AppConfig } from '@/app-config'
 import i18nLoader from '@/_helpers/i18n'
 import { TranslationFunction } from 'i18next'
 import contextLocles from '@/_locales/context'
-import isEqual from 'lodash/isequal'
+import isEqual from 'lodash/isEqual'
 
 import { Observable, ReplaySubject, combineLatest } from 'rxjs'
 import { mergeMap, filter, map, audit, mapTo, share, startWith } from 'rxjs/operators'
