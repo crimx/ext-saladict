@@ -23,6 +23,9 @@ export default function search (
   // http to bypass the referer checking
   return fetchDirtyDOM('http://www.etymonline.com/search?q=' + text)
     .then(doc => handleDom(doc, options))
+    .catch(() => fetchDirtyDOM('https://www.etymonline.com/search?q=' + text)
+      .then(doc => handleDom(doc, options))
+    )
 }
 
 function handleDom (
@@ -50,7 +53,7 @@ function handleDom (
           let word = ($cf.textContent || '').trim()
           $cf.outerHTML = `<a href="https://www.etymonline.com/word/${word}" target="_blank">${word}</a>`
         })
-        def = DOMPurify.sanitize($def.outerHTML)
+        def = DOMPurify.sanitize($def.innerHTML)
       }
 
       if (title && def) {

@@ -76,7 +76,7 @@ function handleDom (
   if ($article) {
     result.defs = Array.from($article.querySelectorAll('.prep-order'))
       .slice(0, options.sentence)
-      .map(d => DOMPurify.sanitize(d.outerHTML))
+      .map(d => DOMPurify.sanitize(d.innerHTML))
   }
 
   if (result.title && result.defs && result.defs.length > 0) {
