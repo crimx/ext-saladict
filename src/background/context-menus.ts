@@ -21,7 +21,7 @@ interface CreateMenuOptions {
 let setMenus$$: Observable<void>
 
 const i18n$$ = new ReplaySubject<TranslationFunction>(1)
-const i18n = i18nLoader({ context: contextLocles }, 'context')
+const i18n = i18nLoader({ context: contextLocles }, 'context', (_, t) => i18n$$.next(t))
 i18n.on('languageChanged', () => i18n$$.next(i18n.t.bind(i18n)))
 
 browser.contextMenus.onClicked.addListener(info => {

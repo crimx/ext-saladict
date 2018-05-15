@@ -10,12 +10,13 @@ function specialConfig () {
 
 describe('Context Menus', () => {
   beforeAll(() => {
-    jest.resetModules()
+    // Order matters. Do not change.
     browser.flush()
-    browser.i18n.getUILanguage.returns('zh-CN')
+    browser.i18n.getUILanguage.returns('en')
     browser.storage.sync.get.callsFake(() => Promise.resolve({
       config: specialConfig()
     }))
+    jest.resetModules()
     require('@/background/context-menus')
   })
   afterAll(() => browser.flush())
@@ -95,15 +96,16 @@ describe('Context Menus', () => {
     let config: AppConfig
 
     beforeEach(() => {
-      jest.resetModules()
-      config = specialConfig()
+      // Order matters. Do not change.
       browser.flush()
-      browser.i18n.getUILanguage.returns('zh-CN')
+      browser.i18n.getUILanguage.returns('en')
+      config = specialConfig()
       browser.storage.sync.get.callsFake(() => Promise.resolve({
         config: specialConfig()
       }))
       browser.contextMenus.removeAll.callsFake(() => Promise.resolve())
       browser.contextMenus.create.callsFake((_, cb) => cb())
+      jest.resetModules()
     })
 
     it('should set menus on init', done => {
@@ -207,6 +209,9 @@ describe('Context Menus', () => {
         const newConfig3 = specialConfig()
         newConfig3.contextMenus.selected = ['oxford']
 
+        const newConfig4 = specialConfig()
+        newConfig4.contextMenus.selected = ['youdao']
+
         browser.storage.onChanged.dispatch({
           config: {
             newValue: newConfig1,
@@ -228,11 +233,19 @@ describe('Context Menus', () => {
           }
         },
         'sync')
+        browser.storage.onChanged.dispatch({
+          config: {
+            newValue: newConfig4,
+            oldValue: newConfig3,
+          }
+        },
+        'sync')
         setTimeout(() => {
-          expect(browser.contextMenus.removeAll.calledTwice).toBeTruthy()
-          expect(browser.contextMenus.create.calledWithMatch({ id: 'bing_dict' }, sinon.match.func)).toBeFalsy()
+          expect(browser.contextMenus.removeAll.calledThrice).toBeTruthy()
+          expect(browser.contextMenus.create.calledWithMatch({ id: 'bing_dict' }, sinon.match.func)).toBeTruthy()
           expect(browser.contextMenus.create.calledWithMatch({ id: 'iciba' }, sinon.match.func)).toBeFalsy()
-          expect(browser.contextMenus.create.calledWithMatch({ id: 'oxford' }, sinon.match.func)).toBeTruthy()
+          expect(browser.contextMenus.create.calledWithMatch({ id: 'oxford' }, sinon.match.func)).toBeFalsy()
+          expect(browser.contextMenus.create.calledWithMatch({ id: 'youdao' }, sinon.match.func)).toBeTruthy()
           done()
         }, 0)
 
