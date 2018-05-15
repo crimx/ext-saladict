@@ -70,13 +70,13 @@
     "en": "Use animation transitions"
   },
   "no_type_field": {
-    "zh_CN": "关闭输入框划词",
-    "zh_TW": "關閉輸入框鼠標滑字",
+    "zh_CN": "关闭可编辑区域划词",
+    "zh_TW": "關閉可編輯區域鼠標滑字",
     "en": "No selection in editable regions"
   },
   "preference_description": {
-    "zh_CN": "关闭过渡动画可减少资源消耗。关闭输入框划词本扩展会自动识别 Input Box、 TextArea 以及常见编辑器，如 CodeMirror 和 ACE 。",
-    "zh_TW": "關閉轉換動畫可減少資源消耗。關閉輸入框鼠標滑字本程式會自動識別 Input Box、 Textarea 以及常見編輯器，如 CodeMirror 和 ACE 。",
+    "zh_CN": "关闭过渡动画可减少资源消耗。关闭可编辑区域划词后，本扩展会自动识别输入框以及常见编辑器，如 CodeMirror 和 ACE 。",
+    "zh_TW": "關閉轉換動畫可減少資源消耗。關閉可編輯區域鼠標滑字后，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror 和 ACE 。",
     "en": "Switch off animation transitions to reduce runtime cost. If selection making in editable regions is banned, the extension will identify Input Boxes, TextAreas and other common text editors like CodeMirror and ACE."
   },
   "privacy_title": {
