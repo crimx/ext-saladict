@@ -161,6 +161,7 @@ module.exports = {
                 loader: require.resolve('ts-loader'),
                 options: {
                   appendTsSuffixTo: [/\.vue$/],
+                  transpileOnly: argv.devbuild,
                 }
               }
             ],
