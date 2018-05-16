@@ -12,7 +12,8 @@
         "react"
       ],
       "plugins": [
-        ["transform-object-rest-spread", { "useBuiltIns": true }]
+        ["transform-object-rest-spread", { "useBuiltIns": true }],
+        ["import", { "libraryName": "antd", "style": "css" }]
       ]
     },
     "development": {
@@ -27,7 +28,8 @@
         "react"
       ],
       "plugins": [
-        ["transform-object-rest-spread", { "useBuiltIns": true }]
+        ["transform-object-rest-spread", { "useBuiltIns": true }],
+        ["import", { "libraryName": "antd", "style": "css" }]
       ]
     },
     "production": {
@@ -43,7 +45,8 @@
       ],
       "plugins": [
         "lodash",
-        ["transform-object-rest-spread", { "useBuiltIns": true }]
+        ["transform-object-rest-spread", { "useBuiltIns": true }],
+        ["import", { "libraryName": "antd", "style": "css" }]
       ]
     }
   }
