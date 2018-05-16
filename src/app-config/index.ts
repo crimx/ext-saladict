@@ -2,10 +2,10 @@ import { DeepReadonly } from '@/typings/helpers'
 import { getALlDicts } from './dicts'
 import { getAllContextMenus } from './context-menus'
 
-const langUI = (browser.i18n.getUILanguage() || 'en').replace('-', '_')
-const langCode = /^zh_CN|zh_TW|en$/.test(langUI)
-  ? langUI === 'zh_HK'
-    ? 'zh_TW'
+const langUI = (browser.i18n.getUILanguage() || 'en')
+const langCode = /^zh-CN|zh-TW|en$/.test(langUI)
+  ? langUI === 'zh-HK'
+    ? 'zh-TW'
     : langUI
   : 'en'
 

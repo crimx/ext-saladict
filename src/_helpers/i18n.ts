@@ -21,7 +21,7 @@ export function i18nLoader (
   const namespaces = Object.keys(locales)
   const instance = i18n
     .init({
-      lng: browser.i18n.getUILanguage().replace('-', '_'),
+      lng: browser.i18n.getUILanguage(),
       fallbackLng: 'en',
       debug: process.env.NODE_ENV === 'development',
       saveMissing: false,
@@ -29,18 +29,18 @@ export function i18nLoader (
 
       defaultNS: defaultNS || namespaces[0] || 'translation',
 
-      whitelist: ['en', 'zh_CN', 'zh_TW'],
+      whitelist: ['en', 'zh-CN', 'zh-TW'],
 
       interpolation: {
         escapeValue: false, // not needed for react!!
       },
 
       resources: namespaces.reduce((res, ns) => {
-        res.zh_CN[ns] = mapValues(locales[ns], x => x.zh_CN)
-        res.zh_TW[ns] = mapValues(locales[ns], x => x.zh_TW)
+        res['zh-CN'][ns] = mapValues(locales[ns], x => x.zh_CN)
+        res['zh-TW'][ns] = mapValues(locales[ns], x => x.zh_TW)
         res.en[ns] = mapValues(locales[ns], x => x.en)
         return res
-      }, { zh_CN: {}, zh_TW: {}, en: {} }),
+      }, { 'zh-CN': {}, 'zh-TW': {}, en: {} }),
 
     }, cb)
 
