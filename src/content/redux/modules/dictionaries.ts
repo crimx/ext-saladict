@@ -22,6 +22,7 @@ export const enum ActionType {
   SEARCH_START = 'dicts/SEARCH_START',
   SEARCH_END = 'dicts/SEARCH_END',
   RESTORE = 'dicts/RESTORE',
+  ADD_HISTORY = 'dicts/ADD_HISTORY',
 }
 
 /*-----------------------------------------------*\
@@ -31,6 +32,7 @@ export const enum ActionType {
 interface DictionariesPayload {
   [ActionType.NEW_CONFIG]: AppConfig
   [ActionType.RESTORE]: undefined
+  [ActionType.ADD_HISTORY]: SelectionInfo
   [ActionType.SEARCH_START]: {
     toOnhold: DictID[]
     toStart: DictID[]
@@ -189,6 +191,16 @@ export const reducer: DictsReducer = {
       }
     }
   },
+  [ActionType.ADD_HISTORY] (state, info) {
+    const history = state.dictionaries.searchHistory
+    return {
+      ...state,
+      dictionaries: {
+        ...state.dictionaries,
+        searchHistory: [info, ...history].slice(0, 20)
+      }
+    }
+  }
 }
 
 /*-----------------------------------------------*\
@@ -219,6 +231,12 @@ export function searchEnd (
   payload: DictionariesPayload[ActionType.SEARCH_END]
 ): Action<ActionType.SEARCH_END> {
   return ({ type: ActionType.SEARCH_END, payload })
+}
+
+export function addSearchHistory (
+  payload: DictionariesPayload[ActionType.ADD_HISTORY]
+): Action<ActionType.ADD_HISTORY> {
+  return ({ type: ActionType.ADD_HISTORY, payload })
 }
 
 /*-----------------------------------------------*\
@@ -317,7 +335,7 @@ function listenTrpleCtrl (
       ? Promise.resolve({ ...state.selection.selectionInfo })
       : tripleCtrlPreload === 'clipboard'
         ? message.send({ type: MsgType.GetClipboard })
-            .then(text => getDefaultSelectionInfo({ text }))
+            .then(text => getDefaultSelectionInfo({ text, title: 'From Clipboard' }))
         : Promise.resolve(getDefaultSelectionInfo())
 
     fetchInfo.then(info => {
@@ -325,6 +343,7 @@ function listenTrpleCtrl (
         dispatch(searchText({ info }))
       } else {
         dispatch(restoreDicts())
+        dispatch(addSearchHistory(info))
       }
     })
   })
@@ -345,14 +364,14 @@ function popupPageInit (
       baPreload === 'selection'
         ? message.send({ type: MsgType.__PreloadSelection__ })
         : message.send({ type: MsgType.GetClipboard })
+          .then(text => getDefaultSelectionInfo({ text, title: 'From Clipboard' }))
     )
-    .then(text => {
-      const info = getDefaultSelectionInfo({ text })
-
+    .then(info => {
       if (baAuto && info.text) {
         dispatch(searchText({ info }))
       } else {
         dispatch(restoreDicts())
+        dispatch(addSearchHistory(info))
       }
     })
   }
