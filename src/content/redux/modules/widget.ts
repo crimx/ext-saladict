@@ -3,7 +3,7 @@ import { StoreState, DispatcherThunk, Dispatcher } from './index'
 import appConfigFactory, { TCDirection, AppConfig, DictID } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
 import { createAppConfigStream } from '@/_helpers/config-manager'
-import { MsgSelection, MsgType, MsgTempDisabledState } from '@/typings/message'
+import { MsgSelection, MsgType, MsgTempDisabledState, MsgEditWord } from '@/typings/message'
 import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
 import { getDefaultSelectionInfo, SelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
@@ -386,6 +386,12 @@ export function startUpAction (): DispatcherThunk {
     message.self.addListener(MsgType.EscapeKey, () => {
       dispatch(closePanel())
     })
+
+    // from word page
+    message.self.addListener<MsgEditWord>(MsgType.EditWord, ({ word }) => {
+      dispatch(searchText({ info: word }))
+      dispatch(wordEditorShouldShow(true))
+    })
   }
 }
 
@@ -444,19 +450,6 @@ export function addToNotebook (info: SelectionInfo): DispatcherThunk {
   return (dispatch, getState) => {
     return recordManager.saveWord('notebook', info)
       .then(() => dispatch(favWord(true)))
-      .catch(err => {
-        if (process.env.NODE_ENV === 'development') {
-          console.error(err)
-        }
-        dispatch(favWord(false))
-      })
-  }
-}
-
-export function removeFromNotebook (word: recordManager.Word): DispatcherThunk {
-  return (dispatch, getState) => {
-    return recordManager.deleteWord('notebook', word)
-      .then(() => dispatch(favWord(false)))
       .catch(err => {
         if (process.env.NODE_ENV === 'development') {
           console.error(err)
