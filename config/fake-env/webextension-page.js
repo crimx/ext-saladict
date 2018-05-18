@@ -31,7 +31,7 @@ window.browser = {
   },
   i18n: {
     getMessage (k) { return locales[k] && locales[k].message.zh_CN },
-    getUILanguage () { return 'zh_CN' },
+    getUILanguage () { return 'zh-CN' },
   },
   notifications: {
     create: _.partial(console.log, 'create notifications:'),
@@ -70,6 +70,7 @@ window.browser = {
   runtime: {
     id: 'mdidnbkkjainbfbcenphabdajogedcnx',
     getURL (name) { return name },
+    getPlatformInfo () { return Promise.resolve({ os: 'win' }) },
     getManifest () {
       return _.assign(
         {},
@@ -158,7 +159,7 @@ function sendMessage (extensionId, message) {
  */
 function genStorageApis () {
   window['storageData'] = {
-    local: {},
+    local: genLocalStorageData(),
     sync: {},
     listeners: [],
   }
@@ -296,5 +297,187 @@ function genStorageApis () {
 
   function alertListeners (changes, area) {
     storageData.listeners.forEach(listener => listener(_.cloneDeep(changes), area))
+  }
+}
+
+function genLocalStorageData () {
+  return {
+    "1514353044965": {
+      "data": [
+        {
+          "data": [
+            {
+              "context": "",
+              "favicon": "chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/assets/icon-16.png",
+              "note": "",
+              "text": "aural",
+              "title": "来自沙拉查词面板",
+              "trans": "",
+              "url": "#"
+            }
+          ],
+          "date": "03282018"
+        },
+        {
+          "data": [
+            {
+              "context": "6.5 Taxonomy of WAI-ARIA States and Properties§",
+              "favicon": "https://www.w3.org/favicon.ico",
+              "note": "",
+              "text": "Taxonomy",
+              "title": "Accessible Rich Internet Applications (WAI-ARIA) 1.1",
+              "trans": "",
+              "url": "https://www.w3.org/TR/wai-aria/#introstates"
+            }
+          ],
+          "date": "03242018"
+        },
+        {
+          "data": [
+            {
+              "context": "An accordion is a vertically stacked set of interactive headings that each contain a title, content snippet, or thumbnail representing a section of content.",
+              "favicon": "https://www.w3.org/favicon.ico",
+              "note": "",
+              "text": "accordion",
+              "title": "WAI-ARIA Authoring Practices 1.1",
+              "trans": "",
+              "url": "https://www.w3.org/TR/wai-aria-practices-1.1/"
+            }
+          ],
+          "date": "03232018"
+        },
+        {
+          "data": [
+            {
+              "context": "",
+              "favicon": "chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/assets/icon-16.png",
+              "note": "",
+              "text": "brochure",
+              "title": "来自沙拉查词面板",
+              "trans": "",
+              "url": "#"
+            }
+          ],
+          "date": "03222018"
+        },
+        {
+          "data": [
+            {
+              "context": "blab blab bla sd",
+              "favicon": "chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/assets/icon-16.png",
+              "note": "a ha ooo",
+              "text": "plateau",
+              "title": "来自沙拉查词面板",
+              "trans": "tttrxsd dfs dfs fg df ",
+              "url": "#"
+            }
+          ],
+          "date": "03192018"
+        },
+        {
+          "data": [
+            {
+              "context": "blab blab bla sd",
+              "favicon": "chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/assets/icon-16.png",
+              "note": "a ha ooo",
+              "text": "plateau",
+              "title": "来自沙拉查词面板",
+              "trans": "tttrxsd dfs dfs fg df ",
+              "url": "#"
+            }
+          ],
+          "date": "03192016"
+        },
+        {
+          "data": [
+            {
+              "context": "",
+              "favicon": "chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/assets/icon-16.png",
+              "note": "",
+              "text": "confetti",
+              "title": "来自沙拉查词面板",
+              "trans": "",
+              "url": "#"
+            }
+          ],
+          "date": "02282018"
+        },
+        {
+          "data": [
+            {
+              "context": "Some of Harrop's friends and former team-mates, namely Scott McTominay and Axel Tuanzebe, have been afforded the odd opportunity by Mourinho this season, albeit predominantly in cup competitions.",
+              "favicon": "",
+              "note": "",
+              "text": "albeit",
+              "title": "[Notes]Why Josh Harrop gambled on Preston ...",
+              "trans": "",
+              "url": "https://www.douban.com/group/topic/112362869/"
+            }
+          ],
+          "date": "02052018"
+        },
+        {
+          "data": [
+            {
+              "context": "",
+              "favicon": "chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/assets/icon-16.png",
+              "note": "",
+              "text": "punctuated",
+              "title": "查词历史记录",
+              "trans": "",
+              "url": "chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/history.html"
+            }
+          ],
+          "date": "01232018"
+        },
+        {
+          "data": [
+            {
+              "context": "",
+              "favicon": "chrome-extension://cdonnmffkdaoajfknoeeecmchibpmkmg/assets/icon-16.png",
+              "note": "",
+              "text": "invariant",
+              "title": "来自沙拉查词面板",
+              "trans": "xx",
+              "url": "#"
+            }
+          ],
+          "date": "12292017"
+        },
+        {
+          "data": [
+            {
+              "context": "This is so that different parts of the code can’t change the state arbitrarily, causing hard-to-reproduce bugs.",
+              "favicon": "https://redux.js.org/gitbook/images/favicon.ico",
+              "note": "",
+              "text": "arbitrarily",
+              "title": "Introduction · Redux",
+              "trans": "",
+              "url": "https://redux.js.org/docs/introduction/"
+            },
+            {
+              "context": "When a system is opaque and non-deterministic, it's hard to reproduce bugs or add new features.",
+              "favicon": "https://redux.js.org/gitbook/images/favicon.ico",
+              "note": "",
+              "text": "opaque",
+              "title": "Introduction · Redux",
+              "trans": "",
+              "url": "https://redux.js.org/docs/introduction/"
+            }
+          ],
+          "date": "12272017"
+        }
+      ],
+      "id": "1514353044965",
+      "wordCount": 11
+    },
+    "notebookCat": {
+      "data": [
+        "1514353044965"
+      ],
+      "timestamp": 1522237783822,
+      "version": 2,
+      "wordCount": 11
+    }
   }
 }
