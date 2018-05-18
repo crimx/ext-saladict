@@ -1,11 +1,13 @@
 import Dexie from 'dexie'
 import { storage } from '@/_helpers/browser-api'
+import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 import {
   MsgIsInNotebook,
   MsgSaveWord,
-  MsgDeleteWord,
+  MsgDeleteWords,
   MsgGetWordsByText,
-  MsgGetAllWords,
+  MsgGetWords,
+  MsgGetWordsResponse,
 } from '@/typings/message'
 
 export interface Word {
@@ -66,8 +68,10 @@ export function saveWord ({ area, info }: MsgSaveWord) {
   })
 }
 
-export function deleteWord ({ area, word }: MsgDeleteWord) {
-  return db[area].delete(word.date)
+export function deleteWords ({ area, dates }: MsgDeleteWords) {
+  return Array.isArray(dates)
+    ? db[area].bulkDelete(dates)
+    : db[area].clear()
 }
 
 export function getWordsByText ({ area, text }: MsgGetWordsByText) {
@@ -77,13 +81,38 @@ export function getWordsByText ({ area, text }: MsgGetWordsByText) {
     .toArray()
 }
 
-export function getAllWords ({ area, itemsPerPage, pageNum }: MsgGetAllWords) {
-  return db[area]
-    .orderBy('date')
-    .reverse()
-    .offset(itemsPerPage * (pageNum - 1))
-    .limit(itemsPerPage)
-    .toArray()
+export async function getWords ({
+  area,
+  itemsPerPage,
+  pageNum,
+  filters = {},
+  sortField = 'date',
+  sortOrder = 'descend',
+}: MsgGetWords): Promise<MsgGetWordsResponse> {
+  const col = db[area].orderBy(sortField)
+
+  const sortedCol = sortOrder === 'descend' ? col.reverse() : col
+
+  let filteredCol = sortedCol
+  if (Array.isArray(filters.text) && filters.text.length > 0) {
+    const validLangs = filters.text.reduce((o, l) => (o[l] = true, o) ,{})
+    filteredCol = sortedCol.and(({ text }) => (
+      (validLangs['zh'] && isContainChinese(text)) ||
+      (validLangs['en'] && isContainEnglish(text))
+    ))
+  }
+
+  const total = await filteredCol.count()
+
+  const paginatedCol = typeof itemsPerPage !== 'undefined' && typeof pageNum !== 'undefined'
+    ? filteredCol
+      .offset(itemsPerPage * (pageNum - 1))
+      .limit(itemsPerPage)
+    : filteredCol
+
+  const words = await paginatedCol.toArray()
+
+  return { total, words }
 }
 
 /*-----------------------------------------------*\
@@ -114,10 +143,9 @@ db.on('ready', () => {
           text: oldWord.text || '',
           context: oldWord.context || '',
           title: oldWord.title || '',
-          /** @todo use icon from github */
           favicon: oldWord.favicon
             ? oldWord.favicon.startsWith('chrome')
-              ? 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
+              ? 'https://raw.githubusercontent.com/crimx/ext-saladict/2ba9d2e85ad4ac2e4bb16ee43498ac4b58ed21a6/public/static/icon-16.png'
               : oldWord.favicon
             : '',
           url: oldWord.url || '',

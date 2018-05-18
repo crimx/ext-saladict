@@ -1,0 +1,107 @@
+{
+  "column-add": {
+    "en": "Add",
+    "zh_CN": "添加",
+    "zh_TW": "添加"
+  },
+  "column-date": {
+    "en": "Date",
+    "zh_CN": "日期",
+    "zh_TW": "日期"
+  },
+  "column-edit": {
+    "en": "Edit",
+    "zh_CN": "编辑",
+    "zh_TW": "編輯"
+  },
+  "column-note": {
+    "en": "Note",
+    "zh_CN": "笔记",
+    "zh_TW": "筆記"
+  },
+  "column-source": {
+    "en": "Source",
+    "zh_CN": "来源",
+    "zh_TW": "來源"
+  },
+  "column-trans": {
+    "en": "Translation",
+    "zh_CN": "翻译",
+    "zh_TW": "翻譯"
+  },
+  "column-word": {
+    "en": "Word",
+    "zh_CN": "单词",
+    "zh_TW": "單字"
+  },
+  "delete": {
+    "en": "Delete words",
+    "zh_CN": "删除单词",
+    "zh_TW": "刪除單字"
+  },
+  "delete_all": {
+    "en": "Delete all",
+    "zh_CN": "删除所有单词",
+    "zh_TW": "刪除所有單字"
+  },
+  "delete_confirm": {
+    "en": ". Confirm?",
+    "zh_CN": "，确定？",
+    "zh_TW": "，確認？"
+  },
+  "delete_selected": {
+    "en": "Delete selected",
+    "zh_CN": "删除选中单词",
+    "zh_TW": "刪除選中單字"
+  },
+  "export": {
+    "en": "Export as text",
+    "zh_CN": "导出文本",
+    "zh_TW": "輸出文本"
+  },
+  "export_all": {
+    "en": "Export all",
+    "zh_CN": "导出所有单词",
+    "zh_TW": "輸出所有單字"
+  },
+  "export_description": {
+    "en": "Describe the shape of each record：",
+    "zh_CN": "编写生成模板，描述每条记录生成的样子：",
+    "zh_TW": "編寫產生的模板，描述每條記錄產生的樣子："
+  },
+  "export_gencontent": {
+    "en": "Generated Content",
+    "zh_CN": "代表的内容",
+    "zh_TW": "代表的內容"
+  },
+  "export_placeholder": {
+    "en": "Placeholder",
+    "zh_CN": "替换符",
+    "zh_TW": "替換符號"
+  },
+  "export_selected": {
+    "en": "Export selected",
+    "zh_CN": "导出选中单词",
+    "zh_TW": "輸出選中單字"
+  },
+  "filter-word-chs": {
+    "en": "Chinese",
+    "zh_CN": "中文",
+    "zh_TW": "中文"
+  },
+  "filter-word-eng": {
+    "en": "English",
+    "zh_CN": "英文",
+    "zh_TW": "英文"
+  },
+  "title_history": {
+    "en": "Search History",
+    "zh_CN": "查词记录",
+    "zh_TW": "查單字紀錄"
+  },
+  "title_notebook": {
+    "en": "Word Notebook",
+    "zh_CN": "生词本",
+    "zh_TW": "生字本"
+  }
+}

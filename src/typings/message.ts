@@ -33,12 +33,16 @@ export const enum MsgType {
 
   IsInNotebook,
   SaveWord,
-  DeleteWord,
+  WordSaved,
+  DeleteWords,
   GetWordsByText,
-  GetAllWords,
+  GetWords,
 
   /** Popup page */
   TempDisabledState,
+
+  /** Word page */
+  EditWord,
 
   /**
    * Background proxy sends back underlyingly
@@ -115,10 +119,10 @@ export interface MsgSaveWord {
   readonly info: SelectionInfo & { readonly date?: number }
 }
 
-export interface MsgDeleteWord {
-  readonly type: MsgType.DeleteWord
+export interface MsgDeleteWords {
+  readonly type: MsgType.DeleteWords
   readonly area: DBArea
-  readonly word: Word
+  readonly dates?: number[]
 }
 
 export interface MsgGetWordsByText {
@@ -127,11 +131,19 @@ export interface MsgGetWordsByText {
   readonly text: string
 }
 
-export interface MsgGetAllWords {
-  readonly type: MsgType.GetAllWords
+export interface MsgGetWords {
+  readonly type: MsgType.GetWords
   readonly area: DBArea
-  readonly itemsPerPage: number
-  readonly pageNum: number
+  readonly itemsPerPage?: number
+  readonly pageNum?: number
+  readonly filters: { [field: string]: string[] | undefined }
+  readonly sortField?: string
+  readonly sortOrder?: 'ascend' | 'descend' | false
+}
+
+export interface MsgGetWordsResponse {
+  total: number
+  words: Word[]
 }
 
 export type MsgTempDisabledState = {
@@ -141,4 +153,9 @@ export type MsgTempDisabledState = {
   readonly type: MsgType.TempDisabledState
   readonly op: 'set'
   readonly value: boolean
+}
+
+export interface MsgEditWord {
+  type: MsgType.EditWord
+  word: Word
 }

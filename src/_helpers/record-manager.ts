@@ -4,17 +4,20 @@
 
 import { message } from '@/_helpers/browser-api'
 import { SelectionInfo } from '@/_helpers/selection'
-import { Word as DBWord, Area } from '@/background/database'
+import { Word as DBWord, Area as DBArea } from '@/background/database'
 import {
   MsgType,
   MsgIsInNotebook,
   MsgSaveWord,
-  MsgDeleteWord,
+  MsgDeleteWords,
   MsgGetWordsByText,
-  MsgGetAllWords,
+  MsgGetWords,
+  MsgGetWordsResponse,
 } from '@/typings/message'
 
 export type Word = DBWord
+
+export type Area = DBArea
 
 export function isInNotebook (info: SelectionInfo): Promise<boolean> {
   return message.send<MsgIsInNotebook>({ type: MsgType.IsInNotebook, info })
@@ -25,16 +28,29 @@ export function saveWord (area: Area, info: SelectionInfo): Promise<void> {
   return message.send<MsgSaveWord>({ type: MsgType.SaveWord, area, info })
 }
 
-export function deleteWord (area: Area, word: Word): Promise<void> {
-  return message.send<MsgDeleteWord>({ type: MsgType.DeleteWord, area, word })
+export function deleteWords (area: Area, dates?: number[]): Promise<void> {
+  return message.send<MsgDeleteWords>({ type: MsgType.DeleteWords, area, dates })
 }
 
 export function getWordsByText (area: Area, text: string): Promise<Word[]> {
   return message.send<MsgGetWordsByText>({ type: MsgType.GetWordsByText, area, text })
 }
 
-export function getAllWords (area: Area, itemsPerPage: number, pageNum: number): Promise<Word[]> {
-  return message.send<MsgGetAllWords>({ type: MsgType.GetAllWords, area, itemsPerPage, pageNum })
+export function getWords (
+  area: Area,
+  config: {
+    itemsPerPage?: number,
+    pageNum?: number,
+    filters: { [field: string]: string[] | undefined },
+    sortField?: string,
+    sortOrder?: 'ascend' | 'descend' | false,
+  }
+): Promise<MsgGetWordsResponse> {
+  return message.send<MsgGetWords, MsgGetWordsResponse>({
+    type: MsgType.GetWords,
+    area,
+    ...config,
+  })
 }
 
 function logError<T = any> (valPassThrough: T): (x: any) => T {

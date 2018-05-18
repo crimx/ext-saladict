@@ -1,6 +1,6 @@
 import { message, openURL } from '@/_helpers/browser-api'
 import { play } from './audio-manager'
-import { isInNotebook, saveWord, deleteWord, getWordsByText, getAllWords } from './database'
+import { isInNotebook, saveWord, deleteWords, getWordsByText, getWords } from './database'
 import { chsToChz } from '@/_helpers/chs-to-chz'
 import appConfigFactory, { AppConfig } from '@/app-config'
 import { createAppConfigStream } from '@/_helpers/config-manager'
@@ -13,9 +13,9 @@ import {
   MsgFetchDictResult,
   MsgIsInNotebook,
   MsgSaveWord,
-  MsgDeleteWord,
+  MsgDeleteWords,
   MsgGetWordsByText,
-  MsgGetAllWords,
+  MsgGetWords,
 } from '@/typings/message'
 
 let config = appConfigFactory()
@@ -42,12 +42,17 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return isInNotebook(data as MsgIsInNotebook)
     case MsgType.SaveWord:
       return saveWord(data as MsgSaveWord)
-    case MsgType.DeleteWord:
-      return deleteWord(data as MsgDeleteWord)
+        .then(response => {
+          setTimeout(() => message.send({ type: MsgType.WordSaved }), 0)
+          return response
+        })
+    case MsgType.DeleteWords:
+      return deleteWords(data as MsgDeleteWords)
     case MsgType.GetWordsByText:
       return getWordsByText(data as MsgGetWordsByText)
-    case MsgType.GetAllWords:
-      return getAllWords(data as MsgGetAllWords)
+    case MsgType.GetWords:
+      return getWords(data as MsgGetWords)
+
     case 'youdao_translate_ajax' as any:
       return youdaoTranslateAjax(data.request)
   }
@@ -101,7 +106,9 @@ function fetchDictResult (
 
   return timeout(pSearch, 10000)
     .catch(err => {
-      console.warn(data.id, err)
+      if (process.env.NODE_ENV !== 'production') {
+        console.warn(data.id, err)
+      }
       return null
     })
 }

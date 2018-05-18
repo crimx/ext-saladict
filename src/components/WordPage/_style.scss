@@ -1,0 +1,44 @@
+textarea {
+  resize: none;
+}
+
+.wordpage-Container {
+  max-width: 1920px;
+  margin: 0 auto;
+  padding-top: 64px;
+}
+
+.wordpage-Header {
+  display: flex;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
+
+.wordpage-Content {
+  background: #fff;
+}
+
+.wordpage-Record_Context {
+  margin: 0 0 5px 0;
+  padding: 0 0 5px 0;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.wordpage-Source_Footer {
+  margin: 0;
+}
+
+.wordpage-Record_Favicon {
+  width: 14px;
+  height: 14px;
+  margin-right: 5px;
+  vertical-align: sub;
+}
+
+.wordpage-Record_Title {
+  font-size: 12px;
+  color: #aaa;
+}
