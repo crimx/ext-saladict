@@ -54,6 +54,7 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
   saveToNotebook = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
     this.props.saveToNotebook(this.state.info)
+      .then(() => this.props.closeModal())
   }
 
   closeModal = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -67,10 +68,13 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
   }
 
   getRelatedWords = () => {
-    const text = this.state.info.text
-    if (!text) { return }
-    this.props.getWordsByText(text)
+    const word = this.state.info as Word
+    if (!word.text) { return }
+    this.props.getWordsByText(word.text)
       .then(words => {
+        if (word.date) {
+          words = words.filter(({ date }) => date !== word.date)
+        }
         if (words.length > 0) {
           this.setState({ relatedWords: words })
         }
