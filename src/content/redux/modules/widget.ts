@@ -372,7 +372,7 @@ export function startUpAction (): DispatcherThunk {
     listenNewSelection(dispatch, getState)
     listenTempDisable(dispatch, getState)
 
-    if (!isSaladictInternalPage) {
+    if (!isSaladictOptionsPage && !isSaladictPopupPage) {
       createAppConfigStream().subscribe(config => {
         dispatch(newConfig(config))
       })
@@ -504,7 +504,11 @@ function listenNewSelection (
 
     const state = getState()
 
-    if (!isSaladictInternalPage && (!state.config.active || state.widget.isTempDisabled)) {
+    if (isSaladictOptionsPage ||
+        isSaladictPopupPage ||
+        !state.config.active ||
+        state.widget.isTempDisabled
+    ) {
       return
     }
 

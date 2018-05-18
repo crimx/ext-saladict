@@ -124,15 +124,28 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     e.currentTarget.blur()
     switch (e.button) {
       case 0: // main button
-        this.props.openWordEditor()
+        if (isSaladictPopupPage) {
+          // Not enough space to open word editor on popup page
+          try {
+            message.send<MsgOpenUrl>({
+              type: MsgType.OpenURL,
+              url: 'notebook.html?info=' +
+                encodeURIComponent(JSON.stringify(this.props.searchHistory[0])),
+              self: true,
+            })
+          } catch (err) {
+            console.warn(err)
+          }
+        } else {
+          this.props.openWordEditor()
+        }
         break
       case 2: { // secondary button
-        const msg: MsgOpenUrl = {
+        message.send<MsgOpenUrl>({
           type: MsgType.OpenURL,
           url: 'notebook.html',
           self: true,
-        }
-        message.send(msg)
+        })
         break
       }
     }
@@ -179,10 +192,11 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
       isFav,
       isPinned,
       handleDragStart,
+      searchHistory,
     } = this.props
 
     const iSearchHistory = this.state.iSearchHistory
-    const nSearchHistory = this.props.searchHistory.length
+    const nSearchHistory = searchHistory.length
 
     return (
       <header className='panel-MenuBar'>
@@ -249,7 +263,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
         <button className='panel-MenuBar_Btn'
           onClick={this.handleIconFavClick}
-          disabled={isSaladictOptionsPage || isSaladictPopupPage}
+          disabled={isSaladictOptionsPage || searchHistory.length <= 0}
         >
           <svg
             className={`panel-MenuBar_Icon-fav ${isFav ? 'isActive' : ''}`}

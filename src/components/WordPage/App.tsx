@@ -240,6 +240,20 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
     message.addListener(MsgType.WordSaved, () => {
       this.fetchData()
     })
+
+    // From popup page
+    const searchURL = new URL(document.URL)
+    const infoText = searchURL.searchParams.get('info')
+    if (infoText) {
+      try {
+        const info = JSON.parse(decodeURIComponent(infoText)) as Word
+        setTimeout(() => {
+          message.self.send<MsgEditWord>({ type: MsgType.EditWord, word: info })
+        }, 1000)
+      } catch (err) {
+        console.warn(err)
+      }
+    }
   }
 
   renderEdit = (_, record: Word): React.ReactNode => {

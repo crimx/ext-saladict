@@ -5,7 +5,8 @@ import VueI18Next from '@panter/vue-i18next'
 import i18nLoader from '@/_helpers/i18n'
 import popupLocles from '@/_locales/popup'
 
-window['__SALADICT_INTERNAL_PAGE__'] = true
+// keep search history
+// window['__SALADICT_INTERNAL_PAGE__'] = true
 window['__SALADICT_POPUP_PAGE__'] = true
 injectPanel() // inject panel AFTER flags are set
 
