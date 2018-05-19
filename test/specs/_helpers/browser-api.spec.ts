@@ -10,6 +10,8 @@ describe('Browser API Wapper', () => {
     delete window.faviconURL
     delete window.pageTitle
     delete window.pageURL
+    browser.runtime.sendMessage.callsFake(() => Promise.resolve())
+    browser.tabs.sendMessage.callsFake(() => Promise.resolve())
   })
 
   describe('Storage', () => {
@@ -308,6 +310,8 @@ describe('Browser API Wapper', () => {
 
       browser.runtime.sendMessage.flush()
       browser.tabs.sendMessage.flush()
+      browser.runtime.sendMessage.callsFake(() => Promise.resolve())
+      browser.tabs.sendMessage.callsFake(() => Promise.resolve())
 
       message.send(tabId, msg)
       expect(browser.tabs.sendMessage.calledWith(tabId, msg)).toBeTruthy()
