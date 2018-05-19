@@ -15,7 +15,13 @@ document.body.style.background = '#ccc'
 root.style.background = '#fff'
 root.style.overflowY = 'scroll'
 
-export default function setupEnv (dict: DictID, style = true) {
+interface EnvConfig {
+  dict: DictID
+  style?: boolean
+  text?: string
+}
+
+export default function setupEnv ({ dict, style = true, text = 'salad' }) {
   const search = require('../dictionaries/' + dict + '/engine').default
   const View = require('../dictionaries/' + dict + '/View').default
 
@@ -23,7 +29,7 @@ export default function setupEnv (dict: DictID, style = true) {
     require('../dictionaries/' + dict + '/_style.scss')
   }
 
-  search('salad', appConfigFactory())
+  search(text, appConfigFactory())
     .then(result => {
       ReactDOM.render(
         <div className='panel-DictItem'>
