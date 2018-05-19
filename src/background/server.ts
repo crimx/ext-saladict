@@ -37,6 +37,8 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return preloadSelection()
     case MsgType.GetClipboard:
       return getClipboard()
+    case MsgType.RequestCSS:
+      return injectCSS(sender)
 
     case MsgType.IsInNotebook:
       return isInNotebook(data as MsgIsInNotebook)
@@ -159,4 +161,13 @@ function youdaoTranslateAjax (request): Promise<any> {
       xhr.send(null)
     }
   })
+}
+
+function injectCSS (sender: browser.runtime.MessageSender) {
+  if (sender.tab && sender.tab.id) {
+    // Chrome fails to inject css via manifest if the page is loaded
+    // as "last opened tabs" when browser opens.
+    // Popup page is safe because it does not have a tab.
+    return browser.tabs.insertCSS(sender.tab.id, { file: '/content.css' })
+  }
 }

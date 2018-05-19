@@ -11,7 +11,12 @@ import i18nLoader from '@/_helpers/i18n'
 import dictsLocles from '@/_locales/dicts'
 import contentLocles from '@/_locales/content'
 
+import { message } from '@/_helpers/browser-api'
+import { MsgType } from '@/typings/message'
+
 import './content.scss'
+
+message.send({ type: MsgType.RequestCSS })
 
 const i18n = i18nLoader({ content: contentLocles, dict: dictsLocles }, 'content')
 

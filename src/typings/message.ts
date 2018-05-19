@@ -31,6 +31,8 @@ export const enum MsgType {
   /** Get clipboard content */
   GetClipboard,
 
+  RequestCSS,
+
   IsInNotebook,
   SaveWord,
   WordSaved,
