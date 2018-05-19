@@ -14,9 +14,9 @@ import optionsLocles from '@/_locales/options'
 import contextLocles from '@/_locales/context'
 import { MsgType, MsgSelection } from '@/typings/message'
 
-window['__SALADICT_INTERNAL_PAGE__'] = true
-window['__SALADICT_OPTIONS_PAGE__'] = true
-window['__SALADICT_LAST_SEARCH__'] = 'salad'
+window.__SALADICT_INTERNAL_PAGE__ = true
+window.__SALADICT_OPTIONS_PAGE__ = true
+window.__SALADICT_LAST_SEARCH__ = 'salad'
 
 injectPanel()
 
@@ -51,7 +51,7 @@ storage.sync.get('config')
                 message.self.send<MsgSelection>({
                   type: MsgType.Selection,
                   selectionInfo: getDefaultSelectionInfo({
-                    text: window['__SALADICT_LAST_SEARCH__']
+                    text: window.__SALADICT_LAST_SEARCH__ || 'salad'
                   }),
                   mouseX: window.innerWidth - this.$store.config.panelWidth - 110,
                   mouseY: window.innerHeight * (1 - this.$store.config.panelMaxHeightRatio) / 2 + 50,

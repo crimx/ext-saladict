@@ -11,16 +11,6 @@ import { MsgType } from '@/typings/message'
  * #Types
 \* --------------------------------------- */
 
-/** For self page messaging */
-declare global {
-  interface Window {
-    pageId?: number | string
-    faviconURL?: string
-    pageTitle?: string
-    pageURL?: string
-  }
-}
-
 export type StorageArea = 'all' | 'local' | 'sync'
 
 export type StorageListenerCb = (

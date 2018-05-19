@@ -8,9 +8,9 @@ import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
 import { getDefaultSelectionInfo, SelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
 
-const isSaladictOptionsPage = Boolean(window['__SALADICT_OPTIONS_PAGE__'])
-const isSaladictInternalPage = Boolean(window['__SALADICT_INTERNAL_PAGE__'])
-const isSaladictPopupPage = Boolean(window['__SALADICT_POPUP_PAGE__'])
+const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
+const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
+const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
 /*-----------------------------------------------*\
     Action Type

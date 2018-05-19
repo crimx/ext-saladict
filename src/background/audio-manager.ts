@@ -6,6 +6,7 @@ import { timeout } from '@/_helpers/promise-more'
 
 declare global {
   interface Window {
+    /** Singleton audio playing */
     __audio_manager__?: HTMLAudioElement
   }
 }

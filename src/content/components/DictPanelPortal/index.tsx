@@ -6,7 +6,7 @@ import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
 import { DictID, DictConfigs } from '@/app-config'
 
-const isSaladictPopupPage = Boolean(window['__SALADICT_POPUP_PAGE__'])
+const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
 export type DictPanelPortalDispatchers = Omit<
   DictPanelDispatchers,

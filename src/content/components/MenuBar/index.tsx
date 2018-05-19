@@ -5,8 +5,8 @@ import { TranslationFunction } from 'i18next'
 import { MsgType, MsgOpenUrl, MsgSelection } from '@/typings/message'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 
-const isSaladictOptionsPage = Boolean(window['__SALADICT_OPTIONS_PAGE__'])
-const isSaladictPopupPage = Boolean(window['__SALADICT_POPUP_PAGE__'])
+const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
+const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
 export interface MenuBarDispatchers {
   readonly handleDragStart: (e: React.MouseEvent<HTMLDivElement>) => any

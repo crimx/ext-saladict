@@ -6,8 +6,8 @@ import i18nLoader from '@/_helpers/i18n'
 import popupLocles from '@/_locales/popup'
 
 // keep search history
-// window['__SALADICT_INTERNAL_PAGE__'] = true
-window['__SALADICT_POPUP_PAGE__'] = true
+// window.__SALADICT_INTERNAL_PAGE__ = true
+window.__SALADICT_POPUP_PAGE__ = true
 injectPanel() // inject panel AFTER flags are set
 
 Vue.use(VueQriously)

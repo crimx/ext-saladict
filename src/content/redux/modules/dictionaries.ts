@@ -9,9 +9,9 @@ import { MsgType, MsgFetchDictResult } from '@/typings/message'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
 import { isInNotebook } from './widget'
 
-const isSaladictOptionsPage = Boolean(window['__SALADICT_OPTIONS_PAGE__'])
-const isSaladictInternalPage = Boolean(window['__SALADICT_INTERNAL_PAGE__'])
-const isSaladictPopupPage = Boolean(window['__SALADICT_POPUP_PAGE__'])
+const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
+const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
+const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
 /*-----------------------------------------------*\
     Action Type

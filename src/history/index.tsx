@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import WordPage from '@/components/WordPage'
 
-window['__SALADICT_INTERNAL_PAGE__'] = true
+window.__SALADICT_INTERNAL_PAGE__ = true
 
 // inject panel first(but after global flags) to listen to page event
 const $scriptSelection = document.createElement('script')
