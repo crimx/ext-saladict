@@ -265,11 +265,17 @@ type MessageThis = typeof message | typeof message.self
 function messageSend<T extends Message, U = any> (tabId: number, message: T): Promise<U>
 function messageSend<T extends Message, U = any> (message: T): Promise<U>
 function messageSend (...args): Promise<any> {
-  if (args.length === 1) {
-    return browser.runtime.sendMessage(args[0])
-  } else {
-    return browser.tabs.sendMessage(args[0], args[1])
-  }
+  return (
+    args.length === 1
+      ? browser.runtime.sendMessage(args[0])
+      : browser.tabs.sendMessage(args[0], args[1])
+  ).catch(err => {
+    if (process.env.DEV_BUILD) {
+      console.warn(err)
+    } else if (process.env.NODE_ENV !== 'production') {
+      return Promise.reject(err) as any
+    }
+  })
 }
 
 function messageSendSelf<T extends Message, U = any> (message: T): Promise<U> {
@@ -279,7 +285,13 @@ function messageSendSelf<T extends Message, U = any> (message: T): Promise<U> {
   return browser.runtime.sendMessage(Object.assign({}, message, {
     __pageId__: window.pageId,
     type: `[[${message.type}]]`
-  }))
+  })).catch(err => {
+    if (process.env.DEV_BUILD) {
+      console.warn(err)
+    } else if (process.env.NODE_ENV !== 'production') {
+      return Promise.reject(err) as any
+    }
+  })
 }
 
 function messageAddListener<T extends Message = Message> (messageType: Message['type'], cb: onMessageEvent<T>): void
