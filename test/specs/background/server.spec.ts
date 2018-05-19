@@ -132,7 +132,7 @@ describe('Server', () => {
     const rejectStub = jest.fn()
     const queryStub = jest.fn(() => Promise.resolve([{ id: 100 }]))
     browser.tabs.query.callsFake(queryStub)
-    browser.tabs.sendMessage.callsFake(() => 'test')
+    browser.tabs.sendMessage.callsFake(() => Promise.resolve('test'))
     browser.runtime.onMessage.dispatch({ type: MsgType.PreloadSelection })
     browser.runtime.onMessage['_listeners'].forEach(f =>
       f({ type: MsgType.PreloadSelection })
