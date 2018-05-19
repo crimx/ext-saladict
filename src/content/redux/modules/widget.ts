@@ -75,14 +75,18 @@ const _initConfig = appConfigFactory()
 export const initState: WidgetState = {
   widget: {
     isTempDisabled: false,
-    isPinned: false,
+    isPinned: isSaladictOptionsPage,
     isFav: false,
     shouldBowlShow: false,
     isPanelAppear: false,
-    shouldPanelShow: isSaladictPopupPage,
+    shouldPanelShow: isSaladictPopupPage || isSaladictOptionsPage,
     panelRect: {
-      x: 0,
-      y: 0,
+      x: isSaladictOptionsPage
+        ? window.innerWidth - _initConfig.panelWidth - 30
+        : 0,
+      y: isSaladictOptionsPage
+        ? window.innerHeight * (1 - _initConfig.panelMaxHeightRatio) / 2
+        : 0,
       width: isSaladictPopupPage
         ? Math.min(750, _initConfig.panelWidth)
         : _initConfig.panelWidth,
@@ -151,7 +155,7 @@ export const reducer: WidgetReducer = {
         y = 10
         break
       case TCDirection.right:
-        x = window.innerWidth - panelWidth - 20
+        x = window.innerWidth - panelWidth - 30
         y = window.innerHeight * 0.3
         break
       case TCDirection.bottom:
@@ -167,7 +171,7 @@ export const reducer: WidgetReducer = {
         y = 10
         break
       case TCDirection.topRight:
-        x = window.innerWidth - panelWidth - 20
+        x = window.innerWidth - panelWidth - 30
         y = 10
         break
       case TCDirection.bottomLeft:
@@ -175,7 +179,7 @@ export const reducer: WidgetReducer = {
         y = window.innerHeight - 10
         break
       case TCDirection.bottomRight:
-        x = window.innerWidth - panelWidth - 20
+        x = window.innerWidth - panelWidth - 30
         y = window.innerHeight - 10
         break
     }
@@ -627,8 +631,8 @@ function listenTempDisable (
 function _restoreWidget (widget: WidgetState['widget']): Mutable<WidgetState['widget']> {
   return {
     ...widget,
-    isPinned: false,
-    shouldPanelShow: isSaladictPopupPage,
+    isPinned: isSaladictOptionsPage,
+    shouldPanelShow: isSaladictPopupPage || isSaladictOptionsPage,
     shouldBowlShow: false,
     isPanelAppear: false,
     shouldWordEditorShow: false,
