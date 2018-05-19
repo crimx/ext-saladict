@@ -116,10 +116,9 @@ function handleLexResult (
       })
 
       searchResult.audio = searchResult.result.phsym.reduce((audio, { lang, pron }) => {
-        const lcLang = lang.toLowerCase()
-        if (lcLang.indexOf('美') !== -1) {
+        if (/us|美/i.test(lang)) {
           audio['us'] = pron
-        } else if (lcLang.indexOf('英') !== -1) {
+        } else if (/uk|英/i.test(lang)) {
           audio['uk'] = pron
         }
         return audio
