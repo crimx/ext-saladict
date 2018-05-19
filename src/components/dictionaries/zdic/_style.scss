@@ -1,0 +1,83 @@
+.dictZdic-Phsym {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.dictZdic-PhsymItem {
+  margin-right: 1em;
+}
+
+.dictZdic-Defs {
+  h1, h2, h3, p {
+    margin: 0;
+  }
+
+  hr {
+    margin: 0 0 5px 0;
+    border: none;
+    border-top: 1px solid #cccccc;
+  }
+
+  p {
+    margin-bottom: 1px;
+  }
+
+  h1, h2 {
+    margin: 5px 0;
+    font-size: 1.2em;
+    border-bottom: 1px solid #ddd;
+  }
+
+  rbc {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-right: 5px;
+  }
+
+  rtc {
+    margin-right: 5px;
+  }
+
+  ol {
+    margin: 0;
+    padding: 0 0 0 1em;
+  }
+
+  li {
+    margin-bottom: 2px;
+  }
+
+  .diczx1 {
+    padding-left: 2em;
+    color: #777;
+  }
+
+  .gc_sy,
+  .gc_jy,
+  .gc_yy,
+  .gc_lz,
+  .gc_yx,
+  .gc_fy,
+  .gc_jy {
+    display: block;
+  }
+
+  .gc_yy,
+  .gc_lz {
+    color: #777;
+  }
+
+  .gc_jfy_i {
+    background-color: #633;
+    border-radius: 4px;
+    color: white;
+    font-size: 100%;
+    line-height: 1;
+    padding: 2px;
+    margin-right: 5px;
+  }
+
+  .zdic-header {
+    margin-top: 5px;
+  }
+}

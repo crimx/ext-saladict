@@ -79,6 +79,24 @@ const fakeFetchData = [
       text: () => require('raw-loader!../../test/specs/components/dictionaries/eudic/response/love.html')
     },
   },
+  {
+    test: {
+      method: /.*/,
+      url: /zdic\.net.*爱/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/zdic/response/爱.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /zdic\.net.*沙拉/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/zdic/response/沙拉.html')
+    },
+  },
 ]
 
 /*-----------------------------------------------*\
