@@ -53,6 +53,15 @@
     "wordeditor.html",
     "wordeditor.js",
     "wordeditor.css",
+    "options.html",
+    "options.js",
+    "options.css",
+    "notebook.html",
+    "notebook.js",
+    "notebook.css",
+    "history.html",
+    "history.js",
+    "history.css",
     "static/*"
   ],
 
