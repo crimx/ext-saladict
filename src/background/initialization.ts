@@ -60,7 +60,7 @@ function onStartup (): void {
         if (isAvailable) {
           browser.notifications.create('update', {
             type: 'basic',
-            iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
+            iconUrl: browser.runtime.getURL(`static/icon-128.png`),
             title: '沙拉查词',
             message: (`可更新至【${info.tag_name}】`
             ),
@@ -90,7 +90,7 @@ function showNews () {
       if (data && data.tag_name) {
         browser.notifications.create('oninstall', {
           type: 'basic',
-          iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
+          iconUrl: browser.runtime.getURL(`static/icon-128.png`),
           title: `沙拉查词 Saladict【${data.tag_name}】`,
           message: data.body.match(/^\d+\..+/gm).join('\n'),
           buttons: [{ title: '查看更新' }],

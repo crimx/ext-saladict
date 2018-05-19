@@ -68,7 +68,7 @@ function stopListening () {
 
 function otherPdfListener ({ url }) {
   return {
-    redirectUrl: browser.runtime.getURL(`assets/pdf/web/viewer.html?file=${encodeURIComponent(url)}`)
+    redirectUrl: browser.runtime.getURL(`static/pdf/web/viewer.html?file=${encodeURIComponent(url)}`)
   }
 }
 
@@ -82,7 +82,7 @@ function httpPdfListener ({ responseHeaders, url }: { responseHeaders?: browser.
       (contentType === 'application/octet-stream' && url.endsWith('.pdf'))
     ) {
       return {
-        redirectUrl: browser.runtime.getURL(`assets/pdf/web/viewer.html?file=${encodeURIComponent(url)}`)
+        redirectUrl: browser.runtime.getURL(`static/pdf/web/viewer.html?file=${encodeURIComponent(url)}`)
       }
     }
   }

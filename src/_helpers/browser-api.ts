@@ -429,8 +429,8 @@ function _getPageInfo (sender) {
   } else {
     // FRAGILE: Assume only browser action page is tabless
     result.pageId = 'popup'
-    if (sender.url && sender.url.startsWith('chrome')) {
-      result.faviconURL = browser.runtime.getURL('assets/icon-16.png')
+    if (sender.url && !sender.url.startsWith('http')) {
+      result.faviconURL = 'https://raw.githubusercontent.com/crimx/ext-saladict/2ba9d2e85ad4ac2e4bb16ee43498ac4b58ed21a6/public/static/icon-16.png'
     }
   }
   return result
