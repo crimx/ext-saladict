@@ -117,9 +117,9 @@ function handleLexResult (
 
       searchResult.audio = searchResult.result.phsym.reduce((audio, { lang, pron }) => {
         const lcLang = lang.toLowerCase()
-        if (lcLang.indexOf('us') !== -1) {
+        if (lcLang.indexOf('美') !== -1) {
           audio['us'] = pron
-        } else if (lcLang.indexOf('uk') !== -1) {
+        } else if (lcLang.indexOf('英') !== -1) {
           audio['uk'] = pron
         }
         return audio
