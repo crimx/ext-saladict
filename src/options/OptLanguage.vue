@@ -8,8 +8,8 @@
         <label class="select-box">
           <span class="select-label">{{ $t('opt:language') }}</span>
           <select class="form-control" v-model="langCode">
-            <option value="zh_CN">简体中文</option>
-            <option value="zh_TW">繁體中文</option>
+            <option value="zh-CN">简体中文</option>
+            <option value="zh-TW">繁體中文</option>
             <option value="en">English</option>
           </select>
         </label>
