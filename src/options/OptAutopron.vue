@@ -19,14 +19,15 @@
               <option v-for="id in autopron.en.list" :value="id">{{ $t('dict:' + id) }}</option>
             </select>
           </label>
-          <span :style="{transition: 'opacity 0.4s', opacity: autopron.en.dict ? '1' : '0'}">
-            <label class="radio-inline">
-              <input type="radio" value="uk" v-model="autopron.en.accent"> {{ $t('opt:autopron_uk') }}
+          <transition name="fade">
+            <label class="select-box" v-if="autopron.en.dict">
+              <span class="select-label">{{ $t('opt:autopron_pref') }}</span>
+              <select class="form-control" v-model="autopron.en.accent">
+                <option value="uk">{{ $t('opt:autopron_uk') }}</option>
+                <option value="us">{{ $t('opt:autopron_us') }}</option>
+              </select>
             </label>
-            <label class="radio-inline">
-              <input type="radio" value="us" v-model="autopron.en.accent"> {{ $t('opt:autopron_us') }}
-            </label>
-          </span>
+          </transition>
        </div>
     </div>
     <div class="opt-item__description-wrap">

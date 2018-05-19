@@ -96,11 +96,17 @@ function fetchDictResult (
         if (audio.py && cn.dict === data.id) {
           play(audio.py)
         } else if (en.dict === data.id) {
-          if (audio.uk && en.accent === 'uk') {
-            play(audio.uk)
-          } else if (audio.us && en.accent === 'us') {
-            play(audio.us)
-          }
+          const accents = en.accent === 'uk'
+            ? ['uk', 'us']
+            : ['us', 'uk']
+
+          accents.some(lang => {
+            if (audio[lang]) {
+              play(audio[lang])
+              return true
+            }
+            return false
+          })
         }
       }
       return result
