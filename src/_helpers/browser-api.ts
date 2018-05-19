@@ -271,7 +271,7 @@ function messageSend (...args): Promise<any> {
       : browser.tabs.sendMessage(args[0], args[1])
   ).catch(err => {
     if (process.env.DEV_BUILD) {
-      console.warn(err)
+      console.warn(err, ...args)
     } else if (process.env.NODE_ENV !== 'production') {
       return Promise.reject(err) as any
     }
@@ -287,7 +287,7 @@ function messageSendSelf<T extends Message, U = any> (message: T): Promise<U> {
     type: `[[${message.type}]]`
   })).catch(err => {
     if (process.env.DEV_BUILD) {
-      console.warn(err)
+      console.warn(err, message)
     } else if (process.env.NODE_ENV !== 'production') {
       return Promise.reject(err) as any
     }
