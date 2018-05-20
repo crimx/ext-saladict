@@ -88,29 +88,46 @@ export async function getWords ({
   filters = {},
   sortField = 'date',
   sortOrder = 'descend',
+  searchText,
 }: MsgGetWords): Promise<MsgGetWordsResponse> {
-  const col = db[area].orderBy(sortField)
+  const collection = db[area].orderBy(sortField)
 
-  const sortedCol = sortOrder === 'descend' ? col.reverse() : col
-
-  let filteredCol = sortedCol
-  if (Array.isArray(filters.text) && filters.text.length > 0) {
-    const validLangs = filters.text.reduce((o, l) => (o[l] = true, o) ,{})
-    filteredCol = sortedCol.and(({ text }) => (
-      (validLangs['zh'] && isContainChinese(text)) ||
-      (validLangs['en'] && isContainEnglish(text))
-    ))
+  if (sortOrder === 'descend') {
+    collection.reverse()
   }
 
-  const total = await filteredCol.count()
+  const shouldFilter = Array.isArray(filters.text) && filters.text.length > 0
+  if (shouldFilter || searchText) {
+    const validLangs = shouldFilter
+      ? (filters.text as string[]).reduce((o, l) => (o[l] = true, o) ,{})
+      : {}
+    const ls = searchText ? searchText.toLocaleLowerCase() : ''
+    collection.filter(record => {
+      const rText = shouldFilter
+        ? (validLangs['en'] && isContainEnglish(record.text)) ||
+          (validLangs['ch'] && isContainChinese(record.text))
+        : true
 
-  const paginatedCol = typeof itemsPerPage !== 'undefined' && typeof pageNum !== 'undefined'
-    ? filteredCol
+      const rSearch = searchText
+        ? Object.values(record).some(v => (
+          typeof v === 'string' &&
+          v.toLocaleLowerCase().indexOf(ls) !== -1
+        ))
+        : true
+
+      return rText && rSearch
+    })
+  }
+
+  const total = await collection.count()
+
+  if (typeof itemsPerPage !== 'undefined' && typeof pageNum !== 'undefined') {
+    collection
       .offset(itemsPerPage * (pageNum - 1))
       .limit(itemsPerPage)
-    : filteredCol
+  }
 
-  const words = await paginatedCol.toArray()
+  const words = await collection.toArray()
 
   return { total, words }
 }

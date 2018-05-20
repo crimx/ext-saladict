@@ -44,6 +44,7 @@ export function getWords (
     filters: { [field: string]: string[] | undefined },
     sortField?: string,
     sortOrder?: 'ascend' | 'descend' | false,
+    searchText?: string,
   }
 ): Promise<MsgGetWordsResponse> {
   return message.send<MsgGetWords, MsgGetWordsResponse>({

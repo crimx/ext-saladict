@@ -141,6 +141,7 @@ export interface MsgGetWords {
   readonly filters: { [field: string]: string[] | undefined }
   readonly sortField?: string
   readonly sortOrder?: 'ascend' | 'descend' | false
+  readonly searchText?: string
 }
 
 export interface MsgGetWordsResponse {

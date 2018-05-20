@@ -1,6 +1,6 @@
 import React from 'react'
 import { translate, TranslationFunction } from 'react-i18next'
-import { Layout, Table, Tooltip, Button, Dropdown, Icon, Menu, Modal } from 'antd'
+import { Layout, Table, Tooltip, Button, Dropdown, Icon, Menu, Modal, Input } from 'antd'
 import { TablePaginationConfig, TableRowSelection, ColumnProps } from 'antd/lib/table/interface'
 import { ClickParam as MenuClickParam } from 'antd/lib/menu'
 
@@ -12,6 +12,9 @@ import { Area, Word, getWords, deleteWords } from '@/_helpers/record-manager'
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgEditWord } from '@/typings/message'
 
+import { Observable, Subject } from 'rxjs'
+import { mergeMap, audit, mapTo, share, startWith, debounceTime } from 'rxjs/operators'
+
 const { Header, Footer, Sider, Content } = Layout
 
 const ITEMS_PER_PAGE = 20
@@ -22,6 +25,7 @@ export interface WordPageMainProps {
 }
 
 export interface WordPageMainState {
+  searchText: string
   words: Word[]
   pagination: TablePaginationConfig
   rowSelection: TableRowSelection<Word>
@@ -41,13 +45,17 @@ interface FetchDataConfig {
   filters: { [field: string]: string[] | undefined },
   sortField?: string,
   sortOrder?: 'ascend' | 'descend' | false,
+  searchText: string,
 }
 
 export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPageMainState> {
   readonly tableColumns: ColumnProps<Word>[]
   readonly emptyRow = []
   readonly contentRef = React.createRef<any>()
+  readonly fetchData$$: Subject<FetchDataConfig>
+
   lastFetchDataConfig: FetchDataConfig = {
+    searchText: '',
     itemsPerPage: ITEMS_PER_PAGE,
     pageNum: 1,
     filters: { },
@@ -57,6 +65,23 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
     super(props)
     const { t, area } = props
 
+    let signal$: Observable<boolean>
+    this.fetchData$$ = new Subject<FetchDataConfig>()
+    const fetchData$$ = this.fetchData$$.pipe(
+      debounceTime(200),
+      // ignore values while fetchData is running
+      // if source emits any value during fetchData,
+      // retrieve the latest after fetchData is completed
+      audit(() => signal$),
+      mergeMap(config => this.fetchData(config)),
+      share(),
+    )
+    signal$ = fetchData$$.pipe(
+      mapTo(true), // last fetchData is completed
+      startWith(true),
+    )
+    fetchData$$.subscribe()
+
     const colSelectionWidth = 48
     const colDateWidth = 150
     const colEditWidth = 80
@@ -65,6 +90,7 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
     const restWidth = `calc((100vw - ${fixedWidth}px) * 2 / 7)`
 
     this.state = {
+      searchText: '',
       words: [],
       selectedRows: [],
       pagination: {
@@ -135,7 +161,7 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
     ]
   }
 
-  fetchData = (config?: FetchDataConfig) => {
+  fetchData = (config?: FetchDataConfig): Promise<void> => {
     config = config || this.lastFetchDataConfig
     this.lastFetchDataConfig = config
 
@@ -162,12 +188,22 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
       }
     })
 
-    this.fetchData({
+    this.fetchData$$.next({
       itemsPerPage: pagination && pagination.pageSize || ITEMS_PER_PAGE,
       pageNum: pagination && pagination.current || 1,
       filters: filters,
       sortField: sorter && sorter.field,
       sortOrder: sorter && sorter.order,
+      searchText: this.state.searchText,
+    })
+  }
+
+  handleSearchTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const searchText = e.currentTarget.value
+    this.setState({ searchText })
+    this.fetchData$$.next({
+      ...this.lastFetchDataConfig,
+      searchText,
     })
   }
 
@@ -228,17 +264,17 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
             ? this.state.rowSelection.selectedRowKeys as number[]
             : undefined
           deleteWords(area, keys)
-            .then(() => this.fetchData())
+            .then(() => this.fetchData$$.next())
         },
       })
     }
   }
 
   componentDidMount () {
-    this.fetchData()
+    this.fetchData$$.next()
 
     message.addListener(MsgType.WordSaved, () => {
-      this.fetchData()
+      this.fetchData$$.next()
     })
 
     // From popup page
@@ -310,6 +346,7 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
     } = this.props
 
     const {
+      searchText,
       words,
       selectedRows,
       pagination,
@@ -325,6 +362,12 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
           <Header className='wordpage-Header'>
             <h1 style={{ color: '#fff' }}>{t(`title_${area}`)}</h1>
             <div style={{ marginLeft: 'auto' }}>
+              <Input
+                style={{ width: '15em' }}
+                placeholder='Search'
+                onChange={this.handleSearchTextChange}
+                value={searchText}
+              />
               <Dropdown overlay={
                 <Menu onClick={this.handleBtnExportClick}>
                   <Menu.Item key='all'>{t('export_all')}</Menu.Item>
