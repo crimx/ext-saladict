@@ -1,43 +1,35 @@
-import fetchDom from 'src/helpers/fetch-dom'
+import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
+import { handleNoResult } from '../helpers'
+import { AppConfig } from '@/app-config'
+import { DictSearchResult } from '@/typings/server'
 
-/**
- * Search text and give back result
- * @param {string} text - Search text
- * @param {object} config - app config
- * @param {object} helpers - helper functions
- * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
- */
-export default function search (text, config) {
-  return fetchDom('https://www.vocabulary.com/dictionary/' + text)
+export interface VocabularyResult {
+  short: string
+  long: string
+}
+
+type VocabularySearchResult = DictSearchResult<VocabularyResult>
+
+export default function search (
+  text: string,
+  config: AppConfig,
+): Promise<VocabularySearchResult> {
+  return fetchDirtyDOM('https://www.vocabulary.com/dictionary/' + text)
     .then(handleDom)
 }
 
-/**
-* @typedef {Object} VocabularyResult
-* @property {string} short
-* @property {string} long
-*/
+function handleDom (doc: Document): VocabularySearchResult | Promise<VocabularySearchResult> {
+  const $short = doc.querySelector('.short')
+  if (!$short) { return handleNoResult() }
+  const short = $short.textContent
 
-/**
- * @async
- * @returns {Promise.<VocabularyResult>} A promise with the result to send back
- */
-function handleDom (doc) {
-  let result = {}
+  const $long = doc.querySelector('.long')
+  if (!$long) { return handleNoResult() }
+  const long = $long.textContent
 
-  let $short = doc.querySelector('.short')
-  if ($short) {
-    result.short = $short.innerText
+  if (short && long) {
+    return { result: { long, short } }
   }
 
-  let $long = doc.querySelector('.long')
-  if ($long) {
-    result.long = $long.innerText
-  }
-
-  if (Object.keys(result).length > 0) {
-    return result
-  } else {
-    return Promise.reject('no result')
-  }
+  return handleNoResult()
 }
