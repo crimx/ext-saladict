@@ -42,6 +42,7 @@
         "selection.js"
       ],
       "matches": ["<all_urls>"],
+      "match_about_blank": true,
       "all_frames": true
     }
   ],
