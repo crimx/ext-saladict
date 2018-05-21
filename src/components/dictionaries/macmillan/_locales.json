@@ -3,5 +3,12 @@
     "en": "Macmillan",
     "zh_CN": "麦克米伦",
     "zh_TW": "麥克米倫"
+  },
+  "options": {
+    "related": {
+      "en": "Show related results",
+      "zh_CN": "失败时显示备选",
+      "zh_TW": "失敗時顯示備選"
+    }
   }
 }

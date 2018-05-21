@@ -315,6 +315,9 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true
+      },
+      options: {
+        related: true,
       }
     },
     urban: {
