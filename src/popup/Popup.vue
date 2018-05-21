@@ -125,6 +125,11 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
 
+.frame-root {
+  // hide white spaces
+  font-size: 0;
+}
+
 .saladict-DictPanel {
   position: static;
   overflow: hidden;
