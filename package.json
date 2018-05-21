@@ -46,7 +46,6 @@
     "bootstrap-sass": "^3.3.7",
     "dexie": "^2.0.3",
     "dompurify": "^1.0.4",
-    "highcharts": "^6.0.4",
     "html2canvas": "^1.0.0-alpha.9",
     "i18next": "^11.2.2",
     "immer": "^1.2.1",

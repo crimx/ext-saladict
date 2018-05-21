@@ -206,13 +206,13 @@ export function appConfigFactory (): AppConfig {
       },
       en: {
         dict: '',
-        list: ['bing', 'dictcn', 'macmillan', 'urban'],
+        list: ['bing', 'macmillan', 'urban', 'eudic'],
         accent: 'uk' as ('us' | 'uk')
       }
     },
 
     dicts: {
-      selected: ['bing', 'urban', 'vocabulary', 'dictcn'],
+      selected: ['bing', 'urban', 'vocabulary'],
       // settings of each dict will be auto-generated
       all: getALlDicts()
     },
