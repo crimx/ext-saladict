@@ -2,10 +2,7 @@ import search, { BingResultLex, BingResultMachine, BingResultRelated } from '@/c
 import { appConfigFactory, AppConfigMutable } from '@/app-config'
 import fs from 'fs'
 import path from 'path'
-import JSDOM from 'jsdom'
 import { URL } from 'url'
-
-// return resolve(new JSDOM(response[searchText]).window.document)
 
 describe('Dict/Bing/engine', () => {
   beforeAll(() => {
