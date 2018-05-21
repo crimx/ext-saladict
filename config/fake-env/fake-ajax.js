@@ -106,6 +106,33 @@ const fakeFetchData = [
       text: () => require('raw-loader!../../test/specs/components/dictionaries/vocabulary/response/love.html')
     },
   },
+  {
+    test: {
+      method: /.*/,
+      url: /macmillandictionary\.com.*love$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/macmillan/response/love.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /macmillandictionary\.com.*love_2$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/macmillan/response/love_2.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /macmillandictionary\.com.*jumblish$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/macmillan/response/jumblish.html')
+    },
+  },
 ]
 
 /*-----------------------------------------------*\
