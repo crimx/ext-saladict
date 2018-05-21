@@ -21,7 +21,7 @@ interface EnvConfig {
   text?: string
 }
 
-export default function setupEnv ({ dict, style = true, text = 'salad' }) {
+export default function setupEnv ({ dict, style = true, text = 'salad' }: EnvConfig) {
   const search = require('../dictionaries/' + dict + '/engine').default
   const View = require('../dictionaries/' + dict + '/View').default
 
