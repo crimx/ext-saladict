@@ -94,6 +94,16 @@
     "zh_CN": "英文",
     "zh_TW": "英文"
   },
+  "filter-word-word": {
+    "en": "Word",
+    "zh_CN": "单词",
+    "zh_TW": "單字"
+  },
+  "filter-word-phrase": {
+    "en": "Phrase",
+    "zh_CN": "词组和句子",
+    "zh_TW": "片語和句子"
+  },
   "title_history": {
     "en": "Search History",
     "zh_CN": "查词记录",

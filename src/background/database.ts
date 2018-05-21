@@ -105,7 +105,9 @@ export async function getWords ({
     collection.filter(record => {
       const rText = shouldFilter
         ? (validLangs['en'] && isContainEnglish(record.text)) ||
-          (validLangs['ch'] && isContainChinese(record.text))
+          (validLangs['ch'] && isContainChinese(record.text)) ||
+          (validLangs['word'] && !/\s/.test(record.text)) ||
+          (validLangs['phra'] && /\s/.test(record.text))
         : true
 
       const rSearch = searchText

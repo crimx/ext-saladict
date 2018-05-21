@@ -119,6 +119,8 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
         filters: [
           { text: t('filter-word-chs'), value: 'ch' },
           { text: t('filter-word-eng'), value: 'en' },
+          { text: t('filter-word-word'), value: 'word' },
+          { text: t('filter-word-phrase'), value: 'phra' },
         ],
       },
       {
