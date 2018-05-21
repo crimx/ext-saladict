@@ -72,7 +72,7 @@ export function getALlDicts () {
         resultnum: 10
       }
     },
-    business: {
+    longman: {
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
