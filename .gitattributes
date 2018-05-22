@@ -1,2 +1,6 @@
 *.min.js binary
 /public/** binary
+
+# For Github language details
+/test/**/response/*.html linguist-vendored
+/public/** linguist-vendored
