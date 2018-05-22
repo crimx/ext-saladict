@@ -3,8 +3,6 @@ import { appConfigFactory, AppConfigMutable } from '@/app-config'
 import fs from 'fs'
 import path from 'path'
 
-// return resolve(new JSDOM(response[searchText]).window.document)
-
 describe('Dict/Macmillan/engine', () => {
   beforeAll(() => {
     const response = {
@@ -25,15 +23,7 @@ describe('Dict/Macmillan/engine', () => {
   })
 
   it('should parse lex result correctly', () => {
-    const config = appConfigFactory() as AppConfigMutable
-    config.dicts.all.bing.options = {
-      tense: true,
-      phsym: true,
-      cdef: true,
-      related: true,
-      sentence: 4
-    }
-    return search('love', config)
+    return search('love', appConfigFactory())
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
 

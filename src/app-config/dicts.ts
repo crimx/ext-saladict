@@ -99,6 +99,15 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true
+      },
+      options: {
+        wordfams: false,
+        collocations: true,
+        grammar: true,
+        thesaurus: true,
+        examples: true,
+        bussinessFirst: true,
+        related: true,
       }
     },
     cobuild: {

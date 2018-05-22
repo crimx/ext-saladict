@@ -133,6 +133,33 @@ const fakeFetchData = [
       text: () => require('raw-loader!../../test/specs/components/dictionaries/macmillan/response/jumblish.html')
     },
   },
+  {
+    test: {
+      method: /.*/,
+      url: /ldoceonline\.com.*love$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/longman/response/love.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /ldoceonline\.com.*profit$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/longman/response/profit.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /ldoceonline\.com.*jumblish$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/longman/response/jumblish.html')
+    },
+  },
 ]
 
 /*-----------------------------------------------*\

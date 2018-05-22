@@ -1,0 +1,258 @@
+.dictLongman-Wordfams {
+  .asset_intro {
+    display: block;
+    font-weight: bold;
+  }
+
+  .pos {
+    color: #16a085;
+    font-weight: bold;
+
+    &::before {
+      content: '';
+      display: block;
+      border-left: 1px solid red;
+    }
+
+    &+* {
+      margin-left: 0.5em;
+    }
+  }
+}
+
+.dictLongman-DictTitle_Wrap {
+  position: relative;
+  text-align: center;
+  font-size: 14px;
+  margin-top: 1.3em;
+  margin-bottom: 0.5em;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    border-top: 1px solid #999;
+  }
+}
+
+.dictLongman-DictTitle {
+  position: relative;
+  z-index: 10;
+  padding: 0 8px;
+  font-weight: normal;
+  background: #fff;
+}
+
+.dictLongman-HeaderContainer {
+  display: flex;
+  align-items: center;
+}
+
+.dictLongman-Title,
+.dictLongman-Level {
+  margin-right: 0.6em;
+}
+
+.dictLongman-Title_HWD {
+  display: none;
+}
+
+.dictLongman-Title_HOMNUM {
+  font-size: 0.5em;
+  vertical-align: super;
+}
+
+.dictLongman-FREQ {
+  margin-right: 0.6em;
+  padding: 0 0.5em;
+  color: #f9690e;
+  vertical-align: middle;
+  border: 1px solid #f9690e;
+  border-radius: 3px;
+  user-select: none;
+}
+
+.dictLongman-Phsym {
+  margin: 0 0.5em;
+}
+
+.dictLongman-Sense {
+  position: relative;
+  padding-left: 1.4em;
+}
+
+.dictLongman-Entry {
+  .SubEntry,
+  .EXAMPLE,
+  .Sense,
+  .newline {
+    display: block;
+  }
+
+  .HWD,
+  .FIELD,
+  .FIELDXX {
+    display: none;
+  }
+
+  .HYPHENATION {
+    font-size: 160%;
+  }
+
+  .POS,
+  .sensenum,
+  .GRAM,
+  .EXPR,
+  .LEXUNIT,
+  .COLLOINEXA,
+  .HYPHENATION {
+    font-weight: bold;
+  }
+
+  .GEO {
+    font-weight: normal;
+  }
+
+  .COLLOINEXA,
+  .GEO {
+    font-style: italic;
+  }
+
+  .GRAM {
+    margin-right: 0.25em;
+    color: #16a085;
+  }
+
+  .GEO,
+  .GLOSS {
+    color: #999;
+  }
+
+  .sensenum {
+    position: absolute;
+    left: 0;
+    text-align: right;
+    width: 1em;
+  }
+
+  .Subsense {
+    display: block;
+    padding-left: 1.4em;
+    position: relative;
+  }
+
+  .EXAMPLE {
+    margin-bottom: 0.4em;
+    padding-left: 0.8em;
+    color: #555;
+
+    &::before {
+      content: '►';
+      user-select: none;
+    }
+  }
+
+  .SIGNPOST {
+    color: #fff;
+    background: #f9690e;
+    padding: 1px 0.4em;
+    border-radius: 3px;
+  }
+
+  a:link,
+  a:visited,
+  a:hover,
+  a:active {
+    text-decoration: none;
+    outline: none;
+    color: #f9690e;
+  }
+
+  .SubEntry {
+    color: #999;
+    margin-left: 0.8em;
+
+    &:last-child {
+      margin-bottom: 0.4em;
+    }
+
+    a:link,
+    a:visited,
+    a:hover,
+    a:active {
+      text-decoration: none;
+      outline: none;
+      color: #999;
+    }
+  }
+}
+
+.dictLongman-Box {
+  position: relative;
+  margin: 1.4em 0.8em 0.6em 0.4em;
+  padding: 0.8em 0.4em 0.4em;
+  border: 1px solid #333;
+  border-radius: 3px;
+
+  .heading {
+    position: absolute;
+    top: 0;
+    left: 0.8em;
+    transform: translateY(-50%);
+    padding: 0 0.4em;
+    font-size: 1.3em;
+    background: #fff;
+  }
+
+  .CROSS,
+  .dont_say,
+  .BADEXA {
+    padding: 0.16em 0.25em;
+    color: #fff;
+    background: #C0392B;
+  }
+
+  .CROSS {
+    padding-left: 0.4em;
+  }
+
+  .BADEXA {
+    padding-right: 0.4em;
+  }
+}
+
+.dictLongman-Examples_Title {
+  font-weight: normal;
+  font-size: 1.3em;
+}
+
+.dictLongman-Examples {
+  margin-bottom: 0.6em;
+
+  .title {
+    display: block;
+    font-weight: bold;
+    font-size: 1.1em;
+  }
+
+  .exa {
+    display: block;
+    position: relative;
+    margin-left: 0.8em;
+    padding-left: 0.8em;
+  }
+
+  .neutral {
+    position: absolute;
+    left: 0;
+  }
+}
+
+.dictLongman-Related {
+  a {
+    margin-left: 2em;
+    color: #16a085;
+  }
+}
