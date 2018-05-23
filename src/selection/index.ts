@@ -50,11 +50,17 @@ const tripleCtrlPressed$ = validCtrlPressed$$.pipe(
   filter(group => group.length >= 3),
 )
 
-window.addEventListener('mousedown', e => {
-  lastMousedownTarget = e.target
-}, { capture: true })
+merge(
+  fromEvent<MouseEvent>(window, 'mousedown', { capture: true }),
+  fromEvent<TouchEvent>(window, 'touchstart', { capture: true }),
+).subscribe(({ target }) => {
+  lastMousedownTarget = target
+})
 
-const validMouseup$$ = fromEvent<MouseEvent>(window, 'mouseup', { capture: true }).pipe(
+const validMouseup$$ = merge(
+  fromEvent<MouseEvent>(window, 'mouseup', { capture: true }),
+  fromEvent<TouchEvent>(window, 'touchend', { capture: true }).pipe(map(e => e.changedTouches[0])),
+).pipe(
   filter(({ target }) => {
     if (!config.active || window.name === 'saladict-frame') {
       return false

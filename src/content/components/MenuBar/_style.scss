@@ -51,6 +51,8 @@
   align-self: stretch;
   cursor: move;
   user-select: none;
+  // prevent scrolling
+  touch-action: none;
 }
 
 .panel-MenuBar_SearchBox {

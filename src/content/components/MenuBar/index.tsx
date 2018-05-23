@@ -9,7 +9,8 @@ const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
 export interface MenuBarDispatchers {
-  readonly handleDragStart: (e: React.MouseEvent<HTMLDivElement>) => any
+  readonly handleDragAreaMouseDown: (e: React.MouseEvent<HTMLDivElement>) => any
+  readonly handleDragAreaTouchStart: (e: React.TouchEvent<HTMLDivElement>) => any
   readonly searchText: (arg: { info: SelectionInfo }) => any
   readonly openWordEditor: () => any
   readonly shareImg: () => any
@@ -191,7 +192,8 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
       t,
       isFav,
       isPinned,
-      handleDragStart,
+      handleDragAreaMouseDown,
+      handleDragAreaTouchStart,
       searchHistory,
     } = this.props
 
@@ -246,7 +248,10 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
           </svg>
         </button>
 
-        <div className='panel-MenuBar_DragArea' onMouseDown={handleDragStart} />
+        <div className='panel-MenuBar_DragArea'
+          onMouseDown={handleDragAreaMouseDown}
+          onTouchStart={handleDragAreaTouchStart}
+        />
 
         <button className='panel-MenuBar_Btn'
           onClick={this.handleIconSettingsClick}
