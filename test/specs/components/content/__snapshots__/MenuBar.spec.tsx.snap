@@ -72,7 +72,6 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
   </button>
   <div
     className="panel-MenuBar_DragArea"
-    onMouseDown={[Function]}
   />
   <button
     className="panel-MenuBar_Btn"
@@ -251,7 +250,6 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
   </button>
   <div
     className="panel-MenuBar_DragArea"
-    onMouseDown={[Function]}
   />
   <button
     className="panel-MenuBar_Btn"
