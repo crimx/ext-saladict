@@ -160,6 +160,33 @@ const fakeFetchData = [
       text: () => require('raw-loader!../../test/specs/components/dictionaries/longman/response/jumblish.html')
     },
   },
+  {
+    test: {
+      method: /.*/,
+      url: /youdao\.com.*jumblish$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/youdao/response/jumblish.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /youdao\.com.*love$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/youdao/response/love.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /youdao\.com.*translation$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/youdao/response/translation.html')
+    },
+  },
 ]
 
 /*-----------------------------------------------*\
