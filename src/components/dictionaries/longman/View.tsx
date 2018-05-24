@@ -51,7 +51,7 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
           <div className='dictLongman-Box' dangerouslySetInnerHTML={{ __html: entry.thesaurus }} />
         }
 
-        {entry.examples && (
+        {entry.examples && entry.examples.length > 0 && (
           <>
             <h2 className='dictLongman-Examples_Title'>Examples from the Corpus</h2>
             {entry.examples.map(exa => (
@@ -81,9 +81,9 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
 
         {dicts.map(dict => result[dict].length > 0
           ? (
-            <div>
-              <h1 className='dictLongman-DictTitle_Wrap'>
-                <span className='dictLongman-DictTitle'>{dictTitle[dict]}</span>
+            <div className='dictLongman-Dict'>
+              <h1 className='dictLongman-DictTitle'>
+                <span>- {dictTitle[dict]} -</span>
               </h1>
               {result[dict].map(this.renderEntry)}
             </div>

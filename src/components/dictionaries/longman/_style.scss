@@ -20,34 +20,27 @@
   }
 }
 
-.dictLongman-DictTitle_Wrap {
-  position: relative;
-  text-align: center;
-  font-size: 14px;
-  margin-top: 1.3em;
-  margin-bottom: 0.5em;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    width: 100%;
-    border-top: 1px solid #999;
-  }
+.dictLongman-Dict {
+  margin-bottom: 1.2em;
 }
 
 .dictLongman-DictTitle {
-  position: relative;
-  z-index: 10;
-  padding: 0 8px;
+  font-size: 14px;
   font-weight: normal;
-  background: #fff;
+  text-align: center;
+
+  > span {
+    padding: 5px 10px;
+    color: #fff;
+    background: #b8b8b8;
+    border-radius: 4px;
+  }
 }
 
 .dictLongman-HeaderContainer {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 }
 
 .dictLongman-Title,
