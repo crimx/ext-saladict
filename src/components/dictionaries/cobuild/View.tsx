@@ -21,7 +21,7 @@ export default class DictCOBUILD extends React.PureComponent<{ result: COBUILDRe
         }
         <div className='dictCOBUILD-Rate'>
           {result.star as number >= 0 &&
-            <StarRates rate={result.star} width={15} gutter={4} />
+            <StarRates rate={result.star} />
           }
           {result.level &&
             <span className='dictCOBUILD-Level'>{result.level}</span>
