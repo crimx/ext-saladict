@@ -244,12 +244,13 @@ function isTypeField (traget: EventTarget | null): boolean {
       return true
     }
 
-    if (traget['classList'] && traget['parentElement']) {
-      // Popular code editors CodeMirror and ACE
-      for (let el = traget as Element | null; el; el = el.parentElement) {
-        if (el.classList.contains('CodeMirror') || el.classList.contains('ace_editor')) {
-          return true
-        }
+    const editorTester = /CodeMirror|ace_editor/
+    // Popular code editors CodeMirror and ACE
+    for (let el = traget as Element | null; el; el = el.parentElement) {
+      // With CodeMirror the `pre.CodeMirror-line` somehow got detached when the event
+      // triggerd. So el will never reach the root `.CodeMirror`.
+      if (editorTester.test(el.className)) {
+        return true
       }
     }
   }
