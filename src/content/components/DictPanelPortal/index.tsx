@@ -101,7 +101,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   panelImmediateCtrl = (key: string) => {
     if (!this.props.isAnimation ||
         !this.props.shouldPanelShow ||
-        this.props.isPanelAppear
+        this.props.isPanelAppear ||
+        isSaladictPopupPage
     ) {
       return true
     }
