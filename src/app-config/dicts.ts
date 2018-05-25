@@ -231,7 +231,7 @@ export function getALlDicts () {
        * %s will be replaced with the current word.
        * %z will be replaced with the traditional Chinese version of the current word
        */
-      page: 'http://www.ldoceonline.com/search/?q=%s',
+      page: 'https://www.ldoceonline.com/dictionary/%s',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
