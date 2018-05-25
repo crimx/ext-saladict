@@ -137,13 +137,22 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     // use background script to open new page
     if (e.target['tagName'] === 'A') {
       e.preventDefault()
-      this.props.searchText({
-        info: getDefaultSelectionInfo({
-          text: e.target['textContent'] || '',
-          title: this.props.t('fromSaladict'),
-          favicon: 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
-        }),
-      })
+
+      const $a = e.target as HTMLAnchorElement
+      if ($a.dataset.target === 'external') {
+        message.send<MsgOpenUrl>({
+          type: MsgType.OpenURL,
+          url: $a.href,
+        })
+      } else {
+        this.props.searchText({
+          info: getDefaultSelectionInfo({
+            text: e.target['textContent'] || '',
+            title: this.props.t('fromSaladict'),
+            favicon: 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
+          }),
+        })
+      }
     }
   }
 

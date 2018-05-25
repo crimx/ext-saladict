@@ -29,7 +29,7 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
             ))}
             {entry.topic && (
               <>
-                Topic: <a href={entry.topic.href}>{entry.topic.title}</a>
+                Topic: <a href={entry.topic.href} data-target='external'>{entry.topic.title}</a>
               </>
             )}
           </div>
@@ -65,10 +65,10 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
 
   renderLex (result: LongmanResultLex) {
     type Dicts = ['bussiness', 'contemporary'] | ['contemporary', 'bussiness']
-    const dictTitle = {
-      contemporary: 'Longman Dictionary of Contemporary English',
-      bussiness: 'Longman Business Dictionary',
-    }
+    // const dictTitle = {
+    //   contemporary: 'Longman Dictionary of Contemporary English',
+    //   bussiness: 'Longman Business Dictionary',
+    // }
     const dicts: Dicts = result.bussinessFirst
       ? ['bussiness', 'contemporary']
       : ['contemporary', 'bussiness']
@@ -82,9 +82,9 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
         {dicts.map(dict => result[dict].length > 0
           ? (
             <div className='dictLongman-Dict'>
-              <h1 className='dictLongman-DictTitle'>
+              {/* <h1 className='dictLongman-DictTitle'>
                 <span>- {dictTitle[dict]} -</span>
-              </h1>
+              </h1> */}
               {result[dict].map(this.renderEntry)}
             </div>
           )
