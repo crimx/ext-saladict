@@ -167,7 +167,11 @@ export const reducer: DictsReducer = {
       dictionaries: {
         ...dictionaries,
         // don't create history for same info
-        searchHistory: info === history[0] ? history : [info, ...history].slice(0, 20),
+        searchHistory: info === history[0]
+          ? history
+          : isSameSelection(info, history[0])
+            ? [info, ...history.slice(1, 20)]
+            : [info, ...history].slice(0, 20),
         dicts,
       }
     }
@@ -306,7 +310,10 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
     dispatch(searchStart({ toStart, toOnhold, info }))
     toStart.forEach(doSearch)
 
-    if (!isSaladictInternalPage && state.config.searhHistory) {
+    if (!isSaladictInternalPage &&
+        state.config.searhHistory &&
+        !isSameSelection(state.config.searhHistory[0], info)
+    ) {
       saveWord('history', info)
     }
 
