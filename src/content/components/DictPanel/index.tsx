@@ -78,7 +78,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
 
     const {
       dicts: dictsInfo,
-      selected: selectedDicts,
+      active: activeDicts,
     } = dictionaries
 
     // wrap iframe into DictPanel so that react
@@ -105,7 +105,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
           closePanel,
         })}
         <div className={`panel-DictContainer${isAnimation ? ' isAnimate' : ''}`}>
-          {selectedDicts.map(id => React.createElement(DictItem, {
+          {activeDicts.map(id => React.createElement(DictItem, {
             key: id,
             id,
             text: (dictionaries.searchHistory[0] || selection.selectionInfo).text,

@@ -485,7 +485,7 @@ export function updateItemHeight (id: DictID, height: number): DispatcherThunk {
       const winHeight = window.innerHeight
       const newHeight = Math.min(
         winHeight * state.config.panelMaxHeightRatio,
-        30 + state.config.dicts.selected
+        30 + state.dictionaries.active
           .reduce((sum, id) => sum + (dictHeights[id] || 30), 0),
       )
 

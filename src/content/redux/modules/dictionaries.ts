@@ -36,6 +36,7 @@ interface DictionariesPayload {
   [ActionType.SEARCH_START]: {
     toOnhold: DictID[]
     toStart: DictID[]
+    toActive?: DictID[]
     info: SelectionInfo
   }
   [ActionType.SEARCH_END]: {
@@ -63,6 +64,7 @@ type DictState = {
 export type DictionariesState = {
   readonly dictionaries: {
     readonly selected: AppConfig['dicts']['selected']
+    readonly active: DictID[]
     readonly dicts: {
       readonly [k in DictID]?: DictState
     }
@@ -75,6 +77,7 @@ const initConfig = appConfigFactory()
 export const initState: DictionariesState = {
   dictionaries: {
     selected: initConfig.dicts.selected,
+    active: [],
     dicts: initConfig.dicts.selected
       .reduce((state, id) => {
         state[id] = {
@@ -109,6 +112,7 @@ export const reducer: DictsReducer = {
       dictionaries: {
         ...dictionaries,
         selected,
+        active: [],
         dicts: selected.reduce((newState, id) => {
           newState[id] = dictionaries.dicts[id] || {
             searchStatus: SearchStatus.OnHold,
@@ -138,7 +142,7 @@ export const reducer: DictsReducer = {
       }
     }
   },
-  [ActionType.SEARCH_START] (state, { toStart, toOnhold, info }) {
+  [ActionType.SEARCH_START] (state, { toStart, toOnhold, toActive, info }) {
     const { dictionaries } = state
     const history = dictionaries.searchHistory
 
@@ -166,6 +170,7 @@ export const reducer: DictsReducer = {
       ...state,
       dictionaries: {
         ...dictionaries,
+        active: toActive || dictionaries.active,
         // don't create history for same info
         searchHistory: info === history[0]
           ? history
@@ -295,19 +300,26 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
     const { selected: selectedDicts, all: allDicts } = state.config.dicts
     const toStart: DictID[] = []
     const toOnhold: DictID[] = []
+    const toActive: DictID[] = []
+
     selectedDicts.forEach(id => {
-      if (
-        !allDicts[id].defaultUnfold ||
+      const isInvalidLang = (
         (!allDicts[id].selectionLang.chs && isContainChinese(info.text)) ||
         (!allDicts[id].selectionLang.eng && isContainEnglish(info.text))
-      ) {
+      )
+
+      if (!isInvalidLang) {
+        toActive.push(id)
+      }
+
+      if (!allDicts[id].defaultUnfold || isInvalidLang) {
         toOnhold.push(id)
       } else {
         toStart.push(id)
       }
     })
 
-    dispatch(searchStart({ toStart, toOnhold, info }))
+    dispatch(searchStart({ toStart, toOnhold, toActive, info }))
     toStart.forEach(doSearch)
 
     if (!isSaladictInternalPage &&
