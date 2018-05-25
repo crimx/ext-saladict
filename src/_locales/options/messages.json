@@ -316,8 +316,18 @@
   },
   "reset": {
     "en": "Reset",
-    "zh_CN": "重置",
-    "zh_TW": "重置"
+    "zh_CN": "重置设定",
+    "zh_TW": "重置設定"
+  },
+  "import": {
+    "en": "Import",
+    "zh_CN": "导入设定",
+    "zh_TW": "匯入設定"
+  },
+  "export": {
+    "en": "Reset",
+    "zh_CN": "导出设定",
+    "zh_TW": "匯出設定"
   },
   "reset_modal_content": {
     "en": "Reset to default settings. Confirm？",

@@ -31,8 +31,13 @@
           </transition>
         </p>
         <p><a href="https://github.com/crimx/crx-saladict/issues" target="_blank" rel="noopener">{{ $t('opt:report_issue') }}</a></p>
-        <button type="button" class="btn btn-default btn-reset" @click="handleReset">{{ $t('opt:reset') }}</button>
       </div>
+    </div>
+    <div class="text-right">
+      <input type="file" id="config-import" class="btn-file" @change="handleImport">
+      <label class="btn btn-default btn-xs" for="config-import">{{ $t('opt:import') }}</label>
+      <button type="button" class="btn btn-default btn-xs" @click="handleExport">{{ $t('opt:export') }}</button>
+      <button type="button" class="btn btn-danger btn-xs" @click="handleReset">{{ $t('opt:reset') }}</button>
     </div>
     <opt-app-active />
     <opt-preference />
@@ -59,6 +64,7 @@
 <script>
 import {storage, message} from '@/_helpers/browser-api'
 import appConfigFactory from '@/app-config'
+import { mergeConfig } from '@/_helpers/merge-config'
 import Coffee from './Coffee'
 import SocialMedia from './SocialMedia'
 import AlertModal from '@/components/AlertModal'
@@ -108,6 +114,36 @@ export default {
           this.isShowAcknowledgement = false
         }, 400)
       }
+    },
+    handleImport (e) {
+      const fr = new FileReader()
+      fr.onload= () => {
+        try {
+          const content = JSON.parse(fr.result)
+          if (content.version) {
+            this.$store.config = mergeConfig(content, this.$store.config)
+          }
+        } catch (err) {
+          if (process.env.NODE_ENV !== 'production' || process.env.DEV_BUILD) {
+            console.warn(err)
+          }
+        }
+      }
+      fr.readAsText(e.currentTarget.files[0])
+    },
+    handleExport () {
+      browser.runtime.getPlatformInfo()
+        .then(({ os }) => {
+          let config = JSON.stringify(this.$store.config, null, '  ')
+          if (os === 'win') {
+            config = config.replace(/\r\n|\n/g, '\r\n')
+          }
+          const file = new Blob([config], { type: 'text/plain;charset=utf-8' })
+          const a = document.createElement('a')
+          a.href = URL.createObjectURL(file)
+          a.download = `config-${Date.now()}.saladict`
+          a.click()
+        })
     },
     handleReset () {
       this.$refs.alert.$emit('show', {
@@ -222,6 +258,33 @@ export default {
   margin: 10px 0;
 }
 
+.btn-file {
+  position: absolute;
+  z-index: -20000;
+  left: -100%;
+
+  &:active + label,
+  &:focus + label {
+    @include tab-focus;
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #8c8c8c;
+  }
+
+  &:hover + label {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+    text-decoration: none;
+  }
+
+  &:active + label {
+    outline: 0;
+    background-image: none;
+    @include box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
+  }
+}
+
 /*------------------------------------*\
    Base
 \*------------------------------------*/
@@ -283,6 +346,7 @@ kbd {
 .page-header {
   display: flex;
   justify-content: space-between;
+  margin: 0 0 8px 0;
 }
 
 .page-header-info {
@@ -302,7 +366,7 @@ kbd {
   position: absolute;
   z-index: 99999;
   top: 150%;
-  left: 0;
+  right: 0;
   width: 300px;
   padding: 20px 8px;
   background-color: #fff;
@@ -318,7 +382,7 @@ kbd {
   position: absolute;
   z-index: 99999;
   top: 150%;
-  left: 0;
+  right: 0;
 }
 
 .opt-item {
