@@ -16,7 +16,7 @@ describe('Initialization', () => {
 
     browser.flush()
     jest.resetModules()
-    jest.doMock('@/background/merge-config', () => {
+    jest.doMock('@/_helpers/merge-config', () => {
       return {
         mergeConfig (config) {
           mergeConfig(config)
@@ -90,8 +90,7 @@ describe('Initialization', () => {
         // expect(browser.storage.local.clear.calledOnce).toBeTruthy()
         expect(browser.storage.sync.clear.calledOnce).toBeTruthy()
         expect(openURL).toHaveBeenCalledTimes(1)
-        expect(mergeConfig).toHaveBeenCalledTimes(1)
-        expect(mergeConfig).toHaveBeenCalledWith(undefined)
+        expect(mergeConfig).toHaveBeenCalledTimes(0)
         expect(initMenus).toHaveBeenCalledTimes(1)
         expect(initPdf).toHaveBeenCalledTimes(1)
         expect(browser.storage.local.set.calledWithMatch({

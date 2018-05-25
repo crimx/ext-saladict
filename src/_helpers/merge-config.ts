@@ -1,48 +1,43 @@
 import { appConfigFactory, AppConfig } from '@/app-config'
 import _ from 'lodash'
 
-/**
- * @param {object} config - old config befroe extension update
- * @return {object} old config merged into default config
- */
-export function mergeConfig (config?): Promise<AppConfig> {
+export function mergeConfig (config?: AppConfig, base?: AppConfig): AppConfig {
   if (!config) {
-    return initConfig()
+    return appConfigFactory()
   }
 
   switch (config.version) {
-    case 6:
-      return browser.storage.sync.set({ config })
-        .then(() => config)
-    default: return mergeHistorical(config)
+    case 6: return config
+    default: return mergeHistorical(config, base)
   }
 }
 
 export default mergeConfig
 
-function initConfig (): Promise<AppConfig> {
-  const storageObj = { config: appConfigFactory() }
+function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig {
+  const base = baseConfig ? JSON.parse(JSON.stringify(baseConfig)) : appConfigFactory()
 
-  return browser.storage.sync.set(storageObj)
-    .then(() => storageObj.config)
-}
+  mergeBoolean('active')
+  mergeBoolean('noTypeField')
+  mergeBoolean('animation')
 
-function mergeHistorical (config): Promise<AppConfig> {
-  const base = appConfigFactory()
+  merge('langCode', val => /^(zh-CN|zh-TW|en)$/.test(val))
 
-  ;[
-    'active',
-    'pdfSniff',
-    'searhHistory',
-    'newWordSound',
-    'mode.icon',
-    'mode.direct',
-    'mode.double',
-    'mode.ctrl',
-    'pinMode.direct',
-    'pinMode.double',
-    'pinMode.ctrl',
-  ].forEach(mergeBoolean)
+  mergeNumber('panelWidth')
+  mergeNumber('panelMaxHeightRatio')
+  mergeNumber('fontSize')
+  mergeBoolean('pdfSniff')
+  mergeBoolean('searhHistory')
+  mergeBoolean('newWordSound')
+
+  mergeBoolean('mode.icon')
+  mergeBoolean('mode.direct')
+  mergeBoolean('mode.double')
+  mergeBoolean('mode.ctrl')
+
+  mergeBoolean('pinMode.direct')
+  mergeBoolean('pinMode.double')
+  mergeBoolean('pinMode.ctrl')
 
   mergeNumber('doubleClickDelay')
 
@@ -80,8 +75,7 @@ function mergeHistorical (config): Promise<AppConfig> {
     }
   })
 
-  return browser.storage.sync.set({ config: base })
-    .then(() => base)
+  return base
 
   function mergeSelectedDicts (path: string): void {
     const selected = _.get(config, [path, 'selected'])

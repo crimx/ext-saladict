@@ -1,21 +1,10 @@
 import { appConfigFactory, AppConfig, AppConfigMutable } from '@/app-config'
-import mergeConfig from '@/background/merge-config'
+import mergeConfig from '@/_helpers/merge-config'
 import sinon from 'sinon'
 
 describe('Merge Config', () => {
-  beforeEach(() => {
-    browser.flush()
-    browser.storage.sync.set.callsFake(() => Promise.resolve())
-  })
-  afterAll(() => {
-    browser.flush()
-  })
-
   it('should init config when there is no previous config', () => {
-    return mergeConfig()
-      .then(config => {
-        expect(config).toEqual(appConfigFactory())
-      })
+    expect(mergeConfig(undefined)).toEqual(appConfigFactory())
   })
   it('should merge config version < 6', () => {
     const oldConfig = appConfigFactory() as AppConfigMutable
@@ -25,24 +14,21 @@ describe('Merge Config', () => {
     oldConfig.dicts.all.bing.defaultUnfold = !oldConfig.dicts.all.bing.defaultUnfold
     oldConfig.dicts.all.bing.preferredHeight = 1000
 
-    return mergeConfig(oldConfig)
-      .then(config => {
-        const defaultStorageObj = { config: appConfigFactory() }
-        const expectStorageObj = { config: appConfigFactory() as AppConfigMutable }
-        expectStorageObj.config.dicts.selected = ['bing']
-        expectStorageObj.config.dicts.all.bing.defaultUnfold = !expectStorageObj.config.dicts.all.bing.defaultUnfold
-        expectStorageObj.config.dicts.all.bing.preferredHeight = 1000
-        expect(config).toEqual(expectStorageObj.config)
-      })
+    const config = mergeConfig(oldConfig)
+
+    const defaultStorageObj = { config: appConfigFactory() }
+    const expectStorageObj = { config: appConfigFactory() as AppConfigMutable }
+    expectStorageObj.config.dicts.selected = ['bing']
+    expectStorageObj.config.dicts.all.bing.defaultUnfold = !expectStorageObj.config.dicts.all.bing.defaultUnfold
+    expectStorageObj.config.dicts.all.bing.preferredHeight = 1000
+
   })
   it('should only update config for version 6', () => {
     const userConfig = appConfigFactory()
 
-    return mergeConfig(userConfig)
-      .then(config => {
-        const expectStorageObj = { config: userConfig }
-        expect(config).toEqual(userConfig)
-        expect(browser.storage.sync.set.calledWithMatch(expectStorageObj)).toBeTruthy()
-      })
+    const config = mergeConfig(userConfig)
+
+    const expectStorageObj = { config: userConfig }
+    expect(config).toEqual(userConfig)
   })
 })

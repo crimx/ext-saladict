@@ -1,7 +1,7 @@
 import { storage, openURL } from '@/_helpers/browser-api'
 import checkUpdate from '@/_helpers/check-update'
-import { AppConfig } from '@/app-config'
-import { mergeConfig } from './merge-config'
+import { mergeConfig } from '@/_helpers/merge-config'
+import appConfigFactory, { AppConfig } from '@/app-config'
 import { init as initMenus } from './context-menus'
 import { init as initPdf } from './pdf-sniffer'
 
@@ -13,14 +13,16 @@ if (browser.notifications.onButtonClicked) {
   browser.notifications.onButtonClicked.addListener(genClickListener('https://github.com/crimx/crx-saladict/releases'))
 }
 
-function onInstalled ({ reason, previousVersion }: { reason: string, previousVersion?: string }): void {
+function onInstalled ({ reason, previousVersion }: { reason: string, previousVersion?: string }) {
   // merge config on installed
-  storage.sync.get('config')
+  return storage.sync.get('config')
     .then(({ config }: { config: AppConfig }) => {
       if (!process.env.DEV_BUILD) {
         if (config && config.dicts) {
           // got previous config
-          return mergeConfig(config)
+          const base = mergeConfig(config)
+          return browser.storage.sync.set({ config: base })
+            .then(() => base)
         }
       }
       return storage.sync.clear() // local get cleared by database
@@ -28,7 +30,7 @@ function onInstalled ({ reason, previousVersion }: { reason: string, previousVer
           if (!process.env.DEV_BUILD) {
             openURL('https://github.com/crimx/crx-saladict/wiki/Instructions')
           }
-          return mergeConfig()
+          return appConfigFactory()
         })
     })
     .then(config => {
@@ -51,6 +53,7 @@ function onStartup (): void {
     storage.sync.get<{ config: AppConfig }>('config'),
   ])
   .then(([{ lastCheckUpdate }, { config }]) => {
+    if (!config) { return }
     initMenus(config.contextMenus)
     initPdf(config.pdfSniff)
     const today = Date.now()
