@@ -377,14 +377,14 @@ export function startUpAction (): DispatcherThunk {
     listenTempDisable(dispatch, getState)
 
     if (!isSaladictOptionsPage && !isSaladictPopupPage) {
-      createAppConfigStream().subscribe(config => {
-        dispatch(newConfig(config))
-      })
-
       message.self.addListener(MsgType.TripleCtrl, () => {
         dispatch(tripleCtrlPressed())
       })
     }
+
+    createAppConfigStream().subscribe(config => {
+      dispatch(newConfig(config))
+    })
 
     // close panel and word editor on esc
     message.self.addListener(MsgType.EscapeKey, () => {
