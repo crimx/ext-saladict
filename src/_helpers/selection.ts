@@ -121,7 +121,7 @@ export function getDefaultSelectionInfo (extra: Partial<SelectionInfo> = {}): Se
 }
 
 export function isSameSelection (a: SelectionInfo, b: SelectionInfo) {
-  return a.text === b.text && a.context === b.context
+  return a && b && a.text === b.text && a.context === b.context
 }
 
 export function getSelectionInfo (): SelectionInfo {
