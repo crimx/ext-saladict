@@ -155,7 +155,7 @@ export function appConfigFactory (): AppConfig {
 
     langCode,
 
-    panelWidth: 400,
+    panelWidth: 430,
 
     panelMaxHeightRatio: 0.8,
 
@@ -206,7 +206,7 @@ export function appConfigFactory (): AppConfig {
       },
       en: {
         dict: '',
-        list: ['bing', 'macmillan', 'urban', 'eudic'],
+        list: ['bing', 'youdao', 'macmillan', 'longman', 'cobuild', 'urban', 'eudic'],
         accent: 'uk' as ('us' | 'uk')
       }
     },
