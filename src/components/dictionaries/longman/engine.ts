@@ -123,7 +123,7 @@ function handleDOMLex (
     if ($topic) {
       entry.topic = {
         title: $topic.textContent || '',
-        href: $topic.href.replace(/^\//, 'https://www.ldoceonline.com/'),
+        href: ($topic.getAttribute('href') || '').replace(/^\//, 'https://www.ldoceonline.com/'),
       }
     }
 
