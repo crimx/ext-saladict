@@ -187,6 +187,33 @@ const fakeFetchData = [
       text: () => require('raw-loader!../../test/specs/components/dictionaries/youdao/response/translation.html')
     },
   },
+  {
+    test: {
+      method: /.*/,
+      url: /learnersdictionary\.com.*house$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/learnersdict/response/house.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /learnersdictionary\.com.*door$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/learnersdict/response/door.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /learnersdictionary\.com.*jumblish$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/learnersdict/response/jumblish.html')
+    },
+  },
 ]
 
 /*-----------------------------------------------*\
