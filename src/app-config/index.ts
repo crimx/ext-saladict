@@ -155,11 +155,11 @@ export function appConfigFactory (): AppConfig {
 
     langCode,
 
-    panelWidth: 430,
+    panelWidth: 450,
 
     panelMaxHeightRatio: 0.8,
 
-    fontSize: 12,
+    fontSize: 13,
 
     pdfSniff: true,
 
