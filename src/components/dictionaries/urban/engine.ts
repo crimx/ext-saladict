@@ -1,16 +1,17 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import DOMPurify from 'dompurify'
-import { handleNoResult } from '../helpers'
+import { HTMLString, getText, getInnerHTMLThunk, handleNoResult } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
+
+const getInnerHTML = getInnerHTMLThunk('https://www.urbandictionary.com/')
 
 interface UrbanResultItem {
   /** keyword */
   title: string
   /** pronunciation */
   pron?: string
-  meaning?: string
-  example?: string
+  meaning?: HTMLString
+  example?: HTMLString
   gif?: {
     src: string
     attr: string
@@ -35,10 +36,10 @@ export default function search (
   const options = config.dicts.all.urban.options
 
   return fetchDirtyDOM('http://www.urbandictionary.com/define.php?term=' + text)
-    .then(doc => handleDom(doc, options))
+    .then(doc => handleDOM(doc, options))
 }
 
-function handleDom (
+function handleDOM (
   doc: Document,
   { resultnum }: { resultnum: number }
 ): UrbanSearchResult | Promise<UrbanSearchResult> {
@@ -56,14 +57,8 @@ function handleDom (
 
     let resultItem: UrbanResultItem = { title: '' }
 
-    let $title = $panel.querySelector('.word')
-    if ($title) {
-      resultItem.title = $title.textContent || ''
-    }
-
-    if (!resultItem.title) {
-      continue
-    }
+    resultItem.title = getText($panel, '.word')
+    if (!resultItem.title) { continue }
 
     let $pron = $panel.querySelector('.play-sound') as HTMLElement
     if ($pron && $pron.dataset.urls) {
@@ -76,20 +71,12 @@ function handleDom (
       } catch (error) {/* ignore */}
     }
 
-    let $meaning = $panel.querySelector('.meaning')
-    if ($meaning) {
-      resultItem.meaning = DOMPurify.sanitize($meaning.innerHTML)
-        .replace(/href="\//g, 'href="https://www.urbandictionary.com/')
-      if (/There aren't any definitions for/i.test(resultItem.meaning)) {
-        continue
-      }
+    resultItem.meaning = getInnerHTML($panel, '.meaning')
+    if (/There aren't any definitions for/i.test(resultItem.meaning)) {
+      continue
     }
 
-    let $example = $panel.querySelector('.example')
-    if ($example) {
-      resultItem.example = DOMPurify.sanitize($example.innerHTML)
-        .replace(/href="\//g, 'href="https://www.urbandictionary.com/')
-    }
+    resultItem.example = getInnerHTML($panel, '.example')
 
     let $gif = $panel.querySelector('.gif > img') as HTMLImageElement
     if ($gif) {
@@ -105,20 +92,9 @@ function handleDom (
       resultItem.tags = $tags.map($tag => ($tag.textContent || ' ').slice(1))
     }
 
-    let $contributor = $panel.querySelector('.contributor')
-    if ($contributor) {
-      resultItem.contributor = $contributor.textContent || ''
-    }
-
-    let $thumbsUp = $panel.querySelector('.thumbs .up .count')
-    if ($thumbsUp) {
-      resultItem.thumbsUp = $thumbsUp.textContent || ''
-    }
-
-    let $thumbsDown = $panel.querySelector('.thumbs .down .count')
-    if ($thumbsDown) {
-      resultItem.thumbsDown = $thumbsDown.textContent || ''
-    }
+    resultItem.contributor = getText($panel, '.contributor')
+    resultItem.thumbsUp = getText($panel, '.thumbs .up .count')
+    resultItem.thumbsDown = getText($panel, '.thumbs .down .count')
 
     result.push(resultItem)
   }

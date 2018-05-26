@@ -1,13 +1,14 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import DOMPurify from 'dompurify'
-import { handleNoResult } from '../helpers'
+import { getText, getInnerHTMLThunk, handleNoResult, HTMLString } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
+
+const getInnerHTML = getInnerHTMLThunk()
 
 type EtymonlineResultItem = {
   title: string
   href: string
-  def: string
+  def: HTMLString
 }
 
 export type EtymonlineResult = EtymonlineResultItem[]
@@ -22,13 +23,13 @@ export default function search (
 
   // http to bypass the referer checking
   return fetchDirtyDOM('http://www.etymonline.com/search?q=' + text)
-    .then(doc => handleDom(doc, options))
+    .then(doc => handleDOM(doc, options))
     .catch(() => fetchDirtyDOM('https://www.etymonline.com/search?q=' + text)
-      .then(doc => handleDom(doc, options))
+      .then(doc => handleDOM(doc, options))
     )
 }
 
-function handleDom (
+function handleDOM (
   doc: Document,
   { resultnum }: { resultnum: number },
 ): EtymonlineSearchResult | Promise<EtymonlineSearchResult> {
@@ -44,11 +45,7 @@ function handleDom (
     }
     if (!href) { continue }
 
-    let title = ''
-    const $title = $item.querySelector('[class^="word__name--"]')
-    if ($title) {
-      title = ($title.textContent || '').trim()
-    }
+    const title = getText($item, '[class^="word__name--"]')
     if (!title) { continue }
 
     let def = ''
@@ -58,7 +55,7 @@ function handleDom (
         let word = ($cf.textContent || '').trim()
         $cf.outerHTML = `<a href="https://www.etymonline.com/word/${word}" target="_blank">${word}</a>`
       })
-      def = DOMPurify.sanitize($def.innerHTML)
+      def = getInnerHTML($def)
     }
     if (!def) { continue }
 

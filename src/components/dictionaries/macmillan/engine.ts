@@ -1,13 +1,14 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { reflect } from '@/_helpers/promise-more'
-import DOMPurify from 'dompurify'
-import { handleNoResult } from '../helpers'
+import { HTMLString, getInnerHTMLThunk, handleNoResult } from '../helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
+const getInnerHTML = getInnerHTMLThunk('http://www.macmillandictionary.com/')
+
 interface MacmillanResultItem {
   title: string
-  senses: string
+  senses: HTMLString
   /** part of speech */
   pos: string
   /** syntax coding */
@@ -24,7 +25,7 @@ export interface MacmillanResultLex {
 
 export interface MacmillanResultRelated {
   type: 'related'
-  list: string
+  list: HTMLString
 }
 
 export type MacmillanResult = MacmillanResultLex | MacmillanResultRelated
@@ -55,7 +56,7 @@ function checkResult (
       return {
         result: {
           type: 'related',
-          list: DOMPurify.sanitize($alternative.innerHTML)
+          list: getInnerHTML($alternative)
         }
       }
     }
@@ -83,7 +84,7 @@ function getAllResults (doc: Document): Document[] | Promise<Document[]> {
 function handleAllDom (
   docs: Document[]
 ): MacmillanSearchResult | Promise<MacmillanSearchResult> {
-  let results = docs.map(handleDom)
+  let results = docs.map(handleDOM)
     .filter((result): result is MacmillanItemSearchResult => result as any as boolean)
   if (results.length > 0) {
     const resultWithAudio = results.find(({ audio }) => (audio && audio.uk) as any as boolean)
@@ -101,7 +102,7 @@ function handleAllDom (
 
 type MacmillanItemSearchResult = DictSearchResult<MacmillanResultItem>
 
-function handleDom (
+function handleDOM (
   doc: Document
 ): null | MacmillanItemSearchResult | Promise<MacmillanItemSearchResult> {
   const result: MacmillanResultItem = {
@@ -147,7 +148,7 @@ function handleDom (
 
   const $senses = doc.querySelector('.senses')
   if ($senses && $senses.querySelectorAll('.SENSE').length > 0) {
-    result.senses = DOMPurify.sanitize($senses.innerHTML)
+    result.senses = getInnerHTML($senses)
   } else {
     return null
   }

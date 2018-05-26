@@ -1,6 +1,5 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import DOMPurify from 'dompurify'
-import { handleNoResult } from '../helpers'
+import { getText, handleNoResult } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -24,10 +23,10 @@ export default function search (
 
   return fetchDirtyDOM('https://dict.eudic.net/dicts/en/' + text)
     .then(validator)
-    .then(doc => handleDom(doc, options))
+    .then(doc => handleDOM(doc, options))
 }
 
-function handleDom (
+function handleDOM (
   doc: Document,
   { resultnum }: { resultnum: number },
 ): EudicSearchResult | Promise<EudicSearchResult> {
@@ -39,16 +38,13 @@ function handleDom (
     const $item = $items[i]
     const item: EudicResultItem = { chs: '', eng: '' }
 
-    const $chs = $item.querySelector('.exp')
-    if ($chs) { item.chs = $chs.textContent || '' }
+    item.chs = getText($item, '.exp')
     if (!item.chs) { continue }
 
-    const $eng = $item.querySelector('.line')
-    if ($eng) { item.eng = $eng.textContent || '' }
+    item.eng = getText($item, '.line')
     if (!item.eng) { continue }
 
-    const $channel = $item.querySelector('.channel_title')
-    if ($channel) { item.channel = $channel.textContent || '' }
+    item.channel = getText($item, '.channel_title')
 
     const audioID = $item.getAttribute('source')
     if (audioID) {

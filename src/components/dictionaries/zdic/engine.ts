@@ -1,8 +1,9 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import DOMPurify from 'dompurify'
-import { handleNoResult } from '../helpers'
+import { HTMLString, getInnerHTMLThunk, handleNoResult } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
+
+const getInnerHTML = getInnerHTMLThunk('http://www.zdic.net/')
 
 export interface ZdicResult {
   /** phonetic symbols */
@@ -13,7 +14,7 @@ export interface ZdicResult {
     pron: string
   }>
   /** html result */
-  defs: string
+  defs: HTMLString
 }
 
 type ZdicSearchResult = DictSearchResult<ZdicResult>
@@ -86,7 +87,7 @@ function handleWord (doc: Document): ZdicSearchResult | Promise<ZdicSearchResult
 
   return {
     result: {
-      defs: DOMPurify.sanitize($content.innerHTML),
+      defs: getInnerHTML($content),
       phsym,
     },
     audio: phsym.length > 0
@@ -129,7 +130,7 @@ function handlePhrase (doc: Document): ZdicSearchResult | Promise<ZdicSearchResu
 
   return {
     result: {
-      defs: DOMPurify.sanitize($cdnr.innerHTML),
+      defs: getInnerHTML($cdnr),
       phsym,
     },
     audio: phsym.length > 0

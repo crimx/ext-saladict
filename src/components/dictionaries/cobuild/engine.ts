@@ -1,12 +1,13 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import DOMPurify from 'dompurify'
-import { handleNoResult } from '../helpers'
+import { HTMLString, getText, getInnerHTMLThunk, handleNoResult } from '../helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
+const getInnerHTML = getInnerHTMLThunk()
+
 export interface COBUILDResult {
   title: string
-  defs: string[]
+  defs: HTMLString[]
   level?: string
   star?: number
   prons?: Array<{
@@ -22,29 +23,24 @@ export default function search (
   config: AppConfig
 ): Promise<COBUILDSearchResult> {
   return fetchDirtyDOM('https://www.iciba.com/' + text)
-    .then(doc => handleDom(doc, config.dicts.all.cobuild.options))
+    .then(doc => handleDOM(doc, config.dicts.all.cobuild.options))
     .catch(() => {
       return fetchDirtyDOM('http://www.iciba.com/' + text)
-        .then(doc => handleDom(doc, config.dicts.all.cobuild.options))
+        .then(doc => handleDOM(doc, config.dicts.all.cobuild.options))
     })
 }
 
-function handleDom (
+function handleDOM (
   doc: Document,
   options: DictConfigs['cobuild']['options']
 ): COBUILDSearchResult | Promise<COBUILDSearchResult> {
   const result: Partial<COBUILDResult> = {}
   const audio: { uk?: string, us?: string } = {}
 
-  let $title = doc.querySelector('.keyword')
-  if ($title && $title.textContent) {
-    result.title = $title.textContent.trim()
-  }
+  result.title = getText(doc, '.keyword')
+  if (!result.title) { return handleNoResult() }
 
-  let $level = doc.querySelector('.base-level')
-  if ($level && $level.textContent) {
-    result.level = $level.textContent.trim()
-  }
+  result.level = getText(doc, '.base-level')
 
   let $star = doc.querySelector('.word-rate [class^="star"]')
   if ($star) {
@@ -76,10 +72,10 @@ function handleDom (
   if ($article) {
     result.defs = Array.from($article.querySelectorAll('.prep-order'))
       .slice(0, options.sentence)
-      .map(d => DOMPurify.sanitize(d.innerHTML))
+      .map(d => getInnerHTML(d))
   }
 
-  if (result.title && result.defs && result.defs.length > 0) {
+  if (result.defs && result.defs.length > 0) {
     return { result, audio } as COBUILDSearchResult
   }
 

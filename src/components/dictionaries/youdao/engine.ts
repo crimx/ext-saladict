@@ -1,9 +1,10 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { reflect } from '@/_helpers/promise-more'
-import DOMPurify from 'dompurify'
-import { getText, handleNoResult } from '../helpers'
+import { getText, getInnerHTMLThunk, handleNoResult, HTMLString } from '../helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
+
+const getInnerHTML = getInnerHTMLThunk('http://www.youdao.com/')
 
 export interface YoudaoResultLex {
   type: 'lex'
@@ -15,16 +16,16 @@ export interface YoudaoResultLex {
     phsym: string
     url: string
   }>
-  basic?: string
-  collins?: string
-  discrimination?: string
-  sentence?: string
-  translation?: string
+  basic?: HTMLString
+  collins?: HTMLString
+  discrimination?: HTMLString
+  sentence?: HTMLString
+  translation?: HTMLString
 }
 
 export interface YoudaoResultRelated {
   type: 'related'
-  list: string
+  list: HTMLString
 }
 
 export type YoudaoResult = YoudaoResultLex | YoudaoResultRelated
@@ -119,11 +120,4 @@ function handleDOM (
     return { result, audio }
   }
   return handleNoResult()
-}
-
-function getInnerHTML (parent: ParentNode, selector?: string): string {
-  const child = selector ? parent.querySelector(selector) : parent
-  if (!child) { return '' }
-  return DOMPurify.sanitize(child['innerHTML'] || '')
-    .replace(/href="\//g, 'href="http://www.youdao.com/')
 }

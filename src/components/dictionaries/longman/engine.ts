@@ -1,9 +1,10 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { reflect } from '@/_helpers/promise-more'
-import DOMPurify from 'dompurify'
-import { getText, handleNoResult } from '../helpers'
+import { HTMLString, getText, getInnerHTMLThunk, handleNoResult } from '../helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
+
+const getInnerHTML = getInnerHTMLThunk('https://www.ldoceonline.com/')
 
 export interface LongmanResultEntry {
   title: {
@@ -11,7 +12,7 @@ export interface LongmanResultEntry {
     HYPHENATION: string
     HOMNUM: string
   }
-  senses: string[]
+  senses: HTMLString[]
   prons: Array<{
     lang: string
     pron: string
@@ -27,10 +28,10 @@ export interface LongmanResultEntry {
     rank: string
   }>
   pos?: string
-  collocations?: string
-  grammar?: string
-  thesaurus?: string
-  examples?: string[]
+  collocations?: HTMLString
+  grammar?: HTMLString
+  thesaurus?: HTMLString
+  examples?: HTMLString[]
 }
 
 export interface LongmanResultLex {
@@ -38,12 +39,12 @@ export interface LongmanResultLex {
   bussinessFirst: boolean
   contemporary: LongmanResultEntry[]
   bussiness: LongmanResultEntry[]
-  wordfams?: string
+  wordfams?: HTMLString
 }
 
 export interface LongmanResultRelated {
   type: 'related'
-  list: string
+  list: HTMLString
 }
 
 export type LongmanResult = LongmanResultLex | LongmanResultRelated
@@ -202,11 +203,4 @@ function handleDOMRelated (
     }
   }
   return handleNoResult()
-}
-
-function getInnerHTML (parent: ParentNode, selector?: string): string {
-  const child = selector ? parent.querySelector(selector) : parent
-  if (!child) { return '' }
-  return DOMPurify.sanitize(child['innerHTML'] || '')
-    .replace(/href="\//g, 'href="https://www.ldoceonline.com/')
 }

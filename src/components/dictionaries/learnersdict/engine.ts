@@ -27,7 +27,7 @@ export interface LearnersDictResultLex {
 
 export interface LearnersDictResultRelated {
   type: 'related'
-  list: string
+  list: HTMLString
 }
 
 export type LearnersDictResult = LearnersDictResultLex | LearnersDictResultRelated
