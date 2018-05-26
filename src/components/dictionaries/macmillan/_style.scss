@@ -1,9 +1,12 @@
-.dictMacmillan-Head {
+.dictMacmillan-Header {
   display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  line-height: 1;
   margin-bottom: 5px;
 }
 
-.dictMacmillan-Head_Info {
+.dictMacmillan-Header_Info {
   margin-left: 10px;
   color: #aaa;
 }
