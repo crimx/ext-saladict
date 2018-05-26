@@ -7,10 +7,12 @@ import { appConfigFactory, DictID } from '@/app-config'
 
 import '@/panel/panel.scss'
 
+const config = appConfigFactory()
+
 const root = document.getElementById('root') as HTMLDivElement
 document.body.style.justifyContent = 'center'
 document.body.style.margin = '0 auto'
-document.body.style.width = '450px'
+document.body.style.width = config.panelWidth + 'px'
 document.body.style.background = '#ccc'
 root.style.background = '#fff'
 root.style.overflowY = 'scroll'
@@ -42,7 +44,7 @@ export default function setupEnv ({ dict, style = true, text = 'salad' }: EnvCon
               </svg>
             </button>
           </header>
-          <div className='panel-DictItem_Body'>
+          <div className='panel-DictItem_Body' style={{ fontSize: config.fontSize }}>
             <article className='panel-DictItem_BodyMesure'>
               <View {...result} />
             </article>
