@@ -6,7 +6,7 @@ import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk('http://www.learnersdictionary.com/')
 
-interface LearnersDictResultItem {
+interface WebsterLearnerResultItem {
   title: HTMLString
   pron?: string
 
@@ -20,26 +20,26 @@ interface LearnersDictResultItem {
   arts?: string[]
 }
 
-export interface LearnersDictResultLex {
+export interface WebsterLearnerResultLex {
   type: 'lex'
-  items: LearnersDictResultItem[]
+  items: WebsterLearnerResultItem[]
 }
 
-export interface LearnersDictResultRelated {
+export interface WebsterLearnerResultRelated {
   type: 'related'
   list: HTMLString
 }
 
-export type LearnersDictResult = LearnersDictResultLex | LearnersDictResultRelated
+export type WebsterLearnerResult = WebsterLearnerResultLex | WebsterLearnerResultRelated
 
-type LearnersDictSearchResult = DictSearchResult<LearnersDictResult>
-type LearnersDictSearchResultLex = DictSearchResult<LearnersDictResultLex>
+type WebsterLearnerSearchResult = DictSearchResult<WebsterLearnerResult>
+type WebsterLearnerSearchResultLex = DictSearchResult<WebsterLearnerResultLex>
 
 export default function search (
   text: string,
   config: AppConfig,
-): Promise<LearnersDictSearchResult> {
-  const options = config.dicts.all.learnersdict.options
+): Promise<WebsterLearnerSearchResult> {
+  const options = config.dicts.all.websterlearner.options
 
   return fetchDirtyDOM('http://www.learnersdictionary.com/definition/' + text.replace(/[^A-Za-z0-9]+/g, '-'))
     .then(doc => checkResult(doc, options))
@@ -47,8 +47,8 @@ export default function search (
 
 function checkResult (
   doc: Document,
-  options: DictConfigs['learnersdict']['options'],
-): LearnersDictSearchResult | Promise<LearnersDictSearchResult> {
+  options: DictConfigs['websterlearner']['options'],
+): WebsterLearnerSearchResult | Promise<WebsterLearnerSearchResult> {
   const $alternative = doc.querySelector<HTMLAnchorElement>('[id^="spelling"] .links')
   if (!$alternative) {
     return handleDOM(doc, options)
@@ -65,18 +65,18 @@ function checkResult (
 
 function handleDOM (
   doc: Document,
-  options: DictConfigs['learnersdict']['options'],
-): LearnersDictSearchResultLex | Promise<LearnersDictSearchResultLex> {
+  options: DictConfigs['websterlearner']['options'],
+): WebsterLearnerSearchResultLex | Promise<WebsterLearnerSearchResultLex> {
   doc.querySelectorAll('.d_hidden').forEach(el => el.remove())
 
-  const result: LearnersDictResultLex = {
+  const result: WebsterLearnerResultLex = {
     type: 'lex',
     items: []
   }
   const audio: { us?: string } = {}
 
   doc.querySelectorAll('.entry').forEach($entry => {
-    const entry: LearnersDictResultItem = {
+    const entry: WebsterLearnerResultItem = {
       title: ''
     }
 

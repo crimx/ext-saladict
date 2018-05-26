@@ -193,7 +193,7 @@ const fakeFetchData = [
       url: /learnersdictionary\.com.*house$/,
     },
     response: {
-      text: () => require('raw-loader!../../test/specs/components/dictionaries/learnersdict/response/house.html')
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/websterlearner/response/house.html')
     },
   },
   {
@@ -202,7 +202,7 @@ const fakeFetchData = [
       url: /learnersdictionary\.com.*door$/,
     },
     response: {
-      text: () => require('raw-loader!../../test/specs/components/dictionaries/learnersdict/response/door.html')
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/websterlearner/response/door.html')
     },
   },
   {
@@ -211,7 +211,7 @@ const fakeFetchData = [
       url: /learnersdictionary\.com.*jumblish$/,
     },
     response: {
-      text: () => require('raw-loader!../../test/specs/components/dictionaries/learnersdict/response/jumblish.html')
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/websterlearner/response/jumblish.html')
     },
   },
 ]

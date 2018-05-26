@@ -196,7 +196,7 @@ export function getALlDicts () {
         chs: true
       }
     },
-    learnersdict: {
+    websterlearner: {
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.

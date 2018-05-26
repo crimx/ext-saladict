@@ -1,17 +1,17 @@
 import React from 'react'
 import Speaker from '@/components/Speaker'
-import { LearnersDictResult, LearnersDictResultLex, LearnersDictResultRelated } from './engine'
+import { WebsterLearnerResult, WebsterLearnerResultLex, WebsterLearnerResultRelated } from './engine'
 
-export default class DictLearnersDict extends React.PureComponent<{ result: LearnersDictResult }> {
-  renderLex (result: LearnersDictResultLex) {
+export default class DictWebsterLearner extends React.PureComponent<{ result: WebsterLearnerResult }> {
+  renderLex (result: WebsterLearnerResultLex) {
     return result.items.map(entry => (
-      <section key={entry.title} className='dictLearnersDict-Entry'>
-        <header className='dictLearnersDict-Header'>
+      <section key={entry.title} className='dictWebsterLearner-Entry'>
+        <header className='dictWebsterLearner-Header'>
           <span className='hw_d hw_0' dangerouslySetInnerHTML={{ __html: entry.title }} />
           <Speaker src={entry.pron} />
         </header>
         {entry.infs &&
-          <div className='dictLearnersDict-Header'>
+          <div className='dictWebsterLearner-Header'>
             <span className='hw_infs_d' dangerouslySetInnerHTML={{ __html: entry.infs }} />
             <Speaker src={entry.infsPron} />
           </div>
@@ -35,11 +35,11 @@ export default class DictLearnersDict extends React.PureComponent<{ result: Lear
     ))
   }
 
-  renderRelated (result: LearnersDictResultRelated) {
+  renderRelated (result: WebsterLearnerResultRelated) {
     return (
       <>
         <p>Did you mean:</p>
-        <ul className='dictLearnersDict-Related' dangerouslySetInnerHTML={{ __html: result.list }} />
+        <ul className='dictWebsterLearner-Related' dangerouslySetInnerHTML={{ __html: result.list }} />
       </>
     )
   }

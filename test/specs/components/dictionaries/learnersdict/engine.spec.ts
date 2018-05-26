@@ -1,9 +1,9 @@
-import search, { LearnersDictResultLex, LearnersDictResultRelated } from '@/components/dictionaries/learnersdict/engine'
+import search, { WebsterLearnerResultLex, WebsterLearnerResultRelated } from '@/components/dictionaries/websterlearner/engine'
 import { appConfigFactory, AppConfigMutable } from '@/app-config'
 import fs from 'fs'
 import path from 'path'
 
-describe('Dict/LearnersDict/engine', () => {
+describe('Dict/WebsterLearner/engine', () => {
   beforeAll(() => {
     const response = {
       house: fs.readFileSync(path.join(__dirname, 'response/house.html'), 'utf8'),
@@ -27,7 +27,7 @@ describe('Dict/LearnersDict/engine', () => {
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
 
-        const result = searchResult.result as LearnersDictResultLex
+        const result = searchResult.result as WebsterLearnerResultLex
         expect(result.type).toBe('lex')
         expect(result.items).toHaveLength(2)
 
@@ -87,7 +87,7 @@ describe('Dict/LearnersDict/engine', () => {
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 
-        const result = searchResult.result as LearnersDictResultRelated
+        const result = searchResult.result as WebsterLearnerResultRelated
         expect(result.type).toBe('related')
         expect(typeof result.list).toBe('string')
       })
