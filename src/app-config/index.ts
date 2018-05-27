@@ -3,7 +3,7 @@ import { getALlDicts } from './dicts'
 import { getAllContextMenus } from './context-menus'
 
 const langUI = (browser.i18n.getUILanguage() || 'en')
-const langCode = /^zh-CN|zh-TW|en$/.test(langUI)
+const langCode: any = /^zh-CN|zh-TW|en$/.test(langUI)
   ? langUI === 'zh-HK'
     ? 'zh-TW'
     : langUI
@@ -45,7 +45,7 @@ export interface AppConfigMutable {
   animation: boolean
 
   /** language code for locales */
-  langCode: string
+  langCode: 'en' | 'zh-CN' | 'zh-TW'
 
   /** panel width */
   panelWidth: number
@@ -208,14 +208,15 @@ export function appConfigFactory (): AppConfig {
         dict: '',
         list: [
           'bing',
-          'youdao',
-          'macmillan',
-          'longman',
+          'cambridge',
           'cobuild',
-          'websterlearner',
+          'eudic',
+          'longman',
+          'macmillan',
           'oald',
           'urban',
-          'eudic',
+          'websterlearner',
+          'youdao',
         ],
         accent: 'uk' as ('us' | 'uk')
       }

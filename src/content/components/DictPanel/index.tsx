@@ -17,6 +17,7 @@ export interface DictPanelProps extends DictPanelDispatchers {
   readonly isPinned: boolean
   readonly dictionaries: DictionariesState['dictionaries']
   readonly allDictsConfig: DictConfigs
+  readonly langCode: AppConfig['langCode']
   readonly fontSize: number
   readonly panelWidth: number
   readonly isAnimation: boolean
@@ -57,6 +58,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
     const {
       isFav,
       isPinned,
+      langCode,
       handleDragAreaMouseDown,
       handleDragAreaTouchStart,
       searchText,
@@ -105,20 +107,27 @@ export default class DictPanel extends React.Component<DictPanelProps> {
           closePanel,
         })}
         <div className={`panel-DictContainer${isAnimation ? ' isAnimate' : ''}`}>
-          {activeDicts.map(id => React.createElement(DictItem, {
-            key: id,
-            id,
-            text: (dictionaries.searchHistory[0] || selection.selectionInfo).text,
-            dictURL: allDictsConfig[id].page,
-            fontSize,
-            preferredHeight: allDictsConfig[id].preferredHeight,
-            panelWidth,
-            isAnimation,
-            searchStatus: (dictsInfo[id] as any).searchStatus,
-            searchResult: (dictsInfo[id] as any).searchResult,
-            searchText,
-            updateItemHeight,
-          }))}
+          {activeDicts.map(id => {
+            let dictURL = allDictsConfig[id].page
+            if (typeof dictURL !== 'string') {
+              dictURL = dictURL[langCode] || dictURL.en
+            }
+
+            return React.createElement(DictItem, {
+              key: id,
+              id,
+              text: (dictionaries.searchHistory[0] || selection.selectionInfo).text,
+              dictURL,
+              fontSize,
+              preferredHeight: allDictsConfig[id].preferredHeight,
+              panelWidth,
+              isAnimation,
+              searchStatus: (dictsInfo[id] as any).searchStatus,
+              searchResult: (dictsInfo[id] as any).searchResult,
+              searchText,
+              updateItemHeight,
+            })
+          })}
         </div>
       </PortalFrame>
     )

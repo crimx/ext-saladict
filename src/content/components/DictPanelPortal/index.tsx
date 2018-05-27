@@ -4,7 +4,7 @@ import { Spring } from 'react-spring'
 import DictPanel, { DictPanelDispatchers, DictPanelProps } from '../DictPanel'
 import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
-import { DictID, DictConfigs } from '@/app-config'
+import { AppConfig, DictID, DictConfigs } from '@/app-config'
 
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
@@ -19,6 +19,7 @@ export interface DictPanelPortalProps extends DictPanelPortalDispatchers {
   readonly isAnimation: boolean
   readonly allDictsConfig: DictConfigs
   readonly fontSize: number
+  readonly langCode: AppConfig['langCode']
 
   readonly isFav: boolean
   readonly isPinned: boolean
