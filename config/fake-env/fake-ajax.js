@@ -214,6 +214,33 @@ const fakeFetchData = [
       text: () => require('raw-loader!../../test/specs/components/dictionaries/websterlearner/response/jumblish.html')
     },
   },
+  {
+    test: {
+      method: /.*/,
+      url: /oxfordlearnersdictionaries\.com.*love$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/oald/response/love.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /oxfordlearnersdictionaries\.com.*love_2$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/oald/response/love_2.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /oxfordlearnersdictionaries\.com.*jumblish$/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/oald/response/jumblish.html')
+    },
+  },
 ]
 
 /*-----------------------------------------------*\

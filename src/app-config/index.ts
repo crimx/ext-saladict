@@ -206,7 +206,17 @@ export function appConfigFactory (): AppConfig {
       },
       en: {
         dict: '',
-        list: ['bing', 'youdao', 'macmillan', 'longman', 'cobuild', 'urban', 'eudic'],
+        list: [
+          'bing',
+          'youdao',
+          'macmillan',
+          'longman',
+          'cobuild',
+          'websterlearner',
+          'oald',
+          'urban',
+          'eudic',
+        ],
         accent: 'uk' as ('us' | 'uk')
       }
     },
