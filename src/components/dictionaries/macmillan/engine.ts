@@ -49,7 +49,7 @@ function checkResult (
   if (doc.querySelector('.senses .SENSE')) {
     return Promise.resolve(doc)
       .then(getAllResults)
-      .then(handleAllDom)
+      .then(handleAllDOMs)
   } else if (options.related) {
     const $alternative = doc.querySelector<HTMLAnchorElement>('#search-results ul')
     if ($alternative) {
@@ -81,11 +81,11 @@ function getAllResults (doc: Document): Document[] | Promise<Document[]> {
     .then(docs => [doc, ...docs.filter(d => d)])
 }
 
-function handleAllDom (
+function handleAllDOMs (
   docs: Document[]
 ): MacmillanSearchResult | Promise<MacmillanSearchResult> {
   let results = docs.map(handleDOM)
-    .filter((result): result is MacmillanItemSearchResult => result as any as boolean)
+    .filter((result): result is DictSearchResult<MacmillanResultItem> => result as any as boolean)
   if (results.length > 0) {
     const resultWithAudio = results.find(({ audio }) => (audio && audio.uk) as any as boolean)
     const audio = resultWithAudio ? resultWithAudio.audio : undefined
@@ -100,11 +100,9 @@ function handleAllDom (
   return handleNoResult()
 }
 
-type MacmillanItemSearchResult = DictSearchResult<MacmillanResultItem>
-
 function handleDOM (
   doc: Document
-): null | MacmillanItemSearchResult | Promise<MacmillanItemSearchResult> {
+): null | DictSearchResult<MacmillanResultItem> {
   const result: MacmillanResultItem = {
     title: '',
     senses: '',
