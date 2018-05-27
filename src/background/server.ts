@@ -66,6 +66,7 @@ function createTab (data: MsgOpenUrl): Promise<void> {
       ? data.url
         .replace(/%s/g, data.text)
         .replace(/%z/g, chsToChz(data.text))
+        .replace(/%h/g, data.text.trim().split(/\s+/).join('-'))
       : data.url,
     data.self
   )

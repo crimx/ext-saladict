@@ -7,6 +7,7 @@ export function getALlDicts () {
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
        * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-"..
        */
       page: 'https://cn.bing.com/dict/search?q=%s',
       /**
@@ -22,13 +23,10 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 240,
-      /**
-       * Only start searching if the selection contains the language.
-       * Better set default to true and let user decide.
-       */
+      /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true
+        chs: true,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -43,7 +41,8 @@ export function getALlDicts () {
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word
+       * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-".
        */
       page: 'https://www.collinsdictionary.com/dictionary/english/%s',
       /**
@@ -59,13 +58,10 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 300,
-      /**
-       * Only start searching if the selection contains the language.
-       * Better set default to true and let user decide.
-       */
+      /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true
+        chs: true,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -76,7 +72,8 @@ export function getALlDicts () {
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word
+       * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-".
        */
       page: 'http://www.etymonline.com/search?q=%s',
       /**
@@ -92,13 +89,10 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
-      /**
-       * Only start searching if the selection contains the language.
-       * Better set default to true and let user decide.
-       */
+      /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true
+        chs: true,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -110,6 +104,7 @@ export function getALlDicts () {
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
        * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-"..
        */
       page: 'https://dict.eudic.net/dicts/en/%s',
       /**
@@ -125,13 +120,10 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 240,
-      /**
-       * Only start searching if the selection contains the language.
-       * Better set default to true and let user decide.
-       */
+      /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true
+        chs: true,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -142,7 +134,8 @@ export function getALlDicts () {
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word
+       * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-".
        */
       page: 'https://translate.google.com/#auto/zh-CN/%s',
       /**
@@ -158,20 +151,18 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 110,
-      /**
-       * Only start searching if the selection contains the language.
-       * Better set default to true and let user decide.
-       */
+      /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true
+        chs: true,
       }
     },
     guoyu: {
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word
+       * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-".
        */
       page: 'https://www.moedict.tw/%z',
       /**
@@ -187,57 +178,18 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
-      /**
-       * Only start searching if the selection contains the language.
-       * Better set default to true and let user decide.
-       */
+      /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true
+        chs: true,
       }
-    },
-    websterlearner: {
-      /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word
-       */
-      page: 'http://www.learnersdictionary.com/definition/%s',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 265,
-      /**
-       * Only start searching if the selection contains the language.
-       * Better set default to true and let user decide.
-       */
-      selectionLang: {
-        eng: true,
-        chs: true
-      },
-      /** Optional dict custom options. Can only be boolean or number. */
-      options: {
-        defs: true,
-        phrase: true,
-        derived: true,
-        arts: true,
-        related: true,
-      },
     },
     liangan: {
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word
+       * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-".
        */
       page: 'https://www.moedict.tw/~%z',
       /**
@@ -253,22 +205,20 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
-      /**
-       * Only start searching if the selection contains the language.
-       * Better set default to true and let user decide.
-       */
+      /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true
+        chs: true,
       }
     },
     longman: {
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word
+       * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-".
        */
-      page: 'https://www.ldoceonline.com/dictionary/%s',
+      page: 'https://www.ldoceonline.com/dictionary/%h',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -282,13 +232,10 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
-      /**
-       * Only start searching if the selection contains the language.
-       * Better set default to true and let user decide.
-       */
+      /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true
+        chs: true,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -305,9 +252,10 @@ export function getALlDicts () {
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word
+       * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-".
        */
-      page: 'http://www.macmillandictionary.com/dictionary/british/%s',
+      page: 'http://www.macmillandictionary.com/dictionary/british/%h',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -321,13 +269,10 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
-      /**
-       * Only start searching if the selection contains the language.
-       * Better set default to true and let user decide.
-       */
+      /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true
+        chs: true,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -338,7 +283,8 @@ export function getALlDicts () {
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word
+       * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-".
        */
       page: 'http://www.urbandictionary.com/define.php?term=%s',
       /**
@@ -354,13 +300,10 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 180,
-      /**
-       * Only start searching if the selection contains the language.
-       * Better set default to true and let user decide.
-       */
+      /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true
+        chs: true,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -371,7 +314,8 @@ export function getALlDicts () {
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word
+       * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-".
        */
       page: 'https://www.vocabulary.com/dictionary/%s',
       /**
@@ -387,20 +331,53 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 180,
-      /**
-       * Only start searching if the selection contains the language.
-       * Better set default to true and let user decide.
-       */
+      /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true
+        chs: true,
       }
+    },
+    websterlearner: {
+      /**
+       * Full content page to jump to when user clicks the title.
+       * %s will be replaced with the current word.
+       * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-".
+       */
+      page: 'http://www.learnersdictionary.com/definition/%h',
+      /**
+       * If set to true, the dict start searching automatically.
+       * Otherwise it'll only start seaching when user clicks the unfold button.
+       * Default MUST be true and let user decide.
+       */
+      defaultUnfold: true,
+      /**
+       * This is the default height when the dict first renders the result.
+       * If the content height is greater than the preferred height,
+       * the preferred height is used and a mask with a view-more button is shown.
+       * Otherwise the content height is used.
+       */
+      preferredHeight: 265,
+      /** Only start searching if the selection contains the language. */
+      selectionLang: {
+        eng: true,
+        chs: true,
+      },
+      /** Optional dict custom options. Can only be boolean or number. */
+      options: {
+        defs: true,
+        phrase: true,
+        derived: true,
+        arts: true,
+        related: true,
+      },
     },
     youdao: {
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word
+       * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-".
        */
       page: 'http://www.youdao.com/w/eng/%s',
       /**
@@ -416,13 +393,10 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
-      /**
-       * Only start searching if the selection contains the language.
-       * Better set default to true and let user decide.
-       */
+      /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true
+        chs: true,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -438,7 +412,8 @@ export function getALlDicts () {
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word
+       * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-".
        */
       page: 'http://www.zdic.net/search/?c=1&q=%s',
       /**
@@ -454,13 +429,10 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 400,
-      /**
-       * Only start searching if the selection contains the language.
-       * Better set default to true and let user decide.
-       */
+      /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true
+        chs: true,
       }
     },
   }
