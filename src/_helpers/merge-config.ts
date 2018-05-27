@@ -6,10 +6,7 @@ export function mergeConfig (config?: AppConfig, base?: AppConfig): AppConfig {
     return appConfigFactory()
   }
 
-  switch (config.version) {
-    case 6: return config
-    default: return mergeHistorical(config, base)
-  }
+  return mergeHistorical(config, base)
 }
 
 export default mergeConfig
