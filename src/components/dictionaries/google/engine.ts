@@ -11,7 +11,7 @@ export default function search (
   text: string,
   config: AppConfig,
 ): Promise<GoogleSearchResult> {
-  const chCode = config.langCode === 'zh_TW' ? 'zh-TW' : 'zh-CN'
+  const chCode = config.langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN'
   let sl = 'auto'
   let tl = chCode
   if (isContainChinese(text)) {
