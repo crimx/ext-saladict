@@ -2,8 +2,6 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  line-height: 1;
-  margin-bottom: 0.5em;
 }
 
 .dictYoudao-Title {
@@ -20,10 +18,12 @@
 
 .dictYoudao-SecTitle {
   font-size: 1.2em;
+  margin-top: 1em;
+  border-bottom: 1px solid rgba(199, 110, 6, 0.5);
 }
 
 .dictYoudao-Basic {
-  margin-bottom: 0.5em;
+  margin: 0.5em 0;
 }
 
 .dictYoudao-Collins {

@@ -29,7 +29,7 @@ export default class DictYoudao extends React.PureComponent<{ result: YoudaoResu
         }
         {result.collins &&
           <div>
-            <h1 className='dictYoudao-SecTitle'>《柯林斯英汉双解》</h1>
+            <h1 className='dictYoudao-SecTitle'>柯林斯英汉双解</h1>
             <ul className='dictYoudao-Collins' dangerouslySetInnerHTML={{ __html: result.collins }} />
           </div>
         }
@@ -41,13 +41,13 @@ export default class DictYoudao extends React.PureComponent<{ result: YoudaoResu
         }
         {result.sentence &&
           <div>
-            <h1 className='dictYoudao-SecTitle'>- 权威例句 -</h1>
+            <h1 className='dictYoudao-SecTitle'>权威例句</h1>
             <ol className='dictYoudao-Sentence' dangerouslySetInnerHTML={{ __html: result.sentence }} />
           </div>
         }
         {result.translation &&
           <div>
-            <h1 className='dictYoudao-SecTitle'>- 机器翻译 -</h1>
+            <h1 className='dictYoudao-SecTitle'>机器翻译</h1>
             <div className='dictYoudao-Translation' dangerouslySetInnerHTML={{ __html: result.translation }} />
           </div>
         }
