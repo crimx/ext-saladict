@@ -39,3 +39,12 @@ export function getOuterHTMLThunk (host?: string) {
       : content
   }
 }
+
+export function removeChild (parent: ParentNode, selector: string) {
+  const child = parent.querySelector(selector)
+  if (child) { child.remove() }
+}
+
+export function removeChildren (parent: ParentNode, selector: string) {
+  parent.querySelectorAll(selector).forEach(el => el.remove())
+}
