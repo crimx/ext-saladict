@@ -7,6 +7,8 @@ import { appConfigFactory, DictID } from '@/app-config'
 
 import '@/panel/panel.scss'
 
+window['FAKE_AJAX_DELAY'] = 0
+
 const config = appConfigFactory()
 
 const root = document.getElementById('root') as HTMLDivElement

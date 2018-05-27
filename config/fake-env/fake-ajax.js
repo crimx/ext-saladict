@@ -258,8 +258,12 @@ window.fetch = (url, ...args) => {
       return Promise.reject(data.error)
     } else {
       // return Promise.resolve(data.response)
+      let delay = window['FAKE_AJAX_DELAY']
+      if (typeof delay === 'undefined') {
+        delay = 100 + Math.random() * 3000
+      }
       return new Promise(resolve => setTimeout(() =>
-        resolve(data.response), 100 + Math.random() * 3000)
+        resolve(data.response), delay)
       )
     }
   }
@@ -302,9 +306,13 @@ function FakeXMLHttpRequest (...args) {
 
             if (target.onload) {
               // target.onload()
+              let delay = window['FAKE_AJAX_DELAY']
+              if (typeof delay === 'undefined') {
+                delay = 100 + Math.random() * 3000
+              }
               setTimeout(() => {
                 target.onload()
-              }, 1000 + Math.random() * 3000);
+              }, delay);
             }
           } else {
             return target.send(...args)
