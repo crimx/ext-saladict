@@ -508,8 +508,7 @@ function listenNewSelection (
 
     const state = getState()
 
-    if (isSaladictOptionsPage ||
-        isSaladictPopupPage ||
+    if (isSaladictPopupPage ||
         !state.config.active ||
         state.widget.isTempDisabled
     ) {
@@ -594,7 +593,8 @@ function listenNewSelection (
         ) ||
         isSaladictOptionsPage
     ) {
-      if (dbClick) { // already double click
+      if (dbClick || isSaladictOptionsPage) {
+        // already double clicked
         dispatch(searchText({ info: selectionInfo }))
       } else {
         // debounce searching
