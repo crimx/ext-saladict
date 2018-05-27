@@ -37,6 +37,37 @@ export function getALlDicts () {
         sentence: 4
       }
     },
+    cambridge: {
+      /**
+       * Full content page to jump to when user clicks the title.
+       * %s will be replaced with the current word.
+       * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-"..
+       */
+      page: {
+        en: 'https://dictionary.cambridge.org/dictionary/english/%h',
+        'zh-CN': 'https://dictionary.cambridge.org/zhs/词典/英语-汉语-简体/%s',
+        'zh-TW': 'https://dictionary.cambridge.org/zht/詞典/英語-漢語-繁體/%z',
+      },
+      /**
+       * If set to true, the dict start searching automatically.
+       * Otherwise it'll only start seaching when user clicks the unfold button.
+       * Default MUST be true and let user decide.
+       */
+      defaultUnfold: true,
+      /**
+       * This is the default height when the dict first renders the result.
+       * If the content height is greater than the preferred height,
+       * the preferred height is used and a mask with a view-more button is shown.
+       * Otherwise the content height is used.
+       */
+      preferredHeight: 265,
+      /** Only start searching if the selection contains the language. */
+      selectionLang: {
+        eng: true,
+        chs: true,
+      },
+    },
     cobuild: {
       /**
        * Full content page to jump to when user clicks the title.
@@ -472,7 +503,11 @@ export function getALlDicts () {
   // tslint:disable-next-line:no-unused-expression
   allDicts as {
     [id: string]: {
-      page: string
+      page: string | {
+        en: string
+        'zh-CN'?: string
+        'zh-TW'?: string
+      }
       defaultUnfold: boolean
       preferredHeight: number
       selectionLang: {
