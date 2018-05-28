@@ -162,7 +162,7 @@ module.exports = {
                 options: {
                   appendTsSuffixTo: [/\.vue$/],
                   // transpileOnly: argv.devbuild,
-                  transpileOnly: !!argv.nots,
+                  transpileOnly: !!argv.notypecheck,
                 }
               }
             ],
