@@ -129,7 +129,14 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
   }
 
   showFull = e => {
-    this.setState(state => ({ visibleHeight: state.offsetHeight }))
+    // always recalculate, in case of img load delay
+    const update = this.calcBodyHeight(true)
+    if (update) {
+      update.visibleHeight = update.offsetHeight
+      this.setState(update as DictItemState)
+    } else {
+      this.setState(state => ({ visibleHeight: state.offsetHeight }))
+    }
     e.currentTarget.blur()
   }
 
@@ -185,7 +192,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     if (this.props.searchStatus === SearchStatus.Finished &&
         this.props.searchStatus !== prevProps.searchStatus) {
       const update = this.calcBodyHeight()
-      if (update) { this.setState(update as any) }
+      if (update) { this.setState(update as DictItemState) }
     }
 
     this.props.updateItemHeight(
