@@ -105,13 +105,13 @@
     "zh_TW": "片語和句子"
   },
   "title_history": {
-    "en": "Search History",
-    "zh_CN": "查词记录",
-    "zh_TW": "查單字紀錄"
+    "en": "Saladict Search History",
+    "zh_CN": "Saladict 查词记录",
+    "zh_TW": "Saladict 查單字紀錄"
   },
   "title_notebook": {
-    "en": "Word Notebook",
-    "zh_CN": "生词本",
-    "zh_TW": "生字本"
+    "en": "Saladict Notebook",
+    "zh_CN": "Saladict 生词本",
+    "zh_TW": "Saladict 生字本"
   }
 }
