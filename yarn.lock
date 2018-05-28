@@ -6139,6 +6139,10 @@ normalize-range@^0.1.2:
   version "0.1.2"
   resolved "http://registry.npm.taobao.org/normalize-range/download/normalize-range-0.1.2.tgz#2d10c06bdfd312ea9777695a4d28439456b75942"
 
+normalize-scss@^7.0.1:
+  version "7.0.1"
+  resolved "http://registry.npm.taobao.org/normalize-scss/download/normalize-scss-7.0.1.tgz#74485e82bb5d0526371136422a09fdb868ffc1a4"
+
 normalize-url@^1.4.0:
   version "1.9.1"
   resolved "http://registry.npm.taobao.org/normalize-url/download/normalize-url-1.9.1.tgz#2cc0d66b31ea23036458436e3620d85954c66c3c"
@@ -6147,10 +6151,6 @@ normalize-url@^1.4.0:
     prepend-http "^1.0.0"
     query-string "^4.1.0"
     sort-keys "^1.0.0"
-
-normalize.css@^8.0.0:
-  version "8.0.0"
-  resolved "http://registry.npm.taobao.org/normalize.css/download/normalize.css-8.0.0.tgz#14ac5e461612538a4ce9be90a7da23f86e718493"
 
 npm-bundled@^1.0.1:
   version "1.0.3"
