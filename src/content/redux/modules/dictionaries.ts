@@ -263,6 +263,10 @@ export function startUpAction (): DispatcherThunk {
     } else {
       listenTrpleCtrl(dispatch, getState)
     }
+
+    if (isSaladictOptionsPage) {
+      dispatch(searchText({ info: getDefaultSelectionInfo({ text: 'salad' }) }))
+    }
   }
 }
 
