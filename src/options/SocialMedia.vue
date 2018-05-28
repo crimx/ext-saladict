@@ -1,6 +1,6 @@
 <template>
   <ul class="social-media__body">
-    <li class="social-media__icon" v-for="media in socialMedia">
+    <li class="social-media__icon" v-for="media in socialMedia" :key="media.title">
       <a :href="media.url" :title="media.title" target="_blank" rel="noopener"></a>
       <svg>
         <use :xlink:href="'./static/symbol-defs.svg#' + media.icon" xmlns:xlink="http://www.w3.org/1999/xlink"></use>

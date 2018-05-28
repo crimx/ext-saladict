@@ -9,14 +9,14 @@
             <span class="select-label">{{ $t('opt:autopron_cn') }}</span>
             <select class="form-control" v-model="autopron.cn.dict">
               <option value="">{{ $t('opt:none') }}</option>
-              <option v-for="id in autopron.cn.list" :value="id">{{ $t('dict:' + id) }}</option>
+              <option v-for="id in autopron.cn.list" :value="id" :key="id">{{ $t('dict:' + id) }}</option>
             </select>
           </label>
           <label class="select-box">
             <span class="select-label">{{ $t('opt:autopron_en') }}</span>
             <select class="form-control" v-model="autopron.en.dict">
               <option value="">{{ $t('opt:none') }}</option>
-              <option v-for="id in autopron.en.list" :value="id">{{ $t('dict:' + id) }}</option>
+              <option v-for="id in autopron.en.list" :value="id" :key="id">{{ $t('dict:' + id) }}</option>
             </select>
           </label>
           <transition name="fade">

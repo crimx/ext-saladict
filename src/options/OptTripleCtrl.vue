@@ -19,7 +19,7 @@
         <label class="select-box">
           <span class="select-label">{{ $t('opt:triple_ctrl_loc_title') }}</span>
           <select class="form-control" v-model.number="tripleCtrlLocation">
-            <option v-for="n in 9" :value="n - 1">{{ $t(`opt:triple_ctrl_loc_${n-1}`) }}</option>
+            <option v-for="n in 9" :value="n - 1" :key="n">{{ $t(`opt:triple_ctrl_loc_${n-1}`) }}</option>
           </select>
         </label>
         <label class="checkbox-inline">
