@@ -37,7 +37,7 @@ const fakeFetchData = [
   {
     test: {
       method: /.*/,
-      url: /translate\.googleapis\.com/,
+      url: /google\w*\.(com|cn)/,
     },
     response: {
       text: () => require('raw-loader!../../test/specs/components/dictionaries/google/response/f.txt')

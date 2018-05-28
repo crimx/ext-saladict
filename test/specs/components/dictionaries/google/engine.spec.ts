@@ -3,14 +3,15 @@ import { appConfigFactory } from '@/app-config'
 import fs from 'fs'
 import path from 'path'
 
-const response = fs.readFileSync(path.join(__dirname, 'response/f.txt'), 'utf8')
+const homepage = fs.readFileSync(path.join(__dirname, 'response/homepage.html'), 'utf8')
+const translation = fs.readFileSync(path.join(__dirname, 'response/f.txt'), 'utf8')
 
 const fetchbak = window.fetch
 
 describe('Dict/Google/engine', () => {
   beforeAll(() => {
     window.fetch = jest.fn((url: string) => Promise.resolve({
-      text: () => response
+      text: () => url.includes('sl') ? translation : homepage
     }))
   })
 
