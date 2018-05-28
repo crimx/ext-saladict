@@ -56,7 +56,7 @@ export const db = new SaladictDB()
 export function isInNotebook ({ info }: MsgIsInNotebook) {
   return db.notebook
     .where('text')
-    .equals(info.text)
+    .equalsIgnoreCase(info.text)
     .count()
     .then(count => count > 0)
 }
@@ -77,7 +77,7 @@ export function deleteWords ({ area, dates }: MsgDeleteWords) {
 export function getWordsByText ({ area, text }: MsgGetWordsByText) {
   return db[area]
     .where('text')
-    .equals(text)
+    .equalsIgnoreCase(text)
     .toArray()
 }
 
