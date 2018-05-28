@@ -124,6 +124,21 @@
     "zh_CN": "查词面板最高占屏幕比例",
     "zh_TW": "查字典介面最高占螢幕高度比例"
   },
+  "dict_panel_lang_en": {
+    "en": "En",
+    "zh_CN": "英",
+    "zh_TW": "英"
+  },
+  "dict_panel_lang_zhs": {
+    "en": "Zhs",
+    "zh_CN": "简",
+    "zh_TW": "简"
+  },
+  "dict_panel_lang_zht": {
+    "en": "Zht",
+    "zh_CN": "繁",
+    "zh_TW": "繁"
+  },
   "dict_panel_title": {
     "en": "Dict Panel",
     "zh_CN": "查词面板",
@@ -163,6 +178,16 @@
     "en": "Dict Options",
     "zh_CN": "词典设置",
     "zh_TW": "字典設定"
+  },
+  "export": {
+    "en": "Reset",
+    "zh_CN": "导出设定",
+    "zh_TW": "匯出設定"
+  },
+  "import": {
+    "en": "Import",
+    "zh_CN": "导入设定",
+    "zh_TW": "匯入設定"
   },
   "instructions": {
     "en": "Instructions",
@@ -318,16 +343,6 @@
     "en": "Reset",
     "zh_CN": "重置设定",
     "zh_TW": "重置設定"
-  },
-  "import": {
-    "en": "Import",
-    "zh_CN": "导入设定",
-    "zh_TW": "匯入設定"
-  },
-  "export": {
-    "en": "Reset",
-    "zh_CN": "导出设定",
-    "zh_TW": "匯出設定"
   },
   "reset_modal_content": {
     "en": "Reset to default settings. Confirm？",

@@ -4,6 +4,11 @@ export function getALlDicts () {
   const allDicts = {
     bing: {
       /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '110',
+      /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
        * %z will be replaced with the traditional Chinese version of the current word.
@@ -39,6 +44,11 @@ export function getALlDicts () {
     },
     cambridge: {
       /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '111',
+      /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
        * %z will be replaced with the traditional Chinese version of the current word.
@@ -69,6 +79,11 @@ export function getALlDicts () {
       },
     },
     cobuild: {
+      /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '100',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -101,6 +116,11 @@ export function getALlDicts () {
     },
     etymonline: {
       /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '100',
+      /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
        * %z will be replaced with the traditional Chinese version of the current word.
@@ -131,6 +151,11 @@ export function getALlDicts () {
       }
     },
     eudic: {
+      /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '110',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -163,6 +188,11 @@ export function getALlDicts () {
     },
     google: {
       /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '111',
+      /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
        * %z will be replaced with the traditional Chinese version of the current word.
@@ -189,6 +219,11 @@ export function getALlDicts () {
       }
     },
     guoyu: {
+      /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '001',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -217,6 +252,11 @@ export function getALlDicts () {
     },
     liangan: {
       /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '001',
+      /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
        * %z will be replaced with the traditional Chinese version of the current word.
@@ -243,6 +283,11 @@ export function getALlDicts () {
       }
     },
     longman: {
+      /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '100',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -281,6 +326,11 @@ export function getALlDicts () {
     },
     macmillan: {
       /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '100',
+      /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
        * %z will be replaced with the traditional Chinese version of the current word.
@@ -311,6 +361,11 @@ export function getALlDicts () {
       }
     },
     oald: {
+      /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '100',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -343,6 +398,11 @@ export function getALlDicts () {
     },
     urban: {
       /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '100',
+      /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
        * %z will be replaced with the traditional Chinese version of the current word.
@@ -374,6 +434,11 @@ export function getALlDicts () {
     },
     vocabulary: {
       /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '100',
+      /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
        * %z will be replaced with the traditional Chinese version of the current word.
@@ -400,6 +465,11 @@ export function getALlDicts () {
       }
     },
     websterlearner: {
+      /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '100',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -436,6 +506,11 @@ export function getALlDicts () {
     },
     youdao: {
       /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '110',
+      /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
        * %z will be replaced with the traditional Chinese version of the current word.
@@ -471,6 +546,11 @@ export function getALlDicts () {
       }
     },
     zdic: {
+      /**
+       * Supported language: en, zh-CN, zh-TW
+       * `1` for supported
+       */
+      lang: '010',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.

@@ -466,8 +466,11 @@ kbd {
   cursor: move;
 }
 
-.panel-list__header {
-  cursor: move;
+.panel-list__title-lang {
+  margin-left: 5px;
+  padding: 0 2px;
+  border: 1px solid #333;
+  border-radius: 2px;
 }
 
 .panel-list__icon {

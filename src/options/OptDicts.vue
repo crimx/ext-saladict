@@ -26,6 +26,9 @@
                         <div class="panel-list__header" @click="handleAddDict(id)">
                           <img class="panel-list__icon" :src="dictsPanelInfo[id].favicon">
                           <strong class="panel-list__title">{{ $t('dict:' + id) }}</strong>
+                          <span class="panel-list__title-lang" v-if="+allDicts[id].lang[0]">{{ $t('opt:dict_panel_lang_en') }}</span>
+                          <span class="panel-list__title-lang" v-if="+allDicts[id].lang[1]">{{ $t('opt:dict_panel_lang_zhs') }}</span>
+                          <span class="panel-list__title-lang" v-if="+allDicts[id].lang[2]">{{ $t('opt:dict_panel_lang_zht') }}</span>
                           <button type="button" class="close">&#10004;</button>
                         </div>
                       </div>
@@ -47,6 +50,9 @@
               <div class="panel-list__header" @click="handlePanelHeadClick(id, i)">
                 <img class="panel-list__icon" :src="dictsPanelInfo[id].favicon">
                 <strong class="panel-list__title">{{ $t('dict:' + id) }}</strong>
+                <span class="panel-list__title-lang" v-if="+allDicts[id].lang[0]">{{ $t('opt:dict_panel_lang_en') }}</span>
+                <span class="panel-list__title-lang" v-if="+allDicts[id].lang[1]">{{ $t('opt:dict_panel_lang_zhs') }}</span>
+                <span class="panel-list__title-lang" v-if="+allDicts[id].lang[2]">{{ $t('opt:dict_panel_lang_zht') }}</span>
                 <button type="button" class="close" @click.stop="dicts.selected.splice(i, 1)">&times;</button>
               </div><!--词典名字与图标-->
               <div class="panel-list__body" ref="dict" :style="{height: dictsPanelInfo[id].height + 'px'}">
@@ -73,20 +79,16 @@
 
                   <!--词典自定义选项-->
                   <div class="checkbox" v-if="allDicts[id].options">
-                    <template v-for="(__, optKey) in allDicts[id].options">
-                      <div class="checkbox" v-if="typeof allDicts[id].options[optKey] !== 'boolean'">
-                        <div class="input-group">
-                          <div class="input-group-addon">{{ $t(`dict:${id}_${optKey}`) }}</div>
-                          <input type="number" min="0" class="form-control" v-model.number.lazy="allDicts[id].options[optKey]">
-                          <div class="input-group-addon">{{ $t(`dict:${id}_${optKey}_unit`)  }}</div>
-                        </div>
+                    <div v-for="(__, optKey) in allDicts[id].options" :key="optKey" class="checkbox" v-if="typeof allDicts[id].options[optKey] !== 'boolean'">
+                      <div class="input-group">
+                        <div class="input-group-addon">{{ $t(`dict:${id}_${optKey}`) }}</div>
+                        <input type="number" min="0" class="form-control" v-model.number.lazy="allDicts[id].options[optKey]">
+                        <div class="input-group-addon">{{ $t(`dict:${id}_${optKey}_unit`)  }}</div>
                       </div>
-                    </template>
-                    <template v-for="(__, optKey) in allDicts[id].options">
-                      <label class="checkbox-inline" v-if="typeof allDicts[id].options[optKey] === 'boolean'">
-                        <input type="checkbox" v-model="allDicts[id].options[optKey]"> {{ $t(`dict:${id}_${optKey}`) }}
-                      </label>
-                    </template>
+                    </div>
+                    <label v-for="(__, optKey) in allDicts[id].options" :key="optKey" class="checkbox-inline" v-if="typeof allDicts[id].options[optKey] === 'boolean'">
+                      <input type="checkbox" v-model="allDicts[id].options[optKey]"> {{ $t(`dict:${id}_${optKey}`) }}
+                    </label>
                   </div><!--词典自定义选项-->
                 </div>
               </div>
