@@ -250,7 +250,7 @@ export default {
 }
 
 .modal-body {
-  overflow-y: auto;
+  overflow-y: scroll;
   max-height: 80vh;
 }
 
@@ -459,6 +459,7 @@ kbd {
 .panel-list__header {
   @extend .panel-heading;
   cursor: pointer;
+  cursor: move;
 }
 
 .panel-list__title {
