@@ -163,7 +163,7 @@ export function appConfigFactory (): AppConfig {
 
     pdfSniff: true,
 
-    searhHistory: true,
+    searhHistory: false,
 
     newWordSound: true,
 
