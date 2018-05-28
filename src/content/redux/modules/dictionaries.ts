@@ -263,10 +263,6 @@ export function startUpAction (): DispatcherThunk {
     } else {
       listenTrpleCtrl(dispatch, getState)
     }
-
-    if (isSaladictOptionsPage) {
-      dispatch(searchText({ info: getDefaultSelectionInfo({ text: 'salad' }) }))
-    }
   }
 }
 
@@ -283,6 +279,10 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
 
     // try to unfold a dict when the panel first popup
     if (!info || !info.text) { return }
+
+    if (isSaladictOptionsPage) {
+      window.__SALADICT_LAST_SEARCH__ = info.text
+    }
 
     dispatch(isInNotebook(info))
 
