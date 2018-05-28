@@ -16,7 +16,7 @@ import { MsgType, MsgSelection } from '@/typings/message'
 
 window.__SALADICT_INTERNAL_PAGE__ = true
 window.__SALADICT_OPTIONS_PAGE__ = true
-window.__SALADICT_LAST_SEARCH__ = 'salad'
+window.__SALADICT_LAST_SEARCH__ = ''
 
 injectPanel()
 
@@ -58,7 +58,7 @@ storage.sync.get('config')
                   dbClick: false,
                   ctrlKey: false,
                 })
-              }, 2000)
+              }, window.__SALADICT_LAST_SEARCH__ ? 2000 : 0)
             }
           }
         }
