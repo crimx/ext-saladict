@@ -24,7 +24,6 @@ exports[`Component/content/SaladBowl should render correctly 1`] = `
     hold={false}
     immediate={false}
     impl={[Function]}
-    inject={[Function]}
     native={false}
     reset={false}
     to={
