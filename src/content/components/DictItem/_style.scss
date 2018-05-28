@@ -5,8 +5,22 @@
 .panel-DictItem_Header {
   display: flex;
   align-items: flex-start;
+  position: sticky;
+  top: 0;
+  z-index: 100;
   height: 20px;
   border-top: 1px #ddd solid;
+  background: #fff;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 20px - 1px;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background: linear-gradient(#fff 5%, rgba(255, 255, 255, 0.3) 60%, transparent 100%);
+  }
 }
 
 .panel-DictItem_Logo {
