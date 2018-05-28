@@ -25,10 +25,10 @@ export default class DictCambridge extends React.PureComponent<DictCambridgeProp
           <span dangerouslySetInnerHTML={{ __html: entry.pos }} />
         </header>
         {entry.prons.length > 0 &&
-          <div>
-            {entry.prons.map(p => (
+          <div className='dictCambridge-Prons'>
+            {entry.prons.map((p, i) => (
               <React.Fragment key={p.pron}>
-                {p.phsym} <Speaker src={p.pron} />
+                {p.phsym} <Speaker src={p.pron} /> {p.phsym.trim().startsWith('us') ? <br/> : null}
               </React.Fragment>
             ))}
           </div>

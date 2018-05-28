@@ -4,6 +4,7 @@
 }
 
 .dictCambridge-Title {
+  font-size: 1.5em;
   margin-right: 0.5em;
 }
 
@@ -2137,7 +2138,7 @@
 
     .trans {
       display: block;
-      margin: 5px 0;
+      margin: 0 0 5px 0;
       font-style: normal;
 
       &:first-child {
@@ -2146,7 +2147,7 @@
     }
 
     .examp {
-      margin-left: 1.2em;
+      margin-left: 1.3em;
       display: list-item;
     }
   }
@@ -2197,6 +2198,14 @@
     a {
       margin-left: 1em;
       color: #16a085;
+    }
+  }
+
+  .def-head {
+    margin-bottom: 0;
+
+    a {
+      color: inherit;
     }
   }
 }
