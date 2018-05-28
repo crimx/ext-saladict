@@ -2,11 +2,17 @@ import React from 'react'
 import Speaker from '@/components/Speaker'
 import { OALDResult, OALDResultLex, OALDResultRelated } from './engine'
 
-export default class DictOALD extends React.PureComponent<{ result: OALDResult }> {
+export interface DictOALDProps {
+  result: OALDResult
+  recalcBodyHeight: () => any
+}
+
+export default class DictOALD extends React.PureComponent<DictOALDProps> {
   handleEntryClick = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.nativeEvent.target as HTMLSpanElement
     if (target.classList && target.classList.contains('heading')) {
       (target.parentElement as HTMLDivElement).classList.toggle('is-active')
+      this.props.recalcBodyHeight()
     }
   }
 

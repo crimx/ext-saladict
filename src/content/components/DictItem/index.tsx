@@ -167,6 +167,20 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     })
   }
 
+  handleRecalcBodyHeight = () => {
+    setTimeout(() => {
+      if (this.bodyRef.current) {
+        const offsetHeight = Math.max(this.bodyRef.current.offsetHeight, 10) || 10
+        this.setState({
+          offsetHeight,
+          visibleHeight: offsetHeight,
+          isUnfold: true,
+          hasError: false,
+        })
+      }
+    }, 0)
+  }
+
   componentDidUpdate (prevProps: DictItemProps) {
     if (this.props.searchStatus === SearchStatus.Finished &&
         this.props.searchStatus !== prevProps.searchStatus) {
@@ -246,7 +260,13 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
             >
               <article ref={this.bodyRef} className='panel-DictItem_BodyMesure' style={{ opacity }}>
                 {searchResult && !hasError &&
-                  React.createElement(require('@/components/dictionaries/' + id + '/View.tsx').default, { result: searchResult })
+                  React.createElement(
+                    require('@/components/dictionaries/' + id + '/View.tsx').default,
+                    {
+                      result: searchResult,
+                      recalcBodyHeight: this.handleRecalcBodyHeight,
+                    }
+                  )
                 }
               </article>
               {isUnfold && searchResult && visibleHeight < offsetHeight &&
