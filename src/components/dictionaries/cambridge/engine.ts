@@ -36,7 +36,7 @@ export default function search (
       ? 'https://dictionary.cambridge.org/zht/詞典/英語-漢語-繁體/'
       : 'https://dictionary.cambridge.org/dictionary/english/'
 
-  return fetchDirtyDOM(url + text.replace(/[^A-Za-z0-9]+/g, '-'))
+  return fetchDirtyDOM(url + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
     .then(handleDOM)
 }
 

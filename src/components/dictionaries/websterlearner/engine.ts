@@ -41,7 +41,7 @@ export default function search (
 ): Promise<WebsterLearnerSearchResult> {
   const options = config.dicts.all.websterlearner.options
 
-  return fetchDirtyDOM('http://www.learnersdictionary.com/definition/' + text.replace(/[^A-Za-z0-9]+/g, '-'))
+  return fetchDirtyDOM('http://www.learnersdictionary.com/definition/' + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
     .then(doc => checkResult(doc, options))
 }
 

@@ -58,7 +58,7 @@ export default function search (
   config: AppConfig,
 ): Promise<LongmanSearchResult> {
   const options = config.dicts.all.longman.options
-  return fetchDirtyDOM('http://www.ldoceonline.com/dictionary/' + text.replace(/[^A-Za-z0-9]+/g, '-'))
+  return fetchDirtyDOM('http://www.ldoceonline.com/dictionary/' + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
     .then(doc => handleDOM(doc, options))
 }
 

@@ -34,7 +34,7 @@ export default function search (
   text: string,
   config: AppConfig,
 ): Promise<OALDSearchResult> {
-  text = text.replace(/[^A-Za-z0-9]+/g, '-')
+  text = text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-')
   const options = config.dicts.all.oald.options
 
   return fetchDirtyDOM('https://www.oxfordlearnersdictionaries.com/definition/english/' + text)

@@ -38,7 +38,7 @@ export default function search (
 ): Promise<MacmillanSearchResult> {
   const options = config.dicts.all.macmillan.options
 
-  return fetchDirtyDOM('http://www.macmillandictionary.com/dictionary/british/' + text.replace(/[^A-Za-z0-9]+/g, '-'))
+  return fetchDirtyDOM('http://www.macmillandictionary.com/dictionary/british/' + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
     .then(doc => checkResult(doc, options))
 }
 
