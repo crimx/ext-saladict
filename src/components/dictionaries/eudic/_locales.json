@@ -3,5 +3,17 @@
     "en": "Eudic",
     "zh_CN": "双语例句",
     "zh_TW": "雙語例句"
+  },
+  "options": {
+    "resultnum": {
+      "en": "Show",
+      "zh_CN": "结果数量",
+      "zh_TW": "結果數量"
+    },
+    "resultnum_unit": {
+      "en": "results",
+      "zh_CN": "个",
+      "zh_TW": "個"
+    }
   }
 }
