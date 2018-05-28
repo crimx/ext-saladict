@@ -75,7 +75,7 @@ export function getALlDicts () {
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true,
+        chs: false,
       },
     },
     cobuild: {
@@ -107,7 +107,7 @@ export function getALlDicts () {
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true,
+        chs: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -143,7 +143,7 @@ export function getALlDicts () {
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true,
+        chs: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -246,7 +246,7 @@ export function getALlDicts () {
       preferredHeight: 265,
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
+        eng: false,
         chs: true,
       }
     },
@@ -278,7 +278,7 @@ export function getALlDicts () {
       preferredHeight: 265,
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
+        eng: false,
         chs: true,
       }
     },
@@ -311,7 +311,7 @@ export function getALlDicts () {
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true,
+        chs: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -353,7 +353,7 @@ export function getALlDicts () {
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true,
+        chs: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -389,7 +389,7 @@ export function getALlDicts () {
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true,
+        chs: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -425,7 +425,7 @@ export function getALlDicts () {
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true,
+        chs: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -461,7 +461,7 @@ export function getALlDicts () {
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true,
+        chs: false,
       }
     },
     websterlearner: {
@@ -493,7 +493,7 @@ export function getALlDicts () {
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
-        chs: true,
+        chs: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -573,7 +573,7 @@ export function getALlDicts () {
       preferredHeight: 400,
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
+        eng: false,
         chs: true,
       }
     },

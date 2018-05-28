@@ -223,12 +223,12 @@ export function appConfigFactory (): AppConfig {
     },
 
     dicts: {
-      selected: ['bing', 'urban', 'vocabulary'],
+      selected: ['bing', 'cambridge', 'urban', 'vocabulary', 'google', 'zdic', 'guoyu', 'liangan'],
       // settings of each dict will be auto-generated
       all: getALlDicts()
     },
     contextMenus: {
-      selected: ['oxford', 'google_translate', 'merriam_webster', 'cambridge', 'google_search', 'google_page_translate', 'youdao_page_translate'],
+      selected: ['google_translate', 'google_search', 'google_page_translate', 'youdao_page_translate'],
       all: getAllContextMenus()
     }
   }
