@@ -26,4 +26,8 @@ if (!process.env.CI && !argv.coverage) {
   rawArgv.push('--watch')
 }
 
+if (process.env.CI) {
+  rawArgv.push('--no-watchman', '--runInBand', '--no-cache')
+}
+
 jest.run(rawArgv)
