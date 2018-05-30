@@ -245,13 +245,13 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
             <a href={dictURL} onClick={this.handleDictURLClick}>{t(`dict:${id}`)}</a>
           </h1>
           { searchStatus === SearchStatus.Searching && !hasError &&
-            <div className='panel-DictItem_Loader'>
-              <div className='panel-DictItem_Loader_Ball' />
-              <div className='panel-DictItem_Loader_Ball' />
-              <div className='panel-DictItem_Loader_Ball' />
-              <div className='panel-DictItem_Loader_Ball' />
-              <div className='panel-DictItem_Loader_Ball' />
-            </div>
+            <svg className='panel-DictItem_Loader' width='120' height='10' viewBox='0 0 120 10' xmlns='http://www.w3.org/2000/svg'>
+              <circle className='panel-DictItem_Loader_Ball' cx='5' cy='5' r='5' />
+              <circle className='panel-DictItem_Loader_Ball' cx='5' cy='5' r='5' />
+              <circle className='panel-DictItem_Loader_Ball' cx='5' cy='5' r='5' />
+              <circle className='panel-DictItem_Loader_Ball' cx='5' cy='5' r='5' />
+              <circle className='panel-DictItem_Loader_Ball' cx='5' cy='5' r='5' />
+            </svg>
           }
           <button className={'panel-DictItem_FoldArrowBtn'} onClick={this.blurAfterClick}>
             <svg className={`panel-DictItem_FoldArrow ${isUnfold ? 'isActive' : ''}`} width='18' height='18' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'>
