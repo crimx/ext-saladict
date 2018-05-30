@@ -1,6 +1,6 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import rootReducer, { StoreState } from './modules'
+import rootReducer from './modules'
 
 import { startUpAction as configStartUp } from './modules/config'
 import { startUpAction as selectionStartUp } from './modules/selection'

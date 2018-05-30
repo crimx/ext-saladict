@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux'
 import mergeUniqueObjects from '../utils/merge-unique-objects'
 
 import {

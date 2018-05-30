@@ -5,9 +5,9 @@
 import setupEnv from './devDict'
 
 setupEnv({
-  dict: 'zdic',
+  dict: 'cambridge',
   style: true,
-  text: '沙拉',
+  text: 'house',
 })
 
 /*-----------------------------------------------*\

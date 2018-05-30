@@ -1,5 +1,4 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { reflect } from '@/_helpers/promise-more'
 import {
   HTMLString,
   getInnerHTMLThunk,
@@ -7,7 +6,7 @@ import {
   getText,
   removeChild,
 } from '../helpers'
-import { AppConfig, DictConfigs } from '@/app-config'
+import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk('https://dictionary.cambridge.org/')

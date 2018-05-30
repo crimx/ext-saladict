@@ -15,7 +15,7 @@ import { MsgType, MsgEditWord } from '@/typings/message'
 import { Observable, Subject } from 'rxjs'
 import { mergeMap, audit, mapTo, share, startWith, debounceTime } from 'rxjs/operators'
 
-const { Header, Footer, Sider, Content } = Layout
+const { Header, Content } = Layout
 
 const ITEMS_PER_PAGE = 20
 

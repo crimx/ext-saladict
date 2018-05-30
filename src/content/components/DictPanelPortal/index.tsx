@@ -4,7 +4,7 @@ import { Spring } from 'react-spring'
 import DictPanel, { DictPanelDispatchers, DictPanelProps } from '../DictPanel'
 import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
-import { AppConfig, DictID, DictConfigs } from '@/app-config'
+import { AppConfig, DictConfigs } from '@/app-config'
 
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 

@@ -1,5 +1,3 @@
-import { DeepReadonly } from '@/typings/helpers'
-
 export function getALlDicts () {
   const allDicts = {
     bing: {

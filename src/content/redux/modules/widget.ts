@@ -5,11 +5,10 @@ import { message } from '@/_helpers/browser-api'
 import { createAppConfigStream } from '@/_helpers/config-manager'
 import { MsgSelection, MsgType, MsgTempDisabledState, MsgEditWord } from '@/typings/message'
 import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
-import { getDefaultSelectionInfo, SelectionInfo } from '@/_helpers/selection'
+import { SelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
-const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
 /*-----------------------------------------------*\
@@ -134,9 +133,7 @@ export const reducer: WidgetReducer = {
     const {
       panelWidth,
       tripleCtrl,
-      tripleCtrlAuto,
       tripleCtrlLocation,
-      tripleCtrlPreload,
     } = state.config
 
     if (!tripleCtrl || state.widget.shouldPanelShow) {
@@ -520,8 +517,6 @@ function listenNewSelection (
     const {
       isPinned,
       shouldPanelShow: lastShouldPanelShow,
-      isPanelAppear: lastIsPanelAppear,
-      shouldBowlShow: lastShouldBowlShow,
       panelRect: lastPanelRect,
     } = state.widget
 
@@ -676,7 +671,6 @@ function _getPanelRectFromEvent (
   }
 
   const winWidth = window.innerWidth
-  const winHeight = window.innerHeight
 
   // icon position           10px  panel position
   //             +-------+         +------------------------+

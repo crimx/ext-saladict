@@ -1,7 +1,7 @@
 import React from 'react'
 import { translate, TranslationFunction } from 'react-i18next'
 import { Layout, Modal, Table } from 'antd'
-import { TableRowSelection, ColumnProps } from 'antd/lib/table/interface'
+import { ColumnProps } from 'antd/lib/table/interface'
 import { Word } from '@/_helpers/record-manager'
 import { storage } from '@/_helpers/browser-api'
 
@@ -130,8 +130,6 @@ export class ExportModalBody extends React.Component<ExportModalInnerProps, Expo
   render () {
     const {
       t,
-      title,
-      onCancel,
     } = this.props
 
     const {

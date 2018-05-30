@@ -1,5 +1,4 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { reflect } from '@/_helpers/promise-more'
 import { getText, getInnerHTMLThunk, handleNoResult, HTMLString } from '../helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'

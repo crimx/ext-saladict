@@ -387,13 +387,12 @@ function popupPageInit (
   } = state.config
 
   if (baPreload) {
-    const fetchInfo = (
-      baPreload === 'selection'
+    const fetchInfo = baPreload === 'selection'
         ? message.send({ type: MsgType.__PreloadSelection__ })
         : message.send({ type: MsgType.GetClipboard })
           .then(text => getDefaultSelectionInfo({ text, title: 'From Clipboard' }))
-    )
-    .then(info => {
+
+    fetchInfo.then(info => {
       if (baAuto && info.text) {
         dispatch(searchText({ info }))
       } else {

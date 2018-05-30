@@ -2,7 +2,7 @@ import React from 'react'
 import { translate } from 'react-i18next'
 import { message } from '@/_helpers/browser-api'
 import { TranslationFunction } from 'i18next'
-import { MsgType, MsgOpenUrl, MsgSelection } from '@/typings/message'
+import { MsgType, MsgOpenUrl } from '@/typings/message'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__

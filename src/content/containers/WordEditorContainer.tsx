@@ -2,7 +2,6 @@ import { connect } from 'react-redux'
 import WordEditorPortal from '../components/WordEditorPortal'
 import { StoreState } from '../redux/modules'
 import { closePanel, closeWordEditor } from '../redux/modules/widget'
-import { saveWord, getWordsByText } from '@/_helpers/record-manager'
 
 export const mapStateToProps = ({ config, dictionaries, widget }: StoreState) => {
   return {

@@ -1,6 +1,6 @@
 import { appConfigFactory, AppConfig } from '@/app-config'
 import { createAppConfigStream } from '@/_helpers/config-manager'
-import { StoreState, Dispatcher, DispatcherThunk } from './index'
+import { StoreState, DispatcherThunk } from './index'
 
 /*-----------------------------------------------*\
     Action Type
