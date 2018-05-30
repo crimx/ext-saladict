@@ -7,24 +7,12 @@
   "short_name": "__MSG_extension_short_name__",
   "description": "__MSG_extension_description__",
 
-  "update_url": "https://clients2.google.com/service/update2/crx",
-
   "default_locale": "zh_CN",
 
   "icons": {
     "16": "static/icon-16.png",
     "48": "static/icon-48.png",
     "128": "static/icon-128.png"
-  },
-
-  "options_page": "options.html",
-
-  "background": {
-    "scripts": [
-      "static/browser-polyfill.min.js",
-      "background.js"
-    ],
-    "persistent": true
   },
 
   "content_scripts": [
