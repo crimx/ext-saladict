@@ -36,7 +36,7 @@ export const createAppConfigStream = jest.fn((): Observable<AppConfig> => {
       handler => addAppConfigListener(handler),
       handler => removeAppConfigListener(handler),
     ).pipe(
-      map(args => args[0].config.newValue)
+      map(args => (Array.isArray(args) ? args[0] : args).config.newValue)
     )
   )
 })
