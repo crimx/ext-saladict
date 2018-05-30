@@ -17,6 +17,7 @@ const rxPaths = require('rxjs/_esm2015/path-mapping')
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const JsConfigPathsPlugin = require('jsconfig-paths-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+const tsImportPluginFactory = require('ts-import-plugin')
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -58,6 +59,8 @@ const entries = fs.readdirSync(paths.appSrc)
   .map(name => ({name, dirPath: path.join(paths.appSrc, name)}))
   .filter(({name, dirPath}) => !/^assets|components|manifest|typings|app-config$/.test(name) && fs.lstatSync(dirPath).isDirectory())
 
+const entriesWithHTML = entries.map(({name, dirPath}) => ({name, dirPath, template: path.join(dirPath, 'index.html')}))
+  .filter(({template}) => fs.existsSync(template))
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
 // The development configuration is different and lives in a separate file.
@@ -163,6 +166,15 @@ module.exports = {
                   appendTsSuffixTo: [/\.vue$/],
                   // transpileOnly: argv.devbuild,
                   transpileOnly: !!argv.notypecheck,
+                  getCustomTransformers: () => ({
+                    before: [ tsImportPluginFactory([
+                      {
+                        libraryName: 'antd',
+                        libraryDirectory: 'es',
+                        style: 'css',
+                      },
+                    ]) ]
+                  }),
                 }
               }
             ],
@@ -228,7 +240,7 @@ module.exports = {
     ],
   },
   plugins: [
-    argv.devbuild
+    argv.devbuild || argv.notypecheck
     ? null
     : new ForkTsCheckerWebpackPlugin({tslint: true, async: false}),
     // Makes some environment variables available in index.html.
@@ -237,34 +249,46 @@ module.exports = {
     // In production, it will be an empty string unless you specify "homepage"
     // in `package.json`, in which case it will be the pathname of that URL.
     new InterpolateHtmlPlugin(env.raw),
+    // extract commons chunk
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'page-commons',
+      filename: 'page-commons.js',
+      chunks: entriesWithHTML.map(x => x.name),
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'wordpage-commons',
+      filename: 'wordpage-commons.js',
+      chunks: ['notebook', 'history'],
+    }),
     // Generates an `index.html` file with the <script> injected.
-    ...entries.map(({name, dirPath}) => ({name, dirPath, template: path.join(dirPath, 'index.html')}))
-      .filter(({template}) => fs.existsSync(template))
-      .map(({name, template}) => new HtmlWebpackPlugin({
-        inject: true,
-        filename: name + '.html',
-        chunks: [name],
-        template,
-        minify: {
-          removeComments: true,
-          collapseWhitespace: true,
-          removeRedundantAttributes: true,
-          useShortDoctype: true,
-          removeEmptyAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          keepClosingSlash: true,
-          minifyJS: true,
-          minifyCSS: true,
-          minifyURLs: true,
-        },
-      })),
+    ...entriesWithHTML.map(({name, template}) => new HtmlWebpackPlugin({
+      inject: true,
+      filename: name + '.html',
+      chunks: /^(notebook|history)$/.test(name)
+        ? ['page-commons', 'wordpage-commons', name]
+        : ['page-commons', name],
+      chunksSortMode: 'manual',
+      template,
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true,
+        removeRedundantAttributes: true,
+        useShortDoctype: true,
+        removeEmptyAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        keepClosingSlash: true,
+        minifyJS: true,
+        minifyCSS: true,
+        minifyURLs: true,
+      },
+    })),
     // Makes some environment variables available to the JS code, for example:
     // if (process.env.NODE_ENV === 'production') { ... }. See `./env.js`.
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
     new webpack.DefinePlugin(env.stringified),
     // RxJs https://github.com/ReactiveX/rxjs/blob/master/doc/pipeable-operators.md
-    argv.devbuild
+    argv.devbuild || argv.analyze
     ? null
     : new webpack.optimize.ModuleConcatenationPlugin(),
     // Minify the code.
@@ -300,7 +324,7 @@ module.exports = {
     }),
     // Tailor locales
     new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /^\.\/(en|zh-cn|zh-tw)$/),
-    argv.analyze
+    argv.analyze || (process.env.NODE_ENV === 'production' && !argv.devbuild)
     ? new BundleAnalyzerPlugin()
     : null,
   ].filter(Boolean),
