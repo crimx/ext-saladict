@@ -1,0 +1,196 @@
+.panel-DictItem {
+  position: relative;
+}
+
+.panel-DictItem_Header {
+  display: flex;
+  align-items: flex-start;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 20px;
+  border-top: 1px #ddd solid;
+  background: #fff;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 20px - 1px;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background: linear-gradient(#fff 5%, rgba(255, 255, 255, 0.3) 60%, transparent 100%);
+  }
+}
+
+.panel-DictItem_Logo {
+  width: 20px;
+  height: 20px;
+  margin-top: -1px;
+  user-select: none;
+}
+
+.panel-DictItem_Title {
+  margin: 0;
+  padding: 0 3px;
+  line-height: 20px - 1px;
+  font-size: 12px;
+  font-weight: normal;
+
+  a {
+    color: #444;
+    text-decoration: none;
+  }
+}
+
+.panel-DictItem_Body {
+  overflow: hidden;
+  position: relative;
+  padding-left: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #333;
+}
+
+.panel-DictItem_BodyMesure {
+  // clear margin collapsing which seems to causing flickering
+  // when changing the parent height
+  overflow: hidden;
+
+  > *:first-child {
+    margin-top: 10px !important;
+  }
+
+  > *:last-child {
+    margin-bottom: 10px !important;
+  }
+}
+
+.panel-DictItem_Loader {
+  align-self: center;
+  width: 120px;
+  height: 10px;
+  user-select: none;
+}
+
+.panel-DictItem_Loader_Ball {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  fill: orange;
+}
+
+.panel-DictItem_FoldArrowBtn {
+  width: 20px - 1px;
+  height: 20px - 1px;
+  overflow: hidden;
+  background: none;
+  border: none;
+  margin: 0 0 0 auto;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    outline: none;
+  }
+}
+
+.panel-DictItem_FoldArrow {
+  fill: #000;
+  width: 18px;
+  height: 18px;
+  padding: 3px;
+
+  &.isActive {
+    transform: rotate(-90deg);
+  }
+}
+
+.panel-DictItem_FoldMask {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  padding: 0;
+  border: none;
+  background: linear-gradient(transparent 40%, rgba(255, 255, 255, 0.3) 60%, rgba(255, 255, 255, 0.9) 100%);
+  cursor: pointer;
+  user-select: none;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(transparent 40%, rgba(225, 225, 225, .2) 60%, rgba(225, 225, 225, .7) 100%);
+  }
+
+  &:hover {
+    outline: none;
+
+    &::after {
+      /**
+       * use top instead of opacity to avoid GUP acceleration
+       * which might casue iframe flickering in Chrome 66
+       * @todo add back after Chrome 68
+       */
+      top: 0;
+    }
+  }
+}
+
+.panel-DictItem_FoldMaskArrow {
+  position: absolute;
+  z-index: 10;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 15px;
+  height: 15px;
+  fill: #000;
+}
+
+/*-----------------------------------------------*\
+    States
+\*-----------------------------------------------*/
+
+.isAnimate {
+  .panel-DictItem_Loader_Ball {
+    animation: panel-DictItem_Loader-shift 2s linear infinite;
+
+    &:nth-child(2) {
+      animation-delay: -0.4s;
+    }
+    &:nth-child(3) {
+      animation-delay: -0.8s;
+    }
+    &:nth-child(4) {
+      animation-delay: -1.2s;
+    }
+    &:nth-child(5) {
+      animation-delay: -1.6s;
+    }
+  }
+
+  .panel-DictItem_FoldArrow {
+    transition: transform 400ms;
+  }
+
+  .panel-DictItem_FoldMask::after {
+    transition: top 400ms;
+  }
+}
+
+@keyframes panel-DictItem_Loader-shift {
+    0% { transform: translateX(  0  ); opacity: 0; }
+   10% { transform: translateX( 30px); opacity: 1; }
+   90% { transform: translateX( 80px); opacity: 1; }
+  100% { transform: translateX(110px); opacity: 0; }
+}

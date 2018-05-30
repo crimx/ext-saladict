@@ -2,51 +2,56 @@
 <div>
   <transition name="dropdown">
     <div class="config-updated" v-if="isShowConfigUpdated">
-      {{ i18n('opt_storage_updated') }}
+      {{ $t('opt:storage_updated') }}
     </div>
   </transition>
   <div class="opt-container">
     <div class="page-header">
-      <h1>{{ i18n('opt_title') }}
-        <a class="new-version" v-if="newVersionAvailable" href="http://www.crimx.com/crx-saladict/" target="_blank">{{ i18n('opt_new_version') }}</a>
+      <h1>{{ $t('opt:title') }}
+        <a class="new-version" v-if="newVersionAvailable" href="http://www.crimx.com/crx-saladict/" target="_blank">{{ $t('opt:new_version') }}</a>
       </h1>
       <div class="page-header-info">
-        <p><a href="https://github.com/crimx/crx-saladict/wiki" target="_blank" rel="noopener">{{ i18n('instructions') }}</a></p>
-        <p class="page-header-social-media-wrap">
-          <a href="mailto:straybugs@gmail.com" @mouseover="isShowSocial = true" @click.prevent="void 0">{{ i18n('cantact_author') }}</a>
+        <p class="page-header-acknowledgement-wrap">
+          <a href="https://github.com/crimx/crx-saladict/wiki#acknowledgement" @mouseenter="showAcknowledgement(true)" @mouseleave="showAcknowledgement(false)" @click.prevent="void 0">{{ $t('opt:acknowledgement') }}</a>
           <transition name="fade">
-            <div class="page-header-social-media" v-if="isShowSocial" @mouseleave="isShowSocial = false">
+            <div class="page-header-acknowledgement" v-if="isShowAcknowledgement" @mouseenter="showAcknowledgement(true)"  @mouseleave="showAcknowledgement(false)">
+              <ol>
+                <li><a href="https://github.com/stockyman" rel="nofollow" target="_blank">stockyman</a> {{ $t('opt:acknowledgement_trans_tw') }}</li>
+              </ol>
+            </div>
+          </transition>
+        </p>
+        <p><a href="https://github.com/crimx/crx-saladict/wiki" target="_blank" rel="noopener">{{ $t('opt:instructions') }}</a></p>
+        <p class="page-header-social-media-wrap">
+          <a href="mailto:straybugs@gmail.com" @mouseenter="showSocialMedia(true)" @mouseleave="showSocialMedia(false)" @click.prevent="void 0">{{ $t('opt:contact_author') }}</a>
+          <transition name="fade">
+            <div class="page-header-social-media" v-if="isShowSocial" @mouseenter="showSocialMedia(true)"  @mouseleave="showSocialMedia(false)">
               <social-media />
             </div>
           </transition>
         </p>
-        <p><a href="https://github.com/crimx/crx-saladict/issues" target="_blank" rel="noopener">{{ i18n('report_issue') }}</a></p>
-        <button type="button" class="btn btn-default btn-reset" @click="handleReset">{{ i18n('opt_reset') }}</button>
+        <p><a href="https://github.com/crimx/crx-saladict/issues" target="_blank" rel="noopener">{{ $t('opt:report_issue') }}</a></p>
       </div>
     </div>
+    <div class="text-right">
+      <input type="file" id="config-import" class="btn-file" @change="handleImport">
+      <label class="btn btn-default btn-xs" for="config-import">{{ $t('opt:import') }}</label>
+      <button type="button" class="btn btn-default btn-xs" @click="handleExport">{{ $t('opt:export') }}</button>
+      <button type="button" class="btn btn-danger btn-xs" @click="handleReset">{{ $t('opt:reset') }}</button>
+    </div>
     <opt-app-active />
-    <opt-word-list />
+    <opt-preference />
+    <opt-privacy />
+    <opt-language />
+    <opt-dict-panel />
     <opt-mode />
     <opt-pin-mode />
-    <opt-language />
     <opt-popup />
     <opt-triple-ctrl />
     <opt-autopron />
     <opt-dicts />
     <opt-context-menu />
   </div>
-
-  <!--查词面板-->
-  <transition appear name="popup">
-    <div class="frame-container">
-      <iframe class="saladict-frame"
-        name="saladict-frame"
-        frameBorder="0"
-        :src="frameSource"
-        :style="{height: panelHeight + 'px'}"
-      ></iframe>
-    </div>
-  </transition><!--查词面板-->
 
   <!--Alert Modal-->
   <alert-modal ref="alert" />
@@ -57,14 +62,17 @@
 </template>
 
 <script>
-import {storage, message} from 'src/helpers/chrome-api'
-import AppConfig from 'src/app-config'
+import {storage, message} from '@/_helpers/browser-api'
+import appConfigFactory from '@/app-config'
+import { mergeConfig } from '@/_helpers/merge-config'
 import Coffee from './Coffee'
 import SocialMedia from './SocialMedia'
-import AlertModal from 'src/components/AlertModal'
+import AlertModal from '@/components/AlertModal'
 
 import OptAppActive from './OptAppActive'
-import OptWordList from './OptWordList'
+import OptPreference from './OptPreference'
+import OptPrivacy from './OptPrivacy'
+import OptDictPanel from './OptDictPanel'
 import OptMode from './OptMode'
 import OptPinMode from './OptPinMode'
 import OptPopup from './OptPopup'
@@ -76,46 +84,80 @@ import OptContextMenu from './OptContextMenu'
 
 export default {
   name: 'options',
-  store: ['config', 'newVersionAvailable', 'i18n'],
+  store: ['config', 'newVersionAvailable', 'searchText'],
   data () {
     return {
       text: 'salad',
-      frameSource: chrome.runtime.getURL('panel.html'),
+      frameSource: 'https://baidu.com',
       isShowConfigUpdated: false,
-      isShowSocial: false
+      isShowSocial: false,
+      isShowAcknowledgement: false,
     }
   },
   methods: {
-    searchText () {
-      clearTimeout(this.searchTextTimeout)
-      this.searchTextTimeout = setTimeout(() => {
-        message.self.send({
-          msg: 'SEARCH_TEXT',
-          selectionInfo: {
-            text: this.text,
-            context: '',
-            title: document.title,
-            url: document.URL,
-            favicon: chrome.runtime.getURL('assets/icon-16.png'),
-            trans: '',
-            note: ''
+    showSocialMedia (flag) {
+      clearTimeout(this.__showSocialMediaTimeout)
+      if (flag) {
+        this.isShowSocial = true
+      } else {
+        this.__showSocialMediaTimeout = setTimeout(() => {
+          this.isShowSocial = false
+        }, 400)
+      }
+    },
+    showAcknowledgement (flag) {
+      clearTimeout(this.__showAcknowledgementTimeout)
+      if (flag) {
+        this.isShowAcknowledgement = true
+      } else {
+        this.__showAcknowledgementTimeout = setTimeout(() => {
+          this.isShowAcknowledgement = false
+        }, 400)
+      }
+    },
+    handleImport (e) {
+      const fr = new FileReader()
+      fr.onload= () => {
+        try {
+          const content = JSON.parse(fr.result)
+          if (content.version) {
+            this.$store.config = mergeConfig(content, this.$store.config)
           }
+        } catch (err) {
+          if (process.env.NODE_ENV !== 'production' || process.env.DEV_BUILD) {
+            console.warn(err)
+          }
+        }
+      }
+      fr.readAsText(e.currentTarget.files[0])
+    },
+    handleExport () {
+      browser.runtime.getPlatformInfo()
+        .then(({ os }) => {
+          let config = JSON.stringify(this.$store.config, null, '  ')
+          if (os === 'win') {
+            config = config.replace(/\r\n|\n/g, '\r\n')
+          }
+          const file = new Blob([config], { type: 'text/plain;charset=utf-8' })
+          const a = document.createElement('a')
+          a.href = URL.createObjectURL(file)
+          a.download = `config-${Date.now()}.saladict`
+          a.click()
         })
-      }, 2000)
     },
     handleReset () {
       this.$refs.alert.$emit('show', {
-        title: chrome.i18n.getMessage('opt_reset_modal_title'),
-        content: chrome.i18n.getMessage('opt_reset_modal_content'),
+        title: this.$t('opt:reset_modal_title'),
+        content: this.$t('opt:reset_modal_content'),
         onConfirm: () => {
-          storage.sync.set({config: new AppConfig()})
+          storage.sync.set({config: appConfigFactory()})
             .then(() => storage.sync.get('config'))
             .then(({config}) => {
               if (config) {
                 this.config = config
               } else {
                 // something wrong with the sync storage, use default config without syncing
-                const defaultConfig = new AppConfig()
+                const defaultConfig = appConfigFactory()
                 storage.sync.set({config: defaultConfig})
                 this.config = defaultConfig
               }
@@ -138,33 +180,12 @@ export default {
           })
       }
     },
-    'config.dicts': {
-      deep: true,
-      handler () { this.searchText() }
-    },
-    'config.autopron': {
-      deep: true,
-      handler () { this.searchText() }
-    }
-  },
-  computed: {
-    panelHeight () {
-      const allDicts = this.config.dicts.all
-      // header + each dictionary
-      const preferredHeight = 30 + this.config.dicts.selected.reduce((sum, id) => {
-        let preferredHeight = 0
-        if (allDicts[id] && allDicts[id].preferredHeight) {
-          preferredHeight = allDicts[id].preferredHeight + 20
-        }
-        return sum + preferredHeight
-      }, 0)
-      const maxHeight = window.innerHeight * 0.78
-      return preferredHeight > maxHeight ? maxHeight : preferredHeight
-    }
   },
   components: {
     OptAppActive,
-    OptWordList,
+    OptPreference,
+    OptPrivacy,
+    OptDictPanel,
     OptMode,
     OptPinMode,
     OptPopup,
@@ -177,22 +198,14 @@ export default {
     SocialMedia,
     AlertModal
   },
-  beforeCreate () {
-    message.self.on('PANEL_READY', (data, sender, sendResponse) => {
-      sendResponse({noSearchHistory: true})
-    })
-  },
   mounted () {
-    // monitor search text
-    message.self.on('FETCH_DICT_RESULT', (data, sender) => {
-      this.text = data.text
-    })
-    setTimeout(() => this.searchText(), 0)
+    this.searchText()
   }
 }
 </script>
 
 <style lang="scss">
+@import "src/_sass_global/z-indices";
 /*------------------------------------*\
    Bootstrap
 \*------------------------------------*/
@@ -226,8 +239,49 @@ export default {
     margin-left: 0;
   }
 
-  :last-child {
+  &:last-child {
     margin-right: 0;
+  }
+}
+
+.modal {
+  // leave space for the dict panel
+  padding-right: 470px;
+}
+
+.modal-body {
+  overflow-y: scroll;
+  max-height: 80vh;
+}
+
+.input-group {
+  margin: 10px 0;
+}
+
+.btn-file {
+  position: absolute;
+  z-index: -20000;
+  left: -100%;
+
+  &:active + label,
+  &:focus + label {
+    @include tab-focus;
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #8c8c8c;
+  }
+
+  &:hover + label {
+    color: #333;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+    text-decoration: none;
+  }
+
+  &:active + label {
+    outline: 0;
+    background-image: none;
+    @include box-shadow(inset 0 3px 5px rgba(0,0,0,.125));
   }
 }
 
@@ -265,11 +319,6 @@ kbd {
 /*------------------------------------*\
    Components
 \*------------------------------------*/
-.modal-body {
-  overflow-y: auto;
-  max-height: 80vh;
-}
-
 .config-updated {
   @extend .alert-success;
   position: fixed;
@@ -284,8 +333,9 @@ kbd {
 }
 
 .opt-container {
+  max-width: 1280px;
   min-width: 800px;
-  margin-right: 500px;
+  margin-right: 470px;
   padding: 0 15px;
 }
 
@@ -297,6 +347,7 @@ kbd {
 .page-header {
   display: flex;
   justify-content: space-between;
+  margin: 0 0 8px 0;
 }
 
 .page-header-info {
@@ -308,6 +359,22 @@ kbd {
   }
 }
 
+.page-header-acknowledgement-wrap {
+  position: relative;
+}
+
+.page-header-acknowledgement {
+  position: absolute;
+  z-index: 99999;
+  top: 150%;
+  right: 0;
+  width: 300px;
+  padding: 20px 8px;
+  background-color: #fff;
+  border-radius: 15px;
+  box-shadow: 3px 4px 31px -8px rgba(0,0,0,0.8);
+}
+
 .page-header-social-media-wrap {
   position: relative;
 }
@@ -316,7 +383,7 @@ kbd {
   position: absolute;
   z-index: 99999;
   top: 150%;
-  left: 0;
+  right: 0;
 }
 
 .opt-item {
@@ -327,11 +394,13 @@ kbd {
 
 .opt-item__header {
   @extend .col-xs-2;
+  width: percentage(2/12);
   text-align: right;
 }
 
 .opt-item__body {
   @extend .col-xs-6;
+  width: percentage(6.5/12);
   background-color: #fafafa;
 
   &:hover + .opt-item__description-wrap {
@@ -342,6 +411,7 @@ kbd {
 
 .opt-item__description-wrap {
   @extend .col-xs-4;
+   width: percentage(3.5/12);
   position: absolute;
   z-index: -1;
   right: 0;
@@ -367,7 +437,7 @@ kbd {
   top: 0;
   right: 0;
   height: 100%;
-  width: 500px;
+  width: 470px;
 }
 
 .saladict-frame {
@@ -390,14 +460,18 @@ kbd {
 .panel-list__header {
   @extend .panel-heading;
   cursor: pointer;
+  cursor: move;
 }
 
 .panel-list__title {
   cursor: move;
 }
 
-.panel-list__header {
-  cursor: move;
+.panel-list__title-lang {
+  margin-left: 5px;
+  padding: 0 2px;
+  border: 1px solid #333;
+  border-radius: 2px;
 }
 
 .panel-list__icon {
@@ -415,6 +489,10 @@ kbd {
   overflow: hidden;
   height: 0;
   transition: height 400ms;
+
+  > .input-group {
+    margin: 0;
+  }
 }
 
 .select-box-container {

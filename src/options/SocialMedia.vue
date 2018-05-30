@@ -1,9 +1,9 @@
 <template>
   <ul class="social-media__body">
-    <li class="social-media__icon" v-for="media in socialMedia">
+    <li class="social-media__icon" v-for="media in socialMedia" :key="media.title">
       <a :href="media.url" :title="media.title" target="_blank" rel="noopener"></a>
       <svg>
-        <use :xlink:href="'./assets/symbol-defs.svg#' + media.icon" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
+        <use :xlink:href="'./static/symbol-defs.svg#' + media.icon" xmlns:xlink="http://www.w3.org/1999/xlink"></use>
       </svg>
     </li>
   </ul>
@@ -26,7 +26,7 @@ export default {
       }, {
         title: '网易云音乐',
         icon: 'icon-netease-music-circle',
-        url: 'https://music.163.com/djradio/3480003'
+        url: 'https://music.163.com/#/user/home?id=44711994'
       }, {
         title: '知乎',
         icon: 'icon-zhihu-circle',

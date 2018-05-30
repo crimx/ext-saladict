@@ -1,0 +1,83 @@
+{
+  "manifest_version": 2,
+
+  "minimum_chrome_version": "55",
+
+  "name": "__MSG_extension_name__",
+  "short_name": "__MSG_extension_short_name__",
+  "description": "__MSG_extension_description__",
+
+  "default_locale": "zh_CN",
+
+  "icons": {
+    "16": "static/icon-16.png",
+    "48": "static/icon-48.png",
+    "128": "static/icon-128.png"
+  },
+
+  "content_scripts": [
+    {
+      "js": [
+        "static/browser-polyfill.min.js",
+        "content.js"
+      ],
+      "css": ["content.css"],
+      "matches": ["<all_urls>"]
+    },
+    {
+      "js": [
+        "static/browser-polyfill.min.js",
+        "selection.js"
+      ],
+      "matches": ["<all_urls>"],
+      "match_about_blank": true,
+      "all_frames": true
+    }
+  ],
+
+  "web_accessible_resources": [
+    "panel.html",
+    "panel.js",
+    "panel.css",
+    "wordeditor.html",
+    "wordeditor.js",
+    "wordeditor.css",
+    "options.html",
+    "options.js",
+    "options.css",
+    "notebook.html",
+    "notebook.js",
+    "notebook.css",
+    "history.html",
+    "history.js",
+    "history.css",
+    "static/*"
+  ],
+
+  "browser_action": {
+    "default_icon": {
+      "19": "static/icon-19.png",
+      "38": "static/icon-38.png"
+    },
+    "default_popup": "popup.html"
+  },
+
+  "permissions": [
+    "<all_urls>",
+    "webRequest",
+    "webRequestBlocking",
+    "contextMenus",
+    "storage",
+    "unlimitedStorage",
+    "tabs",
+    "clipboardRead",
+    "notifications"
+  ],
+
+  "optional_permissions": [
+    "clipboardWrite"
+  ],
+
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'"
+
+}

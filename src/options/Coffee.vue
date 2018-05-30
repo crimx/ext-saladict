@@ -1,6 +1,6 @@
 <template>
 <div>
-  <div class="buy-me-coffee" @click="showPayment = !showPayment" :title="i18n('buy_me_a_coffee')">
+  <div class="buy-me-coffee" @click="showPayment = !showPayment" :title="$t('opt:buy_me_a_coffee')">
     <svg width="80" height="80" viewBox="0 0 32.273 37.388" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com">
       <g transform="translate(-1.158 6.833) scale(1.01513)">
         <path d="M28.595 8.638c0 .073-.017.146-.052.218l-.84 3.15c2.255.007 4.077.746 4.63 2.49.89 2.8-1.832 7.137-5.805 8.4-.615.195-1.23.33-1.83.408l-1.24 4.653h-.056c.002.012.003.025.003.037 0 .84-3.72 1.52-8.31 1.52-4.587 0-8.307-.68-8.307-1.52 0-.023.002-.047.008-.07L1.714 8.834c-.028-.065-.042-.13-.042-.196 0-1.36 6.027-2.462 13.462-2.462 7.434 0 13.46 1.102 13.46 2.462zm-1.214 4.58l-2.42 9.095c.283-.06.57-.135.858-.227 3.342-1.062 5.592-4.724 4.844-7.08-.454-1.428-1.658-1.885-3.28-1.787z" fill="#EDEDED" style="fill:#fff"/>
@@ -18,21 +18,21 @@
     <div class="payment-panel" v-if="showPayment">
       <div class="payment-aside">
         <ul class="payment-tabs">
-          <li class="payment-item" :class="{active: active === 'wechat'}" @mouseover="active = 'wechat'"><img class="payment-icon icon-wechat" src="./assets/wechat.svg">{{ i18n('wechat') }}</li>
-          <li class="payment-item" :class="{active: active === 'alipay'}" @mouseover="active = 'alipay'"><img class="payment-icon icon-alipay" src="./assets/alipay.svg">{{ i18n('alipay') }}</li>
+          <li class="payment-item" :class="{active: active === 'wechat'}" @mouseover="active = 'wechat'"><img class="payment-icon icon-wechat" src="./assets/wechat.svg">{{ $t('opt:wechat') }}</li>
+          <li class="payment-item" :class="{active: active === 'alipay'}" @mouseover="active = 'alipay'"><img class="payment-icon icon-alipay" src="./assets/alipay.svg">{{ $t('opt:alipay') }}</li>
           <li class="payment-item" :class="{active: active === 'paypal'}" @mouseover="active = 'paypal'"><img class="payment-icon icon-paypal" src="./assets/ko-fi.svg">PayPal</li>
-          <li class="payment-item disabled"><img class="payment-icon icon-bitcoin" src="./assets/bitcoin.svg">{{ i18n('bitcoin') }}</li>
+          <li class="payment-item disabled"><img class="payment-icon icon-bitcoin" src="./assets/bitcoin.svg">{{ $t('opt:bitcoin') }}</li>
         </ul>
         <div>
           <p class="coffee-social-media-wrap">
-            <a href="mailto:straybugs@gmail.com" @mouseover="isShowSocial = true" @click.prevent="void 0">{{ i18n('cantact_author') }}</a>
+            <a href="mailto:straybugs@gmail.com" @mouseenter="showSocialMedia(true)" @mouseleave="showSocialMedia(false)" @click.prevent="void 0">{{ $t('opt:contact_author') }}</a>
             <transition name="fade">
-              <div class="coffee-social-media" v-if="isShowSocial" @mouseleave="isShowSocial = false">
+              <div class="coffee-social-media" v-if="isShowSocial" @mouseenter="showSocialMedia(true)" @mouseleave="showSocialMedia(false)">
                 <social-media />
               </div>
             </transition>
           </p>
-          <p><a href="https://github.com/crimx/crx-saladict/issues" target="_blank" rel="noopener">{{ i18n('report_issue') }}</a></p>
+          <p><a href="https://github.com/crimx/crx-saladict/issues" target="_blank" rel="noopener">{{ $t('opt:report_issue') }}</a></p>
         </div>
         <div class="payment-title">
           <div>
@@ -58,7 +58,7 @@
       </div>
       <div class="payment-content">
         <transition name="fade">
-          <div class="payment-pane" key="wechat"      v-if="active === 'wechat'"><img src="./assets/qrcode/wechat.png" alt="wechat qrcode"><p><small>{{ i18n('buy_me_a_coffee') }}</small></p></div>
+          <div class="payment-pane" key="wechat"      v-if="active === 'wechat'"><img src="./assets/qrcode/wechat.png" alt="wechat qrcode"><p><small>{{ $t('opt:buy_me_a_coffee') }}</small></p></div>
           <div class="payment-pane" key="alipay" v-else-if="active === 'alipay'"><img src="./assets/qrcode/alipay.png" alt="alipay qrcode"><p> </p></div>
           <div class="payment-pane" key="paypal" v-else-if="active === 'paypal'"><img src="./assets/qrcode/ko-fi.png" alt="ko-fi qrcode"><p><a href="https://ko-fi.com/crimxcoffee" target="_blank">https://ko-fi.com/crimxcoffee</a></p></div>
           <div class="payment-pane" key="bitcoin" v-else-if="active === 'bitcoin'"><img src="./assets/qrcode/bitcoin.png" alt="bitcoin qrcode"><p><small>1LkSPTYg3xFTZp39XxQJHqA77rskkENDyX</small></p></div>
@@ -80,15 +80,22 @@ export default {
     }
   },
   methods: {
+    showSocialMedia (flag) {
+      clearTimeout(this.__showSocialMediaTimeout)
+      if (flag) {
+        this.isShowSocial = true
+      } else {
+        this.__showSocialMediaTimeout = setTimeout(() => {
+          this.isShowSocial = false
+        }, 400)
+      }
+    },
     coffeeMouseover () {
       this.showPayment = true
     },
     eggClicked () {
-      chrome.storage.sync.set({unlock: true})
+      browser.storage.sync.set({unlock: true})
     },
-    i18n (key) {
-      return chrome.i18n.getMessage(key) || key
-    }
   },
   components: {
     SocialMedia

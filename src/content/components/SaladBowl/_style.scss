@@ -1,0 +1,111 @@
+$bowl-width: 30px;
+$tomato-rotate: 45deg;
+$leaf-rotate: 30deg;
+
+:root:root:root:root:root {
+  .saladict-SaladBowl {
+    @extend %reset-important;
+    position: fixed !important;
+    z-index: $global-zindex-tooltip !important;
+    left: 0 !important;
+    top: 0 !important;
+    overflow: hidden !important;
+    width: $bowl-width !important;
+    height: $bowl-width !important;
+    user-select: none !important;
+    will-change: transform !important;
+  }
+
+  .saladict-SaladBowl_Leaf {
+    @extend %reset-important;
+    position: absolute !important;
+    z-index: 1 !important;
+    top: 50 * $bowl-width / 1024 !important;
+    left: 600 * $bowl-width / 1024 !important;
+    width: $bowl-width * 729 / 1024 * 0.6 !important;
+    height: $bowl-width * 0.6 !important;
+    transform: rotate($leaf-rotate);
+    // In Firefox @keyframes doesn't override !important
+    @media screen and (-webkit-min-device-pixel-ratio:0) {
+      & { transform: rotate($leaf-rotate) !important; }
+    }
+  }
+
+  .saladict-SaladBowl_Orange {
+    @extend %reset-important;
+    position: absolute !important;
+    z-index: 2 !important;
+    top: 0 * $bowl-width / 1024 !important;
+    left: 195 * $bowl-width / 1024 !important;
+    width: $bowl-width * 0.6 !important;
+    height: $bowl-width * 0.6 !important;
+  }
+
+  .saladict-SaladBowl_Tomato {
+    @extend %reset-important;
+    position: absolute !important;
+    z-index: 3 !important;
+    top: 250 * $bowl-width / 1024 !important;
+    left: -117 * $bowl-width / 1024 !important;
+    width: $bowl-width * 0.6 !important;
+    height: $bowl-width * 513 / 1024 * 0.6 !important;
+    transform: rotate($tomato-rotate);
+    // In Firefox @keyframes doesn't override !important
+    @media screen and (-webkit-min-device-pixel-ratio:0) {
+      & { transform: rotate($tomato-rotate) !important; }
+    }
+  }
+
+  .saladict-SaladBowl_Bowl {
+    @extend %reset-important;
+    position: absolute !important;
+    z-index: 4 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: $bowl-width !important;
+    height: $bowl-width * 530 / 1024 !important;
+  }
+}
+
+/*-----------------------------------------------*\
+    States
+\*-----------------------------------------------*/
+
+.saladict-SaladBowl:hover {
+  .saladict-SaladBowl_Leaf {
+    animation: saladict-SaladBowl_Leaf-shake 1s infinite linear;
+  }
+  .saladict-SaladBowl_Orange {
+    animation: saladict-SaladBowl_Orange-spin 1s infinite linear;
+  }
+  .saladict-SaladBowl_Tomato {
+    animation: saladict-SaladBowl_Tomato-shake 0.7s infinite linear;
+  }
+}
+
+@keyframes saladict-SaladBowl_Leaf-shake {
+  0% { transform: translate( 2px,  1px) rotate($leaf-rotate + 0deg); }
+ 10% { transform: translate(-1px, -2px) rotate($leaf-rotate - 1deg); }
+ 20% { transform: translate(-2px,  0  ) rotate($leaf-rotate + 1deg); }
+ 30% { transform: translate( 0  ,  2px) rotate($leaf-rotate + 0deg); }
+ 40% { transform: translate( 1px, -1px) rotate($leaf-rotate + 1deg); }
+ 50% { transform: translate(-1px,  2px) rotate($leaf-rotate - 1deg); }
+ 60% { transform: translate(-2px,  1px) rotate($leaf-rotate + 0deg); }
+ 70% { transform: translate( 2px,  1px) rotate($leaf-rotate - 1deg); }
+ 80% { transform: translate(-1px, -1px) rotate($leaf-rotate + 1deg); }
+ 90% { transform: translate( 2px,  2px) rotate($leaf-rotate + 0deg); }
+100% { transform: translate( 1px, -2px) rotate($leaf-rotate - 1deg); }
+}
+
+@keyframes saladict-SaladBowl_Orange-spin {
+from { transform: rotate(  0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes saladict-SaladBowl_Tomato-shake {
+  0% { transform: rotate($tomato-rotate - 10deg); }
+ 30% { transform: rotate($tomato-rotate +  0deg); }
+ 60% { transform: rotate($tomato-rotate + 10deg); }
+ 90% { transform: rotate($tomato-rotate +  0deg); }
+100% { transform: rotate($tomato-rotate -  5deg); }
+}

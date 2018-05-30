@@ -1,0 +1,12 @@
+{
+  "background": {
+    "scripts": [
+      "static/browser-polyfill.min.js",
+      "background.js"
+    ],
+    "persistent": true
+  },
+  "options_page": "options.html",
+  "update_url": "https://clients2.google.com/service/update2/crx",
+  "minimum_chrome_version": "55"
+}

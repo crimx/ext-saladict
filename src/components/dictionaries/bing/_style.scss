@@ -1,0 +1,89 @@
+.dictBing-Title {
+  font-size: 1.5em;
+}
+
+.dictBing-Phsym {
+  display: flex;
+  margin-bottom: 5px;
+}
+
+.dictBing-PhsymItem {
+  margin-right: 1em;
+}
+
+.dictBing-Cdef {
+  margin-bottom: 5px;
+}
+
+.dictBing-CdefItem {
+  display: table;
+}
+
+.dictBing-CdefItem_Pos {
+  display: table-cell;
+  width: 3em;
+  font-weight: bold;
+  text-align: right;
+}
+
+.dictBing-CdefItem_Def {
+  display: table-cell;
+  padding: 0 12px;
+}
+
+.dictBing-Inf {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: #777;
+}
+
+.dictBing-InfItem {
+  margin-right: 1em;
+}
+
+.dictBing-SentenceList {
+  padding: 0 0 0 1.5em;
+}
+
+.dictBing-SentenceItem {
+  margin-bottom: 10px;
+
+  p {
+    margin: 0;
+  }
+}
+
+.dictBing-SentenceSource {
+  color: #999;
+}
+
+.dictBing-Related_Title {
+  font-size: 1em;
+  margin: 5px 0;
+}
+
+.dictBing-Related_DefTitle {
+  font-size: 1.2em;
+  margin: 5px 0 0 0;
+}
+
+.dictBing-Related_Meaning {
+  display: table;
+  margin-bottom: 2px;
+}
+
+.dictBing-Related_Meaning_Word {
+  display: table-cell;
+  width: 8em;
+  text-align: right;
+  color: #16a085;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.dictBing-Related_Meaning_Def {
+  display: table-cell;
+  padding: 0 12px;
+}

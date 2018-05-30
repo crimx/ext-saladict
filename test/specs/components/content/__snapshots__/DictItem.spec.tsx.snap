@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component/content/DictItem should render pending correctly 1`] = `
+<section
+  className="panel-DictItem"
+  onClick={[Function]}
+>
+  <header
+    className="panel-DictItem_Header"
+    onClick={[Function]}
+  >
+    <img
+      alt="dict logo"
+      className="panel-DictItem_Logo"
+      src="favicon.png"
+    />
+    <h1
+      className="panel-DictItem_Title"
+    >
+      <a
+        href="https://google.com"
+        onClick={[Function]}
+      >
+        dict:bing
+      </a>
+    </h1>
+    <button
+      className="panel-DictItem_FoldArrowBtn"
+      onClick={[Function]}
+    >
+      <svg
+        className="panel-DictItem_FoldArrow "
+        height="18"
+        viewBox="0 0 59.414 59.414"
+        width="18"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M43.854 59.414L14.146 29.707 43.854 0l1.414 1.414-28.293 28.293L45.268 58"
+        />
+      </svg>
+    </button>
+  </header>
+  <Spring
+    config={
+      Object {
+        "friction": 26,
+        "tension": 170,
+      }
+    }
+    from={
+      Object {
+        "height": 30,
+        "opacity": 0,
+      }
+    }
+    hold={false}
+    immediate={true}
+    impl={[Function]}
+    native={false}
+    reset={false}
+    to={
+      Object {
+        "height": 10,
+        "opacity": 0,
+      }
+    }
+  />
+</section>
+`;

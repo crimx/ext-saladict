@@ -1,0 +1,204 @@
+/*-----------------------------------------------*\
+    Variables
+\*-----------------------------------------------*/
+@import '../../../_sass_global/variables';
+@import '../../../_sass_global/z-indices';
+@import '../../../_sass_global/interfaces';
+
+/*-----------------------------------------------*\
+    Libs
+\*-----------------------------------------------*/
+@import '~normalize-scss';
+
+/*-----------------------------------------------*\
+    Base
+\*-----------------------------------------------*/
+html {
+  height: 100%;
+  box-sizing: border-box;
+  background: transparent;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  color: #333;
+  background-color: rgba(0, 0, 0, 0.4);
+  font-size: 14px;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input,
+textarea {
+  display: block;
+  resize: vertical;
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857;
+  color: #555555;
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+
+  &:focus {
+    border-color: #66afe9;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  }
+}
+
+/*-----------------------------------------------*\
+    Components
+\*-----------------------------------------------*/
+.wordEditor-Container {
+  width: 800px;
+  border-radius: 6px;
+  background: #fff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.wordEditor-Header {
+  display: flex;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.wordEditor-Title {
+  margin: 0;
+  font-size: 18px;
+  padding: 15px;
+}
+
+.wordEditor-Note_BtnClose {
+  text-decoration: none;
+  margin-left: auto;
+  padding: 15px;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 1;
+  border: none;
+  background: transparent;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.5;
+  cursor: pointer;
+
+  &:hover {
+    outline: none;
+  }
+}
+
+.wordEditor-Main {
+  display: flex;
+  height: 70vh;
+  max-height: 1000px;
+}
+
+.wordEditor-Note {
+  flex: 1.2;
+  padding: 15px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.wordEditor-Note_SrcFavicon {
+  height: 16px;
+  margin-left: 5px;
+  vertical-align: text-bottom;
+}
+
+.wordEditor-Footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+
+%wordEditor-Note_Btn {
+  display: inline-block;
+  margin-bottom: 0;
+  font-weight: normal;
+  text-align: center;
+  vertical-align: middle;
+  touch-action: manipulation;
+  cursor: pointer;
+  background-image: none;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857;
+  border-radius: 4px;
+  user-select: none;
+}
+
+.wordEditor-Note_BtnCancel {
+  @extend %wordEditor-Note_Btn;
+  color: #333;
+  background-color: #fff;
+  border-color: #ccc;
+
+  &:focus {
+    background-color: #e6e6e6;
+    border-color: #8c8c8c;
+  }
+
+  &:hover {
+    outline: 0;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+  }
+
+  &:active {
+    outline: 0;
+    background-color: #e6e6e6;
+    border-color: #8c8c8c;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  }
+}
+
+.wordEditor-Note_BtnSave {
+  @extend %wordEditor-Note_Btn;
+  margin-left: 10px;
+  color: #fff;
+  background-color: #337ab7;
+  border-color: #2e6da4;
+
+  &:focus {
+    background-color: #286090;
+    border-color: #122b40;
+  }
+
+  &:hover {
+    outline: 0;
+    background-color: #286090;
+    border-color: #204d74;
+  }
+
+  &:active {
+    outline: 0;
+    background-color: #204d74;
+    border-color: #122b40;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  }
+}
+
+@import '../WordCards/style'

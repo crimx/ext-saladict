@@ -1,0 +1,14 @@
+{
+  "name": {
+    "en": "OALD",
+    "zh_CN": "OALD",
+    "zh_TW": "OALD"
+  },
+  "options": {
+    "related": {
+      "en": "Show related results",
+      "zh_CN": "失败时显示备选",
+      "zh_TW": "失敗時顯示備選"
+    }
+  }
+}

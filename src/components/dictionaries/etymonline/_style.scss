@@ -1,0 +1,33 @@
+.dictEtymonline-List {
+  p {
+    margin: 0 0 5px 0;
+  }
+
+  blockquote {
+    margin: 0.5em 0;
+    padding: 0 1em;
+    font-style: italic;
+    border-left: 2px solid #f9690e;
+  }
+
+  .foreign {
+    font-style: italic;
+  }
+
+  .line-break {
+    margin-bottom: 5px;
+  }
+}
+
+.dictEtymonline-Item {
+  margin: 10px 0;
+}
+
+.dictEtymonline-Title {
+  margin: 0;
+  font-size: 1em;
+}
+
+.dictEtymonline-Def {
+  margin: 0;
+}

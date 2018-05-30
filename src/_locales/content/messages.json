@@ -1,0 +1,121 @@
+{
+  "save": {
+    "zh_CN": "保存",
+    "zh_TW": "保存",
+    "en": "Save"
+  },
+  "cancel": {
+    "zh_CN": "取消",
+    "zh_TW": "取消",
+    "en": "Cancel"
+  },
+  "tipSearchHistoryBack": {
+    "zh_CN": "上一个查词记录",
+    "zh_TW": "上一個查單字記錄",
+    "en": "Previous search history"
+  },
+  "tipSearchHistoryNext": {
+    "zh_CN": "下一个查词记录",
+    "zh_TW": "下一個查單字記錄",
+    "en": "Next search history"
+  },
+  "tipSearchText": {
+    "zh_CN": "查单词",
+    "zh_TW": "查單字",
+    "en": "Search text"
+  },
+  "tipOpenSettings": {
+    "zh_CN": "打开设置",
+    "zh_TW": "查看設定",
+    "en": "Open Settings"
+  },
+  "tipAddToNotebook": {
+    "zh_CN": "保存到生词本，右键打开生词本",
+    "zh_TW": "保存到單字本，右擊打開單字本",
+    "en": "Add to Notebook. Right click to open Notebook"
+  },
+  "tipOpenNotebook": {
+    "zh_CN": "打开生词本",
+    "zh_TW": "打開單字本",
+    "en": "Open Notebook"
+  },
+  "tipOpenHistory": {
+    "zh_CN": "打开查词记录",
+    "zh_TW": "打開查單字記錄",
+    "en": "Open History"
+  },
+  "tipShareImg": {
+    "zh_CN": "以图片方式分享查词结果",
+    "zh_TW": "以圖片方式分享查單字結果",
+    "en": "Share as image"
+  },
+  "tipPinPanel": {
+    "zh_CN": "钉住查词面板",
+    "zh_TW": "釘住字典視窗",
+    "en": "Pin the panel"
+  },
+  "tipClosePanel": {
+    "zh_CN": "关闭查词面板",
+    "zh_TW": "關閉字典視窗",
+    "en": "Close the panel"
+  },
+
+  "fromSaladict": {
+    "zh_CN": "来自沙拉查词面板",
+    "zh_TW": "来自沙拉查詞介面",
+    "en": "From Saladict Panel"
+  },
+
+  "wordEditorTitle": {
+    "zh_CN": "保存到生词本",
+    "zh_TW": "保存到單字本",
+    "en": "Add to Notebook"
+  },
+  "wordEditorNoteWord": {
+    "zh_CN": "单词",
+    "zh_TW": "單字",
+    "en": "Word"
+  },
+  "wordEditorNoteTrans": {
+    "zh_CN": "翻译",
+    "zh_TW": "翻譯",
+    "en": "Translation"
+  },
+  "wordEditorNoteNote": {
+    "zh_CN": "笔记",
+    "zh_TW": "筆記",
+    "en": "Note"
+  },
+  "wordEditorNoteContext": {
+    "zh_CN": "上下文",
+    "zh_TW": "上下文",
+    "en": "Context"
+  },
+  "wordEditorNoteSrcTitle": {
+    "zh_CN": "来源标题",
+    "zh_TW": "來源標題",
+    "en": "Source Title"
+  },
+  "wordEditorNoteSrcLink": {
+    "zh_CN": "来源链接",
+    "zh_TW": "來源鏈結",
+    "en": "Source Link"
+  },
+  "wordEditorNoteSrcFavicon": {
+    "zh_CN": "来源图标",
+    "zh_TW": "來源圖示",
+    "en": "Source Favicon"
+  },
+
+  "wordEditorWordCardsTitle": {
+    "zh_CN": "生词本其它记录",
+    "zh_TW": "單字本其它記錄",
+    "en": "Other results from Notebook"
+  },
+
+  "wordEditorCloseConfirm": {
+    "zh_CN": "记录尚未保存，确认关闭？",
+    "zh_TW": "記錄尚未保存，確定關閉？",
+    "en": "Changes will not be saved. Are you sure to close?"
+  }
+}

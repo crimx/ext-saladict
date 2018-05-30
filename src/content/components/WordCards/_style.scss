@@ -1,0 +1,81 @@
+.wordCards {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.wordCards-Title {
+  margin: 0;
+  padding: 3px 0;
+  text-align: center;
+  font-size: 1em;
+  font-weight: normal;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.wordCards-CardList {
+  flex: 1;
+  margin: 0;
+  padding: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.wordCards-Card {
+  list-style-type: none;
+  display: block;
+  overflow: hidden;
+  margin: 0 0 10px 0;
+  padding: 10px 10px 10px;
+  word-wrap: break-word;
+  border: 1px #faebcc solid;
+  border-radius: 20px;
+  color: #8a6d3b;
+  background: #fcf8e3;
+}
+
+.wordCards-CardTitle {
+  margin: 0 0 0.5em;
+  text-align: center;
+}
+
+.wordCards-CardItem {
+  position: relative;
+  overflow: visible;
+  margin-bottom: 0.5em;
+  padding: 0 0 0 25px;
+}
+
+.wordCards-CardItem_Icon {
+  position: absolute;
+  top: -5px;
+  left: 0;
+  width: 18px;
+  height: 18px;
+  fill: #8a6d3b;
+  user-select: none;
+}
+
+.wordCards-CardFooter {
+  position: relative;
+  border-top: 1px solid #faebcc;
+  padding: 8px 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.wordCards-Favicon {
+  position: absolute;
+  top: 8px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+}
+
+.wordCards-URL {
+  padding: 0 0 0 25px;
+  color: inherit;
+  font-size: 12px;
+}

@@ -1,0 +1,19 @@
+{
+  "name": {
+    "en": "COBUILD",
+    "zh_CN": "COBUILD",
+    "zh_TW": "COBUILD"
+  },
+  "options": {
+    "sentence": {
+      "en": "Show sentences",
+      "zh_CN": "显示例句",
+      "zh_TW": "展示例句"
+    },
+    "sentence_unit": {
+      "en": "results",
+      "zh_CN": "个",
+      "zh_TW": "個"
+    }
+  }
+}

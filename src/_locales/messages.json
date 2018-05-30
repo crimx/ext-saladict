@@ -1,0 +1,26 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": {
+      "zh_CN": "沙拉查词-网页划词翻译",
+      "zh_TW": "沙拉查詞-滑鼠劃字翻譯",
+      "en": "Saladict"
+    }
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": {
+      "zh_CN": "Saladict",
+      "zh_TW": "Saladict",
+      "en": "Saladict"
+    }
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": {
+      "zh_CN": "全新工匠打磨，极致交互体验，新增更多词典，支持 PDF，兼容 Vimium 全键盘操作。",
+      "zh_TW": "全新工匠打磨，極致互動體驗，新增更多字典，支援 PDF，相容 Vimium 全鍵盤操作。",
+      "en": "Feature-rich inline translator with PDF support. Vimium compatible."
+    }
+  }
+}

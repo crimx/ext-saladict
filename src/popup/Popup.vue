@@ -1,11 +1,5 @@
 <template>
 <div class="popup-container">
-  <iframe class="saladict-frame"
-    name="saladict-frame"
-    frameBorder="0"
-    :src="frameSource"
-    :style="{height: panelHeight + 'px'}"
-  ></iframe>
   <div class="active-switch">
     <svg class="icon-qrcode" @mouseenter="showQRcode" @mouseleave="currentTabUrl = ''"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
       <path d="M0 225v25h250v-25H0zM0 25h250V0H0v25z"/>
@@ -16,70 +10,102 @@
       <path d="M0 612h25V362H0v250zm225 0h25V362h-25v250zM87.5 524.5h75v-75h-75v75zM587 612h25V441h-25v171zM474.5 499.5v25h50v-25h-50z"/>
       <path d="M474.5 449.5v75h25v-75h-25zM562 587v25h50v-25h-50z"/>
     </svg>
-    <span class="switch-title">{{ i18n('opt_app_active_title') }}</span>
-    <input type="checkbox" id="opt-active" class="btn-switch" v-model="config.active">
+    <span class="switch-title">{{ $t('app_active_title') }}</span>
+    <input type="checkbox" id="opt-active" class="btn-switch" v-model="tempOff" @click.prevent="changeTempOff">
     <label for="opt-active"></label>
   </div>
   <transition name="fade">
     <div class="qrcode-panel" v-if="currentTabUrl">
       <qriously :value="currentTabUrl" :size="250" />
-      <p class="qrcode-panel-title">{{ i18n('popup_tab_title') }}</p>
+      <p class="qrcode-panel-title">{{ $t('qrcode_title') }}</p>
+    </div>
+  </transition>
+  <transition name="fade">
+    <div class="page-no-response-panel" v-if="showPageNoResponse">
+      <p class="page-no-response-title">{{ $t('page_no_response') }}</p>
     </div>
   </transition>
 </div>
 </template>
 
-<script>
-import {storage, message} from 'src/helpers/chrome-api'
+<script lang="ts">
+import Vue from 'vue'
+import { message, storage } from '@/_helpers/browser-api'
+import { MsgType, MsgTempDisabledState } from '@/typings/message'
+import { appConfigFactory } from '@/app-config'
 
-export default {
+export default Vue.extend({
   name: 'Popup',
-  store: ['config', 'i18n'],
   data () {
     return {
-      frameSource: chrome.runtime.getURL('panel.html'),
-      currentTabUrl: ''
+      config: appConfigFactory(),
+      currentTabUrl: '',
+      tempOff: false,
+      showPageNoResponse: false,
     }
   },
   watch: {
-    config: {
-      deep: true,
-      handler () {
-        storage.sync.set({config: this.config})
+    showPageNoResponse (val) {
+      if (val) {
+        clearTimeout(this['__pageNoResponseTimeout'])
+        this['__pageNoResponseTimeout'] = setTimeout(() => {
+          this.showPageNoResponse = false
+        }, 2000)
       }
     }
   },
   methods: {
+    changeTempOff () {
+      const newTempOff = !this.tempOff
+
+      browser.tabs.query({ active: true, currentWindow: true })
+        .then(tabs => {
+          if (tabs.length > 0 && tabs[0].id != null) {
+            return message.send<MsgTempDisabledState>(
+              tabs[0].id as number,
+              {
+                type: MsgType.TempDisabledState,
+                op: 'set',
+                value: newTempOff,
+              },
+            )
+          }
+        })
+        .then(isSuccess => {
+          if (isSuccess) {
+            this.tempOff = newTempOff
+          } else {
+            return Promise.reject(new Error('Set tempOff failed')) as Promise<any>
+          }
+        })
+        .catch(() => this.showPageNoResponse = true)
+    },
     showQRcode () {
       chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-        if (tabs.length > 0) {
-          this.currentTabUrl = tabs[0].url
+        if (tabs.length > 0 && tabs[0].url) {
+          this.currentTabUrl = tabs[0].url as string
         }
       })
     }
   },
-  computed: {
-    panelHeight () {
-      const allDicts = this.config.dicts.all
-      // header + each dictionary
-      const preferredHeight = 30 + this.config.dicts.selected.reduce((sum, id) => {
-        let preferredHeight = 0
-        if (allDicts[id] && allDicts[id].preferredHeight) {
-          preferredHeight = allDicts[id].preferredHeight + 20
+  created () {
+    browser.tabs.query({ active: true, currentWindow: true })
+      .then(tabs => {
+        if (tabs.length > 0 && tabs[0].id != null) {
+          return message.send<MsgTempDisabledState>(
+            tabs[0].id as number,
+            {
+              type: MsgType.TempDisabledState,
+              op: 'get',
+            },
+          ).then(flag => {
+            this.tempOff = flag
+          })
         }
-        return sum + preferredHeight
-      }, 0)
-      const maxHeight = 400
-      return preferredHeight > maxHeight ? maxHeight : preferredHeight
-    }
+      })
+      .catch(err => console.warn('Error when receiving MsgTempDisabled response', err))
   },
-  beforeCreate () {
-    message.self.on('PANEL_READY', (data, sender, sendResponse) => {
-      // trigger the paste command
-      sendResponse({preload: this.config.baPreload, autoSearch: this.config.baAuto})
-    })
-  }
-}
+})
 </script>
 
 <style lang="scss">
@@ -89,20 +115,24 @@ export default {
 html {
   margin: 0;
   padding: 0;
-  overflow-y: scroll;
 }
 
 body {
   margin: 0;
   padding: 0;
+  overflow: hidden;
   font-size: 14px;
   font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
 
-.saladict-frame {
-  width: 400px;
+.frame-root {
+  // hide white spaces
+  font-size: 0;
+}
+
+.saladict-DictPanel {
+  position: static;
   overflow: hidden;
-  border: 0 none;
 }
 
 .qrcode-panel {
@@ -120,6 +150,16 @@ body {
   margin: 5px 0 0 0;
 }
 
+.page-no-response-panel {
+  position: fixed;
+  bottom: 60px;
+  right: 25px;
+  padding: 0 10px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
+}
+
 .active-switch {
   display: flex;
   align-items: center;
@@ -134,13 +174,12 @@ body {
 .icon-qrcode {
   width: 23px;
   margin-top: 3px;
-  margin-right: 11px;
 }
 
 .switch-title {
   flex: 1;
-  font-size: 1.5em;
-  font-weight: bold;
+  font-size: 1.2em;
+  padding: 0 15px;
   text-align: left;
   color: #333;
 }
