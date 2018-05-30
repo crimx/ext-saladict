@@ -30,10 +30,10 @@ export default function search (
   config: AppConfig,
 ): Promise<CambridgeSearchResult> {
   const url = config.langCode === 'zh-CN'
-    ? 'https://dictionary.cambridge.org/zhs/词典/英语-汉语-简体/'
+    ? 'https://dictionary.cambridge.org/zhs/搜索/英语-汉语-简体/direct/?q='
     : config.langCode === 'zh-TW'
-      ? 'https://dictionary.cambridge.org/zht/詞典/英語-漢語-繁體/'
-      : 'https://dictionary.cambridge.org/dictionary/english/'
+      ? 'https://dictionary.cambridge.org/zht/搜索/英語-漢語-繁體/direct/?q='
+      : 'https://dictionary.cambridge.org/search/english/direct/?q='
 
   return fetchDirtyDOM(url + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
     .then(handleDOM)

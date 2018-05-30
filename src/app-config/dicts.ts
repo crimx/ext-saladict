@@ -53,9 +53,9 @@ export function getALlDicts () {
        * %h will be replaced with the current word joining with hyphen "-"..
        */
       page: {
-        en: 'https://dictionary.cambridge.org/dictionary/english/%h',
-        'zh-CN': 'https://dictionary.cambridge.org/zhs/词典/英语-汉语-简体/%s',
-        'zh-TW': 'https://dictionary.cambridge.org/zht/詞典/英語-漢語-繁體/%z',
+        en: 'https://dictionary.cambridge.org/search/english/direct/?q=%h',
+        'zh-CN': 'https://dictionary.cambridge.org/zhs/搜索/英语-汉语-简体/direct/?q=%s',
+        'zh-TW': 'https://dictionary.cambridge.org/zht/搜索/英語-漢語-繁體/direct/?q=%z',
       },
       /**
        * If set to true, the dict start searching automatically.
