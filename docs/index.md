@@ -1,31 +1,29 @@
-# Saladict 沙拉查词5
+# Saladict 沙拉查词 6
 
 [![Version](https://img.shields.io/github/release/crimx/ext-saladict.svg?label=version)](https://github.com/crimx/ext-saladict/releases)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/users/cdonnmffkdaoajfknoeeecmchibpmkmg.svg?label=Chrome%20users)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/cdonnmffkdaoajfknoeeecmchibpmkmg.svg?label=Chrome%20stars)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg)
-<!--
-[![Mozilla Add-on](https://img.shields.io/amo/users/saladict.svgg?label=Firefoxe%20users)]()
-[![Mozilla Add-on](https://img.shields.io/amo/stars/saladict.svgg?label=Firefoxe%20stars)]()
- -->
+[![Mozilla Add-on](https://img.shields.io/amo/users/ext-saladict.svg?label=Firefoxe%20users)](https://addons.mozilla.org/firefox/addon/ext-saladict/)
+[![Mozilla Add-on](https://img.shields.io/amo/stars/ext-saladict.svg?label=Firefoxe%20stars)](https://addons.mozilla.org/firefox/addon/ext-saladict/)
 
 [![Build Status](https://travis-ci.org/crimx/ext-saladict.svg)](https://travis-ci.org/crimx/ext-saladict)
-[![Greenkeeper badge](https://badges.greenkeeper.io/crimx/ext-saladict.svg)](https://greenkeeper.io/)
-[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
-[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-brightgreen.svg)](https://conventionalcommits.org)
-[![Standard - JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com/)
-[![License](https://img.shields.io/github/license/crimx/ext-saladict.svg?colorB=brightgreen)](https://github.com/crimx/ext-saladict/blob/dev/LICENSE)
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?maxAge=2592000)](http://commitizen.github.io/cz-cli/)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-brightgreen.svg?maxAge=2592000)](https://conventionalcommits.org)
+[![Standard - JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?maxAge=2592000)](https://standardjs.com/)
+[![License](https://img.shields.io/github/license/crimx/ext-saladict.svg?colorB=44cc11?maxAge=2592000)](https://github.com/crimx/ext-saladict/blob/dev/LICENSE)
 
-[**English**](https://github.com/crimx/crx-saladict/blob/dev/README.md): Chrome extension, feature-rich inline translator powered with mutiple online dictionaries.
+Chrome/Firefox 浏览器插件，网页划词翻译。
 
-Chrome 浏览器插件，网页划词翻译。
 
-<p align="center">
-  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="saladict.jpg" /></a>
-</p>
+- Chrome Web Store: <https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg>
+- crx: <https://github.com/crimx/crx-saladict/releases/>
+
+- Firefox Add-ons: <https://addons.mozilla.org/en-US/firefox/addon/ext-saladict/>
+- xpi: <https://github.com/crimx/crx-saladict/releases/>
 
 [功能一览：](https://github.com/crimx/crx-saladict/wiki)
 
-- [多词典支持，英汉、英英、俚语、词源、权威例句、汉语（繁简）、释义分布图、谷歌翻译](https://github.com/crimx/crx-saladict/wiki#dicts)
+- [多词典支持](https://github.com/crimx/crx-saladict/wiki#dicts)
 - [支持四种划词方式，支持 iframe 划词](https://github.com/crimx/crx-saladict/wiki#mode)
 - [支持谷歌和有道分级网页翻译](https://github.com/crimx/crx-saladict/wiki#page-trans)
 - [查词面板可钉住可拖动可输入](https://github.com/crimx/crx-saladict/wiki#pin)
@@ -34,20 +32,16 @@ Chrome 浏览器插件，网页划词翻译。
 - [支持 PDF 划词](https://github.com/crimx/crx-saladict/wiki#pdf)
 - [各个词典面板支持个性化调整](https://github.com/crimx/crx-saladict/wiki#dict-settings)
 - [三按 ctrl 快速查词](https://github.com/crimx/crx-saladict/wiki#triple-ctrl)
+- [支持 Vimium 全键盘操作](https://github.com/crimx/crx-saladict/wiki#vimium)
 - [点击图标快速查词](https://github.com/crimx/crx-saladict/wiki#popup-icon)
 - [查词结果支持导出图片](https://github.com/crimx/crx-saladict/wiki#save-img)
 - [可显示当前页面二维码](https://github.com/crimx/crx-saladict/wiki#qrcode)
 - [右键并支持更多词典页面直达](https://github.com/crimx/crx-saladict/wiki#context-menus)
-
-理论上支持所有 Chrome 系浏览器。效果图：
-
-<p align="center">
-  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="screen.gif" /></a>
-</p>
+- [支持开发](https://github.com/crimx/crx-saladict/wiki#reward)
 
 # 用户评价
 
-> “我用过的最好的查词插件，UI美观大方，查词功能也很强，还有多词源对照，真的很棒！身边同学已经全被我安利换成这个插件了。就目前来说还是有些难以找到*比*这款优秀的查词插件。”
+> “我用过的最好的查词插件，UI美观大方，查词功能也很强，还有多词源对照，真的很棒！身边同学已经全被我安利换成这个插件了。就目前来说还是有些难以找到比这款优秀的查词插件。”
 
 > “非常好用，支持快速查词和划词查询，而且可以添加多个翻译工具。”
 
@@ -63,10 +57,19 @@ Chrome 浏览器插件，网页划词翻译。
 
 > “只有一个棒字可以形容！！！”
 
-# 下载
+更多截图:
 
-- Chrome Web Store: <https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg>
-- crx: <https://github.com/crimx/crx-saladict/releases/>
+<p align="center">
+  <a href="https://github.com/crimx/crx-saladict/releases/" target="_blank"><img src="https://github.com/crimx/ext-saladict/wiki/images/youdao-page.gif" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/crimx/crx-saladict/releases/" target="_blank"><img src="https://github.com/crimx/ext-saladict/wiki/images/screen-notebook.png" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/crimx/crx-saladict/releases/" target="_blank"><img src="https://github.com/crimx/ext-saladict/wiki/images/pin.gif" /></a>
+</p>
 
 为什么需要这些权限：
 - 划词需要访问网页数据
@@ -74,124 +77,17 @@ Chrome 浏览器插件，网页划词翻译。
 
 除此以外本扩展不收集任何资料，第三方下载请注意对比扩展 ID `cdonnmffkdaoajfknoeeecmchibpmkmg`。
 
-<p align="center">
-  <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg" target="_blank"><img src="https://github.com/crimx/crx-saladict/wiki/images/screen-config.png" /></a>
-</p>
-
 # 更新
 
-【5.31.7】
-1. 可以直接点击 PDF 链接打开了！
-2. 钉住时快速查询不移动窗口
-3. 设置页面增加反馈链接（用赞赏来反馈问题的朋友看这里，赞赏没法回复的。在第三方下载注意对比 ID）
-
+查看[本次更新](https://github.com/crimx/ext-saladict/releases)。
 
 查看[更新历史](https://github.com/crimx/crx-saladict/blob/dev/CHANGELOG.md)。
 
 # 支持开发
 
-觉得好用的话欢迎给作者买杯咖啡支持开发哦~♥
+用爽了欢迎按上方的 ★Star 以及在[谷歌商店](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg/reviews)留好评。开发不易，懒癌晚期的作者身残志坚，以惊人的毅力克服病魔贡献代码，真是闻者伤心听者落泪。献出一份爱心，挽救一条生命。为保持本项目持久生命力，请给作者打赏杯咖啡 :coffee: ：
 
 <div align="center">
-  <img width="250" height="250" src="https://github.com/crimx/crx-saladict/wiki/images/wechat.png">
-  <img width="250" height="250" src="https://github.com/crimx/crx-saladict/wiki/images/alipay.png">
+  <img width="250" height="250" src="images/wechat.png">
+  <img width="250" height="250" src="images/alipay.png">
 </div>
-
-# 开发
-
-（dev 分支在重构中，请切换到 vue 分支）
-
-添加词典很简单，以 bing 为例
-
-Clone 库并 `$ yarn install`
-
-## 注册词典
-
-`src/app-config.js` 在 `dicts/all` 注册词典并添加相关设置。
-
-```javascript
-{
-  dicts: {
-    all: {
-      // ...
-      bing: {
-        id: 'bing',
-        page: 'https://cn.bing.com/dict/search?q=%s',
-        preferredHeight: 160,
-        showWhenLang: {
-          eng: true,
-          chs: true
-        },
-        options: {
-          tense: true,
-          phsym: true,
-          cdef: true
-        }
-      }
-      // ...
-    }
-  }
-}
-```
-
-- `id` 为每个词典的标识符；
-- `page`为点击标题是跳转的链接，`%s`会替换成关键字，`%z`会替换成繁体字；
-- `preferredHeight` 为词典默认高度，超过默认高度的内容会先隐藏起来并显示下箭头；
-- `showWhenLang` 配置词典在查词包含某种语言时显示，一般默认为 `true`；
-- 词典本身的设置放在 `options` 下，只能是 `boolean` 或者 `number`，会自动在设置页面生成相应选项。
-- 如果词典支持发音，在 `autopron` 下补上即可注册自动发音选项（需要在 engine 中判断+实现）。
-
-## 添加模块
-
-在 `src/dictionaries/` 下以词典 id 命名新建文件夹，放置以下文件（可从其它词典复制过来修改），如 bing：
-
-```
-bing
-├─ favicon.png
-├─ _locales.json
-├─ engine.js
-└─ view.vue
-```
-
-- favicon.png 为 32×32 图片；
-- _locales.json 中添加多语言，`name` 为词典名，`options` 下为自定义的设置；
-- engine.js 负责抓取结果，输出一个函数，返回一个 Promise 包含自定义的结果，最终会被传到 view.vue 上作为 `result` props；
-  ```javascript
-  /**
-  * Search text and give back result
-  * @param {string} text - Search text
-  * @param {object} config - app config
-  * @param {object} helpers - helper functions
-  * @returns {Promise} A promise with the result, which will be passed to view.vue as `result` props
-  */
-  export default function search (text, config, {AUDIO}) {
-    return new Promise((resolve, reject) => {
-      // ...
-    })
-  }
-  ```
-- view.vue 负责渲染结果，如 bing；
-  ```html
-  <template>
-  <section>
-    <div class="bing-result" v-if="result">
-      <!-- content -->
-    </div>
-  </section>
-  </template>
-
-  <script>
-  export default {
-    name: 'Bing',
-    props: ['result']
-  }
-  </script>
-
-  <style scoped>
-  .bing-result {
-    padding: 10px;
-  }
-  </style>
-  ```
-
-具体使用可参考其它词典。
