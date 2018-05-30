@@ -2,8 +2,12 @@
  * @file Wraps some of the extension apis
  */
 
-import { Observable, fromEventPattern } from 'rxjs'
-import { map } from 'rxjs/operators'
+// import { Observable, fromEventPattern } from 'rxjs'
+// import { map } from 'rxjs/operators'
+import { Observable } from 'rxjs/Observable'
+import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
+import { map } from 'rxjs/operators/map'
+
 import { MsgType } from '@/typings/message'
 
 /* --------------------------------------- *\

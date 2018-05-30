@@ -1,7 +1,12 @@
 import { AppConfig, appConfigFactory } from '@/app-config'
 import { storage, StorageListenerCb, StorageUpdate } from './browser-api'
-import { map, filter } from 'rxjs/operators'
-import { Observable, from, concat } from 'rxjs'
+// import { Observable, from, concat } from 'rxjs'
+// import { map, filter } from 'rxjs/operators'
+import { Observable } from 'rxjs/Observable'
+import { from } from 'rxjs/observable/from'
+import { concat } from 'rxjs/observable/concat'
+import { map } from 'rxjs/operators/map'
+import { filter } from 'rxjs/operators/filter'
 
 export type AppConfigChanged = {
   config: {

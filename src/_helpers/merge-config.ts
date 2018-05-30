@@ -1,5 +1,9 @@
 import { appConfigFactory, AppConfig } from '@/app-config'
-import _ from 'lodash'
+import forEach from 'lodash/forEach'
+import isNumber from 'lodash/isNumber'
+import isBoolean from 'lodash/isBoolean'
+import get from 'lodash/get'
+import set from 'lodash/set'
 
 export function mergeConfig (config?: AppConfig, base?: AppConfig): AppConfig {
   if (!config) {
@@ -56,16 +60,16 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   mergeSelectedDicts('dicts')
   mergeSelectedDicts('contextMenus')
 
-  _.forEach(base.dicts.all, (dict, id) => {
+  forEach(base.dicts.all, (dict, id) => {
     mergeBoolean(`dicts.all.${id}.defaultUnfold`)
     mergeNumber(`dicts.all.${id}.preferredHeight`)
     mergeBoolean(`dicts.all.${id}.selectionLang.eng`)
     mergeBoolean(`dicts.all.${id}.selectionLang.chs`)
     if (dict['options']) {
-      _.forEach(dict['options'], (value, opt) => {
-        if (_.isNumber(value)) {
+      forEach(dict['options'], (value, opt) => {
+        if (isNumber(value)) {
           mergeNumber(`dicts.all.${id}.options.${opt}`)
-        } else if (_.isBoolean(value)) {
+        } else if (isBoolean(value)) {
           mergeBoolean(`dicts.all.${id}.options.${opt}`)
         }
       })
@@ -75,28 +79,28 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   return base
 
   function mergeSelectedDicts (path: string): void {
-    const selected = _.get(config, [path, 'selected'])
+    const selected = get(config, [path, 'selected'])
     if (Array.isArray(selected)) {
-      const allDict = _.get(base, [path, 'all'])
+      const allDict = get(base, [path, 'all'])
       const arr = selected.filter(id => allDict[id])
       if (arr.length > 0) {
-        _.set(base, [path, 'selected'], arr)
+        set(base, [path, 'selected'], arr)
       }
     }
   }
 
   function mergeNumber (path: string): void {
-    return merge(path, _.isNumber)
+    return merge(path, isNumber)
   }
 
   function mergeBoolean (path: string): void {
-    return merge(path, _.isBoolean)
+    return merge(path, isBoolean)
   }
 
   function merge (path: string, predicate: (val) => boolean): void {
-    const val = _.get(config, path)
+    const val = get(config, path)
     if (predicate(val)) {
-      _.set(base, path, val)
+      set(base, path, val)
     }
   }
 }

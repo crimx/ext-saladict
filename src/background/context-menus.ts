@@ -5,8 +5,18 @@ import { TranslationFunction } from 'i18next'
 import contextLocles from '@/_locales/context'
 import isEqual from 'lodash/isEqual'
 
-import { Observable, ReplaySubject, combineLatest } from 'rxjs'
-import { mergeMap, filter, map, audit, mapTo, share, startWith } from 'rxjs/operators'
+// import { Observable, ReplaySubject, combineLatest } from 'rxjs'
+// import { mergeMap, filter, map, audit, mapTo, share, startWith } from 'rxjs/operators'
+import { Observable } from 'rxjs/Observable'
+import { ReplaySubject } from 'rxjs/ReplaySubject'
+import { combineLatest } from 'rxjs/observable/combineLatest'
+import { mergeMap } from 'rxjs/operators/mergeMap'
+import { filter } from 'rxjs/operators/filter'
+import { map } from 'rxjs/operators/map'
+import { audit } from 'rxjs/operators/audit'
+import { mapTo } from 'rxjs/operators/mapTo'
+import { share } from 'rxjs/operators/share'
+import { startWith } from 'rxjs/operators/startWith'
 
 type ContextMenusConfig = AppConfig['contextMenus']
 

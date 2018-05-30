@@ -1,7 +1,13 @@
 import { AppConfig, appConfigFactory } from '@/app-config'
 import { StorageListenerCb, StorageChange } from '@/_helpers/browser-api'
-import { map } from 'rxjs/operators'
-import { Observable, fromEventPattern, of, concat } from 'rxjs'
+// import { map } from 'rxjs/operators'
+// import { Observable, fromEventPattern, of, concat } from 'rxjs'
+import { Observable } from 'rxjs/Observable'
+import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
+import { of } from 'rxjs/observable/of'
+import { concat } from 'rxjs/observable/concat'
+import { map } from 'rxjs/operators/map'
+
 const listeners = new Set()
 
 export type AppConfigChanged = {

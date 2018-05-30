@@ -12,8 +12,16 @@ import { Area, Word, getWords, deleteWords } from '@/_helpers/record-manager'
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgEditWord } from '@/typings/message'
 
-import { Observable, Subject } from 'rxjs'
-import { mergeMap, audit, mapTo, share, startWith, debounceTime } from 'rxjs/operators'
+// import { Observable, Subject } from 'rxjs'
+// import { mergeMap, audit, mapTo, share, startWith, debounceTime } from 'rxjs/operators'
+import { Observable } from 'rxjs/Observable'
+import { Subject } from 'rxjs/Subject'
+import { mergeMap } from 'rxjs/operators/mergeMap'
+import { audit } from 'rxjs/operators/audit'
+import { mapTo } from 'rxjs/operators/mapTo'
+import { share } from 'rxjs/operators/share'
+import { startWith } from 'rxjs/operators/startWith'
+import { debounceTime } from 'rxjs/operators/debounceTime'
 
 const { Header, Content } = Layout
 

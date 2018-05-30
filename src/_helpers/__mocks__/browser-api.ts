@@ -2,9 +2,13 @@
  * @file Wraps some of the extension apis
  */
 
-import { Observable, fromEventPattern } from 'rxjs'
-import { map } from 'rxjs/operators'
-import _ from 'lodash'
+// import { Observable, fromEventPattern } from 'rxjs'
+// import { map } from 'rxjs/operators'
+import { Observable } from 'rxjs/Observable'
+import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
+import { map } from 'rxjs/operators/map'
+
+import get from 'lodash/get'
 import { MsgType } from '@/typings/message'
 
 /* --------------------------------------- *\
@@ -251,7 +255,7 @@ function _storageCreateStream (area: string) {
 
   function storageCreateStream (key: string) {
 
-    const obj = _.get(storage, area === 'all' ? '' : area)
+    const obj = get(storage, area === 'all' ? '' : area)
     return fromEventPattern(
       handler => obj.addListener(key, handler as StorageListenerCb),
       handler => obj.removeListener(key, handler as StorageListenerCb),
@@ -374,7 +378,7 @@ function _messageCreateStream (self: boolean) {
   return jest.fn(messageCreateStream)
 
   function messageCreateStream<T> (messageType = MsgType.Null): Observable<T> {
-    const obj = _.get(message, self ? 'self' : '')
+    const obj = get(message, self ? 'self' : '')
     const pattern$ = messageType !== MsgType.Null
       ? fromEventPattern(
         handler => obj.addListener(messageType, handler as onMessageEvent),
