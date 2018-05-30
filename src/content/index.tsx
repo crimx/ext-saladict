@@ -16,7 +16,9 @@ import { MsgType } from '@/typings/message'
 
 import './content.scss'
 
-message.send({ type: MsgType.RequestCSS })
+// Chrome fails to inject css via manifest if the page is loaded
+// as "last opened tabs" when browser opens.
+setTimeout(() => message.send({ type: MsgType.RequestCSS }), 1000)
 
 const i18n = i18nLoader({ content: contentLocles, dict: dictsLocles }, 'content')
 
