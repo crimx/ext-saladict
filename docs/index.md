@@ -14,12 +14,13 @@
 
 Chrome/Firefox 浏览器插件，网页划词翻译。
 
+<p align="center">
+  <a href="https://github.com/crimx/crx-saladict/releases/" target="_blank"><img src="https://raw.githubusercontent.com/wiki/crimx/ext-saladict/images/notebook.gif" /></a>
+</p>
 
-- Chrome Web Store: <https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg>
-- crx: <https://github.com/crimx/crx-saladict/releases/>
+# 下载
 
-- Firefox Add-ons: <https://addons.mozilla.org/en-US/firefox/addon/ext-saladict/>
-- xpi: <https://github.com/crimx/crx-saladict/releases/>
+[Chrome 商店](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg)/[Firefox 商店](https://addons.mozilla.org/firefox/addon/ext-saladict/)/[直接下载](https://github.com/crimx/crx-saladict/releases/)
 
 [功能一览：](https://github.com/crimx/crx-saladict/wiki)
 
@@ -85,9 +86,9 @@ Chrome/Firefox 浏览器插件，网页划词翻译。
 
 # 支持开发
 
-用爽了欢迎按上方的 ★Star 以及在[谷歌商店](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg/reviews)留好评。开发不易，懒癌晚期的作者身残志坚，以惊人的毅力克服病魔贡献代码，真是闻者伤心听者落泪。献出一份爱心，挽救一条生命。为保持本项目持久生命力，请给作者打赏杯咖啡 :coffee: ：
+用爽了欢迎按 Github 上方的 ★Star 以及在[谷歌商店](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg/reviews)留好评。开发不易，懒癌晚期的作者身残志坚，以惊人的毅力克服病魔贡献代码，真是闻者伤心听者落泪。献出一份爱心，挽救一条生命。为保持本项目持久生命力，请给作者打赏杯咖啡 :coffee: ：
 
 <div align="center">
-  <img width="250" height="250" src="images/wechat.png">
-  <img width="250" height="250" src="images/alipay.png">
+  <img width="250" height="250" src="https://github.com/crimx/crx-saladict/wiki/images/wechat.png">
+  <img width="250" height="250" src="https://github.com/crimx/crx-saladict/wiki/images/alipay.png">
 </div>
