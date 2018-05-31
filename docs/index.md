@@ -20,7 +20,7 @@ Chrome/Firefox 浏览器插件，网页划词翻译。
 
 # 下载
 
-[Chrome 商店](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg)/[Firefox 商店](https://addons.mozilla.org/firefox/addon/ext-saladict/)/[直接下载](https://github.com/crimx/crx-saladict/releases/)
+[Chrome 商店](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg) / [Firefox 商店](https://addons.mozilla.org/firefox/addon/ext-saladict/) / [直接下载](https://github.com/crimx/crx-saladict/releases/)
 
 [功能一览：](https://github.com/crimx/crx-saladict/wiki)
 
