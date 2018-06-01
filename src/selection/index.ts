@@ -12,8 +12,8 @@ import { fromEvent } from 'rxjs/observable/fromEvent'
 import { timer } from 'rxjs/observable/timer'
 import { merge } from 'rxjs/observable/merge'
 import { of } from 'rxjs/observable/of'
-import { async as asyncScheduler } from 'rxjs/scheduler/async'
 import { map } from 'rxjs/operators/map'
+import { delay } from 'rxjs/operators/delay'
 import { mapTo } from 'rxjs/operators/mapTo'
 import { scan } from 'rxjs/operators/scan'
 import { filter } from 'rxjs/operators/filter'
@@ -21,7 +21,6 @@ import { take } from 'rxjs/operators/take'
 import { switchMap } from 'rxjs/operators/switchMap'
 import { buffer } from 'rxjs/operators/buffer'
 import { debounceTime } from 'rxjs/operators/debounceTime'
-import { observeOn } from 'rxjs/operators/observeOn'
 import { share } from 'rxjs/operators/share'
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
 
@@ -94,7 +93,7 @@ const validMouseup$$ = merge(
   // if user click on a selected text,
   // getSelection would reture the text before the highlight disappears
   // delay to wait for selection get cleared
-  observeOn(asyncScheduler),
+  delay(10),
   share(),
 )
 
@@ -144,7 +143,6 @@ validMouseup$$.subscribe(({ clientX, clientY }) => {
       // Ignore it so that the panel won't follow.
       return
     }
-    lastText = text
     lastContext = context
 
     sendMessage(
@@ -163,8 +161,11 @@ validMouseup$$.subscribe(({ clientX, clientY }) => {
       },
     )
   } else {
+    lastContext = ''
     sendEmptyMessage()
   }
+  // always update text
+  lastText = text
 })
 
 function sendMessage (
