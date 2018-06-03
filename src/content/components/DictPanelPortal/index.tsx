@@ -1,10 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Spring } from 'react-spring'
+import CSSTransition from 'react-transition-group/CSSTransition'
 import DictPanel, { DictPanelDispatchers, DictPanelProps } from '../DictPanel'
 import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
+import shallowEqual from 'fbjs/lib/shallowEqual'
 
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
@@ -37,7 +38,7 @@ export interface DictPanelPortalProps extends DictPanelPortalDispatchers {
   readonly selection: MsgSelection
 }
 
-type DictPanelState= {
+interface DictPanelState {
   readonly isDragging: boolean
 }
 
@@ -48,11 +49,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     : document.body
   el = document.createElement('div')
   frame: HTMLIFrameElement | null = null
-  initStyle = { x: 0, y: 0, height: 30, width: 400, opacity: 0 }
   lastMouseX = 0
   lastMouseY = 0
-  isAnimating = false
-  _frameAnimationEndTimeout: any
 
   state = {
     isDragging: false,
@@ -75,72 +73,6 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   frameWillUnmount = () => {
     this.frame = null
     setTimeout(this.unmountEL, 100)
-  }
-
-  animateFrame = ({ x, y, height, width, opacity }) => {
-    if (this.frame) {
-      const iframeStyle = this.frame.style
-      if (!this.isAnimating) {
-        this.isAnimating = true
-        iframeStyle.setProperty('left', '0', 'important')
-        iframeStyle.setProperty('top', '0', 'important')
-        iframeStyle.setProperty('will-change', 'transform', 'important')
-      }
-
-      iframeStyle.setProperty('width', width + 'px', 'important')
-      iframeStyle.setProperty('height', height + 'px', 'important')
-
-      if (!isSaladictPopupPage) {
-        iframeStyle.setProperty('opacity', opacity, 'important')
-        iframeStyle.setProperty('transform', `translate(${x}px, ${y}px)`, 'important')
-      }
-    }
-    this.debouncedFrameAnimationEnd()
-    return null
-  }
-
-  panelImmediateCtrl = (key: string) => {
-    if (!this.props.isAnimation ||
-        !this.props.shouldPanelShow ||
-        this.props.isPanelAppear ||
-        isSaladictPopupPage
-    ) {
-      return true
-    }
-
-    if (this.state.isDragging) {
-      switch (key) {
-        case 'x':
-        case 'y':
-          return true
-        default:
-          break
-      }
-    }
-
-    return false
-  }
-
-  debouncedFrameAnimationEnd = () => {
-    clearTimeout(this._frameAnimationEndTimeout)
-    if (!this.props.shouldPanelShow || this.state.isDragging) {
-      return
-    }
-    this._frameAnimationEndTimeout = setTimeout(this.onFrameAnimationEnd, 100)
-  }
-
-  onFrameAnimationEnd = () => {
-    this.isAnimating = false
-    if (this.frame) {
-      // remove hardware acceleration to prevent blurry font
-      const iframeStyle = this.frame.style
-      const { x, y } = this.props.panelRect
-      iframeStyle.setProperty('left', x + 'px', 'important')
-      iframeStyle.setProperty('top', y + 'px', 'important')
-      iframeStyle.removeProperty('transform')
-      iframeStyle.removeProperty('opacity')
-      iframeStyle.removeProperty('will-change')
-    }
   }
 
   handleDragAreaMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -168,6 +100,10 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     window.addEventListener('touchmove', this.handleWindowTouchMove, { capture: true })
     window.addEventListener('mouseup', this.handleDragEnd, { capture: true })
     window.addEventListener('touchend', this.handleDragEnd, { capture: true })
+
+    if (this.frame) {
+      this.frame.style.setProperty('will-change', 'top, left', 'important')
+    }
   }
 
   handleDragEnd = () => {
@@ -176,6 +112,10 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     window.removeEventListener('touchmove', this.handleWindowTouchMove, { capture: true })
     window.removeEventListener('mouseup', this.handleDragEnd, { capture: true })
     window.removeEventListener('touchend', this.handleDragEnd, { capture: true })
+
+    if (this.frame) {
+      this.frame.style.removeProperty('will-change')
+    }
   }
 
   handleWindowMouseMove = (e: MouseEvent) => {
@@ -222,17 +162,68 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     }
   }
 
+  handlePanelEnter = (node: HTMLElement) => {
+    const { x, y, width, height } = this.props.panelRect
+    const style = node.style
+
+    style.setProperty('width', width + 'px', 'important')
+    style.setProperty('height', height + 'px', 'important')
+    style.setProperty('left', `${x}px`, 'important')
+    style.setProperty('top', `${y}px`, 'important')
+  }
+
+  handlePanelEntered = (node: HTMLElement) => {
+    const { x, y, width, height } = this.props.panelRect
+    const style = node.style
+
+    style.setProperty('width', width + 'px', 'important')
+    style.setProperty('height', height + 'px', 'important')
+    style.setProperty('left', `${x}px`, 'important')
+    style.setProperty('top', `${y}px`, 'important')
+  }
+
+  componentDidUpdate () {
+    if (this.frame) {
+      const { x, y, width, height } = this.props.panelRect
+      const style = this.frame.style
+      style.setProperty('width', width + 'px', 'important')
+      style.setProperty('height', height + 'px', 'important')
+      style.setProperty('left', `${x}px`, 'important')
+      style.setProperty('top', `${y}px`, 'important')
+    }
+  }
+
+  renderDictPanel = () => {
+    return (
+      <DictPanel
+        {...this.props}
+        isDragging={this.state.isDragging}
+        panelWidth={this.props.panelRect.width}
+        handleDragAreaMouseDown={this.handleDragAreaMouseDown}
+        handleDragAreaTouchStart={this.handleDragAreaTouchStart}
+        frameDidMount={this.frameDidMount}
+        frameWillUnmount={this.frameWillUnmount}
+      />
+    )
+  }
+
   render () {
     const {
       shouldPanelShow,
+      isAnimation,
     } = this.props
 
-    const { isDragging } = this.state
-    const { x, y, width, height } = this.props.panelRect
+    const {
+      isDragging,
+    } = this.state
 
-    if (shouldPanelShow && !this.isMount) {
+    if (!shouldPanelShow) {
+      return null
+    } else if (!this.isMount) {
       this.mountEL()
     }
+
+    const shouldAnimate = isAnimation && !isSaladictPopupPage
 
     return ReactDOM.createPortal(
       <div
@@ -242,26 +233,19 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
         onTouchEndCapture={isDragging ? this.handleDragEnd : undefined}
         onKeyUp={this.handleFrameKeyUp}
       >
-        {shouldPanelShow
-          ? <DictPanel
-              {...this.props}
-              panelWidth={width}
-              handleDragAreaMouseDown={this.handleDragAreaMouseDown}
-              handleDragAreaTouchStart={this.handleDragAreaTouchStart}
-              frameDidMount={this.frameDidMount}
-              frameWillUnmount={this.frameWillUnmount}
-            />
-          : null
-        }
-        <Spring
-          from={this.initStyle}
-          to={{
-            x, y, height, width,
-            opacity: shouldPanelShow ? 1 : 0
-          }}
-          immediate={this.panelImmediateCtrl}
-          onRest={this.debouncedFrameAnimationEnd}
-        >{this.animateFrame}</Spring>
+        <CSSTransition
+          classNames='saladict-DictPanel'
+          in={shouldPanelShow}
+          timeout={500}
+          appear={true}
+          mountOnEnter={true}
+          unmountOnExit={true}
+          exit={false}
+          onEnter={shouldAnimate ? this.handlePanelEnter : this.handlePanelEntered}
+          onEntered={shouldAnimate ? this.handlePanelEntered : undefined}
+        >
+          {this.renderDictPanel}
+        </CSSTransition>
       </div>,
       this.el,
     )

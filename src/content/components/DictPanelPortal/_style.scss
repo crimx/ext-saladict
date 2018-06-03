@@ -8,4 +8,33 @@
     overflow: hidden !important;
     box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px !important;
   }
+
+  /*-----------------------------------------------*\
+      States
+  \*-----------------------------------------------*/
+  .isAnimate {
+    &.saladict-DictPanel {
+      transition: opacity 0.5s, width 0.4s, height 0.4s !important;
+
+      &.isDragging {
+        transition: opacity 0.5s, width 0.4s, height 0.4s !important;
+      }
+    }
+
+    &.saladict-DictPanel-enter {
+      opacity: 0 !important;
+    }
+
+    &.saladict-DictPanel-enter-active {
+      opacity: 1 !important;
+    }
+
+    &.saladict-DictPanel-enter-done {
+      transition: opacity 0.5s,
+                  width 0.4s, height 0.4s,
+                  top 0.4s cubic-bezier(0.55, 0.82, 0.63, 0.95),
+                  left 0.4s cubic-bezier(0.4, 0.9, 0.71, 1.02)
+                  !important;
+    }
+  }
 }

@@ -65,6 +65,10 @@ export type WidgetState = {
       width: number
       height: number
     },
+    readonly bowlRect: {
+      x: number
+      y: number
+    },
     readonly shouldWordEditorShow: boolean
   }
 }
@@ -92,6 +96,10 @@ export const initState: WidgetState = {
       height: isSaladictPopupPage
         ? 400
         : 30 + _initConfig.dicts.selected.length * 30,
+    },
+    bowlRect: {
+      x: 0,
+      y: 0,
     },
     shouldWordEditorShow: false,
   }
@@ -518,6 +526,7 @@ function listenNewSelection (
       isPinned,
       shouldPanelShow: lastShouldPanelShow,
       panelRect: lastPanelRect,
+      bowlRect: lastBowlRect,
     } = state.widget
 
     const shouldPanelShow = Boolean(
@@ -545,9 +554,14 @@ function listenNewSelection (
       !isSaladictPopupPage
     )
 
+    const bowlRect = shouldBowlShow
+      ? _getBowlRectFromEvent(mouseX, mouseY)
+      : lastBowlRect
+
     const newWidgetPartial: Mutable<Partial<WidgetState['widget']>> = {
       isPanelAppear,
       shouldBowlShow,
+      bowlRect,
     }
 
     if (!isPinned) {
@@ -685,4 +699,21 @@ function _getPanelRectFromEvent (
   const x = mouseX + width + 80 <= winWidth ? mouseX + 80 : mouseX - width - 80
   const y = mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30
   return _reconcilePanelRect(x, y, width, height)
+}
+
+function _getBowlRectFromEvent (mouseX: number, mouseY: number): { x: number, y: number } {
+  // icon position
+  //             +-------+
+  //             |       |
+  //             |       | 30px
+  //        60px +-------+
+  //             |  30px
+  //             |
+  //       40px  |
+  //     +-------+
+  // cursor
+  return {
+    x: mouseX + 70 > window.innerWidth ? mouseX - 70 : mouseX + 40,
+    y: mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30,
+  }
 }
