@@ -93,7 +93,7 @@ export const initState: WidgetState = {
         : _initConfig.panelWidth,
       height: isSaladictPopupPage
         ? 400
-        : 30 + _initConfig.dicts.selected.length * 30,
+        : 30 + 30, // menubar + 1 dict hegiht
     },
     bowlRect: {
       x: 0,
@@ -565,7 +565,7 @@ function listenNewSelection (
           mouseX,
           mouseY,
           lastPanelRect.width,
-          30 + state.config.dicts.selected.length * 30,
+          30 + state.dictionaries.active.length * 30,
         )
       }
     }
