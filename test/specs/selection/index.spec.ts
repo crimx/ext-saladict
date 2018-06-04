@@ -250,20 +250,11 @@ describe('Message Selection', () => {
   })
 
   it('ctrlKey should be true if ctrl key is pressed while clicking', done => {
-    window.dispatchEvent(new MouseEvent('mousedown', {
-      button: 0,
-      clientX: 20,
-      clientY: 20,
-    }))
-
-    window.dispatchEvent(new KeyboardEvent('keydown', {
-      key: 'Control',
-    }))
-
     window.dispatchEvent(new MouseEvent('mouseup', {
       button: 0,
       clientX: 10,
       clientY: 10,
+      ctrlKey: true,
     }))
 
     setTimeout(() => {
