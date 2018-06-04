@@ -179,16 +179,17 @@
     }
   }
 
-  .panel-DictItem_FoldArrow {
-    transition: transform 400ms;
-  }
+  // @fixme causing iframe flickering in Chrome
+  // .panel-DictItem_FoldArrow {
+    // transition: transform 400ms;
+  // }
 
   .panel-DictItem_FoldMask::after {
     transition: top 400ms;
   }
 
   .panel-DictItem_Body {
-    transition: height 0.4s 0.05s, opacity 0.4s;
+    transition: height 0.4s, opacity 0.4s;
   }
 }
 
