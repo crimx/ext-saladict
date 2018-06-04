@@ -56,23 +56,15 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     isDragging: false,
   }
 
-  frameDidMount = (frame: HTMLIFrameElement) => {
-    this.frame = frame
-  }
-
   mountEL = () => {
     this.root.appendChild(this.el)
     this.isMount = true
   }
 
   unmountEL = () => {
+    this.frame = null
     this.root.removeChild(this.el)
     this.isMount = false
-  }
-
-  frameWillUnmount = () => {
-    this.frame = null
-    setTimeout(this.unmountEL, 100)
   }
 
   handleDragAreaMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -163,6 +155,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   }
 
   handlePanelEnter = (node: HTMLElement) => {
+    this.frame = node as HTMLIFrameElement
     const { x, y, width, height } = this.props.panelRect
     const style = node.style
 
@@ -173,6 +166,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   }
 
   handlePanelEntered = (node: HTMLElement) => {
+    this.frame = node as HTMLIFrameElement
     const { x, y, width, height } = this.props.panelRect
     const style = node.style
 
@@ -201,8 +195,6 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
         panelWidth={this.props.panelRect.width}
         handleDragAreaMouseDown={this.handleDragAreaMouseDown}
         handleDragAreaTouchStart={this.handleDragAreaTouchStart}
-        frameDidMount={this.frameDidMount}
-        frameWillUnmount={this.frameWillUnmount}
       />
     )
   }
@@ -217,9 +209,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       isDragging,
     } = this.state
 
-    if (!shouldPanelShow) {
-      return null
-    } else if (!this.isMount) {
+    if (shouldPanelShow && !this.isMount) {
       this.mountEL()
     }
 
@@ -237,12 +227,11 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
           classNames='saladict-DictPanel'
           in={shouldPanelShow}
           timeout={500}
-          appear={true}
           mountOnEnter={true}
           unmountOnExit={true}
-          exit={false}
           onEnter={shouldAnimate ? this.handlePanelEnter : this.handlePanelEntered}
           onEntered={shouldAnimate ? this.handlePanelEntered : undefined}
+          onExited={this.unmountEL}
         >
           {this.renderDictPanel}
         </CSSTransition>

@@ -24,8 +24,8 @@ export interface DictPanelProps extends DictPanelDispatchers {
   readonly isAnimation: boolean
   readonly selection: MsgSelection
 
-  readonly frameDidMount: (frame: HTMLIFrameElement) => any
-  readonly frameWillUnmount: () => any
+  readonly frameDidMount?: (frame: HTMLIFrameElement) => any
+  readonly frameWillUnmount?: () => any
 }
 
 export default class DictPanel extends React.Component<DictPanelProps> {
