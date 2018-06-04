@@ -10,6 +10,8 @@ jest.mock('@/_helpers/browser-api')
 jest.mock('@/_helpers/config-manager')
 jest.mock('@/_helpers/selection')
 
+const selectionDelay = 11
+
 const { message, storage }: {
   message: typeof BrowserApiMock.message
   storage: typeof BrowserApiMock.storage
@@ -63,7 +65,7 @@ describe('Message Selection', () => {
         })
       )
       done()
-    }, 0)
+    }, selectionDelay)
   })
 
   it('should send empty message if the selection language does not match (Chinese)', done => {
@@ -93,7 +95,7 @@ describe('Message Selection', () => {
         })
       )
       done()
-    }, 0)
+    }, selectionDelay)
   })
 
   it('should send empty message if the selection language does not match (English)', done => {
@@ -125,7 +127,7 @@ describe('Message Selection', () => {
         })
       )
       done()
-    }, 0)
+    }, selectionDelay)
   })
 
   it('should collect selection info and send back', done => {
@@ -155,7 +157,7 @@ describe('Message Selection', () => {
         }),
       })
       done()
-    }, 0)
+    }, selectionDelay)
   })
 
   it('should send empty message if the selection is made inside a input box', done => {
@@ -184,7 +186,7 @@ describe('Message Selection', () => {
         })
       )
       done()
-    }, 0)
+    }, selectionDelay)
   })
 
   // FIX ME: Can't mock window.parent
@@ -209,7 +211,7 @@ describe('Message Selection', () => {
     setTimeout(() => {
       expect(message.self.send).toHaveBeenCalledTimes(0)
       done()
-    }, 0)
+    }, selectionDelay)
   })
 
   it('should do nothing if conifg.active is off', done => {
@@ -232,7 +234,7 @@ describe('Message Selection', () => {
     setTimeout(() => {
       expect(message.self.send).toHaveBeenCalledTimes(0)
       done()
-    }, 0)
+    }, selectionDelay)
   })
 
   it('should detect esc key being pressed', done => {
@@ -244,7 +246,7 @@ describe('Message Selection', () => {
       expect(message.self.send).toHaveBeenCalledTimes(1)
       expect(message.self.send).toBeCalledWith({ type: MsgType.EscapeKey })
       done()
-    }, 0)
+    }, selectionDelay)
   })
 
   it('ctrlKey should be true if ctrl key is pressed while clicking', done => {
@@ -272,7 +274,7 @@ describe('Message Selection', () => {
         }),
       )
       done()
-    }, 0)
+    }, selectionDelay)
   })
 
   it('ctrlKey should be false if not released while clicking', done => {
@@ -300,7 +302,7 @@ describe('Message Selection', () => {
         }),
       )
       done()
-    }, 0)
+    }, selectionDelay)
   })
 
   it('ctrlKey should be false if ctrl key is released while clicking', done => {
@@ -332,7 +334,7 @@ describe('Message Selection', () => {
         }),
       )
       done()
-    }, 0)
+    }, selectionDelay)
   })
 
   it('should send message when ctrl is pressed more that three times within 500ms', done => {
@@ -348,7 +350,7 @@ describe('Message Selection', () => {
       expect(message.self.send).toHaveBeenCalledTimes(1)
       expect(message.self.send).toBeCalledWith({ type: MsgType.TripleCtrl })
       done()
-    }, 510)
+    }, 550)
   })
 
   it('should not trigger double click if the interval is too long', done => {
@@ -391,7 +393,7 @@ describe('Message Selection', () => {
           }),
         )
         done()
-      }, 0)
+      }, selectionDelay)
     }, 200)
   })
 
@@ -433,7 +435,7 @@ describe('Message Selection', () => {
           }),
         )
         done()
-      }, 0)
+      }, 11)
     }, 50)
   })
 })
