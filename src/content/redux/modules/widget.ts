@@ -57,13 +57,16 @@ export type WidgetState = {
     readonly isPinned: boolean
     readonly isFav: boolean
     readonly shouldBowlShow: boolean
-    readonly isPanelAppear: boolean
     readonly shouldPanelShow: boolean
     readonly panelRect: {
       x: number
       y: number
       width: number
       height: number
+    },
+    readonly bowlRect: {
+      x: number
+      y: number
     },
     readonly shouldWordEditorShow: boolean
   }
@@ -77,7 +80,6 @@ export const initState: WidgetState = {
     isPinned: isSaladictOptionsPage,
     isFav: false,
     shouldBowlShow: false,
-    isPanelAppear: false,
     shouldPanelShow: isSaladictPopupPage || isSaladictOptionsPage,
     panelRect: {
       x: isSaladictOptionsPage
@@ -92,6 +94,10 @@ export const initState: WidgetState = {
       height: isSaladictPopupPage
         ? 400
         : 30 + _initConfig.dicts.selected.length * 30,
+    },
+    bowlRect: {
+      x: 0,
+      y: 0,
     },
     shouldWordEditorShow: false,
   }
@@ -183,7 +189,6 @@ export const reducer: WidgetReducer = {
 
     const widget = _restoreWidget(state.widget)
     widget.shouldPanelShow = true
-    widget.isPanelAppear = true
     widget.panelRect = _reconcilePanelRect(x, y, width, height)
 
     return {
@@ -282,7 +287,6 @@ export const reducer: WidgetReducer = {
       ...state,
       widget: {
         ...state.widget,
-        isPanelAppear: false,
         panelRect: _reconcilePanelRect(
           x,
           y,
@@ -518,6 +522,7 @@ function listenNewSelection (
       isPinned,
       shouldPanelShow: lastShouldPanelShow,
       panelRect: lastPanelRect,
+      bowlRect: lastBowlRect,
     } = state.widget
 
     const shouldPanelShow = Boolean(
@@ -532,8 +537,6 @@ function listenNewSelection (
       isSaladictPopupPage
     )
 
-    const isPanelAppear = shouldPanelShow && !lastShouldPanelShow
-
     const shouldBowlShow = Boolean(
       selectionInfo.text &&
       icon &&
@@ -545,9 +548,13 @@ function listenNewSelection (
       !isSaladictPopupPage
     )
 
+    const bowlRect = shouldBowlShow
+      ? _getBowlRectFromEvent(mouseX, mouseY)
+      : lastBowlRect
+
     const newWidgetPartial: Mutable<Partial<WidgetState['widget']>> = {
-      isPanelAppear,
       shouldBowlShow,
+      bowlRect,
     }
 
     if (!isPinned) {
@@ -578,8 +585,7 @@ function listenNewSelection (
 
     // should search text?
     const { pinMode } = state.config
-    if (isPanelAppear || (
-          shouldPanelShow && selectionInfo.text && (
+    if ((shouldPanelShow && selectionInfo.text && (
             !isPinned ||
             pinMode.direct ||
             (pinMode.double && dbClick) ||
@@ -629,7 +635,6 @@ function _restoreWidget (widget: WidgetState['widget']): Mutable<WidgetState['wi
     isPinned: isSaladictOptionsPage,
     shouldPanelShow: isSaladictPopupPage || isSaladictOptionsPage,
     shouldBowlShow: false,
-    isPanelAppear: false,
     shouldWordEditorShow: false,
   }
 }
@@ -685,4 +690,21 @@ function _getPanelRectFromEvent (
   const x = mouseX + width + 80 <= winWidth ? mouseX + 80 : mouseX - width - 80
   const y = mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30
   return _reconcilePanelRect(x, y, width, height)
+}
+
+function _getBowlRectFromEvent (mouseX: number, mouseY: number): { x: number, y: number } {
+  // icon position
+  //             +-------+
+  //             |       |
+  //             |       | 30px
+  //        60px +-------+
+  //             |  30px
+  //             |
+  //       40px  |
+  //     +-------+
+  // cursor
+  return {
+    x: mouseX + 70 > window.innerWidth ? mouseX - 70 : mouseX + 40,
+    y: mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30,
+  }
 }

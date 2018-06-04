@@ -13,6 +13,7 @@ export type DictPanelDispatchers = DictItemDispatchers & MenuBarDispatchers & {
 }
 
 export interface DictPanelProps extends DictPanelDispatchers {
+  readonly isDragging: boolean
   readonly isFav: boolean
   readonly isPinned: boolean
   readonly dictionaries: DictionariesState['dictionaries']
@@ -23,8 +24,8 @@ export interface DictPanelProps extends DictPanelDispatchers {
   readonly isAnimation: boolean
   readonly selection: MsgSelection
 
-  readonly frameDidMount: (frame: HTMLIFrameElement) => any
-  readonly frameWillUnmount: () => any
+  readonly frameDidMount?: (frame: HTMLIFrameElement) => any
+  readonly frameWillUnmount?: () => any
 }
 
 export default class DictPanel extends React.Component<DictPanelProps> {
@@ -56,6 +57,8 @@ export default class DictPanel extends React.Component<DictPanelProps> {
 
   render () {
     const {
+      isDragging,
+
       isFav,
       isPinned,
       langCode,
@@ -83,11 +86,15 @@ export default class DictPanel extends React.Component<DictPanelProps> {
       active: activeDicts,
     } = dictionaries
 
+    const frameClassName = 'saladict-DictPanel'
+      + (isAnimation ? ' isAnimate' : '')
+      + (isDragging ? ' isDragging' : '')
+
     // wrap iframe into DictPanel so that react
     // can release memory correctly after removed from DOM
     return (
       <PortalFrame
-        className='saladict-DictPanel'
+        className={frameClassName}
         name='saladict-frame'
         frameBorder='0'
         head={this.frameHead}

@@ -26,7 +26,6 @@ export const mapStateToProps = ({
 
     isFav: widget.isFav,
     isPinned: widget.isPinned,
-    isPanelAppear: widget.isPanelAppear,
     shouldPanelShow: widget.shouldPanelShow,
     panelRect: widget.panelRect,
 

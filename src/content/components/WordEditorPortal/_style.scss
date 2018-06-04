@@ -9,4 +9,32 @@
     height: 100vh !important;
     overflow: hidden !important;
   }
+
+  .saladict-WordEditor-enter {
+    will-change: opacity;
+    opacity: 0 !important;
+  }
+
+  .saladict-WordEditor-enter-active {
+    opacity: 1 !important;
+  }
+
+  .saladict-WordEditor-exit {
+    will-change: opacity;
+    opacity: 1 !important;
+  }
+
+  .saladict-WordEditor-exit-active {
+    opacity: 0 !important;
+  }
+
+  /*-----------------------------------------------*\
+      States
+  \*-----------------------------------------------*/
+
+  .isAnimate {
+    &.saladict-WordEditor {
+      transition: opacity 0.5s !important;
+    }
+  }
 }

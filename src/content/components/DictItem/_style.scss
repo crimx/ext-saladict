@@ -186,6 +186,10 @@
   .panel-DictItem_FoldMask::after {
     transition: top 400ms;
   }
+
+  .panel-DictItem_Body {
+    transition: height 0.4s 0.05s, opacity 0.4s;
+  }
 }
 
 @keyframes panel-DictItem_Loader-shift {

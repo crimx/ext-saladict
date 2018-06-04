@@ -2,7 +2,6 @@ import React from 'react'
 import { DictID } from '@/app-config'
 import { translate } from 'react-i18next'
 import { TranslationFunction } from 'i18next'
-import { Spring } from 'react-spring'
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgOpenUrl } from '@/typings/message'
 
@@ -259,36 +258,32 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
             </svg>
           </button>
         </header>
-        <Spring from={this.initStyle} to={{ height: visibleHeight, opacity: isUnfold ? 1 : 0 }} immediate={!isAnimation}>
-          {({ height, opacity }) => (
-            <div className='panel-DictItem_Body'
-              key={id}
-              style={{ fontSize, height }}
-            >
-              <article ref={this.bodyRef} className='panel-DictItem_BodyMesure' style={{ opacity }}>
-                {searchResult && !hasError &&
-                  React.createElement(
-                    require('@/components/dictionaries/' + id + '/View.tsx').default,
-                    {
-                      result: searchResult,
-                      recalcBodyHeight: this.handleRecalcBodyHeight,
-                    }
-                  )
+        <div className='panel-DictItem_Body'
+          key={id}
+          style={{ fontSize, height: visibleHeight }}
+        >
+          <article ref={this.bodyRef} className='panel-DictItem_BodyMesure' style={{ opacity: isUnfold ? 1 : 0 }}>
+            {searchResult && !hasError &&
+              React.createElement(
+                require('@/components/dictionaries/' + id + '/View.tsx').default,
+                {
+                  result: searchResult,
+                  recalcBodyHeight: this.handleRecalcBodyHeight,
                 }
-              </article>
-              {isUnfold && searchResult && visibleHeight < offsetHeight &&
-                <button
-                  className={'panel-DictItem_FoldMask'}
-                  onClick={this.showFull}
-                >
-                  <svg className='panel-DictItem_FoldMaskArrow' width='15' height='15' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'>
-                    <path d='M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56' />
-                  </svg>
-                </button>
-              }
-            </div>
-          )}
-        </Spring>
+              )
+            }
+          </article>
+          {isUnfold && searchResult && visibleHeight < offsetHeight &&
+            <button
+              className={'panel-DictItem_FoldMask'}
+              onClick={this.showFull}
+            >
+              <svg className='panel-DictItem_FoldMaskArrow' width='15' height='15' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'>
+                <path d='M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56' />
+              </svg>
+            </button>
+          }
+        </div>
       </section>
     )
   }
