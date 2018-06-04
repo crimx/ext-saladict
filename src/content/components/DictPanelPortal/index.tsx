@@ -24,7 +24,6 @@ export interface DictPanelPortalProps extends DictPanelPortalDispatchers {
 
   readonly isFav: boolean
   readonly isPinned: boolean
-  readonly isPanelAppear: boolean
   readonly shouldPanelShow: boolean
   readonly panelRect: {
     x: number

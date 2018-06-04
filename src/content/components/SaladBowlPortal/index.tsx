@@ -15,7 +15,6 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
   el = document.createElement('div')
   bowl: null | HTMLElement = null
   isMount = false
-  isAppeare = false
 
   handleBowlEnter = (node: HTMLElement) => {
     this.bowl = node
@@ -50,12 +49,10 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
 
   render () {
     const { shouldShow, isAnimation } = this.props
-    this.isAppeare = false
     if (shouldShow) {
       if (!this.isMount) {
         this.root.appendChild(this.el)
         this.isMount = true
-        this.isAppeare = true
       }
     } else {
       if (this.isMount) {
