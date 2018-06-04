@@ -50,13 +50,10 @@ window.addEventListener('message', ({ data, source }: { data: PostMsgSelection, 
 })
 
 let config = appConfigFactory()
-let isCtrlPressed = false
 let clickPeriodCount = 0
 let lastMousedownTarget: EventTarget | null
 
-const isCtrlPressed$$ = share<boolean>()(isKeyPressed(isCtrlKey))
-
-const validCtrlPressed$$ = isCtrlPressed$$.pipe(
+const validCtrlPressed$$ = isKeyPressed(isCtrlKey).pipe(
   filter(isCtrlPressed => config.active && isCtrlPressed),
   share(),
 )
@@ -106,8 +103,6 @@ const clickPeriodCount$ = merge(
 
 createAppConfigStream().subscribe(newConfig => config = newConfig)
 
-isCtrlPressed$$.subscribe(flag => isCtrlPressed = flag)
-
 isKeyPressed(isEscapeKey).subscribe(flag => {
   if (flag) {
     message.self.send({ type: MsgType.EscapeKey })
@@ -122,7 +117,7 @@ tripleCtrlPressed$.subscribe(() => {
 
 let lastText: string
 let lastContext: string
-validMouseup$$.subscribe(({ clientX, clientY }) => {
+validMouseup$$.subscribe(event => {
   if (config.noTypeField && isTypeField(lastMousedownTarget)) {
     sendEmptyMessage()
     return
@@ -146,10 +141,10 @@ validMouseup$$.subscribe(({ clientX, clientY }) => {
     lastContext = context
 
     sendMessage(
-      clientX,
-      clientY,
+      event.clientX,
+      event.clientY,
       clickPeriodCount >= 2,
-      isCtrlPressed,
+      Boolean(event['metaKey'] || event['ctrlKey']),
       {
         text: selection.getSelectionText(),
         context,
