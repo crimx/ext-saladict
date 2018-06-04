@@ -39,18 +39,8 @@
       <button type="button" class="btn btn-default btn-xs" @click="handleExport">{{ $t('opt:export') }}</button>
       <button type="button" class="btn btn-danger btn-xs" @click="handleReset">{{ $t('opt:reset') }}</button>
     </div>
-    <opt-app-active />
-    <opt-preference />
-    <opt-privacy />
-    <opt-language />
-    <opt-dict-panel />
-    <opt-mode />
-    <opt-pin-mode />
-    <opt-popup />
-    <opt-triple-ctrl />
-    <opt-autopron />
-    <opt-dicts />
-    <opt-context-menu />
+
+    <component v-for="optName in optNames" :is="optName" :key="optName"></component>
   </div>
 
   <!--Alert Modal-->
@@ -69,18 +59,27 @@ import Coffee from './Coffee'
 import SocialMedia from './SocialMedia'
 import AlertModal from '@/components/AlertModal'
 
-import OptAppActive from './OptAppActive'
-import OptPreference from './OptPreference'
-import OptPrivacy from './OptPrivacy'
-import OptDictPanel from './OptDictPanel'
-import OptMode from './OptMode'
-import OptPinMode from './OptPinMode'
-import OptPopup from './OptPopup'
-import OptTripleCtrl from './OptTripleCtrl'
-import OptLanguage from './OptLanguage'
-import OptAutopron from './OptAutopron'
-import OptDicts from './OptDicts'
-import OptContextMenu from './OptContextMenu'
+// Auto import option section components
+const _optNames = [
+  'OptAppActive',
+  'OptPreference',
+  'OptPrivacy',
+  'OptLanguage',
+  'OptDictPanel',
+  'OptMode',
+  'OptPinMode',
+  'OptPopup',
+  'OptTripleCtrl',
+  'OptAutopron',
+  'OptDicts',
+  'OptContextMenu',
+]
+
+const _optRequire = require.context('./', false, /^\.\/Opt.*\.vue$/)
+const _optComps = _optNames.reduce((o, name) => {
+   o[name] = _optRequire(`./${name}.vue`).default
+  return o
+}, {})
 
 export default {
   name: 'options',
@@ -92,6 +91,7 @@ export default {
       isShowConfigUpdated: false,
       isShowSocial: false,
       isShowAcknowledgement: false,
+      optNames: _optNames,
     }
   },
   methods: {
@@ -182,18 +182,7 @@ export default {
     },
   },
   components: {
-    OptAppActive,
-    OptPreference,
-    OptPrivacy,
-    OptDictPanel,
-    OptMode,
-    OptPinMode,
-    OptPopup,
-    OptTripleCtrl,
-    OptLanguage,
-    OptAutopron,
-    OptDicts,
-    OptContextMenu,
+    ..._optComps,
     Coffee,
     SocialMedia,
     AlertModal
