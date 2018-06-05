@@ -161,6 +161,10 @@ describe('Message Selection', () => {
   })
 
   it('should send empty message if the selection is made inside a input box', done => {
+    const config = mockAppConfigFactory()
+    config.noTypeField = true
+    dispatchAppConfigEvent(config)
+
     const $input = document.createElement('input')
     document.body.appendChild($input)
 
