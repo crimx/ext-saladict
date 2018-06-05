@@ -3,16 +3,15 @@ import ReactDOM from 'react-dom'
 import PortalFrame from '@/components/PortalFrame'
 import WordEditor, { WordEditorProps } from '../WordEditor'
 import { SelectionInfo } from '@/_helpers/selection'
-import { saveWord, getWordsByText } from '@/_helpers/record-manager'
+import { getWordsByText } from '@/_helpers/record-manager'
 import { Omit } from '@/typings/helpers'
 import CSSTransition from 'react-transition-group/CSSTransition'
 
-const saveToNotebook = (info: SelectionInfo) => saveWord('notebook', info)
 const getWordsByTextFromNotebook = (text: string) => getWordsByText('notebook', text)
 
 export interface WordEditorPortalProps extends Omit<
   WordEditorProps,
-  'saveToNotebook' | 'getWordsByText'
+  'getWordsByText'
 > {
   shouldWordEditorShow: boolean
   isAnimation: boolean
@@ -77,7 +76,6 @@ export default class WordEditorPortal extends React.Component<WordEditorPortalPr
       >
         <WordEditor
           {...restProps}
-          saveToNotebook={saveToNotebook}
           getWordsByText={getWordsByTextFromNotebook}
         />
       </PortalFrame>

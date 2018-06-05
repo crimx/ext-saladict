@@ -6,7 +6,7 @@ import { Word } from '@/background/database'
 import WordCards from '../WordCards'
 
 export interface WordEditorDispatchers {
-  saveToNotebook: (info: SelectionInfo) => Promise<void>
+  saveToNotebook: (info: SelectionInfo) => any
   getWordsByText: (text: string) => Promise<Word[]>
   closeDictPanel: () => any
   closeModal: () => any

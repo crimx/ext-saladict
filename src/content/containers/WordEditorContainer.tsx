@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import WordEditorPortal from '../components/WordEditorPortal'
 import { StoreState } from '../redux/modules'
-import { closePanel, closeWordEditor } from '../redux/modules/widget'
+import { closePanel, closeWordEditor, addToNotebook } from '../redux/modules/widget'
 
 export const mapStateToProps = ({ config, dictionaries, widget }: StoreState) => {
   return {
@@ -15,6 +15,7 @@ export const mapStateToProps = ({ config, dictionaries, widget }: StoreState) =>
 export const mapDispatchToProps = {
   closeDictPanel: closePanel,
   closeModal: closeWordEditor,
+  saveToNotebook: addToNotebook,
 }
 
 export default connect(

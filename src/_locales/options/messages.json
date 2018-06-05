@@ -179,6 +179,11 @@
     "zh_CN": "词典设置",
     "zh_TW": "字典設定"
   },
+  "edit_on_fav": {
+    "en": "Open WordEditor on saving",
+    "zh_CN": "红心单词时弹出编辑面板",
+    "zh_TW": "紅心單字時彈出編輯介面"
+  },
   "export": {
     "en": "Reset",
     "zh_CN": "导出设定",
@@ -268,6 +273,16 @@
     "en": "None",
     "zh_CN": "无",
     "zh_TW": "無"
+  },
+  "notebook_description": {
+    "en": "Notebook related",
+    "zh_CN": "生词本相关",
+    "zh_TW": "生字本相關"
+  },
+  "notebook_title": {
+    "en": "Notebook",
+    "zh_CN": "添加生词",
+    "zh_TW": "添加生字"
   },
   "pdf_sniff": {
     "en": "Enable PDF Viewer",

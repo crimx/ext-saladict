@@ -476,7 +476,12 @@ export function isInNotebook (info: SelectionInfo): DispatcherThunk {
 
 export function openWordEditor (): DispatcherThunk {
   return (dispatch, getState) => {
-    dispatch(wordEditorShouldShow(true))
+    const { config, dictionaries } = getState()
+    if (config.editOnFav) {
+      dispatch(wordEditorShouldShow(true))
+    } else {
+      dispatch(addToNotebook(dictionaries.searchHistory[0]))
+    }
   }
 }
 
@@ -496,14 +501,6 @@ export function addToNotebook (info: SelectionInfo): DispatcherThunk {
         }
         dispatch(favWord(false))
       })
-  }
-}
-
-/** Fire when panel is loaded */
-export function updateFaveInfo (): DispatcherThunk {
-  return (dispatch, getState) => {
-    return recordManager.isInNotebook(getState().dictionaries.searchHistory[0])
-      .then(flag => dispatch(favWord(flag)))
   }
 }
 

@@ -64,6 +64,7 @@ const _optNames = [
   'OptAppActive',
   'OptPreference',
   'OptPrivacy',
+  'OptNotebook',
   'OptLanguage',
   'OptDictPanel',
   'OptMode',
