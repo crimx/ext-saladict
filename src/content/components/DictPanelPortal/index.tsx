@@ -8,6 +8,7 @@ import { AppConfig, DictConfigs } from '@/app-config'
 import shallowEqual from 'fbjs/lib/shallowEqual'
 
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
+const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 
 export type DictPanelPortalDispatchers = Omit<
   DictPanelDispatchers,
@@ -228,6 +229,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
           timeout={500}
           mountOnEnter={true}
           unmountOnExit={true}
+          appear={isSaladictOptionsPage || isSaladictPopupPage}
           onEnter={shouldAnimate ? this.handlePanelEnter : this.handlePanelEntered}
           onEntered={shouldAnimate ? this.handlePanelEntered : undefined}
           onExited={this.unmountEL}
