@@ -62,6 +62,9 @@ export interface AppConfigMutable {
   /** track search history */
   searhHistory: boolean
 
+  /** open word editor when adding a word to notebook */
+  editOnFav: boolean
+
   /** play sound */
   newWordSound: boolean
 
@@ -149,7 +152,7 @@ export function appConfigFactory (): AppConfig {
 
     active: true,
 
-    noTypeField: true,
+    noTypeField: false,
 
     animation: true,
 
@@ -166,6 +169,8 @@ export function appConfigFactory (): AppConfig {
     searhHistory: false,
 
     newWordSound: true,
+
+    editOnFav: true,
 
     mode: {
       icon: true,

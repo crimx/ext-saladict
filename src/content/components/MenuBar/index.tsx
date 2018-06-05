@@ -179,11 +179,21 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     this.props.closePanel()
   }
 
-  componentDidMount () {
+  focusSearchBox = () => {
     const input = this.inputRef.current
     if (input) {
       input.focus()
       input.select()
+    }
+  }
+
+  componentDidMount () {
+    this.focusSearchBox()
+  }
+
+  componentDidUpdate (prevProps: MenuBarProps) {
+    if (this.props.searchHistory[0].text !== prevProps.searchHistory[0].text) {
+      this.focusSearchBox()
     }
   }
 

@@ -30,6 +30,7 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   mergeBoolean('pdfSniff')
   mergeBoolean('searhHistory')
   mergeBoolean('newWordSound')
+  mergeBoolean('editOnFav')
 
   mergeBoolean('mode.icon')
   mergeBoolean('mode.direct')

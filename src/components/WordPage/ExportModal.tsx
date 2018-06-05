@@ -140,7 +140,10 @@ export class ExportModalBody extends React.Component<ExportModalInnerProps, Expo
     return (
       <Layout style={{ height: '70vh', maxHeight: 1000 }}>
         <Content style={{ display: 'flex', flexDirection: 'column', background: '#fff' }}>
-          <p className='export-Description'>{t('export_description')}</p>
+          <p className='export-Description'>
+            {t('export_description')}
+            <a href='https://github.com/crimx/ext-saladict/wiki/ANKI' target='_blank'>{t('export_explain')}</a>
+          </p>
           <Table
             dataSource={this.tplTableData}
             columns={this.tplTableCols}

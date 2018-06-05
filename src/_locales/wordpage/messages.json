@@ -65,9 +65,14 @@
     "zh_TW": "輸出所有單字"
   },
   "export_description": {
-    "en": "Describe the shape of each record：",
+    "en": "Describe the shape of each record: ",
     "zh_CN": "编写生成模板，描述每条记录生成的样子：",
     "zh_TW": "編寫產生的模板，描述每條記錄產生的樣子："
+  },
+  "export_explain": {
+    "en": "How to export to ANKI and other tools",
+    "zh_CN": "如何配合 ANKI 等工具",
+    "zh_TW": "如何配合 ANKI 等工具"
   },
   "export_gencontent": {
     "en": "Generated Content",

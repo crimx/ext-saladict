@@ -103,7 +103,12 @@
   width: 18px;
   height: 18px;
   padding: 3px;
+}
 
+// transform svg path instead of svg itself to
+// prevent iframe flickering bug in Chrome
+.panel-DictItem_FoldArrowPath {
+  transform-origin: center;
   &.isActive {
     transform: rotate(-90deg);
   }
@@ -179,12 +184,16 @@
     }
   }
 
-  .panel-DictItem_FoldArrow {
+  .panel-DictItem_FoldArrowPath {
     transition: transform 400ms;
   }
 
   .panel-DictItem_FoldMask::after {
     transition: top 400ms;
+  }
+
+  .panel-DictItem_Body {
+    transition: height 0.4s, opacity 0.4s;
   }
 }
 

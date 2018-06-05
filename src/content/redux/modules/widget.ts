@@ -57,7 +57,6 @@ export type WidgetState = {
     readonly isPinned: boolean
     readonly isFav: boolean
     readonly shouldBowlShow: boolean
-    readonly isPanelAppear: boolean
     readonly shouldPanelShow: boolean
     readonly panelRect: {
       x: number
@@ -65,7 +64,17 @@ export type WidgetState = {
       width: number
       height: number
     },
+    readonly bowlRect: {
+      x: number
+      y: number
+    },
     readonly shouldWordEditorShow: boolean
+    readonly panelStateBeforeWordEditor: {
+      x: number
+      y: number
+      isPinned: boolean
+      shouldPanelShow: boolean
+    }
   }
 }
 
@@ -77,7 +86,6 @@ export const initState: WidgetState = {
     isPinned: isSaladictOptionsPage,
     isFav: false,
     shouldBowlShow: false,
-    isPanelAppear: false,
     shouldPanelShow: isSaladictPopupPage || isSaladictOptionsPage,
     panelRect: {
       x: isSaladictOptionsPage
@@ -91,9 +99,19 @@ export const initState: WidgetState = {
         : _initConfig.panelWidth,
       height: isSaladictPopupPage
         ? 400
-        : 30 + _initConfig.dicts.selected.length * 30,
+        : 30 + 30, // menubar + 1 dict hegiht
+    },
+    bowlRect: {
+      x: 0,
+      y: 0,
     },
     shouldWordEditorShow: false,
+    panelStateBeforeWordEditor: {
+      x: 0,
+      y: 0,
+      isPinned: false,
+      shouldPanelShow: false,
+    },
   }
 }
 
@@ -183,7 +201,6 @@ export const reducer: WidgetReducer = {
 
     const widget = _restoreWidget(state.widget)
     widget.shouldPanelShow = true
-    widget.isPanelAppear = true
     widget.panelRect = _reconcilePanelRect(x, y, width, height)
 
     return {
@@ -250,19 +267,42 @@ export const reducer: WidgetReducer = {
       widget: {
         ...state.widget,
         shouldWordEditorShow: shouldWordEditorShow,
-        isPinned: shouldWordEditorShow,
-        shouldPanelShow: shouldWordEditorShow,
       }
     }
 
     if (shouldWordEditorShow) {
-      const { width, height } = state.widget.panelRect
+      const { panelRect, isPinned, shouldPanelShow } = state.widget
+      const { x, y, width, height } = panelRect
+      newState.widget.panelStateBeforeWordEditor = {
+        x, y,
+        isPinned,
+        shouldPanelShow,
+      }
+
+      newState.widget.isPinned = true
+      newState.widget.shouldPanelShow = true
       newState.widget.panelRect = _reconcilePanelRect(
         40,
         (1 - state.config.panelMaxHeightRatio) * window.innerHeight / 2,
         width,
         height,
       )
+    } else {
+      // Resume cords
+      const { width, height } = state.widget.panelRect
+      const { x, y, isPinned, shouldPanelShow } = state.widget.panelStateBeforeWordEditor
+
+      // User might close the panel during word editor page. Keep it closed.
+      newState.widget.shouldPanelShow = shouldPanelShow && state.widget.shouldPanelShow
+      if (newState.widget.shouldPanelShow) {
+        newState.widget.isPinned = isPinned
+        newState.widget.panelRect = _reconcilePanelRect(
+          x,
+          y,
+          width,
+          height,
+        )
+      }
     }
 
     return newState
@@ -282,7 +322,6 @@ export const reducer: WidgetReducer = {
       ...state,
       widget: {
         ...state.widget,
-        isPanelAppear: false,
         panelRect: _reconcilePanelRect(
           x,
           y,
@@ -437,7 +476,12 @@ export function isInNotebook (info: SelectionInfo): DispatcherThunk {
 
 export function openWordEditor (): DispatcherThunk {
   return (dispatch, getState) => {
-    dispatch(wordEditorShouldShow(true))
+    const { config, dictionaries } = getState()
+    if (config.editOnFav) {
+      dispatch(wordEditorShouldShow(true))
+    } else {
+      dispatch(addToNotebook(dictionaries.searchHistory[0]))
+    }
   }
 }
 
@@ -457,14 +501,6 @@ export function addToNotebook (info: SelectionInfo): DispatcherThunk {
         }
         dispatch(favWord(false))
       })
-  }
-}
-
-/** Fire when panel is loaded */
-export function updateFaveInfo (): DispatcherThunk {
-  return (dispatch, getState) => {
-    return recordManager.isInNotebook(getState().dictionaries.searchHistory[0])
-      .then(flag => dispatch(favWord(flag)))
   }
 }
 
@@ -518,6 +554,7 @@ function listenNewSelection (
       isPinned,
       shouldPanelShow: lastShouldPanelShow,
       panelRect: lastPanelRect,
+      bowlRect: lastBowlRect,
     } = state.widget
 
     const shouldPanelShow = Boolean(
@@ -532,8 +569,6 @@ function listenNewSelection (
       isSaladictPopupPage
     )
 
-    const isPanelAppear = shouldPanelShow && !lastShouldPanelShow
-
     const shouldBowlShow = Boolean(
       selectionInfo.text &&
       icon &&
@@ -545,9 +580,13 @@ function listenNewSelection (
       !isSaladictPopupPage
     )
 
+    const bowlRect = shouldBowlShow
+      ? _getBowlRectFromEvent(mouseX, mouseY)
+      : lastBowlRect
+
     const newWidgetPartial: Mutable<Partial<WidgetState['widget']>> = {
-      isPanelAppear,
       shouldBowlShow,
+      bowlRect,
     }
 
     if (!isPinned) {
@@ -558,7 +597,7 @@ function listenNewSelection (
           mouseX,
           mouseY,
           lastPanelRect.width,
-          30 + state.config.dicts.selected.length * 30,
+          30 + state.dictionaries.active.length * 30,
         )
       }
     }
@@ -578,8 +617,7 @@ function listenNewSelection (
 
     // should search text?
     const { pinMode } = state.config
-    if (isPanelAppear || (
-          shouldPanelShow && selectionInfo.text && (
+    if ((shouldPanelShow && selectionInfo.text && (
             !isPinned ||
             pinMode.direct ||
             (pinMode.double && dbClick) ||
@@ -629,8 +667,6 @@ function _restoreWidget (widget: WidgetState['widget']): Mutable<WidgetState['wi
     isPinned: isSaladictOptionsPage,
     shouldPanelShow: isSaladictPopupPage || isSaladictOptionsPage,
     shouldBowlShow: false,
-    isPanelAppear: false,
-    shouldWordEditorShow: false,
   }
 }
 
@@ -685,4 +721,21 @@ function _getPanelRectFromEvent (
   const x = mouseX + width + 80 <= winWidth ? mouseX + 80 : mouseX - width - 80
   const y = mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30
   return _reconcilePanelRect(x, y, width, height)
+}
+
+function _getBowlRectFromEvent (mouseX: number, mouseY: number): { x: number, y: number } {
+  // icon position
+  //             +-------+
+  //             |       |
+  //             |       | 30px
+  //        60px +-------+
+  //             |  30px
+  //             |
+  //       40px  |
+  //     +-------+
+  // cursor
+  return {
+    x: mouseX + 70 > window.innerWidth ? mouseX - 70 : mouseX + 40,
+    y: mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30,
+  }
 }
