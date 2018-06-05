@@ -5,7 +5,6 @@ import DictPanel, { DictPanelDispatchers, DictPanelProps } from '../DictPanel'
 import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
-import shallowEqual from 'fbjs/lib/shallowEqual'
 
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__

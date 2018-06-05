@@ -10,7 +10,6 @@
   }
 
   .saladict-DictPanel-enter {
-    will-change: opacity;
     opacity: 0 !important;
   }
 
@@ -19,7 +18,6 @@
   }
 
   .saladict-DictPanel-exit {
-    will-change: opacity;
     opacity: 1 !important;
   }
 
@@ -32,6 +30,7 @@
   \*-----------------------------------------------*/
   .isAnimate {
     &.saladict-DictPanel {
+      will-change: width, height, left, top !important;
       transition: opacity 0.2s,
                   width 0.4s, height 0.4s,
                   top 0.4s cubic-bezier(0.55, 0.82, 0.63, 0.95),
@@ -44,10 +43,12 @@
     }
 
     &.saladict-DictPanel-enter {
+      will-change: opacity, width, height;
       transition: opacity 0.4s, width 0.4s, height 0.4s !important;
     }
 
     &.saladict-DictPanel-exit {
+      will-change: opacity, width, height;
       transition: opacity 0.1s, width 0.4s, height 0.4s !important;
     }
   }
