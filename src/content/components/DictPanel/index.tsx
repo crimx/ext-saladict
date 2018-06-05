@@ -101,40 +101,42 @@ export default class DictPanel extends React.Component<DictPanelProps> {
         frameDidMount={this.props.frameDidMount}
         frameWillUnmount={this.props.frameWillUnmount}
       >
-        {React.createElement(MenuBar, {
-          isFav,
-          isPinned,
-          searchHistory: dictionaries.searchHistory,
-          handleDragAreaMouseDown,
-          handleDragAreaTouchStart,
-          searchText,
-          openWordEditor,
-          shareImg,
-          panelPinSwitch,
-          closePanel,
-        })}
-        <div className={`panel-DictContainer${isAnimation ? ' isAnimate' : ''}`}>
-          {activeDicts.map(id => {
-            let dictURL = allDictsConfig[id].page
-            if (typeof dictURL !== 'string') {
-              dictURL = dictURL[langCode] || dictURL.en
-            }
-
-            return React.createElement(DictItem, {
-              key: id,
-              id,
-              text: (dictionaries.searchHistory[0] || selection.selectionInfo).text,
-              dictURL,
-              fontSize,
-              preferredHeight: allDictsConfig[id].preferredHeight,
-              panelWidth,
-              isAnimation,
-              searchStatus: (dictsInfo[id] as any).searchStatus,
-              searchResult: (dictsInfo[id] as any).searchResult,
-              searchText,
-              updateItemHeight,
-            })
+        <div className={isAnimation ? 'isAnimate' : undefined}>
+          {React.createElement(MenuBar, {
+            isFav,
+            isPinned,
+            searchHistory: dictionaries.searchHistory,
+            handleDragAreaMouseDown,
+            handleDragAreaTouchStart,
+            searchText,
+            openWordEditor,
+            shareImg,
+            panelPinSwitch,
+            closePanel,
           })}
+          <div className='panel-DictContainer'>
+            {activeDicts.map(id => {
+              let dictURL = allDictsConfig[id].page
+              if (typeof dictURL !== 'string') {
+                dictURL = dictURL[langCode] || dictURL.en
+              }
+
+              return React.createElement(DictItem, {
+                key: id,
+                id,
+                text: (dictionaries.searchHistory[0] || selection.selectionInfo).text,
+                dictURL,
+                fontSize,
+                preferredHeight: allDictsConfig[id].preferredHeight,
+                panelWidth,
+                isAnimation,
+                searchStatus: (dictsInfo[id] as any).searchStatus,
+                searchResult: (dictsInfo[id] as any).searchResult,
+                searchText,
+                updateItemHeight,
+              })
+            })}
+          </div>
         </div>
       </PortalFrame>
     )
