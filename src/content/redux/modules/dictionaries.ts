@@ -261,7 +261,7 @@ export function startUpAction (): DispatcherThunk {
       }
     })
 
-    if (!isSaladictPopupPage) {
+    if (!isSaladictPopupPage && !isSaladictOptionsPage) {
       listenTrpleCtrl(dispatch, getState)
     }
 
