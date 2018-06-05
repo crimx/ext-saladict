@@ -3,7 +3,7 @@ import { StoreState, DispatcherThunk, Dispatcher } from './index'
 import appConfigFactory, { TCDirection, AppConfig, DictID } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
 import { createAppConfigStream } from '@/_helpers/config-manager'
-import { MsgSelection, MsgType, MsgTempDisabledState, MsgEditWord } from '@/typings/message'
+import { MsgSelection, MsgType, MsgTempDisabledState, MsgEditWord, MsgOpenUrl } from '@/typings/message'
 import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
 import { SelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
@@ -478,7 +478,21 @@ export function openWordEditor (): DispatcherThunk {
   return (dispatch, getState) => {
     const { config, dictionaries } = getState()
     if (config.editOnFav) {
-      dispatch(wordEditorShouldShow(true))
+      if (isSaladictPopupPage) {
+        // Not enough space to open word editor on popup page
+        try {
+          message.send<MsgOpenUrl>({
+            type: MsgType.OpenURL,
+            url: 'notebook.html?info=' +
+              encodeURIComponent(JSON.stringify(dictionaries.searchHistory[0])),
+            self: true,
+          })
+        } catch (err) {
+          console.warn(err)
+        }
+      } else {
+        dispatch(wordEditorShouldShow(true))
+      }
     } else {
       dispatch(addToNotebook(dictionaries.searchHistory[0]))
     }

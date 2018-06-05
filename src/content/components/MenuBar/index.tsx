@@ -119,36 +119,24 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     message.send(msg)
   }
 
-  /** @todo handle popup page */
   /** add/remove current search word into/from notebook */
   handleIconFavClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.currentTarget.blur()
-    switch (e.button) {
-      case 0: // main button
-        if (isSaladictPopupPage) {
-          // Not enough space to open word editor on popup page
-          try {
-            message.send<MsgOpenUrl>({
-              type: MsgType.OpenURL,
-              url: 'notebook.html?info=' +
-                encodeURIComponent(JSON.stringify(this.props.searchHistory[0])),
-              self: true,
-            })
-          } catch (err) {
-            console.warn(err)
-          }
-        } else {
-          this.props.openWordEditor()
-        }
-        break
-      case 2: { // secondary button
-        message.send<MsgOpenUrl>({
-          type: MsgType.OpenURL,
-          url: 'notebook.html',
-          self: true,
-        })
-        break
-      }
+    if (e.button !== 2) {
+      e.currentTarget.blur()
+      this.props.openWordEditor()
+    }
+  }
+
+  /** open notebook on right click */
+  handleIconFavMouseUp = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (e.button === 2) {
+      e.preventDefault()
+      e.currentTarget.blur()
+      message.send<MsgOpenUrl>({
+        type: MsgType.OpenURL,
+        url: 'notebook.html',
+        self: true,
+      })
     }
   }
 
@@ -277,6 +265,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
         </button>
 
         <button className='panel-MenuBar_Btn'
+          onMouseUp={this.handleIconFavMouseUp}
           onClick={this.handleIconFavClick}
           disabled={isSaladictOptionsPage || searchHistory.length <= 0}
         >
