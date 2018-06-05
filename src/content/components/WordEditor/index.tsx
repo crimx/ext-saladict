@@ -115,7 +115,10 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
               value={info.text}
               onChange={this.mapValueToState}
             />
-            <label htmlFor='wordEditor-Note_Trans'>{t('wordEditorNoteTrans')}</label>
+            <label htmlFor='wordEditor-Note_Trans'>
+              {t('wordEditorNoteTrans')}
+              <a href='https://github.com/crimx/ext-saladict/issues/117' target='_blank'> {t('wordEditorNoteTransExplain')}</a>
+            </label>
             <textarea rows={5}
               name='trans'
               id='wordEditor-Note_Trans'

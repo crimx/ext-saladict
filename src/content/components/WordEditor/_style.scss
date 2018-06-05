@@ -118,6 +118,11 @@ textarea {
   padding: 15px;
   overflow-x: hidden;
   overflow-y: scroll;
+
+  a {
+    text-decoration: none;
+    color: #999;
+  }
 }
 
 .wordEditor-Note_SrcFavicon {
