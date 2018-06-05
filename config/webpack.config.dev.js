@@ -16,6 +16,7 @@ const argv = require('minimist')(process.argv.slice(2))
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin')
 const JsConfigPathsPlugin = require('jsconfig-paths-webpack-plugin')
 const WrapperPlugin = require('wrapper-webpack-plugin')
+const tsImportPluginFactory = require('ts-import-plugin')
 
 const fackBgEnv = fs.readFileSync(require.resolve('./fake-env/webextension-background.js'), 'utf8')
 
@@ -197,6 +198,15 @@ module.exports = {
                 loader: require.resolve('ts-loader'),
                 options: {
                   transpileOnly: true,
+                  getCustomTransformers: () => ({
+                    before: [ tsImportPluginFactory([
+                      {
+                        libraryName: 'antd',
+                        libraryDirectory: 'es',
+                        style: 'css',
+                      },
+                    ]) ]
+                  }),
                 },
               }
             ],
