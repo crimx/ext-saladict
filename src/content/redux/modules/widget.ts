@@ -69,6 +69,12 @@ export type WidgetState = {
       y: number
     },
     readonly shouldWordEditorShow: boolean
+    readonly panelStateBeforeWordEditor: {
+      x: number
+      y: number
+      isPinned: boolean
+      shouldPanelShow: boolean
+    }
   }
 }
 
@@ -100,6 +106,12 @@ export const initState: WidgetState = {
       y: 0,
     },
     shouldWordEditorShow: false,
+    panelStateBeforeWordEditor: {
+      x: 0,
+      y: 0,
+      isPinned: false,
+      shouldPanelShow: false,
+    },
   }
 }
 
@@ -255,19 +267,42 @@ export const reducer: WidgetReducer = {
       widget: {
         ...state.widget,
         shouldWordEditorShow: shouldWordEditorShow,
-        isPinned: shouldWordEditorShow,
-        shouldPanelShow: shouldWordEditorShow,
       }
     }
 
     if (shouldWordEditorShow) {
-      const { width, height } = state.widget.panelRect
+      const { panelRect, isPinned, shouldPanelShow } = state.widget
+      const { x, y, width, height } = panelRect
+      newState.widget.panelStateBeforeWordEditor = {
+        x, y,
+        isPinned,
+        shouldPanelShow,
+      }
+
+      newState.widget.isPinned = true
+      newState.widget.shouldPanelShow = true
       newState.widget.panelRect = _reconcilePanelRect(
         40,
         (1 - state.config.panelMaxHeightRatio) * window.innerHeight / 2,
         width,
         height,
       )
+    } else {
+      // Resume cords
+      const { width, height } = state.widget.panelRect
+      const { x, y, isPinned, shouldPanelShow } = state.widget.panelStateBeforeWordEditor
+
+      // User might close the panel during word editor page. Keep it closed.
+      newState.widget.shouldPanelShow = shouldPanelShow && state.widget.shouldPanelShow
+      if (newState.widget.shouldPanelShow) {
+        newState.widget.isPinned = isPinned
+        newState.widget.panelRect = _reconcilePanelRect(
+          x,
+          y,
+          width,
+          height,
+        )
+      }
     }
 
     return newState
@@ -635,7 +670,6 @@ function _restoreWidget (widget: WidgetState['widget']): Mutable<WidgetState['wi
     isPinned: isSaladictOptionsPage,
     shouldPanelShow: isSaladictPopupPage || isSaladictOptionsPage,
     shouldBowlShow: false,
-    shouldWordEditorShow: false,
   }
 }
 
