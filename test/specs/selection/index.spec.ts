@@ -10,7 +10,7 @@ jest.mock('@/_helpers/browser-api')
 jest.mock('@/_helpers/config-manager')
 jest.mock('@/_helpers/selection')
 
-const selectionDelay = 11
+const selectionDelay = 15
 
 const { message, storage }: {
   message: typeof BrowserApiMock.message
@@ -345,7 +345,7 @@ describe('Message Selection', () => {
       expect(message.self.send).toHaveBeenCalledTimes(1)
       expect(message.self.send).toBeCalledWith({ type: MsgType.TripleCtrl })
       done()
-    }, 550)
+    }, 500 + selectionDelay)
   })
 
   it('should not trigger double click if the interval is too long', done => {
@@ -423,14 +423,14 @@ describe('Message Selection', () => {
       }))
 
       setTimeout(() => {
-        expect(message.self.send).toHaveBeenCalledTimes(2)
+        expect(message.self.send).toHaveBeenCalled()
         expect(message.self.send).toBeCalledWith(
           expect.objectContaining({
             dbClick: true,
           }),
         )
         done()
-      }, 11)
+      }, selectionDelay)
     }, 50)
   })
 })
