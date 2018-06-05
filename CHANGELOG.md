@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.1.0"></a>
+# [6.1.0](https://github.com/crimx/ext-saladict/compare/v6.0.0...v6.1.0) (2018-06-05)
+
+
+### Bug Fixes
+
+* **panel:** fix auto focus [#124](https://github.com/crimx/ext-saladict/issues/124) ([4d03bda](https://github.com/crimx/ext-saladict/commit/4d03bda))
+* **panel:** fix entering in options page and popup page ([298bbb1](https://github.com/crimx/ext-saladict/commit/298bbb1))
+* **panel:** fix height calc ([148cd56](https://github.com/crimx/ext-saladict/commit/148cd56))
+* **panel:** fix iframe flickering in Chrome [#124](https://github.com/crimx/ext-saladict/issues/124) [#113](https://github.com/crimx/ext-saladict/issues/113) [#119](https://github.com/crimx/ext-saladict/issues/119) ([922d8d4](https://github.com/crimx/ext-saladict/commit/922d8d4))
+* **panel:** popup preload [#124](https://github.com/crimx/ext-saladict/issues/124) ([69aa7a8](https://github.com/crimx/ext-saladict/commit/69aa7a8))
+* **panel:** remove animation ([55ef5fa](https://github.com/crimx/ext-saladict/commit/55ef5fa)), closes [#123](https://github.com/crimx/ext-saladict/issues/123)
+* **selection:** always update last selection text ([c6aca15](https://github.com/crimx/ext-saladict/commit/c6aca15))
+* **selection:** ctrl key detection [#124](https://github.com/crimx/ext-saladict/issues/124) [#122](https://github.com/crimx/ext-saladict/issues/122) [#114](https://github.com/crimx/ext-saladict/issues/114) ([a5893d2](https://github.com/crimx/ext-saladict/commit/a5893d2))
+
+
+### Features
+
+* **components:** explain export ([c6022c3](https://github.com/crimx/ext-saladict/commit/c6022c3))
+* **config:** add toggle for word editor [#118](https://github.com/crimx/ext-saladict/issues/118) ([eb95680](https://github.com/crimx/ext-saladict/commit/eb95680))
+* **content:** explain translations ([c6d9d50](https://github.com/crimx/ext-saladict/commit/c6d9d50)), closes [#117](https://github.com/crimx/ext-saladict/issues/117)
+
+
+
 <a name="6.0.0"></a>
 # [6.0.0](https://github.com/crimx/ext-saladict/compare/v5.31.7...v6.0.0) (2018-05-30)
 
