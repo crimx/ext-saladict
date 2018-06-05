@@ -256,11 +256,12 @@ export function startUpAction (): DispatcherThunk {
   return (dispatch, getState) => {
     createAppConfigStream().subscribe(config => {
       dispatch(newConfig(config))
+      if (isSaladictPopupPage) {
+        popupPageInit(dispatch, getState)
+      }
     })
 
-    if (isSaladictPopupPage) {
-      popupPageInit(dispatch, getState)
-    } else {
+    if (!isSaladictPopupPage) {
       listenTrpleCtrl(dispatch, getState)
     }
 
