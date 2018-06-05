@@ -35,7 +35,6 @@ Chrome/Firefox 浏览器插件，网页划词翻译。
 - [三按 ctrl 快速查词](https://github.com/crimx/crx-saladict/wiki#triple-ctrl)
 - [支持 Vimium 全键盘操作](https://github.com/crimx/crx-saladict/wiki#vimium)
 - [点击图标快速查词](https://github.com/crimx/crx-saladict/wiki#popup-icon)
-- [查词结果支持导出图片](https://github.com/crimx/crx-saladict/wiki#save-img)
 - [可显示当前页面二维码](https://github.com/crimx/crx-saladict/wiki#qrcode)
 - [右键并支持更多词典页面直达](https://github.com/crimx/crx-saladict/wiki#context-menus)
 - [支持开发](https://github.com/crimx/crx-saladict/wiki#reward)
