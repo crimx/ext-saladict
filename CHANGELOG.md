@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.1.2"></a>
+## [6.1.2](https://github.com/crimx/ext-saladict/compare/v6.1.1...v6.1.2) (2018-06-06)
+
+
+### Bug Fixes
+
+* **panel:** fix null pointer ([dc3a41e](https://github.com/crimx/ext-saladict/commit/dc3a41e)), closes [#130](https://github.com/crimx/ext-saladict/issues/130)
+
+
+
 <a name="6.1.1"></a>
 ## [6.1.1](https://github.com/crimx/ext-saladict/compare/v6.1.0...v6.1.1) (2018-06-05)
 
