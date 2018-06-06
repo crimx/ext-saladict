@@ -23,7 +23,6 @@ export interface DictItemProps extends DictItemDispatchers {
   readonly panelWidth: number
   readonly searchStatus: SearchStatus
   readonly searchResult: any
-  readonly isAnimation: boolean
 }
 
 export type DictItemState = {
@@ -226,7 +225,6 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       fontSize,
       searchStatus,
       searchResult,
-      isAnimation,
     } = this.props
 
     const {

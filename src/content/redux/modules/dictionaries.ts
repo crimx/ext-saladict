@@ -266,7 +266,10 @@ export function startUpAction (): DispatcherThunk {
     }
 
     if (isSaladictOptionsPage) {
-      dispatch(searchText({ info: getDefaultSelectionInfo({ text: 'salad' }) }))
+      // make sure everything is loaded
+      setTimeout(() => {
+        dispatch(searchText({ info: getDefaultSelectionInfo({ text: 'salad' }) }))
+      }, 100)
     }
   }
 }
