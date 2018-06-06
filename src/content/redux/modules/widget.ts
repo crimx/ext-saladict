@@ -599,6 +599,7 @@ function listenNewSelection (
       : lastBowlRect
 
     const newWidgetPartial: Mutable<Partial<WidgetState['widget']>> = {
+      shouldPanelShow,
       shouldBowlShow,
       bowlRect,
     }
@@ -613,17 +614,6 @@ function listenNewSelection (
           lastPanelRect.width,
           30 + state.dictionaries.active.length * 30,
         )
-      }
-    }
-
-    if (shouldPanelShow !== lastShouldPanelShow) {
-      // debounce panel hiding to reduce flickering
-      if ((icon || direct || (double && !dbClick)) && lastShouldPanelShow) {
-        panelToggleTimeout = setTimeout(() => {
-          dispatch(newSelection({ shouldPanelShow: false }))
-        }, state.config.doubleClickDelay)
-      } else { // show
-        newWidgetPartial.shouldPanelShow = true
       }
     }
 
