@@ -129,7 +129,6 @@ export default class DictPanel extends React.Component<DictPanelProps> {
               fontSize,
               preferredHeight: allDictsConfig[id].preferredHeight,
               panelWidth,
-              isAnimation,
               searchStatus: (dictsInfo[id] as any).searchStatus,
               searchResult: (dictsInfo[id] as any).searchResult,
               searchText,
