@@ -131,6 +131,7 @@ export const reducer: DictsReducer = {
       ...state,
       dictionaries: {
         ...dictionaries,
+        active: [],
         dicts: Object.keys(dictionaries.dicts).reduce((newDicts, id) => {
           newDicts[id] =
             dictionaries.dicts[id].searchStatus === SearchStatus.OnHold

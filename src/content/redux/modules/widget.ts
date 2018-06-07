@@ -99,7 +99,7 @@ export const initState: WidgetState = {
         : _initConfig.panelWidth,
       height: isSaladictPopupPage
         ? 400
-        : 30 + 30, // menubar + 1 dict hegiht
+        : 30, // menubar
     },
     bowlRect: {
       x: 0,
@@ -600,16 +600,17 @@ function listenNewSelection (
     }
 
     if (!isPinned) {
-      if (shouldPanelShow === lastShouldPanelShow || shouldPanelShow) {
-        // don't calculate on hiding to prevent moving animation
-        dictHeights = {}
-        newWidgetPartial.panelRect = _getPanelRectFromEvent(
+      newWidgetPartial.panelRect = shouldPanelShow
+        ? _getPanelRectFromEvent(
           mouseX,
           mouseY,
           lastPanelRect.width,
           30 + state.dictionaries.active.length * 30,
         )
-      }
+        : {
+          ...lastPanelRect,
+          height: isSaladictPopupPage ? 400 : 30,
+        }
     }
 
     dispatch(newSelection(newWidgetPartial))
@@ -626,6 +627,8 @@ function listenNewSelection (
         isSaladictOptionsPage
     ) {
       dispatch(searchText({ info: selectionInfo }))
+    } else {
+      dispatch(restoreDicts())
     }
   })
 }
@@ -658,6 +661,10 @@ function _restoreWidget (widget: WidgetState['widget']): Mutable<WidgetState['wi
     isPinned: isSaladictOptionsPage,
     shouldPanelShow: isSaladictPopupPage || isSaladictOptionsPage,
     shouldBowlShow: false,
+    panelRect: {
+      ...widget.panelRect,
+      height: isSaladictPopupPage ? 400 : 30, // menubar
+    },
   }
 }
 
