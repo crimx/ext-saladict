@@ -18,12 +18,13 @@ export interface DictItemProps extends DictItemDispatchers {
   readonly id: DictID
   readonly text: string
   readonly dictURL: string
-  readonly fontSize: number
-  readonly panelDbSearch: '' | 'double' | 'ctrl'
   readonly preferredHeight: number
-  readonly panelWidth: number
   readonly searchStatus: SearchStatus
   readonly searchResult: any
+
+  readonly fontSize: number
+  readonly panelDbSearch: '' | 'double' | 'ctrl'
+  readonly panelWidth: number
 }
 
 export type DictItemState = {

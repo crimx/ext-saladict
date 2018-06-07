@@ -4,29 +4,36 @@ import { AppConfig, DictID, DictConfigs } from '@/app-config'
 import { SelectionInfo } from '@/_helpers/selection'
 import { MsgSelection } from '@/typings/message'
 import PortalFrame from '@/components/PortalFrame'
+import { Omit } from '@/typings/helpers'
 
-import MenuBar, { MenuBarDispatchers } from '../MenuBar'
-import DictItem, { DictItemDispatchers } from '../DictItem'
+import MenuBar, { MenuBarProps, MenuBarDispatchers } from '../MenuBar'
+import DictItem, { DictItemProps, DictItemDispatchers } from '../DictItem'
 
 export type DictPanelDispatchers = DictItemDispatchers & MenuBarDispatchers & {
   searchText: (arg?: { id?: DictID, info?: SelectionInfo | string }) => any
 }
 
-export interface DictPanelProps extends DictPanelDispatchers {
+type ChildrenProps =
+  DictPanelDispatchers &
+  Omit<MenuBarProps,
+    'searchHistory'
+  > &
+  Omit<DictItemProps,
+    'id' |
+    'text' |
+    'dictURL' |
+    'preferredHeight' |
+    'searchStatus' |
+    'searchResult'
+  >
+
+export interface DictPanelProps extends ChildrenProps {
   readonly isDragging: boolean
-  readonly isFav: boolean
-  readonly isPinned: boolean
   readonly dictionaries: DictionariesState['dictionaries']
   readonly allDictsConfig: DictConfigs
   readonly langCode: AppConfig['langCode']
-  readonly fontSize: number
-  readonly panelDbSearch: '' | 'double' | 'ctrl'
-  readonly panelWidth: number
   readonly isAnimation: boolean
   readonly selection: MsgSelection
-
-  readonly frameDidMount?: (frame: HTMLIFrameElement) => any
-  readonly frameWillUnmount?: () => any
 }
 
 export default class DictPanel extends React.Component<DictPanelProps> {
@@ -101,8 +108,6 @@ export default class DictPanel extends React.Component<DictPanelProps> {
         name='saladict-frame'
         frameBorder='0'
         head={this.frameHead}
-        frameDidMount={this.props.frameDidMount}
-        frameWillUnmount={this.props.frameWillUnmount}
       >
         {React.createElement(MenuBar, {
           isFav,
