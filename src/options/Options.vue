@@ -54,7 +54,7 @@
 <script>
 import {storage, message} from '@/_helpers/browser-api'
 import appConfigFactory from '@/app-config'
-import { mergeConfig } from '@/_helpers/merge-config'
+import { mergeConfig } from '@/app-config/merge-config'
 import Coffee from './Coffee'
 import SocialMedia from './SocialMedia'
 import AlertModal from '@/components/AlertModal'
