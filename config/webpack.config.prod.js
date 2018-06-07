@@ -240,7 +240,7 @@ module.exports = {
     ],
   },
   plugins: [
-    argv.devbuild || argv.notypecheck
+    argv.notypecheck
     ? null
     : new ForkTsCheckerWebpackPlugin({tslint: true, async: false}),
     // Makes some environment variables available in index.html.
