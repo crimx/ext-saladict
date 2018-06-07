@@ -627,7 +627,9 @@ function listenNewSelection (
         isSaladictOptionsPage
     ) {
       dispatch(searchText({ info: selectionInfo }))
-    } else {
+    } else if (!shouldPanelShow) {
+      // Everything stays the same if the panel is still visible (e.g. pin mode)
+      // Otherwise clean up all dicts
       dispatch(restoreDicts())
     }
   })
