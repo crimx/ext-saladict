@@ -214,6 +214,10 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
+      },
+      /** Optional dict custom options. Can only be boolean or number. */
+      options: {
+        cnfirst: false
       }
     },
     guoyu: {

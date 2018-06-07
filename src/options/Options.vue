@@ -171,6 +171,18 @@ export default {
     config: {
       deep: true,
       handler () {
+        // patch update google config
+        const { google } = this.config.dicts.all
+        if (!google.page.includes(this.config.langCode) ||
+            (google.options.cnfirst && !google.page.includes('google.cn')) ||
+            (!google.options.cnfirst && !google.page.includes('google.com'))
+        ) {
+          google.page = google.options.cnfirst
+            ? `https://translate.google.cn/#auto/${this.$store.config.langCode}/%s`
+            : `https://translate.google.com/#auto/${this.$store.config.langCode}/%s`
+          return
+        }
+
         storage.sync.set({config: this.config})
           .then(() => {
             this.isShowConfigUpdated = true

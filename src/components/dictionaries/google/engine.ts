@@ -11,6 +11,7 @@ export default function search (
   text: string,
   config: AppConfig,
 ): Promise<GoogleSearchResult> {
+  const options = config.dicts.all.google.options
   const chCode = config.langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN'
   let sl = 'auto'
   let tl = chCode
@@ -22,9 +23,15 @@ export default function search (
     tl = chCode
   }
 
-  return fetchWithToken('https://translate.google.com', sl, tl, text)
-    .catch(() => fetchWithToken('https://translate.google.cn', sl, tl, text))
-    .catch(() => fetchWithoutToken(sl, tl, text))
+  if (options.cnfirst) {
+    return fetchWithToken('https://translate.google.cn', sl, tl, text)
+      .catch(() => fetchWithToken('https://translate.google.com', sl, tl, text))
+      .catch(() => fetchWithoutToken(sl, tl, text))
+  } else {
+    return fetchWithToken('https://translate.google.com', sl, tl, text)
+      .catch(() => fetchWithToken('https://translate.google.cn', sl, tl, text))
+      .catch(() => fetchWithoutToken(sl, tl, text))
+  }
 }
 
 function fetchWithToken (base: string, sl: string, tl: string, text: string): Promise<GoogleSearchResult> {
