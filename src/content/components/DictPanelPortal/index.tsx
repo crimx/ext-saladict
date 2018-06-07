@@ -20,6 +20,7 @@ export interface DictPanelPortalProps extends DictPanelPortalDispatchers {
   readonly isAnimation: boolean
   readonly allDictsConfig: DictConfigs
   readonly fontSize: number
+  readonly panelDbSearch: '' | 'double' | 'ctrl'
   readonly langCode: AppConfig['langCode']
 
   readonly isFav: boolean

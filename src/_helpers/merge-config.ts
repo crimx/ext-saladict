@@ -27,6 +27,7 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   mergeNumber('panelWidth')
   mergeNumber('panelMaxHeightRatio')
   mergeNumber('fontSize')
+  merge('panelDbSearch', val => val === '' || val === 'double' || val === 'ctrl')
   mergeBoolean('pdfSniff')
   mergeBoolean('searhHistory')
   mergeBoolean('newWordSound')

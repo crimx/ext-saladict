@@ -20,6 +20,7 @@ export interface DictPanelProps extends DictPanelDispatchers {
   readonly allDictsConfig: DictConfigs
   readonly langCode: AppConfig['langCode']
   readonly fontSize: number
+  readonly panelDbSearch: '' | 'double' | 'ctrl'
   readonly panelWidth: number
   readonly isAnimation: boolean
   readonly selection: MsgSelection
@@ -76,6 +77,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
       allDictsConfig,
       panelWidth,
       fontSize,
+      panelDbSearch,
       isAnimation,
 
       updateItemHeight,
@@ -127,6 +129,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
               text: (dictionaries.searchHistory[0] || selection.selectionInfo).text,
               dictURL,
               fontSize,
+              panelDbSearch,
               preferredHeight: allDictsConfig[id].preferredHeight,
               panelWidth,
               searchStatus: (dictsInfo[id] as any).searchStatus,

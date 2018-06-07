@@ -20,6 +20,7 @@ export const mapStateToProps = ({
     isAnimation: config.animation,
     allDictsConfig: config.dicts.all,
     fontSize: config.fontSize,
+    panelDbSearch: config.panelDbSearch,
     langCode: config.langCode,
 
     selection,
