@@ -9,12 +9,12 @@ const INLINE_TAGS = new Set([
   'span', 'strong', 'sub', 'sup', 'time', 'u', 'var', 'wbr'
 ])
 
-export function hasSelection (): boolean {
-  return Boolean(window.getSelection().toString().trim())
+export function hasSelection (win = window): boolean {
+  return Boolean(win.getSelection().toString().trim())
 }
 
-export function getSelectionText (): string {
-  return cleanText(window.getSelection().toString())
+export function getSelectionText (win = window): string {
+  return cleanText(win.getSelection().toString())
 }
 
 // match head                 a.b is ok    chars that ends a sentence
@@ -23,8 +23,8 @@ const sentenceHeadTester = /((\.(?![ .]))|[^.?!。？！…\r\n])+$/
 const sentenceTailTester = /^((\.(?![ .]))|[^.?!。？！…\r\n])+(.)\3{0,2}/
 
 /** Returns the sentence containing the selection text */
-export function getSelectionSentence (): string {
-  const selection = window.getSelection()
+export function getSelectionSentence (win = window): string {
+  const selection = win.getSelection()
   const selectedText = selection.toString()
   if (!selectedText.trim()) { return '' }
 
