@@ -402,8 +402,6 @@ export function panelOnDrag (x: number, y: number): Action<ActionType.PANEL_CORD
     Side Effects
 \*-----------------------------------------------*/
 
-let panelToggleTimeout
-let panelSearchTimeout
 let dictHeights: Partial<{ [id in DictID]: number }> = {}
 
 export function startUpAction (): DispatcherThunk {
@@ -550,9 +548,6 @@ function listenNewSelection (
   getState: () => StoreState,
 ) {
   message.self.addListener<MsgSelection>(MsgType.Selection, message => {
-    clearTimeout(panelToggleTimeout)
-    clearTimeout(panelSearchTimeout)
-
     const state = getState()
 
     if (isSaladictPopupPage ||
@@ -630,15 +625,7 @@ function listenNewSelection (
         ) ||
         isSaladictOptionsPage
     ) {
-      if (dbClick || isSaladictOptionsPage) {
-        // already double clicked
-        dispatch(searchText({ info: selectionInfo }))
-      } else {
-        // debounce searching
-        panelSearchTimeout = setTimeout(() => {
-          dispatch(searchText({ info: selectionInfo }))
-        }, state.config.doubleClickDelay)
-      }
+      dispatch(searchText({ info: selectionInfo }))
     }
   })
 }

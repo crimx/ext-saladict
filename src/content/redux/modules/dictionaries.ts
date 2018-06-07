@@ -13,6 +13,8 @@ const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
+let _searchDelayTimeout: any = null
+
 /*-----------------------------------------------*\
     Action Type
 \*-----------------------------------------------*/
@@ -280,6 +282,8 @@ export function startUpAction (): DispatcherThunk {
  */
 export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): DispatcherThunk {
   return (dispatch, getState) => {
+    clearTimeout(_searchDelayTimeout)
+
     const state = getState()
     const info = arg
     ? arg.info || state.dictionaries.searchHistory[0]
@@ -327,15 +331,21 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
       }
     })
 
-    dispatch(searchStart({ toStart, toOnhold, toActive, info }))
-    toStart.forEach(doSearch)
-
     if (!isSaladictInternalPage &&
         state.config.searhHistory &&
         !isSameSelection(state.config.searhHistory[0], info)
     ) {
       saveWord('history', info)
     }
+
+    dispatch(searchStart({ toStart, toOnhold, toActive, info }))
+
+    // update UI immediately but
+    // delay the acutal search so that
+    // it won't search twice with double click
+    _searchDelayTimeout = setTimeout(() => {
+      toStart.forEach(doSearch)
+    }, state.config.doubleClickDelay)
 
     function doSearch (id: DictID) {
       const msg: MsgFetchDictResult = {
