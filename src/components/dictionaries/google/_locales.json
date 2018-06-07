@@ -3,5 +3,12 @@
     "en": "Google Translation",
     "zh_CN": "谷歌翻译",
     "zh_TW": "谷歌翻譯"
+  },
+  "options": {
+    "cnfirst": {
+      "en": "Use google.cn first",
+      "zh_CN": "优先使用 google.cn",
+      "zh_TW": "優先使用 google.cn"
+    }
   }
 }

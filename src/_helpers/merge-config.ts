@@ -27,6 +27,7 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   mergeNumber('panelWidth')
   mergeNumber('panelMaxHeightRatio')
   mergeNumber('fontSize')
+  merge('panelDbSearch', val => val === '' || val === 'double' || val === 'ctrl')
   mergeBoolean('pdfSniff')
   mergeBoolean('searhHistory')
   mergeBoolean('newWordSound')
@@ -64,6 +65,8 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   forEach(base.dicts.all, (dict, id) => {
     mergeBoolean(`dicts.all.${id}.defaultUnfold`)
     mergeNumber(`dicts.all.${id}.preferredHeight`)
+    mergeNumber(`dicts.all.${id}.selectionWC.min`)
+    mergeNumber(`dicts.all.${id}.selectionWC.max`)
     mergeBoolean(`dicts.all.${id}.selectionLang.eng`)
     mergeBoolean(`dicts.all.${id}.selectionLang.chs`)
     if (dict['options']) {

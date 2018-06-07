@@ -6,7 +6,7 @@ import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgOpenUrl } from '@/typings/message'
 
 import { SearchStatus } from '@/content/redux/modules/dictionaries'
-import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
+import { SelectionInfo, getDefaultSelectionInfo, getSelectionText, getSelectionSentence } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
 
 export interface DictItemDispatchers {
@@ -18,11 +18,13 @@ export interface DictItemProps extends DictItemDispatchers {
   readonly id: DictID
   readonly text: string
   readonly dictURL: string
-  readonly fontSize: number
   readonly preferredHeight: number
-  readonly panelWidth: number
   readonly searchStatus: SearchStatus
   readonly searchResult: any
+
+  readonly fontSize: number
+  readonly panelDbSearch: '' | 'double' | 'ctrl'
+  readonly panelWidth: number
 }
 
 export type DictItemState = {
@@ -140,24 +142,51 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
 
   handleDictItemClick = (e: React.MouseEvent<HTMLElement>) => {
     // use background script to open new page
-    if (e.target['tagName'] === 'A') {
-      e.preventDefault()
+    const $target = e.target as HTMLElement
+    if (!$target.tagName || !$target.parentElement) { return }
+    const $dictItemBody = this.bodyRef.current || null
 
-      const $a = e.target as HTMLAnchorElement
-      if ($a.dataset.target === 'external') {
-        message.send<MsgOpenUrl>({
-          type: MsgType.OpenURL,
-          url: $a.href,
-        })
-      } else {
-        this.props.searchText({
-          info: getDefaultSelectionInfo({
-            text: e.target['textContent'] || '',
-            title: this.props.t('fromSaladict'),
-            favicon: 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
-          }),
-        })
+    for (let el: HTMLElement | null = $target; el && el !== $dictItemBody; el = el.parentElement) {
+      if (el.tagName === 'A') {
+        e.preventDefault()
+        e.stopPropagation()
+
+        const $a = el as HTMLAnchorElement
+        if ($a.dataset.target === 'external') {
+          message.send<MsgOpenUrl>({
+            type: MsgType.OpenURL,
+            url: $a.href,
+          })
+        } else {
+          this.props.searchText({
+            info: getDefaultSelectionInfo({
+              text: $a.textContent || '',
+              title: this.props.t('fromSaladict'),
+              favicon: 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
+            }),
+          })
+        }
+        return
       }
+    }
+  }
+
+  handleDictItemDbClick = (e: React.MouseEvent<HTMLElement>) => {
+    const { t, id, searchText, panelDbSearch } = this.props
+    if (!panelDbSearch || (panelDbSearch === 'ctrl' && !(e.ctrlKey || e.metaKey))) {
+      return
+    }
+    const win = e.currentTarget.ownerDocument.defaultView
+    const text = getSelectionText(win)
+    if (text) {
+      searchText({
+        info: getDefaultSelectionInfo({
+          text,
+          context: getSelectionSentence(win),
+          title: `${t('fromSaladict')}: ${t(`dict:${id}`)}`,
+          favicon: `https://raw.githubusercontent.com/crimx/ext-saladict/dev/src/components/dictionaries/${id}/favicon.png`
+        }),
+      })
     }
   }
 
@@ -223,6 +252,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       id,
       dictURL,
       fontSize,
+      panelDbSearch,
       searchStatus,
       searchResult,
     } = this.props
@@ -235,13 +265,16 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     } = this.state
 
     return (
-      <section className='panel-DictItem' onClick={this.handleDictItemClick}>
+      <section className='panel-DictItem'
+        onClick={this.handleDictItemClick}
+        onDoubleClick={panelDbSearch ? this.handleDictItemDbClick : undefined}
+      >
         <header className='panel-DictItem_Header' onClick={this.toggleFolding}>
           <img className='panel-DictItem_Logo' src={require('@/components/dictionaries/' + id + '/favicon.png')} alt='dict logo' />
           <h1 className='panel-DictItem_Title'>
             <a href={dictURL} onClick={this.handleDictURLClick}>{t(`dict:${id}`)}</a>
           </h1>
-          { searchStatus === SearchStatus.Searching && !hasError &&
+          {searchStatus === SearchStatus.Searching && !hasError &&
             <svg className='panel-DictItem_Loader' width='120' height='10' viewBox='0 0 120 10' xmlns='http://www.w3.org/2000/svg'>
               <circle className='panel-DictItem_Loader_Ball' cx='5' cy='5' r='5' />
               <circle className='panel-DictItem_Loader_Ball' cx='5' cy='5' r='5' />

@@ -16,14 +16,17 @@ export type DictPanelPortalDispatchers = Omit<
   panelOnDrag: (x: number, y: number) => any
 }
 
-export interface DictPanelPortalProps extends DictPanelPortalDispatchers {
-  readonly isAnimation: boolean
-  readonly allDictsConfig: DictConfigs
-  readonly fontSize: number
-  readonly langCode: AppConfig['langCode']
+export type ChildrenProps =
+  DictPanelPortalDispatchers &
+  Omit<
+    DictPanelProps,
+    'isDragging' |
+    'panelWidth' |
+    'handleDragAreaTouchStart' |
+    'handleDragAreaMouseDown'
+  >
 
-  readonly isFav: boolean
-  readonly isPinned: boolean
+export interface DictPanelPortalProps extends ChildrenProps {
   readonly shouldPanelShow: boolean
   readonly panelRect: {
     x: number
@@ -31,10 +34,6 @@ export interface DictPanelPortalProps extends DictPanelPortalDispatchers {
     width: number
     height: number
   }
-
-  readonly dictionaries: DictPanelProps['dictionaries']
-
-  readonly selection: MsgSelection
 }
 
 interface DictPanelState {

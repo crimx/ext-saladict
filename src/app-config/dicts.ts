@@ -26,6 +26,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 240,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
@@ -70,6 +75,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
@@ -102,6 +112,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 300,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
@@ -138,6 +153,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
@@ -174,6 +194,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 240,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
@@ -210,10 +235,19 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 110,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 100,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
         chs: true,
+      },
+      /** Optional dict custom options. Can only be boolean or number. */
+      options: {
+        cnfirst: false
       }
     },
     guoyu: {
@@ -242,6 +276,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: false,
@@ -274,6 +313,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: false,
@@ -306,6 +350,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
@@ -348,6 +397,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
@@ -384,6 +438,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
@@ -420,6 +479,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 180,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
@@ -456,6 +520,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 180,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
@@ -488,6 +557,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
@@ -528,6 +602,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 265,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 100,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: true,
@@ -569,6 +648,11 @@ export function getALlDicts () {
        * Otherwise the content height is used.
        */
       preferredHeight: 400,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
         eng: false,
@@ -587,6 +671,10 @@ export function getALlDicts () {
         'zh-TW'?: string
       }
       defaultUnfold: boolean
+      selectionWC: {
+        min: number,
+        max: number,
+      },
       preferredHeight: number
       selectionLang: {
         eng: boolean

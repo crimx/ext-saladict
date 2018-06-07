@@ -2,7 +2,6 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import PortalFrame from '@/components/PortalFrame'
 import WordEditor, { WordEditorProps } from '../WordEditor'
-import { SelectionInfo } from '@/_helpers/selection'
 import { getWordsByText } from '@/_helpers/record-manager'
 import { Omit } from '@/typings/helpers'
 import CSSTransition from 'react-transition-group/CSSTransition'
@@ -99,6 +98,8 @@ export default class WordEditorPortal extends React.Component<WordEditorPortalPr
         timeout={500}
         mountOnEnter={true}
         unmountOnExit={true}
+        enter={isAnimation}
+        exit={isAnimation}
         onExited={this.unmountEL}
       >
         {this.renderEditor}

@@ -70,6 +70,20 @@
                     </label>
                   </div><!--词典语言选项-->
 
+                  <!-- 开始查词的最小字数-->
+                  <div class="input-group">
+                    <div class="input-group-addon">{{ $t('opt:dict_selection_count_min') }}</div>
+                    <input type="number" min="1" class="form-control" v-model.number.lazy="allDicts[id].selectionWC.min">
+                    <div class="input-group-addon">{{ $t('opt:unit_word') }}</div>
+                  </div><!-- 开始查词的最小字数-->
+
+                  <!-- 开始查词的最大字数-->
+                  <div class="input-group">
+                    <div class="input-group-addon">{{ $t('opt:dict_selection_count_max') }}</div>
+                    <input type="number" min="1" class="form-control" v-model.number.lazy="allDicts[id].selectionWC.max">
+                    <div class="input-group-addon">{{ $t('opt:unit_word') }}</div>
+                  </div><!-- 开始查词的最大字数-->
+
                   <!--词典默认高度选项-->
                   <div class="input-group">
                     <div class="input-group-addon">{{ $t('opt:dict_default_height') }}</div>

@@ -180,7 +180,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
   }
 
   componentDidUpdate (prevProps: MenuBarProps) {
-    if (!prevProps.searchHistory[0] || this.props.searchHistory[0].text !== prevProps.searchHistory[0].text) {
+    if (prevProps.searchHistory[0] !== this.props.searchHistory[0]) {
       this.focusSearchBox()
     }
   }

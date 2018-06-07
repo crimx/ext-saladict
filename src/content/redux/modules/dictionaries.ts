@@ -13,6 +13,8 @@ const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
+let _searchDelayTimeout: any = null
+
 /*-----------------------------------------------*\
     Action Type
 \*-----------------------------------------------*/
@@ -129,6 +131,7 @@ export const reducer: DictsReducer = {
       ...state,
       dictionaries: {
         ...dictionaries,
+        active: [],
         dicts: Object.keys(dictionaries.dicts).reduce((newDicts, id) => {
           newDicts[id] =
             dictionaries.dicts[id].searchStatus === SearchStatus.OnHold
@@ -280,6 +283,8 @@ export function startUpAction (): DispatcherThunk {
  */
 export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): DispatcherThunk {
   return (dispatch, getState) => {
+    clearTimeout(_searchDelayTimeout)
+
     const state = getState()
     const info = arg
     ? arg.info || state.dictionaries.searchHistory[0]
@@ -311,24 +316,27 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
     const toActive: DictID[] = []
 
     selectedDicts.forEach(id => {
-      const isInvalidLang = (
+      const isValidLang = !(
         (!allDicts[id].selectionLang.chs && isContainChinese(info.text)) ||
         (!allDicts[id].selectionLang.eng && isContainEnglish(info.text))
       )
 
-      if (!isInvalidLang) {
+      const wordCount = _countWords(info.text)
+      const { min, max } = allDicts[id].selectionWC
+      const isValidWordCount = wordCount >= min && wordCount <= max
+
+      const isValidSelection = isValidLang && isValidWordCount
+
+      if (isValidSelection) {
         toActive.push(id)
       }
 
-      if (!allDicts[id].defaultUnfold || isInvalidLang) {
+      if (!allDicts[id].defaultUnfold || !isValidSelection) {
         toOnhold.push(id)
       } else {
         toStart.push(id)
       }
     })
-
-    dispatch(searchStart({ toStart, toOnhold, toActive, info }))
-    toStart.forEach(doSearch)
 
     if (!isSaladictInternalPage &&
         state.config.searhHistory &&
@@ -336,6 +344,15 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
     ) {
       saveWord('history', info)
     }
+
+    dispatch(searchStart({ toStart, toOnhold, toActive, info }))
+
+    // update UI immediately but
+    // delay the acutal search so that
+    // it won't search twice with double click
+    _searchDelayTimeout = setTimeout(() => {
+      toStart.forEach(doSearch)
+    }, state.config.doubleClickDelay)
 
     function doSearch (id: DictID) {
       const msg: MsgFetchDictResult = {
@@ -405,4 +422,14 @@ function popupPageInit (
       }
     })
   }
+}
+
+/** Count words in both Chinese and English. */
+function _countWords (text: string): number {
+  return (
+    text
+      .replace(/\w+/g, '词')
+      .match(/[\u4e00-\u9fa5]/g)
+    || []
+  ).length
 }

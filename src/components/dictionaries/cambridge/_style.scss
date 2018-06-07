@@ -387,12 +387,6 @@
     color: #292929;
   }
 
-  .di .share {
-    position: absolute;
-    top: -10px;
-    right: -1em;
-  }
-
   .di .pos-head .pos-info {
     margin: 0 0 20px;
   }
@@ -1363,7 +1357,7 @@
     border-bottom: 0;
   }
 
-  .circle.bg--more.open .fcdo-minus,.circle.bg--more .fcdo-plus,.share .bg--gp,.share .bg--di,.share .bg--su,.share .bg--tu,.share .bg--re,.share .bg--def,.translator_layout .share .circle,.share .bg--more {
+  .circle.bg--more.open .fcdo-minus,.circle.bg--more .bg--more {
     display: inline-block;
   }
 
@@ -2207,5 +2201,9 @@
     a {
       color: inherit;
     }
+  }
+
+  .share {
+    display: none !important;
   }
 }

@@ -99,7 +99,7 @@ export const initState: WidgetState = {
         : _initConfig.panelWidth,
       height: isSaladictPopupPage
         ? 400
-        : 30 + 30, // menubar + 1 dict hegiht
+        : 30, // menubar
     },
     bowlRect: {
       x: 0,
@@ -402,8 +402,6 @@ export function panelOnDrag (x: number, y: number): Action<ActionType.PANEL_CORD
     Side Effects
 \*-----------------------------------------------*/
 
-let panelToggleTimeout
-let panelSearchTimeout
 let dictHeights: Partial<{ [id in DictID]: number }> = {}
 
 export function startUpAction (): DispatcherThunk {
@@ -550,9 +548,6 @@ function listenNewSelection (
   getState: () => StoreState,
 ) {
   message.self.addListener<MsgSelection>(MsgType.Selection, message => {
-    clearTimeout(panelToggleTimeout)
-    clearTimeout(panelSearchTimeout)
-
     const state = getState()
 
     if (isSaladictPopupPage ||
@@ -605,16 +600,17 @@ function listenNewSelection (
     }
 
     if (!isPinned) {
-      if (shouldPanelShow === lastShouldPanelShow || shouldPanelShow) {
-        // don't calculate on hiding to prevent moving animation
-        dictHeights = {}
-        newWidgetPartial.panelRect = _getPanelRectFromEvent(
+      newWidgetPartial.panelRect = shouldPanelShow
+        ? _getPanelRectFromEvent(
           mouseX,
           mouseY,
           lastPanelRect.width,
           30 + state.dictionaries.active.length * 30,
         )
-      }
+        : {
+          ...lastPanelRect,
+          height: isSaladictPopupPage ? 400 : 30,
+        }
     }
 
     dispatch(newSelection(newWidgetPartial))
@@ -630,15 +626,11 @@ function listenNewSelection (
         ) ||
         isSaladictOptionsPage
     ) {
-      if (dbClick || isSaladictOptionsPage) {
-        // already double clicked
-        dispatch(searchText({ info: selectionInfo }))
-      } else {
-        // debounce searching
-        panelSearchTimeout = setTimeout(() => {
-          dispatch(searchText({ info: selectionInfo }))
-        }, state.config.doubleClickDelay)
-      }
+      dispatch(searchText({ info: selectionInfo }))
+    } else if (!shouldPanelShow) {
+      // Everything stays the same if the panel is still visible (e.g. pin mode)
+      // Otherwise clean up all dicts
+      dispatch(restoreDicts())
     }
   })
 }
@@ -671,6 +663,10 @@ function _restoreWidget (widget: WidgetState['widget']): Mutable<WidgetState['wi
     isPinned: isSaladictOptionsPage,
     shouldPanelShow: isSaladictPopupPage || isSaladictOptionsPage,
     shouldBowlShow: false,
+    panelRect: {
+      ...widget.panelRect,
+      height: isSaladictPopupPage ? 400 : 30, // menubar
+    },
   }
 }
 

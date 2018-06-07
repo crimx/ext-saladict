@@ -56,6 +56,14 @@ export interface AppConfigMutable {
   /** panel font-size */
   fontSize: number
 
+  /**
+   * panel double click search
+   * empty means no double click search
+   * 'double' means double click
+   * 'ctrl' means double click + ctrl/command pressed
+   */
+  panelDbSearch: '' | 'double' | 'ctrl'
+
   /** sniff pdf request */
   pdfSniff: boolean
 
@@ -163,6 +171,8 @@ export function appConfigFactory (): AppConfig {
     panelMaxHeightRatio: 0.8,
 
     fontSize: 13,
+
+    panelDbSearch: '',
 
     pdfSniff: true,
 
