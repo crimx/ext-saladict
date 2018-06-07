@@ -152,7 +152,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
         e.stopPropagation()
 
         const $a = el as HTMLAnchorElement
-        if ($a.dataset.target === 'external') {
+        if ($a.rel === 'nofollow') {
           message.send<MsgOpenUrl>({
             type: MsgType.OpenURL,
             url: $a.href,

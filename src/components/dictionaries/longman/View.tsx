@@ -29,7 +29,7 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
             ))}
             {entry.topic && (
               <>
-                Topic: <a href={entry.topic.href} data-target='external'>{entry.topic.title}</a>
+                Topic: <a href={entry.topic.href} rel='nofollow'>{entry.topic.title}</a>
               </>
             )}
           </div>
