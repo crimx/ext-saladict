@@ -101,8 +101,8 @@
   },
   "dict_default_height": {
     "en": "Default height",
-    "zh_CN": "默认高度",
-    "zh_TW": "預設高度"
+    "zh_CN": "词典默认高度",
+    "zh_TW": "字典預設高度"
   },
   "dict_default_unfold": {
     "en": "Default Unfold",
@@ -114,20 +114,20 @@
     "zh_CN": "面板内继续查词",
     "zh_TW": "介面内繼續查字"
   },
-  "dict_panel_db_search_none": {
-    "en": "Disabled",
-    "zh_CN": "关闭",
-    "zh_TW": "關閉"
+  "dict_panel_db_search_ctrl": {
+    "en": "Double Click + Ctrl",
+    "zh_CN": "双击同时按 Ctrl",
+    "zh_TW": "雙點擊同時 Ctrl"
   },
   "dict_panel_db_search_double": {
     "en": "Double Click",
     "zh_CN": "双击",
     "zh_TW": "雙點擊"
   },
-  "dict_panel_db_search_ctrl": {
-    "en": "Double Click + Ctrl",
-    "zh_CN": "双击同时按 Ctrl",
-    "zh_TW": "雙點擊同時 Ctrl"
+  "dict_panel_db_search_none": {
+    "en": "Disabled",
+    "zh_CN": "关闭",
+    "zh_TW": "關閉"
   },
   "dict_panel_description": {
     "en": "Dictionary Panel settings. Double click search can be enabled inside dict panel. Or double click with <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> pressed.",
@@ -168,6 +168,16 @@
     "en": "Panel width",
     "zh_CN": "查词面板宽度",
     "zh_TW": "查字典介面寬度"
+  },
+  "dict_selection_count_max": {
+    "en": "Maximum word count to start searching",
+    "zh_CN": "选词最大字数",
+    "zh_TW": "選中單字最大字數"
+  },
+  "dict_selection_count_min": {
+    "en": "Minimum word count to start searching",
+    "zh_CN": "选词最小字数",
+    "zh_TW": "選中單字最小字數"
   },
   "dict_show_when_chs": {
     "en": "Search Chinese",
@@ -468,6 +478,11 @@
     "en": "ms",
     "zh_CN": "毫秒",
     "zh_TW": "毫秒"
+  },
+  "unit_word": {
+    "en": "words",
+    "zh_CN": "个",
+    "zh_TW": "个"
   },
   "wechat": {
     "en": "Wechat",

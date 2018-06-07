@@ -316,16 +316,22 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
     const toActive: DictID[] = []
 
     selectedDicts.forEach(id => {
-      const isInvalidLang = (
+      const isValidLang = !(
         (!allDicts[id].selectionLang.chs && isContainChinese(info.text)) ||
         (!allDicts[id].selectionLang.eng && isContainEnglish(info.text))
       )
 
-      if (!isInvalidLang) {
+      const wordCount = _countWords(info.text)
+      const { min, max } = allDicts[id].selectionWC
+      const isValidWordCount = wordCount >= min && wordCount <= max
+
+      const isValidSelection = isValidLang && isValidWordCount
+
+      if (isValidSelection) {
         toActive.push(id)
       }
 
-      if (!allDicts[id].defaultUnfold || isInvalidLang) {
+      if (!allDicts[id].defaultUnfold || !isValidSelection) {
         toOnhold.push(id)
       } else {
         toStart.push(id)
@@ -416,4 +422,14 @@ function popupPageInit (
       }
     })
   }
+}
+
+/** Count words in both Chinese and English. */
+function _countWords (text: string): number {
+  return (
+    text
+      .replace(/\w+/g, '词')
+      .match(/[\u4e00-\u9fa5]/g)
+    || []
+  ).length
 }
