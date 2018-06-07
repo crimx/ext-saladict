@@ -33,7 +33,7 @@
 .panel-DictItem_Title {
   margin: 0;
   padding: 0 3px;
-  line-height: 20px - 1px;
+  line-height: 20px;
   font-size: 12px;
   font-weight: normal;
 
@@ -74,12 +74,22 @@
 }
 
 .panel-DictItem_Loader_Ball {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 10px;
   height: 10px;
   fill: orange;
+
+  &:nth-child(2) {
+    transform: translateX(15px);
+  }
+  &:nth-child(3) {
+    transform: translateX(30px);
+  }
+  &:nth-child(4) {
+    transform: translateX(45px);
+  }
+  &:nth-child(5) {
+    transform: translateX(60px);
+  }
 }
 
 .panel-DictItem_FoldArrowBtn {
