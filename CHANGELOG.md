@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.2.2"></a>
+## [6.2.2](https://github.com/crimx/ext-saladict/compare/v6.2.1...v6.2.2) (2018-06-08)
+
+
+### Bug Fixes
+
+* **panel:** fix missing calculation on hiding [#135](https://github.com/crimx/ext-saladict/issues/135) ([bb5823e](https://github.com/crimx/ext-saladict/commit/bb5823e))
+
+
+
 <a name="6.2.1"></a>
 ## [6.2.1](https://github.com/crimx/ext-saladict/compare/v6.2.0...v6.2.1) (2018-06-08)
 
