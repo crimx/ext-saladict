@@ -15,6 +15,7 @@ export function getAllContextMenus () {
     longman_business: 'http://www.ldoceonline.com/search/?q=%s',
     merriam_webster: 'http://www.merriam-webster.com/dictionary/%s',
     oxford: 'http://www.oxforddictionaries.com/us/definition/english/%s',
+    sogou: 'https://fanyi.sogou.com/#auto/zh-CHS/%s',
     youdao_page_translate: 'x',
     youdao: 'http://dict.youdao.com/w/%s',
     youglish: 'https://youglish.com/search/%s',
