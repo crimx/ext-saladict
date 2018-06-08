@@ -238,7 +238,7 @@ export function getALlDicts () {
       /** Word count to start searching */
       selectionWC: {
         min: 1,
-        max: 100,
+        max: 999999,
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
@@ -605,7 +605,7 @@ export function getALlDicts () {
       /** Word count to start searching */
       selectionWC: {
         min: 1,
-        max: 100,
+        max: 999999,
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {

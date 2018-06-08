@@ -1,5 +1,5 @@
 import { appConfigFactory, AppConfig, AppConfigMutable } from '@/app-config'
-import mergeConfig from '@/_helpers/merge-config'
+import mergeConfig from '@/app-config/merge-config'
 import sinon from 'sinon'
 
 describe('Merge Config', () => {

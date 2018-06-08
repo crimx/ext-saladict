@@ -113,5 +113,10 @@
     "en": "YouGlish",
     "zh_CN": "YouGlish",
     "zh_TW": "YouGlish"
+  },
+  "sogou": {
+    "en": "Sogou Translate",
+    "zh_CN": "搜狗翻译",
+    "zh_TW": "搜狗翻譯"
   }
 }

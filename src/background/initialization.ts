@@ -1,6 +1,6 @@
 import { storage, openURL } from '@/_helpers/browser-api'
 import checkUpdate from '@/_helpers/check-update'
-import { mergeConfig } from '@/_helpers/merge-config'
+import { mergeConfig } from '@/app-config/merge-config'
 import appConfigFactory, { AppConfig } from '@/app-config'
 import { init as initMenus } from './context-menus'
 import { init as initPdf } from './pdf-sniffer'

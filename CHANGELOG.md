@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.2.1"></a>
+## [6.2.1](https://github.com/crimx/ext-saladict/compare/v6.2.0...v6.2.1) (2018-06-08)
+
+
+### Features
+
+* **config:** add sogou [#134](https://github.com/crimx/ext-saladict/issues/134) ([8833a69](https://github.com/crimx/ext-saladict/commit/8833a69))
+
+
+
 <a name="6.2.0"></a>
 # [6.2.0](https://github.com/crimx/ext-saladict/compare/v6.1.3...v6.2.0) (2018-06-07)
 

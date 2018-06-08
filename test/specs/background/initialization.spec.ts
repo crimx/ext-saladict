@@ -16,7 +16,7 @@ describe('Initialization', () => {
 
     browser.flush()
     jest.resetModules()
-    jest.doMock('@/_helpers/merge-config', () => {
+    jest.doMock('@/app-config/merge-config', () => {
       return {
         mergeConfig (config) {
           mergeConfig(config)
@@ -45,7 +45,7 @@ describe('Initialization', () => {
   })
   afterAll(() => {
     browser.flush()
-    jest.dontMock('@/background/merge-config')
+    jest.dontMock('@/app-config/merge-config')
     jest.dontMock('@/background/context-menus')
     jest.dontMock('@/_helpers/browser-api')
     window.fetch = bakFetch
