@@ -599,18 +599,16 @@ function listenNewSelection (
       bowlRect,
     }
 
-    if (!isPinned) {
-      newWidgetPartial.panelRect = shouldPanelShow
-        ? _getPanelRectFromEvent(
-          mouseX,
-          mouseY,
-          lastPanelRect.width,
-          30 + state.dictionaries.active.length * 30,
-        )
-        : {
-          ...lastPanelRect,
-          height: isSaladictPopupPage ? 400 : 30,
-        }
+    if (!isPinned && (shouldPanelShow || !lastShouldPanelShow)) {
+      // don't calculate on hiding to prevent moving animation
+      newWidgetPartial.panelRect = _getPanelRectFromEvent(
+        mouseX,
+        mouseY,
+        lastPanelRect.width,
+        shouldPanelShow
+          ? 30 + state.dictionaries.active.length * 30
+          : isSaladictPopupPage ? 400 : 30,
+      )
     }
 
     dispatch(newSelection(newWidgetPartial))
