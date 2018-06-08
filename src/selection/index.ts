@@ -54,7 +54,7 @@ let clickPeriodCount = 0
 let lastMousedownTarget: EventTarget | null
 
 const validCtrlPressed$$ = isKeyPressed(isCtrlKey).pipe(
-  filter(isCtrlPressed => config.active && isCtrlPressed),
+  filter(Boolean),
   share(),
 )
 
@@ -75,7 +75,7 @@ const validMouseup$$ = merge(
   fromEvent<TouchEvent>(window, 'touchend', { capture: true }).pipe(map(e => e.changedTouches[0])),
 ).pipe(
   filter(({ target }) => {
-    if (!config.active || window.name === 'saladict-frame') {
+    if (window.name === 'saladict-frame') {
       return false
     }
 
