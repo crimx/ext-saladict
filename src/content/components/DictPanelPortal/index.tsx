@@ -2,9 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import DictPanel, { DictPanelDispatchers, DictPanelProps } from '../DictPanel'
-import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
-import { AppConfig, DictConfigs } from '@/app-config'
 
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
