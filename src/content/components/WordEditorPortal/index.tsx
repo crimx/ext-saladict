@@ -46,6 +46,11 @@ export default class WordEditorPortal extends React.Component<WordEditorPortalPr
         `
   )
 
+  constructor (props) {
+    super(props)
+    this.el.className = 'saladict-DIV'
+  }
+
   mountEL = () => {
     this.root.appendChild(this.el)
     this.isMount = true
@@ -63,7 +68,7 @@ export default class WordEditorPortal extends React.Component<WordEditorPortalPr
   renderEditor = () => {
     const {
       isAnimation,
-      ...restProps,
+      ...restProps
     } = this.props
 
     return (

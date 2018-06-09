@@ -16,6 +16,11 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
   bowl: null | HTMLElement = null
   isMount = false
 
+  constructor (props) {
+    super(props)
+    this.el.className = 'saladict-DIV'
+  }
+
   handleBowlEnter = (node: HTMLElement) => {
     this.bowl = node
     const { x, y } = this.props.bowlRect

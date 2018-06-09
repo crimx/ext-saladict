@@ -52,6 +52,11 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     isDragging: false,
   }
 
+  constructor (props) {
+    super(props)
+    this.el.className = 'saladict-DIV'
+  }
+
   mountEL = () => {
     this.root.appendChild(this.el)
     this.isMount = true
@@ -213,6 +218,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
     return ReactDOM.createPortal(
       <div
+        className='saladict-DIV'
         onMouseMoveCapture={isDragging ? this.handleFrameMouseMove : undefined}
         onTouchMoveCapture={isDragging ? this.handleFrameTouchMove : undefined}
         onMouseUpCapture={isDragging ? this.handleDragEnd : undefined}
