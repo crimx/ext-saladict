@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.3.0"></a>
+# [6.3.0](https://github.com/crimx/ext-saladict/compare/v6.2.2...v6.3.0) (2018-06-12)
+
+
+### Bug Fixes
+
+* **panel:** reset dict height ([f359205](https://github.com/crimx/ext-saladict/commit/f359205))
+
+
+### Features
+
+* **background:** add shortcuts [#141](https://github.com/crimx/ext-saladict/issues/141) ([76a35a2](https://github.com/crimx/ext-saladict/commit/76a35a2))
+* **content:** add search history incognito mode ([8168c12](https://github.com/crimx/ext-saladict/commit/8168c12))
+* **popup:** add active toggle ([3f1d115](https://github.com/crimx/ext-saladict/commit/3f1d115)), closes [#140](https://github.com/crimx/ext-saladict/issues/140)
+
+
+### Performance Improvements
+
+* **panel:** better animation ([8777470](https://github.com/crimx/ext-saladict/commit/8777470))
+
+
+
 <a name="6.2.2"></a>
 ## [6.2.2](https://github.com/crimx/ext-saladict/compare/v6.2.1...v6.2.2) (2018-06-08)
 
