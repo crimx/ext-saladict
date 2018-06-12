@@ -40,48 +40,13 @@ browser.contextMenus.onClicked.addListener(info => {
   const linkUrl = info.linkUrl || ''
   switch (menuItemId) {
     case 'google_page_translate':
-      browser.tabs.query({ active: true, currentWindow: true })
-        .then(tabs => {
-          if (tabs.length > 0) {
-            openURL(`https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`)
-          }
-        })
+      openGoogle()
       break
     case 'youdao_page_translate':
-      // inject youdao script, defaults to the active tab of the current window.
-      browser.tabs.executeScript({ file: '/static/fanyi.youdao.2.0/main.js' })
-        .then(result => {
-          if (!result || (result as any !== 1 && result[0] !== 1)) {
-            throw new Error()
-          }
-        })
-        .catch(() => {
-          // error msg
-          browser.notifications.create({
-            type: 'basic',
-            eventTime: Date.now() + 4000,
-            iconUrl: browser.runtime.getURL(`static/icon-128.png`),
-            title: 'Saladict',
-            message: i18n.t('notification_youdao_err')
-          })
-        })
+      openYoudao()
       break
     case 'view_as_pdf':
-      const pdfURL = browser.runtime.getURL('static/pdf/web/viewer.html')
-      if (linkUrl) {
-        // open link as pdf
-        openURL(pdfURL + '?file=' + linkUrl)
-      } else {
-        browser.tabs.query({ active: true, currentWindow: true })
-          .then(tabs => {
-            // if it is a pdf page
-            if (tabs.length > 0 && /\.pdf$/i.test(tabs[0].url || '')) {
-              openURL(pdfURL + '?file=' + tabs[0].url)
-            } else {
-              openURL(pdfURL)
-            }
-          })
-      }
+      openPDF(linkUrl)
       break
     case 'search_history':
       openURL(browser.runtime.getURL('history.html'))
@@ -141,6 +106,52 @@ export function init (initConfig: ContextMenusConfig): Observable<void> {
   setMenus$$.subscribe()
 
   return setMenus$$
+}
+
+export function openPDF (linkUrl?: string) {
+  const pdfURL = browser.runtime.getURL('static/pdf/web/viewer.html')
+  if (linkUrl) {
+    // open link as pdf
+    openURL(pdfURL + '?file=' + linkUrl)
+  } else {
+    browser.tabs.query({ active: true, currentWindow: true })
+      .then(tabs => {
+        if (tabs.length > 0 && tabs[0].url) {
+          openURL(pdfURL + '?file=' + tabs[0].url)
+        } else {
+          openURL(pdfURL)
+        }
+      })
+  }
+}
+
+export function openGoogle () {
+  browser.tabs.query({ active: true, currentWindow: true })
+    .then(tabs => {
+      if (tabs.length > 0) {
+        openURL(`https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`)
+      }
+    })
+}
+
+export function openYoudao () {
+  // inject youdao script, defaults to the active tab of the current window.
+  browser.tabs.executeScript({ file: '/static/fanyi.youdao.2.0/main.js' })
+  .then(result => {
+    if (!result || (result as any !== 1 && result[0] !== 1)) {
+      throw new Error()
+    }
+  })
+  .catch(() => {
+    // error msg
+    browser.notifications.create({
+      type: 'basic',
+      eventTime: Date.now() + 4000,
+      iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+      title: 'Saladict',
+      message: i18n.t('notification_youdao_err')
+    })
+  })
 }
 
 function setContextMenus (
