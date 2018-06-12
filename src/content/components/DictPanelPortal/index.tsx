@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import DictPanel, { DictPanelDispatchers, DictPanelProps } from '../DictPanel'
 import { Omit } from '@/typings/helpers'
+import PortalFrame from '@/components/PortalFrame'
 
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
@@ -18,13 +19,13 @@ export type ChildrenProps =
   DictPanelPortalDispatchers &
   Omit<
     DictPanelProps,
-    'isDragging' |
     'panelWidth' |
     'handleDragAreaTouchStart' |
     'handleDragAreaMouseDown'
   >
 
 export interface DictPanelPortalProps extends ChildrenProps {
+  readonly isAnimation: boolean
   readonly shouldPanelShow: boolean
   readonly panelRect: {
     x: number
@@ -48,8 +49,39 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   lastMouseX = 0
   lastMouseY = 0
 
+  frameHead = '<meta name="viewport" content="width=device-width, initial-scale=1">\n' + (
+    process.env.NODE_ENV === 'production'
+      ? `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('panel.css')}" />`
+      : Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
+        .map(link => link.outerHTML)
+        .join('\n')
+        + `
+        <script>
+          document.querySelectorAll('link')
+            .forEach(link => {
+              return fetch(link.href)
+                .then(r => r.blob())
+                .then(b => {
+                  var reader = new FileReader();
+                  reader.onload = function() {
+                    if (reader.result.indexOf('wordEditor') !== -1) {
+                      link.remove()
+                    }
+                  }
+                  reader.readAsText(b)
+                })
+            })
+        </script>
+        `
+  )
+
   state = {
     isDragging: false,
+  }
+
+  constructor (props) {
+    super(props)
+    this.el.className = 'saladict-DIV'
   }
 
   mountEL = () => {
@@ -172,6 +204,19 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     style.setProperty('top', `${y}px`, 'important')
   }
 
+  frameDidMount (iframe: HTMLIFrameElement) {
+    if (process.env.NODE_ENV === 'production') {
+      const doc = iframe.contentDocument
+      if (doc && !doc.head.innerHTML.includes('panel.css')) {
+        const $link = doc.createElement('link')
+        $link.type = 'text/css'
+        $link.rel = 'stylesheet'
+        $link.href = browser.runtime.getURL('panel.css')
+        doc.head.appendChild($link)
+      }
+    }
+  }
+
   componentDidUpdate () {
     if (this.frame) {
       const { x, y, width, height } = this.props.panelRect
@@ -184,14 +229,34 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   }
 
   renderDictPanel = () => {
+    const {
+      isAnimation,
+    } = this.props
+
+    const {
+      isDragging,
+    } = this.state
+
+    const frameClassName = 'saladict-DictPanel'
+      + (isAnimation ? ' isAnimate' : '')
+      + (isDragging ? ' isDragging' : '')
+
     return (
-      <DictPanel
-        {...this.props}
-        isDragging={this.state.isDragging}
-        panelWidth={this.props.panelRect.width}
-        handleDragAreaMouseDown={this.handleDragAreaMouseDown}
-        handleDragAreaTouchStart={this.handleDragAreaTouchStart}
-      />
+      <PortalFrame
+        className={frameClassName}
+        bodyClassName={isAnimation ? 'isAnimate' : undefined}
+        name='saladict-frame'
+        frameBorder='0'
+        head={this.frameHead}
+        frameDidMount={this.frameDidMount}
+      >
+        <DictPanel
+          {...this.props}
+          panelWidth={this.props.panelRect.width}
+          handleDragAreaMouseDown={this.handleDragAreaMouseDown}
+          handleDragAreaTouchStart={this.handleDragAreaTouchStart}
+        />
+      </PortalFrame>
     )
   }
 
@@ -213,6 +278,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
     return ReactDOM.createPortal(
       <div
+        className='saladict-DIV'
         onMouseMoveCapture={isDragging ? this.handleFrameMouseMove : undefined}
         onTouchMoveCapture={isDragging ? this.handleFrameTouchMove : undefined}
         onMouseUpCapture={isDragging ? this.handleDragEnd : undefined}

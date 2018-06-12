@@ -35,6 +35,21 @@
     }
   ],
 
+  "commands": {
+    "toggle-active": {
+      "description": "__MSG_command_toggle_active__"
+    },
+    "open-google": {
+      "description": "__MSG_command_open_google__"
+    },
+    "open-youdao": {
+      "description": "__MSG_command_open_youdao__"
+    },
+    "open-pdf": {
+      "description": "__MSG_command_open_pdf__"
+    }
+  },
+
   "web_accessible_resources": [
     "panel.html",
     "panel.js",

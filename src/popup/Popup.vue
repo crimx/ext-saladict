@@ -11,6 +11,11 @@
       <path d="M474.5 449.5v75h25v-75h-25zM562 587v25h50v-25h-50z"/>
     </svg>
     <span class="switch-title">{{ $t('app_active_title') }}</span>
+    <input type="checkbox" id="opt-active" class="btn-switch" :checked="config.active" @click.prevent="changeActive">
+    <label for="opt-active"></label>
+  </div>
+  <div class="active-switch">
+    <span class="switch-title">{{ $t('app_temp_active_title') }}</span>
     <input type="checkbox" id="opt-active" class="btn-switch" v-model="tempOff" @click.prevent="changeTempOff">
     <label for="opt-active"></label>
   </div>
@@ -32,13 +37,14 @@
 import Vue from 'vue'
 import { message, storage } from '@/_helpers/browser-api'
 import { MsgType, MsgTempDisabledState } from '@/typings/message'
-import { appConfigFactory } from '@/app-config'
+import { appConfigFactory, AppConfigMutable } from '@/app-config'
+import { createAppConfigStream, setAppConfig } from '@/_helpers/config-manager'
 
 export default Vue.extend({
   name: 'Popup',
   data () {
     return {
-      config: appConfigFactory(),
+      config: appConfigFactory() as AppConfigMutable,
       currentTabUrl: '',
       tempOff: false,
       showPageNoResponse: false,
@@ -55,6 +61,10 @@ export default Vue.extend({
     }
   },
   methods: {
+    changeActive () {
+      this.config.active = !this.config.active
+      setAppConfig(this.config)
+    },
     changeTempOff () {
       const newTempOff = !this.tempOff
 
@@ -89,6 +99,10 @@ export default Vue.extend({
     }
   },
   created () {
+    createAppConfigStream().subscribe(config => {
+      this.config = config as AppConfigMutable
+    })
+
     browser.tabs.query({ active: true, currentWindow: true })
       .then(tabs => {
         if (tabs.length > 0 && tabs[0].id != null) {
@@ -160,15 +174,22 @@ body {
   box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
 }
 
+.popup-container {
+  background: #f9f9f9;
+  box-shadow: inset 0 10px 6px -6px rgba(0,0,0,.13);
+}
+
 .active-switch {
   display: flex;
   align-items: center;
   position: relative;
   height: 56px;
   padding: 0 20px;
-  background: #f9f9f9;
-  box-shadow: inset 0 10px 6px -6px rgba(0,0,0,.13);
   user-select: none;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid #d8d8d8;
+  }
 }
 
 .icon-qrcode {

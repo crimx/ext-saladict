@@ -152,10 +152,7 @@ export type PortalFrameProps = {
 }
 
 type PortalFrameState = {
-  isLoad: false
-} | {
-  root: HTMLElement
-  isLoad: true
+  root: HTMLElement | null
 }
 
 export default class PortalFrame extends React.PureComponent<PortalFrameProps, PortalFrameState> {
@@ -164,8 +161,8 @@ export default class PortalFrame extends React.PureComponent<PortalFrameProps, P
   frame: HTMLIFrameElement | null = null
 
   state = {
-    isLoad: false
-  } as PortalFrameState
+    root: null
+  }
 
   _setRef = el => this.frame = el
 
@@ -174,7 +171,7 @@ export default class PortalFrame extends React.PureComponent<PortalFrameProps, P
     const doc = frame.contentDocument as Document
     const root = doc.querySelector('html')
     doc.body.remove()
-    this.setState({ root, isLoad: true }, () => {
+    this.setState({ root }, () => {
       if (this.props.frameDidLoad) {
         this.props.frameDidLoad(frame)
       }
@@ -182,22 +179,22 @@ export default class PortalFrame extends React.PureComponent<PortalFrameProps, P
   }
 
   componentDidMount () {
-    const frame = this.frame as HTMLIFrameElement
-    if (this.props.frameDidMount) {
-      this.props.frameDidMount(frame)
+    if (this.frame) {
+      if (this.props.frameDidMount) {
+        this.props.frameDidMount(this.frame)
+      }
+      this.frame.addEventListener('load', this._handleLoad, true)
     }
-    frame && frame.addEventListener('load', this._handleLoad, true)
   }
 
   componentWillUnmount () {
-    const frame = this.frame as HTMLIFrameElement
-    frame && frame.removeEventListener('load', this._handleLoad, true)
+    if (this.frame) {
+      this.frame.removeEventListener('load', this._handleLoad, true)
+    }
     if (this.props.frameWillUnmount) {
       this.props.frameWillUnmount()
     }
     this.frame = null
-    // just in case
-    this.state['root'] = null
   }
 
   render () {
@@ -210,8 +207,13 @@ export default class PortalFrame extends React.PureComponent<PortalFrameProps, P
       name,
       bodyClassName,
       children,
-      ...restProps,
+      ...restProps
     } = this.props
+
+    const {
+      root,
+    } = this.state
+
     return (
       <iframe
         {...restProps}
@@ -219,14 +221,12 @@ export default class PortalFrame extends React.PureComponent<PortalFrameProps, P
         name={name || 'React Portal Frame'}
         srcDoc={`<!DOCTYPE html><html><head>${head || ''}</head></html>`}
       >
-        {this.state.isLoad
-          ? ReactDOM.createPortal(
-              <body {...EVENTS} className={bodyClassName}>
-                {' '}{children}
-              </body>,
-              this.state.root
-            )
-          : null}
+        {root &&
+          ReactDOM.createPortal(
+            <body {...EVENTS} className={bodyClassName} children={children} />,
+            root
+          )
+        }
       </iframe>
     )
   }

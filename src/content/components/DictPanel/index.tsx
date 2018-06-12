@@ -3,7 +3,6 @@ import { DictionariesState } from '../../redux/modules/dictionaries'
 import { AppConfig, DictID, DictConfigs } from '@/app-config'
 import { SelectionInfo } from '@/_helpers/selection'
 import { MsgSelection } from '@/typings/message'
-import PortalFrame from '@/components/PortalFrame'
 import { Omit } from '@/typings/helpers'
 
 import MenuBar, { MenuBarProps, MenuBarDispatchers } from '../MenuBar'
@@ -28,45 +27,15 @@ type ChildrenProps =
   >
 
 export interface DictPanelProps extends ChildrenProps {
-  readonly isDragging: boolean
   readonly dictionaries: DictionariesState['dictionaries']
   readonly allDictsConfig: DictConfigs
   readonly langCode: AppConfig['langCode']
-  readonly isAnimation: boolean
   readonly selection: MsgSelection
 }
 
 export default class DictPanel extends React.Component<DictPanelProps> {
-  frameHead = '<meta name="viewport" content="width=device-width, initial-scale=1">\n' + (
-    process.env.NODE_ENV === 'production'
-      ? `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('panel.css')}" />`
-      : Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
-        .map(link => link.outerHTML)
-        .join('\n')
-        + `
-        <script>
-          document.querySelectorAll('link')
-            .forEach(link => {
-              return fetch(link.href)
-                .then(r => r.blob())
-                .then(b => {
-                  var reader = new FileReader();
-                  reader.onload = function() {
-                    if (reader.result.indexOf('wordEditor') !== -1) {
-                      link.remove()
-                    }
-                  }
-                  reader.readAsText(b)
-                })
-            })
-        </script>
-        `
-  )
-
   render () {
     const {
-      isDragging,
-
       isFav,
       isPinned,
       langCode,
@@ -85,7 +54,6 @@ export default class DictPanel extends React.Component<DictPanelProps> {
       panelWidth,
       fontSize,
       panelDbSearch,
-      isAnimation,
 
       updateItemHeight,
     } = this.props
@@ -95,20 +63,8 @@ export default class DictPanel extends React.Component<DictPanelProps> {
       active: activeDicts,
     } = dictionaries
 
-    const frameClassName = 'saladict-DictPanel'
-      + (isAnimation ? ' isAnimate' : '')
-      + (isDragging ? ' isDragging' : '')
-
-    // wrap iframe into DictPanel so that react
-    // can release memory correctly after removed from DOM
     return (
-      <PortalFrame
-        className={frameClassName}
-        bodyClassName={isAnimation ? 'isAnimate' : undefined}
-        name='saladict-frame'
-        frameBorder='0'
-        head={this.frameHead}
-      >
+      <>
         {React.createElement(MenuBar, {
           isFav,
           isPinned,
@@ -144,7 +100,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
             })
           })}
         </div>
-      </PortalFrame>
+      </>
     )
   }
 }

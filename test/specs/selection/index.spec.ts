@@ -218,7 +218,7 @@ describe('Message Selection', () => {
     }, selectionDelay)
   })
 
-  it('should do nothing if conifg.active is off', done => {
+  it('should fire events even if conifg.active is off', done => {
     const config = mockAppConfigFactory()
     config.active = false
     dispatchAppConfigEvent(config)
@@ -236,7 +236,7 @@ describe('Message Selection', () => {
     }))
 
     setTimeout(() => {
-      expect(message.self.send).toHaveBeenCalledTimes(0)
+      expect(message.self.send).toHaveBeenCalledTimes(1)
       done()
     }, selectionDelay)
   })

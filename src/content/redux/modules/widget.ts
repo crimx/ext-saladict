@@ -550,12 +550,9 @@ function listenNewSelection (
   message.self.addListener<MsgSelection>(MsgType.Selection, message => {
     const state = getState()
 
-    if (isSaladictPopupPage ||
-        !state.config.active ||
-        state.widget.isTempDisabled
-    ) {
-      return
-    }
+    if (isSaladictPopupPage) { return }
+
+    const isActive = state.config.active && !state.widget.isTempDisabled
 
     const { direct, ctrl, double, icon } = state.config.mode
     const { selectionInfo, dbClick, ctrlKey, mouseX, mouseY } = message
@@ -568,7 +565,7 @@ function listenNewSelection (
 
     const shouldPanelShow = Boolean(
       isPinned ||
-      (selectionInfo.text && (
+      (isActive && selectionInfo.text && (
         lastShouldPanelShow ||
         direct ||
         (double && dbClick) ||
@@ -579,6 +576,7 @@ function listenNewSelection (
     )
 
     const shouldBowlShow = Boolean(
+      isActive &&
       selectionInfo.text &&
       icon &&
       !shouldPanelShow &&
@@ -600,14 +598,13 @@ function listenNewSelection (
     }
 
     if (!isPinned && (shouldPanelShow || !lastShouldPanelShow)) {
+      dictHeights = {}
       // don't calculate on hiding to prevent moving animation
       newWidgetPartial.panelRect = _getPanelRectFromEvent(
         mouseX,
         mouseY,
         lastPanelRect.width,
-        shouldPanelShow
-          ? 30 + state.dictionaries.active.length * 30
-          : isSaladictPopupPage ? 400 : 30,
+        isSaladictPopupPage ? 400 : 30,
       )
     }
 
@@ -625,7 +622,7 @@ function listenNewSelection (
         isSaladictOptionsPage
     ) {
       dispatch(searchText({ info: selectionInfo }))
-    } else if (!shouldPanelShow) {
+    } else if (!shouldPanelShow && lastShouldPanelShow) {
       // Everything stays the same if the panel is still visible (e.g. pin mode)
       // Otherwise clean up all dicts
       dispatch(restoreDicts())

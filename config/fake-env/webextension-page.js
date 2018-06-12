@@ -20,6 +20,13 @@ window.browser = {
     getBadgeText (x, cb) { cb(Date.now().toString()) },
     setBadgeBackgroundColor () {},
   },
+  commands: {
+    onCommand: {
+      addListener () {},
+      hasListener () {},
+      removeListener () {},
+    }
+  },
   contextMenus: {
     onClicked: {
       addListener () {},
@@ -28,6 +35,9 @@ window.browser = {
     },
     removeAll () { return Promise.resolve() },
     create () { return Promise.resolve() },
+  },
+  extension: {
+    inIncognitoContext: false,
   },
   i18n: {
     getMessage (k) { return locales[k] && locales[k].message.zh_CN },

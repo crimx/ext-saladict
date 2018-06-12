@@ -22,5 +22,33 @@
       "zh_TW": "全新工匠打磨，極致互動體驗，新增更多字典，支援 PDF，相容 Vimium 全鍵盤操作。",
       "en": "Feature-rich inline translator with PDF support. Vimium compatible."
     }
+  },
+  "command_toggle_active": {
+    "message": {
+      "zh_CN": "鼠标划词翻译开关",
+      "zh_TW": "滑鼠劃字翻譯開關",
+      "en": "Toggle inline translator"
+    }
+  },
+  "command_open_google": {
+    "message": {
+      "zh_CN": "对当前页启用谷歌翻译",
+      "zh_TW": "對此頁面使用谷歌翻譯",
+      "en": "Open Google Translate"
+    }
+  },
+  "command_open_youdao": {
+    "message": {
+      "zh_CN": "对当前页启用有道翻译",
+      "zh_TW": "對此頁面使用有道翻譯",
+      "en": "Open Youdao Translate"
+    }
+  },
+  "command_open_pdf": {
+    "message": {
+      "zh_CN": "在 Saladict 中浏览此 PDF",
+      "zh_TW": "在 Saladict 中瀏覽此 PDF",
+      "en": "Open current PDF in Saladict"
+    }
   }
 }

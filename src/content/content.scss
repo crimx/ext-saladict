@@ -6,8 +6,17 @@
 @import '../_sass_global/interfaces';
 
 /*-----------------------------------------------*\
+    Base
+\*-----------------------------------------------*/
+:root:root:root:root:root {
+  .saladict-DIV {
+    @extend %reset-important;
+  }
+}
+
+/*-----------------------------------------------*\
     Components
 \*-----------------------------------------------*/
-@import './components/SaladBowl/style';
+@import './components/SaladBowlPortal/style';
 @import './components/DictPanelPortal/style';
 @import './components/WordEditorPortal/style';
