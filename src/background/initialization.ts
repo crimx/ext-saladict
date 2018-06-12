@@ -49,7 +49,7 @@ function onInstalled ({ reason, previousVersion }: { reason: string, previousVer
         if (config && config.dicts) {
           // got previous config
           const base = mergeConfig(config)
-          return browser.storage.sync.set({ config: base })
+          return storage.sync.set({ config: base })
             .then(() => base)
         }
       }
