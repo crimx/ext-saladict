@@ -30,6 +30,7 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   merge('panelDbSearch', val => val === '' || val === 'double' || val === 'ctrl')
   mergeBoolean('pdfSniff')
   mergeBoolean('searhHistory')
+  mergeBoolean('searhHistoryInco')
   mergeBoolean('newWordSound')
   mergeBoolean('editOnFav')
 

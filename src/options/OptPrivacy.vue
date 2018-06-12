@@ -8,6 +8,11 @@
         <label class="checkbox-inline">
           <input type="checkbox" v-model="searhHistory"> {{ $t('opt:word_list_history') }}
         </label>
+        <transition name="fade">
+          <label class="checkbox-inline" v-if="searhHistory">
+            <input type="checkbox" v-model="searhHistoryInco"> {{ $t('opt:word_list_historyinco') }}
+          </label>
+        </transition>
       </div>
     </div>
     <div class="opt-item__description-wrap">
@@ -20,6 +25,7 @@
 export default {
   store: {
     searhHistory: 'config.searhHistory',
+    searhHistoryInco: 'config.searhHistoryInco',
   },
 }
 </script>

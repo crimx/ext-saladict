@@ -493,5 +493,10 @@
     "en": "Keep search history",
     "zh_CN": "记录查词历史",
     "zh_TW": "記錄查字歷史"
+  },
+  "word_list_historyinco": {
+    "en": "Also in incognito mode",
+    "zh_CN": "在私隐模式中记录",
+    "zh_TW": "在私隱模式中記錄"
   }
 }

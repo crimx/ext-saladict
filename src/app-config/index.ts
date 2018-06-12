@@ -69,6 +69,8 @@ export interface AppConfigMutable {
 
   /** track search history */
   searhHistory: boolean
+  /** incognito mode */
+  searhHistoryInco: boolean
 
   /** open word editor when adding a word to notebook */
   editOnFav: boolean
@@ -177,6 +179,7 @@ export function appConfigFactory (): AppConfig {
     pdfSniff: true,
 
     searhHistory: false,
+    searhHistoryInco: false,
 
     newWordSound: true,
 

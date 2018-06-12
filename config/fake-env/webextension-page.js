@@ -29,6 +29,9 @@ window.browser = {
     removeAll () { return Promise.resolve() },
     create () { return Promise.resolve() },
   },
+  extension: {
+    inIncognitoContext: false,
+  },
   i18n: {
     getMessage (k) { return locales[k] && locales[k].message.zh_CN },
     getUILanguage () { return 'zh-CN' },
