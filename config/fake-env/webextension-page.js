@@ -20,6 +20,13 @@ window.browser = {
     getBadgeText (x, cb) { cb(Date.now().toString()) },
     setBadgeBackgroundColor () {},
   },
+  commands: {
+    onCommand: {
+      addListener () {},
+      hasListener () {},
+      removeListener () {},
+    }
+  },
   contextMenus: {
     onClicked: {
       addListener () {},
