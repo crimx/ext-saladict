@@ -598,14 +598,13 @@ function listenNewSelection (
     }
 
     if (!isPinned && (shouldPanelShow || !lastShouldPanelShow)) {
+      dictHeights = {}
       // don't calculate on hiding to prevent moving animation
       newWidgetPartial.panelRect = _getPanelRectFromEvent(
         mouseX,
         mouseY,
         lastPanelRect.width,
-        shouldPanelShow
-          ? 30 + state.dictionaries.active.length * 30
-          : isSaladictPopupPage ? 400 : 30,
+        isSaladictPopupPage ? 400 : 30,
       )
     }
 
