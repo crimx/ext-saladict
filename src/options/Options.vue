@@ -171,19 +171,26 @@ export default {
     config: {
       deep: true,
       handler () {
-        // patch update google config
-        const { google } = this.config.dicts.all
-        if (!google.page.includes(this.config.langCode) ||
-            (google.options.cnfirst && !google.page.includes('google.cn')) ||
-            (!google.options.cnfirst && !google.page.includes('google.com'))
-        ) {
-          google.page = google.options.cnfirst
-            ? `https://translate.google.cn/#auto/${this.$store.config.langCode}/%s`
-            : `https://translate.google.com/#auto/${this.$store.config.langCode}/%s`
-          return
-        }
+        /*-----------------------------------------------*\
+            Patch update url
+        \*-----------------------------------------------*/
+        const config = JSON.parse(JSON.stringify(this.config))
+        config.dicts.all.google.page = config.dicts.all.google.options.cnfirst
+          ? `https://translate.google.cn/#auto/${config.langCode}/%s`
+          : `https://translate.google.com/#auto/${config.langCode}/%s`
 
-        storage.sync.set({config: this.config})
+        config.contextMenus.all.google_translate = config.dicts.all.google.options.cnfirst
+          ? `https://translate.google.cn/#auto/${config.langCode}/%s`
+          : `https://translate.google.com/#auto/${config.langCode}/%s`
+
+        const sogouLangCode = config.langCode === 'zh-CN'
+          ? 'zh-CHS'
+          : config.langCode === 'zh-TW'
+            ? 'zh-CHT'
+            : 'en'
+        config.contextMenus.all.sogou = `https://fanyi.sogou.com/#auto/${sogouLangCode}/%s`
+
+        storage.sync.set({config})
           .then(() => {
             this.isShowConfigUpdated = true
             clearTimeout(this.showConfigUpdatedTimeout)

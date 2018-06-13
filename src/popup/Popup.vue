@@ -16,8 +16,8 @@
   </div>
   <div class="active-switch">
     <span class="switch-title">{{ $t('app_temp_active_title') }}</span>
-    <input type="checkbox" id="opt-active" class="btn-switch" v-model="tempOff" @click.prevent="changeTempOff">
-    <label for="opt-active"></label>
+    <input type="checkbox" id="opt-temp-active" class="btn-switch" v-model="tempOff" @click.prevent="changeTempOff">
+    <label for="opt-temp-active"></label>
   </div>
   <transition name="fade">
     <div class="qrcode-panel" v-if="currentTabUrl">

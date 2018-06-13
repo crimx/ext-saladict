@@ -158,7 +158,7 @@ export default appConfigFactory
 
 export function appConfigFactory (): AppConfig {
   return {
-    version: 6,
+    version: 7,
 
     active: true,
 
