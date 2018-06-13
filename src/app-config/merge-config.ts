@@ -1,6 +1,7 @@
-import { appConfigFactory, AppConfig } from '@/app-config'
+import { appConfigFactory, AppConfig, AppConfigMutable } from '@/app-config'
 import forEach from 'lodash/forEach'
 import isNumber from 'lodash/isNumber'
+import isString from 'lodash/isString'
 import isBoolean from 'lodash/isBoolean'
 import get from 'lodash/get'
 import set from 'lodash/set'
@@ -16,7 +17,9 @@ export function mergeConfig (config?: AppConfig, base?: AppConfig): AppConfig {
 export default mergeConfig
 
 function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig {
-  const base = baseConfig ? JSON.parse(JSON.stringify(baseConfig)) : appConfigFactory()
+  const base: AppConfigMutable = baseConfig
+    ? JSON.parse(JSON.stringify(baseConfig))
+    : appConfigFactory()
 
   mergeBoolean('active')
   mergeBoolean('noTypeField')
@@ -64,6 +67,7 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   mergeSelectedDicts('contextMenus')
 
   forEach(base.dicts.all, (dict, id) => {
+    mergeString(`dicts.all.${id}.page`)
     mergeBoolean(`dicts.all.${id}.defaultUnfold`)
     mergeNumber(`dicts.all.${id}.preferredHeight`)
     mergeNumber(`dicts.all.${id}.selectionWC.min`)
@@ -79,6 +83,10 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
         }
       })
     }
+  })
+
+  forEach(base.contextMenus.all, (dict, id) => {
+    mergeString(`contextMenus.all.${id}`)
   })
 
   // patch
@@ -102,6 +110,11 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
 
   function mergeNumber (path: string): void {
     return merge(path, isNumber)
+
+  }
+
+  function mergeString (path: string): void {
+    return merge(path, isString)
   }
 
   function mergeBoolean (path: string): void {
