@@ -1,7 +1,7 @@
 <template>
 <div class="popup-container">
   <div class="active-switch">
-    <svg class="icon-qrcode" @mouseenter="showQRcode" @mouseleave="currentTabUrl = ''"xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
+    <svg class="icon-qrcode" @mouseenter="showQRcode" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
       <path d="M0 225v25h250v-25H0zM0 25h250V0H0v25z"/>
       <path d="M0 250h25V0H0v250zm225 0h25V0h-25v250zM87.5 162.5h75v-75h-75v75zM362 587v25h80v-25h-80zm0-200h80v-25h-80v25z"/>
       <path d="M362 612h25V362h-25v250zm190-250v25h60v-25h-60zm-77.5 87.5v25h50v-25h-50z"/>
@@ -20,7 +20,7 @@
     <label for="opt-temp-active"></label>
   </div>
   <transition name="fade">
-    <div class="qrcode-panel" v-if="currentTabUrl">
+    <div class="qrcode-panel" v-if="currentTabUrl" @mouseleave="currentTabUrl = ''">
       <qriously :value="currentTabUrl" :size="250" />
       <p class="qrcode-panel-title">{{ $t('qrcode_title') }}</p>
     </div>
