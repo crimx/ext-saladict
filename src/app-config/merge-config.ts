@@ -81,6 +81,12 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
     }
   })
 
+  // patch
+  if (config.version === 6) {
+    base.dicts.all.google.selectionWC.max = 999999999999999
+    base.dicts.all.youdao.selectionWC.max = 999999999999999
+  }
+
   return base
 
   function mergeSelectedDicts (path: string): void {
