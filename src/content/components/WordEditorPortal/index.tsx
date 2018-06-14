@@ -74,7 +74,7 @@ export default class WordEditorPortal extends React.Component<WordEditorPortalPr
     return (
       <PortalFrame
         className={'saladict-WordEditor' + (isAnimation ? ' isAnimate' : '')}
-        name='saladict-word-editor'
+        name='saladict-frame'
         frameBorder='0'
         head={this.frameHead}
       >
