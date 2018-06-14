@@ -176,7 +176,10 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
   }
 
   componentDidMount () {
-    this.focusSearchBox()
+    // Fix Firefox popup page delay bug
+    setTimeout(() => {
+      this.focusSearchBox()
+    }, 10)
   }
 
   componentDidUpdate (prevProps: MenuBarProps) {
