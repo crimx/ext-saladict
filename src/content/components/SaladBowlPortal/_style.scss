@@ -58,8 +58,8 @@ $bowl-width: 30px;
 
   .isAnimate {
     &.saladict-SaladBowl {
-      will-change: transform !important;
-      transition: transform 0.3s ease-out !important;
+      will-change: top, left !important;
+      transition: top 0.3s ease-out, left 0.3s ease-out !important;
 
       &:hover {
         .saladict-SaladBowl_Leaf {
@@ -75,6 +75,7 @@ $bowl-width: 30px;
     }
 
     &.saladict-SaladBowl-enter {
+      will-change: transform !important;
       animation: saladict-SaladBowl_Jelly 1000ms linear;
     }
   }

@@ -31,15 +31,15 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
   handleBowlEntered = (node: HTMLElement) => {
     this.bowl = node
     const { x, y } = this.props.bowlRect
-    node.style.removeProperty('top')
-    node.style.removeProperty('left')
-    node.style.setProperty('transform', `translate(${x}px, ${y}px)`, 'important')
+    node.style.setProperty('left', `${x}px`, 'important')
+    node.style.setProperty('top', `${y}px`, 'important')
   }
 
   componentDidUpdate () {
     if (this.bowl) {
       const { x, y } = this.props.bowlRect
-      this.bowl.style.setProperty('transform', `translate(${x}px, ${y}px)`, 'important')
+      this.bowl.style.setProperty('left', `${x}px`, 'important')
+      this.bowl.style.setProperty('top', `${y}px`, 'important')
     }
   }
 
