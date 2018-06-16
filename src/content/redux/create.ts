@@ -1,16 +1,19 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import rootReducer from './modules'
+import rootReducer, { StoreState } from './modules'
 
 import { startUpAction as configStartUp } from './modules/config'
 import { startUpAction as selectionStartUp } from './modules/selection'
 import { startUpAction as widgetStartUp } from './modules/widget'
 import { startUpAction as dictionariesStartUp } from './modules/dictionaries'
 
+import { message } from '@/_helpers/browser-api'
+import { MsgType, MsgIsPinned } from '@/typings/message'
+
 export default () => {
   const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
 
-  const store = createStore(
+  const store = createStore<StoreState>(
     rootReducer as any,
     composeEnhancers(applyMiddleware(thunk))
   )
@@ -19,6 +22,16 @@ export default () => {
   store.dispatch<any>(selectionStartUp())
   store.dispatch<any>(widgetStartUp())
   store.dispatch<any>(dictionariesStartUp())
+
+  // sync state
+  store.subscribe(() => {
+    const state = store.getState()
+
+    message.self.send<MsgIsPinned>({
+      type: MsgType.IsPinned,
+      isPinned: state.widget.isPinned,
+    })
+  })
 
   return store
 }

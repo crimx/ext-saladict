@@ -1,5 +1,5 @@
 import { SelectionInfo } from '@/_helpers/selection'
-import { DictID } from '@/app-config'
+import { DictID, AppConfig } from '@/app-config'
 import { Word, Area as DBArea } from '@/background/database'
 
 export const enum MsgType {
@@ -7,6 +7,9 @@ export const enum MsgType {
   Null,
   /** Default */
   Default,
+
+  /** is dict panel pinned? */
+  IsPinned,
 
   /** Mouse down, selection maybe empty */
   Selection,
@@ -161,4 +164,9 @@ export type MsgTempDisabledState = {
 export interface MsgEditWord {
   type: MsgType.EditWord
   word: Word
+}
+
+export interface MsgIsPinned {
+  type: MsgType.IsPinned
+  isPinned: boolean
 }
