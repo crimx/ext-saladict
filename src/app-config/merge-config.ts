@@ -41,11 +41,14 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   mergeBoolean('mode.direct')
   mergeBoolean('mode.double')
   mergeBoolean('mode.ctrl')
+  merge('mode.instant', val => val === '' || val === 'direct' || val === 'ctrl' || val === 'alt')
 
   mergeBoolean('pinMode.direct')
   mergeBoolean('pinMode.double')
   mergeBoolean('pinMode.ctrl')
+  merge('pinMode.instant', val => val === '' || val === 'direct' || val === 'ctrl' || val === 'alt')
 
+  mergeNumber('insCapDelay')
   mergeNumber('doubleClickDelay')
 
   mergeBoolean('tripleCtrl')
