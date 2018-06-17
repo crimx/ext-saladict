@@ -1,10 +1,11 @@
-import { storage, openURL } from '@/_helpers/browser-api'
+import { message, storage, openURL } from '@/_helpers/browser-api'
 import checkUpdate from '@/_helpers/check-update'
 import { mergeConfig } from '@/app-config/merge-config'
-import appConfigFactory, { AppConfig } from '@/app-config'
+import appConfigFactory, { AppConfig, AppConfigMutable } from '@/app-config'
 import { getAppConfig, setAppConfig } from '@/_helpers/config-manager'
 import { init as initMenus, openPDF, openGoogle, openYoudao } from './context-menus'
 import { init as initPdf } from './pdf-sniffer'
+import { MsgType, MsgQueryPanelState } from '@/typings/message'
 
 getAppConfig().then(config => {
   initMenus(config.contextMenus)
@@ -26,6 +27,27 @@ browser.commands.onCommand.addListener(command => {
         setAppConfig({
           ...config,
           active: !config.active,
+        })
+      })
+      break
+    case 'toggle-instant':
+      browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+        if (tabs.length <= 0 || tabs[0].id == null) { return }
+        Promise.all([
+          getAppConfig(),
+          message.send<MsgQueryPanelState, boolean>(
+            tabs[0].id as number,
+            {
+              type: MsgType.QueryPanelState,
+              path: 'widget.isPinned',
+            }
+          ),
+        ]).then(([c, isPinned]) => {
+          const config = c as AppConfigMutable
+          const isEnable = !config[isPinned ? 'pinMode' : 'mode'].instant.enable
+          config.mode.instant.enable = isEnable
+          config.pinMode.instant.enable = isEnable
+          setAppConfig(config)
         })
       })
       break

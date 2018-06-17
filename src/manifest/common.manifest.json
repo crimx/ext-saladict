@@ -39,6 +39,9 @@
     "toggle-active": {
       "description": "__MSG_command_toggle_active__"
     },
+    "toggle-instant": {
+      "description": "__MSG_command_toggle_instant__"
+    },
     "open-google": {
       "description": "__MSG_command_open_google__"
     },

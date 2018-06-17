@@ -30,6 +30,13 @@
       "en": "Toggle inline translator"
     }
   },
+  "command_toggle_instant": {
+    "message": {
+      "zh_CN": "鼠标悬浮取词开关",
+      "zh_TW": "滑鼠懸浮取詞開關",
+      "en": "Toggle instant capture"
+    }
+  },
   "command_open_google": {
     "message": {
       "zh_CN": "对当前页启用谷歌翻译",
