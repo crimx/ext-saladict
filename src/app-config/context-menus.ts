@@ -1,5 +1,6 @@
 export function getAllContextMenus () {
   const allContextMenus = {
+    baidu_page_translate: 'x',
     baidu_search: 'https://www.baidu.com/s?ie=utf-8&wd=%s',
     bing_dict: 'https://cn.bing.com/dict/?q=%s',
     bing_search: 'https://www.bing.com/search?q=%s',
@@ -14,7 +15,9 @@ export function getAllContextMenus () {
     liangan: 'https://www.moedict.tw/~%s',
     longman_business: 'http://www.ldoceonline.com/search/?q=%s',
     merriam_webster: 'http://www.merriam-webster.com/dictionary/%s',
+    microsoft_page_translate: 'x',
     oxford: 'http://www.oxforddictionaries.com/us/definition/english/%s',
+    sogou_page_translate: 'x',
     sogou: 'https://fanyi.sogou.com/#auto/zh-CHS/%s',
     youdao_page_translate: 'x',
     youdao: 'http://dict.youdao.com/w/%s',
