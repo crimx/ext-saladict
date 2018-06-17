@@ -409,7 +409,9 @@ kbd {
 
 .opt-item__body {
   @extend .col-xs-6;
-  width: percentage(6.5/12);
+  width: percentage(7/12);
+  padding-left: 10px;
+  padding-right: 10px;
   background-color: #fafafa;
 
   &:hover + .opt-item__description-wrap {
@@ -420,13 +422,21 @@ kbd {
 
 .opt-item__description-wrap {
   @extend .col-xs-4;
-   width: percentage(3.5/12);
+   width: percentage(3/12);
   position: absolute;
   z-index: -1;
   right: 0;
   padding-left: 15px;
   opacity: 0;
   transition: all 400ms;
+
+  ul {
+    padding: 0;
+  }
+
+  li {
+    list-style: none;
+  }
 
   &:hover {
     opacity: 1;
@@ -494,14 +504,18 @@ kbd {
   overflow: hidden;
 }
 
-.double-click-delay {
-  overflow: hidden;
-  height: 0;
-  transition: height 400ms;
+.instant-capture-container {
+  display: flex;
+  align-items: flex-end;
 
-  > .input-group {
-    margin: 0;
+  & > * {
+    margin-bottom: 10px !important;
   }
+}
+
+.instant-capture-delay {
+  flex: 1 50%;
+  transition: opacity 0.4s;
 }
 
 .select-box-container {

@@ -260,9 +260,9 @@
     "zh_TW": "按住Ctrl/⌘"
   },
   "mode_description": {
-    "en": "When a text selection is made and <strong>'Show Icon'</strong> mode is enabled, a cute little icon would popup nearby the cursor; while in <strong>'Directly Search'</strong> mode the dictionary panel shows up insted; <strong>'Double Click'</strong> mode shows dictionary panel after double click selection; <strong>'Hold Ctrl/⌘'</strong> mode means the <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key must be pressed when the selection is made.",
-    "zh_CN": "当用鼠标在网页上选择了一段文本，<strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；<strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；<strong>“双击搜索”</strong>双击选择文本之后直接显示词典面板；<strong>“按住 Ctrl”</strong>在选择文本时需同时按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键才显示词典面板。",
-    "zh_TW": "當使用滑鼠在網頁上選擇一段句子或單字，<strong>「顯示圖案」</strong>會先在滑鼠附近顯示一個圖案，滑鼠移動到圖案，會顯示出字典的視窗介面；<strong>「直接搜尋」</strong>則不會顯示圖案，直接顯示字典視窗介面；<strong>「滑鼠雙點擊搜尋」</strong>滑鼠雙點擊所選擇的句子或單字後，會直接顯示字典視窗介面；<strong>「按住 Ctrl」</strong>在選擇句子或單字時，需同時按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵，才顯示字典視窗介面。"
+    "en": "When a text selection is made: <ul><li><strong>'Show Icon'</strong>, a cute little icon pops up nearby the cursor; </li><li><strong>'Directly Search'</strong>, the dictionary panel shows up directly; </li><li><strong>'Double Click'</strong>, dictionary panel shows up after double click selection; </li><li><strong>'Hold Ctrl/⌘'</strong>, the <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key must be pressed when the selection is made; </li><li><strong>'Instant Capture'</strong>, selection is automatically made near by the cursor. </li></ul>",
+    "zh_CN": "当用鼠标在网页上选择了一段文本：<ul><li><strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；</li><li><strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；</li><li><strong>“双击搜索”</strong>双击选择文本之后直接显示词典面板；</li><li><strong>“按住 Ctrl/⌘”</strong>在选择文本时需同时按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键才显示词典面板；</li><li><strong>“鼠标悬浮取词”</strong>会自动选取鼠标下发的单词，可配合快捷键开启关闭。</li></ul>",
+    "zh_TW": "當使用滑鼠在網頁上選擇一段句子或單字：<ul><li><strong>「顯示圖案」</strong>會先在滑鼠附近顯示一個圖案，滑鼠移動到圖案，會顯示出字典的視窗介面；</li><li><strong>「直接搜尋」</strong>則不會顯示圖案，直接顯示字典視窗介面；</li><li><strong>「滑鼠雙點擊」</strong>滑鼠雙點擊所選擇的句子或單字後，會直接顯示字典視窗介面；</li><li><strong>「按住 Ctrl/⌘」</strong>在選擇句子或單字時，需同時按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵，才顯示字典視窗介面；</li><li><strong>「滑鼠懸浮取詞」</strong>會自動選取滑鼠下方的單字，可配合快捷鍵啓用與關閉。</li></ul>"
   },
   "mode_direct": {
     "en": "Direct Search",
@@ -272,7 +272,7 @@
   "mode_double": {
     "en": "Double Click",
     "zh_CN": "双击搜索",
-    "zh_TW": "滑鼠雙點擊搜尋"
+    "zh_TW": "滑鼠雙點擊"
   },
   "mode_double_click_delay": {
     "en": "Double Click Delay",
@@ -283,6 +283,41 @@
     "en": "Show Icon",
     "zh_CN": "显示图标",
     "zh_TW": "顯示圖案"
+  },
+  "mode_instant": {
+    "en": "Instant Capture",
+    "zh_CN": "鼠标悬浮取词",
+    "zh_TW": "滑鼠懸浮取詞"
+  },
+  "mode_instant_alt": {
+    "en": "Alt",
+    "zh_CN": "Alt",
+    "zh_TW": "Alt"
+  },
+  "mode_instant_ctrl": {
+    "en": "Ctrl/⌘",
+    "zh_CN": "Ctrl/⌘",
+    "zh_TW": "Ctrl/⌘"
+  },
+  "mode_instant_delay": {
+    "en": "Capture delay",
+    "zh_CN": "取词延时",
+    "zh_TW": "取詞等待"
+  },
+  "mode_instant_direct": {
+    "en": "Direct",
+    "zh_CN": "直接取词",
+    "zh_TW": "直接取詞"
+  },
+  "mode_instant_disabled": {
+    "en": "Disabled",
+    "zh_CN": "关闭取词",
+    "zh_TW": "關閉取詞"
+  },
+  "mode_instant_key": {
+    "en": "Instant Capture Key",
+    "zh_CN": "悬浮取词按键",
+    "zh_TW": "懸浮取詞按鍵"
   },
   "mode_title": {
     "en": "Search Mode",
@@ -320,9 +355,9 @@
     "zh_TW": "使用本應用程式瀏覽 PDF"
   },
   "pinmode_description": {
-    "en": "When Dictionary Panel is pinned.",
-    "zh_CN": "当面板被钉住时的查词模式。",
-    "zh_TW": "當視窗被釘住時的查字模式。"
+    "en": "When Dictionary Panel is pinned. See 'Search Mode' above.",
+    "zh_CN": "当面板被钉住时的查词模式。参见上方“查词模式”。",
+    "zh_TW": "當視窗被釘住時的查字模式。參見上方「查字模式」。"
   },
   "pinmode_title": {
     "en": "Pinned Mode",
