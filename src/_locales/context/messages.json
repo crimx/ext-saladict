@@ -1,4 +1,9 @@
 {
+  "baidu_page_translate": {
+    "en": "Baidu Page Translate",
+    "zh_CN": "百度网页翻译",
+    "zh_TW": "百度網頁翻譯"
+  },
   "baidu_search": {
     "en": "Baidu Search",
     "zh_CN": "百度搜索",
@@ -79,6 +84,11 @@
     "zh_CN": "韦氏词典",
     "zh_TW": "韋氏字典"
   },
+  "microsoft_page_translate": {
+    "en": "Microsoft Page Translate",
+    "zh_CN": "微软网页翻译",
+    "zh_TW": "微軟網頁翻譯"
+  },
   "notebook_title": {
     "en": "New Word List",
     "zh_CN": "生词本",
@@ -93,6 +103,16 @@
     "en": "Oxford",
     "zh_CN": "牛津词典",
     "zh_TW": "牛津字典"
+  },
+  "sogou": {
+    "en": "Sogou Translate",
+    "zh_CN": "搜狗翻译",
+    "zh_TW": "搜狗翻譯"
+  },
+  "sogou_page_translate": {
+    "en": "Sogou Page Translate",
+    "zh_CN": "搜狗网页翻译",
+    "zh_TW": "搜狗網頁翻譯"
   },
   "view_as_pdf": {
     "en": "View as PDF",
@@ -113,10 +133,5 @@
     "en": "YouGlish",
     "zh_CN": "YouGlish",
     "zh_TW": "YouGlish"
-  },
-  "sogou": {
-    "en": "Sogou Translate",
-    "zh_CN": "搜狗翻译",
-    "zh_TW": "搜狗翻譯"
   }
 }

@@ -18,9 +18,9 @@ export function getSelectionText (win = window): string {
 }
 
 // match head                 a.b is ok    chars that ends a sentence
-const sentenceHeadTester = /((\.(?![ .]))|[^.?!。？！…\r\n])+$/
+const sentenceHeadTester = /((\.(?![ .]))|[^.?!。？！…])+$/
 // match tail                                                    for "..."
-const sentenceTailTester = /^((\.(?![ .]))|[^.?!。？！…\r\n])+(.)\3{0,2}/
+const sentenceTailTester = /^((\.(?![ .]))|[^.?!。？！…])*([.?!。？！…]){0,3}/
 
 /** Returns the sentence containing the selection text */
 export function getSelectionSentence (win = window): string {
@@ -138,10 +138,5 @@ export function getSelectionInfo (): SelectionInfo {
 }
 
 function cleanText (text: string): string {
-  return text
-    .replace(/^\s+\n/gm, '\n') // compress multiple \n to two
-    .trim()
-    .split('\n')
-    .map(line => line.replace(/\s+/g, ' ').trim())
-    .join('\n')
+  return text.replace(/\s+/g, ' ').trim()
 }

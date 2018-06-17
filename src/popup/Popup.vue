@@ -19,6 +19,11 @@
     <input type="checkbox" id="opt-temp-active" class="btn-switch" v-model="tempOff" @click.prevent="changeTempOff">
     <label for="opt-temp-active"></label>
   </div>
+  <div class="active-switch">
+    <span class="switch-title">{{ $t('instant_capture_title') + (insCapMode === 'pinMode' ? $t('instant_capture_pinned') : '') }}</span>
+    <input type="checkbox" id="opt-instant-capture" class="btn-switch" v-model="config[insCapMode].instant.enable" @click.prevent="changeInsCap">
+    <label for="opt-instant-capture"></label>
+  </div>
   <transition name="fade">
     <div class="qrcode-panel" v-if="currentTabUrl" @mouseleave="currentTabUrl = ''">
       <qriously :value="currentTabUrl" :size="250" />
@@ -36,7 +41,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { message, storage } from '@/_helpers/browser-api'
-import { MsgType, MsgTempDisabledState } from '@/typings/message'
+import { MsgType, MsgTempDisabledState, MsgIsPinned, MsgQueryPanelState } from '@/typings/message'
 import { appConfigFactory, AppConfigMutable } from '@/app-config'
 import { createAppConfigStream, setAppConfig } from '@/_helpers/config-manager'
 
@@ -48,6 +53,7 @@ export default Vue.extend({
       currentTabUrl: '',
       tempOff: false,
       showPageNoResponse: false,
+      insCapMode: 'mode' as 'mode' | 'pinMode',
     }
   },
   watch: {
@@ -90,6 +96,10 @@ export default Vue.extend({
         })
         .catch(() => this.showPageNoResponse = true)
     },
+    changeInsCap () {
+      this.config[this.insCapMode].instant.enable = !this.config[this.insCapMode].instant.enable
+      setAppConfig(this.config)
+    },
     showQRcode () {
       chrome.tabs.query({active: true, currentWindow: true}, tabs => {
         if (tabs.length > 0 && tabs[0].url) {
@@ -106,7 +116,7 @@ export default Vue.extend({
     browser.tabs.query({ active: true, currentWindow: true })
       .then(tabs => {
         if (tabs.length > 0 && tabs[0].id != null) {
-          return message.send<MsgTempDisabledState>(
+          message.send<MsgTempDisabledState>(
             tabs[0].id as number,
             {
               type: MsgType.TempDisabledState,
@@ -114,6 +124,16 @@ export default Vue.extend({
             },
           ).then(flag => {
             this.tempOff = flag
+          })
+
+          message.send<MsgQueryPanelState, boolean>(
+            tabs[0].id as number,
+            {
+              type: MsgType.QueryPanelState,
+              path: 'widget.isPinned',
+            },
+          ).then(isPinned => {
+            this.insCapMode = isPinned ? 'pinMode' : 'mode'
           })
         }
       })
@@ -183,7 +203,7 @@ body {
   display: flex;
   align-items: center;
   position: relative;
-  height: 56px;
+  height: 50px;
   padding: 0 20px;
   user-select: none;
 
@@ -193,7 +213,7 @@ body {
 }
 
 .icon-qrcode {
-  width: 23px;
+  width: 20px;
   margin-top: 3px;
 }
 
@@ -205,8 +225,8 @@ body {
   color: #333;
 }
 
-$switch-button-width: 63px;
-$switch-button-height: 37px;
+$switch-button-width: 55px;
+$switch-button-height: 35px;
 .btn-switch {
   // hide input
   position: absolute;

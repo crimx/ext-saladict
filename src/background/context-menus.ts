@@ -4,6 +4,7 @@ import i18nLoader from '@/_helpers/i18n'
 import { TranslationFunction } from 'i18next'
 import contextLocles from '@/_locales/context'
 import isEqual from 'lodash/isEqual'
+import { getAppConfig } from '@/_helpers/config-manager'
 
 // import { Observable, ReplaySubject, combineLatest } from 'rxjs'
 // import { mergeMap, filter, map, audit, mapTo, share, startWith } from 'rxjs/operators'
@@ -44,6 +45,15 @@ browser.contextMenus.onClicked.addListener(info => {
       break
     case 'youdao_page_translate':
       openYoudao()
+      break
+    case 'baidu_page_translate':
+      openBaiduPage()
+      break
+    case 'sogou_page_translate':
+      openSogouPage()
+      break
+    case 'microsoft_page_translate':
+      openMicrosoftPage()
       break
     case 'view_as_pdf':
       openPDF(linkUrl)
@@ -128,8 +138,10 @@ export function openPDF (linkUrl?: string) {
 export function openGoogle () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
-      if (tabs.length > 0) {
-        openURL(`https://translate.google.com/translate?sl=auto&tl=zh-CN&js=y&prev=_t&ie=UTF-8&u=${tabs[0].url}&edit-text=&act=url`)
+      if (tabs.length > 0 && tabs[0].url) {
+        getAppConfig().then(config => {
+          openURL(`https://translate.google.com/translate?sl=auto&tl=${config.langCode}&js=y&prev=_t&ie=UTF-8&u=${encodeURIComponent(tabs[0].url as string)}&edit-text=&act=url`)
+        })
       }
     })
 }
@@ -154,6 +166,50 @@ export function openYoudao () {
   })
 }
 
+export function openBaiduPage () {
+  browser.tabs.query({ active: true, currentWindow: true })
+    .then(tabs => {
+      if (tabs.length > 0 && tabs[0].url) {
+        getAppConfig().then(config => {
+          const langCode = config.langCode === 'zh-CN'
+            ? 'zh'
+            : config.langCode === 'zh-TW'
+              ? 'cht'
+              : 'en'
+          openURL(`https://fanyi.baidu.com/transpage?query=${encodeURIComponent(tabs[0].url as string)}&from=auto&to=${langCode}&source=url&render=1`)
+        })
+      }
+    })
+}
+
+export function openSogouPage () {
+  browser.tabs.query({ active: true, currentWindow: true })
+    .then(tabs => {
+      if (tabs.length > 0 && tabs[0].url) {
+        getAppConfig().then(config => {
+          const langCode = config.langCode === 'zh-CN' ? 'zh-CHS' : 'en'
+          openURL(`https://translate.sogoucdn.com/pcvtsnapshot?from=auto&to=${langCode}&tfr=translatepc&url=${encodeURIComponent(tabs[0].url as string)}&domainType=sogou`)
+        })
+      }
+    })
+}
+
+export function openMicrosoftPage () {
+  browser.tabs.query({ active: true, currentWindow: true })
+    .then(tabs => {
+      if (tabs.length > 0 && tabs[0].url) {
+        getAppConfig().then(config => {
+          const langCode = config.langCode === 'zh-CN'
+            ? 'zh-CHS'
+            : config.langCode === 'zh-TW'
+              ? 'zh-CHT'
+              : 'en'
+          openURL(`https://www.microsofttranslator.com/bv.aspx?from=auto&to=${langCode}&r=true&a=${encodeURIComponent(tabs[0].url as string)}`)
+        })
+      }
+    })
+}
+
 function setContextMenus (
   contextMenus: ContextMenusConfig,
   t: TranslationFunction
@@ -169,16 +225,21 @@ function setContextMenus (
         contexts: ['link', 'browser_action']
       })
 
-      let hasGooglePageTranslate = false
-      let hasYoudaoPageTranslate = false
+      let browserActionCount = 0
       contextMenus.selected.forEach(id => {
-        let contexts: browser.contextMenus.ContextType[] = ['selection']
-        if (id === 'google_page_translate') {
-          hasGooglePageTranslate = true
-          contexts = ['all']
-        } else if (id === 'youdao_page_translate') {
-          hasYoudaoPageTranslate = true
-          contexts = ['all']
+        let contexts: browser.contextMenus.ContextType[]
+        switch (id) {
+          case 'google_page_translate':
+          case 'youdao_page_translate':
+          case 'sogou_page_translate':
+          case 'baidu_page_translate':
+          case 'microsoft_page_translate':
+            contexts = ['all']
+            browserActionCount++
+            break
+          default:
+            contexts = ['selection']
+            break
         }
         optionList.push({
           id,
@@ -188,14 +249,12 @@ function setContextMenus (
       })
 
       // Only for browser action
-      if (!hasGooglePageTranslate) {
+      if (browserActionCount <= 0) {
         optionList.push({
           id: 'google_page_translate',
           title: t('google_page_translate'),
           contexts: ['browser_action']
         })
-      }
-      if (!hasYoudaoPageTranslate) {
         optionList.push({
           id: 'youdao_page_translate',
           title: t('youdao_page_translate'),

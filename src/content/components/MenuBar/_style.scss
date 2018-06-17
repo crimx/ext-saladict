@@ -93,7 +93,7 @@
 }
 
 .panel-MenuBar_Icon-pin {
-  @extend .panel-MenuBar_Icon;
+  transform-origin: center;
 
   &.isActive {
     transform: rotate(45deg);

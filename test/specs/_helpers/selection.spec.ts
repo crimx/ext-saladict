@@ -44,7 +44,7 @@ describe('Selection', () => {
         ' \r  \n\n line1\n  line2\n\n line3   \n\n\nline4  \n\n\n\nline5 \n\n \n '
       )
       window.getSelection = selectionMock
-      expect(selection.getSelectionText()).toBe('line1\nline2\n\nline3\n\nline4\n\nline5')
+      expect(selection.getSelectionText()).toBe('line1 line2 line3 line4 line5')
       expect(selectionMock).toHaveBeenCalledTimes(1)
     })
   })

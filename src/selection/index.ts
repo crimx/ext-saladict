@@ -1,9 +1,10 @@
-import { appConfigFactory } from '@/app-config'
+import { appConfigFactory, AppConfig } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
 import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 import { createAppConfigStream } from '@/_helpers/config-manager'
 import * as selection from '@/_helpers/selection'
-import { MsgType, PostMsgType, PostMsgSelection, MsgSelection } from '@/typings/message'
+import { MsgType, PostMsgType, PostMsgSelection, MsgSelection, MsgIsPinned } from '@/typings/message'
+import { Mutable } from '@/typings/helpers'
 
 // import { Observable, fromEvent, timer, merge, of, asyncScheduler } from 'rxjs'
 // import { map, mapTo, scan, filter, take, switchMap, buffer, debounceTime, observeOn, share, distinctUntilChanged } from 'rxjs/operators'
@@ -23,8 +24,11 @@ import { buffer } from 'rxjs/operators/buffer'
 import { debounceTime } from 'rxjs/operators/debounceTime'
 import { share } from 'rxjs/operators/share'
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
+import { startWith } from 'rxjs/operators/startWith'
+import { pluck } from 'rxjs/operators/pluck'
+import { combineLatest } from 'rxjs/observable/combineLatest'
 
-message.addListener(MsgType.__PreloadSelection__, (data, sender) => {
+message.addListener(MsgType.__PreloadSelection__, () => {
   return Promise.resolve(selection.getSelectionInfo())
 })
 
@@ -37,32 +41,38 @@ window.addEventListener('message', ({ data, source }: { data: PostMsgSelection, 
     .find(({ contentWindow }) => contentWindow === source)
   if (!iframe) { return }
 
-  const { selectionInfo, mouseX, mouseY, ctrlKey, dbClick } = data
   const { left, top } = iframe.getBoundingClientRect()
-
-  sendMessage(
-    mouseX + left,
-    mouseY + top,
-    dbClick,
-    ctrlKey,
-    selectionInfo
-  )
+  const msg: Mutable<typeof data> = data
+  msg.mouseX = msg.mouseX + left
+  msg.mouseY = msg.mouseY + top
+  sendMessage(msg)
 })
 
 let config = appConfigFactory()
+createAppConfigStream().subscribe(newConfig => config = newConfig)
+
 let clickPeriodCount = 0
 let lastMousedownTarget: EventTarget | null
 
+/**
+ * Pressing ctrl/command key more than three times within 500ms
+ * trigers TripleCtrl
+ */
 const validCtrlPressed$$ = isKeyPressed(isCtrlKey).pipe(
   filter(Boolean),
   share(),
 )
 
-const tripleCtrlPressed$ = validCtrlPressed$$.pipe(
+validCtrlPressed$$.pipe(
   buffer(debounceTime(500)(validCtrlPressed$$)),
   filter(group => group.length >= 3),
-)
+).subscribe(() => {
+  message.self.send({ type: MsgType.TripleCtrl })
+})
 
+/**
+ * Track the last mousedown target for identifying input field, if needed.
+ */
 merge(
   fromEvent<MouseEvent>(window, 'mousedown', { capture: true }),
   fromEvent<TouchEvent>(window, 'touchstart', { capture: true }),
@@ -70,9 +80,16 @@ merge(
   lastMousedownTarget = target
 })
 
+/**
+ * A valid mouseup:
+ * 1. Not in Saladict iframe.
+ * 2. Event target is not a Saladict exposed element.
+ */
 const validMouseup$$ = merge(
   fromEvent<MouseEvent>(window, 'mouseup', { capture: true }),
-  fromEvent<TouchEvent>(window, 'touchend', { capture: true }).pipe(map(e => e.changedTouches[0])),
+  fromEvent<TouchEvent>(window, 'touchend', { capture: true }).pipe(
+    map(e => e.changedTouches[0])
+  ),
 ).pipe(
   filter(({ target }) => {
     if (window.name === 'saladict-frame') {
@@ -80,7 +97,9 @@ const validMouseup$$ = merge(
     }
 
     if (target) {
-      if (typeof target['className'] === 'string' && target['className'].startsWith('saladict-')) {
+      if (typeof target['className'] === 'string' &&
+          (target['className'] as string).includes('saladict-')
+      ) {
         return false
       }
     }
@@ -94,25 +113,25 @@ const validMouseup$$ = merge(
   share(),
 )
 
-const clickPeriodCount$ = merge(
+/**
+ * Count mouse click within a period
+ */
+merge(
   mapTo(true)(validMouseup$$),
   switchMap(() => timer(config.doubleClickDelay).pipe(take(1), mapTo(false)))(validMouseup$$)
 ).pipe(
   scan((sum: number, flag: boolean) => flag ? sum + 1 : 0, 0)
-)
+).subscribe(count => {
+  clickPeriodCount = count
+})
 
-createAppConfigStream().subscribe(newConfig => config = newConfig)
-
+/**
+ * Escape key pressed
+ */
 isKeyPressed(isEscapeKey).subscribe(flag => {
   if (flag) {
     message.self.send({ type: MsgType.EscapeKey })
   }
-})
-
-clickPeriodCount$.subscribe(count => clickPeriodCount = count)
-
-tripleCtrlPressed$.subscribe(() => {
-  message.self.send({ type: MsgType.TripleCtrl })
 })
 
 let lastText: string
@@ -132,7 +151,7 @@ validMouseup$$.subscribe(event => {
   ) {
     const context = selection.getSelectionSentence()
     if (text === lastText && context === lastContext && clickPeriodCount < 2) {
-      // Ignore this rule if it is a double click.
+      // (Ignore this rule if it is a double click.)
       // Same selection. This could be caused by other widget on the page
       // that uses preventDefault which stops selection being cleared when clicked.
       // Ignore it so that the panel won't follow.
@@ -140,12 +159,12 @@ validMouseup$$.subscribe(event => {
     }
     lastContext = context
 
-    sendMessage(
-      event.clientX,
-      event.clientY,
-      clickPeriodCount >= 2,
-      Boolean(event['metaKey'] || event['ctrlKey']),
-      {
+    sendMessage({
+      mouseX: event.clientX,
+      mouseY: event.clientY,
+      dbClick: clickPeriodCount >= 2,
+      ctrlKey: Boolean(event['metaKey'] || event['ctrlKey']),
+      selectionInfo: {
         text: selection.getSelectionText(),
         context,
         title: window.pageTitle || document.title,
@@ -154,7 +173,7 @@ validMouseup$$.subscribe(event => {
         trans: '',
         note: ''
       },
-    )
+    })
   } else {
     lastContext = ''
     sendEmptyMessage()
@@ -163,38 +182,101 @@ validMouseup$$.subscribe(event => {
   lastText = text
 })
 
+/**
+ * Cursor Instant Capture
+ */
+combineLatest(
+  createAppConfigStream(),
+  message.self.createStream<MsgIsPinned>(MsgType.IsPinned).pipe(
+    pluck<MsgIsPinned, MsgIsPinned['isPinned']>('isPinned'),
+    startWith(false),
+  ),
+).pipe(
+  map(([config, isPinned]) => {
+    const { instant } = config[isPinned ? 'pinMode' : 'mode']
+    return [
+      instant.enable ? instant.key : '',
+      instant.delay
+    ] as ['' | AppConfig['mode']['instant']['key'] | AppConfig['pinMode']['instant']['key'], number]
+  }),
+  distinctUntilChanged((oldVal, newVal) => oldVal[0] === newVal[0] && oldVal[1] === newVal[1]),
+  switchMap(([instant, insCapDelay]) => {
+    if (!instant || window.name === 'saladict-frame') { return of(undefined) }
+    return merge(
+      validMouseup$$.pipe(mapTo(undefined)),
+      fromEvent<MouseEvent>(window, 'mouseout', { capture: true }).pipe(mapTo(undefined)),
+      fromEvent<MouseEvent>(window, 'mousemove', { capture: true }).pipe(map(e => {
+        if ((instant === 'direct' && !(e.ctrlKey || e.metaKey || e.altKey)) ||
+            (instant === 'alt' && e.altKey) ||
+            (instant === 'ctrl' && (e.ctrlKey || e.metaKey))
+        ) {
+          // harmless side effects
+          selectCursorWord(e)
+          return e
+        }
+        return undefined
+      }),
+    )).pipe(
+      debounceTime(insCapDelay),
+    )
+  }),
+  map(e => {
+    return [
+      e,
+      e ? selection.getSelectionText() : '',
+      e ? selection.getSelectionSentence() : '',
+    ] as [MouseEvent | undefined, string, string]
+  }),
+  distinctUntilChanged((oldVal, newVal) => oldVal[1] === newVal[1] && oldVal[2] === newVal[2]),
+  filter((args): args is [MouseEvent, string, string] => args[0] as any as boolean),
+).subscribe(([event, text, context]) => {
+  if (text) {
+    sendMessage({
+      mouseX: event.clientX,
+      mouseY: event.clientY,
+      instant: true,
+      selectionInfo: {
+        text,
+        context,
+        title: window.pageTitle || document.title,
+        url: window.pageURL || document.URL,
+        favicon: window.faviconURL || '',
+        trans: '',
+        note: ''
+      },
+    })
+  }
+})
+
+/*-----------------------------------------------*\
+    Helpers
+\*-----------------------------------------------*/
+
 function sendMessage (
-  clientX: number,
-  clientY: number,
-  dbClick: boolean,
-  isCtrlPressed: boolean,
-  selectionInfo: selection.SelectionInfo
+  msg: {
+    selectionInfo: selection.SelectionInfo
+    mouseX: number
+    mouseY: number
+    dbClick?: boolean
+    ctrlKey?: boolean
+    instant?: boolean
+  }
 ) {
   if (window.parent === window) {
     // top
-    const msg: MsgSelection = {
-      type: MsgType.Selection,
-      selectionInfo,
-      mouseX: clientX,
-      mouseY: clientY,
-      dbClick,
-      ctrlKey: isCtrlPressed,
-    }
-
     if (process.env.NODE_ENV === 'development') {
       console.log('New selection', msg)
     }
 
-    message.self.send(msg)
+    message.self.send<MsgSelection>({
+      ...msg,
+      type: MsgType.Selection,
+    })
   } else {
     // post to upper frames/window
     window.parent.postMessage({
+      ...msg,
       type: PostMsgType.Selection,
-      selectionInfo,
-      mouseX: clientX,
-      mouseY: clientY,
-      dbClick,
-      ctrlKey: isCtrlPressed,
     } as PostMsgSelection, '*')
   }
 }
@@ -269,4 +351,57 @@ function isTypeField (traget: EventTarget | null): boolean {
   }
 
   return false
+}
+
+/**
+ * Select the word under the cursor position
+ */
+function selectCursorWord (e: MouseEvent): void {
+  const x = e.clientX
+  const y = e.clientY
+
+  let offsetNode: Node
+  let offset: number
+
+  const sel = window.getSelection()
+  sel.removeAllRanges()
+
+  if (document['caretPositionFromPoint']) {
+    const pos = document['caretPositionFromPoint'](x, y)
+    if (!pos) { return }
+    offsetNode = pos.offsetNode
+    offset = pos.offset
+  } else if (document['caretRangeFromPoint']) {
+    const pos = document['caretRangeFromPoint'](x, y)
+    if (!pos) { return }
+    offsetNode = pos.startContainer
+    offset = pos.startOffset
+  } else {
+    return
+  }
+
+  if (offsetNode.nodeType === Node.TEXT_NODE) {
+    const textNode = offsetNode as Text
+    const content = textNode.data
+    const head = (content.slice(0, offset).match(/[-_a-z]+$/i) || [''])[0]
+    const tail = (content.slice(offset).match(/^([-_a-z]+|[\u4e00-\u9fa5])/i) || [''])[0]
+    if (head.length <= 0 && tail.length <= 0) {
+      return
+    }
+
+    const range = document.createRange()
+    range.setStart(textNode, offset - head.length)
+    range.setEnd(textNode, offset + tail.length)
+    const rangeRect = range.getBoundingClientRect()
+
+    if (rangeRect.left <= x &&
+        rangeRect.right >= x &&
+        rangeRect.top <= y &&
+        rangeRect.bottom >= y
+    ) {
+      sel.addRange(range)
+    }
+
+    range.detach()
+  }
 }

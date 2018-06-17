@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.4.0"></a>
+# [6.4.0](https://github.com/crimx/ext-saladict/compare/v6.3.2...v6.4.0) (2018-06-17)
+
+
+### Bug Fixes
+
+* **background:** regression. mistakenly added new code ([f974c61](https://github.com/crimx/ext-saladict/commit/f974c61))
+* **content:** prevent selection detection on word editor ([8cc86a8](https://github.com/crimx/ext-saladict/commit/8cc86a8))
+* **content:** regression: use position ([b5d75d8](https://github.com/crimx/ext-saladict/commit/b5d75d8))
+* **panel:** fix Firefox popup page delay bug ([c5a4d6d](https://github.com/crimx/ext-saladict/commit/c5a4d6d))
+* **panel:** iframe occasionally flickering ([e89cd03](https://github.com/crimx/ext-saladict/commit/e89cd03))
+* **selection:** range could be null ([3cc2ec2](https://github.com/crimx/ext-saladict/commit/3cc2ec2))
+* **selection:** update context matching [#144](https://github.com/crimx/ext-saladict/issues/144) ([fa20ab7](https://github.com/crimx/ext-saladict/commit/fa20ab7))
+
+
+### Features
+
+* **background:** add page translations [#146](https://github.com/crimx/ext-saladict/issues/146) ([c5d6225](https://github.com/crimx/ext-saladict/commit/c5d6225))
+* **background:** add shortcut for instant capture ([bc46a2f](https://github.com/crimx/ext-saladict/commit/bc46a2f))
+* **content:** add query panel state ([c92a7d0](https://github.com/crimx/ext-saladict/commit/c92a7d0))
+* **content:** broadcast store state ([d0a356f](https://github.com/crimx/ext-saladict/commit/d0a356f))
+* **options:** add instant capture ([71955a4](https://github.com/crimx/ext-saladict/commit/71955a4))
+* **popup:** add instant capture toggle ([32dcfdc](https://github.com/crimx/ext-saladict/commit/32dcfdc))
+* **selection:** add cursor instant capture [#14](https://github.com/crimx/ext-saladict/issues/14) ([ef37346](https://github.com/crimx/ext-saladict/commit/ef37346))
+
+
+
 <a name="6.3.2"></a>
 ## [6.3.2](https://github.com/crimx/ext-saladict/compare/v6.3.1...v6.3.2) (2018-06-13)
 

@@ -1,12 +1,16 @@
 import { SelectionInfo } from '@/_helpers/selection'
 import { DictID } from '@/app-config'
 import { Word, Area as DBArea } from '@/background/database'
+import { Omit } from '@/typings/helpers'
 
 export const enum MsgType {
   /** Nothing */
   Null,
   /** Default */
   Default,
+
+  /** is dict panel pinned? */
+  IsPinned,
 
   /** Mouse down, selection maybe empty */
   Selection,
@@ -46,6 +50,9 @@ export const enum MsgType {
   /** Word page */
   EditWord,
 
+  /** Query panel state */
+  QueryPanelState,
+
   /**
    * Background proxy sends back underlyingly
    */
@@ -63,19 +70,15 @@ export interface MsgSelection {
   readonly selectionInfo: SelectionInfo
   readonly mouseX: number
   readonly mouseY: number
-  readonly dbClick: boolean
-  readonly ctrlKey: boolean
+  readonly dbClick?: boolean
+  readonly ctrlKey?: boolean
+  readonly instant?: boolean
   /** force panel to skip reconciling position */
   readonly force?: boolean
 }
 
-export interface PostMsgSelection {
+export interface PostMsgSelection extends Omit<MsgSelection, 'type'> {
   readonly type: PostMsgType.Selection
-  readonly selectionInfo: SelectionInfo
-  readonly mouseX: number
-  readonly mouseY: number
-  readonly dbClick: boolean
-  readonly ctrlKey: boolean
 }
 
 interface MsgOpenUrlWithPlaceholder {
@@ -161,4 +164,15 @@ export type MsgTempDisabledState = {
 export interface MsgEditWord {
   type: MsgType.EditWord
   word: Word
+}
+
+export interface MsgIsPinned {
+  type: MsgType.IsPinned
+  isPinned: boolean
+}
+
+export interface MsgQueryPanelState {
+  type: MsgType.QueryPanelState,
+  /** object path, default returns the whole state */
+  path?: string
 }
