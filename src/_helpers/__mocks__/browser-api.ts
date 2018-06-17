@@ -39,24 +39,37 @@ type onMessageEvent = (
 
 const noop = () => { /* do nothing */ }
 
+// share the listener so that it can be manipulated manually
+declare global {
+  interface Window {
+    __messageListeners__: Map<onMessageEvent, Map<Message['type'], onMessageEvent>>
+    __messageSelfListeners__: Map<onMessageEvent, Map<Message['type'], onMessageEvent>>
+    __storageListeners__: Map<StorageListenerCb, Map<string, StorageListenerCb>>
+  }
+}
+
 /**
  * key: {function} user's callback function
  * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
-const messageListeners: Map<onMessageEvent, Map<Message['type'], onMessageEvent>> = new Map()
+window.__messageListeners__ = window.__messageListeners__ || new Map()
 
 /**
  * For self page messaging
  * key: {function} user's callback function
  * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
-const messageSelfListeners: Map<onMessageEvent, Map<Message['type'], onMessageEvent>> = new Map()
+window.__messageSelfListeners__ = window.__messageSelfListeners__ || new Map()
 
 /**
  * key: {function} user's callback function
  * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
-const storageListeners: Map<StorageListenerCb, Map<string, StorageListenerCb>> = new Map()
+window.__storageListeners__ = window.__storageListeners__ || new Map()
+
+const messageListeners = window.__messageListeners__
+const messageSelfListeners = window.__messageSelfListeners__
+const storageListeners = window.__storageListeners__
 
 /* --------------------------------------- *\
  * #Exports
