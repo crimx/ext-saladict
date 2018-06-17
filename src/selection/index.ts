@@ -211,7 +211,7 @@ combineLatest(
             (instant === 'ctrl' && (e.ctrlKey || e.metaKey))
         ) {
           // harmless side effects
-          selectCusorWord(e)
+          selectCursorWord(e)
           return e
         }
         return undefined
@@ -356,7 +356,7 @@ function isTypeField (traget: EventTarget | null): boolean {
 /**
  * Select the word under the cursor position
  */
-function selectCusorWord (e: MouseEvent): void {
+function selectCursorWord (e: MouseEvent): void {
   const x = e.clientX
   const y = e.clientY
 
@@ -368,10 +368,12 @@ function selectCusorWord (e: MouseEvent): void {
 
   if (document['caretPositionFromPoint']) {
     const pos = document['caretPositionFromPoint'](x, y)
+    if (!pos) { return }
     offsetNode = pos.offsetNode
     offset = pos.offset
   } else if (document['caretRangeFromPoint']) {
     const pos = document['caretRangeFromPoint'](x, y)
+    if (!pos) { return }
     offsetNode = pos.startContainer
     offset = pos.startOffset
   } else {
