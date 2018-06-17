@@ -4,6 +4,7 @@ import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 import { createAppConfigStream } from '@/_helpers/config-manager'
 import * as selection from '@/_helpers/selection'
 import { MsgType, PostMsgType, PostMsgSelection, MsgSelection, MsgIsPinned } from '@/typings/message'
+import { Mutable } from '@/typings/helpers'
 
 // import { Observable, fromEvent, timer, merge, of, asyncScheduler } from 'rxjs'
 // import { map, mapTo, scan, filter, take, switchMap, buffer, debounceTime, observeOn, share, distinctUntilChanged } from 'rxjs/operators'
@@ -40,16 +41,11 @@ window.addEventListener('message', ({ data, source }: { data: PostMsgSelection, 
     .find(({ contentWindow }) => contentWindow === source)
   if (!iframe) { return }
 
-  const { selectionInfo, mouseX, mouseY, ctrlKey, dbClick } = data
   const { left, top } = iframe.getBoundingClientRect()
-
-  sendMessage(
-    mouseX + left,
-    mouseY + top,
-    dbClick,
-    ctrlKey,
-    selectionInfo
-  )
+  const msg: Mutable<typeof data> = data
+  msg.mouseX = msg.mouseX + left
+  msg.mouseY = msg.mouseY + top
+  sendMessage(msg)
 })
 
 let config = appConfigFactory()
@@ -163,12 +159,12 @@ validMouseup$$.subscribe(event => {
     }
     lastContext = context
 
-    sendMessage(
-      event.clientX,
-      event.clientY,
-      clickPeriodCount >= 2,
-      Boolean(event['metaKey'] || event['ctrlKey']),
-      {
+    sendMessage({
+      mouseX: event.clientX,
+      mouseY: event.clientY,
+      dbClick: clickPeriodCount >= 2,
+      ctrlKey: Boolean(event['metaKey'] || event['ctrlKey']),
+      selectionInfo: {
         text: selection.getSelectionText(),
         context,
         title: window.pageTitle || document.title,
@@ -177,7 +173,7 @@ validMouseup$$.subscribe(event => {
         trans: '',
         note: ''
       },
-    )
+    })
   } else {
     lastContext = ''
     sendEmptyMessage()
@@ -231,12 +227,11 @@ combineLatest(
   distinctUntilChanged((oldVal, newVal) => oldVal[1] === newVal[1] && oldVal[2] === newVal[2]),
 ).subscribe(([event, text, context]) => {
   if (text) {
-    sendMessage(
-      event.clientX,
-      event.clientY,
-      true,
-      true,
-      {
+    sendMessage({
+      mouseX: event.clientX,
+      mouseY: event.clientY,
+      instant: true,
+      selectionInfo: {
         text,
         context,
         title: window.pageTitle || document.title,
@@ -245,7 +240,7 @@ combineLatest(
         trans: '',
         note: ''
       },
-    )
+    })
   }
 })
 
@@ -254,37 +249,30 @@ combineLatest(
 \*-----------------------------------------------*/
 
 function sendMessage (
-  clientX: number,
-  clientY: number,
-  dbClick: boolean,
-  isCtrlPressed: boolean,
-  selectionInfo: selection.SelectionInfo
+  msg: {
+    selectionInfo: selection.SelectionInfo
+    mouseX: number
+    mouseY: number
+    dbClick?: boolean
+    ctrlKey?: boolean
+    instant?: boolean
+  }
 ) {
   if (window.parent === window) {
     // top
-    const msg: MsgSelection = {
-      type: MsgType.Selection,
-      selectionInfo,
-      mouseX: clientX,
-      mouseY: clientY,
-      dbClick,
-      ctrlKey: isCtrlPressed,
-    }
-
     if (process.env.NODE_ENV === 'development') {
       console.log('New selection', msg)
     }
 
-    message.self.send(msg)
+    message.self.send<MsgSelection>({
+      ...msg,
+      type: MsgType.Selection,
+    })
   } else {
     // post to upper frames/window
     window.parent.postMessage({
+      ...msg,
       type: PostMsgType.Selection,
-      selectionInfo,
-      mouseX: clientX,
-      mouseY: clientY,
-      dbClick,
-      ctrlKey: isCtrlPressed,
     } as PostMsgSelection, '*')
   }
 }

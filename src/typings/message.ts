@@ -1,6 +1,7 @@
 import { SelectionInfo } from '@/_helpers/selection'
-import { DictID, AppConfig } from '@/app-config'
+import { DictID } from '@/app-config'
 import { Word, Area as DBArea } from '@/background/database'
+import { Omit } from '@/typings/helpers'
 
 export const enum MsgType {
   /** Nothing */
@@ -66,19 +67,15 @@ export interface MsgSelection {
   readonly selectionInfo: SelectionInfo
   readonly mouseX: number
   readonly mouseY: number
-  readonly dbClick: boolean
-  readonly ctrlKey: boolean
+  readonly dbClick?: boolean
+  readonly ctrlKey?: boolean
+  readonly instant?: boolean
   /** force panel to skip reconciling position */
   readonly force?: boolean
 }
 
-export interface PostMsgSelection {
+export interface PostMsgSelection extends Omit<MsgSelection, 'type'> {
   readonly type: PostMsgType.Selection
-  readonly selectionInfo: SelectionInfo
-  readonly mouseX: number
-  readonly mouseY: number
-  readonly dbClick: boolean
-  readonly ctrlKey: boolean
 }
 
 interface MsgOpenUrlWithPlaceholder {

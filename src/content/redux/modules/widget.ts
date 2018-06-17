@@ -555,7 +555,7 @@ function listenNewSelection (
     const isActive = state.config.active && !state.widget.isTempDisabled
 
     const { direct, ctrl, double, icon } = state.config.mode
-    const { selectionInfo, dbClick, ctrlKey, mouseX, mouseY } = message
+    const { selectionInfo, dbClick, ctrlKey, instant, mouseX, mouseY } = message
     const {
       isPinned,
       shouldPanelShow: lastShouldPanelShow,
@@ -569,7 +569,8 @@ function listenNewSelection (
         lastShouldPanelShow ||
         direct ||
         (double && dbClick) ||
-        (ctrl && ctrlKey)
+        (ctrl && ctrlKey) ||
+        instant
       )) ||
       isSaladictOptionsPage ||
       isSaladictPopupPage
@@ -583,6 +584,7 @@ function listenNewSelection (
       !direct &&
       !(double && dbClick) &&
       !(ctrl && ctrlKey) &&
+      !instant &&
       !isSaladictOptionsPage &&
       !isSaladictPopupPage
     )
