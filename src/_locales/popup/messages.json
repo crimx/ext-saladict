@@ -2,12 +2,22 @@
   "app_active_title": {
     "zh_CN": "启用划词",
     "zh_TW": "啓用滑鼠劃字",
-    "en": "Endable inline translator"
+    "en": "Endable Inline Translator"
   },
   "app_temp_active_title": {
     "zh_CN": "对当前页暂时关闭划词",
     "zh_TW": "對當前網頁暫時關閉滑鼠劃字",
     "en": "Temporary disabled to the page"
+  },
+  "instant_capture_title": {
+    "zh_CN": "开启鼠标悬浮取词",
+    "zh_TW": "啓用滑鼠懸浮取詞",
+    "en": "Enable Instant Capture"
+  },
+  "instant_capture_pinned": {
+    "zh_CN": "（钉住）",
+    "zh_TW": "（釘住）",
+    "en": " (pinned) "
   },
   "qrcode_title": {
     "zh_CN": "当前页面二维码",
