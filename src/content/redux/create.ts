@@ -8,7 +8,13 @@ import { startUpAction as widgetStartUp } from './modules/widget'
 import { startUpAction as dictionariesStartUp } from './modules/dictionaries'
 
 import { message } from '@/_helpers/browser-api'
-import { MsgType, MsgIsPinned } from '@/typings/message'
+import { MsgType, MsgIsPinned, MsgQueryPanelState } from '@/typings/message'
+
+import { Observable } from 'rxjs/Observable'
+import { map } from 'rxjs/operators/map'
+import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
+
+import get from 'lodash/get'
 
 export default () => {
   const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
@@ -24,14 +30,29 @@ export default () => {
   store.dispatch<any>(dictionariesStartUp())
 
   // sync state
-  store.subscribe(() => {
-    const state = store.getState()
+  const storeState$ = new Observable<StoreState>(observer => {
+    store.subscribe(() => observer.next(store.getState()))
+  })
 
+  storeState$.pipe(
+    map(state => state.widget.isPinned),
+    distinctUntilChanged()
+  ).subscribe(isPinned => {
     message.self.send<MsgIsPinned>({
       type: MsgType.IsPinned,
-      isPinned: state.widget.isPinned,
+      isPinned,
     })
   })
+
+  message.addListener<MsgQueryPanelState>(MsgType.QueryPanelState, queryStoreState)
+  message.self.addListener<MsgQueryPanelState>(MsgType.QueryPanelState, queryStoreState)
+
+  function queryStoreState ({ path }: MsgQueryPanelState) {
+    return Promise.resolve(path && typeof path === 'string'
+      ? get(store.getState(), path)
+      : store.getState()
+    )
+  }
 
   return store
 }

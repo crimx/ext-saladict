@@ -50,6 +50,9 @@ export const enum MsgType {
   /** Word page */
   EditWord,
 
+  /** Query panel state */
+  QueryPanelState,
+
   /**
    * Background proxy sends back underlyingly
    */
@@ -166,4 +169,10 @@ export interface MsgEditWord {
 export interface MsgIsPinned {
   type: MsgType.IsPinned
   isPinned: boolean
+}
+
+export interface MsgQueryPanelState {
+  type: MsgType.QueryPanelState,
+  /** object path, default returns the whole state */
+  path?: string
 }
