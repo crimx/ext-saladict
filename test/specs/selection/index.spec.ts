@@ -414,8 +414,8 @@ describe('Message Selection', () => {
     addMock.mockClear()
     removeMock.mockClear()
     let config = mockAppConfigFactory()
-    config.mode.instant = 'direct'
-    config.pinMode.instant = 'direct'
+    config.mode.instant.enable = true
+    config.pinMode.instant.enable = true
     dispatchAppConfigEvent(config)
     await timer(0)
     expect(addMock).toHaveBeenCalledTimes(2)
@@ -424,8 +424,8 @@ describe('Message Selection', () => {
     addMock.mockClear()
     removeMock.mockClear()
     config = mockAppConfigFactory()
-    config.mode.instant = ''
-    config.pinMode.instant = 'direct'
+    config.mode.instant.enable = false
+    config.pinMode.instant.enable = true
     dispatchAppConfigEvent(config)
     await timer(0)
     expect(addMock).toHaveBeenCalledTimes(0)

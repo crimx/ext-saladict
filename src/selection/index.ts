@@ -193,15 +193,17 @@ combineLatest(
   ),
 ).pipe(
   map(([config, isPinned]) => {
+    const { instant } = config[isPinned ? 'pinMode' : 'mode']
     return [
-      config[isPinned ? 'pinMode' : 'mode'].instant,
-      config.insCapDelay
-    ] as [AppConfig['mode']['instant'] | AppConfig['pinMode']['instant'], number]
+      instant.enable ? instant.key : '',
+      instant.delay
+    ] as ['' | AppConfig['mode']['instant']['key'] | AppConfig['pinMode']['instant']['key'], number]
   }),
   distinctUntilChanged((oldVal, newVal) => oldVal[0] === newVal[0] && oldVal[1] === newVal[1]),
   switchMap(([instant, insCapDelay]) => {
     if (!instant || window.name === 'saladict-frame') { return of(undefined) }
     return merge(
+      validMouseup$$.pipe(mapTo(undefined)),
       fromEvent<MouseEvent>(window, 'mouseout', { capture: true }).pipe(mapTo(undefined)),
       fromEvent<MouseEvent>(window, 'mousemove', { capture: true }).pipe(map(e => {
         if ((instant === 'direct' && !(e.ctrlKey || e.metaKey || e.altKey)) ||
@@ -218,13 +220,15 @@ combineLatest(
       debounceTime(insCapDelay),
     )
   }),
-  filter((e): e is MouseEvent => e as any as boolean),
-  map<MouseEvent, [MouseEvent, string, string]>(e => [
-    e,
-    selection.getSelectionText(),
-    selection.getSelectionSentence(),
-  ]),
+  map(e => {
+    return [
+      e,
+      e ? selection.getSelectionText() : '',
+      e ? selection.getSelectionSentence() : '',
+    ] as [MouseEvent | undefined, string, string]
+  }),
   distinctUntilChanged((oldVal, newVal) => oldVal[1] === newVal[1] && oldVal[2] === newVal[2]),
+  filter((args): args is [MouseEvent, string, string] => args[0] as any as boolean),
 ).subscribe(([event, text, context]) => {
   if (text) {
     sendMessage({

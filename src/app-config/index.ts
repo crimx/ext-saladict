@@ -89,7 +89,11 @@ export interface AppConfigMutable {
     /** show panel when double click ctrl + selection not empty */
     ctrl: boolean
     /** cursor instant capture */
-    instant: '' | 'direct' | 'ctrl' | 'alt'
+    instant: {
+      enable: boolean
+      key: 'direct' | 'ctrl' | 'alt'
+      delay: number
+    }
   },
 
   /** when and how to search text if the panel is pinned */
@@ -101,7 +105,11 @@ export interface AppConfigMutable {
     /** ctrl: search when double click ctrl + selection not empty */
     ctrl: boolean
     /** cursor instant capture */
-    instant: '' | 'direct' | 'ctrl' | 'alt'
+    instant: {
+      enable: boolean
+      key: 'direct' | 'ctrl' | 'alt'
+      delay: number
+    }
   },
 
   /** instant capture delay, in ms */
@@ -197,14 +205,22 @@ export function appConfigFactory (): AppConfig {
       direct: false,
       double: false,
       ctrl: false,
-      instant: '',
+      instant: {
+        enable: false,
+        key: 'alt',
+        delay: 600,
+      },
     },
 
     pinMode: {
       direct: true,
       double: false,
       ctrl: false,
-      instant: '',
+      instant: {
+        enable: false,
+        key: 'alt',
+        delay: 600,
+      },
     },
 
     insCapDelay: 600,
