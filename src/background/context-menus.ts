@@ -10,8 +10,6 @@ import { getAppConfig } from '@/_helpers/config-manager'
 // import { mergeMap, filter, map, audit, mapTo, share, startWith } from 'rxjs/operators'
 import { Observable } from 'rxjs/Observable'
 import { ReplaySubject } from 'rxjs/ReplaySubject'
-import { fromPromise } from 'rxjs/observable/fromPromise'
-import { merge } from 'rxjs/observable/merge'
 import { combineLatest } from 'rxjs/observable/combineLatest'
 import { mergeMap } from 'rxjs/operators/mergeMap'
 import { filter } from 'rxjs/operators/filter'
@@ -81,12 +79,7 @@ browser.contextMenus.onClicked.addListener(info => {
 export function init (initConfig: ContextMenusConfig): Observable<void> {
   if (setMenus$$) { return setMenus$$ }
   // when context menus config changes
-  const contextMenusChanged$ = merge(
-    fromPromise(getAppConfig().then<StorageUpdate<AppConfig>>(
-      config => ({ newValue: config })
-    )),
-    storage.createStream<AppConfig>('config'),
-  ).pipe(
+  const contextMenusChanged$ = storage.createStream<AppConfig>('config').pipe(
     filter((config): config is StorageUpdate<AppConfig> => {
       const { newValue, oldValue } = config
       if (!newValue) { return false }
