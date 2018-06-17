@@ -1,10 +1,10 @@
 import { appConfigFactory, AppConfigMutable } from '@/app-config'
-import sinon from 'sinon'
 import * as BrowserApiMock from '@/_helpers/__mocks__/browser-api'
 import { SelectionMock } from '@/_helpers/__mocks__/selection'
 import * as ConfigManagerMock from '@/_helpers/__mocks__/config-manager'
 import '@/selection'
-import { MsgType } from '@/typings/message'
+import { MsgType, MsgIsPinned } from '@/typings/message'
+import { timer } from '@/_helpers/promise-more'
 
 jest.mock('@/_helpers/browser-api')
 jest.mock('@/_helpers/config-manager')
@@ -432,5 +432,45 @@ describe('Message Selection', () => {
         done()
       }, selectionDelay)
     }, 50)
+  })
+
+  it('should update mousemove tracking when instant capture config has changed', async () => {
+    const addMock = jest.fn(window.addEventListener)
+    const removeMock = jest.fn(window.removeEventListener)
+    window.addEventListener = addMock
+    window.removeEventListener = removeMock
+
+    addMock.mockClear()
+    removeMock.mockClear()
+    let config = mockAppConfigFactory()
+    config.mode.instant = 'direct'
+    config.pinMode.instant = 'direct'
+    dispatchAppConfigEvent(config)
+    await timer(0)
+    expect(addMock).toHaveBeenCalledTimes(2)
+    expect(removeMock).toHaveBeenCalledTimes(0)
+
+    addMock.mockClear()
+    removeMock.mockClear()
+    config = mockAppConfigFactory()
+    config.mode.instant = ''
+    config.pinMode.instant = 'direct'
+    dispatchAppConfigEvent(config)
+    await timer(0)
+    expect(addMock).toHaveBeenCalledTimes(0)
+    expect(removeMock).toHaveBeenCalledTimes(2)
+
+    addMock.mockClear()
+    removeMock.mockClear()
+    BrowserApiMock.dispatchMessageEvent({
+      self: true,
+      message: {
+        type: MsgType.IsPinned,
+        isPinned: true,
+      } as MsgIsPinned,
+    })
+    await timer(0)
+    expect(addMock).toHaveBeenCalledTimes(2)
+    expect(removeMock).toHaveBeenCalledTimes(0)
   })
 })
