@@ -85,12 +85,16 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   }
 
   mountEL = () => {
+    // body could be replaced by other scripts
+    if (!isSaladictPopupPage) { this.root = document.body }
     this.root.appendChild(this.el)
     this.isMount = true
   }
 
   unmountEL = () => {
     this.frame = null
+    // body could be replaced by other scripts
+    if (!isSaladictPopupPage) { this.root = document.body }
     this.root.removeChild(this.el)
     this.isMount = false
   }
