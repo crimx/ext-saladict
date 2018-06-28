@@ -11,7 +11,6 @@ interface SaladBowlPortalProps {
 }
 
 export default class SaladBowlPortal extends React.Component<SaladBowlPortalProps> {
-  root = document.body
   el = document.createElement('div')
   bowl: null | HTMLElement = null
   isMount = false
@@ -44,7 +43,7 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
   }
 
   componentWillUnmount () {
-    this.root.removeChild(this.el)
+    document.body.removeChild(this.el)
   }
 
   renderBowl = () => {
@@ -56,12 +55,12 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
     const { shouldShow, isAnimation } = this.props
     if (shouldShow) {
       if (!this.isMount) {
-        this.root.appendChild(this.el)
+        document.body.appendChild(this.el)
         this.isMount = true
       }
     } else {
       if (this.isMount) {
-        this.root.removeChild(this.el)
+        document.body.removeChild(this.el)
         this.isMount = false
       }
     }

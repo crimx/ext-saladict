@@ -17,18 +17,19 @@
 
   "content_scripts": [
     {
-      "js": [
-        "static/browser-polyfill.min.js",
-        "content.js"
-      ],
+      "js": ["static/browser-polyfill.min.js"],
+      "matches": ["<all_urls>"],
+      "run_at": "document_start",
+      "match_about_blank": true,
+      "all_frames": true
+    },
+    {
+      "js": ["content.js"],
       "css": ["content.css"],
       "matches": ["<all_urls>"]
     },
     {
-      "js": [
-        "static/browser-polyfill.min.js",
-        "selection.js"
-      ],
+      "js": ["selection.js"],
       "matches": ["<all_urls>"],
       "match_about_blank": true,
       "all_frames": true

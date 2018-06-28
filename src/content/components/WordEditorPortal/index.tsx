@@ -18,7 +18,6 @@ export interface WordEditorPortalProps extends Omit<
 
 export default class WordEditorPortal extends React.Component<WordEditorPortalProps> {
   isMount = false
-  root = document.body
   el = document.createElement('div')
   frameHead = '<meta name="viewport" content="width=device-width, initial-scale=1">\n' + (
     process.env.NODE_ENV === 'production'
@@ -52,12 +51,12 @@ export default class WordEditorPortal extends React.Component<WordEditorPortalPr
   }
 
   mountEL = () => {
-    this.root.appendChild(this.el)
+    document.body.appendChild(this.el)
     this.isMount = true
   }
 
   unmountEL = () => {
-    this.root.removeChild(this.el)
+    document.body.removeChild(this.el)
     this.isMount = false
   }
 
