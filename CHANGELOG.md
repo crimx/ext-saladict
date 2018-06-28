@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.4.1"></a>
+## [6.4.1](https://github.com/crimx/ext-saladict/compare/v6.4.0...v6.4.1) (2018-06-28)
+
+
+### Bug Fixes
+
+* **content:** fix dynamic document.body [#150](https://github.com/crimx/ext-saladict/issues/150) ([27f2787](https://github.com/crimx/ext-saladict/commit/27f2787))
+* **manifest:** fix browser global conflict [#148](https://github.com/crimx/ext-saladict/issues/148) ([ca0d8a1](https://github.com/crimx/ext-saladict/commit/ca0d8a1))
+
+
+
 <a name="6.4.0"></a>
 # [6.4.0](https://github.com/crimx/ext-saladict/compare/v6.3.2...v6.4.0) (2018-06-17)
 
