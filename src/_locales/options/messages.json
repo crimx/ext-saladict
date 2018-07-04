@@ -375,9 +375,9 @@
     "zh_TW": "右上彈框"
   },
   "preference_description": {
-    "en": "Switch off animation transitions to reduce runtime cost. If selection making in editable regions is banned, the extension will identify Input Boxes, TextAreas and other common text editors like CodeMirror and ACE.",
-    "zh_CN": "关闭过渡动画可减少资源消耗。关闭可编辑区域划词后，本扩展会自动识别输入框以及常见编辑器，如 CodeMirror 和 ACE 。",
-    "zh_TW": "關閉轉換動畫可減少資源消耗。關閉可編輯區域鼠標滑字后，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror 和 ACE 。"
+    "en": "Switch off animation transitions to reduce runtime cost. If selection making in editable regions is banned, the extension will identify Input Boxes, TextAreas and other common text editors like CodeMirror, ACE and Monaco.",
+    "zh_CN": "关闭过渡动画可减少资源消耗。关闭可编辑区域划词后，本扩展会自动识别输入框以及常见编辑器，如 CodeMirror、ACE 和 Monaco。",
+    "zh_TW": "關閉轉換動畫可減少資源消耗。關閉可編輯區域鼠標滑字后，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror、ACE 和 Monaco。"
   },
   "preference_title": {
     "en": "Preference",
