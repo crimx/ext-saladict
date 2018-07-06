@@ -5,7 +5,7 @@
 import setupEnv from './devDict'
 
 setupEnv({
-  dict: 'cambridge',
+  dict: 'longman',
   style: true,
   text: 'house',
 })

@@ -145,10 +145,21 @@
     margin-bottom: 0.4em;
     padding-left: 0.8em;
     color: #555;
-
-    &::before {
+    pointer-events: none;
+    position: relative;
+    
+    &:before {
       content: '►';
       user-select: none;
+    }
+
+    .speaker.exafile:before {
+      content: attr(data-speaker-icon);
+      pointer-events: auto;
+      position: absolute;
+      left: 0.8em;
+      background: white;
+      cursor: pointer;
     }
   }
 

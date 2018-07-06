@@ -2,8 +2,19 @@ import React from 'react'
 import Speaker from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
 import { LongmanResult, LongmanResultLex, LongmanResultRelated, LongmanResultEntry } from './engine'
+import { message } from '@/_helpers/browser-api'
+import { MsgType, MsgAudioPlay } from '@/typings/message'
+
+const speakerIcon = {
+  full: '🔊',
+  mid: '🔉',
+  low: '🔈'
+}
 
 export default class DictLongman extends React.PureComponent<{ result: LongmanResult }> {
+  isPlaying = false
+  dicts: HTMLDivElement[] = []
+
   renderEntry (entry: LongmanResultEntry) {
     return (
       <section key={entry.title.HWD + entry.title.HOMNUM} className='dictLongman-Entry'>
@@ -79,9 +90,13 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
           <div className='dictLongman-Wordfams' dangerouslySetInnerHTML={{ __html: result.wordfams }} />
         }
 
-        {dicts.map(dict => result[dict].length > 0
+        {dicts.map((dict, index) => result[dict].length > 0
           ? (
-            <div className='dictLongman-Dict'>
+            <div className='dictLongman-Dict' 
+              onClick={this.onSpeak.bind(this)} 
+              onMouseOver={this.onSpeak.bind(this)} 
+              ref={div => div && this.dicts.push(div)}
+              key={dict + index}>
               {/* <h1 className='dictLongman-DictTitle'>
                 <span>- {dictTitle[dict]} -</span>
               </h1> */}
@@ -104,6 +119,7 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
   }
 
   render () {
+    this.dicts = []
     const { result } = this.props
     switch (result.type) {
       case 'lex':
@@ -113,5 +129,56 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
       default:
         return null
     }
+  }
+
+  onSpeak (evt: React.MouseEvent<HTMLDivElement>) {
+    if (this.isPlaying) return
+    const target = (evt.target as HTMLDivElement)
+    const cls = target.classList
+    if (!cls.contains('speaker') || !cls.contains('exafile')) {
+      return
+    }
+    const src = target.dataset.srcMp3
+    if (src) {
+      this.isPlaying = true
+      const playTimer = setInterval(() => {
+        const currentIcon = target.dataset.speakerIcon
+        switch (currentIcon) {
+          case speakerIcon.low:
+            target.dataset.speakerIcon = speakerIcon.mid
+            break
+          case speakerIcon.full:
+            target.dataset.speakerIcon = speakerIcon.low
+            break
+          case speakerIcon.mid:
+          default:
+            target.dataset.speakerIcon = speakerIcon.full
+            break
+        }
+      }, 1500 / 6)
+      const stopped = () => {
+        clearInterval(playTimer)
+        this.isPlaying = false
+        target.dataset.speakerIcon = speakerIcon.full
+      }
+      message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
+        .then(stopped, stopped)
+    }
+  }
+
+  addSpeakerIcon () {
+    const icon = speakerIcon.full
+    this.dicts.forEach(dict => {
+      const speakers = document.querySelectorAll('.speaker.exafile')
+      speakers.forEach(speaker => (speaker as HTMLSpanElement).dataset.speakerIcon = icon)
+    })
+  }
+
+  componentDidMount () {
+    this.addSpeakerIcon()
+  }
+
+  componentDidUpdate () {
+    this.addSpeakerIcon()
   }
 }
