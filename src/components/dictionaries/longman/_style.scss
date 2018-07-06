@@ -84,7 +84,8 @@
   .SubEntry,
   .EXAMPLE,
   .Sense,
-  .newline {
+  .newline,
+  .GramExa {
     display: block;
   }
 
@@ -105,7 +106,8 @@
   .EXPR,
   .LEXUNIT,
   .COLLOINEXA,
-  .HYPHENATION {
+  .HYPHENATION,
+  .PROPFORMPREP {
     font-weight: bold;
   }
 
