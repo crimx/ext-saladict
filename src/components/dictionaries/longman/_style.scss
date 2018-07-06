@@ -154,9 +154,25 @@
 
   .SIGNPOST {
     color: #fff;
+    font-size: 79%;
+    font-weight: bold;
     background: #f9690e;
-    padding: 1px 0.4em;
+    padding: 0 0.4em;
     border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  .OPP {
+    font-weight: bold;
+
+    .synopp {
+      color: #fff;
+      border-color: #f1d600;
+      background-color:#f1d600;
+      padding: 0 0.4em;
+      border-radius: 3px;
+      text-transform: uppercase;
+    }
   }
 
   a:link,

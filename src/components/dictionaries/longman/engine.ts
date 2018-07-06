@@ -21,7 +21,10 @@ export interface LongmanResultEntry {
     href: string
   }
   phsym?: string
-  level: number
+  level?: {
+    rate: number,
+    title: string
+  }
   freq?: Array<{
     title: string
     rank: string
@@ -116,7 +119,6 @@ function handleDOMLex (
       },
       prons: [],
       senses: [],
-      level: 0,
     }
 
     const $topic = $entry.querySelector<HTMLAnchorElement>('a.topic')
@@ -136,8 +138,18 @@ function handleDOMLex (
 
     entry.phsym = getText($head, '.PronCodes')
 
-    const level = getText($head, '.LEVEL')
-    entry.level = (level.match(/●/g) || []).length
+    const $level = $head.querySelector('.LEVEL') as HTMLSpanElement
+    if ($level) {
+      const level = {
+        rate: 0,
+        title: ''
+      }
+
+      level.rate = (($level.textContent || '').match(/●/g) || []).length
+      level.title = $level.title
+
+      entry.level = level
+    }
 
     entry.freq = Array.from($head.querySelectorAll<HTMLSpanElement>('.FREQ'))
       .map($el => ({
