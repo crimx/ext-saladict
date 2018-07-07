@@ -1,11 +1,9 @@
 import React from 'react'
 import Speaker from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
-import { LongmanResult, LongmanResultLex, LongmanResultRelated, LongmanResultEntry } from './engine'
+import { LongmanResult, LongmanResultLex, LongmanResultRelated, LongmanResultEntry, speakerIcon } from './engine'
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgAudioPlay } from '@/typings/message'
-import { speakerIcon } from './engine'
-
 
 export default class DictLongman extends React.PureComponent<{ result: LongmanResult }> {
   isPlaying = false
@@ -87,9 +85,9 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
 
         {dicts.map((dict, index) => result[dict].length > 0
           ? (
-            <div className='dictLongman-Dict' 
-              onClick={this.onSpeak.bind(this)} 
-              onMouseOver={this.onSpeak.bind(this)} 
+            <div className='dictLongman-Dict'
+              onClick={this.onSpeak.bind(this)}
+              onMouseOver={this.onSpeak.bind(this)}
               key={dict + index}>
               {/* <h1 className='dictLongman-DictTitle'>
                 <span>- {dictTitle[dict]} -</span>
