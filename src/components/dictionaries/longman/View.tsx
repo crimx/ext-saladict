@@ -18,7 +18,7 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
               entry.level ?
               (
                 <span title={entry.level.title} className="dictLongman-Level">
-                  <StarRates max={3} rate={entry.level.rate} className='dictLongman-Level_Rate' />
+                  <StarRates max={3} rate={entry.level.rate} className="dictLongman-Level_Rate" />
                 </span>
               )
               : null
