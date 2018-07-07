@@ -4,16 +4,11 @@ import StarRates from '@/components/StarRates'
 import { LongmanResult, LongmanResultLex, LongmanResultRelated, LongmanResultEntry } from './engine'
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgAudioPlay } from '@/typings/message'
+import { speakerIcon } from './engine'
 
-const speakerIcon = {
-  full: '🔊',
-  mid: '🔉',
-  low: '🔈'
-}
 
 export default class DictLongman extends React.PureComponent<{ result: LongmanResult }> {
   isPlaying = false
-  dicts: HTMLDivElement[] = []
 
   renderEntry (entry: LongmanResultEntry) {
     return (
@@ -95,7 +90,6 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
             <div className='dictLongman-Dict' 
               onClick={this.onSpeak.bind(this)} 
               onMouseOver={this.onSpeak.bind(this)} 
-              ref={div => div && this.dicts.push(div)}
               key={dict + index}>
               {/* <h1 className='dictLongman-DictTitle'>
                 <span>- {dictTitle[dict]} -</span>
@@ -119,7 +113,6 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
   }
 
   render () {
-    this.dicts = []
     const { result } = this.props
     switch (result.type) {
       case 'lex':
@@ -164,21 +157,5 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
       message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
         .then(stopped, stopped)
     }
-  }
-
-  addSpeakerIcon () {
-    const icon = speakerIcon.full
-    this.dicts.forEach(dict => {
-      const speakers = document.querySelectorAll('.speaker.exafile')
-      speakers.forEach(speaker => (speaker as HTMLSpanElement).dataset.speakerIcon = icon)
-    })
-  }
-
-  componentDidMount () {
-    this.addSpeakerIcon()
-  }
-
-  componentDidUpdate () {
-    this.addSpeakerIcon()
   }
 }
