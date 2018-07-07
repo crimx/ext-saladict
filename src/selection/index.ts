@@ -339,8 +339,8 @@ function isTypeField (traget: EventTarget | null): boolean {
       return true
     }
 
-    const editorTester = /CodeMirror|ace_editor/
-    // Popular code editors CodeMirror and ACE
+    const editorTester = /CodeMirror|ace_editor|monaco-editor/
+    // Popular code editors CodeMirror, ACE and Monaco
     for (let el = traget as Element | null; el; el = el.parentElement) {
       // With CodeMirror the `pre.CodeMirror-line` somehow got detached when the event
       // triggerd. So el will never reach the root `.CodeMirror`.
