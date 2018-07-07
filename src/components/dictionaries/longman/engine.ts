@@ -5,6 +5,17 @@ import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk('https://www.ldoceonline.com/')
 
+export const speakerIcon = {
+  full: '🔊',
+  mid: '🔉',
+  low: '🔈'
+}
+
+function addSpeakerIcon (doc, icon) {
+  const speakers = doc.querySelectorAll('.speaker.exafile')
+  speakers.forEach(speaker => (speaker as HTMLSpanElement).dataset.speakerIcon = icon)
+}
+
 export interface LongmanResultEntry {
   title: {
     HWD: string
@@ -88,6 +99,8 @@ function handleDOMLex (
   }
 
   const audio: { uk?: string, us?: string } = {}
+
+  addSpeakerIcon(doc, speakerIcon.full)
 
   if (options.wordfams) {
     result.wordfams = getInnerHTML(doc, '.wordfams')
