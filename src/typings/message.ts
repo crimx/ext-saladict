@@ -60,7 +60,6 @@ export const enum MsgType {
    * Background proxy sends back underlyingly
    */
   __PageInfo__,
-  __PreloadSelection__,
 }
 
 /** iframe messaging */
@@ -75,6 +74,7 @@ export interface MsgSelection {
   readonly mouseY: number
   readonly dbClick?: boolean
   readonly ctrlKey?: boolean
+  /** skip salad bowl and show panel directly */
   readonly instant?: boolean
   /** force panel to skip reconciling position */
   readonly force?: boolean

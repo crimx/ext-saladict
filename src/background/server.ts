@@ -33,8 +33,6 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return playAudio(data as MsgAudioPlay)
     case MsgType.FetchDictResult:
       return fetchDictResult(data as MsgFetchDictResult)
-    case MsgType.PreloadSelection:
-      return preloadSelection()
     case MsgType.GetClipboard:
       return getClipboard()
     case MsgType.RequestCSS:
@@ -120,17 +118,6 @@ function fetchDictResult (
       }
       return null
     })
-}
-
-function preloadSelection (): Promise<void> {
-  return browser.tabs.query({ active: true, currentWindow: true })
-    .then(tabs => {
-      if (tabs.length > 0 && tabs[0].id != null) {
-        return message.send(tabs[0].id as number, { type: MsgType.__PreloadSelection__ })
-      }
-    })
-    .then(text => text || '')
-    .catch(() => '')
 }
 
 function getClipboard (): Promise<string> {
