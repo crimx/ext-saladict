@@ -1,0 +1,14 @@
+{
+  "name": {
+    "en": "Google Dictionary",
+    "zh_CN": "谷歌词典",
+    "zh_TW": "谷歌詞典"
+  },
+  "options": {
+    "enresult": {
+      "en": "English Result",
+      "zh_CN": "强制显示英文结果",
+      "zh_TW": "強制顯示英文結果"
+    }
+  }
+}

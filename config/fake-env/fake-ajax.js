@@ -37,10 +37,37 @@ const fakeFetchData = [
   {
     test: {
       method: /.*/,
-      url: /google\w*\.(com|cn)/,
+      url: /translate\.google(apis)?\.(com|cn)/,
     },
     response: {
       text: () => require('raw-loader!../../test/specs/components/dictionaries/google/response/f.txt')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /www\.google\.com\/.*love/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/googledict/response/en-love.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /www\.google\.com\/.*爱/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/googledict/response/chs-爱.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /www\.google\.com\/.*mouse/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/googledict/response/chs-mouse.html')
     },
   },
   {
