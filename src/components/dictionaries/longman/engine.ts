@@ -5,17 +5,6 @@ import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk('https://www.ldoceonline.com/')
 
-export const speakerIcon = {
-  full: '🔊',
-  mid: '🔉',
-  low: '🔈'
-}
-
-function addSpeakerIcon (doc, icon) {
-  const speakers = doc.querySelectorAll('.speaker.exafile')
-  speakers.forEach(speaker => (speaker as HTMLSpanElement).dataset.speakerIcon = icon)
-}
-
 export interface LongmanResultEntry {
   title: {
     HWD: string
@@ -100,7 +89,15 @@ function handleDOMLex (
 
   const audio: { uk?: string, us?: string } = {}
 
-  addSpeakerIcon(doc, speakerIcon.full)
+  doc.querySelectorAll<HTMLSpanElement>('.speaker.exafile').forEach(
+    $speaker => {
+      const mp3 = $speaker.dataset.srcMp3
+      if (mp3) {
+        $speaker.outerHTML =
+          `<button data-src-mp3="${mp3}" title="${$speaker.title}" class="dictLongman-Speaker">🔊</button>`
+      }
+    }
+  )
 
   if (options.wordfams) {
     result.wordfams = getInnerHTML(doc, '.wordfams')

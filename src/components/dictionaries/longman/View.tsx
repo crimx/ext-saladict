@@ -1,12 +1,50 @@
 import React from 'react'
 import Speaker from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
-import { LongmanResult, LongmanResultLex, LongmanResultRelated, LongmanResultEntry, speakerIcon } from './engine'
+import { LongmanResult, LongmanResultLex, LongmanResultRelated, LongmanResultEntry } from './engine'
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgAudioPlay } from '@/typings/message'
 
 export default class DictLongman extends React.PureComponent<{ result: LongmanResult }> {
-  isPlaying = false
+  _audioDelayTimeout: any
+
+  isAudioElement (evt: React.MouseEvent<HTMLDivElement>): boolean {
+    const target = (evt.target as HTMLElement)
+    const cls = target.classList
+    return cls && cls.contains('dictLongman-Speaker')
+  }
+
+  handleDictMouseOver = (evt: React.MouseEvent<HTMLDivElement>) => {
+    if (this.isAudioElement(evt)) {
+      clearTimeout(this._audioDelayTimeout)
+      // React resuses synthetic event object
+      const target = evt.target as HTMLElement
+      this._audioDelayTimeout =
+        setTimeout(() => this.playAudio(target), 400)
+    }
+  }
+
+  handleDictMouseOut = (evt: React.MouseEvent<HTMLDivElement>) => {
+    if (this.isAudioElement(evt)) {
+      clearTimeout(this._audioDelayTimeout)
+    }
+  }
+
+  handleDictClick = (evt: React.MouseEvent<HTMLDivElement>) => {
+    if (this.isAudioElement(evt)) {
+      clearTimeout(this._audioDelayTimeout)
+      const target = evt.target as HTMLElement
+      target.blur()
+      this.playAudio(target)
+    }
+  }
+
+  playAudio = (target: HTMLElement) => {
+    const src = target.dataset.srcMp3
+    if (src) {
+      message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
+    }
+  }
 
   renderEntry (entry: LongmanResultEntry) {
     return (
@@ -94,9 +132,11 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
         {dicts.map((dict, index) => result[dict].length > 0
           ? (
             <div className='dictLongman-Dict'
-              onClick={this.onSpeak.bind(this)}
-              onMouseOver={this.onSpeak.bind(this)}
-              key={dict + index}>
+              key={dict + index}
+              onClick={this.handleDictClick}
+              onMouseOver={this.handleDictMouseOver}
+              onMouseOut={this.handleDictMouseOut}
+            >
               {/* <h1 className='dictLongman-DictTitle'>
                 <span>- {dictTitle[dict]} -</span>
               </h1> */}
@@ -127,41 +167,6 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
         return this.renderRelated(result)
       default:
         return null
-    }
-  }
-
-  onSpeak (evt: React.MouseEvent<HTMLDivElement>) {
-    if (this.isPlaying) return
-    const target = (evt.target as HTMLDivElement)
-    const cls = target.classList
-    if (!cls.contains('speaker') || !cls.contains('exafile')) {
-      return
-    }
-    const src = target.dataset.srcMp3
-    if (src) {
-      this.isPlaying = true
-      const playTimer = setInterval(() => {
-        const currentIcon = target.dataset.speakerIcon
-        switch (currentIcon) {
-          case speakerIcon.low:
-            target.dataset.speakerIcon = speakerIcon.mid
-            break
-          case speakerIcon.full:
-            target.dataset.speakerIcon = speakerIcon.low
-            break
-          case speakerIcon.mid:
-          default:
-            target.dataset.speakerIcon = speakerIcon.full
-            break
-        }
-      }, 1500 / 6)
-      const stopped = () => {
-        clearInterval(playTimer)
-        this.isPlaying = false
-        target.dataset.speakerIcon = speakerIcon.full
-      }
-      message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
-        .then(stopped, stopped)
     }
   }
 }

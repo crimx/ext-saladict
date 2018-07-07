@@ -1,3 +1,21 @@
+.dictLongman-Speaker {
+  // cover the original bulet point
+  position: absolute;
+  left: 0.8em;
+  background: white;
+
+  margin: 0;
+  padding: 0;
+  border: none;
+  color: inherit;
+  pointer-events: auto;
+  cursor: pointer;
+
+  &:hover {
+    outline: none;
+  }
+}
+
 .dictLongman-Wordfams {
   .asset_intro {
     display: block;
@@ -149,19 +167,10 @@
     color: #555;
     pointer-events: none;
     position: relative;
-    
+
     &:before {
       content: '►';
       user-select: none;
-    }
-
-    .speaker.exafile:before {
-      content: attr(data-speaker-icon);
-      pointer-events: auto;
-      position: absolute;
-      left: 0.8em;
-      background: white;
-      cursor: pointer;
     }
   }
 
@@ -193,7 +202,6 @@
   a:hover,
   a:active {
     text-decoration: none;
-    outline: none;
     color: #f9690e;
   }
 
@@ -210,7 +218,6 @@
     a:hover,
     a:active {
       text-decoration: none;
-      outline: none;
       color: #999;
     }
   }
