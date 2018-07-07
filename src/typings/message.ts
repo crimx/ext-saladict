@@ -53,6 +53,9 @@ export const enum MsgType {
   /** Query panel state */
   QueryPanelState,
 
+  /** Manually emit selection event */
+  EmitSelection,
+
   /**
    * Background proxy sends back underlyingly
    */

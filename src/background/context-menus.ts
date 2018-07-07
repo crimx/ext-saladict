@@ -1,4 +1,5 @@
-import { storage, openURL, StorageUpdate } from '@/_helpers/browser-api'
+import { message, storage, openURL, StorageUpdate } from '@/_helpers/browser-api'
+import { MsgType } from '@/typings/message'
 import { AppConfig } from '@/app-config'
 import i18nLoader from '@/_helpers/i18n'
 import { TranslationFunction } from 'i18next'
@@ -63,6 +64,9 @@ browser.contextMenus.onClicked.addListener(info => {
       break
     case 'notebook':
       openURL(browser.runtime.getURL('notebook.html'))
+      break
+    case 'saladict':
+      requestSelection()
       break
     default:
       storage.sync.get('config')
@@ -206,6 +210,15 @@ export function openMicrosoftPage () {
               : 'en'
           openURL(`https://www.microsofttranslator.com/bv.aspx?from=auto&to=${langCode}&r=true&a=${encodeURIComponent(tabs[0].url as string)}`)
         })
+      }
+    })
+}
+
+function requestSelection () {
+  browser.tabs.query({ active: true, currentWindow: true })
+    .then(tabs => {
+      if (tabs.length > 0 && tabs[0].id != null) {
+        message.send(tabs[0].id as number, { type: MsgType.EmitSelection })
       }
     })
 }
