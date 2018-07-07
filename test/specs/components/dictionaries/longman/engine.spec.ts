@@ -55,7 +55,8 @@ describe('Dict/Longman/engine', () => {
           expect(typeof entry.phsym).toBe('string')
           expect(typeof entry.pos).toBe('string')
           expect(entry.freq).toHaveLength(2)
-          expect(entry.level).toBe(3)
+          expect(entry.level).toBeDefined()
+          expect(entry.level.rate).toBe(3)
           expect(entry.prons).toHaveLength(2)
         })
 
@@ -113,11 +114,12 @@ describe('Dict/Longman/engine', () => {
           expect(typeof entry.phsym).toBe('string')
           expect(typeof entry.pos).toBe('string')
           expect(entry.freq).toHaveLength(0)
-          expect(entry.level).toBe(0)
+          expect(entry.level).toBeUndefined()
           expect(entry.prons).toHaveLength(0)
         })
 
-        expect(result.contemporary[0].level).toBe(3)
+        expect(result.contemporary[0].level).toBeDefined()
+        expect(result.contemporary[0].level.rate).toBe(3)
         expect(typeof result.contemporary[0].collocations).toBe('string')
         expect(typeof result.contemporary[0].thesaurus).toBe('string')
         expect(result.contemporary[0].freq).toHaveLength(2)
@@ -126,7 +128,8 @@ describe('Dict/Longman/engine', () => {
 
         expect(result.contemporary[1].freq).toHaveLength(0)
         expect(result.contemporary[1].examples).toHaveLength(3)
-        expect(result.contemporary[1].level).toBe(1)
+        expect(result.contemporary[1].level).toBeDefined()
+        expect(result.contemporary[1].level.rate).toBe(1)
       })
   })
 

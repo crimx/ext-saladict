@@ -14,7 +14,15 @@ export default class DictLongman extends React.PureComponent<{ result: LongmanRe
               <span className='dictLongman-Title_HYPHENATION'>{entry.title.HYPHENATION}</span>
               <span className='dictLongman-Title_HOMNUM'>{entry.title.HOMNUM}</span>
             </h1>
-            {entry.level ? <StarRates max={3} rate={entry.level} className='dictLongman-Level' /> : null}
+            {
+              entry.level ?
+              (
+                <span title={entry.level.title} className='dictLongman-Level'>
+                  <StarRates max={3} rate={entry.level.rate} className='dictLongman-Level_Rate' />
+                </span>
+              )
+              : null
+            }
             {entry.freq && entry.freq.map(freq => (
               <span key={freq.rank} className='dictLongman-FREQ' title={freq.title}>{freq.rank}</span>
             ))}
