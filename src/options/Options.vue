@@ -72,6 +72,7 @@ const _optNames = [
   'OptPopup',
   'OptTripleCtrl',
   'OptAutopron',
+  'OptMatchPatterns',
   'OptDicts',
   'OptContextMenu',
 ]
