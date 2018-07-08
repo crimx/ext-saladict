@@ -136,6 +136,12 @@ export const reducer: WidgetReducer = {
       widget.panelRect.height,
     )
 
+    const url = window.location.href
+    widget.isTempDisabled = (
+      config.blacklist.some(([r]) => new RegExp(r).test(url)) &&
+      config.whitelist.every(([r]) => !new RegExp(r).test(url))
+    )
+
     return {
       ...state,
       widget,

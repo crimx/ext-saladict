@@ -21,7 +21,7 @@ export function getInnerHTMLThunk (host?: string) {
     if (!child) { return '' }
     const content = DOMPurify.sanitize(child['innerHTML'] || '')
     return host
-      ? content.replace(/href="\//g, 'href="' + host)
+      ? content.replace(/href="\/[^/]/g, 'href="' + host)
       : content
   }
 }
@@ -38,6 +38,13 @@ export function getOuterHTMLThunk (host?: string) {
       ? content.replace(/href="\//g, 'href="' + host)
       : content
   }
+}
+
+export function decodeHEX (text: string): string {
+  return text.replace(
+    /\\x([0-9A-Fa-f]{2})/g,
+    (m, p1) => String.fromCharCode(parseInt(p1, 16)),
+  )
 }
 
 export function removeChild (parent: ParentNode, selector: string) {

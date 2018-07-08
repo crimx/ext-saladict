@@ -28,8 +28,49 @@ import { startWith } from 'rxjs/operators/startWith'
 import { pluck } from 'rxjs/operators/pluck'
 import { combineLatest } from 'rxjs/observable/combineLatest'
 
-message.addListener(MsgType.__PreloadSelection__, () => {
-  return Promise.resolve(selection.getSelectionInfo())
+let config = appConfigFactory()
+createAppConfigStream().subscribe(newConfig => config = newConfig)
+
+let clickPeriodCount = 0
+let lastMousedownEvent: MouseEvent | TouchEvent | null
+
+/**
+ * Beware that this is run on every frame
+ */
+message.addListener(msg => {
+  switch (msg.type) {
+    case MsgType.PreloadSelection:
+      if (selection.getSelectionText()) {
+        return Promise.resolve(selection.getSelectionInfo())
+      }
+      break
+    case MsgType.EmitSelection:
+      if (lastMousedownEvent) {
+        const text = selection.getSelectionText()
+        if (text) {
+          const { clientX, clientY } = lastMousedownEvent instanceof MouseEvent
+            ? lastMousedownEvent
+            : lastMousedownEvent.changedTouches[0]
+          sendMessage({
+            mouseX: clientX,
+            mouseY: clientY,
+            instant: true,
+            selectionInfo: {
+              text,
+              context: selection.getSelectionSentence(),
+              title: window.pageTitle || document.title,
+              url: window.pageURL || document.URL,
+              favicon: window.faviconURL || '',
+              trans: '',
+              note: ''
+            },
+          })
+        }
+      }
+      break
+    default:
+      break
+  }
 })
 
 /** Pass through message from iframes */
@@ -47,12 +88,6 @@ window.addEventListener('message', ({ data, source }: { data: PostMsgSelection, 
   msg.mouseY = msg.mouseY + top
   sendMessage(msg)
 })
-
-let config = appConfigFactory()
-createAppConfigStream().subscribe(newConfig => config = newConfig)
-
-let clickPeriodCount = 0
-let lastMousedownTarget: EventTarget | null
 
 /**
  * Pressing ctrl/command key more than three times within 500ms
@@ -76,8 +111,8 @@ validCtrlPressed$$.pipe(
 merge(
   fromEvent<MouseEvent>(window, 'mousedown', { capture: true }),
   fromEvent<TouchEvent>(window, 'touchstart', { capture: true }),
-).subscribe(({ target }) => {
-  lastMousedownTarget = target
+).subscribe(evt => {
+  lastMousedownEvent = evt
 })
 
 /**
@@ -137,7 +172,7 @@ isKeyPressed(isEscapeKey).subscribe(flag => {
 let lastText: string
 let lastContext: string
 validMouseup$$.subscribe(event => {
-  if (config.noTypeField && isTypeField(lastMousedownTarget)) {
+  if (config.noTypeField && isTypeField(lastMousedownEvent)) {
     sendEmptyMessage()
     return
   }
@@ -333,15 +368,16 @@ function isKeyPressed (keySelectior: (e: KeyboardEvent) => boolean): Observable<
   )
 }
 
-function isTypeField (traget: EventTarget | null): boolean {
-  if (traget) {
-    if (traget['tagName'] === 'INPUT' || traget['tagName'] === 'TEXTAREA') {
+function isTypeField (event: MouseEvent | TouchEvent | null): boolean {
+  if (event && event.target) {
+    const target = event.target
+    if (target['tagName'] === 'INPUT' || target['tagName'] === 'TEXTAREA') {
       return true
     }
 
-    const editorTester = /CodeMirror|ace_editor/
-    // Popular code editors CodeMirror and ACE
-    for (let el = traget as Element | null; el; el = el.parentElement) {
+    const editorTester = /CodeMirror|ace_editor|monaco-editor/
+    // Popular code editors CodeMirror, ACE and Monaco
+    for (let el = target as Element | null; el; el = el.parentElement) {
       // With CodeMirror the `pre.CodeMirror-line` somehow got detached when the event
       // triggerd. So el will never reach the root `.CodeMirror`.
       if (editorTester.test(el.className)) {

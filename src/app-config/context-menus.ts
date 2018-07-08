@@ -17,6 +17,7 @@ export function getAllContextMenus () {
     merriam_webster: 'http://www.merriam-webster.com/dictionary/%s',
     microsoft_page_translate: 'x',
     oxford: 'http://www.oxforddictionaries.com/us/definition/english/%s',
+    saladict: 'x',
     sogou_page_translate: 'x',
     sogou: 'https://fanyi.sogou.com/#auto/zh-CHS/%s',
     youdao_page_translate: 'x',

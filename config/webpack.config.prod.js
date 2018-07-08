@@ -324,7 +324,7 @@ module.exports = {
     }),
     // Tailor locales
     new webpack.ContextReplacementPlugin(/moment[\\/]locale$/, /^\.\/(en|zh-cn|zh-tw)$/),
-    argv.analyze || (process.env.NODE_ENV === 'production' && !argv.devbuild)
+    !process.env.CI && (argv.analyze || (process.env.NODE_ENV === 'production' && !argv.devbuild))
     ? new BundleAnalyzerPlugin()
     : null,
   ].filter(Boolean),

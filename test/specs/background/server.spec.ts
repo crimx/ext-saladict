@@ -1,6 +1,5 @@
 import { appConfigFactory, AppConfig } from '@/app-config'
 import * as browserWrap from '@/_helpers/browser-api'
-import sinon from 'sinon'
 import { MsgType } from '@/typings/message'
 
 jest.mock('@/background/database')
@@ -125,25 +124,5 @@ describe('Server', () => {
       expect(bingSearch).toHaveBeenCalledTimes(1)
       expect(bingSearch).toHaveBeenCalledWith('test', config)
     })
-  })
-
-  it('Preload Selection', done => {
-    const resolveStub = jest.fn()
-    const rejectStub = jest.fn()
-    const queryStub = jest.fn(() => Promise.resolve([{ id: 100 }]))
-    browser.tabs.query.callsFake(queryStub)
-    browser.tabs.sendMessage.callsFake(() => Promise.resolve('test'))
-    browser.runtime.onMessage.dispatch({ type: MsgType.PreloadSelection })
-    browser.runtime.onMessage['_listeners'].forEach(f =>
-      f({ type: MsgType.PreloadSelection })
-      .then(resolveStub, rejectStub)
-    )
-    setTimeout(() => {
-      expect(resolveStub).toHaveBeenCalledTimes(1)
-      expect(resolveStub).toHaveBeenCalledWith('test')
-      expect(rejectStub).toHaveBeenCalledTimes(0)
-      expect(browser.tabs.sendMessage.calledWith(100, { type: MsgType.__PreloadSelection__ })).toBeTruthy()
-      done()
-    }, 0)
   })
 })

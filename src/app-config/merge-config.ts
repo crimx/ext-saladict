@@ -69,6 +69,9 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   merge('autopron.en.dict', id => base.dicts.all[id])
   merge('autopron.en.accent', val => val === 'us' || val === 'uk')
 
+  merge('whiltelist', val => Array.isArray(val))
+  merge('blacklist', val => Array.isArray(val))
+
   mergeSelectedDicts('dicts')
   mergeSelectedDicts('contextMenus')
 

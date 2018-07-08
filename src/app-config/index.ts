@@ -155,6 +155,11 @@ export interface AppConfigMutable {
     }
   }
 
+  /** URLs, [regexp.source, match_pattern] */
+  whitelist: Array<[string, string]>
+  /** URLs, [regexp.source, match_pattern] */
+  blacklist: Array<[string, string]>
+
   dicts: {
     /** default selected dictionaries */
     selected: DictID[]
@@ -265,6 +270,9 @@ export function appConfigFactory (): AppConfig {
         accent: 'uk' as ('us' | 'uk')
       }
     },
+
+    whitelist: [],
+    blacklist: [],
 
     dicts: {
       selected: ['bing', 'cambridge', 'urban', 'vocabulary', 'google', 'zdic', 'guoyu', 'liangan'],

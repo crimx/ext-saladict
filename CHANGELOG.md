@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.5.0"></a>
+# [6.5.0](https://github.com/crimx/ext-saladict/compare/v6.4.1...v6.5.0) (2018-07-08)
+
+
+### Bug Fixes
+
+* **options:** missing files breaks CI build ([ae35a49](https://github.com/crimx/ext-saladict/commit/ae35a49))
+* update ci ([ba3108e](https://github.com/crimx/ext-saladict/commit/ba3108e))
+* update ci ([97e5201](https://github.com/crimx/ext-saladict/commit/97e5201))
+* update ci ([7dd28a8](https://github.com/crimx/ext-saladict/commit/7dd28a8))
+* **popup:** fix preloading selection on popup page ([5912183](https://github.com/crimx/ext-saladict/commit/5912183))
+
+
+### Features
+
+* **$browser:** longman dictionary's exmaples add speaker ([8601078](https://github.com/crimx/ext-saladict/commit/8601078))
+* **$browser:** longman max level is 3 ([c9a4a80](https://github.com/crimx/ext-saladict/commit/c9a4a80))
+* **context:** add context menus saladict search [#152](https://github.com/crimx/ext-saladict/issues/152) ([6125ca8](https://github.com/crimx/ext-saladict/commit/6125ca8))
+* **dicts:** add google dict ([355740c](https://github.com/crimx/ext-saladict/commit/355740c)), closes [#145](https://github.com/crimx/ext-saladict/issues/145)
+* **options:** add balck-white list [#155](https://github.com/crimx/ext-saladict/issues/155) ([a2c8d13](https://github.com/crimx/ext-saladict/commit/a2c8d13))
+* **selection:** support Monaco editor ([edd0012](https://github.com/crimx/ext-saladict/commit/edd0012))
+
+
+
 <a name="6.4.1"></a>
 ## [6.4.1](https://github.com/crimx/ext-saladict/compare/v6.4.0...v6.4.1) (2018-06-28)
 

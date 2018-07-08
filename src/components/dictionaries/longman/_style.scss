@@ -1,3 +1,21 @@
+.dictLongman-Speaker {
+  // cover the original bulet point
+  position: absolute;
+  left: 0.8em;
+  background: white;
+
+  margin: 0;
+  padding: 0;
+  border: none;
+  color: inherit;
+  pointer-events: auto;
+  cursor: pointer;
+
+  &:hover {
+    outline: none;
+  }
+}
+
 .dictLongman-Wordfams {
   .asset_intro {
     display: block;
@@ -84,10 +102,12 @@
   .SubEntry,
   .EXAMPLE,
   .Sense,
-  .newline {
+  .newline,
+  .GramExa {
     display: block;
   }
 
+  .ACTIV,
   .HWD,
   .FIELD,
   .FIELDXX {
@@ -104,7 +124,8 @@
   .EXPR,
   .LEXUNIT,
   .COLLOINEXA,
-  .HYPHENATION {
+  .HYPHENATION,
+  .PROPFORMPREP {
     font-weight: bold;
   }
 
@@ -144,8 +165,10 @@
     margin-bottom: 0.4em;
     padding-left: 0.8em;
     color: #555;
+    pointer-events: none;
+    position: relative;
 
-    &::before {
+    &:before {
       content: '►';
       user-select: none;
     }
@@ -153,9 +176,25 @@
 
   .SIGNPOST {
     color: #fff;
+    font-size: 79%;
+    font-weight: bold;
     background: #f9690e;
-    padding: 1px 0.4em;
+    padding: 0 0.4em;
     border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  .OPP {
+    font-weight: bold;
+
+    .synopp {
+      color: #fff;
+      border-color: #f1d600;
+      background-color:#f1d600;
+      padding: 0 0.4em;
+      border-radius: 3px;
+      text-transform: uppercase;
+    }
   }
 
   a:link,
@@ -163,7 +202,6 @@
   a:hover,
   a:active {
     text-decoration: none;
-    outline: none;
     color: #f9690e;
   }
 
@@ -180,7 +218,6 @@
     a:hover,
     a:active {
       text-decoration: none;
-      outline: none;
       color: #999;
     }
   }
