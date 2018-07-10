@@ -147,7 +147,7 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     const $dictItemBody = this.bodyRef.current || null
 
     for (let el: HTMLElement | null = $target; el && el !== $dictItemBody; el = el.parentElement) {
-      if (el.tagName === 'A') {
+      if (el.tagName === 'A' || el.getAttribute('role') === 'link') {
         e.preventDefault()
         e.stopPropagation()
 
