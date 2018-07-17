@@ -89,21 +89,23 @@ window.addEventListener('message', ({ data, source }: { data: PostMsgSelection, 
   sendMessage(msg)
 })
 
-/**
- * Pressing ctrl/command key more than three times within 500ms
- * trigers TripleCtrl
- */
-const validCtrlPressed$$ = isKeyPressed(isCtrlKey).pipe(
-  filter(Boolean),
-  share(),
-)
+if (window.name !== 'saladict-frame') {
+  /**
+   * Pressing ctrl/command key more than three times within 500ms
+   * trigers TripleCtrl
+   */
+  const validCtrlPressed$$ = isKeyPressed(isCtrlKey).pipe(
+    filter(Boolean),
+    share(),
+  )
 
-validCtrlPressed$$.pipe(
-  buffer(debounceTime(500)(validCtrlPressed$$)),
-  filter(group => group.length >= 3),
-).subscribe(() => {
-  message.self.send({ type: MsgType.TripleCtrl })
-})
+  validCtrlPressed$$.pipe(
+    buffer(debounceTime(500)(validCtrlPressed$$)),
+    filter(group => group.length >= 3),
+  ).subscribe(() => {
+    message.self.send({ type: MsgType.TripleCtrl })
+  })
+}
 
 /**
  * Track the last mousedown target for identifying input field, if needed.

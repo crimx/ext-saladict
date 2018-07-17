@@ -378,6 +378,8 @@ function listenTrpleCtrl (
 ) {
   message.self.addListener(MsgType.TripleCtrl, () => {
     const state = getState()
+    if (state.widget.shouldPanelShow) { return }
+
     const { tripleCtrlPreload, tripleCtrlAuto } = state.config
 
     const fetchInfo = tripleCtrlPreload === 'selection'
