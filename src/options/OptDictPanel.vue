@@ -4,16 +4,6 @@
       <strong>{{ $t('opt:dict_panel_title') }}</strong>
     </div>
     <div class="opt-item__body">
-      <div class="select-box-container">
-         <label class="select-box">
-           <span class="select-label">{{ $t('opt:dict_panel_db_search') }}</span>
-           <select class="form-control" v-model="panelDbSearch">
-             <option value="">{{ $t('opt:dict_panel_db_search_none') }}</option>
-             <option value="double">{{ $t('opt:dict_panel_db_search_double') }}</option>
-             <option value="ctrl">{{ $t('opt:dict_panel_db_search_ctrl') }}</option>
-           </select>
-         </label>
-      </div>
       <div class="input-group">
         <div class="input-group-addon">{{ $t('opt:dict_panel_height_ratio') }}</div>
         <input type="number" step="1" min="10" max="90" class="form-control"
@@ -51,7 +41,6 @@ export default {
     panelWidth: 'config.panelWidth',
     panelMaxHeightRatio: 'config.panelMaxHeightRatio',
     fontSize: 'config.fontSize',
-    panelDbSearch: 'config.panelDbSearch',
     searchText: 'searchText',
   },
   watch: {

@@ -5,7 +5,7 @@ import { message } from '@/_helpers/browser-api'
 import { createAppConfigStream } from '@/_helpers/config-manager'
 import { MsgSelection, MsgType, MsgTempDisabledState, MsgEditWord, MsgOpenUrl } from '@/typings/message'
 import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
-import { SelectionInfo } from '@/_helpers/selection'
+import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
@@ -555,13 +555,36 @@ function listenNewSelection (
 ) {
   message.self.addListener<MsgSelection>(MsgType.Selection, message => {
     const state = getState()
+    const { selectionInfo, dbClick, ctrlKey, instant, mouseX, mouseY, self } = message
 
-    if (isSaladictPopupPage) { return }
+    if (self) {
+      // inside dict panel
+      const { direct, double, ctrl } = state.config.panelMode
+      const { text, context } = selectionInfo
+      if (text && (
+            instant ||
+            direct ||
+            (double && dbClick) ||
+            (ctrl && ctrlKey)
+          )
+      ) {
+        dispatch(searchText({
+          info: getDefaultSelectionInfo({
+            text,
+            context,
+            title: 'Saladict Panel',
+            favicon: 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png',
+          })
+        }))
+      }
+      return
+    }
+
+    if (isSaladictPopupPage || isSaladictOptionsPage) { return }
 
     const isActive = state.config.active && !state.widget.isTempDisabled
 
     const { direct, ctrl, double, icon } = state.config.mode
-    const { selectionInfo, dbClick, ctrlKey, instant, mouseX, mouseY } = message
     const {
       isPinned,
       shouldPanelShow: lastShouldPanelShow,
@@ -578,7 +601,6 @@ function listenNewSelection (
         (ctrl && ctrlKey) ||
         instant
       )) ||
-      isSaladictOptionsPage ||
       isSaladictPopupPage
     )
 
@@ -591,7 +613,6 @@ function listenNewSelection (
       !(double && dbClick) &&
       !(ctrl && ctrlKey) &&
       !instant &&
-      !isSaladictOptionsPage &&
       !isSaladictPopupPage
     )
 
@@ -620,14 +641,12 @@ function listenNewSelection (
 
     // should search text?
     const { pinMode } = state.config
-    if ((shouldPanelShow && selectionInfo.text && (
-            !isPinned ||
-            pinMode.direct ||
-            (pinMode.double && dbClick) ||
-            (pinMode.ctrl && ctrlKey)
-          )
-        ) ||
-        isSaladictOptionsPage
+    if (shouldPanelShow && selectionInfo.text && (
+          !isPinned ||
+          pinMode.direct ||
+          (pinMode.double && dbClick) ||
+          (pinMode.ctrl && ctrlKey)
+        )
     ) {
       dispatch(searchText({ info: selectionInfo }))
     } else if (!shouldPanelShow && lastShouldPanelShow) {

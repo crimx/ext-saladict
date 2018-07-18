@@ -56,14 +56,6 @@ export interface AppConfigMutable {
   /** panel font-size */
   fontSize: number
 
-  /**
-   * panel double click search
-   * empty means no double click search
-   * 'double' means double click
-   * 'ctrl' means double click + ctrl/command pressed
-   */
-  panelDbSearch: '' | 'double' | 'ctrl'
-
   /** sniff pdf request */
   pdfSniff: boolean
 
@@ -98,6 +90,22 @@ export interface AppConfigMutable {
 
   /** when and how to search text if the panel is pinned */
   pinMode: {
+    /** direct: on mouseup */
+    direct: boolean
+    /** double: double click */
+    double: boolean
+    /** ctrl: search when double click ctrl + selection not empty */
+    ctrl: boolean
+    /** cursor instant capture */
+    instant: {
+      enable: boolean
+      key: 'direct' | 'ctrl' | 'alt'
+      delay: number
+    }
+  },
+
+  /** when and how to search text inside dict panel */
+  panelMode: {
     /** direct: on mouseup */
     direct: boolean
     /** double: double click */
@@ -178,7 +186,7 @@ export default appConfigFactory
 
 export function appConfigFactory (): AppConfig {
   return {
-    version: 7,
+    version: 8,
 
     active: true,
 
@@ -193,8 +201,6 @@ export function appConfigFactory (): AppConfig {
     panelMaxHeightRatio: 0.8,
 
     fontSize: 13,
-
-    panelDbSearch: '',
 
     pdfSniff: true,
 
@@ -219,6 +225,17 @@ export function appConfigFactory (): AppConfig {
 
     pinMode: {
       direct: true,
+      double: false,
+      ctrl: false,
+      instant: {
+        enable: false,
+        key: 'alt',
+        delay: 600,
+      },
+    },
+
+    panelMode: {
+      direct: false,
       double: false,
       ctrl: false,
       instant: {

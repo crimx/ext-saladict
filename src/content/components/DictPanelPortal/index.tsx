@@ -249,7 +249,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       <PortalFrame
         className={frameClassName}
         bodyClassName={isAnimation ? 'isAnimate' : undefined}
-        name='saladict-frame'
+        name='saladict-dictpanel'
         frameBorder='0'
         head={this.frameHead}
         frameDidMount={this.frameDidMount}

@@ -28,6 +28,8 @@ import { startWith } from 'rxjs/operators/startWith'
 import { pluck } from 'rxjs/operators/pluck'
 import { combineLatest } from 'rxjs/observable/combineLatest'
 
+const isDictPanel = window.name === 'saladict-dictpanel'
+
 let config = appConfigFactory()
 createAppConfigStream().subscribe(newConfig => config = newConfig)
 
@@ -55,15 +57,8 @@ message.addListener(msg => {
             mouseX: clientX,
             mouseY: clientY,
             instant: true,
-            selectionInfo: {
-              text,
-              context: selection.getSelectionSentence(),
-              title: window.pageTitle || document.title,
-              url: window.pageURL || document.URL,
-              favicon: window.faviconURL || '',
-              trans: '',
-              note: ''
-            },
+            self: isDictPanel,
+            selectionInfo: selection.getSelectionInfo({ text }),
           })
         }
       }
@@ -89,7 +84,7 @@ window.addEventListener('message', ({ data, source }: { data: PostMsgSelection, 
   sendMessage(msg)
 })
 
-if (window.name !== 'saladict-frame') {
+if (!window.name.startsWith('saladict-')) {
   /**
    * Pressing ctrl/command key more than three times within 500ms
    * trigers TripleCtrl
@@ -129,7 +124,7 @@ const validMouseup$$ = merge(
   ),
 ).pipe(
   filter(({ target }) => {
-    if (window.name === 'saladict-frame') {
+    if (window.name === 'saladict-wordeditor') {
       return false
     }
 
@@ -201,6 +196,7 @@ validMouseup$$.subscribe(event => {
       mouseY: event.clientY,
       dbClick: clickPeriodCount >= 2,
       ctrlKey: Boolean(event['metaKey'] || event['ctrlKey']),
+      self: isDictPanel,
       selectionInfo: {
         text: selection.getSelectionText(),
         context,
@@ -230,15 +226,18 @@ combineLatest(
   ),
 ).pipe(
   map(([config, isPinned]) => {
-    const { instant } = config[isPinned ? 'pinMode' : 'mode']
+    const { instant } = config[isDictPanel ? 'panelMode' : isPinned ? 'pinMode' : 'mode']
     return [
       instant.enable ? instant.key : '',
       instant.delay
-    ] as ['' | AppConfig['mode']['instant']['key'] | AppConfig['pinMode']['instant']['key'], number]
+    ] as [
+      '' | AppConfig['mode']['instant']['key'] | AppConfig['pinMode']['instant']['key'] | AppConfig['panelMode']['instant']['key'],
+      number
+    ]
   }),
   distinctUntilChanged((oldVal, newVal) => oldVal[0] === newVal[0] && oldVal[1] === newVal[1]),
   switchMap(([instant, insCapDelay]) => {
-    if (!instant || window.name === 'saladict-frame') { return of(undefined) }
+    if (!instant || window.name === 'saladict-wordeditor') { return of(undefined) }
     return merge(
       validMouseup$$.pipe(mapTo(undefined)),
       fromEvent<MouseEvent>(window, 'mouseout', { capture: true }).pipe(mapTo(undefined)),
@@ -272,15 +271,8 @@ combineLatest(
       mouseX: event.clientX,
       mouseY: event.clientY,
       instant: true,
-      selectionInfo: {
-        text,
-        context,
-        title: window.pageTitle || document.title,
-        url: window.pageURL || document.URL,
-        favicon: window.faviconURL || '',
-        trans: '',
-        note: ''
-      },
+      self: isDictPanel,
+      selectionInfo: selection.getSelectionInfo({ text, context }),
     })
   }
 })
@@ -294,6 +286,7 @@ function sendMessage (
     selectionInfo: selection.SelectionInfo
     mouseX: number
     mouseY: number
+    self: boolean
     dbClick?: boolean
     ctrlKey?: boolean
     instant?: boolean
@@ -322,16 +315,8 @@ function sendEmptyMessage () {
   // empty message
   const msg: MsgSelection = {
     type: MsgType.Selection,
-    selectionInfo: {
-      text: '',
-      context: '',
-      title: window.pageTitle || document.title,
-      url: window.pageURL || document.URL,
-      // set by browser-api helper
-      favicon: window.faviconURL || '',
-      trans: '',
-      note: ''
-    },
+    selectionInfo: selection.getDefaultSelectionInfo(),
+    self: isDictPanel,
     mouseX: 0,
     mouseY: 0,
     dbClick: false,

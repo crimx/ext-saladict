@@ -30,7 +30,6 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   mergeNumber('panelWidth')
   mergeNumber('panelMaxHeightRatio')
   mergeNumber('fontSize')
-  merge('panelDbSearch', val => val === '' || val === 'double' || val === 'ctrl')
   mergeBoolean('pdfSniff')
   mergeBoolean('searhHistory')
   mergeBoolean('searhHistoryInco')
@@ -51,6 +50,13 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   mergeBoolean('pinMode.instant.enable')
   merge('pinMode.instant.key', val => val === 'direct' || val === 'ctrl' || val === 'alt')
   mergeNumber('pinMode.instant.delay')
+
+  mergeBoolean('panelMode.direct')
+  mergeBoolean('panelMode.double')
+  mergeBoolean('panelMode.ctrl')
+  mergeBoolean('panelMode.instant.enable')
+  merge('panelMode.instant.key', val => val === 'direct' || val === 'ctrl' || val === 'alt')
+  mergeNumber('panelMode.instant.delay')
 
   mergeNumber('doubleClickDelay')
 
@@ -99,9 +105,20 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   })
 
   // patch
-  if (config.version === 6) {
-    base.dicts.all.google.selectionWC.max = 999999999999999
-    base.dicts.all.youdao.selectionWC.max = 999999999999999
+  switch (config.version) {
+    case 6:
+      base.dicts.all.google.selectionWC.max = 999999999999999
+      base.dicts.all.youdao.selectionWC.max = 999999999999999
+      break
+    case 7:
+      if (config['panelDbSearch'] === 'double') {
+        base.panelMode.double = true
+      } else if (config['panelDbSearch'] === 'ctrl') {
+        base.panelMode.ctrl = true
+      }
+      break
+    default:
+      break
   }
 
   return base

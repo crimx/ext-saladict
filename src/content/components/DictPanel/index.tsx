@@ -53,7 +53,6 @@ export default class DictPanel extends React.Component<DictPanelProps> {
       allDictsConfig,
       panelWidth,
       fontSize,
-      panelDbSearch,
 
       updateItemHeight,
     } = this.props
@@ -90,7 +89,6 @@ export default class DictPanel extends React.Component<DictPanelProps> {
               text: (dictionaries.searchHistory[0] || selection.selectionInfo).text,
               dictURL,
               fontSize,
-              panelDbSearch,
               preferredHeight: allDictsConfig[id].preferredHeight,
               panelWidth,
               searchStatus: (dictsInfo[id] as any).searchStatus,
