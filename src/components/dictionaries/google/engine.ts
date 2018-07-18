@@ -2,6 +2,7 @@ import { handleNoResult } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
+import { first } from '@/_helpers/promise-more'
 
 export type GoogleResult = string
 
@@ -11,7 +12,7 @@ export default function search (
   text: string,
   config: AppConfig,
 ): Promise<GoogleSearchResult> {
-  const options = config.dicts.all.google.options
+
   const chCode = config.langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN'
   let sl = 'auto'
   let tl = chCode
@@ -23,18 +24,15 @@ export default function search (
     tl = chCode
   }
 
-  if (options.cnfirst) {
-    return fetchWithToken('https://translate.google.cn', sl, tl, text)
-      .catch(() => fetchWithToken('https://translate.google.com', sl, tl, text))
-      .catch(() => fetchWithoutToken(sl, tl, text))
-  } else {
-    return fetchWithToken('https://translate.google.com', sl, tl, text)
-      .catch(() => fetchWithToken('https://translate.google.cn', sl, tl, text))
-      .catch(() => fetchWithoutToken(sl, tl, text))
-  }
+  return first([
+    fetchWithToken('https://translate.google.com', sl, tl, text),
+    fetchWithToken('https://translate.google.cn', sl, tl, text),
+  ])
+  .catch(() => fetchWithoutToken(sl, tl, text))
+  .then(handleText)
 }
 
-function fetchWithToken (base: string, sl: string, tl: string, text: string): Promise<GoogleSearchResult> {
+function fetchWithToken (base: string, sl: string, tl: string, text: string): Promise<string> {
   return fetch(base)
     .then(r => r.text())
     .then<Response>(body => {
@@ -50,13 +48,11 @@ function fetchWithToken (base: string, sl: string, tl: string, text: string): Pr
       return handleNoResult()
     })
     .then(r => r.text())
-    .then(handleText)
 }
 
-function fetchWithoutToken (sl: string, tl: string, text: string): Promise<GoogleSearchResult> {
+function fetchWithoutToken (sl: string, tl: string, text: string): Promise<string> {
   return fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${text}`)
     .then(r => r.text())
-    .then(handleText)
 }
 
 function handleText (
