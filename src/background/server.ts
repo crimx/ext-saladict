@@ -111,7 +111,7 @@ function fetchDictResult (
       return result
     })
 
-  return timeout(pSearch, 10000)
+  return timeout(pSearch, 25000)
     .catch(err => {
       if (process.env.NODE_ENV !== 'production') {
         console.warn(data.id, err)
