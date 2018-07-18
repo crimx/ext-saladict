@@ -199,10 +199,12 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     const { x, y, width, height } = this.props.panelRect
     const style = node.style
 
-    style.setProperty('width', width + 'px', 'important')
-    style.setProperty('height', height + 'px', 'important')
     style.setProperty('left', `${x}px`, 'important')
     style.setProperty('top', `${y}px`, 'important')
+    style.setProperty('width', width + 'px', 'important')
+    if (!isSaladictPopupPage) {
+      style.setProperty('height', height + 'px', 'important')
+    }
   }
 
   handlePanelEntered = (node: HTMLElement) => {
@@ -210,10 +212,12 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     const { x, y, width, height } = this.props.panelRect
     const style = node.style
 
-    style.setProperty('width', width + 'px', 'important')
-    style.setProperty('height', height + 'px', 'important')
     style.setProperty('left', `${x}px`, 'important')
     style.setProperty('top', `${y}px`, 'important')
+    style.setProperty('width', width + 'px', 'important')
+    if (!isSaladictPopupPage) {
+      style.setProperty('height', height + 'px', 'important')
+    }
   }
 
   frameDidMount (iframe: HTMLIFrameElement) {
@@ -233,10 +237,12 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     if (this.frame) {
       const { x, y, width, height } = this.props.panelRect
       const style = this.frame.style
-      style.setProperty('width', width + 'px', 'important')
-      style.setProperty('height', height + 'px', 'important')
       style.setProperty('left', `${x}px`, 'important')
       style.setProperty('top', `${y}px`, 'important')
+      style.setProperty('width', width + 'px', 'important')
+      if (!isSaladictPopupPage) {
+        style.setProperty('height', height + 'px', 'important')
+      }
     }
   }
 

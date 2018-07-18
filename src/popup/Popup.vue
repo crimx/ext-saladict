@@ -1,5 +1,5 @@
 <template>
-<div class="popup-container">
+<div class="popup-container" @mouseenter="activeContainer" @mouseleave="hideContainer">
   <div class="active-switch">
     <svg class="icon-qrcode" @mouseenter="showQRcode" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
       <path d="M0 225v25h250v-25H0zM0 25h250V0H0v25z"/>
@@ -11,17 +11,17 @@
       <path d="M474.5 449.5v75h25v-75h-25zM562 587v25h50v-25h-50z"/>
     </svg>
     <span class="switch-title">{{ $t('app_active_title') }}</span>
-    <input type="checkbox" id="opt-active" class="btn-switch" :checked="config.active" @click.prevent="changeActive">
+    <input type="checkbox" id="opt-active" class="btn-switch" :checked="config.active" @click.prevent="changeActive" @focus="activeContainer" @blur="hideContainer">
     <label for="opt-active"></label>
   </div>
   <div class="active-switch">
     <span class="switch-title">{{ $t('app_temp_active_title') }}</span>
-    <input type="checkbox" id="opt-temp-active" class="btn-switch" v-model="tempOff" @click.prevent="changeTempOff">
+    <input type="checkbox" id="opt-temp-active" class="btn-switch" v-model="tempOff" @click.prevent="changeTempOff" @focus="activeContainer" @blur="hideContainer">
     <label for="opt-temp-active"></label>
   </div>
   <div class="active-switch">
     <span class="switch-title">{{ $t('instant_capture_title') + (insCapMode === 'pinMode' ? $t('instant_capture_pinned') : '') }}</span>
-    <input type="checkbox" id="opt-instant-capture" class="btn-switch" v-model="config[insCapMode].instant.enable" @click.prevent="changeInsCap">
+    <input type="checkbox" id="opt-instant-capture" class="btn-switch" v-model="config[insCapMode].instant.enable" @click.prevent="changeInsCap" @focus="activeContainer" @blur="hideContainer">
     <label for="opt-instant-capture"></label>
   </div>
   <transition name="fade">
@@ -106,7 +106,23 @@ export default Vue.extend({
           this.currentTabUrl = tabs[0].url as string
         }
       })
-    }
+    },
+    activeContainer () {
+      const $panel = document.querySelector<HTMLDivElement>('.saladict-DictPanel')
+      const $container = document.querySelector<HTMLDivElement>('.popup-container')
+      if ($panel && $container) {
+        $panel.style.height = '400px'
+        $container.style.height = '150px'
+      }
+    },
+    hideContainer () {
+      const $panel = document.querySelector<HTMLDivElement>('.saladict-DictPanel')
+      const $container = document.querySelector<HTMLDivElement>('.popup-container')
+      if ($panel && $container) {
+        $panel.style.height = '484px'
+        $container.style.height = '66px'
+      }
+    },
   },
   created () {
     createAppConfigStream().subscribe(config => {
@@ -167,6 +183,8 @@ body {
 .saladict-DictPanel {
   position: static;
   overflow: hidden;
+  height: 484px;
+  transition: height 0.5s;
 }
 
 .qrcode-panel {
@@ -195,8 +213,11 @@ body {
 }
 
 .popup-container {
+  overflow:hidden;
+  height: 66px;
   background: #f9f9f9;
   box-shadow: inset 0 10px 6px -6px rgba(0,0,0,.13);
+  transition: height 0.5s;
 }
 
 .active-switch {
@@ -208,6 +229,7 @@ body {
   user-select: none;
 
   &:not(:last-child) {
+    height: 49px;
     border-bottom: 1px solid #d8d8d8;
   }
 }
@@ -277,6 +299,16 @@ $switch-button-height: 35px;
 
   &:checked + label:after {
     margin-left: $switch-button-width - $switch-button-height + 2px;
+  }
+
+  &:active + label,
+  &:focus + label {
+    outline: 5px auto rgb(59, 153, 252);
+    outline: 5px auto -webkit-focus-ring-color;
+  }
+
+  & + label:hover {
+    outline: none !important;
   }
 }
 
