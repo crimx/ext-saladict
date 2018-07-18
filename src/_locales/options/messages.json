@@ -390,9 +390,9 @@
     "zh_TW": "添加生字"
   },
   "panelmode_description": {
-    "en": "Inside dict panel. See 'Search Mode' above. <p class=\"hl\">Note that it won't affect the dict panel on this page.</p>",
-    "zh_CN": "查词面板内部的查词模式。参见上方“查词模式”。<p class=\"hl\">注意在本页面的查词面板上没有效果。</p>",
-    "zh_TW": "字典視窗內部的查字模式。參見上方「查字模式」。<p class=\"hl\">注意在本窗口的字典視窗介面中沒有效果。</p>"
+    "en": "Inside dict panel. See 'Search Mode' above.",
+    "zh_CN": "查词面板内部的查词模式。参见上方“查词模式”。",
+    "zh_TW": "字典視窗內部的查字模式。參見上方「查字模式」。"
   },
   "panelmode_title": {
     "en": "Panel Mode",

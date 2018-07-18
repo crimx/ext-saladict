@@ -27,6 +27,7 @@ type ChildrenProps =
   >
 
 export interface DictPanelProps extends ChildrenProps {
+  readonly isAnimation: boolean
   readonly dictionaries: DictionariesState['dictionaries']
   readonly allDictsConfig: DictConfigs
   readonly langCode: AppConfig['langCode']
@@ -36,6 +37,7 @@ export interface DictPanelProps extends ChildrenProps {
 export default class DictPanel extends React.Component<DictPanelProps> {
   render () {
     const {
+      isAnimation,
       isFav,
       isPinned,
       langCode,
@@ -63,7 +65,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
     } = dictionaries
 
     return (
-      <>
+      <div className={`panel-Root${isAnimation ? ' isAnimate' : ''}`}>
         {React.createElement(MenuBar, {
           isFav,
           isPinned,
@@ -98,7 +100,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
             })
           })}
         </div>
-      </>
+      </div>
     )
   }
 }

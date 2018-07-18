@@ -28,7 +28,10 @@ import { startWith } from 'rxjs/operators/startWith'
 import { pluck } from 'rxjs/operators/pluck'
 import { combineLatest } from 'rxjs/observable/combineLatest'
 
-const isDictPanel = window.name === 'saladict-dictpanel'
+const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
+const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
+const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
+const isNoSelectionPage = isSaladictOptionsPage || isSaladictPopupPage
 
 let config = appConfigFactory()
 createAppConfigStream().subscribe(newConfig => config = newConfig)
@@ -57,7 +60,9 @@ message.addListener(msg => {
             mouseX: clientX,
             mouseY: clientY,
             instant: true,
-            self: isDictPanel,
+            self: isSaladictInternalPage
+              ? isInPanelOnInternalPage(lastMousedownEvent)
+              : window.name === 'saladict-dictpanel',
             selectionInfo: selection.getSelectionInfo({ text }),
           })
         }
@@ -84,7 +89,7 @@ window.addEventListener('message', ({ data, source }: { data: PostMsgSelection, 
   sendMessage(msg)
 })
 
-if (!window.name.startsWith('saladict-')) {
+if (!window.name.startsWith('saladict-') && !isSaladictOptionsPage) {
   /**
    * Pressing ctrl/command key more than three times within 500ms
    * trigers TripleCtrl
@@ -169,8 +174,16 @@ isKeyPressed(isEscapeKey).subscribe(flag => {
 let lastText: string
 let lastContext: string
 validMouseup$$.subscribe(event => {
+  if (isNoSelectionPage && !isInPanelOnInternalPage(lastMousedownEvent)) {
+    return
+  }
+
+  const isDictPanel = isSaladictInternalPage
+    ? isInPanelOnInternalPage(lastMousedownEvent)
+    : window.name === 'saladict-dictpanel'
+
   if (config.noTypeField && isTypeField(lastMousedownEvent)) {
-    sendEmptyMessage()
+    sendEmptyMessage(isDictPanel)
     return
   }
 
@@ -209,7 +222,7 @@ validMouseup$$.subscribe(event => {
     })
   } else {
     lastContext = ''
-    sendEmptyMessage()
+    sendEmptyMessage(isDictPanel)
   }
   // always update text
   lastText = text
@@ -225,14 +238,15 @@ combineLatest(
     startWith(false),
   ),
 ).pipe(
-  map(([config, isPinned]) => {
-    const { instant } = config[isDictPanel ? 'panelMode' : isPinned ? 'pinMode' : 'mode']
+  map(([config, isPinned]): ['' | AppConfig['mode']['instant']['key'], number] => {
+    const { instant } = config[
+      (isNoSelectionPage || window.name === 'saladict-dictpanel')
+        ? 'panelMode'
+        : isPinned ? 'pinMode' : 'mode'
+    ]
     return [
       instant.enable ? instant.key : '',
       instant.delay
-    ] as [
-      '' | AppConfig['mode']['instant']['key'] | AppConfig['pinMode']['instant']['key'] | AppConfig['panelMode']['instant']['key'],
-      number
     ]
   }),
   distinctUntilChanged((oldVal, newVal) => oldVal[0] === newVal[0] && oldVal[1] === newVal[1]),
@@ -271,7 +285,7 @@ combineLatest(
       mouseX: event.clientX,
       mouseY: event.clientY,
       instant: true,
-      self: isDictPanel,
+      self: isSaladictInternalPage ? isInPanelOnInternalPage(event) : window.name === 'saladict-dictpanel',
       selectionInfo: selection.getSelectionInfo({ text, context }),
     })
   }
@@ -311,7 +325,7 @@ function sendMessage (
   }
 }
 
-function sendEmptyMessage () {
+function sendEmptyMessage (isDictPanel: boolean) {
   // empty message
   const msg: MsgSelection = {
     type: MsgType.Selection,
@@ -373,6 +387,23 @@ function isTypeField (event: MouseEvent | TouchEvent | null): boolean {
     }
   }
 
+  return false
+}
+
+/**
+ * Is inside dict panel on a Saladict internal page
+ */
+function isInPanelOnInternalPage (event: MouseEvent | TouchEvent | null): boolean {
+  if (event && event.target) {
+    const target = event.target
+    if (target['classList']) {
+      for (let el = target as Element | null; el; el = el.parentElement) {
+        if (el.classList.contains('saladict-DictPanel')) {
+          return true
+        }
+      }
+    }
+  }
   return false
 }
 

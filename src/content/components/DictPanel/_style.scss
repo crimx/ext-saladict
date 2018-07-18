@@ -1,3 +1,28 @@
+.panel-FrameBody {
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.panel-Root {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #fff;
+  font-size: 14px;
+  font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+}
+
 .panel-DictContainer {
   flex: 1;
   overflow-x: hidden;
