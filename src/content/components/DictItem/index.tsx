@@ -6,7 +6,7 @@ import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgOpenUrl } from '@/typings/message'
 
 import { SearchStatus } from '@/content/redux/modules/dictionaries'
-import { SelectionInfo, getDefaultSelectionInfo, getSelectionText, getSelectionSentence } from '@/_helpers/selection'
+import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
 
 export interface DictItemDispatchers {
