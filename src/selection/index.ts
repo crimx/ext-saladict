@@ -123,7 +123,9 @@ merge(
  * 2. Event target is not a Saladict exposed element.
  */
 const validMouseup$$ = merge(
-  fromEvent<MouseEvent>(window, 'mouseup', { capture: true }),
+  fromEvent<MouseEvent>(window, 'mouseup', { capture: true }).pipe(
+    filter(e => e.button === 0)
+  ),
   fromEvent<TouchEvent>(window, 'touchend', { capture: true }).pipe(
     map(e => e.changedTouches[0])
   ),
