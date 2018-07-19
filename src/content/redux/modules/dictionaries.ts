@@ -13,6 +13,8 @@ const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
+const isNoSearchHistoryPage = isSaladictInternalPage && !isSaladictPopupPage
+
 let _searchDelayTimeout: any = null
 
 /*-----------------------------------------------*\
@@ -338,7 +340,7 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
       }
     })
 
-    if (!isSaladictInternalPage &&
+    if (!isNoSearchHistoryPage &&
         state.config.searhHistory &&
         (!browser.extension.inIncognitoContext || state.config.searhHistoryInco) &&
         !isSameSelection(state.config.searhHistory[0], info)
@@ -378,6 +380,8 @@ function listenTrpleCtrl (
 ) {
   message.self.addListener(MsgType.TripleCtrl, () => {
     const state = getState()
+    if (state.widget.shouldPanelShow) { return }
+
     const { tripleCtrlPreload, tripleCtrlAuto } = state.config
 
     const fetchInfo = tripleCtrlPreload === 'selection'

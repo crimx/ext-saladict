@@ -33,6 +33,7 @@ export const initState: SelectionState = {
     selectionInfo: getDefaultSelectionInfo(),
     mouseX: 0,
     mouseY: 0,
+    self: false,
     dbClick: false,
     ctrlKey: false,
     force: false,
@@ -67,17 +68,6 @@ interface Action<T extends ActionType> {
 /** When new selection is made */
 export function newSelection (selection: MsgSelection): Action<ActionType.NEW_SELECTION> {
   return { type: ActionType.NEW_SELECTION, payload: selection }
-}
-
-export function sendEmptySelection (): Action<ActionType.NEW_SELECTION> {
-  return { type: ActionType.NEW_SELECTION, payload: {
-    type: MsgType.Selection,
-    selectionInfo: getDefaultSelectionInfo(),
-    mouseX: 0,
-    mouseY: 0,
-    dbClick: false,
-    ctrlKey: false,
-  }}
 }
 
 /*-----------------------------------------------*\

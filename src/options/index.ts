@@ -6,6 +6,7 @@ import { message, storage } from '@/_helpers/browser-api'
 import checkUpdate from '@/_helpers/check-update'
 import { getDefaultSelectionInfo } from '@/_helpers/selection'
 import { appConfigFactory, AppConfigMutable } from '@/app-config'
+import { injectSaladictInternal } from '@/_helpers/injectSaladictInternal'
 
 import i18nLoader from '@/_helpers/i18n'
 import commonLocles from '@/_locales/common'
@@ -18,7 +19,7 @@ window.__SALADICT_INTERNAL_PAGE__ = true
 window.__SALADICT_OPTIONS_PAGE__ = true
 window.__SALADICT_LAST_SEARCH__ = ''
 
-injectPanel()
+injectSaladictInternal()
 
 Vue.use(VueStash)
 Vue.use(VueI18Next)
@@ -53,6 +54,7 @@ storage.sync.get('config')
                   selectionInfo: getDefaultSelectionInfo({
                     text: window.__SALADICT_LAST_SEARCH__ || 'salad'
                   }),
+                  self: true,
                   mouseX: window.innerWidth - this.$store.config.panelWidth - 110,
                   mouseY: window.innerHeight * (1 - this.$store.config.panelMaxHeightRatio) / 2 + 50,
                   dbClick: false,
@@ -78,16 +80,3 @@ storage.sync.get('config')
       },
     })
   })
-
-function injectPanel () {
-  const $script = document.createElement('script')
-  $script.src = './content.js'
-  $script.type = 'text/javascript'
-
-  const $style = document.createElement('link')
-  $style.href = './content.css'
-  $style.rel = 'stylesheet'
-
-  document.body.appendChild($script)
-  document.body.appendChild($style)
-}

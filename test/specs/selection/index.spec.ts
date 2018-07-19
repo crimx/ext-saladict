@@ -38,6 +38,8 @@ describe('Message Selection', () => {
     const randomText = 'test' + Date.now()
     selection.getSelectionText.mockReturnValue(randomText)
     selection.getSelectionSentence.mockReturnValue(`This is a ${randomText}.`)
+    selection.getSelectionInfo.mockReturnValue('mocked selection info')
+    selection.getDefaultSelectionInfo.mockReturnValue('mocked default selection info')
     dispatchAppConfigEvent(mockAppConfigFactory())
   })
 
@@ -61,7 +63,7 @@ describe('Message Selection', () => {
     expect(message.self.send).toBeCalledWith(
       expect.objectContaining({
         type: MsgType.Selection,
-        selectionInfo: expect.objectContaining({ text: '' }),
+        selectionInfo: 'mocked default selection info',
       })
     )
   })
@@ -89,7 +91,7 @@ describe('Message Selection', () => {
     expect(message.self.send).toBeCalledWith(
       expect.objectContaining({
         type: MsgType.Selection,
-        selectionInfo: expect.objectContaining({ text: '' }),
+        selectionInfo: 'mocked default selection info',
       })
     )
   })
@@ -119,7 +121,7 @@ describe('Message Selection', () => {
     expect(message.self.send).toBeCalledWith(
       expect.objectContaining({
         type: MsgType.Selection,
-        selectionInfo: expect.objectContaining({ text: '' }),
+        selectionInfo: 'mocked default selection info',
       })
     )
   })
@@ -145,6 +147,7 @@ describe('Message Selection', () => {
       mouseY: 10,
       dbClick: false,
       ctrlKey: false,
+      self: false,
       selectionInfo: expect.objectContaining({
         text: expect.stringMatching(/^test\d+/),
         context: expect.stringMatching(/^This is a test\d+/)
@@ -178,7 +181,7 @@ describe('Message Selection', () => {
     expect(message.self.send).toBeCalledWith(
       expect.objectContaining({
         type: MsgType.Selection,
-        selectionInfo: expect.objectContaining({ text: '' }),
+        selectionInfo: 'mocked default selection info',
       })
     )
   })
@@ -186,25 +189,6 @@ describe('Message Selection', () => {
   // FIX ME: Can't mock window.parent
   // it('should send message to upper frame if in iframe')
   // it('should pass message from lower frame to upper frame')
-
-  it('should do nothing if clicking the dict panel frame', async () => {
-    window.name = 'saladict-frame'
-
-    window.dispatchEvent(new MouseEvent('mousedown', {
-      button: 0,
-      clientX: 20,
-      clientY: 20,
-    }))
-
-    window.dispatchEvent(new MouseEvent('mouseup', {
-      button: 0,
-      clientX: 10,
-      clientY: 10,
-    }))
-
-    await timer(selectionDelay)
-    expect(message.self.send).toHaveBeenCalledTimes(0)
-  })
 
   it('should fire events even if conifg.active is off', async () => {
     const config = mockAppConfigFactory()

@@ -389,6 +389,16 @@
     "zh_CN": "添加生词",
     "zh_TW": "添加生字"
   },
+  "panelmode_description": {
+    "en": "Inside dict panel. See 'Search Mode' above.",
+    "zh_CN": "查词面板内部的查词模式。参见上方“查词模式”。",
+    "zh_TW": "字典視窗內部的查字模式。參見上方「查字模式」。"
+  },
+  "panelmode_title": {
+    "en": "Panel Mode",
+    "zh_CN": "面板查词",
+    "zh_TW": "內部滑選"
+  },
   "pdf_sniff": {
     "en": "Enable PDF Viewer",
     "zh_CN": "默认用本扩展浏览 PDF",

@@ -69,6 +69,7 @@ const _optNames = [
   'OptDictPanel',
   'OptMode',
   'OptPinMode',
+  'OptPanelMode',
   'OptPopup',
   'OptTripleCtrl',
   'OptAutopron',
@@ -450,6 +451,13 @@ kbd {
   padding-left: 15px;
   line-height: 1.8;
   color: #666;
+
+  .hl {
+    padding: 0 5px;
+    color: white;
+    border-radius: 5px;
+    background: red;
+  }
 }
 
 .frame-container {

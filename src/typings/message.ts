@@ -72,6 +72,8 @@ export interface MsgSelection {
   readonly selectionInfo: SelectionInfo
   readonly mouseX: number
   readonly mouseY: number
+  /** inside panel? */
+  readonly self: boolean
   readonly dbClick?: boolean
   readonly ctrlKey?: boolean
   /** skip salad bowl and show panel directly */

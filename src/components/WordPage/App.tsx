@@ -25,7 +25,7 @@ import { debounceTime } from 'rxjs/operators/debounceTime'
 
 const { Header, Content } = Layout
 
-const ITEMS_PER_PAGE = 20
+const ITEMS_PER_PAGE = 100
 
 export interface WordPageMainProps {
   area: Area

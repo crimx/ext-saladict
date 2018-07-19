@@ -1,7 +1,7 @@
 /**
  * Like Promise.all but always resolves.
  */
-export function reflect (iterable: ArrayLike<any>): Promise<any[]> {
+export function reflect<T> (iterable: ArrayLike<T | PromiseLike<T>>): Promise<T[]> {
   const arr = Array.isArray(iterable) ? iterable : Array.from(iterable)
   return Promise.all(arr.map(p => Promise.resolve(p).catch(() => null)))
 }
@@ -9,7 +9,7 @@ export function reflect (iterable: ArrayLike<any>): Promise<any[]> {
 /**
  * Like Promise.all but only rejects when all are failed.
  */
-export function any (iterable: ArrayLike<any>): Promise<any[]> {
+export function any<T> (iterable: ArrayLike<T | PromiseLike<T>>): Promise<T[]> {
   const arr = Array.isArray(iterable) ? iterable : Array.from(iterable)
 
   let rejectCount = 0
@@ -34,15 +34,15 @@ export function any (iterable: ArrayLike<any>): Promise<any[]> {
  * Returns the first resolved value as soon as it is resolved.
  * Fails when all are failed.
  */
-export function first (iterable: ArrayLike<any>): Promise<any> {
+export function first<T extends any> (iterable: ArrayLike<T | PromiseLike<T>>): Promise<T> {
   const arr = Array.isArray(iterable) ? iterable : Array.from(iterable)
 
   let rejectCount = 0
   return new Promise((resolve, reject) =>
-    arr.map((p, i) => {
+    arr.forEach(p => {
       Promise.resolve(p)
         .then(resolve)
-        .catch(e => {
+        .catch(() => {
           if (++rejectCount === arr.length) {
             reject(new Error('All rejected'))
           }

@@ -6,7 +6,7 @@ import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgOpenUrl } from '@/typings/message'
 
 import { SearchStatus } from '@/content/redux/modules/dictionaries'
-import { SelectionInfo, getDefaultSelectionInfo, getSelectionText, getSelectionSentence } from '@/_helpers/selection'
+import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
 
 export interface DictItemDispatchers {
@@ -23,7 +23,6 @@ export interface DictItemProps extends DictItemDispatchers {
   readonly searchResult: any
 
   readonly fontSize: number
-  readonly panelDbSearch: '' | 'double' | 'ctrl'
   readonly panelWidth: number
 }
 
@@ -171,25 +170,6 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     }
   }
 
-  handleDictItemDbClick = (e: React.MouseEvent<HTMLElement>) => {
-    const { t, id, searchText, panelDbSearch } = this.props
-    if (!panelDbSearch || (panelDbSearch === 'ctrl' && !(e.ctrlKey || e.metaKey))) {
-      return
-    }
-    const win = e.currentTarget.ownerDocument.defaultView
-    const text = getSelectionText(win)
-    if (text) {
-      searchText({
-        info: getDefaultSelectionInfo({
-          text,
-          context: getSelectionSentence(win),
-          title: `${t('fromSaladict')}: ${t(`dict:${id}`)}`,
-          favicon: `https://raw.githubusercontent.com/crimx/ext-saladict/dev/src/components/dictionaries/${id}/favicon.png`
-        }),
-      })
-    }
-  }
-
   handleDictURLClick = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation()
     e.preventDefault()
@@ -252,7 +232,6 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
       id,
       dictURL,
       fontSize,
-      panelDbSearch,
       searchStatus,
       searchResult,
     } = this.props
@@ -267,7 +246,6 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     return (
       <section className='panel-DictItem'
         onClick={this.handleDictItemClick}
-        onDoubleClick={panelDbSearch ? this.handleDictItemDbClick : undefined}
       >
         <header className='panel-DictItem_Header' onClick={this.toggleFolding}>
           <img className='panel-DictItem_Logo' src={require('@/components/dictionaries/' + id + '/favicon.png')} alt='dict logo' />

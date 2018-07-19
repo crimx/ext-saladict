@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.6.0"></a>
+# [6.6.0](https://github.com/crimx/ext-saladict/compare/v6.5.1...v6.6.0) (2018-07-19)
+
+
+### Bug Fixes
+
+* **content:** fix new selection interface ([2bb8ada](https://github.com/crimx/ext-saladict/commit/2bb8ada))
+* **selection:** ignore right click [#166](https://github.com/crimx/ext-saladict/issues/166) ([ee5b794](https://github.com/crimx/ext-saladict/commit/ee5b794))
+* **selection:** ignore triple ctrl when panel is visible [#162](https://github.com/crimx/ext-saladict/issues/162) ([e0e3208](https://github.com/crimx/ext-saladict/commit/e0e3208))
+
+
+### Features
+
+* **selection:** add selection inside dict panel [#165](https://github.com/crimx/ext-saladict/issues/165) ([f8da4be](https://github.com/crimx/ext-saladict/commit/f8da4be))
+* **selection:** support selection on internal pages ([226be86](https://github.com/crimx/ext-saladict/commit/226be86))
+
+
+### Performance Improvements
+
+* **dicts:** improve google translate stability ([edd5fa9](https://github.com/crimx/ext-saladict/commit/edd5fa9))
+
+
+
 <a name="6.5.1"></a>
 # [6.5.1](https://github.com/crimx/ext-saladict/compare/v6.1.0...v6.5.1) (2018-07-10)
 

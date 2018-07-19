@@ -124,16 +124,22 @@ export function isSameSelection (a: SelectionInfo, b: SelectionInfo) {
   return a && b && a.text === b.text && a.context === b.context
 }
 
-export function getSelectionInfo (): SelectionInfo {
+export function getSelectionInfo (config: Partial<SelectionInfo> = {}): SelectionInfo {
   return {
-    text: getSelectionText(),
-    context: getSelectionSentence(),
-    title: window.pageTitle || document.title,
-    url: window.pageURL || document.URL,
+    text: config.text != null ? config.text : getSelectionText(),
+    context: config.context != null ? config.context : getSelectionSentence(),
+    title: config.title != null
+      ? config.title
+      : window.pageTitle || document.title || '',
+    url: config.url != null
+      ? config.url
+      : window.pageURL || document.URL || '',
     // set by chrome-api helper
-    favicon: window.faviconURL || '',
-    trans: '',
-    note: '',
+    favicon: config.favicon != null
+      ? config.favicon
+      : window.faviconURL || '',
+    trans: config.trans || '',
+    note: config.note || '',
   }
 }
 

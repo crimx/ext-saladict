@@ -3,6 +3,7 @@ export interface SelectionMock {
   getSelectionText: jest.Mock
   getSelectionSentence: jest.Mock
   getSelectionInfo: jest.Mock
+  getDefaultSelectionInfo: jest.Mock
 }
 
 module.exports = jest.genMockFromModule<SelectionMock>('../selection')
