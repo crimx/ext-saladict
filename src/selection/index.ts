@@ -1,6 +1,6 @@
 import { appConfigFactory, AppConfig } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
-import { isContainChinese, isContainEnglish, isAllPunctuation } from '@/_helpers/lang-check'
+import { isContainChinese, isContainEnglish, isContainMinor } from '@/_helpers/lang-check'
 import { createAppConfigStream } from '@/_helpers/config-manager'
 import * as selection from '@/_helpers/selection'
 import { MsgType, PostMsgType, PostMsgSelection, MsgSelection, MsgIsPinned } from '@/typings/message'
@@ -191,7 +191,7 @@ validMouseup$$.subscribe(event => {
     text && (
       (english && isContainEnglish(text) && !isContainChinese(text)) ||
       (chinese && isContainChinese(text)) ||
-      (minor && !isAllPunctuation(text))
+      (minor && isContainMinor(text))
     )
   ) {
     const context = selection.getSelectionSentence()
@@ -210,15 +210,7 @@ validMouseup$$.subscribe(event => {
       dbClick: clickPeriodCount >= 2,
       ctrlKey: Boolean(event['metaKey'] || event['ctrlKey']),
       self: isDictPanel,
-      selectionInfo: {
-        text: selection.getSelectionText(),
-        context,
-        title: window.pageTitle || document.title,
-        url: window.pageURL || document.URL,
-        favicon: window.faviconURL || '',
-        trans: '',
-        note: ''
-      },
+      selectionInfo: selection.getSelectionInfo({ context })
     })
   } else {
     lastContext = ''

@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual'
 import { saveWord } from '@/_helpers/record-manager'
 import { getDefaultSelectionInfo, SelectionInfo, isSameSelection } from '@/_helpers/selection'
 import { createAppConfigStream } from '@/_helpers/config-manager'
-import { isContainChinese, isContainEnglish, testerPunct } from '@/_helpers/lang-check'
+import { isContainChinese, isContainEnglish, testerPunct, isContainMinor } from '@/_helpers/lang-check'
 import { MsgType, MsgFetchDictResult } from '@/typings/message'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
 import { isInNotebook } from './widget'
@@ -320,9 +320,9 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
     selectedDicts.forEach(id => {
       const { chs, eng, minor } = allDicts[id].selectionLang
       let isValidSelection = (
-        minor ||
         chs && isContainChinese(info.text) ||
-        eng && isContainEnglish(info.text)
+        eng && isContainEnglish(info.text) ||
+        minor && isContainMinor(info.text)
       )
 
       if (isValidSelection) {
