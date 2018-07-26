@@ -68,6 +68,9 @@
                     <label class="checkbox-inline">
                       <input type="checkbox" v-model="allDicts[id].selectionLang.eng"> {{ $t('opt:dict_show_when_eng') }}
                     </label>
+                    <label class="checkbox-inline">
+                      <input type="checkbox" v-model="allDicts[id].selectionLang.minor"> {{ $t('opt:dict_show_when_minor') }}
+                    </label>
                   </div><!--词典语言选项-->
 
                   <!-- 开始查词的最小字数-->

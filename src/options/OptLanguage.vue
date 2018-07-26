@@ -19,6 +19,9 @@
         <label class="checkbox-inline">
           <input type="checkbox" v-model="english"> {{ $t('opt:language_english') }}
         </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" v-model="minor"> {{ $t('opt:language_minor') }}
+        </label>
       </div>
     </div>
     <div class="opt-item__description-wrap">
@@ -32,6 +35,7 @@ export default {
   store: {
     chinese: 'config.language.chinese',
     english: 'config.language.english',
+    minor: 'config.language.minor',
     langCode: 'config.langCode',
     searchText: 'searchText'
   },
