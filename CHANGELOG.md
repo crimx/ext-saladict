@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.8.1"></a>
+## [6.8.1](https://github.com/crimx/ext-saladict/compare/v6.8.0...v6.8.1) (2018-07-26)
+
+
+### Bug Fixes
+
+* **helpers:** remove chs chars from korean [#173](https://github.com/crimx/ext-saladict/issues/173) ([38f1dce](https://github.com/crimx/ext-saladict/commit/38f1dce))
+
+
+
 <a name="6.8.0"></a>
 # [6.8.0](https://github.com/crimx/ext-saladict/compare/v6.7.0...v6.8.0) (2018-07-26)
 
