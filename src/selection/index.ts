@@ -1,6 +1,6 @@
 import { appConfigFactory, AppConfig } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
-import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
+import { isContainChinese, isContainEnglish, isAllPunctuation } from '@/_helpers/lang-check'
 import { createAppConfigStream } from '@/_helpers/config-manager'
 import * as selection from '@/_helpers/selection'
 import { MsgType, PostMsgType, PostMsgSelection, MsgSelection, MsgIsPinned } from '@/typings/message'
@@ -186,10 +186,12 @@ validMouseup$$.subscribe(event => {
   }
 
   const text = selection.getSelectionText()
+  const { english, chinese, minor } = config.language
   if (
     text && (
-      (config.language.english && isContainEnglish(text) && !isContainChinese(text)) ||
-      (config.language.chinese && isContainChinese(text))
+      (english && isContainEnglish(text) && !isContainChinese(text)) ||
+      (chinese && isContainChinese(text)) ||
+      (minor && !isAllPunctuation(text))
     )
   ) {
     const context = selection.getSelectionSentence()

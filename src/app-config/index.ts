@@ -148,6 +148,7 @@ export interface AppConfigMutable {
   language: {
     chinese: boolean
     english: boolean
+    minor: boolean
   }
 
   /** auto pronunciation */
@@ -262,7 +263,8 @@ export function appConfigFactory (): AppConfig {
 
     language: {
       chinese: true,
-      english: true
+      english: true,
+      minor: true,
     },
 
     autopron: {

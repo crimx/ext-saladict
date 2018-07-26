@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual'
 import { saveWord } from '@/_helpers/record-manager'
 import { getDefaultSelectionInfo, SelectionInfo, isSameSelection } from '@/_helpers/selection'
 import { createAppConfigStream } from '@/_helpers/config-manager'
-import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
+import { isContainChinese, isContainEnglish, testerPunct } from '@/_helpers/lang-check'
 import { MsgType, MsgFetchDictResult } from '@/typings/message'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
 import { isInNotebook } from './widget'
@@ -318,16 +318,18 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
     const toActive: DictID[] = []
 
     selectedDicts.forEach(id => {
-      const isValidLang = !(
-        (!allDicts[id].selectionLang.chs && isContainChinese(info.text)) ||
-        (!allDicts[id].selectionLang.eng && isContainEnglish(info.text))
+      const { chs, eng, minor } = allDicts[id].selectionLang
+      let isValidSelection = (
+        minor ||
+        chs && isContainChinese(info.text) ||
+        eng && isContainEnglish(info.text)
       )
 
-      const wordCount = _countWords(info.text)
-      const { min, max } = allDicts[id].selectionWC
-      const isValidWordCount = wordCount >= min && wordCount <= max
-
-      const isValidSelection = isValidLang && isValidWordCount
+      if (isValidSelection) {
+        const wordCount = info.text.replace(new RegExp(testerPunct, 'g'), '').length
+        const { min, max } = allDicts[id].selectionWC
+        isValidSelection = wordCount >= min && wordCount <= max
+      }
 
       if (isValidSelection) {
         toActive.push(id)
@@ -439,14 +441,4 @@ function popupPageInit (
       }
     })
   }
-}
-
-/** Count words in both Chinese and English. */
-function _countWords (text: string): number {
-  return (
-    text
-      .replace(/\w+/g, '词')
-      .match(/[\u4e00-\u9fa5]/g)
-    || []
-  ).length
 }
