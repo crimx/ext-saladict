@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.8.2"></a>
+## [6.8.2](https://github.com/crimx/ext-saladict/compare/v6.8.1...v6.8.2) (2018-07-26)
+
+
+### Bug Fixes
+
+* **panel:** triple ctrl auto search ([00a1381](https://github.com/crimx/ext-saladict/commit/00a1381)), closes [#174](https://github.com/crimx/ext-saladict/issues/174)
+
+
+
 <a name="6.8.1"></a>
 ## [6.8.1](https://github.com/crimx/ext-saladict/compare/v6.8.0...v6.8.1) (2018-07-26)
 
