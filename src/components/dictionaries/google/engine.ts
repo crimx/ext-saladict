@@ -1,7 +1,7 @@
 import { handleNoResult } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
-import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
+import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 import { first } from '@/_helpers/promise-more'
 
 export interface GoogleResult {
@@ -21,7 +21,7 @@ interface GoogleRawResult {
   tl?: string
   tk1?: number
   tk2?: number
-  searchText: GoogleResult['searchText']
+  text: string
 }
 
 type GoogleSearchResult = DictSearchResult<GoogleResult>
@@ -31,16 +31,10 @@ export default function search (
   config: AppConfig,
 ): Promise<GoogleSearchResult> {
 
-  const chCode = config.langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN'
-  let sl = 'auto'
-  let tl = chCode
-  if (isContainChinese(text)) {
-    sl = chCode
-    tl = 'en'
-  } else if (isContainEnglish(text)) {
-    sl = 'en'
-    tl = chCode
-  }
+  const sl = 'auto'
+  const tl = !isContainChinese(text) || isContainJapanese(text) || isContainKorean(text)
+    ? config.langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN'
+    : 'en'
 
   return first([
     fetchWithToken('https://translate.google.com', sl, tl, text),
@@ -65,13 +59,7 @@ function fetchWithToken (base: string, sl: string, tl: string, text: string): Pr
           const encodedText = encodeURIComponent(text)
           return fetch(`${base}/translate_a/single?client=t&sl=${sl}&tl=${tl}&q=${encodedText}&tk=${tk}&hl=en&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&ie=UTF-8&oe=UTF-8&otf=1&ssel=0&tsel=0&kc=5`)
             .then(r => r.text())
-            .then(json => ({
-              json, base, tl, tk1, tk2,
-              searchText: {
-                text,
-                audio: `${base}/translate_tts?ie=UTF-8&q=${encodedText}&tl=${sl}&total=1&idx=0&tk=${tk}&client=t`
-              }
-            }))
+            .then(json => ({ json, base, tl, tk1, tk2, text }))
         }
       }
       return handleNoResult()
@@ -81,16 +69,11 @@ function fetchWithToken (base: string, sl: string, tl: string, text: string): Pr
 function fetchWithoutToken (sl: string, tl: string, text: string): Promise<GoogleRawResult> {
   return fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${encodeURIComponent(text)}`)
     .then(r => r.text())
-    .then(json => ({
-      json,
-      searchText: {
-        text
-      }
-    }))
+    .then(json => ({ json, text }))
 }
 
 function handleText (
-  { json, base, tl, tk1, tk2, searchText }: GoogleRawResult
+  { json, base, tl, tk1, tk2, text }: GoogleRawResult
 ): GoogleSearchResult | Promise<GoogleSearchResult> {
   const data = JSON.parse(json.replace(/,+/g, ','))
 
@@ -98,14 +81,25 @@ function handleText (
     return handleNoResult()
   }
 
-  const text: string = data[0].map(item => item[0]).join(' ')
+  const transText: string = data[0].map(item => item[0]).join(' ')
 
-  if (text.length > 0) {
-    const audio = tk1 || tk2
-      ? `${base}/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${tl}&total=1&idx=0&tk=${getTK(text, tk1, tk2)}&client=t`
-      : ''
-
-    return { result: { trans: { text, audio }, searchText } }
+  if (transText.length > 0) {
+    return {
+      result: {
+        trans: {
+          text: transText,
+          audio: tk1 || tk2
+            ? `${base}/translate_tts?ie=UTF-8&q=${encodeURIComponent(transText)}&tl=${tl}&total=1&idx=0&tk=${getTK(transText, tk1, tk2)}&client=t`
+            : ''
+        },
+        searchText: {
+          text,
+          audio: tk1 || tk2
+            ? `${base}/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${data[2]}&total=1&idx=0&tk=${getTK(text, tk1, tk2)}&client=t`
+            : ''
+        }
+      }
+    }
   }
 
   return handleNoResult()
