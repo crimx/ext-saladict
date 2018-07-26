@@ -4,7 +4,7 @@ import isEqual from 'lodash/isEqual'
 import { saveWord } from '@/_helpers/record-manager'
 import { getDefaultSelectionInfo, SelectionInfo, isSameSelection } from '@/_helpers/selection'
 import { createAppConfigStream } from '@/_helpers/config-manager'
-import { isContainChinese, isContainEnglish, testerPunct, isContainMinor } from '@/_helpers/lang-check'
+import { isContainChinese, isContainEnglish, testerPunct, isContainMinor, testerChinese, testJapanese, testKorean } from '@/_helpers/lang-check'
 import { MsgType, MsgFetchDictResult } from '@/typings/message'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
 import { isInNotebook } from './widget'
@@ -326,7 +326,11 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
       )
 
       if (isValidSelection) {
-        const wordCount = info.text.replace(new RegExp(testerPunct, 'g'), '').length
+        const wordCount = (info.text
+          .replace(new RegExp(testerPunct, 'g'), ' ')
+          .replace(new RegExp(`${testerChinese.source}|${testJapanese.source}|${testKorean.source}`, 'g'), ' x ')
+          .match(/\S+/g) || '')
+          .length
         const { min, max } = allDicts[id].selectionWC
         isValidSelection = wordCount >= min && wordCount <= max
       }

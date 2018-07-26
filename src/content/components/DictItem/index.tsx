@@ -140,6 +140,8 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
   }
 
   handleDictItemClick = (e: React.MouseEvent<HTMLElement>) => {
+    if (e.ctrlKey || e.metaKey || e.altKey) { return }
+
     // use background script to open new page
     const $target = e.target as HTMLElement
     if (!$target.tagName || !$target.parentElement) { return }

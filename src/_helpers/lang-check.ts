@@ -8,9 +8,9 @@ export const testJapanese = /[\u3041-\u3096]|[\u30A0-\u30FF]/
 export const testKorean = /[\u3131-\uD79D]/
 
 /** Languages excpet Chinese and English */
-export const testerMinor = /[^\u4e00-\u9fa5a-zA-Z0-9\s\/\[\]\{\}\$\^\*\+\|\?\.\-~!@#%&()_='";:><,。？！，、；：“ ”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
+export const testerMinor = /[^\u4e00-\u9fa5a-zA-Z0-9\s\/\[\]\{\}\$\^\*\+\|\?\.\-~!@#%&()_='";:><,。？！，、；：“”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
 
-export const testerPunct = /[\s\/\[\]\{\}\$\^\*\+\|\?\.\-~!@#%&()_='";:><,。？！，、；：“ ”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
+export const testerPunct = /[\/\[\]\{\}\$\^\*\+\|\?\.\-~!@#%&()_='";:><,。？！，、；：“”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
 
 export function isContainChinese (text: string): boolean {
   return testerChinese.test(text)

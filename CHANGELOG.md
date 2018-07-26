@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.8.0"></a>
+# [6.8.0](https://github.com/crimx/ext-saladict/compare/v6.7.0...v6.8.0) (2018-07-26)
+
+
+### Bug Fixes
+
+* **selection:** correct word count ([6a28e3d](https://github.com/crimx/ext-saladict/commit/6a28e3d)), closes [#172](https://github.com/crimx/ext-saladict/issues/172)
+
+
+### Features
+
+* **panel:** open links in new tabs ([d40cf2a](https://github.com/crimx/ext-saladict/commit/d40cf2a))
+
+
+
 <a name="6.7.0"></a>
 # [6.7.0](https://github.com/crimx/ext-saladict/compare/v6.6.0...v6.7.0) (2018-07-26)
 

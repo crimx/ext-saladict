@@ -11,17 +11,17 @@
       <path d="M474.5 449.5v75h25v-75h-25zM562 587v25h50v-25h-50z"/>
     </svg>
     <span class="switch-title">{{ $t('app_active_title') }}</span>
-    <input type="checkbox" id="opt-active" class="btn-switch" :checked="config.active" @click.prevent="changeActive" @focus="activeContainer" @blur="hideContainer">
+    <input type="checkbox" id="opt-active" class="btn-switch" :checked="config.active" @click.prevent="changeActive" @focus="activeContainer">
     <label for="opt-active"></label>
   </div>
   <div class="active-switch">
     <span class="switch-title">{{ $t('app_temp_active_title') }}</span>
-    <input type="checkbox" id="opt-temp-active" class="btn-switch" v-model="tempOff" @click.prevent="changeTempOff" @focus="activeContainer" @blur="hideContainer">
+    <input type="checkbox" id="opt-temp-active" class="btn-switch" v-model="tempOff" @click.prevent="changeTempOff" @focus="activeContainer">
     <label for="opt-temp-active"></label>
   </div>
   <div class="active-switch">
     <span class="switch-title">{{ $t('instant_capture_title') + (insCapMode === 'pinMode' ? $t('instant_capture_pinned') : '') }}</span>
-    <input type="checkbox" id="opt-instant-capture" class="btn-switch" v-model="config[insCapMode].instant.enable" @click.prevent="changeInsCap" @focus="activeContainer" @blur="hideContainer">
+    <input type="checkbox" id="opt-instant-capture" class="btn-switch" v-model="config[insCapMode].instant.enable" @click.prevent="changeInsCap" @focus="activeContainer">
     <label for="opt-instant-capture"></label>
   </div>
   <transition name="fade">
