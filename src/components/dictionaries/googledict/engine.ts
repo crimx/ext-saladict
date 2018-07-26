@@ -15,7 +15,7 @@ export default function search (
   config: AppConfig
 ): Promise<GoogleDictSearchResult> {
   const isen = config.dicts.all.googledict.options.enresult ? 'hl=en&gl=en&' : ''
-  return fetch(`https://www.google.com/search?${isen}q=define+` + text.replace(/\s+/g, '+'))
+  return fetch(`https://www.google.com/search?${isen}q=define+` + encodeURIComponent(text.replace(/\s+/g, '+')))
     .then(r => r.text())
     .then(handleDOM)
 }

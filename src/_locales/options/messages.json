@@ -194,6 +194,11 @@
     "zh_CN": "查英文时显示",
     "zh_TW": "查英文時顯示"
   },
+  "dict_show_when_minor": {
+    "en": "Other Languages",
+    "zh_CN": "查其它语种时显示",
+    "zh_TW": "查其它語種時顯示"
+  },
   "dicts_add_panel_title": {
     "en": "Add dicts",
     "zh_CN": "添加词典",
@@ -253,6 +258,11 @@
     "en": "Search English",
     "zh_CN": "英文查词",
     "zh_TW": "英文查字"
+  },
+  "language_minor": {
+    "en": "Other Languages",
+    "zh_CN": "其它语种",
+    "zh_TW": "其它語種"
   },
   "language_mode_description": {
     "en": "Saladict will be triggered when the selection contains words in the chosen languages.",

@@ -70,6 +70,7 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
 
   mergeBoolean('language.chinese')
   mergeBoolean('language.english')
+  mergeBoolean('language.minor')
 
   merge('autopron.cn.dict', id => base.dicts.all[id])
   merge('autopron.en.dict', id => base.dicts.all[id])
@@ -89,6 +90,7 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
     mergeNumber(`dicts.all.${id}.selectionWC.max`)
     mergeBoolean(`dicts.all.${id}.selectionLang.eng`)
     mergeBoolean(`dicts.all.${id}.selectionLang.chs`)
+    mergeBoolean(`dicts.all.${id}.selectionLang.minor`)
     if (dict['options']) {
       forEach(dict['options'], (value, opt) => {
         if (isNumber(value)) {

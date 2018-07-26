@@ -23,7 +23,7 @@ export default function search (
   text: string,
   config: AppConfig,
 ): Promise<ZdicSearchResult> {
-  return fetchDirtyDOM('http://www.zdic.net/search/?c=3&q=' + text)
+  return fetchDirtyDOM('http://www.zdic.net/search/?c=3&q=' + encodeURIComponent(text))
     .then(deobfuscate)
     .then(handleDOM)
 }

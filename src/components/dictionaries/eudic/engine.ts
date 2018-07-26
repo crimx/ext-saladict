@@ -18,7 +18,7 @@ export default function search (
   text: string,
   config: AppConfig,
 ): Promise<EudicSearchResult> {
-  text = text.split(/\s+/).slice(0, 2).join(' ')
+  text = encodeURIComponent(text.split(/\s+/).slice(0, 2).join(' '))
   const options = config.dicts.all.eudic.options
 
   return fetchDirtyDOM('https://dict.eudic.net/dicts/en/' + text)

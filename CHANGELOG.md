@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.7.0"></a>
+# [6.7.0](https://github.com/crimx/ext-saladict/compare/v6.6.0...v6.7.0) (2018-07-26)
+
+
+### Bug Fixes
+
+* **dicts:** encode url ([0c0cd20](https://github.com/crimx/ext-saladict/commit/0c0cd20)), closes [#170](https://github.com/crimx/ext-saladict/issues/170)
+* **options:** auto-search on options page ([39ed461](https://github.com/crimx/ext-saladict/commit/39ed461))
+* **panel:** reset internal style ([3119084](https://github.com/crimx/ext-saladict/commit/3119084))
+* **selection:** better ctrl detection ([9f0c6b6](https://github.com/crimx/ext-saladict/commit/9f0c6b6)), closes [#168](https://github.com/crimx/ext-saladict/issues/168)
+* **selection:** better language detection ([c1f24e2](https://github.com/crimx/ext-saladict/commit/c1f24e2))
+
+
+### Features
+
+* **dicts:** add google tts ([5af7145](https://github.com/crimx/ext-saladict/commit/5af7145))
+* **options:** add minor language options ([f269d0f](https://github.com/crimx/ext-saladict/commit/f269d0f))
+* **selection:** minor lang selection ([8948f3c](https://github.com/crimx/ext-saladict/commit/8948f3c))
+
+
+
 <a name="6.6.0"></a>
 # [6.6.0](https://github.com/crimx/ext-saladict/compare/v6.5.1...v6.6.0) (2018-07-19)
 

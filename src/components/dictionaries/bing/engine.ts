@@ -68,7 +68,7 @@ export default function search (
 ): Promise<DictSearchResult<BingResult>> {
   const bingConfig = config.dicts.all.bing
 
-  return fetchDirtyDOM(DICT_LINK + text)
+  return fetchDirtyDOM(DICT_LINK + encodeURIComponent(text))
     .then(doc => {
       if (doc.querySelector('.client_def_hd_hd')) {
         return handleLexResult(doc, bingConfig.options)

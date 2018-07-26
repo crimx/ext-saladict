@@ -1,6 +1,6 @@
 import { appConfigFactory, AppConfig } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
-import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
+import { isContainChinese, isContainEnglish, isContainMinor } from '@/_helpers/lang-check'
 import { createAppConfigStream } from '@/_helpers/config-manager'
 import * as selection from '@/_helpers/selection'
 import { MsgType, PostMsgType, PostMsgSelection, MsgSelection, MsgIsPinned } from '@/typings/message'
@@ -94,13 +94,13 @@ if (!window.name.startsWith('saladict-') && !isSaladictOptionsPage) {
    * Pressing ctrl/command key more than three times within 500ms
    * trigers TripleCtrl
    */
-  const validCtrlPressed$$ = isKeyPressed(isCtrlKey).pipe(
-    filter(Boolean),
-    share(),
-  )
+  const ctrlPressed$$ = share<true>()(isKeyPressed(isCtrlKey))
 
-  validCtrlPressed$$.pipe(
-    buffer(debounceTime(500)(validCtrlPressed$$)),
+  ctrlPressed$$.pipe(
+    buffer(merge(
+      debounceTime(500)(ctrlPressed$$), // collect after 0.5s
+      isKeyPressed(e => !isCtrlKey(e)), // other key pressed
+    )),
     filter(group => group.length >= 3),
   ).subscribe(() => {
     message.self.send({ type: MsgType.TripleCtrl })
@@ -167,11 +167,7 @@ merge(
 /**
  * Escape key pressed
  */
-isKeyPressed(isEscapeKey).subscribe(flag => {
-  if (flag) {
-    message.self.send({ type: MsgType.EscapeKey })
-  }
-})
+isKeyPressed(isEscapeKey).subscribe(() => message.self.send({ type: MsgType.EscapeKey }))
 
 let lastText: string
 let lastContext: string
@@ -190,10 +186,12 @@ validMouseup$$.subscribe(event => {
   }
 
   const text = selection.getSelectionText()
+  const { english, chinese, minor } = config.language
   if (
     text && (
-      (config.language.english && isContainEnglish(text) && !isContainChinese(text)) ||
-      (config.language.chinese && isContainChinese(text))
+      (english && isContainEnglish(text) && !isContainChinese(text)) ||
+      (chinese && isContainChinese(text)) ||
+      (minor && isContainMinor(text))
     )
   ) {
     const context = selection.getSelectionSentence()
@@ -212,15 +210,7 @@ validMouseup$$.subscribe(event => {
       dbClick: clickPeriodCount >= 2,
       ctrlKey: Boolean(event['metaKey'] || event['ctrlKey']),
       self: isDictPanel,
-      selectionInfo: {
-        text: selection.getSelectionText(),
-        context,
-        title: window.pageTitle || document.title,
-        url: window.pageURL || document.URL,
-        favicon: window.faviconURL || '',
-        trans: '',
-        note: ''
-      },
+      selectionInfo: selection.getSelectionInfo({ context })
     })
   } else {
     lastContext = ''
@@ -360,14 +350,15 @@ function isEscapeKey (evt: KeyboardEvent): boolean {
   return evt.key === 'Escape'
 }
 
-function isKeyPressed (keySelectior: (e: KeyboardEvent) => boolean): Observable<boolean> {
-  return distinctUntilChanged<boolean>()(
-    merge(
-      map(keySelectior)(fromEvent<KeyboardEvent>(window, 'keydown', { capture: true })),
-      mapTo(false)(fromEvent(window, 'keyup', { capture: true })),
-      mapTo(false)(fromEvent(window, 'blur', { capture: true })),
-      of(false)
-    )
+function isKeyPressed (keySelectior: (e: KeyboardEvent) => boolean): Observable<true> {
+  return merge(
+    map(keySelectior)(fromEvent<KeyboardEvent>(window, 'keydown', { capture: true })),
+    mapTo(false)(fromEvent(window, 'keyup', { capture: true })),
+    mapTo(false)(fromEvent(window, 'blur', { capture: true })),
+    of(false),
+  ).pipe(
+    distinctUntilChanged(), // ignore long press
+    filter((x): x is true => x),
   )
 }
 

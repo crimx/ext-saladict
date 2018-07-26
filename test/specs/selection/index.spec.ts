@@ -72,6 +72,7 @@ describe('Message Selection', () => {
     const config = mockAppConfigFactory()
     config.language.chinese = true
     config.language.english = false
+    config.language.minor = true
     dispatchAppConfigEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
@@ -102,6 +103,38 @@ describe('Message Selection', () => {
     const config = mockAppConfigFactory()
     config.language.chinese = false
     config.language.english = true
+    config.language.minor = true
+    dispatchAppConfigEvent(config)
+
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
+    }))
+
+    window.dispatchEvent(new MouseEvent('mouseup', {
+      button: 0,
+      clientX: 10,
+      clientY: 10,
+    }))
+
+    await timer(selectionDelay)
+    expect(message.self.send).toHaveBeenCalledTimes(1)
+    expect(message.self.send).toBeCalledWith(
+      expect.objectContaining({
+        type: MsgType.Selection,
+        selectionInfo: 'mocked default selection info',
+      })
+    )
+  })
+
+  it('should send empty message if the selection language does not match (Minor)', async () => {
+    selection.getSelectionText.mockReturnValue('れきじつ')
+    selection.getSelectionSentence.mockReturnValue('れきじつ')
+    const config = mockAppConfigFactory()
+    config.language.chinese = true
+    config.language.english = true
+    config.language.minor = false
     dispatchAppConfigEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
@@ -127,6 +160,12 @@ describe('Message Selection', () => {
   })
 
   it('should collect selection info and send back', async () => {
+    const selectionInfo = {
+      text: 'test' + Date.now(),
+      context: 'This is test' + Date.now(),
+    }
+    selection.getSelectionInfo.mockReturnValue(selectionInfo)
+
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
       clientX: 20,
@@ -148,10 +187,47 @@ describe('Message Selection', () => {
       dbClick: false,
       ctrlKey: false,
       self: false,
-      selectionInfo: expect.objectContaining({
-        text: expect.stringMatching(/^test\d+/),
-        context: expect.stringMatching(/^This is a test\d+/)
-      }),
+      selectionInfo,
+    })
+  })
+
+  it('should collect selection info and send back (Minor)', async () => {
+    const selectionInfo = {
+      text: 'れきじつ' + Date.now(),
+      context: 'れきじつ れきじつ' + Date.now(),
+    }
+    selection.getSelectionInfo.mockReturnValue(selectionInfo)
+    selection.getSelectionText.mockReturnValue(selectionInfo.text)
+    selection.getSelectionSentence.mockReturnValue(selectionInfo.context)
+
+    const config = mockAppConfigFactory()
+    config.language.chinese = false
+    config.language.english = false
+    config.language.minor = true
+    dispatchAppConfigEvent(config)
+
+    window.dispatchEvent(new MouseEvent('mousedown', {
+      button: 0,
+      clientX: 20,
+      clientY: 20,
+    }))
+
+    window.dispatchEvent(new MouseEvent('mouseup', {
+      button: 0,
+      clientX: 10,
+      clientY: 10,
+    }))
+
+    await timer(selectionDelay)
+    expect(message.self.send).toHaveBeenCalledTimes(1)
+    expect(message.self.send).toBeCalledWith({
+      type: MsgType.Selection,
+      mouseX: 10,
+      mouseY: 10,
+      dbClick: false,
+      ctrlKey: false,
+      self: false,
+      selectionInfo,
     })
   })
 
