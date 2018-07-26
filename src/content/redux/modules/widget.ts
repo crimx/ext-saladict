@@ -416,12 +416,6 @@ export function startUpAction (): DispatcherThunk {
     listenNewSelection(dispatch, getState)
     listenTempDisable(dispatch, getState)
 
-    if (!isSaladictOptionsPage && !isSaladictPopupPage) {
-      message.self.addListener(MsgType.TripleCtrl, () => {
-        dispatch(tripleCtrlPressed())
-      })
-    }
-
     createAppConfigStream().subscribe(config => {
       dispatch(newConfig(config))
     })

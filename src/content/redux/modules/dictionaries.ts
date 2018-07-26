@@ -7,7 +7,7 @@ import { createAppConfigStream } from '@/_helpers/config-manager'
 import { isContainChinese, isContainEnglish, testerPunct, isContainMinor, testerChinese, testJapanese, testKorean } from '@/_helpers/lang-check'
 import { MsgType, MsgFetchDictResult } from '@/typings/message'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
-import { isInNotebook } from './widget'
+import { isInNotebook, tripleCtrlPressed } from './widget'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
@@ -387,6 +387,8 @@ function listenTrpleCtrl (
   message.self.addListener(MsgType.TripleCtrl, () => {
     const state = getState()
     if (state.widget.shouldPanelShow) { return }
+
+    dispatch(tripleCtrlPressed())
 
     const { tripleCtrlPreload, tripleCtrlAuto } = state.config
 
