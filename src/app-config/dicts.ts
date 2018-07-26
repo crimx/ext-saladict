@@ -234,7 +234,7 @@ export function getALlDicts () {
        * the preferred height is used and a mask with a view-more button is shown.
        * Otherwise the content height is used.
        */
-      preferredHeight: 110,
+      preferredHeight: 210,
       /** Word count to start searching */
       selectionWC: {
         min: 1,
