@@ -35,7 +35,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: true,
+        minor: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -85,7 +85,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: true,
+        minor: false,
       },
     },
     cobuild: {
@@ -123,7 +123,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: true,
+        minor: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -165,7 +165,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: true,
+        minor: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -207,7 +207,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: true,
+        minor: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -291,7 +291,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: true,
+        minor: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -333,7 +333,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: false,
         chs: true,
-        minor: true,
+        minor: false,
       }
     },
     liangan: {
@@ -371,7 +371,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: false,
         chs: true,
-        minor: true,
+        minor: false,
       }
     },
     longman: {
@@ -409,7 +409,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: true,
+        minor: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -457,7 +457,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: true,
+        minor: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -499,7 +499,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: true,
+        minor: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -541,7 +541,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: true,
+        minor: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -583,7 +583,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: true,
+        minor: false,
       }
     },
     websterlearner: {
@@ -621,7 +621,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: true,
+        minor: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -667,7 +667,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: true,
+        minor: false,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {
@@ -714,7 +714,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: false,
         chs: true,
-        minor: true,
+        minor: false,
       }
     },
   }
