@@ -55,6 +55,7 @@ storage.sync.get('config')
                     text: window.__SALADICT_LAST_SEARCH__ || 'salad'
                   }),
                   self: true,
+                  instant: true,
                   mouseX: window.innerWidth - this.$store.config.panelWidth - 110,
                   mouseY: window.innerHeight * (1 - this.$store.config.panelMaxHeightRatio) / 2 + 50,
                   dbClick: false,
