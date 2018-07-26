@@ -40,7 +40,7 @@ export default function search (
   text: string,
   config: AppConfig
 ): Promise<DictSearchResult<GuoYuResult>> {
-  return moedictSearch<GuoYuResult>('a', text, config)
+  return moedictSearch<GuoYuResult>('a', encodeURIComponent(text), config)
 }
 
 export function moedictSearch<R extends GuoYuResult> (

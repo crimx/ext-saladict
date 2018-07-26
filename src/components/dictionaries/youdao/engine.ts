@@ -37,7 +37,7 @@ export default function search (
 ): Promise<YoudaoSearchResult> {
   const options = config.dicts.all.youdao.options
 
-  return fetchDirtyDOM('http://www.youdao.com/w/' + text)
+  return fetchDirtyDOM('http://www.youdao.com/w/' + encodeURIComponent(text))
     .then(doc => checkResult(doc, options))
 }
 

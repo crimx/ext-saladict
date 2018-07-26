@@ -42,7 +42,7 @@ function fetchWithToken (base: string, sl: string, tl: string, text: string): Pr
       if (tkk) {
         const tk = getTK(text, Number(tkk[2]), (Number(tkk[0]) + Number(tkk[1])))
         if (tk) {
-          return fetch(`${base}/translate_a/single?client=t&sl=${sl}&tl=${tl}&q=${text}&tk=${tk}&hl=en&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&ie=UTF-8&oe=UTF-8&otf=1&ssel=0&tsel=0&kc=5`)
+          return fetch(`${base}/translate_a/single?client=t&sl=${sl}&tl=${tl}&q=${encodeURIComponent(text)}&tk=${tk}&hl=en&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&ie=UTF-8&oe=UTF-8&otf=1&ssel=0&tsel=0&kc=5`)
         }
       }
       return handleNoResult()
@@ -51,7 +51,7 @@ function fetchWithToken (base: string, sl: string, tl: string, text: string): Pr
 }
 
 function fetchWithoutToken (sl: string, tl: string, text: string): Promise<string> {
-  return fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${text}`)
+  return fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${encodeURIComponent(text)}`)
     .then(r => r.text())
 }
 
