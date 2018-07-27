@@ -60,8 +60,8 @@ function handleDOM (
       $posHeader.querySelectorAll('.pron-info').forEach($pron => {
         const $btn = $pron.querySelector<HTMLSpanElement>('.audio_play_button')
         if ($btn) {
-          const mp3 = $btn.dataset.srcMp3
-          if (mp3) {
+          if ($btn.dataset.srcMp3) {
+            const mp3 = $btn.dataset.srcMp3.replace(/^\//, 'https://dictionary.cambridge.org/')
             entry.prons.push({
               phsym: getText($pron),
               pron: mp3,
