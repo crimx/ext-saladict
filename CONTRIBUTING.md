@@ -43,6 +43,10 @@ Toggle:
 
 `yarn release` to bump version and generate [CHANGELOG](./CHANGELOG.md).
 
+## Zipball
+
+`yarn zip` to pack zibballs to `./dist/`.
+
 ## How to add a dictionary
 
 1. Register the dictionary in [app config](./src/app-config/dicts.ts) so that TypeScript generates the correct typings. Dict ID should follow alphabetical order.
