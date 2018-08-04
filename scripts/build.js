@@ -28,16 +28,18 @@ const fs = require('fs-extra')
 const webpack = require('webpack')
 const config = require('../config/webpack.config.prod')
 const paths = require('../config/paths')
-const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles')
+// const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles')
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages')
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter')
 const printBuildError = require('react-dev-utils/printBuildError')
-const semver = require('semver')
+// const semver = require('semver')
+var postcss = require('postcss')
+var increaseSpecificity = require('postcss-increase-specificity')
 
 const measureFileSizesBeforeBuild =
   FileSizeReporter.measureFileSizesBeforeBuild
 const printFileSizesAfterBuild = FileSizeReporter.printFileSizesAfterBuild
-const useYarn = fs.existsSync(paths.yarnLockFile)
+// const useYarn = fs.existsSync(paths.yarnLockFile)
 
 // These sizes are pretty large. We'll warn for bundles exceeding them.
 const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024
@@ -89,6 +91,7 @@ measureFileSizesBeforeBuild(paths.appBuild)
       process.exit(1)
     }
   )
+  .then(patchInternalCSS)
   .then(generateByBrowser)
 
 // Create the production build and print the deployment instructions.
@@ -199,4 +202,20 @@ function writeLocales (localesPath, localesJSON) {
       .then(() => fs.writeFile(path.join(langPath, 'messages.json'), JSON.stringify(localesJSON[lang], null, '  ')))
     }))
   )
+}
+
+function patchInternalCSS () {
+  const cssPath = path.join(paths.appBuild, 'panel-internal.css')
+  const panelCSS = fs.readFileSync(cssPath, 'utf8')
+  const output = postcss([
+    increaseSpecificity({
+      repeat: 1,
+      overrideIds: false,
+      stackableRoot: '.panel-StyleRoot'
+    })
+  ])
+  .process(panelCSS)
+  .css
+
+  fs.writeFileSync(cssPath, output)
 }
