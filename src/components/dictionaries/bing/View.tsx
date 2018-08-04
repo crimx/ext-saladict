@@ -45,8 +45,8 @@ export default class DictBing extends React.PureComponent<{ result: BingResult }
           <ol className='dictBing-SentenceList'>
             {result.sentences.map(sen => (
               <li className='dictBing-SentenceItem' key={sen.en}>
-                {sen.en && <p>{sen.en} <Speaker src={sen.mp3}></Speaker></p>}
-                {sen.chs && <p>{sen.chs}</p>}
+                {sen.en && <p><span dangerouslySetInnerHTML={{ __html: sen.en }} /> <Speaker src={sen.mp3}></Speaker></p>}
+                {sen.chs && <p dangerouslySetInnerHTML={{ __html: sen.chs }} />}
                 {sen.source && <footer className='dictBing-SentenceSource'>{sen.source}</footer>}
               </li>
             ))}
