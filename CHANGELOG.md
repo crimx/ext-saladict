@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.9.0"></a>
+# [6.9.0](https://github.com/crimx/ext-saladict/compare/v6.8.3...v6.9.0) (2018-08-04)
+
+
+### Bug Fixes
+
+* **panel:** patch internal panel css ([befe9ce](https://github.com/crimx/ext-saladict/commit/befe9ce))
+
+
+### Features
+
+* **dicts:** bing sentence highlight ([ed1b7c4](https://github.com/crimx/ext-saladict/commit/ed1b7c4))
+
+
+
 <a name="6.8.3"></a>
 ## [6.8.3](https://github.com/crimx/ext-saladict/compare/v6.8.2...v6.8.3) (2018-07-27)
 
