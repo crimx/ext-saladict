@@ -18,8 +18,8 @@
   "extension_description": {
     "description": "Description of extension",
     "message": {
-      "zh_CN": "全新工匠打磨，极致交互体验，新增更多词典，支持 PDF，兼容 Vimium 全键盘操作。",
-      "zh_TW": "全新工匠打磨，極致互動體驗，新增更多字典，支援 PDF，相容 Vimium 全鍵盤操作。",
+      "zh_CN": "涵盖所有主流词典，多重划词模式，极致交互体验，灵活导出生词本，高度可配置，支持 PDF，兼容 Vimium 全键盘操作。",
+      "zh_TW": "涵蓋所有主流字典，多重鼠標滑字模式，極致互動體驗，靈活輸出單字本，高度可配置，支援 PDF，相容 Vimium 全鍵盤操作。",
       "en": "Feature-rich inline translator with PDF support. Vimium compatible."
     }
   },
