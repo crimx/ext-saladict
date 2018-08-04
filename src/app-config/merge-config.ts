@@ -119,6 +119,9 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
         base.panelMode.ctrl = true
       }
       break
+    case 8:
+      base.dicts.all.googledict.selectionLang.minor = true
+      break
     default:
       break
   }
