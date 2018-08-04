@@ -1,4 +1,4 @@
-import { HTMLString, handleNoResult, getInnerHTMLThunk, removeChild, decodeHEX } from '../helpers'
+import { HTMLString, handleNoResult, getInnerHTMLThunk, removeChild, decodeHEX, removeChildren } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -35,6 +35,8 @@ function handleDOM (
         $block.remove()
       }
     })
+
+    removeChildren($obcontainer, '.lr_dct_trns_h') // other Translate to blocks
 
     $obcontainer.querySelectorAll('g-img').forEach($gimg => {
       const $img = $gimg.querySelector('img')

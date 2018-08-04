@@ -291,7 +291,7 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: false,
+        minor: true,
       },
       /** Optional dict custom options. Can only be boolean or number. */
       options: {

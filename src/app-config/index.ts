@@ -187,7 +187,7 @@ export default appConfigFactory
 
 export function appConfigFactory (): AppConfig {
   return {
-    version: 8,
+    version: 9,
 
     active: true,
 
@@ -294,7 +294,7 @@ export function appConfigFactory (): AppConfig {
     blacklist: [],
 
     dicts: {
-      selected: ['bing', 'cambridge', 'urban', 'vocabulary', 'google', 'zdic', 'guoyu', 'liangan'],
+      selected: ['bing', 'cambridge', 'youdao', 'urban', 'vocabulary', 'google', 'zdic', 'guoyu', 'liangan', 'googledict'],
       // settings of each dict will be auto-generated
       all: getALlDicts()
     },

@@ -1,7 +1,9 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { handleNoResult } from '../helpers'
+import { handleNoResult, getText, getInnerHTMLThunk } from '../helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
+
+const getInnerHTML = getInnerHTMLThunk('https://cn.bing.com/')
 
 const DICT_LINK = 'https://cn.bing.com/dict/clientsearch?mkt=zh-CN&setLang=zh&form=BDVEHC&ClientVer=BDDTV3.5.1.4320&q='
 
@@ -154,13 +156,22 @@ function handleLexResult (
       searchResult.result.sentences = $sens
         .map(el => {
           let mp3 = ''
-          let $audio = el.querySelector('.client_aud_o')
+          const $audio = el.querySelector('.client_aud_o')
           if ($audio) {
             mp3 = (($audio.getAttribute('onclick') || '').match(/https.*\.mp3/) || [''])[0]
           }
+          el.querySelectorAll('.client_sen_en_word').forEach($word => {
+            $word.outerHTML = getText($word)
+          })
+          el.querySelectorAll('.client_sen_cn_word').forEach($word => {
+            $word.outerHTML = getText($word)
+          })
+          el.querySelectorAll('.client_sentence_search').forEach($word => {
+            $word.outerHTML = `<span class="dictBing-SentenceItem_HL">${getText($word)}</span>`
+          })
           return {
-            en: getText(el, '.client_sen_en'),
-            chs: getText(el, '.client_sen_cn'),
+            en: getInnerHTML(el, '.client_sen_en'),
+            chs: getInnerHTML(el, '.client_sen_cn'),
             source: getText(el, '.client_sentence_list_link'),
             mp3
           }
@@ -225,12 +236,4 @@ function handleRelatedResult (
     return searchResult
   }
   return handleNoResult()
-}
-
-function getText (el: ParentNode, childSelector: string): string {
-  let child = el.querySelector(childSelector)
-  if (child) {
-    return (child.textContent || '').trim()
-  }
-  return ''
 }
