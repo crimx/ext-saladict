@@ -37,7 +37,10 @@ export function getALlDicts () {
         chs: true,
         minor: false,
       },
-      /** Optional dict custom options. Can only be boolean or number. */
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
       options: {
         tense: true,
         phsym: true,
@@ -125,7 +128,10 @@ export function getALlDicts () {
         chs: false,
         minor: false,
       },
-      /** Optional dict custom options. Can only be boolean or number. */
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
       options: {
         sentence: 4
       }
@@ -167,7 +173,10 @@ export function getALlDicts () {
         chs: false,
         minor: false,
       },
-      /** Optional dict custom options. Can only be boolean or number. */
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
       options: {
         resultnum: 2
       }
@@ -209,7 +218,10 @@ export function getALlDicts () {
         chs: true,
         minor: false,
       },
-      /** Optional dict custom options. Can only be boolean or number. */
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
       options: {
         resultnum: 10
       }
@@ -251,10 +263,17 @@ export function getALlDicts () {
         chs: true,
         minor: true,
       },
-      /** Optional dict custom options. Can only be boolean or number. */
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
       options: {
-        cnfirst: false
-      }
+        cnfirst: false,
+        tl: 'default' as 'default' | 'zh-CN' | 'zh-TW' | 'en',
+      },
+      options_sel: {
+        tl: ['default', 'zh-CN', 'zh-TW', 'en'],
+      },
     },
     googledict: {
       /**
@@ -293,7 +312,10 @@ export function getALlDicts () {
         chs: true,
         minor: true,
       },
-      /** Optional dict custom options. Can only be boolean or number. */
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
       options: {
         enresult: true
       }
@@ -411,7 +433,10 @@ export function getALlDicts () {
         chs: false,
         minor: false,
       },
-      /** Optional dict custom options. Can only be boolean or number. */
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
       options: {
         wordfams: false,
         collocations: true,
@@ -459,7 +484,10 @@ export function getALlDicts () {
         chs: false,
         minor: false,
       },
-      /** Optional dict custom options. Can only be boolean or number. */
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
       options: {
         related: true,
       }
@@ -501,7 +529,10 @@ export function getALlDicts () {
         chs: false,
         minor: false,
       },
-      /** Optional dict custom options. Can only be boolean or number. */
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
       options: {
         related: true,
       },
@@ -543,7 +574,10 @@ export function getALlDicts () {
         chs: false,
         minor: false,
       },
-      /** Optional dict custom options. Can only be boolean or number. */
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
       options: {
         resultnum: 4
       }
@@ -623,7 +657,10 @@ export function getALlDicts () {
         chs: false,
         minor: false,
       },
-      /** Optional dict custom options. Can only be boolean or number. */
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
       options: {
         defs: true,
         phrase: true,
@@ -669,7 +706,10 @@ export function getALlDicts () {
         chs: true,
         minor: false,
       },
-      /** Optional dict custom options. Can only be boolean or number. */
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
       options: {
         basic: true,
         collins: true,
@@ -740,7 +780,10 @@ export function getALlDicts () {
         minor: boolean
       }
       options?: {
-        [option: string]: number | boolean
+        [option: string]: number | boolean | string
+      }
+      options_sel?: {
+        [choice: string]: string[]
       }
     }
   }
