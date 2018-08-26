@@ -118,5 +118,25 @@
     "en": "Saladict Notebook",
     "zh_CN": "Saladict 生词本",
     "zh_TW": "Saladict 生字本"
+  },
+  "wordcount_selected": {
+    "en": "{{count}} item selected",
+    "zh_CN": "已选中 {{count}} 个单词",
+    "zh_TW": "已選中 {{count}} 個單字"
+  },
+  "wordcount_selected_plural": {
+    "en": "{{count}} items selected",
+    "zh_CN": "已选中 {{count}} 个单词",
+    "zh_TW": "已選中 {{count}} 個單字"
+  },
+  "wordcount_total": {
+    "en": "{{count}} item total",
+    "zh_CN": "共有 {{count}} 个单词",
+    "zh_TW": "共有 {{count}} 個單字"
+  },
+  "wordcount_total_plural": {
+    "en": "{{count}} items total",
+    "zh_CN": "共有 {{count}} 个单词",
+    "zh_TW": "共有 {{count}} 個單字"
   }
 }

@@ -105,6 +105,7 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
         current: 1,
         pageSize: ITEMS_PER_PAGE,
         defaultPageSize: ITEMS_PER_PAGE,
+        total: 0,
       },
       rowSelection: {
         selectedRowKeys: [],
@@ -371,6 +372,12 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
         <Layout className='wordpage-Container'>
           <Header className='wordpage-Header'>
             <h1 style={{ color: '#fff' }}>{t(`title_${area}`)}</h1>
+            {(pagination.total as number) > 0 &&
+              <span className='wordpage-Wordcount'>{t(`wordcount_total`, { count: pagination.total })}</span>
+            }
+            {selectedRows.length > 0 &&
+              <span className='wordpage-Wordcount'>{t(`wordcount_selected`, { count: selectedRows.length })}</span>
+            }
             <div style={{ marginLeft: 'auto' }}>
               <Input
                 style={{ width: '15em' }}
