@@ -356,12 +356,7 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
 
     dispatch(searchStart({ toStart, toOnhold, toActive, info }))
 
-    // update UI immediately but
-    // delay the acutal search so that
-    // it won't search twice with double click
-    _searchDelayTimeout = setTimeout(() => {
-      toStart.forEach(doSearch)
-    }, state.config.doubleClickDelay)
+    toStart.forEach(doSearch)
 
     function doSearch (id: DictID) {
       const msg: MsgFetchDictResult = {
