@@ -39,7 +39,7 @@ export interface WordPageMainState {
   rowSelection: TableRowSelection<Word>
   selectedRows: Word[]
   loading: boolean
-  exportModalTitle: '' | 'all' | 'selected'
+  exportModalTitle: '' | 'all' | 'selected' | 'page'
   exportModalWords: Word[]
 }
 
@@ -250,6 +250,11 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
         exportModalTitle: key,
         exportModalWords: this.state.selectedRows,
       })
+    } else if (key === 'page') {
+      this.setState({
+        exportModalTitle: key,
+        exportModalWords: this.state.words,
+      })
     } else {
       this.setState({ exportModalTitle: '' })
     }
@@ -273,7 +278,9 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
         onOk: () => {
           const keys = key === 'selected'
             ? this.state.rowSelection.selectedRowKeys as number[]
-            : undefined
+            : key === 'page'
+              ? this.state.words.map(({ date }) => date)
+              : undefined
           deleteWords(area, keys)
             .then(() => this.fetchData$$.next())
         },
@@ -399,10 +406,11 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
               />
               <Dropdown overlay={
                 <Menu onClick={this.handleBtnExportClick}>
-                  <Menu.Item key='all'>{t('export_all')}</Menu.Item>
                   {selectedRows.length > 0 &&
                     <Menu.Item key='selected'>{t('export_selected')}</Menu.Item>
                   }
+                  <Menu.Item key='page'>{t('export_page')}</Menu.Item>
+                  <Menu.Item key='all'>{t('export_all')}</Menu.Item>
                 </Menu>
               }>
                 <Button style={{ marginLeft: 8 }}>
@@ -411,10 +419,11 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
               </Dropdown>
               <Dropdown overlay={
                 <Menu onClick={this.handleBtnDeleteClick}>
-                  <Menu.Item key='all'>{t('delete_all')}</Menu.Item>
                   {selectedRows.length > 0 &&
                     <Menu.Item key='selected'>{t('delete_selected')}</Menu.Item>
                   }
+                  <Menu.Item key='page'>{t('delete_page')}</Menu.Item>
+                  <Menu.Item key='all'>{t('delete_all')}</Menu.Item>
                 </Menu>
               }>
                 <Button type='danger' style={{ marginLeft: 8 }}>
