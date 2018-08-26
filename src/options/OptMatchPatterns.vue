@@ -7,10 +7,11 @@
       <div class="select-box-container">
         <button type="button" class="btn btn-default" @click="liststate = 'blacklist'">{{ $t('opt:match_pattern_blacklist') }}</button>
         <button type="button" class="btn btn-default" @click="liststate = 'whitelist'">{{ $t('opt:match_pattern_whitelist') }}</button>
+        <button type="button" class="btn btn-default" @click="liststate = 'pdfBlacklist'">{{ $t('opt:match_pattern_pdfBlacklist') }}</button>
+        <button type="button" class="btn btn-default" @click="liststate = 'pdfWhitelist'">{{ $t('opt:match_pattern_pdfWhitelist') }}</button>
       </div>
       <transition name="fade">
-        <match-pattern-editor :list="blacklist" liststate="blacklist" @close="close" @save="save" v-if="liststate === 'blacklist'" />
-        <match-pattern-editor :list="whitelist" liststate="whitelist" @close="close" @save="save" v-else-if="liststate === 'whitelist'" />
+        <match-pattern-editor :list="config[liststate]" :liststate="liststate" @close="close" @save="save" v-if="liststate" />
       </transition>
     </div>
     <div class="opt-item__description-wrap">
@@ -24,8 +25,7 @@ import MatchPatternEditor from './MatchPatternEditor'
 
 export default {
   store: {
-    blacklist: 'config.blacklist',
-    whitelist: 'config.whitelist',
+    config: 'config',
   },
   data () {
     return {
@@ -44,7 +44,7 @@ export default {
     },
     save (data) {
       if (this.liststate) {
-        this[this.liststate] = data
+        this.config[this.liststate] = data
         this.liststate = ''
       } else if (process.env.NODE_ENV !== 'production') {
         console.warn('match pattern list state not matching')

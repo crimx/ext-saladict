@@ -31,6 +31,8 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   mergeNumber('panelMaxHeightRatio')
   mergeNumber('fontSize')
   mergeBoolean('pdfSniff')
+  merge('pdfWhiltelist', val => Array.isArray(val))
+  merge('pdfBlacklist', val => Array.isArray(val))
   mergeBoolean('searhHistory')
   mergeBoolean('searhHistoryInco')
   mergeBoolean('newWordSound')
