@@ -301,6 +301,18 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
         console.warn(err)
       }
     }
+
+    const wordText = searchURL.searchParams.get('text')
+    if (wordText) {
+      const text = decodeURIComponent(wordText)
+      this.fetchData({
+        ...this.lastFetchDataConfig,
+        filters: {
+          word: [text]
+        },
+      })
+      this.setState({ searchText: text })
+    }
   }
 
   renderEdit = (_, record: Word): React.ReactNode => {

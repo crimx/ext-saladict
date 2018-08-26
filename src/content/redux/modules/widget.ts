@@ -474,7 +474,7 @@ export function isInNotebook (info: SelectionInfo): DispatcherThunk {
 
 export function openWordEditor (): DispatcherThunk {
   return (dispatch, getState) => {
-    const { config, dictionaries } = getState()
+    const { config, dictionaries, widget } = getState()
     if (config.editOnFav) {
       if (isSaladictPopupPage) {
         // Not enough space to open word editor on popup page
@@ -492,7 +492,20 @@ export function openWordEditor (): DispatcherThunk {
         dispatch(wordEditorShouldShow(true))
       }
     } else {
-      dispatch(addToNotebook(dictionaries.searchHistory[0]))
+      if (widget.isFav) {
+        try {
+          message.send<MsgOpenUrl>({
+            type: MsgType.OpenURL,
+            url: 'notebook.html?text=' +
+              encodeURIComponent(dictionaries.searchHistory[0].text),
+            self: true,
+          })
+        } catch (err) {
+          console.warn(err)
+        }
+      } else {
+        dispatch(addToNotebook(dictionaries.searchHistory[0]))
+      }
     }
   }
 }
