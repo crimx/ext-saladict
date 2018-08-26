@@ -1,28 +1,30 @@
 <template>
-<div class="popup-container" @mouseenter="activeContainer" @mouseleave="hideContainer">
-  <div class="active-switch">
-    <svg class="icon-qrcode" @mouseenter="showQRcode" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
-      <path d="M0 225v25h250v-25H0zM0 25h250V0H0v25z"/>
-      <path d="M0 250h25V0H0v250zm225 0h25V0h-25v250zM87.5 162.5h75v-75h-75v75zM362 587v25h80v-25h-80zm0-200h80v-25h-80v25z"/>
-      <path d="M362 612h25V362h-25v250zm190-250v25h60v-25h-60zm-77.5 87.5v25h50v-25h-50z"/>
-      <path d="M432 497.958v-25h-70v25h70zM474.5 387h50v-25h-50v25zM362 225v25h250v-25H362zm0-200h250V0H362v25z"/>
-      <path d="M362 250h25V0h-25v250zm225 0h25V0h-25v250zm-137.5-87.5h75v-75h-75v75zM0 587v25h250v-25H0zm0-200h250v-25H0v25z"/>
-      <path d="M0 612h25V362H0v250zm225 0h25V362h-25v250zM87.5 524.5h75v-75h-75v75zM587 612h25V441h-25v171zM474.5 499.5v25h50v-25h-50z"/>
-      <path d="M474.5 449.5v75h25v-75h-25zM562 587v25h50v-25h-50z"/>
-    </svg>
-    <span class="switch-title">{{ $t('app_active_title') }}</span>
-    <input type="checkbox" id="opt-active" class="btn-switch" :checked="config.active" @click.prevent="changeActive" @focus="activeContainer">
-    <label for="opt-active"></label>
-  </div>
-  <div class="active-switch">
-    <span class="switch-title">{{ $t('app_temp_active_title') }}</span>
-    <input type="checkbox" id="opt-temp-active" class="btn-switch" v-model="tempOff" @click.prevent="changeTempOff" @focus="activeContainer">
-    <label for="opt-temp-active"></label>
-  </div>
-  <div class="active-switch">
-    <span class="switch-title">{{ $t('instant_capture_title') + (insCapMode === 'pinMode' ? $t('instant_capture_pinned') : '') }}</span>
-    <input type="checkbox" id="opt-instant-capture" class="btn-switch" v-model="config[insCapMode].instant.enable" @click.prevent="changeInsCap" @focus="activeContainer">
-    <label for="opt-instant-capture"></label>
+<div class="switch-container-wrap" @mouseenter="activeContainer" @mouseleave="hideContainer">
+  <div class="switch-container">
+    <div class="active-switch">
+      <span class="switch-title">{{ $t('app_temp_active_title') }}</span>
+      <input type="checkbox" id="opt-temp-active" class="btn-switch" v-model="tempOff" @click.prevent="changeTempOff" @focus="activeContainer">
+      <label for="opt-temp-active"></label>
+    </div>
+    <div class="active-switch">
+      <span class="switch-title">{{ $t('instant_capture_title') + (insCapMode === 'pinMode' ? $t('instant_capture_pinned') : '') }}</span>
+      <input type="checkbox" id="opt-instant-capture" class="btn-switch" v-model="config[insCapMode].instant.enable" @click.prevent="changeInsCap" @focus="activeContainer">
+      <label for="opt-instant-capture"></label>
+    </div>
+    <div class="active-switch">
+      <svg class="icon-qrcode" @mouseenter="showQRcode" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612 612">
+        <path d="M0 225v25h250v-25H0zM0 25h250V0H0v25z"/>
+        <path d="M0 250h25V0H0v250zm225 0h25V0h-25v250zM87.5 162.5h75v-75h-75v75zM362 587v25h80v-25h-80zm0-200h80v-25h-80v25z"/>
+        <path d="M362 612h25V362h-25v250zm190-250v25h60v-25h-60zm-77.5 87.5v25h50v-25h-50z"/>
+        <path d="M432 497.958v-25h-70v25h70zM474.5 387h50v-25h-50v25zM362 225v25h250v-25H362zm0-200h250V0H362v25z"/>
+        <path d="M362 250h25V0h-25v250zm225 0h25V0h-25v250zm-137.5-87.5h75v-75h-75v75zM0 587v25h250v-25H0zm0-200h250v-25H0v25z"/>
+        <path d="M0 612h25V362H0v250zm225 0h25V362h-25v250zM87.5 524.5h75v-75h-75v75zM587 612h25V441h-25v171zM474.5 499.5v25h50v-25h-50z"/>
+        <path d="M474.5 449.5v75h25v-75h-25zM562 587v25h50v-25h-50z"/>
+      </svg>
+      <span class="switch-title">{{ $t('app_active_title') }}</span>
+      <input type="checkbox" id="opt-active" class="btn-switch" :checked="config.active" @click.prevent="changeActive" @focus="activeContainer">
+      <label for="opt-active"></label>
+    </div>
   </div>
   <transition name="fade">
     <div class="qrcode-panel" v-if="currentTabUrl" @mouseleave="currentTabUrl = ''">
@@ -108,19 +110,20 @@ export default Vue.extend({
       })
     },
     activeContainer () {
-      const $panel = document.querySelector<HTMLDivElement>('.saladict-DictPanel')
-      const $container = document.querySelector<HTMLDivElement>('.popup-container')
-      if ($panel && $container) {
-        $panel.style.height = '400px'
+      const $frameRoot = document.querySelector<HTMLDivElement>('#frame-root')
+      const $container = document.querySelector<HTMLDivElement>('.switch-container-wrap')
+      if ($frameRoot && $container) {
+        $frameRoot.style.height = '400px'
         $container.style.height = '150px'
       }
     },
     hideContainer () {
-      const $panel = document.querySelector<HTMLDivElement>('.saladict-DictPanel')
-      const $container = document.querySelector<HTMLDivElement>('.popup-container')
-      if ($panel && $container) {
-        $panel.style.height = '484px'
-        $container.style.height = '66px'
+      const $frameRoot = document.querySelector<HTMLDivElement>('#frame-root')
+      const $container = document.querySelector<HTMLDivElement>('.switch-container-wrap')
+      if ($frameRoot && $container) {
+        $frameRoot.style.height = '500px'
+        $container.style.height = '50px'
+        this.currentTabUrl = ''
       }
     },
   },
@@ -165,9 +168,12 @@ export default Vue.extend({
 html {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 body {
+  width: 450px;
+  height: 550px;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -175,22 +181,30 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
 
-.frame-root {
+#frame-root {
+  height: 500px;
+  transition: height 0.5s;
+
   // hide white spaces
   font-size: 0;
+}
+
+.saladict-DIV {
+  height: 100%;
 }
 
 .saladict-DictPanel {
   position: static;
   overflow: hidden;
-  height: 484px;
+  height: 100%;
   transition: height 0.5s;
 }
 
 .qrcode-panel {
   position: fixed;
-  bottom: 50px;
-  left: 25px;
+  z-index: 100;
+  bottom: 10px;
+  left: 10px;
   padding: 10px;
   background: #fff;
   border-radius: 10px;
@@ -204,6 +218,7 @@ body {
 
 .page-no-response-panel {
   position: fixed;
+  z-index: 100;
   bottom: 60px;
   right: 25px;
   padding: 0 10px;
@@ -212,25 +227,42 @@ body {
   box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
 }
 
-.popup-container {
-  overflow:hidden;
-  height: 66px;
-  background: #f9f9f9;
-  box-shadow: inset 0 10px 6px -6px rgba(0,0,0,.13);
+.switch-container-wrap {
+  position: relative;
+  overflow: hidden;
+  height: 50px;
   transition: height 0.5s;
+
+  &::before {
+    content: '';
+    display: block;
+    position: relative;
+    z-index: 100;
+    height: 10px;
+    box-shadow: inset 0 10px 6px -6px rgba(0,0,0,.13);
+    pointer-events: none;
+  }
+}
+
+.switch-container {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  overflow: hidden;
+  background: #f9f9f9;
 }
 
 .active-switch {
   display: flex;
   align-items: center;
   position: relative;
-  height: 50px;
+  height: 49px;
+  border-bottom: 1px solid #d8d8d8;
   padding: 0 20px;
   user-select: none;
 
-  &:not(:last-child) {
-    height: 49px;
-    border-bottom: 1px solid #d8d8d8;
+  &:last-child {
+    border-bottom-color: transparent;
   }
 }
 
