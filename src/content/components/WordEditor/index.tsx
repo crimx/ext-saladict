@@ -2,7 +2,7 @@ import React from 'react'
 import { translate } from 'react-i18next'
 import { TranslationFunction } from 'i18next'
 import { SelectionInfo } from '@/_helpers/selection'
-import { Word } from '@/background/database'
+import { Word, deleteWords } from '@/_helpers/record-manager'
 import WordCards from '../WordCards'
 
 export interface WordEditorDispatchers {
@@ -75,10 +75,15 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
         if (word.date) {
           words = words.filter(({ date }) => date !== word.date)
         }
-        if (words.length > 0) {
-          this.setState({ relatedWords: words })
-        }
+        this.setState({ relatedWords: words })
       })
+  }
+
+  deleteCard = (word: Word) => {
+    if (window.confirm(this.props.t('wordEditorDeleteConfirm'))) {
+      deleteWords('notebook', [word.date])
+        .then(this.getRelatedWords)
+    }
   }
 
   componentDidMount () {
@@ -170,7 +175,7 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
               onChange={this.mapValueToState}
             />
           </form>
-          {relatedWords.length > 0 && <WordCards words={relatedWords} /> }
+          {relatedWords.length > 0 && <WordCards words={relatedWords} deleteCard={this.deleteCard} /> }
         </div>
         <footer className='wordEditor-Footer'>
           <button type='button'

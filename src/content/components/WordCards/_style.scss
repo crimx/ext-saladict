@@ -24,6 +24,7 @@
 
 .wordCards-Card {
   list-style-type: none;
+  position: relative;
   display: block;
   overflow: hidden;
   margin: 0 0 10px 0;
@@ -33,6 +34,18 @@
   border-radius: 20px;
   color: #8a6d3b;
   background: #fcf8e3;
+}
+
+.wordCards-CardClose {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: #8a6d3b;
+  background: transparent;
+  cursor: pointer;
 }
 
 .wordCards-CardTitle {
