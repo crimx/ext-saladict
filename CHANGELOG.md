@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.10.0"></a>
+# [6.10.0](https://github.com/crimx/ext-saladict/compare/v6.9.0...v6.10.0) (2018-08-27)
+
+
+### Features
+
+* **background:** add pfd black and white list ([750a745](https://github.com/crimx/ext-saladict/commit/750a745))
+* **dicts:** add google tl option ([489bdd9](https://github.com/crimx/ext-saladict/commit/489bdd9))
+* **options:** dict options support select ([dcf6357](https://github.com/crimx/ext-saladict/commit/dcf6357))
+* **panel:** add wordEditor deleteCards ([47f8f1b](https://github.com/crimx/ext-saladict/commit/47f8f1b))
+* **panel:** improve fav word process ([b632a28](https://github.com/crimx/ext-saladict/commit/b632a28))
+* **wordpage:** add page export/delete ([6ceb21a](https://github.com/crimx/ext-saladict/commit/6ceb21a))
+* **wordpage:** add word count ([6667f53](https://github.com/crimx/ext-saladict/commit/6667f53))
+
+
+### Performance Improvements
+
+* **panel:** regression. remove search delay ([c65e53c](https://github.com/crimx/ext-saladict/commit/c65e53c))
+
+
+
 <a name="6.9.0"></a>
 # [6.9.0](https://github.com/crimx/ext-saladict/compare/v6.8.3...v6.9.0) (2018-08-04)
 
