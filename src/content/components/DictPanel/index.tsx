@@ -70,6 +70,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
           isFav,
           isPinned,
           searchHistory: dictionaries.searchHistory,
+          activeDicts: dictionaries.active,
           handleDragAreaMouseDown,
           handleDragAreaTouchStart,
           searchText,
