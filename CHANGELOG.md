@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.10.2"></a>
+## [6.10.2](https://github.com/crimx/ext-saladict/compare/v6.10.1...v6.10.2) (2018-08-27)
+
+
+### Bug Fixes
+
+* **panel:** better search box focus ([fc16541](https://github.com/crimx/ext-saladict/commit/fc16541)), closes [#182](https://github.com/crimx/ext-saladict/issues/182)
+* **panel:** fix typing ([4c706a7](https://github.com/crimx/ext-saladict/commit/4c706a7))
+* **panel:** improve smoothness when panel shows up ([a3ee454](https://github.com/crimx/ext-saladict/commit/a3ee454))
+
+
+
 <a name="6.10.1"></a>
 ## [6.10.1](https://github.com/crimx/ext-saladict/compare/v6.10.0...v6.10.1) (2018-08-27)
 
