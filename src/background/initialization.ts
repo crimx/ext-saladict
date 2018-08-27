@@ -9,7 +9,7 @@ import { MsgType, MsgQueryPanelState } from '@/typings/message'
 
 getAppConfig().then(config => {
   initMenus(config.contextMenus)
-  initPdf(config.pdfSniff)
+  initPdf(config)
 })
 
 browser.runtime.onInstalled.addListener(onInstalled)
@@ -91,7 +91,7 @@ function onInstalled ({ reason, previousVersion }: { reason: string, previousVer
         }
       }
       initMenus(config.contextMenus)
-      initPdf(config.pdfSniff)
+      initPdf(config)
       storage.local.set({ lastCheckUpdate: Date.now() })
     })
 }
@@ -141,6 +141,8 @@ function showNews () {
           title: `沙拉查词 Saladict【${data.tag_name}】`,
           message: data.body.match(/^\d+\..+/gm).join('\n'),
           buttons: [{ title: '查看更新' }],
+          eventTime: Date.now() + 10000,
+          priority: 2,
         })
       }
     })

@@ -95,17 +95,25 @@
                   </div><!--词典默认高度选项-->
 
                   <!--词典自定义选项-->
-                  <div class="checkbox" v-if="allDicts[id].options">
-                    <div v-for="(__, optKey) in allDicts[id].options" :key="optKey" class="checkbox" v-if="typeof allDicts[id].options[optKey] !== 'boolean'">
+                  <div v-if="allDicts[id].options">
+                    <div v-for="(__, optKey) in allDicts[id].options" :key="optKey" class="checkbox" v-if="typeof allDicts[id].options[optKey] === 'number'">
                       <div class="input-group">
                         <div class="input-group-addon">{{ $t(`dict:${id}_${optKey}`) }}</div>
                         <input type="number" min="0" class="form-control" v-model.number.lazy="allDicts[id].options[optKey]">
                         <div class="input-group-addon">{{ $t(`dict:${id}_${optKey}_unit`)  }}</div>
                       </div>
                     </div>
-                    <label v-for="(__, optKey) in allDicts[id].options" :key="optKey" class="checkbox-inline" v-if="typeof allDicts[id].options[optKey] === 'boolean'">
-                      <input type="checkbox" v-model="allDicts[id].options[optKey]"> {{ $t(`dict:${id}_${optKey}`) }}
-                    </label>
+                    <div class="select-box-container">
+                      <label v-for="(__, optKey) in allDicts[id].options" :key="optKey" class="select-box" v-if="typeof allDicts[id].options[optKey] === 'string'">
+                        <span class="select-label">{{ $t(`dict:${id}_${optKey}`) }}</span>
+                        <select class="form-control" v-model="allDicts[id].options[optKey]">
+                          <option v-for="optChoice in allDicts[id].options_sel[optKey]" :value="optChoice">{{ $t(`dict:${id}_${optKey}-${optChoice}`) }}</option>
+                        </select>
+                      </label>
+                      <label v-for="(__, optKey) in allDicts[id].options" :key="optKey" class="checkbox-inline" v-if="typeof allDicts[id].options[optKey] === 'boolean'">
+                        <input type="checkbox" v-model="allDicts[id].options[optKey]"> {{ $t(`dict:${id}_${optKey}`) }}
+                      </label>
+                    </div>
                   </div><!--词典自定义选项-->
                 </div>
               </div>

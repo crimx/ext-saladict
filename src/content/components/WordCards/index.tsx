@@ -1,10 +1,11 @@
 import React from 'react'
 import { translate } from 'react-i18next'
 import { TranslationFunction } from 'i18next'
-import { Word } from '@/background/database'
+import { Word } from '@/_helpers/record-manager'
 
 export interface WordCardsProps {
   words: Word[]
+  deleteCard: (word: Word) => any
 }
 
 export class WordCards extends React.PureComponent<WordCardsProps & { t: TranslationFunction }> {
@@ -12,6 +13,7 @@ export class WordCards extends React.PureComponent<WordCardsProps & { t: Transla
     const {
       t,
       words,
+      deleteCard,
     } = this.props
 
     return (
@@ -24,6 +26,7 @@ export class WordCards extends React.PureComponent<WordCardsProps & { t: Transla
             <li className='wordCards-Card'
               key={word.date}
             >
+              <button type='button' className='wordCards-CardClose' onClick={() => deleteCard(word)}>&times;</button>
               <h2 className='wordCards-CardTitle'>{word.text}</h2>
               {word.trans &&
                 <div className='wordCards-CardItem'>

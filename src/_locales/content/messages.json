@@ -59,13 +59,16 @@
     "zh_TW": "關閉字典視窗",
     "en": "Close the panel"
   },
-
   "fromSaladict": {
     "zh_CN": "来自沙拉查词面板",
     "zh_TW": "来自沙拉查詞介面",
     "en": "From Saladict Panel"
   },
-
+  "wordEditorDeleteConfirm": {
+    "zh_CN": "从单词本中移除？",
+    "zh_TW": "于單字本中移除？",
+    "en": "Delete from Notebook?"
+  },
   "wordEditorTitle": {
     "zh_CN": "保存到生词本",
     "zh_TW": "保存到單字本",

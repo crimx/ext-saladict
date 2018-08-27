@@ -9,6 +9,31 @@
       "en": "Use google.cn first",
       "zh_CN": "优先使用 google.cn",
       "zh_TW": "優先使用 google.cn"
+    },
+    "tl": {
+      "en": "Target language",
+      "zh_CN": "目标语言",
+      "zh_TW": "目標語言"
+    },
+    "tl-default": {
+      "en": "Default",
+      "zh_CN": "随扩展语言",
+      "zh_TW": "同介面語言"
+    },
+    "tl-zh-CN": {
+      "en": "简体中文",
+      "zh_CN": "简体中文",
+      "zh_TW": "简体中文"
+    },
+    "tl-zh-TW": {
+      "en": "繁體中文",
+      "zh_CN": "繁體中文",
+      "zh_TW": "繁體中文"
+    },
+    "tl-en": {
+      "en": "English",
+      "zh_CN": "English",
+      "zh_TW": "English"
     }
   }
 }

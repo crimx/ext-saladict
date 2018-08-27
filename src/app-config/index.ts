@@ -58,6 +58,10 @@ export interface AppConfigMutable {
 
   /** sniff pdf request */
   pdfSniff: boolean
+  /** URLs, [regexp.source, match_pattern] */
+  pdfWhitelist: Array<[string, string]>
+  /** URLs, [regexp.source, match_pattern] */
+  pdfBlacklist: Array<[string, string]>
 
   /** track search history */
   searhHistory: boolean
@@ -204,6 +208,8 @@ export function appConfigFactory (): AppConfig {
     fontSize: 13,
 
     pdfSniff: true,
+    pdfWhitelist: [],
+    pdfBlacklist: [],
 
     searhHistory: false,
     searhHistoryInco: false,

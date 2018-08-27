@@ -284,6 +284,16 @@
     "zh_CN": "网址支持匹配模式。 <a href=\"https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例\" target=\"_blank\">例子</a>。",
     "zh_TW": "網址支援匹配模式。 <a href=\"https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例\" target=\"_blank\">例子</a>。"
   },
+  "match_pattern_pdfBlacklist": {
+    "en": "PDF Black List",
+    "zh_CN": "PDF 黑名单",
+    "zh_TW": "PDF 黑名單"
+  },
+  "match_pattern_pdfWhitelist": {
+    "en": "PDF White List",
+    "zh_CN": "PDF 白名单",
+    "zh_TW": "PDF 白名單"
+  },
   "match_pattern_placeholder": {
     "en": "Input URL match patterns. Empty lines will be removed when saved.",
     "zh_CN": "输入网址或匹配模式。空行保存后会被移除。",

@@ -30,11 +30,16 @@ export default function search (
   text: string,
   config: AppConfig,
 ): Promise<GoogleSearchResult> {
+  const options = config.dicts.all.google.options
 
   const sl = 'auto'
-  const tl = !isContainChinese(text) || isContainJapanese(text) || isContainKorean(text)
-    ? config.langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN'
-    : 'en'
+  const tl = options.tl === 'default'
+    ? config.langCode === 'en'
+      ? 'en'
+      : !isContainChinese(text) || isContainJapanese(text) || isContainKorean(text)
+        ? config.langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN'
+        : 'en'
+    : options.tl
 
   return first([
     fetchWithToken('https://translate.google.com', sl, tl, text),

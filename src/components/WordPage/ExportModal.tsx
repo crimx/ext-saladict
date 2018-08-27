@@ -8,7 +8,7 @@ import { storage } from '@/_helpers/browser-api'
 const { Content, Sider } = Layout
 
 export interface ExportModalProps {
-  title: 'all' | 'selected' | ''
+  title: 'all' | 'selected' | 'page' | ''
   rawWords: Word[]
   onCancel: (e: React.MouseEvent<any>) => any
 }

@@ -49,6 +49,11 @@
     "zh_CN": "，确定？",
     "zh_TW": "，確認？"
   },
+  "delete_page": {
+    "en": "Delete page",
+    "zh_CN": "删除本页单词",
+    "zh_TW": "刪除本頁單字"
+  },
   "delete_selected": {
     "en": "Delete selected",
     "zh_CN": "删除选中单词",
@@ -78,6 +83,11 @@
     "en": "Generated Content",
     "zh_CN": "代表的内容",
     "zh_TW": "代表的內容"
+  },
+  "export_page": {
+    "en": "Export page",
+    "zh_CN": "导出本页单词",
+    "zh_TW": "輸出本頁單字"
   },
   "export_placeholder": {
     "en": "Placeholder",
@@ -118,5 +128,25 @@
     "en": "Saladict Notebook",
     "zh_CN": "Saladict 生词本",
     "zh_TW": "Saladict 生字本"
+  },
+  "wordcount_selected": {
+    "en": "{{count}} item selected",
+    "zh_CN": "已选中 {{count}} 个单词",
+    "zh_TW": "已選中 {{count}} 個單字"
+  },
+  "wordcount_selected_plural": {
+    "en": "{{count}} items selected",
+    "zh_CN": "已选中 {{count}} 个单词",
+    "zh_TW": "已選中 {{count}} 個單字"
+  },
+  "wordcount_total": {
+    "en": "{{count}} item total",
+    "zh_CN": "共有 {{count}} 个单词",
+    "zh_TW": "共有 {{count}} 個單字"
+  },
+  "wordcount_total_plural": {
+    "en": "{{count}} items total",
+    "zh_CN": "共有 {{count}} 个单词",
+    "zh_TW": "共有 {{count}} 個單字"
   }
 }
