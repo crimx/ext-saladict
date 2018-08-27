@@ -42,11 +42,7 @@
       }
     }
 
-    &.saladict-DictPanel-enter {
-      will-change: opacity, width, height;
-      transition: opacity 0.4s, width 0.4s, height 0.4s !important;
-    }
-
+    &.saladict-DictPanel-enter,
     &.saladict-DictPanel-entering {
       will-change: opacity, width, height, left, top !important;
       transition: opacity 0.2s,

@@ -164,7 +164,8 @@ export const reducer: WidgetReducer = {
       return state
     }
 
-    let { x, y, width, height } = state.widget.panelRect
+    let x = 10
+    let y = 10
 
     switch (tripleCtrlLocation) {
       case TCDirection.center:
@@ -206,6 +207,7 @@ export const reducer: WidgetReducer = {
     }
 
     const widget = _restoreWidget(state.widget)
+    const { width, height } = widget.panelRect
     widget.shouldPanelShow = true
     widget.panelRect = _reconcilePanelRect(x, y, width, height)
 

@@ -22,6 +22,7 @@ export interface MenuBarProps extends MenuBarDispatchers {
   readonly isFav: boolean
   readonly isPinned: boolean
   readonly searchHistory: SelectionInfo[]
+  readonly activeDicts: string[]
 }
 
 type MenuBarState = {
@@ -178,14 +179,10 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
   componentDidMount () {
     // Fix Firefox popup page delay bug
     setTimeout(() => {
-      this.focusSearchBox()
+      if (this.props.activeDicts.length <= 0 || isSaladictPopupPage) {
+        this.focusSearchBox()
+      }
     }, 10)
-  }
-
-  componentDidUpdate (prevProps: MenuBarProps) {
-    if (prevProps.searchHistory[0] !== this.props.searchHistory[0]) {
-      this.focusSearchBox()
-    }
   }
 
   render () {
@@ -233,6 +230,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
 
         <input type='text'
           className='panel-MenuBar_SearchBox'
+          key='search-box'
           ref={this.inputRef}
           onChange={this.handleSearchBoxInput}
           onKeyUp={this.handleSearchBoxKeyUp}

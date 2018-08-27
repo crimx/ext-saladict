@@ -15,7 +15,8 @@ export type DictPanelDispatchers = DictItemDispatchers & MenuBarDispatchers & {
 type ChildrenProps =
   DictPanelDispatchers &
   Omit<MenuBarProps,
-    'searchHistory'
+    'searchHistory' |
+    'activeDicts'
   > &
   Omit<DictItemProps,
     'id' |
@@ -70,6 +71,7 @@ export default class DictPanel extends React.Component<DictPanelProps> {
           isFav,
           isPinned,
           searchHistory: dictionaries.searchHistory,
+          activeDicts: dictionaries.active,
           handleDragAreaMouseDown,
           handleDragAreaTouchStart,
           searchText,
