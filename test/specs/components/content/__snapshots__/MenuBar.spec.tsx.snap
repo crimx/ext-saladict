@@ -46,6 +46,7 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
   </button>
   <input
     className="panel-MenuBar_SearchBox"
+    key="search-box"
     onChange={[Function]}
     onKeyUp={[Function]}
     type="text"
@@ -226,6 +227,7 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
   </button>
   <input
     className="panel-MenuBar_SearchBox"
+    key="search-box"
     onChange={[Function]}
     onKeyUp={[Function]}
     type="text"
