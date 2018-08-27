@@ -15,7 +15,8 @@ export type DictPanelDispatchers = DictItemDispatchers & MenuBarDispatchers & {
 type ChildrenProps =
   DictPanelDispatchers &
   Omit<MenuBarProps,
-    'searchHistory'
+    'searchHistory' |
+    'activeDicts'
   > &
   Omit<DictItemProps,
     'id' |
