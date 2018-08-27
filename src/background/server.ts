@@ -48,6 +48,10 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
         })
     case MsgType.DeleteWords:
       return deleteWords(data as MsgDeleteWords)
+        .then(response => {
+          setTimeout(() => message.send({ type: MsgType.WordSaved }), 0)
+          return response
+        })
     case MsgType.GetWordsByText:
       return getWordsByText(data as MsgGetWordsByText)
     case MsgType.GetWords:

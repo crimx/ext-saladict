@@ -475,6 +475,7 @@ export function isInNotebook (info: SelectionInfo): DispatcherThunk {
 export function openWordEditor (): DispatcherThunk {
   return (dispatch, getState) => {
     const { config, dictionaries, widget } = getState()
+    const info = dictionaries.searchHistory[0]
     if (config.editOnFav) {
       if (isSaladictPopupPage) {
         // Not enough space to open word editor on popup page
@@ -482,7 +483,7 @@ export function openWordEditor (): DispatcherThunk {
           message.send<MsgOpenUrl>({
             type: MsgType.OpenURL,
             url: 'notebook.html?info=' +
-              encodeURIComponent(JSON.stringify(dictionaries.searchHistory[0])),
+              encodeURIComponent(JSON.stringify(info)),
             self: true,
           })
         } catch (err) {
@@ -493,18 +494,21 @@ export function openWordEditor (): DispatcherThunk {
       }
     } else {
       if (widget.isFav) {
-        try {
-          message.send<MsgOpenUrl>({
-            type: MsgType.OpenURL,
-            url: 'notebook.html?text=' +
-              encodeURIComponent(dictionaries.searchHistory[0].text),
-            self: true,
+        recordManager.getWordsByText('notebook', info.text)
+          .then(words => {
+            if (words.length === 1) {
+              recordManager.deleteWords('notebook', [words[0].date])
+                .then(() => dispatch(favWord(false)))
+            } else {
+              message.send<MsgOpenUrl>({
+                type: MsgType.OpenURL,
+                url: 'notebook.html?text=' + encodeURIComponent(info.text),
+                self: true,
+              })
+            }
           })
-        } catch (err) {
-          console.warn(err)
-        }
       } else {
-        dispatch(addToNotebook(dictionaries.searchHistory[0]))
+        dispatch(addToNotebook(info))
       }
     }
   }
