@@ -1,11 +1,12 @@
 .dictLongman-Speaker {
   // cover the original bulet point
   position: absolute;
-  left: 0.8em;
+  top: 0.2em;
+  left: 0.6em;
   background: white;
 
   margin: 0;
-  padding: 0;
+  padding: 0 1px;
   border: none;
   color: inherit;
   pointer-events: auto;
@@ -13,6 +14,12 @@
 
   &:hover {
     outline: none;
+  }
+
+  svg {
+    fill: #555;
+    width: 1em;
+    height: 1em;
   }
 }
 
@@ -99,10 +106,13 @@
 }
 
 .dictLongman-Entry {
+  font-family: arial, helvetica, sans-serif;
+
   .SubEntry,
   .EXAMPLE,
   .Sense,
   .newline,
+  .ColloExa,
   .GramExa {
     display: block;
   }
@@ -119,6 +129,7 @@
   }
 
   .POS,
+  .SYN,
   .sensenum,
   .GRAM,
   .EXPR,
@@ -174,6 +185,7 @@
     }
   }
 
+  .SYN .synopp,
   .SIGNPOST {
     color: #fff;
     font-size: 79%;
@@ -221,6 +233,31 @@
       color: #999;
     }
   }
+
+  .ldoceEntry .synopp, .ldoceEntry .FREQ,
+  .ldoceEntry .AC {
+    display: inline-block;
+    font-style: normal;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 5px;
+    border: solid 1px;
+    padding-left: 4px;
+    padding-right: 4px;
+  }
+
+  .COLLO {
+    font-weight: bold;
+    margin-left: 10px;
+  }
+
+  .neutral {
+    color: #333;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    background: none;
+  }
 }
 
 .dictLongman-Box {
@@ -243,13 +280,15 @@
   .CROSS,
   .dont_say,
   .BADEXA {
-    padding: 0.16em 0.25em;
-    color: #fff;
-    background: #C0392B;
+    color: #f9690e;
   }
 
   .CROSS {
     padding-left: 0.4em;
+
+    .neutral {
+      color: #f9690e;
+    }
   }
 
   .BADEXA {
