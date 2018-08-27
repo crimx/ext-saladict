@@ -14,7 +14,7 @@ getAppConfig().then(config => {
 
 browser.runtime.onInstalled.addListener(onInstalled)
 browser.runtime.onStartup.addListener(onStartup)
-browser.notifications.onClicked.addListener(genClickListener('https://github.com/crimx/crx-saladict/wiki'))
+browser.notifications.onClicked.addListener(genClickListener('https://github.com/crimx/crx-saladict/releases'))
 if (browser.notifications.onButtonClicked) {
   // Firefox doesn't support
   browser.notifications.onButtonClicked.addListener(genClickListener('https://github.com/crimx/crx-saladict/releases'))
