@@ -45,14 +45,14 @@ storage.sync.get('config')
           config: (config || appConfigFactory()) as AppConfigMutable,
           unlock: false,
           newVersionAvailable: false,
-          searchText () {
+          searchText (text?: string) {
             clearTimeout(this['__searchTextTimeout'])
             if (window.innerWidth > 1024) {
               this['__searchTextTimeout'] = setTimeout(() => {
                 message.self.send<MsgSelection>({
                   type: MsgType.Selection,
                   selectionInfo: getDefaultSelectionInfo({
-                    text: window.__SALADICT_LAST_SEARCH__ || 'salad'
+                    text: text || window.__SALADICT_LAST_SEARCH__ || 'salad'
                   }),
                   self: true,
                   instant: true,

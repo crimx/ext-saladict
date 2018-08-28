@@ -269,13 +269,6 @@ export function startUpAction (): DispatcherThunk {
     if (!isSaladictPopupPage && !isSaladictOptionsPage) {
       listenTrpleCtrl(dispatch, getState)
     }
-
-    if (isSaladictOptionsPage) {
-      // make sure everything is loaded
-      setTimeout(() => {
-        dispatch(searchText({ info: getDefaultSelectionInfo({ text: 'salad' }) }))
-      }, 100)
-    }
   }
 }
 

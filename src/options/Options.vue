@@ -52,7 +52,9 @@
 </template>
 
 <script>
-import {storage, message} from '@/_helpers/browser-api'
+import { storage, message } from '@/_helpers/browser-api'
+import { getWordOfTheDay } from '@/_helpers/wordoftheday'
+import { timer } from '@/_helpers/promise-more'
 import appConfigFactory from '@/app-config'
 import { mergeConfig } from '@/app-config/merge-config'
 import Coffee from './Coffee'
@@ -89,8 +91,6 @@ export default {
   store: ['config', 'newVersionAvailable', 'searchText'],
   data () {
     return {
-      text: 'salad',
-      frameSource: 'https://baidu.com',
       isShowConfigUpdated: false,
       isShowSocial: false,
       isShowAcknowledgement: false,
@@ -213,7 +213,9 @@ export default {
     AlertModal
   },
   mounted () {
-    this.searchText()
+    Promise.all([getWordOfTheDay(), timer(1000)])
+      .then(([word]) => this.searchText(word))
+      .catch(() => this.searchText('salad'))
   }
 }
 </script>
