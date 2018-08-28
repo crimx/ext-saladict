@@ -349,7 +349,7 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
     if (!isNoSearchHistoryPage &&
         state.config.searhHistory &&
         (!browser.extension.inIncognitoContext || state.config.searhHistoryInco) &&
-        !isSameSelection(state.config.searhHistory[0], info)
+        !isSameSelection(state.dictionaries.searchHistory[0], info)
     ) {
       saveWord('history', info)
     }
