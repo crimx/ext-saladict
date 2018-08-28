@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.11.0"></a>
+# [6.11.0](https://github.com/crimx/ext-saladict/compare/v6.10.2...v6.11.0) (2018-08-28)
+
+
+### Bug Fixes
+
+* **content:** fix typo ([ff6140a](https://github.com/crimx/ext-saladict/commit/ff6140a))
+* **dicts:** fix typings ([2ea57d3](https://github.com/crimx/ext-saladict/commit/2ea57d3))
+
+
+### Features
+
+* **content:** auto-fill translation field ([efe95d2](https://github.com/crimx/ext-saladict/commit/efe95d2))
+* **dicts:** add sogou translation ([3e11231](https://github.com/crimx/ext-saladict/commit/3e11231))
+* **options:** add word of the day for options page ([251c119](https://github.com/crimx/ext-saladict/commit/251c119))
+
+
+
 <a name="6.10.2"></a>
 ## [6.10.2](https://github.com/crimx/ext-saladict/compare/v6.10.1...v6.10.2) (2018-08-27)
 
