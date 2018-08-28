@@ -12,7 +12,6 @@ export interface WordEditorPortalProps extends Omit<
   WordEditorProps,
   'getWordsByText'
 > {
-  shouldWordEditorShow: boolean
   isAnimation: boolean
 }
 
@@ -60,10 +59,6 @@ export default class WordEditorPortal extends React.Component<WordEditorPortalPr
     this.isMount = false
   }
 
-  shouldComponentUpdate (nextProps) {
-    return nextProps.shouldWordEditorShow !== this.props.shouldWordEditorShow
-  }
-
   renderEditor = () => {
     const {
       isAnimation,
@@ -87,18 +82,18 @@ export default class WordEditorPortal extends React.Component<WordEditorPortalPr
 
   render () {
     const {
-      shouldWordEditorShow,
+      editorWord,
       isAnimation,
     } = this.props
 
-    if (shouldWordEditorShow && !this.isMount) {
+    if (editorWord && !this.isMount) {
       this.mountEL()
     }
 
     return ReactDOM.createPortal(
       <CSSTransition
         classNames='saladict-WordEditor'
-        in={shouldWordEditorShow}
+        in={!!editorWord}
         timeout={500}
         mountOnEnter={true}
         unmountOnExit={true}

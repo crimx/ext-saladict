@@ -24,7 +24,7 @@ export const enum ActionType {
   FAV_WORD = 'widget/FAV_WORD',
   MOUSE_ON_BOWL = 'widget/MOUSE_ON_BOWL',
   NEW_SELECTION = 'widget/NEW_SELECTION',
-  WORD_EDITOR_SHOW = 'widget/WORD_EDITOR_SHOW',
+  EDITOR_WORD_UPDATE = 'widget/EDITOR_WORD_UPDATE',
   NEW_PANEL_HEIGHT = 'widget/NEW_PANEL_HEIGHT',
   PANEL_CORDS = 'widget/PANEL_CORDS',
 }
@@ -41,7 +41,7 @@ interface WidgetPayload {
   [ActionType.PIN]: undefined
   [ActionType.FAV_WORD]: boolean
   [ActionType.MOUSE_ON_BOWL]: boolean
-  [ActionType.WORD_EDITOR_SHOW]: boolean
+  [ActionType.EDITOR_WORD_UPDATE]: SelectionInfo | null
   [ActionType.NEW_SELECTION]: Partial<WidgetState['widget']>
   [ActionType.NEW_PANEL_HEIGHT]: number
   [ActionType.PANEL_CORDS]: { x: number, y: number }
@@ -63,12 +63,12 @@ export type WidgetState = {
       y: number
       width: number
       height: number
-    },
+    }
     readonly bowlRect: {
       x: number
       y: number
-    },
-    readonly shouldWordEditorShow: boolean
+    }
+    readonly editorWord: SelectionInfo | null
     readonly panelStateBeforeWordEditor: {
       x: number
       y: number
@@ -105,7 +105,7 @@ export const initState: WidgetState = {
       x: 0,
       y: 0,
     },
-    shouldWordEditorShow: false,
+    editorWord: null,
     panelStateBeforeWordEditor: {
       x: 0,
       y: 0,
@@ -269,16 +269,18 @@ export const reducer: WidgetReducer = {
       }
     }
   },
-  [ActionType.WORD_EDITOR_SHOW] (state, shouldWordEditorShow) {
+  [ActionType.EDITOR_WORD_UPDATE] (state, editorWord) {
+    const oldEditorWord = state.widget.editorWord
+
     const newState = {
       ...state,
       widget: {
         ...state.widget,
-        shouldWordEditorShow: shouldWordEditorShow,
+        editorWord,
       }
     }
 
-    if (shouldWordEditorShow) {
+    if (!oldEditorWord && editorWord) {
       const { panelRect, isPinned, shouldPanelShow } = state.widget
       const { x, y, width, height } = panelRect
       newState.widget.panelStateBeforeWordEditor = {
@@ -295,7 +297,7 @@ export const reducer: WidgetReducer = {
         width,
         height,
       )
-    } else {
+    } else if (oldEditorWord && !editorWord) {
       // Resume cords
       const { width, height } = state.widget.panelRect
       const { x, y, isPinned, shouldPanelShow } = state.widget.panelStateBeforeWordEditor
@@ -394,8 +396,8 @@ export function newSelection (payload: WidgetPayload[ActionType.NEW_SELECTION]):
   return ({ type: ActionType.NEW_SELECTION, payload })
 }
 
-export function wordEditorShouldShow (payload: boolean): Action<ActionType.WORD_EDITOR_SHOW> {
-  return ({ type: ActionType.WORD_EDITOR_SHOW, payload })
+export function updateEditorWord (payload: SelectionInfo | null): Action<ActionType.EDITOR_WORD_UPDATE> {
+  return ({ type: ActionType.EDITOR_WORD_UPDATE, payload })
 }
 
 export function newPanelHeight (payload: number): Action<ActionType.NEW_PANEL_HEIGHT> {
@@ -430,7 +432,7 @@ export function startUpAction (): DispatcherThunk {
     // from word page
     message.self.addListener<MsgEditWord>(MsgType.EditWord, ({ word }) => {
       dispatch(searchText({ info: word }))
-      dispatch(wordEditorShouldShow(true))
+      dispatch(updateEditorWord(word))
     })
   }
 }
@@ -492,7 +494,7 @@ export function openWordEditor (): DispatcherThunk {
           console.warn(err)
         }
       } else {
-        dispatch(wordEditorShouldShow(true))
+        dispatch(updateEditorWord(info))
       }
     } else {
       if (widget.isFav) {
@@ -518,7 +520,7 @@ export function openWordEditor (): DispatcherThunk {
 
 export function closeWordEditor (): DispatcherThunk {
   return (dispatch, getState) => {
-    dispatch(wordEditorShouldShow(false))
+    dispatch(updateEditorWord(null))
   }
 }
 
