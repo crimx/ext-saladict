@@ -3,7 +3,7 @@ import DictPanelPortal, { DictPanelPortalDispatchers } from '../components/DictP
 import { StoreState } from '../redux/modules'
 import { searchText } from '../redux/modules/dictionaries'
 import {
-  openWordEditor,
+  requestFavWord,
   panelPinSwitch,
   closePanel,
   updateItemHeight,
@@ -36,7 +36,7 @@ export const mapStateToProps = ({
 export const mapDispatchToProps: { [k in keyof DictPanelPortalDispatchers]: Function } = {
   searchText,
 
-  openWordEditor,
+  requestFavWord,
   panelPinSwitch,
   updateItemHeight,
   panelOnDrag,

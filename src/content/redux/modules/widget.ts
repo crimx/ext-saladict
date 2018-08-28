@@ -476,7 +476,7 @@ export function isInNotebook (info: SelectionInfo): DispatcherThunk {
   }
 }
 
-export function openWordEditor (): DispatcherThunk {
+export function requestFavWord (): DispatcherThunk {
   return (dispatch, getState) => {
     const { config, dictionaries, widget } = getState()
     const info = dictionaries.searchHistory[0]
