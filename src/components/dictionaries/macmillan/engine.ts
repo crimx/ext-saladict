@@ -78,7 +78,7 @@ function getAllResults (doc: Document): Document[] | Promise<Document[]> {
   if ($related.length <= 0) { return [doc] }
 
   return reflect($related.map(a => fetchDirtyDOM(a.href)))
-    .then(docs => [doc, ...docs.filter(d => d)])
+    .then(docs => [doc, ...docs.filter((d): d is Document => d as any as boolean)])
 }
 
 function handleAllDOMs (

@@ -52,7 +52,9 @@
 </template>
 
 <script>
-import {storage, message} from '@/_helpers/browser-api'
+import { storage, message } from '@/_helpers/browser-api'
+import { getWordOfTheDay } from '@/_helpers/wordoftheday'
+import { timer } from '@/_helpers/promise-more'
 import appConfigFactory from '@/app-config'
 import { mergeConfig } from '@/app-config/merge-config'
 import Coffee from './Coffee'
@@ -89,8 +91,6 @@ export default {
   store: ['config', 'newVersionAvailable', 'searchText'],
   data () {
     return {
-      text: 'salad',
-      frameSource: 'https://baidu.com',
       isShowConfigUpdated: false,
       isShowSocial: false,
       isShowAcknowledgement: false,
@@ -177,20 +177,23 @@ export default {
             Patch update url
         \*-----------------------------------------------*/
         const config = JSON.parse(JSON.stringify(this.config))
-        config.dicts.all.google.page = config.dicts.all.google.options.cnfirst
-          ? `https://translate.google.cn/#auto/${config.langCode}/%s`
-          : `https://translate.google.com/#auto/${config.langCode}/%s`
 
-        config.contextMenus.all.google_translate = config.dicts.all.google.options.cnfirst
-          ? `https://translate.google.cn/#auto/${config.langCode}/%s`
-          : `https://translate.google.com/#auto/${config.langCode}/%s`
+        const googleLocation = config.dicts.all.google.options.cnfirst ? 'cn' : 'com'
+        const googleLang = config.dicts.all.google.options.tl === 'default'
+          ? config.langCode
+          : config.dicts.all.google.options.tl
+        config.dicts.all.google.page = `https://translate.google.${googleLocation}/#auto/${googleLang}/%s`
+        config.contextMenus.all.google_translate = `https://translate.google.${googleLocation}/#auto/${googleLang}/%s`
 
-        const sogouLangCode = config.langCode === 'zh-CN'
-          ? 'zh-CHS'
-          : config.langCode === 'zh-TW'
-            ? 'zh-CHT'
-            : 'en'
-        config.contextMenus.all.sogou = `https://fanyi.sogou.com/#auto/${sogouLangCode}/%s`
+        const sogouLang = config.dicts.all.sogou.options.tl === 'default'
+          ? config.langCode === 'zh-CN'
+            ? 'zh-CHS'
+            : config.langCode === 'zh-TW'
+              ? 'zh-CHT'
+              : 'en'
+          : config.dicts.all.sogou.options.tl
+        config.dicts.all.sogou.page = `https://fanyi.sogou.com/#auto/${sogouLang}/%s`
+        config.contextMenus.all.sogou = `https://fanyi.sogou.com/#auto/${sogouLang}/%s`
 
         storage.sync.set({config})
           .then(() => {
@@ -210,7 +213,9 @@ export default {
     AlertModal
   },
   mounted () {
-    this.searchText()
+    Promise.all([getWordOfTheDay(), timer(1000)])
+      .then(([word]) => this.searchText(word))
+      .catch(() => this.searchText('salad'))
   }
 }
 </script>

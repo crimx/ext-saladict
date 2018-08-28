@@ -1,19 +1,10 @@
-import { handleNoResult } from '../helpers'
+import { handleNoResult, MachineTranslateResult } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 import { first } from '@/_helpers/promise-more'
 
-export interface GoogleResult {
-  searchText: {
-    text: string
-    audio?: string
-  }
-  trans: {
-    text: string
-    audio?: string
-  }
-}
+export type GoogleResult = MachineTranslateResult
 
 interface GoogleRawResult {
   json: string

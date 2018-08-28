@@ -85,9 +85,9 @@
     "en": "Translation"
   },
   "wordEditorNoteTransExplain": {
-    "zh_CN": "（为什么不自动填充）",
-    "zh_TW": "（爲什麼不自動錄入）",
-    "en": "(Why translations not being added automatically)"
+    "zh_CN": "（Beta 测试版）",
+    "zh_TW": "（Beta 測試版）",
+    "en": "(Beta)"
   },
   "wordEditorNoteNote": {
     "zh_CN": "笔记",

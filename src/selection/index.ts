@@ -73,8 +73,12 @@ message.addListener(msg => {
   }
 })
 
+interface PostMessageEvent extends MessageEvent {
+  data: PostMsgSelection
+}
+
 /** Pass through message from iframes */
-window.addEventListener('message', ({ data, source }: { data: PostMsgSelection, source: Window | null }) => {
+window.addEventListener('message', ({ data, source }: PostMessageEvent) => {
   if (data.type !== PostMsgType.Selection) { return }
 
   // get the souce iframe

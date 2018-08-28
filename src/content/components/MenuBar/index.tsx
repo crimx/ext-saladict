@@ -12,7 +12,7 @@ export interface MenuBarDispatchers {
   readonly handleDragAreaMouseDown: (e: React.MouseEvent<HTMLDivElement>) => any
   readonly handleDragAreaTouchStart: (e: React.TouchEvent<HTMLDivElement>) => any
   readonly searchText: (arg: { info: SelectionInfo }) => any
-  readonly openWordEditor: () => any
+  readonly requestFavWord: () => any
   readonly shareImg: () => any
   readonly panelPinSwitch: () => any
   readonly closePanel: () => any
@@ -124,7 +124,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
   handleIconFavClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.button !== 2) {
       e.currentTarget.blur()
-      this.props.openWordEditor()
+      this.props.requestFavWord()
     }
   }
 

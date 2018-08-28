@@ -3,10 +3,12 @@ import { StoreState, DispatcherThunk, Dispatcher } from './index'
 import appConfigFactory, { TCDirection, AppConfig, DictID } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
 import { createAppConfigStream } from '@/_helpers/config-manager'
-import { MsgSelection, MsgType, MsgTempDisabledState, MsgEditWord, MsgOpenUrl } from '@/typings/message'
+import { MsgSelection, MsgType, MsgTempDisabledState, MsgEditWord, MsgOpenUrl, MsgFetchDictResult } from '@/typings/message'
 import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
+import { reflect } from '@/_helpers/promise-more'
+import { MachineTranslateResult } from '@/components/dictionaries/helpers'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
@@ -24,7 +26,7 @@ export const enum ActionType {
   FAV_WORD = 'widget/FAV_WORD',
   MOUSE_ON_BOWL = 'widget/MOUSE_ON_BOWL',
   NEW_SELECTION = 'widget/NEW_SELECTION',
-  WORD_EDITOR_SHOW = 'widget/WORD_EDITOR_SHOW',
+  EDITOR_WORD_UPDATE = 'widget/EDITOR_WORD_UPDATE',
   NEW_PANEL_HEIGHT = 'widget/NEW_PANEL_HEIGHT',
   PANEL_CORDS = 'widget/PANEL_CORDS',
 }
@@ -41,7 +43,7 @@ interface WidgetPayload {
   [ActionType.PIN]: undefined
   [ActionType.FAV_WORD]: boolean
   [ActionType.MOUSE_ON_BOWL]: boolean
-  [ActionType.WORD_EDITOR_SHOW]: boolean
+  [ActionType.EDITOR_WORD_UPDATE]: SelectionInfo | null
   [ActionType.NEW_SELECTION]: Partial<WidgetState['widget']>
   [ActionType.NEW_PANEL_HEIGHT]: number
   [ActionType.PANEL_CORDS]: { x: number, y: number }
@@ -63,12 +65,12 @@ export type WidgetState = {
       y: number
       width: number
       height: number
-    },
+    }
     readonly bowlRect: {
       x: number
       y: number
-    },
-    readonly shouldWordEditorShow: boolean
+    }
+    readonly editorWord: SelectionInfo | null
     readonly panelStateBeforeWordEditor: {
       x: number
       y: number
@@ -105,7 +107,7 @@ export const initState: WidgetState = {
       x: 0,
       y: 0,
     },
-    shouldWordEditorShow: false,
+    editorWord: null,
     panelStateBeforeWordEditor: {
       x: 0,
       y: 0,
@@ -269,16 +271,18 @@ export const reducer: WidgetReducer = {
       }
     }
   },
-  [ActionType.WORD_EDITOR_SHOW] (state, shouldWordEditorShow) {
+  [ActionType.EDITOR_WORD_UPDATE] (state, editorWord) {
+    const oldEditorWord = state.widget.editorWord
+
     const newState = {
       ...state,
       widget: {
         ...state.widget,
-        shouldWordEditorShow: shouldWordEditorShow,
+        editorWord,
       }
     }
 
-    if (shouldWordEditorShow) {
+    if (!oldEditorWord && editorWord) {
       const { panelRect, isPinned, shouldPanelShow } = state.widget
       const { x, y, width, height } = panelRect
       newState.widget.panelStateBeforeWordEditor = {
@@ -295,7 +299,7 @@ export const reducer: WidgetReducer = {
         width,
         height,
       )
-    } else {
+    } else if (oldEditorWord && !editorWord) {
       // Resume cords
       const { width, height } = state.widget.panelRect
       const { x, y, isPinned, shouldPanelShow } = state.widget.panelStateBeforeWordEditor
@@ -394,8 +398,8 @@ export function newSelection (payload: WidgetPayload[ActionType.NEW_SELECTION]):
   return ({ type: ActionType.NEW_SELECTION, payload })
 }
 
-export function wordEditorShouldShow (payload: boolean): Action<ActionType.WORD_EDITOR_SHOW> {
-  return ({ type: ActionType.WORD_EDITOR_SHOW, payload })
+export function updateEditorWord (payload: SelectionInfo | null): Action<ActionType.EDITOR_WORD_UPDATE> {
+  return ({ type: ActionType.EDITOR_WORD_UPDATE, payload })
 }
 
 export function newPanelHeight (payload: number): Action<ActionType.NEW_PANEL_HEIGHT> {
@@ -430,7 +434,7 @@ export function startUpAction (): DispatcherThunk {
     // from word page
     message.self.addListener<MsgEditWord>(MsgType.EditWord, ({ word }) => {
       dispatch(searchText({ info: word }))
-      dispatch(wordEditorShouldShow(true))
+      dispatch(updateEditorWord(word))
     })
   }
 }
@@ -474,10 +478,10 @@ export function isInNotebook (info: SelectionInfo): DispatcherThunk {
   }
 }
 
-export function openWordEditor (): DispatcherThunk {
+export function requestFavWord (): DispatcherThunk {
   return (dispatch, getState) => {
     const { config, dictionaries, widget } = getState()
-    const info = dictionaries.searchHistory[0]
+    const word = { ...dictionaries.searchHistory[0], date: Date.now() }
     if (config.editOnFav) {
       if (isSaladictPopupPage) {
         // Not enough space to open word editor on popup page
@@ -485,18 +489,18 @@ export function openWordEditor (): DispatcherThunk {
           message.send<MsgOpenUrl>({
             type: MsgType.OpenURL,
             url: 'notebook.html?info=' +
-              encodeURIComponent(JSON.stringify(info)),
+              encodeURIComponent(JSON.stringify(word)),
             self: true,
           })
         } catch (err) {
           console.warn(err)
         }
       } else {
-        dispatch(wordEditorShouldShow(true))
+        dispatch(updateEditorWord(word))
       }
     } else {
       if (widget.isFav) {
-        recordManager.getWordsByText('notebook', info.text)
+        recordManager.getWordsByText('notebook', word.text)
           .then(words => {
             if (words.length === 1) {
               recordManager.deleteWords('notebook', [words[0].date])
@@ -504,25 +508,54 @@ export function openWordEditor (): DispatcherThunk {
             } else {
               message.send<MsgOpenUrl>({
                 type: MsgType.OpenURL,
-                url: 'notebook.html?text=' + encodeURIComponent(info.text),
+                url: 'notebook.html?text=' + encodeURIComponent(word.text),
                 self: true,
               })
             }
           })
       } else {
-        dispatch(addToNotebook(info))
+        dispatch(addToNotebook(word))
       }
+    }
+
+    if (word.context) {
+      const dicts = ['Google', 'Sogou']
+      const ids = ['google', 'sogou'] as ['google', 'sogou']
+      reflect<MachineTranslateResult>(ids.map(id => message.send<MsgFetchDictResult>({
+        type: MsgType.FetchDictResult,
+        id,
+        text: word.context,
+      })))
+      .then(results => {
+        const trans = results
+          .map((result, i) => result && dicts[i] + ': ' + result.trans.text)
+          .filter(Boolean)
+          .join('\n')
+        if (!trans) { return }
+
+        if (config.editOnFav) {
+          const editorWord = widget.editorWord || word
+          dispatch(updateEditorWord({
+            ...editorWord,
+            trans: editorWord.trans
+              ? editorWord.trans + '\n\n' + trans
+              : trans
+          }))
+        } else {
+          dispatch(addToNotebook({ ...word, trans }))
+        }
+      })
     }
   }
 }
 
 export function closeWordEditor (): DispatcherThunk {
   return (dispatch, getState) => {
-    dispatch(wordEditorShouldShow(false))
+    dispatch(updateEditorWord(null))
   }
 }
 
-export function addToNotebook (info: SelectionInfo): DispatcherThunk {
+export function addToNotebook (info: SelectionInfo | recordManager.Word): DispatcherThunk {
   return (dispatch, getState) => {
     return recordManager.saveWord('notebook', info)
       .then(() => dispatch(favWord(true)))
