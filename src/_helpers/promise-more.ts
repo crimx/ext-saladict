@@ -1,7 +1,7 @@
 /**
  * Like Promise.all but always resolves.
  */
-export function reflect<T> (iterable: ArrayLike<T | PromiseLike<T>>): Promise<T[]> {
+export function reflect<T> (iterable: ArrayLike<T | PromiseLike<T>>): Promise<(T | null)[]> {
   const arr = Array.isArray(iterable) ? iterable : Array.from(iterable)
   return Promise.all(arr.map(p => Promise.resolve(p).catch(() => null)))
 }

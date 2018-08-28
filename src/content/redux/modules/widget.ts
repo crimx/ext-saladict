@@ -3,10 +3,12 @@ import { StoreState, DispatcherThunk, Dispatcher } from './index'
 import appConfigFactory, { TCDirection, AppConfig, DictID } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
 import { createAppConfigStream } from '@/_helpers/config-manager'
-import { MsgSelection, MsgType, MsgTempDisabledState, MsgEditWord, MsgOpenUrl } from '@/typings/message'
+import { MsgSelection, MsgType, MsgTempDisabledState, MsgEditWord, MsgOpenUrl, MsgFetchDictResult } from '@/typings/message'
 import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
+import { reflect } from '@/_helpers/promise-more'
+import { MachineTranslateResult } from '@/components/dictionaries/helpers'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
@@ -479,7 +481,7 @@ export function isInNotebook (info: SelectionInfo): DispatcherThunk {
 export function requestFavWord (): DispatcherThunk {
   return (dispatch, getState) => {
     const { config, dictionaries, widget } = getState()
-    const info = dictionaries.searchHistory[0]
+    const word = { ...dictionaries.searchHistory[0], date: Date.now() }
     if (config.editOnFav) {
       if (isSaladictPopupPage) {
         // Not enough space to open word editor on popup page
@@ -487,18 +489,18 @@ export function requestFavWord (): DispatcherThunk {
           message.send<MsgOpenUrl>({
             type: MsgType.OpenURL,
             url: 'notebook.html?info=' +
-              encodeURIComponent(JSON.stringify(info)),
+              encodeURIComponent(JSON.stringify(word)),
             self: true,
           })
         } catch (err) {
           console.warn(err)
         }
       } else {
-        dispatch(updateEditorWord(info))
+        dispatch(updateEditorWord(word))
       }
     } else {
       if (widget.isFav) {
-        recordManager.getWordsByText('notebook', info.text)
+        recordManager.getWordsByText('notebook', word.text)
           .then(words => {
             if (words.length === 1) {
               recordManager.deleteWords('notebook', [words[0].date])
@@ -506,14 +508,43 @@ export function requestFavWord (): DispatcherThunk {
             } else {
               message.send<MsgOpenUrl>({
                 type: MsgType.OpenURL,
-                url: 'notebook.html?text=' + encodeURIComponent(info.text),
+                url: 'notebook.html?text=' + encodeURIComponent(word.text),
                 self: true,
               })
             }
           })
       } else {
-        dispatch(addToNotebook(info))
+        dispatch(addToNotebook(word))
       }
+    }
+
+    if (word.context) {
+      const dicts = ['Google', 'Sogou']
+      const ids = ['google', 'sogou'] as ['google', 'sogou']
+      reflect<MachineTranslateResult>(ids.map(id => message.send<MsgFetchDictResult>({
+        type: MsgType.FetchDictResult,
+        id,
+        text: word.context,
+      })))
+      .then(results => {
+        const trans = results
+          .map((result, i) => result && dicts[i] + ': ' + result.trans.text)
+          .filter(Boolean)
+          .join('\n')
+        if (!trans) { return }
+
+        if (config.editOnFav) {
+          const editorWord = widget.editorWord || word
+          dispatch(updateEditorWord({
+            ...editorWord,
+            trans: editorWord.trans
+              ? editorWord.trans + '\n\n' + trans
+              : trans
+          }))
+        } else {
+          dispatch(addToNotebook({ ...word, trans }))
+        }
+      })
     }
   }
 }
@@ -524,7 +555,7 @@ export function closeWordEditor (): DispatcherThunk {
   }
 }
 
-export function addToNotebook (info: SelectionInfo): DispatcherThunk {
+export function addToNotebook (info: SelectionInfo | recordManager.Word): DispatcherThunk {
   return (dispatch, getState) => {
     return recordManager.saveWord('notebook', info)
       .then(() => dispatch(favWord(true)))
