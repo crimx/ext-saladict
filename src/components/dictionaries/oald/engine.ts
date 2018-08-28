@@ -74,7 +74,7 @@ function getAllEntries (
 
   if (hrefs.length > 0) {
     return reflect(hrefs.map(href => fetchDirtyDOM(href)))
-      .then(docs => [doc, ...docs.filter(Boolean)])
+      .then(docs => [doc, ...docs.filter((d): d is Document => d as any as boolean)])
   }
 
   return Promise.resolve([doc])

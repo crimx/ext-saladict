@@ -3,7 +3,7 @@ import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 
-type SogouResult = MachineTranslateResult
+export type SogouResult = MachineTranslateResult
 
 type SogouSearchResult = DictSearchResult<SogouResult>
 

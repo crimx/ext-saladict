@@ -4,7 +4,7 @@ import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 import { first } from '@/_helpers/promise-more'
 
-type GoogleResult = MachineTranslateResult
+export type GoogleResult = MachineTranslateResult
 
 interface GoogleRawResult {
   json: string
