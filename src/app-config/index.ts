@@ -300,7 +300,7 @@ export function appConfigFactory (): AppConfig {
     blacklist: [],
 
     dicts: {
-      selected: ['bing', 'cambridge', 'youdao', 'urban', 'vocabulary', 'google', 'zdic', 'guoyu', 'liangan', 'googledict'],
+      selected: ['bing', 'cambridge', 'youdao', 'urban', 'vocabulary', 'google', 'sogou', 'zdic', 'guoyu', 'liangan', 'googledict'],
       // settings of each dict will be auto-generated
       all: getALlDicts()
     },

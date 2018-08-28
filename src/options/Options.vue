@@ -177,20 +177,23 @@ export default {
             Patch update url
         \*-----------------------------------------------*/
         const config = JSON.parse(JSON.stringify(this.config))
-        config.dicts.all.google.page = config.dicts.all.google.options.cnfirst
-          ? `https://translate.google.cn/#auto/${config.langCode}/%s`
-          : `https://translate.google.com/#auto/${config.langCode}/%s`
 
-        config.contextMenus.all.google_translate = config.dicts.all.google.options.cnfirst
-          ? `https://translate.google.cn/#auto/${config.langCode}/%s`
-          : `https://translate.google.com/#auto/${config.langCode}/%s`
+        const googleLocation = config.dicts.all.google.options.cnfirst ? 'cn' : 'com'
+        const googleLang = config.dicts.all.google.options.tl === 'default'
+          ? config.langCode
+          : config.dicts.all.google.options.tl
+        config.dicts.all.google.page = `https://translate.google.${googleLocation}/#auto/${googleLang}/%s`
+        config.contextMenus.all.google_translate = `https://translate.google.${googleLocation}/#auto/${googleLang}/%s`
 
-        const sogouLangCode = config.langCode === 'zh-CN'
-          ? 'zh-CHS'
-          : config.langCode === 'zh-TW'
-            ? 'zh-CHT'
-            : 'en'
-        config.contextMenus.all.sogou = `https://fanyi.sogou.com/#auto/${sogouLangCode}/%s`
+        const sogouLang = config.dicts.all.sogou.options.tl === 'default'
+          ? config.langCode === 'zh-CN'
+            ? 'zh-CHS'
+            : config.langCode === 'zh-TW'
+              ? 'zh-CHT'
+              : 'en'
+          : config.dicts.all.sogou.options.tl
+        config.dicts.all.sogou.page = `https://fanyi.sogou.com/#auto/${sogouLang}/%s`
+        config.contextMenus.all.sogou = `https://fanyi.sogou.com/#auto/${sogouLang}/%s`
 
         storage.sync.set({config})
           .then(() => {

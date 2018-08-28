@@ -1,0 +1,34 @@
+{
+  "name": {
+    "en": "Sogou Translation",
+    "zh_CN": "搜狗翻译",
+    "zh_TW": "搜狗翻譯"
+  },
+  "options": {
+    "tl": {
+      "en": "Target language",
+      "zh_CN": "目标语言",
+      "zh_TW": "目標語言"
+    },
+    "tl-default": {
+      "en": "Default",
+      "zh_CN": "随扩展语言",
+      "zh_TW": "同介面語言"
+    },
+    "tl-zh-CHS": {
+      "en": "简体中文",
+      "zh_CN": "简体中文",
+      "zh_TW": "简体中文"
+    },
+    "tl-zh-CHT": {
+      "en": "繁體中文",
+      "zh_CN": "繁體中文",
+      "zh_TW": "繁體中文"
+    },
+    "tl-en": {
+      "en": "English",
+      "zh_CN": "English",
+      "zh_TW": "English"
+    }
+  }
+}
