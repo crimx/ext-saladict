@@ -1,18 +1,9 @@
-import { handleNoResult } from '../helpers'
+import { handleNoResult, MachineTranslateResult } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 
-export interface SogouResult {
-  searchText: {
-    text: string
-    audio?: string
-  }
-  trans: {
-    text: string
-    audio?: string
-  }
-}
+type SogouResult = MachineTranslateResult
 
 type SogouSearchResult = DictSearchResult<SogouResult>
 

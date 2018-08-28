@@ -2,6 +2,17 @@ import DOMPurify from 'dompurify'
 
 export type HTMLString = string
 
+export interface MachineTranslateResult {
+  searchText: {
+    text: string
+    audio?: string
+  }
+  trans: {
+    text: string
+    audio?: string
+  }
+}
+
 export function handleNoResult<T> (): Promise<T> {
   return Promise.reject('No result')
 }
