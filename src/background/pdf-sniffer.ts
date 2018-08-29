@@ -2,8 +2,8 @@
  * Open pdf link directly
  */
 
-import { storage } from '@/_helpers/browser-api'
 import { AppConfig } from '@/app-config'
+import { addActiveConfigListener } from '@/_helpers/config-manager'
 
 let blacklist: AppConfig['pdfBlacklist'] = []
 let whitelist: AppConfig['pdfWhitelist'] = []
@@ -20,15 +20,13 @@ export function init (config: AppConfig) {
     startListening()
   }
 
-  storage.sync.addListener('config', ({ config }) => {
-    const oldValue = config.oldValue as AppConfig | undefined
-    const newValue = config.newValue as AppConfig | undefined
-    if (newValue) {
-      blacklist = newValue.pdfBlacklist
-      whitelist = newValue.pdfWhitelist
+  addActiveConfigListener((newConfig, oldConfig) => {
+    if (newConfig) {
+      blacklist = newConfig.pdfBlacklist
+      whitelist = newConfig.pdfWhitelist
 
-      if (!oldValue || newValue.pdfSniff !== oldValue.pdfSniff) {
-        if (newValue.pdfSniff) {
+      if (!oldConfig || newConfig.pdfSniff !== oldConfig.pdfSniff) {
+        if (newConfig.pdfSniff) {
           startListening()
         } else {
           stopListening()

@@ -1,0 +1,22 @@
+{
+  "daily": {
+    "en": "Daily Mode",
+    "zh_CN": "日常模式",
+    "zh_TW": "日常模式"
+  },
+  "default": {
+    "en": "Default Mode",
+    "zh_CN": "默认模式",
+    "zh_TW": "預設模式"
+  },
+  "scholar": {
+    "en": "Scholar Mode",
+    "zh_CN": "学术模式",
+    "zh_TW": "學術模式"
+  },
+  "translation": {
+    "en": "Translation Mode",
+    "zh_CN": "翻译模式",
+    "zh_TW": "翻譯模式"
+  }
+}

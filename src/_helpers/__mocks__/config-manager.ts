@@ -14,9 +14,9 @@ export type AppConfigChanged = {
   config: StorageChange<AppConfig>
 }
 
-export const getAppConfig = jest.fn(() => Promise.resolve(appConfigFactory()))
+export const getActiveConfig = jest.fn(() => Promise.resolve(appConfigFactory()))
 
-export const setAppConfig = jest.fn((config: AppConfig) => Promise.resolve())
+export const updateActiveConfig = jest.fn((config: AppConfig) => Promise.resolve())
 
 export const addAppConfigListener = jest.fn((cb: StorageListenerCb) => {
   listeners.add(cb)
@@ -29,7 +29,7 @@ export const removeAppConfigListener = jest.fn((cb: StorageListenerCb) => {
 /**
  * Get AppConfig and create a stream listening config changing
  */
-export const createAppConfigStream = jest.fn((): Observable<AppConfig> => {
+export const createActiveConfigStream = jest.fn((): Observable<AppConfig> => {
   return concat<AppConfig>(
     of(appConfigFactory()),
     fromEventPattern<AppConfigChanged>(
@@ -46,8 +46,8 @@ export function dispatchAppConfigEvent (newValue?: AppConfig, oldValue?: AppConf
 }
 
 export const appConfig = {
-  get: getAppConfig,
-  set: setAppConfig,
+  get: getActiveConfig,
+  set: updateActiveConfig,
   addListener: addAppConfigListener,
-  createStream: createAppConfigStream,
+  createStream: createActiveConfigStream,
 }

@@ -3,7 +3,7 @@ import { DictID, appConfigFactory, AppConfig } from '@/app-config'
 import isEqual from 'lodash/isEqual'
 import { saveWord } from '@/_helpers/record-manager'
 import { getDefaultSelectionInfo, SelectionInfo, isSameSelection } from '@/_helpers/selection'
-import { createAppConfigStream } from '@/_helpers/config-manager'
+import { createActiveConfigStream } from '@/_helpers/config-manager'
 import { isContainChinese, isContainEnglish, testerPunct, isContainMinor, testerChinese, testJapanese, testKorean } from '@/_helpers/lang-check'
 import { MsgType, MsgFetchDictResult } from '@/typings/message'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
@@ -259,7 +259,7 @@ export function addSearchHistory (
 
 export function startUpAction (): DispatcherThunk {
   return (dispatch, getState) => {
-    createAppConfigStream().subscribe(config => {
+    createActiveConfigStream().subscribe(config => {
       dispatch(newConfig(config))
       if (isSaladictPopupPage) {
         popupPageInit(dispatch, getState)

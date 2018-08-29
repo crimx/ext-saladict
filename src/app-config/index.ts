@@ -1,12 +1,15 @@
 import { DeepReadonly } from '@/typings/helpers'
 import { getALlDicts } from './dicts'
 import { getAllContextMenus } from './context-menus'
+import { genUniqueKey } from '@/_helpers/uniqueKey'
+
+export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 
 const langUI = (browser.i18n.getUILanguage() || 'en')
-const langCode: any = /^zh-CN|zh-TW|en$/.test(langUI)
+const langCode: LangCode = /^zh-CN|zh-TW|en$/.test(langUI)
   ? langUI === 'zh-HK'
     ? 'zh-TW'
-    : langUI
+    : langUI as LangCode
   : 'en'
 
 export type DictConfigsMutable = ReturnType<typeof getALlDicts>
@@ -33,7 +36,11 @@ export type PreloadSource = '' | 'clipboard' | 'selection'
 export type AppConfig = DeepReadonly<AppConfigMutable>
 
 export interface AppConfigMutable {
-  readonly version: number,
+  readonly version: number
+  readonly id: string
+
+  /** name of the config mode */
+  name: string
 
   /** activate app, won't affect triple-ctrl setting */
   active: boolean
@@ -45,7 +52,7 @@ export interface AppConfigMutable {
   animation: boolean
 
   /** language code for locales */
-  langCode: 'en' | 'zh-CN' | 'zh-TW'
+  langCode: LangCode
 
   /** panel width */
   panelWidth: number
@@ -189,9 +196,12 @@ export interface AppConfigMutable {
 
 export default appConfigFactory
 
-export function appConfigFactory (): AppConfig {
+export function appConfigFactory (id?: string): AppConfig {
   return {
     version: 9,
+    id: id || genUniqueKey(),
+
+    name: `%%_default_%%`,
 
     active: true,
 

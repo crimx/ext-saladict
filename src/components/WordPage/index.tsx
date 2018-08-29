@@ -12,7 +12,7 @@ import zh_TW from 'antd/lib/locale-provider/zh_TW'
 import en_US from 'antd/lib/locale-provider/en_US'
 
 import { Area } from '@/_helpers/record-manager'
-import { createAppConfigStream } from '@/_helpers/config-manager'
+import { createActiveConfigStream } from '@/_helpers/config-manager'
 
 const i18n = i18nLoader({ wordpage: worPageLocales, content: contentLocales }, 'wordpage')
 const antdLocales = {
@@ -38,7 +38,7 @@ export default class WordPage extends React.Component<WordPageProps, WordPageSta
   }
 
   componentDidMount () {
-    createAppConfigStream().subscribe(config => {
+    createActiveConfigStream().subscribe(config => {
       const { locale } = this.state
       if (locale !== config.langCode && antdLocales[locale]) {
         this.setState({ locale: config.langCode })

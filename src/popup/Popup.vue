@@ -45,7 +45,7 @@ import Vue from 'vue'
 import { message, storage } from '@/_helpers/browser-api'
 import { MsgType, MsgTempDisabledState, MsgIsPinned, MsgQueryPanelState } from '@/typings/message'
 import { appConfigFactory, AppConfigMutable } from '@/app-config'
-import { createAppConfigStream, setAppConfig } from '@/_helpers/config-manager'
+import { createActiveConfigStream, updateActiveConfig } from '@/_helpers/config-manager'
 
 export default Vue.extend({
   name: 'Popup',
@@ -71,7 +71,7 @@ export default Vue.extend({
   methods: {
     changeActive () {
       this.config.active = !this.config.active
-      setAppConfig(this.config)
+      updateActiveConfig(this.config)
     },
     changeTempOff () {
       const newTempOff = !this.tempOff
@@ -100,7 +100,7 @@ export default Vue.extend({
     },
     changeInsCap () {
       this.config[this.insCapMode].instant.enable = !this.config[this.insCapMode].instant.enable
-      setAppConfig(this.config)
+      updateActiveConfig(this.config)
     },
     showQRcode () {
       chrome.tabs.query({active: true, currentWindow: true}, tabs => {
@@ -128,7 +128,7 @@ export default Vue.extend({
     },
   },
   created () {
-    createAppConfigStream().subscribe(config => {
+    createActiveConfigStream().subscribe(config => {
       this.config = config as AppConfigMutable
     })
 

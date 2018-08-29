@@ -14,6 +14,7 @@ import dictsLocles from '@/_locales/dicts'
 import optionsLocles from '@/_locales/options'
 import contextLocles from '@/_locales/context'
 import { MsgType, MsgSelection } from '@/typings/message'
+import { getActiveConfig } from '@/_helpers/config-manager'
 
 window.__SALADICT_INTERNAL_PAGE__ = true
 window.__SALADICT_OPTIONS_PAGE__ = true
@@ -33,8 +34,8 @@ const i18n = new VueI18Next(i18nLoader({
   ctx: contextLocles,
 }, 'common'))
 
-storage.sync.get('config')
-  .then(({ config }) => {
+getActiveConfig()
+  .then(config => {
     // tslint:disable
     new Vue({
       el: '#app',

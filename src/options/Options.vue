@@ -60,6 +60,7 @@ import { mergeConfig } from '@/app-config/merge-config'
 import Coffee from './Coffee'
 import SocialMedia from './SocialMedia'
 import AlertModal from '@/components/AlertModal'
+import { updateActiveConfig } from '@/_helpers/config-manager';
 
 // Auto import option section components
 const _optNames = [
@@ -153,18 +154,7 @@ export default {
         title: this.$t('opt:reset_modal_title'),
         content: this.$t('opt:reset_modal_content'),
         onConfirm: () => {
-          storage.sync.set({config: appConfigFactory()})
-            .then(() => storage.sync.get('config'))
-            .then(({config}) => {
-              if (config) {
-                this.config = config
-              } else {
-                // something wrong with the sync storage, use default config without syncing
-                const defaultConfig = appConfigFactory()
-                storage.sync.set({config: defaultConfig})
-                this.config = defaultConfig
-              }
-            })
+          resetConfig().then(config => this.config = config)
         }
       })
     }
@@ -195,7 +185,7 @@ export default {
         config.dicts.all.sogou.page = `https://fanyi.sogou.com/#auto/${sogouLang}/%s`
         config.contextMenus.all.sogou = `https://fanyi.sogou.com/#auto/${sogouLang}/%s`
 
-        storage.sync.set({config})
+        updateActiveConfig(config)
           .then(() => {
             this.isShowConfigUpdated = true
             clearTimeout(this.showConfigUpdatedTimeout)

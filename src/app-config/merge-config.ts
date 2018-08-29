@@ -1,4 +1,4 @@
-import { appConfigFactory, AppConfig, AppConfigMutable } from '@/app-config'
+import { appConfigFactory, AppConfig } from '@/app-config'
 import forEach from 'lodash/forEach'
 import isNumber from 'lodash/isNumber'
 import isString from 'lodash/isString'
@@ -6,20 +6,14 @@ import isBoolean from 'lodash/isBoolean'
 import get from 'lodash/get'
 import set from 'lodash/set'
 
-export function mergeConfig (config?: AppConfig, base?: AppConfig): AppConfig {
-  if (!config) {
-    return appConfigFactory()
-  }
-
-  return mergeHistorical(config, base)
-}
-
 export default mergeConfig
 
-function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig {
-  const base: AppConfigMutable = baseConfig
+export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppConfig {
+  const base: AppConfig = baseConfig
     ? JSON.parse(JSON.stringify(baseConfig))
-    : appConfigFactory()
+    : appConfigFactory(oldConfig.id)
+
+  mergeString('name')
 
   mergeBoolean('active')
   mergeBoolean('noTypeField')
@@ -108,30 +102,10 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
     mergeString(`contextMenus.all.${id}`)
   })
 
-  // patch
-  switch (config.version) {
-    case 6:
-      base.dicts.all.google.selectionWC.max = 999999999999999
-      base.dicts.all.youdao.selectionWC.max = 999999999999999
-      break
-    case 7:
-      if (config['panelDbSearch'] === 'double') {
-        base.panelMode.double = true
-      } else if (config['panelDbSearch'] === 'ctrl') {
-        base.panelMode.ctrl = true
-      }
-      break
-    case 8:
-      base.dicts.all.googledict.selectionLang.minor = true
-      break
-    default:
-      break
-  }
-
   return base
 
   function mergeSelectedDicts (path: string): void {
-    const selected = get(config, [path, 'selected'])
+    const selected = get(oldConfig, [path, 'selected'])
     if (Array.isArray(selected)) {
       const allDict = get(base, [path, 'all'])
       const arr = selected.filter(id => allDict[id])
@@ -155,7 +129,7 @@ function mergeHistorical (config: AppConfig, baseConfig?: AppConfig): AppConfig 
   }
 
   function merge (path: string, predicate: (val) => boolean): void {
-    const val = get(config, path)
+    const val = get(oldConfig, path)
     if (predicate(val)) {
       set(base, path, val)
     }

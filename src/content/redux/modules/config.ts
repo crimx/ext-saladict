@@ -1,5 +1,5 @@
 import { appConfigFactory, AppConfig } from '@/app-config'
-import { createAppConfigStream } from '@/_helpers/config-manager'
+import { createActiveConfigStream } from '@/_helpers/config-manager'
 import { StoreState, DispatcherThunk } from './index'
 
 /*-----------------------------------------------*\
@@ -67,6 +67,6 @@ export function newConfig (config: AppConfig): Action<ActionType.NEW_CONFIG> {
 /** Listen to config change and update config */
 export function startUpAction (): DispatcherThunk {
   return dispatch => {
-    createAppConfigStream().subscribe(config => dispatch(newConfig(config)))
+    createActiveConfigStream().subscribe(config => dispatch(newConfig(config)))
   }
 }

@@ -2,7 +2,7 @@ import * as recordManager from '@/_helpers/record-manager'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
 import appConfigFactory, { TCDirection, AppConfig, DictID } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
-import { createAppConfigStream } from '@/_helpers/config-manager'
+import { createActiveConfigStream } from '@/_helpers/config-manager'
 import { MsgSelection, MsgType, MsgTempDisabledState, MsgEditWord, MsgOpenUrl, MsgFetchDictResult } from '@/typings/message'
 import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
@@ -422,7 +422,7 @@ export function startUpAction (): DispatcherThunk {
     listenNewSelection(dispatch, getState)
     listenTempDisable(dispatch, getState)
 
-    createAppConfigStream().subscribe(config => {
+    createActiveConfigStream().subscribe(config => {
       dispatch(newConfig(config))
     })
 
