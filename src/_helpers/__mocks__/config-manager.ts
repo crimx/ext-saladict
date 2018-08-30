@@ -21,11 +21,15 @@ export const removeConfig = jest.fn(() => Promise.resolve())
 
 export const getActiveConfig = jest.fn(() => Promise.resolve(appConfigFactory('config')))
 
+export const getConfigIDList = jest.fn(() => Promise.resolve(['config']))
+
 export const updateConfigIDList = jest.fn(() => Promise.resolve())
 
 export const updateActiveConfigID = jest.fn(() => Promise.resolve())
 
 export const updateActiveConfig = jest.fn((config: AppConfig) => Promise.resolve())
+
+export const addConfigIDListListener = jest.fn(() => {/* noop */})
 
 export const addActiveConfigListener = jest.fn((cb: StorageListenerCb) => {
   listeners.add(cb)

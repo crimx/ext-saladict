@@ -25,7 +25,7 @@ describe('Config Manager', () => {
     const config = await configManager.initConfig()
     expect(config).toMatchObject({ name: expect.stringContaining('default') })
     expect(browser.storage.sync.set.calledOnceWith(sinon.match({
-      configModeIDs: sinon.match.array,
+      configProfileIDs: sinon.match.array,
       activeConfigID: sinon.match.string,
     }))).toBeTruthy()
   })
@@ -34,7 +34,7 @@ describe('Config Manager', () => {
     const config1 = appConfigFactory('id1')
     const config2 = appConfigFactory('id2')
     fakeStorageGet({
-      configModeIDs: ['id1', 'id2'],
+      configProfileIDs: ['id1', 'id2'],
       activeConfigID: 'id2',
       id1: config1,
       id2: config2,
@@ -43,7 +43,7 @@ describe('Config Manager', () => {
     const config = await configManager.initConfig()
     expect(config).toEqual(config2)
     expect(browser.storage.sync.set.calledOnceWith(sinon.match({
-      configModeIDs: ['id1', 'id2'],
+      configProfileIDs: ['id1', 'id2'],
       activeConfigID: 'id2',
       id1: config1,
       id2: config2,
@@ -54,7 +54,7 @@ describe('Config Manager', () => {
     const config1 = appConfigFactory('id1')
     const config2 = appConfigFactory('id2')
     fakeStorageGet({
-      configModeIDs: ['id1', 'id2'],
+      configProfileIDs: ['id1', 'id2'],
       activeConfigID: 'id2',
       id1: config1,
       id2: config2,
@@ -64,7 +64,7 @@ describe('Config Manager', () => {
     expect(config).toMatchObject({ name: expect.stringContaining('default') })
     expect(browser.storage.sync.remove.called).toBeTruthy()
     expect(browser.storage.sync.set.calledOnceWith(sinon.match({
-      configModeIDs: sinon.match.array,
+      configProfileIDs: sinon.match.array,
       activeConfigID: sinon.match.string,
     }))).toBeTruthy()
   })
@@ -73,7 +73,7 @@ describe('Config Manager', () => {
     const config1 = appConfigFactory('id1')
     const config2 = appConfigFactory('id2')
     fakeStorageGet({
-      configModeIDs: ['id1', 'id2'],
+      configProfileIDs: ['id1', 'id2'],
       activeConfigID: 'id2',
       id1: config1,
       id2: config2,
@@ -82,7 +82,7 @@ describe('Config Manager', () => {
     const config3 = appConfigFactory('id3')
     await configManager.addConfig(config3)
     expect(browser.storage.sync.set.calledWith({
-      configModeIDs: ['id1', 'id2', 'id3'],
+      configProfileIDs: ['id1', 'id2', 'id3'],
       id3: config3
     })).toBeTruthy()
   })
@@ -91,7 +91,7 @@ describe('Config Manager', () => {
     const config1 = appConfigFactory('id1')
     const config2 = appConfigFactory('id2')
     fakeStorageGet({
-      configModeIDs: ['id1', 'id2'],
+      configProfileIDs: ['id1', 'id2'],
       activeConfigID: 'id2',
       id1: config1,
       id2: config2,
@@ -100,7 +100,7 @@ describe('Config Manager', () => {
     await configManager.removeConfig('id1')
     expect(browser.storage.sync.remove.calledWith('id1')).toBeTruthy()
     expect(browser.storage.sync.set.calledWith({
-      configModeIDs: ['id2'],
+      configProfileIDs: ['id2'],
     })).toBeTruthy()
   })
 
@@ -108,7 +108,7 @@ describe('Config Manager', () => {
     const config1 = appConfigFactory('id1')
     const config2 = appConfigFactory('id2')
     fakeStorageGet({
-      configModeIDs: ['id1', 'id2'],
+      configProfileIDs: ['id1', 'id2'],
       activeConfigID: 'id2',
       id1: config1,
       id2: config2,
@@ -120,7 +120,7 @@ describe('Config Manager', () => {
   it('should update config ID list', async () => {
     await configManager.updateConfigIDList(['id2', 'id1'])
     expect(browser.storage.sync.set.calledWith({
-      configModeIDs: ['id2', 'id1'],
+      configProfileIDs: ['id2', 'id1'],
     })).toBeTruthy()
   })
 
@@ -148,7 +148,7 @@ describe('Config Manager', () => {
       config1 = appConfigFactory('id1')
       config2 = appConfigFactory('id2')
       fakeStorageGet({
-        configModeIDs: ['id1', 'id2'],
+        configProfileIDs: ['id1', 'id2'],
         activeConfigID: 'id2',
         id1: config1,
         id2: config2,
@@ -218,7 +218,7 @@ describe('Config Manager', () => {
     const config1 = appConfigFactory('id1')
     const config2 = appConfigFactory('id2')
     fakeStorageGet({
-      configModeIDs: ['id1', 'id2'],
+      configProfileIDs: ['id1', 'id2'],
       activeConfigID: 'id2',
       id1: config1,
       id2: config2,

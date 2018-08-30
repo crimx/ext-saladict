@@ -1,7 +1,7 @@
 /**
  * Abstruct layer for managing app config.
- * From v6.12.0, there is a set of different configs (called modes) for user to choose.
- * This layer filters out the "modes" so that in perspective of
+ * From v6.12.0, there is a set of different configs (called profiles) for user to choose.
+ * This layer filters out the "profiles" so that in perspective of
  * the rest of the program, there is only one config, which is called
  * the "active config". This is for backward compatibility.
  */
@@ -26,8 +26,8 @@ export interface AppConfigChanged {
 export async function initConfig (): Promise<AppConfig> {
   const obj = await storage.sync.get(null)
   let modes: AppConfig[]
-  if (obj.configModeIDs && obj.configModeIDs.length > 0) {
-    modes = obj.configModeIDs
+  if (obj.configProfileIDs && obj.configProfileIDs.length > 0) {
+    modes = obj.configProfileIDs
       .filter(id => obj[id])
       .map(id => mergeConfig(obj[id]))
   } else {
@@ -41,7 +41,7 @@ export async function initConfig (): Promise<AppConfig> {
   await storage.sync.set(modes.reduce(
     (data, m) => ((data[m.id] = m), data),
     {
-      configModeIDs: modes.map(m => m.id),
+      configProfileIDs: modes.map(m => m.id),
       activeConfigID: obj.activeConfigID || modes[0].id
     }
   ))
@@ -49,34 +49,34 @@ export async function initConfig (): Promise<AppConfig> {
 }
 
 export async function resetConfig () {
-  const ids = (await storage.sync.get('configModeIDs')).configModeIDs || []
-  await storage.sync.remove(['configModeIDs', 'activeConfigID', ...ids])
+  const ids = (await storage.sync.get('configProfileIDs')).configProfileIDs || []
+  await storage.sync.remove(['configProfileIDs', 'activeConfigID', ...ids])
   return initConfig()
 }
 
 export async function addConfig (config: AppConfig): Promise<void> {
-  const { configModeIDs } = await storage.sync.get<{ configModeIDs: string[] }>('configModeIDs')
+  const { configProfileIDs } = await storage.sync.get<{ configProfileIDs: string[] }>('configProfileIDs')
   if (process.env.DEV_BUILD) {
-    if (configModeIDs.includes(config.id) ||
+    if (configProfileIDs.includes(config.id) ||
        (await storage.sync.get(config.id))[config.id]
     ) {
       console.warn('add config: config already exists')
     }
   }
-  configModeIDs.push(config.id)
-  return storage.sync.set({ configModeIDs, [config.id]: config })
+  configProfileIDs.push(config.id)
+  return storage.sync.set({ configProfileIDs, [config.id]: config })
 }
 
 export async function removeConfig (id: string): Promise<void> {
-  const { configModeIDs } = await storage.sync.get<{ configModeIDs: string[] }>('configModeIDs')
+  const { configProfileIDs } = await storage.sync.get<{ configProfileIDs: string[] }>('configProfileIDs')
   if (process.env.DEV_BUILD) {
-    if (!configModeIDs.includes(id) ||
+    if (!configProfileIDs.includes(id) ||
        !(await storage.sync.get(id))[id]
     ) {
       console.warn('remove config: config not exists')
     }
   }
-  await storage.sync.set({ configModeIDs: configModeIDs.filter(x => x !== id) })
+  await storage.sync.set({ configProfileIDs: configProfileIDs.filter(x => x !== id) })
   return storage.sync.remove(id)
 }
 
@@ -91,14 +91,28 @@ export async function getActiveConfig (): Promise<AppConfig> {
       return config
     }
   }
-  return appConfigFactory()
+  return initConfig()
+}
+
+/**
+ * This is mainly for ordering
+ */
+export async function getConfigIDList (): Promise<string[]> {
+  return (await storage.sync.get('configProfileIDs')).configProfileIDs || []
 }
 
 /**
  * This is mainly for ordering
  */
 export function updateConfigIDList (list: string[]): Promise<void> {
-  return storage.sync.set({ configModeIDs: list })
+  return storage.sync.set({ configProfileIDs: list })
+}
+
+/**
+ * Change the current active config
+ */
+export async function getActiveConfigID (): Promise<string> {
+  return (await storage.sync.get('activeConfigID')).activeConfigID
 }
 
 /**
@@ -106,9 +120,9 @@ export function updateConfigIDList (list: string[]): Promise<void> {
  */
 export function updateActiveConfigID (id: string): Promise<void> {
   if (process.env.DEV_BUILD) {
-    storage.sync.get('configModeIDs')
-      .then(({ configModeIDs }) => {
-        if (-1 === configModeIDs.indexOf(id)) {
+    storage.sync.get('configProfileIDs')
+      .then(({ configProfileIDs }) => {
+        if (-1 === configProfileIDs.indexOf(id)) {
           console.error('Update Active Config ID Error: Not exist', id)
         }
       })
@@ -121,14 +135,24 @@ export function updateActiveConfigID (id: string): Promise<void> {
  */
 export function updateActiveConfig (config: AppConfig): Promise<void> {
   if (process.env.DEV_BUILD) {
-    storage.sync.get('configModeIDs')
-      .then(({ configModeIDs }) => {
-        if (-1 === configModeIDs.indexOf(config.id)) {
+    storage.sync.get('configProfileIDs')
+      .then(({ configProfileIDs }) => {
+        if (-1 === configProfileIDs.indexOf(config.id)) {
           console.error('Update Config Error: Not exist', config)
         }
       })
   }
   return storage.sync.set({ [config.id]: config })
+}
+
+export function addConfigIDListListener (
+  cb: (changes: { newValue: string[], oldValue?: string[] }) => any
+) {
+  storage.sync.addListener('configProfileIDs', ({ configProfileIDs }) => {
+    if (configProfileIDs.newValue) {
+      cb(configProfileIDs as any)
+    }
+  })
 }
 
 /** Keep tracking the active config id for easy usage */
