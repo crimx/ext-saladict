@@ -182,7 +182,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
       if (this.props.activeDicts.length <= 0 || isSaladictPopupPage) {
         this.focusSearchBox()
       }
-    }, 100)
+    }, 200)
   }
 
   render () {
