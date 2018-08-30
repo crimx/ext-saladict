@@ -60,10 +60,11 @@ import { mergeConfig } from '@/app-config/merge-config'
 import Coffee from './Coffee'
 import SocialMedia from './SocialMedia'
 import AlertModal from '@/components/AlertModal'
-import { updateActiveConfig } from '@/_helpers/config-manager';
+import { updateActiveConfig, updateActiveConfigID, updateConfigIDList } from '@/_helpers/config-manager'
 
 // Auto import option section components
 const _optNames = [
+  'OptConfigProfile',
   'OptAppActive',
   'OptPreference',
   'OptPrivacy',
@@ -89,7 +90,7 @@ const _optComps = _optNames.reduce((o, name) => {
 
 export default {
   name: 'options',
-  store: ['config', 'newVersionAvailable', 'searchText'],
+  store: ['activeConfigID', 'configProfileIDs', 'configProfiles', 'config', 'newVersionAvailable', 'searchText'],
   data () {
     return {
       isShowConfigUpdated: false,
@@ -99,6 +100,13 @@ export default {
     }
   },
   methods: {
+    showSavedBar () {
+      this.isShowConfigUpdated = true
+      clearTimeout(this.showConfigUpdatedTimeout)
+      this.showConfigUpdatedTimeout = setTimeout(() => {
+        this.isShowConfigUpdated = false
+      }, 1500)
+    },
     showSocialMedia (flag) {
       clearTimeout(this.__showSocialMediaTimeout)
       if (flag) {
@@ -123,10 +131,34 @@ export default {
       const fr = new FileReader()
       fr.onload= () => {
         try {
-          const content = JSON.parse(fr.result)
-          if (content.version) {
-            this.$store.config = mergeConfig(content, this.$store.config)
+          const newStore = JSON.parse(fr.result)
+          const {
+            activeConfigID,
+            configProfileIDs,
+            configProfiles
+          } = newStore
+
+          if (!activeConfigID ||
+              typeof activeConfigID !== 'string' ||
+              !Array.isArray(configProfileIDs) ||
+              !configProfileIDs.includes(activeConfigID) ||
+              !configProfiles ||
+              configProfileIDs.some(id => !configProfiles[id] || !configProfiles[id].id)
+            ) {
+            if (process.env.DEV_BUILD) {
+              console.error('Wrong import file')
+            }
+            return
           }
+
+          configProfileIDs.forEach(id => {
+            configProfiles[id] = mergeConfig(configProfiles[id], appConfigFactory(configProfiles[id].id))
+          })
+
+          this.configProfiles = configProfiles
+          this.configProfileIDs = configProfileIDs
+          this.activeConfigID = activeConfigID
+          this.config = configProfiles[activeConfigID]
         } catch (err) {
           if (process.env.NODE_ENV !== 'production' || process.env.DEV_BUILD) {
             console.warn(err)
@@ -138,7 +170,15 @@ export default {
     handleExport () {
       browser.runtime.getPlatformInfo()
         .then(({ os }) => {
-          let config = JSON.stringify(this.$store.config, null, '  ')
+          let config = JSON.stringify(
+            {
+              activeConfigID: this.activeConfigID,
+              configProfileIDs: this.configProfileIDs,
+              configProfiles: this.configProfiles,
+            },
+            null,
+            '  '
+          )
           if (os === 'win') {
             config = config.replace(/\r\n|\n/g, '\r\n')
           }
@@ -160,6 +200,18 @@ export default {
     }
   },
   watch: {
+    async activeConfigID (newID) {
+      await updateActiveConfigID(newID)
+      this.config = this.configProfiles[newID]
+    },
+    configProfileIDs: {
+      deep: true,
+      async handler () {
+        await updateConfigIDList(this.configProfileIDs)
+        this.configProfiles = await storage.sync.get(this.configProfileIDs)
+        this.showSavedBar()
+      }
+    },
     config: {
       deep: true,
       handler () {
@@ -186,13 +238,7 @@ export default {
         config.contextMenus.all.sogou = `https://fanyi.sogou.com/#auto/${sogouLang}/%s`
 
         updateActiveConfig(config)
-          .then(() => {
-            this.isShowConfigUpdated = true
-            clearTimeout(this.showConfigUpdatedTimeout)
-            this.showConfigUpdatedTimeout = setTimeout(() => {
-              this.isShowConfigUpdated = false
-            }, 1500)
-          })
+          .then(() => this.showSavedBar())
       }
     },
   },
@@ -203,9 +249,11 @@ export default {
     AlertModal
   },
   mounted () {
-    Promise.all([getWordOfTheDay(), timer(1000)])
-      .then(([word]) => this.searchText(word))
-      .catch(() => this.searchText('salad'))
+    if (process.env.NODE_ENV !== 'development') {
+      Promise.all([getWordOfTheDay(), timer(1000)])
+        .then(([word]) => this.searchText(word))
+        .catch(() => this.searchText('salad'))
+    }
   }
 }
 </script>

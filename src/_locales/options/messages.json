@@ -84,6 +84,21 @@
     "zh_CN": "修改未保存。确认关闭？",
     "zh_TW": "修改未保存。確定關閉？"
   },
+  "config_profile": {
+    "en": "Current Profile",
+    "zh_CN": "当前模式",
+    "zh_TW": "当前模式"
+  },
+  "config_profile_description": {
+    "en": "Settings within different Profiles are independent. You can have different settings for different Profiles.",
+    "zh_CN": "每个模式下的设置都是独立的，互不干扰。",
+    "zh_TW": "每個模式下的设置都是獨立的，互不干擾。"
+  },
+  "config_profile_title": {
+    "en": "Config Profile",
+    "zh_CN": "情景模式",
+    "zh_TW": "情景模式"
+  },
   "contact_author": {
     "en": "Contact Author",
     "zh_CN": "联系作者",
