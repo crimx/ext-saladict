@@ -10,20 +10,25 @@ import { map } from 'rxjs/operators/map'
 
 const listeners = new Set()
 
-export type AppConfigChanged = {
-  config: StorageChange<AppConfig>
+export interface AppConfigChanged {
+  newConfig: AppConfig,
+  oldConfig?: AppConfig,
 }
 
-export const getActiveConfig = jest.fn(() => Promise.resolve(appConfigFactory()))
+export const addConfig = jest.fn(() => Promise.resolve())
+
+export const removeConfig = jest.fn(() => Promise.resolve())
+
+export const getActiveConfig = jest.fn(() => Promise.resolve(appConfigFactory('config')))
+
+export const updateConfigIDList = jest.fn(() => Promise.resolve())
+
+export const updateActiveConfigID = jest.fn(() => Promise.resolve())
 
 export const updateActiveConfig = jest.fn((config: AppConfig) => Promise.resolve())
 
-export const addAppConfigListener = jest.fn((cb: StorageListenerCb) => {
+export const addActiveConfigListener = jest.fn((cb: StorageListenerCb) => {
   listeners.add(cb)
-})
-
-export const removeAppConfigListener = jest.fn((cb: StorageListenerCb) => {
-  listeners.delete(cb)
 })
 
 /**
@@ -31,23 +36,13 @@ export const removeAppConfigListener = jest.fn((cb: StorageListenerCb) => {
  */
 export const createActiveConfigStream = jest.fn((): Observable<AppConfig> => {
   return concat<AppConfig>(
-    of(appConfigFactory()),
-    fromEventPattern<AppConfigChanged>(
-      handler => addAppConfigListener(handler),
-      handler => removeAppConfigListener(handler),
-    ).pipe(
-      map(args => (Array.isArray(args) ? args[0] : args).config.newValue)
+    of(appConfigFactory('config')),
+    fromEventPattern<AppConfigChanged | [AppConfigChanged]>(addActiveConfigListener).pipe(
+      map(args => (Array.isArray(args) ? args[0] : args).newConfig)
     )
   )
 })
 
-export function dispatchAppConfigEvent (newValue?: AppConfig, oldValue?: AppConfig) {
-  listeners.forEach(cb => cb({ config: { newValue: newValue, oldValue: oldValue } }, 'sync'))
-}
-
-export const appConfig = {
-  get: getActiveConfig,
-  set: updateActiveConfig,
-  addListener: addAppConfigListener,
-  createStream: createActiveConfigStream,
+export function dispatchActiveConfigChangedEvent (newConfig: AppConfig, oldConfig?: AppConfig) {
+  listeners.forEach(cb => cb({ newConfig, oldConfig }))
 }
