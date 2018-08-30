@@ -61,18 +61,16 @@ function handleDOM (
         const $btn = $pron.querySelector<HTMLSpanElement>('.audio_play_button')
         if ($btn) {
           if ($btn.dataset.srcMp3) {
-            const mp3 = $btn.dataset.srcMp3.replace(/^\//, 'https://dictionary.cambridge.org/')
-            entry.prons.push({
-              phsym: getText($pron),
-              pron: mp3,
-            })
+            const pron = $btn.dataset.srcMp3.replace(/^\//, 'https://dictionary.cambridge.org/')
+            const phsym = getText($pron)
+            entry.prons.push({ phsym, pron })
 
-            if (!audio.uk && $btn.classList.contains('uk')) {
-              audio.uk = mp3
+            if (!audio.uk && phsym.includes('uk')) {
+              audio.uk = pron
             }
 
-            if (!audio.us && $btn.classList.contains('us')) {
-              audio.us = mp3
+            if (!audio.us && phsym.includes('us')) {
+              audio.us = pron
             }
           }
         }
