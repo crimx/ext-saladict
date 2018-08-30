@@ -18,11 +18,9 @@ import { map } from 'rxjs/operators/map'
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
 import { mergeConfig } from '@/app-config/merge-config'
 
-export type AppConfigChanged = {
-  config: {
-    newValue: AppConfig,
-    oldValue?: AppConfig,
-  }
+export interface AppConfigChanged {
+  newConfig: AppConfig,
+  oldConfig?: AppConfig,
 }
 
 export async function initConfig (): Promise<AppConfig> {
@@ -56,6 +54,32 @@ export async function resetConfig () {
   return initConfig()
 }
 
+export async function addConfig (config: AppConfig): Promise<void> {
+  const { configModeIDs } = await storage.sync.get<{ configModeIDs: string[] }>('configModeIDs')
+  if (process.env.DEV_BUILD) {
+    if (configModeIDs.includes(config.id) ||
+       (await storage.sync.get(config.id))[config.id]
+    ) {
+      console.warn('add config: config already exists')
+    }
+  }
+  configModeIDs.push(config.id)
+  return storage.sync.set({ configModeIDs, [config.id]: config })
+}
+
+export async function removeConfig (id: string): Promise<void> {
+  const { configModeIDs } = await storage.sync.get<{ configModeIDs: string[] }>('configModeIDs')
+  if (process.env.DEV_BUILD) {
+    if (!configModeIDs.includes(id) ||
+       !(await storage.sync.get(id))[id]
+    ) {
+      console.warn('remove config: config not exists')
+    }
+  }
+  await storage.sync.set({ configModeIDs: configModeIDs.filter(x => x !== id) })
+  return storage.sync.remove(id)
+}
+
 /**
  * Get the config under the current mode
  */
@@ -70,10 +94,16 @@ export async function getActiveConfig (): Promise<AppConfig> {
   return appConfigFactory()
 }
 
-export function updateConfigModeIDList (list: string[]): Promise<void> {
+/**
+ * This is mainly for ordering
+ */
+export function updateConfigIDList (list: string[]): Promise<void> {
   return storage.sync.set({ configModeIDs: list })
 }
 
+/**
+ * Change the current active config
+ */
 export function updateActiveConfigID (id: string): Promise<void> {
   if (process.env.DEV_BUILD) {
     storage.sync.get('configModeIDs')
@@ -108,7 +138,7 @@ let gActiveConfigID: string
  * Listen storage changes of the current config
  */
 export async function addActiveConfigListener (
-  cb: (newValue: AppConfig, oldValue?: AppConfig) => any
+  cb: (changes: AppConfigChanged) => any
 ) {
   if (!gActiveConfigID) {
     gActiveConfigID = (await storage.sync.get('activeConfigID')).activeConfigID
@@ -122,19 +152,22 @@ export async function addActiveConfigListener (
       if (oldID) {
         const obj = await storage.sync.get([oldID, newID])
         if (obj[newID]) {
-          cb(obj[newID], obj[oldID])
+          cb({ newConfig: obj[newID], oldConfig: obj[oldID] })
         }
       } else {
         const newConfig = (await storage.sync.get(newID))[newID]
         if (newConfig) {
-          cb(newConfig)
+          cb({ newConfig })
         }
       }
       return
     }
 
-    if (changes[gActiveConfigID] && changes[gActiveConfigID].newValue) {
-      cb(changes[gActiveConfigID].newValue)
+    if (changes[gActiveConfigID]) {
+      const { newValue, oldValue } = changes[gActiveConfigID]
+      if (newValue) {
+        cb({ newConfig: newValue, oldConfig: oldValue })
+      }
     }
   })
 }
@@ -145,8 +178,8 @@ export async function addActiveConfigListener (
 export function createActiveConfigStream (): Observable<AppConfig> {
   return concat(
     from(getActiveConfig()),
-    fromEventPattern(addActiveConfigListener as any).pipe(
-      map(args => Array.isArray(args) ? args[0] : args),
+    fromEventPattern<[AppConfigChanged] | AppConfigChanged>(addActiveConfigListener as any).pipe(
+      map(args => (Array.isArray(args) ? args[0] : args).newConfig),
     ),
   )
 }

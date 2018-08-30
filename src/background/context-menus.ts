@@ -1,11 +1,11 @@
-import { message, storage, openURL, StorageUpdate } from '@/_helpers/browser-api'
+import { message, openURL } from '@/_helpers/browser-api'
 import { MsgType } from '@/typings/message'
 import { AppConfig } from '@/app-config'
 import i18nLoader from '@/_helpers/i18n'
 import { TranslationFunction } from 'i18next'
 import contextLocles from '@/_locales/context'
 import isEqual from 'lodash/isEqual'
-import { getActiveConfig, addActiveConfigListener } from '@/_helpers/config-manager'
+import { getActiveConfig, addActiveConfigListener, AppConfigChanged } from '@/_helpers/config-manager'
 
 // import { Observable, ReplaySubject, combineLatest } from 'rxjs'
 // import { mergeMap, filter, map, audit, mapTo, share, startWith } from 'rxjs/operators'
@@ -84,8 +84,9 @@ export function init (initConfig: ContextMenusConfig): Observable<void> {
   if (setMenus$$) { return setMenus$$ }
   // when context menus config changes
   const contextMenusChanged$ =
-      fromEventPattern<[AppConfig, AppConfig]>(addActiveConfigListener as any).pipe(
-    filter(([newConfig, oldConfig]) => {
+      fromEventPattern<AppConfigChanged[] | AppConfigChanged>(addActiveConfigListener as any).pipe(
+    map(args => Array.isArray(args) ? args[0] : args),
+    filter(({ newConfig, oldConfig }) => {
       if (!newConfig) { return false }
       if (!oldConfig) { return true }
 
@@ -94,7 +95,7 @@ export function init (initConfig: ContextMenusConfig): Observable<void> {
         newConfig.contextMenus.selected,
       )
     }),
-    map(([newConfig]) => newConfig.contextMenus),
+    map(({ newConfig }) => newConfig.contextMenus),
     startWith(initConfig),
   )
 

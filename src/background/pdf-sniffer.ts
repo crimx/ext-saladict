@@ -20,7 +20,7 @@ export function init (config: AppConfig) {
     startListening()
   }
 
-  addActiveConfigListener((newConfig, oldConfig) => {
+  addActiveConfigListener(({ newConfig, oldConfig }) => {
     if (newConfig) {
       blacklist = newConfig.pdfBlacklist
       whitelist = newConfig.pdfWhitelist
