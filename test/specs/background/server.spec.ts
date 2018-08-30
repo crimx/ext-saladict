@@ -1,6 +1,7 @@
-import { appConfigFactory, AppConfig } from '@/app-config'
+import { appConfigFactory } from '@/app-config'
 import * as browserWrap from '@/_helpers/browser-api'
 import { MsgType } from '@/typings/message'
+import { timer } from '@/_helpers/promise-more'
 
 jest.mock('@/background/database')
 
@@ -13,7 +14,6 @@ describe('Server', () => {
   const openURL = jest.fn()
   const bingSearch = jest.fn()
   browserWrap.message.self.initServer = initServer
-  browserWrap.storage.sync.get = jest.fn(() => Promise.resolve({ config }))
   // @ts-ignore
   browserWrap.openURL = openURL
 
@@ -30,6 +30,18 @@ describe('Server', () => {
     jest.doMock('@/components/dictionaries/bing/engine', () => {
       return {
         default: bingSearch
+      }
+    })
+    jest.doMock('@/app-config', () => {
+      return {
+        appConfigFactory: () => config
+      }
+    })
+    jest.doMock('@/_helpers/config-manager', () => {
+      return {
+        createActiveConfigStream: () => ({
+          subscribe: () => {/* noop */}
+        })
       }
     })
   })
@@ -97,7 +109,7 @@ describe('Server', () => {
   })
 
   describe('Fetch Dict Result', () => {
-    it('should reject when missing dict id', done => {
+    it('should reject when missing dict id', async () => {
       const resolveStub = jest.fn()
       const rejectStub = jest.fn()
       browser.runtime.onMessage['_listeners'].forEach(f =>
@@ -107,12 +119,10 @@ describe('Server', () => {
         })
         .then(resolveStub, rejectStub)
       )
-      setTimeout(() => {
-        expect(bingSearch).toHaveBeenCalledTimes(0)
-        expect(resolveStub).toHaveBeenCalledTimes(0)
-        expect(rejectStub).toHaveBeenCalledTimes(1)
-        done()
-      }, 0)
+      await timer(0)
+      expect(bingSearch).toHaveBeenCalledTimes(0)
+      expect(resolveStub).toHaveBeenCalledTimes(0)
+      expect(rejectStub).toHaveBeenCalledTimes(1)
     })
 
     it('should search text', () => {
