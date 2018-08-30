@@ -17,10 +17,10 @@ export function getSelectionText (win = window): string {
   return cleanText(win.getSelection().toString())
 }
 
-// match head                 a.b is ok    chars that ends a sentence
-const sentenceHeadTester = /((\.(?![ .]))|[^.?!。？！…])+$/
-// match tail                                                    for "..."
-const sentenceTailTester = /^((\.(?![ .]))|[^.?!。？！…])*([.?!。？！…]){0,3}/
+// match head                 a.b is ok             chars that ends a sentence
+const sentenceHeadTester = /((\.(?![\s.?!。？！…]))|[^.?!。？！…])+$/
+// match tail                                                       for "..."
+const sentenceTailTester = /^((\.(?![\s.?!。？！…]))|[^.?!。？！…])*([.?!。？！…]){0,3}/
 
 /** Returns the sentence containing the selection text */
 export function getSelectionSentence (win = window): string {
