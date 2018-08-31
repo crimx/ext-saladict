@@ -376,7 +376,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
           </button>
           <CSSTransition
            classNames='panel-MenuBar_ProfilePanel'
-           in={isShowProfilePanel}
+           in={isShowProfilePanel && !isSaladictOptionsPage}
            timeout={100}
            unmountOnExit={true}
           >{this.renderProfilePanel}</CSSTransition>
