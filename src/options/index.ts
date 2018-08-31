@@ -12,7 +12,7 @@ import commonLocles from '@/_locales/common'
 import dictsLocles from '@/_locales/dicts'
 import optionsLocles from '@/_locales/options'
 import contextLocles from '@/_locales/context'
-import profileLocles from '@/_locales/config-modes'
+import profileLocles from '@/_locales/config-profiles'
 import { MsgType, MsgSelection } from '@/typings/message'
 import { getActiveConfigID, getConfigIDList } from '@/_helpers/config-manager'
 

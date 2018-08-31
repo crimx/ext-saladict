@@ -10,7 +10,7 @@ import { I18nextProvider as ProviderI18next } from 'react-i18next'
 import i18nLoader from '@/_helpers/i18n'
 import dictsLocles from '@/_locales/dicts'
 import contentLocles from '@/_locales/content'
-import profileLocles from '@/_locales/config-modes'
+import profileLocles from '@/_locales/config-profiles'
 
 import { message } from '@/_helpers/browser-api'
 import { MsgType } from '@/typings/message'
