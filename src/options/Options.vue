@@ -60,7 +60,8 @@ import { mergeConfig } from '@/app-config/merge-config'
 import Coffee from './Coffee'
 import SocialMedia from './SocialMedia'
 import AlertModal from '@/components/AlertModal'
-import { updateActiveConfig, updateActiveConfigID, updateConfigIDList } from '@/_helpers/config-manager'
+import { updateActiveConfig, updateActiveConfigID, updateConfigIDList, resetConfig } from '@/_helpers/config-manager'
+import omit from 'lodash/omit'
 
 // Auto import option section components
 const _optNames = [
@@ -129,41 +130,52 @@ export default {
     },
     handleImport (e) {
       const fr = new FileReader()
-      fr.onload= () => {
+      fr.onload = async () => {
+        let newStore
+
         try {
-          const newStore = JSON.parse(fr.result)
-          const {
-            activeConfigID,
-            configProfileIDs,
-            configProfiles
-          } = newStore
-
-          if (!activeConfigID ||
-              typeof activeConfigID !== 'string' ||
-              !Array.isArray(configProfileIDs) ||
-              !configProfileIDs.includes(activeConfigID) ||
-              !configProfiles ||
-              configProfileIDs.some(id => !configProfiles[id] || !configProfiles[id].id)
-            ) {
-            if (process.env.DEV_BUILD) {
-              console.error('Wrong import file')
-            }
-            return
-          }
-
-          configProfileIDs.forEach(id => {
-            configProfiles[id] = mergeConfig(configProfiles[id], appConfigFactory(configProfiles[id].id))
-          })
-
-          this.configProfiles = configProfiles
-          this.configProfileIDs = configProfileIDs
-          this.activeConfigID = activeConfigID
-          this.config = configProfiles[activeConfigID]
+          newStore = JSON.parse(fr.result)
         } catch (err) {
           if (process.env.NODE_ENV !== 'production' || process.env.DEV_BUILD) {
             console.warn(err)
           }
         }
+
+        const {
+          activeConfigID,
+          configProfileIDs,
+          configProfiles
+        } = newStore
+
+        if (!activeConfigID ||
+            typeof activeConfigID !== 'string' ||
+            !Array.isArray(configProfileIDs) ||
+            !configProfileIDs.includes(activeConfigID) ||
+            !configProfiles ||
+            configProfileIDs.some(id => !configProfiles[id] || !configProfiles[id].id)
+          ) {
+          if (process.env.DEV_BUILD) {
+            console.error('Wrong import file')
+          }
+          return
+        }
+
+        const newProfiles = configProfileIDs.reduce((profiles, id) => {
+          profiles[id] = mergeConfig(configProfiles[id], appConfigFactory(id))
+          return profiles
+        }, {})
+
+        await storage.sync.remove(this.configProfileIDs)
+        await storage.sync.set({
+          ...newProfiles,
+          activeConfigID,
+          configProfileIDs,
+        })
+
+        this.configProfiles = newProfiles
+        this.configProfileIDs = configProfileIDs
+        this.activeConfigID = activeConfigID
+        this.config = newProfiles[activeConfigID]
       }
       fr.readAsText(e.currentTarget.files[0])
     },
@@ -193,8 +205,18 @@ export default {
       this.$refs.alert.$emit('show', {
         title: this.$t('opt:reset_modal_title'),
         content: this.$t('opt:reset_modal_content'),
-        onConfirm: () => {
-          resetConfig().then(config => this.config = config)
+        onConfirm: async () => {
+          await resetConfig()
+          const {
+            activeConfigID,
+            configProfileIDs
+          } = await storage.sync.get(['activeConfigID', 'configProfileIDs'])
+          const configProfiles = await storage.sync.get(configProfileIDs)
+
+          this.configProfiles = configProfiles
+          this.configProfileIDs = configProfileIDs
+          this.activeConfigID = activeConfigID
+          this.config = configProfiles[activeConfigID]
         }
       })
     }
