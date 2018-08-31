@@ -115,8 +115,8 @@ export const reducer: DictsReducer = {
       ...state,
       dictionaries: {
         ...dictionaries,
-        selected,
-        active: [],
+        selected: selected.slice(),
+        active: selected.slice(),
         dicts: selected.reduce((newState, id) => {
           newState[id] = dictionaries.dicts[id] || {
             searchStatus: SearchStatus.OnHold,
