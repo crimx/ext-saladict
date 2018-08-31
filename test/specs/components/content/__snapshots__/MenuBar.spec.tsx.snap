@@ -74,26 +74,39 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
   <div
     className="panel-MenuBar_DragArea"
   />
-  <button
-    className="panel-MenuBar_Btn"
-    disabled={false}
-    onClick={[Function]}
+  <div
+    className="panel-MenuBar_SettingsWrapper"
   >
-    <svg
-      className="panel-MenuBar_Icon"
-      height="30"
-      viewBox="0 0 612 612"
-      width="30"
-      xmlns="http://www.w3.org/2000/svg"
+    <button
+      className="panel-MenuBar_Btn"
+      disabled={false}
+      onClick={[Function]}
+      onKeyUp={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
     >
-      <title>
-        tipOpenSettings
-      </title>
-      <path
-        d="M0 97.92v24.48h612V97.92H0zm0 220.32h612v-24.48H0v24.48zm0 195.84h612V489.6H0v24.48z"
-      />
-    </svg>
-  </button>
+      <svg
+        className="panel-MenuBar_Icon"
+        height="30"
+        viewBox="0 0 612 612"
+        width="30"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <title>
+          tipOpenSettings
+        </title>
+        <path
+          d="M0 97.92v24.48h612V97.92H0zm0 220.32h612v-24.48H0v24.48zm0 195.84h612V489.6H0v24.48z"
+        />
+      </svg>
+    </button>
+    <CSSTransition
+      classNames="panel-MenuBar_ProfilePanel"
+      in={false}
+      timeout={100}
+      unmountOnExit={true}
+    />
+  </div>
   <button
     className="panel-MenuBar_Btn"
     disabled={true}
@@ -255,26 +268,39 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
   <div
     className="panel-MenuBar_DragArea"
   />
-  <button
-    className="panel-MenuBar_Btn"
-    disabled={false}
-    onClick={[Function]}
+  <div
+    className="panel-MenuBar_SettingsWrapper"
   >
-    <svg
-      className="panel-MenuBar_Icon"
-      height="30"
-      viewBox="0 0 612 612"
-      width="30"
-      xmlns="http://www.w3.org/2000/svg"
+    <button
+      className="panel-MenuBar_Btn"
+      disabled={false}
+      onClick={[Function]}
+      onKeyUp={[Function]}
+      onMouseEnter={[Function]}
+      onMouseLeave={[Function]}
     >
-      <title>
-        tipOpenSettings
-      </title>
-      <path
-        d="M0 97.92v24.48h612V97.92H0zm0 220.32h612v-24.48H0v24.48zm0 195.84h612V489.6H0v24.48z"
-      />
-    </svg>
-  </button>
+      <svg
+        className="panel-MenuBar_Icon"
+        height="30"
+        viewBox="0 0 612 612"
+        width="30"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <title>
+          tipOpenSettings
+        </title>
+        <path
+          d="M0 97.92v24.48h612V97.92H0zm0 220.32h612v-24.48H0v24.48zm0 195.84h612V489.6H0v24.48z"
+        />
+      </svg>
+    </button>
+    <CSSTransition
+      classNames="panel-MenuBar_ProfilePanel"
+      in={false}
+      timeout={100}
+      unmountOnExit={true}
+    />
+  </div>
   <button
     className="panel-MenuBar_Btn"
     disabled={true}
