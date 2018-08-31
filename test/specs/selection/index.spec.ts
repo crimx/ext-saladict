@@ -1,7 +1,7 @@
 import { appConfigFactory, AppConfigMutable } from '@/app-config'
 import * as BrowserApiMock from '@/_helpers/__mocks__/browser-api'
 import { SelectionMock } from '@/_helpers/__mocks__/selection'
-import * as ConfigManagerMock from '@/_helpers/__mocks__/config-manager'
+import * as configManagerMock from '@/_helpers/__mocks__/config-manager'
 import '@/selection'
 import { MsgType, MsgIsPinned } from '@/typings/message'
 import { timer } from '@/_helpers/promise-more'
@@ -19,8 +19,8 @@ const { message, storage }: {
 
 const selection: SelectionMock = require('@/_helpers/selection')
 
-const { dispatchAppConfigEvent }: {
-  dispatchAppConfigEvent: typeof ConfigManagerMock.dispatchAppConfigEvent
+const { dispatchActiveConfigChangedEvent }: {
+  dispatchActiveConfigChangedEvent: typeof configManagerMock.dispatchActiveConfigChangedEvent
 } = require('@/_helpers/config-manager')
 
 // speed up
@@ -40,7 +40,7 @@ describe('Message Selection', () => {
     selection.getSelectionSentence.mockReturnValue(`This is a ${randomText}.`)
     selection.getSelectionInfo.mockReturnValue('mocked selection info')
     selection.getDefaultSelectionInfo.mockReturnValue('mocked default selection info')
-    dispatchAppConfigEvent(mockAppConfigFactory())
+    dispatchActiveConfigChangedEvent(mockAppConfigFactory())
   })
 
   it('should send empty message when mouseup and no selection', async () => {
@@ -73,7 +73,7 @@ describe('Message Selection', () => {
     config.language.chinese = true
     config.language.english = false
     config.language.minor = true
-    dispatchAppConfigEvent(config)
+    dispatchActiveConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
@@ -104,7 +104,7 @@ describe('Message Selection', () => {
     config.language.chinese = false
     config.language.english = true
     config.language.minor = true
-    dispatchAppConfigEvent(config)
+    dispatchActiveConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
@@ -135,7 +135,7 @@ describe('Message Selection', () => {
     config.language.chinese = true
     config.language.english = true
     config.language.minor = false
-    dispatchAppConfigEvent(config)
+    dispatchActiveConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
@@ -204,7 +204,7 @@ describe('Message Selection', () => {
     config.language.chinese = false
     config.language.english = false
     config.language.minor = true
-    dispatchAppConfigEvent(config)
+    dispatchActiveConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
@@ -234,7 +234,7 @@ describe('Message Selection', () => {
   it('should send empty message if the selection is made inside a input box', async () => {
     const config = mockAppConfigFactory()
     config.noTypeField = true
-    dispatchAppConfigEvent(config)
+    dispatchActiveConfigChangedEvent(config)
 
     const $input = document.createElement('input')
     document.body.appendChild($input)
@@ -269,7 +269,7 @@ describe('Message Selection', () => {
   it('should fire events even if conifg.active is off', async () => {
     const config = mockAppConfigFactory()
     config.active = false
-    dispatchAppConfigEvent(config)
+    dispatchActiveConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
@@ -388,7 +388,7 @@ describe('Message Selection', () => {
   it('should not trigger double click if the interval is too long', async () => {
     const config = mockAppConfigFactory()
     config.doubleClickDelay = 100
-    dispatchAppConfigEvent(config)
+    dispatchActiveConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
@@ -429,7 +429,7 @@ describe('Message Selection', () => {
   it('should trigger double click if the interval is within delay', async () => {
     const config = mockAppConfigFactory()
     config.doubleClickDelay = 100
-    dispatchAppConfigEvent(config)
+    dispatchActiveConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
@@ -476,7 +476,7 @@ describe('Message Selection', () => {
     let config = mockAppConfigFactory()
     config.mode.instant.enable = true
     config.pinMode.instant.enable = true
-    dispatchAppConfigEvent(config)
+    dispatchActiveConfigChangedEvent(config)
     await timer(0)
     expect(addMock).toHaveBeenCalledTimes(2)
     expect(removeMock).toHaveBeenCalledTimes(0)
@@ -486,7 +486,7 @@ describe('Message Selection', () => {
     config = mockAppConfigFactory()
     config.mode.instant.enable = false
     config.pinMode.instant.enable = true
-    dispatchAppConfigEvent(config)
+    dispatchActiveConfigChangedEvent(config)
     await timer(0)
     expect(addMock).toHaveBeenCalledTimes(0)
     expect(removeMock).toHaveBeenCalledTimes(2)

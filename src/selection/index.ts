@@ -1,7 +1,7 @@
 import { appConfigFactory, AppConfig } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
 import { isContainChinese, isContainEnglish, isContainMinor } from '@/_helpers/lang-check'
-import { createAppConfigStream } from '@/_helpers/config-manager'
+import { createActiveConfigStream } from '@/_helpers/config-manager'
 import * as selection from '@/_helpers/selection'
 import { MsgType, PostMsgType, PostMsgSelection, MsgSelection, MsgIsPinned } from '@/typings/message'
 import { Mutable } from '@/typings/helpers'
@@ -34,7 +34,7 @@ const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 const isNoSelectionPage = isSaladictOptionsPage || isSaladictPopupPage
 
 let config = appConfigFactory()
-createAppConfigStream().subscribe(newConfig => config = newConfig)
+createActiveConfigStream().subscribe(newConfig => config = newConfig)
 
 let clickPeriodCount = 0
 let lastMousedownEvent: MouseEvent | TouchEvent | null
@@ -228,7 +228,7 @@ validMouseup$$.subscribe(event => {
  * Cursor Instant Capture
  */
 combineLatest(
-  createAppConfigStream(),
+  createActiveConfigStream(),
   message.self.createStream<MsgIsPinned>(MsgType.IsPinned).pipe(
     pluck<MsgIsPinned, MsgIsPinned['isPinned']>('isPinned'),
     startWith(false),

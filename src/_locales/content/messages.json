@@ -9,6 +9,11 @@
     "zh_TW": "取消",
     "en": "Cancel"
   },
+  "neverShow": {
+    "zh_CN": "不再弹出",
+    "zh_TW": "不再彈出",
+    "en": "Stop showing"
+  },
   "tipSearchHistoryBack": {
     "zh_CN": "上一个查词记录",
     "zh_TW": "上一個查單字記錄",

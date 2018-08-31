@@ -60,9 +60,11 @@ import { mergeConfig } from '@/app-config/merge-config'
 import Coffee from './Coffee'
 import SocialMedia from './SocialMedia'
 import AlertModal from '@/components/AlertModal'
+import { updateActiveConfig, updateActiveConfigID, updateConfigIDList, resetConfig } from '@/_helpers/config-manager'
 
 // Auto import option section components
 const _optNames = [
+  'OptConfigProfile',
   'OptAppActive',
   'OptPreference',
   'OptPrivacy',
@@ -88,7 +90,7 @@ const _optComps = _optNames.reduce((o, name) => {
 
 export default {
   name: 'options',
-  store: ['config', 'newVersionAvailable', 'searchText'],
+  store: ['activeConfigID', 'configProfileIDs', 'configProfiles', 'config', 'newVersionAvailable', 'searchText'],
   data () {
     return {
       isShowConfigUpdated: false,
@@ -98,6 +100,13 @@ export default {
     }
   },
   methods: {
+    showSavedBar () {
+      this.isShowConfigUpdated = true
+      clearTimeout(this.showConfigUpdatedTimeout)
+      this.showConfigUpdatedTimeout = setTimeout(() => {
+        this.isShowConfigUpdated = false
+      }, 1500)
+    },
     showSocialMedia (flag) {
       clearTimeout(this.__showSocialMediaTimeout)
       if (flag) {
@@ -120,24 +129,67 @@ export default {
     },
     handleImport (e) {
       const fr = new FileReader()
-      fr.onload= () => {
+      fr.onload = async () => {
+        let newStore
+
         try {
-          const content = JSON.parse(fr.result)
-          if (content.version) {
-            this.$store.config = mergeConfig(content, this.$store.config)
-          }
+          newStore = JSON.parse(fr.result)
         } catch (err) {
           if (process.env.NODE_ENV !== 'production' || process.env.DEV_BUILD) {
             console.warn(err)
           }
         }
+
+        const {
+          activeConfigID,
+          configProfileIDs,
+          configProfiles
+        } = newStore
+
+        if (!activeConfigID ||
+            typeof activeConfigID !== 'string' ||
+            !Array.isArray(configProfileIDs) ||
+            !configProfileIDs.includes(activeConfigID) ||
+            !configProfiles ||
+            configProfileIDs.some(id => !configProfiles[id] || !configProfiles[id].id)
+          ) {
+          if (process.env.DEV_BUILD) {
+            console.error('Wrong import file')
+          }
+          return
+        }
+
+        const newProfiles = configProfileIDs.reduce((profiles, id) => {
+          profiles[id] = mergeConfig(configProfiles[id], appConfigFactory(id))
+          return profiles
+        }, {})
+
+        await storage.sync.remove(this.configProfileIDs)
+        await storage.sync.set({
+          ...newProfiles,
+          activeConfigID,
+          configProfileIDs,
+        })
+
+        this.configProfiles = newProfiles
+        this.configProfileIDs = configProfileIDs
+        this.activeConfigID = activeConfigID
+        this.config = newProfiles[activeConfigID]
       }
       fr.readAsText(e.currentTarget.files[0])
     },
     handleExport () {
       browser.runtime.getPlatformInfo()
         .then(({ os }) => {
-          let config = JSON.stringify(this.$store.config, null, '  ')
+          let config = JSON.stringify(
+            {
+              activeConfigID: this.activeConfigID,
+              configProfileIDs: this.configProfileIDs,
+              configProfiles: this.configProfiles,
+            },
+            null,
+            '  '
+          )
           if (os === 'win') {
             config = config.replace(/\r\n|\n/g, '\r\n')
           }
@@ -152,24 +204,35 @@ export default {
       this.$refs.alert.$emit('show', {
         title: this.$t('opt:reset_modal_title'),
         content: this.$t('opt:reset_modal_content'),
-        onConfirm: () => {
-          storage.sync.set({config: appConfigFactory()})
-            .then(() => storage.sync.get('config'))
-            .then(({config}) => {
-              if (config) {
-                this.config = config
-              } else {
-                // something wrong with the sync storage, use default config without syncing
-                const defaultConfig = appConfigFactory()
-                storage.sync.set({config: defaultConfig})
-                this.config = defaultConfig
-              }
-            })
+        onConfirm: async () => {
+          await resetConfig()
+          const {
+            activeConfigID,
+            configProfileIDs
+          } = await storage.sync.get(['activeConfigID', 'configProfileIDs'])
+          const configProfiles = await storage.sync.get(configProfileIDs)
+
+          this.configProfiles = configProfiles
+          this.configProfileIDs = configProfileIDs
+          this.activeConfigID = activeConfigID
+          this.config = configProfiles[activeConfigID]
         }
       })
     }
   },
   watch: {
+    async activeConfigID (newID) {
+      await updateActiveConfigID(newID)
+      this.config = this.configProfiles[newID]
+    },
+    configProfileIDs: {
+      deep: true,
+      async handler () {
+        await updateConfigIDList(this.configProfileIDs)
+        this.configProfiles = await storage.sync.get(this.configProfileIDs)
+        this.showSavedBar()
+      }
+    },
     config: {
       deep: true,
       handler () {
@@ -195,14 +258,8 @@ export default {
         config.dicts.all.sogou.page = `https://fanyi.sogou.com/#auto/${sogouLang}/%s`
         config.contextMenus.all.sogou = `https://fanyi.sogou.com/#auto/${sogouLang}/%s`
 
-        storage.sync.set({config})
-          .then(() => {
-            this.isShowConfigUpdated = true
-            clearTimeout(this.showConfigUpdatedTimeout)
-            this.showConfigUpdatedTimeout = setTimeout(() => {
-              this.isShowConfigUpdated = false
-            }, 1500)
-          })
+        updateActiveConfig(config)
+          .then(() => this.showSavedBar())
       }
     },
   },
@@ -213,9 +270,11 @@ export default {
     AlertModal
   },
   mounted () {
-    Promise.all([getWordOfTheDay(), timer(1000)])
-      .then(([word]) => this.searchText(word))
-      .catch(() => this.searchText('salad'))
+    if (process.env.NODE_ENV !== 'development') {
+      Promise.all([getWordOfTheDay(), timer(1000)])
+        .then(([word]) => this.searchText(word))
+        .catch(() => this.searchText('salad'))
+    }
   }
 }
 </script>

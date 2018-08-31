@@ -2,8 +2,8 @@ import { message, openURL } from '@/_helpers/browser-api'
 import { play } from './audio-manager'
 import { isInNotebook, saveWord, deleteWords, getWordsByText, getWords } from './database'
 import { chsToChz } from '@/_helpers/chs-to-chz'
-import appConfigFactory, { AppConfig } from '@/app-config'
-import { createAppConfigStream } from '@/_helpers/config-manager'
+import { appConfigFactory, AppConfig } from '@/app-config'
+import { createActiveConfigStream } from '@/_helpers/config-manager'
 import { DictSearchResult } from '@/typings/server'
 import { timeout } from '@/_helpers/promise-more'
 import {
@@ -20,7 +20,7 @@ import {
 
 let config = appConfigFactory()
 
-createAppConfigStream().subscribe(newConfig => config = newConfig)
+createActiveConfigStream().subscribe(newConfig => config = newConfig)
 
 message.self.initServer()
 
@@ -156,7 +156,7 @@ function youdaoTranslateAjax (request): Promise<any> {
       xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded')
       xhr.send(request.data)
     } else {
-      xhr.send(null)
+      xhr.send(null as any)
     }
   })
 }

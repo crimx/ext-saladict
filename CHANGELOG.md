@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.12.0"></a>
+# [6.12.0](https://github.com/crimx/ext-saladict/compare/v6.11.0...v6.12.0) (2018-08-31)
+
+
+### Bug Fixes
+
+* **content:** correct config and selection listener order ([876b691](https://github.com/crimx/ext-saladict/commit/876b691))
+* **content:** fix blank after new config ([ddc4953](https://github.com/crimx/ext-saladict/commit/ddc4953))
+* **content:** hide config profile panel on options page ([a60ee25](https://github.com/crimx/ext-saladict/commit/a60ee25))
+* **dicts:** fix camberidge audio ([f4c48b2](https://github.com/crimx/ext-saladict/commit/f4c48b2)), closes [#192](https://github.com/crimx/ext-saladict/issues/192)
+* **helpers:** fix listener interface ([41133da](https://github.com/crimx/ext-saladict/commit/41133da))
+* **panel:** add search box delay ([645797c](https://github.com/crimx/ext-saladict/commit/645797c))
+* **panel:** fix search box selection delay ([a3ffe05](https://github.com/crimx/ext-saladict/commit/a3ffe05))
+* **selection:** fix context matching line ending ([da80def](https://github.com/crimx/ext-saladict/commit/da80def))
+
+
+### Features
+
+* **config:** support multi-configs ([5d7660b](https://github.com/crimx/ext-saladict/commit/5d7660b))
+* **content:** add never show button for word editor ([ef77e7c](https://github.com/crimx/ext-saladict/commit/ef77e7c))
+* **content:** add UI for switching profile ([3507b45](https://github.com/crimx/ext-saladict/commit/3507b45))
+* **helpers:** add config id list stream ([398e3fd](https://github.com/crimx/ext-saladict/commit/398e3fd))
+* **options:** add config profile settings ([3825d74](https://github.com/crimx/ext-saladict/commit/3825d74))
+* **options:** add profile operations ([c7a622c](https://github.com/crimx/ext-saladict/commit/c7a622c))
+
+
+
 <a name="6.11.0"></a>
 # [6.11.0](https://github.com/crimx/ext-saladict/compare/v6.10.2...v6.11.0) (2018-08-28)
 

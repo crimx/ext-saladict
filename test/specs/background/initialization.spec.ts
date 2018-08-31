@@ -73,62 +73,6 @@ describe('Initialization', () => {
     }, 0)
   })
 
-  describe('onInstalled', () => {
-    it('should init new config on first install', done => {
-      browser.storage.sync.get.flush()
-      browser.storage.sync.get.callsFake(() => Promise.resolve({}))
-      browser.runtime.onInstalled.dispatch({ reason: 'install' })
-      setTimeout(() => {
-        expect(browser.storage.sync.get.calledOnce).toBeTruthy()
-        expect(browser.storage.sync.clear.calledOnce).toBeTruthy()
-        expect(browser.storage.local.set.calledWithMatch({
-          lastCheckUpdate: sinon.match.number
-        })).toBeTruthy()
-        expect(openURL).toHaveBeenCalledTimes(1)
-        expect(mergeConfig).toHaveBeenCalledTimes(0)
-        expect(initMenus).toHaveBeenCalledTimes(2)
-        expect(initPdf).toHaveBeenCalledTimes(2)
-        done()
-      }, 0)
-    })
-
-    it('should just merge config if exist', done => {
-      const config = appConfigFactory()
-      browser.storage.sync.get.flush()
-      browser.storage.sync.get.returns(Promise.resolve({ config }))
-      window.fetch = jest.fn(() => Promise.resolve({ json: () => ({
-        tag_name: 'v1.1.1',
-        body: '1. one.\r\n2. two',
-      })}))
-
-      browser.runtime.onInstalled.dispatch({ reason: 'update' })
-
-      expect(browser.storage.sync.get.calledOnce).toBeTruthy()
-      setTimeout(() => {
-        expect(browser.storage.local.clear.notCalled).toBeTruthy()
-        expect(browser.storage.sync.clear.notCalled).toBeTruthy()
-        expect(openURL).toHaveBeenCalledTimes(0)
-        expect(mergeConfig).toHaveBeenCalledTimes(1)
-        expect(mergeConfig).toHaveBeenCalledWith(config)
-        expect(window.fetch).toHaveBeenCalledTimes(1)
-        expect(browser.notifications.create.calledOnce).toBeTruthy()
-        expect(browser.notifications.create.calledWithMatch(
-          sinon.match.string,
-          {
-            title: sinon.match('v1.1.1'),
-            message: '1. one.\n2. two',
-          }
-        )).toBeTruthy()
-        expect(initMenus).toHaveBeenCalledTimes(2)
-        expect(initPdf).toHaveBeenCalledTimes(2)
-        expect(browser.storage.local.set.calledWithMatch({
-          lastCheckUpdate: sinon.match.number
-        })).toBeTruthy()
-        done()
-      }, 0)
-    })
-  })
-
   describe('onStartup', () => {
     let checkUpdate: jest.Mock
     beforeEach(() => {

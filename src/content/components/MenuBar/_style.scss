@@ -100,6 +100,47 @@
   }
 }
 
+.panel-MenuBar_SettingsWrapper {
+  position: relative;
+}
+
+.panel-MenuBar_Profiles {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  transform: translateX(-50%);
+  z-index: $global-zindex-tooltip;
+  padding: 8px 18px 8px 5px;
+  word-break: keep-all;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 3px 4px 31px -8px rgba(0,0,0,0.8);
+}
+
+.panel-MenuBar_Profile {
+  position: relative;
+  margin: 5px 0;
+  user-select: none;
+  cursor: pointer;
+
+  &::before {
+    content: '▶';
+    padding: 0 5px;
+    color: transparent;
+    transform: color 0.4s;
+  }
+
+  &.isActive::before {
+    color: #333;
+  }
+}
+
+.panel-MenuBar_ProfileBtn {
+  background: transparent;
+  user-select: none;
+  cursor: pointer;
+}
+
 .isAnimate {
   .panel-MenuBar_SearchBox {
     transition: flex 1s;
@@ -111,5 +152,21 @@
 
   .panel-MenuBar_Icon-pin {
     transition: transform 0.4s;
+  }
+
+  .panel-MenuBar_ProfilePanel-enter {
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .panel-MenuBar_ProfilePanel-enter-active,
+  .panel-MenuBar_ProfilePanel-exit {
+    opacity: 1;
+    transition: opacity 0.4s;
+  }
+
+  .panel-MenuBar_ProfilePanel-exit-active {
+    opacity: 0;
+    transition: opacity 0.4s;
   }
 }

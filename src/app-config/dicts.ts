@@ -178,7 +178,7 @@ export function getALlDicts () {
        * For string, add additional `options_sel` field to list out choices.
        */
       options: {
-        resultnum: 2
+        resultnum: 4
       }
     },
     eudic: {

@@ -13,5 +13,15 @@
     "zh_CN": "确认",
     "zh_TW": "確認",
     "en": "Confirm"
+  },
+  "rename": {
+    "zh_CN": "重命名",
+    "zh_TW": "重新命名",
+    "en": "Rename"
+  },
+  "sort": {
+    "zh_CN": "排序",
+    "zh_TW": "排序",
+    "en": "Sort"
   }
 }

@@ -1,9 +1,9 @@
 import * as recordManager from '@/_helpers/record-manager'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
-import appConfigFactory, { TCDirection, AppConfig, DictID } from '@/app-config'
-import { message } from '@/_helpers/browser-api'
-import { createAppConfigStream } from '@/_helpers/config-manager'
-import { MsgSelection, MsgType, MsgTempDisabledState, MsgEditWord, MsgOpenUrl, MsgFetchDictResult } from '@/typings/message'
+import appConfigFactory, { TCDirection, DictID } from '@/app-config'
+import { message, storage } from '@/_helpers/browser-api'
+import { createConfigIDListStream } from '@/_helpers/config-manager'
+import { MsgType, MsgTempDisabledState, MsgEditWord, MsgOpenUrl, MsgFetchDictResult } from '@/typings/message'
 import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
@@ -29,6 +29,7 @@ export const enum ActionType {
   EDITOR_WORD_UPDATE = 'widget/EDITOR_WORD_UPDATE',
   NEW_PANEL_HEIGHT = 'widget/NEW_PANEL_HEIGHT',
   PANEL_CORDS = 'widget/PANEL_CORDS',
+  CONFIG_PROFILE_lIST = 'widget/CONFIG_PROFILE_lIST'
 }
 
 /*-----------------------------------------------*\
@@ -36,7 +37,7 @@ export const enum ActionType {
 \*-----------------------------------------------*/
 
 interface WidgetPayload {
-  [ActionType.NEW_CONFIG]: AppConfig
+  [ActionType.NEW_CONFIG]: undefined
   [ActionType.RESTORE]: undefined
   [ActionType.TRIPLE_CTRL]: undefined
   [ActionType.TEMP_DISABLED]: boolean
@@ -47,6 +48,7 @@ interface WidgetPayload {
   [ActionType.NEW_SELECTION]: Partial<WidgetState['widget']>
   [ActionType.NEW_PANEL_HEIGHT]: number
   [ActionType.PANEL_CORDS]: { x: number, y: number }
+  [ActionType.CONFIG_PROFILE_lIST]: Array<{ id: string, name: string }>
 }
 
 /*-----------------------------------------------*\
@@ -77,6 +79,7 @@ export type WidgetState = {
       isPinned: boolean
       shouldPanelShow: boolean
     }
+    readonly configProfiles: Array<{ id: string, name: string }>
   }
 }
 
@@ -114,6 +117,7 @@ export const initState: WidgetState = {
       isPinned: false,
       shouldPanelShow: false,
     },
+    configProfiles: [],
   }
 }
 
@@ -126,7 +130,8 @@ type WidgetReducer = {
 }
 
 export const reducer: WidgetReducer = {
-  [ActionType.NEW_CONFIG] (state, config) {
+  [ActionType.NEW_CONFIG] (state) {
+    const { config } = state
     const widget = config.active
       ? { ...state.widget }
       : _restoreWidget(state.widget)
@@ -353,6 +358,15 @@ export const reducer: WidgetReducer = {
       }
     }
   },
+  [ActionType.CONFIG_PROFILE_lIST] (state, configProfiles) {
+    return {
+      ...state,
+      widget: {
+        ...state.widget,
+        configProfiles,
+      }
+    }
+  },
 }
 
 export default reducer
@@ -366,8 +380,8 @@ interface Action<T extends ActionType> {
   payload?: WidgetPayload[T]
 }
 
-export function newConfig (payload: AppConfig): Action<ActionType.NEW_CONFIG> {
-  return ({ type: ActionType.NEW_CONFIG, payload })
+export function newConfig (): Action<ActionType.NEW_CONFIG> {
+  return ({ type: ActionType.NEW_CONFIG })
 }
 
 export function tempDisable (payload: boolean): Action<ActionType.TEMP_DISABLED> {
@@ -394,7 +408,7 @@ export function mouseOnBowlAction (payload: boolean): Action<ActionType.MOUSE_ON
   return ({ type: ActionType.MOUSE_ON_BOWL, payload })
 }
 
-export function newSelection (payload: WidgetPayload[ActionType.NEW_SELECTION]): Action<ActionType.NEW_SELECTION> {
+export function newSelectionAction (payload: WidgetPayload[ActionType.NEW_SELECTION]): Action<ActionType.NEW_SELECTION> {
   return ({ type: ActionType.NEW_SELECTION, payload })
 }
 
@@ -410,6 +424,10 @@ export function panelOnDrag (x: number, y: number): Action<ActionType.PANEL_CORD
   return ({ type: ActionType.PANEL_CORDS, payload: { x, y } })
 }
 
+export function updateConfigProfiles (payload: WidgetPayload[ActionType.CONFIG_PROFILE_lIST]): Action<ActionType.CONFIG_PROFILE_lIST> {
+  return ({ type: ActionType.CONFIG_PROFILE_lIST, payload })
+}
+
 /*-----------------------------------------------*\
     Side Effects
 \*-----------------------------------------------*/
@@ -418,12 +436,18 @@ let dictHeights: Partial<{ [id in DictID]: number }> = {}
 
 export function startUpAction (): DispatcherThunk {
   return (dispatch, getState) => {
-    /** Listen to selection change and determine whether to show bowl and panel */
-    listenNewSelection(dispatch, getState)
     listenTempDisable(dispatch, getState)
 
-    createAppConfigStream().subscribe(config => {
-      dispatch(newConfig(config))
+    createConfigIDListStream().subscribe(idlist => {
+      storage.sync.get(idlist).then(obj => {
+        if (process.env.DEV_BUILD) {
+          const l = idlist.filter(id => !obj[id])
+          if (l.length > 0) {
+            console.error(`Update config ID List: id "${l}" not exist`)
+          }
+        }
+        dispatch(updateConfigProfiles(idlist.map(id => ({ id, name: obj[id].name }))))
+      })
     })
 
     // close panel and word editor on esc
@@ -591,17 +615,10 @@ export function updateItemHeight (id: DictID, height: number): DispatcherThunk {
   }
 }
 
-/*-----------------------------------------------*\
-    Helpers
-\*-----------------------------------------------*/
-
-function listenNewSelection (
-  dispatch: (action: any) => any,
-  getState: () => StoreState,
-) {
-  message.self.addListener<MsgSelection>(MsgType.Selection, message => {
+export function newSelection (): DispatcherThunk {
+  return (dispatch, getState) => {
     const state = getState()
-    const { selectionInfo, dbClick, ctrlKey, instant, mouseX, mouseY, self } = message
+    const { selectionInfo, dbClick, ctrlKey, instant, mouseX, mouseY, self } = state.selection
 
     if (self) {
       // inside dict panel
@@ -683,7 +700,7 @@ function listenNewSelection (
       )
     }
 
-    dispatch(newSelection(newWidgetPartial))
+    dispatch(newSelectionAction(newWidgetPartial))
 
     // should search text?
     const { pinMode } = state.config
@@ -700,8 +717,12 @@ function listenNewSelection (
       // Otherwise clean up all dicts
       dispatch(restoreDicts())
     }
-  })
+  }
 }
+
+/*-----------------------------------------------*\
+    Helpers
+\*-----------------------------------------------*/
 
 /** From popup page */
 function listenTempDisable (

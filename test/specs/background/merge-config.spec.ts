@@ -3,9 +3,6 @@ import mergeConfig from '@/app-config/merge-config'
 import sinon from 'sinon'
 
 describe('Merge Config', () => {
-  it('should init config when there is no previous config', () => {
-    expect(mergeConfig(undefined)).toEqual(appConfigFactory())
-  })
   it('should merge config version < 6', () => {
     const oldConfig = appConfigFactory() as AppConfigMutable
     // @ts-ignore
@@ -21,14 +18,5 @@ describe('Merge Config', () => {
     expectStorageObj.config.dicts.selected = ['bing']
     expectStorageObj.config.dicts.all.bing.defaultUnfold = !expectStorageObj.config.dicts.all.bing.defaultUnfold
     expectStorageObj.config.dicts.all.bing.preferredHeight = 1000
-
-  })
-  it('should only update config for version 6', () => {
-    const userConfig = appConfigFactory()
-
-    const config = mergeConfig(userConfig)
-
-    const expectStorageObj = { config: userConfig }
-    expect(config).toEqual(userConfig)
   })
 })

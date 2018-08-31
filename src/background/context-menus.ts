@@ -1,11 +1,11 @@
-import { message, storage, openURL, StorageUpdate } from '@/_helpers/browser-api'
+import { message, openURL } from '@/_helpers/browser-api'
 import { MsgType } from '@/typings/message'
 import { AppConfig } from '@/app-config'
 import i18nLoader from '@/_helpers/i18n'
 import { TranslationFunction } from 'i18next'
 import contextLocles from '@/_locales/context'
 import isEqual from 'lodash/isEqual'
-import { getAppConfig } from '@/_helpers/config-manager'
+import { getActiveConfig, addActiveConfigListener, AppConfigChanged } from '@/_helpers/config-manager'
 
 // import { Observable, ReplaySubject, combineLatest } from 'rxjs'
 // import { mergeMap, filter, map, audit, mapTo, share, startWith } from 'rxjs/operators'
@@ -19,6 +19,7 @@ import { audit } from 'rxjs/operators/audit'
 import { mapTo } from 'rxjs/operators/mapTo'
 import { share } from 'rxjs/operators/share'
 import { startWith } from 'rxjs/operators/startWith'
+import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
 
 type ContextMenusConfig = AppConfig['contextMenus']
 
@@ -69,9 +70,8 @@ browser.contextMenus.onClicked.addListener(info => {
       requestSelection()
       break
     default:
-      storage.sync.get('config')
-        .then(result => {
-          const config = result.config as AppConfig
+      getActiveConfig()
+        .then(config => {
           const url = config.contextMenus.all[menuItemId]
           if (url) {
             openURL(url.replace('%s', selectionText))
@@ -83,18 +83,19 @@ browser.contextMenus.onClicked.addListener(info => {
 export function init (initConfig: ContextMenusConfig): Observable<void> {
   if (setMenus$$) { return setMenus$$ }
   // when context menus config changes
-  const contextMenusChanged$ = storage.createStream<AppConfig>('config').pipe(
-    filter((config): config is StorageUpdate<AppConfig> => {
-      const { newValue, oldValue } = config
-      if (!newValue) { return false }
-      if (!oldValue) { return true }
+  const contextMenusChanged$ =
+      fromEventPattern<AppConfigChanged[] | AppConfigChanged>(addActiveConfigListener as any).pipe(
+    map(args => Array.isArray(args) ? args[0] : args),
+    filter(({ newConfig, oldConfig }) => {
+      if (!newConfig) { return false }
+      if (!oldConfig) { return true }
 
       return !isEqual(
-        oldValue.contextMenus.selected,
-        newValue.contextMenus.selected,
+        oldConfig.contextMenus.selected,
+        newConfig.contextMenus.selected,
       )
     }),
-    map(({ newValue }) => newValue.contextMenus),
+    map(({ newConfig }) => newConfig.contextMenus),
     startWith(initConfig),
   )
 
@@ -143,7 +144,7 @@ export function openGoogle () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getAppConfig().then(config => {
+        getActiveConfig().then(config => {
           openURL(`https://translate.google.com/translate?sl=auto&tl=${config.langCode}&js=y&prev=_t&ie=UTF-8&u=${encodeURIComponent(tabs[0].url as string)}&edit-text=&act=url`)
         })
       }
@@ -174,7 +175,7 @@ export function openBaiduPage () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getAppConfig().then(config => {
+        getActiveConfig().then(config => {
           const langCode = config.langCode === 'zh-CN'
             ? 'zh'
             : config.langCode === 'zh-TW'
@@ -190,7 +191,7 @@ export function openSogouPage () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getAppConfig().then(config => {
+        getActiveConfig().then(config => {
           const langCode = config.langCode === 'zh-CN' ? 'zh-CHS' : 'en'
           openURL(`https://translate.sogoucdn.com/pcvtsnapshot?from=auto&to=${langCode}&tfr=translatepc&url=${encodeURIComponent(tabs[0].url as string)}&domainType=sogou`)
         })
@@ -202,7 +203,7 @@ export function openMicrosoftPage () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getAppConfig().then(config => {
+        getActiveConfig().then(config => {
           const langCode = config.langCode === 'zh-CN'
             ? 'zh-CHS'
             : config.langCode === 'zh-TW'

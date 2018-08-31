@@ -38,6 +38,8 @@ export interface DictPanelProps extends ChildrenProps {
 export default class DictPanel extends React.Component<DictPanelProps> {
   render () {
     const {
+      activeConfigID,
+      configProfiles,
       isAnimation,
       isFav,
       isPinned,
@@ -68,6 +70,8 @@ export default class DictPanel extends React.Component<DictPanelProps> {
     return (
       <div className={`panel-Root${isAnimation ? ' isAnimate' : ''}`}>
         {React.createElement(MenuBar, {
+          activeConfigID,
+          configProfiles,
           isFav,
           isPinned,
           searchHistory: dictionaries.searchHistory,

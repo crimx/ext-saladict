@@ -4,6 +4,8 @@ import { message } from '@/_helpers/browser-api'
 import { TranslationFunction } from 'i18next'
 import { MsgType, MsgOpenUrl } from '@/typings/message'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
+import { updateActiveConfigID } from '@/_helpers/config-manager'
+import CSSTransition from 'react-transition-group/CSSTransition'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
@@ -23,6 +25,8 @@ export interface MenuBarProps extends MenuBarDispatchers {
   readonly isPinned: boolean
   readonly searchHistory: SelectionInfo[]
   readonly activeDicts: string[]
+  readonly activeConfigID: string
+  readonly configProfiles: Array<{ id: string, name: string }>
 }
 
 type MenuBarState = {
@@ -30,6 +34,7 @@ type MenuBarState = {
 
   iSearchHistory: number
   text: string
+  isShowProfilePanel: boolean
 }
 
 export class MenuBar extends React.PureComponent<MenuBarProps & { t: TranslationFunction }, MenuBarState> {
@@ -40,7 +45,8 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     propsSearchHistory: null,
 
     iSearchHistory: 0,
-    text: ''
+    text: '',
+    isShowProfilePanel: false,
   }
 
   static getDerivedStateFromProps (
@@ -120,6 +126,66 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     message.send(msg)
   }
 
+  handleIconSettingsKeyUp = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'ArrowDown') {
+      // event object is pooled
+      const doc = e.currentTarget.ownerDocument
+      this.setState({ isShowProfilePanel: true }, () => {
+        const firstProfile = doc.getElementById(
+          this.props.configProfiles[0].id
+        )
+        if (firstProfile) {
+          firstProfile.focus()
+        }
+      })
+    }
+  }
+
+  showProfilePanel = () => {
+    this.setState({ isShowProfilePanel: true })
+  }
+
+  hideProfilePanel = () => {
+    this.setState({ isShowProfilePanel: false })
+  }
+
+  handleProfileItemClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    updateActiveConfigID(e.currentTarget.id)
+    setTimeout(() => {
+      if (this.props.searchHistory.length > 0) {
+        this.props.searchText({ info: this.props.searchHistory[0] })
+      }
+    }, 100)
+  }
+
+  handleProfileItemonKeyUp = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (e.key === 'Escape') {
+      e.stopPropagation()
+      this.setState({ isShowProfilePanel: false })
+      return
+    }
+
+    let offset = 0
+    if (e.key === 'ArrowDown') {
+      offset = 1
+    }
+    if (e.key === 'ArrowUp') {
+      offset = -1
+    }
+
+    if (!offset) { return }
+
+    const { configProfiles } = this.props
+    const curID = configProfiles.findIndex(({ id }) => id === e.currentTarget.id)
+    const nextID = ((configProfiles.length + curID) + offset) % configProfiles.length
+    const nextProfile = e.currentTarget.ownerDocument.getElementById(
+      configProfiles[nextID].id
+    )
+    if (nextProfile) {
+      nextProfile.focus()
+    }
+  }
+
   /** add/remove current search word into/from notebook */
   handleIconFavClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.button !== 2) {
@@ -182,7 +248,43 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
       if (this.props.activeDicts.length <= 0 || isSaladictPopupPage) {
         this.focusSearchBox()
       }
-    }, 10)
+    }, 200)
+  }
+
+  renderProfilePanel = () => {
+    const {
+      t,
+      configProfiles,
+      activeConfigID,
+    } = this.props
+    return (
+      <ul
+        className='panel-MenuBar_Profiles'
+        onMouseEnter={this.showProfilePanel}
+        onMouseLeave={this.hideProfilePanel}
+      >
+        {configProfiles.map(({ id, name }) => {
+          // default names
+          const match = /^%%_(\S+)_%%$/.exec(name)
+          let displayName = name
+          if (match) {
+            displayName = t(`profile:${match[1]}`)
+          }
+          return (
+            <li key={id}
+             className={'panel-MenuBar_Profile' + (id === activeConfigID ? ' isActive' : '')}
+            >
+              <button
+               id={id}
+               className='panel-MenuBar_ProfileBtn'
+               onClick={this.handleProfileItemClick}
+               onKeyUp={this.handleProfileItemonKeyUp}
+              >{displayName || name}</button>
+            </li>
+          )
+        })}
+      </ul>
+    )
   }
 
   render () {
@@ -195,7 +297,11 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
       searchHistory,
     } = this.props
 
-    const iSearchHistory = this.state.iSearchHistory
+    const {
+      isShowProfilePanel,
+      iSearchHistory,
+    } = this.state
+
     const nSearchHistory = searchHistory.length
 
     return (
@@ -252,18 +358,29 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
           onTouchStart={handleDragAreaTouchStart}
         />
 
-        <button className='panel-MenuBar_Btn'
-          onClick={this.handleIconSettingsClick}
-          disabled={isSaladictOptionsPage}
-        >
-          <svg
-            className='panel-MenuBar_Icon'
-            width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 612 612'
+        <div className='panel-MenuBar_SettingsWrapper'>
+          <button className='panel-MenuBar_Btn'
+            onClick={this.handleIconSettingsClick}
+            onKeyUp={this.handleIconSettingsKeyUp}
+            onMouseEnter={this.showProfilePanel}
+            onMouseLeave={this.hideProfilePanel}
+            disabled={isSaladictOptionsPage}
           >
-            <title>{t('tipOpenSettings')}</title>
-            <path d='M0 97.92v24.48h612V97.92H0zm0 220.32h612v-24.48H0v24.48zm0 195.84h612V489.6H0v24.48z'/>
-          </svg>
-        </button>
+            <svg
+              className='panel-MenuBar_Icon'
+              width='30' height='30' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 612 612'
+            >
+              <title>{t('tipOpenSettings')}</title>
+              <path d='M0 97.92v24.48h612V97.92H0zm0 220.32h612v-24.48H0v24.48zm0 195.84h612V489.6H0v24.48z'/>
+            </svg>
+          </button>
+          <CSSTransition
+           classNames='panel-MenuBar_ProfilePanel'
+           in={isShowProfilePanel && !isSaladictOptionsPage}
+           timeout={100}
+           unmountOnExit={true}
+          >{this.renderProfilePanel}</CSSTransition>
+        </div>
 
         <button className='panel-MenuBar_Btn'
           onMouseUp={this.handleIconFavMouseUp}

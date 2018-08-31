@@ -2,6 +2,7 @@ import { message } from '@/_helpers/browser-api'
 import { MsgSelection, MsgType } from '@/typings/message'
 import { getDefaultSelectionInfo } from '@/_helpers/selection'
 import { StoreState, DispatcherThunk } from './index'
+import { newSelection as newSelectionWidget } from './widget'
 
 /*-----------------------------------------------*\
     Action Type
@@ -79,7 +80,10 @@ export function startUpAction (): DispatcherThunk {
   return dispatch => {
     message.self.addListener<MsgSelection>(
       MsgType.Selection,
-      message => dispatch(newSelection(message)),
+      message => {
+        dispatch(newSelection(message))
+        dispatch(newSelectionWidget())
+      },
     )
   }
 }

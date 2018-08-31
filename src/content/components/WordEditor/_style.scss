@@ -155,8 +155,10 @@ textarea {
   user-select: none;
 }
 
-.wordEditor-Note_BtnCancel {
+.wordEditor-Note_BtnCancel,
+.wordEditor-Note_BtnNeverShow {
   @extend %wordEditor-Note_Btn;
+  margin-right: 10px;
   color: #333;
   background-color: #fff;
   border-color: #ccc;
@@ -182,7 +184,6 @@ textarea {
 
 .wordEditor-Note_BtnSave {
   @extend %wordEditor-Note_Btn;
-  margin-left: 10px;
   color: #fff;
   background-color: #337ab7;
   border-color: #2e6da4;

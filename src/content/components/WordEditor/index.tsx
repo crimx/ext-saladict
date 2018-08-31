@@ -4,6 +4,8 @@ import { TranslationFunction } from 'i18next'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { Word, deleteWords } from '@/_helpers/record-manager'
 import WordCards from '../WordCards'
+import { message } from '@/_helpers/browser-api'
+import { MsgType, MsgOpenUrl } from '@/typings/message'
 
 export interface WordEditorDispatchers {
   saveToNotebook: (info: SelectionInfo) => any
@@ -64,6 +66,14 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
     if (!this.state.isChanged || confirm(this.props.t('wordEditorCloseConfirm'))) {
       this.props.closeModal()
     }
+  }
+
+  openOptions = () => {
+    message.send<MsgOpenUrl>({
+      type: MsgType.OpenURL,
+      url: 'options.html',
+      self: true,
+    })
   }
 
   getRelatedWords = () => {
@@ -178,6 +188,10 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
           {relatedWords.length > 0 && <WordCards words={relatedWords} deleteCard={this.deleteCard} /> }
         </div>
         <footer className='wordEditor-Footer'>
+          <button type='button'
+            className='wordEditor-Note_BtnNeverShow'
+            onClick={this.openOptions}
+          >{t('neverShow')}</button>
           <button type='button'
             className='wordEditor-Note_BtnCancel'
             onClick={this.closeModal}

@@ -1,13 +1,12 @@
 import { message, storage, openURL } from '@/_helpers/browser-api'
 import checkUpdate from '@/_helpers/check-update'
-import { mergeConfig } from '@/app-config/merge-config'
-import appConfigFactory, { AppConfig, AppConfigMutable } from '@/app-config'
-import { getAppConfig, setAppConfig } from '@/_helpers/config-manager'
+import { AppConfigMutable } from '@/app-config'
+import { getActiveConfig, updateActiveConfig, initConfig } from '@/_helpers/config-manager'
 import { init as initMenus, openPDF, openGoogle, openYoudao } from './context-menus'
 import { init as initPdf } from './pdf-sniffer'
 import { MsgType, MsgQueryPanelState } from '@/typings/message'
 
-getAppConfig().then(config => {
+getActiveConfig().then(config => {
   initMenus(config.contextMenus)
   initPdf(config)
 })
@@ -23,8 +22,8 @@ if (browser.notifications.onButtonClicked) {
 browser.commands.onCommand.addListener(command => {
   switch (command) {
     case 'toggle-active':
-      getAppConfig().then(config => {
-        setAppConfig({
+      getActiveConfig().then(config => {
+        updateActiveConfig({
           ...config,
           active: !config.active,
         })
@@ -34,7 +33,7 @@ browser.commands.onCommand.addListener(command => {
       browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
         if (tabs.length <= 0 || tabs[0].id == null) { return }
         Promise.all([
-          getAppConfig(),
+          getActiveConfig(),
           message.send<MsgQueryPanelState, boolean>(
             tabs[0].id as number,
             {
@@ -47,7 +46,7 @@ browser.commands.onCommand.addListener(command => {
           const isEnable = !config[isPinned ? 'pinMode' : 'mode'].instant.enable
           config.mode.instant.enable = isEnable
           config.pinMode.instant.enable = isEnable
-          setAppConfig(config)
+          updateActiveConfig(config)
         })
       })
       break
@@ -63,37 +62,23 @@ browser.commands.onCommand.addListener(command => {
   }
 })
 
-function onInstalled ({ reason, previousVersion }: { reason: string, previousVersion?: string }) {
-  // merge config on installed
-  return storage.sync.get('config')
-    .then(({ config }: { config: AppConfig }) => {
-      if (!process.env.DEV_BUILD) {
-        if (config && config.dicts) {
-          // got previous config
-          const base = mergeConfig(config)
-          return storage.sync.set({ config: base })
-            .then(() => base)
-        }
-      }
-      return storage.sync.clear() // local get cleared by database
-        .then(() => {
-          if (!process.env.DEV_BUILD) {
-            openURL('https://github.com/crimx/crx-saladict/wiki/Instructions')
-          }
-          return appConfigFactory()
-        })
-    })
-    .then(config => {
-      if (reason === 'update') {
-        // ignore patch updates
-        if (!previousVersion || previousVersion.replace(/[^.]*$/, '') !== browser.runtime.getManifest().version.replace(/[^.]*$/, '')) {
-          showNews()
-        }
-      }
-      initMenus(config.contextMenus)
-      initPdf(config)
-      storage.local.set({ lastCheckUpdate: Date.now() })
-    })
+async function onInstalled ({ reason, previousVersion }: { reason: string, previousVersion?: string }) {
+  const activeConfig = await initConfig()
+  initMenus(activeConfig.contextMenus)
+  initPdf(activeConfig)
+  storage.local.set({ lastCheckUpdate: Date.now() })
+
+  if (reason === 'install') {
+    if (!(await storage.sync.get('hasInstructionsShown')).hasInstructionsShown) {
+      openURL('https://github.com/crimx/crx-saladict/wiki/Instructions')
+      storage.sync.set({ hasInstructionsShown: true })
+    }
+  } else if (reason === 'update') {
+    // ignore patch updates
+    if (!previousVersion || previousVersion.replace(/[^.]*$/, '') !== browser.runtime.getManifest().version.replace(/[^.]*$/, '')) {
+      showNews()
+    }
+  }
 }
 
 function onStartup (): void {
@@ -140,7 +125,7 @@ function showNews () {
           iconUrl: browser.runtime.getURL(`static/icon-128.png`),
           title: `沙拉查词 Saladict【${data.tag_name}】`,
           message: data.body.match(/^\d+\..+/gm).join('\n'),
-          buttons: [{ title: '查看更新' }],
+          buttons: [{ title: '查看更新介绍' }],
           eventTime: Date.now() + 10000,
           priority: 2,
         })
