@@ -17,6 +17,8 @@ export const mapStateToProps = ({
   dictionaries,
 }: StoreState) => {
   return {
+    activeConfigID: config.id,
+    configProfiles: widget.configProfiles,
     isAnimation: config.animation,
     allDictsConfig: config.dicts.all,
     fontSize: config.fontSize,

@@ -108,6 +108,8 @@ export default {
     },
     saveName () {
       this.config.name = String(this.activeConfigName)
+      // also inform id list
+      this.configProfileIDs = this.configProfileIDs.slice()
       this.isShowRename = false
     },
 
