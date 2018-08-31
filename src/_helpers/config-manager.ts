@@ -18,6 +18,11 @@ import { map } from 'rxjs/operators/map'
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
 import { mergeConfig } from '@/app-config/merge-config'
 
+export interface StorageChanged<T> {
+  newValue: T,
+  oldValue?: T,
+}
+
 export interface AppConfigChanged {
   newConfig: AppConfig,
   oldConfig?: AppConfig,
@@ -146,7 +151,7 @@ export function updateActiveConfig (config: AppConfig): Promise<void> {
 }
 
 export function addConfigIDListListener (
-  cb: (changes: { newValue: string[], oldValue?: string[] }) => any
+  cb: (changes: StorageChanged<string[]>) => any
 ) {
   storage.sync.addListener('configProfileIDs', ({ configProfileIDs }) => {
     if (configProfileIDs.newValue) {
@@ -194,6 +199,20 @@ export async function addActiveConfigListener (
       }
     }
   })
+}
+
+/**
+ * Get active config and create a stream listening to config changing
+ */
+export function createConfigIDListStream (): Observable<string[]> {
+  return concat(
+    from(getConfigIDList()),
+    fromEventPattern<[StorageChanged<string[]>] | StorageChanged<string[]>>(
+      addConfigIDListListener as any
+    ).pipe(
+      map(args => (Array.isArray(args) ? args[0] : args).newValue),
+    ),
+  )
 }
 
 /**
