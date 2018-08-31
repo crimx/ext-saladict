@@ -14,7 +14,7 @@ import optionsLocles from '@/_locales/options'
 import contextLocles from '@/_locales/context'
 import profileLocles from '@/_locales/config-modes'
 import { MsgType, MsgSelection } from '@/typings/message'
-import { getActiveConfigID, getConfigIDList, initConfig } from '@/_helpers/config-manager'
+import { getActiveConfigID, getConfigIDList } from '@/_helpers/config-manager'
 
 window.__SALADICT_INTERNAL_PAGE__ = true
 window.__SALADICT_OPTIONS_PAGE__ = true

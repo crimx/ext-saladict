@@ -6,7 +6,7 @@
  * the "active config". This is for backward compatibility.
  */
 
-import { AppConfig, appConfigFactory } from '@/app-config'
+import { AppConfig } from '@/app-config'
 import { defaultModesFactory } from '@/app-config/default-modes'
 import { storage } from './browser-api'
 // import { Observable, from, concat } from 'rxjs'
