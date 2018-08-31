@@ -4,6 +4,7 @@
       <strong>{{ $t('opt:config_profile_title') }}</strong>
     </div>
     <div class="opt-item__body opt-config-profile-body">
+      <button type="button" class="btn btn-default btn-xs" @click="isShowSort = true">{{ $t('sort') }}</button>
       <div class="select-box-container">
         <label class="select-box">
           <select class="form-control" v-model="activeConfigID">
@@ -11,10 +12,61 @@
               v-for="id in configProfileIDs"
               :value="id"
               :selected="id === activeConfigID"
-            >{{ profileText(id) }}</option>
+            >{{ profileName(id) }}</option>
           </select>
         </label>
       </div>
+      <button type="button" class="btn btn-default btn-xs" @click="openRename">{{ $t('rename') }}</button>
+
+      <!--Modal 重命名-->
+      <transition name="fade">
+        <div class="modal show text-left" v-if="isShowRename">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" @click="isShowRename = false">&times;</button>
+                <h4 class="modal-title">{{ $t('opt:config_profile_rename') }}</h4>
+              </div>
+              <div class="modal-body">
+                <input type="text" class="form-control" v-model="activeConfigName">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" @click="isShowRename = false">{{ $t('cancel') }}</button>
+                <button type="button" class="btn btn-primary" @click="saveName">{{ $t('save') }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition><!--Modal 重命名-->
+
+      <!--Modal 排序-->
+      <transition name="fade">
+        <div class="modal show text-left" v-if="isShowSort">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" @click="isShowSort = false">&times;</button>
+                <h4 class="modal-title">{{ $t('opt:config_profile_title') }}</h4>
+              </div>
+              <div class="modal-body">
+                <div class="panel-group">
+                  <draggable v-model="configProfileIDs" :options="{animation: 200}">
+                    <transition-group name="panel-list">
+                      <div class="panel-list panel panel-default" v-for="id in configProfileIDs" :key="id">
+                        <div class="panel-list__header">
+                          <strong class="panel-list__title">{{ profileName(id) }}</strong>
+                          <button type="button" class="close" @click.stop="deleteProfile(id)">&times;</button>
+                        </div>
+                      </div>
+                      <div key='___'></div><!--An empty div to fix a tricky bug on draggable-->
+                    </transition-group>
+                  </draggable>
+                </div><!--已选择右键菜单列表-->
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition><!--Modal 排序-->
     </div>
     <div class="opt-item__description-wrap">
       <p class="opt-item__description" v-html="$t('opt:config_profile_description')"></p>
@@ -23,10 +75,21 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import Draggable from 'vuedraggable'
+import { storage } from '@/_helpers/browser-api'
+
 export default {
-  store: ['configProfileIDs', 'configProfiles', 'activeConfigID'],
+  store: ['configProfileIDs', 'configProfiles', 'activeConfigID', 'config'],
+  data () {
+    return {
+      isShowRename: false,
+      isShowSort: false,
+      activeConfigName: '',
+    }
+  },
   methods: {
-    profileText (id) {
+    profileName (id) {
       const name = this.configProfiles[id].name
 
       // default names
@@ -36,7 +99,33 @@ export default {
       }
 
       return name
+    },
+
+    openRename () {
+      // Prevent reactive passing
+      this.activeConfigName = String(this.profileName(this.activeConfigID))
+      this.isShowRename = true
+    },
+    saveName () {
+      this.config.name = String(this.activeConfigName)
+      this.isShowRename = false
+    },
+
+    deleteProfile (id) {
+      if (window.confirm(this.$t('opt:config_profile_delete_confirm', { name: this.profileName(id) }))) {
+        const newList = this.configProfileIDs.filter(x => x !== id)
+        if (this.activeConfigID === id) {
+          this.activeConfigID = newList[0]
+          this.config = this.configProfiles[newList[0]]
+        }
+        this.configProfileIDs = newList
+        Vue.delete(this.configProfiles, id)
+        storage.sync.remove(id)
+      }
     }
+  },
+  components: {
+    Draggable
   },
 }
 </script>
@@ -45,8 +134,14 @@ export default {
 .opt-config-profile-body {
   display: flex;
   justify-content: center;
+  align-items: center;
   border: 1px solid #FDE3A7;
   background: #fffec8;
+}
+
+.opt-config-profile-body select {
+  text-align: center;
+  text-align-last: center;
 }
 </style>
 

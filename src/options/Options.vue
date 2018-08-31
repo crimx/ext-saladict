@@ -61,7 +61,6 @@ import Coffee from './Coffee'
 import SocialMedia from './SocialMedia'
 import AlertModal from '@/components/AlertModal'
 import { updateActiveConfig, updateActiveConfigID, updateConfigIDList, resetConfig } from '@/_helpers/config-manager'
-import omit from 'lodash/omit'
 
 // Auto import option section components
 const _optNames = [

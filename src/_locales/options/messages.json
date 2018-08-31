@@ -89,10 +89,20 @@
     "zh_CN": "当前模式",
     "zh_TW": "当前模式"
   },
+  "config_profile_delete_confirm": {
+    "en": "Delete Profile \"{{name}}\". Confirm?",
+    "zh_CN": "“{{name}}”将被删除，确认？",
+    "zh_TW": "「{{name}}」將被刪除，確認？"
+  },
   "config_profile_description": {
-    "en": "Settings within different Profiles are independent. You can have different settings for different Profiles.",
-    "zh_CN": "每个模式下的设置都是独立的，互不干扰。",
-    "zh_TW": "每個模式下的设置都是獨立的，互不干擾。"
+    "en": "Settings under different Profiles are independent. One may switch profiles by hovering on the menu icon on the Dictionary Panel. Or focus on the icon then hit <kbd>↓</kbd>.",
+    "zh_CN": "每个模式下的设置都是独立的，互不干扰。鼠标悬浮在查词面板的菜单图标上可快速切换，或者焦点选中菜单图标然后按<kbd>↓</kbd>。",
+    "zh_TW": "每個模式下的设置都是獨立的，互不干擾。滑鼠懸浮在字典介面的選單圖示上可快速切換，或者焦點選中選單圖示然後按<kbd>↓</kbd>。"
+  },
+  "config_profile_rename": {
+    "en": "Rename Profile",
+    "zh_CN": "情景模式重命名",
+    "zh_TW": "情景模式重新命名"
   },
   "config_profile_title": {
     "en": "Config Profile",
