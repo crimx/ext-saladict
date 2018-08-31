@@ -37,7 +37,7 @@ export const enum ActionType {
 \*-----------------------------------------------*/
 
 interface WidgetPayload {
-  [ActionType.NEW_CONFIG]: AppConfig
+  [ActionType.NEW_CONFIG]: undefined
   [ActionType.RESTORE]: undefined
   [ActionType.TRIPLE_CTRL]: undefined
   [ActionType.TEMP_DISABLED]: boolean
@@ -130,7 +130,8 @@ type WidgetReducer = {
 }
 
 export const reducer: WidgetReducer = {
-  [ActionType.NEW_CONFIG] (state, config) {
+  [ActionType.NEW_CONFIG] (state) {
+    const { config } = state
     const widget = config.active
       ? { ...state.widget }
       : _restoreWidget(state.widget)
@@ -379,8 +380,8 @@ interface Action<T extends ActionType> {
   payload?: WidgetPayload[T]
 }
 
-export function newConfig (payload: AppConfig): Action<ActionType.NEW_CONFIG> {
-  return ({ type: ActionType.NEW_CONFIG, payload })
+export function newConfig (): Action<ActionType.NEW_CONFIG> {
+  return ({ type: ActionType.NEW_CONFIG })
 }
 
 export function tempDisable (payload: boolean): Action<ActionType.TEMP_DISABLED> {
@@ -407,7 +408,7 @@ export function mouseOnBowlAction (payload: boolean): Action<ActionType.MOUSE_ON
   return ({ type: ActionType.MOUSE_ON_BOWL, payload })
 }
 
-export function newSelection (payload: WidgetPayload[ActionType.NEW_SELECTION]): Action<ActionType.NEW_SELECTION> {
+export function newSelectionAction (payload: WidgetPayload[ActionType.NEW_SELECTION]): Action<ActionType.NEW_SELECTION> {
   return ({ type: ActionType.NEW_SELECTION, payload })
 }
 
@@ -435,13 +436,7 @@ let dictHeights: Partial<{ [id in DictID]: number }> = {}
 
 export function startUpAction (): DispatcherThunk {
   return (dispatch, getState) => {
-    /** Listen to selection change and determine whether to show bowl and panel */
-    listenNewSelection(dispatch, getState)
     listenTempDisable(dispatch, getState)
-
-    createActiveConfigStream().subscribe(config => {
-      dispatch(newConfig(config))
-    })
 
     createConfigIDListStream().subscribe(idlist => {
       storage.sync.get(idlist).then(obj => {
@@ -620,17 +615,10 @@ export function updateItemHeight (id: DictID, height: number): DispatcherThunk {
   }
 }
 
-/*-----------------------------------------------*\
-    Helpers
-\*-----------------------------------------------*/
-
-function listenNewSelection (
-  dispatch: (action: any) => any,
-  getState: () => StoreState,
-) {
-  message.self.addListener<MsgSelection>(MsgType.Selection, message => {
+export function newSelection (): DispatcherThunk {
+  return (dispatch, getState) => {
     const state = getState()
-    const { selectionInfo, dbClick, ctrlKey, instant, mouseX, mouseY, self } = message
+    const { selectionInfo, dbClick, ctrlKey, instant, mouseX, mouseY, self } = state.selection
 
     if (self) {
       // inside dict panel
@@ -712,7 +700,7 @@ function listenNewSelection (
       )
     }
 
-    dispatch(newSelection(newWidgetPartial))
+    dispatch(newSelectionAction(newWidgetPartial))
 
     // should search text?
     const { pinMode } = state.config
@@ -729,8 +717,12 @@ function listenNewSelection (
       // Otherwise clean up all dicts
       dispatch(restoreDicts())
     }
-  })
+  }
 }
+
+/*-----------------------------------------------*\
+    Helpers
+\*-----------------------------------------------*/
 
 /** From popup page */
 function listenTempDisable (

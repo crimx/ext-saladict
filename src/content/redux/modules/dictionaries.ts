@@ -34,7 +34,7 @@ export const enum ActionType {
 \*-----------------------------------------------*/
 
 interface DictionariesPayload {
-  [ActionType.NEW_CONFIG]: AppConfig
+  [ActionType.NEW_CONFIG]: undefined
   [ActionType.RESTORE]: undefined
   [ActionType.ADD_HISTORY]: SelectionInfo
   [ActionType.SEARCH_START]: {
@@ -103,9 +103,9 @@ type DictsReducer = {
 }
 
 export const reducer: DictsReducer = {
-  [ActionType.NEW_CONFIG] (state, config) {
+  [ActionType.NEW_CONFIG] (state) {
     const { dictionaries } = state
-    const { selected } = config.dicts
+    const { selected } = state.config.dicts
 
     if (isEqual(selected, dictionaries.selected)) {
       return state
@@ -226,8 +226,8 @@ interface Action<T extends ActionType> {
   payload?: DictionariesPayload[T]
 }
 
-export function newConfig (config: AppConfig): Action<ActionType.NEW_CONFIG> {
-  return ({ type: ActionType.NEW_CONFIG, payload: config })
+export function newConfigAction (): Action<ActionType.NEW_CONFIG> {
+  return ({ type: ActionType.NEW_CONFIG })
 }
 
 export function restoreDicts (): Action<ActionType.RESTORE> {
@@ -259,15 +259,17 @@ export function addSearchHistory (
 
 export function startUpAction (): DispatcherThunk {
   return (dispatch, getState) => {
-    createActiveConfigStream().subscribe(config => {
-      dispatch(newConfig(config))
-      if (isSaladictPopupPage) {
-        popupPageInit(dispatch, getState)
-      }
-    })
-
     if (!isSaladictPopupPage && !isSaladictOptionsPage) {
       listenTrpleCtrl(dispatch, getState)
+    }
+  }
+}
+
+export function newConfig (): DispatcherThunk {
+  return (dispatch, getState) => {
+    dispatch(newConfigAction())
+    if (isSaladictPopupPage) {
+      popupPageInit(dispatch, getState)
     }
   }
 }

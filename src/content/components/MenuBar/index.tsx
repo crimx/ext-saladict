@@ -155,7 +155,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
       if (this.props.searchHistory.length > 0) {
         this.props.searchText({ info: this.props.searchHistory[0] })
       }
-    }, 200)
+    }, 100)
   }
 
   handleProfileItemonKeyUp = (e: React.KeyboardEvent<HTMLButtonElement>) => {
