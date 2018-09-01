@@ -28,10 +28,19 @@ const fakeFetchData = [
   {
     test: {
       method: /.*/,
-      url: /\.etymonline\.com/,
+      url: /\.etymonline\.com\/search/,
     },
     response: {
       text: () => require('raw-loader!../../test/specs/components/dictionaries/etymonline/response/love.html'),
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /\.etymonline\.com\/word/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/etymonline/response/love-word.html'),
     },
   },
   {

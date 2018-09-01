@@ -14,6 +14,11 @@
       "en": "results",
       "zh_CN": "个",
       "zh_TW": "個"
+    },
+    "chart": {
+      "en": "Show Chart",
+      "zh_CN": "显示图表",
+      "zh_TW": "顯示圖表"
     }
   }
 }

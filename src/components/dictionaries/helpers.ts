@@ -46,7 +46,7 @@ export function getOuterHTMLThunk (host?: string) {
     if (!child) { return '' }
     const content = DOMPurify.sanitize(child['outerHTML'] || '')
     return host
-      ? content.replace(/href="\//g, 'href="' + host)
+      ? content.replace(/href="\/(?!\/)/g, 'href="' + host)
       : content
   }
 }
