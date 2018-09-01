@@ -17,7 +17,7 @@
         </label>
       </div>
       <button type="button" class="btn btn-default btn-xs" @click="isShowSort = true" style="margin-right: 5px">{{ $t('sort') }}</button>
-      <button type="button" class="btn btn-default btn-xs" @click="openAdd">{{ $t('add') }}</button>
+      <button type="button" class="btn btn-default btn-xs" @click="openAdd" :disabled="configProfileIDs.length > 10">{{ $t('add') }}</button>
 
       <!--Modal 重命名-->
       <transition name="fade">
