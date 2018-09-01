@@ -17,6 +17,7 @@ import { concat } from 'rxjs/observable/concat'
 import { map } from 'rxjs/operators/map'
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
 import { mergeConfig } from '@/app-config/merge-config'
+import { isGeneratedKey } from '@/_helpers/uniqueKey'
 
 export interface StorageChanged<T> {
   newValue: T,
@@ -43,13 +44,28 @@ export async function initConfig (): Promise<AppConfig> {
       await storage.sync.remove('config')
     }
   }
-  await storage.sync.set(modes.reduce(
-    (data, m) => ((data[m.id] = m), data),
-    {
-      configProfileIDs: modes.map(m => m.id),
-      activeConfigID: obj.activeConfigID || modes[0].id
+
+  await storage.sync.set({
+    configProfileIDs: modes.map(m => m.id),
+    activeConfigID: obj.activeConfigID || modes[0].id
+  })
+
+  // beware of quota bytes per item exceeds
+  for (let i = 0; i < modes.length; i++) {
+    const id = modes[i].id
+    if (!obj[id]) {
+      await storage.sync.set({ [id]: modes[i] })
     }
-  ))
+  }
+
+  await storage.sync.remove(
+    Object.keys(obj).filter(key => (
+      isGeneratedKey(key) &&
+      obj[key].id === key &&
+      !modes.some(({ id }) => id === key)
+    ))
+  )
+
   return (obj.activeConfigID && modes.find(m => m.id === obj.activeConfigID)) || modes[0]
 }
 
@@ -68,8 +84,10 @@ export async function addConfig (config: AppConfig): Promise<void> {
       console.warn('add config: config already exists')
     }
   }
-  configProfileIDs.push(config.id)
-  return storage.sync.set({ configProfileIDs, [config.id]: config })
+  return storage.sync.set({
+    configProfileIDs: [...configProfileIDs, config.id],
+    [config.id]: config,
+  })
 }
 
 export async function removeConfig (id: string): Promise<void> {

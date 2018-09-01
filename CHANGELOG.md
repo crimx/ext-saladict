@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.12.1"></a>
+## [6.12.1](https://github.com/crimx/ext-saladict/compare/v6.12.0...v6.12.1) (2018-09-01)
+
+
+### Bug Fixes
+
+* **config:** fix quota bytes per item exceeds ([2a64195](https://github.com/crimx/ext-saladict/commit/2a64195))
+
+
+### Features
+
+* **options:** add profile adding ([22fe8e7](https://github.com/crimx/ext-saladict/commit/22fe8e7))
+
+
+
 <a name="6.12.0"></a>
 # [6.12.0](https://github.com/crimx/ext-saladict/compare/v6.11.0...v6.12.0) (2018-08-31)
 
