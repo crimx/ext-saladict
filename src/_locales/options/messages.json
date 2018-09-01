@@ -89,6 +89,11 @@
     "zh_CN": "当前模式",
     "zh_TW": "当前模式"
   },
+  "config_profile_add": {
+    "en": "Add Profile",
+    "zh_CN": "添加模式",
+    "zh_TW": "添加模式"
+  },
   "config_profile_delete_confirm": {
     "en": "Delete Profile \"{{name}}\". Confirm?",
     "zh_CN": "“{{name}}”将被删除，确认？",

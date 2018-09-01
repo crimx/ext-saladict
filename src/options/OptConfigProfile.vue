@@ -4,7 +4,7 @@
       <strong>{{ $t('opt:config_profile_title') }}</strong>
     </div>
     <div class="opt-item__body opt-config-profile-body">
-      <button type="button" class="btn btn-default btn-xs" @click="isShowSort = true">{{ $t('sort') }}</button>
+      <button type="button" class="btn btn-default btn-xs" @click="openRename">{{ $t('rename') }}</button>
       <div class="select-box-container">
         <label class="select-box">
           <select class="form-control" v-model="activeConfigID">
@@ -16,7 +16,8 @@
           </select>
         </label>
       </div>
-      <button type="button" class="btn btn-default btn-xs" @click="openRename">{{ $t('rename') }}</button>
+      <button type="button" class="btn btn-default btn-xs" @click="isShowSort = true" style="margin-right: 5px">{{ $t('sort') }}</button>
+      <button type="button" class="btn btn-default btn-xs" @click="openAdd">{{ $t('add') }}</button>
 
       <!--Modal 重命名-->
       <transition name="fade">
@@ -67,6 +68,28 @@
           </div>
         </div>
       </transition><!--Modal 排序-->
+
+      <!--Modal 添加-->
+      <transition name="fade">
+        <div class="modal show text-left" v-if="isShowAdd">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" @click="isShowAdd = false">&times;</button>
+                <h4 class="modal-title">{{ $t('opt:config_profile_add') }}</h4>
+              </div>
+              <div class="modal-body">
+                <input type="text" class="form-control" v-model="newProfileName">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" @click="isShowAdd = false">{{ $t('cancel') }}</button>
+                <button type="button" class="btn btn-primary" @click="addProfile">{{ $t('add') }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </transition><!--Modal 添加-->
+
     </div>
     <div class="opt-item__description-wrap">
       <p class="opt-item__description" v-html="$t('opt:config_profile_description')"></p>
@@ -78,6 +101,8 @@
 import Vue from 'vue'
 import Draggable from 'vuedraggable'
 import { storage } from '@/_helpers/browser-api'
+import { appConfigFactory } from '@/app-config'
+import { addConfig } from '@/_helpers/config-manager'
 
 export default {
   store: ['configProfileIDs', 'configProfiles', 'activeConfigID', 'config'],
@@ -85,7 +110,9 @@ export default {
     return {
       isShowRename: false,
       isShowSort: false,
+      isShowAdd: false,
       activeConfigName: '',
+      newProfileName: '',
     }
   },
   methods: {
@@ -111,6 +138,23 @@ export default {
       // also inform id list
       this.configProfileIDs = this.configProfileIDs.slice()
       this.isShowRename = false
+    },
+
+    openAdd () {
+      this.isShowAdd = true
+      this.newProfileName = this.$t('profile:default')
+    },
+
+    addProfile () {
+      const config = appConfigFactory()
+      config.name = this.newProfileName
+      addConfig(config)
+        .then(() => {
+          Vue.set(this.configProfiles, config.id, config)
+          this.configProfileIDs.push(config.id)
+          this.activeConfigID = config.id
+          this.isShowAdd = false
+        })
     },
 
     deleteProfile (id) {
