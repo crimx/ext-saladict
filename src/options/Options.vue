@@ -166,10 +166,15 @@ export default {
 
         await storage.sync.remove(this.configProfileIDs)
         await storage.sync.set({
-          ...newProfiles,
           activeConfigID,
           configProfileIDs,
         })
+
+        // beware of quota bytes per item exceeds
+        for (let i = 0; i < configProfileIDs.length; i++) {
+          const id = configProfileIDs[i]
+          await storage.sync.set({ [id]: newProfiles[id] })
+        }
 
         this.configProfiles = newProfiles
         this.configProfileIDs = configProfileIDs
