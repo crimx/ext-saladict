@@ -26,6 +26,8 @@ if (process.env.NODE_ENV !== 'development') {
 
 Vue.use(VueStash)
 Vue.use(VueI18Next)
+Vue.directive('focus', { inserted: el => el.focus() })
+Vue.directive('select', { inserted: (el: any) => el.select() })
 Vue.config.productionTip = false
 
 // Vue.use(VueI18Next) before loading

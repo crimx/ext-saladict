@@ -79,7 +79,7 @@
                 <h4 class="modal-title">{{ $t('opt:config_profile_add') }}</h4>
               </div>
               <div class="modal-body">
-                <input type="text" class="form-control" v-model="newProfileName">
+                <input v-focus v-select type="text" class="form-control" v-model="newProfileName">
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" @click="isShowAdd = false">{{ $t('cancel') }}</button>
