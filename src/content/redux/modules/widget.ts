@@ -438,16 +438,21 @@ export function startUpAction (): DispatcherThunk {
   return (dispatch, getState) => {
     listenTempDisable(dispatch, getState)
 
-    createConfigIDListStream().subscribe(idlist => {
-      storage.sync.get(idlist).then(obj => {
+    createConfigIDListStream().subscribe(async idlist => {
+      const profiles: Array<{ id: string, name: string }> = []
+      for (let i = 0; i < idlist.length; i++) {
+        const id = idlist[i]
+        // beware of quota bytes per item exceeds
+        const profile = (await storage.sync.get(id))[id]
         if (process.env.DEV_BUILD) {
-          const l = idlist.filter(id => !obj[id])
-          if (l.length > 0) {
-            console.error(`Update config ID List: id "${l}" not exist`)
+          if (!profile) {
+            console.error(`Update config ID List: id "${id}" not exist`)
           }
         }
-        dispatch(updateConfigProfiles(idlist.map(id => ({ id, name: obj[id].name }))))
-      })
+        profiles.push({ id, name: profile.name })
+      }
+
+      dispatch(updateConfigProfiles(profiles))
     })
 
     // close panel and word editor on esc
