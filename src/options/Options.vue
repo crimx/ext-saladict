@@ -1,8 +1,8 @@
 <template>
 <div>
   <transition name="dropdown">
-    <div class="config-updated" v-if="isShowConfigUpdated">
-      {{ $t('opt:storage_updated') }}
+    <div :class="`config-updated ${configUpdateStatus}`" v-if="configUpdateStatus">
+      {{ configUpdateMsg }}
     </div>
   </transition>
   <div class="opt-container">
@@ -93,19 +93,28 @@ export default {
   store: ['activeConfigID', 'configProfileIDs', 'configProfiles', 'config', 'newVersionAvailable', 'searchText'],
   data () {
     return {
-      isShowConfigUpdated: false,
+      configUpdateStatus: '',
+      configUpdateMsg: '',
       isShowSocial: false,
       isShowAcknowledgement: false,
       optNames: _optNames,
     }
   },
   methods: {
-    showSavedBar () {
-      this.isShowConfigUpdated = true
+    showConfigUpdateBar (msg, status) {
+      this.configUpdateMsg = msg
+      this.configUpdateStatus = status
       clearTimeout(this.showConfigUpdatedTimeout)
       this.showConfigUpdatedTimeout = setTimeout(() => {
-        this.isShowConfigUpdated = false
+        this.configUpdateStatus = ''
+        this.configUpdateMsg = ''
       }, 1500)
+    },
+    showSavedBar () {
+      this.showConfigUpdateBar(this.$t('opt:storage_updated'), 'alert-success')
+    },
+    showImportErrorBar () {
+      this.showConfigUpdateBar(this.$t('opt:storage_import_error'), 'alert-danger')
     },
     showSocialMedia (flag) {
       clearTimeout(this.__showSocialMediaTimeout)
@@ -138,6 +147,8 @@ export default {
           if (process.env.NODE_ENV !== 'production' || process.env.DEV_BUILD) {
             console.warn(err)
           }
+          this.showImportErrorBar()
+          return
         }
 
         const {
@@ -156,6 +167,7 @@ export default {
           if (process.env.DEV_BUILD) {
             console.error('Wrong import file')
           }
+          this.showImportErrorBar()
           return
         }
 
