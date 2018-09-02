@@ -26,7 +26,8 @@ type ChildrenProps =
   Omit<MenuBarProps,
     't' |
     'searchHistory' |
-    'activeDicts'
+    'activeDicts' |
+    'isShowMtaBox'
   > &
   Omit<DictItemProps,
     't' |
