@@ -23,6 +23,7 @@ export const mapStateToProps = ({
     fontSize: config.fontSize,
     langCode: config.langCode,
     panelMaxHeightRatio: config.panelMaxHeightRatio,
+    mtaAutoUnfold: config.mtaAutoUnfold,
 
     activeConfigID: config.id,
     configProfiles: widget.configProfiles,

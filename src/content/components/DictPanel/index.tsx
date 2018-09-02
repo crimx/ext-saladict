@@ -1,12 +1,14 @@
 import React from 'react'
 import { DictionariesState } from '../../redux/modules/dictionaries'
-import { AppConfig, DictID, DictConfigs } from '@/app-config'
+import { AppConfig, DictID, DictConfigs, MtaAutoUnfold } from '@/app-config'
 import { SelectionInfo } from '@/_helpers/selection'
 import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
 
 import MenuBar, { MenuBarProps, MenuBarDispatchers } from '../MenuBar'
 import DictItem, { DictItemProps, DictItemDispatchers } from '../DictItem'
+
+const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
 export type DictPanelDispatchers = DictItemDispatchers & MenuBarDispatchers & {
   readonly searchText: (arg?: { id?: DictID, info?: SelectionInfo | string }) => any
@@ -31,6 +33,7 @@ type ChildrenProps =
 export interface DictPanelProps extends ChildrenProps {
   readonly isAnimation: boolean
   readonly panelMaxHeightRatio: number
+  readonly mtaAutoUnfold: MtaAutoUnfold
   readonly dictionaries: DictionariesState['dictionaries']
   readonly allDictsConfig: DictConfigs
   readonly langCode: AppConfig['langCode']
@@ -48,8 +51,8 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
     textAreaHeight: 0
   }
 
-  toggleBigSearchBox = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.currentTarget.blur()
+  toggleBigSearchBox = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    if (e) { e.currentTarget.blur() }
     this.setState(preState => {
       return { textAreaHeight: preState.textAreaHeight <= 0
         ? window.innerHeight * this.props.panelMaxHeightRatio * 0.4
@@ -65,12 +68,24 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
     })
   }
 
-  componentDidUpdate (prevProps, prevState) {
+  componentDidMount () {
+    if (this.props.mtaAutoUnfold === 'always' ||
+        this.props.mtaAutoUnfold === 'popup' && isSaladictPopupPage
+    ) {
+      this.toggleBigSearchBox()
+    }
+  }
+
+  componentDidUpdate (prevProps: DictPanelProps, prevState: DictPanelState) {
     if (prevState.textAreaHeight <= 0 &&
         this.state.textAreaHeight > 0 &&
         this.bigSearchBoxRef.current
     ) {
       this.bigSearchBoxRef.current.focus()
+    }
+
+    if (prevProps.mtaAutoUnfold !== this.props.mtaAutoUnfold) {
+      this.toggleBigSearchBox()
     }
   }
 

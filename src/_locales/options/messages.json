@@ -14,6 +14,11 @@
     "zh_CN": "支付宝",
     "zh_TW": "支付寶"
   },
+  "always": {
+    "en": "Always",
+    "zh_CN": "总是",
+    "zh_TW": "總是"
+  },
   "animation": {
     "en": "Use animation transitions",
     "zh_CN": "开启动画过渡",
@@ -413,6 +418,16 @@
     "en": "Search Mode",
     "zh_CN": "查词模式",
     "zh_TW": "查字模式"
+  },
+  "mta_auto_unfold": {
+    "en": "Auto unfold multiline search box",
+    "zh_CN": "自动展开多行搜索框",
+    "zh_TW": "自動展開多行搜尋框"
+  },
+  "never": {
+    "en": "Never",
+    "zh_CN": "从不",
+    "zh_TW": "從不"
   },
   "new_version": {
     "en": "(New Version Available!)",
