@@ -52,10 +52,7 @@ export async function initConfig (): Promise<AppConfig> {
 
   // beware of quota bytes per item exceeds
   for (let i = 0; i < modes.length; i++) {
-    const id = modes[i].id
-    if (!obj[id]) {
-      await storage.sync.set({ [id]: modes[i] })
-    }
+    await storage.sync.set({ [modes[i].id]: modes[i] })
   }
 
   await storage.sync.remove(
