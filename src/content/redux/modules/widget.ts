@@ -470,12 +470,13 @@ export function startUpAction (): DispatcherThunk {
         const id = idlist[i]
         // beware of quota bytes per item exceeds
         const profile = (await storage.sync.get(id))[id]
-        if (process.env.DEV_BUILD) {
-          if (!profile) {
-            console.error(`Update config ID List: id "${id}" not exist`)
+        if (profile) {
+          profiles.push({ id, name: profile.name })
+        } else {
+          if (process.env.DEV_BUILD) {
+            console.warn(`Update config ID List: id "${id}" not exist`)
           }
         }
-        profiles.push({ id, name: profile.name })
       }
 
       dispatch(updateConfigProfiles(profiles))
