@@ -6,7 +6,7 @@
  * the "active config". This is for backward compatibility.
  */
 
-import { AppConfig } from '@/app-config'
+import { appConfigFactory, AppConfig } from '@/app-config'
 import { defaultModesFactory } from '@/app-config/default-modes'
 import { storage } from './browser-api'
 // import { Observable, from, concat } from 'rxjs'
@@ -114,7 +114,7 @@ export async function getActiveConfig (): Promise<AppConfig> {
       return config
     }
   }
-  return initConfig()
+  return appConfigFactory()
 }
 
 /**
