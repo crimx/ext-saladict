@@ -26,7 +26,8 @@ type ChildrenProps =
   Omit<MenuBarProps,
     't' |
     'searchHistory' |
-    'activeDicts'
+    'activeDicts' |
+    'isShowMtaBox'
   > &
   Omit<DictItemProps,
     't' |
@@ -112,6 +113,13 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
     ) {
       this.toggleMtaBox()
     }
+
+    setTimeout(() => {
+      if (this.state.mtaBoxHeight > 0 && this.MtaBoxRef.current) {
+        this.MtaBoxRef.current.focus()
+        this.MtaBoxRef.current.select()
+      }
+    }, 100)
   }
 
   componentDidUpdate (prevProps: DictPanelProps, prevState: DictPanelState) {
@@ -191,6 +199,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
           isPinned,
           searchHistory: dictionaries.searchHistory,
           activeDicts: dictionaries.active,
+          isShowMtaBox: mtaBoxHeight > 0,
           handleDragAreaMouseDown,
           handleDragAreaTouchStart,
           searchText: this.searchText,

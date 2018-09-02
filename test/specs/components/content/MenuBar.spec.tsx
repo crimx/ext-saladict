@@ -18,6 +18,7 @@ describe('Component/content/MenuBar', () => {
       configProfiles: [{ id: config.id, name: config.name }],
       searchBoxText: '',
       searchBoxIndex: 0,
+      isShowMtaBox: false,
 
       searchText: noop,
       shareImg: noop,
@@ -43,6 +44,7 @@ describe('Component/content/MenuBar', () => {
       configProfiles: [{ id: config.id, name: config.name }],
       searchBoxText: '',
       searchBoxIndex: 0,
+      isShowMtaBox: true,
 
       searchText: noop,
       shareImg: noop,

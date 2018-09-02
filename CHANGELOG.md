@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.13.1"></a>
+## [6.13.1](https://github.com/crimx/ext-saladict/compare/v6.13.0...v6.13.1) (2018-09-02)
+
+
+### Bug Fixes
+
+* **content:** fix popup init ([fc3cc85](https://github.com/crimx/ext-saladict/commit/fc3cc85))
+
+
+
 <a name="6.13.0"></a>
 # [6.13.0](https://github.com/crimx/ext-saladict/compare/v6.12.1...v6.13.0) (2018-09-02)
 
