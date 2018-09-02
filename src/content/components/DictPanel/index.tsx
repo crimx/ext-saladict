@@ -5,6 +5,8 @@ import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
 
+import CSSTransition from 'react-transition-group/CSSTransition'
+
 import { translate } from 'react-i18next'
 import { TranslationFunction } from 'i18next'
 
@@ -49,7 +51,7 @@ interface DictPanelState {
 }
 
 export class DictPanel extends React.Component<DictPanelProps & { t: TranslationFunction }, DictPanelState> {
-  bigSearchBoxRef = React.createRef<HTMLTextAreaElement>()
+  MtaBoxRef = React.createRef<HTMLTextAreaElement>()
 
   state = {
     mtaBoxHeight: 0
@@ -113,9 +115,9 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
   componentDidUpdate (prevProps: DictPanelProps, prevState: DictPanelState) {
     if (prevState.mtaBoxHeight <= 0 &&
         this.state.mtaBoxHeight > 0 &&
-        this.bigSearchBoxRef.current
+        this.MtaBoxRef.current
     ) {
-      this.bigSearchBoxRef.current.focus()
+      this.MtaBoxRef.current.focus()
     }
 
     if (prevState.mtaBoxHeight !== this.state.mtaBoxHeight) {
@@ -128,6 +130,16 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
       }
     }
   }
+
+  renderMtaBox = () => (
+    <textarea
+      ref={this.MtaBoxRef}
+      value={this.props.searchBoxText}
+      onChange={this.handleMtaBoxInput}
+      onKeyDown={this.handleMtaBoxKeyDown}
+      style={{ fontSize: this.props.fontSize }}
+    />
+  )
 
   render () {
     const {
@@ -189,20 +201,20 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
           closePanel,
         })}
         <div className='panel-DictContainer'>
-          <div className='panel-BigSearchBox' style={{ height: mtaBoxHeight }}>
-            {mtaBoxHeight > 0 && (
-              <textarea
-                ref={this.bigSearchBoxRef}
-                value={searchBoxText}
-                onChange={this.handleMtaBoxInput}
-                onKeyDown={this.handleMtaBoxKeyDown}
-                style={{ fontSize: this.props.fontSize }}
-              />
-            )}
+          <div className='panel-MtaBox' style={{ height: mtaBoxHeight }}>
+            <CSSTransition
+              classNames='panel-MtaBoxTrans'
+              in={mtaBoxHeight > 0}
+              timeout={500}
+              mountOnEnter={true}
+              unmountOnExit={true}
+            >
+              {this.renderMtaBox}
+            </CSSTransition>
           </div>
-          <button className='panel-BigSearchBoxBtn' onClick={this.toggleMtaBox}>
+          <button className='panel-MtaBoxBtn' onClick={this.toggleMtaBox}>
             <svg width='10' height='10' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'
-             className={'panel-BigSearchBoxBtn_Arrow' + (mtaBoxHeight > 0 ? ' isActive' : '')}
+             className={'panel-MtaBoxBtn_Arrow' + (mtaBoxHeight > 0 ? ' isActive' : '')}
             >
               <path d='M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56' />
             </svg>

@@ -30,7 +30,7 @@
   font-size: 0; // remove whitespace
 }
 
-.panel-BigSearchBox {
+.panel-MtaBox {
   overflow: hidden;
 
   textarea {
@@ -42,7 +42,7 @@
   }
 }
 
-.panel-BigSearchBoxBtn {
+.panel-MtaBoxBtn {
   width: 100%;
   height: 12px;
   overflow: hidden;
@@ -50,18 +50,18 @@
   cursor: pointer;
 }
 
-.panel-BigSearchBoxBtn_Arrow {
+.panel-MtaBoxBtn_Arrow {
   &.isActive {
     transform: rotate(180deg);
   }
 }
 
 .isAnimate {
-  .panel-BigSearchBox {
+  .panel-MtaBox {
     transition: height 0.4s;
   }
 
-  .panel-BigSearchBoxBtn_Arrow {
+  .panel-MtaBoxBtn_Arrow {
     transition: transform 0.2s;
   }
 }
