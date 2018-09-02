@@ -24,10 +24,12 @@ export type DictPanelDispatchers = DictItemDispatchers & MenuBarDispatchers & {
 type ChildrenProps =
   DictPanelDispatchers &
   Omit<MenuBarProps,
+    't' |
     'searchHistory' |
     'activeDicts'
   > &
   Omit<DictItemProps,
+    't' |
     'id' |
     'text' |
     'dictURL' |
