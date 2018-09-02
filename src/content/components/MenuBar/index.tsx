@@ -30,6 +30,7 @@ export interface MenuBarProps extends MenuBarDispatchers {
   readonly configProfiles: Array<{ id: string, name: string }>
   readonly searchBoxText: string
   readonly searchBoxIndex: number
+  readonly isShowMtaBox: boolean
 }
 
 type MenuBarState = {
@@ -227,8 +228,10 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   componentDidMount () {
     // Fix Firefox popup page delay bug
     setTimeout(() => {
-      if (this.props.activeDicts.length <= 0 || isSaladictPopupPage) {
-        this.focusSearchBox()
+      if (!this.props.isShowMtaBox) {
+        if (this.props.activeDicts.length <= 0 || isSaladictPopupPage) {
+          this.focusSearchBox()
+        }
       }
     }, 200)
   }
