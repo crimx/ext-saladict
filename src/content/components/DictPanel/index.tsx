@@ -52,6 +52,13 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
     mtaBoxHeight: 0
   }
 
+  searchText = (arg?: { id?: DictID, info?: SelectionInfo | string }) => {
+    if (this.state.mtaBoxHeight !== 0) {
+      this.setState({ mtaBoxHeight: 0 })
+    }
+    return this.props.searchText(arg)
+  }
+
   toggleMtaBox = (e?: React.MouseEvent<HTMLButtonElement>) => {
     if (e) { e.currentTarget.blur() }
     this.setState(preState => {
@@ -67,6 +74,13 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
       index: this.props.searchBoxIndex,
       text: e.currentTarget.value
     })
+  }
+
+  handleMtaBoxKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter' && e.ctrlKey) {
+      e.preventDefault()
+      this.searchText()
+    }
   }
 
   componentDidMount () {
@@ -104,7 +118,6 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
       langCode,
       handleDragAreaMouseDown,
       handleDragAreaTouchStart,
-      searchText,
       searchBoxUpdate,
       searchBoxText,
       searchBoxIndex,
@@ -143,7 +156,7 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
           activeDicts: dictionaries.active,
           handleDragAreaMouseDown,
           handleDragAreaTouchStart,
-          searchText,
+          searchText: this.searchText,
           searchBoxUpdate,
           searchBoxText,
           searchBoxIndex,
@@ -159,6 +172,7 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
                 ref={this.bigSearchBoxRef}
                 value={searchBoxText}
                 onChange={this.handleMtaBoxInput}
+                onKeyDown={this.handleMtaBoxKeyDown}
                 style={{ fontSize: this.props.fontSize }}
               />
             )}
@@ -186,7 +200,7 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
               panelWidth,
               searchStatus: (dictsInfo[id] as any).searchStatus,
               searchResult: (dictsInfo[id] as any).searchResult,
-              searchText,
+              searchText: this.searchText,
               updateItemHeight,
             })
           })}
