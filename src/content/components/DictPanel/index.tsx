@@ -9,7 +9,8 @@ import MenuBar, { MenuBarProps, MenuBarDispatchers } from '../MenuBar'
 import DictItem, { DictItemProps, DictItemDispatchers } from '../DictItem'
 
 export type DictPanelDispatchers = DictItemDispatchers & MenuBarDispatchers & {
-  searchText: (arg?: { id?: DictID, info?: SelectionInfo | string }) => any
+  readonly searchText: (arg?: { id?: DictID, info?: SelectionInfo | string }) => any
+  readonly searchBoxUpdate: (arg: { text: string, index: number }) => any
 }
 
 type ChildrenProps =
@@ -47,6 +48,9 @@ export default class DictPanel extends React.Component<DictPanelProps> {
       handleDragAreaMouseDown,
       handleDragAreaTouchStart,
       searchText,
+      searchBoxUpdate,
+      searchBoxText,
+      searchBoxIndex,
       requestFavWord,
       shareImg,
       panelPinSwitch,
@@ -79,6 +83,9 @@ export default class DictPanel extends React.Component<DictPanelProps> {
           handleDragAreaMouseDown,
           handleDragAreaTouchStart,
           searchText,
+          searchBoxUpdate,
+          searchBoxText,
+          searchBoxIndex,
           requestFavWord,
           shareImg,
           panelPinSwitch,

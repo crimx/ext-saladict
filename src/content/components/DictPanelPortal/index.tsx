@@ -265,6 +265,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
             <DictPanel
               {...this.props}
               panelWidth={this.props.panelRect.width}
+              panelHeight={this.props.panelRect.height}
               handleDragAreaMouseDown={this.handleDragAreaMouseDown}
               handleDragAreaTouchStart={this.handleDragAreaTouchStart}
             />
@@ -280,6 +281,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
             <DictPanel
               {...this.props}
               panelWidth={this.props.panelRect.width}
+              panelHeight={this.props.panelRect.height}
               handleDragAreaMouseDown={this.handleDragAreaMouseDown}
               handleDragAreaTouchStart={this.handleDragAreaTouchStart}
             />

@@ -29,7 +29,8 @@ export const enum ActionType {
   EDITOR_WORD_UPDATE = 'widget/EDITOR_WORD_UPDATE',
   NEW_PANEL_HEIGHT = 'widget/NEW_PANEL_HEIGHT',
   PANEL_CORDS = 'widget/PANEL_CORDS',
-  CONFIG_PROFILE_lIST = 'widget/CONFIG_PROFILE_lIST'
+  CONFIG_PROFILE_lIST = 'widget/CONFIG_PROFILE_lIST',
+  SEARCH_BOX_UPDATE = 'dicts/SEARCH_BOX_UPDATE',
 }
 
 /*-----------------------------------------------*\
@@ -49,6 +50,10 @@ interface WidgetPayload {
   [ActionType.NEW_PANEL_HEIGHT]: number
   [ActionType.PANEL_CORDS]: { x: number, y: number }
   [ActionType.CONFIG_PROFILE_lIST]: Array<{ id: string, name: string }>
+  [ActionType.SEARCH_BOX_UPDATE]: {
+    text: string
+    index: number
+  }
 }
 
 /*-----------------------------------------------*\
@@ -80,6 +85,9 @@ export type WidgetState = {
       shouldPanelShow: boolean
     }
     readonly configProfiles: Array<{ id: string, name: string }>
+    /** index in search history */
+    readonly searchBoxIndex: number
+    readonly searchBoxText: string
   }
 }
 
@@ -118,6 +126,8 @@ export const initState: WidgetState = {
       shouldPanelShow: false,
     },
     configProfiles: [],
+    searchBoxIndex: 0,
+    searchBoxText: '',
   }
 }
 
@@ -367,6 +377,16 @@ export const reducer: WidgetReducer = {
       }
     }
   },
+  [ActionType.SEARCH_BOX_UPDATE] (state, { text, index }) {
+    return {
+      ...state,
+      widget: {
+        ...state.widget,
+        searchBoxText: text,
+        searchBoxIndex: index,
+      }
+    }
+  },
 }
 
 export default reducer
@@ -426,6 +446,10 @@ export function panelOnDrag (x: number, y: number): Action<ActionType.PANEL_CORD
 
 export function updateConfigProfiles (payload: WidgetPayload[ActionType.CONFIG_PROFILE_lIST]): Action<ActionType.CONFIG_PROFILE_lIST> {
   return ({ type: ActionType.CONFIG_PROFILE_lIST, payload })
+}
+
+export function searchBoxUpdate (payload: WidgetPayload[ActionType.SEARCH_BOX_UPDATE]): Action<ActionType.SEARCH_BOX_UPDATE> {
+  return ({ type: ActionType.SEARCH_BOX_UPDATE, payload })
 }
 
 /*-----------------------------------------------*\
