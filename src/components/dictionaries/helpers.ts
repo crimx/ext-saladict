@@ -30,7 +30,10 @@ export function getInnerHTMLThunk (host?: string) {
   return function getInnerHTML (parent: ParentNode, selector?: string): HTMLString {
     const child = selector ? parent.querySelector(selector) : parent
     if (!child) { return '' }
-    const content = DOMPurify.sanitize(child['innerHTML'] || '')
+    const content = DOMPurify.sanitize(child['innerHTML'] || '', {
+      FORBID_TAGS: ['style'],
+      FORBID_ATTR: ['style'],
+    })
     return host
       ? content.replace(/href="\/[^/]/g, 'href="' + host)
       : content
@@ -44,7 +47,10 @@ export function getOuterHTMLThunk (host?: string) {
   return function getOuterHTML (parent: ParentNode, selector?: string): HTMLString {
     const child = selector ? parent.querySelector(selector) : parent
     if (!child) { return '' }
-    const content = DOMPurify.sanitize(child['outerHTML'] || '')
+    const content = DOMPurify.sanitize(child['outerHTML'] || '', {
+      FORBID_TAGS: ['style'],
+      FORBID_ATTR: ['style'],
+    })
     return host
       ? content.replace(/href="\/(?!\/)/g, 'href="' + host)
       : content
