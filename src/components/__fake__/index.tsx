@@ -5,9 +5,9 @@
 import setupEnv from './devDict'
 
 setupEnv({
-  dict: 'longman',
+  dict: 'etymonline',
   style: true,
-  text: 'common',
+  text: 'love',
 })
 
 /*-----------------------------------------------*\

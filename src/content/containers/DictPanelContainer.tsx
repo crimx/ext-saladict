@@ -8,6 +8,7 @@ import {
   closePanel,
   updateItemHeight,
   panelOnDrag,
+  searchBoxUpdate,
 } from '../redux/modules/widget'
 
 export const mapStateToProps = ({
@@ -17,12 +18,15 @@ export const mapStateToProps = ({
   dictionaries,
 }: StoreState) => {
   return {
-    activeConfigID: config.id,
-    configProfiles: widget.configProfiles,
     isAnimation: config.animation,
     allDictsConfig: config.dicts.all,
     fontSize: config.fontSize,
     langCode: config.langCode,
+    panelMaxHeightRatio: config.panelMaxHeightRatio,
+    mtaAutoUnfold: config.mtaAutoUnfold,
+
+    activeConfigID: config.id,
+    configProfiles: widget.configProfiles,
 
     selection,
 
@@ -31,12 +35,16 @@ export const mapStateToProps = ({
     shouldPanelShow: widget.shouldPanelShow,
     panelRect: widget.panelRect,
 
+    searchBoxText: widget.searchBoxText,
+    searchBoxIndex: widget.searchBoxIndex,
+
     dictionaries,
   }
 }
 
 export const mapDispatchToProps: { [k in keyof DictPanelPortalDispatchers]: Function } = {
   searchText,
+  searchBoxUpdate,
 
   requestFavWord,
   panelPinSwitch,

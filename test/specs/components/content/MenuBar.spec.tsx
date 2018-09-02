@@ -1,59 +1,57 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import { MenuBar } from '@/content/components/MenuBar'
-import { getDefaultSelectionInfo } from '@/_helpers/selection'
-import { MsgType, MsgSelection } from '@/typings/message'
+import MenuBar, { MenuBarProps } from '@/content/components/MenuBar'
+import noop from 'lodash/noop'
+import { appConfigFactory } from '@/app-config'
 
 describe('Component/content/MenuBar', () => {
   it('should render correctly', () => {
-    const noop = () => {/* noop */}
-    const props = {
+    const config = appConfigFactory()
+    const props: MenuBarProps = {
       t: x => x,
       isFav: false,
       isPinned: false,
-      selection: {
-        type: MsgType.Selection,
-        selectionInfo: getDefaultSelectionInfo(),
-        mouseX: 0,
-        mouseY: 0,
-        dbClick: false,
-        ctrlKey: false,
-      } as MsgSelection,
       searchHistory: [],
-      handleDragStart: noop,
+      activeDicts: [config.id],
+      activeConfigID: config.id,
+      configProfiles: [{ id: config.id, name: config.name }],
+      searchBoxText: '',
+      searchBoxIndex: 0,
+
       searchText: noop,
-      addToNotebook: noop,
-      removeFromNotebook: noop,
       shareImg: noop,
-      pinPanel: noop,
       closePanel: noop,
+      handleDragAreaTouchStart: noop,
+      handleDragAreaMouseDown: noop,
+      requestFavWord: noop,
+      panelPinSwitch: noop,
+      searchBoxUpdate: noop,
     }
     expect(shallow(<MenuBar {...props}/>)).toMatchSnapshot()
   })
 
   it('should render correctly with fav and pin', () => {
-    const noop = () => {/* noop */}
-    const props = {
+    const config = appConfigFactory()
+    const props: MenuBarProps = {
       t: x => x,
       isFav: true,
       isPinned: true,
-      selection: {
-        type: MsgType.Selection,
-        selectionInfo: getDefaultSelectionInfo(),
-        mouseX: 0,
-        mouseY: 0,
-        dbClick: false,
-        ctrlKey: false,
-      } as MsgSelection,
       searchHistory: [],
-      handleDragStart: noop,
+      activeDicts: [config.id],
+      activeConfigID: config.id,
+      configProfiles: [{ id: config.id, name: config.name }],
+      searchBoxText: '',
+      searchBoxIndex: 0,
+
       searchText: noop,
-      addToNotebook: noop,
-      removeFromNotebook: noop,
       shareImg: noop,
-      pinPanel: noop,
       closePanel: noop,
+      handleDragAreaTouchStart: noop,
+      handleDragAreaMouseDown: noop,
+      requestFavWord: noop,
+      panelPinSwitch: noop,
+      searchBoxUpdate: noop,
     }
     expect(shallow(<MenuBar {...props}/>)).toMatchSnapshot()
   })

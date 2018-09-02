@@ -13,6 +13,8 @@ import { MachineTranslateResult } from '@/components/dictionaries/helpers'
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
+const panelHeaderHeight = 30 + 12 // menu bar + multiline search box button
+
 /*-----------------------------------------------*\
     Action Type
 \*-----------------------------------------------*/
@@ -29,7 +31,8 @@ export const enum ActionType {
   EDITOR_WORD_UPDATE = 'widget/EDITOR_WORD_UPDATE',
   NEW_PANEL_HEIGHT = 'widget/NEW_PANEL_HEIGHT',
   PANEL_CORDS = 'widget/PANEL_CORDS',
-  CONFIG_PROFILE_lIST = 'widget/CONFIG_PROFILE_lIST'
+  CONFIG_PROFILE_lIST = 'widget/CONFIG_PROFILE_lIST',
+  SEARCH_BOX_UPDATE = 'dicts/SEARCH_BOX_UPDATE',
 }
 
 /*-----------------------------------------------*\
@@ -49,6 +52,10 @@ interface WidgetPayload {
   [ActionType.NEW_PANEL_HEIGHT]: number
   [ActionType.PANEL_CORDS]: { x: number, y: number }
   [ActionType.CONFIG_PROFILE_lIST]: Array<{ id: string, name: string }>
+  [ActionType.SEARCH_BOX_UPDATE]: {
+    text: string
+    index: number
+  }
 }
 
 /*-----------------------------------------------*\
@@ -80,6 +87,9 @@ export type WidgetState = {
       shouldPanelShow: boolean
     }
     readonly configProfiles: Array<{ id: string, name: string }>
+    /** index in search history */
+    readonly searchBoxIndex: number
+    readonly searchBoxText: string
   }
 }
 
@@ -104,7 +114,7 @@ export const initState: WidgetState = {
         : _initConfig.panelWidth,
       height: isSaladictPopupPage
         ? 400
-        : 30, // menubar
+        : panelHeaderHeight
     },
     bowlRect: {
       x: 0,
@@ -118,6 +128,8 @@ export const initState: WidgetState = {
       shouldPanelShow: false,
     },
     configProfiles: [],
+    searchBoxIndex: 0,
+    searchBoxText: '',
   }
 }
 
@@ -367,6 +379,16 @@ export const reducer: WidgetReducer = {
       }
     }
   },
+  [ActionType.SEARCH_BOX_UPDATE] (state, { text, index }) {
+    return {
+      ...state,
+      widget: {
+        ...state.widget,
+        searchBoxText: text,
+        searchBoxIndex: index,
+      }
+    }
+  },
 }
 
 export default reducer
@@ -428,26 +450,36 @@ export function updateConfigProfiles (payload: WidgetPayload[ActionType.CONFIG_P
   return ({ type: ActionType.CONFIG_PROFILE_lIST, payload })
 }
 
+export function searchBoxUpdate (payload: WidgetPayload[ActionType.SEARCH_BOX_UPDATE]): Action<ActionType.SEARCH_BOX_UPDATE> {
+  return ({ type: ActionType.SEARCH_BOX_UPDATE, payload })
+}
+
 /*-----------------------------------------------*\
     Side Effects
 \*-----------------------------------------------*/
 
-let dictHeights: Partial<{ [id in DictID]: number }> = {}
+let dictHeights: Partial<{ [id in (DictID | '_mtabox')]: number }> = {}
 
 export function startUpAction (): DispatcherThunk {
   return (dispatch, getState) => {
     listenTempDisable(dispatch, getState)
 
-    createConfigIDListStream().subscribe(idlist => {
-      storage.sync.get(idlist).then(obj => {
-        if (process.env.DEV_BUILD) {
-          const l = idlist.filter(id => !obj[id])
-          if (l.length > 0) {
-            console.error(`Update config ID List: id "${l}" not exist`)
+    createConfigIDListStream().subscribe(async idlist => {
+      const profiles: Array<{ id: string, name: string }> = []
+      for (let i = 0; i < idlist.length; i++) {
+        const id = idlist[i]
+        // beware of quota bytes per item exceeds
+        const profile = (await storage.sync.get(id))[id]
+        if (profile) {
+          profiles.push({ id, name: profile.name })
+        } else {
+          if (process.env.DEV_BUILD) {
+            console.warn(`Update config ID List: id "${id}" not exist`)
           }
         }
-        dispatch(updateConfigProfiles(idlist.map(id => ({ id, name: obj[id].name }))))
-      })
+      }
+
+      dispatch(updateConfigProfiles(profiles))
     })
 
     // close panel and word editor on esc
@@ -592,7 +624,7 @@ export function addToNotebook (info: SelectionInfo | recordManager.Word): Dispat
   }
 }
 
-export function updateItemHeight (id: DictID, height: number): DispatcherThunk {
+export function updateItemHeight (id: DictID | '_mtabox', height: number): DispatcherThunk {
   return (dispatch, getState) => {
     if (isSaladictPopupPage) {
       return
@@ -606,8 +638,10 @@ export function updateItemHeight (id: DictID, height: number): DispatcherThunk {
       const winHeight = window.innerHeight
       const newHeight = Math.min(
         winHeight * state.config.panelMaxHeightRatio,
-        30 + state.dictionaries.active
-          .reduce((sum, id) => sum + (dictHeights[id] || 30), 0),
+        panelHeaderHeight +
+        (dictHeights._mtabox || 0) +
+        state.dictionaries.active
+          .reduce((sum, id) => sum + (dictHeights[id] || panelHeaderHeight), 0),
       )
 
       dispatch(newPanelHeight(newHeight))
@@ -696,7 +730,7 @@ export function newSelection (): DispatcherThunk {
         mouseX,
         mouseY,
         lastPanelRect.width,
-        isSaladictPopupPage ? 400 : 30,
+        isSaladictPopupPage ? 400 : panelHeaderHeight,
       )
     }
 
@@ -754,7 +788,7 @@ function _restoreWidget (widget: WidgetState['widget']): Mutable<WidgetState['wi
     shouldBowlShow: false,
     panelRect: {
       ...widget.panelRect,
-      height: isSaladictPopupPage ? 400 : 30, // menubar
+      height: isSaladictPopupPage ? 400 : panelHeaderHeight,
     },
   }
 }

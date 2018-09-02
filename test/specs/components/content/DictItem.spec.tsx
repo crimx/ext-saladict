@@ -1,7 +1,7 @@
 import React from 'react'
 import { mount, shallow } from 'enzyme'
 import { SearchStatus } from '@/content/redux/modules/dictionaries'
-import { DictItem, DictItemProps } from '@/content/components/DictItem'
+import DictItem, { DictItemProps } from '@/content/components/DictItem'
 import { TranslationFunction } from 'i18next'
 import _ from 'lodash'
 
@@ -23,14 +23,17 @@ describe('Component/content/DictItem', () => {
     const props: TransProps = {
       t: _.identity,
       id: 'bing',
+      text: 'string',
       dictURL: 'https://google.com',
-      fontSize: 14,
-      searchResult: null,
       preferredHeight: 100,
-      panelWidth: 400,
       searchStatus: SearchStatus.OnHold,
+      searchResult: null,
+
+      fontSize: 14,
+      panelWidth: 400,
       updateItemHeight: _.noop,
       searchText: _.noop
+
     }
     expect(shallow(<DictItem {...props} />)).toMatchSnapshot()
   })
@@ -39,6 +42,7 @@ describe('Component/content/DictItem', () => {
     const props: TransProps = {
       t: _.identity,
       id: 'bing',
+      text: 'string',
       dictURL: 'https://google.com',
       fontSize: 14,
       searchResult: null,
@@ -62,6 +66,7 @@ describe('Component/content/DictItem', () => {
     const props: TransProps = {
       t: _.identity,
       id: 'bing',
+      text: 'string',
       dictURL: 'https://google.com',
       fontSize: 14,
       searchResult: null,

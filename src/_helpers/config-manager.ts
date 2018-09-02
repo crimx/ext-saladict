@@ -6,7 +6,7 @@
  * the "active config". This is for backward compatibility.
  */
 
-import { AppConfig } from '@/app-config'
+import { appConfigFactory, AppConfig } from '@/app-config'
 import { defaultModesFactory } from '@/app-config/default-modes'
 import { storage } from './browser-api'
 // import { Observable, from, concat } from 'rxjs'
@@ -52,10 +52,7 @@ export async function initConfig (): Promise<AppConfig> {
 
   // beware of quota bytes per item exceeds
   for (let i = 0; i < modes.length; i++) {
-    const id = modes[i].id
-    if (!obj[id]) {
-      await storage.sync.set({ [id]: modes[i] })
-    }
+    await storage.sync.set({ [modes[i].id]: modes[i] })
   }
 
   await storage.sync.remove(
@@ -114,7 +111,7 @@ export async function getActiveConfig (): Promise<AppConfig> {
       return config
     }
   }
-  return initConfig()
+  return appConfigFactory()
 }
 
 /**

@@ -41,5 +41,6 @@ export function translation (): AppConfig {
   const config = appConfigFactory() as AppConfigMutable
   config.name = '%%_translation_%%'
   config.dicts.selected = ['google', 'sogou', 'youdao', 'zdic', 'guoyu', 'liangan']
+  config.mtaAutoUnfold = 'always'
   return config
 }

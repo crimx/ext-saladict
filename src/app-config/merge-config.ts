@@ -31,6 +31,7 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   mergeBoolean('searhHistoryInco')
   mergeBoolean('newWordSound')
   mergeBoolean('editOnFav')
+  mergeString('mtaAutoUnfold')
 
   mergeBoolean('mode.icon')
   mergeBoolean('mode.direct')

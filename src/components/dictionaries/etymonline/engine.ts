@@ -7,8 +7,9 @@ const getInnerHTML = getInnerHTMLThunk()
 
 type EtymonlineResultItem = {
   title: string
-  href: string
   def: HTMLString
+  href?: string
+  chart?: string
 }
 
 export type EtymonlineResult = EtymonlineResultItem[]
@@ -23,34 +24,31 @@ export default function search (
   text = encodeURIComponent(text)
 
   // http to bypass the referer checking
-  return fetchDirtyDOM('http://www.etymonline.com/search?q=' + text)
+  return fetchDirtyDOM('https://www.etymonline.com/word/' + text)
     .then(doc => handleDOM(doc, options))
-    .catch(() => fetchDirtyDOM('https://www.etymonline.com/search?q=' + text)
-      .then(doc => handleDOM(doc, options))
-    )
+    // .catch(() => fetchDirtyDOM('http://www.etymonline.com/search?q=' + text)
+    //   .then(doc => handleDOM(doc, options))
+    // )
+    // .catch(() => fetchDirtyDOM('https://www.etymonline.com/search?q=' + text)
+    //   .then(doc => handleDOM(doc, options))
+    // )
 }
 
 function handleDOM (
   doc: Document,
-  { resultnum }: { resultnum: number },
+  options: AppConfig['dicts']['all']['etymonline']['options'],
 ): EtymonlineSearchResult | Promise<EtymonlineSearchResult> {
   const result: EtymonlineResult = []
-  const $items = Array.from(doc.querySelectorAll('[class^="word--"]'))
+  const $items = Array.from(doc.querySelectorAll('[class*="word--"]'))
 
-  for (let i = 0; i < $items.length && result.length < resultnum; i++) {
+  for (let i = 0; i < $items.length && result.length < options.resultnum; i++) {
     const $item = $items[i]
 
-    let href = $item.getAttribute('href') || ''
-    if (href[0] === '/') {
-      href = 'https://www.etymonline.com' + href
-    }
-    if (!href) { continue }
-
-    const title = getText($item, '[class^="word__name--"]')
+    const title = getText($item, '[class*="word__name--"]')
     if (!title) { continue }
 
     let def = ''
-    const $def = $item.querySelector('[class^="word__defination--"]>object')
+    const $def = $item.querySelector('[class*="word__defination--"]>*')
     if ($def) {
       $def.querySelectorAll('.crossreference').forEach($cf => {
         let word = ($cf.textContent || '').trim()
@@ -60,7 +58,18 @@ function handleDOM (
     }
     if (!def) { continue }
 
-    result.push({ href, title, def })
+    let href = ($item.getAttribute('href') || '')
+      .replace(/^\/(?!\/)/, 'https://www.etymonline.com/')
+
+    let chart = ''
+    if (options.chart) {
+      const $chart = $item.querySelector<HTMLImageElement>('[class*="chart--"] img')
+      if ($chart) {
+        chart = $chart.src.replace(/^\/(?!\/)/, 'https://www.etymonline.com/')
+      }
+    }
+
+    result.push({ href, title, def, chart })
   }
 
   if (result.length > 0) {

@@ -4,6 +4,17 @@
       <strong>{{ $t('opt:dict_panel_title') }}</strong>
     </div>
     <div class="opt-item__body">
+      <div class="select-box-container">
+         <label class="select-box">
+           <span class="select-label">{{ $t('opt:mta_auto_unfold') }}</span>
+           <select class="form-control" v-model="mtaAutoUnfold">
+             <option value="">{{ $t('opt:never') }}</option>
+             <option value="once">{{ $t('opt:mta_once') }}</option>
+             <option value="always">{{ $t('opt:mta_always') }}</option>
+             <option value="popup">{{ $t('opt:popup_title') }}</option>
+           </select>
+         </label>
+      </div>
       <div class="input-group">
         <div class="input-group-addon">{{ $t('opt:dict_panel_height_ratio') }}</div>
         <input type="number" step="1" min="10" max="90" class="form-control"
@@ -38,12 +49,14 @@
 <script>
 export default {
   store: {
+    mtaAutoUnfold: 'config.mtaAutoUnfold',
     panelWidth: 'config.panelWidth',
     panelMaxHeightRatio: 'config.panelMaxHeightRatio',
     fontSize: 'config.fontSize',
     searchText: 'searchText',
   },
   watch: {
+    mtaAutoUnfold: function () { this.searchText() },
     panelMaxHeightRatio: function () { this.searchText() },
     fontSize: function () { this.searchText() },
   },

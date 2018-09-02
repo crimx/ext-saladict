@@ -8,9 +8,16 @@ export default class DictEtymonline extends React.PureComponent<{ result: Etymon
         {this.props.result.map(item => (
           <li key={item.title} className='dictEtymonline-Item'>
             <h2 className='dictEtymonline-Title'>
-              <a href={item.href} target='_blank' rel='nofollow'>{item.title}</a>
+              {item.href
+                ? <a href={item.href} target='_blank' rel='nofollow'>{item.title}</a>
+                : item.title
+              }
             </h2>
             <p className='dictEtymonline-Def' dangerouslySetInnerHTML={{ __html: item.def }} />
+            {item.chart
+              ? <img src={item.chart} alt={'Origin of ' + item.title} />
+              : null
+            }
           </li>
         ))}
       </ul>

@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.13.0"></a>
+# [6.13.0](https://github.com/crimx/ext-saladict/compare/v6.12.1...v6.13.0) (2018-09-02)
+
+
+### Bug Fixes
+
+* **config:** add met merge config ([74ae476](https://github.com/crimx/ext-saladict/commit/74ae476))
+* **configs:** fix config not updating on init ([7d54aa0](https://github.com/crimx/ext-saladict/commit/7d54aa0))
+* **dicts:** fix etymonline ([c5aeca2](https://github.com/crimx/ext-saladict/commit/c5aeca2))
+* **helpers:** prevent profiles blow up ([a5b7d2f](https://github.com/crimx/ext-saladict/commit/a5b7d2f))
+* **panel:** fix mta search box search text ([244a45c](https://github.com/crimx/ext-saladict/commit/244a45c))
+* **panel:** fix typings ([f312ffe](https://github.com/crimx/ext-saladict/commit/f312ffe))
+* **panel:** safety check ([23e06db](https://github.com/crimx/ext-saladict/commit/23e06db))
+
+
+### Features
+
+* **options:** add options for toggling multiline search box ([df4e241](https://github.com/crimx/ext-saladict/commit/df4e241))
+* **panel:** add multiline search box ([7370fc5](https://github.com/crimx/ext-saladict/commit/7370fc5))
+
+
+
 <a name="6.12.1"></a>
 ## [6.12.1](https://github.com/crimx/ext-saladict/compare/v6.12.0...v6.12.1) (2018-09-01)
 

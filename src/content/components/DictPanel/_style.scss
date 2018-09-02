@@ -27,4 +27,41 @@
   flex: 1;
   overflow-x: hidden;
   overflow-y: scroll;
+  font-size: 0; // remove whitespace
+}
+
+.panel-MtaBox {
+  overflow: hidden;
+
+  textarea {
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+    font-family: inherit;
+    resize: none;
+  }
+}
+
+.panel-MtaBoxBtn {
+  width: 100%;
+  height: 12px;
+  overflow: hidden;
+  font-size: 0;
+  cursor: pointer;
+}
+
+.panel-MtaBoxBtn_Arrow {
+  &.isActive {
+    transform: rotate(180deg);
+  }
+}
+
+.isAnimate {
+  .panel-MtaBox {
+    transition: height 0.4s;
+  }
+
+  .panel-MtaBoxBtn_Arrow {
+    transition: transform 0.2s;
+  }
 }

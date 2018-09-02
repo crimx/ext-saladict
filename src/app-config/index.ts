@@ -33,6 +33,8 @@ export const enum TCDirection {
 /** '' means no preload */
 export type PreloadSource = '' | 'clipboard' | 'selection'
 
+export type MtaAutoUnfold = '' | 'once' | 'always' | 'popup'
+
 export type AppConfig = DeepReadonly<AppConfigMutable>
 
 export interface AppConfigMutable {
@@ -77,6 +79,9 @@ export interface AppConfigMutable {
 
   /** open word editor when adding a word to notebook */
   editOnFav: boolean
+
+  /** auto unfold multiline textarea search box */
+  mtaAutoUnfold: MtaAutoUnfold
 
   /** play sound */
   newWordSound: boolean
@@ -227,6 +232,8 @@ export function appConfigFactory (id?: string): AppConfig {
     newWordSound: true,
 
     editOnFav: true,
+
+    mtaAutoUnfold: '',
 
     mode: {
       icon: true,

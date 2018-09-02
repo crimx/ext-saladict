@@ -6,15 +6,13 @@ import { getDefaultSelectionInfo, SelectionInfo, isSameSelection } from '@/_help
 import { isContainChinese, isContainEnglish, testerPunct, isContainMinor, testerChinese, testJapanese, testKorean } from '@/_helpers/lang-check'
 import { MsgType, MsgFetchDictResult } from '@/typings/message'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
-import { isInNotebook, tripleCtrlPressed } from './widget'
+import { isInNotebook, tripleCtrlPressed, searchBoxUpdate } from './widget'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
 const isNoSearchHistoryPage = isSaladictInternalPage && !isSaladictPopupPage
-
-let _searchDelayTimeout: any = null
 
 /*-----------------------------------------------*\
     Action Type
@@ -279,8 +277,6 @@ export function newConfig (): DispatcherThunk {
  */
 export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): DispatcherThunk {
   return (dispatch, getState) => {
-    clearTimeout(_searchDelayTimeout)
-
     const state = getState()
     const info = arg
     ? arg.info || state.dictionaries.searchHistory[0]
@@ -305,6 +301,8 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
     }
 
     // search all, except the default onholded
+    dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
+
     // and those who don't match the selection language
     const { selected: selectedDicts, all: allDicts } = state.config.dicts
     const toStart: DictID[] = []

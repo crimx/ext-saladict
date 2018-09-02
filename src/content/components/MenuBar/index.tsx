@@ -1,5 +1,4 @@
 import React from 'react'
-import { translate } from 'react-i18next'
 import { message } from '@/_helpers/browser-api'
 import { TranslationFunction } from 'i18next'
 import { MsgType, MsgOpenUrl } from '@/typings/message'
@@ -18,102 +17,83 @@ export interface MenuBarDispatchers {
   readonly shareImg: () => any
   readonly panelPinSwitch: () => any
   readonly closePanel: () => any
+  readonly searchBoxUpdate: (arg: { text: string, index: number }) => any
 }
 
 export interface MenuBarProps extends MenuBarDispatchers {
+  readonly t: TranslationFunction
   readonly isFav: boolean
   readonly isPinned: boolean
   readonly searchHistory: SelectionInfo[]
   readonly activeDicts: string[]
   readonly activeConfigID: string
   readonly configProfiles: Array<{ id: string, name: string }>
+  readonly searchBoxText: string
+  readonly searchBoxIndex: number
 }
 
 type MenuBarState = {
-  propsSearchHistory: SelectionInfo[] | null
-
-  iSearchHistory: number
-  text: string
   isShowProfilePanel: boolean
 }
 
-export class MenuBar extends React.PureComponent<MenuBarProps & { t: TranslationFunction }, MenuBarState> {
+export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarState> {
   inputRef = React.createRef<HTMLInputElement>()
   dragAreaRef = React.createRef<HTMLDivElement>()
 
   state = {
-    propsSearchHistory: null,
-
-    iSearchHistory: 0,
-    text: '',
     isShowProfilePanel: false,
   }
 
-  static getDerivedStateFromProps (
-    nextProps: MenuBarProps,
-    prevState: MenuBarState
-  ): Partial<MenuBarState> | null {
-    // only overwrite text when new search is made
-    const { searchHistory } = nextProps
-    const { propsSearchHistory } = prevState
-    if (propsSearchHistory !== searchHistory) {
-      const latestSearch = searchHistory[0]
-      // restore history
-      return {
-        propsSearchHistory: searchHistory,
-        iSearchHistory: 0,
-        text: latestSearch && latestSearch.text || '',
-      }
-    }
-
-    return null
-  }
-
   searchText = () => {
-    return this.props.searchText({
-      info: getDefaultSelectionInfo({
-        text: this.state.text,
-        title: this.props.t('fromSaladict'),
-        favicon: 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
-      }),
-    })
+    if (this.props.searchBoxText) {
+      return this.props.searchText({
+        info: getDefaultSelectionInfo({
+          text: this.props.searchBoxText,
+          title: this.props.t('fromSaladict'),
+          favicon: 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
+        }),
+      })
+    }
   }
 
   /** previous search history */
   handleIconBackClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
-    const i = this.state.iSearchHistory + 1
-    this.setState({
-      text: this.props.searchHistory[i].text,
-      iSearchHistory: i
+    // button will be disabled when it's on the boundary
+    const index = this.props.searchBoxIndex + 1
+    this.props.searchBoxUpdate({
+      index,
+      text: this.props.searchHistory[index].text
     })
   }
 
   /** next search history */
   handleIconNextClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
-    const i = this.state.iSearchHistory - 1
-    this.setState({
-      text: this.props.searchHistory[i].text,
-      iSearchHistory: i
+    // button will be disabled when it's on the boundary
+    const index = this.props.searchBoxIndex - 1
+    this.props.searchBoxUpdate({
+      index,
+      text: this.props.searchHistory[index].text
     })
   }
 
   handleSearchBoxInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ text: e.currentTarget.value })
+    this.props.searchBoxUpdate({
+      index: this.props.searchBoxIndex,
+      text: e.currentTarget.value
+    })
   }
 
   handleSearchBoxKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (this.state.text && e.key === 'Enter') {
+    if (e.key === 'Enter') {
       this.searchText()
     }
   }
 
   handleIconSearchClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
-    if (this.state.text) {
-      this.searchText()
-    }
+    this.searchText()
   }
 
   handleIconSettingsClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -154,6 +134,8 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     setTimeout(() => {
       if (this.props.searchHistory.length > 0) {
         this.props.searchText({ info: this.props.searchHistory[0] })
+      } else {
+        this.searchText()
       }
     }, 100)
   }
@@ -295,21 +277,19 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
       handleDragAreaMouseDown,
       handleDragAreaTouchStart,
       searchHistory,
+      searchBoxIndex,
     } = this.props
 
     const {
       isShowProfilePanel,
-      iSearchHistory,
     } = this.state
-
-    const nSearchHistory = searchHistory.length
 
     return (
       <header className='panel-MenuBar'>
         <button
           className='panel-MenuBar_Btn-dir'
           onClick={this.handleIconBackClick}
-          disabled={iSearchHistory >= nSearchHistory - 1}
+          disabled={searchBoxIndex >= searchHistory.length - 1}
         >
           <svg
             className='panel-MenuBar_Icon'
@@ -323,7 +303,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
         <button
           className='panel-MenuBar_Btn-dir'
           onClick={this.handleIconNextClick}
-          disabled={iSearchHistory <= 0}
+          disabled={searchBoxIndex <= 0}
         >
           <svg
             className='panel-MenuBar_Icon'
@@ -340,7 +320,7 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
           ref={this.inputRef}
           onChange={this.handleSearchBoxInput}
           onKeyUp={this.handleSearchBoxKeyUp}
-          value={this.state.text}
+          value={this.props.searchBoxText}
         />
 
         <button className='panel-MenuBar_Btn' onClick={this.handleIconSearchClick}>
@@ -449,5 +429,3 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     )
   }
 }
-
-export default translate()(MenuBar)
