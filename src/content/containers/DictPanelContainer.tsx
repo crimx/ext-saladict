@@ -22,6 +22,7 @@ export const mapStateToProps = ({
     allDictsConfig: config.dicts.all,
     fontSize: config.fontSize,
     langCode: config.langCode,
+    panelMaxHeightRatio: config.panelMaxHeightRatio,
 
     activeConfigID: config.id,
     configProfiles: widget.configProfiles,

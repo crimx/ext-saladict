@@ -30,13 +30,50 @@ type ChildrenProps =
 
 export interface DictPanelProps extends ChildrenProps {
   readonly isAnimation: boolean
+  readonly panelMaxHeightRatio: number
   readonly dictionaries: DictionariesState['dictionaries']
   readonly allDictsConfig: DictConfigs
   readonly langCode: AppConfig['langCode']
   readonly selection: MsgSelection
 }
 
-export default class DictPanel extends React.Component<DictPanelProps> {
+interface DictPanelState {
+  textAreaHeight: number
+}
+
+export default class DictPanel extends React.Component<DictPanelProps, DictPanelState> {
+  bigSearchBoxRef = React.createRef<HTMLTextAreaElement>()
+
+  state = {
+    textAreaHeight: 0
+  }
+
+  toggleBigSearchBox = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.currentTarget.blur()
+    this.setState(preState => {
+      return { textAreaHeight: preState.textAreaHeight <= 0
+        ? window.innerHeight * this.props.panelMaxHeightRatio * 0.4
+        : 0
+      }
+    })
+  }
+
+  handleSearchBoxInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    this.props.searchBoxUpdate({
+      index: this.props.searchBoxIndex,
+      text: e.currentTarget.value
+    })
+  }
+
+  componentDidUpdate (prevProps, prevState) {
+    if (prevState.textAreaHeight <= 0 &&
+        this.state.textAreaHeight > 0 &&
+        this.bigSearchBoxRef.current
+    ) {
+      this.bigSearchBoxRef.current.focus()
+    }
+  }
+
   render () {
     const {
       activeConfigID,
@@ -67,6 +104,10 @@ export default class DictPanel extends React.Component<DictPanelProps> {
     } = this.props
 
     const {
+      textAreaHeight,
+    } = this.state
+
+    const {
       dicts: dictsInfo,
       active: activeDicts,
     } = dictionaries
@@ -92,6 +133,23 @@ export default class DictPanel extends React.Component<DictPanelProps> {
           closePanel,
         })}
         <div className='panel-DictContainer'>
+          <div className='panel-BigSearchBox' style={{ height: textAreaHeight }}>
+            {textAreaHeight > 0 && (
+              <textarea
+                ref={this.bigSearchBoxRef}
+                value={searchBoxText}
+                onChange={this.handleSearchBoxInput}
+                style={{ fontSize: this.props.fontSize }}
+              />
+            )}
+          </div>
+          <button className='panel-BigSearchBoxBtn' onClick={this.toggleBigSearchBox}>
+            <svg width='10' height='10' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'
+             className={'panel-BigSearchBoxBtn_Arrow' + (textAreaHeight > 0 ? ' isActive' : '')}
+            >
+              <path d='M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56' />
+            </svg>
+          </button>
           {activeDicts.map(id => {
             let dictURL = allDictsConfig[id].page
             if (typeof dictURL !== 'string') {

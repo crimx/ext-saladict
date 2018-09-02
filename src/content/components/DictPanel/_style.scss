@@ -27,4 +27,39 @@
   flex: 1;
   overflow-x: hidden;
   overflow-y: scroll;
+  font-size: 0; // remove whitespace
+}
+
+.panel-BigSearchBox {
+  overflow: hidden;
+
+  textarea {
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+    font-family: inherit;
+    resize: none;
+  }
+}
+
+.panel-BigSearchBoxBtn {
+  width: 100%;
+  height: 10px;
+  cursor: pointer;
+}
+
+.panel-BigSearchBoxBtn_Arrow {
+  &.isActive {
+    transform: rotate(180deg);
+  }
+}
+
+.isAnimate {
+  .panel-BigSearchBox {
+    transition: height 0.4s;
+  }
+
+  .panel-BigSearchBoxBtn_Arrow {
+    transition: transform 0.2s;
+  }
 }
