@@ -13,7 +13,7 @@ import { MachineTranslateResult } from '@/components/dictionaries/helpers'
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
-const panelHeaderHeight = 30 + 10 // menu bar + multiline search box button
+const panelHeaderHeight = 30 + 12 // menu bar + multiline search box button
 
 /*-----------------------------------------------*\
     Action Type

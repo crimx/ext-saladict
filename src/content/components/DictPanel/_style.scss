@@ -44,7 +44,9 @@
 
 .panel-BigSearchBoxBtn {
   width: 100%;
-  height: 10px;
+  height: 12px;
+  overflow: hidden;
+  font-size: 0;
   cursor: pointer;
 }
 
