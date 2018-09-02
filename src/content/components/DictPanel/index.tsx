@@ -57,7 +57,13 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
 
   searchText = (arg?: { id?: DictID, info?: SelectionInfo | string }) => {
     if (this.state.mtaBoxHeight !== 0) {
-      this.setState({ mtaBoxHeight: 0 })
+      const { mtaAutoUnfold } = this.props
+      if (!mtaAutoUnfold ||
+          mtaAutoUnfold === 'once' ||
+          mtaAutoUnfold === 'popup' && !isSaladictPopupPage
+      ) {
+        this.setState({ mtaBoxHeight: 0 })
+      }
     }
     return this.props.searchText(arg)
   }
@@ -95,8 +101,10 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
   }
 
   componentDidMount () {
-    if (this.props.mtaAutoUnfold === 'always' ||
-        this.props.mtaAutoUnfold === 'popup' && isSaladictPopupPage
+    const { mtaAutoUnfold } = this.props
+    if (mtaAutoUnfold === 'once' ||
+        mtaAutoUnfold === 'always' ||
+        mtaAutoUnfold === 'popup' && isSaladictPopupPage
     ) {
       this.toggleMtaBox()
     }
@@ -114,8 +122,10 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
       this.props.updateItemHeight('_mtabox', this.state.mtaBoxHeight)
     }
 
-    if (prevProps.mtaAutoUnfold !== this.props.mtaAutoUnfold) {
-      this.toggleMtaBox()
+    if (Boolean(prevProps.mtaAutoUnfold) !== Boolean(this.props.mtaAutoUnfold)) {
+      if (this.props.mtaAutoUnfold !== 'popup' || isSaladictPopupPage) {
+        this.toggleMtaBox()
+      }
     }
   }
 

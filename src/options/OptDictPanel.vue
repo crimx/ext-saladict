@@ -9,7 +9,8 @@
            <span class="select-label">{{ $t('opt:mta_auto_unfold') }}</span>
            <select class="form-control" v-model="mtaAutoUnfold">
              <option value="">{{ $t('opt:never') }}</option>
-             <option value="always">{{ $t('opt:always') }}</option>
+             <option value="once">{{ $t('opt:mta_once') }}</option>
+             <option value="always">{{ $t('opt:mta_always') }}</option>
              <option value="popup">{{ $t('opt:popup_title') }}</option>
            </select>
          </label>

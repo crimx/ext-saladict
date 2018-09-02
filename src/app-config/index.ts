@@ -33,7 +33,7 @@ export const enum TCDirection {
 /** '' means no preload */
 export type PreloadSource = '' | 'clipboard' | 'selection'
 
-export type MtaAutoUnfold = '' | 'always' | 'popup'
+export type MtaAutoUnfold = '' | 'once' | 'always' | 'popup'
 
 export type AppConfig = DeepReadonly<AppConfigMutable>
 
