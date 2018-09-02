@@ -6,7 +6,7 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
 >
   <button
     className="panel-MenuBar_Btn-dir"
-    disabled={false}
+    disabled={true}
     onClick={[Function]}
   >
     <svg
@@ -26,7 +26,7 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
   </button>
   <button
     className="panel-MenuBar_Btn-dir"
-    disabled={false}
+    disabled={true}
     onClick={[Function]}
   >
     <svg
@@ -50,6 +50,7 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
     onChange={[Function]}
     onKeyUp={[Function]}
     type="text"
+    value=""
   />
   <button
     className="panel-MenuBar_Btn"
@@ -72,6 +73,8 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
   </button>
   <div
     className="panel-MenuBar_DragArea"
+    onMouseDown={[Function]}
+    onTouchStart={[Function]}
   />
   <div
     className="panel-MenuBar_SettingsWrapper"
@@ -199,7 +202,7 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
 >
   <button
     className="panel-MenuBar_Btn-dir"
-    disabled={false}
+    disabled={true}
     onClick={[Function]}
   >
     <svg
@@ -219,7 +222,7 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
   </button>
   <button
     className="panel-MenuBar_Btn-dir"
-    disabled={false}
+    disabled={true}
     onClick={[Function]}
   >
     <svg
@@ -243,6 +246,7 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
     onChange={[Function]}
     onKeyUp={[Function]}
     type="text"
+    value=""
   />
   <button
     className="panel-MenuBar_Btn"
@@ -265,6 +269,8 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
   </button>
   <div
     className="panel-MenuBar_DragArea"
+    onMouseDown={[Function]}
+    onTouchStart={[Function]}
   />
   <div
     className="panel-MenuBar_SettingsWrapper"

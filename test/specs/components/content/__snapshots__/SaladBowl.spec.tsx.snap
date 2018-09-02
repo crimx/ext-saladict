@@ -2,7 +2,7 @@
 
 exports[`Component/content/SaladBowl should render correctly 1`] = `
 <div
-  className="saladict-SaladBowl"
+  className="saladict-SaladBowl isAnimate"
   key="saladict-SaladBowl"
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}

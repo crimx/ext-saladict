@@ -52,10 +52,10 @@ describe('Config Manager', () => {
     }))).toBeTruthy()
     expect(browser.storage.sync.set.calledWith(sinon.match({
       [config1.id]: config1,
-    }))).toBeFalsy()
+    }))).toBeTruthy()
     expect(browser.storage.sync.set.calledWith(sinon.match({
       [config2.id]: config2,
-    }))).toBeFalsy()
+    }))).toBeTruthy()
   })
 
   it('should remove detached keys when init', async () => {
