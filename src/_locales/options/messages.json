@@ -534,6 +534,11 @@
     "zh_CN": "重置设定",
     "zh_TW": "重設設定"
   },
+  "storage_import_error": {
+    "en": "Import Failed",
+    "zh_CN": "导入失败",
+    "zh_TW": "輸入失敗"
+  },
   "storage_updated": {
     "en": "Settings updated",
     "zh_CN": "设置已更新",
