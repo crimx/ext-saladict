@@ -13,6 +13,7 @@ const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 export type DictPanelDispatchers = DictItemDispatchers & MenuBarDispatchers & {
   readonly searchText: (arg?: { id?: DictID, info?: SelectionInfo | string }) => any
   readonly searchBoxUpdate: (arg: { text: string, index: number }) => any
+  readonly updateItemHeight: (id: DictID | '_mtabox', height: number) => any
 }
 
 type ChildrenProps =
@@ -41,27 +42,27 @@ export interface DictPanelProps extends ChildrenProps {
 }
 
 interface DictPanelState {
-  textAreaHeight: number
+  mtaBoxHeight: number
 }
 
 export default class DictPanel extends React.Component<DictPanelProps, DictPanelState> {
   bigSearchBoxRef = React.createRef<HTMLTextAreaElement>()
 
   state = {
-    textAreaHeight: 0
+    mtaBoxHeight: 0
   }
 
-  toggleBigSearchBox = (e?: React.MouseEvent<HTMLButtonElement>) => {
+  toggleMtaBox = (e?: React.MouseEvent<HTMLButtonElement>) => {
     if (e) { e.currentTarget.blur() }
     this.setState(preState => {
-      return { textAreaHeight: preState.textAreaHeight <= 0
+      return { mtaBoxHeight: preState.mtaBoxHeight <= 0
         ? window.innerHeight * this.props.panelMaxHeightRatio * 0.4
         : 0
       }
     })
   }
 
-  handleSearchBoxInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  handleMtaBoxInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.props.searchBoxUpdate({
       index: this.props.searchBoxIndex,
       text: e.currentTarget.value
@@ -72,20 +73,24 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
     if (this.props.mtaAutoUnfold === 'always' ||
         this.props.mtaAutoUnfold === 'popup' && isSaladictPopupPage
     ) {
-      this.toggleBigSearchBox()
+      this.toggleMtaBox()
     }
   }
 
   componentDidUpdate (prevProps: DictPanelProps, prevState: DictPanelState) {
-    if (prevState.textAreaHeight <= 0 &&
-        this.state.textAreaHeight > 0 &&
+    if (prevState.mtaBoxHeight <= 0 &&
+        this.state.mtaBoxHeight > 0 &&
         this.bigSearchBoxRef.current
     ) {
       this.bigSearchBoxRef.current.focus()
     }
 
+    if (prevState.mtaBoxHeight !== this.state.mtaBoxHeight) {
+      this.props.updateItemHeight('_mtabox', this.state.mtaBoxHeight)
+    }
+
     if (prevProps.mtaAutoUnfold !== this.props.mtaAutoUnfold) {
-      this.toggleBigSearchBox()
+      this.toggleMtaBox()
     }
   }
 
@@ -119,7 +124,7 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
     } = this.props
 
     const {
-      textAreaHeight,
+      mtaBoxHeight,
     } = this.state
 
     const {
@@ -148,19 +153,19 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
           closePanel,
         })}
         <div className='panel-DictContainer'>
-          <div className='panel-BigSearchBox' style={{ height: textAreaHeight }}>
-            {textAreaHeight > 0 && (
+          <div className='panel-BigSearchBox' style={{ height: mtaBoxHeight }}>
+            {mtaBoxHeight > 0 && (
               <textarea
                 ref={this.bigSearchBoxRef}
                 value={searchBoxText}
-                onChange={this.handleSearchBoxInput}
+                onChange={this.handleMtaBoxInput}
                 style={{ fontSize: this.props.fontSize }}
               />
             )}
           </div>
-          <button className='panel-BigSearchBoxBtn' onClick={this.toggleBigSearchBox}>
+          <button className='panel-BigSearchBoxBtn' onClick={this.toggleMtaBox}>
             <svg width='10' height='10' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'
-             className={'panel-BigSearchBoxBtn_Arrow' + (textAreaHeight > 0 ? ' isActive' : '')}
+             className={'panel-BigSearchBoxBtn_Arrow' + (mtaBoxHeight > 0 ? ' isActive' : '')}
             >
               <path d='M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56' />
             </svg>

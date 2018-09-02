@@ -13,6 +13,8 @@ import { MachineTranslateResult } from '@/components/dictionaries/helpers'
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 
+const panelHeaderHeight = 30 + 10 // menu bar + multiline search box button
+
 /*-----------------------------------------------*\
     Action Type
 \*-----------------------------------------------*/
@@ -112,7 +114,7 @@ export const initState: WidgetState = {
         : _initConfig.panelWidth,
       height: isSaladictPopupPage
         ? 400
-        : 30, // menubar
+        : panelHeaderHeight
     },
     bowlRect: {
       x: 0,
@@ -456,7 +458,7 @@ export function searchBoxUpdate (payload: WidgetPayload[ActionType.SEARCH_BOX_UP
     Side Effects
 \*-----------------------------------------------*/
 
-let dictHeights: Partial<{ [id in DictID]: number }> = {}
+let dictHeights: Partial<{ [id in (DictID | '_mtabox')]: number }> = {}
 
 export function startUpAction (): DispatcherThunk {
   return (dispatch, getState) => {
@@ -621,7 +623,7 @@ export function addToNotebook (info: SelectionInfo | recordManager.Word): Dispat
   }
 }
 
-export function updateItemHeight (id: DictID, height: number): DispatcherThunk {
+export function updateItemHeight (id: DictID | '_mtabox', height: number): DispatcherThunk {
   return (dispatch, getState) => {
     if (isSaladictPopupPage) {
       return
@@ -635,8 +637,10 @@ export function updateItemHeight (id: DictID, height: number): DispatcherThunk {
       const winHeight = window.innerHeight
       const newHeight = Math.min(
         winHeight * state.config.panelMaxHeightRatio,
-        30 + state.dictionaries.active
-          .reduce((sum, id) => sum + (dictHeights[id] || 30), 0),
+        panelHeaderHeight +
+        (dictHeights._mtabox || 0) +
+        state.dictionaries.active
+          .reduce((sum, id) => sum + (dictHeights[id] || panelHeaderHeight), 0),
       )
 
       dispatch(newPanelHeight(newHeight))
@@ -725,7 +729,7 @@ export function newSelection (): DispatcherThunk {
         mouseX,
         mouseY,
         lastPanelRect.width,
-        isSaladictPopupPage ? 400 : 30,
+        isSaladictPopupPage ? 400 : panelHeaderHeight,
       )
     }
 
@@ -783,7 +787,7 @@ function _restoreWidget (widget: WidgetState['widget']): Mutable<WidgetState['wi
     shouldBowlShow: false,
     panelRect: {
       ...widget.panelRect,
-      height: isSaladictPopupPage ? 400 : 30, // menubar
+      height: isSaladictPopupPage ? 400 : panelHeaderHeight,
     },
   }
 }
