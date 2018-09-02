@@ -223,7 +223,7 @@ interface Action<T extends ActionType> {
   payload?: DictionariesPayload[T]
 }
 
-export function newConfigAction (): Action<ActionType.NEW_CONFIG> {
+export function newConfig (): Action<ActionType.NEW_CONFIG> {
   return ({ type: ActionType.NEW_CONFIG })
 }
 
@@ -259,12 +259,7 @@ export function startUpAction (): DispatcherThunk {
     if (!isSaladictPopupPage && !isSaladictOptionsPage) {
       listenTrpleCtrl(dispatch, getState)
     }
-  }
-}
 
-export function newConfig (): DispatcherThunk {
-  return (dispatch, getState) => {
-    dispatch(newConfigAction())
     if (isSaladictPopupPage) {
       popupPageInit(dispatch, getState)
     }
@@ -300,10 +295,7 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
       return
     }
 
-    // search all, except the default onholded
-    dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
-
-    // and those who don't match the selection language
+     // and those who don't match the selection language
     const { selected: selectedDicts, all: allDicts } = state.config.dicts
     const toStart: DictID[] = []
     const toOnhold: DictID[] = []
@@ -425,7 +417,7 @@ function popupPageInit (
           dispatch(searchText({ info }))
         } else {
           dispatch(restoreDicts())
-          dispatch(addSearchHistory(info))
+          dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
         }
       }
     }).catch(e => {
