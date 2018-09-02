@@ -1,9 +1,12 @@
 import React from 'react'
 import { DictionariesState } from '../../redux/modules/dictionaries'
 import { AppConfig, DictID, DictConfigs, MtaAutoUnfold } from '@/app-config'
-import { SelectionInfo } from '@/_helpers/selection'
+import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
+
+import { translate } from 'react-i18next'
+import { TranslationFunction } from 'i18next'
 
 import MenuBar, { MenuBarProps, MenuBarDispatchers } from '../MenuBar'
 import DictItem, { DictItemProps, DictItemDispatchers } from '../DictItem'
@@ -45,7 +48,7 @@ interface DictPanelState {
   mtaBoxHeight: number
 }
 
-export default class DictPanel extends React.Component<DictPanelProps, DictPanelState> {
+export class DictPanel extends React.Component<DictPanelProps & { t: TranslationFunction }, DictPanelState> {
   bigSearchBoxRef = React.createRef<HTMLTextAreaElement>()
 
   state = {
@@ -79,7 +82,15 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
   handleMtaBoxKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && e.ctrlKey) {
       e.preventDefault()
-      this.searchText()
+      if (this.props.searchBoxText) {
+        return this.searchText({
+          info: getDefaultSelectionInfo({
+            text: this.props.searchBoxText,
+            title: this.props.t('fromSaladict'),
+            favicon: 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
+          }),
+        })
+      }
     }
   }
 
@@ -110,6 +121,7 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
 
   render () {
     const {
+      t,
       activeConfigID,
       configProfiles,
       isAnimation,
@@ -148,6 +160,7 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
     return (
       <div className={`panel-Root${isAnimation ? ' isAnimate' : ''}`}>
         {React.createElement(MenuBar, {
+          t,
           activeConfigID,
           configProfiles,
           isFav,
@@ -191,6 +204,7 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
             }
 
             return React.createElement(DictItem, {
+              t,
               key: id,
               id,
               text: (dictionaries.searchHistory[0] || selection.selectionInfo).text,
@@ -209,3 +223,5 @@ export default class DictPanel extends React.Component<DictPanelProps, DictPanel
     )
   }
 }
+
+export default translate()(DictPanel)

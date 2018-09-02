@@ -1,6 +1,5 @@
 import React from 'react'
 import { DictID } from '@/app-config'
-import { translate } from 'react-i18next'
 import { TranslationFunction } from 'i18next'
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgOpenUrl } from '@/typings/message'
@@ -15,6 +14,7 @@ export interface DictItemDispatchers {
 }
 
 export interface DictItemProps extends DictItemDispatchers {
+  readonly t: TranslationFunction
   readonly id: DictID
   readonly text: string
   readonly dictURL: string
@@ -35,7 +35,7 @@ export type DictItemState = {
   readonly hasError: boolean
 }
 
-export class DictItem extends React.PureComponent<DictItemProps & { t: TranslationFunction }, DictItemState> {
+export default class DictItem extends React.PureComponent<DictItemProps, DictItemState> {
   bodyRef = React.createRef<HTMLDivElement>()
   prevItemHeight = 30
   initStyle = { height: 30, opacity: 0 }
@@ -299,5 +299,3 @@ export class DictItem extends React.PureComponent<DictItemProps & { t: Translati
     )
   }
 }
-
-export default translate()(DictItem)

@@ -1,5 +1,4 @@
 import React from 'react'
-import { translate } from 'react-i18next'
 import { message } from '@/_helpers/browser-api'
 import { TranslationFunction } from 'i18next'
 import { MsgType, MsgOpenUrl } from '@/typings/message'
@@ -22,6 +21,7 @@ export interface MenuBarDispatchers {
 }
 
 export interface MenuBarProps extends MenuBarDispatchers {
+  readonly t: TranslationFunction
   readonly isFav: boolean
   readonly isPinned: boolean
   readonly searchHistory: SelectionInfo[]
@@ -36,7 +36,7 @@ type MenuBarState = {
   isShowProfilePanel: boolean
 }
 
-export class MenuBar extends React.PureComponent<MenuBarProps & { t: TranslationFunction }, MenuBarState> {
+export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarState> {
   inputRef = React.createRef<HTMLInputElement>()
   dragAreaRef = React.createRef<HTMLDivElement>()
 
@@ -429,5 +429,3 @@ export class MenuBar extends React.PureComponent<MenuBarProps & { t: Translation
     )
   }
 }
-
-export default translate()(MenuBar)
