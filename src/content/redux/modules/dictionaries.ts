@@ -295,6 +295,8 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
       return
     }
 
+    dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
+
      // and those who don't match the selection language
     const { selected: selectedDicts, all: allDicts } = state.config.dicts
     const toStart: DictID[] = []
