@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.13.2"></a>
+## [6.13.2](https://github.com/crimx/ext-saladict/compare/v6.13.1...v6.13.2) (2018-09-03)
+
+
+### Bug Fixes
+
+* **panel:** fix search box update on selection ([7f3a270](https://github.com/crimx/ext-saladict/commit/7f3a270)), closes [#197](https://github.com/crimx/ext-saladict/issues/197)
+
+
+
 <a name="6.13.1"></a>
 ## [6.13.1](https://github.com/crimx/ext-saladict/compare/v6.13.0...v6.13.1) (2018-09-02)
 
