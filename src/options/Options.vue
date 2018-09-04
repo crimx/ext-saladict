@@ -227,7 +227,12 @@ export default {
             activeConfigID,
             configProfileIDs
           } = await storage.sync.get(['activeConfigID', 'configProfileIDs'])
-          const configProfiles = await storage.sync.get(configProfileIDs)
+          const configProfiles = {}
+          // quota bytes limit
+          for (let i = 0; i < configProfileIDs.length; i++) {
+            const id = configProfileIDs[i]
+            configProfiles[id] = (await storage.sync.get(id))[id]
+          }
 
           this.configProfiles = configProfiles
           this.configProfileIDs = configProfileIDs
@@ -246,7 +251,13 @@ export default {
       deep: true,
       async handler () {
         await updateConfigIDList(this.configProfileIDs)
-        this.configProfiles = await storage.sync.get(this.configProfileIDs)
+        const profiles = {}
+        // quota bytes limit
+        for (let i = 0; i < this.configProfileIDs.length; i++) {
+          const id = this.configProfileIDs[i]
+          profiles[id] = (await storage.sync.get(id))[id]
+        }
+        this.configProfiles = profiles
         this.showSavedBar()
       }
     },
