@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.13.3"></a>
+## [6.13.3](https://github.com/crimx/ext-saladict/compare/v6.13.2...v6.13.3) (2018-09-04)
+
+
+### Bug Fixes
+
+* **config:** fix quota bytes limit ([cfb7268](https://github.com/crimx/ext-saladict/commit/cfb7268))
+* **panel:** fix mta box toggling on update ([9f9983f](https://github.com/crimx/ext-saladict/commit/9f9983f))
+
+
+
 <a name="6.13.2"></a>
 ## [6.13.2](https://github.com/crimx/ext-saladict/compare/v6.13.1...v6.13.2) (2018-09-03)
 
