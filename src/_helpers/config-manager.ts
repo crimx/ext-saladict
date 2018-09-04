@@ -17,7 +17,6 @@ import { concat } from 'rxjs/observable/concat'
 import { map } from 'rxjs/operators/map'
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
 import { mergeConfig } from '@/app-config/merge-config'
-import { isGeneratedKey } from '@/_helpers/uniqueKey'
 
 export interface StorageChanged<T> {
   newValue: T,
