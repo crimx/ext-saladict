@@ -17,7 +17,6 @@ import { concat } from 'rxjs/observable/concat'
 import { map } from 'rxjs/operators/map'
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
 import { mergeConfig } from '@/app-config/merge-config'
-import { isGeneratedKey } from '@/_helpers/uniqueKey'
 
 export interface StorageChanged<T> {
   newValue: T,
@@ -30,24 +29,32 @@ export interface AppConfigChanged {
 }
 
 export async function initConfig (): Promise<AppConfig> {
-  const obj = await storage.sync.get(null)
-  let modes: AppConfig[]
-  if (obj.configProfileIDs && obj.configProfileIDs.length > 0) {
-    modes = obj.configProfileIDs
-      .filter(id => obj[id])
-      .map(id => mergeConfig(obj[id]))
+  const {
+    configProfileIDs,
+    activeConfigID,
+  } = await storage.sync.get(['configProfileIDs', 'activeConfigID'])
+
+  let modes: AppConfig[] = []
+  if (configProfileIDs && configProfileIDs.length > 0) {
+    // quota bytes limit
+    for (let i = 0; i < configProfileIDs.length; i++) {
+      const id = configProfileIDs[i]
+      const config = (await storage.sync.get(id))[id]
+      modes.push(config ? mergeConfig(config) : appConfigFactory(id))
+    }
   } else {
     modes = defaultModesFactory()
     // old config, replace the default if exist
-    if (obj.config) {
-      modes[0] = mergeConfig(obj.config)
+    const config = (await storage.sync.get('config')).config
+    if (config) {
+      modes[0] = mergeConfig(config)
       await storage.sync.remove('config')
     }
   }
 
   await storage.sync.set({
     configProfileIDs: modes.map(m => m.id),
-    activeConfigID: obj.activeConfigID || modes[0].id
+    activeConfigID: activeConfigID || modes[0].id
   })
 
   // beware of quota bytes per item exceeds
@@ -55,15 +62,7 @@ export async function initConfig (): Promise<AppConfig> {
     await storage.sync.set({ [modes[i].id]: modes[i] })
   }
 
-  await storage.sync.remove(
-    Object.keys(obj).filter(key => (
-      isGeneratedKey(key) &&
-      obj[key].id === key &&
-      !modes.some(({ id }) => id === key)
-    ))
-  )
-
-  return (obj.activeConfigID && modes.find(m => m.id === obj.activeConfigID)) || modes[0]
+  return (activeConfigID && modes.find(m => m.id === activeConfigID)) || modes[0]
 }
 
 export async function resetConfig () {

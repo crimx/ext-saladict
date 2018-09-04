@@ -73,6 +73,14 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
     return this.props.searchText(arg)
   }
 
+  showMtaBox = (isShow: boolean) => {
+    this.setState({
+      mtaBoxHeight: isShow
+        ? window.innerHeight * this.props.panelMaxHeightRatio * 0.4
+        : 0
+    })
+  }
+
   toggleMtaBox = (e?: React.MouseEvent<HTMLButtonElement>) => {
     if (e) { e.currentTarget.blur() }
     this.setState(preState => {
@@ -111,7 +119,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
         mtaAutoUnfold === 'always' ||
         mtaAutoUnfold === 'popup' && isSaladictPopupPage
     ) {
-      this.toggleMtaBox()
+      this.showMtaBox(true)
     }
 
     setTimeout(() => {
@@ -134,10 +142,13 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
       this.props.updateItemHeight('_mtabox', this.state.mtaBoxHeight)
     }
 
-    if (Boolean(prevProps.mtaAutoUnfold) !== Boolean(this.props.mtaAutoUnfold)) {
-      if (this.props.mtaAutoUnfold !== 'popup' || isSaladictPopupPage) {
-        this.toggleMtaBox()
-      }
+    const { mtaAutoUnfold } = this.props
+    if (prevProps.mtaAutoUnfold !== mtaAutoUnfold) {
+      this.showMtaBox(
+        mtaAutoUnfold === 'once' ||
+        mtaAutoUnfold === 'always' ||
+        mtaAutoUnfold === 'popup' && isSaladictPopupPage
+      )
     }
   }
 

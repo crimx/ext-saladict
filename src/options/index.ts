@@ -41,7 +41,12 @@ const i18n = new VueI18Next(i18nLoader({
 
 Promise.all([getActiveConfigID(), getConfigIDList()])
   .then(async ([activeConfigID, configProfileIDs]) => {
-    const configProfiles = await storage.sync.get(configProfileIDs)
+    const configProfiles = {}
+    // quota bytes limit
+    for (let i = 0; i < configProfileIDs.length; i++) {
+      const id = configProfileIDs[i]
+      configProfiles[id] = (await storage.sync.get(id))[id]
+    }
     // tslint:disable
     new Vue({
       el: '#app',

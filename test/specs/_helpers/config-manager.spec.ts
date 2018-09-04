@@ -78,10 +78,6 @@ describe('Config Manager', () => {
       configProfileIDs: [config1.id, config2.id],
       activeConfigID: config2.id,
     }))).toBeTruthy()
-    expect(browser.storage.sync.remove.calledWith([
-      detached1.id,
-      detached2.id,
-    ])).toBeTruthy()
   })
 
   it('should reset to default config', async () => {
