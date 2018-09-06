@@ -1,8 +1,8 @@
 # Saladict 沙拉查词 6
 
 [![Version](https://img.shields.io/github/release/crimx/ext-saladict.svg?label=version)](https://github.com/crimx/ext-saladict/releases)
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/users/cdonnmffkdaoajfknoeeecmchibpmkmg.svg?label=Chrome%20users)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg)
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/cdonnmffkdaoajfknoeeecmchibpmkmg.svg?label=Chrome%20stars)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/users/cdonnmffkdaoajfknoeeecmchibpmkmg.svg?label=Chrome%20users)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/cdonnmffkdaoajfknoeeecmchibpmkmg.svg?label=Chrome%20stars)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en)
 [![Mozilla Add-on](https://img.shields.io/amo/users/ext-saladict.svg?label=Firefoxe%20users)](https://addons.mozilla.org/firefox/addon/ext-saladict/)
 [![Mozilla Add-on](https://img.shields.io/amo/stars/ext-saladict.svg?label=Firefoxe%20stars)](https://addons.mozilla.org/firefox/addon/ext-saladict/)
 
@@ -20,7 +20,7 @@ Chrome/Firefox 浏览器插件，网页划词翻译。
 
 # 下载
 
-[Chrome 商店](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg) / [Firefox 商店](https://addons.mozilla.org/firefox/addon/ext-saladict/) / [直接下载](https://github.com/crimx/crx-saladict/releases/)
+[Chrome 商店](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en) / [Firefox 商店](https://addons.mozilla.org/firefox/addon/ext-saladict/) / [直接下载](https://github.com/crimx/crx-saladict/releases/)
 
 [功能一览：](https://github.com/crimx/crx-saladict/wiki)
 
@@ -85,7 +85,7 @@ Chrome/Firefox 浏览器插件，网页划词翻译。
 
 # 支持开发
 
-用爽了欢迎按 Github 上方的 ★Star 以及在[谷歌商店](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg/reviews)留好评。开发不易，懒癌晚期的作者身残志坚，以惊人的毅力克服病魔贡献代码，真是闻者伤心听者落泪。献出一份爱心，挽救一条生命。为保持本项目持久生命力，请给作者打赏杯咖啡 :coffee: ：
+用爽了欢迎按 Github 上方的 ★Star 以及在[谷歌商店](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg/reviews?hl=en)留好评。开发不易，懒癌晚期的作者身残志坚，以惊人的毅力克服病魔贡献代码，真是闻者伤心听者落泪。献出一份爱心，挽救一条生命。为保持本项目持久生命力，请给作者打赏杯咖啡 :coffee: ：
 
 <div align="center">
   <img width="250" height="250" src="https://github.com/crimx/crx-saladict/wiki/images/wechat.png">

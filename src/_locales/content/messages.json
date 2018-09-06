@@ -89,11 +89,6 @@
     "zh_TW": "翻譯",
     "en": "Translation"
   },
-  "wordEditorNoteTransExplain": {
-    "zh_CN": "（Beta 测试版）",
-    "zh_TW": "（Beta 測試版）",
-    "en": "(Beta)"
-  },
   "wordEditorNoteNote": {
     "zh_CN": "笔记",
     "zh_TW": "筆記",

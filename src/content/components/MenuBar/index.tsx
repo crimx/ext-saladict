@@ -217,23 +217,25 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
     this.props.closePanel()
   }
 
-  focusSearchBox = () => {
-    const input = this.inputRef.current
-    if (input) {
-      input.focus()
-      input.select()
+  componentDidMount () {
+    if (!this.props.isShowMtaBox &&
+        (this.props.activeDicts.length <= 0 || isSaladictPopupPage) &&
+        this.inputRef.current
+    ) {
+      this.inputRef.current.focus()
+      this.inputRef.current.select()
     }
   }
 
-  componentDidMount () {
-    // Fix Firefox popup page delay bug
-    setTimeout(() => {
-      if (!this.props.isShowMtaBox) {
-        if (this.props.activeDicts.length <= 0 || isSaladictPopupPage) {
-          this.focusSearchBox()
-        }
-      }
-    }, 200)
+  componentDidUpdate (prevProps: MenuBarProps) {
+    if (prevProps.searchBoxText === this.props.searchBoxText &&
+        !this.props.isShowMtaBox &&
+        (this.props.activeDicts.length <= 0 || isSaladictPopupPage) &&
+        this.inputRef.current
+    ) {
+      this.inputRef.current.focus()
+      this.inputRef.current.select()
+    }
   }
 
   renderProfilePanel = () => {

@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.13.4"></a>
+## [6.13.4](https://github.com/crimx/ext-saladict/compare/v6.13.3...v6.13.4) (2018-09-06)
+
+
+### Bug Fixes
+
+* **panel:** fix focus losing on triple ctrl ([ff7a67b](https://github.com/crimx/ext-saladict/commit/ff7a67b)), closes [#193](https://github.com/crimx/ext-saladict/issues/193)
+
+
+
 <a name="6.13.3"></a>
 ## [6.13.3](https://github.com/crimx/ext-saladict/compare/v6.13.2...v6.13.3) (2018-09-04)
 

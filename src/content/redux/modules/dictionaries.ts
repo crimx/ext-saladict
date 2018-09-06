@@ -385,7 +385,7 @@ function listenTrpleCtrl (
         dispatch(searchText({ info }))
       } else {
         dispatch(restoreDicts())
-        dispatch(addSearchHistory(info))
+        dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
       }
     })
   })
