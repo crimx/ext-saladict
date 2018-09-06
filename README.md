@@ -1,8 +1,8 @@
 # Saladict 沙拉查词
 
 [![Version](https://img.shields.io/github/release/crimx/ext-saladict.svg?label=version)](https://github.com/crimx/ext-saladict/releases)
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/users/cdonnmffkdaoajfknoeeecmchibpmkmg.svg?label=Chrome%20users)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg)
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/cdonnmffkdaoajfknoeeecmchibpmkmg.svg?label=Chrome%20stars)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/users/cdonnmffkdaoajfknoeeecmchibpmkmg.svg?label=Chrome%20users)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en)
+[![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/cdonnmffkdaoajfknoeeecmchibpmkmg.svg?label=Chrome%20stars)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en)
 [![Mozilla Add-on](https://img.shields.io/amo/users/ext-saladict.svg?label=Firefoxe%20users)](https://addons.mozilla.org/firefox/addon/ext-saladict/)
 [![Mozilla Add-on](https://img.shields.io/amo/stars/ext-saladict.svg?label=Firefoxe%20stars)](https://addons.mozilla.org/firefox/addon/ext-saladict/)
 
@@ -22,7 +22,7 @@ Chrome/Firefox WebExtension. Feature-rich inline translator with PDF support. Vi
 
 ## Downloads
 
-[Chrome Web Store](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg) / [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/ext-saladict/) / [Github Release](https://github.com/crimx/crx-saladict/releases/)
+[Chrome Web Store](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en) / [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/ext-saladict/) / [Github Release](https://github.com/crimx/crx-saladict/releases/)
 
 Saladict 6 is a complete rewrite in React Typescript for both Chrome & Firefox. Built for speed, stability and customization.
 

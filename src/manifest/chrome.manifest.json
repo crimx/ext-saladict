@@ -6,6 +6,7 @@
     ],
     "persistent": true
   },
+  "homepage_url": "https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en",
   "options_page": "options.html",
   "update_url": "https://clients2.google.com/service/update2/crx",
   "minimum_chrome_version": "55"
