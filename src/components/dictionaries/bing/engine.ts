@@ -1,5 +1,5 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { handleNoResult, getText, getInnerHTMLThunk } from '../helpers'
+import { handleNoResult, handleNetWorkError, getText, getInnerHTMLThunk } from '../helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -71,6 +71,7 @@ export default function search (
   const bingConfig = config.dicts.all.bing
 
   return fetchDirtyDOM(DICT_LINK + encodeURIComponent(text))
+    .catch(handleNetWorkError)
     .then(doc => {
       if (doc.querySelector('.client_def_hd_hd')) {
         return handleLexResult(doc, bingConfig.options)

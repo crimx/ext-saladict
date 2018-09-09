@@ -1,5 +1,5 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { getText, getInnerHTMLThunk, handleNoResult, HTMLString } from '../helpers'
+import { getText, getInnerHTMLThunk, handleNoResult, HTMLString, handleNetWorkError } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -29,9 +29,10 @@ export default function search (
     // .catch(() => fetchDirtyDOM('http://www.etymonline.com/search?q=' + text)
     //   .then(doc => handleDOM(doc, options))
     // )
-    // .catch(() => fetchDirtyDOM('https://www.etymonline.com/search?q=' + text)
-    //   .then(doc => handleDOM(doc, options))
-    // )
+    .catch(() => fetchDirtyDOM('https://www.etymonline.com/search?q=' + text)
+      .catch(handleNetWorkError)
+      .then(doc => handleDOM(doc, options))
+    )
 }
 
 function handleDOM (

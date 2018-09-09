@@ -1,4 +1,4 @@
-import { HTMLString, handleNoResult, getInnerHTMLThunk, removeChild, decodeHEX, removeChildren } from '../helpers'
+import { HTMLString, handleNoResult, getInnerHTMLThunk, removeChild, decodeHEX, removeChildren, handleNetWorkError } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -16,7 +16,7 @@ export default function search (
 ): Promise<GoogleDictSearchResult> {
   const isen = config.dicts.all.googledict.options.enresult ? 'hl=en&gl=en&' : ''
   return fetch(`https://www.google.com/search?${isen}q=define+` + encodeURIComponent(text.replace(/\s+/g, '+')))
-    .then(r => r.text())
+    .then(r => r.ok ? r.text() : handleNetWorkError())
     .then(handleDOM)
 }
 

@@ -1,4 +1,4 @@
-import { handleNoResult } from '../helpers'
+import { handleNoResult, handleNetWorkError } from '../helpers'
 import chsToChz from '@/_helpers/chs-to-chz'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
@@ -50,6 +50,7 @@ export function moedictSearch<R extends GuoYuResult> (
 ): Promise<DictSearchResult<R>> {
   return fetch(`https://www.moedict.tw/${moedictID}/${chsToChz(text)}.json`)
     .then<R>(res => res.json())
+    .catch(handleNetWorkError)
     .then<DictSearchResult<R>>(data => {
       if (!data || !data.h) { return handleNoResult() }
 

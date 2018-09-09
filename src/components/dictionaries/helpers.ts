@@ -2,6 +2,19 @@ import DOMPurify from 'dompurify'
 
 export type HTMLString = string
 
+export const enum SearchErrorType {
+  NoResult,
+  NetWorkError,
+}
+
+export function handleNoResult<T> (): Promise<T> {
+  return Promise.reject(SearchErrorType.NoResult)
+}
+
+export function handleNetWorkError (): Promise<never> {
+  return Promise.reject(SearchErrorType.NetWorkError)
+}
+
 export interface MachineTranslateResult {
   searchText: {
     text: string
@@ -11,10 +24,6 @@ export interface MachineTranslateResult {
     text: string
     audio?: string
   }
-}
-
-export function handleNoResult<T> (): Promise<T> {
-  return Promise.reject('No result')
 }
 
 export function getText (parent: ParentNode, selector?: string): string {

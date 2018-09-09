@@ -1,5 +1,5 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getInnerHTMLThunk, handleNoResult } from '../helpers'
+import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError } from '../helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -41,6 +41,7 @@ export default function search (
   const options = config.dicts.all.websterlearner.options
 
   return fetchDirtyDOM('http://www.learnersdictionary.com/definition/' + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
+    .catch(handleNetWorkError)
     .then(doc => checkResult(doc, options))
 }
 

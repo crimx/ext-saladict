@@ -1,5 +1,5 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getText, getInnerHTMLThunk, handleNoResult } from '../helpers'
+import { HTMLString, getText, getInnerHTMLThunk, handleNoResult, handleNetWorkError } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -36,6 +36,7 @@ export default function search (
   const options = config.dicts.all.urban.options
 
   return fetchDirtyDOM('http://www.urbandictionary.com/define.php?term=' + encodeURIComponent(text))
+    .catch(handleNetWorkError)
     .then(doc => handleDOM(doc, options))
 }
 
