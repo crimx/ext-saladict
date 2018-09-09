@@ -224,7 +224,9 @@ export function appConfigFactory (id?: string): AppConfig {
 
     pdfSniff: true,
     pdfWhitelist: [],
-    pdfBlacklist: [],
+    pdfBlacklist: [
+      ['^(http|https)://[^/]*?cnki\.net(/.*)?$', '*://*.cnki.net/*'],
+    ],
 
     searhHistory: false,
     searhHistoryInco: false,
