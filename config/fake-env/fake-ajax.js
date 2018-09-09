@@ -323,10 +323,14 @@ window.fetch = (url, ...args) => {
       // return Promise.resolve(data.response)
       let delay = window['FAKE_AJAX_DELAY']
       if (typeof delay === 'undefined') {
-        delay = 100 + Math.random() * 3000
+        delay = Math.random() * 3000
       }
       return new Promise(resolve => setTimeout(() =>
-        resolve(data.response), delay)
+        resolve(Object.assign({
+          ok: true,
+          status: 200,
+          statusText: 'ok',
+        }, data.response)), delay)
       )
     }
   }
