@@ -4,6 +4,7 @@ import { appConfigFactory } from '@/app-config'
 describe('Dict/GuoYu/engine', () => {
   beforeAll(() => {
     window.fetch = jest.fn((url: string) => Promise.resolve({
+      ok: true,
       json: () => require('./response/愛.json')
     }))
   })

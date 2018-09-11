@@ -15,6 +15,7 @@ describe('Dict/Macmillan/engine', () => {
       const key = Object.keys(response).find(keyword => url.endsWith(keyword))
       if (key) {
         return Promise.resolve({
+          ok: true,
           text: () => response[key]
         })
       }

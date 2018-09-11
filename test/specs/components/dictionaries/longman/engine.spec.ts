@@ -15,6 +15,7 @@ describe('Dict/Longman/engine', () => {
       const key = Object.keys(response).find(keyword => url.endsWith(keyword))
       if (key) {
         return Promise.resolve({
+          ok: true,
           text: () => response[key]
         })
       }
@@ -56,7 +57,7 @@ describe('Dict/Longman/engine', () => {
           expect(typeof entry.pos).toBe('string')
           expect(entry.freq).toHaveLength(2)
           expect(entry.level).toBeDefined()
-          expect(entry.level.rate).toBe(3)
+          expect((entry.level as any).rate).toBe(3)
           expect(entry.prons).toHaveLength(2)
         })
 
@@ -119,7 +120,7 @@ describe('Dict/Longman/engine', () => {
         })
 
         expect(result.contemporary[0].level).toBeDefined()
-        expect(result.contemporary[0].level.rate).toBe(3)
+        expect((result.contemporary[0].level as any).rate).toBe(3)
         expect(typeof result.contemporary[0].collocations).toBe('string')
         expect(typeof result.contemporary[0].thesaurus).toBe('string')
         expect(result.contemporary[0].freq).toHaveLength(2)
@@ -129,7 +130,7 @@ describe('Dict/Longman/engine', () => {
         expect(result.contemporary[1].freq).toHaveLength(0)
         expect(result.contemporary[1].examples).toHaveLength(3)
         expect(result.contemporary[1].level).toBeDefined()
-        expect(result.contemporary[1].level.rate).toBe(1)
+        expect((result.contemporary[1].level as any).rate).toBe(1)
       })
   })
 
