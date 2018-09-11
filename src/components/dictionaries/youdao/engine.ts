@@ -1,5 +1,5 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { getText, getInnerHTMLThunk, handleNoResult, HTMLString } from '../helpers'
+import { getText, getInnerHTMLThunk, handleNoResult, HTMLString, handleNetWorkError } from '../helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -38,6 +38,7 @@ export default function search (
   const options = config.dicts.all.youdao.options
 
   return fetchDirtyDOM('http://www.youdao.com/w/' + encodeURIComponent(text))
+    .catch(handleNetWorkError)
     .then(doc => checkResult(doc, options))
 }
 

@@ -304,6 +304,33 @@ const fakeFetchData = [
       text: () => require('raw-loader!../../test/specs/components/dictionaries/cambridge/response/house-zhs.html')
     },
   },
+  {
+    test: {
+      method: /.*/,
+      url: /weblio\.jp.*love/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/weblio/response/love.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /weblio\.jp.*吐く/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/weblio/response/吐く.html')
+    },
+  },
+  {
+    test: {
+      method: /.*/,
+      url: /weblio\.jp.*当たる/,
+    },
+    response: {
+      text: () => require('raw-loader!../../test/specs/components/dictionaries/weblio/response/当たる.html')
+    },
+  },
 ]
 
 /*-----------------------------------------------*\
@@ -313,7 +340,7 @@ const fetch = window.fetch
 
 window.fetch = (url, ...args) => {
   const data = fakeFetchData.find(data => {
-    return data.test.url.test(url)
+    return data.test.url.test(decodeURI(url))
   })
 
   if (data) {
@@ -323,10 +350,14 @@ window.fetch = (url, ...args) => {
       // return Promise.resolve(data.response)
       let delay = window['FAKE_AJAX_DELAY']
       if (typeof delay === 'undefined') {
-        delay = 100 + Math.random() * 3000
+        delay = Math.random() * 3000
       }
       return new Promise(resolve => setTimeout(() =>
-        resolve(data.response), delay)
+        resolve(Object.assign({
+          ok: true,
+          status: 200,
+          statusText: 'ok',
+        }, data.response)), delay)
       )
     }
   }

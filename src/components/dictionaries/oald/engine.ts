@@ -1,6 +1,6 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { reflect } from '@/_helpers/promise-more'
-import { HTMLString, getInnerHTMLThunk, handleNoResult } from '../helpers'
+import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError } from '../helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -38,6 +38,7 @@ export default function search (
   const options = config.dicts.all.oald.options
 
   return fetchDirtyDOM('https://www.oxfordlearnersdictionaries.com/definition/english/' + text)
+    .catch(handleNetWorkError)
     .then(doc => checkResult(doc, text, options))
 }
 

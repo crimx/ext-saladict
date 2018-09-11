@@ -1,5 +1,5 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getInnerHTMLThunk, handleNoResult } from '../helpers'
+import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -24,6 +24,7 @@ export default function search (
   config: AppConfig,
 ): Promise<ZdicSearchResult> {
   return fetchDirtyDOM('http://www.zdic.net/search/?c=3&q=' + encodeURIComponent(text))
+    .catch(handleNetWorkError)
     .then(deobfuscate)
     .then(handleDOM)
 }

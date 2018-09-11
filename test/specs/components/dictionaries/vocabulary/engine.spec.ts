@@ -7,6 +7,7 @@ describe('Dict/Vocabulary/engine', () => {
   beforeAll(() => {
     const response = fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8')
     window.fetch = jest.fn((url: string) => Promise.resolve({
+      ok: true,
       text: () => response
     }))
   })

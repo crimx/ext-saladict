@@ -1,5 +1,5 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { getText, handleNoResult } from '../helpers'
+import { getText, handleNoResult, handleNetWorkError } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -15,6 +15,7 @@ export default function search (
   config: AppConfig,
 ): Promise<VocabularySearchResult> {
   return fetchDirtyDOM('https://www.vocabulary.com/dictionary/' + encodeURIComponent(text))
+    .catch(handleNetWorkError)
     .then(handleDOM)
 }
 

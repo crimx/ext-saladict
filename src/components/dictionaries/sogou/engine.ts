@@ -1,4 +1,4 @@
-import { handleNoResult, MachineTranslateResult } from '../helpers'
+import { handleNoResult, MachineTranslateResult, handleNetWorkError } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
@@ -31,6 +31,7 @@ export default function search (
     body: `from=${sl}&to=${tl}&text=${encodeURIComponent(text)}&uuid=${getUUID()}&client=pc&fr=browser_pc&useDetect=on&useDetectResult=on&needQc=1&oxford=on&isReturnSugg=on`
   })
   .then(r => r.json())
+  .catch(handleNetWorkError)
   .then(handleJSON)
 }
 

@@ -2,10 +2,10 @@ export function getALlDicts () {
   const allDicts = {
     bing: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '110',
+      lang: '1100',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -51,10 +51,10 @@ export function getALlDicts () {
     },
     cambridge: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '111',
+      lang: '1110',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -93,10 +93,10 @@ export function getALlDicts () {
     },
     cobuild: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '100',
+      lang: '1000',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -138,10 +138,10 @@ export function getALlDicts () {
     },
     etymonline: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '100',
+      lang: '1000',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -184,10 +184,10 @@ export function getALlDicts () {
     },
     eudic: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '110',
+      lang: '1100',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -229,10 +229,10 @@ export function getALlDicts () {
     },
     google: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '111',
+      lang: '1111',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -278,10 +278,10 @@ export function getALlDicts () {
     },
     googledict: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '111',
+      lang: '1111',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -323,10 +323,10 @@ export function getALlDicts () {
     },
     guoyu: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '001',
+      lang: '0010',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -361,10 +361,10 @@ export function getALlDicts () {
     },
     liangan: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '001',
+      lang: '0010',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -399,10 +399,10 @@ export function getALlDicts () {
     },
     longman: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '100',
+      lang: '1000',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -450,10 +450,10 @@ export function getALlDicts () {
     },
     macmillan: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '100',
+      lang: '1000',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -495,10 +495,10 @@ export function getALlDicts () {
     },
     oald: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '100',
+      lang: '1000',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -540,10 +540,10 @@ export function getALlDicts () {
     },
     sogou: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '111',
+      lang: '1111',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -588,10 +588,10 @@ export function getALlDicts () {
     },
     urban: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '100',
+      lang: '1000',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -633,10 +633,10 @@ export function getALlDicts () {
     },
     vocabulary: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '100',
+      lang: '1000',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -671,10 +671,10 @@ export function getALlDicts () {
     },
     websterlearner: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '100',
+      lang: '1000',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -718,12 +718,50 @@ export function getALlDicts () {
         related: true,
       },
     },
-    youdao: {
+    weblio: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '110',
+      lang: '0001',
+      /**
+       * Full content page to jump to when user clicks the title.
+       * %s will be replaced with the current word.
+       * %z will be replaced with the traditional Chinese version of the current word.
+       * %h will be replaced with the current word joining with hyphen "-".
+       */
+      page: 'https://www.weblio.jp/content/%s',
+      /**
+       * If set to true, the dict start searching automatically.
+       * Otherwise it'll only start seaching when user clicks the unfold button.
+       * Default MUST be true and let user decide.
+       */
+      defaultUnfold: true,
+      /**
+       * This is the default height when the dict first renders the result.
+       * If the content height is greater than the preferred height,
+       * the preferred height is used and a mask with a view-more button is shown.
+       * Otherwise the content height is used.
+       */
+      preferredHeight: 265,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 20,
+      },
+      /** Only start searching if the selection contains the language. */
+      selectionLang: {
+        eng: true,
+        chs: true,
+        minor: true,
+      },
+    },
+    youdao: {
+      /**
+       * Supported language: en, zh-CN, zh-TW, ja
+       * `1` for supported
+       */
+      lang: '1100',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -770,10 +808,10 @@ export function getALlDicts () {
     },
     zdic: {
       /**
-       * Supported language: en, zh-CN, zh-TW
+       * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
-      lang: '010',
+      lang: '0100',
       /**
        * Full content page to jump to when user clicks the title.
        * %s will be replaced with the current word.
@@ -812,6 +850,7 @@ export function getALlDicts () {
   // tslint:disable-next-line:no-unused-expression
   allDicts as {
     [id: string]: {
+      lang: string
       page: string | {
         en: string
         'zh-CN'?: string

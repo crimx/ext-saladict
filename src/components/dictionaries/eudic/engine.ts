@@ -1,5 +1,5 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { getText, handleNoResult } from '../helpers'
+import { getText, handleNoResult, handleNetWorkError } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -22,6 +22,7 @@ export default function search (
   const options = config.dicts.all.eudic.options
 
   return fetchDirtyDOM('https://dict.eudic.net/dicts/en/' + text)
+    .catch(handleNetWorkError)
     .then(validator)
     .then(doc => handleDOM(doc, options))
 }

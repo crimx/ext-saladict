@@ -5,9 +5,9 @@
 import setupEnv from './devDict'
 
 setupEnv({
-  dict: 'etymonline',
+  dict: 'weblio',
   style: true,
-  text: 'love',
+  text: '吐く', // 当たる 吐く
 })
 
 /*-----------------------------------------------*\

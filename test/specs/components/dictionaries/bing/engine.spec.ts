@@ -17,6 +17,7 @@ describe('Dict/Bing/engine', () => {
       const searchText = searchURL.searchParams.get('q')
       if (searchText && response[searchText]) {
         return Promise.resolve({
+          ok: true,
           text: () => response[searchText]
         })
       }

@@ -5,6 +5,7 @@ import {
   handleNoResult,
   getText,
   removeChild,
+  handleNetWorkError,
 } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
@@ -36,6 +37,7 @@ export default function search (
       : 'https://dictionary.cambridge.org/search/english/direct/?q='
 
   return fetchDirtyDOM(url + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
+    .catch(handleNetWorkError)
     .then(handleDOM)
 }
 

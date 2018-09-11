@@ -8,6 +8,7 @@ describe('Dict/Eudic/engine', () => {
     const entry = fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8')
     const data = fs.readFileSync(path.join(__dirname, 'response/sentences.html'), 'utf8')
     window.fetch = jest.fn((url: string) => Promise.resolve({
+      ok: true,
       text: () => url.indexOf('tab-detail') === -1 ? entry : data
     }))
   })

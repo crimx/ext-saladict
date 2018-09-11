@@ -53,6 +53,7 @@
                 <span class="panel-list__title-lang" v-if="+allDicts[id].lang[0]">{{ $t('opt:dict_panel_lang_en') }}</span>
                 <span class="panel-list__title-lang" v-if="+allDicts[id].lang[1]">{{ $t('opt:dict_panel_lang_zhs') }}</span>
                 <span class="panel-list__title-lang" v-if="+allDicts[id].lang[2]">{{ $t('opt:dict_panel_lang_zht') }}</span>
+                <span class="panel-list__title-lang" v-if="+allDicts[id].lang[3]">{{ $t('opt:dict_panel_lang_ja') }}</span>
                 <button type="button" class="close" @click.stop="dicts.selected.splice(i, 1)">&times;</button>
               </div><!--词典名字与图标-->
               <div class="panel-list__body" ref="dict" :style="{height: dictsPanelInfo[id].height + 'px'}">

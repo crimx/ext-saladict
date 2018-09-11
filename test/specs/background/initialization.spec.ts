@@ -3,7 +3,10 @@ import sinon from 'sinon'
 
 import { message, storage } from '@/_helpers/browser-api'
 
-window.fetch = jest.fn(() => Promise.resolve({ json: () => '' }))
+window.fetch = jest.fn(() => Promise.resolve({
+  ok: true,
+  json: () => ''
+}))
 
 jest.mock('@/app-config/merge-config', () => {
   const { appConfigFactory } = require('@/app-config')

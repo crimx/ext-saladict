@@ -7,6 +7,7 @@ describe('Dict/Etymonline/engine', () => {
   beforeAll(() => {
     const response = fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8')
     window.fetch = jest.fn((url: string) => Promise.resolve({
+      ok: true,
       text: () => response
     }))
   })
@@ -14,6 +15,7 @@ describe('Dict/Etymonline/engine', () => {
   it('should parse result correctly', () => {
     const config = appConfigFactory() as AppConfigMutable
     config.dicts.all.etymonline.options = {
+      chart: true,
       resultnum: 4
     }
     return search('any', config)

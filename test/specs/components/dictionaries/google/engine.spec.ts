@@ -11,6 +11,7 @@ const fetchbak = window.fetch
 describe('Dict/Google/engine', () => {
   beforeAll(() => {
     window.fetch = jest.fn((url: string) => Promise.resolve({
+      ok: true,
       text: () => /translate_a|googleapis\.com/.test(url) ? translation : homepage
     }))
   })

@@ -1,4 +1,4 @@
-import { handleNoResult, MachineTranslateResult } from '../helpers'
+import { handleNoResult, MachineTranslateResult, handleNetWorkError } from '../helpers'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
@@ -42,7 +42,7 @@ export default function search (
 
 function fetchWithToken (base: string, sl: string, tl: string, text: string): Promise<GoogleRawResult> {
   return fetch(base)
-    .then(r => r.text())
+    .then(r => r.ok ? r.text() : handleNetWorkError())
     .then<GoogleRawResult>(body => {
       const tkk = (body.match(/TKK=(.*?)\(\)\)'\);/) || [''])[0]
         .replace(/\\x([0-9A-Fa-f]{2})/g, '') // remove hex chars
@@ -64,7 +64,7 @@ function fetchWithToken (base: string, sl: string, tl: string, text: string): Pr
 
 function fetchWithoutToken (sl: string, tl: string, text: string): Promise<GoogleRawResult> {
   return fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${encodeURIComponent(text)}`)
-    .then(r => r.text())
+    .then(r => r.ok ? r.text() : handleNetWorkError())
     .then(json => ({ json, text }))
 }
 

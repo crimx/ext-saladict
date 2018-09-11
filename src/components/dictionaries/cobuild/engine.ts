@@ -1,5 +1,5 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getText, getInnerHTMLThunk, handleNoResult } from '../helpers'
+import { HTMLString, getText, getInnerHTMLThunk, handleNoResult, handleNetWorkError } from '../helpers'
 import { AppConfig, DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -27,6 +27,7 @@ export default function search (
     .then(doc => handleDOM(doc, config.dicts.all.cobuild.options))
     .catch(() => {
       return fetchDirtyDOM('http://www.iciba.com/' + text)
+        .catch(handleNetWorkError)
         .then(doc => handleDOM(doc, config.dicts.all.cobuild.options))
     })
 }

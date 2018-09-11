@@ -49,6 +49,8 @@ Toggle:
 
 ## How to add a dictionary
 
+Check out [style-extractor.js](./scripts/style-extractor.js) and [helpers.ts](./components/dictionaries/helpers.ts) for useful tools to extract information from a webpage.
+
 1. Register the dictionary in [app config](./src/app-config/dicts.ts) so that TypeScript generates the correct typings. Dict ID should follow alphabetical order.
 1. Create a directory at [`src/components/dictionaries/`](./src/components/dictionaries/), with the name of the dict ID.
   1. Use [Bing](./src/components/dictionaries/bing) as guidance. Copy the files to the new directory.

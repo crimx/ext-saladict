@@ -2,6 +2,19 @@ import DOMPurify from 'dompurify'
 
 export type HTMLString = string
 
+export const enum SearchErrorType {
+  NoResult,
+  NetWorkError,
+}
+
+export function handleNoResult<T> (): Promise<T> {
+  return Promise.reject(SearchErrorType.NoResult)
+}
+
+export function handleNetWorkError (): Promise<never> {
+  return Promise.reject(SearchErrorType.NetWorkError)
+}
+
 export interface MachineTranslateResult {
   searchText: {
     text: string
@@ -13,46 +26,67 @@ export interface MachineTranslateResult {
   }
 }
 
-export function handleNoResult<T> (): Promise<T> {
-  return Promise.reject('No result')
-}
-
 export function getText (parent: ParentNode, selector?: string): string {
   const child = selector ? parent.querySelector(selector) : parent
   if (!child) { return '' }
   return child['textContent'] || ''
 }
 
-export function getInnerHTMLThunk (host?: string) {
+export function getInnerHTMLThunk (
+  host?: string,
+  DOMPurifyConfig?: DOMPurify.Config,
+): (parent: ParentNode, selector?: string) => HTMLString
+export function getInnerHTMLThunk (...args) {
+  let host: string = typeof args[0] === 'string' ? args.shift() : ''
+  let DOMPurifyConfig: DOMPurify.Config = Object(args[0]) === args[0] ? args.shift() : {
+    FORBID_TAGS: ['style'],
+    FORBID_ATTR: ['style'],
+  }
+
   if (host && !host.endsWith('/')) {
     host = host + '/'
   }
   return function getInnerHTML (parent: ParentNode, selector?: string): HTMLString {
     const child = selector ? parent.querySelector(selector) : parent
     if (!child) { return '' }
-    const content = DOMPurify.sanitize(child['innerHTML'] || '', {
-      FORBID_TAGS: ['style'],
-      FORBID_ATTR: ['style'],
-    })
+    let purifyResult = DOMPurify.sanitize(child['outerHTML'] || '', DOMPurifyConfig)
+    const content = typeof purifyResult === 'string'
+      ? purifyResult
+      : purifyResult['outerHTML']
+        ? purifyResult['outerHTML']
+        : purifyResult.firstElementChild
+          ? purifyResult.firstElementChild.outerHTML
+          : ''
     return host
       ? content.replace(/href="\/[^/]/g, 'href="' + host)
       : content
   }
 }
 
-export function getOuterHTMLThunk (host?: string) {
+export function getOuterHTMLThunk (host?: string, DOMPurifyConfig?: DOMPurify.Config)
+export function getOuterHTMLThunk (...args) {
+  let host: string = typeof args[0] === 'string' ? args.shift() : ''
+  let DOMPurifyConfig: DOMPurify.Config = Object(args[0]) === args[0] ? args.shift() : {
+    FORBID_TAGS: ['style'],
+    FORBID_ATTR: ['style'],
+  }
+
   if (host && !host.endsWith('/')) {
     host = host + '/'
   }
   return function getOuterHTML (parent: ParentNode, selector?: string): HTMLString {
     const child = selector ? parent.querySelector(selector) : parent
     if (!child) { return '' }
-    const content = DOMPurify.sanitize(child['outerHTML'] || '', {
-      FORBID_TAGS: ['style'],
-      FORBID_ATTR: ['style'],
-    })
+    let purifyResult = DOMPurify.sanitize(child['innerHTML'] || '', DOMPurifyConfig)
+    const content = typeof purifyResult === 'string'
+      ? purifyResult
+      : purifyResult['outerHTML']
+        ? purifyResult['outerHTML']
+        : purifyResult.firstElementChild
+          ? purifyResult.firstElementChild.outerHTML
+          : ''
     return host
-      ? content.replace(/href="\/(?!\/)/g, 'href="' + host)
+      ? content.replace(/href="\/[^/]/g, 'href="' + host)
       : content
   }
 }

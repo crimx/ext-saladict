@@ -64,7 +64,7 @@ export function timer (delay = 0): Promise<any> {
  * Timeouts a promise.
  * Rejects when timeout.
  */
-export function timeout (pr: PromiseLike<any>, delay = 0): Promise<any> {
+export function timeout<T> (pr: PromiseLike<T>, delay = 0): Promise<T> {
   return Promise.race([
     pr,
     timer(delay).then(() => Promise.reject(new Error(`timeout ${delay}ms`)))

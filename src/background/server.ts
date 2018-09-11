@@ -5,7 +5,8 @@ import { chsToChz } from '@/_helpers/chs-to-chz'
 import { appConfigFactory, AppConfig } from '@/app-config'
 import { createActiveConfigStream } from '@/_helpers/config-manager'
 import { DictSearchResult } from '@/typings/server'
-import { timeout } from '@/_helpers/promise-more'
+import { timeout, timer } from '@/_helpers/promise-more'
+import { SearchErrorType } from '@/components/dictionaries/helpers'
 import {
   MsgType,
   MsgOpenUrl,
@@ -92,7 +93,20 @@ function fetchDictResult (
     return Promise.reject(err)
   }
 
-  const pSearch = search(data.text, config)
+  return timeout(search(data.text, config), 25000)
+    .catch(err => {
+      if (process.env.DEV_BUILD) {
+        console.warn(data.id, err)
+      }
+
+      if (err === SearchErrorType.NetWorkError) {
+        // retry once
+        return timer(500)
+          .then(() => timeout(search(data.text, config), 25000))
+      }
+
+      return Promise.reject(err)
+    })
     .then(({ result, audio }) => {
       if (audio) {
         const { cn, en } = config.autopron
@@ -114,10 +128,8 @@ function fetchDictResult (
       }
       return result
     })
-
-  return timeout(pSearch, 25000)
     .catch(err => {
-      if (process.env.NODE_ENV !== 'production') {
+      if (process.env.DEV_BUILD) {
         console.warn(data.id, err)
       }
       return null

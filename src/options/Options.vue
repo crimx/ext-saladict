@@ -17,6 +17,7 @@
             <div class="page-header-acknowledgement" v-if="isShowAcknowledgement" @mouseenter="showAcknowledgement(true)"  @mouseleave="showAcknowledgement(false)">
               <ol>
                 <li><a href="https://github.com/stockyman" rel="nofollow" target="_blank">stockyman</a> {{ $t('opt:acknowledgement_trans_tw') }}</li>
+                <li><a href="https://github.com/caerlie" rel="nofollow" target="_blank">caerlie</a> {{ $t('opt:acknowledgement_weblio') }}</li>
               </ol>
             </div>
           </transition>
