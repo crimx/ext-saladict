@@ -488,10 +488,6 @@
     top: 0
   }
 
-  .LiZFt {
-    font-size: large
-  }
-
   .FtlNye {
     font-family: arial, sans-serif;
     font-weight: normal !important;
@@ -950,6 +946,10 @@
 
   [data-dobid="wd-dfn"] {
     margin-bottom: 5px;
+  }
+
+  .ellip {
+    display: none !important;
   }
 }
 
