@@ -112,6 +112,7 @@
   z-index: $global-zindex-tooltip;
   padding: 8px 18px 8px 5px;
   word-break: keep-all;
+  white-space: nowrap;
   border-radius: 10px;
   background: #fff;
   box-shadow: 3px 4px 31px -8px rgba(0,0,0,0.8);
