@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.14.0"></a>
+# [6.14.0](https://github.com/crimx/ext-saladict/compare/v6.13.4...v6.14.0) (2018-09-11)
+
+
+### Bug Fixes
+
+* fix typings ([5678833](https://github.com/crimx/ext-saladict/commit/5678833))
+
+
+### Features
+
+* **components:** add dict weblio [#156](https://github.com/crimx/ext-saladict/issues/156) ([86bd514](https://github.com/crimx/ext-saladict/commit/86bd514))
+
+
+
 <a name="6.13.4"></a>
 ## [6.13.4](https://github.com/crimx/ext-saladict/compare/v6.13.3...v6.13.4) (2018-09-06)
 
