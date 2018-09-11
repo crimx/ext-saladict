@@ -28,7 +28,7 @@ export function load (src: string): HTMLAudioElement {
   return window.__audio_manager__
 }
 
-export function play (src?: string): Promise<void> {
+export function play (src?: string): Promise<any> {
   if (!src) {
     reset()
     return Promise.resolve()

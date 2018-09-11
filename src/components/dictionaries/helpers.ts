@@ -32,7 +32,10 @@ export function getText (parent: ParentNode, selector?: string): string {
   return child['textContent'] || ''
 }
 
-export function getInnerHTMLThunk (host?: string, DOMPurifyConfig?: DOMPurify.Config)
+export function getInnerHTMLThunk (
+  host?: string,
+  DOMPurifyConfig?: DOMPurify.Config,
+): (parent: ParentNode, selector?: string) => HTMLString
 export function getInnerHTMLThunk (...args) {
   let host: string = typeof args[0] === 'string' ? args.shift() : ''
   let DOMPurifyConfig: DOMPurify.Config = Object(args[0]) === args[0] ? args.shift() : {

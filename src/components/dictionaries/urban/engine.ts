@@ -73,7 +73,7 @@ function handleDOM (
     }
 
     resultItem.meaning = getInnerHTML($panel, '.meaning')
-    if (/There aren't any definitions for/i.test(resultItem.meaning)) {
+    if (/There aren't any definitions for/i.test(resultItem.meaning || '')) {
       continue
     }
 
