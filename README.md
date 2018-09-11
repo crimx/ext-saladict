@@ -30,7 +30,7 @@ Saladict 6 is a complete rewrite in React Typescript for both Chrome & Firefox. 
 
 [CHANGELOG.md](./CHANGELOG.md)
 
-## How can I contribute?
+## How can I contribute / build from source?
 
 [CONTRIBUTING.md](./CONTRIBUTING.md)
 
