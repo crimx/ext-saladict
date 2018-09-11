@@ -9,6 +9,11 @@
     "zh_CN": "提供繁体中文翻译",
     "zh_TW": "提供繁體中文翻譯"
   },
+  "acknowledgement_weblio": {
+    "en": "for helping add Weblio dict",
+    "zh_CN": "协助添加 Weblio 辞書",
+    "zh_TW": "協助新增 Weblio 辭書"
+  },
   "alipay": {
     "en": "Alipay",
     "zh_CN": "支付宝",
@@ -183,6 +188,11 @@
     "en": "En",
     "zh_CN": "英",
     "zh_TW": "英"
+  },
+  "dict_panel_lang_ja": {
+    "en": "Ja",
+    "zh_CN": "日",
+    "zh_TW": "日"
   },
   "dict_panel_lang_zhs": {
     "en": "Zhs",
