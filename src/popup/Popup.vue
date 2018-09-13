@@ -130,6 +130,7 @@ export default Vue.extend({
   created () {
     createActiveConfigStream().subscribe(config => {
       this.config = config as AppConfigMutable
+      document.body.style.width = config.panelWidth + 'px'
     })
 
     browser.tabs.query({ active: true, currentWindow: true })
