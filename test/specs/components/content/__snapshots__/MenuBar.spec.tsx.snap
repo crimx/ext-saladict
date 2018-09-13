@@ -84,8 +84,8 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
       disabled={false}
       onClick={[Function]}
       onKeyUp={[Function]}
-      onMouseEnter={[Function]}
-      onMouseLeave={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
     >
       <svg
         className="panel-MenuBar_Icon"
@@ -280,8 +280,8 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
       disabled={false}
       onClick={[Function]}
       onKeyUp={[Function]}
-      onMouseEnter={[Function]}
-      onMouseLeave={[Function]}
+      onMouseOut={[Function]}
+      onMouseOver={[Function]}
     >
       <svg
         className="panel-MenuBar_Icon"
