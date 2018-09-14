@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 词典设置 -->
+  <div id="opt-dicts" class="opt-item"><!-- 词典设置 -->
     <div class="opt-item__header">
       <strong>{{ $t('opt:dicts_title') }}</strong>
     </div>

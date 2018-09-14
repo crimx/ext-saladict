@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 自动发音 -->
+  <div id="opt-auto-pron" class="opt-item"><!-- 自动发音 -->
     <div class="opt-item__header">
       <strong>{{ $t('opt:autopron_title') }}</strong>
     </div>

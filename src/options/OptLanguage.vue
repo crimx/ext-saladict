@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 语言支持 -->
+  <div id="opt-language" class="opt-item"><!-- 语言支持 -->
     <div class="opt-item__header">
       <strong>{{ $t('opt:language_title') }}</strong>
     </div>

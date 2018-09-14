@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 面板查词-->
+  <div id="opt-panel-mode" class="opt-item"><!-- 面板查词-->
     <div class="opt-item__header">
       <strong>{{ $t('opt:panelmode_title') }}</strong>
     </div>

@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 用户隐私 -->
+  <div id="opt-privacy" class="opt-item"><!-- 用户隐私 -->
     <div class="opt-item__header">
       <strong>{{ $t('opt:privacy_title') }}</strong>
     </div>

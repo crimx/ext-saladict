@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 快捷查词 -->
+  <div id="opt-triple-ctrl" class="opt-item"><!-- 快捷查词 -->
     <div class="opt-item__header">
       <strong>{{ $t('opt:triple_ctrl_title') }}</strong>
     </div>

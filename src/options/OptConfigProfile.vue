@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 情景模式 -->
+  <div id="opt-config-profile" class="opt-item"><!-- 情景模式 -->
     <div class="opt-item__header">
       <strong>{{ $t('opt:config_profile_title') }}</strong>
     </div>

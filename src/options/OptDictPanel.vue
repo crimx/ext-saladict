@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 查词面板 -->
+  <div id="opt-dict-panel" class="opt-item"><!-- 查词面板 -->
     <div class="opt-item__header">
       <strong>{{ $t('opt:dict_panel_title') }}</strong>
     </div>
