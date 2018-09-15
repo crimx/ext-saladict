@@ -2,8 +2,9 @@ import React from 'react'
 import Speaker from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
 import { MacmillanResult, MacmillanResultLex, MacmillanResultRelated } from './engine'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictMacmillan extends React.PureComponent<{ result: MacmillanResult }> {
+export default class DictMacmillan extends React.PureComponent<ViewPorps<MacmillanResult>> {
   renderLex (result: MacmillanResultLex) {
     return result.items.map(def => (
       <section key={def.senses}>

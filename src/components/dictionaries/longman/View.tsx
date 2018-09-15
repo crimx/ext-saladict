@@ -4,8 +4,9 @@ import StarRates from '@/components/StarRates'
 import { LongmanResult, LongmanResultLex, LongmanResultRelated, LongmanResultEntry } from './engine'
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgAudioPlay } from '@/typings/message'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictLongman extends React.PureComponent<{ result: LongmanResult }> {
+export default class DictLongman extends React.PureComponent<ViewPorps<LongmanResult>> {
   _audioDelayTimeout: any
 
   isAudioElement (evt: React.MouseEvent<HTMLDivElement>): boolean {

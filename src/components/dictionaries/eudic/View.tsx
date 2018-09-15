@@ -1,8 +1,9 @@
 import React from 'react'
 import { EudicResult } from './engine'
 import Speaker from '@/components/Speaker'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictEudic extends React.PureComponent<{ result: EudicResult }> {
+export default class DictEudic extends React.PureComponent<ViewPorps<EudicResult>> {
   render () {
     return (
       <ul className='dictEudic-List'>

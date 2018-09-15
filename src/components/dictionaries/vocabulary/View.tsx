@@ -1,7 +1,8 @@
 import React from 'react'
 import { VocabularyResult } from './engine'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictVocabulary extends React.PureComponent<{ result: VocabularyResult }> {
+export default class DictVocabulary extends React.PureComponent<ViewPorps<VocabularyResult>> {
   render () {
     const { long, short } = this.props.result
     return (

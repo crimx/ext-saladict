@@ -278,6 +278,7 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
               React.createElement(
                 require('@/components/dictionaries/' + id + '/View.tsx').default,
                 {
+                  t,
                   result: searchResult,
                   recalcBodyHeight: this.handleRecalcBodyHeight,
                 }

@@ -2,8 +2,9 @@ import React from 'react'
 import Speaker from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
 import { COBUILDResult } from './engine'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictCOBUILD extends React.PureComponent<{ result: COBUILDResult }> {
+export default class DictCOBUILD extends React.PureComponent<ViewPorps<COBUILDResult>> {
   render () {
     const { result } = this.props
     return (

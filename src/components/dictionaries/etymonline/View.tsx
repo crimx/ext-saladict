@@ -1,7 +1,8 @@
 import React from 'react'
 import { EtymonlineResult } from './engine'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictEtymonline extends React.PureComponent<{ result: EtymonlineResult }> {
+export default class DictEtymonline extends React.PureComponent<ViewPorps<EtymonlineResult>> {
   render () {
     return (
       <ul className='dictEtymonline-List'>

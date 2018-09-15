@@ -1,6 +1,13 @@
 import DOMPurify from 'dompurify'
+import { TranslationFunction } from 'i18next'
 
 export type HTMLString = string
+
+export interface ViewPorps<T> {
+  result: T
+  t: TranslationFunction
+  recalcBodyHeight: () => void
+}
 
 export const enum SearchErrorType {
   NoResult,
@@ -16,6 +23,10 @@ export function handleNetWorkError (): Promise<never> {
 }
 
 export interface MachineTranslateResult {
+  /** Source language */
+  sl: string
+  /** Target language */
+  tl: string
   searchText: {
     text: string
     audio?: string

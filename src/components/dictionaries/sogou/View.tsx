@@ -1,8 +1,9 @@
 import React from 'react'
 import { SogouResult } from './engine'
 import Speaker from '@/components/Speaker'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictSogou extends React.PureComponent<{ result: SogouResult }> {
+export default class DictSogou extends React.PureComponent<ViewPorps<SogouResult>> {
   render () {
     const {
       trans,
