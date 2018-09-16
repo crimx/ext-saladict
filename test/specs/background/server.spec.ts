@@ -130,9 +130,10 @@ describe('Server', () => {
         type: MsgType.FetchDictResult,
         id: 'bing',
         text: 'test',
+        payload: { field: 'any' },
       })
       expect(bingSearch).toHaveBeenCalledTimes(1)
-      expect(bingSearch).toHaveBeenCalledWith('test', config)
+      expect(bingSearch).toHaveBeenCalledWith('test', config, { field: 'any' })
     })
   })
 })
