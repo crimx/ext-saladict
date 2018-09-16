@@ -5,7 +5,22 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { appConfigFactory, DictID } from '@/app-config'
 
+import { I18nextProvider as ProviderI18next, translate } from 'react-i18next'
+import i18nLoader from '@/_helpers/i18n'
+import dictsLocles from '@/_locales/dicts'
+import contentLocles from '@/_locales/content'
+import profileLocles from '@/_locales/config-profiles'
+import langcodeLocles from '@/_locales/langcode'
+import { TranslationFunction } from 'i18next'
+
 import '@/panel/panel.scss'
+
+const i18n = i18nLoader({
+  content: contentLocles,
+  dict: dictsLocles,
+  profile: profileLocles,
+  langcode: langcodeLocles,
+}, 'content')
 
 window['FAKE_AJAX_DELAY'] = 0
 
@@ -27,7 +42,7 @@ interface EnvConfig {
 
 export default function setupEnv ({ dict, style = true, text = 'salad' }: EnvConfig) {
   const search = require('../dictionaries/' + dict + '/engine').default
-  const View = require('../dictionaries/' + dict + '/View').default
+  const View = translate()(require('../dictionaries/' + dict + '/View').default)
 
   if (style) {
     require('../dictionaries/' + dict + '/_style.scss')
@@ -36,6 +51,7 @@ export default function setupEnv ({ dict, style = true, text = 'salad' }: EnvCon
   search(text, appConfigFactory())
     .then(result => {
       ReactDOM.render(
+        <ProviderI18next i18n={i18n}>
         <div className='panel-DictItem'>
           <header className='panel-DictItem_Header'>
             <img className='panel-DictItem_Logo' src={require('@/components/dictionaries/' + dict + '/favicon.png')} alt='dict logo' />
@@ -51,7 +67,8 @@ export default function setupEnv ({ dict, style = true, text = 'salad' }: EnvCon
               <View {...result} />
             </article>
           </div>
-        </div>,
+        </div>
+        </ProviderI18next>,
         root,
       )
     })

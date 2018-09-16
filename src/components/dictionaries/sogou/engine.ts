@@ -32,10 +32,10 @@ export default function search (
   })
   .then(r => r.json())
   .catch(handleNetWorkError)
-  .then(handleJSON)
+  .then(json => handleJSON(json, sl, tl))
 }
 
-function handleJSON (json: any): SogouSearchResult | Promise<SogouSearchResult> {
+function handleJSON (json: any, sl: string, tl: string): SogouSearchResult | Promise<SogouSearchResult> {
   const tr = json.translate as undefined | {
     errorCode: string // "0"
     from: string
@@ -49,6 +49,15 @@ function handleJSON (json: any): SogouSearchResult | Promise<SogouSearchResult> 
 
   return {
     result: {
+      sl, tl,
+      langcodes: [
+        'zh-CHS', 'zh-CHT', 'en',
+        'af', 'ar', 'bg', 'bn', 'bs-Latn', 'ca', 'cs', 'cy', 'da', 'de', 'el', 'es', 'et',
+        'fa', 'fi', 'fil', 'fj', 'fr', 'he', 'hi', 'hr', 'ht', 'hu', 'id', 'it', 'ja', 'ko',
+        'lt', 'lv', 'mg', 'ms', 'mt', 'mww', 'nl', 'no', 'otq', 'pl', 'pt', 'ro', 'ru', 'sk',
+        'sl', 'sm', 'sr-Cyrl', 'sr-Latn', 'sv', 'sw', 'th', 'tlh', 'tlh-Qaak', 'to', 'tr', 'ty',
+        'uk', 'ur', 'vi', 'yua', 'yue'
+      ],
       trans: {
         text: tr.dit,
         audio: tr.to === 'zh-CHT'

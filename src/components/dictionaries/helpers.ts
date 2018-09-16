@@ -27,6 +27,8 @@ export interface MachineTranslateResult {
   sl: string
   /** Target language */
   tl: string
+  /** All supported languages */
+  langcodes: string[]
   searchText: {
     text: string
     audio?: string
