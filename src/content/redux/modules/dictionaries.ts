@@ -270,7 +270,9 @@ export function startUpAction (): DispatcherThunk {
  * Search all selected dicts if id is not provided.
  * Use last selection if info is not provided.
  */
-export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): DispatcherThunk {
+export function searchText (
+  arg?: { id?: DictID, info?: SelectionInfo, payload?: { [index: string]: any } }
+): DispatcherThunk {
   return (dispatch, getState) => {
     const state = getState()
     const info = arg
@@ -348,7 +350,8 @@ export function searchText (arg?: { id?: DictID, info?: SelectionInfo }): Dispat
       const msg: MsgFetchDictResult = {
         type: MsgType.FetchDictResult,
         id,
-        text: info.text
+        text: info.text,
+        payload: arg && arg.payload,
       }
       return message.send(msg)
         .then(result => {

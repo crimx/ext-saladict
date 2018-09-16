@@ -40,6 +40,9 @@ interface EnvConfig {
   text?: string
 }
 
+const searchText = (...args) => console.log('searchText', ...args)
+const recalcBodyHeight = (...args) => console.log('recalcBodyHeight', ...args)
+
 export default function setupEnv ({ dict, style = true, text = 'salad' }: EnvConfig) {
   const search = require('../dictionaries/' + dict + '/engine').default
   const View = translate()(require('../dictionaries/' + dict + '/View').default)
@@ -64,7 +67,7 @@ export default function setupEnv ({ dict, style = true, text = 'salad' }: EnvCon
           </header>
           <div className='panel-DictItem_Body' style={{ fontSize: config.fontSize }}>
             <article className='panel-DictItem_BodyMesure'>
-              <View {...result} />
+              <View {...result} searchText={searchText} recalcBodyHeight={recalcBodyHeight} />
             </article>
           </div>
         </div>

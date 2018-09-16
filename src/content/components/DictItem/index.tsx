@@ -7,10 +7,10 @@ import { MsgType, MsgOpenUrl } from '@/typings/message'
 import { SearchStatus } from '@/content/redux/modules/dictionaries'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
-import { ViewPorps } from '@/components/dictionaries/helpers';
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
 export interface DictItemDispatchers {
-  readonly searchText: (arg: { id: DictID } | { info: SelectionInfo }) => any
+  readonly searchText: (arg?: { id?: DictID, info?: SelectionInfo, payload?: { [index: string]: any } }) => any
   readonly updateItemHeight: (id: DictID, height: number) => any
 }
 
@@ -237,6 +237,7 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
       fontSize,
       searchStatus,
       searchResult,
+      searchText,
     } = this.props
 
     const {
@@ -281,6 +282,7 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
                 {
                   t,
                   result: searchResult,
+                  searchText,
                   recalcBodyHeight: this.handleRecalcBodyHeight,
                 }
               )

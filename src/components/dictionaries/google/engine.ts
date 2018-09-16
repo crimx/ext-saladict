@@ -18,20 +18,34 @@ interface GoogleRawResult {
 
 type GoogleSearchResult = DictSearchResult<GoogleResult>
 
+const langcodes: ReadonlyArray<string> = [
+  'zh-CN', 'zh-TW', 'en',
+  'af', 'am', 'ar', 'az', 'be', 'bg', 'bn', 'bs', 'ca', 'ceb', 'co', 'cs', 'cy', 'da', 'de',
+  'el', 'eo', 'es', 'et', 'eu', 'fa', 'fi', 'fr', 'fy', 'ga', 'gd', 'gl', 'gu', 'ha', 'haw',
+  'he', 'hi', 'hmn', 'hr', 'ht', 'hu', 'hy', 'id', 'ig', 'is', 'it', 'ja', 'jw', 'ka', 'kk',
+  'km', 'kn', 'ko', 'ku', 'ky', 'la', 'lb', 'lo', 'lt', 'lv', 'mg', 'mi', 'mk', 'ml', 'mn',
+  'mr', 'ms', 'mt', 'my', 'ne', 'nl', 'no', 'ny', 'pa', 'pl', 'ps', 'pt', 'ro', 'ru', 'sd',
+  'si', 'sk', 'sl', 'sm', 'sn', 'so', 'sq', 'sr', 'st', 'su', 'sv', 'sw', 'ta', 'te', 'tg',
+  'th', 'tl', 'tr', 'uk', 'ur', 'uz', 'vi', 'xh', 'yi', 'yo', 'zu',
+]
+
 export default function search (
   text: string,
   config: AppConfig,
+  payload: { sl?: string, tl?: string }
 ): Promise<GoogleSearchResult> {
   const options = config.dicts.all.google.options
 
-  const sl = 'auto'
-  const tl = options.tl === 'default'
-    ? config.langCode === 'en'
-      ? 'en'
-      : !isContainChinese(text) || isContainJapanese(text) || isContainKorean(text)
-        ? config.langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN'
-        : 'en'
-    : options.tl
+  const sl: string = payload.sl || 'auto'
+  const tl: string = payload.tl || (
+    options.tl === 'default'
+      ? config.langCode === 'en'
+        ? 'en'
+        : !isContainChinese(text) || isContainJapanese(text) || isContainKorean(text)
+          ? config.langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN'
+          : 'en'
+      : options.tl
+  )
 
   return first([
     fetchWithToken('https://translate.google.com', sl, tl, text),
@@ -83,17 +97,8 @@ function handleText (
   if (transText.length > 0) {
     return {
       result: {
-        sl, tl,
-        langcodes: [
-          'zh-CN', 'zh-TW', 'en',
-          'af', 'am', 'ar', 'az', 'be', 'bg', 'bn', 'bs', 'ca', 'ceb', 'co', 'cs', 'cy', 'da', 'de',
-          'el', 'eo', 'es', 'et', 'eu', 'fa', 'fi', 'fr', 'fy', 'ga', 'gd', 'gl', 'gu', 'ha', 'haw',
-          'he', 'hi', 'hmn', 'hr', 'ht', 'hu', 'hy', 'id', 'ig', 'is', 'it', 'ja', 'jw', 'ka', 'kk',
-          'km', 'kn', 'ko', 'ku', 'ky', 'la', 'lb', 'lo', 'lt', 'lv', 'mg', 'mi', 'mk', 'ml', 'mn',
-          'mr', 'ms', 'mt', 'my', 'ne', 'nl', 'no', 'ny', 'pa', 'pl', 'ps', 'pt', 'ro', 'ru', 'sd',
-          'si', 'sk', 'sl', 'sm', 'sn', 'so', 'sq', 'sr', 'st', 'su', 'sv', 'sw', 'ta', 'te', 'tg',
-          'th', 'tl', 'tr', 'uk', 'ur', 'uz', 'vi', 'xh', 'yi', 'yo', 'zu',
-        ],
+        id: 'google',
+        sl, tl, langcodes,
         trans: {
           text: transText,
           audio: tk1 || tk2
