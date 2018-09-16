@@ -1,13 +1,9 @@
 import React from 'react'
 import Speaker from '@/components/Speaker'
 import { OALDResult, OALDResultLex, OALDResultRelated } from './engine'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export interface DictOALDProps {
-  result: OALDResult
-  recalcBodyHeight: () => any
-}
-
-export default class DictOALD extends React.PureComponent<DictOALDProps> {
+export default class DictOALD extends React.PureComponent<ViewPorps<OALDResult>> {
   handleEntryClick = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.nativeEvent.target as HTMLSpanElement
     if (target.classList && target.classList.contains('heading')) {

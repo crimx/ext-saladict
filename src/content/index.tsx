@@ -11,6 +11,7 @@ import i18nLoader from '@/_helpers/i18n'
 import dictsLocles from '@/_locales/dicts'
 import contentLocles from '@/_locales/content'
 import profileLocles from '@/_locales/config-profiles'
+import langcodeLocles from '@/_locales/langcode'
 
 import { message } from '@/_helpers/browser-api'
 import { MsgType } from '@/typings/message'
@@ -25,6 +26,7 @@ const i18n = i18nLoader({
   content: contentLocles,
   dict: dictsLocles,
   profile: profileLocles,
+  langcode: langcodeLocles,
 }, 'content')
 
 const store = createStore()

@@ -7,20 +7,32 @@ export type SogouResult = MachineTranslateResult
 
 type SogouSearchResult = DictSearchResult<SogouResult>
 
+const langcodes: ReadonlyArray<string> = [
+  'zh-CHS', 'zh-CHT', 'en',
+  'af', 'ar', 'bg', 'bn', 'bs-Latn', 'ca', 'cs', 'cy', 'da', 'de', 'el', 'es', 'et',
+  'fa', 'fi', 'fil', 'fj', 'fr', 'he', 'hi', 'hr', 'ht', 'hu', 'id', 'it', 'ja', 'ko',
+  'lt', 'lv', 'mg', 'ms', 'mt', 'mww', 'nl', 'no', 'otq', 'pl', 'pt', 'ro', 'ru', 'sk',
+  'sl', 'sm', 'sr-Cyrl', 'sr-Latn', 'sv', 'sw', 'th', 'tlh', 'tlh-Qaak', 'to', 'tr', 'ty',
+  'uk', 'ur', 'vi', 'yua', 'yue',
+]
+
 export default function search (
   text: string,
   config: AppConfig,
+  payload: { sl?: string, tl?: string }
 ): Promise<SogouSearchResult> {
   const options = config.dicts.all.sogou.options
 
-  const sl = 'auto'
-  const tl = options.tl === 'default'
-    ? config.langCode === 'en'
-      ? 'en'
-      : !isContainChinese(text) || isContainJapanese(text) || isContainKorean(text)
-        ? config.langCode === 'zh-TW' ? 'zh-CHT' : 'zh-CHS'
-        : 'en'
-    : options.tl
+  const sl: string = payload.sl || 'auto'
+  const tl: string = payload.tl || (
+    options.tl === 'default'
+      ? config.langCode === 'en'
+        ? 'en'
+        : !isContainChinese(text) || isContainJapanese(text) || isContainKorean(text)
+          ? config.langCode === 'zh-TW' ? 'zh-CHT' : 'zh-CHS'
+          : 'en'
+      : options.tl
+  )
 
   return fetch('https://fanyi.sogou.com/reventondc/translate', {
     method: 'POST',
@@ -32,10 +44,10 @@ export default function search (
   })
   .then(r => r.json())
   .catch(handleNetWorkError)
-  .then(handleJSON)
+  .then(json => handleJSON(json, sl, tl))
 }
 
-function handleJSON (json: any): SogouSearchResult | Promise<SogouSearchResult> {
+function handleJSON (json: any, sl: string, tl: string): SogouSearchResult | Promise<SogouSearchResult> {
   const tr = json.translate as undefined | {
     errorCode: string // "0"
     from: string
@@ -49,6 +61,8 @@ function handleJSON (json: any): SogouSearchResult | Promise<SogouSearchResult> 
 
   return {
     result: {
+      id: 'sogou',
+      sl, tl, langcodes,
       trans: {
         text: tr.dit,
         audio: tr.to === 'zh-CHT'

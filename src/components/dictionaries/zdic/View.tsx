@@ -1,8 +1,9 @@
 import React from 'react'
 import Speaker from '@/components/Speaker'
 import { ZdicResult } from './engine'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictZdic extends React.PureComponent<{ result: ZdicResult }> {
+export default class DictZdic extends React.PureComponent<ViewPorps<ZdicResult>> {
   render () {
     const { defs, phsym } = this.props.result
     return (

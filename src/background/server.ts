@@ -84,7 +84,8 @@ function fetchDictResult (
 ): Promise<any> {
   let search: (
     text: string,
-    config: AppConfig
+    config: AppConfig,
+    payload: NonNullable<MsgFetchDictResult['payload']>,
   ) => Promise<DictSearchResult<any>>
 
   try {
@@ -93,7 +94,9 @@ function fetchDictResult (
     return Promise.reject(err)
   }
 
-  return timeout(search(data.text, config), 25000)
+  const payload = data.payload || {}
+
+  return timeout(search(data.text, config, payload), 25000)
     .catch(err => {
       if (process.env.DEV_BUILD) {
         console.warn(data.id, err)
@@ -102,7 +105,7 @@ function fetchDictResult (
       if (err === SearchErrorType.NetWorkError) {
         // retry once
         return timer(500)
-          .then(() => timeout(search(data.text, config), 25000))
+          .then(() => timeout(search(data.text, config, payload), 25000))
       }
 
       return Promise.reject(err)

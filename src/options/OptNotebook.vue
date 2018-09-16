@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 生词本相关 -->
+  <div id="opt-notebook" class="opt-item"><!-- 生词本相关 -->
     <div class="opt-item__header">
       <strong>{{ $t('opt:notebook_title') }}</strong>
     </div>

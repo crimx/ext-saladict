@@ -1,8 +1,9 @@
 import React from 'react'
 import { GuoYuResult } from './engine'
 import Speaker from '@/components/Speaker'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictGuoyu extends React.PureComponent<{ result: GuoYuResult }> {
+export default class DictGuoyu extends React.PureComponent<ViewPorps<GuoYuResult>> {
   render () {
     const result = this.props.result
     return (

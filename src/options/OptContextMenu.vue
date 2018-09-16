@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 右键菜单 -->
+  <div id="opt-context-menu" class="opt-item"><!-- 右键菜单 -->
     <div class="opt-item__header">
       <strong>{{ $t('opt:context_title') }}</strong>
     </div>

@@ -1,6 +1,16 @@
 import DOMPurify from 'dompurify'
+import { TranslationFunction } from 'i18next'
+import { DictID } from '@/app-config'
+import { SelectionInfo } from '@/_helpers/selection'
 
 export type HTMLString = string
+
+export interface ViewPorps<T> {
+  result: T
+  t: TranslationFunction
+  searchText: (arg?: { id?: DictID, info?: SelectionInfo, payload?: { [index: string]: any } }) => any
+  recalcBodyHeight: () => void
+}
 
 export const enum SearchErrorType {
   NoResult,
@@ -16,6 +26,13 @@ export function handleNetWorkError (): Promise<never> {
 }
 
 export interface MachineTranslateResult {
+  id: DictID
+  /** Source language */
+  sl: string
+  /** Target language */
+  tl: string
+  /** All supported languages */
+  langcodes: ReadonlyArray<string>
   searchText: {
     text: string
     audio?: string

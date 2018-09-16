@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 右上弹框 -->
+  <div id="opt-popup" class="opt-item"><!-- 右上弹框 -->
     <div class="opt-item__header">
       <strong>{{ $t('opt:popup_title') }}</strong>
     </div>

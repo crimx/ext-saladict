@@ -2,8 +2,9 @@ import React from 'react'
 import Speaker from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
 import { YoudaoResult, YoudaoResultLex, YoudaoResultRelated } from './engine'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictYoudao extends React.PureComponent<{ result: YoudaoResult }> {
+export default class DictYoudao extends React.PureComponent<ViewPorps<YoudaoResult>> {
   renderLex (result: YoudaoResultLex) {
     return (
       <>

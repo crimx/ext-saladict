@@ -71,7 +71,7 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
   openOptions = () => {
     message.send<MsgOpenUrl>({
       type: MsgType.OpenURL,
-      url: 'options.html',
+      url: 'options.html#opt-notebook',
       self: true,
     })
   }

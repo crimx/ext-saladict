@@ -1,8 +1,9 @@
 import React from 'react'
 import Speaker from '@/components/Speaker'
 import { BingResult, BingResultLex, BingResultMachine, BingResultRelated } from './engine'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictBing extends React.PureComponent<{ result: BingResult }> {
+export default class DictBing extends React.PureComponent<ViewPorps<BingResult>> {
   renderLex () {
     const result = this.props.result as BingResultLex
     return (

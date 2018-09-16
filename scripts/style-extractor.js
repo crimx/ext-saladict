@@ -25,20 +25,20 @@ function getIdsAndClassNames (root) {
 }
 
 /**
- * Get relevant styles based on ids and class names.
- * @param {string[]} idsAndClassNames
+ * Get relevant styles if the selector contains the keywords..
+ * @param {string[]} attrs - i.e. [".head", "red"]
  * @param {string} from - css path
  * @param {string} to - css path
  */
-function getStylesByIdsAndClassNames (idsAndClassNames, from, to) {
-  idsAndClassNames = Array.from(new Set(idsAndClassNames)).map(n => n.toLowerCase() + ',')
+function getStylesByAttrs (attrs, from, to) {
+  attrs = new Set(attrs.map(n => n.toLowerCase().replace(/[^a-z-_]/g, '')))
   let result = ''
 
   fs.readFile(from, (err, source) => {
     const root = postcss.parse(source, { from, to })
     root.walkRules(rule => {
-      const selector = rule.selector.replace(/\s+/g, ',').replace(/,+/, ',').toLowerCase() + ','
-      if (idsAndClassNames.some(n => selector.indexOf(n) !== -1)) {
+      const selectors = rule.selector.toLowerCase().split(/[^a-z-_]+/)
+      if (selectors.some(s => s && attrs.has(s))) {
         result += rule.toString() + '\n\n'
         rule.remove()
       }

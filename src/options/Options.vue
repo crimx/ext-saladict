@@ -304,6 +304,19 @@ export default {
         .then(([word]) => this.searchText(word))
         .catch(() => this.searchText('salad'))
     }
+
+    setTimeout(() => {
+      if(window.location.hash){
+         const el = document.querySelector(window.location.hash)
+         if (el) {
+           window.scrollTo({
+             top: el.offsetTop,
+             left: 0,
+             behavior: 'smooth',
+           })
+         }
+      }
+    }, 1000)
   }
 }
 </script>

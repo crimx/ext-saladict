@@ -1,13 +1,9 @@
 import React from 'react'
 import Speaker from '@/components/Speaker'
 import { CambridgeResult } from './engine'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export interface DictCambridgeProps {
-  result: CambridgeResult
-  recalcBodyHeight: () => any
-}
-
-export default class DictCambridge extends React.PureComponent<DictCambridgeProps> {
+export default class DictCambridge extends React.PureComponent<ViewPorps<CambridgeResult>> {
   handleEntryClick = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.nativeEvent.target as HTMLDivElement
     if (target.classList && target.classList.contains('js-accord')) {

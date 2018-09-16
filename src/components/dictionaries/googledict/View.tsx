@@ -2,8 +2,9 @@ import React from 'react'
 import { GoogleDictResult } from './engine'
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgAudioPlay } from '@/typings/message'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictGoogleDict extends React.PureComponent<{ result: GoogleDictResult }> {
+export default class DictGoogleDict extends React.PureComponent<ViewPorps<GoogleDictResult>> {
   _audioDelayTimeout: any
 
   isAudioElement (evt: React.MouseEvent<HTMLDivElement>): boolean {

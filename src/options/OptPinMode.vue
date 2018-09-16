@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 钉住查词-->
+  <div id="opt-pin-mode" class="opt-item"><!-- 钉住查词-->
     <div class="opt-item__header">
       <strong>{{ $t('opt:pinmode_title') }}</strong>
     </div>

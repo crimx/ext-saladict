@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 开启查词 -->
+  <div id="opt-app-active" class="opt-item"><!-- 开启查词 -->
     <div class="opt-item__header">
       <strong>{{ $t('opt:app_active_title') }}</strong>
     </div>

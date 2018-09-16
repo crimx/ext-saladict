@@ -116,6 +116,8 @@ export interface MsgFetchDictResult {
   readonly type: MsgType.FetchDictResult
   readonly id: DictID
   readonly text: string
+  /** pass to engine search function as the third argument */
+  readonly payload?: { [index: string]: any }
 }
 
 export interface MsgIsInNotebook {

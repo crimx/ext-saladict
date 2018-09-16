@@ -1,8 +1,9 @@
 import React from 'react'
 import Speaker from '@/components/Speaker'
 import { UrbanResult } from './engine'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictUrban extends React.PureComponent<{ result: UrbanResult }> {
+export default class DictUrban extends React.PureComponent<ViewPorps<UrbanResult>> {
   render () {
     return (
       <ul className='dictUrban-List'>

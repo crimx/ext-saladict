@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 黑白名单 -->
+  <div id="opt-match-patterns" class="opt-item"><!-- 黑白名单 -->
     <div class="opt-item__header">
       <strong>{{ $t('opt:match_pattern_title') }}</strong>
     </div>

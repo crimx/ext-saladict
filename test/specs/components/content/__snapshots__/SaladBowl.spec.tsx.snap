@@ -6,22 +6,19 @@ exports[`Component/content/SaladBowl should render correctly 1`] = `
   key="saladict-SaladBowl"
   onMouseEnter={[Function]}
   onMouseLeave={[Function]}
+  role="img"
 >
-  <img
+  <div
     className="saladict-SaladBowl_Leaf"
-    src="leaf.svg"
   />
-  <img
+  <div
     className="saladict-SaladBowl_Orange"
-    src="orange.svg"
   />
-  <img
+  <div
     className="saladict-SaladBowl_Tomato"
-    src="tomato.svg"
   />
-  <img
+  <div
     className="saladict-SaladBowl_Bowl"
-    src="bowl.svg"
   />
 </div>
 `;

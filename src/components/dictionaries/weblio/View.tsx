@@ -1,7 +1,8 @@
 import React from 'react'
 import { WeblioResult } from './engine'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictWeblio extends React.PureComponent<{ result: WeblioResult }> {
+export default class DictWeblio extends React.PureComponent<ViewPorps<WeblioResult>> {
   render () {
     return (
       <div className='dictWeblio-Container'>{

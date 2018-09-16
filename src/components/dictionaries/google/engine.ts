@@ -9,7 +9,8 @@ export type GoogleResult = MachineTranslateResult
 interface GoogleRawResult {
   json: string
   base?: string
-  tl?: string
+  sl: string
+  tl: string
   tk1?: number
   tk2?: number
   text: string
@@ -17,20 +18,34 @@ interface GoogleRawResult {
 
 type GoogleSearchResult = DictSearchResult<GoogleResult>
 
+const langcodes: ReadonlyArray<string> = [
+  'zh-CN', 'zh-TW', 'en',
+  'af', 'am', 'ar', 'az', 'be', 'bg', 'bn', 'bs', 'ca', 'ceb', 'co', 'cs', 'cy', 'da', 'de',
+  'el', 'eo', 'es', 'et', 'eu', 'fa', 'fi', 'fr', 'fy', 'ga', 'gd', 'gl', 'gu', 'ha', 'haw',
+  'he', 'hi', 'hmn', 'hr', 'ht', 'hu', 'hy', 'id', 'ig', 'is', 'it', 'ja', 'jw', 'ka', 'kk',
+  'km', 'kn', 'ko', 'ku', 'ky', 'la', 'lb', 'lo', 'lt', 'lv', 'mg', 'mi', 'mk', 'ml', 'mn',
+  'mr', 'ms', 'mt', 'my', 'ne', 'nl', 'no', 'ny', 'pa', 'pl', 'ps', 'pt', 'ro', 'ru', 'sd',
+  'si', 'sk', 'sl', 'sm', 'sn', 'so', 'sq', 'sr', 'st', 'su', 'sv', 'sw', 'ta', 'te', 'tg',
+  'th', 'tl', 'tr', 'uk', 'ur', 'uz', 'vi', 'xh', 'yi', 'yo', 'zu',
+]
+
 export default function search (
   text: string,
   config: AppConfig,
+  payload: { sl?: string, tl?: string }
 ): Promise<GoogleSearchResult> {
   const options = config.dicts.all.google.options
 
-  const sl = 'auto'
-  const tl = options.tl === 'default'
-    ? config.langCode === 'en'
-      ? 'en'
-      : !isContainChinese(text) || isContainJapanese(text) || isContainKorean(text)
-        ? config.langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN'
-        : 'en'
-    : options.tl
+  const sl: string = payload.sl || 'auto'
+  const tl: string = payload.tl || (
+    options.tl === 'default'
+      ? config.langCode === 'en'
+        ? 'en'
+        : !isContainChinese(text) || isContainJapanese(text) || isContainKorean(text)
+          ? config.langCode === 'zh-TW' ? 'zh-TW' : 'zh-CN'
+          : 'en'
+      : options.tl
+  )
 
   return first([
     fetchWithToken('https://translate.google.com', sl, tl, text),
@@ -55,7 +70,7 @@ function fetchWithToken (base: string, sl: string, tl: string, text: string): Pr
           const encodedText = encodeURIComponent(text)
           return fetch(`${base}/translate_a/single?client=t&sl=${sl}&tl=${tl}&q=${encodedText}&tk=${tk}&hl=en&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&ie=UTF-8&oe=UTF-8&otf=1&ssel=0&tsel=0&kc=5`)
             .then(r => r.text())
-            .then(json => ({ json, base, tl, tk1, tk2, text }))
+            .then(json => ({ json, base, sl, tl, tk1, tk2, text }))
         }
       }
       return handleNoResult()
@@ -65,11 +80,11 @@ function fetchWithToken (base: string, sl: string, tl: string, text: string): Pr
 function fetchWithoutToken (sl: string, tl: string, text: string): Promise<GoogleRawResult> {
   return fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sl}&tl=${tl}&dt=t&q=${encodeURIComponent(text)}`)
     .then(r => r.ok ? r.text() : handleNetWorkError())
-    .then(json => ({ json, text }))
+    .then(json => ({ json, sl, tl, text }))
 }
 
 function handleText (
-  { json, base, tl, tk1, tk2, text }: GoogleRawResult
+  { json, base, sl, tl, tk1, tk2, text }: GoogleRawResult
 ): GoogleSearchResult | Promise<GoogleSearchResult> {
   const data = JSON.parse(json.replace(/,+/g, ','))
 
@@ -82,6 +97,8 @@ function handleText (
   if (transText.length > 0) {
     return {
       result: {
+        id: 'google',
+        sl, tl, langcodes,
         trans: {
           text: transText,
           audio: tk1 || tk2

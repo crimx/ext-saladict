@@ -1,5 +1,5 @@
 <template>
-  <div class="opt-item"><!-- 查词模式-->
+  <div id="opt-mode" class="opt-item"><!-- 查词模式-->
     <div class="opt-item__header">
       <strong>{{ $t('opt:mode_title') }}</strong>
     </div>

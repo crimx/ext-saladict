@@ -347,8 +347,8 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
           <button className='panel-MenuBar_Btn'
             onClick={this.handleIconSettingsClick}
             onKeyUp={this.handleIconSettingsKeyUp}
-            onMouseEnter={this.showProfilePanel}
-            onMouseLeave={this.hideProfilePanel}
+            onMouseOver={this.showProfilePanel}
+            onMouseOut={this.hideProfilePanel}
             disabled={isSaladictOptionsPage}
           >
             <svg

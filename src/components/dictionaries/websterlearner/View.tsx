@@ -1,8 +1,9 @@
 import React from 'react'
 import Speaker from '@/components/Speaker'
 import { WebsterLearnerResult, WebsterLearnerResultLex, WebsterLearnerResultRelated } from './engine'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictWebsterLearner extends React.PureComponent<{ result: WebsterLearnerResult }> {
+export default class DictWebsterLearner extends React.PureComponent<ViewPorps<WebsterLearnerResult>> {
   renderLex (result: WebsterLearnerResultLex) {
     return result.items.map(entry => (
       <section key={entry.title} className='dictWebsterLearner-Entry'>
