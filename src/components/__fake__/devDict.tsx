@@ -11,7 +11,6 @@ import dictsLocles from '@/_locales/dicts'
 import contentLocles from '@/_locales/content'
 import profileLocles from '@/_locales/config-profiles'
 import langcodeLocles from '@/_locales/langcode'
-import { TranslationFunction } from 'i18next'
 
 import '@/panel/panel.scss'
 
