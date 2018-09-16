@@ -7,6 +7,7 @@ import { MsgType, MsgOpenUrl } from '@/typings/message'
 import { SearchStatus } from '@/content/redux/modules/dictionaries'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
+import { ViewPorps } from '@/components/dictionaries/helpers';
 
 export interface DictItemDispatchers {
   readonly searchText: (arg: { id: DictID } | { info: SelectionInfo }) => any
@@ -275,7 +276,7 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
         >
           <article ref={this.bodyRef} className='panel-DictItem_BodyMesure' style={{ opacity: isUnfold ? 1 : 0 }}>
             {searchResult && !hasError &&
-              React.createElement(
+              React.createElement<ViewPorps<any>>(
                 require('@/components/dictionaries/' + id + '/View.tsx').default,
                 {
                   t,
