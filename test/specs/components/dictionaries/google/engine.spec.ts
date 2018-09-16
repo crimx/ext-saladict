@@ -21,13 +21,24 @@ describe('Dict/Google/engine', () => {
   })
 
   it('should parse result correctly', () => {
-    return search('any', appConfigFactory())
+    return search('any', appConfigFactory(), {})
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
         expect(searchResult.result.trans.text).toBe('不要温柔地进入那个晚安。 愤怒，对光明的消逝愤怒。')
+        expect(searchResult.result.id).toBe('google')
+        expect(searchResult.result.sl).toBe('auto')
+        expect(searchResult.result.tl).toBe('en')
         expect(typeof searchResult.result.trans.audio).toBe('string')
         expect(typeof searchResult.result.searchText.text).toBe('string')
         expect(typeof searchResult.result.searchText.audio).toBe('string')
+      })
+  })
+
+  it('should parse result correctly with payload', () => {
+    return search('any', appConfigFactory(), { sl: 'en', tl: 'jp' })
+      .then(searchResult => {
+        expect(searchResult.result.sl).toBe('en')
+        expect(searchResult.result.tl).toBe('jp')
       })
   })
 })
