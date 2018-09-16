@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.15.0"></a>
+# [6.15.0](https://github.com/crimx/ext-saladict/compare/v6.14.0...v6.15.0) (2018-09-16)
+
+
+### Bug Fixes
+
+* **panel:** fix line breaking in English ([4b76760](https://github.com/crimx/ext-saladict/commit/4b76760))
+* **panel:** fix profile panel shows on hover ([4b96472](https://github.com/crimx/ext-saladict/commit/4b96472))
+* **popup:** fix body width ([5212b6a](https://github.com/crimx/ext-saladict/commit/5212b6a))
+
+
+### Features
+
+* **dicts:** add lang selection for machine translations ([739e5ea](https://github.com/crimx/ext-saladict/commit/739e5ea))
+* **panel:** enable searchText on dict result ([85ec153](https://github.com/crimx/ext-saladict/commit/85ec153))
+
+
+
 <a name="6.14.0"></a>
 # [6.14.0](https://github.com/crimx/ext-saladict/compare/v6.13.4...v6.14.0) (2018-09-11)
 
