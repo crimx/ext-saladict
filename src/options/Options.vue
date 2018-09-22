@@ -22,7 +22,7 @@
             </div>
           </transition>
         </p>
-        <p><a href="https://github.com/crimx/crx-saladict/wiki" target="_blank" rel="noopener">{{ $t('opt:instructions') }}</a></p>
+        <p><a href="https://github.com/crimx/crx-saladict/wiki#wiki-content" target="_blank" rel="noopener">{{ $t('opt:instructions') }}</a></p>
         <p class="page-header-social-media-wrap">
           <a href="mailto:straybugs@gmail.com" @mouseenter="showSocialMedia(true)" @mouseleave="showSocialMedia(false)" @click.prevent="void 0">{{ $t('opt:contact_author') }}</a>
           <transition name="fade">
