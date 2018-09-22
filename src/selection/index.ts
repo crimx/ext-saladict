@@ -190,14 +190,7 @@ validMouseup$$.subscribe(event => {
   }
 
   const text = selection.getSelectionText()
-  const { english, chinese, minor } = config.language
-  if (
-    text && (
-      (english && isContainEnglish(text) && !isContainChinese(text)) ||
-      (chinese && isContainChinese(text)) ||
-      (minor && isContainMinor(text))
-    )
-  ) {
+  if (isSelectionLangValid(text)) {
     const context = selection.getSelectionSentence()
     if (text === lastText && context === lastContext && clickPeriodCount < 2) {
       // (Ignore this rule if it is a double click.)
@@ -276,7 +269,7 @@ combineLatest(
   distinctUntilChanged((oldVal, newVal) => oldVal[1] === newVal[1] && oldVal[2] === newVal[2]),
   filter((args): args is [MouseEvent, string, string] => args[0] as any as boolean),
 ).subscribe(([event, text, context]) => {
-  if (text) {
+  if (isSelectionLangValid(text)) {
     sendMessage({
       mouseX: event.clientX,
       mouseY: event.clientY,
@@ -385,6 +378,17 @@ function isTypeField (event: MouseEvent | TouchEvent | null): boolean {
   }
 
   return false
+}
+
+function isSelectionLangValid (text: string): boolean {
+  const { english, chinese, minor } = config.language
+  return Boolean(
+    text && (
+      (english && isContainEnglish(text) && !isContainChinese(text)) ||
+      (chinese && isContainChinese(text)) ||
+      (minor && isContainMinor(text))
+    )
+  )
 }
 
 /**
