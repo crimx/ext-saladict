@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.15.3"></a>
+## [6.15.3](https://github.com/crimx/ext-saladict/compare/v6.15.2...v6.15.3) (2018-09-23)
+
+
+### Bug Fixes
+
+* **content:** fix salad bowl tomato on Firefox ([552f1ab](https://github.com/crimx/ext-saladict/commit/552f1ab))
+
+
+
 <a name="6.15.2"></a>
 ## [6.15.2](https://github.com/crimx/ext-saladict/compare/v6.15.1...v6.15.2) (2018-09-23)
 
