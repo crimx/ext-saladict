@@ -1,5 +1,5 @@
 import React from 'react'
-import { DictionariesState } from '../../redux/modules/dictionaries'
+import { DictionariesState, SearchStatus } from '../../redux/modules/dictionaries'
 import { AppConfig, DictID, DictConfigs, MtaAutoUnfold } from '@/app-config'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { MsgSelection } from '@/typings/message'
@@ -246,7 +246,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
             if (typeof dictURL !== 'string') {
               dictURL = dictURL[langCode] || dictURL.en
             }
-
+            const dictInfo = dictsInfo[id]
             return React.createElement(DictItem, {
               t,
               key: id,
@@ -256,8 +256,8 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
               fontSize,
               preferredHeight: allDictsConfig[id].preferredHeight,
               panelWidth,
-              searchStatus: (dictsInfo[id] as any).searchStatus,
-              searchResult: (dictsInfo[id] as any).searchResult,
+              searchStatus: dictInfo ? dictInfo.searchStatus : SearchStatus.OnHold,
+              searchResult: dictInfo ? dictInfo.searchResult : null,
               searchText: this.searchText,
               updateItemHeight,
             })
