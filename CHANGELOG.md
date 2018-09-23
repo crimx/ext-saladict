@@ -2,6 +2,71 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.15.2"></a>
+## [6.15.2](https://github.com/crimx/ext-saladict/compare/v6.15.1...v6.15.2) (2018-09-23)
+
+
+### Bug Fixes
+
+* **panel:** dict info could be undefined ([388edc0](https://github.com/crimx/ext-saladict/commit/388edc0))
+
+
+
+<a name="6.5.0"></a>
+# [6.5.0](https://github.com/crimx/ext-saladict/compare/v6.4.1...v6.5.0) (2018-07-08)
+
+
+
+<a name="6.4.1"></a>
+## [6.4.1](https://github.com/crimx/ext-saladict/compare/v6.4.0...v6.4.1) (2018-06-28)
+
+
+
+<a name="6.4.0"></a>
+# [6.4.0](https://github.com/crimx/ext-saladict/compare/v6.3.2...v6.4.0) (2018-06-17)
+
+
+
+<a name="6.3.2"></a>
+## [6.3.2](https://github.com/crimx/ext-saladict/compare/v6.3.1...v6.3.2) (2018-06-13)
+
+
+
+<a name="6.3.1"></a>
+## [6.3.1](https://github.com/crimx/ext-saladict/compare/v6.3.0...v6.3.1) (2018-06-13)
+
+
+
+<a name="6.3.0"></a>
+# [6.3.0](https://github.com/crimx/ext-saladict/compare/v6.2.2...v6.3.0) (2018-06-12)
+
+
+
+<a name="6.2.2"></a>
+## [6.2.2](https://github.com/crimx/ext-saladict/compare/v6.2.1...v6.2.2) (2018-06-08)
+
+
+
+<a name="6.2.1"></a>
+## [6.2.1](https://github.com/crimx/ext-saladict/compare/v6.2.0...v6.2.1) (2018-06-08)
+
+
+
+<a name="6.2.0"></a>
+# [6.2.0](https://github.com/crimx/ext-saladict/compare/v6.1.3...v6.2.0) (2018-06-06)
+
+
+
+<a name="6.1.2"></a>
+## [6.1.2](https://github.com/crimx/ext-saladict/compare/v6.1.1...v6.1.2) (2018-06-06)
+
+
+
+<a name="6.1.1"></a>
+## [6.1.1](https://github.com/crimx/ext-saladict/compare/v6.1.0...v6.1.1) (2018-06-05)
+
+
+
 <a name="6.15.1"></a>
 ## [6.15.1](https://github.com/crimx/ext-saladict/compare/v6.15.0...v6.15.1) (2018-09-23)
 
