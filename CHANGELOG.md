@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.15.1"></a>
+## [6.15.1](https://github.com/crimx/ext-saladict/compare/v6.15.0...v6.15.1) (2018-09-23)
+
+
+### Bug Fixes
+
+* **panel:** fix init config state mismatch ([06d7d5a](https://github.com/crimx/ext-saladict/commit/06d7d5a))
+* **selection:** fix lang check for instant capture ([90aeb1b](https://github.com/crimx/ext-saladict/commit/90aeb1b))
+
+
+
 <a name="6.15.0"></a>
 # [6.15.0](https://github.com/crimx/ext-saladict/compare/v6.14.0...v6.15.0) (2018-09-16)
 
