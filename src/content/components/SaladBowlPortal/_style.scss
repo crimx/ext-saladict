@@ -41,8 +41,8 @@ $bowl-width: 30px;
     top: 80 * $bowl-width / 1024 !important;
     left: 5 * $bowl-width / 1024 !important;
     width: $bowl-width * 0.6 !important;
-    height: $bowl-width * 1029 / 1024 * 0.6 !important;
-    background: no-repeat center/($bowl-width * 0.6) ($bowl-width * 1029 / 1024 * 0.6) url(@/assets/tomato.svg) !important;
+    height: $bowl-width * 0.6 !important;
+    background: no-repeat center/($bowl-width * 0.6) ($bowl-width * 0.6) url(@/assets/tomato.svg) !important;
   }
 
   .saladict-SaladBowl_Bowl {
