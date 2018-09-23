@@ -1,5 +1,5 @@
 import { appConfigFactory, AppConfig } from '@/app-config'
-import { createActiveConfigStream } from '@/_helpers/config-manager'
+import { addActiveConfigListener } from '@/_helpers/config-manager'
 import { StoreState, DispatcherThunk } from './index'
 import { newConfig as newConfigDicts } from './dictionaries'
 import { newConfig as newConfigWidget } from './widget'
@@ -69,7 +69,7 @@ export function newConfig (config: AppConfig): Action<ActionType.NEW_CONFIG> {
 /** Listen to config change and update config */
 export function startUpAction (): DispatcherThunk {
   return dispatch => {
-    createActiveConfigStream().subscribe(config => {
+    addActiveConfigListener(({ newConfig: config }) => {
       dispatch(newConfig(config))
       // first widget then dicts so that the panel rect is re-calculated
       dispatch(newConfigWidget())

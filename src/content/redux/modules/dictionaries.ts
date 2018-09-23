@@ -406,15 +406,15 @@ function popupPageInit (
 
   if (baPreload) {
     const fetchInfo = baPreload === 'selection'
-        ? browser.tabs.query({ active: true, currentWindow: true })
-          .then(tabs => {
-            if (tabs.length > 0 && tabs[0].id != null) {
-              return message.send(tabs[0].id as number, { type: MsgType.PreloadSelection })
-            }
-            return null
-          })
-        : message.send({ type: MsgType.GetClipboard })
-          .then(text => getDefaultSelectionInfo({ text, title: 'From Clipboard' }))
+      ? browser.tabs.query({ active: true, currentWindow: true })
+        .then(tabs => {
+          if (tabs.length > 0 && tabs[0].id != null) {
+            return message.send(tabs[0].id as number, { type: MsgType.PreloadSelection })
+          }
+          return null
+        })
+      : message.send({ type: MsgType.GetClipboard })
+        .then(text => getDefaultSelectionInfo({ text, title: 'From Clipboard' }))
 
     fetchInfo.then(info => {
       if (info) {

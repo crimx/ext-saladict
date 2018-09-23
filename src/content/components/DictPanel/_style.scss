@@ -2,6 +2,7 @@
   height: 100vh;
   margin: 0;
   padding: 0;
+  overscroll-behavior: contain;
 }
 
 .panel-Root {
@@ -28,6 +29,7 @@
   overflow-x: hidden;
   overflow-y: scroll;
   font-size: 0; // remove whitespace
+  overscroll-behavior: contain;
 }
 
 .panel-MtaBox {

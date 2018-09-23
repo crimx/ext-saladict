@@ -564,6 +564,11 @@
     "zh_CN": "重置设定",
     "zh_TW": "重設設定"
   },
+  "set_shortkey": {
+    "en": "Set Shortkeys",
+    "zh_CN": "设置快捷键",
+    "zh_TW": "設定快捷鍵"
+  },
   "storage_import_error": {
     "en": "Import Failed",
     "zh_CN": "导入失败",

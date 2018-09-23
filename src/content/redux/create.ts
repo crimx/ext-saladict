@@ -2,13 +2,14 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer, { StoreState } from './modules'
 
-import { startUpAction as configStartUp } from './modules/config'
+import { startUpAction as configStartUp, newConfig } from './modules/config'
 import { startUpAction as selectionStartUp } from './modules/selection'
 import { startUpAction as widgetStartUp } from './modules/widget'
 import { startUpAction as dictionariesStartUp } from './modules/dictionaries'
 
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgIsPinned, MsgQueryPanelState } from '@/typings/message'
+import { getActiveConfig } from '@/_helpers/config-manager'
 
 import { Observable } from 'rxjs/Observable'
 import { map } from 'rxjs/operators/map'
@@ -24,10 +25,13 @@ export default () => {
     composeEnhancers(applyMiddleware(thunk))
   )
 
-  store.dispatch<any>(configStartUp())
-  store.dispatch<any>(selectionStartUp())
-  store.dispatch<any>(widgetStartUp())
-  store.dispatch<any>(dictionariesStartUp())
+  getActiveConfig().then(config => {
+    store.dispatch<any>(newConfig(config))
+    store.dispatch<any>(configStartUp())
+    store.dispatch<any>(selectionStartUp())
+    store.dispatch<any>(widgetStartUp())
+    store.dispatch<any>(dictionariesStartUp())
+  })
 
   // sync state
   const storeState$ = new Observable<StoreState>(observer => {

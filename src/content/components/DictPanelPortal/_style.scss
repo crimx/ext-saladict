@@ -5,6 +5,7 @@
     z-index: $global-zindex-tooltip !important;
     overflow: hidden !important;
     box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px !important;
+    overscroll-behavior: contain !important;
   }
 
   .saladict-DictPanel-enter {

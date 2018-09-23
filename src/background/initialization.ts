@@ -70,7 +70,7 @@ async function onInstalled ({ reason, previousVersion }: { reason: string, previ
 
   if (reason === 'install') {
     if (!(await storage.sync.get('hasInstructionsShown')).hasInstructionsShown) {
-      openURL('https://github.com/crimx/crx-saladict/wiki/Instructions')
+      openURL('https://github.com/crimx/crx-saladict/wiki/Instructions#wiki-content')
       storage.sync.set({ hasInstructionsShown: true })
     }
   } else if (reason === 'update') {
