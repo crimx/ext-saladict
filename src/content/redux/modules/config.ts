@@ -70,10 +70,16 @@ export function newConfig (config: AppConfig): Action<ActionType.NEW_CONFIG> {
 export function startUpAction (): DispatcherThunk {
   return dispatch => {
     addActiveConfigListener(({ newConfig: config }) => {
-      dispatch(newConfig(config))
-      // first widget then dicts so that the panel rect is re-calculated
-      dispatch(newConfigWidget())
-      dispatch(newConfigDicts())
+      dispatch(updateConfig(config))
     })
+  }
+}
+
+export function updateConfig (config: AppConfig): DispatcherThunk {
+  return dispatch => {
+    dispatch(newConfig(config))
+    // first widget then dicts so that the panel rect is re-calculated
+    dispatch(newConfigWidget())
+    dispatch(newConfigDicts())
   }
 }
