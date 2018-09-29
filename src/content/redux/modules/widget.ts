@@ -67,6 +67,8 @@ export type WidgetState = {
     readonly isTempDisabled: boolean
     readonly isPinned: boolean
     readonly isFav: boolean
+    /** is called by triple ctrl */
+    readonly isTripleCtrl: boolean
     readonly shouldBowlShow: boolean
     readonly shouldPanelShow: boolean
     readonly panelRect: {
@@ -100,6 +102,7 @@ export const initState: WidgetState = {
     isTempDisabled: false,
     isPinned: isSaladictOptionsPage,
     isFav: false,
+    isTripleCtrl: false,
     shouldBowlShow: false,
     shouldPanelShow: isSaladictPopupPage || isSaladictOptionsPage,
     panelRect: {
@@ -227,6 +230,7 @@ export const reducer: WidgetReducer = {
 
     const widget = _restoreWidget(state.widget)
     const { width, height } = widget.panelRect
+    widget.isTripleCtrl = true
     widget.shouldPanelShow = true
     widget.panelRect = _reconcilePanelRect(x, y, width, height)
 
@@ -784,6 +788,7 @@ function _restoreWidget (widget: WidgetState['widget']): Mutable<WidgetState['wi
   return {
     ...widget,
     isPinned: isSaladictOptionsPage,
+    isTripleCtrl: false,
     shouldPanelShow: isSaladictPopupPage || isSaladictOptionsPage,
     shouldBowlShow: false,
     panelRect: {

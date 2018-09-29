@@ -24,6 +24,7 @@ export interface MenuBarProps extends MenuBarDispatchers {
   readonly t: TranslationFunction
   readonly isFav: boolean
   readonly isPinned: boolean
+  readonly isTripleCtrl: boolean
   readonly searchHistory: SelectionInfo[]
   readonly activeDicts: string[]
   readonly activeConfigID: string
@@ -219,7 +220,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
 
   componentDidMount () {
     if (!this.props.isShowMtaBox &&
-        (this.props.activeDicts.length <= 0 || isSaladictPopupPage) &&
+        (isSaladictPopupPage || this.props.isTripleCtrl || this.props.activeDicts.length <= 0) &&
         this.inputRef.current
     ) {
       this.inputRef.current.focus()
@@ -230,7 +231,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   componentDidUpdate (prevProps: MenuBarProps) {
     if (prevProps.searchBoxText === this.props.searchBoxText &&
         !this.props.isShowMtaBox &&
-        (this.props.activeDicts.length <= 0 || isSaladictPopupPage) &&
+        (isSaladictPopupPage || this.props.isTripleCtrl || this.props.activeDicts.length <= 0) &&
         this.inputRef.current
     ) {
       this.inputRef.current.focus()
