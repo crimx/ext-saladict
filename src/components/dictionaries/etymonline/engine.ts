@@ -21,7 +21,7 @@ export default function search (
   config: AppConfig,
 ): Promise<EtymonlineSearchResult> {
   const options = config.dicts.all.etymonline.options
-  text = encodeURIComponent(text)
+  text = encodeURIComponent(text.replace(/\s+/g, ' '))
 
   // http to bypass the referer checking
   return fetchDirtyDOM('https://www.etymonline.com/word/' + text)

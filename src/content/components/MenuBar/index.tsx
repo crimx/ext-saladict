@@ -325,7 +325,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
           ref={this.inputRef}
           onChange={this.handleSearchBoxInput}
           onKeyUp={this.handleSearchBoxKeyUp}
-          value={this.props.searchBoxText}
+          value={this.props.searchBoxText.replace(/\s+/g, ' ')}
         />
 
         <button className='panel-MenuBar_Btn' onClick={this.handleIconSearchClick}>

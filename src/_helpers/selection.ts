@@ -14,7 +14,7 @@ export function hasSelection (win = window): boolean {
 }
 
 export function getSelectionText (win = window): string {
-  return cleanText(win.getSelection().toString())
+  return win.getSelection().toString().trim()
 }
 
 // match head                 a.b is ok             chars that ends a sentence

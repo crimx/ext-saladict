@@ -35,7 +35,7 @@ export default function search (
 ): Promise<UrbanSearchResult> {
   const options = config.dicts.all.urban.options
 
-  return fetchDirtyDOM('http://www.urbandictionary.com/define.php?term=' + encodeURIComponent(text))
+  return fetchDirtyDOM('http://www.urbandictionary.com/define.php?term=' + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)
     .then(doc => handleDOM(doc, options))
 }
