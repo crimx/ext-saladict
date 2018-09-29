@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer, { StoreState } from './modules'
 
-import { startUpAction as configStartUp, newConfig } from './modules/config'
+import { startUpAction as configStartUp, updateConfig } from './modules/config'
 import { startUpAction as selectionStartUp } from './modules/selection'
 import { startUpAction as widgetStartUp } from './modules/widget'
 import { startUpAction as dictionariesStartUp } from './modules/dictionaries'
@@ -26,7 +26,7 @@ export default () => {
   )
 
   getActiveConfig().then(config => {
-    store.dispatch<any>(newConfig(config))
+    store.dispatch<any>(updateConfig(config))
     store.dispatch<any>(configStartUp())
     store.dispatch<any>(selectionStartUp())
     store.dispatch<any>(widgetStartUp())

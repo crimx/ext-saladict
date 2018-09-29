@@ -22,7 +22,7 @@ export default function search (
   text: string,
   config: AppConfig
 ): Promise<COBUILDSearchResult> {
-  text = encodeURIComponent(text)
+  text = encodeURIComponent(text.replace(/\s+/g, ' '))
   return fetchDirtyDOM('https://www.iciba.com/' + text)
     .then(doc => handleDOM(doc, config.dicts.all.cobuild.options))
     .catch(() => {

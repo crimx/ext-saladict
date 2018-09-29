@@ -70,7 +70,7 @@ export default function search (
 ): Promise<DictSearchResult<BingResult>> {
   const bingConfig = config.dicts.all.bing
 
-  return fetchDirtyDOM(DICT_LINK + encodeURIComponent(text))
+  return fetchDirtyDOM(DICT_LINK + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)
     .then(doc => {
       if (doc.querySelector('.client_def_hd_hd')) {

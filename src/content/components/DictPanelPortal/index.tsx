@@ -201,8 +201,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
     style.setProperty('left', `${x}px`, 'important')
     style.setProperty('top', `${y}px`, 'important')
-    style.setProperty('width', width + 'px', 'important')
     if (!isSaladictPopupPage) {
+      style.setProperty('width', width + 'px', 'important')
       style.setProperty('height', height + 'px', 'important')
     }
   }
@@ -214,8 +214,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
     style.setProperty('left', `${x}px`, 'important')
     style.setProperty('top', `${y}px`, 'important')
-    style.setProperty('width', width + 'px', 'important')
     if (!isSaladictPopupPage) {
+      style.setProperty('width', width + 'px', 'important')
       style.setProperty('height', height + 'px', 'important')
     }
   }
@@ -239,8 +239,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       const style = this.frame.style
       style.setProperty('left', `${x}px`, 'important')
       style.setProperty('top', `${y}px`, 'important')
-      style.setProperty('width', width + 'px', 'important')
       if (!isSaladictPopupPage) {
+        style.setProperty('width', width + 'px', 'important')
         style.setProperty('height', height + 'px', 'important')
       }
     }

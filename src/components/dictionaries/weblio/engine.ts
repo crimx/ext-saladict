@@ -17,7 +17,7 @@ export default function search (
   text: string,
   config: AppConfig,
 ): Promise<WeblioSearchResult> {
-  return fetchDirtyDOM('https://www.weblio.jp/content/' + text)
+  return fetchDirtyDOM('https://www.weblio.jp/content/' + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)
     .then(handleDOM)
 }

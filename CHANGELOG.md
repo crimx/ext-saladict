@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.15.4"></a>
+## [6.15.4](https://github.com/crimx/ext-saladict/compare/v6.15.3...v6.15.4) (2018-09-29)
+
+
+### Bug Fixes
+
+* **panel:** config not updating on init ([361c8ca](https://github.com/crimx/ext-saladict/commit/361c8ca)), closes [#209](https://github.com/crimx/ext-saladict/issues/209)
+* **panel:** not selecting when panel is called by triple ctrl ([b34b84d](https://github.com/crimx/ext-saladict/commit/b34b84d)), closes [#193](https://github.com/crimx/ext-saladict/issues/193)
+
+
+
 <a name="6.15.3"></a>
 ## [6.15.3](https://github.com/crimx/ext-saladict/compare/v6.15.2...v6.15.3) (2018-09-23)
 

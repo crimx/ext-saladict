@@ -14,7 +14,7 @@ export default function search (
   text: string,
   config: AppConfig,
 ): Promise<VocabularySearchResult> {
-  return fetchDirtyDOM('https://www.vocabulary.com/dictionary/' + encodeURIComponent(text))
+  return fetchDirtyDOM('https://www.vocabulary.com/dictionary/' + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)
     .then(handleDOM)
 }
