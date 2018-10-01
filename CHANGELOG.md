@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.16.0"></a>
+# [6.16.0](https://github.com/crimx/ext-saladict/compare/v6.15.4...v6.16.0) (2018-10-01)
+
+
+### Features
+
+* **dicts:** chs to chz ([c0cf11e](https://github.com/crimx/ext-saladict/commit/c0cf11e))
+
+
+
 <a name="6.15.4"></a>
 ## [6.15.4](https://github.com/crimx/ext-saladict/compare/v6.15.3...v6.15.4) (2018-09-29)
 
