@@ -3,7 +3,7 @@
  */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { appConfigFactory, DictID } from '@/app-config'
+import { appConfigFactory, DictID, AppConfigMutable } from '@/app-config'
 
 import { I18nextProvider as ProviderI18next, translate } from 'react-i18next'
 import i18nLoader from '@/_helpers/i18n'
@@ -50,7 +50,11 @@ export default function setupEnv ({ dict, style = true, text = 'salad' }: EnvCon
     require('../dictionaries/' + dict + '/_style.scss')
   }
 
-  search(text, appConfigFactory())
+  const config = appConfigFactory() as AppConfigMutable
+  // config.langCode = 'zh-TW'
+  const payload = {}
+
+  search(text, config, payload)
     .then(result => {
       ReactDOM.render(
         <ProviderI18next i18n={i18n}>

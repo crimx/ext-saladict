@@ -5,9 +5,9 @@
 import setupEnv from './devDict'
 
 setupEnv({
-  dict: 'google',
-  style: false,
-  text: 'love', // 当たる 吐く
+  dict: 'zdic',
+  style: true,
+  text: '爱', // 当たる 吐く
 })
 
 /*-----------------------------------------------*\

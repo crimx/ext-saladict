@@ -2639,9 +2639,7 @@ const charMap = {
 }
 
 export function chsToChz (text: string): string {
-  return text.split('')
-    .map(c => charMap[c] || c)
-    .join('')
+  return text.replace(/[\u4e00-\u9fa5]/g, m => charMap[m] || m)
 }
 
 export default chsToChz

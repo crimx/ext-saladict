@@ -36,24 +36,26 @@ export default function search (
   config: AppConfig,
 ): Promise<YoudaoSearchResult> {
   const options = config.dicts.all.youdao.options
+  const isChz = config.langCode === 'zh-TW'
 
   return fetchDirtyDOM('http://www.youdao.com/w/' + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)
-    .then(doc => checkResult(doc, options))
+    .then(doc => checkResult(doc, options, isChz))
 }
 
 function checkResult (
   doc: Document,
   options: DictConfigs['youdao']['options'],
+  isChz: boolean,
 ): YoudaoSearchResult | Promise<YoudaoSearchResult> {
   const $typo = doc.querySelector('.error-typo')
   if (!$typo) {
-    return handleDOM(doc, options)
+    return handleDOM(doc, options, isChz)
   } else if (options.related) {
     return {
       result: {
         type: 'related',
-        list: getInnerHTML($typo)
+        list: getInnerHTML($typo, isChz)
       }
     }
   }
@@ -63,13 +65,14 @@ function checkResult (
 function handleDOM (
   doc: Document,
   options: DictConfigs['youdao']['options'],
+  isChz: boolean,
 ): YoudaoSearchResult | Promise<YoudaoSearchResult> {
   const result: YoudaoResult = {
     type: 'lex',
-    title: getText(doc, '.keyword'),
+    title: getText(doc, '.keyword', isChz),
     stars: 0,
     rank: getText(doc, '.rank'),
-    pattern: getText(doc, '.pattern'),
+    pattern: getText(doc, '.pattern', isChz),
     prons: [],
   }
 
@@ -97,23 +100,23 @@ function handleDOM (
   })
 
   if (options.basic) {
-    result.basic = getInnerHTML(doc, '#phrsListTab .trans-container')
+    result.basic = getInnerHTML(doc, '#phrsListTab .trans-container', isChz)
   }
 
   if (options.collins) {
-    result.collins = getInnerHTML(doc, '#collinsResult .ol')
+    result.collins = getInnerHTML(doc, '#collinsResult .ol', isChz)
   }
 
   if (options.discrimination) {
-    result.discrimination = getInnerHTML(doc, '#discriminate')
+    result.discrimination = getInnerHTML(doc, '#discriminate', isChz)
   }
 
   if (options.sentence) {
-    result.sentence = getInnerHTML(doc, '#authority .ol')
+    result.sentence = getInnerHTML(doc, '#authority .ol', isChz)
   }
 
   if (options.translation) {
-    result.translation = getInnerHTML(doc, '#fanyiToggle .trans-container')
+    result.translation = getInnerHTML(doc, '#fanyiToggle .trans-container', isChz)
   }
 
   if (result.title || result.translation) {
