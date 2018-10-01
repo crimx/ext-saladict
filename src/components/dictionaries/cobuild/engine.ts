@@ -23,23 +23,25 @@ export default function search (
   config: AppConfig
 ): Promise<COBUILDSearchResult> {
   text = encodeURIComponent(text.replace(/\s+/g, ' '))
+  const isChz = config.langCode === 'zh-TW'
   return fetchDirtyDOM('https://www.iciba.com/' + text)
-    .then(doc => handleDOM(doc, config.dicts.all.cobuild.options))
+    .then(doc => handleDOM(doc, config.dicts.all.cobuild.options, isChz))
     .catch(() => {
       return fetchDirtyDOM('http://www.iciba.com/' + text)
         .catch(handleNetWorkError)
-        .then(doc => handleDOM(doc, config.dicts.all.cobuild.options))
+        .then(doc => handleDOM(doc, config.dicts.all.cobuild.options, isChz))
     })
 }
 
 function handleDOM (
   doc: Document,
-  options: DictConfigs['cobuild']['options']
+  options: DictConfigs['cobuild']['options'],
+  isChz: boolean,
 ): COBUILDSearchResult | Promise<COBUILDSearchResult> {
   const result: Partial<COBUILDResult> = {}
   const audio: { uk?: string, us?: string } = {}
 
-  result.title = getText(doc, '.keyword')
+  result.title = getText(doc, '.keyword', isChz)
   if (!result.title) { return handleNoResult() }
 
   result.level = getText(doc, '.base-level')
@@ -74,7 +76,7 @@ function handleDOM (
   if ($article) {
     result.defs = Array.from($article.querySelectorAll('.prep-order'))
       .slice(0, options.sentence)
-      .map(d => getInnerHTML(d))
+      .map(d => getInnerHTML(d, isChz))
   }
 
   if (result.defs && result.defs.length > 0) {

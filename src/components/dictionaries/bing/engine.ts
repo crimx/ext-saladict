@@ -73,17 +73,19 @@ export default function search (
   return fetchDirtyDOM(DICT_LINK + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)
     .then(doc => {
+      const isChz = config.langCode === 'zh-TW'
+
       if (doc.querySelector('.client_def_hd_hd')) {
-        return handleLexResult(doc, bingConfig.options)
+        return handleLexResult(doc, bingConfig.options, isChz)
       }
 
       if (doc.querySelector('.client_trans_head')) {
-        return handleMachineResult(doc)
+        return handleMachineResult(doc, isChz)
       }
 
       if (bingConfig.options.related) {
         if (doc.querySelector('.client_do_you_mean_title_bar')) {
-          return handleRelatedResult(doc, bingConfig)
+          return handleRelatedResult(doc, bingConfig, isChz)
         }
       }
 
@@ -94,11 +96,12 @@ export default function search (
 function handleLexResult (
   doc: Document,
   options: BingConfig['options'],
+  isChz: boolean,
 ): BingSearchResultLex | Promise<BingSearchResultLex> {
   let searchResult: DictSearchResult<BingResultLex> = {
     result: {
       type: 'lex',
-      title: getText(doc, '.client_def_hd_hd')
+      title: getText(doc, '.client_def_hd_hd', isChz)
     }
   }
 
@@ -136,8 +139,8 @@ function handleLexResult (
       let $defs = Array.from($container.querySelectorAll('.client_def_bar'))
       if ($defs.length > 0) {
         searchResult.result.cdef = $defs.map(el => ({
-          'pos': getText(el, '.client_def_title_bar'),
-          'def': getText(el, '.client_def_list')
+          'pos': getText(el, '.client_def_title_bar', isChz),
+          'def': getText(el, '.client_def_list', isChz)
         }))
       }
     }
@@ -152,33 +155,32 @@ function handleLexResult (
   }
 
   if (options.sentence > 0) {
-    let $sens = Array.from(doc.querySelectorAll('.client_sentence_list'))
-    if ($sens.length > 0) {
-      searchResult.result.sentences = $sens
-        .map(el => {
-          let mp3 = ''
-          const $audio = el.querySelector('.client_aud_o')
-          if ($audio) {
-            mp3 = (($audio.getAttribute('onclick') || '').match(/https.*\.mp3/) || [''])[0]
-          }
-          el.querySelectorAll('.client_sen_en_word').forEach($word => {
-            $word.outerHTML = getText($word)
-          })
-          el.querySelectorAll('.client_sen_cn_word').forEach($word => {
-            $word.outerHTML = getText($word)
-          })
-          el.querySelectorAll('.client_sentence_search').forEach($word => {
-            $word.outerHTML = `<span class="dictBing-SentenceItem_HL">${getText($word)}</span>`
-          })
-          return {
-            en: getInnerHTML(el, '.client_sen_en'),
-            chs: getInnerHTML(el, '.client_sen_cn'),
-            source: getText(el, '.client_sentence_list_link'),
-            mp3
-          }
-        })
-        .slice(0, options.sentence)
+    let $sens = doc.querySelectorAll('.client_sentence_list')
+    const sentences: typeof searchResult.result.sentences = []
+    for (let i = 0; i < $sens.length && sentences.length < options.sentence; i++) {
+      const el = $sens[i]
+      let mp3 = ''
+      const $audio = el.querySelector('.client_aud_o')
+      if ($audio) {
+        mp3 = (($audio.getAttribute('onclick') || '').match(/https.*\.mp3/) || [''])[0]
+      }
+      el.querySelectorAll('.client_sen_en_word').forEach($word => {
+        $word.outerHTML = getText($word)
+      })
+      el.querySelectorAll('.client_sen_cn_word').forEach($word => {
+        $word.outerHTML = getText($word, isChz)
+      })
+      el.querySelectorAll('.client_sentence_search').forEach($word => {
+        $word.outerHTML = `<span class="dictBing-SentenceItem_HL">${getText($word)}</span>`
+      })
+      sentences.push({
+        en: getInnerHTML(el, '.client_sen_en'),
+        chs: getInnerHTML(el, '.client_sen_cn', isChz),
+        source: getText(el, '.client_sentence_list_link'),
+        mp3
+      })
     }
+    searchResult.result.sentences = sentences
   }
 
   if (Object.keys(searchResult.result).length > 2) {
@@ -189,8 +191,9 @@ function handleLexResult (
 
 function handleMachineResult (
   doc: Document,
+  isChz: boolean,
 ): BingSearchResultMachine | Promise<BingSearchResultMachine> {
-  const mt = getText(doc, '.client_sen_cn')
+  const mt = getText(doc, '.client_sen_cn', isChz)
 
   if (mt) {
     return {
@@ -207,11 +210,12 @@ function handleMachineResult (
 function handleRelatedResult (
   doc: Document,
   config: BingConfig,
+  isChz: boolean,
 ): BingSearchResultRelated | Promise<BingSearchResultRelated> {
   const searchResult: DictSearchResult<BingResultRelated> = {
     result: {
       type: 'related',
-      title: getText(doc, '.client_do_you_mean_title_bar'),
+      title: getText(doc, '.client_do_you_mean_title_bar', isChz),
       defs: []
     }
   }
@@ -220,13 +224,13 @@ function handleRelatedResult (
     const $defsList = $area.querySelectorAll('.client_do_you_mean_list')
     if ($defsList.length > 0) {
       searchResult.result.defs.push({
-        title: getText($area, '.client_do_you_mean_title'),
+        title: getText($area, '.client_do_you_mean_title', isChz),
         meanings: Array.from($defsList).map($list => {
-          const word = getText($list, '.client_do_you_mean_list_word')
+          const word = getText($list, '.client_do_you_mean_list_word', isChz)
           return {
             href: config.page.replace('%s', word),
             word,
-            def: getText($list, '.client_do_you_mean_list_def')
+            def: getText($list, '.client_do_you_mean_list_def', isChz)
           }
         })
       })
