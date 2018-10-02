@@ -199,15 +199,11 @@ export default {
     handleExport () {
       browser.runtime.getPlatformInfo()
         .then(({ os }) => {
-          let config = JSON.stringify(
-            {
-              activeConfigID: this.activeConfigID,
-              configProfileIDs: this.configProfileIDs,
-              configProfiles: this.configProfiles,
-            },
-            null,
-            '  '
-          )
+          let config = JSON.stringify({
+            activeConfigID: this.activeConfigID,
+            configProfileIDs: this.configProfileIDs,
+            configProfiles: this.configProfiles,
+          })
           if (os === 'win') {
             config = config.replace(/\r\n|\n/g, '\r\n')
           }
@@ -215,6 +211,10 @@ export default {
           const a = document.createElement('a')
           a.href = URL.createObjectURL(file)
           a.download = `config-${Date.now()}.saladict`
+          // firefox
+          a.target = '_blank'
+          document.body.appendChild(a)
+
           a.click()
         })
     },
