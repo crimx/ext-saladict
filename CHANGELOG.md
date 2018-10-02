@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.16.1"></a>
+## [6.16.1](https://github.com/crimx/ext-saladict/compare/v6.16.0...v6.16.1) (2018-10-02)
+
+
+### Bug Fixes
+
+* **options:** support firefox export ([322ca3c](https://github.com/crimx/ext-saladict/commit/322ca3c)), closes [#210](https://github.com/crimx/ext-saladict/issues/210)
+
+
+
 <a name="6.16.0"></a>
 # [6.16.0](https://github.com/crimx/ext-saladict/compare/v6.15.4...v6.16.0) (2018-10-01)
 
