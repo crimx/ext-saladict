@@ -69,6 +69,7 @@ export type DictionariesState = {
     readonly dicts: {
       readonly [k in DictID]?: DictState
     }
+    // 0 is the latest
     readonly searchHistory: SelectionInfo[]
   }
 }
@@ -145,8 +146,10 @@ export const reducer: DictsReducer = {
     }
   },
   [ActionType.SEARCH_START] (state, { toStart, toOnhold, toActive, info }) {
-    const { dictionaries } = state
-    const history = dictionaries.searchHistory
+    const { dictionaries, widget } = state
+    const history = widget.searchBoxIndex > 0
+      ? dictionaries.searchHistory.slice(widget.searchBoxIndex)
+      : dictionaries.searchHistory
 
     const dicts = { ...dictionaries.dicts }
     toOnhold.forEach(id => {
@@ -275,9 +278,10 @@ export function searchText (
 ): DispatcherThunk {
   return (dispatch, getState) => {
     const state = getState()
+    const searchBoxIndex = state.widget.searchBoxIndex || 0
     const info = arg
-    ? arg.info || state.dictionaries.searchHistory[0]
-    : state.dictionaries.searchHistory[0]
+      ? arg.info || state.dictionaries.searchHistory[searchBoxIndex]
+      : state.dictionaries.searchHistory[searchBoxIndex]
 
     // try to unfold a dict when the panel first popup
     if (!info || !info.text) { return }
@@ -296,8 +300,6 @@ export function searchText (
       doSearch(requestID)
       return
     }
-
-    dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
 
      // and those who don't match the selection language
     const { selected: selectedDicts, all: allDicts } = state.config.dicts
@@ -343,6 +345,8 @@ export function searchText (
     }
 
     dispatch(searchStart({ toStart, toOnhold, toActive, info }))
+    // After search start. Index is useful.
+    dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
 
     toStart.forEach(doSearch)
 

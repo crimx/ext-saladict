@@ -12,7 +12,7 @@ const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 export interface MenuBarDispatchers {
   readonly handleDragAreaMouseDown: (e: React.MouseEvent<HTMLDivElement>) => any
   readonly handleDragAreaTouchStart: (e: React.TouchEvent<HTMLDivElement>) => any
-  readonly searchText: (arg: { info: SelectionInfo }) => any
+  readonly searchText: (arg?: { info: SelectionInfo }) => any
   readonly requestFavWord: () => any
   readonly shareImg: () => any
   readonly panelPinSwitch: () => any
@@ -67,6 +67,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
       index,
       text: this.props.searchHistory[index].text
     })
+    this.props.searchText()
   }
 
   /** next search history */
@@ -78,6 +79,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
       index,
       text: this.props.searchHistory[index].text
     })
+    this.props.searchText()
   }
 
   handleSearchBoxInput = (e: React.ChangeEvent<HTMLInputElement>) => {
