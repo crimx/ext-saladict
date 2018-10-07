@@ -7,6 +7,7 @@ export function getAllContextMenus () {
     cambridge: 'http://dictionary.cambridge.org/spellcheck/english-chinese-simplified/?q=%s',
     dictcn: 'https://dict.eudic.net/dicts/en/%s',
     etymonline: 'http://www.etymonline.com/index.php?search=%s',
+    google_cn_page_translate: 'x',
     google_page_translate: 'x',
     google_search: 'https://www.google.com/#newwindow=1&q=%s',
     google_translate: 'https://translate.google.cn/#auto/zh-CN/%s',
