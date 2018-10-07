@@ -184,6 +184,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   handleIconFavMouseUp = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.button === 2) {
       e.preventDefault()
+      e.stopPropagation()
       e.currentTarget.blur()
       message.send<MsgOpenUrl>({
         type: MsgType.OpenURL,
