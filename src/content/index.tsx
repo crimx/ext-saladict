@@ -13,34 +13,30 @@ import contentLocles from '@/_locales/content'
 import profileLocles from '@/_locales/config-profiles'
 import langcodeLocles from '@/_locales/langcode'
 
-import { message } from '@/_helpers/browser-api'
-import { MsgType } from '@/typings/message'
-
 import './content.scss'
 
-// Chrome fails to inject css via manifest if the page is loaded
-// as "last opened tabs" when browser opens.
-setTimeout(() => message.send({ type: MsgType.RequestCSS }), 1000)
+// Only load on top frame
+if (window.parent === window) {
+  const i18n = i18nLoader({
+    content: contentLocles,
+    dict: dictsLocles,
+    profile: profileLocles,
+    langcode: langcodeLocles,
+  }, 'content')
 
-const i18n = i18nLoader({
-  content: contentLocles,
-  dict: dictsLocles,
-  profile: profileLocles,
-  langcode: langcodeLocles,
-}, 'content')
+  const store = createStore()
 
-const store = createStore()
+  const App = () => (
+    <ProviderRedux store={store}>
+    <ProviderI18next i18n={i18n}>
+      <div>
+        <SaladBowlContainer />
+        <DictPanelContainer />
+        <WordEditorContainer />
+      </div>
+    </ProviderI18next>
+    </ProviderRedux>
+  )
 
-const App = () => (
-  <ProviderRedux store={store}>
-  <ProviderI18next i18n={i18n}>
-    <div>
-      <SaladBowlContainer />
-      <DictPanelContainer />
-      <WordEditorContainer />
-    </div>
-  </ProviderI18next>
-  </ProviderRedux>
-)
-
-ReactDOM.render(<App />, document.createElement('div'))
+  ReactDOM.render(<App />, document.createElement('div'))
+}
