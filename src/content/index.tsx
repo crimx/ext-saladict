@@ -16,7 +16,9 @@ import langcodeLocles from '@/_locales/langcode'
 import './content.scss'
 
 // Only load on top frame
-if (window.parent === window) {
+if (window.parent === window && !window.__SALADICT_PANEL_LOADED__) {
+  window.__SALADICT_PANEL_LOADED__ = true
+
   const i18n = i18nLoader({
     content: contentLocles,
     dict: dictsLocles,

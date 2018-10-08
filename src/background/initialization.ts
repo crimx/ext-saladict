@@ -102,6 +102,20 @@ function onStartup (): void {
         })
       }
     })
+
+  // Chrome fails to inject css via manifest if the page is loaded
+  // as "last opened tabs" when browser opens.
+  setTimeout(() => {
+    browser.tabs.query({})
+      .then(tabs => {
+        tabs.forEach(({ id, url }) => {
+          if (id && url && url.startsWith('http')) {
+            browser.tabs.insertCSS(id, { file: '/content.css' }).catch(() => {/* noop */})
+            browser.tabs.executeScript(id, { file: '/content.js' }).catch(() => {/* noop */})
+          }
+        })
+      })
+  }, 1000)
 }
 
 function genClickListener (url: string) {

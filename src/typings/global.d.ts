@@ -1,4 +1,6 @@
 interface Window {
+  __SALADICT_PANEL_LOADED__?: boolean
+
   // For self page messaging
   pageId?: number | string
   faviconURL?: string
