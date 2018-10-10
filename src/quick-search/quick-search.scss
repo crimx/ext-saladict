@@ -1,0 +1,16 @@
+html,
+body,
+#frame-root,
+.saladict-DIV,
+.saladict-DictPanel {
+  position: static;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  // hide white spaces
+  font-size: 0;
+}
+
+#frame-root {
+  overflow: hidden;
+}

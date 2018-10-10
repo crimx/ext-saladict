@@ -154,6 +154,15 @@ export interface AppConfigMutable {
   /** where should the dict appears */
   tripleCtrlLocation: TCDirection
 
+  /** should panel be in a standalone window */
+  tripleCtrlStandalone: boolean
+
+  /** standalone panel height */
+  tripleCtrlHeight: number
+
+  /** should standalone panel response to page selection */
+  tripleCtrlPageSel: boolean
+
   /** browser action preload source */
   baPreload: PreloadSource
 
@@ -281,6 +290,10 @@ export function appConfigFactory (id?: string): AppConfig {
     tripleCtrlAuto: false,
 
     tripleCtrlLocation: TCDirection.center,
+
+    tripleCtrlStandalone: true,
+    tripleCtrlHeight: 600,
+    tripleCtrlPageSel: true,
 
     baPreload: 'clipboard' as PreloadSource,
 

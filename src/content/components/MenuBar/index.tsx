@@ -8,6 +8,8 @@ import CSSTransition from 'react-transition-group/CSSTransition'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
+const isSaladictQuickSearchPage = !!window.__SALADICT_QUICK_SEARCH_PAGE__
+const isStandalonePage = isSaladictPopupPage || isSaladictQuickSearchPage
 
 export interface MenuBarDispatchers {
   readonly handleDragAreaMouseDown: (e: React.MouseEvent<HTMLDivElement>) => any
@@ -112,16 +114,18 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
 
   handleIconSettingsKeyUp = (e: React.KeyboardEvent<HTMLButtonElement>) => {
     if (e.key === 'ArrowDown') {
-      // event object is pooled
+      // React event object is pooled
       const doc = e.currentTarget.ownerDocument
-      this.setState({ isShowProfilePanel: true }, () => {
-        const firstProfile = doc.getElementById(
-          this.props.configProfiles[0].id
-        )
-        if (firstProfile) {
-          firstProfile.focus()
-        }
-      })
+      if (doc) {
+        this.setState({ isShowProfilePanel: true }, () => {
+          const firstProfile = doc.getElementById(
+            this.props.configProfiles[0].id
+          )
+          if (firstProfile) {
+            firstProfile.focus()
+          }
+        })
+      }
     }
   }
 
@@ -164,11 +168,14 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
     const { configProfiles } = this.props
     const curID = configProfiles.findIndex(({ id }) => id === e.currentTarget.id)
     const nextID = ((configProfiles.length + curID) + offset) % configProfiles.length
-    const nextProfile = e.currentTarget.ownerDocument.getElementById(
-      configProfiles[nextID].id
-    )
-    if (nextProfile) {
-      nextProfile.focus()
+    const doc = e.currentTarget.ownerDocument
+    if (doc) {
+      const nextProfile = doc.getElementById(
+        configProfiles[nextID].id
+      )
+      if (nextProfile) {
+        nextProfile.focus()
+      }
     }
   }
 
@@ -223,7 +230,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
 
   componentDidMount () {
     if (!this.props.isShowMtaBox &&
-        (isSaladictPopupPage || this.props.isTripleCtrl || this.props.activeDicts.length <= 0) &&
+        (isStandalonePage || this.props.isTripleCtrl || this.props.activeDicts.length <= 0) &&
         this.inputRef.current
     ) {
       this.inputRef.current.focus()
@@ -234,7 +241,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   componentDidUpdate (prevProps: MenuBarProps) {
     if (prevProps.searchBoxText === this.props.searchBoxText &&
         !this.props.isShowMtaBox &&
-        (isSaladictPopupPage || this.props.isTripleCtrl || this.props.activeDicts.length <= 0) &&
+        (isStandalonePage || this.props.isTripleCtrl || this.props.activeDicts.length <= 0) &&
         this.inputRef.current
     ) {
       this.inputRef.current.focus()
@@ -411,7 +418,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
 
         <button className='panel-MenuBar_Btn'
           onClick={this.handleIconPinClick}
-          disabled={isSaladictOptionsPage || isSaladictPopupPage}
+          disabled={isSaladictOptionsPage || isStandalonePage}
         >
           <svg
             className='panel-MenuBar_Icon'
@@ -424,7 +431,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
 
         <button className='panel-MenuBar_Btn'
           onClick={this.handleIconCloseClick}
-          disabled={isSaladictOptionsPage || isSaladictPopupPage}
+          disabled={isSaladictOptionsPage || isStandalonePage}
         >
           <svg
             className='panel-MenuBar_Icon'
