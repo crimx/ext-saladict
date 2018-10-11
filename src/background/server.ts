@@ -44,7 +44,7 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return injectCSS(sender)
 
     case MsgType.QueryQSPanel:
-      return Promise.resolve(qsPanelID !== false) as Promise<MsgQueryQSPanelResponse>
+      return Promise.resolve(qsPanelID !== false)
     case MsgType.OpenQSPanel:
       return openQSPanel()
 
