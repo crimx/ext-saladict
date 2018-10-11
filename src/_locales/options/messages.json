@@ -452,7 +452,7 @@
   "no_type_field": {
     "en": "No selection in editable regions",
     "zh_CN": "不在输入框划词",
-    "zh_TW": "不在輸入框鼠標滑字"
+    "zh_TW": "不在輸入框滑鼠滑字"
   },
   "none": {
     "en": "None",
@@ -507,7 +507,7 @@
   "preference_description": {
     "en": "Switch off animation transitions to reduce runtime cost. If selection making in editable regions is banned, the extension will identify Input Boxes, TextAreas and other common text editors like CodeMirror, ACE and Monaco.",
     "zh_CN": "关闭过渡动画可减少资源消耗。关闭输入框划词后，本扩展会自动识别输入框以及常见编辑器，如 CodeMirror、ACE 和 Monaco。",
-    "zh_TW": "關閉轉換動畫可減少資源消耗。關閉輸入框鼠標滑字后，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror、ACE 和 Monaco。"
+    "zh_TW": "關閉轉換動畫可減少資源消耗。關閉輸入框滑鼠滑字后，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror、ACE 和 Monaco。"
   },
   "preference_title": {
     "en": "Preference",
@@ -594,6 +594,11 @@
     "zh_CN": "连续按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键将弹出词典界面。选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。",
     "zh_TW": "連續按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵，將會彈出字典視窗介面。選擇預先下載的內容，會顯示在輸入框裡。啟動自動查字功能，字典視窗介面會出現，此時，會自動開始查尋單字。"
   },
+  "triple_ctrl_height": {
+    "en": "Window Height",
+    "zh_CN": "窗口高度",
+    "zh_TW": "視窗高度"
+  },
   "triple_ctrl_loc_0": {
     "en": "Center",
     "zh_CN": "居中",
@@ -643,6 +648,16 @@
     "en": "Location",
     "zh_CN": "出现位置",
     "zh_TW": "出現位置"
+  },
+  "triple_ctrl_page_selection": {
+    "en": "Response to page selection",
+    "zh_CN": "响应主页面划词",
+    "zh_TW": "對主介面滑鼠滑字作出反應"
+  },
+  "triple_ctrl_standalone": {
+    "en": "Standalone",
+    "zh_CN": "独立窗口",
+    "zh_TW": "獨立視窗"
   },
   "triple_ctrl_title": {
     "en": "Quick Search",
