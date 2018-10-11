@@ -23,6 +23,10 @@ jest.mock('@/background/pdf-sniffer', () => {
   return { init: jest.fn() }
 })
 
+jest.mock('@/background/server', () => {
+  return { openQSPanel: jest.fn() }
+})
+
 jest.mock('@/_helpers/check-update', () => {
   return jest.fn().mockReturnValue(Promise.resolve())
 })
