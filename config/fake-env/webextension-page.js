@@ -43,6 +43,15 @@ window.browser = {
     getMessage (k) { return locales[k] && locales[k].message.zh_CN },
     getUILanguage () { return 'zh-CN' },
   },
+  windows: {
+    update: () => Promise.resolve(1),
+    create: () => Promise.resolve(1),
+    onRemoved: {
+      addListener () {},
+      hasListener () {},
+      removeListener () {},
+    }
+  },
   notifications: {
     create: _.partial(console.log, 'create notifications:'),
     onClicked: {

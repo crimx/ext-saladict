@@ -156,8 +156,10 @@ export function updateActiveConfig (config: AppConfig): Promise<void> {
   if (process.env.DEV_BUILD) {
     storage.sync.get('configProfileIDs')
       .then(({ configProfileIDs }) => {
-        if (-1 === configProfileIDs.indexOf(config.id)) {
-          console.error('Update Config Error: Not exist', config)
+        if (!configProfileIDs || -1 === configProfileIDs.indexOf(config.id)) {
+          if (process.env.NODE_ENV === 'production') {
+            console.error('Update Config Error: Not exist', config)
+          }
         }
       })
   }
