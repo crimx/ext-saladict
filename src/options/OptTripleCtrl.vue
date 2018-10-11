@@ -85,7 +85,7 @@
       </transition>
     </div>
     <div class="opt-item__description-wrap">
-      <p class="opt-item__description" v-html="$t('opt:triple_ctrl_description')"></p>
+      <p class="opt-item__description" v-html="$t('opt:triple_ctrl_description') + $t('opt:mode_explain')"></p>
     </div>
   </div><!-- 快捷查词 -->
 </template>

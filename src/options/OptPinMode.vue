@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="opt-item__description-wrap">
-      <p class="opt-item__description" v-html="$t('opt:pinmode_description')"></p>
+      <p class="opt-item__description" v-html="$t('opt:pinmode_description') + $t('opt:mode_explain')"></p>
     </div>
   </div><!-- 钉住查词-->
 </template>

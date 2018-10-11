@@ -43,7 +43,7 @@
       </div>
     </div>
     <div class="opt-item__description-wrap">
-      <p class="opt-item__description" v-html="$t('opt:mode_description')"></p>
+      <p class="opt-item__description" v-html="$t('opt:mode_description') + $t('opt:mode_explain')"></p>
     </div>
   </div><!-- 查词模式-->
 </template>
