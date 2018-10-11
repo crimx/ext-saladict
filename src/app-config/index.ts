@@ -136,6 +136,22 @@ export interface AppConfigMutable {
     }
   },
 
+  /** when this is a quick search standalone panel running */
+  qsPanelMode: {
+    /** direct: on mouseup */
+    direct: boolean
+    /** double: double click */
+    double: boolean
+    /** ctrl: search when double click ctrl + selection not empty */
+    ctrl: boolean
+    /** cursor instant capture */
+    instant: {
+      enable: boolean
+      key: 'direct' | 'ctrl' | 'alt'
+      delay: number
+    }
+  },
+
   /** instant capture delay, in ms */
   insCapDelay: number
 
@@ -273,6 +289,17 @@ export function appConfigFactory (id?: string): AppConfig {
       direct: false,
       double: false,
       ctrl: false,
+      instant: {
+        enable: false,
+        key: 'alt',
+        delay: 600,
+      },
+    },
+
+    qsPanelMode: {
+      direct: false,
+      double: false,
+      ctrl: true,
       instant: {
         enable: false,
         key: 'alt',

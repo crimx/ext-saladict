@@ -55,6 +55,13 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   merge('panelMode.instant.key', val => val === 'direct' || val === 'ctrl' || val === 'alt')
   mergeNumber('panelMode.instant.delay')
 
+  mergeBoolean('qsPanelMode.direct')
+  mergeBoolean('qsPanelMode.double')
+  mergeBoolean('qsPanelMode.ctrl')
+  mergeBoolean('qsPanelMode.instant.enable')
+  merge('qsPanelMode.instant.key', val => val === 'direct' || val === 'ctrl' || val === 'alt')
+  mergeNumber('qsPanelMode.instant.delay')
+
   mergeNumber('doubleClickDelay')
 
   mergeBoolean('tripleCtrl')

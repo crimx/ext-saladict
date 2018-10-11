@@ -116,7 +116,7 @@ export const reducer: DictsReducer = {
       dictionaries: {
         ...dictionaries,
         selected: selected.slice(),
-        active: selected.slice(),
+        active: dictionaries.active.filter(id => selected.indexOf(id) !== -1),
         dicts: selected.reduce((newState, id) => {
           newState[id] = dictionaries.dicts[id] || {
             searchStatus: SearchStatus.OnHold,
@@ -268,6 +268,8 @@ export function startUpAction (): DispatcherThunk {
       /** From other tabs */
       message.addListener<MsgQSPanelSearchText>(MsgType.QSPanelSearchText, ({ info }) => {
         dispatch(searchText({ info }))
+        // focus standalone panel
+        message.send({ type: MsgType.OpenQSPanel })
       })
     }
   }

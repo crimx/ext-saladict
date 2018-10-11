@@ -84,7 +84,7 @@ export type WidgetState = {
     /** is called by triple ctrl */
     readonly isTripleCtrl: boolean
     /** is a standalone panel running */
-    readonly isQSPanel: boolean
+    readonly withQSPanel: boolean
     readonly shouldBowlShow: boolean
     readonly shouldPanelShow: boolean
     readonly panelRect: {
@@ -119,7 +119,7 @@ export const initState: WidgetState = {
     isPinned: isSaladictOptionsPage,
     isFav: false,
     isTripleCtrl: isSaladictQuickSearchPage,
-    isQSPanel: false,
+    withQSPanel: false,
     shouldBowlShow: false,
     shouldPanelShow: isStandalonePage || isSaladictOptionsPage,
     panelRect: {
@@ -407,19 +407,20 @@ export const reducer: WidgetReducer = {
     }
   },
   [ActionType.QS_PANEL_TABID_CHANGED] (state, flag) {
-    if (state.widget.isQSPanel === flag) {
+    if (state.widget.withQSPanel === flag) {
       return state
     }
 
-    const widget = {
-      ...state.widget,
-      isQSPanel: flag,
-    }
-
     // hide panel on otehr pages
+    let widget
     if (flag && state.config.tripleCtrlPageSel) {
-      widget.shouldBowlShow = false
-      widget.shouldPanelShow = false
+      widget = _restoreWidget(state.widget)
+      widget.withQSPanel = true
+    } else {
+      widget = {
+        ...state.widget,
+        withQSPanel: flag,
+      }
     }
 
     return {
@@ -737,11 +738,20 @@ export function newSelection (): DispatcherThunk {
     }
 
     // standalone panel takes control
-    if (!widget.isQSPanel && config.tripleCtrlPageSel) {
-      message.send<MsgQSPanelSearchText>({
-        type: MsgType.QSPanelSearchText,
-        info: selection.selectionInfo,
-      })
+    if (widget.withQSPanel && config.tripleCtrlPageSel) {
+      const { qsPanelMode } = config
+      if (selectionInfo.text && (
+            instant ||
+            qsPanelMode.direct ||
+            (qsPanelMode.double && dbClick) ||
+            (qsPanelMode.ctrl && ctrlKey)
+          )
+      ) {
+        message.send<MsgQSPanelSearchText>({
+          type: MsgType.QSPanelSearchText,
+          info: selection.selectionInfo,
+        })
+      }
       return
     }
 
@@ -832,9 +842,12 @@ function listenTrpleCtrl (
 ) {
   message.self.addListener(MsgType.TripleCtrl, () => {
     const { config, widget } = getState()
-    if (widget.shouldPanelShow || !widget.isQSPanel) { return }
+    if (!config.tripleCtrlStandalone && widget.shouldPanelShow) {
+      return
+    }
 
     if (config.tripleCtrlStandalone) {
+      // focus if the standalone panel is already opened
       message.send({ type: MsgType.OpenQSPanel })
     } else {
       dispatch(tripleCtrlPressed())
