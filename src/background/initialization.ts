@@ -3,6 +3,7 @@ import checkUpdate from '@/_helpers/check-update'
 import { AppConfigMutable } from '@/app-config'
 import { getActiveConfig, updateActiveConfig, initConfig } from '@/_helpers/config-manager'
 import { init as initMenus, openPDF, openGoogle, openYoudao } from './context-menus'
+import { openQSPanel } from './server'
 import { init as initPdf } from './pdf-sniffer'
 import { MsgType, MsgQueryPanelState } from '@/typings/message'
 
@@ -49,6 +50,9 @@ browser.commands.onCommand.addListener(command => {
           updateActiveConfig(config)
         })
       })
+      break
+    case 'open-quick-search':
+      openQSPanel()
       break
     case 'open-google':
       openGoogle()

@@ -86,7 +86,7 @@ browser.windows.onRemoved.addListener(async winID => {
   }
 })
 
-async function openQSPanel (): Promise<void> {
+export async function openQSPanel (): Promise<void> {
   if (qsPanelID !== false) {
     await browser.windows.update(qsPanelID, { focused: true })
   } else {
