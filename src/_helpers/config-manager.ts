@@ -7,7 +7,7 @@
  */
 
 import { appConfigFactory, AppConfig } from '@/app-config'
-import { defaultModesFactory } from '@/app-config/default-modes'
+import { defaultProfilesFactory } from '@/app-config/default-profiles'
 import { storage } from './browser-api'
 // import { Observable, from, concat } from 'rxjs'
 // import { map, filter } from 'rxjs/operators'
@@ -43,7 +43,7 @@ export async function initConfig (): Promise<AppConfig> {
       modes.push(config ? mergeConfig(config) : appConfigFactory(id))
     }
   } else {
-    modes = defaultModesFactory()
+    modes = defaultProfilesFactory()
     // old config, replace the default if exist
     const config = (await storage.sync.get('config')).config
     if (config) {
