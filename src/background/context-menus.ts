@@ -45,6 +45,9 @@ browser.contextMenus.onClicked.addListener(info => {
     case 'google_page_translate':
       openGoogle()
       break
+    case 'google_cn_page_translate':
+      openGoogle(true)
+      break
     case 'youdao_page_translate':
       openYoudao()
       break
@@ -140,12 +143,12 @@ export function openPDF (linkUrl?: string) {
   }
 }
 
-export function openGoogle () {
+export function openGoogle (cn?: boolean) {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
         getActiveConfig().then(config => {
-          openURL(`https://translate.google.com/translate?sl=auto&tl=${config.langCode}&js=y&prev=_t&ie=UTF-8&u=${encodeURIComponent(tabs[0].url as string)}&edit-text=&act=url`)
+          openURL(`https://translate.google.${cn ? 'cn' : 'com'}/translate?sl=auto&tl=${config.langCode}&js=y&prev=_t&ie=UTF-8&u=${encodeURIComponent(tabs[0].url as string)}&edit-text=&act=url`)
         })
       }
     })
@@ -244,6 +247,7 @@ function setContextMenus (
         let contexts: browser.contextMenus.ContextType[]
         switch (id) {
           case 'google_page_translate':
+          case 'google_cn_page_translate':
           case 'youdao_page_translate':
           case 'sogou_page_translate':
           case 'baidu_page_translate':
@@ -264,9 +268,12 @@ function setContextMenus (
 
       // Only for browser action
       if (browserActionCount <= 0) {
+        const google = contextMenus.selected.indexOf('google_page_translate') !== -1
+          ? 'google_page_translate'
+          : 'google_cn_page_translate'
         optionList.push({
-          id: 'google_page_translate',
-          title: t('google_page_translate'),
+          id: google,
+          title: t(google),
           contexts: ['browser_action']
         })
         optionList.push({

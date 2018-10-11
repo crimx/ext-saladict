@@ -1,6 +1,6 @@
 import { appConfigFactory, AppConfig, AppConfigMutable } from './'
 
-export function defaultModesFactory (): AppConfig[] {
+export function defaultProfilesFactory (): AppConfig[] {
   return [
     appConfigFactory(),
     daily(),

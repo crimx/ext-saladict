@@ -270,7 +270,7 @@
     "zh_TW": "例子"
   },
   "export": {
-    "en": "Reset",
+    "en": "Export",
     "zh_CN": "导出设定",
     "zh_TW": "匯出設定"
   },
@@ -360,9 +360,9 @@
     "zh_TW": "按住Ctrl/⌘"
   },
   "mode_description": {
-    "en": "When a text selection is made: <ul><li><strong>'Show Icon'</strong>, a cute little icon pops up nearby the cursor; </li><li><strong>'Directly Search'</strong>, the dictionary panel shows up directly; </li><li><strong>'Double Click'</strong>, dictionary panel shows up after double click selection; </li><li><strong>'Hold Ctrl/⌘'</strong>, the <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key must be pressed when the selection is made; </li><li><strong>'Instant Capture'</strong>, selection is automatically made near by the cursor. </li></ul>",
-    "zh_CN": "当用鼠标在网页上选择了一段文本：<ul><li><strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；</li><li><strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；</li><li><strong>“双击搜索”</strong>双击选择文本之后直接显示词典面板；</li><li><strong>“按住 Ctrl/⌘”</strong>在选择文本时需同时按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键才显示词典面板；</li><li><strong>“鼠标悬浮取词”</strong>会自动选取鼠标下发的单词，可配合快捷键开启关闭。</li></ul>",
-    "zh_TW": "當使用滑鼠在網頁上選擇一段句子或單字：<ul><li><strong>「顯示圖案」</strong>會先在滑鼠附近顯示一個圖案，滑鼠移動到圖案，會顯示出字典的視窗介面；</li><li><strong>「直接搜尋」</strong>則不會顯示圖案，直接顯示字典視窗介面；</li><li><strong>「滑鼠雙點擊」</strong>滑鼠雙點擊所選擇的句子或單字後，會直接顯示字典視窗介面；</li><li><strong>「按住 Ctrl/⌘」</strong>在選擇句子或單字時，需同時按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵，才顯示字典視窗介面；</li><li><strong>「滑鼠懸浮取詞」</strong>會自動選取滑鼠下方的單字，可配合快捷鍵啓用與關閉。</li></ul>"
+    "en": "When a text selection is made:",
+    "zh_CN": "当用鼠标在网页上选择了一段文本：",
+    "zh_TW": "當使用滑鼠在網頁上選擇一段句子或單字："
   },
   "mode_direct": {
     "en": "Direct Search",
@@ -378,6 +378,11 @@
     "en": "Double Click Delay",
     "zh_CN": "双击间隔",
     "zh_TW": "滑鼠雙點擊間隔"
+  },
+  "mode_explain": {
+    "en": "<ul><li><strong>'Show Icon'</strong>, a cute little icon pops up nearby the cursor; </li><li><strong>'Directly Search'</strong>, the dictionary panel shows up directly; </li><li><strong>'Double Click'</strong>, dictionary panel shows up after double click selection; </li><li><strong>'Hold Ctrl/⌘'</strong>, the <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key must be pressed when the selection is made; </li><li><strong>'Instant Capture'</strong>, selection is automatically made near by the cursor. </li></ul>",
+    "zh_CN": "<ul><li><strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；</li><li><strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；</li><li><strong>“双击搜索”</strong>双击选择文本之后直接显示词典面板；</li><li><strong>“按住 Ctrl/⌘”</strong>在选择文本时需同时按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键才显示词典面板；</li><li><strong>“鼠标悬浮取词”</strong>会自动选取鼠标下发的单词，可配合快捷键开启关闭。</li></ul>",
+    "zh_TW": "<ul><li><strong>「顯示圖案」</strong>會先在滑鼠附近顯示一個圖案，滑鼠移動到圖案，會顯示出字典的視窗介面；</li><li><strong>「直接搜尋」</strong>則不會顯示圖案，直接顯示字典視窗介面；</li><li><strong>「滑鼠雙點擊」</strong>滑鼠雙點擊所選擇的句子或單字後，會直接顯示字典視窗介面；</li><li><strong>「按住 Ctrl/⌘」</strong>在選擇句子或單字時，需同時按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵，才顯示字典視窗介面；</li><li><strong>「滑鼠懸浮取詞」</strong>會自動選取滑鼠下方的單字，可配合快捷鍵啓用與關閉。</li></ul>"
   },
   "mode_icon": {
     "en": "Show Icon",
@@ -452,7 +457,7 @@
   "no_type_field": {
     "en": "No selection in editable regions",
     "zh_CN": "不在输入框划词",
-    "zh_TW": "不在輸入框鼠標滑字"
+    "zh_TW": "不在輸入框滑鼠滑字"
   },
   "none": {
     "en": "None",
@@ -470,9 +475,9 @@
     "zh_TW": "添加生字"
   },
   "panelmode_description": {
-    "en": "Inside dict panel. See 'Search Mode' above.",
-    "zh_CN": "查词面板内部的查词模式。参见上方“查词模式”。",
-    "zh_TW": "字典視窗內部的查字模式。參見上方「查字模式」。"
+    "en": "Inside dict panel.",
+    "zh_CN": "查词面板内部的查词模式。",
+    "zh_TW": "字典視窗內部的查字模式。"
   },
   "panelmode_title": {
     "en": "Panel Mode",
@@ -485,9 +490,9 @@
     "zh_TW": "使用本應用程式瀏覽 PDF"
   },
   "pinmode_description": {
-    "en": "When Dictionary Panel is pinned. See 'Search Mode' above.",
-    "zh_CN": "当面板被钉住时的查词模式。参见上方“查词模式”。",
-    "zh_TW": "當視窗被釘住時的查字模式。參見上方「查字模式」。"
+    "en": "When Dictionary Panel is pinned.",
+    "zh_CN": "当面板被钉住时的查词模式。",
+    "zh_TW": "當視窗被釘住時的查字模式。"
   },
   "pinmode_title": {
     "en": "Pinned Mode",
@@ -507,7 +512,7 @@
   "preference_description": {
     "en": "Switch off animation transitions to reduce runtime cost. If selection making in editable regions is banned, the extension will identify Input Boxes, TextAreas and other common text editors like CodeMirror, ACE and Monaco.",
     "zh_CN": "关闭过渡动画可减少资源消耗。关闭输入框划词后，本扩展会自动识别输入框以及常见编辑器，如 CodeMirror、ACE 和 Monaco。",
-    "zh_TW": "關閉轉換動畫可減少資源消耗。關閉輸入框鼠標滑字后，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror、ACE 和 Monaco。"
+    "zh_TW": "關閉轉換動畫可減少資源消耗。關閉輸入框滑鼠滑字后，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror、ACE 和 Monaco。"
   },
   "preference_title": {
     "en": "Preference",
@@ -590,9 +595,14 @@
     "zh_TW": "開啟"
   },
   "triple_ctrl_description": {
-    "en": "Press <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key three times to summon the dictionary panel. Preloaded content will be inserted into input box. Enable auto search to search as soon as the panel shows up.",
-    "zh_CN": "连续按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键将弹出词典界面。选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。",
-    "zh_TW": "連續按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵，將會彈出字典視窗介面。選擇預先下載的內容，會顯示在輸入框裡。啟動自動查字功能，字典視窗介面會出現，此時，會自動開始查尋單字。"
+    "en": "Press <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key three times (or with browser shortkey) to summon the dictionary panel. <br>Preloaded content will be inserted into input box. Enable auto search to search as soon as the panel shows up.",
+    "zh_CN": "连续按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键（或设置浏览器快捷键）将弹出词典界面。<br>选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。<br>若打开为新窗口可额外设置划词模式，或不对主页面划词响应（做单独词典窗口用）。",
+    "zh_TW": "連續按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵（或設定瀏覽器快捷鍵），將會彈出字典視窗介面。<br>選擇預先下載的內容，會顯示在輸入框裡。啟動自動查字功能，字典視窗介面會出現，此時，會自動開始查尋單字。<br>若開啟為新視窗可額外設定劃詞模式，或不對主頁面劃詞響應（做單獨字典視窗用）。"
+  },
+  "triple_ctrl_height": {
+    "en": "Window Height",
+    "zh_CN": "窗口高度",
+    "zh_TW": "視窗高度"
   },
   "triple_ctrl_loc_0": {
     "en": "Center",
@@ -643,6 +653,16 @@
     "en": "Location",
     "zh_CN": "出现位置",
     "zh_TW": "出現位置"
+  },
+  "triple_ctrl_page_selection": {
+    "en": "Response to page selection",
+    "zh_CN": "响应主页面划词",
+    "zh_TW": "對主介面滑鼠滑字作出反應"
+  },
+  "triple_ctrl_standalone": {
+    "en": "Standalone",
+    "zh_CN": "独立窗口",
+    "zh_TW": "獨立視窗"
   },
   "triple_ctrl_title": {
     "en": "Quick Search",

@@ -1,18 +1,20 @@
 import { message } from '@/_helpers/browser-api'
-import { DictID, appConfigFactory, AppConfig } from '@/app-config'
+import { DictID, appConfigFactory, AppConfig, PreloadSource } from '@/app-config'
 import isEqual from 'lodash/isEqual'
 import { saveWord } from '@/_helpers/record-manager'
 import { getDefaultSelectionInfo, SelectionInfo, isSameSelection } from '@/_helpers/selection'
 import { isContainChinese, isContainEnglish, testerPunct, isContainMinor, testerChinese, testJapanese, testKorean } from '@/_helpers/lang-check'
-import { MsgType, MsgFetchDictResult } from '@/typings/message'
-import { StoreState, DispatcherThunk, Dispatcher } from './index'
-import { isInNotebook, tripleCtrlPressed, searchBoxUpdate } from './widget'
+import { MsgType, MsgFetchDictResult, MsgQSPanelSearchText } from '@/typings/message'
+import { StoreState, DispatcherThunk } from './index'
+import { isInNotebook, searchBoxUpdate } from './widget'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
+const isSaladictQuickSearchPage = !!window.__SALADICT_QUICK_SEARCH_PAGE__
 
-const isNoSearchHistoryPage = isSaladictInternalPage && !isSaladictPopupPage
+const isStandalonePage = isSaladictPopupPage || isSaladictQuickSearchPage
+const isNoSearchHistoryPage = isSaladictInternalPage && !isStandalonePage
 
 /*-----------------------------------------------*\
     Action Type
@@ -69,6 +71,7 @@ export type DictionariesState = {
     readonly dicts: {
       readonly [k in DictID]?: DictState
     }
+    // 0 is the latest
     readonly searchHistory: SelectionInfo[]
   }
 }
@@ -113,7 +116,7 @@ export const reducer: DictsReducer = {
       dictionaries: {
         ...dictionaries,
         selected: selected.slice(),
-        active: selected.slice(),
+        active: dictionaries.active.filter(id => selected.indexOf(id) !== -1),
         dicts: selected.reduce((newState, id) => {
           newState[id] = dictionaries.dicts[id] || {
             searchStatus: SearchStatus.OnHold,
@@ -145,8 +148,10 @@ export const reducer: DictsReducer = {
     }
   },
   [ActionType.SEARCH_START] (state, { toStart, toOnhold, toActive, info }) {
-    const { dictionaries } = state
-    const history = dictionaries.searchHistory
+    const { dictionaries, widget } = state
+    const history = widget.searchBoxIndex > 0
+      ? dictionaries.searchHistory.slice(widget.searchBoxIndex)
+      : dictionaries.searchHistory
 
     const dicts = { ...dictionaries.dicts }
     toOnhold.forEach(id => {
@@ -256,12 +261,16 @@ export function addSearchHistory (
 
 export function startUpAction (): DispatcherThunk {
   return (dispatch, getState) => {
-    if (!isSaladictPopupPage && !isSaladictOptionsPage) {
-      listenTrpleCtrl(dispatch, getState)
-    }
-
     if (isSaladictPopupPage) {
-      popupPageInit(dispatch, getState)
+      const { baPreload, baAuto } = getState().config
+      dispatch(summonedPanelInit(baPreload, baAuto, true))
+    } else if (isSaladictQuickSearchPage) {
+      /** From other tabs */
+      message.addListener<MsgQSPanelSearchText>(MsgType.QSPanelSearchText, ({ info }) => {
+        dispatch(searchText({ info }))
+        // focus standalone panel
+        message.send({ type: MsgType.OpenQSPanel })
+      })
     }
   }
 }
@@ -275,9 +284,10 @@ export function searchText (
 ): DispatcherThunk {
   return (dispatch, getState) => {
     const state = getState()
+    const searchBoxIndex = state.widget.searchBoxIndex || 0
     const info = arg
-    ? arg.info || state.dictionaries.searchHistory[0]
-    : state.dictionaries.searchHistory[0]
+      ? arg.info || state.dictionaries.searchHistory[searchBoxIndex]
+      : state.dictionaries.searchHistory[searchBoxIndex]
 
     // try to unfold a dict when the panel first popup
     if (!info || !info.text) { return }
@@ -296,8 +306,6 @@ export function searchText (
       doSearch(requestID)
       return
     }
-
-    dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
 
      // and those who don't match the selection language
     const { selected: selectedDicts, all: allDicts } = state.config.dicts
@@ -343,6 +351,8 @@ export function searchText (
     }
 
     dispatch(searchStart({ toStart, toOnhold, toActive, info }))
+    // After search start. Index is useful.
+    dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
 
     toStart.forEach(doSearch)
 
@@ -364,61 +374,32 @@ export function searchText (
   }
 }
 
-function listenTrpleCtrl (
-  dispatch: Dispatcher,
-  getState: () => StoreState,
-) {
-  message.self.addListener(MsgType.TripleCtrl, () => {
+export function summonedPanelInit (
+  preload: PreloadSource,
+  autoSearch: boolean,
+  isStandalone: boolean,
+): DispatcherThunk {
+  return (dispatch, getState) => {
+    if (!preload) { return }
+
     const state = getState()
-    if (state.widget.shouldPanelShow) { return }
 
-    dispatch(tripleCtrlPressed())
-
-    const { tripleCtrlPreload, tripleCtrlAuto } = state.config
-
-    const fetchInfo = tripleCtrlPreload === 'selection'
-      ? Promise.resolve({ ...state.selection.selectionInfo })
-      : tripleCtrlPreload === 'clipboard'
-        ? message.send({ type: MsgType.GetClipboard })
-            .then(text => getDefaultSelectionInfo({ text, title: 'From Clipboard' }))
-        : Promise.resolve(getDefaultSelectionInfo())
-
-    fetchInfo.then(info => {
-      if (tripleCtrlAuto && info.text) {
-        dispatch(searchText({ info }))
-      } else {
-        dispatch(restoreDicts())
-        dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
-      }
-    })
-  })
-}
-
-function popupPageInit (
-  dispatch: Dispatcher,
-  getState: () => StoreState,
-) {
-  const state = getState()
-  const {
-    baAuto,
-    baPreload,
-  } = state.config
-
-  if (baPreload) {
-    const fetchInfo = baPreload === 'selection'
-      ? browser.tabs.query({ active: true, currentWindow: true })
-        .then(tabs => {
-          if (tabs.length > 0 && tabs[0].id != null) {
-            return message.send(tabs[0].id as number, { type: MsgType.PreloadSelection })
-          }
-          return null
-        })
+    const fetchInfo = preload === 'selection'
+      ? isStandalone
+        ? browser.tabs.query({ active: true, currentWindow: true })
+          .then(tabs => {
+            if (tabs.length > 0 && tabs[0].id != null) {
+              return message.send(tabs[0].id as number, { type: MsgType.PreloadSelection })
+            }
+            return null
+          })
+        : Promise.resolve({ ...state.selection.selectionInfo })
       : message.send({ type: MsgType.GetClipboard })
         .then(text => getDefaultSelectionInfo({ text, title: 'From Clipboard' }))
 
     fetchInfo.then(info => {
       if (info) {
-        if (baAuto && info.text) {
+        if (autoSearch && info.text) {
           dispatch(searchText({ info }))
         } else {
           dispatch(restoreDicts())

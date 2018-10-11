@@ -59,20 +59,37 @@ function fetchWithToken (base: string, sl: string, tl: string, text: string): Pr
   return fetch(base)
     .then(r => r.ok ? r.text() : handleNetWorkError())
     .then<GoogleRawResult>(body => {
-      const tkk = (body.match(/TKK=(.*?)\(\)\)'\);/) || [''])[0]
+      let tk = ''
+      let tk1 = 0
+      let tk2 = 0
+
+      // eval version
+      let tkk = (body.match(/TKK=(.*?)\(\)\)'\);/i) || [''])[0]
         .replace(/\\x([0-9A-Fa-f]{2})/g, '') // remove hex chars
         .match(/[+-]?\d+/g)
       if (tkk) {
-        const tk1 = Number(tkk[2])
-        const tk2 = Number(tkk[0]) + Number(tkk[1])
-        const tk = getTK(text, tk1, tk2)
-        if (tk) {
-          const encodedText = encodeURIComponent(text)
-          return fetch(`${base}/translate_a/single?client=t&sl=${sl}&tl=${tl}&q=${encodedText}&tk=${tk}&hl=en&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&ie=UTF-8&oe=UTF-8&otf=1&ssel=0&tsel=0&kc=5`)
-            .then(r => r.text())
-            .then(json => ({ json, base, sl, tl, tk1, tk2, text }))
+        tk1 = Number(tkk[2])
+        tk2 = Number(tkk[0]) + Number(tkk[1])
+        tk = getTK(text, tk1, tk2)
+      }
+
+      // direct number
+      if (!tk) {
+        tkk = body.match(/TKK[=:]['"](\d+?)\.(\d+?)['"]/i)
+        if (tkk) {
+          tk1 = Number(tkk[1])
+          tk2 = Number(tkk[2])
+          tk = getTK(text, tk1, tk2)
         }
       }
+
+      if (tk) {
+        const encodedText = encodeURIComponent(text)
+        return fetch(`${base}/translate_a/single?client=t&sl=${sl}&tl=${tl}&q=${encodedText}&tk=${tk}&hl=en&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&ie=UTF-8&oe=UTF-8&otf=1&ssel=0&tsel=0&kc=5`)
+          .then(r => r.text())
+          .then(json => ({ json, base, sl, tl, tk1, tk2, text }))
+      }
+
       return handleNoResult()
     })
 }

@@ -12,6 +12,16 @@ export const enum MsgType {
   /** is dict panel pinned? */
   IsPinned,
 
+  /** is a standalone panel running? */
+  QSPanelIDChanged,
+
+  /** query background for standalone panel appearance */
+  QueryQSPanel,
+
+  OpenQSPanel,
+
+  QSPanelSearchText,
+
   /** Mouse down, selection maybe empty */
   Selection,
 
@@ -177,6 +187,22 @@ export interface MsgIsPinned {
   type: MsgType.IsPinned
   isPinned: boolean
 }
+
+export interface MsgQSPanelIDChanged {
+  type: MsgType.QSPanelIDChanged
+  flag: boolean
+}
+
+export interface MsgQueryQSPanel {
+  type: MsgType.QueryQSPanel
+}
+
+export interface MsgQSPanelSearchText {
+  type: MsgType.QSPanelSearchText
+  info: SelectionInfo
+}
+
+export type MsgQueryQSPanelResponse = boolean
 
 export interface MsgQueryPanelState {
   type: MsgType.QueryPanelState,

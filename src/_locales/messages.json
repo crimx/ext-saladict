@@ -37,6 +37,13 @@
       "en": "Toggle instant capture"
     }
   },
+  "command_open_quick_search": {
+    "message": {
+      "zh_CN": "打开独立词典窗口",
+      "zh_TW": "開啟獨立詞典視窗",
+      "en": "Open or highlight standalone dict panel"
+    }
+  },
   "command_open_google": {
     "message": {
       "zh_CN": "对当前页启用谷歌翻译",

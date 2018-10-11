@@ -3,15 +3,27 @@ import { StoreState, DispatcherThunk, Dispatcher } from './index'
 import appConfigFactory, { TCDirection, DictID } from '@/app-config'
 import { message, storage } from '@/_helpers/browser-api'
 import { createConfigIDListStream } from '@/_helpers/config-manager'
-import { MsgType, MsgTempDisabledState, MsgEditWord, MsgOpenUrl, MsgFetchDictResult } from '@/typings/message'
-import { searchText, restoreDicts } from '@/content/redux/modules/dictionaries'
+import { searchText, restoreDicts, summonedPanelInit } from '@/content/redux/modules/dictionaries'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
 import { reflect } from '@/_helpers/promise-more'
 import { MachineTranslateResult } from '@/components/dictionaries/helpers'
+import {
+  MsgType,
+  MsgTempDisabledState,
+  MsgEditWord,
+  MsgOpenUrl,
+  MsgFetchDictResult,
+  MsgQSPanelIDChanged,
+  MsgQueryQSPanel,
+  MsgQueryQSPanelResponse,
+  MsgQSPanelSearchText,
+} from '@/typings/message'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
+const isSaladictQuickSearchPage = !!window.__SALADICT_QUICK_SEARCH_PAGE__
+const isStandalonePage = isSaladictPopupPage || isSaladictQuickSearchPage
 
 const panelHeaderHeight = 30 + 12 // menu bar + multiline search box button
 
@@ -33,6 +45,7 @@ export const enum ActionType {
   PANEL_CORDS = 'widget/PANEL_CORDS',
   CONFIG_PROFILE_lIST = 'widget/CONFIG_PROFILE_lIST',
   SEARCH_BOX_UPDATE = 'dicts/SEARCH_BOX_UPDATE',
+  QS_PANEL_TABID_CHANGED = 'dicts/QS_PANEL_TABID_CHANGED',
 }
 
 /*-----------------------------------------------*\
@@ -56,6 +69,7 @@ interface WidgetPayload {
     text: string
     index: number
   }
+  [ActionType.QS_PANEL_TABID_CHANGED]: boolean
 }
 
 /*-----------------------------------------------*\
@@ -69,6 +83,8 @@ export type WidgetState = {
     readonly isFav: boolean
     /** is called by triple ctrl */
     readonly isTripleCtrl: boolean
+    /** is a standalone panel running */
+    readonly withQSPanel: boolean
     readonly shouldBowlShow: boolean
     readonly shouldPanelShow: boolean
     readonly panelRect: {
@@ -102,9 +118,10 @@ export const initState: WidgetState = {
     isTempDisabled: false,
     isPinned: isSaladictOptionsPage,
     isFav: false,
-    isTripleCtrl: false,
+    isTripleCtrl: isSaladictQuickSearchPage,
+    withQSPanel: false,
     shouldBowlShow: false,
-    shouldPanelShow: isSaladictPopupPage || isSaladictOptionsPage,
+    shouldPanelShow: isStandalonePage || isSaladictOptionsPage,
     panelRect: {
       x: isSaladictOptionsPage
         ? window.innerWidth - _initConfig.panelWidth - 30
@@ -112,12 +129,8 @@ export const initState: WidgetState = {
       y: isSaladictOptionsPage
         ? window.innerHeight * (1 - _initConfig.panelMaxHeightRatio) / 2
         : 0,
-      width: isSaladictPopupPage
-        ? Math.min(750, _initConfig.panelWidth)
-        : _initConfig.panelWidth,
-      height: isSaladictPopupPage
-        ? 400
-        : panelHeaderHeight
+      width: _initConfig.panelWidth,
+      height: panelHeaderHeight,
     },
     bowlRect: {
       x: 0,
@@ -393,6 +406,28 @@ export const reducer: WidgetReducer = {
       }
     }
   },
+  [ActionType.QS_PANEL_TABID_CHANGED] (state, flag) {
+    if (state.widget.withQSPanel === flag) {
+      return state
+    }
+
+    // hide panel on otehr pages
+    let widget
+    if (flag && state.config.tripleCtrlPageSel) {
+      widget = _restoreWidget(state.widget)
+      widget.withQSPanel = true
+    } else {
+      widget = {
+        ...state.widget,
+        withQSPanel: flag,
+      }
+    }
+
+    return {
+      ...state,
+      widget,
+    }
+  },
 }
 
 export default reducer
@@ -458,6 +493,10 @@ export function searchBoxUpdate (payload: WidgetPayload[ActionType.SEARCH_BOX_UP
   return ({ type: ActionType.SEARCH_BOX_UPDATE, payload })
 }
 
+export function QSPanelIDChanged (payload: WidgetPayload[ActionType.QS_PANEL_TABID_CHANGED]): Action<ActionType.QS_PANEL_TABID_CHANGED> {
+  return ({ type: ActionType.QS_PANEL_TABID_CHANGED, payload })
+}
+
 /*-----------------------------------------------*\
     Side Effects
 \*-----------------------------------------------*/
@@ -467,6 +506,13 @@ let dictHeights: Partial<{ [id in (DictID | '_mtabox')]: number }> = {}
 export function startUpAction (): DispatcherThunk {
   return (dispatch, getState) => {
     listenTempDisable(dispatch, getState)
+
+    if (isSaladictQuickSearchPage) {
+      const { config } = getState()
+      dispatch(summonedPanelInit(config.tripleCtrlPreload, config.tripleCtrlAuto, true))
+    } else if (!isSaladictPopupPage && !isSaladictOptionsPage) {
+      listenTrpleCtrl(dispatch, getState)
+    }
 
     createConfigIDListStream().subscribe(async idlist => {
       const profiles: Array<{ id: string, name: string }> = []
@@ -485,6 +531,15 @@ export function startUpAction (): DispatcherThunk {
 
       dispatch(updateConfigProfiles(profiles))
     })
+
+    if (!isSaladictQuickSearchPage) {
+      message.send<MsgQueryQSPanel, MsgQueryQSPanelResponse>({ type: MsgType.QueryQSPanel })
+        .then(flag => dispatch(QSPanelIDChanged((flag))))
+
+      message.addListener<MsgQSPanelIDChanged>(MsgType.QSPanelIDChanged, ({ flag }) => {
+        dispatch(QSPanelIDChanged((flag)))
+      })
+    }
 
     // close panel and word editor on esc
     message.self.addListener(MsgType.EscapeKey, () => {
@@ -543,7 +598,7 @@ export function requestFavWord (): DispatcherThunk {
     const { config, dictionaries, widget } = getState()
     const word = { ...dictionaries.searchHistory[0], date: Date.now() }
     if (config.editOnFav) {
-      if (isSaladictPopupPage) {
+      if (isStandalonePage) {
         // Not enough space to open word editor on popup page
         try {
           message.send<MsgOpenUrl>({
@@ -630,7 +685,7 @@ export function addToNotebook (info: SelectionInfo | recordManager.Word): Dispat
 
 export function updateItemHeight (id: DictID | '_mtabox', height: number): DispatcherThunk {
   return (dispatch, getState) => {
-    if (isSaladictPopupPage) {
+    if (isStandalonePage) {
       return
     }
 
@@ -655,12 +710,13 @@ export function updateItemHeight (id: DictID | '_mtabox', height: number): Dispa
 
 export function newSelection (): DispatcherThunk {
   return (dispatch, getState) => {
-    const state = getState()
-    const { selectionInfo, dbClick, ctrlKey, instant, mouseX, mouseY, self } = state.selection
+    const { widget, selection, config } = getState()
+
+    const { selectionInfo, dbClick, ctrlKey, instant, mouseX, mouseY, self } = selection
 
     if (self) {
       // inside dict panel
-      const { direct, double, ctrl } = state.config.panelMode
+      const { direct, double, ctrl } = config.panelMode
       const { text, context } = selectionInfo
       if (text && (
             instant ||
@@ -681,17 +737,35 @@ export function newSelection (): DispatcherThunk {
       return
     }
 
-    if (isSaladictPopupPage || isSaladictOptionsPage) { return }
+    // standalone panel takes control
+    if (widget.withQSPanel && config.tripleCtrlPageSel) {
+      const { qsPanelMode } = config
+      if (selectionInfo.text && (
+            instant ||
+            qsPanelMode.direct ||
+            (qsPanelMode.double && dbClick) ||
+            (qsPanelMode.ctrl && ctrlKey)
+          )
+      ) {
+        message.send<MsgQSPanelSearchText>({
+          type: MsgType.QSPanelSearchText,
+          info: selection.selectionInfo,
+        })
+      }
+      return
+    }
 
-    const isActive = state.config.active && !state.widget.isTempDisabled
+    if (isStandalonePage || isSaladictOptionsPage) { return }
 
-    const { direct, ctrl, double, icon } = state.config.mode
+    const isActive = config.active && !widget.isTempDisabled
+
+    const { direct, ctrl, double, icon } = config.mode
     const {
       isPinned,
       shouldPanelShow: lastShouldPanelShow,
       panelRect: lastPanelRect,
       bowlRect: lastBowlRect,
-    } = state.widget
+    } = widget
 
     const shouldPanelShow = Boolean(
       isPinned ||
@@ -702,7 +776,7 @@ export function newSelection (): DispatcherThunk {
         (ctrl && ctrlKey) ||
         instant
       )) ||
-      isSaladictPopupPage
+      isStandalonePage
     )
 
     const shouldBowlShow = Boolean(
@@ -714,7 +788,7 @@ export function newSelection (): DispatcherThunk {
       !(double && dbClick) &&
       !(ctrl && ctrlKey) &&
       !instant &&
-      !isSaladictPopupPage
+      !isStandalonePage
     )
 
     const bowlRect = shouldBowlShow
@@ -734,14 +808,14 @@ export function newSelection (): DispatcherThunk {
         mouseX,
         mouseY,
         lastPanelRect.width,
-        isSaladictPopupPage ? 400 : panelHeaderHeight,
+        panelHeaderHeight,
       )
     }
 
     dispatch(newSelectionAction(newWidgetPartial))
 
     // should search text?
-    const { pinMode } = state.config
+    const { pinMode } = config
     if (shouldPanelShow && selectionInfo.text && (
           !isPinned ||
           pinMode.direct ||
@@ -761,6 +835,26 @@ export function newSelection (): DispatcherThunk {
 /*-----------------------------------------------*\
     Helpers
 \*-----------------------------------------------*/
+
+function listenTrpleCtrl (
+  dispatch: Dispatcher,
+  getState: () => StoreState,
+) {
+  message.self.addListener(MsgType.TripleCtrl, () => {
+    const { config, widget } = getState()
+    if (!config.tripleCtrlStandalone && widget.shouldPanelShow) {
+      return
+    }
+
+    if (config.tripleCtrlStandalone) {
+      // focus if the standalone panel is already opened
+      message.send({ type: MsgType.OpenQSPanel })
+    } else {
+      dispatch(tripleCtrlPressed())
+      dispatch(summonedPanelInit(config.tripleCtrlPreload, config.tripleCtrlAuto, false))
+    }
+  })
+}
 
 /** From popup page */
 function listenTempDisable (
@@ -788,12 +882,12 @@ function _restoreWidget (widget: WidgetState['widget']): Mutable<WidgetState['wi
   return {
     ...widget,
     isPinned: isSaladictOptionsPage,
-    isTripleCtrl: false,
-    shouldPanelShow: isSaladictPopupPage || isSaladictOptionsPage,
+    isTripleCtrl: isSaladictQuickSearchPage,
+    shouldPanelShow: isStandalonePage || isSaladictOptionsPage,
     shouldBowlShow: false,
     panelRect: {
       ...widget.panelRect,
-      height: isSaladictPopupPage ? 400 : panelHeaderHeight,
+      height: panelHeaderHeight,
     },
   }
 }
@@ -825,12 +919,13 @@ function _getPanelRectFromEvent (
   width: number,
   height: number,
 ): WidgetState['widget']['panelRect'] {
-  if (isSaladictPopupPage) {
+  if (isStandalonePage) {
+    // these values are ignored anyway
     return {
       x: 0,
       y: 0,
-      width: Math.min(width, 750),
-      height: 400,
+      width,
+      height,
     }
   }
 

@@ -3,13 +3,14 @@ import { message } from '@/_helpers/browser-api'
 import { isContainChinese, isContainEnglish, isContainMinor } from '@/_helpers/lang-check'
 import { createActiveConfigStream } from '@/_helpers/config-manager'
 import * as selection from '@/_helpers/selection'
-import { MsgType, PostMsgType, PostMsgSelection, MsgSelection, MsgIsPinned } from '@/typings/message'
+import { MsgType, PostMsgType, PostMsgSelection, MsgSelection, MsgIsPinned, MsgQueryQSPanel, MsgQueryQSPanelResponse, MsgQSPanelIDChanged } from '@/typings/message'
 import { Mutable } from '@/typings/helpers'
 
 // import { Observable, fromEvent, timer, merge, of, asyncScheduler } from 'rxjs'
 // import { map, mapTo, scan, filter, take, switchMap, buffer, debounceTime, observeOn, share, distinctUntilChanged } from 'rxjs/operators'
 import { Observable } from 'rxjs/Observable'
 import { fromEvent } from 'rxjs/observable/fromEvent'
+import { fromPromise } from 'rxjs/observable/fromPromise'
 import { timer } from 'rxjs/observable/timer'
 import { merge } from 'rxjs/observable/merge'
 import { of } from 'rxjs/observable/of'
@@ -226,12 +227,21 @@ combineLatest(
     pluck<MsgIsPinned, MsgIsPinned['isPinned']>('isPinned'),
     startWith(false),
   ),
+  merge(
+    fromPromise(message.send<MsgQueryQSPanel, MsgQueryQSPanelResponse>({ type: MsgType.QueryQSPanel })),
+    message.createStream<MsgQSPanelIDChanged>(MsgType.QSPanelIDChanged).pipe(
+      pluck<MsgQSPanelIDChanged, MsgQSPanelIDChanged['flag']>('flag'),
+      startWith(false),
+    ),
+  ),
 ).pipe(
-  map(([config, isPinned]): ['' | AppConfig['mode']['instant']['key'], number] => {
+  map(([config, isPinned, withQSPanel]): ['' | AppConfig['mode']['instant']['key'], number] => {
     const { instant } = config[
-      (isNoSelectionPage || window.name === 'saladict-dictpanel')
-        ? 'panelMode'
-        : isPinned ? 'pinMode' : 'mode'
+      withQSPanel
+        ? 'qsPanelMode'
+        : (isNoSelectionPage || window.name === 'saladict-dictpanel')
+          ? 'panelMode'
+          : isPinned ? 'pinMode' : 'mode'
     ]
     return [
       instant.enable ? instant.key : '',

@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.17.0"></a>
+# [6.17.0](https://github.com/crimx/ext-saladict/compare/v6.16.1...v6.17.0) (2018-10-11)
+
+
+### Bug Fixes
+
+* **background:** fix typing ([8cc0760](https://github.com/crimx/ext-saladict/commit/8cc0760))
+* **dicts:** update google tk ([c36d15d](https://github.com/crimx/ext-saladict/commit/c36d15d)), closes [#212](https://github.com/crimx/ext-saladict/issues/212)
+* **locales:** typo ([4934e7c](https://github.com/crimx/ext-saladict/commit/4934e7c))
+* **panel:** only load on top frame ([c9a8bf7](https://github.com/crimx/ext-saladict/commit/c9a8bf7)), closes [#214](https://github.com/crimx/ext-saladict/issues/214)
+* **panel:** prevent context menu on right click ([dd2b5ce](https://github.com/crimx/ext-saladict/commit/dd2b5ce))
+* **selection:** input and textarea selection on Firefox ([dfa95f7](https://github.com/crimx/ext-saladict/commit/dfa95f7))
+
+
+### Features
+
+* **command:** add command for quick search panel ([dc34810](https://github.com/crimx/ext-saladict/commit/dc34810))
+* **menu:** add google cn page translate ([f549fdc](https://github.com/crimx/ext-saladict/commit/f549fdc))
+* **panel:** add quick search standalone panel ([2ff9fa2](https://github.com/crimx/ext-saladict/commit/2ff9fa2))
+
+
+
 <a name="6.16.1"></a>
 ## [6.16.1](https://github.com/crimx/ext-saladict/compare/v6.16.0...v6.16.1) (2018-10-02)
 

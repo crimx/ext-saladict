@@ -136,6 +136,22 @@ export interface AppConfigMutable {
     }
   },
 
+  /** when this is a quick search standalone panel running */
+  qsPanelMode: {
+    /** direct: on mouseup */
+    direct: boolean
+    /** double: double click */
+    double: boolean
+    /** ctrl: search when double click ctrl + selection not empty */
+    ctrl: boolean
+    /** cursor instant capture */
+    instant: {
+      enable: boolean
+      key: 'direct' | 'ctrl' | 'alt'
+      delay: number
+    }
+  },
+
   /** instant capture delay, in ms */
   insCapDelay: number
 
@@ -153,6 +169,15 @@ export interface AppConfigMutable {
 
   /** where should the dict appears */
   tripleCtrlLocation: TCDirection
+
+  /** should panel be in a standalone window */
+  tripleCtrlStandalone: boolean
+
+  /** standalone panel height */
+  tripleCtrlHeight: number
+
+  /** should standalone panel response to page selection */
+  tripleCtrlPageSel: boolean
 
   /** browser action preload source */
   baPreload: PreloadSource
@@ -271,6 +296,17 @@ export function appConfigFactory (id?: string): AppConfig {
       },
     },
 
+    qsPanelMode: {
+      direct: false,
+      double: false,
+      ctrl: true,
+      instant: {
+        enable: false,
+        key: 'alt',
+        delay: 600,
+      },
+    },
+
     insCapDelay: 600,
     doubleClickDelay: 450,
 
@@ -281,6 +317,10 @@ export function appConfigFactory (id?: string): AppConfig {
     tripleCtrlAuto: false,
 
     tripleCtrlLocation: TCDirection.center,
+
+    tripleCtrlStandalone: true,
+    tripleCtrlHeight: 600,
+    tripleCtrlPageSel: true,
 
     baPreload: 'clipboard' as PreloadSource,
 

@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="opt-item__description-wrap">
-      <p class="opt-item__description" v-html="$t('opt:panelmode_description')"></p>
+      <p class="opt-item__description" v-html="$t('opt:panelmode_description') + $t('opt:mode_explain')"></p>
     </div>
   </div><!-- 面板查词-->
 </template>

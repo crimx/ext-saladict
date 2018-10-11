@@ -6,7 +6,6 @@
     <meta name="description" content="{{ page.description | default: site.description | default: site.github.project_tagline }}"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" media="whatever"/>
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
     <style>
       * {
@@ -20,10 +19,11 @@
   <body>
     <section class="page-header">
       <h1 class="project-name">Saladict 沙拉查词</h1>
-      <h2 class="project-tagline">涵盖所有主流词典，多重划词模式，极致交互体验，灵活导出生词本，高度可配置，支持 PDF，兼容 Vimium 全键盘操作。</h2>
+      <h2 class="project-tagline" style="margin:0">专业多词典网页划词翻译</h2>
+      <h2 class="project-tagline">涵盖所有主流词典，多重划词模式，极致交互体验，灵活导出生词本，骨灰级配置，支持 PDF，兼容 Vimium 全键盘操作。</h2>
       <a href="https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en" class="btn">进入 Chrome 商店</a>
       <a href="https://addons.mozilla.org/firefox/addon/ext-saladict/" class="btn">进入 Firefox 商店</a>
-      <a href="{{ site.github.releases_url }}" class="btn">直接下载 crx</a>
+      <a href="https://github.com/crimx/ext-saladict/releases" class="btn">其它下载方式</a>
       <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
     </section>
 
@@ -51,5 +51,6 @@
         ga('send', 'pageview');
       </script>
     {% endif %}
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" media="whatever"/>
   </body>
 </html>

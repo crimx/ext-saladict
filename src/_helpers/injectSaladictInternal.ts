@@ -17,8 +17,10 @@ export function injectSaladictInternal (noInjectContentCSS?: boolean) {
 
   document.body.appendChild($scriptSelection)
   document.body.appendChild($scriptContent)
-  if (!noInjectContentCSS) {
-    document.head.appendChild($styleContent)
+  if (document.head) {
+    if (!noInjectContentCSS) {
+      document.head.appendChild($styleContent)
+    }
+    document.head.appendChild($stylePanel)
   }
-  document.head.appendChild($stylePanel)
 }

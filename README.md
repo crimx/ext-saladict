@@ -22,7 +22,7 @@ Chrome/Firefox WebExtension. Feature-rich inline translator with PDF support. Vi
 
 ## Downloads
 
-[Chrome Web Store](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en) / [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/ext-saladict/) / [Github Release](https://github.com/crimx/crx-saladict/releases/)
+[Chrome Web Store](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en) / [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/ext-saladict/)
 
 Saladict 6 is a complete rewrite in React Typescript for both Chrome & Firefox. Built for speed, stability and customization.
 

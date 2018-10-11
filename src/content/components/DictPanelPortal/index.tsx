@@ -8,6 +8,9 @@ import PortalFrame from '@/components/PortalFrame'
 const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
+const isSaladictQuickSearchPage = !!window.__SALADICT_QUICK_SEARCH_PAGE__
+
+const isStandalonePage = isSaladictPopupPage || isSaladictQuickSearchPage
 
 export type DictPanelPortalDispatchers = Omit<
   DictPanelDispatchers,
@@ -42,7 +45,7 @@ interface DictPanelState {
 
 export default class DictPanelPortal extends React.Component<DictPanelPortalProps, DictPanelState> {
   isMount = false
-  root = isSaladictPopupPage
+  root = isStandalonePage
     ? document.getElementById('frame-root') as HTMLDivElement
     : document.body
   el = document.createElement('div')
@@ -87,7 +90,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
   mountEL = () => {
     // body could be replaced by other scripts
-    if (!isSaladictPopupPage) { this.root = document.body }
+    if (!isStandalonePage) { this.root = document.body }
     this.root.appendChild(this.el)
     this.isMount = true
   }
@@ -95,7 +98,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   unmountEL = () => {
     this.frame = null
     // body could be replaced by other scripts
-    if (!isSaladictPopupPage) { this.root = document.body }
+    if (!isStandalonePage) { this.root = document.body }
     this.root.removeChild(this.el)
     this.isMount = false
   }
@@ -201,10 +204,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
     style.setProperty('left', `${x}px`, 'important')
     style.setProperty('top', `${y}px`, 'important')
-    if (!isSaladictPopupPage) {
-      style.setProperty('width', width + 'px', 'important')
-      style.setProperty('height', height + 'px', 'important')
-    }
+    style.setProperty('width', width + 'px', 'important')
+    style.setProperty('height', height + 'px', 'important')
   }
 
   handlePanelEntered = (node: HTMLElement) => {
@@ -214,16 +215,14 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
     style.setProperty('left', `${x}px`, 'important')
     style.setProperty('top', `${y}px`, 'important')
-    if (!isSaladictPopupPage) {
-      style.setProperty('width', width + 'px', 'important')
-      style.setProperty('height', height + 'px', 'important')
-    }
+    style.setProperty('width', width + 'px', 'important')
+    style.setProperty('height', height + 'px', 'important')
   }
 
   frameDidMount (iframe: HTMLIFrameElement) {
     if (process.env.NODE_ENV === 'production') {
       const doc = iframe.contentDocument
-      if (doc && !doc.head.innerHTML.includes('panel.css')) {
+      if (doc && doc.head && !doc.head.innerHTML.includes('panel.css')) {
         const $link = doc.createElement('link')
         $link.type = 'text/css'
         $link.rel = 'stylesheet'
@@ -234,15 +233,13 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   }
 
   componentDidUpdate () {
-    if (this.frame) {
+    if (this.frame && !isStandalonePage) {
       const { x, y, width, height } = this.props.panelRect
       const style = this.frame.style
       style.setProperty('left', `${x}px`, 'important')
       style.setProperty('top', `${y}px`, 'important')
-      if (!isSaladictPopupPage) {
-        style.setProperty('width', width + 'px', 'important')
-        style.setProperty('height', height + 'px', 'important')
-      }
+      style.setProperty('width', width + 'px', 'important')
+      style.setProperty('height', height + 'px', 'important')
     }
   }
 
@@ -301,7 +298,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       this.mountEL()
     }
 
-    const shouldAnimate = isAnimation && !isSaladictPopupPage
+    const shouldAnimate = isAnimation && !isStandalonePage
 
     return ReactDOM.createPortal(
       <div
@@ -318,8 +315,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
           timeout={500}
           mountOnEnter={true}
           unmountOnExit={true}
-          appear={isSaladictOptionsPage || isSaladictPopupPage}
-          onEnter={shouldAnimate ? this.handlePanelEnter : this.handlePanelEntered}
+          appear={isSaladictOptionsPage || isStandalonePage}
+          onEnter={shouldAnimate ? this.handlePanelEnter : undefined}
           onEntered={shouldAnimate ? this.handlePanelEntered : undefined}
           onExited={this.unmountEL}
         >

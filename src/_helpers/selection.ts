@@ -10,11 +10,23 @@ const INLINE_TAGS = new Set([
 ])
 
 export function hasSelection (win = window): boolean {
-  return Boolean(win.getSelection().toString().trim())
+  return Boolean(getSelectionText(win))
 }
 
 export function getSelectionText (win = window): string {
-  return win.getSelection().toString().trim()
+  const selection = win.getSelection().toString().trim()
+  if (selection) {
+    return selection
+  }
+
+  // Firefox fix
+  const activeElement = win.document.activeElement
+  if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA') {
+    const el = activeElement as HTMLInputElement | HTMLTextAreaElement
+    return el.value.slice(el.selectionStart || 0, el.selectionEnd || 0)
+  }
+
+  return ''
 }
 
 // match head                 a.b is ok             chars that ends a sentence

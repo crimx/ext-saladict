@@ -7,7 +7,7 @@
  */
 
 import { appConfigFactory, AppConfig } from '@/app-config'
-import { defaultModesFactory } from '@/app-config/default-modes'
+import { defaultProfilesFactory } from '@/app-config/default-profiles'
 import { storage } from './browser-api'
 // import { Observable, from, concat } from 'rxjs'
 // import { map, filter } from 'rxjs/operators'
@@ -43,7 +43,7 @@ export async function initConfig (): Promise<AppConfig> {
       modes.push(config ? mergeConfig(config) : appConfigFactory(id))
     }
   } else {
-    modes = defaultModesFactory()
+    modes = defaultProfilesFactory()
     // old config, replace the default if exist
     const config = (await storage.sync.get('config')).config
     if (config) {
@@ -156,8 +156,10 @@ export function updateActiveConfig (config: AppConfig): Promise<void> {
   if (process.env.DEV_BUILD) {
     storage.sync.get('configProfileIDs')
       .then(({ configProfileIDs }) => {
-        if (-1 === configProfileIDs.indexOf(config.id)) {
-          console.error('Update Config Error: Not exist', config)
+        if (!configProfileIDs || -1 === configProfileIDs.indexOf(config.id)) {
+          if (process.env.NODE_ENV === 'production') {
+            console.error('Update Config Error: Not exist', config)
+          }
         }
       })
   }
