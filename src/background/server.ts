@@ -17,7 +17,6 @@ import {
   MsgDeleteWords,
   MsgGetWordsByText,
   MsgGetWords,
-  MsgQueryQSPanelResponse,
   MsgQSPanelIDChanged,
 } from '@/typings/message'
 

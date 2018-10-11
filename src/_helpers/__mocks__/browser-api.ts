@@ -8,7 +8,6 @@ import { Observable } from 'rxjs/Observable'
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
 import { map } from 'rxjs/operators/map'
 
-import get from 'lodash/get'
 import { MsgType } from '@/typings/message'
 
 /* --------------------------------------- *\
@@ -268,7 +267,7 @@ function _storageCreateStream (area: string) {
 
   function storageCreateStream (key: string) {
 
-    const obj = get(storage, area === 'all' ? '' : area)
+    const obj = area === 'all' ? storage : storage[area]
     return fromEventPattern(
       handler => obj.addListener(key, handler as StorageListenerCb),
       handler => obj.removeListener(key, handler as StorageListenerCb),
@@ -391,7 +390,7 @@ function _messageCreateStream (self: boolean) {
   return jest.fn(messageCreateStream)
 
   function messageCreateStream<T> (messageType = MsgType.Null): Observable<T> {
-    const obj = get(message, self ? 'self' : '')
+    const obj = self ? message.self : message
     const pattern$ = messageType !== MsgType.Null
       ? fromEventPattern(
         handler => obj.addListener(messageType, handler as onMessageEvent),
