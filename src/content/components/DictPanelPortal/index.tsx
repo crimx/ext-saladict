@@ -298,8 +298,6 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       this.mountEL()
     }
 
-    const shouldAnimate = isAnimation && !isStandalonePage
-
     return ReactDOM.createPortal(
       <div
         className='saladict-DIV'
@@ -316,8 +314,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
           mountOnEnter={true}
           unmountOnExit={true}
           appear={isSaladictOptionsPage || isStandalonePage}
-          onEnter={shouldAnimate ? this.handlePanelEnter : undefined}
-          onEntered={shouldAnimate ? this.handlePanelEntered : undefined}
+          onEnter={isStandalonePage ? undefined : isAnimation ? this.handlePanelEnter : this.handlePanelEntered}
+          onEntered={isAnimation && !isStandalonePage ? this.handlePanelEntered : undefined}
           onExited={this.unmountEL}
         >
           {this.renderDictPanel}
