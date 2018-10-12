@@ -509,7 +509,7 @@ export function startUpAction (): DispatcherThunk {
 
     if (isSaladictQuickSearchPage) {
       const { config } = getState()
-      dispatch(summonedPanelInit(config.tripleCtrlPreload, config.tripleCtrlAuto, true))
+      dispatch(summonedPanelInit(config.tripleCtrlPreload, config.tripleCtrlAuto, 'quick-search'))
     } else if (!isSaladictPopupPage && !isSaladictOptionsPage) {
       listenTrpleCtrl(dispatch, getState)
     }
@@ -851,7 +851,7 @@ function listenTrpleCtrl (
       message.send({ type: MsgType.OpenQSPanel })
     } else {
       dispatch(tripleCtrlPressed())
-      dispatch(summonedPanelInit(config.tripleCtrlPreload, config.tripleCtrlAuto, false))
+      dispatch(summonedPanelInit(config.tripleCtrlPreload, config.tripleCtrlAuto, ''))
     }
   })
 }
