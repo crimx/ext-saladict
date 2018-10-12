@@ -131,9 +131,24 @@ export async function openQSPanel (): Promise<void> {
         break
     }
 
+    let url = browser.runtime.getURL('quick-search.html')
+    if (config.tripleCtrlPreload === 'selection') {
+      const tab = (await browser.tabs.query({ active: true, lastFocusedWindow: true }))[0]
+      if (tab && tab.id) {
+        const info = await message.send(tab.id, { type: MsgType.PreloadSelection })
+        try {
+          url += '?info=' + encodeURIComponent(JSON.stringify(info))
+        } catch (e) {
+          if (process.env.DEV_BUILD) {
+            console.warn(e)
+          }
+        }
+      }
+    }
+
     const qsPanelWin = await browser.windows.create({
       type: 'popup',
-      url: browser.runtime.getURL('quick-search.html'),
+      url,
       width: config.panelWidth,
       height: config.tripleCtrlHeight,
       left: Math.round(left),

@@ -263,7 +263,7 @@ export function startUpAction (): DispatcherThunk {
   return (dispatch, getState) => {
     if (isSaladictPopupPage) {
       const { baPreload, baAuto } = getState().config
-      dispatch(summonedPanelInit(baPreload, baAuto, true))
+      dispatch(summonedPanelInit(baPreload, baAuto, 'popup'))
     } else if (isSaladictQuickSearchPage) {
       /** From other tabs */
       message.addListener<MsgQSPanelSearchText>(MsgType.QSPanelSearchText, ({ info }) => {
@@ -377,39 +377,52 @@ export function searchText (
 export function summonedPanelInit (
   preload: PreloadSource,
   autoSearch: boolean,
-  isStandalone: boolean,
+  // quick-search could be turned off so this argument is needed
+  standalone: '' | 'popup' | 'quick-search',
 ): DispatcherThunk {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     if (!preload) { return }
 
     const state = getState()
 
-    const fetchInfo = preload === 'selection'
-      ? isStandalone
-        ? browser.tabs.query({ active: true, currentWindow: true })
-          .then(tabs => {
-            if (tabs.length > 0 && tabs[0].id != null) {
-              return message.send(tabs[0].id as number, { type: MsgType.PreloadSelection })
-            }
-            return null
-          })
-        : Promise.resolve({ ...state.selection.selectionInfo })
-      : message.send({ type: MsgType.GetClipboard })
-        .then(text => getDefaultSelectionInfo({ text, title: 'From Clipboard' }))
+    let info: SelectionInfo | null = null
 
-    fetchInfo.then(info => {
-      if (info) {
-        if (autoSearch && info.text) {
-          dispatch(searchText({ info }))
+    try {
+      if (preload === 'selection') {
+        if (standalone === 'popup') {
+          const tab = (await browser.tabs.query({ active: true, currentWindow: true }))[0]
+          if (tab && tab.id != null) {
+            info = await message.send(tab.id, { type: MsgType.PreloadSelection })
+          }
+        } else if (standalone === 'quick-search') {
+          const infoText = new URL(document.URL).searchParams.get('info')
+          if (infoText) {
+            try {
+              info = JSON.parse(decodeURIComponent(infoText))
+            } catch (err) {
+              info = null
+            }
+          }
         } else {
-          dispatch(restoreDicts())
-          dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
+          info = { ...state.selection.selectionInfo }
         }
+      } else /* preload === clipboard */ {
+        const text = await message.send({ type: MsgType.GetClipboard })
+        info = getDefaultSelectionInfo({ text, title: 'From Clipboard' })
       }
-    }).catch(e => {
-      if (process.env.NODE_ENV !== 'production') {
+    } catch (e) {
+      if (process.env.DEV_BUILD) {
         console.warn(e)
       }
-    })
+    }
+
+    if (info) {
+      if (autoSearch && info.text) {
+        dispatch(searchText({ info }))
+      } else {
+        dispatch(restoreDicts())
+        dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
+      }
+    }
   }
 }
