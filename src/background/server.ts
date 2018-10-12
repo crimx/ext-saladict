@@ -234,11 +234,15 @@ function getClipboard (): Promise<string> {
   if (process.env.NODE_ENV === 'development') {
     return Promise.resolve('clipboard content')
   } else {
-    const el = document.createElement('input')
-    document.body.appendChild(el)
+    let el = document.getElementById('saladict-paste') as HTMLTextAreaElement | null
+    if (!el) {
+      el = document.createElement('textarea')
+      el.id = 'saladict-paste'
+      document.body.appendChild(el)
+    }
+    el.value = ''
     el.focus()
     document.execCommand('paste')
-    el.remove()
     return Promise.resolve(el.value || '')
   }
 }
