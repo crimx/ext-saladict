@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.17.1"></a>
+## [6.17.1](https://github.com/crimx/ext-saladict/compare/v6.17.0...v6.17.1) (2018-10-12)
+
+
+### Bug Fixes
+
+* **panel:** fix panel not showing if animation is off ([a533f59](https://github.com/crimx/ext-saladict/commit/a533f59))
+* **panel:** fix search text loading on standalone panel ([828e315](https://github.com/crimx/ext-saladict/commit/828e315))
+
+
+
 <a name="6.17.0"></a>
 # [6.17.0](https://github.com/crimx/ext-saladict/compare/v6.16.1...v6.17.0) (2018-10-11)
 
