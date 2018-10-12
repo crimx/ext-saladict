@@ -90,7 +90,7 @@ function onStartup (): void {
   storage.local.get<{ lastCheckUpdate: number }>('lastCheckUpdate')
     .then(({ lastCheckUpdate }) => {
       const today = Date.now()
-      if (!lastCheckUpdate || !(today - lastCheckUpdate < 7 * 24 * 60 * 60 * 1000)) {
+      if (!lastCheckUpdate || !(today - lastCheckUpdate < 20 * 24 * 60 * 60 * 1000)) {
         checkUpdate().then(({ info, isAvailable }) => {
           storage.local.set({ lastCheckUpdate: today })
           if (isAvailable) {
