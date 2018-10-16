@@ -36,7 +36,10 @@ export const initState: SelectionState = {
     mouseY: 0,
     self: false,
     dbClick: false,
+    shiftKey: false,
     ctrlKey: false,
+    metaKey: false,
+    instant: false,
     force: false,
   }
 }

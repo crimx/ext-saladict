@@ -84,12 +84,14 @@ export interface MsgSelection {
   readonly mouseY: number
   /** inside panel? */
   readonly self: boolean
-  readonly dbClick?: boolean
-  readonly ctrlKey?: boolean
+  readonly dbClick: boolean
+  readonly shiftKey: boolean
+  readonly ctrlKey: boolean
+  readonly metaKey: boolean
   /** skip salad bowl and show panel directly */
-  readonly instant?: boolean
+  readonly instant: boolean
   /** force panel to skip reconciling position */
-  readonly force?: boolean
+  readonly force: boolean
 }
 
 export interface PostMsgSelection extends Omit<MsgSelection, 'type'> {

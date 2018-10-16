@@ -208,7 +208,9 @@ validMouseup$$.subscribe(event => {
       mouseX: event.clientX,
       mouseY: event.clientY,
       dbClick: clickPeriodCount >= 2,
-      ctrlKey: Boolean(event['metaKey'] || event['ctrlKey']),
+      shiftKey: Boolean(event['shiftKey']),
+      ctrlKey: Boolean(event['ctrlKey']),
+      metaKey: Boolean(event['metaKey']),
       self: isDictPanel,
       selectionInfo: selection.getSelectionInfo({ context })
     })
@@ -303,7 +305,9 @@ function sendMessage (
     mouseY: number
     self: boolean
     dbClick?: boolean
+    shiftKey?: boolean
     ctrlKey?: boolean
+    metaKey?: boolean
     instant?: boolean
   }
 ) {
@@ -314,7 +318,13 @@ function sendMessage (
     }
 
     message.self.send<MsgSelection>({
+      dbClick: false,
+      shiftKey: false,
+      ctrlKey: false,
+      metaKey: false,
+      instant: false,
       ...msg,
+      force: false,
       type: MsgType.Selection,
     })
   } else {
@@ -335,7 +345,11 @@ function sendEmptyMessage (isDictPanel: boolean) {
     mouseX: 0,
     mouseY: 0,
     dbClick: false,
+    shiftKey: false,
     ctrlKey: false,
+    metaKey: false,
+    instant: false,
+    force: false,
   }
 
   if (process.env.NODE_ENV === 'development') {

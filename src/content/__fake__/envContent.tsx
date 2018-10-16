@@ -16,14 +16,15 @@ initConfig().then(activeConfig => {
   // config.mode.icon = false
   // config.animation = false
   config.panelMode.double = true
-  config.panelMode.ctrl = true
+  config.panelMode.holding.ctrl = true
+  config.panelMode.holding.shift = true
   config.panelMode.instant.enable = true
   config.tripleCtrlAuto = true
   config.tripleCtrlLocation = TCDirection.right
   config.tripleCtrlPreload = 'selection'
   config.pinMode.direct = false
   config.pinMode.double = true
-  config.pinMode.ctrl = false
+  config.pinMode.holding.ctrl = false
   config.dicts.all.bing.defaultUnfold = false
   config.dicts.all.guoyu.selectionLang.eng = false
 

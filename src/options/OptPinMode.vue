@@ -12,10 +12,22 @@
           <input type="checkbox" v-model="pinMode.double"> {{ $t('opt:mode_double') }}
         </label>
         <label class="checkbox-inline">
-          <input type="checkbox" v-model="pinMode.ctrl"> {{ $t('opt:mode_ctrl') }}
+          <input type="checkbox" v-model="holding"> {{ $t('opt:mode_holding') }}
         </label>
         <label class="checkbox-inline">
           <input type="checkbox" v-model="pinMode.instant.enable"> {{ $t('opt:mode_instant') }}
+        </label>
+      </div>
+      <div v-if="holding">
+        <span>{{ $t('opt:mode_holding_subtitle') }}</span>
+        <label class="checkbox-inline">
+          <input type="checkbox" v-model="pinMode.holding.shift"> {{ $t('opt:mode_holding_shift') }}
+        </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" v-model="pinMode.holding.ctrl"> {{ $t('opt:mode_holding_ctrl') }}
+        </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" v-model="pinMode.holding.meta"> {{ $t('opt:mode_holding_meta') }}
         </label>
       </div>
       <div class="input-group" v-if="pinMode.double">
@@ -50,6 +62,12 @@ export default {
   store: {
     pinMode: 'config.pinMode',
     doubleClickDelay: 'config.doubleClickDelay',
-  }
+  },
+  data () {
+    const { holding } = this.$store.config.pinMode
+    return {
+      holding: holding.shift || holding.ctrl || holding.meta
+    }
+  },
 }
 </script>

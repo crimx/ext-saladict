@@ -1,4 +1,4 @@
-import { appConfigFactory, AppConfig } from '@/app-config'
+import { appConfigFactory, AppConfig, AppConfigMutable } from '@/app-config'
 import forEach from 'lodash/forEach'
 import isNumber from 'lodash/isNumber'
 import isString from 'lodash/isString'
@@ -9,9 +9,18 @@ import set from 'lodash/set'
 export default mergeConfig
 
 export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppConfig {
-  const base: AppConfig = baseConfig
+  const base: AppConfigMutable = baseConfig
     ? JSON.parse(JSON.stringify(baseConfig))
     : appConfigFactory(oldConfig.id)
+
+  if (oldConfig.version === 9) {
+    ['mode', 'pinMode', 'panelMode', 'qsPanelMode'].forEach(mode => {
+      base[mode].holding.shift = false
+      base[mode].holding.ctrl = !!oldConfig[mode]['ctrl']
+      base[mode].holding.meta = !!oldConfig[mode]['ctrl']
+      delete oldConfig[mode]['ctrl']
+    })
+  }
 
   mergeString('name')
 
@@ -36,28 +45,36 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   mergeBoolean('mode.icon')
   mergeBoolean('mode.direct')
   mergeBoolean('mode.double')
-  mergeBoolean('mode.ctrl')
+  mergeBoolean('mode.holding.shift')
+  mergeBoolean('mode.holding.ctrl')
+  mergeBoolean('mode.holding.meta')
   mergeBoolean('mode.instant.enable')
   merge('mode.instant.key', val => val === 'direct' || val === 'ctrl' || val === 'alt')
   mergeNumber('mode.instant.delay')
 
   mergeBoolean('pinMode.direct')
   mergeBoolean('pinMode.double')
-  mergeBoolean('pinMode.ctrl')
+  mergeBoolean('pinMode.holding.shift')
+  mergeBoolean('pinMode.holding.ctrl')
+  mergeBoolean('pinMode.holding.meta')
   mergeBoolean('pinMode.instant.enable')
   merge('pinMode.instant.key', val => val === 'direct' || val === 'ctrl' || val === 'alt')
   mergeNumber('pinMode.instant.delay')
 
   mergeBoolean('panelMode.direct')
   mergeBoolean('panelMode.double')
-  mergeBoolean('panelMode.ctrl')
+  mergeBoolean('panelMode.holding.shift')
+  mergeBoolean('panelMode.holding.ctrl')
+  mergeBoolean('panelMode.holding.meta')
   mergeBoolean('panelMode.instant.enable')
   merge('panelMode.instant.key', val => val === 'direct' || val === 'ctrl' || val === 'alt')
   mergeNumber('panelMode.instant.delay')
 
   mergeBoolean('qsPanelMode.direct')
   mergeBoolean('qsPanelMode.double')
-  mergeBoolean('qsPanelMode.ctrl')
+  mergeBoolean('qsPanelMode.holding.shift')
+  mergeBoolean('qsPanelMode.holding.ctrl')
+  mergeBoolean('qsPanelMode.holding.meta')
   mergeBoolean('qsPanelMode.instant.enable')
   merge('qsPanelMode.instant.key', val => val === 'direct' || val === 'ctrl' || val === 'alt')
   mergeNumber('qsPanelMode.instant.delay')

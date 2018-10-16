@@ -74,7 +74,10 @@ Promise.all([getActiveConfigID(), getConfigIDList()])
                   mouseX: window.innerWidth - this.$store.config.panelWidth - 110,
                   mouseY: window.innerHeight * (1 - this.$store.config.panelMaxHeightRatio) / 2 + 50,
                   dbClick: false,
+                  shiftKey: false,
                   ctrlKey: false,
+                  metaKey: false,
+                  force: false,
                 })
               }, window.__SALADICT_LAST_SEARCH__ ? 2000 : 0)
             }
