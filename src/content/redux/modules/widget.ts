@@ -842,6 +842,10 @@ function listenTrpleCtrl (
 ) {
   message.self.addListener(MsgType.TripleCtrl, () => {
     const { config, widget } = getState()
+    if (!config.tripleCtrl) {
+      return
+    }
+
     if (!config.tripleCtrlStandalone && widget.shouldPanelShow) {
       return
     }

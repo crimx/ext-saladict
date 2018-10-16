@@ -108,7 +108,9 @@ if (!window.name.startsWith('saladict-') && !isSaladictOptionsPage) {
     )),
     filter(group => group.length >= 3),
   ).subscribe(() => {
-    message.self.send({ type: MsgType.TripleCtrl })
+    if (config.tripleCtrl) {
+      message.self.send({ type: MsgType.TripleCtrl })
+    }
   })
 }
 
