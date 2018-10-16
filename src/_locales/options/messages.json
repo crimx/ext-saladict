@@ -354,11 +354,6 @@
     "zh_CN": "https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例",
     "zh_TW": "https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例"
   },
-  "mode_ctrl": {
-    "en": "Hold Ctrl/⌘",
-    "zh_CN": "按住Ctrl/⌘",
-    "zh_TW": "按住Ctrl/⌘"
-  },
   "mode_description": {
     "en": "When a text selection is made:",
     "zh_CN": "当用鼠标在网页上选择了一段文本：",
@@ -380,9 +375,34 @@
     "zh_TW": "滑鼠雙點擊間隔"
   },
   "mode_explain": {
-    "en": "<ul><li><strong>'Show Icon'</strong>, a cute little icon pops up nearby the cursor; </li><li><strong>'Directly Search'</strong>, the dictionary panel shows up directly; </li><li><strong>'Double Click'</strong>, dictionary panel shows up after double click selection; </li><li><strong>'Hold Ctrl/⌘'</strong>, the <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key must be pressed when the selection is made; </li><li><strong>'Instant Capture'</strong>, selection is automatically made near by the cursor. </li></ul>",
-    "zh_CN": "<ul><li><strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；</li><li><strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；</li><li><strong>“双击搜索”</strong>双击选择文本之后直接显示词典面板；</li><li><strong>“按住 Ctrl/⌘”</strong>在选择文本时需同时按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键才显示词典面板；</li><li><strong>“鼠标悬浮取词”</strong>会自动选取鼠标下发的单词，可配合快捷键开启关闭。</li></ul>",
-    "zh_TW": "<ul><li><strong>「顯示圖案」</strong>會先在滑鼠附近顯示一個圖案，滑鼠移動到圖案，會顯示出字典的視窗介面；</li><li><strong>「直接搜尋」</strong>則不會顯示圖案，直接顯示字典視窗介面；</li><li><strong>「滑鼠雙點擊」</strong>滑鼠雙點擊所選擇的句子或單字後，會直接顯示字典視窗介面；</li><li><strong>「按住 Ctrl/⌘」</strong>在選擇句子或單字時，需同時按住<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵，才顯示字典視窗介面；</li><li><strong>「滑鼠懸浮取詞」</strong>會自動選取滑鼠下方的單字，可配合快捷鍵啓用與關閉。</li></ul>"
+    "en": "<ul><li><strong>'Show Icon'</strong>, a cute little icon pops up nearby the cursor; </li><li><strong>'Directly Search'</strong>, the dictionary panel shows up directly; </li><li><strong>'Double Click'</strong>, dictionary panel shows up after double click selection; </li><li><strong>'Hold a Key'</strong>, the selected key must be pressed when the selection is made; </li><li><strong>'Instant Capture'</strong>, selection is automatically made near by the cursor. </li></ul>",
+    "zh_CN": "<ul><li><strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；</li><li><strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；</li><li><strong>“双击搜索”</strong>双击选择文本之后直接显示词典面板；</li><li><strong>“按住按键”</strong>在放开鼠标之前按住选择的按键才显示词典面板；</li><li><strong>“鼠标悬浮取词”</strong>会自动选取鼠标下发的单词，可配合快捷键开启关闭。</li></ul>",
+    "zh_TW": "<ul><li><strong>「顯示圖案」</strong>會先在滑鼠附近顯示一個圖案，滑鼠移動到圖案，會顯示出字典的視窗介面；</li><li><strong>「直接搜尋」</strong>則不會顯示圖案，直接顯示字典視窗介面；</li><li><strong>「滑鼠雙點擊」</strong>滑鼠雙點擊所選擇的句子或單字後，會直接顯示字典視窗介面；</li><li><strong>「按住按键」</strong>在放開滑鼠之前，需按住選擇的按鍵才顯示字典視窗介面；</li><li><strong>「滑鼠懸浮取詞」</strong>會自動選取滑鼠下方的單字，可配合快捷鍵啓用與關閉。</li></ul>"
+  },
+  "mode_holding": {
+    "en": "Hold a key",
+    "zh_CN": "按住按键",
+    "zh_TW": "按住按键"
+  },
+  "mode_holding_ctrl": {
+    "en": "Hold Ctrl key",
+    "zh_CN": "按住 Ctrl 键",
+    "zh_TW": "按住 Ctrl 键"
+  },
+  "mode_holding_meta": {
+    "en": "Hold Meta key",
+    "zh_CN": "按住 Meta 键",
+    "zh_TW": "按住 Meta 键"
+  },
+  "mode_holding_shift": {
+    "en": "Hold Shift key",
+    "zh_CN": "按住 Shift 键",
+    "zh_TW": "按住 Shift 键"
+  },
+  "mode_holding_subtitle": {
+    "en": "Chose holding keys:",
+    "zh_CN": "选择按住按键：",
+    "zh_TW": "选择按住按键："
   },
   "mode_icon": {
     "en": "Show Icon",
@@ -590,9 +610,9 @@
     "zh_TW": "Saladict 設定"
   },
   "triple_ctrl": {
-    "en": "Enable",
-    "zh_CN": "开启",
-    "zh_TW": "開啟"
+    "en": "Open via Triple-Ctrl",
+    "zh_CN": "三按 ctrl 开启",
+    "zh_TW": "三按 ctrl 開啟"
   },
   "triple_ctrl_description": {
     "en": "Press <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key three times (or with browser shortkey) to summon the dictionary panel. <br>Preloaded content will be inserted into input box. Enable auto search to search as soon as the panel shows up.",

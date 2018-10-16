@@ -94,8 +94,12 @@ export interface AppConfigMutable {
     direct: boolean
     /** double click */
     double: boolean
-    /** show panel when double click ctrl + selection not empty */
-    ctrl: boolean
+    /** holding a key */
+    holding: {
+      shift: boolean
+      ctrl: boolean
+      meta: boolean
+    }
     /** cursor instant capture */
     instant: {
       enable: boolean
@@ -110,8 +114,12 @@ export interface AppConfigMutable {
     direct: boolean
     /** double: double click */
     double: boolean
-    /** ctrl: search when double click ctrl + selection not empty */
-    ctrl: boolean
+    /** holding a key */
+    holding: {
+      shift: boolean
+      ctrl: boolean
+      meta: boolean
+    }
     /** cursor instant capture */
     instant: {
       enable: boolean
@@ -126,8 +134,12 @@ export interface AppConfigMutable {
     direct: boolean
     /** double: double click */
     double: boolean
-    /** ctrl: search when double click ctrl + selection not empty */
-    ctrl: boolean
+    /** holding a key */
+    holding: {
+      shift: boolean
+      ctrl: boolean
+      meta: boolean
+    }
     /** cursor instant capture */
     instant: {
       enable: boolean
@@ -142,8 +154,12 @@ export interface AppConfigMutable {
     direct: boolean
     /** double: double click */
     double: boolean
-    /** ctrl: search when double click ctrl + selection not empty */
-    ctrl: boolean
+    /** holding a key */
+    holding: {
+      shift: boolean
+      ctrl: boolean
+      meta: boolean
+    }
     /** cursor instant capture */
     instant: {
       enable: boolean
@@ -228,7 +244,7 @@ export default appConfigFactory
 
 export function appConfigFactory (id?: string): AppConfig {
   return {
-    version: 9,
+    version: 10,
     id: id || genUniqueKey(),
 
     name: `%%_default_%%`,
@@ -266,7 +282,11 @@ export function appConfigFactory (id?: string): AppConfig {
       icon: true,
       direct: false,
       double: false,
-      ctrl: false,
+      holding: {
+        shift: false,
+        ctrl: false,
+        meta: false,
+      },
       instant: {
         enable: false,
         key: 'alt',
@@ -277,7 +297,11 @@ export function appConfigFactory (id?: string): AppConfig {
     pinMode: {
       direct: true,
       double: false,
-      ctrl: false,
+      holding: {
+        shift: false,
+        ctrl: false,
+        meta: false,
+      },
       instant: {
         enable: false,
         key: 'alt',
@@ -288,7 +312,11 @@ export function appConfigFactory (id?: string): AppConfig {
     panelMode: {
       direct: false,
       double: false,
-      ctrl: false,
+      holding: {
+        shift: false,
+        ctrl: false,
+        meta: false,
+      },
       instant: {
         enable: false,
         key: 'alt',
@@ -299,7 +327,11 @@ export function appConfigFactory (id?: string): AppConfig {
     qsPanelMode: {
       direct: false,
       double: false,
-      ctrl: true,
+      holding: {
+        shift: false,
+        ctrl: true,
+        meta: false,
+      },
       instant: {
         enable: false,
         key: 'alt',

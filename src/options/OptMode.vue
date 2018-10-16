@@ -15,10 +15,22 @@
           <input type="checkbox" v-model="mode.double"> {{ $t('opt:mode_double') }}
         </label>
         <label class="checkbox-inline">
-          <input type="checkbox" v-model="mode.ctrl"> {{ $t('opt:mode_ctrl') }}
+          <input type="checkbox" v-model="holding"> {{ $t('opt:mode_holding') }}
         </label>
         <label class="checkbox-inline">
           <input type="checkbox" v-model="mode.instant.enable"> {{ $t('opt:mode_instant') }}
+        </label>
+      </div>
+      <div v-if="holding">
+        <span>{{ $t('opt:mode_holding_subtitle') }}</span>
+        <label class="checkbox-inline">
+          <input type="checkbox" v-model="mode.holding.shift"> {{ $t('opt:mode_holding_shift') }}
+        </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" v-model="mode.holding.ctrl"> {{ $t('opt:mode_holding_ctrl') }}
+        </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" v-model="mode.holding.meta"> {{ $t('opt:mode_holding_meta') }}
         </label>
       </div>
       <div class="input-group" v-if="mode.double">
@@ -53,6 +65,12 @@ export default {
   store: {
     mode: 'config.mode',
     doubleClickDelay: 'config.doubleClickDelay',
-  }
+  },
+  data () {
+    const { holding } = this.$store.config.mode
+    return {
+      holding: holding.shift || holding.ctrl || holding.meta
+    }
+  },
 }
 </script>

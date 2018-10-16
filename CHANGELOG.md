@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.18.0"></a>
+# [6.18.0](https://github.com/crimx/ext-saladict/compare/v6.17.1...v6.18.0) (2018-10-16)
+
+
+### Bug Fixes
+
+* **content:** fix triple ctrl switch ([d1dcdeb](https://github.com/crimx/ext-saladict/commit/d1dcdeb)), closes [#222](https://github.com/crimx/ext-saladict/issues/222)
+
+
+### Features
+
+* **content:** add more keys for holding mode ([bda8c07](https://github.com/crimx/ext-saladict/commit/bda8c07)), closes [#221](https://github.com/crimx/ext-saladict/issues/221)
+
+
+
 <a name="6.17.1"></a>
 ## [6.17.1](https://github.com/crimx/ext-saladict/compare/v6.17.0...v6.17.1) (2018-10-12)
 

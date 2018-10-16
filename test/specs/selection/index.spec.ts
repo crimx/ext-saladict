@@ -185,9 +185,13 @@ describe('Message Selection', () => {
       mouseX: 10,
       mouseY: 10,
       dbClick: false,
+      shiftKey: false,
       ctrlKey: false,
+      metaKey: false,
       self: false,
       selectionInfo,
+      force: false,
+      instant: false,
     })
   })
 
@@ -225,9 +229,13 @@ describe('Message Selection', () => {
       mouseX: 10,
       mouseY: 10,
       dbClick: false,
+      shiftKey: false,
       ctrlKey: false,
+      metaKey: false,
       self: false,
       selectionInfo,
+      force: false,
+      instant: false,
     })
   })
 

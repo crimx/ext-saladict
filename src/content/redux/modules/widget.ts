@@ -712,17 +712,19 @@ export function newSelection (): DispatcherThunk {
   return (dispatch, getState) => {
     const { widget, selection, config } = getState()
 
-    const { selectionInfo, dbClick, ctrlKey, instant, mouseX, mouseY, self } = selection
+    const { selectionInfo, dbClick, ctrlKey, shiftKey, metaKey, instant, mouseX, mouseY, self } = selection
 
     if (self) {
       // inside dict panel
-      const { direct, double, ctrl } = config.panelMode
+      const { direct, double, holding } = config.panelMode
       const { text, context } = selectionInfo
       if (text && (
             instant ||
             direct ||
             (double && dbClick) ||
-            (ctrl && ctrlKey)
+            (holding.shift && shiftKey) ||
+            (holding.ctrl && ctrlKey) ||
+            (holding.meta && metaKey)
           )
       ) {
         dispatch(searchText({
@@ -744,7 +746,9 @@ export function newSelection (): DispatcherThunk {
             instant ||
             qsPanelMode.direct ||
             (qsPanelMode.double && dbClick) ||
-            (qsPanelMode.ctrl && ctrlKey)
+            (qsPanelMode.holding.shift && shiftKey) ||
+            (qsPanelMode.holding.ctrl && ctrlKey) ||
+            (qsPanelMode.holding.meta && metaKey)
           )
       ) {
         message.send<MsgQSPanelSearchText>({
@@ -759,7 +763,7 @@ export function newSelection (): DispatcherThunk {
 
     const isActive = config.active && !widget.isTempDisabled
 
-    const { direct, ctrl, double, icon } = config.mode
+    const { direct, holding, double, icon } = config.mode
     const {
       isPinned,
       shouldPanelShow: lastShouldPanelShow,
@@ -773,7 +777,9 @@ export function newSelection (): DispatcherThunk {
         lastShouldPanelShow ||
         direct ||
         (double && dbClick) ||
-        (ctrl && ctrlKey) ||
+        (holding.shift && shiftKey) ||
+        (holding.ctrl && ctrlKey) ||
+        (holding.meta && metaKey) ||
         instant
       )) ||
       isStandalonePage
@@ -786,7 +792,9 @@ export function newSelection (): DispatcherThunk {
       !shouldPanelShow &&
       !direct &&
       !(double && dbClick) &&
-      !(ctrl && ctrlKey) &&
+      !(holding.shift && shiftKey) &&
+      !(holding.ctrl && ctrlKey) &&
+      !(holding.meta && metaKey) &&
       !instant &&
       !isStandalonePage
     )
@@ -820,7 +828,9 @@ export function newSelection (): DispatcherThunk {
           !isPinned ||
           pinMode.direct ||
           (pinMode.double && dbClick) ||
-          (pinMode.ctrl && ctrlKey)
+          (pinMode.holding.shift && shiftKey) ||
+          (pinMode.holding.ctrl && ctrlKey) ||
+          (pinMode.holding.meta && metaKey)
         )
     ) {
       dispatch(searchText({ info: selectionInfo }))
@@ -842,6 +852,10 @@ function listenTrpleCtrl (
 ) {
   message.self.addListener(MsgType.TripleCtrl, () => {
     const { config, widget } = getState()
+    if (!config.tripleCtrl) {
+      return
+    }
+
     if (!config.tripleCtrlStandalone && widget.shouldPanelShow) {
       return
     }
