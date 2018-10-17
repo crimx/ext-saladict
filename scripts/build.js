@@ -138,6 +138,8 @@ function build (previousFileSizes) {
 
 // Generate results for all browsers
 function generateByBrowser () {
+  console.log('\nGenerating files for each browser...\n')
+
   const commonManifest = require('../src/manifest/common.manifest.json')
   const version = { version: require('../package.json').version }
   const files = fs.readdirSync(paths.appBuild)
@@ -173,6 +175,9 @@ function generateByBrowser () {
     // clean up files
     fs.remove(file.path)
   )))
+  .then(() => {
+    console.log('Done.\n')
+  })
 }
 
 function genLocales () {
