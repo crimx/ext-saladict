@@ -34,6 +34,8 @@ const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 const isNoSelectionPage = isSaladictOptionsPage || isSaladictPopupPage
 
+const isMac = /mac/i.test(navigator.platform)
+
 let config = appConfigFactory()
 createActiveConfigStream().subscribe(newConfig => config = newConfig)
 
@@ -99,12 +101,12 @@ if (!window.name.startsWith('saladict-') && !isSaladictOptionsPage) {
    * Pressing ctrl/command key more than three times within 500ms
    * trigers TripleCtrl
    */
-  const ctrlPressed$$ = share<true>()(isKeyPressed(isCtrlKey))
+  const qsKeyPressed$$ = share<true>()(isKeyPressed(isQSKey))
 
-  ctrlPressed$$.pipe(
+  qsKeyPressed$$.pipe(
     buffer(merge(
-      debounceTime(500)(ctrlPressed$$), // collect after 0.5s
-      isKeyPressed(e => !isCtrlKey(e)), // other key pressed
+      debounceTime(500)(qsKeyPressed$$), // collect after 0.5s
+      isKeyPressed(e => !isQSKey(e)), // other key pressed
     )),
     filter(group => group.length >= 3),
   ).subscribe(() => {
@@ -360,10 +362,10 @@ function sendEmptyMessage (isDictPanel: boolean) {
 }
 
 /**
- * Is ctrl/command button pressed
+ * Is quick search key pressed(command on mac, ctrl on others)
  */
-function isCtrlKey (evt: KeyboardEvent): boolean {
-  return evt.key === 'Control' || evt.key === 'Meta'
+function isQSKey (evt: KeyboardEvent): boolean {
+  return isMac ? evt.key === 'Meta' : evt.key === 'Control'
 }
 
 /**
