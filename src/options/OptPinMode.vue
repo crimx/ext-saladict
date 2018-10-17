@@ -69,5 +69,13 @@ export default {
       holding: holding.shift || holding.ctrl || holding.meta
     }
   },
+  watch: {
+    holding (val) {
+      const { holding } = this.$store.config.pinMode
+      holding.shift = val
+      holding.ctrl = val
+      holding.meta = val
+    }
+  },
 }
 </script>
