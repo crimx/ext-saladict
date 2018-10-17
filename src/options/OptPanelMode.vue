@@ -18,16 +18,16 @@
           <input type="checkbox" v-model="panelMode.instant.enable"> {{ $t('opt:mode_instant') }}
         </label>
       </div>
-      <div v-if="holding">
+      <div v-if="holding" style="margin: 10px 0;">
         <span>{{ $t('opt:mode_holding_subtitle') }}</span>
         <label class="checkbox-inline">
-          <input type="checkbox" v-model="panelMode.holding.shift"> {{ $t('opt:mode_holding_shift') }}
+          <input type="checkbox" v-model="panelMode.holding.shift"> <span v-html="$t('opt:mode_holding_shift')" />
         </label>
         <label class="checkbox-inline">
-          <input type="checkbox" v-model="panelMode.holding.ctrl"> {{ $t('opt:mode_holding_ctrl') }}
+          <input type="checkbox" v-model="panelMode.holding.ctrl"> <span v-html="$t('opt:mode_holding_ctrl')" />
         </label>
         <label class="checkbox-inline">
-          <input type="checkbox" v-model="panelMode.holding.meta"> {{ $t('opt:mode_holding_meta') }}
+          <input type="checkbox" v-model="panelMode.holding.meta"> <span v-html="$t('opt:mode_holding_meta')" />
         </label>
       </div>
       <div class="input-group" v-if="panelMode.double">

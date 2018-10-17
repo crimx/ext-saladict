@@ -375,9 +375,9 @@
     "zh_TW": "滑鼠雙點擊間隔"
   },
   "mode_explain": {
-    "en": "<ul><li><strong>'Show Icon'</strong>, a cute little icon pops up nearby the cursor; </li><li><strong>'Directly Search'</strong>, the dictionary panel shows up directly; </li><li><strong>'Double Click'</strong>, dictionary panel shows up after double click selection; </li><li><strong>'Hold a Key'</strong>, the selected key must be pressed when the selection is made; </li><li><strong>'Instant Capture'</strong>, selection is automatically made near by the cursor. </li></ul>",
-    "zh_CN": "<ul><li><strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；</li><li><strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；</li><li><strong>“双击搜索”</strong>双击选择文本之后直接显示词典面板；</li><li><strong>“按住按键”</strong>在放开鼠标之前按住选择的按键才显示词典面板；</li><li><strong>“鼠标悬浮取词”</strong>会自动选取鼠标下发的单词，可配合快捷键开启关闭。</li></ul>",
-    "zh_TW": "<ul><li><strong>「顯示圖案」</strong>會先在滑鼠附近顯示一個圖案，滑鼠移動到圖案，會顯示出字典的視窗介面；</li><li><strong>「直接搜尋」</strong>則不會顯示圖案，直接顯示字典視窗介面；</li><li><strong>「滑鼠雙點擊」</strong>滑鼠雙點擊所選擇的句子或單字後，會直接顯示字典視窗介面；</li><li><strong>「按住按键」</strong>在放開滑鼠之前，需按住選擇的按鍵才顯示字典視窗介面；</li><li><strong>「滑鼠懸浮取詞」</strong>會自動選取滑鼠下方的單字，可配合快捷鍵啓用與關閉。</li></ul>"
+    "en": "<ul><li><strong>'Show Icon'</strong>, a cute little icon pops up nearby the cursor; </li><li><strong>'Directly Search'</strong>, the dictionary panel shows up directly; </li><li><strong>'Double Click'</strong>, dictionary panel shows up after double click selection; </li><li><strong>'Hold a Key'</strong>, the selected key must be pressed when the selection is made (Meta key is <kbd>⌘ Command</kbd> on Mac and <kbd>⊞ Windows</kbd> for others); </li><li><strong>'Instant Capture'</strong>, selection is automatically made near by the cursor. </li></ul>",
+    "zh_CN": "<ul><li><strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；</li><li><strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；</li><li><strong>“双击搜索”</strong>双击选择文本之后直接显示词典面板；</li><li><strong>“按住按键”</strong>在放开鼠标之前按住选择的按键才显示词典面板（Meta 键为 Mac 上的 <kbd>⌘ Command</kbd> 键以及其它键盘的 <kbd>⊞ Windows</kbd> 键）；</li><li><strong>“鼠标悬浮取词”</strong>会自动选取鼠标下发的单词，可配合快捷键开启关闭。</li></ul>",
+    "zh_TW": "<ul><li><strong>「顯示圖案」</strong>會先在滑鼠附近顯示一個圖案，滑鼠移動到圖案，會顯示出字典的視窗介面；</li><li><strong>「直接搜尋」</strong>則不會顯示圖案，直接顯示字典視窗介面；</li><li><strong>「滑鼠雙點擊」</strong>滑鼠雙點擊所選擇的句子或單字後，會直接顯示字典視窗介面；</li><li><strong>「按住按键」</strong>在放開滑鼠之前，需按住選擇的按鍵才顯示字典視窗介面（Meta 鍵為 Mac 上的 <kbd>⌘ Command</kbd> 鍵以及其它鍵盤的 <kbd>⊞ Windows</kbd> 鍵）；</li><li><strong>「滑鼠懸浮取詞」</strong>會自動選取滑鼠下方的單字，可配合快捷鍵啓用與關閉。</li></ul>"
   },
   "mode_holding": {
     "en": "Hold a key",
@@ -385,19 +385,19 @@
     "zh_TW": "按住按键"
   },
   "mode_holding_ctrl": {
-    "en": "Hold Ctrl key",
-    "zh_CN": "按住 Ctrl 键",
-    "zh_TW": "按住 Ctrl 键"
+    "en": "<kbd>Ctrl</kbd>",
+    "zh_CN": "<kbd>Ctrl</kbd>",
+    "zh_TW": "<kbd>Ctrl</kbd>"
   },
   "mode_holding_meta": {
-    "en": "Hold Meta key",
-    "zh_CN": "按住 Meta 键",
-    "zh_TW": "按住 Meta 键"
+    "en": "<kbd>Meta(⌘/⊞)</kbd>",
+    "zh_CN": "<kbd>Meta(⌘/⊞)</kbd>",
+    "zh_TW": "<kbd>Meta(⌘/⊞)</kbd>"
   },
   "mode_holding_shift": {
-    "en": "Hold Shift key",
-    "zh_CN": "按住 Shift 键",
-    "zh_TW": "按住 Shift 键"
+    "en": "<kbd>Shift</kbd>",
+    "zh_CN": "<kbd>Shift</kbd>",
+    "zh_TW": "<kbd>Shift</kbd>"
   },
   "mode_holding_subtitle": {
     "en": "Chose holding keys:",
@@ -611,13 +611,13 @@
   },
   "triple_ctrl": {
     "en": "Open via Triple-Ctrl",
-    "zh_CN": "三按 ctrl 开启",
-    "zh_TW": "三按 ctrl 開啟"
+    "zh_CN": "三按 ctrl/⌘ 开启",
+    "zh_TW": "三按 ctrl/⌘ 開啟"
   },
   "triple_ctrl_description": {
-    "en": "Press <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> key three times (or with browser shortkey) to summon the dictionary panel. <br>Preloaded content will be inserted into input box. Enable auto search to search as soon as the panel shows up.",
-    "zh_CN": "连续按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>键（或设置浏览器快捷键）将弹出词典界面。<br>选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。<br>若打开为新窗口可额外设置划词模式，或不对主页面划词响应（做单独词典窗口用）。",
-    "zh_TW": "連續按三次<kbd>Ctrl</kbd>或者<kbd>Command ⌘</kbd>鍵（或設定瀏覽器快捷鍵），將會彈出字典視窗介面。<br>選擇預先下載的內容，會顯示在輸入框裡。啟動自動查字功能，字典視窗介面會出現，此時，會自動開始查尋單字。<br>若開啟為新視窗可額外設定劃詞模式，或不對主頁面劃詞響應（做單獨字典視窗用）。"
+    "en": "Press <kbd>⌘ Command</kbd>(Mac) or <kbd>Ctrl</kbd>(Others) three times (or with browser shortkey) to summon the dictionary panel. <br>Preloaded content will be inserted into input box. Enable auto search to search as soon as the panel shows up.",
+    "zh_CN": "连续按三次<kbd>⌘ Command</kbd>（Mac）或者<kbd>Ctrl</kbd>（其它键盘）（或设置浏览器快捷键）将弹出词典界面。<br>选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。<br>若打开为新窗口可额外设置划词模式，或不对主页面划词响应（做单独词典窗口用）。",
+    "zh_TW": "連續按三次<kbd>⌘ Command</kbd>（Mac）或者<kbd>Ctrl</kbd>（其它键盘）（或設定瀏覽器快捷鍵），將會彈出字典視窗介面。<br>選擇預先下載的內容，會顯示在輸入框裡。啟動自動查字功能，字典視窗介面會出現，此時，會自動開始查尋單字。<br>若開啟為新視窗可額外設定劃詞模式，或不對主頁面劃詞響應（做單獨字典視窗用）。"
   },
   "triple_ctrl_height": {
     "en": "Window Height",

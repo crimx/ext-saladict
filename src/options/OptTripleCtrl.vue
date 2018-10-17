@@ -34,12 +34,10 @@
           <input type="checkbox" v-model="tripleCtrlPageSel"> {{ $t('opt:triple_ctrl_page_selection') }}
         </label>
       </div>
-      <div v-if="tripleCtrlStandalone" class="checkbox">
-        <div class="input-group">
-          <div class="input-group-addon">{{ $t('opt:triple_ctrl_height') }}</div>
-          <input type="number" min="50" class="form-control" v-model.number="tripleCtrlHeight">
-          <div class="input-group-addon">px</div>
-        </div>
+      <div v-if="tripleCtrlStandalone" class="input-group">
+        <div class="input-group-addon">{{ $t('opt:triple_ctrl_height') }}</div>
+        <input type="number" min="50" class="form-control" v-model.number="tripleCtrlHeight">
+        <div class="input-group-addon">px</div>
       </div>
       <div v-if="tripleCtrlStandalone && tripleCtrlPageSel">
         <p style="font-weight: bold;">{{ $t('opt:mode_title') }}:</p>
@@ -57,16 +55,16 @@
             <input type="checkbox" v-model="qsPanelMode.instant.enable"> {{ $t('opt:mode_instant') }}
           </label>
         </div>
-        <div v-if="holding">
+        <div v-if="holding" style="margin: 10px 0;">
           <span>{{ $t('opt:mode_holding_subtitle') }}</span>
           <label class="checkbox-inline">
-            <input type="checkbox" v-model="qsPanelMode.holding.shift"> {{ $t('opt:mode_holding_shift') }}
+            <input type="checkbox" v-model="qsPanelMode.holding.shift"> <span v-html="$t('opt:mode_holding_shift')" />
           </label>
           <label class="checkbox-inline">
-            <input type="checkbox" v-model="qsPanelMode.holding.ctrl"> {{ $t('opt:mode_holding_ctrl') }}
+            <input type="checkbox" v-model="qsPanelMode.holding.ctrl"> <span v-html="$t('opt:mode_holding_ctrl')" />
           </label>
           <label class="checkbox-inline">
-            <input type="checkbox" v-model="qsPanelMode.holding.meta"> {{ $t('opt:mode_holding_meta') }}
+            <input type="checkbox" v-model="qsPanelMode.holding.meta"> <span v-html="$t('opt:mode_holding_meta')" />
           </label>
         </div>
         <div class="input-group" v-if="qsPanelMode.double">
