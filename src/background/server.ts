@@ -20,8 +20,13 @@ import {
   MsgQSPanelIDChanged,
 } from '@/typings/message'
 
+browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B' })
+
 let config = appConfigFactory()
-createActiveConfigStream().subscribe(newConfig => config = newConfig)
+createActiveConfigStream().subscribe(newConfig => {
+  config = newConfig
+  browser.browserAction.setBadgeText({ text: newConfig.active ? '' : 'off' })
+})
 
 message.self.initServer()
 
