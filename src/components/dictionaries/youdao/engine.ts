@@ -1,6 +1,6 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { getText, getInnerHTMLThunk, handleNoResult, HTMLString, handleNetWorkError } from '../helpers'
-import { AppConfig, DictConfigs } from '@/app-config'
+import { getText, getInnerHTMLThunk, handleNoResult, HTMLString, handleNetWorkError, SearchFunction } from '../helpers'
+import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk('http://www.youdao.com/')
@@ -31,10 +31,9 @@ export type YoudaoResult = YoudaoResultLex | YoudaoResultRelated
 
 type YoudaoSearchResult = DictSearchResult<YoudaoResult>
 
-export default function search (
-  text: string,
-  config: AppConfig,
-): Promise<YoudaoSearchResult> {
+export const search: SearchFunction<YoudaoSearchResult> = (
+  text, config, payload
+) => {
   const options = config.dicts.all.youdao.options
   const isChz = config.langCode === 'zh-TW'
 

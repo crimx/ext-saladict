@@ -1,5 +1,4 @@
-import { handleNoResult, MachineTranslateResult, handleNetWorkError } from '../helpers'
-import { AppConfig } from '@/app-config'
+import { handleNoResult, MachineTranslatePayload, MachineTranslateResult, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 
@@ -16,11 +15,9 @@ const langcodes: ReadonlyArray<string> = [
   'uk', 'ur', 'vi', 'yua', 'yue',
 ]
 
-export default function search (
-  text: string,
-  config: AppConfig,
-  payload: { sl?: string, tl?: string }
-): Promise<SogouSearchResult> {
+export const search: SearchFunction<SogouSearchResult, MachineTranslatePayload> = (
+  text, config, payload
+) => {
   const options = config.dicts.all.sogou.options
 
   const sl: string = payload.sl || 'auto'

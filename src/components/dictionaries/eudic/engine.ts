@@ -1,6 +1,5 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { getText, handleNoResult, handleNetWorkError } from '../helpers'
-import { AppConfig } from '@/app-config'
+import { getText, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 
 interface EudicResultItem {
@@ -14,10 +13,9 @@ export type EudicResult = EudicResultItem[]
 
 type EudicSearchResult = DictSearchResult<EudicResult>
 
-export default function search (
-  text: string,
-  config: AppConfig,
-): Promise<EudicSearchResult> {
+export const search: SearchFunction<EudicSearchResult> = (
+  text, config, payload
+) => {
   text = encodeURIComponent(text.split(/\s+/).slice(0, 2).join(' '))
   const options = config.dicts.all.eudic.options
 
