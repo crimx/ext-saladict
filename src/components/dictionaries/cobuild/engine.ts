@@ -23,10 +23,10 @@ export const search: SearchFunction<COBUILDSearchResult> = (
 ) => {
   text = encodeURIComponent(text.replace(/\s+/g, ' '))
   const isChz = config.langCode === 'zh-TW'
-  return fetchDirtyDOM('https://www.iciba.com/' + text)
+  return fetchDirtyDOM('http://www.iciba.com/' + text)
     .then(doc => handleDOM(doc, config.dicts.all.cobuild.options, isChz))
     .catch(() => {
-      return fetchDirtyDOM('http://www.iciba.com/' + text)
+      return fetchDirtyDOM('https://www.iciba.com/' + text)
         .catch(handleNetWorkError)
         .then(doc => handleDOM(doc, config.dicts.all.cobuild.options, isChz))
     })
