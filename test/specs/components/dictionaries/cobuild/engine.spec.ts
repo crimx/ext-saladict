@@ -1,4 +1,4 @@
-import search from '@/components/dictionaries/cobuild/engine'
+import { search } from '@/components/dictionaries/cobuild/engine'
 import { appConfigFactory, AppConfigMutable } from '@/app-config'
 import fs from 'fs'
 import path from 'path'
@@ -17,7 +17,7 @@ describe('Dict/COBUILD/engine', () => {
     config.dicts.all.cobuild.options = {
       sentence: 4
     }
-    return search('any', config)
+    return search('any', config, {})
       .then(searchResult => {
         expect(searchResult.audio).toHaveProperty('us', expect.stringContaining('mp3'))
         expect(searchResult.audio).toHaveProperty('uk', expect.stringContaining('mp3'))

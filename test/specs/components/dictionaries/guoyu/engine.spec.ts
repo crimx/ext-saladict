@@ -1,4 +1,4 @@
-import search from '@/components/dictionaries/guoyu/engine'
+import { search } from '@/components/dictionaries/guoyu/engine'
 import { appConfigFactory } from '@/app-config'
 
 describe('Dict/GuoYu/engine', () => {
@@ -10,7 +10,7 @@ describe('Dict/GuoYu/engine', () => {
   })
 
   it('should parse result correctly', () => {
-    return search('any', appConfigFactory())
+    return search('any', appConfigFactory(), {})
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.py).toBe('string')
         expect(typeof searchResult.result.t).toBe('string')

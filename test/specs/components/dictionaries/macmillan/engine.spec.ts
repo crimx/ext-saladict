@@ -1,5 +1,5 @@
-import search, { MacmillanResultLex, MacmillanResultRelated } from '@/components/dictionaries/macmillan/engine'
-import { appConfigFactory, AppConfigMutable } from '@/app-config'
+import { search, MacmillanResultLex, MacmillanResultRelated } from '@/components/dictionaries/macmillan/engine'
+import { appConfigFactory } from '@/app-config'
 import fs from 'fs'
 import path from 'path'
 
@@ -24,7 +24,7 @@ describe('Dict/Macmillan/engine', () => {
   })
 
   it('should parse lex result correctly', () => {
-    return search('love', appConfigFactory())
+    return search('love', appConfigFactory(), {})
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
 
@@ -45,7 +45,7 @@ describe('Dict/Macmillan/engine', () => {
   })
 
   it('should parse related result correctly', () => {
-    return search('jumblish', appConfigFactory())
+    return search('jumblish', appConfigFactory(), {})
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 

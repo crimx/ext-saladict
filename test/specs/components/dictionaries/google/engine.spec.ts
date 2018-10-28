@@ -1,4 +1,4 @@
-import search from '@/components/dictionaries/google/engine'
+import { search } from '@/components/dictionaries/google/engine'
 import { appConfigFactory } from '@/app-config'
 import fs from 'fs'
 import path from 'path'

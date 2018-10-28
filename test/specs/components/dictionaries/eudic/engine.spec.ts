@@ -1,4 +1,4 @@
-import search from '@/components/dictionaries/eudic/engine'
+import { search } from '@/components/dictionaries/eudic/engine'
 import { appConfigFactory } from '@/app-config'
 import fs from 'fs'
 import path from 'path'
@@ -14,7 +14,7 @@ describe('Dict/Eudic/engine', () => {
   })
 
   it('should parse result correctly', () => {
-    return search('love', appConfigFactory())
+    return search('love', appConfigFactory(), {})
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
         expect(searchResult.result).toHaveLength(10)

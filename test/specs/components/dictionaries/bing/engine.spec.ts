@@ -1,4 +1,4 @@
-import search, { BingResultLex, BingResultMachine, BingResultRelated } from '@/components/dictionaries/bing/engine'
+import { search, BingResultLex, BingResultMachine, BingResultRelated } from '@/components/dictionaries/bing/engine'
 import { appConfigFactory, AppConfigMutable } from '@/app-config'
 import fs from 'fs'
 import path from 'path'
@@ -34,7 +34,7 @@ describe('Dict/Bing/engine', () => {
       related: true,
       sentence: 4
     }
-    return search('lex', config)
+    return search('lex', config, {})
       .then(searchResult => {
         expect(searchResult.audio).toHaveProperty('us', expect.stringContaining('mp3'))
         expect(searchResult.audio).toHaveProperty('uk', expect.stringContaining('mp3'))
@@ -49,7 +49,7 @@ describe('Dict/Bing/engine', () => {
   })
 
   it('should parse machine result correctly', () => {
-    return search('machine', appConfigFactory())
+    return search('machine', appConfigFactory(), {})
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 
@@ -61,7 +61,7 @@ describe('Dict/Bing/engine', () => {
   })
 
   it('should parse related result correctly', () => {
-    return search('related', appConfigFactory())
+    return search('related', appConfigFactory(), {})
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 

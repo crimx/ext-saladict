@@ -1,4 +1,4 @@
-import search, { LongmanResultLex, LongmanResultRelated } from '@/components/dictionaries/longman/engine'
+import { search, LongmanResultLex, LongmanResultRelated } from '@/components/dictionaries/longman/engine'
 import { appConfigFactory, AppConfigMutable } from '@/app-config'
 import fs from 'fs'
 import path from 'path'
@@ -35,7 +35,7 @@ describe('Dict/Longman/engine', () => {
       related: true,
     }
 
-    return search('love', config)
+    return search('love', config, {})
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
@@ -84,7 +84,7 @@ describe('Dict/Longman/engine', () => {
       related: true,
     }
 
-    return search('profit', config)
+    return search('profit', config, {})
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
@@ -135,7 +135,7 @@ describe('Dict/Longman/engine', () => {
   })
 
   it('should parse related result correctly', () => {
-    return search('jumblish', appConfigFactory())
+    return search('jumblish', appConfigFactory(), {})
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 

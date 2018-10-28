@@ -1,4 +1,4 @@
-import search from '@/components/dictionaries/etymonline/engine'
+import { search } from '@/components/dictionaries/etymonline/engine'
 import { appConfigFactory, AppConfigMutable } from '@/app-config'
 import fs from 'fs'
 import path from 'path'
@@ -18,7 +18,7 @@ describe('Dict/Etymonline/engine', () => {
       chart: true,
       resultnum: 4
     }
-    return search('any', config)
+    return search('any', config, {})
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 
