@@ -106,7 +106,7 @@ function handleText (
     return handleNoResult()
   }
 
-  const transText: string = data[0].map(item => item[0]).join(' ')
+  const transText: string = data[0].map(item => item[0]).join('\n')
 
   if (transText.length > 0) {
     return {
