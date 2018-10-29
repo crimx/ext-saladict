@@ -68,6 +68,15 @@ export function saveWord ({ area, info }: MsgSaveWord) {
   })
 }
 
+export function saveWords ({ area, words }: { area: Area, words: Word[] }) {
+  if (process.env.DEV_BUILD) {
+    if (words.length !== new Set(words.map(w => w.date)).size) {
+      console.error('save Words: duplicate records')
+    }
+  }
+  return db[area].bulkPut(words)
+}
+
 export function deleteWords ({ area, dates }: MsgDeleteWords) {
   return Array.isArray(dates)
     ? db[area].bulkDelete(dates)
