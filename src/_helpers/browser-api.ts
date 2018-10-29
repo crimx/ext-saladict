@@ -7,6 +7,7 @@
 import { Observable } from 'rxjs/Observable'
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
 import { map } from 'rxjs/operators/map'
+import { filter } from 'rxjs/operators/filter'
 
 import { MsgType } from '@/typings/message'
 
@@ -257,7 +258,8 @@ function storageCreateStream (this: StorageThisThree, key: string) {
     handler => this.addListener(key, handler as StorageListenerCb),
     handler => this.removeListener(key, handler as StorageListenerCb),
   ).pipe(
-    map(args => Array.isArray(args) ? args[0][key] : args[key])
+    filter(args => (Array.isArray(args) ? args[0] : args).hasOwnProperty(key)),
+    map(args => Array.isArray(args) ? args[0][key] : args[key]),
   )
 }
 
