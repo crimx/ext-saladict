@@ -160,7 +160,7 @@ export interface MsgGetWords {
   readonly area: DBArea
   readonly itemsPerPage?: number
   readonly pageNum?: number
-  readonly filters: { [field: string]: string[] | undefined }
+  readonly filters?: { [field: string]: string[] | undefined }
   readonly sortField?: string
   readonly sortOrder?: 'ascend' | 'descend' | false
   readonly searchText?: string
