@@ -5,6 +5,8 @@ import {
   DlChanged,
   getNotebook,
   setNotebook,
+  getMeta,
+  setMeta,
 } from '../helpers'
 
 export interface SyncConfig {
@@ -141,10 +143,35 @@ export const initServer: InitServer<SyncConfig> = async config => {
     const words = await getNotebook()
     if (words.length > 0) {
       // file exist
-      // require use permission for overwriting
-      return Promise.reject('exist')
-    } else {
-      await setNotebook(file.json.words)
+      const meta = await getMeta<Meta>(serviceID)
+
+      if (!meta || !meta.timestamp) {
+        // let user decide to keep which one
+        return Promise.reject('exist')
+      }
+
+      if (meta.timestamp === file.json.timestamp) {
+        return
+      }
+
+      if (meta.timestamp > file.json.timestamp) {
+        // local is newer
+        try {
+          const text = JSON.stringify({ timestamp: meta.timestamp, words } as NotebookFile)
+          await upload(config, text)
+        } catch (e) {
+          if (process.env.DEV_BUILD) {
+            console.error('Stringify notebook failed', words)
+          }
+        }
+        return
+      }
     }
+
+    await setMeta<Required<Meta>>(
+      serviceID,
+      { timestamp: file.json.timestamp, etag: file.etag },
+    )
+    await setNotebook(file.json.words)
   }
 }
