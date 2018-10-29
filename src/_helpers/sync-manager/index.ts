@@ -7,33 +7,37 @@ import { empty } from 'rxjs/observable/empty'
 import * as service from './services/webdav'
 import { createSyncConfigStream, getMeta, setMeta, setNotebook, getNotebook, NotebookFile, getSyncConfig } from './helpers'
 
-// Moniter sync configs and start interval
-createSyncConfigStream().pipe(
-  switchMap(configs => {
-    if (!configs || !configs[service.serviceID]) {
-      if (process.env.DEV_BUILD) {
-        console.log('No Sync Service Conifg', configs, service.serviceID)
+/** Init on new server */
+export function initSyncService (config: any): Promise<void> {
+  return service.initServer(config)
+}
+
+export function startSyncServiceInterval () {
+  // Moniter sync configs and start interval
+  createSyncConfigStream().pipe(
+    switchMap(configs => {
+      if (!configs || !configs[service.serviceID]) {
+        if (process.env.DEV_BUILD) {
+          console.log('No Sync Service Conifg', configs, service.serviceID)
+        }
+        return empty<void>()
       }
-      return empty<void>()
-    }
 
-    if (process.env.DEV_BUILD) {
-      console.log('Sync Service Conifg', configs, service.serviceID)
-    }
+      if (process.env.DEV_BUILD) {
+        console.log('Sync Service Conifg', configs, service.serviceID)
+      }
 
-    const config = configs[service.serviceID]
+      const config = configs[service.serviceID]
 
-    return fromPromise<void>(downlaod(config)).pipe(
-      delay(config.duration),
-      repeat(),
-    )
-  })
-)
+      return fromPromise<void>(downlaod(config)).pipe(
+        delay(config.duration),
+        repeat(),
+      )
+    })
+  )
+}
 
 export async function upload () {
-  const words = await getNotebook()
-  if (!words || words.length <= 0) { return }
-
   const config = await getSyncConfig<service.SyncConfig>(service.serviceID)
   if (!config) {
     if (process.env.DEV_BUILD) {
@@ -41,6 +45,11 @@ export async function upload () {
     }
     return
   }
+
+  await downlaod(config)
+
+  const words = await getNotebook()
+  if (!words || words.length <= 0) { return }
 
   const timestamp = Date.now()
 

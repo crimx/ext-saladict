@@ -66,6 +66,8 @@ export const enum MsgType {
   /** Manually emit selection event */
   EmitSelection,
 
+  SyncServiceInit,
+
   /**
    * Background proxy sends back underlyingly
    */
@@ -207,7 +209,12 @@ export interface MsgQSPanelSearchText {
 export type MsgQueryQSPanelResponse = boolean
 
 export interface MsgQueryPanelState {
-  type: MsgType.QueryPanelState,
+  type: MsgType.QueryPanelState
   /** object path, default returns the whole state */
   path?: string
+}
+
+export interface MsgSyncServiceInit {
+  type: MsgType.SyncServiceInit
+  config: any
 }

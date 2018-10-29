@@ -3,8 +3,8 @@ import {
   InitServer,
   Upload,
   DlChanged,
-  setMeta,
   getNotebook,
+  setNotebook,
 } from '../helpers'
 
 export interface SyncConfig {
@@ -22,52 +22,6 @@ export interface Meta {
 }
 
 export const serviceID = 'webdav'
-
-export const initServer: InitServer<SyncConfig> = async config => {
-  const text = await fetch(config.url, {
-    method: 'PROPFIND',
-    headers: {
-      'Authorization': 'Basic ' + window.btoa(`${config.user}:${config.passwd}`),
-      'Content-Type': 'application/xml; charset="utf-8"',
-      'Depth': '2',
-    },
-  }).then(r => r.text())
-
-  const doc = new DOMParser().parseFromString(text, 'application/xml')
-
-  const dir = Array.from(doc.querySelectorAll('response'))
-    .find(el => {
-      const href = el.querySelector('href')
-      if (href && href.textContent && href.textContent.endsWith('/Saladict/')) {
-        // is Saladict
-        if (el.querySelector('resourcetype collection')) {
-          // is collection
-          return true
-        }
-      }
-      return false
-    })
-
-  if (!dir) {
-    // create directory
-    const response = await fetch(config.url + 'Saladict', { method: 'MKCOL' })
-    if (!response.ok) {
-      // cannot create directory
-      return Promise.reject('mkcol')
-    }
-    return true
-  }
-
-  const file = await dlChanged(config, {})
-  if (file) {
-    // file exist
-    // remind use for overwriting
-    return Promise.reject('exist')
-  }
-
-  const words = await getNotebook()
-  return true
-}
 
 export const upload: Upload<SyncConfig> = async (config, text) => {
   const response = await fetch(config.url + 'Saladict/notebook.json', {
@@ -139,4 +93,58 @@ export const dlChanged: DlChanged<SyncConfig, Meta> = async (
   }
 
   return { json, etag: response.headers.get('ETag') || '' }
+}
+
+export const initServer: InitServer<SyncConfig> = async config => {
+  let text: string
+
+  try {
+    text = await fetch(config.url, {
+      method: 'PROPFIND',
+      headers: {
+        'Authorization': 'Basic ' + window.btoa(`${config.user}:${config.passwd}`),
+        'Content-Type': 'application/xml; charset="utf-8"',
+        'Depth': '2',
+      },
+    }).then(r => r.text())
+  } catch (e) {
+    return Promise.reject('network')
+  }
+
+  const doc = new DOMParser().parseFromString(text, 'application/xml')
+
+  const dir = Array.from(doc.querySelectorAll('response'))
+    .find(el => {
+      const href = el.querySelector('href')
+      if (href && href.textContent && href.textContent.endsWith('/Saladict/')) {
+        // is Saladict
+        if (el.querySelector('resourcetype collection')) {
+          // is collection
+          return
+        }
+      }
+      return Promise.reject('parse') as any
+    })
+
+  if (!dir) {
+    // create directory
+    const response = await fetch(config.url + 'Saladict', { method: 'MKCOL' })
+    if (!response.ok) {
+      // cannot create directory
+      return Promise.reject('mkcol')
+    }
+    return
+  }
+
+  const file = await dlChanged(config, {})
+  if (file) {
+    const words = await getNotebook()
+    if (words.length > 0) {
+      // file exist
+      // require use permission for overwriting
+      return Promise.reject('exist')
+    } else {
+      await setNotebook(file.json.words)
+    }
+  }
 }

@@ -15,7 +15,7 @@ export interface NotebookFile {
  * Check server and create a Saladict Directory if not exist.
  */
 export interface InitServer<C> {
-  (config: C): Promise<boolean>
+  (config: C): Promise<void>
 }
 
 /**
@@ -68,5 +68,5 @@ export async function setNotebook (words: Word[]): Promise<void> {
 }
 
 export async function getNotebook (): Promise<Word[]> {
-  return (await getWords({ type: MsgType.GetWords, area: 'notebook' })).words
+  return (await getWords({ type: MsgType.GetWords, area: 'notebook' })).words || []
 }

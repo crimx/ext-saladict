@@ -1,12 +1,13 @@
-import { message, openURL } from '@/_helpers/browser-api'
-import { play } from './audio-manager'
-import { isInNotebook, saveWord, deleteWords, getWordsByText, getWords } from './database'
-import { chsToChz } from '@/_helpers/chs-to-chz'
 import { appConfigFactory, TCDirection } from '@/app-config'
+import { message, openURL } from '@/_helpers/browser-api'
+import { chsToChz } from '@/_helpers/chs-to-chz'
+import { initSyncService } from '@/_helpers/sync-manager'
+import { timeout, timer } from '@/_helpers/promise-more'
 import { createActiveConfigStream } from '@/_helpers/config-manager'
 import { DictSearchResult } from '@/typings/server'
-import { timeout, timer } from '@/_helpers/promise-more'
 import { SearchErrorType, SearchFunction } from '@/components/dictionaries/helpers'
+import { isInNotebook, saveWord, deleteWords, getWordsByText, getWords } from './database'
+import { play } from './audio-manager'
 import {
   MsgType,
   MsgOpenUrl,
@@ -18,6 +19,7 @@ import {
   MsgGetWordsByText,
   MsgGetWords,
   MsgQSPanelIDChanged,
+  MsgSyncServiceInit,
 } from '@/typings/message'
 
 browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B' })
@@ -70,6 +72,9 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return getWordsByText(data as MsgGetWordsByText)
     case MsgType.GetWords:
       return getWords(data as MsgGetWords)
+
+    case MsgType.SyncServiceInit:
+      return initSyncService((data as MsgSyncServiceInit).config)
 
     case 'youdao_translate_ajax' as any:
       return youdaoTranslateAjax(data.request)
