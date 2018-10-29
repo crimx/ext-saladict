@@ -29,7 +29,7 @@ describe('Server', () => {
     })
     jest.doMock('@/components/dictionaries/bing/engine', () => {
       return {
-        default: bingSearch
+        search: bingSearch
       }
     })
     jest.doMock('@/app-config', () => {

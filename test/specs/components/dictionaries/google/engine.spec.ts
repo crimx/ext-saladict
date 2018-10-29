@@ -24,7 +24,7 @@ describe('Dict/Google/engine', () => {
     return search('any', appConfigFactory(), {})
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
-        expect(searchResult.result.trans.text).toBe('不要温柔地进入那个晚安。 愤怒，对光明的消逝愤怒。')
+        expect(searchResult.result.trans.text).toBe('“当你不需要的时候，这就是你所读到的东西，当你无法帮助它时，它将决定你将会是什么。”\n- 奥斯卡·王尔德\n成功一夜成名需要很长时间。')
         expect(searchResult.result.id).toBe('google')
         expect(searchResult.result.sl).toBe('auto')
         expect(searchResult.result.tl).toBe('en')
