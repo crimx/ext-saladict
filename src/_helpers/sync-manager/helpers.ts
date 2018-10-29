@@ -1,5 +1,5 @@
 import { storage } from '@/_helpers/browser-api'
-import { getWords, saveWords, Word } from '@/background/database'
+import { getWords, saveWords, Word, getSyncMeta, setSyncMeta } from '@/background/database'
 import { MsgType } from '@/typings/message'
 
 import { concat } from 'rxjs/observable/concat'
@@ -55,12 +55,14 @@ export function createSyncConfigStream () {
 }
 
 export async function setMeta<T = any> (serviceID: string, meta: T): Promise<void> {
-  await storage.sync.set({ ['sync' + serviceID]: meta })
+  await setSyncMeta(serviceID, JSON.stringify(meta))
 }
 
 export async function getMeta<T> (serviceID: string): Promise<T | undefined> {
-  const key = 'sync' + serviceID
-  return (await storage.local.get(key))[key]
+  const text = await getSyncMeta(serviceID)
+  if (text) {
+    return JSON.parse(text)
+  }
 }
 
 export async function setNotebook (words: Word[]): Promise<void> {

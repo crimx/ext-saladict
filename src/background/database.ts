@@ -36,6 +36,8 @@ export class SaladictDB extends Dexie {
   notebook: Dexie.Table<Word, number>
   // @ts-ignore
   history: Dexie.Table<Word, number>
+  // @ts-ignore
+  syncmeta: Dexie.Table<{ id: string, json: string }, string>
 
   constructor () {
     super('SaladictWords')
@@ -43,6 +45,7 @@ export class SaladictDB extends Dexie {
     this.version(1).stores({
       notebook: 'date,text,context,url',
       history: 'date,text,context,url',
+      syncmeta: 'id'
     })
   }
 }
@@ -52,6 +55,18 @@ export const db = new SaladictDB()
 /*-----------------------------------------------*\
     Apis
 \*-----------------------------------------------*/
+
+export function getSyncMeta (serviceID: string) {
+  return db.syncmeta
+    .where('id')
+    .equals(serviceID)
+    .first(record => record && record.json)
+}
+
+export function setSyncMeta (serviceID: string, text: string) {
+  return db.syncmeta
+    .put({ id: serviceID, json: text })
+}
 
 export function isInNotebook ({ info }: MsgIsInNotebook) {
   return db.notebook
