@@ -67,6 +67,8 @@ export const enum MsgType {
   EmitSelection,
 
   SyncServiceInit,
+  SyncServiceDownload,
+  SyncServiceUpload,
 
   /**
    * Background proxy sends back underlyingly

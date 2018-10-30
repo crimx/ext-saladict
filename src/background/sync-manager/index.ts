@@ -8,13 +8,13 @@ import * as service from './services/webdav'
 import { createSyncConfigStream, getMeta, setMeta, setNotebook, getNotebook, NotebookFile, getSyncConfig } from './helpers'
 
 /** Init on new server */
-export function initSyncService (config: any): Promise<void> {
+export function syncServiceInit (config: any): Promise<void> {
   return service.initServer(config)
 }
 
 export function startSyncServiceInterval () {
   // Moniter sync configs and start interval
-  createSyncConfigStream().pipe(
+  return createSyncConfigStream().pipe(
     switchMap(configs => {
       if (!configs || !configs[service.serviceID]) {
         if (process.env.DEV_BUILD) {
@@ -37,7 +37,7 @@ export function startSyncServiceInterval () {
   )
 }
 
-export async function upload () {
+export async function syncServiceUpload () {
   const config = await getSyncConfig<service.SyncConfig>(service.serviceID)
   if (!config) {
     if (process.env.DEV_BUILD) {
@@ -46,7 +46,7 @@ export async function upload () {
     return
   }
 
-  await downlaod(config)
+  await download(config)
 
   const words = await getNotebook()
   if (!words || words.length <= 0) { return }
@@ -77,7 +77,18 @@ export async function upload () {
   )
 }
 
-async function downlaod (config) {
+export async function syncServiceDownload (): Promise<void> {
+  const config = await getSyncConfig<service.SyncConfig>(service.serviceID)
+  if (!config) {
+    if (process.env.DEV_BUILD) {
+      console.warn('Download notebook failed. No Config.')
+    }
+    return
+  }
+  await download(config)
+}
+
+async function download (config) {
   const meta = await getMeta<service.Meta>(service.serviceID)
   const response = await service.dlChanged(config, meta || {})
   if (!response) { return }
