@@ -1,16 +1,19 @@
+import { AppConfigMutable } from '@/app-config'
 import { message, storage, openURL } from '@/_helpers/browser-api'
 import checkUpdate from '@/_helpers/check-update'
-import { AppConfigMutable } from '@/app-config'
 import { getActiveConfig, updateActiveConfig, initConfig } from '@/_helpers/config-manager'
+import { MsgType, MsgQueryPanelState } from '@/typings/message'
 import { init as initMenus, openPDF, openGoogle, openYoudao } from './context-menus'
 import { openQSPanel } from './server'
 import { init as initPdf } from './pdf-sniffer'
-import { MsgType, MsgQueryPanelState } from '@/typings/message'
+import { startSyncServiceInterval } from './sync-manager'
 
 getActiveConfig().then(config => {
   initMenus(config.contextMenus)
   initPdf(config)
 })
+
+startSyncServiceInterval()
 
 browser.runtime.onInstalled.addListener(onInstalled)
 browser.runtime.onStartup.addListener(onStartup)
