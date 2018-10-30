@@ -1,11 +1,11 @@
 import { appConfigFactory, TCDirection } from '@/app-config'
 import { message, openURL } from '@/_helpers/browser-api'
 import { chsToChz } from '@/_helpers/chs-to-chz'
-import { initSyncService } from '@/_helpers/sync-manager'
 import { timeout, timer } from '@/_helpers/promise-more'
 import { createActiveConfigStream } from '@/_helpers/config-manager'
 import { DictSearchResult } from '@/typings/server'
 import { SearchErrorType, SearchFunction } from '@/components/dictionaries/helpers'
+import { initSyncService } from './sync-manager'
 import { isInNotebook, saveWord, deleteWords, getWordsByText, getWords } from './database'
 import { play } from './audio-manager'
 import {
