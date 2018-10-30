@@ -1,4 +1,5 @@
 import { fromPromise } from 'rxjs/observable/fromPromise'
+import { of } from 'rxjs/observable/of'
 import { switchMap } from 'rxjs/operators/switchMap'
 import { delay } from 'rxjs/operators/delay'
 import { repeat } from 'rxjs/operators/repeat'
@@ -29,12 +30,13 @@ export function startSyncServiceInterval () {
 
       const config = configs[service.serviceID]
 
-      return fromPromise<void>(downlaod(config)).pipe(
+      return of('').pipe(
+        switchMap(() => fromPromise<void>(download(config))),
         delay(config.duration),
         repeat(),
       )
     })
-  )
+  ).subscribe()
 }
 
 export async function syncServiceUpload () {
