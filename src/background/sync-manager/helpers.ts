@@ -11,6 +11,11 @@ export interface NotebookFile {
   words: Word[]
 }
 
+export interface DlResponse {
+  json: NotebookFile
+  etag: string
+}
+
 /**
  * Check server and create a Saladict Directory if not exist.
  */
@@ -29,7 +34,7 @@ export interface Upload<C> {
  * Download files from server and filter out unchanged
  */
 export interface DlChanged<C, M = { [k: string]: any }> {
-  (config: C, meta: M): Promise<{ json: NotebookFile, etag: string } | undefined>
+  (config: C, meta: M): Promise<DlResponse | undefined>
 }
 
 export async function setSyncConfig<T = any> (serviceID: string, config: T): Promise<void> {

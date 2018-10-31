@@ -1,4 +1,5 @@
 import { SyncConfig, Meta } from '@/background/sync-manager/services/webdav'
+import { DlResponse } from '@/background/sync-manager/helpers'
 import * as syncManager from '@/background/sync-manager'
 
 import { Subject } from 'rxjs/Subject'
@@ -33,18 +34,21 @@ describe('Sync Manager', () => {
   it('start interval without config', async () => {
     const config$ = new Subject<SyncConfig>()
     helpers.createSyncConfigStream.mockImplementationOnce(() => config$)
-    syncManager.startSyncServiceInterval()
+    const subscription = syncManager.startSyncServiceInterval()
     config$.next()
 
     await timer(0)
     expect(service.dlChanged).toHaveBeenCalledTimes(0)
-    config$.unsubscribe()
+    expect(helpers.setMeta).toHaveBeenCalledTimes(0)
+    expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
+
+    subscription.unsubscribe()
   })
 
   it('start interval with config', async () => {
-    const config$ = new Subject<{ webdav: SyncConfig }>()
+    const config$ = new Subject<{ [index: string]: SyncConfig }>()
     helpers.createSyncConfigStream.mockImplementationOnce(() => config$)
-    syncManager.startSyncServiceInterval()
+    const subscription = syncManager.startSyncServiceInterval()
 
     const config: SyncConfig = {
       url: 'https://example.com/dav/',
@@ -52,11 +56,13 @@ describe('Sync Manager', () => {
       passwd: 'passwd',
       duration: 500,
     }
-    config$.next({ webdav: config })
+    config$.next({ [service.serviceID]: config })
 
     await timer(0)
     expect(service.dlChanged).toHaveBeenCalledTimes(1)
-    expect(service.dlChanged).toBeCalledWith(config, {})
+    expect(service.dlChanged).lastCalledWith(config, {})
+    expect(helpers.setMeta).toHaveBeenCalledTimes(0)
+    expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
 
     await timer(100)
     expect(service.dlChanged).toHaveBeenCalledTimes(1)
@@ -66,9 +72,12 @@ describe('Sync Manager', () => {
       etag: 'etag',
     }
     helpers.getMeta.mockImplementationOnce(() => Promise.resolve(meta))
+
     await timer(500)
     expect(service.dlChanged).toHaveBeenCalledTimes(2)
-    expect(service.dlChanged).toBeCalledWith(config, meta)
+    expect(service.dlChanged).lastCalledWith(config, meta)
+    expect(helpers.setMeta).toHaveBeenCalledTimes(0)
+    expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
 
     const config2: SyncConfig = {
       url: 'https://example2.com/dav/',
@@ -76,19 +85,137 @@ describe('Sync Manager', () => {
       passwd: 'passwd2',
       duration: 100,
     }
-    config$.next({ webdav: config2 })
+    config$.next({ [service.serviceID]: config2 })
 
     await timer(0)
     expect(service.dlChanged).toHaveBeenCalledTimes(3)
-    expect(service.dlChanged).toBeCalledWith(config, {})
+    expect(service.dlChanged).lastCalledWith(config2, {})
 
     await timer(50)
     expect(service.dlChanged).toHaveBeenCalledTimes(3)
 
     await timer(100)
     expect(service.dlChanged).toHaveBeenCalledTimes(4)
-    expect(service.dlChanged).toBeCalledWith(config, {})
+    expect(service.dlChanged).lastCalledWith(config2, {})
 
-    config$.unsubscribe()
+    subscription.unsubscribe()
+  })
+
+  it('start interval with config and receive same file', async () => {
+    const config$ = new Subject<{ [index: string]: SyncConfig }>()
+    helpers.createSyncConfigStream.mockImplementationOnce(() => config$)
+    const subscription = syncManager.startSyncServiceInterval()
+
+    const meta: Required<Meta> = {
+      etag: 'etag',
+      timestamp: Date.now(),
+    }
+
+    const dlResponse: DlResponse = {
+      etag: meta.etag,
+      json: {
+        timestamp: meta.timestamp,
+        words: []
+      },
+    }
+    service.dlChanged.mockImplementationOnce(() => Promise.resolve(dlResponse))
+
+    const config: SyncConfig = {
+      url: 'https://example.com/dav/',
+      user: 'user',
+      passwd: 'passwd',
+      duration: 50,
+    }
+    config$.next({ [service.serviceID]: config })
+
+    await timer(0)
+    expect(service.dlChanged).toHaveBeenCalledTimes(1)
+    expect(service.dlChanged).lastCalledWith(config, {})
+    expect(helpers.setMeta).toHaveBeenCalledTimes(1)
+    expect(helpers.setMeta).lastCalledWith(service.serviceID, meta)
+    expect(helpers.setNotebook).toHaveBeenCalledTimes(1)
+    expect(helpers.setNotebook).lastCalledWith([])
+
+    helpers.getMeta.mockImplementationOnce(() => Promise.resolve(meta))
+
+    await timer(50)
+    expect(service.dlChanged).toHaveBeenCalledTimes(2)
+    expect(service.dlChanged).lastCalledWith(config, meta)
+    expect(helpers.setMeta).toHaveBeenCalledTimes(1)
+    expect(helpers.setNotebook).toHaveBeenCalledTimes(1)
+
+    subscription.unsubscribe()
+  })
+
+  it('start interval with config and receive different files', async () => {
+    const config$ = new Subject<{ [index: string]: SyncConfig }>()
+    helpers.createSyncConfigStream.mockImplementationOnce(() => config$)
+    const subscription = syncManager.startSyncServiceInterval()
+
+    const meta: Required<Meta> = {
+      etag: 'etag',
+      timestamp: Date.now(),
+    }
+
+    const dlResponse: DlResponse = {
+      etag: meta.etag,
+      json: {
+        timestamp: meta.timestamp,
+        words: []
+      },
+    }
+
+    helpers.getMeta.mockImplementationOnce(() => Promise.resolve())
+    service.dlChanged.mockImplementationOnce(() => Promise.resolve(dlResponse))
+
+    const config: SyncConfig = {
+      url: 'https://example.com/dav/',
+      user: 'user',
+      passwd: 'passwd',
+      duration: 50,
+    }
+    config$.next({ [service.serviceID]: config })
+
+    await timer(0)
+    expect(service.dlChanged).toHaveBeenCalledTimes(1)
+    expect(service.dlChanged).lastCalledWith(config, {})
+    expect(helpers.setMeta).toHaveBeenCalledTimes(1)
+    expect(helpers.setMeta).lastCalledWith(service.serviceID, meta)
+    expect(helpers.setNotebook).toHaveBeenCalledTimes(1)
+    expect(helpers.setNotebook).lastCalledWith(dlResponse.json.words)
+
+    const meta2: Required<Meta> = {
+      etag: 'etag2',
+      timestamp: Date.now() + 200,
+    }
+
+    const dlResponse2: DlResponse = {
+      etag: meta2.etag,
+      json: {
+        timestamp: meta2.timestamp,
+        words: [{
+          date: Date.now(),
+          text: 'text',
+          context: 'context',
+          title: 'title',
+          url: 'url',
+          favicon: 'favicon',
+          trans: 'trans',
+          note: 'note',
+        }]
+      },
+    }
+    helpers.getMeta.mockImplementationOnce(() => Promise.resolve(meta2))
+    service.dlChanged.mockImplementationOnce(() => Promise.resolve(dlResponse2))
+
+    await timer(50)
+    expect(service.dlChanged).toHaveBeenCalledTimes(2)
+    expect(service.dlChanged).lastCalledWith(config, meta2)
+    expect(helpers.setMeta).toHaveBeenCalledTimes(2)
+    expect(helpers.setMeta).lastCalledWith(service.serviceID, meta2)
+    expect(helpers.setNotebook).toHaveBeenCalledTimes(2)
+    expect(helpers.setNotebook).lastCalledWith(dlResponse2.json.words)
+
+    subscription.unsubscribe()
   })
 })

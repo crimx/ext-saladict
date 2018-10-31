@@ -3,10 +3,7 @@ import {
   InitServer,
   Upload,
   DlChanged,
-  getNotebook,
-  setNotebook,
   getMeta,
-  setMeta,
 } from '../helpers'
 
 export interface SyncConfig {
@@ -113,19 +110,28 @@ export const initServer: InitServer<SyncConfig> = async config => {
     return Promise.reject('network')
   }
 
-  const doc = new DOMParser().parseFromString(text, 'application/xml')
+  let doc: Document
+
+  try {
+    doc = new DOMParser().parseFromString(text, 'text/xml')
+    if (!doc) { throw new Error() }
+  } catch (e) {
+    return Promise.reject('parse')
+  }
 
   const dir = Array.from(doc.querySelectorAll('response'))
-    .find(el => {
+    .some(el => {
       const href = el.querySelector('href')
       if (href && href.textContent && href.textContent.endsWith('/Saladict/')) {
         // is Saladict
         if (el.querySelector('resourcetype collection')) {
           // is collection
-          return
+          return true
+        } else {
+          return Promise.reject('dir') as any
         }
       }
-      return Promise.reject('parse') as any
+      return false
     })
 
   if (!dir) {
@@ -138,40 +144,12 @@ export const initServer: InitServer<SyncConfig> = async config => {
     return
   }
 
-  const file = await dlChanged(config, {})
-  if (file) {
-    const words = await getNotebook()
-    if (words.length > 0) {
-      // file exist
-      const meta = await getMeta<Meta>(serviceID)
-
-      if (!meta || !meta.timestamp) {
-        // let user decide to keep which one
-        return Promise.reject('exist')
-      }
-
-      if (meta.timestamp === file.json.timestamp) {
-        return
-      }
-
-      if (meta.timestamp > file.json.timestamp) {
-        // local is newer
-        try {
-          const text = JSON.stringify({ timestamp: meta.timestamp, words } as NotebookFile)
-          await upload(config, text)
-        } catch (e) {
-          if (process.env.DEV_BUILD) {
-            console.error('Stringify notebook failed', words)
-          }
-        }
-        return
-      }
+  const meta = await getMeta<Meta>(serviceID)
+  if (meta && meta.timestamp) {
+    const file = await dlChanged(config, meta)
+    if (file && meta.timestamp > file.json.timestamp) {
+      // local is newer. let user decide whether to upload
+      return Promise.reject('exist')
     }
-
-    await setMeta<Required<Meta>>(
-      serviceID,
-      { timestamp: file.json.timestamp, etag: file.etag },
-    )
-    await setNotebook(file.json.words)
   }
 }
