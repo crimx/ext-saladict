@@ -452,8 +452,8 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const err = await initServer(config).catch(err => err)
-      expect(err).toBeUndefined()
+      const { error } = await initServer(config)
+      expect(error).toBeUndefined()
       expect(fetchInit.checkServer).toHaveBeenCalledTimes(1)
       expect(fetchInit.checkServer).lastCalledWith(...fetchArgs.checkServer(config))
       expect(fetchInit.createDir).toHaveBeenCalledTimes(1)
@@ -506,8 +506,8 @@ describe('Sync service WebDAV', () => {
       }))
       mockFetch(config, fetchInit)
 
-      const err = await initServer(config).catch(err => err)
-      expect(err).toBeUndefined()
+      const { error } = await initServer(config)
+      expect(error).toBeUndefined()
       expect(fetchInit.checkServer).toHaveBeenCalledTimes(1)
       expect(fetchInit.checkServer).lastCalledWith(...fetchArgs.checkServer(config))
       // @upstream JSDOM missing namespace selector support
@@ -535,8 +535,8 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const err = await initServer(config).catch(err => err)
-      expect(err).toBe('network')
+      const { error } = await initServer(config)
+      expect(error).toBe('network')
       expect(fetchInit.checkServer).toHaveBeenCalledTimes(1)
       expect(fetchInit.checkServer).lastCalledWith(...fetchArgs.checkServer(config))
       // @upstream JSDOM missing namespace selector support
@@ -564,8 +564,8 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const err = await initServer(config).catch(err => err)
-      expect(err).toBe('mkcol')
+      const { error } = await initServer(config)
+      expect(error).toBe('mkcol')
       expect(fetchInit.checkServer).toHaveBeenCalledTimes(1)
       expect(fetchInit.checkServer).lastCalledWith(...fetchArgs.checkServer(config))
       expect(fetchInit.createDir).toHaveBeenCalledTimes(1)
@@ -619,8 +619,8 @@ describe('Sync service WebDAV', () => {
     //   }))
     //   mockFetch(config, fetchInit)
 
-    //   const err = await initServer(config).catch(err => err)
-    //   expect(err).toBe('exist')
+    //   c{ onsor t} err = await initServer(config)
+    //   exerrort(err).toBe('exist')
     //   expect(fetchInit.checkServer).toHaveBeenCalledTimes(1)
     //   expect(fetchInit.checkServer).lastCalledWith(...fetchArgs.checkServer(config))
     //   // @upstream JSDOM missing namespace selector support
