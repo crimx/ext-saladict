@@ -1,5 +1,5 @@
 import { storage } from '@/_helpers/browser-api'
-import { getWords, saveWords, Word, getSyncMeta, setSyncMeta } from '@/background/database'
+import { getWords, saveWords, Word, getSyncMeta, setSyncMeta, deleteSyncMeta } from '@/background/database'
 import { MsgType } from '@/typings/message'
 
 import { concat } from 'rxjs/observable/concat'
@@ -20,7 +20,7 @@ export interface DlResponse {
  * Check server and create a Saladict Directory if not exist.
  */
 export interface InitServer<C> {
-  (config: C): Promise<void>
+  (config: C): Promise<{ error?: string }>
 }
 
 /**
@@ -34,7 +34,7 @@ export interface Upload<C> {
  * Download files from server and filter out unchanged
  */
 export interface DlChanged<C, M = { [k: string]: any }> {
-  (config: C, meta: M): Promise<DlResponse | undefined>
+  (config: C, meta: M, force?: boolean): Promise<DlResponse | undefined>
 }
 
 export async function setSyncConfig<T = any> (serviceID: string, config: T): Promise<void> {
@@ -68,6 +68,10 @@ export async function getMeta<T> (serviceID: string): Promise<T | undefined> {
   if (text) {
     return JSON.parse(text)
   }
+}
+
+export async function deleteMeta (serviceID): Promise<void> {
+  await deleteSyncMeta(serviceID)
 }
 
 export async function setNotebook (words: Word[]): Promise<void> {

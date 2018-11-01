@@ -6,10 +6,10 @@ import { repeat } from 'rxjs/operators/repeat'
 import { empty } from 'rxjs/observable/empty'
 
 import * as service from './services/webdav'
-import { createSyncConfigStream, getMeta, setMeta, setNotebook, getNotebook, NotebookFile, getSyncConfig } from './helpers'
+import { createSyncConfigStream, getMeta, setMeta, deleteMeta, setNotebook, getNotebook, NotebookFile, getSyncConfig } from './helpers'
 
 /** Init on new server */
-export function syncServiceInit (config: any): Promise<void> {
+export function syncServiceInit (config: any): Promise<{ error?: string }> {
   return service.initServer(config)
 }
 
@@ -21,6 +21,7 @@ export function startSyncServiceInterval () {
         if (process.env.DEV_BUILD) {
           console.log('No Sync Service Conifg', configs, service.serviceID)
         }
+        deleteMeta(service.serviceID)
         return empty<void>()
       }
 
@@ -31,15 +32,15 @@ export function startSyncServiceInterval () {
       const config = configs[service.serviceID]
 
       return of('').pipe(
-        switchMap(() => fromPromise<void>(download(config))),
         delay(config.duration),
+        switchMap(() => fromPromise<void>(download(config))),
         repeat(),
       )
     })
   ).subscribe()
 }
 
-export async function syncServiceUpload () {
+export async function syncServiceUpload (force?: boolean) {
   const config = await getSyncConfig<service.SyncConfig>(service.serviceID)
   if (!config) {
     if (process.env.DEV_BUILD) {
@@ -48,7 +49,9 @@ export async function syncServiceUpload () {
     return
   }
 
-  await download(config)
+  if (!force) {
+    await download(config)
+  }
 
   const words = await getNotebook()
   if (!words || words.length <= 0) { return }
@@ -79,7 +82,7 @@ export async function syncServiceUpload () {
   )
 }
 
-export async function syncServiceDownload (): Promise<void> {
+export async function syncServiceDownload (force?: boolean): Promise<void> {
   const config = await getSyncConfig<service.SyncConfig>(service.serviceID)
   if (!config) {
     if (process.env.DEV_BUILD) {
@@ -87,12 +90,12 @@ export async function syncServiceDownload (): Promise<void> {
     }
     return
   }
-  await download(config)
+  await download(config, force)
 }
 
-async function download (config) {
+async function download (config, force?: boolean) {
   const meta = await getMeta<service.Meta>(service.serviceID)
-  const response = await service.dlChanged(config, meta || {})
+  const response = await service.dlChanged(config, meta || {}, force)
   if (!response) { return }
 
   const { json } = response
