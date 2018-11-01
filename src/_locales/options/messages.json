@@ -45,9 +45,9 @@
     "zh_TW": "中文"
   },
   "autopron_description": {
-    "en": "To fully enable auto pronunciation, selected the dicts that are needed to be activated. \"Default Unfold\" and language match should be checked accordingly. See below.",
-    "zh_CN": "下拉列表的项目为支持自动发音的词典，开启功能还必须启用词典，见下方“词典配置”。“默认展开”与相应的语言显示须要勾选。",
-    "zh_TW": "下拉列表的選項項目為支持自動發音的字典。開啟功能，還必須啟動字典。見下方「字典配置設定」。「確認展開」與相對應的語言顯示，須要勾選。"
+    "en": "Auto pronunciation.",
+    "zh_CN": "下拉列表的项目为支持自动发音的词典。",
+    "zh_TW": "下拉列表的選項項目為支持自動發音的字典。"
   },
   "autopron_en": {
     "en": "English",
