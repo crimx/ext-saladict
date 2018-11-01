@@ -263,6 +263,7 @@ combineLatest(
       fromEvent<MouseEvent>(window, 'mousemove', { capture: true }).pipe(map(e => {
         if ((instant === 'direct' && !(e.ctrlKey || e.metaKey || e.altKey)) ||
             (instant === 'alt' && e.altKey) ||
+            (instant === 'shift' && e.shiftKey) ||
             (instant === 'ctrl' && (e.ctrlKey || e.metaKey))
         ) {
           // harmless side effects
