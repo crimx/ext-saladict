@@ -28,5 +28,10 @@
     "zh_CN": "添加",
     "zh_TW": "添加",
     "en": "Add"
+  },
+  "delete": {
+    "zh_CN": "删除",
+    "zh_TW": "删除",
+    "en": "Delete"
   }
 }
