@@ -220,3 +220,13 @@ export interface MsgSyncServiceInit {
   type: MsgType.SyncServiceInit
   config: any
 }
+
+export interface MsgSyncServiceDownload {
+  type: MsgType.SyncServiceDownload
+  force?: boolean
+}
+
+export interface MsgSyncServiceUpload {
+  type: MsgType.SyncServiceUpload
+  force?: boolean
+}

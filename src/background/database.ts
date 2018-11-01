@@ -61,11 +61,26 @@ export function getSyncMeta (serviceID: string) {
     .where('id')
     .equals(serviceID)
     .first(record => record && record.json)
+    .catch(e => {
+      if (process.env.DEV_BUILD) {
+        console.error(e)
+      }
+    })
 }
 
 export function setSyncMeta (serviceID: string, text: string) {
   return db.syncmeta
     .put({ id: serviceID, json: text })
+}
+
+export function deleteSyncMeta (serviceID: string) {
+  return db.syncmeta
+    .delete(serviceID)
+    .catch(e => {
+      if (process.env.DEV_BUILD) {
+        console.error(e)
+      }
+    })
 }
 
 export function isInNotebook ({ info }: MsgIsInNotebook) {

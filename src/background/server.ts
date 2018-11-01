@@ -20,6 +20,8 @@ import {
   MsgGetWords,
   MsgQSPanelIDChanged,
   MsgSyncServiceInit,
+  MsgSyncServiceDownload,
+  MsgSyncServiceUpload,
 } from '@/typings/message'
 
 browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B' })
@@ -76,9 +78,9 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
     case MsgType.SyncServiceInit:
       return syncServiceInit((data as MsgSyncServiceInit).config)
     case MsgType.SyncServiceDownload:
-      return syncServiceDownload()
+      return syncServiceDownload((data as MsgSyncServiceDownload).force)
     case MsgType.SyncServiceUpload:
-      return syncServiceUpload()
+      return syncServiceUpload((data as MsgSyncServiceUpload).force)
 
     case 'youdao_translate_ajax' as any:
       return youdaoTranslateAjax(data.request)

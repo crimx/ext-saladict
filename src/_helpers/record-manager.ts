@@ -24,12 +24,15 @@ export function isInNotebook (info: SelectionInfo): Promise<boolean> {
     .catch(logError(false))
 }
 
-export function saveWord (area: Area, info: SelectionInfo): Promise<void> {
-  return message.send<MsgSaveWord>({ type: MsgType.SaveWord, area, info })
+export async function saveWord (area: Area, info: SelectionInfo): Promise<void> {
+  await message.send<MsgSaveWord>({ type: MsgType.SaveWord, area, info })
+  await message.send({ type: MsgType.SyncServiceUpload })
 }
 
-export function deleteWords (area: Area, dates?: number[]): Promise<void> {
-  return message.send<MsgDeleteWords>({ type: MsgType.DeleteWords, area, dates })
+export async function deleteWords (area: Area, dates?: number[]): Promise<void> {
+  await message.send({ type: MsgType.SyncServiceDownload })
+  await message.send<MsgDeleteWords>({ type: MsgType.DeleteWords, area, dates })
+  await message.send({ type: MsgType.SyncServiceUpload })
 }
 
 export function getWordsByText (area: Area, text: string): Promise<Word[]> {
