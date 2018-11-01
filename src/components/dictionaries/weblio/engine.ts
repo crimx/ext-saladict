@@ -1,6 +1,5 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError, getOuterHTMLThunk } from '../helpers'
-import { AppConfig } from '@/app-config'
+import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError, getOuterHTMLThunk, SearchFunction } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk('https://www.weblio.jp/', {}) // keep inline style
@@ -13,10 +12,9 @@ export type WeblioResult = Array<{
 
 type WeblioSearchResult = DictSearchResult<WeblioResult>
 
-export default function search (
-  text: string,
-  config: AppConfig,
-): Promise<WeblioSearchResult> {
+export const search: SearchFunction<WeblioSearchResult> = (
+  text, config, payload
+) => {
   return fetchDirtyDOM('https://www.weblio.jp/content/' + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)
     .then(handleDOM)

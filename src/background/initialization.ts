@@ -1,16 +1,19 @@
+import { AppConfigMutable } from '@/app-config'
 import { message, storage, openURL } from '@/_helpers/browser-api'
 import checkUpdate from '@/_helpers/check-update'
-import { AppConfigMutable } from '@/app-config'
 import { getActiveConfig, updateActiveConfig, initConfig } from '@/_helpers/config-manager'
+import { MsgType, MsgQueryPanelState } from '@/typings/message'
 import { init as initMenus, openPDF, openGoogle, openYoudao } from './context-menus'
 import { openQSPanel } from './server'
 import { init as initPdf } from './pdf-sniffer'
-import { MsgType, MsgQueryPanelState } from '@/typings/message'
+import { startSyncServiceInterval } from './sync-manager'
 
 getActiveConfig().then(config => {
   initMenus(config.contextMenus)
   initPdf(config)
 })
+
+startSyncServiceInterval()
 
 browser.runtime.onInstalled.addListener(onInstalled)
 browser.runtime.onStartup.addListener(onStartup)
@@ -137,12 +140,17 @@ function showNews () {
   return fetch('https://api.github.com/repos/crimx/crx-saladict/releases/latest')
     .then(r => r.json())
     .then(data => {
+      const message = '-= 感谢支持本扩展开发的朋友！=-\n' +
+        data.body
+          .match(/^\d+\..+/gm) // item list
+          .map(line => line.replace(/\[(\S+)\](?:\(\S+\)|\[\S+\])/g, '$1')) // strip markdown link
+          .join('\n')
       if (data && data.tag_name) {
         browser.notifications.create('oninstall', {
           type: 'basic',
           iconUrl: browser.runtime.getURL(`static/icon-128.png`),
-          title: `沙拉查词 Saladict【${data.tag_name}】`,
-          message: data.body.match(/^\d+\..+/gm).join('\n'),
+          title: `Saladict ${data.tag_name} 新增特性：`,
+          message,
           buttons: [{ title: '查看更新介绍' }],
           eventTime: Date.now() + 10000,
           priority: 2,

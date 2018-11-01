@@ -1,6 +1,5 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError } from '../helpers'
-import { AppConfig } from '@/app-config'
+import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk('http://www.zdic.net/')
@@ -19,10 +18,9 @@ export interface ZdicResult {
 
 type ZdicSearchResult = DictSearchResult<ZdicResult>
 
-export default function search (
-  text: string,
-  config: AppConfig,
-): Promise<ZdicSearchResult> {
+export const search: SearchFunction<ZdicSearchResult> = (
+  text, config, payload
+) => {
   return fetchDirtyDOM('http://www.zdic.net/search/?c=3&q=' + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)
     .then(deobfuscate)

@@ -1,0 +1,17 @@
+.MachineTrans-Line {
+  margin: 0.2em 0;
+}
+
+.MachineTrans-LangSwitch {
+  margin-top: 1em;
+}
+
+.MachineTrans-LangSwitchBtn {
+  font-weight: bold;
+  color: #f9690e;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

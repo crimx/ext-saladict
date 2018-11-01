@@ -1,13 +1,12 @@
-import { AppConfig } from '@/app-config'
+import { SearchFunction } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 import { moedictSearch, GuoYuResult } from '../guoyu/engine'
 
 export type LiangAnResult = GuoYuResult
 
-export default function search (
-  text: string,
-  config: AppConfig
-): Promise<DictSearchResult<LiangAnResult>> {
+export const search: SearchFunction<DictSearchResult<LiangAnResult>> = (
+  text, config, payload
+) => {
   return moedictSearch<LiangAnResult>('c', encodeURIComponent(text.replace(/\s+/g, '')), config)
     .then(result => {
       if (result.result.h) {

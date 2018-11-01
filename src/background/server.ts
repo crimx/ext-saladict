@@ -1,12 +1,13 @@
+import { appConfigFactory, TCDirection } from '@/app-config'
 import { message, openURL } from '@/_helpers/browser-api'
-import { play } from './audio-manager'
-import { isInNotebook, saveWord, deleteWords, getWordsByText, getWords } from './database'
 import { chsToChz } from '@/_helpers/chs-to-chz'
-import { appConfigFactory, AppConfig, TCDirection } from '@/app-config'
+import { timeout, timer } from '@/_helpers/promise-more'
 import { createActiveConfigStream } from '@/_helpers/config-manager'
 import { DictSearchResult } from '@/typings/server'
-import { timeout, timer } from '@/_helpers/promise-more'
-import { SearchErrorType } from '@/components/dictionaries/helpers'
+import { SearchErrorType, SearchFunction } from '@/components/dictionaries/helpers'
+import { syncServiceInit, syncServiceDownload, syncServiceUpload } from './sync-manager'
+import { isInNotebook, saveWord, deleteWords, getWordsByText, getWords } from './database'
+import { play } from './audio-manager'
 import {
   MsgType,
   MsgOpenUrl,
@@ -18,10 +19,18 @@ import {
   MsgGetWordsByText,
   MsgGetWords,
   MsgQSPanelIDChanged,
+  MsgSyncServiceInit,
+  MsgSyncServiceDownload,
+  MsgSyncServiceUpload,
 } from '@/typings/message'
 
+browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B' })
+
 let config = appConfigFactory()
-createActiveConfigStream().subscribe(newConfig => config = newConfig)
+createActiveConfigStream().subscribe(newConfig => {
+  config = newConfig
+  browser.browserAction.setBadgeText({ text: newConfig.active ? '' : 'off' })
+})
 
 message.self.initServer()
 
@@ -65,6 +74,13 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return getWordsByText(data as MsgGetWordsByText)
     case MsgType.GetWords:
       return getWords(data as MsgGetWords)
+
+    case MsgType.SyncServiceInit:
+      return syncServiceInit((data as MsgSyncServiceInit).config)
+    case MsgType.SyncServiceDownload:
+      return syncServiceDownload((data as MsgSyncServiceDownload).force)
+    case MsgType.SyncServiceUpload:
+      return syncServiceUpload((data as MsgSyncServiceUpload).force)
 
     case 'youdao_translate_ajax' as any:
       return youdaoTranslateAjax(data.request)
@@ -188,14 +204,10 @@ function playAudio (data: MsgAudioPlay): Promise<void> {
 function fetchDictResult (
   data: MsgFetchDictResult
 ): Promise<any> {
-  let search: (
-    text: string,
-    config: AppConfig,
-    payload: NonNullable<MsgFetchDictResult['payload']>,
-  ) => Promise<DictSearchResult<any>>
+  let search: SearchFunction<DictSearchResult<any>, NonNullable<MsgFetchDictResult['payload']>>
 
   try {
-    search = require('@/components/dictionaries/' + data.id + '/engine').default
+    search = require('@/components/dictionaries/' + data.id + '/engine').search
   } catch (err) {
     return Promise.reject(err)
   }

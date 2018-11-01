@@ -21,9 +21,11 @@ export function getSelectionText (win = window): string {
 
   // Firefox fix
   const activeElement = win.document.activeElement
-  if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA') {
-    const el = activeElement as HTMLInputElement | HTMLTextAreaElement
-    return el.value.slice(el.selectionStart || 0, el.selectionEnd || 0)
+  if (activeElement) {
+    if (activeElement.tagName === 'INPUT' || activeElement.tagName === 'TEXTAREA') {
+      const el = activeElement as HTMLInputElement | HTMLTextAreaElement
+      return el.value.slice(el.selectionStart || 0, el.selectionEnd || 0)
+    }
   }
 
   return ''

@@ -43,7 +43,7 @@ const searchText = (...args) => console.log('searchText', ...args)
 const recalcBodyHeight = (...args) => console.log('recalcBodyHeight', ...args)
 
 export default function setupEnv ({ dict, style = true, text = 'salad' }: EnvConfig) {
-  const search = require('../dictionaries/' + dict + '/engine').default
+  const search = require('../dictionaries/' + dict + '/engine').search
   const View = translate()(require('../dictionaries/' + dict + '/View').default)
 
   if (style) {

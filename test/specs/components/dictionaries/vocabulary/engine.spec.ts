@@ -1,4 +1,4 @@
-import search from '@/components/dictionaries/vocabulary/engine'
+import { search } from '@/components/dictionaries/vocabulary/engine'
 import { appConfigFactory } from '@/app-config'
 import fs from 'fs'
 import path from 'path'
@@ -13,7 +13,7 @@ describe('Dict/Vocabulary/engine', () => {
   })
 
   it('should parse result correctly', () => {
-    return search('any', appConfigFactory())
+    return search('any', appConfigFactory(), {})
       .then(({ result, audio }) => {
         expect(audio).toBeUndefined()
         expect(typeof result.long).toBe('string')

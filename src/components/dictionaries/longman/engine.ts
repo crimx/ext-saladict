@@ -1,6 +1,6 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getText, getInnerHTMLThunk, handleNoResult, handleNetWorkError } from '../helpers'
-import { AppConfig, DictConfigs } from '@/app-config'
+import { HTMLString, getText, getInnerHTMLThunk, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk('https://www.ldoceonline.com/')
@@ -55,10 +55,9 @@ type LongmanSearchResult = DictSearchResult<LongmanResult>
 type LongmanSearchResultLex = DictSearchResult<LongmanResultLex>
 type LongmanSearchResultRelated = DictSearchResult<LongmanResultRelated>
 
-export default function search (
-  text: string,
-  config: AppConfig,
-): Promise<LongmanSearchResult> {
+export const search: SearchFunction<LongmanSearchResult> = (
+  text, config, payload
+) => {
   const options = config.dicts.all.longman.options
   return fetchDirtyDOM('http://www.ldoceonline.com/dictionary/' + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
     .catch(handleNetWorkError)

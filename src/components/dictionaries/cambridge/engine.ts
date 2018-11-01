@@ -6,8 +6,8 @@ import {
   getText,
   removeChild,
   handleNetWorkError,
+  SearchFunction,
 } from '../helpers'
-import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk('https://dictionary.cambridge.org/')
@@ -26,10 +26,9 @@ export type CambridgeResult = CambridgeResultItem[]
 
 type CambridgeSearchResult = DictSearchResult<CambridgeResult>
 
-export default function search (
-  text: string,
-  config: AppConfig,
-): Promise<CambridgeSearchResult> {
+export const search: SearchFunction<CambridgeSearchResult> = (
+  text, config, payload
+) => {
   const url = config.langCode === 'zh-CN'
     ? 'https://dictionary.cambridge.org/zhs/搜索/英语-汉语-简体/direct/?q='
     : config.langCode === 'zh-TW'

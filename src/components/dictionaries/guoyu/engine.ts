@@ -1,4 +1,4 @@
-import { handleNoResult, handleNetWorkError } from '../helpers'
+import { handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
 import chsToChz from '@/_helpers/chs-to-chz'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
@@ -36,10 +36,9 @@ export interface GuoYuResult {
   }
 }
 
-export default function search (
-  text: string,
-  config: AppConfig
-): Promise<DictSearchResult<GuoYuResult>> {
+export const search: SearchFunction<DictSearchResult<GuoYuResult>> = (
+  text, config, payload
+) => {
   return moedictSearch<GuoYuResult>('a', encodeURIComponent(text.replace(/\s+/g, '')), config)
 }
 

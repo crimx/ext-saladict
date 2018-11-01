@@ -1,6 +1,5 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getText, getInnerHTMLThunk, handleNoResult, handleNetWorkError } from '../helpers'
-import { AppConfig } from '@/app-config'
+import { HTMLString, getText, getInnerHTMLThunk, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk('https://www.urbandictionary.com/')
@@ -29,10 +28,9 @@ export type UrbanResult = UrbanResultItem[]
 
 type UrbanSearchResult = DictSearchResult<UrbanResult>
 
-export default function search (
-  text: string,
-  config: AppConfig,
-): Promise<UrbanSearchResult> {
+export const search: SearchFunction<UrbanSearchResult> = (
+  text, config, payload
+) => {
   const options = config.dicts.all.urban.options
 
   return fetchDirtyDOM('http://www.urbandictionary.com/define.php?term=' + encodeURIComponent(text.replace(/\s+/g, ' ')))

@@ -1,5 +1,4 @@
-import { handleNoResult, MachineTranslateResult, handleNetWorkError } from '../helpers'
-import { AppConfig } from '@/app-config'
+import { handleNoResult, MachineTranslateResult, handleNetWorkError, SearchFunction, MachineTranslatePayload } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 import { first } from '@/_helpers/promise-more'
@@ -29,11 +28,9 @@ const langcodes: ReadonlyArray<string> = [
   'th', 'tl', 'tr', 'uk', 'ur', 'uz', 'vi', 'xh', 'yi', 'yo', 'zu',
 ]
 
-export default function search (
-  text: string,
-  config: AppConfig,
-  payload: { sl?: string, tl?: string }
-): Promise<GoogleSearchResult> {
+export const search: SearchFunction<GoogleSearchResult, MachineTranslatePayload> = (
+  text, config, payload
+) => {
   const options = config.dicts.all.google.options
 
   const sl: string = payload.sl || 'auto'
@@ -109,7 +106,10 @@ function handleText (
     return handleNoResult()
   }
 
-  const transText: string = data[0].map(item => item[0]).join(' ')
+  const transText: string = data[0]
+    .map(item => item[0] && item[0].trim())
+    .filter(Boolean)
+    .join('\n')
 
   if (transText.length > 0) {
     return {

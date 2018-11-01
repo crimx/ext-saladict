@@ -1,7 +1,7 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { reflect } from '@/_helpers/promise-more'
-import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError } from '../helpers'
-import { AppConfig, DictConfigs } from '@/app-config'
+import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk('https://www.oxfordlearnersdictionaries.com/')
@@ -30,10 +30,9 @@ export type OALDResult = OALDResultLex | OALDResultRelated
 type OALDSearchResult = DictSearchResult<OALDResult>
 type OALDSearchResultLex = DictSearchResult<OALDResultLex>
 
-export default function search (
-  text: string,
-  config: AppConfig,
-): Promise<OALDSearchResult> {
+export const search: SearchFunction<OALDSearchResult> = (
+  text, config, payload
+) => {
   text = text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-')
   const options = config.dicts.all.oald.options
 

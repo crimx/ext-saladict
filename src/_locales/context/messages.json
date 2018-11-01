@@ -125,9 +125,9 @@
     "zh_TW": "搜狗網頁翻譯"
   },
   "view_as_pdf": {
-    "en": "View as PDF",
-    "zh_CN": "打开为 PDF",
-    "zh_TW": "打開為 PDF"
+    "en": "Open in PDF Viewer",
+    "zh_CN": "在 PDF 阅读器中打开",
+    "zh_TW": "在 PDF 瀏覽器中打開"
   },
   "youdao": {
     "en": "Youdao",

@@ -313,12 +313,16 @@ export function searchText (
     const toOnhold: DictID[] = []
     const toActive: DictID[] = []
 
+    const isTextContainChs = isContainChinese(info.text)
+    const isTextContainEng = isContainEnglish(info.text)
+    const isTextContainOther = isContainMinor(info.text)
+
     selectedDicts.forEach(id => {
       const { chs, eng, minor } = allDicts[id].selectionLang
       let isValidSelection = (
-        chs && isContainChinese(info.text) ||
-        eng && isContainEnglish(info.text) ||
-        minor && isContainMinor(info.text)
+        chs && isTextContainChs ||
+        eng && isTextContainEng ||
+        minor && isTextContainOther
       )
 
       if (isValidSelection) {
@@ -356,14 +360,28 @@ export function searchText (
 
     toStart.forEach(doSearch)
 
-    function doSearch (id: DictID) {
-      const msg: MsgFetchDictResult = {
+    // dict with auto pronunciation but not searching
+    const autopronEng = state.config.autopron.en.dict
+    if (autopronEng && isTextContainEng && toStart.indexOf(autopronEng) === -1) {
+      requestDictResult(autopronEng)
+    } else {
+      const autopronChs = state.config.autopron.cn.dict
+      if (autopronChs && isTextContainChs && toStart.indexOf(autopronChs) === -1) {
+        requestDictResult(autopronChs)
+      }
+    }
+
+    function requestDictResult (id: DictID) {
+      return message.send<MsgFetchDictResult>({
         type: MsgType.FetchDictResult,
         id,
         text: info.text,
         payload: arg && arg.payload,
-      }
-      return message.send(msg)
+      })
+    }
+
+    function doSearch (id: DictID) {
+      return requestDictResult(id)
         .then(result => {
           dispatch(searchEnd({ id, info, result }))
         })

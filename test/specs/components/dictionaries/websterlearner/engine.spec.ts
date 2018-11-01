@@ -1,5 +1,5 @@
-import search, { WebsterLearnerResultLex, WebsterLearnerResultRelated } from '@/components/dictionaries/websterlearner/engine'
-import { appConfigFactory, AppConfigMutable } from '@/app-config'
+import { search, WebsterLearnerResultLex, WebsterLearnerResultRelated } from '@/components/dictionaries/websterlearner/engine'
+import { appConfigFactory } from '@/app-config'
 import fs from 'fs'
 import path from 'path'
 
@@ -24,7 +24,7 @@ describe('Dict/WebsterLearner/engine', () => {
   })
 
   it('should parse lex result correctly', () => {
-    return search('house', appConfigFactory())
+    return search('house', appConfigFactory(), {})
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
 
@@ -84,7 +84,7 @@ describe('Dict/WebsterLearner/engine', () => {
   })
 
   it('should parse related result correctly', () => {
-    return search('jumblish', appConfigFactory())
+    return search('jumblish', appConfigFactory(), {})
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 

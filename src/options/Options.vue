@@ -65,6 +65,7 @@ import { updateActiveConfig, updateActiveConfigID, updateConfigIDList, resetConf
 
 // Auto import option section components
 const _optNames = [
+  'OptSync',
   'OptConfigProfile',
   'OptAppActive',
   'OptPreference',
@@ -155,8 +156,13 @@ export default {
         const {
           activeConfigID,
           configProfileIDs,
-          configProfiles
+          configProfiles,
+          syncConfig,
         } = newStore
+
+        if (syncConfig) {
+          await storage.sync.set({ syncConfig })
+        }
 
         if (!activeConfigID ||
             typeof activeConfigID !== 'string' ||
@@ -196,27 +202,26 @@ export default {
       }
       fr.readAsText(e.currentTarget.files[0])
     },
-    handleExport () {
-      browser.runtime.getPlatformInfo()
-        .then(({ os }) => {
-          let config = JSON.stringify({
-            activeConfigID: this.activeConfigID,
-            configProfileIDs: this.configProfileIDs,
-            configProfiles: this.configProfiles,
-          })
-          if (os === 'win') {
-            config = config.replace(/\r\n|\n/g, '\r\n')
-          }
-          const file = new Blob([config], { type: 'text/plain;charset=utf-8' })
-          const a = document.createElement('a')
-          a.href = URL.createObjectURL(file)
-          a.download = `config-${Date.now()}.saladict`
-          // firefox
-          a.target = '_blank'
-          document.body.appendChild(a)
+    async handleExport () {
+      const { os } = await browser.runtime.getPlatformInfo()
+      let config = JSON.stringify({
+        activeConfigID: this.activeConfigID,
+        configProfileIDs: this.configProfileIDs,
+        configProfiles: this.configProfiles,
+        syncConfig: (await storage.sync.get('syncConfig')).syncConfig,
+      })
+      if (os === 'win') {
+        config = config.replace(/\r\n|\n/g, '\r\n')
+      }
+      const file = new Blob([config], { type: 'text/plain;charset=utf-8' })
+      const a = document.createElement('a')
+      a.href = URL.createObjectURL(file)
+      a.download = `config-${Date.now()}.saladict`
+      // firefox
+      a.target = '_blank'
+      document.body.appendChild(a)
 
-          a.click()
-        })
+      a.click()
     },
     handleReset () {
       this.$refs.alert.$emit('show', {
@@ -224,6 +229,7 @@ export default {
         content: this.$t('opt:reset_modal_content'),
         onConfirm: async () => {
           await resetConfig()
+          await storage.sync.remove('syncConfig')
           const {
             activeConfigID,
             configProfileIDs

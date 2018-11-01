@@ -1,7 +1,7 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { reflect } from '@/_helpers/promise-more'
-import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError } from '../helpers'
-import { AppConfig, DictConfigs } from '@/app-config'
+import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk('http://www.macmillandictionary.com/')
@@ -32,10 +32,9 @@ export type MacmillanResult = MacmillanResultLex | MacmillanResultRelated
 
 type MacmillanSearchResult = DictSearchResult<MacmillanResult>
 
-export default function search (
-  text: string,
-  config: AppConfig,
-): Promise<MacmillanSearchResult> {
+export const search: SearchFunction<MacmillanSearchResult> = (
+  text, config, payload
+) => {
   const options = config.dicts.all.macmillan.options
 
   return fetchDirtyDOM('http://www.macmillandictionary.com/dictionary/british/' + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))

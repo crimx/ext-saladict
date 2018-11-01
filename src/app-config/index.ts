@@ -103,7 +103,7 @@ export interface AppConfigMutable {
     /** cursor instant capture */
     instant: {
       enable: boolean
-      key: 'direct' | 'ctrl' | 'alt'
+      key: 'direct' | 'ctrl' | 'alt' | 'shift'
       delay: number
     }
   },
@@ -123,7 +123,7 @@ export interface AppConfigMutable {
     /** cursor instant capture */
     instant: {
       enable: boolean
-      key: 'direct' | 'ctrl' | 'alt'
+      key: 'direct' | 'ctrl' | 'alt' | 'shift'
       delay: number
     }
   },
@@ -143,7 +143,7 @@ export interface AppConfigMutable {
     /** cursor instant capture */
     instant: {
       enable: boolean
-      key: 'direct' | 'ctrl' | 'alt'
+      key: 'direct' | 'ctrl' | 'alt' | 'shift'
       delay: number
     }
   },
@@ -163,7 +163,7 @@ export interface AppConfigMutable {
     /** cursor instant capture */
     instant: {
       enable: boolean
-      key: 'direct' | 'ctrl' | 'alt'
+      key: 'direct' | 'ctrl' | 'alt' | 'shift'
       delay: number
     }
   },

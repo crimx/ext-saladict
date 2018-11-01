@@ -1,8 +1,12 @@
 import DOMPurify from 'dompurify'
 import { TranslationFunction } from 'i18next'
-import { DictID } from '@/app-config'
+import { DictID, AppConfig } from '@/app-config'
 import { SelectionInfo } from '@/_helpers/selection'
 import { chsToChz } from '@/_helpers/chs-to-chz'
+
+export interface SearchFunction<Result, Payload = {}> {
+  (text: string, config: AppConfig, payload: Payload): Promise<Result>
+}
 
 export type HTMLString = string
 
@@ -24,6 +28,11 @@ export function handleNoResult<T> (): Promise<T> {
 
 export function handleNetWorkError (): Promise<never> {
   return Promise.reject(SearchErrorType.NetWorkError)
+}
+
+export interface MachineTranslatePayload {
+  sl?: string
+  tl?: string
 }
 
 export interface MachineTranslateResult {

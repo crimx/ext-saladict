@@ -6,6 +6,11 @@ export default class MachineTrans extends React.PureComponent<ViewPorps<MachineT
   state = {
     sl: this.props.result.sl,
     tl: this.props.result.tl,
+    isShowLang: false,
+  }
+
+  handleShowLang = () => {
+    this.setState({ isShowLang: true }, () => this.props.recalcBodyHeight())
   }
 
   handleLangChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -23,18 +28,12 @@ export default class MachineTrans extends React.PureComponent<ViewPorps<MachineT
     )
   }
 
-  render () {
+  renderLangSwitch () {
     const { t } = this.props
-    const {
-      langcodes,
-      trans,
-      searchText,
-    } = this.props.result
+    const { langcodes } = this.props.result
+
     return (
-      <>
-        <p>{trans.text} <Speaker src={trans.audio} /></p>
-        <p>{searchText.text} <Speaker src={searchText.audio} /></p>
-        <br/>
+      <div className='MachineTrans-LangSwitch'>
         <div>
           <span>{t('machineTransTL')}</span>{': '}
           <select name='tl' value={this.state.tl} onChange={this.handleLangChanged}>
@@ -52,6 +51,38 @@ export default class MachineTrans extends React.PureComponent<ViewPorps<MachineT
             ))}
           </select>
         </div>
+      </div>
+    )
+  }
+
+  render () {
+    const { t } = this.props
+    const {
+      trans,
+      searchText,
+    } = this.props.result
+    return (
+      <>
+        <div className='MachineTrans-Text'>
+          {[trans, searchText].map(source => (
+            <p>{
+              source.text.split('\n').map((line, i) => {
+                if (i === 0) {
+                  return <p className='MachineTrans-Line'><Speaker src={source.audio} /> {line}</p>
+                } else {
+                  return <p className='MachineTrans-Line'>{line}</p>
+                }
+              })
+            }</p>
+          ))}
+        </div>
+        {this.state.isShowLang
+          ? this.renderLangSwitch()
+          : <button
+              className='MachineTrans-LangSwitchBtn'
+              onClick={this.handleShowLang}
+            >{t('machineTransSwitch')}</button>
+        }
       </>
     )
   }

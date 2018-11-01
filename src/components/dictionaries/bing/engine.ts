@@ -1,6 +1,6 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { handleNoResult, handleNetWorkError, getText, getInnerHTMLThunk } from '../helpers'
-import { AppConfig, DictConfigs } from '@/app-config'
+import { handleNoResult, handleNetWorkError, getText, getInnerHTMLThunk, SearchFunction } from '../helpers'
+import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk('https://cn.bing.com/')
@@ -64,10 +64,9 @@ type BingSearchResultLex = DictSearchResult<BingResultLex>
 type BingSearchResultMachine = DictSearchResult<BingResultMachine>
 type BingSearchResultRelated = DictSearchResult<BingResultRelated>
 
-export default function search (
-  text: string,
-  config: AppConfig
-): Promise<DictSearchResult<BingResult>> {
+export const search: SearchFunction<DictSearchResult<BingResult>> = (
+  text, config, payload
+) => {
   const bingConfig = config.dicts.all.bing
 
   return fetchDirtyDOM(DICT_LINK + encodeURIComponent(text.replace(/\s+/g, ' ')))

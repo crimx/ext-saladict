@@ -124,6 +124,11 @@
     "zh_TW": "記錄尚未保存，確定關閉？",
     "en": "Changes will not be saved. Are you sure to close?"
   },
+  "machineTransSwitch": {
+    "zh_CN": "更改语言",
+    "zh_TW": "更改語言",
+    "en": "Switch Language"
+  },
   "machineTransSL": {
     "zh_CN": "来源语言",
     "zh_TW": "來源語言",

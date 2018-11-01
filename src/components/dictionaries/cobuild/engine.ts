@@ -1,6 +1,6 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getText, getInnerHTMLThunk, handleNoResult, handleNetWorkError } from '../helpers'
-import { AppConfig, DictConfigs } from '@/app-config'
+import { HTMLString, getText, getInnerHTMLThunk, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk()
@@ -18,16 +18,15 @@ export interface COBUILDResult {
 
 type COBUILDSearchResult = DictSearchResult<COBUILDResult>
 
-export default function search (
-  text: string,
-  config: AppConfig
-): Promise<COBUILDSearchResult> {
+export const search: SearchFunction<COBUILDSearchResult> = (
+  text, config, payload
+) => {
   text = encodeURIComponent(text.replace(/\s+/g, ' '))
   const isChz = config.langCode === 'zh-TW'
-  return fetchDirtyDOM('https://www.iciba.com/' + text)
+  return fetchDirtyDOM('http://www.iciba.com/' + text)
     .then(doc => handleDOM(doc, config.dicts.all.cobuild.options, isChz))
     .catch(() => {
-      return fetchDirtyDOM('http://www.iciba.com/' + text)
+      return fetchDirtyDOM('https://www.iciba.com/' + text)
         .catch(handleNetWorkError)
         .then(doc => handleDOM(doc, config.dicts.all.cobuild.options, isChz))
     })

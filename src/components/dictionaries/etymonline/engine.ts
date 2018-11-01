@@ -1,6 +1,6 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { getText, getInnerHTMLThunk, handleNoResult, HTMLString, handleNetWorkError } from '../helpers'
-import { AppConfig } from '@/app-config'
+import { DictConfigs } from '@/app-config'
+import { getText, getInnerHTMLThunk, handleNoResult, HTMLString, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk()
@@ -16,10 +16,9 @@ export type EtymonlineResult = EtymonlineResultItem[]
 
 type EtymonlineSearchResult = DictSearchResult<EtymonlineResult>
 
-export default function search (
-  text: string,
-  config: AppConfig,
-): Promise<EtymonlineSearchResult> {
+export const search: SearchFunction<EtymonlineSearchResult> = (
+  text, config, payload
+) => {
   const options = config.dicts.all.etymonline.options
   text = encodeURIComponent(text.replace(/\s+/g, ' '))
 
@@ -37,7 +36,7 @@ export default function search (
 
 function handleDOM (
   doc: Document,
-  options: AppConfig['dicts']['all']['etymonline']['options'],
+  options: DictConfigs['etymonline']['options'],
 ): EtymonlineSearchResult | Promise<EtymonlineSearchResult> {
   const result: EtymonlineResult = []
   const $items = Array.from(doc.querySelectorAll('[class*="word--"]'))

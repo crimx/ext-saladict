@@ -1,6 +1,6 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError } from '../helpers'
-import { AppConfig, DictConfigs } from '@/app-config'
+import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
 const getInnerHTML = getInnerHTMLThunk('http://www.learnersdictionary.com/')
@@ -34,10 +34,9 @@ export type WebsterLearnerResult = WebsterLearnerResultLex | WebsterLearnerResul
 type WebsterLearnerSearchResult = DictSearchResult<WebsterLearnerResult>
 type WebsterLearnerSearchResultLex = DictSearchResult<WebsterLearnerResultLex>
 
-export default function search (
-  text: string,
-  config: AppConfig,
-): Promise<WebsterLearnerSearchResult> {
+export const search: SearchFunction<WebsterLearnerSearchResult> = (
+  text, config, payload
+) => {
   const options = config.dicts.all.websterlearner.options
 
   return fetchDirtyDOM('http://www.learnersdictionary.com/definition/' + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
