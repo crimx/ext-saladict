@@ -36,6 +36,8 @@ export class SaladictDB extends Dexie {
   notebook: Dexie.Table<Word, number>
   // @ts-ignore
   history: Dexie.Table<Word, number>
+  // @ts-ignore
+  syncmeta: Dexie.Table<{ id: string, json: string }, string>
 
   constructor () {
     super('SaladictWords')
@@ -43,6 +45,7 @@ export class SaladictDB extends Dexie {
     this.version(1).stores({
       notebook: 'date,text,context,url',
       history: 'date,text,context,url',
+      syncmeta: 'id'
     })
   }
 }
@@ -52,6 +55,33 @@ export const db = new SaladictDB()
 /*-----------------------------------------------*\
     Apis
 \*-----------------------------------------------*/
+
+export function getSyncMeta (serviceID: string) {
+  return db.syncmeta
+    .where('id')
+    .equals(serviceID)
+    .first(record => record && record.json)
+    .catch(e => {
+      if (process.env.DEV_BUILD) {
+        console.error(e)
+      }
+    })
+}
+
+export function setSyncMeta (serviceID: string, text: string) {
+  return db.syncmeta
+    .put({ id: serviceID, json: text })
+}
+
+export function deleteSyncMeta (serviceID: string) {
+  return db.syncmeta
+    .delete(serviceID)
+    .catch(e => {
+      if (process.env.DEV_BUILD) {
+        console.error(e)
+      }
+    })
+}
 
 export function isInNotebook ({ info }: MsgIsInNotebook) {
   return db.notebook
@@ -66,6 +96,15 @@ export function saveWord ({ area, info }: MsgSaveWord) {
     ...info,
     date: info.date || Date.now()
   })
+}
+
+export function saveWords ({ area, words }: { area: Area, words: Word[] }) {
+  if (process.env.DEV_BUILD) {
+    if (words.length !== new Set(words.map(w => w.date)).size) {
+      console.error('save Words: duplicate records')
+    }
+  }
+  return db[area].bulkPut(words)
 }
 
 export function deleteWords ({ area, dates }: MsgDeleteWords) {

@@ -78,6 +78,7 @@
             <select class="form-control" v-model="qsPanelMode.instant.key">
               <option value="alt">{{ $t('opt:mode_instant_alt') }}</option>
               <option value="ctrl">{{ $t('opt:mode_instant_ctrl') }}</option>
+              <option value="shift">Shift</option>
               <option value="direct">{{ $t('opt:mode_instant_direct') }}</option>
             </select>
           </label>

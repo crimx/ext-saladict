@@ -66,6 +66,10 @@ export const enum MsgType {
   /** Manually emit selection event */
   EmitSelection,
 
+  SyncServiceInit,
+  SyncServiceDownload,
+  SyncServiceUpload,
+
   /**
    * Background proxy sends back underlyingly
    */
@@ -160,7 +164,7 @@ export interface MsgGetWords {
   readonly area: DBArea
   readonly itemsPerPage?: number
   readonly pageNum?: number
-  readonly filters: { [field: string]: string[] | undefined }
+  readonly filters?: { [field: string]: string[] | undefined }
   readonly sortField?: string
   readonly sortOrder?: 'ascend' | 'descend' | false
   readonly searchText?: string
@@ -207,7 +211,22 @@ export interface MsgQSPanelSearchText {
 export type MsgQueryQSPanelResponse = boolean
 
 export interface MsgQueryPanelState {
-  type: MsgType.QueryPanelState,
+  type: MsgType.QueryPanelState
   /** object path, default returns the whole state */
   path?: string
+}
+
+export interface MsgSyncServiceInit {
+  type: MsgType.SyncServiceInit
+  config: any
+}
+
+export interface MsgSyncServiceDownload {
+  type: MsgType.SyncServiceDownload
+  force?: boolean
+}
+
+export interface MsgSyncServiceUpload {
+  type: MsgType.SyncServiceUpload
+  force?: boolean
 }

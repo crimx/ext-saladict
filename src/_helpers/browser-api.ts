@@ -7,6 +7,7 @@
 import { Observable } from 'rxjs/Observable'
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
 import { map } from 'rxjs/operators/map'
+import { filter } from 'rxjs/operators/filter'
 
 import { MsgType } from '@/typings/message'
 
@@ -153,6 +154,7 @@ export default {
 type StorageThisTwo = typeof storage.sync | typeof storage.local
 type StorageThisThree = StorageThisTwo | typeof storage
 
+function storageClear (): Promise<void>
 function storageClear (this: StorageThisThree): Promise<void> {
   return this.__storageArea__ === 'all'
     ? Promise.all([
@@ -162,6 +164,7 @@ function storageClear (this: StorageThisThree): Promise<void> {
     : browser.storage[this.__storageArea__].clear()
 }
 
+function storageRemove (keys: string | string[]): Promise<void>
 function storageRemove (this: StorageThisTwo, keys: string | string[]): Promise<void> {
   return browser.storage[this.__storageArea__].remove(keys)
 }
@@ -172,6 +175,7 @@ function storageGet<T = any> (this: StorageThisTwo, ...args): Promise<T> {
   return browser.storage[this.__storageArea__].get(...args)
 }
 
+function storageSet (keys: any): Promise<void>
 function storageSet (this: StorageThisTwo, keys: any): Promise<void> {
   return browser.storage[this.__storageArea__].set(keys)
 }
@@ -257,7 +261,8 @@ function storageCreateStream (this: StorageThisThree, key: string) {
     handler => this.addListener(key, handler as StorageListenerCb),
     handler => this.removeListener(key, handler as StorageListenerCb),
   ).pipe(
-    map(args => Array.isArray(args) ? args[0][key] : args[key])
+    filter(args => (Array.isArray(args) ? args[0] : args).hasOwnProperty(key)),
+    map(args => Array.isArray(args) ? args[0][key] : args[key]),
   )
 }
 

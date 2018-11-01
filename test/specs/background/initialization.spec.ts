@@ -23,6 +23,10 @@ jest.mock('@/background/pdf-sniffer', () => {
   return { init: jest.fn() }
 })
 
+jest.mock('@/background/sync-manager', () => {
+  return { startSyncServiceInterval: jest.fn() }
+})
+
 jest.mock('@/background/server', () => {
   return { openQSPanel: jest.fn() }
 })

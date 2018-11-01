@@ -49,7 +49,7 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   mergeBoolean('mode.holding.ctrl')
   mergeBoolean('mode.holding.meta')
   mergeBoolean('mode.instant.enable')
-  merge('mode.instant.key', val => val === 'direct' || val === 'ctrl' || val === 'alt')
+  merge('mode.instant.key', val => /^(direct|ctrl|alt|shift)$/.test(val))
   mergeNumber('mode.instant.delay')
 
   mergeBoolean('pinMode.direct')
@@ -58,7 +58,7 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   mergeBoolean('pinMode.holding.ctrl')
   mergeBoolean('pinMode.holding.meta')
   mergeBoolean('pinMode.instant.enable')
-  merge('pinMode.instant.key', val => val === 'direct' || val === 'ctrl' || val === 'alt')
+  merge('pinMode.instant.key', val => /^(direct|ctrl|alt|shift)$/.test(val))
   mergeNumber('pinMode.instant.delay')
 
   mergeBoolean('panelMode.direct')
@@ -67,7 +67,7 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   mergeBoolean('panelMode.holding.ctrl')
   mergeBoolean('panelMode.holding.meta')
   mergeBoolean('panelMode.instant.enable')
-  merge('panelMode.instant.key', val => val === 'direct' || val === 'ctrl' || val === 'alt')
+  merge('panelMode.instant.key', val => /^(direct|ctrl|alt|shift)$/.test(val))
   mergeNumber('panelMode.instant.delay')
 
   mergeBoolean('qsPanelMode.direct')
@@ -76,7 +76,7 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   mergeBoolean('qsPanelMode.holding.ctrl')
   mergeBoolean('qsPanelMode.holding.meta')
   mergeBoolean('qsPanelMode.instant.enable')
-  merge('qsPanelMode.instant.key', val => val === 'direct' || val === 'ctrl' || val === 'alt')
+  merge('qsPanelMode.instant.key', val => /^(direct|ctrl|alt|shift)$/.test(val))
   mergeNumber('qsPanelMode.instant.delay')
 
   mergeNumber('doubleClickDelay')
