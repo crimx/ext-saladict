@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.19.0"></a>
+# [6.19.0](https://github.com/crimx/ext-saladict/compare/v6.18.1...v6.19.0) (2018-11-01)
+
+
+### Bug Fixes
+
+* **configs:** new value could be empty when deleting ([5a5fad5](https://github.com/crimx/ext-saladict/commit/5a5fad5))
+* **dicts:** trim text ([5dac1e7](https://github.com/crimx/ext-saladict/commit/5dac1e7))
+* **helpers:** ignore irrelevant events ([72aa11a](https://github.com/crimx/ext-saladict/commit/72aa11a))
+* **sync:** correct interval repeat ([0c7b607](https://github.com/crimx/ext-saladict/commit/0c7b607))
+* **wordpage:** reset selected rows on full fetch ([9f0f42e](https://github.com/crimx/ext-saladict/commit/9f0f42e))
+
+
+### Features
+
+* **background:** add badge text ([8477f65](https://github.com/crimx/ext-saladict/commit/8477f65))
+* **helpers:** add webdav sync service ([64df7c3](https://github.com/crimx/ext-saladict/commit/64df7c3))
+* **sync:** add sync options ([73e4ce6](https://github.com/crimx/ext-saladict/commit/73e4ce6))
+* add shift for instant search ([20a942a](https://github.com/crimx/ext-saladict/commit/20a942a)), closes [#232](https://github.com/crimx/ext-saladict/issues/232)
+
+
+
 <a name="6.18.1"></a>
 ## [6.18.1](https://github.com/crimx/ext-saladict/compare/v6.18.0...v6.18.1) (2018-10-17)
 
