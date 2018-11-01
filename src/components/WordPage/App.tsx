@@ -185,7 +185,8 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
         pagination: {
           ...this.state.pagination,
           total,
-        }
+        },
+        selectedRows: [],
       }))
   }
 
