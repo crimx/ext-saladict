@@ -193,6 +193,7 @@ export async function addActiveConfigListener (
 
     if (changes.activeConfigID) {
       const { newValue: newID, oldValue: oldID } = changes.activeConfigID
+      if (!newID) { return }
       gActiveConfigID = newID
       if (oldID) {
         const obj = await storage.sync.get([oldID, newID])
