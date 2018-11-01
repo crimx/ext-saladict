@@ -25,6 +25,12 @@ jest.mock('@/background/sync-manager/services/webdav', (): ServiceMock => ({
 const helpers: typeof helpersMock = require('@/background/sync-manager/helpers')
 const service: ServiceMock = require('@/background/sync-manager/services/webdav')
 
+// absolute time
+const atTimeThunk = (lastTime = 0) => async absTime => {
+  await timer(absTime - lastTime)
+  lastTime = absTime
+}
+
 describe('Sync Manager', () => {
 
   beforeEach(() => {
@@ -54,17 +60,27 @@ describe('Sync Manager', () => {
       url: 'https://example.com/dav/',
       user: 'user',
       passwd: 'passwd',
-      duration: 500,
+      duration: 100,
     }
     config$.next({ [service.serviceID]: config })
 
-    await timer(0)
-    expect(service.dlChanged).toHaveBeenCalledTimes(1)
-    expect(service.dlChanged).lastCalledWith(config, {})
+    let atTime = atTimeThunk()
+
+    await atTime(0)
+    expect(service.dlChanged).toHaveBeenCalledTimes(0)
     expect(helpers.setMeta).toHaveBeenCalledTimes(0)
     expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
 
-    await timer(100)
+    await atTime(50)
+    expect(service.dlChanged).toHaveBeenCalledTimes(0)
+
+    await atTime(120)
+    expect(service.dlChanged).toHaveBeenCalledTimes(1)
+    expect(service.dlChanged).lastCalledWith(config, {}, undefined)
+    expect(helpers.setMeta).toHaveBeenCalledTimes(0)
+    expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
+
+    await atTime(160)
     expect(service.dlChanged).toHaveBeenCalledTimes(1)
 
     const meta: Meta = {
@@ -73,9 +89,9 @@ describe('Sync Manager', () => {
     }
     helpers.getMeta.mockImplementationOnce(() => Promise.resolve(meta))
 
-    await timer(500)
+    await atTime(220)
     expect(service.dlChanged).toHaveBeenCalledTimes(2)
-    expect(service.dlChanged).lastCalledWith(config, meta)
+    expect(service.dlChanged).lastCalledWith(config, meta, undefined)
     expect(helpers.setMeta).toHaveBeenCalledTimes(0)
     expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
 
@@ -83,20 +99,25 @@ describe('Sync Manager', () => {
       url: 'https://example2.com/dav/',
       user: 'user2',
       passwd: 'passwd2',
-      duration: 100,
+      duration: 200,
     }
     config$.next({ [service.serviceID]: config2 })
 
-    await timer(0)
-    expect(service.dlChanged).toHaveBeenCalledTimes(3)
-    expect(service.dlChanged).lastCalledWith(config2, {})
+    atTime = atTimeThunk()
 
-    await timer(50)
+    await atTime(10)
+    expect(service.dlChanged).toHaveBeenCalledTimes(2)
+
+    await atTime(220)
+    expect(service.dlChanged).toHaveBeenCalledTimes(3)
+    expect(service.dlChanged).lastCalledWith(config2, {}, undefined)
+
+    await atTime(270)
     expect(service.dlChanged).toHaveBeenCalledTimes(3)
 
-    await timer(100)
+    await atTime(420)
     expect(service.dlChanged).toHaveBeenCalledTimes(4)
-    expect(service.dlChanged).lastCalledWith(config2, {})
+    expect(service.dlChanged).lastCalledWith(config2, {}, undefined)
 
     subscription.unsubscribe()
   })
@@ -124,13 +145,15 @@ describe('Sync Manager', () => {
       url: 'https://example.com/dav/',
       user: 'user',
       passwd: 'passwd',
-      duration: 50,
+      duration: 100,
     }
     config$.next({ [service.serviceID]: config })
 
-    await timer(0)
+    let atTime = atTimeThunk()
+
+    await atTime(120)
     expect(service.dlChanged).toHaveBeenCalledTimes(1)
-    expect(service.dlChanged).lastCalledWith(config, {})
+    expect(service.dlChanged).lastCalledWith(config, {}, undefined)
     expect(helpers.setMeta).toHaveBeenCalledTimes(1)
     expect(helpers.setMeta).lastCalledWith(service.serviceID, meta)
     expect(helpers.setNotebook).toHaveBeenCalledTimes(1)
@@ -138,9 +161,9 @@ describe('Sync Manager', () => {
 
     helpers.getMeta.mockImplementationOnce(() => Promise.resolve(meta))
 
-    await timer(50)
+    await atTime(220)
     expect(service.dlChanged).toHaveBeenCalledTimes(2)
-    expect(service.dlChanged).lastCalledWith(config, meta)
+    expect(service.dlChanged).lastCalledWith(config, meta, undefined)
     expect(helpers.setMeta).toHaveBeenCalledTimes(1)
     expect(helpers.setNotebook).toHaveBeenCalledTimes(1)
 
@@ -172,13 +195,15 @@ describe('Sync Manager', () => {
       url: 'https://example.com/dav/',
       user: 'user',
       passwd: 'passwd',
-      duration: 50,
+      duration: 100,
     }
     config$.next({ [service.serviceID]: config })
 
-    await timer(0)
+    let atTime = atTimeThunk()
+
+    await atTime(120)
     expect(service.dlChanged).toHaveBeenCalledTimes(1)
-    expect(service.dlChanged).lastCalledWith(config, {})
+    expect(service.dlChanged).lastCalledWith(config, {}, undefined)
     expect(helpers.setMeta).toHaveBeenCalledTimes(1)
     expect(helpers.setMeta).lastCalledWith(service.serviceID, meta)
     expect(helpers.setNotebook).toHaveBeenCalledTimes(1)
@@ -208,9 +233,9 @@ describe('Sync Manager', () => {
     helpers.getMeta.mockImplementationOnce(() => Promise.resolve(meta2))
     service.dlChanged.mockImplementationOnce(() => Promise.resolve(dlResponse2))
 
-    await timer(50)
+    await atTime(220)
     expect(service.dlChanged).toHaveBeenCalledTimes(2)
-    expect(service.dlChanged).lastCalledWith(config, meta2)
+    expect(service.dlChanged).lastCalledWith(config, meta2, undefined)
     expect(helpers.setMeta).toHaveBeenCalledTimes(2)
     expect(helpers.setMeta).lastCalledWith(service.serviceID, meta2)
     expect(helpers.setNotebook).toHaveBeenCalledTimes(2)

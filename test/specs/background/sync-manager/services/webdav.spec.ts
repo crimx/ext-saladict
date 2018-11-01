@@ -16,7 +16,7 @@ const fetchArgs = {
         headers: {
           'Authorization': 'Basic ' + window.btoa(`${config.user}:${config.passwd}`),
           'Content-Type': 'application/xml; charset="utf-8"',
-          'Depth': '2',
+          'Depth': '1',
         },
       },
     ]
