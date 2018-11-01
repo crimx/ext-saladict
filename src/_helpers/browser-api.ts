@@ -154,6 +154,7 @@ export default {
 type StorageThisTwo = typeof storage.sync | typeof storage.local
 type StorageThisThree = StorageThisTwo | typeof storage
 
+function storageClear (): Promise<void>
 function storageClear (this: StorageThisThree): Promise<void> {
   return this.__storageArea__ === 'all'
     ? Promise.all([
@@ -163,6 +164,7 @@ function storageClear (this: StorageThisThree): Promise<void> {
     : browser.storage[this.__storageArea__].clear()
 }
 
+function storageRemove (keys: string | string[]): Promise<void>
 function storageRemove (this: StorageThisTwo, keys: string | string[]): Promise<void> {
   return browser.storage[this.__storageArea__].remove(keys)
 }
@@ -173,6 +175,7 @@ function storageGet<T = any> (this: StorageThisTwo, ...args): Promise<T> {
   return browser.storage[this.__storageArea__].get(...args)
 }
 
+function storageSet (keys: any): Promise<void>
 function storageSet (this: StorageThisTwo, keys: any): Promise<void> {
   return browser.storage[this.__storageArea__].set(keys)
 }
