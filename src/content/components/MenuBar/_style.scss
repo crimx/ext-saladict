@@ -82,7 +82,13 @@
   white-space: nowrap;
   border-radius: 10px;
   background: #fff;
-  box-shadow: 0px 4px 40px -8px rgba(0, 0, 0, 0.8);
+  box-shadow: 0px 4px 31px -8px rgba(0, 0, 0, 0.8);
+}
+
+@-moz-document url-prefix() {
+  .panel-MenuBar_SuggestsWrapper {
+    box-shadow: 0px 4px 20px -8px rgba(0, 0, 0, 0.8);
+  }
 }
 
 .panel-MenuBar_Suggests {
@@ -110,6 +116,10 @@
   text-overflow: ellipsis;
   text-align: initial;
   cursor: pointer;
+
+  &:focus {
+    background: #eee;
+  }
 }
 
 .panel-MenuBar_SuggestsEntry {
