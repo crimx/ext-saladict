@@ -5,6 +5,11 @@
     "zh_TW": "搜狗翻譯"
   },
   "options": {
+    "pdfNewline": {
+      "en": "Keep linebreaks on PDF",
+      "zh_CN": "PDF 保持换行",
+      "zh_TW": "PDF 保持換行"
+    },
     "tl": {
       "en": "Target language",
       "zh_CN": "目标语言",

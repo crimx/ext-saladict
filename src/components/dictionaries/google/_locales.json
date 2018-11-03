@@ -5,6 +5,11 @@
     "zh_TW": "谷歌翻譯"
   },
   "options": {
+    "pdfNewline": {
+      "en": "Keep linebreaks on PDF",
+      "zh_CN": "PDF 保持换行",
+      "zh_TW": "PDF 保持換行"
+    },
     "cnfirst": {
       "en": "Use google.cn first",
       "zh_CN": "优先使用 google.cn",

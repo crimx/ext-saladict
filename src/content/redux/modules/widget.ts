@@ -637,10 +637,12 @@ export function requestFavWord (): DispatcherThunk {
     if (word.context) {
       const dicts = ['Google', 'Sogou']
       const ids = ['google', 'sogou'] as ['google', 'sogou']
+      const payload = { isPDF: isSaladictPDFPage }
       reflect<MachineTranslateResult>(ids.map(id => message.send<MsgFetchDictResult>({
         type: MsgType.FetchDictResult,
         id,
         text: word.context,
+        payload,
       })))
       .then(results => {
         const trans = results

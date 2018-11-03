@@ -5,7 +5,7 @@ import { SelectionInfo } from '@/_helpers/selection'
 import { chsToChz } from '@/_helpers/chs-to-chz'
 
 export interface SearchFunction<Result, Payload = {}> {
-  (text: string, config: AppConfig, payload: Payload): Promise<Result>
+  (text: string, config: AppConfig, payload: Readonly<Payload & { isPDF: boolean }>): Promise<Result>
 }
 
 export type HTMLString = string

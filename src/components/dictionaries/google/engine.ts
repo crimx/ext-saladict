@@ -44,12 +44,17 @@ export const search: SearchFunction<GoogleSearchResult, MachineTranslatePayload>
       : options.tl
   )
 
+  const isNoLinebreak = payload.isPDF && !options.pdfNewline
+  if (isNoLinebreak) {
+    text = text.replace(/\n/g, ' ')
+  }
+
   return first([
     fetchWithToken('https://translate.google.com', sl, tl, text),
     fetchWithToken('https://translate.google.cn', sl, tl, text),
   ])
   .catch(() => fetchWithoutToken(sl, tl, text))
-  .then(handleText)
+  .then(r => handleText(r, isNoLinebreak))
 }
 
 function fetchWithToken (base: string, sl: string, tl: string, text: string): Promise<GoogleRawResult> {
@@ -98,7 +103,8 @@ function fetchWithoutToken (sl: string, tl: string, text: string): Promise<Googl
 }
 
 function handleText (
-  { json, base, sl, tl, tk1, tk2, text }: GoogleRawResult
+  { json, base, sl, tl, tk1, tk2, text }: GoogleRawResult,
+  isNoLinebreak: boolean,
 ): GoogleSearchResult | Promise<GoogleSearchResult> {
   const data = JSON.parse(json.replace(/,+/g, ','))
 
@@ -109,7 +115,7 @@ function handleText (
   const transText: string = data[0]
     .map(item => item[0] && item[0].trim())
     .filter(Boolean)
-    .join('\n')
+    .join(isNoLinebreak ? ' ' : '\n')
 
   if (transText.length > 0) {
     return {
