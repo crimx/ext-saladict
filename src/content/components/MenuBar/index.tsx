@@ -57,11 +57,43 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   inputRef = React.createRef<HTMLInputElement>()
   dragAreaRef = React.createRef<HTMLDivElement>()
   suggestsRequest$ = new Subject<string>()
+  suggestVisibility$ = new Subject<boolean>()
 
   state: MenuBarState = {
     isShowProfilePanel: false,
     isShowSuggestPanel: false,
     suggests: [],
+  }
+
+  constructor (props) {
+    super(props)
+
+    this.suggestVisibility$.pipe(
+      debounceTime(100),
+    ).subscribe(flag => {
+      this.setState({ isShowSuggestPanel: flag })
+    })
+
+    this.suggestsRequest$.pipe(
+      filter(text => this.props.searchSuggests && text.length > 1),
+      debounceTime(750),
+      distinctUntilChanged(),
+      switchMap(text => fromPromise(
+        message.send<MsgGetSuggests>({
+          type: MsgType.GetSuggests,
+          text,
+        })
+      )),
+    ).subscribe(suggests => {
+      this.setState({ suggests })
+    })
+
+    const emptySuggests = []
+    this.suggestsRequest$.subscribe(() => {
+      if (this.props.searchSuggests) {
+        this.setState({ suggests: emptySuggests })
+      }
+    })
   }
 
   searchText = (text?: string) => {
@@ -132,12 +164,12 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
 
   showSuggests = () => {
     if (this.props.searchSuggests) {
-      this.setState({ isShowSuggestPanel: true })
+      this.suggestVisibility$.next(true)
     }
   }
 
   hideSuggests = () => {
-    this.setState({ isShowSuggestPanel: false })
+    this.suggestVisibility$.next(false)
   }
 
   handleIconSettingsClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -273,27 +305,6 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
     ) {
       this.inputRef.current.focus()
       this.inputRef.current.select()
-    }
-
-    if (this.props.searchSuggests) {
-      this.suggestsRequest$.pipe(
-        filter(text => text.length > 1),
-        debounceTime(750),
-        distinctUntilChanged(),
-        switchMap(text => fromPromise(
-          message.send<MsgGetSuggests>({
-            type: MsgType.GetSuggests,
-            text,
-          })
-        )),
-      ).subscribe(suggests => {
-        this.setState({ suggests })
-      })
-
-      const emptySuggests = []
-      this.suggestsRequest$.subscribe(() => {
-        this.setState({ suggests: emptySuggests })
-      })
     }
   }
 
