@@ -24,7 +24,7 @@ describe('Dict/WebsterLearner/engine', () => {
   })
 
   it('should parse lex result correctly', () => {
-    return search('house', appConfigFactory(), {})
+    return search('house', appConfigFactory(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
 
@@ -84,7 +84,7 @@ describe('Dict/WebsterLearner/engine', () => {
   })
 
   it('should parse related result correctly', () => {
-    return search('jumblish', appConfigFactory(), {})
+    return search('jumblish', appConfigFactory(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 

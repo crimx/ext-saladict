@@ -24,6 +24,7 @@ export const mapStateToProps = ({
     langCode: config.langCode,
     panelMaxHeightRatio: config.panelMaxHeightRatio,
     mtaAutoUnfold: config.mtaAutoUnfold,
+    searchSuggests: config.searchSuggests,
 
     activeConfigID: config.id,
     configProfiles: widget.configProfiles,

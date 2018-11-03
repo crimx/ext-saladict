@@ -589,6 +589,11 @@
     "zh_CN": "重置设定",
     "zh_TW": "重設設定"
   },
+  "search_suggests": {
+    "en": "Search suggests",
+    "zh_CN": "输入时显示候选",
+    "zh_TW": "輸入時顯示候選"
+  },
   "set_shortkey": {
     "en": "Set Shortkeys",
     "zh_CN": "设置快捷键",

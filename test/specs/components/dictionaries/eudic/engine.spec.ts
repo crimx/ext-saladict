@@ -14,7 +14,7 @@ describe('Dict/Eudic/engine', () => {
   })
 
   it('should parse result correctly', () => {
-    return search('love', appConfigFactory(), {})
+    return search('love', appConfigFactory(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
         expect(searchResult.result).toHaveLength(10)

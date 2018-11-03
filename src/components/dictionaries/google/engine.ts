@@ -44,6 +44,10 @@ export const search: SearchFunction<GoogleSearchResult, MachineTranslatePayload>
       : options.tl
   )
 
+  if (payload.isPDF && !options.pdfNewline) {
+    text = text.replace(/\n+/g, ' ')
+  }
+
   return first([
     fetchWithToken('https://translate.google.com', sl, tl, text),
     fetchWithToken('https://translate.google.cn', sl, tl, text),
@@ -107,9 +111,9 @@ function handleText (
   }
 
   const transText: string = data[0]
-    .map(item => item[0] && item[0].trim())
+    .map(item => item[0])
     .filter(Boolean)
-    .join('\n')
+    .join(' ')
 
   if (transText.length > 0) {
     return {

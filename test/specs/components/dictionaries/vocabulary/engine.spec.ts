@@ -13,7 +13,7 @@ describe('Dict/Vocabulary/engine', () => {
   })
 
   it('should parse result correctly', () => {
-    return search('any', appConfigFactory(), {})
+    return search('any', appConfigFactory(), { isPDF: false })
       .then(({ result, audio }) => {
         expect(audio).toBeUndefined()
         expect(typeof result.long).toBe('string')

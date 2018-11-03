@@ -14,6 +14,9 @@
              <option value="popup">{{ $t('opt:popup_title') }}</option>
            </select>
          </label>
+        <label class="checkbox-inline">
+          <input type="checkbox" v-model="searchSuggests"> {{ $t('opt:search_suggests') }}
+        </label>
       </div>
       <div class="input-group">
         <div class="input-group-addon">{{ $t('opt:dict_panel_height_ratio') }}</div>
@@ -50,6 +53,7 @@
 export default {
   store: {
     mtaAutoUnfold: 'config.mtaAutoUnfold',
+    searchSuggests: 'config.searchSuggests',
     panelWidth: 'config.panelWidth',
     panelMaxHeightRatio: 'config.panelMaxHeightRatio',
     fontSize: 'config.fontSize',

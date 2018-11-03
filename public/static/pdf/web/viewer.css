@@ -260,6 +260,7 @@
 .annotationLayer .circleAnnotation svg ellipse,
 .annotationLayer .polylineAnnotation svg polyline,
 .annotationLayer .polygonAnnotation svg polygon,
+.annotationLayer .inkAnnotation svg polyline,
 .annotationLayer .stampAnnotation,
 .annotationLayer .fileAttachmentAnnotation {
   cursor: pointer;
@@ -297,6 +298,46 @@
   border: none;
 }
 
+.pdfViewer.scrollHorizontal, .pdfViewer.scrollWrapped, .spread {
+  margin-left: 3.5px;
+  margin-right: 3.5px;
+  text-align: center;
+}
+
+.pdfViewer.scrollHorizontal, .spread {
+  white-space: nowrap;
+}
+
+.pdfViewer.removePageBorders,
+.pdfViewer.scrollHorizontal .spread,
+.pdfViewer.scrollWrapped .spread {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.spread .page,
+.pdfViewer.scrollHorizontal .page,
+.pdfViewer.scrollWrapped .page,
+.pdfViewer.scrollHorizontal .spread,
+.pdfViewer.scrollWrapped .spread {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.spread .page,
+.pdfViewer.scrollHorizontal .page,
+.pdfViewer.scrollWrapped .page {
+  margin-left: -3.5px;
+  margin-right: -3.5px;
+}
+
+.pdfViewer.removePageBorders .spread .page,
+.pdfViewer.removePageBorders.scrollHorizontal .page,
+.pdfViewer.removePageBorders.scrollWrapped .page {
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
 .pdfViewer .page canvas {
   margin: 0;
   display: block;
@@ -314,6 +355,22 @@
   right: 0;
   bottom: 0;
   background: url('images/loading-icon.gif') center no-repeat;
+}
+
+.pdfPresentationMode .pdfViewer {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.pdfPresentationMode .pdfViewer .page,
+.pdfPresentationMode .pdfViewer .spread {
+  display: block;
+}
+
+.pdfPresentationMode .pdfViewer .page,
+.pdfPresentationMode .pdfViewer.removePageBorders .page {
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .pdfPresentationMode:-ms-fullscreen .pdfViewer .page {
@@ -561,7 +618,8 @@ html[dir='rtl'] #sidebarContent {
   bottom: 0;
   left: 0;
   outline: none;
-
+}
+#viewerContainer:not(.pdfPresentationMode) {
   transition-duration: 200ms;
   transition-timing-function: ease;
 }
@@ -577,12 +635,12 @@ html[dir='rtl'] #viewerContainer {
   transition-duration: 0s;
 }
 
-html[dir='ltr'] #outerContainer.sidebarOpen #viewerContainer {
+html[dir='ltr'] #outerContainer.sidebarOpen #viewerContainer:not(.pdfPresentationMode) {
   transition-property: left;
   left: 200px;
   left: var(--sidebar-width);
 }
-html[dir='rtl'] #outerContainer.sidebarOpen #viewerContainer {
+html[dir='rtl'] #outerContainer.sidebarOpen #viewerContainer:not(.pdfPresentationMode) {
   transition-property: right;
   right: 200px;
   right: var(--sidebar-width);
@@ -793,6 +851,11 @@ html[dir='rtl'] .secondaryToolbar {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   margin-bottom: -4px;
+}
+
+#secondaryToolbarButtonContainer.hiddenScrollModeButtons > .scrollModeButtons,
+#secondaryToolbarButtonContainer.hiddenSpreadModeButtons > .spreadModeButtons {
+  display: none !important;
 }
 
 .doorHanger,
@@ -1370,6 +1433,30 @@ html[dir="rtl"] .secondaryToolbarButton > span {
 
 .secondaryToolbarButton.handTool::before {
   content: url(images/secondaryToolbarButton-handTool.png);
+}
+
+.secondaryToolbarButton.scrollVertical::before {
+  content: url(images/secondaryToolbarButton-scrollVertical.png);
+}
+
+.secondaryToolbarButton.scrollHorizontal::before {
+  content: url(images/secondaryToolbarButton-scrollHorizontal.png);
+}
+
+.secondaryToolbarButton.scrollWrapped::before {
+  content: url(images/secondaryToolbarButton-scrollWrapped.png);
+}
+
+.secondaryToolbarButton.spreadNone::before {
+  content: url(images/secondaryToolbarButton-spreadNone.png);
+}
+
+.secondaryToolbarButton.spreadOdd::before {
+  content: url(images/secondaryToolbarButton-spreadOdd.png);
+}
+
+.secondaryToolbarButton.spreadEven::before {
+  content: url(images/secondaryToolbarButton-spreadEven.png);
 }
 
 .secondaryToolbarButton.documentProperties::before {
@@ -2109,6 +2196,30 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
     content: url(images/secondaryToolbarButton-handTool@2x.png);
   }
 
+  .secondaryToolbarButton.scrollVertical::before {
+    content: url(images/secondaryToolbarButton-scrollVertical@2x.png);
+  }
+
+  .secondaryToolbarButton.scrollHorizontal::before {
+    content: url(images/secondaryToolbarButton-scrollHorizontal@2x.png);
+  }
+
+  .secondaryToolbarButton.scrollWrapped::before {
+    content: url(images/secondaryToolbarButton-scrollWrapped@2x.png);
+  }
+
+  .secondaryToolbarButton.spreadNone::before {
+    content: url(images/secondaryToolbarButton-spreadNone@2x.png);
+  }
+
+  .secondaryToolbarButton.spreadOdd::before {
+    content: url(images/secondaryToolbarButton-spreadOdd@2x.png);
+  }
+
+  .secondaryToolbarButton.spreadEven::before {
+    content: url(images/secondaryToolbarButton-spreadEven@2x.png);
+  }
+
   .secondaryToolbarButton.documentProperties::before {
     content: url(images/secondaryToolbarButton-documentProperties@2x.png);
   }
@@ -2220,10 +2331,10 @@ html[dir='rtl'] #documentPropertiesOverlay .row > * {
   }
 
   html[dir='ltr'] #outerContainer.sidebarOpen #viewerContainer {
-    left: 0px;
+    left: 0px !important;
   }
   html[dir='rtl'] #outerContainer.sidebarOpen #viewerContainer {
-    right: 0px;
+    right: 0px !important;
   }
 
   #outerContainer .hiddenLargeView,

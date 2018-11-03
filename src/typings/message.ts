@@ -53,6 +53,7 @@ export const enum MsgType {
   DeleteWords,
   GetWordsByText,
   GetWords,
+  GetSuggests,
 
   /** Popup page */
   TempDisabledState,
@@ -133,7 +134,10 @@ export interface MsgFetchDictResult {
   readonly id: DictID
   readonly text: string
   /** pass to engine search function as the third argument */
-  readonly payload?: { [index: string]: any }
+  readonly payload: {
+    isPDF: boolean
+    [index: string]: any
+  }
 }
 
 export interface MsgIsInNotebook {
@@ -170,9 +174,14 @@ export interface MsgGetWords {
   readonly searchText?: string
 }
 
+export interface MsgGetSuggests {
+  readonly type: MsgType.GetSuggests
+  readonly text: string
+}
+
 export interface MsgGetWordsResponse {
-  total: number
-  words: Word[]
+  readonly total: number
+  readonly words: Word[]
 }
 
 export type MsgTempDisabledState = {
@@ -185,48 +194,48 @@ export type MsgTempDisabledState = {
 }
 
 export interface MsgEditWord {
-  type: MsgType.EditWord
-  word: Word
+  readonly type: MsgType.EditWord
+  readonly word: Word
 }
 
 export interface MsgIsPinned {
-  type: MsgType.IsPinned
-  isPinned: boolean
+  readonly type: MsgType.IsPinned
+  readonly isPinned: boolean
 }
 
 export interface MsgQSPanelIDChanged {
-  type: MsgType.QSPanelIDChanged
-  flag: boolean
+  readonly type: MsgType.QSPanelIDChanged
+  readonly flag: boolean
 }
 
 export interface MsgQueryQSPanel {
-  type: MsgType.QueryQSPanel
+  readonly type: MsgType.QueryQSPanel
 }
 
 export interface MsgQSPanelSearchText {
-  type: MsgType.QSPanelSearchText
-  info: SelectionInfo
+  readonly type: MsgType.QSPanelSearchText
+  readonly info: SelectionInfo
 }
 
 export type MsgQueryQSPanelResponse = boolean
 
 export interface MsgQueryPanelState {
-  type: MsgType.QueryPanelState
+  readonly type: MsgType.QueryPanelState
   /** object path, default returns the whole state */
-  path?: string
+  readonly path?: string
 }
 
 export interface MsgSyncServiceInit {
-  type: MsgType.SyncServiceInit
-  config: any
+  readonly type: MsgType.SyncServiceInit
+  readonly config: any
 }
 
 export interface MsgSyncServiceDownload {
-  type: MsgType.SyncServiceDownload
-  force?: boolean
+  readonly type: MsgType.SyncServiceDownload
+  readonly force?: boolean
 }
 
 export interface MsgSyncServiceUpload {
-  type: MsgType.SyncServiceUpload
-  force?: boolean
+  readonly type: MsgType.SyncServiceUpload
+  readonly force?: boolean
 }

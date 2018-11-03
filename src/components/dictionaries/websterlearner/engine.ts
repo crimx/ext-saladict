@@ -1,9 +1,9 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import { HTMLString, getInnerHTMLBuilder, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
-const getInnerHTML = getInnerHTMLThunk('http://www.learnersdictionary.com/')
+const getInnerHTML = getInnerHTMLBuilder('http://www.learnersdictionary.com/')
 
 interface WebsterLearnerResultItem {
   title: HTMLString

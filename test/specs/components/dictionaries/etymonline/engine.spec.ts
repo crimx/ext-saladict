@@ -18,7 +18,7 @@ describe('Dict/Etymonline/engine', () => {
       chart: true,
       resultnum: 4
     }
-    return search('any', config, {})
+    return search('any', config, { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 

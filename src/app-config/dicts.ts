@@ -269,7 +269,9 @@ export function getALlDicts () {
        * For string, add additional `options_sel` field to list out choices.
        */
       options: {
-        cnfirst: false,
+        /** Keep linebreaks on PDF */
+        pdfNewline: false,
+        cnfirst: true,
         tl: 'default' as 'default' | 'zh-CN' | 'zh-TW' | 'en',
       },
       options_sel: {
@@ -580,6 +582,8 @@ export function getALlDicts () {
        * For string, add additional `options_sel` field to list out choices.
        */
       options: {
+        /** Keep linebreaks on PDF */
+        pdfNewline: false,
         tl: 'default' as 'default' | 'zh-CHS' | 'zh-CHT' | 'en',
       },
       options_sel: {

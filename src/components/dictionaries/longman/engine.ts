@@ -1,9 +1,9 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getText, getInnerHTMLThunk, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import { HTMLString, getText, getInnerHTMLBuilder, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
-const getInnerHTML = getInnerHTMLThunk('https://www.ldoceonline.com/')
+const getInnerHTML = getInnerHTMLBuilder('https://www.ldoceonline.com/')
 
 export interface LongmanResultEntry {
   title: {

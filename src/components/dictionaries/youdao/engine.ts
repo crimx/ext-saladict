@@ -1,9 +1,9 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { getText, getInnerHTMLThunk, handleNoResult, HTMLString, handleNetWorkError, SearchFunction } from '../helpers'
+import { getText, getInnerHTMLBuilder, handleNoResult, HTMLString, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
-const getInnerHTML = getInnerHTMLThunk('http://www.youdao.com/')
+const getInnerHTML = getInnerHTMLBuilder('http://www.youdao.com/')
 
 export interface YoudaoResultLex {
   type: 'lex'
@@ -37,7 +37,7 @@ export const search: SearchFunction<YoudaoSearchResult> = (
   const options = config.dicts.all.youdao.options
   const isChz = config.langCode === 'zh-TW'
 
-  return fetchDirtyDOM('http://www.youdao.com/w/' + encodeURIComponent(text.replace(/\s+/g, ' ')))
+  return fetchDirtyDOM('https://dict.youdao.com/w/' + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)
     .then(doc => checkResult(doc, options, isChz))
 }

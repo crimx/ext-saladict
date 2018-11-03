@@ -12,6 +12,7 @@ const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 const isSaladictQuickSearchPage = !!window.__SALADICT_QUICK_SEARCH_PAGE__
+const isSaladictPDFPage = !!window.__SALADICT_PDF_PAGE__
 
 const isStandalonePage = isSaladictPopupPage || isSaladictQuickSearchPage
 const isNoSearchHistoryPage = isSaladictInternalPage && !isStandalonePage
@@ -376,7 +377,9 @@ export function searchText (
         type: MsgType.FetchDictResult,
         id,
         text: info.text,
-        payload: arg && arg.payload,
+        payload: arg && arg.payload
+          ? { isPDF: isSaladictPDFPage, ...arg.payload }
+          : { isPDF: isSaladictPDFPage },
       })
     }
 

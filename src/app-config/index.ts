@@ -83,6 +83,9 @@ export interface AppConfigMutable {
   /** auto unfold multiline textarea search box */
   mtaAutoUnfold: MtaAutoUnfold
 
+  /** Show suggestions when typing on search box */
+  searchSuggests: boolean
+
   /** play sound */
   newWordSound: boolean
 
@@ -277,6 +280,8 @@ export function appConfigFactory (id?: string): AppConfig {
     editOnFav: true,
 
     mtaAutoUnfold: '',
+
+    searchSuggests: true,
 
     mode: {
       icon: true,

@@ -30,7 +30,7 @@ describe('Dict/Cambridge/engine', () => {
   })
 
   it('should parse result (en) correctly', () => {
-    return search('love', appConfigFactory(), {})
+    return search('love', appConfigFactory(), { isPDF: false })
       .then(({ result, audio }) => {
         expect(audio && typeof audio.uk).toBe('string')
         expect(audio && typeof audio.us).toBe('string')
@@ -56,7 +56,7 @@ describe('Dict/Cambridge/engine', () => {
   })
 
   it('should parse result (zhs) correctly', () => {
-    return search('house', appConfigFactory(), {})
+    return search('house', appConfigFactory(), { isPDF: false })
       .then(({ result, audio }) => {
         expect(audio && typeof audio.uk).toBe('string')
         expect(audio && typeof audio.us).toBe('string')
@@ -80,7 +80,7 @@ describe('Dict/Cambridge/engine', () => {
   })
 
   it('should parse result (zht) correctly', () => {
-    return search('catch', appConfigFactory(), {})
+    return search('catch', appConfigFactory(), { isPDF: false })
       .then(({ result, audio }) => {
         expect(audio && typeof audio.uk).toBe('string')
         expect(audio && typeof audio.us).toBe('string')

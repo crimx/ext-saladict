@@ -24,7 +24,7 @@ describe('Dict/Macmillan/engine', () => {
   })
 
   it('should parse lex result correctly', () => {
-    return search('love', appConfigFactory(), {})
+    return search('love', appConfigFactory(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
 
@@ -45,7 +45,7 @@ describe('Dict/Macmillan/engine', () => {
   })
 
   it('should parse related result correctly', () => {
-    return search('jumblish', appConfigFactory(), {})
+    return search('jumblish', appConfigFactory(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 

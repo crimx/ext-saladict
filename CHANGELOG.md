@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.20.0"></a>
+# [6.20.0](https://github.com/crimx/ext-saladict/compare/v6.19.0...v6.20.0) (2018-11-03)
+
+
+### Bug Fixes
+
+* **content:** search context when jumping from popup to wordpage ([c1703ef](https://github.com/crimx/ext-saladict/commit/c1703ef))
+* fix trans component ([0711058](https://github.com/crimx/ext-saladict/commit/0711058))
+* **dicts:** remove trimming ([44f1fc4](https://github.com/crimx/ext-saladict/commit/44f1fc4))
+* **panel:** fix suggests panel logic ([dff562d](https://github.com/crimx/ext-saladict/commit/dff562d))
+
+
+### Features
+
+* **dicts:** add options to remove linebreaks on PDF ([8b72b69](https://github.com/crimx/ext-saladict/commit/8b72b69))
+* add search suggests ([f1f458b](https://github.com/crimx/ext-saladict/commit/f1f458b))
+
+
+
 <a name="6.19.0"></a>
 # [6.19.0](https://github.com/crimx/ext-saladict/compare/v6.18.1...v6.19.0) (2018-11-01)
 

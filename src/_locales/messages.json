@@ -2,7 +2,7 @@
   "extension_name": {
     "description": "Extension name",
     "message": {
-      "zh_CN": "沙拉查词-多词典专业划词翻译",
+      "zh_CN": "沙拉查词-聚合词典专业划词翻译",
       "zh_TW": "沙拉查詞-多字典專業滑鼠劃字翻譯",
       "en": "Saladict"
     }
@@ -18,8 +18,8 @@
   "extension_description": {
     "description": "Description of extension",
     "message": {
-      "zh_CN": "涵盖所有主流词典，多重划词模式，极致交互体验，灵活导出生词本，高度可配置，支持 PDF，兼容 Vimium 全键盘操作。",
-      "zh_TW": "涵蓋所有主流字典，多重鼠標滑字模式，極致互動體驗，靈活輸出單字本，高度可配置，支援 PDF，相容 Vimium 全鍵盤操作。",
+      "zh_CN": "涵盖大量主流词典，多重划词模式，极致交互体验，灵活导出生词本，高度可配置，支持 PDF，兼容 Vimium 全键盘操作。",
+      "zh_TW": "涵蓋大量主流字典，多重鼠標滑字模式，極致互動體驗，靈活輸出單字本，高度可配置，支援 PDF，相容 Vimium 全鍵盤操作。",
       "en": "Feature-rich inline translator with PDF support. Vimium compatible."
     }
   },

@@ -1,8 +1,8 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import { HTMLString, getInnerHTMLBuilder, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 
-const getInnerHTML = getInnerHTMLThunk('http://www.zdic.net/')
+const getInnerHTML = getInnerHTMLBuilder('http://www.zdic.net/')
 
 export interface ZdicResult {
   /** phonetic symbols */

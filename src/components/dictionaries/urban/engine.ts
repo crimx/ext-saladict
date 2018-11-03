@@ -1,8 +1,8 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getText, getInnerHTMLThunk, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import { HTMLString, getText, getInnerHTMLBuilder, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 
-const getInnerHTML = getInnerHTMLThunk('https://www.urbandictionary.com/')
+const getInnerHTML = getInnerHTMLBuilder('https://www.urbandictionary.com/')
 
 interface UrbanResultItem {
   /** keyword */

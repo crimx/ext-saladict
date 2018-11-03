@@ -1,4 +1,4 @@
-import { HTMLString, handleNoResult, getInnerHTMLThunk, removeChild, decodeHEX, removeChildren, handleNetWorkError, SearchFunction } from '../helpers'
+import { HTMLString, handleNoResult, getInnerHTMLBuilder, removeChild, decodeHEX, removeChildren, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 
 export interface GoogleDictResult {
@@ -7,7 +7,7 @@ export interface GoogleDictResult {
 
 type GoogleDictSearchResult = DictSearchResult<GoogleDictResult>
 
-const getInnerHTML = getInnerHTMLThunk('https://www.google.com/')
+const getInnerHTML = getInnerHTMLBuilder('https://www.google.com/')
 
 export const search: SearchFunction<GoogleDictSearchResult> = (
   text, config, payload

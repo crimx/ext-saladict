@@ -1,9 +1,9 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getText, getInnerHTMLThunk, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import { HTMLString, getText, getInnerHTMLBuilder, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
-const getInnerHTML = getInnerHTMLThunk()
+const getInnerHTML = getInnerHTMLBuilder()
 
 export interface COBUILDResult {
   title: string

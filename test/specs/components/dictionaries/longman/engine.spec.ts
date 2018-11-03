@@ -35,7 +35,7 @@ describe('Dict/Longman/engine', () => {
       related: true,
     }
 
-    return search('love', config, {})
+    return search('love', config, { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
@@ -84,7 +84,7 @@ describe('Dict/Longman/engine', () => {
       related: true,
     }
 
-    return search('profit', config, {})
+    return search('profit', config, { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
@@ -135,7 +135,7 @@ describe('Dict/Longman/engine', () => {
   })
 
   it('should parse related result correctly', () => {
-    return search('jumblish', appConfigFactory(), {})
+    return search('jumblish', appConfigFactory(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 

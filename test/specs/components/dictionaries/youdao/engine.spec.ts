@@ -25,7 +25,7 @@ describe('Dict/Youdao/engine', () => {
 
   it('should parse lex result correctly', () => {
     const config = appConfigFactory() as AppConfigMutable
-    return search('love', config, {})
+    return search('love', config, { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
@@ -62,7 +62,7 @@ describe('Dict/Youdao/engine', () => {
       translation: false,
       related: false,
     }
-    return search('love', config, {})
+    return search('love', config, { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
@@ -87,7 +87,7 @@ describe('Dict/Youdao/engine', () => {
 
   it('should parse translation result correctly', () => {
     const config = appConfigFactory() as AppConfigMutable
-    return search('translation', config, {})
+    return search('translation', config, { isPDF: false })
       .then(searchResult => {
         expect(!searchResult.audio || !searchResult.audio.uk).toBeTruthy()
         expect(!searchResult.audio || !searchResult.audio.us).toBeTruthy()
@@ -109,7 +109,7 @@ describe('Dict/Youdao/engine', () => {
   })
 
   it('should parse related result correctly', () => {
-    return search('jumblish', appConfigFactory(), {})
+    return search('jumblish', appConfigFactory(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 
