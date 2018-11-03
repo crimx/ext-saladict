@@ -115,28 +115,29 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   handleSearchBoxKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       this.searchText()
-      if (this.props.searchSuggests) {
-        this.setState({ isShowSuggestPanel: false })
-      }
-    }
-  }
-
-  handleSearchBoxBlur = () => {
-    if (this.props.searchSuggests) {
-      this.setState({ isShowSuggestPanel: false })
+      this.hideSuggests()
     }
   }
 
   handleIconSearchClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
     this.searchText()
-    if (this.props.searchSuggests) {
-      this.setState({ isShowSuggestPanel: false })
-    }
+    this.hideSuggests()
   }
 
   handleSuggestsItemClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.currentTarget.blur()
     this.searchText(e.currentTarget.dataset.entry)
+  }
+
+  showSuggests = () => {
+    if (this.props.searchSuggests) {
+      this.setState({ isShowSuggestPanel: true })
+    }
+  }
+
+  hideSuggests = () => {
+    this.setState({ isShowSuggestPanel: false })
   }
 
   handleIconSettingsClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -320,6 +321,8 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
             <li key={s.entry} className='panel-MenuBar_SuggestsItem'>
               <button className='panel-MenuBar_SuggestsBtn'
                 onClick={this.handleSuggestsItemClick}
+                onFocus={this.showSuggests}
+                onBlur={this.hideSuggests}
                 data-entry={s.entry}
               >
                 <span className='panel-MenuBar_SuggestsEntry'>{s.entry}</span>
@@ -378,6 +381,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
       searchHistory,
       searchBoxIndex,
       searchBoxText,
+      searchSuggests,
     } = this.props
 
     const {
@@ -421,14 +425,14 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
           ref={this.inputRef}
           onChange={this.handleSearchBoxInput}
           onKeyUp={this.handleSearchBoxKeyUp}
-          onBlur={this.handleSearchBoxBlur}
+          onBlur={this.hideSuggests}
           value={searchBoxText.replace(/\s+/g, ' ')}
         />
 
         <div>
           <CSSTransition
             classNames='panel-MenuBar_SuggestPanel'
-            in={isShowSuggestPanel}
+            in={searchSuggests && isShowSuggestPanel}
             timeout={100}
             unmountOnExit={true}
           >{this.renderSuggestsPanel}</CSSTransition>
