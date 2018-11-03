@@ -64,16 +64,16 @@ export default class MachineTrans extends React.PureComponent<ViewPorps<MachineT
     return (
       <>
         <div className='MachineTrans-Text'>
-          {[trans, searchText].map(source => (
-            <p>{
+          {[trans, searchText].map((source, i) => (
+            <div key={i} className='MachineTrans-Lines'>{
               source.text.split('\n').map((line, i) => {
                 if (i === 0) {
-                  return <p className='MachineTrans-Line'><Speaker src={source.audio} /> {line}</p>
+                  return <p key={i}><Speaker src={source.audio} /> {line}</p>
                 } else {
-                  return <p className='MachineTrans-Line'>{line}</p>
+                  return <p key={i}>{line}</p>
                 }
               })
-            }</p>
+            }</div>
           ))}
         </div>
         {this.state.isShowLang
