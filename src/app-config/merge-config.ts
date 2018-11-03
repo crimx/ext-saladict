@@ -41,6 +41,7 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   mergeBoolean('newWordSound')
   mergeBoolean('editOnFav')
   mergeString('mtaAutoUnfold')
+  mergeBoolean('searchSuggests')
 
   mergeBoolean('mode.icon')
   mergeBoolean('mode.direct')

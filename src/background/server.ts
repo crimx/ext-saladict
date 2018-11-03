@@ -3,6 +3,7 @@ import { message, openURL } from '@/_helpers/browser-api'
 import { chsToChz } from '@/_helpers/chs-to-chz'
 import { timeout, timer } from '@/_helpers/promise-more'
 import { createActiveConfigStream } from '@/_helpers/config-manager'
+import { getSuggests } from '@/_helpers/getSuggests'
 import { DictSearchResult } from '@/typings/server'
 import { SearchErrorType, SearchFunction } from '@/components/dictionaries/helpers'
 import { syncServiceInit, syncServiceDownload, syncServiceUpload } from './sync-manager'
@@ -22,6 +23,7 @@ import {
   MsgSyncServiceInit,
   MsgSyncServiceDownload,
   MsgSyncServiceUpload,
+  MsgGetSuggests,
 } from '@/typings/message'
 
 browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B' })
@@ -74,6 +76,8 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return getWordsByText(data as MsgGetWordsByText)
     case MsgType.GetWords:
       return getWords(data as MsgGetWords)
+    case MsgType.GetSuggests:
+      return getSuggests((data as MsgGetSuggests).text)
 
     case MsgType.SyncServiceInit:
       return syncServiceInit((data as MsgSyncServiceInit).config)

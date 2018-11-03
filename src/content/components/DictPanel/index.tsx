@@ -182,6 +182,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
       panelPinSwitch,
       closePanel,
       selection,
+      searchSuggests,
 
       dictionaries,
 
@@ -210,6 +211,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
           isFav,
           isPinned,
           isTripleCtrl,
+          searchSuggests,
           searchHistory: dictionaries.searchHistory,
           activeDicts: dictionaries.active,
           isShowMtaBox: mtaBoxHeight > 0,

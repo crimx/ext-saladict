@@ -1,10 +1,17 @@
 import React from 'react'
 import { message } from '@/_helpers/browser-api'
 import { TranslationFunction } from 'i18next'
-import { MsgType, MsgOpenUrl } from '@/typings/message'
+import { MsgType, MsgOpenUrl, MsgGetSuggests } from '@/typings/message'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { updateActiveConfigID } from '@/_helpers/config-manager'
 import CSSTransition from 'react-transition-group/CSSTransition'
+
+import { Subject } from 'rxjs/Subject'
+import { debounceTime } from 'rxjs/operators/debounceTime'
+import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
+import { filter } from 'rxjs/operators/filter'
+import { switchMap } from 'rxjs/operators/switchMap'
+import { fromPromise } from 'rxjs/observable/fromPromise'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
@@ -34,25 +41,34 @@ export interface MenuBarProps extends MenuBarDispatchers {
   readonly searchBoxText: string
   readonly searchBoxIndex: number
   readonly isShowMtaBox: boolean
+  readonly searchSuggests: boolean
 }
 
 type MenuBarState = {
   isShowProfilePanel: boolean
+  isShowSuggestPanel: boolean
+  suggests: Array<{
+    explain: string,
+    entry: string
+  }>
 }
 
 export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarState> {
   inputRef = React.createRef<HTMLInputElement>()
   dragAreaRef = React.createRef<HTMLDivElement>()
+  suggestsRequest$ = new Subject<string>()
 
-  state = {
+  state: MenuBarState = {
     isShowProfilePanel: false,
+    isShowSuggestPanel: false,
+    suggests: [],
   }
 
-  searchText = () => {
+  searchText = (text?: string) => {
     if (this.props.searchBoxText) {
       return this.props.searchText({
         info: getDefaultSelectionInfo({
-          text: this.props.searchBoxText,
+          text: text || this.props.searchBoxText,
           title: this.props.t('fromSaladict'),
           favicon: 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
         }),
@@ -85,21 +101,42 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   }
 
   handleSearchBoxInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const text = e.currentTarget.value
     this.props.searchBoxUpdate({
       index: this.props.searchBoxIndex,
-      text: e.currentTarget.value
+      text,
     })
+    if (this.props.searchSuggests) {
+      this.setState({ isShowSuggestPanel: !!text })
+      this.suggestsRequest$.next(text)
+    }
   }
 
   handleSearchBoxKeyUp = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       this.searchText()
+      if (this.props.searchSuggests) {
+        this.setState({ isShowSuggestPanel: false })
+      }
+    }
+  }
+
+  handleSearchBoxBlur = () => {
+    if (this.props.searchSuggests) {
+      this.setState({ isShowSuggestPanel: false })
     }
   }
 
   handleIconSearchClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
     this.searchText()
+    if (this.props.searchSuggests) {
+      this.setState({ isShowSuggestPanel: false })
+    }
+  }
+
+  handleSuggestsItemClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    this.searchText(e.currentTarget.dataset.entry)
   }
 
   handleIconSettingsClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -236,17 +273,63 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
       this.inputRef.current.focus()
       this.inputRef.current.select()
     }
+
+    if (this.props.searchSuggests) {
+      this.suggestsRequest$.pipe(
+        filter(text => text.length > 1),
+        debounceTime(750),
+        distinctUntilChanged(),
+        switchMap(text => fromPromise(
+          message.send<MsgGetSuggests>({
+            type: MsgType.GetSuggests,
+            text,
+          })
+        )),
+      ).subscribe(suggests => {
+        this.setState({ suggests })
+      })
+
+      const emptySuggests = []
+      this.suggestsRequest$.subscribe(() => {
+        this.setState({ suggests: emptySuggests })
+      })
+    }
   }
 
   componentDidUpdate (prevProps: MenuBarProps) {
     if (prevProps.searchBoxText === this.props.searchBoxText &&
         !this.props.isShowMtaBox &&
+        !this.state.isShowSuggestPanel &&
         (isStandalonePage || this.props.isTripleCtrl || this.props.activeDicts.length <= 0) &&
         this.inputRef.current
     ) {
       this.inputRef.current.focus()
       this.inputRef.current.select()
     }
+  }
+
+  renderSuggestsPanel = () => {
+    return (
+      <div className='panel-MenuBar_SuggestsWrapper'
+        style={{
+          height: Math.min(window.innerHeight * 80 | 0, this.state.suggests.length * 28 + 20)
+        }}
+      >
+        <ul className='panel-MenuBar_Suggests'>
+          {this.state.suggests.map(s => (
+            <li key={s.entry} className='panel-MenuBar_SuggestsItem'>
+              <button className='panel-MenuBar_SuggestsBtn'
+                onClick={this.handleSuggestsItemClick}
+                data-entry={s.entry}
+              >
+                <span className='panel-MenuBar_SuggestsEntry'>{s.entry}</span>
+                <span className='panel-MenuBar_SuggestsExplain'>{s.explain}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
   }
 
   renderProfilePanel = () => {
@@ -294,10 +377,12 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
       handleDragAreaTouchStart,
       searchHistory,
       searchBoxIndex,
+      searchBoxText,
     } = this.props
 
     const {
       isShowProfilePanel,
+      isShowSuggestPanel,
     } = this.state
 
     return (
@@ -336,8 +421,18 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
           ref={this.inputRef}
           onChange={this.handleSearchBoxInput}
           onKeyUp={this.handleSearchBoxKeyUp}
-          value={this.props.searchBoxText.replace(/\s+/g, ' ')}
+          onBlur={this.handleSearchBoxBlur}
+          value={searchBoxText.replace(/\s+/g, ' ')}
         />
+
+        <div>
+          <CSSTransition
+            classNames='panel-MenuBar_SuggestPanel'
+            in={isShowSuggestPanel}
+            timeout={100}
+            unmountOnExit={true}
+          >{this.renderSuggestsPanel}</CSSTransition>
+        </div>
 
         <button className='panel-MenuBar_Btn' onClick={this.handleIconSearchClick}>
           <svg
