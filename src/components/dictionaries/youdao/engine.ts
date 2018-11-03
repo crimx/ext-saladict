@@ -37,7 +37,7 @@ export const search: SearchFunction<YoudaoSearchResult> = (
   const options = config.dicts.all.youdao.options
   const isChz = config.langCode === 'zh-TW'
 
-  return fetchDirtyDOM('http://www.youdao.com/w/' + encodeURIComponent(text.replace(/\s+/g, ' ')))
+  return fetchDirtyDOM('https://dict.youdao.com/w/' + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)
     .then(doc => checkResult(doc, options, isChz))
 }
