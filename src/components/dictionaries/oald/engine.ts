@@ -1,10 +1,10 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { reflect } from '@/_helpers/promise-more'
-import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import { HTMLString, getInnerHTMLBuilder, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
-const getInnerHTML = getInnerHTMLThunk('https://www.oxfordlearnersdictionaries.com/')
+const getInnerHTML = getInnerHTMLBuilder('https://www.oxfordlearnersdictionaries.com/')
 
 interface OALDResultItem {
   title: HTMLString

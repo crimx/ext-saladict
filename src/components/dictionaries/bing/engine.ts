@@ -1,9 +1,9 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { handleNoResult, handleNetWorkError, getText, getInnerHTMLThunk, SearchFunction } from '../helpers'
+import { handleNoResult, handleNetWorkError, getText, getInnerHTMLBuilder, SearchFunction } from '../helpers'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
-const getInnerHTML = getInnerHTMLThunk('https://cn.bing.com/')
+const getInnerHTML = getInnerHTMLBuilder('https://cn.bing.com/')
 
 const DICT_LINK = 'https://cn.bing.com/dict/clientsearch?mkt=zh-CN&setLang=zh&form=BDVEHC&ClientVer=BDDTV3.5.1.4320&q='
 

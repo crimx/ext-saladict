@@ -1,9 +1,9 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { DictConfigs } from '@/app-config'
-import { getText, getInnerHTMLThunk, handleNoResult, HTMLString, handleNetWorkError, SearchFunction } from '../helpers'
+import { getText, getInnerHTMLBuilder, handleNoResult, HTMLString, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 
-const getInnerHTML = getInnerHTMLThunk()
+const getInnerHTML = getInnerHTMLBuilder()
 
 type EtymonlineResultItem = {
   title: string

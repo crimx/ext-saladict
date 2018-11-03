@@ -1,9 +1,9 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getInnerHTMLThunk, handleNoResult, handleNetWorkError, getOuterHTMLThunk, SearchFunction } from '../helpers'
+import { HTMLString, getInnerHTMLBuilder, handleNoResult, handleNetWorkError, getOuterHTMLBuilder, SearchFunction } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 
-const getInnerHTML = getInnerHTMLThunk('https://www.weblio.jp/', {}) // keep inline style
-const getOuterHTML = getOuterHTMLThunk('https://www.weblio.jp/', {}) // keep inline style
+const getInnerHTML = getInnerHTMLBuilder('https://www.weblio.jp/', {}) // keep inline style
+const getOuterHTML = getOuterHTMLBuilder('https://www.weblio.jp/', {}) // keep inline style
 
 export type WeblioResult = Array<{
   title: HTMLString

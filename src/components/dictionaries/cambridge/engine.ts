@@ -1,7 +1,7 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   HTMLString,
-  getInnerHTMLThunk,
+  getInnerHTMLBuilder,
   handleNoResult,
   getText,
   removeChild,
@@ -10,7 +10,7 @@ import {
 } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 
-const getInnerHTML = getInnerHTMLThunk('https://dictionary.cambridge.org/')
+const getInnerHTML = getInnerHTMLBuilder('https://dictionary.cambridge.org/')
 
 interface CambridgeResultItem {
   title: HTMLString

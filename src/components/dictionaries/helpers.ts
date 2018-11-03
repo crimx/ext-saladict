@@ -86,8 +86,8 @@ interface GetHTML {
  * @param host - repleace the relative href
  * @param DOMPurifyConfig - config for DOM Purify
  */
-export function getInnerHTMLThunk (host?: string, DOMPurifyConfig?: DOMPurify.Config): GetHTML
-export function getInnerHTMLThunk (...args) {
+export function getInnerHTMLBuilder (host?: string, DOMPurifyConfig?: DOMPurify.Config): GetHTML
+export function getInnerHTMLBuilder (...args) {
   let host: string = typeof args[0] === 'string' ? args.shift() : ''
   let DOMPurifyConfig: DOMPurify.Config = Object(args[0]) === args[0] ? args.shift() : {
     FORBID_TAGS: ['style'],
@@ -134,8 +134,8 @@ export function getInnerHTMLThunk (...args) {
  * @param host - repleace the relative href
  * @param DOMPurifyConfig - config for DOM Purify
  */
-export function getOuterHTMLThunk (host?: string, DOMPurifyConfig?: DOMPurify.Config): GetHTML
-export function getOuterHTMLThunk (...args) {
+export function getOuterHTMLBuilder (host?: string, DOMPurifyConfig?: DOMPurify.Config): GetHTML
+export function getOuterHTMLBuilder (...args) {
   let host: string = typeof args[0] === 'string' ? args.shift() : ''
   let DOMPurifyConfig: DOMPurify.Config = Object(args[0]) === args[0] ? args.shift() : {
     FORBID_TAGS: ['style'],

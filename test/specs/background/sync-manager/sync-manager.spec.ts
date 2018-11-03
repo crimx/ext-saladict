@@ -26,7 +26,7 @@ const helpers: typeof helpersMock = require('@/background/sync-manager/helpers')
 const service: ServiceMock = require('@/background/sync-manager/services/webdav')
 
 // absolute time
-const atTimeThunk = (lastTime = 0) => async absTime => {
+const atTimeBuilder = (lastTime = 0) => async absTime => {
   await timer(absTime - lastTime)
   lastTime = absTime
 }
@@ -64,7 +64,7 @@ describe('Sync Manager', () => {
     }
     config$.next({ [service.serviceID]: config })
 
-    let atTime = atTimeThunk()
+    let atTime = atTimeBuilder()
 
     await atTime(0)
     expect(service.dlChanged).toHaveBeenCalledTimes(0)
@@ -103,7 +103,7 @@ describe('Sync Manager', () => {
     }
     config$.next({ [service.serviceID]: config2 })
 
-    atTime = atTimeThunk()
+    atTime = atTimeBuilder()
 
     await atTime(10)
     expect(service.dlChanged).toHaveBeenCalledTimes(2)
@@ -149,7 +149,7 @@ describe('Sync Manager', () => {
     }
     config$.next({ [service.serviceID]: config })
 
-    let atTime = atTimeThunk()
+    let atTime = atTimeBuilder()
 
     await atTime(120)
     expect(service.dlChanged).toHaveBeenCalledTimes(1)
@@ -199,7 +199,7 @@ describe('Sync Manager', () => {
     }
     config$.next({ [service.serviceID]: config })
 
-    let atTime = atTimeThunk()
+    let atTime = atTimeBuilder()
 
     await atTime(120)
     expect(service.dlChanged).toHaveBeenCalledTimes(1)

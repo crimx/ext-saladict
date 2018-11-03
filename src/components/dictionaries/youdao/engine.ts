@@ -1,9 +1,9 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { getText, getInnerHTMLThunk, handleNoResult, HTMLString, handleNetWorkError, SearchFunction } from '../helpers'
+import { getText, getInnerHTMLBuilder, handleNoResult, HTMLString, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
-const getInnerHTML = getInnerHTMLThunk('http://www.youdao.com/')
+const getInnerHTML = getInnerHTMLBuilder('http://www.youdao.com/')
 
 export interface YoudaoResultLex {
   type: 'lex'
