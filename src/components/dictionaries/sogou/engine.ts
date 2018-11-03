@@ -32,7 +32,7 @@ export const search: SearchFunction<SogouSearchResult, MachineTranslatePayload> 
   )
 
   if (payload.isPDF && !options.pdfNewline) {
-    text = text.replace(/\n/g, ' ')
+    text = text.replace(/\n+/g, ' ')
   }
 
   return fetch('https://fanyi.sogou.com/reventondc/translate', {
