@@ -21,10 +21,10 @@ describe('Dict/Google/engine', () => {
   })
 
   it('should parse result correctly', () => {
-    return search('any', appConfigFactory(), {})
+    return search('any', appConfigFactory(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
-        expect(searchResult.result.trans.text).toBe('“当你不需要的时候，这就是你所读到的东西，当你无法帮助它时，它将决定你将会是什么。”\n- 奥斯卡·王尔德\n成功一夜成名需要很长时间。')
+        expect(searchResult.result.trans.text).toBe('“当你不需要的时候，这就是你所读到的东西，当你无法帮助它时，它将决定你将会是什么。”\n - 奥斯卡·王尔德\n 成功一夜成名需要很长时间。')
         expect(searchResult.result.id).toBe('google')
         expect(searchResult.result.sl).toBe('auto')
         expect(searchResult.result.tl).toBe('en')
@@ -35,7 +35,7 @@ describe('Dict/Google/engine', () => {
   })
 
   it('should parse result correctly with payload', () => {
-    return search('any', appConfigFactory(), { sl: 'en', tl: 'jp' })
+    return search('any', appConfigFactory(), { sl: 'en', tl: 'jp', isPDF: false })
       .then(searchResult => {
         expect(searchResult.result.sl).toBe('en')
         expect(searchResult.result.tl).toBe('jp')

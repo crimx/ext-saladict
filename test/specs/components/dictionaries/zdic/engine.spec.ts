@@ -14,7 +14,7 @@ describe('Dict/Zdic/engine', () => {
   })
 
   it('should parse word result correctly', () => {
-    return search('爱', appConfigFactory(), {})
+    return search('爱', appConfigFactory(), { isPDF: false })
       .then(({ result, audio }) => {
         expect(audio && typeof audio.py).toBe('string')
         expect(result.phsym.length).toBeGreaterThan(0)
@@ -23,7 +23,7 @@ describe('Dict/Zdic/engine', () => {
   })
 
   it('should parse phrase result correctly', () => {
-    return search('沙拉', appConfigFactory(), {})
+    return search('沙拉', appConfigFactory(), { isPDF: false })
       .then(({ result, audio }) => {
         expect(audio && typeof audio.py).toBe('string')
         expect(result.phsym.length).toBeGreaterThan(0)

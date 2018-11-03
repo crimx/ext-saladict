@@ -13,7 +13,7 @@ describe('Dict/Urban/engine', () => {
   })
 
   it('should parse result correctly', () => {
-    return search('any', appConfigFactory(), {})
+    return search('any', appConfigFactory(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
         expect(searchResult.result).toHaveLength(4)

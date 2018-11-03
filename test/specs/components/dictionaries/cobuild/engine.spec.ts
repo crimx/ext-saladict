@@ -17,7 +17,7 @@ describe('Dict/COBUILD/engine', () => {
     config.dicts.all.cobuild.options = {
       sentence: 4
     }
-    return search('any', config, {})
+    return search('any', config, { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toHaveProperty('us', expect.stringContaining('mp3'))
         expect(searchResult.audio).toHaveProperty('uk', expect.stringContaining('mp3'))
