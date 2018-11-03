@@ -47,11 +47,20 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
   <input
     className="panel-MenuBar_SearchBox"
     key="search-box"
+    onBlur={[Function]}
     onChange={[Function]}
     onKeyUp={[Function]}
     type="text"
     value=""
   />
+  <div>
+    <CSSTransition
+      classNames="panel-MenuBar_SuggestPanel"
+      in={false}
+      timeout={100}
+      unmountOnExit={true}
+    />
+  </div>
   <button
     className="panel-MenuBar_Btn"
     onClick={[Function]}
@@ -243,11 +252,20 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
   <input
     className="panel-MenuBar_SearchBox"
     key="search-box"
+    onBlur={[Function]}
     onChange={[Function]}
     onKeyUp={[Function]}
     type="text"
     value=""
   />
+  <div>
+    <CSSTransition
+      classNames="panel-MenuBar_SuggestPanel"
+      in={false}
+      timeout={100}
+      unmountOnExit={true}
+    />
+  </div>
   <button
     className="panel-MenuBar_Btn"
     onClick={[Function]}
