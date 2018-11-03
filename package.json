@@ -11,6 +11,7 @@
     "test": "node scripts/test.js --env=jsdom",
     "commit": "git-cz",
     "release": "standard-version",
+    "pdf": "node scripts/pdf.js",
     "commitmsg": "commitlint -e $GIT_PARAMS"
   },
   "engines": {
