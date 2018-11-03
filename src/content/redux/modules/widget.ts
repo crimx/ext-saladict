@@ -24,6 +24,7 @@ const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 const isSaladictQuickSearchPage = !!window.__SALADICT_QUICK_SEARCH_PAGE__
 const isStandalonePage = isSaladictPopupPage || isSaladictQuickSearchPage
+const isSaladictPDFPage = !!window.__SALADICT_PDF_PAGE__
 
 const panelHeaderHeight = 30 + 12 // menu bar + multiline search box button
 
@@ -549,7 +550,7 @@ export function startUpAction (): DispatcherThunk {
     // from word page
     message.self.addListener<MsgEditWord>(MsgType.EditWord, ({ word }) => {
       dispatch(searchText({ info: word }))
-      dispatch(updateEditorWord(word))
+      dispatch(requestFavWord())
     })
   }
 }
