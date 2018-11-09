@@ -12,18 +12,21 @@ if (!shell.which('git')) {
 }
 
 const repoRoot = 'pdf'
-const publicPDFDir = path.join(__dirname, '../public/static/pdf')
-const files = [
+const publicPDFRoot = path.join(__dirname, '../public/static/pdf')
+const pdfFiles = [
   'build/pdf.js',
   'build/pdf.worker.js',
-  'web/cmaps',
-  'web/images',
-  'web/locale',
   'web/debugger.js',
   'web/viewer.js',
   'web/viewer.html',
   'web/viewer.css',
 ]
+const pdfDirs = [
+  'web/cmaps',
+  'web/images',
+  'web/locale',
+]
+const files = [...pdfFiles, ...pdfDirs]
 
 shell.cd(path.resolve(__dirname))
 
@@ -48,6 +51,7 @@ async function startUpgrade () {
   await Promise.all([modifyViewrJS(), modifyViewerHTML()])
 
   shell.echo('\nCloning files.')
+  removeDirs()
   cloneFiles('build')
   cloneFiles('web')
 
@@ -106,13 +110,19 @@ async function modifyViewerHTML () {
   await fs.writeFile(viewerPath, file)
 }
 
-async function cloneFiles (subdir) {
+function removeDirs () {
+  pdfDirs.forEach(name => {
+    shell.rm('-rf', path.join(publicPDFRoot, name))
+  })
+}
+
+function cloneFiles (subdir) {
   const execResult = shell.cp(
     '-R',
     files
       .filter(name => name.startsWith(subdir))
       .map(name => path.join(__dirname, repoRoot, name)),
-    path.join(publicPDFDir, subdir),
+    path.join(publicPDFRoot, subdir),
   )
 
   if (execResult.code !== 0) {
