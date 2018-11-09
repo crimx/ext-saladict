@@ -12,6 +12,7 @@ import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
 import { filter } from 'rxjs/operators/filter'
 import { switchMap } from 'rxjs/operators/switchMap'
 import { fromPromise } from 'rxjs/observable/fromPromise'
+import { empty } from 'rxjs/observable/empty'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
@@ -78,12 +79,15 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
       filter(text => this.props.searchSuggests && text.length > 1),
       debounceTime(750),
       distinctUntilChanged(),
-      switchMap(text => fromPromise(
-        message.send<MsgGetSuggests>({
-          type: MsgType.GetSuggests,
-          text,
-        })
-      )),
+      switchMap(text => this.state.isShowSuggestPanel
+        ? fromPromise(
+          message.send<MsgGetSuggests>({
+            type: MsgType.GetSuggests,
+            text,
+          })
+        )
+        : empty()
+      ),
     ).subscribe(suggests => {
       this.setState({ suggests })
     })
