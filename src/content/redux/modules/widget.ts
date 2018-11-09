@@ -601,6 +601,7 @@ export function requestFavWord (): DispatcherThunk {
     if (config.editOnFav) {
       if (isStandalonePage) {
         // Not enough space to open word editor on popup page
+        // Open Notebook instead
         try {
           message.send<MsgOpenUrl>({
             type: MsgType.OpenURL,
@@ -611,17 +612,24 @@ export function requestFavWord (): DispatcherThunk {
         } catch (err) {
           console.warn(err)
         }
-      } else {
+        return // exit. do not fetch translation
+      } else /* normal page */ {
         dispatch(updateEditorWord(word))
       }
-    } else {
+    } else /* no edit on fav */ {
       if (widget.isFav) {
         recordManager.getWordsByText('notebook', word.text)
           .then(words => {
             if (words.length === 1) {
+              dispatch(favWord(false))
               recordManager.deleteWords('notebook', [words[0].date])
-                .then(() => dispatch(favWord(false)))
+                .catch(e => {
+                  if (process.env.DEV_BUILD) {
+                    console.error(e)
+                  }
+                })
             } else {
+              // more than one word. let user choose.
               message.send<MsgOpenUrl>({
                 type: MsgType.OpenURL,
                 url: 'notebook.html?text=' + encodeURIComponent(word.text),
@@ -629,7 +637,8 @@ export function requestFavWord (): DispatcherThunk {
               })
             }
           })
-      } else {
+        return // exit. do not fetch translation
+      } else /* !widget.isFav */ {
         dispatch(addToNotebook(word))
       }
     }
@@ -675,10 +684,10 @@ export function closeWordEditor (): DispatcherThunk {
 
 export function addToNotebook (info: SelectionInfo | recordManager.Word): DispatcherThunk {
   return (dispatch, getState) => {
+    dispatch(favWord(true))
     return recordManager.saveWord('notebook', info)
-      .then(() => dispatch(favWord(true)))
       .catch(err => {
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.DEV_BUILD) {
           console.error(err)
         }
         dispatch(favWord(false))

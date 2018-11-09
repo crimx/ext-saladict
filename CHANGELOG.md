@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.20.2"></a>
+## [6.20.2](https://github.com/crimx/ext-saladict/compare/v6.20.1...v6.20.2) (2018-11-09)
+
+
+### Bug Fixes
+
+* **content:** exit after deleting word ([af34a37](https://github.com/crimx/ext-saladict/commit/af34a37)), closes [#245](https://github.com/crimx/ext-saladict/issues/245)
+
+
+
 <a name="6.20.1"></a>
 ## [6.20.1](https://github.com/crimx/ext-saladict/compare/v6.20.0...v6.20.1) (2018-11-03)
 

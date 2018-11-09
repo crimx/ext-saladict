@@ -655,9 +655,9 @@
     "zh_TW": "伺服器上 Saladict 目錄下的檔案將被替換。先下載合併到本地？"
   },
   "sync_webdav_err_mkcol": {
-    "en": "Cannot create \"Saladict\" directory on server.",
-    "zh_CN": "无法在服务器创建“Saladict”目录。",
-    "zh_TW": "無法在伺服器建立“Saladict”目錄。"
+    "en": "Cannot create \"Saladict\" directory on server. Please create the directory manualy on server.",
+    "zh_CN": "无法在服务器创建“Saladict”目录。请手动在服务器上创建。",
+    "zh_TW": "無法在伺服器建立“Saladict”目錄。請手動在伺服器上建立。"
   },
   "sync_webdav_err_network": {
     "en": "Network error. Cannot connect to server.",
