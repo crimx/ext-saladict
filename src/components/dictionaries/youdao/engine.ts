@@ -1,7 +1,19 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { getText, getInnerHTMLBuilder, handleNoResult, HTMLString, handleNetWorkError, SearchFunction } from '../helpers'
+import {
+  getText,
+  getInnerHTMLBuilder,
+  handleNoResult,
+  HTMLString,
+  handleNetWorkError,
+  SearchFunction,
+  GetSrcPageFunction,
+} from '../helpers'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
+
+export const getSrcPage: GetSrcPageFunction = (text) => {
+  return `https://dict.youdao.com/w/eng/${text}`
+}
 
 const getInnerHTML = getInnerHTMLBuilder('http://www.youdao.com/')
 

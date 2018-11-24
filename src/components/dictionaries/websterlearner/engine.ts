@@ -1,7 +1,18 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getInnerHTMLBuilder, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import {
+  HTMLString,
+  getInnerHTMLBuilder,
+  handleNoResult,
+  handleNetWorkError,
+  SearchFunction,
+  GetSrcPageFunction,
+} from '../helpers'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
+
+export const getSrcPage: GetSrcPageFunction = (text) => {
+  return `http://www.learnersdictionary.com/definition/${text.trim().split(/\s+/).join('-')}`
+}
 
 const getInnerHTML = getInnerHTMLBuilder('http://www.learnersdictionary.com/')
 

@@ -34,8 +34,10 @@ export const enum MsgType {
   /** Response the pageInfo of a page */
   PageInfo,
 
-  /** Create a tab with the url */
+  /** Create a tab with the url or highlight an existing one */
   OpenURL,
+  /** open a dictionary source page */
+  OpenSrcPage,
   /** Play a audio src */
   PlayAudio,
   /** Search text with a dictionary and response the result */
@@ -103,17 +105,7 @@ export interface PostMsgSelection extends Omit<MsgSelection, 'type'> {
   readonly type: PostMsgType.Selection
 }
 
-interface MsgOpenUrlWithPlaceholder {
-  readonly type: MsgType.OpenURL
-  readonly url: string
-  readonly placeholder: true
-  /** text to replace the placeholder */
-  readonly text: string
-  /** use browser.runtime.getURL? */
-  readonly self?: boolean
-}
-
-interface MsgOpenUrlWithoutPlaceholder {
+export interface MsgOpenUrl {
   readonly type: MsgType.OpenURL
   readonly url: string
   readonly placeholder?: false
@@ -121,7 +113,11 @@ interface MsgOpenUrlWithoutPlaceholder {
   readonly self?: boolean
 }
 
-export type MsgOpenUrl = MsgOpenUrlWithoutPlaceholder | MsgOpenUrlWithPlaceholder
+export interface MsgOpenSrcPage {
+  readonly type: MsgType.OpenSrcPage
+  readonly text: string
+  readonly id: DictID
+}
 
 export interface MsgAudioPlay {
   readonly type: MsgType.PlayAudio

@@ -1,7 +1,23 @@
-import { handleNoResult, MachineTranslateResult, handleNetWorkError, SearchFunction, MachineTranslatePayload } from '../helpers'
+import {
+  handleNoResult,
+  MachineTranslateResult,
+  handleNetWorkError,
+  SearchFunction,
+  MachineTranslatePayload,
+  GetSrcPageFunction,
+} from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 import { first } from '@/_helpers/promise-more'
+
+export const getSrcPage: GetSrcPageFunction = (text, config) => {
+  const domain = config.dicts.all.google.options.cnfirst ? 'cn' : 'com'
+  const lang = config.dicts.all.google.options.tl === 'default'
+    ? config.langCode
+    : config.dicts.all.google.options.tl
+
+  return `https://translate.google.${domain}/#auto/${lang}/${text}`
+}
 
 export type GoogleResult = MachineTranslateResult
 

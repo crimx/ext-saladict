@@ -1,7 +1,26 @@
-import { handleNoResult, MachineTranslatePayload, MachineTranslateResult, handleNetWorkError, SearchFunction } from '../helpers'
+import {
+  handleNoResult,
+  MachineTranslatePayload,
+  MachineTranslateResult,
+  handleNetWorkError,
+  SearchFunction,
+  GetSrcPageFunction,
+} from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 import md5 from 'md5'
+
+export const getSrcPage: GetSrcPageFunction = (text, config) => {
+  const lang = config.dicts.all.sogou.options.tl === 'default'
+    ? config.langCode === 'zh-CN'
+      ? 'zh-CHS'
+      : config.langCode === 'zh-TW'
+        ? 'zh-CHT'
+        : 'en'
+    : config.dicts.all.sogou.options.tl
+
+  return `https://fanyi.sogou.com/#auto/${lang}/${text}`
+}
 
 export type SogouResult = MachineTranslateResult
 

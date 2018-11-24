@@ -1,7 +1,11 @@
-import { handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import { handleNoResult, handleNetWorkError, SearchFunction, GetSrcPageFunction } from '../helpers'
 import chsToChz from '@/_helpers/chs-to-chz'
 import { AppConfig } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
+
+export const getSrcPage: GetSrcPageFunction = (text) => {
+  return `https://www.moedict.tw/${chsToChz(text)}`
+}
 
 /** @see https://github.com/audreyt/moedict-webkit#4-國語-a */
 export interface GuoYuResult {

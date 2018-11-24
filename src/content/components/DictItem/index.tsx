@@ -2,7 +2,7 @@ import React from 'react'
 import { DictID } from '@/app-config'
 import { TranslationFunction } from 'i18next'
 import { message } from '@/_helpers/browser-api'
-import { MsgType, MsgOpenUrl } from '@/typings/message'
+import { MsgType, MsgOpenUrl, MsgOpenSrcPage } from '@/typings/message'
 
 import { SearchStatus } from '@/content/redux/modules/dictionaries'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
@@ -18,7 +18,6 @@ export interface DictItemProps extends DictItemDispatchers {
   readonly t: TranslationFunction
   readonly id: DictID
   readonly text: string
-  readonly dictURL: string
   readonly preferredHeight: number
   readonly searchStatus: SearchStatus
   readonly searchResult: any
@@ -176,12 +175,11 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
   handleDictURLClick = (e: React.MouseEvent<HTMLElement>) => {
     e.stopPropagation()
     e.preventDefault()
-    message.send<MsgOpenUrl>({
-      type: MsgType.OpenURL,
-      url: this.props.dictURL,
-      placeholder: true,
+    message.send<MsgOpenSrcPage>({
+      type: MsgType.OpenSrcPage,
       text: this.props.text,
-    })
+      id: this.props.id,
+    }).catch(e => {/* */})
   }
 
   handleRecalcBodyHeight = () => {
@@ -233,7 +231,6 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
     const {
       t,
       id,
-      dictURL,
       fontSize,
       searchStatus,
       searchResult,
@@ -254,7 +251,7 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
         <header className='panel-DictItem_Header' onClick={this.toggleFolding}>
           <img className='panel-DictItem_Logo' src={require('@/components/dictionaries/' + id + '/favicon.png')} alt='dict logo' />
           <h1 className='panel-DictItem_Title'>
-            <a href={dictURL} onClick={this.handleDictURLClick}>{t(`dict:${id}`)}</a>
+            <a href='#' onClick={this.handleDictURLClick}>{t(`dict:${id}`)}</a>
           </h1>
           {searchStatus === SearchStatus.Searching && !hasError &&
             <svg className='panel-DictItem_Loader' width='120' height='10' viewBox='0 0 120 10' xmlns='http://www.w3.org/2000/svg'>

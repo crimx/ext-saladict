@@ -7,13 +7,6 @@ export function getALlDicts () {
        */
       lang: '1100',
       /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-"..
-       */
-      page: 'https://cn.bing.com/dict/search?q=%s',
-      /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
        * Default MUST be true and let user decide.
@@ -56,17 +49,6 @@ export function getALlDicts () {
        */
       lang: '1110',
       /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-"..
-       */
-      page: {
-        en: 'https://dictionary.cambridge.org/search/english/direct/?q=%h',
-        'zh-CN': 'https://dictionary.cambridge.org/zhs/搜索/英语-汉语-简体/direct/?q=%s',
-        'zh-TW': 'https://dictionary.cambridge.org/zht/搜索/英語-漢語-繁體/direct/?q=%z',
-      },
-      /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
        * Default MUST be true and let user decide.
@@ -97,13 +79,6 @@ export function getALlDicts () {
        * `1` for supported
        */
       lang: '1000',
-      /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'https://www.collinsdictionary.com/dictionary/english/%s',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -142,13 +117,6 @@ export function getALlDicts () {
        * `1` for supported
        */
       lang: '1000',
-      /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'http://www.etymonline.com/search?q=%s',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -189,13 +157,6 @@ export function getALlDicts () {
        */
       lang: '1100',
       /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-"..
-       */
-      page: 'https://dict.eudic.net/dicts/en/%s',
-      /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
        * Default MUST be true and let user decide.
@@ -233,13 +194,6 @@ export function getALlDicts () {
        * `1` for supported
        */
       lang: '1111',
-      /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'https://translate.google.com/#auto/zh-CN/%s',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -285,13 +239,6 @@ export function getALlDicts () {
        */
       lang: '1111',
       /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'https://www.google.com.hk/search?q=define+%s',
-      /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
        * Default MUST be true and let user decide.
@@ -330,13 +277,6 @@ export function getALlDicts () {
        */
       lang: '0010',
       /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'https://www.moedict.tw/%z',
-      /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
        * Default MUST be true and let user decide.
@@ -368,13 +308,6 @@ export function getALlDicts () {
        */
       lang: '0010',
       /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'https://www.moedict.tw/~%z',
-      /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
        * Default MUST be true and let user decide.
@@ -405,13 +338,6 @@ export function getALlDicts () {
        * `1` for supported
        */
       lang: '1000',
-      /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'https://www.ldoceonline.com/dictionary/%h',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -457,13 +383,6 @@ export function getALlDicts () {
        */
       lang: '1000',
       /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'http://www.macmillandictionary.com/dictionary/british/%h',
-      /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
        * Default MUST be true and let user decide.
@@ -502,13 +421,6 @@ export function getALlDicts () {
        */
       lang: '1000',
       /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'https://www.oxfordlearnersdictionaries.com/definition/english/%h',
-      /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
        * Default MUST be true and let user decide.
@@ -546,13 +458,6 @@ export function getALlDicts () {
        * `1` for supported
        */
       lang: '1111',
-      /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'https://fanyi.sogou.com/#auto/zh-CHS/%s',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -597,13 +502,6 @@ export function getALlDicts () {
        */
       lang: '1000',
       /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'http://www.urbandictionary.com/define.php?term=%s',
-      /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
        * Default MUST be true and let user decide.
@@ -642,13 +540,6 @@ export function getALlDicts () {
        */
       lang: '1000',
       /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'https://www.vocabulary.com/dictionary/%s',
-      /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
        * Default MUST be true and let user decide.
@@ -673,19 +564,43 @@ export function getALlDicts () {
         minor: false,
       }
     },
+    weblio: {
+      /**
+       * Supported language: en, zh-CN, zh-TW, ja
+       * `1` for supported
+       */
+      lang: '0001',
+      /**
+       * If set to true, the dict start searching automatically.
+       * Otherwise it'll only start seaching when user clicks the unfold button.
+       * Default MUST be true and let user decide.
+       */
+      defaultUnfold: true,
+      /**
+       * This is the default height when the dict first renders the result.
+       * If the content height is greater than the preferred height,
+       * the preferred height is used and a mask with a view-more button is shown.
+       * Otherwise the content height is used.
+       */
+      preferredHeight: 265,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 20,
+      },
+      /** Only start searching if the selection contains the language. */
+      selectionLang: {
+        eng: true,
+        chs: true,
+        minor: true,
+      },
+    },
     websterlearner: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
       lang: '1000',
-      /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'http://www.learnersdictionary.com/definition/%h',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -722,57 +637,12 @@ export function getALlDicts () {
         related: true,
       },
     },
-    weblio: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja
-       * `1` for supported
-       */
-      lang: '0001',
-      /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'https://www.weblio.jp/content/%s',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 265,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 20,
-      },
-      /** Only start searching if the selection contains the language. */
-      selectionLang: {
-        eng: true,
-        chs: true,
-        minor: true,
-      },
-    },
     youdao: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja
        * `1` for supported
        */
       lang: '1100',
-      /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'http://www.youdao.com/w/eng/%s',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -817,13 +687,6 @@ export function getALlDicts () {
        */
       lang: '0100',
       /**
-       * Full content page to jump to when user clicks the title.
-       * %s will be replaced with the current word.
-       * %z will be replaced with the traditional Chinese version of the current word.
-       * %h will be replaced with the current word joining with hyphen "-".
-       */
-      page: 'http://www.zdic.net/search/?c=1&q=%s',
-      /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
        * Default MUST be true and let user decide.
@@ -855,11 +718,6 @@ export function getALlDicts () {
   allDicts as {
     [id: string]: {
       lang: string
-      page: string | {
-        en: string
-        'zh-CN'?: string
-        'zh-TW'?: string
-      }
       defaultUnfold: boolean
       selectionWC: {
         min: number,

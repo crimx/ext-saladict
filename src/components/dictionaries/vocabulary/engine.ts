@@ -1,6 +1,16 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { getText, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import {
+  getText,
+  handleNoResult,
+  handleNetWorkError,
+  SearchFunction,
+  GetSrcPageFunction,
+} from '../helpers'
 import { DictSearchResult } from '@/typings/server'
+
+export const getSrcPage: GetSrcPageFunction = (text) => {
+  return `https://www.vocabulary.com/dictionary/${text}`
+}
 
 export interface VocabularyResult {
   short: string

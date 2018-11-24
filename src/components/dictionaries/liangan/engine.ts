@@ -1,6 +1,11 @@
-import { SearchFunction } from '../helpers'
+import { SearchFunction, GetSrcPageFunction } from '../helpers'
+import chsToChz from '@/_helpers/chs-to-chz'
 import { DictSearchResult } from '@/typings/server'
 import { moedictSearch, GuoYuResult } from '../guoyu/engine'
+
+export const getSrcPage: GetSrcPageFunction = (text) => {
+  return `https://www.moedict.tw/~${chsToChz(text)}`
+}
 
 export type LiangAnResult = GuoYuResult
 

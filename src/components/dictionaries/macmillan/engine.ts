@@ -1,8 +1,19 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { reflect } from '@/_helpers/promise-more'
-import { HTMLString, getInnerHTMLBuilder, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import {
+  HTMLString,
+  getInnerHTMLBuilder,
+  handleNoResult,
+  handleNetWorkError,
+  SearchFunction,
+  GetSrcPageFunction,
+} from '../helpers'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
+
+export const getSrcPage: GetSrcPageFunction = (text) => {
+  return `http://www.macmillandictionary.com/dictionary/british/${text.trim().split(/\s+/).join('-')}`
+}
 
 const getInnerHTML = getInnerHTMLBuilder('http://www.macmillandictionary.com/')
 

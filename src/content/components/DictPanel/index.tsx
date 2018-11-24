@@ -33,7 +33,6 @@ type ChildrenProps =
     't' |
     'id' |
     'text' |
-    'dictURL' |
     'preferredHeight' |
     'searchStatus' |
     'searchResult'
@@ -246,17 +245,12 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
             </svg>
           </button>
           {activeDicts.map(id => {
-            let dictURL = allDictsConfig[id].page
-            if (typeof dictURL !== 'string') {
-              dictURL = dictURL[langCode] || dictURL.en
-            }
             const dictInfo = dictsInfo[id]
             return React.createElement(DictItem, {
               t,
               key: id,
               id,
               text: (dictionaries.searchHistory[0] || selection.selectionInfo).text,
-              dictURL,
               fontSize,
               preferredHeight: allDictsConfig[id].preferredHeight,
               panelWidth,

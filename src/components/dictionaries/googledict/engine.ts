@@ -1,5 +1,19 @@
-import { HTMLString, handleNoResult, getInnerHTMLBuilder, removeChild, decodeHEX, removeChildren, handleNetWorkError, SearchFunction } from '../helpers'
+import {
+  HTMLString,
+  handleNoResult,
+  getInnerHTMLBuilder,
+  removeChild,
+  decodeHEX,
+  removeChildren,
+  handleNetWorkError,
+  SearchFunction,
+  GetSrcPageFunction,
+} from '../helpers'
 import { DictSearchResult } from '@/typings/server'
+
+export const getSrcPage: GetSrcPageFunction = (text) => {
+  return `https://www.google.com.hk/search?q=define+${text}`
+}
 
 export interface GoogleDictResult {
   entry: HTMLString
