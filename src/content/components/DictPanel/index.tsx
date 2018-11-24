@@ -1,6 +1,6 @@
 import React from 'react'
 import { DictionariesState, SearchStatus } from '../../redux/modules/dictionaries'
-import { AppConfig, DictID, DictConfigs, MtaAutoUnfold } from '@/app-config'
+import { DictID, DictConfigs, MtaAutoUnfold } from '@/app-config'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
@@ -44,7 +44,6 @@ export interface DictPanelProps extends ChildrenProps {
   readonly mtaAutoUnfold: MtaAutoUnfold
   readonly dictionaries: DictionariesState['dictionaries']
   readonly allDictsConfig: DictConfigs
-  readonly langCode: AppConfig['langCode']
   readonly selection: MsgSelection
 }
 
@@ -170,7 +169,6 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
       isFav,
       isPinned,
       isTripleCtrl,
-      langCode,
       handleDragAreaMouseDown,
       handleDragAreaTouchStart,
       searchBoxUpdate,
