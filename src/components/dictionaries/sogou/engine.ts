@@ -1,6 +1,7 @@
 import { handleNoResult, MachineTranslatePayload, MachineTranslateResult, handleNetWorkError, SearchFunction } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
+import md5 from 'md5'
 
 export type SogouResult = MachineTranslateResult
 
@@ -35,13 +36,15 @@ export const search: SearchFunction<SogouSearchResult, MachineTranslatePayload> 
     text = text.replace(/\n+/g, ' ')
   }
 
+  text = encodeURIComponent(text)
+
   return fetch('https://fanyi.sogou.com/reventondc/translate', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'X-Requested-With': 'XMLHttpRequest',
     },
-    body: `from=${sl}&to=${tl}&text=${encodeURIComponent(text)}&uuid=${getUUID()}&client=pc&fr=browser_pc&useDetect=on&useDetectResult=on&needQc=1&oxford=on&isReturnSugg=on`
+    body: `from=${sl}&to=${tl}&text=${text}&uuid=${getUUID()}&s=${md5('' + sl + tl + text + 'front_9ee4f0a1102eee31d09b55e4d66931fd')}&client=pc&fr=browser_pc&useDetect=on&useDetectResult=on&needQc=1&oxford=on&isReturnSugg=on`
   })
   .then(r => r.json())
   .catch(handleNetWorkError)
