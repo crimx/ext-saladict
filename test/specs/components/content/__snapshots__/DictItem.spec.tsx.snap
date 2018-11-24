@@ -18,7 +18,7 @@ exports[`Component/content/DictItem should render pending correctly 1`] = `
       className="panel-DictItem_Title"
     >
       <a
-        href="https://google.com"
+        href="#"
         onClick={[Function]}
       >
         dict:bing
