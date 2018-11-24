@@ -98,8 +98,13 @@ export class ExportModalBody extends React.Component<ExportModalInnerProps, Expo
           : this.state.processedWords
         const file = new Blob([content], { type: 'text/plain;charset=utf-8' })
         const a = document.createElement('a')
+        a.style.display = 'none'
         a.href = URL.createObjectURL(file)
-        a.download = `saladict-${Date.now()}`
+        a.download = `saladict-words-${Date.now()}.txt`
+        // firefox
+        a.target = '_blank'
+        document.body.appendChild(a)
+
         a.click()
       })
   }
