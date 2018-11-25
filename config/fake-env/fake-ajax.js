@@ -8,6 +8,10 @@ const fakeXHRData = [
 
 const fakeFetchData = [
   {
+    test: { url: /m\.wikipedia\.org\/wiki\/数字/ },
+    response: [require('raw-loader!../../test/specs/components/dictionaries/wikipedia/response/数字.html')],
+  },
+  {
     test: { url: /dict\.youdao.com\/suggest.*q=love/ },
     response: [`{"result":{"code":200,"msg":"success"},"data":{"query":"love","entries":[{"explain":"n. 恋爱; 亲爱的; 酷爱; 喜爱的事物; vt. 喜欢; 热爱; 爱慕; vi. 爱; n. (...","entry":"love"},{"explain":"adj. 可爱的; 令人愉快的; n. (Lovely)人名; (英)洛夫利","entry":"lovely"},{"explain":"n. 爱人，恋人; 爱好者; n. (Lover)人名; (英)洛弗","entry":"lover"},{"explain":"n. 可爱; 漂亮; 魅力; 美好","entry":"loveliness"},{"explain":"v. 热爱（love的过去分词）; adj. 恋爱的; 受珍爱的","entry":"loved"},{"explain":"n. 情人（lover的复数形式）","entry":"lovers"},{"explain":"adj. 害相思病的; 苦恋的","entry":"lovesick"},{"explain":"可爱的; 优美的; 令人愉快的; 亲切友好的（lovely的最高级）","entry":"loveliest"},{"explain":"爱情","entry":"loves"},{"explain":"adj. 失恋的; 害相思病的","entry":"lovelorn"},{"explain":"爱你（歌曲名）","entry":"love you"},{"explain":"风流韵事; 强烈爱好","entry":"love affair"},{"explain":"情书","entry":"love letter"},{"explain":"n. 爱情故事，恋爱小说","entry":"love story"},{"explain":"深爱","entry":"love dearly"},{"explain":"永恒的爱（歌曲名）","entry":"love forever"},{"explain":"n. 爱情生活","entry":"love life"},{"explain":"爱是忧郁（等于蓝色的爱，歌曲名）","entry":"love is blue"},{"explain":"无头东宫（电视剧名）","entry":"love is beautiful"},{"explain":"温柔地爱我（歌名）","entry":"love me tender"},{"explain":"爱情使人盲目; 情人眼里出西施","entry":"love is blind"}],"language":"en"}}`],
   },

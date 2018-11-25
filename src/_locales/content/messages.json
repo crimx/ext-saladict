@@ -9,6 +9,16 @@
     "zh_TW": "取消",
     "en": "Cancel"
   },
+  "chooseLang": {
+    "zh_CN": "-选择其它语言-",
+    "zh_TW": "-選擇其它語言-",
+    "en": "Choose another language"
+  },
+  "fetchLangList": {
+    "zh_CN": "获取全部语言列表",
+    "zh_TW": "獲取全部語言列表",
+    "en": "Fetch full language list"
+  },
   "neverShow": {
     "zh_CN": "不再弹出",
     "zh_TW": "不再彈出",
