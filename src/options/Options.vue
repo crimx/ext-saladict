@@ -280,7 +280,6 @@ export default {
         const googleLang = config.dicts.all.google.options.tl === 'default'
           ? config.langCode
           : config.dicts.all.google.options.tl
-        config.dicts.all.google.page = `https://translate.google.${googleLocation}/#auto/${googleLang}/%s`
         config.contextMenus.all.google_translate = `https://translate.google.${googleLocation}/#auto/${googleLang}/%s`
 
         const sogouLang = config.dicts.all.sogou.options.tl === 'default'
@@ -290,7 +289,6 @@ export default {
               ? 'zh-CHT'
               : 'en'
           : config.dicts.all.sogou.options.tl
-        config.dicts.all.sogou.page = `https://fanyi.sogou.com/#auto/${sogouLang}/%s`
         config.contextMenus.all.sogou = `https://fanyi.sogou.com/#auto/${sogouLang}/%s`
 
         updateActiveConfig(config)

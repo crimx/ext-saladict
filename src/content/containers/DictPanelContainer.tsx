@@ -21,7 +21,6 @@ export const mapStateToProps = ({
     isAnimation: config.animation,
     allDictsConfig: config.dicts.all,
     fontSize: config.fontSize,
-    langCode: config.langCode,
     panelMaxHeightRatio: config.panelMaxHeightRatio,
     mtaAutoUnfold: config.mtaAutoUnfold,
     searchSuggests: config.searchSuggests,

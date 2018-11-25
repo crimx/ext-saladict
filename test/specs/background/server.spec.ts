@@ -73,30 +73,15 @@ describe('Server', () => {
     expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
   })
 
-  describe('Create Tab', () => {
-    it('called with placeholder', () => {
-      browser.runtime.onMessage.dispatch({
-        type: MsgType.OpenURL,
-        url: 'https://test.com/%s%z',
-        placeholder: true,
-        text: 'test',
-      })
-      expect(chsToChz).toHaveBeenCalledTimes(1)
-      expect(chsToChz).toHaveBeenCalledWith('test')
-      expect(openURL).toHaveBeenCalledTimes(1)
-      expect(openURL).toHaveBeenCalledWith('https://test.com/testtest', undefined)
+  it('Open url', () => {
+    browser.runtime.onMessage.dispatch({
+      type: MsgType.OpenURL,
+      url: 'https://test.com/',
+      text: 'test',
     })
-
-    it('called without pattern', () => {
-      browser.runtime.onMessage.dispatch({
-        type: MsgType.OpenURL,
-        url: 'https://test.com/',
-        text: 'test',
-      })
-      expect(chsToChz).toHaveBeenCalledTimes(0)
-      expect(openURL).toHaveBeenCalledTimes(1)
-      expect(openURL).toHaveBeenCalledWith('https://test.com/', undefined)
-    })
+    expect(chsToChz).toHaveBeenCalledTimes(0)
+    expect(openURL).toHaveBeenCalledTimes(1)
+    expect(openURL).toHaveBeenCalledWith('https://test.com/', undefined)
   })
 
   it('Audio Play', () => {

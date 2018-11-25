@@ -1,3 +1,4 @@
+import { chsToChz } from '@/_helpers/chs-to-chz'
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   HTMLString,
@@ -7,8 +8,17 @@ import {
   removeChild,
   handleNetWorkError,
   SearchFunction,
+  GetSrcPageFunction,
 } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
+
+export const getSrcPage: GetSrcPageFunction = (text, config) => {
+  switch (config.langCode) {
+    case 'en': return `https://dictionary.cambridge.org/search/english/direct/?q=${text.trim().split(/\s+/).join('-')}`
+    case 'zh-CN': return `https://dictionary.cambridge.org/zhs/搜索/英语-汉语-简体/direct/?q=${text}`
+    case 'zh-TW': return `https://dictionary.cambridge.org/zht/搜索/英語-漢語-繁體/direct/?q=${chsToChz(text)}`
+  }
+}
 
 const getInnerHTML = getInnerHTMLBuilder('https://dictionary.cambridge.org/')
 

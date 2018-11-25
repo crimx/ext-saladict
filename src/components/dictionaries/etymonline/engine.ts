@@ -1,7 +1,19 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { DictConfigs } from '@/app-config'
-import { getText, getInnerHTMLBuilder, handleNoResult, HTMLString, handleNetWorkError, SearchFunction } from '../helpers'
+import {
+  getText,
+  getInnerHTMLBuilder,
+  handleNoResult,
+  HTMLString,
+  handleNetWorkError,
+  SearchFunction,
+  GetSrcPageFunction,
+} from '../helpers'
 import { DictSearchResult } from '@/typings/server'
+
+export const getSrcPage: GetSrcPageFunction = (text) => {
+  return `http://www.etymonline.com/search?q=${text}`
+}
 
 const getInnerHTML = getInnerHTMLBuilder()
 

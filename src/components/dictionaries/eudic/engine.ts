@@ -1,6 +1,16 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { getText, handleNoResult, handleNetWorkError, SearchFunction } from '../helpers'
+import {
+  getText,
+  handleNoResult,
+  handleNetWorkError,
+  SearchFunction,
+  GetSrcPageFunction,
+} from '../helpers'
 import { DictSearchResult } from '@/typings/server'
+
+export const getSrcPage: GetSrcPageFunction = (text) => {
+  return `https://dict.eudic.net/dicts/en/${text}`
+}
 
 interface EudicResultItem {
   chs: string

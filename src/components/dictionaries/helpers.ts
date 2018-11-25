@@ -4,8 +4,14 @@ import { DictID, AppConfig } from '@/app-config'
 import { SelectionInfo } from '@/_helpers/selection'
 import { chsToChz } from '@/_helpers/chs-to-chz'
 
+/** Fetch and parse dictionary search result */
 export interface SearchFunction<Result, Payload = {}> {
   (text: string, config: AppConfig, payload: Readonly<Payload & { isPDF: boolean }>): Promise<Result>
+}
+
+/** Return a dictionary source page url for the dictionary header */
+export interface GetSrcPageFunction {
+  (text: string, config: AppConfig): string
 }
 
 export type HTMLString = string
@@ -88,44 +94,7 @@ interface GetHTML {
  */
 export function getInnerHTMLBuilder (host?: string, DOMPurifyConfig?: DOMPurify.Config): GetHTML
 export function getInnerHTMLBuilder (...args) {
-  let host: string = typeof args[0] === 'string' ? args.shift() : ''
-  let DOMPurifyConfig: DOMPurify.Config = Object(args[0]) === args[0] ? args.shift() : {
-    FORBID_TAGS: ['style'],
-    FORBID_ATTR: ['style'],
-  }
-
-  if (host && !host.endsWith('/')) {
-    host = host + '/'
-  }
-
-  const getInnerHTML: GetHTML = (parent: ParentNode, ...args): HTMLString => {
-    let selector = ''
-    let toChz = false
-    for (let i = args.length; i >= 0; i--) {
-      if (typeof args[i] === 'string') {
-        selector = args[i]
-      } else if (typeof args[i] === 'boolean') {
-        toChz = args[i]
-      }
-    }
-
-    const child = selector ? parent.querySelector(selector) : parent
-    if (!child) { return '' }
-    let purifyResult = DOMPurify.sanitize(child['innerHTML'] || '', DOMPurifyConfig)
-    let content = typeof purifyResult === 'string'
-      ? purifyResult
-      : purifyResult['outerHTML']
-        ? purifyResult['outerHTML']
-        : purifyResult.firstElementChild
-          ? purifyResult.firstElementChild.outerHTML
-          : ''
-    content = host
-      ? content.replace(/href="\/[^/]/g, 'href="' + host)
-      : content
-    return toChz ? chsToChz(content) : content
-  }
-
-  return getInnerHTML
+  return getHTMLBuilder('innerHTML', args)
 }
 
 /**
@@ -136,17 +105,36 @@ export function getInnerHTMLBuilder (...args) {
  */
 export function getOuterHTMLBuilder (host?: string, DOMPurifyConfig?: DOMPurify.Config): GetHTML
 export function getOuterHTMLBuilder (...args) {
+  return getHTMLBuilder('outerHTML', args)
+}
+
+function getHTMLBuilder (location: string, args: any): GetHTML {
   let host: string = typeof args[0] === 'string' ? args.shift() : ''
   let DOMPurifyConfig: DOMPurify.Config = Object(args[0]) === args[0] ? args.shift() : {
     FORBID_TAGS: ['style'],
     FORBID_ATTR: ['style'],
   }
 
-  if (host && !host.endsWith('/')) {
-    host = host + '/'
+  if (host.endsWith('/')) {
+    host = host.slice(0, -1)
   }
 
-  const getOuterHTML: GetHTML = (parent: ParentNode, ...args): HTMLString => {
+  const protocol = host.startsWith('https') ? 'https:' : 'http:'
+
+  function fillLink (el: HTMLElement) {
+    ['href', 'src'].forEach(attr => {
+      const url = el.getAttribute(attr)
+      if (url) {
+        if (url.startsWith('//')) {
+          el.setAttribute(attr, protocol + url)
+        } else if (url.startsWith('/')) {
+          el.setAttribute(attr, host + url)
+        }
+      }
+    })
+  }
+
+  const getHTML: GetHTML = (parent: ParentNode, ...args): HTMLString => {
     let selector = ''
     let toChz = false
     for (let i = args.length; i >= 0; i--) {
@@ -159,7 +147,14 @@ export function getOuterHTMLBuilder (...args) {
 
     const child = selector ? parent.querySelector(selector) : parent
     if (!child) { return '' }
-    let purifyResult = DOMPurify.sanitize(child['outerHTML'] || '', DOMPurifyConfig)
+
+    if (child['tagName'] === 'A' || child['tagName'] === 'IMG') {
+      fillLink(child as HTMLElement)
+    }
+    child.querySelectorAll('a').forEach(fillLink)
+    child.querySelectorAll('img').forEach(fillLink)
+
+    let purifyResult = DOMPurify.sanitize(child[location] || '', DOMPurifyConfig)
     let content = typeof purifyResult === 'string'
       ? purifyResult
       : purifyResult['outerHTML']
@@ -167,13 +162,10 @@ export function getOuterHTMLBuilder (...args) {
         : purifyResult.firstElementChild
           ? purifyResult.firstElementChild.outerHTML
           : ''
-    content = host
-      ? content.replace(/href="\/[^/]/g, 'href="' + host)
-      : content
     return toChz ? chsToChz(content) : content
   }
 
-  return getOuterHTML
+  return getHTML
 }
 
 /**

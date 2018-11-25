@@ -1,6 +1,6 @@
 import React from 'react'
 import { DictionariesState, SearchStatus } from '../../redux/modules/dictionaries'
-import { AppConfig, DictID, DictConfigs, MtaAutoUnfold } from '@/app-config'
+import { DictID, DictConfigs, MtaAutoUnfold } from '@/app-config'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
@@ -33,7 +33,6 @@ type ChildrenProps =
     't' |
     'id' |
     'text' |
-    'dictURL' |
     'preferredHeight' |
     'searchStatus' |
     'searchResult'
@@ -45,7 +44,6 @@ export interface DictPanelProps extends ChildrenProps {
   readonly mtaAutoUnfold: MtaAutoUnfold
   readonly dictionaries: DictionariesState['dictionaries']
   readonly allDictsConfig: DictConfigs
-  readonly langCode: AppConfig['langCode']
   readonly selection: MsgSelection
 }
 
@@ -171,7 +169,6 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
       isFav,
       isPinned,
       isTripleCtrl,
-      langCode,
       handleDragAreaMouseDown,
       handleDragAreaTouchStart,
       searchBoxUpdate,
@@ -246,17 +243,12 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
             </svg>
           </button>
           {activeDicts.map(id => {
-            let dictURL = allDictsConfig[id].page
-            if (typeof dictURL !== 'string') {
-              dictURL = dictURL[langCode] || dictURL.en
-            }
             const dictInfo = dictsInfo[id]
             return React.createElement(DictItem, {
               t,
               key: id,
               id,
               text: (dictionaries.searchHistory[0] || selection.selectionInfo).text,
-              dictURL,
               fontSize,
               preferredHeight: allDictsConfig[id].preferredHeight,
               panelWidth,

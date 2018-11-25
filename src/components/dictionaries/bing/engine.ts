@@ -1,7 +1,18 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { handleNoResult, handleNetWorkError, getText, getInnerHTMLBuilder, SearchFunction } from '../helpers'
+import {
+  handleNoResult,
+  handleNetWorkError,
+  getText,
+  getInnerHTMLBuilder,
+  SearchFunction,
+  GetSrcPageFunction,
+} from '../helpers'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
+
+export const getSrcPage: GetSrcPageFunction = (text) => {
+  return `https://cn.bing.com/dict/search?q=${text}`
+}
 
 const getInnerHTML = getInnerHTMLBuilder('https://cn.bing.com/')
 
@@ -227,7 +238,7 @@ function handleRelatedResult (
         meanings: Array.from($defsList).map($list => {
           const word = getText($list, '.client_do_you_mean_list_word', isChz)
           return {
-            href: config.page.replace('%s', word),
+            href: `https://cn.bing.com/dict/search?q=${word}`,
             word,
             def: getText($list, '.client_do_you_mean_list_def', isChz)
           }

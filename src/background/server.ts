@@ -1,17 +1,16 @@
 import { appConfigFactory, TCDirection } from '@/app-config'
 import { message, openURL } from '@/_helpers/browser-api'
-import { chsToChz } from '@/_helpers/chs-to-chz'
 import { timeout, timer } from '@/_helpers/promise-more'
 import { createActiveConfigStream } from '@/_helpers/config-manager'
 import { getSuggests } from '@/_helpers/getSuggests'
 import { DictSearchResult } from '@/typings/server'
-import { SearchErrorType, SearchFunction } from '@/components/dictionaries/helpers'
+import { SearchErrorType, SearchFunction, GetSrcPageFunction } from '@/components/dictionaries/helpers'
 import { syncServiceInit, syncServiceDownload, syncServiceUpload } from './sync-manager'
 import { isInNotebook, saveWord, deleteWords, getWordsByText, getWords } from './database'
 import { play } from './audio-manager'
 import {
   MsgType,
-  MsgOpenUrl,
+  MsgOpenSrcPage,
   MsgAudioPlay,
   MsgFetchDictResult,
   MsgIsInNotebook,
@@ -42,8 +41,10 @@ let qsPanelID: number | false = false
 // background script as transfer station
 message.addListener((data, sender: browser.runtime.MessageSender) => {
   switch (data.type) {
+    case MsgType.OpenSrcPage:
+      return openSrcPage(data as MsgOpenSrcPage)
     case MsgType.OpenURL:
-      return createTab(data as MsgOpenUrl)
+      return openURL(data.url, data.self)
     case MsgType.PlayAudio:
       return playAudio(data as MsgAudioPlay)
     case MsgType.FetchDictResult:
@@ -189,16 +190,14 @@ export async function openQSPanel (): Promise<void> {
   }
 }
 
-function createTab (data: MsgOpenUrl): Promise<void> {
-  return openURL(
-    data.placeholder
-      ? data.url
-        .replace(/%s/g, data.text)
-        .replace(/%z/g, chsToChz(data.text))
-        .replace(/%h/g, data.text.trim().split(/\s+/).join('-'))
-      : data.url,
-    data.self
-  )
+function openSrcPage (data: MsgOpenSrcPage): Promise<void> {
+  let getSrcPage: GetSrcPageFunction
+  try {
+    getSrcPage = require('@/components/dictionaries/' + data.id + '/engine').getSrcPage
+  } catch (err) {
+    return Promise.reject(err)
+  }
+  return openURL(getSrcPage(data.text, config))
 }
 
 function playAudio (data: MsgAudioPlay): Promise<void> {

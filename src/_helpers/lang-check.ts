@@ -5,7 +5,7 @@ export const testerEnglish = /[a-zA-Z]/
 export const testJapanese = /[\u3041-\u3096\u30A0-\u30FF]/
 
 /** Korean Hangul, no Chinese */
-export const testKorean = /[\u3131-\u4e00\u9fa5-\uD79D]/
+export const testKorean = /[\u3131-\u4dff\u9fa6-\uD79D]/
 
 /** Languages excpet Chinese and English */
 export const testerMinor = /[^\u4e00-\u9fa5a-zA-Z0-9\s\/\[\]\{\}\$\^\*\+\|\?\.\-~!@#%&()_='";:><,。？！，、；：“”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/

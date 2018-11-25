@@ -56,10 +56,12 @@ Check out [style-extractor.js](./scripts/style-extractor.js) and [helpers.ts](./
   1. Use [Bing](./src/components/dictionaries/bing) as guidance. Copy the files to the new directory.
   1. Replace the favicon with a new 32x32 png.
   1. Update `_locales.json` with the new dictionary name. Add locales for options, if any.
-  1. `engine.ts` exports a `search` function which is responsible for fetching, parsing and returning  dictionary results. See the typings for more detail.
-     - If the dictionary supports pronunciation:
-       1. Register the ID at [`config.autopron`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/app-config/index.ts#L202-L223).
-       1. Include an [`audio`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/typings/server.ts#L5-L9) field in the object which search engine returns.
+  1. `engine.ts` exports two functions
+     1. `getSrcPage` function is responsible for generating source page url base on search text and app config. Source page url is opened when user clicks the dictionary title.
+     1. `search` function is responsible for fetching, parsing and returning  dictionary results. See the typings for more detail.
+        - If the dictionary supports pronunciation:
+          1. Register the ID at [`config.autopron`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/app-config/index.ts#L202-L223).
+          1. Include an [`audio`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/typings/server.ts#L5-L9) field in the object which search engine returns.
   1. Search result will ultimately be passed to a React PureComponent in `View.tsx`, which renders the result accordingly.
   1. Scope the styles in `_style.scss` following [ECSS](http://ecss.io/chapter5.html#anatomy-of-the-ecss-naming-convention)-ish naming convention.
 

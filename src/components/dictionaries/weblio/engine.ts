@@ -1,6 +1,18 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { HTMLString, getInnerHTMLBuilder, handleNoResult, handleNetWorkError, getOuterHTMLBuilder, SearchFunction } from '../helpers'
+import {
+  HTMLString,
+  getInnerHTMLBuilder,
+  handleNoResult,
+  handleNetWorkError,
+  getOuterHTMLBuilder,
+  SearchFunction,
+  GetSrcPageFunction,
+} from '../helpers'
 import { DictSearchResult } from '@/typings/server'
+
+export const getSrcPage: GetSrcPageFunction = (text) => {
+  return `https://www.weblio.jp/content/${text}`
+}
 
 const getInnerHTML = getInnerHTMLBuilder('https://www.weblio.jp/', {}) // keep inline style
 const getOuterHTML = getOuterHTMLBuilder('https://www.weblio.jp/', {}) // keep inline style
