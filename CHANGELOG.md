@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.21.0"></a>
+# [6.21.0](https://github.com/crimx/ext-saladict/compare/v6.20.2...v6.21.0) (2018-11-25)
+
+
+### Bug Fixes
+
+* download exported wordpage files on Firefox ([aaba271](https://github.com/crimx/ext-saladict/commit/aaba271))
+* **dicts:** sogou api ([bdd0bb5](https://github.com/crimx/ext-saladict/commit/bdd0bb5))
+* **helpers:** remove Chs chars from Korean matching ([1daed3c](https://github.com/crimx/ext-saladict/commit/1daed3c)), closes [#249](https://github.com/crimx/ext-saladict/issues/249)
+* remove unused ([151bfb5](https://github.com/crimx/ext-saladict/commit/151bfb5))
+
+
+### Features
+
+* **dict:** add dict wikipedia ([603c558](https://github.com/crimx/ext-saladict/commit/603c558))
+
+
+
 <a name="6.20.2"></a>
 ## [6.20.2](https://github.com/crimx/ext-saladict/compare/v6.20.1...v6.20.2) (2018-11-09)
 
