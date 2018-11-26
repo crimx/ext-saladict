@@ -108,7 +108,6 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   mergeSelectedDicts('contextMenus')
 
   forEach(base.dicts.all, (dict, id) => {
-    mergeString(`dicts.all.${id}.page`)
     mergeBoolean(`dicts.all.${id}.defaultUnfold`)
     mergeNumber(`dicts.all.${id}.preferredHeight`)
     mergeNumber(`dicts.all.${id}.selectionWC.min`)
@@ -122,6 +121,8 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
           mergeNumber(`dicts.all.${id}.options.${opt}`)
         } else if (isBoolean(value)) {
           mergeBoolean(`dicts.all.${id}.options.${opt}`)
+        } else if (isString(value)) {
+          mergeString(`dicts.all.${id}.options.${opt}`)
         }
       })
     }
