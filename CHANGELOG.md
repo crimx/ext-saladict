@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.21.1"></a>
+## [6.21.1](https://github.com/crimx/ext-saladict/compare/v6.21.0...v6.21.1) (2018-11-26)
+
+
+### Bug Fixes
+
+* merge config ([791b7df](https://github.com/crimx/ext-saladict/commit/791b7df))
+
+
+
 <a name="6.21.0"></a>
 # [6.21.0](https://github.com/crimx/ext-saladict/compare/v6.20.2...v6.21.0) (2018-11-25)
 
