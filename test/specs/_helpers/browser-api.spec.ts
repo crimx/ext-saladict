@@ -586,13 +586,14 @@ describe('Browser API Wapper', () => {
     it('Existing tab', () => {
       browser.tabs.query.returns(Promise.resolve(
         [{
+          windowId: 10,
           index: 1
         }]
       ))
       return openURL(url)
         .then(() => {
           expect(browser.tabs.query.calledWith({ url })).toBeTruthy()
-          expect(browser.tabs.highlight.calledWith({ tabs: 1 })).toBeTruthy()
+          expect(browser.tabs.highlight.calledWith({ tabs: 1, windowId: 10 })).toBeTruthy()
           expect(browser.tabs.create.notCalled).toBeTruthy()
         })
     })
