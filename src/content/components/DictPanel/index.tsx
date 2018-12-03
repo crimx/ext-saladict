@@ -259,6 +259,9 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
             })
           })}
         </div>
+        {dictionaries.active.map(id =>
+          <link key={id} rel='stylesheet' href={browser.runtime.getURL(`/dicts/${id}.css`)} />
+        )}
       </div>
     )
   }

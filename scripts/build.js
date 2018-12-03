@@ -169,7 +169,11 @@ function generateByBrowser () {
         filter: file => !/[\\\/]+\./.test(file),
       }),
       // project files
-      ...files.map(file => fs.copy(file.path, path.join(dest, file.name)))
+      ...files.map(file => fs.copy(file.path, path.join(dest, file.name), {
+        dereference: true,
+        // remove js files for css only chunks
+        filter: file => !/[\\\/]+(panel(-internal)?|dicts[\\\/]+[^\\\/]+)\.js(\.map)?$/.test(file)
+      }))
     ])
   })).then(() => Promise.all(files.map(file =>
     // clean up files
