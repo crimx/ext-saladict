@@ -44,7 +44,7 @@ export default class DictBing extends React.PureComponent<ViewPorps<WikipediaRes
       const payload: WikipediaPayload = {
         url: e.target.value
       }
-      this.props.searchText({ payload })
+      this.props.searchText({ id: 'wikipedia', payload })
     }
   }
 
@@ -53,7 +53,7 @@ export default class DictBing extends React.PureComponent<ViewPorps<WikipediaRes
       fetchLangs: true,
       result: this.props.result
     }
-    this.props.searchText({ payload })
+    this.props.searchText({ id: 'wikipedia', payload })
   }
 
   renderLangSelector () {
