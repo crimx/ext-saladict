@@ -5,8 +5,8 @@
 import setupEnv from './devDict'
 
 setupEnv({
-  dict: 'longman',
-  text: 'love', // 当たる 吐く
+  dict: 'hjdict',
+  text: 'henr', // 当たる 吐く
 })
 
 /*-----------------------------------------------*\

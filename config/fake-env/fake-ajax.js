@@ -8,6 +8,18 @@ const fakeXHRData = [
 
 const fakeFetchData = [
   {
+    test: { url: /www\.hjdict\.com.*love$/ },
+      response: [require('raw-loader!../../test/specs/components/dictionaries/hjdict/response/love.html')],
+  },
+  {
+    test: { url: /www\.hjdict\.com.*henr$/ },
+      response: [require('raw-loader!../../test/specs/components/dictionaries/hjdict/response/henr.html')],
+  },
+  {
+    test: { url: /www\.hjdict\.com.*爱$/ },
+      response: [require('raw-loader!../../test/specs/components/dictionaries/hjdict/response/爱.html')],
+  },
+  {
     test: { url: /m\.wikipedia\.org\/wiki\/数字/ },
     response: [require('raw-loader!../../test/specs/components/dictionaries/wikipedia/response/数字.html')],
   },

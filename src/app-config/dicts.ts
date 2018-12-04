@@ -301,6 +301,56 @@ export function getALlDicts () {
         minor: false,
       }
     },
+    hjdict: {
+      /**
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
+       * `1` for supported
+       */
+      lang: '10011111',
+      /**
+       * If set to true, the dict start searching automatically.
+       * Otherwise it'll only start seaching when user clicks the unfold button.
+       * Default MUST be true and let user decide.
+       */
+      defaultUnfold: true,
+      /**
+       * This is the default height when the dict first renders the result.
+       * If the content height is greater than the preferred height,
+       * the preferred height is used and a mask with a view-more button is shown.
+       * Otherwise the content height is used.
+       */
+      preferredHeight: 265,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 10,
+      },
+      /** Only start searching if the selection contains the language. */
+      selectionLang: {
+        eng: true,
+        chs: true,
+        minor: true,
+      },
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
+      options: {
+        related: true,
+        chsas: 'jp/jc' as 'jp/cj' | 'jp/jc' | 'kor' | 'w' | 'fr' | 'de' | 'es',
+        engas: 'w' as 'w' | 'fr' | 'de' | 'es',
+        uas: 'fr' as 'fr' | 'de' | 'es',
+        aas: 'fr' as 'fr' | 'de',
+        eas: 'fr' as 'fr' | 'es',
+      },
+      options_sel: {
+        chsas: ['jp/cj', 'jp/jc', 'kor', 'w', 'fr', 'de', 'es'],
+        engas: ['w', 'fr', 'de', 'es'],
+        uas: ['fr', 'de', 'es'],
+        aas: ['fr', 'de'],
+        eas: ['fr', 'es'],
+      },
+    },
     liangan: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
