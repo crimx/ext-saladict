@@ -2,7 +2,6 @@
 
 const fs = require('fs')
 const path = require('path')
-const autoprefixer = require('autoprefixer')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
@@ -61,6 +60,14 @@ const entries = fs.readdirSync(paths.appSrc)
 
 const entriesWithHTML = entries.map(({name, dirPath}) => ({name, dirPath, template: path.join(dirPath, 'index.html')}))
   .filter(({template}) => fs.existsSync(template))
+
+// add dictionary styles
+const dictStyleEntries = {}
+fs.readdirSync(path.join(paths.appSrc, 'components/dictionaries')).forEach(name => {
+  if (name === 'helpers.ts') { return }
+  dictStyleEntries[`dicts/${name}`] = path.join(paths.appSrc, 'components/dictionaries', name, '_style.scss')
+})
+
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
 // The development configuration is different and lives in a separate file.
@@ -73,11 +80,13 @@ module.exports = {
   // In production, we only want to load the polyfills and the app code.
   entry: entries.reduce((result, {name, dirPath}) => {
     const names = fs.readdirSync(dirPath)
-    const indexFile = names.find(name => /index\.((t|j)sx?)$/.test(name))
+    const indexFile = names.find(name => /index\.(ts|tsx|js|jsx|css|scss)$/.test(name))
     if (!indexFile) { throw new Error(`Missing entry file for ${dirPath}`) }
-    result[name] = [require.resolve('./polyfills'), path.join(dirPath, indexFile)]
+    result[name] = indexFile.endsWith('css')
+      ? path.join(dirPath, indexFile)
+      : [require.resolve('./polyfills'), path.join(dirPath, indexFile)]
     return result
-  }, {}),
+  }, dictStyleEntries),
   output: {
     // The build folder.
     path: paths.appBuild,

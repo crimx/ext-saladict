@@ -12,7 +12,7 @@ import contentLocles from '@/_locales/content'
 import profileLocles from '@/_locales/config-profiles'
 import langcodeLocles from '@/_locales/langcode'
 
-import '@/panel/panel.scss'
+import '@/panel/index.scss'
 
 const i18n = i18nLoader({
   content: contentLocles,
@@ -35,20 +35,17 @@ root.style.overflowY = 'scroll'
 
 interface EnvConfig {
   dict: DictID
-  style?: boolean
   text?: string
 }
 
 const searchText = (...args) => console.log('searchText', ...args)
 const recalcBodyHeight = (...args) => console.log('recalcBodyHeight', ...args)
 
-export default function setupEnv ({ dict, style = true, text = 'salad' }: EnvConfig) {
+export default function setupEnv ({ dict, text = 'salad' }: EnvConfig) {
   const search = require('../dictionaries/' + dict + '/engine').search
   const View = translate()(require('../dictionaries/' + dict + '/View').default)
 
-  if (style) {
-    require('../dictionaries/' + dict + '/_style.scss')
-  }
+  require('../dictionaries/' + dict + '/_style.scss')
 
   const config = appConfigFactory() as AppConfigMutable
   // config.langCode = 'zh-TW'

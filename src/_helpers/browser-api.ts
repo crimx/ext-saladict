@@ -131,15 +131,17 @@ export const message = {
 /**
  * Open a url on new tab or highlight a existing tab if already opened
  */
-export function openURL (url: string, self?: boolean): Promise<void> {
+export async function openURL (url: string, self?: boolean): Promise<void> {
   if (self) { url = browser.runtime.getURL(url) }
-  return browser.tabs.query({ url })
-    // Only Chrome supports tab.highlight for now
-    .then(tabs => (tabs.length > 0 && typeof browser.tabs.highlight === 'function')
-      ? (browser.tabs.highlight({ tabs: tabs[0].index }) as Promise<any>)
-      : (browser.tabs.create({ url }) as Promise<any>)
-    )
-    .then(noop)
+  const tabs = await browser.tabs.query({ url })
+  // Only Chrome supports tab.highlight for now
+  if (tabs.length > 0 && typeof browser.tabs.highlight === 'function') {
+    const { index, windowId } = tabs[0]
+    await browser.tabs.highlight({ tabs: index, windowId })
+    await browser.windows.update(windowId, { focused: true })
+  } else {
+    await browser.tabs.create({ url })
+  }
 }
 
 export default {

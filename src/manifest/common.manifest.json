@@ -73,7 +73,8 @@
     "history.html",
     "history.js",
     "history.css",
-    "static/*"
+    "static/*",
+    "dicts/*"
   ],
 
   "browser_action": {

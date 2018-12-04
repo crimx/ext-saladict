@@ -25,16 +25,9 @@ function pack (browser) {
 
     archive.pipe(output)
 
-    fs.readdirSync(path.join(__dirname, `../dist/${browser}`))
-    .filter(name => !name.endsWith('.map'))
-    .forEach(name => {
-      const filePath = path.join(__dirname, `../dist/${browser}/`, name)
-      const stats = fs.lstatSync(filePath)
-      if (stats.isDirectory()) {
-        archive.directory(filePath, name)
-      } else if (stats.isFile()) {
-        archive.file(filePath, { name })
-      }
+    archive.glob(`**/*`, {
+      cwd: path.join(__dirname, '../dist', browser),
+      ignore: `**/*.map`
     })
 
     archive.finalize()

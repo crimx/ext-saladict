@@ -80,6 +80,12 @@ async function onInstalled ({ reason, previousVersion }: { reason: string, previ
       openURL('https://github.com/crimx/crx-saladict/wiki/Instructions#wiki-content')
       storage.sync.set({ hasInstructionsShown: true })
     }
+    (await browser.tabs.query({})).forEach(tab => {
+      if (tab.id) {
+        browser.tabs.executeScript(tab.id, { file: '/content.js' }).catch(() => {/**/})
+        browser.tabs.insertCSS(tab.id, { file: '/content.css' }).catch(() => {/**/})
+      }
+    })
   } else if (reason === 'update') {
     // ignore patch updates
     if (!previousVersion || previousVersion.replace(/[^.]*$/, '') !== browser.runtime.getManifest().version.replace(/[^.]*$/, '')) {

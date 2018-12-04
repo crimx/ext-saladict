@@ -2,7 +2,6 @@
 
 const fs = require('fs')
 const path = require('path')
-const autoprefixer = require('autoprefixer')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin')

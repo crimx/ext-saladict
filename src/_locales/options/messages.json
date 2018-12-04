@@ -204,6 +204,26 @@
     "zh_CN": "繁",
     "zh_TW": "繁"
   },
+  "dict_panel_lang_kor": {
+    "en": "Korean",
+    "zh_CN": "韩",
+    "zh_TW": "韩"
+  },
+  "dict_panel_lang_fr": {
+    "en": "French",
+    "zh_CN": "法",
+    "zh_TW": "法"
+  },
+  "dict_panel_lang_de": {
+    "en": "Deutsch",
+    "zh_CN": "德",
+    "zh_TW": "德"
+  },
+  "dict_panel_lang_es": {
+    "en": "Español",
+    "zh_CN": "西",
+    "zh_TW": "西"
+  },
   "dict_panel_title": {
     "en": "Dict Panel",
     "zh_CN": "查词面板",

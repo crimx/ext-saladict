@@ -2,10 +2,10 @@ export function getALlDicts () {
   const allDicts = {
     bing: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1100',
+      lang: '11000000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -44,10 +44,10 @@ export function getALlDicts () {
     },
     cambridge: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1110',
+      lang: '11100000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -75,10 +75,10 @@ export function getALlDicts () {
     },
     cobuild: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1000',
+      lang: '10000000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -113,10 +113,10 @@ export function getALlDicts () {
     },
     etymonline: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1000',
+      lang: '10000000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -152,10 +152,10 @@ export function getALlDicts () {
     },
     eudic: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1100',
+      lang: '11000000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -190,10 +190,10 @@ export function getALlDicts () {
     },
     google: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1111',
+      lang: '11110000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -234,10 +234,10 @@ export function getALlDicts () {
     },
     googledict: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1111',
+      lang: '11110000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -272,10 +272,10 @@ export function getALlDicts () {
     },
     guoyu: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '0010',
+      lang: '00100000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -301,12 +301,62 @@ export function getALlDicts () {
         minor: false,
       }
     },
-    liangan: {
+    hjdict: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '0010',
+      lang: '10011111',
+      /**
+       * If set to true, the dict start searching automatically.
+       * Otherwise it'll only start seaching when user clicks the unfold button.
+       * Default MUST be true and let user decide.
+       */
+      defaultUnfold: true,
+      /**
+       * This is the default height when the dict first renders the result.
+       * If the content height is greater than the preferred height,
+       * the preferred height is used and a mask with a view-more button is shown.
+       * Otherwise the content height is used.
+       */
+      preferredHeight: 265,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 10,
+      },
+      /** Only start searching if the selection contains the language. */
+      selectionLang: {
+        eng: true,
+        chs: true,
+        minor: true,
+      },
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
+      options: {
+        related: true,
+        chsas: 'jp/jc' as 'jp/cj' | 'jp/jc' | 'kor' | 'w' | 'fr' | 'de' | 'es',
+        engas: 'w' as 'w' | 'fr' | 'de' | 'es',
+        uas: 'fr' as 'fr' | 'de' | 'es',
+        aas: 'fr' as 'fr' | 'de',
+        eas: 'fr' as 'fr' | 'es',
+      },
+      options_sel: {
+        chsas: ['jp/cj', 'jp/jc', 'kor', 'w', 'fr', 'de', 'es'],
+        engas: ['w', 'fr', 'de', 'es'],
+        uas: ['fr', 'de', 'es'],
+        aas: ['fr', 'de'],
+        eas: ['fr', 'es'],
+      },
+    },
+    liangan: {
+      /**
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
+       * `1` for supported
+       */
+      lang: '00100000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -334,10 +384,10 @@ export function getALlDicts () {
     },
     longman: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1000',
+      lang: '10000000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -378,10 +428,10 @@ export function getALlDicts () {
     },
     macmillan: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1000',
+      lang: '10000000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -416,10 +466,10 @@ export function getALlDicts () {
     },
     oald: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1000',
+      lang: '10000000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -454,10 +504,10 @@ export function getALlDicts () {
     },
     sogou: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1111',
+      lang: '11110000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -497,10 +547,10 @@ export function getALlDicts () {
     },
     urban: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1000',
+      lang: '10000000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -535,10 +585,10 @@ export function getALlDicts () {
     },
     vocabulary: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1000',
+      lang: '10000000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -566,10 +616,10 @@ export function getALlDicts () {
     },
     weblio: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '0001',
+      lang: '00010000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -597,10 +647,10 @@ export function getALlDicts () {
     },
     websterlearner: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1000',
+      lang: '10000000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -639,10 +689,10 @@ export function getALlDicts () {
     },
     wikipedia: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1111',
+      lang: '11110000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -680,10 +730,10 @@ export function getALlDicts () {
     },
     youdao: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '1100',
+      lang: '11000000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.
@@ -723,10 +773,10 @@ export function getALlDicts () {
     },
     zdic: {
       /**
-       * Supported language: en, zh-CN, zh-TW, ja
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
        * `1` for supported
        */
-      lang: '0100',
+      lang: '01000000',
       /**
        * If set to true, the dict start searching automatically.
        * Otherwise it'll only start seaching when user clicks the unfold button.

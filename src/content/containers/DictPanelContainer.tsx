@@ -19,7 +19,7 @@ export const mapStateToProps = ({
 }: StoreState) => {
   return {
     isAnimation: config.animation,
-    allDictsConfig: config.dicts.all,
+    dictsConfig: config.dicts,
     fontSize: config.fontSize,
     panelMaxHeightRatio: config.panelMaxHeightRatio,
     mtaAutoUnfold: config.mtaAutoUnfold,

@@ -1,0 +1,129 @@
+{
+  "name": {
+    "en": "Hu Jiang",
+    "zh_CN": "沪江小D",
+    "zh_TW": "沪江小D"
+  },
+  "options": {
+    "engas": {
+      "en": "Treat English as",
+      "zh_CN": "对全英文使用词典",
+      "zh_TW": "對全英文使用字典"
+    },
+    "chsas": {
+      "en": "Treat Chinese as",
+      "zh_CN": "对全中文使用词典",
+      "zh_TW": "對全中文使用字典"
+    },
+    "uas": {
+      "en": "Treat 'ü' as",
+      "zh_CN": "将 'ü' 字符当作",
+      "zh_TW": "把 'ü' 字元當成"
+    },
+    "aas": {
+      "en": "Treat 'ä' as",
+      "zh_CN": "将 'ä' 字符当作",
+      "zh_TW": "把 'ä' 字元當成"
+    },
+    "eas": {
+      "en": "Treat 'é' as",
+      "zh_CN": "将 'é' 字符当作",
+      "zh_TW": "把 'é' 字元當成"
+    },
+    "related": {
+      "en": "Show related results",
+      "zh_CN": "失败时显示备选",
+      "zh_TW": "失敗時顯示備選"
+    },
+    "chsas-jp/cj": {
+      "en": "中 → 日",
+      "zh_CN": "中 → 日",
+      "zh_TW": "中 → 日"
+    },
+    "chsas-jp/jc": {
+      "en": "日 → 中",
+      "zh_CN": "日 → 中",
+      "zh_TW": "日 → 中"
+    },
+    "chsas-kor": {
+      "en": "Korean",
+      "zh_CN": "韩文",
+      "zh_TW": "韓文"
+    },
+    "chsas-w": {
+      "en": "English",
+      "zh_CN": "英文",
+      "zh_TW": "英文"
+    },
+    "chsas-fr": {
+      "en": "French",
+      "zh_CN": "法文",
+      "zh_TW": "法文"
+    },
+    "chsas-de": {
+      "en": "Deutsch",
+      "zh_CN": "德文",
+      "zh_TW": "德文"
+    },
+    "chsas-es": {
+      "en": "Spanish",
+      "zh_CN": "西班牙文",
+      "zh_TW": "西班牙文"
+    },
+    "engas-w": {
+      "en": "English",
+      "zh_CN": "英文",
+      "zh_TW": "英文"
+    },
+    "engas-fr": {
+      "en": "French",
+      "zh_CN": "法文",
+      "zh_TW": "法文"
+    },
+    "engas-de": {
+      "en": "Deutsch",
+      "zh_CN": "德文",
+      "zh_TW": "德文"
+    },
+    "engas-es": {
+      "en": "Spanish",
+      "zh_CN": "西班牙文",
+      "zh_TW": "西班牙文"
+    },
+    "uas-fr": {
+      "en": "French",
+      "zh_CN": "法文",
+      "zh_TW": "法文"
+    },
+    "uas-de": {
+      "en": "Deutsch",
+      "zh_CN": "德文",
+      "zh_TW": "德文"
+    },
+    "uas-es": {
+      "en": "Spanish",
+      "zh_CN": "西班牙文",
+      "zh_TW": "西班牙文"
+    },
+    "aas-fr": {
+      "en": "French",
+      "zh_CN": "法文",
+      "zh_TW": "法文"
+    },
+    "aas-de": {
+      "en": "Deutsch",
+      "zh_CN": "德文",
+      "zh_TW": "德文"
+    },
+    "eas-fr": {
+      "en": "French",
+      "zh_CN": "法文",
+      "zh_TW": "法文"
+    },
+    "eas-es": {
+      "en": "Spanish",
+      "zh_CN": "西班牙文",
+      "zh_TW": "西班牙文"
+    }
+  }
+}

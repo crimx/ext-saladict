@@ -5,9 +5,8 @@
 import setupEnv from './devDict'
 
 setupEnv({
-  dict: 'wikipedia',
-  style: true,
-  text: '数字', // 当たる 吐く
+  dict: 'hjdict',
+  text: 'henr', // 当たる 吐く
 })
 
 /*-----------------------------------------------*\
