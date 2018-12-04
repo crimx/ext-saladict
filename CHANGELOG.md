@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.22.0"></a>
+# [6.22.0](https://github.com/crimx/ext-saladict/compare/v6.21.2...v6.22.0) (2018-12-04)
+
+
+### Bug Fixes
+
+* generate styles for all selected dicts ([1de0599](https://github.com/crimx/ext-saladict/commit/1de0599))
+* highlight window and tab is exist ([840c085](https://github.com/crimx/ext-saladict/commit/840c085)), closes [#251](https://github.com/crimx/ext-saladict/issues/251)
+* **dicts:** add id when searching ([246c9af](https://github.com/crimx/ext-saladict/commit/246c9af))
+* inject panel to every page on install ([f108f2e](https://github.com/crimx/ext-saladict/commit/f108f2e))
+* **manifest:** make dicts styles web accessible ([2bc0dff](https://github.com/crimx/ext-saladict/commit/2bc0dff))
+
+
+### Features
+
+* **dicts:** add dict Hjdict ([76b8210](https://github.com/crimx/ext-saladict/commit/76b8210)), closes [#252](https://github.com/crimx/ext-saladict/issues/252)
+* **helpers:** add lang check ([5375f67](https://github.com/crimx/ext-saladict/commit/5375f67))
+
+
+### Performance Improvements
+
+* **dicts:** only load necessary styles ([e15fbdd](https://github.com/crimx/ext-saladict/commit/e15fbdd))
+
+
+
 <a name="6.21.2"></a>
 ## [6.21.2](https://github.com/crimx/ext-saladict/compare/v6.21.1...v6.21.2) (2018-11-28)
 
