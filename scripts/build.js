@@ -214,17 +214,24 @@ function writeLocales (localesPath, localesJSON) {
 }
 
 function patchInternalCSS () {
-  const cssPath = path.join(paths.appBuild, 'panel-internal.css')
-  const panelCSS = fs.readFileSync(cssPath, 'utf8')
-  const output = postcss([
-    increaseSpecificity({
-      repeat: 1,
-      overrideIds: false,
-      stackableRoot: '.panel-StyleRoot'
-    })
-  ])
-  .process(panelCSS)
-  .css
+  const styles = fs.readdirSync(path.join(paths.appBuild, 'dicts'))
+    .filter(name => name.endsWith('.css'))
+    .map(name => ['dicts/' + name, 'dicts/internal/' + name])
+  styles.push(['panel-internal.css', 'panel-internal.css'])
 
-  fs.writeFileSync(cssPath, output)
+  styles.forEach(([src, out]) => {
+    const cssPath = path.join(paths.appBuild, src)
+    const panelCSS = fs.readFileSync(cssPath, 'utf8')
+    const output = postcss([
+      increaseSpecificity({
+        repeat: 1,
+        overrideIds: false,
+        stackableRoot: '.panel-StyleRoot'
+      })
+    ])
+    .process(panelCSS)
+    .css
+
+    fs.outputFileSync(path.join(paths.appBuild, out), output)
+  })
 }
