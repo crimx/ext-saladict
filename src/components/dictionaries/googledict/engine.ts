@@ -21,7 +21,7 @@ export interface GoogleDictResult {
 
 type GoogleDictSearchResult = DictSearchResult<GoogleDictResult>
 
-const getInnerHTML = getInnerHTMLBuilder('https://www.google.com/')
+const getInnerHTML = getInnerHTMLBuilder('https://www.google.com/', {})
 
 export const search: SearchFunction<GoogleDictSearchResult> = (
   text, config, payload
