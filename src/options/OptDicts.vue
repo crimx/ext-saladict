@@ -26,9 +26,7 @@
                         <div class="panel-list__header" @click="handleAddDict(id)">
                           <img class="panel-list__icon" :src="dictsPanelInfo[id].favicon">
                           <strong class="panel-list__title">{{ $t('dict:' + id) }}</strong>
-                          <span class="panel-list__title-lang" v-if="+allDicts[id].lang[0]">{{ $t('opt:dict_panel_lang_en') }}</span>
-                          <span class="panel-list__title-lang" v-if="+allDicts[id].lang[1]">{{ $t('opt:dict_panel_lang_zhs') }}</span>
-                          <span class="panel-list__title-lang" v-if="+allDicts[id].lang[2]">{{ $t('opt:dict_panel_lang_zht') }}</span>
+                          <span class="panel-list__title-lang" v-for="(c, i) in allDicts[id].lang" v-if="+c" :key="i">{{ $t('opt:dict_panel_lang_' + supportedLang[i]) }}</span>
                           <button type="button" class="close">&#10004;</button>
                         </div>
                       </div>
@@ -156,6 +154,7 @@ export default {
       }
     })
     return {
+      supportedLang: ['en', 'zhs', 'zht', 'ja', 'kor', 'fr', 'de', 'es'],
       dictsPanelInfo,
       isShowAddDictsPanel: false
     }
