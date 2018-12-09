@@ -40,12 +40,51 @@ export type HjdictResult = HjdictResultLex | HjdictResultRelated
 
 type HjdictSearchResult = DictSearchResult<HjdictResult>
 
-export const search: SearchFunction<HjdictSearchResult> = (
+export const search: SearchFunction<HjdictSearchResult> = async (
   text, config, payload
 ) => {
-  return fetchDirtyDOM(getSrcPage(text, config))
+  const cookies = {
+    HJ_SITEID: 3,
+    HJ_UID: getUUID(),
+    HJ_SID: getUUID(),
+    HJ_SSID: getUUID(),
+    HJID: 0,
+    HJ_VT: 2,
+    HJ_SST: 1,
+    HJ_CSST: 1,
+    HJ_ST: 1,
+    HJ_CST: 1,
+    HJ_T: +new Date(),
+    _: getUUID(16),
+  }
+
+  const prevCookies = await browser.cookies.getAll({
+    url: 'https://www.hjdict.com',
+  })
+
+  await Promise.all(Object.keys(cookies).map(name =>
+    browser.cookies.set({
+      url: 'https://www.hjdict.com',
+      domain: 'hjdict.com',
+      name,
+      value: String(cookies[name]),
+    })
+  ))
+
+  return fetchDirtyDOM(getSrcPage(text, config), {
+    credentials: 'include',
+  })
     .catch(handleNetWorkError)
-    .then(doc => handleDOM(doc, config.dicts.all.hjdict.options))
+    .then(doc => {
+      // restore cookies
+      prevCookies.forEach(cookie => {
+        browser.cookies.set({
+          ...cookie,
+          url: 'https://www.hjdict.com',
+        })
+      })
+      return handleDOM(doc, config.dicts.all.hjdict.options)
+    })
 }
 
 function handleDOM (
@@ -144,4 +183,22 @@ function getLangCode (text: string, config: AppConfig): string {
   }
 
   return 'w'
+}
+
+function getUUID (e?: number): string {
+  let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 16
+  let n = ''
+  if ('number' === typeof e) {
+    for (let i = 0; i < e; i++) {
+      let r = Math.floor(10 * Math.random())
+      n += r % 2 === 0 ? 'x' : 'y'
+    }
+  } else {
+    n = e || 'xxxxxxxx-xyxx-yxxx-xxxy-xxyxxxxxxxxx'
+  }
+  return ('number' !== typeof t || t < 2 || t > 36) && (t = 16),
+    n.replace(/[xy]/g, function (e) {
+      let n = Math.random() * t | 0
+      return ('x' === e ? n : 3 & n | 8).toString(t)
+    })
 }
