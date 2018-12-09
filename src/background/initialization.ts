@@ -87,9 +87,19 @@ async function onInstalled ({ reason, previousVersion }: { reason: string, previ
       }
     })
   } else if (reason === 'update') {
-    // ignore patch updates
-    if (!previousVersion || previousVersion.replace(/[^.]*$/, '') !== browser.runtime.getManifest().version.replace(/[^.]*$/, '')) {
-      showNews()
+    let data
+    if (!process.env.DEV_BUILD) {
+      try {
+        const response = await fetch('https://api.github.com/repos/crimx/crx-saladict/releases/latest')
+        data = await response.json()
+      } catch (e) {/* */}
+    }
+
+    if (data) {
+      // ignore patch updates
+      if (data.name.endsWith('#') || !previousVersion || previousVersion.replace(/[^.]*$/, '') !== browser.runtime.getManifest().version.replace(/[^.]*$/, '')) {
+        showNews(data)
+      }
     }
   }
 }
@@ -142,25 +152,21 @@ function genClickListener (url: string) {
   }
 }
 
-function showNews () {
-  return fetch('https://api.github.com/repos/crimx/crx-saladict/releases/latest')
-    .then(r => r.json())
-    .then(data => {
-      const message = '-= 感谢支持本扩展开发的朋友！=-\n' +
-        data.body
-          .match(/^\d+\..+/gm) // item list
-          .map(line => line.replace(/\[(\S+)\](?:\(\S+\)|\[\S+\])/g, '$1')) // strip markdown link
-          .join('\n')
-      if (data && data.tag_name) {
-        browser.notifications.create('oninstall', {
-          type: 'basic',
-          iconUrl: browser.runtime.getURL(`static/icon-128.png`),
-          title: `Saladict ${data.tag_name} 新增特性：`,
-          message,
-          buttons: [{ title: '查看更新介绍' }],
-          eventTime: Date.now() + 10000,
-          priority: 2,
-        })
-      }
+function showNews (data) {
+  const message = '-= 感谢支持本扩展开发的朋友！=-\n' +
+    data.body
+      .match(/^\d+\..+/gm) // item list
+      .map(line => line.replace(/\[(\S+)\](?:\(\S+\)|\[\S+\])/g, '$1')) // strip markdown link
+      .join('\n')
+  if (data && data.tag_name) {
+    browser.notifications.create('oninstall', {
+      type: 'basic',
+      iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+      title: `Saladict ${data.tag_name} 新增特性：`,
+      message,
+      buttons: [{ title: '查看更新介绍' }],
+      eventTime: Date.now() + 10000,
+      priority: 2,
     })
+  }
 }
