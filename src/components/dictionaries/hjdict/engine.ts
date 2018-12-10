@@ -7,7 +7,6 @@ import {
   isContainDeutsch,
   isContainSpanish,
 } from '@/_helpers/lang-check'
-import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   HTMLString,
   getInnerHTMLBuilder,
@@ -58,10 +57,6 @@ export const search: SearchFunction<HjdictSearchResult> = async (
     _: getUUID(16),
   }
 
-  const prevCookies = await browser.cookies.getAll({
-    url: 'https://www.hjdict.com',
-  })
-
   await Promise.all(Object.keys(cookies).map(name =>
     browser.cookies.set({
       url: 'https://www.hjdict.com',
@@ -71,20 +66,9 @@ export const search: SearchFunction<HjdictSearchResult> = async (
     })
   ))
 
-  return fetchDirtyDOM(getSrcPage(text, config), {
-    credentials: 'include',
-  })
+  return xhrDirtyDOM(getSrcPage(text, config))
     .catch(handleNetWorkError)
-    .then(doc => {
-      // restore cookies
-      prevCookies.forEach(cookie => {
-        browser.cookies.set({
-          ...cookie,
-          url: 'https://www.hjdict.com',
-        })
-      })
-      return handleDOM(doc, config.dicts.all.hjdict.options)
-    })
+    .then(doc => handleDOM(doc, config.dicts.all.hjdict.options))
 }
 
 function handleDOM (
@@ -136,6 +120,30 @@ function handleDOM (
   return entries.length > 0
     ? { result: { type: 'lex', header, entries } }
     : handleNoResult()
+}
+
+/**
+ * Firefox adds 'Origin' field with `fetch` which would be rejected by the server.
+ */
+function xhrDirtyDOM (url: string): Promise<Document> {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest()
+    xhr.open('GET', url, true)
+    xhr.responseType = 'document'
+    xhr.withCredentials = true
+    xhr.onload = () => {
+      console.log(xhr.readyState)
+      if (xhr.readyState === xhr.DONE && xhr.status >= 200 && xhr.status < 300) {
+        if (xhr.responseXML) {
+          resolve(xhr.responseXML)
+        } else {
+          reject(xhr)
+        }
+      }
+    }
+    xhr.onerror = err => reject(err)
+    xhr.send(null)
+  })
 }
 
 function getLangCode (text: string, config: AppConfig): string {
