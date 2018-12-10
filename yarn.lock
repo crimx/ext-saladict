@@ -9523,11 +9523,7 @@ wbuf@^1.1.0, wbuf@^1.7.2:
 
 web-ext-types@crimx/web-ext-types:
   version "1.1.9"
-  resolved "https://codeload.github.com/crimx/web-ext-types/tar.gz/d707822b2776d1c6013711dae033779fd03d623e"
-
-webextension-polyfill@^0.2.1:
-  version "0.2.1"
-  resolved "http://registry.npm.taobao.org/webextension-polyfill/download/webextension-polyfill-0.2.1.tgz#cdfc9126033039f1713553157d35beff1d4d6f4a"
+  resolved "https://codeload.github.com/crimx/web-ext-types/tar.gz/106fe9d74d54e9cb66e99205795c64cc0bf4df68"
 
 webidl-conversions@^4.0.2:
   version "4.0.2"

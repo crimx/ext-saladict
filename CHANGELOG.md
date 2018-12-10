@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.22.1"></a>
+## [6.22.1](https://github.com/crimx/ext-saladict/compare/v6.22.0...v6.22.1) (2018-12-10)
+
+
+### Bug Fixes
+
+* **dicts:** fix hjdict cookies ([b89618f](https://github.com/crimx/ext-saladict/commit/b89618f))
+* **dicts:** use xhr to avoid Origin header ([36ffb4c](https://github.com/crimx/ext-saladict/commit/36ffb4c)), closes [#259](https://github.com/crimx/ext-saladict/issues/259)
+
+
+
 <a name="6.22.0"></a>
 # [6.22.0](https://github.com/crimx/ext-saladict/compare/v6.21.2...v6.22.0) (2018-12-04)
 

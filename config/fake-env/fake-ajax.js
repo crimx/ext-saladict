@@ -3,21 +3,44 @@
  * You can use libraries like 'mork-fetch', 'faker'
  */
 
+import _ from 'lodash'
+
 const fakeXHRData = [
+  {
+    test: { url: /www\.hjdict\.com.*love$/ },
+    response: {
+      status: 200,
+      response: require('raw-loader!../../test/specs/components/dictionaries/hjdict/response/love.html')
+    },
+  },
+  {
+    test: { url: /www\.hjdict\.com.*henr$/ },
+    response: {
+      status: 200,
+      response: require('raw-loader!../../test/specs/components/dictionaries/hjdict/response/henr.html')
+    },
+  },
+  {
+    test: { url: /www\.hjdict\.com.*爱$/ },
+    response: {
+      status: 200,
+      response: require('raw-loader!../../test/specs/components/dictionaries/hjdict/response/爱.html')
+    },
+  },
 ]
 
 const fakeFetchData = [
   {
     test: { url: /www\.hjdict\.com.*love$/ },
-      response: [require('raw-loader!../../test/specs/components/dictionaries/hjdict/response/love.html')],
+    response: [require('raw-loader!../../test/specs/components/dictionaries/hjdict/response/love.html')],
   },
   {
     test: { url: /www\.hjdict\.com.*henr$/ },
-      response: [require('raw-loader!../../test/specs/components/dictionaries/hjdict/response/henr.html')],
+    response: [require('raw-loader!../../test/specs/components/dictionaries/hjdict/response/henr.html')],
   },
   {
     test: { url: /www\.hjdict\.com.*爱$/ },
-      response: [require('raw-loader!../../test/specs/components/dictionaries/hjdict/response/爱.html')],
+    response: [require('raw-loader!../../test/specs/components/dictionaries/hjdict/response/爱.html')],
   },
   {
     test: { url: /m\.wikipedia\.org\/wiki\/数字/ },
@@ -209,6 +232,7 @@ window.fetch = async (url, ...args) => {
 \*-----------------------------------------------*/
 
 const XMLHttpRequest = window.XMLHttpRequest
+window.XMLHttpRequest = FakeXMLHttpRequest
 
 function FakeXMLHttpRequest (...args) {
   return new Proxy(new XMLHttpRequest(...args), {
@@ -239,11 +263,10 @@ function FakeXMLHttpRequest (...args) {
 
             if (target.onload) {
               // target.onload()
-              let delay = window['FAKE_AJAX_DELAY']
-              if (typeof delay === 'undefined') {
-                delay = 100 + Math.random() * 3000
-              }
+              let delay = window['FAKE_AJAX_DELAY'] || 1000
               setTimeout(() => {
+                _.set(target, '__dictData.response.readyState', target.DONE)
+                console.log(target.__dictData)
                 target.onload()
               }, delay);
             }
@@ -253,19 +276,26 @@ function FakeXMLHttpRequest (...args) {
         }
       }
 
-      if (target.__dictData &&
-          target.__dictData.response &&
-          typeof target.__dictData.response[propKey] !== 'undefined') {
-        return target.__dictData.response[propKey]
+      const val = _.get(target, `__dictData.response.${propKey}`)
+      if (val !== undefined) {
+        return val
       }
 
       return target[propKey]
     },
     set (target, propKey, value) {
       target[propKey] = value
+      if (propKey === 'responseType' && value === 'document') {
+        const res = _.get(target, '__dictData.response.response')
+        const responseXML = res
+          ? new DOMParser().parseFromString(
+            target.__dictData.response.response,
+            'text/html',
+          )
+          : null
+        _.set(target, '__dictData.response.responseXML', responseXML)
+      }
       return true
     }
   })
 }
-
-window.XMLHttpRequest = FakeXMLHttpRequest
