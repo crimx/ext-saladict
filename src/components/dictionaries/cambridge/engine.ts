@@ -68,12 +68,13 @@ function handleDOM (
 
     const $posHeader = $entry.querySelector('.pos-header')
     if ($posHeader) {
-      Array.from($posHeader.children).forEach($pron => {
+      $posHeader.querySelectorAll('.region').forEach($region => {
+        const $pron = $region.parentElement as HTMLElement
         const $btn = $pron.querySelector<HTMLSpanElement>('.audio_play_button')
         if (!$btn) { return }
         if ($btn.dataset.srcMp3) {
           const pron = $btn.dataset.srcMp3.replace(/^\//, 'https://dictionary.cambridge.org/')
-          const phsym = getText($pron)
+          const phsym = getText($pron).trim()
           entry.prons.push({ phsym, pron })
 
           if (!audio.uk && phsym.includes('uk')) {

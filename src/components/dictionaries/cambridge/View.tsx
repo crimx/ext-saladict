@@ -24,7 +24,7 @@ export default class DictCambridge extends React.PureComponent<ViewPorps<Cambrid
           <div className='dictCambridge-Prons'>
             {entry.prons.map((p, i) => (
               <React.Fragment key={p.pron}>
-                {p.phsym} <Speaker src={p.pron} /> {p.phsym.trim().startsWith('us') ? <br/> : null}
+                {p.phsym} <Speaker src={p.pron} /> {p.phsym.startsWith('us') ? <br/> : null}
               </React.Fragment>
             ))}
           </div>
