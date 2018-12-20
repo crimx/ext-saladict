@@ -68,21 +68,20 @@ function handleDOM (
 
     const $posHeader = $entry.querySelector('.pos-header')
     if ($posHeader) {
-      $posHeader.querySelectorAll('.pron-info').forEach($pron => {
+      Array.from($posHeader.children).forEach($pron => {
         const $btn = $pron.querySelector<HTMLSpanElement>('.audio_play_button')
-        if ($btn) {
-          if ($btn.dataset.srcMp3) {
-            const pron = $btn.dataset.srcMp3.replace(/^\//, 'https://dictionary.cambridge.org/')
-            const phsym = getText($pron)
-            entry.prons.push({ phsym, pron })
+        if (!$btn) { return }
+        if ($btn.dataset.srcMp3) {
+          const pron = $btn.dataset.srcMp3.replace(/^\//, 'https://dictionary.cambridge.org/')
+          const phsym = getText($pron)
+          entry.prons.push({ phsym, pron })
 
-            if (!audio.uk && phsym.includes('uk')) {
-              audio.uk = pron
-            }
+          if (!audio.uk && phsym.includes('uk')) {
+            audio.uk = pron
+          }
 
-            if (!audio.us && phsym.includes('us')) {
-              audio.us = pron
-            }
+          if (!audio.us && phsym.includes('us')) {
+            audio.us = pron
           }
         }
         $pron.remove()
