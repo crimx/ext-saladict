@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.22.3"></a>
+## [6.22.3](https://github.com/crimx/ext-saladict/compare/v6.22.2...v6.22.3) (2018-12-20)
+
+
+### Bug Fixes
+
+* **dicts:** extract cambridge plurals ([2124c17](https://github.com/crimx/ext-saladict/commit/2124c17))
+* **dicts:** update cambridge parser Closes [#266](https://github.com/crimx/ext-saladict/issues/266) ([b996c87](https://github.com/crimx/ext-saladict/commit/b996c87))
+
+
+
 <a name="6.22.2"></a>
 ## [6.22.2](https://github.com/crimx/ext-saladict/compare/v6.22.1...v6.22.2) (2018-12-14)
 
