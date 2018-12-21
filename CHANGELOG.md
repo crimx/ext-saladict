@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.22.5"></a>
+## [6.22.5](https://github.com/crimx/ext-saladict/compare/v6.22.4...v6.22.5) (2018-12-21)
+
+
+### Bug Fixes
+
+* fix google dict image src error ([682ae16](https://github.com/crimx/ext-saladict/commit/682ae16))
+
+
+
 <a name="6.22.4"></a>
 ## [6.22.4](https://github.com/crimx/ext-saladict/compare/v6.22.3...v6.22.4) (2018-12-21)
 
