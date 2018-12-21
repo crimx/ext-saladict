@@ -59,7 +59,7 @@ function handleDOM (
       const id = $img.id
       if (!id) { return }
 
-      const src = (bodyText.match(new RegExp(`_image_src='([^']+)'[^']+?'${id}'`)) || ['',''])[1]
+      const src = (bodyText.match(new RegExp(`'(data:image[^']+)';[^']+?'${id}'`)) || ['',''])[1]
       if (!src) { return }
 
       $img.setAttribute('src', decodeHEX(src))
