@@ -1,6 +1,6 @@
 {
   "name": "saladict",
-  "version": "6.22.4",
+  "version": "6.22.3",
   "description": "Chrome extension and Firefox WebExtension, inline translator powered by mutiple online dictionaries",
   "private": true,
   "scripts": {
@@ -11,8 +11,12 @@
     "test": "node scripts/test.js --env=jsdom",
     "commit": "git-cz",
     "release": "standard-version",
-    "pdf": "node scripts/pdf.js",
-    "commitmsg": "commitlint -e $GIT_PARAMS"
+    "pdf": "node scripts/pdf.js"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $GIT_PARAMS"
+    }
   },
   "engines": {
     "node": ">= 8.9.4",
@@ -102,7 +106,7 @@
     "fs-extra": "^5.0.0",
     "generate-json-webpack-plugin": "^0.2.2",
     "html-webpack-plugin": "3.0.6",
-    "husky": "^0.14.3",
+    "husky": "^1.2.1",
     "jest": "^22.0.6",
     "jest-fetch-mock": "^1.4.0",
     "jsconfig-paths-webpack-plugin": "^0.1.3",
