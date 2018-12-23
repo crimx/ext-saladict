@@ -54,10 +54,10 @@ describe('Context Menus', () => {
       expect(browser.tabs.executeScript.calledWith({ file: sinon.match('youdao') })).toBeTruthy()
     })
     it('view_as_pdf', async () => {
+      browser.tabs.query.onFirstCall().returns(Promise.resolve([]))
       browser.contextMenus.onClicked.dispatch({ menuItemId: 'view_as_pdf' })
       await timer(0)
-      expect(browser.tabs.query.called).toBeTruthy()
-      expect(browser.tabs.create.calledWith({ url: sinon.match('pdf') })).toBeTruthy()
+      expect(browser.tabs.create.called).toBeTruthy()
     })
     it('search_history', async () => {
       browser.tabs.query.onFirstCall().returns(Promise.resolve([]))
