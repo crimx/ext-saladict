@@ -12,6 +12,8 @@ injectSaladictInternal(true) // inject panel AFTER flags are set
 
 Vue.use(VueQriously)
 Vue.use(VueI18Next)
+Vue.directive('focus', { inserted: el => el.focus() })
+Vue.directive('select', { inserted: (el: any) => (el.focus(), el.select()) })
 Vue.config.productionTip = false
 
 // Vue.use(VueI18Next) before loading
