@@ -153,11 +153,10 @@ function genClickListener (url: string) {
 }
 
 function showNews (data) {
-  const message = '-= 感谢支持本扩展开发的朋友！=-\n' +
-    data.body
-      .match(/^\d+\..+/gm) // item list
-      .map(line => line.replace(/\[(\S+)\](?:\(\S+\)|\[\S+\])/g, '$1')) // strip markdown link
-      .join('\n')
+  const message = data.body
+    .match(/^\d+\..+/gm) // item list
+    .map(line => line.replace(/\[(\S+)\](?:\(\S+\)|\[\S+\])/g, '$1')) // strip markdown link
+    .join('\n')
   if (data && data.tag_name) {
     browser.notifications.create('oninstall', {
       type: 'basic',
