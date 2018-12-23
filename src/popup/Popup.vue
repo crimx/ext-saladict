@@ -29,7 +29,10 @@
   <transition name="fade">
     <div class="qrcode-panel" v-if="currentTabUrl" @mouseleave="currentTabUrl = ''">
       <qriously :value="currentTabUrl" :size="250" />
-      <p class="qrcode-panel-title">{{ $t('qrcode_title') }}</p>
+      <p class="qrcode-panel-title">
+        <input v-if="isShowUrlBox" v-select type="text" readonly :value="currentTabUrl">
+        <span v-else>{{ $t('qrcode_title') }}</span>
+      </p>
     </div>
   </transition>
   <transition name="fade">
@@ -53,6 +56,7 @@ export default Vue.extend({
     return {
       config: appConfigFactory() as AppConfigMutable,
       currentTabUrl: '',
+      isShowUrlBox: false,
       tempOff: false,
       showPageNoResponse: false,
       insCapMode: 'mode' as 'mode' | 'pinMode',
@@ -104,8 +108,20 @@ export default Vue.extend({
     },
     showQRcode () {
       chrome.tabs.query({active: true, currentWindow: true}, tabs => {
-        if (tabs.length > 0 && tabs[0].url) {
-          this.currentTabUrl = tabs[0].url as string
+        if (tabs.length > 0) {
+          const url = tabs[0].url
+          if (url) {
+            if (!url.startsWith('http')) {
+              const match = /static\/pdf\/web\/viewer\.html\?file=(.*)$/.exec(url)
+              if (match) {
+                this.isShowUrlBox = true
+                this.currentTabUrl = decodeURIComponent(match[1])
+                return
+              }
+            }
+            this.isShowUrlBox = false
+            this.currentTabUrl = url
+          }
         }
       })
     },
@@ -215,6 +231,10 @@ body {
 .qrcode-panel-title {
   text-align: center;
   margin: 5px 0 0 0;
+
+  input {
+    width: 100%;
+  }
 }
 
 .page-no-response-panel {

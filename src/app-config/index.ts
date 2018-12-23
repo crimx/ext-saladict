@@ -247,7 +247,7 @@ export default appConfigFactory
 
 export function appConfigFactory (id?: string): AppConfig {
   return {
-    version: 10,
+    version: 11,
     id: id || genUniqueKey(),
 
     name: `%%_default_%%`,
@@ -401,7 +401,7 @@ export function appConfigFactory (id?: string): AppConfig {
       all: getALlDicts()
     },
     contextMenus: {
-      selected: ['google_translate', 'google_search', 'google_page_translate', 'youdao_page_translate'],
+      selected: ['view_as_pdf', 'google_translate', 'google_search', 'google_page_translate', 'youdao_page_translate'],
       all: getAllContextMenus()
     }
   }

@@ -21,6 +21,7 @@ export function getAllContextMenus () {
     saladict: 'x',
     sogou_page_translate: 'x',
     sogou: 'https://fanyi.sogou.com/#auto/zh-CHS/%s',
+    view_as_pdf: 'x',
     youdao_page_translate: 'x',
     youdao: 'http://dict.youdao.com/w/%s',
     youglish: 'https://youglish.com/search/%s',
