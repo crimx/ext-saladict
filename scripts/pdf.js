@@ -69,15 +69,15 @@ async function modifyViewrJS () {
   file = '/* saladict */ window.__SALADICT_PDF_PAGE__ = true;\n' + file
 
   // change default pdf
-  const defaultPDFTester = /defaultUrl: {[\s\S]*?value: '(\S+?.pdf)',[\s\S]*?kind: OptionKind.VIEWER/
+  const defaultPDFTester = /defaultUrl: {[\s\S]*?value: ('\S+?.pdf'),[\s\S]*?kind: OptionKind.VIEWER/
   if (!defaultPDFTester.test(file)) {
     shell.echo('Could not locate default pdf in viewer.js')
     shell.exit(1)
   }
-  file = file.replace(defaultPDFTester, (m, p1) => m.replace(p1, '/* saladict *//pdf/default.pdf'))
+  file = file.replace(defaultPDFTester, (m, p1) => m.replace(p1, "/* saladict */'/static/pdf/default.pdf'"))
 
   // disable url check
-  const validateTester = /var validateFileURL = void 0;[\s\S]+?^}$/m
+  const validateTester = /var validateFileURL[^\n]*\n+^{$[\s\S]+?^}$/m
   if (!validateTester.test(file)) {
     shell.echo('Could not locate validateFileURL in viewer.js')
     shell.exit(1)
