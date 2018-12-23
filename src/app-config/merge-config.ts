@@ -13,14 +13,19 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
     ? JSON.parse(JSON.stringify(baseConfig))
     : appConfigFactory(oldConfig.id)
 
-  if (oldConfig.version === 9) {
-    ['mode', 'pinMode', 'panelMode', 'qsPanelMode'].forEach(mode => {
+  // pre-merge patch start
+  let oldVersion = oldConfig.version
+
+  if (oldVersion <= 9) {
+    oldVersion = 10
+    ;['mode', 'pinMode', 'panelMode', 'qsPanelMode'].forEach(mode => {
       base[mode].holding.shift = false
       base[mode].holding.ctrl = !!oldConfig[mode]['ctrl']
       base[mode].holding.meta = !!oldConfig[mode]['ctrl']
       delete oldConfig[mode]['ctrl']
     })
   }
+  // pre-merge patch end
 
   mergeString('name')
 
@@ -131,6 +136,15 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   forEach(base.contextMenus.all, (dict, id) => {
     mergeString(`contextMenus.all.${id}`)
   })
+
+  // post-merge patch start
+  oldVersion = oldConfig.version
+
+  if (oldVersion <= 10) {
+    oldVersion = 11
+    base.contextMenus.selected.unshift('view_as_pdf')
+  }
+  // post-merge patch end
 
   return base
 

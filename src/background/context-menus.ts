@@ -1,6 +1,6 @@
 import { message, openURL } from '@/_helpers/browser-api'
 import { MsgType } from '@/typings/message'
-import { AppConfig } from '@/app-config'
+import { AppConfig, ContextMenuDictID } from '@/app-config'
 import i18nLoader from '@/_helpers/i18n'
 import { TranslationFunction } from 'i18next'
 import contextLocles from '@/_locales/context'
@@ -26,6 +26,7 @@ type ContextMenusConfig = AppConfig['contextMenus']
 interface CreateMenuOptions {
   type?: browser.contextMenus.ItemType,
   id?: string
+  parentId?: string
   title?: string
   contexts?: browser.contextMenus.ContextType[]
 }
@@ -38,7 +39,7 @@ const i18n = i18nLoader({ context: contextLocles }, 'context', (_, t) => i18n$$.
 i18n.on('languageChanged', () => i18n$$.next(i18n.t.bind(i18n)))
 
 browser.contextMenus.onClicked.addListener(info => {
-  const menuItemId = info.menuItemId
+  const menuItemId = String(info.menuItemId).replace(/_ba$/, '')
   const selectionText = info.selectionText || ''
   const linkUrl = info.linkUrl || ''
   switch (menuItemId) {
@@ -132,14 +133,7 @@ export function openPDF (linkUrl?: string) {
     // open link as pdf
     openURL(pdfURL + '?file=' + linkUrl)
   } else {
-    browser.tabs.query({ active: true, currentWindow: true })
-      .then(tabs => {
-        if (tabs.length > 0 && tabs[0].url) {
-          openURL(pdfURL + '?file=' + tabs[0].url)
-        } else {
-          openURL(pdfURL)
-        }
-      })
+    openURL(pdfURL)
   }
 }
 
@@ -227,88 +221,139 @@ function requestSelection () {
     })
 }
 
-function setContextMenus (
+async function setContextMenus (
   contextMenus: ContextMenusConfig,
   t: TranslationFunction
 ): Promise<void> {
-  return browser.contextMenus.removeAll()
-    .then(() => {
-      const optionList: CreateMenuOptions[] = []
+  await browser.contextMenus.removeAll()
+  const ctx: browser.contextMenus.ContextType[] = [
+    'audio', 'editable', 'frame', 'image', 'link', 'selection', 'page', 'video'
+  ]
 
-      // pdf
-      optionList.push({
-        id: 'view_as_pdf',
-        title: t('view_as_pdf'),
-        contexts: ['link', 'browser_action']
-      })
+  const containerCtx = new Set<browser.contextMenus.ContextType>(['selection'])
+  const optionList: CreateMenuOptions[] = []
 
-      let browserActionCount = 0
-      contextMenus.selected.forEach(id => {
-        let contexts: browser.contextMenus.ContextType[]
-        switch (id) {
-          case 'google_page_translate':
-          case 'google_cn_page_translate':
-          case 'youdao_page_translate':
-          case 'sogou_page_translate':
-          case 'baidu_page_translate':
-          case 'microsoft_page_translate':
-            contexts = ['all']
-            browserActionCount++
-            break
-          default:
-            contexts = ['selection']
-            break
-        }
-        optionList.push({
-          id,
-          title: t(id),
-          contexts
-        })
-      })
-
-      // Only for browser action
-      if (browserActionCount <= 0) {
-        const google = contextMenus.selected.indexOf('google_page_translate') !== -1
-          ? 'google_page_translate'
-          : 'google_cn_page_translate'
-        optionList.push({
-          id: google,
-          title: t(google),
-          contexts: ['browser_action']
-        })
-        optionList.push({
-          id: 'youdao_page_translate',
-          title: t('youdao_page_translate'),
-          contexts: ['browser_action']
-        })
-      }
-
-      optionList.push({
-        type: 'separator',
-        id: Date.now().toString(),
-        contexts: ['browser_action']
-      })
-
-      // search history
-      optionList.push({
-        id: 'search_history',
-        title: t('history_title'),
-        contexts: ['browser_action']
-      })
-
-      // Manual
-      optionList.push({
-        id: 'notebook',
-        title: t('notebook_title'),
-        contexts: ['browser_action']
-      })
-
-      return Promise.all(
-        optionList.map(option =>
-        new Promise(resolve => {
-          browser.contextMenus.create(option, resolve)
-        })
-      ))
+  let browserActionItems: ContextMenuDictID[] = []
+  for (const id of contextMenus.selected) {
+    let contexts: browser.contextMenus.ContextType[]
+    switch (id) {
+      case 'google_page_translate':
+      case 'google_cn_page_translate':
+      case 'youdao_page_translate':
+      case 'sogou_page_translate':
+      case 'baidu_page_translate':
+      case 'microsoft_page_translate':
+        // two for browser action
+        contexts = ctx
+        browserActionItems.push(id)
+        break
+      case 'view_as_pdf':
+        containerCtx.add('link')
+        contexts = ['link']
+        break
+      default:
+        contexts = ['selection']
+        break
+    }
+    optionList.push({
+      id,
+      title: t(id),
+      contexts
     })
-    .then(() => { /* noop */ })
+  }
+
+  if (optionList.length > 1) {
+    if (browserActionItems.length > 0) {
+      ctx.forEach(type => containerCtx.add(type))
+    }
+
+    await createContextMenu({
+      id: 'saladict_container',
+      title: t('saladict'),
+      contexts: [...containerCtx]
+    })
+
+    for (const opt of optionList) {
+      opt.parentId = 'saladict_container'
+      await createContextMenu(opt)
+    }
+  } else if (optionList.length > 0) {
+    // only one item, no need for parent container
+    await createContextMenu(optionList[0])
+  }
+
+  await createContextMenu({
+    id: 'view_as_pdf_ba',
+    title: t('view_as_pdf'),
+    contexts: ['browser_action', 'page_action']
+  })
+
+  if (browserActionItems.length > 2) {
+    await createContextMenu({
+      id: 'saladict_ba_container',
+      title: t('page_translations'),
+      contexts: ['browser_action', 'page_action']
+    })
+
+    for (const id of browserActionItems) {
+      await createContextMenu({
+        id: id + '_ba',
+        parentId: 'saladict_ba_container',
+        title: t(id),
+        contexts: ['browser_action', 'page_action']
+      })
+    }
+  } else if (browserActionItems.length > 0) {
+    for (const id of browserActionItems) {
+      await createContextMenu({
+        id: id + '_ba',
+        title: t(id),
+        contexts: ['browser_action', 'page_action']
+      })
+    }
+  } else {
+    // Add only to browser action if not selected
+    await createContextMenu({
+      id: 'google_cn_page_translate_ba',
+      title: t('google_cn_page_translate'),
+      contexts: ['browser_action', 'page_action']
+    })
+    await createContextMenu({
+      id: 'youdao_page_translate_ba',
+      title: t('youdao_page_translate'),
+      contexts: ['browser_action', 'page_action']
+    })
+  }
+
+  await createContextMenu({
+    type: 'separator',
+    id: Date.now().toString(),
+    contexts: ['browser_action']
+  })
+
+  // search history
+  await createContextMenu({
+    id: 'search_history',
+    title: t('history_title'),
+    contexts: ['browser_action']
+  })
+
+  // Manual
+  await createContextMenu({
+    id: 'notebook',
+    title: t('notebook_title'),
+    contexts: ['browser_action']
+  })
+}
+
+function createContextMenu (createProperties: CreateMenuOptions): Promise<void> {
+  return new Promise((resolve, reject) => {
+    browser.contextMenus.create(createProperties, () => {
+      if (browser.runtime.lastError) {
+        reject(browser.runtime.lastError)
+      } else {
+        resolve()
+      }
+    })
+  })
 }

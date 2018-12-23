@@ -109,6 +109,11 @@
     "zh_CN": "牛津词典",
     "zh_TW": "牛津字典"
   },
+  "page_translations": {
+    "en": "Page Translations",
+    "zh_CN": "网页翻译",
+    "zh_TW": "網頁翻譯"
+  },
   "saladict": {
     "en": "Saladict",
     "zh_CN": "沙拉查词",
