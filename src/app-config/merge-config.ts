@@ -151,10 +151,14 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   function mergeSelectedDicts (path: string): void {
     const selected = get(oldConfig, [path, 'selected'])
     if (Array.isArray(selected)) {
-      const allDict = get(base, [path, 'all'])
-      const arr = selected.filter(id => allDict[id])
-      if (arr.length > 0) {
-        set(base, [path, 'selected'], arr)
+      if (selected.length === 0) {
+        set(base, [path, 'selected'], [])
+      } else {
+        const allDict = get(base, [path, 'all'])
+        const arr = selected.filter(id => allDict[id])
+        if (arr.length > 0) {
+          set(base, [path, 'selected'], arr)
+        }
       }
     }
   }
