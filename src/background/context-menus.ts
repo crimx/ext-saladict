@@ -62,7 +62,7 @@ browser.contextMenus.onClicked.addListener(info => {
       openMicrosoftPage()
       break
     case 'view_as_pdf':
-      openPDF(linkUrl)
+      openPDF(linkUrl, info.menuItemId !== 'view_as_pdf_ba')
       break
     case 'search_history':
       openURL(browser.runtime.getURL('history.html'))
@@ -127,14 +127,23 @@ export function init (initConfig: ContextMenusConfig): Observable<void> {
   return setMenus$$
 }
 
-export function openPDF (linkUrl?: string) {
+/**
+ * @param url provide a url
+ * @param force load the current tab anyway
+ */
+export async function openPDF (url?: string, force?: boolean) {
   const pdfURL = browser.runtime.getURL('static/pdf/web/viewer.html')
-  if (linkUrl) {
+  if (url) {
     // open link as pdf
-    openURL(pdfURL + '?file=' + linkUrl)
-  } else {
-    openURL(pdfURL)
+    return openURL(pdfURL + '?file=' + encodeURIComponent(url))
   }
+  const tabs = await browser.tabs.query({ active: true, currentWindow: true })
+  if (tabs.length > 0 && tabs[0].url) {
+    if (/pdf$/i.test(tabs[0].url as string) || force) {
+      return openURL(pdfURL + '?file=' + encodeURIComponent(tabs[0].url))
+    }
+  }
+  return openURL(pdfURL)
 }
 
 export function openGoogle (cn?: boolean) {
@@ -249,7 +258,8 @@ async function setContextMenus (
         break
       case 'view_as_pdf':
         containerCtx.add('link')
-        contexts = ['link']
+        containerCtx.add('page')
+        contexts = ['link', 'page']
         break
       default:
         contexts = ['selection']
