@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.22.7"></a>
+## [6.22.7](https://github.com/crimx/ext-saladict/compare/v6.22.6...v6.22.7) (2018-12-31)
+
+
+### Bug Fixes
+
+* better pdf context menu ([e7ada83](https://github.com/crimx/ext-saladict/commit/e7ada83))
+* keep empty selected dicts ([acf3fb3](https://github.com/crimx/ext-saladict/commit/acf3fb3))
+
+
+
 <a name="6.22.6"></a>
 ## [6.22.6](https://github.com/crimx/ext-saladict/compare/v6.22.5...v6.22.6) (2018-12-23)
 
