@@ -124,7 +124,7 @@ export class ExportModalBody extends React.Component<ExportModalInnerProps, Expo
     storage.sync.get<{ wordpageTemplate: string }>('wordpageTemplate')
       .then(({ wordpageTemplate }) => {
         const template = wordpageTemplate ||
-          `${t('content:wordEditorNoteWord')}: %text%\n${t('content:wordEditorNoteContext')}: %context%\n`
+          `${t('content:wordEditorNoteWord')}: %text%\n%trans%\n${t('content:wordEditorNoteContext')}: %context%\n`
         this.setState({
           template,
           processedWords: processWords(rawWords, template),

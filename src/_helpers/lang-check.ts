@@ -17,7 +17,7 @@ export const testDeutsch = /\u00E4\u00F6\u00FC\u00C4\u00D6\u00DC\u00df/i
 export const testSpanish = /\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1\u00fc\u00a1\u00bf/i
 
 /** Languages excpet Chinese and English */
-export const testerMinor = /[^\u4e00-\u9fa5a-zA-Z0-9\s\/\[\]\{\}\$\^\*\+\|\?\.\-~!@#%&()_='";:><,。？！，、；：“”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
+export const testerMinor = /[^\u4e00-\u9fa5a-zA-Z0-9\s\u200b\/\[\]\{\}\$\^\*\+\|\?\.\-~!@#%&()_='";:><,。？！，、；：“”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
 
 export const testerPunct = /[\/\[\]\{\}\$\^\*\+\|\?\.\-~!@#%&()_='";:><,。？！，、；：“”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
 

@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.22.8"></a>
+## [6.22.8](https://github.com/crimx/ext-saladict/compare/v6.22.7...v6.22.8) (2019-01-07)
+
+
+### Bug Fixes
+
+* blacklist stackedit.io ([775298d](https://github.com/crimx/ext-saladict/commit/775298d)), closes [#277](https://github.com/crimx/ext-saladict/issues/277)
+* encode uri ([6098e34](https://github.com/crimx/ext-saladict/commit/6098e34))
+* ignore &[#8203](https://github.com/crimx/ext-saladict/issues/8203); ([156275b](https://github.com/crimx/ext-saladict/commit/156275b)), closes [#274](https://github.com/crimx/ext-saladict/issues/274)
+
+
+### Performance Improvements
+
+* faster matching sentence head ([3fa2fb6](https://github.com/crimx/ext-saladict/commit/3fa2fb6)), closes [#274](https://github.com/crimx/ext-saladict/issues/274)
+
+
+
 <a name="6.22.7"></a>
 ## [6.22.7](https://github.com/crimx/ext-saladict/compare/v6.22.6...v6.22.7) (2018-12-31)
 
