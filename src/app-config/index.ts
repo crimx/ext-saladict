@@ -247,7 +247,7 @@ export default appConfigFactory
 
 export function appConfigFactory (id?: string): AppConfig {
   return {
-    version: 11,
+    version: 12,
     id: id || genUniqueKey(),
 
     name: `%%_default_%%`,
@@ -393,7 +393,9 @@ export function appConfigFactory (id?: string): AppConfig {
     },
 
     whitelist: [],
-    blacklist: [],
+    blacklist: [
+      ['^https://stackedit\.io(/.*)?$', 'https://stackedit.io/*']
+    ],
 
     dicts: {
       selected: ['bing', 'cambridge', 'youdao', 'urban', 'vocabulary', 'google', 'sogou', 'zdic', 'guoyu', 'liangan', 'googledict'],

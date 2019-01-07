@@ -144,6 +144,12 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
     oldVersion = 11
     base.contextMenus.selected.unshift('view_as_pdf')
   }
+  if (oldVersion <= 11) {
+    oldVersion = 12
+    base.blacklist.push(
+      ['^https://stackedit\.io(/.*)?$', 'https://stackedit.io/*']
+    )
+  }
   // post-merge patch end
 
   return base
