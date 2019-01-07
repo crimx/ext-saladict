@@ -140,7 +140,7 @@ export async function openPDF (url?: string, force?: boolean) {
   const tabs = await browser.tabs.query({ active: true, currentWindow: true })
   if (tabs.length > 0 && tabs[0].url) {
     if (/pdf$/i.test(tabs[0].url as string) || force) {
-      return openURL(pdfURL + '?file=' + encodeURIComponent(tabs[0].url))
+      return openURL(pdfURL + '?file=' + encodeURIComponent((tabs[0].url as string)))
     }
   }
   return openURL(pdfURL)
