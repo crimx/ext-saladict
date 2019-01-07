@@ -152,6 +152,10 @@ const validMouseup$$ = merge(
       }
     }
 
+    if (isBlacklisted()) {
+      return false
+    }
+
     return true
   }),
   // if user click on a selected text,
@@ -256,7 +260,9 @@ combineLatest(
   }),
   distinctUntilChanged((oldVal, newVal) => oldVal[0] === newVal[0] && oldVal[1] === newVal[1]),
   switchMap(([instant, insCapDelay]) => {
-    if (!instant || window.name === 'saladict-wordeditor') { return of(undefined) }
+    if (!instant || window.name === 'saladict-wordeditor' || isBlacklisted()) {
+      return of(undefined)
+    }
     return merge(
       validMouseup$$.pipe(mapTo(undefined)),
       fromEvent<MouseEvent>(window, 'mouseout', { capture: true }).pipe(mapTo(undefined)),
@@ -488,4 +494,13 @@ function selectCursorWord (e: MouseEvent): void {
 
     range.detach()
   }
+}
+
+function isBlacklisted (): boolean {
+  const url = window.pageURL || document.URL || ''
+  if (!url) { return false }
+  return (
+    config.blacklist.some(([r]) => new RegExp(r).test(url)) &&
+    config.whitelist.every(([r]) => !new RegExp(r).test(url))
+  )
 }
