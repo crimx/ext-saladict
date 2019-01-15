@@ -209,6 +209,13 @@
   version "9.6.18"
   resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-9.6.18.tgz#092e13ef64c47e986802c9c45a61c1454813b31d"
 
+"@types/qrcode.react@^0.8.1":
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/@types/qrcode.react/-/qrcode.react-0.8.1.tgz#7efeb1d01d8e6dddcdf07fbec0724aaf0fa5c984"
+  integrity sha512-OpMOBjWIMTnC1sdLcFgif/cXZYiPQGUN2yDaxC2EmZaAmElxehE+toMzPZvUJVXNyFXFdmYSDRWsjKtTTnqqAQ==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-dom@^16.0.5":
   version "16.0.5"
   resolved "http://registry.npm.taobao.org/@types/react-dom/download/@types/react-dom-16.0.5.tgz#a757457662e3819409229e8f86795ff37b371f96"
@@ -7297,6 +7304,19 @@ q@^1.1.2, q@^1.4.1, q@^1.5.1:
   version "1.5.1"
   resolved "http://registry.npm.taobao.org/q/download/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
 
+qr.js@0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/qr.js/-/qr.js-0.0.0.tgz#cace86386f59a0db8050fa90d9b6b0e88a1e364f"
+  integrity sha1-ys6GOG9ZoNuAUPqQ2baw6IoeNk8=
+
+qrcode.react@^0.9.2:
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/qrcode.react/-/qrcode.react-0.9.2.tgz#52f9d55db38bc2d75d63b685ca266b7d6286575b"
+  integrity sha512-opV0IA4w84qMaZg3hhgmktDs1xjfx3K7RAOzdvmKgkLdhmtv95AYGZmlG0s3NIAZ1qXCK4AyPJayLd3sa6p/RA==
+  dependencies:
+    prop-types "^15.6.0"
+    qr.js "0.0.0"
+
 qs@6.5.1:
   version "6.5.1"
   resolved "http://registry.npm.taobao.org/qs/download/qs-6.5.1.tgz#349cdf6eef89ec45c12d7d5eb3fc0c870343a6d8"
@@ -9602,10 +9622,6 @@ vue-parser@^1.1.5:
   resolved "http://registry.npm.taobao.org/vue-parser/download/vue-parser-1.1.6.tgz#3063c8431795664ebe429c23b5506899706e6355"
   dependencies:
     parse5 "^3.0.3"
-
-vue-qriously@^1.1.1:
-  version "1.1.1"
-  resolved "http://registry.npm.taobao.org/vue-qriously/download/vue-qriously-1.1.1.tgz#b3a84b05280cb1edfd153bbc003f031995ea7ce7"
 
 vue-stash@^2.0.1-beta:
   version "2.0.1-beta"
