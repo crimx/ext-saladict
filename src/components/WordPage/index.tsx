@@ -30,17 +30,13 @@ export interface WordPageState {
 }
 
 export default class WordPage extends React.Component<WordPageProps, WordPageState> {
-  constructor (props) {
+  constructor (props: WordPageProps) {
     super(props)
     this.state = {
       locale: 'zh-CN'
     }
-  }
-
-  componentDidMount () {
     createActiveConfigStream().subscribe(config => {
-      const { locale } = this.state
-      if (locale !== config.langCode && antdLocales[locale]) {
+      if (this.state.locale !== config.langCode && antdLocales[config.langCode]) {
         this.setState({ locale: config.langCode })
       }
     })
