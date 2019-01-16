@@ -1,832 +1,87 @@
 {
-  "acknowledgement": {
-    "en": "Acknowledgement ",
+  "head_info_acknowledgement": {
+    "en": "Acknowledgement",
     "zh_CN": "特别鸣谢",
     "zh_TW": "特別鳴謝"
   },
-  "acknowledgement_trans_tw": {
+  "head_info_acknowledgement_trans_tw": {
     "en": "for traditional Chinese translation",
     "zh_CN": "提供繁体中文翻译",
     "zh_TW": "提供繁體中文翻譯"
   },
-  "acknowledgement_weblio": {
+  "head_info_acknowledgement_weblio": {
     "en": "for helping add Weblio dict",
     "zh_CN": "协助添加 Weblio 辞書",
     "zh_TW": "協助新增 Weblio 辭書"
   },
-  "alipay": {
-    "en": "Alipay",
-    "zh_CN": "支付宝",
-    "zh_TW": "支付寶"
-  },
-  "animation": {
-    "en": "Use animation transitions",
-    "zh_CN": "开启动画过渡",
-    "zh_TW": "啓用轉換動畫"
-  },
-  "app_active": {
-    "en": "Enable Inline Translator",
-    "zh_CN": "启用划词翻译",
-    "zh_TW": "啟用滑鼠劃字翻譯"
-  },
-  "app_active_description": {
-    "en": "Quick Search is still available even if Inline translation is turned off. PDF links will be automatically captured if the sniffer is turned on. Previous records can be cleared on Search History Page.",
-    "zh_CN": "划词翻译功能关闭后快捷查词功能依然可用。开启默认 PDF 浏览所有 PDF 链接将自动跳转到本扩展打开（包括本地）。关闭记录查词历史后先前的记录依然保留，可在查词历史页面手动清空。",
-    "zh_TW": "滑鼠劃字和句子翻譯功能關閉後，迅速查單字和句子的功能依然可以用。開啟 PDF 瀏覽功能後，所有 PDF 鏈接將自動跳轉到本延伸擴展視窗介面打開（包括本地）。關閉查字歷史記錄後，先前的記錄依然保存，可以在查字歷史視窗介面裡手動清空。"
-  },
-  "app_active_title": {
-    "en": "Enable Saladict",
-    "zh_CN": "开启查词",
-    "zh_TW": "開啟查詞"
-  },
-  "autopron_cn": {
-    "en": "Chinese",
-    "zh_CN": "中文",
-    "zh_TW": "中文"
-  },
-  "autopron_description": {
-    "en": "Auto pronunciation.",
-    "zh_CN": "下拉列表的项目为支持自动发音的词典。",
-    "zh_TW": "下拉列表的選項項目為支持自動發音的字典。"
-  },
-  "autopron_en": {
-    "en": "English",
-    "zh_CN": "英文",
-    "zh_TW": "英文"
-  },
-  "autopron_pref": {
-    "en": "Accent priority",
-    "zh_CN": "优先口音",
-    "zh_TW": "優先口音"
-  },
-  "autopron_title": {
-    "en": "auto pronounce",
-    "zh_CN": "自动发音",
-    "zh_TW": "自動發音"
-  },
-  "autopron_uk": {
-    "en": "UK",
-    "zh_CN": "英式",
-    "zh_TW": "英式"
-  },
-  "autopron_us": {
-    "en": "US",
-    "zh_CN": "美式",
-    "zh_TW": "美式"
-  },
-  "bitcoin": {
-    "en": "Bitcoin",
-    "zh_CN": "比特币",
-    "zh_TW": "比特幣"
-  },
-  "buy_me_a_coffee": {
-    "en": "Enjoying the extension? Care to oblige me with a cup of coffee?",
-    "zh_CN": "觉得好用的话欢迎支持一下我买杯咖啡哦~",
-    "zh_TW": "覺得好用的話，歡迎支持我一下買杯咖啡哦！謝謝！~"
-  },
-  "changes_not_saved": {
-    "en": "Changes not saved. Close anyway?",
-    "zh_CN": "修改未保存。确认关闭？",
-    "zh_TW": "修改未保存。確定關閉？"
-  },
-  "config_profile": {
-    "en": "Current Profile",
-    "zh_CN": "当前模式",
-    "zh_TW": "当前模式"
-  },
-  "config_profile_add": {
-    "en": "Add Profile",
-    "zh_CN": "添加模式",
-    "zh_TW": "添加模式"
-  },
-  "config_profile_delete_confirm": {
-    "en": "Delete Profile \"{{name}}\". Confirm?",
-    "zh_CN": "“{{name}}”将被删除，确认？",
-    "zh_TW": "「{{name}}」將被刪除，確認？"
-  },
-  "config_profile_description": {
-    "en": "Settings under different Profiles are independent. One may switch profiles by hovering on the menu icon on the Dictionary Panel. Or focus on the icon then hit <kbd>↓</kbd>.",
-    "zh_CN": "每个模式下的设置都是独立的，互不干扰。鼠标悬浮在查词面板的菜单图标上可快速切换，或者焦点选中菜单图标然后按<kbd>↓</kbd>。",
-    "zh_TW": "每個模式下的设置都是獨立的，互不干擾。滑鼠懸浮在字典介面的選單圖示上可快速切換，或者焦點選中選單圖示然後按<kbd>↓</kbd>。"
-  },
-  "config_profile_rename": {
-    "en": "Rename Profile",
-    "zh_CN": "情景模式重命名",
-    "zh_TW": "情景模式重新命名"
-  },
-  "config_profile_title": {
-    "en": "Config Profile",
-    "zh_CN": "情景模式",
-    "zh_TW": "情景模式"
-  },
-  "contact_author": {
+  "head_info_contact_author": {
     "en": "Contact Author",
     "zh_CN": "联系作者",
     "zh_TW": "聯絡作者"
   },
-  "context_add_panel_title": {
-    "en": "Add Context Menu",
-    "zh_CN": "添加右键菜单",
-    "zh_TW": "添加右鍵菜單"
-  },
-  "context_description": {
-    "en": "Context menu shows up when right clicking a text selection. Drag items to sort.",
-    "zh_CN": "选择单词之后可以通过右键查找或者搜索。拖动标题可以进行排序。",
-    "zh_TW": "選擇單字和句子後可以按滑鼠右鍵查尋或者搜尋。使用滑鼠拖動標題可以進行排列。"
-  },
-  "context_title": {
-    "en": "Context Menu",
-    "zh_CN": "右键菜单",
-    "zh_TW": "右鍵菜單"
-  },
-  "dict_default_height": {
-    "en": "Default height",
-    "zh_CN": "词典默认高度",
-    "zh_TW": "字典預設高度"
-  },
-  "dict_default_unfold": {
-    "en": "Default Unfold",
-    "zh_CN": "默认展开",
-    "zh_TW": "自動展開"
-  },
-  "dict_panel_db_search": {
-    "en": "Double click search",
-    "zh_CN": "面板内继续查词",
-    "zh_TW": "介面内繼續查字"
-  },
-  "dict_panel_db_search_ctrl": {
-    "en": "Double Click + Ctrl",
-    "zh_CN": "双击同时按 Ctrl",
-    "zh_TW": "雙點擊同時 Ctrl"
-  },
-  "dict_panel_db_search_double": {
-    "en": "Double Click",
-    "zh_CN": "双击",
-    "zh_TW": "雙點擊"
-  },
-  "dict_panel_db_search_none": {
-    "en": "Disabled",
-    "zh_CN": "关闭",
-    "zh_TW": "關閉"
-  },
-  "dict_panel_description": {
-    "en": "Dictionary Panel settings. Double click search can be enabled inside dict panel. Or double click with <kbd>Ctrl</kbd> or <kbd>Command ⌘</kbd> pressed.",
-    "zh_CN": "查词面板相关设置。可设置在查词面板内继续双击查词，或者双击同时需要按住 <kbd>Ctrl</kbd> 或 <kbd>Command ⌘</kbd> 键。",
-    "zh_TW": "查字典介面相關設置。可設置在查單字介面內繼續雙點擊查字，或者雙點擊同時需要按住 <kbd>Ctrl</kbd> 或 <kbd>Command ⌘</kbd> 鍵。"
-  },
-  "dict_panel_font_size": {
-    "en": "Font size for search reasults",
-    "zh_CN": "词典内容字体大小",
-    "zh_TW": "字典内容字體大小"
-  },
-  "dict_panel_height_ratio": {
-    "en": "Panel max height ratio",
-    "zh_CN": "查词面板最高占屏幕比例",
-    "zh_TW": "查字典介面最高占螢幕高度比例"
-  },
-  "dict_panel_lang_en": {
-    "en": "En",
-    "zh_CN": "英",
-    "zh_TW": "英"
-  },
-  "dict_panel_lang_ja": {
-    "en": "Ja",
-    "zh_CN": "日",
-    "zh_TW": "日"
-  },
-  "dict_panel_lang_zhs": {
-    "en": "Zhs",
-    "zh_CN": "简",
-    "zh_TW": "简"
-  },
-  "dict_panel_lang_zht": {
-    "en": "Zht",
-    "zh_CN": "繁",
-    "zh_TW": "繁"
-  },
-  "dict_panel_lang_kor": {
-    "en": "Korean",
-    "zh_CN": "韩",
-    "zh_TW": "韩"
-  },
-  "dict_panel_lang_fr": {
-    "en": "French",
-    "zh_CN": "法",
-    "zh_TW": "法"
-  },
-  "dict_panel_lang_de": {
-    "en": "Deutsch",
-    "zh_CN": "德",
-    "zh_TW": "德"
-  },
-  "dict_panel_lang_es": {
-    "en": "Español",
-    "zh_CN": "西",
-    "zh_TW": "西"
-  },
-  "dict_panel_title": {
-    "en": "Dict Panel",
-    "zh_CN": "查词面板",
-    "zh_TW": "查字典介面"
-  },
-  "dict_panel_width": {
-    "en": "Panel width",
-    "zh_CN": "查词面板宽度",
-    "zh_TW": "查字典介面寬度"
-  },
-  "dict_selection_count_max": {
-    "en": "Maximum word count to start searching",
-    "zh_CN": "选词最大字数",
-    "zh_TW": "選中單字最大字數"
-  },
-  "dict_selection_count_min": {
-    "en": "Minimum word count to start searching",
-    "zh_CN": "选词最小字数",
-    "zh_TW": "選中單字最小字數"
-  },
-  "dict_show_when_chs": {
-    "en": "Search Chinese",
-    "zh_CN": "查中文时显示",
-    "zh_TW": "查中文時顯示"
-  },
-  "dict_show_when_eng": {
-    "en": "Search English",
-    "zh_CN": "查英文时显示",
-    "zh_TW": "查英文時顯示"
-  },
-  "dict_show_when_minor": {
-    "en": "Other Languages",
-    "zh_CN": "查其它语种时显示",
-    "zh_TW": "查其它語種時顯示"
-  },
-  "dicts_add_panel_title": {
-    "en": "Add dicts",
-    "zh_CN": "添加词典",
-    "zh_TW": "添加字典"
-  },
-  "dicts_btn_add": {
-    "en": "Add",
-    "zh_CN": "添加",
-    "zh_TW": "添加"
-  },
-  "dicts_description": {
-    "en": "Drag titles to sort.",
-    "zh_CN": "配置各个词典，建议按个人需求裁减到最少。拖动词典标题可以进行排序。",
-    "zh_TW": "設定配置各個字典，建議按照個人所需來增減需求。使用滑鼠拖動字典標題可以進行排列。"
-  },
-  "dicts_title": {
-    "en": "Dict Options",
-    "zh_CN": "词典设置",
-    "zh_TW": "字典設定"
-  },
-  "edit_on_fav": {
-    "en": "Open WordEditor on saving",
-    "zh_CN": "红心单词时弹出编辑面板",
-    "zh_TW": "紅心單字時彈出編輯介面"
-  },
-  "example": {
-    "en": "Example",
-    "zh_CN": "例子",
-    "zh_TW": "例子"
-  },
-  "export": {
-    "en": "Export",
-    "zh_CN": "导出设定",
-    "zh_TW": "匯出設定"
-  },
-  "import": {
-    "en": "Import",
-    "zh_CN": "导入设定",
-    "zh_TW": "匯入設定"
-  },
-  "instructions": {
+  "head_info_instructions": {
     "en": "Instructions",
     "zh_CN": "使用说明",
     "zh_TW": "使用說明"
   },
-  "language": {
-    "en": "App Language",
-    "zh_CN": "界面语言",
-    "zh_TW": "介面語言"
-  },
-  "language_chinese": {
-    "en": "Search Chinese",
-    "zh_CN": "中文查词",
-    "zh_TW": "中文查字"
-  },
-  "language_english": {
-    "en": "Search English",
-    "zh_CN": "英文查词",
-    "zh_TW": "英文查字"
-  },
-  "language_minor": {
-    "en": "Other Languages",
-    "zh_CN": "其它语种",
-    "zh_TW": "其它語種"
-  },
-  "language_mode_description": {
-    "en": "Saladict will be triggered when the selection contains words in the chosen languages.",
-    "zh_CN": "当选中的文字包含相应的语言时才进行查找。",
-    "zh_TW": "當選中的文字包含相對應的語言時，才進行查尋。"
-  },
-  "language_title": {
-    "en": "Language",
-    "zh_CN": "语言支持",
-    "zh_TW": "語言支援"
-  },
-  "match_pattern_blacklist": {
-    "en": "Black List",
-    "zh_CN": "黑名单",
-    "zh_TW": "黑名單"
-  },
-  "match_pattern_description": {
-    "en": "Specify URLs as match patterns. <a href=\"https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Match_patterns#Examples\" target=\"_blank\">Examples</a>.",
-    "zh_CN": "网址支持匹配模式。 <a href=\"https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例\" target=\"_blank\">例子</a>。",
-    "zh_TW": "網址支援匹配模式。 <a href=\"https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例\" target=\"_blank\">例子</a>。"
-  },
-  "match_pattern_pdfBlacklist": {
-    "en": "PDF Black List",
-    "zh_CN": "PDF 黑名单",
-    "zh_TW": "PDF 黑名單"
-  },
-  "match_pattern_pdfWhitelist": {
-    "en": "PDF White List",
-    "zh_CN": "PDF 白名单",
-    "zh_TW": "PDF 白名單"
-  },
-  "match_pattern_placeholder": {
-    "en": "Input URL match patterns. Empty lines will be removed when saved.",
-    "zh_CN": "输入网址或匹配模式。空行保存后会被移除。",
-    "zh_TW": "輸入網址或匹配模式。空行保存後會被移除。"
-  },
-  "match_pattern_title": {
-    "en": "Black/White List",
-    "zh_CN": "黑白名单",
-    "zh_TW": "黑白名單"
-  },
-  "match_pattern_whitelist": {
-    "en": "White List",
-    "zh_CN": "白名单",
-    "zh_TW": "白名單"
-  },
-  "match_pattern_url": {
-    "en": "https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Match_patterns#Examples",
-    "zh_CN": "https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例",
-    "zh_TW": "https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例"
-  },
-  "mode_description": {
-    "en": "When a text selection is made:",
-    "zh_CN": "当用鼠标在网页上选择了一段文本：",
-    "zh_TW": "當使用滑鼠在網頁上選擇一段句子或單字："
-  },
-  "mode_direct": {
-    "en": "Direct Search",
-    "zh_CN": "直接搜索",
-    "zh_TW": "直接搜尋"
-  },
-  "mode_double": {
-    "en": "Double Click",
-    "zh_CN": "双击搜索",
-    "zh_TW": "滑鼠雙點擊"
-  },
-  "mode_double_click_delay": {
-    "en": "Double Click Delay",
-    "zh_CN": "双击间隔",
-    "zh_TW": "滑鼠雙點擊間隔"
-  },
-  "mode_explain": {
-    "en": "<ul><li><strong>'Show Icon'</strong>, a cute little icon pops up nearby the cursor; </li><li><strong>'Directly Search'</strong>, the dictionary panel shows up directly; </li><li><strong>'Double Click'</strong>, dictionary panel shows up after double click selection; </li><li><strong>'Hold a Key'</strong>, the selected key must be pressed when the selection is made (Meta key is <kbd>⌘ Command</kbd> on Mac and <kbd>⊞ Windows</kbd> for others); </li><li><strong>'Instant Capture'</strong>, selection is automatically made near by the cursor. </li></ul>",
-    "zh_CN": "<ul><li><strong>“显示图标”</strong>会先在鼠标附近显示一个图标，鼠标移上去后才显示词典面板；</li><li><strong>“直接搜索”</strong>则不显示图标，直接显示词典面板；</li><li><strong>“双击搜索”</strong>双击选择文本之后直接显示词典面板；</li><li><strong>“按住按键”</strong>在放开鼠标之前按住选择的按键才显示词典面板（Meta 键为 Mac 上的 <kbd>⌘ Command</kbd> 键以及其它键盘的 <kbd>⊞ Windows</kbd> 键）；</li><li><strong>“鼠标悬浮取词”</strong>会自动选取鼠标下发的单词，可配合快捷键开启关闭。</li></ul>",
-    "zh_TW": "<ul><li><strong>「顯示圖案」</strong>會先在滑鼠附近顯示一個圖案，滑鼠移動到圖案，會顯示出字典的視窗介面；</li><li><strong>「直接搜尋」</strong>則不會顯示圖案，直接顯示字典視窗介面；</li><li><strong>「滑鼠雙點擊」</strong>滑鼠雙點擊所選擇的句子或單字後，會直接顯示字典視窗介面；</li><li><strong>「按住按键」</strong>在放開滑鼠之前，需按住選擇的按鍵才顯示字典視窗介面（Meta 鍵為 Mac 上的 <kbd>⌘ Command</kbd> 鍵以及其它鍵盤的 <kbd>⊞ Windows</kbd> 鍵）；</li><li><strong>「滑鼠懸浮取詞」</strong>會自動選取滑鼠下方的單字，可配合快捷鍵啓用與關閉。</li></ul>"
-  },
-  "mode_holding": {
-    "en": "Hold a key",
-    "zh_CN": "按住按键",
-    "zh_TW": "按住按键"
-  },
-  "mode_holding_ctrl": {
-    "en": "<kbd>Ctrl</kbd>",
-    "zh_CN": "<kbd>Ctrl</kbd>",
-    "zh_TW": "<kbd>Ctrl</kbd>"
-  },
-  "mode_holding_meta": {
-    "en": "<kbd>Meta(⌘/⊞)</kbd>",
-    "zh_CN": "<kbd>Meta(⌘/⊞)</kbd>",
-    "zh_TW": "<kbd>Meta(⌘/⊞)</kbd>"
-  },
-  "mode_holding_shift": {
-    "en": "<kbd>Shift</kbd>",
-    "zh_CN": "<kbd>Shift</kbd>",
-    "zh_TW": "<kbd>Shift</kbd>"
-  },
-  "mode_holding_subtitle": {
-    "en": "Chose holding keys:",
-    "zh_CN": "选择按住按键：",
-    "zh_TW": "选择按住按键："
-  },
-  "mode_icon": {
-    "en": "Show Icon",
-    "zh_CN": "显示图标",
-    "zh_TW": "顯示圖案"
-  },
-  "mode_instant": {
-    "en": "Instant Capture",
-    "zh_CN": "鼠标悬浮取词",
-    "zh_TW": "滑鼠懸浮取詞"
-  },
-  "mode_instant_alt": {
-    "en": "Alt",
-    "zh_CN": "Alt",
-    "zh_TW": "Alt"
-  },
-  "mode_instant_ctrl": {
-    "en": "Ctrl/⌘",
-    "zh_CN": "Ctrl/⌘",
-    "zh_TW": "Ctrl/⌘"
-  },
-  "mode_instant_delay": {
-    "en": "Capture delay",
-    "zh_CN": "取词延时",
-    "zh_TW": "取詞等待"
-  },
-  "mode_instant_direct": {
-    "en": "Direct",
-    "zh_CN": "直接取词",
-    "zh_TW": "直接取詞"
-  },
-  "mode_instant_disabled": {
-    "en": "Disabled",
-    "zh_CN": "关闭取词",
-    "zh_TW": "關閉取詞"
-  },
-  "mode_instant_key": {
-    "en": "Instant Capture Key",
-    "zh_CN": "悬浮取词按键",
-    "zh_TW": "懸浮取詞按鍵"
-  },
-  "mode_title": {
-    "en": "Search Mode",
-    "zh_CN": "查词模式",
-    "zh_TW": "查字模式"
-  },
-  "mta_always": {
-    "en": "Keep Unfolding",
-    "zh_CN": "保持展开",
-    "zh_TW": "保持展開"
-  },
-  "mta_auto_unfold": {
-    "en": "Auto unfold multiline search box",
-    "zh_CN": "自动展开多行搜索框",
-    "zh_TW": "自動展開多行搜尋框"
-  },
-  "mta_once": {
-    "en": "Unfold Once",
-    "zh_CN": "展开一次",
-    "zh_TW": "展開一次"
-  },
-  "never": {
-    "en": "Never",
-    "zh_CN": "从不",
-    "zh_TW": "從不"
-  },
-  "new_version": {
-    "en": "(New Version Available!)",
-    "zh_CN": "(请更新版本!)",
-    "zh_TW": "(請更新版本!)"
-  },
-  "no_type_field": {
-    "en": "No selection in editable regions",
-    "zh_CN": "不在输入框划词",
-    "zh_TW": "不在輸入框滑鼠滑字"
-  },
-  "none": {
-    "en": "None",
-    "zh_CN": "无",
-    "zh_TW": "無"
-  },
-  "notebook_description": {
-    "en": "Notebook related",
-    "zh_CN": "生词本相关",
-    "zh_TW": "生字本相關"
-  },
-  "notebook_title": {
-    "en": "Notebook",
-    "zh_CN": "添加生词",
-    "zh_TW": "添加生字"
-  },
-  "panelmode_description": {
-    "en": "Inside dict panel.",
-    "zh_CN": "查词面板内部的查词模式。",
-    "zh_TW": "字典視窗內部的查字模式。"
-  },
-  "panelmode_title": {
-    "en": "Panel Mode",
-    "zh_CN": "面板查词",
-    "zh_TW": "內部滑選"
-  },
-  "pdf_sniff": {
-    "en": "Enable PDF Viewer",
-    "zh_CN": "默认用本扩展浏览 PDF",
-    "zh_TW": "使用本應用程式瀏覽 PDF"
-  },
-  "pinmode_description": {
-    "en": "When Dictionary Panel is pinned.",
-    "zh_CN": "当面板被钉住时的查词模式。",
-    "zh_TW": "當視窗被釘住時的查字模式。"
-  },
-  "pinmode_title": {
-    "en": "Pinned Mode",
-    "zh_CN": "钉住查词",
-    "zh_TW": "釘住查字"
-  },
-  "popup_description": {
-    "en": "Browser Action icon is right next to the address bar. Preloaded content will be inserted into input box. Enable auto search to search as soon as the panel shows up.",
-    "zh_CN": "点击右上方地址栏旁图标弹出的窗口。选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。",
-    "zh_TW": "滑鼠點擊右上方的地址欄，旁邊的圖案會自動彈出視窗介面。選擇預先下載的內容，會顯示在輸入框裡。啟動自動查字功能，在視窗介面出現後，自動開啟查字功能。"
-  },
-  "popup_title": {
-    "en": "Browser Action",
-    "zh_CN": "右上弹框",
-    "zh_TW": "右上彈框"
-  },
-  "preference_description": {
-    "en": "Switch off animation transitions to reduce runtime cost. If selection making in editable regions is banned, the extension will identify Input Boxes, TextAreas and other common text editors like CodeMirror, ACE and Monaco.",
-    "zh_CN": "关闭过渡动画可减少资源消耗。关闭输入框划词后，本扩展会自动识别输入框以及常见编辑器，如 CodeMirror、ACE 和 Monaco。",
-    "zh_TW": "關閉轉換動畫可減少資源消耗。關閉輸入框滑鼠滑字后，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror、ACE 和 Monaco。"
-  },
-  "preference_title": {
-    "en": "Preference",
-    "zh_CN": "划词习惯",
-    "zh_TW": "滑字習慣"
-  },
-  "preload": {
-    "en": "Preload",
-    "zh_CN": "预先加载",
-    "zh_TW": "預先下載"
-  },
-  "preload_auto": {
-    "en": "Auto search",
-    "zh_CN": "自动查词",
-    "zh_TW": "自動查字"
-  },
-  "preload_clipboard": {
-    "en": "Clipboard",
-    "zh_CN": "剪贴板",
-    "zh_TW": "剪貼板"
-  },
-  "preload_selection": {
-    "en": "Selection",
-    "zh_CN": "页面划词",
-    "zh_TW": "滑鼠劃字"
-  },
-  "privacy_description": {
-    "en": "Search histry might reveal your browsing history unintentionally. Also, duo to limited syncing capacity, _Notebook_ and Search history would not be synced. Please export the data regularly.",
-    "zh_CN": "查词记录可能会泄漏您的浏览痕迹。另外因同步容量有限，_生词本_和查词记录均没有同步。在使用系统垃圾清理工具时，数据可能会被一并清除。请注意定期导出。",
-    "zh_TW": "查字典記錄可能會泄漏您的瀏覽痕跡。另外因同步容量有限，_生字本_和查詞典記錄都沒有同步。在使用電腦垃圾清理工具時，資料可能會被一併清除。請注意定期輸出。"
-  },
-  "privacy_title": {
-    "en": "Privacy",
-    "zh_CN": "用户私隐",
-    "zh_TW": "用戶私隱"
-  },
-  "report_issue": {
+  "head_info_report_issue": {
     "en": "Report Issue",
     "zh_CN": "反馈问题",
     "zh_TW": "軟體使用疑問和建言"
   },
-  "reset": {
-    "en": "Reset",
-    "zh_CN": "重置设定",
-    "zh_TW": "重置設定"
+  "nav_black_white_list": {
+    "en": "Black/White List",
+    "zh_CN": "黑白名单",
+    "zh_TW": "黑白名單"
   },
-  "reset_modal_content": {
-    "en": "Reset to default settings. Confirm？",
-    "zh_CN": "所有设定将还原到默认值，确定？",
-    "zh_TW": "所有設定將還原到還原點，確定？"
+  "nav_context_menus": {
+    "en": "Context Menus",
+    "zh_CN": "右键菜单",
+    "zh_TW": "右鍵菜單"
   },
-  "reset_modal_title": {
-    "en": "Reset Settings",
-    "zh_CN": "重置设定",
-    "zh_TW": "重設設定"
+  "nav_dict_panel": {
+    "en": "Dict Panel",
+    "zh_CN": "查词面板",
+    "zh_TW": "字典介面"
   },
-  "search_suggests": {
-    "en": "Search suggests",
-    "zh_CN": "输入时显示候选",
-    "zh_TW": "輸入時顯示候選"
+  "nav_dictioneries": {
+    "en": "Dictioneries",
+    "zh_CN": "词典设置",
+    "zh_TW": "字典設定"
   },
-  "set_shortkey": {
-    "en": "Set Shortkeys",
-    "zh_CN": "设置快捷键",
-    "zh_TW": "設定快捷鍵"
+  "nav_general": {
+    "en": "General",
+    "zh_CN": "基本选项",
+    "zh_TW": "基本選項"
   },
-  "storage_import_error": {
-    "en": "Import Failed",
-    "zh_CN": "导入失败",
-    "zh_TW": "輸入失敗"
+  "nav_inport_export": {
+    "en": "Inport/Export",
+    "zh_CN": "导入导出",
+    "zh_TW": "匯入匯出"
   },
-  "storage_updated": {
-    "en": "Settings updated",
-    "zh_CN": "设置已更新",
-    "zh_TW": "設定已更新"
+  "nav_popup": {
+    "en": "Popup Panel",
+    "zh_CN": "右上弹框",
+    "zh_TW": "右上彈框"
   },
-  "sync_add": {
-    "en": "Add Service",
-    "zh_CN": "添加同步",
-    "zh_TW": "添加同步"
+  "nav_profiles": {
+    "en": "Profiles",
+    "zh_CN": "情景模式",
+    "zh_TW": "情景模式"
   },
-  "sync_close_confirm": {
-    "en": "Settings not saved. Close?",
-    "zh_CN": "设置未保存，关闭？",
-    "zh_TW": "設定未儲存，關閉？"
+  "nav_quick_search": {
+    "en": "Quick Search",
+    "zh_CN": "快捷查词",
+    "zh_TW": "迅速查字"
   },
-  "sync_description": {
-    "en": "Sync settings.",
-    "zh_CN": "数据同步设置。",
-    "zh_TW": "資料同步設定。"
-  },
-  "sync_notebook_title": {
-    "en": "Notebook Sync",
-    "zh_CN": "生词本同步",
-    "zh_TW": "生字本同步"
-  },
-  "sync_title": {
-    "en": "Sync",
-    "zh_CN": "数据同步",
-    "zh_TW": "資料同步"
-  },
-  "sync_webdav_checking": {
-    "en": "Connecting...",
-    "zh_CN": "连接中...",
-    "zh_TW": "連線中..."
-  },
-  "sync_webdav_duration": {
-    "en": "Duration",
-    "zh_CN": "同步周期",
-    "zh_TW": "同步頻率"
-  },
-  "sync_webdav_duration_helper": {
-    "en": "Data is guaranteed to be updated before upload. If you do not need real-time syncing across browsers, set a longer polling cycle to reduce CPU and memory footprint.",
-    "zh_CN": "添加生词后会马上上传，数据会在上传前保证同步，所以如果不需要多个浏览器实时查看更新，可将更新检测周期调大些以减少资源占用及避免服务器拒绝响应。",
-    "zh_TW": "新增生字後會馬上上傳，資料會在上傳前保證同步，所以如果不需要多個瀏覽器實時查看更新，可將更新檢測週期調大些以減少資源佔用及避免伺服器拒絕響應。"
-  },
-  "sync_webdav_err_exist": {
-    "en": "Files under Saladict directory on server will be overwritten. Download and merge with local files first?",
-    "zh_CN": "服务器上 Saladict 目录下的文件将被替换。先下载合并到本地？",
-    "zh_TW": "伺服器上 Saladict 目錄下的檔案將被替換。先下載合併到本地？"
-  },
-  "sync_webdav_err_mkcol": {
-    "en": "Cannot create \"Saladict\" directory on server. Please create the directory manualy on server.",
-    "zh_CN": "无法在服务器创建“Saladict”目录。请手动在服务器上创建。",
-    "zh_TW": "無法在伺服器建立“Saladict”目錄。請手動在伺服器上建立。"
-  },
-  "sync_webdav_err_network": {
-    "en": "Network error. Cannot connect to server.",
-    "zh_CN": "连接服务器失败。",
-    "zh_TW": "連線伺服器失敗。"
-  },
-  "sync_webdav_err_parse": {
-    "en": "Incorrect response XML from server.",
-    "zh_CN": "服务器返回 XML 格式不正确。",
-    "zh_TW": "伺服器返回 XML 格式不正確。"
-  },
-  "sync_webdav_err_unauthorized": {
-    "en": "Incorrect account or password.",
-    "zh_CN": "账户或密码不正确。",
-    "zh_TW": "賬戶或密碼不正確。"
-  },
-  "sync_webdav_explain": {
-    "en": "Extension settings (including this) are synced via browser. New words notebook can be synced via WebDAV through settings here. <a href=\"http://help.jianguoyun.com/?p=2064\" target=\"_blank\">See Jianguoyun for example</a>.",
-    "zh_CN": "应用设置（包括本设置）已通过浏览器自动同步。生词本可通过本设置实现 WebDAV 同步。<a href=\"http://help.jianguoyun.com/?p=2064\" target=\"_blank\">参考坚果云设置</a>。",
-    "zh_TW": "應用設定（包括本設定）已通過瀏覽器自動同步。生詞本可通過本設定實現 WebDAV 同步。<a href=\"http://help.jianguoyun.com/?p=2064\" target=\"_blank\">參考堅果雲設定</a>。"
-  },
-  "sync_webdav_passwd": {
-    "en": "Password",
-    "zh_CN": "密码",
-    "zh_TW": "密碼"
-  },
-  "sync_webdav_url": {
-    "en": "Server Address",
-    "zh_CN": "服务器地址",
-    "zh_TW": "伺服器地址"
-  },
-  "sync_webdav_user": {
-    "en": "User Account",
-    "zh_CN": "账户",
-    "zh_TW": "賬戶"
+  "nav_search_modes": {
+    "en": "Search Modes",
+    "zh_CN": "查词习惯",
+    "zh_TW": "查字習慣"
   },
   "title": {
     "en": "Saladict Options",
     "zh_CN": "Saladict 设置",
     "zh_TW": "Saladict 設定"
-  },
-  "triple_ctrl": {
-    "en": "Open via Triple-Ctrl",
-    "zh_CN": "三按 ctrl/⌘ 开启",
-    "zh_TW": "三按 ctrl/⌘ 開啟"
-  },
-  "triple_ctrl_description": {
-    "en": "Press <kbd>⌘ Command</kbd>(Mac) or <kbd>Ctrl</kbd>(Others) three times (or with browser shortkey) to summon the dictionary panel. <br>Preloaded content will be inserted into input box. Enable auto search to search as soon as the panel shows up.",
-    "zh_CN": "连续按三次<kbd>⌘ Command</kbd>（Mac）或者<kbd>Ctrl</kbd>（其它键盘）（或设置浏览器快捷键）将弹出词典界面。<br>选择预先加载内容会显示在输入框里。启动自动查词将在面板出现之后自动开始查词。<br>若打开为新窗口可额外设置划词模式，或不对主页面划词响应（做单独词典窗口用）。",
-    "zh_TW": "連續按三次<kbd>⌘ Command</kbd>（Mac）或者<kbd>Ctrl</kbd>（其它键盘）（或設定瀏覽器快捷鍵），將會彈出字典視窗介面。<br>選擇預先下載的內容，會顯示在輸入框裡。啟動自動查字功能，字典視窗介面會出現，此時，會自動開始查尋單字。<br>若開啟為新視窗可額外設定劃詞模式，或不對主頁面劃詞響應（做單獨字典視窗用）。"
-  },
-  "triple_ctrl_height": {
-    "en": "Window Height",
-    "zh_CN": "窗口高度",
-    "zh_TW": "視窗高度"
-  },
-  "triple_ctrl_loc_0": {
-    "en": "Center",
-    "zh_CN": "居中",
-    "zh_TW": "居中"
-  },
-  "triple_ctrl_loc_1": {
-    "en": "Top",
-    "zh_CN": "上方",
-    "zh_TW": "上方"
-  },
-  "triple_ctrl_loc_2": {
-    "en": "Right",
-    "zh_CN": "右方",
-    "zh_TW": "右方"
-  },
-  "triple_ctrl_loc_3": {
-    "en": "Bottom",
-    "zh_CN": "下方",
-    "zh_TW": "下方"
-  },
-  "triple_ctrl_loc_4": {
-    "en": "Left",
-    "zh_CN": "左方",
-    "zh_TW": "左方"
-  },
-  "triple_ctrl_loc_5": {
-    "en": "Top Left",
-    "zh_CN": "左上",
-    "zh_TW": "左上"
-  },
-  "triple_ctrl_loc_6": {
-    "en": "Top Right",
-    "zh_CN": "右上",
-    "zh_TW": "右上"
-  },
-  "triple_ctrl_loc_7": {
-    "en": "Bottom Left",
-    "zh_CN": "左下",
-    "zh_TW": "左下"
-  },
-  "triple_ctrl_loc_8": {
-    "en": "Bottom Right",
-    "zh_CN": "右下",
-    "zh_TW": "右下"
-  },
-  "triple_ctrl_loc_title": {
-    "en": "Location",
-    "zh_CN": "出现位置",
-    "zh_TW": "出現位置"
-  },
-  "triple_ctrl_page_selection": {
-    "en": "Response to page selection",
-    "zh_CN": "响应主页面划词",
-    "zh_TW": "對主介面滑鼠滑字作出反應"
-  },
-  "triple_ctrl_standalone": {
-    "en": "Standalone",
-    "zh_CN": "独立窗口",
-    "zh_TW": "獨立視窗"
-  },
-  "triple_ctrl_title": {
-    "en": "Quick Search",
-    "zh_CN": "快捷查词",
-    "zh_TW": "迅速查字"
-  },
-  "unit_mins": {
-    "en": "minutes",
-    "zh_CN": "分钟",
-    "zh_TW": "分鐘"
-  },
-  "unit_ms": {
-    "en": "ms",
-    "zh_CN": "毫秒",
-    "zh_TW": "毫秒"
-  },
-  "unit_word": {
-    "en": "words",
-    "zh_CN": "个",
-    "zh_TW": "个"
-  },
-  "wechat": {
-    "en": "Wechat",
-    "zh_CN": "微信",
-    "zh_TW": "微信"
-  },
-  "word_list_history": {
-    "en": "Keep search history",
-    "zh_CN": "记录查词历史",
-    "zh_TW": "記錄查字歷史"
-  },
-  "word_list_historyinco": {
-    "en": "Also in incognito mode",
-    "zh_CN": "在私隐模式中记录",
-    "zh_TW": "在私隱模式中記錄"
   }
 }

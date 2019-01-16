@@ -41,7 +41,6 @@
     "@types/react": "*"
   },
   "dependencies": {
-    "@panter/vue-i18next": "^0.9.1",
     "@types/dompurify": "^0.0.31",
     "@types/i18next": "^8.4.3",
     "@types/lodash": "^4.14.98",
@@ -52,8 +51,7 @@
     "@types/react-i18next": "^7.3.2",
     "@types/react-redux": "^5.0.16",
     "@types/react-transition-group": "^2.0.11",
-    "antd": "^3.5.2",
-    "bootstrap-sass": "^3.3.7",
+    "antd": "^3.12.3",
     "dexie": "^2.0.3",
     "dompurify": "^1.0.4",
     "fbjs": "^0.8.16",
@@ -70,9 +68,6 @@
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "rxjs": "5.x",
-    "vue": "^2.5.13",
-    "vue-stash": "^2.0.1-beta",
-    "vuedraggable": "^2.16.0",
     "web-ext-types": "crimx/web-ext-types"
   },
   "devDependencies": {
