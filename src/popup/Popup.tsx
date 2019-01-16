@@ -269,7 +269,6 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
         <CSSTransition
           classNames='fade'
           in={!!currentTabUrl}
-          appear
           timeout={500}
           exit={false}
           mountOnEnter
