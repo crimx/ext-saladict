@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import appConfigFactory, { AppConfig } from '@/app-config'
-import { createActiveConfigStream } from '@/_helpers/config-manager'
+import { getActiveConfig, addActiveConfigListener } from '@/_helpers/config-manager'
 import { injectSaladictInternal } from '@/_helpers/injectSaladictInternal'
 
 import { I18nextProvider as ProviderI18next } from 'react-i18next'
@@ -13,7 +13,7 @@ import optionsLocles from '@/_locales/options'
 import contextLocles from '@/_locales/context'
 import profileLocles from '@/_locales/config-profiles'
 
-import { LocaleProvider as ProviderAntdLocale } from 'antd'
+import { LocaleProvider as ProviderAntdLocale, message } from 'antd'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import zh_TW from 'antd/lib/locale-provider/zh_TW'
 import en_US from 'antd/lib/locale-provider/en_US'
@@ -32,7 +32,7 @@ const i18n = i18nLoader({
   dict: dictsLocles,
   ctx: contextLocles,
   profile: profileLocles,
-}, 'common')
+}, 'opt')
 
 const antdLocales = {
   'zh-CN': zh_CN,
@@ -47,15 +47,18 @@ export interface OptionsState {
   config: AppConfig
 }
 
-class Options extends React.Component<OptionsProps, OptionsState> {
+export class Options extends React.Component<OptionsProps, OptionsState> {
   state = {
     config: appConfigFactory()
   }
 
   constructor (props: OptionsProps) {
     super(props)
-    createActiveConfigStream().subscribe(config => {
-      this.setState({ config })
+    getActiveConfig().then(config => this.setState({ config }))
+    addActiveConfigListener(({ newConfig }) => {
+      this.setState({ config: newConfig })
+      message.destroy()
+      message.success(i18n.t('msg_updated'))
     })
   }
 
@@ -70,4 +73,6 @@ class Options extends React.Component<OptionsProps, OptionsState> {
   }
 }
 
-ReactDOM.render(<Options />, document.getElementById('root'))
+if (process.env.NODE_ENV !== 'development') {
+  ReactDOM.render(<Options />, document.getElementById('root'))
+}

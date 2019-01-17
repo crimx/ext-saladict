@@ -8,8 +8,7 @@ const { Header, Content, Sider } = Layout
 
 const _optRequire = require['context']('./components/options/', true, /index\.tsx$/)
 
-const searchURL = new URL(document.URL)
-const menuselected = searchURL.searchParams.get('menuselected') || 'General'
+const menuselected = new URL(document.URL).searchParams.get('menuselected') || 'General'
 
 export interface OptionsMainProps {
   config: AppConfig
@@ -18,7 +17,16 @@ export interface OptionsMainProps {
 export class OptionsMain extends React.Component<OptionsMainProps & { t: TranslationFunction }> {
   state = {
     activeProfileName: '',
-    selectedOptionId: menuselected,
+    selectedKey: menuselected,
+  }
+
+  constructor (props: OptionsMainProps & { t: TranslationFunction }) {
+    super(props)
+    this.setTitle(this.state.selectedKey)
+
+    window.addEventListener('popstate', e => {
+      this.setState({ selectedKey: e.state.key || 'General' })
+    })
   }
 
   static getDerivedStateFromProps (props: OptionsMainProps & { t: TranslationFunction }) {
@@ -36,7 +44,20 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
   }
 
   onNavSelect = ({ key }: { key: string }) => {
-    this.setState({ selectedOptionId: key })
+    this.setState({ selectedKey: key })
+    this.setTitle(key)
+    const { protocol, host, pathname } = window.location
+    const newurl = `${protocol}//${host}${pathname}?menuselected=${key}`
+    window.history.pushState(
+      { key },
+      '',
+      newurl
+    )
+  }
+
+  setTitle = (key: string) => {
+    const { t } = this.props
+    document.title = `${t('title')} - ${t('nav_' + key)}`
   }
 
   render () {
@@ -45,7 +66,7 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
     return (
       <Layout>
         <Header style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <h1 style={{ color: '#fff' }}>{t('opt:title')}</h1>
+          <h1 style={{ color: '#fff' }}>{t('title')}</h1>
           <span style={{ color: '#fff' }}>「 {this.state.activeProfileName} 」</span>
           <HeadInfo />
         </Header>
@@ -53,22 +74,22 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
           <Sider width={180} style={{ background: '#fff' }}>
             <Menu
               mode='inline'
-              defaultSelectedKeys={[menuselected]}
+              selectedKeys={[this.state.selectedKey]}
               style={{ height: '100%', borderRight: 0 }}
               onSelect={this.onNavSelect}
             >
-              <Menu.Item key='General'><Icon type='setting' /> {t('opt:nav_general')}</Menu.Item>
-              <Menu.Item key='Notebook'><Icon type='tags' /> {t('opt:nav_notebook')}</Menu.Item>
-              <Menu.Item key='Profiles'><Icon type='dashboard' /> {t('opt:nav_profiles')}</Menu.Item>
-              <Menu.Item key='DictPanel'><Icon type='profile' /> {t('opt:nav_dict_panel')}</Menu.Item>
-              <Menu.Item key='SearchModes'><Icon type='select' /> {t('opt:nav_search_modes')}</Menu.Item>
-              <Menu.Item key='Dictioneries'><Icon type='book' /> {t('opt:nav_dictioneries')}</Menu.Item>
-              <Menu.Item key='DPF'><Icon type='file-pdf' /> {t('opt:nav_pdf')}</Menu.Item>
-              <Menu.Item key='ContextMenus'><Icon type='database' /> {t('opt:nav_context_menus')}</Menu.Item>
-              <Menu.Item key='Popup'><Icon type='layout' /> {t('opt:nav_popup')}</Menu.Item>
-              <Menu.Item key='QuickSearch'><Icon type='thunderbolt' /> {t('opt:nav_quick_search')}</Menu.Item>
-              <Menu.Item key='BlackWhiteList'><Icon type='file-protect' /> {t('opt:nav_black_white_list')}</Menu.Item>
-              <Menu.Item key='ImportExport'><Icon type='swap' /> {t('opt:nav_import_export')}</Menu.Item>
+              <Menu.Item key='General'><Icon type='setting' /> {t('nav_General')}</Menu.Item>
+              <Menu.Item key='Notebook'><Icon type='tags' /> {t('nav_Notebook')}</Menu.Item>
+              <Menu.Item key='Profiles'><Icon type='dashboard' /> {t('nav_Profiles')}</Menu.Item>
+              <Menu.Item key='DictPanel'><Icon type='profile' /> {t('nav_DictPanel')}</Menu.Item>
+              <Menu.Item key='SearchModes'><Icon type='select' /> {t('nav_SearchModes')}</Menu.Item>
+              <Menu.Item key='Dictioneries'><Icon type='book' /> {t('nav_Dictioneries')}</Menu.Item>
+              <Menu.Item key='PDF'><Icon type='file-pdf' /> {t('nav_PDF')}</Menu.Item>
+              <Menu.Item key='ContextMenus'><Icon type='database' /> {t('nav_ContextMenus')}</Menu.Item>
+              <Menu.Item key='Popup'><Icon type='layout' /> {t('nav_Popup')}</Menu.Item>
+              <Menu.Item key='QuickSearch'><Icon type='thunderbolt' /> {t('nav_QuickSearch')}</Menu.Item>
+              <Menu.Item key='BlackWhiteList'><Icon type='file-protect' /> {t('nav_BlackWhiteList')}</Menu.Item>
+              <Menu.Item key='ImportExport'><Icon type='swap' /> {t('nav_ImportExport')}</Menu.Item>
             </Menu>
           </Sider>
           <Layout style={{ padding: '24px', minHeight: innerHeight - 64 }}>
@@ -77,7 +98,7 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
             }}
             >
               {React.createElement(
-                _optRequire(`./${this.state.selectedOptionId}/index.tsx`).default,
+                _optRequire(`./${this.state.selectedKey}/index.tsx`).default,
                 { t, config }
               )}
             </Content>
