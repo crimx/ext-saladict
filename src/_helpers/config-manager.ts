@@ -176,18 +176,14 @@ export function addConfigIDListListener (
   })
 }
 
-/** Keep tracking the active config id for easy usage */
-let gActiveConfigID: string
-
 /**
  * Listen storage changes of the current config
  */
 export async function addActiveConfigListener (
   cb: (changes: AppConfigChanged) => any
 ) {
-  if (!gActiveConfigID) {
-    gActiveConfigID = (await storage.sync.get('activeConfigID')).activeConfigID
-  }
+  let gActiveConfigID = (await storage.sync.get('activeConfigID')).activeConfigID
+
   storage.sync.addListener(async (changes, area) => {
     if (area !== 'sync') { return }
 
