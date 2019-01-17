@@ -29,55 +29,220 @@
     "zh_CN": "反馈问题",
     "zh_TW": "軟體使用疑問和建言"
   },
-  "nav_black_white_list": {
+  "msg_updated": {
+    "en": "Successfully updated",
+    "zh_CN": "设置已更新",
+    "zh_TW": "設定已更新"
+  },
+  "nav_BlackWhiteList": {
     "en": "Black/White List",
     "zh_CN": "黑白名单",
     "zh_TW": "黑白名單"
   },
-  "nav_context_menus": {
+  "nav_ContextMenus": {
     "en": "Context Menus",
     "zh_CN": "右键菜单",
     "zh_TW": "右鍵菜單"
   },
-  "nav_dict_panel": {
+  "nav_DictPanel": {
     "en": "Dict Panel",
     "zh_CN": "查词面板",
     "zh_TW": "字典介面"
   },
-  "nav_dictioneries": {
+  "nav_Dictioneries": {
     "en": "Dictioneries",
     "zh_CN": "词典设置",
     "zh_TW": "字典設定"
   },
-  "nav_general": {
+  "nav_General": {
     "en": "General",
     "zh_CN": "基本选项",
     "zh_TW": "基本選項"
   },
-  "nav_inport_export": {
-    "en": "Inport/Export",
+  "nav_ImportExport": {
+    "en": "Import/Export",
     "zh_CN": "导入导出",
     "zh_TW": "匯入匯出"
   },
-  "nav_popup": {
+  "nav_Notebook": {
+    "en": "Notebook",
+    "zh_CN": "单词管理",
+    "zh_TW": "單字管理"
+  },
+  "nav_PDF": {
+    "en": "PDF",
+    "zh_CN": "PDF 设置",
+    "zh_TW": "PDF 設定"
+  },
+  "nav_Popup": {
     "en": "Popup Panel",
     "zh_CN": "右上弹框",
     "zh_TW": "右上彈框"
   },
-  "nav_profiles": {
+  "nav_Profiles": {
     "en": "Profiles",
     "zh_CN": "情景模式",
     "zh_TW": "情景模式"
   },
-  "nav_quick_search": {
+  "nav_QuickSearch": {
     "en": "Quick Search",
     "zh_CN": "快捷查词",
     "zh_TW": "迅速查字"
   },
-  "nav_search_modes": {
+  "nav_SearchModes": {
     "en": "Search Modes",
     "zh_CN": "查词习惯",
     "zh_TW": "查字習慣"
+  },
+  "opt_active": {
+    "en": "Enable Inline Translator",
+    "zh_CN": "启用划词翻译",
+    "zh_TW": "啟用滑鼠劃字翻譯"
+  },
+  "opt_animation": {
+    "en": "Animation transitions",
+    "zh_CN": "开启动画过渡",
+    "zh_TW": "啓用轉換動畫"
+  },
+  "opt_animation_help": {
+    "en": "Switch off animation transitions to reduce runtime cost.",
+    "zh_CN": "在低性能设备上关闭过渡动画可减少渲染负担。",
+    "zh_TW": "在低效能裝置上關閉過渡動畫可減少渲染負擔。"
+  },
+  "opt_app_active_help": {
+    "en": "\"Quick Search\" is still available even if Inline translation is turned off.",
+    "zh_CN": "关闭后「快捷查词」功能依然可用。",
+    "zh_TW": "關閉後「迅速查字」功能依然可用。"
+  },
+  "opt_edit_on_fav": {
+    "en": "Open WordEditor when saving",
+    "zh_CN": "红心单词时弹出编辑面板",
+    "zh_TW": "紅心單字時彈出編輯介面"
+  },
+  "opt_edit_on_fav_help": {
+    "en": "When turned off, new words will be added to notebook directly.",
+    "zh_CN": "关闭后，点击红心生词将至今添加到生词本，上下文翻译亦会自动获取。",
+    "zh_TW": "關閉後，點選紅心生詞將至今新增到生詞本，上下文翻譯亦會自動獲取。"
+  },
+  "opt_history": {
+    "en": "Keep search history",
+    "zh_CN": "记录查词历史",
+    "zh_TW": "記錄查字歷史"
+  },
+  "opt_history_help": {
+    "en": "Search histry might unintentionally reveal your browsing history.",
+    "zh_CN": "查词记录可能会泄漏您的浏览痕迹。",
+    "zh_TW": "查字典記錄可能會泄漏您的瀏覽痕跡。"
+  },
+  "opt_history_inco": {
+    "en": "Also in incognito mode",
+    "zh_CN": "在私隐模式中记录",
+    "zh_TW": "在私隱模式中記錄"
+  },
+  "opt_language": {
+    "en": "App Language",
+    "zh_CN": "界面语言",
+    "zh_TW": "介面語言"
+  },
+  "opt_profile_change": {
+    "en": "This option may change base on \"Profile\".",
+    "zh_CN": "此选项会因「情景模式」而改变。",
+    "zh_TW": "此選項會因「情景模式」而改變。"
+  },
+  "opt_shortcuts": {
+    "en": "Set Shortcuts",
+    "zh_CN": "设置快捷键",
+    "zh_TW": "設定快捷鍵"
+  },
+  "opt_sync_btn": {
+    "en": "Sync Service",
+    "zh_CN": "添加同步",
+    "zh_TW": "添加同步"
+  },
+  "sync_delete_confirm": {
+    "en": "Delete?",
+    "zh_CN": "清空同步设置？",
+    "zh_TW": "清空同步設定？"
+  },
+  "sync_error_url": {
+    "en": "Not a valid url.",
+    "zh_CN": "不正确的超链接格式。",
+    "zh_TW": "不正確的超連結格式。"
+  },
+  "sync_close_confirm": {
+    "en": "Settings not saved. Close?",
+    "zh_CN": "设置未保存，关闭？",
+    "zh_TW": "設定未儲存，關閉？"
+  },
+  "sync_description": {
+    "en": "Sync settings.",
+    "zh_CN": "数据同步设置。",
+    "zh_TW": "資料同步設定。"
+  },
+  "sync_notebook_title": {
+    "en": "Notebook Sync",
+    "zh_CN": "生词本同步",
+    "zh_TW": "生字本同步"
+  },
+  "sync_webdav_checking": {
+    "en": "Connecting...",
+    "zh_CN": "连接中...",
+    "zh_TW": "連線中..."
+  },
+  "sync_webdav_duration": {
+    "en": "Duration",
+    "zh_CN": "同步周期",
+    "zh_TW": "同步頻率"
+  },
+  "sync_webdav_duration_help": {
+    "en": "Data is guaranteed to be updated before upload. If you do not need real-time syncing across browsers, set a longer polling cycle to reduce CPU and memory footprint.",
+    "zh_CN": "添加生词后会马上上传，数据会在上传前保证同步，所以如果不需要多个浏览器实时查看更新，可将更新检测周期调大些以减少资源占用及避免服务器拒绝响应。",
+    "zh_TW": "新增生字後會馬上上傳，資料會在上傳前保證同步，所以如果不需要多個瀏覽器實時查看更新，可將更新檢測週期調大些以減少資源佔用及避免伺服器拒絕響應。"
+  },
+  "sync_webdav_err_exist": {
+    "en": "Files under Saladict directory on server will be overwritten. Download and merge with local files first?",
+    "zh_CN": "服务器上 Saladict 目录下的文件将被替换。先下载合并到本地？",
+    "zh_TW": "伺服器上 Saladict 目錄下的檔案將被替換。先下載合併到本地？"
+  },
+  "sync_webdav_err_mkcol": {
+    "en": "Cannot create \"Saladict\" directory on server. Please create the directory manualy on server.",
+    "zh_CN": "无法在服务器创建“Saladict”目录。请手动在服务器上创建。",
+    "zh_TW": "無法在伺服器建立“Saladict”目錄。請手動在伺服器上建立。"
+  },
+  "sync_webdav_err_network": {
+    "en": "Network error. Cannot connect to server.",
+    "zh_CN": "连接服务器失败。",
+    "zh_TW": "連線伺服器失敗。"
+  },
+  "sync_webdav_err_parse": {
+    "en": "Incorrect response XML from server.",
+    "zh_CN": "服务器返回 XML 格式不正确。",
+    "zh_TW": "伺服器返回 XML 格式不正確。"
+  },
+  "sync_webdav_err_unauthorized": {
+    "en": "Incorrect account or password.",
+    "zh_CN": "账户或密码不正确。",
+    "zh_TW": "賬戶或密碼不正確。"
+  },
+  "sync_webdav_explain": {
+    "en": "Extension settings (including this) are synced via browser. New words notebook can be synced via WebDAV through settings here. <a href=\"http://help.jianguoyun.com/?p=2064\" target=\"_blank\">See Jianguoyun for example</a>.",
+    "zh_CN": "应用设置（包括本设置）已通过浏览器自动同步。生词本可通过本设置实现 WebDAV 同步。<a href=\"http://help.jianguoyun.com/?p=2064\" target=\"_blank\">参考坚果云设置</a>。",
+    "zh_TW": "應用設定（包括本設定）已通過瀏覽器自動同步。生詞本可通過本設定實現 WebDAV 同步。<a href=\"http://help.jianguoyun.com/?p=2064\" target=\"_blank\">參考堅果雲設定</a>。"
+  },
+  "sync_webdav_passwd": {
+    "en": "Password",
+    "zh_CN": "密码",
+    "zh_TW": "密碼"
+  },
+  "sync_webdav_url": {
+    "en": "Server Address",
+    "zh_CN": "服务器地址",
+    "zh_TW": "伺服器地址"
+  },
+  "sync_webdav_user": {
+    "en": "User Account",
+    "zh_CN": "账户",
+    "zh_TW": "賬戶"
   },
   "title": {
     "en": "Saladict Options",

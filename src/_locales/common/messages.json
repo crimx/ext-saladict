@@ -1,37 +1,52 @@
 {
-  "save": {
-    "zh_CN": "保存",
-    "zh_TW": "保存",
-    "en": "Save"
+  "add": {
+    "en": "Add",
+    "zh_CN": "添加",
+    "zh_TW": "添加"
   },
   "cancel": {
+    "en": "Cancel",
     "zh_CN": "取消",
-    "zh_TW": "取消",
-    "en": "Cancel"
+    "zh_TW": "取消"
   },
   "confirm": {
+    "en": "Confirm",
     "zh_CN": "确认",
-    "zh_TW": "確認",
-    "en": "Confirm"
-  },
-  "rename": {
-    "zh_CN": "重命名",
-    "zh_TW": "重新命名",
-    "en": "Rename"
-  },
-  "sort": {
-    "zh_CN": "排序",
-    "zh_TW": "排序",
-    "en": "Sort"
-  },
-  "add": {
-    "zh_CN": "添加",
-    "zh_TW": "添加",
-    "en": "Add"
+    "zh_TW": "確認"
   },
   "delete": {
+    "en": "Delete",
     "zh_CN": "删除",
-    "zh_TW": "删除",
-    "en": "Delete"
+    "zh_TW": "删除"
+  },
+  "rename": {
+    "en": "Rename",
+    "zh_CN": "重命名",
+    "zh_TW": "重新命名"
+  },
+  "save": {
+    "en": "Save",
+    "zh_CN": "保存",
+    "zh_TW": "保存"
+  },
+  "sort": {
+    "en": "Sort",
+    "zh_CN": "排序",
+    "zh_TW": "排序"
+  },
+  "unit_mins": {
+    "en": "minutes",
+    "zh_CN": "分钟",
+    "zh_TW": "分鐘"
+  },
+  "unit_ms": {
+    "en": "ms",
+    "zh_CN": "毫秒",
+    "zh_TW": "毫秒"
+  },
+  "unit_word": {
+    "en": "words",
+    "zh_CN": "个",
+    "zh_TW": "个"
   }
 }
