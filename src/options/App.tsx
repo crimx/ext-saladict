@@ -8,6 +8,9 @@ const { Header, Content, Sider } = Layout
 
 const _optRequire = require['context']('./components/options/', true, /index\.tsx$/)
 
+const searchURL = new URL(document.URL)
+const menuselected = searchURL.searchParams.get('menuselected') || 'General'
+
 export interface OptionsMainProps {
   config: AppConfig
 }
@@ -15,7 +18,7 @@ export interface OptionsMainProps {
 export class OptionsMain extends React.Component<OptionsMainProps & { t: TranslationFunction }> {
   state = {
     activeProfileName: '',
-    selectedOptionId: 'General',
+    selectedOptionId: menuselected,
   }
 
   static getDerivedStateFromProps (props: OptionsMainProps & { t: TranslationFunction }) {
@@ -50,25 +53,27 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
           <Sider width={180} style={{ background: '#fff' }}>
             <Menu
               mode='inline'
-              defaultSelectedKeys={['General']}
+              defaultSelectedKeys={[menuselected]}
               style={{ height: '100%', borderRight: 0 }}
               onSelect={this.onNavSelect}
             >
               <Menu.Item key='General'><Icon type='setting' /> {t('opt:nav_general')}</Menu.Item>
+              <Menu.Item key='Notebook'><Icon type='tags' /> {t('opt:nav_notebook')}</Menu.Item>
               <Menu.Item key='Profiles'><Icon type='dashboard' /> {t('opt:nav_profiles')}</Menu.Item>
               <Menu.Item key='DictPanel'><Icon type='profile' /> {t('opt:nav_dict_panel')}</Menu.Item>
               <Menu.Item key='SearchModes'><Icon type='select' /> {t('opt:nav_search_modes')}</Menu.Item>
               <Menu.Item key='Dictioneries'><Icon type='book' /> {t('opt:nav_dictioneries')}</Menu.Item>
+              <Menu.Item key='DPF'><Icon type='file-pdf' /> {t('opt:nav_pdf')}</Menu.Item>
               <Menu.Item key='ContextMenus'><Icon type='database' /> {t('opt:nav_context_menus')}</Menu.Item>
               <Menu.Item key='Popup'><Icon type='layout' /> {t('opt:nav_popup')}</Menu.Item>
               <Menu.Item key='QuickSearch'><Icon type='thunderbolt' /> {t('opt:nav_quick_search')}</Menu.Item>
               <Menu.Item key='BlackWhiteList'><Icon type='file-protect' /> {t('opt:nav_black_white_list')}</Menu.Item>
-              <Menu.Item key='InportExport'><Icon type='swap' /> {t('opt:nav_inport_export')}</Menu.Item>
+              <Menu.Item key='ImportExport'><Icon type='swap' /> {t('opt:nav_import_export')}</Menu.Item>
             </Menu>
           </Sider>
-          <Layout style={{ padding: '24px' }}>
+          <Layout style={{ padding: '24px', minHeight: innerHeight - 64 }}>
             <Content style={{
-              background: '#fff', padding: 24, margin: 0, minHeight: 280,
+              background: '#fff', padding: 24, margin: 0,
             }}
             >
               {React.createElement(
