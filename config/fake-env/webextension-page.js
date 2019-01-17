@@ -182,7 +182,7 @@ function sendMessage (extensionId, message) {
 function genStorageApis () {
   window['storageData'] = {
     local: genLocalStorageData(),
-    sync: {},
+    sync: { hasInstructionsShown: true },
     listeners: [],
   }
 
