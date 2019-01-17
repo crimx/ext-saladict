@@ -39,8 +39,8 @@ export class OptMenu extends React.PureComponent<{ t: TranslationFunction }> {
     const { t } = this.props
 
     return (
-      <div className='head-info'>
-        <p className='head-info-acknowledgement-wrap'>
+      <ul className='head-info'>
+        <li className='head-info-acknowledgement-wrap'>
           <a
             href='https://github.com/crimx/crx-saladict/wiki#acknowledgement'
             onMouseEnter={this.showAcknowledgement}
@@ -76,14 +76,14 @@ export class OptMenu extends React.PureComponent<{ t: TranslationFunction }> {
               </ol>
             </div>
           )}</CSSTransition>
-        </p>
-        <p>
+        </li>
+        <li>
           <a
             href='https://github.com/crimx/crx-saladict/wiki#wiki-content'
             target='_blank'
             rel='noopener'>{t('opt:head_info_instructions')}</a>
-        </p>
-        <p className='head-info-social-media-wrap'>
+        </li>
+        <li className='head-info-social-media-wrap'>
           <a
             href='mailto:straybugsgmail.com'
             onMouseEnter={this.showSocialMedia}
@@ -104,15 +104,15 @@ export class OptMenu extends React.PureComponent<{ t: TranslationFunction }> {
               <SocialMedia />
             </div>
           )}</CSSTransition >
-        </p>
-        <p>
+        </li>
+        <li>
           <a
             href='https://github.com/crimx/crx-saladict/issues'
             target='_blank'
             rel='noopener'
           >{t('opt:head_info_report_issue')}</a>
-        </p>
-      </div>
+        </li>
+      </ul>
     )
   }
 }

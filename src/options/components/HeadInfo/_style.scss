@@ -1,20 +1,23 @@
 .head-info {
   display: flex;
   align-items: flex-end;
+  margin: 0;
+  padding: 0;
 
-  & > * {
+  & > li {
     margin: 0 0 0 8px;
-  }
+    list-style-type: none;
 
-  & > * > a {
-    color: #fff;
-    opacity: 0.65;
-    transition: opacity 0.4s;
+    & > a {
+      color: #fff;
+      opacity: 0.65;
+      transition: opacity 0.4s;
 
-    &:hover,
-    &:active,
-    &:focus, {
-      opacity: 1;
+      &:hover,
+      &:active,
+      &:focus, {
+        opacity: 1;
+      }
     }
   }
 }
