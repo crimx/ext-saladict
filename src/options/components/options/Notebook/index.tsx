@@ -4,7 +4,7 @@ import { message } from '@/_helpers/browser-api'
 import { getSyncConfig, setSyncConfig , removeSyncConfig } from '@/background/sync-manager/helpers'
 import { getDefaultConfig, serviceID, SyncConfig } from '@/background/sync-manager/services/webdav'
 import { Props } from '../typings'
-import { updateConfig as updateConfigWrap } from '../helpers'
+import { updateConfig } from '../helpers'
 import SyncServiceModal from './SyncServiceModal'
 
 import { FormComponentProps } from 'antd/lib/form'
@@ -101,8 +101,6 @@ export class Notebook extends React.Component<NotebookProps> {
     const { t, config } = this.props
     const { syncServiceConfig } = this.state
 
-    const updateConfig = updateConfigWrap(config)
-
     const formItemLayout = {
       labelCol: { span: 5 },
       wrapperCol: { span: 8 },
@@ -118,8 +116,6 @@ export class Notebook extends React.Component<NotebookProps> {
         >{
           this.props.form.getFieldDecorator('editOnFav', {
             initialValue: config.editOnFav,
-            getValueFromEvent: updateConfig('editOnFav'),
-            valuePropName: 'checked',
           })(
             <Switch />
           )
@@ -131,8 +127,6 @@ export class Notebook extends React.Component<NotebookProps> {
         >{
           this.props.form.getFieldDecorator('searhHistory', {
             initialValue: config.searhHistory,
-            getValueFromEvent: updateConfig('searhHistory'),
-            valuePropName: 'checked',
           })(
             <Switch />
           )
@@ -144,8 +138,6 @@ export class Notebook extends React.Component<NotebookProps> {
           >{
             this.props.form.getFieldDecorator('searhHistoryInco', {
               initialValue: config.searhHistoryInco,
-              getValueFromEvent: updateConfig('searhHistoryInco'),
-              valuePropName: 'checked',
             })(
               <Switch />
             )
@@ -186,4 +178,6 @@ export class Notebook extends React.Component<NotebookProps> {
   }
 }
 
-export default Form.create()(Notebook)
+export default Form.create({
+  onValuesChange: updateConfig
+})(Notebook)

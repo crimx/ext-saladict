@@ -1,7 +1,7 @@
 import React from 'react'
 import { openURL } from '@/_helpers/browser-api'
 import { Props } from '../typings'
-import { updateConfig as updateConfigWrap } from '../helpers'
+import { updateConfig } from '../helpers'
 
 import { FormComponentProps } from 'antd/lib/form'
 import { Form, Select, Switch, Button } from 'antd'
@@ -15,7 +15,6 @@ export class General extends React.Component<Props & FormComponentProps> {
 
   render () {
     const { t, config } = this.props
-    const updateConfig = updateConfigWrap(config)
 
     const formItemLayout = {
       labelCol: { span: 5 },
@@ -34,8 +33,6 @@ export class General extends React.Component<Props & FormComponentProps> {
         >{
           this.props.form.getFieldDecorator('active', {
             initialValue: config.active,
-            getValueFromEvent: updateConfig('active'),
-            valuePropName: 'checked',
           })(
             <Switch />
           )
@@ -47,8 +44,6 @@ export class General extends React.Component<Props & FormComponentProps> {
         >{
           this.props.form.getFieldDecorator('animation', {
             initialValue: config.animation,
-            getValueFromEvent: updateConfig('animation'),
-            valuePropName: 'checked',
           })(
             <Switch />
           )
@@ -59,7 +54,6 @@ export class General extends React.Component<Props & FormComponentProps> {
         >{
           this.props.form.getFieldDecorator('langCode', {
             initialValue: config.langCode,
-            getValueFromEvent: updateConfig('langCode'),
           })(
             <Select>
               <Select.Option value='zh-CN'>简体中文</Select.Option>
@@ -73,4 +67,6 @@ export class General extends React.Component<Props & FormComponentProps> {
   }
 }
 
-export default Form.create({})(General)
+export default Form.create({
+  onValuesChange: updateConfig
+})(General)

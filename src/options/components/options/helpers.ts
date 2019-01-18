@@ -1,15 +1,24 @@
 import set from 'lodash/set'
-import curry from 'lodash/curry'
-import { AppConfig } from '@/app-config'
 import { updateActiveConfig } from '@/_helpers/config-manager'
+import { Props } from './typings'
 
-export const updateConfig = curry(
-  <T = any>(config: AppConfig, path: string, value: T): T => {
-    if (process.env.NODE_ENV === 'development') {
-      console.log(path, value)
+export function updateConfig (
+  { config }: Props, fields: { [index: string]: any }
+): void {
+  if (!fields) { return }
+
+  const path = Object.keys(fields)[0]
+  if (!path) {
+    if (process.env.DEV_BUILD) {
+      console.error('empty field', fields)
     }
-    set(config, path, value)
-    updateActiveConfig(config)
-    return value
+    return
   }
-)
+
+  if (process.env.DEV_BUILD) {
+    console.log(path, fields[path])
+  }
+
+  set(config, path, fields[path])
+  updateActiveConfig(config)
+}
