@@ -2,6 +2,11 @@ import set from 'lodash/set'
 import { updateActiveConfig } from '@/_helpers/config-manager'
 import { Props } from './typings'
 
+export const formItemLayout = {
+  labelCol: { span: 5 },
+  wrapperCol: { span: 8 },
+}
+
 export function updateConfig (
   { config }: Props, fields: { [index: string]: any }
 ): void {

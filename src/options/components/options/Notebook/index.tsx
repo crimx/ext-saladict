@@ -4,7 +4,7 @@ import { message } from '@/_helpers/browser-api'
 import { getSyncConfig, setSyncConfig , removeSyncConfig } from '@/background/sync-manager/helpers'
 import { getDefaultConfig, serviceID, SyncConfig } from '@/background/sync-manager/services/webdav'
 import { Props } from '../typings'
-import { updateConfig } from '../helpers'
+import { updateConfig, formItemLayout } from '../helpers'
 import SyncServiceModal from './SyncServiceModal'
 
 import { FormComponentProps } from 'antd/lib/form'
@@ -100,11 +100,6 @@ export class Notebook extends React.Component<NotebookProps> {
   render () {
     const { t, config } = this.props
     const { syncServiceConfig } = this.state
-
-    const formItemLayout = {
-      labelCol: { span: 5 },
-      wrapperCol: { span: 8 },
-    }
 
     return (
       <Form>

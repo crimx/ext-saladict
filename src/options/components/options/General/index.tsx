@@ -1,7 +1,7 @@
 import React from 'react'
 import { openURL } from '@/_helpers/browser-api'
 import { Props } from '../typings'
-import { updateConfig } from '../helpers'
+import { updateConfig, formItemLayout } from '../helpers'
 
 import { FormComponentProps } from 'antd/lib/form'
 import { Form, Select, Switch, Button } from 'antd'
@@ -15,11 +15,6 @@ export class General extends React.Component<Props & FormComponentProps> {
 
   render () {
     const { t, config } = this.props
-
-    const formItemLayout = {
-      labelCol: { span: 5 },
-      wrapperCol: { span: 8 },
-    }
 
     return (
       <Form>
