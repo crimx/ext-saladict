@@ -1,4 +1,49 @@
 {
+  "opt_mta_always": {
+    "en": "Keep Unfolding",
+    "zh_CN": "保持展开",
+    "zh_TW": "保持展開"
+  },
+  "opt_mta": {
+    "en": "Auto unfold multiline search box",
+    "zh_CN": "自动展开多行搜索框",
+    "zh_TW": "自動展開多行搜尋框"
+  },
+  "opt_mta_once": {
+    "en": "Unfold Once",
+    "zh_CN": "展开一次",
+    "zh_TW": "展開一次"
+  },
+  "opt_mta_never": {
+    "en": "Never Unfold",
+    "zh_CN": "从不展开",
+    "zh_TW": "从不展開"
+  },
+  "opt_mta_popup": {
+    "en": "Only On Browser Action",
+    "zh_CN": "只在右上弹框展开",
+    "zh_TW": "只在右上彈框展開"
+  },
+  "opt_search_suggests": {
+    "en": "Search suggests",
+    "zh_CN": "输入时显示候选",
+    "zh_TW": "輸入時顯示候選"
+  },
+  "opt_dict_panel_height_ratio": {
+    "en": "Panel max height ratio",
+    "zh_CN": "查词面板最高占屏幕比例",
+    "zh_TW": "字典介面最高占螢幕高度比例"
+  },
+  "opt_dict_panel_width": {
+    "en": "Panel width",
+    "zh_CN": "查词面板宽度",
+    "zh_TW": "查字典介面寬度"
+  },
+  "opt_dict_panel_font_size": {
+    "en": "Font size for search reasults",
+    "zh_CN": "词典内容字体大小",
+    "zh_TW": "字典内容字體大小"
+  },
   "head_info_acknowledgement": {
     "en": "Acknowledgement",
     "zh_CN": "特别鸣谢",
