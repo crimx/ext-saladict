@@ -28,6 +28,7 @@ export class General extends React.Component<Props & FormComponentProps> {
         >{
           this.props.form.getFieldDecorator('active', {
             initialValue: config.active,
+            valuePropName: 'checked',
           })(
             <Switch />
           )
@@ -39,6 +40,7 @@ export class General extends React.Component<Props & FormComponentProps> {
         >{
           this.props.form.getFieldDecorator('animation', {
             initialValue: config.animation,
+            valuePropName: 'checked',
           })(
             <Switch />
           )

@@ -111,6 +111,7 @@ export class Notebook extends React.Component<NotebookProps> {
         >{
           this.props.form.getFieldDecorator('editOnFav', {
             initialValue: config.editOnFav,
+            valuePropName: 'checked',
           })(
             <Switch />
           )
@@ -122,6 +123,7 @@ export class Notebook extends React.Component<NotebookProps> {
         >{
           this.props.form.getFieldDecorator('searhHistory', {
             initialValue: config.searhHistory,
+            valuePropName: 'checked',
           })(
             <Switch />
           )
@@ -133,6 +135,7 @@ export class Notebook extends React.Component<NotebookProps> {
           >{
             this.props.form.getFieldDecorator('searhHistoryInco', {
               initialValue: config.searhHistoryInco,
+              valuePropName: 'checked',
             })(
               <Switch />
             )
