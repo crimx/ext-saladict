@@ -21,7 +21,7 @@ import {
 } from '@/_helpers/config-manager'
 import EditNameModal from './EditNameModal'
 
-import { Card, List, Button, Radio, Col, message, Icon, Tooltip } from 'antd'
+import { Card, List, Button, Radio, Col, message, Icon } from 'antd'
 import { RadioChangeEvent } from 'antd/lib/radio'
 
 const btnSylte: React.CSSProperties = {
