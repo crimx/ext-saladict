@@ -1,16 +1,9 @@
 import React from 'react'
-import mapValues from 'lodash/mapValues'
-import { storage } from '@/_helpers/browser-api'
-import { getSyncConfig, removeSyncConfig } from '@/background/sync-manager/helpers'
-import { getDefaultConfig, serviceID, SyncConfig } from '@/background/sync-manager/services/webdav'
+import { SyncConfig } from '@/background/sync-manager/services/webdav'
 import { Props } from '../typings'
-import { updateConfig as updateConfigWrap } from '../helpers'
 
 import { FormComponentProps } from 'antd/lib/form'
-import {
-  Form, Select, InputNumber, Switch, Radio, Input,
-  Slider, Button, Upload, Icon, Checkbox
-} from 'antd'
+import { Form, InputNumber, Input } from 'antd'
 
 export type SyncServiceModalProps = Props & FormComponentProps & {
   onChange: (syncConfig: SyncConfig) => void
