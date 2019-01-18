@@ -2,7 +2,7 @@
   "add": {
     "en": "Add",
     "zh_CN": "添加",
-    "zh_TW": "添加"
+    "zh_TW": "新增"
   },
   "cancel": {
     "en": "Cancel",
@@ -18,6 +18,11 @@
     "en": "Delete",
     "zh_CN": "删除",
     "zh_TW": "删除"
+  },
+  "edit": {
+    "en": "Edit",
+    "zh_CN": "编辑",
+    "zh_TW": "編輯"
   },
   "rename": {
     "en": "Rename",

@@ -17,6 +17,7 @@ import { concat } from 'rxjs/observable/concat'
 import { map } from 'rxjs/operators/map'
 import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
 import { mergeConfig } from '@/app-config/merge-config'
+import { TranslationFunction } from 'i18next'
 
 export interface StorageChanged<T> {
   newValue: T,
@@ -74,10 +75,31 @@ export async function initConfig (): Promise<AppConfig> {
   return (activeConfigID && modes.find(m => m.id === activeConfigID)) || modes[0]
 }
 
-export async function resetConfig () {
+export async function resetAllConfigs () {
   const ids = (await storage.sync.get('configProfileIDs')).configProfileIDs || []
   await storage.sync.remove(['configProfileIDs', 'activeConfigID', ...ids])
   return initConfig()
+}
+
+export async function getConfig (id: string): Promise<AppConfig | undefined> {
+  return (await storage.sync.get(id))[id]
+}
+
+/**
+ * Update config
+ */
+export function updateConfig (config: AppConfig): Promise<void> {
+  if (process.env.DEV_BUILD) {
+    storage.sync.get('configProfileIDs')
+      .then(({ configProfileIDs }) => {
+        if (!configProfileIDs || -1 === configProfileIDs.indexOf(config.id)) {
+          if (process.env.NODE_ENV === 'production') {
+            console.error('Update Config Error: Not exist', config)
+          }
+        }
+      })
+  }
+  return storage.sync.set({ [config.id]: config })
 }
 
 export async function addConfig (config: AppConfig): Promise<void> {
@@ -114,13 +136,18 @@ export async function removeConfig (id: string): Promise<void> {
 export async function getActiveConfig (): Promise<AppConfig> {
   const { activeConfigID } = await storage.sync.get('activeConfigID')
   if (activeConfigID) {
-    const config = (await storage.sync.get(activeConfigID))[activeConfigID]
+    const config = await getConfig(activeConfigID)
     if (config) {
       return config
     }
   }
   return appConfigFactory()
 }
+
+/**
+ * Update the config under the current mode
+ */
+export const updateActiveConfig = updateConfig
 
 /**
  * This is mainly for ordering
@@ -156,23 +183,6 @@ export function updateActiveConfigID (id: string): Promise<void> {
       })
   }
   return storage.sync.set({ activeConfigID: id })
-}
-
-/**
- * Update the config under the current mode
- */
-export function updateActiveConfig (config: AppConfig): Promise<void> {
-  if (process.env.DEV_BUILD) {
-    storage.sync.get('configProfileIDs')
-      .then(({ configProfileIDs }) => {
-        if (!configProfileIDs || -1 === configProfileIDs.indexOf(config.id)) {
-          if (process.env.NODE_ENV === 'production') {
-            console.error('Update Config Error: Not exist', config)
-          }
-        }
-      })
-  }
-  return storage.sync.set({ [config.id]: config })
 }
 
 export function addConfigIDListListener (

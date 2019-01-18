@@ -44,15 +44,15 @@
     "zh_CN": "右键菜单",
     "zh_TW": "右鍵菜單"
   },
-  "nav_DictPanel": {
-    "en": "Dict Panel",
-    "zh_CN": "查词面板",
-    "zh_TW": "字典介面"
-  },
   "nav_Dictioneries": {
     "en": "Dictioneries",
     "zh_CN": "词典设置",
     "zh_TW": "字典設定"
+  },
+  "nav_DictPanel": {
+    "en": "Dict Panel",
+    "zh_CN": "查词面板",
+    "zh_TW": "字典介面"
   },
   "nav_General": {
     "en": "General",
@@ -159,25 +159,45 @@
     "zh_CN": "添加同步",
     "zh_TW": "添加同步"
   },
-  "sync_delete_confirm": {
-    "en": "Delete?",
-    "zh_CN": "清空同步设置？",
-    "zh_TW": "清空同步設定？"
+  "profiles_add_name": {
+    "en": "Add Profile Name",
+    "zh_CN": "新增情景模式名称",
+    "zh_TW": "新增情景模式名稱"
   },
-  "sync_error_url": {
-    "en": "Not a valid url.",
-    "zh_CN": "不正确的超链接格式。",
-    "zh_TW": "不正確的超連結格式。"
+  "profiles_delete_confirm": {
+    "en": "Delete Profile \"{{name}}\". Confirm?",
+    "zh_CN": "「{{name}}」将被删除，确认？",
+    "zh_TW": "「{{name}}」將被刪除，確認？"
+  },
+  "profiles_edit_name": {
+    "en": "Change Profile Name",
+    "zh_CN": "更改情景模式名称",
+    "zh_TW": "更改情景模式名稱"
+  },
+  "profiles_help": {
+    "en": "Settings under different Profiles are independent. One may switch profiles by hovering on the menu icon on the Dictionary Panel. Or focus on the icon then hit <kbd>↓</kbd>.",
+    "zh_CN": "每个模式下的设置都是独立的，互不干扰。鼠标悬浮在查词面板的菜单图标上可快速切换，或者焦点选中菜单图标然后按<kbd>↓</kbd>。",
+    "zh_TW": "每個模式下的设置都是獨立的，互不干擾。滑鼠懸浮在字典介面的選單圖示上可快速切換，或者焦點選中選單圖示然後按<kbd>↓</kbd>。"
   },
   "sync_close_confirm": {
     "en": "Settings not saved. Close?",
     "zh_CN": "设置未保存，关闭？",
     "zh_TW": "設定未儲存，關閉？"
   },
+  "sync_delete_confirm": {
+    "en": "Delete?",
+    "zh_CN": "清空同步设置？",
+    "zh_TW": "清空同步設定？"
+  },
   "sync_description": {
     "en": "Sync settings.",
     "zh_CN": "数据同步设置。",
     "zh_TW": "資料同步設定。"
+  },
+  "sync_error_url": {
+    "en": "Not a valid url.",
+    "zh_CN": "不正确的超链接格式。",
+    "zh_TW": "不正確的超連結格式。"
   },
   "sync_notebook_title": {
     "en": "Notebook Sync",
