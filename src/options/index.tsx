@@ -18,6 +18,8 @@ import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import zh_TW from 'antd/lib/locale-provider/zh_TW'
 import en_US from 'antd/lib/locale-provider/en_US'
 
+import './_style.scss'
+
 window.__SALADICT_INTERNAL_PAGE__ = true
 window.__SALADICT_OPTIONS_PAGE__ = true
 window.__SALADICT_LAST_SEARCH__ = ''

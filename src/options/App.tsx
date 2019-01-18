@@ -3,6 +3,7 @@ import { AppConfig } from '@/app-config'
 import { translate, TranslationFunction } from 'react-i18next'
 import { Layout, Menu, Icon } from 'antd'
 import HeadInfo from './components/HeadInfo'
+import { getProfileName } from '@/_helpers/config-manager'
 
 const { Header, Content, Sider } = Layout
 
@@ -30,17 +31,9 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
   }
 
   static getDerivedStateFromProps (props: OptionsMainProps & { t: TranslationFunction }) {
-    const name = props.config.name
-
-    // default names
-    const match = /^%%_(\S+)_%%$/.exec(name)
-    if (match) {
-      return {
-        activeProfileName: props.t(`profile:${match[1]}`) || name
-      }
+    return {
+      activeProfileName: getProfileName(props.config.name, props.t)
     }
-
-    return { activeProfileName: name }
   }
 
   onNavSelect = ({ key }: { key: string }) => {

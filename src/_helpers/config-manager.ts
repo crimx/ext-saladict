@@ -28,6 +28,15 @@ export interface AppConfigChanged {
   oldConfig?: AppConfig,
 }
 
+export function getProfileName (name: string, t: TranslationFunction): string {
+  // default names
+  const match = /^%%_(\S+)_%%$/.exec(name)
+  if (match) {
+    return t(`profile:${match[1]}`) || name
+  }
+  return name
+}
+
 export async function initConfig (): Promise<AppConfig> {
   const {
     configProfileIDs,
