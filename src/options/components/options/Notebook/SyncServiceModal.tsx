@@ -52,7 +52,7 @@ export class SyncServiceModal extends React.Component<SyncServiceModalProps> {
           getFieldDecorator('passwd', {
             initialValue: syncConfig.passwd,
           })(
-            React.createElement(Input.Password) // Antd types bug
+            <Input type='password' />
           )
         }</Form.Item>
         <Form.Item
