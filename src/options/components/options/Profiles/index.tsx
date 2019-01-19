@@ -68,10 +68,7 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
   ProfileListItem = SortableElement<{ config: AppConfig }>(({ config }) => (
     <List.Item>
       <div style={itemStyle}>
-        <div>
-          <Radio value={config.id} />
-          {getProfileName(config.name, this.props.t)}
-        </div>
+        <Radio value={config.id}>{getProfileName(config.name, this.props.t)}</Radio>
         <div>
           {React.createElement(this.DragHandle)}
           <Button
