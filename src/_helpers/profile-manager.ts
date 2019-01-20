@@ -128,6 +128,7 @@ export async function resetAllProfiles () {
     await storage.sync.remove([
       ...profileIDList.map(({ id }) => id),
       'profileIDList',
+      'activeProfileID',
     ])
   }
   return initProfiles()
@@ -168,7 +169,8 @@ export async function addProfile (profileID: ProfileID): Promise<void> {
 }
 
 export async function removeProfile (id: string): Promise<void> {
-  const profileIDList = await getProfileIDList()
+  const activeProfileID = await getActiveProfileID()
+  let profileIDList = await getProfileIDList()
   if (process.env.DEV_BUILD) {
     if (!profileIDList.find(item => item.id === id) ||
        !(await storage.sync.get(id))[id]
@@ -176,7 +178,11 @@ export async function removeProfile (id: string): Promise<void> {
       console.warn(`Remove profile: profile ${id} does not exists`)
     }
   }
-  await storage.sync.set({ profileIDList: profileIDList.filter(item => item.id !== id) })
+  profileIDList = profileIDList.filter(item => item.id !== id)
+  if (activeProfileID === id) {
+    await updateActiveProfileID(profileIDList[0].id)
+  }
+  await updateProfileIDList(profileIDList)
   return storage.sync.remove(id)
 }
 
