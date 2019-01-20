@@ -1,14 +1,15 @@
 import { AppConfigMutable } from '@/app-config'
 import { message, storage, openURL } from '@/_helpers/browser-api'
 import checkUpdate from '@/_helpers/check-update'
-import { getActiveConfig, updateActiveConfig, initConfig } from '@/_helpers/config-manager'
+import { getConfig, updateConfig, initConfig } from '@/_helpers/config-manager'
+import { initProfiles } from '@/_helpers/profile-manager'
 import { MsgType, MsgQueryPanelState } from '@/typings/message'
 import { init as initMenus, openPDF, openGoogle, openYoudao } from './context-menus'
 import { openQSPanel } from './server'
 import { init as initPdf } from './pdf-sniffer'
 import { startSyncServiceInterval } from './sync-manager'
 
-getActiveConfig().then(config => {
+getConfig().then(config => {
   initMenus(config.contextMenus)
   initPdf(config)
 })
@@ -26,8 +27,8 @@ if (browser.notifications.onButtonClicked) {
 browser.commands.onCommand.addListener(command => {
   switch (command) {
     case 'toggle-active':
-      getActiveConfig().then(config => {
-        updateActiveConfig({
+      getConfig().then(config => {
+        updateConfig({
           ...config,
           active: !config.active,
         })
@@ -37,7 +38,7 @@ browser.commands.onCommand.addListener(command => {
       browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
         if (tabs.length <= 0 || tabs[0].id == null) { return }
         Promise.all([
-          getActiveConfig(),
+          getConfig(),
           message.send<MsgQueryPanelState, boolean>(
             tabs[0].id as number,
             {
@@ -45,12 +46,11 @@ browser.commands.onCommand.addListener(command => {
               path: 'widget.isPinned',
             }
           ),
-        ]).then(([c, isPinned]) => {
-          const config = c as AppConfigMutable
+        ]).then(([config, isPinned]) => {
           const isEnable = !config[isPinned ? 'pinMode' : 'mode'].instant.enable
-          config.mode.instant.enable = isEnable
-          config.pinMode.instant.enable = isEnable
-          updateActiveConfig(config)
+          ;(config as AppConfigMutable).mode.instant.enable = isEnable
+          ;(config as AppConfigMutable).pinMode.instant.enable = isEnable
+          updateConfig(config)
         })
       })
       break
@@ -70,9 +70,10 @@ browser.commands.onCommand.addListener(command => {
 })
 
 async function onInstalled ({ reason, previousVersion }: { reason: string, previousVersion?: string }) {
-  const activeConfig = await initConfig()
-  initMenus(activeConfig.contextMenus)
-  initPdf(activeConfig)
+  const config = await initConfig()
+  initMenus(config.contextMenus)
+  initPdf(config)
+  await initProfiles()
   storage.local.set({ lastCheckUpdate: Date.now() })
 
   if (reason === 'install') {

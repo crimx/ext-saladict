@@ -1,4 +1,6 @@
-import { appConfigFactory, AppConfig, AppConfigMutable } from '@/app-config'
+import { getDefaultConfig, AppConfig, AppConfigMutable } from '@/app-config'
+import { getALlDicts } from './dicts'
+
 import forEach from 'lodash/forEach'
 import isNumber from 'lodash/isNumber'
 import isString from 'lodash/isString'
@@ -6,12 +8,14 @@ import isBoolean from 'lodash/isBoolean'
 import get from 'lodash/get'
 import set from 'lodash/set'
 
+const defaultAllDicts = getALlDicts()
+
 export default mergeConfig
 
 export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppConfig {
   const base: AppConfigMutable = baseConfig
     ? JSON.parse(JSON.stringify(baseConfig))
-    : appConfigFactory(oldConfig.id)
+    : getDefaultConfig()
 
   // pre-merge patch start
   let oldVersion = oldConfig.version
@@ -26,8 +30,6 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
     })
   }
   // pre-merge patch end
-
-  mergeString('name')
 
   mergeBoolean('active')
   mergeBoolean('noTypeField')
@@ -45,7 +47,6 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   mergeBoolean('searhHistoryInco')
   mergeBoolean('newWordSound')
   mergeBoolean('editOnFav')
-  mergeString('mtaAutoUnfold')
   mergeBoolean('searchSuggests')
 
   mergeBoolean('mode.icon')
@@ -102,36 +103,15 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   mergeBoolean('language.english')
   mergeBoolean('language.minor')
 
-  merge('autopron.cn.dict', id => base.dicts.all[id])
-  merge('autopron.en.dict', id => base.dicts.all[id])
+  merge('autopron.cn.dict', id => defaultAllDicts[id])
+  merge('autopron.en.dict', id => defaultAllDicts[id])
+
   merge('autopron.en.accent', val => val === 'us' || val === 'uk')
 
   merge('whiltelist', val => Array.isArray(val))
   merge('blacklist', val => Array.isArray(val))
 
-  mergeSelectedDicts('dicts')
-  mergeSelectedDicts('contextMenus')
-
-  forEach(base.dicts.all, (dict, id) => {
-    mergeBoolean(`dicts.all.${id}.defaultUnfold`)
-    mergeNumber(`dicts.all.${id}.preferredHeight`)
-    mergeNumber(`dicts.all.${id}.selectionWC.min`)
-    mergeNumber(`dicts.all.${id}.selectionWC.max`)
-    mergeBoolean(`dicts.all.${id}.selectionLang.eng`)
-    mergeBoolean(`dicts.all.${id}.selectionLang.chs`)
-    mergeBoolean(`dicts.all.${id}.selectionLang.minor`)
-    if (dict['options']) {
-      forEach(dict['options'], (value, opt) => {
-        if (isNumber(value)) {
-          mergeNumber(`dicts.all.${id}.options.${opt}`)
-        } else if (isBoolean(value)) {
-          mergeBoolean(`dicts.all.${id}.options.${opt}`)
-        } else if (isString(value)) {
-          mergeString(`dicts.all.${id}.options.${opt}`)
-        }
-      })
-    }
-  })
+  mergeSelectedContextMenus('contextMenus')
 
   forEach(base.contextMenus.all, (dict, id) => {
     mergeString(`contextMenus.all.${id}`)
@@ -154,14 +134,14 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
 
   return base
 
-  function mergeSelectedDicts (path: string): void {
+  function mergeSelectedContextMenus (path: string): void {
     const selected = get(oldConfig, [path, 'selected'])
     if (Array.isArray(selected)) {
       if (selected.length === 0) {
         set(base, [path, 'selected'], [])
       } else {
-        const allDict = get(base, [path, 'all'])
-        const arr = selected.filter(id => allDict[id])
+        const allContextMenus = get(base, [path, 'all'])
+        const arr = selected.filter(id => allContextMenus[id])
         if (arr.length > 0) {
           set(base, [path, 'selected'], arr)
         }
