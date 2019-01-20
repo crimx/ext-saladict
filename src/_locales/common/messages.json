@@ -39,6 +39,21 @@
     "zh_CN": "排序",
     "zh_TW": "排序"
   },
+  "lang_chinese": {
+    "en": "Chinese",
+    "zh_CN": "中文",
+    "zh_TW": "漢字"
+  },
+  "lang_english": {
+    "en": "English",
+    "zh_CN": "英文",
+    "zh_TW": "英文"
+  },
+  "lang_minor": {
+    "en": "Minor",
+    "zh_CN": "其它语言",
+    "zh_TW": "其它語言"
+  },
   "unit_mins": {
     "en": "minutes",
     "zh_CN": "分钟",

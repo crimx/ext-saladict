@@ -1,4 +1,89 @@
 {
+  "opt_sm_mode": {
+    "en": "Normal Mode",
+    "zh_CN": "普通划词",
+    "zh_TW": "普通選詞"
+  },
+  "opt_sm_pinMode": {
+    "en": "Pinned Mode",
+    "zh_CN": "钉住查词",
+    "zh_TW": "釘住查字"
+  },
+  "opt_sm_panelMode": {
+    "en": "Panel Mode",
+    "zh_CN": "面板查词",
+    "zh_TW": "內部選詞"
+  },
+  "opt_sm_qsPanelMode": {
+    "en": "Panel Mode",
+    "zh_CN": "面板查词",
+    "zh_TW": "內部選詞"
+  },
+  "opt_sm_direct": {
+    "en": "Direct Search",
+    "zh_CN": "直接搜索",
+    "zh_TW": "直接搜尋"
+  },
+  "opt_sm_direct_help": {
+    "en": "Show dict panel directly.",
+    "zh_CN": "直接显示词典面板。",
+    "zh_TW": "直接顯示字典視窗介面。"
+  },
+  "opt_sm_double": {
+    "en": "Double Click",
+    "zh_CN": "双击搜索",
+    "zh_TW": "滑鼠雙點擊"
+  },
+  "opt_sm_double_help": {
+    "en": "Show dict panel after double click selection.",
+    "zh_CN": "双击选择文本之后直接显示词典面板。",
+    "zh_TW": "滑鼠雙點擊所選擇的句子或單字後，會直接顯示字典視窗介面。"
+  },
+  "opt_sm_holding": {
+    "en": "Hold a key",
+    "zh_CN": "按住按键",
+    "zh_TW": "按住按键"
+  },
+  "opt_sm_holding_help": {
+    "en": "After a selection is made, the selected key must be pressing when releasing mouse (Meta key is \"⌘ Command\" on Mac and \"⊞ Windows\" for others).",
+    "zh_CN": "在放开鼠标之前按住选择的按键才显示词典面板（Meta 键为 Mac 上的「⌘ Command」键以及其它键盘的「⊞ Windows」键）。",
+    "zh_TW": "在放開滑鼠之前，需按住選擇的按鍵才顯示字典視窗介面（Meta 鍵為 Mac 上的「⌘ Command」鍵以及其它鍵盤的「⊞ Windows」鍵）。"
+  },
+  "opt_sm_icon": {
+    "en": "Show Icon",
+    "zh_CN": "显示图标",
+    "zh_TW": "顯示圖案"
+  },
+  "opt_sm_icon_help": {
+    "en": "A cute little icon pops up nearby the cursor.",
+    "zh_CN": "在鼠标附近显示一个图标，鼠标移上去后才显示词典面板。",
+    "zh_TW": "在滑鼠附近顯示一個圖案，滑鼠移動到圖案，會顯示出字典的視窗介面。"
+  },
+  "opt_sm_instant": {
+    "en": "Instant Capture",
+    "zh_CN": "鼠标悬浮取词",
+    "zh_TW": "滑鼠懸浮取詞"
+  },
+  "opt_sm_instant_help": {
+    "en": "Selection is automatically made near by the cursor.",
+    "zh_CN": "自动选取鼠标附近的单词，直接取词建议配合快捷键开启关闭。",
+    "zh_TW": "自動選取滑鼠附近的單字，直接取詞建議配合快捷鍵啓用與關閉。"
+  },
+  "opt_sm_instant_delay": {
+    "en": "Capture delay",
+    "zh_CN": "取词延时",
+    "zh_TW": "取詞等待"
+  },
+  "opt_sm_instant_direct": {
+    "en": "Direct",
+    "zh_CN": "直接取词",
+    "zh_TW": "直接取詞"
+  },
+  "opt_sm_instant_key": {
+    "en": "Key",
+    "zh_CN": "按键",
+    "zh_TW": "按鍵"
+  },
   "opt_mta_always": {
     "en": "Keep Unfolding",
     "zh_CN": "保持展开",
@@ -203,6 +288,31 @@
     "en": "Sync Service",
     "zh_CN": "添加同步",
     "zh_TW": "添加同步"
+  },
+  "opt_no_type_field": {
+    "en": "No selection on editable regions",
+    "zh_CN": "不在输入框划词",
+    "zh_TW": "不在輸入框滑鼠滑字"
+  },
+  "opt_no_type_field_help": {
+    "en": "If selection making in editable regions is banned, the extension will identify Input Boxes, TextAreas and other common text editors like CodeMirror, ACE and Monaco.",
+    "zh_CN": "开启后，本扩展会自动识别输入框以及常见编辑器，如 CodeMirror、ACE 和 Monaco。",
+    "zh_TW": "開啟后，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror、ACE 和 Monaco。"
+  },
+  "opt_sel_lang": {
+    "en": "Selection Languages",
+    "zh_CN": "划词语言",
+    "zh_TW": "選詞語言"
+  },
+  "opt_double_click_delay": {
+    "en": "Double Click Delay",
+    "zh_CN": "双击间隔",
+    "zh_TW": "滑鼠雙點擊間隔"
+  },
+  "opt_sel_lang_help": {
+    "en": "Search when selection contains words in the chosen languages.",
+    "zh_CN": "当选中的文字包含相应的语言时才进行查找。",
+    "zh_TW": "當選中的文字包含相對應的語言時，才進行查尋。"
   },
   "profiles_add_name": {
     "en": "Add Profile Name",

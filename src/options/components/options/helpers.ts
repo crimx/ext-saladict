@@ -10,6 +10,11 @@ export const formItemLayout = {
   wrapperCol: { span: 8 },
 }
 
+export const formItemInlineStyle = {
+  display: 'inline-block',
+  margin: 0,
+}
+
 let updateConfigTimeout: any = null
 let updateProfileTimeout: any = null
 
