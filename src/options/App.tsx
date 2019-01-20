@@ -16,11 +16,11 @@ export interface OptionsMainProps {
   config: AppConfig
   profile: Profile
   profileIDList: ProfileIDList
+  rawProfileName: string
 }
 
 export class OptionsMain extends React.Component<OptionsMainProps & { t: TranslationFunction }> {
   state = {
-    activeProfileName: '',
     selectedKey: menuselected,
   }
 
@@ -31,14 +31,6 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
     window.addEventListener('popstate', e => {
       this.setState({ selectedKey: e.state.key || 'General' })
     })
-  }
-
-  static getDerivedStateFromProps (props: OptionsMainProps & { t: TranslationFunction }) {
-    const activeProfileID = props.profileIDList.find(({ id }) => id === props.profile.id)
-    const activeProfileName = activeProfileID
-      ? getProfileName(activeProfileID.name, props.t)
-      : ''
-    return { activeProfileName }
   }
 
   onNavSelect = ({ key }: { key: string }) => {
@@ -59,13 +51,13 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
   }
 
   render () {
-    const { t, config, profile } = this.props
+    const { t, config, profile, rawProfileName } = this.props
 
     return (
       <Layout>
         <Header style={{ display: 'flex', justifyContent: 'space-between' }}>
           <h1 style={{ color: '#fff' }}>{t('title')}</h1>
-          <span style={{ color: '#fff' }}>「 {this.state.activeProfileName} 」</span>
+          <span style={{ color: '#fff' }}>「 {getProfileName(rawProfileName, t)} 」</span>
           <HeadInfo />
         </Header>
         <Layout>

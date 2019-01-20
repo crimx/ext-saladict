@@ -4,8 +4,13 @@ import App from './App'
 import { getDefaultConfig, AppConfig } from '@/app-config'
 import { getDefaultProfile, Profile, ProfileIDList } from '@/app-config/profiles'
 import { getConfig, addConfigListener } from '@/_helpers/config-manager'
-import { getActiveProfile, addActiveProfileListener, getProfileIDList, addProfileIDListListener } from '@/_helpers/profile-manager'
 import { injectSaladictInternal } from '@/_helpers/injectSaladictInternal'
+import {
+  getActiveProfile,
+  addActiveProfileListener,
+  getProfileIDList,
+  addProfileIDListListener,
+} from '@/_helpers/profile-manager'
 
 import { I18nextProvider as ProviderI18next } from 'react-i18next'
 import i18nLoader from '@/_helpers/i18n'
@@ -51,17 +56,19 @@ export interface OptionsState {
   config: AppConfig
   profile: Profile
   profileIDList: ProfileIDList
+  rawProfileName: string
 }
 
 export class Options extends React.Component<OptionsProps, OptionsState> {
-  state = {
-    config: getDefaultConfig(),
-    profile: getDefaultProfile(),
-    profileIDList: [],
-  }
-
   constructor (props: OptionsProps) {
     super(props)
+
+    this.state = {
+      config: getDefaultConfig(),
+      profile: getDefaultProfile(),
+      profileIDList: [],
+      rawProfileName: '',
+    }
 
     Promise.all([getConfig(), getActiveProfile(), getProfileIDList()])
       .then(([ config, profile, profileIDList ]) => {
@@ -75,7 +82,11 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
     })
 
     addActiveProfileListener(({ newProfile }) => {
-      this.setState({ profile: newProfile })
+      const activeProfileID = this.state.profileIDList.find(
+        ({ id }) => id === newProfile.id
+      )
+      const rawProfileName = activeProfileID ? activeProfileID.name : ''
+      this.setState({ profile: newProfile, rawProfileName })
       message.destroy()
       message.success(i18n.t('msg_updated'))
     })
