@@ -1,5 +1,6 @@
 import { search } from '@/components/dictionaries/google/engine'
-import { appConfigFactory } from '@/app-config'
+import { getDefaultConfig } from '@/app-config'
+import { getDefaultProfile } from '@/app-config/profiles'
 import fs from 'fs'
 import path from 'path'
 
@@ -21,7 +22,7 @@ describe('Dict/Google/engine', () => {
   })
 
   it('should parse result correctly', () => {
-    return search('any', appConfigFactory(), { isPDF: false })
+    return search('any', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
         expect(searchResult.result.trans.text).toBe('“当你不需要的时候，这就是你所读到的东西，当你无法帮助它时，它将决定你将会是什么。”\n - 奥斯卡·王尔德\n 成功一夜成名需要很长时间。')
@@ -35,7 +36,7 @@ describe('Dict/Google/engine', () => {
   })
 
   it('should parse result correctly with payload', () => {
-    return search('any', appConfigFactory(), { sl: 'en', tl: 'jp', isPDF: false })
+    return search('any', getDefaultConfig(), getDefaultProfile(), { sl: 'en', tl: 'jp', isPDF: false })
       .then(searchResult => {
         expect(searchResult.result.sl).toBe('en')
         expect(searchResult.result.tl).toBe('jp')

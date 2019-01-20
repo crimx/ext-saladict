@@ -1,5 +1,6 @@
 import { search } from '@/components/dictionaries/zdic/engine'
-import { appConfigFactory } from '@/app-config'
+import { getDefaultConfig } from '@/app-config'
+import getDefaultProfile from '@/app-config/profiles'
 import fs from 'fs'
 import path from 'path'
 
@@ -14,7 +15,7 @@ describe('Dict/Zdic/engine', () => {
   })
 
   it('should parse word result correctly', () => {
-    return search('爱', appConfigFactory(), { isPDF: false })
+    return search('爱', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(({ result, audio }) => {
         expect(audio && typeof audio.py).toBe('string')
         expect(result.phsym.length).toBeGreaterThan(0)
@@ -23,7 +24,7 @@ describe('Dict/Zdic/engine', () => {
   })
 
   it('should parse phrase result correctly', () => {
-    return search('沙拉', appConfigFactory(), { isPDF: false })
+    return search('沙拉', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(({ result, audio }) => {
         expect(audio && typeof audio.py).toBe('string')
         expect(result.phsym.length).toBeGreaterThan(0)

@@ -1,5 +1,6 @@
 import { search, BingResultLex, BingResultMachine, BingResultRelated } from '@/components/dictionaries/bing/engine'
-import { appConfigFactory, AppConfigMutable } from '@/app-config'
+import { getDefaultConfig } from '@/app-config'
+import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
 import fs from 'fs'
 import path from 'path'
 import { URL } from 'url'
@@ -26,15 +27,15 @@ describe('Dict/Bing/engine', () => {
   })
 
   it('should parse lex result correctly', () => {
-    const config = appConfigFactory() as AppConfigMutable
-    config.dicts.all.bing.options = {
+    const profile = getDefaultProfile() as ProfileMutable
+    profile.dicts.all.bing.options = {
       tense: true,
       phsym: true,
       cdef: true,
       related: true,
       sentence: 4
     }
-    return search('lex', config, { isPDF: false })
+    return search('lex', getDefaultConfig(), profile, { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toHaveProperty('us', expect.stringContaining('mp3'))
         expect(searchResult.audio).toHaveProperty('uk', expect.stringContaining('mp3'))
@@ -49,7 +50,7 @@ describe('Dict/Bing/engine', () => {
   })
 
   it('should parse machine result correctly', () => {
-    return search('machine', appConfigFactory(), { isPDF: false })
+    return search('machine', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 
@@ -61,7 +62,7 @@ describe('Dict/Bing/engine', () => {
   })
 
   it('should parse related result correctly', () => {
-    return search('related', appConfigFactory(), { isPDF: false })
+    return search('related', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 

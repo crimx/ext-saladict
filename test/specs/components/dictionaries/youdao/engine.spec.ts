@@ -1,5 +1,6 @@
 import { search, YoudaoResultLex, YoudaoResultRelated } from '@/components/dictionaries/youdao/engine'
-import { appConfigFactory, AppConfigMutable } from '@/app-config'
+import { getDefaultConfig, AppConfigMutable } from '@/app-config'
+import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
 import fs from 'fs'
 import path from 'path'
 
@@ -24,8 +25,7 @@ describe('Dict/Youdao/engine', () => {
   })
 
   it('should parse lex result correctly', () => {
-    const config = appConfigFactory() as AppConfigMutable
-    return search('love', config, { isPDF: false })
+    return search('love', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
@@ -53,8 +53,8 @@ describe('Dict/Youdao/engine', () => {
   })
 
   it('should parse lex result correctly when options are changed', () => {
-    const config = appConfigFactory() as AppConfigMutable
-    config.dicts.all.youdao.options = {
+    const profile = getDefaultProfile() as ProfileMutable
+    profile.dicts.all.youdao.options = {
       basic: false,
       collins: false,
       discrimination: false,
@@ -62,7 +62,7 @@ describe('Dict/Youdao/engine', () => {
       translation: false,
       related: false,
     }
-    return search('love', config, { isPDF: false })
+    return search('love', getDefaultConfig(), profile, { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
@@ -86,8 +86,7 @@ describe('Dict/Youdao/engine', () => {
   })
 
   it('should parse translation result correctly', () => {
-    const config = appConfigFactory() as AppConfigMutable
-    return search('translation', config, { isPDF: false })
+    return search('translation', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(searchResult => {
         expect(!searchResult.audio || !searchResult.audio.uk).toBeTruthy()
         expect(!searchResult.audio || !searchResult.audio.us).toBeTruthy()
@@ -109,7 +108,7 @@ describe('Dict/Youdao/engine', () => {
   })
 
   it('should parse related result correctly', () => {
-    return search('jumblish', appConfigFactory(), { isPDF: false })
+    return search('jumblish', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 

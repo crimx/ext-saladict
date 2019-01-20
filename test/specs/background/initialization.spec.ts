@@ -1,4 +1,4 @@
-import { appConfigFactory } from '@/app-config'
+import { getDefaultConfig } from '@/app-config'
 import sinon from 'sinon'
 
 import { message, storage } from '@/_helpers/browser-api'
@@ -9,9 +9,9 @@ window.fetch = jest.fn(() => Promise.resolve({
 }))
 
 jest.mock('@/app-config/merge-config', () => {
-  const { appConfigFactory } = require('@/app-config')
+  const { getDefaultConfig } = require('@/app-config')
   return {
-    mergeConfig: jest.fn(config => Promise.resolve(config || appConfigFactory()))
+    mergeConfig: jest.fn(config => Promise.resolve(config || getDefaultConfig()))
   }
 })
 

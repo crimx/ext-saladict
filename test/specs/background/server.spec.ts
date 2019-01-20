@@ -1,11 +1,11 @@
-import { appConfigFactory } from '@/app-config'
+import { getDefaultConfig } from '@/app-config'
 import * as browserWrap from '@/_helpers/browser-api'
 import { MsgType } from '@/typings/message'
 import { timer } from '@/_helpers/promise-more'
 
 jest.mock('@/background/database')
 
-const config = appConfigFactory()
+const config = getDefaultConfig()
 
 describe('Server', () => {
   const chsToChz = jest.fn()
@@ -34,7 +34,7 @@ describe('Server', () => {
     })
     jest.doMock('@/app-config', () => {
       return {
-        appConfigFactory: () => config
+        getDefaultConfig: () => config
       }
     })
     jest.doMock('@/_helpers/config-manager', () => {
