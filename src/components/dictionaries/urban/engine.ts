@@ -41,9 +41,9 @@ export type UrbanResult = UrbanResultItem[]
 type UrbanSearchResult = DictSearchResult<UrbanResult>
 
 export const search: SearchFunction<UrbanSearchResult> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
-  const options = config.dicts.all.urban.options
+  const options = profile.dicts.all.urban.options
 
   return fetchDirtyDOM('http://www.urbandictionary.com/define.php?term=' + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)

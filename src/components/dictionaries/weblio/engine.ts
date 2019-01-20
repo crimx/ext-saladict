@@ -25,7 +25,7 @@ export type WeblioResult = Array<{
 type WeblioSearchResult = DictSearchResult<WeblioResult>
 
 export const search: SearchFunction<WeblioSearchResult> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
   return fetchDirtyDOM('https://www.weblio.jp/content/' + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)

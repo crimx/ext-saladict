@@ -10,10 +10,10 @@ import {
   getText,
 } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
-import { AppConfig } from '@/app-config'
+import { AllDicts } from '@/app-config'
 
-export const getSrcPage: GetSrcPageFunction = (text, config) => {
-  const { lang } = config.dicts.all.wikipedia.options
+export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
+  const { lang } = profile.dicts.all.wikipedia.options
   const subdomain = getSubdomain(text, lang)
   const path = lang.startsWith('zh-') ? lang : 'wiki'
   return `https://${subdomain}.wikipedia.org/${path}/${encodeURIComponent(text)}`
@@ -45,7 +45,7 @@ export type WikipediaPayload = {
 }
 
 export const search: SearchFunction<WikipediaSearchResult, WikipediaPayload> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
   if (payload.fetchLangs) {
     return fetchDirtyDOM(payload.result.langSelector)
@@ -54,7 +54,7 @@ export const search: SearchFunction<WikipediaSearchResult, WikipediaPayload> = (
       .then(langList => ({ result: { ...payload.result, langList } }))
   }
 
-  const { lang } = config.dicts.all.wikipedia.options
+  const { lang } = profile.dicts.all.wikipedia.options
   const subdomain = getSubdomain(text, lang)
 
   let url = payload.url
@@ -116,7 +116,7 @@ function handleDOM (
 
 function getSubdomain (
   text: string,
-  lang: AppConfig['dicts']['all']['wikipedia']['options']['lang'],
+  lang: AllDicts['wikipedia']['options']['lang'],
 ): string {
   if (lang.startsWith('zh-')) {
     return 'zh'

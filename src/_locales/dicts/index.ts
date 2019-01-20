@@ -1,12 +1,12 @@
 import { RawLocale, RawLocales } from '@/_helpers/i18n'
-import { appConfigFactory } from '@/app-config'
+import { getALlDicts } from '@/app-config/dicts'
 
 export interface RawDictLocales {
   name: RawLocale
   options?: RawLocales
 }
 
-export const dictsLocales: RawLocales = Object.keys(appConfigFactory().dicts.all)
+export const dictsLocales: RawLocales = Object.keys(getALlDicts())
   .reduce((result, id) => {
     const locale: RawDictLocales = require('@/components/dictionaries/' + id + '/_locales')
     result[id] = locale.name

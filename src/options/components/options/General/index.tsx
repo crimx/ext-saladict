@@ -1,7 +1,7 @@
 import React from 'react'
 import { openURL } from '@/_helpers/browser-api'
 import { Props } from '../typings'
-import { updateConfig, formItemLayout } from '../helpers'
+import { updateConfigOrProfile, formItemLayout } from '../helpers'
 
 import { FormComponentProps } from 'antd/lib/form'
 import { Form, Select, Switch, Button } from 'antd'
@@ -26,7 +26,7 @@ export class General extends React.Component<Props & FormComponentProps> {
           label={t('opt_active')}
           help={t('opt_app_active_help')}
         >{
-          this.props.form.getFieldDecorator('active', {
+          this.props.form.getFieldDecorator('config#active', {
             initialValue: config.active,
             valuePropName: 'checked',
           })(
@@ -38,7 +38,7 @@ export class General extends React.Component<Props & FormComponentProps> {
           label={t('opt_animation')}
           help={t('opt_animation_help')}
         >{
-          this.props.form.getFieldDecorator('animation', {
+          this.props.form.getFieldDecorator('config#animation', {
             initialValue: config.animation,
             valuePropName: 'checked',
           })(
@@ -49,7 +49,7 @@ export class General extends React.Component<Props & FormComponentProps> {
           {...formItemLayout}
           label={t('opt_language')}
         >{
-          this.props.form.getFieldDecorator('langCode', {
+          this.props.form.getFieldDecorator('config#langCode', {
             initialValue: config.langCode,
           })(
             <Select>
@@ -65,5 +65,5 @@ export class General extends React.Component<Props & FormComponentProps> {
 }
 
 export default Form.create({
-  onValuesChange: updateConfig
+  onValuesChange: updateConfigOrProfile
 })(General)

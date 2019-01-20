@@ -5,7 +5,7 @@ import i18nLoader from '@/_helpers/i18n'
 import { TranslationFunction } from 'i18next'
 import contextLocles from '@/_locales/context'
 import isEqual from 'lodash/isEqual'
-import { getActiveConfig, addActiveConfigListener, AppConfigChanged } from '@/_helpers/config-manager'
+import { getConfig, addConfigListener, AppConfigChanged } from '@/_helpers/config-manager'
 
 // import { Observable, ReplaySubject, combineLatest } from 'rxjs'
 // import { mergeMap, filter, map, audit, mapTo, share, startWith } from 'rxjs/operators'
@@ -74,7 +74,7 @@ browser.contextMenus.onClicked.addListener(info => {
       requestSelection()
       break
     default:
-      getActiveConfig()
+      getConfig()
         .then(config => {
           const url = config.contextMenus.all[menuItemId]
           if (url) {
@@ -88,7 +88,7 @@ export function init (initConfig: ContextMenusConfig): Observable<void> {
   if (setMenus$$) { return setMenus$$ }
   // when context menus config changes
   const contextMenusChanged$ =
-      fromEventPattern<AppConfigChanged[] | AppConfigChanged>(addActiveConfigListener as any).pipe(
+      fromEventPattern<AppConfigChanged[] | AppConfigChanged>(addConfigListener as any).pipe(
     map(args => Array.isArray(args) ? args[0] : args),
     filter(({ newConfig, oldConfig }) => {
       if (!newConfig) { return false }
@@ -139,8 +139,8 @@ export async function openPDF (url?: string, force?: boolean) {
   }
   const tabs = await browser.tabs.query({ active: true, currentWindow: true })
   if (tabs.length > 0 && tabs[0].url) {
-    if (/pdf$/i.test(tabs[0].url as string) || force) {
-      return openURL(pdfURL + '?file=' + encodeURIComponent((tabs[0].url as string)))
+    if (/pdf$/i.test(tabs[0].url) || force) {
+      return openURL(pdfURL + '?file=' + encodeURIComponent((tabs[0].url)))
     }
   }
   return openURL(pdfURL)
@@ -150,7 +150,7 @@ export function openGoogle (cn?: boolean) {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getActiveConfig().then(config => {
+        getConfig().then(config => {
           openURL(`https://translate.google.${cn ? 'cn' : 'com'}/translate?sl=auto&tl=${config.langCode}&js=y&prev=_t&ie=UTF-8&u=${encodeURIComponent(tabs[0].url as string)}&edit-text=&act=url`)
         })
       }
@@ -181,7 +181,7 @@ export function openBaiduPage () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getActiveConfig().then(config => {
+        getConfig().then(config => {
           const langCode = config.langCode === 'zh-CN'
             ? 'zh'
             : config.langCode === 'zh-TW'
@@ -197,7 +197,7 @@ export function openSogouPage () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getActiveConfig().then(config => {
+        getConfig().then(config => {
           const langCode = config.langCode === 'zh-CN' ? 'zh-CHS' : 'en'
           openURL(`https://translate.sogoucdn.com/pcvtsnapshot?from=auto&to=${langCode}&tfr=translatepc&url=${encodeURIComponent(tabs[0].url as string)}&domainType=sogou`)
         })
@@ -209,7 +209,7 @@ export function openMicrosoftPage () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getActiveConfig().then(config => {
+        getConfig().then(config => {
           const langCode = config.langCode === 'zh-CN'
             ? 'zh-CHS'
             : config.langCode === 'zh-TW'
@@ -225,7 +225,7 @@ function requestSelection () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].id != null) {
-        message.send(tabs[0].id as number, { type: MsgType.EmitSelection })
+        message.send(tabs[0].id, { type: MsgType.EmitSelection })
       }
     })
 }

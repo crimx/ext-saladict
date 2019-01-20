@@ -1,6 +1,7 @@
 import { DeepReadonly } from '@/typings/helpers'
 import { getALlDicts } from './dicts'
 import { getAllContextMenus } from './context-menus'
+import { MtaAutoUnfold as _MtaAutoUnfold, _getDefaultProfile } from './profiles'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 
@@ -14,6 +15,7 @@ const langCode: LangCode = /^zh-CN|zh-TW|en$/.test(langUI)
 export type DictConfigsMutable = ReturnType<typeof getALlDicts>
 export type DictConfigs = DeepReadonly<DictConfigsMutable>
 export type DictID = keyof DictConfigsMutable
+export type MtaAutoUnfold = _MtaAutoUnfold
 
 export type ContextMenuDictID = keyof ReturnType<typeof getAllContextMenus>
 
@@ -34,14 +36,15 @@ export type InstantSearchKey = 'direct' | 'ctrl' | 'alt' | 'shift'
 /** '' means no preload */
 export type PreloadSource = '' | 'clipboard' | 'selection'
 
+export type AllDicts = ReturnType<typeof getALlDicts>
+
 export type AppConfigMutable = ReturnType<typeof _getDefaultConfig>
 export type AppConfig = DeepReadonly<AppConfigMutable>
 
 export const getDefaultConfig: () => AppConfig = _getDefaultConfig
-
 export default getDefaultConfig
 
-export function _getDefaultConfig () {
+function _getDefaultConfig () {
   return {
     version: 12,
 
@@ -71,6 +74,7 @@ export function _getDefaultConfig () {
     /** URLs, [regexp.source, match_pattern] */
     pdfWhitelist: [] as [string, string][],
     /** URLs, [regexp.source, match_pattern] */
+    // tslint:disable-next-line: no-unnecessary-type-assertion
     pdfBlacklist: [
       ['^(http|https)://[^/]*?cnki\.net(/.*)?$', '*://*.cnki.net/*'],
     ] as [string, string][],
@@ -235,6 +239,7 @@ export function _getDefaultConfig () {
     /** URLs, [regexp.source, match_pattern] */
     whitelist: [] as [string, string][],
     /** URLs, [regexp.source, match_pattern] */
+    // tslint:disable-next-line: no-unnecessary-type-assertion
     blacklist: [
       ['^https://stackedit\.io(/.*)?$', 'https://stackedit.io/*']
     ] as [string, string][],

@@ -1,7 +1,9 @@
-import { appConfigFactory, TCDirection } from '@/app-config'
+import { getDefaultConfig, TCDirection } from '@/app-config'
+import getDefaultProfile from '@/app-config/profiles'
 import { message, openURL } from '@/_helpers/browser-api'
 import { timeout, timer } from '@/_helpers/promise-more'
-import { createActiveConfigStream } from '@/_helpers/config-manager'
+import { createConfigStream } from '@/_helpers/config-manager'
+import { createActiveProfileStream } from '@/_helpers/profile-manager'
 import { getSuggests } from '@/_helpers/getSuggests'
 import { DictSearchResult } from '@/typings/server'
 import { SearchErrorType, SearchFunction, GetSrcPageFunction } from '@/components/dictionaries/helpers'
@@ -27,10 +29,15 @@ import {
 
 browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B' })
 
-let config = appConfigFactory()
-createActiveConfigStream().subscribe(newConfig => {
+let config = getDefaultConfig()
+createConfigStream().subscribe(newConfig => {
   config = newConfig
   browser.browserAction.setBadgeText({ text: newConfig.active ? '' : 'off' })
+})
+
+let profile = getDefaultProfile()
+createActiveProfileStream().subscribe(newProfile => {
+  profile = newProfile
 })
 
 message.self.initServer()
@@ -197,7 +204,7 @@ function openSrcPage (data: MsgOpenSrcPage): Promise<void> {
   } catch (err) {
     return Promise.reject(err)
   }
-  return openURL(getSrcPage(data.text, config))
+  return openURL(getSrcPage(data.text, config, profile))
 }
 
 function playAudio (data: MsgAudioPlay): Promise<void> {
@@ -217,7 +224,7 @@ function fetchDictResult (
 
   const payload = data.payload || {}
 
-  return timeout(search(data.text, config, payload), 25000)
+  return timeout(search(data.text, config, profile, payload), 25000)
     .catch(err => {
       if (process.env.DEV_BUILD) {
         console.warn(data.id, err)
@@ -226,7 +233,7 @@ function fetchDictResult (
       if (err === SearchErrorType.NetWorkError) {
         // retry once
         return timer(500)
-          .then(() => timeout(search(data.text, config, payload), 25000))
+          .then(() => timeout(search(data.text, config, profile, payload), 25000))
       }
 
       return Promise.reject(err)

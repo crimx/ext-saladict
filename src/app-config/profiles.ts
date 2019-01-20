@@ -1,21 +1,26 @@
+import { DeepReadonly } from '@/typings/helpers'
 import { genUniqueKey } from '@/_helpers/uniqueKey'
 import { getALlDicts } from './dicts'
 
 export type MtaAutoUnfold = '' | 'once' | 'always' | 'popup'
 
 export type ProfileMutable = ReturnType<typeof _getDefaultProfile>
-export type Profile = Readonly<ProfileMutable>
+export type Profile = DeepReadonly<ProfileMutable>
+
+export interface ProfileID {
+  id: string
+  name: string
+}
+
+export type ProfileIDList = Array<ProfileID>
 
 export const getDefaultProfile: (id?: string) => Profile = _getDefaultProfile
 
 export default getDefaultProfile
 
-function _getDefaultProfile (id?: string) {
+export function _getDefaultProfile (id?: string) {
   return {
     id: id || genUniqueKey(),
-
-    /** name of the config mode */
-    name: `%%_default_%%`,
 
     /** auto unfold multiline textarea search box */
     mtaAutoUnfold: '' as MtaAutoUnfold,
@@ -32,18 +37,49 @@ function _getDefaultProfile (id?: string) {
   }
 }
 
-export function genDefaultProfiles () {
-  return [
-    getDefaultProfile(),
-    daily(),
-    translation(),
-    scholar(),
-  ]
+export function getDefaultProfileID (id?: string): ProfileID {
+  return {
+    id: id || genUniqueKey(),
+    name: '%%_default_%%',
+  }
 }
 
-export function daily () {
-  const profile = getDefaultProfile() as ProfileMutable
-  profile.name = '%%_daily_%%'
+export interface ProfileStorage {
+  idItem: ProfileID
+  profile: Profile
+}
+
+export function genProfilesStorage (): {
+  profileIDList: ProfileIDList
+  profiles: Profile[]
+} {
+  const defaultID = getDefaultProfileID()
+  const defaultProfile = getDefaultProfile(defaultID.id)
+  const dailyStorage = daily()
+  const translationStorage = translation()
+  const scholarStorage = scholar()
+
+  return {
+    profileIDList: [
+      defaultID,
+      dailyStorage.idItem,
+      translationStorage.idItem,
+      scholarStorage.idItem,
+    ],
+    profiles: [
+      defaultProfile,
+      dailyStorage.profile,
+      translationStorage.profile,
+      scholarStorage.profile,
+    ]
+  }
+}
+
+export function daily (): ProfileStorage {
+  const idItem = getDefaultProfileID()
+  idItem.name = '%%_daily_%%'
+
+  const profile = getDefaultProfile(idItem.id) as ProfileMutable
   profile.dicts.selected = ['bing', 'cambridge', 'urban', 'vocabulary', 'macmillan', 'etymonline', 'google', 'sogou', 'zdic', 'guoyu', 'liangan', 'googledict']
 
   const allDict = profile.dicts.all
@@ -51,12 +87,14 @@ export function daily () {
   allDict.sogou.selectionWC.min = 5
   allDict.etymonline.defaultUnfold = false
 
-  return profile
+  return { idItem, profile }
 }
 
-export function scholar () {
-  const profile = getDefaultProfile() as ProfileMutable
-  profile.name = '%%_scholar_%%'
+export function scholar (): ProfileStorage {
+  const idItem = getDefaultProfileID()
+  idItem.name = '%%_scholar_%%'
+
+  const profile = getDefaultProfile(idItem.id) as ProfileMutable
   profile.dicts.selected = ['googledict', 'cambridge', 'cobuild', 'etymonline', 'macmillan', 'oald', 'websterlearner', 'google', 'sogou', 'zdic', 'guoyu', 'liangan']
 
   const allDict = profile.dicts.all
@@ -66,13 +104,16 @@ export function scholar () {
   allDict.google.selectionWC.min = 5
   allDict.sogou.selectionWC.min = 5
 
-  return profile
+  return { idItem, profile }
 }
 
-export function translation () {
-  const profile = getDefaultProfile() as ProfileMutable
-  profile.name = '%%_translation_%%'
+export function translation (): ProfileStorage {
+  const idItem = getDefaultProfileID()
+  idItem.name = '%%_translation_%%'
+
+  const profile = getDefaultProfile(idItem.id) as ProfileMutable
   profile.dicts.selected = ['google', 'sogou', 'youdao', 'zdic', 'guoyu', 'liangan']
   profile.mtaAutoUnfold = 'always'
-  return profile
+
+  return { idItem, profile }
 }

@@ -10,14 +10,14 @@ import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 import md5 from 'md5'
 
-export const getSrcPage: GetSrcPageFunction = (text, config) => {
-  const lang = config.dicts.all.sogou.options.tl === 'default'
+export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
+  const lang = profile.dicts.all.sogou.options.tl === 'default'
     ? config.langCode === 'zh-CN'
       ? 'zh-CHS'
       : config.langCode === 'zh-TW'
         ? 'zh-CHT'
         : 'en'
-    : config.dicts.all.sogou.options.tl
+    : profile.dicts.all.sogou.options.tl
 
   return `https://fanyi.sogou.com/#auto/${lang}/${text}`
 }
@@ -36,9 +36,9 @@ const langcodes: ReadonlyArray<string> = [
 ]
 
 export const search: SearchFunction<SogouSearchResult, MachineTranslatePayload> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
-  const options = config.dicts.all.sogou.options
+  const options = profile.dicts.all.sogou.options
 
   const sl: string = payload.sl || 'auto'
   const tl: string = payload.tl || (

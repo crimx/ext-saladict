@@ -41,7 +41,7 @@ export interface GuoYuResult {
 }
 
 export const search: SearchFunction<DictSearchResult<GuoYuResult>> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
   return moedictSearch<GuoYuResult>('a', encodeURIComponent(text.replace(/\s+/g, '')), config)
 }

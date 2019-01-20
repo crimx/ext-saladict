@@ -65,7 +65,7 @@ export default reducer
 \*-----------------------------------------------*/
 
 interface Action<T extends ActionType> {
-  type: ActionType,
+  type: T,
   payload?: SelectionPayload[T]
 }
 

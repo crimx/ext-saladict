@@ -20,7 +20,7 @@ export interface VocabularyResult {
 type VocabularySearchResult = DictSearchResult<VocabularyResult>
 
 export const search: SearchFunction<VocabularySearchResult> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
   return fetchDirtyDOM('https://www.vocabulary.com/dictionary/' + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)

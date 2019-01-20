@@ -1,5 +1,5 @@
 import { AppConfig } from '@/app-config'
-import { createActiveConfigStream } from '@/_helpers/config-manager'
+import { createConfigStream } from '@/_helpers/config-manager'
 import { message } from '@/_helpers/browser-api'
 import { getDefaultSelectionInfo, SelectionInfo } from '@/_helpers/selection'
 import { isContainChinese, isContainEnglish, isContainMinor } from '@/_helpers/lang-check'
@@ -17,7 +17,7 @@ import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
 
 const isMac = /mac/i.test(navigator.platform)
 
-export const config$$ = share<AppConfig>()(createActiveConfigStream())
+export const config$$ = share<AppConfig>()(createConfigStream())
 
 export function sendMessage (
   msg: {

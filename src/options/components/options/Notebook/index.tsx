@@ -4,7 +4,7 @@ import { message } from '@/_helpers/browser-api'
 import { getSyncConfig, setSyncConfig , removeSyncConfig } from '@/background/sync-manager/helpers'
 import { getDefaultConfig, serviceID, SyncConfig } from '@/background/sync-manager/services/webdav'
 import { Props } from '../typings'
-import { updateConfig, formItemLayout } from '../helpers'
+import { updateConfigOrProfile, formItemLayout } from '../helpers'
 import SyncServiceModal from './SyncServiceModal'
 
 import { FormComponentProps } from 'antd/lib/form'
@@ -98,7 +98,7 @@ export class Notebook extends React.Component<NotebookProps> {
   }
 
   render () {
-    const { t, config } = this.props
+    const { t, config, profile } = this.props
     const { syncServiceConfig } = this.state
 
     return (
@@ -109,7 +109,7 @@ export class Notebook extends React.Component<NotebookProps> {
           label={t('opt_edit_on_fav')}
           help={t('opt_edit_on_fav_help')}
         >{
-          this.props.form.getFieldDecorator('editOnFav', {
+          this.props.form.getFieldDecorator('config#editOnFav', {
             initialValue: config.editOnFav,
             valuePropName: 'checked',
           })(
@@ -121,7 +121,7 @@ export class Notebook extends React.Component<NotebookProps> {
           label={t('opt_history')}
           help={t('opt_history_help')}
         >{
-          this.props.form.getFieldDecorator('searhHistory', {
+          this.props.form.getFieldDecorator('config#searhHistory', {
             initialValue: config.searhHistory,
             valuePropName: 'checked',
           })(
@@ -133,7 +133,7 @@ export class Notebook extends React.Component<NotebookProps> {
             {...formItemLayout}
             label={t('opt_history_inco')}
           >{
-            this.props.form.getFieldDecorator('searhHistoryInco', {
+            this.props.form.getFieldDecorator('config#searhHistoryInco', {
               initialValue: config.searhHistoryInco,
               valuePropName: 'checked',
             })(
@@ -166,7 +166,7 @@ export class Notebook extends React.Component<NotebookProps> {
           ]}
         >{
           React.createElement(SyncServiceModal, {
-            t, config,
+            t, config, profile,
             onChange: this.onSyncServiceChange,
             syncConfig: syncServiceConfig as SyncConfig,
           })
@@ -177,5 +177,5 @@ export class Notebook extends React.Component<NotebookProps> {
 }
 
 export default Form.create({
-  onValuesChange: updateConfig
+  onValuesChange: updateConfigOrProfile
 })(Notebook)

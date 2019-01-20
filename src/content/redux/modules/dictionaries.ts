@@ -1,10 +1,12 @@
 import { message } from '@/_helpers/browser-api'
-import { DictID, appConfigFactory, AppConfig, PreloadSource } from '@/app-config'
+import { DictID, PreloadSource } from '@/app-config'
 import isEqual from 'lodash/isEqual'
 import { saveWord } from '@/_helpers/record-manager'
 import { getDefaultSelectionInfo, SelectionInfo, isSameSelection } from '@/_helpers/selection'
 import { isContainChinese, isContainEnglish, testerPunct, isContainMinor, testerChinese, testJapanese, testKorean } from '@/_helpers/lang-check'
 import { MsgType, MsgFetchDictResult, MsgQSPanelSearchText } from '@/typings/message'
+import getDefaultProfile from '@/app-config/profiles'
+import { DeepReadonly } from '@/typings/helpers'
 import { StoreState, DispatcherThunk } from './index'
 import { isInNotebook, searchBoxUpdate } from './widget'
 
@@ -67,7 +69,7 @@ type DictState = {
 
 export type DictionariesState = {
   readonly dictionaries: {
-    readonly selected: AppConfig['dicts']['selected']
+    readonly selected: DeepReadonly<DictID[]>
     readonly active: DictID[]
     readonly dicts: {
       readonly [k in DictID]?: DictState
@@ -77,13 +79,13 @@ export type DictionariesState = {
   }
 }
 
-const initConfig = appConfigFactory()
+const defaultProfile = getDefaultProfile()
 
 export const initState: DictionariesState = {
   dictionaries: {
-    selected: initConfig.dicts.selected,
+    selected: defaultProfile.dicts.selected,
     active: [],
-    dicts: initConfig.dicts.selected
+    dicts: defaultProfile.dicts.selected
       .reduce((state, id) => {
         state[id] = {
           searchStatus: SearchStatus.OnHold,
@@ -225,7 +227,7 @@ export const reducer: DictsReducer = {
 \*-----------------------------------------------*/
 
 interface Action<T extends ActionType> {
-  type: ActionType,
+  type: T,
   payload?: DictionariesPayload[T]
 }
 

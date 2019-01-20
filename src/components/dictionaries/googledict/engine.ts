@@ -24,9 +24,9 @@ type GoogleDictSearchResult = DictSearchResult<GoogleDictResult>
 const getInnerHTML = getInnerHTMLBuilder('https://www.google.com/', {})
 
 export const search: SearchFunction<GoogleDictSearchResult> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
-  const isen = config.dicts.all.googledict.options.enresult ? 'hl=en&gl=en&' : ''
+  const isen = profile.dicts.all.googledict.options.enresult ? 'hl=en&gl=en&' : ''
   return fetch(`https://www.google.com/search?${isen}q=define+` + encodeURIComponent(text.replace(/\s+/g, '+')))
     .then(r => r.ok ? r.text() : handleNetWorkError())
     .then(handleDOM)

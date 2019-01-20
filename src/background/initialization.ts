@@ -40,7 +40,7 @@ browser.commands.onCommand.addListener(command => {
         Promise.all([
           getConfig(),
           message.send<MsgQueryPanelState, boolean>(
-            tabs[0].id as number,
+            tabs[0].id,
             {
               type: MsgType.QueryPanelState,
               path: 'widget.isPinned',

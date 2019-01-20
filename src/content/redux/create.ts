@@ -9,7 +9,8 @@ import { startUpAction as dictionariesStartUp } from './modules/dictionaries'
 
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgIsPinned, MsgQueryPanelState } from '@/typings/message'
-import { getActiveConfig } from '@/_helpers/config-manager'
+import { getConfig } from '@/_helpers/config-manager'
+import { getActiveProfile } from '@/_helpers/profile-manager'
 
 import { Observable } from 'rxjs/Observable'
 import { map } from 'rxjs/operators/map'
@@ -25,8 +26,8 @@ export default () => {
     composeEnhancers(applyMiddleware(thunk))
   )
 
-  getActiveConfig().then(config => {
-    store.dispatch<any>(updateConfig(config))
+  Promise.all([getConfig(), getActiveProfile()]).then(configOrProfiles => {
+    store.dispatch<any>(updateConfig(configOrProfiles))
     store.dispatch<any>(configStartUp())
     store.dispatch<any>(selectionStartUp())
     store.dispatch<any>(widgetStartUp())

@@ -30,7 +30,7 @@ export interface ZdicResult {
 type ZdicSearchResult = DictSearchResult<ZdicResult>
 
 export const search: SearchFunction<ZdicSearchResult> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
   return fetchDirtyDOM('http://www.zdic.net/search/?c=3&q=' + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)

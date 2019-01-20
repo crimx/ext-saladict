@@ -1,6 +1,6 @@
 import React from 'react'
 import { DictionariesState, SearchStatus } from '../../redux/modules/dictionaries'
-import { DictID, AppConfig, MtaAutoUnfold } from '@/app-config'
+import { DictID, MtaAutoUnfold, AllDicts } from '@/app-config'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
@@ -44,7 +44,10 @@ export interface DictPanelProps extends ChildrenProps {
   readonly panelMaxHeightRatio: number
   readonly mtaAutoUnfold: MtaAutoUnfold
   readonly dictionaries: DictionariesState['dictionaries']
-  readonly dictsConfig: AppConfig['dicts']
+  readonly dictsConfig: {
+    selected: DictID[]
+    all: AllDicts
+  }
   readonly selection: MsgSelection
 }
 

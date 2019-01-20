@@ -3,7 +3,8 @@
  */
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { appConfigFactory, DictID, AppConfigMutable } from '@/app-config'
+import { getDefaultConfig, DictID, AppConfigMutable } from '@/app-config'
+import getDefaultProfile from '@/app-config/profiles'
 
 import { I18nextProvider as ProviderI18next, translate } from 'react-i18next'
 import i18nLoader from '@/_helpers/i18n'
@@ -23,7 +24,7 @@ const i18n = i18nLoader({
 
 window['FAKE_AJAX_DELAY'] = 0
 
-const config = appConfigFactory()
+const config = getDefaultConfig()
 
 const root = document.getElementById('root') as HTMLDivElement
 document.body.style.justifyContent = 'center'
@@ -47,11 +48,12 @@ export default function setupEnv ({ dict, text = 'salad' }: EnvConfig) {
 
   require('../dictionaries/' + dict + '/_style.scss')
 
-  const config = appConfigFactory() as AppConfigMutable
+  const config = getDefaultConfig() as AppConfigMutable
   // config.langCode = 'zh-TW'
+  const profile = getDefaultProfile()
   const payload = {}
 
-  search(text, config, payload)
+  search(text, config, profile, payload)
     .then(result => {
       ReactDOM.render(
         <ProviderI18next i18n={i18n}>

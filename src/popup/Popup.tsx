@@ -4,8 +4,8 @@ import CSSTransition from 'react-transition-group/CSSTransition'
 import { translate } from 'react-i18next'
 import { TranslationFunction } from 'i18next'
 import { message } from '@/_helpers/browser-api'
-import { appConfigFactory, AppConfig } from '@/app-config'
-import { createActiveConfigStream, updateActiveConfig } from '@/_helpers/config-manager'
+import { getDefaultConfig, AppConfig } from '@/app-config'
+import { createConfigStream, updateConfig } from '@/_helpers/config-manager'
 import {
   MsgType,
   MsgQueryPanelState,
@@ -23,7 +23,7 @@ interface PopupState {
 
 export class Popup extends React.Component<{ t: TranslationFunction }, PopupState> {
   state = {
-    config: appConfigFactory(),
+    config: getDefaultConfig(),
     currentTabUrl: '',
     isShowUrlBox: false,
     tempOff: false,
@@ -33,7 +33,7 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
 
   constructor (props: any) {
     super(props)
-    createActiveConfigStream().subscribe(config => {
+    createConfigStream().subscribe(config => {
       this.setState({ config })
     })
 
@@ -41,7 +41,7 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
       .then(tabs => {
         if (tabs.length > 0 && tabs[0].id != null) {
           message.send<MsgTempDisabledState>(
-            tabs[0].id as number,
+            tabs[0].id,
             {
               type: MsgType.TempDisabledState,
               op: 'get',
@@ -51,7 +51,7 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
           })
 
           message.send<MsgQueryPanelState, boolean>(
-            tabs[0].id as number,
+            tabs[0].id,
             {
               type: MsgType.QueryPanelState,
               path: 'widget.isPinned',
@@ -93,7 +93,7 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
       .then(tabs => {
         if (tabs.length > 0 && tabs[0].id != null) {
           return message.send<MsgTempDisabledState>(
-            tabs[0].id as number,
+            tabs[0].id,
             {
               type: MsgType.TempDisabledState,
               op: 'set',
@@ -105,7 +105,7 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
       .then(isSuccess => {
         if (!isSuccess) {
           this.setState({ tempOff: oldTempOff })
-          return Promise.reject(new Error('Set tempOff failed')) as Promise<any>
+          return Promise.reject(new Error('Set tempOff failed')) as any
         }
       })
       .catch(() => this.setState({ showPageNoResponse: true }))
@@ -124,7 +124,7 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
       }
     }
     this.setState({ config: newConfig })
-    updateActiveConfig(newConfig)
+    updateConfig(newConfig)
   }
 
   showQRcode = () => {
@@ -158,7 +158,7 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
       active: !config.active
     }
     this.setState({ config: newConfig })
-    updateActiveConfig(newConfig)
+    updateConfig(newConfig)
   }
 
   clearCurrentTabUrl = () => {

@@ -1,6 +1,9 @@
 import React from 'react'
 import { Props } from '../typings'
-import { AppConfig, appConfigFactory, AppConfigMutable } from '@/app-config'
+import {
+  ProfileID,
+  getDefaultProfileID,
+} from '@/app-config/profiles'
 import {
   SortableContainer,
   SortableElement,
@@ -10,15 +13,13 @@ import {
 } from 'react-sortable-hoc'
 import {
   getProfileName,
-  addConfig,
-  getConfig,
-  updateConfig,
-  removeConfig,
-  getConfigIDList,
-  updateConfigIDList,
-  getActiveConfigID,
-  updateActiveConfigID,
-} from '@/_helpers/config-manager'
+  addProfile,
+  getProfileIDList,
+  getActiveProfileID,
+  updateActiveProfileID,
+  removeProfile,
+  updateProfileIDList,
+} from '@/_helpers/profile-manager'
 import EditNameModal from './EditNameModal'
 
 import { Card, List, Button, Radio, Col, message, Icon } from 'antd'
@@ -42,8 +43,8 @@ export type ProfilesProps = Props
 
 interface ProfilesState {
   selected: string,
-  list: AppConfig[]
-  editingConfig: AppConfig | null
+  list: ProfileID[]
+  editingProfileID: ProfileID | null
   showEditNameModal: boolean
   showAddProfileModal: boolean
 }
@@ -52,7 +53,7 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
   state: ProfilesState = {
     selected: '',
     list: [],
-    editingConfig: null,
+    editingProfileID: null,
     showEditNameModal: false,
     showAddProfileModal: false,
   }
@@ -65,10 +66,10 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
     />
   ))
 
-  ProfileListItem = SortableElement<{ config: AppConfig }>(({ config }) => (
+  ProfileListItem = SortableElement<{ profileID: ProfileID }>(({ profileID }) => (
     <List.Item>
       <div style={itemStyle}>
-        <Radio value={config.id}>{getProfileName(config.name, this.props.t)}</Radio>
+        <Radio value={profileID.id}>{getProfileName(profileID.name, this.props.t)}</Radio>
         <div>
           {React.createElement(this.DragHandle)}
           <Button
@@ -79,7 +80,7 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
             icon='edit'
             onClick={() => this.setState({
               showEditNameModal: true,
-              editingConfig: config,
+              editingProfileID: profileID,
             })}
           />
           <Button
@@ -88,48 +89,49 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
             shape='circle'
             size='small'
             icon='close'
-            disabled={config.id === this.state.selected}
-            onClick={() => this.deleteItem(config)}
+            disabled={profileID.id === this.state.selected}
+            onClick={() => this.deleteItem(profileID)}
           />
         </div>
       </div>
     </List.Item>
   ))
 
-  ProfileList = SortableContainer<{ list: AppConfig[] }>(({ list }) => (
+  ProfileList = SortableContainer<{ list: ProfileID[] }>(({ list }) => (
     <List
       size='large'
       dataSource={list}
-      renderItem={(config: AppConfig, index: number) => React.createElement(
-        this.ProfileListItem, { config, index }
+      renderItem={(profileID: ProfileID, index: number) => React.createElement(
+        this.ProfileListItem, { profileID, index }
       )}
     />
   ))
 
   constructor (props: ProfilesProps) {
     super(props)
-    getConfigIDList().then(async idList => {
-      if (!idList) { return }
+    getProfileIDList().then(async idList => {
       this.setState({
-        list: (await Promise.all(idList.map(getConfig))).filter(Boolean) as AppConfig[]
+        list: idList.filter(Boolean)
       })
     })
-    getActiveConfigID().then(selected => {
+    getActiveProfileID().then(selected => {
       this.setState({ selected })
     })
   }
 
-  handleProfileSelect = ({ target: { value } }: RadioChangeEvent) => {
+  handleProfileSelect = async ({ target: { value } }: RadioChangeEvent) => {
     this.setState({ selected: value })
-    updateActiveConfigID(value)
+    await updateActiveProfileID(value)
+    message.destroy()
+    message.success(this.props.t('msg_updated'))
   }
 
-  deleteItem = async ({ name, id }: AppConfig) => {
+  deleteItem = async ({ name, id }: ProfileID) => {
     const { t } = this.props
     if (confirm(t('profiles_delete_confirm', { name: getProfileName(name, t) }))) {
-      await removeConfig(id)
+      await removeProfile(id)
       this.setState(({ list }) => ({
-        list: list.filter(config => config.id !== id),
+        list: list.filter(profileID => profileID.id !== id),
       }))
       message.destroy()
       message.success(t('msg_updated'))
@@ -138,11 +140,11 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
 
   handleAddProfileClose = async (name?: string) => {
     if (name) {
-      const config = appConfigFactory() as AppConfigMutable
-      config.name = name
-      await addConfig(config)
+      const profileID = getDefaultProfileID()
+      profileID.name = name
+      await addProfile(profileID)
       this.setState(({ list }) => ({
-        list: [...list, config],
+        list: [...list, profileID],
         showAddProfileModal: false,
       }))
       message.destroy()
@@ -153,25 +155,28 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
   }
 
   handleEditNameClose = async (name?: string) => {
-    const { editingConfig, list, selected } = this.state
-    if (name && editingConfig) {
-      const newConfig = {
-        ...editingConfig,
+    const { editingProfileID, list, selected } = this.state
+    if (name && editingProfileID) {
+      const newProfileID = {
+        ...editingProfileID,
         name,
       }
-      await updateConfig(newConfig)
+      const newList = list.map(profile =>
+        profile.id === newProfileID.id ? newProfileID : profile
+      )
+      await updateProfileIDList(newList)
       this.setState({
-        list: list.map(config => config === editingConfig ? newConfig : config),
-        editingConfig: null,
+        list: newList,
+        editingProfileID: null,
       })
-      if (newConfig.id !== selected) {
+      if (newProfileID.id !== selected) {
         // active config alert is handled by global
         message.destroy()
         message.success(this.props.t('msg_updated'))
       }
     } else {
       this.setState({
-        editingConfig: null,
+        editingProfileID: null,
         showEditNameModal: false,
       })
     }
@@ -180,7 +185,7 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
   handleSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
     this.setState(({ list }) => {
       const newList = arrayMove(list, oldIndex, newIndex)
-      updateConfigIDList(newList.map(config => config.id))
+      updateProfileIDList(newList)
         .then(() => {
           message.destroy()
           message.success(this.props.t('msg_updated'))
@@ -194,7 +199,7 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
     const {
       selected,
       list,
-      editingConfig,
+      editingProfileID,
       showEditNameModal,
       showAddProfileModal,
     } = this.state
@@ -233,7 +238,7 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
         <EditNameModal
           title={t('profiles_edit_name')}
           show={showEditNameModal}
-          name={editingConfig ? getProfileName(editingConfig.name, t) : ''}
+          name={editingProfileID ? getProfileName(editingProfileID.name, t) : ''}
           onClose={this.handleEditNameClose}
         />
       </Col>

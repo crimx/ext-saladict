@@ -1,8 +1,8 @@
 import * as recordManager from '@/_helpers/record-manager'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
 import appConfigFactory, { TCDirection, DictID } from '@/app-config'
-import { message, storage } from '@/_helpers/browser-api'
-import { createConfigIDListStream } from '@/_helpers/config-manager'
+import { message } from '@/_helpers/browser-api'
+import { createProfileIDListStream } from '@/_helpers/profile-manager'
 import { searchText, restoreDicts, summonedPanelInit } from '@/content/redux/modules/dictionaries'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
@@ -438,7 +438,7 @@ export default reducer
 \*-----------------------------------------------*/
 
 interface Action<T extends ActionType> {
-  type: ActionType,
+  type: T,
   payload?: WidgetPayload[T]
 }
 
@@ -486,7 +486,7 @@ export function panelOnDrag (x: number, y: number): Action<ActionType.PANEL_CORD
   return ({ type: ActionType.PANEL_CORDS, payload: { x, y } })
 }
 
-export function updateConfigProfiles (payload: WidgetPayload[ActionType.CONFIG_PROFILE_lIST]): Action<ActionType.CONFIG_PROFILE_lIST> {
+export function updateProfileIDList (payload: WidgetPayload[ActionType.CONFIG_PROFILE_lIST]): Action<ActionType.CONFIG_PROFILE_lIST> {
   return ({ type: ActionType.CONFIG_PROFILE_lIST, payload })
 }
 
@@ -515,22 +515,8 @@ export function startUpAction (): DispatcherThunk {
       listenTrpleCtrl(dispatch, getState)
     }
 
-    createConfigIDListStream().subscribe(async idlist => {
-      const profiles: Array<{ id: string, name: string }> = []
-      for (let i = 0; i < idlist.length; i++) {
-        const id = idlist[i]
-        // beware of quota bytes per item exceeds
-        const profile = (await storage.sync.get(id))[id]
-        if (profile) {
-          profiles.push({ id, name: profile.name })
-        } else {
-          if (process.env.DEV_BUILD) {
-            console.warn(`Update config ID List: id "${id}" not exist`)
-          }
-        }
-      }
-
-      dispatch(updateConfigProfiles(profiles))
+    createProfileIDListStream().subscribe(idlist => {
+      dispatch(updateProfileIDList(idlist))
     })
 
     if (!isSaladictQuickSearchPage) {

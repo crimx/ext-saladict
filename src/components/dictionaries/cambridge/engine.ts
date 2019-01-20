@@ -37,7 +37,7 @@ export type CambridgeResult = CambridgeResultItem[]
 type CambridgeSearchResult = DictSearchResult<CambridgeResult>
 
 export const search: SearchFunction<CambridgeSearchResult> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
   const url = config.langCode === 'zh-CN'
     ? 'https://dictionary.cambridge.org/zhs/搜索/英语-汉语-简体/direct/?q='

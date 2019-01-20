@@ -3,7 +3,7 @@ import { message } from '@/_helpers/browser-api'
 import { TranslationFunction } from 'i18next'
 import { MsgType, MsgOpenUrl, MsgGetSuggests } from '@/typings/message'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
-import { updateActiveConfigID } from '@/_helpers/config-manager'
+import { switchActiveProfile } from '@/_helpers/profile-manager'
 import CSSTransition from 'react-transition-group/CSSTransition'
 
 import { Subject } from 'rxjs/Subject'
@@ -212,7 +212,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   }
 
   handleProfileItemClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    updateActiveConfigID(e.currentTarget.id)
+    switchActiveProfile(e.currentTarget.id)
     setTimeout(() => {
       if (this.props.searchHistory.length > 0) {
         this.props.searchText({ info: this.props.searchHistory[0] })

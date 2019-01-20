@@ -1,7 +1,14 @@
 /**
  * Profiles are switchable profiles
  */
-import { getDefaultProfile, Profile, genDefaultProfiles } from '@/app-config/profiles'
+import {
+  getDefaultProfileID,
+  getDefaultProfile,
+  Profile,
+  genProfilesStorage,
+  ProfileIDList,
+  ProfileID,
+} from '@/app-config/profiles'
 import { mergeProfile } from '@/app-config/merge-profile'
 import { storage } from './browser-api'
 import { TranslationFunction } from 'i18next'
@@ -32,45 +39,97 @@ export function getProfileName (name: string, t: TranslationFunction): string {
 }
 
 export async function initProfiles (): Promise<Profile> {
-  const {
-    configProfileIDs,
-    activeConfigID,
-  } = await storage.sync.get(['configProfileIDs', 'activeConfigID'])
+  let profiles: Profile[] = []
+  let profileIDList: ProfileIDList = []
+  let activeProfileID = ''
 
-  let modes: Profile[] = []
-  if (configProfileIDs && configProfileIDs.length > 0) {
+  let response = await storage.sync.get<{
+    profileIDList: ProfileIDList
+    activeProfileID: string
+  }>(['profileIDList', 'activeProfileID'])
+
+  if (response.profileIDList) {
+    profileIDList = response.profileIDList.filter(Boolean)
+  }
+
+  if (response.activeProfileID) {
+    activeProfileID = response.activeProfileID
+  }
+
+  if (profileIDList.length > 0) {
     // quota bytes limit
-    for (let i = 0; i < configProfileIDs.length; i++) {
-      const id = configProfileIDs[i]
+    for (const { id } of profileIDList) {
       const profile = (await storage.sync.get(id))[id]
-      modes.push(profile ? mergeProfile(profile) : getDefaultProfile(id))
-    }
-  } else {
-    modes = genDefaultProfiles()
-    // old config, replace the default if exist
-    const { config } = (await storage.sync.get('config'))
-    if (config) {
-      modes[0] = mergeProfile(config)
-      await storage.sync.remove('config')
+      profiles.push(profile ? mergeProfile(profile) : getDefaultProfile(id))
     }
   }
 
-  await storage.sync.set({
-    configProfileIDs: modes.map(m => m.id),
-    activeConfigID: activeConfigID || modes[0].id
-  })
+  // legacy
+  if (profileIDList.length <= 0) {
+    const {
+      configProfileIDs,
+      activeConfigID,
+    } = await storage.sync.get<{
+      configProfileIDs: string[],
+      activeConfigID: string,
+    }>(['configProfileIDs', 'activeConfigID'])
 
-  // beware of quota bytes per item exceeds
-  for (let i = 0; i < modes.length; i++) {
-    await storage.sync.set({ [modes[i].id]: modes[i] })
+    if (configProfileIDs && configProfileIDs.length > 0) {
+      // quota bytes limit
+      for (const id of configProfileIDs) {
+        const config = (await storage.sync.get(id))[id]
+        const profile = config ? mergeProfile(config) : getDefaultProfile(id)
+        const profileID = config && config.name
+          ? {
+            id: id,
+            name: config.name
+          }
+          : getDefaultProfileID(id)
+        // the first item is active
+        profileIDList.push(profileID)
+        profiles.push(profile)
+        if (id === activeConfigID) {
+          activeProfileID = id
+        }
+      }
+    }
   }
 
-  return (activeConfigID && modes.find(m => m.id === activeConfigID)) || modes[0]
+  if (profileIDList.length <= 0) {
+    ({ profileIDList, profiles } = genProfilesStorage())
+  }
+
+  if (!activeProfileID) {
+    activeProfileID = profileIDList[0].id
+  }
+
+  let activeProfile = profiles.find(({ id }) => id === activeProfileID)
+  if (!activeProfile) {
+    activeProfile = profiles[0]
+    activeProfileID = activeProfile.id
+  }
+
+  await storage.sync.set({ profileIDList, activeProfileID })
+
+  // quota bytes per item limit
+  for (const profile of profiles) {
+    await storage.sync.set({ [profile.id]: profile })
+  }
+
+  return activeProfile
 }
 
 export async function resetAllProfiles () {
-  const ids = (await storage.sync.get('configProfileIDs')).configProfileIDs || []
-  await storage.sync.remove(['configProfileIDs', 'activeConfigID', ...ids])
+  const { profileIDList } = await storage.sync.get<{
+    profileIDList: ProfileIDList
+  }>('profileIDList')
+
+  if (profileIDList) {
+    await storage.sync.remove([
+      ...profileIDList.map(({ id }) => id),
+      'profileIDList',
+    ])
+  }
   return initProfiles()
 }
 
@@ -81,49 +140,43 @@ export async function getProfile (id: string): Promise<Profile | undefined> {
 /**
  * Update profile
  */
-export function updateProfile (profile: Profile): Promise<void> {
+export async function updateProfile (profile: Profile): Promise<void> {
   if (process.env.DEV_BUILD) {
-    storage.sync.get('configProfileIDs')
-      .then(({ configProfileIDs }) => {
-        if (!configProfileIDs || -1 === configProfileIDs.indexOf(profile.id)) {
-          if (process.env.NODE_ENV === 'production') {
-            console.error('Update Config Error: Not exist', profile)
-          }
-        }
-      })
+    const profileIDList = await getProfileIDList()
+    if (!profileIDList.find(item => item.id === profile.id)) {
+      console.error(`Update Profile: profile ${profile.id} does not exist`)
+    }
   }
   return storage.sync.set({ [profile.id]: profile })
 }
 
-export async function addProfile (profile: Profile): Promise<void> {
-  const {
-    configProfileIDs
-  } = await storage.sync.get<{ configProfileIDs: string[] }>('configProfileIDs')
+export async function addProfile (profileID: ProfileID): Promise<void> {
+  const id = profileID.id
+  const profileIDList = await getProfileIDList()
   if (process.env.DEV_BUILD) {
-    if (configProfileIDs.includes(profile.id) ||
-       (await storage.sync.get(profile.id))[profile.id]
+    if (profileIDList.find(item => item.id === id) ||
+      (await storage.sync.get(id))[id]
     ) {
-      console.warn('add profile: profile already exists')
+      console.warn(`Add profile: profile ${id} exists`)
     }
   }
+
   return storage.sync.set({
-    configProfileIDs: [...configProfileIDs, profile.id],
-    [profile.id]: profile,
+    profileIDList: [...profileIDList, profileID],
+    [id]: getDefaultProfile(id),
   })
 }
 
 export async function removeProfile (id: string): Promise<void> {
-  const {
-    configProfileIDs
-  } = await storage.sync.get<{ configProfileIDs: string[] }>('configProfileIDs')
+  const profileIDList = await getProfileIDList()
   if (process.env.DEV_BUILD) {
-    if (!configProfileIDs.includes(id) ||
+    if (!profileIDList.find(item => item.id === id) ||
        !(await storage.sync.get(id))[id]
     ) {
-      console.warn('remove config: config not exists')
+      console.warn(`Remove profile: profile ${id} does not exists`)
     }
   }
-  await storage.sync.set({ configProfileIDs: configProfileIDs.filter(x => x !== id) })
+  await storage.sync.set({ profileIDList: profileIDList.filter(item => item.id !== id) })
   return storage.sync.remove(id)
 }
 
@@ -131,63 +184,57 @@ export async function removeProfile (id: string): Promise<void> {
  * Get the profile under the current mode
  */
 export async function getActiveProfile (): Promise<Profile> {
-  const { activeConfigID } = await storage.sync.get('activeConfigID')
-  if (activeConfigID) {
-    const profile = await getProfile(activeConfigID)
+  const activeProfileID = await getActiveProfileID()
+  if (activeProfileID) {
+    const profile = await getProfile(activeProfileID)
     if (profile) {
       return profile
     }
   }
+  if (process.env.DEV_BUILD) {
+    console.error('cannot find profile ' + activeProfileID)
+  }
   return getDefaultProfile()
 }
 
-/**
- * Update the profile under the current mode
- */
-export const updateActiveProfile = updateProfile
-
-/**
- * This is mainly for ordering
- */
-export async function getProfileIDList (): Promise<string[]> {
-  return (await storage.sync.get('configProfileIDs')).configProfileIDs || []
-}
-
-/**
- * This is mainly for ordering
- */
-export function updateProfileIDList (list: string[]): Promise<void> {
-  return storage.sync.set({ configProfileIDs: list })
-}
-
-/**
- * Change the current active profile
- */
 export async function getActiveProfileID (): Promise<string> {
-  return (await storage.sync.get('activeConfigID')).activeConfigID
+  return (await storage.sync.get('activeProfileID')).activeProfileID || ''
+}
+
+export function updateActiveProfileID (id: string): Promise<void> {
+  return storage.sync.set({ activeProfileID: id })
 }
 
 /**
- * Change the current active profile
+ * This is mainly for ordering
  */
-export function updateActiveProfileID (id: string): Promise<void> {
-  if (process.env.DEV_BUILD) {
-    storage.sync.get('configProfileIDs')
-      .then(({ configProfileIDs }) => {
-        if (-1 === configProfileIDs.indexOf(id)) {
-          console.error('Update Active Config ID Error: Not exist', id)
-        }
-      })
-  }
-  return storage.sync.set({ activeConfigID: id })
+export async function getProfileIDList (): Promise<ProfileIDList> {
+  return (await storage.sync.get('profileIDList')).profileIDList || []
+}
+
+/**
+ * This is mainly for ordering
+ */
+export function updateProfileIDList (list: ProfileIDList): Promise<void> {
+  return storage.sync.set({ profileIDList: list })
+}
+
+export function addActiveProfileIDListener (
+  cb: (changes: StorageChanged<string>) => any
+) {
+  storage.sync.addListener('activeProfileID', ({ activeProfileID }) => {
+    if (activeProfileID && activeProfileID.newValue) {
+      cb(activeProfileID as StorageChanged<string>)
+    }
+  })
 }
 
 export function addProfileIDListListener (
-  cb: (changes: StorageChanged<string[]>) => any
+  cb: (changes: StorageChanged<ProfileIDList>) => any
 ) {
-  storage.sync.addListener('configProfileIDs', ({ configProfileIDs }) => {
-    if (configProfileIDs.newValue) {
-      cb(configProfileIDs as any)
+  storage.sync.addListener('profileIDList', ({ profileIDList }) => {
+    if (profileIDList && profileIDList.newValue) {
+      cb(profileIDList as StorageChanged<ProfileIDList>)
     }
   })
 }
@@ -198,36 +245,42 @@ export function addProfileIDListListener (
 export async function addActiveProfileListener (
   cb: (changes: ProfileChanged) => any
 ) {
-  let gActiveConfigID = (await storage.sync.get('activeConfigID')).activeConfigID
+  let activeProfileID: ProfileID | undefined = (await getProfileIDList())[0]
 
-  storage.sync.addListener((changes, area) => {
-    if (area !== 'sync') { return }
-
-    if (changes.activeConfigID) {
-      const { newValue: newID, oldValue: oldID } = changes.activeConfigID
-      if (!newID) { return }
-      gActiveConfigID = newID
-      if (oldID) {
-        storage.sync.get([oldID, newID]).then(obj => {
-          if (obj[newID]) {
-            cb({ newProfile: obj[newID], oldProfile: obj[oldID] })
-          }
-        })
-      } else {
-        storage.sync.get(newID).then(response => {
-          const newProfile = response[newID]
-          if (newProfile) {
-            cb({ newProfile })
-          }
-        })
+  storage.sync.addListener(changes => {
+    if (changes.profileIDList) {
+      const {
+        newValue: newList,
+        oldValue: oldList
+      } = (changes as { profileIDList: StorageChanged<ProfileIDList> }).profileIDList
+      if (newList && newList[0]) {
+        activeProfileID = newList[0]
+        const newID = activeProfileID.id
+        if (oldList && oldList[0]) {
+          const oldID = oldList[0].id
+          storage.sync.get([oldID, newID]).then(obj => {
+            if (obj[newID]) {
+              cb({ newProfile: obj[newID], oldProfile: obj[oldID] })
+              return
+            }
+          })
+        } else {
+          storage.sync.get(newID).then(response => {
+            const newProfile = response[newID]
+            if (newProfile) {
+              cb({ newProfile })
+              return
+            }
+          })
+        }
       }
-      return
     }
 
-    if (changes[gActiveConfigID]) {
-      const { newValue, oldValue } = changes[gActiveConfigID]
+    if (activeProfileID && changes[activeProfileID.id]) {
+      const { newValue, oldValue } = changes[activeProfileID.id]
       if (newValue) {
         cb({ newProfile: newValue, oldProfile: oldValue })
+        return
       }
     }
   })
@@ -236,10 +289,10 @@ export async function addActiveProfileListener (
 /**
  * Get active profile and create a stream listening to profile changing
  */
-export function createProfileIDListStream (): Observable<string[]> {
+export function createProfileIDListStream (): Observable<ProfileIDList> {
   return concat(
     from(getProfileIDList()),
-    fromEventPattern<[StorageChanged<string[]>] | StorageChanged<string[]>>(
+    fromEventPattern<[StorageChanged<ProfileIDList>] | StorageChanged<ProfileIDList>>(
       addProfileIDListListener as any
     ).pipe(
       map(args => (Array.isArray(args) ? args[0] : args).newValue),

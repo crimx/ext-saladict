@@ -24,10 +24,10 @@ export type EudicResult = EudicResultItem[]
 type EudicSearchResult = DictSearchResult<EudicResult>
 
 export const search: SearchFunction<EudicSearchResult> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
   text = encodeURIComponent(text.split(/\s+/).slice(0, 2).join(' '))
-  const options = config.dicts.all.eudic.options
+  const options = profile.dicts.all.eudic.options
 
   return fetchDirtyDOM('https://dict.eudic.net/dicts/en/' + text)
     .catch(handleNetWorkError)

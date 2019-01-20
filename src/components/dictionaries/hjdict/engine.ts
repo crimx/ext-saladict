@@ -16,10 +16,11 @@ import {
   GetSrcPageFunction,
 } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
-import { AppConfig, DictConfigs } from '@/app-config'
+import { DictConfigs } from '@/app-config'
+import { Profile } from '@/app-config/profiles'
 
-export const getSrcPage: GetSrcPageFunction = (text, config) => {
-  return `https://www.hjdict.com/${getLangCode(text, config)}/${encodeURIComponent(text)}`
+export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
+  return `https://www.hjdict.com/${getLangCode(text, profile)}/${encodeURIComponent(text)}`
 }
 
 const getInnerHTML = getInnerHTMLBuilder('https://www.hjdict.com/', {})
@@ -40,7 +41,7 @@ export type HjdictResult = HjdictResultLex | HjdictResultRelated
 type HjdictSearchResult = DictSearchResult<HjdictResult>
 
 export const search: SearchFunction<HjdictSearchResult> = async (
-  text, config, payload
+  text, config, profile, payload
 ) => {
   const cookies = {
     HJ_SITEID: 3,
@@ -66,9 +67,9 @@ export const search: SearchFunction<HjdictSearchResult> = async (
     })
   ))
 
-  return xhrDirtyDOM(getSrcPage(text, config))
+  return xhrDirtyDOM(getSrcPage(text, config, profile))
     .catch(handleNetWorkError)
-    .then(doc => handleDOM(doc, config.dicts.all.hjdict.options))
+    .then(doc => handleDOM(doc, profile.dicts.all.hjdict.options))
 }
 
 function handleDOM (
@@ -146,20 +147,20 @@ function xhrDirtyDOM (url: string): Promise<Document> {
   })
 }
 
-function getLangCode (text: string, config: AppConfig): string {
+function getLangCode (text: string, profile: Profile): string {
   // ü
   if (/\u00fc/i.test(text)) {
-    return config.dicts.all.hjdict.options.uas
+    return profile.dicts.all.hjdict.options.uas
   }
 
   // ä
   if (/\u00e4/i.test(text)) {
-    return config.dicts.all.hjdict.options.aas
+    return profile.dicts.all.hjdict.options.aas
   }
 
   // é
   if (/\u00e9/i.test(text)) {
-    return config.dicts.all.hjdict.options.eas
+    return profile.dicts.all.hjdict.options.eas
   }
 
   if (isContainFrench(text)) {
@@ -175,7 +176,7 @@ function getLangCode (text: string, config: AppConfig): string {
   }
 
   if (isContainEnglish(text)) {
-    return config.dicts.all.hjdict.options.engas
+    return profile.dicts.all.hjdict.options.engas
   }
 
   if (isContainJapanese(text)) {
@@ -187,7 +188,7 @@ function getLangCode (text: string, config: AppConfig): string {
   }
 
   if (isContainChinese(text)) {
-    return config.dicts.all.hjdict.options.chsas
+    return profile.dicts.all.hjdict.options.chsas
   }
 
   return 'w'

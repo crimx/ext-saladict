@@ -44,9 +44,9 @@ export type YoudaoResult = YoudaoResultLex | YoudaoResultRelated
 type YoudaoSearchResult = DictSearchResult<YoudaoResult>
 
 export const search: SearchFunction<YoudaoSearchResult> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
-  const options = config.dicts.all.youdao.options
+  const options = profile.dicts.all.youdao.options
   const isChz = config.langCode === 'zh-TW'
 
   return fetchDirtyDOM('https://dict.youdao.com/w/' + encodeURIComponent(text.replace(/\s+/g, ' ')))

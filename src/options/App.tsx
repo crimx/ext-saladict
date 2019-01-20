@@ -1,9 +1,10 @@
 import React from 'react'
 import { AppConfig } from '@/app-config'
+import { Profile, ProfileIDList } from '@/app-config/profiles'
 import { translate, TranslationFunction } from 'react-i18next'
 import { Layout, Menu, Icon } from 'antd'
 import HeadInfo from './components/HeadInfo'
-import { getProfileName } from '@/_helpers/config-manager'
+import { getProfileName } from '@/_helpers/profile-manager'
 
 const { Header, Content, Sider } = Layout
 
@@ -13,6 +14,8 @@ const menuselected = new URL(document.URL).searchParams.get('menuselected') || '
 
 export interface OptionsMainProps {
   config: AppConfig
+  profile: Profile
+  profileIDList: ProfileIDList
 }
 
 export class OptionsMain extends React.Component<OptionsMainProps & { t: TranslationFunction }> {
@@ -31,9 +34,11 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
   }
 
   static getDerivedStateFromProps (props: OptionsMainProps & { t: TranslationFunction }) {
-    return {
-      activeProfileName: getProfileName(props.config.name, props.t)
-    }
+    const activeProfileID = props.profileIDList.find(({ id }) => id === props.profile.id)
+    const activeProfileName = activeProfileID
+      ? getProfileName(activeProfileID.name, props.t)
+      : ''
+    return { activeProfileName }
   }
 
   onNavSelect = ({ key }: { key: string }) => {
@@ -54,7 +59,7 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
   }
 
   render () {
-    const { t, config } = this.props
+    const { t, config, profile } = this.props
 
     return (
       <Layout>
@@ -92,7 +97,7 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
             >
               {React.createElement(
                 _optRequire(`./${this.state.selectedKey}/index.tsx`).default,
-                { t, config }
+                { t, config, profile }
               )}
             </Content>
           </Layout>

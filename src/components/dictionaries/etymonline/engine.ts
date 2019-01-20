@@ -29,9 +29,9 @@ export type EtymonlineResult = EtymonlineResultItem[]
 type EtymonlineSearchResult = DictSearchResult<EtymonlineResult>
 
 export const search: SearchFunction<EtymonlineSearchResult> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
-  const options = config.dicts.all.etymonline.options
+  const options = profile.dicts.all.etymonline.options
   text = encodeURIComponent(text.replace(/\s+/g, ' '))
 
   // http to bypass the referer checking

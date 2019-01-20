@@ -1,8 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-import appConfigFactory, { AppConfig } from '@/app-config'
-import { getActiveConfig, addActiveConfigListener } from '@/_helpers/config-manager'
+import { getDefaultConfig, AppConfig } from '@/app-config'
+import { getDefaultProfile, Profile, ProfileIDList } from '@/app-config/profiles'
+import { getConfig, addConfigListener } from '@/_helpers/config-manager'
+import { getActiveProfile, addActiveProfileListener, getProfileIDList, addProfileIDListListener } from '@/_helpers/profile-manager'
 import { injectSaladictInternal } from '@/_helpers/injectSaladictInternal'
 
 import { I18nextProvider as ProviderI18next } from 'react-i18next'
@@ -47,18 +49,39 @@ export interface OptionsProps {
 
 export interface OptionsState {
   config: AppConfig
+  profile: Profile
+  profileIDList: ProfileIDList
 }
 
 export class Options extends React.Component<OptionsProps, OptionsState> {
   state = {
-    config: appConfigFactory()
+    config: getDefaultConfig(),
+    profile: getDefaultProfile(),
+    profileIDList: [],
   }
 
   constructor (props: OptionsProps) {
     super(props)
-    getActiveConfig().then(config => this.setState({ config }))
-    addActiveConfigListener(({ newConfig }) => {
+
+    Promise.all([getConfig(), getActiveProfile(), getProfileIDList()])
+      .then(([ config, profile, profileIDList ]) => {
+        this.setState({ config, profile, profileIDList })
+      })
+
+    addConfigListener(({ newConfig }) => {
       this.setState({ config: newConfig })
+      message.destroy()
+      message.success(i18n.t('msg_updated'))
+    })
+
+    addActiveProfileListener(({ newProfile }) => {
+      this.setState({ profile: newProfile })
+      message.destroy()
+      message.success(i18n.t('msg_updated'))
+    })
+
+    addProfileIDListListener(({ newValue }) => {
+      this.setState({ profileIDList: newValue })
       message.destroy()
       message.success(i18n.t('msg_updated'))
     })
@@ -68,7 +91,7 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
     return (
       <ProviderI18next i18n={i18n}>
         <ProviderAntdLocale locale={antdLocales[this.state.config.langCode] || zh_CN}>
-          <App config={this.state.config} />
+          {React.createElement(App, { ...this.state })}
         </ProviderAntdLocale>
       </ ProviderI18next>
     )

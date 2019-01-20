@@ -1,6 +1,6 @@
 import React from 'react'
 import { Props } from '../typings'
-import { updateConfig, formItemLayout } from '../helpers'
+import { updateConfigOrProfile, formItemLayout } from '../helpers'
 
 import { FormComponentProps } from 'antd/lib/form'
 import { Form, Switch, Row, Col, Radio, InputNumber } from 'antd'
@@ -9,7 +9,7 @@ export type DictPanelProps = Props & FormComponentProps
 
 export class DictPanel extends React.Component<DictPanelProps> {
   render () {
-    const { t, config } = this.props
+    const { t, config, profile } = this.props
 
     return (
       <Form>
@@ -19,8 +19,8 @@ export class DictPanel extends React.Component<DictPanelProps> {
           extra={t('opt_profile_change')}
           required
         >{
-          this.props.form.getFieldDecorator('mtaAutoUnfold', {
-            initialValue: config.mtaAutoUnfold,
+          this.props.form.getFieldDecorator('profile#mtaAutoUnfold', {
+            initialValue: profile.mtaAutoUnfold,
           })(
             <Radio.Group>
               <Row>
@@ -38,7 +38,7 @@ export class DictPanel extends React.Component<DictPanelProps> {
           {...formItemLayout}
           label={t('opt_search_suggests')}
         >{
-          this.props.form.getFieldDecorator('searchSuggests', {
+          this.props.form.getFieldDecorator('config#searchSuggests', {
             initialValue: config.searchSuggests,
             valuePropName: 'checked',
           })(
@@ -50,7 +50,7 @@ export class DictPanel extends React.Component<DictPanelProps> {
           label={t('opt_animation')}
           help={t('opt_animation_help')}
         >{
-          this.props.form.getFieldDecorator('animation', {
+          this.props.form.getFieldDecorator('config#animation', {
             initialValue: config.animation,
             valuePropName: 'checked',
           })(
@@ -61,7 +61,7 @@ export class DictPanel extends React.Component<DictPanelProps> {
           {...formItemLayout}
           label={t('opt_dict_panel_height_ratio')}
         >{
-          this.props.form.getFieldDecorator('panelMaxHeightRatio', {
+          this.props.form.getFieldDecorator('config#panelMaxHeightRatio', {
             initialValue: config.panelMaxHeightRatio,
             rules: [{ type: 'number' }],
           })(
@@ -72,7 +72,7 @@ export class DictPanel extends React.Component<DictPanelProps> {
           {...formItemLayout}
           label={t('opt_dict_panel_width')}
         >{
-          this.props.form.getFieldDecorator('panelWidth', {
+          this.props.form.getFieldDecorator('config#panelWidth', {
             initialValue: config.panelWidth,
           })(
             <InputNumber formatter={v => `${v}  px`} />
@@ -82,7 +82,7 @@ export class DictPanel extends React.Component<DictPanelProps> {
           {...formItemLayout}
           label={t('opt_dict_panel_font_size')}
         >{
-          this.props.form.getFieldDecorator('fontSize', {
+          this.props.form.getFieldDecorator('config#fontSize', {
             initialValue: config.fontSize,
           })(
             <InputNumber formatter={v => `${v}  px`} />
@@ -94,5 +94,5 @@ export class DictPanel extends React.Component<DictPanelProps> {
 }
 
 export default Form.create<DictPanelProps>({
-  onValuesChange: updateConfig
+  onValuesChange: updateConfigOrProfile
 })(DictPanel)
