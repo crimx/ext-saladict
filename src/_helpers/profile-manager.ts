@@ -191,9 +191,6 @@ export async function getActiveProfile (): Promise<Profile> {
       return profile
     }
   }
-  if (process.env.DEV_BUILD) {
-    console.error('cannot find profile ' + activeProfileID)
-  }
   return getDefaultProfile()
 }
 
@@ -245,19 +242,17 @@ export function addProfileIDListListener (
 export async function addActiveProfileListener (
   cb: (changes: ProfileChanged) => any
 ) {
-  let activeProfileID: ProfileID | undefined = (await getProfileIDList())[0]
+  let activeID: string | undefined = await getActiveProfileID()
 
   storage.sync.addListener(changes => {
-    if (changes.profileIDList) {
+    if (changes.activeProfileID) {
       const {
-        newValue: newList,
-        oldValue: oldList
-      } = (changes as { profileIDList: StorageChanged<ProfileIDList> }).profileIDList
-      if (newList && newList[0]) {
-        activeProfileID = newList[0]
-        const newID = activeProfileID.id
-        if (oldList && oldList[0]) {
-          const oldID = oldList[0].id
+        newValue: newID,
+        oldValue: oldID,
+      } = (changes as { activeProfileID: StorageChanged<string> }).activeProfileID
+      if (newID) {
+        activeID = newID
+        if (oldID) {
           storage.sync.get([oldID, newID]).then(obj => {
             if (obj[newID]) {
               cb({ newProfile: obj[newID], oldProfile: obj[oldID] })
@@ -276,8 +271,8 @@ export async function addActiveProfileListener (
       }
     }
 
-    if (activeProfileID && changes[activeProfileID.id]) {
-      const { newValue, oldValue } = changes[activeProfileID.id]
+    if (activeID && changes[activeID]) {
+      const { newValue, oldValue } = changes[activeID]
       if (newValue) {
         cb({ newProfile: newValue, oldProfile: oldValue })
         return
