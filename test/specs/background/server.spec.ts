@@ -1,4 +1,5 @@
 import { getDefaultConfig } from '@/app-config'
+import { getDefaultProfile } from '@/app-config/profiles'
 import * as browserWrap from '@/_helpers/browser-api'
 import { MsgType } from '@/typings/message'
 import { timer } from '@/_helpers/promise-more'
@@ -6,6 +7,7 @@ import { timer } from '@/_helpers/promise-more'
 jest.mock('@/background/database')
 
 const config = getDefaultConfig()
+const profile = getDefaultProfile()
 
 describe('Server', () => {
   const chsToChz = jest.fn()
@@ -37,9 +39,21 @@ describe('Server', () => {
         getDefaultConfig: () => config
       }
     })
+    jest.doMock('@/app-config/profiles', () => {
+      return {
+        getDefaultProfile: () => profile
+      }
+    })
     jest.doMock('@/_helpers/config-manager', () => {
       return {
-        createActiveConfigStream: () => ({
+        createConfigStream: () => ({
+          subscribe: () => {/* noop */}
+        })
+      }
+    })
+    jest.doMock('@/_helpers/profile-manager', () => {
+      return {
+        createActiveProfileStream: () => ({
           subscribe: () => {/* noop */}
         })
       }
@@ -118,7 +132,7 @@ describe('Server', () => {
         payload: { field: 'any' },
       })
       expect(bingSearch).toHaveBeenCalledTimes(1)
-      expect(bingSearch).toHaveBeenCalledWith('test', config, { field: 'any' })
+      expect(bingSearch).toHaveBeenCalledWith('test', config, profile, { field: 'any' })
     })
   })
 })

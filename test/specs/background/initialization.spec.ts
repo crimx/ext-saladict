@@ -15,6 +15,13 @@ jest.mock('@/app-config/merge-config', () => {
   }
 })
 
+jest.mock('@/app-config/merge-profile', () => {
+  const { getDefaultProfile } = require('@/app-config/profiles')
+  return {
+    mergeProfile: jest.fn(profile => Promise.resolve(profile || getDefaultProfile()))
+  }
+})
+
 jest.mock('@/background/context-menus', () => {
   return { init: jest.fn(() => Promise.resolve()) }
 })
@@ -48,6 +55,7 @@ describe('Initialization', () => {
   let initPdf: jest.Mock
   let openURL: jest.Mock
   let mergeConfig: jest.Mock
+  let mergeProfile: jest.Mock
 
   beforeEach(() => {
     browser.flush()
@@ -57,10 +65,12 @@ describe('Initialization', () => {
     const pdfSniffer = require('@/background/pdf-sniffer')
     const browserApi = require('@/_helpers/browser-api')
     const _mergeConfig = require('@/app-config/merge-config')
+    const _mergeProfile = require('@/app-config/merge-profile')
     initMenus = contextMenus.init
     initPdf = pdfSniffer.init
     openURL = browserApi.openURL
     mergeConfig = _mergeConfig.mergeConfig
+    mergeProfile = _mergeProfile.mergeProfile
 
     browser.storage.sync.get.callsFake(() => Promise.resolve({}))
     browser.storage.sync.set.callsFake(() => Promise.resolve())

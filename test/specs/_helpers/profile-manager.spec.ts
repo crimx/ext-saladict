@@ -27,7 +27,7 @@ describe('Profile Manager', () => {
     fakeStorageGet({})
 
     const profile = await profileManager.initProfiles()
-    expect(profile).toMatchObject({ name: expect.stringContaining('default') })
+    expect(typeof profile).toBe('object')
     expect(browser.storage.sync.set.calledWith(sinon.match({
       profileIDList: sinon.match.array,
       activeProfileID: sinon.match.string,
@@ -96,9 +96,13 @@ describe('Profile Manager', () => {
       [profile2.id]: profile2,
     })
 
-    const profile = await profileManager.resetAllProfiles()
-    expect(profile.id).not.toEqual(profile2.id)
-    expect(browser.storage.sync.remove.called).toBeTruthy()
+    await profileManager.resetAllProfiles()
+    expect(browser.storage.sync.remove.calledWith(sinon.match([
+      profile1.id,
+      profile2.id,
+      'profileIDList',
+      'activeProfileID',
+    ]))).toBeTruthy()
     expect(browser.storage.sync.set.calledWith(sinon.match({
       profileIDList: sinon.match.array,
       activeProfileID: sinon.match.string,

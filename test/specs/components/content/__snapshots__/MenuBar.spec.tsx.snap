@@ -56,6 +56,7 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
   <div>
     <CSSTransition
       classNames="panel-MenuBar_SuggestPanel"
+      in={false}
       timeout={100}
       unmountOnExit={true}
     />
@@ -260,6 +261,7 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
   <div>
     <CSSTransition
       classNames="panel-MenuBar_SuggestPanel"
+      in={false}
       timeout={100}
       unmountOnExit={true}
     />
