@@ -225,7 +225,7 @@ function requestSelection () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].id != null) {
-        message.send(tabs[0].id, { type: MsgType.EmitSelection })
+        message.send(tabs[0].id as number, { type: MsgType.EmitSelection })
       }
     })
 }

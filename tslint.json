@@ -5,6 +5,7 @@
     "return-undefined": false,
     "strict-type-predicates": false,
     "no-floating-promises": false,
+    "no-unnecessary-type-assertion": false,
 
     "rxjs-ban-observables": { "severity": "error" },
     "rxjs-ban-operators": { "severity": "error" },

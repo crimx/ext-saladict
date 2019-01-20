@@ -41,7 +41,7 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
       .then(tabs => {
         if (tabs.length > 0 && tabs[0].id != null) {
           message.send<MsgTempDisabledState>(
-            tabs[0].id,
+            tabs[0].id as number,
             {
               type: MsgType.TempDisabledState,
               op: 'get',
@@ -51,7 +51,7 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
           })
 
           message.send<MsgQueryPanelState, boolean>(
-            tabs[0].id,
+            tabs[0].id as number,
             {
               type: MsgType.QueryPanelState,
               path: 'widget.isPinned',
@@ -93,7 +93,7 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
       .then(tabs => {
         if (tabs.length > 0 && tabs[0].id != null) {
           return message.send<MsgTempDisabledState>(
-            tabs[0].id,
+            tabs[0].id as number,
             {
               type: MsgType.TempDisabledState,
               op: 'set',
