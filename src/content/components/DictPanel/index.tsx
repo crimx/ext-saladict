@@ -168,7 +168,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
     const {
       t,
       activeConfigID,
-      configProfiles,
+      profiles,
       isAnimation,
       isFav,
       isPinned,
@@ -208,7 +208,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
         {React.createElement(MenuBar, {
           t,
           activeConfigID,
-          configProfiles,
+          profiles,
           isFav,
           isPinned,
           isTripleCtrl,

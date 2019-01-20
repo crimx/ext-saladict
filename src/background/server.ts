@@ -1,5 +1,5 @@
 import { getDefaultConfig, TCDirection } from '@/app-config'
-import getDefaultProfile from '@/app-config/profiles'
+import { getDefaultProfile } from '@/app-config/profiles'
 import { message, openURL } from '@/_helpers/browser-api'
 import { timeout, timer } from '@/_helpers/promise-more'
 import { createConfigStream } from '@/_helpers/config-manager'

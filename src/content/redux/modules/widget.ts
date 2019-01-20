@@ -1,6 +1,6 @@
 import * as recordManager from '@/_helpers/record-manager'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
-import appConfigFactory, { TCDirection, DictID } from '@/app-config'
+import { getDefaultConfig, TCDirection, DictID } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
 import { createProfileIDListStream } from '@/_helpers/profile-manager'
 import { searchText, restoreDicts, summonedPanelInit } from '@/content/redux/modules/dictionaries'
@@ -44,7 +44,7 @@ export const enum ActionType {
   EDITOR_WORD_UPDATE = 'widget/EDITOR_WORD_UPDATE',
   NEW_PANEL_HEIGHT = 'widget/NEW_PANEL_HEIGHT',
   PANEL_CORDS = 'widget/PANEL_CORDS',
-  CONFIG_PROFILE_lIST = 'widget/CONFIG_PROFILE_lIST',
+  PROFILE_lIST = 'widget/PROFILE_lIST',
   SEARCH_BOX_UPDATE = 'dicts/SEARCH_BOX_UPDATE',
   QS_PANEL_TABID_CHANGED = 'dicts/QS_PANEL_TABID_CHANGED',
 }
@@ -65,7 +65,7 @@ interface WidgetPayload {
   [ActionType.NEW_SELECTION]: Partial<WidgetState['widget']>
   [ActionType.NEW_PANEL_HEIGHT]: number
   [ActionType.PANEL_CORDS]: { x: number, y: number }
-  [ActionType.CONFIG_PROFILE_lIST]: Array<{ id: string, name: string }>
+  [ActionType.PROFILE_lIST]: Array<{ id: string, name: string }>
   [ActionType.SEARCH_BOX_UPDATE]: {
     text: string
     index: number
@@ -105,14 +105,14 @@ export type WidgetState = {
       isPinned: boolean
       shouldPanelShow: boolean
     }
-    readonly configProfiles: Array<{ id: string, name: string }>
+    readonly profiles: Array<{ id: string, name: string }>
     /** index in search history */
     readonly searchBoxIndex: number
     readonly searchBoxText: string
   }
 }
 
-const _initConfig = appConfigFactory()
+const _initConfig = getDefaultConfig()
 
 export const initState: WidgetState = {
   widget: {
@@ -144,7 +144,7 @@ export const initState: WidgetState = {
       isPinned: false,
       shouldPanelShow: false,
     },
-    configProfiles: [],
+    profiles: [],
     searchBoxIndex: 0,
     searchBoxText: '',
   }
@@ -388,12 +388,12 @@ export const reducer: WidgetReducer = {
       }
     }
   },
-  [ActionType.CONFIG_PROFILE_lIST] (state, configProfiles) {
+  [ActionType.PROFILE_lIST] (state, profiles) {
     return {
       ...state,
       widget: {
         ...state.widget,
-        configProfiles,
+        profiles,
       }
     }
   },
@@ -486,8 +486,8 @@ export function panelOnDrag (x: number, y: number): Action<ActionType.PANEL_CORD
   return ({ type: ActionType.PANEL_CORDS, payload: { x, y } })
 }
 
-export function updateProfileIDList (payload: WidgetPayload[ActionType.CONFIG_PROFILE_lIST]): Action<ActionType.CONFIG_PROFILE_lIST> {
-  return ({ type: ActionType.CONFIG_PROFILE_lIST, payload })
+export function updateProfileIDList (payload: WidgetPayload[ActionType.PROFILE_lIST]): Action<ActionType.PROFILE_lIST> {
+  return ({ type: ActionType.PROFILE_lIST, payload })
 }
 
 export function searchBoxUpdate (payload: WidgetPayload[ActionType.SEARCH_BOX_UPDATE]): Action<ActionType.SEARCH_BOX_UPDATE> {

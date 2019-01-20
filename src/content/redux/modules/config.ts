@@ -1,6 +1,7 @@
 import { getDefaultConfig, AppConfig } from '@/app-config'
 import getDefaultProfile, { Profile } from '@/app-config/profiles'
 import { addConfigListener } from '@/_helpers/config-manager'
+import { addActiveProfileListener } from '@/_helpers/profile-manager'
 import { StoreState, DispatcherThunk } from './index'
 import { newConfig as newConfigDicts } from './dictionaries'
 import { newConfig as newConfigWidget } from './widget'
@@ -81,6 +82,9 @@ export function startUpAction (): DispatcherThunk {
   return dispatch => {
     addConfigListener(({ newConfig: config }) => {
       dispatch(updateConfig([config]))
+    })
+    addActiveProfileListener(({ newProfile }) => {
+      dispatch(updateConfig([newProfile]))
     })
   }
 }
