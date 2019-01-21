@@ -2,9 +2,10 @@ import React from 'react'
 import { DictID } from '@/app-config'
 import { Props } from '../typings'
 import { updateConfigOrProfile, formItemModalLayout } from '../helpers'
+import { DictItem } from '@/app-config/dicts'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, Modal, InputNumber, Select, Switch, Checkbox } from 'antd'
+import { Form, Modal, InputNumber, Select, Switch, Checkbox, Radio } from 'antd'
 
 const { Option } = Select
 
@@ -14,6 +15,79 @@ export type EditDictModalProps = Props & FormComponentProps & {
 }
 
 export class EditDictModal extends React.Component<EditDictModalProps> {
+  renderMoreOptions = (dictID: DictID) => {
+    const { t, profile } = this.props
+    const { getFieldDecorator } = this.props.form
+    const dict = profile.dicts.all[dictID] as DictItem
+    const { options } = dict
+    if (!options) { return }
+
+    const optionPath = `profile#dicts#all#${dictID}#options#`
+
+    return (
+      <>
+        <p>{t('dict_more_options')}</p>
+        {Object.keys(options).map(optKey => {
+          // can be number | boolean | string(select)
+          const value = options[optKey]
+          switch (typeof value) {
+            case 'number':
+              return (
+                <Form.Item
+                  {...formItemModalLayout}
+                  key={optKey}
+                  label={t(`dict:${dictID}_${optKey}`)}
+                >{
+                  getFieldDecorator(optionPath + optKey, {
+                    initialValue: value,
+                    rules: [{ type: 'number' }],
+                  })(
+                    <InputNumber formatter={v => `${v}  ${t(`dict:${dictID}_${optKey}_unit`)}`} />
+                  )
+                }</Form.Item>
+              )
+            case 'boolean':
+              return (
+                <Form.Item
+                  {...formItemModalLayout}
+                  key={optKey}
+                  label={t(`dict:${dictID}_${optKey}`)}
+                >{
+                  getFieldDecorator(optionPath + optKey, {
+                    initialValue: value,
+                    valuePropName: 'checked',
+                  })(
+                    <Switch />
+                  )
+                }</Form.Item>
+              )
+            case 'string':
+              return (
+                <Form.Item
+                  {...formItemModalLayout}
+                  key={optKey}
+                  label={t(`dict:${dictID}_${optKey}`)}
+                  style={{ marginBottom: 0 }}
+                >{
+                  getFieldDecorator(optionPath + optKey, {
+                    initialValue: value,
+                  })(
+                    <Radio.Group>
+                      {dict.options_sel![optKey].map(option => (
+                        <Radio value={option} key={option}>{
+                          t(`dict:${dictID}_${optKey}-${option}`)
+                        }</Radio>
+                      ))}
+                    </Radio.Group>
+                  )
+                }</Form.Item>
+              )
+          }
+        })}
+      </>
+    )
+  }
+
   render () {
     const { onClose, dictID, t, profile } = this.props
     const { getFieldDecorator } = this.props.form
@@ -93,67 +167,7 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
                 <InputNumber formatter={v => `${v}  px`} />
               )
             }</Form.Item>
-            {allDict[dictID].options &&
-              <>
-                <p>{t('dict_more_options')}</p>
-                {Object.keys(allDict[dictID].options!).map(optKey => {
-                  // can be number | boolean | string(select)
-                  const value = allDict[dictID].options![optKey]
-                  switch (typeof value) {
-                    case 'number':
-                      return (
-                        <Form.Item
-                          {...formItemModalLayout}
-                          key={optKey}
-                          label={t(`dict:${dictID}_${optKey}`)}
-                        >{
-                          getFieldDecorator(`${dictPath}#options#${optKey}`, {
-                            initialValue: value,
-                            rules: [{ type: 'number' }],
-                          })(
-                            <InputNumber formatter={v => `${v}  ${t(`dict:${dictID}_${optKey}_unit`)}`} />
-                          )
-                        }</Form.Item>
-                      )
-                    case 'boolean':
-                      return (
-                        <Form.Item
-                          {...formItemModalLayout}
-                          key={optKey}
-                          label={t(`dict:${dictID}_${optKey}`)}
-                        >{
-                          getFieldDecorator(`${dictPath}#options#${optKey}`, {
-                            initialValue: value,
-                            valuePropName: 'checked',
-                          })(
-                            <Switch />
-                          )
-                        }</Form.Item>
-                      )
-                    case 'string':
-                      return (
-                        <Form.Item
-                          {...formItemModalLayout}
-                          key={optKey}
-                          label={t(`dict:${dictID}_${optKey}`)}
-                        >{
-                          getFieldDecorator(`${dictPath}#options#${optKey}`, {
-                            initialValue: value,
-                          })(
-                            <Select>
-                              {allDict[dictID].options_sel![optKey].map(option => (
-                                <Option value={option} key={option}>{
-                                  t(`dict:${dictID}_${optKey}-${option}`)
-                                }</Option>
-                              ))}
-                            </Select>
-                          )
-                        }</Form.Item>
-                      )
-                  }
-                })}
-              </>
-            }
+            {this.renderMoreOptions(dictID)}
           </Form>
         }
       </Modal>
