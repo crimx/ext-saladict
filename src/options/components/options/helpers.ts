@@ -5,14 +5,19 @@ import { updateProfile } from '@/_helpers/profile-manager'
 import set from 'lodash/set'
 import get from 'lodash/get'
 
-export const formItemLayout = {
+interface FormItemLayout {
+  readonly labelCol: { readonly span: number }
+  readonly wrapperCol: { readonly span: number }
+}
+
+export const formItemLayout: FormItemLayout = {
   labelCol: { span: 5 },
   wrapperCol: { span: 8 },
 }
 
-export const formItemInlineStyle = {
-  display: 'inline-block',
-  margin: 0,
+export const formItemModalLayout: FormItemLayout = {
+  labelCol: { span: 6 },
+  wrapperCol: { span: 17 },
 }
 
 let updateConfigTimeout: any = null
@@ -40,9 +45,10 @@ export function updateConfigOrProfile (
   }
 
   if (process.env.DEV_BUILD) {
-    console.log(path, fields[path])
+    const p = path.replace(/#/g, '.')
+    console.log(p, fields[path])
     const err = {}
-    if (get(props, path.replace(/#/g, '.'), err) === err) {
+    if (get(props, p, err) === err) {
       console.error('field not exist', fields)
     }
   }
