@@ -5,9 +5,7 @@ import { updateConfigOrProfile, formItemModalLayout } from '../helpers'
 import { DictItem } from '@/app-config/dicts'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, Modal, InputNumber, Select, Switch, Checkbox, Radio } from 'antd'
-
-const { Option } = Select
+import { Form, Modal, InputNumber, Switch, Checkbox, Radio } from 'antd'
 
 export type EditDictModalProps = Props & FormComponentProps & {
   dictID: DictID | ''
