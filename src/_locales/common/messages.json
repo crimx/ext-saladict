@@ -24,6 +24,41 @@
     "zh_CN": "编辑",
     "zh_TW": "編輯"
   },
+  "lang_chinese": {
+    "en": "Chinese",
+    "zh_CN": "中文",
+    "zh_TW": "漢字"
+  },
+  "lang_chs": {
+    "en": "Chinese",
+    "zh_CN": "中文",
+    "zh_TW": "漢字"
+  },
+  "lang_eng": {
+    "en": "English",
+    "zh_CN": "英文",
+    "zh_TW": "英文"
+  },
+  "lang_english": {
+    "en": "English",
+    "zh_CN": "英文",
+    "zh_TW": "英文"
+  },
+  "lang_minor": {
+    "en": "Minor",
+    "zh_CN": "其它语言",
+    "zh_TW": "其它語言"
+  },
+  "max": {
+    "en": "Max",
+    "zh_CN": "最大",
+    "zh_TW": "最大"
+  },
+  "min": {
+    "en": "Min",
+    "zh_CN": "最小",
+    "zh_TW": "最小"
+  },
   "rename": {
     "en": "Rename",
     "zh_CN": "重命名",
@@ -38,21 +73,6 @@
     "en": "Sort",
     "zh_CN": "排序",
     "zh_TW": "排序"
-  },
-  "lang_chinese": {
-    "en": "Chinese",
-    "zh_CN": "中文",
-    "zh_TW": "漢字"
-  },
-  "lang_english": {
-    "en": "English",
-    "zh_CN": "英文",
-    "zh_TW": "英文"
-  },
-  "lang_minor": {
-    "en": "Minor",
-    "zh_CN": "其它语言",
-    "zh_TW": "其它語言"
   },
   "unit_mins": {
     "en": "minutes",

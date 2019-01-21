@@ -54,7 +54,7 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
     const { t, config, profile, rawProfileName } = this.props
 
     return (
-      <Layout>
+      <Layout style={{ maxWidth: 1400, margin: '0 auto' }}>
         <Header style={{ display: 'flex', justifyContent: 'space-between' }}>
           <h1 style={{ color: '#fff' }}>{t('title')}</h1>
           <span style={{ color: '#fff' }}>「 {getProfileName(rawProfileName, t)} 」</span>
@@ -73,7 +73,7 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
               <Menu.Item key='Profiles'><Icon type='dashboard' /> {t('nav_Profiles')}</Menu.Item>
               <Menu.Item key='DictPanel'><Icon type='profile' /> {t('nav_DictPanel')}</Menu.Item>
               <Menu.Item key='SearchModes'><Icon type='select' /> {t('nav_SearchModes')}</Menu.Item>
-              <Menu.Item key='Dictioneries'><Icon type='book' /> {t('nav_Dictioneries')}</Menu.Item>
+              <Menu.Item key='Dictionaries'><Icon type='book' /> {t('nav_Dictionaries')}</Menu.Item>
               <Menu.Item key='PDF'><Icon type='file-pdf' /> {t('nav_PDF')}</Menu.Item>
               <Menu.Item key='ContextMenus'><Icon type='database' /> {t('nav_ContextMenus')}</Menu.Item>
               <Menu.Item key='Popup'><Icon type='layout' /> {t('nav_Popup')}</Menu.Item>
@@ -84,7 +84,7 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
           </Sider>
           <Layout style={{ padding: '24px', minHeight: innerHeight - 64 }}>
             <Content style={{
-              background: '#fff', padding: 24, margin: 0,
+              background: '#fff', padding: 24, margin: 0
             }}
             >
               {React.createElement(

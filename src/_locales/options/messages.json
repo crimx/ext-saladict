@@ -1,4 +1,44 @@
 {
+  "dict_lang_de": {
+    "en": "Deutsch",
+    "zh_CN": "德",
+    "zh_TW": "德"
+  },
+  "dict_lang_en": {
+    "en": "En",
+    "zh_CN": "英",
+    "zh_TW": "英"
+  },
+  "dict_lang_es": {
+    "en": "Español",
+    "zh_CN": "西",
+    "zh_TW": "西"
+  },
+  "dict_lang_fr": {
+    "en": "French",
+    "zh_CN": "法",
+    "zh_TW": "法"
+  },
+  "dict_lang_ja": {
+    "en": "Ja",
+    "zh_CN": "日",
+    "zh_TW": "日"
+  },
+  "dict_lang_kor": {
+    "en": "Korean",
+    "zh_CN": "韩",
+    "zh_TW": "韩"
+  },
+  "dict_lang_zhs": {
+    "en": "Zhs",
+    "zh_CN": "简",
+    "zh_TW": "简"
+  },
+  "dict_lang_zht": {
+    "en": "Zht",
+    "zh_CN": "繁",
+    "zh_TW": "繁"
+  },
   "head_info_acknowledgement": {
     "en": "Acknowledgement",
     "zh_CN": "特别鸣谢",
@@ -44,8 +84,8 @@
     "zh_CN": "右键菜单",
     "zh_TW": "右鍵菜單"
   },
-  "nav_Dictioneries": {
-    "en": "Dictioneries",
+  "nav_Dictionaries": {
+    "en": "Dictionaries",
     "zh_CN": "词典设置",
     "zh_TW": "字典設定"
   },
@@ -423,5 +463,55 @@
     "en": "Saladict Options",
     "zh_CN": "Saladict 设置",
     "zh_TW": "Saladict 設定"
+  },
+  "dict_default_unfold": {
+    "en": "Default Unfold",
+    "zh_CN": "默认展开",
+    "zh_TW": "自動展開"
+  },
+  "dict_default_unfold_help": {
+    "en": "If turned off, this dictionary won't start searching unless it's title bar is clicked.",
+    "zh_CN": "关闭后该词典将不会自动搜索，除非点击「展开」箭头。适合一些需要时再深入了解的词典，以加快初次查词速度。",
+    "zh_TW": "關閉後这个字典將不會自動搜尋，除非點選「展開」箭頭。適合一些需要時再深入瞭解的字典，以加快初次查字典速度。"
+  },
+  "dict_sel_lang": {
+    "en": "Selection Languages",
+    "zh_CN": "划词语言",
+    "zh_TW": "選詞語言"
+  },
+  "dict_sel_lang_help": {
+    "en": "Show this dictionary when selection contains words in the chosen languages.",
+    "zh_CN": "当选中的文字包含相应的语言时才显示该词典。",
+    "zh_TW": "當選中的文字包含相對應的語言時才顯示這個字典。"
+  },
+  "dict_sel_word_count": {
+    "en": "Selection Word Count",
+    "zh_CN": "划词字数",
+    "zh_TW": "選詞字數"
+  },
+  "dict_sel_word_count_help": {
+    "en": "Show this dictionary when selection word count meets the requirements.",
+    "zh_CN": "当选中文字的字数符合条件时才显示该词典。",
+    "zh_TW": "當選中文字的字數符合條件時才顯示該詞典。"
+  },
+  "dict_default_height": {
+    "en": "Default Panel Height",
+    "zh_CN": "词典默认高度",
+    "zh_TW": "字典預設高度"
+  },
+  "dict_default_height_help": {
+    "en": "Maximum height on first appearance. Contents exceeding this height will be hidden.",
+    "zh_CN": "词典初次出现的最大高度。超出此高度的内容将被隐藏并显示下箭头。",
+    "zh_TW": "字典初次出現的最大高度。超出此高度的內容將被隱藏並顯示下箭頭。"
+  },
+  "dict_more_options": {
+    "en": "More Options",
+    "zh_CN": "更多设置",
+    "zh_TW": "更多設定"
+  },
+  "dict_add": {
+    "en": "Add dicts",
+    "zh_CN": "添加词典",
+    "zh_TW": "添加字典"
   }
 }
