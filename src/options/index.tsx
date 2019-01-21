@@ -76,7 +76,7 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
           config,
           profile,
           profileIDList,
-          rawProfileName: this.getActiveProfileName(profile.id),
+          rawProfileName: this.getActiveProfileName(profile.id, profileIDList),
         })
       })
 
@@ -102,8 +102,11 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
     })
   }
 
-  getActiveProfileName = (activeID: string): string => {
-    const activeProfileID = this.state.profileIDList.find(
+  getActiveProfileName = (
+    activeID: string,
+    profileIDList = this.state.profileIDList,
+  ): string => {
+    const activeProfileID = profileIDList.find(
       ({ id }) => id === activeID
     )
     return activeProfileID ? activeProfileID.name : ''
