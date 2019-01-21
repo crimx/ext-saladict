@@ -1,3 +1,24 @@
+export interface DictItem {
+  lang: string
+  defaultUnfold: boolean
+  selectionWC: {
+    min: number,
+    max: number,
+  },
+  preferredHeight: number
+  selectionLang: {
+    eng: boolean
+    chs: boolean
+    minor: boolean
+  }
+  options?: {
+    [option: string]: number | boolean | string
+  }
+  options_sel?: {
+    [choice: string]: string[]
+  }
+}
+
 export function getALlDicts () {
   const allDicts = {
     bing: {
@@ -41,7 +62,7 @@ export function getALlDicts () {
         related: true,
         sentence: 4
       }
-    },
+    } as DictItem,
     cambridge: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -72,7 +93,7 @@ export function getALlDicts () {
         chs: false,
         minor: false,
       },
-    },
+    } as DictItem,
     cobuild: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -110,7 +131,7 @@ export function getALlDicts () {
       options: {
         sentence: 4
       }
-    },
+    } as DictItem,
     etymonline: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -149,7 +170,7 @@ export function getALlDicts () {
         resultnum: 4,
         chart: true,
       }
-    },
+    } as DictItem,
     eudic: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -187,7 +208,7 @@ export function getALlDicts () {
       options: {
         resultnum: 10
       }
-    },
+    } as DictItem,
     google: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -231,7 +252,7 @@ export function getALlDicts () {
       options_sel: {
         tl: ['default', 'zh-CN', 'zh-TW', 'en'],
       },
-    },
+    } as DictItem,
     googledict: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -269,7 +290,7 @@ export function getALlDicts () {
       options: {
         enresult: true
       }
-    },
+    } as DictItem,
     guoyu: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -300,7 +321,7 @@ export function getALlDicts () {
         chs: true,
         minor: false,
       }
-    },
+    } as DictItem,
     hjdict: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -350,7 +371,7 @@ export function getALlDicts () {
         aas: ['fr', 'de'],
         eas: ['fr', 'es'],
       },
-    },
+    } as DictItem,
     liangan: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -381,7 +402,7 @@ export function getALlDicts () {
         chs: true,
         minor: false,
       }
-    },
+    } as DictItem,
     longman: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -425,7 +446,7 @@ export function getALlDicts () {
         bussinessFirst: true,
         related: true,
       }
-    },
+    } as DictItem,
     macmillan: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -463,7 +484,7 @@ export function getALlDicts () {
       options: {
         related: true,
       }
-    },
+    } as DictItem,
     oald: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -501,7 +522,7 @@ export function getALlDicts () {
       options: {
         related: true,
       },
-    },
+    } as DictItem,
     sogou: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -544,7 +565,7 @@ export function getALlDicts () {
       options_sel: {
         tl: ['default', 'zh-CHS', 'zh-CHT', 'en'],
       },
-    },
+    } as DictItem,
     urban: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -582,7 +603,7 @@ export function getALlDicts () {
       options: {
         resultnum: 4
       }
-    },
+    } as DictItem,
     vocabulary: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -613,7 +634,7 @@ export function getALlDicts () {
         chs: false,
         minor: false,
       }
-    },
+    } as DictItem,
     weblio: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -644,7 +665,7 @@ export function getALlDicts () {
         chs: true,
         minor: true,
       },
-    },
+    } as DictItem,
     websterlearner: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -686,7 +707,7 @@ export function getALlDicts () {
         arts: true,
         related: true,
       },
-    },
+    } as DictItem,
     wikipedia: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -727,7 +748,7 @@ export function getALlDicts () {
       options_sel: {
         lang: ['auto', 'zh', 'zh-cn', 'zh-tw', 'zh-hk', 'en', 'ja', 'fr', 'de'],
       },
-    },
+    } as DictItem,
     youdao: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -770,7 +791,7 @@ export function getALlDicts () {
         translation: true,
         related: true,
       }
-    },
+    } as DictItem,
     zdic: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
@@ -801,33 +822,7 @@ export function getALlDicts () {
         chs: true,
         minor: false,
       }
-    },
+    } as DictItem,
   }
-
-  // Just for type check. Keys in allDicts are useful so no actual assertion
-  // tslint:disable-next-line:no-unused-expression
-  allDicts as {
-    [id: string]: {
-      lang: string
-      defaultUnfold: boolean
-      selectionWC: {
-        min: number,
-        max: number,
-      },
-      preferredHeight: number
-      selectionLang: {
-        eng: boolean
-        chs: boolean
-        minor: boolean
-      }
-      options?: {
-        [option: string]: number | boolean | string
-      }
-      options_sel?: {
-        [choice: string]: string[]
-      }
-    }
-  }
-
   return allDicts
 }
