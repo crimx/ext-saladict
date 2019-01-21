@@ -72,7 +72,12 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
 
     Promise.all([getConfig(), getActiveProfile(), getProfileIDList()])
       .then(([ config, profile, profileIDList ]) => {
-        this.setState({ config, profile, profileIDList })
+        this.setState({
+          config,
+          profile,
+          profileIDList,
+          rawProfileName: this.getActiveProfileName(profile.id),
+        })
       })
 
     addConfigListener(({ newConfig }) => {
@@ -82,11 +87,10 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
     })
 
     addActiveProfileListener(({ newProfile }) => {
-      const activeProfileID = this.state.profileIDList.find(
-        ({ id }) => id === newProfile.id
-      )
-      const rawProfileName = activeProfileID ? activeProfileID.name : ''
-      this.setState({ profile: newProfile, rawProfileName })
+      this.setState({
+        profile: newProfile,
+        rawProfileName: this.getActiveProfileName(newProfile.id),
+      })
       message.destroy()
       message.success(i18n.t('msg_updated'))
     })
@@ -96,6 +100,13 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
       message.destroy()
       message.success(i18n.t('msg_updated'))
     })
+  }
+
+  getActiveProfileName = (activeID: string): string => {
+    const activeProfileID = this.state.profileIDList.find(
+      ({ id }) => id === activeID
+    )
+    return activeProfileID ? activeProfileID.name : ''
   }
 
   render () {
