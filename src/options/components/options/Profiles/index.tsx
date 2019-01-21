@@ -5,9 +5,6 @@ import {
   getDefaultProfileID,
 } from '@/app-config/profiles'
 import {
-  SortableContainer,
-  SortableElement,
-  SortableHandle,
   arrayMove,
   SortEnd,
 } from 'react-sortable-hoc'
@@ -21,23 +18,10 @@ import {
   updateProfileIDList,
 } from '@/_helpers/profile-manager'
 import EditNameModal from './EditNameModal'
+import SortableList from '../../SortableList'
 
-import { Card, List, Button, Radio, Col, message, Icon } from 'antd'
+import { Row, Col, message } from 'antd'
 import { RadioChangeEvent } from 'antd/lib/radio'
-
-const btnSylte: React.CSSProperties = {
-  marginLeft: 10,
-  padding: 0,
-  lineHeight: 1,
-  border: 'none',
-}
-
-const itemStyle: React.CSSProperties = {
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-}
 
 export type ProfilesProps = Props
 
@@ -58,55 +42,6 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
     showAddProfileModal: false,
   }
 
-  DragHandle = SortableHandle(() => (
-    <Icon
-      title={this.props.t('common:sort')}
-      style={{ cursor: 'move' }}
-      type='bars'
-    />
-  ))
-
-  ProfileListItem = SortableElement<{ profileID: ProfileID }>(({ profileID }) => (
-    <List.Item>
-      <div style={itemStyle}>
-        <Radio value={profileID.id}>{getProfileName(profileID.name, this.props.t)}</Radio>
-        <div>
-          {React.createElement(this.DragHandle)}
-          <Button
-            title={this.props.t('common:edit')}
-            style={btnSylte}
-            shape='circle'
-            size='small'
-            icon='edit'
-            onClick={() => this.setState({
-              showEditNameModal: true,
-              editingProfileID: profileID,
-            })}
-          />
-          <Button
-            title={this.props.t('common:delete')}
-            style={btnSylte}
-            shape='circle'
-            size='small'
-            icon='close'
-            disabled={profileID.id === this.state.selected}
-            onClick={() => this.deleteItem(profileID)}
-          />
-        </div>
-      </div>
-    </List.Item>
-  ))
-
-  ProfileList = SortableContainer<{ list: ProfileID[] }>(({ list }) => (
-    <List
-      size='large'
-      dataSource={list}
-      renderItem={(profileID: ProfileID, index: number) => React.createElement(
-        this.ProfileListItem, { profileID, index }
-      )}
-    />
-  ))
-
   constructor (props: ProfilesProps) {
     super(props)
     getProfileIDList().then(async idList => {
@@ -119,6 +54,17 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
     })
   }
 
+  openAddProfileModal = () => {
+    this.setState({ showAddProfileModal: true })
+  }
+
+  editProfileName = (index: number) => {
+    this.setState({
+      showEditNameModal: true,
+      editingProfileID: this.state.list[index],
+    })
+  }
+
   handleProfileSelect = async ({ target: { value } }: RadioChangeEvent) => {
     this.setState({ selected: value })
     await updateActiveProfileID(value)
@@ -126,8 +72,9 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
     message.success(this.props.t('msg_updated'))
   }
 
-  deleteItem = async ({ name, id }: ProfileID) => {
+  deleteItem = async (index: number) => {
     const { t } = this.props
+    const { name, id } = this.state.list[index]
     if (confirm(t('profiles_delete_confirm', { name: getProfileName(name, t) }))) {
       await removeProfile(id)
       this.setState(({ list }) => ({
@@ -138,7 +85,8 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
     }
   }
 
-  handleAddProfileClose = async (name?: string) => {
+  handleAddProfileClose = async (name = '') => {
+    name = name.trim()
     if (name) {
       const profileID = getDefaultProfileID()
       profileID.name = name
@@ -183,6 +131,7 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
   }
 
   handleSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
+    if (oldIndex === newIndex) { return }
     this.setState(({ list }) => {
       const newList = arrayMove(list, oldIndex, newIndex)
       updateProfileIDList(newList)
@@ -205,43 +154,39 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
     } = this.state
 
     return (
-      <Col span={12}>
-        <Card title={t('nav_Profiles')}>
-          <p dangerouslySetInnerHTML={{ __html: t('profiles_help') }} />
-          <Radio.Group
-            value={selected}
-            onChange={this.handleProfileSelect}
-            style={{ display: 'block', marginBottom: 10 }}
-          >
-          {React.createElement(this.ProfileList, {
-            useDragHandle: true,
-            onSortEnd: this.handleSortEnd,
-            list,
-          })}
-          </Radio.Group>
-          {list.length <= 10 &&
-            <Button
-              type='dashed'
-              style={{ width: '100%' }}
-              onClick={() => this.setState({ showAddProfileModal: true })}
-            >
-              <Icon type='plus' /> {t('common:add')}
-            </Button>
-          }
-        </Card>
-        <EditNameModal
-          title={t('profiles_add_name')}
-          show={showAddProfileModal}
-          name=''
-          onClose={this.handleAddProfileClose}
-        />
-        <EditNameModal
-          title={t('profiles_edit_name')}
-          show={showEditNameModal}
-          name={editingProfileID ? getProfileName(editingProfileID.name, t) : ''}
-          onClose={this.handleEditNameClose}
-        />
-      </Col>
+      <Row>
+        <Col span={12}>
+          <SortableList
+            t={t}
+            title={t('nav_Profiles')}
+            description={
+              <p dangerouslySetInnerHTML={{ __html: t('profiles_help') }} />
+            }
+            list={list.map(profileID => ({
+              value: profileID.id,
+              title: getProfileName(profileID.name, t)
+            }))}
+            selected={selected}
+            onSelect={this.handleProfileSelect}
+            onAdd={this.openAddProfileModal}
+            onEdit={this.editProfileName}
+            onDelete={this.deleteItem}
+            onSortEnd={this.handleSortEnd}
+          />
+          <EditNameModal
+            title={t('profiles_add_name')}
+            show={showAddProfileModal}
+            name=''
+            onClose={this.handleAddProfileClose}
+          />
+          <EditNameModal
+            title={t('profiles_edit_name')}
+            show={showEditNameModal}
+            name={editingProfileID ? getProfileName(editingProfileID.name, t) : ''}
+            onClose={this.handleEditNameClose}
+          />
+        </Col>
+      </Row>
     )
   }
 }

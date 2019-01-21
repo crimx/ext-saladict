@@ -79,7 +79,7 @@ const ProfileListItem = SortableElement<SortableListItemProps>(({
   )
 })
 
-export const SortableListContainer = SortableContainer<SortableListProps>(props => (
+const SortableListContainer = SortableContainer<SortableListProps>(props => (
   <List
     size='large'
     dataSource={props.list}

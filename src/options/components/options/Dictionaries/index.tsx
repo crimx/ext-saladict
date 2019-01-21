@@ -46,6 +46,7 @@ export class Dictionaries extends React.Component<DictionariesProps, Dictionarie
   }
 
   handleSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
+    if (oldIndex === newIndex) { return }
     const { profile } = this.props
     ;(profile.dicts.selected as DictID[]) = arrayMove(
       profile.dicts.selected as DictID[],
