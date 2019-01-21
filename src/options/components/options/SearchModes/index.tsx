@@ -1,10 +1,10 @@
 import React from 'react'
 import { Props } from '../typings'
-import { updateConfigOrProfile, formItemLayout, formItemInlineStyle } from '../helpers'
+import { updateConfigOrProfile, formItemLayout } from '../helpers'
 import SearchMode from './SearchMode'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, Switch, Row, Col, Radio, InputNumber, Checkbox } from 'antd'
+import { Form, Switch, InputNumber, Checkbox } from 'antd'
 
 export type SearchModesProps = Props & FormComponentProps
 
@@ -32,7 +32,7 @@ export class SearchModes extends React.Component<SearchModesProps> {
           help={t('opt_sel_lang_help')}
         >{
           ['chinese', 'english', 'minor'].map(lang => (
-            <Form.Item key={lang} style={formItemInlineStyle}>{
+            <Form.Item key={lang} className='form-item-inline'>{
               this.props.form.getFieldDecorator(`config#language#${lang}`, {
                 initialValue: config.language[lang],
                 valuePropName: 'checked',
