@@ -59,6 +59,11 @@
     "zh_CN": "最小",
     "zh_TW": "最小"
   },
+  "none": {
+    "en": "None",
+    "zh_CN": "无",
+    "zh_TW": "無"
+  },
   "rename": {
     "en": "Rename",
     "zh_CN": "重命名",

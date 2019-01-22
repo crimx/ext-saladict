@@ -6,6 +6,7 @@ import SortableList from '../../SortableList'
 import AddDictModal from './AddDictModal'
 import EditDictModal from './EditDictModal'
 import DictTitle from './DictTitle'
+import DictForm from './DictForm'
 
 import { Col, Row } from 'antd'
 import { DictID } from '@/app-config'
@@ -62,7 +63,10 @@ export class Dictionaries extends React.Component<DictionariesProps, Dictionarie
 
     return (
       <Row>
-        <Col span={12}>
+        <Col>
+          <DictForm {...this.props} />
+        </Col>
+        <Col span={13}>
           <SortableList
             t={t}
             title={t('nav_Dictionaries')}
