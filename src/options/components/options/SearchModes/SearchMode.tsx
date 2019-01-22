@@ -79,7 +79,7 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
             onChange={this.toggleHolding}
           >{t('opt_sm_holding')}</Checkbox>
           {isShowHolding &&
-            <>
+            <div>
               <Form.Item className='form-item-inline'>{
                 this.props.form.getFieldDecorator(`config#${mode}#holding#shift`, {
                   initialValue: config[mode].holding.shift,
@@ -104,7 +104,7 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
                   <Checkbox><kbd>Meta(⌘/⊞)</kbd></Checkbox>
                 )
               }</Form.Item>
-            </>
+            </div>
           }
         </Form.Item>
         <Form.Item help={t('opt_sm_instant_help')}>
