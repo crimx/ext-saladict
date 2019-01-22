@@ -119,6 +119,11 @@
     "zh_CN": "反馈问题",
     "zh_TW": "軟體使用疑問和建言"
   },
+  "match_pattern_description": {
+    "en": "Specify URLs as match patterns. <a href=\"https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Match_patterns#Examples\" target=\"_blank\">Examples</a>. Empty fields will be removed.",
+    "zh_CN": "网址支持匹配模式（<a href=\"https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例\" target=\"_blank\">例子</a>）。留空保存即可清除。",
+    "zh_TW": "網址支援匹配模式（<a href=\"https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例\" target=\"_blank\">例子</a>）。留空儲存即可清除。"
+  },
   "msg_updated": {
     "en": "Successfully updated",
     "zh_CN": "设置已更新",
@@ -319,6 +324,21 @@
     "zh_CN": "开启后，本扩展会自动识别输入框以及常见编辑器，如 CodeMirror、ACE 和 Monaco。",
     "zh_TW": "開啟后，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror、ACE 和 Monaco。"
   },
+  "opt_pdf_blackwhitelist_help": {
+    "en": "Blacklisted PDF links will not jump to Saladict PDF Viewer.",
+    "zh_CN": "黑名单匹配的 PDF 链接将不会跳转到 Saladict 打开。",
+    "zh_TW": "黑名單匹配的 PDF 連結將不會跳轉到 Saladict 開啟。"
+  },
+  "opt_pdf_sniff": {
+    "en": "Enable PDF Sniffer",
+    "zh_CN": "默认用本扩展浏览 PDF",
+    "zh_TW": "使用本應用程式瀏覽 PDF"
+  },
+  "opt_pdf_sniff_help": {
+    "en": "If turned on， PDF links will be automatically captured.",
+    "zh_CN": "开启后所有 PDF 链接将自动跳转到本扩展打开（包括本地，如果在扩展管理页面勾选了允许）。",
+    "zh_TW": "開啟後所有 PDF 連結將自動跳轉到本擴充套件開啟（包括本地，如果在擴充套件管理頁面勾選了允許）。"
+  },
   "opt_profile_change": {
     "en": "This option may change base on \"Profile\".",
     "zh_CN": "此选项会因「情景模式」而改变。",
@@ -328,6 +348,16 @@
     "en": "Search suggests",
     "zh_CN": "输入时显示候选",
     "zh_TW": "輸入時顯示候選"
+  },
+  "opt_sel_blackwhitelist": {
+    "en": "Selection Black/White List",
+    "zh_CN": "划词黑白名单",
+    "zh_TW": "選詞黑白名單"
+  },
+  "opt_sel_blackwhitelist_help": {
+    "en": "Saladict will not react to selection in blacklisted pages.",
+    "zh_CN": "黑名单匹配的页面 Saladict 将不会响应鼠标划词。",
+    "zh_TW": "黑名單匹配的頁面 Saladict 將不會響應滑鼠劃詞。"
   },
   "opt_sel_lang": {
     "en": "Selection Languages",

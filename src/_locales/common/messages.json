@@ -4,10 +4,20 @@
     "zh_CN": "添加",
     "zh_TW": "新增"
   },
+  "blacklist": {
+    "en": "Blacklist",
+    "zh_CN": "黑名单",
+    "zh_TW": "黑名單"
+  },
   "cancel": {
     "en": "Cancel",
     "zh_CN": "取消",
     "zh_TW": "取消"
+  },
+  "changes_confirm": {
+    "en": "Changes not saved. Close anyway?",
+    "zh_CN": "修改未保存。确认关闭？",
+    "zh_TW": "修改未保存。確定關閉？"
   },
   "confirm": {
     "en": "Confirm",
@@ -93,5 +103,10 @@
     "en": "words",
     "zh_CN": "个",
     "zh_TW": "个"
+  },
+  "whitelist": {
+    "en": "Whitelist",
+    "zh_CN": "白名单",
+    "zh_TW": "白名單"
   }
 }
