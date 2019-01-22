@@ -6,36 +6,32 @@ body {
   background: #f0f2f5;
 }
 
-.form-item-inline {
-  display: inline-block !important;
-  margin: 0 10px 0 0 !important;
+.ant-form-item.form-item-inline {
+  display: inline-block;
+  margin: 0 10px 0 0;
 
   &:last-of-type {
-    margin-right: 0 !important;
+    margin-right: 0;
   }
 }
 
-/* ======================================= *\
- * Sortable List Patch
-\* ======================================= */
-
 .sortable-list-item {
-  width: 100% !important;
-  display: flex !important;
-  justify-content: space-between !important;
-  align-items: center !important;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.sortable-list-radio-group {
-  display: block !important;
-  margin-bottom: 10 !important;
+.ant-radio-group.sortable-list-radio-group {
+  display: block;
+  margin-bottom: 10;
 }
 
-.sortable-list-item-btn {
-  margin-left: 10px !important;
-  padding: 0 !important;
-  line-height: 1 !important;
-  border: none !important;
+.ant-btn.sortable-list-item-btn {
+  margin-left: 10px;
+  padding: 0;
+  line-height: 1;
+  border: none;
 }
 
 /* ======================================= *\
