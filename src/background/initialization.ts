@@ -18,10 +18,14 @@ startSyncServiceInterval()
 
 browser.runtime.onInstalled.addListener(onInstalled)
 browser.runtime.onStartup.addListener(onStartup)
-browser.notifications.onClicked.addListener(genClickListener('https://github.com/crimx/crx-saladict/releases'))
+browser.notifications.onClicked.addListener(
+  genClickListener('https://github.com/crimx/ext-saladict/releases')
+)
 if (browser.notifications.onButtonClicked) {
   // Firefox doesn't support
-  browser.notifications.onButtonClicked.addListener(genClickListener('https://github.com/crimx/crx-saladict/releases'))
+  browser.notifications.onButtonClicked.addListener(
+    genClickListener('https://github.com/crimx/ext-saladict/releases')
+  )
 }
 
 browser.commands.onCommand.addListener(command => {
@@ -78,7 +82,7 @@ async function onInstalled ({ reason, previousVersion }: { reason: string, previ
 
   if (reason === 'install') {
     if (!(await storage.sync.get('hasInstructionsShown')).hasInstructionsShown) {
-      openURL('https://github.com/crimx/crx-saladict/wiki/Instructions#wiki-content')
+      openURL('https://github.com/crimx/ext-saladict/wiki/Instructions#wiki-content')
       storage.sync.set({ hasInstructionsShown: true })
     }
     (await browser.tabs.query({})).forEach(tab => {
@@ -91,7 +95,7 @@ async function onInstalled ({ reason, previousVersion }: { reason: string, previ
     let data
     if (!process.env.DEV_BUILD) {
       try {
-        const response = await fetch('https://api.github.com/repos/crimx/crx-saladict/releases/latest')
+        const response = await fetch('https://api.github.com/repos/crimx/ext-saladict/releases/latest')
         data = await response.json()
       } catch (e) {/* */}
     }

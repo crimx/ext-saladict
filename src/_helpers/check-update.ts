@@ -5,7 +5,7 @@ type UpdateInfo = {
 
 export default function checkUpdate (): Promise<UpdateInfo> {
   // check new version
-  return fetch('https://api.github.com/repos/crimx/crx-saladict/releases/latest')
+  return fetch('https://api.github.com/repos/crimx/ext-saladict/releases/latest')
     .then(r => r.json())
     .then(data => {
       if (data && data.tag_name) {

@@ -42,7 +42,7 @@ export class OptMenu extends React.PureComponent<{ t: TranslationFunction }> {
       <ul className='head-info'>
         <li className='head-info-acknowledgement-wrap'>
           <a
-            href='https://github.com/crimx/crx-saladict/wiki#acknowledgement'
+            href='https://github.com/crimx/ext-saladict/wiki#acknowledgement'
             onMouseEnter={this.showAcknowledgement}
             onMouseLeave={this.hideAcknowledgement}
             onClick={this.preventDefault}>{t('opt:head_info_acknowledgement')}</a>
@@ -79,7 +79,7 @@ export class OptMenu extends React.PureComponent<{ t: TranslationFunction }> {
         </li>
         <li>
           <a
-            href='https://github.com/crimx/crx-saladict/wiki#wiki-content'
+            href='https://github.com/crimx/ext-saladict/wiki#wiki-content'
             target='_blank'
             rel='noopener'>{t('opt:head_info_instructions')}</a>
         </li>
@@ -107,7 +107,7 @@ export class OptMenu extends React.PureComponent<{ t: TranslationFunction }> {
         </li>
         <li>
           <a
-            href='https://github.com/crimx/crx-saladict/issues'
+            href='https://github.com/crimx/ext-saladict/issues'
             target='_blank'
             rel='noopener'
           >{t('opt:head_info_report_issue')}</a>

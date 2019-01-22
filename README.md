@@ -17,7 +17,7 @@ Chrome/Firefox WebExtension. Feature-rich inline translator with PDF support. Vi
 [【中文】](https://www.crimx.com/ext-saladict/)Chrome/Firefox 浏览器插件，网页划词翻译。
 
 <p align="center">
-  <a href="https://github.com/crimx/crx-saladict/releases/" target="_blank"><img src="https://raw.githubusercontent.com/wiki/crimx/ext-saladict/images/notebook.gif" /></a>
+  <a href="https://github.com/crimx/ext-saladict/releases/" target="_blank"><img src="https://raw.githubusercontent.com/wiki/crimx/ext-saladict/images/notebook.gif" /></a>
 </p>
 
 ## Downloads
@@ -37,13 +37,13 @@ Saladict 6 is a complete rewrite in React Typescript for both Chrome & Firefox. 
 ## More screenshots:
 
 <p align="center">
-  <a href="https://github.com/crimx/crx-saladict/releases/" target="_blank"><img src="https://github.com/crimx/ext-saladict/wiki/images/youdao-page.gif" /></a>
+  <a href="https://github.com/crimx/ext-saladict/releases/" target="_blank"><img src="https://github.com/crimx/ext-saladict/wiki/images/youdao-page.gif" /></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/crimx/crx-saladict/releases/" target="_blank"><img src="https://github.com/crimx/ext-saladict/wiki/images/screen-notebook.png" /></a>
+  <a href="https://github.com/crimx/ext-saladict/releases/" target="_blank"><img src="https://github.com/crimx/ext-saladict/wiki/images/screen-notebook.png" /></a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/crimx/crx-saladict/releases/" target="_blank"><img src="https://github.com/crimx/ext-saladict/wiki/images/pin.gif" /></a>
+  <a href="https://github.com/crimx/ext-saladict/releases/" target="_blank"><img src="https://github.com/crimx/ext-saladict/wiki/images/pin.gif" /></a>
 </p>

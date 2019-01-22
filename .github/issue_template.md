@@ -1,6 +1,6 @@
 <details><summary>反馈说明</summary>
 
-使用相关的问题请阅读 《使用方式》 <https://github.com/crimx/crx-saladict/wiki#wiki-content> 。
+使用相关的问题请阅读 《使用方式》 <https://github.com/crimx/ext-saladict/wiki#wiki-content> 。
 
 常见问题：
 
