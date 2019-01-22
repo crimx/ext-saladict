@@ -8,7 +8,7 @@ import EditDictModal from './EditDictModal'
 import DictTitle from './DictTitle'
 import DictForm from './DictForm'
 
-import { Col, Row } from 'antd'
+import { Col, Row, Tooltip, Icon } from 'antd'
 import { DictID } from '@/app-config'
 
 export type DictionariesProps = Props
@@ -69,7 +69,11 @@ export class Dictionaries extends React.Component<DictionariesProps, Dictionarie
         <Col span={13}>
           <SortableList
             t={t}
-            title={t('nav_Dictionaries')}
+            title={
+              <Tooltip title={t('opt_profile_change')}>
+                <Icon type='question-circle-o' /> {t('opt_dict_selected')}
+              </Tooltip>
+            }
             list={selected.map(id => {
               return {
                 value: id,

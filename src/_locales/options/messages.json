@@ -244,6 +244,11 @@
     "zh_CN": "查词面板宽度",
     "zh_TW": "查字典介面寬度"
   },
+  "opt_dict_selected": {
+    "en": "Selected Dicts",
+    "zh_CN": "已选词典",
+    "zh_TW": "已選字典"
+  },
   "opt_double_click_delay": {
     "en": "Double Click Delay",
     "zh_CN": "双击间隔",
