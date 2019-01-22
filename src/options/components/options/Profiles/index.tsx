@@ -116,6 +116,7 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
       this.setState({
         list: newList,
         editingProfileID: null,
+        showEditNameModal: false,
       })
       if (newProfileID.id !== selected) {
         // active config alert is handled by global
