@@ -15,6 +15,7 @@ export class General extends React.Component<Props & FormComponentProps> {
 
   render () {
     const { t, config } = this.props
+    const { getFieldDecorator } = this.props.form
 
     return (
       <Form>
@@ -26,7 +27,7 @@ export class General extends React.Component<Props & FormComponentProps> {
           label={t('opt_active')}
           help={t('opt_app_active_help')}
         >{
-          this.props.form.getFieldDecorator('config#active', {
+          getFieldDecorator('config#active', {
             initialValue: config.active,
             valuePropName: 'checked',
           })(
@@ -38,7 +39,7 @@ export class General extends React.Component<Props & FormComponentProps> {
           label={t('opt_animation')}
           help={t('opt_animation_help')}
         >{
-          this.props.form.getFieldDecorator('config#animation', {
+          getFieldDecorator('config#animation', {
             initialValue: config.animation,
             valuePropName: 'checked',
           })(
@@ -49,7 +50,7 @@ export class General extends React.Component<Props & FormComponentProps> {
           {...formItemLayout}
           label={t('opt_language')}
         >{
-          this.props.form.getFieldDecorator('config#langCode', {
+          getFieldDecorator('config#langCode', {
             initialValue: config.langCode,
           })(
             <Select>

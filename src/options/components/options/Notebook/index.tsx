@@ -100,6 +100,7 @@ export class Notebook extends React.Component<NotebookProps> {
   render () {
     const { t, config, profile } = this.props
     const { syncServiceConfig } = this.state
+    const { getFieldDecorator } = this.props.form
 
     return (
       <Form>
@@ -109,7 +110,7 @@ export class Notebook extends React.Component<NotebookProps> {
           label={t('opt_edit_on_fav')}
           help={t('opt_edit_on_fav_help')}
         >{
-          this.props.form.getFieldDecorator('config#editOnFav', {
+          getFieldDecorator('config#editOnFav', {
             initialValue: config.editOnFav,
             valuePropName: 'checked',
           })(
@@ -121,7 +122,7 @@ export class Notebook extends React.Component<NotebookProps> {
           label={t('opt_history')}
           help={t('opt_history_help')}
         >{
-          this.props.form.getFieldDecorator('config#searhHistory', {
+          getFieldDecorator('config#searhHistory', {
             initialValue: config.searhHistory,
             valuePropName: 'checked',
           })(
@@ -133,7 +134,7 @@ export class Notebook extends React.Component<NotebookProps> {
             {...formItemLayout}
             label={t('opt_history_inco')}
           >{
-            this.props.form.getFieldDecorator('config#searhHistoryInco', {
+            getFieldDecorator('config#searhHistoryInco', {
               initialValue: config.searhHistoryInco,
               valuePropName: 'checked',
             })(

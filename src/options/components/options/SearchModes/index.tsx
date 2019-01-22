@@ -11,6 +11,7 @@ export type SearchModesProps = Props & FormComponentProps
 export class SearchModes extends React.Component<SearchModesProps> {
   render () {
     const { t, config } = this.props
+    const { getFieldDecorator } = this.props.form
 
     return (
       <Form>
@@ -19,7 +20,7 @@ export class SearchModes extends React.Component<SearchModesProps> {
           label={t('opt_no_type_field')}
           help={t('opt_no_type_field_help')}
         >{
-          this.props.form.getFieldDecorator('config#noTypeField', {
+          getFieldDecorator('config#noTypeField', {
             initialValue: config.noTypeField,
             valuePropName: 'checked',
           })(
@@ -33,7 +34,7 @@ export class SearchModes extends React.Component<SearchModesProps> {
         >{
           ['chinese', 'english', 'minor'].map(lang => (
             <Form.Item key={lang} className='form-item-inline'>{
-              this.props.form.getFieldDecorator(`config#language#${lang}`, {
+              getFieldDecorator(`config#language#${lang}`, {
                 initialValue: config.language[lang],
                 valuePropName: 'checked',
               })(
@@ -46,7 +47,7 @@ export class SearchModes extends React.Component<SearchModesProps> {
           {...formItemLayout}
           label={t('opt_double_click_delay')}
         >{
-          this.props.form.getFieldDecorator('config#doubleClickDelay', {
+          getFieldDecorator('config#doubleClickDelay', {
             initialValue: config.doubleClickDelay,
             rules: [{ type: 'number' }],
           })(

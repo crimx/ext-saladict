@@ -41,6 +41,7 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
   render () {
     const { t, config, mode } = this.props
     const { isShowHolding } = this.state
+    const { getFieldDecorator } = this.props.form
 
     return (
       <Form.Item
@@ -49,7 +50,7 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
       >
         {mode === 'mode' && (
           <Form.Item help={t('opt_sm_icon_help')}>{
-            this.props.form.getFieldDecorator(`config#${mode}#icon`, {
+            getFieldDecorator(`config#${mode}#icon`, {
               initialValue: config[mode].icon,
               valuePropName: 'checked',
             })(
@@ -58,7 +59,7 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
           }</Form.Item>
         )}
         <Form.Item help={t('opt_sm_direct_help')}>{
-          this.props.form.getFieldDecorator(`config#${mode}#direct`, {
+          getFieldDecorator(`config#${mode}#direct`, {
             initialValue: config[mode].direct,
             valuePropName: 'checked',
           })(
@@ -66,7 +67,7 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
           )
         }</Form.Item>
         <Form.Item help={t('opt_sm_double_help')}>{
-          this.props.form.getFieldDecorator(`config#${mode}#double`, {
+          getFieldDecorator(`config#${mode}#double`, {
             initialValue: config[mode].double,
             valuePropName: 'checked',
           })(
@@ -81,7 +82,7 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
           {isShowHolding &&
             <div>
               <Form.Item className='form-item-inline'>{
-                this.props.form.getFieldDecorator(`config#${mode}#holding#shift`, {
+                getFieldDecorator(`config#${mode}#holding#shift`, {
                   initialValue: config[mode].holding.shift,
                   valuePropName: 'checked',
                 })(
@@ -89,7 +90,7 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
                 )
               }</Form.Item>
               <Form.Item className='form-item-inline'>{
-                this.props.form.getFieldDecorator(`config#${mode}#holding#ctrl`, {
+                getFieldDecorator(`config#${mode}#holding#ctrl`, {
                   initialValue: config[mode].holding.ctrl,
                   valuePropName: 'checked',
                 })(
@@ -97,7 +98,7 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
                 )
               }</Form.Item>
               <Form.Item className='form-item-inline'>{
-                this.props.form.getFieldDecorator(`config#${mode}#holding#meta`, {
+                getFieldDecorator(`config#${mode}#holding#meta`, {
                   initialValue: config[mode].holding.meta,
                   valuePropName: 'checked',
                 })(
@@ -108,7 +109,7 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
           }
         </Form.Item>
         <Form.Item help={t('opt_sm_instant_help')}>
-          {this.props.form.getFieldDecorator(`config#${mode}#instant#enable`, {
+          {getFieldDecorator(`config#${mode}#instant#enable`, {
             initialValue: config[mode].instant.enable,
             valuePropName: 'checked',
           })(
@@ -118,7 +119,7 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
             <div>
               {t('opt_sm_instant_key') + ': '}
               <Form.Item className='form-item-inline'>{
-                this.props.form.getFieldDecorator(`config#${mode}#instant#key`, {
+                getFieldDecorator(`config#${mode}#instant#key`, {
                   initialValue: config[mode].instant.key,
                 })(
                   <Select style={{ width: 100 }}>
@@ -132,7 +133,7 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
 
               <span style={{ marginLeft: 20 }}>{t('opt_sm_instant_delay')}: </span>
               <Form.Item className='form-item-inline'>{
-                this.props.form.getFieldDecorator(`config#${mode}#instant#delay`, {
+                getFieldDecorator(`config#${mode}#instant#delay`, {
                   initialValue: config[mode].instant.delay,
                   rules: [{ type: 'number' }],
                 })(

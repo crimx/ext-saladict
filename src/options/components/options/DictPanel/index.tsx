@@ -10,6 +10,7 @@ export type DictPanelProps = Props & FormComponentProps
 export class DictPanel extends React.Component<DictPanelProps> {
   render () {
     const { t, config, profile } = this.props
+    const { getFieldDecorator } = this.props.form
 
     return (
       <Form>
@@ -19,7 +20,7 @@ export class DictPanel extends React.Component<DictPanelProps> {
           extra={t('opt_profile_change')}
           required
         >{
-          this.props.form.getFieldDecorator('profile#mtaAutoUnfold', {
+          getFieldDecorator('profile#mtaAutoUnfold', {
             initialValue: profile.mtaAutoUnfold,
           })(
             <Radio.Group>
@@ -38,7 +39,7 @@ export class DictPanel extends React.Component<DictPanelProps> {
           {...formItemLayout}
           label={t('opt_search_suggests')}
         >{
-          this.props.form.getFieldDecorator('config#searchSuggests', {
+          getFieldDecorator('config#searchSuggests', {
             initialValue: config.searchSuggests,
             valuePropName: 'checked',
           })(
@@ -50,7 +51,7 @@ export class DictPanel extends React.Component<DictPanelProps> {
           label={t('opt_animation')}
           help={t('opt_animation_help')}
         >{
-          this.props.form.getFieldDecorator('config#animation', {
+          getFieldDecorator('config#animation', {
             initialValue: config.animation,
             valuePropName: 'checked',
           })(
@@ -61,7 +62,7 @@ export class DictPanel extends React.Component<DictPanelProps> {
           {...formItemLayout}
           label={t('opt_dict_panel_height_ratio')}
         >{
-          this.props.form.getFieldDecorator('config#panelMaxHeightRatio', {
+          getFieldDecorator('config#panelMaxHeightRatio', {
             initialValue: config.panelMaxHeightRatio,
             rules: [{ type: 'number' }],
           })(
@@ -72,7 +73,7 @@ export class DictPanel extends React.Component<DictPanelProps> {
           {...formItemLayout}
           label={t('opt_dict_panel_width')}
         >{
-          this.props.form.getFieldDecorator('config#panelWidth', {
+          getFieldDecorator('config#panelWidth', {
             initialValue: config.panelWidth,
           })(
             <InputNumber formatter={v => `${v}  px`} />
@@ -82,7 +83,7 @@ export class DictPanel extends React.Component<DictPanelProps> {
           {...formItemLayout}
           label={t('opt_dict_panel_font_size')}
         >{
-          this.props.form.getFieldDecorator('config#fontSize', {
+          getFieldDecorator('config#fontSize', {
             initialValue: config.fontSize,
           })(
             <InputNumber formatter={v => `${v}  px`} />

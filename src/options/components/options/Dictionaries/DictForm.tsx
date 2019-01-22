@@ -10,6 +10,7 @@ export type DictFormProps = Props & FormComponentProps
 export class DictForm extends React.Component<DictFormProps> {
   render () {
     const { t, config } = this.props
+    const { getFieldDecorator } = this.props.form
 
     return (
       <Form>
@@ -17,7 +18,7 @@ export class DictForm extends React.Component<DictFormProps> {
           {...formItemLayout}
           label={t('opt_autopron_cn')}
         >{
-          this.props.form.getFieldDecorator('config#autopron#cn#dict', {
+          getFieldDecorator('config#autopron#cn#dict', {
             initialValue: config.autopron.cn.dict,
           })(
             <Select>
@@ -34,7 +35,7 @@ export class DictForm extends React.Component<DictFormProps> {
           {...formItemLayout}
           label={t('opt_autopron_en')}
         >{
-          this.props.form.getFieldDecorator('config#autopron#en#dict', {
+          getFieldDecorator('config#autopron#en#dict', {
             initialValue: config.autopron.en.dict,
           })(
             <Select>
@@ -52,7 +53,7 @@ export class DictForm extends React.Component<DictFormProps> {
             {...formItemLayout}
             label={t('opt_autopron_accent')}
           >{
-            this.props.form.getFieldDecorator('config#autopron#en#accent', {
+            getFieldDecorator('config#autopron#en#accent', {
               initialValue: config.autopron.en.accent,
             })(
               <Select>
