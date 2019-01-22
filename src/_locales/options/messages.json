@@ -344,6 +344,46 @@
     "zh_CN": "此选项会因「情景模式」而改变。",
     "zh_TW": "此選項會因「情景模式」而改變。"
   },
+  "opt_quick_search": {
+    "en": "Enable",
+    "zh_CN": "启用快捷键",
+    "zh_TW": "啟用快捷鍵"
+  },
+  "opt_quick_search_height": {
+    "en": "Window Height",
+    "zh_CN": "窗口高度",
+    "zh_TW": "視窗高度"
+  },
+  "opt_quick_search_help": {
+    "en": "Press <kbd>⌘ Command</kbd>(Mac) or <kbd>Ctrl</kbd>(Others) three times (or with browser shortkey) to summon the dictionary panel. ",
+    "zh_CN": "连续按三次<kbd>⌘ Command</kbd>（Mac）或者<kbd>Ctrl</kbd>（其它键盘）（或设置浏览器快捷键）将弹出词典界面。",
+    "zh_TW": "連續按三次<kbd>⌘ Command</kbd>（Mac）或者<kbd>Ctrl</kbd>（其它键盘）（或設定瀏覽器快捷鍵），將會彈出字典視窗介面。"
+  },
+  "opt_quick_search_loc": {
+    "en": "Location",
+    "zh_CN": "出现位置",
+    "zh_TW": "出現位置"
+  },
+  "opt_quick_search_page_sel": {
+    "en": "Selection Response",
+    "zh_CN": "响应划词",
+    "zh_TW": "響應滑字"
+  },
+  "opt_quick_search_page_sel_help": {
+    "en": "Response to page selection.",
+    "zh_CN": "响应网页划词。",
+    "zh_TW": "對网页滑鼠滑字作出反應。"
+  },
+  "opt_quick_search_standalone": {
+    "en": "Standalone",
+    "zh_CN": "独立窗口",
+    "zh_TW": "獨立視窗"
+  },
+  "opt_quick_search_standalone_help": {
+    "en": "Render dict panel in a standalone window.",
+    "zh_CN": "显示为单独的窗口（不能响应浏览器以外的划词）。",
+    "zh_TW": "显示为獨立的視窗（不能響應瀏覽器以外的滑鼠選字）。"
+  },
   "opt_search_suggests": {
     "en": "Search suggests",
     "zh_CN": "输入时显示候选",
@@ -464,6 +504,36 @@
     "zh_CN": "添加同步",
     "zh_TW": "添加同步"
   },
+  "preload": {
+    "en": "Preload",
+    "zh_CN": "预先加载",
+    "zh_TW": "預先下載"
+  },
+  "preload_auto": {
+    "en": "Auto search",
+    "zh_CN": "自动查词",
+    "zh_TW": "自動查字"
+  },
+  "preload_auto_help": {
+    "en": "Search automatically when panel shows up.",
+    "zh_CN": "查词面板出现时自动搜索预加载内容。",
+    "zh_TW": "字典介面出現時自動搜尋預載入內容。"
+  },
+  "preload_clipboard": {
+    "en": "Clipboard",
+    "zh_CN": "剪贴板",
+    "zh_TW": "剪貼板"
+  },
+  "preload_help": {
+    "en": "Preload content in search box when panel shows up.",
+    "zh_CN": "查词面板出现时预先加载内容到搜索框。",
+    "zh_TW": "字典介面出現時預先載入內容到搜尋框。"
+  },
+  "preload_selection": {
+    "en": "Selection",
+    "zh_CN": "页面划词",
+    "zh_TW": "滑鼠劃字"
+  },
   "profiles_add_name": {
     "en": "Add Profile Name",
     "zh_CN": "新增情景模式名称",
@@ -483,6 +553,51 @@
     "en": "Some of the settings (with <span style=\"color:#f5222d\">*</span> prefix) change according to profile. One may switch profiles by hovering on the menu icon on Dict Panel, or focus on the icon then hit <kbd>↓</kbd>.",
     "zh_CN": "一些选项（带 <span style=\"color:#f5222d\">*</span>）会随着情景模式变化。鼠标悬浮在查词面板的菜单图标上可快速切换，或者焦点选中菜单图标然后按<kbd>↓</kbd>。",
     "zh_TW": "一些選項（帶 <span style=\"color:#f5222d\">*</span>）會隨著情景模式變化。滑鼠懸浮在字典介面的選單圖示上可快速切換，或者焦點選中選單圖示然後按<kbd>↓</kbd>。"
+  },
+  "quick_search_loc_0": {
+    "en": "Center",
+    "zh_CN": "居中",
+    "zh_TW": "居中"
+  },
+  "quick_search_loc_1": {
+    "en": "Top",
+    "zh_CN": "上方",
+    "zh_TW": "上方"
+  },
+  "quick_search_loc_2": {
+    "en": "Right",
+    "zh_CN": "右方",
+    "zh_TW": "右方"
+  },
+  "quick_search_loc_3": {
+    "en": "Bottom",
+    "zh_CN": "下方",
+    "zh_TW": "下方"
+  },
+  "quick_search_loc_4": {
+    "en": "Left",
+    "zh_CN": "左方",
+    "zh_TW": "左方"
+  },
+  "quick_search_loc_5": {
+    "en": "Top Left",
+    "zh_CN": "左上",
+    "zh_TW": "左上"
+  },
+  "quick_search_loc_6": {
+    "en": "Top Right",
+    "zh_CN": "右上",
+    "zh_TW": "右上"
+  },
+  "quick_search_loc_7": {
+    "en": "Bottom Left",
+    "zh_CN": "左下",
+    "zh_TW": "左下"
+  },
+  "quick_search_loc_8": {
+    "en": "Bottom Right",
+    "zh_CN": "右下",
+    "zh_TW": "右下"
   },
   "sync_close_confirm": {
     "en": "Settings not saved. Close?",
