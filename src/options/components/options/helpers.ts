@@ -15,6 +15,11 @@ export const formItemLayout: FormItemLayout = {
   wrapperCol: { span: 8 },
 }
 
+export const formSubItemLayout: FormItemLayout = {
+  labelCol: { span: 7 },
+  wrapperCol: { span: 17 },
+}
+
 export const formItemModalLayout: FormItemLayout = {
   labelCol: { span: 6 },
   wrapperCol: { span: 17 },

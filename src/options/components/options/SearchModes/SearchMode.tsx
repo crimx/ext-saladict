@@ -1,6 +1,6 @@
 import React from 'react'
 import { Props } from '../typings'
-import { updateConfigOrProfile, formItemLayout } from '../helpers'
+import { updateConfigOrProfile, formItemLayout, formSubItemLayout } from '../helpers'
 
 import { FormComponentProps } from 'antd/lib/form'
 import { Form, Checkbox, Select, InputNumber } from 'antd'
@@ -9,6 +9,8 @@ const { Option } = Select
 
 export type SearchModeProps = Props & FormComponentProps & {
   mode: 'mode' | 'pinMode' | 'panelMode' | 'qsPanelMode'
+  /** sub panel */
+  sub?: boolean
 }
 
 interface SearchModeState {
@@ -39,13 +41,13 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
   })
 
   render () {
-    const { t, config, mode } = this.props
+    const { t, config, mode, sub } = this.props
     const { isShowHolding } = this.state
     const { getFieldDecorator } = this.props.form
 
     return (
       <Form.Item
-        {...formItemLayout}
+        {...(sub ? formSubItemLayout : formItemLayout)}
         label={t(`opt_sm_${mode}`)}
       >
         {mode === 'mode' && (
