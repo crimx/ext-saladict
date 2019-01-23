@@ -178,5 +178,5 @@ export class Notebook extends React.Component<NotebookProps> {
 }
 
 export default Form.create({
-  onValuesChange: updateConfigOrProfile
+  onFieldsChange: updateConfigOrProfile as any
 })(Notebook)

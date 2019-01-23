@@ -68,5 +68,5 @@ export class PDF extends React.Component<PDFProps, PDFState> {
 }
 
 export default Form.create<PDFProps>({
-  onValuesChange: updateConfigOrProfile
+  onFieldsChange: updateConfigOrProfile as any
 })(PDF)

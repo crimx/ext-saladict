@@ -98,5 +98,5 @@ export class DictPanel extends React.Component<DictPanelProps> {
 }
 
 export default Form.create<DictPanelProps>({
-  onValuesChange: updateConfigOrProfile
+  onFieldsChange: updateConfigOrProfile as any
 })(DictPanel)

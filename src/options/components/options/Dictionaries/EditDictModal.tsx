@@ -175,5 +175,5 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
 }
 
 export default Form.create<EditDictModalProps>({
-  onValuesChange: updateConfigOrProfile
+  onFieldsChange: updateConfigOrProfile as any
 })(EditDictModal)

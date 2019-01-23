@@ -95,5 +95,5 @@ export class General extends React.Component<Props & FormComponentProps> {
 }
 
 export default Form.create({
-  onValuesChange: updateConfigOrProfile
+  onFieldsChange: updateConfigOrProfile as any
 })(General)

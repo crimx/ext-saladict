@@ -64,5 +64,5 @@ export class SearchModes extends React.Component<SearchModesProps> {
 }
 
 export default Form.create<SearchModesProps>({
-  onValuesChange: updateConfigOrProfile
+  onFieldsChange: updateConfigOrProfile as any
 })(SearchModes)

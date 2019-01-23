@@ -69,5 +69,5 @@ export class DictForm extends React.Component<DictFormProps> {
 }
 
 export default Form.create<DictFormProps>({
-  onValuesChange: updateConfigOrProfile
+  onFieldsChange: updateConfigOrProfile as any
 })(DictForm)

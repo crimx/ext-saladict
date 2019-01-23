@@ -28,8 +28,20 @@ export const formItemModalLayout: FormItemLayout = {
 let updateConfigTimeout: any = null
 let updateProfileTimeout: any = null
 
+export interface FormItemField {
+  dirty: boolean
+  name: string
+  touched: boolean
+  value: any
+  validating?: boolean
+  errors?: {
+    field: string
+    message: string
+  }
+}
+
 export function updateConfigOrProfile (
-  props: Props, fields: { [index: string]: any }
+  props: Props, fields: { [index: string]: FormItemField }
 ): void {
   if (!fields) { return }
 
@@ -38,6 +50,12 @@ export function updateConfigOrProfile (
     if (process.env.DEV_BUILD) {
       console.error('empty field', fields)
     }
+    return
+  }
+
+  const field = fields[path]
+
+  if (!field || field.dirty || field.validating || field.errors) {
     return
   }
 
@@ -51,7 +69,7 @@ export function updateConfigOrProfile (
 
   if (process.env.DEV_BUILD) {
     const p = path.replace(/#/g, '.')
-    console.log(p, fields[path])
+    console.log(p, field.value)
     const err = {}
     if (get(props, p, err) === err) {
       console.error('field not exist', fields)
@@ -59,9 +77,9 @@ export function updateConfigOrProfile (
   }
 
   // antd form will swallow '.' path, use '#' instead
-  set(props, path.replace(/#/g, '.'), fields[path])
+  set(props, path.replace(/#/g, '.'), field.value)
 
-  const delay = typeof fields[path] === 'number' ? 2000 : 1000
+  const delay = typeof field.value === 'number' ? 2000 : 1000
 
   switch (key) {
     case 'config':
