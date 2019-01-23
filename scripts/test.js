@@ -22,9 +22,9 @@ require('../config/env')
 const jest = require('jest')
 
 // Watch unless on CI or in coverage mode
-if (!process.env.CI && !argv.coverage) {
-  rawArgv.push('--watch')
-}
+// if (!process.env.CI && !argv.coverage) {
+//   rawArgv.push('--watch')
+// }
 
 if (process.env.CI) {
   rawArgv.push('--no-watchman', '--runInBand', '--no-cache')
