@@ -3,9 +3,10 @@ import { DictID } from '@/app-config'
 import { Props } from '../typings'
 import { updateConfigOrProfile, formItemModalLayout } from '../helpers'
 import { DictItem } from '@/app-config/dicts'
+import { InputNumberGroup } from '../../InputNumberGroup'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, Modal, InputNumber, Switch, Checkbox, Radio } from 'antd'
+import { Form, Modal, Switch, Checkbox, Radio } from 'antd'
 
 export type EditDictModalProps = Props & FormComponentProps & {
   dictID: DictID | ''
@@ -40,7 +41,7 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
                     initialValue: value,
                     rules: [{ type: 'number' }],
                   })(
-                    <InputNumber formatter={v => `${v}  ${t(`dict:${dictID}_${optKey}_unit`)}`} />
+                    <InputNumberGroup suffix={t(`dict:${dictID}_${optKey}_unit`)} />
                   )
                 }</Form.Item>
               )
@@ -139,17 +140,17 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
               <Form.Item className='form-item-inline' help=''>{
                 getFieldDecorator(`${dictPath}#selectionWC#min`, {
                   initialValue: allDict[dictID].selectionWC.min,
-                  rules: [{ type: 'number' }],
+                  rules: [{ type: 'number', whitespace: true }],
                 })(
-                  <InputNumber formatter={v => `${t('common:min')} ${v}`} />
+                  <InputNumberGroup suffix={t('common:min')} />
                 )
               }</Form.Item>
               <Form.Item className='form-item-inline' help=''>{
                 getFieldDecorator(`${dictPath}#selectionWC#max`, {
                   initialValue: allDict[dictID].selectionWC.max,
-                  rules: [{ type: 'number' }],
+                  rules: [{ type: 'number', whitespace: true }],
                 })(
-                  <InputNumber formatter={v => `${t('common:max')} ${v}`} />
+                  <InputNumberGroup suffix={t('common:max')} />
                 )
               }</Form.Item>
             </Form.Item>
@@ -160,9 +161,9 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
             >{
               getFieldDecorator(`${dictPath}#preferredHeight`, {
                 initialValue: allDict[dictID].preferredHeight,
-                rules: [{ type: 'number' }],
+                rules: [{ type: 'number', whitespace: true }],
               })(
-                <InputNumber formatter={v => `${v}  px`} />
+                <InputNumberGroup suffix='px' />
               )
             }</Form.Item>
             {this.renderMoreOptions(dictID)}

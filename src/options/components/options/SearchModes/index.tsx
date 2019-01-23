@@ -2,9 +2,10 @@ import React from 'react'
 import { Props } from '../typings'
 import { updateConfigOrProfile, formItemLayout } from '../helpers'
 import SearchMode from './SearchMode'
+import { InputNumberGroup } from '../../InputNumberGroup'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, Switch, InputNumber, Checkbox } from 'antd'
+import { Form, Switch, Checkbox } from 'antd'
 
 export type SearchModesProps = Props & FormComponentProps
 
@@ -49,9 +50,9 @@ export class SearchModes extends React.Component<SearchModesProps> {
         >{
           getFieldDecorator('config#doubleClickDelay', {
             initialValue: config.doubleClickDelay,
-            rules: [{ type: 'number' }],
+            rules: [{ type: 'number', whitespace: true }],
           })(
-            <InputNumber formatter={v => `${v}  ${t('common:unit_ms')}`} />
+            <InputNumberGroup suffix={t('common:unit_ms')} />
           )
         }</Form.Item>
         <SearchMode {...this.props} mode='mode' />

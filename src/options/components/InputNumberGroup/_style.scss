@@ -1,0 +1,18 @@
+/* ======================================= *\
+ * Antd Patch
+\* ======================================= */
+
+.ant-input-group-wrapper.ant-input-number-group-wrapper {
+  width: auto;
+}
+
+.ant-input-group {
+  &>.ant-input-number {
+    width: auto;
+  }
+
+  &>.ant-input-number:first-child {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
+}

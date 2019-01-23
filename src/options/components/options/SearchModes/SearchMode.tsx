@@ -1,9 +1,10 @@
 import React from 'react'
 import { Props } from '../typings'
 import { updateConfigOrProfile, formItemLayout, formSubItemLayout } from '../helpers'
+import { InputNumberGroup } from '../../InputNumberGroup'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, Checkbox, Select, InputNumber } from 'antd'
+import { Form, Checkbox, Select } from 'antd'
 
 const { Option } = Select
 
@@ -137,9 +138,9 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
               <Form.Item className='form-item-inline'>{
                 getFieldDecorator(`config#${mode}#instant#delay`, {
                   initialValue: config[mode].instant.delay,
-                  rules: [{ type: 'number' }],
+                  rules: [{ type: 'number', whitespace: true }],
                 })(
-                  <InputNumber formatter={v => `${v}  ${t('common:unit_ms')}`} />
+                  <InputNumberGroup suffix={t('common:unit_ms')} />
                 )
               }</Form.Item>
             </div>

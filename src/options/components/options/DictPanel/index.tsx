@@ -1,9 +1,10 @@
 import React from 'react'
 import { Props } from '../typings'
 import { updateConfigOrProfile, formItemLayout } from '../helpers'
+import { InputNumberGroup } from '../../InputNumberGroup'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, Switch, Row, Col, Radio, InputNumber } from 'antd'
+import { Form, Switch, Row, Col, Radio } from 'antd'
 
 export type DictPanelProps = Props & FormComponentProps
 
@@ -64,9 +65,9 @@ export class DictPanel extends React.Component<DictPanelProps> {
         >{
           getFieldDecorator('config#panelMaxHeightRatio', {
             initialValue: config.panelMaxHeightRatio,
-            rules: [{ type: 'number' }],
+            rules: [{ type: 'number', whitespace: true }],
           })(
-            <InputNumber formatter={v => `${v}  %`} />
+            <InputNumberGroup suffix='%' />
           )
         }</Form.Item>
         <Form.Item
@@ -75,8 +76,9 @@ export class DictPanel extends React.Component<DictPanelProps> {
         >{
           getFieldDecorator('config#panelWidth', {
             initialValue: config.panelWidth,
+            rules: [{ type: 'number', whitespace: true }],
           })(
-            <InputNumber formatter={v => `${v}  px`} />
+            <InputNumberGroup suffix='px' />
           )
         }</Form.Item>
         <Form.Item
@@ -85,8 +87,9 @@ export class DictPanel extends React.Component<DictPanelProps> {
         >{
           getFieldDecorator('config#fontSize', {
             initialValue: config.fontSize,
+            rules: [{ type: 'number', whitespace: true }],
           })(
-            <InputNumber formatter={v => `${v}  px`} />
+            <InputNumberGroup suffix='px' />
           )
         }</Form.Item>
       </Form>

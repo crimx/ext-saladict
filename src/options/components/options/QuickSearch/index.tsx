@@ -2,9 +2,10 @@ import React from 'react'
 import { Props } from '../typings'
 import { updateConfigOrProfile, formItemLayout, formSubItemLayout } from '../helpers'
 import SearchMode from '../SearchModes/SearchMode'
+import { InputNumberGroup } from '../../InputNumberGroup'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, Select, Switch, Card, Row, Col, InputNumber } from 'antd'
+import { Form, Select, Switch, Card, Row, Col } from 'antd'
 
 const locLocale = [...Array(9)].map((_, i) => `quick_search_loc_${i}`)
 
@@ -107,9 +108,9 @@ export class QuickSearch extends React.Component<Props & FormComponentProps> {
                 >{
                   getFieldDecorator('config#tripleCtrlHeight', {
                     initialValue: config.tripleCtrlHeight,
-                    rules: [{ type: 'number' }],
+                    rules: [{ type: 'number', whitespace: true }],
                   })(
-                    <InputNumber formatter={v => `${v}  px`} />
+                    <InputNumberGroup suffix='px' />
                   )
                 }</Form.Item>
                 <SearchMode {...this.props} mode='qsPanelMode' sub={true} />

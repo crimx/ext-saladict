@@ -1,9 +1,10 @@
 import React from 'react'
 import { SyncConfig } from '@/background/sync-manager/services/webdav'
 import { Props } from '../typings'
+import { InputNumberGroup } from '../../InputNumberGroup'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, InputNumber, Input } from 'antd'
+import { Form, Input } from 'antd'
 
 export type SyncServiceModalProps = Props & FormComponentProps & {
   onChange: (syncConfig: SyncConfig) => void
@@ -63,9 +64,9 @@ export class SyncServiceModal extends React.Component<SyncServiceModalProps> {
         >{
           getFieldDecorator('duration', {
             initialValue: syncConfig.duration,
-            rules: [{ type: 'number' }],
+            rules: [{ type: 'number', whitespace: true }],
           })(
-            <InputNumber min={10} formatter={v => `${v}  ${t('common:unit_mins')}`} />
+            <InputNumberGroup suffix={t('common:unit_mins')} />
           )
         }</Form.Item>
       </Form>
