@@ -5,6 +5,11 @@ import { getDefaultConfig, AppConfig } from '@/app-config'
 import { getDefaultProfile, Profile, ProfileIDList } from '@/app-config/profiles'
 import { getConfig, addConfigListener } from '@/_helpers/config-manager'
 import { injectSaladictInternal } from '@/_helpers/injectSaladictInternal'
+import { getWordOfTheDay } from '@/_helpers/wordoftheday'
+import { message as browserMessage } from '@/_helpers/browser-api'
+import { MsgSelection, MsgType } from '@/typings/message'
+import { getDefaultSelectionInfo } from '@/_helpers/selection'
+import { timer } from '@/_helpers/promise-more'
 import {
   getActiveProfile,
   addActiveProfileListener,
@@ -30,10 +35,6 @@ import './_style.scss'
 window.__SALADICT_INTERNAL_PAGE__ = true
 window.__SALADICT_OPTIONS_PAGE__ = true
 window.__SALADICT_LAST_SEARCH__ = ''
-
-if (process.env.NODE_ENV !== 'development') {
-  injectSaladictInternal()
-}
 
 const i18n = i18nLoader({
   common: commonLocles,
@@ -71,13 +72,45 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
     }
 
     Promise.all([getConfig(), getActiveProfile(), getProfileIDList()])
-      .then(([ config, profile, profileIDList ]) => {
+      .then(async ([ config, profile, profileIDList ]) => {
         this.setState({
           config,
           profile,
           profileIDList,
           rawProfileName: this.getActiveProfileName(profile.id, profileIDList),
         })
+
+        if (process.env.NODE_ENV !== 'development') {
+          if (window.innerWidth > 1024) {
+            injectSaladictInternal()
+
+            await timer(500)
+            const text = await getWordOfTheDay()
+            const $container = document.querySelector('.xmain-container')
+
+            let mouseX: number
+            if ($container) {
+              const { left, width } = $container.getBoundingClientRect()
+              mouseX = left + width / 2
+            } else {
+              mouseX = window.innerWidth - config.panelWidth - 150
+            }
+
+            browserMessage.self.send<MsgSelection>({
+              type: MsgType.Selection,
+              selectionInfo: getDefaultSelectionInfo({ text }),
+              self: true,
+              instant: true,
+              mouseX,
+              mouseY: 250,
+              dbClick: false,
+              shiftKey: false,
+              ctrlKey: false,
+              metaKey: false,
+              force: false,
+            })
+          }
+        }
       })
 
     addConfigListener(({ newConfig }) => {

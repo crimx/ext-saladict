@@ -54,7 +54,7 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
     const { t, config, profile, rawProfileName } = this.props
 
     return (
-      <Layout style={{ maxWidth: 1400, margin: '0 auto' }}>
+      <Layout className='xmain-container' style={{ maxWidth: 1400, margin: '0 auto' }}>
         <Header style={{ display: 'flex', justifyContent: 'space-between' }}>
           <h1 style={{ color: '#fff' }}>{t('title')}</h1>
           <span style={{ color: '#fff' }}>「 {getProfileName(rawProfileName, t)} 」</span>

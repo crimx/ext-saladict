@@ -217,6 +217,11 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     style.setProperty('top', `${y}px`, 'important')
     style.setProperty('width', width + 'px', 'important')
     style.setProperty('height', height + 'px', 'important')
+
+    if (isSaladictOptionsPage) {
+      // under antd modal mask
+      style.setProperty('z-index', '900', 'important')
+    }
   }
 
   frameDidMount (iframe: HTMLIFrameElement) {
