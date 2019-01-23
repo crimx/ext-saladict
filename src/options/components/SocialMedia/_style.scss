@@ -1,9 +1,6 @@
 .social-media__body {
   display: flex;
-  padding: 8px;
-  background-color: #fff;
-  border-radius: 15px;
-  box-shadow: 3px 4px 31px -8px rgba(0,0,0,0.8);
+  padding: 0;
 }
 
 .social-media__icon {
@@ -14,8 +11,8 @@
   list-style-type: none;
 
   svg {
-    max-width: 100%;
-    max-height: 100%;
+    width: 42px;
+    height: 42px;
   }
 
   a {

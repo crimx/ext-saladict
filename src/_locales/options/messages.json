@@ -109,6 +109,11 @@
     "zh_CN": "联系作者",
     "zh_TW": "聯絡作者"
   },
+  "head_info_donate": {
+    "en": "Donate",
+    "zh_CN": "随喜捐赠",
+    "zh_TW": "隨喜捐贈"
+  },
   "head_info_instructions": {
     "en": "Instructions",
     "zh_CN": "使用说明",
