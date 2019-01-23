@@ -75,7 +75,6 @@ export class MatchPatternModal extends React.Component<MatchPatternModalProps, M
 
   render () {
     const { area, t, config } = this.props
-    if (!area) { return null }
 
     const { getFieldDecorator, getFieldsError } = this.props.form
     const title = (area.startsWith('pdf') ? 'PDF ' : '') +
@@ -83,8 +82,6 @@ export class MatchPatternModal extends React.Component<MatchPatternModalProps, M
 
     const hasErrors = Object.values(getFieldsError())
       .some(errs => errs && errs.length > 0)
-
-    const length = config[area].length
 
     return (
       <Modal
@@ -96,28 +93,30 @@ export class MatchPatternModal extends React.Component<MatchPatternModalProps, M
         onCancel={this.handleCancel}
       >
         <p dangerouslySetInnerHTML={{ __html: t('match_pattern_description') }} />
-        <Form>
-          {config[area].map(([reg, src], index) => (
-            <Form.Item key={index} help='' style={itemStyle}>{
-              getFieldDecorator(`${index}`, {
-                initialValue: src,
-                rules: [{ validator: this.validator }],
-              })(
-                <Input />
-              )
-            }</Form.Item>
-          ))}
-          {this.state.additionalItems.map(([reg, src], index) => (
-            <Form.Item key={index + length} help='' style={itemStyle}>{
-              getFieldDecorator(`${index + length}`, {
-                initialValue: src,
-                rules: [{ validator: this.validator }],
-              })(
-                <Input />
-              )
-            }</Form.Item>
-          ))}
-        </Form>
+        {area &&
+          <Form>
+            {config[area].map(([reg, src], index) => (
+              <Form.Item key={index} help='' style={itemStyle}>{
+                getFieldDecorator(`${index}`, {
+                  initialValue: src,
+                  rules: [{ validator: this.validator }],
+                })(
+                  <Input />
+                )
+              }</Form.Item>
+            ))}
+            {this.state.additionalItems.map(([reg, src], index) => (
+              <Form.Item key={index + config[area].length} help='' style={itemStyle}>{
+                getFieldDecorator(`${index + config[area].length}`, {
+                  initialValue: src,
+                  rules: [{ validator: this.validator }],
+                })(
+                  <Input />
+                )
+              }</Form.Item>
+            ))}
+          </Form>
+        }
         <Button
           type='dashed'
           style={{ width: '100%', marginTop: 10 }}
