@@ -108,6 +108,7 @@ export function SortableList (props: SortableListProps) {
         </Button>
       )}
     >
+      {props.description}
       <Radio.Group
         className='sortable-list-radio-group'
         value={props.selected}
