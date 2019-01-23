@@ -61,18 +61,20 @@ export function updateConfigOrProfile (
   // antd form will swallow '.' path, use '#' instead
   set(props, path.replace(/#/g, '.'), fields[path])
 
+  const delay = typeof fields[path] === 'number' ? 2000 : 1000
+
   switch (key) {
     case 'config':
       clearTimeout(updateConfigTimeout)
       updateConfigTimeout = setTimeout(() => {
         updateConfig(props.config)
-      }, 2000)
+      }, delay)
       break
     case 'profile':
       clearTimeout(updateProfileTimeout)
       updateProfileTimeout = setTimeout(() => {
         updateProfile(props.profile)
-      }, 2000)
+      }, delay)
       break
     default:
       break
