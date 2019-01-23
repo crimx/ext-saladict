@@ -18,10 +18,12 @@ export class General extends React.Component<Props & FormComponentProps> {
   }
 
   resetConfigs = async () => {
-    await resetConfig()
-    this.isReseted = true
-    await resetAllProfiles()
-    this.isReseted = true
+    if (confirm(this.props.t('opt_config_reset_confirm'))) {
+      await resetConfig()
+      this.isReseted = true
+      await resetAllProfiles()
+      this.isReseted = true
+    }
   }
 
   componentDidUpdate () {
