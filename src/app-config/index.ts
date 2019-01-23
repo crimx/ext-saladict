@@ -61,8 +61,8 @@ function _getDefaultConfig () {
     /** panel width */
     panelWidth: 450,
 
-    /** panel max height, 0 < n < 1 */
-    panelMaxHeightRatio: 0.8,
+    /** panel max height in percentage, 0 < n < 100 */
+    panelMaxHeightRatio: 80,
 
     /** panel font-size */
     fontSize: 13,

@@ -139,6 +139,10 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
       ['^https://stackedit\.io(/.*)?$', 'https://stackedit.io/*']
     )
   }
+
+  if (base.panelMaxHeightRatio < 1) {
+    base.panelMaxHeightRatio = Math.round(base.panelMaxHeightRatio * 100)
+  }
   // post-merge patch end
 
   return base

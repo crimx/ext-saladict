@@ -128,7 +128,7 @@ export const initState: WidgetState = {
         ? window.innerWidth - _initConfig.panelWidth - 30
         : 0,
       y: isSaladictOptionsPage
-        ? window.innerHeight * (1 - _initConfig.panelMaxHeightRatio) / 2
+        ? window.innerHeight * (1 - _initConfig.panelMaxHeightRatio / 100) / 2
         : 0,
       width: _initConfig.panelWidth,
       height: panelHeaderHeight,
@@ -330,7 +330,7 @@ export const reducer: WidgetReducer = {
       newState.widget.shouldPanelShow = true
       newState.widget.panelRect = _reconcilePanelRect(
         40,
-        (1 - state.config.panelMaxHeightRatio) * window.innerHeight / 2,
+        (1 - state.config.panelMaxHeightRatio) * window.innerHeight / 100 / 2,
         width,
         height,
       )
@@ -694,7 +694,7 @@ export function updateItemHeight (id: DictID | '_mtabox', height: number): Dispa
 
       const winHeight = window.innerHeight
       const newHeight = Math.min(
-        winHeight * state.config.panelMaxHeightRatio,
+        winHeight * state.config.panelMaxHeightRatio / 100,
         panelHeaderHeight +
         (dictHeights._mtabox || 0) +
         state.dictionaries.active

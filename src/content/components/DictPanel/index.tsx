@@ -78,7 +78,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
   showMtaBox = (isShow: boolean) => {
     this.setState({
       mtaBoxHeight: isShow
-        ? window.innerHeight * this.props.panelMaxHeightRatio * 0.4
+        ? window.innerHeight * this.props.panelMaxHeightRatio / 100 * 0.4
         : 0
     })
   }
@@ -87,7 +87,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
     if (e) { e.currentTarget.blur() }
     this.setState(preState => {
       return { mtaBoxHeight: preState.mtaBoxHeight <= 0
-        ? window.innerHeight * this.props.panelMaxHeightRatio * 0.4
+        ? window.innerHeight * this.props.panelMaxHeightRatio / 100 * 0.4
         : 0
       }
     })
