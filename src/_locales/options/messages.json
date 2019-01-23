@@ -234,6 +234,36 @@
     "zh_CN": "英文自动发音",
     "zh_TW": "英文自動發音"
   },
+  "opt_config_export": {
+    "en": "Export Configs",
+    "zh_CN": "导出设定",
+    "zh_TW": "匯出設定"
+  },
+  "opt_config_help": {
+    "en": "Configs are synced automatically via browser.",
+    "zh_CN": "设定已通过浏览器自动同步，也可以手动导入导出。",
+    "zh_TW": "設定已通過瀏覽器自動同步，也可以手動匯入匯出。"
+  },
+  "opt_config_import": {
+    "en": "Import Configs",
+    "zh_CN": "导入设定",
+    "zh_TW": "匯入設定"
+  },
+  "opt_config_import_error": {
+    "en": "Import Configs failed",
+    "zh_CN": "导入设定失败",
+    "zh_TW": "匯入設定失敗"
+  },
+  "opt_config_reset": {
+    "en": "Reset Configs",
+    "zh_CN": "重置设定",
+    "zh_TW": "重置設定"
+  },
+  "opt_config_reset_confirm": {
+    "en": "Reset to default settings. Confirm？",
+    "zh_CN": "所有设定将还原到默认值，确定？",
+    "zh_TW": "所有設定將還原到還原點，確定？"
+  },
   "opt_context_menus_add_rules": {
     "en": "URL with %s in place of query.",
     "zh_CN": "链接中的 %s 会被替换为选词。",
