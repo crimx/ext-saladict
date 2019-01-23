@@ -29,6 +29,11 @@
     "zh_CN": "删除",
     "zh_TW": "删除"
   },
+  "delete_confirm": {
+    "en": "Deleted item completely?",
+    "zh_CN": "确定完全删除该条目？",
+    "zh_TW": "確定完全刪除該條目？"
+  },
   "edit": {
     "en": "Edit",
     "zh_CN": "编辑",
@@ -68,6 +73,11 @@
     "en": "Min",
     "zh_CN": "最小",
     "zh_TW": "最小"
+  },
+  "name": {
+    "en": "Name",
+    "zh_CN": "名称",
+    "zh_TW": "名稱"
   },
   "none": {
     "en": "None",

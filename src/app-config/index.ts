@@ -17,8 +17,6 @@ export type DictConfigs = DeepReadonly<DictConfigsMutable>
 export type DictID = keyof DictConfigsMutable
 export type MtaAutoUnfold = _MtaAutoUnfold
 
-export type ContextMenuDictID = keyof ReturnType<typeof getAllContextMenus>
-
 export const enum TCDirection {
   center,
   top,
@@ -251,7 +249,7 @@ function _getDefaultConfig () {
         'google_search',
         'google_page_translate',
         'youdao_page_translate'
-      ] as ContextMenuDictID[],
+      ],
       all: getAllContextMenus()
     }
   }

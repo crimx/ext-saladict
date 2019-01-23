@@ -234,6 +234,11 @@
     "zh_CN": "英文自动发音",
     "zh_TW": "英文自動發音"
   },
+  "opt_context_menus_add_rules": {
+    "en": "URL with %s in place of query.",
+    "zh_CN": "链接中的 %s 会被替换为选词。",
+    "zh_TW": "連結中的 %s 會被替換為選詞。"
+  },
   "opt_dict_panel_font_size": {
     "en": "Font size for search reasults",
     "zh_CN": "词典内容字体大小",

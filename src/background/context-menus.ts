@@ -1,6 +1,6 @@
 import { message, openURL } from '@/_helpers/browser-api'
 import { MsgType } from '@/typings/message'
-import { AppConfig, ContextMenuDictID } from '@/app-config'
+import { AppConfig } from '@/app-config'
 import i18nLoader from '@/_helpers/i18n'
 import { TranslationFunction } from 'i18next'
 import contextLocles from '@/_locales/context'
@@ -76,9 +76,12 @@ browser.contextMenus.onClicked.addListener(info => {
     default:
       getConfig()
         .then(config => {
-          const url = config.contextMenus.all[menuItemId]
-          if (url) {
-            openURL(url.replace('%s', selectionText))
+          const item = config.contextMenus.all[menuItemId]
+          if (item) {
+            const url = typeof item === 'string' ? item : item.url
+            if (url) {
+              openURL(url.replace('%s', selectionText))
+            }
           }
         })
   }
@@ -242,7 +245,7 @@ async function setContextMenus (
   const containerCtx = new Set<browser.contextMenus.ContextType>(['selection'])
   const optionList: CreateMenuOptions[] = []
 
-  let browserActionItems: ContextMenuDictID[] = []
+  let browserActionItems: string[] = []
   for (const id of contextMenus.selected) {
     let contexts: browser.contextMenus.ContextType[]
     switch (id) {
@@ -267,7 +270,7 @@ async function setContextMenus (
     }
     optionList.push({
       id,
-      title: t(id),
+      title: getTitle(id),
       contexts
     })
   }
@@ -309,7 +312,7 @@ async function setContextMenus (
       await createContextMenu({
         id: id + '_ba',
         parentId: 'saladict_ba_container',
-        title: t(id),
+        title: getTitle(id),
         contexts: ['browser_action', 'page_action']
       })
     }
@@ -317,7 +320,7 @@ async function setContextMenus (
     for (const id of browserActionItems) {
       await createContextMenu({
         id: id + '_ba',
-        title: t(id),
+        title: getTitle(id),
         contexts: ['browser_action', 'page_action']
       })
     }
@@ -354,6 +357,11 @@ async function setContextMenus (
     title: t('notebook_title'),
     contexts: ['browser_action']
   })
+
+  function getTitle (id: string): string {
+    const item = contextMenus.all[id]
+    return !item || typeof item === 'string' ? t(id) : item.name
+  }
 }
 
 function createContextMenu (createProperties: CreateMenuOptions): Promise<void> {

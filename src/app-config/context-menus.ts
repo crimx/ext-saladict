@@ -1,3 +1,10 @@
+export interface CustomContextItem {
+  name: string
+  url: string
+}
+
+export type ContextItem = string | CustomContextItem
+
 export function getAllContextMenus () {
   const allContextMenus = {
     baidu_page_translate: 'x',
@@ -31,5 +38,5 @@ export function getAllContextMenus () {
   // tslint:disable-next-line:no-unused-expression
   allContextMenus as { [id: string]: string }
 
-  return allContextMenus
+  return allContextMenus as typeof allContextMenus & { [index: string]: ContextItem }
 }

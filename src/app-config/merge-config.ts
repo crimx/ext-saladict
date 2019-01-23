@@ -113,8 +113,17 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
 
   mergeSelectedContextMenus('contextMenus')
 
-  forEach(base.contextMenus.all, (dict, id) => {
-    mergeString(`contextMenus.all.${id}`)
+  forEach(oldConfig.contextMenus.all, (dict, id) => {
+    if (typeof dict === 'string') {
+      // default menus
+      if (base.contextMenus.all[id]) {
+        mergeString(`contextMenus.all.${id}`)
+      }
+    } else {
+      // custom menus
+      mergeString(`contextMenus.all.${id}.name`)
+      mergeString(`contextMenus.all.${id}.url`)
+    }
   })
 
   // post-merge patch start
