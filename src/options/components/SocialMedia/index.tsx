@@ -34,7 +34,10 @@ export const SocialMedia = () => (
       <li key={media.title} className='social-media__icon'>
         <a href={media.url} title={media.title} target='_blank' rel='noopener'></a>
         <svg>
-          <use xlinkHref={'./static/symbol-defs.svg%23' + media.icon} xmlnsXlink='http://www.w3.org/1999/xlink'></use>
+          <use
+            xlinkHref={require('@/assets/symbol-defs.svg') + '#' + media.icon}
+            xmlnsXlink='http://www.w3.org/1999/xlink'
+          ></use>
         </svg>
       </li>
     ))}
