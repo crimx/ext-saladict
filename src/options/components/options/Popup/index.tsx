@@ -1,5 +1,4 @@
 import React from 'react'
-import { openURL } from '@/_helpers/browser-api'
 import { Props } from '../typings'
 import { updateConfigOrProfile, formItemLayout } from '../helpers'
 
