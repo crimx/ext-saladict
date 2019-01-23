@@ -11,11 +11,11 @@ export interface InputNumberGroupProps extends InputNumberProps {
 export class InputNumberGroup extends React.Component<InputNumberGroupProps> {
   render () {
     return (
-      <span className='ant-input-group-wrapper ant-input-number-group-wrapper'>
-        <span className='ant-input-wrapper ant-input-group'>
+      <span className='input-number-group-wrapper'>
+        <span className='input-number-group'>
           <InputNumber {...this.props} />
           {!!this.props.suffix &&
-            <span className='ant-input-group-addon'>{this.props.suffix}</span>
+            <span className='input-number-group-addon'>{this.props.suffix}</span>
           }
         </span>
       </span>
