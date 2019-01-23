@@ -78,3 +78,11 @@ export function updateConfigOrProfile (
       break
   }
 }
+
+/**
+ * Changes the contents of an array by moving an element to a different position
+ */
+export function arrayMove<T extends any[]> (arr: T, from: number, to: number): T {
+  arr.splice((to < 0 ? arr.length + to : to), 0, arr.splice(from, 1)[0])
+  return arr
+}

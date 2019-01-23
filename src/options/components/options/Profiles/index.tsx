@@ -1,13 +1,10 @@
 import React from 'react'
 import { Props } from '../typings'
+import { arrayMove } from '../helpers'
 import {
   ProfileID,
   getDefaultProfileID,
 } from '@/app-config/profiles'
-import {
-  arrayMove,
-  SortEnd,
-} from 'react-sortable-hoc'
 import {
   getProfileName,
   addProfile,
@@ -18,7 +15,7 @@ import {
   updateProfileIDList,
 } from '@/_helpers/profile-manager'
 import EditNameModal from './EditNameModal'
-import SortableList from '../../SortableList'
+import SortableList, { SortEnd } from '../../SortableList'
 
 import { Row, Col, message } from 'antd'
 import { RadioChangeEvent } from 'antd/lib/radio'
@@ -134,7 +131,7 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
   handleSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
     if (oldIndex === newIndex) { return }
     this.setState(({ list }) => {
-      const newList = arrayMove(list, oldIndex, newIndex)
+      const newList = arrayMove(list.slice(), oldIndex, newIndex)
       updateProfileIDList(newList)
         .then(() => {
           message.destroy()

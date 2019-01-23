@@ -1,9 +1,16 @@
 import React from 'react'
 import { TranslationFunction } from 'i18next'
-import { SortableContainer, SortableHandle, SortableElement, SortEnd } from 'react-sortable-hoc'
+import {
+  SortableContainer,
+  SortableHandle,
+  SortableElement,
+  SortEnd as _SortEnd,
+} from 'react-sortable-hoc'
 import { Icon, List, Radio, Button, Card } from 'antd'
 import { RadioChangeEvent } from 'antd/lib/radio'
 import { Omit } from '@/typings/helpers'
+
+export type SortEnd = _SortEnd
 
 export type SortableListItem = { value: string, title: React.ReactNode }
 
@@ -12,6 +19,7 @@ export interface SortableListItemProps {
   indexCopy: number
   selected?: string
   item: SortableListItem
+  disableEdit?: (index: number, item: SortableListItem) => boolean
   onEdit?: (index: number, item: SortableListItem) => void
   onDelete?: (index: number, item: SortableListItem) => void
 }
@@ -45,7 +53,7 @@ const DragHandle = SortableHandle<{
 ))
 
 const ProfileListItem = SortableElement<SortableListItemProps>(({
-  t, selected, item, onEdit, onDelete, indexCopy
+  t, selected, item, disableEdit, onEdit, onDelete, indexCopy
 }) => {
   return (
     <List.Item>
@@ -62,6 +70,7 @@ const ProfileListItem = SortableElement<SortableListItemProps>(({
             shape='circle'
             size='small'
             icon='edit'
+            disabled={disableEdit != null && disableEdit(indexCopy, item)}
             onClick={onEdit && (() => onEdit(indexCopy, item))}
           />
           <Button
