@@ -4,6 +4,14 @@
   width: auto;
 }
 
+form .input-number-group-wrapper {
+  display: inline-block;
+  vertical-align: middle;
+  width: auto;
+  position: relative;
+  top: -1px;
+}
+
 .input-number-group {
   font-size: 14px;
   font-variant: tabular-nums;
@@ -19,7 +27,10 @@
   width: 100%;
 
   &>.ant-input-number {
+    display: table-cell;
+    float: left;
     width: auto;
+    margin-bottom: 0;
   }
 
   &>.ant-input-number:first-child {
