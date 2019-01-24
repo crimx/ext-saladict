@@ -1,5 +1,5 @@
 import { message, openURL } from '@/_helpers/browser-api'
-import { MsgType } from '@/typings/message'
+import { MsgType, MsgContextMenusClick } from '@/typings/message'
 import { AppConfig } from '@/app-config'
 import i18nLoader from '@/_helpers/i18n'
 import { TranslationFunction } from 'i18next'
@@ -38,54 +38,8 @@ const i18n$$ = new ReplaySubject<TranslationFunction>(1)
 const i18n = i18nLoader({ context: contextLocles }, 'context', (_, t) => i18n$$.next(t))
 i18n.on('languageChanged', () => i18n$$.next(i18n.t.bind(i18n)))
 
-browser.contextMenus.onClicked.addListener(info => {
-  const menuItemId = String(info.menuItemId).replace(/_ba$/, '')
-  const selectionText = info.selectionText || ''
-  const linkUrl = info.linkUrl || ''
-  switch (menuItemId) {
-    case 'google_page_translate':
-      openGoogle()
-      break
-    case 'google_cn_page_translate':
-      openGoogle(true)
-      break
-    case 'youdao_page_translate':
-      openYoudao()
-      break
-    case 'baidu_page_translate':
-      openBaiduPage()
-      break
-    case 'sogou_page_translate':
-      openSogouPage()
-      break
-    case 'microsoft_page_translate':
-      openMicrosoftPage()
-      break
-    case 'view_as_pdf':
-      openPDF(linkUrl, info.menuItemId !== 'view_as_pdf_ba')
-      break
-    case 'search_history':
-      openURL(browser.runtime.getURL('history.html'))
-      break
-    case 'notebook':
-      openURL(browser.runtime.getURL('notebook.html'))
-      break
-    case 'saladict':
-      requestSelection()
-      break
-    default:
-      getConfig()
-        .then(config => {
-          const item = config.contextMenus.all[menuItemId]
-          if (item) {
-            const url = typeof item === 'string' ? item : item.url
-            if (url) {
-              openURL(url.replace('%s', selectionText))
-            }
-          }
-        })
-  }
-})
+browser.contextMenus.onClicked.addListener(handleContextMenusClick)
+message.addListener<MsgContextMenusClick>(MsgType.ContextMenusClick, handleContextMenusClick)
 
 export function init (initConfig: ContextMenusConfig): Observable<void> {
   if (setMenus$$) { return setMenus$$ }
@@ -374,4 +328,59 @@ function createContextMenu (createProperties: CreateMenuOptions): Promise<void> 
       }
     })
   })
+}
+
+interface ContextMenusClickInfo {
+  menuItemId: string | number
+  selectionText?: string
+  linkUrl?: string
+}
+
+function handleContextMenusClick (info: ContextMenusClickInfo) {
+  const menuItemId = String(info.menuItemId).replace(/_ba$/, '')
+  const selectionText = info.selectionText || ''
+  const linkUrl = info.linkUrl || ''
+  switch (menuItemId) {
+    case 'google_page_translate':
+      openGoogle()
+      break
+    case 'google_cn_page_translate':
+      openGoogle(true)
+      break
+    case 'youdao_page_translate':
+      openYoudao()
+      break
+    case 'baidu_page_translate':
+      openBaiduPage()
+      break
+    case 'sogou_page_translate':
+      openSogouPage()
+      break
+    case 'microsoft_page_translate':
+      openMicrosoftPage()
+      break
+    case 'view_as_pdf':
+      openPDF(linkUrl, info.menuItemId !== 'view_as_pdf_ba')
+      break
+    case 'search_history':
+      openURL(browser.runtime.getURL('history.html'))
+      break
+    case 'notebook':
+      openURL(browser.runtime.getURL('notebook.html'))
+      break
+    case 'saladict':
+      requestSelection()
+      break
+    default:
+      getConfig()
+        .then(config => {
+          const item = config.contextMenus.all[menuItemId]
+          if (item) {
+            const url = typeof item === 'string' ? item : item.url
+            if (url) {
+              openURL(url.replace('%s', selectionText))
+            }
+          }
+        })
+  }
 }

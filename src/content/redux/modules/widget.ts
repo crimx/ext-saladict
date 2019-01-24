@@ -6,14 +6,12 @@ import { createProfileIDListStream } from '@/_helpers/profile-manager'
 import { searchText, restoreDicts, summonedPanelInit } from '@/content/redux/modules/dictionaries'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
-import { reflect } from '@/_helpers/promise-more'
-import { MachineTranslateResult } from '@/components/dictionaries/helpers'
+import { translateCtx } from '@/_helpers/translateCtx'
 import {
   MsgType,
   MsgTempDisabledState,
   MsgEditWord,
   MsgOpenUrl,
-  MsgFetchDictResult,
   MsgQSPanelIDChanged,
   MsgQueryQSPanel,
   MsgQueryQSPanelResponse,
@@ -24,7 +22,6 @@ const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 const isSaladictQuickSearchPage = !!window.__SALADICT_QUICK_SEARCH_PAGE__
 const isStandalonePage = isSaladictPopupPage || isSaladictQuickSearchPage
-const isSaladictPDFPage = !!window.__SALADICT_PDF_PAGE__
 
 const panelHeaderHeight = 30 + 12 // menu bar + multiline search box button
 
@@ -630,22 +627,8 @@ export function requestFavWord (): DispatcherThunk {
     }
 
     if (word.context) {
-      const ids = Object.keys(config.ctxTrans).filter(id => config.ctxTrans[id]) as DictID[]
-      if (ids.length > 0) {
-        const payload = { isPDF: isSaladictPDFPage }
-        reflect<MachineTranslateResult>(ids.map(id => message.send<MsgFetchDictResult>({
-          type: MsgType.FetchDictResult,
-          id,
-          text: word.context,
-          payload,
-        })))
-        .then(results => {
-          const trans = results
-            .map((result, i) => result && [ids[i], result.trans.text])
-            .filter((x): x is [string, string] => !!x)
-            .map(([id, text], i, arr) => arr.length > 1 ? `${id}: ${text}` : text)
-            .join('\n')
-
+      translateCtx(word.context, config.ctxTrans)
+        .then(trans => {
           if (!trans) { return }
 
           if (config.editOnFav) {
@@ -660,7 +643,6 @@ export function requestFavWord (): DispatcherThunk {
             dispatch(addToNotebook({ ...word, trans }))
           }
         })
-      }
     }
   }
 }

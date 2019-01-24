@@ -99,6 +99,7 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
 
   merge('baPreload', val => val === '' || val === 'clipboard' || val === 'selection')
   mergeBoolean('baAuto')
+  mergeString('baOpen')
 
   forEach(base.ctxTrans, (value, id) => {
     mergeBoolean(`ctxTrans.${id}`)

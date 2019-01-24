@@ -197,11 +197,20 @@ function _getDefaultConfig () {
     /** should standalone panel response to page selection */
     tripleCtrlPageSel: true,
 
-    /** browser action preload source */
+    /** browser action panel preload source */
     baPreload: 'clipboard' as PreloadSource,
 
-    /** auto search when browser action triggered */
+    /** auto search when browser action panel shows */
     baAuto: false,
+
+    /**
+     * browser action behavior
+     * 'popup_panel' - show dict panel
+     * 'popup_fav' - add selection to notebook
+     * 'popup_options' - opten options
+     * others are same as context menus
+     */
+    baOpen: 'popup_panel',
 
     /** context tranlate engines */
     ctxTrans: {

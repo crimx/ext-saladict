@@ -73,6 +73,9 @@ export const enum MsgType {
   SyncServiceDownload,
   SyncServiceUpload,
 
+  /** Manually trigger context menus click */
+  ContextMenusClick,
+
   /**
    * Background proxy sends back underlyingly
    */
@@ -233,4 +236,11 @@ export interface MsgSyncServiceDownload {
 export interface MsgSyncServiceUpload {
   readonly type: MsgType.SyncServiceUpload
   readonly force?: boolean
+}
+
+export interface MsgContextMenusClick {
+  readonly type: MsgType.ContextMenusClick
+  readonly menuItemId: string
+  readonly selectionText?: string
+  readonly linkUrl?: string
 }

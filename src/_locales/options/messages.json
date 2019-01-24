@@ -239,6 +239,31 @@
     "zh_CN": "英文自动发音",
     "zh_TW": "英文自動發音"
   },
+  "opt_ba_open": {
+    "en": "Browser Action",
+    "zh_CN": "点击地址栏旁图标",
+    "zh_TW": "點選位址列旁圖示"
+  },
+  "opt_ba_open_dict_panel": {
+    "en": "Dict Panel",
+    "zh_CN": "显示查词面板",
+    "zh_TW": "打开字典介面"
+  },
+  "opt_ba_open_fav": {
+    "en": "Add to Notebook",
+    "zh_CN": "添加选词到生词本",
+    "zh_TW": "新增選詞到生字本"
+  },
+  "opt_ba_open_help": {
+    "en": "When clicking the browser action icon in toolbar (on the right of the address bar). Items are the same as Context Menus, which can be added or edited on then Context Menus config page.",
+    "zh_CN": "点击地址栏旁 Saladict 图标时发生的操作。沿用了「右键菜单」的项目，可以前往该设置页面进行增加或编辑。",
+    "zh_TW": "點選位址列旁 Saladict 圖示時發生的操作。沿用了「右鍵選單」的條目，可以前往該設定頁面增加或編輯。"
+  },
+  "opt_ba_open_options": {
+    "en": "Open Saladict Options",
+    "zh_CN": "打开 Saladict 设置",
+    "zh_TW": "進入 Saladict 設定"
+  },
   "opt_bowl_hover": {
     "en": "Mouse Hover",
     "zh_CN": "悬停查词",

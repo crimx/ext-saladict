@@ -8,21 +8,28 @@ html {
 }
 
 body {
-  width: 450px;
-  height: 550px;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  font-size: 14px;
   font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
 
 #frame-root {
-  height: 500px;
+  height: 0;
   transition: height 0.5s;
 
   // hide white spaces
   font-size: 0;
+}
+
+body.panel {
+  width: 450px;
+  height: 550px;
+  font-size: 14px;
+
+  #frame-root {
+    height: 500px;
+  }
 }
 
 .saladict-DIV {

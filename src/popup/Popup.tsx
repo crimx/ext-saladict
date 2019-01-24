@@ -3,17 +3,20 @@ import QRCode from 'qrcode.react'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import { translate } from 'react-i18next'
 import { TranslationFunction } from 'i18next'
+import { AppConfig } from '@/app-config'
+import { updateConfig } from '@/_helpers/config-manager'
 import { message } from '@/_helpers/browser-api'
-import { getDefaultConfig, AppConfig } from '@/app-config'
-import { createConfigStream, updateConfig } from '@/_helpers/config-manager'
 import {
   MsgType,
   MsgQueryPanelState,
   MsgTempDisabledState,
 } from '@/typings/message'
 
-interface PopupState {
+interface PopupProps {
   config: AppConfig
+}
+
+interface PopupState {
   currentTabUrl: string
   isShowUrlBox: boolean
   tempOff: boolean
@@ -21,9 +24,8 @@ interface PopupState {
   insCapMode: 'mode' | 'pinMode'
 }
 
-export class Popup extends React.Component<{ t: TranslationFunction }, PopupState> {
+export class Popup extends React.Component<PopupProps & { t: TranslationFunction }, PopupState> {
   state = {
-    config: getDefaultConfig(),
     currentTabUrl: '',
     isShowUrlBox: false,
     tempOff: false,
@@ -33,10 +35,6 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
 
   constructor (props: any) {
     super(props)
-    createConfigStream().subscribe(config => {
-      this.setState({ config })
-    })
-
     browser.tabs.query({ active: true, currentWindow: true })
       .then(tabs => {
         if (tabs.length > 0 && tabs[0].id != null) {
@@ -112,7 +110,8 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
   }
 
   changeInsCap = () => {
-    const { config, insCapMode } = this.state
+    const { config } = this.props
+    const { insCapMode } = this.state
     const newConfig: AppConfig = {
       ...config,
       [insCapMode]: {
@@ -123,7 +122,6 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
         }
       }
     }
-    this.setState({ config: newConfig })
     updateConfig(newConfig)
   }
 
@@ -152,12 +150,11 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
   }
 
   changeActive = () => {
-    const { config } = this.state
+    const { config } = this.props
     const newConfig = {
       ...config,
       active: !config.active
     }
-    this.setState({ config: newConfig })
     updateConfig(newConfig)
   }
 
@@ -197,9 +194,8 @@ export class Popup extends React.Component<{ t: TranslationFunction }, PopupStat
   }
 
   render () {
-    const { t } = this.props
+    const { t, config } = this.props
     const {
-      config,
       currentTabUrl,
       tempOff,
       insCapMode,
