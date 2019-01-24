@@ -1,4 +1,4 @@
-import '@/panel'
+import '@/panel/index.scss'
 import '@/wordeditor'
 import '../../selection'
 import '../index'

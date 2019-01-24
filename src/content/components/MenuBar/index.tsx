@@ -262,7 +262,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   }
 
   /** open notebook on right click */
-  handleIconFavMouseUp = (e: React.MouseEvent<HTMLButtonElement>) => {
+  handleIconFavMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.button === 2) {
       e.preventDefault()
       e.stopPropagation()
@@ -493,7 +493,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
         </div>
 
         <button className='panel-MenuBar_Btn'
-          onMouseUp={this.handleIconFavMouseUp}
+          onMouseDown={this.handleIconFavMouseDown}
           onClick={this.handleIconFavClick}
           disabled={isSaladictOptionsPage || searchHistory.length <= 0}
         >
