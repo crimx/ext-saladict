@@ -35,9 +35,30 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
   toggleHolding = () => this.setState(({ isShowHolding }) => {
     isShowHolding = !isShowHolding
     const { mode } = this.props
-    updateConfigOrProfile(this.props, { [`config#${mode}#holding#shift`]: isShowHolding })
-    updateConfigOrProfile(this.props, { [`config#${mode}#holding#ctrl`]: isShowHolding })
-    updateConfigOrProfile(this.props, { [`config#${mode}#holding#meta`]: isShowHolding })
+    updateConfigOrProfile(this.props, {
+      [`config#${mode}#holding#shift`]: {
+        name: `config#${mode}#holding#shift`,
+        touched: true,
+        dirty: false,
+        value: isShowHolding,
+      }
+    })
+    updateConfigOrProfile(this.props, {
+      [`config#${mode}#holding#ctrl`]: {
+        name: `config#${mode}#holding#ctrl`,
+        touched: true,
+        dirty: false,
+        value: isShowHolding,
+      }
+    })
+    updateConfigOrProfile(this.props, {
+      [`config#${mode}#holding#meta`]: {
+        name: `config#${mode}#holding#meta`,
+        touched: true,
+        dirty: false,
+        value: isShowHolding,
+      }
+    })
     return { isShowHolding }
   })
 
