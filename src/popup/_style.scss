@@ -8,6 +8,7 @@ html {
 }
 
 body {
+  position: relative;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -15,11 +16,23 @@ body {
 }
 
 #frame-root {
+  position: relative;
+  z-index: 100;
   height: 0;
-  transition: height 0.5s;
 
   // hide white spaces
   font-size: 0;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    box-shadow: inset 0 10px 6px -6px rgba(0,0,0,.13);
+    pointer-events: none;
+  }
 }
 
 body.panel {
@@ -29,6 +42,13 @@ body.panel {
 
   #frame-root {
     height: 500px;
+    transition: height 0.5s;
+  }
+
+  #root {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
 }
 
@@ -74,27 +94,7 @@ body.panel {
   box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
 }
 
-.switch-container-wrap {
-  position: relative;
-  overflow: hidden;
-  height: 50px;
-  transition: height 0.5s;
-
-  &::before {
-    content: '';
-    display: block;
-    position: relative;
-    z-index: 100;
-    height: 10px;
-    box-shadow: inset 0 10px 6px -6px rgba(0,0,0,.13);
-    pointer-events: none;
-  }
-}
-
 .switch-container {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
   overflow: hidden;
   background: #f9f9f9;
 }

@@ -1,4 +1,8 @@
 export function injectSaladictInternal (noInjectContentCSS?: boolean) {
+  if (process.env.NODE_ENV === 'development') {
+    return
+  }
+
   const $scriptSelection = document.createElement('script')
   $scriptSelection.src = './selection.js'
   $scriptSelection.type = 'text/javascript'
