@@ -533,7 +533,7 @@ export function startUpAction (): DispatcherThunk {
     // from word page
     message.self.addListener<MsgEditWord>(MsgType.EditWord, ({ word }) => {
       dispatch(searchText({ info: word }))
-      dispatch(requestFavWord())
+      dispatch(updateEditorWord(word))
     })
   }
 }
@@ -626,20 +626,10 @@ export function requestFavWord (): DispatcherThunk {
       }
     }
 
-    if (word.context) {
+    if (word.context && !config.editOnFav) {
       translateCtx(word.context, config.ctxTrans)
         .then(trans => {
-          if (!trans) { return }
-
-          if (config.editOnFav) {
-            const editorWord = widget.editorWord || word
-            dispatch(updateEditorWord({
-              ...editorWord,
-              trans: editorWord.trans
-                ? editorWord.trans + '\n\n' + trans
-                : trans
-            }))
-          } else {
+          if (trans) {
             dispatch(addToNotebook({ ...word, trans }))
           }
         })
