@@ -60,7 +60,6 @@ export class SyncServiceModal extends React.Component<SyncServiceModalProps> {
           {...formItemLayout}
           label={t('sync_webdav_duration')}
           extra={t('sync_webdav_duration_help')}
-          hasFeedback
         >{
           getFieldDecorator('duration', {
             initialValue: syncConfig.duration,
