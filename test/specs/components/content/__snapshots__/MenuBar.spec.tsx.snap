@@ -122,7 +122,7 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
     className="panel-MenuBar_Btn"
     disabled={true}
     onClick={[Function]}
-    onMouseUp={[Function]}
+    onMouseDown={[Function]}
   >
     <svg
       className="panel-MenuBar_Icon-fav "
@@ -327,7 +327,7 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
     className="panel-MenuBar_Btn"
     disabled={true}
     onClick={[Function]}
-    onMouseUp={[Function]}
+    onMouseDown={[Function]}
   >
     <svg
       className="panel-MenuBar_Icon-fav isActive"
