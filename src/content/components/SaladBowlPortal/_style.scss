@@ -10,6 +10,7 @@ $bowl-width: 30px;
     width: $bowl-width !important;
     height: $bowl-width !important;
     user-select: none !important;
+    cursor: pointer !important;
   }
 
   .saladict-SaladBowl_Leaf {
@@ -21,6 +22,7 @@ $bowl-width: 30px;
     width: $bowl-width * 729 / 1024 * 0.6 !important;
     height: $bowl-width * 0.6 !important;
     background: no-repeat center/($bowl-width * 729 / 1024 * 0.6) ($bowl-width * 0.6) url(@/assets/leaf.svg) !important;
+    cursor: pointer !important;
   }
 
   .saladict-SaladBowl_Orange {
@@ -32,6 +34,7 @@ $bowl-width: 30px;
     width: $bowl-width * 0.6 !important;
     height: $bowl-width * 0.6 !important;
     background: no-repeat center/($bowl-width * 0.6) ($bowl-width * 0.6) url(@/assets/orange.svg) !important;
+    cursor: pointer !important;
   }
 
   .saladict-SaladBowl_Tomato {
@@ -43,6 +46,7 @@ $bowl-width: 30px;
     width: $bowl-width * 0.6 !important;
     height: $bowl-width * 0.6 !important;
     background: no-repeat center/($bowl-width * 0.6) ($bowl-width * 0.6) url(@/assets/tomato.svg) !important;
+    cursor: pointer !important;
   }
 
   .saladict-SaladBowl_Bowl {
@@ -54,6 +58,7 @@ $bowl-width: 30px;
     width: $bowl-width !important;
     height: $bowl-width * 530 / 1024 !important;
     background: no-repeat center/$bowl-width ($bowl-width * 530 / 1024) url(@/assets/bowl.svg) !important;
+    cursor: pointer !important;
   }
 
   /*-----------------------------------------------*\
@@ -65,7 +70,7 @@ $bowl-width: 30px;
       will-change: top, left !important;
       transition: top 0.3s ease-out, left 0.3s ease-out !important;
 
-      &:hover {
+      &.bowlHover:hover {
         .saladict-SaladBowl_Leaf {
           animation: saladict-SaladBowl_Leaf-shake 1s infinite linear;
         }

@@ -170,8 +170,8 @@ function _getDefaultConfig () {
       },
     },
 
-    /** instant capture delay, in ms */
-    insCapDelay: 600,
+    /** hover instead of click */
+    bowlHover: true,
 
     /** double click delay, in ms */
     doubleClickDelay: 450,

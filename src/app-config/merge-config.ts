@@ -86,6 +86,7 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   merge('qsPanelMode.instant.key', val => /^(direct|ctrl|alt|shift)$/.test(val))
   mergeNumber('qsPanelMode.instant.delay')
 
+  mergeBoolean('bowlHover')
   mergeNumber('doubleClickDelay')
 
   mergeBoolean('tripleCtrl')
@@ -168,7 +169,6 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
 
   function mergeNumber (path: string): void {
     return merge(path, isNumber)
-
   }
 
   function mergeString (path: string): void {

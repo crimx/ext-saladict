@@ -73,14 +73,26 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
         label={t(`opt_sm_${mode}`)}
       >
         {mode === 'mode' && (
-          <Form.Item help={t('opt_sm_icon_help')}>{
-            getFieldDecorator(`config#${mode}#icon`, {
-              initialValue: config[mode].icon,
-              valuePropName: 'checked',
-            })(
-              <Checkbox>{t('opt_sm_icon')}</Checkbox>
-            )
-          }</Form.Item>
+          <>
+            <Form.Item help={t('opt_sm_icon_help')}>{
+              getFieldDecorator(`config#${mode}#icon`, {
+                initialValue: config[mode].icon,
+                valuePropName: 'checked',
+              })(
+                <Checkbox>{t('opt_sm_icon')}</Checkbox>
+              )
+            }</Form.Item>
+            {config.mode.icon &&
+              <Form.Item help={t('opt_bowl_hover_help')}>{
+                getFieldDecorator(`config#bowlHover`, {
+                  initialValue: config.bowlHover,
+                  valuePropName: 'checked',
+                })(
+                  <Checkbox>{t('opt_bowl_hover')}</Checkbox>
+                )
+              }</Form.Item>
+            }
+          </>
         )}
         <Form.Item help={t('opt_sm_direct_help')}>{
           getFieldDecorator(`config#${mode}#direct`, {

@@ -239,6 +239,16 @@
     "zh_CN": "英文自动发音",
     "zh_TW": "英文自動發音"
   },
+  "opt_bowl_hover": {
+    "en": "Mouse Hover",
+    "zh_CN": "悬停查词",
+    "zh_TW": "滑鼠查字"
+  },
+  "opt_bowl_hover_help": {
+    "en": "Hover on the bowl icon to trigger searching instead of clicking.",
+    "zh_CN": "鼠标悬停在沙拉图标上触发查词，否则需要点击。",
+    "zh_TW": "滑鼠懸停在沙拉圖示上打开字典介面，否則需要點選。"
+  },
   "opt_config_export": {
     "en": "Export Configs",
     "zh_CN": "导出设定",
