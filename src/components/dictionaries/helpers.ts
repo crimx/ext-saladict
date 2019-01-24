@@ -1,17 +1,23 @@
 import DOMPurify from 'dompurify'
 import { TranslationFunction } from 'i18next'
 import { DictID, AppConfig } from '@/app-config'
+import { Profile } from '@/app-config/profiles'
 import { SelectionInfo } from '@/_helpers/selection'
 import { chsToChz } from '@/_helpers/chs-to-chz'
 
 /** Fetch and parse dictionary search result */
 export interface SearchFunction<Result, Payload = {}> {
-  (text: string, config: AppConfig, payload: Readonly<Payload & { isPDF: boolean }>): Promise<Result>
+  (
+    text: string,
+    config: AppConfig,
+    profile: Profile,
+    payload: Readonly<Payload & { isPDF: boolean }>
+  ): Promise<Result>
 }
 
 /** Return a dictionary source page url for the dictionary header */
 export interface GetSrcPageFunction {
-  (text: string, config: AppConfig): string
+  (text: string, config: AppConfig, profile: Profile): string
 }
 
 export type HTMLString = string

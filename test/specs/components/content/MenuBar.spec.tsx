@@ -3,19 +3,25 @@ import { shallow } from 'enzyme'
 
 import MenuBar, { MenuBarProps } from '@/content/components/MenuBar'
 import noop from 'lodash/noop'
-import { appConfigFactory } from '@/app-config'
+import { getDefaultConfig } from '@/app-config'
+import { getDefaultProfile, getDefaultProfileID } from '@/app-config/profiles'
 
 describe('Component/content/MenuBar', () => {
   it('should render correctly', () => {
-    const config = appConfigFactory()
+    const config = {
+      ...getDefaultConfig(),
+      ...getDefaultProfile(),
+    }
     const props: MenuBarProps = {
       t: x => x,
+      searchSuggests: true,
+      isTripleCtrl: true,
       isFav: false,
       isPinned: false,
       searchHistory: [],
       activeDicts: [config.id],
       activeConfigID: config.id,
-      configProfiles: [{ id: config.id, name: config.name }],
+      profiles: [getDefaultProfileID()],
       searchBoxText: '',
       searchBoxIndex: 0,
       isShowMtaBox: false,
@@ -33,15 +39,20 @@ describe('Component/content/MenuBar', () => {
   })
 
   it('should render correctly with fav and pin', () => {
-    const config = appConfigFactory()
+    const config = {
+      ...getDefaultConfig(),
+      ...getDefaultProfile(),
+    }
     const props: MenuBarProps = {
       t: x => x,
+      searchSuggests: true,
+      isTripleCtrl: true,
       isFav: true,
       isPinned: true,
       searchHistory: [],
       activeDicts: [config.id],
       activeConfigID: config.id,
-      configProfiles: [{ id: config.id, name: config.name }],
+      profiles: [getDefaultProfileID()],
       searchBoxText: '',
       searchBoxIndex: 0,
       isShowMtaBox: true,

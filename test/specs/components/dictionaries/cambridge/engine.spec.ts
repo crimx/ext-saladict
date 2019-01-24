@@ -1,5 +1,6 @@
 import { search } from '@/components/dictionaries/cambridge/engine'
-import { appConfigFactory } from '@/app-config'
+import { getDefaultConfig } from '@/app-config'
+import getDefaultProfile from '@/app-config/profiles'
 import fs from 'fs'
 import path from 'path'
 
@@ -30,7 +31,7 @@ describe('Dict/Cambridge/engine', () => {
   })
 
   it('should parse result (en) correctly', () => {
-    return search('love', appConfigFactory(), { isPDF: false })
+    return search('love', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(({ result, audio }) => {
         expect(audio && typeof audio.uk).toBe('string')
         expect(audio && typeof audio.us).toBe('string')
@@ -56,7 +57,7 @@ describe('Dict/Cambridge/engine', () => {
   })
 
   it('should parse result (zhs) correctly', () => {
-    return search('house', appConfigFactory(), { isPDF: false })
+    return search('house', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(({ result, audio }) => {
         expect(audio && typeof audio.uk).toBe('string')
         expect(audio && typeof audio.us).toBe('string')
@@ -80,7 +81,7 @@ describe('Dict/Cambridge/engine', () => {
   })
 
   it('should parse result (zht) correctly', () => {
-    return search('catch', appConfigFactory(), { isPDF: false })
+    return search('catch', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(({ result, audio }) => {
         expect(audio && typeof audio.uk).toBe('string')
         expect(audio && typeof audio.us).toBe('string')

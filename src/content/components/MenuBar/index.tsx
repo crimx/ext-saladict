@@ -3,7 +3,7 @@ import { message } from '@/_helpers/browser-api'
 import { TranslationFunction } from 'i18next'
 import { MsgType, MsgOpenUrl, MsgGetSuggests } from '@/typings/message'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
-import { updateActiveConfigID } from '@/_helpers/config-manager'
+import { updateActiveProfileID } from '@/_helpers/profile-manager'
 import CSSTransition from 'react-transition-group/CSSTransition'
 
 import { Subject } from 'rxjs/Subject'
@@ -38,7 +38,7 @@ export interface MenuBarProps extends MenuBarDispatchers {
   readonly searchHistory: SelectionInfo[]
   readonly activeDicts: string[]
   readonly activeConfigID: string
-  readonly configProfiles: Array<{ id: string, name: string }>
+  readonly profiles: Array<{ id: string, name: string }>
   readonly searchBoxText: string
   readonly searchBoxIndex: number
   readonly isShowMtaBox: boolean
@@ -193,7 +193,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
       if (doc) {
         this.setState({ isShowProfilePanel: true }, () => {
           const firstProfile = doc.getElementById(
-            this.props.configProfiles[0].id
+            this.props.profiles[0].id
           )
           if (firstProfile) {
             firstProfile.focus()
@@ -212,7 +212,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   }
 
   handleProfileItemClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    updateActiveConfigID(e.currentTarget.id)
+    updateActiveProfileID(e.currentTarget.id)
     setTimeout(() => {
       if (this.props.searchHistory.length > 0) {
         this.props.searchText({ info: this.props.searchHistory[0] })
@@ -239,13 +239,13 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
 
     if (!offset) { return }
 
-    const { configProfiles } = this.props
-    const curID = configProfiles.findIndex(({ id }) => id === e.currentTarget.id)
-    const nextID = ((configProfiles.length + curID) + offset) % configProfiles.length
+    const { profiles } = this.props
+    const curID = profiles.findIndex(({ id }) => id === e.currentTarget.id)
+    const nextID = ((profiles.length + curID) + offset) % profiles.length
     const doc = e.currentTarget.ownerDocument
     if (doc) {
       const nextProfile = doc.getElementById(
-        configProfiles[nextID].id
+        profiles[nextID].id
       )
       if (nextProfile) {
         nextProfile.focus()
@@ -262,7 +262,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   }
 
   /** open notebook on right click */
-  handleIconFavMouseUp = (e: React.MouseEvent<HTMLButtonElement>) => {
+  handleIconFavMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (e.button === 2) {
       e.preventDefault()
       e.stopPropagation()
@@ -353,7 +353,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   renderProfilePanel = () => {
     const {
       t,
-      configProfiles,
+      profiles,
       activeConfigID,
     } = this.props
     return (
@@ -362,7 +362,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
         onMouseEnter={this.showProfilePanel}
         onMouseLeave={this.hideProfilePanel}
       >
-        {configProfiles.map(({ id, name }) => {
+        {profiles.map(({ id, name }) => {
           // default names
           const match = /^%%_(\S+)_%%$/.exec(name)
           let displayName = name
@@ -493,7 +493,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
         </div>
 
         <button className='panel-MenuBar_Btn'
-          onMouseUp={this.handleIconFavMouseUp}
+          onMouseDown={this.handleIconFavMouseDown}
           onClick={this.handleIconFavClick}
           disabled={isSaladictOptionsPage || searchHistory.length <= 0}
         >

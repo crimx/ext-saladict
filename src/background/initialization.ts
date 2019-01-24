@@ -1,14 +1,16 @@
 import { AppConfigMutable } from '@/app-config'
 import { message, storage, openURL } from '@/_helpers/browser-api'
+import { isExtTainted } from '@/_helpers/integrity'
 import checkUpdate from '@/_helpers/check-update'
-import { getActiveConfig, updateActiveConfig, initConfig } from '@/_helpers/config-manager'
+import { getConfig, updateConfig, initConfig } from '@/_helpers/config-manager'
+import { initProfiles } from '@/_helpers/profile-manager'
 import { MsgType, MsgQueryPanelState } from '@/typings/message'
 import { init as initMenus, openPDF, openGoogle, openYoudao } from './context-menus'
 import { openQSPanel } from './server'
 import { init as initPdf } from './pdf-sniffer'
 import { startSyncServiceInterval } from './sync-manager'
 
-getActiveConfig().then(config => {
+getConfig().then(config => {
   initMenus(config.contextMenus)
   initPdf(config)
 })
@@ -17,17 +19,21 @@ startSyncServiceInterval()
 
 browser.runtime.onInstalled.addListener(onInstalled)
 browser.runtime.onStartup.addListener(onStartup)
-browser.notifications.onClicked.addListener(genClickListener('https://github.com/crimx/crx-saladict/releases'))
+browser.notifications.onClicked.addListener(
+  genClickListener('https://github.com/crimx/ext-saladict/releases')
+)
 if (browser.notifications.onButtonClicked) {
   // Firefox doesn't support
-  browser.notifications.onButtonClicked.addListener(genClickListener('https://github.com/crimx/crx-saladict/releases'))
+  browser.notifications.onButtonClicked.addListener(
+    genClickListener('https://github.com/crimx/ext-saladict/releases')
+  )
 }
 
 browser.commands.onCommand.addListener(command => {
   switch (command) {
     case 'toggle-active':
-      getActiveConfig().then(config => {
-        updateActiveConfig({
+      getConfig().then(config => {
+        updateConfig({
           ...config,
           active: !config.active,
         })
@@ -37,7 +43,7 @@ browser.commands.onCommand.addListener(command => {
       browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
         if (tabs.length <= 0 || tabs[0].id == null) { return }
         Promise.all([
-          getActiveConfig(),
+          getConfig(),
           message.send<MsgQueryPanelState, boolean>(
             tabs[0].id as number,
             {
@@ -45,12 +51,11 @@ browser.commands.onCommand.addListener(command => {
               path: 'widget.isPinned',
             }
           ),
-        ]).then(([c, isPinned]) => {
-          const config = c as AppConfigMutable
+        ]).then(([config, isPinned]) => {
           const isEnable = !config[isPinned ? 'pinMode' : 'mode'].instant.enable
-          config.mode.instant.enable = isEnable
-          config.pinMode.instant.enable = isEnable
-          updateActiveConfig(config)
+          ;(config as AppConfigMutable).mode.instant.enable = isEnable
+          ;(config as AppConfigMutable).pinMode.instant.enable = isEnable
+          updateConfig(config)
         })
       })
       break
@@ -70,14 +75,15 @@ browser.commands.onCommand.addListener(command => {
 })
 
 async function onInstalled ({ reason, previousVersion }: { reason: string, previousVersion?: string }) {
-  const activeConfig = await initConfig()
-  initMenus(activeConfig.contextMenus)
-  initPdf(activeConfig)
+  const config = await initConfig()
+  initMenus(config.contextMenus)
+  initPdf(config)
+  await initProfiles()
   storage.local.set({ lastCheckUpdate: Date.now() })
 
   if (reason === 'install') {
     if (!(await storage.sync.get('hasInstructionsShown')).hasInstructionsShown) {
-      openURL('https://github.com/crimx/crx-saladict/wiki/Instructions#wiki-content')
+      openURL('https://github.com/crimx/ext-saladict/wiki/Instructions#wiki-content')
       storage.sync.set({ hasInstructionsShown: true })
     }
     (await browser.tabs.query({})).forEach(tab => {
@@ -90,7 +96,7 @@ async function onInstalled ({ reason, previousVersion }: { reason: string, previ
     let data
     if (!process.env.DEV_BUILD) {
       try {
-        const response = await fetch('https://api.github.com/repos/crimx/crx-saladict/releases/latest')
+        const response = await fetch('https://api.github.com/repos/crimx/ext-saladict/releases/latest')
         data = await response.json()
       } catch (e) {/* */}
     }
@@ -116,13 +122,27 @@ function onStartup (): void {
             browser.notifications.create('update', {
               type: 'basic',
               iconUrl: browser.runtime.getURL(`static/icon-128.png`),
-              title: '沙拉查词',
+              title: decodeURI('%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D'),
               message: (`可更新至【${info.tag_name}】`
               ),
               buttons: [{ title: '查看更新' }],
             })
           }
         })
+      }
+
+      // anti piracy
+      if (!process.env.DEV_BUILD && lastCheckUpdate && isExtTainted) {
+        const diff = Math.floor((today - lastCheckUpdate) / 24 / 60 / 60 / 1000)
+        if (diff > 0 && diff % 7 === 0) {
+          browser.notifications.create('update', {
+            type: 'basic',
+            iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+            title: decodeURI('%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D'),
+            message: decodeURI('%E6%AD%A4%E3%80%8C%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D%E3%80%8D%E6%89%A9%E5%B1%95%E5%B7%B2%E8%A2%AB%E4%BA%8C%E6%AC%A1%E6%89%93%E5%8C%85%EF%BC%8C%E8%AF%B7%E5%9C%A8%E5%AE%98%E6%96%B9%E5%BB%BA%E8%AE%AE%E7%9A%84%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E3%80%82'),
+            buttons: [{ title: decodeURI('%E6%9F%A5%E7%9C%8B%E5%8F%AF%E9%9D%A0%E7%9A%84%E5%B9%B3%E5%8F%B0') }],
+          })
+        }
       }
     })
 

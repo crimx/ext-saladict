@@ -1,4 +1,4 @@
-import { appConfigFactory, AppConfig, AppConfigMutable } from '@/app-config'
+import { getDefaultConfig, AppConfig, AppConfigMutable } from '@/app-config'
 import sinon from 'sinon'
 import { take } from 'rxjs/operators'
 import { timer } from '@/_helpers/promise-more'
@@ -9,7 +9,7 @@ jest.mock('@/_helpers/config-manager')
 let configManager: typeof configManagerMock
 
 function specialConfig () {
-  const config = appConfigFactory('config') as AppConfigMutable
+  const config = getDefaultConfig() as AppConfigMutable
   config.contextMenus.selected = ['youdao', 'dictcn']
   return config
 }
@@ -128,7 +128,7 @@ describe('Context Menus', () => {
       const { init } = require('@/background/context-menus')
       take(1)(init(config.contextMenus)).subscribe(() => {
         expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
-        configManager.dispatchActiveConfigChangedEvent(newConfig, config)
+        configManager.dispatchConfigChangedEvent(newConfig, config)
         setTimeout(() => {
           expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
           done()
@@ -143,7 +143,7 @@ describe('Context Menus', () => {
       const { init } = require('@/background/context-menus')
       take(1)(init(config.contextMenus)).subscribe(() => {
         expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
-        configManager.dispatchActiveConfigChangedEvent(newConfig)
+        configManager.dispatchConfigChangedEvent(newConfig)
         setTimeout(() => {
           expect(browser.contextMenus.removeAll.calledTwice).toBeTruthy()
           done()
@@ -158,7 +158,7 @@ describe('Context Menus', () => {
       const { init } = require('@/background/context-menus')
       take(1)(init(config.contextMenus)).subscribe(() => {
         expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
-        configManager.dispatchActiveConfigChangedEvent(newConfig, config)
+        configManager.dispatchConfigChangedEvent(newConfig, config)
         setTimeout(() => {
           expect(browser.contextMenus.removeAll.calledTwice).toBeTruthy()
           done()
@@ -183,10 +183,10 @@ describe('Context Menus', () => {
         const newConfig4 = specialConfig()
         newConfig4.contextMenus.selected = ['youdao']
 
-        configManager.dispatchActiveConfigChangedEvent(newConfig1, config)
-        configManager.dispatchActiveConfigChangedEvent(newConfig2, newConfig1)
-        configManager.dispatchActiveConfigChangedEvent(newConfig3, newConfig2)
-        configManager.dispatchActiveConfigChangedEvent(newConfig4, newConfig3)
+        configManager.dispatchConfigChangedEvent(newConfig1, config)
+        configManager.dispatchConfigChangedEvent(newConfig2, newConfig1)
+        configManager.dispatchConfigChangedEvent(newConfig3, newConfig2)
+        configManager.dispatchConfigChangedEvent(newConfig4, newConfig3)
 
         setTimeout(() => {
           expect(browser.contextMenus.removeAll.calledThrice).toBeTruthy()

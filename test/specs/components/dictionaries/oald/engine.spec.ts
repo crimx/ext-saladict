@@ -1,5 +1,6 @@
 import { search, OALDResultLex, OALDResultRelated } from '@/components/dictionaries/oald/engine'
-import { appConfigFactory } from '@/app-config'
+import { getDefaultConfig } from '@/app-config'
+import { getDefaultProfile } from '@/app-config/profiles'
 import fs from 'fs'
 import path from 'path'
 
@@ -24,7 +25,7 @@ describe('Dict/OALD/engine', () => {
   })
 
   it('should parse lex result correctly', () => {
-    return search('love', appConfigFactory(), { isPDF: false })
+    return search('love', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
@@ -44,7 +45,7 @@ describe('Dict/OALD/engine', () => {
   })
 
   it('should parse related result correctly', () => {
-    return search('jumblish', appConfigFactory(), { isPDF: false })
+    return search('jumblish', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 

@@ -6,6 +6,10 @@ import { Word, deleteWords } from '@/_helpers/record-manager'
 import WordCards from '../WordCards'
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgOpenUrl } from '@/typings/message'
+import { translateCtx } from '@/_helpers/translateCtx'
+import { DictID } from '@/app-config'
+
+const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
 
 export interface WordEditorDispatchers {
   saveToNotebook: (info: SelectionInfo) => any
@@ -18,6 +22,7 @@ export interface WordEditorDispatchers {
 export interface WordEditorProps extends WordEditorDispatchers {
   dictPanelWidth: number
   editorWord: SelectionInfo
+  ctxTrans: { [index in DictID]: boolean }
 }
 
 interface WordEditorState {
@@ -71,7 +76,7 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
   openOptions = () => {
     message.send<MsgOpenUrl>({
       type: MsgType.OpenURL,
-      url: 'options.html#opt-notebook',
+      url: 'options.html?menuselected=Notebook',
       self: true,
     })
   }
@@ -97,6 +102,21 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
 
   componentDidMount () {
     this.getRelatedWords()
+    const word = this.props.editorWord
+    if (word.context && !word.trans) {
+      translateCtx(word.context, this.props.ctxTrans)
+        .then(trans => {
+          if (trans) {
+            const word = this.props.editorWord
+            this.props.updateEditorWord({
+              ...word,
+              trans: word.trans
+                ? word.trans + '\n\n' + trans
+                : trans
+            })
+          }
+        })
+    }
   }
 
   render () {
@@ -187,10 +207,12 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
           {relatedWords.length > 0 && <WordCards words={relatedWords} deleteCard={this.deleteCard} /> }
         </div>
         <footer className='wordEditor-Footer'>
-          <button type='button'
-            className='wordEditor-Note_BtnNeverShow'
-            onClick={this.openOptions}
-          >{t('neverShow')}</button>
+          {!isSaladictInternalPage &&
+            <button type='button'
+              className='wordEditor-Note_BtnNeverShow'
+              onClick={this.openOptions}
+            >{t('neverShow')}</button>
+          }
           <button type='button'
             className='wordEditor-Note_BtnCancel'
             onClick={this.closeModal}

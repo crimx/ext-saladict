@@ -31,16 +31,16 @@ export interface COBUILDResult {
 type COBUILDSearchResult = DictSearchResult<COBUILDResult>
 
 export const search: SearchFunction<COBUILDSearchResult> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
   text = encodeURIComponent(text.replace(/\s+/g, ' '))
   const isChz = config.langCode === 'zh-TW'
   return fetchDirtyDOM('http://www.iciba.com/' + text)
-    .then(doc => handleDOM(doc, config.dicts.all.cobuild.options, isChz))
+    .then(doc => handleDOM(doc, profile.dicts.all.cobuild.options, isChz))
     .catch(() => {
       return fetchDirtyDOM('https://www.iciba.com/' + text)
         .catch(handleNetWorkError)
-        .then(doc => handleDOM(doc, config.dicts.all.cobuild.options, isChz))
+        .then(doc => handleDOM(doc, profile.dicts.all.cobuild.options, isChz))
     })
 }
 

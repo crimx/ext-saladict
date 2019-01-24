@@ -1,4 +1,4 @@
-import { appConfigFactory } from '@/app-config'
+import { getDefaultConfig } from '@/app-config'
 import sinon from 'sinon'
 
 import { message, storage } from '@/_helpers/browser-api'
@@ -9,9 +9,16 @@ window.fetch = jest.fn(() => Promise.resolve({
 }))
 
 jest.mock('@/app-config/merge-config', () => {
-  const { appConfigFactory } = require('@/app-config')
+  const { getDefaultConfig } = require('@/app-config')
   return {
-    mergeConfig: jest.fn(config => Promise.resolve(config || appConfigFactory()))
+    mergeConfig: jest.fn(config => Promise.resolve(config || getDefaultConfig()))
+  }
+})
+
+jest.mock('@/app-config/merge-profile', () => {
+  const { getDefaultProfile } = require('@/app-config/profiles')
+  return {
+    mergeProfile: jest.fn(profile => Promise.resolve(profile || getDefaultProfile()))
   }
 })
 
@@ -48,6 +55,7 @@ describe('Initialization', () => {
   let initPdf: jest.Mock
   let openURL: jest.Mock
   let mergeConfig: jest.Mock
+  let mergeProfile: jest.Mock
 
   beforeEach(() => {
     browser.flush()
@@ -57,10 +65,12 @@ describe('Initialization', () => {
     const pdfSniffer = require('@/background/pdf-sniffer')
     const browserApi = require('@/_helpers/browser-api')
     const _mergeConfig = require('@/app-config/merge-config')
+    const _mergeProfile = require('@/app-config/merge-profile')
     initMenus = contextMenus.init
     initPdf = pdfSniffer.init
     openURL = browserApi.openURL
     mergeConfig = _mergeConfig.mergeConfig
+    mergeProfile = _mergeProfile.mergeProfile
 
     browser.storage.sync.get.callsFake(() => Promise.resolve({}))
     browser.storage.sync.set.callsFake(() => Promise.resolve())

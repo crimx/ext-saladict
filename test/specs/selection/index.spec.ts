@@ -1,4 +1,4 @@
-import { appConfigFactory, AppConfigMutable } from '@/app-config'
+import { getDefaultConfig, AppConfigMutable } from '@/app-config'
 import * as BrowserApiMock from '@/_helpers/__mocks__/browser-api'
 import { SelectionMock } from '@/_helpers/__mocks__/selection'
 import * as configManagerMock from '@/_helpers/__mocks__/config-manager'
@@ -19,13 +19,13 @@ const { message, storage }: {
 
 const selection: SelectionMock = require('@/_helpers/selection')
 
-const { dispatchActiveConfigChangedEvent }: {
-  dispatchActiveConfigChangedEvent: typeof configManagerMock.dispatchActiveConfigChangedEvent
+const { dispatchConfigChangedEvent }: {
+  dispatchConfigChangedEvent: typeof configManagerMock.dispatchConfigChangedEvent
 } = require('@/_helpers/config-manager')
 
 // speed up
-const mockAppConfigFactory = () => {
-  const config = appConfigFactory() as AppConfigMutable
+const mockgetDefaultConfig = () => {
+  const config = getDefaultConfig() as AppConfigMutable
   config.doubleClickDelay = 0
   return config
 }
@@ -40,7 +40,7 @@ describe('Message Selection', () => {
     selection.getSelectionSentence.mockReturnValue(`This is a ${randomText}.`)
     selection.getSelectionInfo.mockReturnValue('mocked selection info')
     selection.getDefaultSelectionInfo.mockReturnValue('mocked default selection info')
-    dispatchActiveConfigChangedEvent(mockAppConfigFactory())
+    dispatchConfigChangedEvent(mockgetDefaultConfig())
   })
 
   it('should send empty message when mouseup and no selection', async () => {
@@ -69,11 +69,11 @@ describe('Message Selection', () => {
   })
 
   it('should send empty message if the selection language does not match (Chinese)', async () => {
-    const config = mockAppConfigFactory()
+    const config = mockgetDefaultConfig()
     config.language.chinese = true
     config.language.english = false
     config.language.minor = true
-    dispatchActiveConfigChangedEvent(config)
+    dispatchConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
@@ -100,11 +100,11 @@ describe('Message Selection', () => {
   it('should send empty message if the selection language does not match (English)', async () => {
     selection.getSelectionText.mockReturnValue('你好')
     selection.getSelectionSentence.mockReturnValue('你好')
-    const config = mockAppConfigFactory()
+    const config = mockgetDefaultConfig()
     config.language.chinese = false
     config.language.english = true
     config.language.minor = true
-    dispatchActiveConfigChangedEvent(config)
+    dispatchConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
@@ -131,11 +131,11 @@ describe('Message Selection', () => {
   it('should send empty message if the selection language does not match (Minor)', async () => {
     selection.getSelectionText.mockReturnValue('れきじつ')
     selection.getSelectionSentence.mockReturnValue('れきじつ')
-    const config = mockAppConfigFactory()
+    const config = mockgetDefaultConfig()
     config.language.chinese = true
     config.language.english = true
     config.language.minor = false
-    dispatchActiveConfigChangedEvent(config)
+    dispatchConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
@@ -204,11 +204,11 @@ describe('Message Selection', () => {
     selection.getSelectionText.mockReturnValue(selectionInfo.text)
     selection.getSelectionSentence.mockReturnValue(selectionInfo.context)
 
-    const config = mockAppConfigFactory()
+    const config = mockgetDefaultConfig()
     config.language.chinese = false
     config.language.english = false
     config.language.minor = true
-    dispatchActiveConfigChangedEvent(config)
+    dispatchConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
@@ -240,9 +240,9 @@ describe('Message Selection', () => {
   })
 
   it('should send empty message if the selection is made inside a input box', async () => {
-    const config = mockAppConfigFactory()
+    const config = mockgetDefaultConfig()
     config.noTypeField = true
-    dispatchActiveConfigChangedEvent(config)
+    dispatchConfigChangedEvent(config)
 
     const $input = document.createElement('input')
     document.body.appendChild($input)
@@ -275,9 +275,9 @@ describe('Message Selection', () => {
   // it('should pass message from lower frame to upper frame')
 
   it('should fire events even if conifg.active is off', async () => {
-    const config = mockAppConfigFactory()
+    const config = mockgetDefaultConfig()
     config.active = false
-    dispatchActiveConfigChangedEvent(config)
+    dispatchConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
@@ -394,9 +394,9 @@ describe('Message Selection', () => {
   })
 
   it('should not trigger double click if the interval is too long', async () => {
-    const config = mockAppConfigFactory()
+    const config = mockgetDefaultConfig()
     config.doubleClickDelay = 100
-    dispatchActiveConfigChangedEvent(config)
+    dispatchConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
@@ -435,9 +435,9 @@ describe('Message Selection', () => {
   })
 
   it('should trigger double click if the interval is within delay', async () => {
-    const config = mockAppConfigFactory()
+    const config = mockgetDefaultConfig()
     config.doubleClickDelay = 100
-    dispatchActiveConfigChangedEvent(config)
+    dispatchConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
       button: 0,
@@ -481,20 +481,20 @@ describe('Message Selection', () => {
 
     addMock.mockClear()
     removeMock.mockClear()
-    let config = mockAppConfigFactory()
+    let config = mockgetDefaultConfig()
     config.mode.instant.enable = true
     config.pinMode.instant.enable = true
-    dispatchActiveConfigChangedEvent(config)
+    dispatchConfigChangedEvent(config)
     await timer(0)
     expect(addMock).toHaveBeenCalledTimes(2)
     expect(removeMock).toHaveBeenCalledTimes(0)
 
     addMock.mockClear()
     removeMock.mockClear()
-    config = mockAppConfigFactory()
+    config = mockgetDefaultConfig()
     config.mode.instant.enable = false
     config.pinMode.instant.enable = true
-    dispatchActiveConfigChangedEvent(config)
+    dispatchConfigChangedEvent(config)
     await timer(0)
     expect(addMock).toHaveBeenCalledTimes(0)
     expect(removeMock).toHaveBeenCalledTimes(2)

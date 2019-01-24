@@ -1,9 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import CSSTransition from 'react-transition-group/CSSTransition'
-import SaladBowl from '../SaladBowl'
+import SaladBowl, { SaladBowlProps } from '../SaladBowl'
 
-interface SaladBowlPortalProps {
+interface SaladBowlPortalProps extends SaladBowlProps {
   readonly shouldShow: boolean
   readonly isAnimation: boolean
   readonly bowlRect: { x: number, y: number }
@@ -47,8 +47,14 @@ export default class SaladBowlPortal extends React.Component<SaladBowlPortalProp
   }
 
   renderBowl = () => {
-    const { mouseOnBowl, isAnimation } = this.props
-    return <SaladBowl mouseOnBowl={mouseOnBowl} isAnimation={isAnimation} />
+    const { mouseOnBowl, isAnimation, bowlHover } = this.props
+    return (
+      <SaladBowl
+        mouseOnBowl={mouseOnBowl}
+        isAnimation={isAnimation}
+        bowlHover={bowlHover}
+      />
+    )
   }
 
   render () {

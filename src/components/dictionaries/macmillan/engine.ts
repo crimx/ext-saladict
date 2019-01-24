@@ -44,9 +44,9 @@ export type MacmillanResult = MacmillanResultLex | MacmillanResultRelated
 type MacmillanSearchResult = DictSearchResult<MacmillanResult>
 
 export const search: SearchFunction<MacmillanSearchResult> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
-  const options = config.dicts.all.macmillan.options
+  const options = profile.dicts.all.macmillan.options
 
   return fetchDirtyDOM('http://www.macmillandictionary.com/dictionary/british/' + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
     .catch(handleNetWorkError)

@@ -171,9 +171,9 @@ function storageRemove (this: StorageThisTwo, keys: string | string[]): Promise<
   return browser.storage[this.__storageArea__].remove(keys)
 }
 
-function storageGet<T = any> (key?: string | string[] | null): Promise<T>
-function storageGet<T extends Object> (key: T | any): Promise<T>
-function storageGet<T = any> (this: StorageThisTwo, ...args): Promise<T> {
+function storageGet<T = any> (key?: string | string[] | null): Promise<Partial<T>>
+function storageGet<T extends Object> (key: T | any): Promise<Partial<T>>
+function storageGet<T = any> (this: StorageThisTwo, ...args): Promise<Partial<T>> {
   return browser.storage[this.__storageArea__].get(...args)
 }
 
@@ -206,7 +206,9 @@ function storageAddListener (this: StorageThisThree, ...args): void {
   let listener = listeners.get(listenerKey)
   if (!listener) {
     listener = (changes, areaName) => {
-      if ((this.__storageArea__ === 'all' || areaName === this.__storageArea__) && (!key || changes[key])) {
+      if ((this.__storageArea__ === 'all' || areaName === this.__storageArea__) &&
+          (!key || key in changes)
+      ) {
         cb(changes, areaName)
       }
     }

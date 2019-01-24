@@ -7,6 +7,7 @@ export const mapStateToProps = ({ config, selection, widget }: StoreState) => {
   return {
     shouldShow: widget.shouldBowlShow,
     isAnimation: config.animation,
+    bowlHover: config.bowlHover,
     bowlRect: widget.bowlRect,
   }
 }

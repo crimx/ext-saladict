@@ -22,8 +22,18 @@ export interface Meta {
 
 export const serviceID = 'webdav'
 
+export function getDefaultConfig (): SyncConfig {
+  return {
+    url: '',
+    user: '',
+    passwd: '',
+    duration: 15,
+  }
+}
+
 export const upload: Upload<SyncConfig> = async (config, text) => {
-  const response = await fetch(config.url + 'Saladict/notebook.json', {
+  const url = config.url + (config.url.endsWith('/') ? '' : '/')
+  const response = await fetch(url + 'Saladict/notebook.json', {
     method: 'PUT',
     headers: {
       'Authorization': 'Basic ' + window.btoa(`${config.user}:${config.passwd}`),
@@ -45,7 +55,8 @@ export const dlChanged: DlChanged<SyncConfig, Meta> = async (
     headers['If-Modified-Since'] = meta.etag
   }
 
-  const response = await fetch(config.url + 'Saladict/notebook.json', {
+  const url = config.url + (config.url.endsWith('/') ? '' : '/')
+  const response = await fetch(url + 'Saladict/notebook.json', {
     method: 'GET',
     headers,
   })
@@ -153,7 +164,8 @@ export const initServer: InitServer<SyncConfig> = async config => {
 
   if (!dir) {
     // create directory
-    const response = await fetch(config.url + 'Saladict', { method: 'MKCOL' })
+    const url = config.url + (config.url.endsWith('/') ? '' : '/')
+    const response = await fetch(url + 'Saladict', { method: 'MKCOL' })
     if (!response.ok) {
       // cannot create directory
       return { error: 'mkcol' }

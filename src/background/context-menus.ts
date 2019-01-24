@@ -1,11 +1,11 @@
 import { message, openURL } from '@/_helpers/browser-api'
-import { MsgType } from '@/typings/message'
-import { AppConfig, ContextMenuDictID } from '@/app-config'
+import { MsgType, MsgContextMenusClick } from '@/typings/message'
+import { AppConfig } from '@/app-config'
 import i18nLoader from '@/_helpers/i18n'
 import { TranslationFunction } from 'i18next'
 import contextLocles from '@/_locales/context'
 import isEqual from 'lodash/isEqual'
-import { getActiveConfig, addActiveConfigListener, AppConfigChanged } from '@/_helpers/config-manager'
+import { getConfig, addConfigListener, AppConfigChanged } from '@/_helpers/config-manager'
 
 // import { Observable, ReplaySubject, combineLatest } from 'rxjs'
 // import { mergeMap, filter, map, audit, mapTo, share, startWith } from 'rxjs/operators'
@@ -38,57 +38,14 @@ const i18n$$ = new ReplaySubject<TranslationFunction>(1)
 const i18n = i18nLoader({ context: contextLocles }, 'context', (_, t) => i18n$$.next(t))
 i18n.on('languageChanged', () => i18n$$.next(i18n.t.bind(i18n)))
 
-browser.contextMenus.onClicked.addListener(info => {
-  const menuItemId = String(info.menuItemId).replace(/_ba$/, '')
-  const selectionText = info.selectionText || ''
-  const linkUrl = info.linkUrl || ''
-  switch (menuItemId) {
-    case 'google_page_translate':
-      openGoogle()
-      break
-    case 'google_cn_page_translate':
-      openGoogle(true)
-      break
-    case 'youdao_page_translate':
-      openYoudao()
-      break
-    case 'baidu_page_translate':
-      openBaiduPage()
-      break
-    case 'sogou_page_translate':
-      openSogouPage()
-      break
-    case 'microsoft_page_translate':
-      openMicrosoftPage()
-      break
-    case 'view_as_pdf':
-      openPDF(linkUrl, info.menuItemId !== 'view_as_pdf_ba')
-      break
-    case 'search_history':
-      openURL(browser.runtime.getURL('history.html'))
-      break
-    case 'notebook':
-      openURL(browser.runtime.getURL('notebook.html'))
-      break
-    case 'saladict':
-      requestSelection()
-      break
-    default:
-      getActiveConfig()
-        .then(config => {
-          const url = config.contextMenus.all[menuItemId]
-          if (url) {
-            openURL(url.replace('%s', selectionText))
-          }
-        })
-  }
-})
+browser.contextMenus.onClicked.addListener(handleContextMenusClick)
+message.addListener<MsgContextMenusClick>(MsgType.ContextMenusClick, handleContextMenusClick)
 
 export function init (initConfig: ContextMenusConfig): Observable<void> {
   if (setMenus$$) { return setMenus$$ }
   // when context menus config changes
   const contextMenusChanged$ =
-      fromEventPattern<AppConfigChanged[] | AppConfigChanged>(addActiveConfigListener as any).pipe(
+      fromEventPattern<AppConfigChanged[] | AppConfigChanged>(addConfigListener as any).pipe(
     map(args => Array.isArray(args) ? args[0] : args),
     filter(({ newConfig, oldConfig }) => {
       if (!newConfig) { return false }
@@ -150,7 +107,7 @@ export function openGoogle (cn?: boolean) {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getActiveConfig().then(config => {
+        getConfig().then(config => {
           openURL(`https://translate.google.${cn ? 'cn' : 'com'}/translate?sl=auto&tl=${config.langCode}&js=y&prev=_t&ie=UTF-8&u=${encodeURIComponent(tabs[0].url as string)}&edit-text=&act=url`)
         })
       }
@@ -181,7 +138,7 @@ export function openBaiduPage () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getActiveConfig().then(config => {
+        getConfig().then(config => {
           const langCode = config.langCode === 'zh-CN'
             ? 'zh'
             : config.langCode === 'zh-TW'
@@ -197,7 +154,7 @@ export function openSogouPage () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getActiveConfig().then(config => {
+        getConfig().then(config => {
           const langCode = config.langCode === 'zh-CN' ? 'zh-CHS' : 'en'
           openURL(`https://translate.sogoucdn.com/pcvtsnapshot?from=auto&to=${langCode}&tfr=translatepc&url=${encodeURIComponent(tabs[0].url as string)}&domainType=sogou`)
         })
@@ -209,7 +166,7 @@ export function openMicrosoftPage () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getActiveConfig().then(config => {
+        getConfig().then(config => {
           const langCode = config.langCode === 'zh-CN'
             ? 'zh-CHS'
             : config.langCode === 'zh-TW'
@@ -242,7 +199,7 @@ async function setContextMenus (
   const containerCtx = new Set<browser.contextMenus.ContextType>(['selection'])
   const optionList: CreateMenuOptions[] = []
 
-  let browserActionItems: ContextMenuDictID[] = []
+  let browserActionItems: string[] = []
   for (const id of contextMenus.selected) {
     let contexts: browser.contextMenus.ContextType[]
     switch (id) {
@@ -267,7 +224,7 @@ async function setContextMenus (
     }
     optionList.push({
       id,
-      title: t(id),
+      title: getTitle(id),
       contexts
     })
   }
@@ -309,7 +266,7 @@ async function setContextMenus (
       await createContextMenu({
         id: id + '_ba',
         parentId: 'saladict_ba_container',
-        title: t(id),
+        title: getTitle(id),
         contexts: ['browser_action', 'page_action']
       })
     }
@@ -317,7 +274,7 @@ async function setContextMenus (
     for (const id of browserActionItems) {
       await createContextMenu({
         id: id + '_ba',
-        title: t(id),
+        title: getTitle(id),
         contexts: ['browser_action', 'page_action']
       })
     }
@@ -354,6 +311,11 @@ async function setContextMenus (
     title: t('notebook_title'),
     contexts: ['browser_action']
   })
+
+  function getTitle (id: string): string {
+    const item = contextMenus.all[id]
+    return !item || typeof item === 'string' ? t(id) : item.name
+  }
 }
 
 function createContextMenu (createProperties: CreateMenuOptions): Promise<void> {
@@ -366,4 +328,59 @@ function createContextMenu (createProperties: CreateMenuOptions): Promise<void> 
       }
     })
   })
+}
+
+interface ContextMenusClickInfo {
+  menuItemId: string | number
+  selectionText?: string
+  linkUrl?: string
+}
+
+function handleContextMenusClick (info: ContextMenusClickInfo) {
+  const menuItemId = String(info.menuItemId).replace(/_ba$/, '')
+  const selectionText = info.selectionText || ''
+  const linkUrl = info.linkUrl || ''
+  switch (menuItemId) {
+    case 'google_page_translate':
+      openGoogle()
+      break
+    case 'google_cn_page_translate':
+      openGoogle(true)
+      break
+    case 'youdao_page_translate':
+      openYoudao()
+      break
+    case 'baidu_page_translate':
+      openBaiduPage()
+      break
+    case 'sogou_page_translate':
+      openSogouPage()
+      break
+    case 'microsoft_page_translate':
+      openMicrosoftPage()
+      break
+    case 'view_as_pdf':
+      openPDF(linkUrl, info.menuItemId !== 'view_as_pdf_ba')
+      break
+    case 'search_history':
+      openURL(browser.runtime.getURL('history.html'))
+      break
+    case 'notebook':
+      openURL(browser.runtime.getURL('notebook.html'))
+      break
+    case 'saladict':
+      requestSelection()
+      break
+    default:
+      getConfig()
+        .then(config => {
+          const item = config.contextMenus.all[menuItemId]
+          if (item) {
+            const url = typeof item === 'string' ? item : item.url
+            if (url) {
+              openURL(url.replace('%s', selectionText))
+            }
+          }
+        })
+  }
 }

@@ -1,5 +1,6 @@
 import { search } from '@/components/dictionaries/vocabulary/engine'
-import { appConfigFactory } from '@/app-config'
+import { getDefaultConfig } from '@/app-config'
+import { getDefaultProfile } from '@/app-config/profiles'
 import fs from 'fs'
 import path from 'path'
 
@@ -13,7 +14,7 @@ describe('Dict/Vocabulary/engine', () => {
   })
 
   it('should parse result correctly', () => {
-    return search('any', appConfigFactory(), { isPDF: false })
+    return search('any', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(({ result, audio }) => {
         expect(audio).toBeUndefined()
         expect(typeof result.long).toBe('string')

@@ -1,0 +1,64 @@
+.input-number-group-wrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: auto;
+}
+
+form .input-number-group-wrapper {
+  display: inline-block;
+  vertical-align: middle;
+  width: auto;
+  position: relative;
+  top: -1px;
+}
+
+.input-number-group {
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5;
+  color: rgba(0,0,0,0.65);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+  display: table;
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+
+  &>.ant-input-number {
+    display: table-cell;
+    float: left;
+    width: auto;
+    margin-bottom: 0;
+  }
+
+  &>.ant-input-number:first-child {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0;
+  }
+}
+
+.input-number-group-addon {
+  display: table-cell;
+  width: 1px;
+  white-space: nowrap;
+  vertical-align: middle;
+  padding: 0 11px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 1;
+  color: rgba(0,0,0,0.65);
+  text-align: center;
+  background-color: #fafafa;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  position: relative;
+  transition: all .3s;
+
+  &:last-child {
+    border-left: 0;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+  }
+}

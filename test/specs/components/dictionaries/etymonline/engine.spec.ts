@@ -1,5 +1,6 @@
 import { search } from '@/components/dictionaries/etymonline/engine'
-import { appConfigFactory, AppConfigMutable } from '@/app-config'
+import { getDefaultConfig, AppConfigMutable } from '@/app-config'
+import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
 import fs from 'fs'
 import path from 'path'
 
@@ -13,12 +14,12 @@ describe('Dict/Etymonline/engine', () => {
   })
 
   it('should parse result correctly', () => {
-    const config = appConfigFactory() as AppConfigMutable
-    config.dicts.all.etymonline.options = {
+    const profile = getDefaultProfile() as ProfileMutable
+    profile.dicts.all.etymonline.options = {
       chart: true,
       resultnum: 4
     }
-    return search('any', config, { isPDF: false })
+    return search('any', getDefaultConfig(), profile, { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 

@@ -26,7 +26,7 @@ export const mapStateToProps = ({
     searchSuggests: config.searchSuggests,
 
     activeConfigID: config.id,
-    configProfiles: widget.configProfiles,
+    profiles: widget.profiles,
 
     selection,
 

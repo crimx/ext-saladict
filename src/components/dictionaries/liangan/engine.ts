@@ -10,7 +10,7 @@ export const getSrcPage: GetSrcPageFunction = (text) => {
 export type LiangAnResult = GuoYuResult
 
 export const search: SearchFunction<DictSearchResult<LiangAnResult>> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
   return moedictSearch<LiangAnResult>('c', encodeURIComponent(text.replace(/\s+/g, '')), config)
     .then(result => {

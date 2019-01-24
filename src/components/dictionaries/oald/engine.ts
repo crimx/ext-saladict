@@ -42,10 +42,10 @@ type OALDSearchResult = DictSearchResult<OALDResult>
 type OALDSearchResultLex = DictSearchResult<OALDResultLex>
 
 export const search: SearchFunction<OALDSearchResult> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
   text = text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-')
-  const options = config.dicts.all.oald.options
+  const options = profile.dicts.all.oald.options
 
   return fetchDirtyDOM('https://www.oxfordlearnersdictionaries.com/definition/english/' + text)
     .catch(handleNetWorkError)

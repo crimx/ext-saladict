@@ -3,7 +3,7 @@
  */
 
 import { AppConfig } from '@/app-config'
-import { addActiveConfigListener } from '@/_helpers/config-manager'
+import { addConfigListener } from '@/_helpers/config-manager'
 
 let blacklist: AppConfig['pdfBlacklist'] = []
 let whitelist: AppConfig['pdfWhitelist'] = []
@@ -20,7 +20,7 @@ export function init (config: AppConfig) {
     startListening()
   }
 
-  addActiveConfigListener(({ newConfig, oldConfig }) => {
+  addConfigListener(({ newConfig, oldConfig }) => {
     if (newConfig) {
       blacklist = newConfig.pdfBlacklist
       whitelist = newConfig.pdfWhitelist

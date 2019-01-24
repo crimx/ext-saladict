@@ -10,11 +10,11 @@ import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 import { first } from '@/_helpers/promise-more'
 
-export const getSrcPage: GetSrcPageFunction = (text, config) => {
-  const domain = config.dicts.all.google.options.cnfirst ? 'cn' : 'com'
-  const lang = config.dicts.all.google.options.tl === 'default'
+export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
+  const domain = profile.dicts.all.google.options.cnfirst ? 'cn' : 'com'
+  const lang = profile.dicts.all.google.options.tl === 'default'
     ? config.langCode
-    : config.dicts.all.google.options.tl
+    : profile.dicts.all.google.options.tl
 
   return `https://translate.google.${domain}/#auto/${lang}/${text}`
 }
@@ -45,9 +45,9 @@ const langcodes: ReadonlyArray<string> = [
 ]
 
 export const search: SearchFunction<GoogleSearchResult, MachineTranslatePayload> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
-  const options = config.dicts.all.google.options
+  const options = profile.dicts.all.google.options
 
   const sl: string = payload.sl || 'auto'
   const tl: string = payload.tl || (

@@ -1,6 +1,6 @@
 import i18n from 'i18next'
 import mapValues from 'lodash/mapValues'
-import { createActiveConfigStream } from '@/_helpers/config-manager'
+import { createConfigStream } from '@/_helpers/config-manager'
 
 export interface RawLocale {
   zh_CN: string
@@ -44,7 +44,7 @@ export function i18nLoader (
 
     }, cb)
 
-  createActiveConfigStream().subscribe(config => {
+  createConfigStream().subscribe(config => {
     if (instance.language !== config.langCode) {
       instance.changeLanguage(config.langCode)
     }

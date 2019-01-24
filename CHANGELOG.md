@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.23.0"></a>
+# [6.23.0](https://github.com/crimx/ext-saladict/compare/v6.22.8...v6.23.0) (2019-01-24)
+
+
+### Bug Fixes
+
+* **panel:** open notebook on right click ([0099024](https://github.com/crimx/ext-saladict/commit/0099024))
+* close [#289](https://github.com/crimx/ext-saladict/issues/289) ([1615794](https://github.com/crimx/ext-saladict/commit/1615794))
+* **options:** add description ([deca4cb](https://github.com/crimx/ext-saladict/commit/deca4cb))
+* **options:** add valuePropName for switch ([8574a30](https://github.com/crimx/ext-saladict/commit/8574a30))
+* **options:** close modal ([b241d8b](https://github.com/crimx/ext-saladict/commit/b241d8b))
+* **options:** fix holding toggling ([5f7cdfe](https://github.com/crimx/ext-saladict/commit/5f7cdfe))
+* **options:** get profile id list on init ([114ccf0](https://github.com/crimx/ext-saladict/commit/114ccf0))
+* **options:** keep modal hide animation ([18ce805](https://github.com/crimx/ext-saladict/commit/18ce805))
+* **options:** remove unused ([0c6ea6d](https://github.com/crimx/ext-saladict/commit/0c6ea6d))
+* **popup:** fix popup flickering ([90b7d72](https://github.com/crimx/ext-saladict/commit/90b7d72))
+* **selection:** extract sentence head ([d5649e0](https://github.com/crimx/ext-saladict/commit/d5649e0)), closes [#287](https://github.com/crimx/ext-saladict/issues/287)
+* disable warning on dev ([2abc24a](https://github.com/crimx/ext-saladict/commit/2abc24a))
+* fix config typing ([d164efb](https://github.com/crimx/ext-saladict/commit/d164efb))
+* fix type error ([3db0b88](https://github.com/crimx/ext-saladict/commit/3db0b88))
+* **options:** update active profile name on init ([83cadf3](https://github.com/crimx/ext-saladict/commit/83cadf3))
+* remove activeProfileID when reset ([bbd5f01](https://github.com/crimx/ext-saladict/commit/bbd5f01))
+* **options:** replace p elements with lis ([ed42ccb](https://github.com/crimx/ext-saladict/commit/ed42ccb))
+* **profiles:** fix addActiveProfileListener ([2c67642](https://github.com/crimx/ext-saladict/commit/2c67642))
+* langcode comparison ([4dade9b](https://github.com/crimx/ext-saladict/commit/4dade9b))
+
+
+### Features
+
+* **content:** add salad bowl clicking ([e6834af](https://github.com/crimx/ext-saladict/commit/e6834af))
+* **popup:** add browser action behaviors ([6672a7a](https://github.com/crimx/ext-saladict/commit/6672a7a)), closes [#280](https://github.com/crimx/ext-saladict/issues/280)
+* add context translate engines config ([52e390b](https://github.com/crimx/ext-saladict/commit/52e390b))
+
+
+
 <a name="6.22.8"></a>
 ## [6.22.8](https://github.com/crimx/ext-saladict/compare/v6.22.7...v6.22.8) (2019-01-07)
 
@@ -1354,28 +1389,28 @@ All notable changes to this project will be documented in this file. See [standa
 - 搜索图标右击可以变成翻译搜索
 - 修复了几处错误并加速了结果显示
 
-[Unreleased]: https://github.com/crimx/crx-saladict/compare/v5.31.7...HEAD
-[5.31.7]: https://github.com/crimx/crx-saladict/compare/v5.30.0...v5.31.7
-[5.30.0]: https://github.com/crimx/crx-saladict/compare/v5.28.3...v5.30.0
-[5.29.3]: https://github.com/crimx/crx-saladict/compare/v5.28.1...v5.29.3
-[5.28.1]: https://github.com/crimx/crx-saladict/compare/v5.27.3...v5.28.1
-[5.27.3]: https://github.com/crimx/crx-saladict/compare/v5.19.1...v5.27.3
-[5.19.1]: https://github.com/crimx/crx-saladict/compare/v5.18.5...v5.19.1
-[5.18.5]: https://github.com/crimx/crx-saladict/compare/v5.16.1...v5.18.5
-[5.16.1]: https://github.com/crimx/crx-saladict/compare/v5.15.21...v5.16.1
-[5.15.21]: https://github.com/crimx/crx-saladict/compare/v5.15.19...v5.15.21
-[5.15.19]: https://github.com/crimx/crx-saladict/compare/v5.15.14...v5.15.19
-[5.15.14]: https://github.com/crimx/crx-saladict/compare/v5.15.12...v5.15.14
-[5.15.12]: https://github.com/crimx/crx-saladict/compare/v5.15.9...v5.15.12
-[5.15.9]: https://github.com/crimx/crx-saladict/compare/v5.15.4...v5.15.9
-[5.15.4]: https://github.com/crimx/crx-saladict/compare/v5.15.2...v5.15.4
-[5.15.2]: https://github.com/crimx/crx-saladict/compare/v5.12.8...v5.15.2
-[5.12.8]: https://github.com/crimx/crx-saladict/compare/v5.11.23...v5.12.8
-[5.11.23]: https://github.com/crimx/crx-saladict/compare/v5.7.20...v5.11.23
-[5.7.20]: https://github.com/crimx/crx-saladict/compare/v5.5.14...v5.7.20
-[5.5.14]: https://github.com/crimx/crx-saladict/compare/v5.5.12...v5.5.14
-[5.5.12]: https://github.com/crimx/crx-saladict/compare/v5.3.9...v5.5.12
-[5.3.9]: https://github.com/crimx/crx-saladict/compare/v5.1.6...v5.3.9
-[5.1.6]: https://github.com/crimx/crx-saladict/compare/v5.0.0...v5.1.6
-[5.0.0]: https://github.com/crimx/crx-saladict/compare/v4.1.1...v5.0.0
-[4.1.1]: https://github.com/crimx/crx-saladict/tree/v4.1.1
+[Unreleased]: https://github.com/crimx/ext-saladict/compare/v5.31.7...HEAD
+[5.31.7]: https://github.com/crimx/ext-saladict/compare/v5.30.0...v5.31.7
+[5.30.0]: https://github.com/crimx/ext-saladict/compare/v5.28.3...v5.30.0
+[5.29.3]: https://github.com/crimx/ext-saladict/compare/v5.28.1...v5.29.3
+[5.28.1]: https://github.com/crimx/ext-saladict/compare/v5.27.3...v5.28.1
+[5.27.3]: https://github.com/crimx/ext-saladict/compare/v5.19.1...v5.27.3
+[5.19.1]: https://github.com/crimx/ext-saladict/compare/v5.18.5...v5.19.1
+[5.18.5]: https://github.com/crimx/ext-saladict/compare/v5.16.1...v5.18.5
+[5.16.1]: https://github.com/crimx/ext-saladict/compare/v5.15.21...v5.16.1
+[5.15.21]: https://github.com/crimx/ext-saladict/compare/v5.15.19...v5.15.21
+[5.15.19]: https://github.com/crimx/ext-saladict/compare/v5.15.14...v5.15.19
+[5.15.14]: https://github.com/crimx/ext-saladict/compare/v5.15.12...v5.15.14
+[5.15.12]: https://github.com/crimx/ext-saladict/compare/v5.15.9...v5.15.12
+[5.15.9]: https://github.com/crimx/ext-saladict/compare/v5.15.4...v5.15.9
+[5.15.4]: https://github.com/crimx/ext-saladict/compare/v5.15.2...v5.15.4
+[5.15.2]: https://github.com/crimx/ext-saladict/compare/v5.12.8...v5.15.2
+[5.12.8]: https://github.com/crimx/ext-saladict/compare/v5.11.23...v5.12.8
+[5.11.23]: https://github.com/crimx/ext-saladict/compare/v5.7.20...v5.11.23
+[5.7.20]: https://github.com/crimx/ext-saladict/compare/v5.5.14...v5.7.20
+[5.5.14]: https://github.com/crimx/ext-saladict/compare/v5.5.12...v5.5.14
+[5.5.12]: https://github.com/crimx/ext-saladict/compare/v5.3.9...v5.5.12
+[5.3.9]: https://github.com/crimx/ext-saladict/compare/v5.1.6...v5.3.9
+[5.1.6]: https://github.com/crimx/ext-saladict/compare/v5.0.0...v5.1.6
+[5.0.0]: https://github.com/crimx/ext-saladict/compare/v4.1.1...v5.0.0
+[4.1.1]: https://github.com/crimx/ext-saladict/tree/v4.1.1

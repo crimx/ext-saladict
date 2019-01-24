@@ -1,7 +1,7 @@
 import React from 'react'
 import { translate, TranslationFunction } from 'react-i18next'
 import { Layout, Table, Tooltip, Button, Dropdown, Icon, Menu, Modal, Input } from 'antd'
-import { TablePaginationConfig, TableRowSelection, ColumnProps } from 'antd/lib/table/interface'
+import { PaginationConfig, TableRowSelection, ColumnProps } from 'antd/lib/table/interface'
 import { ClickParam as MenuClickParam } from 'antd/lib/menu'
 
 import ExportModal from './ExportModal'
@@ -35,7 +35,7 @@ export interface WordPageMainProps {
 export interface WordPageMainState {
   searchText: string
   words: Word[]
-  pagination: TablePaginationConfig
+  pagination: PaginationConfig
   rowSelection: TableRowSelection<Word>
   selectedRows: Word[]
   loading: boolean

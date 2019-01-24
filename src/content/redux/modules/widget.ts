@@ -1,19 +1,17 @@
 import * as recordManager from '@/_helpers/record-manager'
 import { StoreState, DispatcherThunk, Dispatcher } from './index'
-import appConfigFactory, { TCDirection, DictID } from '@/app-config'
-import { message, storage } from '@/_helpers/browser-api'
-import { createConfigIDListStream } from '@/_helpers/config-manager'
+import { getDefaultConfig, TCDirection, DictID } from '@/app-config'
+import { message } from '@/_helpers/browser-api'
+import { createProfileIDListStream } from '@/_helpers/profile-manager'
 import { searchText, restoreDicts, summonedPanelInit } from '@/content/redux/modules/dictionaries'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { Mutable } from '@/typings/helpers'
-import { reflect } from '@/_helpers/promise-more'
-import { MachineTranslateResult } from '@/components/dictionaries/helpers'
+import { translateCtx } from '@/_helpers/translateCtx'
 import {
   MsgType,
   MsgTempDisabledState,
   MsgEditWord,
   MsgOpenUrl,
-  MsgFetchDictResult,
   MsgQSPanelIDChanged,
   MsgQueryQSPanel,
   MsgQueryQSPanelResponse,
@@ -24,7 +22,6 @@ const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 const isSaladictQuickSearchPage = !!window.__SALADICT_QUICK_SEARCH_PAGE__
 const isStandalonePage = isSaladictPopupPage || isSaladictQuickSearchPage
-const isSaladictPDFPage = !!window.__SALADICT_PDF_PAGE__
 
 const panelHeaderHeight = 30 + 12 // menu bar + multiline search box button
 
@@ -44,7 +41,7 @@ export const enum ActionType {
   EDITOR_WORD_UPDATE = 'widget/EDITOR_WORD_UPDATE',
   NEW_PANEL_HEIGHT = 'widget/NEW_PANEL_HEIGHT',
   PANEL_CORDS = 'widget/PANEL_CORDS',
-  CONFIG_PROFILE_lIST = 'widget/CONFIG_PROFILE_lIST',
+  PROFILE_lIST = 'widget/PROFILE_lIST',
   SEARCH_BOX_UPDATE = 'dicts/SEARCH_BOX_UPDATE',
   QS_PANEL_TABID_CHANGED = 'dicts/QS_PANEL_TABID_CHANGED',
 }
@@ -65,7 +62,7 @@ interface WidgetPayload {
   [ActionType.NEW_SELECTION]: Partial<WidgetState['widget']>
   [ActionType.NEW_PANEL_HEIGHT]: number
   [ActionType.PANEL_CORDS]: { x: number, y: number }
-  [ActionType.CONFIG_PROFILE_lIST]: Array<{ id: string, name: string }>
+  [ActionType.PROFILE_lIST]: Array<{ id: string, name: string }>
   [ActionType.SEARCH_BOX_UPDATE]: {
     text: string
     index: number
@@ -105,14 +102,14 @@ export type WidgetState = {
       isPinned: boolean
       shouldPanelShow: boolean
     }
-    readonly configProfiles: Array<{ id: string, name: string }>
+    readonly profiles: Array<{ id: string, name: string }>
     /** index in search history */
     readonly searchBoxIndex: number
     readonly searchBoxText: string
   }
 }
 
-const _initConfig = appConfigFactory()
+const _initConfig = getDefaultConfig()
 
 export const initState: WidgetState = {
   widget: {
@@ -128,7 +125,7 @@ export const initState: WidgetState = {
         ? window.innerWidth - _initConfig.panelWidth - 30
         : 0,
       y: isSaladictOptionsPage
-        ? window.innerHeight * (1 - _initConfig.panelMaxHeightRatio) / 2
+        ? window.innerHeight * (1 - _initConfig.panelMaxHeightRatio / 100) / 2
         : 0,
       width: _initConfig.panelWidth,
       height: panelHeaderHeight,
@@ -144,7 +141,7 @@ export const initState: WidgetState = {
       isPinned: false,
       shouldPanelShow: false,
     },
-    configProfiles: [],
+    profiles: [],
     searchBoxIndex: 0,
     searchBoxText: '',
   }
@@ -330,7 +327,7 @@ export const reducer: WidgetReducer = {
       newState.widget.shouldPanelShow = true
       newState.widget.panelRect = _reconcilePanelRect(
         40,
-        (1 - state.config.panelMaxHeightRatio) * window.innerHeight / 2,
+        (1 - state.config.panelMaxHeightRatio) * window.innerHeight / 100 / 2,
         width,
         height,
       )
@@ -388,12 +385,12 @@ export const reducer: WidgetReducer = {
       }
     }
   },
-  [ActionType.CONFIG_PROFILE_lIST] (state, configProfiles) {
+  [ActionType.PROFILE_lIST] (state, profiles) {
     return {
       ...state,
       widget: {
         ...state.widget,
-        configProfiles,
+        profiles,
       }
     }
   },
@@ -438,7 +435,7 @@ export default reducer
 \*-----------------------------------------------*/
 
 interface Action<T extends ActionType> {
-  type: ActionType,
+  type: T,
   payload?: WidgetPayload[T]
 }
 
@@ -486,8 +483,8 @@ export function panelOnDrag (x: number, y: number): Action<ActionType.PANEL_CORD
   return ({ type: ActionType.PANEL_CORDS, payload: { x, y } })
 }
 
-export function updateConfigProfiles (payload: WidgetPayload[ActionType.CONFIG_PROFILE_lIST]): Action<ActionType.CONFIG_PROFILE_lIST> {
-  return ({ type: ActionType.CONFIG_PROFILE_lIST, payload })
+export function updateProfileIDList (payload: WidgetPayload[ActionType.PROFILE_lIST]): Action<ActionType.PROFILE_lIST> {
+  return ({ type: ActionType.PROFILE_lIST, payload })
 }
 
 export function searchBoxUpdate (payload: WidgetPayload[ActionType.SEARCH_BOX_UPDATE]): Action<ActionType.SEARCH_BOX_UPDATE> {
@@ -515,22 +512,8 @@ export function startUpAction (): DispatcherThunk {
       listenTrpleCtrl(dispatch, getState)
     }
 
-    createConfigIDListStream().subscribe(async idlist => {
-      const profiles: Array<{ id: string, name: string }> = []
-      for (let i = 0; i < idlist.length; i++) {
-        const id = idlist[i]
-        // beware of quota bytes per item exceeds
-        const profile = (await storage.sync.get(id))[id]
-        if (profile) {
-          profiles.push({ id, name: profile.name })
-        } else {
-          if (process.env.DEV_BUILD) {
-            console.warn(`Update config ID List: id "${id}" not exist`)
-          }
-        }
-      }
-
-      dispatch(updateConfigProfiles(profiles))
+    createProfileIDListStream().subscribe(idlist => {
+      dispatch(updateProfileIDList(idlist))
     })
 
     if (!isSaladictQuickSearchPage) {
@@ -550,7 +533,7 @@ export function startUpAction (): DispatcherThunk {
     // from word page
     message.self.addListener<MsgEditWord>(MsgType.EditWord, ({ word }) => {
       dispatch(searchText({ info: word }))
-      dispatch(requestFavWord())
+      dispatch(updateEditorWord(word))
     })
   }
 }
@@ -643,35 +626,13 @@ export function requestFavWord (): DispatcherThunk {
       }
     }
 
-    if (word.context) {
-      const dicts = ['Google', 'Sogou']
-      const ids = ['google', 'sogou'] as ['google', 'sogou']
-      const payload = { isPDF: isSaladictPDFPage }
-      reflect<MachineTranslateResult>(ids.map(id => message.send<MsgFetchDictResult>({
-        type: MsgType.FetchDictResult,
-        id,
-        text: word.context,
-        payload,
-      })))
-      .then(results => {
-        const trans = results
-          .map((result, i) => result && dicts[i] + ': ' + result.trans.text)
-          .filter(Boolean)
-          .join('\n')
-        if (!trans) { return }
-
-        if (config.editOnFav) {
-          const editorWord = widget.editorWord || word
-          dispatch(updateEditorWord({
-            ...editorWord,
-            trans: editorWord.trans
-              ? editorWord.trans + '\n\n' + trans
-              : trans
-          }))
-        } else {
-          dispatch(addToNotebook({ ...word, trans }))
-        }
-      })
+    if (word.context && !config.editOnFav) {
+      translateCtx(word.context, config.ctxTrans)
+        .then(trans => {
+          if (trans) {
+            dispatch(addToNotebook({ ...word, trans }))
+          }
+        })
     }
   }
 }
@@ -708,7 +669,7 @@ export function updateItemHeight (id: DictID | '_mtabox', height: number): Dispa
 
       const winHeight = window.innerHeight
       const newHeight = Math.min(
-        winHeight * state.config.panelMaxHeightRatio,
+        winHeight * state.config.panelMaxHeightRatio / 100,
         panelHeaderHeight +
         (dictHeights._mtabox || 0) +
         state.dictionaries.active

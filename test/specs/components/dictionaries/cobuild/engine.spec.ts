@@ -1,5 +1,6 @@
 import { search } from '@/components/dictionaries/cobuild/engine'
-import { appConfigFactory, AppConfigMutable } from '@/app-config'
+import { getDefaultConfig, AppConfigMutable } from '@/app-config'
+import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
 import fs from 'fs'
 import path from 'path'
 
@@ -13,11 +14,11 @@ describe('Dict/COBUILD/engine', () => {
   })
 
   it('should parse result correctly', () => {
-    const config = appConfigFactory() as AppConfigMutable
-    config.dicts.all.cobuild.options = {
+    const profile = getDefaultProfile() as ProfileMutable
+    profile.dicts.all.cobuild.options = {
       sentence: 4
     }
-    return search('any', config, { isPDF: false })
+    return search('any', getDefaultConfig(), profile, { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toHaveProperty('us', expect.stringContaining('mp3'))
         expect(searchResult.audio).toHaveProperty('uk', expect.stringContaining('mp3'))

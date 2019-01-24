@@ -132,12 +132,12 @@ function extractSentenceHead (anchorNode: Node, anchorOffset: number): string {
 
     const puncTester = /[.?!。？！…]/
     /** meaningful char after dot "." */
-    const charTester = /[\s.?!。？！…]/
+    const charTester = /[^\s.?!。？！…]/
 
     for (let i = leadingText.length - 1; i >= 0; i--) {
       const c = leadingText[i]
       if (puncTester.test(c)) {
-        if (c === '.' && charTester.test(c)) {
+        if (c === '.' && charTester.test(leadingText[i + 1])) {
           // a.b is allowed
           continue
         }

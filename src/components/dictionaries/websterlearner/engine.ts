@@ -46,9 +46,9 @@ type WebsterLearnerSearchResult = DictSearchResult<WebsterLearnerResult>
 type WebsterLearnerSearchResultLex = DictSearchResult<WebsterLearnerResultLex>
 
 export const search: SearchFunction<WebsterLearnerSearchResult> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
-  const options = config.dicts.all.websterlearner.options
+  const options = profile.dicts.all.websterlearner.options
 
   return fetchDirtyDOM('http://www.learnersdictionary.com/definition/' + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
     .catch(handleNetWorkError)

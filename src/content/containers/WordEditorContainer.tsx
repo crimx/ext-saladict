@@ -8,6 +8,7 @@ export const mapStateToProps = ({ config, widget }: StoreState) => {
     editorWord: widget.editorWord,
     isAnimation: config.animation,
     dictPanelWidth: config.panelWidth,
+    ctxTrans: config.ctxTrans,
   }
 }
 

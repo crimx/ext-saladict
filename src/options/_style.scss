@@ -1,0 +1,138 @@
+/* ======================================= *\
+ * Antd Patch
+\* ======================================= */
+
+body {
+  background: #f0f2f5;
+}
+
+.ant-form-item.form-item-inline {
+  display: inline-block;
+  margin: 0 10px 0 0;
+
+  &:last-of-type {
+    margin-right: 0;
+  }
+}
+
+.sortable-list-item {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ant-radio-group.sortable-list-radio-group {
+  display: block;
+  margin-bottom: 10;
+}
+
+.ant-btn.sortable-list-item-btn {
+  margin-left: 10px;
+  padding: 0;
+  line-height: 1;
+  border: none;
+}
+
+/* ======================================= *\
+ * 快捷键 <kbd>
+\* ======================================= */
+
+kbd {
+  position: relative;
+  top: -0.3em;
+  display: inline-block;
+  padding: .25em .5em .2em;
+  margin-left: .25em;
+  margin-right: .25em;
+  font: 75%/1 monaco, menlo, consolas, 'courier new', courier, monospace;
+  border: solid 1px #ccc;
+  border-bottom-color: #bbb;
+  border-radius: 3px;
+  white-space: nowrap;
+  word-wrap: normal;
+  text-transform: capitalize; // 首字母大写
+
+  color: #555;
+  background-color: #fefefe;
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0));
+  box-shadow: 0 2px 0 #ccc, 0 3px 1px #999, inset 0 1px 1px #fff;
+}
+
+.dark kbd,
+kbd.dark {
+  color: #fdfdfd;
+  text-shadow: 0 -1px 0 #000;
+  border-color: #000;
+  background-color: #4d4c4c;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0) 80%, rgba(0, 0, 0, 0));
+  box-shadow: 0 2px 0 #000, 0 3px 1px #999, inset 0 1px 1px #aaa, inset 0 -1px 3px #272727;
+}
+
+kbd kbd {
+  padding: 0;
+  font-size: 100%;
+  font-weight: bold;
+  box-shadow: none;
+}
+
+
+// Mac 修饰键符号
+// https://support.apple.com/kb/PH10564?locale=zh_CN
+// [Mac——如何输入⌘、⌥、⇧、⌃、⎋等特殊字符](http://softu.cn/447)
+
+kbd[data-key]:after {
+  font-family: 'Myriad Set Pro', 'Helvetica Neue', 'Helvetica', 'Arial', 'Verdana', 'sans-serif';
+}
+
+kbd[data-key='command']:after {
+  content: ' ⌘';
+}
+
+kbd[data-key='cmd']:after {
+  content: ' ⌘';
+}
+
+kbd[data-key='shift']:after {
+  content: ' ⇧';
+}
+
+kbd[data-key='control']:after {
+  content: ' ⌃';
+}
+
+kbd[data-key='option']:after {
+  content: ' ⌥';
+}
+
+kbd[data-key='capslock']:after {
+  content: ' ⇪';
+}
+
+kbd[data-key='caps lock']:after {
+  content: ' ⇪';
+}
+
+kbd[data-key='escape']:after {
+  content: ' ⎋';
+}
+
+kbd[data-key='esc']:after {
+  content: ' ⎋';
+}
+
+kbd[data-key='return']:after {
+  content: ' ↩';
+}
+
+kbd[data-key='enter']:after {
+  content: ' ↩';
+}
+
+kbd[data-key='delete']:after {
+  content: ' ⌫';
+}
+
+kbd[data-key='eject']:after {
+  content: ' ⏏';
+}

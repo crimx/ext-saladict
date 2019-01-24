@@ -51,6 +51,10 @@ export async function getSyncConfig<T> (serviceID: string): Promise<T | undefine
   }
 }
 
+export function removeSyncConfig (): Promise<void> {
+  return storage.sync.remove('syncConfig')
+}
+
 /** Get a sync config and listen changes */
 export function createSyncConfigStream () {
   return concat(

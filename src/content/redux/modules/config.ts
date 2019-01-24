@@ -1,5 +1,7 @@
-import { appConfigFactory, AppConfig } from '@/app-config'
-import { addActiveConfigListener } from '@/_helpers/config-manager'
+import { getDefaultConfig, AppConfig } from '@/app-config'
+import getDefaultProfile, { Profile } from '@/app-config/profiles'
+import { addConfigListener } from '@/_helpers/config-manager'
+import { addActiveProfileListener } from '@/_helpers/profile-manager'
 import { StoreState, DispatcherThunk } from './index'
 import { newConfig as newConfigDicts } from './dictionaries'
 import { newConfig as newConfigWidget } from './widget'
@@ -17,7 +19,7 @@ export const enum ActionType {
 \*-----------------------------------------------*/
 
 interface ConfigPayload {
-  [ActionType.NEW_CONFIG]: AppConfig
+  [ActionType.NEW_CONFIG]: AppConfig | Profile
 }
 
 /*-----------------------------------------------*\
@@ -25,11 +27,14 @@ interface ConfigPayload {
 \*-----------------------------------------------*/
 
 export interface ConfigState {
-  readonly config: AppConfig
+  readonly config: AppConfig & Profile
 }
 
 export const initState: ConfigState = {
-  config: appConfigFactory()
+  config: {
+    ...getDefaultConfig(),
+    ...getDefaultProfile(),
+  }
 }
 
 /*-----------------------------------------------*\
@@ -41,8 +46,14 @@ type ConfigReducer = {
 }
 
 export const reducer: ConfigReducer = {
-  [ActionType.NEW_CONFIG] (state, config) {
-    return { ...state, config }
+  [ActionType.NEW_CONFIG] (state, configOrProfile) {
+    return {
+      ...state,
+      config: {
+        ...state.config,
+        ...configOrProfile,
+      }
+    }
   }
 }
 
@@ -53,13 +64,13 @@ export default reducer
 \*-----------------------------------------------*/
 
 interface Action<T extends ActionType> {
-  type: ActionType,
+  type: T,
   payload?: ConfigPayload[T]
 }
 
 /** When app config is updated */
-export function newConfig (config: AppConfig): Action<ActionType.NEW_CONFIG> {
-  return { type: ActionType.NEW_CONFIG, payload: config }
+export function newConfig (configOrProfile: AppConfig | Profile): Action<ActionType.NEW_CONFIG> {
+  return { type: ActionType.NEW_CONFIG, payload: configOrProfile }
 }
 
 /*-----------------------------------------------*\
@@ -69,15 +80,18 @@ export function newConfig (config: AppConfig): Action<ActionType.NEW_CONFIG> {
 /** Listen to config change and update config */
 export function startUpAction (): DispatcherThunk {
   return dispatch => {
-    addActiveConfigListener(({ newConfig: config }) => {
-      dispatch(updateConfig(config))
+    addConfigListener(({ newConfig: config }) => {
+      dispatch(updateConfig([config]))
+    })
+    addActiveProfileListener(({ newProfile }) => {
+      dispatch(updateConfig([newProfile]))
     })
   }
 }
 
-export function updateConfig (config: AppConfig): DispatcherThunk {
+export function updateConfig (configOrProfiles: Array<AppConfig | Profile>): DispatcherThunk {
   return dispatch => {
-    dispatch(newConfig(config))
+    configOrProfiles.forEach(item => dispatch(newConfig(item)))
     // first widget then dicts so that the panel rect is re-calculated
     dispatch(newConfigWidget())
     dispatch(newConfigDicts())

@@ -76,9 +76,9 @@ type BingSearchResultMachine = DictSearchResult<BingResultMachine>
 type BingSearchResultRelated = DictSearchResult<BingResultRelated>
 
 export const search: SearchFunction<DictSearchResult<BingResult>> = (
-  text, config, payload
+  text, config, profile, payload
 ) => {
-  const bingConfig = config.dicts.all.bing
+  const bingConfig = profile.dicts.all.bing
 
   return fetchDirtyDOM(DICT_LINK + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)

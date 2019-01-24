@@ -1,6 +1,6 @@
 import React from 'react'
 import { DictionariesState, SearchStatus } from '../../redux/modules/dictionaries'
-import { DictID, AppConfig, MtaAutoUnfold } from '@/app-config'
+import { DictID, MtaAutoUnfold, AllDicts } from '@/app-config'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
@@ -44,7 +44,10 @@ export interface DictPanelProps extends ChildrenProps {
   readonly panelMaxHeightRatio: number
   readonly mtaAutoUnfold: MtaAutoUnfold
   readonly dictionaries: DictionariesState['dictionaries']
-  readonly dictsConfig: AppConfig['dicts']
+  readonly dictsConfig: {
+    selected: DictID[]
+    all: AllDicts
+  }
   readonly selection: MsgSelection
 }
 
@@ -75,7 +78,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
   showMtaBox = (isShow: boolean) => {
     this.setState({
       mtaBoxHeight: isShow
-        ? window.innerHeight * this.props.panelMaxHeightRatio * 0.4
+        ? window.innerHeight * this.props.panelMaxHeightRatio / 100 * 0.4
         : 0
     })
   }
@@ -84,7 +87,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
     if (e) { e.currentTarget.blur() }
     this.setState(preState => {
       return { mtaBoxHeight: preState.mtaBoxHeight <= 0
-        ? window.innerHeight * this.props.panelMaxHeightRatio * 0.4
+        ? window.innerHeight * this.props.panelMaxHeightRatio / 100 * 0.4
         : 0
       }
     })
@@ -165,7 +168,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
     const {
       t,
       activeConfigID,
-      configProfiles,
+      profiles,
       isAnimation,
       isFav,
       isPinned,
@@ -205,7 +208,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
         {React.createElement(MenuBar, {
           t,
           activeConfigID,
-          configProfiles,
+          profiles,
           isFav,
           isPinned,
           isTripleCtrl,

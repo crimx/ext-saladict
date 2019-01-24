@@ -1,5 +1,6 @@
 import { search, LongmanResultLex, LongmanResultRelated } from '@/components/dictionaries/longman/engine'
-import { appConfigFactory, AppConfigMutable } from '@/app-config'
+import { getDefaultConfig, AppConfigMutable } from '@/app-config'
+import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
 import fs from 'fs'
 import path from 'path'
 
@@ -24,8 +25,8 @@ describe('Dict/Longman/engine', () => {
   })
 
   it('should parse lex result (love) correctly', () => {
-    const config = appConfigFactory() as AppConfigMutable
-    config.dicts.all.longman.options = {
+    const profile = getDefaultProfile() as ProfileMutable
+    profile.dicts.all.longman.options = {
       wordfams: false,
       collocations: true,
       grammar: true,
@@ -35,7 +36,7 @@ describe('Dict/Longman/engine', () => {
       related: true,
     }
 
-    return search('love', config, { isPDF: false })
+    return search('love', getDefaultConfig(), profile, { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
@@ -73,8 +74,8 @@ describe('Dict/Longman/engine', () => {
   })
 
   it('should parse lex result (profit) correctly', () => {
-    const config = appConfigFactory() as AppConfigMutable
-    config.dicts.all.longman.options = {
+    const profile = getDefaultProfile() as ProfileMutable
+    profile.dicts.all.longman.options = {
       wordfams: true,
       collocations: true,
       grammar: true,
@@ -84,7 +85,7 @@ describe('Dict/Longman/engine', () => {
       related: true,
     }
 
-    return search('profit', config, { isPDF: false })
+    return search('profit', getDefaultConfig(), profile, { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
@@ -135,7 +136,7 @@ describe('Dict/Longman/engine', () => {
   })
 
   it('should parse related result correctly', () => {
-    return search('jumblish', appConfigFactory(), { isPDF: false })
+    return search('jumblish', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 

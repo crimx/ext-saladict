@@ -1,3 +1,24 @@
+export interface DictItem {
+  lang: string
+  defaultUnfold: boolean
+  selectionWC: {
+    min: number,
+    max: number,
+  },
+  preferredHeight: number
+  selectionLang: {
+    eng: boolean
+    chs: boolean
+    minor: boolean
+  }
+  options?: {
+    [option: string]: number | boolean | string
+  }
+  options_sel?: {
+    [choice: string]: string[]
+  }
+}
+
 export function getALlDicts () {
   const allDicts = {
     bing: {
@@ -804,29 +825,10 @@ export function getALlDicts () {
     },
   }
 
-  // Just for type check. Keys in allDicts are useful so no actual assertion
-  // tslint:disable-next-line:no-unused-expression
+  // This is simply for type checking. The returned types are useful.
+  // tslint:disable-next-line: no-unused-expression
   allDicts as {
-    [id: string]: {
-      lang: string
-      defaultUnfold: boolean
-      selectionWC: {
-        min: number,
-        max: number,
-      },
-      preferredHeight: number
-      selectionLang: {
-        eng: boolean
-        chs: boolean
-        minor: boolean
-      }
-      options?: {
-        [option: string]: number | boolean | string
-      }
-      options_sel?: {
-        [choice: string]: string[]
-      }
-    }
+    [index: string]: DictItem
   }
 
   return allDicts
