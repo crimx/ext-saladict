@@ -99,6 +99,10 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   merge('baPreload', val => val === '' || val === 'clipboard' || val === 'selection')
   mergeBoolean('baAuto')
 
+  forEach(base.ctxTrans, (value, id) => {
+    mergeBoolean(`ctxTrans.${id}`)
+  })
+
   mergeBoolean('language.chinese')
   mergeBoolean('language.english')
   mergeBoolean('language.minor')

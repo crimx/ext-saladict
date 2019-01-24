@@ -8,7 +8,7 @@ import { updateConfigOrProfile, formItemLayout } from '../helpers'
 import SyncServiceModal from './SyncServiceModal'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, Switch, Modal, Button } from 'antd'
+import { Form, Switch, Modal, Button, Checkbox } from 'antd'
 
 export type NotebookProps = Props & FormComponentProps
 
@@ -104,7 +104,6 @@ export class Notebook extends React.Component<NotebookProps> {
 
     return (
       <Form>
-        <Button onClick={this.openSyncService}>{t('opt_sync_btn')}</Button>
         <Form.Item
           {...formItemLayout}
           label={t('opt_edit_on_fav')}
@@ -142,6 +141,28 @@ export class Notebook extends React.Component<NotebookProps> {
             )
           }</Form.Item>
         }
+        <Form.Item
+          {...formItemLayout}
+          label={t('opt_ctx_trans')}
+          help={t('opt_ctx_trans_help')}
+        >
+          {Object.keys(config.ctxTrans).map(id => (
+            <Form.Item key={id} style={{ marginBottom: 0 }}>{
+              getFieldDecorator(`config#ctxTrans#${id}`, {
+                initialValue: config.ctxTrans[id],
+                valuePropName: 'checked',
+              })(
+                <Checkbox>{t(`dict:${id}`)}</Checkbox>
+              )
+            }</Form.Item>
+          ))}
+        </Form.Item>
+        <Form.Item
+          {...formItemLayout}
+          label={t('opt_sync_btn')}
+        >
+          <Button onClick={this.openSyncService}>{t('opt_sync_btn')}</Button>
+        </Form.Item>
         <Modal
           visible={!!syncServiceConfig}
           title={t('sync_notebook_title')}

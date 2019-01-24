@@ -630,34 +630,37 @@ export function requestFavWord (): DispatcherThunk {
     }
 
     if (word.context) {
-      const dicts = ['Google', 'Sogou']
-      const ids = ['google', 'sogou'] as ['google', 'sogou']
-      const payload = { isPDF: isSaladictPDFPage }
-      reflect<MachineTranslateResult>(ids.map(id => message.send<MsgFetchDictResult>({
-        type: MsgType.FetchDictResult,
-        id,
-        text: word.context,
-        payload,
-      })))
-      .then(results => {
-        const trans = results
-          .map((result, i) => result && dicts[i] + ': ' + result.trans.text)
-          .filter(Boolean)
-          .join('\n')
-        if (!trans) { return }
+      const ids = Object.keys(config.ctxTrans).filter(id => config.ctxTrans[id]) as DictID[]
+      if (ids.length > 0) {
+        const payload = { isPDF: isSaladictPDFPage }
+        reflect<MachineTranslateResult>(ids.map(id => message.send<MsgFetchDictResult>({
+          type: MsgType.FetchDictResult,
+          id,
+          text: word.context,
+          payload,
+        })))
+        .then(results => {
+          const trans = results
+            .map((result, i) => result && [ids[i], result.trans.text])
+            .filter((x): x is [string, string] => !!x)
+            .map(([id, text], i, arr) => arr.length > 1 ? `${id}: ${text}` : text)
+            .join('\n')
 
-        if (config.editOnFav) {
-          const editorWord = widget.editorWord || word
-          dispatch(updateEditorWord({
-            ...editorWord,
-            trans: editorWord.trans
-              ? editorWord.trans + '\n\n' + trans
-              : trans
-          }))
-        } else {
-          dispatch(addToNotebook({ ...word, trans }))
-        }
-      })
+          if (!trans) { return }
+
+          if (config.editOnFav) {
+            const editorWord = widget.editorWord || word
+            dispatch(updateEditorWord({
+              ...editorWord,
+              trans: editorWord.trans
+                ? editorWord.trans + '\n\n' + trans
+                : trans
+            }))
+          } else {
+            dispatch(addToNotebook({ ...word, trans }))
+          }
+        })
+      }
     }
   }
 }

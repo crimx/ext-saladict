@@ -274,6 +274,16 @@
     "zh_CN": "链接中的 %s 会被替换为选词。",
     "zh_TW": "連結中的 %s 會被替換為選詞。"
   },
+  "opt_ctx_trans": {
+    "en": "Context Translate Engines",
+    "zh_CN": "上下文翻译引擎",
+    "zh_TW": "上下文翻譯引擎"
+  },
+  "opt_ctx_trans_help": {
+    "en": "Context sentence will be translated before being added to notebook.",
+    "zh_CN": "单词被添加进生词本前会自动翻译上下文。",
+    "zh_TW": "單字加入生字本前會自動翻譯上下文。"
+  },
   "opt_dict_panel_font_size": {
     "en": "Font size for search reasults",
     "zh_CN": "词典内容字体大小",

@@ -203,6 +203,12 @@ function _getDefaultConfig () {
     /** auto search when browser action triggered */
     baAuto: false,
 
+    /** context tranlate engines */
+    ctxTrans: {
+      google: true,
+      sogou: true,
+    } as { [id in DictID]: boolean },
+
     /** start searching when source containing the languages */
     language: {
       chinese: true,
