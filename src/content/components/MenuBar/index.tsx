@@ -39,8 +39,10 @@ export interface MenuBarProps extends MenuBarDispatchers {
   readonly activeDicts: string[]
   readonly activeConfigID: string
   readonly profiles: Array<{ id: string, name: string }>
-  readonly searchBoxText: string
-  readonly searchBoxIndex: number
+  readonly searchBox: {
+    readonly index: number
+    readonly text: string
+  }
   readonly isShowMtaBox: boolean
   readonly searchSuggests: boolean
 }
@@ -101,10 +103,10 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   }
 
   searchText = (text?: string) => {
-    if (this.props.searchBoxText) {
+    if (this.props.searchBox.text) {
       return this.props.searchText({
         info: getDefaultSelectionInfo({
-          text: text || this.props.searchBoxText,
+          text: text || this.props.searchBox.text,
           title: this.props.t('fromSaladict'),
           favicon: 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
         }),
@@ -116,7 +118,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   handleIconBackClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
     // button will be disabled when it's on the boundary
-    const index = this.props.searchBoxIndex + 1
+    const index = this.props.searchBox.index + 1
     this.props.searchBoxUpdate({
       index,
       text: this.props.searchHistory[index].text
@@ -128,7 +130,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   handleIconNextClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
     // button will be disabled when it's on the boundary
-    const index = this.props.searchBoxIndex - 1
+    const index = this.props.searchBox.index - 1
     this.props.searchBoxUpdate({
       index,
       text: this.props.searchHistory[index].text
@@ -139,7 +141,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   handleSearchBoxInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     const text = e.currentTarget.value
     this.props.searchBoxUpdate({
-      index: this.props.searchBoxIndex,
+      index: this.props.searchBox.index,
       text,
     })
     if (this.props.searchSuggests) {
@@ -313,7 +315,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   }
 
   componentDidUpdate (prevProps: MenuBarProps) {
-    if (prevProps.searchBoxText === this.props.searchBoxText &&
+    if (prevProps.searchBox.text === this.props.searchBox.text &&
         !this.props.isShowMtaBox &&
         !this.state.isShowSuggestPanel &&
         (isStandalonePage || this.props.isTripleCtrl || this.props.activeDicts.length <= 0) &&
@@ -394,8 +396,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
       handleDragAreaMouseDown,
       handleDragAreaTouchStart,
       searchHistory,
-      searchBoxIndex,
-      searchBoxText,
+      searchBox,
       searchSuggests,
     } = this.props
 
@@ -409,7 +410,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
         <button
           className='panel-MenuBar_Btn-dir'
           onClick={this.handleIconBackClick}
-          disabled={searchBoxIndex >= searchHistory.length - 1}
+          disabled={searchBox.index >= searchHistory.length - 1}
         >
           <svg
             className='panel-MenuBar_Icon'
@@ -423,7 +424,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
         <button
           className='panel-MenuBar_Btn-dir'
           onClick={this.handleIconNextClick}
-          disabled={searchBoxIndex <= 0}
+          disabled={searchBox.index <= 0}
         >
           <svg
             className='panel-MenuBar_Icon'
@@ -441,7 +442,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
           onChange={this.handleSearchBoxInput}
           onKeyUp={this.handleSearchBoxKeyUp}
           onBlur={this.hideSuggests}
-          value={searchBoxText.replace(/\s+/g, ' ')}
+          value={searchBox.text.replace(/\s+/g, ' ')}
         />
 
         <div>

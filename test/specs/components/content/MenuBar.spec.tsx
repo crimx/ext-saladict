@@ -22,8 +22,10 @@ describe('Component/content/MenuBar', () => {
       activeDicts: [config.id],
       activeConfigID: config.id,
       profiles: [getDefaultProfileID()],
-      searchBoxText: '',
-      searchBoxIndex: 0,
+      searchBox: {
+        index: 0,
+        text: '',
+      },
       isShowMtaBox: false,
 
       searchText: noop,
@@ -53,8 +55,10 @@ describe('Component/content/MenuBar', () => {
       activeDicts: [config.id],
       activeConfigID: config.id,
       profiles: [getDefaultProfileID()],
-      searchBoxText: '',
-      searchBoxIndex: 0,
+      searchBox: {
+        index: 0,
+        text: '',
+      },
       isShowMtaBox: true,
 
       searchText: noop,

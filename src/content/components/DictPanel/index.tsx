@@ -95,7 +95,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
 
   handleMtaBoxInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     this.props.searchBoxUpdate({
-      index: this.props.searchBoxIndex,
+      index: this.props.searchBox.index,
       text: e.currentTarget.value
     })
   }
@@ -103,10 +103,10 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
   handleMtaBoxKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && e.ctrlKey) {
       e.preventDefault()
-      if (this.props.searchBoxText) {
+      if (this.props.searchBox.text) {
         return this.searchText({
           info: getDefaultSelectionInfo({
-            text: this.props.searchBoxText,
+            text: this.props.searchBox.text,
             title: this.props.t('fromSaladict'),
             favicon: 'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
           }),
@@ -157,7 +157,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
   renderMtaBox = () => (
     <textarea
       ref={this.MtaBoxRef}
-      value={this.props.searchBoxText}
+      value={this.props.searchBox.text}
       onChange={this.handleMtaBoxInput}
       onKeyDown={this.handleMtaBoxKeyDown}
       style={{ fontSize: this.props.fontSize }}
@@ -176,8 +176,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
       handleDragAreaMouseDown,
       handleDragAreaTouchStart,
       searchBoxUpdate,
-      searchBoxText,
-      searchBoxIndex,
+      searchBox,
       requestFavWord,
       shareImg,
       panelPinSwitch,
@@ -220,8 +219,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
           handleDragAreaTouchStart,
           searchText: this.searchText,
           searchBoxUpdate,
-          searchBoxText,
-          searchBoxIndex,
+          searchBox,
           requestFavWord,
           shareImg,
           panelPinSwitch,

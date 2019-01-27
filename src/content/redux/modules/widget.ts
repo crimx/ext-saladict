@@ -104,8 +104,10 @@ export type WidgetState = {
     }
     readonly profiles: Array<{ id: string, name: string }>
     /** index in search history */
-    readonly searchBoxIndex: number
-    readonly searchBoxText: string
+    readonly searchBox: {
+      index: number
+      text: string
+    }
   }
 }
 
@@ -142,8 +144,10 @@ export const initState: WidgetState = {
       shouldPanelShow: false,
     },
     profiles: [],
-    searchBoxIndex: 0,
-    searchBoxText: '',
+    searchBox: {
+      index: 0,
+      text: '',
+    },
   }
 }
 
@@ -394,13 +398,12 @@ export const reducer: WidgetReducer = {
       }
     }
   },
-  [ActionType.SEARCH_BOX_UPDATE] (state, { text, index }) {
+  [ActionType.SEARCH_BOX_UPDATE] (state, searchBox) {
     return {
       ...state,
       widget: {
         ...state.widget,
-        searchBoxText: text,
-        searchBoxIndex: index,
+        searchBox,
       }
     }
   },
