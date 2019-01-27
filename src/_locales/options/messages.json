@@ -351,8 +351,8 @@
   },
   "opt_edit_on_fav_help": {
     "en": "When turned off, new words will be added to notebook directly.",
-    "zh_CN": "关闭后，点击红心生词将至今添加到生词本，上下文翻译亦会自动获取。",
-    "zh_TW": "關閉後，點選紅心生詞將至今新增到生詞本，上下文翻譯亦會自動獲取。"
+    "zh_CN": "关闭后，点击红心生词将自动添加到生词本，上下文翻译亦会自动获取。",
+    "zh_TW": "關閉後，點選紅心生詞將自動新增到生詞本，上下文翻譯亦會自動獲取。"
   },
   "opt_history": {
     "en": "Keep search history",
