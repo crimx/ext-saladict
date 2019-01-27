@@ -26,8 +26,8 @@ export default () => {
     composeEnhancers(applyMiddleware(thunk))
   )
 
-  Promise.all([getConfig(), getActiveProfile()]).then(configOrProfiles => {
-    store.dispatch<any>(updateConfig(configOrProfiles))
+  Promise.all([getConfig(), getActiveProfile()]).then(([config, profile]) => {
+    store.dispatch<any>(updateConfig({ ...config, ...profile }))
     store.dispatch<any>(configStartUp())
     store.dispatch<any>(selectionStartUp())
     store.dispatch<any>(widgetStartUp())
