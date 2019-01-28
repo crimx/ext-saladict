@@ -102,6 +102,8 @@ describe('Profile Manager', () => {
       profile2.id,
       'profileIDList',
       'activeProfileID',
+      'configProfileIDs',
+      'activeConfigID',
     ]))).toBeTruthy()
     expect(browser.storage.sync.set.calledWith(sinon.match({
       profileIDList: sinon.match.array,
