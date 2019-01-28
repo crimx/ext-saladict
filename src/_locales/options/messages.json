@@ -129,6 +129,11 @@
     "zh_CN": "网址支持匹配模式（<a href=\"https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例\" target=\"_blank\">例子</a>）。留空保存即可清除。",
     "zh_TW": "網址支援匹配模式（<a href=\"https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例\" target=\"_blank\">例子</a>）。留空儲存即可清除。"
   },
+  "msg_update_error": {
+    "en": "Unable to update",
+    "zh_CN": "设置更新失败",
+    "zh_TW": "設定更新失敗"
+  },
   "msg_updated": {
     "en": "Successfully updated",
     "zh_CN": "设置已更新",
