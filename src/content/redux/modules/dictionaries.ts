@@ -152,8 +152,8 @@ export const reducer: DictsReducer = {
   },
   [ActionType.SEARCH_START] (state, { toStart, toOnhold, toActive, info }) {
     const { dictionaries, widget } = state
-    const history = widget.searchBoxIndex > 0
-      ? dictionaries.searchHistory.slice(widget.searchBoxIndex)
+    const history = widget.searchBox.index > 0
+      ? dictionaries.searchHistory.slice(widget.searchBox.index)
       : dictionaries.searchHistory
 
     const dicts = { ...dictionaries.dicts }
@@ -287,7 +287,7 @@ export function searchText (
 ): DispatcherThunk {
   return (dispatch, getState) => {
     const state = getState()
-    const searchBoxIndex = state.widget.searchBoxIndex || 0
+    const searchBoxIndex = state.widget.searchBox.index || 0
     const info = arg
       ? arg.info || state.dictionaries.searchHistory[searchBoxIndex]
       : state.dictionaries.searchHistory[searchBoxIndex]
@@ -444,6 +444,8 @@ export function summonedPanelInit (
         dispatch(searchText({ info }))
       } else {
         dispatch(restoreDicts())
+        dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
+        // extra same text update which lets search input box select text
         dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
       }
     }

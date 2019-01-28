@@ -129,6 +129,11 @@
     "zh_CN": "网址支持匹配模式（<a href=\"https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例\" target=\"_blank\">例子</a>）。留空保存即可清除。",
     "zh_TW": "網址支援匹配模式（<a href=\"https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例\" target=\"_blank\">例子</a>）。留空儲存即可清除。"
   },
+  "msg_update_error": {
+    "en": "Unable to update",
+    "zh_CN": "设置更新失败",
+    "zh_TW": "設定更新失敗"
+  },
   "msg_updated": {
     "en": "Successfully updated",
     "zh_CN": "设置已更新",
@@ -351,8 +356,8 @@
   },
   "opt_edit_on_fav_help": {
     "en": "When turned off, new words will be added to notebook directly.",
-    "zh_CN": "关闭后，点击红心生词将至今添加到生词本，上下文翻译亦会自动获取。",
-    "zh_TW": "關閉後，點選紅心生詞將至今新增到生詞本，上下文翻譯亦會自動獲取。"
+    "zh_CN": "关闭后，点击红心生词将自动添加到生词本，上下文翻译亦会自动获取。",
+    "zh_TW": "關閉後，點選紅心生詞將自動新增到生詞本，上下文翻譯亦會自動獲取。"
   },
   "opt_history": {
     "en": "Keep search history",

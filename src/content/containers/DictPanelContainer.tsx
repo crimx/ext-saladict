@@ -36,8 +36,7 @@ export const mapStateToProps = ({
     shouldPanelShow: widget.shouldPanelShow,
     panelRect: widget.panelRect,
 
-    searchBoxText: widget.searchBoxText,
-    searchBoxIndex: widget.searchBoxIndex,
+    searchBox: widget.searchBox,
 
     dictionaries,
   }

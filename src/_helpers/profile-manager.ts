@@ -75,6 +75,7 @@ export async function initProfiles (): Promise<Profile> {
     }>(['configProfileIDs', 'activeConfigID'])
 
     if (configProfileIDs && configProfileIDs.length > 0) {
+      await storage.sync.remove(['configProfileIDs', 'activeConfigID'])
       // quota bytes limit
       for (const id of configProfileIDs) {
         const config = (await storage.sync.get(id))[id]
@@ -129,6 +130,9 @@ export async function resetAllProfiles () {
       ...profileIDList.map(({ id }) => id),
       'profileIDList',
       'activeProfileID',
+      // legacy
+      'configProfileIDs',
+      'activeConfigID',
     ])
   }
   return initProfiles()

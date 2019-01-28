@@ -80,18 +80,18 @@ export function newConfig (configOrProfile: AppConfig | Profile): Action<ActionT
 /** Listen to config change and update config */
 export function startUpAction (): DispatcherThunk {
   return dispatch => {
-    addConfigListener(({ newConfig: config }) => {
-      dispatch(updateConfig([config]))
+    addConfigListener(({ newConfig }) => {
+      dispatch(updateConfig(newConfig))
     })
     addActiveProfileListener(({ newProfile }) => {
-      dispatch(updateConfig([newProfile]))
+      dispatch(updateConfig(newProfile))
     })
   }
 }
 
-export function updateConfig (configOrProfiles: Array<AppConfig | Profile>): DispatcherThunk {
+export function updateConfig (configOrProfile: AppConfig | Profile): DispatcherThunk {
   return dispatch => {
-    configOrProfiles.forEach(item => dispatch(newConfig(item)))
+    dispatch(newConfig(configOrProfile))
     // first widget then dicts so that the panel rect is re-calculated
     dispatch(newConfigWidget())
     dispatch(newConfigDicts())

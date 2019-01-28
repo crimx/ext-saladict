@@ -28,12 +28,12 @@ export function _getDefaultProfile (id?: string) {
     dicts: {
       /** default selected dictionaries */
       selected: [
+        'bing',
         'cobuild',
         'cambridge',
         'youdao',
         'urban',
         'vocabulary',
-        'bing',
         'google',
         'sogou',
         'zdic',

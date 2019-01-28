@@ -5,6 +5,8 @@ import { updateProfile } from '@/_helpers/profile-manager'
 import set from 'lodash/set'
 import get from 'lodash/get'
 
+import { message } from 'antd'
+
 interface FormItemLayout {
   readonly labelCol: { readonly span: number }
   readonly wrapperCol: { readonly span: number }
@@ -86,12 +88,14 @@ export function updateConfigOrProfile (
       clearTimeout(updateConfigTimeout)
       updateConfigTimeout = setTimeout(() => {
         updateConfig(props.config)
+          .catch(() => message.error(props.t('msg_update_error')))
       }, delay)
       break
     case 'profile':
       clearTimeout(updateProfileTimeout)
       updateProfileTimeout = setTimeout(() => {
         updateProfile(props.profile)
+          .catch(() => message.error(props.t('msg_update_error')))
       }, delay)
       break
     default:

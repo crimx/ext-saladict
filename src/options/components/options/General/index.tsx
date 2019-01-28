@@ -29,7 +29,12 @@ export class General extends React.Component<Props & FormComponentProps> {
   componentDidUpdate () {
     if (this.isReseted) {
       this.isReseted = false
-      this.props.form.resetFields()
+      const { form, config } = this.props
+      form.setFieldsValue({
+        'config#active': config.active,
+        'config#animation': config.animation,
+        'config#langCode': config.langCode,
+      })
     }
   }
 
