@@ -25,41 +25,12 @@ interface PopupState {
 }
 
 export class Popup extends React.Component<PopupProps & { t: TranslationFunction }, PopupState> {
-  state = {
+  state: PopupState = {
     currentTabUrl: '',
     isShowUrlBox: false,
     tempOff: false,
     showPageNoResponse: false,
     insCapMode: 'mode' as 'mode' | 'pinMode',
-  }
-
-  constructor (props: any) {
-    super(props)
-    browser.tabs.query({ active: true, currentWindow: true })
-      .then(tabs => {
-        if (tabs.length > 0 && tabs[0].id != null) {
-          message.send<MsgTempDisabledState>(
-            tabs[0].id as number,
-            {
-              type: MsgType.TempDisabledState,
-              op: 'get',
-            },
-          ).then(flag => {
-            this.setState({ tempOff: flag })
-          })
-
-          message.send<MsgQueryPanelState, boolean>(
-            tabs[0].id as number,
-            {
-              type: MsgType.QueryPanelState,
-              path: 'widget.isPinned',
-            },
-          ).then(isPinned => {
-            this.setState({ insCapMode: isPinned ? 'pinMode' : 'mode' })
-          })
-        }
-      })
-      .catch(err => console.warn('Error when receiving MsgTempDisabled response', err))
   }
 
   activeContainer = () => {
@@ -186,6 +157,34 @@ export class Popup extends React.Component<PopupProps & { t: TranslationFunction
         }
       </div>
     )
+  }
+
+  componentDidMount () {
+    browser.tabs.query({ active: true, currentWindow: true })
+    .then(tabs => {
+      if (tabs.length > 0 && tabs[0].id != null) {
+        message.send<MsgTempDisabledState>(
+          tabs[0].id as number,
+          {
+            type: MsgType.TempDisabledState,
+            op: 'get',
+          },
+        ).then(flag => {
+          this.setState({ tempOff: flag })
+        })
+
+        message.send<MsgQueryPanelState, boolean>(
+          tabs[0].id as number,
+          {
+            type: MsgType.QueryPanelState,
+            path: 'widget.isPinned',
+          },
+        ).then(isPinned => {
+          this.setState({ insCapMode: isPinned ? 'pinMode' : 'mode' })
+        })
+      }
+    })
+    .catch(err => console.warn('Error when receiving MsgTempDisabled response', err))
   }
 
   render () {

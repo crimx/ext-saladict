@@ -32,13 +32,11 @@ interface AppState {
 }
 
 class App extends React.Component<AppProps, AppState> {
-  constructor (props: AppProps) {
-    super(props)
+  state: AppState = {
+    config: this.props.config
+  }
 
-    this.state = {
-      config: this.props.config
-    }
-
+  componentDidMount () {
     addConfigListener(({ newConfig }) => {
       this.setState({ config: newConfig })
     })

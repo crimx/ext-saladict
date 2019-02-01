@@ -68,40 +68,6 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
     suggests: [],
   }
 
-  constructor (props) {
-    super(props)
-
-    this.suggestVisibility$.pipe(
-      debounceTime(100),
-    ).subscribe(flag => {
-      this.setState({ isShowSuggestPanel: flag })
-    })
-
-    this.suggestsRequest$.pipe(
-      filter(text => this.props.searchSuggests && text.length > 1),
-      debounceTime(750),
-      distinctUntilChanged(),
-      switchMap(text => this.state.isShowSuggestPanel
-        ? fromPromise(
-          message.send<MsgGetSuggests>({
-            type: MsgType.GetSuggests,
-            text,
-          })
-        )
-        : empty()
-      ),
-    ).subscribe(suggests => {
-      this.setState({ suggests })
-    })
-
-    const emptySuggests = []
-    this.suggestsRequest$.subscribe(() => {
-      if (this.props.searchSuggests) {
-        this.setState({ suggests: emptySuggests })
-      }
-    })
-  }
-
   searchText = (text?: string) => {
     if (this.props.searchBox.text) {
       return this.props.searchText({
@@ -305,6 +271,36 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   }
 
   componentDidMount () {
+    this.suggestVisibility$.pipe(
+      debounceTime(100),
+    ).subscribe(flag => {
+      this.setState({ isShowSuggestPanel: flag })
+    })
+
+    this.suggestsRequest$.pipe(
+      filter(text => this.props.searchSuggests && text.length > 1),
+      debounceTime(750),
+      distinctUntilChanged(),
+      switchMap(text => this.state.isShowSuggestPanel
+        ? fromPromise(
+          message.send<MsgGetSuggests>({
+            type: MsgType.GetSuggests,
+            text,
+          })
+        )
+        : empty()
+      ),
+    ).subscribe(suggests => {
+      this.setState({ suggests })
+    })
+
+    const emptySuggests = []
+    this.suggestsRequest$.subscribe(() => {
+      if (this.props.searchSuggests) {
+        this.setState({ suggests: emptySuggests })
+      }
+    })
+
     if (!this.props.isShowMtaBox &&
         (isStandalonePage || this.props.isTripleCtrl || this.props.activeDicts.length <= 0) &&
         this.inputRef.current

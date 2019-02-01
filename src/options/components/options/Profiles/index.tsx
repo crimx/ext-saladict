@@ -39,18 +39,6 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
     showAddProfileModal: false,
   }
 
-  constructor (props: ProfilesProps) {
-    super(props)
-    getProfileIDList().then(async idList => {
-      this.setState({
-        list: idList.filter(Boolean)
-      })
-    })
-    getActiveProfileID().then(selected => {
-      this.setState({ selected })
-    })
-  }
-
   openAddProfileModal = () => {
     this.setState({ showAddProfileModal: true })
   }
@@ -138,6 +126,17 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
           message.success(this.props.t('msg_updated'))
         })
       return { list: newList }
+    })
+  }
+
+  componentDidMount () {
+    getProfileIDList().then(async idList => {
+      this.setState({
+        list: idList.filter(Boolean)
+      })
+    })
+    getActiveProfileID().then(selected => {
+      this.setState({ selected })
     })
   }
 
