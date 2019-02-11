@@ -5,7 +5,8 @@ import i18nLoader from '@/_helpers/i18n'
 import { TranslationFunction } from 'i18next'
 import contextLocles from '@/_locales/context'
 import isEqual from 'lodash/isEqual'
-import { getConfig, addConfigListener, AppConfigChanged } from '@/_helpers/config-manager'
+import { addConfigListener, AppConfigChanged } from '@/_helpers/config-manager'
+import './types'
 
 // import { Observable, ReplaySubject, combineLatest } from 'rxjs'
 // import { mergeMap, filter, map, audit, mapTo, share, startWith } from 'rxjs/operators'
@@ -107,9 +108,7 @@ export function openGoogle (cn?: boolean) {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getConfig().then(config => {
-          openURL(`https://translate.google.${cn ? 'cn' : 'com'}/translate?sl=auto&tl=${config.langCode}&js=y&prev=_t&ie=UTF-8&u=${encodeURIComponent(tabs[0].url as string)}&edit-text=&act=url`)
-        })
+        openURL(`https://translate.google.${cn ? 'cn' : 'com'}/translate?sl=auto&tl=${window.appConfig.langCode}&js=y&prev=_t&ie=UTF-8&u=${encodeURIComponent(tabs[0].url as string)}&edit-text=&act=url`)
       }
     })
 }
@@ -138,14 +137,12 @@ export function openBaiduPage () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getConfig().then(config => {
-          const langCode = config.langCode === 'zh-CN'
-            ? 'zh'
-            : config.langCode === 'zh-TW'
-              ? 'cht'
-              : 'en'
-          openURL(`https://fanyi.baidu.com/transpage?query=${encodeURIComponent(tabs[0].url as string)}&from=auto&to=${langCode}&source=url&render=1`)
-        })
+        const langCode = window.appConfig.langCode === 'zh-CN'
+          ? 'zh'
+          : window.appConfig.langCode === 'zh-TW'
+            ? 'cht'
+            : 'en'
+        openURL(`https://fanyi.baidu.com/transpage?query=${encodeURIComponent(tabs[0].url as string)}&from=auto&to=${langCode}&source=url&render=1`)
       }
     })
 }
@@ -154,10 +151,8 @@ export function openSogouPage () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getConfig().then(config => {
-          const langCode = config.langCode === 'zh-CN' ? 'zh-CHS' : 'en'
-          openURL(`https://translate.sogoucdn.com/pcvtsnapshot?from=auto&to=${langCode}&tfr=translatepc&url=${encodeURIComponent(tabs[0].url as string)}&domainType=sogou`)
-        })
+        const langCode = window.appConfig.langCode === 'zh-CN' ? 'zh-CHS' : 'en'
+        openURL(`https://translate.sogoucdn.com/pcvtsnapshot?from=auto&to=${langCode}&tfr=translatepc&url=${encodeURIComponent(tabs[0].url as string)}&domainType=sogou`)
       }
     })
 }
@@ -166,14 +161,12 @@ export function openMicrosoftPage () {
   browser.tabs.query({ active: true, currentWindow: true })
     .then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        getConfig().then(config => {
-          const langCode = config.langCode === 'zh-CN'
-            ? 'zh-CHS'
-            : config.langCode === 'zh-TW'
-              ? 'zh-CHT'
-              : 'en'
-          openURL(`https://www.microsofttranslator.com/bv.aspx?from=auto&to=${langCode}&r=true&a=${encodeURIComponent(tabs[0].url as string)}`)
-        })
+        const langCode = window.appConfig.langCode === 'zh-CN'
+          ? 'zh-CHS'
+          : window.appConfig.langCode === 'zh-TW'
+            ? 'zh-CHT'
+            : 'en'
+        openURL(`https://www.microsofttranslator.com/bv.aspx?from=auto&to=${langCode}&r=true&a=${encodeURIComponent(tabs[0].url as string)}`)
       }
     })
 }
@@ -372,15 +365,12 @@ function handleContextMenusClick (info: ContextMenusClickInfo) {
       requestSelection()
       break
     default:
-      getConfig()
-        .then(config => {
-          const item = config.contextMenus.all[menuItemId]
-          if (item) {
-            const url = typeof item === 'string' ? item : item.url
-            if (url) {
-              openURL(url.replace('%s', selectionText))
-            }
-          }
-        })
+      const item = window.appConfig.contextMenus.all[menuItemId]
+      if (item) {
+        const url = typeof item === 'string' ? item : item.url
+        if (url) {
+          openURL(url.replace('%s', selectionText))
+        }
+      }
   }
 }

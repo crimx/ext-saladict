@@ -49,6 +49,9 @@ function _getDefaultConfig () {
     /** activate app, won't affect triple-ctrl setting */
     active: true,
 
+    /** enable Google analytics */
+    analytics: true,
+
     /** disable selection on type fields, like input and textarea */
     noTypeField: false,
 
