@@ -7,23 +7,27 @@ import { URL } from 'url'
 
 describe('Dict/Bing/engine', () => {
   beforeAll(() => {
-    const response = {
-      lex: fs.readFileSync(path.join(__dirname, 'response/lex.html'), 'utf8'),
-      machine: fs.readFileSync(path.join(__dirname, 'response/machine.html'), 'utf8'),
-      related: fs.readFileSync(path.join(__dirname, 'response/related.html'), 'utf8'),
-    }
-
-    window.fetch = jest.fn((url: string) => {
-      const searchURL = new URL(url)
-      const searchText = searchURL.searchParams.get('q')
-      if (searchText && response[searchText]) {
-        return Promise.resolve({
-          ok: true,
-          text: () => response[searchText]
-        })
+    if (process.env.CI) {
+      window.fetch = require('node-fetch')
+    } else {
+      const response = {
+        love: fs.readFileSync(path.join(__dirname, 'response/lex.html'), 'utf8'),
+        machine: fs.readFileSync(path.join(__dirname, 'response/machine.html'), 'utf8'),
+        related: fs.readFileSync(path.join(__dirname, 'response/related.html'), 'utf8'),
       }
-      return Promise.reject(new Error(`Missing Response file for ${searchText}`))
-    })
+
+      window.fetch = jest.fn((url: string) => {
+        const searchURL = new URL(url)
+        const searchText = searchURL.searchParams.get('q')
+        if (searchText && response[searchText]) {
+          return Promise.resolve({
+            ok: true,
+            text: () => response[searchText]
+          })
+        }
+        return Promise.reject(new Error(`Missing Response file for ${searchText}`))
+      })
+    }
   })
 
   it('should parse lex result correctly', () => {
@@ -35,7 +39,7 @@ describe('Dict/Bing/engine', () => {
       related: true,
       sentence: 4
     }
-    return search('lex', getDefaultConfig(), profile, { isPDF: false })
+    return search('love', getDefaultConfig(), profile, { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toHaveProperty('us', expect.stringContaining('mp3'))
         expect(searchResult.audio).toHaveProperty('uk', expect.stringContaining('mp3'))
@@ -50,7 +54,7 @@ describe('Dict/Bing/engine', () => {
   })
 
   it('should parse machine result correctly', () => {
-    return search('machine', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
+    return search('lose yourself in the dark', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 
@@ -62,7 +66,7 @@ describe('Dict/Bing/engine', () => {
   })
 
   it('should parse related result correctly', () => {
-    return search('related', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
+    return search('lovxx', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 
