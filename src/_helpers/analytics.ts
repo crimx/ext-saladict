@@ -16,5 +16,5 @@ export function injectAnalytics (win = window) {
   ga.type = 'text/javascript'
   ga.async = true
   ga.src = `https://www.googletagmanager.com/gtag/js?id=${process.env.SDAPP_ANALYTICS}`
-  win.document.body.append(ga)
+  win.document.body.appendChild(ga)
 }
