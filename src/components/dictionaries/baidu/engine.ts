@@ -73,8 +73,12 @@ export const search: SearchFunction<BaiduSearchResult, MachineTranslatePayload> 
 
   return fetch('https://fanyi.baidu.com/v2transapi', {
     method: 'POST',
+    credentials: 'include',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      'cookie': process.env.NODE_ENV === 'test'
+        ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
+        : '',
     },
     body: `from=${sl}&to=${tl}&query=${encodeURIComponent(text).replace(/%20/g, '+')}&token=${token}&sign=${sign(text, gtk)}&transtype=translang&simple_means_flag=3`
   })
@@ -86,6 +90,11 @@ export const search: SearchFunction<BaiduSearchResult, MachineTranslatePayload> 
 function handleJSON (
   json: BaiduRawResult, sl: string, tl: string
 ): BaiduSearchResult | Promise<BaiduSearchResult> {
+  if (json.error === 998) {
+    // missing cookie, fetch again
+    return handleNetWorkError()
+  }
+
   if (!json.trans_result) {
     return handleNoResult()
   }
@@ -114,13 +123,19 @@ function handleJSON (
 }
 
 async function getToken (): Promise<{ gtk: string, token: string }> {
-  const text = await fetch('https://fanyi.baidu.com')
-    .then(r => r.text())
-    .catch(() => '')
+  const response = await fetch('https://fanyi.baidu.com', {
+    credentials: 'include',
+    headers: {
+      'cookie': process.env.NODE_ENV === 'test'
+      ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
+      : '',
+    },
+  })
+  const text = await response.text()
 
   return {
     gtk: (/window.gtk = '([^']+)'/.exec(text) || ['', ''])[1],
-    token: (/token: '([^']+)'/.exec(text) || ['', ''])[1]
+    token: (/token: '([^']+)'/.exec(text) || ['', ''])[1],
   }
 }
 
