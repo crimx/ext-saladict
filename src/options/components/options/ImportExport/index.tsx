@@ -42,6 +42,7 @@ export class ImportExport extends React.Component<Props> {
       activeProfileID,
       hasInstructionsShown,
       profileIDList,
+      syncConfig,
     } = result
 
     if (!baseconfig &&
@@ -56,11 +57,15 @@ export class ImportExport extends React.Component<Props> {
     await storage.sync.clear()
 
     if (baseconfig) {
-      updateConfig(baseconfig)
+      await updateConfig(baseconfig)
+    }
+
+    if (syncConfig) {
+      await storage.sync.set({ syncConfig })
     }
 
     if (hasInstructionsShown != null) {
-      storage.sync.set({ hasInstructionsShown })
+      await storage.sync.set({ hasInstructionsShown })
     }
 
     if (profileIDList) {
@@ -75,20 +80,20 @@ export class ImportExport extends React.Component<Props> {
           // use first item instead
           activeProfileID = profileIDList[0].id
         }
-        storage.sync.set({ activeProfileID, profileIDList })
+        await storage.sync.set({ activeProfileID, profileIDList })
       }
     }
   }
 
   exportConfig = async () => {
     const result = await storage.sync.get([
-      'baseconfig',
       'activeProfileID',
       'hasInstructionsShown',
       'profileIDList',
+      'syncConfig'
     ])
 
-    console.log(result)
+    result.baseconfig = (await storage.sync.get('baseconfig')).baseconfig
 
     if (!result.baseconfig ||
       !result.activeProfileID ||
