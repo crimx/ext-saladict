@@ -3,6 +3,9 @@ import { getDefaultProfile } from '@/app-config/profiles'
 import * as browserWrap from '@/_helpers/browser-api'
 import { MsgType } from '@/typings/message'
 import { timer } from '@/_helpers/promise-more'
+import '@/background/types'
+
+window.appConfig = getDefaultConfig()
 
 jest.mock('@/background/database')
 
@@ -79,7 +82,7 @@ describe('Server', () => {
     bingSearch.mockReset()
     bingSearch.mockImplementation(() => Promise.resolve({ result: '' }))
     jest.resetModules()
-    require('@/background/server')
+    require('@/background/server').default()
   })
 
   it('should properly init', () => {
