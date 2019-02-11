@@ -295,7 +295,6 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   render () {
     const {
       shouldPanelShow,
-      isAnimation,
     } = this.props
 
     const {
