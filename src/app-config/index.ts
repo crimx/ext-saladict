@@ -219,6 +219,7 @@ function _getDefaultConfig () {
     ctxTrans: {
       google: true,
       sogou: true,
+      baidu: true,
     } as { [id in DictID]: boolean },
 
     /** start searching when source containing the languages */
