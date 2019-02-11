@@ -133,7 +133,6 @@ function xhrDirtyDOM (url: string): Promise<Document> {
     xhr.responseType = 'document'
     xhr.withCredentials = true
     xhr.onload = () => {
-      console.log(xhr.readyState)
       if (xhr.readyState === xhr.DONE && xhr.status >= 200 && xhr.status < 300) {
         if (xhr.responseXML) {
           resolve(xhr.responseXML)
