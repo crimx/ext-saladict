@@ -13,6 +13,9 @@ interface Window {
   __SALADICT_QUICK_SEARCH_PAGE__?: boolean
   __SALADICT_PDF_PAGE__?: boolean
 
+  // Google analytics
+  dataLayer: any[]
+
   // Options page
   __SALADICT_LAST_SEARCH__?: string
 }

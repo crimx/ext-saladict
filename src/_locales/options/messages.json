@@ -204,6 +204,16 @@
     "zh_CN": "启用划词翻译",
     "zh_TW": "啟用滑鼠劃字翻譯"
   },
+  "opt_analytics": {
+    "en": "UX Improvement Program",
+    "zh_CN": "用户体验改进计划",
+    "zh_TW": "使用者體驗改進計劃"
+  },
+  "opt_analytics_help": {
+    "en": "Enable Google Analytics to help me improve Saladict",
+    "zh_CN": "启用 Google Analytics 服务协助开发者改进 Saladict",
+    "zh_TW": "啟用 Google Analytics 服務協助開發者改進 Saladict"
+  },
   "opt_animation": {
     "en": "Animation transitions",
     "zh_CN": "开启动画过渡",
