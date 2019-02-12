@@ -152,9 +152,11 @@ validMouseup$$.pipe(
     // Same selection. This could be caused by other widget on the page
     // that uses preventDefault which stops selection being cleared when clicked.
     // Ignore it so that the panel won't follow.
-    return (
+    return Boolean(
       clickPeriodCount < 2 &&
+      oldVal[1].text &&
       oldVal[1].text === newVal[1].text &&
+      oldVal[1].context &&
       oldVal[1].context === newVal[1].context
     )
   })
