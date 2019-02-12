@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.24.0"></a>
+# [6.24.0](https://github.com/crimx/ext-saladict/compare/v6.23.1...v6.24.0) (2019-02-12)
+
+
+### Bug Fixes
+
+* **selection:** fixed [#296](https://github.com/crimx/ext-saladict/issues/296) ([1f9b6a6](https://github.com/crimx/ext-saladict/commit/1f9b6a6))
+* fix typo ([129e863](https://github.com/crimx/ext-saladict/commit/129e863))
+* **options:** add syncConfig ([51a9e57](https://github.com/crimx/ext-saladict/commit/51a9e57))
+
+
+### Features
+
+* **config:** add baidu to ctxTrans ([a2c1fda](https://github.com/crimx/ext-saladict/commit/a2c1fda))
+* **dicts:** add baidu ([a9fecee](https://github.com/crimx/ext-saladict/commit/a9fecee))
+* add analytics ([48582bd](https://github.com/crimx/ext-saladict/commit/48582bd))
+
+
+
 <a name="6.23.1"></a>
 ## [6.23.1](https://github.com/crimx/ext-saladict/compare/v6.23.0...v6.23.1) (2019-01-28)
 
