@@ -4,6 +4,7 @@ import CSSTransition from 'react-transition-group/CSSTransition'
 import DictPanel, { DictPanelDispatchers, DictPanelProps } from '../DictPanel'
 import { Omit } from '@/typings/helpers'
 import PortalFrame from '@/components/PortalFrame'
+import { injectAnalytics } from '@/_helpers/analytics'
 
 const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
@@ -199,28 +200,30 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
 
   handlePanelEnter = (node: HTMLElement) => {
     this.frame = node as HTMLIFrameElement
-    const { x, y, width, height } = this.props.panelRect
-    const style = node.style
 
-    style.setProperty('left', `${x}px`, 'important')
-    style.setProperty('top', `${y}px`, 'important')
-    style.setProperty('width', width + 'px', 'important')
-    style.setProperty('height', height + 'px', 'important')
-  }
+    if (!isStandalonePage) {
+      const { x, y, width, height } = this.props.panelRect
+      const style = node.style
 
-  handlePanelEntered = (node: HTMLElement) => {
-    this.frame = node as HTMLIFrameElement
-    const { x, y, width, height } = this.props.panelRect
-    const style = node.style
+      style.setProperty('left', `${x}px`, 'important')
+      style.setProperty('top', `${y}px`, 'important')
+      style.setProperty('width', width + 'px', 'important')
+      style.setProperty('height', height + 'px', 'important')
 
-    style.setProperty('left', `${x}px`, 'important')
-    style.setProperty('top', `${y}px`, 'important')
-    style.setProperty('width', width + 'px', 'important')
-    style.setProperty('height', height + 'px', 'important')
+      if (isSaladictOptionsPage) {
+        // under antd modal mask
+        style.setProperty('z-index', '900', 'important')
+      }
+    }
 
-    if (isSaladictOptionsPage) {
-      // under antd modal mask
-      style.setProperty('z-index', '900', 'important')
+    if (node.ownerDocument) {
+      node.ownerDocument.title = isSaladictQuickSearchPage
+        ? 'Saladict Quick Search Panel'
+        : 'Saladict Panel'
+      const win = node.ownerDocument.defaultView
+      if (win) {
+        injectAnalytics(win)
+      }
     }
   }
 
@@ -292,7 +295,6 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   render () {
     const {
       shouldPanelShow,
-      isAnimation,
     } = this.props
 
     const {
@@ -319,8 +321,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
           mountOnEnter={true}
           unmountOnExit={true}
           appear={isSaladictOptionsPage || isStandalonePage}
-          onEnter={isStandalonePage ? undefined : isAnimation ? this.handlePanelEnter : this.handlePanelEntered}
-          onEntered={isAnimation && !isStandalonePage ? this.handlePanelEntered : undefined}
+          onEnter={this.handlePanelEnter}
+          onEntered={this.handlePanelEnter}
           onExited={this.unmountEL}
         >
           {this.renderDictPanel}

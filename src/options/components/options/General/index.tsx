@@ -33,6 +33,7 @@ export class General extends React.Component<Props & FormComponentProps> {
       form.setFieldsValue({
         'config#active': config.active,
         'config#animation': config.animation,
+        'config#analytics': config.analytics,
         'config#langCode': config.langCode,
       })
     }
@@ -66,6 +67,18 @@ export class General extends React.Component<Props & FormComponentProps> {
         >{
           getFieldDecorator('config#animation', {
             initialValue: config.animation,
+            valuePropName: 'checked',
+          })(
+            <Switch />
+          )
+        }</Form.Item>
+        <Form.Item
+          {...formItemLayout}
+          label={t('opt_analytics')}
+          help={t('opt_analytics_help')}
+        >{
+          getFieldDecorator('config#analytics', {
+            initialValue: config.analytics,
             valuePropName: 'checked',
           })(
             <Switch />

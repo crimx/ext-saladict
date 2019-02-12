@@ -2036,6 +2036,13 @@ combined-stream@1.0.6, combined-stream@^1.0.5, combined-stream@~1.0.5:
   dependencies:
     delayed-stream "~1.0.0"
 
+combined-stream@^1.0.6:
+  version "1.0.7"
+  resolved "http://registry.npm.taobao.org/combined-stream/download/combined-stream-1.0.7.tgz#2d1d24317afb8abe95d6d2c0b07b57813539d828"
+  integrity sha1-LR0kMXr7ir6V1tLAsHtXgTU52Cg=
+  dependencies:
+    delayed-stream "~1.0.0"
+
 commander@2.15.x, commander@^2.12.1, commander@^2.13.0, commander@^2.9.0, commander@~2.15.0:
   version "2.15.1"
   resolved "http://registry.npm.taobao.org/commander/download/commander-2.15.1.tgz#df46e867d0fc2aec66a34662b406a9ccafff5b0f"
@@ -3783,6 +3790,15 @@ fork-ts-checker-webpack-plugin@^0.4.0:
     resolve "^1.5.0"
     tapable "^1.0.0"
     vue-parser "^1.1.5"
+
+form-data@^2.3.3:
+  version "2.3.3"
+  resolved "http://registry.npm.taobao.org/form-data/download/form-data-2.3.3.tgz#dcce52c05f644f298c6a7ab936bd724ceffbf3a6"
+  integrity sha1-3M5SwF9kTymManq5Nr1yTO/786Y=
+  dependencies:
+    asynckit "^0.4.0"
+    combined-stream "^1.0.6"
+    mime-types "^2.1.12"
 
 form-data@~2.1.1:
   version "2.1.4"
@@ -6286,6 +6302,11 @@ node-fetch@^1.0.1:
   dependencies:
     encoding "^0.1.11"
     is-stream "^1.0.1"
+
+node-fetch@^2.3.0:
+  version "2.3.0"
+  resolved "http://registry.npm.taobao.org/node-fetch/download/node-fetch-2.3.0.tgz#1a1d940bbfb916a1d3e0219f037e89e71f8c5fa5"
+  integrity sha1-Gh2UC7+5FqHT4CGfA36J5x+MX6U=
 
 node-forge@0.7.5:
   version "0.7.5"

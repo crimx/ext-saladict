@@ -3,6 +3,9 @@ import sinon from 'sinon'
 import { take } from 'rxjs/operators'
 import { timer } from '@/_helpers/promise-more'
 import * as configManagerMock from '@/_helpers/__mocks__/config-manager'
+import '@/background/types'
+
+window.appConfig = getDefaultConfig()
 
 jest.mock('@/_helpers/config-manager')
 

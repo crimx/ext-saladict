@@ -1,0 +1,39 @@
+{
+  "name": {
+    "en": "Baidu Translate",
+    "zh_CN": "百度翻译",
+    "zh_TW": "百度翻譯"
+  },
+  "options": {
+    "pdfNewline": {
+      "en": "Keep linebreaks on PDF",
+      "zh_CN": "PDF 保持换行",
+      "zh_TW": "PDF 保持換行"
+    },
+    "tl": {
+      "en": "Target language",
+      "zh_CN": "目标语言",
+      "zh_TW": "目標語言"
+    },
+    "tl-default": {
+      "en": "Default",
+      "zh_CN": "随扩展语言",
+      "zh_TW": "同介面語言"
+    },
+    "tl-zh": {
+      "en": "简体中文",
+      "zh_CN": "简体中文",
+      "zh_TW": "简体中文"
+    },
+    "tl-cht": {
+      "en": "繁體中文",
+      "zh_CN": "繁體中文",
+      "zh_TW": "繁體中文"
+    },
+    "tl-en": {
+      "en": "English",
+      "zh_CN": "English",
+      "zh_TW": "English"
+    }
+  }
+}

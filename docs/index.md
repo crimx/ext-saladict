@@ -87,7 +87,7 @@ Chrome/Firefox 浏览器插件，网页划词翻译。
 - 划词需要访问网页数据
 - 快速查词会直接搜索剪贴板文字
 
-除此以外本扩展不收集任何资料，第三方下载请注意对比扩展 ID `cdonnmffkdaoajfknoeeecmchibpmkmg`。
+另外本扩展依赖 Google Analytics 服务作设计改进的参考，可在设置中关闭。
 
 # 更新
 

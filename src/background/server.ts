@@ -1,8 +1,7 @@
-import { getDefaultConfig, TCDirection } from '@/app-config'
+import { TCDirection } from '@/app-config'
 import { getDefaultProfile } from '@/app-config/profiles'
 import { message, openURL } from '@/_helpers/browser-api'
 import { timeout, timer } from '@/_helpers/promise-more'
-import { createConfigStream } from '@/_helpers/config-manager'
 import { createActiveProfileStream } from '@/_helpers/profile-manager'
 import { getSuggests } from '@/_helpers/getSuggests'
 import { DictSearchResult } from '@/typings/server'
@@ -10,6 +9,7 @@ import { SearchErrorType, SearchFunction, GetSrcPageFunction } from '@/component
 import { syncServiceInit, syncServiceDownload, syncServiceUpload } from './sync-manager'
 import { isInNotebook, saveWord, deleteWords, getWordsByText, getWords } from './database'
 import { play } from './audio-manager'
+import './types'
 import {
   MsgType,
   MsgOpenSrcPage,
@@ -27,97 +27,92 @@ import {
   MsgGetSuggests,
 } from '@/typings/message'
 
-browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B' })
-
-let config = getDefaultConfig()
-createConfigStream().subscribe(newConfig => {
-  config = newConfig
-  browser.browserAction.setBadgeText({ text: newConfig.active ? '' : 'off' })
-})
-
 let profile = getDefaultProfile()
-createActiveProfileStream().subscribe(newProfile => {
-  profile = newProfile
-})
-
-message.self.initServer()
 
 /** is a standalone panel running */
 let qsPanelID: number | false = false
 
-// background script as transfer station
-message.addListener((data, sender: browser.runtime.MessageSender) => {
-  switch (data.type) {
-    case MsgType.OpenSrcPage:
-      return openSrcPage(data as MsgOpenSrcPage)
-    case MsgType.OpenURL:
-      return openURL(data.url, data.self)
-    case MsgType.PlayAudio:
-      return playAudio(data as MsgAudioPlay)
-    case MsgType.FetchDictResult:
-      return fetchDictResult(data as MsgFetchDictResult)
-    case MsgType.GetClipboard:
-      return getClipboard()
-    case MsgType.RequestCSS:
-      return injectCSS(sender)
+export default function main () {
+  createActiveProfileStream().subscribe(newProfile => {
+    profile = newProfile
+  })
 
-    case MsgType.QueryQSPanel:
-      return Promise.resolve(qsPanelID !== false)
-    case MsgType.OpenQSPanel:
-      return openQSPanel()
+  message.self.initServer()
 
-    case MsgType.IsInNotebook:
-      return isInNotebook(data as MsgIsInNotebook)
-    case MsgType.SaveWord:
-      return saveWord(data as MsgSaveWord)
-        .then(response => {
-          setTimeout(() => message.send({ type: MsgType.WordSaved }), 0)
-          return response
-        })
-    case MsgType.DeleteWords:
-      return deleteWords(data as MsgDeleteWords)
-        .then(response => {
-          setTimeout(() => message.send({ type: MsgType.WordSaved }), 0)
-          return response
-        })
-    case MsgType.GetWordsByText:
-      return getWordsByText(data as MsgGetWordsByText)
-    case MsgType.GetWords:
-      return getWords(data as MsgGetWords)
-    case MsgType.GetSuggests:
-      return getSuggests((data as MsgGetSuggests).text)
+  // background script as transfer station
+  message.addListener((data, sender: browser.runtime.MessageSender) => {
+    switch (data.type) {
+      case MsgType.OpenSrcPage:
+        return openSrcPage(data as MsgOpenSrcPage)
+      case MsgType.OpenURL:
+        return openURL(data.url, data.self)
+      case MsgType.PlayAudio:
+        return playAudio(data as MsgAudioPlay)
+      case MsgType.FetchDictResult:
+        return fetchDictResult(data as MsgFetchDictResult)
+      case MsgType.GetClipboard:
+        return getClipboard()
+      case MsgType.RequestCSS:
+        return injectCSS(sender)
 
-    case MsgType.SyncServiceInit:
-      return syncServiceInit((data as MsgSyncServiceInit).config)
-    case MsgType.SyncServiceDownload:
-      return syncServiceDownload((data as MsgSyncServiceDownload).force)
-    case MsgType.SyncServiceUpload:
-      return syncServiceUpload((data as MsgSyncServiceUpload).force)
+      case MsgType.QueryQSPanel:
+        return Promise.resolve(qsPanelID !== false)
+      case MsgType.OpenQSPanel:
+        return openQSPanel()
 
-    case 'youdao_translate_ajax' as any:
-      return youdaoTranslateAjax(data.request)
-  }
-})
+      case MsgType.IsInNotebook:
+        return isInNotebook(data as MsgIsInNotebook)
+      case MsgType.SaveWord:
+        return saveWord(data as MsgSaveWord)
+          .then(response => {
+            setTimeout(() => message.send({ type: MsgType.WordSaved }), 0)
+            return response
+          })
+      case MsgType.DeleteWords:
+        return deleteWords(data as MsgDeleteWords)
+          .then(response => {
+            setTimeout(() => message.send({ type: MsgType.WordSaved }), 0)
+            return response
+          })
+      case MsgType.GetWordsByText:
+        return getWordsByText(data as MsgGetWordsByText)
+      case MsgType.GetWords:
+        return getWords(data as MsgGetWords)
+      case MsgType.GetSuggests:
+        return getSuggests((data as MsgGetSuggests).text)
 
-browser.windows.onRemoved.addListener(async winID => {
-  if (winID === qsPanelID) {
-    qsPanelID = false
-    ;(await browser.tabs.query({})).forEach(tab => {
-      if (tab.id && tab.windowId !== winID) {
-        message.send<MsgQSPanelIDChanged>(tab.id, {
-          type: MsgType.QSPanelIDChanged,
-          flag: qsPanelID !== false,
-        })
-      }
-    })
-  }
-})
+      case MsgType.SyncServiceInit:
+        return syncServiceInit((data as MsgSyncServiceInit).config)
+      case MsgType.SyncServiceDownload:
+        return syncServiceDownload((data as MsgSyncServiceDownload).force)
+      case MsgType.SyncServiceUpload:
+        return syncServiceUpload((data as MsgSyncServiceUpload).force)
+
+      case 'youdao_translate_ajax' as any:
+        return youdaoTranslateAjax(data.request)
+    }
+  })
+
+  browser.windows.onRemoved.addListener(async winID => {
+    if (winID === qsPanelID) {
+      qsPanelID = false
+      ;(await browser.tabs.query({})).forEach(tab => {
+        if (tab.id && tab.windowId !== winID) {
+          message.send<MsgQSPanelIDChanged>(tab.id, {
+            type: MsgType.QSPanelIDChanged,
+            flag: qsPanelID !== false,
+          })
+        }
+      })
+    }
+  })
+}
 
 export async function openQSPanel (): Promise<void> {
   if (qsPanelID !== false) {
     await browser.windows.update(qsPanelID, { focused: true })
   } else {
-    const { tripleCtrlLocation, panelWidth, tripleCtrlHeight } = config
+    const { tripleCtrlLocation, panelWidth, tripleCtrlHeight } = window.appConfig
     let left = 10
     let top = 30
     switch (tripleCtrlLocation) {
@@ -160,7 +155,7 @@ export async function openQSPanel (): Promise<void> {
     }
 
     let url = browser.runtime.getURL('quick-search.html')
-    if (config.tripleCtrlPreload === 'selection') {
+    if (window.appConfig.tripleCtrlPreload === 'selection') {
       const tab = (await browser.tabs.query({ active: true, lastFocusedWindow: true }))[0]
       if (tab && tab.id) {
         const info = await message.send(tab.id, { type: MsgType.PreloadSelection })
@@ -177,8 +172,8 @@ export async function openQSPanel (): Promise<void> {
     const qsPanelWin = await browser.windows.create({
       type: 'popup',
       url,
-      width: config.panelWidth,
-      height: config.tripleCtrlHeight,
+      width: window.appConfig.panelWidth,
+      height: window.appConfig.tripleCtrlHeight,
       left: Math.round(left),
       top: Math.round(top),
     })
@@ -204,7 +199,7 @@ function openSrcPage (data: MsgOpenSrcPage): Promise<void> {
   } catch (err) {
     return Promise.reject(err)
   }
-  return openURL(getSrcPage(data.text, config, profile))
+  return openURL(getSrcPage(data.text, window.appConfig, profile))
 }
 
 function playAudio (data: MsgAudioPlay): Promise<void> {
@@ -224,7 +219,7 @@ function fetchDictResult (
 
   const payload = data.payload || {}
 
-  return timeout(search(data.text, config, profile, payload), 25000)
+  return timeout(search(data.text, window.appConfig, profile, payload), 25000)
     .catch(err => {
       if (process.env.DEV_BUILD) {
         console.warn(data.id, err)
@@ -233,14 +228,14 @@ function fetchDictResult (
       if (err === SearchErrorType.NetWorkError) {
         // retry once
         return timer(500)
-          .then(() => timeout(search(data.text, config, profile, payload), 25000))
+          .then(() => timeout(search(data.text, window.appConfig, profile, payload), 25000))
       }
 
       return Promise.reject(err)
     })
     .then(({ result, audio }) => {
       if (audio) {
-        const { cn, en } = config.autopron
+        const { cn, en } = window.appConfig.autopron
         if (audio.py && cn.dict === data.id) {
           play(audio.py)
         } else if (en.dict === data.id) {

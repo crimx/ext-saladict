@@ -120,7 +120,7 @@ exports[`Component/content/MenuBar should render correctly 1`] = `
   </div>
   <button
     className="panel-MenuBar_Btn"
-    disabled={true}
+    disabled={false}
     onClick={[Function]}
     onMouseDown={[Function]}
   >
@@ -325,7 +325,7 @@ exports[`Component/content/MenuBar should render correctly with fav and pin 1`] 
   </div>
   <button
     className="panel-MenuBar_Btn"
-    disabled={true}
+    disabled={false}
     onClick={[Function]}
     onMouseDown={[Function]}
   >

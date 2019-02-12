@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Popup from './Popup'
 import { injectSaladictInternal } from '@/_helpers/injectSaladictInternal'
+import { injectAnalytics } from '@/_helpers/analytics'
 import { AppConfig } from '@/app-config'
 import { getConfig, addConfigListener } from '@/_helpers/config-manager'
 import { message, openURL } from '@/_helpers/browser-api'
@@ -32,13 +33,11 @@ interface AppState {
 }
 
 class App extends React.Component<AppProps, AppState> {
-  constructor (props: AppProps) {
-    super(props)
+  state: AppState = {
+    config: this.props.config
+  }
 
-    this.state = {
-      config: this.props.config
-    }
-
+  componentDidMount () {
     addConfigListener(({ newConfig }) => {
       this.setState({ config: newConfig })
     })
@@ -73,6 +72,10 @@ getConfig().then(config => {
 function showPanel (config: AppConfig) {
   document.body.classList.add('panel')
   injectSaladictInternal(true)
+
+  if (config.analytics) {
+    injectAnalytics()
+  }
 
   const i18n = i18nLoader({ popup: popupLocles }, 'popup')
   ReactDOM.render(

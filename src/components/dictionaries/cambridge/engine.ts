@@ -45,7 +45,7 @@ export const search: SearchFunction<CambridgeSearchResult> = (
       ? 'https://dictionary.cambridge.org/zht/搜索/英語-漢語-繁體/direct/?q='
       : 'https://dictionary.cambridge.org/search/english/direct/?q='
 
-  return fetchDirtyDOM(url + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
+  return fetchDirtyDOM(encodeURI(url) + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
     .catch(handleNetWorkError)
     .then(handleDOM)
 }

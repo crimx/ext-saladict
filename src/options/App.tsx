@@ -19,18 +19,13 @@ export interface OptionsMainProps {
   rawProfileName: string
 }
 
-export class OptionsMain extends React.Component<OptionsMainProps & { t: TranslationFunction }> {
-  state = {
+interface OptionsMainState {
+  selectedKey: string
+}
+
+export class OptionsMain extends React.Component<OptionsMainProps & { t: TranslationFunction }, OptionsMainState> {
+  state: OptionsMainState = {
     selectedKey: menuselected,
-  }
-
-  constructor (props: OptionsMainProps & { t: TranslationFunction }) {
-    super(props)
-    this.setTitle(this.state.selectedKey)
-
-    window.addEventListener('popstate', e => {
-      this.setState({ selectedKey: e.state.key || 'General' })
-    })
   }
 
   onNavSelect = ({ key }: { key: string }) => {
@@ -48,6 +43,14 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
   setTitle = (key: string) => {
     const { t } = this.props
     document.title = `${t('title')} - ${t('nav_' + key)}`
+  }
+
+  componentDidMount () {
+    this.setTitle(this.state.selectedKey)
+
+    window.addEventListener('popstate', e => {
+      this.setState({ selectedKey: e.state.key || 'General' })
+    })
   }
 
   render () {

@@ -14,6 +14,11 @@
     "zh_CN": "阿拉伯语",
     "zh_TW": "阿拉伯語"
   },
+  "ara": {
+    "en": "Arabic",
+    "zh_CN": "阿拉伯语",
+    "zh_TW": "阿拉伯語"
+  },
   "az": {
     "en": "Azeerbaijani",
     "zh_CN": "阿塞拜疆语",
@@ -44,6 +49,11 @@
     "zh_CN": "波斯尼亚语",
     "zh_TW": "波斯尼亞語"
   },
+  "bul": {
+    "en": "Bulgarian",
+    "zh_CN": "保加利亚语",
+    "zh_TW": "保加利亞語"
+  },
   "ca": {
     "en": "Catalan",
     "zh_CN": "加泰罗尼亚语",
@@ -53,6 +63,11 @@
     "en": "Cebuano",
     "zh_CN": "宿务语",
     "zh_TW": "宿務語"
+  },
+  "cht": {
+    "en": "Chinese (Traditional)",
+    "zh_CN": "中文（繁体）",
+    "zh_TW": "中文（繁體）"
   },
   "co": {
     "en": "Corsican",
@@ -70,6 +85,11 @@
     "zh_TW": "威爾士語"
   },
   "da": {
+    "en": "Danish",
+    "zh_CN": "丹麦语",
+    "zh_TW": "丹麥語"
+  },
+  "dan": {
     "en": "Danish",
     "zh_CN": "丹麦语",
     "zh_TW": "丹麥語"
@@ -99,6 +119,11 @@
     "zh_CN": "西班牙语",
     "zh_TW": "西班牙語"
   },
+  "est": {
+    "en": "Estonian",
+    "zh_CN": "爱沙尼亚语",
+    "zh_TW": "愛沙尼亞語"
+  },
   "et": {
     "en": "Estonian",
     "zh_CN": "爱沙尼亚语",
@@ -124,12 +149,22 @@
     "zh_CN": "菲律宾语",
     "zh_TW": "菲律賓語"
   },
+  "fin": {
+    "en": "Finnish",
+    "zh_CN": "芬兰语",
+    "zh_TW": "芬蘭語"
+  },
   "fj": {
     "en": "Fijian",
     "zh_CN": "斐济语",
     "zh_TW": "斐濟語"
   },
   "fr": {
+    "en": "French",
+    "zh_CN": "法语",
+    "zh_TW": "法語"
+  },
+  "fra": {
     "en": "French",
     "zh_CN": "法语",
     "zh_TW": "法語"
@@ -224,7 +259,17 @@
     "zh_CN": "意大利语",
     "zh_TW": "義大利語"
   },
+  "iw": {
+    "en": "Hebrew",
+    "zh_CN": "希伯来语",
+    "zh_TW": "希伯來語"
+  },
   "ja": {
+    "en": "Japanese",
+    "zh_CN": "日语",
+    "zh_TW": "日語"
+  },
+  "jp": {
     "en": "Japanese",
     "zh_CN": "日语",
     "zh_TW": "日語"
@@ -255,6 +300,11 @@
     "zh_TW": "卡納達語"
   },
   "ko": {
+    "en": "Korean",
+    "zh_CN": "韩语",
+    "zh_TW": "韓語"
+  },
+  "kor": {
     "en": "Korean",
     "zh_CN": "韩语",
     "zh_TW": "韓語"
@@ -389,7 +439,17 @@
     "zh_CN": "葡萄牙语（葡萄牙、巴西）",
     "zh_TW": "葡萄牙語（葡萄牙、巴西）"
   },
+  "pt_BR": {
+    "en": "Brazilian",
+    "zh_CN": "巴西语",
+    "zh_TW": "巴西語"
+  },
   "ro": {
+    "en": "Romanian",
+    "zh_CN": "罗马尼亚语",
+    "zh_TW": "羅馬尼亞語"
+  },
+  "rom": {
     "en": "Romanian",
     "zh_CN": "罗马尼亚语",
     "zh_TW": "羅馬尼亞語"
@@ -419,6 +479,11 @@
     "zh_CN": "斯洛文尼亚语",
     "zh_TW": "斯洛維尼亞語"
   },
+  "slo": {
+    "en": "Slovenian",
+    "zh_CN": "斯洛文尼亚语",
+    "zh_TW": "斯洛維尼亞語"
+  },
   "sm": {
     "en": "Samoan",
     "zh_CN": "萨摩亚语",
@@ -433,6 +498,11 @@
     "en": "Somali",
     "zh_CN": "索马里语",
     "zh_TW": "索馬利亞語"
+  },
+  "spa": {
+    "en": "Spanish",
+    "zh_CN": "西班牙语",
+    "zh_TW": "西班牙語"
   },
   "sq": {
     "en": "Albanian",
@@ -473,6 +543,11 @@
     "en": "Swahili",
     "zh_CN": "斯瓦希里语",
     "zh_TW": "斯瓦希里語"
+  },
+  "swe": {
+    "en": "Swedish",
+    "zh_CN": "瑞典语",
+    "zh_TW": "瑞典語"
   },
   "ta": {
     "en": "Tamil",
@@ -544,6 +619,16 @@
     "zh_CN": "越南语",
     "zh_TW": "越南語"
   },
+  "vie": {
+    "en": "Vietnamese",
+    "zh_CN": "越南语",
+    "zh_TW": "越南語"
+  },
+  "wyw": {
+    "en": "Classical Chinese",
+    "zh_CN": "文言文",
+    "zh_TW": "文言文"
+  },
   "xh": {
     "en": "Xhosa",
     "zh_CN": "班图语",
@@ -568,6 +653,11 @@
     "en": "Cantonese (Traditional)",
     "zh_CN": "粤语（繁体）",
     "zh_TW": "粵語（繁體）"
+  },
+  "zh": {
+    "en": "Chinese (Simplified)",
+    "zh_CN": "中文（简体）",
+    "zh_TW": "中文（簡體）"
   },
   "zh-CHS": {
     "en": "Chinese (Simplified)",

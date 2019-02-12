@@ -1,7 +1,10 @@
-import { getDefaultConfig } from '@/app-config'
 import sinon from 'sinon'
 
 import { message, storage } from '@/_helpers/browser-api'
+import { getDefaultConfig } from '@/app-config'
+import '@/background/types'
+
+window.appConfig = getDefaultConfig()
 
 window.fetch = jest.fn(() => Promise.resolve({
   ok: true,
@@ -79,7 +82,7 @@ describe('Initialization', () => {
     browser.storage.local.set.callsFake(() => Promise.resolve())
     browser.storage.local.clear.callsFake(() => Promise.resolve())
 
-    require('@/background/initialization')
+    require('@/background/initialization').default()
   })
 
   it('should properly set up', done => {

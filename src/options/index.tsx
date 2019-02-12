@@ -61,16 +61,24 @@ export interface OptionsState {
 }
 
 export class Options extends React.Component<OptionsProps, OptionsState> {
-  constructor (props: OptionsProps) {
-    super(props)
+  state: OptionsState = {
+    config: getDefaultConfig(),
+    profile: getDefaultProfile(),
+    profileIDList: [],
+    rawProfileName: '',
+  }
 
-    this.state = {
-      config: getDefaultConfig(),
-      profile: getDefaultProfile(),
-      profileIDList: [],
-      rawProfileName: '',
-    }
+  getActiveProfileName = (
+    activeID: string,
+    profileIDList = this.state.profileIDList,
+  ): string => {
+    const activeProfileID = profileIDList.find(
+      ({ id }) => id === activeID
+    )
+    return activeProfileID ? activeProfileID.name : ''
+  }
 
+  componentDidMount () {
     Promise.all([getConfig(), getActiveProfile(), getProfileIDList()])
       .then(async ([ config, profile, profileIDList ]) => {
         this.setState({
@@ -133,16 +141,6 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
       message.destroy()
       message.success(i18n.t('msg_updated'))
     })
-  }
-
-  getActiveProfileName = (
-    activeID: string,
-    profileIDList = this.state.profileIDList,
-  ): string => {
-    const activeProfileID = profileIDList.find(
-      ({ id }) => id === activeID
-    )
-    return activeProfileID ? activeProfileID.name : ''
   }
 
   render () {

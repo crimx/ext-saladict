@@ -1,27 +1,30 @@
+import { retry } from '../helpers'
 import { search, LongmanResultLex, LongmanResultRelated } from '@/components/dictionaries/longman/engine'
-import { getDefaultConfig, AppConfigMutable } from '@/app-config'
+import { getDefaultConfig } from '@/app-config'
 import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
 import fs from 'fs'
 import path from 'path'
 
 describe('Dict/Longman/engine', () => {
   beforeAll(() => {
-    const response = {
-      love: fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8'),
-      profit: fs.readFileSync(path.join(__dirname, 'response/profit.html'), 'utf8'),
-      jumblish: fs.readFileSync(path.join(__dirname, 'response/jumblish.html'), 'utf8'),
-    }
-
-    window.fetch = jest.fn((url: string) => {
-      const key = Object.keys(response).find(keyword => url.endsWith(keyword))
-      if (key) {
-        return Promise.resolve({
-          ok: true,
-          text: () => response[key]
-        })
+    if (!process.env.CI) {
+      const response = {
+        love: fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8'),
+        profit: fs.readFileSync(path.join(__dirname, 'response/profit.html'), 'utf8'),
+        jumblish: fs.readFileSync(path.join(__dirname, 'response/jumblish.html'), 'utf8'),
       }
-      return Promise.reject(new Error(`Missing Response file for ${url}`))
-    })
+
+      window.fetch = jest.fn((url: string) => {
+        const key = Object.keys(response).find(keyword => url.endsWith(keyword))
+        if (key) {
+          return Promise.resolve({
+            ok: true,
+            text: () => response[key]
+          })
+        }
+        return Promise.reject(new Error(`Missing Response file for ${url}`))
+      })
+    }
   })
 
   it('should parse lex result (love) correctly', () => {
@@ -36,41 +39,43 @@ describe('Dict/Longman/engine', () => {
       related: true,
     }
 
-    return search('love', getDefaultConfig(), profile, { isPDF: false })
-      .then(searchResult => {
-        expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
-        expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
+    return retry(() =>
+      search('love', getDefaultConfig(), profile, { isPDF: false })
+        .then(searchResult => {
+          expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
+          expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
 
-        const result = searchResult.result as LongmanResultLex
-        expect(result.type).toBe('lex')
+          const result = searchResult.result as LongmanResultLex
+          expect(result.type).toBe('lex')
 
-        expect(result.bussinessFirst).toBe(true)
-        expect(result.wordfams).toBeUndefined()
-        expect(result.contemporary).toHaveLength(2)
-        expect(result.bussiness).toHaveLength(0)
+          expect(result.bussinessFirst).toBe(true)
+          expect(result.wordfams).toBeUndefined()
+          expect(result.contemporary).toHaveLength(2)
+          expect(result.bussiness).toHaveLength(0)
 
-        result.contemporary.forEach(entry => {
-          expect(entry.title.HWD.length).toBeGreaterThan(0)
-          expect(entry.title.HYPHENATION.length).toBeGreaterThan(0)
-          expect(entry.title.HOMNUM.length).toBeGreaterThan(0)
-          expect(entry.senses.length).toBeGreaterThan(0)
-          expect(typeof entry.phsym).toBe('string')
-          expect(typeof entry.pos).toBe('string')
-          expect(entry.freq).toHaveLength(2)
-          expect(entry.level).toBeDefined()
-          expect((entry.level as any).rate).toBe(3)
-          expect(entry.prons).toHaveLength(2)
+          result.contemporary.forEach(entry => {
+            expect(entry.title.HWD.length).toBeGreaterThan(0)
+            expect(entry.title.HYPHENATION.length).toBeGreaterThan(0)
+            expect(entry.title.HOMNUM.length).toBeGreaterThan(0)
+            expect(entry.senses.length).toBeGreaterThan(0)
+            expect(typeof entry.phsym).toBe('string')
+            expect(typeof entry.pos).toBe('string')
+            expect(entry.freq).toHaveLength(2)
+            expect(entry.level).toBeDefined()
+            expect((entry.level as any).rate).toBe(3)
+            expect(entry.prons).toHaveLength(2)
+          })
+
+          expect(typeof result.contemporary[0].grammar).toBe('string')
+          expect(typeof result.contemporary[0].thesaurus).toBe('string')
+          expect(result.contemporary[0].examples).toHaveLength(3)
+          expect(result.contemporary[0].topic).toBeUndefined()
+
+          expect(typeof result.contemporary[0].collocations).toBe('string')
+          expect(typeof result.contemporary[0].thesaurus).toBe('string')
+          expect(result.contemporary[1].examples).toHaveLength(4)
         })
-
-        expect(typeof result.contemporary[0].grammar).toBe('string')
-        expect(typeof result.contemporary[0].thesaurus).toBe('string')
-        expect(result.contemporary[0].examples).toHaveLength(3)
-        expect(result.contemporary[0].topic).toBeUndefined()
-
-        expect(typeof result.contemporary[0].collocations).toBe('string')
-        expect(typeof result.contemporary[0].thesaurus).toBe('string')
-        expect(result.contemporary[1].examples).toHaveLength(4)
-      })
+    )
   })
 
   it('should parse lex result (profit) correctly', () => {
@@ -85,64 +90,68 @@ describe('Dict/Longman/engine', () => {
       related: true,
     }
 
-    return search('profit', getDefaultConfig(), profile, { isPDF: false })
-      .then(searchResult => {
-        expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
-        expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
+    return retry(() =>
+      search('profit', getDefaultConfig(), profile, { isPDF: false })
+        .then(searchResult => {
+          expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
+          expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
 
-        const result = searchResult.result as LongmanResultLex
-        expect(result.type).toBe('lex')
+          const result = searchResult.result as LongmanResultLex
+          expect(result.type).toBe('lex')
 
-        expect(result.bussinessFirst).toBe(false)
-        expect((result.wordfams as string).length).toBeGreaterThan(0)
-        expect(result.contemporary).toHaveLength(2)
-        expect(result.bussiness).toHaveLength(2)
+          expect(result.bussinessFirst).toBe(false)
+          expect((result.wordfams as string).length).toBeGreaterThan(0)
+          expect(result.contemporary).toHaveLength(2)
+          expect(result.bussiness).toHaveLength(2)
 
-        result.contemporary.forEach(entry => {
-          expect(entry.title.HWD.length).toBeGreaterThan(0)
-          expect(entry.title.HYPHENATION.length).toBeGreaterThan(0)
-          expect(entry.title.HOMNUM.length).toBeGreaterThan(0)
-          expect(entry.senses.length).toBeGreaterThan(0)
-          expect(typeof entry.phsym).toBe('string')
-          expect(typeof entry.pos).toBe('string')
-          expect(entry.prons).toHaveLength(2)
+          result.contemporary.forEach(entry => {
+            expect(entry.title.HWD.length).toBeGreaterThan(0)
+            expect(entry.title.HYPHENATION.length).toBeGreaterThan(0)
+            expect(entry.title.HOMNUM.length).toBeGreaterThan(0)
+            expect(entry.senses.length).toBeGreaterThan(0)
+            expect(typeof entry.phsym).toBe('string')
+            expect(typeof entry.pos).toBe('string')
+            expect(entry.prons).toHaveLength(2)
+          })
+
+          result.bussiness.forEach(entry => {
+            expect(entry.title.HWD.length).toBeGreaterThan(0)
+            expect(entry.title.HYPHENATION.length).toBeGreaterThan(0)
+            expect(entry.title.HOMNUM.length).toBeGreaterThan(0)
+            expect(entry.senses.length).toBeGreaterThan(0)
+            expect(typeof entry.phsym).toBe('string')
+            expect(typeof entry.pos).toBe('string')
+            expect(entry.freq).toHaveLength(0)
+            expect(entry.level).toBeUndefined()
+            expect(entry.prons).toHaveLength(0)
+          })
+
+          expect(result.contemporary[0].level).toBeDefined()
+          expect((result.contemporary[0].level as any).rate).toBe(3)
+          expect(typeof result.contemporary[0].collocations).toBe('string')
+          expect(typeof result.contemporary[0].thesaurus).toBe('string')
+          expect(result.contemporary[0].freq).toHaveLength(2)
+          expect(result.contemporary[0].examples).toHaveLength(2)
+          expect(typeof result.contemporary[0].topic).toBeTruthy()
+
+          expect(result.contemporary[1].freq).toHaveLength(0)
+          expect(result.contemporary[1].examples).toHaveLength(3)
+          expect(result.contemporary[1].level).toBeDefined()
+          expect((result.contemporary[1].level as any).rate).toBe(1)
         })
-
-        result.bussiness.forEach(entry => {
-          expect(entry.title.HWD.length).toBeGreaterThan(0)
-          expect(entry.title.HYPHENATION.length).toBeGreaterThan(0)
-          expect(entry.title.HOMNUM.length).toBeGreaterThan(0)
-          expect(entry.senses.length).toBeGreaterThan(0)
-          expect(typeof entry.phsym).toBe('string')
-          expect(typeof entry.pos).toBe('string')
-          expect(entry.freq).toHaveLength(0)
-          expect(entry.level).toBeUndefined()
-          expect(entry.prons).toHaveLength(0)
-        })
-
-        expect(result.contemporary[0].level).toBeDefined()
-        expect((result.contemporary[0].level as any).rate).toBe(3)
-        expect(typeof result.contemporary[0].collocations).toBe('string')
-        expect(typeof result.contemporary[0].thesaurus).toBe('string')
-        expect(result.contemporary[0].freq).toHaveLength(2)
-        expect(result.contemporary[0].examples).toHaveLength(2)
-        expect(typeof result.contemporary[0].topic).toBeTruthy()
-
-        expect(result.contemporary[1].freq).toHaveLength(0)
-        expect(result.contemporary[1].examples).toHaveLength(3)
-        expect(result.contemporary[1].level).toBeDefined()
-        expect((result.contemporary[1].level as any).rate).toBe(1)
-      })
+    )
   })
 
   it('should parse related result correctly', () => {
-    return search('jumblish', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
-      .then(searchResult => {
-        expect(searchResult.audio).toBeUndefined()
+    return retry(() =>
+      search('jumblish', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
+        .then(searchResult => {
+          expect(searchResult.audio).toBeUndefined()
 
-        const result = searchResult.result as LongmanResultRelated
-        expect(result.type).toBe('related')
-        expect(typeof result.list).toBe('string')
-      })
+          const result = searchResult.result as LongmanResultRelated
+          expect(result.type).toBe('related')
+          expect(typeof result.list).toBe('string')
+        })
+    )
   })
 })

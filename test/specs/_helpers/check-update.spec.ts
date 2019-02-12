@@ -2,15 +2,11 @@ import checkUpdate from '@/_helpers/check-update'
 import fetchMock from 'jest-fetch-mock'
 
 describe('Check Update', () => {
-  const bakFetch = window.fetch
   beforeAll(() => {
     window.fetch = fetchMock
     browser.runtime.getManifest.returns({
       version: '1.1.1'
     })
-  })
-  afterAll(() => {
-    window.fetch = bakFetch
   })
   beforeEach(() => {
     fetchMock.resetMocks()

@@ -2,60 +2,65 @@ import { AppConfigMutable } from '@/app-config'
 import { message, storage, openURL } from '@/_helpers/browser-api'
 import { isExtTainted } from '@/_helpers/integrity'
 import checkUpdate from '@/_helpers/check-update'
-import { getConfig, updateConfig, initConfig } from '@/_helpers/config-manager'
+import { updateConfig, initConfig } from '@/_helpers/config-manager'
 import { initProfiles } from '@/_helpers/profile-manager'
 import { MsgType, MsgQueryPanelState } from '@/typings/message'
 import { init as initMenus, openPDF, openGoogle, openYoudao } from './context-menus'
 import { openQSPanel } from './server'
 import { init as initPdf } from './pdf-sniffer'
 import { startSyncServiceInterval } from './sync-manager'
+import './types'
 
-getConfig().then(config => {
-  initMenus(config.contextMenus)
-  initPdf(config)
-})
-
-startSyncServiceInterval()
-
-browser.runtime.onInstalled.addListener(onInstalled)
-browser.runtime.onStartup.addListener(onStartup)
-browser.notifications.onClicked.addListener(
-  genClickListener('https://github.com/crimx/ext-saladict/releases')
-)
-if (browser.notifications.onButtonClicked) {
-  // Firefox doesn't support
-  browser.notifications.onButtonClicked.addListener(
-    genClickListener('https://github.com/crimx/ext-saladict/releases')
-  )
+interface UpdateData {
+  name?: string
+  body?: string
+  tag_name?: string
 }
 
-browser.commands.onCommand.addListener(command => {
+export default function main () {
+  initMenus(window.appConfig.contextMenus)
+  initPdf(window.appConfig)
+
+  startSyncServiceInterval()
+
+  browser.runtime.onInstalled.addListener(onInstalled)
+  browser.runtime.onStartup.addListener(onStartup)
+  browser.notifications.onClicked.addListener(
+    genClickListener('https://github.com/crimx/ext-saladict/releases')
+  )
+  if (browser.notifications.onButtonClicked) {
+    // Firefox doesn't support
+    browser.notifications.onButtonClicked.addListener(
+      genClickListener('https://github.com/crimx/ext-saladict/releases')
+    )
+  }
+
+  browser.commands.onCommand.addListener(onCommand)
+}
+
+function onCommand (command: string) {
   switch (command) {
     case 'toggle-active':
-      getConfig().then(config => {
-        updateConfig({
-          ...config,
-          active: !config.active,
-        })
+      updateConfig({
+        ...window.appConfig,
+        active: !window.appConfig.active,
       })
       break
     case 'toggle-instant':
       browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
         if (tabs.length <= 0 || tabs[0].id == null) { return }
-        Promise.all([
-          getConfig(),
-          message.send<MsgQueryPanelState, boolean>(
-            tabs[0].id as number,
-            {
-              type: MsgType.QueryPanelState,
-              path: 'widget.isPinned',
-            }
-          ),
-        ]).then(([config, isPinned]) => {
-          const isEnable = !config[isPinned ? 'pinMode' : 'mode'].instant.enable
-          ;(config as AppConfigMutable).mode.instant.enable = isEnable
-          ;(config as AppConfigMutable).pinMode.instant.enable = isEnable
-          updateConfig(config)
+        message.send<MsgQueryPanelState, boolean>(
+          tabs[0].id as number,
+          {
+            type: MsgType.QueryPanelState,
+            path: 'widget.isPinned',
+          }
+        ).then(isPinned => {
+          const appConfig = window.appConfig as AppConfigMutable
+          const isEnable = !appConfig[isPinned ? 'pinMode' : 'mode'].instant.enable
+          appConfig.mode.instant.enable = isEnable
+          appConfig.pinMode.instant.enable = isEnable
+          updateConfig(window.appConfig)
         })
       })
       break
@@ -72,7 +77,7 @@ browser.commands.onCommand.addListener(command => {
       openPDF()
       break
   }
-})
+}
 
 async function onInstalled ({ reason, previousVersion }: { reason: string, previousVersion?: string }) {
   const config = await initConfig()
@@ -93,7 +98,7 @@ async function onInstalled ({ reason, previousVersion }: { reason: string, previ
       }
     })
   } else if (reason === 'update') {
-    let data
+    let data: UpdateData | undefined
     if (!process.env.DEV_BUILD) {
       try {
         const response = await fetch('https://api.github.com/repos/crimx/ext-saladict/releases/latest')
@@ -103,7 +108,10 @@ async function onInstalled ({ reason, previousVersion }: { reason: string, previ
 
     if (data) {
       // ignore patch updates
-      if (data.name.endsWith('#') || !previousVersion || previousVersion.replace(/[^.]*$/, '') !== browser.runtime.getManifest().version.replace(/[^.]*$/, '')) {
+      if ((data.name && data.name.endsWith('#')) ||
+          !previousVersion ||
+          previousVersion.replace(/[^.]*$/, '') !== browser.runtime.getManifest().version.replace(/[^.]*$/, '')
+      ) {
         showNews(data)
       }
     }
@@ -172,12 +180,13 @@ function genClickListener (url: string) {
   }
 }
 
-function showNews (data) {
+function showNews (data: UpdateData) {
   const message = data.body
-    .match(/^\d+\..+/gm) // item list
-    .map(line => line.replace(/\[(\S+)\](?:\(\S+\)|\[\S+\])/g, '$1')) // strip markdown link
-    .join('\n')
-  if (data && data.tag_name) {
+    ? (data.body.match(/^\d+\..+/gm) || []) // ordered list
+      .map(line => line.replace(/\[(\S+)\](?:\(\S+\)|\[\S+\])/g, '$1')) // strip markdown link
+      .join('\n')
+    : ''
+  if (data.tag_name) {
     browser.notifications.create('oninstall', {
       type: 'basic',
       iconUrl: browser.runtime.getURL(`static/icon-128.png`),

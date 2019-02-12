@@ -13,6 +13,7 @@ import en_US from 'antd/lib/locale-provider/en_US'
 
 import { Area } from '@/_helpers/record-manager'
 import { createConfigStream } from '@/_helpers/config-manager'
+import { injectAnalytics } from '@/_helpers/analytics'
 
 const i18n = i18nLoader({ wordpage: worPageLocales, content: contentLocales }, 'wordpage')
 const antdLocales = {
@@ -30,14 +31,17 @@ export interface WordPageState {
 }
 
 export default class WordPage extends React.Component<WordPageProps, WordPageState> {
-  constructor (props: WordPageProps) {
-    super(props)
-    this.state = {
-      locale: 'zh-CN'
-    }
+  state: WordPageState = {
+    locale: 'zh-CN'
+  }
+
+  componentDidMount () {
     createConfigStream().subscribe(config => {
       if (this.state.locale !== config.langCode && antdLocales[config.langCode]) {
         this.setState({ locale: config.langCode })
+      }
+      if (config.analytics) {
+        injectAnalytics()
       }
     })
   }

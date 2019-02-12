@@ -32,6 +32,7 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   // pre-merge patch end
 
   mergeBoolean('active')
+  mergeBoolean('analytics')
   mergeBoolean('noTypeField')
   mergeBoolean('animation')
 

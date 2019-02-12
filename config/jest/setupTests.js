@@ -2,11 +2,19 @@ import browser from 'sinon-chrome/extensions'
 import Enzyme from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import raf from 'raf'
-import { Request, Response } from 'node-fetch'
+import fetch from 'node-fetch'
 
 window.browser = browser
-window.Request = Request
-window.Response = Response
+window.Request = fetch.Request
+window.Response = fetch.Response
+window.Headers = fetch.Headers
+
+if (process.env.CI) {
+  window.FormData = require('form-data')
+  window.fetch = fetch
+
+  jest.setTimeout(30000)
+}
 
 Enzyme.configure({ adapter: new Adapter() })
 
