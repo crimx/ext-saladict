@@ -7,9 +7,7 @@ import { URL } from 'url'
 
 describe('Dict/Bing/engine', () => {
   beforeAll(() => {
-    if (process.env.CI) {
-      window.fetch = require('node-fetch')
-    } else {
+    if (!process.env.CI) {
       const response = {
         love: fs.readFileSync(path.join(__dirname, 'response/lex.html'), 'utf8'),
         machine: fs.readFileSync(path.join(__dirname, 'response/machine.html'), 'utf8'),

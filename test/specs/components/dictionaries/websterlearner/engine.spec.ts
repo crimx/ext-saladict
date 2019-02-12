@@ -6,22 +6,24 @@ import path from 'path'
 
 describe('Dict/WebsterLearner/engine', () => {
   beforeAll(() => {
-    const response = {
-      house: fs.readFileSync(path.join(__dirname, 'response/house.html'), 'utf8'),
-      door: fs.readFileSync(path.join(__dirname, 'response/door.html'), 'utf8'),
-      jumblish: fs.readFileSync(path.join(__dirname, 'response/jumblish.html'), 'utf8'),
-    }
-
-    window.fetch = jest.fn((url: string) => {
-      const key = Object.keys(response).find(keyword => url.endsWith(keyword))
-      if (key) {
-        return Promise.resolve({
-          ok: true,
-          text: () => response[key]
-        })
+    if (!process.env.CI) {
+      const response = {
+        house: fs.readFileSync(path.join(__dirname, 'response/house.html'), 'utf8'),
+        door: fs.readFileSync(path.join(__dirname, 'response/door.html'), 'utf8'),
+        jumblish: fs.readFileSync(path.join(__dirname, 'response/jumblish.html'), 'utf8'),
       }
-      return Promise.reject(new Error(`Missing Response file for ${url}`))
-    })
+
+      window.fetch = jest.fn((url: string) => {
+        const key = Object.keys(response).find(keyword => url.endsWith(keyword))
+        if (key) {
+          return Promise.resolve({
+            ok: true,
+            text: () => response[key]
+          })
+        }
+        return Promise.reject(new Error(`Missing Response file for ${url}`))
+      })
+    }
   })
 
   it('should parse lex result correctly', () => {
@@ -81,17 +83,6 @@ describe('Dict/WebsterLearner/engine', () => {
         expect(result.items[1].phrases).toBeFalsy()
 
         expect(result.items[1].derived).toBeFalsy()
-      })
-  })
-
-  it('should parse related result correctly', () => {
-    return search('jumblish', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
-      .then(searchResult => {
-        expect(searchResult.audio).toBeUndefined()
-
-        const result = searchResult.result as WebsterLearnerResultRelated
-        expect(result.type).toBe('related')
-        expect(typeof result.list).toBe('string')
       })
   })
 })

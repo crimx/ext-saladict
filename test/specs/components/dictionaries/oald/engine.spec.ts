@@ -6,22 +6,24 @@ import path from 'path'
 
 describe('Dict/OALD/engine', () => {
   beforeAll(() => {
-    const response = {
-      love: fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8'),
-      love_2: fs.readFileSync(path.join(__dirname, 'response/love_2.html'), 'utf8'),
-      jumblish: fs.readFileSync(path.join(__dirname, 'response/jumblish.html'), 'utf8'),
-    }
-
-    window.fetch = jest.fn((url: string) => {
-      const key = Object.keys(response).find(keyword => url.endsWith(keyword))
-      if (key) {
-        return Promise.resolve({
-          ok: true,
-          text: () => response[key]
-        })
+    if (!process.env.CI) {
+      const response = {
+        love: fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8'),
+        love_2: fs.readFileSync(path.join(__dirname, 'response/love_2.html'), 'utf8'),
+        jumblish: fs.readFileSync(path.join(__dirname, 'response/jumblish.html'), 'utf8'),
       }
-      return Promise.reject(new Error(`Missing Response file for ${url}`))
-    })
+
+      window.fetch = jest.fn((url: string) => {
+        const key = Object.keys(response).find(keyword => url.endsWith(keyword))
+        if (key) {
+          return Promise.resolve({
+            ok: true,
+            text: () => response[key]
+          })
+        }
+        return Promise.reject(new Error(`Missing Response file for ${url}`))
+      })
+    }
   })
 
   it('should parse lex result correctly', () => {

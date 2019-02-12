@@ -4,12 +4,6 @@ import { getDefaultProfile } from '@/app-config/profiles'
 import { isContainChinese, isContainEnglish, isContainJapanese } from '@/_helpers/lang-check'
 
 describe('Dict/Baidu/engine', () => {
-  beforeAll(() => {
-    if (process.env.CI) {
-      window.fetch = require('node-fetch')
-    }
-  })
-
   it('should parse result correctly', () => {
     if (process.env.CI) {
       return search('我爱你', getDefaultConfig(), getDefaultProfile(), { isPDF: false })

@@ -6,15 +6,17 @@ import path from 'path'
 
 describe('Dict/Eudic/engine', () => {
   beforeAll(() => {
-    const entry = fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8')
-    const data = fs.readFileSync(path.join(__dirname, 'response/sentences.html'), 'utf8')
-    window.fetch = jest.fn((url: string) => Promise.resolve({
-      ok: true,
-      text: () => url.indexOf('tab-detail') === -1 ? entry : data
-    }))
+    if (!process.env.CI) {
+      const entry = fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8')
+      const data = fs.readFileSync(path.join(__dirname, 'response/sentences.html'), 'utf8')
+      window.fetch = jest.fn((url: string) => Promise.resolve({
+        ok: true,
+        text: () => url.indexOf('tab-detail') === -1 ? entry : data
+      }))
+    }
   })
 
-  it('should parse result correctly', () => {
+  it('should parse result correctly', async () => {
     return search('love', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')

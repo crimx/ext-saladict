@@ -100,6 +100,7 @@
     "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "1.1.11",
     "fork-ts-checker-webpack-plugin": "^0.4.0",
+    "form-data": "^2.3.3",
     "fs-extra": "^5.0.0",
     "generate-json-webpack-plugin": "^0.2.2",
     "html-webpack-plugin": "3.0.6",
@@ -139,8 +140,7 @@
     "webpack": "3.11.0",
     "webpack-bundle-analyzer": "^2.11.1",
     "webpack-dev-server": "2.11.1",
-    "wrapper-webpack-plugin": "^1.0.0",
-    "xmlhttprequest": "^1.8.0"
+    "wrapper-webpack-plugin": "^1.0.0"
   },
   "jest": {
     "globals": {

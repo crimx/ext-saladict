@@ -1,27 +1,29 @@
 import { search, LongmanResultLex, LongmanResultRelated } from '@/components/dictionaries/longman/engine'
-import { getDefaultConfig, AppConfigMutable } from '@/app-config'
+import { getDefaultConfig } from '@/app-config'
 import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
 import fs from 'fs'
 import path from 'path'
 
 describe('Dict/Longman/engine', () => {
   beforeAll(() => {
-    const response = {
-      love: fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8'),
-      profit: fs.readFileSync(path.join(__dirname, 'response/profit.html'), 'utf8'),
-      jumblish: fs.readFileSync(path.join(__dirname, 'response/jumblish.html'), 'utf8'),
-    }
-
-    window.fetch = jest.fn((url: string) => {
-      const key = Object.keys(response).find(keyword => url.endsWith(keyword))
-      if (key) {
-        return Promise.resolve({
-          ok: true,
-          text: () => response[key]
-        })
+    if (!process.env.CI) {
+      const response = {
+        love: fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8'),
+        profit: fs.readFileSync(path.join(__dirname, 'response/profit.html'), 'utf8'),
+        jumblish: fs.readFileSync(path.join(__dirname, 'response/jumblish.html'), 'utf8'),
       }
-      return Promise.reject(new Error(`Missing Response file for ${url}`))
-    })
+
+      window.fetch = jest.fn((url: string) => {
+        const key = Object.keys(response).find(keyword => url.endsWith(keyword))
+        if (key) {
+          return Promise.resolve({
+            ok: true,
+            text: () => response[key]
+          })
+        }
+        return Promise.reject(new Error(`Missing Response file for ${url}`))
+      })
+    }
   })
 
   it('should parse lex result (love) correctly', () => {

@@ -6,12 +6,14 @@ import path from 'path'
 
 describe('Dict/Zdic/engine', () => {
   beforeAll(() => {
-    const word = fs.readFileSync(path.join(__dirname, 'response/爱.html'), 'utf8')
-    const phrase = fs.readFileSync(path.join(__dirname, 'response/沙拉.html'), 'utf8')
-    window.fetch = jest.fn((url: string) => Promise.resolve({
-      ok: true,
-      text: () => url.indexOf('爱') !== -1 ? word : phrase
-    }))
+    if (!process.env.CI) {
+      const word = fs.readFileSync(path.join(__dirname, 'response/爱.html'), 'utf8')
+      const phrase = fs.readFileSync(path.join(__dirname, 'response/沙拉.html'), 'utf8')
+      window.fetch = jest.fn((url: string) => Promise.resolve({
+        ok: true,
+        text: () => url.indexOf('爱') !== -1 ? word : phrase
+      }))
+    }
   })
 
   it('should parse word result correctly', () => {

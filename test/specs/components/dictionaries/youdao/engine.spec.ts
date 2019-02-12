@@ -6,22 +6,24 @@ import path from 'path'
 
 describe('Dict/Youdao/engine', () => {
   beforeAll(() => {
-    const response = {
-      love: fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8'),
-      jumblish: fs.readFileSync(path.join(__dirname, 'response/jumblish.html'), 'utf8'),
-      translation: fs.readFileSync(path.join(__dirname, 'response/translation.html'), 'utf8'),
-    }
-
-    window.fetch = jest.fn((url: string) => {
-      const key = Object.keys(response).find(keyword => url.endsWith(keyword))
-      if (key) {
-        return Promise.resolve({
-          ok: true,
-          text: () => response[key]
-        })
+    if (!process.env.CI) {
+      const response = {
+        love: fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8'),
+        jumblish: fs.readFileSync(path.join(__dirname, 'response/jumblish.html'), 'utf8'),
+        translation: fs.readFileSync(path.join(__dirname, 'response/translation.html'), 'utf8'),
       }
-      return Promise.reject(new Error(`Missing Response file for ${url}`))
-    })
+
+      window.fetch = jest.fn((url: string) => {
+        const key = Object.keys(response).find(keyword => url.endsWith(keyword))
+        if (key) {
+          return Promise.resolve({
+            ok: true,
+            text: () => response[key]
+          })
+        }
+        return Promise.reject(new Error(`Missing Response file for ${url}`))
+      })
+    }
   })
 
   it('should parse lex result correctly', () => {
@@ -86,7 +88,10 @@ describe('Dict/Youdao/engine', () => {
   })
 
   it('should parse translation result correctly', () => {
-    return search('translation', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
+    const text = process.env.CI
+      ? 'She walks in beauty, like the night Of cloudless climes and starry skies.'
+      : 'translation'
+    return search(text, getDefaultConfig(), getDefaultProfile(), { isPDF: false })
       .then(searchResult => {
         expect(!searchResult.audio || !searchResult.audio.uk).toBeTruthy()
         expect(!searchResult.audio || !searchResult.audio.us).toBeTruthy()

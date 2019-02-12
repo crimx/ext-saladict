@@ -6,11 +6,13 @@ import path from 'path'
 
 describe('Dict/Etymonline/engine', () => {
   beforeAll(() => {
-    const response = fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8')
-    window.fetch = jest.fn((url: string) => Promise.resolve({
-      ok: true,
-      text: () => response
-    }))
+    if (!process.env.CI) {
+      const response = fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8')
+      window.fetch = jest.fn((url: string) => Promise.resolve({
+        ok: true,
+        text: () => response
+      }))
+    }
   })
 
   it('should parse result correctly', () => {
@@ -19,7 +21,7 @@ describe('Dict/Etymonline/engine', () => {
       chart: true,
       resultnum: 4
     }
-    return search('any', getDefaultConfig(), profile, { isPDF: false })
+    return search('love', getDefaultConfig(), profile, { isPDF: false })
       .then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 
