@@ -7,6 +7,7 @@ import fetch from 'node-fetch'
 window.browser = browser
 window.Request = fetch.Request
 window.Response = fetch.Response
+window.Headers = fetch.Headers
 
 if (process.env.CI) {
   window.FormData = require('form-data')
