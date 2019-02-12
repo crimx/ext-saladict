@@ -1,3 +1,4 @@
+import { retry } from '../helpers'
 import { search } from '@/components/dictionaries/cambridge/engine'
 import { getDefaultConfig, AppConfigMutable } from '@/app-config'
 import getDefaultProfile from '@/app-config/profiles'
@@ -33,77 +34,83 @@ describe('Dict/Cambridge/engine', () => {
   })
 
   it('should parse result (en) correctly', () => {
-    return search('love', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
-      .then(({ result, audio }) => {
-        expect(audio && typeof audio.uk).toBe('string')
-        expect(audio && typeof audio.us).toBe('string')
+    return retry(() =>
+      search('love', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
+        .then(({ result, audio }) => {
+          expect(audio && typeof audio.uk).toBe('string')
+          expect(audio && typeof audio.us).toBe('string')
 
-        expect(result.length).toBeGreaterThanOrEqual(1)
+          expect(result.length).toBeGreaterThanOrEqual(1)
 
-        result.forEach(r => {
-          expect(typeof r.title).toBe('string')
-          expect(r.title).toBeTruthy()
+          result.forEach(r => {
+            expect(typeof r.title).toBe('string')
+            expect(r.title).toBeTruthy()
 
-          expect(typeof r.pos).toBe('string')
-          expect(r.pos).toBeTruthy()
+            expect(typeof r.pos).toBe('string')
+            expect(r.pos).toBeTruthy()
 
-          expect(typeof r.defs).toBe('string')
-          expect(r.defs).toBeTruthy()
+            expect(typeof r.defs).toBe('string')
+            expect(r.defs).toBeTruthy()
+          })
+
+          expect(result[0].prons).toHaveLength(2)
+          expect(result[1].prons).toHaveLength(2)
+          expect(result[2].prons).toHaveLength(1)
+          expect(result[3].prons).toHaveLength(1)
         })
-
-        expect(result[0].prons).toHaveLength(2)
-        expect(result[1].prons).toHaveLength(2)
-        expect(result[2].prons).toHaveLength(1)
-        expect(result[3].prons).toHaveLength(1)
-      })
+    )
   })
 
   it('should parse result (zhs) correctly', () => {
-    return search('house', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
-      .then(({ result, audio }) => {
-        expect(audio && typeof audio.uk).toBe('string')
-        expect(audio && typeof audio.us).toBe('string')
+    return retry(() =>
+      search('house', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
+        .then(({ result, audio }) => {
+          expect(audio && typeof audio.uk).toBe('string')
+          expect(audio && typeof audio.us).toBe('string')
 
-        expect(result.length).toBeGreaterThanOrEqual(1)
+          expect(result.length).toBeGreaterThanOrEqual(1)
 
-        result.forEach(r => {
-          expect(typeof r.title).toBe('string')
-          expect(r.title).toBeTruthy()
+          result.forEach(r => {
+            expect(typeof r.title).toBe('string')
+            expect(r.title).toBeTruthy()
 
-          expect(typeof r.pos).toBe('string')
-          expect(r.pos).toBeTruthy()
+            expect(typeof r.pos).toBe('string')
+            expect(r.pos).toBeTruthy()
 
-          expect(typeof r.defs).toBe('string')
-          expect(r.defs).toBeTruthy()
+            expect(typeof r.defs).toBe('string')
+            expect(r.defs).toBeTruthy()
+          })
+
+          expect(result[0].prons).toHaveLength(4)
+          expect(result[1].prons).toHaveLength(2)
         })
-
-        expect(result[0].prons).toHaveLength(4)
-        expect(result[1].prons).toHaveLength(2)
-      })
+    )
   })
 
   it('should parse result (zht) correctly', () => {
     const config = getDefaultConfig() as AppConfigMutable
     config.langCode = 'zh-TW'
-    return search('catch', config, getDefaultProfile(), { isPDF: false })
-      .then(({ result, audio }) => {
-        expect(audio && typeof audio.uk).toBe('string')
-        expect(audio && typeof audio.us).toBe('string')
+    return retry(() =>
+      search('catch', config, getDefaultProfile(), { isPDF: false })
+        .then(({ result, audio }) => {
+          expect(audio && typeof audio.uk).toBe('string')
+          expect(audio && typeof audio.us).toBe('string')
 
-        expect(result.length).toBeGreaterThanOrEqual(1)
+          expect(result.length).toBeGreaterThanOrEqual(1)
 
-        result.forEach(r => {
-          expect(typeof r.title).toBe('string')
-          expect(r.title).toBeTruthy()
+          result.forEach(r => {
+            expect(typeof r.title).toBe('string')
+            expect(r.title).toBeTruthy()
 
-          expect(typeof r.pos).toBe('string')
-          expect(r.pos).toBeTruthy()
+            expect(typeof r.pos).toBe('string')
+            expect(r.pos).toBeTruthy()
 
-          expect(typeof r.defs).toBe('string')
-          expect(r.defs).toBeTruthy()
+            expect(typeof r.defs).toBe('string')
+            expect(r.defs).toBeTruthy()
 
-          expect(r.prons).toHaveLength(2)
+            expect(r.prons).toHaveLength(2)
+          })
         })
-      })
+    )
   })
 })
