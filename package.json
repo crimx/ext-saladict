@@ -163,7 +163,7 @@
       "enzyme-to-json/serializer"
     ],
     "testMatch": [
-      "<rootDir>/test/specs/**/*.{ts,tsx,js,jsx}"
+      "<rootDir>/test/specs/**/*.spec.{ts,tsx,js,jsx}"
     ],
     "testEnvironment": "node",
     "testURL": "http://localhost",
