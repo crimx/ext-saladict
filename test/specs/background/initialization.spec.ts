@@ -2,9 +2,12 @@ import sinon from 'sinon'
 
 import { message, storage } from '@/_helpers/browser-api'
 import { getDefaultConfig } from '@/app-config'
+import getDefaultProfile from '@/app-config/profiles'
+import { timer } from '@/_helpers/promise-more'
 import '@/background/types'
 
 window.appConfig = getDefaultConfig()
+window.activeProfile = getDefaultProfile()
 
 window.fetch = jest.fn(() => Promise.resolve({
   ok: true,
@@ -82,19 +85,17 @@ describe('Initialization', () => {
     browser.storage.local.set.callsFake(() => Promise.resolve())
     browser.storage.local.clear.callsFake(() => Promise.resolve())
 
-    require('@/background/initialization').default()
+    require('@/background/initialization')
   })
 
-  it('should properly set up', done => {
-    setTimeout(() => {
-      expect(browser.runtime.onInstalled.addListener.calledOnce).toBeTruthy()
-      expect(browser.runtime.onStartup.addListener.calledOnce).toBeTruthy()
-      expect(browser.notifications.onClicked.addListener.calledOnce).toBeTruthy()
-      expect(browser.notifications.onButtonClicked.addListener.calledOnce).toBeTruthy()
-      expect(initMenus).toHaveBeenCalledTimes(1)
-      expect(initPdf).toHaveBeenCalledTimes(1)
-      done()
-    }, 0)
+  it('should properly set up', async () => {
+    await timer(0)
+    expect(browser.runtime.onInstalled.addListener.calledOnce).toBeTruthy()
+    expect(browser.runtime.onStartup.addListener.calledOnce).toBeTruthy()
+    expect(browser.notifications.onClicked.addListener.calledOnce).toBeTruthy()
+    expect(browser.notifications.onButtonClicked.addListener.calledOnce).toBeTruthy()
+    expect(initMenus).toHaveBeenCalledTimes(0)
+    expect(initPdf).toHaveBeenCalledTimes(0)
   })
 
   describe('onStartup', () => {
@@ -103,31 +104,29 @@ describe('Initialization', () => {
       checkUpdate = require('@/_helpers/check-update')
     })
 
-    it('should not check update if last check was just now', done => {
+    it('should not check update if last check was just now', async () => {
       browser.storage.local.get.onFirstCall().returns(Promise.resolve({
         lastCheckUpdate: Date.now()
       }))
       browser.runtime.onStartup.dispatch()
-      setTimeout(() => {
-        expect(checkUpdate).toHaveBeenCalledTimes(0)
-        done()
-      }, 0)
+
+      await timer(0)
+      expect(checkUpdate).toHaveBeenCalledTimes(0)
     })
 
-    it('should check update when last check was 7 days ago', done => {
+    it('should check update when last check was 7 days ago', async () => {
       browser.storage.local.get.onFirstCall().returns(Promise.resolve({
         lastCheckUpdate: 0
       }))
       checkUpdate.mockReturnValueOnce(Promise.resolve({ isAvailable: true, info: {} }))
       browser.runtime.onStartup.dispatch()
-      setTimeout(() => {
-        expect(checkUpdate).toHaveBeenCalledTimes(1)
-        expect(browser.storage.local.set.calledWith({
-          lastCheckUpdate: sinon.match.number
-        })).toBeTruthy()
-        expect(browser.notifications.create.calledOnce).toBeTruthy()
-        done()
-      }, 0)
+
+      await timer(0)
+      expect(checkUpdate).toHaveBeenCalledTimes(1)
+      expect(browser.storage.local.set.calledWith({
+        lastCheckUpdate: sinon.match.number
+      })).toBeTruthy()
+      expect(browser.notifications.create.calledOnce).toBeTruthy()
     })
   })
 })

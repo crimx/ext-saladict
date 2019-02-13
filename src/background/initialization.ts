@@ -5,10 +5,8 @@ import checkUpdate from '@/_helpers/check-update'
 import { updateConfig, initConfig } from '@/_helpers/config-manager'
 import { initProfiles } from '@/_helpers/profile-manager'
 import { MsgType, MsgQueryPanelState } from '@/typings/message'
-import { init as initMenus, openPDF, openGoogle, openYoudao } from './context-menus'
+import { openPDF, openGoogle, openYoudao } from './context-menus'
 import { openQSPanel } from './server'
-import { init as initPdf } from './pdf-sniffer'
-import { startSyncServiceInterval } from './sync-manager'
 import './types'
 
 interface UpdateData {
@@ -17,26 +15,19 @@ interface UpdateData {
   tag_name?: string
 }
 
-export default function main () {
-  initMenus(window.appConfig.contextMenus)
-  initPdf(window.appConfig)
-
-  startSyncServiceInterval()
-
-  browser.runtime.onInstalled.addListener(onInstalled)
-  browser.runtime.onStartup.addListener(onStartup)
-  browser.notifications.onClicked.addListener(
+browser.runtime.onInstalled.addListener(onInstalled)
+browser.runtime.onStartup.addListener(onStartup)
+browser.notifications.onClicked.addListener(
+  genClickListener('https://github.com/crimx/ext-saladict/releases')
+)
+if (browser.notifications.onButtonClicked) {
+  // Firefox doesn't support
+  browser.notifications.onButtonClicked.addListener(
     genClickListener('https://github.com/crimx/ext-saladict/releases')
   )
-  if (browser.notifications.onButtonClicked) {
-    // Firefox doesn't support
-    browser.notifications.onButtonClicked.addListener(
-      genClickListener('https://github.com/crimx/ext-saladict/releases')
-    )
-  }
-
-  browser.commands.onCommand.addListener(onCommand)
 }
+
+browser.commands.onCommand.addListener(onCommand)
 
 function onCommand (command: string) {
   switch (command) {
@@ -80,11 +71,10 @@ function onCommand (command: string) {
 }
 
 async function onInstalled ({ reason, previousVersion }: { reason: string, previousVersion?: string }) {
-  const config = await initConfig()
-  initMenus(config.contextMenus)
-  initPdf(config)
-  await initProfiles()
-  storage.local.set({ lastCheckUpdate: Date.now() })
+  window.appConfig = await initConfig()
+  window.activeProfile = await initProfiles()
+
+  await storage.local.set({ lastCheckUpdate: Date.now() })
 
   if (reason === 'install') {
     if (!(await storage.sync.get('hasInstructionsShown')).hasInstructionsShown) {
