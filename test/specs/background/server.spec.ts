@@ -6,11 +6,9 @@ import { timer } from '@/_helpers/promise-more'
 import '@/background/types'
 
 window.appConfig = getDefaultConfig()
+window.activeProfile = getDefaultProfile()
 
 jest.mock('@/background/database')
-
-const config = getDefaultConfig()
-const profile = getDefaultProfile()
 
 describe('Server', () => {
   const chsToChz = jest.fn()
@@ -39,12 +37,12 @@ describe('Server', () => {
     })
     jest.doMock('@/app-config', () => {
       return {
-        getDefaultConfig: () => config
+        getDefaultConfig: () => window.appConfig
       }
     })
     jest.doMock('@/app-config/profiles', () => {
       return {
-        getDefaultProfile: () => profile
+        getDefaultProfile: () => window.activeProfile
       }
     })
     jest.doMock('@/_helpers/config-manager', () => {
@@ -82,7 +80,7 @@ describe('Server', () => {
     bingSearch.mockReset()
     bingSearch.mockImplementation(() => Promise.resolve({ result: '' }))
     jest.resetModules()
-    require('@/background/server').default()
+    require('@/background/server')
   })
 
   it('should properly init', () => {
@@ -135,7 +133,12 @@ describe('Server', () => {
         payload: { field: 'any' },
       })
       expect(bingSearch).toHaveBeenCalledTimes(1)
-      expect(bingSearch).toHaveBeenCalledWith('test', config, profile, { field: 'any' })
+      expect(bingSearch).toHaveBeenCalledWith(
+        'test',
+        window.appConfig,
+        window.activeProfile,
+        { field: 'any' }
+      )
     })
   })
 })
