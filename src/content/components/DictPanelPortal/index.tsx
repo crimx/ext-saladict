@@ -216,14 +216,11 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       }
     }
 
-    if (node.ownerDocument) {
-      node.ownerDocument.title = isSaladictQuickSearchPage
+    if (this.frame.contentWindow) {
+      this.frame.contentWindow.document.title = isSaladictQuickSearchPage
         ? 'Saladict Quick Search Panel'
         : 'Saladict Panel'
-      const win = node.ownerDocument.defaultView
-      if (win) {
-        injectAnalytics(win)
-      }
+      injectAnalytics(this.frame.contentWindow)
     }
   }
 
