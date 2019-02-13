@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.24.3"></a>
+## [6.24.3](https://github.com/crimx/ext-saladict/compare/v6.24.2...v6.24.3) (2019-02-13)
+
+
+### Bug Fixes
+
+* csp ([7d8790d](https://github.com/crimx/ext-saladict/commit/7d8790d))
+* fix analytics ([adebbd3](https://github.com/crimx/ext-saladict/commit/adebbd3))
+
+
+
 <a name="6.24.2"></a>
 ## [6.24.2](https://github.com/crimx/ext-saladict/compare/v6.24.1...v6.24.2) (2019-02-13)
 

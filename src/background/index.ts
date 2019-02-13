@@ -16,7 +16,7 @@ getConfig().then(async config => {
   window.appConfig = config
   initMenus(config.contextMenus)
   initPdf(config)
-  injectAnalytics()
+  injectAnalytics('/background')
 
   browser.browserAction.setBadgeText({ text: window.appConfig.active ? '' : 'off' })
 

@@ -41,7 +41,7 @@ export default class WordPage extends React.Component<WordPageProps, WordPageSta
         this.setState({ locale: config.langCode })
       }
       if (config.analytics) {
-        injectAnalytics()
+        injectAnalytics(`/wordpage/${this.props.area}`)
       }
     })
   }

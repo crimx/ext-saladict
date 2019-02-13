@@ -74,7 +74,7 @@ function showPanel (config: AppConfig) {
   injectSaladictInternal(true)
 
   if (config.analytics) {
-    injectAnalytics()
+    injectAnalytics('/popup')
   }
 
   const i18n = i18nLoader({ popup: popupLocles }, 'popup')

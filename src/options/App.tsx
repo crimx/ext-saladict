@@ -5,6 +5,7 @@ import { translate, TranslationFunction } from 'react-i18next'
 import { Layout, Menu, Icon } from 'antd'
 import HeadInfo from './components/HeadInfo'
 import { getProfileName } from '@/_helpers/profile-manager'
+import { injectAnalytics } from '@/_helpers/analytics'
 
 const { Header, Content, Sider } = Layout
 
@@ -38,6 +39,9 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
       '',
       newurl
     )
+    if (window.ga) {
+      window.ga('send', 'pageview', `/options/${key}`)
+    }
   }
 
   setTitle = (key: string) => {
@@ -47,6 +51,8 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
 
   componentDidMount () {
     this.setTitle(this.state.selectedKey)
+
+    injectAnalytics(`/options/${this.state.selectedKey}`)
 
     window.addEventListener('popstate', e => {
       this.setState({ selectedKey: e.state.key || 'General' })
