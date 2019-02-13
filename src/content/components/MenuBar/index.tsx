@@ -492,7 +492,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
         <button className='panel-MenuBar_Btn'
           onMouseDown={this.handleIconFavMouseDown}
           onClick={this.handleIconFavClick}
-          disabled={Boolean(searchBox.text)}
+          disabled={!searchBox.text}
         >
           <svg
             className={`panel-MenuBar_Icon-fav ${isFav ? 'isActive' : ''}`}

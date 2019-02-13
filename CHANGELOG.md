@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.24.2"></a>
+## [6.24.2](https://github.com/crimx/ext-saladict/compare/v6.24.1...v6.24.2) (2019-02-13)
+
+
+### Bug Fixes
+
+* **panel:** fix changing page title ([1fe0acc](https://github.com/crimx/ext-saladict/commit/1fe0acc))
+* **panel:** fix fav icon ([5f0433f](https://github.com/crimx/ext-saladict/commit/5f0433f))
+
+
+
 <a name="6.24.1"></a>
 ## [6.24.1](https://github.com/crimx/ext-saladict/compare/v6.24.0...v6.24.1) (2019-02-13)
 
