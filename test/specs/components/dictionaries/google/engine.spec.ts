@@ -25,6 +25,7 @@ describe('Dict/Google/engine', () => {
         .then(searchResult => {
           if (process.env.CI) {
             expect(isContainEnglish(searchResult.result.trans.text)).toBeTruthy()
+            expect(searchResult.result.trans.text).toMatch(/love/)
           } else {
             expect(searchResult.result.trans.text).toBe('“当你不需要的时候，这就是你所读到的东西，当你无法帮助它时，它将决定你将会是什么。”\n - 奥斯卡·王尔德\n 成功一夜成名需要很长时间。')
           }

@@ -13,6 +13,7 @@ describe('Dict/Baidu/engine', () => {
             expect(searchResult.audio).toBeUndefined()
             expect(isContainChinese(searchResult.result.searchText.text)).toBeTruthy()
             expect(isContainEnglish(searchResult.result.trans.text)).toBeTruthy()
+            expect(searchResult.result.trans.text).toMatch(/love/)
             expect(searchResult.result.id).toBe('baidu')
             expect(searchResult.result.sl).toBe('zh')
             expect(searchResult.result.tl).toBe('en')
