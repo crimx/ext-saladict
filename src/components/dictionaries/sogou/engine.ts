@@ -8,6 +8,7 @@ import {
 } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
+import { storage } from '@/_helpers/browser-api'
 import md5 from 'md5'
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
@@ -20,6 +21,13 @@ export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
     : profile.dicts.all.sogou.options.tl
 
   return `https://fanyi.sogou.com/#auto/${lang}/${text}`
+}
+
+interface SogouStorage {
+  // sogou search token
+  token: string
+  // token added date, update the token every day
+  tokenDate: number
 }
 
 export type SogouResult = MachineTranslateResult
@@ -35,7 +43,7 @@ const langcodes: ReadonlyArray<string> = [
   'uk', 'ur', 'vi', 'yua', 'yue',
 ]
 
-export const search: SearchFunction<SogouSearchResult, MachineTranslatePayload> = (
+export const search: SearchFunction<SogouSearchResult, MachineTranslatePayload> = async (
   text, config, profile, payload
 ) => {
   const options = profile.dicts.all.sogou.options
@@ -55,13 +63,22 @@ export const search: SearchFunction<SogouSearchResult, MachineTranslatePayload> 
     text = text.replace(/\n+/g, ' ')
   }
 
+  let { dict_sogou } = await storage.local.get<{'dict_sogou': SogouStorage}>('dict_sogou')
+  if (!dict_sogou || (Date.now() - dict_sogou.tokenDate > 24 * 3600 * 1000)) {
+    dict_sogou = {
+      token: (await getSogouToken().catch(() => '')) || 'b33bf8c58706155663d1ad5dba4192dc',
+      tokenDate: Date.now()
+    }
+    storage.local.set({ dict_sogou })
+  }
+
   return fetch('https://fanyi.sogou.com/reventondc/translate', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       'X-Requested-With': 'XMLHttpRequest',
     },
-    body: `from=${sl}&to=${tl}&text=${encodeURIComponent(text).replace(/%20/g, '+')}&uuid=${getUUID()}&s=${md5('' + sl + tl + text + '41ee21a5ab5a13f72687a270816d1bfd')}&client=pc&fr=browser_pc&useDetect=on&useDetectResult=on&needQc=1&oxford=on&isReturnSugg=on`
+    body: `from=${sl}&to=${tl}&text=${encodeURIComponent(text).replace(/%20/g, '+')}&uuid=${getUUID()}&s=${md5('' + sl + tl + text + dict_sogou.token)}&client=pc&fr=browser_pc&useDetect=on&useDetectResult=on&needQc=1&oxford=on&isReturnSugg=on`
   })
   .then(r => r.json())
   .catch(handleNetWorkError)
@@ -110,4 +127,16 @@ function getUUID () {
     uuid += (i === 12 ? 4 : i === 16 ? (3 & digit) | 8 : digit).toString(16)
   }
   return uuid
+}
+
+async function getSogouToken (): Promise<string> {
+  const homepage = await fetch('https://fanyi.sogou.com').then(r => r.text())
+
+  const appjsMatcher = /dlweb\.sogoucdn\.com\/translate\/pc\/static\/js\/app\.\S+\.js/
+  const appjsPath = (homepage.match(appjsMatcher) || [''])[0]
+  if (!appjsPath) { return '' }
+
+  const appjs = await fetch('https://' + appjsPath).then(r => r.text())
+
+  return (appjs.match(/"(\w{32})"/) || ['', ''])[1]
 }
