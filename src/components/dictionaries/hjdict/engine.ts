@@ -183,7 +183,7 @@ function getLangCode (text: string, profile: Profile): string {
   }
 
   if (isContainKorean(text)) {
-    return 'kor'
+    return 'kr'
   }
 
   if (isContainChinese(text)) {
