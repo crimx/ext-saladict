@@ -30,7 +30,7 @@ export class Popup extends React.Component<Props & FormComponentProps> {
             </Select>
           )
         }</Form.Item>
-        {config.baOpen === '' &&
+        {config.baOpen === 'popup_panel' &&
           <Form.Item
             {...formItemLayout}
             label={t('preload')}
@@ -47,7 +47,7 @@ export class Popup extends React.Component<Props & FormComponentProps> {
             )
           }</Form.Item>
         }
-        {config.baOpen === '' && config.baPreload !== '' &&
+        {config.baOpen === 'popup_panel' && config.baPreload !== '' &&
           <Form.Item
             {...formItemLayout}
             label={t('preload_auto')}
