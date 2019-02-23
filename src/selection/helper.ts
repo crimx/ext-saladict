@@ -2,8 +2,16 @@ import { AppConfig } from '@/app-config'
 import { createConfigStream } from '@/_helpers/config-manager'
 import { message } from '@/_helpers/browser-api'
 import { getDefaultSelectionInfo, SelectionInfo } from '@/_helpers/selection'
-import { isContainChinese, isContainEnglish, isContainMinor } from '@/_helpers/lang-check'
 import { MsgType, PostMsgType, PostMsgSelection, MsgSelection } from '@/typings/message'
+import {
+  isContainChinese,
+  isContainEnglish,
+  isContainJapanese,
+  isContainKorean,
+  isContainFrench,
+  isContainSpanish,
+  isContainDeutsch,
+} from '@/_helpers/lang-check'
 
 import { Observable } from 'rxjs/Observable'
 import { fromEvent } from 'rxjs/observable/fromEvent'
@@ -131,12 +139,25 @@ export function isSelectionLangValid (
   text: string,
   language: AppConfig['language'],
 ): boolean {
-  return Boolean(
-    text && (
-      (language.english && isContainEnglish(text) && !isContainChinese(text)) ||
-      (language.chinese && isContainChinese(text)) ||
-      (language.minor && isContainMinor(text))
-    )
+  if (!text) { return false }
+
+  const isContainEng = isContainEnglish(text)
+  if (language.english && isContainEng) {
+    return true
+  }
+
+  const isContainChs = isContainChinese(text)
+  if (language.chinese && isContainChs) {
+    return true
+  }
+
+  return (
+    language.japanese && (isContainJapanese(text) || isContainChs) ||
+    language.korean && (isContainKorean(text) || isContainChs) ||
+    language.french && (isContainFrench(text) || isContainEng) ||
+    language.spanish && (isContainSpanish(text) || isContainEng) ||
+    language.deutsch && (isContainDeutsch(text) || isContainEng) ||
+    language.others
   )
 }
 

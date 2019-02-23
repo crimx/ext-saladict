@@ -9,7 +9,12 @@ export interface DictItem {
   selectionLang: {
     eng: boolean
     chs: boolean
-    minor: boolean
+    japanese: boolean
+    korean: boolean
+    french: boolean
+    spanish: boolean
+    deutsch: boolean
+    others: boolean
   }
   options?: {
     [option: string]: number | boolean | string
@@ -49,7 +54,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -92,7 +102,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -134,7 +149,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       },
     },
     cobuild: {
@@ -165,7 +185,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -203,7 +228,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -242,7 +272,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -280,7 +315,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -324,7 +364,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -362,7 +407,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: false,
         chs: true,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       }
     },
     hjdict: {
@@ -393,7 +443,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: false,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -443,7 +498,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: false,
         chs: true,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       }
     },
     longman: {
@@ -474,7 +534,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -518,7 +583,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -556,7 +626,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -594,7 +669,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -637,7 +717,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -675,7 +760,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       }
     },
     weblio: {
@@ -706,7 +796,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: true,
+        japanese: true,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       },
     },
     websterlearner: {
@@ -737,7 +832,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: false,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -779,7 +879,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -820,7 +925,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: true,
         chs: true,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       },
       /**
        * Optional dict custom options. Can only be boolean, number or string.
@@ -863,7 +973,12 @@ export function getALlDicts () {
       selectionLang: {
         eng: false,
         chs: true,
-        minor: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
       }
     },
   }

@@ -3,12 +3,24 @@ import { DictID, PreloadSource } from '@/app-config'
 import isEqual from 'lodash/isEqual'
 import { saveWord } from '@/_helpers/record-manager'
 import { getDefaultSelectionInfo, SelectionInfo, isSameSelection } from '@/_helpers/selection'
-import { isContainChinese, isContainEnglish, testerPunct, isContainMinor, testerChinese, testJapanese, testKorean } from '@/_helpers/lang-check'
 import { MsgType, MsgFetchDictResult, MsgQSPanelSearchText } from '@/typings/message'
 import getDefaultProfile from '@/app-config/profiles'
 import { DeepReadonly } from '@/typings/helpers'
 import { StoreState, DispatcherThunk } from './index'
 import { isInNotebook, searchBoxUpdate } from './widget'
+import {
+  testerPunct,
+  testerChinese,
+  testJapanese,
+  testKorean,
+  isContainChinese,
+  isContainEnglish,
+  isContainJapanese,
+  isContainKorean,
+  isContainFrench,
+  isContainSpanish,
+  isContainDeutsch,
+} from '@/_helpers/lang-check'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
@@ -318,14 +330,18 @@ export function searchText (
 
     const isTextContainChs = isContainChinese(info.text)
     const isTextContainEng = isContainEnglish(info.text)
-    const isTextContainOther = isContainMinor(info.text)
 
     selectedDicts.forEach(id => {
-      const { chs, eng, minor } = allDicts[id].selectionLang
+      const { selectionLang } = allDicts[id]
       let isValidSelection = (
-        chs && isTextContainChs ||
-        eng && isTextContainEng ||
-        minor && isTextContainOther
+        selectionLang.eng && isTextContainEng ||
+        selectionLang.chs && isTextContainChs ||
+        selectionLang.japanese && (isContainJapanese(info.text) || isTextContainChs) ||
+        selectionLang.korean && (isContainKorean(info.text) || isTextContainChs) ||
+        selectionLang.french && (isContainFrench(info.text) || isTextContainEng) ||
+        selectionLang.spanish && (isContainSpanish(info.text) || isTextContainEng) ||
+        selectionLang.deutsch && (isContainDeutsch(info.text) || isTextContainEng) ||
+        selectionLang.others
       )
 
       if (isValidSelection) {

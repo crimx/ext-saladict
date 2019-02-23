@@ -32,8 +32,16 @@ export class SearchModes extends React.Component<SearchModesProps> {
           {...formItemLayout}
           label={t('opt_sel_lang')}
           help={t('opt_sel_lang_help')}
-        >{
-          ['chinese', 'english', 'minor'].map(lang => (
+        >{[
+          'chinese',
+          'english',
+          'japanese',
+          'korean',
+          'french',
+          'spanish',
+          'deutsch',
+          'others',
+        ].map(lang => (
             <Form.Item key={lang} className='form-item-inline'>{
               getFieldDecorator(`config#language#${lang}`, {
                 initialValue: config.language[lang],
