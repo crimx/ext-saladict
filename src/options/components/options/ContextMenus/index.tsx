@@ -99,6 +99,7 @@ export class ContextMenus extends React.Component<ContextMenusProps, ContextMenu
           <SortableList
             t={t}
             title={t('nav_ContextMenus')}
+            description={<p>{t('opt_context_description')}</p>}
             list={config.contextMenus.selected.map(id => {
               const item = allMenus[id]
               return {

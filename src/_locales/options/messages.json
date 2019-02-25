@@ -319,6 +319,11 @@
     "zh_CN": "所有设定将还原到默认值，确定？",
     "zh_TW": "所有設定將還原到還原點，確定？"
   },
+  "opt_context_description": {
+    "en": "Integration efforts are mostly made to 有道网页翻译, which has been deserted for years, to let it support https web pages. Other page translation extensions such as Google Translate and Lingocloud Interpreter are available in Web Store.",
+    "zh_CN": "有道网页翻译已经多年没有更新，我做了些维护，将其内置到 Saladict 并支持 https 网页，其它网页翻译扩展可以安装 Google 翻译和彩云小译。",
+    "zh_TW": "有道網頁翻譯已經多年沒有更新，我做了些維護，將其內建到 Saladict 並支援 https 網頁，其它網頁翻譯擴充套件可以安裝 Google 翻譯和彩雲小譯。"
+  },
   "opt_context_menus_add_rules": {
     "en": "URL with %s in place of query.",
     "zh_CN": "链接中的 %s 会被替换为选词。",
