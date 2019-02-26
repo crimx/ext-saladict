@@ -204,9 +204,6 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
 
     return (
       <div className={`panel-Root${isAnimation ? ' isAnimate' : ''}`}>
-        {dictsConfig.selected.map(id =>
-          <link key={id} rel='stylesheet' href={browser.runtime.getURL(`/dicts/${isSaladictInternalPage ? 'internal/' : ''}${id}.css`)} />
-        )}
         {React.createElement(MenuBar, {
           t,
           activeConfigID,

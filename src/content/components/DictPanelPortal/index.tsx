@@ -1,5 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import memoizeOne from 'memoize-one'
+import { DictID } from '@/app-config'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import DictPanel, { DictPanelDispatchers, DictPanelProps } from '../DictPanel'
 import { Omit } from '@/typings/helpers'
@@ -44,6 +46,45 @@ interface DictPanelState {
   readonly isDragging: boolean
 }
 
+const memoizeFrameHead = memoizeOne((selected: DictID[]): string => {
+  const meta = '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+
+  if (process.env.NODE_ENV === 'production') {
+    // load panel style and selected dict styles
+    return (
+      meta +
+      `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('panel.css')}" />\n` +
+      selected.map(id =>
+        `<link rel='stylesheet' href=${browser.runtime.getURL(`/dicts/${isSaladictInternalPage ? 'internal/' : ''}${id}.css`)} />\n`
+      ).join('')
+    )
+  }
+
+  const styles = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
+    .map(link => link.outerHTML)
+    .join('\n')
+
+  // remove wordEditor style
+  return meta + styles + `
+    <script>
+      document.querySelectorAll('link')
+        .forEach(link => {
+          return fetch(link.href)
+            .then(r => r.blob())
+            .then(b => {
+              var reader = new FileReader();
+              reader.onload = function() {
+                if (reader.result.indexOf('wordEditor') !== -1) {
+                  link.remove()
+                }
+              }
+              reader.readAsText(b)
+            })
+        })
+    </script>
+    `
+})
+
 export default class DictPanelPortal extends React.Component<DictPanelPortalProps, DictPanelState> {
   isMount = false
   root = isStandalonePage
@@ -54,33 +95,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   lastMouseX = 0
   lastMouseY = 0
 
-  frameHead = '<meta name="viewport" content="width=device-width, initial-scale=1">\n' + (
-    process.env.NODE_ENV === 'production'
-      ? `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('panel.css')}" />`
-      : Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
-        .map(link => link.outerHTML)
-        .join('\n')
-        + `
-        <script>
-          document.querySelectorAll('link')
-            .forEach(link => {
-              return fetch(link.href)
-                .then(r => r.blob())
-                .then(b => {
-                  var reader = new FileReader();
-                  reader.onload = function() {
-                    if (reader.result.indexOf('wordEditor') !== -1) {
-                      link.remove()
-                    }
-                  }
-                  reader.readAsText(b)
-                })
-            })
-        </script>
-        `
-  )
-
-  state = {
+  state: DictPanelState = {
     isDragging: false,
   }
 
@@ -254,6 +269,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   renderDictPanel = () => {
     const {
       isAnimation,
+      dictsConfig,
     } = this.props
 
     const {
@@ -279,7 +295,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
             bodyClassName='panel-FrameBody'
             name='saladict-dictpanel'
             frameBorder='0'
-            head={this.frameHead}
+            head={memoizeFrameHead(dictsConfig.selected)}
             frameDidMount={this.frameDidMount}
           >
             <DictPanel
