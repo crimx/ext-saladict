@@ -96,8 +96,8 @@
   },
   "head_info_acknowledgement_trans_tw": {
     "en": "for traditional Chinese translation",
-    "zh_CN": "提供繁体中文翻译",
-    "zh_TW": "提供繁體中文翻譯"
+    "zh_CN": "提供部分繁体中文翻译",
+    "zh_TW": "提供部分繁體中文翻譯"
   },
   "head_info_acknowledgement_weblio": {
     "en": "for helping add Weblio dict",
@@ -202,7 +202,7 @@
   "opt_active": {
     "en": "Enable Inline Translator",
     "zh_CN": "启用划词翻译",
-    "zh_TW": "啟用滑鼠劃字翻譯"
+    "zh_TW": "啟用滑鼠選字翻譯"
   },
   "opt_analytics": {
     "en": "UX Improvement Program",
@@ -637,7 +637,7 @@
   "preload_selection": {
     "en": "Selection",
     "zh_CN": "页面划词",
-    "zh_TW": "滑鼠劃字"
+    "zh_TW": "滑鼠選字"
   },
   "profiles_add_name": {
     "en": "Add Profile Name",
