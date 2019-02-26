@@ -485,9 +485,9 @@
     "zh_TW": "獨立視窗"
   },
   "opt_quick_search_standalone_help": {
-    "en": "Render dict panel in a standalone window.",
-    "zh_CN": "显示为单独的窗口（不能响应浏览器以外的划词）。",
-    "zh_TW": "显示为獨立的視窗（不能響應瀏覽器以外的滑鼠選字）。"
+    "en": "Render dict panel in a standalone window (Need <a href=\"https://getquicker.net/Sharedaction?code=42abae81-ed41-4f16-269a-08d668af12c8\" target=\"_blank\">Quicker</a> to work with text selection outside browser).",
+    "zh_CN": "显示为单独的窗口（需配合 <a href=\"https://getquicker.net/Sharedaction?code=42abae81-ed41-4f16-269a-08d668af12c8\" target=\"_blank\">Quicker</a> 响应浏览器以外的划词）。",
+    "zh_TW": "显示为獨立的視窗（需配合 <a href=\"https://getquicker.net/Sharedaction?code=42abae81-ed41-4f16-269a-08d668af12c8\" target=\"_blank\">Quicker</a> 響應瀏覽器以外的滑鼠選字）。"
   },
   "opt_search_suggests": {
     "en": "Search suggests",
