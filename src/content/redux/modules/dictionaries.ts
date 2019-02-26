@@ -461,8 +461,6 @@ export function summonedPanelInit (
       } else {
         dispatch(restoreDicts())
         dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
-        // extra same text update which lets search input box select text
-        dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
       }
     }
   }
