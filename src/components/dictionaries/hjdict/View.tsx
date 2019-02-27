@@ -6,20 +6,21 @@ import { ViewPorps } from '@/components/dictionaries/helpers'
 export default withStaticSpeaker((props: ViewPorps<HjdictResult>) => {
   switch (props.result.type) {
     case 'lex':
-      return renderLex(props.result, props.recalcBodyHeight)
+      return renderLex(props)
     case 'related':
-      return renderRelated(props.result)
+      return renderRelated(props)
   }
   return null
 }, 'dictHjdict-Speaker')
 
-function renderLex (result: HjdictResultLex, recalcBodyHeight: () => void) {
-  const { header, entries } = result
+function renderLex (props: ViewPorps<HjdictResult>) {
+  const { header, entries } = props.result as HjdictResultLex
   return (
-    <div className='dictHjdict-Entry' onClick={e => handleClick(e, recalcBodyHeight)}>
+    <div className='dictHjdict-Entry' onClick={e => handleClick(e, props.recalcBodyHeight)}>
       {header && (
         <header className='word-details-header' dangerouslySetInnerHTML={{ __html: header }} />
       )}
+      {renderLangSelect(props)}
       {entries.map((entry, i) => (
         <div dangerouslySetInnerHTML={{ __html: entry }} key={i} />
       ))}
@@ -27,9 +28,33 @@ function renderLex (result: HjdictResultLex, recalcBodyHeight: () => void) {
   )
 }
 
-function renderRelated (result: HjdictResultRelated) {
+function renderRelated (props: ViewPorps<HjdictResult>) {
+  const { content } = props.result as HjdictResultRelated
   return (
-    <div className='dictHjdict-Entry' dangerouslySetInnerHTML={{ __html: result.content }} />
+    <div>
+      {renderLangSelect(props)}
+      <div
+        className='dictHjdict-Entry' dangerouslySetInnerHTML={{ __html: content }} />
+    </div>
+  )
+}
+
+const langSelectList = ['w', 'jp/cj', 'jp/jc', 'kr', 'fr', 'de', 'es']
+
+function renderLangSelect (props: ViewPorps<HjdictResult>) {
+  const { langCode } = props.result
+
+  return (
+    <select onChange={e => props.searchText({
+      id: 'hjdict',
+      payload: { langCode: e.target.value },
+    })}>
+      {langSelectList.map(lang => (
+        <option key={lang} value={lang} selected={lang === langCode}>{
+          props.t(`dict:hjdict_chsas-${lang}`)
+        }</option>
+      ))}
+    </select>
   )
 }
 

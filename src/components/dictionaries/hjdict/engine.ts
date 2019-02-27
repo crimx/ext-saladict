@@ -27,12 +27,14 @@ const getInnerHTML = getInnerHTMLBuilder('https://www.hjdict.com/', {})
 
 export interface HjdictResultLex {
   type: 'lex'
+  langCode: string
   header?: HTMLString
   entries: HTMLString[]
 }
 
 export interface HjdictResultRelated {
   type: 'related'
+  langCode: string
   content: HTMLString
 }
 
@@ -40,7 +42,11 @@ export type HjdictResult = HjdictResultLex | HjdictResultRelated
 
 type HjdictSearchResult = DictSearchResult<HjdictResult>
 
-export const search: SearchFunction<HjdictSearchResult> = async (
+interface HjdictPayload {
+  langCode?: string
+}
+
+export const search: SearchFunction<HjdictSearchResult, HjdictPayload> = async (
   text, config, profile, payload
 ) => {
   const cookies = {
@@ -67,14 +73,19 @@ export const search: SearchFunction<HjdictSearchResult> = async (
     })
   ))
 
-  return xhrDirtyDOM(getSrcPage(text, config, profile))
+  const langCode = payload.langCode || getLangCode(text, profile)
+
+  return xhrDirtyDOM(
+    `https://www.hjdict.com/${langCode}/${encodeURIComponent(text)}`
+  )
     .catch(handleNetWorkError)
-    .then(doc => handleDOM(doc, profile.dicts.all.hjdict.options))
+    .then(doc => handleDOM(doc, profile.dicts.all.hjdict.options, langCode))
 }
 
 function handleDOM (
   doc: Document,
-  options: DictConfigs['hjdict']['options']
+  options: DictConfigs['hjdict']['options'],
+  langCode: string,
 ): HjdictSearchResult | Promise<HjdictSearchResult> {
   if (doc.querySelector('.word-notfound')) {
     return handleNoResult()
@@ -86,6 +97,7 @@ function handleDOM (
       return {
         result: {
           type: 'related',
+          langCode,
           content: getInnerHTML($suggests),
         }
       }
@@ -119,7 +131,7 @@ function handleDOM (
     `))
 
   return entries.length > 0
-    ? { result: { type: 'lex', header, entries } }
+    ? { result: { type: 'lex', header, entries, langCode } }
     : handleNoResult()
 }
 
