@@ -91,6 +91,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     ? document.getElementById('frame-root') as HTMLDivElement
     : document.body
   el = document.createElement('div')
+  /** background layer when dragging to prevent event losing */
+  dragBg = document.createElement('div')
   frame: HTMLIFrameElement | null = null
   lastMouseX = 0
   lastMouseY = 0
@@ -102,6 +104,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   constructor (props) {
     super(props)
     this.el.className = 'saladict-DIV'
+    this.dragBg.className = 'saladict-DragBg'
   }
 
   mountEL = () => {
@@ -155,6 +158,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     if (this.frame) {
       this.frame.style.setProperty('will-change', 'top, left', 'important')
     }
+
+    document.body.appendChild(this.dragBg)
   }
 
   handleDragEnd = () => {
@@ -167,6 +172,8 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     if (this.frame) {
       this.frame.style.removeProperty('will-change')
     }
+
+    this.dragBg.remove()
   }
 
   handleWindowMouseMove = (e: MouseEvent) => {
