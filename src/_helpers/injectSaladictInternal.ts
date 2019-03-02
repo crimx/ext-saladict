@@ -1,3 +1,5 @@
+import { createActiveProfileStream } from './profile-manager'
+
 export function injectSaladictInternal (noInjectContentCSS?: boolean) {
   if (process.env.NODE_ENV === 'development') {
     return
@@ -27,4 +29,22 @@ export function injectSaladictInternal (noInjectContentCSS?: boolean) {
     }
     document.head.appendChild($stylePanel)
   }
+
+  const selectedDicts = new Set()
+  createActiveProfileStream().subscribe(profile => {
+    profile.dicts.selected.forEach(dict => {
+      if (!selectedDicts.has(dict)) {
+        const $styleDict = document.createElement('link')
+        $styleDict.href = `./dicts/internal/${dict}.css`
+        $styleDict.rel = 'stylesheet'
+        if (document.head) {
+          document.head.appendChild($styleDict)
+        } else {
+          document.body.appendChild($styleDict)
+        }
+
+        selectedDicts.add(dict)
+      }
+    })
+  })
 }
