@@ -72,7 +72,9 @@ describe('Message Selection', () => {
     const config = mockgetDefaultConfig()
     config.language.chinese = true
     config.language.english = false
-    config.language.minor = true
+    config.language.spanish = false
+    config.language.french = false
+    config.language.deutsch = false
     dispatchConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
@@ -103,7 +105,8 @@ describe('Message Selection', () => {
     const config = mockgetDefaultConfig()
     config.language.chinese = false
     config.language.english = true
-    config.language.minor = true
+    config.language.japanese = false
+    config.language.korean = false
     dispatchConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
@@ -134,7 +137,7 @@ describe('Message Selection', () => {
     const config = mockgetDefaultConfig()
     config.language.chinese = true
     config.language.english = true
-    config.language.minor = false
+    config.language.japanese = false
     dispatchConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {
@@ -207,7 +210,7 @@ describe('Message Selection', () => {
     const config = mockgetDefaultConfig()
     config.language.chinese = false
     config.language.english = false
-    config.language.minor = true
+    config.language.japanese = true
     dispatchConfigChangedEvent(config)
 
     window.dispatchEvent(new MouseEvent('mousedown', {

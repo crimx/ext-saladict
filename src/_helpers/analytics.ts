@@ -1,3 +1,5 @@
+import UAParser from 'ua-parser-js'
+
 interface Ga {
   (...args: any[]): void
   l: number
@@ -19,14 +21,26 @@ export function injectAnalytics (page: string, win = window as Window & { ga?: G
     return
   }
 
+  const ua = new UAParser()
+  const browser = ua.getBrowser()
+  const os = ua.getOS()
+
   win.ga = win.ga || function () {
     (win.ga!.q = win.ga!.q || []).push(arguments)
   } as Ga
   win.ga.l = Date.now()
 
   win.ga('create', process.env.SDAPP_ANALYTICS, 'auto')
+
   win.ga('set', 'checkProtocolTask', null)
   win.ga('set', 'transport', 'beacon')
+
+  win.ga('set', 'dimension1', browser.name || 'None')
+  win.ga('set', 'dimension2', browser.version || '0.0')
+
+  win.ga('set', 'dimension3', os.name || 'None')
+  win.ga('set', 'dimension4', os.version || '0.0')
+
   win.ga('send', 'pageview', page)
 
   const $ga = win.document.createElement('script')

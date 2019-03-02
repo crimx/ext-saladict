@@ -34,7 +34,7 @@ export const enum SearchErrorType {
   NetWorkError,
 }
 
-export function handleNoResult<T> (): Promise<T> {
+export function handleNoResult<T = any> (): Promise<T> {
   return Promise.reject(SearchErrorType.NoResult)
 }
 

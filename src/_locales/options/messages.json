@@ -94,10 +94,15 @@
     "zh_CN": "特别鸣谢",
     "zh_TW": "特別鳴謝"
   },
+  "head_info_acknowledgement_naver": {
+    "en": "for helping add Naver dict",
+    "zh_CN": "协助添加 Naver 韩国语词典",
+    "zh_TW": "協助新增 Naver 韩国语词典"
+  },
   "head_info_acknowledgement_trans_tw": {
     "en": "for traditional Chinese translation",
-    "zh_CN": "提供繁体中文翻译",
-    "zh_TW": "提供繁體中文翻譯"
+    "zh_CN": "提供部分繁体中文翻译",
+    "zh_TW": "提供部分繁體中文翻譯"
   },
   "head_info_acknowledgement_weblio": {
     "en": "for helping add Weblio dict",
@@ -202,7 +207,7 @@
   "opt_active": {
     "en": "Enable Inline Translator",
     "zh_CN": "启用划词翻译",
-    "zh_TW": "啟用滑鼠劃字翻譯"
+    "zh_TW": "啟用滑鼠選字翻譯"
   },
   "opt_analytics": {
     "en": "UX Improvement Program",
@@ -270,7 +275,7 @@
     "zh_TW": "新增選詞到生字本"
   },
   "opt_ba_open_help": {
-    "en": "When clicking the browser action icon in toolbar (on the right of the address bar). Items are the same as Context Menus, which can be added or edited on then Context Menus config page.",
+    "en": "When clicking the browser action icon in toolbar (next to the address bar). Items are same as Context Menus, which can be added or edited on the Context Menus config page.",
     "zh_CN": "点击地址栏旁 Saladict 图标时发生的操作。沿用了「右键菜单」的项目，可以前往该设置页面进行增加或编辑。",
     "zh_TW": "點選位址列旁 Saladict 圖示時發生的操作。沿用了「右鍵選單」的條目，可以前往該設定頁面增加或編輯。"
   },
@@ -318,6 +323,11 @@
     "en": "Reset to default settings. Confirm？",
     "zh_CN": "所有设定将还原到默认值，确定？",
     "zh_TW": "所有設定將還原到還原點，確定？"
+  },
+  "opt_context_description": {
+    "en": "Integration efforts are mostly made to 有道网页翻译, which has been deserted for years, to let it support https web pages. Other page translation extensions such as Google Translate and Lingocloud Interpreter are available in Web Store.",
+    "zh_CN": "有道网页翻译已经多年没有更新，我做了些维护，将其内置到 Saladict 并支持 https 网页，其它网页翻译扩展可以安装 Google 翻译和彩云小译。",
+    "zh_TW": "有道網頁翻譯已經多年沒有更新，我做了些維護，將其內建到 Saladict 並支援 https 網頁，其它網頁翻譯擴充套件可以安裝 Google 翻譯和彩雲小譯。"
   },
   "opt_context_menus_add_rules": {
     "en": "URL with %s in place of query.",
@@ -480,9 +490,9 @@
     "zh_TW": "獨立視窗"
   },
   "opt_quick_search_standalone_help": {
-    "en": "Render dict panel in a standalone window.",
-    "zh_CN": "显示为单独的窗口（不能响应浏览器以外的划词）。",
-    "zh_TW": "显示为獨立的視窗（不能響應瀏覽器以外的滑鼠選字）。"
+    "en": "Render dict panel in a standalone window (Need <a href=\"https://getquicker.net/Sharedaction?code=42abae81-ed41-4f16-269a-08d668af12c8\" target=\"_blank\">Quicker</a> to work with text selection outside browser).",
+    "zh_CN": "显示为单独的窗口（需配合 <a href=\"https://getquicker.net/Sharedaction?code=42abae81-ed41-4f16-269a-08d668af12c8\" target=\"_blank\">Quicker</a> 响应浏览器以外的划词）。",
+    "zh_TW": "显示为獨立的視窗（需配合 <a href=\"https://getquicker.net/Sharedaction?code=42abae81-ed41-4f16-269a-08d668af12c8\" target=\"_blank\">Quicker</a> 響應瀏覽器以外的滑鼠選字）。"
   },
   "opt_search_suggests": {
     "en": "Search suggests",
@@ -632,7 +642,7 @@
   "preload_selection": {
     "en": "Selection",
     "zh_CN": "页面划词",
-    "zh_TW": "滑鼠劃字"
+    "zh_TW": "滑鼠選字"
   },
   "profiles_add_name": {
     "en": "Add Profile Name",

@@ -120,8 +120,16 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
               {...formItemModalLayout}
               label={t('dict_sel_lang')}
               help={t('dict_sel_lang_help')}
-            >{
-              ['eng', 'chs', 'minor'].map(lang => (
+            >{[
+              'eng',
+              'chs',
+              'japanese',
+              'korean',
+              'french',
+              'spanish',
+              'deutsch',
+              'others',
+            ].map(lang => (
                 <Form.Item key={lang} className='form-item-inline'>{
                   getFieldDecorator(`${dictPath}#selectionLang#${lang}`, {
                     initialValue: allDict[dictID].selectionLang[lang],

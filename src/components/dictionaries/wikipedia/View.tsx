@@ -60,7 +60,10 @@ export default class DictBing extends React.PureComponent<ViewPorps<WikipediaRes
     const { langList, langSelector } = this.props.result
     if (langList) {
       return (
-        <select onChange={this.handleSelectChanged}>
+        <select
+          style={{ width: '100%' }}
+          onChange={this.handleSelectChanged}
+        >
           <option key='' value='' selected>{this.props.t('chooseLang')}</option>
           {langList.map(item => (
             <option key={item.url} value={item.url}>{item.title}</option>

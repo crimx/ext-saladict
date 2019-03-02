@@ -14,7 +14,6 @@ import MenuBar, { MenuBarProps, MenuBarDispatchers } from '../MenuBar'
 import DictItem, { DictItemProps, DictItemDispatchers } from '../DictItem'
 
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
-const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
 
 export type DictPanelDispatchers = DictItemDispatchers & MenuBarDispatchers & {
   readonly searchText: (arg?: { id?: DictID, info?: SelectionInfo | string }) => any
@@ -173,6 +172,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
       isFav,
       isPinned,
       isTripleCtrl,
+      tripleCtrlPreload,
       handleDragAreaMouseDown,
       handleDragAreaTouchStart,
       searchBoxUpdate,
@@ -204,13 +204,11 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
 
     return (
       <div className={`panel-Root${isAnimation ? ' isAnimate' : ''}`}>
-        {dictsConfig.selected.map(id =>
-          <link key={id} rel='stylesheet' href={browser.runtime.getURL(`/dicts/${isSaladictInternalPage ? 'internal/' : ''}${id}.css`)} />
-        )}
         {React.createElement(MenuBar, {
           t,
           activeConfigID,
           profiles,
+          tripleCtrlPreload,
           isFav,
           isPinned,
           isTripleCtrl,

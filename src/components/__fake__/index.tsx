@@ -3,10 +3,16 @@
 \*-----------------------------------------------*/
 
 import setupEnv from './devDict'
+import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
+
+const dict = 'naver'
+const dictConfig = (getDefaultProfile() as ProfileMutable).dicts.all[dict]
+dictConfig.options.hanAsJa = true
 
 setupEnv({
-  dict: 'hjdict',
-  text: 'henr', // 当たる 吐く
+  dict,
+  dictConfig,
+  text: '爱', // 当たる 吐く
 })
 
 /*-----------------------------------------------*\

@@ -226,7 +226,12 @@ function _getDefaultConfig () {
     language: {
       chinese: true,
       english: true,
-      minor: true,
+      japanese: true,
+      korean: true,
+      french: true,
+      spanish: true,
+      deutsch: true,
+      others: false,
     },
 
     /** auto pronunciation */

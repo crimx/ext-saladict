@@ -2,12 +2,12 @@
   "app_active_title": {
     "en": "Enable Inline Translator",
     "zh_CN": "启用划词",
-    "zh_TW": "啓用滑鼠劃字"
+    "zh_TW": "啓用滑鼠選字"
   },
   "app_temp_active_title": {
     "en": "Temporary disabled to the page",
     "zh_CN": "对当前页暂时关闭划词",
-    "zh_TW": "對當前網頁暫時關閉滑鼠劃字"
+    "zh_TW": "對當前網頁暫時關閉滑鼠選字"
   },
   "instant_capture_pinned": {
     "en": " (pinned) ",

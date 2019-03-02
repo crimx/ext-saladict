@@ -108,7 +108,12 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
 
   mergeBoolean('language.chinese')
   mergeBoolean('language.english')
-  mergeBoolean('language.minor')
+  mergeBoolean('language.japanese')
+  mergeBoolean('language.korean')
+  mergeBoolean('language.french')
+  mergeBoolean('language.spanish')
+  mergeBoolean('language.deutsch')
+  mergeBoolean('language.others')
 
   merge('autopron.cn.dict', id => defaultAllDicts[id])
   merge('autopron.en.dict', id => defaultAllDicts[id])
@@ -145,6 +150,14 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
     base.blacklist.push(
       ['^https://stackedit\.io(/.*)?$', 'https://stackedit.io/*']
     )
+  }
+
+  if (oldConfig.language['minor'] === false) {
+    base.language.japanese = false
+    base.language.korean = false
+    base.language.french = false
+    base.language.spanish = false
+    base.language.deutsch = false
   }
 
   if (base.panelMaxHeightRatio < 1) {

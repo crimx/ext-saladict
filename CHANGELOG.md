@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.25.0"></a>
+# [6.25.0](https://github.com/crimx/ext-saladict/compare/v6.24.4...v6.25.0) (2019-03-02)
+
+
+### Bug Fixes
+
+* type error ([75d93d9](https://github.com/crimx/ext-saladict/commit/75d93d9))
+* **dicts:** update hjdict korean page ([66c7341](https://github.com/crimx/ext-saladict/commit/66c7341))
+* **options:** popup options ([5701525](https://github.com/crimx/ext-saladict/commit/5701525))
+* **options:** styling ([dca805f](https://github.com/crimx/ext-saladict/commit/dca805f))
+* **options:** wording ([087102a](https://github.com/crimx/ext-saladict/commit/087102a))
+* **panel:** prevent drag event losing ([05dbaec](https://github.com/crimx/ext-saladict/commit/05dbaec))
+* better korean rendering ([e13b51e](https://github.com/crimx/ext-saladict/commit/e13b51e))
+
+
+### Features
+
+* **dicts:** add dict naver ([cef45b4](https://github.com/crimx/ext-saladict/commit/cef45b4))
+
+
+### Performance Improvements
+
+* **panel:** faster style loading ([e2757af](https://github.com/crimx/ext-saladict/commit/e2757af))
+* **panel:** remove extra update for auto-pasting ([2f7182b](https://github.com/crimx/ext-saladict/commit/2f7182b))
+
+
+
 <a name="6.24.4"></a>
 ## [6.24.4](https://github.com/crimx/ext-saladict/compare/v6.24.3...v6.24.4) (2019-02-17)
 

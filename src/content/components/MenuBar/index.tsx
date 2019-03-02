@@ -5,6 +5,7 @@ import { MsgType, MsgOpenUrl, MsgGetSuggests } from '@/typings/message'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
 import { updateActiveProfileID } from '@/_helpers/profile-manager'
 import CSSTransition from 'react-transition-group/CSSTransition'
+import { AppConfig } from '@/app-config'
 
 import { Subject } from 'rxjs/Subject'
 import { debounceTime } from 'rxjs/operators/debounceTime'
@@ -32,13 +33,14 @@ export interface MenuBarDispatchers {
 
 export interface MenuBarProps extends MenuBarDispatchers {
   readonly t: TranslationFunction
+  readonly activeConfigID: string
+  readonly profiles: Array<{ id: string, name: string }>
+  readonly tripleCtrlPreload: AppConfig['tripleCtrlPreload']
   readonly isFav: boolean
   readonly isPinned: boolean
   readonly isTripleCtrl: boolean
   readonly searchHistory: SelectionInfo[]
   readonly activeDicts: string[]
-  readonly activeConfigID: string
-  readonly profiles: Array<{ id: string, name: string }>
   readonly searchBox: {
     readonly index: number
     readonly text: string
@@ -61,6 +63,7 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   dragAreaRef = React.createRef<HTMLDivElement>()
   suggestsRequest$ = new Subject<string>()
   suggestVisibility$ = new Subject<boolean>()
+  textChangedOnStandalonePage = false
 
   state: MenuBarState = {
     isShowProfilePanel: false,
@@ -311,8 +314,19 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   }
 
   componentDidUpdate (prevProps: MenuBarProps) {
-    if (prevProps.searchBox.text === this.props.searchBox.text &&
-        !this.props.isShowMtaBox &&
+    if (prevProps.searchBox.text !== this.props.searchBox.text) {
+      // ignore the first change from async clipboard pasting
+      if (isStandalonePage &&
+          !this.textChangedOnStandalonePage &&
+          this.props.tripleCtrlPreload === 'clipboard'
+      ) {
+        this.textChangedOnStandalonePage = true
+      } else {
+        return
+      }
+    }
+
+    if (!this.props.isShowMtaBox &&
         !this.state.isShowSuggestPanel &&
         (isStandalonePage || this.props.isTripleCtrl || this.props.activeDicts.length <= 0) &&
         this.inputRef.current

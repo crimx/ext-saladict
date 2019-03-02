@@ -77,7 +77,7 @@ export class QuickSearch extends React.Component<Props & FormComponentProps> {
         <Form.Item
           {...formItemLayout}
           label={t('opt_quick_search_standalone')}
-          help={t('opt_quick_search_standalone_help')}
+          help={<span dangerouslySetInnerHTML={{ __html: t('opt_quick_search_standalone_help') }} />}
         >{
           getFieldDecorator('config#tripleCtrlStandalone', {
             initialValue: config.tripleCtrlStandalone,

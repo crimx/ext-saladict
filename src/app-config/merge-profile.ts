@@ -24,7 +24,12 @@ export function mergeProfile (oldProfile: Profile, baseProfile?: Profile): Profi
     mergeNumber(`dicts.all.${id}.selectionWC.max`)
     mergeBoolean(`dicts.all.${id}.selectionLang.eng`)
     mergeBoolean(`dicts.all.${id}.selectionLang.chs`)
-    mergeBoolean(`dicts.all.${id}.selectionLang.minor`)
+    mergeBoolean(`dicts.all.${id}.selectionLang.japanese`)
+    mergeBoolean(`dicts.all.${id}.selectionLang.korean`)
+    mergeBoolean(`dicts.all.${id}.selectionLang.french`)
+    mergeBoolean(`dicts.all.${id}.selectionLang.spanish`)
+    mergeBoolean(`dicts.all.${id}.selectionLang.deutsch`)
+    mergeBoolean(`dicts.all.${id}.selectionLang.others`)
     if (dict['options']) {
       forEach(dict['options'], (value, opt) => {
         if (isNumber(value)) {

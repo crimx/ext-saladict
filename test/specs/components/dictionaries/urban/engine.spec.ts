@@ -21,7 +21,7 @@ describe('Dict/Urban/engine', () => {
       search('love', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
         .then(searchResult => {
           expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
-          expect(searchResult.result).toHaveLength(4)
+          expect(searchResult.result.length).toBeGreaterThan(0)
           const item = searchResult.result[0]
           expect(typeof item.title).toBe('string')
           expect(typeof item.pron).toBe('string')
@@ -29,13 +29,10 @@ describe('Dict/Urban/engine', () => {
           expect(typeof item.example).toBe('string')
           expect(item.gif).toBeUndefined()
           expect(Array.isArray(item.tags)).toBeTruthy()
-          expect((item.tags as any).length).toBeGreaterThan(0)
+          expect(item.tags!.length).toBeGreaterThan(0)
           expect(typeof item.contributor).toBe('string')
           expect(typeof item.thumbsUp).toBe('string')
           expect(typeof item.thumbsDown).toBe('string')
-
-          expect(typeof (searchResult.result[1].gif as any).src).toBe('string')
-          expect(typeof (searchResult.result[1].gif as any).attr).toBe('string')
         })
     )
   })

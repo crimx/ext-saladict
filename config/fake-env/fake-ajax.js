@@ -31,6 +31,14 @@ const fakeXHRData = [
 
 const fakeFetchData = [
   {
+    test: { url: /ja\.dict\.naver\.com.*愛$/ },
+    response: [require('raw-loader!../../test/specs/components/dictionaries/naver/response/愛.html')],
+  },
+  {
+    test: { url: /m\.cndic\.naver\.com.*爱$/ },
+    response: [require('raw-loader!../../test/specs/components/dictionaries/naver/response/爱.html')],
+  },
+  {
     test: { url: /www\.hjdict\.com.*love$/ },
     response: [require('raw-loader!../../test/specs/components/dictionaries/hjdict/response/love.html')],
   },
