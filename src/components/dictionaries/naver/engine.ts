@@ -2,7 +2,6 @@ import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   handleNoResult,
   handleNetWorkError,
-  getText,
   getInnerHTMLBuilder,
   SearchFunction,
   GetSrcPageFunction,

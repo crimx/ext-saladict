@@ -9,14 +9,13 @@ export default class DictNaver extends React.PureComponent<ViewPorps<NaverResult
   ]
 
   render () {
-    const { t, searchText } = this.props
     const { lang, entry } = this.props.result
 
     return (
       <>
         <select
           style={{ width: '100%' }}
-          onChange={e => searchText({
+          onChange={e => this.props.searchText({
             id: 'naver',
             payload: { lang: e.target.value },
           })}
