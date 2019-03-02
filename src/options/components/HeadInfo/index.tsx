@@ -102,6 +102,13 @@ export class OptMenu extends React.PureComponent<{ t: TranslationFunction }, Opt
                     target='_blank'
                   >caerlie</a> {t('opt:head_info_acknowledgement_weblio')}
                 </li>
+                <li>
+                  <a
+                    href='https://weibo.com/925515171?is_hot=1'
+                    rel='nofollow'
+                    target='_blank'
+                  >Wekey</a> {t('opt:head_info_acknowledgement_naver')}
+                </li>
               </ol>
             </div>
           )}</CSSTransition>
