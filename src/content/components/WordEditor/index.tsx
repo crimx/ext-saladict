@@ -155,7 +155,7 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
               <a
                 href='https://github.com/crimx/ext-saladict/issues/117'
                 target='_blank'
-              >Why?</a>
+              > Why?</a>
             </label>
             <textarea rows={5}
               name='trans'
