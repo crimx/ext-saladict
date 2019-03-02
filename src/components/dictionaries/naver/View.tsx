@@ -14,10 +14,13 @@ export default class DictNaver extends React.PureComponent<ViewPorps<NaverResult
 
     return (
       <>
-        <select onChange={e => searchText({
-          id: 'naver',
-          payload: { lang: e.target.value },
-        })}>
+        <select
+          style={{ width: '100%' }}
+          onChange={e => searchText({
+            id: 'naver',
+            payload: { lang: e.target.value },
+          })}
+        >
           {this.langSelectList.map(([langCode, locale]) => (
             <option key={langCode} value={langCode} selected={lang === langCode}>
               {locale}
