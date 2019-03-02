@@ -31,7 +31,7 @@ describe('Dict/Naver/engine', () => {
       search('爱', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
         .then(searchResult => {
           expect(searchResult.result.lang).toBe('zh')
-          expect(searchResult.result.entry).toBe('string')
+          expect(typeof searchResult.result.entry).toBe('string')
         })
     )
   })
@@ -43,7 +43,7 @@ describe('Dict/Naver/engine', () => {
       search('愛', getDefaultConfig(), profile, { isPDF: false })
         .then(searchResult => {
           expect(searchResult.result.lang).toBe('ja')
-          expect(searchResult.result.entry).toBe('string')
+          expect(typeof searchResult.result.entry).toBe('string')
         })
     )
   })
