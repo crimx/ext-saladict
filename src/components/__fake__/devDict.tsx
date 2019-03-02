@@ -4,7 +4,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { getDefaultConfig, DictID, AppConfigMutable } from '@/app-config'
-import getDefaultProfile from '@/app-config/profiles'
+import getDefaultProfile, { ProfileMutable, Profile } from '@/app-config/profiles'
 
 import { I18nextProvider as ProviderI18next, translate } from 'react-i18next'
 import i18nLoader from '@/_helpers/i18n'
@@ -37,12 +37,16 @@ root.style.overflowY = 'scroll'
 interface EnvConfig {
   dict: DictID
   text?: string
+  payload?: { [index: string]: any }
+  dictConfig?: Profile['dicts']['all'][keyof Profile['dicts']['all']]
 }
 
 const searchText = (...args) => console.log('searchText', ...args)
 const recalcBodyHeight = (...args) => console.log('recalcBodyHeight', ...args)
 
-export default function setupEnv ({ dict, text = 'salad' }: EnvConfig) {
+export default function setupEnv ({
+  dict, text = 'salad', payload = {}, dictConfig
+}: EnvConfig) {
   const search = require('../dictionaries/' + dict + '/engine').search
   const View = translate()(require('../dictionaries/' + dict + '/View').default)
 
@@ -50,8 +54,10 @@ export default function setupEnv ({ dict, text = 'salad' }: EnvConfig) {
 
   const config = getDefaultConfig() as AppConfigMutable
   // config.langCode = 'zh-TW'
-  const profile = getDefaultProfile()
-  const payload = {}
+  const profile = getDefaultProfile() as ProfileMutable
+  if (dictConfig) {
+    profile.dicts.all[dict] = dictConfig
+  }
 
   search(text, config, profile, payload)
     .then(result => {
