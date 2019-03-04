@@ -42,6 +42,8 @@ export const enum MsgType {
   PlayAudio,
   /** Search text with a dictionary and response the result */
   FetchDictResult,
+  /** Call a custom method of a dict engine */
+  DictEngineMethod,
   /** Request background proxy for current selection */
   PreloadSelection,
   /** Get clipboard content */
@@ -136,6 +138,13 @@ export interface MsgFetchDictResult {
     isPDF: boolean
     [index: string]: any
   }
+}
+
+export interface MsgDictEngineMethod {
+  readonly type: MsgType.DictEngineMethod
+  readonly id: DictID
+  readonly method: string
+  readonly args?: any[]
 }
 
 export interface MsgIsInNotebook {

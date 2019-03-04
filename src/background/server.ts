@@ -23,6 +23,7 @@ import {
   MsgSyncServiceDownload,
   MsgSyncServiceUpload,
   MsgGetSuggests,
+  MsgDictEngineMethod,
 } from '@/typings/message'
 
 /** is a standalone panel running */
@@ -41,6 +42,8 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return playAudio(data as MsgAudioPlay)
     case MsgType.FetchDictResult:
       return fetchDictResult(data as MsgFetchDictResult)
+    case MsgType.DictEngineMethod:
+      return callDictEngineMethod(data as MsgDictEngineMethod)
     case MsgType.GetClipboard:
       return getClipboard()
     case MsgType.RequestCSS:
@@ -250,6 +253,10 @@ function fetchDictResult (
       }
       return null
     })
+}
+
+async function callDictEngineMethod (data: MsgDictEngineMethod) {
+  return require(`@/components/dictionaries/${data.id}/engine`)[data.method](...(data.args || []))
 }
 
 function getClipboard (): Promise<string> {
