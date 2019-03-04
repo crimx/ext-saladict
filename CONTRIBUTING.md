@@ -49,20 +49,20 @@ Toggle:
 
 ## How to add a dictionary
 
-Check out [style-extractor.js](./scripts/style-extractor.js) and [helpers.ts](./components/dictionaries/helpers.ts) for useful tools to extract information from a webpage.
-
-1. Register the dictionary in [app config](./src/app-config/dicts.ts) so that TypeScript generates the correct typings. Dict ID should follow alphabetical order.
+1. Register the dictionary in [app config](./src/app-config/dicts.ts) so that TypeScript generates the correct typings. Dict ID **MUST** follow alphabetical order.
 1. Create a directory at [`src/components/dictionaries/`](./src/components/dictionaries/), with the name of the dict ID.
-  1. Use [Bing](./src/components/dictionaries/bing) as guidance. Copy the files to the new directory.
-  1. Replace the favicon with a new 32x32 png.
+  1. Use any existing dictionary as guidance, e.g. [Bing](./src/components/dictionaries/bing). Copy files to the new directory.
+  1. Replace the favicon with a new LOGO.
   1. Update `_locales.json` with the new dictionary name. Add locales for options, if any.
-  1. `engine.ts` exports two functions
-     1. `getSrcPage` function is responsible for generating source page url base on search text and app config. Source page url is opened when user clicks the dictionary title.
-     1. `search` function is responsible for fetching, parsing and returning  dictionary results. See the typings for more detail.
+  1. `engine.ts` **MUST** export at least two functions:
+     1. `getSrcPage` function which is responsible for generating source page url base on search text and app config. Source page url is opened when user clicks the dictionary title.
+     1. `search` function which is responsible for fetching, parsing and returning dictionary results. See the typings for more detail.
+        - Extracting information from a webpage **MUST** use helper functions in [../helpers.ts](./components/dictionaries/helpers.ts) for data cleansing.
         - If the dictionary supports pronunciation:
           1. Register the ID at [`config.autopron`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/app-config/index.ts#L202-L223).
           1. Include an [`audio`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/typings/server.ts#L5-L9) field in the object which search engine returns.
-  1. Search result will ultimately be passed to a React PureComponent in `View.tsx`, which renders the result accordingly.
+      1. Other exported functions can be called from `View.tsx` via `DictEngineMethod` message channel, see `src/typings/message` for typing details (also don't use the native `sendMessage` function, import `{ message }` from `'@/_helpers/browser-api'`).
+  1. Search result will ultimately be passed to a React PureComponent in `View.tsx`, which **SHOULD** be a dumb component that renders the result accordingly.
   1. Scope the styles in `_style.scss` following [ECSS](http://ecss.io/chapter5.html#anatomy-of-the-ecss-naming-convention)-ish naming convention.
 
 Add Testing
@@ -86,4 +86,4 @@ If you are using IDEs like VSCode, make sure TSLint related plugins are installe
 
 This project follows [conventional](https://conventionalcommits.org/) commit style.
 
-You can run `yarn commit` and follow the instructions. Or use [vscode-commitizen](https://github.com/KnisterPeter/vscode-commitizen) extension in VSCode.
+You can run `yarn commit` and follow the instructions, or use [vscode-commitizen](https://github.com/KnisterPeter/vscode-commitizen) extension in VSCode.
