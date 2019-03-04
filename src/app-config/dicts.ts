@@ -197,7 +197,7 @@ export function getALlDicts () {
        * For string, add additional `options_sel` field to list out choices.
        */
       options: {
-        sentence: 4
+        cibaFirst: true,
       }
     },
     etymonline: {

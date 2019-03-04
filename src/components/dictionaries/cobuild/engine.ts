@@ -15,9 +15,8 @@ export const getSrcPage: GetSrcPageFunction = (text) => {
   return `https://www.collinsdictionary.com/dictionary/english/${text}`
 }
 
-const getInnerHTML = getInnerHTMLBuilder()
-
-export interface COBUILDResult {
+export interface COBUILDCibaResult {
+  type: 'ciba'
   title: string
   defs: HTMLString[]
   level?: string
@@ -28,28 +27,60 @@ export interface COBUILDResult {
   }>
 }
 
+export interface COBUILDColResult {
+  type: 'collins'
+  sections: Array<{
+    id: string
+    className: string
+    type: string
+    title: string
+    num: string
+    content: HTMLString
+  }>
+}
+
+export type COBUILDResult = COBUILDCibaResult | COBUILDColResult
+
 type COBUILDSearchResult = DictSearchResult<COBUILDResult>
+type COBUILDCibaSearchResult = DictSearchResult<COBUILDCibaResult>
+type COBUILDColSearchResult = DictSearchResult<COBUILDColResult>
 
 export const search: SearchFunction<COBUILDSearchResult> = (
   text, config, profile, payload
 ) => {
   text = encodeURIComponent(text.replace(/\s+/g, ' '))
   const isChz = config.langCode === 'zh-TW'
-  return fetchDirtyDOM('http://www.iciba.com/' + text)
-    .then(doc => handleDOM(doc, profile.dicts.all.cobuild.options, isChz))
+  const { options } = profile.dicts.all.cobuild
+  const sources: [string, Function][] = [
+    ['https://www.collinsdictionary.com/dictionary/english/', handleColDOM],
+    ['http://www.iciba.com/', handleCibaDOM],
+  ]
+
+  if (options.cibaFirst) {
+    sources.reverse()
+  }
+
+  return fetchDirtyDOM(sources[0][0] + text)
+    .then(doc => sources[0][1](doc, options, isChz))
     .catch(() => {
-      return fetchDirtyDOM('https://www.iciba.com/' + text)
+      return fetchDirtyDOM(sources[1][0] + text)
         .catch(handleNetWorkError)
-        .then(doc => handleDOM(doc, profile.dicts.all.cobuild.options, isChz))
+        .then(doc => sources[1][1](doc, options, isChz))
     })
 }
 
-function handleDOM (
+function handleCibaDOM (
   doc: Document,
   options: DictConfigs['cobuild']['options'],
   isChz: boolean,
-): COBUILDSearchResult | Promise<COBUILDSearchResult> {
-  const result: Partial<COBUILDResult> = {}
+): COBUILDCibaSearchResult | Promise<COBUILDCibaSearchResult> {
+  const getInnerHTML = getInnerHTMLBuilder('http://www.iciba.com/')
+
+  const result: COBUILDCibaResult = {
+    type: 'ciba',
+    title: '',
+    defs: [],
+  }
   const audio: { uk?: string, us?: string } = {}
 
   result.title = getText(doc, '.keyword', isChz)
@@ -86,13 +117,86 @@ function handleDOM (
     .find(x => /柯林斯高阶英汉双解学习词典/.test(x.textContent || ''))
   if ($article) {
     result.defs = Array.from($article.querySelectorAll('.prep-order'))
-      .slice(0, options.sentence)
       .map(d => getInnerHTML(d, isChz))
   }
 
-  if (result.defs && result.defs.length > 0) {
-    return { result, audio } as COBUILDSearchResult
+  if (result.defs.length > 0) {
+    return { result, audio }
   }
 
   return handleNoResult()
+}
+
+function handleColDOM (
+  doc: Document,
+  options: DictConfigs['cobuild']['options'],
+  isChz: boolean,
+): COBUILDColSearchResult | Promise<COBUILDColSearchResult> {
+  const getInnerHTML = getInnerHTMLBuilder('https://www.collinsdictionary.com/')
+
+  const result: COBUILDColResult = {
+    type: 'collins',
+    sections: [],
+  }
+  const audio: { uk?: string, us?: string } = {}
+
+  result.sections = [...doc.querySelectorAll<HTMLDivElement>(`[data-type-block]`)]
+    .filter($section => {
+      const type = $section.dataset.typeBlock || ''
+      return type && type !== 'Video' && type !== 'Trends'
+    })
+    .map($section => {
+      const type = $section.dataset.typeBlock || ''
+      const title = $section.dataset.titleBlock || ''
+      const num = $section.dataset.numBlock || ''
+
+      if (type === 'Learner') {
+      //   const $frequency = $section.querySelector<HTMLSpanElement>('.word-frequency-img')
+      //   if ($frequency) {
+      //     const star = Number($frequency.dataset.band)
+      //     if (star) {
+      //       result.star = star
+      //     }
+      //   }
+        if (!audio.uk) {
+          const mp3 = getAudio($section)
+          if (mp3) {
+            audio.uk = mp3
+          }
+        }
+      } else if (type === 'English') {
+        audio.uk = getAudio($section)
+      } else if (type === 'American') {
+        audio.us = getAudio($section)
+      }
+
+      $section.querySelectorAll<HTMLAnchorElement>('.audio_play_button').forEach($speaker => {
+        $speaker.outerHTML = `<button data-src-mp3="${$speaker.dataset.srcMp3}" class="dictCOBUILD-Speaker">🔊</button>`
+      })
+
+      return {
+        id: type + title + num,
+        className: $section.className || '',
+        type,
+        title,
+        num,
+        content: getInnerHTML($section)
+      }
+    })
+
+  if (result.sections.length > 0) {
+    return { result, audio }
+  }
+
+  return handleNoResult()
+}
+
+function getAudio ($section: HTMLElement): string | undefined {
+  const $audio = $section.querySelector<HTMLAnchorElement>('.pron .audio_play_button')
+  if ($audio) {
+    const src = $audio.dataset.srcMp3
+    if (src) {
+      return src
+    }
+  }
 }

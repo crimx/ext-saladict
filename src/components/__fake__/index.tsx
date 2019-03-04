@@ -5,14 +5,14 @@
 import setupEnv from './devDict'
 import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
 
-const dict = 'naver'
+const dict = 'cobuild'
 const dictConfig = (getDefaultProfile() as ProfileMutable).dicts.all[dict]
-dictConfig.options.hanAsJa = true
+dictConfig.options.cibaFirst = false
 
 setupEnv({
   dict,
   dictConfig,
-  text: '爱', // 当たる 吐く
+  text: 'how', // 当たる 吐く
 })
 
 /*-----------------------------------------------*\
