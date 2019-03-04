@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.25.1"></a>
+## [6.25.1](https://github.com/crimx/ext-saladict/compare/v6.25.0...v6.25.1) (2019-03-04)
+
+
+### Bug Fixes
+
+* firefox style error ([8256e63](https://github.com/crimx/ext-saladict/commit/8256e63))
+* **dicts:** omit cookies ([3b6d1a8](https://github.com/crimx/ext-saladict/commit/3b6d1a8)), closes [#312](https://github.com/crimx/ext-saladict/issues/312)
+* correct lang selection ([86add32](https://github.com/crimx/ext-saladict/commit/86add32))
+
+
+
 <a name="6.25.0"></a>
 # [6.25.0](https://github.com/crimx/ext-saladict/compare/v6.24.4...v6.25.0) (2019-03-02)
 
