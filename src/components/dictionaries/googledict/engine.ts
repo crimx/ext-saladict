@@ -27,7 +27,10 @@ export const search: SearchFunction<GoogleDictSearchResult> = (
   text, config, profile, payload
 ) => {
   const isen = profile.dicts.all.googledict.options.enresult ? 'hl=en&gl=en&' : ''
-  return fetch(`https://www.google.com/search?${isen}q=define+` + encodeURIComponent(text.replace(/\s+/g, '+')))
+  return fetch(
+    `https://www.google.com/search?${isen}q=define+` + encodeURIComponent(text.replace(/\s+/g, '+')),
+    { credentials: 'omit' }
+  )
     .then(r => r.ok ? r.text() : handleNetWorkError())
     .then(handleDOM)
 }
