@@ -724,6 +724,7 @@
   }
 
   .section_word .top_dn {
+    margin-top: 0;
     padding-top: 1px;
   }
 
@@ -772,11 +773,11 @@
   }
 
   .section_example .lst li {
-    margin-bottom: 25px;
+    margin-bottom: 0.8em;
   }
 
   .section_example .lst li:last-child {
-    margin-bottom: 20px;
+    margin-bottom: 0.8em;
   }
 
   .section_example .lst p {
@@ -2928,7 +2929,7 @@
 
   .more {
     text-align: right;
-    margin: 0 0 0.5em 0;
+    margin: 0;
   }
 
   .more2 {
@@ -3025,14 +3026,14 @@
     position: relative;
     overflow: hidden;
     clear: both;
-    padding: 6px 11px 6px 12px;
+    padding: 6px 11px 6px 0;
     font-size: 1.2em;
     line-height: 1.50;
     letter-spacing: -1px;
   }
 
   .word_h2w {
-    margin-bottom: 1em;
+    margin-bottom: 0.5em;
     border-bottom: 1px solid #b8b8b8;
   }
 
@@ -3049,7 +3050,7 @@
 
   .word2 {
     clear: both;
-    padding: 0 13px;
+    padding: 0 5px;
     letter-spacing: -1px;
   }
 
@@ -4078,7 +4079,7 @@
 
   .word_otr {
     padding: 15px 10px 3px;
-    font-size: 1.15em;
+    font-size: 1em;
     border-top: 1px solid #ccc;
   }
 
@@ -5876,7 +5877,7 @@
     padding-left: 7px;
 
     .word_lst {
-      margin-bottom: 0.5em;
+      margin-bottom: 0;
     }
   }
 
@@ -7059,7 +7060,7 @@
   .section {
     padding: 10px 0 0;
     font-size: 1.00em;
-    line-height: 1.13;
+    line-height: 1.3;
   }
 
   .section.all {
@@ -7147,7 +7148,7 @@
   }
 
   .srch_box {
-    padding: 0 10px 1em;
+    padding: 0 10px 0.5em;
   }
 
   .srch_box .srch_top {
@@ -7157,7 +7158,7 @@
 
   .srch_box .srch_top>* {
     vertical-align: middle;
-    line-height: 1.25;
+    line-height: 1.3;
   }
 
   .srch_box .srch_top .entry {
@@ -7235,7 +7236,7 @@
     position: relative;
     top: -1px;
     vertical-align: middle;
-    font-size: 1.2em;
+    font-size: 1em;
   }
 
   .srch_box .inner_lst {
@@ -7257,7 +7258,6 @@
 
   .srch_box2 .pin2 {
     display: block;
-    padding-top: 3px;
   }
 
   .srch_result .section_article .srch_box2 .pin2 {
@@ -8551,11 +8551,12 @@
   }
 
   .section_word .top_dn {
+    margin: 5px 0;
     padding-top: 1px;
   }
 
   .section_article .srch_box {
-    padding-bottom: 1em;
+    padding-bottom: 0.8em;
   }
 
   .section_article .entry .sw {
@@ -8603,15 +8604,16 @@
   }
 
   .section_example .lst li {
-    margin-bottom: 1em;
+    margin-bottom: 0.8em;
   }
 
   .section_example .lst p {
+    margin: 0;
     color: #000;
   }
 
   .section_example .lst .jp {
-    font-size: 1.13em;
+    font-size: 1em;
   }
 
   .section_example .lst .pin {
@@ -10441,10 +10443,20 @@
     color: #aaa;
   }
 
+  .section.all:first-of-type {
+    border: none;
+  }
+
   .section .more2 {
     padding-bottom: 5px !important;
   }
 
+  .lst_p {
+    margin: 0;
+  }
+
+  ruby rt,
+  .tbl_bx.srch,
   .play,
   .tts_wrap,
   .btn_play,

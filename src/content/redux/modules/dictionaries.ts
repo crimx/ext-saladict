@@ -341,7 +341,14 @@ export function searchText (
         selectionLang.french && (isContainFrench(info.text) || isTextContainEng) ||
         selectionLang.spanish && (isContainSpanish(info.text) || isTextContainEng) ||
         selectionLang.deutsch && (isContainDeutsch(info.text) || isTextContainEng) ||
-        selectionLang.others
+        selectionLang.others &&
+          !isTextContainChs &&
+          !isTextContainEng &&
+          !isContainJapanese(info.text) &&
+          !isContainKorean(info.text) &&
+          !isContainFrench(info.text) &&
+          !isContainSpanish(info.text) &&
+          !isContainDeutsch(info.text)
       )
 
       if (isValidSelection) {

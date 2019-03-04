@@ -157,7 +157,14 @@ export function isSelectionLangValid (
     language.french && (isContainFrench(text) || isContainEng) ||
     language.spanish && (isContainSpanish(text) || isContainEng) ||
     language.deutsch && (isContainDeutsch(text) || isContainEng) ||
-    language.others
+    language.others &&
+      !isContainChs &&
+      !isContainEng &&
+      !isContainJapanese(text) &&
+      !isContainKorean(text) &&
+      !isContainFrench(text) &&
+      !isContainSpanish(text) &&
+      !isContainDeutsch(text)
   )
 }
 

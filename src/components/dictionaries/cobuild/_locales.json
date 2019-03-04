@@ -5,15 +5,10 @@
     "zh_TW": "柯林斯高階"
   },
   "options": {
-    "sentence": {
-      "en": "Show sentences",
-      "zh_CN": "显示例句",
-      "zh_TW": "展示例句"
-    },
-    "sentence_unit": {
-      "en": "results",
-      "zh_CN": "个",
-      "zh_TW": "個"
+    "cibaFirst": {
+      "en": "Prefer bilingual dictionary (unstable)",
+      "zh_CN": "优先查双语词典（源服务器不稳定，解释没全英丰富）",
+      "zh_TW": "優先查雙語詞典（源伺服器不穩定，解釋沒全英豐富）"
     }
   }
 }

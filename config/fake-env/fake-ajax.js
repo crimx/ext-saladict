@@ -31,6 +31,10 @@ const fakeXHRData = [
 
 const fakeFetchData = [
   {
+    test: { url: /www\.collinsdictionary\.com/ },
+    response: [require('raw-loader!../../test/specs/components/dictionaries/cobuild/response/how.html')],
+  },
+  {
     test: { url: /ja\.dict\.naver\.com.*愛$/ },
     response: [require('raw-loader!../../test/specs/components/dictionaries/naver/response/愛.html')],
   },
