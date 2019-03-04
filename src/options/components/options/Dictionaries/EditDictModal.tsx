@@ -6,6 +6,7 @@ import { DictItem } from '@/app-config/dicts'
 import { InputNumberGroup } from '../../InputNumberGroup'
 
 import { FormComponentProps } from 'antd/lib/form'
+import { CheckboxChangeEvent } from 'antd/lib/checkbox'
 import { Form, Modal, Switch, Checkbox, Radio } from 'antd'
 
 export type EditDictModalProps = Props & FormComponentProps & {
@@ -14,6 +15,55 @@ export type EditDictModalProps = Props & FormComponentProps & {
 }
 
 export class EditDictModal extends React.Component<EditDictModalProps> {
+  langs = {
+    'chs': {
+      on: [],
+      off: ['japanese', 'korean'],
+    },
+    'eng': {
+      on: [],
+      off: ['french', 'spanish', 'deutsch'],
+    },
+    'japanese': {
+      on: ['chs'],
+      off: [],
+    },
+    'korean': {
+      on: ['chs'],
+      off: [],
+    },
+    'french': {
+      on: ['eng'],
+      off: [],
+    },
+    'spanish': {
+      on: ['eng'],
+      off: [],
+    },
+    'deutsch': {
+      on: ['eng'],
+      off: [],
+    },
+    'others': {
+      on: [],
+      off: [],
+    },
+  }
+
+  handleLangSelChanged = (e: CheckboxChangeEvent) => {
+    const { checked } = e.target
+    const arr = this.langs[e.target.name!][checked ? 'on' : 'off']
+    if (arr.length > 0) {
+      const dictPath = `profile#dicts#all#${this.props.dictID}`
+      this.props.form.setFieldsValue(
+        arr.reduce((o: object, lang: string) => {
+          o[`${dictPath}#selectionLang#${lang}`] = checked
+          return o
+        }, {})
+      )
+    }
+  }
+
   renderMoreOptions = (dictID: DictID) => {
     const { t, profile } = this.props
     const { getFieldDecorator } = this.props.form
@@ -120,22 +170,17 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
               {...formItemModalLayout}
               label={t('dict_sel_lang')}
               help={t('dict_sel_lang_help')}
-            >{[
-              'eng',
-              'chs',
-              'japanese',
-              'korean',
-              'french',
-              'spanish',
-              'deutsch',
-              'others',
-            ].map(lang => (
+            >{
+              Object.keys(this.langs).map(lang => (
                 <Form.Item key={lang} className='form-item-inline'>{
                   getFieldDecorator(`${dictPath}#selectionLang#${lang}`, {
                     initialValue: allDict[dictID].selectionLang[lang],
                     valuePropName: 'checked',
                   })(
-                    <Checkbox>{t(`common:lang_${lang}`)}</Checkbox>
+                    <Checkbox
+                      name={lang}
+                      onChange={this.handleLangSelChanged}
+                    >{t(`common:lang_${lang}`)}</Checkbox>
                   )
                 }</Form.Item>
               ))
