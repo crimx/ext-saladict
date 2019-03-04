@@ -92,6 +92,7 @@ async function jaDict (text: string): Promise<NaverSearchResult> {
   removeChildren($container, '.view_ctrl')
   removeChildren($container, '.go_register')
   removeChildren($container, '.section_banner')
+  removeChildren($container, '.conjugate')
 
   return {
     result: {
