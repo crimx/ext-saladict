@@ -3,19 +3,21 @@ import Speaker from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
 import { COBUILDResult, COBUILDCibaResult, COBUILDColResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import withStaticSpeaker from '@/components/withStaticSpeaker'
 
-interface COBUILDState {
+interface COBUILDColState {
   curTab: string
 }
 
-export default class DictCOBUILD extends React.PureComponent<ViewPorps<COBUILDResult>, COBUILDState> {
-  state: COBUILDState = {
+export class DictCOBUILDCol extends React.Component<ViewPorps<COBUILDColResult>, COBUILDColState> {
+  state: COBUILDColState = {
     curTab: ''
   }
 
   tabWheelDebounce: any
 
   handleTabClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.stopPropagation()
     e.preventDefault()
     this.setState({ curTab: e.currentTarget.dataset.id || '' })
   }
@@ -34,43 +36,9 @@ export default class DictCOBUILD extends React.PureComponent<ViewPorps<COBUILDRe
     }, 50)
   }
 
-  renderCiba (result: COBUILDCibaResult) {
-    return (
-      <>
-        <h1 className='dictCOBUILD-Title'>{result.title}</h1>
-        {result.prons &&
-          <ul className='dictCOBUILD-Pron'>
-            {result.prons.map(p => (
-              <li key={p.phsym} className='dictCOBUILD-PronItem'>
-                {p.phsym}
-                <Speaker src={p.audio} />
-              </li>
-            ))}
-          </ul>
-        }
-        <div className='dictCOBUILD-Rate'>
-          {result.star as number >= 0 &&
-            <StarRates rate={result.star} />
-          }
-          {result.level &&
-            <span className='dictCOBUILD-Level'>{result.level}</span>
-          }
-        </div>
-        {result.defs &&
-          <ol className='dictCOBUILD-Defs'>
-            {result.defs.map((def, i) => (
-              <li className='dictCOBUILD-Def'
-                key={i}
-                dangerouslySetInnerHTML={{ __html: def }}
-              />
-            ))}
-          </ol>
-        }
-      </>
-    )
-  }
+  render () {
+    const { result } = this.props
 
-  renderCollins (result: COBUILDColResult) {
     const curSec = this.state.curTab
       ? result.sections.find(({ id }) => id === this.state.curTab) || result.sections[0]
       : result.sections[0]
@@ -123,12 +91,52 @@ export default class DictCOBUILD extends React.PureComponent<ViewPorps<COBUILDRe
       </main>
     )
   }
+}
 
+export const DictCOBUILDColWithSpeaker = withStaticSpeaker(DictCOBUILDCol, 'dictCOBUILD-Speaker')
+
+export function DictCOBUILDCiba (result: COBUILDCibaResult) {
+  return (
+    <>
+      <h1 className='dictCOBUILD-Title'>{result.title}</h1>
+      {result.prons &&
+        <ul className='dictCOBUILD-Pron'>
+          {result.prons.map(p => (
+            <li key={p.phsym} className='dictCOBUILD-PronItem'>
+              {p.phsym}
+              <Speaker src={p.audio} />
+            </li>
+          ))}
+        </ul>
+      }
+      <div className='dictCOBUILD-Rate'>
+        {result.star as number >= 0 &&
+          <StarRates rate={result.star} />
+        }
+        {result.level &&
+          <span className='dictCOBUILD-Level'>{result.level}</span>
+        }
+      </div>
+      {result.defs &&
+        <ol className='dictCOBUILD-Defs'>
+          {result.defs.map((def, i) => (
+            <li className='dictCOBUILD-Def'
+              key={i}
+              dangerouslySetInnerHTML={{ __html: def }}
+            />
+          ))}
+        </ol>
+      }
+    </>
+  )
+}
+
+export default class DictCOBUILD extends React.PureComponent<ViewPorps<COBUILDResult>> {
   render () {
     const { result } = this.props
     switch (result.type) {
-      case 'ciba': return this.renderCiba(result as COBUILDCibaResult)
-      case 'collins': return this.renderCollins(result as COBUILDColResult)
+      case 'ciba': return DictCOBUILDCiba(result as COBUILDCibaResult)
+      case 'collins': return <DictCOBUILDColWithSpeaker {...this.props as ViewPorps<COBUILDColResult>} />
       default: return ''
     }
   }
