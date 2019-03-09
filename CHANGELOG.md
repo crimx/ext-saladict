@@ -2,6 +2,28 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.26.0"></a>
+# [6.26.0](https://github.com/crimx/ext-saladict/compare/v6.25.1...v6.26.0) (2019-03-09)
+
+
+### Bug Fixes
+
+* **dicts:** add mp3 playing and fixing styles ([aefd2b1](https://github.com/crimx/ext-saladict/commit/aefd2b1))
+* **options:** change wording close [#314](https://github.com/crimx/ext-saladict/issues/314) ([17aa162](https://github.com/crimx/ext-saladict/commit/17aa162))
+* **selection:** match frames ([c923ce8](https://github.com/crimx/ext-saladict/commit/c923ce8))
+
+
+### Features
+
+* **menus:** google page translation ([a023074](https://github.com/crimx/ext-saladict/commit/a023074))
+
+
+### Performance Improvements
+
+* **panel:** prevent flickering when switching profiles ([c0bc97f](https://github.com/crimx/ext-saladict/commit/c0bc97f))
+
+
+
 <a name="6.25.1"></a>
 ## [6.25.1](https://github.com/crimx/ext-saladict/compare/v6.25.0...v6.25.1) (2019-03-04)
 
