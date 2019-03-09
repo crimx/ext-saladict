@@ -36,7 +36,7 @@ export function injectAnalytics (page: string, win = window as Window & { ga?: G
   win.ga('set', 'transport', 'beacon')
 
   win.ga('set', 'dimension1', browser.name || 'None')
-  win.ga('set', 'dimension2', browser.version || '0.0')
+  win.ga('set', 'dimension2', (browser.version || '0.0').split('.').slice(0, 3).join('.'))
 
   win.ga('set', 'dimension3', os.name || 'None')
   win.ga('set', 'dimension4', os.version || '0.0')

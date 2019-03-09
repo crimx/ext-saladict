@@ -104,13 +104,14 @@ export async function openPDF (url?: string, force?: boolean) {
   return openURL(pdfURL)
 }
 
-export function openGoogle (cn?: boolean) {
-  browser.tabs.query({ active: true, currentWindow: true })
-    .then(tabs => {
-      if (tabs.length > 0 && tabs[0].url) {
-        openURL(`https://translate.google.${cn ? 'cn' : 'com'}/translate?sl=auto&tl=${window.appConfig.langCode}&js=y&prev=_t&ie=UTF-8&u=${encodeURIComponent(tabs[0].url as string)}&edit-text=&act=url`)
-      }
-    })
+export function openGoogle () {
+  browser.tabs.executeScript({ file: '/static/google-page-trans.js' })
+  // browser.tabs.query({ active: true, currentWindow: true })
+  //   .then(tabs => {
+  //     if (tabs.length > 0 && tabs[0].url) {
+  //       openURL(`https://translate.google.${cn ? 'cn' : 'com'}/translate?sl=auto&tl=${window.appConfig.langCode}&js=y&prev=_t&ie=UTF-8&u=${encodeURIComponent(tabs[0].url as string)}&edit-text=&act=url`)
+  //     }
+  //   })
 }
 
 export function openYoudao () {
@@ -338,7 +339,7 @@ function handleContextMenusClick (info: ContextMenusClickInfo) {
       openGoogle()
       break
     case 'google_cn_page_translate':
-      openGoogle(true)
+      openGoogle()
       break
     case 'youdao_page_translate':
       openYoudao()

@@ -81,11 +81,15 @@ window.addEventListener('message', ({ data, source }: PostMessageEvent) => {
   if (data.type !== PostMsgType.Selection) { return }
 
   // get the souce iframe
-  const iframe = Array.from(document.querySelectorAll('iframe'))
-    .find(({ contentWindow }) => contentWindow === source)
-  if (!iframe) { return }
+  const matchSrc = ({ contentWindow }: HTMLIFrameElement | HTMLFrameElement) =>
+    contentWindow === source
+  const frame = (
+    Array.from(document.querySelectorAll('iframe')).find(matchSrc) ||
+    Array.from(document.querySelectorAll('frame')).find(matchSrc)
+  )
+  if (!frame) { return }
 
-  const { left, top } = iframe.getBoundingClientRect()
+  const { left, top } = frame.getBoundingClientRect()
   const msg: Mutable<typeof data> = data
   msg.mouseX = msg.mouseX + left
   msg.mouseY = msg.mouseY + top

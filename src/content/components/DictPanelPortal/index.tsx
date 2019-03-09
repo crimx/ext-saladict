@@ -1,7 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import memoizeOne from 'memoize-one'
-import { DictID } from '@/app-config'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import DictPanel, { DictPanelDispatchers, DictPanelProps } from '../DictPanel'
 import { Omit } from '@/typings/helpers'
@@ -46,45 +44,6 @@ interface DictPanelState {
   readonly isDragging: boolean
 }
 
-const memoizeFrameHead = memoizeOne((selected: DictID[]): string => {
-  const meta = '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
-
-  if (process.env.NODE_ENV === 'production') {
-    // load panel style and selected dict styles
-    return (
-      meta +
-      `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('panel.css')}" />\n` +
-      selected.map(id =>
-        `<link rel='stylesheet' href=${browser.runtime.getURL(`/dicts/${isSaladictInternalPage ? 'internal/' : ''}${id}.css`)} />\n`
-      ).join('')
-    )
-  }
-
-  const styles = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
-    .map(link => link.outerHTML)
-    .join('\n')
-
-  // remove wordEditor style
-  return meta + styles + `
-    <script>
-      document.querySelectorAll('link')
-        .forEach(link => {
-          return fetch(link.href)
-            .then(r => r.blob())
-            .then(b => {
-              var reader = new FileReader();
-              reader.onload = function() {
-                if (reader.result.indexOf('wordEditor') !== -1) {
-                  link.remove()
-                }
-              }
-              reader.readAsText(b)
-            })
-        })
-    </script>
-    `
-})
-
 export default class DictPanelPortal extends React.Component<DictPanelPortalProps, DictPanelState> {
   isMount = false
   root = isStandalonePage
@@ -96,15 +55,59 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   frame: HTMLIFrameElement | null = null
   lastMouseX = 0
   lastMouseY = 0
+  /** iframe head */
+  frameHead: string
+  /** dicts whose style are loaded */
+  styledDicts: Set<string>
 
   state: DictPanelState = {
     isDragging: false,
   }
 
-  constructor (props) {
+  constructor (props: DictPanelPortalProps) {
     super(props)
     this.el.className = 'saladict-DIV'
     this.dragBg.className = 'saladict-DragBg'
+
+    this.styledDicts = new Set(this.props.dictsConfig.selected)
+
+    const meta = '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+
+    if (process.env.NODE_ENV === 'production') {
+      // load panel style and selected dict styles
+      // this will reduce the initial loading time
+      this.frameHead = (
+        meta +
+        `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('panel.css')}" />\n` +
+        this.props.dictsConfig.selected.map(id =>
+          `<link rel='stylesheet' href=${browser.runtime.getURL(`/dicts/${isSaladictInternalPage ? 'internal/' : ''}${id}.css`)} />\n`
+        ).join('')
+      )
+    } else {
+      const styles = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
+        .map(link => link.outerHTML)
+        .join('\n')
+
+      // remove wordEditor style
+      this.frameHead = meta + styles + `
+        <script>
+          document.querySelectorAll('link')
+            .forEach(link => {
+              return fetch(link.href)
+                .then(r => r.blob())
+                .then(b => {
+                  var reader = new FileReader();
+                  reader.onload = function() {
+                    if (reader.result.indexOf('wordEditor') !== -1) {
+                      link.remove()
+                    }
+                  }
+                  reader.readAsText(b)
+                })
+            })
+        </script>
+        `
+    }
   }
 
   mountEL = () => {
@@ -136,7 +139,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     this.handleDragStart(e.touches[0].clientX, e.touches[0].clientY)
   }
 
-  handleDragStart = (clientX, clientY) => {
+  handleDragStart = (clientX: number, clientY: number) => {
     const activeElement = document.activeElement as any
     if (activeElement) { activeElement.blur() }
 
@@ -204,7 +207,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     this.handleDragging(e.touches[0].clientX + x, e.touches[0].clientY + y)
   }
 
-  handleDragging = (clientX, clientY) => {
+  handleDragging = (clientX: number, clientY: number) => {
     const { x, y } = this.props.panelRect
     this.props.panelOnDrag(
       x + clientX - this.lastMouseX,
@@ -262,21 +265,37 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     }
   }
 
-  componentDidUpdate () {
-    if (this.frame && !isStandalonePage) {
+  componentDidUpdate (prevProps: DictPanelPortalProps) {
+    if (!this.frame) { return }
+
+    const { style, contentDocument } = this.frame
+
+    if (!isStandalonePage) {
       const { x, y, width, height } = this.props.panelRect
-      const style = this.frame.style
       style.setProperty('left', `${x}px`, 'important')
       style.setProperty('top', `${y}px`, 'important')
       style.setProperty('width', width + 'px', 'important')
       style.setProperty('height', height + 'px', 'important')
+    }
+
+    if (this.props.dictsConfig.selected !== prevProps.dictionaries.selected &&
+        contentDocument && contentDocument.head
+    ) {
+      this.props.dictsConfig.selected.forEach(id => {
+        if (!this.styledDicts.has(id)) {
+          this.styledDicts.add(id)
+          const link = contentDocument.createElement('link')
+          link.rel = 'stylesheet'
+          link.href = browser.runtime.getURL(`/dicts/${isSaladictInternalPage ? 'internal/' : ''}${id}.css`)
+          contentDocument.head.appendChild(link)
+        }
+      })
     }
   }
 
   renderDictPanel = () => {
     const {
       isAnimation,
-      dictsConfig,
     } = this.props
 
     const {
@@ -302,7 +321,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
             bodyClassName='panel-FrameBody'
             name='saladict-dictpanel'
             frameBorder='0'
-            head={memoizeFrameHead(dictsConfig.selected)}
+            head={this.frameHead}
             frameDidMount={this.frameDidMount}
           >
             <DictPanel

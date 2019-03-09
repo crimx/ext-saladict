@@ -92,6 +92,17 @@ export class QuickSearch extends React.Component<Props & FormComponentProps> {
               <Card title={t('opt_quick_search_standalone')}>
                 <Form.Item
                   {...formSubItemLayout}
+                  label={t('opt_quick_search_height')}
+                >{
+                  getFieldDecorator('config#tripleCtrlHeight', {
+                    initialValue: config.tripleCtrlHeight,
+                    rules: [{ type: 'number', whitespace: true }],
+                  })(
+                    <InputNumberGroup suffix='px' />
+                  )
+                }</Form.Item>
+                <Form.Item
+                  {...formSubItemLayout}
                   label={t('opt_quick_search_page_sel')}
                   help={t('opt_quick_search_page_sel_help')}
                 >{
@@ -102,18 +113,9 @@ export class QuickSearch extends React.Component<Props & FormComponentProps> {
                     <Switch />
                   )
                 }</Form.Item>
-                <Form.Item
-                  {...formSubItemLayout}
-                  label={t('opt_quick_search_height')}
-                >{
-                  getFieldDecorator('config#tripleCtrlHeight', {
-                    initialValue: config.tripleCtrlHeight,
-                    rules: [{ type: 'number', whitespace: true }],
-                  })(
-                    <InputNumberGroup suffix='px' />
-                  )
-                }</Form.Item>
-                <SearchMode {...this.props} mode='qsPanelMode' sub={true} />
+                {config.tripleCtrlPageSel && (
+                  <SearchMode {...this.props} mode='qsPanelMode' sub={true} />
+                )}
               </Card>
             </Col>
           </Row>

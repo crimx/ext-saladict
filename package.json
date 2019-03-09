@@ -1,6 +1,6 @@
 {
   "name": "saladict",
-  "version": "6.25.1",
+  "version": "6.26.0",
   "description": "Chrome extension and Firefox WebExtension, inline translator powered by mutiple online dictionaries",
   "private": true,
   "scripts": {
@@ -60,7 +60,6 @@
     "i18next": "^11.2.2",
     "lodash": "^4.17.4",
     "md5": "^2.2.1",
-    "memoize-one": "^5.0.0",
     "normalize-scss": "^7.0.1",
     "qrcode.react": "^0.9.2",
     "react": "^16.4.0",
