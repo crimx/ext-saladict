@@ -43,12 +43,10 @@ describe('Context Menus', () => {
     })
 
     it('google_page_translate', async () => {
+      browser.tabs.executeScript.flush()
+      browser.tabs.executeScript.callsFake(() => Promise.resolve())
       browser.contextMenus.onClicked.dispatch({ menuItemId: 'google_page_translate' })
-
-      await timer(0)
-      expect(browser.tabs.query.called).toBeTruthy()
-      expect(browser.tabs.create.calledWith({ url: sinon.match('google') })).toBeTruthy()
-      expect(browser.tabs.create.calledWith({ url: sinon.match('test-url') })).toBeTruthy()
+      expect(browser.tabs.executeScript.calledOnce).toBeTruthy()
     })
     it('youdao_page_translate', () => {
       browser.tabs.executeScript.flush()
