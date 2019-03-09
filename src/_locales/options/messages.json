@@ -605,9 +605,9 @@
     "zh_TW": "字典視窗介面釘住后選詞"
   },
   "opt_sm_qsPanelMode": {
-    "en": "Inside Dict Panel",
-    "zh_CN": "查词面板内部划词",
-    "zh_TW": "字典視窗介面內部選詞"
+    "en": "Page Selection",
+    "zh_CN": "页面划词",
+    "zh_TW": "滑鼠選字"
   },
   "opt_sync_btn": {
     "en": "Sync Service",
