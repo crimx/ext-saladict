@@ -1,0 +1,19 @@
+{
+  "name": {
+    "en": "Shanbay Dictionary",
+    "zh_CN": "扇贝词典",
+    "zh_TW": "扇貝詞典"
+  },
+  "options": {
+    "basic": {
+      "en": "Show basic meaning",
+      "zh_CN": "显示简单释义",
+      "zh_TW": "顯示簡單解釋"
+    },
+    "sentence": {
+      "en": "Show sentences",
+      "zh_CN": "显示权威例句",
+      "zh_TW": "顯示權威例句"
+    }
+  }
+}

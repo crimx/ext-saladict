@@ -989,6 +989,50 @@ export function getALlDicts () {
         related: true,
       }
     },
+    shanbay: {
+      /**
+       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
+       * `1` for supported
+       */
+      lang: '10000000',
+      /**
+       * If set to true, the dict start searching automatically.
+       * Otherwise it'll only start seaching when user clicks the unfold button.
+       * Default MUST be true and let user decide.
+       */
+      defaultUnfold: true,
+      /**
+       * This is the default height when the dict first renders the result.
+       * If the content height is greater than the preferred height,
+       * the preferred height is used and a mask with a view-more button is shown.
+       * Otherwise the content height is used.
+       */
+      preferredHeight: 150,
+      /** Word count to start searching */
+      selectionWC: {
+        min: 1,
+        max: 30,
+      },
+      /** Only start searching if the selection contains the language. */
+      selectionLang: {
+        eng: true,
+        chs: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
+      },
+      /**
+       * Optional dict custom options. Can only be boolean, number or string.
+       * For string, add additional `options_sel` field to list out choices.
+       */
+      options: {
+        basic: true,
+        sentence: true,
+      }
+    },
     zdic: {
       /**
        * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
