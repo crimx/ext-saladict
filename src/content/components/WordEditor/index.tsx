@@ -38,13 +38,16 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
 
     const winWidth = window.innerWidth
     const width = Math.min(800, Math.max(400, winWidth - props.dictPanelWidth - 100))
-    const preferredLeft = props.dictPanelWidth + 60
-    const currentLeft = (winWidth - width) / 2
-    let leftOffset = preferredLeft - currentLeft
-    if (preferredLeft + width / 2 >= winWidth) {
-      // not enough space, close dict panel and move to the left
-      leftOffset = 10 - currentLeft
-      this.props.closeDictPanel()
+
+    let leftOffset = 0
+    const emptySpace = (winWidth - width) / 2
+    if (emptySpace < props.dictPanelWidth + 40) {
+      const shouldMove = props.dictPanelWidth + 40 - emptySpace
+      if (emptySpace > shouldMove) {
+        leftOffset = shouldMove
+      } else {
+        this.props.closeDictPanel()
+      }
     }
 
     this.state = {
