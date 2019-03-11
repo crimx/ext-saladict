@@ -85,6 +85,8 @@
     "default_popup": "popup.html"
   },
 
+  "incognito": "split",
+
   "permissions": [
     "<all_urls>",
     "webRequest",
