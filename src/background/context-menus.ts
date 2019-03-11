@@ -185,7 +185,10 @@ async function setContextMenus (
   contextMenus: ContextMenusConfig,
   t: TranslationFunction
 ): Promise<void> {
-  await browser.contextMenus.removeAll()
+  if (!browser.extension.inIncognitoContext) {
+    // In 'split' incognito mode, this will also remove the items on normal mode windows
+    await browser.contextMenus.removeAll()
+  }
   const ctx: browser.contextMenus.ContextType[] = [
     'audio', 'editable', 'frame', 'image', 'link', 'selection', 'page', 'video'
   ]
@@ -313,13 +316,12 @@ async function setContextMenus (
 }
 
 function createContextMenu (createProperties: CreateMenuOptions): Promise<void> {
-  return new Promise((resolve, reject) => {
+  return new Promise(resolve => {
     browser.contextMenus.create(createProperties, () => {
-      if (browser.runtime.lastError) {
-        reject(browser.runtime.lastError)
-      } else {
-        resolve()
+      if (browser.runtime.lastError && process.env.DEV_BUILD) {
+        console.error(browser.runtime.lastError)
       }
+      resolve()
     })
   })
 }
