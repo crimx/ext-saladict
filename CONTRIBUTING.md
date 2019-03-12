@@ -4,6 +4,8 @@
 
 ## How to Contribute
 
+:warning: Unless it is a small hox fix, before you write any code and get your hands dirty, please open an issue or make a WIP pull request to elaborate what you are trying to do and how you are going to implement it. Just to make sure we are on the same page and nobody's time and effort are wasted.
+
 - Read [How to get started](#how-to-get-started).
 - Follow [code style](#code-style) and [commit style](#commit-style).
 - Before submit, run [test](#testing) and [build](#building) locally. Or leave it to CI.
