@@ -97,6 +97,7 @@ async function handleDOM (
     title: getText(doc, '.word-spell'),
     pattern: getText(doc, '.pattern'),
     prons: [],
+    sentences: [],
   }
 
   const audio: { uk: string, us: string } = {
