@@ -99,6 +99,11 @@
     "zh_CN": "协助添加 Naver 韩国语词典",
     "zh_TW": "協助新增 Naver 韩国语词典"
   },
+  "head_info_acknowledgement_shanbay": {
+    "en": "for adding Shanbay dict",
+    "zh_CN": "编写扇贝词典模块",
+    "zh_TW": "編寫扇貝詞典模組"
+  },
   "head_info_acknowledgement_trans_tw": {
     "en": "for traditional Chinese translation",
     "zh_CN": "提供部分繁体中文翻译",

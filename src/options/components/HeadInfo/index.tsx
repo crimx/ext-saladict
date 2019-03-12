@@ -3,6 +3,7 @@ import CSSTransition from 'react-transition-group/CSSTransition'
 import { translate, TranslationFunction } from 'react-i18next'
 import { Tooltip, Icon } from 'antd'
 import SocialMedia from '../SocialMedia'
+import acknowledgement from '@/options/acknowledgement'
 
 import './_style.scss'
 
@@ -88,27 +89,15 @@ export class OptMenu extends React.PureComponent<{ t: TranslationFunction }, Opt
               onMouseLeave={this.hideAcknowledgement}
             >
               <ol>
-                <li>
-                  <a
-                    href='https://github.com/stockyman'
-                    rel='nofollow'
-                    target='_blank'
-                  >stockyman</a> {t('opt:head_info_acknowledgement_trans_tw')}
-                </li>
-                <li>
-                  <a
-                    href='https://github.com/caerlie'
-                    rel='nofollow'
-                    target='_blank'
-                  >caerlie</a> {t('opt:head_info_acknowledgement_weblio')}
-                </li>
-                <li>
-                  <a
-                    href='https://weibo.com/925515171?is_hot=1'
-                    rel='nofollow'
-                    target='_blank'
-                  >Wekey</a> {t('opt:head_info_acknowledgement_naver')}
-                </li>
+                {acknowledgement.map(ack => (
+                  <li key={ack.locale}>
+                    <a
+                      href={ack.href}
+                      rel='nofollow'
+                      target='_blank'
+                    >{ack.name}</a> {t(`opt:head_info_acknowledgement_${ack.locale}`)}
+                  </li>
+                ))}
               </ol>
             </div>
           )}</CSSTransition>
