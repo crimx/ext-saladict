@@ -202,10 +202,10 @@
   version "4.14.109"
   resolved "http://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.109.tgz#b1c4442239730bf35cabaf493c772b18c045886d"
 
-"@types/memoize-one@^4.1.0":
-  version "4.1.0"
-  resolved "http://registry.npm.taobao.org/@types/memoize-one/download/@types/memoize-one-4.1.0.tgz#62119f26055b3193ae43ca1882c5b29b88b71ece"
-  integrity sha1-YhGfJgVbMZOuQ8oYgsWym4i3Hs4=
+"@types/memoize-one@^4.1.1":
+  version "4.1.1"
+  resolved "http://registry.npm.taobao.org/@types/memoize-one/download/@types/memoize-one-4.1.1.tgz#41dd138a4335b5041f7d8fc038f9d593d88b3369"
+  integrity sha1-Qd0TikM1tQQffY/AOPnVk9iLM2k=
 
 "@types/node@*":
   version "10.1.3"
@@ -5927,6 +5927,11 @@ mem@^1.1.0:
   resolved "http://registry.npm.taobao.org/mem/download/mem-1.1.0.tgz#5edd52b485ca1d900fe64895505399a0dfa45f76"
   dependencies:
     mimic-fn "^1.0.0"
+
+memoize-one@^5.0.0:
+  version "5.0.0"
+  resolved "http://registry.npm.taobao.org/memoize-one/download/memoize-one-5.0.0.tgz#d55007dffefb8de7546659a1722a5d42e128286e"
+  integrity sha1-1VAH3/77jedUZlmhcipdQuEoKG4=
 
 memory-fs@^0.4.0, memory-fs@~0.4.1:
   version "0.4.1"
