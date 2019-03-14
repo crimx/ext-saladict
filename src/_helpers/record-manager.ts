@@ -4,7 +4,6 @@
 
 import { message } from '@/_helpers/browser-api'
 import { SelectionInfo } from '@/_helpers/selection'
-import { Word as DBWord, Area as DBArea } from '@/background/database'
 import {
   MsgType,
   MsgIsInNotebook,
@@ -15,9 +14,26 @@ import {
   MsgGetWordsResponse,
 } from '@/typings/message'
 
-export type Word = DBWord
+export interface Word {
+  /** primary key, milliseconds elapsed since the UNIX epoch */
+  date: number
+  /** word text */
+  text: string
+  /** the sentence where the text string is located */
+  context: string
+  /** page title */
+  title: string
+  /** page url */
+  url: string
+  /** favicon url */
+  favicon: string
+  /** translation */
+  trans: string
+  /** custom note */
+  note: string
+}
 
-export type Area = DBArea
+export type Area = 'notebook' | 'history'
 
 export function isInNotebook (info: SelectionInfo): Promise<boolean> {
   return message.send<MsgIsInNotebook>({ type: MsgType.IsInNotebook, info })

@@ -1,8 +1,10 @@
 import {
   NotebookFile,
-  SyncService,
   UploadConfig,
   DownloadConfig,
+  SyncService,
+} from '../interface'
+import {
   getNotebook,
   setNotebook,
   createSyncConfigStream,

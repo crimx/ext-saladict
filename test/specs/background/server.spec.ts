@@ -21,6 +21,8 @@ describe('Server', () => {
   browserWrap.openURL = openURL
 
   beforeAll(() => {
+    jest.doMock('@/background/sync-manager', () => {})
+
     jest.doMock('@/_helpers/chs-to-chz', () => {
       return { chsToChz }
     })

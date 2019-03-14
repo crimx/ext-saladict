@@ -1,6 +1,7 @@
 import Dexie from 'dexie'
 import { storage } from '@/_helpers/browser-api'
 import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
+import { Word, Area } from '@/_helpers/record-manager'
 import {
   MsgIsInNotebook,
   MsgSaveWord,
@@ -9,27 +10,6 @@ import {
   MsgGetWords,
   MsgGetWordsResponse,
 } from '@/typings/message'
-
-export interface Word {
-  /** primary key, milliseconds elapsed since the UNIX epoch */
-  date: number
-  /** word text */
-  text: string
-  /** the sentence where the text string is located */
-  context: string
-  /** page title */
-  title: string
-  /** page url */
-  url: string
-  /** favicon url */
-  favicon: string
-  /** translation */
-  trans: string
-  /** custom note */
-  note: string
-}
-
-export type Area = 'notebook' | 'history'
 
 export class SaladictDB extends Dexie {
   // @ts-ignore

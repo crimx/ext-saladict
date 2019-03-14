@@ -1,7 +1,8 @@
 import * as helpersMock from '@/background/sync-manager/__mocks__/helpers'
-import { NotebookFile } from '@/background/sync-manager/helpers'
+import { NotebookFile } from '@/background/sync-manager/interface'
 import { getDefaultSelectionInfo } from '@/_helpers/selection'
-import { initServer, upload, dlChanged, SyncConfig, Meta } from '@/background/sync-manager/services/webdav'
+import { Service, SyncConfig } from '@/background/sync-manager/services/webdav'
+import { Word } from '@/_helpers/record-manager'
 
 jest.mock('@/background/sync-manager/helpers')
 
@@ -29,7 +30,7 @@ const fetchArgs = {
     ]
   },
 
-  upload (config: SyncConfig, text: string = '') {
+  upload (config: SyncConfig, body: any = '') {
     return [
       config.url + 'Saladict/notebook.json',
       {
@@ -37,7 +38,7 @@ const fetchArgs = {
         headers: {
           'Authorization': 'Basic ' + window.btoa(`${config.user}:${config.passwd}`),
         },
-        body: text,
+        body,
       },
     ]
   },
@@ -94,16 +95,24 @@ describe('Sync service WebDAV', () => {
     const fetchInit = {
       upload: jest.fn(() => new Response())
     }
-
     mockFetch(config, fetchInit)
 
-    expect(await upload(config, 'message')).toBe(true)
+    const words = [getWord(), getWord({ text: 'word' })]
+    helpers.getNotebook.mockImplementationOnce(() => Promise.resolve(words))
+
+    const service = new Service()
+    service.config = config
+
+    await service.upload({ force: true })
+
     expect(fetchInit.upload).toHaveBeenCalledTimes(1)
-    expect(fetchInit.upload).lastCalledWith(...fetchArgs.upload(config, 'message'))
+    expect(fetchInit.upload).lastCalledWith(
+      ...fetchArgs.upload(config, expect.stringContaining(JSON.stringify(words)))
+    )
   })
 
-  describe('dlChanged', () => {
-    it('should return file on first download', async () => {
+  describe('download', () => {
+    it('should save file on first download', async () => {
       const config: SyncConfig = {
         url: 'https://example.com/dav/',
         user: 'user',
@@ -111,15 +120,14 @@ describe('Sync service WebDAV', () => {
         duration: 0,
       }
 
-      const file: NotebookFile = {
-        timestamp: Date.now(),
-        words: [
-          {
-            ...getDefaultSelectionInfo({ text: 'test' }),
-            date: Date.now(),
-          }
-        ],
-      }
+      const words = [
+        getWord({
+          ...getDefaultSelectionInfo({ text: 'test' }),
+          date: Date.now(),
+        })
+      ]
+      const timestamp = Date.now()
+      const file: NotebookFile = { timestamp, words }
 
       const etag = 'etag222'
 
@@ -136,12 +144,18 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      expect(await dlChanged(config, {})).toEqual({ json: file, etag })
+      const service = new Service()
+      service.config = config
+
+      await service.download({})
+
+      expect(helpers.setNotebook).lastCalledWith(words)
+      expect(helpers.setMeta).lastCalledWith('webdav', { timestamp, etag })
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(...fetchArgs.download(config))
     })
 
-    it('should return file if etag changed', async () => {
+    it('should save file if etag changed', async () => {
       const config: SyncConfig = {
         url: 'https://example.com/dav/',
         user: 'user',
@@ -149,15 +163,14 @@ describe('Sync service WebDAV', () => {
         duration: 0,
       }
 
-      const file: NotebookFile = {
-        timestamp: Date.now(),
-        words: [
-          {
-            ...getDefaultSelectionInfo({ text: 'test' }),
-            date: Date.now(),
-          }
-        ],
-      }
+      const words = [
+        getWord({
+          ...getDefaultSelectionInfo({ text: 'test' }),
+          date: Date.now(),
+        })
+      ]
+      const timestamp = Date.now()
+      const file: NotebookFile = { timestamp, words }
 
       const etagOrigin = 'etag12345'
       const etag = 'etag222'
@@ -175,7 +188,14 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      expect(await dlChanged(config, { etag: etagOrigin })).toEqual({ json: file, etag })
+      const service = new Service()
+      service.config = config
+      service.meta = { etag: etagOrigin }
+
+      await service.download({})
+
+      expect(helpers.setNotebook).lastCalledWith(words)
+      expect(helpers.setMeta).lastCalledWith('webdav', { timestamp, etag })
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(...fetchArgs.download(config, {
         'If-None-Match': etagOrigin,
@@ -183,22 +203,12 @@ describe('Sync service WebDAV', () => {
       }))
     })
 
-    it('should return nothing if 304 (same etag)', async () => {
+    it('should do nothing if 304 (same etag)', async () => {
       const config: SyncConfig = {
         url: 'https://example.com/dav/',
         user: 'user',
         passwd: 'passwd',
         duration: 0,
-      }
-
-      const file: NotebookFile = {
-        timestamp: Date.now(),
-        words: [
-          {
-            ...getDefaultSelectionInfo({ text: 'test' }),
-            date: Date.now(),
-          }
-        ],
       }
 
       const etag = 'etag222'
@@ -217,7 +227,14 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      expect(await dlChanged(config, { etag })).toBeUndefined()
+      const service = new Service()
+      service.config = config
+      service.meta = { etag }
+
+      await service.download({})
+
+      expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
+      expect(helpers.setMeta).toHaveBeenCalledTimes(0)
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(...fetchArgs.download(config, {
         'If-None-Match': etag,
@@ -225,7 +242,7 @@ describe('Sync service WebDAV', () => {
       }))
     })
 
-    it('should return nothing if different etag but same timestamp', async () => {
+    it('should do nothing if etags are different but timestamps are identical', async () => {
       const config: SyncConfig = {
         url: 'https://example.com/dav/',
         user: 'user',
@@ -259,10 +276,17 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      expect(await dlChanged(config, {
+      const service = new Service()
+      service.config = config
+      service.meta = {
         etag: etagOrigin,
         timestamp: file.timestamp
-      })).toBeUndefined()
+      }
+
+      await service.download({})
+
+      expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
+      expect(helpers.setMeta).toHaveBeenCalledTimes(0)
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(...fetchArgs.download(config, {
         'If-None-Match': etagOrigin,
@@ -270,7 +294,7 @@ describe('Sync service WebDAV', () => {
       }))
     })
 
-    it('should return nothing if different etag but same timestamp', async () => {
+    it('should do nothing if etags are different but timestamps are identical', async () => {
       const config: SyncConfig = {
         url: 'https://example.com/dav/',
         user: 'user',
@@ -281,10 +305,10 @@ describe('Sync service WebDAV', () => {
       const file: NotebookFile = {
         timestamp: Date.now(),
         words: [
-          {
+          getWord({
             ...getDefaultSelectionInfo({ text: 'test' }),
             date: Date.now(),
-          }
+          })
         ],
       }
 
@@ -304,10 +328,17 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      expect(await dlChanged(config, {
+      const service = new Service()
+      service.config = config
+      service.meta = {
         etag: etagOrigin,
         timestamp: file.timestamp
-      })).toBeUndefined()
+      }
+
+      await service.download({})
+
+      expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
+      expect(helpers.setMeta).toHaveBeenCalledTimes(0)
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(...fetchArgs.download(config, {
         'If-None-Match': etagOrigin,
@@ -315,42 +346,7 @@ describe('Sync service WebDAV', () => {
       }))
     })
 
-    it('should return nothing if file is corrupted', async () => {
-      const config: SyncConfig = {
-        url: 'https://example.com/dav/',
-        user: 'user',
-        passwd: 'passwd',
-        duration: 0,
-      }
-
-      const etagOrigin = 'etag12345'
-      const etag = 'etag222'
-
-      const fetchInit = {
-        download: jest.fn(() => new Response(
-          'corrupted file',
-          {
-            headers: {
-              etag,
-            }
-          }
-        ))
-      }
-
-      mockFetch(config, fetchInit)
-
-      expect(await dlChanged(config, {
-        etag: etagOrigin,
-        timestamp: Date.now(),
-      })).toBeUndefined()
-      expect(fetchInit.download).toHaveBeenCalledTimes(1)
-      expect(fetchInit.download).lastCalledWith(...fetchArgs.download(config, {
-        'If-None-Match': etagOrigin,
-        'If-Modified-Since': etagOrigin,
-      }))
-    })
-
-    it('should return nothing if words is corrupted', async () => {
+    it('should do nothing if words are corrupted', async () => {
       const config: SyncConfig = {
         url: 'https://example.com/dav/',
         user: 'user',
@@ -378,12 +374,22 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      expect(await dlChanged(config, {})).toBeUndefined()
+      const service = new Service()
+      service.config = config
+
+      try {
+        await service.download({})
+      } catch (e) {
+        expect(e).toBe('format')
+      }
+
+      expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
+      expect(helpers.setMeta).toHaveBeenCalledTimes(0)
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(...fetchArgs.download(config))
     })
 
-    it('should return nothing if netword failed', async () => {
+    it('should do nothing if network failed', async () => {
       const config: SyncConfig = {
         url: 'https://example.com/dav/',
         user: 'user',
@@ -407,7 +413,17 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      expect(await dlChanged(config, {})).toBeUndefined()
+      const service = new Service()
+      service.config = config
+
+      try {
+        await service.download({})
+      } catch (e) {
+        expect(e).toBe('network')
+      }
+
+      expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
+      expect(helpers.setMeta).toHaveBeenCalledTimes(0)
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(...fetchArgs.download(config))
     })
@@ -433,7 +449,6 @@ describe('Sync service WebDAV', () => {
       }
       const fileText = JSON.stringify(file)
 
-      const etagOrigin = 'etag12345'
       const etag = 'etag222'
 
       const fetchInit = {
@@ -452,15 +467,20 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const { error } = await initServer(config)
-      expect(error).toBeUndefined()
+      const service = new Service()
+      service.config = config
+      service.download = jest.fn(() => Promise.resolve())
+
+      await service.init(config)
+
+      expect(service.download).toHaveBeenCalledTimes(0)
       expect(fetchInit.checkServer).toHaveBeenCalledTimes(1)
       expect(fetchInit.checkServer).lastCalledWith(...fetchArgs.checkServer(config))
       expect(fetchInit.createDir).toHaveBeenCalledTimes(1)
       expect(fetchInit.createDir).lastCalledWith(...fetchArgs.createDir(config))
       expect(fetchInit.upload).toHaveBeenCalledTimes(0)
       expect(fetchInit.download).toHaveBeenCalledTimes(0)
-      expect(helpers.setMeta).toHaveBeenCalledTimes(0)
+      expect(helpers.setMeta).toHaveBeenCalledTimes(1)
       expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
     })
 
@@ -506,15 +526,20 @@ describe('Sync service WebDAV', () => {
       }))
       mockFetch(config, fetchInit)
 
-      const { error } = await initServer(config)
-      expect(error).toBeUndefined()
+      const service = new Service()
+      service.config = config
+      service.download = jest.fn(() => Promise.resolve())
+
+      await service.init(config)
+
+      expect(service.download).toHaveBeenCalledTimes(0)
       expect(fetchInit.checkServer).toHaveBeenCalledTimes(1)
       expect(fetchInit.checkServer).lastCalledWith(...fetchArgs.checkServer(config))
       // @upstream JSDOM missing namespace selector support
       // expect(fetchInit.createDir).toHaveBeenCalledTimes(0)
       expect(fetchInit.upload).toHaveBeenCalledTimes(0)
       expect(fetchInit.download).toHaveBeenCalledTimes(0)
-      expect(helpers.setMeta).toHaveBeenCalledTimes(0)
+      expect(helpers.setMeta).toHaveBeenCalledTimes(1)
       expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
     })
 
@@ -535,8 +560,17 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const { error } = await initServer(config)
-      expect(error).toBe('network')
+      const service = new Service()
+      service.config = config
+      service.download = jest.fn(() => Promise.resolve())
+
+      try {
+        await service.init(config)
+      } catch (e) {
+        expect(e).toBe('network')
+      }
+
+      expect(service.download).toHaveBeenCalledTimes(0)
       expect(fetchInit.checkServer).toHaveBeenCalledTimes(1)
       expect(fetchInit.checkServer).lastCalledWith(...fetchArgs.checkServer(config))
       // @upstream JSDOM missing namespace selector support
@@ -564,8 +598,17 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const { error } = await initServer(config)
-      expect(error).toBe('mkcol')
+      const service = new Service()
+      service.config = config
+      service.download = jest.fn(() => Promise.resolve())
+
+      try {
+        await service.init(config)
+      } catch (e) {
+        expect(e).toBe('mkcol')
+      }
+
+      expect(service.download).toHaveBeenCalledTimes(0)
       expect(fetchInit.checkServer).toHaveBeenCalledTimes(1)
       expect(fetchInit.checkServer).lastCalledWith(...fetchArgs.checkServer(config))
       expect(fetchInit.createDir).toHaveBeenCalledTimes(1)
@@ -693,4 +736,18 @@ function genXML (withDir?: boolean): string {
     </d:response>
     ${withDir ? dir : ''}
   </d:multistatus>`
+}
+
+function getWord (word: Partial<Word> = {}): Word {
+  return {
+    date: Date.now(),
+    text: '',
+    context: '',
+    title: '',
+    url: '',
+    favicon: '',
+    trans: '',
+    note: '',
+    ...word,
+  }
 }

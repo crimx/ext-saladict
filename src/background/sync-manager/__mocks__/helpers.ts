@@ -1,8 +1,10 @@
+import { empty } from 'rxjs/observable/empty'
+
 export const setSyncConfig = jest.fn(() => Promise.resolve())
 
 export const getSyncConfig = jest.fn(() => Promise.resolve())
 
-export const createSyncConfigStream = jest.fn()
+export const createSyncConfigStream = jest.fn(() => empty())
 
 export const setMeta = jest.fn(() => Promise.resolve())
 
