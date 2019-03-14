@@ -27,7 +27,7 @@ export interface SyncConfig {
   readonly url: string
   readonly user: string
   readonly passwd: string
-  /** In ms */
+  /** In min */
   readonly duration: number
 }
 
@@ -78,7 +78,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
           this.config = newConfig
 
           return of('').pipe(
-            delay(newConfig.duration),
+            delay(newConfig.duration * 60000),
             switchMap(() => fromPromise<void>(this.download({}).catch(() => {/* nothing */}))),
             repeat(),
           )
