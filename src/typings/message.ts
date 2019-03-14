@@ -1,6 +1,6 @@
 import { SelectionInfo } from '@/_helpers/selection'
 import { DictID } from '@/app-config'
-import { Word, Area as DBArea } from '@/background/database'
+import { Word, Area as DBArea } from '@/_helpers/record-manager'
 import { Omit } from '@/typings/helpers'
 
 export const enum MsgType {

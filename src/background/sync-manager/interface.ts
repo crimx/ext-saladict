@@ -1,5 +1,10 @@
 import { Word } from '@/_helpers/record-manager'
 
+export const enum UploadOp {
+  Add,
+  Delete,
+}
+
 export interface NotebookFile {
   timestamp: number
   words: Word[]

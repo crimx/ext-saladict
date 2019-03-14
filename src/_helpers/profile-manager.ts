@@ -2,7 +2,6 @@
  * Profiles are switchable profiles
  */
 import {
-  getDefaultProfileID,
   getDefaultProfile,
   Profile,
   genProfilesStorage,

@@ -1,4 +1,4 @@
-import { SyncService } from './helpers'
+import { SyncService } from './interface'
 import { MsgSyncServiceUpload, MsgSyncServiceInit, MsgSyncServiceDownload } from '@/typings/message'
 
 const reqServices = require['context']('./services', false, /./)
