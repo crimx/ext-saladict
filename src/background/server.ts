@@ -76,11 +76,11 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return getSuggests((data as MsgGetSuggests).text)
 
     case MsgType.SyncServiceInit:
-      return syncServiceInit((data as MsgSyncServiceInit).config)
+      return syncServiceInit(data as MsgSyncServiceInit)
     case MsgType.SyncServiceDownload:
-      return syncServiceDownload((data as MsgSyncServiceDownload).force)
+      return syncServiceDownload(data as MsgSyncServiceDownload)
     case MsgType.SyncServiceUpload:
-      return syncServiceUpload((data as MsgSyncServiceUpload).force)
+      return syncServiceUpload(data as MsgSyncServiceUpload)
 
     case 'youdao_translate_ajax' as any:
       return youdaoTranslateAjax(data.request)

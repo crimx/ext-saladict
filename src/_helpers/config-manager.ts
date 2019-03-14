@@ -23,23 +23,6 @@ export async function initConfig (): Promise<AppConfig> {
     baseconfig: AppConfig
   }>('baseconfig')
 
-  if (!baseconfig || !baseconfig.version) {
-    // legacy configs
-    const { activeConfigID } = await storage.sync.get('activeConfigID')
-    if (activeConfigID) {
-      baseconfig = (await storage.sync.get(activeConfigID))[activeConfigID]
-    }
-  }
-
-  if (!baseconfig || !baseconfig.version) {
-    // old config, replace the default if exist
-    const { config: oldConfig } = (await storage.sync.get('config'))
-    if (oldConfig) {
-      baseconfig = mergeConfig(oldConfig)
-      await storage.sync.remove('config')
-    }
-  }
-
   baseconfig = baseconfig && baseconfig.version
     ? mergeConfig(baseconfig)
     : getDefaultConfig()

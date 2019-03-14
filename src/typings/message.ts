@@ -232,18 +232,22 @@ export interface MsgQueryPanelState {
   readonly path?: string
 }
 
-export interface MsgSyncServiceInit {
+export interface MsgSyncServiceInit<C = any> {
   readonly type: MsgType.SyncServiceInit
-  readonly config: any
+  readonly serviceID: string
+  readonly config: C
 }
 
 export interface MsgSyncServiceDownload {
   readonly type: MsgType.SyncServiceDownload
-  readonly force?: boolean
+  readonly serviceID: string
+  readonly noCache?: boolean
 }
 
 export interface MsgSyncServiceUpload {
   readonly type: MsgType.SyncServiceUpload
+  readonly serviceID?: string
+  readonly word?: Word
   readonly force?: boolean
 }
 

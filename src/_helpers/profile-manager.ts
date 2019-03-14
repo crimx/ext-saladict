@@ -62,42 +62,9 @@ export async function initProfiles (): Promise<Profile> {
       const profile = (await storage.sync.get(id))[id]
       profiles.push(profile ? mergeProfile(profile) : getDefaultProfile(id))
     }
-  }
-
-  // legacy
-  if (profileIDList.length <= 0) {
-    const {
-      configProfileIDs,
-      activeConfigID,
-    } = await storage.sync.get<{
-      configProfileIDs: string[],
-      activeConfigID: string,
-    }>(['configProfileIDs', 'activeConfigID'])
-
-    if (configProfileIDs && configProfileIDs.length > 0) {
-      await storage.sync.remove(['configProfileIDs', 'activeConfigID'])
-      // quota bytes limit
-      for (const id of configProfileIDs) {
-        const config = (await storage.sync.get(id))[id]
-        const profile = config ? mergeProfile(config) : getDefaultProfile(id)
-        const profileID = config && config.name
-          ? {
-            id: id,
-            name: config.name
-          }
-          : getDefaultProfileID(id)
-        // the first item is active
-        profileIDList.push(profileID)
-        profiles.push(profile)
-        if (id === activeConfigID) {
-          activeProfileID = id
-        }
-      }
-    }
-  }
-
-  if (profileIDList.length <= 0) {
+  } else {
     ({ profileIDList, profiles } = genProfilesStorage())
+    activeProfileID = profileIDList[0].id
   }
 
   if (!activeProfileID) {

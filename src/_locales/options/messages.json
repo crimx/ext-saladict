@@ -779,6 +779,11 @@
     "zh_CN": "账户或密码不正确。",
     "zh_TW": "賬戶或密碼不正確。"
   },
+  "sync_webdav_err_unknown": {
+    "en": "Unknown error 「{{error}}」.",
+    "zh_CN": "未知错误 「{{error}}」。",
+    "zh_TW": "未知錯誤 「{{error}}」。"
+  },
   "sync_webdav_explain": {
     "en": "Extension settings (including this) are synced via browser. New words notebook can be synced via WebDAV through settings here. <a href=\"http://help.jianguoyun.com/?p=2064\" target=\"_blank\">See Jianguoyun for example</a>.",
     "zh_CN": "应用设置（包括本设置）已通过浏览器自动同步。生词本可通过本设置实现 WebDAV 同步。<a href=\"http://help.jianguoyun.com/?p=2064\" target=\"_blank\">参考坚果云设置</a>。",
