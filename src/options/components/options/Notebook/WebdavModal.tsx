@@ -1,6 +1,6 @@
 import React from 'react'
 import { Service, SyncConfig } from '@/background/sync-manager/services/webdav'
-import { MsgSyncServiceInit, MsgType, MsgSyncServiceDownload, MsgSyncServiceUpload } from '@/typings/message'
+import { MsgSyncServiceInit, MsgType, MsgSyncServiceDownload, MsgSyncServiceUpload, SyncServiceUploadOp } from '@/typings/message'
 import { message } from '@/_helpers/browser-api'
 import { getSyncConfig, removeSyncConfig } from '@/background/sync-manager/helpers'
 import { InputNumberGroup } from '../../InputNumberGroup'
@@ -172,6 +172,7 @@ export default class WebdavModal extends React.Component<WebdavModalProps, Webda
 
     await message.send<MsgSyncServiceUpload>({
       type: MsgType.SyncServiceUpload,
+      op: SyncServiceUploadOp.Add,
       serviceID: Service.id,
       force: true,
     })

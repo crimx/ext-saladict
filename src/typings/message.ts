@@ -244,10 +244,19 @@ export interface MsgSyncServiceDownload {
   readonly noCache?: boolean
 }
 
+export const enum SyncServiceUploadOp {
+  Add,
+  Delete,
+}
+
 export interface MsgSyncServiceUpload {
   readonly type: MsgType.SyncServiceUpload
+  readonly op: SyncServiceUploadOp
   readonly serviceID?: string
-  readonly word?: Word
+  /** When op is Add */
+  readonly words?: Word[]
+  /** When op is Delete */
+  readonly dates?: number[]
   readonly force?: boolean
 }
 

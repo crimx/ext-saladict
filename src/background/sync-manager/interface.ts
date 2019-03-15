@@ -1,10 +1,5 @@
 import { Word } from '@/_helpers/record-manager'
 
-export const enum UploadOp {
-  Add,
-  Delete,
-}
-
 export interface NotebookFile {
   timestamp: number
   words: Word[]
@@ -15,8 +10,14 @@ export interface DlResponse {
   etag: string
 }
 
-export interface UploadConfig {
-  readonly word?: Readonly<Word>
+export interface AddConfig {
+  readonly words?: ReadonlyArray<Readonly<Word>>
+  /** Do not sync before upload */
+  readonly force?: boolean
+}
+
+export interface DeleteConfig {
+  readonly dates?: ReadonlyArray<number>
   /** Do not sync before upload */
   readonly force?: boolean
 }
@@ -35,8 +36,10 @@ export abstract class SyncService<Config = any, Meta = any> {
     readonly 'zh-CN': string,
     readonly 'zh-TW': string
   }
+  /** service config that is saved with browser sync storage */
   abstract config: Config
-  abstract meta?: Meta
+  /** service data that is saved with the database */
+  meta?: Meta
 
   static getDefaultConfig () {
     return {}
@@ -45,7 +48,8 @@ export abstract class SyncService<Config = any, Meta = any> {
     return {}
   }
   abstract init (config: Readonly<Config>): Promise<void>
-  abstract upload (config: UploadConfig): Promise<void>
-  abstract download (config: DownloadConfig): Promise<void>
+  abstract add (config: AddConfig): Promise<void>
+  async delete (config: DeleteConfig): Promise<void> {/* nothing */}
+  async download (config: DownloadConfig): Promise<void> {/* nothing */}
   startInterval () {/* nothing */}
 }

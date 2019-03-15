@@ -2,6 +2,7 @@ import Dexie from 'dexie'
 import { storage } from '@/_helpers/browser-api'
 import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 import { Word, Area } from '@/_helpers/record-manager'
+import { syncServiceUpload } from './sync-manager'
 import {
   MsgIsInNotebook,
   MsgSaveWord,
@@ -9,6 +10,8 @@ import {
   MsgGetWordsByText,
   MsgGetWords,
   MsgGetWordsResponse,
+  SyncServiceUploadOp,
+  MsgType,
 } from '@/typings/message'
 
 export class SaladictDB extends Dexie {
@@ -72,10 +75,16 @@ export function isInNotebook ({ info }: MsgIsInNotebook) {
 }
 
 export function saveWord ({ area, info }: MsgSaveWord) {
-  return db[area].put({
+  const word = {
     ...info,
     date: info.date || Date.now()
-  })
+  }
+  syncServiceUpload({
+    type: MsgType.SyncServiceUpload,
+    op: SyncServiceUploadOp.Add,
+    words: [word],
+  }).catch(() => {/* nothing */})
+  return db[area].put(word)
 }
 
 export function saveWords ({ area, words }: { area: Area, words: Word[] }) {
@@ -84,10 +93,20 @@ export function saveWords ({ area, words }: { area: Area, words: Word[] }) {
       console.error('save Words: duplicate records')
     }
   }
+  syncServiceUpload({
+    type: MsgType.SyncServiceUpload,
+    op: SyncServiceUploadOp.Add,
+    words,
+  }).catch(() => {/* nothing */})
   return db[area].bulkPut(words)
 }
 
 export function deleteWords ({ area, dates }: MsgDeleteWords) {
+  syncServiceUpload({
+    type: MsgType.SyncServiceUpload,
+    op: SyncServiceUploadOp.Delete,
+    dates,
+  }).catch(() => {/* nothing */})
   return Array.isArray(dates)
     ? db[area].bulkDelete(dates)
     : db[area].clear()

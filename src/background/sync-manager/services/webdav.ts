@@ -1,6 +1,6 @@
 import {
   NotebookFile,
-  UploadConfig,
+  AddConfig,
   DownloadConfig,
   SyncService,
 } from '../interface'
@@ -157,7 +157,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     }
   }
 
-  async upload ({ force }: UploadConfig) {
+  async add ({ force }: AddConfig) {
     if (!this.config.url) {
       if (process.env.DEV_BUILD) {
         console.warn(`sync service ${Service.id} upload: empty url`)
@@ -202,6 +202,11 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     }
 
     await this.setMeta({ timestamp, etag: '' })
+  }
+
+  delete ({ force }) {
+    // full sync anyway
+    return this.add({ force })
   }
 
   async download ({ testConfig, noCache }: DownloadConfig) {
@@ -314,7 +319,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
   }
 
   async getConfig () {
-    const config = await getSyncConfig(Service.id)
-    return config || Service.getDefaultConfig()
+    this.config = (await getSyncConfig<SyncConfig>(Service.id)) || this.config
+    return this.config
   }
 }
