@@ -1,7 +1,12 @@
 import React from 'react'
+import { storage } from '@/_helpers/browser-api'
 import { Props } from '../typings'
 import { updateConfigOrProfile, formItemLayout } from '../helpers'
 import WebdavModal from './WebdavModal'
+import {
+  Service as WebDAVService,
+  SyncConfig as WebDAVConfig
+} from '@/background/sync-manager/services/webdav'
 
 import { FormComponentProps } from 'antd/lib/form'
 import { Form, Switch, Checkbox, Button } from 'antd'
@@ -10,11 +15,23 @@ export type NotebookProps = Props & FormComponentProps
 
 export interface NotebookState {
   isShowSyncServiceModal: boolean
+  syncConfigs: null | {
+    [WebDAVService.id]?: WebDAVConfig
+  }
 }
 
 export class Notebook extends React.Component<NotebookProps, NotebookState> {
   state: NotebookState = {
     isShowSyncServiceModal: false,
+    syncConfigs: null,
+  }
+
+  constructor (props: NotebookProps) {
+    super(props)
+
+    storage.sync.get('syncConfig').then(({ syncConfig }) => {
+      this.setState({ syncConfigs: syncConfig || {} })
+    })
   }
 
   openSyncService = () => {
@@ -28,6 +45,7 @@ export class Notebook extends React.Component<NotebookProps, NotebookState> {
   render () {
     const { t, config } = this.props
     const { getFieldDecorator } = this.props.form
+    const { syncConfigs, isShowSyncServiceModal } = this.state
 
     return (
       <Form>
@@ -90,11 +108,16 @@ export class Notebook extends React.Component<NotebookProps, NotebookState> {
         >
           <Button onClick={this.openSyncService}>{t('opt_sync_btn')}</Button>
         </Form.Item>
-        <WebdavModal
-          t={t}
-          show={this.state.isShowSyncServiceModal}
-          onClose={this.closeSyncServiceModal}
-        />
+        {syncConfigs && (
+          <>
+            <WebdavModal
+              syncConfig={syncConfigs[WebDAVService.id]}
+              t={t}
+              show={isShowSyncServiceModal}
+              onClose={this.closeSyncServiceModal}
+            />
+          </>
+        )}
       </Form>
     )
   }

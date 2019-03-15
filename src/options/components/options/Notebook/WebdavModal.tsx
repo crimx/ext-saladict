@@ -2,7 +2,7 @@ import React from 'react'
 import { Service, SyncConfig } from '@/background/sync-manager/services/webdav'
 import { MsgSyncServiceInit, MsgType, MsgSyncServiceDownload, MsgSyncServiceUpload, SyncServiceUploadOp } from '@/typings/message'
 import { message } from '@/_helpers/browser-api'
-import { getSyncConfig, removeSyncConfig } from '@/background/sync-manager/helpers'
+import { removeSyncConfig } from '@/background/sync-manager/helpers'
 import { InputNumberGroup } from '../../InputNumberGroup'
 import { TranslationFunction } from 'i18next'
 
@@ -94,6 +94,7 @@ const WebDAVForm = Form.create<WebDAVFormProps>({
 })(WebDAVFormBase)
 
 export interface WebdavModalProps {
+  syncConfig?: SyncConfig
   t: TranslationFunction
   show: boolean
   onClose: () => void
@@ -109,19 +110,7 @@ export default class WebdavModal extends React.Component<WebdavModalProps, Webda
 
   state: WebdavModalState = {
     isSyncServiceLoading: false,
-    configFormItems: wrapFromItems(Service.getDefaultConfig()),
-  }
-
-  constructor (props: WebdavModalProps) {
-    super(props)
-
-    getSyncConfig<SyncConfig>(Service.id).then(config => {
-      if (config) {
-        this.setState({
-          configFormItems: wrapFromItems(config),
-        })
-      }
-    })
+    configFormItems: wrapFromItems(this.props.syncConfig || Service.getDefaultConfig()),
   }
 
   closeSyncService = () => {
