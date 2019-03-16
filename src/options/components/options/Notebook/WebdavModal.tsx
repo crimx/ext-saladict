@@ -216,7 +216,7 @@ export default class WebdavModal extends React.Component<WebdavModalProps, Webda
     return (
       <Modal
         visible={show}
-        title={t('sync_notebook_title')}
+        title={t('sync_webdav_title')}
         destroyOnClose
         onOk={this.saveSyncService}
         onCancel={this.closeSyncService}

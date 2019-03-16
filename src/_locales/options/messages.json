@@ -614,10 +614,15 @@
     "zh_CN": "页面划词",
     "zh_TW": "滑鼠選字"
   },
-  "opt_sync_btn": {
-    "en": "Sync Service",
-    "zh_CN": "添加同步",
-    "zh_TW": "添加同步"
+  "opt_sync_shanbay": {
+    "en": "Shanbay Sync Service",
+    "zh_CN": "添加扇贝生词本同步",
+    "zh_TW": "新增扇貝生詞本同步"
+  },
+  "opt_sync_webdav": {
+    "en": "WebDAV Sync Service",
+    "zh_CN": "添加 WebDAV 同步",
+    "zh_TW": "添加 WebDAV 同步"
   },
   "preload": {
     "en": "Preload",
@@ -734,10 +739,50 @@
     "zh_CN": "不正确的超链接格式。",
     "zh_TW": "不正確的超連結格式。"
   },
-  "sync_notebook_title": {
-    "en": "Notebook Sync",
-    "zh_CN": "生词本同步",
-    "zh_TW": "生字本同步"
+  "sync_failed": {
+    "en": "Syncing failed",
+    "zh_CN": "同步失败",
+    "zh_TW": "同步失敗"
+  },
+  "sync_shanbay_description": {
+    "en": "Use the account that has logged in shanbay.com. Note that it's a one-way sync(from Saladict to Shanbay). Only the new added words are synced. Words also need to be existed on Shanbay's database.",
+    "zh_CN": "使用登录了 shanbay.com 的帐号同步。单向同步到扇贝生词本（只从沙拉查词到扇贝），只同步新增单词（删除不同步），只同步单词本身（上下文等均没有同步）。生词需要存在扇贝单词库才能被添加。",
+    "zh_TW": "使用登入了 shanbay.com 的帳號同步。單向同步到扇貝生詞本（只從沙拉查詞到扇貝），只同步新增單詞（刪除不同步），只同步單詞本身（上下文等均沒有同步）。生詞需要存在扇貝單詞庫才能被新增。"
+  },
+  "sync_shanbay_login": {
+    "en": "Will open shanbay.com. Please log in then come back and enable again.",
+    "zh_CN": "将打开扇贝官网，请登录再回来重新开启。",
+    "zh_TW": "將開啟扇貝官網，請登入再回來重新開啟。"
+  },
+  "sync_shanbay_sync_all": {
+    "en": "Upload all existing new words",
+    "zh_CN": "上传现有的所有生词",
+    "zh_TW": "上傳現有的所有生字"
+  },
+  "sync_shanbay_sync_all_confirm": {
+    "en": "Too many new words in notebook. Saladict will upload in batches. Note that uploading too many words would cause account banning which is unrecoverable. Confirm?",
+    "zh_CN": "生词本存在较多单词，将分批上传。注意上传太多有可能会导致封号，且不可恢复，确定继续？",
+    "zh_TW": "生詞本存在較多單詞，將分批上傳。注意上傳太多有可能會導致封號，且不可恢復，確定繼續？"
+  },
+  "sync_shanbay_sync_last": {
+    "en": "Upload the last new word",
+    "zh_CN": "上传最近的一个生词",
+    "zh_TW": "上傳最近的一個生字"
+  },
+  "sync_shanbay_title": {
+    "en": "Shanbay Sync",
+    "zh_CN": "扇贝生词本同步",
+    "zh_TW": "扇貝生詞本同步"
+  },
+  "sync_start": {
+    "en": "Syncing started in background",
+    "zh_CN": "同步已在后台开始",
+    "zh_TW": "同步已在後端開始"
+  },
+  "sync_success": {
+    "en": "Syncing success",
+    "zh_CN": "同步成功",
+    "zh_TW": "同步成功"
   },
   "sync_webdav_checking": {
     "en": "Connecting...",
@@ -793,6 +838,11 @@
     "en": "Password",
     "zh_CN": "密码",
     "zh_TW": "密碼"
+  },
+  "sync_webdav_title": {
+    "en": "WebDAV Sync",
+    "zh_CN": "WebDAV 同步",
+    "zh_TW": "WebDAV 同步"
   },
   "sync_webdav_url": {
     "en": "Server Address",

@@ -34,10 +34,25 @@
     "zh_CN": "确定完全删除该条目？",
     "zh_TW": "確定完全刪除該條目？"
   },
+  "disabled": {
+    "en": "Disabled",
+    "zh_CN": "已关闭",
+    "zh_TW": "已關閉"
+  },
   "edit": {
     "en": "Edit",
     "zh_CN": "编辑",
     "zh_TW": "編輯"
+  },
+  "enable": {
+    "en": "Enable",
+    "zh_CN": "开启",
+    "zh_TW": "開啟"
+  },
+  "enabled": {
+    "en": "Enabled",
+    "zh_CN": "已开启",
+    "zh_TW": "已開啟"
   },
   "lang_chinese": {
     "en": "Chinese",
