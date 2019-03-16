@@ -1,6 +1,7 @@
 import { AppConfig } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
 import * as selection from '@/_helpers/selection'
+import { checkSupportedLangs } from '@/_helpers/lang-check'
 import {
   MsgType,
   MsgIsPinned,
@@ -12,7 +13,6 @@ import {
   config$$,
   sendMessage,
   isBlacklisted,
-  isSelectionLangValid,
   isInPanelOnInternalPage,
 } from './helper'
 import { validMouseup$$ } from './mouse-events'
@@ -107,7 +107,7 @@ combineLatest(
     oldVal[1].context === newVal[1].context
   )),
 ).subscribe(([[event, config], partialSelInfo]) => {
-  if (isSelectionLangValid(partialSelInfo.text, config.language)) {
+  if (checkSupportedLangs(config.language, partialSelInfo.text)) {
     sendMessage({
       mouseX: event.clientX,
       mouseY: event.clientY,

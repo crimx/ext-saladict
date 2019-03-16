@@ -20,6 +20,7 @@ import {
   isContainFrench,
   isContainSpanish,
   isContainDeutsch,
+  checkSupportedLangs,
 } from '@/_helpers/lang-check'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
@@ -333,23 +334,7 @@ export function searchText (
 
     selectedDicts.forEach(id => {
       const { selectionLang } = allDicts[id]
-      let isValidSelection = (
-        selectionLang.eng && isTextContainEng ||
-        selectionLang.chs && isTextContainChs ||
-        selectionLang.japanese && (isContainJapanese(info.text) || isTextContainChs) ||
-        selectionLang.korean && (isContainKorean(info.text) || isTextContainChs) ||
-        selectionLang.french && (isContainFrench(info.text) || isTextContainEng) ||
-        selectionLang.spanish && (isContainSpanish(info.text) || isTextContainEng) ||
-        selectionLang.deutsch && (isContainDeutsch(info.text) || isTextContainEng) ||
-        selectionLang.others &&
-          !isTextContainChs &&
-          !isTextContainEng &&
-          !isContainJapanese(info.text) &&
-          !isContainKorean(info.text) &&
-          !isContainFrench(info.text) &&
-          !isContainSpanish(info.text) &&
-          !isContainDeutsch(info.text)
-      )
+      let isValidSelection = checkSupportedLangs(selectionLang, info.text)
 
       if (isValidSelection) {
         const wordCount = (info.text

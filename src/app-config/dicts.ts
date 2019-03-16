@@ -1,3 +1,5 @@
+import { SupportedLangs } from '@/_helpers/lang-check'
+
 export interface DictItem {
   lang: string
   defaultUnfold: boolean
@@ -6,16 +8,7 @@ export interface DictItem {
     max: number,
   },
   preferredHeight: number
-  selectionLang: {
-    eng: boolean
-    chs: boolean
-    japanese: boolean
-    korean: boolean
-    french: boolean
-    spanish: boolean
-    deutsch: boolean
-    others: boolean
-  }
+  selectionLang: SupportedLangs
   options?: {
     [option: string]: number | boolean | string
   }
@@ -52,8 +45,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: true,
+        english: true,
+        chinese: true,
         japanese: true,
         korean: true,
         french: true,
@@ -100,8 +93,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: true,
+        english: true,
+        chinese: true,
         japanese: false,
         korean: false,
         french: false,
@@ -147,8 +140,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: false,
+        english: true,
+        chinese: false,
         japanese: false,
         korean: false,
         french: false,
@@ -183,8 +176,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: false,
+        english: true,
+        chinese: false,
         japanese: false,
         korean: false,
         french: false,
@@ -226,8 +219,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: false,
+        english: true,
+        chinese: false,
         japanese: false,
         korean: false,
         french: false,
@@ -270,8 +263,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: true,
+        english: true,
+        chinese: true,
         japanese: false,
         korean: false,
         french: false,
@@ -313,8 +306,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: true,
+        english: true,
+        chinese: true,
         japanese: true,
         korean: true,
         french: true,
@@ -362,8 +355,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: true,
+        english: true,
+        chinese: true,
         japanese: true,
         korean: true,
         french: true,
@@ -405,8 +398,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: false,
-        chs: true,
+        english: false,
+        chinese: true,
         japanese: false,
         korean: false,
         french: false,
@@ -441,8 +434,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: true,
+        english: true,
+        chinese: true,
         japanese: true,
         korean: true,
         french: true,
@@ -496,8 +489,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: false,
-        chs: true,
+        english: false,
+        chinese: true,
         japanese: false,
         korean: false,
         french: false,
@@ -532,8 +525,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: false,
+        english: true,
+        chinese: false,
         japanese: false,
         korean: false,
         french: false,
@@ -581,8 +574,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: false,
+        english: true,
+        chinese: false,
         japanese: false,
         korean: false,
         french: false,
@@ -624,8 +617,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: false,
-        chs: true,
+        english: false,
+        chinese: true,
         japanese: true,
         korean: true,
         french: false,
@@ -668,8 +661,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: false,
+        english: true,
+        chinese: false,
         japanese: false,
         korean: false,
         french: false,
@@ -711,8 +704,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: true,
+        english: true,
+        chinese: true,
         japanese: true,
         korean: true,
         french: true,
@@ -759,8 +752,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: false,
+        english: true,
+        chinese: false,
         japanese: false,
         korean: false,
         french: false,
@@ -802,8 +795,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: false,
+        english: true,
+        chinese: false,
         japanese: false,
         korean: false,
         french: false,
@@ -838,8 +831,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: true,
+        english: true,
+        chinese: true,
         japanese: true,
         korean: false,
         french: false,
@@ -874,8 +867,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: false,
+        english: true,
+        chinese: false,
         japanese: false,
         korean: false,
         french: false,
@@ -921,8 +914,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: true,
+        english: true,
+        chinese: true,
         japanese: true,
         korean: true,
         french: true,
@@ -967,8 +960,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: true,
+        english: true,
+        chinese: true,
         japanese: false,
         korean: false,
         french: false,
@@ -1015,8 +1008,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: true,
-        chs: false,
+        english: true,
+        chinese: false,
         japanese: false,
         korean: false,
         french: false,
@@ -1059,8 +1052,8 @@ export function getALlDicts () {
       },
       /** Only start searching if the selection contains the language. */
       selectionLang: {
-        eng: false,
-        chs: true,
+        english: false,
+        chinese: true,
         japanese: false,
         korean: false,
         french: false,

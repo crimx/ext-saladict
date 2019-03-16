@@ -1,12 +1,12 @@
 import { message } from '@/_helpers/browser-api'
 import * as selection from '@/_helpers/selection'
+import { checkSupportedLangs } from '@/_helpers/lang-check'
 import { Mutable } from '@/typings/helpers'
 import { MsgType, PostMsgType, PostMsgSelection } from '@/typings/message'
 
 import { lastMousedown$$, validMouseup$$, clickPeriodCount$ } from './mouse-events'
 import {
   isTypeField,
-  isSelectionLangValid,
   sendMessage,
   sendEmptyMessage,
   isQSKey,
@@ -169,7 +169,7 @@ validMouseup$$.pipe(
     ? isInPanelOnInternalPage(lastMousedownEvent)
     : window.name === 'saladict-dictpanel'
 
-  if (isSelectionLangValid(partialSelInfo.text, config.language)) {
+  if (checkSupportedLangs(config.language, partialSelInfo.text)) {
     sendMessage({
       mouseX: event.clientX,
       mouseY: event.clientY,

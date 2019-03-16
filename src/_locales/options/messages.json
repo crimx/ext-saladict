@@ -534,6 +534,11 @@
     "zh_CN": "当选中的文字包含相应的语言时才进行查找。",
     "zh_TW": "當選中的文字包含相對應的語言時，才進行查尋。"
   },
+  "opt_sel_lang_warning": {
+    "en": "Note that Japanese and Korean also include Chinese. French, Deutsch and Spanish also include English. If Chinese or English is cancelled while others are selected, only the exclusive parts of those languages are tested. E.g. kana characters in Japanese.",
+    "zh_CN": "注意日语与韩语也包含了汉字。法语、德语和西语也包含了英文。若取消了中文或英语而勾选了其它语言，则只匹配那些语言独有的部分，如日语只匹配假名。",
+    "zh_TW": "注意日語與韓語也包含了漢字。法語、德語和西語也包含了英文。若取消了中文或英語而勾選了其它語言，則只匹配那些語言獨有的部分，如日語只匹配假名。"
+  },
   "opt_shortcuts": {
     "en": "Set Shortcuts",
     "zh_CN": "设置快捷键",

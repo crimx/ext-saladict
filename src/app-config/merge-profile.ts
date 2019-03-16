@@ -22,8 +22,19 @@ export function mergeProfile (oldProfile: Profile, baseProfile?: Profile): Profi
     mergeNumber(`dicts.all.${id}.preferredHeight`)
     mergeNumber(`dicts.all.${id}.selectionWC.min`)
     mergeNumber(`dicts.all.${id}.selectionWC.max`)
-    mergeBoolean(`dicts.all.${id}.selectionLang.eng`)
-    mergeBoolean(`dicts.all.${id}.selectionLang.chs`)
+    // legacy
+    const chs = get(oldProfile, `dicts.all.${id}.selectionLang.chs`)
+    if (isBoolean(chs)) {
+      set(base, `dicts.all.${id}.selectionLang.chinese`, chs)
+    } else {
+      mergeBoolean(`dicts.all.${id}.selectionLang.chinese`)
+    }
+    const eng = get(oldProfile, `dicts.all.${id}.selectionLang.eng`)
+    if (isBoolean(eng)) {
+      set(base, `dicts.all.${id}.selectionLang.english`, eng)
+    } else {
+      mergeBoolean(`dicts.all.${id}.selectionLang.english`)
+    }
     mergeBoolean(`dicts.all.${id}.selectionLang.japanese`)
     mergeBoolean(`dicts.all.${id}.selectionLang.korean`)
     mergeBoolean(`dicts.all.${id}.selectionLang.french`)

@@ -60,3 +60,55 @@ export const isContainSpanish = memoizeOne((text: string): boolean => {
 export const isContainMinor = memoizeOne((text: string): boolean => {
   return testerMinor.test(text)
 })
+
+export interface SupportedLangs {
+  chinese: boolean
+  english: boolean
+  japanese: boolean
+  korean: boolean
+  french: boolean
+  spanish: boolean
+  deutsch: boolean
+  others: boolean
+}
+
+export const supportedLangs: ReadonlyArray<keyof SupportedLangs> = [
+  'chinese',
+  'english',
+  'japanese',
+  'korean',
+  'french',
+  'spanish',
+  'deutsch',
+  'others',
+]
+
+export function checkSupportedLangs (langs: SupportedLangs, text: string): boolean {
+  if (!text) { return false }
+
+  const isContainEng = langs.english && isContainEnglish(text)
+  if (isContainEng) {
+    return true
+  }
+
+  const isContainChs = langs.chinese && isContainChinese(text)
+  if (isContainChs) {
+    return true
+  }
+
+  return (
+    langs.japanese && (isContainJapanese(text) || isContainChs) ||
+    langs.korean && (isContainKorean(text) || isContainChs) ||
+    langs.french && (isContainFrench(text) || isContainEng) ||
+    langs.spanish && (isContainSpanish(text) || isContainEng) ||
+    langs.deutsch && (isContainDeutsch(text) || isContainEng) ||
+    langs.others &&
+      !isContainChinese(text) &&
+      !isContainEnglish(text) &&
+      !isContainJapanese(text) &&
+      !isContainKorean(text) &&
+      !isContainFrench(text) &&
+      !isContainSpanish(text) &&
+      !isContainDeutsch(text)
+  )
+}
