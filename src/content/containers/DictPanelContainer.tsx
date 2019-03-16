@@ -19,6 +19,7 @@ export const mapStateToProps = ({
 }: StoreState) => {
   return {
     isAnimation: config.animation,
+    panelCSS: config.panelCSS,
     dictsConfig: config.dicts,
     fontSize: config.fontSize,
     panelMaxHeightRatio: config.panelMaxHeightRatio,

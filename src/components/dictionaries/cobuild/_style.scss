@@ -168,7 +168,6 @@
 
   .content-box {
     padding: 0;
-    background: #fff;
     margin-bottom: 1em;
     -webkit-column-break-inside: avoid;
     page-break-inside: avoid;
@@ -530,10 +529,6 @@
     font-weight: bold;
   }
 
-  .dc .mini_h2 {
-
-  }
-
   .dc .blackbold {
     color: black;
   }
@@ -644,7 +639,7 @@
   }
 
   .dc .ref.type-thesaurus,.dc .content-box-synonyms .thesaurus-link-plus,.dc .link-right.verbtable,.dc .extra-link,.dc .content-box-examples .button,.verbtable_content .headword_link {
-    background: #e5ebf3;
+    background: rgba(229, 237, 247, 0.5);
     display: inline-block;
     padding: 2px 10px;
     border: 0;
@@ -901,8 +896,6 @@
   .page .dictionary .sense.inline {
     display: inline;
     margin-left: 0;
-    margin-bottom: .5em;
-    margin-top: .5em;
   }
 
   .page .dictionary .inline {
@@ -1323,7 +1316,6 @@
   .page .thesbase h2.first-sense {
     display: inline;
     font-size: inherit;
-    margin-bottom: inherit;
   }
 
   .thesbase ol.square {
@@ -2344,7 +2336,6 @@
   .navigation {
     position: relative;
     width: 100%;
-    background-color: #fafafa;
   }
 
   .navigation:before {
@@ -2805,7 +2796,6 @@
 
   [class^="icon-"],[class*=" icon-"] {
     font-family: 'icomoon';
-    speak: none;
     font-style: normal;
     font-weight: normal;
     font-variant: normal;

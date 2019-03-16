@@ -349,6 +349,16 @@
     "zh_CN": "单词被添加进生词本前会自动翻译上下文。",
     "zh_TW": "單字加入生字本前會自動翻譯上下文。"
   },
+  "opt_dict_panel_custom_css": {
+    "en": "Custom Dict Panel Styles",
+    "zh_CN": "自定义查词面板样式",
+    "zh_TW": "自定義查字界面樣式"
+  },
+  "opt_dict_panel_custom_css_help": {
+    "en": "Add Custom CSS for Dict Panel. Should use `.saladict-DictPanel` as root",
+    "zh_CN": "为查词面板添加自定义 CSS 。请使用 .saladict-DictPanel 作为根。",
+    "zh_TW": "為查字界面自定義 CSS 。請使用 .saladict-DictPanel 作為根。"
+  },
   "opt_dict_panel_font_size": {
     "en": "Font size for search reasults",
     "zh_CN": "词典内容字体大小",

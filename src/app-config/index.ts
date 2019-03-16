@@ -67,6 +67,9 @@ function _getDefaultConfig () {
     /** panel max height in percentage, 0 < n < 100 */
     panelMaxHeightRatio: 80,
 
+    /** custom panel css */
+    panelCSS: '',
+
     /** panel font-size */
     fontSize: 13,
 

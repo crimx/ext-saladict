@@ -4,7 +4,7 @@ import { updateConfigOrProfile, formItemLayout } from '../helpers'
 import { InputNumberGroup } from '../../InputNumberGroup'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, Switch, Row, Col, Radio } from 'antd'
+import { Form, Switch, Row, Col, Radio, Input } from 'antd'
 
 export type DictPanelProps = Props & FormComponentProps
 
@@ -90,6 +90,27 @@ export class DictPanel extends React.Component<DictPanelProps> {
             rules: [{ type: 'number', whitespace: true }],
           })(
             <InputNumberGroup suffix='px' />
+          )
+        }</Form.Item>
+        <Form.Item
+          {...formItemLayout}
+          label={t('opt_dict_panel_custom_css')}
+          help={t('opt_dict_panel_custom_css_help')}
+          extra={
+            <a
+              href='https://github.com/crimx/ext-saladict/wiki/PanelCSS#wiki-content'
+              target='_blank'
+              rel='nofollow'
+            >Examples</a>
+          }
+        >{
+          getFieldDecorator('config#panelCSS', {
+            initialValue: config.panelCSS,
+          })(
+            <Input.TextArea
+              placeholder='.saladict-DictPanel .panel-DictContainer { }'
+              autosize={{ minRows: 4, maxRows: 15 }}
+            />
           )
         }</Form.Item>
       </Form>

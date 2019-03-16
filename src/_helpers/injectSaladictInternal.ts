@@ -1,4 +1,5 @@
 import { createActiveProfileStream } from './profile-manager'
+import { createConfigStream } from './config-manager'
 
 export function injectSaladictInternal (noInjectContentCSS?: boolean) {
   if (process.env.NODE_ENV === 'development') {
@@ -46,5 +47,11 @@ export function injectSaladictInternal (noInjectContentCSS?: boolean) {
         selectedDicts.add(dict)
       }
     })
+  })
+
+  const $panelCSS = document.createElement('style')
+  ;(document.head || document.body).appendChild($panelCSS)
+  createConfigStream().subscribe(config => {
+    $panelCSS.innerHTML = config.panelCSS
   })
 }
