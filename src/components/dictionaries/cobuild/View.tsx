@@ -46,41 +46,39 @@ export class DictCOBUILDCol extends React.Component<ViewPorps<COBUILDColResult>,
     return (
       <main className='dictCOBUILD-ColEntry'>
         <div className='dictionary'>
-          <div className='res_cell_center'>
-            <div className='dc res_cell_center_content'>
-              <div className='navigation'>
-                <div className='tabsNavigation' onWheel={this.handleTabWheel}>
-                  {result.sections.map((section, i) => (
-                    <a
-                      key={section.id}
-                      className={`tab${
-                        (i === 0 && !this.state.curTab) || section.id === this.state.curTab
-                          ? ' current'
-                          : ''
-                        }`
-                      }
-                      href='#'
-                      data-id={section.id}
-                      onClick={this.handleTabClick}
-                    >
-                      {section.type}
-                      {section.title ? ` :${section.title}` : ''}
-                      {section.num ? <span className='expo'>{section.num}</span> : ''}
-                    </a>
-                  ))}
-                </div>
+          <div className='dc'>
+            <div className='navigation'>
+              <div className='tabsNavigation' onWheel={this.handleTabWheel}>
+                {result.sections.map((section, i) => (
+                  <a
+                    key={section.id}
+                    className={`tab${
+                      (i === 0 && !this.state.curTab) || section.id === this.state.curTab
+                        ? ' current'
+                        : ''
+                      }`
+                    }
+                    href='#'
+                    data-id={section.id}
+                    onClick={this.handleTabClick}
+                  >
+                    {section.type}
+                    {section.title ? ` :${section.title}` : ''}
+                    {section.num ? <span className='expo'>{section.num}</span> : ''}
+                  </a>
+                ))}
               </div>
-              <div className='he'>
-                <div className='page'>
-                  <div className='dictionary'>
-                    <div className='dictentry'>
-                      <div className='dictlink'>
-                        <div
-                          key={curSec.id}
-                          className={curSec.className}
-                          dangerouslySetInnerHTML={{ __html: curSec.content }}
-                        />
-                      </div>
+            </div>
+            <div className='he'>
+              <div className='page'>
+                <div className='dictionary'>
+                  <div className='dictentry'>
+                    <div className='dictlink'>
+                      <div
+                        key={curSec.id}
+                        className={curSec.className}
+                        dangerouslySetInnerHTML={{ __html: curSec.content }}
+                      />
                     </div>
                   </div>
                 </div>
