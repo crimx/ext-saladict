@@ -120,12 +120,12 @@ export class Service extends SyncService<SyncConfig> {
       var resSearch = await fetch(url).then(r => r.json())
     } catch (e) {
       this.notifyError('errNetwork', text)
-      return Promise.reject()
+      return Promise.reject('network')
     }
 
     if (!resSearch || !resSearch.data) {
       this.notifyError('errWord', text)
-      return Promise.reject()
+      return Promise.reject('word')
     }
 
     try {
@@ -138,12 +138,12 @@ export class Service extends SyncService<SyncConfig> {
       }).then(r => r.json())
     } catch (e) {
       this.notifyError('errNetwork', text)
-      return Promise.reject()
+      return Promise.reject('network')
     }
 
     if (!resLearning || resLearning.status_code !== 0) {
       this.notifyError('errLearning', text)
-      return Promise.reject()
+      return Promise.reject('learning')
     }
   }
 
