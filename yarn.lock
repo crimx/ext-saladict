@@ -215,6 +215,11 @@
   version "9.6.18"
   resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-9.6.18.tgz#092e13ef64c47e986802c9c45a61c1454813b31d"
 
+"@types/pako@^1.0.0":
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/@types/pako/download/@types/pako-1.0.0.tgz#eaae8364d1b7f752e263bc3fd68dfec98e6136c5"
+  integrity sha1-6q6DZNG391LiY7w/1o3+yY5hNsU=
+
 "@types/qrcode.react@^0.8.1":
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/@types/qrcode.react/-/qrcode.react-0.8.1.tgz#7efeb1d01d8e6dddcdf07fbec0724aaf0fa5c984"
@@ -6789,6 +6794,11 @@ pad-right@^0.2.2:
   resolved "http://registry.npm.taobao.org/pad-right/download/pad-right-0.2.2.tgz#6fbc924045d244f2a2a244503060d3bfc6009774"
   dependencies:
     repeat-string "^1.5.2"
+
+pako@^1.0.10:
+  version "1.0.10"
+  resolved "http://registry.npm.taobao.org/pako/download/pako-1.0.10.tgz#4328badb5086a426aa90f541977d4955da5c9732"
+  integrity sha1-Qyi621CGpCaqkPVBl31JVdpclzI=
 
 pako@~1.0.5:
   version "1.0.6"
