@@ -17,8 +17,7 @@ Promise.all([initConfig(), initProfiles()])
   const profile: ProfileMutable = JSON.parse(JSON.stringify(_profile))
 
   profile.dicts.selected = ['bing', 'google', 'guoyu', 'cobuild', 'liangan']
-  profile.dicts.all.bing.defaultUnfold = false
-  profile.dicts.all.guoyu.selectionLang.eng = false
+  profile.dicts.all.guoyu.selectionLang.english = false
 
   config.mode.double = true
   // config.mode.icon = false

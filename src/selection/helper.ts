@@ -3,15 +3,6 @@ import { createConfigStream } from '@/_helpers/config-manager'
 import { message } from '@/_helpers/browser-api'
 import { getDefaultSelectionInfo, SelectionInfo } from '@/_helpers/selection'
 import { MsgType, PostMsgType, PostMsgSelection, MsgSelection } from '@/typings/message'
-import {
-  isContainChinese,
-  isContainEnglish,
-  isContainJapanese,
-  isContainKorean,
-  isContainFrench,
-  isContainSpanish,
-  isContainDeutsch,
-} from '@/_helpers/lang-check'
 
 import { Observable } from 'rxjs/Observable'
 import { fromEvent } from 'rxjs/observable/fromEvent'
@@ -133,39 +124,6 @@ export function isTypeField (event: MouseEvent | TouchEvent | null): boolean {
   }
 
   return false
-}
-
-export function isSelectionLangValid (
-  text: string,
-  language: AppConfig['language'],
-): boolean {
-  if (!text) { return false }
-
-  const isContainEng = isContainEnglish(text)
-  if (language.english && isContainEng) {
-    return true
-  }
-
-  const isContainChs = isContainChinese(text)
-  if (language.chinese && isContainChs) {
-    return true
-  }
-
-  return (
-    language.japanese && (isContainJapanese(text) || isContainChs) ||
-    language.korean && (isContainKorean(text) || isContainChs) ||
-    language.french && (isContainFrench(text) || isContainEng) ||
-    language.spanish && (isContainSpanish(text) || isContainEng) ||
-    language.deutsch && (isContainDeutsch(text) || isContainEng) ||
-    language.others &&
-      !isContainChs &&
-      !isContainEng &&
-      !isContainJapanese(text) &&
-      !isContainKorean(text) &&
-      !isContainFrench(text) &&
-      !isContainSpanish(text) &&
-      !isContainDeutsch(text)
-  )
 }
 
 /**

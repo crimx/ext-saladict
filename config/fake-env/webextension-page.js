@@ -60,6 +60,9 @@ window.browser = {
     onClicked: {
       addListener () {},
     },
+    onButtonClicked: {
+      addListener () {},
+    }
   },
   storage: genStorageApis(),
   tabs: {

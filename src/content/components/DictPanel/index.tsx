@@ -55,6 +55,7 @@ interface DictPanelState {
 }
 
 export class DictPanel extends React.Component<DictPanelProps & { t: TranslationFunction }, DictPanelState> {
+  ContainerRef = React.createRef<HTMLMainElement>()
   MtaBoxRef = React.createRef<HTMLTextAreaElement>()
 
   state = {
@@ -151,6 +152,12 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
         mtaAutoUnfold === 'popup' && isSaladictPopupPage
       )
     }
+
+    if (prevProps.dictionaries.searchHistory !== this.props.dictionaries.searchHistory &&
+      this.ContainerRef.current
+    ) {
+      this.ContainerRef.current.scrollTop = 0
+    }
   }
 
   renderMtaBox = () => (
@@ -226,7 +233,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
           panelPinSwitch,
           closePanel,
         })}
-        <div className='panel-DictContainer'>
+        <main className='panel-DictContainer' ref={this.ContainerRef}>
           <div className='panel-MtaBox' style={{ height: mtaBoxHeight }}>
             <CSSTransition
               classNames='panel-MtaBoxTrans'
@@ -261,7 +268,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
               updateItemHeight,
             })
           })}
-        </div>
+        </main>
       </div>
     )
   }

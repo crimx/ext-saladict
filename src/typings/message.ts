@@ -1,6 +1,6 @@
 import { SelectionInfo } from '@/_helpers/selection'
 import { DictID } from '@/app-config'
-import { Word, Area as DBArea } from '@/background/database'
+import { Word, Area as DBArea } from '@/_helpers/record-manager'
 import { Omit } from '@/typings/helpers'
 
 export const enum MsgType {
@@ -232,18 +232,31 @@ export interface MsgQueryPanelState {
   readonly path?: string
 }
 
-export interface MsgSyncServiceInit {
+export interface MsgSyncServiceInit<C = any> {
   readonly type: MsgType.SyncServiceInit
-  readonly config: any
+  readonly serviceID: string
+  readonly config: C
 }
 
 export interface MsgSyncServiceDownload {
   readonly type: MsgType.SyncServiceDownload
-  readonly force?: boolean
+  readonly serviceID: string
+  readonly noCache?: boolean
+}
+
+export const enum SyncServiceUploadOp {
+  Add,
+  Delete,
 }
 
 export interface MsgSyncServiceUpload {
   readonly type: MsgType.SyncServiceUpload
+  readonly op: SyncServiceUploadOp
+  readonly serviceID?: string
+  /** When op is Add */
+  readonly words?: Word[]
+  /** When op is Delete */
+  readonly dates?: number[]
   readonly force?: boolean
 }
 

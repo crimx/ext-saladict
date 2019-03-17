@@ -1,8 +1,8 @@
 /**
  * Profiles are switchable profiles
  */
+import pako from 'pako'
 import {
-  getDefaultProfileID,
   getDefaultProfile,
   Profile,
   genProfilesStorage,
@@ -29,6 +29,31 @@ export interface ProfileChanged {
   oldProfile?: Profile,
 }
 
+/** Compressed profile data */
+interface ProfileCompressed {
+  /** version */
+  v: 1
+  /** data */
+  d: string
+}
+
+export function deflate (profile: Profile): ProfileCompressed {
+  return {
+    v: 1,
+    d: pako.deflate(JSON.stringify(profile), { to: 'string' })
+  }
+}
+
+export function inflate (profile: Profile | ProfileCompressed): Profile
+export function inflate (profile: undefined): undefined
+export function inflate (profile?: Profile | ProfileCompressed): Profile | undefined
+export function inflate (profile?: Profile | ProfileCompressed): Profile | undefined {
+  if (profile && profile['v'] === 1) {
+    return JSON.parse(pako.inflate((profile as ProfileCompressed).d, { to: 'string' }))
+  }
+  return profile as Profile | undefined
+}
+
 export function getProfileName (name: string, t: TranslationFunction): string {
   // default names
   const match = /^%%_(\S+)_%%$/.exec(name)
@@ -49,7 +74,9 @@ export async function initProfiles (): Promise<Profile> {
   }>(['profileIDList', 'activeProfileID'])
 
   if (response.profileIDList) {
-    profileIDList = response.profileIDList.filter(Boolean)
+    profileIDList = response.profileIDList.filter(item => Boolean(
+      item && typeof item.id === 'string' && typeof item.name === 'string'
+    ))
   }
 
   if (response.activeProfileID) {
@@ -59,45 +86,12 @@ export async function initProfiles (): Promise<Profile> {
   if (profileIDList.length > 0) {
     // quota bytes limit
     for (const { id } of profileIDList) {
-      const profile = (await storage.sync.get(id))[id]
+      const profile = await getProfile(id)
       profiles.push(profile ? mergeProfile(profile) : getDefaultProfile(id))
     }
-  }
-
-  // legacy
-  if (profileIDList.length <= 0) {
-    const {
-      configProfileIDs,
-      activeConfigID,
-    } = await storage.sync.get<{
-      configProfileIDs: string[],
-      activeConfigID: string,
-    }>(['configProfileIDs', 'activeConfigID'])
-
-    if (configProfileIDs && configProfileIDs.length > 0) {
-      await storage.sync.remove(['configProfileIDs', 'activeConfigID'])
-      // quota bytes limit
-      for (const id of configProfileIDs) {
-        const config = (await storage.sync.get(id))[id]
-        const profile = config ? mergeProfile(config) : getDefaultProfile(id)
-        const profileID = config && config.name
-          ? {
-            id: id,
-            name: config.name
-          }
-          : getDefaultProfileID(id)
-        // the first item is active
-        profileIDList.push(profileID)
-        profiles.push(profile)
-        if (id === activeConfigID) {
-          activeProfileID = id
-        }
-      }
-    }
-  }
-
-  if (profileIDList.length <= 0) {
+  } else {
     ({ profileIDList, profiles } = genProfilesStorage())
+    activeProfileID = profileIDList[0].id
   }
 
   if (!activeProfileID) {
@@ -114,7 +108,7 @@ export async function initProfiles (): Promise<Profile> {
 
   // quota bytes per item limit
   for (const profile of profiles) {
-    await storage.sync.set({ [profile.id]: profile })
+    await updateProfile(profile)
   }
 
   return activeProfile
@@ -139,7 +133,7 @@ export async function resetAllProfiles () {
 }
 
 export async function getProfile (id: string): Promise<Profile | undefined> {
-  return (await storage.sync.get(id))[id]
+  return inflate((await storage.sync.get(id))[id])
 }
 
 /**
@@ -152,7 +146,7 @@ export async function updateProfile (profile: Profile): Promise<void> {
       console.error(`Update Profile: profile ${profile.id} does not exist`)
     }
   }
-  return storage.sync.set({ [profile.id]: profile })
+  return storage.sync.set({ [profile.id]: deflate(profile) })
 }
 
 export async function addProfile (profileID: ProfileID): Promise<void> {
@@ -160,7 +154,7 @@ export async function addProfile (profileID: ProfileID): Promise<void> {
   const profileIDList = await getProfileIDList()
   if (process.env.DEV_BUILD) {
     if (profileIDList.find(item => item.id === id) ||
-      (await storage.sync.get(id))[id]
+      (await getProfile(id))
     ) {
       console.warn(`Add profile: profile ${id} exists`)
     }
@@ -168,7 +162,7 @@ export async function addProfile (profileID: ProfileID): Promise<void> {
 
   return storage.sync.set({
     profileIDList: [...profileIDList, profileID],
-    [id]: getDefaultProfile(id),
+    [id]: deflate(getDefaultProfile(id)),
   })
 }
 
@@ -177,7 +171,7 @@ export async function removeProfile (id: string): Promise<void> {
   let profileIDList = await getProfileIDList()
   if (process.env.DEV_BUILD) {
     if (!profileIDList.find(item => item.id === id) ||
-       !(await storage.sync.get(id))[id]
+       !(await getProfile(id))
     ) {
       console.warn(`Remove profile: profile ${id} does not exists`)
     }
@@ -255,6 +249,7 @@ export async function addActiveProfileListener (
   let activeID: string | undefined = await getActiveProfileID()
 
   storage.sync.addListener(changes => {
+    // this id changed
     if (changes.activeProfileID) {
       const {
         newValue: newID,
@@ -265,13 +260,12 @@ export async function addActiveProfileListener (
         if (oldID) {
           storage.sync.get([oldID, newID]).then(obj => {
             if (obj[newID]) {
-              cb({ newProfile: obj[newID], oldProfile: obj[oldID] })
+              cb({ newProfile: inflate(obj[newID]), oldProfile: inflate(obj[oldID]) })
               return
             }
           })
         } else {
-          storage.sync.get(newID).then(response => {
-            const newProfile = response[newID]
+          getProfile(newID).then(newProfile => {
             if (newProfile) {
               cb({ newProfile })
               return
@@ -281,10 +275,11 @@ export async function addActiveProfileListener (
       }
     }
 
+    // the active profile itself updated
     if (activeID && changes[activeID]) {
-      const { newValue, oldValue } = changes[activeID]
+      const { newValue, oldValue } = changes[activeID] as StorageChanged<ProfileCompressed>
       if (newValue) {
-        cb({ newProfile: newValue, oldProfile: oldValue })
+        cb({ newProfile: inflate(newValue), oldProfile: inflate(oldValue) })
         return
       }
     }

@@ -1,6 +1,8 @@
 import Dexie from 'dexie'
 import { storage } from '@/_helpers/browser-api'
 import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
+import { Word, Area } from '@/_helpers/record-manager'
+import { syncServiceUpload } from './sync-manager'
 import {
   MsgIsInNotebook,
   MsgSaveWord,
@@ -8,28 +10,9 @@ import {
   MsgGetWordsByText,
   MsgGetWords,
   MsgGetWordsResponse,
+  SyncServiceUploadOp,
+  MsgType,
 } from '@/typings/message'
-
-export interface Word {
-  /** primary key, milliseconds elapsed since the UNIX epoch */
-  date: number
-  /** word text */
-  text: string
-  /** the sentence where the text string is located */
-  context: string
-  /** page title */
-  title: string
-  /** page url */
-  url: string
-  /** favicon url */
-  favicon: string
-  /** translation */
-  trans: string
-  /** custom note */
-  note: string
-}
-
-export type Area = 'notebook' | 'history'
 
 export class SaladictDB extends Dexie {
   // @ts-ignore
@@ -92,10 +75,16 @@ export function isInNotebook ({ info }: MsgIsInNotebook) {
 }
 
 export function saveWord ({ area, info }: MsgSaveWord) {
-  return db[area].put({
+  const word = {
     ...info,
     date: info.date || Date.now()
-  })
+  }
+  syncServiceUpload({
+    type: MsgType.SyncServiceUpload,
+    op: SyncServiceUploadOp.Add,
+    words: [word],
+  }).catch(() => {/* nothing */})
+  return db[area].put(word)
 }
 
 export function saveWords ({ area, words }: { area: Area, words: Word[] }) {
@@ -104,10 +93,20 @@ export function saveWords ({ area, words }: { area: Area, words: Word[] }) {
       console.error('save Words: duplicate records')
     }
   }
+  syncServiceUpload({
+    type: MsgType.SyncServiceUpload,
+    op: SyncServiceUploadOp.Add,
+    words,
+  }).catch(() => {/* nothing */})
   return db[area].bulkPut(words)
 }
 
 export function deleteWords ({ area, dates }: MsgDeleteWords) {
+  syncServiceUpload({
+    type: MsgType.SyncServiceUpload,
+    op: SyncServiceUploadOp.Delete,
+    dates,
+  }).catch(() => {/* nothing */})
   return Array.isArray(dates)
     ? db[area].bulkDelete(dates)
     : db[area].clear()

@@ -202,10 +202,10 @@
   version "4.14.109"
   resolved "http://registry.npm.taobao.org/@types/lodash/download/@types/lodash-4.14.109.tgz#b1c4442239730bf35cabaf493c772b18c045886d"
 
-"@types/memoize-one@^4.1.0":
-  version "4.1.0"
-  resolved "http://registry.npm.taobao.org/@types/memoize-one/download/@types/memoize-one-4.1.0.tgz#62119f26055b3193ae43ca1882c5b29b88b71ece"
-  integrity sha1-YhGfJgVbMZOuQ8oYgsWym4i3Hs4=
+"@types/memoize-one@^4.1.1":
+  version "4.1.1"
+  resolved "http://registry.npm.taobao.org/@types/memoize-one/download/@types/memoize-one-4.1.1.tgz#41dd138a4335b5041f7d8fc038f9d593d88b3369"
+  integrity sha1-Qd0TikM1tQQffY/AOPnVk9iLM2k=
 
 "@types/node@*":
   version "10.1.3"
@@ -214,6 +214,11 @@
 "@types/node@^9.3.0":
   version "9.6.18"
   resolved "http://registry.npm.taobao.org/@types/node/download/@types/node-9.6.18.tgz#092e13ef64c47e986802c9c45a61c1454813b31d"
+
+"@types/pako@^1.0.0":
+  version "1.0.0"
+  resolved "http://registry.npm.taobao.org/@types/pako/download/@types/pako-1.0.0.tgz#eaae8364d1b7f752e263bc3fd68dfec98e6136c5"
+  integrity sha1-6q6DZNG391LiY7w/1o3+yY5hNsU=
 
 "@types/qrcode.react@^0.8.1":
   version "0.8.1"
@@ -5928,6 +5933,11 @@ mem@^1.1.0:
   dependencies:
     mimic-fn "^1.0.0"
 
+memoize-one@^5.0.0:
+  version "5.0.0"
+  resolved "http://registry.npm.taobao.org/memoize-one/download/memoize-one-5.0.0.tgz#d55007dffefb8de7546659a1722a5d42e128286e"
+  integrity sha1-1VAH3/77jedUZlmhcipdQuEoKG4=
+
 memory-fs@^0.4.0, memory-fs@~0.4.1:
   version "0.4.1"
   resolved "http://registry.npm.taobao.org/memory-fs/download/memory-fs-0.4.1.tgz#3a9a20b8462523e447cfbc7e8bb80ed667bfc552"
@@ -6784,6 +6794,11 @@ pad-right@^0.2.2:
   resolved "http://registry.npm.taobao.org/pad-right/download/pad-right-0.2.2.tgz#6fbc924045d244f2a2a244503060d3bfc6009774"
   dependencies:
     repeat-string "^1.5.2"
+
+pako@^1.0.10:
+  version "1.0.10"
+  resolved "http://registry.npm.taobao.org/pako/download/pako-1.0.10.tgz#4328badb5086a426aa90f541977d4955da5c9732"
+  integrity sha1-Qyi621CGpCaqkPVBl31JVdpclzI=
 
 pako@~1.0.5:
   version "1.0.6"

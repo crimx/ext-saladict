@@ -1,0 +1,29 @@
+.dictShanbay-HeaderContainer {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.dictShanbay-Title {
+  font-size: 1.5em;
+  margin-right: 8px;
+}
+
+.dictShanbay-Pattern {
+  margin-top: 0.5em;
+}
+
+.dictShanbay-SecTitle {
+  font-size: 1.1em;
+  margin-top: 1em;
+  border-bottom: 1px solid rgba(199, 110, 6, 0.5);
+}
+
+.dictShanbay-Basic {
+  margin: 0.5em 0;
+}
+
+.dictShanbay-Sentence {
+  margin: 0;
+  padding: 0 0 0 1.5em;
+}

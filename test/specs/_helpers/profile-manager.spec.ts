@@ -39,11 +39,13 @@ describe('Profile Manager', () => {
     const id2 = getDefaultProfileID()
     const profile1 = getDefaultProfile(id1.id)
     const profile2 = getDefaultProfile(id2.id)
+    const deflatedProfile1 = profileManager.deflate(profile1)
+    const deflatedProfile2 = profileManager.deflate(profile2)
     fakeStorageGet({
       profileIDList: [id1, id2],
       activeProfileID: profile2.id,
-      [profile1.id]: profile1,
-      [profile2.id]: profile2,
+      [profile1.id]: deflatedProfile1,
+      [profile2.id]: deflatedProfile2,
     })
 
     const profile = await profileManager.initProfiles()
@@ -53,10 +55,10 @@ describe('Profile Manager', () => {
       activeProfileID: profile2.id,
     }))).toBeTruthy()
     expect(browser.storage.sync.set.calledWith(sinon.match({
-      [profile1.id]: profile1,
+      [profile1.id]: deflatedProfile1,
     }))).toBeTruthy()
     expect(browser.storage.sync.set.calledWith(sinon.match({
-      [profile2.id]: profile2,
+      [profile2.id]: deflatedProfile2,
     }))).toBeTruthy()
   })
 
@@ -70,8 +72,8 @@ describe('Profile Manager', () => {
     fakeStorageGet({
       profileIDList: [id1, id2],
       activeProfileID: profile2.id,
-      [profile1.id]: profile1,
-      [profile2.id]: profile2,
+      [profile1.id]: profileManager.deflate(profile1),
+      [profile2.id]: profileManager.deflate(profile2),
       [detached1.id]: detached1,
       [detached2.id]: detached2,
     })
@@ -92,8 +94,8 @@ describe('Profile Manager', () => {
     fakeStorageGet({
       profileIDList: [id1, id2],
       activeProfileID: profile2.id,
-      [profile1.id]: profile1,
-      [profile2.id]: profile2,
+      [profile1.id]: profileManager.deflate(profile1),
+      [profile2.id]: profileManager.deflate(profile2),
     })
 
     await profileManager.resetAllProfiles()
@@ -119,8 +121,8 @@ describe('Profile Manager', () => {
     fakeStorageGet({
       profileIDList: [id1, id2],
       activeProfileID: profile2.id,
-      [profile1.id]: profile1,
-      [profile2.id]: profile2,
+      [profile1.id]: profileManager.deflate(profile1),
+      [profile2.id]: profileManager.deflate(profile2),
     })
 
     const id3 = getDefaultProfileID()
@@ -139,8 +141,8 @@ describe('Profile Manager', () => {
     fakeStorageGet({
       profileIDList: [id1, id2],
       activeProfileID: profile2.id,
-      [profile1.id]: profile1,
-      [profile2.id]: profile2,
+      [profile1.id]: profileManager.deflate(profile1),
+      [profile2.id]: profileManager.deflate(profile2),
     })
 
     await profileManager.removeProfile(profile1.id)
@@ -158,11 +160,11 @@ describe('Profile Manager', () => {
     fakeStorageGet({
       profileIDList: [id1, id2],
       activeProfileID: profile2.id,
-      [profile1.id]: profile1,
-      [profile2.id]: profile2,
+      [profile1.id]: profileManager.deflate(profile1),
+      [profile2.id]: profileManager.deflate(profile2),
     })
 
-    expect(await profileManager.getActiveProfile()).toBe(profile2)
+    expect((await profileManager.getActiveProfile()).id).toBe(profile2.id)
   })
 
   it('should update profile ID list', async () => {
@@ -186,7 +188,7 @@ describe('Profile Manager', () => {
     const profile = getDefaultProfile()
     await profileManager.updateProfile(profile)
     expect(browser.storage.sync.set.calledWith({
-      [profile.id]: profile,
+      [profile.id]: sinon.match(profileManager.deflate(profile)),
     })).toBeTruthy()
   })
 
@@ -203,8 +205,8 @@ describe('Profile Manager', () => {
       fakeStorageGet({
         profileIDList: [id1, id2],
         activeProfileID: profile2.id,
-        [profile1.id]: profile1,
-        [profile2.id]: profile2,
+        [profile1.id]: profileManager.deflate(profile1),
+        [profile2.id]: profileManager.deflate(profile2),
       })
       callback = jest.fn()
       await profileManager.addActiveProfileListener(callback)
@@ -281,8 +283,8 @@ describe('Profile Manager', () => {
     fakeStorageGet({
       profileIDList: [id1, id2],
       activeProfileID: profile2.id,
-      [profile1.id]: profile1,
-      [profile2.id]: profile2,
+      [profile1.id]: profileManager.deflate(profile1),
+      [profile2.id]: profileManager.deflate(profile2),
     })
     const subscriber = jest.fn()
 

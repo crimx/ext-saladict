@@ -15,11 +15,7 @@ import {
   testKorean,
   isContainChinese,
   isContainEnglish,
-  isContainJapanese,
-  isContainKorean,
-  isContainFrench,
-  isContainSpanish,
-  isContainDeutsch,
+  checkSupportedLangs,
 } from '@/_helpers/lang-check'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
@@ -328,28 +324,9 @@ export function searchText (
     const toOnhold: DictID[] = []
     const toActive: DictID[] = []
 
-    const isTextContainChs = isContainChinese(info.text)
-    const isTextContainEng = isContainEnglish(info.text)
-
     selectedDicts.forEach(id => {
-      const { selectionLang } = allDicts[id]
-      let isValidSelection = (
-        selectionLang.eng && isTextContainEng ||
-        selectionLang.chs && isTextContainChs ||
-        selectionLang.japanese && (isContainJapanese(info.text) || isTextContainChs) ||
-        selectionLang.korean && (isContainKorean(info.text) || isTextContainChs) ||
-        selectionLang.french && (isContainFrench(info.text) || isTextContainEng) ||
-        selectionLang.spanish && (isContainSpanish(info.text) || isTextContainEng) ||
-        selectionLang.deutsch && (isContainDeutsch(info.text) || isTextContainEng) ||
-        selectionLang.others &&
-          !isTextContainChs &&
-          !isTextContainEng &&
-          !isContainJapanese(info.text) &&
-          !isContainKorean(info.text) &&
-          !isContainFrench(info.text) &&
-          !isContainSpanish(info.text) &&
-          !isContainDeutsch(info.text)
-      )
+      const dict = allDicts[id]
+      let isValidSelection = checkSupportedLangs(dict.selectionLang, info.text)
 
       if (isValidSelection) {
         const wordCount = (info.text
@@ -357,7 +334,7 @@ export function searchText (
           .replace(new RegExp(`${testerChinese.source}|${testJapanese.source}|${testKorean.source}`, 'g'), ' x ')
           .match(/\S+/g) || '')
           .length
-        const { min, max } = allDicts[id].selectionWC
+        const { min, max } = dict.selectionWC
         isValidSelection = wordCount >= min && wordCount <= max
       }
 
@@ -365,7 +342,7 @@ export function searchText (
         toActive.push(id)
       }
 
-      if (!allDicts[id].defaultUnfold || !isValidSelection) {
+      if (!checkSupportedLangs(dict.defaultUnfold, info.text) || !isValidSelection) {
         toOnhold.push(id)
       } else {
         toStart.push(id)
@@ -388,11 +365,11 @@ export function searchText (
 
     // dict with auto pronunciation but not searching
     const autopronEng = state.config.autopron.en.dict
-    if (autopronEng && isTextContainEng && toStart.indexOf(autopronEng) === -1) {
+    if (autopronEng && isContainEnglish(info.text) && !toStart.includes(autopronEng)) {
       requestDictResult(autopronEng)
     } else {
       const autopronChs = state.config.autopron.cn.dict
-      if (autopronChs && isTextContainChs && toStart.indexOf(autopronChs) === -1) {
+      if (autopronChs && isContainChinese(info.text) && !toStart.includes(autopronChs)) {
         requestDictResult(autopronChs)
       }
     }

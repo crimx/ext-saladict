@@ -1,106 +1,69 @@
 import React from 'react'
-import { MsgSyncServiceInit, MsgType, MsgSyncServiceDownload, MsgSyncServiceUpload } from '@/typings/message'
-import { message } from '@/_helpers/browser-api'
-import { getSyncConfig, setSyncConfig , removeSyncConfig } from '@/background/sync-manager/helpers'
-import { getDefaultConfig, serviceID, SyncConfig } from '@/background/sync-manager/services/webdav'
+import { storage } from '@/_helpers/browser-api'
 import { Props } from '../typings'
 import { updateConfigOrProfile, formItemLayout } from '../helpers'
-import SyncServiceModal from './SyncServiceModal'
+import WebdavModal from './WebdavModal'
+import ShanbayModal from './ShanbayModal'
+import {
+  Service as WebDAVService,
+  SyncConfig as WebDAVConfig
+} from '@/background/sync-manager/services/webdav'
+import {
+  Service as ShanbayService,
+  SyncConfig as ShanbayConfig
+} from '@/background/sync-manager/services/shanbay'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, Switch, Modal, Button, Checkbox } from 'antd'
+import { Form, Switch, Checkbox, Button } from 'antd'
 
 export type NotebookProps = Props & FormComponentProps
 
-export class Notebook extends React.Component<NotebookProps> {
-  isSyncServiceTainted = false
+interface SyncConfigs {
+  [WebDAVService.id]?: WebDAVConfig
+  [ShanbayService.id]?: ShanbayConfig
+}
 
-  state = {
-    isSyncServiceLoading: false,
-    syncServiceConfig: null as null | SyncConfig,
+export interface NotebookState {
+  isShowSyncServiceModal: {
+    [WebDAVService.id]: boolean
+    [ShanbayService.id]: boolean
+  }
+  syncConfigs: null | SyncConfigs
+}
+
+export class Notebook extends React.Component<NotebookProps, NotebookState> {
+  state: NotebookState = {
+    isShowSyncServiceModal: {
+      [WebDAVService.id]: false,
+      [ShanbayService.id]: false,
+    },
+    syncConfigs: null,
   }
 
-  openSyncService = async () => {
-    this.setState({
-      syncServiceConfig: (
-        (await getSyncConfig<SyncConfig>(serviceID)) || getDefaultConfig()
-      )
+  constructor (props: NotebookProps) {
+    super(props)
+
+    storage.sync.get('syncConfig').then(({ syncConfig }) => {
+      this.setState({ syncConfigs: syncConfig || {} })
+    })
+    storage.sync.addListener<SyncConfigs>('syncConfig', ({ syncConfig }) => {
+      this.setState({ syncConfigs: syncConfig.newValue || {} })
     })
   }
 
-  closeSyncService = () => {
-    if (!this.isSyncServiceTainted ||
-      confirm(this.props.t('sync_close_confirm'))
-    ) {
-      this.setState({ syncServiceConfig: null })
-      this.isSyncServiceTainted = false
-    }
-  }
-
-  saveSyncService = async () => {
-    const { t } = this.props
-    const { syncServiceConfig } = this.state
-    if (!syncServiceConfig) { return }
-
-    this.setState({ isSyncServiceLoading: true })
-
-    const { error } = await message.send<MsgSyncServiceInit>({
-      type: MsgType.SyncServiceInit,
-      config: syncServiceConfig,
-    })
-    if (error && error !== 'exist') {
-      if (/^(network|unauthorized|mkcol|parse)$/.test(error)) {
-        alert(t('sync_webdav_err_' + error))
+  showSyncServiceModal = (id: keyof NotebookState['isShowSyncServiceModal'], isShow: boolean) => {
+    this.setState(prevState => ({
+      isShowSyncServiceModal: {
+        ...prevState.isShowSyncServiceModal,
+        [id]: isShow,
       }
-      this.setState({ isSyncServiceLoading: false })
-      return
-    }
-
-    await setSyncConfig(serviceID, syncServiceConfig)
-
-    if (error === 'exist') {
-      if (confirm(t('sync_webdav_err_exist'))) {
-        await message.send<MsgSyncServiceDownload>({
-          type: MsgType.SyncServiceDownload,
-          force: true,
-        }).catch(() => {
-          alert(t('sync_webdav_err_network'))
-        })
-      }
-    }
-
-    await message.send<MsgSyncServiceUpload>({
-      type: MsgType.SyncServiceUpload,
-      force: true,
-    }).catch(() => {
-      alert(t('sync_webdav_err_network'))
-    })
-
-    this.setState({
-      isSyncServiceLoading: false,
-      syncServiceConfig: null,
-    })
-    this.isSyncServiceTainted = false
-  }
-
-  clearSyncService = async () => {
-    if (confirm(this.props.t('sync_delete_confirm'))) {
-      await removeSyncConfig()
-      this.setState({ syncServiceConfig: null })
-      this.isSyncServiceTainted = false
-    }
-  }
-
-  onSyncServiceChange = (newSyncConfig: SyncConfig) => {
-    this.isSyncServiceTainted = true
-    this.setState({ syncServiceConfig: newSyncConfig })
-    console.log(newSyncConfig)
+    }))
   }
 
   render () {
-    const { t, config, profile } = this.props
-    const { syncServiceConfig } = this.state
+    const { t, config } = this.props
     const { getFieldDecorator } = this.props.form
+    const { syncConfigs, isShowSyncServiceModal } = this.state
 
     return (
       <Form>
@@ -159,40 +122,44 @@ export class Notebook extends React.Component<NotebookProps> {
         </Form.Item>
         <Form.Item
           {...formItemLayout}
-          label={t('opt_sync_btn')}
+          label={t('opt_sync_webdav')}
         >
-          <Button onClick={this.openSyncService}>{t('opt_sync_btn')}</Button>
+          <Button onClick={() => this.showSyncServiceModal(WebDAVService.id, true)}>{
+            `${t('opt_sync_webdav')} (${t(
+              syncConfigs && syncConfigs[WebDAVService.id] && syncConfigs[WebDAVService.id]!.url
+                ? 'common:enabled'
+                : 'common:disabled'
+            )})`
+          }</Button>
         </Form.Item>
-        <Modal
-          visible={!!syncServiceConfig}
-          title={t('sync_notebook_title')}
-          destroyOnClose
-          onOk={this.saveSyncService}
-          onCancel={this.closeSyncService}
-          footer={[
-            <Button
-              key='delete'
-              type='danger'
-              onClick={this.clearSyncService}
-            >{t('common:delete')}</Button>,
-            <Button
-              key='save'
-              type='primary'
-              loading={this.state.isSyncServiceLoading}
-              onClick={this.saveSyncService}
-            >{t('common:save')}</Button>,
-            <Button
-              key='cancel'
-              onClick={this.closeSyncService}
-            >{t('common:cancel')}</Button>,
-          ]}
-        >{
-          React.createElement(SyncServiceModal, {
-            t, config, profile,
-            onChange: this.onSyncServiceChange,
-            syncConfig: syncServiceConfig as SyncConfig,
-          })
-        }</Modal>
+        <Form.Item
+          {...formItemLayout}
+          label={t('opt_sync_shanbay')}
+        >
+          <Button onClick={() => this.showSyncServiceModal(ShanbayService.id, true)}>{
+            `${t('opt_sync_shanbay')} (${t(
+              syncConfigs && syncConfigs[ShanbayService.id] && syncConfigs[ShanbayService.id]!.enable
+                ? 'common:enabled'
+                : 'common:disabled'
+            )})`
+          }</Button>
+        </Form.Item>
+        {syncConfigs && (
+          <>
+            <WebdavModal
+              syncConfig={syncConfigs[WebDAVService.id]}
+              t={t}
+              show={isShowSyncServiceModal[WebDAVService.id]}
+              onClose={() => this.showSyncServiceModal(WebDAVService.id, false)}
+            />
+            <ShanbayModal
+              syncConfig={syncConfigs[ShanbayService.id]}
+              t={t}
+              show={isShowSyncServiceModal[ShanbayService.id]}
+              onClose={() => this.showSyncServiceModal(ShanbayService.id, false)}
+            />
+          </>
+        )}
       </Form>
     )
   }

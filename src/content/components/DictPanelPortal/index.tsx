@@ -31,6 +31,7 @@ export type ChildrenProps =
 
 export interface DictPanelPortalProps extends ChildrenProps {
   readonly isAnimation: boolean
+  readonly panelCSS: string
   readonly shouldPanelShow: boolean
   readonly panelRect: {
     x: number
@@ -296,6 +297,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   renderDictPanel = () => {
     const {
       isAnimation,
+      panelCSS,
     } = this.props
 
     const {
@@ -321,7 +323,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
             bodyClassName='panel-FrameBody'
             name='saladict-dictpanel'
             frameBorder='0'
-            head={this.frameHead}
+            head={this.frameHead + `\n<style>${panelCSS}</style>\n`}
             frameDidMount={this.frameDidMount}
           >
             <DictPanel

@@ -40,6 +40,7 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
 
   mergeNumber('panelWidth')
   mergeNumber('panelMaxHeightRatio')
+  mergeString('panelCSS')
   mergeNumber('fontSize')
   mergeBoolean('pdfSniff')
   merge('pdfWhiltelist', val => Array.isArray(val))

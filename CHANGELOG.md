@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.27.0"></a>
+# [6.27.0](https://github.com/crimx/ext-saladict/compare/v6.26.0...v6.27.0) (2019-03-17)
+
+
+### Bug Fixes
+
+* compress data ([3795836](https://github.com/crimx/ext-saladict/commit/3795836))
+* **dicts:** fix shanbay typing warning ([99caa99](https://github.com/crimx/ext-saladict/commit/99caa99))
+* **dicts:** prevent in-panel search ([f88b960](https://github.com/crimx/ext-saladict/commit/f88b960))
+* **dicts:** remove float elements ([143b258](https://github.com/crimx/ext-saladict/commit/143b258))
+* **dicts:** typings ([bafe61c](https://github.com/crimx/ext-saladict/commit/bafe61c))
+* **manifest:** load pdf viewer under incognito mode ([5d57b25](https://github.com/crimx/ext-saladict/commit/5d57b25))
+* **menus:** prevent items being removed in incognito mode ([a380980](https://github.com/crimx/ext-saladict/commit/a380980))
+* **panel:** disable fav icon on options page ([c616149](https://github.com/crimx/ext-saladict/commit/c616149))
+* typings ([7f382a2](https://github.com/crimx/ext-saladict/commit/7f382a2))
+* **panel:** center panel vertically when word editor shows up ([c31b5fa](https://github.com/crimx/ext-saladict/commit/c31b5fa)), closes [#315](https://github.com/crimx/ext-saladict/issues/315)
+* **panel:** max z-index for dict panel ([51b60d5](https://github.com/crimx/ext-saladict/commit/51b60d5)), closes [#316](https://github.com/crimx/ext-saladict/issues/316)
+* **sync:** duration ([4785a71](https://github.com/crimx/ext-saladict/commit/4785a71))
+
+
+### Features
+
+* **dicts:** add shanbay dictionary ([95ee0d5](https://github.com/crimx/ext-saladict/commit/95ee0d5))
+* **panel:** add custom css ([4c58886](https://github.com/crimx/ext-saladict/commit/4c58886))
+* **sync:** add shanbay ([a7389d5](https://github.com/crimx/ext-saladict/commit/a7389d5))
+
+
+### Performance Improvements
+
+* cache lang checks ([5e3034e](https://github.com/crimx/ext-saladict/commit/5e3034e))
+
+
+
 <a name="6.26.0"></a>
 # [6.26.0](https://github.com/crimx/ext-saladict/compare/v6.25.1...v6.26.0) (2019-03-09)
 

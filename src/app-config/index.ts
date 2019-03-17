@@ -2,6 +2,7 @@ import { DeepReadonly } from '@/typings/helpers'
 import { getALlDicts } from './dicts'
 import { getAllContextMenus } from './context-menus'
 import { MtaAutoUnfold as _MtaAutoUnfold, _getDefaultProfile } from './profiles'
+import { SupportedLangs } from '@/_helpers/lang-check'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 
@@ -66,6 +67,9 @@ function _getDefaultConfig () {
 
     /** panel max height in percentage, 0 < n < 100 */
     panelMaxHeightRatio: 80,
+
+    /** custom panel css */
+    panelCSS: '',
 
     /** panel font-size */
     fontSize: 13,
@@ -232,7 +236,7 @@ function _getDefaultConfig () {
       spanish: true,
       deutsch: true,
       others: false,
-    },
+    } as SupportedLangs,
 
     /** auto pronunciation */
     autopron: {

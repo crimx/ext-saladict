@@ -174,6 +174,11 @@ function handleColDOM (
         $speaker.outerHTML = `<button data-src-mp3="${$speaker.dataset.srcMp3}" class="dictCOBUILD-Speaker">🔊</button>`
       })
 
+      // so that clicking won't trigger in-panel search
+      $section.querySelectorAll<HTMLAnchorElement>('a.type-thesaurus').forEach($a => {
+        $a.rel = 'nofollow'
+      })
+
       return {
         id: type + title + num,
         className: $section.className || '',

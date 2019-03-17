@@ -330,8 +330,8 @@ export const reducer: WidgetReducer = {
       newState.widget.isPinned = true
       newState.widget.shouldPanelShow = true
       newState.widget.panelRect = _reconcilePanelRect(
-        40,
-        (1 - state.config.panelMaxHeightRatio) * window.innerHeight / 100 / 2,
+        (window.innerWidth - 800) / 2 - 20 - width,
+        (window.innerHeight - height) / 2,
         width,
         height,
       )
@@ -919,8 +919,6 @@ function _getPanelRectFromEvent (
     }
   }
 
-  const winWidth = window.innerWidth
-
   // icon position           10px  panel position
   //             +-------+         +------------------------+
   //             |       |         |                        |
@@ -931,9 +929,12 @@ function _getPanelRectFromEvent (
   //       40px  |                 |                        |
   //     +-------+                 |                        |
   // cursor
-  const x = mouseX + width + 80 <= winWidth ? mouseX + 80 : mouseX - width - 80
-  const y = mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30
-  return _reconcilePanelRect(x, y, width, height)
+  return _reconcilePanelRect(
+    mouseX + width + 80 <= window.innerWidth ? mouseX + 80 : mouseX - width - 80,
+    mouseY > 60 ? mouseY - 60 : mouseY + 60 - 30,
+    width,
+    height,
+  )
 }
 
 function _getBowlRectFromEvent (mouseX: number, mouseY: number): { x: number, y: number } {
