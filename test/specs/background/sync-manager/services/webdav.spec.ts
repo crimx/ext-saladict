@@ -1,7 +1,7 @@
 import * as helpersMock from '@/background/sync-manager/__mocks__/helpers'
 import { NotebookFile } from '@/background/sync-manager/interface'
 import { getDefaultSelectionInfo } from '@/_helpers/selection'
-import { Service, SyncConfig } from '@/background/sync-manager/services/webdav'
+import { Service, SyncConfig, SyncMeta } from '@/background/sync-manager/services/webdav'
 import { Word } from '@/_helpers/record-manager'
 
 jest.mock('@/background/sync-manager/helpers')
@@ -103,7 +103,7 @@ describe('Sync service WebDAV', () => {
     const service = new Service()
     service.config = config
 
-    await service.upload({ force: true })
+    await service.add({ force: true })
 
     expect(fetchInit.upload).toHaveBeenCalledTimes(1)
     expect(fetchInit.upload).lastCalledWith(
@@ -520,7 +520,7 @@ describe('Sync service WebDAV', () => {
         createDir: jest.fn(() => new Response())
       }
 
-      helpers.getMeta.mockImplementationOnce((): Promise<Meta> => Promise.resolve({
+      helpers.getMeta.mockImplementationOnce((): Promise<SyncMeta> => Promise.resolve({
         timestamp: file.timestamp - 100,
         etag: etagLocal
       }))
