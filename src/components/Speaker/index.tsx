@@ -27,15 +27,15 @@ export default class Speaker extends React.PureComponent<SpeakerProps, SpeakerSt
     }
   }
 
-  handleMouseEnter = () => {
-    if (this.state.isPlaying) { return }
-    clearTimeout(this._playTimeout)
-    this._playTimeout = setTimeout(() => this.playAudio(), 400)
-  }
+  // handleMouseEnter = () => {
+  //   if (this.state.isPlaying) { return }
+  //   clearTimeout(this._playTimeout)
+  //   this._playTimeout = setTimeout(() => this.playAudio(), 400)
+  // }
 
-  handleMouseLeave = () => {
-    clearTimeout(this._playTimeout)
-  }
+  // handleMouseLeave = () => {
+  //   clearTimeout(this._playTimeout)
+  // }
 
   handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.currentTarget.blur()
@@ -66,8 +66,8 @@ export default class Speaker extends React.PureComponent<SpeakerProps, SpeakerSt
     return (
       <button
         className={`icon-Speaker ${this.state.isPlaying ? 'isActive' : ''}`}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseLeave={this.handleMouseLeave}
+        // onMouseEnter={this.handleMouseEnter}
+        // onMouseLeave={this.handleMouseLeave}
         onClick={this.handleClick}
         style={{ width, height }}
       >
