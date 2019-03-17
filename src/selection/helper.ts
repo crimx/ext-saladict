@@ -3,15 +3,6 @@ import { createConfigStream } from '@/_helpers/config-manager'
 import { message } from '@/_helpers/browser-api'
 import { getDefaultSelectionInfo, SelectionInfo } from '@/_helpers/selection'
 import { MsgType, PostMsgType, PostMsgSelection, MsgSelection } from '@/typings/message'
-import {
-  isContainChinese,
-  isContainEnglish,
-  isContainJapanese,
-  isContainKorean,
-  isContainFrench,
-  isContainSpanish,
-  isContainDeutsch,
-} from '@/_helpers/lang-check'
 
 import { Observable } from 'rxjs/Observable'
 import { fromEvent } from 'rxjs/observable/fromEvent'

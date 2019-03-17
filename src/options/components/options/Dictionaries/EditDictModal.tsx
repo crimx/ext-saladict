@@ -107,18 +107,6 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
           <Form>
             <Form.Item
               {...formItemModalLayout}
-              label={t('dict_default_unfold')}
-              help={t('dict_default_unfold_help')}
-            >{
-              getFieldDecorator(`${dictPath}#defaultUnfold`, {
-                initialValue: allDict[dictID].defaultUnfold,
-                valuePropName: 'checked',
-              })(
-                <Switch />
-              )
-            }</Form.Item>
-            <Form.Item
-              {...formItemModalLayout}
               label={t('dict_sel_lang')}
               help={t('dict_sel_lang_help')}
               extra={<span style={{ color: '#c0392b' }}>{t('opt_sel_lang_warning')}</span>}
@@ -126,6 +114,22 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
                 <Form.Item key={lang} className='form-item-inline'>{
                   getFieldDecorator(`${dictPath}#selectionLang#${lang}`, {
                     initialValue: allDict[dictID].selectionLang[lang],
+                    valuePropName: 'checked',
+                  })(
+                    <Checkbox>{t(`common:lang_${lang}`)}</Checkbox>
+                  )
+                }</Form.Item>
+              ))
+            }</Form.Item>
+            <Form.Item
+              {...formItemModalLayout}
+              label={t('dict_default_unfold')}
+              help={t('dict_default_unfold_help')}
+              extra={<span style={{ color: '#c0392b' }}>{t('opt_sel_lang_warning')}</span>}
+            >{supportedLangs.map(lang => (
+                <Form.Item key={lang} className='form-item-inline'>{
+                  getFieldDecorator(`${dictPath}#defaultUnfold#${lang}`, {
+                    initialValue: allDict[dictID].defaultUnfold[lang],
                     valuePropName: 'checked',
                   })(
                     <Checkbox>{t(`common:lang_${lang}`)}</Checkbox>

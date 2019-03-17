@@ -18,10 +18,30 @@ export function mergeProfile (oldProfile: Profile, baseProfile?: Profile): Profi
   mergeSelectedDicts('dicts')
 
   forEach(base.dicts.all, (dict, id) => {
-    mergeBoolean(`dicts.all.${id}.defaultUnfold`)
-    mergeNumber(`dicts.all.${id}.preferredHeight`)
-    mergeNumber(`dicts.all.${id}.selectionWC.min`)
-    mergeNumber(`dicts.all.${id}.selectionWC.max`)
+    // legacy
+    const unfold = get(oldProfile, `dicts.all.${id}.defaultUnfold`)
+    if (isBoolean(unfold)) {
+      set(base, `dicts.all.${id}.defaultUnfold`, {
+        chinese: unfold,
+        english: unfold,
+        japanese: unfold,
+        korean: unfold,
+        french: unfold,
+        spanish: unfold,
+        deutsch: unfold,
+        others: unfold,
+      })
+    } else {
+      mergeBoolean(`dicts.all.${id}.defaultUnfold.chinese`)
+      mergeBoolean(`dicts.all.${id}.defaultUnfold.english`)
+      mergeBoolean(`dicts.all.${id}.defaultUnfold.japanese`)
+      mergeBoolean(`dicts.all.${id}.defaultUnfold.korean`)
+      mergeBoolean(`dicts.all.${id}.defaultUnfold.french`)
+      mergeBoolean(`dicts.all.${id}.defaultUnfold.spanish`)
+      mergeBoolean(`dicts.all.${id}.defaultUnfold.deutsch`)
+      mergeBoolean(`dicts.all.${id}.defaultUnfold.others`)
+    }
+
     // legacy
     const chs = get(oldProfile, `dicts.all.${id}.selectionLang.chs`)
     if (isBoolean(chs)) {
@@ -41,6 +61,11 @@ export function mergeProfile (oldProfile: Profile, baseProfile?: Profile): Profi
     mergeBoolean(`dicts.all.${id}.selectionLang.spanish`)
     mergeBoolean(`dicts.all.${id}.selectionLang.deutsch`)
     mergeBoolean(`dicts.all.${id}.selectionLang.others`)
+
+    mergeNumber(`dicts.all.${id}.preferredHeight`)
+    mergeNumber(`dicts.all.${id}.selectionWC.min`)
+    mergeNumber(`dicts.all.${id}.selectionWC.max`)
+
     if (dict['options']) {
       forEach(dict['options'], (value, opt) => {
         if (isNumber(value)) {

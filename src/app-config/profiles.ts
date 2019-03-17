@@ -95,7 +95,16 @@ export function daily (): ProfileStorage {
   const allDict = profile.dicts.all
   allDict.google.selectionWC.min = 5
   allDict.sogou.selectionWC.min = 5
-  allDict.etymonline.defaultUnfold = false
+  allDict.etymonline.defaultUnfold = {
+    english: false,
+    chinese: false,
+    japanese: false,
+    korean: false,
+    french: false,
+    spanish: false,
+    deutsch: false,
+    others: false,
+  }
 
   return { idItem, profile }
 }
@@ -108,9 +117,36 @@ export function scholar (): ProfileStorage {
   profile.dicts.selected = ['googledict', 'cambridge', 'cobuild', 'etymonline', 'macmillan', 'oald', 'websterlearner', 'google', 'sogou', 'zdic', 'guoyu', 'liangan']
 
   const allDict = profile.dicts.all
-  allDict.macmillan.defaultUnfold = false
-  allDict.oald.defaultUnfold = false
-  allDict.websterlearner.defaultUnfold = false
+  allDict.macmillan.defaultUnfold = {
+    english: false,
+    chinese: false,
+    japanese: false,
+    korean: false,
+    french: false,
+    spanish: false,
+    deutsch: false,
+    others: false,
+  }
+  allDict.oald.defaultUnfold = {
+    english: false,
+    chinese: false,
+    japanese: false,
+    korean: false,
+    french: false,
+    spanish: false,
+    deutsch: false,
+    others: false,
+  }
+  allDict.websterlearner.defaultUnfold = {
+    english: false,
+    chinese: false,
+    japanese: false,
+    korean: false,
+    french: false,
+    spanish: false,
+    deutsch: false,
+    others: false,
+  }
   allDict.google.selectionWC.min = 5
   allDict.sogou.selectionWC.min = 5
 

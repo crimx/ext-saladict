@@ -1,14 +1,35 @@
 import { SupportedLangs } from '@/_helpers/lang-check'
 
 export interface DictItem {
+  /**
+   * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
+   * `1` for supported
+   */
   lang: string
-  defaultUnfold: boolean
+  /** Show this dictionary when selection contains words in the chosen languages. */
+  selectionLang: SupportedLangs
+  /**
+   * If set to true, the dict start searching automatically.
+   * Otherwise it'll only start seaching when user clicks the unfold button.
+   * Default MUST be true and let user decide.
+   */
+  defaultUnfold: SupportedLangs
+  /**
+   * This is the default height when the dict first renders the result.
+   * If the content height is greater than the preferred height,
+   * the preferred height is used and a mask with a view-more button is shown.
+   * Otherwise the content height is used.
+   */
   selectionWC: {
     min: number,
     max: number,
   },
+  /** Word count to start searching */
   preferredHeight: number
-  selectionLang: SupportedLangs
+  /**
+   * Optional dict custom options. Can only be boolean, number or string.
+   * For string, add additional `options_sel` field to list out choices.
+   */
   options?: {
     [option: string]: number | boolean | string
   }
@@ -20,30 +41,7 @@ export interface DictItem {
 export function getALlDicts () {
   const allDicts = {
     baidu: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '11111111',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 320,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 999999999999999,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: true,
         chinese: true,
@@ -54,10 +52,21 @@ export function getALlDicts () {
         deutsch: true,
         others: true,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 320,
+      selectionWC: {
+        min: 1,
+        max: 999999999999999,
+      },
       options: {
         /** Keep linebreaks on PDF */
         pdfNewline: false,
@@ -68,30 +77,7 @@ export function getALlDicts () {
       },
     },
     bing: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '11000000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 240,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 5,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: true,
         chinese: true,
@@ -102,10 +88,21 @@ export function getALlDicts () {
         deutsch: false,
         others: false,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 240,
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       options: {
         tense: true,
         phsym: true,
@@ -115,30 +112,7 @@ export function getALlDicts () {
       }
     },
     cambridge: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '11100000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 265,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 5,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: true,
         chinese: false,
@@ -148,33 +122,25 @@ export function getALlDicts () {
         spanish: false,
         deutsch: false,
         others: false,
+      },
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 265,
+      selectionWC: {
+        min: 1,
+        max: 5,
       },
     },
     cobuild: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '10000000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 300,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 5,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: true,
         chinese: false,
@@ -185,39 +151,27 @@ export function getALlDicts () {
         deutsch: false,
         others: false,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 300,
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       options: {
         cibaFirst: true,
       }
     },
     etymonline: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '10000000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 265,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 5,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: true,
         chinese: false,
@@ -228,40 +182,28 @@ export function getALlDicts () {
         deutsch: false,
         others: false,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 265,
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       options: {
         resultnum: 4,
         chart: true,
       }
     },
     eudic: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '11000000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 240,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 5,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: true,
         chinese: true,
@@ -272,39 +214,27 @@ export function getALlDicts () {
         deutsch: false,
         others: false,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 240,
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       options: {
         resultnum: 10
       }
     },
     google: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '11111111',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 320,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 999999999999999,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: true,
         chinese: true,
@@ -315,10 +245,21 @@ export function getALlDicts () {
         deutsch: true,
         others: true,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 320,
+      selectionWC: {
+        min: 1,
+        max: 999999999999999,
+      },
       options: {
         /** Keep linebreaks on PDF */
         pdfNewline: false,
@@ -330,30 +271,7 @@ export function getALlDicts () {
       },
     },
     googledict: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '11110000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 240,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 5,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: true,
         chinese: true,
@@ -364,39 +282,27 @@ export function getALlDicts () {
         deutsch: true,
         others: true,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 240,
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       options: {
         enresult: true
       }
     },
     guoyu: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '00100000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 265,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 5,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: false,
         chinese: true,
@@ -406,33 +312,25 @@ export function getALlDicts () {
         spanish: false,
         deutsch: false,
         others: false,
-      }
-    },
-    hjdict: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
-      lang: '10011111',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
+      },
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
       preferredHeight: 265,
-      /** Word count to start searching */
       selectionWC: {
         min: 1,
-        max: 10,
+        max: 5,
       },
-      /** Only start searching if the selection contains the language. */
+    },
+    hjdict: {
+      lang: '10011111',
       selectionLang: {
         english: true,
         chinese: true,
@@ -443,10 +341,21 @@ export function getALlDicts () {
         deutsch: true,
         others: false,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 265,
+      selectionWC: {
+        min: 1,
+        max: 10,
+      },
       options: {
         related: true,
         chsas: 'jp/jc' as 'jp/cj' | 'jp/jc' | 'kor' | 'w' | 'fr' | 'de' | 'es',
@@ -464,30 +373,7 @@ export function getALlDicts () {
       },
     },
     liangan: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '00100000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 265,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 5,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: false,
         chinese: true,
@@ -497,33 +383,25 @@ export function getALlDicts () {
         spanish: false,
         deutsch: false,
         others: false,
-      }
-    },
-    longman: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
-      lang: '10000000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
+      },
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
       preferredHeight: 265,
-      /** Word count to start searching */
       selectionWC: {
         min: 1,
         max: 5,
       },
-      /** Only start searching if the selection contains the language. */
+    },
+    longman: {
+      lang: '10000000',
       selectionLang: {
         english: true,
         chinese: false,
@@ -534,10 +412,21 @@ export function getALlDicts () {
         deutsch: false,
         others: false,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 265,
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       options: {
         wordfams: false,
         collocations: true,
@@ -549,30 +438,7 @@ export function getALlDicts () {
       }
     },
     macmillan: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '10000000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 265,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 5,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: true,
         chinese: false,
@@ -583,39 +449,27 @@ export function getALlDicts () {
         deutsch: false,
         others: false,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 265,
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       options: {
         related: true,
       }
     },
     naver: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '01011000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 465,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 10,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: false,
         chinese: true,
@@ -626,40 +480,28 @@ export function getALlDicts () {
         deutsch: false,
         others: false,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 465,
+      selectionWC: {
+        min: 1,
+        max: 10,
+      },
       options: {
         hanAsJa: false,
         korAsJa: false,
       },
     },
     oald: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '10000000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 265,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 5,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: true,
         chinese: false,
@@ -670,39 +512,59 @@ export function getALlDicts () {
         deutsch: false,
         others: false,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 265,
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       options: {
         related: true,
       },
     },
-    sogou: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
-      lang: '11111111',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 320,
-      /** Word count to start searching */
+    shanbay: {
+      lang: '10000000',
+      selectionLang: {
+        english: true,
+        chinese: false,
+        japanese: false,
+        korean: false,
+        french: false,
+        spanish: false,
+        deutsch: false,
+        others: false,
+      },
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 150,
       selectionWC: {
         min: 1,
-        max: 999999999999999,
+        max: 30,
       },
-      /** Only start searching if the selection contains the language. */
+      options: {
+        basic: true,
+        sentence: true,
+      }
+    },
+    sogou: {
+      lang: '11111111',
       selectionLang: {
         english: true,
         chinese: true,
@@ -713,10 +575,21 @@ export function getALlDicts () {
         deutsch: true,
         others: true,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 320,
+      selectionWC: {
+        min: 1,
+        max: 999999999999999,
+      },
       options: {
         /** Keep linebreaks on PDF */
         pdfNewline: false,
@@ -727,30 +600,7 @@ export function getALlDicts () {
       },
     },
     urban: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '10000000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 180,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 5,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: true,
         chinese: false,
@@ -761,39 +611,27 @@ export function getALlDicts () {
         deutsch: false,
         others: false,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 180,
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       options: {
         resultnum: 4
       }
     },
     vocabulary: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '10000000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 180,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 5,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: true,
         chinese: false,
@@ -803,33 +641,25 @@ export function getALlDicts () {
         spanish: false,
         deutsch: false,
         others: false,
-      }
-    },
-    weblio: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
-      lang: '00010000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 265,
-      /** Word count to start searching */
+      },
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 180,
       selectionWC: {
         min: 1,
-        max: 20,
+        max: 5,
       },
-      /** Only start searching if the selection contains the language. */
+    },
+    weblio: {
+      lang: '00010000',
       selectionLang: {
         english: true,
         chinese: true,
@@ -840,32 +670,24 @@ export function getALlDicts () {
         deutsch: false,
         others: false,
       },
-    },
-    websterlearner: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
-      lang: '10000000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
       preferredHeight: 265,
-      /** Word count to start searching */
       selectionWC: {
         min: 1,
-        max: 5,
+        max: 20,
       },
-      /** Only start searching if the selection contains the language. */
+    },
+    websterlearner: {
+      lang: '10000000',
       selectionLang: {
         english: true,
         chinese: false,
@@ -876,10 +698,21 @@ export function getALlDicts () {
         deutsch: false,
         others: false,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 265,
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
       options: {
         defs: true,
         phrase: true,
@@ -889,30 +722,7 @@ export function getALlDicts () {
       },
     },
     wikipedia: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '11110000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 420,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 999999999999999,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: true,
         chinese: true,
@@ -923,10 +733,21 @@ export function getALlDicts () {
         deutsch: true,
         others: true,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 420,
+      selectionWC: {
+        min: 1,
+        max: 999999999999999,
+      },
       options: {
         lang: 'auto' as 'auto' | 'zh' | 'zh-cn' | 'zh-tw' | 'zh-hk' | 'en' | 'ja' | 'fr' | 'de',
       },
@@ -935,30 +756,7 @@ export function getALlDicts () {
       },
     },
     youdao: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '11000000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 265,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 999999999999999,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: true,
         chinese: true,
@@ -969,10 +767,21 @@ export function getALlDicts () {
         deutsch: false,
         others: false,
       },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 265,
+      selectionWC: {
+        min: 1,
+        max: 999999999999999,
+      },
       options: {
         basic: true,
         collins: true,
@@ -982,75 +791,8 @@ export function getALlDicts () {
         related: true,
       }
     },
-    shanbay: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
-      lang: '10000000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 150,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 30,
-      },
-      /** Only start searching if the selection contains the language. */
-      selectionLang: {
-        english: true,
-        chinese: false,
-        japanese: false,
-        korean: false,
-        french: false,
-        spanish: false,
-        deutsch: false,
-        others: false,
-      },
-      /**
-       * Optional dict custom options. Can only be boolean, number or string.
-       * For string, add additional `options_sel` field to list out choices.
-       */
-      options: {
-        basic: true,
-        sentence: true,
-      }
-    },
     zdic: {
-      /**
-       * Supported language: en, zh-CN, zh-TW, ja, kor, fr, de, es
-       * `1` for supported
-       */
       lang: '01000000',
-      /**
-       * If set to true, the dict start searching automatically.
-       * Otherwise it'll only start seaching when user clicks the unfold button.
-       * Default MUST be true and let user decide.
-       */
-      defaultUnfold: true,
-      /**
-       * This is the default height when the dict first renders the result.
-       * If the content height is greater than the preferred height,
-       * the preferred height is used and a mask with a view-more button is shown.
-       * Otherwise the content height is used.
-       */
-      preferredHeight: 400,
-      /** Word count to start searching */
-      selectionWC: {
-        min: 1,
-        max: 5,
-      },
-      /** Only start searching if the selection contains the language. */
       selectionLang: {
         english: false,
         chinese: true,
@@ -1060,7 +802,22 @@ export function getALlDicts () {
         spanish: false,
         deutsch: false,
         others: false,
-      }
+      },
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 400,
+      selectionWC: {
+        min: 1,
+        max: 5,
+      },
     },
   }
 

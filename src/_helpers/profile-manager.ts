@@ -48,7 +48,9 @@ export async function initProfiles (): Promise<Profile> {
   }>(['profileIDList', 'activeProfileID'])
 
   if (response.profileIDList) {
-    profileIDList = response.profileIDList.filter(Boolean)
+    profileIDList = response.profileIDList.filter(item => Boolean(
+      item && typeof item.id === 'string' && typeof item.name === 'string'
+    ))
   }
 
   if (response.activeProfileID) {
