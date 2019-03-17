@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.27.1"></a>
+## [6.27.1](https://github.com/crimx/ext-saladict/compare/v6.27.0...v6.27.1) (2019-03-17)
+
+
+### Bug Fixes
+
+* **manifest:** firefox incognito mode ([58b946f](https://github.com/crimx/ext-saladict/commit/58b946f))
+
+
+
 <a name="6.27.0"></a>
 # [6.27.0](https://github.com/crimx/ext-saladict/compare/v6.26.0...v6.27.0) (2019-03-17)
 
