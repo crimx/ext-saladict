@@ -19,41 +19,29 @@ export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   return `https://${subdomain}.wikipedia.org/${path}/${encodeURIComponent(text)}`
 }
 
-type LangListItem = {
+export type LangListItem = {
   title: string
   url: string
 }
-type LangList = LangListItem[]
+
+export type LangList = LangListItem[]
 
 export interface WikipediaResult {
   title: string
   content: HTMLString
   langSelector: string
-  langList?: LangList
 }
 
 type WikipediaSearchResult = DictSearchResult<WikipediaResult>
 
 export type WikipediaPayload = {
-  /** Fetch lang list */
-  fetchLangs?: false
   /** Search a specific url */
   url?: string
-} | {
-  fetchLangs: true
-  result: WikipediaResult
 }
 
 export const search: SearchFunction<WikipediaSearchResult, WikipediaPayload> = (
   text, config, profile, payload
 ) => {
-  if (payload.fetchLangs) {
-    return fetchDirtyDOM(payload.result.langSelector)
-      .then(getLangList)
-      .catch((e) => (console.log(e), []))
-      .then(langList => ({ result: { ...payload.result, langList } }))
-  }
-
   const { lang } = profile.dicts.all.wikipedia.options
   const subdomain = getSubdomain(text, lang)
 
@@ -68,6 +56,12 @@ export const search: SearchFunction<WikipediaSearchResult, WikipediaPayload> = (
   return fetchDirtyDOM(url)
     .catch(handleNetWorkError)
     .then(doc => handleDOM(doc, subdomain))
+}
+
+export function fetchLangList (langSelector: string) {
+  return fetchDirtyDOM(langSelector)
+    .then(getLangList)
+    .catch((e) => (console.log(e), []))
 }
 
 function handleDOM (
@@ -105,10 +99,13 @@ function handleDOM (
   }
 
   let langSelector = ''
-  const $langSelector = doc.querySelector('.language-selector a')
+  let $langSelector = doc.querySelector('a.language-selector')
+  if (!$langSelector) {
+    $langSelector = doc.querySelector('.language-selector a')
+  }
   if ($langSelector) {
-    langSelector = $langSelector.getAttribute('href') || ''
-    langSelector = langSelector.replace(/^\//, `https://${subdomain}.m.wikipedia.org/`)
+    langSelector = ($langSelector.getAttribute('href') || '')
+      .replace(/^\//, `https://${subdomain}.m.wikipedia.org/`)
   }
 
   return { result: { title, content, langSelector } }

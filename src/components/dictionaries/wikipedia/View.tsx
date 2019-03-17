@@ -1,8 +1,32 @@
 import React from 'react'
-import { WikipediaResult, WikipediaPayload } from './engine'
+import { WikipediaResult, WikipediaPayload, LangList } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { message } from '@/_helpers/browser-api'
+import { MsgType, MsgDictEngineMethod } from '@/typings/message'
 
-export default class DictBing extends React.PureComponent<ViewPorps<WikipediaResult>> {
+interface WikipediaState {
+  cloneProps: ViewPorps<WikipediaResult> | null
+  langList: null | LangList
+}
+
+export default class DictWikipedia extends React.PureComponent<ViewPorps<WikipediaResult>, WikipediaState> {
+  state: WikipediaState = {
+    cloneProps: null,
+    langList: null,
+  }
+
+  static getDerivedStateFromProps (props: ViewPorps<WikipediaResult>, state: WikipediaState) {
+    if (props !== state.cloneProps) {
+      return {
+        cloneProps: props,
+        langList: null,
+      }
+    }
+    return {
+      cloneProps: props,
+    }
+  }
+
   handleEntryClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!e.target['classList']) {
       return
@@ -48,31 +72,33 @@ export default class DictBing extends React.PureComponent<ViewPorps<WikipediaRes
     }
   }
 
-  handleLangSelectorClick = () => {
-    const payload: WikipediaPayload = {
-      fetchLangs: true,
-      result: this.props.result
-    }
-    this.props.searchText({ id: 'wikipedia', payload })
+  handleLangSelectorClick = async () => {
+    this.setState({
+      langList: await message.send<MsgDictEngineMethod>({
+        type: MsgType.DictEngineMethod,
+        id: 'wikipedia',
+        method: 'fetchLangList',
+        args: [this.props.result.langSelector],
+      })
+    })
   }
 
   renderLangSelector () {
-    const { langList, langSelector } = this.props.result
-    if (langList) {
+    if (this.state.langList) {
       return (
         <select
           style={{ width: '100%' }}
           onChange={this.handleSelectChanged}
         >
           <option key='' value='' selected>{this.props.t('chooseLang')}</option>
-          {langList.map(item => (
+          {this.state.langList.map(item => (
             <option key={item.url} value={item.url}>{item.title}</option>
           ))}
         </select>
       )
     }
 
-    if (langSelector) {
+    if (this.props.result.langSelector) {
       return (
         <button className='dictWikipedia-LangSelector' onClick={this.handleLangSelectorClick}>{
           this.props.t('fetchLangList')
