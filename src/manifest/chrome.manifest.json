@@ -6,6 +6,7 @@
     ],
     "persistent": true
   },
+  "incognito": "split",
   "homepage_url": "https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en",
   "options_page": "options.html",
   "update_url": "https://clients2.google.com/service/update2/crx",
