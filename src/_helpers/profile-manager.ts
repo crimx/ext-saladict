@@ -37,17 +37,17 @@ interface ProfileCompressed {
   d: string
 }
 
-function deflate (profile: Profile): ProfileCompressed {
+export function deflate (profile: Profile): ProfileCompressed {
   return {
     v: 1,
     d: pako.deflate(JSON.stringify(profile), { to: 'string' })
   }
 }
 
-function inflate (profile: Profile | ProfileCompressed): Profile
-function inflate (profile: undefined): undefined
-function inflate (profile?: Profile | ProfileCompressed): Profile | undefined
-function inflate (profile?: Profile | ProfileCompressed): Profile | undefined {
+export function inflate (profile: Profile | ProfileCompressed): Profile
+export function inflate (profile: undefined): undefined
+export function inflate (profile?: Profile | ProfileCompressed): Profile | undefined
+export function inflate (profile?: Profile | ProfileCompressed): Profile | undefined {
   if (profile && profile['v'] === 1) {
     return JSON.parse(pako.inflate((profile as ProfileCompressed).d, { to: 'string' }))
   }
