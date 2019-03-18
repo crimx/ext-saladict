@@ -51,7 +51,7 @@
   $main.onerror = function () {
     alert(
       '无法在此网页加载谷歌网页翻译组件，可能是网络问题或者此网站禁止加载外部脚本。\\n' +
-      ‘Unable to load google page translation script. Could be network issue or script being blocked by the website.’
+      'Unable to load google page translation script. Could be network issue or script being blocked by the website.'
     )
   };
 
