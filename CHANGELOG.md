@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.27.2"></a>
+## [6.27.2](https://github.com/crimx/ext-saladict/compare/v6.27.1...v6.27.2) (2019-03-18)
+
+
+### Bug Fixes
+
+* fix google translate ([d8715d1](https://github.com/crimx/ext-saladict/commit/d8715d1))
+* **dicts:** disable passive wheel events on lastest Chrome ([9e8c3f0](https://github.com/crimx/ext-saladict/commit/9e8c3f0))
+
+
+
 <a name="6.27.1"></a>
 ## [6.27.1](https://github.com/crimx/ext-saladict/compare/v6.27.0...v6.27.1) (2019-03-17)
 

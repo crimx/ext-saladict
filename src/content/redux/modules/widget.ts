@@ -581,7 +581,7 @@ export function isInNotebook (info: SelectionInfo): DispatcherThunk {
 }
 
 export function requestFavWord (): DispatcherThunk {
-  return (dispatch, getState) => {
+  return async (dispatch, getState) => {
     const { config, dictionaries, widget } = getState()
     const word = { ...dictionaries.searchHistory[0], date: Date.now() }
     if (config.editOnFav) {
@@ -589,7 +589,7 @@ export function requestFavWord (): DispatcherThunk {
         // Not enough space to open word editor on popup page
         // Open Notebook instead
         try {
-          message.send<MsgOpenUrl>({
+          await message.send<MsgOpenUrl>({
             type: MsgType.OpenURL,
             url: 'notebook.html?info=' +
               encodeURIComponent(JSON.stringify(word)),
@@ -598,44 +598,39 @@ export function requestFavWord (): DispatcherThunk {
         } catch (err) {
           console.warn(err)
         }
-        return // exit. do not fetch translation
-      } else /* normal page */ {
+      } else {
         dispatch(updateEditorWord(word))
       }
-    } else /* no edit on fav */ {
-      if (widget.isFav) {
-        recordManager.getWordsByText('notebook', word.text)
-          .then(words => {
-            if (words.length === 1) {
-              dispatch(favWord(false))
-              recordManager.deleteWords('notebook', [words[0].date])
-                .catch(e => {
-                  if (process.env.DEV_BUILD) {
-                    console.error(e)
-                  }
-                })
-            } else {
-              // more than one word. let user choose.
-              message.send<MsgOpenUrl>({
-                type: MsgType.OpenURL,
-                url: 'notebook.html?text=' + encodeURIComponent(word.text),
-                self: true,
-              })
-            }
-          })
-        return // exit. do not fetch translation
-      } else /* !widget.isFav */ {
-        dispatch(addToNotebook(word))
-      }
+      return
     }
 
-    if (word.context && !config.editOnFav) {
-      translateCtx(word.context, config.ctxTrans)
-        .then(trans => {
-          if (trans) {
-            dispatch(addToNotebook({ ...word, trans }))
-          }
+    // add silently
+    if (widget.isFav) { // delete
+      const words = await recordManager.getWordsByText('notebook', word.text)
+      if (words.length === 1) {
+        dispatch(favWord(false))
+        recordManager.deleteWords('notebook', [words[0].date])
+          .catch(e => {
+            if (process.env.DEV_BUILD) {
+              console.error(e)
+            }
+          })
+      } else if (words.length > 1) { // more than one word.
+        // let user choose.
+        message.send<MsgOpenUrl>({
+          type: MsgType.OpenURL,
+          url: 'notebook.html?text=' + encodeURIComponent(word.text),
+          self: true,
         })
+      }
+    } else { // add
+      if (word.context) { // tranlate context
+        const trans = await translateCtx(word.context, config.ctxTrans)
+        if (trans) {
+          word.trans = trans
+        }
+      }
+      dispatch(addToNotebook(word))
     }
   }
 }
