@@ -14,7 +14,30 @@ export class DictCOBUILDCol extends React.Component<ViewPorps<COBUILDColResult>,
     curTab: ''
   }
 
+  navRef = React.createRef<HTMLDivElement>()
+
   tabWheelDebounce: any
+
+  handleTabWheel = (e: WheelEvent) => {
+    e.stopPropagation()
+    e.preventDefault()
+    const { currentTarget, deltaY } = e
+
+    clearTimeout(this.tabWheelDebounce)
+    this.tabWheelDebounce = setTimeout(() => {
+      (currentTarget as HTMLDivElement).scrollBy({
+        left: deltaY > 0 ? 250 : -250,
+        behavior: 'smooth'
+      })
+    }, 80)
+  }
+
+  updateWheelListener = () => {
+    if (this.navRef.current) {
+      this.navRef.current.removeEventListener('wheel', this.handleTabWheel)
+      this.navRef.current.addEventListener('wheel', this.handleTabWheel, { passive: false })
+    }
+  }
 
   handleTabClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.stopPropagation()
@@ -22,18 +45,12 @@ export class DictCOBUILDCol extends React.Component<ViewPorps<COBUILDColResult>,
     this.setState({ curTab: e.currentTarget.dataset.id || '' })
   }
 
-  handleTabWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    e.stopPropagation()
-    e.preventDefault()
-    const { currentTarget, deltaY } = e
+  componentDidMount () {
+    this.updateWheelListener()
+  }
 
-    clearTimeout(this.tabWheelDebounce)
-    this.tabWheelDebounce = setTimeout(() => {
-      currentTarget.scrollBy({
-        left: deltaY > 0 ? 250 : -250,
-        behavior: 'smooth'
-      })
-    }, 50)
+  componentDidUpdate () {
+    this.updateWheelListener()
   }
 
   render () {
@@ -48,7 +65,7 @@ export class DictCOBUILDCol extends React.Component<ViewPorps<COBUILDColResult>,
         <div className='dictionary'>
           <div className='dc'>
             <div className='navigation'>
-              <div className='tabsNavigation' onWheel={this.handleTabWheel}>
+              <div className='tabsNavigation' ref={this.navRef}>
                 {result.sections.map((section, i) => (
                   <a
                     key={section.id}
