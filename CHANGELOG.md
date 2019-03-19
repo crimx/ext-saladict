@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.27.3"></a>
+## [6.27.3](https://github.com/crimx/ext-saladict/compare/v6.27.2...v6.27.3) (2019-03-19)
+
+
+### Bug Fixes
+
+* **dicts:** update sogou token ([570dc90](https://github.com/crimx/ext-saladict/commit/570dc90))
+
+
+
 <a name="6.27.2"></a>
 ## [6.27.2](https://github.com/crimx/ext-saladict/compare/v6.27.1...v6.27.2) (2019-03-18)
 
