@@ -4,7 +4,7 @@
 
 ## How to Contribute
 
-:warning: Unless it is a small hox fix, before you write any code and get your hands dirty, please open an issue or make a WIP pull request to elaborate what you are trying to do and how you are going to implement it. Just to make sure we are on the same page and nobody's time and effort are wasted.
+:warning: Unless it is a small hot fix, before you write any code and get your hands dirty, please open an issue or make a WIP pull request to elaborate what you are trying to do and how you are going to implement it. Just to make sure we are on the same page and nobody's time and effort are wasted.
 
 - Read [How to get started](#how-to-get-started).
 - Follow [code style](#code-style) and [commit style](#commit-style).
@@ -16,25 +16,21 @@ Clone the repo and run `yarn install`.
 
 ## UI Tweaking
 
-`yarn start --main=[entry id]` to view a certain entry with WDS in a fake WebExtension environment.
+Run `yarn start --main=[entry id]` to view a certain entry with WDS in a fake WebExtension environment.
 
 Entry ids are generally directory names in `src`.
 
-`index.[html/js(x)/ts[x]]` in `[entry id]/__fake__` has higher priority.
+`index.[html/js(x)/ts(x)` in `[entry id]/__fake__` has higher priority.
 
 ## Testing
 
-`yarn test` to run Jest.
-
-Toggle:
-
-- `--coverage`: Show coverage instead of watching.
+Run `yarn test` to run Jest. Supports all the Jest [options](https://jestjs.io/docs/en/cli).
 
 ## Building
 
-`yarn devbuild` to start a quick build without compression.
+Run `yarn devbuild` to start a quick build without compression.
 
-`yarn build` to start a full build.
+Run `yarn build` to start a full build.
 
 Toggle:
 
@@ -43,11 +39,11 @@ Toggle:
 
 ## Releasing
 
-`yarn release` to bump version and generate [CHANGELOG](./CHANGELOG.md).
+Run `yarn release` to bump version and generate [CHANGELOG](./CHANGELOG.md).
 
 ## Zipball
 
-`yarn zip` to pack zibballs to `./dist/`.
+Run `yarn zip` to pack zibballs to `./dist/`.
 
 ## How to add a dictionary
 
