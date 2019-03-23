@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.27.4"></a>
+## [6.27.4](https://github.com/crimx/ext-saladict/compare/v6.27.3...v6.27.4) (2019-03-23)
+
+
+### Bug Fixes
+
+* **panel:** frame head typos ([94a055f](https://github.com/crimx/ext-saladict/commit/94a055f))
+* **sync:** proper trun off shanbay ([af93ba0](https://github.com/crimx/ext-saladict/commit/af93ba0))
+
+
+
 <a name="6.27.3"></a>
 ## [6.27.3](https://github.com/crimx/ext-saladict/compare/v6.27.2...v6.27.3) (2019-03-19)
 
