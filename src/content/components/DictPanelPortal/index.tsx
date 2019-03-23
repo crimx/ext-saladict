@@ -81,7 +81,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
         meta +
         `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('panel.css')}" />\n` +
         this.props.dictsConfig.selected.map(id =>
-          `<link rel='stylesheet' href=${browser.runtime.getURL(`/dicts/${isSaladictInternalPage ? 'internal/' : ''}${id}.css`)} />\n`
+          `<link rel="stylesheet" href="${browser.runtime.getURL(`/dicts/${isSaladictInternalPage ? 'internal/' : ''}${id}.css`)}" />\n`
         ).join('')
       )
     } else {

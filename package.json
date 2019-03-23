@@ -1,6 +1,6 @@
 {
   "name": "saladict",
-  "version": "6.27.3",
+  "version": "6.27.4",
   "description": "Chrome extension and Firefox WebExtension, inline translator powered by mutiple online dictionaries",
   "private": true,
   "scripts": {
