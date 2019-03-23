@@ -1,5 +1,6 @@
 import React from 'react'
 import { Service, SyncConfig } from '@/background/sync-manager/services/shanbay'
+import { setSyncConfig } from '@/background/sync-manager/helpers'
 import { formItemModalLayout } from '../helpers'
 import { MsgSyncServiceInit, MsgType, MsgSyncServiceUpload, SyncServiceUploadOp } from '@/typings/message'
 import { message } from '@/_helpers/browser-api'
@@ -41,6 +42,11 @@ export default class ShanbayModal extends React.Component<WebdavModalProps, Shan
         Service.openLogin()
         return
       }
+    } else {
+      setSyncConfig('shanbay', {
+        ...this.state.syncConfig,
+        enable: false,
+      })
     }
 
     this.setState(prevState => ({
