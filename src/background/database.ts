@@ -79,11 +79,13 @@ export function saveWord ({ area, info }: MsgSaveWord) {
     ...info,
     date: info.date || Date.now()
   }
-  syncServiceUpload({
-    type: MsgType.SyncServiceUpload,
-    op: SyncServiceUploadOp.Add,
-    words: [word],
-  }).catch(() => {/* nothing */})
+  if (area === 'notebook') {
+    syncServiceUpload({
+      type: MsgType.SyncServiceUpload,
+      op: SyncServiceUploadOp.Add,
+      words: [word],
+    }).catch(() => {/* nothing */})
+  }
   return db[area].put(word)
 }
 
@@ -93,20 +95,24 @@ export function saveWords ({ area, words }: { area: Area, words: Word[] }) {
       console.error('save Words: duplicate records')
     }
   }
-  syncServiceUpload({
-    type: MsgType.SyncServiceUpload,
-    op: SyncServiceUploadOp.Add,
-    words,
-  }).catch(() => {/* nothing */})
+  if (area === 'notebook') {
+    syncServiceUpload({
+      type: MsgType.SyncServiceUpload,
+      op: SyncServiceUploadOp.Add,
+      words,
+    }).catch(() => {/* nothing */})
+  }
   return db[area].bulkPut(words)
 }
 
 export function deleteWords ({ area, dates }: MsgDeleteWords) {
-  syncServiceUpload({
-    type: MsgType.SyncServiceUpload,
-    op: SyncServiceUploadOp.Delete,
-    dates,
-  }).catch(() => {/* nothing */})
+  if (area === 'notebook') {
+    syncServiceUpload({
+      type: MsgType.SyncServiceUpload,
+      op: SyncServiceUploadOp.Delete,
+      dates,
+    }).catch(() => {/* nothing */})
+  }
   return Array.isArray(dates)
     ? db[area].bulkDelete(dates)
     : db[area].clear()
