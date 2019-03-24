@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.27.5"></a>
+## [6.27.5](https://github.com/crimx/ext-saladict/compare/v6.27.4...v6.27.5) (2019-03-24)
+
+
+### Bug Fixes
+
+* **sync:** only sync on notebook changes ([90d4183](https://github.com/crimx/ext-saladict/commit/90d4183))
+
+
+
 <a name="6.27.4"></a>
 ## [6.27.4](https://github.com/crimx/ext-saladict/compare/v6.27.3...v6.27.4) (2019-03-23)
 
