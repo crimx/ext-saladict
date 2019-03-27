@@ -15,6 +15,7 @@ import {
   SearchFunction,
   GetSrcPageFunction,
 } from '../helpers'
+import { getStaticSpeakerHTML } from '@/components/withStaticSpeaker'
 import { DictSearchResult } from '@/typings/server'
 import { DictConfigs } from '@/app-config'
 import { Profile } from '@/app-config/profiles'
@@ -115,7 +116,7 @@ function handleDOM (
   }
 
   doc.querySelectorAll<HTMLSpanElement>('.word-audio').forEach($audio => {
-    $audio.outerHTML = `<button data-src-mp3="${$audio.dataset.src}" class="dictHjdict-Speaker">🔊</button>`
+    $audio.outerHTML = getStaticSpeakerHTML($audio.dataset.src)
   })
 
   const entries: HTMLString[] = [...doc.querySelectorAll('.word-details-pane')]

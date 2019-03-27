@@ -1,6 +1,6 @@
 import React from 'react'
 import { HjdictResult, HjdictResultLex, HjdictResultRelated } from './engine'
-import withStaticSpeaker from '@/components/withStaticSpeaker'
+import { withStaticSpeaker } from '@/components/withStaticSpeaker'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 
 export default withStaticSpeaker((props: ViewPorps<HjdictResult>) => {
@@ -11,7 +11,7 @@ export default withStaticSpeaker((props: ViewPorps<HjdictResult>) => {
       return renderRelated(props)
   }
   return null
-}, 'dictHjdict-Speaker')
+})
 
 function renderLex (props: ViewPorps<HjdictResult>) {
   const { header, entries } = props.result as HjdictResultLex

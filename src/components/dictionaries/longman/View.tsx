@@ -3,8 +3,7 @@ import Speaker from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
 import { LongmanResult, LongmanResultLex, LongmanResultRelated, LongmanResultEntry } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
-
-import withStaticSpeaker from '@/components/withStaticSpeaker'
+import { withStaticSpeaker } from '@/components/withStaticSpeaker'
 
 export default withStaticSpeaker((props: ViewPorps<LongmanResult>) => {
   switch (props.result.type) {
@@ -15,7 +14,7 @@ export default withStaticSpeaker((props: ViewPorps<LongmanResult>) => {
     default:
       return null
   }
-}, 'dictLongman-Speaker')
+})
 
 function renderEntry (entry: LongmanResultEntry) {
   return (

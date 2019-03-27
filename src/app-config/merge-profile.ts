@@ -79,6 +79,14 @@ export function mergeProfile (oldProfile: Profile, baseProfile?: Profile): Profi
     }
   })
 
+  /*-----------------------------------------------*\
+      Patch
+  \*-----------------------------------------------*/
+  // hjdict changed korean location
+  if (base.dicts.all.hjdict.options.chsas as string === 'kor') {
+    base.dicts.all.hjdict.options.chsas = 'kr'
+  }
+
   return base
 
   function mergeSelectedDicts (path: string): void {

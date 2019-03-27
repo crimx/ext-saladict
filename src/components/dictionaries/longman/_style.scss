@@ -1,28 +1,3 @@
-.dictLongman-Speaker {
-  // cover the original bulet point
-  position: absolute;
-  top: 0;
-  left: 0.6em;
-  background: white;
-
-  margin: 0;
-  padding: 0 1px;
-  border: none;
-  color: inherit;
-  pointer-events: auto;
-  cursor: pointer;
-
-  &:hover {
-    outline: none;
-  }
-
-  svg {
-    fill: #555;
-    width: 1em;
-    height: 1em;
-  }
-}
-
 .dictLongman-Wordfams {
   .asset_intro {
     display: block;
@@ -257,6 +232,18 @@
     font-weight: normal;
     font-variant: normal;
     background: none;
+  }
+
+  .saladict-StaticSpeaker {
+    // cover the original bulet point
+    position: absolute;
+    top: 0;
+    left: 0.6em;
+    background: white;
+
+    margin: 0;
+    padding: 0 1px;
+    color: inherit;
   }
 }
 

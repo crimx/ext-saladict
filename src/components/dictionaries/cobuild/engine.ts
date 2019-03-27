@@ -8,6 +8,7 @@ import {
   SearchFunction,
   GetSrcPageFunction,
 } from '../helpers'
+import { getStaticSpeakerHTML } from '@/components/withStaticSpeaker'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -171,7 +172,7 @@ function handleColDOM (
       }
 
       $section.querySelectorAll<HTMLAnchorElement>('.audio_play_button').forEach($speaker => {
-        $speaker.outerHTML = `<button data-src-mp3="${$speaker.dataset.srcMp3}" class="dictCOBUILD-Speaker">🔊</button>`
+        $speaker.outerHTML = getStaticSpeakerHTML($speaker.dataset.srcMp3)
       })
 
       // so that clicking won't trigger in-panel search
