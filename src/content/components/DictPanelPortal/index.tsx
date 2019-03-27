@@ -1,6 +1,8 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import CSSTransition from 'react-transition-group/CSSTransition'
+import { DictID } from '@/app-config'
+import memoizeOne from 'memoize-one'
 import DictPanel, { DictPanelDispatchers, DictPanelProps } from '../DictPanel'
 import { Omit } from '@/typings/helpers'
 import PortalFrame from '@/components/PortalFrame'
@@ -12,6 +14,12 @@ const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictQuickSearchPage = !!window.__SALADICT_QUICK_SEARCH_PAGE__
 
 const isStandalonePage = isSaladictPopupPage || isSaladictQuickSearchPage
+
+const getDictStyles = memoizeOne((selected: DictID[]): string => {
+  return selected.map(
+    id => `<link rel="stylesheet" href="${browser.runtime.getURL(`/dicts/${isSaladictInternalPage ? 'internal/' : ''}${id}.css`)}" />`
+  ).join('\n')
+})
 
 export type DictPanelPortalDispatchers = Omit<
   DictPanelDispatchers,
@@ -58,8 +66,6 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
   lastMouseY = 0
   /** iframe head */
   frameHead: string
-  /** dicts whose style are loaded */
-  styledDicts: Set<string>
 
   state: DictPanelState = {
     isDragging: false,
@@ -70,8 +76,6 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     this.el.className = 'saladict-DIV'
     this.dragBg.className = 'saladict-DragBg'
 
-    this.styledDicts = new Set(this.props.dictsConfig.selected)
-
     const meta = '<meta name="viewport" content="width=device-width, initial-scale=1">\n'
 
     if (process.env.NODE_ENV === 'production') {
@@ -79,10 +83,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       // this will reduce the initial loading time
       this.frameHead = (
         meta +
-        `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('panel.css')}" />\n` +
-        this.props.dictsConfig.selected.map(id =>
-          `<link rel="stylesheet" href="${browser.runtime.getURL(`/dicts/${isSaladictInternalPage ? 'internal/' : ''}${id}.css`)}" />\n`
-        ).join('')
+        `<link type="text/css" rel="stylesheet" href="${browser.runtime.getURL('panel.css')}" />\n`
       )
     } else {
       const styles = Array.from(document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]'))
@@ -266,10 +267,10 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
     }
   }
 
-  componentDidUpdate (prevProps: DictPanelPortalProps) {
+  componentDidUpdate () {
     if (!this.frame) { return }
 
-    const { style, contentDocument } = this.frame
+    const { style } = this.frame
 
     if (!isStandalonePage) {
       const { x, y, width, height } = this.props.panelRect
@@ -278,26 +279,13 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       style.setProperty('width', width + 'px', 'important')
       style.setProperty('height', height + 'px', 'important')
     }
-
-    if (this.props.dictsConfig.selected !== prevProps.dictsConfig.selected &&
-        contentDocument && contentDocument.head
-    ) {
-      this.props.dictsConfig.selected.forEach(id => {
-        if (!this.styledDicts.has(id)) {
-          this.styledDicts.add(id)
-          const link = contentDocument.createElement('link')
-          link.rel = 'stylesheet'
-          link.href = browser.runtime.getURL(`/dicts/${isSaladictInternalPage ? 'internal/' : ''}${id}.css`)
-          contentDocument.head.appendChild(link)
-        }
-      })
-    }
   }
 
   renderDictPanel = () => {
     const {
       isAnimation,
       panelCSS,
+      dictsConfig,
     } = this.props
 
     const {
@@ -323,7 +311,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
             bodyClassName='panel-FrameBody'
             name='saladict-dictpanel'
             frameBorder='0'
-            head={this.frameHead + `\n<style>${panelCSS}</style>\n`}
+            head={`${this.frameHead}\n${getDictStyles(dictsConfig.selected)}\n<style>${panelCSS}</style>\n`}
             frameDidMount={this.frameDidMount}
           >
             <DictPanel
