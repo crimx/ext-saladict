@@ -8,6 +8,7 @@ import {
   SearchFunction,
   GetSrcPageFunction,
 } from '../helpers'
+import { getStaticSpeakerHTML } from '@/components/withStaticSpeaker'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
 
@@ -105,8 +106,7 @@ function handleDOMLex (
     $speaker => {
       const mp3 = $speaker.dataset.srcMp3
       if (mp3) {
-        $speaker.outerHTML =
-          `<button data-src-mp3="${mp3}" title="${$speaker.title}" class="dictLongman-Speaker">🔊</button>`
+        $speaker.outerHTML = getStaticSpeakerHTML(mp3)
       }
     }
   )

@@ -358,14 +358,14 @@ export function getALlDicts () {
       },
       options: {
         related: true,
-        chsas: 'jp/jc' as 'jp/cj' | 'jp/jc' | 'kor' | 'w' | 'fr' | 'de' | 'es',
+        chsas: 'jp/jc' as 'jp/cj' | 'jp/jc' | 'kr' | 'w' | 'fr' | 'de' | 'es',
         engas: 'w' as 'w' | 'fr' | 'de' | 'es',
         uas: 'fr' as 'fr' | 'de' | 'es',
         aas: 'fr' as 'fr' | 'de',
         eas: 'fr' as 'fr' | 'es',
       },
       options_sel: {
-        chsas: ['jp/cj', 'jp/jc', 'kor', 'w', 'fr', 'de', 'es'],
+        chsas: ['jp/cj', 'jp/jc', 'kr', 'w', 'fr', 'de', 'es'],
         engas: ['w', 'fr', 'de', 'es'],
         uas: ['fr', 'de', 'es'],
         aas: ['fr', 'de'],

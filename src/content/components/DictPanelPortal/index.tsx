@@ -279,7 +279,7 @@ export default class DictPanelPortal extends React.Component<DictPanelPortalProp
       style.setProperty('height', height + 'px', 'important')
     }
 
-    if (this.props.dictsConfig.selected !== prevProps.dictionaries.selected &&
+    if (this.props.dictsConfig.selected !== prevProps.dictsConfig.selected &&
         contentDocument && contentDocument.head
     ) {
       this.props.dictsConfig.selected.forEach(id => {

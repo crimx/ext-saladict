@@ -1,8 +1,10 @@
 $speaker-duration: 1.5s !default;
 
 .icon-Speaker {
+  text-decoration: none;
   margin: 0 5px;
   padding: 0;
+  line-height: 1;
   vertical-align: text-bottom;
   border: none;
   background: transparent;

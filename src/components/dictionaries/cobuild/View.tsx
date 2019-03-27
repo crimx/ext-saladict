@@ -3,7 +3,7 @@ import Speaker from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
 import { COBUILDResult, COBUILDCibaResult, COBUILDColResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
-import withStaticSpeaker from '@/components/withStaticSpeaker'
+import { withStaticSpeaker } from '@/components/withStaticSpeaker'
 
 interface COBUILDColState {
   curTab: string
@@ -108,7 +108,7 @@ export class DictCOBUILDCol extends React.Component<ViewPorps<COBUILDColResult>,
   }
 }
 
-export const DictCOBUILDColWithSpeaker = withStaticSpeaker(DictCOBUILDCol, 'dictCOBUILD-Speaker')
+export const DictCOBUILDColWithSpeaker = withStaticSpeaker(DictCOBUILDCol)
 
 export function DictCOBUILDCiba (result: COBUILDCibaResult) {
   return (

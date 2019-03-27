@@ -9,6 +9,7 @@ import {
   SearchFunction,
   GetSrcPageFunction,
 } from '../helpers'
+import { getStaticSpeakerHTML } from '@/components/withStaticSpeaker'
 import { DictSearchResult } from '@/typings/server'
 
 export const getSrcPage: GetSrcPageFunction = (text) => {
@@ -72,7 +73,7 @@ function handleDOM (
       const $audio = $speaker.querySelector('audio')
       if ($audio) {
         const src = ($audio.getAttribute('src') || '').replace(/^\/\//, 'https://')
-        $speaker.outerHTML = `<button data-src-mp3="${src}" class="dictGoogleDict-Speaker">🔊</button>`
+        $speaker.outerHTML = getStaticSpeakerHTML(src)
       }
     })
 

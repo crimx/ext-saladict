@@ -2,21 +2,29 @@ import React, { ComponentClass, SFC } from 'react'
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgAudioPlay } from '@/typings/message'
 
+export function getStaticSpeakerHTML (src?: string): string {
+  return src
+    ? `<a href="${src}" target="_blank" class="saladict-StaticSpeaker">🔊</a>`
+    : ''
+}
+
 /**
  * Use this HOC when speakers are rendered from HTML string.
  * Speakers should have class name 'saladict-StaticSpeaker'.
  */
-export default function withStaticSpeaker<P> (
+export function withStaticSpeaker<P> (
   WrapComponent: ComponentClass<P> | SFC<P> | string,
-  className = 'saladict-StaticSpeaker'
 ) {
   return class StaticSpeaker extends React.PureComponent<P> {
     // _audioDelayTimeout: any
 
     static isAudioElement (evt: React.MouseEvent<HTMLDivElement>): boolean {
-      const target = (evt.target as HTMLElement)
-      const cls = target.classList
-      return cls && cls.contains(className)
+      return Boolean(
+        evt.target &&
+        evt.target['tagName'] === 'A' &&
+        evt.target['classList'] &&
+        evt.target['classList'].contains('saladict-StaticSpeaker')
+      )
     }
 
     // handleDictMouseOver = (evt: React.MouseEvent<HTMLDivElement>) => {
@@ -36,12 +44,11 @@ export default function withStaticSpeaker<P> (
     // }
 
     handleDictClick = (evt: React.MouseEvent<HTMLDivElement>) => {
-      if (StaticSpeaker.isAudioElement(evt)) {
+      if (StaticSpeaker.isAudioElement(evt) && evt.target['href']) {
         // clearTimeout(this._audioDelayTimeout)
-        const src = evt.target && evt.target['dataset'] && evt.target['dataset'].srcMp3
-        if (src) {
-          message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
-        }
+        evt.preventDefault()
+        evt.stopPropagation()
+        message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src: evt.target['href'] })
       }
     }
 
