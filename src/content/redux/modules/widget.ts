@@ -127,7 +127,7 @@ export const initState: WidgetState = {
         ? window.innerWidth - _initConfig.panelWidth - 30
         : 0,
       y: isSaladictOptionsPage
-        ? window.innerHeight * (1 - _initConfig.panelMaxHeightRatio / 100) / 2
+        ? 100
         : 0,
       width: _initConfig.panelWidth,
       height: panelHeaderHeight,
