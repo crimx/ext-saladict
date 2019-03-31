@@ -2,7 +2,10 @@ import React from 'react'
 import { Props } from '../typings'
 import { AppConfig } from '@/app-config'
 import { ProfileIDList, Profile } from '@/app-config/profiles'
-import { updateConfig } from '@/_helpers/config-manager'
+import { mergeConfig } from '@/app-config/merge-config'
+import { mergeProfile } from '@/app-config/merge-profile'
+import { updateConfig, getConfig } from '@/_helpers/config-manager'
+import { updateProfile, getProfile } from '@/_helpers/profile-manager'
 import { storage } from '@/_helpers/browser-api'
 
 import { Upload, Icon, Row, Col, message } from 'antd'
@@ -57,7 +60,7 @@ export class ImportExport extends React.Component<Props> {
     await storage.sync.clear()
 
     if (baseconfig) {
-      await updateConfig(baseconfig)
+      await updateConfig(mergeConfig(baseconfig))
     }
 
     if (syncConfig) {
@@ -72,7 +75,7 @@ export class ImportExport extends React.Component<Props> {
       profileIDList = profileIDList.filter(({ id }) => result[id])
       if (profileIDList.length > 0) {
         for (const { id } of profileIDList) {
-          await storage.sync.set({ [id]: result[id] })
+          await updateProfile(mergeProfile(result[id] as Profile))
         }
         if (!activeProfileID ||
           profileIDList.every(({ id }) => id !== activeProfileID)
@@ -93,7 +96,7 @@ export class ImportExport extends React.Component<Props> {
       'syncConfig'
     ])
 
-    result.baseconfig = (await storage.sync.get('baseconfig')).baseconfig
+    result.baseconfig = await getConfig()
 
     if (!result.baseconfig ||
       !result.activeProfileID ||
@@ -104,7 +107,7 @@ export class ImportExport extends React.Component<Props> {
     }
 
     for (const { id } of result.profileIDList) {
-      result[id] = (await storage.sync.get(id))[id]
+      result[id] = await getProfile(id)
     }
     try {
       let text = JSON.stringify(result)
