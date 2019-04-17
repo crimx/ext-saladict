@@ -92,15 +92,32 @@ export class QuickSearch extends React.Component<Props & FormComponentProps> {
               <Card title={t('opt_quick_search_standalone')}>
                 <Form.Item
                   {...formSubItemLayout}
-                  label={t('opt_quick_search_height')}
+                  label={t('opt_quick_search_sidebar')}
+                  help={t('opt_quick_search_sidebar_help')}
                 >{
-                  getFieldDecorator('config#tripleCtrlHeight', {
-                    initialValue: config.tripleCtrlHeight,
-                    rules: [{ type: 'number', whitespace: true }],
+                  getFieldDecorator('config#tripleCtrlSidebar', {
+                    initialValue: config.tripleCtrlSidebar,
                   })(
-                    <InputNumberGroup suffix='px' />
+                    <Select>
+                      <Select.Option value=''>{t('common:none')}</Select.Option>
+                      <Select.Option value='left'>{t('quick_search_loc_4')}</Select.Option>
+                      <Select.Option value='right'>{t('quick_search_loc_2')}</Select.Option>
+                    </Select>
                   )
                 }</Form.Item>
+                {!config.tripleCtrlSidebar && (
+                  <Form.Item
+                    {...formSubItemLayout}
+                    label={t('opt_quick_search_height')}
+                  >{
+                    getFieldDecorator('config#tripleCtrlHeight', {
+                      initialValue: config.tripleCtrlHeight,
+                      rules: [{ type: 'number', whitespace: true }],
+                    })(
+                      <InputNumberGroup suffix='px' />
+                    )
+                  }</Form.Item>
+                )}
                 <Form.Item
                   {...formSubItemLayout}
                   label={t('opt_quick_search_page_sel')}

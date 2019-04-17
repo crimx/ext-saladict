@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.28.0"></a>
+# [6.28.0](https://github.com/crimx/ext-saladict/compare/v6.27.8...v6.28.0) (2019-04-17)
+
+
+### Features
+
+* add standalone sidebar layout ([6f4c5b8](https://github.com/crimx/ext-saladict/commit/6f4c5b8))
+
+
+
 <a name="6.27.8"></a>
 ## [6.27.8](https://github.com/crimx/ext-saladict/compare/v6.27.7...v6.27.8) (2019-03-31)
 

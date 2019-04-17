@@ -19,6 +19,7 @@ export const enum MsgType {
   QueryQSPanel,
 
   OpenQSPanel,
+  CloseQSPanel,
 
   QSPanelSearchText,
 

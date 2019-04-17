@@ -201,6 +201,9 @@ function _getDefaultConfig () {
     /** standalone panel height */
     tripleCtrlHeight: 600,
 
+    /** resize main widnow to leave space to standalone window */
+    tripleCtrlSidebar: '' as '' | 'left' | 'right',
+
     /** should standalone panel response to page selection */
     tripleCtrlPageSel: true,
 

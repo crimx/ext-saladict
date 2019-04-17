@@ -97,6 +97,7 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   merge('tripleCtrlLocation', val => val >= 0 && val <= 8)
   mergeBoolean('tripleCtrlStandalone')
   mergeNumber('tripleCtrlHeight')
+  mergeString('tripleCtrlSidebar')
   mergeBoolean('tripleCtrlPageSel')
 
   merge('baPreload', val => val === '' || val === 'clipboard' || val === 'selection')
