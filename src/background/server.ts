@@ -28,6 +28,8 @@ import {
 
 /** is a standalone panel running */
 let qsPanelID: number | false = false
+/** last focused window before standalone panel showing */
+let lastQsMainWindow: browser.windows.Window | undefined
 
 message.self.initServer()
 
@@ -53,6 +55,8 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return Promise.resolve(qsPanelID !== false)
     case MsgType.OpenQSPanel:
       return openQSPanel()
+    case MsgType.CloseQSPanel:
+      return closeQSPanel()
 
     case MsgType.IsInNotebook:
       return isInNotebook(data as MsgIsInNotebook)
@@ -104,85 +108,136 @@ browser.windows.onRemoved.addListener(async winID => {
 export async function openQSPanel (): Promise<void> {
   if (qsPanelID !== false) {
     await browser.windows.update(qsPanelID, { focused: true })
+    return
+  }
+
+  const { tripleCtrlLocation, panelWidth, tripleCtrlHeight, tripleCtrlSidebar } = window.appConfig
+  let qsPanelLeft = 10
+  let qsPanelTop = 30
+  let qsPanelWidth = window.appConfig.panelWidth
+  let qsPanelHeight = window.appConfig.tripleCtrlHeight
+
+  if (tripleCtrlSidebar === 'left') {
+    qsPanelLeft = 0
+    qsPanelTop = 0
+    qsPanelHeight = window.screen.availHeight
+  } else if (tripleCtrlSidebar === 'right') {
+    qsPanelLeft = window.screen.availWidth - qsPanelWidth
+    qsPanelTop = 0
+    qsPanelHeight = window.screen.availHeight
   } else {
-    const { tripleCtrlLocation, panelWidth, tripleCtrlHeight } = window.appConfig
-    let left = 10
-    let top = 30
     switch (tripleCtrlLocation) {
       case TCDirection.center:
-        left = (screen.width - panelWidth) / 2
-        top = (screen.height - tripleCtrlHeight) / 2
+        qsPanelLeft = (screen.width - panelWidth) / 2
+        qsPanelTop = (screen.height - tripleCtrlHeight) / 2
         break
       case TCDirection.top:
-        left = (screen.width - panelWidth) / 2
-        top = 30
+        qsPanelLeft = (screen.width - panelWidth) / 2
+        qsPanelTop = 30
         break
       case TCDirection.right:
-        left = screen.width - panelWidth - 30
-        top = (screen.height - tripleCtrlHeight) / 2
+        qsPanelLeft = screen.width - panelWidth - 30
+        qsPanelTop = (screen.height - tripleCtrlHeight) / 2
         break
       case TCDirection.bottom:
-        left = (screen.width - panelWidth) / 2
-        top = screen.height - 10
+        qsPanelLeft = (screen.width - panelWidth) / 2
+        qsPanelTop = screen.height - 10
         break
       case TCDirection.left:
-        left = 10
-        top = (screen.height - tripleCtrlHeight) / 2
+        qsPanelLeft = 10
+        qsPanelTop = (screen.height - tripleCtrlHeight) / 2
         break
       case TCDirection.topLeft:
-        left = 10
-        top = 30
+        qsPanelLeft = 10
+        qsPanelTop = 30
         break
       case TCDirection.topRight:
-        left = screen.width - panelWidth - 30
-        top = 30
+        qsPanelLeft = screen.width - panelWidth - 30
+        qsPanelTop = 30
         break
       case TCDirection.bottomLeft:
-        left = 10
-        top = screen.height - 10
+        qsPanelLeft = 10
+        qsPanelTop = screen.height - 10
         break
       case TCDirection.bottomRight:
-        left = screen.width - panelWidth - 30
-        top = screen.height - 10
+        qsPanelLeft = screen.width - panelWidth - 30
+        qsPanelTop = screen.height - 10
         break
     }
+  }
 
-    let url = browser.runtime.getURL('quick-search.html')
-    if (window.appConfig.tripleCtrlPreload === 'selection') {
-      const tab = (await browser.tabs.query({ active: true, lastFocusedWindow: true }))[0]
-      if (tab && tab.id) {
-        const info = await message.send(tab.id, { type: MsgType.PreloadSelection })
-        try {
-          url += '?info=' + encodeURIComponent(JSON.stringify(info))
-        } catch (e) {
-          if (process.env.DEV_BUILD) {
-            console.warn(e)
-          }
+  let url = browser.runtime.getURL('quick-search.html')
+  if (window.appConfig.tripleCtrlPreload === 'selection') {
+    const tab = (await browser.tabs.query({ active: true, lastFocusedWindow: true }))[0]
+    if (tab && tab.id) {
+      const info = await message.send(tab.id, { type: MsgType.PreloadSelection })
+      try {
+        url += '?info=' + encodeURIComponent(JSON.stringify(info))
+      } catch (e) {
+        if (process.env.DEV_BUILD) {
+          console.warn(e)
         }
       }
     }
+  }
 
-    const qsPanelWin = await browser.windows.create({
-      type: 'popup',
-      url,
-      width: window.appConfig.panelWidth,
-      height: window.appConfig.tripleCtrlHeight,
-      left: Math.round(left),
-      top: Math.round(top),
+  lastQsMainWindow = tripleCtrlSidebar ? (await browser.windows.getLastFocused()) : void 0
+
+  const qsPanelWin = await browser.windows.create({
+    type: 'popup',
+    url,
+    width: qsPanelWidth,
+    height: qsPanelHeight,
+    left: Math.round(qsPanelLeft),
+    top: Math.round(qsPanelTop),
+  })
+
+  if (qsPanelWin.id) {
+    qsPanelID = qsPanelWin.id
+    // notify all tabs
+    ;(await browser.tabs.query({})).forEach(tab => {
+      if (tab.id && tab.windowId !== qsPanelID) {
+        message.send<MsgQSPanelIDChanged>(tab.id, {
+          type: MsgType.QSPanelIDChanged,
+          flag: qsPanelID !== false,
+        })
+      }
     })
 
-    if (qsPanelWin.id) {
-      qsPanelID = qsPanelWin.id
-      ;(await browser.tabs.query({})).forEach(tab => {
-        if (tab.id && tab.windowId !== qsPanelID) {
-          message.send<MsgQSPanelIDChanged>(tab.id, {
-            type: MsgType.QSPanelIDChanged,
-            flag: qsPanelID !== false,
-          })
-        }
+    if (lastQsMainWindow && lastQsMainWindow.id) {
+      await browser.windows.update(lastQsMainWindow.id, {
+        state: 'normal',
+        top: 0,
+        left: tripleCtrlSidebar === 'left' ? qsPanelWidth : 1,
+        width: window.screen.availWidth - qsPanelWidth,
+        height: window.screen.availHeight,
       })
+
+      // fix a chrome bugs by moving 1 extra pixal then to 0
+      if (tripleCtrlSidebar === 'right') {
+        await browser.windows.update(lastQsMainWindow.id, {
+          state: 'normal',
+          top: 0,
+          left: 0,
+          width: window.screen.availWidth - qsPanelWidth,
+          height: window.screen.availHeight,
+        })
+      }
     }
   }
+}
+
+async function closeQSPanel (): Promise<void> {
+  if (window.appConfig.tripleCtrlSidebar && lastQsMainWindow && lastQsMainWindow.id) {
+    await browser.windows.update(lastQsMainWindow.id, {
+      state: lastQsMainWindow.state,
+      top: lastQsMainWindow.top,
+      left: lastQsMainWindow.left,
+      width: lastQsMainWindow.width,
+      height: lastQsMainWindow.height,
+    })
+  }
+  lastQsMainWindow = void 0
 }
 
 function openSrcPage (data: MsgOpenSrcPage): Promise<void> {

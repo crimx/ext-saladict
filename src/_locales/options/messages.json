@@ -499,6 +499,16 @@
     "zh_CN": "响应网页划词。",
     "zh_TW": "對网页滑鼠滑字作出反應。"
   },
+  "opt_quick_search_sidebar": {
+    "en": "Sidebar Layout",
+    "zh_CN": "类侧边栏",
+    "zh_TW": "類側邊欄"
+  },
+  "opt_quick_search_sidebar_help": {
+    "en": "Rearrange windows to sidebar-like layout.",
+    "zh_CN": "并排显示窗口以达到类似侧边栏的布局。",
+    "zh_TW": "並排顯示視窗以達到類似側邊欄的佈局。"
+  },
   "opt_quick_search_standalone": {
     "en": "Standalone",
     "zh_CN": "独立窗口",
