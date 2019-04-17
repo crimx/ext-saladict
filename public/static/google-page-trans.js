@@ -68,5 +68,18 @@
   ;(document.head || document.body).appendChild($main);
 }());
   `;
+
+  const $style = document.createElement('style');
+  $style.innerHTML = `
+    #google_translate_element {
+      position: relative;
+      z-index: 2147483647;
+    }
+    .goog-te-banner-frame {
+      z-index: 2147483647;
+    }
+  `;
+
   ;(document.head || document.body).appendChild($script);
+  ;(document.head || document.body).appendChild($style);
 }());
