@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.28.1"></a>
+## [6.28.1](https://github.com/crimx/ext-saladict/compare/v6.28.0...v6.28.1) (2019-04-17)
+
+
+### Bug Fixes
+
+* add z-index to google page translate elements ([38b08e5](https://github.com/crimx/ext-saladict/commit/38b08e5))
+
+
+
 <a name="6.28.0"></a>
 # [6.28.0](https://github.com/crimx/ext-saladict/compare/v6.27.8...v6.28.0) (2019-04-17)
 
