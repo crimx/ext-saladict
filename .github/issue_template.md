@@ -1,5 +1,4 @@
-<details><summary>反馈说明</summary>
-
+<!––
 使用相关的问题请阅读使用方式：
 https://github.com/crimx/ext-saladict/wiki#wiki-content
 
@@ -10,10 +9,7 @@ https://github.com/crimx/ext-saladict/wiki/Q&A
 请根据模板描述问题，以便别人理解、定位和解决问题。
 请根据模板描述问题，以便别人理解、定位和解决问题。
 请根据模板描述问题，以便别人理解、定位和解决问题。
-
-
-== 提交前删除下一行以及到以上*所有*内容，并填充下面模板 ==
-</details>
+-->
 
 - Saladict 版本
 
