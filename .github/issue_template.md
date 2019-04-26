@@ -1,4 +1,4 @@
-<!––
+<!--
 使用相关的问题请阅读使用方式：
 https://github.com/crimx/ext-saladict/wiki#wiki-content
 
@@ -15,7 +15,7 @@ https://github.com/crimx/ext-saladict/wiki/Q&A
 
 
 
-- 平台：包括操作系统和 Chrome/Firefox 版本（或者其它浏览器版本）
+- 平台：操作系统版本，Chrome/Firefox 版本，是否测试版
 
 
 
