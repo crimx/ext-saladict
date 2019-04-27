@@ -15,7 +15,7 @@ https://github.com/crimx/ext-saladict/wiki/Q&A
 
 
 
-- 平台：操作系统版本，Chrome/Firefox 版本，是否测试版
+- 平台：操作系统版本，浏览器名字及版本（测试版或开发者版的浏览器不在 Saladict 支持范围）
 
 
 
