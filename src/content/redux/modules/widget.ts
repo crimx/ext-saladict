@@ -625,7 +625,7 @@ export function requestFavWord (): DispatcherThunk {
       }
     } else { // add
       if (word.context) { // tranlate context
-        const trans = await translateCtx(word.context, config.ctxTrans)
+        const trans = await translateCtx(word.context || word.title, config.ctxTrans)
         if (trans) {
           word.trans = trans
         }

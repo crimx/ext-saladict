@@ -107,7 +107,7 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
     this.getRelatedWords()
     const word = this.props.editorWord
     if (word.context && !word.trans) {
-      translateCtx(word.context, this.props.ctxTrans)
+      translateCtx(word.context || word.title, this.props.ctxTrans)
         .then(trans => {
           if (trans) {
             const word = this.props.editorWord
