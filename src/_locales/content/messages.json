@@ -109,6 +109,11 @@
     "zh_TW": "上下文",
     "en": "Context"
   },
+  "wordEditorNoteDate": {
+    "zh_CN": "日期",
+    "zh_TW": "日期",
+    "en": "Date"
+  },
   "wordEditorNoteSrcTitle": {
     "zh_CN": "来源标题",
     "zh_TW": "來源標題",
