@@ -65,6 +65,8 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
   suggestVisibility$ = new Subject<boolean>()
   textChangedOnStandalonePage = false
 
+  historyBtnSearchDelay: any
+
   state: MenuBarState = {
     isShowProfilePanel: false,
     isShowSuggestPanel: false,
@@ -92,7 +94,8 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
       index,
       text: this.props.searchHistory[index].text
     })
-    this.props.searchText()
+    clearTimeout(this.historyBtnSearchDelay)
+    this.historyBtnSearchDelay = setTimeout(this.props.searchText, 1000)
   }
 
   /** next search history */
@@ -104,7 +107,8 @@ export default class MenuBar extends React.PureComponent<MenuBarProps, MenuBarSt
       index,
       text: this.props.searchHistory[index].text
     })
-    this.props.searchText()
+    clearTimeout(this.historyBtnSearchDelay)
+    this.historyBtnSearchDelay = setTimeout(this.props.searchText, 1000)
   }
 
   handleSearchBoxInput = (e: React.ChangeEvent<HTMLInputElement>) => {
