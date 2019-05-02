@@ -1,0 +1,63 @@
+.dictCNKI {
+  padding-top: 1em;
+}
+
+.dictCNKI-DictLink {
+  display: inline-block; // keep in one line
+  margin-right: 1em;
+  line-height: 1.8;
+}
+
+.dictCNKI-Sensbi {
+  p {
+    position: relative;
+    padding-left: 2em;
+  }
+
+  p:nth-of-type(2n+1) {
+    margin-bottom: 0;
+
+    &+p {
+      margin-top: 0;
+    }
+
+    &::before {
+      content: '•';
+      display: block;
+      position: absolute;
+      left: 0.8em;
+    }
+  }
+
+  font {
+    color: #f9690e;
+  }
+}
+
+.dictCNKI-Senseng {
+  p {
+    position: relative;
+    padding-left: 2em;
+  }
+
+  p::before {
+    content: '•';
+    display: block;
+    position: absolute;
+    left: 0.8em;
+  }
+
+  font {
+    color: #f9690e;
+  }
+}
+
+.dictCNKI-SensTitle {
+  margin-left: 5px;
+  font-size: 1.3em;
+}
+
+.dictCNKI-SensMore {
+  text-align: right;
+  padding: 0 1em;
+}
