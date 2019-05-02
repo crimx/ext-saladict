@@ -161,7 +161,11 @@ export class ExportModalBody extends React.Component<ExportModalInnerProps, Expo
         <Content style={{ display: 'flex', flexDirection: 'column', background: '#fff' }}>
           <p className='export-Description'>
             {t('export_description')}
-            <a href='https://github.com/crimx/ext-saladict/wiki/ANKI#wiki-content' target='_blank'>{t('export_explain')}</a>
+            <a
+              href='https://github.com/crimx/ext-saladict/wiki/ANKI#wiki-content'
+              target='_blank'
+              rel='nofollow noopener noreferrer'
+            >{t('export_explain')}</a>
           </p>
           <Table
             dataSource={this.tplTableData}

@@ -100,7 +100,7 @@ export class DictPanel extends React.Component<DictPanelProps> {
             <a
               href='https://github.com/crimx/ext-saladict/wiki/PanelCSS#wiki-content'
               target='_blank'
-              rel='nofollow'
+              rel='nofollow noopener noreferrer'
             >Examples</a>
           }
         >{

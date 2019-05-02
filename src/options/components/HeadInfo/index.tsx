@@ -93,7 +93,7 @@ export class OptMenu extends React.PureComponent<{ t: TranslationFunction }, Opt
                   <li key={ack.locale}>
                     <a
                       href={ack.href}
-                      rel='nofollow'
+                      rel='nofollow noopener noreferrer'
                       target='_blank'
                     >{ack.name}</a> {t(`opt:head_info_acknowledgement_${ack.locale}`)}
                   </li>
@@ -106,7 +106,8 @@ export class OptMenu extends React.PureComponent<{ t: TranslationFunction }, Opt
           <a
             href='https://github.com/crimx/ext-saladict/wiki#wiki-content'
             target='_blank'
-            rel='noopener'>{t('opt:head_info_instructions')}</a>
+            rel='nofollow noopener noreferrer'
+          >{t('opt:head_info_instructions')}</a>
         </li>
         <li className='head-info-bubble-wrap'>
           <a
@@ -166,7 +167,7 @@ export class OptMenu extends React.PureComponent<{ t: TranslationFunction }, Opt
           <a
             href='https://github.com/crimx/ext-saladict/issues'
             target='_blank'
-            rel='noopener'
+            rel='nofollow noopener noreferrer'
           >{t('opt:head_info_report_issue')}</a>
         </li>
       </ul>

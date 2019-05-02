@@ -158,6 +158,7 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
               <a
                 href='https://github.com/crimx/ext-saladict/issues/117'
                 target='_blank'
+                rel='nofollow noopener noreferrer'
               > Why?</a>
             </label>
             <textarea rows={5}

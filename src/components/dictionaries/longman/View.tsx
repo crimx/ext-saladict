@@ -49,7 +49,9 @@ function renderEntry (entry: LongmanResultEntry) {
           ))}
           {entry.topic && (
             <>
-              Topic: <a href={entry.topic.href} rel='nofollow'>{entry.topic.title}</a>
+              Topic: <a href={entry.topic.href} rel='nofollow noopener noreferrer'>{
+                entry.topic.title
+              }</a>
             </>
           )}
         </div>

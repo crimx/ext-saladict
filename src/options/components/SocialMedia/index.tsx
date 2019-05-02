@@ -32,7 +32,7 @@ export const SocialMedia = () => (
   <ul className='social-media__body'>
     {socialMedia.map(media => (
       <li key={media.title} className='social-media__icon'>
-        <a href={media.url} title={media.title} target='_blank' rel='noopener'></a>
+        <a href={media.url} title={media.title} target='_blank' rel='nofollow noopener noreferrer'></a>
         <svg>
           <use
             xlinkHref={require('@/assets/symbol-defs.svg') + '#' + media.icon}

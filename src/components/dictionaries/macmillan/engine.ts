@@ -158,7 +158,7 @@ function handleDOM (
   const $senses = doc.querySelector('.senses')
   if ($senses && $senses.querySelectorAll('.SENSE').length > 0) {
     $senses.querySelectorAll<HTMLAnchorElement>('a.moreButton').forEach($a => {
-      $a.rel = 'nofollow'
+      $a.rel = 'nofollow noopener noreferrer'
     })
     result.senses = getInnerHTML($senses)
   } else {

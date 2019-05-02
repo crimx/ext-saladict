@@ -153,7 +153,7 @@ export default class DictItem extends React.PureComponent<DictItemProps, DictIte
         e.stopPropagation()
 
         const $a = el as HTMLAnchorElement
-        if ($a.rel === 'nofollow') {
+        if (/nofollow|noopener|noreferrer/.test($a.rel)) {
           message.send<MsgOpenUrl>({
             type: MsgType.OpenURL,
             url: $a.href,
