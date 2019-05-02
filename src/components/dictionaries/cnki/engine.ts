@@ -2,7 +2,7 @@ import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   HTMLString,
   getInnerHTMLBuilder,
-  getOuterHTMLBuilder,
+  // getOuterHTMLBuilder,
   getFullLinkBuilder,
   handleNoResult,
   getText,
@@ -18,7 +18,7 @@ export const getSrcPage: GetSrcPageFunction = text => {
 }
 
 const getInnerHTML = getInnerHTMLBuilder('http://dict.cnki.net')
-const getOuterHTML = getOuterHTMLBuilder('http://dict.cnki.net')
+// const getOuterHTML = getOuterHTMLBuilder('http://dict.cnki.net')
 const getFullLink = getFullLinkBuilder('http://dict.cnki.net')
 
 interface CNKIDictItem {
