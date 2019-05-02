@@ -10,7 +10,11 @@ export default class DictEtymonline extends React.PureComponent<ViewPorps<Etymon
           <li key={item.title} className='dictEtymonline-Item'>
             <h2 className='dictEtymonline-Title'>
               {item.href
-                ? <a href={item.href} target='_blank' rel='nofollow'>{item.title}</a>
+                ? <a
+                    href={item.href}
+                    target='_blank'
+                    rel='nofollow noopener noreferrer'
+                  >{item.title}</a>
                 : item.title
               }
             </h2>

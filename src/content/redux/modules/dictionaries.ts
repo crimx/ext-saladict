@@ -160,10 +160,7 @@ export const reducer: DictsReducer = {
   },
   [ActionType.SEARCH_START] (state, { toStart, toOnhold, toActive, info }) {
     const { dictionaries, widget } = state
-    const history = widget.searchBox.index > 0
-      ? dictionaries.searchHistory.slice(widget.searchBox.index)
-      : dictionaries.searchHistory
-
+    const searchBoxIndex = widget.searchBox.index || 0
     const dicts = { ...dictionaries.dicts }
     toOnhold.forEach(id => {
       if (dicts[id]) {
@@ -189,20 +186,20 @@ export const reducer: DictsReducer = {
       dictionaries: {
         ...dictionaries,
         active: toActive || dictionaries.active,
-        // don't create history for same info
-        searchHistory: info === history[0]
-          ? history
-          : isSameSelection(info, history[0])
-            ? [info, ...history.slice(1, 20)]
-            : [info, ...history].slice(0, 20),
+        searchHistory: info === dictionaries.searchHistory[searchBoxIndex]
+          ? dictionaries.searchHistory
+          // don't create history for same info
+          : isSameSelection(info, dictionaries.searchHistory[0])
+            ? [info, ...dictionaries.searchHistory.slice(1)]
+            : [info, ...dictionaries.searchHistory],
         dicts,
       }
     }
   },
   [ActionType.SEARCH_END] (state, { id, info, result }) {
-    const { dictionaries } = state
+    const { dictionaries, widget } = state
 
-    if (!isSameSelection(info, dictionaries.searchHistory[0])) {
+    if (!isSameSelection(info, dictionaries.searchHistory[widget.searchBox.index || 0])) {
       // ignore the outdated selection
       return state
     }
@@ -224,7 +221,7 @@ export const reducer: DictsReducer = {
       ...state,
       dictionaries: {
         ...state.dictionaries,
-        searchHistory: [info, ...history].slice(0, 20)
+        searchHistory: [info, ...history]
       }
     }
   }
@@ -296,8 +293,8 @@ export function searchText (
   return (dispatch, getState) => {
     const state = getState()
     const searchBoxIndex = state.widget.searchBox.index || 0
-    const info = arg
-      ? arg.info || state.dictionaries.searchHistory[searchBoxIndex]
+    const info = arg && arg.info
+      ? arg.info
       : state.dictionaries.searchHistory[searchBoxIndex]
 
     // try to unfold a dict when the panel first popup
@@ -358,8 +355,10 @@ export function searchText (
     }
 
     dispatch(searchStart({ toStart, toOnhold, toActive, info }))
-    // After search start. Index is useful.
-    dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
+    if (arg && arg.info) {
+      // Reset index after search start. Index is useful.
+      dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
+    }
 
     toStart.forEach(doSearch)
 

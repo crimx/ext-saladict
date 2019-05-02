@@ -39,6 +39,7 @@ class App extends React.Component<AppProps, AppState> {
 
   componentDidMount () {
     addConfigListener(({ newConfig }) => {
+      document.body.style.width = newConfig.panelWidth + 'px'
       this.setState({ config: newConfig })
     })
   }
@@ -53,6 +54,8 @@ class App extends React.Component<AppProps, AppState> {
 }
 
 getConfig().then(config => {
+  document.body.style.width = config.panelWidth + 'px'
+
   switch (config.baOpen) {
     case 'popup_panel':
       showPanel(config)
@@ -122,7 +125,7 @@ async function addNotebook () {
   // async get translations
   if (info && info.context) {
     const config = await getConfig()
-    info.trans = await translateCtx(info.context, config.ctxTrans)
+    info.trans = await translateCtx(info.context || info.title, config.ctxTrans)
     try {
       await saveWord('notebook', info)
     } catch (err) {/* */}

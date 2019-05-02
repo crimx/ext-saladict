@@ -23,7 +23,12 @@ export default class DictUrban extends React.PureComponent<ViewPorps<UrbanResult
             {def.tags &&
               <ul className='dictUrban-Tags'>
                 {def.tags.map(tag => (
-                  <a key={tag} className='dictUrban-TagItem' href={`https://www.urbandictionary.com/tags.php?tag=${tag}`} rel='nofollow'>#{tag} </a>
+                  <a
+                    key={tag}
+                    className='dictUrban-TagItem'
+                    href={`https://www.urbandictionary.com/tags.php?tag=${tag}`}
+                    rel='nofollow noopener noreferrer'
+                  >#{tag} </a>
                 ))}
               </ul>
             }

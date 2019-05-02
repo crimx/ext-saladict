@@ -135,6 +135,8 @@ function getHTMLBuilder (location: string, args: any): GetHTML {
           el.setAttribute(attr, protocol + url)
         } else if (url.startsWith('/')) {
           el.setAttribute(attr, host + url)
+        } else if (!url.startsWith('http')) {
+          el.setAttribute(attr, host + '/' + url)
         }
       }
     })
@@ -197,4 +199,31 @@ export function decodeHEX (text: string): string {
     /\\x([0-9A-Fa-f]{2})/g,
     (m, p1) => String.fromCharCode(parseInt(p1, 16)),
   )
+}
+
+export function getFullLinkBuilder (host: string) {
+  if (host.endsWith('/')) {
+    host = host.slice(0, -1)
+  }
+
+  const protocol = host.startsWith('https') ? 'https:' : 'http:'
+
+  return function getFullLink (element: Element, attr: string): string {
+    const link = element.getAttribute(attr)
+    if (!link) { return '' }
+
+    if (link.startsWith('http')) {
+      return link
+    }
+
+    if (link.startsWith('//')) {
+      return protocol + link
+    }
+
+    if (link.startsWith('/')) {
+      return host + link
+    }
+
+    return host + '/' + link
+  }
 }

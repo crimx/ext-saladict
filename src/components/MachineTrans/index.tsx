@@ -64,17 +64,20 @@ export default class MachineTrans extends React.PureComponent<ViewPorps<MachineT
     return (
       <>
         <div className='MachineTrans-Text'>
-          {[trans, searchText].map((source, i) => (
-            <div key={i} className='MachineTrans-Lines'>{
-              source.text.split('\n').map((line, i) => {
-                if (i === 0) {
-                  return <p key={i}><Speaker src={source.audio} /> {line}</p>
-                } else {
-                  return <p key={i}>{line}</p>
-                }
-              })
-            }</div>
-          ))}
+          <TText source={trans} />
+          {searchText.text.length <= 100
+            ? <TText source={searchText} />
+            : (
+              <p>
+                <details>
+                  <summary onClick={this.props.recalcBodyHeight}>{
+                    t('machineTransStext')
+                  }</summary>
+                  <TText source={searchText} />
+                </details>
+              </p>
+            )
+          }
         </div>
         {this.state.isShowLang
           ? this.renderLangSwitch()
@@ -86,4 +89,18 @@ export default class MachineTrans extends React.PureComponent<ViewPorps<MachineT
       </>
     )
   }
+}
+
+function TText ({ source }: { source: MachineTranslateResult['searchText'] | MachineTranslateResult['trans'] }) {
+  return (
+    <div className='MachineTrans-Lines'>{
+      source.text.split('\n').map((line, i) => {
+        if (i === 0) {
+          return <p key={i}><Speaker src={source.audio} /> {line}</p>
+        } else {
+          return <p key={i}>{line}</p>
+        }
+      })
+    }</div>
+  )
 }

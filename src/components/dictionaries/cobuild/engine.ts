@@ -177,7 +177,7 @@ function handleColDOM (
 
       // so that clicking won't trigger in-panel search
       $section.querySelectorAll<HTMLAnchorElement>('a.type-thesaurus').forEach($a => {
-        $a.rel = 'nofollow'
+        $a.rel = 'nofollow noopener noreferrer'
       })
 
       return {

@@ -72,11 +72,12 @@
   const $style = document.createElement('style');
   $style.innerHTML = `
     #google_translate_element {
-      position: relative;
-      z-index: 2147483647;
+      position: relative !important;
     }
+    #google_translate_element,
+    .goog-te-menu-frame,
     .goog-te-banner-frame {
-      z-index: 2147483647;
+      z-index: 2147483647 !important;
     }
   `;
 

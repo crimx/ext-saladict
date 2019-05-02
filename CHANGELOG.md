@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.29.0"></a>
+# [6.29.0](https://github.com/crimx/ext-saladict/compare/v6.28.1...v6.29.0) (2019-05-02)
+
+
+### Bug Fixes
+
+* **panel:** correct history forward btn ([ee1d4f6](https://github.com/crimx/ext-saladict/commit/ee1d4f6)), closes [#349](https://github.com/crimx/ext-saladict/issues/349)
+* add z-index to google page translate ([f59cc57](https://github.com/crimx/ext-saladict/commit/f59cc57))
+
+
+### Features
+
+* **dicts:** add cnki ([2743cac](https://github.com/crimx/ext-saladict/commit/2743cac)), closes [#336](https://github.com/crimx/ext-saladict/issues/336)
+* add comp EntryBox ([fdd71dd](https://github.com/crimx/ext-saladict/commit/fdd71dd))
+
+
+
 <a name="6.28.1"></a>
 ## [6.28.1](https://github.com/crimx/ext-saladict/compare/v6.28.0...v6.28.1) (2019-04-17)
 

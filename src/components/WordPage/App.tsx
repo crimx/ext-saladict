@@ -86,7 +86,7 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
     )
     signal$ = fetchData$$.pipe(
       mapTo(true), // last fetchData is completed
-      startWith(true),
+      startWith(true as boolean),
     )
     fetchData$$.subscribe()
 
@@ -145,14 +145,14 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
         dataIndex: 'trans',
         key: 'trans',
         width: restWidth,
-        align: 'center',
+        render: (_, record) => this.renderText(record.trans)
       },
       {
         title: t('column-note'),
         dataIndex: 'note',
         key: 'note',
         width: restWidth,
-        align: 'center',
+        render: (_, record) => this.renderText(record.note)
       },
       {
         title: t('column-date'),
@@ -341,6 +341,12 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
     </Button>
   }
 
+  renderText = (text: string): React.ReactNode => {
+    return text.split('\n').map((line, i) => (
+      <div key={i}>{line}</div>
+    ))
+  }
+
   renderSource = (_, record: Word): React.ReactNode => {
     return (
       <React.Fragment key={record.date}>
@@ -448,6 +454,7 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
           </Content>
         </Layout>
         <ExportModal
+          locale={this.props.locale}
           title={exportModalTitle}
           rawWords={exportModalWords}
           onCancel={this.handleExportModalCancel}

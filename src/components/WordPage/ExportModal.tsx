@@ -8,6 +8,7 @@ import { storage } from '@/_helpers/browser-api'
 const { Content, Sider } = Layout
 
 export interface ExportModalProps {
+  locale: string
   title: 'all' | 'selected' | 'page' | ''
   rawWords: Word[]
   onCancel: (e: React.MouseEvent<any>) => any
@@ -59,7 +60,7 @@ export class ExportModalBody extends React.Component<ExportModalInnerProps, Expo
       },
       {
         plcholderL: '%trans%', contentL: t('content:wordEditorNoteTrans'),
-        plcholderR: '', contentR: '',
+        plcholderR: '%date%', contentR: t('content:wordEditorNoteDate'),
       },
     ]
 
@@ -113,13 +114,26 @@ export class ExportModalBody extends React.Component<ExportModalInnerProps, Expo
     const template = e.currentTarget.value
     this.setState({
       template,
-      processedWords: processWords(this.props.rawWords, template)
+      processedWords: this.processWords(template)
     })
     storage.sync.set({ wordpageTemplate: template })
   }
 
+  processWords = (template: string): string => {
+    return this.props.rawWords
+      .map(word =>
+        template.replace(/%(\S+)%/g, (match, k) => {
+          if (k === 'date') {
+            return new Date(word.date).toLocaleDateString(this.props.locale)
+          }
+          return typeof word[k] === 'string' ? word[k] : match
+        })
+      )
+      .join('\n')
+  }
+
   componentDidMount () {
-    const { t, rawWords } = this.props
+    const { t } = this.props
 
     storage.sync.get<{ wordpageTemplate: string }>('wordpageTemplate')
       .then(({ wordpageTemplate }) => {
@@ -127,7 +141,7 @@ export class ExportModalBody extends React.Component<ExportModalInnerProps, Expo
           `${t('content:wordEditorNoteWord')}: %text%\n%trans%\n${t('content:wordEditorNoteContext')}: %context%\n`
         this.setState({
           template,
-          processedWords: processWords(rawWords, template),
+          processedWords: this.processWords(template),
         })
       })
   }
@@ -147,7 +161,11 @@ export class ExportModalBody extends React.Component<ExportModalInnerProps, Expo
         <Content style={{ display: 'flex', flexDirection: 'column', background: '#fff' }}>
           <p className='export-Description'>
             {t('export_description')}
-            <a href='https://github.com/crimx/ext-saladict/wiki/ANKI#wiki-content' target='_blank'>{t('export_explain')}</a>
+            <a
+              href='https://github.com/crimx/ext-saladict/wiki/ANKI#wiki-content'
+              target='_blank'
+              rel='nofollow noopener noreferrer'
+            >{t('export_explain')}</a>
           </p>
           <Table
             dataSource={this.tplTableData}
@@ -202,12 +220,3 @@ export class ExportModal extends React.PureComponent<ExportModalInnerProps, Expo
 }
 
 export default translate()(ExportModal)
-
-function processWords (rawWords: Word[], template: string): string {
-  return rawWords
-    .map(word =>
-      template.replace(/%(\S+)%/g, (match, k) =>
-        typeof word[k] === 'string' ? word[k] : match)
-    )
-    .join('\n')
-}
