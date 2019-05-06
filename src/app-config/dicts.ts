@@ -70,10 +70,10 @@ export function getALlDicts () {
       options: {
         /** Keep linebreaks on PDF */
         pdfNewline: false,
-        tl: 'default' as 'default' | 'zh' | 'cht' | 'en',
+        tl: 'default' as 'default' | 'zh' | 'cht' | 'en' | 'jp' | 'kor' | 'fra' | 'de' | 'spa',
       },
       options_sel: {
-        tl: ['default', 'zh', 'cht', 'en'],
+        tl: ['default', 'zh', 'cht', 'en', 'jp', 'kor', 'fra', 'de', 'spa'],
       },
     },
     bing: {
@@ -298,10 +298,10 @@ export function getALlDicts () {
         /** Keep linebreaks on PDF */
         pdfNewline: false,
         cnfirst: true,
-        tl: 'default' as 'default' | 'zh-CN' | 'zh-TW' | 'en',
+        tl: 'default' as 'default' | 'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es',
       },
       options_sel: {
-        tl: ['default', 'zh-CN', 'zh-TW', 'en'],
+        tl: ['default', 'zh-CN', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'de', 'es'],
       },
     },
     googledict: {
@@ -627,10 +627,10 @@ export function getALlDicts () {
       options: {
         /** Keep linebreaks on PDF */
         pdfNewline: false,
-        tl: 'default' as 'default' | 'zh-CHS' | 'zh-CHT' | 'en',
+        tl: 'default' as 'default' | 'zh-CHS' | 'zh-CHT' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es',
       },
       options_sel: {
-        tl: ['default', 'zh-CHS', 'zh-CHT', 'en'],
+        tl: ['default', 'zh-CHS', 'zh-CHT', 'en', 'ja', 'ko', 'fr', 'de', 'es'],
       },
     },
     urban: {

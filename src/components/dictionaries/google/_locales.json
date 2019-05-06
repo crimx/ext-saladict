@@ -39,6 +39,31 @@
       "en": "English",
       "zh_CN": "English",
       "zh_TW": "English"
+    },
+    "tl-ja": {
+      "en": "Japanese",
+      "zh_CN": "日文",
+      "zh_TW": "日文"
+    },
+    "tl-ko": {
+      "en": "Korean",
+      "zh_CN": "韩文",
+      "zh_TW": "韓文"
+    },
+    "tl-fr": {
+      "en": "French",
+      "zh_CN": "法文",
+      "zh_TW": "法文"
+    },
+    "tl-de": {
+      "en": "Deutsch",
+      "zh_CN": "德文",
+      "zh_TW": "德文"
+    },
+    "tl-es": {
+      "en": "Spanish",
+      "zh_CN": "西班牙文",
+      "zh_TW": "西班牙文"
     }
   }
 }
