@@ -8,13 +8,15 @@ import { updateConfigOrProfile, formItemLayout } from '../helpers'
 import { FormComponentProps } from 'antd/lib/form'
 import { Form, Select, Switch, Button } from 'antd'
 
-const isChrome = navigator.userAgent.includes('Chrome')
-
 export class General extends React.Component<Props & FormComponentProps> {
   isReseted = false
 
   openShortcuts = () => {
-    openURL('chrome://extensions/shortcuts')
+    if (navigator.userAgent.includes('Chrome')) {
+      openURL('chrome://extensions/shortcuts')
+    } else {
+      openURL('about:addons')
+    }
   }
 
   resetConfigs = async () => {
@@ -45,9 +47,7 @@ export class General extends React.Component<Props & FormComponentProps> {
 
     return (
       <Form>
-        {isChrome && // @todo wait for firefox https://bugzilla.mozilla.org/show_bug.cgi?id=1303384
-          <Button onClick={this.openShortcuts}>{t('opt_shortcuts')}</Button>
-        }
+        <Button onClick={this.openShortcuts}>{t('opt_shortcuts')}</Button>
         <Form.Item
           {...formItemLayout}
           label={t('opt_active')}
