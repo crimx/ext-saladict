@@ -43,11 +43,16 @@ export const search: SearchFunction<WikipediaSearchResult, WikipediaPayload> = (
   text, config, profile, payload
 ) => {
   const { lang } = profile.dicts.all.wikipedia.options
-  const subdomain = getSubdomain(text, lang)
+  let subdomain = getSubdomain(text, lang)
 
   let url = payload.url
   if (url) {
-    url = url.replace(/^\//, `https://${subdomain}.m.wikipedia.org/`)
+    const matchSubdomain = url.match(/([^\/\.]+)\.m\.wikipedia\.org/)
+    if (matchSubdomain) {
+      subdomain = matchSubdomain[1]
+    } else {
+      url = url.replace(/^\//, `https://${subdomain}.m.wikipedia.org/`)
+    }
   } else {
     const path = lang.startsWith('zh-') ? lang : 'wiki'
     url = `https://${subdomain}.m.wikipedia.org/${path}/${encodeURIComponent(text)}`
