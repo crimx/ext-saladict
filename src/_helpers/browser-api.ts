@@ -420,7 +420,8 @@ function initServer (): void {
       if (sender.tab && sender.tab.id) {
         return messageSend(sender.tab.id, message)
       } else {
-        return messageSend(message)
+        // has to be a tab
+        // return messageSend(message)
       }
     }
   })
