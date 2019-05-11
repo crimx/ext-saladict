@@ -1,8 +1,8 @@
 {
-  "daily": {
-    "en": "Daily Mode",
-    "zh_CN": "日常模式",
-    "zh_TW": "日常模式"
+  "sentence": {
+    "en": "Sentence Mode",
+    "zh_CN": "句库模式",
+    "zh_TW": "句庫模式"
   },
   "default": {
     "en": "Default Mode",
