@@ -87,15 +87,16 @@
 
   "permissions": [
     "<all_urls>",
-    "webRequest",
-    "webRequestBlocking",
-    "contextMenus",
-    "storage",
-    "unlimitedStorage",
-    "tabs",
+    "alarms",
     "clipboardRead",
+    "contextMenus",
     "cookies",
-    "notifications"
+    "notifications",
+    "storage",
+    "tabs",
+    "unlimitedStorage",
+    "webRequest",
+    "webRequestBlocking"
   ],
 
   "optional_permissions": [
