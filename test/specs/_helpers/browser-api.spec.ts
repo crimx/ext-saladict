@@ -471,7 +471,7 @@ describe('Browser API Wapper', () => {
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
 
         browser.runtime.onMessage.dispatch({ type: '[[1]]', __pageId__: 1 }, {})
-        expect(browser.runtime.sendMessage.calledWith({ type: 1, __pageId__: 1 })).toBeTruthy()
+        expect(browser.runtime.sendMessage.calledWith({ type: 1, __pageId__: 1 })).toBeFalsy()
 
         browser.runtime.onMessage.dispatch({ type: '[[1]]', __pageId__: 1 }, { tab })
         expect(browser.tabs.sendMessage.calledWith(tab.id, { type: 1, __pageId__: 1 })).toBeTruthy()

@@ -65,46 +65,49 @@ export function genProfilesStorage (): {
 } {
   const defaultID = getDefaultProfileID()
   const defaultProfile = getDefaultProfile(defaultID.id)
-  const dailyStorage = daily()
+  const sentenceStorage = sentence()
   const translationStorage = translation()
   const scholarStorage = scholar()
 
   return {
     profileIDList: [
       defaultID,
-      dailyStorage.idItem,
+      sentenceStorage.idItem,
       translationStorage.idItem,
       scholarStorage.idItem,
     ],
     profiles: [
       defaultProfile,
-      dailyStorage.profile,
+      sentenceStorage.profile,
       translationStorage.profile,
       scholarStorage.profile,
     ]
   }
 }
 
-export function daily (): ProfileStorage {
+export function sentence (): ProfileStorage {
   const idItem = getDefaultProfileID()
-  idItem.name = '%%_daily_%%'
+  idItem.name = '%%_sentence_%%'
 
   const profile = getDefaultProfile(idItem.id) as ProfileMutable
-  profile.dicts.selected = ['bing', 'cambridge', 'urban', 'vocabulary', 'macmillan', 'etymonline', 'google', 'sogou', 'zdic', 'guoyu', 'liangan', 'googledict']
+  profile.dicts.selected = ['jukuu', 'bing', 'cnki', 'eudic', 'cobuild', 'cambridge', 'longman', 'macmillan']
 
   const allDict = profile.dicts.all
-  allDict.google.selectionWC.min = 5
-  allDict.sogou.selectionWC.min = 5
-  allDict.etymonline.defaultUnfold = {
-    english: false,
-    chinese: false,
-    japanese: false,
-    korean: false,
-    french: false,
-    spanish: false,
-    deutsch: false,
-    others: false,
-  }
+  allDict.bing.options.tense = false
+  allDict.bing.options.phsym = false
+  allDict.bing.options.cdef = false
+  allDict.bing.options.related = false
+  allDict.bing.options.sentence = 9999
+  allDict.cnki.options.dict = false
+  allDict.eudic.options.resultnum = 9999
+  allDict.macmillan.options.related = false
+  allDict.longman.options.wordfams = false
+  allDict.longman.options.collocations = false
+  allDict.longman.options.grammar = false
+  allDict.longman.options.thesaurus = false
+  allDict.longman.options.examples = true
+  allDict.longman.options.bussinessFirst = false
+  allDict.longman.options.related = false
 
   return { idItem, profile }
 }
@@ -114,7 +117,7 @@ export function scholar (): ProfileStorage {
   idItem.name = '%%_scholar_%%'
 
   const profile = getDefaultProfile(idItem.id) as ProfileMutable
-  profile.dicts.selected = ['googledict', 'cambridge', 'cobuild', 'etymonline', 'macmillan', 'oald', 'websterlearner', 'google', 'sogou', 'zdic', 'guoyu', 'liangan']
+  profile.dicts.selected = ['googledict', 'cambridge', 'cobuild', 'etymonline', 'cnki', 'macmillan', 'oald', 'websterlearner', 'google', 'sogou', 'zdic', 'guoyu', 'liangan']
 
   const allDict = profile.dicts.all
   allDict.macmillan.defaultUnfold = {

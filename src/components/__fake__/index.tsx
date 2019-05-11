@@ -5,14 +5,13 @@
 import setupEnv from './devDict'
 import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
 
-const dict = 'cobuild'
+const dict = 'cnki'
 const dictConfig = (getDefaultProfile() as ProfileMutable).dicts.all[dict]
-dictConfig.options.cibaFirst = false
 
 setupEnv({
   dict,
   dictConfig,
-  text: 'how', // 当たる 吐く
+  text: 'love', // 当たる 吐く
 })
 
 /*-----------------------------------------------*\

@@ -14,13 +14,8 @@ import {
   getSyncConfig,
 } from '../helpers'
 
-import { empty } from 'rxjs/observable/empty'
-import { of } from 'rxjs/observable/of'
-import { fromPromise } from 'rxjs/observable/fromPromise'
-import { switchMap } from 'rxjs/operators/switchMap'
-import { delay } from 'rxjs/operators/delay'
-import { repeat } from 'rxjs/operators/repeat'
 import { Mutable } from '@/typings/helpers'
+import { storage } from '@/_helpers/browser-api'
 
 export interface SyncConfig {
   /** Server address. Ends with '/'. */
@@ -58,33 +53,57 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     }
   }
 
-  startInterval () {
-    getMeta(Service.id).then(meta => {
-      if (meta) {
-        this.meta = meta
+  async startInterval () {
+    this.meta = await getMeta(Service.id) || this.meta
+
+    browser.alarms.onAlarm.addListener(this.handleSyncAlarm.bind(this))
+
+    createSyncConfigStream<SyncConfig>(Service.id)
+      .subscribe(this.handleInterval.bind(this))
+  }
+
+  async handleInterval (newConfig: SyncConfig | null) {
+    await browser.alarms.clear('webdav')
+
+    if (!newConfig) {
+      this.config = Service.getDefaultConfig()
+      return
+    }
+
+    if (typeof newConfig.url === 'string' && !newConfig.url.endsWith('/')) {
+      (newConfig as Mutable<SyncConfig>).url += '/'
+    }
+
+    this.config = newConfig
+
+    if (newConfig.url) {
+      const duration = +newConfig.duration || 15
+      const now = Date.now()
+      let nextInterval: number = +(await storage.local.get('webdavInterval')).webdavInterval
+      if (!nextInterval || nextInterval < now || now + duration * 60000 < nextInterval) {
+        nextInterval = now + 1000
       }
+      await storage.local.set({ 'webdavInterval': nextInterval })
+      browser.alarms.create('webdav', {
+        when: nextInterval,
+        periodInMinutes: duration,
+      })
+    } else {
+      await storage.local.set({ 'webdavInterval': 0 })
+    }
+  }
 
-      createSyncConfigStream<SyncConfig>(Service.id).pipe(
-        switchMap(newConfig => {
-          if (!newConfig) {
-            this.config = Service.getDefaultConfig()
-            return empty<void>()
-          }
+  async handleSyncAlarm (alarm: browser.alarms.Alarm) {
+    if (alarm.name !== 'webdav') { return }
 
-          if (typeof newConfig.url === 'string' && !newConfig.url.endsWith('/')) {
-            (newConfig as Mutable<SyncConfig>).url += '/'
-          }
+    if (process.env.DEV_BUILD) {
+      console.log('WebDAV Alarm Interval')
+    }
 
-          this.config = newConfig
+    await this.download({}).catch(() => {/* nothing */})
 
-          return of('').pipe(
-            delay(newConfig.duration * 60000),
-            switchMap(() => fromPromise<void>(this.download({}).catch(() => {/* nothing */}))),
-            repeat(),
-          )
-        })
-      ).subscribe()
-    })
+    const duration = this.config.duration * 60000 || 15 * 60000
+    await storage.local.set({ 'webdavInterval': Date.now() + duration })
   }
 
   /**

@@ -70,10 +70,10 @@ export function getALlDicts () {
       options: {
         /** Keep linebreaks on PDF */
         pdfNewline: false,
-        tl: 'default' as 'default' | 'zh' | 'cht' | 'en',
+        tl: 'default' as 'default' | 'zh' | 'cht' | 'en' | 'jp' | 'kor' | 'fra' | 'de' | 'spa',
       },
       options_sel: {
-        tl: ['default', 'zh', 'cht', 'en'],
+        tl: ['default', 'zh', 'cht', 'en', 'jp', 'kor', 'fra', 'de', 'spa'],
       },
     },
     bing: {
@@ -298,10 +298,10 @@ export function getALlDicts () {
         /** Keep linebreaks on PDF */
         pdfNewline: false,
         cnfirst: true,
-        tl: 'default' as 'default' | 'zh-CN' | 'zh-TW' | 'en',
+        tl: 'default' as 'default' | 'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es',
       },
       options_sel: {
-        tl: ['default', 'zh-CN', 'zh-TW', 'en'],
+        tl: ['default', 'zh-CN', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'de', 'es'],
       },
     },
     googledict: {
@@ -404,6 +404,40 @@ export function getALlDicts () {
         uas: ['fr', 'de', 'es'],
         aas: ['fr', 'de'],
         eas: ['fr', 'es'],
+      },
+    },
+    jukuu: {
+      lang: '11010000',
+      selectionLang: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: false,
+      },
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 300,
+      selectionWC: {
+        min: 1,
+        max: 99999,
+      },
+      options: {
+        lang: 'zheng' as 'zheng' | 'engjp' | 'zhjp'
+      },
+      options_sel: {
+        lang: ['zheng', 'engjp', 'zhjp']
       },
     },
     liangan: {
@@ -627,10 +661,10 @@ export function getALlDicts () {
       options: {
         /** Keep linebreaks on PDF */
         pdfNewline: false,
-        tl: 'default' as 'default' | 'zh-CHS' | 'zh-CHT' | 'en',
+        tl: 'default' as 'default' | 'zh-CHS' | 'zh-CHT' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es',
       },
       options_sel: {
-        tl: ['default', 'zh-CHS', 'zh-CHT', 'en'],
+        tl: ['default', 'zh-CHS', 'zh-CHT', 'en', 'ja', 'ko', 'fr', 'de', 'es'],
       },
     },
     urban: {

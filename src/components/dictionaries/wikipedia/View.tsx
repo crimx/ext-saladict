@@ -5,26 +5,12 @@ import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgDictEngineMethod } from '@/typings/message'
 
 interface WikipediaState {
-  cloneProps: ViewPorps<WikipediaResult> | null
   langList: null | LangList
 }
 
 export default class DictWikipedia extends React.PureComponent<ViewPorps<WikipediaResult>, WikipediaState> {
   state: WikipediaState = {
-    cloneProps: null,
     langList: null,
-  }
-
-  static getDerivedStateFromProps (props: ViewPorps<WikipediaResult>, state: WikipediaState) {
-    if (props !== state.cloneProps) {
-      return {
-        cloneProps: props,
-        langList: null,
-      }
-    }
-    return {
-      cloneProps: props,
-    }
   }
 
   handleEntryClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -84,7 +70,7 @@ export default class DictWikipedia extends React.PureComponent<ViewPorps<Wikiped
   }
 
   renderLangSelector () {
-    if (this.state.langList) {
+    if (this.state.langList && this.state.langList.length > 0) {
       return (
         <select
           style={{ width: '100%' }}
