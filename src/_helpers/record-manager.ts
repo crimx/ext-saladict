@@ -35,6 +35,30 @@ export interface Word {
 
 export type Area = 'notebook' | 'history'
 
+export function newWord (word?: Partial<Word>): Word {
+  return word
+    ? {
+      date: word.date || Date.now(),
+      text: word.text || '',
+      context: word.context || '',
+      title: word.title || '',
+      url: word.url || '',
+      favicon: word.favicon || '',
+      trans: word.trans || '',
+      note: word.note || '',
+    }
+    : {
+      date: Date.now(),
+      text: '',
+      context: '',
+      title: '',
+      url: '',
+      favicon: '',
+      trans: '',
+      note: '',
+    }
+}
+
 export function isInNotebook (info: SelectionInfo): Promise<boolean> {
   return message.send<MsgIsInNotebook>({ type: MsgType.IsInNotebook, info })
     .catch(logError(false))

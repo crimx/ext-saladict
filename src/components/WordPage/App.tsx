@@ -341,7 +341,8 @@ export class WordPageMain extends React.Component<WordPageMainInnerProps, WordPa
     </Button>
   }
 
-  renderText = (text: string): React.ReactNode => {
+  renderText = (text?: string): React.ReactNode => {
+    if (!text) { return '' }
     return text.split('\n').map((line, i) => (
       <div key={i}>{line}</div>
     ))

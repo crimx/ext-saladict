@@ -2,7 +2,7 @@ import React from 'react'
 import { translate, TranslationFunction } from 'react-i18next'
 import { Layout, Modal, Table } from 'antd'
 import { ColumnProps } from 'antd/lib/table/interface'
-import { Word } from '@/_helpers/record-manager'
+import { Word, newWord } from '@/_helpers/record-manager'
 import { storage } from '@/_helpers/browser-api'
 
 const { Content, Sider } = Layout
@@ -120,13 +120,17 @@ export class ExportModalBody extends React.Component<ExportModalInnerProps, Expo
   }
 
   processWords = (template: string): string => {
+    const keys = Object.keys(newWord())
     return this.props.rawWords
       .map(word =>
         template.replace(/%(\S+)%/g, (match, k) => {
-          if (k === 'date') {
-            return new Date(word.date).toLocaleDateString(this.props.locale)
+          if (keys.includes(k)) {
+            if (k === 'date') {
+              return new Date(word.date).toLocaleDateString(this.props.locale)
+            }
+            return word[k] || ''
           }
-          return typeof word[k] === 'string' ? word[k] : match
+          return match
         })
       )
       .join('\n')
