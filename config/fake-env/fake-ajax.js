@@ -31,6 +31,10 @@ const fakeXHRData = [
 
 const fakeFetchData = [
   {
+    test: { url: /jukuu\.com.*love$/ },
+    response: [require('raw-loader!../../test/specs/components/dictionaries/jukuu/response/love.html')],
+  },
+  {
     test: { url: /dict\.cnki\.net.*love$/ },
     response: [require('raw-loader!../../test/specs/components/dictionaries/cnki/response/love.html')],
   },

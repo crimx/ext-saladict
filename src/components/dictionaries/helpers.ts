@@ -25,7 +25,9 @@ export type HTMLString = string
 export interface ViewPorps<T> {
   result: T
   t: TranslationFunction
-  searchText: (arg?: { id?: DictID, info?: SelectionInfo, payload?: { [index: string]: any } }) => any
+  searchText: <P = { [index: string]: any }>(
+    arg?: { id?: DictID, info?: SelectionInfo, payload?: P }
+  ) => any
   recalcBodyHeight: () => void
 }
 
