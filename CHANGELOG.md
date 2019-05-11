@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.30.0"></a>
+# [6.30.0](https://github.com/crimx/ext-saladict/compare/v6.29.0...v6.30.0) (2019-05-11)
+
+
+### Bug Fixes
+
+* **sync:** replace settimeout with alarms ([05f1260](https://github.com/crimx/ext-saladict/commit/05f1260)), closes [#361](https://github.com/crimx/ext-saladict/issues/361)
+* check empty word fields ([60f8066](https://github.com/crimx/ext-saladict/commit/60f8066)), closes [#363](https://github.com/crimx/ext-saladict/issues/363)
+* typo ([8b0f3ff](https://github.com/crimx/ext-saladict/commit/8b0f3ff))
+* **dicts:** get correct lang list on consecutive searches ([4ad4dcf](https://github.com/crimx/ext-saladict/commit/4ad4dcf)), closes [#360](https://github.com/crimx/ext-saladict/issues/360)
+
+
+### Features
+
+* **dicts:** add jukuu ([a4775fd](https://github.com/crimx/ext-saladict/commit/a4775fd))
+
+
+
 <a name="6.29.0"></a>
 # [6.29.0](https://github.com/crimx/ext-saladict/compare/v6.28.1...v6.29.0) (2019-05-02)
 
