@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.31.0"></a>
+# [6.31.0](https://github.com/crimx/ext-saladict/compare/v6.30.0...v6.31.0) (2019-05-24)
+
+
+### Bug Fixes
+
+* **dicts:** caiyun options ([3efae72](https://github.com/crimx/ext-saladict/commit/3efae72))
+* update typings ([a3074e0](https://github.com/crimx/ext-saladict/commit/a3074e0))
+* **options:** use short title to prevent overflow ([52fb802](https://github.com/crimx/ext-saladict/commit/52fb802))
+
+
+### Features
+
+* **dicts:** add caiyun ([92ad971](https://github.com/crimx/ext-saladict/commit/92ad971))
+* **dicts:** add tencent translate ([46657ea](https://github.com/crimx/ext-saladict/commit/46657ea))
+
+
+
 <a name="6.30.0"></a>
 # [6.30.0](https://github.com/crimx/ext-saladict/compare/v6.29.0...v6.30.0) (2019-05-11)
 
