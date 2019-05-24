@@ -19,7 +19,7 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
     const { t, profile } = this.props
     const { getFieldDecorator } = this.props.form
     const dict = profile.dicts.all[dictID] as DictItem
-    const { options } = dict
+    const options = dict['options']
     if (!options) { return }
 
     const optionPath = `profile#dicts#all#${dictID}#options#`
@@ -73,7 +73,7 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
                     initialValue: value,
                   })(
                     <Radio.Group>
-                      {dict.options_sel![optKey].map(option => (
+                      {dict['options_sel'][optKey].map(option => (
                         <Radio value={option} key={option}>{
                           t(`dict:${dictID}_${optKey}-${option}`)
                         }</Radio>

@@ -47,10 +47,10 @@ Run `yarn zip` to pack zibballs to `./dist/`.
 
 ## How to add a dictionary
 
-1. Register the dictionary in [app config](./src/app-config/dicts.ts) so that TypeScript generates the correct typings. Dict ID **MUST** follow alphabetical order. See the top of the file for typings and explanations on each filed.
 1. Create a directory at [`src/components/dictionaries/`](./src/components/dictionaries/), with the name of the dict ID.
   1. Use any existing dictionary as guidance, e.g. [Bing](./src/components/dictionaries/bing). Copy files to the new directory.
   1. Replace the favicon with a new LOGO.
+  1. Edit `config.ts` to change default options. See the `DictItem` type and explanation for more details. Register the dictionary in [app config](./src/app-config/dicts.ts) so that TypeScript generates the correct typings. Dict ID **MUST** follow alphabetical order.
   1. Update `_locales.json` with the new dictionary name. Add locales for options, if any.
   1. `engine.ts` **MUST** export at least two functions:
      1. `getSrcPage` function which is responsible for generating source page url base on search text and app config. Source page url is opened when user clicks the dictionary title.

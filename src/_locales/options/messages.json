@@ -25,7 +25,7 @@
     "zh_TW": "關閉後这个字典將不會自動搜尋，除非點選「展開」箭頭。適合一些需要時再深入瞭解的字典，以加快初次查字典速度。"
   },
   "dict_lang_de": {
-    "en": "Deutsch",
+    "en": "De",
     "zh_CN": "德",
     "zh_TW": "德"
   },
@@ -35,12 +35,12 @@
     "zh_TW": "英"
   },
   "dict_lang_es": {
-    "en": "Español",
+    "en": "Es",
     "zh_CN": "西",
     "zh_TW": "西"
   },
   "dict_lang_fr": {
-    "en": "French",
+    "en": "Fr",
     "zh_CN": "法",
     "zh_TW": "法"
   },
@@ -50,7 +50,7 @@
     "zh_TW": "日"
   },
   "dict_lang_kor": {
-    "en": "Korean",
+    "en": "Kor",
     "zh_CN": "韩",
     "zh_TW": "韩"
   },
