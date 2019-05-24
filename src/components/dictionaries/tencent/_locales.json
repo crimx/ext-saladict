@@ -1,0 +1,64 @@
+{
+  "name": {
+    "en": "Tencent Translate",
+    "zh_CN": "腾讯翻译君",
+    "zh_TW": "騰訊翻譯君"
+  },
+  "options": {
+    "pdfNewline": {
+      "en": "Keep linebreaks on PDF",
+      "zh_CN": "PDF 保持换行",
+      "zh_TW": "PDF 保持換行"
+    },
+    "tl": {
+      "en": "Target language",
+      "zh_CN": "目标语言",
+      "zh_TW": "目標語言"
+    },
+    "tl-default": {
+      "en": "Default",
+      "zh_CN": "随扩展语言",
+      "zh_TW": "同介面語言"
+    },
+    "tl-zh": {
+      "en": "简体中文",
+      "zh_CN": "简体中文",
+      "zh_TW": "简体中文"
+    },
+    "tl-en": {
+      "en": "English",
+      "zh_CN": "English",
+      "zh_TW": "English"
+    },
+    "tl-jp": {
+      "en": "Japanese",
+      "zh_CN": "日文",
+      "zh_TW": "日文"
+    },
+    "tl-kr": {
+      "en": "Korean",
+      "zh_CN": "韩文",
+      "zh_TW": "韓文"
+    },
+    "tl-fr": {
+      "en": "French",
+      "zh_CN": "法文",
+      "zh_TW": "法文"
+    },
+    "tl-de": {
+      "en": "Deutsch",
+      "zh_CN": "德文",
+      "zh_TW": "德文"
+    },
+    "tl-es": {
+      "en": "Spanish",
+      "zh_CN": "西班牙文",
+      "zh_TW": "西班牙文"
+    },
+    "tl-ru": {
+      "en": "Russian",
+      "zh_CN": "俄语",
+      "zh_TW": "俄語"
+    }
+  }
+}

@@ -20,6 +20,7 @@ import naver from '@/components/dictionaries/naver/config'
 import oald from '@/components/dictionaries/oald/config'
 import shanbay from '@/components/dictionaries/shanbay/config'
 import sogou from '@/components/dictionaries/sogou/config'
+import tencent from '@/components/dictionaries/tencent/config'
 import urban from '@/components/dictionaries/urban/config'
 import vocabulary from '@/components/dictionaries/vocabulary/config'
 import weblio from '@/components/dictionaries/weblio/config'
@@ -52,6 +53,7 @@ export function getALlDicts () {
     oald: oald(),
     shanbay: shanbay(),
     sogou: sogou(),
+    tencent: tencent(),
     urban: urban(),
     vocabulary: vocabulary(),
     weblio: weblio(),
