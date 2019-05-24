@@ -11,5 +11,6 @@ export async function retry (executor: () => Promise<any>, retryTimes = 1) {
       await timer(1000)
     }
   }
+  console.error(error)
   return Promise.reject(error)
 }
