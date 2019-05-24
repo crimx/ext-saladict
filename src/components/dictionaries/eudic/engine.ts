@@ -29,7 +29,10 @@ export const search: SearchFunction<EudicSearchResult> = (
   text = encodeURIComponent(text.split(/\s+/).slice(0, 2).join(' '))
   const options = profile.dicts.all.eudic.options
 
-  return fetchDirtyDOM('https://dict.eudic.net/dicts/en/' + text)
+  return fetchDirtyDOM(
+      'https://dict.eudic.net/dicts/en/' + text,
+      { credentials: 'omit' },
+    )
     .catch(handleNetWorkError)
     .then(validator)
     .then(doc => handleDOM(doc, options))
@@ -90,7 +93,8 @@ function validator (doc: Document): Document | Promise<Document> {
     'https://dict.eudic.net/Dicts/en/tab-detail/-12',
     {
       method: 'POST',
-      body: formData
+      body: formData,
+      credentials: 'omit',
     }
   )
 }
