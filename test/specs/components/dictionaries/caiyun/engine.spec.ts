@@ -16,7 +16,7 @@ describe('Dict/Caiyun/engine', () => {
         search('我爱你', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
           .then(searchResult => {
             expect(isContainEnglish(searchResult.result.trans.text)).toBeTruthy()
-            expect(searchResult.result.trans.text).toMatch(/love/)
+            expect(searchResult.result.trans.text).toMatch(/love/i)
             expect(searchResult.audio).toBeUndefined()
             expect(searchResult.result.id).toBe('caiyun')
             expect(searchResult.result.sl).toBe('zh')
