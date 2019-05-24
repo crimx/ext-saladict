@@ -161,7 +161,7 @@ export function translation (): ProfileStorage {
   idItem.name = '%%_translation_%%'
 
   const profile = getDefaultProfile(idItem.id) as ProfileMutable
-  profile.dicts.selected = ['google', 'sogou', 'baidu', 'youdao', 'zdic', 'guoyu', 'liangan']
+  profile.dicts.selected = ['google', 'tencent', 'sogou', 'baidu', 'caiyun', 'youdao', 'zdic', 'guoyu', 'liangan']
   profile.mtaAutoUnfold = 'always'
 
   return { idItem, profile }
