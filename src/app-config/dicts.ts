@@ -111,6 +111,42 @@ export function getALlDicts () {
         sentence: 4
       }
     },
+    caiyun: {
+      lang: '11010000',
+      selectionLang: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      defaultUnfold: {
+        english: true,
+        chinese: true,
+        japanese: true,
+        korean: true,
+        french: true,
+        spanish: true,
+        deutsch: true,
+        others: true,
+      },
+      preferredHeight: 320,
+      selectionWC: {
+        min: 1,
+        max: 999999999999999,
+      },
+      options: {
+        /** Keep linebreaks on PDF */
+        pdfNewline: false,
+        tl: 'default' as 'default' | 'zh' | 'en' | 'ja',
+      },
+      options_sel: {
+        tl: ['default', 'zh', 'en', 'ja'],
+      },
+    },
     cambridge: {
       lang: '11100000',
       selectionLang: {
