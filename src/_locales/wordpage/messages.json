@@ -120,14 +120,14 @@
     "zh_TW": "片語和句子"
   },
   "title_history": {
-    "en": "Saladict Search History",
-    "zh_CN": "Saladict 查词记录",
-    "zh_TW": "Saladict 查單字紀錄"
+    "en": "Saladict Search History (local)",
+    "zh_CN": "Saladict 查词记录（仅本地保存）",
+    "zh_TW": "Saladict 查單字紀錄（只本地儲存）"
   },
   "title_notebook": {
-    "en": "Saladict Notebook",
-    "zh_CN": "Saladict 生词本",
-    "zh_TW": "Saladict 生字本"
+    "en": "Saladict Notebook (local)",
+    "zh_CN": "Saladict 生词本（仅本地保存）",
+    "zh_TW": "Saladict 生字本（只本地儲存）"
   },
   "wordcount_selected": {
     "en": "{{count}} item selected",
