@@ -32,7 +32,7 @@ const langcodes: ReadonlyArray<string> = [
 export const search: SearchFunction<CaiyunSearchResult, MachineTranslatePayload> = async (
   text, config, profile, payload
 ) => {
-  const options = profile.dicts.all.google.options
+  const options = profile.dicts.all.caiyun.options
 
   let sl: string = payload.sl || (
     isContainJapanese(text) ? 'ja' : isContainChinese(text) ? 'zh' : 'en'
