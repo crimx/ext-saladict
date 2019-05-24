@@ -70,10 +70,10 @@ export function getALlDicts () {
       options: {
         /** Keep linebreaks on PDF */
         pdfNewline: false,
-        tl: 'default' as 'default' | 'zh' | 'cht' | 'en' | 'jp' | 'kor' | 'fra' | 'de' | 'spa',
+        tl: 'default' as 'default' | 'zh' | 'cht' | 'en' | 'jp' | 'kor' | 'fra' | 'de' | 'spa' | 'ru',
       },
       options_sel: {
-        tl: ['default', 'zh', 'cht', 'en', 'jp', 'kor', 'fra', 'de', 'spa'],
+        tl: ['default', 'zh', 'cht', 'en', 'jp', 'kor', 'fra', 'de', 'spa', 'ru'],
       },
     },
     bing: {
@@ -334,10 +334,10 @@ export function getALlDicts () {
         /** Keep linebreaks on PDF */
         pdfNewline: false,
         cnfirst: true,
-        tl: 'default' as 'default' | 'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es',
+        tl: 'default' as 'default' | 'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'ru',
       },
       options_sel: {
-        tl: ['default', 'zh-CN', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'de', 'es'],
+        tl: ['default', 'zh-CN', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru'],
       },
     },
     googledict: {
@@ -697,10 +697,10 @@ export function getALlDicts () {
       options: {
         /** Keep linebreaks on PDF */
         pdfNewline: false,
-        tl: 'default' as 'default' | 'zh-CHS' | 'zh-CHT' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es',
+        tl: 'default' as 'default' | 'zh-CHS' | 'zh-CHT' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'ru',
       },
       options_sel: {
-        tl: ['default', 'zh-CHS', 'zh-CHT', 'en', 'ja', 'ko', 'fr', 'de', 'es'],
+        tl: ['default', 'zh-CHS', 'zh-CHT', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru'],
       },
     },
     urban: {
