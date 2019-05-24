@@ -28,20 +28,4 @@ describe('Dict/Caiyun/engine', () => {
       )
     }
   })
-
-  it('should parse result correctly with payload', () => {
-    if (process.env.CI) {
-      return retry(() =>
-        search('I love you', getDefaultConfig(), getDefaultProfile(), { sl: 'en', tl: 'ja', isPDF: false })
-          .then(searchResult => {
-            expect(searchResult.result.sl).toBe('en')
-            expect(searchResult.result.tl).toBe('ja')
-            if (process.env.CI) {
-              expect(isContainJapanese(searchResult.result.trans.text)).toBeTruthy()
-              expect(isContainEnglish(searchResult.result.searchText.text)).toBeTruthy()
-            }
-          })
-      )
-    }
-  })
 })
