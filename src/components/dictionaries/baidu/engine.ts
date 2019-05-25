@@ -49,12 +49,12 @@ const langcodes: ReadonlyArray<string> = [
 
 type BaiduSearchResult = DictSearchResult<BaiduResult>
 
-export const search: SearchFunction<BaiduSearchResult, MachineTranslatePayload> = (
+export const search: SearchFunction<BaiduSearchResult, MachineTranslatePayload> = async (
   text, config, profile, payload
 ) => {
   const options = profile.dicts.all.google.options
 
-  const sl: string = payload.sl || 'auto'
+  let sl: string = payload.sl || 'auto'
   const tl: string = payload.tl || (
     options.tl === 'default'
       ? config.langCode === 'en'
@@ -67,6 +67,12 @@ export const search: SearchFunction<BaiduSearchResult, MachineTranslatePayload> 
 
   if (payload.isPDF && !options.pdfNewline) {
     text = text.replace(/\n+/g, ' ')
+  }
+
+  if (!payload.sl) {
+    try {
+      sl = await remoteLangCheck(text)
+    } catch (e) {/* nothing */}
   }
 
   return getToken()
@@ -130,6 +136,22 @@ function handleJSON (
       }
     }
   }
+}
+
+function remoteLangCheck (text: string): Promise<string> {
+  return fetch(
+    'https://fanyi.baidu.com/langdetect',
+    {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      },
+      credentials: 'omit',
+      body: `query=${text}`,
+    },
+  )
+  .then(t => t.json())
+  .then(json => json && json.lan || Promise.reject())
 }
 
 async function getToken (): Promise<{ gtk: string, token: string }> {
