@@ -93,11 +93,12 @@ function handleJSON (json: any): TencentSearchResult | Promise<TencentSearchResu
     source: string
     target: string
   }
-  if (!tr || !tr.records || tr.records.length <= 0 || !tr.records[0].targetText) {
+  if (!tr || !tr.records || tr.records.length <= 0) {
     return handleNoResult()
   }
 
-  const { sourceText, targetText } = tr.records[0]
+  const sourceText = tr.records.map(r => r.sourceText || '').join('')
+  const targetText = tr.records.map(r => r.targetText || '').join('')
 
   return {
     result: {
