@@ -2,7 +2,6 @@ import {
   handleNoResult,
   MachineTranslatePayload,
   MachineTranslateResult,
-  handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
 } from '../helpers'

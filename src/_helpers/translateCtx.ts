@@ -5,11 +5,16 @@ import { message } from './browser-api'
 import { MsgFetchDictResult, MsgType } from '@/typings/message'
 const isSaladictPDFPage = !!window.__SALADICT_PDF_PAGE__
 
-export function translateCtx (text: string, ctxTrans: { [index: string]: boolean }): Promise<string> {
+/**
+ * translate selection context with selected machine translatiors
+ * @param text search text
+ * @param ctxTrans machine translatiors
+ */
+export function translateCtx (text: string, ctxTrans: { [id in DictID]: boolean }): Promise<string> {
   const ids = Object.keys(ctxTrans).filter(id => ctxTrans[id]) as DictID[]
   if (ids.length > 0) {
     const payload = { isPDF: isSaladictPDFPage }
-    return reflect<MachineTranslateResult>(
+    return reflect<MachineTranslateResult<DictID>>(
       ids.map(id => message.send<MsgFetchDictResult>({
         type: MsgType.FetchDictResult,
         id,

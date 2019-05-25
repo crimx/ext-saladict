@@ -1,7 +1,6 @@
 import {
   handleNoResult,
   MachineTranslateResult,
-  handleNetWorkError,
   SearchFunction,
   MachineTranslatePayload,
   GetSrcPageFunction,
