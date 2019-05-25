@@ -21,16 +21,65 @@
   }
 }
 
-.MachineTrans-LangSwitch {
-  margin-top: 1em;
+.MachineTrans-LangSwitchWrap {
+  position: relative;
+  min-height: 1.2em;
 }
 
 .MachineTrans-LangSwitchBtn {
+  position: absolute;
   font-weight: bold;
   color: #f9690e;
+  opacity: 0;
   cursor: pointer;
 
   &:hover {
     text-decoration: underline;
+  }
+}
+
+.MachineTrans-LangSwitch {
+  display: flex;
+  position: relative;
+  z-index: 100;
+}
+
+.MachineTrans-LangSwitch_Titles,
+.MachineTrans-LangSwitch_Selects {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: flex-end;
+  margin: 5px;
+}
+
+.MachineTrans-LangSwitch_Selects {
+  select:first-child {
+    margin-bottom: 5px;
+  }
+}
+
+/*-----------------------------------------------*\
+    States
+\*-----------------------------------------------*/
+.MachineTrans-LangSwitchBtn.isActive {
+  opacity: 1;
+}
+
+.isAnimate {
+  .MachineTrans-LangSwitchBtn {
+    transition: opacity 0.2s;
+  }
+  .MachineTrans-LangSwitch-enter {
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .MachineTrans-LangSwitch-entering {
+    opacity: 1;
+  }
+
+  .MachineTrans-LangSwitch-exit {
+    opacity: 0;
+    transition: opacity 0.1s;
   }
 }
