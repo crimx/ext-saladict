@@ -1,7 +1,6 @@
 import {
   handleNoResult,
   MachineTranslateResult,
-  handleNetWorkError,
   SearchFunction,
   MachineTranslatePayload,
   GetSrcPageFunction,
@@ -21,7 +20,7 @@ interface CaiyunStorage {
   tokenDate: number
 }
 
-export type CaiyunResult = MachineTranslateResult
+export type CaiyunResult = MachineTranslateResult<'caiyun'>
 
 type CaiyunSearchResult = DictSearchResult<CaiyunResult>
 
@@ -67,7 +66,7 @@ export const search: SearchFunction<CaiyunSearchResult, MachineTranslatePayload>
     text = text.replace(/\n+/g, ' ')
   }
 
-  const json = await fetch(
+  return fetch(
     'https://api.interpreter.caiyunai.com/v1/translator',
     {
       headers: {
@@ -90,9 +89,16 @@ export const search: SearchFunction<CaiyunSearchResult, MachineTranslatePayload>
     }
   )
   .then(r => r.json())
-  .catch(handleNetWorkError)
-
-  return handleJSON(json, sl, tl, text)
+  .then(json => handleJSON(json, sl, tl, text))
+  // return empty result so that user can still toggle language
+  .catch((): CaiyunSearchResult => ({
+    result: {
+      id: 'caiyun',
+      sl, tl, langcodes,
+      searchText: { text: '' },
+      trans: { text: '' }
+    }
+  }))
 }
 
 function handleJSON (

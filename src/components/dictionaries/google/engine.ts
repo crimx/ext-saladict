@@ -19,7 +19,7 @@ export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   return `https://translate.google.${domain}/#auto/${lang}/${text}`
 }
 
-export type GoogleResult = MachineTranslateResult
+export type GoogleResult = MachineTranslateResult<'google'>
 
 interface GoogleRawResult {
   json: string
@@ -70,6 +70,15 @@ export const search: SearchFunction<GoogleSearchResult, MachineTranslatePayload>
   ])
   .catch(() => fetchWithoutToken(sl, tl, text))
   .then(handleText)
+  // return empty result so that user can still toggle language
+  .catch((): GoogleSearchResult => ({
+    result: {
+      id: 'google',
+      sl, tl, langcodes,
+      searchText: { text: '' },
+      trans: { text: '' }
+    }
+  }))
 }
 
 function fetchWithToken (base: string, sl: string, tl: string, text: string): Promise<GoogleRawResult> {

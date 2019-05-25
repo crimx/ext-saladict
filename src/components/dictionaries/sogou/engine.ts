@@ -2,7 +2,6 @@ import {
   handleNoResult,
   MachineTranslatePayload,
   MachineTranslateResult,
-  handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
 } from '../helpers'
@@ -30,7 +29,7 @@ interface SogouStorage {
   tokenDate: number
 }
 
-export type SogouResult = MachineTranslateResult
+export type SogouResult = MachineTranslateResult<'sogou'>
 
 type SogouSearchResult = DictSearchResult<SogouResult>
 
@@ -72,8 +71,16 @@ export const search: SearchFunction<SogouSearchResult, MachineTranslatePayload> 
     body: `from=${sl}&to=${tl}&text=${encodeURIComponent(text).replace(/%20/g, '+')}&uuid=${getUUID()}&s=${md5('' + sl + tl + text + await getSogouToken())}&client=pc&fr=browser_pc&useDetect=on&useDetectResult=on&needQc=1&oxford=on&isReturnSugg=on`
   })
   .then(r => r.json())
-  .catch(handleNetWorkError)
   .then(json => handleJSON(json, sl, tl))
+  // return empty result so that user can still toggle language
+  .catch((): SogouSearchResult => ({
+    result: {
+      id: 'sogou',
+      sl, tl, langcodes,
+      searchText: { text: '' },
+      trans: { text: '' }
+    }
+  }))
 }
 
 function handleJSON (json: any, sl: string, tl: string): SogouSearchResult | Promise<SogouSearchResult> {

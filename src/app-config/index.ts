@@ -225,6 +225,7 @@ function _getDefaultConfig () {
     /** context tranlate engines */
     ctxTrans: {
       google: true,
+      tencent: true,
       sogou: true,
       baidu: true,
     } as { [id in DictID]: boolean },

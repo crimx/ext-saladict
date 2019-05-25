@@ -21,7 +21,7 @@ export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   return `https://fanyi.baidu.com/#auto/${lang}/${text}`
 }
 
-export type BaiduResult = MachineTranslateResult
+export type BaiduResult = MachineTranslateResult<'baidu'>
 
 interface BaiduRawResult {
   error?: number
@@ -49,7 +49,7 @@ const langcodes: ReadonlyArray<string> = [
 
 type BaiduSearchResult = DictSearchResult<BaiduResult>
 
-export const search: SearchFunction<BaiduSearchResult, MachineTranslatePayload> = async (
+export const search: SearchFunction<BaiduSearchResult, MachineTranslatePayload> = (
   text, config, profile, payload
 ) => {
   const options = profile.dicts.all.google.options
@@ -69,22 +69,32 @@ export const search: SearchFunction<BaiduSearchResult, MachineTranslatePayload> 
     text = text.replace(/\n+/g, ' ')
   }
 
-  const { gtk, token } = await getToken()
-
-  return fetch('https://fanyi.baidu.com/v2transapi', {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      'cookie': process.env.NODE_ENV === 'test'
-        ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
-        : '',
-    },
-    body: `from=${sl}&to=${tl}&query=${encodeURIComponent(text).replace(/%20/g, '+')}&token=${token}&sign=${sign(text, gtk)}&transtype=translang&simple_means_flag=3`
-  })
+  return getToken()
+    .then(({ gtk, token }) => fetch(
+      'https://fanyi.baidu.com/v2transapi',
+      {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          'cookie': process.env.NODE_ENV === 'test'
+            ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
+            : '',
+        },
+        body: `from=${sl}&to=${tl}&query=${encodeURIComponent(text).replace(/%20/g, '+')}&token=${token}&sign=${sign(text, gtk)}&transtype=translang&simple_means_flag=3`
+      }
+    ))
     .then(r => r.json())
-    .catch(handleNetWorkError)
     .then(json => handleJSON(json, sl, tl))
+    // return empty result so that user can still toggle language
+    .catch((): BaiduSearchResult => ({
+      result: {
+        id: 'baidu',
+        sl, tl, langcodes,
+        searchText: { text: '' },
+        trans: { text: '' }
+      }
+    }))
 }
 
 function handleJSON (

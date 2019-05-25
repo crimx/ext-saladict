@@ -14,6 +14,13 @@ window.msgPageListeners = window.msgPageListeners || []
 window.msgBackgroundListeners = window.msgBackgroundListeners || []
 
 window.browser = {
+  alarms: {
+    onAlarm: {
+      addListener () {},
+      hasListener () {},
+      removeListener () {},
+    }
+  },
   browserAction: {
     setTitle () {},
     setBadgeText () {},

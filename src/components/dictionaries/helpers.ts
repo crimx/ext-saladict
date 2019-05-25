@@ -49,8 +49,8 @@ export interface MachineTranslatePayload {
   tl?: string
 }
 
-export interface MachineTranslateResult {
-  id: DictID
+export interface MachineTranslateResult<ID extends DictID> {
+  id: ID
   /** Source language */
   sl: string
   /** Target language */

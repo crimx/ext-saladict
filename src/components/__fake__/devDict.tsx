@@ -53,7 +53,10 @@ export default function setupEnv ({
   require('../dictionaries/' + dict + '/_style.scss')
 
   const config = getDefaultConfig() as AppConfigMutable
-  // config.langCode = 'zh-TW'
+  // config.langCode = 'en'
+  // setTimeout(() => {
+  //   i18n.changeLanguage('en')
+  // }, 1000)
   const profile = getDefaultProfile() as ProfileMutable
   if (dictConfig) {
     profile.dicts.all[dict] = dictConfig
@@ -63,7 +66,7 @@ export default function setupEnv ({
     .then(result => {
       ReactDOM.render(
         <ProviderI18next i18n={i18n}>
-        <div className='panel-DictItem'>
+        <div className={`panel-DictItem${config.animation ? ' isAnimate' : ''}`}>
           <header className='panel-DictItem_Header'>
             <img className='panel-DictItem_Logo' src={require('@/components/dictionaries/' + dict + '/favicon.png')} alt='dict logo' />
             <h1 className='panel-DictItem_Title'>{dict}</h1>
