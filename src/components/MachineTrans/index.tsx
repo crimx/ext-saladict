@@ -1,8 +1,9 @@
 import React from 'react'
 import Speaker from '@/components/Speaker'
 import { ViewPorps, MachineTranslateResult } from '@/components/dictionaries/helpers'
+import { DictID } from '@/app-config'
 
-export default class MachineTrans extends React.PureComponent<ViewPorps<MachineTranslateResult>> {
+export default class MachineTrans extends React.PureComponent<ViewPorps<MachineTranslateResult<DictID>>> {
   state = {
     sl: this.props.result.sl,
     tl: this.props.result.tl,
@@ -91,16 +92,19 @@ export default class MachineTrans extends React.PureComponent<ViewPorps<MachineT
   }
 }
 
-function TText ({ source }: { source: MachineTranslateResult['searchText'] | MachineTranslateResult['trans'] }) {
+type TTextSource = MachineTranslateResult<DictID>['searchText'] |
+  MachineTranslateResult<DictID>['trans']
+
+function TText ({ source }: { source: TTextSource }) {
+  if (!source.text) {
+    return null
+  }
   return (
-    <div className='MachineTrans-Lines'>{
-      source.text.split('\n').map((line, i) => {
-        if (i === 0) {
-          return <p key={i}><Speaker src={source.audio} /> {line}</p>
-        } else {
-          return <p key={i}>{line}</p>
-        }
-      })
-    }</div>
+    <div className='MachineTrans-Lines'>
+      <Speaker src={source.audio} />
+      {source.text.split('\n').map(
+        (line, i) => <p key={i}>{line}</p>
+      )}
+    </div>
   )
 }

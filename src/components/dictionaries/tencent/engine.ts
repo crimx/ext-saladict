@@ -33,7 +33,7 @@ interface TencentStorage {
   tokenDate: number
 }
 
-export type TencentResult = MachineTranslateResult
+export type TencentResult = MachineTranslateResult<'tencent'>
 
 type TencentSearchResult = DictSearchResult<TencentResult>
 
@@ -43,7 +43,7 @@ const langcodes: ReadonlyArray<string> = [
 
 let isSetupOriginModifier = false
 
-export const search: SearchFunction<TencentSearchResult, MachineTranslatePayload> = async (
+export const search: SearchFunction<TencentSearchResult, MachineTranslatePayload> = (
   text, config, profile, payload
 ) => {
   if (!isSetupOriginModifier) {
@@ -64,24 +64,31 @@ export const search: SearchFunction<TencentSearchResult, MachineTranslatePayload
     text = text.replace(/\n+/g, ' ')
   }
 
-  const token = await getToken()
-
-  return fetch(
-    'https://fanyi.qq.com/api/translate',
-    {
-      credentials: 'omit',
-      headers: {
-        'Accept': 'application/json, text/javascript, */*; q=0.01',
-        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        'X-Requested-With': 'XMLHttpRequest',
-      },
-      method: 'POST',
-      body: `source=${sl}&target=${tl}&sourceText=${encodeURIComponent(text)}&qtv=${encodeURIComponent(token.qtv)}&qtk=${encodeURIComponent(token.qtk)}&sessionUuid=translate_uuid${Date.now()}`
-    }
-  )
-  .then(r => r.json())
-  .catch(handleNetWorkError)
-  .then(handleJSON)
+  return getToken()
+    .then(({ qtv, qtk }) => fetch(
+      'https://fanyi.qq.com/api/translate',
+      {
+        credentials: 'omit',
+        headers: {
+          'Accept': 'application/json, text/javascript, */*; q=0.01',
+          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+          'X-Requested-With': 'XMLHttpRequest',
+        },
+        method: 'POST',
+        body: `source=${sl}&target=${tl}&sourceText=${encodeURIComponent(text)}&qtv=${encodeURIComponent(qtv)}&qtk=${encodeURIComponent(qtk)}&sessionUuid=translate_uuid${Date.now()}`
+      }
+    ))
+    .then(r => r.json())
+    .then(handleJSON)
+    // return empty result so that user can still toggle language
+    .catch((): TencentSearchResult => ({
+      result: {
+        id: 'tencent',
+        sl, tl, langcodes,
+        searchText: { text: '' },
+        trans: { text: '' }
+      }
+    }))
 }
 
 function handleJSON (json: any): TencentSearchResult | Promise<TencentSearchResult> {
