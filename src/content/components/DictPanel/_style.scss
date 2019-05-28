@@ -6,6 +6,7 @@
 }
 
 .panel-Root {
+  position: relative;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -44,7 +45,17 @@
   }
 }
 
-.panel-MtaBoxBtn {
+.panel-AudioBox {
+  position: absolute;
+  left: 0;
+  z-index: 100;
+  width: 100%;
+  overflow: hidden;
+  background: #fff;
+}
+
+.panel-MtaBoxBtn,
+.panel-AudioBoxBtn {
   width: 100%;
   height: 12px;
   overflow: hidden;
@@ -52,10 +63,22 @@
   cursor: pointer;
 }
 
-.panel-MtaBoxBtn_Arrow {
+.panel-AudioBoxBtn {
+  border-top: 1px solid rgb(221, 221, 221);
+  border-bottom: 1px solid rgb(221, 221, 221);
+}
+
+.panel-MtaBoxBtn_Arrow,
+.panel-AudioBoxBtn_Arrow {
   &.isActive {
     transform: rotate(180deg);
   }
+}
+
+.panel-AudioBoxFrame {
+  width: 100%;
+  height: 165px;
+  border: none;
 }
 
 .isAnimate {
@@ -63,7 +86,12 @@
     transition: height 0.4s;
   }
 
-  .panel-MtaBoxBtn_Arrow {
+  .panel-AudioBox {
+    transition: bottom 0.4s;
+  }
+
+  .panel-MtaBoxBtn_Arrow,
+  .panel-AudioBoxBtn_Arrow {
     transition: transform 0.2s;
   }
 }

@@ -54,6 +54,7 @@
     "@types/react-redux": "^5.0.16",
     "@types/react-transition-group": "^2.0.11",
     "@types/ua-parser-js": "^0.7.32",
+    "@types/wavesurfer.js": "^2.0.2",
     "antd": "3.7.x",
     "dexie": "^2.0.3",
     "dompurify": "^1.0.4",
@@ -68,6 +69,7 @@
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "react-i18next": "^7.6.0",
+    "react-number-editor": "^4.0.3",
     "react-redux": "^5.0.7",
     "react-sortable-hoc": "^1.4.0",
     "react-transition-group": "^2.3.1",
@@ -75,6 +77,7 @@
     "redux-thunk": "^2.2.0",
     "rxjs": "5.x",
     "ua-parser-js": "^0.7.19",
+    "wavesurfer.js": "^2.2.1",
     "web-ext-types": "crimx/web-ext-types"
   },
   "devDependencies": {
