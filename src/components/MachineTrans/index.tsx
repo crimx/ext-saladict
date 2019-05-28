@@ -24,13 +24,13 @@ export default class MachineTrans extends React.PureComponent<ViewPorps<MachineT
   showLangDelay = () => {
     clearTimeout(this._showLangTimeout)
     if (this.state.isShowLang) { return }
-    setTimeout(this.showLang, 500)
+    this._showLangTimeout = setTimeout(this.showLang, 500)
   }
 
   hideLangDelay = () => {
     clearTimeout(this._showLangTimeout)
     if (!this.state.isShowLang) { return }
-    setTimeout(this.hideLang, 800)
+    this._showLangTimeout = setTimeout(this.hideLang, 800)
   }
 
   handleLangChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -111,6 +111,7 @@ export default class MachineTrans extends React.PureComponent<ViewPorps<MachineT
             style={{ opacity: isShowLang ? 0 : 1 }}
             onClick={this.showLang}
             onMouseOver={this.showLangDelay}
+            onMouseLeave={this.hideLangDelay}
           >{t('machineTransSwitch')}</button>
           <CSSTransition
             classNames='MachineTrans-LangSwitch'
