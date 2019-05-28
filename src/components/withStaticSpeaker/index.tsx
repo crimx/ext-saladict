@@ -48,14 +48,17 @@ export function withStaticSpeaker<P> (
         // clearTimeout(this._audioDelayTimeout)
         evt.preventDefault()
         evt.stopPropagation()
-        message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src: evt.target['href'] })
+        message.self.send<MsgAudioPlay>({
+          type: MsgType.PlayAudio,
+          src: evt.target['href']
+        })
       }
     }
 
     // playAudio = (target: HTMLElement) => {
     //   const src = target.dataset.srcMp3
     //   if (src) {
-    //     message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
+    //     message.self.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
     //   }
     // }
 

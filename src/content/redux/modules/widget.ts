@@ -563,7 +563,6 @@ export function closePanel (): DispatcherThunk {
       dispatch(restoreWidget())
       dispatch(restoreDicts())
     }
-    message.send({ type: MsgType.PlayAudio, src: '' })
   }
 }
 

@@ -6,7 +6,6 @@ import { DictSearchResult } from '@/typings/server'
 import { SearchErrorType, SearchFunction, GetSrcPageFunction } from '@/components/dictionaries/helpers'
 import { syncServiceInit, syncServiceDownload, syncServiceUpload } from './sync-manager'
 import { isInNotebook, saveWord, deleteWords, getWordsByText, getWords } from './database'
-import { play } from './audio-manager'
 import './types'
 import {
   MsgType,
@@ -40,10 +39,8 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return openSrcPage(data as MsgOpenSrcPage)
     case MsgType.OpenURL:
       return openURL(data.url, data.self)
-    case MsgType.PlayAudio:
-      return playAudio(data as MsgAudioPlay)
     case MsgType.FetchDictResult:
-      return fetchDictResult(data as MsgFetchDictResult)
+      return fetchDictResult(data as MsgFetchDictResult, sender)
     case MsgType.DictEngineMethod:
       return callDictEngineMethod(data as MsgDictEngineMethod)
     case MsgType.GetClipboard:
@@ -250,12 +247,22 @@ function openSrcPage (data: MsgOpenSrcPage): Promise<void> {
   return openURL(getSrcPage(data.text, window.appConfig, window.activeProfile))
 }
 
-function playAudio (data: MsgAudioPlay): Promise<void> {
-  return play(data.src)
+function playAudio (src: string, sender: browser.runtime.MessageSender) {
+  if (sender.tab && sender.tab.id) {
+    return message.send<MsgAudioPlay & { __pageId__: number }>(
+      sender.tab.id,
+      {
+        type: MsgType.PlayAudio,
+        src,
+        __pageId__: sender.tab.id,
+      }
+    )
+  }
 }
 
 function fetchDictResult (
-  data: MsgFetchDictResult
+  data: MsgFetchDictResult,
+  sender: browser.runtime.MessageSender,
 ): Promise<any> {
   let search: SearchFunction<DictSearchResult<any>, NonNullable<MsgFetchDictResult['payload']>>
 
@@ -285,7 +292,7 @@ function fetchDictResult (
       if (audio) {
         const { cn, en } = window.appConfig.autopron
         if (audio.py && cn.dict === data.id) {
-          play(audio.py)
+          playAudio(audio.py, sender)
         } else if (en.dict === data.id) {
           const accents = en.accent === 'uk'
             ? ['uk', 'us']
@@ -293,7 +300,7 @@ function fetchDictResult (
 
           accents.some(lang => {
             if (audio[lang]) {
-              play(audio[lang])
+              playAudio(audio[lang], sender)
               return true
             }
             return false
