@@ -40,36 +40,29 @@
     height: 100%;
     width: 100%;
     padding: 5px;
+    border: none;
     font-family: inherit;
     resize: none;
   }
 }
 
 .panel-AudioBox {
-  position: absolute;
-  left: 0;
-  z-index: 100;
-  width: 100%;
   overflow: hidden;
   background: #fff;
+  font-size: 0;
 }
 
-.panel-MtaBoxBtn,
-.panel-AudioBoxBtn {
+.panel-DrawerBtn {
   width: 100%;
   height: 12px;
   overflow: hidden;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
   font-size: 0;
   cursor: pointer;
 }
 
-.panel-AudioBoxBtn {
-  border-top: 1px solid rgb(221, 221, 221);
-  border-bottom: 1px solid rgb(221, 221, 221);
-}
-
-.panel-MtaBoxBtn_Arrow,
-.panel-AudioBoxBtn_Arrow {
+.panel-DrawerBtn_Arrow {
   &.isActive {
     transform: rotate(180deg);
   }
@@ -82,16 +75,12 @@
 }
 
 .isAnimate {
-  .panel-MtaBox {
+  .panel-MtaBox,
+  .panel-AudioBox {
     transition: height 0.4s;
   }
 
-  .panel-AudioBox {
-    transition: bottom 0.4s;
-  }
-
-  .panel-MtaBoxBtn_Arrow,
-  .panel-AudioBoxBtn_Arrow {
+  .panel-DrawerBtn_Arrow {
     transition: transform 0.2s;
   }
 }

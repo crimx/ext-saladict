@@ -2,8 +2,9 @@ import React from 'react'
 import { DictionariesState, SearchStatus } from '../../redux/modules/dictionaries'
 import { DictID, MtaAutoUnfold, AllDicts } from '@/app-config'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
-import { MsgSelection } from '@/typings/message'
+import { MsgSelection, MsgType, MsgAudioPlay } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
+import { message } from '@/_helpers/browser-api'
 
 import CSSTransition from 'react-transition-group/CSSTransition'
 
@@ -259,9 +260,9 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
               {this.renderMtaBox}
             </CSSTransition>
           </div>
-          <button className='panel-MtaBoxBtn' onClick={this.toggleMtaBox}>
+          <button className='panel-DrawerBtn' onClick={this.toggleMtaBox}>
             <svg width='10' height='10' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'
-             className={'panel-MtaBoxBtn_Arrow' + (mtaBoxHeight > 0 ? ' isActive' : '')}
+             className={'panel-DrawerBtn_Arrow' + (mtaBoxHeight > 0 ? ' isActive' : '')}
             >
               <path d='M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56' />
             </svg>
@@ -284,17 +285,17 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
               })
             })}
           </div>
-          <div className='panel-AudioBox' style={{ bottom: audioBoxShow ? 0 : -165 }}>
-            <button className='panel-AudioBoxBtn' onClick={this.toggleAudioBox}>
-              <svg width='10' height='10' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'
-               className={'panel-AudioBoxBtn_Arrow' + (audioBoxShow ? ' isActive' : '')}
-              >
-                <path d='M 58 45.269 L 29.707 16.975 L 1.414 45.27 L 0 43.855 L 29.707 14.145 L 59.414 43.855' />
-              </svg>
-            </button>
-            <iframe className='panel-AudioBoxFrame' src={browser.runtime.getURL('/audio-control.html')} frameBorder='0' />
-          </div>
         </main>
+        <button className='panel-DrawerBtn' onClick={this.toggleAudioBox}>
+          <svg width='10' height='10' viewBox='0 0 59.414 59.414' xmlns='http://www.w3.org/2000/svg'
+            className={'panel-DrawerBtn_Arrow' + (audioBoxShow ? ' isActive' : '')}
+          >
+            <path d='M 58 45.269 L 29.707 16.975 L 1.414 45.27 L 0 43.855 L 29.707 14.145 L 59.414 43.855' />
+          </svg>
+        </button>
+        <div className='panel-AudioBox' style={{ height: audioBoxShow ? 165 : 0 }}>
+          <iframe className='panel-AudioBoxFrame' src={browser.runtime.getURL('/audio-control.html')} frameBorder='0' />
+        </div>
       </div>
     )
   }
