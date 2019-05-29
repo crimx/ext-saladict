@@ -4,6 +4,11 @@ import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min.js'
 import NumberEditor from 'react-number-editor'
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgAudioPlay } from '@/typings/message'
+import { SoundTouch, SimpleFilter, getWebAudioNode } from 'soundtouchjs'
+
+interface AnyObject {
+  [index: string]: any
+}
 
 interface WaveformState {
   blob?: Blob
@@ -12,12 +17,13 @@ interface WaveformState {
   loop: boolean
 }
 
-export default class Waveform extends React.PureComponent<
-  {},
-  WaveformState
-> {
+export default class Waveform extends React.PureComponent<{}, WaveformState> {
   wavesurfer: WaveSurfer | null | undefined
-  region: any | null | undefined
+  region: AnyObject | null | undefined
+  soundTouch: AnyObject | null | undefined
+  soundTouchNode: AnyObject | null | undefined
+  /** Sync Wavesurfer & SoundTouch position */
+  shouldSTSync: boolean = false
   src?: string
 
   state: WaveformState = {
@@ -26,7 +32,42 @@ export default class Waveform extends React.PureComponent<
     loop: false
   }
 
-  initWavesurfer () {
+  initSoundTouch = (wavesurfer: WaveSurfer) => {
+    const buffer = wavesurfer.backend.buffer
+    const bufferLength = buffer.length
+    const lChannel = buffer.getChannelData(0)
+    const rChannel =
+      buffer.numberOfChannels > 1 ? buffer.getChannelData(1) : lChannel
+    let seekingDiff = 0
+    const source = {
+      extract: (target, numFrames, position) => {
+        if (this.shouldSTSync) {
+          // get the new diff
+          seekingDiff =
+            ~~(wavesurfer.backend.getPlayedPercents() * bufferLength) - position
+          this.shouldSTSync = false
+        }
+
+        position += seekingDiff
+
+        for (let i = 0; i < numFrames; i++) {
+          target[i * 2] = lChannel[i + position]
+          target[i * 2 + 1] = rChannel[i + position]
+        }
+
+        return Math.min(numFrames, bufferLength - position)
+      }
+    }
+
+    this.soundTouch = new SoundTouch(wavesurfer.backend.ac.sampleRate)
+    this.soundTouchNode = getWebAudioNode(
+      wavesurfer.backend.ac,
+      new SimpleFilter(source, this.soundTouch)
+    )
+    wavesurfer.backend.setFilter(this.soundTouchNode)
+  }
+
+  initWavesurfer = () => {
     const wavesurfer = WaveSurfer.create({
       container: '#waveform-container',
       waveColor: '#f9690e',
@@ -39,41 +80,48 @@ export default class Waveform extends React.PureComponent<
     wavesurfer.enableDragSelection({})
 
     wavesurfer.on('region-created', region => {
-      this.removeRegin()
+      this.removeRegion()
       this.region = region
     })
-    wavesurfer.on('region-update-end', region => {
-      this.play(region.start)
-    })
+    wavesurfer.on('region-update-end', this.play)
     wavesurfer.on('region-out', this.onPlayEnd)
 
     wavesurfer.on('seek', () => {
-      if (this.region) {
-        const curTime = wavesurfer.getCurrentTime()
-        if (curTime < this.region.start || curTime > this.region.end) {
-          this.removeRegin()
-        }
+      if (!this.isInRegion()) {
+        this.removeRegion()
       }
+      this.shouldSTSync = true
     })
 
     wavesurfer.on('ready', this.play)
+
     wavesurfer.on('finish', this.onPlayEnd)
   }
 
-  play = (start?: number) => {
-    if (!this.wavesurfer) {
-      return
-    }
+  play = () => {
     this.setState({ isPlaying: true })
-    this.wavesurfer.play(start)
+    if (this.wavesurfer) {
+      if (this.soundTouchNode && this.wavesurfer.getFilters().length <= 0) {
+        this.wavesurfer.backend.setFilter(this.soundTouchNode)
+      }
+      if (this.region && !this.isInRegion()) {
+        this.wavesurfer.play(this.region.start)
+      } else {
+        this.wavesurfer.play()
+      }
+    }
+    this.shouldSTSync = true
   }
 
   pause = () => {
-    if (!this.wavesurfer) {
-      return
-    }
     this.setState({ isPlaying: false })
-    this.wavesurfer.pause()
+    if (this.soundTouchNode) {
+      this.soundTouchNode.disconnect()
+    }
+    if (this.wavesurfer) {
+      this.wavesurfer.pause()
+      this.wavesurfer.backend.disconnectFilters()
+    }
   }
 
   togglePlay = () => {
@@ -81,41 +129,80 @@ export default class Waveform extends React.PureComponent<
   }
 
   onPlayEnd = () => {
-    if (this.state.loop) {
-      this.play(this.region && this.region.start)
-    } else {
-      this.setState({ isPlaying: false })
-    }
+    // could be region end
+    this.state.loop ? this.play() : this.pause()
   }
 
   updateSpeed = (speed: number) => {
+    this.setState({ speed })
+
+    if (speed < 0.1 || speed > 3) {
+      return
+    }
+
     if (this.wavesurfer) {
+      if (speed !== 1) {
+        if (!this.soundTouch) {
+          this.initSoundTouch(this.wavesurfer)
+        }
+        this.soundTouch!.tempo = speed
+      }
       this.wavesurfer.setPlaybackRate(speed)
     }
-    this.setState({ speed })
+
+    this.shouldSTSync = true
   }
 
   updateLoop = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ loop: e.currentTarget.checked })
+    if (e.currentTarget.checked && !this.state.isPlaying) {
+      this.play()
+    }
   }
 
-  removeRegin = () => {
+  isInRegion = (region = this.region): boolean => {
+    if (region && this.wavesurfer) {
+      const curTime = this.wavesurfer.getCurrentTime()
+      return curTime >= region.start && curTime <= region.end
+    }
+    return false
+  }
+
+  removeRegion = () => {
     if (this.region) {
       this.region.remove()
     }
     this.region = null
   }
 
+  reset = () => {
+    this.removeRegion()
+    this.updateSpeed(1)
+    if (this.wavesurfer) {
+      this.wavesurfer.empty()
+      this.wavesurfer.backend.disconnectFilters()
+    }
+    if (this.soundTouch) {
+      this.soundTouch.clear()
+      this.soundTouch.tempo = 1
+    }
+    if (this.soundTouchNode) {
+      this.soundTouchNode.disconnect()
+    }
+    this.soundTouch = null
+    this.soundTouchNode = null
+    this.shouldSTSync = false
+  }
+
   componentDidMount () {
     message.self.addListener<MsgAudioPlay>(MsgType.PlayAudio, async message => {
-      console.log('play', message)
       if (message.src) {
         this.src = message.src
-        if (!this.wavesurfer) {
+        if (this.wavesurfer) {
+          this.reset()
+        } else {
           this.initWavesurfer()
         }
-        this.removeRegin()
-        this.wavesurfer!.empty()
         this.wavesurfer!.load(message.src)
         // https://github.com/katspaugh/wavesurfer.js/issues/1657
         if (this.wavesurfer!.backend.ac.state === 'suspended') {
@@ -123,14 +210,13 @@ export default class Waveform extends React.PureComponent<
           new Audio(message.src).play()
         }
       } else {
-        if (this.wavesurfer) {
-          this.wavesurfer.pause()
-        }
+        this.reset()
       }
     })
   }
 
   componentWillUnmount () {
+    this.reset()
     if (this.wavesurfer) {
       this.wavesurfer.destroy()
       this.wavesurfer = null
@@ -160,21 +246,35 @@ export default class Waveform extends React.PureComponent<
             value={this.state.speed}
             min={0.1} // too low could cause error
             max={3}
-            step={0.01}
+            step={0.005}
             decimals={3}
             onValueChange={this.updateSpeed}
           />
           <label className='saladict-waveformLoop' title='Loop'>
             {this.state.loop ? (
-              <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='#333'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                viewBox='0 0 512 512'
+                fill='#333'
+              >
                 <path d='M23.242 388.417l162.59 120.596v-74.925h300.281l-.297-240.358-89.555-.239-.44 150.801H185.832l.81-75.934-163.4 120.06z' />
                 <path d='M490.884 120.747L328.294.15l.001 74.925H28.013l.297 240.358 89.555.239.44-150.801h209.99l-.81 75.934 163.4-120.06z' />
               </svg>
             ) : (
-              <svg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg' fill='#999'>
+              <svg
+                viewBox='0 0 512 512'
+                xmlns='http://www.w3.org/2000/svg'
+                fill='#999'
+              >
                 <path d='M 23.242 388.417 L 23.243 388.417 L 23.242 388.418 Z M 23.243 388.418 L 186.642 268.358 L 185.832 344.292 L 283.967 344.292 L 331.712 434.088 L 185.832 434.088 L 185.832 509.013 Z M 395.821 344.292 L 396.261 193.491 L 485.816 193.73 L 486.113 434.088 L 388.064 434.088 L 340.319 344.292 Z' />
                 <path d='M 490.884 120.747 L 490.883 120.746 L 490.885 120.745 Z M 490.883 120.746 L 327.485 240.805 L 328.295 164.871 L 244.267 164.871 L 196.521 75.075 L 328.295 75.075 L 328.294 0.15 Z M 118.305 164.871 L 117.865 315.672 L 28.31 315.433 L 28.013 75.075 L 141.077 75.075 L 188.823 164.871 Z' />
-                <rect x='525.825' y='9.264' width='45.879' height='644.398' transform='matrix(0.882947, -0.469472, 0.469472, 0.882947, -403.998657, 225.106232)' />
+                <rect
+                  x='525.825'
+                  y='9.264'
+                  width='45.879'
+                  height='644.398'
+                  transform='matrix(0.882947, -0.469472, 0.469472, 0.882947, -403.998657, 225.106232)'
+                />
               </svg>
             )}
             <input

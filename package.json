@@ -76,6 +76,7 @@
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "rxjs": "5.x",
+    "soundtouchjs": "^0.1.5",
     "ua-parser-js": "^0.7.19",
     "wavesurfer.js": "^2.2.1",
     "web-ext-types": "crimx/web-ext-types"

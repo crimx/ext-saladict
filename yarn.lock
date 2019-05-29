@@ -9002,6 +9002,11 @@ sort-keys@^1.0.0:
   dependencies:
     is-plain-obj "^1.0.0"
 
+soundtouchjs@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.npm.taobao.org/soundtouchjs/download/soundtouchjs-0.1.5.tgz#89e6cae0fba8cf00d0928895d0a1ded1cef52cf2"
+  integrity sha1-iebK4PuozwDQkoiV0KHe0c71LPI=
+
 source-list-map@^2.0.0:
   version "2.0.0"
   resolved "http://registry.npm.taobao.org/source-list-map/download/source-list-map-2.0.0.tgz#aaa47403f7b245a92fbc97ea08f250d6087ed085"
