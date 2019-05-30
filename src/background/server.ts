@@ -258,6 +258,12 @@ function playAudio (src: string, sender: browser.runtime.MessageSender) {
       }
     )
   }
+
+  return message.send<MsgAudioPlay & { __pageId__: string }>({
+    type: MsgType.PlayAudio,
+    src,
+    __pageId__: 'popup',
+  })
 }
 
 function fetchDictResult (

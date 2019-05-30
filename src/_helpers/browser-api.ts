@@ -418,7 +418,7 @@ function initServer (): void {
     if (selfMsg) {
       const msgType = Number(selfMsg[1])
       message.type = isNaN(msgType) ? selfMsg[1] : msgType as MsgType
-      const tabId = sender.tab && sender.tab.id || message.__pageId__
+      const tabId = sender.tab && sender.tab.id
       if (tabId) {
         return messageSend(tabId, message)
       } else {
