@@ -1,6 +1,8 @@
 import { DictItem } from '@/app-config/dicts'
 
-export type ZdicConfig = DictItem
+export type ZdicConfig = DictItem<{
+  audio: boolean
+}>
 
 export default (): ZdicConfig => ({
   lang: '01000000',
@@ -29,4 +31,7 @@ export default (): ZdicConfig => ({
     min: 1,
     max: 5,
   },
+  options: {
+    audio: false
+  }
 })

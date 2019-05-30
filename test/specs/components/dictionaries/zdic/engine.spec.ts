@@ -23,8 +23,7 @@ describe('Dict/Zdic/engine', () => {
       search('爱', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
         .then(({ result, audio }) => {
           expect(audio && typeof audio.py).toBe('string')
-          expect(result.phsym.length).toBeGreaterThan(0)
-          expect(typeof result.defs).toBe('string')
+          expect(result.length).toBeGreaterThan(0)
         })
     )
   })
@@ -34,8 +33,7 @@ describe('Dict/Zdic/engine', () => {
       search('沙拉', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
         .then(({ result, audio }) => {
           expect(audio && typeof audio.py).toBe('string')
-          expect(result.phsym.length).toBeGreaterThan(0)
-          expect(typeof result.defs).toBe('string')
+          expect(result.length).toBeGreaterThan(0)
         })
     )
   })

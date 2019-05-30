@@ -3,5 +3,12 @@
     "en": "汉典",
     "zh_CN": "汉典",
     "zh_TW": "漢典"
+  },
+  "options": {
+    "audio": {
+      "en": "Enable audio",
+      "zh_CN": "开启发音",
+      "zh_TW": "啟用發音"
+    }
   }
 }
