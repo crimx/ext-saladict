@@ -53,6 +53,7 @@ export interface DictPanelProps extends ChildrenProps {
 interface DictPanelState {
   mtaBoxHeight: number
   audioBoxShow: boolean
+  shouldLoadAudioBox: boolean
 }
 
 export class DictPanel extends React.Component<DictPanelProps & { t: TranslationFunction }, DictPanelState> {
@@ -62,6 +63,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
   state: DictPanelState = {
     mtaBoxHeight: 0,
     audioBoxShow: false,
+    shouldLoadAudioBox: false,
   }
 
   searchText = (arg?: { id?: DictID, info?: SelectionInfo | string }) => {
@@ -142,6 +144,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
         this.MtaBoxRef.current.focus()
         this.MtaBoxRef.current.select()
       }
+      this.setState({ shouldLoadAudioBox: true })
     }, 100)
   }
 
@@ -216,6 +219,7 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
     const {
       mtaBoxHeight,
       audioBoxShow,
+      shouldLoadAudioBox,
     } = this.state
 
     const {
@@ -293,7 +297,10 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
           </svg>
         </button>
         <div className='panel-AudioBox' style={{ height: audioBoxShow ? 165 : 0 }}>
-          <iframe className='panel-AudioBoxFrame' src={browser.runtime.getURL('/audio-control.html')} frameBorder='0' />
+          {shouldLoadAudioBox
+            ? <iframe className='panel-AudioBoxFrame' src={browser.runtime.getURL('/audio-control.html')} frameBorder='0' />
+            : null
+          }
         </div>
       </div>
     )
