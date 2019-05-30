@@ -151,7 +151,7 @@ function remoteLangCheck (text: string): Promise<string> {
     },
   )
   .then(t => t.json())
-  .then(json => json && json.lan || Promise.reject())
+  .then(json => json && json.lan || Promise.reject(json))
 }
 
 async function getToken (): Promise<{ gtk: string, token: string }> {

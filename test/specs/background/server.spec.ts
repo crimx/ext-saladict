@@ -73,6 +73,7 @@ describe('Server', () => {
 
   beforeEach(() => {
     browser.flush()
+    browser.runtime.sendMessage.callsFake(() => Promise.resolve({}))
     chsToChz.mockReset()
     chsToChz.mockImplementation(t => t)
     play.mockReset()
@@ -99,15 +100,6 @@ describe('Server', () => {
     expect(chsToChz).toHaveBeenCalledTimes(0)
     expect(openURL).toHaveBeenCalledTimes(1)
     expect(openURL).toHaveBeenCalledWith('https://test.com/', undefined)
-  })
-
-  it('Audio Play', () => {
-    browser.runtime.onMessage.dispatch({
-      type: MsgType.PlayAudio,
-      src: 'https://test.com/a.mp3',
-    })
-    expect(play).toHaveBeenCalledTimes(1)
-    expect(play).toHaveBeenCalledWith('https://test.com/a.mp3')
   })
 
   describe('Fetch Dict Result', () => {
