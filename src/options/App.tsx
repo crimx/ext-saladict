@@ -2,6 +2,7 @@ import React from 'react'
 import { AppConfig } from '@/app-config'
 import { Profile, ProfileIDList } from '@/app-config/profiles'
 import { translate, TranslationFunction } from 'react-i18next'
+import { i18n } from 'i18next'
 import { Layout, Menu, Icon } from 'antd'
 import HeadInfo from './components/HeadInfo'
 import { getProfileName } from '@/_helpers/profile-manager'
@@ -24,7 +25,9 @@ interface OptionsMainState {
   selectedKey: string
 }
 
-export class OptionsMain extends React.Component<OptionsMainProps & { t: TranslationFunction }, OptionsMainState> {
+export class OptionsMain extends React.Component<
+  OptionsMainProps & { t: TranslationFunction, i18n: i18n }, OptionsMainState
+> {
   state: OptionsMainState = {
     selectedKey: menuselected,
   }
@@ -60,7 +63,7 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
   }
 
   render () {
-    const { t, config, profile, rawProfileName } = this.props
+    const { t, i18n, config, profile, rawProfileName } = this.props
 
     return (
       <Layout className='xmain-container' style={{ maxWidth: 1400, margin: '0 auto' }}>
@@ -98,7 +101,7 @@ export class OptionsMain extends React.Component<OptionsMainProps & { t: Transla
             >
               {React.createElement(
                 _optRequire(`./${this.state.selectedKey}/index.tsx`).default,
-                { t, config, profile }
+                { t, i18n, config, profile }
               )}
             </Content>
           </Layout>

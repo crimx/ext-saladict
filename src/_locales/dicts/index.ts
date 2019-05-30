@@ -4,6 +4,7 @@ import { getALlDicts } from '@/app-config/dicts'
 export interface RawDictLocales {
   name: RawLocale
   options?: RawLocales
+  helps?: RawLocale
 }
 
 export const dictsLocales: RawLocales = Object.keys(getALlDicts())
@@ -16,6 +17,14 @@ export const dictsLocales: RawLocales = Object.keys(getALlDicts())
         result[`${id}_${opt}`] = options[opt]
       })
     }
+
+    const helps = locale.helps
+    if (helps) {
+      Object.keys(helps).forEach(opt => {
+        result[`${id}_h_${opt}`] = helps[opt]
+      })
+    }
+
     return result
   }, {})
 

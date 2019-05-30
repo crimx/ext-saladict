@@ -16,7 +16,7 @@ export type EditDictModalProps = Props & FormComponentProps & {
 
 export class EditDictModal extends React.Component<EditDictModalProps> {
   renderMoreOptions = (dictID: DictID) => {
-    const { t, profile } = this.props
+    const { t, i18n, profile } = this.props
     const { getFieldDecorator } = this.props.form
     const dict = profile.dicts.all[dictID] as DictItem
     const options = dict['options']
@@ -37,6 +37,10 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
                   {...formItemModalLayout}
                   key={optKey}
                   label={t(`dict:${dictID}_${optKey}`)}
+                  help={i18n.exists(`dict:${dictID}_h_${optKey}`)
+                    ? t(`dict:${dictID}_h_${optKey}`)
+                    : null
+                  }
                 >{
                   getFieldDecorator(optionPath + optKey, {
                     initialValue: value,
@@ -52,6 +56,10 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
                   {...formItemModalLayout}
                   key={optKey}
                   label={t(`dict:${dictID}_${optKey}`)}
+                  help={i18n.exists(`dict:${dictID}_h_${optKey}`)
+                    ? t(`dict:${dictID}_h_${optKey}`)
+                    : null
+                  }
                 >{
                   getFieldDecorator(optionPath + optKey, {
                     initialValue: value,
@@ -67,6 +75,10 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
                   {...formItemModalLayout}
                   key={optKey}
                   label={t(`dict:${dictID}_${optKey}`)}
+                  help={i18n.exists(`dict:${dictID}_h_${optKey}`)
+                    ? t(`dict:${dictID}_h_${optKey}`)
+                    : null
+                  }
                   style={{ marginBottom: 0 }}
                 >{
                   getFieldDecorator(optionPath + optKey, {
