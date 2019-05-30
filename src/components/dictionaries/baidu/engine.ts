@@ -134,6 +134,9 @@ function handleJSON (
         text: searchText,
         audio: `https://fanyi.baidu.com/gettts?lan=${sl}&text=${encodeURIComponent(searchText)}&spd=3&source=web`,
       }
+    },
+    audio: {
+      us: `https://fanyi.baidu.com/gettts?lan=${tl}&text=${encodeURIComponent(transText)}&spd=3&source=web`
     }
   }
 }

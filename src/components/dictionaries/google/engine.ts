@@ -141,15 +141,16 @@ function handleText (
     .join(' ')
 
   if (transText.length > 0) {
+    const transAudio = tk1 || tk2
+      ? `${base}/translate_tts?ie=UTF-8&q=${encodeURIComponent(transText)}&tl=${tl}&total=1&idx=0&tk=${getTK(transText, tk1, tk2)}&client=t`
+      : ''
     return {
       result: {
         id: 'google',
         sl, tl, langcodes,
         trans: {
           text: transText,
-          audio: tk1 || tk2
-            ? `${base}/translate_tts?ie=UTF-8&q=${encodeURIComponent(transText)}&tl=${tl}&total=1&idx=0&tk=${getTK(transText, tk1, tk2)}&client=t`
-            : ''
+          audio: transAudio
         },
         searchText: {
           text,
@@ -157,6 +158,9 @@ function handleText (
             ? `${base}/translate_tts?ie=UTF-8&q=${encodeURIComponent(text)}&tl=${data[2]}&total=1&idx=0&tk=${getTK(text, tk1, tk2)}&client=t`
             : ''
         }
+      },
+      audio: {
+        us: transAudio
       }
     }
   }
