@@ -65,7 +65,7 @@ $halfWaveformPlayWidth: $waveformPlayWidth / 2;
   }
 
   &.isPlaying:after {
-    right: -$halfWaveformPlayWidth;
+    right: -($halfWaveformPlayWidth - 0.05em);
     height: $waveformPlayWidth;
     border-width: 0 ($halfWaveformPlayWidth - 0.05em);
   }
@@ -76,7 +76,7 @@ $halfWaveformPlayWidth: $waveformPlayWidth / 2;
   text-align: center;
 }
 
-.saladict-waveformLoop {
+.saladict-waveformBtn_label {
   display: block;
   width: 1.3em;
   height: 1.3em;
@@ -85,11 +85,15 @@ $halfWaveformPlayWidth: $waveformPlayWidth / 2;
   cursor: pointer;
 }
 
-.saladict-waveformLoop > input {
+.saladict-waveformBtn_label > input {
   display: inline-block;
   position: absolute;
   width: 0;
   height: 0;
   opacity: 0;
   z-index: -20000px;
+}
+
+.saladict-waveformPitch {
+  margin: 0.5em 0;
 }

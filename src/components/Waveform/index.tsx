@@ -2,7 +2,7 @@ import * as React from 'react'
 import WaveSurfer from 'wavesurfer.js'
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min.js'
 import NumberEditor from 'react-number-editor'
-import { message } from '@/_helpers/browser-api'
+import { message, storage } from '@/_helpers/browser-api'
 import { MsgType, MsgAudioPlay } from '@/typings/message'
 import { SoundTouch, SimpleFilter, getWebAudioNode } from 'soundtouchjs'
 
@@ -15,7 +15,11 @@ interface WaveformState {
   isPlaying: boolean
   speed: number
   loop: boolean
+  /** use pitch stretcher */
+  pitchStretch: boolean
 }
+
+const isFirefox = navigator.userAgent.includes('Firefox')
 
 export default class Waveform extends React.PureComponent<{}, WaveformState> {
   wavesurfer: WaveSurfer | null | undefined
@@ -29,7 +33,8 @@ export default class Waveform extends React.PureComponent<{}, WaveformState> {
   state: WaveformState = {
     isPlaying: false,
     speed: 1,
-    loop: false
+    loop: false,
+    pitchStretch: !isFirefox
   }
 
   initSoundTouch = (wavesurfer: WaveSurfer) => {
@@ -101,7 +106,10 @@ export default class Waveform extends React.PureComponent<{}, WaveformState> {
   play = () => {
     this.setState({ isPlaying: true })
     if (this.wavesurfer) {
-      if (this.soundTouchNode && this.wavesurfer.getFilters().length <= 0) {
+      if (this.state.pitchStretch &&
+          this.soundTouchNode &&
+          this.wavesurfer.getFilters().length <= 0
+      ) {
         this.wavesurfer.backend.setFilter(this.soundTouchNode)
       }
       if (this.region && !this.isInRegion()) {
@@ -141,22 +149,50 @@ export default class Waveform extends React.PureComponent<{}, WaveformState> {
     }
 
     if (this.wavesurfer) {
-      if (speed !== 1) {
-        if (!this.soundTouch) {
-          this.initSoundTouch(this.wavesurfer)
-        }
-        this.soundTouch!.tempo = speed
-      }
       this.wavesurfer.setPlaybackRate(speed)
+      if (speed !== 1 && this.state.pitchStretch && !this.soundTouch) {
+        this.initSoundTouch(this.wavesurfer)
+      }
+      if (this.soundTouch) {
+        this.soundTouch.tempo = speed
+      }
     }
 
     this.shouldSTSync = true
   }
 
-  updateLoop = (e: React.ChangeEvent<HTMLInputElement>) => {
+  toggleLoop = (e: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ loop: e.currentTarget.checked })
     if (e.currentTarget.checked && !this.state.isPlaying) {
       this.play()
+    }
+  }
+
+  togglePitchStretch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    this.updatePitchStretch(e.currentTarget.checked)
+    storage.local.set({ waveform_pitch: e.currentTarget.checked })
+  }
+
+  updatePitchStretch = (flag: boolean) => {
+    this.setState({ pitchStretch: flag })
+
+    if (flag) {
+      if (
+        this.state.speed !== 1 &&
+        this.soundTouchNode &&
+        this.wavesurfer &&
+        this.wavesurfer.getFilters().length <= 0
+      ) {
+        this.wavesurfer.backend.setFilter(this.soundTouchNode)
+        this.shouldSTSync = true
+      }
+    } else {
+      if (this.soundTouchNode) {
+        this.soundTouchNode.disconnect()
+      }
+      if (this.wavesurfer) {
+        this.wavesurfer.backend.disconnectFilters()
+      }
     }
   }
 
@@ -179,6 +215,7 @@ export default class Waveform extends React.PureComponent<{}, WaveformState> {
     this.removeRegion()
     this.updateSpeed(1)
     if (this.wavesurfer) {
+      this.wavesurfer.pause()
       this.wavesurfer.empty()
       this.wavesurfer.backend.disconnectFilters()
     }
@@ -211,6 +248,12 @@ export default class Waveform extends React.PureComponent<{}, WaveformState> {
         }
       } else {
         this.reset()
+      }
+    })
+
+    storage.local.get('waveform_pitch').then(({ waveform_pitch }) => {
+      if (waveform_pitch != null) {
+        this.updatePitchStretch(Boolean(waveform_pitch))
       }
     })
   }
@@ -250,7 +293,7 @@ export default class Waveform extends React.PureComponent<{}, WaveformState> {
             decimals={3}
             onValueChange={this.updateSpeed}
           />
-          <label className='saladict-waveformLoop' title='Loop'>
+          <label className='saladict-waveformBtn_label' title='Loop'>
             {this.state.loop ? (
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -280,9 +323,25 @@ export default class Waveform extends React.PureComponent<{}, WaveformState> {
             <input
               type='checkbox'
               checked={this.state.loop}
-              onChange={this.updateLoop}
+              onChange={this.toggleLoop}
             />
           </label>
+          {!isFirefox && (// @TOFIX SoundTouch bug with Firefox
+            <label className='saladict-waveformPitch saladict-waveformBtn_label' title='Pitch Stretch'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                viewBox='0 0 467.987 467.987'
+                fill={this.state.pitchStretch ? '#333' : '#999'}
+              >
+                <path d='M70.01 146.717h47.924V321.27H70.01zM210.032 146.717h47.924V321.27h-47.924zM350.053 146.717h47.924V321.27h-47.924zM0 196.717h47.924v74.553H0zM280.042 196.717h47.924v74.553h-47.924zM420.063 196.717h47.924v74.553h-47.924zM140.021 96.717h47.924V371.27h-47.924z' />
+              </svg>
+              <input
+                type='checkbox'
+                checked={this.state.pitchStretch}
+                onChange={this.togglePitchStretch}
+              />
+            </label>
+          )}
         </div>
       </div>
     )
