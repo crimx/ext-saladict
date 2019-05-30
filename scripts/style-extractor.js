@@ -10,7 +10,7 @@ const path = require('path')
 function getIdsAndClassNames (root) {
   const result = new Set()
   _fn(root)
-  return Array.from(result).join('\n')
+  return Array.from(result).map(x => `'${x}',`).join('\n')
 
   function _fn (node) {
     if  (!node) { return }
@@ -26,22 +26,24 @@ function getIdsAndClassNames (root) {
 
 /**
  * Get relevant styles if the selector contains the keywords..
- * @param {string[]} attrs - i.e. [".head", "red"]
+ * @param {string[]} attrs - i.e. ["head", "red"]
  * @param {string} from - css path
  * @param {string} to - css path
  */
 function getStylesByAttrs (attrs, from, to) {
-  attrs = new Set(attrs.map(n => n.toLowerCase().replace(/[^a-z-_]/g, '')))
   let result = ''
 
   fs.readFile(from, (err, source) => {
     const root = postcss.parse(source, { from, to })
     root.walkRules(rule => {
-      const selectors = rule.selector.toLowerCase().split(/[^a-z-_]+/)
-      if (selectors.some(s => s && attrs.has(s))) {
+      const selector = rule.selector.toLowerCase()
+      if (attrs.some(attr => selector.includes(attr))) {
         result += rule.toString() + '\n\n'
         rule.remove()
       }
+    })
+    root.walkAtRules(rule => {
+      result += rule.toString() + '\n\n'
     })
     fs.writeFile(to, result, () => true)
   })
