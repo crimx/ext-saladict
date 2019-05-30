@@ -2,9 +2,8 @@ import React from 'react'
 import { DictionariesState, SearchStatus } from '../../redux/modules/dictionaries'
 import { DictID, MtaAutoUnfold, AllDicts } from '@/app-config'
 import { SelectionInfo, getDefaultSelectionInfo } from '@/_helpers/selection'
-import { MsgSelection, MsgType, MsgAudioPlay } from '@/typings/message'
+import { MsgSelection } from '@/typings/message'
 import { Omit } from '@/typings/helpers'
-import { message } from '@/_helpers/browser-api'
 
 import CSSTransition from 'react-transition-group/CSSTransition'
 
