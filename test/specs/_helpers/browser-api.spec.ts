@@ -10,8 +10,8 @@ describe('Browser API Wapper', () => {
     delete window.faviconURL
     delete window.pageTitle
     delete window.pageURL
-    browser.runtime.sendMessage.callsFake(() => Promise.resolve())
-    browser.tabs.sendMessage.callsFake(() => Promise.resolve())
+    browser.runtime.sendMessage.callsFake(() => Promise.resolve({}))
+    browser.tabs.sendMessage.callsFake(() => Promise.resolve({}))
   })
 
   describe('Storage', () => {
@@ -310,8 +310,8 @@ describe('Browser API Wapper', () => {
 
       browser.runtime.sendMessage.flush()
       browser.tabs.sendMessage.flush()
-      browser.runtime.sendMessage.callsFake(() => Promise.resolve())
-      browser.tabs.sendMessage.callsFake(() => Promise.resolve())
+      browser.runtime.sendMessage.callsFake(() => Promise.resolve({}))
+      browser.tabs.sendMessage.callsFake(() => Promise.resolve({}))
 
       message.send(tabId, msg)
       expect(browser.tabs.sendMessage.calledWith(tabId, msg)).toBeTruthy()
@@ -471,7 +471,8 @@ describe('Browser API Wapper', () => {
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
 
         browser.runtime.onMessage.dispatch({ type: '[[1]]', __pageId__: 1 }, {})
-        expect(browser.runtime.sendMessage.calledWith({ type: 1, __pageId__: 1 })).toBeFalsy()
+        expect(browser.runtime.sendMessage.calledWith({ type: 1, __pageId__: 1 })).toBeTruthy()
+        browser.runtime.sendMessage.resetHistory()
 
         browser.runtime.onMessage.dispatch({ type: '[[1]]', __pageId__: 1 }, { tab })
         expect(browser.tabs.sendMessage.calledWith(tab.id, { type: 1, __pageId__: 1 })).toBeTruthy()

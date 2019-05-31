@@ -17,7 +17,6 @@ describe('Dict/Sogou/engine', () => {
           .then(searchResult => {
             expect(isContainEnglish(searchResult.result.trans.text)).toBeTruthy()
             expect(searchResult.result.trans.text).toMatch(/love/)
-            expect(searchResult.audio).toBeUndefined()
             expect(searchResult.result.id).toBe('sogou')
             expect(searchResult.result.sl).toBe('auto')
             expect(searchResult.result.tl).toBe('en')

@@ -63,6 +63,11 @@ describe('Initialization', () => {
   let mergeConfig: jest.Mock
   let mergeProfile: jest.Mock
 
+  beforeAll(() => {
+    browser.runtime.sendMessage.callsFake(() => Promise.resolve({}))
+    browser.tabs.sendMessage.callsFake(() => Promise.resolve({}))
+  })
+
   beforeEach(() => {
     browser.flush()
     jest.resetModules()

@@ -21,6 +21,9 @@ describe('Server', () => {
   browserWrap.openURL = openURL
 
   beforeAll(() => {
+    browser.runtime.sendMessage.callsFake(() => Promise.resolve({}))
+    browser.tabs.sendMessage.callsFake(() => Promise.resolve({}))
+
     jest.doMock('@/background/sync-manager', () => {})
 
     jest.doMock('@/_helpers/chs-to-chz', () => {

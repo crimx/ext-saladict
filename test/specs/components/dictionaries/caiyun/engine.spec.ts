@@ -17,7 +17,6 @@ describe('Dict/Caiyun/engine', () => {
           .then(searchResult => {
             expect(isContainEnglish(searchResult.result.trans.text)).toBeTruthy()
             expect(searchResult.result.trans.text).toMatch(/love/i)
-            expect(searchResult.audio).toBeUndefined()
             expect(searchResult.result.id).toBe('caiyun')
             expect(searchResult.result.sl).toBe('zh')
             expect(searchResult.result.tl).toBe('en')
