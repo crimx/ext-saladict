@@ -297,8 +297,12 @@ export class DictPanel extends React.Component<DictPanelProps & { t: Translation
           </svg>
         </button>
         <div className='panel-AudioBox' style={{ height: audioBoxShow ? 165 : 0 }}>
-          {shouldLoadAudioBox
-            ? <iframe className='panel-AudioBoxFrame' src={browser.runtime.getURL('/audio-control.html')} frameBorder='0' />
+          {shouldLoadAudioBox // x-frame-options: SAMEORIGIN
+            ? <iframe
+                className='panel-AudioBoxFrame'
+                src={browser.runtime.getURL('/audio-control.html')}
+                sandbox='allow-same-origin allow-scripts'
+              />
             : null
           }
         </div>

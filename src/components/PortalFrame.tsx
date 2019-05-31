@@ -220,6 +220,7 @@ export default class PortalFrame extends React.PureComponent<PortalFrameProps, P
         ref={this._setRef}
         name={name || 'React Portal Frame'}
         srcDoc={`<!DOCTYPE html><html><head>${head || ''}</head></html>`}
+        sandbox='allow-same-origin allow-scripts'
       >
         {root &&
           ReactDOM.createPortal(
