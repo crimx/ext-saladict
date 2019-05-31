@@ -97,12 +97,17 @@ async function onInstalled ({ reason, previousVersion }: { reason: string, previ
     }
 
     if (data) {
-      // ignore patch updates
-      if ((data.name && data.name.endsWith('#')) ||
-          !previousVersion ||
-          previousVersion.replace(/[^.]*$/, '') !== browser.runtime.getManifest().version.replace(/[^.]*$/, '')
-      ) {
+      if (data.name && data.name.endsWith('#') || !previousVersion) {
         showNews(data)
+      } else if (previousVersion) {
+        // ignore patch updates
+        const prev = previousVersion.split('.')
+        const curr = browser.runtime.getManifest().version.split('.')
+        if (+prev[0] < +curr[0] || (
+            prev[0] === curr[0] && +prev[1] < +curr[1]
+        )) {
+          showNews(data)
+        }
       }
     }
   }
@@ -171,20 +176,37 @@ function genClickListener (url: string) {
 }
 
 function showNews (data: UpdateData) {
-  const message = data.body
-    ? (data.body.match(/^\d+\..+/gm) || []) // ordered list
-      .map(line => line.replace(/\[(\S+)\](?:\(\S+\)|\[\S+\])/g, '$1')) // strip markdown link
-      .join('\n')
-    : ''
-  if (data.tag_name) {
-    browser.notifications.create('oninstall', {
-      type: 'basic',
-      iconUrl: browser.runtime.getURL(`static/icon-128.png`),
-      title: `Saladict ${data.tag_name} 新增特性：`,
-      message,
-      buttons: [{ title: '查看更新介绍' }],
-      eventTime: Date.now() + 10000,
-      priority: 2,
-    })
-  }
+  setTimeout(() => {
+    const isZh = window.appConfig.langCode.startsWith('zh')
+    const lineMatcher = isZh ? /^\d+\..+/gm : /^ {3}.+/gm
+    const message = data.body
+      ? (data.body.match(lineMatcher) || []) // ordered list
+        .map((line, i) => (
+          `${i + 1}. ` +
+          line.slice(3).replace(/\[(.+)\](?:\(\S+\)|\[\S+\])/g, '$1') // strip markdown link
+        ))
+        .join('\n')
+      : ''
+    if (data.tag_name) {
+      const options = {
+        type: 'basic',
+        iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+        title: isZh
+          ? `沙拉查词已更新到 ${data.tag_name}`
+          : `Saladict has updated to ${data.tag_name}`,
+        message,
+        buttons: [{ title: isZh ? '查看更新介绍' : 'More Info' }],
+        priority: 2,
+      } as any
+
+      if (window.navigator.userAgent.includes('Firefox')) {
+        options.eventTime = Date.now() + 10000
+      } else {
+        options.requireInteraction = true
+        options.silent = true
+      }
+
+      browser.notifications.create('oninstall', options)
+    }
+  }, 5000)
 }
