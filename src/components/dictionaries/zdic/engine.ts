@@ -99,6 +99,7 @@ function modifyReferer () {
       return { requestHeaders: details.requestHeaders }
     },
     { urls: ['https://img.zdic.net/audio/*'] },
-    extraInfoSpec,
+    /** WebExt type is missing Chrome support */
+    extraInfoSpec as any,
   )
 }
