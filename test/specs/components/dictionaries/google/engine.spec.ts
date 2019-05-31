@@ -29,7 +29,6 @@ describe('Dict/Google/engine', () => {
           } else {
             expect(searchResult.result.trans.text).toBe('“当你不需要的时候，这就是你所读到的东西，当你无法帮助它时，它将决定你将会是什么。”\n - 奥斯卡·王尔德\n 成功一夜成名需要很长时间。')
           }
-          expect(searchResult.audio).toBeUndefined()
           expect(searchResult.result.id).toBe('google')
           expect(searchResult.result.sl).toBe('auto')
           expect(searchResult.result.tl).toBe('en')

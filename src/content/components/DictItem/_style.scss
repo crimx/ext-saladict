@@ -1,5 +1,11 @@
 .panel-DictItem {
   position: relative;
+
+  &:first-child {
+    .panel-DictItem_Header {
+      border-top: none;
+    }
+  }
 }
 
 .panel-DictItem_Header {

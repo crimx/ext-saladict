@@ -9,8 +9,12 @@ export type DictFormProps = Props & FormComponentProps
 
 export class DictForm extends React.Component<DictFormProps> {
   render () {
-    const { t, config } = this.props
+    const { t, config, profile } = this.props
     const { getFieldDecorator } = this.props.form
+
+    const autopronCnList = profile.dicts.all.zdic.options.audio
+      ? config.autopron.cn.list
+      : config.autopron.cn.list.filter(id => id !== 'zdic')
 
     return (
       <Form>
@@ -23,7 +27,7 @@ export class DictForm extends React.Component<DictFormProps> {
           })(
             <Select>
               <Select.Option value=''>{t('common:none')}</Select.Option>
-              {config.autopron.cn.list.map(id => (
+              {autopronCnList.map(id => (
                 <Select.Option key={id} value={id}>{
                   t(`dict:${id}`)
                 }</Select.Option>

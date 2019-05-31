@@ -559,11 +559,10 @@ export function mouseOnBowl (payload: boolean): DispatcherThunk {
 
 export function closePanel (): DispatcherThunk {
   return (dispatch, getState) => {
-    if (!isSaladictOptionsPage) {
+    if (!isSaladictOptionsPage && !isStandalonePage) {
       dispatch(restoreWidget())
       dispatch(restoreDicts())
     }
-    message.send({ type: MsgType.PlayAudio, src: '' })
   }
 }
 

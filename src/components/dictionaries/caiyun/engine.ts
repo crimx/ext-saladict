@@ -121,6 +121,9 @@ function handleJSON (
         text,
         audio: `http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=5&text=${encodeURIComponent(text)}`
       }
+    },
+    audio: {
+      us: `http://tts.baidu.com/text2audio?lan=zh&ie=UTF-8&spd=5&text=${encodeURIComponent(trans)}`
     }
   }
 }

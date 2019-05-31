@@ -139,9 +139,7 @@ message.self.createStream = _messageCreateStream(true)
 /**
  * Open a url on new tab or highlight a existing tab if already opened
  */
-export function openURL (url: string): Promise<void> {
-  return Promise.resolve()
-}
+export const openURL = jest.fn(() => Promise.resolve())
 
 export default {
   openURL,
@@ -346,7 +344,7 @@ function _messageAddListener (self: boolean) {
       listener = (
         (message, sender, sendResponse) => {
           if (message && (self ? window.pageId === message.__pageId__ : !message.__pageId__)) {
-            if (!messageType || message.type === messageType) {
+            if (messageType == null || message.type === messageType) {
               return cb(message, sender, sendResponse)
             }
           }

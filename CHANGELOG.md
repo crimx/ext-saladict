@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.32.0"></a>
+# [6.32.0](https://github.com/crimx/ext-saladict/compare/v6.31.1...v6.32.0) (2019-05-31)
+
+
+### Bug Fixes
+
+* same origin iframe ([39bacf9](https://github.com/crimx/ext-saladict/commit/39bacf9)), closes [#373](https://github.com/crimx/ext-saladict/issues/373)
+* **dicts:** update zdic ([ebef2ce](https://github.com/crimx/ext-saladict/commit/ebef2ce))
+* **options:** styles ([50cc464](https://github.com/crimx/ext-saladict/commit/50cc464))
+* assgin timeout ticket ([23f85c5](https://github.com/crimx/ext-saladict/commit/23f85c5))
+* correct popup page id ([45db00b](https://github.com/crimx/ext-saladict/commit/45db00b))
+* ignore esc key on standalone panel ([1970556](https://github.com/crimx/ext-saladict/commit/1970556))
+
+
+### Features
+
+* add audio control ([6df1682](https://github.com/crimx/ext-saladict/commit/6df1682))
+* add soundtouch ([ca7e7f8](https://github.com/crimx/ext-saladict/commit/ca7e7f8))
+
+
+
 <a name="6.31.1"></a>
 ## [6.31.1](https://github.com/crimx/ext-saladict/compare/v6.31.0...v6.31.1) (2019-05-25)
 

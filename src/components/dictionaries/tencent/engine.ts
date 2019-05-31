@@ -120,6 +120,9 @@ function handleJSON (json: any): TencentSearchResult | Promise<TencentSearchResu
         text: sourceText,
         audio: `https://fanyi.qq.com/api/tts?lang=${tr.source}&text=${encodeURIComponent(sourceText)}`,
       }
+    },
+    audio: {
+      us: `https://fanyi.qq.com/api/tts?lang=${tr.target}&text=${encodeURIComponent(targetText)}`
     }
   }
 }

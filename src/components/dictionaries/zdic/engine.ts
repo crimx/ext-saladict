@@ -8,143 +8,98 @@ import {
   GetSrcPageFunction,
 } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
+import { getStaticSpeakerHTML } from '@/components/withStaticSpeaker'
 
 export const getSrcPage: GetSrcPageFunction = (text) => {
-  return `http://www.zdic.net/search/?c=1&q=${text}`
+  return `https://www.zdic.net/hans/${text}`
 }
 
-const getInnerHTML = getInnerHTMLBuilder('http://www.zdic.net/')
+const getInnerHTML = getInnerHTMLBuilder('https://www.zdic.net')
 
-export interface ZdicResult {
-  /** phonetic symbols */
-  phsym: Array<{
-    /** Pinyin */
-    pinyin: string
-    /** pronunciation src */
-    pron: string
-  }>
-  /** html result */
-  defs: HTMLString
-}
+export type ZdicResult = Array<{
+  title: string
+  content: HTMLString
+}>
 
 type ZdicSearchResult = DictSearchResult<ZdicResult>
+
+let isRefererModified = false
 
 export const search: SearchFunction<ZdicSearchResult> = (
   text, config, profile, payload
 ) => {
-  return fetchDirtyDOM('http://www.zdic.net/search/?c=3&q=' + encodeURIComponent(text.replace(/\s+/g, ' ')))
+  const isAudio = profile.dicts.all.zdic.options.audio
+  if (!isRefererModified && isAudio) {
+    isRefererModified = true
+    modifyReferer()
+  }
+
+  return fetchDirtyDOM('https://www.zdic.net/hans/' + encodeURIComponent(text.replace(/\s+/g, ' ')))
     .catch(handleNetWorkError)
-    .then(deobfuscate)
-    .then(handleDOM)
+    .then(doc => handleDOM(doc, isAudio))
 }
 
-const junkStyleTester = /\.(\S+)(?=\s?\{\s*display\s?:\s?none)/ig
-function deobfuscate (doc: Document): Document {
-  doc.querySelectorAll('style').forEach($style => {
-    const styleContent = $style.textContent || ''
-    if (styleContent) {
-      (styleContent.match(junkStyleTester) || [])
-        .forEach(junkClassName => {
-          doc.querySelectorAll(junkClassName)
-            .forEach($junkEl => $junkEl.remove())
-        })
+function handleDOM (
+  doc: Document, isAudio: boolean
+): ZdicSearchResult | Promise<ZdicSearchResult> {
+  const response: ZdicSearchResult = {
+    result: []
+  }
+
+  for (const $entry of doc.querySelectorAll<HTMLDivElement>('[data-type-block]')) {
+    const title = $entry.dataset.typeBlock || ''
+    if (!/基本解释|词语解释|详细解释/.test(title)) {
+      continue
     }
-  })
-  return doc
-}
 
-function handleDOM (doc: Document): ZdicSearchResult | Promise<ZdicSearchResult> {
-  return doc.querySelector('#tagContent0')
-    ? handleWord(doc)
-    : handlePhrase(doc)
-}
-
-function handleWord (doc: Document): ZdicSearchResult | Promise<ZdicSearchResult> {
-  const $content = doc.querySelector('#tagContent0')
-  if (!$content) { return handleNoResult() }
-
-  const phsym: ZdicResult['phsym'] = []
-  const $zui = $content.querySelector('.zui')
-  if ($zui) {
-    $zui.querySelectorAll<HTMLAnchorElement>('.dicpy a').forEach($a => {
-      phsym.push({
-        pinyin: ($a.textContent || '').trim(),
-        pron: `http://www.zdic.net/p/mp3/${($a.href.match(/[^=]+$/) || [''])[0]}.mp3`
-      })
-    })
-    $zui.remove()
-  }
-
-  // 五笔、仓颉、郑码
-  const $diczx7 = $content.querySelector('.diczx7')
-  if ($diczx7 && $diczx7.parentElement) {
-    $diczx7.parentElement.remove()
-  }
-
-  // 笔顺编号、四角号码、Unicode
-  const $diczx6 = $content.querySelector('.diczx6')
-  if ($diczx6 && $diczx6.parentElement) {
-    $diczx6.parentElement.remove()
-  }
-
-  // Mark headers, which are elements before hrs
-  $content.querySelectorAll('.dichr').forEach($hr => {
-    const $header = $hr.previousElementSibling
-    if ($header) {
-      $header.classList.add('zdic-header')
-    }
-  })
-
-  return {
-    result: {
-      defs: getInnerHTML($content),
-      phsym,
-    },
-    audio: phsym.length > 0
-      ? { py: phsym[0].pron }
-      : undefined
-  }
-}
-
-function handlePhrase (doc: Document): ZdicSearchResult | Promise<ZdicSearchResult> {
-  const $cdnr = doc.querySelector('.cdnr')
-  if (!$cdnr) { return handleNoResult() }
-
-  let phsym: ZdicResult['phsym'] = []
-
-  // get pinyin src from js function
-  const pinyinTester = /\("(.*)"\)/
-  Array.from($cdnr.querySelectorAll<HTMLScriptElement>('script'))
-    .find(({ textContent }) => {
-      if (!textContent) { return false }
-
-      const $pinyins = $cdnr.querySelector('.dicpy')
-      if (!$pinyins) { return false }
-      const pinyinsContent = $pinyins.textContent
-      if (!pinyinsContent) { return false }
-
-      const p = textContent.match(pinyinTester)
-      if (!p) { return false }
-
-      const prons = p[1].split(' ')
-      const pinyins = pinyinsContent.trim().split(' ')
-      if (prons.length === pinyins.length) {
-        phsym = pinyins.map((pinyin, i) => ({
-          pinyin,
-          pron: `http://www.zdic.net/p/mp3/${prons[i]}.mp3`
-        }))
-        return true
+    for (const $a of $entry.querySelectorAll<HTMLAnchorElement>('[data-src-mp3]')) {
+      if (isAudio) {
+        if (!response.audio) {
+          response.audio = {
+            py: $a.dataset.srcMp3
+          }
+        }
+        $a.outerHTML = getStaticSpeakerHTML($a.dataset.srcMp3)
+      } else {
+        $a.remove()
       }
-      return false
-    })
+    }
 
-  return {
-    result: {
-      defs: getInnerHTML($cdnr),
-      phsym,
-    },
-    audio: phsym.length > 0
-      ? { py: phsym[0].pron }
-      : undefined
+    response.result.push({
+      title,
+      content: getInnerHTML($entry, '.content')
+    })
   }
+
+  return response.result.length > 0 ? response : handleNoResult()
+}
+
+function modifyReferer () {
+  const extraInfoSpec = ['blocking', 'requestHeaders']
+  // https://developer.chrome.com/extensions/webRequest#life_cycle_footnote
+  if (browser.webRequest['OnBeforeSendHeadersOptions'] &&
+      browser.webRequest['OnBeforeSendHeadersOptions'].hasOwnProperty('EXTRA_HEADERS')
+  ) {
+    extraInfoSpec.push('extraHeaders')
+  }
+
+  browser.webRequest.onBeforeSendHeaders.addListener(
+    details => {
+      if (details && details.requestHeaders) {
+        for (var i = 0; i < details.requestHeaders.length; ++i) {
+          if (details.requestHeaders[i].name === 'Referer') {
+            details.requestHeaders[i].value = 'https://www.zdic.net'
+            break
+          }
+        }
+        if (i === details.requestHeaders.length) {
+          details.requestHeaders.push({ name: 'Referer', value: 'https://www.zdic.net' })
+        }
+      }
+      return { requestHeaders: details.requestHeaders }
+    },
+    { urls: ['https://img.zdic.net/audio/*'] },
+    /** WebExt type is missing Chrome support */
+    extraInfoSpec as any,
+  )
 }

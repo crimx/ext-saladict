@@ -95,15 +95,17 @@ function handleJSON (json: any, sl: string, tl: string): SogouSearchResult | Pro
     return handleNoResult()
   }
 
+  const transAudio = tr.to === 'zh-CHT'
+    ? `https://fanyi.sogou.com/reventondc/microsoftGetSpeakFile?text=${encodeURIComponent(tr.dit)}&spokenDialect=zh-CHT&from=translateweb`
+    : `https://fanyi.sogou.com/reventondc/synthesis?text=${encodeURIComponent(tr.dit)}&speed=1&lang=${tr.to}&from=translateweb`
+
   return {
     result: {
       id: 'sogou',
       sl, tl, langcodes,
       trans: {
         text: tr.dit,
-        audio: tr.to === 'zh-CHT'
-          ? `https://fanyi.sogou.com/reventondc/microsoftGetSpeakFile?text=${encodeURIComponent(tr.dit)}&spokenDialect=zh-CHT&from=translateweb`
-          : `https://fanyi.sogou.com/reventondc/synthesis?text=${encodeURIComponent(tr.dit)}&speed=1&lang=${tr.to}&from=translateweb`
+        audio: transAudio
       },
       searchText: {
         text: tr.text,
@@ -111,6 +113,9 @@ function handleJSON (json: any, sl: string, tl: string): SogouSearchResult | Pro
         ? `https://fanyi.sogou.com/reventondc/microsoftGetSpeakFile?text=${encodeURIComponent(tr.text)}&spokenDialect=zh-CHT&from=translateweb`
         : `https://fanyi.sogou.com/reventondc/synthesis?text=${encodeURIComponent(tr.text)}&speed=1&lang=${tr.from}&from=translateweb`
       }
+    },
+    audio: {
+      us: transAudio
     }
   }
 }

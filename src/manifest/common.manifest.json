@@ -60,6 +60,9 @@
   },
 
   "web_accessible_resources": [
+    "audio-control.html",
+    "audio-control.js",
+    "audio-control.css",
     "panel.html",
     "panel.js",
     "panel.css",

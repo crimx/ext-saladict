@@ -167,13 +167,13 @@ export default class SearchMode extends React.Component<SearchModeProps, SearchM
                 )
               }</Form.Item>
 
-              <span style={{ marginLeft: 20 }}>{t('opt_sm_instant_delay')}: </span>
+              <span style={{ marginLeft: 10 }}>{t('opt_sm_instant_delay')}: </span>
               <Form.Item className='form-item-inline'>{
                 getFieldDecorator(`config#${mode}#instant#delay`, {
                   initialValue: config[mode].instant.delay,
                   rules: [{ type: 'number', whitespace: true }],
                 })(
-                  <InputNumberGroup suffix={t('common:unit_ms')} />
+                  <InputNumberGroup style={{ width: 60 }} suffix={t('common:unit_ms')} />
                 )
               }</Form.Item>
             </div>

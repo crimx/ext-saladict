@@ -276,6 +276,11 @@
   resolved "http://registry.npm.taobao.org/@types/ua-parser-js/download/@types/ua-parser-js-0.7.32.tgz#8827d451d6702307248073b5d98aa9293d02b5e5"
   integrity sha1-iCfUUdZwIwckgHO12YqpKT0CteU=
 
+"@types/wavesurfer.js@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.npm.taobao.org/@types/wavesurfer.js/download/@types/wavesurfer.js-2.0.2.tgz#b98a4d57ca24ee2028ae6dd5c2208b568bb73842"
+  integrity sha1-uYpNV8ok7iAorm3VwiCLVou3OEI=
+
 JSONStream@^1.0.4:
   version "1.3.3"
   resolved "http://registry.npm.taobao.org/JSONStream/download/JSONStream-1.3.3.tgz#27b4b8fbbfeab4e71bcf551e7f27be8d952239bf"
@@ -1896,6 +1901,11 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+clamp@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npm.taobao.org/clamp/download/clamp-1.0.1.tgz#66a0e64011816e37196828fdc8c8c147312c8634"
+  integrity sha1-ZqDmQBGBbjcZaCj9yMjBRzEshjQ=
 
 clap@^1.0.9:
   version "1.2.3"
@@ -8021,6 +8031,11 @@ rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-clickdrag@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.npm.taobao.org/react-clickdrag/download/react-clickdrag-3.0.2.tgz#54df5f3df6d695c54e9978a08253f83de7611bd2"
+  integrity sha1-VN9fPfbWlcVOmXigglP4PedhG9I=
+
 react-dev-utils@^5.0.0:
   version "5.0.1"
   resolved "http://registry.npm.taobao.org/react-dev-utils/download/react-dev-utils-5.0.1.tgz#1f396e161fe44b595db1b186a40067289bf06613"
@@ -8082,6 +8097,15 @@ react-lazy-load@^3.0.12:
 react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "http://registry.npm.taobao.org/react-lifecycles-compat/download/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
+
+react-number-editor@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.npm.taobao.org/react-number-editor/download/react-number-editor-4.0.3.tgz#3b2b2310910060a41418453299813c5acd3161c7"
+  integrity sha1-OysjEJEAYKQUGEUymYE8Ws0xYcc=
+  dependencies:
+    clamp "^1.0.1"
+    prop-types "^15.6.0"
+    react-clickdrag "^3.0.2"
 
 react-reconciler@^0.7.0:
   version "0.7.0"
@@ -8977,6 +9001,11 @@ sort-keys@^1.0.0:
   resolved "http://registry.npm.taobao.org/sort-keys/download/sort-keys-1.1.2.tgz#441b6d4d346798f1b4e49e8920adfba0e543f9ad"
   dependencies:
     is-plain-obj "^1.0.0"
+
+soundtouchjs@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.npm.taobao.org/soundtouchjs/download/soundtouchjs-0.1.5.tgz#89e6cae0fba8cf00d0928895d0a1ded1cef52cf2"
+  integrity sha1-iebK4PuozwDQkoiV0KHe0c71LPI=
 
 source-list-map@^2.0.0:
   version "2.0.0"
@@ -9982,6 +10011,11 @@ watchpack@^1.4.0:
     chokidar "^2.0.2"
     graceful-fs "^4.1.2"
     neo-async "^2.5.0"
+
+wavesurfer.js@^2.2.1:
+  version "2.2.1"
+  resolved "https://registry.npm.taobao.org/wavesurfer.js/download/wavesurfer.js-2.2.1.tgz#066ccd85d1ce70b64bd5a5b491e2c797645a6973"
+  integrity sha1-BmzNhdHOcLZL1aW0keLHl2RaaXM=
 
 wbuf@^1.1.0, wbuf@^1.7.2:
   version "1.7.3"

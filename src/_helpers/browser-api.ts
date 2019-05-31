@@ -291,9 +291,9 @@ function messageSend (...args): Promise<any> {
   })
 }
 
-function messageSendSelf<T extends Message, U = any> (message: T): Promise<U> {
+async function messageSendSelf<T extends Message, U = any> (message: T): Promise<U> {
   if (window.pageId === undefined) {
-    return initClient().then(() => messageSendSelf(message))
+    await initClient()
   }
   return browser.runtime.sendMessage(Object.assign({}, message, {
     __pageId__: window.pageId,
@@ -310,6 +310,9 @@ function messageSendSelf<T extends Message, U = any> (message: T): Promise<U> {
 function messageAddListener<T extends Message = Message> (messageType: Message['type'], cb: onMessageEvent<T>): void
 function messageAddListener<T extends Message = Message> (cb: onMessageEvent<T>): void
 function messageAddListener (this: MessageThis, ...args): void {
+  if (window.pageId === undefined) {
+    initClient()
+  }
   const allListeners = this.__self__ ? messageSelfListeners : messageListeners
   const messageType = args.length === 1 ? undefined : args[0]
   const cb = args.length === 1 ? args[0] : args[1]
@@ -323,7 +326,7 @@ function messageAddListener (this: MessageThis, ...args): void {
     listener = (
       (message, sender) => {
         if (message && (this.__self__ ? window.pageId === message.__pageId__ : !message.__pageId__)) {
-          if (!messageType || message.type === messageType) {
+          if (messageType == null || message.type === messageType) {
             return cb(message, sender)
           }
         }
@@ -407,21 +410,19 @@ function initServer (): void {
   browser.runtime.onMessage.addListener((message, sender) => {
     if (!message) { return }
 
-    switch (message.type) {
-      case MsgType.__PageInfo__:
-        return Promise.resolve(_getPageInfo(sender))
-      default:
-        break
+    if (message.type === MsgType.__PageInfo__) {
+      return Promise.resolve(_getPageInfo(sender))
     }
 
     const selfMsg = selfMsgTester.exec(message.type)
     if (selfMsg) {
-      message.type = Number(selfMsg[1]) as MsgType
-      if (sender.tab && sender.tab.id) {
-        return messageSend(sender.tab.id, message)
+      const msgType = Number(selfMsg[1])
+      message.type = isNaN(msgType) ? selfMsg[1] : msgType as MsgType
+      const tabId = sender.tab && sender.tab.id
+      if (tabId) {
+        return messageSend(tabId, message)
       } else {
-        // has to be a tab
-        // return messageSend(message)
+        return messageSend(message)
       }
     }
   })

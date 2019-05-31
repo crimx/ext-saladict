@@ -1,0 +1,99 @@
+#waveform-container {
+  min-height: 128px;
+}
+
+.saladict-waveformWrap {
+  overflow: hidden;
+  height: 165px;
+}
+
+.saladict-waveformCtrl {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+}
+
+$waveformPlayWidth: 1.3em;
+$halfWaveformPlayWidth: $waveformPlayWidth / 2;
+
+%palyFGBlock {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 0;
+  height: 0;
+  border: $halfWaveformPlayWidth solid transparent;
+  border-width: $halfWaveformPlayWidth $waveformPlayWidth;
+  border-left-color: #333;
+  transition-property: border, height, right;
+  transition-duration: 0.25s;
+  transition-timing-function: ease;
+}
+
+.saladict-waveformPlay {
+  margin: 0.5em;
+  padding: 3px;
+  border: none;
+  background: none;
+  cursor: pointer;
+
+  &:hover {
+    outline: none;
+  }
+}
+
+.saladict-waveformPlay_FG {
+  position: relative;
+  width: $waveformPlayWidth;
+  height: $waveformPlayWidth;
+  overflow: hidden;
+
+  &:before {
+    @extend %palyFGBlock;
+    left: 0;
+  }
+
+  &.isPlaying:before {
+    height: $waveformPlayWidth;
+    border-width: 0 ($halfWaveformPlayWidth - 0.05em);
+  }
+
+  &:after {
+    @extend %palyFGBlock;
+    right: 0;
+  }
+
+  &.isPlaying:after {
+    right: -($halfWaveformPlayWidth - 0.05em);
+    height: $waveformPlayWidth;
+    border-width: 0 ($halfWaveformPlayWidth - 0.05em);
+  }
+}
+
+.saladict-waveformSpeed {
+  width: 3em;
+  text-align: center;
+}
+
+.saladict-waveformBtn_label {
+  display: block;
+  width: 1.3em;
+  height: 1.3em;
+  overflow: hidden;
+  margin: 0.5em;
+  cursor: pointer;
+}
+
+.saladict-waveformBtn_label > input {
+  display: inline-block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  opacity: 0;
+  z-index: -20000px;
+}
+
+.saladict-waveformPitch {
+  margin: 0.5em 0;
+}

@@ -1,7 +1,7 @@
 import { retry } from '../helpers'
 import { search } from '@/components/dictionaries/zdic/engine'
 import { getDefaultConfig } from '@/app-config'
-import getDefaultProfile from '@/app-config/profiles'
+import getDefaultProfile, { ProfileMutable } from '@/app-config/profiles'
 import fs from 'fs'
 import path from 'path'
 
@@ -22,20 +22,20 @@ describe('Dict/Zdic/engine', () => {
     return retry(() =>
       search('爱', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
         .then(({ result, audio }) => {
-          expect(audio && typeof audio.py).toBe('string')
-          expect(result.phsym.length).toBeGreaterThan(0)
-          expect(typeof result.defs).toBe('string')
+          expect(audio && typeof audio.py).toBeUndefined()
+          expect(result.length).toBeGreaterThan(0)
         })
     )
   })
 
   it('should parse phrase result correctly', () => {
+    const profile = getDefaultProfile() as ProfileMutable
+    profile.dicts.all.zdic.options.audio = true
     return retry(() =>
-      search('沙拉', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
+      search('沙拉', getDefaultConfig(), profile, { isPDF: false })
         .then(({ result, audio }) => {
           expect(audio && typeof audio.py).toBe('string')
-          expect(result.phsym.length).toBeGreaterThan(0)
-          expect(typeof result.defs).toBe('string')
+          expect(result.length).toBeGreaterThan(0)
         })
     )
   })

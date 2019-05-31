@@ -261,6 +261,11 @@ function _getDefaultConfig () {
           'urban',
           'websterlearner',
           'youdao',
+          'google',
+          'sogou',
+          'tencent',
+          'baidu',
+          'caiyun',
         ] as DictID[],
         accent: 'uk' as 'us' | 'uk'
       }

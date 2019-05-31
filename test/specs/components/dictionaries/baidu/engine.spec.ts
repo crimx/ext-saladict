@@ -10,7 +10,6 @@ describe('Dict/Baidu/engine', () => {
       return retry(() =>
         search('我爱你', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
           .then(searchResult => {
-            expect(searchResult.audio).toBeUndefined()
             expect(isContainChinese(searchResult.result.searchText.text)).toBeTruthy()
             expect(isContainEnglish(searchResult.result.trans.text)).toBeTruthy()
             expect(searchResult.result.trans.text).toMatch(/love/)

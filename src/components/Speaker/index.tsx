@@ -1,6 +1,7 @@
 import React from 'react'
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgAudioPlay } from '@/typings/message'
+import { timer } from '@/_helpers/promise-more'
 
 export interface SpeakerProps {
   /** render nothing when no src */
@@ -50,8 +51,13 @@ export default class Speaker extends React.PureComponent<SpeakerProps, SpeakerSt
 
     const src = this.props.src as string
 
-    message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
-      .then(() => !this.isUnmount && this.setState({ isPlaying: false }))
+    message.self.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
+      .then(() => timer(1000))
+      .then(() => {
+        if (!this.isUnmount) {
+          this.setState({ isPlaying: false })
+        }
+      })
   }
 
   componentWillUnmount () {

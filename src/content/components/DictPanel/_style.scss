@@ -6,6 +6,7 @@
 }
 
 .panel-Root {
+  position: relative;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -39,31 +40,47 @@
     height: 100%;
     width: 100%;
     padding: 5px;
+    border: none;
     font-family: inherit;
     resize: none;
   }
 }
 
-.panel-MtaBoxBtn {
+.panel-AudioBox {
+  overflow: hidden;
+  background: #fff;
+  font-size: 0;
+}
+
+.panel-DrawerBtn {
   width: 100%;
   height: 12px;
   overflow: hidden;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
   font-size: 0;
   cursor: pointer;
 }
 
-.panel-MtaBoxBtn_Arrow {
+.panel-DrawerBtn_Arrow {
   &.isActive {
     transform: rotate(180deg);
   }
 }
 
+.panel-AudioBoxFrame {
+  width: 100%;
+  height: 165px;
+  border: none;
+}
+
 .isAnimate {
-  .panel-MtaBox {
+  .panel-MtaBox,
+  .panel-AudioBox {
     transition: height 0.4s;
   }
 
-  .panel-MtaBoxBtn_Arrow {
+  .panel-DrawerBtn_Arrow {
     transition: transform 0.2s;
   }
 }
