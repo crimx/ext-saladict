@@ -12,12 +12,12 @@
   "bing_dict": {
     "en": "Bing Dict",
     "zh_CN": "必应词典",
-    "zh_TW": "必應字典"
+    "zh_TW": "Bing 字典"
   },
   "bing_search": {
     "en": "Bing Search",
     "zh_CN": "必应搜索",
-    "zh_TW": "必應搜尋"
+    "zh_TW": "Bing 搜尋"
   },
   "cambridge": {
     "en": "Cambridge",
@@ -37,22 +37,22 @@
   "google_cn_page_translate": {
     "en": "Google cn Page Translate",
     "zh_CN": "谷歌cn网页翻译",
-    "zh_TW": "谷歌cn網頁翻譯"
+    "zh_TW": "Google cn 網頁翻譯"
   },
   "google_page_translate": {
     "en": "Google Page Translate",
     "zh_CN": "谷歌网页翻译",
-    "zh_TW": "谷歌網頁翻譯"
+    "zh_TW": "Google 網頁翻譯"
   },
   "google_search": {
     "en": "Google Search",
     "zh_CN": "谷歌搜索",
-    "zh_TW": "谷歌搜尋"
+    "zh_TW": "Google 搜尋"
   },
   "google_translate": {
     "en": "Google Translate",
     "zh_CN": "谷歌翻译",
-    "zh_TW": "谷歌翻譯"
+    "zh_TW": "Google 翻譯"
   },
   "guoyu": {
     "en": "國語辭典",
@@ -102,7 +102,7 @@
   "notification_youdao_err": {
     "en": "Youdao Page Translation 2.0 not responding.\nSaladict might not have permission to access this page.\nIgnore this message if Youdao panal is shown.",
     "zh_CN": "有道网页翻译2.0 加载无响应，\n可能扩展无权访问该页面，\n如加载成功请忽略本消息。",
-    "zh_TW": "有道網頁翻譯2.0 下載後無反應，\n可能新視窗網頁無權訪問該網站，\n如果下載成功後，請忽略本訊息。"
+    "zh_TW": "有道網頁翻譯2.0 下載後無回應，\n可能是套件無權造訪該網站，\n如果下載成功後，請忽略本訊息。"
   },
   "oxford": {
     "en": "Oxford",
@@ -132,7 +132,7 @@
   "view_as_pdf": {
     "en": "Open in PDF Viewer",
     "zh_CN": "在 PDF 阅读器中打开",
-    "zh_TW": "在 PDF 瀏覽器中打開"
+    "zh_TW": "在 PDF 閱讀器中開啟"
   },
   "youdao": {
     "en": "Youdao",
