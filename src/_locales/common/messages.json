@@ -17,7 +17,7 @@
   "changes_confirm": {
     "en": "Changes not saved. Close anyway?",
     "zh_CN": "修改未保存。确认关闭？",
-    "zh_TW": "修改未保存。確定關閉？"
+    "zh_TW": "修改未儲存。確定關閉？"
   },
   "confirm": {
     "en": "Confirm",
