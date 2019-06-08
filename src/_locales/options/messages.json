@@ -649,6 +649,16 @@
     "zh_CN": "添加 WebDAV 同步",
     "zh_TW": "新增 WebDAV 同步"
   },
+  "opt_waveform": {
+    "en": "Waveform Control",
+    "zh_CN": "波形控制",
+    "zh_TW": "波形控制"
+  },
+  "opt_waveform_help": {
+    "en": "Display Waveform Control Panel which may have impact on performance. Audio files can still be played if turned off.",
+    "zh_CN": "显示音频波形控制面板。关闭依然可以播放音频，并减少性能消耗。",
+    "zh_TW": "顯示音訊波形控制面板。關閉依然可以播放音訊，并減少效能消耗。"
+  },
   "preload": {
     "en": "Preload",
     "zh_CN": "预先加载",

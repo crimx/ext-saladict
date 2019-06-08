@@ -3,7 +3,7 @@ import { Props } from '../typings'
 import { updateConfigOrProfile, formItemLayout } from '../helpers'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, Select } from 'antd'
+import { Form, Select, Switch } from 'antd'
 
 export type DictFormProps = Props & FormComponentProps
 
@@ -67,6 +67,20 @@ export class DictForm extends React.Component<DictFormProps> {
             )
           }</Form.Item>
         )}
+        <Form.Item
+          {...formItemLayout}
+          label={t('opt_waveform')}
+          help={t('opt_waveform_help')}
+          extra={t('opt_profile_change')}
+          required
+        >{
+          getFieldDecorator('profile#waveform', {
+            initialValue: profile.waveform,
+            valuePropName: 'checked',
+          })(
+            <Switch />
+          )
+        }</Form.Item>
       </Form>
     )
   }

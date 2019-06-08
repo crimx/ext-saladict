@@ -38,6 +38,20 @@ export class DictPanel extends React.Component<DictPanelProps> {
         }</Form.Item>
         <Form.Item
           {...formItemLayout}
+          label={t('opt_waveform')}
+          help={t('opt_waveform_help')}
+          extra={t('opt_profile_change')}
+          required
+        >{
+          getFieldDecorator('profile#waveform', {
+            initialValue: profile.waveform,
+            valuePropName: 'checked',
+          })(
+            <Switch />
+          )
+        }</Form.Item>
+        <Form.Item
+          {...formItemLayout}
           label={t('opt_search_suggests')}
         >{
           getFieldDecorator('config#searchSuggests', {

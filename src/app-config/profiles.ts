@@ -25,6 +25,9 @@ export function _getDefaultProfile (id?: string) {
     /** auto unfold multiline textarea search box */
     mtaAutoUnfold: '' as MtaAutoUnfold,
 
+    /** show waveform control panel */
+    waveform: true,
+
     dicts: {
       /** default selected dictionaries */
       selected: [

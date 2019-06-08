@@ -6,6 +6,7 @@ import { DictSearchResult } from '@/typings/server'
 import { SearchErrorType, SearchFunction, GetSrcPageFunction } from '@/components/dictionaries/helpers'
 import { syncServiceInit, syncServiceDownload, syncServiceUpload } from './sync-manager'
 import { isInNotebook, saveWord, deleteWords, getWordsByText, getWords } from './database'
+import { play } from './audio-manager'
 import './types'
 import {
   MsgType,
@@ -23,6 +24,7 @@ import {
   MsgSyncServiceUpload,
   MsgGetSuggests,
   MsgDictEngineMethod,
+  MsgWaveFormPlay,
 } from '@/typings/message'
 
 /** is a standalone panel running */
@@ -39,6 +41,8 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return openSrcPage(data as MsgOpenSrcPage)
     case MsgType.OpenURL:
       return openURL(data.url, data.self)
+    case MsgType.PlayAudio:
+      return playAudio((data as MsgAudioPlay).src, sender)
     case MsgType.FetchDictResult:
       return fetchDictResult(data as MsgFetchDictResult, sender)
     case MsgType.DictEngineMethod:
@@ -248,21 +252,28 @@ function openSrcPage (data: MsgOpenSrcPage): Promise<void> {
 }
 
 function playAudio (src: string, sender: browser.runtime.MessageSender) {
+  if (window.activeProfile.waveform) {
+    return playWaveform(src, sender)
+  }
+  return play(src)
+}
+
+function playWaveform (src: string, sender: browser.runtime.MessageSender) {
   if (sender.tab && sender.tab.id) {
-    return message.send<MsgAudioPlay & { __pageId__: number }>(
+    return message.send<MsgWaveFormPlay>(
       sender.tab.id,
       {
-        type: MsgType.PlayAudio,
+        type: MsgType.PlayWaveform,
         src,
-        __pageId__: sender.tab.id,
+        tabId: sender.tab.id,
       }
     )
   }
 
-  return message.send<MsgAudioPlay & { __pageId__: string }>({
-    type: MsgType.PlayAudio,
+  return message.send<MsgWaveFormPlay>({
+    type: MsgType.PlayWaveform,
     src,
-    __pageId__: 'popup',
+    tabId: 'popup',
   })
 }
 

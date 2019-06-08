@@ -51,7 +51,7 @@ export default class Speaker extends React.PureComponent<SpeakerProps, SpeakerSt
 
     const src = this.props.src as string
 
-    message.self.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
+    message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
       .then(() => timer(1000))
       .then(() => {
         if (!this.isUnmount) {

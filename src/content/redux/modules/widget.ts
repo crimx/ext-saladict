@@ -23,7 +23,8 @@ const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 const isSaladictQuickSearchPage = !!window.__SALADICT_QUICK_SEARCH_PAGE__
 const isStandalonePage = isSaladictPopupPage || isSaladictQuickSearchPage
 
-const panelHeaderHeight = 30 + 12 // menu bar + multiline search box button
+const drawerBtnHeight = 12
+const panelHeaderHeight = 30 + drawerBtnHeight // menu bar + multiline search box button
 
 /*-----------------------------------------------*\
     Action Type
@@ -81,6 +82,8 @@ export type WidgetState = {
     readonly isFav: boolean
     /** is called by triple ctrl */
     readonly isTripleCtrl: boolean
+    /** render wavefrom control panel */
+    readonly withWaveform: boolean
     /** is a standalone panel running */
     readonly withQSPanel: boolean
     readonly shouldBowlShow: boolean
@@ -119,6 +122,7 @@ export const initState: WidgetState = {
     isPinned: isSaladictOptionsPage,
     isFav: false,
     isTripleCtrl: isSaladictQuickSearchPage,
+    withWaveform: false,
     withQSPanel: false,
     shouldBowlShow: false,
     shouldPanelShow: isStandalonePage || isSaladictOptionsPage,
@@ -165,6 +169,9 @@ export const reducer: WidgetReducer = {
     const widget = config.active
       ? { ...state.widget }
       : _restoreWidget(state.widget)
+
+    // so that withWaveform is inactive by default
+    widget.withWaveform = config.waveform
 
     widget.panelRect = _reconcilePanelRect(
       widget.panelRect.x,
@@ -668,6 +675,7 @@ export function updateItemHeight (id: DictID | '_mtabox', height: number): Dispa
       const newHeight = Math.min(
         winHeight * state.config.panelMaxHeightRatio / 100,
         panelHeaderHeight +
+        (state.widget.withWaveform ? drawerBtnHeight : 0) +
         (dictHeights._mtabox || 0) +
         state.dictionaries.active
           .reduce((sum, id) => sum + (dictHeights[id] || panelHeaderHeight), 0),
@@ -786,7 +794,7 @@ export function newSelection (): DispatcherThunk {
         mouseX,
         mouseY,
         lastPanelRect.width,
-        panelHeaderHeight,
+        panelHeaderHeight + (widget.withWaveform ? drawerBtnHeight : 0),
       )
     }
 
@@ -871,7 +879,7 @@ function _restoreWidget (widget: WidgetState['widget']): Mutable<WidgetState['wi
     shouldBowlShow: false,
     panelRect: {
       ...widget.panelRect,
-      height: panelHeaderHeight,
+      height: panelHeaderHeight + (widget.withWaveform ? drawerBtnHeight : 0),
     },
   }
 }

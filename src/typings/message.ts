@@ -39,8 +39,10 @@ export const enum MsgType {
   OpenURL,
   /** open a dictionary source page */
   OpenSrcPage,
-  /** Play a audio src */
+  /** Request background to play a audio src */
   PlayAudio,
+  /** Background to a dict panel on one page */
+  PlayWaveform,
   /** Search text with a dictionary and response the result */
   FetchDictResult,
   /** Call a custom method of a dict engine */
@@ -128,6 +130,12 @@ export interface MsgAudioPlay {
   readonly type: MsgType.PlayAudio
   /** empty string for stoping */
   readonly src: string
+}
+
+export interface MsgWaveFormPlay {
+  readonly type: MsgType.PlayWaveform
+  readonly src: string
+  readonly tabId: string | number
 }
 
 export interface MsgFetchDictResult {

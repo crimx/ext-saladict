@@ -48,7 +48,7 @@ export function withStaticSpeaker<P> (
         // clearTimeout(this._audioDelayTimeout)
         evt.preventDefault()
         evt.stopPropagation()
-        message.self.send<MsgAudioPlay>({
+        message.send<MsgAudioPlay>({
           type: MsgType.PlayAudio,
           src: evt.target['href']
         })
