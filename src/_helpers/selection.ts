@@ -14,7 +14,7 @@ export function hasSelection (win = window): boolean {
 }
 
 export function getSelectionText (win = window): string {
-  const selection = win.getSelection().toString().trim()
+  const selection = (win.getSelection() || '').toString().trim()
   if (selection) {
     return selection
   }
@@ -34,6 +34,8 @@ export function getSelectionText (win = window): string {
 /** Returns the sentence containing the selection text */
 export function getSelectionSentence (win = window): string {
   const selection = win.getSelection()
+  if (!selection) { return '' }
+
   const selectedText = selection.toString()
   if (!selectedText.trim()) { return '' }
 
@@ -103,85 +105,86 @@ function cleanText (text: string): string {
   return text.replace(/\s+/g, ' ').trim()
 }
 
-function extractSentenceHead (anchorNode: Node, anchorOffset: number): string {
-  if (anchorNode.nodeType === Node.TEXT_NODE) {
-    let leadingText = anchorNode.textContent || ''
-    if (leadingText) {
-      leadingText = leadingText.slice(0, anchorOffset)
-    }
-
-    // prev siblings
-    for (let node = anchorNode.previousSibling; node; node = node.previousSibling) {
-      if (node.nodeType === Node.TEXT_NODE) {
-        leadingText = (node.textContent || '') + leadingText
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        leadingText = (node as HTMLElement).innerText + leadingText
-      }
-    }
-
-    // parent prev siblings
-    for (
-      let element = anchorNode.parentElement;
-      element && INLINE_TAGS.has(element.tagName.toLowerCase()) && element !== document.body;
-      element = element.parentElement
-    ) {
-      for (let el = element.previousElementSibling; el; el = el.previousElementSibling) {
-        leadingText = (el as HTMLElement).innerText + leadingText
-      }
-    }
-
-    const puncTester = /[.?!。？！…]/
-    /** meaningful char after dot "." */
-    const charTester = /[^\s.?!。？！…]/
-
-    for (let i = leadingText.length - 1; i >= 0; i--) {
-      const c = leadingText[i]
-      if (puncTester.test(c)) {
-        if (c === '.' && charTester.test(leadingText[i + 1])) {
-          // a.b is allowed
-          continue
-        }
-        return leadingText.slice(i + 1)
-      }
-    }
-
-    return leadingText
+function extractSentenceHead (anchorNode: Node | null, anchorOffset: number): string {
+  if (!anchorNode || anchorNode.nodeType !== Node.TEXT_NODE) {
+    return ''
   }
 
-  return ''
+  let leadingText = anchorNode.textContent || ''
+  if (leadingText) {
+    leadingText = leadingText.slice(0, anchorOffset)
+  }
+
+  // prev siblings
+  for (let node = anchorNode.previousSibling; node; node = node.previousSibling) {
+    leadingText = getTextFromNode(node) + leadingText
+  }
+
+  // parent prev siblings
+  for (
+    let element = anchorNode.parentElement;
+    element && INLINE_TAGS.has(element.tagName.toLowerCase()) && element !== document.body;
+    element = element.parentElement
+  ) {
+    for (let node = element.previousSibling; node; node = node.previousSibling) {
+      leadingText = getTextFromNode(node) + leadingText
+    }
+  }
+
+  const puncTester = /[.?!。？！…]/
+  /** meaningful char after dot "." */
+  const charTester = /[^\s.?!。？！…]/
+
+  for (let i = leadingText.length - 1; i >= 0; i--) {
+    const c = leadingText[i]
+    if (puncTester.test(c)) {
+      if (c === '.' && charTester.test(leadingText[i + 1])) {
+        // a.b is allowed
+        continue
+      }
+      return leadingText.slice(i + 1)
+    }
+  }
+
+  return leadingText
 }
 
-function extractSentenceTail (focusNode: Node, focusOffset: number): string {
-  if (focusNode.nodeType === Node.TEXT_NODE) {
-    let tailingText = focusNode.textContent || ''
-    if (tailingText) {
-      tailingText = tailingText.slice(focusOffset)
-    }
-
-    // next siblings
-    for (let node = focusNode.nextSibling; node; node = node.nextSibling) {
-      if (node.nodeType === Node.TEXT_NODE) {
-        tailingText += node.textContent
-      } else if (node.nodeType === Node.ELEMENT_NODE) {
-        tailingText += (node as HTMLElement).innerText
-      }
-    }
-
-    // parent next siblings
-    for (
-      let element = focusNode.parentElement;
-      element && INLINE_TAGS.has(element.tagName.toLowerCase()) && element !== document.body;
-      element = element.parentElement
-    ) {
-      for (let el = element.nextElementSibling; el; el = el.nextElementSibling) {
-        tailingText += (el as HTMLElement).innerText
-      }
-    }
-
-    // match tail                                                       for "..."
-    const sentenceTailTester = /^((\.(?![\s.?!。？！…]))|[^.?!。？！…])*([.?!。？！…]){0,3}/
-    return (tailingText.match(sentenceTailTester) || [''])[0]
+function extractSentenceTail (focusNode: Node | null, focusOffset: number): string {
+  if (!focusNode || focusNode.nodeType !== Node.TEXT_NODE) {
+    return ''
   }
 
+  let tailingText = focusNode.textContent || ''
+  if (tailingText) {
+    tailingText = tailingText.slice(focusOffset)
+  }
+
+  // next siblings
+  for (let node = focusNode.nextSibling; node; node = node.nextSibling) {
+    tailingText += getTextFromNode(node)
+  }
+
+  // parent next siblings
+  for (
+    let element = focusNode.parentElement;
+    element && INLINE_TAGS.has(element.tagName.toLowerCase()) && element !== document.body;
+    element = element.parentElement
+  ) {
+    for (let node = element.nextSibling; node; node = node.nextSibling) {
+      tailingText += getTextFromNode(node)
+    }
+  }
+
+  // match tail                                                       for "..."
+  const sentenceTailTester = /^((\.(?![\s.?!。？！…]))|[^.?!。？！…])*([.?!。？！…]){0,3}/
+  return (tailingText.match(sentenceTailTester) || [''])[0]
+}
+
+function getTextFromNode (node: Node): string {
+  if (node.nodeType === Node.TEXT_NODE) {
+    return (node.textContent || '')
+  } else if (node.nodeType === Node.ELEMENT_NODE) {
+    return (node as HTMLElement).innerText
+  }
   return ''
 }
