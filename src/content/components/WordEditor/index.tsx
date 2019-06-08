@@ -156,7 +156,7 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
             <label htmlFor='wordEditor-Note_Trans'>
               {t('wordEditorNoteTrans')}
               <a
-                href='https://github.com/crimx/ext-saladict/issues/117'
+                href='https://github.com/crimx/ext-saladict/wiki/Q&A#%E9%97%AE%E6%B7%BB%E5%8A%A0%E7%94%9F%E8%AF%8D%E5%8F%AF%E4%B8%8D%E5%8F%AF%E4%BB%A5%E5%8A%A0%E5%85%A5%E5%8D%95%E8%AF%8D%E7%BF%BB%E8%AF%91%E8%80%8C%E4%B8%8D%E6%98%AF%E7%BF%BB%E8%AF%91%E6%95%B4%E5%8F%A5%E4%B8%8A%E4%B8%8B%E6%96%87'
                 target='_blank'
                 rel='nofollow noopener noreferrer'
               > Why?</a>
