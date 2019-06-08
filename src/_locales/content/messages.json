@@ -1,7 +1,7 @@
 {
   "save": {
     "zh_CN": "保存",
-    "zh_TW": "保存",
+    "zh_TW": "儲存",
     "en": "Save"
   },
   "cancel": {
@@ -16,7 +16,7 @@
   },
   "fetchLangList": {
     "zh_CN": "获取全部语言列表",
-    "zh_TW": "獲取全部語言列表",
+    "zh_TW": "取得全部語言清單",
     "en": "Fetch full language list"
   },
   "neverShow": {
@@ -41,22 +41,22 @@
   },
   "tipOpenSettings": {
     "zh_CN": "打开设置",
-    "zh_TW": "查看設定",
+    "zh_TW": "開啟設定",
     "en": "Open Settings"
   },
   "tipAddToNotebook": {
     "zh_CN": "保存到生词本，右键打开生词本",
-    "zh_TW": "保存到單字本，右擊打開單字本",
+    "zh_TW": "儲存到單字本，右鍵開啟單字本",
     "en": "Add to Notebook. Right click to open Notebook"
   },
   "tipOpenNotebook": {
     "zh_CN": "打开生词本",
-    "zh_TW": "打開單字本",
+    "zh_TW": "開啟單字本",
     "en": "Open Notebook"
   },
   "tipOpenHistory": {
     "zh_CN": "打开查词记录",
-    "zh_TW": "打開查單字記錄",
+    "zh_TW": "開啟查單字記錄",
     "en": "Open History"
   },
   "tipShareImg": {
@@ -66,7 +66,7 @@
   },
   "tipPinPanel": {
     "zh_CN": "钉住查词面板",
-    "zh_TW": "釘住字典視窗",
+    "zh_TW": "釘選字典視窗",
     "en": "Pin the panel"
   },
   "tipClosePanel": {
@@ -81,12 +81,12 @@
   },
   "wordEditorDeleteConfirm": {
     "zh_CN": "从单词本中移除？",
-    "zh_TW": "于單字本中移除？",
+    "zh_TW": "從單字本中移除？",
     "en": "Delete from Notebook?"
   },
   "wordEditorTitle": {
     "zh_CN": "保存到生词本",
-    "zh_TW": "保存到單字本",
+    "zh_TW": "儲存到單字本",
     "en": "Add to Notebook"
   },
   "wordEditorNoteWord": {
@@ -121,7 +121,7 @@
   },
   "wordEditorNoteSrcLink": {
     "zh_CN": "来源链接",
-    "zh_TW": "來源鏈結",
+    "zh_TW": "來源連結",
     "en": "Source Link"
   },
   "wordEditorNoteSrcFavicon": {
@@ -136,12 +136,12 @@
   },
   "wordEditorCloseConfirm": {
     "zh_CN": "记录尚未保存，确认关闭？",
-    "zh_TW": "記錄尚未保存，確定關閉？",
+    "zh_TW": "記錄尚未儲存，確定關閉？",
     "en": "Changes will not be saved. Are you sure to close?"
   },
   "machineTransSwitch": {
     "zh_CN": "更改语言",
-    "zh_TW": "更改語言",
+    "zh_TW": "變更語言",
     "en": "Switch Language"
   },
   "machineTransSL": {
