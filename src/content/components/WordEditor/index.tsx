@@ -103,22 +103,28 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
     }
   }
 
+  translateCtx = () => {
+    const word = this.props.editorWord
+    translateCtx(word.context || word.text, this.props.ctxTrans)
+      .then(trans => {
+        if (trans) {
+          // incase user has inputed other words
+          const word = this.props.editorWord
+          this.props.updateEditorWord({
+            ...word,
+            trans: word.trans
+              ? word.trans + '\n\n' + trans
+              : trans
+          })
+        }
+      })
+      .catch(() => {/* nothing */})
+  }
+
   componentDidMount () {
     this.getRelatedWords()
-    const word = this.props.editorWord
-    if (word.context && !word.trans) {
-      translateCtx(word.context || word.title, this.props.ctxTrans)
-        .then(trans => {
-          if (trans) {
-            const word = this.props.editorWord
-            this.props.updateEditorWord({
-              ...word,
-              trans: word.trans
-                ? word.trans + '\n\n' + trans
-                : trans
-            })
-          }
-        })
+    if (!this.props.editorWord.trans) {
+      this.translateCtx()
     }
   }
 
@@ -215,14 +221,18 @@ export class WordEditor extends React.PureComponent<WordEditorProps & { t: Trans
           {relatedWords.length > 0 && <WordCards words={relatedWords} deleteCard={this.deleteCard} /> }
         </div>
         <footer className='wordEditor-Footer'>
+          <button type='button'
+            className='wordEditor-Note_Btn'
+            onClick={this.translateCtx}
+          >{t('transContext')}</button>
           {!isSaladictInternalPage &&
             <button type='button'
-              className='wordEditor-Note_BtnNeverShow'
+              className='wordEditor-Note_Btn'
               onClick={this.openOptions}
             >{t('neverShow')}</button>
           }
           <button type='button'
-            className='wordEditor-Note_BtnCancel'
+            className='wordEditor-Note_Btn'
             onClick={this.closeModal}
           >{t('cancel')}</button>
           <button type='button'

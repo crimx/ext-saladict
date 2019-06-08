@@ -19,6 +19,11 @@
     "zh_TW": "取得全部語言清單",
     "en": "Fetch full language list"
   },
+  "transContext": {
+    "zh_CN": "重新翻译",
+    "zh_TW": "重新翻譯",
+    "en": "Retranslate"
+  },
   "neverShow": {
     "zh_CN": "不再弹出",
     "zh_TW": "不再彈出",
