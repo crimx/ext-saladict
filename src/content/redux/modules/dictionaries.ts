@@ -3,20 +3,16 @@ import { DictID, PreloadSource } from '@/app-config'
 import isEqual from 'lodash/isEqual'
 import { saveWord } from '@/_helpers/record-manager'
 import { getDefaultSelectionInfo, SelectionInfo, isSameSelection } from '@/_helpers/selection'
-import { MsgType, MsgFetchDictResult, MsgQSPanelSearchText } from '@/typings/message'
+import { MsgType, MsgFetchDictResult, MsgQSPanelSearchText, MsgFetchDictResultResponse, MsgAudioPlay } from '@/typings/message'
 import getDefaultProfile from '@/app-config/profiles'
 import { DeepReadonly } from '@/typings/helpers'
 import { StoreState, DispatcherThunk } from './index'
 import { isInNotebook, searchBoxUpdate } from './widget'
 import {
-  testerPunct,
-  testerChinese,
-  testJapanese,
-  testKorean,
-  isContainChinese,
-  isContainEnglish,
+  countWords,
   checkSupportedLangs,
 } from '@/_helpers/lang-check'
+import { MachineTranslateResult } from '@/components/dictionaries/helpers'
 
 const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
 const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
@@ -315,22 +311,20 @@ export function searchText (
       return
     }
 
-     // and those who don't match the selection language
     const { selected: selectedDicts, all: allDicts } = state.config.dicts
-    const toStart: DictID[] = []
-    const toOnhold: DictID[] = []
+    /** should display */
     const toActive: DictID[] = []
+    /** should start searching */
+    const toStart: DictID[] = []
+    /** reset to folded state */
+    const toOnhold: DictID[] = []
 
     selectedDicts.forEach(id => {
       const dict = allDicts[id]
       let isValidSelection = checkSupportedLangs(dict.selectionLang, info.text)
 
       if (isValidSelection) {
-        const wordCount = (info.text
-          .replace(new RegExp(testerPunct, 'g'), ' ')
-          .replace(new RegExp(`${testerChinese.source}|${testJapanese.source}|${testKorean.source}`, 'g'), ' x ')
-          .match(/\S+/g) || '')
-          .length
+        const wordCount = countWords(info.text)
         const { min, max } = dict.selectionWC
         isValidSelection = wordCount >= min && wordCount <= max
       }
@@ -339,10 +333,10 @@ export function searchText (
         toActive.push(id)
       }
 
-      if (!checkSupportedLangs(dict.defaultUnfold, info.text) || !isValidSelection) {
-        toOnhold.push(id)
-      } else {
+      if (isValidSelection && checkSupportedLangs(dict.defaultUnfold, info.text)) {
         toStart.push(id)
+      } else {
+        toOnhold.push(id)
       }
     })
 
@@ -360,20 +354,58 @@ export function searchText (
       dispatch(searchBoxUpdate({ text: info.text, index: 0 }))
     }
 
-    toStart.forEach(doSearch)
+    const pSearchResponses = toStart.map(doSearch)
 
     // dict with auto pronunciation but not searching
-    const autopronEng = state.config.autopron.en.dict
-    if (autopronEng && isContainEnglish(info.text) && !toStart.includes(autopronEng)) {
-      requestDictResult(autopronEng)
+    const autopronChs = state.config.autopron.cn.dict
+    if (autopronChs && !toStart.includes(autopronChs)) {
+      pSearchResponses.push(requestDictResult(autopronChs))
     } else {
-      const autopronChs = state.config.autopron.cn.dict
-      if (autopronChs && isContainChinese(info.text) && !toStart.includes(autopronChs)) {
-        requestDictResult(autopronChs)
+      const autopronEng = state.config.autopron.en.dict
+      if (autopronEng && !toStart.includes(autopronEng)) {
+        pSearchResponses.push(requestDictResult(autopronEng))
       }
     }
 
-    function requestDictResult (id: DictID) {
+    // handle auto pronunciation
+    let hasPlayed = false
+    for (const pSearchResponse of pSearchResponses) {
+      pSearchResponse.then(({ id, result, audio }) => {
+        if (hasPlayed) { return }
+
+        const { cn, en, machine } = state.config.autopron
+
+        if (audio) {
+          if (id === cn.dict && audio.py) {
+            message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src: audio.py })
+            hasPlayed = true
+            return
+          }
+
+          if (id === en.dict) {
+            const src = en.accent === 'us'
+              ? audio!.us || audio!.uk
+              : audio!.uk || audio!.us
+            if (src) {
+              message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
+              hasPlayed = true
+              return
+            }
+          }
+        }
+
+        if (id === machine.dict) {
+          const src = (result as MachineTranslateResult<DictID>)[machine.src].audio
+          if (src) {
+            message.send<MsgAudioPlay>({ type: MsgType.PlayAudio, src })
+            hasPlayed = true
+            return
+          }
+        }
+      })
+    }
+
+    function requestDictResult (id: DictID): Promise<MsgFetchDictResultResponse<any>> {
       return message.send<MsgFetchDictResult>({
         type: MsgType.FetchDictResult,
         id,
@@ -384,13 +416,15 @@ export function searchText (
       })
     }
 
-    function doSearch (id: DictID) {
+    function doSearch (id: DictID): Promise<MsgFetchDictResultResponse<any>> {
       return requestDictResult(id)
-        .then(result => {
-          dispatch(searchEnd({ id, info, result }))
+        .then(response => {
+          dispatch(searchEnd({ id, info, result: response.result }))
+          return response
         })
         .catch(() => {
           dispatch(searchEnd({ id, info , result: null }))
+          return { id, result: null }
         })
     }
   }

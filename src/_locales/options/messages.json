@@ -264,6 +264,31 @@
     "zh_CN": "英文自动发音",
     "zh_TW": "英文自動發音"
   },
+  "opt_autopron_machine": {
+    "en": "Machine Auto-Pronounce",
+    "zh_CN": "机器自动发音",
+    "zh_TW": "機器自動發音"
+  },
+  "opt_autopron_machine_src": {
+    "en": "Machine Pronounce",
+    "zh_CN": "机器发音部分",
+    "zh_TW": "機器發音部分"
+  },
+  "opt_autopron_machine_src_help": {
+    "en": "Machine Translation Dictionary needs to be added and enabled on the list below to enable auto-pronunciation.",
+    "zh_CN": "机器翻译词典需要在下方添加并启用才会自动发音。",
+    "zh_TW": "機器翻譯字典需要在下方新增並啟用才會自動發音。"
+  },
+  "opt_autopron_machine_src_search": {
+    "en": "Read Source Text",
+    "zh_CN": "朗读原文",
+    "zh_TW": "朗讀原文"
+  },
+  "opt_autopron_machine_src_trans": {
+    "en": "Read Translation Text",
+    "zh_CN": "朗读翻译",
+    "zh_TW": "朗讀翻譯"
+  },
   "opt_ba_open": {
     "en": "Browser Action",
     "zh_CN": "点击地址栏旁图标",

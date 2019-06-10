@@ -2,6 +2,7 @@ import { SelectionInfo } from '@/_helpers/selection'
 import { DictID } from '@/app-config'
 import { Word, Area as DBArea } from '@/_helpers/record-manager'
 import { Omit } from '@/typings/helpers'
+import { DictSearchResult } from '@/typings/server'
 
 export const enum MsgType {
   /** Nothing */
@@ -147,6 +148,12 @@ export interface MsgFetchDictResult {
     isPDF: boolean
     [index: string]: any
   }
+}
+
+export interface MsgFetchDictResultResponse<R = any> {
+  id: DictID
+  result: R | null
+  audio?: DictSearchResult<R>['audio']
 }
 
 export interface MsgDictEngineMethod {

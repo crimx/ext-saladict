@@ -13,6 +13,7 @@ import {
   MsgOpenSrcPage,
   MsgAudioPlay,
   MsgFetchDictResult,
+  MsgFetchDictResultResponse,
   MsgIsInNotebook,
   MsgSaveWord,
   MsgDeleteWords,
@@ -44,7 +45,7 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
     case MsgType.PlayAudio:
       return playAudio((data as MsgAudioPlay).src, sender)
     case MsgType.FetchDictResult:
-      return fetchDictResult(data as MsgFetchDictResult, sender)
+      return fetchDictResult(data as MsgFetchDictResult)
     case MsgType.DictEngineMethod:
       return callDictEngineMethod(data as MsgDictEngineMethod)
     case MsgType.GetClipboard:
@@ -279,8 +280,7 @@ function playWaveform (src: string, sender: browser.runtime.MessageSender) {
 
 function fetchDictResult (
   data: MsgFetchDictResult,
-  sender: browser.runtime.MessageSender,
-): Promise<any> {
+): Promise<MsgFetchDictResultResponse<any>> {
   let search: SearchFunction<DictSearchResult<any>, NonNullable<MsgFetchDictResult['payload']>>
 
   try {
@@ -305,32 +305,12 @@ function fetchDictResult (
 
       return Promise.reject(err)
     })
-    .then(({ result, audio }) => {
-      if (audio) {
-        const { cn, en } = window.appConfig.autopron
-        if (audio.py && cn.dict === data.id) {
-          playAudio(audio.py, sender)
-        } else if (en.dict === data.id) {
-          const accents = en.accent === 'uk'
-            ? ['uk', 'us']
-            : ['us', 'uk']
-
-          accents.some(lang => {
-            if (audio[lang]) {
-              playAudio(audio[lang], sender)
-              return true
-            }
-            return false
-          })
-        }
-      }
-      return result
-    })
+    .then(response => ({ ...response, id: data.id }))
     .catch(err => {
       if (process.env.DEV_BUILD) {
         console.warn(data.id, err)
       }
-      return null
+      return { result: null, id: data.id }
     })
 }
 
