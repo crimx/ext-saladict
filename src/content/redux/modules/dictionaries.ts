@@ -356,15 +356,17 @@ export function searchText (
 
     const pSearchResponses = toStart.map(doSearch)
 
+    const { cn, en, machine } = state.config.autopron
+
     // dict with auto pronunciation but not searching
-    const autopronChs = state.config.autopron.cn.dict
-    if (autopronChs && !toStart.includes(autopronChs)) {
-      pSearchResponses.push(requestDictResult(autopronChs))
-    } else {
-      const autopronEng = state.config.autopron.en.dict
-      if (autopronEng && !toStart.includes(autopronEng)) {
-        pSearchResponses.push(requestDictResult(autopronEng))
-      }
+    if (cn.dict && !toStart.includes(cn.dict)) {
+      pSearchResponses.push(requestDictResult(cn.dict))
+    }
+    if (en.dict && !toStart.includes(en.dict)) {
+      pSearchResponses.push(requestDictResult(en.dict))
+    }
+    if (machine.dict && !toStart.includes(machine.dict)) {
+      pSearchResponses.push(requestDictResult(machine.dict))
     }
 
     // handle auto pronunciation
@@ -372,8 +374,6 @@ export function searchText (
     for (const pSearchResponse of pSearchResponses) {
       pSearchResponse.then(({ id, result, audio }) => {
         if (hasPlayed) { return }
-
-        const { cn, en, machine } = state.config.autopron
 
         if (audio) {
           if (id === cn.dict && audio.py) {

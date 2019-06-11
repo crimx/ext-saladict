@@ -70,7 +70,6 @@ export class DictForm extends React.Component<DictFormProps> {
         <Form.Item
           {...formItemLayout}
           label={t('opt_autopron_machine')}
-          help={config.autopron.machine.dict && t('opt_autopron_machine_src_help')}
         >{
           getFieldDecorator('config#autopron#machine#dict', {
             initialValue: config.autopron.machine.dict,
