@@ -33,11 +33,13 @@ function getIdsAndClassNames (root) {
 function getStylesByAttrs (attrs, from, to) {
   let result = ''
 
+  const lattrs = attrs.map(name => name.toLocaleLowerCase())
+
   fs.readFile(from, (err, source) => {
     const root = postcss.parse(source, { from, to })
     root.walkRules(rule => {
       const selector = rule.selector.toLowerCase()
-      if (attrs.some(attr => selector.includes(attr))) {
+      if (lattrs.some(attr => selector.includes(attr))) {
         result += rule.toString() + '\n\n'
         rule.remove()
       }
