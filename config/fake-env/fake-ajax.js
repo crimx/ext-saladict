@@ -31,6 +31,14 @@ const fakeXHRData = [
 
 const fakeFetchData = [
   {
+    test: { url: /ejje\.weblio\.jp.*love$/ },
+    response: [require('raw-loader!../../test/specs/components/dictionaries/weblioejje/response/love.html')],
+  },
+  {
+    test: { url: /ejje\.weblio\.jp.*愛$/ },
+    response: [require('raw-loader!../../test/specs/components/dictionaries/weblioejje/response/愛.html')],
+  },
+  {
     test: { url: /jukuu\.com.*love$/ },
     response: [require('raw-loader!../../test/specs/components/dictionaries/jukuu/response/love.html')],
   },
@@ -207,15 +215,15 @@ const fakeFetchData = [
     response: [require('raw-loader!../../test/specs/components/dictionaries/cambridge/response/house-zhs.html')],
   },
   {
-    test: { url: /weblio\.jp.*love/, },
+    test: { url: /www\.weblio\.jp.*love/, },
     response: [require('raw-loader!../../test/specs/components/dictionaries/weblio/response/love.html')],
   },
   {
-    test: { url: /weblio\.jp.*吐く/, },
+    test: { url: /www\.weblio\.jp.*吐く/, },
     response: [require('raw-loader!../../test/specs/components/dictionaries/weblio/response/吐く.html')],
   },
   {
-    test: { url: /weblio\.jp.*当たる/, },
+    test: { url: /www\.weblio\.jp.*当たる/, },
     response: [require('raw-loader!../../test/specs/components/dictionaries/weblio/response/当たる.html')],
   },
 ]
