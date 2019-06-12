@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.33.0"></a>
+# [6.33.0](https://github.com/crimx/ext-saladict/compare/v6.32.0...v6.33.0) (2019-06-12)
+
+
+### Bug Fixes
+
+* **dicts:** baidu options mixed with google ([239527e](https://github.com/crimx/ext-saladict/commit/239527e))
+* **selection:** context extraction ([ec7421d](https://github.com/crimx/ext-saladict/commit/ec7421d))
+
+
+### Features
+
+* **dicts:** add weblio ejje ([5b01e1e](https://github.com/crimx/ext-saladict/commit/5b01e1e))
+
+
+
 <a name="6.32.0"></a>
 # [6.32.0](https://github.com/crimx/ext-saladict/compare/v6.31.1...v6.32.0) (2019-05-31)
 
