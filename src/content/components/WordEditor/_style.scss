@@ -155,8 +155,7 @@ textarea {
   user-select: none;
 }
 
-.wordEditor-Note_BtnCancel,
-.wordEditor-Note_BtnNeverShow {
+.wordEditor-Note_Btn {
   @extend %wordEditor-Note_Btn;
   margin-right: 10px;
   color: #333;

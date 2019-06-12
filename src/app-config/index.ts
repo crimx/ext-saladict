@@ -261,13 +261,20 @@ function _getDefaultConfig () {
           'urban',
           'websterlearner',
           'youdao',
+        ] as DictID[],
+        accent: 'uk' as 'us' | 'uk'
+      },
+      machine: {
+        dict: '' as DictID | '',
+        list: [
           'google',
           'sogou',
           'tencent',
           'baidu',
           'caiyun',
-        ] as DictID[],
-        accent: 'uk' as 'us' | 'uk'
+        ],
+        // play translation or source
+        src: 'trans' as 'trans' | 'searchText',
       }
     },
 

@@ -61,6 +61,16 @@ export const isContainMinor = memoizeOne((text: string): boolean => {
   return testerMinor.test(text)
 })
 
+export const countWords = memoizeOne((text: string): number => {
+  return (
+    text
+    .replace(new RegExp(testerPunct, 'g'), ' ')
+    .replace(new RegExp(`${testerChinese.source}|${testJapanese.source}|${testKorean.source}`, 'g'), ' x ')
+    .match(/\S+/g) || ''
+  )
+  .length
+})
+
 export interface SupportedLangs {
   chinese: boolean
   english: boolean

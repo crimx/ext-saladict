@@ -6,14 +6,14 @@ export type Acknowledgement = Array<{
 
 export const acknowledgement: Acknowledgement = [
   {
-    name: 'stockyman',
-    href: 'https://github.com/stockyman',
+    name: 'zhtw2013',
+    href: 'https://github.com/crimx/ext-saladict/commits?author=zhtw2013',
     locale: 'trans_tw',
   },
   {
-    name: 'caerlie',
-    href: 'https://github.com/caerlie',
-    locale: 'weblio',
+    name: 'lwdgit',
+    href: 'https://github.com/crimx/ext-saladict/commits?author=lwdgit',
+    locale: 'shanbay',
   },
   {
     name: 'Wekey',
@@ -21,9 +21,14 @@ export const acknowledgement: Acknowledgement = [
     locale: 'naver',
   },
   {
-    name: 'lwdgit',
-    href: 'https://github.com/lwdgit',
-    locale: 'shanbay',
+    name: 'caerlie',
+    href: 'https://github.com/caerlie',
+    locale: 'weblio',
+  },
+  {
+    name: 'stockyman',
+    href: 'https://github.com/stockyman',
+    locale: 'trans_tw',
   },
 ]
 

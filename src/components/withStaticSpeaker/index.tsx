@@ -2,7 +2,7 @@ import React, { ComponentClass, SFC } from 'react'
 import { message } from '@/_helpers/browser-api'
 import { MsgType, MsgAudioPlay } from '@/typings/message'
 
-export function getStaticSpeakerHTML (src?: string): string {
+export function getStaticSpeakerHTML (src?: string | null): string {
   return src
     ? `<a href="${src}" target="_blank" class="saladict-StaticSpeaker">🔊</a>`
     : ''
@@ -48,7 +48,7 @@ export function withStaticSpeaker<P> (
         // clearTimeout(this._audioDelayTimeout)
         evt.preventDefault()
         evt.stopPropagation()
-        message.self.send<MsgAudioPlay>({
+        message.send<MsgAudioPlay>({
           type: MsgType.PlayAudio,
           src: evt.target['href']
         })

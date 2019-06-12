@@ -3,7 +3,7 @@ import WaveSurfer from 'wavesurfer.js'
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min.js'
 import NumberEditor from 'react-number-editor'
 import { message, storage } from '@/_helpers/browser-api'
-import { MsgType, MsgAudioPlay } from '@/typings/message'
+import { MsgType, MsgWaveFormPlay } from '@/typings/message'
 import { SoundTouch, SimpleFilter, getWebAudioNode } from 'soundtouchjs'
 
 interface AnyObject {
@@ -231,8 +231,12 @@ export default class Waveform extends React.PureComponent<{}, WaveformState> {
     this.shouldSTSync = false
   }
 
-  componentDidMount () {
-    message.self.addListener<MsgAudioPlay>(MsgType.PlayAudio, async message => {
+  async componentDidMount () {
+    const pageId = await message.self.initClient()
+
+    message.addListener<MsgWaveFormPlay>(MsgType.PlayWaveform, message => {
+      if (pageId !== message.tabId) { return }
+
       if (message.src) {
         this.src = message.src
         if (this.wavesurfer) {
@@ -249,6 +253,8 @@ export default class Waveform extends React.PureComponent<{}, WaveformState> {
       } else {
         this.reset()
       }
+
+      return Promise.resolve()
     })
 
     storage.local.get('waveform_pitch').then(({ waveform_pitch }) => {

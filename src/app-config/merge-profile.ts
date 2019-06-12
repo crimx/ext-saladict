@@ -14,6 +14,7 @@ export function mergeProfile (oldProfile: Profile, baseProfile?: Profile): Profi
 
   mergeString('name')
   mergeString('mtaAutoUnfold')
+  mergeBoolean('waveform')
 
   mergeSelectedDicts('dicts')
 

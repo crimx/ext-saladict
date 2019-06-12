@@ -6,12 +6,14 @@ import { DictSearchResult } from '@/typings/server'
 import { SearchErrorType, SearchFunction, GetSrcPageFunction } from '@/components/dictionaries/helpers'
 import { syncServiceInit, syncServiceDownload, syncServiceUpload } from './sync-manager'
 import { isInNotebook, saveWord, deleteWords, getWordsByText, getWords } from './database'
+import { play } from './audio-manager'
 import './types'
 import {
   MsgType,
   MsgOpenSrcPage,
   MsgAudioPlay,
   MsgFetchDictResult,
+  MsgFetchDictResultResponse,
   MsgIsInNotebook,
   MsgSaveWord,
   MsgDeleteWords,
@@ -23,6 +25,7 @@ import {
   MsgSyncServiceUpload,
   MsgGetSuggests,
   MsgDictEngineMethod,
+  MsgWaveFormPlay,
 } from '@/typings/message'
 
 /** is a standalone panel running */
@@ -39,8 +42,10 @@ message.addListener((data, sender: browser.runtime.MessageSender) => {
       return openSrcPage(data as MsgOpenSrcPage)
     case MsgType.OpenURL:
       return openURL(data.url, data.self)
+    case MsgType.PlayAudio:
+      return playAudio((data as MsgAudioPlay).src, sender)
     case MsgType.FetchDictResult:
-      return fetchDictResult(data as MsgFetchDictResult, sender)
+      return fetchDictResult(data as MsgFetchDictResult)
     case MsgType.DictEngineMethod:
       return callDictEngineMethod(data as MsgDictEngineMethod)
     case MsgType.GetClipboard:
@@ -248,28 +253,34 @@ function openSrcPage (data: MsgOpenSrcPage): Promise<void> {
 }
 
 function playAudio (src: string, sender: browser.runtime.MessageSender) {
+  if (window.activeProfile.waveform) {
+    return playWaveform(src, sender)
+  }
+  return play(src)
+}
+
+function playWaveform (src: string, sender: browser.runtime.MessageSender) {
   if (sender.tab && sender.tab.id) {
-    return message.send<MsgAudioPlay & { __pageId__: number }>(
+    return message.send<MsgWaveFormPlay>(
       sender.tab.id,
       {
-        type: MsgType.PlayAudio,
+        type: MsgType.PlayWaveform,
         src,
-        __pageId__: sender.tab.id,
+        tabId: sender.tab.id,
       }
     )
   }
 
-  return message.send<MsgAudioPlay & { __pageId__: string }>({
-    type: MsgType.PlayAudio,
+  return message.send<MsgWaveFormPlay>({
+    type: MsgType.PlayWaveform,
     src,
-    __pageId__: 'popup',
+    tabId: 'popup',
   })
 }
 
 function fetchDictResult (
   data: MsgFetchDictResult,
-  sender: browser.runtime.MessageSender,
-): Promise<any> {
+): Promise<MsgFetchDictResultResponse<any>> {
   let search: SearchFunction<DictSearchResult<any>, NonNullable<MsgFetchDictResult['payload']>>
 
   try {
@@ -294,32 +305,12 @@ function fetchDictResult (
 
       return Promise.reject(err)
     })
-    .then(({ result, audio }) => {
-      if (audio) {
-        const { cn, en } = window.appConfig.autopron
-        if (audio.py && cn.dict === data.id) {
-          playAudio(audio.py, sender)
-        } else if (en.dict === data.id) {
-          const accents = en.accent === 'uk'
-            ? ['uk', 'us']
-            : ['us', 'uk']
-
-          accents.some(lang => {
-            if (audio[lang]) {
-              playAudio(audio[lang], sender)
-              return true
-            }
-            return false
-          })
-        }
-      }
-      return result
-    })
+    .then(response => ({ ...response, id: data.id }))
     .catch(err => {
       if (process.env.DEV_BUILD) {
         console.warn(data.id, err)
       }
-      return null
+      return { result: null, id: data.id }
     })
 }
 

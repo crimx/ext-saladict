@@ -3,7 +3,7 @@ import { Props } from '../typings'
 import { updateConfigOrProfile, formItemLayout } from '../helpers'
 
 import { FormComponentProps } from 'antd/lib/form'
-import { Form, Select } from 'antd'
+import { Form, Select, Switch } from 'antd'
 
 export type DictFormProps = Props & FormComponentProps
 
@@ -67,6 +67,52 @@ export class DictForm extends React.Component<DictFormProps> {
             )
           }</Form.Item>
         )}
+        <Form.Item
+          {...formItemLayout}
+          label={t('opt_autopron_machine')}
+        >{
+          getFieldDecorator('config#autopron#machine#dict', {
+            initialValue: config.autopron.machine.dict,
+          })(
+            <Select>
+              <Select.Option value=''>{t('common:none')}</Select.Option>
+              {config.autopron.machine.list.map(id => (
+                <Select.Option key={id} value={id}>{
+                  t(`dict:${id}`)
+                }</Select.Option>
+              ))}
+            </Select>
+          )
+        }</Form.Item>
+        {config.autopron.machine.dict && (
+          <Form.Item
+            {...formItemLayout}
+            label={t('opt_autopron_machine_src')}
+          >{
+            getFieldDecorator('config#autopron#machine#src', {
+              initialValue: config.autopron.machine.src,
+            })(
+              <Select>
+                <Select.Option value='trans'>{t('opt_autopron_machine_src_trans')}</Select.Option>
+                <Select.Option value='searchText'>{t('opt_autopron_machine_src_search')}</Select.Option>
+              </Select>
+            )
+          }</Form.Item>
+        )}
+        <Form.Item
+          {...formItemLayout}
+          label={t('opt_waveform')}
+          help={t('opt_waveform_help')}
+          extra={t('opt_profile_change')}
+          required
+        >{
+          getFieldDecorator('profile#waveform', {
+            initialValue: profile.waveform,
+            valuePropName: 'checked',
+          })(
+            <Switch />
+          )
+        }</Form.Item>
       </Form>
     )
   }

@@ -2,7 +2,7 @@ import { DictID } from '@/app-config'
 import { MachineTranslateResult } from '@/components/dictionaries/helpers'
 import { reflect } from './promise-more'
 import { message } from './browser-api'
-import { MsgFetchDictResult, MsgType } from '@/typings/message'
+import { MsgFetchDictResult, MsgType, MsgFetchDictResultResponse } from '@/typings/message'
 const isSaladictPDFPage = !!window.__SALADICT_PDF_PAGE__
 
 /**
@@ -14,7 +14,7 @@ export function translateCtx (text: string, ctxTrans: { [id in DictID]: boolean 
   const ids = Object.keys(ctxTrans).filter(id => ctxTrans[id]) as DictID[]
   if (ids.length > 0) {
     const payload = { isPDF: isSaladictPDFPage }
-    return reflect<MachineTranslateResult<DictID>>(
+    return reflect<MsgFetchDictResultResponse<MachineTranslateResult<DictID>>>(
       ids.map(id => message.send<MsgFetchDictResult>({
         type: MsgType.FetchDictResult,
         id,
@@ -22,8 +22,8 @@ export function translateCtx (text: string, ctxTrans: { [id in DictID]: boolean 
         payload,
       }))
     )
-    .then(results => results
-      .map((result, i) => result && [ids[i], result.trans.text])
+    .then(responses => responses
+      .map((response, i) => response && response.result && [ids[i], response.result.trans.text])
       .filter((x): x is [string, string] => !!x)
       .map(([id, text], i, arr) => arr.length > 1 ? `${id}: ${text}` : text)
       .join('\n')

@@ -24,6 +24,7 @@ import tencent from '@/components/dictionaries/tencent/config'
 import urban from '@/components/dictionaries/urban/config'
 import vocabulary from '@/components/dictionaries/vocabulary/config'
 import weblio from '@/components/dictionaries/weblio/config'
+import weblioejje from '@/components/dictionaries/weblioejje/config'
 import websterlearner from '@/components/dictionaries/websterlearner/config'
 import wikipedia from '@/components/dictionaries/wikipedia/config'
 import youdao from '@/components/dictionaries/youdao/config'
@@ -57,6 +58,7 @@ export function getALlDicts () {
     urban: urban(),
     vocabulary: vocabulary(),
     weblio: weblio(),
+    weblioejje: weblioejje(),
     websterlearner: websterlearner(),
     wikipedia: wikipedia(),
     youdao: youdao(),

@@ -52,9 +52,9 @@ type BaiduSearchResult = DictSearchResult<BaiduResult>
 export const search: SearchFunction<BaiduSearchResult, MachineTranslatePayload> = async (
   text, config, profile, payload
 ) => {
-  const options = profile.dicts.all.google.options
+  const options = profile.dicts.all.baidu.options
 
-  let sl: string = payload.sl || 'auto'
+  let sl: string = payload.sl || await remoteLangCheck(text)
   const tl: string = payload.tl || (
     options.tl === 'default'
       ? config.langCode === 'en'
@@ -67,12 +67,6 @@ export const search: SearchFunction<BaiduSearchResult, MachineTranslatePayload> 
 
   if (payload.isPDF && !options.pdfNewline) {
     text = text.replace(/\n+/g, ' ')
-  }
-
-  if (!payload.sl) {
-    try {
-      sl = await remoteLangCheck(text)
-    } catch (e) {/* nothing */}
   }
 
   return getToken()
@@ -155,6 +149,7 @@ function remoteLangCheck (text: string): Promise<string> {
   )
   .then(t => t.json())
   .then(json => json && json.lan || Promise.reject(json))
+  .catch(() => 'auto')
 }
 
 async function getToken (): Promise<{ gtk: string, token: string }> {

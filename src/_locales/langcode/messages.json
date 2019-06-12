@@ -57,12 +57,12 @@
   "ca": {
     "en": "Catalan",
     "zh_CN": "加泰罗尼亚语",
-    "zh_TW": "加泰羅尼亞語"
+    "zh_TW": "加泰隆尼亞語"
   },
   "ceb": {
     "en": "Cebuano",
     "zh_CN": "宿务语",
-    "zh_TW": "宿務語"
+    "zh_TW": "宿霧語"
   },
   "cht": {
     "en": "Chinese (Traditional)",
@@ -297,7 +297,7 @@
   "kn": {
     "en": "Kannada",
     "zh_CN": "卡纳达语",
-    "zh_TW": "卡納達語"
+    "zh_TW": "康納達語"
   },
   "ko": {
     "en": "Korean",
@@ -317,12 +317,12 @@
   "ku": {
     "en": "Kurdish",
     "zh_CN": "库尔德语",
-    "zh_TW": "庫爾德語"
+    "zh_TW": "庫德語"
   },
   "ky": {
     "en": "Kyrgyz",
     "zh_CN": "吉尔吉斯语",
-    "zh_TW": "吉爾吉斯語"
+    "zh_TW": "柯爾克孜語"
   },
   "la": {
     "en": "Latin",
@@ -337,7 +337,7 @@
   "lo": {
     "en": "Lao",
     "zh_CN": "老挝语",
-    "zh_TW": "寮國語"
+    "zh_TW": "寮語"
   },
   "lt": {
     "en": "Lithuanian",
@@ -352,7 +352,7 @@
   "mg": {
     "en": "Malagasy",
     "zh_CN": "马尔加什语",
-    "zh_TW": "馬爾加什語"
+    "zh_TW": "馬拉加斯語"
   },
   "mi": {
     "en": "Maori",
@@ -387,7 +387,7 @@
   "mt": {
     "en": "Maltese",
     "zh_CN": "马耳他语",
-    "zh_TW": "馬耳他語"
+    "zh_TW": "馬爾他語"
   },
   "mww": {
     "en": "Bai Miao Wen",
@@ -417,7 +417,7 @@
   "ny": {
     "en": "Nyanja (Chichewa)",
     "zh_CN": "尼杨扎语（齐切瓦语）",
-    "zh_TW": "尼楊扎語（齊切瓦語）"
+    "zh_TW": "尼揚賈語（齊切瓦語）"
   },
   "otq": {
     "en": "Cretaro Ottomi",
@@ -577,7 +577,7 @@
   "tl": {
     "en": "Tagalog (Filipino)",
     "zh_CN": "塔加路语（菲律宾语）",
-    "zh_TW": "塔加路語（菲律賓語）"
+    "zh_TW": "他加祿語（菲律賓語）"
   },
   "tlh": {
     "en": "Klingon",
@@ -602,7 +602,7 @@
   "ty": {
     "en": "Tahiti",
     "zh_CN": "塔希提语",
-    "zh_TW": "塔希提語"
+    "zh_TW": "大溪地語"
   },
   "uk": {
     "en": "Ukrainian",
@@ -652,7 +652,7 @@
   "yua": {
     "en": "Yucatan Mayan",
     "zh_CN": "尤卡坦玛雅语",
-    "zh_TW": "尤卡坦瑪雅語"
+    "zh_TW": "猶加敦馬雅語"
   },
   "yue": {
     "en": "Cantonese (Traditional)",

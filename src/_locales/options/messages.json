@@ -2,7 +2,7 @@
   "dict_add": {
     "en": "Add dicts",
     "zh_CN": "添加词典",
-    "zh_TW": "添加字典"
+    "zh_TW": "新增字典"
   },
   "dict_default_height": {
     "en": "Default Panel Height",
@@ -22,7 +22,7 @@
   "dict_default_unfold_help": {
     "en": "If turned off, this dictionary won't start searching unless it's title bar is clicked.",
     "zh_CN": "关闭后该词典将不会自动搜索，除非点击「展开」箭头。适合一些需要时再深入了解的词典，以加快初次查词速度。",
-    "zh_TW": "關閉後这个字典將不會自動搜尋，除非點選「展開」箭頭。適合一些需要時再深入瞭解的字典，以加快初次查字典速度。"
+    "zh_TW": "關閉後此字典將不會自動搜尋，除非點選「展開」箭頭。適合一些需要時再深入瞭解的字典，以加快初次查字典速度。"
   },
   "dict_lang_de": {
     "en": "De",
@@ -52,7 +52,7 @@
   "dict_lang_kor": {
     "en": "Kor",
     "zh_CN": "韩",
-    "zh_TW": "韩"
+    "zh_TW": "韓"
   },
   "dict_lang_zhs": {
     "en": "Zhs",
@@ -97,7 +97,7 @@
   "head_info_acknowledgement_naver": {
     "en": "for helping add Naver dict",
     "zh_CN": "协助添加 Naver 韩国语词典",
-    "zh_TW": "協助新增 Naver 韩国语词典"
+    "zh_TW": "協助新增 Naver 韓國語字典"
   },
   "head_info_acknowledgement_shanbay": {
     "en": "for adding Shanbay dict",
@@ -137,7 +137,7 @@
   "match_pattern_description": {
     "en": "Specify URLs as match patterns. <a href=\"https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Match_patterns#Examples\" target=\"_blank\">Examples</a>. Empty fields will be removed.",
     "zh_CN": "网址支持匹配模式（<a href=\"https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例\" target=\"_blank\">例子</a>）。留空保存即可清除。",
-    "zh_TW": "網址支援匹配模式（<a href=\"https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例\" target=\"_blank\">例子</a>）。留空儲存即可清除。"
+    "zh_TW": "網址支援比對模式（<a href=\"https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#範例\" target=\"_blank\">例子</a>）。留空儲存即可清除。"
   },
   "msg_update_error": {
     "en": "Unable to update",
@@ -157,7 +157,7 @@
   "nav_ContextMenus": {
     "en": "Context Menus",
     "zh_CN": "右键菜单",
-    "zh_TW": "右鍵菜單"
+    "zh_TW": "右鍵選單"
   },
   "nav_Dictionaries": {
     "en": "Dictionaries",
@@ -192,7 +192,7 @@
   "nav_Popup": {
     "en": "Popup Panel",
     "zh_CN": "右上弹框",
-    "zh_TW": "右上彈框"
+    "zh_TW": "右上彈出式視窗"
   },
   "nav_Profiles": {
     "en": "Profiles",
@@ -227,7 +227,7 @@
   "opt_animation": {
     "en": "Animation transitions",
     "zh_CN": "开启动画过渡",
-    "zh_TW": "啓用轉換動畫"
+    "zh_TW": "啟用轉換動畫"
   },
   "opt_animation_help": {
     "en": "Switch off animation transitions to reduce runtime cost.",
@@ -264,15 +264,40 @@
     "zh_CN": "英文自动发音",
     "zh_TW": "英文自動發音"
   },
+  "opt_autopron_machine": {
+    "en": "Machine Auto-Pronounce",
+    "zh_CN": "机器自动发音",
+    "zh_TW": "機器自動發音"
+  },
+  "opt_autopron_machine_src": {
+    "en": "Machine Pronounce",
+    "zh_CN": "机器发音部分",
+    "zh_TW": "機器發音部分"
+  },
+  "opt_autopron_machine_src_help": {
+    "en": "Machine Translation Dictionary needs to be added and enabled on the list below to enable auto-pronunciation.",
+    "zh_CN": "机器翻译词典需要在下方添加并启用才会自动发音。",
+    "zh_TW": "機器翻譯字典需要在下方新增並啟用才會自動發音。"
+  },
+  "opt_autopron_machine_src_search": {
+    "en": "Read Source Text",
+    "zh_CN": "朗读原文",
+    "zh_TW": "朗讀原文"
+  },
+  "opt_autopron_machine_src_trans": {
+    "en": "Read Translation Text",
+    "zh_CN": "朗读翻译",
+    "zh_TW": "朗讀翻譯"
+  },
   "opt_ba_open": {
     "en": "Browser Action",
     "zh_CN": "点击地址栏旁图标",
-    "zh_TW": "點選位址列旁圖示"
+    "zh_TW": "點選網址列旁圖示"
   },
   "opt_ba_open_dict_panel": {
     "en": "Dict Panel",
     "zh_CN": "显示查词面板",
-    "zh_TW": "打开字典介面"
+    "zh_TW": "開啟字典介面"
   },
   "opt_ba_open_fav": {
     "en": "Add to Notebook",
@@ -282,7 +307,7 @@
   "opt_ba_open_help": {
     "en": "When clicking the browser action icon in toolbar (next to the address bar). Items are same as Context Menus, which can be added or edited on the Context Menus config page.",
     "zh_CN": "点击地址栏旁 Saladict 图标时发生的操作。沿用了「右键菜单」的项目，可以前往该设置页面进行增加或编辑。",
-    "zh_TW": "點選位址列旁 Saladict 圖示時發生的操作。沿用了「右鍵選單」的條目，可以前往該設定頁面增加或編輯。"
+    "zh_TW": "點選網址列旁 Saladict 圖示時發生的操作。沿用了「右鍵選單」的條目，可以前往該設定頁面增加或編輯。"
   },
   "opt_ba_open_options": {
     "en": "Open Saladict Options",
@@ -297,7 +322,7 @@
   "opt_bowl_hover_help": {
     "en": "Hover on the bowl icon to trigger searching instead of clicking.",
     "zh_CN": "鼠标悬停在沙拉图标上触发查词，否则需要点击。",
-    "zh_TW": "滑鼠懸停在沙拉圖示上打开字典介面，否則需要點選。"
+    "zh_TW": "滑鼠暫留在沙拉圖示上開啟字典介面，否則需要點選。"
   },
   "opt_config_export": {
     "en": "Export Configs",
@@ -322,12 +347,12 @@
   "opt_config_reset": {
     "en": "Reset Configs",
     "zh_CN": "重置设定",
-    "zh_TW": "重置設定"
+    "zh_TW": "重設設定"
   },
   "opt_config_reset_confirm": {
     "en": "Reset to default settings. Confirm？",
     "zh_CN": "所有设定将还原到默认值，确定？",
-    "zh_TW": "所有設定將還原到還原點，確定？"
+    "zh_TW": "所有設定將還原至預設值，確定？"
   },
   "opt_context_description": {
     "en": "Integration efforts are mostly made to 有道网页翻译, which has been deserted for years, to let it support https web pages. Other page translation extensions such as Google Translate and Lingocloud Interpreter are available in Web Store.",
@@ -337,7 +362,7 @@
   "opt_context_menus_add_rules": {
     "en": "URL with %s in place of query.",
     "zh_CN": "链接中的 %s 会被替换为选词。",
-    "zh_TW": "連結中的 %s 會被替換為選詞。"
+    "zh_TW": "連結中的 %s 會被取代為選詞。"
   },
   "opt_ctx_trans": {
     "en": "Context Translate Engines",
@@ -352,17 +377,17 @@
   "opt_dict_panel_custom_css": {
     "en": "Custom Dict Panel Styles",
     "zh_CN": "自定义查词面板样式",
-    "zh_TW": "自定義查字界面樣式"
+    "zh_TW": "自訂查字介面樣式"
   },
   "opt_dict_panel_custom_css_help": {
     "en": "Add Custom CSS for Dict Panel. Should use `.saladict-DictPanel` as root",
     "zh_CN": "为查词面板添加自定义 CSS 。请使用 .saladict-DictPanel 作为根。",
-    "zh_TW": "為查字界面自定義 CSS 。請使用 .saladict-DictPanel 作為根。"
+    "zh_TW": "為查字介面自訂 CSS 。請使用 .saladict-DictPanel 作為根。"
   },
   "opt_dict_panel_font_size": {
     "en": "Font size for search reasults",
     "zh_CN": "词典内容字体大小",
-    "zh_TW": "字典内容字體大小"
+    "zh_TW": "字典內容字型大小"
   },
   "opt_dict_panel_height_ratio": {
     "en": "Panel max height ratio",
@@ -382,7 +407,7 @@
   "opt_double_click_delay": {
     "en": "Double Click Delay",
     "zh_CN": "双击间隔",
-    "zh_TW": "滑鼠雙點擊間隔"
+    "zh_TW": "滑鼠按兩下間隔"
   },
   "opt_edit_on_fav": {
     "en": "Open WordEditor when saving",
@@ -407,7 +432,7 @@
   "opt_history_inco": {
     "en": "Also in incognito mode",
     "zh_CN": "在私隐模式中记录",
-    "zh_TW": "在私隱模式中記錄"
+    "zh_TW": "在無痕模式中記錄"
   },
   "opt_language": {
     "en": "App Language",
@@ -427,7 +452,7 @@
   "opt_mta_never": {
     "en": "Never Unfold",
     "zh_CN": "从不展开",
-    "zh_TW": "从不展開"
+    "zh_TW": "永遠不展開"
   },
   "opt_mta_once": {
     "en": "Unfold Once",
@@ -447,12 +472,12 @@
   "opt_no_type_field_help": {
     "en": "If selection making in editable regions is banned, the extension will identify Input Boxes, TextAreas and other common text editors like CodeMirror, ACE and Monaco.",
     "zh_CN": "开启后，本扩展会自动识别输入框以及常见编辑器，如 CodeMirror、ACE 和 Monaco。",
-    "zh_TW": "開啟后，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror、ACE 和 Monaco。"
+    "zh_TW": "開啟後，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror、ACE 和 Monaco。"
   },
   "opt_pdf_blackwhitelist_help": {
     "en": "Blacklisted PDF links will not jump to Saladict PDF Viewer.",
     "zh_CN": "黑名单匹配的 PDF 链接将不会跳转到 Saladict 打开。",
-    "zh_TW": "黑名單匹配的 PDF 連結將不會跳轉到 Saladict 開啟。"
+    "zh_TW": "黑名單相符的 PDF 連結將不會跳至 Saladict 開啟。"
   },
   "opt_pdf_sniff": {
     "en": "Enable PDF Sniffer",
@@ -462,7 +487,7 @@
   "opt_pdf_sniff_help": {
     "en": "If turned on， PDF links will be automatically captured.",
     "zh_CN": "开启后所有 PDF 链接将自动跳转到本扩展打开（包括本地，如果在扩展管理页面勾选了允许）。",
-    "zh_TW": "開啟後所有 PDF 連結將自動跳轉到本擴充套件開啟（包括本地，如果在擴充套件管理頁面勾選了允許）。"
+    "zh_TW": "開啟後所有 PDF 連結將自動跳至本套件開啟（包括本機，如果在套件管理頁面勾選了允許）。"
   },
   "opt_profile_change": {
     "en": "This option may change base on \"Profile\".",
@@ -472,7 +497,7 @@
   "opt_quick_search": {
     "en": "Enable",
     "zh_CN": "启用快捷键",
-    "zh_TW": "啟用快捷鍵"
+    "zh_TW": "啟用快速鍵"
   },
   "opt_quick_search_height": {
     "en": "Window Height",
@@ -482,7 +507,7 @@
   "opt_quick_search_help": {
     "en": "Press <kbd>⌘ Command</kbd>(Mac) or <kbd>Ctrl</kbd>(Others) three times (or with browser shortkey) to summon the dictionary panel. ",
     "zh_CN": "连续按三次<kbd>⌘ Command</kbd>（Mac）或者<kbd>Ctrl</kbd>（其它键盘）（或设置浏览器快捷键）将弹出词典界面。",
-    "zh_TW": "連續按三次<kbd>⌘ Command</kbd>（Mac）或者<kbd>Ctrl</kbd>（其它键盘）（或設定瀏覽器快捷鍵），將會彈出字典視窗介面。"
+    "zh_TW": "連續按三次<kbd>⌘ Command</kbd>（Mac）或者<kbd>Ctrl</kbd>（其它鍵盤）（或設定瀏覽器快速鍵），將會彈出字典視窗介面。"
   },
   "opt_quick_search_loc": {
     "en": "Location",
@@ -497,7 +522,7 @@
   "opt_quick_search_page_sel_help": {
     "en": "Response to page selection.",
     "zh_CN": "响应网页划词。",
-    "zh_TW": "對网页滑鼠滑字作出反應。"
+    "zh_TW": "對網頁滑鼠滑字作出反應。"
   },
   "opt_quick_search_sidebar": {
     "en": "Sidebar Layout",
@@ -507,7 +532,7 @@
   "opt_quick_search_sidebar_help": {
     "en": "Rearrange windows to sidebar-like layout.",
     "zh_CN": "并排显示窗口以达到类似侧边栏的布局。",
-    "zh_TW": "並排顯示視窗以達到類似側邊欄的佈局。"
+    "zh_TW": "並排顯示視窗以達到類似側邊欄的配置。"
   },
   "opt_quick_search_standalone": {
     "en": "Standalone",
@@ -517,7 +542,7 @@
   "opt_quick_search_standalone_help": {
     "en": "Render dict panel in a standalone window (Need <a href=\"https://getquicker.net/Sharedaction?code=42abae81-ed41-4f16-269a-08d668af12c8\" target=\"_blank\">Quicker</a> to work with text selection outside browser).",
     "zh_CN": "显示为单独的窗口（需配合 <a href=\"https://getquicker.net/Sharedaction?code=42abae81-ed41-4f16-269a-08d668af12c8\" target=\"_blank\">Quicker</a> 响应浏览器以外的划词）。",
-    "zh_TW": "显示为獨立的視窗（需配合 <a href=\"https://getquicker.net/Sharedaction?code=42abae81-ed41-4f16-269a-08d668af12c8\" target=\"_blank\">Quicker</a> 響應瀏覽器以外的滑鼠選字）。"
+    "zh_TW": "顯示為獨立的視窗（需配合 <a href=\"https://getquicker.net/Sharedaction?code=42abae81-ed41-4f16-269a-08d668af12c8\" target=\"_blank\">Quicker</a> 響應瀏覽器以外的滑鼠選字）。"
   },
   "opt_search_suggests": {
     "en": "Search suggests",
@@ -532,7 +557,7 @@
   "opt_sel_blackwhitelist_help": {
     "en": "Saladict will not react to selection in blacklisted pages.",
     "zh_CN": "黑名单匹配的页面 Saladict 将不会响应鼠标划词。",
-    "zh_TW": "黑名單匹配的頁面 Saladict 將不會響應滑鼠劃詞。"
+    "zh_TW": "黑名單相符的頁面 Saladict 將不會響應滑鼠劃詞。"
   },
   "opt_sel_lang": {
     "en": "Selection Languages",
@@ -542,17 +567,17 @@
   "opt_sel_lang_help": {
     "en": "Search when selection contains words in the chosen languages.",
     "zh_CN": "当选中的文字包含相应的语言时才进行查找。",
-    "zh_TW": "當選中的文字包含相對應的語言時，才進行查尋。"
+    "zh_TW": "當選取的文字包含相對應的語言時，才進行尋找。"
   },
   "opt_sel_lang_warning": {
     "en": "Note that Japanese and Korean also include Chinese. French, Deutsch and Spanish also include English. If Chinese or English is cancelled while others are selected, only the exclusive parts of those languages are tested. E.g. kana characters in Japanese.",
     "zh_CN": "注意日语与韩语也包含了汉字。法语、德语和西语也包含了英文。若取消了中文或英语而勾选了其它语言，则只匹配那些语言独有的部分，如日语只匹配假名。",
-    "zh_TW": "注意日語與韓語也包含了漢字。法語、德語和西語也包含了英文。若取消了中文或英語而勾選了其它語言，則只匹配那些語言獨有的部分，如日語只匹配假名。"
+    "zh_TW": "注意日語與韓語也包含了漢字。法語、德語和西語也包含了英文。若取消了中文或英語而勾選了其它語言，則只翻譯那些語言獨有的部分，如日語只翻譯假名。"
   },
   "opt_shortcuts": {
     "en": "Set Shortcuts",
     "zh_CN": "设置快捷键",
-    "zh_TW": "設定快捷鍵"
+    "zh_TW": "設定快速鍵"
   },
   "opt_sm_direct": {
     "en": "Direct Search",
@@ -567,12 +592,12 @@
   "opt_sm_double": {
     "en": "Double Click",
     "zh_CN": "双击搜索",
-    "zh_TW": "滑鼠雙點擊"
+    "zh_TW": "滑鼠按兩下"
   },
   "opt_sm_double_help": {
     "en": "Show dict panel after double click selection.",
     "zh_CN": "双击选择文本之后直接显示词典面板。",
-    "zh_TW": "滑鼠雙點擊所選擇的句子或單字後，會直接顯示字典視窗介面。"
+    "zh_TW": "滑鼠按兩下所選擇的句子或單字後，會直接顯示字典視窗介面。"
   },
   "opt_sm_holding": {
     "en": "Hold a key",
@@ -587,12 +612,12 @@
   "opt_sm_icon": {
     "en": "Show Icon",
     "zh_CN": "显示图标",
-    "zh_TW": "顯示圖案"
+    "zh_TW": "顯示圖示"
   },
   "opt_sm_icon_help": {
     "en": "A cute little icon pops up nearby the cursor.",
     "zh_CN": "在鼠标附近显示一个图标，鼠标移上去后才显示词典面板。",
-    "zh_TW": "在滑鼠附近顯示一個圖案，滑鼠移動到圖案，會顯示出字典的視窗介面。"
+    "zh_TW": "在滑鼠附近顯示一個圖示，滑鼠移動到圖示後，會顯示出字典的視窗介面。"
   },
   "opt_sm_instant": {
     "en": "Instant Capture",
@@ -612,7 +637,7 @@
   "opt_sm_instant_help": {
     "en": "Selection is automatically made near by the cursor.",
     "zh_CN": "自动选取鼠标附近的单词，因技术限制，悬浮取词通过自动选择鼠标附近单词实现，不设置按键直接取词可导致无法选词，建议配合快捷键开启关闭。",
-    "zh_TW": "自動選取滑鼠附近的單字，自動選取滑鼠附近的單詞，因技術限制，懸浮取詞通過自動選擇滑鼠附近單字實現，不設定按鍵直接取詞可導致滑鼠無法選字，建議配合快捷鍵開啟關閉。"
+    "zh_TW": "自動選取滑鼠附近的單字，自動選取滑鼠附近的單詞，因技術限制，懸浮取詞通過自動選擇滑鼠附近單字實現，不設定按鍵直接取詞可能導致滑鼠無法選字，建議配合快速鍵開啟關閉。"
   },
   "opt_sm_instant_key": {
     "en": "Key",
@@ -647,7 +672,17 @@
   "opt_sync_webdav": {
     "en": "WebDAV Sync Service",
     "zh_CN": "添加 WebDAV 同步",
-    "zh_TW": "添加 WebDAV 同步"
+    "zh_TW": "新增 WebDAV 同步"
+  },
+  "opt_waveform": {
+    "en": "Waveform Control",
+    "zh_CN": "波形控制",
+    "zh_TW": "波形控制"
+  },
+  "opt_waveform_help": {
+    "en": "Display Waveform Control Panel which may have impact on performance. Audio files can still be played if turned off.",
+    "zh_CN": "显示音频波形控制面板。关闭依然可以播放音频，并减少性能消耗。",
+    "zh_TW": "顯示音訊波形控制面板。關閉依然可以播放音訊，并減少效能消耗。"
   },
   "preload": {
     "en": "Preload",
@@ -662,12 +697,12 @@
   "preload_auto_help": {
     "en": "Search automatically when panel shows up.",
     "zh_CN": "查词面板出现时自动搜索预加载内容。",
-    "zh_TW": "字典介面出現時自動搜尋預載入內容。"
+    "zh_TW": "字典介面出現時自動搜尋預先載入內容。"
   },
   "preload_clipboard": {
     "en": "Clipboard",
     "zh_CN": "剪贴板",
-    "zh_TW": "剪貼板"
+    "zh_TW": "剪貼簿"
   },
   "preload_help": {
     "en": "Preload content in search box when panel shows up.",
@@ -692,12 +727,12 @@
   "profiles_edit_name": {
     "en": "Change Profile Name",
     "zh_CN": "更改情景模式名称",
-    "zh_TW": "更改情景模式名稱"
+    "zh_TW": "變更情景模式名稱"
   },
   "profiles_help": {
     "en": "Some of the settings (with <span style=\"color:#f5222d\">*</span> prefix) change according to profile. One may switch profiles by hovering on the menu icon on Dict Panel, or focus on the icon then hit <kbd>↓</kbd>.",
     "zh_CN": "一些选项（带 <span style=\"color:#f5222d\">*</span>）会随着情景模式变化。鼠标悬浮在查词面板的菜单图标上可快速切换，或者焦点选中菜单图标然后按<kbd>↓</kbd>。",
-    "zh_TW": "一些選項（帶 <span style=\"color:#f5222d\">*</span>）會隨著情景模式變化。滑鼠懸浮在字典介面的選單圖示上可快速切換，或者焦點選中選單圖示然後按<kbd>↓</kbd>。"
+    "zh_TW": "一些選項（帶有 <span style=\"color:#f5222d\">*</span>）會隨著情景模式變化。滑鼠懸浮在字典介面的選單圖示上可快速切換，或者焦點選中選單圖示然後按<kbd>↓</kbd>。"
   },
   "quick_search_loc_0": {
     "en": "Center",
@@ -802,7 +837,7 @@
   "sync_start": {
     "en": "Syncing started in background",
     "zh_CN": "同步已在后台开始",
-    "zh_TW": "同步已在後端開始"
+    "zh_TW": "同步已在背景開始"
   },
   "sync_success": {
     "en": "Syncing success",
@@ -822,12 +857,12 @@
   "sync_webdav_duration_help": {
     "en": "Data is guaranteed to be updated before upload. If you do not need real-time syncing across browsers, set a longer polling cycle to reduce CPU and memory footprint.",
     "zh_CN": "添加生词后会马上上传，数据会在上传前保证同步，所以如果不需要多个浏览器实时查看更新，可将更新检测周期调大些以减少资源占用及避免服务器拒绝响应。",
-    "zh_TW": "新增生字後會馬上上傳，資料會在上傳前保證同步，所以如果不需要多個瀏覽器實時查看更新，可將更新檢測週期調大些以減少資源佔用及避免伺服器拒絕響應。"
+    "zh_TW": "新增生字後會馬上上傳，資料會在上傳前保證同步，所以如果不需要多個瀏覽器即時檢視更新，可將更新檢查週期調大些以減少資源佔用及避免伺服器拒絕回應。"
   },
   "sync_webdav_err_exist": {
     "en": "Files under Saladict directory on server will be overwritten. Download and merge with local files first?",
     "zh_CN": "服务器上 Saladict 目录下的文件将被替换。先下载合并到本地？",
-    "zh_TW": "伺服器上 Saladict 目錄下的檔案將被替換。先下載合併到本地？"
+    "zh_TW": "伺服器上 Saladict 目錄下的檔案將被替換。先下載合併到本機？"
   },
   "sync_webdav_err_mkcol": {
     "en": "Cannot create \"Saladict\" directory on server. Please create the directory manualy on server.",
@@ -847,12 +882,12 @@
   "sync_webdav_err_unauthorized": {
     "en": "Incorrect account or password.",
     "zh_CN": "账户或密码不正确。",
-    "zh_TW": "賬戶或密碼不正確。"
+    "zh_TW": "帳戶或密碼不正確。"
   },
   "sync_webdav_err_unknown": {
     "en": "Unknown error 「{{error}}」.",
     "zh_CN": "未知错误 「{{error}}」。",
-    "zh_TW": "未知錯誤 「{{error}}」。"
+    "zh_TW": "不詳錯誤 「{{error}}」。"
   },
   "sync_webdav_explain": {
     "en": "Extension settings (including this) are synced via browser. New words notebook can be synced via WebDAV through settings here. <a href=\"http://help.jianguoyun.com/?p=2064\" target=\"_blank\">See Jianguoyun for example</a>.",
@@ -872,12 +907,12 @@
   "sync_webdav_url": {
     "en": "Server Address",
     "zh_CN": "服务器地址",
-    "zh_TW": "伺服器地址"
+    "zh_TW": "伺服器位址"
   },
   "sync_webdav_user": {
     "en": "User Account",
     "zh_CN": "账户",
-    "zh_TW": "賬戶"
+    "zh_TW": "帳戶"
   },
   "title": {
     "en": "Saladict Options",
