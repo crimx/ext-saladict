@@ -7,6 +7,7 @@ import {
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
+  externalLink,
 } from '../helpers'
 import { DictConfigs } from '@/app-config'
 import { DictSearchResult } from '@/typings/server'
@@ -157,9 +158,7 @@ function handleDOM (
 
   const $senses = doc.querySelector('.senses')
   if ($senses && $senses.querySelectorAll('.SENSE').length > 0) {
-    $senses.querySelectorAll<HTMLAnchorElement>('a.moreButton').forEach($a => {
-      $a.rel = 'nofollow noopener noreferrer'
-    })
+    $senses.querySelectorAll<HTMLAnchorElement>('a.moreButton').forEach(externalLink)
     result.senses = getInnerHTML($senses)
   } else {
     return null

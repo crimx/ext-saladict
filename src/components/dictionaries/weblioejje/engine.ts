@@ -4,7 +4,6 @@ import {
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
-  removeChild,
   getOuterHTMLBuilder,
   HTMLString,
   externalLink,
@@ -99,6 +98,12 @@ function handleDOM (doc: Document): WeblioejjeSearchResult | Promise<WeblioejjeS
     $entry.querySelectorAll('br').forEach($br => {
       $br.classList.add('br')
       $br.outerHTML = `<div class="${$br.className}"></div>`
+    })
+
+    $entry.querySelectorAll('a').forEach($a => {
+      if (!$a.classList.contains('crosslink')) {
+        externalLink($a)
+      }
     })
 
     result.push({ title, content: getOuterHTML($entry) })

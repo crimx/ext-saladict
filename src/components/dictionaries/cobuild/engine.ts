@@ -7,6 +7,7 @@ import {
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
+  externalLink,
 } from '../helpers'
 import { getStaticSpeakerHTML } from '@/components/withStaticSpeaker'
 import { DictConfigs } from '@/app-config'
@@ -176,9 +177,7 @@ function handleColDOM (
       })
 
       // so that clicking won't trigger in-panel search
-      $section.querySelectorAll<HTMLAnchorElement>('a.type-thesaurus').forEach($a => {
-        $a.rel = 'nofollow noopener noreferrer'
-      })
+      $section.querySelectorAll<HTMLAnchorElement>('a.type-thesaurus').forEach(externalLink)
 
       return {
         id: type + title + num,
