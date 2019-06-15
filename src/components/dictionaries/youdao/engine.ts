@@ -98,7 +98,7 @@ function handleDOM (
     const phsym = $pron.textContent || ''
     const $voice = $pron.querySelector<HTMLAnchorElement>('.dictvoice')
     if ($voice && $voice.dataset.rel) {
-      const url = 'http://dict.youdao.com/dictvoice?audio=' + $voice.dataset.rel
+      const url = 'https://dict.youdao.com/dictvoice?audio=' + $voice.dataset.rel
 
       result.prons.push({ phsym, url })
 

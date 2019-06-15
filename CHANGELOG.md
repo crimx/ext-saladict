@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.33.1"></a>
+## [6.33.1](https://github.com/crimx/ext-saladict/compare/v6.33.0...v6.33.1) (2019-06-15)
+
+
+### Bug Fixes
+
+* **dicts:** https audio ([d8d569f](https://github.com/crimx/ext-saladict/commit/d8d569f))
+
+
+
 <a name="6.33.0"></a>
 # [6.33.0](https://github.com/crimx/ext-saladict/compare/v6.32.0...v6.33.0) (2019-06-12)
 
