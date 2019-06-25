@@ -14,6 +14,10 @@
 
 Chrome/Firefox WebExtension. Feature-rich inline translator with PDF support. Vimium compatible.
 
+:rotating_light: :rotating_light: :rotating_light: :rotating_light: :rotating_light: :rotating_light:   
+The core engine of Saladict is under rewriting right now. PRs are not encouraged unless there are critical bugs.   
+:rotating_light: :rotating_light: :rotating_light: :rotating_light: :rotating_light: :rotating_light: 
+
 [【中文】](https://www.crimx.com/ext-saladict/)Chrome/Firefox 浏览器插件，网页划词翻译。
 
 <p align="center">
