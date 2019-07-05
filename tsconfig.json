@@ -1,22 +1,26 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": "./",
-    "jsx": "react",
-    "lib": ["es2017", "dom", "dom.iterable"],
-    "module": "es2015",
+    // Target latest version of ECMAScript.
+    "target": "esnext",
+    // Search under node_modules for non-relative imports.
     "moduleResolution": "node",
-    "noImplicitAny": false,
-    "outDir": "./dist/",
-    "paths": {
-      "@/*": ["src/*"]
-    },
-    "sourceMap": true,
+    // Process & infer types from .js files.
+    "allowJs": true,
+    // Don't emit; allow Babel to transform files.
+    "noEmit": true,
+    // Enable strictest settings like strictNullChecks & noImplicitAny.
     "strict": true,
-    "target": "es2017",
-    "typeRoots": ["node_modules/@types", "node_modules/web-ext-types", "src/typings"]
+    // Disallow features that require cross-file information for emit.
+    "isolatedModules": true,
+    // Import non-ES modules as default imports.
+    "esModuleInterop": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/web-ext-types",
+      "src/typings"
+    ],
   },
   "include": [
-    "./src/**/*"
+    "src"
   ]
 }
