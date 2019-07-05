@@ -1,14 +1,6 @@
 {
-  "background": {
-    "scripts": [
-      "static/browser-polyfill.min.js",
-      "background.js"
-    ]
-  },
   "options_ui": {
-    "page": "options.html",
-    "browser_style": false,
-    "open_in_tab": true
+    "browser_style": false
   },
   "applications": {
     "gecko": {

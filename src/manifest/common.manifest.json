@@ -17,27 +17,6 @@
     "128": "static/icon-128.png"
   },
 
-  "content_scripts": [
-    {
-      "js": ["static/browser-polyfill.min.js"],
-      "matches": ["<all_urls>"],
-      "run_at": "document_start",
-      "match_about_blank": true,
-      "all_frames": true
-    },
-    {
-      "js": ["content.js"],
-      "css": ["content.css"],
-      "matches": ["<all_urls>"]
-    },
-    {
-      "js": ["selection.js"],
-      "matches": ["<all_urls>"],
-      "match_about_blank": true,
-      "all_frames": true
-    }
-  ],
-
   "commands": {
     "toggle-active": {
       "description": "__MSG_command_toggle_active__"
@@ -60,35 +39,8 @@
   },
 
   "web_accessible_resources": [
-    "audio-control.html",
-    "audio-control.js",
-    "audio-control.css",
-    "panel.html",
-    "panel.js",
-    "panel.css",
-    "wordeditor.html",
-    "wordeditor.js",
-    "wordeditor.css",
-    "options.html",
-    "options.js",
-    "options.css",
-    "notebook.html",
-    "notebook.js",
-    "notebook.css",
-    "history.html",
-    "history.js",
-    "history.css",
-    "static/*",
-    "dicts/*"
+    "assets/*"
   ],
-
-  "browser_action": {
-    "default_icon": {
-      "19": "static/icon-19.png",
-      "38": "static/icon-38.png"
-    },
-    "default_popup": "popup.html"
-  },
 
   "permissions": [
     "<all_urls>",
