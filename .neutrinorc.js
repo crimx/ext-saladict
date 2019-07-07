@@ -4,7 +4,7 @@ const copy = require('@neutrinojs/copy')
 const wext = require('neutrino-webextension')
 
 module.exports = {
-  optons: {
+  options: {
     mains: {
       content: {
         entry: 'content',
@@ -61,6 +61,25 @@ module.exports = {
   },
   use: [
     react({
+      style: {
+        test: /\.(css|scss)$/,
+        modulesTest: /\.module\.(css|scss)$/,
+        loaders: [
+          // Define loaders as objects. Note: loaders must be specified in reverse order.
+          // ie: for the loaders below the actual execution order would be:
+          // input file -> sass-loader -> postcss-loader -> css-loader -> style-loader/mini-css-extract-plugin
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [require('autoprefixer')]
+            }
+          },
+          {
+            loader: 'sass-loader',
+            useId: 'scss'
+          }
+        ]
+      },
       babel: {
         presets: [
           [

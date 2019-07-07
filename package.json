@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "start": "webpack-dev-server --mode development --open",
+    "storybook": "start-storybook",
     "build": "webpack --mode production",
     "devbuild": "node scripts/build.js --devbuild",
     "type-check": "tsc --noEmit",
@@ -31,7 +32,7 @@
   "license": "MIT",
   "readmeFilename": "README.md",
   "bugs": {
-    "url": "https://github.com/crimx/create-react-typescript-sass-webextension/issues"
+    "url": "https://github.com/crimx/ext-saladict/issues"
   },
   "config": {
     "commitizen": {
@@ -39,6 +40,8 @@
     }
   },
   "dependencies": {
+    "@types/react": "^16.8.23",
+    "@types/react-dom": "^16.8.4",
     "react": "^16",
     "react-dom": "^16",
     "react-hot-loader": "^4",
@@ -49,9 +52,16 @@
     "@babel/preset-typescript": "^7.3.3",
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
-    "@neutrinojs/copy": "^8.3.0",
+    "@neutrinojs/copy": "^9.0.0-rc.3",
     "@neutrinojs/react": "^9.0.0-rc.3",
+    "@storybook/addon-actions": "^5.1.9",
+    "@storybook/addon-info": "^5.1.9",
+    "@storybook/react": "^5.1.9",
+    "@types/storybook__react": "^4.0.2",
     "@typescript-eslint/eslint-plugin": "^1.11.0",
+    "@typescript-eslint/parser": "^1.11.0",
+    "autoprefixer": "^9.6.1",
+    "babel-plugin-react-docgen-typescript": "^1.2.0",
     "commitizen": "^3.1.1",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^6.0.1",
@@ -67,7 +77,10 @@
     "jest": "^24.8.0",
     "neutrino": "^9.0.0-rc.3",
     "neutrino-webextension": "^0.1.1",
+    "node-sass": "^4.12.0",
+    "postcss-loader": "^3.0.0",
     "prettier": "^1.18.2",
+    "sass-loader": "^7.1.0",
     "standard-version": "^6.0.1",
     "typescript": "^3.5.2",
     "webpack": "^4",
