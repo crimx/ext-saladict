@@ -72,7 +72,8 @@ module.exports = {
             loader: 'postcss-loader',
             options: {
               plugins: [require('autoprefixer')]
-            }
+            },
+            useId: 'postcss'
           },
           {
             loader: 'sass-loader',
@@ -105,15 +106,49 @@ module.exports = {
     }),
     neutrino => {
       /* eslint-disable indent */
+
+      // transform *.string.(css|scss) to string
+      // this will be injected into shadow-dom style tag
+      // prettier-ignore
+      const stringStyleRules = neutrino.config.module
+        .rule('style')
+          .oneOf('shadow')
+            .before('normal')
+            .test(/\.shadow\.(css|scss)$/)
+              .use('tostring')
+                .loader('to-string-loader')
+                .end()
+              .use('minify')
+              .after('css')
+                .loader('clean-css-loader')
+                .options({
+                  level: 1,
+                })
+                .end()
+      // prettier-ignore
+      neutrino.config.module
+        .rule('style')
+          .oneOf('normal')
+            .uses.values()
+              .filter(rule => rule.name !== 'extract')
+              .forEach(rule => {
+                stringStyleRules
+                  .use(rule.name)
+                    .loader(rule.get('loader'))
+                    .options(rule.get('options'))
+              })
+
       // prettier-ignore
       neutrino.config
         .resolve
-          .extensions
+          .extensions // typescript extensions
             .add('.ts')
             .add('.tsx')
             .end()
-          .alias
+          .alias // '@' src alias
             .set('@', path.join(__dirname, 'src'))
+            .end()
+          .end()
       /* eslint-enable indent */
     },
     wext({

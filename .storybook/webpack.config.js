@@ -8,6 +8,7 @@ const babelOptions = neutrino.config.module
   .rule('compile')
   .use('babel')
   .get('options')
+
 babelOptions.plugins.push([
   'babel-plugin-react-docgen-typescript',
   {
@@ -24,11 +25,79 @@ module.exports = ({ config, mode }) => {
     options: babelOptions
   })
   config.module.rules.push({
-    test: /\.scss$/,
-    use: ['style-loader', 'css-loader', 'sass-loader'],
-    include: path.resolve(__dirname, '../src')
+    oneOf: [
+      {
+        test: /\.module\.(css|scss)$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+              modules: true
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [require('autoprefixer')]
+            }
+          },
+          'sass-loader'
+        ],
+        include: path.resolve(__dirname, '../src')
+      },
+      {
+        test: /\.shadow\.(css|scss)$/,
+        use: [
+          'to-string-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2
+            }
+          },
+          {
+            loader: 'clean-css-loader',
+            options: {
+              level: 1
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [require('autoprefixer')]
+            }
+          },
+          'sass-loader'
+        ],
+        include: path.resolve(__dirname, '../src')
+      },
+      {
+        test: /\.(css|scss)$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: [require('autoprefixer')]
+            }
+          },
+          'sass-loader'
+        ],
+        include: path.resolve(__dirname, '../src')
+      }
+    ]
   })
+
   config.resolve.extensions.push('.ts', '.tsx')
   config.resolve.alias['@'] = path.join(__dirname, '../src')
+
   return config
 }
