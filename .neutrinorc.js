@@ -140,6 +140,11 @@ module.exports = {
 
       // prettier-ignore
       neutrino.config
+        .module
+          .rule('compile') // add ts extensions for babel ect
+            .test(/\.(mjs|jsx|js|ts|tsx)$/)
+            .end()
+          .end()
         .resolve
           .extensions // typescript extensions
             .add('.ts')
