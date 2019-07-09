@@ -20,6 +20,10 @@ babelOptions.plugins.push([
 
 module.exports = ({ config, mode }) => {
   config.module.rules.push({
+    test: /\.mjs$/,
+    type: 'javascript/auto'
+  })
+  config.module.rules.push({
     test: /\.(ts|tsx)$/,
     loader: require.resolve('babel-loader'),
     options: babelOptions
