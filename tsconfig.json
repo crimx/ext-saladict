@@ -14,20 +14,17 @@
     "isolatedModules": true,
     // Import non-ES modules as default imports.
     "esModuleInterop": true,
+    "noImplicitAny": false,
     "jsx": "react",
     "baseUrl": "./",
     "paths": {
-      "@/*": [
-        "src/*"
-      ]
+      "@/*": ["src/*"]
     },
     "typeRoots": [
       "node_modules/@types",
       "node_modules/web-ext-types",
       "src/typings"
-    ],
+    ]
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }
