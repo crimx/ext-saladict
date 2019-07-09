@@ -42,10 +42,13 @@
   "dependencies": {
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
+    "@types/react-transition-group": "^2.9.2",
     "react": "^16",
     "react-dom": "^16",
     "react-hot-loader": "^4",
     "react-shadow": "^17.1.1",
+    "react-transition-group": "^4.2.1",
+    "rxjs": "^6.5.2",
     "web-ext-types": "latest",
     "webextension-polyfill": "latest"
   },
