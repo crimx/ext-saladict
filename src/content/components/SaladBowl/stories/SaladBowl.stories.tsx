@@ -7,7 +7,7 @@ import { SaladBowl, SaladBowlShadow, SaladBowlPortal } from '../index'
 storiesOf('Content|SaladBowl', module)
   .addDecorator(withKnobs)
   .add('SaladBowl', () => (
-    <>
+    <div>
       <style>{require('../style.shadow.scss').toString()}</style>
       <SaladBowl
         mouseX={number('mouseX', 0)}
@@ -16,7 +16,7 @@ storiesOf('Content|SaladBowl', module)
         enableHover={boolean('Enable hover', true)}
         onChange={action('onChange')}
       />
-    </>
+    </div>
   ))
   .add('SaladBowlShadow', () => (
     <SaladBowlShadow
