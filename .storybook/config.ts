@@ -1,3 +1,4 @@
+import React from 'react'
 import { configure, addDecorator } from '@storybook/react'
 import { withInfo } from '@storybook/addon-info'
 
@@ -7,6 +8,10 @@ addDecorator(
     header: false
   })
 )
+
+// https://github.com/storybookjs/storybook/issues/5721
+// @ts-ignore
+addDecorator(Story => React.createElement(Story))
 
 function loadStories() {
   const req = require.context('../src', true, /\.stories\.tsx$/)
