@@ -21,26 +21,31 @@ export interface SaladBowlProps {
  */
 export const SaladBowl: FC<SaladBowlProps> = props => {
   // icon position
-  //             +-------+
-  //             |       |
-  //             |       | 30px
-  //        60px +-------+
-  //             |  30px
-  //             |
-  //       40px  |
-  //     +-------+
+  //           +-------+
+  //           |       |
+  //           |       | 30px
+  //      50px +-------+
+  //           |  30px
+  //     20px  |
+  //     +-----+
   // cursor
+  const iconWidth = 30
+  const gap = 20
+  const scrollbarWidth = 10
+
   const x = useMemo(
     (): number =>
-      props.mouseX + 70 > window.innerWidth
-        ? props.mouseX - 70
-        : props.mouseX + 40,
+      props.mouseX + gap + iconWidth > window.innerWidth - scrollbarWidth
+        ? props.mouseX - gap - iconWidth // switch to left
+        : props.mouseX + gap,
     [props.mouseX]
   )
 
   const y = useMemo(
     (): number =>
-      props.mouseY > 60 ? props.mouseY - 60 : props.mouseY + 60 - 30,
+      props.mouseY < iconWidth + gap // top overflow
+        ? props.mouseY + gap // switch to bottom
+        : props.mouseY - iconWidth - gap,
     [props.mouseY]
   )
 
