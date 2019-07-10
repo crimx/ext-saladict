@@ -10,8 +10,8 @@ storiesOf('Content|SaladBowl', module)
     <>
       <style>{require('../style.shadow.scss').toString()}</style>
       <SaladBowl
-        x={number('x', 10)}
-        y={number('y', 10)}
+        mouseX={number('mouseX', 0)}
+        mouseY={number('mouseY', 0)}
         withAnimation={boolean('Animation', true)}
         enableHover={boolean('Enable hover', true)}
         onChange={action('onChange')}
@@ -21,8 +21,8 @@ storiesOf('Content|SaladBowl', module)
   .add('SaladBowlShadow', () => (
     <SaladBowlShadow
       show={boolean('Show', true)}
-      x={number('x', 10)}
-      y={number('y', 10)}
+      mouseX={number('mouseX', 0)}
+      mouseY={number('mouseY', 0)}
       withAnimation={boolean('Animation', true)}
       enableHover={boolean('Enable hover', true)}
       onChange={action('onChange')}
