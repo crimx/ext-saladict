@@ -40,12 +40,18 @@
     }
   },
   "dependencies": {
+    "@types/i18next": "^12.1.0",
+    "@types/lodash": "^4.14.136",
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
+    "@types/react-i18next": "^8.1.0",
     "@types/react-transition-group": "^2.9.2",
+    "i18next": "^17.0.6",
+    "lodash": "^4.17.14",
     "react": "^16",
     "react-dom": "^16",
     "react-hot-loader": "^4",
+    "react-i18next": "^10.11.4",
     "react-shadow": "^17.1.1",
     "react-transition-group": "^4.2.1",
     "rxjs": "^6.5.2",

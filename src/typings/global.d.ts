@@ -15,4 +15,7 @@ interface Window {
 
   // Options page
   __SALADICT_LAST_SEARCH__?: string
+
+  // eslint-disable-next-line
+  __webpack_public_path__?: string
 }
