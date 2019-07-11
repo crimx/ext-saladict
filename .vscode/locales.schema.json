@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "name": {
+      "$ref": "#/definitions/locale"
+    },
+    "options": {
+      "$ref": "#/definitions/locales"
+    },
+    "helps": {
+      "$ref": "#/definitions/locales"
+    }
+  },
+  "required": ["name"],
+  "additionalProperties": false,
+
+  "definitions": {
+    "locale": {
+      "type": "object",
+      "properties": {
+        "en": { "type": "string" },
+        "zh-CN": { "type": "string" },
+        "zh-TW": { "type": "string" }
+      },
+      "required": ["en", "zh-CN", "zh-TW"],
+      "additionalProperties": false
+    },
+    "locales": {
+      "type": "object",
+      "patternProperties": {
+        ".+": {
+          "$ref": "#/definitions/locale"
+        }
+      }
+    }
+  }
+}

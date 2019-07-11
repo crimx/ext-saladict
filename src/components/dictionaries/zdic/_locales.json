@@ -1,21 +1,21 @@
 {
   "name": {
     "en": "汉典",
-    "zh_CN": "汉典",
-    "zh_TW": "漢典"
+    "zh-CN": "汉典",
+    "zh-TW": "漢典"
   },
   "options": {
     "audio": {
       "en": "Enable audio",
-      "zh_CN": "开启发音",
-      "zh_TW": "啟用發音"
+      "zh-CN": "开启发音",
+      "zh-TW": "啟用發音"
     }
   },
   "helps": {
     "audio": {
       "en": "Referer modification is required, which may slightly impact performance.",
-      "zh_CN": "突破外链限制需要改写 Referer，可能会轻微影响性能。",
-      "zh_TW": "突破外鏈限制需要改寫 Referer，可能會輕微影響效能。"
+      "zh-CN": "突破外链限制需要改写 Referer，可能会轻微影响性能。",
+      "zh-TW": "突破外鏈限制需要改寫 Referer，可能會輕微影響效能。"
     }
   }
 }

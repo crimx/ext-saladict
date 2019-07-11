@@ -1,39 +1,39 @@
 {
   "name": {
     "en": "LingoCloud",
-    "zh_CN": "彩云小译",
-    "zh_TW": "彩雲小譯"
+    "zh-CN": "彩云小译",
+    "zh-TW": "彩雲小譯"
   },
   "options": {
     "pdfNewline": {
       "en": "Keep linebreaks on PDF",
-      "zh_CN": "PDF 保持换行",
-      "zh_TW": "PDF 保持換行"
+      "zh-CN": "PDF 保持换行",
+      "zh-TW": "PDF 保持換行"
     },
     "tl": {
       "en": "Target language",
-      "zh_CN": "目标语言",
-      "zh_TW": "目標語言"
+      "zh-CN": "目标语言",
+      "zh-TW": "目標語言"
     },
     "tl-default": {
       "en": "Default",
-      "zh_CN": "随扩展语言",
-      "zh_TW": "同介面語言"
+      "zh-CN": "随扩展语言",
+      "zh-TW": "同介面語言"
     },
     "tl-zh": {
       "en": "简体中文",
-      "zh_CN": "简体中文",
-      "zh_TW": "简体中文"
+      "zh-CN": "简体中文",
+      "zh-TW": "简体中文"
     },
     "tl-en": {
       "en": "English",
-      "zh_CN": "English",
-      "zh_TW": "English"
+      "zh-CN": "English",
+      "zh-TW": "English"
     },
     "tl-ja": {
       "en": "Japanese",
-      "zh_CN": "日文",
-      "zh_TW": "日文"
+      "zh-CN": "日文",
+      "zh-TW": "日文"
     }
   }
 }

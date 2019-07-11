@@ -1,29 +1,29 @@
 {
   "name": {
     "en": "CNKI Dict",
-    "zh_CN": "CNKI翻译助手",
-    "zh_TW": "CNKI翻譯助手"
+    "zh-CN": "CNKI翻译助手",
+    "zh-TW": "CNKI翻譯助手"
   },
   "options": {
     "dict": {
       "en": "Show dict result",
-      "zh_CN": "显示词典结果",
-      "zh_TW": "展示字典結果"
+      "zh-CN": "显示词典结果",
+      "zh-TW": "展示字典結果"
     },
     "senbi": {
       "en": "Show bilingual sentences",
-      "zh_CN": "显示双语例句",
-      "zh_TW": "展示雙語例句"
+      "zh-CN": "显示双语例句",
+      "zh-TW": "展示雙語例句"
     },
     "seneng": {
       "en": "Show English sentences",
-      "zh_CN": "显示英文例句",
-      "zh_TW": "展示英文例句"
+      "zh-CN": "显示英文例句",
+      "zh-TW": "展示英文例句"
     },
     "digests": {
       "en": "Show relevant digests",
-      "zh_CN": "显示相关文摘",
-      "zh_TW": "展示相關文摘"
+      "zh-CN": "显示相关文摘",
+      "zh-TW": "展示相關文摘"
     }
   }
 }

@@ -1,39 +1,39 @@
 {
   "name": {
     "en": "Youdao Dictionary & Translation",
-    "zh_CN": "有道词典（翻译）",
-    "zh_TW": "有道詞典（翻譯）"
+    "zh-CN": "有道词典（翻译）",
+    "zh-TW": "有道詞典（翻譯）"
   },
   "options": {
     "basic": {
       "en": "Show basic meaning",
-      "zh_CN": "显示简单释义",
-      "zh_TW": "顯示簡單解釋"
+      "zh-CN": "显示简单释义",
+      "zh-TW": "顯示簡單解釋"
     },
     "collins": {
       "en": "Show Collins result",
-      "zh_CN": "显示柯林斯双解",
-      "zh_TW": "顯示柯林斯雙解"
+      "zh-CN": "显示柯林斯双解",
+      "zh-TW": "顯示柯林斯雙解"
     },
     "discrimination": {
       "en": "Show discrimination",
-      "zh_CN": "显示词语辨析",
-      "zh_TW": "顯示詞語辨析"
+      "zh-CN": "显示词语辨析",
+      "zh-TW": "顯示詞語辨析"
     },
     "sentence": {
       "en": "Show sentences",
-      "zh_CN": "显示权威例句",
-      "zh_TW": "顯示權威例句"
+      "zh-CN": "显示权威例句",
+      "zh-TW": "顯示權威例句"
     },
     "translation": {
       "en": "Show translation",
-      "zh_CN": "显示有道翻译",
-      "zh_TW": "顯示有道翻譯"
+      "zh-CN": "显示有道翻译",
+      "zh-TW": "顯示有道翻譯"
     },
     "related": {
       "en": "Show related results",
-      "zh_CN": "失败时显示备选",
-      "zh_TW": "失敗時顯示備選"
+      "zh-CN": "失败时显示备选",
+      "zh-TW": "失敗時顯示備選"
     }
   }
 }

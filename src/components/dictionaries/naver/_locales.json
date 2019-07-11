@@ -1,19 +1,19 @@
 {
   "name": {
     "en": "Naver韩国语词典",
-    "zh_CN": "Naver韩国语词典",
-    "zh_TW": "Naver韩国语词典"
+    "zh-CN": "Naver韩国语词典",
+    "zh-TW": "Naver韩国语词典"
   },
   "options": {
     "hanAsJa": {
       "en": "Search Chinese with Japanese Dictionary",
-      "zh_CN": "用日语词典查中文",
-      "zh_TW": "用日語詞典查漢字"
+      "zh-CN": "用日语词典查中文",
+      "zh-TW": "用日語詞典查漢字"
     },
     "korAsJa": {
       "en": "Search Korean with Japanese Dictionary",
-      "zh_CN": "用日语词典查韩语",
-      "zh_TW": "用日语词典查韓語"
+      "zh-CN": "用日语词典查韩语",
+      "zh-TW": "用日语词典查韓語"
     }
   }
 }

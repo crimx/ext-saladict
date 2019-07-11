@@ -1,39 +1,39 @@
 {
   "name": {
     "en": "Bing Dict",
-    "zh_CN": "必应词典",
-    "zh_TW": "必應詞典"
+    "zh-CN": "必应词典",
+    "zh-TW": "必應詞典"
   },
   "options": {
     "tense": {
       "en": "Show sense",
-      "zh_CN": "显示单词时态",
-      "zh_TW": "展示單詞時態"
+      "zh-CN": "显示单词时态",
+      "zh-TW": "展示單詞時態"
     },
     "phsym": {
       "en": "Show pronunciation",
-      "zh_CN": "显示单词发音",
-      "zh_TW": "展示單詞發音"
+      "zh-CN": "显示单词发音",
+      "zh-TW": "展示單詞發音"
     },
     "cdef": {
       "en": "Show definitions",
-      "zh_CN": "显示单词解释",
-      "zh_TW": "展示單詞解釋"
+      "zh-CN": "显示单词解释",
+      "zh-TW": "展示單詞解釋"
     },
     "related": {
       "en": "Show related results",
-      "zh_CN": "失败时显示备选",
-      "zh_TW": "失敗時顯示備選"
+      "zh-CN": "失败时显示备选",
+      "zh-TW": "失敗時顯示備選"
     },
     "sentence": {
       "en": "Show sentences",
-      "zh_CN": "显示例句",
-      "zh_TW": "展示例句"
+      "zh-CN": "显示例句",
+      "zh-TW": "展示例句"
     },
     "sentence_unit": {
       "en": "results",
-      "zh_CN": "个",
-      "zh_TW": "個"
+      "zh-CN": "个",
+      "zh-TW": "個"
     }
   }
 }
