@@ -1,14 +1,14 @@
 {
   "name": {
     "en": "OALD",
-    "zh_CN": "牛津高阶",
-    "zh_TW": "牛津高階"
+    "zh-CN": "牛津高阶",
+    "zh-TW": "牛津高階"
   },
   "options": {
     "related": {
       "en": "Show related results",
-      "zh_CN": "失败时显示备选",
-      "zh_TW": "失敗時顯示備選"
+      "zh-CN": "失败时显示备选",
+      "zh-TW": "失敗時顯示備選"
     }
   }
 }

@@ -1,34 +1,34 @@
 {
   "name": {
     "en": "Merriam-Webster's Learner's Dictionary",
-    "zh_CN": "韦氏学习词典",
-    "zh_TW": "韋氏學習字典"
+    "zh-CN": "韦氏学习词典",
+    "zh-TW": "韋氏學習字典"
   },
   "options": {
     "defs": {
       "en": "Show definitions",
-      "zh_CN": "显示释义",
-      "zh_TW": "顯示解釋"
+      "zh-CN": "显示释义",
+      "zh-TW": "顯示解釋"
     },
     "phrase": {
       "en": "Show phrases",
-      "zh_CN": "显示词组",
-      "zh_TW": "顯示片語"
+      "zh-CN": "显示词组",
+      "zh-TW": "顯示片語"
     },
     "derived": {
       "en": "Show derived words",
-      "zh_CN": "显示派生词",
-      "zh_TW": "顯示衍生字"
+      "zh-CN": "显示派生词",
+      "zh-TW": "顯示衍生字"
     },
     "arts": {
       "en": "Show pictures",
-      "zh_CN": "显示图片释义",
-      "zh_TW": "顯示圖片解釋"
+      "zh-CN": "显示图片释义",
+      "zh-TW": "顯示圖片解釋"
     },
     "related": {
       "en": "Show related results",
-      "zh_CN": "失败时显示备选",
-      "zh_TW": "失敗時顯示備選"
+      "zh-CN": "失败时显示备选",
+      "zh-TW": "失敗時顯示備選"
     }
   }
 }

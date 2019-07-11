@@ -1,29 +1,29 @@
 {
   "name": {
     "en": "Jukuu",
-    "zh_CN": "句酷",
-    "zh_TW": "句酷"
+    "zh-CN": "句酷",
+    "zh-TW": "句酷"
   },
   "options": {
     "lang": {
       "en": "Language",
-      "zh_CN": "语言",
-      "zh_TW": "語言"
+      "zh-CN": "语言",
+      "zh-TW": "語言"
     },
     "lang-zheng": {
       "en": "Chinese-English",
-      "zh_CN": "中英",
-      "zh_TW": "中英"
+      "zh-CN": "中英",
+      "zh-TW": "中英"
     },
     "lang-engjp": {
       "en": "English-Japanese",
-      "zh_CN": "英日",
-      "zh_TW": "英日"
+      "zh-CN": "英日",
+      "zh-TW": "英日"
     },
     "lang-zhjp": {
       "en": "Chinese-Japanese",
-      "zh_CN": "中日",
-      "zh_TW": "中日"
+      "zh-CN": "中日",
+      "zh-TW": "中日"
     }
   }
 }
