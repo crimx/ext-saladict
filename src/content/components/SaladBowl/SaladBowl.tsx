@@ -1,7 +1,4 @@
-import React, { FC, useMemo, useRef } from 'react'
-import ReactDOM from 'react-dom'
-import root from 'react-shadow'
-import { CSSTransition } from 'react-transition-group'
+import React, { FC, useMemo } from 'react'
 
 export interface SaladBowlProps {
   /** Viewport based coordinate. */
@@ -108,51 +105,3 @@ export const SaladBowl: FC<SaladBowlProps> = props => {
     </div>
   )
 }
-
-export interface SaladBowlShadowProps extends SaladBowlProps {
-  /** Visibility */
-  readonly show: boolean
-}
-
-/**
- * Shadow DOM wrapped SaladBowl with pop-up animation.
- */
-export const SaladBowlShadow: FC<SaladBowlShadowProps> = props => (
-  <root.div>
-    <style>{require('./style.shadow.scss').toString()}</style>
-    <CSSTransition
-      classNames="saladbowl"
-      in={props.show}
-      timeout={1000}
-      enter={props.withAnimation}
-      exit={false}
-    >
-      <SaladBowl {...props} />
-    </CSSTransition>
-  </root.div>
-)
-
-export type SaladBowlPortalProps = SaladBowlShadowProps
-
-/**
- * React portal wrapped SaladBowlShadow.
- * Detach from DOM when not visible.
- */
-export const SaladBowlPortal: FC<SaladBowlPortalProps> = props => {
-  const nodeRef = useRef(document.createElement('div'))
-  nodeRef.current.className = 'saladict-div'
-
-  if (props.show) {
-    if (!nodeRef.current.parentElement) {
-      document.body.appendChild(nodeRef.current)
-    }
-  } else {
-    if (nodeRef.current.parentElement) {
-      nodeRef.current.remove()
-    }
-  }
-
-  return ReactDOM.createPortal(<SaladBowlShadow {...props} />, nodeRef.current)
-}
-
-export default SaladBowlPortal
