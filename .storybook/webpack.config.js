@@ -33,7 +33,7 @@ module.exports = ({ config }) => {
       {
         test: /\.module\.(css|scss)$/,
         use: [
-          'style-loader',
+          'to-string-loader',
           {
             loader: 'css-loader',
             options: {
@@ -80,7 +80,7 @@ module.exports = ({ config }) => {
       {
         test: /\.(css|scss)$/,
         use: [
-          'style-loader',
+          'to-string-loader',
           {
             loader: 'css-loader',
             options: {
