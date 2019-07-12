@@ -65,6 +65,7 @@
     "@neutrinojs/copy": "^9.0.0-rc.3",
     "@neutrinojs/react": "^9.0.0-rc.3",
     "@storybook/addon-actions": "^5.1.9",
+    "@storybook/addon-backgrounds": "^5.1.9",
     "@storybook/addon-contexts": "^5.1.9",
     "@storybook/addon-info": "^5.1.9",
     "@storybook/addon-knobs": "^5.1.9",
