@@ -6,11 +6,11 @@ import { SaladBowl } from './SaladBowl'
 import { SaladBowlShadow } from './SaladBowl.shadow'
 import { SaladBowlPortal } from './SaladBowl.portal'
 
-storiesOf('Content|SaladBowl', module)
+storiesOf('Content Scripts|SaladBowl', module)
   .addDecorator(withKnobs)
   .add('SaladBowl', () => (
     <div>
-      <style>{require('../style.shadow.scss').toString()}</style>
+      <style>{require('./style.shadow.scss').toString()}</style>
       <SaladBowl
         mouseX={number('mouseX', 0)}
         mouseY={number('mouseY', 0)}
