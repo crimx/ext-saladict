@@ -18,7 +18,7 @@ babelOptions.plugins.push([
   }
 ])
 
-module.exports = ({ config, mode }) => {
+module.exports = ({ config }) => {
   config.module.rules.push({
     test: /\.mjs$/,
     type: 'javascript/auto'
@@ -99,6 +99,17 @@ module.exports = ({ config, mode }) => {
       }
     ]
   })
+
+  if (Array.isArray(config.entry)) {
+    config.entry.unshift('webextensions-emulator/dist/core')
+  } else {
+    Object.keys(config.entry).forEach(id => {
+      if (!Array.isArray(config.entry[id])) {
+        config.entry[id] = [config.entry[id]]
+      }
+      config.entry[id].unshift('webextensions-emulator/dist/core')
+    })
+  }
 
   config.resolve.extensions.push('.ts', '.tsx')
   config.resolve.alias['@'] = path.join(__dirname, '../src')
