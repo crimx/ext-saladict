@@ -49,7 +49,7 @@ export function i18nLoader() {
           cb(null, extractDictLocales(lang))
           return
         }
-        cb(null, require(`./${lang}/${ns}.ts`).locale)
+        cb(null, require(`@/_locales/${lang}/${ns}.ts`).locale)
       }
     })
     .use(initReactI18next)

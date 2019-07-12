@@ -1,6 +1,6 @@
 import { AddonSetting } from '@storybook/addon-contexts/dist/shared/types'
 import React from 'react'
-import { i18nLoader } from '../../src/_locales/helpers'
+import { i18nLoader } from '../../src/_helpers/i18n'
 
 const i18n = i18nLoader()
 
