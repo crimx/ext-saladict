@@ -101,7 +101,13 @@ module.exports = {
     }),
     copy({
       patterns: [
-        { context: 'assets', from: '**/*', to: 'assets', toType: 'dir' }
+        { context: 'assets', from: '**/*', to: 'assets', toType: 'dir' },
+        {
+          context: 'src/_locales/manifest',
+          from: '**/*',
+          to: '_locales',
+          toType: 'dir'
+        }
       ]
     }),
     neutrino => {
