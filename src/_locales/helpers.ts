@@ -3,11 +3,6 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 // import { createConfigStream } from '@/_helpers/config-manager'
 
-if (process.env.NODE_ENV === 'production') {
-  // for dynamic import
-  window.__webpack_public_path__ = browser.runtime.getURL('/')
-}
-
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 export type Namespace =
   | 'common'
@@ -45,7 +40,7 @@ export interface DictLocales {
   }
 }
 
-export function i18nLoader(namespaces: Namespace[], defaultNS?: Namespace) {
+export function i18nLoader() {
   i18n
     .use({
       type: 'backend',
@@ -54,28 +49,25 @@ export function i18nLoader(namespaces: Namespace[], defaultNS?: Namespace) {
           cb(null, extractDictLocales(lang))
           return
         }
-
-        import(
-          /* webpackExclude: /helpers\.ts$/ */
-          /* webpackChunkName: "locales/[request]" */
-          `./${lang}/${ns}.ts`
-        ).then(bundle => {
-          cb(null, bundle.locale)
-        })
+        cb(null, require(`./${lang}/${ns}.ts`).locale)
       }
     })
     .use(initReactI18next)
     .init({
-      lng: browser.i18n.getUILanguage(),
-      fallbackLng: 'en',
+      lng: (/^(en|zh-CN|zh-TW)$/.exec(browser.i18n.getUILanguage()) || [
+        'en'
+      ])[0],
+      fallbackLng: false,
       whitelist: ['en', 'zh-CN', 'zh-TW'],
 
       debug: process.env.NODE_ENV === 'development',
       saveMissing: false,
       load: 'currentOnly',
 
-      ns: namespaces,
-      defaultNS: defaultNS || namespaces[0] || 'translation',
+      ns: 'common',
+      defaultNS: 'common',
+
+      initImmediate: true,
 
       interpolation: {
         escapeValue: false // not needed for react as it escapes by default
@@ -90,8 +82,7 @@ export function i18nLoader(namespaces: Namespace[], defaultNS?: Namespace) {
   return i18n
 }
 
-export function extractDictLocales(lang: LangCode) {
-  // @todo replace with dict id & import()
+function extractDictLocales(lang: LangCode) {
   const req = require.context(
     '@/components/dictionaries',
     true,
