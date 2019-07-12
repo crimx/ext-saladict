@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { withKnobs, boolean, number } from '@storybook/addon-knobs'
-import { SaladBowl, SaladBowlShadow, SaladBowlPortal } from '../index'
+import { SaladBowl } from './SaladBowl'
+import { SaladBowlShadow } from './SaladBowl.shadow'
+import { SaladBowlPortal } from './SaladBowl.portal'
 
 storiesOf('Content|SaladBowl', module)
   .addDecorator(withKnobs)
