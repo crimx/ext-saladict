@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   configure,
   addDecorator,
@@ -26,10 +25,6 @@ addDecorator(
 
 // place after the info addon so that wrappers get removed
 addDecorator(withContexts(i18nContexts) as StoryDecorator)
-
-// https://github.com/storybookjs/storybook/issues/5721
-// @ts-ignore
-addDecorator(Story => React.createElement(Story))
 
 function loadStories() {
   const req = require.context('../src', true, /\.stories\.tsx$/)

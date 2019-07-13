@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useMemo, useEffect } from 'react'
 import ReactDOM from 'react-dom'
 import { SaladBowlShadow, SaladBowlShadowProps } from './SaladBowl.shadow'
 
@@ -9,18 +9,30 @@ export type SaladBowlPortalProps = SaladBowlShadowProps
  * Detach from DOM when not visible.
  */
 export const SaladBowlPortal: FC<SaladBowlPortalProps> = props => {
-  const nodeRef = useRef(document.createElement('div'))
-  nodeRef.current.className = 'saladict-div'
+  const root = useMemo(getRootElement, [])
+
+  // unmout element on React node unmount
+  useEffect(() => () => root.remove(), [])
 
   if (props.show) {
-    if (!nodeRef.current.parentElement) {
-      document.body.appendChild(nodeRef.current)
+    if (!root.parentElement) {
+      document.body.appendChild(root)
     }
   } else {
-    if (nodeRef.current.parentElement) {
-      nodeRef.current.remove()
+    if (root.parentElement) {
+      root.remove()
     }
   }
 
-  return ReactDOM.createPortal(<SaladBowlShadow {...props} />, nodeRef.current)
+  return ReactDOM.createPortal(<SaladBowlShadow {...props} />, root)
+}
+
+function getRootElement(): HTMLElement {
+  let root = document.getElementById('saladbowl-root')
+  if (!root) {
+    root = document.createElement('div')
+    root.id = 'saladbowl-root'
+    root.className = 'saladict-div'
+  }
+  return root
 }

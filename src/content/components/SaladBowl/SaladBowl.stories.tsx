@@ -42,30 +42,38 @@ storiesOf('Content Scripts|SaladBowl', module)
   ))
   .add(
     'Bowl Playground',
-    () => {
-      const [{ mouseX, mouseY }, setCoord] = useState({ mouseX: 0, mouseY: 0 })
-      return (
-        <div
-          style={{ height: 200, background: '#c5d3e2' }}
-          onClick={e =>
-            setCoord({
-              mouseX: e.clientX,
-              mouseY: e.clientY
-            })
-          }
-        >
-          <SaladBowlPortal
-            show={boolean('Show', true)}
-            mouseX={mouseX}
-            mouseY={mouseY}
-            withAnimation={boolean('Animation', true)}
-            enableHover={boolean('Enable hover', true)}
-            onChange={action('onChange')}
-          />
-        </div>
-      )
-    },
+    () =>
+      React.createElement(() => {
+        const [{ mouseX, mouseY }, setCoord] = useState({
+          mouseX: 0,
+          mouseY: 0
+        })
+        return (
+          <div
+            style={{ height: '100vh', background: '#c5d3e2' }}
+            onClick={e =>
+              setCoord({
+                mouseX: e.clientX,
+                mouseY: e.clientY
+              })
+            }
+          >
+            <p style={{ textAlign: 'center', color: '#5C6A79' }}>
+              CLICK AROUND AND SEE THE BOWL FOLLOWS
+            </p>
+            <SaladBowlPortal
+              show={boolean('Show', true)}
+              mouseX={mouseX}
+              mouseY={mouseY}
+              withAnimation={boolean('Animation', true)}
+              enableHover={boolean('Enable hover', true)}
+              onChange={action('onChange')}
+            />
+          </div>
+        )
+      }),
     {
-      info: 'Click in grey area and the bowl follows.'
+      info: { disable: true }
+      // backgrounds: [{ name: 'Background', value: '#c5d3e2', default: true }]
     }
   )
