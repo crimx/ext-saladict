@@ -1,16 +1,23 @@
 import React, { useState } from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
+import { withInfo } from '@storybook/addon-info'
 import { withKnobs, boolean, number } from '@storybook/addon-knobs'
 import { SaladBowl } from './SaladBowl'
 import { SaladBowlShadow } from './SaladBowl.shadow'
 import { SaladBowlPortal } from './SaladBowl.portal'
 
 storiesOf('Content Scripts|SaladBowl', module)
+  .addDecorator(
+    withInfo({
+      inline: true,
+      header: false
+    })
+  )
   .addDecorator(withKnobs)
-  .add('SaladBowl', () => (
-    <div>
-      <style>{require('./style.shadow.scss').toString()}</style>
+  .add(
+    'SaladBowl',
+    () => (
       <SaladBowl
         mouseX={number('mouseX', 0)}
         mouseY={number('mouseY', 0)}
@@ -18,8 +25,20 @@ storiesOf('Content Scripts|SaladBowl', module)
         enableHover={boolean('Enable hover', true)}
         onChange={action('onChange')}
       />
-    </div>
-  ))
+    ),
+    {
+      decorators: [
+        function withShadowStyle(fn) {
+          return (
+            <div>
+              <style>{require('./style.shadow.scss').toString()}</style>
+              {fn()}
+            </div>
+          )
+        }
+      ]
+    }
+  )
   .add('SaladBowlShadow', () => (
     <SaladBowlShadow
       show={boolean('Show', true)}
