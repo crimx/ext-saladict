@@ -1,5 +1,5 @@
 import { AddonSetting } from '@storybook/addon-contexts/dist/shared/types'
-import React from 'react'
+import React, { FC } from 'react'
 import { i18nLoader } from '../../src/_helpers/i18n'
 
 const i18n = i18nLoader()
@@ -9,11 +9,15 @@ const i18n = i18nLoader()
 // import { contexts } from '...../configs/contexts'
 // .addDecorator(withContexts(contexts))
 
-const I18nWrap = props => {
+interface I18nWrapProps {
+  lang: string
+}
+
+const I18nWrap: FC<I18nWrapProps> = props => {
   if (props.lang !== i18n.language) {
     i18n.changeLanguage(props.lang)
   }
-  return <div lang={props.lang}>{props.children}</div>
+  return <>{props.children}</>
 }
 
 export const i18nContexts: AddonSetting[] = [
