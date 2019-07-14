@@ -26,7 +26,7 @@
       "node_modules/web-ext-types",
       "src/typings"
     ],
-    "lib": ["ESNext", "DOM", "DOM.Iterable"]
+    "lib": ["esnext", "dom", "dom.iterable"]
   },
-  "include": ["src"]
+  "include": ["src", ".storybook"]
 }
