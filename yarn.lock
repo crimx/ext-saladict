@@ -1568,6 +1568,13 @@
   dependencies:
     type-detect "4.0.8"
 
+"@sinonjs/formatio@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@sinonjs/formatio/-/formatio-2.0.0.tgz#84db7e9eb5531df18a8c5e0bfb6e449e55e654b2"
+  integrity sha512-ls6CAMA6/5gG+O/IdsBcblvnd8qcO/l1TYoNeAzp3wcISOxlPXQEus0mLcdwazEkWjaBdaJ3TaxmNgCLWwvWzg==
+  dependencies:
+    samsam "1.3.0"
+
 "@sinonjs/formatio@^3.1.0", "@sinonjs/formatio@^3.2.1":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/@sinonjs/formatio/-/formatio-3.2.1.tgz#52310f2f9bcbc67bdac18c94ad4901b95fde267e"
@@ -5028,7 +5035,7 @@ diff-sequences@^24.3.0:
   resolved "https://registry.yarnpkg.com/diff-sequences/-/diff-sequences-24.3.0.tgz#0f20e8a1df1abddaf4d9c226680952e64118b975"
   integrity sha512-xLqpez+Zj9GKSnPWS0WZw1igGocZ+uua8+y+5dDNTT934N3QuY1sp2LkHzwiaYQGz60hMq0pjAshdeXm5VUOEw==
 
-diff@^3.5.0:
+diff@^3.1.0, diff@^3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
   integrity sha512-A46qtFgd+g7pDZinpnwiRJtxbC1hpgf0uzP3iG89scHk0AUC7A1TGxf5OiiOUv/JMZR8GOt8hL900hV0bOy5xA==
@@ -8449,6 +8456,11 @@ loglevel@^1.6.3:
   resolved "https://registry.yarnpkg.com/loglevel/-/loglevel-1.6.3.tgz#77f2eb64be55a404c9fd04ad16d57c1d6d6b1280"
   integrity sha512-LoEDv5pgpvWgPF4kNYuIp0qqSJVWak/dML0RY74xlzMZiT9w77teNAwKYKWBTYjlokMirg+o3jBwp+vlLrcfAA==
 
+lolex@^2.2.0:
+  version "2.7.5"
+  resolved "https://registry.yarnpkg.com/lolex/-/lolex-2.7.5.tgz#113001d56bfc7e02d56e36291cc5c413d1aa0733"
+  integrity sha512-l9x0+1offnKKIzYVjyXU2SiwhXDLekRzKyhnbyldPHvC7BvLPVpdNUNR2KeMAiCN2D/kLNttZgQD5WjSxuBx3Q==
+
 lolex@^4.0.1, lolex@^4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/lolex/-/lolex-4.1.0.tgz#ecdd7b86539391d8237947a3419aa8ac975f0fe1"
@@ -9014,17 +9026,17 @@ nested-object-assign@^1.0.3:
   resolved "https://registry.yarnpkg.com/nested-object-assign/-/nested-object-assign-1.0.3.tgz#5aca69390d9affe5a612152b5f0843ae399ac597"
   integrity sha512-kgq1CuvLyUcbcIuTiCA93cQ2IJFSlRwXcN+hLcb2qLJwC2qrePHGZZa7IipyWqaWF6tQjdax2pQnVxdq19Zzwg==
 
-neutrino-webextension@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/neutrino-webextension/-/neutrino-webextension-0.1.1.tgz#6f2dd514163f7e35485df6cceeb1fa154a3a6df0"
-  integrity sha512-eNuQ5e3i/w7hR3x5p3n71mAsAJJu4rRy8rfjPcHQ6Eq7Dbw0DoWC0bgt09vM+xF4Nh8FkB0w1VRdaU7ACWKPug==
+neutrino-webextension@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/neutrino-webextension/-/neutrino-webextension-0.1.3.tgz#57558600c056668dc56d81218feb6cf30b8b3704"
+  integrity sha512-wr4LRQANEGHQkGNXimLTF6qiWZHzq33l4TWeUPNEbDdHBiCVt/m3+cKmE85deLnKXRyUFzQO3SAaH5+9nWHkLQ==
   dependencies:
     archiver "^3.0.0"
     deepmerge "^3.3.0"
     fs-extra "^8.0.1"
     globby "^10.0.1"
     sinon-chrome "^3.0.1"
-    webextensions-emulator "^2.0.0"
+    webextensions-emulator "^1.1.0"
     yargs-parser "^13.1.1"
 
 neutrino@^9.0.0-rc.3:
@@ -9042,7 +9054,7 @@ nice-try@^1.0.4:
   resolved "https://registry.yarnpkg.com/nice-try/-/nice-try-1.0.5.tgz#a3378a7696ce7d223e88fc9b764bd7ef1089e366"
   integrity sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==
 
-nise@^1.4.10:
+nise@^1.2.0, nise@^1.4.10:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/nise/-/nise-1.5.0.tgz#d03ea0e6c1b75c638015aa3585eddc132949a50d"
   integrity sha512-Z3sfYEkLFzFmL8KY6xnSJLRxwQwYBjOXi/24lb62ZnZiGA0JUzGGTI6TBIgfCSMIDl9Jlu8SRmHNACLTemDHww==
@@ -11216,6 +11228,11 @@ safe-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
+samsam@1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/samsam/-/samsam-1.3.0.tgz#8d1d9350e25622da30de3e44ba692b5221ab7c50"
+  integrity sha512-1HwIYD/8UlOtFS3QO3w7ey+SdSDFE4HRNLZoZRYVQefrOY3l17epswImeB1ijgJFQJodIaHcwkp3r/myBjFVbg==
+
 sane@^4.0.3:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/sane/-/sane-4.1.0.tgz#ed881fd922733a6c461bc189dc2b6c006f3ffded"
@@ -11525,6 +11542,15 @@ simplebar@^4.1.0:
     lodash.throttle "^4.1.1"
     resize-observer-polyfill "^1.5.1"
 
+sinon-chrome@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/sinon-chrome/-/sinon-chrome-2.3.2.tgz#0e4253bd1eceaffa57e2164bc817c2c7b4ef3912"
+  integrity sha1-DkJTvR7Or/pX4hZLyBfCx7TvORI=
+  dependencies:
+    lodash "^4.16.3"
+    sinon "^4.4.2"
+    urijs "^1.18.2"
+
 sinon-chrome@^3.0.1:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/sinon-chrome/-/sinon-chrome-3.0.1.tgz#9fb14c230fa0959cb280f9f589e9eda8ccfda1d9"
@@ -11533,6 +11559,19 @@ sinon-chrome@^3.0.1:
     lodash "^4.16.3"
     sinon "^7.2.3"
     urijs "^1.18.2"
+
+sinon@^4.4.2:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/sinon/-/sinon-4.5.0.tgz#427ae312a337d3c516804ce2754e8c0d5028cb04"
+  integrity sha512-trdx+mB0VBBgoYucy6a9L7/jfQOmvGeaKZT4OOJ+lPAtI8623xyGr8wLiE4eojzBS8G9yXbhx42GHUOVLr4X2w==
+  dependencies:
+    "@sinonjs/formatio" "^2.0.0"
+    diff "^3.1.0"
+    lodash.get "^4.4.2"
+    lolex "^2.2.0"
+    nise "^1.2.0"
+    supports-color "^5.1.0"
+    type-detect "^4.0.5"
 
 sinon@^7.2.3:
   version "7.3.2"
@@ -12066,7 +12105,7 @@ supports-color@^2.0.0:
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-2.0.0.tgz#535d045ce6b6363fa40117084629995e9df324c7"
   integrity sha1-U10EXOa2Nj+kARcIRimZXp3zJMc=
 
-supports-color@^5.2.0, supports-color@^5.3.0, supports-color@^5.5.0:
+supports-color@^5.1.0, supports-color@^5.2.0, supports-color@^5.3.0, supports-color@^5.5.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-5.5.0.tgz#e2e69a44ac8772f78a1ec0b35b689df6530efc8f"
   integrity sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==
@@ -12456,7 +12495,7 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
-type-detect@4.0.8:
+type-detect@4.0.8, type-detect@^4.0.5:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/type-detect/-/type-detect-4.0.8.tgz#7646fb5f18871cfbb7749e69bd39a6388eb7450c"
   integrity sha512-0fr/mIH1dlO+x7TlcMy+bIDqKPsw/70tVyeHW787goQjhmqaZe10uwLujubK9q9Lg6Fiho1KUKDYz0Z7k7g5/g==
@@ -12837,10 +12876,10 @@ wbuf@^1.1.0, wbuf@^1.7.3:
   dependencies:
     minimalistic-assert "^1.0.0"
 
-web-ext-types@latest:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/web-ext-types/-/web-ext-types-3.2.0.tgz#df5cfc6c5b614b8e5a98b51642d1b2ad3b9b41e2"
-  integrity sha512-85MBVBvZTCtc5yTfwz+xKzycrW6lUpBi68Sn8dlMwOFNDyWroUHXRJNCO4Bs80ScfePf7ciF2J2N+1UDWpq1Lg==
+web-ext-types@^3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/web-ext-types/-/web-ext-types-3.2.1.tgz#3edc0e3c2e8fe121d7d7e4ca0b7ee0c883cea832"
+  integrity sha512-oQZYDU3W8X867h8Jmt3129kRVKklz70db40Y6OzoTTuzOJpF/dB2KULJUf0txVPyUUXuyzV8GmT3nVvRHoG+Ew==
 
 web-namespaces@^1.1.2:
   version "1.1.3"
@@ -12852,12 +12891,13 @@ webextension-polyfill@latest:
   resolved "https://registry.yarnpkg.com/webextension-polyfill/-/webextension-polyfill-0.4.0.tgz#9cc5a60f0f2bf907a6b349fdd7e61701f54956f9"
   integrity sha512-oreMp+EoAo1pzRMigx4jB5jInIpx6NTCySPSjGyLLee/dCIPiRqowCEfbFP8o20wz9SOtNwSsfkaJ9D/tRgpag==
 
-webextensions-emulator@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/webextensions-emulator/-/webextensions-emulator-2.0.0.tgz#1667b748acbbdec1634a2a43ed9c7e6c5ec1749e"
-  integrity sha512-CSkE8dNrNJBljV5dCmPzS47mE7B3grbkiPKipoC517M+ftrImFLgba8diAoTmiTpttEAa9ffYSb+erWFPNYwCg==
+webextensions-emulator@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/webextensions-emulator/-/webextensions-emulator-1.1.0.tgz#1dbba06149bb50fc0faf2c86071c69ff2f1a50f8"
+  integrity sha512-haqhcnD2ErsmAx26xTvJFK5ElASbGwf31qzCzx5/s01XGA7VMNPY+DszIDeHzmSe/pdREajY3y3g9rGvZOnYLA==
   dependencies:
     lodash "^4.17.11"
+    sinon-chrome "^2.3.2"
 
 webidl-conversions@^4.0.2:
   version "4.0.2"
