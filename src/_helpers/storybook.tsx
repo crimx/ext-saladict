@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect } from 'react'
 import i18next from 'i18next'
+import { number } from '@storybook/addon-knobs'
 
 interface StyleWrapProps {
   style: string
@@ -57,4 +58,21 @@ export function withSideEffect(fn: React.EffectCallback) {
     return <>{props.story()}</>
   }
   return story => <SideEffect story={story} />
+}
+
+/**
+ * Fake salalict panel
+ */
+export function withSaladictPanel(story) {
+  return (
+    <div
+      style={{
+        fontSize: number('Panel Font Size', 13),
+        '--panel-width': `${number('Panel Width', 450)}px`,
+        '--panel-height': `${number('Panel Height', 450 * 1.68)}px`
+      }}
+    >
+      {story()}
+    </div>
+  )
 }
