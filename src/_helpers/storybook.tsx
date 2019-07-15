@@ -46,3 +46,15 @@ export function withi18nNS(ns: string | string[]) {
     return <I18nNS story={fn} />
   }
 }
+
+/**
+ * Perform side effects and clean up when switching stroies
+ * @param fn performs side effects and optionally returns a clean-up function
+ */
+export function withSideEffect(fn: React.EffectCallback) {
+  const SideEffect: FC<{ story: Function }> = props => {
+    useEffect(fn, [])
+    return <>{props.story()}</>
+  }
+  return story => <SideEffect story={story} />
+}
