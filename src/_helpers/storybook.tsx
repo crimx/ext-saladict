@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from 'react'
 import i18next from 'i18next'
-import { number } from '@storybook/addon-knobs'
+import { number, boolean } from '@storybook/addon-knobs'
 
 interface StyleWrapProps {
   style: string
@@ -57,6 +57,7 @@ export function withSideEffect(fn: React.EffectCallback) {
     useEffect(fn, [])
     return <>{props.story()}</>
   }
+  // eslint-disable-next-line react/display-name
   return story => <SideEffect story={story} />
 }
 
@@ -66,6 +67,7 @@ export function withSideEffect(fn: React.EffectCallback) {
 export function withSaladictPanel(story) {
   return (
     <div
+      className={boolean('Enable Animation', true) ? 'isAnimate' : ''}
       style={{
         fontSize: number('Panel Font Size', 13),
         '--panel-width': `${number('Panel Width', 450)}px`,
