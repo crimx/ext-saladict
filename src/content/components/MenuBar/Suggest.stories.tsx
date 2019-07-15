@@ -43,6 +43,10 @@ storiesOf('Content Scripts|Menubar', module)
         }
         return Promise.resolve()
       })
+
+      return () =>
+        // @ts-ignore
+        browser.runtime.sendMessage.callsFake(() => Promise.resolve())
     })
   )
   .add('Suggest', () => {
