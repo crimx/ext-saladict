@@ -1,6 +1,6 @@
 import mapValues from 'lodash/mapValues'
 import i18n from 'i18next'
-import { initReactI18next } from 'react-i18next'
+import { initReactI18next, useTranslation } from 'react-i18next'
 // import { createConfigStream } from '@/_helpers/config-manager'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
@@ -80,6 +80,20 @@ export function i18nLoader() {
   //   }
   // })
   return i18n
+}
+
+const useTranslationOptions = { useSuspense: false }
+
+const dumbT = (keys: any) => keys
+
+export function useTranslate(
+  ns?: string | string[]
+): ReturnType<typeof useTranslation> {
+  const o = useTranslation(ns, useTranslationOptions)
+  if (!o.ready) {
+    o.t = dumbT
+  }
+  return o
 }
 
 function extractDictLocales(lang: LangCode) {
