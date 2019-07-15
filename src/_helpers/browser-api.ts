@@ -378,9 +378,8 @@ function messageAddListener(this: MessageThis, ...args): void {
     }) as onMessageEvent
     listeners.set(messageType, listener)
   }
-  // buggy object type https://github.com/kelseasy/web-ext-types/blob/f4573176659c28b3df684cf1e0ad7ba312bbd724/global/index.d.ts#L1376-L1398
-  // @ts-ignore
-  return browser.runtime.onMessage.addListener(listener)
+  // object is handled
+  return browser.runtime.onMessage.addListener(listener as any)
 }
 
 function messageRemoveListener(
