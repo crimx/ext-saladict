@@ -11,6 +11,7 @@ import {
 } from 'rxjs/operators'
 import { message } from '@/_helpers/browser-api'
 import AnimateHeight from 'react-animate-height'
+import { search } from '@/components/dictionaries/longman/engine'
 
 export interface SuggestItem {
   explain: string
@@ -83,17 +84,23 @@ export const Suggest: FC<SuggestProps> = props => {
                     }
                     e.preventDefault()
                     e.stopPropagation()
-                    return
-                  }
-
-                  if (e.key === 'ArrowUp') {
+                  } else if (e.key === 'ArrowUp') {
                     const $prevLi = e.currentTarget.previousSibling
                     if ($prevLi) {
                       ;($prevLi as HTMLButtonElement).focus()
                     }
                     e.preventDefault()
                     e.stopPropagation()
-                    return
+                  } else if (e.key === 'Escape') {
+                    const doc = e.currentTarget.ownerDocument
+                    if (doc) {
+                      const searchBox = doc.querySelector<HTMLInputElement>(
+                        '.menuBar-SearchBox'
+                      )
+                      if (searchBox) {
+                        searchBox.focus()
+                      }
+                    }
                   }
                 }}
                 data-entry={s.entry}

@@ -1,0 +1,41 @@
+.menuBar-SearchBox_Wrap {
+  position: relative;
+  width: 4em;
+}
+
+.menuBar-SearchBox {
+  padding: 0 5px;
+  border: 0 none;
+  outline: 0 none;
+  color: #fff;
+  background-color: rgba(225, 225, 225, 0.1);
+}
+
+.menuBar-SearchBox_Suggests {
+  position: absolute;
+  left: 0;
+  top: 150%;
+  z-index: 1000;
+}
+
+.isAnimate {
+  .panel-MenuBar_SearchBox {
+    transition: flex 1s;
+  }
+
+  .menuBar-SearchBox_Suggest-enter {
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .menuBar-SearchBox_Suggest-enter-active,
+  .menuBar-SearchBox_Suggest-exit {
+    opacity: 1;
+    transition: opacity 0.4s;
+  }
+
+  .menuBar-SearchBox_Suggest-exit-active {
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+}
