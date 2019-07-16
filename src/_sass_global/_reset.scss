@@ -3,39 +3,3 @@
 \*-----------------------------------------------*/
 
 @import '~normalize-scss';
-
-h1, h2, h3, h4, ul, li, button {
-  margin: 0;
-  padding: 0;
-}
-
-img {
-  display: block;
-  max-width: 95%;
-}
-
-p {
-  margin: 0.5em 0;
-}
-
-ul li {
-  list-style-type: none;
-}
-
-button {
-  background: transparent;
-  border: none;
-
-  &:hover {
-    outline: none;
-  }
-}
-
-a {
-  color: #f9690e;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
