@@ -1,4 +1,6 @@
-import React, { FC, useMemo } from 'react'
+import React, { FC } from 'react'
+import { useEventCallback } from 'rxjs-hooks'
+import { filter, map, switchMap, tap, delay } from 'rxjs/operators'
 
 export interface SaladBowlProps {
   /** Viewport based coordinate. */
@@ -30,20 +32,45 @@ export const SaladBowl: FC<SaladBowlProps> = props => {
   const gap = 20
   const scrollbarWidth = 10
 
-  const x = useMemo(
-    (): number =>
-      props.mouseX + gap + iconWidth > window.innerWidth - scrollbarWidth
-        ? props.mouseX - gap - iconWidth // switch to left
-        : props.mouseX + gap,
-    [props.mouseX]
-  )
+  // no need to cache since x and y are almost always the changed props
+  const x =
+    props.mouseX + gap + iconWidth > window.innerWidth - scrollbarWidth // right overflow
+      ? props.mouseX - gap - iconWidth // switch to left
+      : props.mouseX + gap
 
-  const y = useMemo(
-    (): number =>
-      props.mouseY < iconWidth + gap // top overflow
-        ? props.mouseY + gap // switch to bottom
-        : props.mouseY - iconWidth - gap,
-    [props.mouseY]
+  const y =
+    props.mouseY < iconWidth + gap // top overflow
+      ? props.mouseY + gap // switch to bottom
+      : props.mouseY - iconWidth - gap
+
+  const [onMouseOverOut] = useEventCallback<
+    React.MouseEvent<HTMLDivElement>,
+    any,
+    [SaladBowlProps['onChange']]
+  >(
+    (event$, $input) =>
+      event$.pipe(
+        filter(
+          e =>
+            // Shadow DOM does not send mouseenter and mouseleave
+            // cross the boundary which means React synthetic
+            // event handler will not collect.
+            // Here mouseover and mouseout are used to simulate.
+            e.relatedTarget !== e.currentTarget &&
+            (!(e.relatedTarget instanceof Node) ||
+              !e.currentTarget.contains(e.relatedTarget))
+        ),
+        map(e => e.type === 'mouseover'),
+        // so that enter delay can be cancelled
+        switchMap(isEnter =>
+          $input.pipe(
+            delay(isEnter ? 500 : 0),
+            tap(([onChange]) => onChange(isEnter))
+          )
+        )
+      ),
+    undefined,
+    [props.onChange]
   )
 
   return (
@@ -55,30 +82,8 @@ export const SaladBowl: FC<SaladBowlProps> = props => {
         (props.enableHover ? ' enableHover' : '')
       }
       style={{ transform: `translate(${x}px, ${y}px)` }}
-      // React onMouseEnter has issue with react-shadow.
-      // Use over & out instead.
-      onMouseOver={
-        props.enableHover
-          ? (e: React.MouseEvent<HTMLDivElement>) => {
-              if (
-                e.relatedTarget !== e.currentTarget &&
-                (!(e.relatedTarget instanceof Node) ||
-                  !e.currentTarget.contains(e.relatedTarget))
-              ) {
-                props.onChange(true)
-              }
-            }
-          : undefined
-      }
-      onMouseOut={(e: React.MouseEvent<HTMLDivElement>) => {
-        if (
-          e.relatedTarget !== e.currentTarget &&
-          (!(e.relatedTarget instanceof Node) ||
-            !e.currentTarget.contains(e.relatedTarget))
-        ) {
-          props.onChange(false)
-        }
-      }}
+      onMouseOver={props.enableHover ? onMouseOverOut : undefined}
+      onMouseOut={onMouseOverOut}
       onClick={() => props.onChange(true)}
     >
       {/* prettier-ignore */}
