@@ -11,7 +11,6 @@ import {
 } from 'rxjs/operators'
 import { message } from '@/_helpers/browser-api'
 import AnimateHeight from 'react-animate-height'
-import { search } from '@/components/dictionaries/longman/engine'
 
 export interface SuggestItem {
   explain: string
@@ -101,6 +100,9 @@ export const Suggest: FC<SuggestProps> = props => {
                         searchBox.focus()
                       }
                     }
+                    // prevent the dict panel being closed
+                    e.preventDefault()
+                    e.stopPropagation()
                   }
                 }}
                 data-entry={s.entry}
