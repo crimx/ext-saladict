@@ -1,0 +1,81 @@
+.menuBar-Btn {
+  width: 30px;
+  height: 30px;
+  overflow: hidden;
+  padding: 8px;
+  font-size: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  user-select: none;
+
+  &:focus,
+  &:hover {
+    outline: none;
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  &:disabled {
+    svg {
+      fill: #9accc1;
+    }
+
+    .menuBar-Btn_Icon-fav {
+      fill: none;
+      stroke: #9accc1;
+    }
+
+    &:hover {
+      cursor: unset;
+      background: transparent;
+    }
+  }
+}
+
+// history back and next
+.menuBar-Btn-dir {
+  @extend .menuBar-Btn;
+  width: 22px;
+  padding: 4px;
+}
+
+.menuBar-Btn_Icon {
+  width: 100%;
+  height: 100%;
+  fill: #fff;
+}
+
+.menuBar-Btn_Icon-history {
+  @extend .menuBar-Btn_Icon;
+  fill-opacity: 0.8;
+}
+
+.menuBar-Btn_Icon-fav {
+  @extend .menuBar-Btn_Icon;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+
+  &.isActive {
+    fill: #dd4b39;
+    stroke-width: 0;
+  }
+}
+
+.menuBar-Btn_Icon-pin {
+  transform-origin: center;
+
+  &.isActive {
+    transform: rotate(45deg);
+  }
+}
+
+.isAnimate {
+  .menuBar-Btn {
+    transition: background 0.2s;
+  }
+
+  .menuBar-Btn_Icon-pin {
+    transition: transform 0.4s;
+  }
+}
