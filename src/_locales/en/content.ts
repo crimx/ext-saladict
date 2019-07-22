@@ -10,7 +10,7 @@ export const locale: typeof _locale = {
     historyBack: 'Previous search history',
     historyNext: 'Next search history',
     searchText: 'Search text',
-    openSettings: 'Open Settings',
+    openOptions: 'Open Options',
     addToNotebook: 'Add to Notebook. Right click to open Notebook',
     openNotebook: 'Open Notebook',
     openHistory: 'Open History',
