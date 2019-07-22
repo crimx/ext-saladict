@@ -1,6 +1,9 @@
 import React, { FC } from 'react'
-import { useEventCallback } from 'rxjs-hooks'
-import { filter, map, switchMap, tap, delay } from 'rxjs/operators'
+import {
+  useObservablePropsCallback,
+  useObservableCallback
+} from 'observable-hooks'
+import { hover } from '@/_helpers/observables'
 
 export interface SaladBowlProps {
   /** Viewport based coordinate. */
@@ -43,35 +46,12 @@ export const SaladBowl: FC<SaladBowlProps> = props => {
       ? props.mouseY + gap // switch to bottom
       : props.mouseY - iconWidth - gap
 
-  const [onMouseOverOut] = useEventCallback<
-    React.MouseEvent<HTMLDivElement>,
-    any,
-    [SaladBowlProps['onChange']]
-  >(
-    (event$, $input) =>
-      event$.pipe(
-        filter(
-          e =>
-            // Shadow DOM does not send mouseenter and mouseleave
-            // cross the boundary which means React synthetic
-            // event handler will not collect.
-            // Here mouseover and mouseout are used to simulate.
-            e.relatedTarget !== e.currentTarget &&
-            (!(e.relatedTarget instanceof Node) ||
-              !e.currentTarget.contains(e.relatedTarget))
-        ),
-        map(e => e.type === 'mouseover'),
-        // so that enter delay can be cancelled
-        switchMap(isEnter =>
-          $input.pipe(
-            delay(isEnter ? 500 : 0),
-            tap(([onChange]) => onChange(isEnter))
-          )
-        )
-      ),
-    undefined,
-    [props.onChange]
-  )
+  const [onMouseOverOut, mouseOverOut$] = useObservableCallback<
+    boolean,
+    React.MouseEvent<HTMLDivElement>
+  >(hover)
+
+  useObservablePropsCallback(mouseOverOut$, props.onChange)
 
   return (
     <div

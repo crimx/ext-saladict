@@ -1,9 +1,13 @@
 import React, { FC, useRef, useEffect } from 'react'
 import { CSSTransition } from 'react-transition-group'
 import i18next from 'i18next'
-import { useEventCallback } from 'rxjs-hooks'
-import { Observable, empty, timer } from 'rxjs'
-import { map, debounce } from 'rxjs/operators'
+import {
+  useObservableCallback,
+  useObservableState,
+  useObservable
+} from 'observable-hooks'
+import { identity, merge } from 'rxjs'
+import { map, debounceTime } from 'rxjs/operators'
 import { Suggest } from './Suggest'
 
 export interface SearchBoxProps {
@@ -26,18 +30,24 @@ export const SearchBox: FC<SearchBoxProps> = props => {
   // Textarea also shares the text so only replace here
   const text = props.text.replace(/\s+/g, ' ')
 
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [onFocusBlur, focusBlur$] = useObservableCallback<
+    boolean,
+    { type: string }
+  >(event$ =>
+    event$.pipe(
+      map(e => e.type !== 'blur'),
+      debounceTime(100)
+    )
+  )
 
-  const [onFocusBlur, showSuggest] = useEventCallback(
-    (event$: Observable<{ type: string; _immediate?: boolean }>) =>
-      event$.pipe(
-        // synthetic event
-        map(e => [e.type !== 'blur', e._immediate]),
-        debounce(e => (e[1] ? empty() : timer(100))),
-        map(e => e[0])
-      ),
+  const [onShowSugget, onShowSugget$] = useObservableCallback<boolean>(identity)
+
+  const shouldShowSuggest = useObservableState(
+    useObservable(() => merge(focusBlur$, onShowSugget$)),
     false
   )
+
+  const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     if (props.isFocusOnMount && inputRef.current) {
@@ -55,12 +65,12 @@ export const SearchBox: FC<SearchBoxProps> = props => {
         ref={inputRef}
         onChange={e => {
           props.onInput(e.currentTarget.value)
-          onFocusBlur({ type: 'focus', _immediate: true })
+          onShowSugget(true)
         }}
         onKeyUp={e => {
           if (e.key === 'Enter') {
             props.onSearch(props.text)
-            onFocusBlur({ type: 'blur', _immediate: true })
+            onShowSugget(false)
           }
         }}
         onKeyDown={e => {
@@ -84,7 +94,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
 
       <CSSTransition
         classNames="menuBar-SearchBox_Suggest"
-        in={!!(props.enableSuggest && showSuggest && props.text)}
+        in={!!(props.enableSuggest && shouldShowSuggest && props.text)}
         timeout={100}
         mountOnEnter={true}
         unmountOnExit={true}
@@ -93,11 +103,16 @@ export const SearchBox: FC<SearchBoxProps> = props => {
           <Suggest
             text={text}
             onSelect={text => {
-              onFocusBlur({ type: 'blur', _immediate: true })
+              onShowSugget(true)
               props.onSearch(text)
             }}
             onFocus={onFocusBlur}
             onBlur={onFocusBlur}
+            onFocusInput={() => {
+              if (inputRef.current) {
+                inputRef.current.focus()
+              }
+            }}
           />
         </div>
       </CSSTransition>
