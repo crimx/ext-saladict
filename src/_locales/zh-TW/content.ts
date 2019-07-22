@@ -10,7 +10,7 @@ export const locale: typeof _locale = {
     historyBack: '上一個查單字記錄',
     historyNext: '下一個查單字記錄',
     searchText: '查單字',
-    openSettings: '開啟設定',
+    openOptions: '開啟設定',
     addToNotebook: '儲存到單字本，右鍵開啟單字本',
     openNotebook: '開啟單字本',
     openHistory: '開啟查單字記錄',
