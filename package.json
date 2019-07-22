@@ -49,6 +49,7 @@
     "i18next": "^17.0.6",
     "lodash": "^4.17.14",
     "normalize-scss": "^7.0.1",
+    "observable-hooks": "^1.0.1",
     "react": "^16",
     "react-animate-height": "^2.0.15",
     "react-dom": "^16",
@@ -57,7 +58,6 @@
     "react-shadow": "^17.1.1",
     "react-transition-group": "^4.2.1",
     "rxjs": "^6.5.2",
-    "rxjs-hooks": "^0.5.1",
     "web-ext-types": "^3.2.1",
     "webextension-polyfill": "latest"
   },
