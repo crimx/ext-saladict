@@ -48,6 +48,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
   )
 
   const inputRef = useRef<HTMLInputElement>(null)
+  const suggestRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (props.isFocusOnMount && inputRef.current) {
@@ -77,9 +78,8 @@ export const SearchBox: FC<SearchBoxProps> = props => {
           if (e.key === 'ArrowDown') {
             const doc = e.currentTarget.ownerDocument
             if (doc) {
-              const firstSuggestBtn = doc.querySelector<HTMLButtonElement>(
-                '.menuBar-SuggestsBtn'
-              )
+              const firstSuggestBtn =
+                suggestRef.current && suggestRef.current.querySelector('button')
               if (firstSuggestBtn) {
                 firstSuggestBtn.focus()
               }
@@ -101,6 +101,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
       >
         <div className="menuBar-SearchBox_Suggests">
           <Suggest
+            ref={suggestRef}
             text={text}
             onSelect={text => {
               onShowSugget(true)
@@ -108,7 +109,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
             }}
             onFocus={onFocusBlur}
             onBlur={onFocusBlur}
-            onFocusInput={() => {
+            onClose={() => {
               if (inputRef.current) {
                 inputRef.current.focus()
               }
