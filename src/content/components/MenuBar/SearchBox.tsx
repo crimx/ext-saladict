@@ -76,13 +76,12 @@ export const SearchBox: FC<SearchBoxProps> = props => {
         }}
         onKeyDown={e => {
           if (e.key === 'ArrowDown') {
-            const doc = e.currentTarget.ownerDocument
-            if (doc) {
-              const firstSuggestBtn =
-                suggestRef.current && suggestRef.current.querySelector('button')
-              if (firstSuggestBtn) {
-                firstSuggestBtn.focus()
-              }
+            const firstSuggestBtn =
+              suggestRef.current && suggestRef.current.querySelector('button')
+            if (firstSuggestBtn) {
+              firstSuggestBtn.focus()
+            } else {
+              onShowSugget(true)
             }
             e.preventDefault()
             e.stopPropagation()
