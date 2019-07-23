@@ -27,6 +27,7 @@ module.exports = {
       }
     ],
     yoda: 'off',
+    'react/display-name': 'off',
     'react/prop-types': 'off',
     'import/first': 'off',
     'no-unused-vars': 'off',
