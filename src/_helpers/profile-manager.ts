@@ -11,13 +11,10 @@ import {
 } from '@/app-config/profiles'
 import { mergeProfile } from '@/app-config/merge-profile'
 import { storage } from './browser-api'
-import { TranslationFunction } from 'i18next'
+import i18next from 'i18next'
 
-import { Observable } from 'rxjs/Observable'
-import { from } from 'rxjs/observable/from'
-import { concat } from 'rxjs/observable/concat'
-import { map } from 'rxjs/operators/map'
-import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
+import { Observable, from, concat, fromEventPattern } from 'rxjs'
+import { map } from 'rxjs/operators'
 
 export interface StorageChanged<T> {
   newValue: T,
@@ -37,33 +34,33 @@ interface ProfileCompressed {
   d: string
 }
 
-export function deflate (profile: Profile): ProfileCompressed {
+export function deflate(profile: Profile): ProfileCompressed {
   return {
     v: 1,
     d: pako.deflate(JSON.stringify(profile), { to: 'string' })
   }
 }
 
-export function inflate (profile: Profile | ProfileCompressed): Profile
-export function inflate (profile: undefined): undefined
-export function inflate (profile?: Profile | ProfileCompressed): Profile | undefined
-export function inflate (profile?: Profile | ProfileCompressed): Profile | undefined {
+export function inflate(profile: Profile | ProfileCompressed): Profile
+export function inflate(profile: undefined): undefined
+export function inflate(profile?: Profile | ProfileCompressed): Profile | undefined
+export function inflate(profile?: Profile | ProfileCompressed): Profile | undefined {
   if (profile && profile['v'] === 1) {
     return JSON.parse(pako.inflate((profile as ProfileCompressed).d, { to: 'string' }))
   }
   return profile as Profile | undefined
 }
 
-export function getProfileName (name: string, t: TranslationFunction): string {
+export function getProfileName(name: string, t: i18next.TFunction): string {
   // default names
   const match = /^%%_(\S+)_%%$/.exec(name)
   if (match) {
-    return t(`profile:${match[1]}`) || name
+    return t(`common:profile.${match[1]}`) || name
   }
   return name
 }
 
-export async function initProfiles (): Promise<Profile> {
+export async function initProfiles(): Promise<Profile> {
   let profiles: Profile[] = []
   let profileIDList: ProfileIDList = []
   let activeProfileID = ''
@@ -114,7 +111,7 @@ export async function initProfiles (): Promise<Profile> {
   return activeProfile
 }
 
-export async function resetAllProfiles () {
+export async function resetAllProfiles() {
   const { profileIDList } = await storage.sync.get<{
     profileIDList: ProfileIDList
   }>('profileIDList')
@@ -132,14 +129,14 @@ export async function resetAllProfiles () {
   return initProfiles()
 }
 
-export async function getProfile (id: string): Promise<Profile | undefined> {
+export async function getProfile(id: string): Promise<Profile | undefined> {
   return inflate((await storage.sync.get(id))[id])
 }
 
 /**
  * Update profile
  */
-export async function updateProfile (profile: Profile): Promise<void> {
+export async function updateProfile(profile: Profile): Promise<void> {
   if (process.env.DEV_BUILD) {
     const profileIDList = await getProfileIDList()
     if (!profileIDList.find(item => item.id === profile.id)) {
@@ -149,7 +146,7 @@ export async function updateProfile (profile: Profile): Promise<void> {
   return storage.sync.set({ [profile.id]: deflate(profile) })
 }
 
-export async function addProfile (profileID: ProfileID): Promise<void> {
+export async function addProfile(profileID: ProfileID): Promise<void> {
   const id = profileID.id
   const profileIDList = await getProfileIDList()
   if (process.env.DEV_BUILD) {
@@ -166,12 +163,12 @@ export async function addProfile (profileID: ProfileID): Promise<void> {
   })
 }
 
-export async function removeProfile (id: string): Promise<void> {
+export async function removeProfile(id: string): Promise<void> {
   const activeProfileID = await getActiveProfileID()
   let profileIDList = await getProfileIDList()
   if (process.env.DEV_BUILD) {
     if (!profileIDList.find(item => item.id === id) ||
-       !(await getProfile(id))
+      !(await getProfile(id))
     ) {
       console.warn(`Remove profile: profile ${id} does not exists`)
     }
@@ -187,7 +184,7 @@ export async function removeProfile (id: string): Promise<void> {
 /**
  * Get the profile under the current mode
  */
-export async function getActiveProfile (): Promise<Profile> {
+export async function getActiveProfile(): Promise<Profile> {
   const activeProfileID = await getActiveProfileID()
   if (activeProfileID) {
     const profile = await getProfile(activeProfileID)
@@ -198,29 +195,29 @@ export async function getActiveProfile (): Promise<Profile> {
   return getDefaultProfile()
 }
 
-export async function getActiveProfileID (): Promise<string> {
+export async function getActiveProfileID(): Promise<string> {
   return (await storage.sync.get('activeProfileID')).activeProfileID || ''
 }
 
-export function updateActiveProfileID (id: string): Promise<void> {
+export function updateActiveProfileID(id: string): Promise<void> {
   return storage.sync.set({ activeProfileID: id })
 }
 
 /**
  * This is mainly for ordering
  */
-export async function getProfileIDList (): Promise<ProfileIDList> {
+export async function getProfileIDList(): Promise<ProfileIDList> {
   return (await storage.sync.get('profileIDList')).profileIDList || []
 }
 
 /**
  * This is mainly for ordering
  */
-export function updateProfileIDList (list: ProfileIDList): Promise<void> {
+export function updateProfileIDList(list: ProfileIDList): Promise<void> {
   return storage.sync.set({ profileIDList: list })
 }
 
-export function addActiveProfileIDListener (
+export function addActiveProfileIDListener(
   cb: (changes: StorageChanged<string>) => any
 ) {
   storage.sync.addListener('activeProfileID', ({ activeProfileID }) => {
@@ -230,7 +227,7 @@ export function addActiveProfileIDListener (
   })
 }
 
-export function addProfileIDListListener (
+export function addProfileIDListListener(
   cb: (changes: StorageChanged<ProfileIDList>) => any
 ) {
   storage.sync.addListener('profileIDList', ({ profileIDList }) => {
@@ -243,7 +240,7 @@ export function addProfileIDListListener (
 /**
  * Listen storage changes of the current profile
  */
-export async function addActiveProfileListener (
+export async function addActiveProfileListener(
   cb: (changes: ProfileChanged) => any
 ) {
   let activeID: string | undefined = await getActiveProfileID()
@@ -289,7 +286,7 @@ export async function addActiveProfileListener (
 /**
  * Get active profile and create a stream listening to profile changing
  */
-export function createProfileIDListStream (): Observable<ProfileIDList> {
+export function createProfileIDListStream(): Observable<ProfileIDList> {
   return concat(
     from(getProfileIDList()),
     fromEventPattern<[StorageChanged<ProfileIDList>] | StorageChanged<ProfileIDList>>(
@@ -303,7 +300,7 @@ export function createProfileIDListStream (): Observable<ProfileIDList> {
 /**
  * Get active profile and create a stream listening to profile changing
  */
-export function createActiveProfileStream (): Observable<Profile> {
+export function createActiveProfileStream(): Observable<Profile> {
   return concat(
     from(getActiveProfile()),
     fromEventPattern<[ProfileChanged] | ProfileChanged>(addActiveProfileListener as any).pipe(
