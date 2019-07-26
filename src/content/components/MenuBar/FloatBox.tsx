@@ -2,12 +2,16 @@ import React from 'react'
 import AnimateHeight from 'react-animate-height'
 
 interface FloatBoxPropsBase {
-  /** When a item is focused */
-  onFocus: (e: React.FocusEvent<HTMLButtonElement>) => any
-  /** When a item is blur */
-  onBlur: (e: React.FocusEvent<HTMLButtonElement>) => any
   /** When a item is selected */
   onSelect: (key: string) => any
+  /** When a item is focused */
+  onFocus?: (e: React.FocusEvent<HTMLButtonElement>) => any
+  /** When a item is blur */
+  onBlur?: (e: React.FocusEvent<HTMLButtonElement>) => any
+  /** When mouse over on panel */
+  onMouseOver?: (e: React.MouseEvent<HTMLDivElement>) => any
+  /** When mouse out on panel */
+  onMouseOut?: (e: React.MouseEvent<HTMLDivElement>) => any
   /** When ArrowUp key if pressed on the first item */
   onArrowUpFirst?: (container: HTMLDivElement) => any
   /** When ArrowDown key if pressed on the last item */
@@ -33,7 +37,11 @@ export type FloatBoxProps = FloatBoxPropsWithList | FloatBoxPropsLoading
 export const FloatBox = React.forwardRef(
   (props: FloatBoxProps, containerRef: React.Ref<HTMLDivElement>) => {
     return (
-      <div className="menuBar-FloatBoxContainer">
+      <div
+        className="menuBar-FloatBoxContainer"
+        onMouseOver={props.onMouseOver}
+        onMouseOut={props.onMouseOut}
+      >
         <AnimateHeight height={props.isLoading ? 32 : 'auto'}>
           {props.isLoading ? (
             <div className="lds-ellipsis">

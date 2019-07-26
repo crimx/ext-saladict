@@ -1,0 +1,50 @@
+@import './FloatBox.scss';
+@import './MenubarBtns.scss';
+
+.menuBar-ProfileContainer {
+  display: inline-block;
+  position: relative;
+}
+
+.menuBar-ProfileItem {
+  position: relative;
+  padding-left: 10px;
+
+  &.isActive::before {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: -5px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid #333;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+  }
+}
+
+.menuBar-ProfileBox {
+  position: absolute;
+  left: 50%;
+  top: 150%;
+  z-index: 1000;
+  transform: translateX(-50%);
+}
+
+.isAnimate {
+  .menuBar-Profiles-enter {
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+
+  .menuBar-Profiles-enter-active,
+  .menuBar-Profiles-exit {
+    opacity: 1;
+    transition: opacity 0.4s;
+  }
+
+  .menuBar-Profiles-exit-active {
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+}
