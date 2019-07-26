@@ -1,4 +1,4 @@
-import { filter, map, switchMap, delay } from 'rxjs/operators'
+import { filter, map, switchMap, delay, debounceTime } from 'rxjs/operators'
 import { of, Observable } from 'rxjs'
 import { MouseEvent } from 'react'
 
@@ -28,7 +28,27 @@ export function hover<N extends Node>(
           !e.currentTarget.contains(e.relatedTarget))
     ),
     map(e => e.type === 'mouseover'),
+  )
+}
+
+/**
+ * [[hover]] with delay on enter.
+ */
+export function hoverWithDelay<N extends Node>(
+  event$: Observable<MouseEvent<N>>
+): Observable<boolean> {
+  return hover(event$).pipe(
     // delay enter but not leave
     switchMap(isEnter => of(isEnter).pipe(delay(isEnter ? 500 : 0)))
+  )
+}
+
+/**
+ * Emits true is focus and false if blur.
+ */
+export function focusBlur(event$: Observable<{ type: string }>) {
+  return event$.pipe(
+    map(e => e.type !== 'blur'),
+    debounceTime(100)
   )
 }
