@@ -7,7 +7,7 @@ import {
   useObservable
 } from 'observable-hooks'
 import { identity, merge } from 'rxjs'
-import { map, debounceTime } from 'rxjs/operators'
+import { focusBlur } from '@/_helpers/observables'
 import { Suggest } from './Suggest'
 
 export interface SearchBoxProps {
@@ -30,15 +30,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
   // Textarea also shares the text so only replace here
   const text = props.text.replace(/\s+/g, ' ')
 
-  const [onFocusBlur, focusBlur$] = useObservableCallback<
-    boolean,
-    { type: string }
-  >(event$ =>
-    event$.pipe(
-      map(e => e.type !== 'blur'),
-      debounceTime(100)
-    )
-  )
+  const [onFocusBlur, focusBlur$] = useObservableCallback(focusBlur)
 
   const [onShowSugget, onShowSugget$] = useObservableCallback<boolean>(identity)
 
@@ -56,6 +48,12 @@ export const SearchBox: FC<SearchBoxProps> = props => {
       inputRef.current.select()
     }
   }, [])
+
+  const focusInput = () => {
+    if (inputRef.current) {
+      inputRef.current.focus()
+    }
+  }
 
   return (
     <div className="menuBar-SearchBox_Wrap">
@@ -108,11 +106,8 @@ export const SearchBox: FC<SearchBoxProps> = props => {
             }}
             onFocus={onFocusBlur}
             onBlur={onFocusBlur}
-            onClose={() => {
-              if (inputRef.current) {
-                inputRef.current.focus()
-              }
-            }}
+            onArrowUpFirst={focusInput}
+            onClose={focusInput}
           />
         </div>
       </CSSTransition>

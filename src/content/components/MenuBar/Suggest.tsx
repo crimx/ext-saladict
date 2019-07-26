@@ -20,7 +20,10 @@ export interface SuggestItem {
 export type SuggestProps = {
   /** Search box text */
   text: string
-} & Pick<FloatBoxProps, 'onFocus' | 'onBlur' | 'onSelect' | 'onClose'>
+} & Pick<
+  FloatBoxProps,
+  'onFocus' | 'onBlur' | 'onSelect' | 'onArrowUpFirst' | 'onClose'
+>
 
 /**
  * Suggest panel offering similar words.
