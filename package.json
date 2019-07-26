@@ -21,7 +21,7 @@
     }
   },
   "engines": {
-    "node": ">= 12.5.0",
+    "node": ">= 11.0.0",
     "npm": ">= 6.9.0"
   },
   "repository": {
@@ -50,6 +50,7 @@
     "lodash": "^4.17.14",
     "normalize-scss": "^7.0.1",
     "observable-hooks": "^1.0.1",
+    "pako": "^1.0.10",
     "react": "^16",
     "react-animate-height": "^2.0.15",
     "react-dom": "^16",
