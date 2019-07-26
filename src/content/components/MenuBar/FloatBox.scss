@@ -1,5 +1,5 @@
 .menuBar-FloatBoxContainer {
-  width: calc(var(--panel-width) * 0.7);
+  max-width: calc(var(--panel-width) * 0.7);
   max-height: calc(var(--panel-height) * 0.8);
   padding: 10px;
   word-break: keep-all;
