@@ -65,13 +65,15 @@ export function withSideEffect(fn: React.EffectCallback) {
  * Fake salalict panel
  */
 export function withSaladictPanel(story) {
+  const width = number('Panel Width', 450)
   return (
     <div
       className={boolean('Enable Animation', true) ? 'isAnimate' : ''}
       style={{
         fontSize: number('Panel Font Size', 13),
-        '--panel-width': `${number('Panel Width', 450)}px`,
-        '--panel-height': `${number('Panel Height', 450 * 1.68)}px`
+        width,
+        '--panel-width': `${width}px`
+        // '--panel-height': `${number('Panel Height', 450 * 1.68)}px`
       }}
     >
       {story()}
