@@ -6,6 +6,7 @@ import { Observable, fromEventPattern } from 'rxjs'
 import { map, filter } from 'rxjs/operators'
 
 import { Message, MessageResponse, MsgType } from '@/typings/message'
+import { Mutable } from '@/typings/helpers'
 
 /* --------------------------------------- *\
  * #Types
@@ -48,8 +49,8 @@ const noop = () => {
  * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
 const messageListeners: Map<
-  onMessageEvent,
-  Map<MsgType, onMessageEvent>
+  Function,
+  Map<MsgType | '__DEFAULT_MSGTYPE__', Function>
 > = new Map()
 
 /**
@@ -58,8 +59,8 @@ const messageListeners: Map<
  * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
 const messageSelfListeners: Map<
-  onMessageEvent,
-  Map<MsgType, onMessageEvent>
+  Function,
+  Map<MsgType | '__DEFAULT_MSGTYPE__', Function>
 > = new Map()
 
 /**
@@ -308,7 +309,9 @@ function messageSend<T extends MsgType>(
   tabId: number,
   message: Message<T>
 ): Promise<MessageResponse<T>>
-function messageSend(...args): Promise<any> {
+function messageSend<T extends MsgType>(
+  ...args: [Message<T>] | [number, Message<T>]
+): Promise<any> {
   return (args.length === 1
     ? browser.runtime.sendMessage(args[0])
     : browser.tabs.sendMessage(args[0], args[1])
@@ -350,7 +353,10 @@ function messageAddListener<T extends MsgType>(
 function messageAddListener<T extends MsgType>(
   cb: onMessageEvent<Message>
 ): void
-function messageAddListener(this: MessageThis, ...args): void {
+function messageAddListener<T extends MsgType>(
+  this: MessageThis,
+  ...args: [T, onMessageEvent<Message<T>>] | [onMessageEvent<Message>]
+): void {
   if (window.pageId === undefined) {
     initClient()
   }
@@ -372,11 +378,11 @@ function messageAddListener(this: MessageThis, ...args): void {
           : !message.__pageId__)
       ) {
         if (messageType == null || message.type === messageType) {
-          return cb(message, sender)
+          return cb(message as Message<T> & { __pageId__?: string }, sender)
         }
       }
     }) as onMessageEvent
-    listeners.set(messageType, listener)
+    listeners.set(messageType || '__DEFAULT_MSGTYPE__', listener)
   }
   // object is handled
   return browser.runtime.onMessage.addListener(listener as any)
@@ -387,7 +393,10 @@ function messageRemoveListener(
   cb: onMessageEvent
 ): void
 function messageRemoveListener(cb: onMessageEvent): void
-function messageRemoveListener(this: MessageThis, ...args): void {
+function messageRemoveListener(
+  this: MessageThis,
+  ...args: [Message['type'], onMessageEvent] | [onMessageEvent]
+): void {
   const allListeners = this.__self__ ? messageSelfListeners : messageListeners
   const messageType = args.length === 1 ? undefined : args[0]
   const cb = args.length === 1 ? args[0] : args[1]
@@ -414,6 +423,7 @@ function messageRemoveListener(this: MessageThis, ...args): void {
       return
     }
   }
+  // @ts-ignore
   browser.runtime.onMessage.removeListener(cb)
 }
 
@@ -476,7 +486,7 @@ function initServer(): void {
 
       const selfMsg = selfMsgTester.exec((message as Message).type)
       if (selfMsg) {
-        ;(message as Message).type = selfMsg[1] as MsgType
+        ;(message as Mutable<Message>).type = selfMsg[1] as MsgType
         const tabId = sender.tab && sender.tab.id
         if (tabId) {
           return messageSend(tabId, message as Message)

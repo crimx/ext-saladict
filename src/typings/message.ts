@@ -31,13 +31,17 @@ export type MessageConfig = {
 export type MsgType = keyof MessageConfig
 
 export type Message<T = undefined> = T extends MsgType
-  ? Pick<MessageConfig[T], Extract<'type' | 'payload', keyof MessageConfig[T]>>
-  : UnionPick<MessageConfig[MsgType], 'type' | 'payload'>
+  ? Readonly<
+      Pick<
+        MessageConfig[T],
+        Extract<'type' | 'payload', keyof MessageConfig[T]>
+      >
+    >
+  : Readonly<UnionPick<MessageConfig[MsgType], 'type' | 'payload'>>
 
-export type MessageResponse<T extends MsgType> = MessageConfig[T][Extract<
-  'response',
-  keyof MessageConfig[T]
->]
+export type MessageResponse<T extends MsgType> = Readonly<
+  MessageConfig[T][Extract<'response', keyof MessageConfig[T]>]
+>
 
 // export enum MsgType {
 //   /** Nothing */
