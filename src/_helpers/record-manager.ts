@@ -3,16 +3,6 @@
  */
 
 import { message } from '@/_helpers/browser-api'
-import { SelectionInfo } from '@/_helpers/selection'
-import {
-  MsgType,
-  MsgIsInNotebook,
-  MsgSaveWord,
-  MsgDeleteWords,
-  MsgGetWordsByText,
-  MsgGetWords,
-  MsgGetWordsResponse,
-} from '@/typings/message'
 
 export interface Word {
   /** primary key, milliseconds elapsed since the UNIX epoch */
@@ -33,69 +23,81 @@ export interface Word {
   note: string
 }
 
-export type Area = 'notebook' | 'history'
+export type DBArea = 'notebook' | 'history'
 
-export function newWord (word?: Partial<Word>): Word {
+export function newWord(word?: Partial<Word>): Word {
   return word
     ? {
-      date: word.date || Date.now(),
-      text: word.text || '',
-      context: word.context || '',
-      title: word.title || '',
-      url: word.url || '',
-      favicon: word.favicon || '',
-      trans: word.trans || '',
-      note: word.note || '',
-    }
+        date: word.date || Date.now(),
+        text: word.text || '',
+        context: word.context || '',
+        title: word.title || '',
+        url: word.url || '',
+        favicon: word.favicon || '',
+        trans: word.trans || '',
+        note: word.note || ''
+      }
     : {
-      date: Date.now(),
-      text: '',
-      context: '',
-      title: '',
-      url: '',
-      favicon: '',
-      trans: '',
-      note: '',
-    }
+        date: Date.now(),
+        text: '',
+        context: '',
+        title: '',
+        url: '',
+        favicon: '',
+        trans: '',
+        note: ''
+      }
 }
 
-export function isInNotebook (info: SelectionInfo): Promise<boolean> {
-  return message.send<MsgIsInNotebook>({ type: MsgType.IsInNotebook, info })
+export function isInNotebook(word: Word): Promise<boolean> {
+  return message
+    .send({ type: 'IS_IN_NOTEBOOK', payload: word })
     .catch(logError(false))
 }
 
-export async function saveWord (area: Area, info: SelectionInfo): Promise<void> {
-  await message.send<MsgSaveWord>({ type: MsgType.SaveWord, area, info })
+export async function saveWord(area: DBArea, word: Word): Promise<void> {
+  await message.send({ type: 'SAVE_WORD', payload: { area, word } })
 }
 
-export async function deleteWords (area: Area, dates?: number[]): Promise<void> {
-  await message.send({ type: MsgType.SyncServiceDownload })
-  await message.send<MsgDeleteWords>({ type: MsgType.DeleteWords, area, dates })
+export async function deleteWords(
+  area: DBArea,
+  dates?: number[]
+): Promise<void> {
+  await message.send({ type: 'SYNC_SERVICE_DOWNLOAD' })
+  await message.send({ type: 'DELETE_WORDS', payload: { area, dates } })
 }
 
-export function getWordsByText (area: Area, text: string): Promise<Word[]> {
-  return message.send<MsgGetWordsByText>({ type: MsgType.GetWordsByText, area, text })
-}
-
-export function getWords (
-  area: Area,
-  config: {
-    itemsPerPage?: number,
-    pageNum?: number,
-    filters: { [field: string]: string[] | undefined },
-    sortField?: string,
-    sortOrder?: 'ascend' | 'descend' | false,
-    searchText?: string,
-  }
-): Promise<MsgGetWordsResponse> {
-  return message.send<MsgGetWords, MsgGetWordsResponse>({
-    type: MsgType.GetWords,
-    area,
-    ...config,
+export function getWordsByText(area: DBArea, text: string): Promise<Word[]> {
+  return message.send({
+    type: 'GET_WORDS_BY_TEXT',
+    payload: {
+      area,
+      text
+    }
   })
 }
 
-function logError<T = any> (valPassThrough: T): (x: any) => T {
+export function getWords(
+  area: DBArea,
+  config: {
+    itemsPerPage?: number
+    pageNum?: number
+    filters: { [field: string]: string[] | undefined }
+    sortField?: string
+    sortOrder?: 'ascend' | 'descend' | false
+    searchText?: string
+  }
+) {
+  return message.send({
+    type: 'GET_WORDS',
+    payload: {
+      area,
+      ...config
+    }
+  })
+}
+
+function logError<T = any>(valPassThrough: T): (x: any) => T {
   return err => {
     if (process.env.NODE_ENV !== 'production') {
       console.error(err)
