@@ -7,12 +7,12 @@ export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 export type Namespace =
   | 'common'
   | 'content'
-  | 'popup'
-  | 'options'
-  | 'menus'
-  | 'profiles'
-  | 'dicts'
   | 'langcode'
+  | 'menus'
+  | 'options'
+  | 'popup'
+  | 'wordpage'
+  | 'dicts'
 
 export interface RawLocale {
   'zh-CN': string
@@ -87,7 +87,7 @@ const useTranslationOptions = { useSuspense: false }
 const dumbT = (keys: any) => keys
 
 export function useTranslate(
-  ns?: string | string[]
+  ns?: Namespace | Namespace[]
 ): ReturnType<typeof useTranslation> {
   const o = useTranslation(ns, useTranslationOptions)
   if (!o.ready) {
