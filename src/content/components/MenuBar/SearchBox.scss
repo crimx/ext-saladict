@@ -1,9 +1,11 @@
 .menuBar-SearchBox_Wrap {
   position: relative;
-  width: 4em;
+  width: 5em;
 }
 
 .menuBar-SearchBox {
+  width: 100%;
+  box-sizing: border-box;
   padding: 0 5px;
   border: 0 none;
   outline: 0 none;

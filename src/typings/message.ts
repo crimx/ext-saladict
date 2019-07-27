@@ -1,10 +1,19 @@
-// import { SelectionInfo } from '@/_helpers/selection'
+import { Word, DBArea } from '@/_helpers/record-manager'
 // import { DictID } from '@/app-config'
 // import { Word, Area as DBArea } from '@/_helpers/record-manager'
 import { UnionPick } from '@/typings/helpers'
 // import { DictSearchResult } from '@/typings/server'
 
 export type MessageConfig = {
+  OPEN_URL: {
+    type: 'OPEN_URL'
+    payload: {
+      url: string
+      /** use browser.runtime.getURL? */
+      self?: boolean
+    }
+  }
+
   PAGE_INFO: {
     /** Request backend for page info */
     type: 'PAGE_INFO'
@@ -15,6 +24,7 @@ export type MessageConfig = {
       pageURL?: string
     }
   }
+
   GET_SUGGESTS: {
     /** Request backend to fetch suggest */
     type: 'GET_SUGGESTS'
@@ -25,6 +35,79 @@ export type MessageConfig = {
       explain: string
       entry: string
     }>
+  }
+
+  IS_IN_NOTEBOOK: {
+    /** Is a word in Notebook */
+    type: 'IS_IN_NOTEBOOK'
+    payload: Word
+    response: boolean
+  }
+  SAVE_WORD: {
+    /** Save a word to Notebook or History */
+    type: 'SAVE_WORD'
+    payload: {
+      area: DBArea
+      word: Word
+    }
+  }
+  DELETE_WORDS: {
+    type: 'DELETE_WORDS'
+    payload: {
+      area: DBArea
+      dates?: number[]
+    }
+  }
+  GET_WORDS_BY_TEXT: {
+    type: 'GET_WORDS_BY_TEXT'
+    payload: {
+      area: DBArea
+      text: string
+    }
+  }
+  GET_WORDS: {
+    type: 'GET_WORDS'
+    payload: {
+      area: DBArea
+      itemsPerPage?: number
+      pageNum?: number
+      filters?: { [field: string]: string[] | undefined }
+      sortField?: string
+      sortOrder?: 'ascend' | 'descend' | false
+      searchText?: string
+    }
+  }
+
+  SYNC_SERVICE_INIT: {
+    type: 'SYNC_SERVICE_INIT'
+    payload: {
+      serviceID: string
+      config: any
+    }
+  }
+  SYNC_SERVICE_DOWNLOAD: {
+    type: 'SYNC_SERVICE_DOWNLOAD'
+    payload?: {
+      serviceID?: string
+      noCache?: boolean
+    }
+  }
+  SYNC_SERVICE_ADD: {
+    type: 'SYNC_SERVICE_ADD'
+    payload: {
+      /** If not provided, call all services */
+      serviceID?: string
+      words: Word[]
+    }
+  }
+  SYNC_SERVICE_DELETE: {
+    type: 'SYNC_SERVICE_DELETE'
+    payload: {
+      /** If not provided, call all services */
+      serviceID?: string
+      dates?: number[]
+      force?: boolean
+    }
   }
 }
 
