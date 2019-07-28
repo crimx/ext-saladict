@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { useObservable, useObservableState } from 'observable-hooks'
 import { from } from 'rxjs'
 import {
@@ -22,13 +22,13 @@ export type SuggestProps = {
   text: string
 } & Pick<
   FloatBoxProps,
-  'onFocus' | 'onBlur' | 'onSelect' | 'onArrowUpFirst' | 'onClose'
+  'ref' | 'onFocus' | 'onBlur' | 'onSelect' | 'onArrowUpFirst' | 'onClose'
 >
 
 /**
  * Suggest panel offering similar words.
  */
-export const Suggest = React.forwardRef(
+export const Suggest: FC<SuggestProps> = React.forwardRef(
   (props: SuggestProps, ref: React.Ref<HTMLDivElement>) => {
     return useObservableState(
       useObservable(
@@ -45,7 +45,7 @@ export const Suggest = React.forwardRef(
                     type: 'GET_SUGGESTS',
                     payload: text
                   })
-                  .catch(() => [] as SuggestItem[])
+                  .catch(() => [] as readonly SuggestItem[])
               ).pipe(
                 map(suggests => (
                   <FloatBox
