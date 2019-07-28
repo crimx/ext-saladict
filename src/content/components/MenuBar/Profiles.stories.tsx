@@ -25,9 +25,7 @@ storiesOf('Content Scripts|Menubar', module)
   )
   .addDecorator(withKnobs)
   .addDecorator(withSaladictPanel)
-  .addDecorator(stroy => (
-    <div style={{ marginLeft: 50 }}>{stroy()}</div>
-  ))
+  .addDecorator(stroy => <div style={{ marginLeft: 50 }}>{stroy()}</div>)
   .addDecorator(withLocalStyle(require('./Profiles.scss')))
   .addDecorator(withLocalStyle(require('@/_sass_global/_reset.scss')))
   .addDecorator(withi18nNS('content'))
@@ -45,7 +43,11 @@ storiesOf('Content Scripts|Menubar', module)
       <Profiles
         t={i18next.getFixedT(i18next.language, ['content', 'common'])}
         profiles={profiles}
-        activeProfileId={select('Active Profile', profilesOption, profiles[0].id)}
+        activeProfileId={select(
+          'Active Profile',
+          profilesOption,
+          profiles[0].id
+        )}
       />
     )
   })

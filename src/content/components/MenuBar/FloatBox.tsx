@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { FC, Ref } from 'react'
 import AnimateHeight from 'react-animate-height'
 
 interface FloatBoxPropsBase {
+  /** Box container */
+  ref?: Ref<HTMLDivElement>
   /** When a item is selected */
   onSelect: (key: string) => any
   /** When a item is focused */
@@ -34,7 +36,7 @@ export type FloatBoxProps = FloatBoxPropsWithList | FloatBoxPropsLoading
 /**
  * A white box
  */
-export const FloatBox = React.forwardRef(
+export const FloatBox: FC<FloatBoxProps> = React.forwardRef(
   (props: FloatBoxProps, containerRef: React.Ref<HTMLDivElement>) => {
     return (
       <div
@@ -51,52 +53,52 @@ export const FloatBox = React.forwardRef(
               <div></div>
             </div>
           ) : (
-              <div ref={containerRef} className="menuBar-FloatBox">
-                {props.list.map(item => (
-                  <button
-                    key={item.key}
-                    className="menuBar-FloatBoxBtn"
-                    onFocus={props.onFocus}
-                    onBlur={props.onBlur}
-                    onClick={e => props.onSelect(e.currentTarget.dataset.key!)}
-                    onKeyDown={e => {
-                      if (e.key === 'ArrowDown') {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        const $nextLi = e.currentTarget.nextSibling
-                        if ($nextLi) {
-                          ; ($nextLi as HTMLButtonElement).focus()
-                        } else if (props.onArrowDownLast) {
-                          props.onArrowDownLast(e.currentTarget
-                            .parentElement as HTMLDivElement)
-                        }
-                      } else if (e.key === 'ArrowUp') {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        const $prevLi = e.currentTarget.previousSibling
-                        if ($prevLi) {
-                          ; ($prevLi as HTMLButtonElement).focus()
-                        } else if (props.onArrowUpFirst) {
-                          props.onArrowUpFirst(e.currentTarget
-                            .parentElement as HTMLDivElement)
-                        }
-                      } else if (e.key === 'Escape') {
-                        // prevent the dict panel being closed
-                        e.preventDefault()
-                        e.stopPropagation()
-                        if (props.onClose) {
-                          props.onClose(e.currentTarget
-                            .parentElement as HTMLDivElement)
-                        }
+            <div ref={containerRef} className="menuBar-FloatBox">
+              {props.list.map(item => (
+                <button
+                  key={item.key}
+                  className="menuBar-FloatBoxBtn"
+                  onFocus={props.onFocus}
+                  onBlur={props.onBlur}
+                  onClick={e => props.onSelect(e.currentTarget.dataset.key!)}
+                  onKeyDown={e => {
+                    if (e.key === 'ArrowDown') {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      const $nextLi = e.currentTarget.nextSibling
+                      if ($nextLi) {
+                        ;($nextLi as HTMLButtonElement).focus()
+                      } else if (props.onArrowDownLast) {
+                        props.onArrowDownLast(e.currentTarget
+                          .parentElement as HTMLDivElement)
                       }
-                    }}
-                    data-key={item.key}
-                  >
-                    {item.content}
-                  </button>
-                ))}
-              </div>
-            )}
+                    } else if (e.key === 'ArrowUp') {
+                      e.preventDefault()
+                      e.stopPropagation()
+                      const $prevLi = e.currentTarget.previousSibling
+                      if ($prevLi) {
+                        ;($prevLi as HTMLButtonElement).focus()
+                      } else if (props.onArrowUpFirst) {
+                        props.onArrowUpFirst(e.currentTarget
+                          .parentElement as HTMLDivElement)
+                      }
+                    } else if (e.key === 'Escape') {
+                      // prevent the dict panel being closed
+                      e.preventDefault()
+                      e.stopPropagation()
+                      if (props.onClose) {
+                        props.onClose(e.currentTarget
+                          .parentElement as HTMLDivElement)
+                      }
+                    }
+                  }}
+                  data-key={item.key}
+                >
+                  {item.content}
+                </button>
+              ))}
+            </div>
+          )}
         </AnimateHeight>
       </div>
     )

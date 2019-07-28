@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { FC } from 'react'
 import i18next from 'i18next'
 
-export interface MenubarBtnProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface MenubarBtnProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   t: i18next.TFunction
 }
 
 /**
  * History Back Button
  */
-export const HistoryBackBtn: React.FC<MenubarBtnProps> = props => {
+export const HistoryBackBtn: FC<MenubarBtnProps> = props => {
   const { t, ...restProps } = props
   return (
     <button
@@ -32,7 +33,7 @@ export const HistoryBackBtn: React.FC<MenubarBtnProps> = props => {
 /**
  * History Back Button
  */
-export const HistoryNextBtn: React.FC<MenubarBtnProps> = props => {
+export const HistoryNextBtn: FC<MenubarBtnProps> = props => {
   const { t, ...restProps } = props
   return (
     <button
@@ -56,14 +57,10 @@ export const HistoryNextBtn: React.FC<MenubarBtnProps> = props => {
 /**
  * Search Button
  */
-export const SearchBtn: React.FC<MenubarBtnProps> = props => {
+export const SearchBtn: FC<MenubarBtnProps> = props => {
   const { t, ...restProps } = props
   return (
-    <button
-      className="menuBar-Btn"
-      title={t('tip.searchText')}
-      {...restProps}
-    >
+    <button className="menuBar-Btn" title={t('tip.searchText')} {...restProps}>
       <svg
         className="menuBar-Btn_Icon"
         width="30"
@@ -80,14 +77,10 @@ export const SearchBtn: React.FC<MenubarBtnProps> = props => {
 /**
  * Options Button
  */
-export const OptionsBtn: React.FC<MenubarBtnProps> = props => {
+export const OptionsBtn: FC<MenubarBtnProps> = props => {
   const { t, ...restProps } = props
   return (
-    <button
-      className="menuBar-Btn"
-      title={t('tip.openOptions')}
-      {...restProps}
-    >
+    <button className="menuBar-Btn" title={t('tip.openOptions')} {...restProps}>
       <svg
         className="menuBar-Btn_Icon"
         width="30"
@@ -109,7 +102,7 @@ export interface FavBtnProps extends MenubarBtnProps {
 /**
  * Add to Notebook
  */
-export const FavBtn: React.FC<FavBtnProps> = props => {
+export const FavBtn: FC<FavBtnProps> = props => {
   const { t, isFav, ...restProps } = props
   return (
     <button
@@ -133,14 +126,10 @@ export const FavBtn: React.FC<FavBtnProps> = props => {
 /**
  * Open History page
  */
-export const HistoryBtn: React.FC<MenubarBtnProps> = props => {
+export const HistoryBtn: FC<MenubarBtnProps> = props => {
   const { t, ...restProps } = props
   return (
-    <button
-      className="menuBar-Btn"
-      title={t('tip.openHistory')}
-      {...restProps}
-    >
+    <button className="menuBar-Btn" title={t('tip.openHistory')} {...restProps}>
       <svg
         className="menuBar-Btn_Icon-history"
         width="30"
@@ -166,14 +155,10 @@ export interface PinBtnProps extends MenubarBtnProps {
  * - Normal in-page dict panel will stay visible.
  * - Standalone dict panel will stay on top of other windows.
  */
-export const PinBtn: React.FC<PinBtnProps> = props => {
+export const PinBtn: FC<PinBtnProps> = props => {
   const { t, isPinned, ...restProps } = props
   return (
-    <button
-      className="menuBar-Btn"
-      title={t('tip.pinPanel')}
-      {...restProps}
-    >
+    <button className="menuBar-Btn" title={t('tip.pinPanel')} {...restProps}>
       <svg
         className="menuBar-Btn_Icon"
         width="30"
@@ -193,14 +178,10 @@ export const PinBtn: React.FC<PinBtnProps> = props => {
 /**
  * Close dict panel
  */
-export const CloseBtn: React.FC<MenubarBtnProps> = props => {
+export const CloseBtn: FC<MenubarBtnProps> = props => {
   const { t, ...restProps } = props
   return (
-    <button
-      className="menuBar-Btn"
-      title={t('tip.closePanel')}
-      {...restProps}
-    >
+    <button className="menuBar-Btn" title={t('tip.closePanel')} {...restProps}>
       <svg
         className="menuBar-Btn_Icon"
         width="30"

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import i18next from 'i18next'
 import { CSSTransition } from 'react-transition-group'
 import {
@@ -10,7 +10,10 @@ import {
 import { merge } from 'rxjs'
 import { debounceTime } from 'rxjs/operators'
 import { hover, hoverWithDelay, focusBlur } from '@/_helpers/observables'
-import { updateActiveProfileID, getProfileName } from '@/_helpers/profile-manager'
+import {
+  updateActiveProfileID,
+  getProfileName
+} from '@/_helpers/profile-manager'
 import { FloatBox } from './FloatBox'
 import { OptionsBtn } from './MenubarBtns'
 
@@ -23,7 +26,7 @@ export interface ProfilesProps {
 /**
  * Pick and choose profiles
  */
-export const Profiles = React.memo((props: ProfilesProps) => {
+export const Profiles: FC<ProfilesProps> = props => {
   const [onMouseOverOutDelay, mouseOverOutDelay$] = useObservableCallback<
     boolean,
     React.MouseEvent<Element>
@@ -41,9 +44,9 @@ export const Profiles = React.memo((props: ProfilesProps) => {
   )
 
   const isShowProfiles = useObservableState(
-    useObservable(() => merge(mouseOverOut$, mouseOverOutDelay$, focusBlur$, showHideProfiles$)).pipe(
-      debounceTime(100)
-    ),
+    useObservable(() =>
+      merge(mouseOverOut$, mouseOverOutDelay$, focusBlur$, showHideProfiles$)
+    ).pipe(debounceTime(100)),
     false
   )
 
@@ -54,7 +57,7 @@ export const Profiles = React.memo((props: ProfilesProps) => {
         <span
           className={`menuBar-ProfileItem${
             p.id === props.activeProfileId ? ' isActive' : ''
-            }`}
+          }`}
         >
           {getProfileName(p.name, props.t)}
         </span>
@@ -63,7 +66,7 @@ export const Profiles = React.memo((props: ProfilesProps) => {
   })
 
   return (
-    <div className='menuBar-ProfileContainer'>
+    <div className="menuBar-ProfileContainer">
       <OptionsBtn
         t={props.t}
         disabled={window.__SALADICT_OPTIONS_PAGE__}
@@ -85,7 +88,7 @@ export const Profiles = React.memo((props: ProfilesProps) => {
           mountOnEnter={true}
           unmountOnExit={true}
         >
-          <div className='menuBar-ProfileBox'>
+          <div className="menuBar-ProfileBox">
             <FloatBox
               list={listItem}
               onFocus={onFocusBlur}
@@ -105,4 +108,4 @@ export const Profiles = React.memo((props: ProfilesProps) => {
       )}
     </div>
   )
-})
+}

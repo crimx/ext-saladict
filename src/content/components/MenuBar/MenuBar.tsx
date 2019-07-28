@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { Word } from '@/_helpers/record-manager'
 import { useTranslate } from '@/_helpers/i18n'
 import {
@@ -13,6 +13,8 @@ import {
 import { SearchBox, SearchBoxProps } from './SearchBox'
 import { Profiles, ProfilesProps } from './Profiles'
 import { message } from '@/_helpers/browser-api'
+
+const ProfilesMemo = React.memo(Profiles)
 
 const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
 const isSaladictQuickSearchPage = !!window.__SALADICT_QUICK_SEARCH_PAGE__
@@ -46,7 +48,7 @@ export interface MenuBarProps {
   onDragAreaTouchStart: (e: React.TouchEvent<HTMLDivElement>) => any
 }
 
-export const MenuBar: React.FC<MenuBarProps> = props => {
+export const MenuBar: FC<MenuBarProps> = props => {
   const { t } = useTranslate(['content', 'common'])
   return (
     <header className="menuBar">
@@ -74,7 +76,7 @@ export const MenuBar: React.FC<MenuBarProps> = props => {
         onMouseDown={props.onDragAreaMouseDown}
         onTouchStart={props.onDragAreaTouchStart}
       />
-      <Profiles
+      <ProfilesMemo
         t={t}
         profiles={props.profiles}
         activeProfileId={props.activeProfileId}

@@ -10,6 +10,19 @@ import { i18nContexts } from './configs/contexts' // we will define the contextu
 addParameters({
   options: {
     panelPosition: 'right'
+  },
+  info: {
+    inline: true,
+    header: false,
+    styles: styles => ({
+      ...styles,
+      infoBody: {
+        ...styles.infoBody,
+        position: 'absolute',
+        left: 8,
+        right: 8
+      }
+    })
   }
 })
 
