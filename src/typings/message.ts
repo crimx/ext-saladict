@@ -2,6 +2,7 @@ import { Word, DBArea } from '@/_helpers/record-manager'
 // import { DictID } from '@/app-config'
 // import { Word, Area as DBArea } from '@/_helpers/record-manager'
 import { UnionPick } from '@/typings/helpers'
+import { DictID } from '@/app-config'
 // import { DictSearchResult } from '@/typings/server'
 
 export type MessageConfig = {
@@ -11,6 +12,14 @@ export type MessageConfig = {
       url: string
       /** use browser.runtime.getURL? */
       self?: boolean
+    }
+  }
+  OPEN_DICT_SRC_PAGE: {
+    /** Open the source page of a dictionary */
+    type: 'OPEN_DICT_SRC_PAGE'
+    payload: {
+      id: DictID
+      text: string
     }
   }
 
