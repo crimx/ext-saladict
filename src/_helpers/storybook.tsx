@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from 'react'
 import i18next from 'i18next'
-import { number, boolean } from '@storybook/addon-knobs'
+import { number, boolean, text } from '@storybook/addon-knobs'
 
 interface StyleWrapProps {
   style: string
@@ -72,8 +72,10 @@ export function withSaladictPanel(story) {
       style={{
         fontSize: number('Panel Font Size', 13),
         width,
-        '--panel-width': `${width}px`
-        // '--panel-height': `${number('Panel Height', 450 * 1.68)}px`
+        '--panel-width': `${width}px`,
+        '--panel-height': `${number('Panel Height', 450 * 1.68)}px`,
+        '--panel-color': text('Panel Color', '#333'),
+        '--panel-background-color': text('Panel Background Color', '#fff')
       }}
     >
       {story()}
