@@ -1,0 +1,125 @@
+.dictItemHead {
+  display: flex;
+  align-items: flex-start;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  height: 20px;
+  border-top: 1px #ddd solid;
+  // sticky header to cover content
+  background: var(--panel-background-color);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 20px - 1px;
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background: linear-gradient(
+      var(--panel-background-color) 5%,
+      rgba(255, 255, 255, 0.3) 60%,
+      transparent 100%
+    );
+  }
+}
+
+.dictItemHead-Logo {
+  width: 20px;
+  height: 20px;
+  margin-top: -1px;
+  user-select: none;
+}
+
+.dictItemHead-Title {
+  margin: 0;
+  padding: 0 3px;
+  line-height: 20px;
+  font-size: 12px;
+  font-weight: normal;
+
+  a {
+    color: var(--panel-color);
+    text-decoration: none;
+  }
+}
+
+.dictItemHead-FoldArrowBtn {
+  width: 20px - 1px;
+  height: 20px - 1px;
+  overflow: hidden;
+  background: none;
+  border: none;
+  margin: 0 0 0 auto;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    outline: none;
+  }
+}
+
+.dictItemHead-FoldArrow {
+  box-sizing: border-box;
+  fill: #000;
+  width: 18px;
+  height: 18px;
+  padding: 3px;
+  transform-origin: center;
+}
+
+.dictItemHead-Loader {
+  display: flex;
+  align-items: center;
+  width: 54px;
+  height: 20px;
+}
+
+.dictItemHead-Loader > div {
+  width: 8px;
+  height: 8px;
+  margin: 2px;
+  background: #f9690e;
+  border-radius: 100%;
+}
+
+@keyframes dictItemHead-Loader {
+  0%,
+  30%,
+  70%,
+  100% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+}
+
+/*-----------------------------------------------*\
+    States
+\*-----------------------------------------------*/
+
+.isUnfold {
+  .dictItemHead-FoldArrow {
+    transform: rotate(-90deg);
+  }
+}
+
+.isAnimate {
+  .dictItemHead-FoldArrow {
+    transition: transform 400ms;
+  }
+
+  .dictItemHead-Loader > div {
+    animation: dictItemHead-Loader 1.5s infinite ease-in-out;
+
+    $dictItemHead-LoaderNum: 5;
+    @for $i from 1 through $dictItemHead-LoaderNum {
+      &:nth-child(#{$dictItemHead-LoaderNum + 1 - $i}) {
+        animation-delay: -0.1s * ($i - 1);
+      }
+    }
+  }
+}
