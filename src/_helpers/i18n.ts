@@ -1,6 +1,7 @@
+import { useMemo } from 'react'
 import mapValues from 'lodash/mapValues'
 import i18n from 'i18next'
-import { initReactI18next, useTranslation } from 'react-i18next'
+import { initReactI18next } from 'react-i18next'
 // import { createConfigStream } from '@/_helpers/config-manager'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
@@ -75,25 +76,29 @@ export function i18nLoader() {
     })
 
   // createConfigStream().subscribe(config => {
-  //   if (i18next.language !== config.langCode) {
-  //     i18next.changeLanguage(config.langCode)
+  //   if (i18n.language !== config.langCode) {
+  //     i18n.changeLanguage(config.langCode)
   //   }
   // })
+
   return i18n
 }
 
-const useTranslationOptions = { useSuspense: false }
-
-const dumbT = (keys: any) => keys
-
-export function useTranslate(
-  ns?: Namespace | Namespace[]
-): ReturnType<typeof useTranslation> {
-  const o = useTranslation(ns, useTranslationOptions)
-  if (!o.ready) {
-    o.t = dumbT
+/**
+ * Tailored for this project.
+ * The official `useTranslation` is too heavy.
+ * @param namespaces Should be fixed.
+ */
+export function useTranslate(namespaces?: Namespace | Namespace[]) {
+  return {
+    t: useMemo(() => {
+      if (namespaces) {
+        i18n.loadNamespaces(namespaces)
+      }
+      return i18n.getFixedT(i18n.language, namespaces)
+    }, [i18n.language]),
+    i18n
   }
-  return o
 }
 
 function extractDictLocales(lang: LangCode) {
