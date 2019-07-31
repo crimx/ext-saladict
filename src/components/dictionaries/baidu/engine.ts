@@ -1,3 +1,4 @@
+import axios from 'axios'
 import {
   handleNoResult,
   MachineTranslateResult,
@@ -5,18 +6,23 @@ import {
   SearchFunction,
   MachineTranslatePayload,
   GetSrcPageFunction,
+  DictSearchResult
 } from '../helpers'
-import { DictSearchResult } from '@/typings/server'
-import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
+import {
+  isContainChinese,
+  isContainJapanese,
+  isContainKorean
+} from '@/_helpers/lang-check'
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
-  const lang = profile.dicts.all.baidu.options.tl === 'default'
-    ? config.langCode === 'zh-CN'
-      ? 'zh'
-      : config.langCode === 'zh-TW'
+  const lang =
+    profile.dicts.all.baidu.options.tl === 'default'
+      ? config.langCode === 'zh-CN'
+        ? 'zh'
+        : config.langCode === 'zh-TW'
         ? 'cht'
         : 'en'
-    : profile.dicts.all.baidu.options.tl
+      : profile.dicts.all.baidu.options.tl
 
   return `https://fanyi.baidu.com/#auto/${lang}/${text}`
 }
@@ -36,6 +42,7 @@ interface BaiduRawResult {
   }
 }
 
+// prettier-ignore
 const langcodes: ReadonlyArray<string> = [
   'zh', 'cht', 'en',
   'af', 'am', 'ara', 'az', 'be', 'bn', 'bs', 'bul', 'ca', 'cs', 'cy',
@@ -49,56 +56,74 @@ const langcodes: ReadonlyArray<string> = [
 
 type BaiduSearchResult = DictSearchResult<BaiduResult>
 
-export const search: SearchFunction<BaiduSearchResult, MachineTranslatePayload> = async (
-  text, config, profile, payload
-) => {
+export const search: SearchFunction<
+  BaiduResult,
+  MachineTranslatePayload
+> = async (text, config, profile, payload) => {
   const options = profile.dicts.all.baidu.options
 
-  let sl: string = payload.sl || await remoteLangCheck(text)
-  const tl: string = payload.tl || (
-    options.tl === 'default'
+  let sl: string = payload.sl || (await remoteLangCheck(text))
+  const tl: string =
+    payload.tl ||
+    (options.tl === 'default'
       ? config.langCode === 'en'
         ? 'en'
-        : !isContainChinese(text) || isContainJapanese(text) || isContainKorean(text)
-          ? config.langCode === 'zh-TW' ? 'cht' : 'zh'
-          : 'en'
-      : options.tl
-  )
+        : !isContainChinese(text) ||
+          isContainJapanese(text) ||
+          isContainKorean(text)
+        ? config.langCode === 'zh-TW'
+          ? 'cht'
+          : 'zh'
+        : 'en'
+      : options.tl)
 
   if (payload.isPDF && !options.pdfNewline) {
     text = text.replace(/\n+/g, ' ')
   }
 
-  return getToken()
-    .then(({ gtk, token }) => fetch(
-      'https://fanyi.baidu.com/v2transapi',
-      {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-          'cookie': process.env.NODE_ENV === 'test'
-            ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
-            : '',
-        },
-        body: `from=${sl}&to=${tl}&query=${encodeURIComponent(text).replace(/%20/g, '+')}&token=${token}&sign=${sign(text, gtk)}&transtype=translang&simple_means_flag=3`
-      }
-    ))
-    .then(r => r.json())
-    .then(json => handleJSON(json, sl, tl))
-    // return empty result so that user can still toggle language
-    .catch((): BaiduSearchResult => ({
-      result: {
-        id: 'baidu',
-        sl, tl, langcodes,
-        searchText: { text: '' },
-        trans: { text: '' }
-      }
-    }))
+  return (
+    getToken()
+      .then(({ gtk, token }) =>
+        axios.post<BaiduRawResult>('https://fanyi.baidu.com/v2transapi', {
+          withCredentials: true,
+          headers: {
+            cookie:
+              process.env.NODE_ENV === 'test'
+                ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
+                : ''
+          },
+          data: new URLSearchParams({
+            from: sl,
+            to: tl,
+            query: text.replace(/%20/g, '+'),
+            token: token,
+            sign: sign(text, gtk),
+            transtype: 'translang',
+            simple_means_flag: '3'
+          })
+        })
+      )
+      .then(({ data }) => handleJSON(data, sl, tl))
+      // return empty result so that user can still toggle language
+      .catch(
+        (): BaiduSearchResult => ({
+          result: {
+            id: 'baidu',
+            sl,
+            tl,
+            langcodes,
+            searchText: { text: '' },
+            trans: { text: '' }
+          }
+        })
+      )
+  )
 }
 
-function handleJSON (
-  json: BaiduRawResult, sl: string, tl: string
+function handleJSON(
+  json: BaiduRawResult,
+  sl: string,
+  tl: string
 ): BaiduSearchResult | Promise<BaiduSearchResult> {
   if (json.error === 998) {
     // missing cookie, fetch again
@@ -119,64 +144,68 @@ function handleJSON (
   return {
     result: {
       id: 'baidu',
-      sl, tl, langcodes,
+      sl,
+      tl,
+      langcodes,
       trans: {
         text: transText,
-        audio: `https://fanyi.baidu.com/gettts?lan=${tl}&text=${encodeURIComponent(transText)}&spd=3&source=web`,
+        audio: `https://fanyi.baidu.com/gettts?lan=${tl}&text=${encodeURIComponent(
+          transText
+        )}&spd=3&source=web`
       },
       searchText: {
         text: searchText,
-        audio: `https://fanyi.baidu.com/gettts?lan=${sl}&text=${encodeURIComponent(searchText)}&spd=3&source=web`,
+        audio: `https://fanyi.baidu.com/gettts?spd=3&source=web&lan=${sl}&text=${encodeURIComponent(
+          searchText
+        )}`
       }
     },
     audio: {
-      us: `https://fanyi.baidu.com/gettts?lan=${tl}&text=${encodeURIComponent(transText)}&spd=3&source=web`
+      us: `https://fanyi.baidu.com/gettts?spd=3&source=web&lan=${tl}&text=${encodeURIComponent(
+        transText
+      )}`
     }
   }
 }
 
-function remoteLangCheck (text: string): Promise<string> {
-  return fetch(
-    'https://fanyi.baidu.com/langdetect',
-    {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded; charset=UTF-8',
-      },
-      credentials: 'omit',
-      body: `query=${text}`,
-    },
-  )
-  .then(t => t.json())
-  .then(json => json && json.lan || Promise.reject(json))
-  .catch(() => 'auto')
+function remoteLangCheck(text: string): Promise<string> {
+  return axios
+    .post('https://fanyi.baidu.com/langdetect', {
+      withCredentials: false,
+      body: new URLSearchParams({
+        query: text
+      })
+    })
+    .then(({ data }) => (data && data.lan) || Promise.reject(data))
+    .catch(() => 'auto')
 }
 
-async function getToken (): Promise<{ gtk: string, token: string }> {
-  const response = await fetch('https://fanyi.baidu.com', {
-    credentials: 'include',
+async function getToken(): Promise<{ gtk: string; token: string }> {
+  const { data } = await axios.get<string>('https://fanyi.baidu.com', {
+    withCredentials: true,
+    responseType: 'text',
     headers: {
-      'cookie': process.env.NODE_ENV === 'test'
-      ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
-      : '',
-    },
+      cookie:
+        process.env.NODE_ENV === 'test'
+          ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
+          : ''
+    }
   })
-  const text = await response.text()
 
   return {
-    gtk: (/window.gtk = '([^']+)'/.exec(text) || ['', ''])[1],
-    token: (/token: '([^']+)'/.exec(text) || ['', ''])[1],
+    gtk: (/window.gtk = '([^']+)'/.exec(data) || ['', ''])[1],
+    token: (/token: '([^']+)'/.exec(data) || ['', ''])[1]
   }
 }
 
-function sign (text: string, gtk: string) {
+function sign(text: string, gtk: string) {
   let o = text.length
-  o > 30 && (text =
-    '' +
-    text.substr(0, 10) +
-    text.substr(Math.floor(o / 2) - 5, 10) +
-    text.substr(-10, 10)
-  )
+  o > 30 &&
+    (text =
+      '' +
+      text.substr(0, 10) +
+      text.substr(Math.floor(o / 2) - 5, 10) +
+      text.substr(-10, 10))
   let t = gtk || ''
 
   let e = t.split('.')
@@ -208,7 +237,7 @@ function sign (text: string, gtk: string) {
   let l = '+-3^+b+-f'
   let s = 0
   for (; s < d.length; s++) {
-    (S += d[s]), (S = a(S, u))
+    ;(S += d[s]), (S = a(S, u))
   }
   return (
     (S = a(S, l)),
@@ -218,7 +247,7 @@ function sign (text: string, gtk: string) {
     S.toString() + '.' + (S ^ h)
   )
 
-  function a (r: any, o: any) {
+  function a(r: any, o: any) {
     for (let t = 0; t < o.length - 2; t += 3) {
       let a = o.charAt(t + 2)
       ;(a = a >= 'a' ? a.charCodeAt(0) - 87 : Number(a)),

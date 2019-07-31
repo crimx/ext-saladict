@@ -1,3 +1,3 @@
-import MachineTrans from '@/components/MachineTrans'
+import { MachineTrans } from '@/components/MachineTrans/MachineTrans'
 
-export default MachineTrans
+export const View = MachineTrans
