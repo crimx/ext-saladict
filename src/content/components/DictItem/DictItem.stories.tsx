@@ -31,7 +31,7 @@ storiesOf('Content Scripts|DictItem', module)
   .add('DictItem', () => {
     return (
       <DictItem
-        dictID="bing"
+        dictID="baidu"
         text={text('Search Text', 'test')}
         fontSize={number('Font Size', 13)}
         preferredHeight={number('Preferred Height', 256)}
