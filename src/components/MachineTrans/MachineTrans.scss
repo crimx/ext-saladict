@@ -1,3 +1,5 @@
+@import '@/components/Speaker/Speaker.scss';
+
 .MachineTrans-Text {
   .icon-Speaker {
     position: absolute;
@@ -32,6 +34,8 @@
   color: #f9690e;
   opacity: 0;
   cursor: pointer;
+  background: transparent;
+  border: none;
 
   &:hover {
     text-decoration: underline;
@@ -42,6 +46,10 @@
   display: flex;
   position: relative;
   z-index: 100;
+
+  select {
+    background: transparent;
+  }
 }
 
 .MachineTrans-LangSwitch_Titles,
