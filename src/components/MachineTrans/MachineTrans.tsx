@@ -50,14 +50,14 @@ export const MachineTrans: FC<
         {searchText.text.length <= 100 ? (
           <TText source={searchText} />
         ) : (
-          <p>
+          <div>
             <details>
               <summary onClick={props.recalcBodyHeight}>
                 {t('machineTrans.stext')}
               </summary>
               <TText source={searchText} />
             </details>
-          </p>
+          </div>
         )}
       </div>
 
