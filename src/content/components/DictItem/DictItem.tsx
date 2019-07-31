@@ -6,6 +6,7 @@ import React, {
   useCallback,
   useEffect
 } from 'react'
+import root from 'react-shadow'
 import { message } from '@/_helpers/browser-api'
 import { Word, newWord } from '@/_helpers/record-manager'
 import { DictID } from '@/app-config'
@@ -21,10 +22,10 @@ export interface DictItem {
   preferredHeight: number
 
   searchStatus: 'IDLE' | 'SEARCHING' | 'FINISH'
-  searchResult: any
+  searchResult?: object | null
 
   /** Inject dict component. Mainly for testing */
-  dictComp: ComponentType<ViewPorps<any>>
+  dictComp?: ComponentType<ViewPorps<any>>
 
   searchText: (arg?: {
     id?: DictID
@@ -44,7 +45,8 @@ export const DictItem: FC<DictItem> = props => {
 
   useEffect(() => {
     if (props.searchStatus === 'FINISH') {
-      unfold()
+      // wait till render complete
+      setTimeout(unfold, 0)
     } else {
       fold()
     }
@@ -83,18 +85,31 @@ export const DictItem: FC<DictItem> = props => {
           <ErrorBoundary error={DictRenderError}>
             {props.searchStatus === 'FINISH' &&
               props.searchResult &&
-              React.createElement<ViewPorps<any>>(
-                props.dictComp,
-                // ||
-                //   require('@/components/dictionaries/' +
-                //     props.dictID +
-                //     '/View.tsx').default
-                {
+              (props.dictComp ? (
+                React.createElement(props.dictComp, {
                   result: props.searchResult,
                   searchText: props.searchText,
                   recalcBodyHeight
-                }
-              )}
+                })
+              ) : (
+                <root.div>
+                  <style>
+                    {require('@/components/dictionaries/' +
+                      props.dictID +
+                      '/_style.shadow.scss').toString()}
+                  </style>
+                  {React.createElement<ViewPorps<any>>(
+                    require('@/components/dictionaries/' +
+                      props.dictID +
+                      '/View.tsx').View,
+                    {
+                      result: props.searchResult,
+                      searchText: props.searchText,
+                      recalcBodyHeight
+                    }
+                  )}
+                </root.div>
+              ))}
           </ErrorBoundary>
         </article>
         {foldState === 'HALF' && props.searchResult && (
