@@ -54,6 +54,7 @@ storiesOf('Content Scripts|DictItem', module)
           </>
         )}
         searchText={action('Search Text')}
+        onHeightChanged={action('Height Changed')}
       />
     )
   })

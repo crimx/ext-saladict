@@ -1,37 +1,20 @@
-import React, {
-  ComponentType,
-  FC,
-  useState,
-  useRef,
-  useCallback,
-  useEffect
-} from 'react'
-import root from 'react-shadow'
+import React, { ComponentType, FC, useState, useRef, useEffect } from 'react'
 import { message } from '@/_helpers/browser-api'
-import { Word, newWord } from '@/_helpers/record-manager'
-import { DictID } from '@/app-config'
+import { newWord } from '@/_helpers/record-manager'
 import { ViewPorps } from '@/components/dictionaries/helpers'
-import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { DictItemHead } from './DictItemHead'
+import { DictItemBody, DictItemBodyProps } from './DictItemBody'
+import { ResizeReporter } from 'react-resize-reporter'
 
-export interface DictItem {
-  dictID: DictID
+export interface DictItem extends DictItemBodyProps {
   text: string
   fontSize: number
   /** default height when search result is received */
   preferredHeight: number
-
-  searchStatus: 'IDLE' | 'SEARCHING' | 'FINISH'
-  searchResult?: object | null
-
   /** Inject dict component. Mainly for testing */
   dictComp?: ComponentType<ViewPorps<any>>
-
-  searchText: (arg?: {
-    id?: DictID
-    word?: Word
-    payload?: { [index: string]: any }
-  }) => any
+  /** report dict item height */
+  onHeightChanged: (height: number) => void
 }
 
 export const DictItem: FC<DictItem> = props => {
@@ -39,28 +22,28 @@ export const DictItem: FC<DictItem> = props => {
     'COLLAPSE'
   )
   /** Rendered height */
-  const [visibleHeight, setVisibleHeight] = useState(10)
+  const [offsetHeight, setOffsetHeight] = useState(0)
 
-  const bodyRef = useRef<HTMLElement>(null)
+  const visibleHeight = Math.max(
+    10,
+    foldState === 'COLLAPSE'
+      ? 10
+      : foldState === 'FULL'
+      ? offsetHeight
+      : Math.min(offsetHeight, props.preferredHeight)
+  )
+
+  useEffect(() => {
+    props.onHeightChanged(visibleHeight + 31)
+  }, [visibleHeight])
 
   useEffect(() => {
     if (props.searchStatus === 'FINISH') {
-      // wait till render complete
-      setTimeout(unfold, 0)
+      setFoldState('HALF')
     } else {
-      fold()
+      setFoldState('COLLAPSE')
     }
-  }, [props.searchStatus, props.searchResult])
-
-  const recalcBodyHeight = useCallback(
-    () =>
-      setTimeout(() => {
-        if (bodyRef.current) {
-          setVisibleHeight(Math.max(bodyRef.current.offsetHeight || 10, 10))
-        }
-      }, 0),
-    [bodyRef.current]
-  )
+  }, [props.searchStatus])
 
   return (
     <section
@@ -76,69 +59,44 @@ export const DictItem: FC<DictItem> = props => {
         className="dictItem-Body"
         key={props.dictID}
         style={{ fontSize: props.fontSize, height: visibleHeight }}
+        onClick={searchLinkText}
       >
-        <article
-          ref={bodyRef}
-          className="dictItem-BodyMesure"
-          onClick={searchLinkText}
-        >
-          <ErrorBoundary error={DictRenderError}>
-            {props.searchStatus === 'FINISH' &&
-              props.searchResult &&
-              (props.dictComp ? (
-                React.createElement(props.dictComp, {
-                  result: props.searchResult,
-                  searchText: props.searchText,
-                  recalcBodyHeight
-                })
-              ) : (
-                <root.div>
-                  <style>
-                    {require('@/components/dictionaries/' +
-                      props.dictID +
-                      '/_style.shadow.scss').toString()}
-                  </style>
-                  {React.createElement<ViewPorps<any>>(
-                    require('@/components/dictionaries/' +
-                      props.dictID +
-                      '/View.tsx').default,
-                    {
-                      result: props.searchResult,
-                      searchText: props.searchText,
-                      recalcBodyHeight
-                    }
-                  )}
-                </root.div>
-              ))}
-          </ErrorBoundary>
+        <article className="dictItem-BodyMesure">
+          <ResizeReporter reportInit onHeightChanged={setOffsetHeight} />
+          {props.dictComp ? (
+            props.searchStatus === 'FINISH' &&
+            props.searchResult &&
+            React.createElement(props.dictComp, {
+              result: props.searchResult,
+              searchText: props.searchText
+            })
+          ) : (
+            <DictItemBody {...props} />
+          )}
         </article>
-        {foldState === 'HALF' && props.searchResult && (
-          <button
-            className="dictItem-FoldMask"
-            onClick={() => {
-              if (bodyRef.current) {
-                setFoldState('FULL')
-                setVisibleHeight(
-                  Math.max(bodyRef.current.offsetHeight || 10, 10)
-                )
-              }
-            }}
-          >
-            <svg
-              className="dictItem-FoldMaskArrow"
-              width="15"
-              height="15"
-              viewBox="0 0 59.414 59.414"
-              xmlns="http://www.w3.org/2000/svg"
+        {foldState === 'HALF' &&
+          visibleHeight < offsetHeight &&
+          props.searchResult && (
+            <button
+              className="dictItem-FoldMask"
+              onClick={() => setFoldState('FULL')}
             >
-              <path d="M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56" />
-            </svg>
-          </button>
-        )}
+              <svg
+                className="dictItem-FoldMaskArrow"
+                width="15"
+                height="15"
+                viewBox="0 0 59.414 59.414"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path d="M58 14.146L29.707 42.44 1.414 14.145 0 15.56 29.707 45.27 59.414 15.56" />
+              </svg>
+            </button>
+          )}
       </div>
     </section>
   )
 
+  /** Search the content of an <a> instead of jumping unless it's external */
   function searchLinkText(e: React.MouseEvent<HTMLElement>) {
     if (e.ctrlKey || e.metaKey || e.altKey) {
       // ignore if extra key is pressed
@@ -182,49 +140,17 @@ export const DictItem: FC<DictItem> = props => {
     }
   }
 
-  function fold() {
-    setFoldState('COLLAPSE')
-    setVisibleHeight(10)
-  }
-
-  function unfold() {
-    const offsetHeight = Math.max(bodyRef.current!.offsetHeight || 10, 10)
-    if (offsetHeight <= props.preferredHeight) {
-      setVisibleHeight(offsetHeight)
-      setFoldState('FULL')
-    } else {
-      setVisibleHeight(props.preferredHeight)
-      setFoldState('HALF')
-    }
-  }
-
   function toggleFold() {
     if (props.searchStatus === 'SEARCHING') {
       return
     }
 
     if (foldState !== 'COLLAPSE') {
-      fold()
+      setFoldState('COLLAPSE')
     } else if (props.searchResult) {
-      unfold()
+      setFoldState('HALF')
     } else {
       props.searchText({ id: props.dictID })
     }
   }
-}
-
-function DictRenderError() {
-  return (
-    <p style={{ textAlign: 'center' }}>
-      Render error. Please{' '}
-      <a
-        href="https://github.com/crimx/ext-saladict/issues"
-        target="_blank"
-        rel="nofollow onopener noreferrer"
-      >
-        report issue
-      </a>
-      .
-    </p>
-  )
 }

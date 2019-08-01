@@ -24,11 +24,11 @@ export type HTMLString = string
 
 export interface ViewPorps<T> {
   result: T
-  t: TranslationFunction
-  searchText: <P = { [index: string]: any }>(
-    arg?: { id?: DictID, info?: SelectionInfo, payload?: P }
-  ) => any
-  recalcBodyHeight: () => void
+  searchText: <P = { [index: string]: any }>(arg?: {
+    id?: DictID
+    word?: Word
+    payload?: P
+  }) => any
 }
 
 export const enum SearchErrorType {
