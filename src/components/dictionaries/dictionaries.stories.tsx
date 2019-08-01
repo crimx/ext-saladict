@@ -82,6 +82,7 @@ function Dict() {
       searchStatus={status}
       searchResult={result}
       searchText={action('Search Text')}
+      onHeightChanged={action('Height Changed')}
     />
   )
 }
