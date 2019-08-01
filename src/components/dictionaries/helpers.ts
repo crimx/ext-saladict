@@ -1,8 +1,8 @@
 import DOMPurify from 'dompurify'
-import { TranslationFunction } from 'i18next'
+import AxiosMockAdapter from 'axios-mock-adapter'
 import { DictID, AppConfig } from '@/app-config'
 import { Profile } from '@/app-config/profiles'
-import { SelectionInfo } from '@/_helpers/selection'
+import { Word } from '@/_helpers/record-manager'
 import { chsToChz } from '@/_helpers/chs-to-chz'
 
 /** Fetch and parse dictionary search result */
@@ -12,12 +12,32 @@ export interface SearchFunction<Result, Payload = {}> {
     config: AppConfig,
     profile: Profile,
     payload: Readonly<Payload & { isPDF: boolean }>
-  ): Promise<Result>
+  ): Promise<DictSearchResult<Result>>
+}
+
+export interface DictSearchResult<R> {
+  /** search result */
+  result: R
+  /** auto play sound */
+  audio?: {
+    uk?: string
+    us?: string
+    py?: string
+  }
 }
 
 /** Return a dictionary source page url for the dictionary header */
 export interface GetSrcPageFunction {
   (text: string, config: AppConfig, profile: Profile): string
+}
+
+/**
+ * For testing and storybook.
+ *
+ * Mock all the requests and returns all searchable texts.
+ */
+export interface MockRequest {
+  (mock: AxiosMockAdapter): void
 }
 
 export type HTMLString = string
@@ -31,17 +51,14 @@ export interface ViewPorps<T> {
   }) => any
 }
 
-export const enum SearchErrorType {
-  NoResult,
-  NetWorkError,
+export type SearchErrorType = 'NO_RESULT' | 'NETWORK_ERROR'
+
+export function handleNoResult<T = any>(): Promise<T> {
+  return Promise.reject('NO_RESULT')
 }
 
-export function handleNoResult<T = any> (): Promise<T> {
-  return Promise.reject(SearchErrorType.NoResult)
-}
-
-export function handleNetWorkError (): Promise<never> {
-  return Promise.reject(SearchErrorType.NetWorkError)
+export function handleNetWorkError(): Promise<never> {
+  return Promise.reject('NETWORK_ERROR')
 }
 
 export interface MachineTranslatePayload {
@@ -70,9 +87,17 @@ export interface MachineTranslateResult<ID extends DictID> {
 /**
  * Get the textContent of a node or its child.
  */
-export function getText (parent: ParentNode, selector?: string, toChz?: boolean): string
-export function getText (parent: ParentNode, toChz?: boolean, selector?: string): string
-export function getText (parent: ParentNode, ...args): string {
+export function getText(
+  parent: ParentNode,
+  selector?: string,
+  toChz?: boolean
+): string
+export function getText(
+  parent: ParentNode,
+  toChz?: boolean,
+  selector?: string
+): string
+export function getText(parent: ParentNode, ...args): string {
   let selector = ''
   let toChz = false
   for (let i = args.length; i >= 0; i--) {
@@ -84,7 +109,9 @@ export function getText (parent: ParentNode, ...args): string {
   }
 
   const child = selector ? parent.querySelector(selector) : parent
-  if (!child) { return '' }
+  if (!child) {
+    return ''
+  }
   const textContent = child['textContent'] || ''
   return toChz ? chsToChz(textContent) : textContent
 }
@@ -100,8 +127,16 @@ interface GetHTML {
  * @param host - repleace the relative href
  * @param DOMPurifyConfig - config for DOM Purify
  */
-export function getInnerHTMLBuilder (host?: string, DOMPurifyConfig?: DOMPurify.Config): GetHTML
-export function getInnerHTMLBuilder (...args) {
+export function getInnerHTMLBuilder(): GetHTML
+export function getInnerHTMLBuilder(DOMPurifyConfig: DOMPurify.Config): GetHTML
+export function getInnerHTMLBuilder(host: string): GetHTML
+export function getInnerHTMLBuilder(
+  host: string,
+  DOMPurifyConfig: DOMPurify.Config
+): GetHTML
+export function getInnerHTMLBuilder(
+  ...args: [] | [string] | [DOMPurify.Config] | [string, DOMPurify.Config]
+) {
   return getHTMLBuilder('innerHTML', args)
 }
 
@@ -111,17 +146,31 @@ export function getInnerHTMLBuilder (...args) {
  * @param host - repleace the relative href
  * @param DOMPurifyConfig - config for DOM Purify
  */
-export function getOuterHTMLBuilder (host?: string, DOMPurifyConfig?: DOMPurify.Config): GetHTML
-export function getOuterHTMLBuilder (...args) {
+export function getOuterHTMLBuilder(): GetHTML
+export function getOuterHTMLBuilder(DOMPurifyConfig: DOMPurify.Config): GetHTML
+export function getOuterHTMLBuilder(host: string): GetHTML
+export function getOuterHTMLBuilder(
+  host: string,
+  DOMPurifyConfig: DOMPurify.Config
+): GetHTML
+export function getOuterHTMLBuilder(
+  ...args: [] | [string] | [DOMPurify.Config] | [string, DOMPurify.Config]
+) {
   return getHTMLBuilder('outerHTML', args)
 }
 
-function getHTMLBuilder (location: string, args: any): GetHTML {
-  let host: string = typeof args[0] === 'string' ? args.shift() : ''
-  let DOMPurifyConfig: DOMPurify.Config = Object(args[0]) === args[0] ? args.shift() : {
-    FORBID_TAGS: ['style'],
-    FORBID_ATTR: ['style'],
-  }
+function getHTMLBuilder(
+  location: string,
+  args: [] | [string] | [DOMPurify.Config] | [string, DOMPurify.Config]
+): GetHTML {
+  let host: string = typeof args[0] === 'string' ? (args.shift() as string) : ''
+  let DOMPurifyConfig: DOMPurify.Config =
+    Object(args[0]) === args[0]
+      ? (args.shift() as DOMPurify.Config)
+      : {
+          FORBID_TAGS: ['style'],
+          FORBID_ATTR: ['style']
+        }
 
   if (host.endsWith('/')) {
     host = host.slice(0, -1)
@@ -129,8 +178,8 @@ function getHTMLBuilder (location: string, args: any): GetHTML {
 
   const protocol = host.startsWith('https') ? 'https:' : 'http:'
 
-  function fillLink (el: HTMLElement) {
-    ['href', 'src'].forEach(attr => {
+  function fillLink(el: HTMLElement) {
+    ;['href', 'src'].forEach(attr => {
       const url = el.getAttribute(attr)
       if (url) {
         if (url.startsWith('//')) {
@@ -144,19 +193,24 @@ function getHTMLBuilder (location: string, args: any): GetHTML {
     })
   }
 
-  const getHTML: GetHTML = (parent: ParentNode, ...args): HTMLString => {
+  const getHTML: GetHTML = (
+    parent: ParentNode,
+    ...args: [string?, boolean?] | [boolean?, string?]
+  ): HTMLString => {
     let selector = ''
     let toChz = false
-    for (let i = args.length; i >= 0; i--) {
+    for (let i = args.length - 1; i >= 0; i--) {
       if (typeof args[i] === 'string') {
-        selector = args[i]
+        selector = args[i] as string
       } else if (typeof args[i] === 'boolean') {
-        toChz = args[i]
+        toChz = args[i] as boolean
       }
     }
 
     const child = selector ? parent.querySelector(selector) : parent
-    if (!child) { return '' }
+    if (!child) {
+      return ''
+    }
 
     if (child['tagName'] === 'A' || child['tagName'] === 'IMG') {
       fillLink(child as HTMLElement)
@@ -164,14 +218,18 @@ function getHTMLBuilder (location: string, args: any): GetHTML {
     child.querySelectorAll('a').forEach(fillLink)
     child.querySelectorAll('img').forEach(fillLink)
 
-    let purifyResult = DOMPurify.sanitize(child[location] || '', DOMPurifyConfig)
-    let content = typeof purifyResult === 'string'
-      ? purifyResult
-      : purifyResult['outerHTML']
+    let purifyResult = DOMPurify.sanitize(
+      child[location] || '',
+      DOMPurifyConfig
+    ) as ReturnType<typeof DOMPurify.sanitize>
+    let content =
+      typeof purifyResult === 'string'
+        ? purifyResult
+        : purifyResult['outerHTML']
         ? purifyResult['outerHTML']
         : purifyResult.firstElementChild
-          ? purifyResult.firstElementChild.outerHTML
-          : ''
+        ? purifyResult.firstElementChild.outerHTML
+        : ''
     return toChz ? chsToChz(content) : content
   }
 
@@ -181,25 +239,26 @@ function getHTMLBuilder (location: string, args: any): GetHTML {
 /**
  * Remove a child node from a parent node
  */
-export function removeChild (parent: ParentNode, selector: string) {
+export function removeChild(parent: ParentNode, selector: string) {
   const child = parent.querySelector(selector)
-  if (child) { child.remove() }
+  if (child) {
+    child.remove()
+  }
 }
 
 /**
  * Remove all the matching child nodes from a parent node
  */
-export function removeChildren (parent: ParentNode, selector: string) {
+export function removeChildren(parent: ParentNode, selector: string) {
   parent.querySelectorAll(selector).forEach(el => el.remove())
 }
 
 /**
  * HEX string to normal string
  */
-export function decodeHEX (text: string): string {
-  return text.replace(
-    /\\x([0-9A-Fa-f]{2})/g,
-    (m, p1) => String.fromCharCode(parseInt(p1, 16)),
+export function decodeHEX(text: string): string {
+  return text.replace(/\\x([0-9A-Fa-f]{2})/g, (m, p1) =>
+    String.fromCharCode(parseInt(p1, 16))
   )
 }
 
@@ -207,21 +266,23 @@ export function decodeHEX (text: string): string {
  * Will jump to the website instead of searching
  * when clicking on the dict panel
  */
-export function externalLink ($a: HTMLElement) {
+export function externalLink($a: HTMLElement) {
   $a.setAttribute('target', '_blank')
   $a.setAttribute('rel', 'nofollow noopener noreferrer')
 }
 
-export function getFullLinkBuilder (host: string) {
+export function getFullLinkBuilder(host: string) {
   if (host.endsWith('/')) {
     host = host.slice(0, -1)
   }
 
   const protocol = host.startsWith('https') ? 'https:' : 'http:'
 
-  return function getFullLink (element: Element, attr: string): string {
+  return function getFullLink(element: Element, attr: string): string {
     const link = element.getAttribute(attr)
-    if (!link) { return '' }
+    if (!link) {
+      return ''
+    }
 
     if (link.startsWith('http')) {
       return link
