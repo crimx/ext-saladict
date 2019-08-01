@@ -40,7 +40,7 @@
     }
   },
   "dependencies": {
-    "@types/dompurify": "^0.0.33",
+    "@types/dompurify": "0.0.32",
     "@types/i18next": "^12.1.0",
     "@types/lodash": "^4.14.136",
     "@types/react": "^16.8.23",
