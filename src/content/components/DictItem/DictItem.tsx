@@ -101,7 +101,7 @@ export const DictItem: FC<DictItem> = props => {
                   {React.createElement<ViewPorps<any>>(
                     require('@/components/dictionaries/' +
                       props.dictID +
-                      '/View.tsx').View,
+                      '/View.tsx').default,
                     {
                       result: props.searchResult,
                       searchText: props.searchText,
