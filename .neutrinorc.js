@@ -113,10 +113,10 @@ module.exports = {
     neutrino => {
       /* eslint-disable indent */
 
-      // transform *.string.(css|scss) to string
+      // transform *.shadow.(css|scss) to string
       // this will be injected into shadow-dom style tag
       // prettier-ignore
-      const stringStyleRules = neutrino.config.module
+      const shadowStyleRules = neutrino.config.module
         .rule('style')
           .oneOf('shadow')
             .before('normal')
@@ -131,6 +131,7 @@ module.exports = {
                   level: 1,
                 })
                 .end()
+      // copy loaders from normal to shadow
       // prettier-ignore
       neutrino.config.module
         .rule('style')
@@ -138,7 +139,7 @@ module.exports = {
             .uses.values()
               .filter(rule => rule.name !== 'extract')
               .forEach(rule => {
-                stringStyleRules
+                shadowStyleRules
                   .use(rule.name)
                     .loader(rule.get('loader'))
                     .options(rule.get('options'))
