@@ -20,6 +20,8 @@
   // when changing the parent height
   overflow: hidden;
   opacity: 0;
+  // react-resize-reporter
+  position: relative;
 
   > *:first-child {
     margin-top: 10px !important;
