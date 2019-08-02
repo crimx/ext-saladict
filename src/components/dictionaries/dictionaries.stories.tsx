@@ -10,11 +10,12 @@ import {
   withSaladictPanel
 } from '@/_helpers/storybook'
 import { DictItem } from '@/content/components/DictItem/DictItem'
-import { getDefaultConfig } from '@/app-config'
+import { getDefaultConfig, DictID } from '@/app-config'
 import { getDefaultProfile } from '@/app-config/profiles'
 import { SearchFunction, MockRequest } from './helpers'
+import { getAllDicts } from '@/app-config/dicts'
 
-storiesOf('Content Scripts|Dictionaries', module)
+const stories = storiesOf('Content Scripts|Dictionaries', module)
   .addParameters({
     backgrounds: [
       { name: 'MenuBar', value: '#5caf9e', default: true },
@@ -28,23 +29,24 @@ storiesOf('Content Scripts|Dictionaries', module)
   )
   .addDecorator(withLocalStyle(require('@/_sass_global/_reset.scss')))
   .addDecorator(withi18nNS('content'))
-  .add('baidu', () => <Dict />)
 
-function Dict() {
+Object.keys(getAllDicts()).forEach(id => {
+  stories.add(id, () => <Dict dictID={id as DictID} />)
+})
+
+function Dict(props: { dictID: DictID }) {
   const {
     mockSearchTexts,
     mockRequest
   } = require('../../../test/specs/components/dictionaries/' +
-    // props.dictID +
-    'baidu' +
+    props.dictID +
     '/requests.mock.ts') as {
     mockSearchTexts: string[]
     mockRequest: MockRequest
   }
 
   const { search } = require('@/components/dictionaries/' +
-    // props.dictID +
-    'baidu' +
+    props.dictID +
     '/engine.ts') as { search: SearchFunction<any> }
 
   const searchText = select(
@@ -60,6 +62,10 @@ function Dict() {
     // mock requests
     const mock = new AxiosMockAdapter(axios)
     mockRequest(mock)
+    mock.onAny().reply(config => {
+      console.warn(`Unmatch url: ${config.url}`, config)
+      return [404, {}]
+    })
     return () => mock.restore()
   }, [])
 
@@ -75,7 +81,7 @@ function Dict() {
 
   return (
     <DictItem
-      dictID="baidu"
+      dictID={props.dictID}
       text={searchText}
       fontSize={number('Font Size', 13)}
       preferredHeight={number('Preferred Height', 256)}
