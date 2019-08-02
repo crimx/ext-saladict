@@ -15,7 +15,7 @@ import { Message } from '@/typings/message'
 storiesOf('Content Scripts|Menubar', module)
   .addParameters({
     backgrounds: [
-      { name: 'MenuBar', value: '#5caf9e', default: true },
+      { name: 'Saladict', value: '#5caf9e', default: true },
       { name: 'Black', value: '#000' }
     ]
   })
