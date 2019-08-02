@@ -14,7 +14,7 @@ import { getAllDicts } from '@/app-config/dicts'
 const stories = storiesOf('Content Scripts|Dictionaries', module)
   .addParameters({
     backgrounds: [
-      { name: 'MenuBar', value: '#5caf9e', default: true },
+      { name: 'Saladict', value: '#5caf9e', default: true },
       { name: 'Black', value: '#000' }
     ]
   })
