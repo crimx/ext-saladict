@@ -33,7 +33,6 @@
   position: absolute;
   font-weight: bold;
   color: #f9690e;
-  opacity: 0;
   cursor: pointer;
   background: transparent;
   border: none;
@@ -71,24 +70,20 @@
 /*-----------------------------------------------*\
     States
 \*-----------------------------------------------*/
-.MachineTrans-LangSwitchBtn.isActive {
-  opacity: 1;
-}
-
 .isAnimate {
-  .MachineTrans-LangSwitchBtn {
-    transition: opacity 0.2s;
-  }
   .MachineTrans-LangSwitch-enter {
     opacity: 0;
-    transition: opacity 0.2s;
+    transition: opacity 0.1s;
   }
-  .MachineTrans-LangSwitch-entering {
+  .MachineTrans-LangSwitch-enter-active {
     opacity: 1;
   }
 
   .MachineTrans-LangSwitch-exit {
-    opacity: 0;
+    opacity: 1;
     transition: opacity 0.1s;
+  }
+  .MachineTrans-LangSwitch-exit-active {
+    opacity: 0;
   }
 }

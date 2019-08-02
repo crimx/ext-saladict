@@ -1,5 +1,5 @@
 import React, { FC, useRef, useEffect } from 'react'
-import { CSSTransition } from 'react-transition-group'
+import CSSTransition from 'react-transition-group/CSSTransition'
 import i18next from 'i18next'
 import {
   useObservableCallback,
@@ -96,20 +96,22 @@ export const SearchBox: FC<SearchBoxProps> = props => {
         mountOnEnter={true}
         unmountOnExit={true}
       >
-        <div className="menuBar-SearchBox_Suggests">
-          <Suggest
-            ref={suggestRef}
-            text={text}
-            onSelect={text => {
-              onShowSugget(true)
-              props.onSearch(text)
-            }}
-            onFocus={onFocusBlur}
-            onBlur={onFocusBlur}
-            onArrowUpFirst={focusInput}
-            onClose={focusInput}
-          />
-        </div>
+        {() => (
+          <div className="menuBar-SearchBox_Suggests">
+            <Suggest
+              ref={suggestRef}
+              text={text}
+              onSelect={text => {
+                onShowSugget(true)
+                props.onSearch(text)
+              }}
+              onFocus={onFocusBlur}
+              onBlur={onFocusBlur}
+              onArrowUpFirst={focusInput}
+              onClose={focusInput}
+            />
+          </div>
+        )}
       </CSSTransition>
     </div>
   )

@@ -45,7 +45,7 @@
     "@types/lodash": "^4.14.136",
     "@types/react": "^16.8.23",
     "@types/react-dom": "^16.8.4",
-    "@types/react-transition-group": "^2.9.2",
+    "@types/react-transition-group": "^4.2.0",
     "axios": "^0.19.0",
     "dompurify": "^1.0.11",
     "i18next": "^17.0.6",
