@@ -1,13 +1,17 @@
-$speaker-duration: 1.5s !default;
+$speaker-duration: 1s !default;
 
-.icon-Speaker {
+.saladict-Speaker {
+  display: inline-block;
+  width: 1.2em;
+  height: 1.2em;
   text-decoration: none;
   margin: 0 5px;
   padding: 0;
   line-height: 1;
   vertical-align: text-bottom;
   border: none;
-  background: transparent;
+  background: no-repeat left / cover url('~@/assets/Speaker.svg');
+  user-select: none;
   cursor: pointer;
 
   &:hover {
@@ -15,30 +19,18 @@ $speaker-duration: 1.5s !default;
   }
 }
 
-.icon-Speaker_Body {
-  fill: #f9690e;
+.saladict-Speaker.isActive {
+  animation: saladict-Speaker-playing $speaker-duration steps(6) infinite;
 }
 
-.icon-Speaker_Wave {
-  fill: #f9690e;
-  opacity: 0;
-}
-
-.icon-Speaker.isActive {
-  .icon-Speaker_Wave {
-    animation: icon-Speaker-playing $speaker-duration infinite;
-
-    &:nth-child(3) {
-      animation-delay: $speaker-duration / 6;
-    }
-
-    &:nth-child(4) {
-      animation-delay: $speaker-duration / 6 * 2;
-    }
+@keyframes saladict-Speaker-playing {
+  from {
+    background-position-x: 0;
   }
-}
-
-@keyframes icon-Speaker-playing {
-  33% { opacity: 1; }
-  66% { opacity: 0; }
+  70% {
+    background-position-x: 100%;
+  }
+  100% {
+    background-position-x: 100%;
+  }
 }
