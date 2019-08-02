@@ -8,6 +8,8 @@ import { ErrorBoundary } from '@/components/ErrorBoundary'
 export interface DictItemBodyProps {
   dictID: DictID
 
+  fontSize: number
+
   searchStatus: 'IDLE' | 'SEARCHING' | 'FINISH'
   searchResult?: object | null
 
@@ -44,7 +46,17 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
                 props.dictID +
                 '/_style.shadow.scss').toString()}
             </style>
-            <Dict result={props.searchResult} searchText={props.searchText} />
+            <style>
+              {`.dictRoot {
+                  font-size: ${props.fontSize}px;
+                  -webkit-font-smoothing: antialiased;
+                  text-rendering: optimizelegibility;
+                  font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+                }`}
+            </style>
+            <div className="dictRoot">
+              <Dict result={props.searchResult} searchText={props.searchText} />
+            </div>
           </root.div>
         )}
       </Suspense>

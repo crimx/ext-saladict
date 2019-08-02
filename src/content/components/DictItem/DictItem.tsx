@@ -8,7 +8,6 @@ import { ResizeReporter } from 'react-resize-reporter'
 
 export interface DictItem extends DictItemBodyProps {
   text: string
-  fontSize: number
   /** default height when search result is received */
   preferredHeight: number
   /** Inject dict component. Mainly for testing */
@@ -58,7 +57,7 @@ export const DictItem: FC<DictItem> = props => {
       <div
         className="dictItem-Body"
         key={props.dictID}
-        style={{ fontSize: props.fontSize, height: visibleHeight }}
+        style={{ height: visibleHeight }}
         onClick={searchLinkText}
       >
         <article className="dictItem-BodyMesure">
