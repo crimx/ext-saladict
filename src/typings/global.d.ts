@@ -1,4 +1,8 @@
+/// <reference types="web-ext-types"/>
+
 interface Window {
+  browser: typeof browser
+
   __SALADICT_PANEL_LOADED__?: boolean
 
   // For self page messaging
