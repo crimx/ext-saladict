@@ -1627,27 +1627,6 @@
     "@storybook/core-events" "5.1.10"
     core-js "^3.0.1"
 
-"@storybook/addon-info@^5.1.9":
-  version "5.1.10"
-  resolved "https://registry.yarnpkg.com/@storybook/addon-info/-/addon-info-5.1.10.tgz#11b4f8b286d1990748f2e2b6ba248624a0a876c4"
-  integrity sha512-+o92LNVGWQJ7oToMdQdaKBHYwfhvn2IRTNT0mZ0Lo1oCmpw0D+4sguYnxiqVrX5Y2zt0VMd9bepkc7zAl3t8VQ==
-  dependencies:
-    "@storybook/addons" "5.1.10"
-    "@storybook/client-logger" "5.1.10"
-    "@storybook/components" "5.1.10"
-    "@storybook/theming" "5.1.10"
-    core-js "^3.0.1"
-    global "^4.3.2"
-    marksy "^7.0.0"
-    nested-object-assign "^1.0.3"
-    prop-types "^15.7.2"
-    react "^16.8.3"
-    react-addons-create-fragment "^15.6.2"
-    react-element-to-jsx-string "^14.0.2"
-    react-is "^16.8.3"
-    react-lifecycles-compat "^3.0.4"
-    util-deprecate "^1.0.2"
-
 "@storybook/addon-knobs@^5.1.9":
   version "5.1.10"
   resolved "https://registry.yarnpkg.com/@storybook/addon-knobs/-/addon-knobs-5.1.10.tgz#f5d9f21090e28046169a0aa0418de59bd92c21fd"
@@ -3304,11 +3283,6 @@ babel-runtime@^6.18.0, babel-runtime@^6.23.0, babel-runtime@^6.26.0:
     core-js "^2.4.0"
     regenerator-runtime "^0.11.0"
 
-babel-standalone@^6.26.0:
-  version "6.26.0"
-  resolved "https://registry.yarnpkg.com/babel-standalone/-/babel-standalone-6.26.0.tgz#15fb3d35f2c456695815ebf1ed96fe7f015b6886"
-  integrity sha1-Ffs9NfLEVmlYFevx7Zb+fwFbaIY=
-
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
@@ -4164,6 +4138,14 @@ concat-stream@^2.0.0:
     inherits "^2.0.3"
     readable-stream "^3.0.2"
     typedarray "^0.0.6"
+
+config-chain@^1.1.12:
+  version "1.1.12"
+  resolved "https://registry.yarnpkg.com/config-chain/-/config-chain-1.1.12.tgz#0fde8d091200eb5e808caf25fe618c02f48e4efa"
+  integrity sha512-a1eOIcu8+7lUInge4Rpf/n4Krkf3Dd9lqhljRzII1/Zno/kRtUWnznPO3jOKBmTEktkt3fkxisUcivoj0ebzoA==
+  dependencies:
+    ini "^1.3.4"
+    proto-list "~1.2.1"
 
 connect-history-api-fallback@^1.6.0:
   version "1.6.0"
@@ -5213,6 +5195,16 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
+
+editorconfig@^0.15.3:
+  version "0.15.3"
+  resolved "https://registry.yarnpkg.com/editorconfig/-/editorconfig-0.15.3.tgz#bef84c4e75fb8dcb0ce5cee8efd51c15999befc5"
+  integrity sha512-M9wIMFx96vq0R4F+gRpY3o2exzb8hEj/n9S8unZtHSvYjibBp/iMufSzvmOcV/laG0ZtuTVGtiJggPOSW2r93g==
+  dependencies:
+    commander "^2.19.0"
+    lru-cache "^4.1.5"
+    semver "^5.6.0"
+    sigmund "^1.0.1"
 
 ee-first@1.1.1:
   version "1.1.1"
@@ -6717,7 +6709,7 @@ hastscript@^5.0.0:
     property-information "^5.0.1"
     space-separated-tokens "^1.0.0"
 
-he@1.2.x, he@^1.1.1, he@^1.2.0:
+he@1.2.x, he@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/he/-/he-1.2.0.tgz#84ae65fa7eafb165fddb61566ae14baf05664f0f"
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
@@ -7993,6 +7985,17 @@ js-base64@^2.1.8:
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.5.1.tgz#1efa39ef2c5f7980bb1784ade4a8af2de3291121"
   integrity sha512-M7kLczedRMYX4L8Mdh4MzyAMM9O5osx+4FcOQuTvr3A9F2D9S5JXheN0ewNbrvK2UatkTRhL5ejGmGSjNMiZuw==
 
+js-beautify@^1.8.8:
+  version "1.10.1"
+  resolved "https://registry.yarnpkg.com/js-beautify/-/js-beautify-1.10.1.tgz#bdfe738ddbcaa12e4fced5af2d7cfad59f60ac0a"
+  integrity sha512-4y8SHOIRC+/YQ2gs3zJEKBUraQerq49FJYyXRpdzUGYQzCq8q9xtIh0YXial1S5KmonVui4aiUb6XaGyjE51XA==
+  dependencies:
+    config-chain "^1.1.12"
+    editorconfig "^0.15.3"
+    glob "^7.1.3"
+    mkdirp "~0.5.1"
+    nopt "~4.0.1"
+
 js-levenshtein@^1.1.3:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/js-levenshtein/-/js-levenshtein-1.1.6.tgz#c6cee58eb3550372df8deb85fad5ce66ce01d59d"
@@ -8513,7 +8516,7 @@ lowlight@~1.9.1:
     fault "^1.0.2"
     highlight.js "~9.12.0"
 
-lru-cache@^4.0.1:
+lru-cache@^4.0.1, lru-cache@^4.1.5:
   version "4.1.5"
   resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-4.1.5.tgz#8bbe50ea85bed59bc9e33dcab8235ee9bcf443cd"
   integrity sha512-sWZlbEP2OsHNkXrMl5GYk/jKk70MBng6UU4YI/qGDYbgf6YbP4EvmqISbXCoJiRKs+1bSpFHVgQxvJ17F2li5g==
@@ -8596,20 +8599,6 @@ markdown-to-jsx@^6.9.1, markdown-to-jsx@^6.9.3:
   dependencies:
     prop-types "^15.6.2"
     unquote "^1.1.0"
-
-marked@^0.6.2:
-  version "0.6.3"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.6.3.tgz#79babad78af638ba4d522a9e715cdfdd2429e946"
-  integrity sha512-Fqa7eq+UaxfMriqzYLayfqAE40WN03jf+zHjT18/uXNuzjq3TY0XTbrAoPeqSJrAmPz11VuUA+kBPYOhHt9oOQ==
-
-marksy@^7.0.0:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/marksy/-/marksy-7.0.1.tgz#fb26f780ce56bf5ca48fc137efdef1f97dd4c7ef"
-  integrity sha512-tB4cQxIY7f8PWTcIouJO/V60rl9JVVOmCDjmukYVO7mdpGM1JWl4qIP98iDYItexSXZ0DkEqk6yXFxgdmZRMxA==
-  dependencies:
-    babel-standalone "^6.26.0"
-    he "^1.1.1"
-    marked "^0.6.2"
 
 material-colors@^1.2.1:
   version "1.2.6"
@@ -9237,7 +9226,7 @@ node-sass@^4.12.0:
   dependencies:
     abbrev "1"
 
-nopt@^4.0.1:
+nopt@^4.0.1, nopt@~4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/nopt/-/nopt-4.0.1.tgz#d0d4685afd5415193c8c7505602d0d17cd64474d"
   integrity sha1-0NRoWv1UFRk8jHUFYC0NF81kR00=
@@ -10117,7 +10106,7 @@ pretty-hrtime@^1.0.3:
   resolved "https://registry.yarnpkg.com/pretty-hrtime/-/pretty-hrtime-1.0.3.tgz#b7e3ea42435a4c9b2759d99e0f201eb195802ee1"
   integrity sha1-t+PqQkNaTJsnWdmeDyAesZWALuE=
 
-prismjs@^1.8.4, prismjs@~1.17.0:
+prismjs@^1.15.0, prismjs@^1.8.4, prismjs@~1.17.0:
   version "1.17.1"
   resolved "https://registry.yarnpkg.com/prismjs/-/prismjs-1.17.1.tgz#e669fcbd4cdd873c35102881c33b14d0d68519be"
   integrity sha512-PrEDJAFdUGbOP6xK/UsfkC5ghJsPJviKgnQOoxaDbBjwc8op68Quupwt1DeAFoG8GImPhiKXAvvsH7wDSLsu1Q==
@@ -10197,6 +10186,11 @@ property-information@^5.0.1:
   integrity sha512-N2moasZmjn2mjVGIWpaqz5qnz6QyeQSGgGvMtl81gA9cPTWa6wpesRSe/quNnOjUHpvSH1oZx0pdz0EEckLFnA==
   dependencies:
     xtend "^4.0.1"
+
+proto-list@~1.2.1:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/proto-list/-/proto-list-1.2.4.tgz#212d5bfe1318306a420f6402b8e26ff39647a849"
+  integrity sha1-IS1b/hMYMGpCD2QCuOJv85ZHqEk=
 
 proxy-addr@~2.0.5:
   version "2.0.5"
@@ -10501,7 +10495,7 @@ react-draggable@^3.1.1:
     classnames "^2.2.5"
     prop-types "^15.6.0"
 
-react-element-to-jsx-string@^14.0.2:
+react-element-to-jsx-string@^14.0.3:
   version "14.0.3"
   resolved "https://registry.yarnpkg.com/react-element-to-jsx-string/-/react-element-to-jsx-string-14.0.3.tgz#64f50fdbf6ba154d6439da3d7307f79069b94d58"
   integrity sha512-ziZAm7OwEfFtyhCmQiFNI87KFu+G9EP8qVW4XtDHdKNqqprYifLzqXkzHqC1vnVsPhyp2znoPm0bJHAf1mUBZA==
@@ -10585,7 +10579,7 @@ react-inspector@^3.0.2:
     is-dom "^1.0.9"
     prop-types "^15.6.1"
 
-react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.3, react-is@^16.8.4:
+react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
@@ -11550,6 +11544,11 @@ shellwords@^0.1.1:
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
   integrity sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==
 
+sigmund@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/sigmund/-/sigmund-1.0.1.tgz#3ff21f198cad2175f9f3b781853fd94d0d19b590"
+  integrity sha1-P/IfGYytIXX587eBhT/ZTQ0ZtZA=
+
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.2"
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.2.tgz#b5fdc08f1287ea1178628e415e25132b73646c6d"
@@ -11924,6 +11923,26 @@ store2@^2.7.1:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/store2/-/store2-2.8.0.tgz#032d5dcbd185a5d74049d67a1765ff1e75faa04b"
   integrity sha512-FBJpcOEZQLZBIGL4Yp7W5RgZ0ejaURmcfUjIpyOb64BpI8z/iJXw7zd/NTBeq304dVMxuWVDZEUUCGn7llaVrA==
+
+storybook-addon-jsx@^7.1.5:
+  version "7.1.5"
+  resolved "https://registry.yarnpkg.com/storybook-addon-jsx/-/storybook-addon-jsx-7.1.5.tgz#f57b4fdc7da5d07b85b1da6a9425207bffbc2fb1"
+  integrity sha512-OU3JcBYGmFHeZjkvG6nbEOKy8AesURi+s7CcT7Ud68adAP8cJEDNxL6DUXWdJyt5DUKUivxewRmyQT8B9v8qWw==
+  dependencies:
+    copy-to-clipboard "^3.0.8"
+    js-beautify "^1.8.8"
+    prismjs "^1.15.0"
+    react-element-to-jsx-string "^14.0.3"
+
+storybook-addon-react-docgen@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/storybook-addon-react-docgen/-/storybook-addon-react-docgen-1.2.2.tgz#eefca64b0d582fd35898801eea791a0294bbfc9b"
+  integrity sha512-vRJUQvrmX4sutQjEmvlQjcTWDtf6Jw1qQMoyK/UNJEo9oTR5RYoT12ozYe7Pjz4bcEdU03j9xXnZ0AIX90qbjg==
+  dependencies:
+    nested-object-assign "^1.0.3"
+    prop-types "^15.6.2"
+    react-addons-create-fragment "^15.6.2"
+    react-lifecycles-compat "^3.0.4"
 
 stream-browserify@^2.0.1:
   version "2.0.2"

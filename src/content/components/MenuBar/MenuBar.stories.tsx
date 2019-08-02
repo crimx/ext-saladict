@@ -1,6 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withInfo } from '@storybook/addon-info'
+import { jsxDecorator } from 'storybook-addon-jsx'
+import { withPropsTable } from 'storybook-addon-react-docgen'
 import { action } from '@storybook/addon-actions'
 import {
   withKnobs,
@@ -9,21 +10,13 @@ import {
   number,
   boolean
 } from '@storybook/addon-knobs'
-import {
-  withLocalStyle,
-  withi18nNS,
-  withSaladictPanel
-} from '@/_helpers/storybook'
+import { withi18nNS, withSaladictPanel } from '@/_helpers/storybook'
 import { newWord } from '@/_helpers/record-manager'
 import { MenuBar } from './MenuBar'
 
 storiesOf('Content Scripts|Menubar', module)
-  .addDecorator(
-    withInfo({
-      inline: true,
-      header: false
-    })
-  )
+  .addDecorator(withPropsTable)
+  .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
   .addDecorator(
     withSaladictPanel(<style>{require('./MenuBar.scss').toString()}</style>)

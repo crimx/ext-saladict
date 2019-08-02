@@ -1,18 +1,15 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withInfo } from '@storybook/addon-info'
 import { action } from '@storybook/addon-actions'
 import { withKnobs } from '@storybook/addon-knobs'
-import { withLocalStyle, withSaladictPanel } from '@/_helpers/storybook'
+import { jsxDecorator } from 'storybook-addon-jsx'
+import { withPropsTable } from 'storybook-addon-react-docgen'
+import { withSaladictPanel } from '@/_helpers/storybook'
 import { MachineTrans } from './MachineTrans'
 
 storiesOf('Content Scripts|Components', module)
-  .addDecorator(
-    withInfo({
-      inline: true,
-      header: false
-    })
-  )
+  .addDecorator(withPropsTable)
+  .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
   .addDecorator(
     withSaladictPanel(
