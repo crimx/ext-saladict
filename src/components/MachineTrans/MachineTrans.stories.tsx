@@ -14,9 +14,11 @@ storiesOf('Content Scripts|Components', module)
     })
   )
   .addDecorator(withKnobs)
-  .addDecorator(withSaladictPanel)
-  .addDecorator(withLocalStyle(require('./MachineTrans.scss')))
-  .addDecorator(withLocalStyle(require('@/_sass_global/_reset.scss')))
+  .addDecorator(
+    withSaladictPanel(
+      <style>{require('./MachineTrans.scss').toString()}</style>
+    )
+  )
   .add('MachineTrans', () => {
     return (
       <MachineTrans
@@ -36,7 +38,6 @@ storiesOf('Content Scripts|Components', module)
           }
         }}
         searchText={action('Search Text')}
-        recalcBodyHeight={action('Re-calc Body Height')}
       />
     )
   })

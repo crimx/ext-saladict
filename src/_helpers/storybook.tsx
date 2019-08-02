@@ -1,4 +1,5 @@
 import React, { FC, useState, useEffect } from 'react'
+import root from 'react-shadow'
 import i18next from 'i18next'
 import { number, boolean, text } from '@storybook/addon-knobs'
 
@@ -64,21 +65,27 @@ export function withSideEffect(fn: React.EffectCallback) {
 /**
  * Fake salalict panel
  */
-export function withSaladictPanel(story) {
-  const width = number('Panel Width', 450)
-  return (
-    <div
-      className={boolean('Enable Animation', true) ? 'isAnimate' : ''}
-      style={{
-        fontSize: number('Panel Font Size', 13),
-        width,
-        '--panel-width': `${width}px`,
-        '--panel-height': `${number('Panel Height', 450 * 1.68)}px`,
-        '--panel-color': text('Panel Color', '#333'),
-        '--panel-background-color': text('Panel Background Color', '#fff')
-      }}
-    >
-      {story()}
-    </div>
-  )
+export function withSaladictPanel(children: React.ReactNode) {
+  return function SaladcitPanel(story: Function) {
+    const width = number('Panel Width', 450)
+    return (
+      <root.div>
+        <style>{require('@/_sass_global/_reset.scss').toString()}</style>
+        <div
+          className={boolean('Enable Animation', true) ? 'isAnimate' : ''}
+          style={{
+            fontSize: number('Panel Font Size', 13),
+            width,
+            '--panel-width': `${width}px`,
+            '--panel-height': `${number('Panel Height', 450 * 1.68)}px`,
+            '--panel-color': text('Panel Color', '#333'),
+            '--panel-background-color': text('Panel Background Color', '#fff')
+          }}
+        >
+          {children}
+          {story()}
+        </div>
+      </root.div>
+    )
+  }
 }
