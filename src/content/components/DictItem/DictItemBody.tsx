@@ -9,6 +9,7 @@ export interface DictItemBodyProps {
   dictID: DictID
 
   fontSize: number
+  withAnimation: boolean
 
   searchStatus: 'IDLE' | 'SEARCHING' | 'FINISH'
   searchResult?: object | null
@@ -54,7 +55,9 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
                   font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
                 }`}
             </style>
-            <div className="dictRoot">
+            <div
+              className={`dictRoot${props.withAnimation ? ' isAnimate' : ''}`}
+            >
               <Dict result={props.searchResult} searchText={props.searchText} />
             </div>
           </root.div>
