@@ -46,6 +46,12 @@ export type MessageConfig = {
     }>
   }
 
+  PLAY_AUDIO: {
+    type: 'PLAY_AUDIO'
+    /** url */
+    payload: string
+  }
+
   IS_IN_NOTEBOOK: {
     /** Is a word in Notebook */
     type: 'IS_IN_NOTEBOOK'

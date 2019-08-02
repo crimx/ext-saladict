@@ -10,7 +10,12 @@ import {
   browser
 } from '@/_helpers/storybook'
 import { Message } from '@/typings/message'
-import { Speaker } from './index'
+import {
+  Speaker,
+  StaticSpeakerContainer,
+  getStaticSpeakerString,
+  getStaticSpeaker
+} from './index'
 
 storiesOf('Content Scripts|Components', module)
   .addDecorator(withPropsTable)
@@ -46,5 +51,31 @@ storiesOf('Content Scripts|Components', module)
         height={number('Icon Height', 20)}
         src={text('Audio URL', 'https://example.com/a.mp3')}
       ></Speaker>
+    )
+  })
+  .add('StaticSpeakerContainer', () => {
+    const textStr = text(
+      'Audio URL for getStaticSpeakerString',
+      'https://example.com/a.mp3'
+    )
+
+    const textNode = text(
+      'Audio URL for getStaticSpeaker',
+      'https://example.com/b.mp3'
+    )
+
+    const node = getStaticSpeaker(textNode)
+
+    return (
+      <StaticSpeakerContainer>
+        <div
+          dangerouslySetInnerHTML={{
+            __html: `
+          <p>${getStaticSpeakerString(textStr)} ${textStr}</p>
+          <p>${node && node.outerHTML} ${textNode}</p>
+        `
+          }}
+        ></div>
+      </StaticSpeakerContainer>
     )
   })
