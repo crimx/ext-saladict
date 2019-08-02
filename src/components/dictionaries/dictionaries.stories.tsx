@@ -23,11 +23,13 @@ const stories = storiesOf('Content Scripts|Dictionaries', module)
     ]
   })
   .addDecorator(withKnobs)
-  .addDecorator(withSaladictPanel)
   .addDecorator(
-    withLocalStyle(require('@/content/components/DictItem/DictItem.scss'))
+    withSaladictPanel(
+      <style>
+        {require('@/content/components/DictItem/DictItem.scss').toString()}
+      </style>
+    )
   )
-  .addDecorator(withLocalStyle(require('@/_sass_global/_reset.scss')))
   .addDecorator(withi18nNS('content'))
 
 Object.keys(getAllDicts()).forEach(id => {
