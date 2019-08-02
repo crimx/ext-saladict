@@ -76,6 +76,7 @@
     "@storybook/addon-contexts": "^5.1.9",
     "@storybook/addon-knobs": "^5.1.9",
     "@storybook/react": "^5.1.9",
+    "@types/sinon-chrome": "^2.2.6",
     "@types/storybook__addon-knobs": "^5.0.2",
     "@types/storybook__react": "^4.0.2",
     "@typescript-eslint/eslint-plugin": "^1.11.0",

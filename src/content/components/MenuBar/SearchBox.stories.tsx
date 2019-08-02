@@ -6,6 +6,7 @@ import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
 import {
+  browser,
   withi18nNS,
   withSideEffect,
   withSaladictPanel
@@ -35,7 +36,6 @@ storiesOf('Content Scripts|Menubar', module)
   .addDecorator(withi18nNS('content'))
   .addDecorator(
     withSideEffect(() => {
-      // @ts-ignore
       browser.runtime.sendMessage.callsFake((message: Message) => {
         if (message.type === 'GET_SUGGESTS') {
           return new Promise(resolve => {
@@ -47,9 +47,9 @@ storiesOf('Content Scripts|Menubar', module)
         return Promise.resolve()
       })
 
-      return () =>
-        // @ts-ignore
+      return () => {
         browser.runtime.sendMessage.callsFake(() => Promise.resolve())
+      }
     })
   )
   // @ts-ignore

@@ -2,10 +2,13 @@ import React, { FC, useState, useEffect } from 'react'
 import root from 'react-shadow'
 import i18next from 'i18next'
 import { number, boolean, text } from '@storybook/addon-knobs'
+import SinonChrome from 'sinon-chrome'
 
 interface StyleWrapProps {
   style: string
 }
+
+export const browser: typeof SinonChrome = window.browser as any
 
 export const StyleWrap: FC<StyleWrapProps> = props => {
   return (
