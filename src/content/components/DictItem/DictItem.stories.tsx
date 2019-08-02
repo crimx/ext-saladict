@@ -1,13 +1,10 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withInfo } from '@storybook/addon-info'
+import { jsxDecorator } from 'storybook-addon-jsx'
+import { withPropsTable } from 'storybook-addon-react-docgen'
 import { action } from '@storybook/addon-actions'
 import { withKnobs, select, text, number, array } from '@storybook/addon-knobs'
-import {
-  withLocalStyle,
-  withi18nNS,
-  withSaladictPanel
-} from '@/_helpers/storybook'
+import { withi18nNS, withSaladictPanel } from '@/_helpers/storybook'
 import { DictItem } from './DictItem'
 
 storiesOf('Content Scripts|DictItem', module)
@@ -17,12 +14,8 @@ storiesOf('Content Scripts|DictItem', module)
       { name: 'Black', value: '#000' }
     ]
   })
-  .addDecorator(
-    withInfo({
-      inline: true,
-      header: false
-    })
-  )
+  .addDecorator(withPropsTable)
+  .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
   .addDecorator(
     withSaladictPanel(<style>{require('./DictItem.scss').toString()}</style>)

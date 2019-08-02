@@ -1,13 +1,10 @@
 import React from 'react'
 import i18next from 'i18next'
 import { storiesOf } from '@storybook/react'
-import { withInfo } from '@storybook/addon-info'
+import { jsxDecorator } from 'storybook-addon-jsx'
+import { withPropsTable } from 'storybook-addon-react-docgen'
 import { withKnobs, select } from '@storybook/addon-knobs'
-import {
-  withLocalStyle,
-  withi18nNS,
-  withSaladictPanel
-} from '@/_helpers/storybook'
+import { withi18nNS, withSaladictPanel } from '@/_helpers/storybook'
 import { Profiles } from './Profiles'
 
 storiesOf('Content Scripts|Menubar', module)
@@ -17,12 +14,8 @@ storiesOf('Content Scripts|Menubar', module)
       { name: 'Black', value: '#000' }
     ]
   })
-  .addDecorator(
-    withInfo({
-      inline: true,
-      header: false
-    })
-  )
+  .addDecorator(withPropsTable)
+  .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
   .addDecorator(
     withSaladictPanel(<style>{require('./Profiles.scss').toString()}</style>)

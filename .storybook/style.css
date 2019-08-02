@@ -1,0 +1,8 @@
+body {
+  width: unset;
+  height: unset;
+  overflow-y: scroll;
+  margin: 0;
+  padding: 8px;
+  box-sizing: border-box;
+}

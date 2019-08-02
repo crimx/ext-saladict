@@ -1,19 +1,16 @@
 import React, { useState } from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
-import { withInfo } from '@storybook/addon-info'
+import { jsxDecorator } from 'storybook-addon-jsx'
+import { withPropsTable } from 'storybook-addon-react-docgen'
 import { withKnobs, boolean, number } from '@storybook/addon-knobs'
 import { SaladBowl } from './SaladBowl'
 import { SaladBowlShadow } from './SaladBowl.shadow'
 import { SaladBowlPortal } from './SaladBowl.portal'
 
 storiesOf('Content Scripts|SaladBowl', module)
-  .addDecorator(
-    withInfo({
-      inline: true,
-      header: false
-    })
-  )
+  .addDecorator(withPropsTable)
+  .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
   .add(
     'SaladBowl',

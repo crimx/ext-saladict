@@ -1,4 +1,3 @@
-import { AddonSetting } from '@storybook/addon-contexts/dist/shared/types'
 import React, { FC } from 'react'
 import { i18nLoader } from '../../src/_helpers/i18n'
 
@@ -20,7 +19,7 @@ const I18nWrap: FC<I18nWrapProps> = props => {
   return <>{props.children}</>
 }
 
-export const i18nContexts: AddonSetting[] = [
+export const i18nContexts = [
   {
     // https://storybooks-official.netlify.com/?path=/story/basics-icon--labels
     icon: 'globe',

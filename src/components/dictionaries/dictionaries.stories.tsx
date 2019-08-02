@@ -4,11 +4,7 @@ import AxiosMockAdapter from 'axios-mock-adapter'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { withKnobs, select, number } from '@storybook/addon-knobs'
-import {
-  withLocalStyle,
-  withi18nNS,
-  withSaladictPanel
-} from '@/_helpers/storybook'
+import { withi18nNS, withSaladictPanel } from '@/_helpers/storybook'
 import { DictItem } from '@/content/components/DictItem/DictItem'
 import { getDefaultConfig, DictID } from '@/app-config'
 import { getDefaultProfile } from '@/app-config/profiles'
