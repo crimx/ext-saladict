@@ -1,17 +1,23 @@
 import DOMPurify from 'dompurify'
+import axios, { AxiosRequestConfig } from 'axios'
 
-export function fetchDOM (input: string | Request, init?: RequestInit): Promise<DocumentFragment> {
-  return fetch(input, init)
-    .then(r => r.text())
-    .then(text => DOMPurify.sanitize(text, { RETURN_DOM_FRAGMENT: true }))
+export function fetchDOM(
+  url: string,
+  config: AxiosRequestConfig = {}
+): Promise<DocumentFragment> {
+  return axios(url, {
+    ...config,
+    responseType: 'document'
+  }).then(({ data }) => DOMPurify.sanitize(data, { RETURN_DOM_FRAGMENT: true }))
 }
 
 /** about 6 time faster as it typically takes less than 5ms to parse a DOM */
-export function fetchDirtyDOM (input: string | Request, init?: RequestInit): Promise<Document> {
-  return fetch(input, init)
-    .then(r => r.ok ? r.text() : Promise.reject(r))
-    .then(text => new DOMParser().parseFromString(
-      text,
-      'text/html',
-    ))
+export function fetchDirtyDOM(
+  url: string,
+  config: AxiosRequestConfig = {}
+): Promise<Document> {
+  return axios(url, {
+    ...config,
+    responseType: 'document'
+  }).then(({ data }) => data)
 }
