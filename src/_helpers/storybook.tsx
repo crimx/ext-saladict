@@ -69,7 +69,7 @@ export function withSaladictPanel(children: React.ReactNode) {
   return function SaladcitPanel(story: Function) {
     const width = number('Panel Width', 450)
     return (
-      <root.div style={{ width, margin: '0 auto' }}>
+      <root.div style={{ width, margin: '10px auto' }}>
         <style>{require('@/_sass_global/_reset.scss').toString()}</style>
         <div
           className={boolean('Enable Animation', true) ? 'isAnimate' : ''}

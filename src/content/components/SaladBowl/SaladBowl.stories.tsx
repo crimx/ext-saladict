@@ -56,40 +56,34 @@ storiesOf('Content Scripts|SaladBowl', module)
       onChange={action('onChange')}
     />
   ))
-  .add(
-    'Bowl Playground',
-    () =>
-      React.createElement(() => {
-        const [{ mouseX, mouseY }, setCoord] = useState({
-          mouseX: 0,
-          mouseY: 0
-        })
-        return (
-          <div
-            style={{ height: '100vh', background: '#c5d3e2' }}
-            onClick={e =>
-              setCoord({
-                mouseX: e.clientX,
-                mouseY: e.clientY
-              })
-            }
-          >
-            <p style={{ textAlign: 'center', color: '#5C6A79' }}>
-              CLICK AROUND AND SEE THE BOWL FOLLOWS
-            </p>
-            <SaladBowlPortal
-              show={boolean('Show', true)}
-              mouseX={mouseX}
-              mouseY={mouseY}
-              withAnimation={boolean('Animation', true)}
-              enableHover={boolean('Enable hover', true)}
-              onChange={action('onChange')}
-            />
-          </div>
-        )
-      }),
-    {
-      info: { disable: true }
-      // backgrounds: [{ name: 'Background', value: '#c5d3e2', default: true }]
-    }
+  .add('Bowl Playground', () =>
+    React.createElement(() => {
+      const [{ mouseX, mouseY }, setCoord] = useState({
+        mouseX: 0,
+        mouseY: 0
+      })
+      return (
+        <div
+          style={{ height: '100vh', background: '#5caf9e', overflow: 'hidden' }}
+          onClick={e =>
+            setCoord({
+              mouseX: e.clientX,
+              mouseY: e.clientY
+            })
+          }
+        >
+          <p style={{ textAlign: 'center', color: '#fff', userSelect: 'none' }}>
+            CLICK AROUND AND SEE THE BOWL FOLLOWS
+          </p>
+          <SaladBowlPortal
+            show={boolean('Show', true)}
+            mouseX={mouseX}
+            mouseY={mouseY}
+            withAnimation={boolean('Animation', true)}
+            enableHover={boolean('Enable hover', true)}
+            onChange={action('onChange')}
+          />
+        </div>
+      )
+    })
   )

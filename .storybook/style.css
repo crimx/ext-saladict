@@ -3,6 +3,6 @@ body {
   height: unset;
   overflow-y: scroll;
   margin: 0;
-  padding: 8px;
+  padding: 0;
   box-sizing: border-box;
 }
