@@ -25,9 +25,9 @@ storiesOf('Content Scripts|Menubar', module)
     })
   )
   .addDecorator(withKnobs)
-  .addDecorator(withSaladictPanel)
-  .addDecorator(withLocalStyle(require('./MenuBar.scss')))
-  .addDecorator(withLocalStyle(require('@/_sass_global/_reset.scss')))
+  .addDecorator(
+    withSaladictPanel(<style>{require('./MenuBar.scss').toString()}</style>)
+  )
   .addDecorator(withi18nNS('content'))
   .add('MenuBar', () => {
     const histories = Array.from(Array(5)).map((_, i) =>

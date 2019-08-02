@@ -24,10 +24,10 @@ storiesOf('Content Scripts|Menubar', module)
     })
   )
   .addDecorator(withKnobs)
-  .addDecorator(withSaladictPanel)
+  .addDecorator(
+    withSaladictPanel(<style>{require('./Profiles.scss').toString()}</style>)
+  )
   .addDecorator(stroy => <div style={{ marginLeft: 50 }}>{stroy()}</div>)
-  .addDecorator(withLocalStyle(require('./Profiles.scss')))
-  .addDecorator(withLocalStyle(require('@/_sass_global/_reset.scss')))
   .addDecorator(withi18nNS('content'))
   .add('Profiles', () => {
     const profiles = Array.from(Array(5)).map((_, i) => ({

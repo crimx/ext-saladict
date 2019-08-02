@@ -34,9 +34,9 @@ storiesOf('Content Scripts|Menubar', module)
     })
   )
   .addDecorator(withKnobs)
-  .addDecorator(withSaladictPanel)
-  .addDecorator(withLocalStyle(require('./MenubarBtns.scss')))
-  .addDecorator(withLocalStyle(require('@/_sass_global/_reset.scss')))
+  .addDecorator(
+    withSaladictPanel(<style>{require('./MenubarBtns.scss').toString()}</style>)
+  )
   .addDecorator(withi18nNS('content'))
   .add('HistoryBackBtn', () => {
     return (

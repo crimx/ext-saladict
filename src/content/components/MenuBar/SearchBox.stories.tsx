@@ -28,10 +28,14 @@ storiesOf('Content Scripts|Menubar', module)
     })
   )
   .addDecorator(withKnobs)
-  .addDecorator(withSaladictPanel)
-  .addDecorator(withLocalStyle(require('./Suggest.scss')))
-  .addDecorator(withLocalStyle(require('./SearchBox.scss')))
-  .addDecorator(withLocalStyle(require('@/_sass_global/_reset.scss')))
+  .addDecorator(
+    withSaladictPanel(
+      <>
+        <style>{require('./Suggest.scss').toString()}</style>
+        <style>{require('./SearchBox.scss').toString()}</style>
+      </>
+    )
+  )
   .addDecorator(withi18nNS('content'))
   .addDecorator(
     withSideEffect(() => {
