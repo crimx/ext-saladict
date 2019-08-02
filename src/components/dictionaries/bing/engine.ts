@@ -6,17 +6,18 @@ import {
   getInnerHTMLBuilder,
   SearchFunction,
   GetSrcPageFunction,
+  DictSearchResult
 } from '../helpers'
 import { DictConfigs } from '@/app-config'
-import { DictSearchResult } from '@/typings/server'
 
-export const getSrcPage: GetSrcPageFunction = (text) => {
+export const getSrcPage: GetSrcPageFunction = text => {
   return `https://cn.bing.com/dict/search?q=${text}`
 }
 
 const getInnerHTML = getInnerHTMLBuilder('https://cn.bing.com/')
 
-const DICT_LINK = 'https://cn.bing.com/dict/clientsearch?mkt=zh-CN&setLang=zh&form=BDVEHC&ClientVer=BDDTV3.5.1.4320&q='
+const DICT_LINK =
+  'https://cn.bing.com/dict/clientsearch?mkt=zh-CN&setLang=zh&form=BDVEHC&ClientVer=BDDTV3.5.1.4320&q='
 
 /** Lexical result */
 export interface BingResultLex {
@@ -75,12 +76,17 @@ type BingSearchResultLex = DictSearchResult<BingResultLex>
 type BingSearchResultMachine = DictSearchResult<BingResultMachine>
 type BingSearchResultRelated = DictSearchResult<BingResultRelated>
 
-export const search: SearchFunction<DictSearchResult<BingResult>> = (
-  text, config, profile, payload
+export const search: SearchFunction<BingResult> = (
+  text,
+  config,
+  profile,
+  payload
 ) => {
   const bingConfig = profile.dicts.all.bing
 
-  return fetchDirtyDOM(DICT_LINK + encodeURIComponent(text.replace(/\s+/g, ' ')))
+  return fetchDirtyDOM(
+    DICT_LINK + encodeURIComponent(text.replace(/\s+/g, ' '))
+  )
     .catch(handleNetWorkError)
     .then(doc => {
       const isChz = config.langCode === 'zh-TW'
@@ -103,10 +109,10 @@ export const search: SearchFunction<DictSearchResult<BingResult>> = (
     })
 }
 
-function handleLexResult (
+function handleLexResult(
   doc: Document,
   options: BingConfig['options'],
-  isChz: boolean,
+  isChz: boolean
 ): BingSearchResultLex | Promise<BingSearchResultLex> {
   let searchResult: DictSearchResult<BingResultLex> = {
     result: {
@@ -123,7 +129,9 @@ function handleLexResult (
         let pron = ''
         let $audio = el.querySelector('.client_aud_o')
         if ($audio) {
-          pron = (($audio.getAttribute('onclick') || '').match(/https.*\.mp3/) || [''])[0]
+          pron = (($audio.getAttribute('onclick') || '').match(
+            /https.*\.mp3/
+          ) || [''])[0]
         }
         return {
           lang: getText(el, '.client_def_hd_pn'),
@@ -131,14 +139,17 @@ function handleLexResult (
         }
       })
 
-      searchResult.audio = searchResult.result.phsym.reduce((audio, { lang, pron }) => {
-        if (/us|美/i.test(lang)) {
-          audio['us'] = pron
-        } else if (/uk|英/i.test(lang)) {
-          audio['uk'] = pron
-        }
-        return audio
-      }, {})
+      searchResult.audio = searchResult.result.phsym.reduce(
+        (audio, { lang, pron }) => {
+          if (/us|美/i.test(lang)) {
+            audio['us'] = pron
+          } else if (/uk|英/i.test(lang)) {
+            audio['uk'] = pron
+          }
+          return audio
+        },
+        {}
+      )
     }
   }
 
@@ -149,8 +160,8 @@ function handleLexResult (
       let $defs = Array.from($container.querySelectorAll('.client_def_bar'))
       if ($defs.length > 0) {
         searchResult.result.cdef = $defs.map(el => ({
-          'pos': getText(el, '.client_def_title_bar', isChz),
-          'def': getText(el, '.client_def_list', isChz)
+          pos: getText(el, '.client_def_title_bar', isChz),
+          def: getText(el, '.client_def_list', isChz)
         }))
       }
     }
@@ -167,12 +178,18 @@ function handleLexResult (
   if (options.sentence > 0) {
     let $sens = doc.querySelectorAll('.client_sentence_list')
     const sentences: typeof searchResult.result.sentences = []
-    for (let i = 0; i < $sens.length && sentences.length < options.sentence; i++) {
+    for (
+      let i = 0;
+      i < $sens.length && sentences.length < options.sentence;
+      i++
+    ) {
       const el = $sens[i]
       let mp3 = ''
       const $audio = el.querySelector('.client_aud_o')
       if ($audio) {
-        mp3 = (($audio.getAttribute('onclick') || '').match(/https.*\.mp3/) || [''])[0]
+        mp3 = (($audio.getAttribute('onclick') || '').match(/https.*\.mp3/) || [
+          ''
+        ])[0]
       }
       el.querySelectorAll('.client_sen_en_word').forEach($word => {
         $word.outerHTML = getText($word)
@@ -181,7 +198,9 @@ function handleLexResult (
         $word.outerHTML = getText($word, isChz)
       })
       el.querySelectorAll('.client_sentence_search').forEach($word => {
-        $word.outerHTML = `<span class="dictBing-SentenceItem_HL">${getText($word)}</span>`
+        $word.outerHTML = `<span class="dictBing-SentenceItem_HL">${getText(
+          $word
+        )}</span>`
       })
       sentences.push({
         en: getInnerHTML(el, '.client_sen_en'),
@@ -199,9 +218,9 @@ function handleLexResult (
   return handleNoResult()
 }
 
-function handleMachineResult (
+function handleMachineResult(
   doc: Document,
-  isChz: boolean,
+  isChz: boolean
 ): BingSearchResultMachine | Promise<BingSearchResultMachine> {
   const mt = getText(doc, '.client_sen_cn', isChz)
 
@@ -209,7 +228,7 @@ function handleMachineResult (
     return {
       result: {
         type: 'machine',
-        mt,
+        mt
       }
     }
   }
@@ -217,10 +236,10 @@ function handleMachineResult (
   return handleNoResult()
 }
 
-function handleRelatedResult (
+function handleRelatedResult(
   doc: Document,
   config: BingConfig,
-  isChz: boolean,
+  isChz: boolean
 ): BingSearchResultRelated | Promise<BingSearchResultRelated> {
   const searchResult: DictSearchResult<BingResultRelated> = {
     result: {
