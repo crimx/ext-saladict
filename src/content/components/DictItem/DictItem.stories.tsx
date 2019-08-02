@@ -17,16 +17,18 @@ storiesOf('Content Scripts|DictItem', module)
   .addDecorator(withPropsTable)
   .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
+  .addDecorator(withi18nNS('content'))
   .addDecorator(
     withSaladictPanel(<style>{require('./DictItem.scss').toString()}</style>)
   )
-  .addDecorator(withi18nNS('content'))
-  .add('DictItem', () => {
+  // @ts-ignore: wrong storybook typing
+  .add('DictItem', ({ fontSize, withAnimation }) => {
     return (
       <DictItem
         dictID="baidu"
         text={text('Search Text', 'test')}
-        fontSize={number('Font Size', 13)}
+        fontSize={fontSize}
+        withAnimation={withAnimation}
         preferredHeight={number('Preferred Height', 256)}
         searchStatus={select(
           'Search Status',

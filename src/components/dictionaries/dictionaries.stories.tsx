@@ -29,10 +29,21 @@ const stories = storiesOf('Content Scripts|Dictionaries', module)
   .addDecorator(withi18nNS('content'))
 
 Object.keys(getAllDicts()).forEach(id => {
-  stories.add(id, () => <Dict dictID={id as DictID} />)
+  // @ts-ignore: wrong storybook typing
+  stories.add(id, ({ fontSize, withAnimation }) => (
+    <Dict
+      dictID={id as DictID}
+      fontSize={fontSize}
+      withAnimation={withAnimation}
+    />
+  ))
 })
 
-function Dict(props: { dictID: DictID }) {
+function Dict(props: {
+  dictID: DictID
+  fontSize: number
+  withAnimation: boolean
+}) {
   const {
     mockSearchTexts,
     mockRequest
@@ -81,7 +92,8 @@ function Dict(props: { dictID: DictID }) {
     <DictItem
       dictID={props.dictID}
       text={searchText}
-      fontSize={number('Font Size', 13)}
+      fontSize={props.fontSize}
+      withAnimation={props.withAnimation}
       preferredHeight={number('Preferred Height', 256)}
       searchStatus={status}
       searchResult={result}

@@ -68,22 +68,31 @@ export function withSideEffect(fn: React.EffectCallback) {
 export function withSaladictPanel(children: React.ReactNode) {
   return function SaladcitPanel(story: Function) {
     const width = number('Panel Width', 450)
+    const height = number('Panel Height', 450 * 1.68)
+    const withAnimation = boolean('Enable Animation', true)
+    const fontSize = number('Panel Font Size', 13)
+
     return (
       <root.div style={{ width, margin: '10px auto' }}>
         <style>{require('@/_sass_global/_reset.scss').toString()}</style>
         <div
-          className={boolean('Enable Animation', true) ? 'isAnimate' : ''}
+          className={withAnimation ? 'isAnimate' : ''}
           style={{
-            fontSize: number('Panel Font Size', 13),
+            fontSize,
             width,
             '--panel-width': `${width}px`,
-            '--panel-height': `${number('Panel Height', 450 * 1.68)}px`,
+            '--panel-height': `${height}px`,
             '--panel-color': text('Panel Color', '#333'),
             '--panel-background-color': text('Panel Background Color', '#fff')
           }}
         >
           {children}
-          {story()}
+          {story({
+            width,
+            height,
+            fontSize,
+            withAnimation
+          })}
         </div>
       </root.div>
     )
