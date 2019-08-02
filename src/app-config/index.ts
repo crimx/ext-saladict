@@ -1,41 +1,40 @@
 import { DeepReadonly } from '@/typings/helpers'
-import { getALlDicts } from './dicts'
+import { getAllDicts } from './dicts'
 import { getAllContextMenus } from './context-menus'
 import { MtaAutoUnfold as _MtaAutoUnfold, _getDefaultProfile } from './profiles'
 import { SupportedLangs } from '@/_helpers/lang-check'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 
-const langUI = (browser.i18n.getUILanguage() || 'en')
+const langUI = browser.i18n.getUILanguage() || 'en'
 const langCode: LangCode = /^zh-CN|zh-TW|en$/.test(langUI)
   ? langUI === 'zh-HK'
     ? 'zh-TW'
-    : langUI as LangCode
+    : (langUI as LangCode)
   : 'en'
 
-export type DictConfigsMutable = ReturnType<typeof getALlDicts>
+export type DictConfigsMutable = ReturnType<typeof getAllDicts>
 export type DictConfigs = DeepReadonly<DictConfigsMutable>
 export type DictID = keyof DictConfigsMutable
 export type MtaAutoUnfold = _MtaAutoUnfold
 
-export const enum TCDirection {
-  center,
-  top,
-  right,
-  bottom,
-  left,
-  topLeft,
-  topRight,
-  bottomLeft,
-  bottomRight,
-}
+export type TCDirection =
+  | 'CENTER'
+  | 'TOP'
+  | 'RIGHT'
+  | 'BOTTOM'
+  | 'LEFT'
+  | 'TOP_LEFT'
+  | 'TOP_RIGHT'
+  | 'BOTTOM_LEFT'
+  | 'BOTTOM_RIGHT'
 
 export type InstantSearchKey = 'direct' | 'ctrl' | 'alt' | 'shift'
 
 /** '' means no preload */
 export type PreloadSource = '' | 'clipboard' | 'selection'
 
-export type AllDicts = ReturnType<typeof getALlDicts>
+export type AllDicts = ReturnType<typeof getAllDicts>
 
 export type AppConfigMutable = ReturnType<typeof _getDefaultConfig>
 export type AppConfig = DeepReadonly<AppConfigMutable>
@@ -43,7 +42,7 @@ export type AppConfig = DeepReadonly<AppConfigMutable>
 export const getDefaultConfig: () => AppConfig = _getDefaultConfig
 export default getDefaultConfig
 
-function _getDefaultConfig () {
+function _getDefaultConfig() {
   return {
     version: 12,
 
@@ -81,7 +80,7 @@ function _getDefaultConfig () {
     /** URLs, [regexp.source, match_pattern] */
     // tslint:disable-next-line: no-unnecessary-type-assertion
     pdfBlacklist: [
-      ['^(http|https)://[^/]*?cnki\.net(/.*)?$', '*://*.cnki.net/*'],
+      ['^(http|https)://[^/]*?cnki.net(/.*)?$', '*://*.cnki.net/*']
     ] as [string, string][],
 
     /** track search history */
@@ -107,14 +106,14 @@ function _getDefaultConfig () {
       holding: {
         shift: false,
         ctrl: false,
-        meta: false,
+        meta: false
       },
       /** cursor instant capture */
       instant: {
         enable: false,
         key: 'alt' as InstantSearchKey,
-        delay: 600,
-      },
+        delay: 600
+      }
     },
 
     /** when and how to search text if the panel is pinned */
@@ -127,14 +126,14 @@ function _getDefaultConfig () {
       holding: {
         shift: false,
         ctrl: false,
-        meta: false,
+        meta: false
       },
       /** cursor instant capture */
       instant: {
         enable: false,
         key: 'alt' as InstantSearchKey,
-        delay: 600,
-      },
+        delay: 600
+      }
     },
 
     /** when and how to search text inside dict panel */
@@ -147,14 +146,14 @@ function _getDefaultConfig () {
       holding: {
         shift: false,
         ctrl: false,
-        meta: false,
+        meta: false
       },
       /** cursor instant capture */
       instant: {
         enable: false,
         key: 'alt' as InstantSearchKey,
-        delay: 600,
-      },
+        delay: 600
+      }
     },
 
     /** when this is a quick search standalone panel running */
@@ -167,14 +166,14 @@ function _getDefaultConfig () {
       holding: {
         shift: false,
         ctrl: true,
-        meta: false,
+        meta: false
       },
       /** cursor instant capture */
       instant: {
         enable: false,
         key: 'alt' as InstantSearchKey,
-        delay: 600,
-      },
+        delay: 600
+      }
     },
 
     /** hover instead of click */
@@ -193,7 +192,7 @@ function _getDefaultConfig () {
     tripleCtrlAuto: false,
 
     /** where should the dict appears */
-    tripleCtrlLocation: TCDirection.center,
+    tripleCtrlLocation: 'CENTER' as TCDirection,
 
     /** should panel be in a standalone window */
     tripleCtrlStandalone: true,
@@ -227,7 +226,7 @@ function _getDefaultConfig () {
       google: true,
       tencent: true,
       sogou: true,
-      baidu: true,
+      baidu: true
     } as { [id in DictID]: boolean },
 
     /** start searching when source containing the languages */
@@ -239,7 +238,7 @@ function _getDefaultConfig () {
       french: true,
       spanish: true,
       deutsch: true,
-      others: false,
+      others: false
     } as SupportedLangs,
 
     /** auto pronunciation */
@@ -260,21 +259,15 @@ function _getDefaultConfig () {
           'oald',
           'urban',
           'websterlearner',
-          'youdao',
+          'youdao'
         ] as DictID[],
         accent: 'uk' as 'us' | 'uk'
       },
       machine: {
         dict: '' as DictID | '',
-        list: [
-          'google',
-          'sogou',
-          'tencent',
-          'baidu',
-          'caiyun',
-        ],
+        list: ['google', 'sogou', 'tencent', 'baidu', 'caiyun'],
         // play translation or source
-        src: 'trans' as 'trans' | 'searchText',
+        src: 'trans' as 'trans' | 'searchText'
       }
     },
 
@@ -282,9 +275,10 @@ function _getDefaultConfig () {
     whitelist: [] as [string, string][],
     /** URLs, [regexp.source, match_pattern] */
     // tslint:disable-next-line: no-unnecessary-type-assertion
-    blacklist: [
-      ['^https://stackedit\.io(/.*)?$', 'https://stackedit.io/*']
-    ] as [string, string][],
+    blacklist: [['^https://stackedit.io(/.*)?$', 'https://stackedit.io/*']] as [
+      string,
+      string
+    ][],
 
     contextMenus: {
       selected: [

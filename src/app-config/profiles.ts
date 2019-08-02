@@ -1,6 +1,6 @@
 import { DeepReadonly } from '@/typings/helpers'
 import { genUniqueKey } from '@/_helpers/uniqueKey'
-import { getALlDicts } from './dicts'
+import { getAllDicts } from './dicts'
 
 export type MtaAutoUnfold = '' | 'once' | 'always' | 'popup'
 
@@ -18,7 +18,7 @@ export const getDefaultProfile: (id?: string) => Profile = _getDefaultProfile
 
 export default getDefaultProfile
 
-export function _getDefaultProfile (id?: string) {
+export function _getDefaultProfile(id?: string) {
   return {
     id: id || genUniqueKey(),
 
@@ -42,18 +42,18 @@ export function _getDefaultProfile (id?: string) {
         'zdic',
         'guoyu',
         'liangan',
-        'googledict',
-      ] as Array<keyof ReturnType<typeof getALlDicts>>,
+        'googledict'
+      ] as Array<keyof ReturnType<typeof getAllDicts>>,
       // settings of each dict will be auto-generated
-      all: getALlDicts()
-    },
+      all: getAllDicts()
+    }
   }
 }
 
-export function getDefaultProfileID (id?: string): ProfileID {
+export function getDefaultProfileID(id?: string): ProfileID {
   return {
     id: id || genUniqueKey(),
-    name: '%%_default_%%',
+    name: '%%_default_%%'
   }
 }
 
@@ -62,7 +62,7 @@ export interface ProfileStorage {
   profile: Profile
 }
 
-export function genProfilesStorage (): {
+export function genProfilesStorage(): {
   profileIDList: ProfileIDList
   profiles: Profile[]
 } {
@@ -77,23 +77,32 @@ export function genProfilesStorage (): {
       defaultID,
       sentenceStorage.idItem,
       translationStorage.idItem,
-      scholarStorage.idItem,
+      scholarStorage.idItem
     ],
     profiles: [
       defaultProfile,
       sentenceStorage.profile,
       translationStorage.profile,
-      scholarStorage.profile,
+      scholarStorage.profile
     ]
   }
 }
 
-export function sentence (): ProfileStorage {
+export function sentence(): ProfileStorage {
   const idItem = getDefaultProfileID()
   idItem.name = '%%_sentence_%%'
 
   const profile = getDefaultProfile(idItem.id) as ProfileMutable
-  profile.dicts.selected = ['jukuu', 'bing', 'cnki', 'eudic', 'cobuild', 'cambridge', 'longman', 'macmillan']
+  profile.dicts.selected = [
+    'jukuu',
+    'bing',
+    'cnki',
+    'eudic',
+    'cobuild',
+    'cambridge',
+    'longman',
+    'macmillan'
+  ]
 
   const allDict = profile.dicts.all
   allDict.bing.options.tense = false
@@ -115,12 +124,26 @@ export function sentence (): ProfileStorage {
   return { idItem, profile }
 }
 
-export function scholar (): ProfileStorage {
+export function scholar(): ProfileStorage {
   const idItem = getDefaultProfileID()
   idItem.name = '%%_scholar_%%'
 
   const profile = getDefaultProfile(idItem.id) as ProfileMutable
-  profile.dicts.selected = ['googledict', 'cambridge', 'cobuild', 'etymonline', 'cnki', 'macmillan', 'oald', 'websterlearner', 'google', 'sogou', 'zdic', 'guoyu', 'liangan']
+  profile.dicts.selected = [
+    'googledict',
+    'cambridge',
+    'cobuild',
+    'etymonline',
+    'cnki',
+    'macmillan',
+    'oald',
+    'websterlearner',
+    'google',
+    'sogou',
+    'zdic',
+    'guoyu',
+    'liangan'
+  ]
 
   const allDict = profile.dicts.all
   allDict.macmillan.defaultUnfold = {
@@ -131,7 +154,7 @@ export function scholar (): ProfileStorage {
     french: false,
     spanish: false,
     deutsch: false,
-    others: false,
+    others: false
   }
   allDict.oald.defaultUnfold = {
     english: false,
@@ -141,7 +164,7 @@ export function scholar (): ProfileStorage {
     french: false,
     spanish: false,
     deutsch: false,
-    others: false,
+    others: false
   }
   allDict.websterlearner.defaultUnfold = {
     english: false,
@@ -151,7 +174,7 @@ export function scholar (): ProfileStorage {
     french: false,
     spanish: false,
     deutsch: false,
-    others: false,
+    others: false
   }
   allDict.google.selectionWC.min = 5
   allDict.sogou.selectionWC.min = 5
@@ -159,12 +182,22 @@ export function scholar (): ProfileStorage {
   return { idItem, profile }
 }
 
-export function translation (): ProfileStorage {
+export function translation(): ProfileStorage {
   const idItem = getDefaultProfileID()
   idItem.name = '%%_translation_%%'
 
   const profile = getDefaultProfile(idItem.id) as ProfileMutable
-  profile.dicts.selected = ['google', 'tencent', 'sogou', 'baidu', 'caiyun', 'youdao', 'zdic', 'guoyu', 'liangan']
+  profile.dicts.selected = [
+    'google',
+    'tencent',
+    'sogou',
+    'baidu',
+    'caiyun',
+    'youdao',
+    'zdic',
+    'guoyu',
+    'liangan'
+  ]
   profile.mtaAutoUnfold = 'always'
 
   return { idItem, profile }
