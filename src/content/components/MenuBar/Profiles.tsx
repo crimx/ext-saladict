@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import i18next from 'i18next'
-import { CSSTransition } from 'react-transition-group'
+import CSSTransition from 'react-transition-group/CSSTransition'
 import {
   useObservable,
   useObservableCallback,
@@ -88,22 +88,24 @@ export const Profiles: FC<ProfilesProps> = props => {
           mountOnEnter={true}
           unmountOnExit={true}
         >
-          <div className="menuBar-ProfileBox">
-            <FloatBox
-              list={listItem}
-              onFocus={onFocusBlur}
-              onBlur={onFocusBlur}
-              onMouseOver={onMouseOverOut}
-              onMouseOut={onMouseOverOut}
-              onArrowUpFirst={container =>
-                (container.lastElementChild as HTMLButtonElement).focus()
-              }
-              onArrowDownLast={container =>
-                (container.firstElementChild as HTMLButtonElement).focus()
-              }
-              onSelect={updateActiveProfileID}
-            />
-          </div>
+          {() => (
+            <div className="menuBar-ProfileBox">
+              <FloatBox
+                list={listItem}
+                onFocus={onFocusBlur}
+                onBlur={onFocusBlur}
+                onMouseOver={onMouseOverOut}
+                onMouseOut={onMouseOverOut}
+                onArrowUpFirst={container =>
+                  (container.lastElementChild as HTMLButtonElement).focus()
+                }
+                onArrowDownLast={container =>
+                  (container.firstElementChild as HTMLButtonElement).focus()
+                }
+                onSelect={updateActiveProfileID}
+              />
+            </div>
+          )}
         </CSSTransition>
       )}
     </div>

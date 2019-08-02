@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react'
-import { CSSTransition } from 'react-transition-group'
+import CSSTransition from 'react-transition-group/CSSTransition'
+import SwitchTransition from 'react-transition-group/SwitchTransition'
 import { debounce } from 'rxjs/operators'
 import { timer } from 'rxjs'
 import { useObservableCallback, useSubscription } from 'observable-hooks'
@@ -60,29 +61,31 @@ export const MachineTrans: FC<
       </div>
 
       <div className="MachineTrans-LangSwitchWrap">
-        <button
-          className={`MachineTrans-LangSwitchBtn${
-            isShowLang ? '' : ' isActive'
-          }`}
-          onClick={() => setShowLang(true)}
-          onMouseOver={onMouseOverOut}
-          onMouseLeave={onMouseOverOut}
-        >
-          {t('machineTrans.switch')}
-        </button>
-        <CSSTransition
-          classNames="MachineTrans-LangSwitch"
-          in={isShowLang}
-          timeout={200}
-          appear
-          mountOnEnter
-          unmountOnExit
-        >
-          {renderLangSwitch}
-        </CSSTransition>
+        <SwitchTransition>
+          <CSSTransition
+            key={isShowLang ? 'select' : 'button'}
+            classNames="MachineTrans-LangSwitch"
+            timeout={100}
+          >
+            {isShowLang ? renderLangSwitch : renderLangSwitchBtn}
+          </CSSTransition>
+        </SwitchTransition>
       </div>
     </div>
   )
+
+  function renderLangSwitchBtn() {
+    return (
+      <button
+        className="MachineTrans-LangSwitchBtn"
+        onClick={() => setShowLang(true)}
+        onMouseOver={onMouseOverOut}
+        onMouseLeave={onMouseOverOut}
+      >
+        {t('machineTrans.switch')}
+      </button>
+    )
+  }
 
   function renderLangSwitch() {
     return (
