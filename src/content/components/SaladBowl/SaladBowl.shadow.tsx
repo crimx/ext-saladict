@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import root from 'react-shadow'
-import { CSSTransition } from 'react-transition-group'
+import CSSTransition from 'react-transition-group/CSSTransition'
 import { SaladBowl, SaladBowlProps } from './SaladBowl'
 
 export interface SaladBowlShadowProps extends SaladBowlProps {
