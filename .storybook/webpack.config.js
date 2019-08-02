@@ -9,14 +9,14 @@ const babelOptions = neutrino.config.module
   .use('babel')
   .get('options')
 
-babelOptions.plugins.push([
-  'babel-plugin-react-docgen-typescript',
-  {
-    docgenCollectionName: 'STORYBOOK_REACT_CLASSES',
-    include: 'components.*\\.tsx$',
-    exclude: '__mocks__|(\\.stories\\.tsx$)'
-  }
-])
+// babelOptions.plugins.push([
+//   'babel-plugin-react-docgen-typescript',
+//   {
+//     docgenCollectionName: 'STORYBOOK_REACT_CLASSES',
+//     include: 'components.*\\.tsx$',
+//     exclude: '__mocks__|(\\.stories\\.tsx$)'
+//   }
+// ])
 
 module.exports = ({ config }) => {
   config.module.rules.push({
@@ -25,8 +25,18 @@ module.exports = ({ config }) => {
   })
   config.module.rules.push({
     test: /\.(ts|tsx)$/,
-    loader: require.resolve('babel-loader'),
-    options: babelOptions
+    use: [
+      {
+        loader: require.resolve('babel-loader'),
+        options: babelOptions
+      },
+      {
+        loader: require.resolve('react-docgen-typescript-loader'),
+        options: {
+          tsconfigPath: path.join(__dirname, '../tsconfig.json')
+        }
+      }
+    ]
   })
   config.module.rules.push({
     oneOf: [
