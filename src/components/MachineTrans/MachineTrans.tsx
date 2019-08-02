@@ -52,9 +52,7 @@ export const MachineTrans: FC<
         ) : (
           <div>
             <details>
-              <summary onClick={props.recalcBodyHeight}>
-                {t('machineTrans.stext')}
-              </summary>
+              <summary>{t('machineTrans.stext')}</summary>
               <TText source={searchText} />
             </details>
           </div>
@@ -79,8 +77,6 @@ export const MachineTrans: FC<
           appear
           mountOnEnter
           unmountOnExit
-          onEntered={props.recalcBodyHeight}
-          onExited={props.recalcBodyHeight}
         >
           {renderLangSwitch}
         </CSSTransition>
