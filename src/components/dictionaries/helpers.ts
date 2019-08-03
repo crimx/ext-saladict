@@ -4,6 +4,10 @@ import { DictID, AppConfig } from '@/app-config'
 import { Profile } from '@/app-config/profiles'
 import { Word } from '@/_helpers/record-manager'
 import { chsToChz } from '@/_helpers/chs-to-chz'
+import { useEffect, useRef } from 'react'
+import { useSubscription, useObservableCallback } from 'observable-hooks'
+import { debounceTime, map, tap } from 'rxjs/operators'
+import { Observable } from 'rxjs'
 
 /** Fetch and parse dictionary search result */
 export interface SearchFunction<Result, Payload = {}> {
@@ -262,4 +266,43 @@ export function getFullLink(host: string, el: Element, attr: string): string {
   }
 
   return host + '/' + link
+}
+
+/**
+ * Vertically scroll a list of items
+ * React event listener doesn't support passive arguemnt.
+ */
+export const useVerticalScroll = <T extends HTMLElement>() => {
+  const [onWheel, onWHeel$] = useObservableCallback(_useVerticalScrollOnWheel)
+  useSubscription(onWHeel$)
+
+  const tabsRef = useRef<T>(null)
+  useEffect(() => {
+    if (tabsRef.current) {
+      // take the node out for cleaning up
+      const node = tabsRef.current
+      node.addEventListener('wheel', onWheel, { passive: false })
+      return () => {
+        node.removeEventListener('wheel', onWheel)
+      }
+    }
+  }, [tabsRef.current])
+
+  return tabsRef
+}
+function _useVerticalScrollOnWheel(event$: Observable<WheelEvent>) {
+  return event$.pipe(
+    map(e => {
+      e.stopPropagation()
+      e.preventDefault()
+      return [e.currentTarget, e.deltaY] as [HTMLElement, number]
+    }),
+    debounceTime(80),
+    tap(([node, deltaY]) => {
+      node.scrollBy({
+        left: deltaY > 0 ? 250 : -250,
+        behavior: 'smooth'
+      })
+    })
+  )
 }
