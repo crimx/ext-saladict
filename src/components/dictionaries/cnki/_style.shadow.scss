@@ -1,6 +1,6 @@
-.dictCNKI {
-  padding-top: 1em;
-}
+@import '@/_sass_global/_reset.scss';
+@import '@/components/Speaker/Speaker.scss';
+@import '@/components/EntryBox/EntryBox.scss';
 
 .dictCNKI-DictLink {
   display: inline-block; // keep in one line
@@ -14,10 +14,10 @@
     padding-left: 2em;
   }
 
-  p:nth-of-type(2n+1) {
+  p:nth-of-type(2n + 1) {
     margin-bottom: 0;
 
-    &+p {
+    & + p {
       margin-top: 0;
     }
 
