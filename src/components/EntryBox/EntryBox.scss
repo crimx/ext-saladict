@@ -1,6 +1,10 @@
 .entryBox-Wrap {
+  padding-top: 0.8em;
+}
+
+.entryBox {
   position: relative;
-  border: 1px solid #333;
+  border: 1px solid var(--panel-color);
   margin-bottom: 1em;
   padding: 1em 5px 5px 5px;
 }
@@ -12,5 +16,5 @@
   transform: translateY(-50%);
   padding: 0 5px;
   font-size: 1.2em;
-  background: #fff;
+  background: var(--panel-background-color);
 }
