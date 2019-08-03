@@ -97,14 +97,17 @@ export function getText(
   toChz?: boolean,
   selector?: string
 ): string
-export function getText(parent: ParentNode, ...args): string {
+export function getText(
+  parent: ParentNode,
+  ...args: [string?, boolean?] | [boolean?, string?]
+): string {
   let selector = ''
   let toChz = false
-  for (let i = args.length; i >= 0; i--) {
+  for (let i = args.length - 1; i >= 0; i--) {
     if (typeof args[i] === 'string') {
-      selector = args[i]
+      selector = args[i] as string
     } else if (typeof args[i] === 'boolean') {
-      toChz = args[i]
+      toChz = args[i] as boolean
     }
   }
 
@@ -112,128 +115,97 @@ export function getText(parent: ParentNode, ...args): string {
   if (!child) {
     return ''
   }
+
   const textContent = child['textContent'] || ''
   return toChz ? chsToChz(textContent) : textContent
 }
 
-interface GetHTML {
-  (parent: ParentNode, selector?: string, toChz?: boolean): HTMLString
-  (parent: ParentNode, toChz?: boolean, selector?: string): HTMLString
+export interface GetHTMLConfig {
+  /** innerHTML or outerHTML */
+  mode?: 'innerHTML' | 'outerHTML'
+  /** Select child node */
+  selector?: string
+  /** to traditional Chinese */
+  toChz?: boolean
+  /** Give url and src a host */
+  host?: string
+  /** DOM Purify config */
+  config?: DOMPurify.Config
 }
 
-/**
- * Return a function that can get inner HTML from a node or its child.
- *
- * @param host - repleace the relative href
- * @param DOMPurifyConfig - config for DOM Purify
- */
-export function getInnerHTMLBuilder(): GetHTML
-export function getInnerHTMLBuilder(DOMPurifyConfig: DOMPurify.Config): GetHTML
-export function getInnerHTMLBuilder(host: string): GetHTML
-export function getInnerHTMLBuilder(
+const defaultDOMPurifyConfig: DOMPurify.Config = {
+  FORBID_TAGS: ['style'],
+  FORBID_ATTR: ['style']
+}
+
+export function getHTML(
+  parent: ParentNode,
+  {
+    mode = 'innerHTML',
+    selector,
+    toChz,
+    host,
+    config = defaultDOMPurifyConfig
+  }: GetHTMLConfig = {}
+): string {
+  const node = selector ? parent.querySelector<HTMLElement>(selector) : parent
+  if (!node) {
+    return ''
+  }
+
+  if (host) {
+    const getFullLink = getFullLinkBuilder(host)
+
+    function fillLink(el: HTMLElement) {
+      el.setAttribute('href', getFullLink(el, 'href'))
+      el.setAttribute('src', getFullLink(el, 'src'))
+    }
+
+    if (node['tagName'] === 'A' || node['tagName'] === 'IMG') {
+      fillLink(node as HTMLElement)
+    }
+    node.querySelectorAll('a').forEach(fillLink)
+    node.querySelectorAll('img').forEach(fillLink)
+  }
+
+  const purifyResult = DOMPurify.sanitize((node as unknown) as Node, config)
+
+  const content =
+    typeof purifyResult === 'string'
+      ? purifyResult
+      : purifyResult[mode]
+      ? purifyResult[mode]
+      : purifyResult.firstElementChild
+      ? purifyResult.firstElementChild.outerHTML
+      : ''
+
+  return toChz ? chsToChz(content) : content
+}
+
+export function getInnerHTML(
   host: string,
-  DOMPurifyConfig: DOMPurify.Config
-): GetHTML
-export function getInnerHTMLBuilder(
-  ...args: [] | [string] | [DOMPurify.Config] | [string, DOMPurify.Config]
+  parent: ParentNode,
+  selectorOrConfig: string | Omit<GetHTMLConfig, 'mode' | 'host'> = {}
 ) {
-  return getHTMLBuilder('innerHTML', args)
+  return getHTML(
+    parent,
+    typeof selectorOrConfig === 'string'
+      ? { selector: selectorOrConfig, host, mode: 'innerHTML' }
+      : { ...selectorOrConfig, host, mode: 'innerHTML' }
+  )
 }
 
-/**
- * Return a function that can get outer HTML from a node or its child.
- *
- * @param host - repleace the relative href
- * @param DOMPurifyConfig - config for DOM Purify
- */
-export function getOuterHTMLBuilder(): GetHTML
-export function getOuterHTMLBuilder(DOMPurifyConfig: DOMPurify.Config): GetHTML
-export function getOuterHTMLBuilder(host: string): GetHTML
-export function getOuterHTMLBuilder(
+export function getOuterHTML(
   host: string,
-  DOMPurifyConfig: DOMPurify.Config
-): GetHTML
-export function getOuterHTMLBuilder(
-  ...args: [] | [string] | [DOMPurify.Config] | [string, DOMPurify.Config]
+  parent: ParentNode,
+  selectorOrConfig: string | Omit<GetHTMLConfig, 'mode' | 'host'> = {}
 ) {
-  return getHTMLBuilder('outerHTML', args)
-}
-
-function getHTMLBuilder(
-  location: string,
-  args: [] | [string] | [DOMPurify.Config] | [string, DOMPurify.Config]
-): GetHTML {
-  let host: string = typeof args[0] === 'string' ? (args.shift() as string) : ''
-  let DOMPurifyConfig: DOMPurify.Config =
-    Object(args[0]) === args[0]
-      ? (args.shift() as DOMPurify.Config)
-      : {
-          FORBID_TAGS: ['style'],
-          FORBID_ATTR: ['style']
-        }
-
-  if (host.endsWith('/')) {
-    host = host.slice(0, -1)
-  }
-
-  const protocol = host.startsWith('https') ? 'https:' : 'http:'
-
-  function fillLink(el: HTMLElement) {
-    ;['href', 'src'].forEach(attr => {
-      const url = el.getAttribute(attr)
-      if (url) {
-        if (url.startsWith('//')) {
-          el.setAttribute(attr, protocol + url)
-        } else if (url.startsWith('/')) {
-          el.setAttribute(attr, host + url)
-        } else if (!url.startsWith('http')) {
-          el.setAttribute(attr, host + '/' + url)
-        }
-      }
-    })
-  }
-
-  const getHTML: GetHTML = (
-    parent: ParentNode,
-    ...args: [string?, boolean?] | [boolean?, string?]
-  ): HTMLString => {
-    let selector = ''
-    let toChz = false
-    for (let i = args.length - 1; i >= 0; i--) {
-      if (typeof args[i] === 'string') {
-        selector = args[i] as string
-      } else if (typeof args[i] === 'boolean') {
-        toChz = args[i] as boolean
-      }
-    }
-
-    const child = selector ? parent.querySelector(selector) : parent
-    if (!child) {
-      return ''
-    }
-
-    if (child['tagName'] === 'A' || child['tagName'] === 'IMG') {
-      fillLink(child as HTMLElement)
-    }
-    child.querySelectorAll('a').forEach(fillLink)
-    child.querySelectorAll('img').forEach(fillLink)
-
-    let purifyResult = DOMPurify.sanitize(
-      child[location] || '',
-      DOMPurifyConfig
-    ) as ReturnType<typeof DOMPurify.sanitize>
-    let content =
-      typeof purifyResult === 'string'
-        ? purifyResult
-        : purifyResult['outerHTML']
-        ? purifyResult['outerHTML']
-        : purifyResult.firstElementChild
-        ? purifyResult.firstElementChild.outerHTML
-        : ''
-    return toChz ? chsToChz(content) : content
-  }
-
-  return getHTML
+  return getHTML(
+    parent,
+    typeof selectorOrConfig === 'string'
+      ? { selector: selectorOrConfig, host, mode: 'outerHTML' }
+      : { ...selectorOrConfig, host, mode: 'outerHTML' }
+  )
 }
 
 /**
