@@ -74,6 +74,8 @@ export function withSaladictPanel(children: React.ReactNode) {
     const height = number('Panel Height', 450 * 1.68)
     const withAnimation = boolean('Enable Animation', true)
     const fontSize = number('Panel Font Size', 13)
+    const color = text('Panel Color', '#333')
+    const backgroundColor = text('Panel Background Color', '#fff')
 
     return (
       <root.div style={{ width, margin: '10px auto' }}>
@@ -83,10 +85,12 @@ export function withSaladictPanel(children: React.ReactNode) {
           style={{
             fontSize,
             width,
+            color,
+            backgroundColor,
             '--panel-width': `${width}px`,
             '--panel-height': `${height}px`,
-            '--panel-color': text('Panel Color', '#333'),
-            '--panel-background-color': text('Panel Background Color', '#fff')
+            '--panel-color': color,
+            '--panel-background-color': backgroundColor
           }}
         >
           {children}
