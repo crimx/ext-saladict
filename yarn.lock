@@ -9543,10 +9543,10 @@ object.values@^1.1.0:
     function-bind "^1.1.1"
     has "^1.0.3"
 
-observable-hooks@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/observable-hooks/-/observable-hooks-1.0.1.tgz#2fcc3ad5b96967e64fd59335e6472dd02a7d120c"
-  integrity sha512-IQC4HMlJjk7tsSPBx0lNkUlQxNql1ulZ5NVUVSVszrDug4lAvw/HBQSR9Bck7CPEI9t2C+08Yj76vepCrK45UQ==
+observable-hooks@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/observable-hooks/-/observable-hooks-1.0.2.tgz#f3f121ed78d9297c9a16c97fbb1dff19f5985078"
+  integrity sha512-ufNvAM6mdt2n6A1dr9xBWOabYj26s1BS5kh+RkOuvr0/FeEC+G/I8sZjSdkM3QZtBERlKqxYUeAy8hK7/Qfokw==
 
 obuf@^1.0.0, obuf@^1.1.2:
   version "1.1.2"
@@ -10730,10 +10730,10 @@ react-resize-detector@^4.0.5:
     raf-schd "^4.0.0"
     resize-observer-polyfill "^1.5.1"
 
-react-resize-reporter@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/react-resize-reporter/-/react-resize-reporter-0.1.0.tgz#2dd078f2610f7a7e9f1e549d757bcfbeaf6d064a"
-  integrity sha512-M02uIxklkXIyIZ27AMXC57Bs6Qdvu5VH2skL17hEutTyMtuRnN3n0ASy/r9fYwqG1ebMlOgZ47OeHk3ZPcDtAA==
+react-resize-reporter@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/react-resize-reporter/-/react-resize-reporter-0.1.3.tgz#a3992944a370f4f2d434beace007d48475edbd71"
+  integrity sha512-5OIoh15typqzT/3Khv+YDBQ5uDvUIc/w95bTETONnO9XQ0IP2T7hdTKqkjP+waDxNXNirRt6NknA6brogLwQAQ==
 
 react-select@^2.2.0:
   version "2.4.4"
