@@ -1,20 +1,24 @@
-import React from 'react'
+import React, { FC, ComponentProps } from 'react'
 
-export interface EntryBoxProps {
-  title: React.ReactNode
-  className?: string
-  style?: React.CSSProperties
+export interface EntryBoxProps extends ComponentProps<'div'> {
+  title: string
 }
 
-const EntryBox: React.SFC<EntryBoxProps> = props => {
+/**
+ * Box-wrapped content
+ */
+export const EntryBox: FC<EntryBoxProps> = props => {
+  const { title, className, children, ...restProps } = props
   return (
-    <section
-      className={`entryBox-Wrap${props.className ? ` ${props.className}` : ''}`}
-      style={props.style}
+    <div
+      className={`entryBox-Wrap${className ? ` ${className}` : ''}`}
+      {...restProps}
     >
-      <h1 className='entryBox-Title'>{props.title}</h1>
-      <div>{props.children}</div>
-    </section>
+      <section className="entryBox">
+        <h1 className="entryBox-Title">{title}</h1>
+        <div>{children}</div>
+      </section>
+    </div>
   )
 }
 
