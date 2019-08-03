@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, ComponentProps } from 'react'
 import { message } from '@/_helpers/browser-api'
 import {
   useObservableCallback,
@@ -73,7 +73,9 @@ export default React.memo(Speaker)
 /**
  * Listens to HTML injected Speakers in childern
  */
-export const StaticSpeakerContainer: FC = props => {
+export const StaticSpeakerContainer: FC<
+  Omit<ComponentProps<'div'>, 'onClick'>
+> = props => {
   const [onClick, clickEvent$] = useObservableCallback<
     any,
     React.MouseEvent<HTMLDivElement>
@@ -111,7 +113,11 @@ export const StaticSpeakerContainer: FC = props => {
 
   useSubscription(clickEvent$)
 
-  return <div onClick={onClick}>{props.children}</div>
+  return (
+    <div onClick={onClick} {...props}>
+      {props.children}
+    </div>
+  )
 }
 
 /**
@@ -119,7 +125,7 @@ export const StaticSpeakerContainer: FC = props => {
  */
 export const getStaticSpeaker = (src?: string | null) => {
   if (!src) {
-    return null
+    return ''
   }
 
   const $a = document.createElement('a')
