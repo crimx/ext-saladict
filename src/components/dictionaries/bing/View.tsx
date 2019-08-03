@@ -25,7 +25,7 @@ export default DictBing
 
 function renderLex(result: BingResultLex) {
   return (
-    <div className="dictBing">
+    <>
       <h1 className="dictBing-Title">{result.title}</h1>
 
       {result.phsym && (
@@ -80,21 +80,17 @@ function renderLex(result: BingResultLex) {
           ))}
         </ol>
       )}
-    </div>
+    </>
   )
 }
 
 function renderMachine(result: BingResultMachine) {
-  return (
-    <div className="dictBing">
-      <p>{result.mt}</p>
-    </div>
-  )
+  return <p>{result.mt}</p>
 }
 
 function renderRelated(result: BingResultRelated) {
   return (
-    <div className="dictBing">
+    <>
       <h1 className="dictBing-Related_Title">{result.title}</h1>
       {result.defs.map(def => (
         <React.Fragment key={def.title}>
@@ -116,6 +112,6 @@ function renderRelated(result: BingResultRelated) {
           </ul>
         </React.Fragment>
       ))}
-    </div>
+    </>
   )
 }

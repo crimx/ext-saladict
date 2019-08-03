@@ -56,7 +56,9 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
                 }`}
             </style>
             <div
-              className={`dictRoot${props.withAnimation ? ' isAnimate' : ''}`}
+              className={`d-${props.dictID} dictRoot${
+                props.withAnimation ? ' isAnimate' : ''
+              }`}
             >
               <Dict result={props.searchResult} searchText={props.searchText} />
             </div>
