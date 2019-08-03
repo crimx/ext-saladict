@@ -1,6 +1,6 @@
 import { MockRequest } from '@/components/dictionaries/helpers'
 
-export const mockSearchTexts = ['collin source', 'ciba source']
+export const mockSearchTexts = ['source1', 'source2']
 
 export const mockRequest: MockRequest = mock => {
   mock
