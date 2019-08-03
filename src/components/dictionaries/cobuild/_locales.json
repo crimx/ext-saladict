@@ -6,9 +6,16 @@
   },
   "options": {
     "cibaFirst": {
-      "en": "Prefer bilingual dictionary (unstable)",
-      "zh-CN": "优先查双语词典（源服务器不稳定，解释没全英丰富）",
-      "zh-TW": "優先查雙語詞典（源伺服器不穩定，解釋沒全英豐富）"
+      "en": "Prefer bilingual dictionary",
+      "zh-CN": "优先查双语词典",
+      "zh-TW": "優先查雙語詞典"
+    }
+  },
+  "helps": {
+    "cibaFirst": {
+      "en": "Bilingual server is less stable",
+      "zh-CN": "双语词典服务器不稳定，解释没全英丰富",
+      "zh-TW": "雙語詞典伺服器不穩定，解釋沒全英豐富"
     }
   }
 }

@@ -1,3 +1,6 @@
+@import '@/_sass_global/_reset.scss';
+@import '@/components/Speaker/Speaker.scss';
+
 .dictCOBUILD-Title {
   font-size: 1.5em;
   font-weight: bold;
@@ -76,7 +79,8 @@
     text-align: center;
   }
 
-  ol,ul {
+  ol,
+  ul {
     list-style-type: none;
   }
 
@@ -84,10 +88,12 @@
     quotes: none;
   }
 
-  input,button,select {
+  input,
+  button,
+  select {
     font-size: inherit;
     color: inherit;
-    padding: .5em;
+    padding: 0.5em;
     border: solid 1px #c3c3c3;
   }
 
@@ -117,8 +123,9 @@
     margin: 0 auto;
   }
 
-  .clear:before,.clear:after {
-    content: " ";
+  .clear:before,
+  .clear:after {
+    content: ' ';
     display: block;
     height: 0;
     overflow: hidden;
@@ -133,7 +140,7 @@
   }
 
   .discrete {
-    font-size: .85em;
+    font-size: 0.85em;
     color: #888;
   }
 
@@ -154,7 +161,9 @@
     margin-right: auto;
   }
 
-  .topslot_container,#ad_rightslot,#ad_rightslot2 {
+  .topslot_container,
+  #ad_rightslot,
+  #ad_rightslot2 {
     margin-bottom: 20px;
   }
 
@@ -174,16 +183,17 @@
     break-inside: avoid;
   }
 
-  .content-box h2,.content-box .h2 {
-    margin-bottom: .5em;
+  .content-box h2,
+  .content-box .h2 {
+    margin-bottom: 0.5em;
   }
 
   .content-box .view_more a {
-    opacity: .7;
+    opacity: 0.7;
     text-decoration: none;
     margin-top: 1em;
     display: block;
-    font-size: .8em;
+    font-size: 0.8em;
   }
 
   .lsw {
@@ -195,7 +205,7 @@
   }
 
   .lsw[data-type='trends'] a {
-    margin-left: .5em;
+    margin-left: 0.5em;
   }
 
   .lsw[data-type='trends'] .percentVariation .icon-fiber_new {
@@ -220,7 +230,7 @@
   }
 
   .lsw[data-type='trends'] .lsw_title {
-    margin-bottom: .3em;
+    margin-bottom: 0.3em;
   }
 
   .lsw .lsw_title i {
@@ -252,7 +262,7 @@
   }
 
   .lsw .lsw_list span {
-    font-size: .7em;
+    font-size: 0.7em;
     color: grey;
   }
 
@@ -273,7 +283,8 @@
     padding: 0;
   }
 
-  .lgg h2,.lgg .margin {
+  .lgg h2,
+  .lgg .margin {
     color: #333;
     text-align: center;
     padding: 21px 5px;
@@ -285,28 +296,28 @@
     margin-bottom: 5px;
     text-align: center;
     padding: 10px;
-    border: 1px solid rgba(216,216,216,0.7);
+    border: 1px solid rgba(216, 216, 216, 0.7);
     border-radius: 5px;
     background-color: #e5ebf3;
     display: block;
   }
 
   .lgg a:hover {
-    border: 1px solid rgba(144,144,144,0.7);
-    background-color: rgba(187,183,183,0.37);
+    border: 1px solid rgba(144, 144, 144, 0.7);
+    background-color: rgba(187, 183, 183, 0.37);
   }
 
   .def-dict {
     text-decoration: none;
     display: block;
-    box-shadow: 0 0 3px rgba(0,0,0,0.2);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
     background: #e5ebf3;
     color: #194885;
   }
 
   .def-dict-title {
     font-size: 1.6em;
-    margin: .5em 0 1em 0;
+    margin: 0.5em 0 1em 0;
     font-weight: bold;
   }
 
@@ -325,7 +336,7 @@
   .toc {
     padding: 0 10px;
     text-align: center;
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
   }
 
   .toc-group {
@@ -387,7 +398,7 @@
   .dc .cobuild-logo.partner {
     width: 200px;
     background-image: url(https://www.collinsdictionary.com/external/images/cobuild-word-partner.png?version=3.1.211);
-    margin-right: .5em;
+    margin-right: 0.5em;
     margin-top: 10px;
   }
 
@@ -405,7 +416,7 @@
   }
 
   .dc .expandable-list {
-    padding: .1em;
+    padding: 0.1em;
   }
 
   .dc .content-box {
@@ -417,7 +428,7 @@
   }
 
   .dc .content-box-header:after {
-    content: " ";
+    content: ' ';
     display: block;
     clear: both;
   }
@@ -427,13 +438,16 @@
     padding: 0.5em 15px;
   }
 
-  .cdet .dc .content-box .content-box-header,.dc .content .content-box-header {
+  .cdet .dc .content-box .content-box-header,
+  .dc .content .content-box-header {
     background: 0;
     padding: 0;
     margin: 0;
   }
 
-  .dc .content-box-definition.cobuild .content-box-header,.dc .content-box-collocation.cobuild .content-box-header,.dc .content-box-learners .content-box-header {
+  .dc .content-box-definition.cobuild .content-box-header,
+  .dc .content-box-collocation.cobuild .content-box-header,
+  .dc .content-box-learners .content-box-header {
     background: #ccedf0;
   }
 
@@ -493,7 +507,7 @@
 
   .dc .h2_entry {
     font-size: 1.4em;
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
   }
 
   .dc .content-box-definition h2.h2_entry {
@@ -506,26 +520,38 @@
   }
 
   .dc .definitions .thes {
-    margin-top: .8em;
+    margin-top: 0.8em;
   }
 
-  .dc .example_box,.dc ol li,.dc .thesaurus_synonyms,.verbtable_content .headword_link,.dc .link-right.verbtable {
+  .dc .example_box,
+  .dc ol li,
+  .dc .thesaurus_synonyms,
+  .verbtable_content .headword_link,
+  .dc .link-right.verbtable {
     margin-bottom: 1em;
   }
 
   .dc .h3_entry {
     font-size: 1.3em;
-    margin: .5em 0;
+    margin: 0.5em 0;
   }
 
   .dc .sense_list .scbold {
     display: block;
     font-style: italic;
-    font-family: "Times New Roman",Times,serif;
+    font-family: 'Times New Roman', Times, serif;
     border-bottom: 1px dotted #c5c5c5;
   }
 
-  .dc strong,.dc .content-box-synonyms .firstSyn,.dc .content-box-nearby-words .current,.dc .cit-type-example .orth,.dc .mini_h2 .orth,.dc .example_box .author,.dc .thesaurus_synonyms .synonym:first-of-type,.dc .content-box-translation .phr,.dc .blackbold {
+  .dc strong,
+  .dc .content-box-synonyms .firstSyn,
+  .dc .content-box-nearby-words .current,
+  .dc .cit-type-example .orth,
+  .dc .mini_h2 .orth,
+  .dc .example_box .author,
+  .dc .thesaurus_synonyms .synonym:first-of-type,
+  .dc .content-box-translation .phr,
+  .dc .blackbold {
     font-weight: bold;
   }
 
@@ -539,13 +565,13 @@
 
   .dc .def {
     font-size: 1.15em;
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
     line-height: 1.5em;
   }
 
   .dc .sensenumdef .def {
     font-size: 1.1em;
-    margin: .5em 0;
+    margin: 0.5em 0;
   }
 
   .dc .hom ol ol {
@@ -561,7 +587,11 @@
     padding-top: 12px;
   }
 
-  .dc .lbl.type-register,.dc .lbl.misc,.dc .colloc,.dc #synonyms_content .thesaurus_synonyms .lbl,.dc #synonyms_content .thesaurus_synonyms .misc {
+  .dc .lbl.type-register,
+  .dc .lbl.misc,
+  .dc .colloc,
+  .dc #synonyms_content .thesaurus_synonyms .lbl,
+  .dc #synonyms_content .thesaurus_synonyms .misc {
     font-style: italic;
   }
 
@@ -569,7 +599,8 @@
     font-variant: small-caps;
   }
 
-  .school .form.type-drv .orth,.school .form.type-phrasalverb .orth {
+  .school .form.type-drv .orth,
+  .school .form.type-phrasalverb .orth {
     font-weight: bold;
     font-size: 1.1em;
   }
@@ -578,29 +609,30 @@
     display: inline-block;
     position: relative;
     vertical-align: middle;
-    letter-spacing: .001em;
+    letter-spacing: 0.001em;
     text-align: center;
     padding-left: 3px;
     padding-right: 3px;
-    font-size: .7em;
+    font-size: 0.7em;
     line-height: 1.1em;
   }
 
-  .school .fraction>span {
+  .school .fraction > span {
     display: none;
-    padding: 0 .2em;
+    padding: 0 0.2em;
   }
 
-  .school .fraction>.denominator {
+  .school .fraction > .denominator {
     border-top: thin solid black;
   }
 
-  .school .fraction>.numerator,.school .fraction>.denominator {
+  .school .fraction > .numerator,
+  .school .fraction > .denominator {
     display: block;
   }
 
   .dc .lbl.type-syntax {
-    font-size: .8em;
+    font-size: 0.8em;
     color: #666;
   }
 
@@ -610,7 +642,8 @@
     margin-left: 2em;
   }
 
-  .dc ol.single,.dc ol ol.single {
+  .dc ol.single,
+  .dc ol ol.single {
     list-style-type: none;
   }
 
@@ -618,7 +651,8 @@
     display: inline-block;
   }
 
-  .dc .content-box-synonyms .extra-link,.dc .content-box-collocation .explore-collocation {
+  .dc .content-box-synonyms .extra-link,
+  .dc .content-box-collocation .explore-collocation {
     display: inline-block;
     margin-left: 1em;
   }
@@ -634,11 +668,16 @@
     margin: 0 5px 0 0;
   }
 
-  .dc .thesaurus_synonyms .firstSyn>a {
+  .dc .thesaurus_synonyms .firstSyn > a {
     text-decoration: none;
   }
 
-  .dc .ref.type-thesaurus,.dc .content-box-synonyms .thesaurus-link-plus,.dc .link-right.verbtable,.dc .extra-link,.dc .content-box-examples .button,.verbtable_content .headword_link {
+  .dc .ref.type-thesaurus,
+  .dc .content-box-synonyms .thesaurus-link-plus,
+  .dc .link-right.verbtable,
+  .dc .extra-link,
+  .dc .content-box-examples .button,
+  .verbtable_content .headword_link {
     background: rgba(229, 237, 247, 0.5);
     display: inline-block;
     padding: 2px 10px;
@@ -646,11 +685,12 @@
     text-decoration: none;
     display: inline-block;
     font-weight: bold;
-    font-size: .9em;
+    font-size: 0.9em;
     margin-top: 2px;
   }
 
-  .dc .h2_entry .dictname,.dc .h2_entry .lbl.type-misc {
+  .dc .h2_entry .dictname,
+  .dc .h2_entry .lbl.type-misc {
     font-size: 16px;
   }
 
@@ -678,11 +718,12 @@
     text-transform: lowercase;
   }
 
-  .dc .audio_play_button,.audio_play_button {
+  .dc .audio_play_button,
+  .audio_play_button {
     color: #ec2615;
     vertical-align: middle;
-    -webkit-transition: transform .2s,text-shadow .2s;
-    transition: transform .2s,text-shadow .2s;
+    -webkit-transition: transform 0.2s, text-shadow 0.2s;
+    transition: transform 0.2s, text-shadow 0.2s;
     border: 0;
   }
 
@@ -741,7 +782,7 @@
   .context-english-thesaurus .scbold {
     display: block;
     font-style: italic;
-    font-family: "Times New Roman",Times,serif;
+    font-family: 'Times New Roman', Times, serif;
     border-bottom: 0;
     margin-top: 15px;
     margin-bottom: 5px;
@@ -753,36 +794,53 @@
     font-size: smaller;
   }
 
-  .dc .content-box:after,.dc .dictionary .content:after {
+  .dc .content-box:after,
+  .dc .dictionary .content:after {
     content: '';
     clear: both;
     display: table;
   }
 
-  .dc .cit.type-quotation .quote,.dc .content-box-quotations .quote,.dc .content-box-examples .quote,.dc .content-box-thesaurus .quote {
+  .dc .cit.type-quotation .quote,
+  .dc .content-box-quotations .quote,
+  .dc .content-box-examples .quote,
+  .dc .content-box-thesaurus .quote {
     display: block;
     margin-top: 1em;
   }
 
-  .dc .cit.type-quotation .author,.dc .content-box-quotations .author,.dc .content-box-examples .author,.dc .content-box-thesaurus .author {
+  .dc .cit.type-quotation .author,
+  .dc .content-box-quotations .author,
+  .dc .content-box-examples .author,
+  .dc .content-box-thesaurus .author {
     font-weight: bold;
     font-style: italic;
-    font-size: .8em;
+    font-size: 0.8em;
   }
 
-  .dc .cit.type-quotation .title,.dc .content-box-quotations .title,.dc .content-box-examples .title,.dc .content-box-thesaurus .title {
+  .dc .cit.type-quotation .title,
+  .dc .content-box-quotations .title,
+  .dc .content-box-examples .title,
+  .dc .content-box-thesaurus .title {
     display: inline;
     font-variant: small-caps;
     font-style: italic;
-    font-size: .8em;
+    font-size: 0.8em;
   }
 
-  .dc .cit.type-quotation .year,.dc .content-box-quotations .year,.dc .content-box-examples .year,.dc .content-box-thesaurus .year {
-    font-size: .8em;
+  .dc .cit.type-quotation .year,
+  .dc .content-box-quotations .year,
+  .dc .content-box-examples .year,
+  .dc .content-box-thesaurus .year {
+    font-size: 0.8em;
     font-style: italic;
   }
 
-  .dc .content-box-syn-of-syns div.type-syn_of_syn_head .orth,.dc .thesbase .key,.context-dataset-english-thesaurus .author,.dc .rend-b,.headwordSense {
+  .dc .content-box-syn-of-syns div.type-syn_of_syn_head .orth,
+  .dc .thesbase .key,
+  .context-dataset-english-thesaurus .author,
+  .dc .rend-b,
+  .headwordSense {
     color: #1683be;
   }
 
@@ -804,7 +862,7 @@
 
   .dc .image .imageDescription {
     font-style: italic;
-    font-size: .8em;
+    font-size: 0.8em;
     padding: 0 5px;
   }
 
@@ -817,7 +875,7 @@
 
   .dc .example-info {
     font-style: italic;
-    font-size: .9em;
+    font-size: 0.9em;
   }
 
   .page {
@@ -825,7 +883,7 @@
   }
 
   .page .dictname {
-    font-size: .7em;
+    font-size: 0.7em;
   }
 
   .page .dictionary .copyright .i {
@@ -842,7 +900,18 @@
     display: none;
   }
 
-  .page .infls,.page .description,.page .title,.page .url,.page .summary,.page .og,.page .infls,.page .description,.page .title,.page .url,.page .summary,.page .og {
+  .page .infls,
+  .page .description,
+  .page .title,
+  .page .url,
+  .page .summary,
+  .page .og,
+  .page .infls,
+  .page .description,
+  .page .title,
+  .page .url,
+  .page .summary,
+  .page .og {
     display: block;
   }
 
@@ -855,11 +924,13 @@
     color: blue;
   }
 
-  .page .dictentry,.page .colloList {
+  .page .dictentry,
+  .page .colloList {
     margin-bottom: 20px;
   }
 
-  .page .assets_intro,.page .asset_intro {
+  .page .assets_intro,
+  .page .asset_intro {
     color: green;
     display: block;
     font-weight: bold;
@@ -883,14 +954,14 @@
   .page .cobuild .sense {
     margin-left: 0;
     margin-bottom: 0;
-    margin-top: .25em;
+    margin-top: 0.25em;
   }
 
   .page .dictionary .sense {
     display: block;
     margin-left: 1.5em;
-    margin-bottom: .5em;
-    margin-top: .5em;
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
   }
 
   .page .dictionary .sense.inline {
@@ -910,7 +981,8 @@
     display: none;
   }
 
-  .page .dictionary .subc,.page .dictionary .colloc {
+  .page .dictionary .subc,
+  .page .dictionary .colloc {
     font-style: italic;
     font-weight: normal;
   }
@@ -920,7 +992,11 @@
     color: black;
   }
 
-  .page .dictionary .b,.page .dictionary .form.type-infl .orth,.page .dictionary .form.type-drv .orth,.page .dictionary .hi.rend-b,.page .dictionary .emph {
+  .page .dictionary .b,
+  .page .dictionary .form.type-infl .orth,
+  .page .dictionary .form.type-drv .orth,
+  .page .dictionary .hi.rend-b,
+  .page .dictionary .emph {
     font-weight: bold;
   }
 
@@ -928,7 +1004,8 @@
     display: none;
   }
 
-  .page .dictionary .hi.rend-b,.page .dictionary .emph {
+  .page .dictionary .hi.rend-b,
+  .page .dictionary .emph {
     font-weight: bold;
   }
 
@@ -946,12 +1023,14 @@
     font-style: normal;
   }
 
-  .page .dictionary .sup,.page .dictionary .hi.rend-sup {
+  .page .dictionary .sup,
+  .page .dictionary .hi.rend-sup {
     vertical-align: super;
     font-size: smaller;
   }
 
-  .page .dictionary .sub,.page .dictionary .hi.rend-sub {
+  .page .dictionary .sub,
+  .page .dictionary .hi.rend-sub {
     vertical-align: sub;
     font-size: smaller;
   }
@@ -1011,7 +1090,8 @@
     color: #1c4b8b;
   }
 
-  .page span.italics,.page span.ital {
+  .page span.italics,
+  .page span.ital {
     font-style: italic;
   }
 
@@ -1027,15 +1107,18 @@
     color: #1683be;
   }
 
-  .page span.bold,.page .dictionary .cit.type-translation .pos,.page .dictionary .var {
+  .page span.bold,
+  .page .dictionary .cit.type-translation .pos,
+  .page .dictionary .var {
     font-style: bold;
   }
 
-  .dc a,.openerBig {
+  .dc a,
+  .openerBig {
     cursor: pointer;
     color: inherit;
     text-decoration: none;
-    border-bottom: dashed 1px rgba(0,0,0,.6);
+    border-bottom: dashed 1px rgba(0, 0, 0, 0.6);
   }
 
   label.openerBig {
@@ -1059,7 +1142,9 @@
     display: block;
   }
 
-  .page .dictionary .definitions,.page .dictionary .derivs,.page .dictionary .etyms {
+  .page .dictionary .definitions,
+  .page .dictionary .derivs,
+  .page .dictionary .etyms {
     margin-bottom: 1em;
   }
 
@@ -1071,7 +1156,7 @@
   .page .dictionary .scbold {
     font-weight: bold;
     text-transform: uppercase;
-    font-size: .8em;
+    font-size: 0.8em;
   }
 
   .page .dictionary .note .scbold {
@@ -1082,16 +1167,19 @@
     color: red;
   }
 
-  .page .dictionary .list,.page .dictionary .relwordgrp {
+  .page .dictionary .list,
+  .page .dictionary .relwordgrp {
     display: block;
     margin-left: 20px;
   }
 
-  .page .dictionary .listitem,.page .dictionary .relwordunit {
+  .page .dictionary .listitem,
+  .page .dictionary .relwordunit {
     display: list-item;
   }
 
-  .page .dictionary .type-syngrp,.page .dictionary .type-antgrp {
+  .page .dictionary .type-syngrp,
+  .page .dictionary .type-antgrp {
     display: block;
   }
 
@@ -1141,10 +1229,11 @@
   }
 
   .page .biling .lbl.type-tm_hw {
-    font-size: .78em;
+    font-size: 0.78em;
   }
 
-  .page .biling .lbl.type-infl span,.page .biling .lbl.type-infl {
+  .page .biling .lbl.type-infl span,
+  .page .biling .lbl.type-infl {
     font-style: normal;
     color: #1c4b8b;
     font-weight: normal;
@@ -1163,7 +1252,9 @@
     margin-left: 0;
   }
 
-  .page .hin .form.type-syn .orth,.page .hin .form.type-ant .orth,.page .hin .form.type-phr .orth {
+  .page .hin .form.type-syn .orth,
+  .page .hin .form.type-ant .orth,
+  .page .hin .form.type-phr .orth {
     font-weight: normal;
     font-size: 100%;
   }
@@ -1194,7 +1285,9 @@
     font-size: larger;
   }
 
-  .page .thesbase .table,.page .thesbase .bibl,.page .thesbase .cit.type-proverb {
+  .page .thesbase .table,
+  .page .thesbase .bibl,
+  .page .thesbase .cit.type-proverb {
     display: block;
   }
 
@@ -1250,10 +1343,10 @@
 
   .page .thesbase .link {
     text-decoration: underline;
-    font-family: "Open Sans",sans-serif;
+    font-family: 'Open Sans', sans-serif;
     background: #e5ebf3;
     color: #1c4b8b;
-    padding: .3em .8em;
+    padding: 0.3em 0.8em;
     margin: 5px 0;
     display: inline-block;
   }
@@ -1272,13 +1365,13 @@
     padding-bottom: 0;
   }
 
-  .page .thesbase .sensehead>.sensenum {
+  .page .thesbase .sensehead > .sensenum {
     float: none;
   }
 
   .page .thesbase .scbold {
     background: #efefef;
-    padding: .5em 22px;
+    padding: 0.5em 22px;
     margin: 2em 0 1em 0;
     font-weight: bold;
     font-size: 80%;
@@ -1290,12 +1383,13 @@
     display: inline-block;
   }
 
-  .page .content-box-syn-of-syns div.type-syn_of_syn_head .orth,.page .thesbase .key {
+  .page .content-box-syn-of-syns div.type-syn_of_syn_head .orth,
+  .page .thesbase .key {
     font-weight: bold;
     margin-right: 0;
     display: inline-block;
     margin-left: 0;
-    padding: .3em .3em;
+    padding: 0.3em 0.3em;
     border: 0;
     font-size: 1.1em;
     padding-left: 0;
@@ -1324,7 +1418,7 @@
 
   .page .thesbase .firstSyn {
     color: black;
-    font-size: .9em;
+    font-size: 0.9em;
   }
 
   .page .content-box-syn-of-syns .syns_head {
@@ -1335,7 +1429,8 @@
     line-height: 2.5em;
   }
 
-  .page .type-ant.columns3,.page .content-box-syn-of-syns .columns3 {
+  .page .type-ant.columns3,
+  .page .content-box-syn-of-syns .columns3 {
     -webkit-column-count: 3;
     -moz-column-count: 3;
     column-count: 3;
@@ -1350,32 +1445,44 @@
     margin: 1em;
   }
 
-  .pagination a.prev,.pagination a.next,.pagination a.page,.pagination span.page,.pagination p,.pagination p a {
-    padding: .3em .8em;
+  .pagination a.prev,
+  .pagination a.next,
+  .pagination a.page,
+  .pagination span.page,
+  .pagination p,
+  .pagination p a {
+    padding: 0.3em 0.8em;
     display: inline-block;
     text-decoration: none;
     font-weight: bold;
     border: 0;
   }
 
-  .pagination a.prev,.pagination a.next,.pagination a.page {
+  .pagination a.prev,
+  .pagination a.next,
+  .pagination a.page {
     background: #e5ebf3;
     color: #194885;
   }
 
-  .pagination span.page,.pagination p,.pagination p a {
+  .pagination span.page,
+  .pagination p,
+  .pagination p a {
     background: #194885;
     color: #e5ebf3;
   }
 
-  .page .content-box-syn-of-syns .lbl,.page .content-box-syn-of-syns .lbl span,.page .dictionary.thesbase .lbl,.page .dictionary.thesbase .lbl span {
+  .page .content-box-syn-of-syns .lbl,
+  .page .content-box-syn-of-syns .lbl span,
+  .page .dictionary.thesbase .lbl,
+  .page .dictionary.thesbase .lbl span {
     font-style: italic;
     color: green;
   }
 
   .page .dictionary.thesbase .sensebody {
     display: block;
-    margin: .5em 0 .5em 6px;
+    margin: 0.5em 0 0.5em 6px;
   }
 
   .page .thesbase span.bold {
@@ -1383,11 +1490,11 @@
   }
 
   .page .thesbase span.kerntouch {
-    letter-spacing: -.18em;
+    letter-spacing: -0.18em;
   }
 
   .page .thesbase span.kern60 {
-    letter-spacing: -.60em;
+    letter-spacing: -0.6em;
   }
 
   .page .thesbase span.manualdiacritic {
@@ -1468,13 +1575,15 @@
     display: block;
   }
 
-  .page .thesbase .cit.type-quotation>.quote,.page .thesbase .cit.type-proverb>.quote,.page .thesbase .cit.type-quotation>.bibl {
+  .page .thesbase .cit.type-quotation > .quote,
+  .page .thesbase .cit.type-proverb > .quote,
+  .page .thesbase .cit.type-quotation > .bibl {
     display: block;
     margin-left: 1em;
     padding-left: 0;
   }
 
-  .page .thesbase>.re.type-phr .xr {
+  .page .thesbase > .re.type-phr .xr {
     font-weight: bold;
   }
 
@@ -1492,9 +1601,9 @@
     position: absolute;
     right: 0;
     top: -1em;
-    padding: .2em;
+    padding: 0.2em;
     padding-right: 1em;
-    background-color: rgba(164,189,212,.53);
+    background-color: rgba(164, 189, 212, 0.53);
   }
 
   .cdet .blockSyn {
@@ -1505,10 +1614,11 @@
     margin-left: 0;
   }
 
-  .cdet .page .dictionary .sense,.cdet .sense.moreSyn {
+  .cdet .page .dictionary .sense,
+  .cdet .sense.moreSyn {
     margin-left: 0;
-    margin-bottom: .5em;
-    padding-bottom: .5em;
+    margin-bottom: 0.5em;
+    padding-bottom: 0.5em;
     position: relative;
   }
 
@@ -1524,7 +1634,8 @@
     padding-left: 1.9em;
   }
 
-  .cdet .dictionary.thesbase .sensebody,.cdet div[data-type-block] .sense .sensebody {
+  .cdet .dictionary.thesbase .sensebody,
+  .cdet div[data-type-block] .sense .sensebody {
     margin: 0;
     display: block;
     overflow: hidden;
@@ -1534,10 +1645,11 @@
     padding-right: 1.9em;
     padding-left: 1.9em;
     line-height: 1.5em;
-    font-size: .9em;
+    font-size: 0.9em;
   }
 
-  .cdet .content-box-syn-of-syns div[data-type-block] .sense .def,.cdet .content-box-syn-of-syns div[data-type-block] .sense .syns_example {
+  .cdet .content-box-syn-of-syns div[data-type-block] .sense .def,
+  .cdet .content-box-syn-of-syns div[data-type-block] .sense .syns_example {
     margin: 0;
     display: block;
     overflow: hidden;
@@ -1545,34 +1657,37 @@
     white-space: nowrap;
     word-wrap: normal;
     line-height: 1.5em;
-    font-size: .9em;
+    font-size: 0.9em;
     padding-right: 0;
     padding-left: 0;
   }
 
-  .cdet .sensehead>.sensenum {
+  .cdet .sensehead > .sensenum {
     min-width: 1.9em;
     display: inline-block;
     text-align: center;
-    font-size: .9em;
+    font-size: 0.9em;
     color: #4d4e51;
   }
 
-  .cdet .dictionary .sense.opened,.cdet div[data-type-block] .sense.opened {
+  .cdet .dictionary .sense.opened,
+  .cdet div[data-type-block] .sense.opened {
     margin-left: 0;
     margin-bottom: 1em;
-    padding-bottom: .5em;
+    padding-bottom: 0.5em;
     cursor: auto;
     position: relative;
   }
 
-  .cdet .dictionary.thesbase .sense.opened .sensebody,.cdet div[data-type-block] .sense.opened .sensebody {
+  .cdet .dictionary.thesbase .sense.opened .sensebody,
+  .cdet div[data-type-block] .sense.opened .sensebody {
     overflow: auto;
     text-overflow: inherit;
     white-space: inherit;
   }
 
-  .cdet .toggleExample,.cdet .iconContainer {
+  .cdet .toggleExample,
+  .cdet .iconContainer {
     display: none;
   }
 
@@ -1590,13 +1705,15 @@
   }
 
   .cdet .content-box-syn-of-syns .sense.moreSyn {
-    margin-bottom: .5em;
+    margin-bottom: 0.5em;
   }
 
-  .cdet .form.type-syn .orth,.cdet .type-ant .orth,.cdet .syns_container .form.type-syn .orth {
+  .cdet .form.type-syn .orth,
+  .cdet .type-ant .orth,
+  .cdet .syns_container .form.type-syn .orth {
     background-color: transparent;
     border: 0;
-    font-size: .97em;
+    font-size: 0.97em;
     font-weight: bold;
     text-decoration: none;
     color: #4d4e51;
@@ -1604,19 +1721,20 @@
     display: inline-block;
   }
 
-  .cdet .dictionary .content,.cdet .form.type-syn {
+  .cdet .dictionary .content,
+  .cdet .form.type-syn {
     position: relative;
   }
 
   .cdet .titleTypeContainer {
-    font-size: .9em;
+    font-size: 0.9em;
   }
 
   .cdet .titleTypeContainer .titleType {
     font-size: 1.1em;
     color: #4d4e51;
     display: inline-block;
-    margin-top: .5em;
+    margin-top: 0.5em;
     font-weight: bold;
   }
 
@@ -1624,21 +1742,27 @@
     background-color: white;
   }
 
-  .cdet .sense .form *[class*="type"] {
-    font-size: .9em;
+  .cdet .sense .form *[class*='type'] {
+    font-size: 0.9em;
   }
 
   .cdet .titleTypeSubContainer {
-    margin-top: .5em;
+    margin-top: 0.5em;
     font-weight: bold;
-    font-size: .9em;
+    font-size: 0.9em;
   }
 
   .cdet .form.type-syn .titleTypeSubContainer {
     display: block;
   }
 
-  .cdet .sense.moreAnt .type-ant div,.cdet .form.type-syn .titleTypeSubContainer,.cdet .form.type-ant .titleTypeSubContainer,.cdet .form.type-ant,.cdet .blockAnt,.cdet .blockSyn,.cdet .blockAnt div {
+  .cdet .sense.moreAnt .type-ant div,
+  .cdet .form.type-syn .titleTypeSubContainer,
+  .cdet .form.type-ant .titleTypeSubContainer,
+  .cdet .form.type-ant,
+  .cdet .blockAnt,
+  .cdet .blockSyn,
+  .cdet .blockAnt div {
     display: inline;
   }
 
@@ -1646,8 +1770,9 @@
     position: relative;
   }
 
-  .cdet .form.type-syn .titleTypeSubContainer:after,.cdet .form.type-ant .titleTypeSubContainer:after {
-    content: ": ";
+  .cdet .form.type-syn .titleTypeSubContainer:after,
+  .cdet .form.type-ant .titleTypeSubContainer:after {
+    content: ': ';
     display: inline;
   }
 
@@ -1663,18 +1788,18 @@
   }
 
   .headerSensePos {
-    font-size: .9em;
+    font-size: 0.9em;
     color: #888;
     font-style: italic;
   }
 
-  .blockAnt .type-ant>div:before {
-    content: ", ";
+  .blockAnt .type-ant > div:before {
+    content: ', ';
     display: inline;
   }
 
-  .cdet .blockAnt .type-ant>div:first-child:before {
-    content: "";
+  .cdet .blockAnt .type-ant > div:first-child:before {
+    content: '';
     display: inline;
   }
 
@@ -1682,7 +1807,8 @@
     font-weight: normal;
   }
 
-  .cdet .type-ant,.cdet .content-box-syn-of-syns .syns_container {
+  .cdet .type-ant,
+  .cdet .content-box-syn-of-syns .syns_container {
     padding-left: 0;
     margin-left: 0;
   }
@@ -1694,16 +1820,21 @@
     position: relative;
   }
 
-  .cdet .content-box-comments,.cdet .content-box-origin,.cdet .content-box-nearby-words,.cdet .dictionary .content,.cdet .content-box-syn-of-syns {
+  .cdet .content-box-comments,
+  .cdet .content-box-origin,
+  .cdet .content-box-nearby-words,
+  .cdet .dictionary .content,
+  .cdet .content-box-syn-of-syns {
     border-left: none;
     box-shadow: none;
   }
 
-  .cdet .re.type-phr .xr,.cdet .content-box-nearby-words li {
+  .cdet .re.type-phr .xr,
+  .cdet .content-box-nearby-words li {
     margin-left: 0;
-    padding-left: .85em;
-    margin-bottom: .3em;
-    padding-bottom: .3em;
+    padding-left: 0.85em;
+    margin-bottom: 0.3em;
+    padding-bottom: 0.3em;
     display: block;
   }
 
@@ -1715,7 +1846,8 @@
     padding-left: 1em;
   }
 
-  .cdet .content-box-syn-of-syns .sense .def,.cdet .content-box-syn-of-syns .sense .syns_example {
+  .cdet .content-box-syn-of-syns .sense .def,
+  .cdet .content-box-syn-of-syns .sense .syns_example {
     margin: 0;
     display: block;
     overflow: hidden;
@@ -1723,7 +1855,7 @@
     white-space: nowrap;
     word-wrap: normal;
     line-height: 1.5em;
-    font-size: .9em;
+    font-size: 0.9em;
     color: #4d4e51;
   }
 
@@ -1731,7 +1863,9 @@
     font-style: italic;
   }
 
-  .cdet div[data-type-block] .sense.opened .sensebody,.cdet .content-box-syn-of-syns .sense.opened .def,.cdet .content-box-syn-of-syns .sense.opened .syns_example {
+  .cdet div[data-type-block] .sense.opened .sensebody,
+  .cdet .content-box-syn-of-syns .sense.opened .def,
+  .cdet .content-box-syn-of-syns .sense.opened .syns_example {
     overflow: auto;
     white-space: normal;
   }
@@ -1740,23 +1874,24 @@
     margin-top: 0;
   }
 
-  .cdet .cit.type-quotation>.bibl {
-    font-size: .85em;
+  .cdet .cit.type-quotation > .bibl {
+    font-size: 0.85em;
   }
 
   .cdet .cit.type-quotation {
     margin-left: 0;
-    margin-bottom: .3em;
-    padding-bottom: .3em;
+    margin-bottom: 0.3em;
+    padding-bottom: 0.3em;
   }
 
-  .cdet .re.type-phr>.titleTypeContainer,.cdet .cit.type-quotation>.titleTypeContainer {
+  .cdet .re.type-phr > .titleTypeContainer,
+  .cdet .cit.type-quotation > .titleTypeContainer {
     margin-bottom: 1em;
   }
 
-  .cdet .cit.type-quotation>.quote {
+  .cdet .cit.type-quotation > .quote {
     line-height: 1.3em;
-    margin-bottom: .3em;
+    margin-bottom: 0.3em;
   }
 
   .cdet .syns_example .cit.type-example {
@@ -1765,7 +1900,8 @@
     white-space: inherit;
   }
 
-  .cdet .cit.type-quotation .title,.cdet .cit.type-quotation .author {
+  .cdet .cit.type-quotation .title,
+  .cdet .cit.type-quotation .author {
     font-size: inherit;
   }
 
@@ -1775,11 +1911,11 @@
 
   .cdet .dictionary .quote {
     color: #4d4e51;
-    font-size: .9em;
+    font-size: 0.9em;
   }
 
   .cdet span.quote:before {
-    content: "";
+    content: '';
     margin: 2px 6px;
     display: inline-block;
     background-color: black;
@@ -1790,13 +1926,14 @@
     margin-left: -20px;
   }
 
-  .cdet .synonymBlock,.cdet .containerBlock {
+  .cdet .synonymBlock,
+  .cdet .containerBlock {
     margin-left: 20px;
   }
 
-  .cdet .headerThes .entry_title+div a {
+  .cdet .headerThes .entry_title + div a {
     color: #1683be;
-    font-size: .9em;
+    font-size: 0.9em;
     margin-bottom: 1em;
     display: inline-block;
   }
@@ -1805,26 +1942,31 @@
     display: inline;
   }
 
-  .cdet .cit.type-example,.selectorOpernerBig:checked+.sense.opened .sep,.selectorOpernerBig:checked+.sense.opened .openerBig,.selectorOpernerBig:checked ~ label[for="default"],.selectorOpernerBig {
+  .cdet .cit.type-example,
+  .selectorOpernerBig:checked + .sense.opened .sep,
+  .selectorOpernerBig:checked + .sense.opened .openerBig,
+  .selectorOpernerBig:checked ~ label[for='default'],
+  .selectorOpernerBig {
     display: none;
   }
 
-  .selectorOpernerBig+.shadow_layer {
+  .selectorOpernerBig + .shadow_layer {
     position: fixed;
     width: 100%;
     height: 100%;
     top: 0;
     left: 0;
-    background-color: rgba(128,128,128,0.78);
+    background-color: rgba(128, 128, 128, 0.78);
     z-index: 2;
   }
 
-  .selectorOpernerBig:checked+.sense.opened .cit.type-example,.selectorOpernerBig:checked+.sense.opened div>.form {
+  .selectorOpernerBig:checked + .sense.opened .cit.type-example,
+  .selectorOpernerBig:checked + .sense.opened div > .form {
     display: block;
   }
 
-  .selectorOpernerBig:checked+.sense.opened:before {
-    content: "";
+  .selectorOpernerBig:checked + .sense.opened:before {
+    content: '';
     display: block;
     height: 2em;
     position: fixed;
@@ -1835,7 +1977,7 @@
     left: 15%;
   }
 
-  .selectorOpernerBig:checked+.sense.sense.opened {
+  .selectorOpernerBig:checked + .sense.sense.opened {
     position: fixed;
     top: 0;
     left: 15%;
@@ -1861,16 +2003,17 @@
   .he .grammar .page {
     display: block;
     border: solid 1px;
-    font-family: arial,helvetica,sans-serif;
+    font-family: arial, helvetica, sans-serif;
     margin-bottom: 20px;
     padding: 15px;
     padding-bottom: 40px;
   }
 
-  .he .grammar a.previous,.he .grammar a.next {
+  .he .grammar a.previous,
+  .he .grammar a.next {
     background: #e5ebf3;
     color: #194885;
-    padding: .5em 1em;
+    padding: 0.5em 1em;
     font-weight: bolder;
     border-bottom: 0;
     float: left;
@@ -1881,11 +2024,13 @@
     float: right;
   }
 
-  .he .grammar a.previous:hover,.he .grammar a.next:hover {
+  .he .grammar a.previous:hover,
+  .he .grammar a.next:hover {
     color: #194885;
   }
 
-  .he .grammar a.previous i,.he .grammar a.next i {
+  .he .grammar a.previous i,
+  .he .grammar a.next i {
     font-size: 1.3em;
     vertical-align: middle;
     padding-right: 8px;
@@ -1898,7 +2043,7 @@
   }
 
   .he .grammar .exmplblk {
-    padding: .5em;
+    padding: 0.5em;
   }
 
   .he .grammar .exmplgrp ul {
@@ -1956,7 +2101,8 @@
     font-style: italic;
   }
 
-  .he .grammar .i,.he .grammar .post {
+  .he .grammar .i,
+  .he .grammar .post {
     font-style: italic;
   }
 
@@ -2022,17 +2168,18 @@
     column-count: 4;
   }
 
-  .he .grammar th,.he .grammar td {
+  .he .grammar th,
+  .he .grammar td {
     border-color: #000;
     border-style: solid;
     border-width: 1px;
-    padding: .5em 1.4em;
+    padding: 0.5em 1.4em;
   }
 
   .he .grammar th {
     background-color: #ddd;
     font-weight: bold;
-    font-size: .9em;
+    font-size: 0.9em;
   }
 
   .he .grammar table {
@@ -2044,14 +2191,14 @@
     margin-bottom: 1em;
   }
 
-  .linksTool+.linksTool {
-    margin-top: .5em;
+  .linksTool + .linksTool {
+    margin-top: 0.5em;
   }
 
   .linksTool {
     margin: 1.5em 1em 1.5em 1em;
     font-style: italic;
-    font-size: .9em;
+    font-size: 0.9em;
   }
 
   .he .grammar a.block {
@@ -2063,19 +2210,24 @@
     font-weight: bold;
     width: 2em;
     text-align: center;
-    font-size: .6em;
+    font-size: 0.6em;
   }
 
-  .he .grammar .group a:before,.he .grammar .section a:before,.he .grammar .posGr a:before,.he .grammar .subpattern a:before,.he .grammar .pattern a:before,.he .grammar .chapter a:before {
+  .he .grammar .group a:before,
+  .he .grammar .section a:before,
+  .he .grammar .posGr a:before,
+  .he .grammar .subpattern a:before,
+  .he .grammar .pattern a:before,
+  .he .grammar .chapter a:before {
     display: block;
-    content: "";
+    content: '';
   }
 
   .entry_container {
     color: inherit;
     display: block;
     background: #fff;
-    box-shadow: 0 0 3px rgba(0,0,0,0.2);
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
     text-decoration: none;
     margin-bottom: 20px;
     padding: 20px;
@@ -2090,7 +2242,7 @@
   }
 
   .synonymBlock:after {
-    content: "";
+    content: '';
     display: block;
     clear: both;
   }
@@ -2158,9 +2310,9 @@
     font-weight: normal;
     font-style: normal;
     text-indent: 0;
-    margin-top: .3em;
-    margin-bottom: .3em;
-    margin-left: .8em;
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+    margin-left: 0.8em;
     text-indent: -0.8em;
   }
 
@@ -2178,23 +2330,26 @@
     list-style-type: none;
   }
 
-  .grammar .ul.cll1>.li:before {
-    content: "– ";
+  .grammar .ul.cll1 > .li:before {
+    content: '– ';
   }
 
-  .grammar .ul.cll1 .li,.grammar .ul.cll2 .li,.grammar .ol.cll4 .li {
-    margin-left: .8em;
+  .grammar .ul.cll1 .li,
+  .grammar .ul.cll2 .li,
+  .grammar .ol.cll4 .li {
+    margin-left: 0.8em;
     text-indent: -0.8em;
   }
 
-  .grammar .ul.cll2a,.grammar .ul.cll2 {
+  .grammar .ul.cll2a,
+  .grammar .ul.cll2 {
     list-style-type: none;
     margin-top: 1em;
     margin-bottom: 1em;
   }
 
   .grammar .ul.cll2a {
-    padding-left: .75em;
+    padding-left: 0.75em;
   }
 
   .grammar .ul.cll2a .li {
@@ -2207,7 +2362,7 @@
     color: #0058a9;
   }
 
-  .grammar .ul.cll3>.li>span {
+  .grammar .ul.cll3 > .li > span {
     color: black;
   }
 
@@ -2219,24 +2374,24 @@
   }
 
   .grammar span.label {
-    width: .8em;
+    width: 0.8em;
     display: inline-block;
     color: #0058a9;
     font-weight: bold;
   }
 
   .grammar span.label1 {
-    width: .8em;
+    width: 0.8em;
     display: inline-block;
   }
 
   .grammar .block {
-    font-size: .83em;
+    font-size: 0.83em;
     font-style: italic;
     font-weight: normal;
     text-align: justify;
     text-indent: 0;
-    margin: .3em 1.3em;
+    margin: 0.3em 1.3em;
   }
 
   .grammar div.box {
@@ -2249,8 +2404,8 @@
   }
 
   .grammar .toc {
-    margin-top: .25em;
-    margin-bottom: .25em;
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
   }
 
   .grammar .center {
@@ -2269,7 +2424,10 @@
     vertical-align: top;
   }
 
-  .grammar td.filet_b,.grammar td.filet_t,.grammar td.filet_l,.grammar td.filet_r {
+  .grammar td.filet_b,
+  .grammar td.filet_t,
+  .grammar td.filet_l,
+  .grammar td.filet_r {
     border-right: 1px solid black;
   }
 
@@ -2281,17 +2439,18 @@
     text-decoration: line-through;
   }
 
-  .navigation .tab.current .ref>.pos {
+  .navigation .tab.current .ref > .pos {
     color: white;
   }
 
-  .cdet .ref>.pos {
+  .cdet .ref > .pos {
     font-style: italic;
-    font-size: .9em;
+    font-size: 0.9em;
     color: #777772;
   }
 
-  .openTootip,.openTootip ~ .def {
+  .openTootip,
+  .openTootip ~ .def {
     display: none;
   }
 
@@ -2303,17 +2462,20 @@
     display: inline;
   }
 
-  .selectorOpernerBig:checked+.sense.sense.opened .cit .quote:before {
+  .selectorOpernerBig:checked + .sense.sense.opened .cit .quote:before {
     display: none;
   }
 
-  @media screen and (min-width:321px) {
-    .cdet .page .dictionary .sense,.cdet .sense.moreSyn,.cdet .dictionary .hom,.cdet .dictionary .syn_of_syns {
+  @media screen and (min-width: 321px) {
+    .cdet .page .dictionary .sense,
+    .cdet .sense.moreSyn,
+    .cdet .dictionary .hom,
+    .cdet .dictionary .syn_of_syns {
       overflow: hidden;
     }
   }
 
-  @media screen and (max-width:761px) {
+  @media screen and (max-width: 761px) {
     .cdet .navigation .nav {
       display: none;
     }
@@ -2323,7 +2485,8 @@
       width: 50%;
     }
 
-    .selectorOpernerBig:checked+.sense.sense.opened:before,.selectorOpernerBig:checked+.sense.sense.opened {
+    .selectorOpernerBig:checked + .sense.sense.opened:before,
+    .selectorOpernerBig:checked + .sense.sense.opened {
       width: 100%;
       left: 0;
     }
@@ -2339,7 +2502,7 @@
   }
 
   .navigation:before {
-    content: "\a0";
+    content: '\a0';
     position: absolute;
     width: 100%;
     height: 100%;
@@ -2347,8 +2510,9 @@
     background-color: inherit;
   }
 
-  .navigation a.tab,.navigation span.tab>a {
-    font-size: .9em;
+  .navigation a.tab,
+  .navigation span.tab > a {
+    font-size: 0.9em;
     display: inline-block;
     line-height: 26px;
     padding: 4px 8px;
@@ -2361,11 +2525,11 @@
   .navigation .expo {
     position: relative;
     top: -4px;
-    font-size: .8em;
+    font-size: 0.8em;
     margin-left: 2px;
   }
 
-  .navigation[data-position="fixed"] {
+  .navigation[data-position='fixed'] {
     position: fixed;
     top: 50px;
     z-index: 2;
@@ -2376,13 +2540,15 @@
     color: white;
   }
 
-  .navigation .tab .ref:active,.navigation a.tab.current,.navigation span.tab.current>a {
+  .navigation .tab .ref:active,
+  .navigation a.tab.current,
+  .navigation span.tab.current > a {
     background-color: #1c4b8b;
     color: white;
     position: relative;
   }
 
-  .cdet .ref:active>.pos {
+  .cdet .ref:active > .pos {
     color: white;
   }
 
@@ -2394,7 +2560,7 @@
   }
 
   .navigation .tabsNavigation i {
-    font-size: .85em;
+    font-size: 0.85em;
   }
 
   .navigation .tab.current::before {
@@ -2445,9 +2611,9 @@
     border-bottom: 0;
   }
 
-  .cdet .tab span+span {
+  .cdet .tab span + span {
     display: inline-block;
-    padding-left: .3em;
+    padding-left: 0.3em;
   }
 
   .cdet .tab a {
@@ -2459,11 +2625,11 @@
   }
 
   .dc .word-frequency-img {
-    margin-left: .5em;
+    margin-left: 0.5em;
   }
 
   .dc .word-frequency-container .level {
-    border: 1px solid rgba(0,0,0,0.5);
+    border: 1px solid rgba(0, 0, 0, 0.5);
     border-radius: 50%;
     display: inline-block;
     background-color: #f2928e;
@@ -2544,7 +2710,7 @@
   }
 
   .lightboxOverlay {
-    background: rgba(0,0,0,0.8);
+    background: rgba(0, 0, 0, 0.8);
     position: fixed;
     top: 0;
     left: 0;
@@ -2611,18 +2777,19 @@
     display: inline-block;
   }
 
-  .home_menu a.current,.home_menu a:hover {
-    background: rgba(255,255,255,0.2);
+  .home_menu a.current,
+  .home_menu a:hover {
+    background: rgba(255, 255, 255, 0.2);
   }
 
   .home_menu a {
     padding: 10px 25px;
     color: inherit;
     display: inline-block;
-    -webkit-transition: background-color .4s ease,color .4s ease;
-    -moz-transition: background-color .4s ease,color .4s ease;
-    -o-transition: background-color .4s ease,color .4s ease;
-    transition: background-color .4s ease,color .4s ease;
+    -webkit-transition: background-color 0.4s ease, color 0.4s ease;
+    -moz-transition: background-color 0.4s ease, color 0.4s ease;
+    -o-transition: background-color 0.4s ease, color 0.4s ease;
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
 
   .home_search_container {
@@ -2630,14 +2797,14 @@
   }
 
   .dataset-description {
-    font-size: 1.0em;
-    opacity: .8;
+    font-size: 1em;
+    opacity: 0.8;
     margin-top: 1em;
     text-align: center;
   }
 
   h1 {
-    padding-top: .5em;
+    padding-top: 0.5em;
     font-size: 2em;
     text-align: center;
   }
@@ -2669,7 +2836,8 @@
     text-align: center;
   }
 
-  .word-content .home-link.current,.word-content .home-link:hover {
+  .word-content .home-link.current,
+  .word-content .home-link:hover {
     background: #ddd;
   }
 
@@ -2703,7 +2871,7 @@
     padding-top: 20px;
   }
 
-  @media screen and (max-width:761px) {
+  @media screen and (max-width: 761px) {
     header .main-content {
       padding-top: 10px;
     }
@@ -2729,7 +2897,7 @@
     }
 
     .word-content .home-link {
-      padding: .5em;
+      padding: 0.5em;
     }
 
     .home_logo_link {
@@ -2749,7 +2917,7 @@
     }
   }
 
-  @media screen and (min-width:762px) and (max-width:948px) {
+  @media screen and (min-width: 762px) and (max-width: 948px) {
     .tagline {
       font-size: 10px;
       margin-left: 4px;
@@ -2770,7 +2938,6 @@
     }
   }
 
-
   .columns .columns_item {
     display: inline-block;
     width: 24.5%;
@@ -2779,7 +2946,7 @@
     min-height: 360px;
   }
 
-  @media screen and (max-width:761px) {
+  @media screen and (max-width: 761px) {
     .columns .columns_item {
       display: block;
       width: auto;
@@ -2788,13 +2955,14 @@
     }
   }
 
-  @media screen and (min-width:762px) {
+  @media screen and (min-width: 762px) {
     .columns .columns_item {
       width: 49.5%;
     }
   }
 
-  [class^="icon-"],[class*=" icon-"] {
+  [class^='icon-'],
+  [class*=' icon-'] {
     font-family: 'icomoon';
     font-style: normal;
     font-weight: normal;
@@ -2816,138 +2984,138 @@
   }
 
   .icon-chat:before {
-    content: "\e900";
+    content: '\e900';
   }
 
   .icon-community:before {
-    content: "\e901";
+    content: '\e901';
   }
 
   .icon-keyboard:before {
-    content: "\e955";
+    content: '\e955';
   }
 
   .icon-search:before {
-    content: "\f002";
+    content: '\f002';
   }
 
   .icon-user:before {
-    content: "\f007";
+    content: '\f007';
   }
 
   .icon-times:before {
-    content: "\f00d";
+    content: '\f00d';
   }
 
   .icon-volume-up:before {
-    content: "\f028";
+    content: '\f028';
   }
 
   .icon-twitter-square:before {
-    content: "\f081";
+    content: '\f081';
   }
 
   .icon-twitter:before {
-    content: "\f099";
+    content: '\f099';
   }
 
   .icon-facebook:before {
-    content: "\f09a";
+    content: '\f09a';
   }
 
   .icon-globe:before {
-    content: "\f0ac";
+    content: '\f0ac';
   }
 
   .icon-bars:before {
-    content: "\f0c9";
+    content: '\f0c9';
   }
 
   .icon-caret-down:before {
-    content: "\f0d7";
+    content: '\f0d7';
   }
 
   .icon-caret-up:before {
-    content: "\f0d8";
+    content: '\f0d8';
   }
 
   .icon-caret-left:before {
-    content: "\f0d9";
+    content: '\f0d9';
   }
 
   .icon-caret-right:before {
-    content: "\f0da";
+    content: '\f0da';
   }
 
   .icon-copyright:before {
-    content: "\f1f9";
+    content: '\f1f9';
   }
 
   .icon-facebook-official:before {
-    content: "\f230";
+    content: '\f230';
   }
 
   .icon-warning:before {
-    content: "\e907";
+    content: '\e907';
   }
 
   .icon-fiber_new:before {
-    content: "\e05e";
+    content: '\e05e';
   }
 
   .icon-trending_down:before {
-    content: "\e8e3";
+    content: '\e8e3';
   }
 
   .icon-trending_flat:before {
-    content: "\e8e4";
+    content: '\e8e4';
   }
 
   .icon-trending_up:before {
-    content: "\e8e5";
+    content: '\e8e5';
   }
 
   .icon-chevron-thin-left:before {
-    content: "\e905";
+    content: '\e905';
   }
 
   .icon-chevron-thin-right:before {
-    content: "\e906";
+    content: '\e906';
   }
 
   .icon-books:before {
-    content: "\e920";
+    content: '\e920';
   }
 
   .icon-eye-plus:before {
-    content: "\e9cf";
+    content: '\e9cf';
   }
 
   .icon-eye-minus:before {
-    content: "\e9d0";
+    content: '\e9d0';
   }
 
   .icon-share2:before {
-    content: "\ea82";
+    content: '\ea82';
   }
 
   .icon-read:before {
-    content: "\e902";
+    content: '\e902';
   }
 
   .icon-copy:before {
-    content: "\e908";
+    content: '\e908';
   }
 
   .icon-exchange:before {
-    content: "\e909";
+    content: '\e909';
   }
 
   .icon-sort:before {
-    content: "\f0dc";
+    content: '\f0dc';
   }
 
-  [class*="res_cell"] {
+  [class*='res_cell'] {
     float: left;
     display: block;
     width: 100%;
@@ -2980,7 +3148,7 @@
     padding: 0;
   }
 
-  @media screen and (max-width:320px) {
+  @media screen and (max-width: 320px) {
     .mpuslot_b-container {
       margin: 0 0 0 -38px;
     }
@@ -3006,7 +3174,7 @@
     }
   }
 
-  @media screen and (min-width:321px) and (max-width:761px) {
+  @media screen and (min-width: 321px) and (max-width: 761px) {
     .mpuslot_b-container {
       margin: 0 0 0 -24px;
     }
@@ -3020,19 +3188,26 @@
     }
   }
 
-  @media screen and (max-width:761px) {
-    main>.dictionary,main>.browse_wrapper,main>.spellcheck_wrapper,main>.content_wrapper,main>.submit_new_word_wrapper,main>.word_submitted_wrapper,main>.suggested_word_wrapper {
+  @media screen and (max-width: 761px) {
+    main > .dictionary,
+    main > .browse_wrapper,
+    main > .spellcheck_wrapper,
+    main > .content_wrapper,
+    main > .submit_new_word_wrapper,
+    main > .word_submitted_wrapper,
+    main > .suggested_word_wrapper {
       width: 100%;
       float: none;
     }
 
-    [class*="res_cell"] {
+    [class*='res_cell'] {
       clear: both;
       width: 100%;
       margin: 0 0 10px 0;
     }
 
-    .res_cell_center_content,.res_cell_2_3_content {
+    .res_cell_center_content,
+    .res_cell_2_3_content {
       padding: 0;
     }
 
@@ -3044,11 +3219,13 @@
       float: none;
     }
 
-    main,.main-content {
+    main,
+    .main-content {
       width: 100%;
     }
 
-    .page .type-ant.columns3,.page .content-box-syn-of-syns .columns3 {
+    .page .type-ant.columns3,
+    .page .content-box-syn-of-syns .columns3 {
       -webkit-column-count: 1;
       -moz-column-count: 1;
       column-count: 1;
@@ -3056,7 +3233,7 @@
 
     .dc .entry_title {
       font-size: 1.5em;
-      padding-left: .5em;
+      padding-left: 0.5em;
     }
 
     .topslot_container {
@@ -3079,7 +3256,11 @@
       display: none;
     }
 
-    .content-box,.page .Corpus_Examples_EN .content,.dc .content-box,.wotd-txt-block,.promoBox-content {
+    .content-box,
+    .page .Corpus_Examples_EN .content,
+    .dc .content-box,
+    .wotd-txt-block,
+    .promoBox-content {
       padding: 10px;
     }
 
@@ -3087,7 +3268,8 @@
       padding-top: 0;
     }
 
-    .promoBox,.promoBox {
+    .promoBox,
+    .promoBox {
       min-height: 0;
     }
 
@@ -3110,7 +3292,7 @@
       display: block;
       position: absolute;
       left: 0;
-      opacity: .001;
+      opacity: 0.001;
       width: 50px;
       height: 100%;
       font-size: medium;
@@ -3139,13 +3321,20 @@
       height: 160px;
     }
 
-    .cdet .dc .entry_title,.cdet .headerThes .entry_title+div {
+    .cdet .dc .entry_title,
+    .cdet .headerThes .entry_title + div {
       padding-left: 10px;
     }
   }
 
-  @media screen and (min-width:762px) and (max-width:948px) {
-    main>.dictionary,main>.browse_wrapper,main>.spellcheck_wrapper,main>.content_wrapper,main>.submit_new_word_wrapper,main>.word_submitted_wrapper,main>.suggested_word_wrapper {
+  @media screen and (min-width: 762px) and (max-width: 948px) {
+    main > .dictionary,
+    main > .browse_wrapper,
+    main > .spellcheck_wrapper,
+    main > .content_wrapper,
+    main > .submit_new_word_wrapper,
+    main > .word_submitted_wrapper,
+    main > .suggested_word_wrapper {
       width: 100%;
       float: none;
     }
@@ -3159,7 +3348,7 @@
     }
   }
 
-  i[class^=icon],
+  i[class^='icon'],
   .extra-link,
   .socialButtons {
     display: none !important;
