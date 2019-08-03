@@ -1,158 +1,107 @@
-import React from 'react'
-import Speaker from '@/components/Speaker'
+import React, { FC, useState } from 'react'
+import { Speaker, StaticSpeakerContainer } from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
 import { COBUILDResult, COBUILDCibaResult, COBUILDColResult } from './engine'
-import { ViewPorps } from '@/components/dictionaries/helpers'
-import { withStaticSpeaker } from '@/components/withStaticSpeaker'
+import { ViewPorps, useVerticalScroll } from '@/components/dictionaries/helpers'
 
-interface COBUILDColState {
-  curTab: string
+export const DictCOBUILD: FC<ViewPorps<COBUILDResult>> = ({ result }) => {
+  switch (result.type) {
+    case 'ciba':
+      return renderCiba(result)
+    case 'collins':
+      return renderCol(result)
+  }
+  return null
 }
 
-export class DictCOBUILDCol extends React.Component<ViewPorps<COBUILDColResult>, COBUILDColState> {
-  state: COBUILDColState = {
-    curTab: ''
-  }
+export default DictCOBUILD
 
-  navRef = React.createRef<HTMLDivElement>()
+function renderCiba(result: COBUILDCibaResult) {
+  return (
+    <>
+      <h1 className="dictCOBUILD-Title">{result.title}</h1>
+      {result.prons && (
+        <ul className="dictCOBUILD-Pron">
+          {result.prons.map(p => (
+            <li key={p.phsym} className="dictCOBUILD-PronItem">
+              {p.phsym}
+              <Speaker src={p.audio} />
+            </li>
+          ))}
+        </ul>
+      )}
+      <div className="dictCOBUILD-Rate">
+        {(result.star as number) >= 0 && <StarRates rate={result.star} />}
+        {result.level && (
+          <span className="dictCOBUILD-Level">{result.level}</span>
+        )}
+      </div>
+      {result.defs && (
+        <ol className="dictCOBUILD-Defs">
+          {result.defs.map((def, i) => (
+            <li
+              className="dictCOBUILD-Def"
+              key={i}
+              dangerouslySetInnerHTML={{ __html: def }}
+            />
+          ))}
+        </ol>
+      )}
+    </>
+  )
+}
 
-  tabWheelDebounce: any
+function renderCol(result: COBUILDColResult) {
+  const [curSection, setCurSection] = useState(result.sections[0])
+  const tabsRef = useVerticalScroll<HTMLDivElement>()
 
-  handleTabWheel = (e: WheelEvent) => {
-    e.stopPropagation()
-    e.preventDefault()
-    const { currentTarget, deltaY } = e
-
-    clearTimeout(this.tabWheelDebounce)
-    this.tabWheelDebounce = setTimeout(() => {
-      (currentTarget as HTMLDivElement).scrollBy({
-        left: deltaY > 0 ? 250 : -250,
-        behavior: 'smooth'
-      })
-    }, 80)
-  }
-
-  updateWheelListener = () => {
-    if (this.navRef.current) {
-      this.navRef.current.removeEventListener('wheel', this.handleTabWheel)
-      this.navRef.current.addEventListener('wheel', this.handleTabWheel, { passive: false })
-    }
-  }
-
-  handleTabClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.stopPropagation()
-    e.preventDefault()
-    this.setState({ curTab: e.currentTarget.dataset.id || '' })
-  }
-
-  componentDidMount () {
-    this.updateWheelListener()
-  }
-
-  componentDidUpdate () {
-    this.updateWheelListener()
-  }
-
-  render () {
-    const { result } = this.props
-
-    const curSec = this.state.curTab
-      ? result.sections.find(({ id }) => id === this.state.curTab) || result.sections[0]
-      : result.sections[0]
-
-    return (
-      <main className='dictCOBUILD-ColEntry'>
-        <div className='dictionary'>
-          <div className='dc'>
-            <div className='navigation'>
-              <div className='tabsNavigation' ref={this.navRef}>
-                {result.sections.map((section, i) => (
-                  <a
-                    key={section.id}
-                    className={`tab${
-                      (i === 0 && !this.state.curTab) || section.id === this.state.curTab
-                        ? ' current'
-                        : ''
-                      }`
-                    }
-                    href='#'
-                    data-id={section.id}
-                    onClick={this.handleTabClick}
-                  >
-                    {section.type}
-                    {section.title ? ` :${section.title}` : ''}
-                    {section.num ? <span className='expo'>{section.num}</span> : ''}
-                  </a>
-                ))}
-              </div>
+  return (
+    <StaticSpeakerContainer className="dictCOBUILD-ColEntry">
+      <div className="dictionary">
+        <div className="dc">
+          <div className="navigation">
+            <div className="tabsNavigation" ref={tabsRef}>
+              {result.sections.map(section => (
+                <a
+                  key={section.id}
+                  className={`tab${
+                    section.id === curSection.id ? ' current' : ''
+                  }`}
+                  href="#"
+                  onClick={e => {
+                    e.stopPropagation()
+                    e.preventDefault()
+                    setCurSection(section)
+                  }}
+                >
+                  {section.type}
+                  {section.title ? ` :${section.title}` : ''}
+                  {section.num ? (
+                    <span className="expo">{section.num}</span>
+                  ) : (
+                    ''
+                  )}
+                </a>
+              ))}
             </div>
-            <div className='he'>
-              <div className='page'>
-                <div className='dictionary'>
-                  <div className='dictentry'>
-                    <div className='dictlink'>
-                      <div
-                        key={curSec.id}
-                        className={curSec.className}
-                        dangerouslySetInnerHTML={{ __html: curSec.content }}
-                      />
-                    </div>
+          </div>
+          <div className="he">
+            <div className="page">
+              <div className="dictionary">
+                <div className="dictentry">
+                  <div className="dictlink">
+                    <div
+                      key={curSection.id}
+                      className={curSection.className}
+                      dangerouslySetInnerHTML={{ __html: curSection.content }}
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </main>
-    )
-  }
-}
-
-export const DictCOBUILDColWithSpeaker = withStaticSpeaker(DictCOBUILDCol)
-
-export function DictCOBUILDCiba (result: COBUILDCibaResult) {
-  return (
-    <>
-      <h1 className='dictCOBUILD-Title'>{result.title}</h1>
-      {result.prons &&
-        <ul className='dictCOBUILD-Pron'>
-          {result.prons.map(p => (
-            <li key={p.phsym} className='dictCOBUILD-PronItem'>
-              {p.phsym}
-              <Speaker src={p.audio} />
-            </li>
-          ))}
-        </ul>
-      }
-      <div className='dictCOBUILD-Rate'>
-        {result.star as number >= 0 &&
-          <StarRates rate={result.star} />
-        }
-        {result.level &&
-          <span className='dictCOBUILD-Level'>{result.level}</span>
-        }
       </div>
-      {result.defs &&
-        <ol className='dictCOBUILD-Defs'>
-          {result.defs.map((def, i) => (
-            <li className='dictCOBUILD-Def'
-              key={i}
-              dangerouslySetInnerHTML={{ __html: def }}
-            />
-          ))}
-        </ol>
-      }
-    </>
+    </StaticSpeakerContainer>
   )
-}
-
-export default class DictCOBUILD extends React.PureComponent<ViewPorps<COBUILDResult>> {
-  render () {
-    const { result } = this.props
-    switch (result.type) {
-      case 'ciba': return DictCOBUILDCiba(result as COBUILDCibaResult)
-      case 'collins': return <DictCOBUILDColWithSpeaker {...this.props as ViewPorps<COBUILDColResult>} />
-      default: return ''
-    }
-  }
 }

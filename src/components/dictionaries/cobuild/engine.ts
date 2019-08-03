@@ -2,18 +2,17 @@ import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   HTMLString,
   getText,
-  getInnerHTMLBuilder,
+  getInnerHTML,
   handleNoResult,
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
   externalLink,
+  DictSearchResult
 } from '../helpers'
-import { getStaticSpeakerHTML } from '@/components/withStaticSpeaker'
-import { DictConfigs } from '@/app-config'
-import { DictSearchResult } from '@/typings/server'
+import { getStaticSpeaker } from '@/components/Speaker'
 
-export const getSrcPage: GetSrcPageFunction = (text) => {
+export const getSrcPage: GetSrcPageFunction = text => {
   return `https://www.collinsdictionary.com/dictionary/english/${text}`
 }
 
@@ -43,19 +42,20 @@ export interface COBUILDColResult {
 
 export type COBUILDResult = COBUILDCibaResult | COBUILDColResult
 
-type COBUILDSearchResult = DictSearchResult<COBUILDResult>
-type COBUILDCibaSearchResult = DictSearchResult<COBUILDCibaResult>
-type COBUILDColSearchResult = DictSearchResult<COBUILDColResult>
-
-export const search: SearchFunction<COBUILDSearchResult> = (
-  text, config, profile, payload
+export const search: SearchFunction<COBUILDResult> = (
+  text,
+  config,
+  profile,
+  payload
 ) => {
   text = encodeURIComponent(text.replace(/\s+/g, ' '))
   const isChz = config.langCode === 'zh-TW'
   const { options } = profile.dicts.all.cobuild
-  const sources: [string, Function][] = [
+  const sources:
+    | [[string, typeof handleCibaDOM], [string, typeof handleColDOM]]
+    | [[string, typeof handleColDOM], [string, typeof handleCibaDOM]] = [
     ['https://www.collinsdictionary.com/dictionary/english/', handleColDOM],
-    ['http://www.iciba.com/', handleCibaDOM],
+    ['http://www.iciba.com/', handleCibaDOM]
   ]
 
   if (options.cibaFirst) {
@@ -63,37 +63,38 @@ export const search: SearchFunction<COBUILDSearchResult> = (
   }
 
   return fetchDirtyDOM(sources[0][0] + text)
-    .then(doc => sources[0][1](doc, options, isChz))
+    .then(doc => sources[0][1](doc, isChz))
     .catch(() => {
       return fetchDirtyDOM(sources[1][0] + text)
         .catch(handleNetWorkError)
-        .then(doc => sources[1][1](doc, options, isChz))
+        .then(doc => sources[1][1](doc, isChz))
     })
 }
 
-function handleCibaDOM (
+async function handleCibaDOM(
   doc: Document,
-  options: DictConfigs['cobuild']['options'],
-  isChz: boolean,
-): COBUILDCibaSearchResult | Promise<COBUILDCibaSearchResult> {
-  const getInnerHTML = getInnerHTMLBuilder('http://www.iciba.com/')
-
+  isChz: boolean
+): Promise<DictSearchResult<COBUILDCibaResult>> {
   const result: COBUILDCibaResult = {
     type: 'ciba',
     title: '',
-    defs: [],
+    defs: []
   }
-  const audio: { uk?: string, us?: string } = {}
+  const audio: { uk?: string; us?: string } = {}
 
   result.title = getText(doc, '.keyword', isChz)
-  if (!result.title) { return handleNoResult() }
+  if (!result.title) {
+    return handleNoResult()
+  }
 
   result.level = getText(doc, '.base-level')
 
   let $star = doc.querySelector('.word-rate [class^="star"]')
   if ($star) {
     let star = Number($star.className[$star.className.length - 1])
-    if (!isNaN(star)) { result.star = star }
+    if (!isNaN(star)) {
+      result.star = star
+    }
   }
 
   let $pron = doc.querySelector('.base-speak')
@@ -110,16 +111,18 @@ function handleCibaDOM (
 
       return {
         phsym,
-        audio: mp3,
+        audio: mp3
       }
     })
   }
 
-  let $article = Array.from(doc.querySelectorAll('.info-article'))
-    .find(x => /柯林斯高阶英汉双解学习词典/.test(x.textContent || ''))
+  let $article = Array.from(doc.querySelectorAll('.info-article')).find(x =>
+    /柯林斯高阶英汉双解学习词典/.test(x.textContent || '')
+  )
   if ($article) {
-    result.defs = Array.from($article.querySelectorAll('.prep-order'))
-      .map(d => getInnerHTML(d, isChz))
+    result.defs = Array.from($article.querySelectorAll('.prep-order')).map(d =>
+      getInnerHTML('http://www.iciba.com', d, { toChz: isChz })
+    )
   }
 
   if (result.defs.length > 0) {
@@ -129,20 +132,19 @@ function handleCibaDOM (
   return handleNoResult()
 }
 
-function handleColDOM (
+async function handleColDOM(
   doc: Document,
-  options: DictConfigs['cobuild']['options'],
-  isChz: boolean,
-): COBUILDColSearchResult | Promise<COBUILDColSearchResult> {
-  const getInnerHTML = getInnerHTMLBuilder('https://www.collinsdictionary.com/')
-
+  toChz: boolean
+): Promise<DictSearchResult<COBUILDColResult>> {
   const result: COBUILDColResult = {
     type: 'collins',
-    sections: [],
+    sections: []
   }
-  const audio: { uk?: string, us?: string } = {}
+  const audio: { uk?: string; us?: string } = {}
 
-  result.sections = [...doc.querySelectorAll<HTMLDivElement>(`[data-type-block]`)]
+  result.sections = [
+    ...doc.querySelectorAll<HTMLDivElement>(`[data-type-block]`)
+  ]
     .filter($section => {
       const type = $section.dataset.typeBlock || ''
       return type && type !== 'Video' && type !== 'Trends'
@@ -153,13 +155,13 @@ function handleColDOM (
       const num = $section.dataset.numBlock || ''
 
       if (type === 'Learner') {
-      //   const $frequency = $section.querySelector<HTMLSpanElement>('.word-frequency-img')
-      //   if ($frequency) {
-      //     const star = Number($frequency.dataset.band)
-      //     if (star) {
-      //       result.star = star
-      //     }
-      //   }
+        //   const $frequency = $section.querySelector<HTMLSpanElement>('.word-frequency-img')
+        //   if ($frequency) {
+        //     const star = Number($frequency.dataset.band)
+        //     if (star) {
+        //       result.star = star
+        //     }
+        //   }
         if (!audio.uk) {
           const mp3 = getAudio($section)
           if (mp3) {
@@ -172,12 +174,16 @@ function handleColDOM (
         audio.us = getAudio($section)
       }
 
-      $section.querySelectorAll<HTMLAnchorElement>('.audio_play_button').forEach($speaker => {
-        $speaker.outerHTML = getStaticSpeakerHTML($speaker.dataset.srcMp3)
-      })
+      $section
+        .querySelectorAll<HTMLAnchorElement>('.audio_play_button')
+        .forEach($speaker => {
+          $speaker.replaceWith(getStaticSpeaker($speaker.dataset.srcMp3))
+        })
 
       // so that clicking won't trigger in-panel search
-      $section.querySelectorAll<HTMLAnchorElement>('a.type-thesaurus').forEach(externalLink)
+      $section
+        .querySelectorAll<HTMLAnchorElement>('a.type-thesaurus')
+        .forEach(externalLink)
 
       return {
         id: type + title + num,
@@ -185,7 +191,9 @@ function handleColDOM (
         type,
         title,
         num,
-        content: getInnerHTML($section)
+        content: getInnerHTML('https://www.collinsdictionary.com', $section, {
+          toChz
+        })
       }
     })
 
@@ -196,8 +204,10 @@ function handleColDOM (
   return handleNoResult()
 }
 
-function getAudio ($section: HTMLElement): string | undefined {
-  const $audio = $section.querySelector<HTMLAnchorElement>('.pron .audio_play_button')
+function getAudio($section: HTMLElement): string | undefined {
+  const $audio = $section.querySelector<HTMLAnchorElement>(
+    '.pron .audio_play_button'
+  )
   if ($audio) {
     const src = $audio.dataset.srcMp3
     if (src) {
