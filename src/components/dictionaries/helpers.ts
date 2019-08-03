@@ -154,11 +154,9 @@ export function getHTML(
   }
 
   if (host) {
-    const getFullLink = getFullLinkBuilder(host)
-
     function fillLink(el: HTMLElement) {
-      el.setAttribute('href', getFullLink(el, 'href'))
-      el.setAttribute('src', getFullLink(el, 'src'))
+      el.setAttribute('href', getFullLink(host!, el, 'href'))
+      el.setAttribute('src', getFullLink(host!, el, 'src'))
     }
 
     if (node['tagName'] === 'A' || node['tagName'] === 'IMG') {
@@ -239,31 +237,29 @@ export function externalLink($a: HTMLElement) {
   $a.setAttribute('rel', 'nofollow noopener noreferrer')
 }
 
-export function getFullLinkBuilder(host: string) {
+export function getFullLink(host: string, el: Element, attr: string): string {
   if (host.endsWith('/')) {
     host = host.slice(0, -1)
   }
 
   const protocol = host.startsWith('https') ? 'https:' : 'http:'
 
-  return function getFullLink(element: Element, attr: string): string {
-    const link = element.getAttribute(attr)
-    if (!link) {
-      return ''
-    }
-
-    if (link.startsWith('http')) {
-      return link
-    }
-
-    if (link.startsWith('//')) {
-      return protocol + link
-    }
-
-    if (link.startsWith('/')) {
-      return host + link
-    }
-
-    return host + '/' + link
+  const link = el.getAttribute(attr)
+  if (!link) {
+    return ''
   }
+
+  if (link.startsWith('http')) {
+    return link
+  }
+
+  if (link.startsWith('//')) {
+    return protocol + link
+  }
+
+  if (link.startsWith('/')) {
+    return host + link
+  }
+
+  return host + '/' + link
 }
