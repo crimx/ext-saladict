@@ -3,13 +3,21 @@ import axios from 'axios'
 import AxiosMockAdapter from 'axios-mock-adapter'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
-import { withKnobs, select, number } from '@storybook/addon-knobs'
+import {
+  withKnobs,
+  select,
+  number,
+  object,
+  boolean
+} from '@storybook/addon-knobs'
 import { withi18nNS, withSaladictPanel } from '@/_helpers/storybook'
 import { DictItem } from '@/content/components/DictItem/DictItem'
 import { getDefaultConfig, DictID } from '@/app-config'
 import { getDefaultProfile } from '@/app-config/profiles'
 import { SearchFunction, MockRequest } from './helpers'
 import { getAllDicts } from '@/app-config/dicts'
+import { useTranslate } from '@/_helpers/i18n'
+import { timer } from '@/_helpers/promise-more'
 
 const stories = storiesOf('Content Scripts|Dictionaries', module)
   .addParameters({
@@ -44,6 +52,8 @@ function Dict(props: {
   fontSize: number
   withAnimation: boolean
 }) {
+  const { i18n } = useTranslate()
+
   const {
     mockSearchTexts,
     mockRequest
@@ -53,6 +63,10 @@ function Dict(props: {
     mockSearchTexts: string[]
     mockRequest: MockRequest
   }
+
+  const locales = require('@/components/dictionaries/' +
+    props.dictID +
+    '/_locales.json')
 
   const { search } = require('@/components/dictionaries/' +
     props.dictID +
@@ -67,6 +81,39 @@ function Dict(props: {
   const [status, setStatus] = useState<'IDLE' | 'SEARCHING' | 'FINISH'>('IDLE')
   const [result, setResult] = useState<any>(null)
 
+  // add custom dict options
+  const profiles = getDefaultProfile()
+  const options = profiles.dicts.all[props.dictID]['options']
+  if (options) {
+    Object.keys(options).forEach(key => {
+      const name = locales.options[key][i18n.language]
+      switch (typeof options[key]) {
+        case 'boolean':
+          options[key] = boolean(name, options[key])
+          break
+        case 'number':
+          options[key] = number(name, options[key])
+          break
+        case 'string':
+          const values: string[] =
+            profiles.dicts.all[props.dictID]['options_sel'][key]
+          options[key] = select(
+            name,
+            values.reduce(
+              (o, k) => (
+                (o[locales.options[`${key}-${k}`][i18n.language]] = k), o
+              ),
+              {}
+            ),
+            options[key]
+          )
+          break
+        default:
+          break
+      }
+    })
+  }
+
   useEffect(() => {
     // mock requests
     const mock = new AxiosMockAdapter(axios)
@@ -80,9 +127,10 @@ function Dict(props: {
 
   useEffect(() => {
     setStatus('SEARCHING')
-    search(searchText, getDefaultConfig(), getDefaultProfile(), {
+    search(searchText, getDefaultConfig(), profiles, {
       isPDF: false
-    }).then(({ result }) => {
+    }).then(async ({ result }) => {
+      await timer(Math.random() * 3000)
       setStatus('FINISH')
       setResult(result)
     })
