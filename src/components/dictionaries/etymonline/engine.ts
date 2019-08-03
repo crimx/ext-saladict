@@ -2,20 +2,21 @@ import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { DictConfigs } from '@/app-config'
 import {
   getText,
-  getInnerHTMLBuilder,
+  getInnerHTML,
+  getFullLink,
   handleNoResult,
   HTMLString,
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
+  DictSearchResult
 } from '../helpers'
-import { DictSearchResult } from '@/typings/server'
 
-export const getSrcPage: GetSrcPageFunction = (text) => {
+export const getSrcPage: GetSrcPageFunction = text => {
   return `http://www.etymonline.com/search?q=${text}`
 }
 
-const getInnerHTML = getInnerHTMLBuilder()
+const HOST = 'https://www.etymonline.com'
 
 type EtymonlineResultItem = {
   title: string
@@ -28,27 +29,25 @@ export type EtymonlineResult = EtymonlineResultItem[]
 
 type EtymonlineSearchResult = DictSearchResult<EtymonlineResult>
 
-export const search: SearchFunction<EtymonlineSearchResult> = (
-  text, config, profile, payload
+export const search: SearchFunction<EtymonlineResult> = (
+  text,
+  config,
+  profile,
+  payload
 ) => {
   const options = profile.dicts.all.etymonline.options
   text = encodeURIComponent(text.replace(/\s+/g, ' '))
 
   // http to bypass the referer checking
   return fetchDirtyDOM('https://www.etymonline.com/word/' + text)
+    .catch(() => fetchDirtyDOM('https://www.etymonline.com/search?q=' + text))
+    .catch(handleNetWorkError)
     .then(doc => handleDOM(doc, options))
-    // .catch(() => fetchDirtyDOM('http://www.etymonline.com/search?q=' + text)
-    //   .then(doc => handleDOM(doc, options))
-    // )
-    .catch(() => fetchDirtyDOM('https://www.etymonline.com/search?q=' + text)
-      .catch(handleNetWorkError)
-      .then(doc => handleDOM(doc, options))
-    )
 }
 
-function handleDOM (
+function handleDOM(
   doc: Document,
-  options: DictConfigs['etymonline']['options'],
+  options: DictConfigs['etymonline']['options']
 ): EtymonlineSearchResult | Promise<EtymonlineSearchResult> {
   const result: EtymonlineResult = []
   const $items = Array.from(doc.querySelectorAll('[class*="word--"]'))
@@ -57,27 +56,38 @@ function handleDOM (
     const $item = $items[i]
 
     const title = getText($item, '[class*="word__name--"]')
-    if (!title) { continue }
+    if (!title) {
+      continue
+    }
 
     let def = ''
     const $def = $item.querySelector('[class*="word__defination--"]>*')
     if ($def) {
       $def.querySelectorAll('.crossreference').forEach($cf => {
-        let word = ($cf.textContent || '').trim()
-        $cf.outerHTML = `<a href="https://www.etymonline.com/word/${word}" target="_blank">${word}</a>`
-      })
-      def = getInnerHTML($def)
-    }
-    if (!def) { continue }
+        const word = getText($cf)
 
-    let href = ($item.getAttribute('href') || '')
-      .replace(/^\/(?!\/)/, 'https://www.etymonline.com/')
+        const $a = document.createElement('a')
+        $a.target = '_blank'
+        $a.href = `https://www.etymonline.com/word/${word}`
+        $a.textContent = word
+
+        $cf.replaceWith($a)
+      })
+      def = getInnerHTML(HOST, $def)
+    }
+    if (!def) {
+      continue
+    }
+
+    const href = getFullLink(HOST, $item, 'href')
 
     let chart = ''
     if (options.chart) {
-      const $chart = $item.querySelector<HTMLImageElement>('[class*="chart--"] img')
+      const $chart = $item.querySelector<HTMLImageElement>(
+        '[class*="chart--"] img'
+      )
       if ($chart) {
-        chart = $chart.src.replace(/^\/(?!\/)/, 'https://www.etymonline.com/')
+        chart = getFullLink(HOST, $chart, 'src')
       }
     }
 
