@@ -168,16 +168,12 @@ export function getHTML(
     node.querySelectorAll('img').forEach(fillLink)
   }
 
-  const purifyResult = DOMPurify.sanitize((node as unknown) as Node, config)
+  const fragment = DOMPurify.sanitize((node as unknown) as Node, {
+    ...config,
+    RETURN_DOM_FRAGMENT: true
+  })
 
-  const content =
-    typeof purifyResult === 'string'
-      ? purifyResult
-      : purifyResult[mode]
-      ? purifyResult[mode]
-      : purifyResult.firstElementChild
-      ? purifyResult.firstElementChild.outerHTML
-      : ''
+  const content = fragment.firstChild ? fragment.firstChild[mode] : ''
 
   return toChz ? chsToChz(content) : content
 }
