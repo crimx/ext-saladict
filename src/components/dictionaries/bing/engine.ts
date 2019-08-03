@@ -3,7 +3,7 @@ import {
   handleNoResult,
   handleNetWorkError,
   getText,
-  getInnerHTMLBuilder,
+  getInnerHTML,
   SearchFunction,
   GetSrcPageFunction,
   DictSearchResult
@@ -14,7 +14,7 @@ export const getSrcPage: GetSrcPageFunction = text => {
   return `https://cn.bing.com/dict/search?q=${text}`
 }
 
-const getInnerHTML = getInnerHTMLBuilder('https://cn.bing.com/')
+const HOST = 'https://cn.bing.com'
 
 const DICT_LINK =
   'https://cn.bing.com/dict/clientsearch?mkt=zh-CN&setLang=zh&form=BDVEHC&ClientVer=BDDTV3.5.1.4320&q='
@@ -203,8 +203,11 @@ function handleLexResult(
         )}</span>`
       })
       sentences.push({
-        en: getInnerHTML(el, '.client_sen_en'),
-        chs: getInnerHTML(el, '.client_sen_cn', isChz),
+        en: getInnerHTML(HOST, el, '.client_sen_en'),
+        chs: getInnerHTML(HOST, el, {
+          selector: '.client_sen_cn',
+          toChz: isChz
+        }),
         source: getText(el, '.client_sentence_list_link'),
         mp3
       })
