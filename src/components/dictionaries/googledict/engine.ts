@@ -1,18 +1,20 @@
 import {
   HTMLString,
   handleNoResult,
-  getInnerHTMLBuilder,
+  getInnerHTML,
   removeChild,
   decodeHEX,
   removeChildren,
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
+  DictSearchResult,
+  getFullLink
 } from '../helpers'
-import { getStaticSpeakerHTML } from '@/components/withStaticSpeaker'
-import { DictSearchResult } from '@/typings/server'
+import axios from 'axios'
+import { getStaticSpeaker } from '@/components/Speaker'
 
-export const getSrcPage: GetSrcPageFunction = (text) => {
+export const getSrcPage: GetSrcPageFunction = text => {
   return `https://www.google.com.hk/search?q=define+${text}`
 }
 
@@ -22,31 +24,38 @@ export interface GoogleDictResult {
 
 type GoogleDictSearchResult = DictSearchResult<GoogleDictResult>
 
-const getInnerHTML = getInnerHTMLBuilder('https://www.google.com/', {})
-
-export const search: SearchFunction<GoogleDictSearchResult> = (
-  text, config, profile, payload
+export const search: SearchFunction<GoogleDictResult> = async (
+  text,
+  config,
+  profile,
+  payload
 ) => {
-  const isen = profile.dicts.all.googledict.options.enresult ? 'hl=en&gl=en&' : ''
-  return fetch(
-    `https://www.google.com/search?${isen}q=define+` + encodeURIComponent(text.replace(/\s+/g, '+')),
-    { credentials: 'omit' }
-  )
-    .then(r => r.ok ? r.text() : handleNetWorkError())
-    .then(handleDOM)
+  const isen = profile.dicts.all.googledict.options.enresult
+    ? 'hl=en&gl=en&'
+    : ''
+  const { data: bodyText } = await axios
+    .get(
+      `https://www.google.com/search?${isen}q=define+` +
+        encodeURIComponent(text.replace(/\s+/g, '+')),
+      { withCredentials: false, responseType: 'text' }
+    )
+    .catch(handleNetWorkError)
+
+  return handleDOM(bodyText)
 }
 
-function handleDOM (
-  bodyText: string,
+function handleDOM(
+  bodyText: string
 ): GoogleDictSearchResult | Promise<GoogleDictSearchResult> {
   const doc = new DOMParser().parseFromString(bodyText, 'text/html')
 
   const $obcontainer = doc.querySelector('.obcontainer')
   if ($obcontainer) {
     $obcontainer.querySelectorAll<HTMLDivElement>('.vkc_np').forEach($block => {
-      if ($block.querySelector('.zbA8Me') || // Dictionary title
-          $block.querySelector('#dw-siw') || // Search box
-          $block.querySelector('#tl_select') // Translate to
+      if (
+        $block.querySelector('.zbA8Me') || // Dictionary title
+        $block.querySelector('#dw-siw') || // Search box
+        $block.querySelector('#tl_select') // Translate to
       ) {
         $block.remove()
       }
@@ -57,14 +66,22 @@ function handleDOM (
     $obcontainer.querySelectorAll('g-img').forEach($gimg => {
       const $img = $gimg.querySelector('img')
       const $parent = $gimg.parentElement
-      if (!$parent || !$img) { return }
+      if (!$parent || !$img) {
+        return
+      }
 
       $parent.replaceChild($img, $gimg)
       const id = $img.id
-      if (!id) { return }
+      if (!id) {
+        return
+      }
 
-      const src = (bodyText.match(new RegExp(`'(data:image[^']+)';[^']+?'${id}'`)) || ['',''])[1]
-      if (!src) { return }
+      const src = (bodyText.match(
+        new RegExp(`'(data:image[^']+)';[^']+?'${id}'`)
+      ) || ['', ''])[1]
+      if (!src) {
+        return
+      }
 
       $img.setAttribute('src', decodeHEX(src))
     })
@@ -72,14 +89,16 @@ function handleDOM (
     $obcontainer.querySelectorAll('.lr_dct_spkr').forEach($speaker => {
       const $audio = $speaker.querySelector('audio')
       if ($audio) {
-        const src = ($audio.getAttribute('src') || '').replace(/^\/\//, 'https://')
-        $speaker.outerHTML = getStaticSpeakerHTML(src)
+        const src = getFullLink('https://www.google.com', $audio, 'src')
+        $speaker.replaceWith(getStaticSpeaker(src))
       }
     })
 
     removeChild($obcontainer, '.jFHKNd')
 
-    const cleanText = getInnerHTML($obcontainer)
+    const cleanText = getInnerHTML('https://www.google.com', $obcontainer, {
+      config: {}
+    })
       .replace(/synonyms:/g, 'syn:')
       .replace(/antonyms:/g, 'ant:')
 

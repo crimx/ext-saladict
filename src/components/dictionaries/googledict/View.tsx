@@ -1,11 +1,10 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { GoogleDictResult } from './engine'
-import { withStaticSpeaker } from '@/components/withStaticSpeaker'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StaticSpeakerContainer } from '@/components/Speaker'
 
-export default withStaticSpeaker((props: ViewPorps<GoogleDictResult>) => (
-  <div
-    className='dictGoogleDict-Entry'
-    dangerouslySetInnerHTML={{ __html: props.result.entry }}
-  />
-))
+export const DictGoogleDict: FC<ViewPorps<GoogleDictResult>> = ({ result }) => (
+  <StaticSpeakerContainer dangerouslySetInnerHTML={{ __html: result.entry }} />
+)
+
+export default DictGoogleDict
