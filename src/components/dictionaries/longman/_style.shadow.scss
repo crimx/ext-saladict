@@ -1,3 +1,6 @@
+@import '@/_sass_global/_reset.scss';
+@import '@/components/Speaker/Speaker.scss';
+
 .dictLongman-Wordfams {
   .asset_intro {
     display: block;
@@ -14,7 +17,7 @@
       border-left: 1px solid red;
     }
 
-    &+* {
+    & + * {
       margin-left: 0.5em;
     }
   }
@@ -45,6 +48,7 @@
 
 .dictLongman-Title,
 .dictLongman-Level {
+  font-size: 1em;
   margin-right: 0.6em;
 }
 
@@ -63,8 +67,9 @@
 
 .dictLongman-FREQ {
   margin-right: 0.6em;
-  padding: 0 0.5em;
+  padding: 1px 0.5em 0;
   color: #f9690e;
+  line-height: 1.5;
   vertical-align: middle;
   border: 1px solid #f9690e;
   border-radius: 3px;
@@ -151,22 +156,26 @@
     margin-bottom: 0.4em;
     padding-left: 0.8em;
     color: #555;
-    pointer-events: none;
     position: relative;
 
     &:before {
-      content: '►';
+      content: '•';
+      margin-right: 0.5em;
       user-select: none;
+    }
+
+    &.withSpeaker:before {
+      display: none;
     }
   }
 
   .SYN .synopp,
   .SIGNPOST {
     color: #fff;
-    font-size: 79%;
+    font-size: 80%;
     font-weight: bold;
-    background: #f9690e;
-    padding: 0 0.4em;
+    background: #ff9552;
+    padding: 2px 0.4em 1px;
     border-radius: 3px;
     text-transform: uppercase;
   }
@@ -177,7 +186,7 @@
     .synopp {
       color: #fff;
       border-color: #f1d600;
-      background-color:#f1d600;
+      background-color: #f1d600;
       padding: 0 0.4em;
       border-radius: 3px;
       text-transform: uppercase;
@@ -209,7 +218,8 @@
     }
   }
 
-  .ldoceEntry .synopp, .ldoceEntry .FREQ,
+  .ldoceEntry .synopp,
+  .ldoceEntry .FREQ,
   .ldoceEntry .AC {
     display: inline-block;
     font-style: normal;
@@ -234,17 +244,28 @@
     background: none;
   }
 
-  .saladict-StaticSpeaker {
-    // cover the original bulet point
-    position: absolute;
-    top: 0;
-    left: 0.6em;
-    background: white;
+  // .saladict-Speaker {
+  //   // cover the original bulet point
+  //   position: absolute;
+  //   z-index: 10;
+  //   top: 0;
+  //   left: 0.6em;
+  //   width: 1.2em;
+  //   height: 1.2em;
 
-    margin: 0;
-    padding: 0 1px;
-    color: inherit;
-  }
+  //   margin: 0;
+  //   padding: 0 1px;
+  //   color: inherit;
+
+  //   &::after {
+  //     content: '';
+  //     position: absolute;
+  //     z-index: 0;
+  //     width: 100%;
+  //     height: 100%;
+  //     background: var(--panel-background-color);
+  //   }
+  // }
 }
 
 .dictLongman-Box {

@@ -2,21 +2,25 @@ import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   HTMLString,
   getText,
-  getInnerHTMLBuilder,
+  getInnerHTML,
   handleNoResult,
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
+  DictSearchResult,
+  getFullLink
 } from '../helpers'
-import { getStaticSpeakerHTML } from '@/components/withStaticSpeaker'
 import { DictConfigs } from '@/app-config'
-import { DictSearchResult } from '@/typings/server'
+import { getStaticSpeaker } from '@/components/Speaker'
 
-export const getSrcPage: GetSrcPageFunction = (text) => {
-  return `https://www.ldoceonline.com/dictionary/${text.trim().split(/\s+/).join('-')}`
+export const getSrcPage: GetSrcPageFunction = text => {
+  return `https://www.ldoceonline.com/dictionary/${text
+    .trim()
+    .split(/\s+/)
+    .join('-')}`
 }
 
-const getInnerHTML = getInnerHTMLBuilder('https://www.ldoceonline.com/')
+const HOST = 'https://www.ldoceonline.com'
 
 export interface LongmanResultEntry {
   title: {
@@ -35,7 +39,7 @@ export interface LongmanResultEntry {
   }
   phsym?: string
   level?: {
-    rate: number,
+    rate: number
     title: string
   }
   freq?: Array<{
@@ -68,18 +72,24 @@ type LongmanSearchResult = DictSearchResult<LongmanResult>
 type LongmanSearchResultLex = DictSearchResult<LongmanResultLex>
 type LongmanSearchResultRelated = DictSearchResult<LongmanResultRelated>
 
-export const search: SearchFunction<LongmanSearchResult> = (
-  text, config, profile, payload
+export const search: SearchFunction<LongmanResult> = (
+  text,
+  config,
+  profile,
+  payload
 ) => {
   const options = profile.dicts.all.longman.options
-  return fetchDirtyDOM('http://www.ldoceonline.com/dictionary/' + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
+  return fetchDirtyDOM(
+    'http://www.ldoceonline.com/dictionary/' +
+      text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-')
+  )
     .catch(handleNetWorkError)
     .then(doc => handleDOM(doc, options))
 }
 
-function handleDOM (
+function handleDOM(
   doc: Document,
-  options: DictConfigs['longman']['options'],
+  options: DictConfigs['longman']['options']
 ): LongmanSearchResult | Promise<LongmanSearchResult> {
   if (doc.querySelector('.dictentry')) {
     return handleDOMLex(doc, options)
@@ -89,30 +99,34 @@ function handleDOM (
   return handleNoResult()
 }
 
-function handleDOMLex (
+function handleDOMLex(
   doc: Document,
-  options: DictConfigs['longman']['options'],
+  options: DictConfigs['longman']['options']
 ): LongmanSearchResultLex | Promise<LongmanSearchResultLex> {
   const result: LongmanResultLex = {
     type: 'lex',
     bussinessFirst: options.bussinessFirst,
     contemporary: [],
-    bussiness: [],
+    bussiness: []
   }
 
-  const audio: { uk?: string, us?: string } = {}
+  const audio: { uk?: string; us?: string } = {}
 
-  doc.querySelectorAll<HTMLSpanElement>('.speaker.exafile').forEach(
-    $speaker => {
+  doc
+    .querySelectorAll<HTMLSpanElement>('.speaker.exafile')
+    .forEach($speaker => {
       const mp3 = $speaker.dataset.srcMp3
       if (mp3) {
-        $speaker.outerHTML = getStaticSpeakerHTML(mp3)
+        const parent = $speaker.parentElement
+        $speaker.replaceWith(getStaticSpeaker(mp3))
+        if (parent && parent.classList.contains('EXAMPLE')) {
+          parent.classList.add('withSpeaker')
+        }
       }
-    }
-  )
+    })
 
   if (options.wordfams) {
-    result.wordfams = getInnerHTML(doc, '.wordfams')
+    result.wordfams = getInnerHTML(HOST, doc, '.wordfams')
   }
 
   const $dictentries = doc.querySelectorAll('.dictentry')
@@ -131,28 +145,32 @@ function handleDOMLex (
       }
     }
 
-    if (!currentDict) { continue }
+    if (!currentDict) {
+      continue
+    }
 
     const entry: LongmanResultEntry = {
       title: {
         HWD: '',
         HYPHENATION: '',
-        HOMNUM: '',
+        HOMNUM: ''
       },
       prons: [],
-      senses: [],
+      senses: []
     }
 
     const $topic = $entry.querySelector<HTMLAnchorElement>('a.topic')
     if ($topic) {
       entry.topic = {
         title: $topic.textContent || '',
-        href: ($topic.getAttribute('href') || '').replace(/^\//, 'https://www.ldoceonline.com/'),
+        href: getFullLink(HOST, $topic, 'href')
       }
     }
 
     const $head = $entry.querySelector('.Head')
-    if (!$head) { continue }
+    if (!$head) {
+      continue
+    }
 
     entry.title.HWD = getText($head, '.HWD')
     entry.title.HYPHENATION = getText($head, '.HYPHENATION')
@@ -173,11 +191,12 @@ function handleDOMLex (
       entry.level = level
     }
 
-    entry.freq = Array.from($head.querySelectorAll<HTMLSpanElement>('.FREQ'))
-      .map($el => ({
-        title: $el.title,
-        rank: $el.textContent || ''
-      }))
+    entry.freq = Array.from(
+      $head.querySelectorAll<HTMLSpanElement>('.FREQ')
+    ).map($el => ({
+      title: $el.title,
+      rank: $el.textContent || ''
+    }))
 
     entry.pos = getText($head, '.POS')
 
@@ -193,24 +212,26 @@ function handleDOMLex (
       entry.prons.push({ lang, pron })
     })
 
-    entry.senses = Array.from($entry.querySelectorAll('.Sense'))
-      .map($sen => getInnerHTML($sen))
+    entry.senses = Array.from($entry.querySelectorAll('.Sense')).map($sen =>
+      getInnerHTML(HOST, $sen)
+    )
 
     if (options.collocations) {
-      entry.collocations = getInnerHTML($entry, '.ColloBox')
+      entry.collocations = getInnerHTML(HOST, $entry, '.ColloBox')
     }
 
     if (options.grammar) {
-      entry.grammar = getInnerHTML($entry, '.GramBox')
+      entry.grammar = getInnerHTML(HOST, $entry, '.GramBox')
     }
 
     if (options.thesaurus) {
-      entry.thesaurus = getInnerHTML($entry, '.ThesBox')
+      entry.thesaurus = getInnerHTML(HOST, $entry, '.ThesBox')
     }
 
     if (options.examples) {
-      entry.examples = Array.from($entry.querySelectorAll('.exaGroup'))
-        .map($exa => getInnerHTML($exa))
+      entry.examples = Array.from($entry.querySelectorAll('.exaGroup')).map(
+        $exa => getInnerHTML(HOST, $exa)
+      )
     }
 
     result[currentDict].push(entry)
@@ -223,15 +244,15 @@ function handleDOMLex (
   return { result, audio }
 }
 
-function handleDOMRelated (
-  doc: Document,
+function handleDOMRelated(
+  doc: Document
 ): LongmanSearchResultRelated | Promise<LongmanSearchResultRelated> {
   const $didyoumean = doc.querySelector('.didyoumean')
   if ($didyoumean) {
     return {
       result: {
         type: 'related',
-        list: getInnerHTML($didyoumean)
+        list: getInnerHTML(HOST, $didyoumean)
       }
     }
   }
