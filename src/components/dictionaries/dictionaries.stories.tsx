@@ -73,11 +73,14 @@ function Dict(props: {
     props.dictID +
     '/engine.ts') as { search: SearchFunction<any> }
 
-  const searchText = select(
-    'Search Text',
-    mockSearchTexts.reduce((o, t) => ((o[t] = t), o), {}),
-    mockSearchTexts[0]
-  )
+  const searchText =
+    mockSearchTexts.length > 1
+      ? select(
+          'Search Text',
+          mockSearchTexts.reduce((o, t) => ((o[t] = t), o), {}),
+          mockSearchTexts[0]
+        )
+      : mockSearchTexts[0]
 
   const [status, setStatus] = useState<'IDLE' | 'SEARCHING' | 'FINISH'>('IDLE')
   const [result, setResult] = useState<any>(null)
