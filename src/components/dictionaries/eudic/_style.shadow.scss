@@ -1,3 +1,6 @@
+@import '@/_sass_global/_reset.scss';
+@import '@/components/Speaker/Speaker.scss';
+
 .dictEudic-Item {
   margin-bottom: 10px;
 
@@ -10,10 +13,10 @@
   color: #999;
 
   &::before {
-    content: '《'
+    content: '《';
   }
 
   &::after {
-    content: '》'
+    content: '》';
   }
 }
