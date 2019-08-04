@@ -5,26 +5,30 @@ import {
   isContainKorean,
   isContainFrench,
   isContainDeutsch,
-  isContainSpanish,
+  isContainSpanish
 } from '@/_helpers/lang-check'
 import {
   HTMLString,
-  getInnerHTMLBuilder,
+  getInnerHTML,
   handleNoResult,
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
+  DictSearchResult
 } from '../helpers'
-import { getStaticSpeakerHTML } from '@/components/withStaticSpeaker'
-import { DictSearchResult } from '@/typings/server'
 import { DictConfigs } from '@/app-config'
 import { Profile } from '@/app-config/profiles'
+import { getStaticSpeaker } from '@/components/Speaker'
+import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
-  return `https://www.hjdict.com/${getLangCode(text, profile)}/${encodeURIComponent(text)}`
+  return `https://www.hjdict.com/${getLangCode(
+    text,
+    profile
+  )}/${encodeURIComponent(text)}`
 }
 
-const getInnerHTML = getInnerHTMLBuilder('https://www.hjdict.com/', {})
+const HOST = 'https://www.hjdict.com'
 
 export interface HjdictResultLex {
   type: 'lex'
@@ -47,8 +51,11 @@ interface HjdictPayload {
   langCode?: string
 }
 
-export const search: SearchFunction<HjdictSearchResult, HjdictPayload> = async (
-  text, config, profile, payload
+export const search: SearchFunction<HjdictResult, HjdictPayload> = async (
+  text,
+  config,
+  profile,
+  payload
 ) => {
   const cookies = {
     HJ_SITEID: 3,
@@ -62,31 +69,36 @@ export const search: SearchFunction<HjdictSearchResult, HjdictPayload> = async (
     HJ_ST: 1,
     HJ_CST: 1,
     HJ_T: +new Date(),
-    _: getUUID(16),
+    _: getUUID(16)
   }
 
-  await Promise.all(Object.keys(cookies).map(name =>
-    browser.cookies.set({
-      url: 'https://www.hjdict.com',
-      domain: 'hjdict.com',
-      name,
-      value: String(cookies[name]),
-    })
-  ))
+  await Promise.all(
+    Object.keys(cookies).map(name =>
+      browser.cookies.set({
+        url: 'https://www.hjdict.com',
+        domain: 'hjdict.com',
+        name,
+        value: String(cookies[name])
+      })
+    )
+  )
 
   const langCode = payload.langCode || getLangCode(text, profile)
 
-  return xhrDirtyDOM(
-    `https://www.hjdict.com/${langCode}/${encodeURIComponent(text)}`
+  return fetchDirtyDOM(
+    `https://www.hjdict.com/${langCode}/${encodeURIComponent(text)}`,
+    {
+      withCredentials: true
+    }
   )
     .catch(handleNetWorkError)
     .then(doc => handleDOM(doc, profile.dicts.all.hjdict.options, langCode))
 }
 
-function handleDOM (
+function handleDOM(
   doc: Document,
   options: DictConfigs['hjdict']['options'],
-  langCode: string,
+  langCode: string
 ): HjdictSearchResult | Promise<HjdictSearchResult> {
   if (doc.querySelector('.word-notfound')) {
     return handleNoResult()
@@ -99,7 +111,7 @@ function handleDOM (
         result: {
           type: 'related',
           langCode,
-          content: getInnerHTML($suggests),
+          content: getInnerHTML(HOST, $suggests)
         }
       }
     }
@@ -109,27 +121,34 @@ function handleDOM (
   let header = ''
   const $header = doc.querySelector('.word-details-multi .word-details-header')
   if ($header) {
-    $header.querySelectorAll<HTMLLIElement>('.word-details-tab').forEach(($tab, i) => {
-      $tab.dataset.categories = String(i)
-    })
-    header = getInnerHTML($header)
+    $header
+      .querySelectorAll<HTMLLIElement>('.word-details-tab')
+      .forEach(($tab, i) => {
+        $tab.dataset.categories = String(i)
+      })
+    header = getInnerHTML(HOST, $header)
   }
 
   doc.querySelectorAll<HTMLSpanElement>('.word-audio').forEach($audio => {
-    $audio.outerHTML = getStaticSpeakerHTML($audio.dataset.src)
+    $audio.replaceWith(getStaticSpeaker($audio.dataset.src))
   })
 
-  const entries: HTMLString[] = [...doc.querySelectorAll('.word-details-pane')]
-    .map(($pane, i) => (`
-      <div class="word-details-pane${i === 0 ? ' word-details-pane-active' : ''}">
+  const entries: HTMLString[] = [
+    ...doc.querySelectorAll('.word-details-pane')
+  ].map(
+    ($pane, i) => `
+      <div class="word-details-pane${
+        i === 0 ? ' word-details-pane-active' : ''
+      }">
         <div class="word-details-pane-header">
-          ${getInnerHTML($pane, '.word-details-pane-header')}
+          ${getInnerHTML(HOST, $pane, '.word-details-pane-header')}
         </div>
         <div class="word-details-pane-content">
-          ${getInnerHTML($pane, '.word-details-pane-content')}
+          ${getInnerHTML(HOST, $pane, '.word-details-pane-content')}
         </div>
       </div>
-    `))
+    `
+  )
 
   return entries.length > 0
     ? { result: { type: 'lex', header, entries, langCode } }
@@ -139,27 +158,27 @@ function handleDOM (
 /**
  * Firefox adds 'Origin' field with `fetch` which would be rejected by the server.
  */
-function xhrDirtyDOM (url: string): Promise<Document> {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest()
-    xhr.open('GET', url, true)
-    xhr.responseType = 'document'
-    xhr.withCredentials = true
-    xhr.onload = () => {
-      if (xhr.readyState === xhr.DONE && xhr.status >= 200 && xhr.status < 300) {
-        if (xhr.responseXML) {
-          resolve(xhr.responseXML)
-        } else {
-          reject(xhr)
-        }
-      }
-    }
-    xhr.onerror = err => reject(err)
-    xhr.send(null)
-  })
-}
+// function xhrDirtyDOM (url: string): Promise<Document> {
+//   return new Promise((resolve, reject) => {
+//     const xhr = new XMLHttpRequest()
+//     xhr.open('GET', url, true)
+//     xhr.responseType = 'document'
+//     xhr.withCredentials = true
+//     xhr.onload = () => {
+//       if (xhr.readyState === xhr.DONE && xhr.status >= 200 && xhr.status < 300) {
+//         if (xhr.responseXML) {
+//           resolve(xhr.responseXML)
+//         } else {
+//           reject(xhr)
+//         }
+//       }
+//     }
+//     xhr.onerror = err => reject(err)
+//     xhr.send(null)
+//   })
+// }
 
-function getLangCode (text: string, profile: Profile): string {
+function getLangCode(text: string, profile: Profile): string {
   // ü
   if (/\u00fc/i.test(text)) {
     return profile.dicts.all.hjdict.options.uas
@@ -206,7 +225,7 @@ function getLangCode (text: string, profile: Profile): string {
   return 'w'
 }
 
-function getUUID (e?: number): string {
+function getUUID(e?: number): string {
   let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 16
   let n = ''
   if ('number' === typeof e) {
@@ -217,9 +236,11 @@ function getUUID (e?: number): string {
   } else {
     n = e || 'xxxxxxxx-xyxx-yxxx-xxxy-xxyxxxxxxxxx'
   }
-  return ('number' !== typeof t || t < 2 || t > 36) && (t = 16),
-    n.replace(/[xy]/g, function (e) {
-      let n = Math.random() * t | 0
-      return ('x' === e ? n : 3 & n | 8).toString(t)
+  return (
+    ('number' !== typeof t || t < 2 || t > 36) && (t = 16),
+    n.replace(/[xy]/g, function(e) {
+      let n = (Math.random() * t) | 0
+      return ('x' === e ? n : (3 & n) | 8).toString(t)
     })
+  )
 }
