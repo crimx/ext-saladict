@@ -40,6 +40,7 @@ Object.keys(getAllDicts()).forEach(id => {
   // @ts-ignore: wrong storybook typing
   stories.add(id, ({ fontSize, withAnimation }) => (
     <Dict
+      key={id}
       dictID={id as DictID}
       fontSize={fontSize}
       withAnimation={withAnimation}
@@ -81,38 +82,43 @@ function Dict(props: {
   const [status, setStatus] = useState<'IDLE' | 'SEARCHING' | 'FINISH'>('IDLE')
   const [result, setResult] = useState<any>(null)
 
-  // add custom dict options
-  const profiles = getDefaultProfile()
+  const [profiles, updateProfiles] = useState(() => getDefaultProfile())
+  // custom dict options
   const options = profiles.dicts.all[props.dictID]['options']
-  if (options) {
-    Object.keys(options).forEach(key => {
-      const name = locales.options[key][i18n.language]
-      switch (typeof options[key]) {
-        case 'boolean':
-          options[key] = boolean(name, options[key])
-          break
-        case 'number':
-          options[key] = number(name, options[key])
-          break
-        case 'string':
-          const values: string[] =
-            profiles.dicts.all[props.dictID]['options_sel'][key]
-          options[key] = select(
-            name,
-            values.reduce(
-              (o, k) => (
-                (o[locales.options[`${key}-${k}`][i18n.language]] = k), o
-              ),
-              {}
+  const optKeys = options ? Object.keys(options) : []
+  const optValues = optKeys.map(key => {
+    const name = locales.options[key][i18n.language]
+    switch (typeof options[key]) {
+      case 'boolean':
+        return boolean(name, options[key])
+      case 'number':
+        return number(name, options[key])
+      case 'string':
+        const values: string[] =
+          profiles.dicts.all[props.dictID]['options_sel'][key]
+        return select(
+          name,
+          values.reduce(
+            (o, k) => (
+              (o[locales.options[`${key}-${k}`][i18n.language]] = k), o
             ),
-            options[key]
-          )
-          break
-        default:
-          break
-      }
+            {}
+          ),
+          options[key]
+        )
+      default:
+        return options[key]
+    }
+  })
+
+  useEffect(() => {
+    const newProfiles = getDefaultProfile()
+    const newOptions = newProfiles.dicts.all[props.dictID]['options']
+    optKeys.forEach((key, i) => {
+      newOptions[key] = optValues[i]
     })
-  }
+    updateProfiles(newProfiles)
+  }, optValues)
 
   useEffect(() => {
     // mock requests
@@ -134,7 +140,7 @@ function Dict(props: {
       setStatus('FINISH')
       setResult(result)
     })
-  }, [searchText])
+  }, [searchText, profiles])
 
   return (
     <DictItem
