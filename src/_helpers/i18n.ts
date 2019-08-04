@@ -45,6 +45,8 @@ export function i18nLoader() {
   i18n
     .use({
       type: 'backend',
+      init: () => {},
+      create: () => {},
       read: (lang: LangCode, ns: Namespace, cb: Function) => {
         if (ns === 'dicts') {
           cb(null, extractDictLocales(lang))
@@ -53,7 +55,7 @@ export function i18nLoader() {
         cb(null, require(`@/_locales/${lang}/${ns}.ts`).locale)
       }
     })
-    .use(initReactI18next)
+    .use(initReactI18next as any)
     .init({
       lng: (/^(en|zh-CN|zh-TW)$/.exec(browser.i18n.getUILanguage()) || [
         'en'
@@ -113,16 +115,11 @@ function extractDictLocales(lang: LangCode) {
     o[dictId] = {
       name: json.name[lang]
     }
-    if (window.__SALADICT_OPTIONS_PAGE__) {
-      if (json.options) {
-        o[dictId].options = mapValues(
-          json.options,
-          rawLocale => rawLocale[lang]
-        )
-      }
-      if (json.helps) {
-        o[dictId].helps = mapValues(json.helps, rawLocale => rawLocale[lang])
-      }
+    if (json.options) {
+      o[dictId].options = mapValues(json.options, rawLocale => rawLocale[lang])
+    }
+    if (json.helps) {
+      o[dictId].helps = mapValues(json.helps, rawLocale => rawLocale[lang])
     }
     return o
   }, {})
