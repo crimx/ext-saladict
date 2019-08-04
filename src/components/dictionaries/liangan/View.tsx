@@ -1,5 +1,7 @@
-import GuoYu from '../guoyu/View'
+import { DictGuoyu } from '../guoyu/View'
 
-export default class LiangAn extends GuoYu {
-  displayName = 'LiangAn'
-}
+export const DictLiangAn = DictGuoyu
+
+DictLiangAn.displayName = 'LiangAn'
+
+export default DictLiangAn
