@@ -17,6 +17,7 @@ export function fetchDirtyDOM(
   config: AxiosRequestConfig = {}
 ): Promise<Document> {
   return axios(url, {
+    withCredentials: false,
     ...config,
     responseType: 'document'
   }).then(({ data }) => data)
