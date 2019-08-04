@@ -253,7 +253,7 @@ export function getFullLink(host: string, el: Element, attr: string): string {
     return ''
   }
 
-  if (link.startsWith('http')) {
+  if (/^[a-zA-Z0-9]+:/.test(link)) {
     return link
   }
 
