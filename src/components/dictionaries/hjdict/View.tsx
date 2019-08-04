@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import { HjdictResult, HjdictResultLex, HjdictResultRelated } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
-import { HjdictConfig } from './config'
 import { useTranslate } from '@/_helpers/i18n'
 import { StaticSpeakerContainer } from '@/components/Speaker'
 
@@ -52,8 +51,7 @@ const langSelectList = ['w', 'jp/cj', 'jp/jc', 'kr', 'fr', 'de', 'es']
 
 function LangSelect(props: ViewPorps<HjdictResult>) {
   const { langCode } = props.result
-  const locales: HjdictConfig = require('./_locales.json')
-  const { i18n } = useTranslate()
+  const { t } = useTranslate('dicts')
 
   return (
     <select
@@ -67,7 +65,7 @@ function LangSelect(props: ViewPorps<HjdictResult>) {
     >
       {langSelectList.map(lang => (
         <option key={lang} value={lang} selected={lang === langCode}>
-          {locales.options[`chsas-${lang}`][i18n.language]}
+          {t(`hjdict.options.chsas-${lang}`)}
         </option>
       ))}
     </select>
