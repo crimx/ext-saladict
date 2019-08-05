@@ -2,21 +2,24 @@ import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { reflect } from '@/_helpers/promise-more'
 import {
   HTMLString,
-  getInnerHTMLBuilder,
+  getInnerHTML,
   handleNoResult,
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
   externalLink,
+  DictSearchResult
 } from '../helpers'
 import { DictConfigs } from '@/app-config'
-import { DictSearchResult } from '@/typings/server'
 
-export const getSrcPage: GetSrcPageFunction = (text) => {
-  return `http://www.macmillandictionary.com/dictionary/british/${text.trim().split(/\s+/).join('-')}`
+export const getSrcPage: GetSrcPageFunction = text => {
+  return `http://www.macmillandictionary.com/dictionary/british/${text
+    .trim()
+    .split(/\s+/)
+    .join('-')}`
 }
 
-const getInnerHTML = getInnerHTMLBuilder('http://www.macmillandictionary.com/')
+const HOST = 'http://www.macmillandictionary.com'
 
 interface MacmillanResultItem {
   title: string
@@ -44,17 +47,23 @@ export type MacmillanResult = MacmillanResultLex | MacmillanResultRelated
 
 type MacmillanSearchResult = DictSearchResult<MacmillanResult>
 
-export const search: SearchFunction<MacmillanSearchResult> = (
-  text, config, profile, payload
+export const search: SearchFunction<MacmillanResult> = (
+  text,
+  config,
+  profile,
+  payload
 ) => {
   const options = profile.dicts.all.macmillan.options
 
-  return fetchDirtyDOM('http://www.macmillandictionary.com/dictionary/british/' + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
+  return fetchDirtyDOM(
+    'http://www.macmillandictionary.com/dictionary/british/' +
+      text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-')
+  )
     .catch(handleNetWorkError)
     .then(doc => checkResult(doc, options))
 }
 
-function checkResult (
+function checkResult(
   doc: Document,
   options: DictConfigs['macmillan']['options']
 ): MacmillanSearchResult | Promise<MacmillanSearchResult> {
@@ -63,12 +72,14 @@ function checkResult (
       .then(getAllResults)
       .then(handleAllDOMs)
   } else if (options.related) {
-    const $alternative = doc.querySelector<HTMLAnchorElement>('#search-results ul')
+    const $alternative = doc.querySelector<HTMLAnchorElement>(
+      '#search-results ul'
+    )
     if ($alternative) {
       return {
         result: {
           type: 'related',
-          list: getInnerHTML($alternative)
+          list: getInnerHTML(HOST, $alternative)
         }
       }
     }
@@ -77,42 +88,54 @@ function checkResult (
 }
 
 /** Find all results of the same word */
-function getAllResults (doc: Document): Document[] | Promise<Document[]> {
+function getAllResults(doc: Document): Document[] | Promise<Document[]> {
   const $link = doc.querySelector<HTMLLinkElement>('link[rel="canonical"]')
-  if (!$link) { return [doc] }
+  if (!$link) {
+    return [doc]
+  }
 
   const keyword = (/[^/]+(?=_\d+$)/.exec($link.href) || [''])[0]
-  if (!keyword) { return [doc] }
+  if (!keyword) {
+    return [doc]
+  }
 
   const keywordTester = new RegExp(keyword + '_\\d+$')
-  const $related = Array.from(doc.querySelectorAll<HTMLAnchorElement>('#relatedentries li a'))
-    .filter(a => keywordTester.test(a.href))
-  if ($related.length <= 0) { return [doc] }
+  const $related = Array.from(
+    doc.querySelectorAll<HTMLAnchorElement>('#relatedentries li a')
+  ).filter(a => keywordTester.test(a.href))
+  if ($related.length <= 0) {
+    return [doc]
+  }
 
-  return reflect($related.map(a => fetchDirtyDOM(a.href)))
-    .then(docs => [doc, ...docs.filter((d): d is Document => d as any as boolean)])
+  return reflect($related.map(a => fetchDirtyDOM(a.href))).then(docs => [
+    doc,
+    ...docs.filter((d): d is Document => !!d)
+  ])
 }
 
-function handleAllDOMs (
+function handleAllDOMs(
   docs: Document[]
 ): MacmillanSearchResult | Promise<MacmillanSearchResult> {
-  let results = docs.map(handleDOM)
-    .filter((result): result is DictSearchResult<MacmillanResultItem> => result as any as boolean)
+  let results = docs
+    .map(handleDOM)
+    .filter(
+      (result): result is DictSearchResult<MacmillanResultItem> => !!result
+    )
   if (results.length > 0) {
-    const resultWithAudio = results.find(({ audio }) => (audio && audio.uk) as any as boolean)
+    const resultWithAudio = results.find(({ audio }) => audio && audio.uk)
     const audio = resultWithAudio ? resultWithAudio.audio : undefined
     return {
       result: {
         type: 'lex',
         items: results.map(({ result }) => result)
       },
-      audio,
+      audio
     }
   }
   return handleNoResult()
 }
 
-function handleDOM (
+function handleDOM(
   doc: Document
 ): null | DictSearchResult<MacmillanResultItem> {
   const result: MacmillanResultItem = {
@@ -122,27 +145,37 @@ function handleDOM (
     pos: '',
     /** syntax coding */
     sc: '',
-    phsym: '',
+    phsym: ''
   }
 
   const audio: { uk?: string } = {}
 
   const $title = doc.querySelector('#headword .BASE')
-  if (!$title) { return null }
+  if (!$title) {
+    return null
+  }
   result.title = $title.textContent || ''
-  if (!result.title) { return null }
+  if (!result.title) {
+    return null
+  }
 
   const $headbar = doc.querySelector('#headbar')
 
   if ($headbar) {
     const $pos = $headbar.querySelector('.PART-OF-SPEECH')
-    if ($pos) { result.pos = ($pos.textContent || '').toUpperCase() }
+    if ($pos) {
+      result.pos = ($pos.textContent || '').toUpperCase()
+    }
 
     const $sc = $headbar.querySelector('.SYNTAX-CODING')
-    if ($sc) { result.sc = $sc.textContent || '' }
+    if ($sc) {
+      result.sc = $sc.textContent || ''
+    }
 
     const $pron = $headbar.querySelector('.PRON')
-    if ($pron) { result.phsym = $pron.textContent || '' }
+    if ($pron) {
+      result.phsym = $pron.textContent || ''
+    }
 
     const $sound = $headbar.querySelector<HTMLDivElement>('.PRONS .sound')
     if ($sound && $sound.dataset.srcMp3) {
@@ -158,8 +191,10 @@ function handleDOM (
 
   const $senses = doc.querySelector('.senses')
   if ($senses && $senses.querySelectorAll('.SENSE').length > 0) {
-    $senses.querySelectorAll<HTMLAnchorElement>('a.moreButton').forEach(externalLink)
-    result.senses = getInnerHTML($senses)
+    $senses
+      .querySelectorAll<HTMLAnchorElement>('a.moreButton')
+      .forEach(externalLink)
+    result.senses = getInnerHTML(HOST, $senses)
   } else {
     return null
   }
