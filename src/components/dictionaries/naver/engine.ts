@@ -2,18 +2,21 @@ import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   handleNoResult,
   handleNetWorkError,
-  getInnerHTMLBuilder,
+  getInnerHTML,
   SearchFunction,
   GetSrcPageFunction,
   HTMLString,
   removeChildren,
+  DictSearchResult,
+  externalLink
 } from '../helpers'
-import { DictSearchResult } from '@/typings/server'
 import { isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 
-export const getSrcPage: GetSrcPageFunction = (text) => {
+export const getSrcPage: GetSrcPageFunction = text => {
   return isContainJapanese(text)
-    ? `https://ja.dict.naver.com/search.nhn?range=all&q=${encodeURIComponent(text)}`
+    ? `https://ja.dict.naver.com/search.nhn?range=all&q=${encodeURIComponent(
+        text
+      )}`
     : `https://zh.dict.naver.com/#/search?query=${encodeURIComponent(text)}`
 }
 
@@ -29,15 +32,19 @@ interface NaverPayload {
 
 type NaverSearchResult = DictSearchResult<NaverResult>
 
-export const search: SearchFunction<NaverSearchResult, NaverPayload> = (
-  text, config, profile, payload
+export const search: SearchFunction<NaverResult, NaverPayload> = (
+  text,
+  config,
+  profile,
+  payload
 ) => {
   const { options } = profile.dicts.all.naver
 
-  if (payload.lang === 'ja' ||
-      options.hanAsJa ||
-      isContainJapanese(text) ||
-      (options.korAsJa && isContainKorean(text))
+  if (
+    payload.lang === 'ja' ||
+    options.hanAsJa ||
+    isContainJapanese(text) ||
+    (options.korAsJa && isContainKorean(text))
   ) {
     return jaDict(text)
   }
@@ -45,17 +52,21 @@ export const search: SearchFunction<NaverSearchResult, NaverPayload> = (
   return zhDict(text)
 }
 
-async function zhDict (text: string): Promise<NaverSearchResult> {
+async function zhDict(text: string): Promise<NaverSearchResult> {
   try {
-    var doc = await fetchDirtyDOM(`http://m.cndic.naver.com/search/all?sLn=zh_CN&fromNewVer&q=${encodeURIComponent(text)}`)
+    var doc = await fetchDirtyDOM(
+      `http://m.cndic.naver.com/search/all?sLn=zh_CN&fromNewVer&q=${encodeURIComponent(
+        text
+      )}`
+    )
   } catch (e) {
     return handleNetWorkError()
   }
 
-  const getInnerHTML = getInnerHTMLBuilder('http://m.cndic.naver.com/', {})
-
   let $container = doc.querySelector('#ct')
-  if (!$container) { return handleNoResult() }
+  if (!$container) {
+    return handleNoResult()
+  }
 
   $container = $container.querySelector('#ct') || $container
 
@@ -66,26 +77,36 @@ async function zhDict (text: string): Promise<NaverSearchResult> {
   removeChildren($container, '.go_register')
   removeChildren($container, '.section_banner')
   removeChildren($container, '.spi_area')
+  removeChildren($container, '.word_otr.word_line')
+  removeChildren($container, '.common_btn_wrap.my_vlive_pageBar')
+
+  $container
+    .querySelectorAll<HTMLAnchorElement>('a.more_d')
+    .forEach(externalLink)
 
   return {
     result: {
       lang: 'zh',
-      entry: getInnerHTML($container),
+      entry: getInnerHTML('http://m.cndic.naver.com', $container)
     }
   }
 }
 
-async function jaDict (text: string): Promise<NaverSearchResult> {
+async function jaDict(text: string): Promise<NaverSearchResult> {
   try {
-    var doc = await fetchDirtyDOM(`https://ja.dict.naver.com/search.nhn?range=all&q=${encodeURIComponent(text)}`)
+    var doc = await fetchDirtyDOM(
+      `https://ja.dict.naver.com/search.nhn?range=all&q=${encodeURIComponent(
+        text
+      )}`
+    )
   } catch (e) {
     return handleNetWorkError()
   }
 
-  const getInnerHTML = getInnerHTMLBuilder('https://ja.dict.naver.com/')
-
   const $container = doc.querySelector('#content')
-  if (!$container) { return handleNoResult() }
+  if (!$container) {
+    return handleNoResult()
+  }
 
   removeChildren($container, '.sorting')
   removeChildren($container, '.info_userent')
@@ -97,7 +118,7 @@ async function jaDict (text: string): Promise<NaverSearchResult> {
   return {
     result: {
       lang: 'ja',
-      entry: getInnerHTML($container),
+      entry: getInnerHTML('https://ja.dict.naver.com', $container)
     }
   }
 }

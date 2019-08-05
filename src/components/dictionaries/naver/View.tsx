@@ -1,36 +1,31 @@
-import React from 'react'
+import React, { FC } from 'react'
 import { NaverResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export default class DictNaver extends React.PureComponent<ViewPorps<NaverResult>> {
-  langSelectList = [
-    ['zh', '中韩'],
-    ['ja', '日韩'],
-  ]
+export const DictNaver: FC<ViewPorps<NaverResult>> = props => (
+  <>
+    <select
+      style={{ width: '100%' }}
+      onChange={e =>
+        props.searchText({
+          id: 'naver',
+          payload: { lang: e.target.value }
+        })
+      }
+      value={props.result.lang}
+    >
+      <option key="zh" value="zh">
+        中韩
+      </option>
+      <option key="ja" value="ja">
+        日韓
+      </option>
+    </select>
+    <div
+      className={`dictNaver-Entry-${props.result.lang}`}
+      dangerouslySetInnerHTML={{ __html: props.result.entry }}
+    />
+  </>
+)
 
-  render () {
-    const { lang, entry } = this.props.result
-
-    return (
-      <>
-        <select
-          style={{ width: '100%' }}
-          onChange={e => this.props.searchText({
-            id: 'naver',
-            payload: { lang: e.target.value },
-          })}
-        >
-          {this.langSelectList.map(([langCode, locale]) => (
-            <option key={langCode} value={langCode} selected={lang === langCode}>
-              {locale}
-            </option>
-          ))}
-        </select>
-        <div
-          className={`dictNaver-Entry-${lang}`}
-          dangerouslySetInnerHTML={{ __html: entry }}
-        />
-      </>
-    )
-  }
-}
+export default DictNaver

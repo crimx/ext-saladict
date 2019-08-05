@@ -1,3 +1,5 @@
+@import '@/_sass_global/_reset.scss';
+
 .dictNaver-Entry-zh {
   .info_box {
     position: relative;
@@ -5586,7 +5588,6 @@
     font-size: 1.00em;
     font-weight: 400;
     color: #4e637e;
-    text-stroke-width: 0;
   }
 
   .quiz_cont .word_view .word_area .tit_confuse .count {
@@ -5599,7 +5600,6 @@
 
   .quiz_cont .word_view .word_area .tit_confuse .count strong {
     font-weight: 400;
-    text-stroke-width: 0;
   }
 
   .quiz_cont .word_view .word_area .dsc_quiz {
@@ -5714,7 +5714,6 @@
     min-height: 29px;
     border: 1px solid #dedede;
     background: #fcfcfc;
-    vertical-align: middle;
     font-size: 0;
     line-height: 0;
   }
@@ -7322,7 +7321,6 @@
     position: static;
     left: auto;
     top: auto;
-    vertical-align: middle;
     color: #666;
   }
 
@@ -9021,7 +9019,6 @@
     height: 16px;
     display: block;
     overflow: hidden;
-    vertical-align: top;
   }
 
   .ts h1 ul .tab_name {
@@ -9498,7 +9495,6 @@
     display: block;
     line-height: 3.25;
     height: 52px;
-    vertical-align: middle;
     border-left: solid 1px #b5b5b5;
     border-bottom: solid 1px #d8d8d8;
     background: #f4f4f4;
