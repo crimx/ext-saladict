@@ -4,18 +4,22 @@ import {
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
-  getOuterHTMLBuilder,
+  getOuterHTML,
   HTMLString,
   externalLink,
   getText,
   removeChildren,
+  DictSearchResult
 } from '../helpers'
-import { DictSearchResult } from '@/typings/server'
-import { getStaticSpeakerHTML } from '@/components/withStaticSpeaker'
+import { getStaticSpeakerString, getStaticSpeaker } from '@/components/Speaker'
 
-export const getSrcPage: GetSrcPageFunction = (text) => {
-  return `https://ejje.weblio.jp/content/${encodeURIComponent(text.replace(/\s+/g, '+'))}`
+export const getSrcPage: GetSrcPageFunction = text => {
+  return `https://ejje.weblio.jp/content/${encodeURIComponent(
+    text.replace(/\s+/g, '+')
+  )}`
 }
+
+const HOST = 'https://ejje.weblio.jp'
 
 export type WeblioejjeResult = Array<{
   title?: string
@@ -24,16 +28,20 @@ export type WeblioejjeResult = Array<{
 
 type WeblioejjeSearchResult = DictSearchResult<WeblioejjeResult>
 
-export const search: SearchFunction<WeblioejjeSearchResult> = (
-  text, config, profile, payload
+export const search: SearchFunction<WeblioejjeResult> = (
+  text,
+  config,
+  profile,
+  payload
 ) => {
   return fetchDirtyDOM(getSrcPage(text, config, profile))
     .catch(handleNetWorkError)
     .then(handleDOM)
 }
 
-function handleDOM (doc: Document): WeblioejjeSearchResult | Promise<WeblioejjeSearchResult> {
-  const getOuterHTML = getOuterHTMLBuilder('https://ejje.weblio.jp')
+function handleDOM(
+  doc: Document
+): WeblioejjeSearchResult | Promise<WeblioejjeSearchResult> {
   const result: WeblioejjeResult = []
 
   doc.querySelectorAll<HTMLDivElement>('.mainBlock').forEach($entry => {
@@ -42,11 +50,11 @@ function handleDOM (doc: Document): WeblioejjeSearchResult | Promise<WeblioejjeS
 
       const $summaryTbl = $entry.querySelector('.summaryTbl')
       if ($summaryTbl) {
-        head += getOuterHTML($summaryTbl, '.summaryL h1')
+        head += getOuterHTML(HOST, $summaryTbl, '.summaryL h1')
 
         const $audio = $summaryTbl.querySelector('.summaryC audio source')
         if ($audio) {
-          head += getStaticSpeakerHTML($audio.getAttribute('src'))
+          head += getStaticSpeakerString($audio.getAttribute('src'))
         }
 
         $summaryTbl.outerHTML = `<div class="summaryHead">${head}</div>`
@@ -57,13 +65,14 @@ function handleDOM (doc: Document): WeblioejjeSearchResult | Promise<WeblioejjeS
       removeChildren($entry, '.flex-rectangle-ads-frame')
       removeChildren($entry, '.outsideLlTable')
 
-      result.push({ content: getOuterHTML($entry) })
+      result.push({ content: getOuterHTML(HOST, $entry) })
       return
     }
 
-    if (!$entry.className.includes('hlt_') ||
-        $entry.classList.contains('hlt_CPRHT') ||
-        $entry.classList.contains('hlt_RLTED')
+    if (
+      !$entry.className.includes('hlt_') ||
+      $entry.classList.contains('hlt_CPRHT') ||
+      $entry.classList.contains('hlt_RLTED')
     ) {
       return
     }
@@ -91,7 +100,7 @@ function handleDOM (doc: Document): WeblioejjeSearchResult | Promise<WeblioejjeS
     $entry.querySelectorAll('.fa-volume-up').forEach($audio => {
       const $source = $audio.querySelector('source')
       if ($source) {
-        $audio.outerHTML = getStaticSpeakerHTML($source.getAttribute('src'))
+        $audio.replaceWith(getStaticSpeaker($source.getAttribute('src')))
       }
     })
 
@@ -106,7 +115,7 @@ function handleDOM (doc: Document): WeblioejjeSearchResult | Promise<WeblioejjeS
       }
     })
 
-    result.push({ title, content: getOuterHTML($entry) })
+    result.push({ title, content: getOuterHTML(HOST, $entry) })
   })
 
   return result.length > 0 ? { result } : handleNoResult()
