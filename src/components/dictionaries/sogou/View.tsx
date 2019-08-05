@@ -1,3 +1,1 @@
-import MachineTrans from '@/components/MachineTrans'
-
-export default MachineTrans
+export { MachineTrans as default } from '@/components/MachineTrans/MachineTrans'
