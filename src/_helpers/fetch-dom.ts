@@ -22,3 +22,16 @@ export function fetchDirtyDOM(
     responseType: 'document'
   }).then(({ data }) => data)
 }
+
+export function fetchPlainText(
+  url: string,
+  config: AxiosRequestConfig = {}
+): Promise<string> {
+  return axios(url, {
+    withCredentials: false,
+    ...config,
+    // axios bug https://github.com/axios/axios/issues/907
+    transformResponse: [data => data],
+    responseType: 'text'
+  }).then(({ data }) => data)
+}

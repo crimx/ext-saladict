@@ -13,6 +13,7 @@ import {
 } from '../helpers'
 import axios from 'axios'
 import { getStaticSpeaker } from '@/components/Speaker'
+import { fetchPlainText } from '@/_helpers/fetch-dom'
 
 export const getSrcPage: GetSrcPageFunction = text => {
   return `https://www.google.com.hk/search?q=define+${text}`
@@ -33,13 +34,10 @@ export const search: SearchFunction<GoogleDictResult> = async (
   const isen = profile.dicts.all.googledict.options.enresult
     ? 'hl=en&gl=en&'
     : ''
-  const { data: bodyText } = await axios
-    .get(
-      `https://www.google.com/search?${isen}q=define+` +
-        encodeURIComponent(text.replace(/\s+/g, '+')),
-      { withCredentials: false, responseType: 'text' }
-    )
-    .catch(handleNetWorkError)
+  const bodyText = await fetchPlainText(
+    `https://www.google.com/search?${isen}q=define+` +
+      encodeURIComponent(text.replace(/\s+/g, '+'))
+  ).catch(handleNetWorkError)
 
   return handleDOM(bodyText)
 }

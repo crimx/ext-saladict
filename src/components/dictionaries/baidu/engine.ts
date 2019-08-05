@@ -13,6 +13,7 @@ import {
   isContainJapanese,
   isContainKorean
 } from '@/_helpers/lang-check'
+import { fetchPlainText } from '@/_helpers/fetch-dom'
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   const lang =
@@ -181,9 +182,8 @@ function remoteLangCheck(text: string): Promise<string> {
 }
 
 async function getToken(): Promise<{ gtk: string; token: string }> {
-  const { data } = await axios.get<string>('https://fanyi.baidu.com', {
+  const homepage = await fetchPlainText('https://fanyi.baidu.com', {
     withCredentials: true,
-    responseType: 'text',
     headers: {
       cookie:
         process.env.NODE_ENV === 'test'
@@ -193,8 +193,8 @@ async function getToken(): Promise<{ gtk: string; token: string }> {
   })
 
   return {
-    gtk: (/window.gtk = '([^']+)'/.exec(data) || ['', ''])[1],
-    token: (/token: '([^']+)'/.exec(data) || ['', ''])[1]
+    gtk: (/window.gtk = '([^']+)'/.exec(homepage) || ['', ''])[1],
+    token: (/token: '([^']+)'/.exec(homepage) || ['', ''])[1]
   }
 }
 

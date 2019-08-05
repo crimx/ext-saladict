@@ -9,6 +9,7 @@ import {
 } from '../helpers'
 import { isContainChinese, isContainJapanese } from '@/_helpers/lang-check'
 import { storage } from '@/_helpers/browser-api'
+import { fetchPlainText } from '@/_helpers/fetch-dom'
 
 export const getSrcPage: GetSrcPageFunction = () => {
   return 'https://fanyi.caiyunapp.com/'
@@ -151,23 +152,14 @@ async function getToken(): Promise<string> {
   if (!dict_caiyun || Date.now() - dict_caiyun.tokenDate > 15 * 60000) {
     let token = 'token:3975l6lr5pcbvidl6jl2'
     try {
-      const { data: homepage } = await axios.get<string>(
-        'https://fanyi.caiyunapp.com',
-        {
-          withCredentials: false,
-          responseType: 'text'
-        }
-      )
+      const homepage = await fetchPlainText('https://fanyi.caiyunapp.com')
 
       const appjsPath = (homepage.match(/\/static\/js\/app\.\w+\.js/) || [
         ''
       ])[0]
       if (appjsPath) {
-        const { data: appjs } = await axios.get<string>(
-          'https://fanyi.caiyunapp.com' + appjsPath,
-          {
-            responseType: 'text'
-          }
+        const appjs = await fetchPlainText(
+          'https://fanyi.caiyunapp.com' + appjsPath
         )
         const matchRes = appjs.match(/token:\w+/)
         if (matchRes) {
