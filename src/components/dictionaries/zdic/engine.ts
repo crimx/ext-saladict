@@ -1,20 +1,20 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   HTMLString,
-  getInnerHTMLBuilder,
+  getInnerHTML,
   handleNoResult,
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
+  DictSearchResult
 } from '../helpers'
-import { DictSearchResult } from '@/typings/server'
-import { getStaticSpeakerHTML } from '@/components/withStaticSpeaker'
+import { getStaticSpeaker } from '@/components/Speaker'
 
-export const getSrcPage: GetSrcPageFunction = (text) => {
+export const getSrcPage: GetSrcPageFunction = text => {
   return `https://www.zdic.net/hans/${text}`
 }
 
-const getInnerHTML = getInnerHTMLBuilder('https://www.zdic.net')
+const HOST = 'https://www.zdic.net'
 
 export type ZdicResult = Array<{
   title: string
@@ -25,8 +25,11 @@ type ZdicSearchResult = DictSearchResult<ZdicResult>
 
 let isRefererModified = false
 
-export const search: SearchFunction<ZdicSearchResult> = (
-  text, config, profile, payload
+export const search: SearchFunction<ZdicResult> = (
+  text,
+  config,
+  profile,
+  payload
 ) => {
   const isAudio = profile.dicts.all.zdic.options.audio
   if (!isRefererModified && isAudio) {
@@ -34,32 +37,39 @@ export const search: SearchFunction<ZdicSearchResult> = (
     modifyReferer()
   }
 
-  return fetchDirtyDOM('https://www.zdic.net/hans/' + encodeURIComponent(text.replace(/\s+/g, ' ')))
+  return fetchDirtyDOM(
+    'https://www.zdic.net/hans/' + encodeURIComponent(text.replace(/\s+/g, ' '))
+  )
     .catch(handleNetWorkError)
     .then(doc => handleDOM(doc, isAudio))
 }
 
-function handleDOM (
-  doc: Document, isAudio: boolean
+function handleDOM(
+  doc: Document,
+  isAudio: boolean
 ): ZdicSearchResult | Promise<ZdicSearchResult> {
   const response: ZdicSearchResult = {
     result: []
   }
 
-  for (const $entry of doc.querySelectorAll<HTMLDivElement>('[data-type-block]')) {
+  for (const $entry of doc.querySelectorAll<HTMLDivElement>(
+    '[data-type-block]'
+  )) {
     const title = $entry.dataset.typeBlock || ''
     if (!/基本解释|词语解释|详细解释/.test(title)) {
       continue
     }
 
-    for (const $a of $entry.querySelectorAll<HTMLAnchorElement>('[data-src-mp3]')) {
+    for (const $a of $entry.querySelectorAll<HTMLAnchorElement>(
+      '[data-src-mp3]'
+    )) {
       if (isAudio) {
         if (!response.audio) {
           response.audio = {
             py: $a.dataset.srcMp3
           }
         }
-        $a.outerHTML = getStaticSpeakerHTML($a.dataset.srcMp3)
+        $a.replaceWith(getStaticSpeaker($a.dataset.srcMp3))
       } else {
         $a.remove()
       }
@@ -67,18 +77,21 @@ function handleDOM (
 
     response.result.push({
       title,
-      content: getInnerHTML($entry, '.content')
+      content: getInnerHTML(HOST, $entry, '.content')
     })
   }
 
   return response.result.length > 0 ? response : handleNoResult()
 }
 
-function modifyReferer () {
+function modifyReferer() {
   const extraInfoSpec = ['blocking', 'requestHeaders']
   // https://developer.chrome.com/extensions/webRequest#life_cycle_footnote
-  if (browser.webRequest['OnBeforeSendHeadersOptions'] &&
-      browser.webRequest['OnBeforeSendHeadersOptions'].hasOwnProperty('EXTRA_HEADERS')
+  if (
+    browser.webRequest['OnBeforeSendHeadersOptions'] &&
+    browser.webRequest['OnBeforeSendHeadersOptions'].hasOwnProperty(
+      'EXTRA_HEADERS'
+    )
   ) {
     extraInfoSpec.push('extraHeaders')
   }
@@ -93,13 +106,16 @@ function modifyReferer () {
           }
         }
         if (i === details.requestHeaders.length) {
-          details.requestHeaders.push({ name: 'Referer', value: 'https://www.zdic.net' })
+          details.requestHeaders.push({
+            name: 'Referer',
+            value: 'https://www.zdic.net'
+          })
         }
       }
       return { requestHeaders: details.requestHeaders }
     },
     { urls: ['https://img.zdic.net/audio/*'] },
     /** WebExt type is missing Chrome support */
-    extraInfoSpec as any,
+    extraInfoSpec as any
   )
 }
