@@ -3,14 +3,12 @@ import axios from 'axios'
 import AxiosMockAdapter from 'axios-mock-adapter'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
+import { withKnobs, select, number, boolean } from '@storybook/addon-knobs'
 import {
-  withKnobs,
-  select,
-  number,
-  object,
-  boolean
-} from '@storybook/addon-knobs'
-import { withi18nNS, withSaladictPanel } from '@/_helpers/storybook'
+  withSaladictPanel,
+  withSideEffect,
+  browser
+} from '@/_helpers/storybook'
 import { DictItem } from '@/content/components/DictItem/DictItem'
 import { getDefaultConfig, DictID } from '@/app-config'
 import { getDefaultProfile } from '@/app-config/profiles'
@@ -18,6 +16,7 @@ import { SearchFunction, MockRequest } from './helpers'
 import { getAllDicts } from '@/app-config/dicts'
 import { useTranslate } from '@/_helpers/i18n'
 import { timer } from '@/_helpers/promise-more'
+import { Message } from '@/typings/message'
 
 const stories = storiesOf('Content Scripts|Dictionaries', module)
   .addParameters({
@@ -28,13 +27,34 @@ const stories = storiesOf('Content Scripts|Dictionaries', module)
   })
   .addDecorator(withKnobs)
   .addDecorator(
+    withSideEffect(() => {
+      browser.runtime.sendMessage.callsFake((message: Message) => {
+        if (message.type === 'DICT_ENGINE_METHOD') {
+          action('Calling DICT_ENGINE_METHOD')(message.payload)
+          return new Promise(resolve => {
+            setTimeout(() => {
+              const method = require('@/components/dictionaries/' +
+                message.payload.id +
+                '/engine.ts')[message.payload.method]
+              resolve(method(...(message.payload.args || [])))
+            }, Math.random() * 2000)
+          })
+        }
+        return Promise.resolve()
+      })
+
+      return () => {
+        browser.runtime.sendMessage.callsFake(() => Promise.resolve())
+      }
+    })
+  )
+  .addDecorator(
     withSaladictPanel(
       <style>
         {require('@/content/components/DictItem/DictItem.scss').toString()}
       </style>
     )
   )
-  .addDecorator(withi18nNS('content'))
 
 Object.keys(getAllDicts()).forEach(id => {
   // @ts-ignore: wrong storybook typing
