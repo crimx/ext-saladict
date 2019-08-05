@@ -302,13 +302,13 @@ function storageCreateStream<T = any>(
 \* --------------------------------------- */
 type MessageThis = typeof message | typeof message.self
 
-function messageSend<T extends MsgType>(
+function messageSend<T extends MsgType, R = undefined>(
   message: Message<T>
-): Promise<MessageResponse<T>>
-function messageSend<T extends MsgType>(
+): Promise<R extends undefined ? MessageResponse<T> : R>
+function messageSend<T extends MsgType, R = undefined>(
   tabId: number,
   message: Message<T>
-): Promise<MessageResponse<T>>
+): Promise<R extends undefined ? MessageResponse<T> : R>
 function messageSend<T extends MsgType>(
   ...args: [Message<T>] | [number, Message<T>]
 ): Promise<any> {
@@ -324,9 +324,9 @@ function messageSend<T extends MsgType>(
   })
 }
 
-async function messageSendSelf<T extends MsgType>(
+async function messageSendSelf<T extends MsgType, R = undefined>(
   message: Message<T>
-): Promise<MessageResponse<T>> {
+): Promise<R extends undefined ? MessageResponse<T> : R> {
   if (window.pageId === undefined) {
     await initClient()
   }

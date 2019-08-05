@@ -52,6 +52,17 @@ export type MessageConfig = {
     payload: string
   }
 
+  DICT_ENGINE_METHOD: {
+    /** call any method exported from the engine */
+    type: 'DICT_ENGINE_METHOD'
+    payload: {
+      id: DictID
+      method: string
+      args?: any[]
+    }
+    response: any
+  }
+
   IS_IN_NOTEBOOK: {
     /** Is a word in Notebook */
     type: 'IS_IN_NOTEBOOK'
