@@ -1,20 +1,23 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   HTMLString,
-  getInnerHTMLBuilder,
+  getInnerHTML,
   handleNoResult,
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
+  DictSearchResult
 } from '../helpers'
 import { DictConfigs } from '@/app-config'
-import { DictSearchResult } from '@/typings/server'
 
-export const getSrcPage: GetSrcPageFunction = (text) => {
-  return `http://www.learnersdictionary.com/definition/${text.trim().split(/\s+/).join('-')}`
+export const getSrcPage: GetSrcPageFunction = text => {
+  return `http://www.learnersdictionary.com/definition/${text
+    .trim()
+    .split(/\s+/)
+    .join('-')}`
 }
 
-const getInnerHTML = getInnerHTMLBuilder('http://www.learnersdictionary.com/')
+const HOST = 'http://www.learnersdictionary.com'
 
 interface WebsterLearnerResultItem {
   title: HTMLString
@@ -40,42 +43,52 @@ export interface WebsterLearnerResultRelated {
   list: HTMLString
 }
 
-export type WebsterLearnerResult = WebsterLearnerResultLex | WebsterLearnerResultRelated
+export type WebsterLearnerResult =
+  | WebsterLearnerResultLex
+  | WebsterLearnerResultRelated
 
 type WebsterLearnerSearchResult = DictSearchResult<WebsterLearnerResult>
 type WebsterLearnerSearchResultLex = DictSearchResult<WebsterLearnerResultLex>
 
-export const search: SearchFunction<WebsterLearnerSearchResult> = (
-  text, config, profile, payload
+export const search: SearchFunction<WebsterLearnerResult> = (
+  text,
+  config,
+  profile,
+  payload
 ) => {
   const options = profile.dicts.all.websterlearner.options
 
-  return fetchDirtyDOM('http://www.learnersdictionary.com/definition/' + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
+  return fetchDirtyDOM(
+    'http://www.learnersdictionary.com/definition/' +
+      text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-')
+  )
     .catch(handleNetWorkError)
     .then(doc => checkResult(doc, options))
 }
 
-function checkResult (
+function checkResult(
   doc: Document,
-  options: DictConfigs['websterlearner']['options'],
+  options: DictConfigs['websterlearner']['options']
 ): WebsterLearnerSearchResult | Promise<WebsterLearnerSearchResult> {
-  const $alternative = doc.querySelector<HTMLAnchorElement>('[id^="spelling"] .links')
+  const $alternative = doc.querySelector<HTMLAnchorElement>(
+    '[id^="spelling"] .links'
+  )
   if (!$alternative) {
     return handleDOM(doc, options)
   } else if (options.related) {
     return {
       result: {
         type: 'related',
-        list: getInnerHTML($alternative)
+        list: getInnerHTML(HOST, $alternative)
       }
     }
   }
   return handleNoResult()
 }
 
-function handleDOM (
+function handleDOM(
   doc: Document,
-  options: DictConfigs['websterlearner']['options'],
+  options: DictConfigs['websterlearner']['options']
 ): WebsterLearnerSearchResultLex | Promise<WebsterLearnerSearchResultLex> {
   doc.querySelectorAll('.d_hidden').forEach(el => el.remove())
 
@@ -91,7 +104,9 @@ function handleDOM (
     }
 
     const $headword = $entry.querySelector('.hw_d')
-    if (!$headword) { return }
+    if (!$headword) {
+      return
+    }
     const $pron = $headword.querySelector<HTMLAnchorElement>('.play_pron')
     if ($pron) {
       const path = ($pron.dataset.lang || '').replace('_', '/')
@@ -101,7 +116,7 @@ function handleDOM (
       audio.us = entry.pron
       $pron.remove()
     }
-    entry.title = getInnerHTML($headword)
+    entry.title = getInnerHTML(HOST, $headword)
 
     const $headwordInfs = $entry.querySelector('.hw_infs_d')
     if ($headwordInfs) {
@@ -113,29 +128,35 @@ function handleDOM (
         entry.infsPron = `http://media.merriam-webster.com/audio/prons/${path}/mp3/${dir}/${file}.mp3`
         $pron.remove()
       }
-      entry.infs = getInnerHTML($headwordInfs)
+      entry.infs = getInnerHTML(HOST, $headwordInfs)
     }
 
-    entry.labels = getInnerHTML($entry, '.labels')
+    entry.labels = getInnerHTML(HOST, $entry, '.labels')
 
     if (options.defs) {
-      entry.senses = getInnerHTML($entry, '.sblocks')
+      entry.senses = getInnerHTML(HOST, $entry, '.sblocks')
     }
 
     if (options.phrase) {
-      entry.phrases = getInnerHTML($entry, '.dros')
+      entry.phrases = getInnerHTML(HOST, $entry, '.dros')
     }
 
     if (options.derived) {
-      entry.derived = getInnerHTML($entry, '.uros')
+      entry.derived = getInnerHTML(HOST, $entry, '.uros')
     }
 
     if (options.arts) {
-      entry.arts = Array.from($entry.querySelectorAll<HTMLImageElement>('.arts img'))
-        .map($img => $img.src)
+      entry.arts = Array.from(
+        $entry.querySelectorAll<HTMLImageElement>('.arts img')
+      ).map($img => $img.src)
     }
 
-    if (entry.senses || entry.phrases || entry.derived || (entry.arts && entry.arts.length > 0)) {
+    if (
+      entry.senses ||
+      entry.phrases ||
+      entry.derived ||
+      (entry.arts && entry.arts.length > 0)
+    ) {
       result.items.push(entry)
     }
   })
