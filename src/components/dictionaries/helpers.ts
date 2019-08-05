@@ -92,19 +92,23 @@ export interface MachineTranslateResult<ID extends DictID> {
  * Get the textContent of a node or its child.
  */
 export function getText(
-  parent: ParentNode,
+  parent: ParentNode | null,
   selector?: string,
   toChz?: boolean
 ): string
 export function getText(
-  parent: ParentNode,
+  parent: ParentNode | null,
   toChz?: boolean,
   selector?: string
 ): string
 export function getText(
-  parent: ParentNode,
+  parent: ParentNode | null,
   ...args: [string?, boolean?] | [boolean?, string?]
 ): string {
+  if (!parent) {
+    return ''
+  }
+
   let selector = ''
   let toChz = false
   for (let i = args.length - 1; i >= 0; i--) {
