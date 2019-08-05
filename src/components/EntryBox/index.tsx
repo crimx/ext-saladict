@@ -1,7 +1,7 @@
-import React, { FC, ComponentProps } from 'react'
+import React, { FC, ComponentProps, ReactNode } from 'react'
 
-export interface EntryBoxProps extends ComponentProps<'div'> {
-  title: string
+export interface EntryBoxProps extends Omit<ComponentProps<'div'>, 'title'> {
+  title: ReactNode
 }
 
 /**
