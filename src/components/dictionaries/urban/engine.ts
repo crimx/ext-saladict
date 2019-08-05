@@ -2,19 +2,19 @@ import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   HTMLString,
   getText,
-  getInnerHTMLBuilder,
+  getInnerHTML,
   handleNoResult,
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
+  DictSearchResult
 } from '../helpers'
-import { DictSearchResult } from '@/typings/server'
 
-export const getSrcPage: GetSrcPageFunction = (text) => {
+export const getSrcPage: GetSrcPageFunction = text => {
   return `http://www.urbandictionary.com/define.php?term=${text}`
 }
 
-const getInnerHTML = getInnerHTMLBuilder('https://www.urbandictionary.com/')
+const HOST = 'https://www.urbandictionary.com'
 
 interface UrbanResultItem {
   /** keyword */
@@ -40,17 +40,23 @@ export type UrbanResult = UrbanResultItem[]
 
 type UrbanSearchResult = DictSearchResult<UrbanResult>
 
-export const search: SearchFunction<UrbanSearchResult> = (
-  text, config, profile, payload
+export const search: SearchFunction<UrbanResult> = (
+  text,
+  config,
+  profile,
+  payload
 ) => {
   const options = profile.dicts.all.urban.options
 
-  return fetchDirtyDOM('http://www.urbandictionary.com/define.php?term=' + encodeURIComponent(text.replace(/\s+/g, ' ')))
+  return fetchDirtyDOM(
+    'http://www.urbandictionary.com/define.php?term=' +
+      encodeURIComponent(text.replace(/\s+/g, ' '))
+  )
     .catch(handleNetWorkError)
     .then(doc => handleDOM(doc, options))
 }
 
-function handleDOM (
+function handleDOM(
   doc: Document,
   { resultnum }: { resultnum: number }
 ): UrbanSearchResult | Promise<UrbanSearchResult> {
@@ -69,7 +75,9 @@ function handleDOM (
     let resultItem: UrbanResultItem = { title: '' }
 
     resultItem.title = getText($panel, '.word')
-    if (!resultItem.title) { continue }
+    if (!resultItem.title) {
+      continue
+    }
 
     let $pron = $panel.querySelector('.play-sound') as HTMLElement
     if ($pron && $pron.dataset.urls) {
@@ -79,22 +87,24 @@ function handleDOM (
           resultItem.pron = pron
           audio.us = pron
         }
-      } catch (error) {/* ignore */}
+      } catch (error) {
+        /* ignore */
+      }
     }
 
-    resultItem.meaning = getInnerHTML($panel, '.meaning')
+    resultItem.meaning = getInnerHTML(HOST, $panel, '.meaning')
     if (/There aren't any definitions for/i.test(resultItem.meaning || '')) {
       continue
     }
 
-    resultItem.example = getInnerHTML($panel, '.example')
+    resultItem.example = getInnerHTML(HOST, $panel, '.example')
 
     let $gif = $panel.querySelector('.gif > img') as HTMLImageElement
     if ($gif) {
       const $attr = $gif.nextElementSibling
       resultItem.gif = {
         src: $gif.src,
-        attr: $attr && $attr.textContent || ''
+        attr: getText($attr)
       }
     }
 
