@@ -1,21 +1,21 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   getText,
-  getInnerHTMLBuilder,
+  getInnerHTML,
   handleNoResult,
   HTMLString,
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
+  DictSearchResult
 } from '../helpers'
 import { DictConfigs } from '@/app-config'
-import { DictSearchResult } from '@/typings/server'
 
-export const getSrcPage: GetSrcPageFunction = (text) => {
+export const getSrcPage: GetSrcPageFunction = text => {
   return `https://dict.youdao.com/w/eng/${text}`
 }
 
-const getInnerHTML = getInnerHTMLBuilder('http://www.youdao.com/')
+const HOST = 'http://www.youdao.com'
 
 export interface YoudaoResultLex {
   type: 'lex'
@@ -43,21 +43,26 @@ export type YoudaoResult = YoudaoResultLex | YoudaoResultRelated
 
 type YoudaoSearchResult = DictSearchResult<YoudaoResult>
 
-export const search: SearchFunction<YoudaoSearchResult> = (
-  text, config, profile, payload
+export const search: SearchFunction<YoudaoResult> = (
+  text,
+  config,
+  profile,
+  payload
 ) => {
   const options = profile.dicts.all.youdao.options
   const isChz = config.langCode === 'zh-TW'
 
-  return fetchDirtyDOM('https://dict.youdao.com/w/' + encodeURIComponent(text.replace(/\s+/g, ' ')))
+  return fetchDirtyDOM(
+    'https://dict.youdao.com/w/' + encodeURIComponent(text.replace(/\s+/g, ' '))
+  )
     .catch(handleNetWorkError)
     .then(doc => checkResult(doc, options, isChz))
 }
 
-function checkResult (
+function checkResult(
   doc: Document,
   options: DictConfigs['youdao']['options'],
-  isChz: boolean,
+  isChz: boolean
 ): YoudaoSearchResult | Promise<YoudaoSearchResult> {
   const $typo = doc.querySelector('.error-typo')
   if (!$typo) {
@@ -66,17 +71,17 @@ function checkResult (
     return {
       result: {
         type: 'related',
-        list: getInnerHTML($typo, isChz)
+        list: getInnerHTML(HOST, $typo, { toChz: isChz })
       }
     }
   }
   return handleNoResult()
 }
 
-function handleDOM (
+function handleDOM(
   doc: Document,
   options: DictConfigs['youdao']['options'],
-  isChz: boolean,
+  isChz: boolean
 ): YoudaoSearchResult | Promise<YoudaoSearchResult> {
   const result: YoudaoResult = {
     type: 'lex',
@@ -84,10 +89,10 @@ function handleDOM (
     stars: 0,
     rank: getText(doc, '.rank'),
     pattern: getText(doc, '.pattern', isChz),
-    prons: [],
+    prons: []
   }
 
-  const audio: { uk?: string, us?: string } = {}
+  const audio: { uk?: string; us?: string } = {}
 
   const $star = doc.querySelector('.star')
   if ($star) {
@@ -98,7 +103,8 @@ function handleDOM (
     const phsym = $pron.textContent || ''
     const $voice = $pron.querySelector<HTMLAnchorElement>('.dictvoice')
     if ($voice && $voice.dataset.rel) {
-      const url = 'https://dict.youdao.com/dictvoice?audio=' + $voice.dataset.rel
+      const url =
+        'https://dict.youdao.com/dictvoice?audio=' + $voice.dataset.rel
 
       result.prons.push({ phsym, url })
 
@@ -111,23 +117,38 @@ function handleDOM (
   })
 
   if (options.basic) {
-    result.basic = getInnerHTML(doc, '#phrsListTab .trans-container', isChz)
+    result.basic = getInnerHTML(HOST, doc, {
+      selector: '#phrsListTab .trans-container',
+      toChz: isChz
+    })
   }
 
   if (options.collins) {
-    result.collins = getInnerHTML(doc, '#collinsResult .ol', isChz)
+    result.collins = getInnerHTML(HOST, doc, {
+      selector: '#collinsResult .ol',
+      toChz: isChz
+    })
   }
 
   if (options.discrimination) {
-    result.discrimination = getInnerHTML(doc, '#discriminate', isChz)
+    result.discrimination = getInnerHTML(HOST, doc, {
+      selector: '#discriminate',
+      toChz: isChz
+    })
   }
 
   if (options.sentence) {
-    result.sentence = getInnerHTML(doc, '#authority .ol', isChz)
+    result.sentence = getInnerHTML(HOST, doc, {
+      selector: '#authority .ol',
+      toChz: isChz
+    })
   }
 
   if (options.translation) {
-    result.translation = getInnerHTML(doc, '#fanyiToggle .trans-container', isChz)
+    result.translation = getInnerHTML(HOST, doc, {
+      selector: '#fanyiToggle .trans-container',
+      toChz: isChz
+    })
   }
 
   if (result.title || result.translation) {

@@ -1,3 +1,7 @@
+@import '@/_sass_global/_reset.scss';
+@import '@/components/Speaker/Speaker.scss';
+@import '@/components/EntryBox/EntryBox.scss';
+
 .dictYoudao-HeaderContainer {
   display: flex;
   align-items: center;
@@ -15,12 +19,6 @@
 
 .dictYoudao-Stars {
   margin-right: 8px;
-}
-
-.dictYoudao-SecTitle {
-  font-size: 1.1em;
-  margin-top: 1em;
-  border-bottom: 1px solid rgba(199, 110, 6, 0.5);
 }
 
 .dictYoudao-Basic {
@@ -52,10 +50,6 @@
 
 .dictYoudao-Discrimination {
   position: relative;
-  margin: 1.4em 0.8em 0.6em 0.4em;
-  padding: 1.2em 0.4em 0.4em;
-  border: 1px solid #333;
-  border-radius: 3px;
 
   .do-detail {
     display: none;
@@ -77,13 +71,7 @@
 }
 
 .dictYoudao-Discrimination_Title {
-  position: absolute;
-  top: 0;
-  left: 0.8em;
-  transform: translateY(-50%);
-  padding: 0 0.4em;
   font-size: 1.2em;
-  background: #fff;
 }
 
 .dictYoudao-Sentence {
