@@ -30,7 +30,7 @@ import wikipedia from '@/components/dictionaries/wikipedia/config'
 import youdao from '@/components/dictionaries/youdao/config'
 import zdic from '@/components/dictionaries/zdic/config'
 
-export function getALlDicts () {
+export function getAllDicts() {
   // For TypeScript to generate typings
   // Follow alphabetical order for easy reading
   return {
@@ -62,7 +62,7 @@ export function getALlDicts () {
     websterlearner: websterlearner(),
     wikipedia: wikipedia(),
     youdao: youdao(),
-    zdic: zdic(),
+    zdic: zdic()
   }
 }
 
@@ -87,9 +87,9 @@ interface DictItemBase {
    * Otherwise the content height is used.
    */
   selectionWC: {
-    min: number,
-    max: number,
-  },
+    min: number
+    max: number
+  }
   /** Word count to start searching */
   preferredHeight: number
 }
@@ -99,8 +99,12 @@ interface DictItemBase {
  * For string, add additional `options_sel` field to list out choices.
  */
 type DictItemWithOptions<
-  Options extends { [option: string]: number | boolean | string } | undefined = undefined,
-> = Options extends undefined ? DictItemBase : DictItemBase & { options: Options }
+  Options extends
+    | { [option: string]: number | boolean | string }
+    | undefined = undefined
+> = Options extends undefined
+  ? DictItemBase
+  : DictItemBase & { options: Options }
 
 /**
  * SelKeys is a subset of keyof Options for `string` type options.
@@ -109,8 +113,12 @@ type DictItemWithOptions<
  * SelKeys should be 'lang'
  */
 export type DictItem<
-  Options extends { [option: string]: number | boolean | string } | undefined = undefined,
+  Options extends
+    | { [option: string]: number | boolean | string }
+    | undefined = undefined,
   SelKeys extends string | number | undefined = undefined
 > = SelKeys extends keyof Options
-  ? DictItemWithOptions<Options> & { options_sel: { [key in SelKeys]: Options[key][] } }
+  ? DictItemWithOptions<Options> & {
+      options_sel: { [key in SelKeys]: Options[key][] }
+    }
   : DictItemWithOptions<Options>
