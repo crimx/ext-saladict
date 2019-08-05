@@ -3,20 +3,23 @@ import { isContainJapanese, isContainChinese } from '@/_helpers/lang-check'
 import {
   handleNoResult,
   handleNetWorkError,
-  getOuterHTMLBuilder,
+  getOuterHTML,
   SearchFunction,
   HTMLString,
   GetSrcPageFunction,
   getText,
+  DictSearchResult,
+  getFullLink
 } from '../helpers'
-import { DictSearchResult } from '@/typings/server'
 import { AllDicts } from '@/app-config'
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   const { lang } = profile.dicts.all.wikipedia.options
   const subdomain = getSubdomain(text, lang)
   const path = lang.startsWith('zh-') ? lang : 'wiki'
-  return `https://${subdomain}.wikipedia.org/${path}/${encodeURIComponent(text)}`
+  return `https://${subdomain}.wikipedia.org/${path}/${encodeURIComponent(
+    text
+  )}`
 }
 
 export type LangListItem = {
@@ -39,8 +42,11 @@ export type WikipediaPayload = {
   url?: string
 }
 
-export const search: SearchFunction<WikipediaSearchResult, WikipediaPayload> = (
-  text, config, profile, payload
+export const search: SearchFunction<WikipediaResult, WikipediaPayload> = (
+  text,
+  config,
+  profile,
+  payload
 ) => {
   const { lang } = profile.dicts.all.wikipedia.options
   let subdomain = getSubdomain(text, lang)
@@ -55,7 +61,9 @@ export const search: SearchFunction<WikipediaSearchResult, WikipediaPayload> = (
     }
   } else {
     const path = lang.startsWith('zh-') ? lang : 'wiki'
-    url = `https://${subdomain}.m.wikipedia.org/${path}/${encodeURIComponent(text)}`
+    url = `https://${subdomain}.m.wikipedia.org/${path}/${encodeURIComponent(
+      text
+    )}`
   }
 
   return fetchDirtyDOM(url)
@@ -63,22 +71,29 @@ export const search: SearchFunction<WikipediaSearchResult, WikipediaPayload> = (
     .then(doc => handleDOM(doc, subdomain))
 }
 
-export function fetchLangList (langSelector: string) {
+export function fetchLangList(langSelector: string) {
   return fetchDirtyDOM(langSelector)
     .then(getLangList)
-    .catch((e) => (console.log(e), []))
+    .catch(e => {
+      console.error('dict wikipedia: fetch langlist failed', e)
+      return [] as LangList
+    })
 }
 
-function handleDOM (
+function handleDOM(
   doc: Document,
-  subdomain: string,
+  subdomain: string
 ): WikipediaSearchResult | Promise<WikipediaSearchResult> {
   const $bs = [...doc.querySelectorAll('#mf-section-0 b')]
-  if ($bs.some($b => {
-    const textContent = $b.textContent
-    return textContent === `The article that you're looking for doesn't exist.` ||
-           textContent === `维基百科目前还没有与上述标题相同的条目。`
-  })) {
+  if (
+    $bs.some($b => {
+      const textContent = $b.textContent
+      return (
+        textContent === `The article that you're looking for doesn't exist.` ||
+        textContent === `维基百科目前还没有与上述标题相同的条目。`
+      )
+    })
+  ) {
     return handleNoResult<WikipediaSearchResult>()
   }
 
@@ -96,9 +111,10 @@ function handleDOM (
     }
   })
 
-  const getOuterHTML = getOuterHTMLBuilder(`https://${subdomain}.wikipedia.org/`, {})
-
-  const content = getOuterHTML(doc, '#bodyContent')
+  const content = getOuterHTML(`https://${subdomain}.wikipedia.org/`, doc, {
+    selector: '#bodyContent',
+    config: {}
+  })
   if (!content) {
     return handleNoResult<WikipediaSearchResult>()
   }
@@ -109,33 +125,32 @@ function handleDOM (
     $langSelector = doc.querySelector('.language-selector a')
   }
   if ($langSelector) {
-    langSelector = ($langSelector.getAttribute('href') || '')
-      .replace(/^\//, `https://${subdomain}.m.wikipedia.org/`)
+    langSelector = getFullLink(
+      `https://${subdomain}.m.wikipedia.org/`,
+      $langSelector,
+      'href'
+    )
   }
 
   return { result: { title, content, langSelector } }
 }
 
-function getSubdomain (
+function getSubdomain(
   text: string,
-  lang: AllDicts['wikipedia']['options']['lang'],
+  lang: AllDicts['wikipedia']['options']['lang']
 ): string {
   if (lang.startsWith('zh-')) {
     return 'zh'
   }
 
   if (lang === 'auto') {
-    return isContainJapanese(text)
-      ? 'ja'
-      : isContainChinese(text)
-        ? 'zh'
-        : 'en'
+    return isContainJapanese(text) ? 'ja' : isContainChinese(text) ? 'zh' : 'en'
   }
 
   return lang
 }
 
-function getLangList (doc: Document): LangList {
+function getLangList(doc: Document): LangList {
   return [...doc.querySelectorAll('#mw-content-text li a')]
     .map<LangListItem | undefined>($a => {
       const url = $a.getAttribute('href')
@@ -144,5 +159,5 @@ function getLangList (doc: Document): LangList {
         return { url, title }
       }
     })
-    .filter((x): x is LangListItem => x as any as boolean)
+    .filter((x): x is LangListItem => !!x)
 }
