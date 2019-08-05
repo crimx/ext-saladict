@@ -13,7 +13,7 @@ import {
   isContainKorean
 } from '@/_helpers/lang-check'
 import { first } from '@/_helpers/promise-more'
-import axios from 'axios'
+import { fetchPlainText } from '@/_helpers/fetch-dom'
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   const domain = profile.dicts.all.google.options.cnfirst ? 'cn' : 'com'
@@ -28,7 +28,7 @@ export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
 export type GoogleResult = MachineTranslateResult<'google'>
 
 interface GoogleRawResult {
-  json: string | object
+  json: string
   base: string
   sl: string
   tl: string
@@ -107,11 +107,7 @@ async function fetchWithToken(
   tl: string,
   text: string
 ): Promise<GoogleRawResult> {
-  const { data: homepage } = await axios
-    .get<string>(base, {
-      responseType: 'text'
-    })
-    .catch(handleNetWorkError)
+  const homepage = await fetchPlainText(base).catch(handleNetWorkError)
 
   if (!homepage) {
     handleNetWorkError()
@@ -150,13 +146,9 @@ async function fetchWithToken(
     params.append('tk', tk)
     params.append('q', text)
 
-    const { data: json } = await axios.get<object | string>(
-      `${base}/translate_a/single`,
-      {
-        params,
-        responseType: 'text'
-      }
-    )
+    const json = await fetchPlainText(`${base}/translate_a/single`, {
+      params
+    })
 
     return { json, base, sl, tl, tk1, tk2, text }
   }
@@ -169,21 +161,18 @@ async function fetchWithoutToken(
   tl: string,
   text: string
 ): Promise<GoogleRawResult> {
-  const { data: json } = await axios
-    .get<string | object>(
-      'https://translate.googleapis.com/translate_a/single',
-      {
-        params: new URLSearchParams({
-          client: 'gtx',
-          dt: 't',
-          sl,
-          tl,
-          q: text
-        }),
-        responseType: 'text'
-      }
-    )
-    .catch(handleNetWorkError)
+  const json = await fetchPlainText(
+    'https://translate.googleapis.com/translate_a/single',
+    {
+      params: new URLSearchParams({
+        client: 'gtx',
+        dt: 't',
+        sl,
+        tl,
+        q: text
+      })
+    }
+  ).catch(handleNetWorkError)
 
   return { json, base: 'https://translate.google.cn', sl, tl, text }
 }
@@ -197,9 +186,7 @@ function handleText({
   tk2,
   text
 }: GoogleRawResult): GoogleSearchResult | Promise<GoogleSearchResult> {
-  // axios bug https://github.com/axios/axios/issues/907
-  const data =
-    typeof json === 'string' ? JSON.parse(json.replace(/,+/g, ',')) : json
+  const data = JSON.parse(json.replace(/,+/g, ','))
 
   if (!data[0] || data[0].length <= 0) {
     return handleNoResult()
