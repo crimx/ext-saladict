@@ -1,0 +1,81 @@
+{
+  "msg": "SUCCESS",
+  "status_code": 0,
+  "data": [
+    {
+      "username": "Shanbay",
+      "vocabulary_id": 3869,
+      "word": "love",
+      "user": {
+        "username": "Shanbay",
+        "timezone": "Asia/Shanghai",
+        "nickname": "Shanbay",
+        "id": 1,
+        "avatar": "https://media-image1.baydn.com/avatar%2Fmedia_store%2F0ef69ded3383a1cffcdeb71280ddbc7e.png@128w_128h"
+      },
+      "userid": 1,
+      "mid": "love",
+      "audio_name": "",
+      "id": 10139,
+      "audio_addresses": {},
+      "version": 1,
+      "unlikes": 7,
+      "likes": 77,
+      "last": " of my life.",
+      "translation": "\u6211\u8ba4\u4e3a\u6211\u5df2\u627e\u5230\u7406\u60f3\u7684\u7231\u4eba\u4e86\u3002",
+      "nickname": "Shanbay",
+      "annotation": "I think I've met the <vocab>love</vocab> of my life.",
+      "first": "I think I've met the "
+    },
+    {
+      "username": "Shanbay",
+      "vocabulary_id": 3869,
+      "word": "love",
+      "user": {
+        "username": "Shanbay",
+        "timezone": "Asia/Shanghai",
+        "nickname": "Shanbay",
+        "id": 1,
+        "avatar": "https://media-image1.baydn.com/avatar%2Fmedia_store%2F0ef69ded3383a1cffcdeb71280ddbc7e.png@128w_128h"
+      },
+      "userid": 0,
+      "mid": "love",
+      "audio_name": "",
+      "id": 10140,
+      "audio_addresses": {},
+      "version": 1,
+      "unlikes": 5,
+      "likes": 44,
+      "last": " my motherland.",
+      "translation": "\u6211\u7231\u6211\u7684\u7956\u56fd\u3002",
+      "nickname": "Shanbay",
+      "annotation": "I <vocab>love</vocab> my motherland.",
+      "first": "I "
+    },
+    {
+      "username": "Shanbay",
+      "vocabulary_id": 3869,
+      "word": "love",
+      "user": {
+        "username": "Shanbay",
+        "timezone": "Asia/Shanghai",
+        "nickname": "Shanbay",
+        "id": 1,
+        "avatar": "https://media-image1.baydn.com/avatar%2Fmedia_store%2F0ef69ded3383a1cffcdeb71280ddbc7e.png@128w_128h"
+      },
+      "userid": 0,
+      "mid": "love",
+      "audio_name": "",
+      "id": 10141,
+      "audio_addresses": {},
+      "version": 3,
+      "unlikes": 6,
+      "likes": 61,
+      "last": " for him never waved.",
+      "translation": "\u5979\u5bf9\u4ed6\u7684\u7231\u4ece\u672a\u52a8\u6447\u8fc7\u3002",
+      "nickname": "Shanbay",
+      "annotation": "Her <vocab>love</vocab> for him never waved.",
+      "first": "Her "
+    }
+  ]
+}

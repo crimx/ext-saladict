@@ -1,3 +1,6 @@
+@import '@/_sass_global/_reset.scss';
+@import '@/components/Speaker/Speaker.scss';
+
 .dictShanbay-HeaderContainer {
   display: flex;
   align-items: center;
@@ -21,6 +24,10 @@
 
 .dictShanbay-Basic {
   margin: 0.5em 0;
+
+  .definition-pos {
+    padding-right: 0.5em;
+  }
 }
 
 .dictShanbay-Sentence {
