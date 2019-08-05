@@ -96,7 +96,7 @@ export const search: SearchFunction<
           data: new URLSearchParams({
             from: sl,
             to: tl,
-            query: text.replace(/%20/g, '+'),
+            query: encodeURIComponent(text).replace(/%20/g, '+'),
             token: token,
             sign: sign(text, gtk),
             transtype: 'translang',
@@ -174,7 +174,7 @@ function remoteLangCheck(text: string): Promise<string> {
     .post('https://fanyi.baidu.com/langdetect', {
       withCredentials: false,
       body: new URLSearchParams({
-        query: text
+        query: encodeURIComponent(text)
       })
     })
     .then(({ data }) => (data && data.lan) || Promise.reject(data))
