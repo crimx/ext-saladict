@@ -58,7 +58,7 @@
     "react-dom": "^16",
     "react-hot-loader": "^4",
     "react-i18next": "^10.11.4",
-    "react-resize-reporter": "^0.1.3",
+    "react-resize-reporter": "^0.1.4",
     "react-shadow": "^17.1.1",
     "react-transition-group": "^4.2.1",
     "rxjs": "^6.5.2",
