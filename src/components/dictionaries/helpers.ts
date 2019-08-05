@@ -261,8 +261,8 @@ export function getFullLink(host: string, el: Element, attr: string): string {
     return protocol + link
   }
 
-  if (link.startsWith('/')) {
-    return host + link
+  if (/^.?\/+/.test(link)) {
+    return host + '/' + link.replace(/^.?\/+/, '')
   }
 
   return host + '/' + link
