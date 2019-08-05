@@ -4,18 +4,21 @@ import {
   MachineTranslateResult,
   SearchFunction,
   GetSrcPageFunction,
+  DictSearchResult
 } from '../helpers'
-import { DictSearchResult } from '@/typings/server'
 import { storage } from '@/_helpers/browser-api'
+import axios from 'axios'
+import { fetchPlainText } from '@/_helpers/fetch-dom'
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
-  const lang = profile.dicts.all.tencent.options.tl === 'default'
-    ? config.langCode === 'zh-CN'
-      ? 'zh-CHS'
-      : config.langCode === 'zh-TW'
+  const lang =
+    profile.dicts.all.tencent.options.tl === 'default'
+      ? config.langCode === 'zh-CN'
+        ? 'zh-CHS'
+        : config.langCode === 'zh-TW'
         ? 'zh-CHT'
         : 'en'
-    : profile.dicts.all.tencent.options.tl
+      : profile.dicts.all.tencent.options.tl
 
   return `https://fanyi.tencent.com/#auto/${lang}/${text}`
 }
@@ -36,14 +39,19 @@ export type TencentResult = MachineTranslateResult<'tencent'>
 
 type TencentSearchResult = DictSearchResult<TencentResult>
 
+// prettier-ignore
 const langcodes: ReadonlyArray<string> = [
-  'zh', 'en', 'jp', 'kr', 'fr', 'es', 'it', 'de', 'tr', 'ru', 'pt', 'vi', 'id', 'th', 'ms'
+  'zh', 'en', 'jp', 'kr', 'fr', 'es', 'it',
+  'de', 'tr', 'ru', 'pt', 'vi', 'id', 'th', 'ms'
 ]
 
 let isSetupOriginModifier = false
 
-export const search: SearchFunction<TencentSearchResult, MachineTranslatePayload> = (
-  text, config, profile, payload
+export const search: SearchFunction<TencentResult, MachineTranslatePayload> = (
+  text,
+  config,
+  profile,
+  payload
 ) => {
   if (!isSetupOriginModifier) {
     setupOriginModifier()
@@ -53,52 +61,69 @@ export const search: SearchFunction<TencentSearchResult, MachineTranslatePayload
   const options = profile.dicts.all.tencent.options
 
   const sl: string = payload.sl || 'auto'
-  const tl: string = payload.tl || (
-    options.tl === 'default'
-      ? config.langCode === 'en' ? 'en' : 'zh'
-      : options.tl
-  )
+  const tl: string =
+    payload.tl ||
+    (options.tl === 'default'
+      ? config.langCode === 'en'
+        ? 'en'
+        : 'zh'
+      : options.tl)
 
   if (payload.isPDF && !options.pdfNewline) {
     text = text.replace(/\n+/g, ' ')
   }
 
-  return getToken()
-    .then(({ qtv, qtk }) => fetch(
-      'https://fanyi.qq.com/api/translate',
-      {
-        credentials: 'omit',
-        headers: {
-          'Accept': 'application/json, text/javascript, */*; q=0.01',
-          'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-          'X-Requested-With': 'XMLHttpRequest',
-        },
-        method: 'POST',
-        body: `source=${sl}&target=${tl}&sourceText=${encodeURIComponent(text)}&qtv=${encodeURIComponent(qtv)}&qtk=${encodeURIComponent(qtk)}&sessionUuid=translate_uuid${Date.now()}`
-      }
-    ))
-    .then(r => r.json())
-    .then(handleJSON)
-    // return empty result so that user can still toggle language
-    .catch((): TencentSearchResult => ({
-      result: {
-        id: 'tencent',
-        sl, tl, langcodes,
-        searchText: { text: '' },
-        trans: { text: '' }
-      }
-    }))
+  return (
+    getToken()
+      .then(({ qtv, qtk }) =>
+        axios.post('https://fanyi.qq.com/api/translate', {
+          headers: {
+            Accept: 'application/json, text/javascript, */*; q=0.01',
+            'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          data: new URLSearchParams({
+            source: sl,
+            target: tl,
+            sourceText: encodeURIComponent(text),
+            qtv: encodeURIComponent(qtv),
+            qtk: encodeURIComponent(qtk),
+            sessionUuid: `translate_uuid${Date.now()}`
+          })
+        })
+      )
+      .then(handleJSON)
+      // return empty result so that user can still toggle language
+      .catch(
+        (): TencentSearchResult => ({
+          result: {
+            id: 'tencent',
+            sl,
+            tl,
+            langcodes,
+            searchText: { text: '' },
+            trans: { text: '' }
+          }
+        })
+      )
+  )
 }
 
-function handleJSON (json: any): TencentSearchResult | Promise<TencentSearchResult> {
-  const tr = json && json.translate as undefined | {
-    records: Array<{
-      sourceText: string,
-      targetText: string
-    }>
-    source: string
-    target: string
-  }
+function handleJSON({
+  data: json
+}: any): TencentSearchResult | Promise<TencentSearchResult> {
+  const tr =
+    json &&
+    (json.translate as
+      | undefined
+      | {
+          records: Array<{
+            sourceText: string
+            targetText: string
+          }>
+          source: string
+          target: string
+        })
   if (!tr || !tr.records || tr.records.length <= 0) {
     return handleNoResult()
   }
@@ -114,28 +139,37 @@ function handleJSON (json: any): TencentSearchResult | Promise<TencentSearchResu
       langcodes,
       trans: {
         text: targetText,
-        audio: `https://fanyi.qq.com/api/tts?lang=${tr.target}&text=${encodeURIComponent(targetText)}`,
+        audio: `https://fanyi.qq.com/api/tts?lang=${
+          tr.target
+        }&text=${encodeURIComponent(targetText)}`
       },
       searchText: {
         text: sourceText,
-        audio: `https://fanyi.qq.com/api/tts?lang=${tr.source}&text=${encodeURIComponent(sourceText)}`,
+        audio: `https://fanyi.qq.com/api/tts?lang=${
+          tr.source
+        }&text=${encodeURIComponent(sourceText)}`
       }
     },
     audio: {
-      us: `https://fanyi.qq.com/api/tts?lang=${tr.target}&text=${encodeURIComponent(targetText)}`
+      us: `https://fanyi.qq.com/api/tts?lang=${
+        tr.target
+      }&text=${encodeURIComponent(targetText)}`
     }
   }
 }
 
-async function getToken (): Promise<TencentToken> {
-  let { dict_tencent } = await storage.local.get<{'dict_tencent': TencentStorage}>('dict_tencent')
-  if (!dict_tencent || (Date.now() - dict_tencent.tokenDate > 5 * 60000)) {
+async function getToken(): Promise<TencentToken> {
+  let { dict_tencent } = await storage.local.get<{
+    dict_tencent: TencentStorage
+  }>('dict_tencent')
+  if (!dict_tencent || Date.now() - dict_tencent.tokenDate > 5 * 60000) {
     const token: TencentToken = {
       qtv: '7942c43f8426b03b',
-      qtk: 'n22E6wF/W+z6bVcH5EVMTOrRyT5dKWhdiw8fKosmYBWvLXuLkGqO8VbMGRmTyMFURB2jz69MyeGwumKYvoaG0P3PufmAr1NB4YlzDayX0/pD7vEr1AZYxrbiZmzms1zheGqDTvVvo8ckartOLA+3aQ=='
+      qtk:
+        'n22E6wF/W+z6bVcH5EVMTOrRyT5dKWhdiw8fKosmYBWvLXuLkGqO8VbMGRmTyMFURB2jz69MyeGwumKYvoaG0P3PufmAr1NB4YlzDayX0/pD7vEr1AZYxrbiZmzms1zheGqDTvVvo8ckartOLA+3aQ=='
     }
     try {
-      const homepage = await fetch('https://fanyi.qq.com').then(r => r.text())
+      const homepage = await fetchPlainText('https://fanyi.qq.com')
 
       const qtv = homepage.match(/"qtv=([^"]+)/)
       if (qtv) {
@@ -146,7 +180,9 @@ async function getToken (): Promise<TencentToken> {
       if (qtk) {
         token.qtk = qtk[1]
       }
-    } catch (e) {/* nothing */}
+    } catch (e) {
+      /* nothing */
+    }
     dict_tencent = {
       token,
       tokenDate: Date.now()
@@ -157,7 +193,7 @@ async function getToken (): Promise<TencentToken> {
   return dict_tencent.token
 }
 
-function setupOriginModifier () {
+function setupOriginModifier() {
   browser.webRequest.onBeforeSendHeaders.addListener(
     details => {
       if (details && details.requestHeaders) {
