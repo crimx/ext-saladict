@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.33.3"></a>
+## 6.33.3 (2019-08-08)
+
+
+### Bug Fixes
+
+* **manifest:** remvoe update url ([f83a485](https://github.com/crimx/ext-saladict/commit/f83a485))
+
+
+
 <a name="6.33.2"></a>
 ## [6.33.2](https://github.com/crimx/ext-saladict/compare/v6.33.1...v6.33.2) (2019-06-27)
 
