@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.33.4"></a>
+## [6.33.4](https://github.com/crimx/ext-saladict/compare/v6.33.3...v6.33.4) (2019-08-09)
+
+
+### Bug Fixes
+
+* **manifest:** fix chrome 67 bug ([bca3b56](https://github.com/crimx/ext-saladict/commit/bca3b56))
+
+
+
 <a name="6.33.3"></a>
 ## 6.33.3 (2019-08-08)
 
