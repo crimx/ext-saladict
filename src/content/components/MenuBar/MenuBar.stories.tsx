@@ -10,9 +10,15 @@ import {
   number,
   boolean
 } from '@storybook/addon-knobs'
-import { withi18nNS, withSaladictPanel } from '@/_helpers/storybook'
+import {
+  withSaladictPanel,
+  withSideEffect,
+  mockRuntimeMessage
+} from '@/_helpers/storybook'
 import { newWord } from '@/_helpers/record-manager'
 import { MenuBar } from './MenuBar'
+import { timer } from '@/_helpers/promise-more'
+import { SuggestItem } from './Suggest'
 
 storiesOf('Content Scripts|Menubar', module)
   .addDecorator(withPropsTable)
@@ -24,7 +30,16 @@ storiesOf('Content Scripts|Menubar', module)
       backgroundColor: 'transparent'
     })
   )
-  .addDecorator(withi18nNS('content'))
+  .addDecorator(
+    withSideEffect(
+      mockRuntimeMessage(async message => {
+        if (message.type === 'GET_SUGGESTS') {
+          await timer(Math.random() * 1500)
+          return fakeSuggest(message.payload)
+        }
+      })
+    )
+  )
   .add('MenuBar', () => {
     const histories = Array.from(Array(5)).map((_, i) =>
       newWord({
@@ -69,3 +84,10 @@ storiesOf('Content Scripts|Menubar', module)
       />
     )
   })
+
+function fakeSuggest(text: string): SuggestItem[] {
+  return Array.from(Array(10)).map((v, i) => ({
+    explain: `单词 ${text} 的各种相近的建议#${i}`,
+    entry: `Word ${text}#${i}`
+  }))
+}

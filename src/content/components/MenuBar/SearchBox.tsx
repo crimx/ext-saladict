@@ -1,4 +1,4 @@
-import React, { FC, useRef, useEffect } from 'react'
+import React, { FC, useRef, useEffect, useState } from 'react'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import i18next from 'i18next'
 import {
@@ -9,6 +9,7 @@ import {
 import { identity, merge } from 'rxjs'
 import { focusBlur } from '@/_helpers/observables'
 import { Suggest } from './Suggest'
+import { filter } from 'rxjs/operators'
 
 export interface SearchBoxProps {
   t: i18next.TFunction
@@ -30,14 +31,29 @@ export const SearchBox: FC<SearchBoxProps> = props => {
   // Textarea also shares the text so only replace here
   const text = props.text.replace(/\s+/g, ' ')
 
-  const [onFocusBlur, focusBlur$] = useObservableCallback(focusBlur)
+  const [onSearchBoxFocusBlur, searchBoxFocusBlur$] = useObservableCallback(
+    focusBlur
+  )
+
+  const [onSuggestFocusBlur, suggestFocusBlur$] = useObservableCallback(
+    focusBlur
+  )
 
   const [onShowSugget, onShowSugget$] = useObservableCallback<boolean>(identity)
 
   const shouldShowSuggest = useObservableState(
-    useObservable(() => merge(focusBlur$, onShowSugget$)),
+    useObservable(() =>
+      merge(
+        // only show suggest when start typing
+        searchBoxFocusBlur$.pipe(filter(isFocus => !isFocus)),
+        suggestFocusBlur$,
+        onShowSugget$
+      )
+    ),
     false
   )
+
+  const isExpand = useObservableState(searchBoxFocusBlur$)
 
   const inputRef = useRef<HTMLInputElement>(null)
   const suggestRef = useRef<HTMLDivElement>(null)
@@ -56,7 +72,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
   }
 
   return (
-    <div className="menuBar-SearchBox_Wrap">
+    <div className={`menuBar-SearchBox_Wrap${isExpand ? ' isExpand' : ''}`}>
       <input
         type="text"
         className="menuBar-SearchBox"
@@ -85,7 +101,8 @@ export const SearchBox: FC<SearchBoxProps> = props => {
             e.stopPropagation()
           }
         }}
-        onBlur={onFocusBlur}
+        onFocus={onSearchBoxFocusBlur}
+        onBlur={onSearchBoxFocusBlur}
         value={text}
       />
 
@@ -105,8 +122,8 @@ export const SearchBox: FC<SearchBoxProps> = props => {
                 onShowSugget(true)
                 props.onSearch(text)
               }}
-              onFocus={onFocusBlur}
-              onBlur={onFocusBlur}
+              onFocus={onSuggestFocusBlur}
+              onBlur={onSuggestFocusBlur}
               onArrowUpFirst={focusInput}
               onClose={focusInput}
             />
