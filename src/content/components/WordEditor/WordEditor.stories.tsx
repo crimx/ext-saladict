@@ -50,7 +50,8 @@ storiesOf('Content Scripts|WordEditor', module)
       )
     },
     {
-      decorators: [withLocalStyle(require('./WordEditor.scss'))]
+      decorators: [withLocalStyle(require('./WordEditor.scss'))],
+      jsx: { skip: 1 }
     }
   )
   .add('WordEditorPortal', () => {

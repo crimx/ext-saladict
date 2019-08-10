@@ -6,6 +6,7 @@ import { withPropsTable } from 'storybook-addon-react-docgen'
 import { withKnobs, boolean, number } from '@storybook/addon-knobs'
 import { SaladBowl } from './SaladBowl'
 import { SaladBowlPortal } from './SaladBowl.portal'
+import { withLocalStyle } from '@/_helpers/storybook'
 
 storiesOf('Content Scripts|SaladBowl', module)
   .addDecorator(withPropsTable)
@@ -23,16 +24,8 @@ storiesOf('Content Scripts|SaladBowl', module)
       />
     ),
     {
-      decorators: [
-        function withShadowStyle(fn) {
-          return (
-            <div>
-              <style>{require('./SaladBowl.shadow.scss').toString()}</style>
-              {fn()}
-            </div>
-          )
-        }
-      ]
+      decorators: [withLocalStyle(require('./SaladBowl.shadow.scss'))],
+      jsx: { skip: 1 }
     }
   )
   .add('SaladBowlPortal', () => (
