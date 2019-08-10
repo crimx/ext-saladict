@@ -3,6 +3,7 @@ import root from 'react-shadow'
 import i18next from 'i18next'
 import { number, boolean, text } from '@storybook/addon-knobs'
 import SinonChrome from 'sinon-chrome'
+import { Message } from '@/typings/message'
 
 interface StyleWrapProps {
   style: string
@@ -63,6 +64,16 @@ export function withSideEffect(fn: React.EffectCallback) {
   }
   // eslint-disable-next-line react/display-name
   return story => <SideEffect story={story} />
+}
+
+export function mockRuntimeMessage(fn: (message: Message) => Promise<any>) {
+  return () => {
+    browser.runtime.sendMessage.callsFake(fn)
+
+    return () => {
+      browser.runtime.sendMessage.callsFake(() => Promise.resolve())
+    }
+  }
 }
 
 /**

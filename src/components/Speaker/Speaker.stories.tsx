@@ -7,39 +7,30 @@ import { withPropsTable } from 'storybook-addon-react-docgen'
 import {
   withSaladictPanel,
   withSideEffect,
-  browser
+  mockRuntimeMessage
 } from '@/_helpers/storybook'
-import { Message } from '@/typings/message'
 import {
   Speaker,
   StaticSpeakerContainer,
   getStaticSpeakerString,
   getStaticSpeaker
 } from './index'
+import { timer } from '@/_helpers/promise-more'
 
 storiesOf('Content Scripts|Components', module)
   .addDecorator(withPropsTable)
   .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
   .addDecorator(
-    withSideEffect(() => {
-      browser.runtime.sendMessage.callsFake((message: Message) => {
+    withSideEffect(
+      mockRuntimeMessage(async message => {
         if (message.type === 'PLAY_AUDIO') {
           action('Play Audio')(message.payload)
-          return new Promise(resolve => {
-            setTimeout(() => {
-              action('Audio End')(message.payload)
-              resolve()
-            }, Math.random() * 5000)
-          })
+          await timer(Math.random() * 5000)
+          action('Audio End')(message.payload)
         }
-        return Promise.resolve()
       })
-
-      return () => {
-        browser.runtime.sendMessage.callsFake(() => Promise.resolve())
-      }
-    })
+    )
   )
   .addDecorator(
     withSaladictPanel(<style>{require('./Speaker.scss').toString()}</style>)
