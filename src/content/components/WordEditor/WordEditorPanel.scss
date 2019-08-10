@@ -13,30 +13,6 @@
 /*-----------------------------------------------*\
     Base
 \*-----------------------------------------------*/
-html {
-  height: 100%;
-  box-sizing: border-box;
-  background: transparent;
-}
-
-*, *:before, *:after {
-  box-sizing: inherit;
-}
-
-body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  color: #333;
-  background-color: rgba(0, 0, 0, 0.4);
-  font-size: 14px;
-  font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
-}
-
 label {
   display: block;
   margin-bottom: 5px;
@@ -45,6 +21,7 @@ label {
 
 input,
 textarea {
+  box-sizing: border-box;
   display: block;
   resize: vertical;
   width: 100%;
@@ -63,18 +40,26 @@ textarea {
   &:focus {
     border-color: #66afe9;
     outline: 0;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+      0 0 8px rgba(102, 175, 233, 0.6);
   }
 }
 
 /*-----------------------------------------------*\
     Components
 \*-----------------------------------------------*/
-.wordEditor-Container {
-  width: 800px;
+.wordEditor-Panel {
+  display: flex;
+  flex-direction: column;
+  max-width: 800px;
+  min-width: 400px;
+  max-height: 90vh;
   border-radius: 6px;
   background: #fff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  font-size: 13px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, 'Hiragino Sans GB',
+    'Hiragino Sans GB W3', 'Microsoft YaHei UI', 'Microsoft YaHei', sans-serif;
 }
 
 .wordEditor-Header {
@@ -108,16 +93,13 @@ textarea {
 }
 
 .wordEditor-Main {
-  display: flex;
-  height: 70vh;
-  max-height: 1000px;
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .wordEditor-Note {
-  flex: 1.2;
   padding: 15px;
-  overflow-x: hidden;
-  overflow-y: scroll;
 
   a {
     text-decoration: none;
@@ -206,4 +188,4 @@ textarea {
   }
 }
 
-@import '../WordCards/style'
+@import './WordCards.scss';

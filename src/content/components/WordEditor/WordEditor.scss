@@ -1,0 +1,20 @@
+@import './WordEditorPanel.scss';
+
+.wordEditor-Container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+}
+
+.wordEditor-PanelContainer {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-width: 440px;
+  margin-left: auto;
+}
