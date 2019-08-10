@@ -3,6 +3,7 @@ import { Word, DBArea } from '@/_helpers/record-manager'
 // import { Word, Area as DBArea } from '@/_helpers/record-manager'
 import { UnionPick } from '@/typings/helpers'
 import { DictID } from '@/app-config'
+import { DictSearchResult } from '@/components/dictionaries/helpers'
 // import { DictSearchResult } from '@/typings/server'
 
 export type MessageConfig = {
@@ -44,6 +45,24 @@ export type MessageConfig = {
       explain: string
       entry: string
     }>
+  }
+
+  FETCH_DICT_RESULT: {
+    type: 'FETCH_DICT_RESULT'
+    payload: {
+      id: DictID
+      text: string
+      /** search function payload */
+      payload: {
+        isPDF: boolean
+        [index: string]: any
+      }
+    }
+    response: {
+      id: DictID
+      result: any
+      audio?: DictSearchResult<DictID>['audio']
+    }
   }
 
   PLAY_AUDIO: {
