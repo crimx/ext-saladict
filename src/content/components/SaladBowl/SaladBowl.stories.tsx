@@ -5,7 +5,6 @@ import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
 import { withKnobs, boolean, number } from '@storybook/addon-knobs'
 import { SaladBowl } from './SaladBowl'
-import { SaladBowlShadow } from './SaladBowl.shadow'
 import { SaladBowlPortal } from './SaladBowl.portal'
 
 storiesOf('Content Scripts|SaladBowl', module)
@@ -28,7 +27,7 @@ storiesOf('Content Scripts|SaladBowl', module)
         function withShadowStyle(fn) {
           return (
             <div>
-              <style>{require('./style.shadow.scss').toString()}</style>
+              <style>{require('./SaladBowl.shadow.scss').toString()}</style>
               {fn()}
             </div>
           )
@@ -36,16 +35,6 @@ storiesOf('Content Scripts|SaladBowl', module)
       ]
     }
   )
-  .add('SaladBowlShadow', () => (
-    <SaladBowlShadow
-      show={boolean('Show', true)}
-      mouseX={number('mouseX', 0)}
-      mouseY={number('mouseY', 0)}
-      withAnimation={boolean('Animation', true)}
-      enableHover={boolean('Enable hover', true)}
-      onChange={action('onChange')}
-    />
-  ))
   .add('SaladBowlPortal', () => (
     <SaladBowlPortal
       show={boolean('Show', true)}
@@ -76,7 +65,7 @@ storiesOf('Content Scripts|SaladBowl', module)
             CLICK AROUND AND SEE THE BOWL FOLLOWS
           </p>
           <SaladBowlPortal
-            show={boolean('Show', true)}
+            show
             mouseX={mouseX}
             mouseY={mouseY}
             withAnimation={boolean('Animation', true)}

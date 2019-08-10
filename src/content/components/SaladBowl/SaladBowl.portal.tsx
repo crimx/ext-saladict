@@ -1,38 +1,28 @@
-import React, { FC, useMemo, useEffect } from 'react'
-import ReactDOM from 'react-dom'
-import { SaladBowlShadow, SaladBowlShadowProps } from './SaladBowl.shadow'
+import React, { FC } from 'react'
+import { SaladBowl, SaladBowlProps } from './SaladBowl'
+import ShadowPortal from '@/components/ShadowPortal'
 
-export type SaladBowlPortalProps = SaladBowlShadowProps
+const animationTimeout = { enter: 1000, exit: 100, appear: 1000 }
+
+export interface SaladBowlPortalProps extends SaladBowlProps {
+  show: boolean
+}
 
 /**
  * React portal wrapped SaladBowlShadow.
  * Detach from DOM when not visible.
  */
 export const SaladBowlPortal: FC<SaladBowlPortalProps> = props => {
-  const root = useMemo(getRootElement, [])
-
-  // unmout element on React node unmount
-  useEffect(() => () => root.remove(), [])
-
-  if (props.show) {
-    if (!root.parentElement) {
-      document.body.appendChild(root)
-    }
-  } else {
-    if (root.parentElement) {
-      root.remove()
-    }
-  }
-
-  return ReactDOM.createPortal(<SaladBowlShadow {...props} />, root)
-}
-
-function getRootElement(): HTMLElement {
-  let root = document.getElementById('saladbowl-root')
-  if (!root) {
-    root = document.createElement('div')
-    root.id = 'saladbowl-root'
-    root.className = 'saladict-div'
-  }
-  return root
+  const { show, ...restProps } = props
+  return (
+    <ShadowPortal
+      id="saladict-saladbowl-root"
+      head={<style>{require('./SaladBowl.shadow.scss').toString()}</style>}
+      classNames="saladbowl"
+      in={show}
+      timeout={props.withAnimation ? animationTimeout : 0}
+    >
+      {() => <SaladBowl {...restProps} />}
+    </ShadowPortal>
+  )
 }

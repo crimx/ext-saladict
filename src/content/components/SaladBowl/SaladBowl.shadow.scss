@@ -39,6 +39,15 @@ $bowl-width: 30px;
   &.saladbowl-enter-active > svg {
     animation: saladbowl-jelly 1000ms linear;
   }
+
+  &.saladbowl-exit {
+    opacity: 1;
+  }
+
+  &.saladbowl-exit-active {
+    opacity: 0;
+    transition: opacity 0.1s;
+  }
 }
 
 .saladbowl-exit-done {
