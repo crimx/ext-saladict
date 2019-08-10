@@ -1,6 +1,12 @@
+@import './Suggest.scss';
+
 .menuBar-SearchBox_Wrap {
+  flex: 2;
   position: relative;
-  width: 5em;
+
+  &.isExpand {
+    flex: 7;
+  }
 }
 
 .menuBar-SearchBox {
@@ -21,8 +27,8 @@
 }
 
 .isAnimate {
-  .panel-MenuBar_SearchBox {
-    transition: flex 1s;
+  .menuBar-SearchBox_Wrap {
+    transition: flex 0.6s;
   }
 
   .menuBar-SearchBox_Suggest-enter {

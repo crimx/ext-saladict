@@ -27,12 +27,7 @@ storiesOf('Content Scripts|Menubar', module)
   .addDecorator(withKnobs)
   .addDecorator(
     withSaladictPanel({
-      head: (
-        <>
-          <style>{require('./Suggest.scss').toString()}</style>
-          <style>{require('./SearchBox.scss').toString()}</style>
-        </>
-      ),
+      head: <style>{require('./SearchBox.scss').toString()}</style>,
       backgroundColor: 'transparent'
     })
   )
