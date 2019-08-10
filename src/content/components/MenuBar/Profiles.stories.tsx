@@ -18,7 +18,10 @@ storiesOf('Content Scripts|Menubar', module)
   .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
   .addDecorator(
-    withSaladictPanel(<style>{require('./Profiles.scss').toString()}</style>)
+    withSaladictPanel({
+      head: <style>{require('./Profiles.scss').toString()}</style>,
+      backgroundColor: 'transparent'
+    })
   )
   .addDecorator(stroy => <div style={{ marginLeft: 50 }}>{stroy()}</div>)
   .addDecorator(withi18nNS('content'))

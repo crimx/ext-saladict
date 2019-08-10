@@ -28,7 +28,10 @@ storiesOf('Content Scripts|Menubar', module)
   .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
   .addDecorator(
-    withSaladictPanel(<style>{require('./MenubarBtns.scss').toString()}</style>)
+    withSaladictPanel({
+      head: <style>{require('./MenubarBtns.scss').toString()}</style>,
+      backgroundColor: 'transparent'
+    })
   )
   .addDecorator(withi18nNS('content'))
   .add('HistoryBackBtn', () => {

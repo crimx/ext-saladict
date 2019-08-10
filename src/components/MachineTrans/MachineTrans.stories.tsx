@@ -12,9 +12,9 @@ storiesOf('Content Scripts|Components', module)
   .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
   .addDecorator(
-    withSaladictPanel(
-      <style>{require('./MachineTrans.scss').toString()}</style>
-    )
+    withSaladictPanel({
+      head: <style>{require('./MachineTrans.scss').toString()}</style>
+    })
   )
   .add('MachineTrans', () => {
     return (

@@ -33,7 +33,9 @@ storiesOf('Content Scripts|Components', module)
     )
   )
   .addDecorator(
-    withSaladictPanel(<style>{require('./Speaker.scss').toString()}</style>)
+    withSaladictPanel({
+      head: <style>{require('./Speaker.scss').toString()}</style>
+    })
   )
   .add('Speaker', () => {
     return (

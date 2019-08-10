@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react'
 import root from 'react-shadow'
 import i18next from 'i18next'
-import { number, boolean, text } from '@storybook/addon-knobs'
+import { number, boolean, color as colorKnob } from '@storybook/addon-knobs'
 import SinonChrome from 'sinon-chrome'
 import { Message } from '@/typings/message'
 
@@ -76,17 +76,47 @@ export function mockRuntimeMessage(fn: (message: Message) => Promise<any>) {
   }
 }
 
+export interface WithSaladictPanelOptions {
+  /** before the story component */
+  head?: React.ReactNode
+  width?: number
+  height?: number
+  withAnimation?: boolean
+  fontSize?: number
+  color?: string
+  backgroundColor?: string
+}
+
 /**
  * Fake salalict panel
  */
-export function withSaladictPanel(children: React.ReactNode) {
+export function withSaladictPanel(options: WithSaladictPanelOptions) {
   return function SaladcitPanel(story: Function) {
-    const width = number('Panel Width', 450)
-    const height = number('Panel Height', 450 * 1.68)
-    const withAnimation = boolean('Enable Animation', true)
-    const fontSize = number('Panel Font Size', 13)
-    const color = text('Panel Color', '#333')
-    const backgroundColor = text('Panel Background Color', '#fff')
+    const width =
+      options.width != null ? options.width : number('Panel Width', 450)
+
+    const height =
+      options.height != null
+        ? options.height
+        : number('Panel Height', 450 * 1.68)
+
+    const withAnimation =
+      options.withAnimation != null
+        ? options.withAnimation
+        : boolean('Enable Animation', true)
+
+    const fontSize =
+      options.fontSize != null
+        ? options.fontSize
+        : number('Panel Font Size', 13)
+
+    const color =
+      options.color != null ? options.color : colorKnob('Panel Color', '#333')
+
+    const backgroundColor =
+      options.backgroundColor != null
+        ? options.backgroundColor
+        : colorKnob('Panel Background Color', '#fff')
 
     return (
       <root.div style={{ width, margin: '10px auto' }}>
@@ -104,7 +134,7 @@ export function withSaladictPanel(children: React.ReactNode) {
             '--panel-background-color': backgroundColor
           }}
         >
-          {children}
+          {options.head}
           {story({
             width,
             height,
