@@ -6,11 +6,17 @@ import {
 } from '@storybook/react'
 import { withContexts } from '@storybook/addon-contexts/react'
 import { i18nContexts } from './configs/contexts'
+import { StyleWrap } from '../src/_helpers/storybook'
 
 import './style.css'
 
 addParameters({
+  options: {
+    // bug https://github.com/storybookjs/storybook/issues/6569
+    enableShortcuts: false
+  },
   props: {
+    propTablesExclude: [StyleWrap],
     styles: styles => ({
       ...styles,
       infoBody: {

@@ -133,6 +133,8 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
             '--panel-color': color,
             '--panel-background-color': backgroundColor
           }}
+          // bug https://github.com/storybookjs/storybook/issues/6569
+          onKeyDown={e => e.stopPropagation()}
         >
           {options.head}
           {story({
