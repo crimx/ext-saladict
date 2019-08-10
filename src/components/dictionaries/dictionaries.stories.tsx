@@ -7,7 +7,7 @@ import { withKnobs, select, number, boolean } from '@storybook/addon-knobs'
 import {
   withSaladictPanel,
   withSideEffect,
-  browser
+  mockRuntimeMessage
 } from '@/_helpers/storybook'
 import { DictItem } from '@/content/components/DictItem/DictItem'
 import { getDefaultConfig, DictID } from '@/app-config'
@@ -16,7 +16,6 @@ import { SearchFunction, MockRequest } from './helpers'
 import { getAllDicts } from '@/app-config/dicts'
 import { useTranslate } from '@/_helpers/i18n'
 import { timer } from '@/_helpers/promise-more'
-import { Message } from '@/typings/message'
 
 const stories = storiesOf('Content Scripts|Dictionaries', module)
   .addParameters({
@@ -27,26 +26,21 @@ const stories = storiesOf('Content Scripts|Dictionaries', module)
   })
   .addDecorator(withKnobs)
   .addDecorator(
-    withSideEffect(() => {
-      browser.runtime.sendMessage.callsFake((message: Message) => {
+    withSideEffect(
+      mockRuntimeMessage(async message => {
         if (message.type === 'DICT_ENGINE_METHOD') {
           action('Calling DICT_ENGINE_METHOD')(message.payload)
-          return new Promise(resolve => {
-            setTimeout(() => {
-              const method = require('@/components/dictionaries/' +
-                message.payload.id +
-                '/engine.ts')[message.payload.method]
-              resolve(method(...(message.payload.args || [])))
-            }, Math.random() * 2000)
-          })
-        }
-        return Promise.resolve()
-      })
 
-      return () => {
-        browser.runtime.sendMessage.callsFake(() => Promise.resolve())
-      }
-    })
+          await timer(Math.random() * 2000)
+
+          const method = require('@/components/dictionaries/' +
+            message.payload.id +
+            '/engine.ts')[message.payload.method]
+
+          return method(...(message.payload.args || []))
+        }
+      })
+    )
   )
   .addDecorator(
     withSaladictPanel(

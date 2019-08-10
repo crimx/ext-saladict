@@ -6,14 +6,14 @@ import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
 import {
-  browser,
   withi18nNS,
   withSideEffect,
-  withSaladictPanel
+  withSaladictPanel,
+  mockRuntimeMessage
 } from '@/_helpers/storybook'
 import { SuggestItem } from './Suggest'
 import { SearchBox } from './SearchBox'
-import { Message } from '@/typings/message'
+import { timer } from '@/_helpers/promise-more'
 
 storiesOf('Content Scripts|Menubar', module)
   .addParameters({
@@ -35,22 +35,14 @@ storiesOf('Content Scripts|Menubar', module)
   )
   .addDecorator(withi18nNS('content'))
   .addDecorator(
-    withSideEffect(() => {
-      browser.runtime.sendMessage.callsFake((message: Message) => {
+    withSideEffect(
+      mockRuntimeMessage(async message => {
         if (message.type === 'GET_SUGGESTS') {
-          return new Promise(resolve => {
-            setTimeout(() => {
-              resolve(fakeSuggest(message.payload))
-            }, Math.random() * 1500)
-          })
+          await timer(Math.random() * 1500)
+          return fakeSuggest(message.payload)
         }
-        return Promise.resolve()
       })
-
-      return () => {
-        browser.runtime.sendMessage.callsFake(() => Promise.resolve())
-      }
-    })
+    )
   )
   // @ts-ignore
   .addDecorator(Story => <Story />)
