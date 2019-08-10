@@ -19,7 +19,9 @@ storiesOf('Content Scripts|DictItem', module)
   .addDecorator(withKnobs)
   .addDecorator(withi18nNS('content'))
   .addDecorator(
-    withSaladictPanel(<style>{require('./DictItem.scss').toString()}</style>)
+    withSaladictPanel({
+      head: <style>{require('./DictItem.scss').toString()}</style>
+    })
   )
   // @ts-ignore: wrong storybook typing
   .add('DictItem', ({ fontSize, withAnimation }) => {

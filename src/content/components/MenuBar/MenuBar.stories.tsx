@@ -19,7 +19,10 @@ storiesOf('Content Scripts|Menubar', module)
   .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
   .addDecorator(
-    withSaladictPanel(<style>{require('./MenuBar.scss').toString()}</style>)
+    withSaladictPanel({
+      head: <style>{require('./MenuBar.scss').toString()}</style>,
+      backgroundColor: 'transparent'
+    })
   )
   .addDecorator(withi18nNS('content'))
   .add('MenuBar', () => {

@@ -26,12 +26,15 @@ storiesOf('Content Scripts|Menubar', module)
   .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
   .addDecorator(
-    withSaladictPanel(
-      <>
-        <style>{require('./Suggest.scss').toString()}</style>
-        <style>{require('./SearchBox.scss').toString()}</style>
-      </>
-    )
+    withSaladictPanel({
+      head: (
+        <>
+          <style>{require('./Suggest.scss').toString()}</style>
+          <style>{require('./SearchBox.scss').toString()}</style>
+        </>
+      ),
+      backgroundColor: 'transparent'
+    })
   )
   .addDecorator(withi18nNS('content'))
   .addDecorator(

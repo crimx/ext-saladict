@@ -14,7 +14,9 @@ storiesOf('Content Scripts|Components', module)
   })
   .addDecorator(withKnobs)
   .addDecorator(
-    withSaladictPanel(<style>{require('./EntryBox.scss').toString()}</style>)
+    withSaladictPanel({
+      head: <style>{require('./EntryBox.scss').toString()}</style>
+    })
   )
   .add('EntryBox', () => (
     <EntryBox title={text('Title', 'title text')}>
