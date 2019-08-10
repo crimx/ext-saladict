@@ -224,10 +224,11 @@ function _getDefaultConfig() {
     /** context tranlate engines */
     ctxTrans: {
       google: true,
-      tencent: true,
       sogou: true,
-      baidu: true
-    } as { [id in DictID]: boolean },
+      baidu: true,
+      tencent: false,
+      caiyun: false
+    },
 
     /** start searching when source containing the languages */
     language: {
