@@ -1,0 +1,15 @@
+.shadowPortal-enter {
+  opacity: 0;
+}
+.shadowPortal-enter-active {
+  opacity: 1;
+  transition: opacity 0.4s;
+}
+
+.shadowPortal-exit {
+  opacity: 1;
+}
+.shadowPortal-exit-active {
+  opacity: 0;
+  transition: opacity 0.1s;
+}
