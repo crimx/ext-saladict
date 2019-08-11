@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.33.5"></a>
+## [6.33.5](https://github.com/crimx/ext-saladict/compare/v6.33.4...v6.33.5) (2019-08-11)
+
+
+### Bug Fixes
+
+* change the checksums of panel.css ([e2ed394](https://github.com/crimx/ext-saladict/commit/e2ed394))
+
+
+
 <a name="6.33.4"></a>
 ## [6.33.4](https://github.com/crimx/ext-saladict/compare/v6.33.3...v6.33.4) (2019-08-09)
 
