@@ -1,32 +1,36 @@
 import { Word, DBArea } from '@/_helpers/record-manager'
 // import { DictID } from '@/app-config'
 // import { Word, Area as DBArea } from '@/_helpers/record-manager'
-import { UnionPick } from '@/typings/helpers'
 import { DictID } from '@/app-config'
 import { DictSearchResult } from '@/components/dictionaries/helpers'
 // import { DictSearchResult } from '@/typings/server'
 
 export type MessageConfig = {
+  /* ------------------------------------------------ *\
+     Backend - From other pages to background script
+  \* ------------------------------------------------ */
+
   OPEN_URL: {
-    type: 'OPEN_URL'
     payload: {
       url: string
       /** use browser.runtime.getURL? */
       self?: boolean
     }
+    response: void
   }
+
   OPEN_DICT_SRC_PAGE: {
     /** Open the source page of a dictionary */
-    type: 'OPEN_DICT_SRC_PAGE'
     payload: {
       id: DictID
       text: string
     }
+    response: void
   }
 
   PAGE_INFO: {
     /** Request backend for page info */
-    type: 'PAGE_INFO'
+    payload: undefined
     response: {
       pageId: string | number
       faviconURL?: string
@@ -37,7 +41,6 @@ export type MessageConfig = {
 
   GET_SUGGESTS: {
     /** Request backend to fetch suggest */
-    type: 'GET_SUGGESTS'
     /** Search text */
     payload: string
     /** Response with suggest items */
@@ -48,7 +51,6 @@ export type MessageConfig = {
   }
 
   FETCH_DICT_RESULT: {
-    type: 'FETCH_DICT_RESULT'
     payload: {
       id: DictID
       text: string
@@ -66,14 +68,13 @@ export type MessageConfig = {
   }
 
   PLAY_AUDIO: {
-    type: 'PLAY_AUDIO'
     /** url */
     payload: string
+    response: void
   }
 
   DICT_ENGINE_METHOD: {
     /** call any method exported from the engine */
-    type: 'DICT_ENGINE_METHOD'
     payload: {
       id: DictID
       method: string
@@ -82,36 +83,42 @@ export type MessageConfig = {
     response: any
   }
 
+  /* ------------------------------------------------ *\
+     Backend IndexedDB: Notebook or History
+  \* ------------------------------------------------ */
+
   IS_IN_NOTEBOOK: {
     /** Is a word in Notebook */
-    type: 'IS_IN_NOTEBOOK'
     payload: Word
     response: boolean
   }
+
   SAVE_WORD: {
     /** Save a word to Notebook or History */
-    type: 'SAVE_WORD'
     payload: {
       area: DBArea
       word: Word
     }
+    response: void
   }
+
   DELETE_WORDS: {
-    type: 'DELETE_WORDS'
     payload: {
       area: DBArea
       dates?: number[]
     }
+    response: void
   }
+
   GET_WORDS_BY_TEXT: {
-    type: 'GET_WORDS_BY_TEXT'
     payload: {
       area: DBArea
       text: string
     }
+    response: void
   }
+
   GET_WORDS: {
-    type: 'GET_WORDS'
     payload: {
       area: DBArea
       itemsPerPage?: number
@@ -121,54 +128,79 @@ export type MessageConfig = {
       sortOrder?: 'ascend' | 'descend' | false
       searchText?: string
     }
+    response: void
   }
 
+  /* ------------------------------------------------ *\
+     Dict Panel
+  \* ------------------------------------------------ */
+
+  PIN_STATE: {
+    /** From dict panel when it is pinned or unpinned */
+    payload: boolean
+    response: void
+  }
+
+  QUERY_PANEL_STATE: {
+    /** Other pages or frames query for panel state */
+    /** object path, default returns the whole state */
+    payload?: string
+    response: void
+  }
+
+  /* ------------------------------------------------ *\
+     Sync services
+  \* ------------------------------------------------ */
+
   SYNC_SERVICE_INIT: {
-    type: 'SYNC_SERVICE_INIT'
     payload: {
       serviceID: string
       config: any
     }
+    response: void
   }
+
   SYNC_SERVICE_DOWNLOAD: {
-    type: 'SYNC_SERVICE_DOWNLOAD'
     payload?: {
       serviceID?: string
       noCache?: boolean
     }
+    response: void
   }
+
   SYNC_SERVICE_ADD: {
-    type: 'SYNC_SERVICE_ADD'
     payload: {
       /** If not provided, call all services */
       serviceID?: string
       words: Word[]
     }
+    response: void
   }
+
   SYNC_SERVICE_DELETE: {
-    type: 'SYNC_SERVICE_DELETE'
     payload: {
       /** If not provided, call all services */
       serviceID?: string
       dates?: number[]
       force?: boolean
     }
+    response: void
   }
 }
 
 export type MsgType = keyof MessageConfig
 
-export type Message<T = undefined> = T extends MsgType
-  ? Readonly<
-      Pick<
-        MessageConfig[T],
-        Extract<'type' | 'payload', keyof MessageConfig[T]>
-      >
-    >
-  : Readonly<UnionPick<MessageConfig[MsgType], 'type' | 'payload'>>
+// 'extends' hack to generate union
+// https://www.typescriptlang.org/docs/handbook/advanced-types.html#distributive-conditional-types
+export type Message<T extends MsgType = MsgType> = T extends any
+  ? Readonly<{
+      type: T
+      payload: MessageConfig[T]['payload']
+    }>
+  : never
 
 export type MessageResponse<T extends MsgType> = Readonly<
-  MessageConfig[T][Extract<'response', keyof MessageConfig[T]>]
+  MessageConfig[T]['response']
 >
 
 // export enum MsgType {
