@@ -132,6 +132,30 @@ export type MessageConfig = {
   }
 
   /* ------------------------------------------------ *\
+     Text Selection
+  \* ------------------------------------------------ */
+
+  SELECTION: {
+    /** To dict panel */
+    payload: {
+      word: Word
+      mouseX: number
+      mouseY: number
+      dbClick: boolean
+      shiftKey: boolean
+      ctrlKey: boolean
+      metaKey: boolean
+      /** inside panel? */
+      self: boolean
+      /** skip salad bowl and show panel directly */
+      instant: boolean
+      /** force panel to skip reconciling position */
+      force: boolean
+    }
+    response: void
+  }
+
+  /* ------------------------------------------------ *\
      Dict Panel
   \* ------------------------------------------------ */
 
@@ -209,9 +233,6 @@ export type MessageResponse<T extends MsgType> = Readonly<
 //   /** Default */
 //   Default,
 
-//   /** is dict panel pinned? */
-//   IsPinned,
-
 //   /** is a standalone panel running? */
 //   QSPanelIDChanged,
 
@@ -223,9 +244,6 @@ export type MessageResponse<T extends MsgType> = Readonly<
 
 //   QSPanelSearchText,
 
-//   /** Mouse down, selection maybe empty */
-//   Selection,
-
 //   /** Ctrl/Command has been hit 3 times */
 //   TripleCtrl,
 
@@ -235,32 +253,14 @@ export type MessageResponse<T extends MsgType> = Readonly<
 //   /** Response the pageInfo of a page */
 //   PageInfo,
 
-//   /** Create a tab with the url or highlight an existing one */
-//   OpenURL,
-//   /** open a dictionary source page */
-//   OpenSrcPage,
-//   /** Request background to play a audio src */
-//   PlayAudio,
 //   /** Background to a dict panel on one page */
 //   PlayWaveform,
-//   /** Search text with a dictionary and response the result */
-//   FetchDictResult,
-//   /** Call a custom method of a dict engine */
-//   DictEngineMethod,
 //   /** Request background proxy for current selection */
 //   PreloadSelection,
 //   /** Get clipboard content */
 //   GetClipboard,
 
 //   RequestCSS,
-
-//   IsInNotebook,
-//   SaveWord,
-//   WordSaved,
-//   DeleteWords,
-//   GetWordsByText,
-//   GetWords,
-//   GetSuggests,
 
 //   /** Popup page */
 //   TempDisabledState,
@@ -273,10 +273,6 @@ export type MessageResponse<T extends MsgType> = Readonly<
 
 //   /** Manually emit selection event */
 //   EmitSelection,
-
-//   SyncServiceInit,
-//   SyncServiceDownload,
-//   SyncServiceUpload,
 
 //   /** Manually trigger context menus click */
 //   ContextMenusClick,
