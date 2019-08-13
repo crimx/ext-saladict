@@ -1,7 +1,9 @@
+@import '@/_sass_global/_z-indices.scss';
 @import './WordEditorPanel.scss';
 
 .wordEditor-Container {
   position: fixed;
+  z-index: $global-zindex-dicteditor;
   top: 0;
   left: 0;
   right: 0;
