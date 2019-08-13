@@ -1,99 +1,41 @@
 import { getDefaultConfig, AppConfig } from '@/app-config'
-import getDefaultProfile, { Profile } from '@/app-config/profiles'
+import { getDefaultProfile, Profile } from '@/app-config/profiles'
 import { addConfigListener } from '@/_helpers/config-manager'
 import { addActiveProfileListener } from '@/_helpers/profile-manager'
-import { StoreState, DispatcherThunk } from './index'
-import { newConfig as newConfigDicts } from './dictionaries'
-import { newConfig as newConfigWidget } from './widget'
+import { createReducer } from '../utils/createReducer'
+import { Init } from '../utils/types'
 
-/*-----------------------------------------------*\
-    Action Type
-\*-----------------------------------------------*/
-
-export const enum ActionType {
-  NEW_CONFIG = 'configs/NEW_CONFIG',
+export interface Payload {
+  'CONFIG/NEW_CONFIG': AppConfig
+  'CONFIG/NEW_PROFILE': Profile
 }
 
-/*-----------------------------------------------*\
-    Payload
-\*-----------------------------------------------*/
+export type State = typeof initState
 
-interface ConfigPayload {
-  [ActionType.NEW_CONFIG]: AppConfig | Profile
+const initState = {
+  config: getDefaultConfig(),
+  activeProfile: getDefaultProfile()
 }
 
-/*-----------------------------------------------*\
-    State
-\*-----------------------------------------------*/
-
-export interface ConfigState {
-  readonly config: AppConfig & Profile
-}
-
-export const initState: ConfigState = {
-  config: {
-    ...getDefaultConfig(),
-    ...getDefaultProfile(),
-  }
-}
-
-/*-----------------------------------------------*\
-    Reducer Object
-\*-----------------------------------------------*/
-
-type ConfigReducer = {
-  [k in ActionType]: (state: StoreState, payload: ConfigPayload[k]) => StoreState
-}
-
-export const reducer: ConfigReducer = {
-  [ActionType.NEW_CONFIG] (state, configOrProfile) {
-    return {
-      ...state,
-      config: {
-        ...state.config,
-        ...configOrProfile,
-      }
-    }
-  }
-}
+export const reducer = createReducer<Payload, State>(initState, {
+  'CONFIG/NEW_CONFIG': (state, action) => ({
+    ...state,
+    config: action.payload
+  }),
+  'CONFIG/NEW_PROFILE': (state, action) => ({
+    ...state,
+    activeProfile: action.payload
+  })
+})
 
 export default reducer
 
-/*-----------------------------------------------*\
-    Action Creators
-\*-----------------------------------------------*/
+export const init: Init<Payload> = dispatch => {
+  addConfigListener(({ newConfig }) => {
+    dispatch({ type: 'CONFIG/NEW_CONFIG', payload: newConfig })
+  })
 
-interface Action<T extends ActionType> {
-  type: T,
-  payload?: ConfigPayload[T]
-}
-
-/** When app config is updated */
-export function newConfig (configOrProfile: AppConfig | Profile): Action<ActionType.NEW_CONFIG> {
-  return { type: ActionType.NEW_CONFIG, payload: configOrProfile }
-}
-
-/*-----------------------------------------------*\
-    Side Effects
-\*-----------------------------------------------*/
-
-/** Listen to config change and update config */
-export function startUpAction (): DispatcherThunk {
-  return dispatch => {
-    addConfigListener(({ newConfig }) => {
-      dispatch(updateConfig(newConfig))
-    })
-    addActiveProfileListener(({ newProfile }) => {
-      dispatch(updateConfig(newProfile))
-    })
-  }
-}
-
-export function updateConfig (configOrProfile: AppConfig | Profile): DispatcherThunk {
-  return dispatch => {
-    dispatch(newConfig(configOrProfile))
-    // first widget then dicts so that the panel rect is re-calculated
-    dispatch(newConfigWidget())
-    dispatch(newConfigDicts())
-  }
+  addActiveProfileListener(({ newProfile }) => {
+    dispatch({ type: 'CONFIG/NEW_PROFILE', payload: newProfile })
+  })
 }

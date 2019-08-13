@@ -1,92 +1,36 @@
 import { message } from '@/_helpers/browser-api'
-import { MsgSelection, MsgType } from '@/typings/message'
-import { getDefaultSelectionInfo } from '@/_helpers/selection'
-import { StoreState, DispatcherThunk } from './index'
-import { newSelection as newSelectionWidget } from './widget'
+import { Message } from '@/typings/message'
+import { newWord } from '@/_helpers/record-manager'
+import { createReducer } from '../utils/createReducer'
+import { Init } from '../utils/types'
 
-/*-----------------------------------------------*\
-    Action Type
-\*-----------------------------------------------*/
-
-export const enum ActionType {
-  NEW_SELECTION = 'selection/NEW_SELECTION'
+export interface Payload {
+  'SELECTION/NEW_SELECTION': Message<'SELECTION'>['payload']
 }
 
-/*-----------------------------------------------*\
-    Payload
-\*-----------------------------------------------*/
+export type State = typeof initState
 
-interface SelectionPayload {
-  [ActionType.NEW_SELECTION]: MsgSelection
+export const initState: Message<'SELECTION'>['payload'] = {
+  word: newWord(),
+  mouseX: 0,
+  mouseY: 0,
+  self: false,
+  dbClick: false,
+  shiftKey: false,
+  ctrlKey: false,
+  metaKey: false,
+  instant: false,
+  force: false
 }
 
-/*-----------------------------------------------*\
-    State
-\*-----------------------------------------------*/
-
-export type SelectionState = {
-  readonly selection: MsgSelection
-}
-
-export const initState: SelectionState = {
-  selection: {
-    type: MsgType.Selection,
-    selectionInfo: getDefaultSelectionInfo(),
-    mouseX: 0,
-    mouseY: 0,
-    self: false,
-    dbClick: false,
-    shiftKey: false,
-    ctrlKey: false,
-    metaKey: false,
-    instant: false,
-    force: false,
-  }
-}
-
-/*-----------------------------------------------*\
-    Reducer Object
-\*-----------------------------------------------*/
-
-type SelectionReducer = {
-  [k in ActionType]: (state: StoreState, payload: SelectionPayload[k]) => StoreState
-}
-
-export const reducer: SelectionReducer = {
-  [ActionType.NEW_SELECTION] (state, selection) {
-    return { ...state, selection }
-  }
-}
+export const reducer = createReducer<Payload, State>(initState, {
+  'SELECTION/NEW_SELECTION': (state, action) => action.payload
+})
 
 export default reducer
 
-/*-----------------------------------------------*\
-    Action Creators
-\*-----------------------------------------------*/
-
-interface Action<T extends ActionType> {
-  type: T,
-  payload?: SelectionPayload[T]
-}
-
-/** When new selection is made */
-export function newSelection (selection: MsgSelection): Action<ActionType.NEW_SELECTION> {
-  return { type: ActionType.NEW_SELECTION, payload: selection }
-}
-
-/*-----------------------------------------------*\
-    Side Effects
-\*-----------------------------------------------*/
-
-/** Listen to selection change and update selection */
-export function startUpAction (): DispatcherThunk {
-  return dispatch => {
-    message.self.addListener<MsgSelection>(
-      MsgType.Selection,
-      message => {
-        dispatch(newSelection(message))
-        dispatch(newSelectionWidget())
-      },
-    )
-  }
+export const init: Init<Payload> = dispatch => {
+  message.self.addListener('SELECTION', ({ payload }) => {
+    dispatch({ type: 'SELECTION/NEW_SELECTION', payload })
+  })
 }

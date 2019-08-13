@@ -62,7 +62,9 @@
     "react-resize-reporter": "^0.1.4",
     "react-shadow": "^17.1.1",
     "react-transition-group": "^4.2.1",
+    "redux": "^4.0.4",
     "rxjs": "^6.5.2",
+    "utility-types": "^3.7.0",
     "web-ext-types": "^3.2.1",
     "webextension-polyfill": "latest"
   },
