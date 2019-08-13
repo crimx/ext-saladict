@@ -1,81 +1,34 @@
-import mergeUniqueObjects from '../utils/merge-unique-objects'
+import { combineReducers, Dispatch } from 'redux'
+import { Action, ActionType } from '../utils/types'
 
 import {
-  reducer as configReducer,
-  initState as configInitState,
-  ActionType as ConfigActionType,
-  ConfigState,
+  Payload as ConfigPayload,
+  State as ConfigState,
+  reducer as configReducer
 } from './config'
 
 import {
-  reducer as widgetReducer,
-  initState as widgetInitState,
-  ActionType as widgetActionType,
-  WidgetState,
-} from './widget'
-
-import {
-  reducer as dictionariesReducer,
-  initState as dictionariesInitState,
-  ActionType as dictionariesActionType,
-  DictionariesState,
-} from './dictionaries'
-
-import {
-  reducer as selectionReducer,
-  initState as selectionInitState,
-  ActionType as selectionActionType,
-  SelectionState,
+  Payload as SelectionPayload,
+  State as SelectionState,
+  reducer as SelectionReducer
 } from './selection'
 
-export type StoreState =
-  ConfigState &
-  WidgetState &
-  DictionariesState &
-  SelectionState
+type StorePayload = ConfigPayload & SelectionPayload
 
-export type ActionType =
-  ConfigActionType |
-  widgetActionType |
-  dictionariesActionType |
-  selectionActionType
-
-/** Thunk dispatcher */
-export type Dispatcher = (action: { type: ActionType, payload?: any } | DispatcherThunk) => any
-
-export type DispatcherThunk = (
-  dispatch: Dispatcher,
-  getState: () => StoreState
-) => any
-
-const storeInitState: StoreState = mergeUniqueObjects(
-  configInitState,
-  widgetInitState,
-  dictionariesInitState,
-  selectionInitState,
-)
-
-const storeReducer = mergeUniqueObjects(
-  configReducer,
-  widgetReducer,
-  dictionariesReducer,
-  selectionReducer,
-)
-
-export default function reducer (
-  state = storeInitState,
-  action: { type: ActionType, payload: any },
-): StoreState {
-  if (typeof storeReducer[action.type] === 'function') {
-    // @ts-ignore
-    return storeReducer[action.type](state, action.payload)
-  }
-
-  if (process.env.NODE_ENV !== 'production') {
-    if (!action.type.startsWith('@@')) {
-      console.error(`Action ${action.type} doesn't have a handler`)
-    }
-  }
-
-  return state
+export type StoreState = {
+  config: ConfigState
+  selection: SelectionState
 }
+
+export type StoreAction = Action<StorePayload>
+
+export type StoreActionType = ActionType<StorePayload>
+
+export type StoreDispatch = Dispatch<StoreAction>
+
+export const rootReducer = combineReducers<StoreState, StoreAction>({
+  config: configReducer,
+  selection: SelectionReducer
+})
+
+export default rootReducer
