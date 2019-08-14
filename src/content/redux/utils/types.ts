@@ -1,23 +1,48 @@
 import { Dispatch } from 'redux'
 
-export interface Payload {
-  [type: string]: any
+/** Default action catalog */
+export interface ActionCatalog {
+  [type: string]: {
+    payload: any
+    meta?: any
+  }
 }
 
-export type ActionType<P extends Payload> = keyof P
+export type ActionType<P extends ActionCatalog> = keyof P
 
 export type Action<
-  P extends Payload,
-  T extends keyof P = keyof P
+  C extends ActionCatalog,
+  T extends keyof C = keyof C
 > = T extends any // 'extends' hack to generate union
   ? Readonly<{
       type: T
-      payload: P[T]
+      payload: 'payload' extends keyof C[T]
+        ? C[T][Extract<'payload', keyof C[T]>]
+        : undefined
+      error?: boolean
+      meta?: 'meta' extends keyof C[T]
+        ? C[T][Extract<'meta', keyof C[T]>]
+        : undefined
     }>
   : never
 
-export type ActionHandler<P extends Payload, S extends {}> = {
-  [k in keyof P]: (state: S, action: Action<P, k>) => S
-}
+export type ActionHandler<
+  /** module actions */
+  C extends ActionCatalog,
+  /** state */
+  S extends {},
+  /** all actions */
+  SC extends {} = {}
+> = {
+  [k in keyof C]: (state: Readonly<S>, action: Action<C, k>) => Readonly<S>
+} &
+  {
+    [k in keyof Omit<SC, keyof C>]?: (
+      state: Readonly<S>,
+      action: Action<SC, k>
+    ) => Readonly<S>
+  }
 
-export type Init<P extends Payload> = (dispatch: Dispatch<Action<P>>) => void
+export type Init<C extends ActionCatalog> = (
+  dispatch: Dispatch<Action<C>>
+) => void

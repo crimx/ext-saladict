@@ -1,9 +1,9 @@
-import { StoreAction } from '../modules'
-import { Payload, ActionHandler } from '../utils/types'
+import { StoreActionCatalog, StoreAction } from '../modules'
+import { ActionHandler } from '../utils/types'
 
-export const createReducer = <P = Payload, S = {}>(
+export const createReducer = <C extends {}, S extends {}>(
   initialState: S,
-  handlers: ActionHandler<P, S>
+  handlers: ActionHandler<C, S, StoreActionCatalog>
 ) =>
   function reducer(state = initialState, action: StoreAction): S {
     if (handlers.hasOwnProperty(action.type)) {
