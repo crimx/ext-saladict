@@ -2,27 +2,27 @@ import { combineReducers, Dispatch } from 'redux'
 import { Action, ActionType } from '../utils/types'
 
 import {
-  Payload as ConfigPayload,
+  ActionCatalog as ConfigActionCatalog,
   State as ConfigState,
   reducer as configReducer
 } from './config'
 
 import {
-  Payload as SelectionPayload,
+  ActionCatalog as SelectionActionCatalog,
   State as SelectionState,
   reducer as SelectionReducer
 } from './selection'
 
-type StorePayload = ConfigPayload & SelectionPayload
+export type StoreActionCatalog = ConfigActionCatalog & SelectionActionCatalog
 
 export type StoreState = {
   config: ConfigState
   selection: SelectionState
 }
 
-export type StoreAction = Action<StorePayload>
+export type StoreAction = Action<StoreActionCatalog>
 
-export type StoreActionType = ActionType<StorePayload>
+export type StoreActionType = ActionType<StoreActionCatalog>
 
 export type StoreDispatch = Dispatch<StoreAction>
 

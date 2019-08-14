@@ -3,13 +3,16 @@ import { getDefaultProfile, Profile } from '@/app-config/profiles'
 import { addConfigListener } from '@/_helpers/config-manager'
 import { addActiveProfileListener } from '@/_helpers/profile-manager'
 import { createReducer } from '../utils/createReducer'
-import { Init } from '../utils/types'
+import { Init, Action } from '../utils/types'
 
-export interface Payload {
-  'CONFIG/NEW_CONFIG': AppConfig
-  'CONFIG/NEW_PROFILE': Profile
+export type ActionCatalog = {
+  'CONFIG/NEW_CONFIG': {
+    payload: AppConfig
+  }
+  'CONFIG/NEW_PROFILE': {
+    payload: Profile
+  }
 }
-
 export type State = typeof initState
 
 const initState = {
@@ -17,7 +20,7 @@ const initState = {
   activeProfile: getDefaultProfile()
 }
 
-export const reducer = createReducer<Payload, State>(initState, {
+export const reducer = createReducer<ActionCatalog, State>(initState, {
   'CONFIG/NEW_CONFIG': (state, action) => ({
     ...state,
     config: action.payload
@@ -30,7 +33,7 @@ export const reducer = createReducer<Payload, State>(initState, {
 
 export default reducer
 
-export const init: Init<Payload> = dispatch => {
+export const init: Init<ActionCatalog> = dispatch => {
   addConfigListener(({ newConfig }) => {
     dispatch({ type: 'CONFIG/NEW_CONFIG', payload: newConfig })
   })
