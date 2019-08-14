@@ -1,0 +1,29 @@
+import React, { FC } from 'react'
+import { DictItem, DictItemProps } from '../DictItem/DictItem'
+
+export interface DictListProps {
+  text: string
+
+  fontSize: number
+  withAnimation: boolean
+
+  dicts: Array<
+    Pick<
+      DictItemProps,
+      'dictID' | 'preferredHeight' | 'searchStatus' | 'searchResult'
+    >
+  >
+
+  searchText: DictItemProps['searchText']
+}
+
+export const DictList: FC<DictListProps> = props => {
+  const { dicts, ...restProps } = props
+  return (
+    <div>
+      {props.dicts.map(data => (
+        <DictItem {...restProps} {...data} />
+      ))}
+    </div>
+  )
+}
