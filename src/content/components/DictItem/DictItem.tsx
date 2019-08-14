@@ -6,17 +6,15 @@ import { DictItemHead } from './DictItemHead'
 import { DictItemBody, DictItemBodyProps } from './DictItemBody'
 import { ResizeReporter } from 'react-resize-reporter'
 
-export interface DictItem extends DictItemBodyProps {
+export interface DictItemProps extends DictItemBodyProps {
   text: string
   /** default height when search result is received */
   preferredHeight: number
   /** Inject dict component. Mainly for testing */
   dictComp?: ComponentType<ViewPorps<any>>
-  /** report dict item height */
-  onHeightChanged: (height: number) => void
 }
 
-export const DictItem: FC<DictItem> = props => {
+export const DictItem: FC<DictItemProps> = props => {
   const [foldState, setFoldState] = useState<'COLLAPSE' | 'HALF' | 'FULL'>(
     'COLLAPSE'
   )
@@ -31,10 +29,6 @@ export const DictItem: FC<DictItem> = props => {
       ? offsetHeight
       : Math.min(offsetHeight, props.preferredHeight)
   )
-
-  useEffect(() => {
-    props.onHeightChanged(visibleHeight + 31)
-  }, [visibleHeight])
 
   useEffect(() => {
     if (props.searchStatus === 'FINISH') {
