@@ -20,7 +20,8 @@ storiesOf('Content Scripts|DictItem', module)
   .addDecorator(withi18nNS('content'))
   .addDecorator(
     withSaladictPanel({
-      head: <style>{require('./DictItem.scss').toString()}</style>
+      head: <style>{require('./DictItem.scss').toString()}</style>,
+      height: 'auto'
     })
   )
   // @ts-ignore: wrong storybook typing
@@ -51,7 +52,6 @@ storiesOf('Content Scripts|DictItem', module)
           </>
         )}
         searchText={action('Search Text')}
-        onHeightChanged={action('Height Changed')}
       />
     )
   })

@@ -48,7 +48,8 @@ const stories = storiesOf('Content Scripts|Dictionaries', module)
         <style>
           {require('@/content/components/DictItem/DictItem.scss').toString()}
         </style>
-      )
+      ),
+      height: 'auto'
     })
   )
 
@@ -171,7 +172,6 @@ function Dict(props: {
       searchStatus={status}
       searchResult={result}
       searchText={action('Search Text')}
-      onHeightChanged={action('Height Changed')}
     />
   )
 }
