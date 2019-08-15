@@ -1,0 +1,42 @@
+.mtaBox-TextArea-Wrap {
+  position: relative;
+  overflow: hidden;
+  transition: height 0.4s;
+}
+
+.mtaBox-TextArea {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 5px 5px 10px;
+  border: none;
+}
+
+.mtaBox-TextArea-Wrap-appear,
+.mtaBox-TextArea-Wrap-appear-active,
+.mtaBox-TextArea-Wrap-enter,
+.mtaBox-TextArea-Wrap-enter-active,
+.mtaBox-TextArea-Wrap-exit,
+.mtaBox-TextArea-Wrap-exit-active {
+  .mtaBox-TextArea {
+    position: absolute;
+    bottom: 0;
+  }
+}
+
+.mtaBox-DrawerBtn {
+  display: block;
+  width: 100%;
+  height: 12px;
+  overflow: hidden;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  font-size: 0;
+  cursor: pointer;
+}
+
+.mtaBox-DrawerBtn_Arrow {
+  &.isExpand {
+    transform: rotate(180deg);
+  }
+}
