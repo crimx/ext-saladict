@@ -26,6 +26,7 @@ storiesOf('Content Scripts|Menubar', module)
   .addDecorator(
     withSaladictPanel({
       head: <style>{require('./Suggest.scss').toString()}</style>,
+      height: 'auto',
       backgroundColor: 'transparent'
     })
   )

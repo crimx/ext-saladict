@@ -79,10 +79,10 @@ export function mockRuntimeMessage(fn: (message: Message) => Promise<any>) {
 export interface WithSaladictPanelOptions {
   /** before the story component */
   head?: React.ReactNode
-  width?: number
-  height?: number
+  width?: number | string
+  height?: number | string
   withAnimation?: boolean
-  fontSize?: number
+  fontSize?: number | string
   color?: string
   backgroundColor?: string
 }
@@ -98,7 +98,7 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
     const height =
       options.height != null
         ? options.height
-        : number('Panel Height', 450 * 1.68)
+        : number('Panel Height', window.innerHeight - 50)
 
     const withAnimation =
       options.withAnimation != null
@@ -126,6 +126,7 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
           style={{
             fontSize,
             width,
+            height,
             color,
             backgroundColor,
             '--panel-width': `${width}px`,
