@@ -1,3 +1,5 @@
+import * as CSS from 'csstype'
+
 declare module 'csstype' {
   interface Properties {
     '--panel-color'?: string
