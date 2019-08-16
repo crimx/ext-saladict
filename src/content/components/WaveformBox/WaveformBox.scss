@@ -1,0 +1,49 @@
+$waveform-height: 165px;
+
+.waveformBox-DrawerBtn {
+  display: block;
+  width: 100%;
+  height: 12px;
+  overflow: hidden;
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  font-size: 0;
+  cursor: pointer;
+}
+
+.waveformBox-DrawerBtn_Arrow {
+  &.isExpand {
+    transform: rotate(180deg);
+  }
+}
+
+.waveformBox-FrameWrap {
+  overflow: hidden;
+  height: 0;
+  font-size: 0;
+  transition: height 0.4s;
+
+  &.isExpand {
+    height: $waveform-height;
+  }
+}
+
+.waveformBox-Frame {
+  width: 100%;
+  height: $waveform-height;
+  border: none;
+  transition: opacity 0.4s;
+}
+
+.waveformBox-Frame-enter {
+  opacity: 0;
+}
+
+.waveformBox-Frame-enter-active,
+.waveformBox-Frame-exit {
+  opacity: 1;
+}
+
+.waveformBox-Frame-exit-active {
+  opacity: 0;
+}
