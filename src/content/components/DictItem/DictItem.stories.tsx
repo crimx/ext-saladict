@@ -7,7 +7,7 @@ import { withKnobs, select, text, number, array } from '@storybook/addon-knobs'
 import { withi18nNS, withSaladictPanel } from '@/_helpers/storybook'
 import { DictItem } from './DictItem'
 
-storiesOf('Content Scripts|DictItem', module)
+storiesOf('Content Scripts|Dict Panel', module)
   .addParameters({
     backgrounds: [
       { name: 'Saladict', value: '#5caf9e', default: true },

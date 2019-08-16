@@ -7,7 +7,7 @@ import { withKnobs, select } from '@storybook/addon-knobs'
 import { withi18nNS, withSaladictPanel } from '@/_helpers/storybook'
 import { Profiles } from './Profiles'
 
-storiesOf('Content Scripts|Menubar', module)
+storiesOf('Content Scripts|Dict Panel/Menubar', module)
   .addParameters({
     backgrounds: [
       { name: 'Saladict', value: '#5caf9e', default: true },

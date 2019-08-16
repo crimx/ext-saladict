@@ -10,7 +10,7 @@ import {
 } from '@/_helpers/storybook'
 import { Waveform } from './Waveform'
 
-storiesOf('Content Scripts|Waveform', module)
+storiesOf('Content Scripts|Dict Panel', module)
   .addParameters({
     backgrounds: [
       { name: 'Saladict', value: '#5caf9e', default: true },

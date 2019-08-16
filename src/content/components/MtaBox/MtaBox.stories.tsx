@@ -8,7 +8,7 @@ import { withSaladictPanel } from '@/_helpers/storybook'
 import faker from 'faker'
 import { MtaBox } from './MtaBox'
 
-storiesOf('Content Scripts|MtaBox', module)
+storiesOf('Content Scripts|Dict Panel', module)
   .addParameters({
     backgrounds: [
       { name: 'Saladict', value: '#5caf9e', default: true },
