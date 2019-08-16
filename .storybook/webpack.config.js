@@ -123,6 +123,7 @@ module.exports = ({ config }) => {
 
   config.resolve.extensions.push('.ts', '.tsx')
   config.resolve.alias['@'] = path.join(__dirname, '../src')
+  config.resolve.alias['@sb'] = path.join(__dirname)
 
   return config
 }

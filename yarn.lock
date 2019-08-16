@@ -2187,6 +2187,13 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-textarea-autosize@^4.3.4":
+  version "4.3.4"
+  resolved "https://registry.yarnpkg.com/@types/react-textarea-autosize/-/react-textarea-autosize-4.3.4.tgz#9a93f751c91ad5e86387bce75e3b7e11ed195813"
+  integrity sha512-LLqG27BJGt8ja9x4umQXbnK9pRd0dI23X/GXBcuf476feOZ+e5QiKJYmWOHwAJC3YLl3YixDSigzfF4gzVQZ5w==
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@^4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-4.2.0.tgz#86ddb509ce3de27341c7cb7797abb99b1c4676bf"
@@ -2240,6 +2247,11 @@
   dependencies:
     "@types/react" "*"
     "@types/webpack-env" "*"
+
+"@types/wavesurfer.js@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/wavesurfer.js/-/wavesurfer.js-2.0.2.tgz#b98a4d57ca24ee2028ae6dd5c2208b568bb73842"
+  integrity sha512-078vSMwH9LNVg9oAe7/M27p1MjfJ3ncuj54ROj+nL4vnrvDEV7Ye1v+o/LTR0Z396r6u6DTNkoEq5kKgJkzFrQ==
 
 "@types/webpack-env@*":
   version "1.14.0"
@@ -3894,6 +3906,11 @@ cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   dependencies:
     inherits "^2.0.1"
     safe-buffer "^5.0.1"
+
+clamp@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/clamp/-/clamp-1.0.1.tgz#66a0e64011816e37196828fdc8c8c147312c8634"
+  integrity sha1-ZqDmQBGBbjcZaCj9yMjBRzEshjQ=
 
 class-utils@^0.3.5:
   version "0.3.6"
@@ -10539,6 +10556,11 @@ react-animate-height@^2.0.15:
     classnames "^2.2.5"
     prop-types "^15.6.1"
 
+react-clickdrag@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/react-clickdrag/-/react-clickdrag-3.0.2.tgz#54df5f3df6d695c54e9978a08253f83de7611bd2"
+  integrity sha1-VN9fPfbWlcVOmXigglP4PedhG9I=
+
 react-clientside-effect@^1.2.0:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/react-clientside-effect/-/react-clientside-effect-1.2.2.tgz#6212fb0e07b204e714581dd51992603d1accc837"
@@ -10727,6 +10749,15 @@ react-lifecycles-compat@^3.0.2, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+
+react-number-editor@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/react-number-editor/-/react-number-editor-4.0.3.tgz#3b2b2310910060a41418453299813c5acd3161c7"
+  integrity sha512-/Y6Pc7awrYrlZg9p7+z/1fMYRdGXNupYjdneRDdpBuwhNNhg8UbLNvv0V3ksVwWctCUYif3ta1Azi2AstS9vow==
+  dependencies:
+    clamp "^1.0.1"
+    prop-types "^15.6.0"
+    react-clickdrag "^3.0.2"
 
 react-popper-tooltip@^2.8.3:
   version "2.8.3"
@@ -11018,6 +11049,16 @@ redent@^2.0.0:
   dependencies:
     indent-string "^3.0.0"
     strip-indent "^2.0.0"
+
+redux-observable@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/redux-observable/-/redux-observable-1.1.0.tgz#323a8fe53e89fdb519be2807b55f08e21c13e6f1"
+  integrity sha512-G0nxgmTZwTK3Z3KoQIL8VQu9n0YCUwEP3wc3zxKQ8zAZm+iYkoZvBqAnBJfLi4EsD1E64KR4s4jFH/dFXpV9Og==
+
+redux-thunk@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
+  integrity sha512-km6dclyFnmcvxhAcrQV2AkZmPQjzPDjgVlQtR0EQjxZPyJ0BnMf3in1ryuR8A2qU0HldVRfxYXbFSKlI3N7Slw==
 
 redux@^4.0.4:
   version "4.0.4"
@@ -11857,6 +11898,11 @@ sort-keys@^2.0.0:
   integrity sha1-ZYU1WEhh7JfXMNbPQYIuH1ZoQSg=
   dependencies:
     is-plain-obj "^1.0.0"
+
+soundtouchjs@^0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/soundtouchjs/-/soundtouchjs-0.1.5.tgz#89e6cae0fba8cf00d0928895d0a1ded1cef52cf2"
+  integrity sha512-m89HBaT6yCpeMHKDY4tRaGRtLe+A7U7dytkakVG9xLYXPCyy5wM1RBAOvrchWJiDTzh4+Ms4GaAPvomePXvPDw==
 
 source-list-map@^2.0.0:
   version "2.0.1"
@@ -13006,6 +13052,11 @@ watchpack@^1.6.0:
     chokidar "^2.0.2"
     graceful-fs "^4.1.2"
     neo-async "^2.5.0"
+
+wavesurfer.js@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-3.0.0.tgz#35f36d76d59c749dca453cf4e10ee0ec49f454f8"
+  integrity sha512-DANu206c6gb9pSUbYFevsSiXMy8+Ri+CNtqm0UsouUdsn9fVQRtYs8uxzBtXK+rUPlIc6FlO54DU8uWeW3lDzw==
 
 wbuf@^1.1.0, wbuf@^1.7.3:
   version "1.7.3"

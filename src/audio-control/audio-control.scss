@@ -1,8 +1,9 @@
-html, body {
+html,
+body {
   height: 165px;
   overflow: hidden;
   margin: 0;
   padding: 0;
 }
 
-@import '../components/Waveform/style';
+@import '@/components/Waveform/Waveform.scss';
