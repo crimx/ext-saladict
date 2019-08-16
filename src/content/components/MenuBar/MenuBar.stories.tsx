@@ -20,7 +20,7 @@ import { MenuBar } from './MenuBar'
 import { timer } from '@/_helpers/promise-more'
 import { SuggestItem } from './Suggest'
 
-storiesOf('Content Scripts|Menubar', module)
+storiesOf('Content Scripts|Dict Panel/Menubar', module)
   .addDecorator(withPropsTable)
   .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)

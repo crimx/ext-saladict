@@ -15,7 +15,7 @@ import { SuggestItem } from './Suggest'
 import { SearchBox } from './SearchBox'
 import { timer } from '@/_helpers/promise-more'
 
-storiesOf('Content Scripts|Menubar', module)
+storiesOf('Content Scripts|Dict Panel/Menubar', module)
   .addParameters({
     backgrounds: [
       { name: 'Saladict', value: '#5caf9e', default: true },
