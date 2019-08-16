@@ -30,7 +30,7 @@ export type MessageConfig = {
 
   PAGE_INFO: {
     /** Request backend for page info */
-    payload: undefined
+    payload?: undefined
     response: {
       pageId: string | number
       faviconURL?: string
@@ -65,12 +65,6 @@ export type MessageConfig = {
       result: any
       audio?: DictSearchResult<DictID>['audio']
     }
-  }
-
-  PLAY_AUDIO: {
-    /** url */
-    payload: string
-    response: void
   }
 
   DICT_ENGINE_METHOD: {
@@ -129,6 +123,29 @@ export type MessageConfig = {
       searchText?: string
     }
     response: void
+  }
+
+  /* ------------------------------------------------ *\
+     Audio Playing
+  \* ------------------------------------------------ */
+
+  PLAY_AUDIO: {
+    /** url: to backend */
+    payload: string
+    response: void
+  }
+
+  WAVEFORM_PLAY_AUDIO: {
+    /** url: to waveform */
+    payload: string
+    response: void
+  }
+
+  LAST_PLAY_AUDIO: {
+    /** waveform to panel */
+    payload?: undefined
+    /** url */
+    response?: string
   }
 
   /* ------------------------------------------------ *\
@@ -216,12 +233,17 @@ export type MsgType = keyof MessageConfig
 
 // 'extends' hack to generate union
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#distributive-conditional-types
-export type Message<T extends MsgType = MsgType> = T extends any
+export type Message<
+  T extends MsgType = MsgType
+> = MessageConfig[T]['payload'] extends undefined
   ? Readonly<{
+      type: T
+      payload?: MessageConfig[T]['payload']
+    }>
+  : Readonly<{
       type: T
       payload: MessageConfig[T]['payload']
     }>
-  : never
 
 export type MessageResponse<T extends MsgType> = Readonly<
   MessageConfig[T]['response']
