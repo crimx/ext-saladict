@@ -233,17 +233,17 @@ export type MsgType = keyof MessageConfig
 
 // 'extends' hack to generate union
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#distributive-conditional-types
-export type Message<
-  T extends MsgType = MsgType
-> = MessageConfig[T]['payload'] extends undefined
-  ? Readonly<{
-      type: T
-      payload?: MessageConfig[T]['payload']
-    }>
-  : Readonly<{
-      type: T
-      payload: MessageConfig[T]['payload']
-    }>
+export type Message<T extends MsgType = MsgType> = T extends any
+  ? MessageConfig[T]['payload'] extends undefined
+    ? Readonly<{
+        type: T
+        payload?: MessageConfig[T]['payload']
+      }>
+    : Readonly<{
+        type: T
+        payload: MessageConfig[T]['payload']
+      }>
+  : never
 
 export type MessageResponse<T extends MsgType> = Readonly<
   MessageConfig[T]['response']
