@@ -5,16 +5,11 @@ $waveform-height: 165px;
   width: 100%;
   height: 12px;
   overflow: hidden;
+  border: none;
   border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
   font-size: 0;
+  background-color: var(--panel-background-color);
   cursor: pointer;
-}
-
-.waveformBox-DrawerBtn_Arrow {
-  &.isExpand {
-    transform: rotate(180deg);
-  }
 }
 
 .waveformBox-FrameWrap {
@@ -22,9 +17,19 @@ $waveform-height: 165px;
   height: 0;
   font-size: 0;
   transition: height 0.4s;
+}
 
-  &.isExpand {
+.waveformBox.isExpand {
+  .waveformBox-FrameWrap {
     height: $waveform-height;
+  }
+
+  .waveformBox-DrawerBtn {
+    border-bottom: 1px solid #ddd;
+  }
+
+  .waveformBox-DrawerBtn_Arrow {
+    transform: rotate(180deg);
   }
 }
 
