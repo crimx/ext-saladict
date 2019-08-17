@@ -24,7 +24,7 @@ export interface DictListProps {
 export const DictList: FC<DictListProps> = props => {
   const { dicts, ...restProps } = props
   return (
-    <div>
+    <div className="dictList">
       {props.dicts.map(data => (
         <DictItem {...restProps} {...data} />
       ))}

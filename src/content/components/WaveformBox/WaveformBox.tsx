@@ -5,7 +5,7 @@ export const WaveformBox = () => {
   const [expand, setExpand] = useState(false)
 
   return (
-    <div className="waveformBox">
+    <div className={`waveformBox${expand ? ' isExpand' : ''}`}>
       <button
         className="waveformBox-DrawerBtn"
         onClick={() => setExpand(!expand)}
@@ -15,14 +15,12 @@ export const WaveformBox = () => {
           height="10"
           viewBox="0 0 59.414 59.414"
           xmlns="http://www.w3.org/2000/svg"
-          className={
-            'waveformBox-DrawerBtn_Arrow' + (expand ? ' isExpand' : '')
-          }
+          className="waveformBox-DrawerBtn_Arrow"
         >
           <path d="M 58 45.269 L 29.707 16.975 L 1.414 45.27 L 0 43.855 L 29.707 14.145 L 59.414 43.855" />
         </svg>
       </button>
-      <div className={`waveformBox-FrameWrap${expand ? ' isExpand' : ''}`}>
+      <div className="waveformBox-FrameWrap">
         <CSSTransition
           timeout={400}
           in={expand}
