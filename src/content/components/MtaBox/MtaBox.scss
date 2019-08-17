@@ -1,7 +1,10 @@
 .mtaBox-TextArea-Wrap {
   position: relative;
   overflow: hidden;
-  transition: height 0.4s;
+
+  &.isAnimate {
+    transition: height 0.4s;
+  }
 }
 
 .mtaBox-TextArea {

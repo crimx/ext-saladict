@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useRef, useState } from 'react'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import AutosizeTextarea from 'react-textarea-autosize'
 
@@ -16,43 +16,44 @@ export interface MtaBoxProps {
  * Multiline Textarea Drawer. With animation on Expanding and Shrinking.
  */
 export const MtaBox: FC<MtaBoxProps> = props => {
-  const heightRef = useRef(0)
+  const [height, setHeight] = useState(0)
+  const [isFocus, setFocus] = useState(false)
 
-  const setHeight = (el: HTMLElement) => {
-    el.style.height = heightRef.current + 'px'
+  const onFocusBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {
+    setFocus(e.type === 'focus')
   }
 
   return (
     <div>
-      <CSSTransition
-        in={props.expand}
-        timeout={400}
-        classNames="mtaBox-TextArea-Wrap"
-        appear
-        mountOnEnter
-        unmountOnExit
-        onEnter={resetHeight}
-        onEntering={setHeight}
-        onEntered={removeHeight}
-        onExit={setHeight}
-        onExiting={resetHeight}
-        onExited={removeHeight}
+      <div
+        className={`mtaBox-TextArea-Wrap${isFocus ? '' : ' isAnimate'}`}
+        style={{
+          height: props.expand ? height : 0,
+          maxHeight: props.maxHeight
+        }}
       >
-        {() => (
-          <div className="mtaBox-TextArea-Wrap">
+        <CSSTransition
+          in={props.expand}
+          timeout={400}
+          classNames="mtaBox-TextArea-Wrap"
+          appear
+          mountOnEnter
+          unmountOnExit
+        >
+          {() => (
             <AutosizeTextarea
               className="mtaBox-TextArea"
               style={{ maxHeight: props.maxHeight }}
               value={props.text}
               onChange={e => props.onInput(e.currentTarget.value)}
+              onFocus={onFocusBlur}
+              onBlur={onFocusBlur}
               minRows={2}
-              onHeightChange={height =>
-                (heightRef.current = Math.min(props.maxHeight, height))
-              }
+              onHeightChange={height => setHeight(height)}
             />
-          </div>
-        )}
-      </CSSTransition>
+          )}
+        </CSSTransition>
+      </div>
       <button className="mtaBox-DrawerBtn" onClick={props.onDrawerToggle}>
         <svg
           width="10"
