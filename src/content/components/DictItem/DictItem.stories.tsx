@@ -5,6 +5,7 @@ import { withPropsTable } from 'storybook-addon-react-docgen'
 import { action } from '@storybook/addon-actions'
 import { withKnobs, select, text, number, array } from '@storybook/addon-knobs'
 import { withi18nNS, withSaladictPanel } from '@/_helpers/storybook'
+import faker from 'faker'
 import { DictItem } from './DictItem'
 
 storiesOf('Content Scripts|Dict Panel', module)
@@ -38,16 +39,13 @@ storiesOf('Content Scripts|Dict Panel', module)
           { IDLE: 'IDLE', SEARCHING: 'SEARCHING', FINISH: 'FINISH' },
           'FINISH'
         )}
-        searchResult={array(
-          'Search Result',
-          Array(5).fill(
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt eum ratione assumenda accusantium vel numquam voluptate nam ab laborum ut aliquam illum alias nemo perspiciatis rem distinctio illo, expedita nihil sint! Non distinctio, cum quam esse quod, possimus itaque velit reiciendis dolor, et aut minima? Quas quae laudantium doloremque unde.'
-          )
-        )}
-        dictComp={({ result }: { result: string[] }) => (
+        searchResult={{
+          count: number('Paragraphs', 5)
+        }}
+        dictComp={({ result }: { result: { count: number } }) => (
           <>
-            {result.map((line, i) => (
-              <p key={i}>{line}</p>
+            {[...Array(result.count)].map((line, i) => (
+              <p key={i}>{faker.lorem.paragraph()}</p>
             ))}
           </>
         )}

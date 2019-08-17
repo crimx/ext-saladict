@@ -10,7 +10,11 @@ export interface DictListProps {
   dicts: Array<
     Pick<
       DictItemProps,
-      'dictID' | 'preferredHeight' | 'searchStatus' | 'searchResult'
+      | 'dictID'
+      | 'preferredHeight'
+      | 'searchStatus'
+      | 'searchResult'
+      | 'dictComp'
     >
   >
 
