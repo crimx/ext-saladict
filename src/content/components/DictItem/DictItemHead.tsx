@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { DictID } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
 import { useTranslate } from '@/_helpers/i18n'
@@ -12,6 +12,18 @@ export interface DictItemHeadProps {
 
 export const DictItemHead: FC<DictItemHeadProps> = props => {
   const { t } = useTranslate('dicts')
+
+  const [showLoader, setShowLoader] = useState(false)
+  useEffect(() => {
+    // small time offset to add a little organic feeling
+    const ticket = setTimeout(
+      () => setShowLoader(props.isSearching),
+      Math.random() * 1500
+    )
+    return () => {
+      clearTimeout(ticket)
+    }
+  }, [props.isSearching])
 
   return (
     <header
@@ -43,7 +55,7 @@ export const DictItemHead: FC<DictItemHeadProps> = props => {
           {t(`${props.dictID}.name`)}
         </a>
       </h1>
-      {props.isSearching && (
+      {showLoader && (
         <div className="dictItemHead-Loader">
           <div />
           <div />
