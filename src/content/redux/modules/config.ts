@@ -3,7 +3,7 @@ import { getDefaultProfile, Profile } from '@/app-config/profiles'
 import { addConfigListener } from '@/_helpers/config-manager'
 import { addActiveProfileListener } from '@/_helpers/profile-manager'
 import { createReducer } from '../utils/createReducer'
-import { Init, Action } from '../utils/types'
+import { Init } from '../utils/types'
 
 export type ActionCatalog = {
   'CONFIG/NEW_CONFIG': {
