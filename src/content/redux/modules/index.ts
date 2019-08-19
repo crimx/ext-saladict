@@ -13,11 +13,20 @@ import {
   reducer as SelectionReducer
 } from './selection'
 
-export type StoreActionCatalog = ConfigActionCatalog & SelectionActionCatalog
+import {
+  ActionCatalog as WidgetActionCatalog,
+  State as WidgetState,
+  reducer as WidgetReducer
+} from './widget'
+
+export type StoreActionCatalog = ConfigActionCatalog &
+  SelectionActionCatalog &
+  WidgetActionCatalog
 
 export type StoreState = {
   config: ConfigState
   selection: SelectionState
+  widget: WidgetState
 }
 
 export type StoreAction = Action<StoreActionCatalog>
@@ -28,7 +37,8 @@ export type StoreDispatch = Dispatch<StoreAction>
 
 export const rootReducer = combineReducers<StoreState, StoreAction>({
   config: configReducer,
-  selection: SelectionReducer
+  selection: SelectionReducer,
+  widget: WidgetReducer
 })
 
 export default rootReducer
