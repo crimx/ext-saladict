@@ -10,27 +10,25 @@ export type MessageConfig = {
      Backend - From other pages to background script
   \* ------------------------------------------------ */
 
+  /** Open url in new tab or update existing tab */
   OPEN_URL: {
     payload: {
       url: string
       /** use browser.runtime.getURL? */
       self?: boolean
     }
-    response: void
   }
 
+  /** Open the source page of a dictionary */
   OPEN_DICT_SRC_PAGE: {
-    /** Open the source page of a dictionary */
     payload: {
       id: DictID
       text: string
     }
-    response: void
   }
 
+  /** Request backend for page info */
   PAGE_INFO: {
-    /** Request backend for page info */
-    payload?: undefined
     response: {
       pageId: string | number
       faviconURL?: string
@@ -39,8 +37,8 @@ export type MessageConfig = {
     }
   }
 
+  /** Request backend to fetch suggest */
   GET_SUGGESTS: {
-    /** Request backend to fetch suggest */
     /** Search text */
     payload: string
     /** Response with suggest items */
@@ -54,7 +52,7 @@ export type MessageConfig = {
     payload: {
       id: DictID
       text: string
-      /** search function payload */
+      /** engine search function payload */
       payload: {
         isPDF: boolean
         [index: string]: any
@@ -67,8 +65,8 @@ export type MessageConfig = {
     }
   }
 
+  /** call any method exported from the engine */
   DICT_ENGINE_METHOD: {
-    /** call any method exported from the engine */
     payload: {
       id: DictID
       method: string
@@ -81,19 +79,18 @@ export type MessageConfig = {
      Backend IndexedDB: Notebook or History
   \* ------------------------------------------------ */
 
+  /** Is a word in Notebook */
   IS_IN_NOTEBOOK: {
-    /** Is a word in Notebook */
     payload: Word
     response: boolean
   }
 
+  /** Save a word to Notebook or History */
   SAVE_WORD: {
-    /** Save a word to Notebook or History */
     payload: {
       area: DBArea
       word: Word
     }
-    response: void
   }
 
   DELETE_WORDS: {
@@ -101,7 +98,6 @@ export type MessageConfig = {
       area: DBArea
       dates?: number[]
     }
-    response: void
   }
 
   GET_WORDS_BY_TEXT: {
@@ -109,7 +105,6 @@ export type MessageConfig = {
       area: DBArea
       text: string
     }
-    response: void
   }
 
   GET_WORDS: {
@@ -122,7 +117,6 @@ export type MessageConfig = {
       sortOrder?: 'ascend' | 'descend' | false
       searchText?: string
     }
-    response: void
   }
 
   /* ------------------------------------------------ *\
@@ -132,18 +126,15 @@ export type MessageConfig = {
   PLAY_AUDIO: {
     /** url: to backend */
     payload: string
-    response: void
   }
 
   WAVEFORM_PLAY_AUDIO: {
     /** url: to waveform */
     payload: string
-    response: void
   }
 
+  /** waveform to panel */
   LAST_PLAY_AUDIO: {
-    /** waveform to panel */
-    payload?: undefined
     /** url */
     response?: string
   }
@@ -152,8 +143,8 @@ export type MessageConfig = {
      Text Selection
   \* ------------------------------------------------ */
 
+  /** To dict panel */
   SELECTION: {
-    /** To dict panel */
     payload: {
       word: Word
       mouseX: number
@@ -169,25 +160,34 @@ export type MessageConfig = {
       /** force panel to skip reconciling position */
       force: boolean
     }
-    response: void
   }
 
   /* ------------------------------------------------ *\
      Dict Panel
   \* ------------------------------------------------ */
 
+  /** From dict panel when it is pinned or unpinned */
   PIN_STATE: {
-    /** From dict panel when it is pinned or unpinned */
     payload: boolean
-    response: void
   }
 
+  /** Other pages or frames query for panel state */
   QUERY_PANEL_STATE: {
-    /** Other pages or frames query for panel state */
     /** object path, default returns the whole state */
     payload?: string
-    response: void
   }
+
+  /* ------------------------------------------------ *\
+    Quick Search Dict Panel
+  \* ------------------------------------------------ */
+
+  /** Send new words to standalone panel */
+  QS_PANEL_SEARCH_TEXT: {
+    payload: Word
+  }
+
+  /** Open or update Quick Search Panel */
+  OPEN_QS_PANEL: {}
 
   /* ------------------------------------------------ *\
      Sync services
@@ -198,7 +198,6 @@ export type MessageConfig = {
       serviceID: string
       config: any
     }
-    response: void
   }
 
   SYNC_SERVICE_DOWNLOAD: {
@@ -206,7 +205,6 @@ export type MessageConfig = {
       serviceID?: string
       noCache?: boolean
     }
-    response: void
   }
 
   SYNC_SERVICE_ADD: {
@@ -215,7 +213,6 @@ export type MessageConfig = {
       serviceID?: string
       words: Word[]
     }
-    response: void
   }
 
   SYNC_SERVICE_DELETE: {
@@ -225,7 +222,6 @@ export type MessageConfig = {
       dates?: number[]
       force?: boolean
     }
-    response: void
   }
 }
 
@@ -234,19 +230,19 @@ export type MsgType = keyof MessageConfig
 // 'extends' hack to generate union
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#distributive-conditional-types
 export type Message<T extends MsgType = MsgType> = T extends any
-  ? MessageConfig[T]['payload'] extends undefined
-    ? Readonly<{
+  ? Readonly<
+      {
         type: T
-        payload?: MessageConfig[T]['payload']
-      }>
-    : Readonly<{
-        type: T
-        payload: MessageConfig[T]['payload']
-      }>
+      } & ('payload' extends keyof MessageConfig[T]
+        ? Pick<MessageConfig[T], Extract<'payload', keyof MessageConfig[T]>>
+        : { payload?: null })
+    >
   : never
 
 export type MessageResponse<T extends MsgType> = Readonly<
-  MessageConfig[T]['response']
+  'response' extends keyof MessageConfig[T]
+    ? MessageConfig[T][Extract<'response', keyof MessageConfig[T]>]
+    : void
 >
 
 // export enum MsgType {
@@ -261,10 +257,7 @@ export type MessageResponse<T extends MsgType> = Readonly<
 //   /** query background for standalone panel appearance */
 //   QueryQSPanel,
 
-//   OpenQSPanel,
 //   CloseQSPanel,
-
-//   QSPanelSearchText,
 
 //   /** Ctrl/Command has been hit 3 times */
 //   TripleCtrl,
@@ -452,11 +445,6 @@ export type MessageResponse<T extends MsgType> = Readonly<
 
 // export interface MsgQueryQSPanel {
 //   readonly type: MsgType.QueryQSPanel
-// }
-
-// export interface MsgQSPanelSearchText {
-//   readonly type: MsgType.QSPanelSearchText
-//   readonly info: SelectionInfo
 // }
 
 // export type MsgQueryQSPanelResponse = boolean
