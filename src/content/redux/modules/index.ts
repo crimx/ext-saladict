@@ -1,44 +1,25 @@
-import { combineReducers, Dispatch } from 'redux'
-import { Action, ActionType } from '../utils/types'
+import { Dispatch } from 'redux'
+import { initState } from './state'
+import { ActionCatalog } from './action-catalog'
+import { Action, ActionType, ActionHandler } from '../utils/types'
+import { reducer } from './reducer'
 
-import {
-  ActionCatalog as ConfigActionCatalog,
-  State as ConfigState,
-  reducer as configReducer
-} from './config'
+export type StoreState = typeof initState
 
-import {
-  ActionCatalog as SelectionActionCatalog,
-  State as SelectionState,
-  reducer as SelectionReducer
-} from './selection'
+export type StoreActionCatalog = ActionCatalog
 
-import {
-  ActionCatalog as WidgetActionCatalog,
-  State as WidgetState,
-  reducer as WidgetReducer
-} from './widget'
+export type StoreAction = Action<ActionCatalog>
 
-export type StoreActionCatalog = ConfigActionCatalog &
-  SelectionActionCatalog &
-  WidgetActionCatalog
+export type StoreActionType = ActionType<ActionCatalog>
 
-export type StoreState = {
-  config: ConfigState
-  selection: SelectionState
-  widget: WidgetState
-}
-
-export type StoreAction = Action<StoreActionCatalog>
-
-export type StoreActionType = ActionType<StoreActionCatalog>
+export type StoreActionHandler<T extends StoreActionType> = ActionHandler<
+  ActionCatalog,
+  StoreState,
+  T
+>
 
 export type StoreDispatch = Dispatch<StoreAction>
 
-export const rootReducer = combineReducers<StoreState, StoreAction>({
-  config: configReducer,
-  selection: SelectionReducer,
-  widget: WidgetReducer
-})
+export const rootReducer = reducer
 
 export default rootReducer

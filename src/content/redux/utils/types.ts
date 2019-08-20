@@ -53,6 +53,7 @@ export type ActionHandlers<
   }
 
 /** Perform init operations e.g. setup listeners */
-export type Init<C extends ActionCatalog> = (
-  dispatch: Dispatch<Action<C>>
+export type Init<C extends ActionCatalog, S extends {}> = (
+  dispatch: Dispatch<Action<C>>,
+  getState: () => S
 ) => void

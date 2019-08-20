@@ -1,7 +1,7 @@
 import { StoreActionCatalog, StoreAction } from '../modules'
 import { ActionHandlers } from '../utils/types'
 
-export const createReducer = <C extends {}, S extends {}>(
+export const createReducer = <S extends {}, C extends {}>(
   initialState: S,
   handlers: ActionHandlers<C, S, StoreActionCatalog>
 ) =>
