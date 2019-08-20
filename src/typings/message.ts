@@ -27,6 +27,11 @@ export type MessageConfig = {
     }
   }
 
+  /** Get clipboard content */
+  GET_CLIPBOARD: {
+    response: string
+  }
+
   /** Request backend for page info */
   PAGE_INFO: {
     response: {
@@ -162,6 +167,16 @@ export type MessageConfig = {
     }
   }
 
+  /** send to the current active tab for selection */
+  PRELOAD_SELECTION: {
+    response: Word
+  }
+
+  ESCAPE_KEY: {}
+
+  /** Ctrl/Command has been hit 3 times */
+  TRIPLE_CTRL: {}
+
   /* ------------------------------------------------ *\
      Dict Panel
   \* ------------------------------------------------ */
@@ -177,6 +192,23 @@ export type MessageConfig = {
     payload?: string
   }
 
+  /** request searching */
+  SEARCH_TEXT: {
+    payload: Word
+  }
+
+  TEMP_DISABLED_STATE: {
+    payload:
+      | {
+          op: 'get'
+        }
+      | {
+          op: 'set'
+          value: boolean
+        }
+    response: boolean
+  }
+
   /* ------------------------------------------------ *\
     Quick Search Dict Panel
   \* ------------------------------------------------ */
@@ -188,6 +220,16 @@ export type MessageConfig = {
 
   /** Open or update Quick Search Panel */
   OPEN_QS_PANEL: {}
+
+  /** query backend for standalone panel appearance */
+  QUERY_QS_PANEL: {
+    response: boolean
+  }
+
+  /** Fired from backend when standalone panel show or hide */
+  QS_PANEL_CHANGED: {
+    payload: boolean
+  }
 
   /* ------------------------------------------------ *\
      Sync services
@@ -251,19 +293,7 @@ export type MessageResponse<T extends MsgType> = Readonly<
 //   /** Default */
 //   Default,
 
-//   /** is a standalone panel running? */
-//   QSPanelIDChanged,
-
-//   /** query background for standalone panel appearance */
-//   QueryQSPanel,
-
 //   CloseQSPanel,
-
-//   /** Ctrl/Command has been hit 3 times */
-//   TripleCtrl,
-
-//   /** Escape key is pressed */
-//   EscapeKey,
 
 //   /** Response the pageInfo of a page */
 //   PageInfo,
@@ -271,17 +301,8 @@ export type MessageResponse<T extends MsgType> = Readonly<
 //   /** Background to a dict panel on one page */
 //   PlayWaveform,
 //   /** Request background proxy for current selection */
-//   PreloadSelection,
-//   /** Get clipboard content */
-//   GetClipboard,
 
 //   RequestCSS,
-
-//   /** Popup page */
-//   TempDisabledState,
-
-//   /** Word page */
-//   EditWord,
 
 //   /** Query panel state */
 //   QueryPanelState,
@@ -415,22 +436,6 @@ export type MessageResponse<T extends MsgType> = Readonly<
 // export interface MsgGetWordsResponse {
 //   readonly total: number
 //   readonly words: Word[]
-// }
-
-// export type MsgTempDisabledState =
-//   | {
-//       readonly type: MsgType.TempDisabledState
-//       readonly op: 'get'
-//     }
-//   | {
-//       readonly type: MsgType.TempDisabledState
-//       readonly op: 'set'
-//       readonly value: boolean
-//     }
-
-// export interface MsgEditWord {
-//   readonly type: MsgType.EditWord
-//   readonly word: Word
 // }
 
 // export interface MsgIsPinned {

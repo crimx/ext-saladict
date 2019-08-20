@@ -26,10 +26,10 @@ export const initState = {
   withQSPanel: false,
   /** Is current word in Notebook */
   isFav: false,
-  /** -1 is for panel show triggered by anything other than selection */
+  /** Pass negative value to skip the reconciliation */
   dictPanelCord: {
-    mouseX: -1,
-    mouseY: -1
+    mouseX: 0,
+    mouseY: 0
   },
   /** Dicts that will be rendered to dict panel */
   renderedDicts: [] as {
@@ -37,6 +37,8 @@ export const initState = {
     readonly searchStatus: 'IDLE' | 'SEARCHING' | 'FINISH'
     readonly searchResult: any
   }[],
+  /** Search text */
+  text: '',
   /** 0 is the oldest */
   searchHistory: [] as Word[],
   /** User can view back search history */
