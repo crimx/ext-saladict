@@ -1,7 +1,15 @@
 import { Observable } from 'rxjs'
 import { filter } from 'rxjs/operators'
-import { StoreActionCatalog, StoreActionType, StoreAction } from '../modules'
+import { Epic as EpicTemplate } from 'redux-observable'
 import { Action } from './types'
+import {
+  StoreActionCatalog,
+  StoreActionType,
+  StoreAction,
+  StoreState
+} from '../modules'
+
+export type Epic = EpicTemplate<StoreAction, StoreAction, StoreState>
 
 /** Tailored epic ofType */
 export function ofType<T extends StoreActionType>(
