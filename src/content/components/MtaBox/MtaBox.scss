@@ -1,10 +1,7 @@
 .mtaBox-TextArea-Wrap {
   position: relative;
   overflow: hidden;
-
-  &.isAnimate {
-    transition: height 0.4s;
-  }
+  height: 0; // init height transition
 }
 
 .mtaBox-TextArea {
@@ -44,5 +41,15 @@
 .mtaBox-DrawerBtn_Arrow {
   &.isExpand {
     transform: rotate(180deg);
+  }
+}
+
+.isAnimate {
+  .mtaBox-TextArea-Wrap {
+    transition: height 0.4s;
+
+    &.isTyping {
+      transition: height 0s;
+    }
   }
 }
