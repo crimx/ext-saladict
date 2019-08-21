@@ -13,6 +13,10 @@
   box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
 }
 
+.dictPanel-Head {
+  flex-shrink: 0;
+}
+
 .dictPanel-Body {
   flex: 1;
   overflow-x: hidden;
