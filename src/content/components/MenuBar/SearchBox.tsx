@@ -6,17 +6,17 @@ import {
   useObservableState,
   useObservable
 } from 'observable-hooks'
-import { identity, merge } from 'rxjs'
+import { identity, merge, combineLatest } from 'rxjs'
 import { focusBlur } from '@/_helpers/observables'
 import { Suggest } from './Suggest'
-import { filter } from 'rxjs/operators'
+import { filter, map } from 'rxjs/operators'
 
 export interface SearchBoxProps {
   t: i18next.TFunction
   /** Search box text */
   text: string
-  /** Focus search box on mount */
-  isFocusOnMount: boolean
+  /** Focus search box */
+  shouldFocus: boolean
   /** Show suggest panel when typing */
   enableSuggest: boolean
   onInput: (text: string) => any
@@ -41,14 +41,23 @@ export const SearchBox: FC<SearchBoxProps> = props => {
 
   const [onShowSugget, onShowSugget$] = useObservableCallback<boolean>(identity)
 
-  const shouldShowSuggest = useObservableState(
-    useObservable(() =>
-      merge(
-        // only show suggest when start typing
-        searchBoxFocusBlur$.pipe(filter(isFocus => !isFocus)),
-        suggestFocusBlur$,
-        onShowSugget$
-      )
+  const isShowSuggest = useObservableState(
+    useObservable(
+      inputs$ =>
+        combineLatest(
+          inputs$,
+          merge(
+            // only show suggest when start typing
+            searchBoxFocusBlur$.pipe(filter(isFocus => !isFocus)),
+            suggestFocusBlur$,
+            onShowSugget$
+          )
+        ).pipe(
+          map(([[enableSuggest, text], shouldShowSuggest]) =>
+            Boolean(enableSuggest && text && shouldShowSuggest)
+          )
+        ),
+      [props.enableSuggest, props.text] as [boolean, string]
     ),
     false
   )
@@ -59,11 +68,11 @@ export const SearchBox: FC<SearchBoxProps> = props => {
   const suggestRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    if (props.isFocusOnMount && inputRef.current) {
+    if (props.shouldFocus && !isShowSuggest && inputRef.current) {
       inputRef.current.focus()
       inputRef.current.select()
     }
-  }, [])
+  }) // Run on every update
 
   const focusInput = () => {
     if (inputRef.current) {
@@ -108,7 +117,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
 
       <CSSTransition
         classNames="menuBar-SearchBox_Suggest"
-        in={!!(props.enableSuggest && shouldShowSuggest && props.text)}
+        in={isShowSuggest}
         timeout={100}
         mountOnEnter={true}
         unmountOnExit={true}

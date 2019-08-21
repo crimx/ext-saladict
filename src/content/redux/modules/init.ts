@@ -1,6 +1,9 @@
 import { Init } from '../utils/types'
 import { addConfigListener } from '@/_helpers/config-manager'
-import { addActiveProfileListener } from '@/_helpers/profile-manager'
+import {
+  addActiveProfileListener,
+  createProfileIDListStream
+} from '@/_helpers/profile-manager'
 import {
   isPopupPage,
   isQuickSearchPage,
@@ -21,7 +24,11 @@ export const init: Init<StoreActionCatalog, StoreState> = (
   })
 
   addActiveProfileListener(({ newProfile }) => {
-    dispatch({ type: 'NEW_PROFILE', payload: newProfile })
+    dispatch({ type: 'NEW_ACTIVE_PROFILE', payload: newProfile })
+  })
+
+  createProfileIDListStream().subscribe(idlist => {
+    dispatch({ type: 'NEW_PROFILES', payload: idlist })
   })
 
   message.addListener(msg => {
@@ -113,7 +120,12 @@ export const init: Init<StoreActionCatalog, StoreState> = (
   }
 }
 
-/** Dict Panel show that is triggered by anything other than selection  */
+/**
+ * Summoned panel could be the dict panel
+ * 1. in Standalone Quick Search page.
+ * 2. in Popup page (Browser Action).
+ * 3. triggered by triple ctrl shortcut.
+ */
 async function summonedPanelInit(
   dispatch: Dispatch<StoreAction>,
   word: Word | null,

@@ -29,7 +29,7 @@ export interface MenuBarProps {
   isInNotebook: boolean
   addToNoteBook: () => any
 
-  isFocusInputOnMount: boolean
+  shouldFocus: boolean
   enableSuggest: boolean
 
   histories: Word[]
@@ -65,7 +65,7 @@ export const MenuBar: FC<MenuBarProps> = props => {
       <SearchBox
         t={t}
         text={props.text}
-        isFocusOnMount={props.isFocusInputOnMount}
+        shouldFocus={props.shouldFocus}
         enableSuggest={props.enableSuggest}
         onInput={props.updateText}
         onSearch={props.searchText}

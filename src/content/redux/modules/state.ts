@@ -1,10 +1,16 @@
 import { newWord, Word } from '@/_helpers/record-manager'
 import { getDefaultConfig, DictID } from '@/app-config'
-import { getDefaultProfile } from '@/app-config/profiles'
+import { getDefaultProfile, ProfileIDList } from '@/app-config/profiles'
+import {
+  isQuickSearchPage,
+  isStandalonePage,
+  isOptionsPage
+} from '@/_helpers/saladict'
 
-export const initState = {
-  activeProfile: getDefaultProfile(),
+export const initState = () => ({
   config: getDefaultConfig(),
+  profiles: [] as ProfileIDList,
+  activeProfile: getDefaultProfile(),
   selection: {
     word: newWord(),
     mouseX: 0,
@@ -17,13 +23,17 @@ export const initState = {
     instant: false,
     force: false
   },
-  isShowBowl: false,
-  isShowDictPanel: false,
   /** Temporary disable Saladict */
   isTempDisabled: false,
-  isPinned: false,
+  /** Is current panel a Quick Search Panel */
+  isQSPanel: isQuickSearchPage(),
   /** is a standalone quick search panel running */
   withQSPanel: false,
+  isShowWordEditor: false,
+  isShowBowl: false,
+  isShowDictPanel: isStandalonePage() || isOptionsPage(),
+  isExpandMtaBox: false,
+  isPinned: isOptionsPage(),
   /** Is current word in Notebook */
   isFav: false,
   /** Pass negative value to skip the reconciliation */
@@ -43,6 +53,6 @@ export const initState = {
   searchHistory: [] as Word[],
   /** User can view back search history */
   historyIndex: 0
-}
+})
 
 export default initState

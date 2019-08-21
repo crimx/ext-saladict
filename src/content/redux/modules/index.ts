@@ -4,7 +4,7 @@ import { ActionCatalog } from './action-catalog'
 import { Action, ActionType, ActionHandler } from '../utils/types'
 import { reducer } from './reducer'
 
-export type StoreState = typeof initState
+export type StoreState = ReturnType<typeof initState>
 
 export type StoreActionCatalog = ActionCatalog
 

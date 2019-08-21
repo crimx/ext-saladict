@@ -1,37 +1,39 @@
 import { createStore, applyMiddleware, compose } from 'redux'
-import thunk from 'redux-thunk'
-import rootReducer, { StoreState } from './modules'
-
-import { startUpAction as configStartUp, updateConfig } from './modules/config'
-import { startUpAction as selectionStartUp } from './modules/selection'
-import { startUpAction as widgetStartUp } from './modules/widget'
-import { startUpAction as dictionariesStartUp } from './modules/dictionaries'
-
-import { message } from '@/_helpers/browser-api'
-import { MsgType, MsgIsPinned, MsgQueryPanelState } from '@/typings/message'
-import { getConfig } from '@/_helpers/config-manager'
-import { getActiveProfile } from '@/_helpers/profile-manager'
-
-import { Observable } from 'rxjs/Observable'
-import { map } from 'rxjs/operators/map'
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
+import { createEpicMiddleware } from 'redux-observable'
+import { Observable } from 'rxjs'
+import { map, distinctUntilChanged } from 'rxjs/operators'
 
 import get from 'lodash/get'
 
-export default () => {
-  const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
+import { message } from '@/_helpers/browser-api'
+import { getConfig } from '@/_helpers/config-manager'
+import { getActiveProfile } from '@/_helpers/profile-manager'
 
-  const store = createStore<StoreState>(
-    rootReducer as any,
-    composeEnhancers(applyMiddleware(thunk))
+import { rootReducer, StoreState, StoreAction } from './modules'
+import { init } from './modules/init'
+import { epics } from './modules/epics'
+
+const epicMiddleware = createEpicMiddleware<
+  StoreAction,
+  StoreAction,
+  StoreState
+>()
+
+export default () => {
+  const composeEnhancers =
+    window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
+
+  const store = createStore(
+    rootReducer,
+    composeEnhancers(applyMiddleware(epicMiddleware))
   )
 
+  epicMiddleware.run(epics)
+
   Promise.all([getConfig(), getActiveProfile()]).then(([config, profile]) => {
-    store.dispatch<any>(updateConfig({ ...config, ...profile }))
-    store.dispatch<any>(configStartUp())
-    store.dispatch<any>(selectionStartUp())
-    store.dispatch<any>(widgetStartUp())
-    store.dispatch<any>(dictionariesStartUp())
+    store.dispatch({ type: 'NEW_CONFIG', payload: config })
+    store.dispatch({ type: 'NEW_PROFILE', payload: profile })
+    init(store.dispatch, store.getState)
   })
 
   // sync state
@@ -39,23 +41,26 @@ export default () => {
     store.subscribe(() => observer.next(store.getState()))
   })
 
-  storeState$.pipe(
-    map(state => state.widget.isPinned),
-    distinctUntilChanged()
-  ).subscribe(isPinned => {
-    message.self.send<MsgIsPinned>({
-      type: MsgType.IsPinned,
-      isPinned,
+  storeState$
+    .pipe(
+      map(state => state.isPinned),
+      distinctUntilChanged()
+    )
+    .subscribe(isPinned => {
+      message.self.send({
+        type: 'PIN_STATE',
+        payload: isPinned
+      })
     })
-  })
 
-  message.addListener<MsgQueryPanelState>(MsgType.QueryPanelState, queryStoreState)
-  message.self.addListener<MsgQueryPanelState>(MsgType.QueryPanelState, queryStoreState)
+  message.addListener('QUERY_PANEL_STATE', queryStoreState)
+  message.self.addListener('QUERY_PANEL_STATE', queryStoreState)
 
-  function queryStoreState ({ path }: MsgQueryPanelState) {
-    return Promise.resolve(path && typeof path === 'string'
-      ? get(store.getState(), path)
-      : store.getState()
+  function queryStoreState({ payload: path }: { payload?: string }) {
+    return Promise.resolve(
+      path && typeof path === 'string'
+        ? get(store.getState(), path)
+        : store.getState()
     )
   }
 

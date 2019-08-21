@@ -65,7 +65,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
         searchText={action('Search Text')}
         isInNotebook={boolean('Is In Notebook', false)}
         addToNoteBook={action('Add to Notebook')}
-        isFocusInputOnMount={true}
+        shouldFocus={true}
         enableSuggest={boolean('Enable Suggest', true)}
         histories={histories}
         historyIndex={number('History Index', 0)}

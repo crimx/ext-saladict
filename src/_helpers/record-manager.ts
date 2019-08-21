@@ -51,7 +51,7 @@ export function newWord(word?: Partial<Word>): Word {
 
 export function isInNotebook(word: Word): Promise<boolean> {
   return message
-    .send({ type: 'IS_IN_NOTEBOOK', payload: word })
+    .send<'IS_IN_NOTEBOOK'>({ type: 'IS_IN_NOTEBOOK', payload: word })
     .catch(logError(false))
 }
 
@@ -67,8 +67,11 @@ export async function deleteWords(
   await message.send({ type: 'DELETE_WORDS', payload: { area, dates } })
 }
 
-export function getWordsByText(area: DBArea, text: string): Promise<Word[]> {
-  return message.send({
+export function getWordsByText(
+  area: DBArea,
+  text: string
+): Promise<readonly Word[]> {
+  return message.send<'GET_WORDS_BY_TEXT'>({
     type: 'GET_WORDS_BY_TEXT',
     payload: {
       area,
@@ -88,7 +91,7 @@ export function getWords(
     searchText?: string
   }
 ) {
-  return message.send({
+  return message.send<'GET_WORDS'>({
     type: 'GET_WORDS',
     payload: {
       area,
