@@ -44,7 +44,7 @@ export const DictPanel: FC<DictPanelProps> = props => {
         reportInit
         debounce={10}
       />
-      {props.menuBar}
+      <div className="dictPanel-Head">{props.menuBar}</div>
       <div className="dictPanel-Body">
         {props.mtaBox}
         {props.dictList}
