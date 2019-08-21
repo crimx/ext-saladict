@@ -1,5 +1,5 @@
 import { AppConfig, DictID } from '@/app-config'
-import { Profile } from '@/app-config/profiles'
+import { Profile, ProfileIDList } from '@/app-config/profiles'
 import { Message } from '@/typings/message'
 import { Word } from '@/_helpers/record-manager'
 
@@ -8,7 +8,11 @@ export type ActionCatalog = {
     payload: AppConfig
   }
 
-  NEW_PROFILE: {
+  NEW_PROFILES: {
+    payload: ProfileIDList
+  }
+
+  NEW_ACTIVE_PROFILE: {
     payload: Profile
   }
 
@@ -28,12 +32,27 @@ export type ActionCatalog = {
      Dict Panel
   \* ------------------------------------------------ */
 
+  UPDATE_TEXT: {
+    payload: string
+  }
+
+  TOGGLE_MTA_BOX: {}
+
+  TOGGLE_PIN: {}
+
   CLOSE_PANEL: {}
+
+  UPDATE_HISTORY_INDEX: {
+    payload: number
+  }
 
   /** Is current word in Notebook */
   WORD_IN_NOTEBOOK: {
     payload: boolean
   }
+
+  // Add the latest history item to Notebook
+  ADD_TO_NOTEBOOK: {}
 
   SEARCH_START: {
     payload?: {

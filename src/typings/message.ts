@@ -110,6 +110,7 @@ export type MessageConfig = {
       area: DBArea
       text: string
     }
+    response: Word[]
   }
 
   GET_WORDS: {

@@ -1,5 +1,6 @@
 import { StoreActionHandler } from '..'
 import { checkSupportedLangs, countWords } from '@/_helpers/lang-check'
+import { isPopupPage } from '@/_helpers/saladict'
 
 export const searchStart: StoreActionHandler<'SEARCH_START'> = (
   state,
@@ -24,6 +25,9 @@ export const searchStart: StoreActionHandler<'SEARCH_START'> = (
 
   return {
     ...state,
+    isExpandMtaBox:
+      activeProfile.mtaAutoUnfold === 'always' ||
+      (activeProfile.mtaAutoUnfold === 'popup' && isPopupPage()),
     searchHistory: shouldAddHistory
       ? [...searchHistory, payload!.word!]
       : searchHistory,

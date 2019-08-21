@@ -8,19 +8,19 @@ type Dispatchers = 'onChange'
 const mapStateToProps = (
   state: StoreState
 ): Omit<SaladBowlPortalProps, Dispatchers> => ({
-  show: state.widget.isShowDictPanel,
+  show: state.isShowDictPanel,
   mouseX: state.selection.mouseX,
   mouseY: state.selection.mouseY,
-  withAnimation: state.config.config.animation,
-  enableHover: state.config.config.bowlHover
+  withAnimation: state.config.animation,
+  enableHover: state.config.bowlHover
 })
 
 const mapDispatchToProps = (
   dispatch: Dispatch<StoreAction>
 ): Pick<SaladBowlPortalProps, Dispatchers> => ({
-  onChange: (active: boolean) => {
+  onChange: active => {
     if (active) {
-      dispatch({ type: 'WIDGET/BOWL_ACTIVATED' })
+      dispatch({ type: 'BOWL_ACTIVATED' })
     }
   }
 })
