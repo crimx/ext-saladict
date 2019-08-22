@@ -26,7 +26,7 @@ export const DictList: FC<DictListProps> = props => {
   return (
     <div className="dictList">
       {props.dicts.map(data => (
-        <DictItem {...restProps} {...data} />
+        <DictItem key={data.dictID} {...restProps} {...data} />
       ))}
     </div>
   )
