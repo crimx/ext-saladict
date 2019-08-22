@@ -8,7 +8,7 @@ type Dispatchers = 'onChange'
 const mapStateToProps = (
   state: StoreState
 ): Omit<SaladBowlPortalProps, Dispatchers> => ({
-  show: state.isShowDictPanel,
+  show: state.isShowBowl,
   mouseX: state.selection.mouseX,
   mouseY: state.selection.mouseY,
   withAnimation: state.config.animation,
