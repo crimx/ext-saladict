@@ -1,4 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux'
+import thunkMiddleware from 'redux-thunk'
 import { createEpicMiddleware } from 'redux-observable'
 import { Observable } from 'rxjs'
 import { map, distinctUntilChanged } from 'rxjs/operators'
@@ -20,19 +21,19 @@ const epicMiddleware = createEpicMiddleware<
 >()
 
 export default () => {
-  const composeEnhancers =
+  const composeEnhancers: typeof compose =
     window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
 
   const store = createStore(
     rootReducer,
-    composeEnhancers(applyMiddleware(epicMiddleware))
+    composeEnhancers(applyMiddleware(thunkMiddleware, epicMiddleware))
   )
 
   epicMiddleware.run(epics)
 
   Promise.all([getConfig(), getActiveProfile()]).then(([config, profile]) => {
     store.dispatch({ type: 'NEW_CONFIG', payload: config })
-    store.dispatch({ type: 'NEW_PROFILE', payload: profile })
+    store.dispatch({ type: 'NEW_ACTIVE_PROFILE', payload: profile })
     init(store.dispatch, store.getState)
   })
 
