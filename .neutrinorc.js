@@ -12,7 +12,8 @@ module.exports = {
           type: 'content_scripts',
           manifest: {
             matches: ['<all_urls>']
-          }
+          },
+          setup: 'content/__fake__/env.ts'
         }
       },
 
@@ -137,7 +138,7 @@ module.exports = {
         .rule('style')
           .oneOf('normal')
             .uses.values()
-              .filter(rule => rule.name !== 'extract')
+              .filter(rule => !/^(extract|style)$/.test(rule.name))
               .forEach(rule => {
                 shadowStyleRules
                   .use(rule.name)
