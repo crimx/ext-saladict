@@ -1,6 +1,8 @@
 import React, { FC } from 'react'
 import { DictItem, DictItemProps } from '../DictItem/DictItem'
 
+const MemoDictItem = React.memo(DictItem)
+
 type DictListItemKeys =
   | 'dictID'
   | 'preferredHeight'
@@ -17,7 +19,7 @@ export const DictList: FC<DictListProps> = props => {
   return (
     <div className="dictList">
       {props.dicts.map(data => (
-        <DictItem key={data.dictID} {...restProps} {...data} />
+        <MemoDictItem key={data.dictID} {...restProps} {...data} />
       ))}
     </div>
   )
