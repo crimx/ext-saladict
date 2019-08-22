@@ -10,7 +10,7 @@ const mapStateToProps = (
   state: StoreState
 ): Omit<MtaBoxProps, Dispatchers> => ({
   expand: state.isExpandMtaBox,
-  maxHeight: state.config.panelMaxHeightRatio * window.innerHeight,
+  maxHeight: state.panelMaxHeight,
   text: state.text
 })
 
