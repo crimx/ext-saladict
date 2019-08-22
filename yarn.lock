@@ -9607,10 +9607,10 @@ object.values@^1.1.0:
     function-bind "^1.1.1"
     has "^1.0.3"
 
-observable-hooks@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/observable-hooks/-/observable-hooks-1.0.2.tgz#f3f121ed78d9297c9a16c97fbb1dff19f5985078"
-  integrity sha512-ufNvAM6mdt2n6A1dr9xBWOabYj26s1BS5kh+RkOuvr0/FeEC+G/I8sZjSdkM3QZtBERlKqxYUeAy8hK7/Qfokw==
+observable-hooks@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/observable-hooks/-/observable-hooks-2.0.1.tgz#b0397f92f398927d441cb8c785776ff42f6af415"
+  integrity sha512-zKZ0kzynE8pH8nSfANfZhh2K/9Ir6Y0kJLrot4THKrxazeeEYqPoXUZulhWhpi8hE3kmCBkW4ebBV484ZNg7tw==
 
 obuf@^1.0.0, obuf@^1.1.2:
   version "1.1.2"

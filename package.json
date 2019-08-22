@@ -55,7 +55,7 @@
     "lodash": "^4.17.14",
     "md5": "^2.2.1",
     "normalize-scss": "^7.0.1",
-    "observable-hooks": "^1.0.2",
+    "observable-hooks": "^2.0.1",
     "pako": "^1.0.10",
     "react": "^16",
     "react-animate-height": "^2.0.15",
