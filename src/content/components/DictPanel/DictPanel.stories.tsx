@@ -64,7 +64,7 @@ storiesOf('Content Scripts|Dict Panel', module)
 
 function useDictPanelProps(): DictPanelProps {
   const [text, setText] = useState('saladict')
-  const [expand, setExpand] = useState(true)
+  const [expandMta, setExpandMta] = useState(false)
   const withAnimation = boolean('Enable Animation', true)
 
   const dictsNum = number(
@@ -72,10 +72,10 @@ function useDictPanelProps(): DictPanelProps {
     faker.random.number({ min: 3, max: 10 })
   )
 
-  const randomDicts = useMemo(
-    () =>
-      [...Array(dictsNum)].map(() => ({
-        ...faker.random.arrayElement(dicts),
+  const randomDicts = useMemo(() => {
+    const shuffledDicts = faker.helpers.shuffle(
+      dicts.map(config => ({
+        ...config,
         searchStatus: faker.random.arrayElement(searchStatus),
         searchResult: {
           paragraphs: faker.lorem.paragraphs(
@@ -83,9 +83,13 @@ function useDictPanelProps(): DictPanelProps {
           )
         },
         dictComp: TestComp
-      })),
-    [dictsNum]
-  )
+      }))
+    )
+    return shuffledDicts.slice(
+      0,
+      faker.random.number({ max: shuffledDicts.length })
+    )
+  }, [dictsNum])
 
   const histories = Array.from(Array(5)).map((_, i) =>
     newWord({
@@ -120,7 +124,7 @@ function useDictPanelProps(): DictPanelProps {
         searchText={action('Search Text')}
         isInNotebook={boolean('Is In Notebook', false)}
         addToNoteBook={action('Add to Notebook')}
-        isFocusInputOnMount={true}
+        shouldFocus={true}
         enableSuggest={boolean('Enable Suggest', true)}
         histories={histories}
         historyIndex={number('History Index', 0)}
@@ -141,8 +145,8 @@ function useDictPanelProps(): DictPanelProps {
     mtaBox: (
       <MtaBox
         text={text}
-        expand={expand}
-        maxHeight={number('Max Height', 100)}
+        expand={expandMta}
+        maxHeight={number('Mta Max Height', 100)}
         searchText={action('Search Text')}
         onInput={text => {
           action('Input')(text)
@@ -150,7 +154,7 @@ function useDictPanelProps(): DictPanelProps {
         }}
         onDrawerToggle={() => {
           action('Drawer Toggle')()
-          setExpand(!expand)
+          setExpandMta(!expandMta)
         }}
       />
     ),
