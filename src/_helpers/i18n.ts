@@ -70,7 +70,7 @@ export function i18nLoader() {
       ns: 'common',
       defaultNS: 'common',
 
-      initImmediate: true,
+      initImmediate: false, // sync init
 
       interpolation: {
         escapeValue: false // not needed for react as it escapes by default
