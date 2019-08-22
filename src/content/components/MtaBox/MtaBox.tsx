@@ -9,7 +9,6 @@ export interface MtaBoxProps {
   expand: boolean
   maxHeight: number
   text: string
-  shouldFocus: boolean
   searchText: (text: string) => any
   onInput: (text: string) => void
   /** Expand or Shrink */
@@ -36,13 +35,7 @@ export const MtaBox: FC<MtaBoxProps> = props => {
   }, [props.expand, isTyping])
 
   useEffect(() => {
-    if (
-      !isTyping &&
-      !hasTyped &&
-      props.expand &&
-      props.shouldFocus &&
-      textareaRef.current
-    ) {
+    if (!isTyping && !hasTyped && props.expand && textareaRef.current) {
       textareaRef.current.focus()
       textareaRef.current.select()
     }

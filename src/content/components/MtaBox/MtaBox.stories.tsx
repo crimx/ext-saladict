@@ -34,7 +34,6 @@ storiesOf('Content Scripts|Dict Panel', module)
         text={text}
         expand={expand}
         maxHeight={number('Max Height', 100)}
-        shouldFocus={boolean('Should Focus', true)}
         searchText={action('Search Text')}
         onInput={text => {
           action('Input')(text)

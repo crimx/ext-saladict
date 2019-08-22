@@ -4,7 +4,6 @@ import { useTranslate } from '@/_helpers/i18n'
 import {
   HistoryBackBtn,
   HistoryNextBtn,
-  SearchBtn,
   FavBtn,
   HistoryBtn,
   PinBtn,
@@ -70,7 +69,6 @@ export const MenuBar: FC<MenuBarProps> = props => {
         onInput={props.updateText}
         onSearch={props.searchText}
       />
-      <SearchBtn t={t} onClick={() => props.searchText(props.text)} />
       <div
         className={`menuBar-DragArea${isStandalonePage ? '' : ' isActive'}`}
         onMouseDown={props.onDragAreaMouseDown}

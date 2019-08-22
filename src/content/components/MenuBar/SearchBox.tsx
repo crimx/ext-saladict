@@ -1,15 +1,17 @@
-import React, { FC, useRef, useEffect, useState } from 'react'
+import React, { FC, useRef, useEffect, useCallback } from 'react'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import i18next from 'i18next'
 import {
   useObservableCallback,
   useObservableState,
-  useObservable
+  useObservable,
+  identity
 } from 'observable-hooks'
-import { identity, merge, combineLatest } from 'rxjs'
+import { merge, combineLatest } from 'rxjs'
 import { focusBlur } from '@/_helpers/observables'
+import { filter, map, distinctUntilChanged } from 'rxjs/operators'
 import { Suggest } from './Suggest'
-import { filter, map } from 'rxjs/operators'
+import { SearchBtn } from './MenubarBtns'
 
 export interface SearchBoxProps {
   t: i18next.TFunction
@@ -55,7 +57,8 @@ export const SearchBox: FC<SearchBoxProps> = props => {
         ).pipe(
           map(([[enableSuggest, text], shouldShowSuggest]) =>
             Boolean(enableSuggest && text && shouldShowSuggest)
-          )
+          ),
+          distinctUntilChanged()
         ),
       [props.enableSuggest, props.text] as [boolean, string]
     ),
@@ -64,81 +67,90 @@ export const SearchBox: FC<SearchBoxProps> = props => {
 
   const isExpand = useObservableState(searchBoxFocusBlur$)
 
+  const hasTypedRef = useRef(false)
+
   const inputRef = useRef<HTMLInputElement>(null)
   const suggestRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
-    if (props.shouldFocus && !isShowSuggest && inputRef.current) {
+  const focusInput = useRef(() => {
+    if (inputRef.current) {
       inputRef.current.focus()
       inputRef.current.select()
     }
-  }) // Run on every update
+  }).current
 
-  const focusInput = () => {
-    if (inputRef.current) {
-      inputRef.current.focus()
-    }
+  const searchText = (text: unknown) => {
+    hasTypedRef.current = false
+    onShowSugget(false)
+    props.onSearch(typeof text === 'string' ? text : props.text)
+    focusInput()
   }
 
-  return (
-    <div className={`menuBar-SearchBox_Wrap${isExpand ? ' isExpand' : ''}`}>
-      <input
-        type="text"
-        className="menuBar-SearchBox"
-        key="search-box"
-        ref={inputRef}
-        onChange={e => {
-          props.onInput(e.currentTarget.value)
-          onShowSugget(true)
-        }}
-        onKeyUp={e => {
-          if (e.key === 'Enter') {
-            props.onSearch(props.text)
-            onShowSugget(false)
-          }
-        }}
-        onKeyDown={e => {
-          if (e.key === 'ArrowDown') {
-            const firstSuggestBtn =
-              suggestRef.current && suggestRef.current.querySelector('button')
-            if (firstSuggestBtn) {
-              firstSuggestBtn.focus()
-            } else {
-              onShowSugget(true)
-            }
-            e.preventDefault()
-            e.stopPropagation()
-          }
-        }}
-        onFocus={onSearchBoxFocusBlur}
-        onBlur={onSearchBoxFocusBlur}
-        value={text}
-      />
+  useEffect(() => {
+    if (props.shouldFocus && !hasTypedRef.current && !isShowSuggest) {
+      focusInput()
+    }
+  }, [props.text])
 
-      <CSSTransition
-        classNames="menuBar-SearchBox_Suggest"
-        in={isShowSuggest}
-        timeout={100}
-        mountOnEnter={true}
-        unmountOnExit={true}
-      >
-        {() => (
-          <div className="menuBar-SearchBox_Suggests">
-            <Suggest
-              ref={suggestRef}
-              text={text}
-              onSelect={text => {
+  return (
+    <>
+      <div className={`menuBar-SearchBox_Wrap${isExpand ? ' isExpand' : ''}`}>
+        <input
+          type="text"
+          className="menuBar-SearchBox"
+          key="search-box"
+          ref={inputRef}
+          onChange={e => {
+            props.onInput(e.currentTarget.value)
+            onShowSugget(true)
+          }}
+          onKeyUp={e => {
+            if (e.key === 'Enter') {
+              searchText(props.text)
+            }
+          }}
+          onKeyDown={e => {
+            hasTypedRef.current = true
+            if (e.key === 'ArrowDown') {
+              const firstSuggestBtn =
+                suggestRef.current && suggestRef.current.querySelector('button')
+              if (firstSuggestBtn) {
+                firstSuggestBtn.focus()
+              } else {
                 onShowSugget(true)
-                props.onSearch(text)
-              }}
-              onFocus={onSuggestFocusBlur}
-              onBlur={onSuggestFocusBlur}
-              onArrowUpFirst={focusInput}
-              onClose={focusInput}
-            />
-          </div>
-        )}
-      </CSSTransition>
-    </div>
+              }
+              e.preventDefault()
+              e.stopPropagation()
+            }
+          }}
+          onFocus={onSearchBoxFocusBlur}
+          onBlur={onSearchBoxFocusBlur}
+          value={text}
+        />
+
+        <CSSTransition
+          classNames="menuBar-SearchBox_Suggest"
+          in={isShowSuggest}
+          timeout={100}
+          mountOnEnter={true}
+          unmountOnExit={true}
+        >
+          {() => (
+            <div className="menuBar-SearchBox_Suggests">
+              <Suggest
+                ref={suggestRef}
+                text={text}
+                onSelect={searchText}
+                onFocus={onSuggestFocusBlur}
+                onBlur={onSuggestFocusBlur}
+                onArrowUpFirst={focusInput}
+                onClose={focusInput}
+              />
+            </div>
+          )}
+        </CSSTransition>
+      </div>
+      <SearchBtn t={props.t} onClick={searchText} />
+    </>
   )
 }
