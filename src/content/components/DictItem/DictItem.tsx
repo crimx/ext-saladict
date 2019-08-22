@@ -2,16 +2,17 @@ import React, { ComponentType, FC, useState, useRef, useEffect } from 'react'
 import { message } from '@/_helpers/browser-api'
 import { newWord } from '@/_helpers/record-manager'
 import { ViewPorps } from '@/components/dictionaries/helpers'
-import { DictItemHead } from './DictItemHead'
+import { DictItemHead, DictItemHeadProps } from './DictItemHead'
 import { DictItemBody, DictItemBodyProps } from './DictItemBody'
 import { ResizeReporter } from 'react-resize-reporter'
 
 export interface DictItemProps extends DictItemBodyProps {
-  text: string
   /** default height when search result is received */
   preferredHeight: number
   /** Inject dict component. Mainly for testing */
   dictComp?: ComponentType<ViewPorps<any>>
+
+  openDictSrcPage: DictItemHeadProps['openDictSrcPage']
 }
 
 export const DictItem: FC<DictItemProps> = props => {
@@ -44,9 +45,9 @@ export const DictItem: FC<DictItemProps> = props => {
     >
       <DictItemHead
         dictID={props.dictID}
-        text={props.text}
         isSearching={props.searchStatus === 'SEARCHING'}
         toggleFold={toggleFold}
+        openDictSrcPage={props.openDictSrcPage}
       />
       <div
         className="dictItem-Body"

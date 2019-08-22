@@ -1,13 +1,12 @@
 import React, { FC, useState, useEffect } from 'react'
 import { DictID } from '@/app-config'
-import { message } from '@/_helpers/browser-api'
 import { useTranslate } from '@/_helpers/i18n'
 
 export interface DictItemHeadProps {
   dictID: DictID
-  text: string
   isSearching: boolean
   toggleFold: () => void
+  openDictSrcPage: (id: DictID) => void
 }
 
 export const DictItemHead: FC<DictItemHeadProps> = props => {
@@ -43,13 +42,7 @@ export const DictItemHead: FC<DictItemHeadProps> = props => {
           onClick={(e: React.MouseEvent<HTMLElement>) => {
             e.stopPropagation()
             e.preventDefault()
-            message.send({
-              type: 'OPEN_DICT_SRC_PAGE',
-              payload: {
-                text: props.text,
-                id: props.dictID
-              }
-            })
+            props.openDictSrcPage(props.dictID)
           }}
         >
           {t(`${props.dictID}.name`)}

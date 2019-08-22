@@ -1,24 +1,15 @@
 import React, { FC } from 'react'
 import { DictItem, DictItemProps } from '../DictItem/DictItem'
 
-export interface DictListProps {
-  text: string
+type DictListItemKeys =
+  | 'dictID'
+  | 'preferredHeight'
+  | 'searchStatus'
+  | 'searchResult'
+  | 'dictComp'
 
-  fontSize: number
-  withAnimation: boolean
-
-  dicts: Array<
-    Pick<
-      DictItemProps,
-      | 'dictID'
-      | 'preferredHeight'
-      | 'searchStatus'
-      | 'searchResult'
-      | 'dictComp'
-    >
-  >
-
-  searchText: DictItemProps['searchText']
+export interface DictListProps extends Omit<DictItemProps, DictListItemKeys> {
+  dicts: Pick<DictItemProps, DictListItemKeys>[]
 }
 
 export const DictList: FC<DictListProps> = props => {
