@@ -50,7 +50,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
       <SearchBox
         t={i18next.getFixedT(i18next.language, 'content')}
         text={text}
-        isFocusOnMount={boolean('Focus On Mount', true)}
+        shouldFocus={boolean('Focus On Mount', true)}
         enableSuggest={boolean('Enable Suggest', true)}
         onInput={text => {
           setText(text)
