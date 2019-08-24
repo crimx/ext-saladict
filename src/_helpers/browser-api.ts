@@ -427,18 +427,23 @@ function messageRemoveListener(
   browser.runtime.onMessage.removeListener(cb)
 }
 
-function messageCreateStream<T = any>(messageType?: MsgType): Observable<T>
-function messageCreateStream(this: MessageThis, messageType?: MsgType) {
+function messageCreateStream<T extends MsgType>(
+  messageType?: T
+): Observable<Message<T>>
+function messageCreateStream<T extends MsgType>(
+  this: MessageThis,
+  messageType?: T
+): Observable<Message<T>> {
   const pattern$ = messageType
-    ? fromEventPattern(
-        handler => this.addListener(messageType, handler as onMessageEvent),
-        handler => this.removeListener(messageType, handler as onMessageEvent)
+    ? fromEventPattern<Message<T>>(
+        handler => this.addListener(messageType, handler),
+        handler => this.removeListener(messageType, handler)
       )
-    : fromEventPattern(
-        handler => this.addListener(handler as onMessageEvent),
-        handler => this.removeListener(handler as onMessageEvent)
+    : fromEventPattern<Message<T>>(
+        handler => this.addListener(handler),
+        handler => this.removeListener(handler)
       )
-
+  // Arguments could be an array if there are multiple values emitted.
   return pattern$.pipe(map(args => (Array.isArray(args) ? args[0] : args)))
 }
 
