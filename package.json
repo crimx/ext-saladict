@@ -51,6 +51,7 @@
     "@types/wavesurfer.js": "^2.0.2",
     "axios": "^0.19.0",
     "dompurify": "^1.0.11",
+    "get-selection-more": "^1.0.2",
     "i18next": "^17.0.6",
     "lodash": "^4.17.14",
     "md5": "^2.2.1",

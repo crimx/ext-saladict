@@ -6435,6 +6435,11 @@ get-pkg-repo@^1.0.0:
     parse-github-repo-url "^1.3.0"
     through2 "^2.0.0"
 
+get-selection-more@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/get-selection-more/-/get-selection-more-1.0.2.tgz#6da521e5181b78370a4ece8cd2a6c8c13a28724b"
+  integrity sha512-24nle8gqdyZUgXhOmixqD9vB5dORTYh01MSzJIYdXP4oVCRKUz7C6BNTop2S/wtWTCmLM6QoNrgZfl6g7HsrFg==
+
 get-stdin@7.0.0, get-stdin@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-7.0.0.tgz#8d5de98f15171a125c5e516643c7a6d0ea8a96f6"
