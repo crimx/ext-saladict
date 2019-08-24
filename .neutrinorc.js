@@ -114,6 +114,9 @@ module.exports = {
     neutrino => {
       /* eslint-disable indent */
 
+      // avoid collision
+      neutrino.config.output.jsonpFunction('saladictJSONP')
+
       // transform *.shadow.(css|scss) to string
       // this will be injected into shadow-dom style tag
       // prettier-ignore
