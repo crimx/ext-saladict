@@ -173,6 +173,9 @@ export type MessageConfig = {
     response: Word
   }
 
+  /** Manually emit selection */
+  EMIT_SELECTION: {}
+
   ESCAPE_KEY: {}
 
   /** Ctrl/Command has been hit 3 times */
@@ -307,9 +310,6 @@ export type MessageResponse<T extends MsgType> = Readonly<
 
 //   /** Query panel state */
 //   QueryPanelState,
-
-//   /** Manually emit selection event */
-//   EmitSelection,
 
 //   /** Manually trigger context menus click */
 //   ContextMenusClick,

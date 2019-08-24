@@ -1,157 +1,143 @@
+import { getText, getSentence } from 'get-selection-more'
 import { AppConfig } from '@/app-config'
+import { isStandalonePage, isInDictPanel } from '@/_helpers/saladict'
 import { message } from '@/_helpers/browser-api'
-import * as selection from '@/_helpers/selection'
 import { checkSupportedLangs } from '@/_helpers/lang-check'
+import { Word, newWord } from '@/_helpers/record-manager'
+
+import { combineLatest, from, fromEvent, merge, of, Observable } from 'rxjs'
 import {
-  MsgType,
-  MsgIsPinned,
-  MsgQueryQSPanel,
-  MsgQSPanelIDChanged,
-  MsgQueryQSPanelResponse,
-} from '@/typings/message'
-import {
-  config$$,
-  sendMessage,
-  isBlacklisted,
-  isInPanelOnInternalPage,
-} from './helper'
-import { validMouseup$$ } from './mouse-events'
+  map,
+  mapTo,
+  pluck,
+  filter,
+  startWith,
+  switchMap,
+  debounceTime,
+  distinctUntilChanged,
+  share
+} from 'rxjs/operators'
 
-import { combineLatest } from 'rxjs/observable/combineLatest'
-import { fromPromise } from 'rxjs/observable/fromPromise'
-import { fromEvent } from 'rxjs/observable/fromEvent'
-import { merge } from 'rxjs/observable/merge'
-import { of } from 'rxjs/observable/of'
-import { map } from 'rxjs/operators/map'
-import { mapTo } from 'rxjs/operators/mapTo'
-import { pluck } from 'rxjs/operators/pluck'
-import { filter } from 'rxjs/operators/filter'
-import { startWith } from 'rxjs/operators/startWith'
-import { switchMap } from 'rxjs/operators/switchMap'
-import { debounceTime } from 'rxjs/operators/debounceTime'
-import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged'
+import { isBlacklisted } from './helper'
 
-const isSaladictInternalPage = !!window.__SALADICT_INTERNAL_PAGE__
-const isSaladictOptionsPage = !!window.__SALADICT_OPTIONS_PAGE__
-const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
-const isNoSelectionPage = isSaladictOptionsPage || isSaladictPopupPage
-
-/**
- * Cursor Instant Capture
- */
-combineLatest(
-  config$$,
-  message.self.createStream<MsgIsPinned>(MsgType.IsPinned).pipe(
-    pluck<MsgIsPinned, MsgIsPinned['isPinned']>('isPinned'),
-    startWith(false),
-  ),
-  merge(
-    fromPromise(message.send<MsgQueryQSPanel, MsgQueryQSPanelResponse>({ type: MsgType.QueryQSPanel })),
-    message.createStream<MsgQSPanelIDChanged>(MsgType.QSPanelIDChanged).pipe(
-      pluck<MsgQSPanelIDChanged, MsgQSPanelIDChanged['flag']>('flag'),
-      startWith(false),
+export function getIntantCapture$(
+  config$: Observable<AppConfig>,
+  validMouseup$: Observable<any>
+) {
+  return combineLatest(
+    config$,
+    message.self.createStream('PIN_STATE').pipe(
+      pluck('payload'),
+      startWith(false)
     ),
-  ),
-).pipe(
-  map(([config, isPinned, withQSPanel]) => {
-    const { instant } = config[
-      withQSPanel
-        ? 'qsPanelMode'
-        : (isNoSelectionPage || window.name === 'saladict-dictpanel')
-          ? 'panelMode'
-          : isPinned ? 'pinMode' : 'mode'
-    ]
-    return [
-      instant.enable ? instant.key : '',
-      instant.delay,
-      config,
-    ] as ['' | AppConfig['mode']['instant']['key'], number, AppConfig]
-  }),
-  distinctUntilChanged((oldVal, newVal) => oldVal[0] === newVal[0] && oldVal[1] === newVal[1]),
-  switchMap(([instant, insCapDelay, config]) => {
-    if (!instant || window.name === 'saladict-wordeditor' || isBlacklisted(config)) {
-      return of(null)
-    }
-    return merge(
-      mapTo(null)(validMouseup$$),
-      mapTo(null)(fromEvent(window, 'mouseout', { capture: true })),
-      fromEvent<MouseEvent>(window, 'mousemove', { capture: true }).pipe(
-        map(e => {
-          if ((instant === 'direct' && !(e.ctrlKey || e.metaKey || e.altKey)) ||
-            (instant === 'alt' && e.altKey) ||
-            (instant === 'shift' && e.shiftKey) ||
-            (instant === 'ctrl' && (e.ctrlKey || e.metaKey))
-          ) {
-            // harmless side effects
-            selectCursorWord(e)
-            return [e, config] as [MouseEvent, AppConfig]
-          }
-          return null
-        }),
-    )).pipe(
-      debounceTime(insCapDelay),
+    merge(
+      // When Quick Search Panel show and hide
+      from(message.send<'QUERY_QS_PANEL'>({ type: 'QUERY_QS_PANEL' })),
+      message.createStream('QS_PANEL_CHANGED').pipe(
+        pluck('payload'),
+        startWith(false)
+      )
     )
-  }),
-  filter((args): args is [MouseEvent, AppConfig] => Boolean(args)),
-  map(args => {
-    return [
-      args,
-      {
-        text: selection.getSelectionText(),
-        context: selection.getSelectionSentence(),
-      }
-    ] as [typeof args, { text: string, context: string }]
-  }),
-  distinctUntilChanged((oldVal, newVal) => (
-    oldVal[1].text === newVal[1].text &&
-    oldVal[1].context === newVal[1].context
-  )),
-).subscribe(([[event, config], partialSelInfo]) => {
-  if (checkSupportedLangs(config.language, partialSelInfo.text)) {
-    sendMessage({
-      mouseX: event.clientX,
-      mouseY: event.clientY,
-      instant: true,
-      self: isSaladictInternalPage ? isInPanelOnInternalPage(event) : window.name === 'saladict-dictpanel',
-      selectionInfo: selection.getSelectionInfo(partialSelInfo),
-    })
-  }
-})
+  ).pipe(
+    switchMap(([config, isPinned, withQSPanel]) => {
+      if (!isBlacklisted(config)) return of(null)
 
-/**
- * Select the word under the cursor position
- */
-function selectCursorWord (e: MouseEvent): void {
-  const x = e.clientX
-  const y = e.clientY
+      const { instant: panelInstant } = config.panelMode
+      const { instant: otherInstant } = config[
+        withQSPanel ? 'qsPanelMode' : isPinned ? 'pinMode' : 'mode'
+      ]
+
+      if (!panelInstant.enable && !otherInstant.enable) {
+        return of(null)
+      }
+
+      const cancelInstant$$ = share<null>()(
+        merge(
+          mapTo(null)(validMouseup$),
+          mapTo(null)(fromEvent(window, 'mouseout', { capture: true }))
+        )
+      )
+
+      return fromEvent<MouseEvent>(window, 'mousemove', { capture: true }).pipe(
+        // extra inner Observable to get debounceTime
+        switchMap(event => {
+          const self = isInDictPanel(event.target)
+          const instant =
+            self || isStandalonePage() ? panelInstant : otherInstant
+          if (instant.enable) {
+            if (
+              (instant.key === 'alt' && event.altKey) ||
+              (instant.key === 'shift' && event.shiftKey) ||
+              (instant.key === 'ctrl' && (event.ctrlKey || event.metaKey)) ||
+              (instant.key === 'direct' &&
+                !(event.ctrlKey || event.metaKey || event.altKey))
+            ) {
+              return cancelInstant$$.pipe(
+                startWith([event, config, self] as const),
+                debounceTime(instant.delay)
+              )
+            }
+          }
+          return of(null)
+        })
+      )
+    }),
+    map(
+      args =>
+        args &&
+        ([getCursorWord(args[0]), ...args] as
+          | null
+          | [Word | null, MouseEvent, AppConfig, boolean])
+    ),
+    filter((args): args is [Word, MouseEvent, AppConfig, boolean] =>
+      Boolean(
+        args && args[0] && checkSupportedLangs(args[2].language, args[0].text)
+      )
+    ),
+    distinctUntilChanged(
+      ([oldWord], [newWord]) =>
+        oldWord.text === newWord.text && oldWord.context === newWord.context
+    )
+  )
+}
+
+function getCursorWord(event: MouseEvent): Word | null {
+  const x = event.clientX
+  const y = event.clientY
 
   let offsetNode: Node
   let offset: number
+  let originRange: Range | undefined
 
   const sel = window.getSelection()
-  sel.removeAllRanges()
+  if (!sel) return null
+  if (sel.rangeCount > 0) {
+    originRange = sel.getRangeAt(0)
+  }
 
-  if (document['caretPositionFromPoint']) {
-    const pos = document['caretPositionFromPoint'](x, y)
-    if (!pos) { return }
+  if (document.caretPositionFromPoint) {
+    const pos = document.caretPositionFromPoint(x, y)
+    if (!pos) return null
     offsetNode = pos.offsetNode
     offset = pos.offset
-  } else if (document['caretRangeFromPoint']) {
-    const pos = document['caretRangeFromPoint'](x, y)
-    if (!pos) { return }
+  } else if (document.caretRangeFromPoint) {
+    const pos = document.caretRangeFromPoint(x, y)
+    if (!pos) return null
     offsetNode = pos.startContainer
     offset = pos.startOffset
   } else {
-    return
+    return null
   }
 
   if (offsetNode.nodeType === Node.TEXT_NODE) {
     const textNode = offsetNode as Text
     const content = textNode.data
     const head = (content.slice(0, offset).match(/[-_a-z]+$/i) || [''])[0]
-    const tail = (content.slice(offset).match(/^([-_a-z]+|[\u4e00-\u9fa5])/i) || [''])[0]
+    const tail = (content
+      .slice(offset)
+      .match(/^([-_a-z]+|[\u4e00-\u9fa5])/i) || [''])[0]
     if (head.length <= 0 && tail.length <= 0) {
-      return
+      return null
     }
 
     const range = document.createRange()
@@ -159,11 +145,13 @@ function selectCursorWord (e: MouseEvent): void {
     range.setEnd(textNode, offset + tail.length)
     const rangeRect = range.getBoundingClientRect()
 
-    if (rangeRect.left <= x &&
-        rangeRect.right >= x &&
-        rangeRect.top <= y &&
-        rangeRect.bottom >= y
+    if (
+      rangeRect.left <= x &&
+      rangeRect.right >= x &&
+      rangeRect.top <= y &&
+      rangeRect.bottom >= y
     ) {
+      sel.removeAllRanges()
       sel.addRange(range)
       if (sel['modify']) {
         sel['modify']('move', 'backward', 'word')
@@ -172,6 +160,17 @@ function selectCursorWord (e: MouseEvent): void {
       }
     }
 
+    const text = getText()
+    const context = getSentence()
+
+    if (originRange) {
+      sel.removeAllRanges()
+      sel.addRange(originRange)
+    }
     range.detach()
+
+    return text ? newWord({ text, context }) : null
   }
+
+  return null
 }
