@@ -1,46 +1,32 @@
 import { getText, getSentence } from 'get-selection-more'
 import { AppConfig } from '@/app-config'
 import { isStandalonePage, isInDictPanel } from '@/_helpers/saladict'
-import { message } from '@/_helpers/browser-api'
 import { checkSupportedLangs } from '@/_helpers/lang-check'
 import { Word, newWord } from '@/_helpers/record-manager'
 
-import { combineLatest, from, fromEvent, merge, of, Observable } from 'rxjs'
+import { fromEvent, merge, of, Observable, timer } from 'rxjs'
 import {
   map,
   mapTo,
-  pluck,
   filter,
-  startWith,
   switchMap,
-  debounceTime,
   distinctUntilChanged,
-  share
+  debounce
 } from 'rxjs/operators'
 
 import { isBlacklisted } from './helper'
 
-export function getIntantCapture$(
-  config$: Observable<AppConfig>,
-  validMouseup$: Observable<any>
+/**
+ * Create an instant capture Observable
+ * @param input$ Observable of app config,
+ *  is panel pinned, and is the Quick Search Panel showing.
+ */
+export function createIntantCaptureStream(
+  input$: Observable<Readonly<[AppConfig, boolean, boolean]>>
 ) {
-  return combineLatest(
-    config$,
-    message.self.createStream('PIN_STATE').pipe(
-      pluck('payload'),
-      startWith(false)
-    ),
-    merge(
-      // When Quick Search Panel show and hide
-      from(message.send<'QUERY_QS_PANEL'>({ type: 'QUERY_QS_PANEL' })),
-      message.createStream('QS_PANEL_CHANGED').pipe(
-        pluck('payload'),
-        startWith(false)
-      )
-    )
-  ).pipe(
+  return input$.pipe(
     switchMap(([config, isPinned, withQSPanel]) => {
-      if (!isBlacklisted(config)) return of(null)
+      if (isBlacklisted(config)) return of(null)
 
       const { instant: panelInstant } = config.panelMode
       const { instant: otherInstant } = config[
@@ -51,35 +37,39 @@ export function getIntantCapture$(
         return of(null)
       }
 
-      const cancelInstant$$ = share<null>()(
-        merge(
-          mapTo(null)(validMouseup$),
-          mapTo(null)(fromEvent(window, 'mouseout', { capture: true }))
-        )
-      )
+      // Reduce GC
+      // Only the latest result is used so it's safe to reuse the array
+      const reuseTuple = ([] as unknown) as [MouseEvent, AppConfig, boolean]
 
-      return fromEvent<MouseEvent>(window, 'mousemove', { capture: true }).pipe(
-        // extra inner Observable to get debounceTime
-        switchMap(event => {
-          const self = isInDictPanel(event.target)
-          const instant =
-            self || isStandalonePage() ? panelInstant : otherInstant
-          if (instant.enable) {
-            if (
-              (instant.key === 'alt' && event.altKey) ||
-              (instant.key === 'shift' && event.shiftKey) ||
-              (instant.key === 'ctrl' && (event.ctrlKey || event.metaKey)) ||
-              (instant.key === 'direct' &&
-                !(event.ctrlKey || event.metaKey || event.altKey))
-            ) {
-              return cancelInstant$$.pipe(
-                startWith([event, config, self] as const),
-                debounceTime(instant.delay)
-              )
+      return merge(
+        mapTo(null)(fromEvent(window, 'mouseup', { capture: true })),
+        mapTo(null)(fromEvent(window, 'mouseout', { capture: true })),
+        fromEvent<MouseEvent>(window, 'mousemove', { capture: true }).pipe(
+          map(event => {
+            const self = isInDictPanel(event.target)
+            const instant =
+              self || isStandalonePage() ? panelInstant : otherInstant
+            if (instant.enable) {
+              if (
+                (instant.key === 'alt' && event.altKey) ||
+                (instant.key === 'shift' && event.shiftKey) ||
+                (instant.key === 'ctrl' && (event.ctrlKey || event.metaKey)) ||
+                (instant.key === 'direct' &&
+                  !(event.ctrlKey || event.metaKey || event.altKey))
+              ) {
+                reuseTuple[0] = event
+                reuseTuple[1] = config
+                reuseTuple[2] = self
+                return reuseTuple
+              }
             }
-          }
-          return of(null)
-        })
+            return null
+          })
+        )
+      ).pipe(
+        debounce(arg =>
+          arg ? timer(arg[2] ? panelInstant.delay : otherInstant.delay) : of()
+        )
       )
     }),
     map(
@@ -163,8 +153,8 @@ function getCursorWord(event: MouseEvent): Word | null {
     const text = getText()
     const context = getSentence()
 
+    sel.removeAllRanges()
     if (originRange) {
-      sel.removeAllRanges()
       sel.addRange(originRange)
     }
     range.detach()
