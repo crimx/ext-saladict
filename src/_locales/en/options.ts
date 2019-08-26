@@ -236,7 +236,7 @@ export const locale: typeof _locale = {
         'Will open shanbay.com. Please log in then come back and enable again.',
       sync_all: 'Upload all existing new words',
       sync_all_confirm:
-        'Too many new words in notebook. Saladict will upload in batches. Note that uploading too many words would cause account banning which is unrecoverable. Confirm?',
+        'Too many new words in notebook. Saladict will upload in batches. Note that uploading too many words in short period would cause account banning which is unrecoverable. Confirm?',
       sync_last: 'Upload the last new word'
     },
 
