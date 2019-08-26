@@ -1,10 +1,11 @@
 import { getText, getSentence } from 'get-selection-more'
+import { DeepNonNullable } from 'utility-types'
 import { AppConfig } from '@/app-config'
 import { isStandalonePage, isInDictPanel } from '@/_helpers/saladict'
 import { checkSupportedLangs } from '@/_helpers/lang-check'
 import { Word, newWord } from '@/_helpers/record-manager'
 
-import { fromEvent, merge, of, Observable, timer } from 'rxjs'
+import { fromEvent, merge, of, Observable, timer, combineLatest } from 'rxjs'
 import {
   map,
   mapTo,
@@ -18,13 +19,13 @@ import { isBlacklisted } from './helper'
 
 /**
  * Create an instant capture Observable
- * @param input$ Observable of app config,
- *  is panel pinned, and is the Quick Search Panel showing.
  */
 export function createIntantCaptureStream(
-  input$: Observable<Readonly<[AppConfig, boolean, boolean]>>
+  config$: Observable<AppConfig>,
+  isPinned$: Observable<boolean>,
+  withQSPanel$: Observable<boolean>
 ) {
-  return input$.pipe(
+  return combineLatest(config$, isPinned$, withQSPanel$).pipe(
     switchMap(([config, isPinned, withQSPanel]) => {
       if (isBlacklisted(config)) return of(null)
 
@@ -38,8 +39,12 @@ export function createIntantCaptureStream(
       }
 
       // Reduce GC
-      // Only the latest result is used so it's safe to reuse the array
-      const reuseTuple = ([] as unknown) as [MouseEvent, AppConfig, boolean]
+      // Only the latest result is used so it's safe to reuse the object
+      const reuseObj = ({} as unknown) as {
+        event: MouseEvent
+        config: AppConfig
+        self: boolean
+      }
 
       return merge(
         mapTo(null)(fromEvent(window, 'mouseup', { capture: true })),
@@ -57,36 +62,38 @@ export function createIntantCaptureStream(
                 (instant.key === 'direct' &&
                   !(event.ctrlKey || event.metaKey || event.altKey))
               ) {
-                reuseTuple[0] = event
-                reuseTuple[1] = config
-                reuseTuple[2] = self
-                return reuseTuple
+                reuseObj.event = event
+                reuseObj.config = config
+                reuseObj.self = self
+                return reuseObj
               }
             }
             return null
           })
         )
       ).pipe(
-        debounce(arg =>
-          arg ? timer(arg[2] ? panelInstant.delay : otherInstant.delay) : of()
+        debounce(obj =>
+          obj ? timer(obj.self ? panelInstant.delay : otherInstant.delay) : of()
         )
       )
     }),
-    map(
-      args =>
-        args &&
-        ([getCursorWord(args[0]), ...args] as
-          | null
-          | [Word | null, MouseEvent, AppConfig, boolean])
-    ),
-    filter((args): args is [Word, MouseEvent, AppConfig, boolean] =>
+    map(obj => obj && { word: getCursorWord(obj.event), ...obj }),
+    filter((obj): obj is {
+      word: Word
+      event: MouseEvent
+      config: AppConfig
+      self: boolean
+    } =>
       Boolean(
-        args && args[0] && checkSupportedLangs(args[2].language, args[0].text)
+        obj &&
+          obj.word &&
+          checkSupportedLangs(obj.config.language, obj.word.text)
       )
     ),
     distinctUntilChanged(
-      ([oldWord], [newWord]) =>
-        oldWord.text === newWord.text && oldWord.context === newWord.context
+      (oldObj, newObj) =>
+        oldObj.word.text === newObj.word.text &&
+        oldObj.word.context === newObj.word.context
     )
   )
 }

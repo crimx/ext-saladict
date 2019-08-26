@@ -18,7 +18,7 @@ export function isEscapeKey(evt: KeyboardEvent): boolean {
   return evt.key === 'Escape'
 }
 
-export function isKeyPressed(
+export function whenKeyPressed(
   keySelectior: (e: KeyboardEvent) => boolean
 ): Observable<true> {
   return merge(

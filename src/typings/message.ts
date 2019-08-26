@@ -152,7 +152,7 @@ export type MessageConfig = {
   /** To dict panel */
   SELECTION: {
     payload: {
-      word: Word
+      word: Word | null
       mouseX: number
       mouseY: number
       dbClick: boolean

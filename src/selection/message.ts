@@ -1,4 +1,3 @@
-import { newWord } from '@/_helpers/record-manager'
 import { Message } from '@/typings/message'
 import { message } from '@/_helpers/browser-api'
 
@@ -9,7 +8,7 @@ interface PostMessageEvent extends MessageEvent {
   }
 }
 
-export function messageHandler({ data, source }: PostMessageEvent) {
+export function postMessageHandler({ data, source }: PostMessageEvent) {
   if (!data || data.type !== 'SALADICT_SELECTION') {
     return
   }
@@ -67,7 +66,7 @@ export function sendEmptyMessage(isDictPanel: boolean) {
   const msg: Message<'SELECTION'> = {
     type: 'SELECTION',
     payload: {
-      word: newWord(),
+      word: null,
       self: isDictPanel,
       mouseX: 0,
       mouseY: 0,
