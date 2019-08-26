@@ -1,5 +1,5 @@
 import { AppConfig } from '@/app-config'
-import { isInSaladict } from '@/_helpers/saladict'
+import { isInSaladictExternal } from '@/_helpers/saladict'
 
 import { fromEvent, merge, timer, of, Observable } from 'rxjs'
 import {
@@ -20,7 +20,7 @@ import { isBlacklisted } from './helper'
 /**
  * Track the last mousedown target for identifying input field, if needed.
  */
-export function getMousedown$$() {
+export function createMousedownStream() {
   return merge(
     fromEvent<MouseEvent>(window, 'mousedown', { capture: true }),
     fromEvent<TouchEvent>(window, 'touchstart', { capture: true }),
@@ -38,7 +38,7 @@ export function getMousedown$$() {
  * 2. Event target is not a Saladict exposed element.
  * 3. Site url is not blacked.
  */
-export function getValidMouseup$$(config$: Observable<AppConfig>) {
+export function createValidMouseupStream(config$: Observable<AppConfig>) {
   return merge(
     fromEvent<MouseEvent>(window, 'mouseup', { capture: true }).pipe(
       filter(e => e.button === 0)
@@ -49,7 +49,7 @@ export function getValidMouseup$$(config$: Observable<AppConfig>) {
   ).pipe(
     withLatestFrom(config$),
     filter(([event, config]) => {
-      if (isInSaladict(event.target)) {
+      if (isInSaladictExternal(event.target)) {
         return false
       }
       if (isBlacklisted(config)) {
@@ -57,9 +57,9 @@ export function getValidMouseup$$(config$: Observable<AppConfig>) {
       }
       return true
     }),
-    // if user click on a selected text,
-    // getSelection would return the text before the highlight disappears
-    // delay to wait for selection get cleared
+    // if user clicks on a selected text,
+    // getSelection would return the text before the highlight disappears.
+    // Delay to wait for selection being cleared.
     delay(10),
     share()
   )
@@ -68,8 +68,8 @@ export function getValidMouseup$$(config$: Observable<AppConfig>) {
 /**
  * Count mouse click within a period
  */
-export function getClickPeriodCount$(
-  validMouseup$: Observable<[MouseEvent | TouchEvent, AppConfig]>
+export function createClickPeriodCountStream(
+  validMouseup$: ReturnType<typeof createValidMouseupStream>
 ) {
   return merge(
     mapTo(true)(validMouseup$),
