@@ -26,6 +26,7 @@ module.exports = {
         semi: false
       }
     ],
+    'standard/no-callback-literal': 'off',
     yoda: 'off',
     'react/display-name': 'off',
     'react/prop-types': 'off',

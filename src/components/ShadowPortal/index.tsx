@@ -1,14 +1,15 @@
 import React, { useMemo, useEffect, ReactNode } from 'react'
 import ReactDOM from 'react-dom'
-import CSSTransition from 'react-transition-group/CSSTransition'
+import CSSTransition, {
+  CSSTransitionProps
+} from 'react-transition-group/CSSTransition'
 import root from 'react-shadow'
 
 export const defaultTimeout = { enter: 400, exit: 100, appear: 400 }
 
 export const defaultClassNames = 'shadowPortal'
 
-export interface ShadowPortalProps
-  extends Partial<CSSTransition.CSSTransitionProps> {
+export interface ShadowPortalProps extends Partial<CSSTransitionProps> {
   /** Unique id for the injected element */
   id: string
   /** Static content before the children  */
