@@ -35,6 +35,7 @@ export const newSelectionEpic: Epic = (action$, state$) =>
 
       if (
         isShowDictPanel &&
+        selection.word &&
         selection.word.text &&
         (!isPinned ||
           pinMode.direct ||
@@ -63,6 +64,7 @@ function selectionInsideDictPanel(
   // inside dict panel
   const { direct, double, holding } = config.panelMode
   if (
+    selection.word &&
     selection.word.text &&
     (selection.instant ||
       direct ||
@@ -93,6 +95,7 @@ function selectionToQSPanel(
   // standalone panel takes control
   const { direct, double, holding } = config.qsPanelMode
   if (
+    selection.word &&
     selection.word.text &&
     (selection.instant ||
       direct ||

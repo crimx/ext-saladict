@@ -1,16 +1,30 @@
 import { StoreActionHandler } from '..'
 import { isStandalonePage, isOptionsPage } from '@/_helpers/saladict'
+import { Mutable } from '@/typings/helpers'
 
 export const newSelection: StoreActionHandler<'NEW_SELECTION'> = (
   state,
-  { payload }
+  { payload: selection }
 ) => {
-  const { selection, config } = state
+  const { config, selection: lastSelection } = state
 
-  const newState = {
+  const newState: Mutable<typeof state> = {
     ...state,
-    selection: payload,
-    dictPanelCord: {
+    selection: selection.word
+      ? selection
+      : {
+          ...selection,
+          // keep in same position so that
+          // hide animation won't float around
+          mouseX: lastSelection.mouseX,
+          mouseY: lastSelection.mouseY
+        }
+  }
+
+  if (selection.word) {
+    newState.text = selection.word.text
+
+    newState.dictPanelCord = {
       mouseX: selection.mouseX,
       mouseY: selection.mouseY
     }
@@ -32,6 +46,7 @@ export const newSelection: StoreActionHandler<'NEW_SELECTION'> = (
   newState.isShowDictPanel = Boolean(
     state.isPinned ||
       (isActive &&
+        selection.word &&
         selection.word.text &&
         (state.isShowDictPanel ||
           direct ||
@@ -45,6 +60,7 @@ export const newSelection: StoreActionHandler<'NEW_SELECTION'> = (
 
   newState.isShowBowl = Boolean(
     isActive &&
+      selection.word &&
       selection.word.text &&
       icon &&
       !newState.isShowDictPanel &&

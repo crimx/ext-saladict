@@ -1,16 +1,9 @@
 import { Observable, empty, of } from 'rxjs'
-import {
-  withLatestFrom,
-  filter,
-  map,
-  distinctUntilChanged,
-  mergeMap
-} from 'rxjs/operators'
+import { withLatestFrom, distinctUntilChanged, mergeMap } from 'rxjs/operators'
 import { AppConfig } from '@/app-config'
 import {
   createValidMouseupStream,
-  createClickPeriodCountStream,
-  createMousedownStream
+  createClickPeriodCountStream
 } from './mouse-events'
 import { isTypeField } from './helper'
 import { isInDictPanel, isStandalonePage } from '@/_helpers/saladict'
