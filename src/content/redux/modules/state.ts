@@ -12,7 +12,7 @@ export const initState = () => ({
   profiles: [] as ProfileIDList,
   activeProfile: getDefaultProfile(),
   selection: {
-    word: newWord(),
+    word: newWord() as Word | null,
     mouseX: 0,
     mouseY: 0,
     self: false,
