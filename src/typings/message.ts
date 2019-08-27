@@ -1,9 +1,6 @@
 import { Word, DBArea } from '@/_helpers/record-manager'
-// import { DictID } from '@/app-config'
-// import { Word, Area as DBArea } from '@/_helpers/record-manager'
 import { DictID } from '@/app-config'
 import { DictSearchResult } from '@/components/dictionaries/helpers'
-// import { DictSearchResult } from '@/typings/server'
 
 export type MessageConfig = {
   /* ------------------------------------------------ *\
@@ -98,6 +95,8 @@ export type MessageConfig = {
     }
   }
 
+  WORD_SAVED: {}
+
   DELETE_WORDS: {
     payload: {
       area: DBArea
@@ -123,6 +122,10 @@ export type MessageConfig = {
       sortOrder?: 'ascend' | 'descend' | false
       searchText?: string
     }
+    response: {
+      total: number
+      words: Word[]
+    }
   }
 
   /* ------------------------------------------------ *\
@@ -135,8 +138,11 @@ export type MessageConfig = {
   }
 
   WAVEFORM_PLAY_AUDIO: {
-    /** url: to waveform */
-    payload: string
+    payload: {
+      /** url: to waveform */
+      src: string
+      tabId: string | number
+    }
   }
 
   /** waveform to panel */
@@ -225,6 +231,8 @@ export type MessageConfig = {
   /** Open or update Quick Search Panel */
   OPEN_QS_PANEL: {}
 
+  CLOSE_QS_PANEL: {}
+
   /** query backend for standalone panel appearance */
   QUERY_QS_PANEL: {
     response: boolean
@@ -247,27 +255,39 @@ export type MessageConfig = {
   }
 
   SYNC_SERVICE_DOWNLOAD: {
-    payload?: {
-      serviceID?: string
+    payload: {
+      serviceID: string
       noCache?: boolean
     }
   }
 
-  SYNC_SERVICE_ADD: {
-    payload: {
-      /** If not provided, call all services */
-      serviceID?: string
-      words: Word[]
-    }
+  SYNC_SERVICE_UPLOAD: {
+    payload:
+      | {
+          op: 'ADD'
+          /** If not provided, call all services */
+          serviceID?: string
+          words: Word[]
+          /** full sync anyway */
+          force?: boolean
+        }
+      | {
+          op: 'DELETE'
+          /** If not provided, call all services */
+          serviceID?: string
+          dates?: number[]
+          /** full sync anyway */
+          force?: boolean
+        }
   }
 
-  SYNC_SERVICE_DELETE: {
-    payload: {
-      /** If not provided, call all services */
-      serviceID?: string
-      dates?: number[]
-      force?: boolean
-    }
+  /* ------------------------------------------------ *\
+     Third-party Scripts
+  \* ------------------------------------------------ */
+
+  YOUDAO_TRANSLATE_AJAX: {
+    payload: any
+    response: any
   }
 }
 

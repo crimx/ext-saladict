@@ -1,18 +1,9 @@
 import Dexie from 'dexie'
 import { storage } from '@/_helpers/browser-api'
 import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
-import { Word, Area } from '@/_helpers/record-manager'
+import { Word, DBArea } from '@/_helpers/record-manager'
 import { syncServiceUpload } from './sync-manager'
-import {
-  MsgIsInNotebook,
-  MsgSaveWord,
-  MsgDeleteWords,
-  MsgGetWordsByText,
-  MsgGetWords,
-  MsgGetWordsResponse,
-  SyncServiceUploadOp,
-  MsgType,
-} from '@/typings/message'
+import { Message, MessageResponse } from '@/typings/message'
 
 export class SaladictDB extends Dexie {
   // @ts-ignore
@@ -20,9 +11,9 @@ export class SaladictDB extends Dexie {
   // @ts-ignore
   history: Dexie.Table<Word, number>
   // @ts-ignore
-  syncmeta: Dexie.Table<{ id: string, json: string }, string>
+  syncmeta: Dexie.Table<{ id: string; json: string }, string>
 
-  constructor () {
+  constructor() {
     super('SaladictWords')
 
     this.version(1).stores({
@@ -30,16 +21,22 @@ export class SaladictDB extends Dexie {
       history: 'date,text,context,url',
       syncmeta: 'id'
     })
+
+    // The following lines are needed if your typescript
+    // is compiled using babel instead of tsc:
+    this.notebook = this.table('notebook')
+    this.history = this.table('history')
+    this.syncmeta = this.table('syncmeta')
   }
 }
 
 export const db = new SaladictDB()
 
-/*-----------------------------------------------*\
+/* ----------------------------------------------- *\
     Apis
-\*-----------------------------------------------*/
+\* ----------------------------------------------- */
 
-export function getSyncMeta (serviceID: string) {
+export function getSyncMeta(serviceID: string) {
   return db.syncmeta
     .where('id')
     .equals(serviceID)
@@ -51,45 +48,37 @@ export function getSyncMeta (serviceID: string) {
     })
 }
 
-export function setSyncMeta (serviceID: string, text: string) {
-  return db.syncmeta
-    .put({ id: serviceID, json: text })
+export function setSyncMeta(serviceID: string, text: string) {
+  return db.syncmeta.put({ id: serviceID, json: text })
 }
 
-export function deleteSyncMeta (serviceID: string) {
-  return db.syncmeta
-    .delete(serviceID)
-    .catch(e => {
-      if (process.env.DEV_BUILD) {
-        console.error(e)
-      }
-    })
+export function deleteSyncMeta(serviceID: string) {
+  return db.syncmeta.delete(serviceID).catch(e => {
+    if (process.env.DEV_BUILD) {
+      console.error(e)
+    }
+  })
 }
 
-export function isInNotebook ({ info }: MsgIsInNotebook) {
+export function isInNotebook(word: Message<'IS_IN_NOTEBOOK'>['payload']) {
   return db.notebook
     .where('text')
-    .equalsIgnoreCase(info.text)
+    .equalsIgnoreCase(word.text)
     .count()
     .then(count => count > 0)
 }
 
-export function saveWord ({ area, info }: MsgSaveWord) {
-  const word = {
-    ...info,
-    date: info.date || Date.now()
-  }
+export function saveWord({ area, word }: Message<'SAVE_WORD'>['payload']) {
   if (area === 'notebook') {
     syncServiceUpload({
-      type: MsgType.SyncServiceUpload,
-      op: SyncServiceUploadOp.Add,
-      words: [word],
-    }).catch(() => {/* nothing */})
+      op: 'ADD',
+      words: [word]
+    }).catch(() => {})
   }
   return db[area].put(word)
 }
 
-export function saveWords ({ area, words }: { area: Area, words: Word[] }) {
+export function saveWords({ area, words }: { area: DBArea; words: Word[] }) {
   if (process.env.DEV_BUILD) {
     if (words.length !== new Set(words.map(w => w.date)).size) {
       console.error('save Words: duplicate records')
@@ -97,43 +86,49 @@ export function saveWords ({ area, words }: { area: Area, words: Word[] }) {
   }
   if (area === 'notebook') {
     syncServiceUpload({
-      type: MsgType.SyncServiceUpload,
-      op: SyncServiceUploadOp.Add,
-      words,
-    }).catch(() => {/* nothing */})
+      op: 'ADD',
+      words
+    }).catch(() => {
+      /* nothing */
+    })
   }
   return db[area].bulkPut(words)
 }
 
-export function deleteWords ({ area, dates }: MsgDeleteWords) {
+export function deleteWords({
+  area,
+  dates
+}: Message<'DELETE_WORDS'>['payload']) {
   if (area === 'notebook') {
     syncServiceUpload({
-      type: MsgType.SyncServiceUpload,
-      op: SyncServiceUploadOp.Delete,
-      dates,
-    }).catch(() => {/* nothing */})
+      op: 'DELETE',
+      dates
+    }).catch(() => {
+      /* nothing */
+    })
   }
-  return Array.isArray(dates)
-    ? db[area].bulkDelete(dates)
-    : db[area].clear()
+  return Array.isArray(dates) ? db[area].bulkDelete(dates) : db[area].clear()
 }
 
-export function getWordsByText ({ area, text }: MsgGetWordsByText) {
+export function getWordsByText({
+  area,
+  text
+}: Message<'GET_WORDS_BY_TEXT'>['payload']) {
   return db[area]
     .where('text')
     .equalsIgnoreCase(text)
     .toArray()
 }
 
-export async function getWords ({
+export async function getWords({
   area,
   itemsPerPage,
   pageNum,
   filters = {},
   sortField = 'date',
   sortOrder = 'descend',
-  searchText,
-}: MsgGetWords): Promise<MsgGetWordsResponse> {
+  searchText
+}: Message<'GET_WORDS'>['payload']): Promise<MessageResponse<'GET_WORDS'>> {
   const collection = db[area].orderBy(sortField)
 
   if (sortOrder === 'descend') {
@@ -143,7 +138,10 @@ export async function getWords ({
   const shouldFilter = Array.isArray(filters.text) && filters.text.length > 0
   if (shouldFilter || searchText) {
     const validLangs = shouldFilter
-      ? (filters.text as string[]).reduce((o, l) => (o[l] = true, o) ,{})
+      ? (filters.text as string[]).reduce((o, l) => {
+          o[l] = true
+          return o
+        }, {})
       : {}
     const ls = searchText ? searchText.toLocaleLowerCase() : ''
     collection.filter(record => {
@@ -155,10 +153,10 @@ export async function getWords ({
         : true
 
       const rSearch = searchText
-        ? Object.values(record).some(v => (
-          typeof v === 'string' &&
-          v.toLocaleLowerCase().indexOf(ls) !== -1
-        ))
+        ? Object.values(record).some(
+            v =>
+              typeof v === 'string' && v.toLocaleLowerCase().indexOf(ls) !== -1
+          )
         : true
 
       return rText && rSearch
@@ -168,9 +166,7 @@ export async function getWords ({
   const total = await collection.count()
 
   if (typeof itemsPerPage !== 'undefined' && typeof pageNum !== 'undefined') {
-    collection
-      .offset(itemsPerPage * (pageNum - 1))
-      .limit(itemsPerPage)
+    collection.offset(itemsPerPage * (pageNum - 1)).limit(itemsPerPage)
   }
 
   const words = await collection.toArray()
@@ -178,17 +174,21 @@ export async function getWords ({
   return { total, words }
 }
 
-/*-----------------------------------------------*\
+/* ----------------------------------------------- *\
     Init
-\*-----------------------------------------------*/
+\* ----------------------------------------------- */
 
 // Populate data from old non-indexed db version
 db.on('ready', () => {
   return db.notebook.count(async count => {
-    if (count > 0) { return }
+    if (count > 0) {
+      return
+    }
 
     const { notebookCat } = await storage.local.get('notebookCat')
-    if (!notebookCat || !Array.isArray(notebookCat.data)) { return }
+    if (!notebookCat || !Array.isArray(notebookCat.data)) {
+      return
+    }
     const sliceIDs = notebookCat.data
 
     const dbSlices = await storage.local.get(sliceIDs)
@@ -196,11 +196,14 @@ db.on('ready', () => {
 
     sliceIDs.forEach(sliceID => {
       const slice = dbSlices[sliceID]
-      if (!slice || !Array.isArray(slice.data)) { return }
+      if (!slice || !Array.isArray(slice.data)) {
+        return
+      }
       slice.data.forEach(wordsGroupByDate => {
         const { date, data } = wordsGroupByDate
-        const dateNum = new Date(`${date.slice(0, 2)}/${date.slice(2, 4)}/${date.slice(4)}`)
-          .getTime()
+        const dateNum = new Date(
+          `${date.slice(0, 2)}/${date.slice(2, 4)}/${date.slice(4)}`
+        ).getTime()
         const oldWords = data.map((oldWord, i) => ({
           date: dateNum + i,
           text: oldWord.text || '',
@@ -213,7 +216,7 @@ db.on('ready', () => {
             : '',
           url: oldWord.url || '',
           trans: oldWord.trans || '',
-          note: oldWord.note || '',
+          note: oldWord.note || ''
         }))
         words.push(...oldWords)
       })

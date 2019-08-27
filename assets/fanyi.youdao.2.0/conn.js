@@ -297,7 +297,7 @@ window.onload = function() {
            * @param request 请求数据
            */
           translate : function(request) {
-              browser.runtime.sendMessage({ type: 'youdao_translate_ajax', request })
+              browser.runtime.sendMessage({ type: 'YOUDAO_TRANSLATE_AJAX', payload: request })
                 .then(response => {
                   Response.sendMessage({
                     ...response,

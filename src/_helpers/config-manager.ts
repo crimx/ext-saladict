@@ -7,7 +7,7 @@ import { Observable, from, concat, fromEventPattern } from 'rxjs'
 import { map } from 'rxjs/operators'
 
 export interface StorageChanged<T> {
-  newValue: T
+  newValue?: T
   oldValue?: T
 }
 
@@ -84,9 +84,9 @@ export async function addConfigListener(
 ) {
   storage.sync.addListener(changes => {
     if (changes.baseconfig) {
-      const { newValue, oldValue } = (changes as {
-        baseconfig: StorageChanged<AppConfigCompressed>
-      }).baseconfig
+      const { newValue, oldValue } = changes.baseconfig as StorageChanged<
+        AppConfigCompressed
+      >
       if (newValue) {
         cb({ newConfig: inflate(newValue), oldConfig: inflate(oldValue) })
       }
@@ -101,7 +101,7 @@ export function createConfigStream(): Observable<AppConfig> {
   return concat(
     from(getConfig()),
     fromEventPattern<[AppConfigChanged] | AppConfigChanged>(
-      addConfigListener as any
+      addConfigListener
     ).pipe(map(args => (Array.isArray(args) ? args[0] : args).newConfig))
   )
 }

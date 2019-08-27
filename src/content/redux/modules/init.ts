@@ -60,6 +60,10 @@ export const init: Init<StoreActionCatalog, StoreState> = (
 
   message.self.addListener(msg => {
     switch (msg.type) {
+      case 'SELECTION':
+        dispatch({ type: 'NEW_SELECTION', payload: msg.payload })
+        return Promise.resolve()
+
       case 'ESCAPE_KEY':
         dispatch({ type: 'CLOSE_PANEL' })
         return Promise.resolve()
