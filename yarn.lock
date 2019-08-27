@@ -12962,9 +12962,9 @@ webextension-polyfill@latest:
   integrity sha512-oreMp+EoAo1pzRMigx4jB5jInIpx6NTCySPSjGyLLee/dCIPiRqowCEfbFP8o20wz9SOtNwSsfkaJ9D/tRgpag==
 
 webextensions-emulator@^1.1.0:
-  version "1.2.2"
-  resolved "https://registry.yarnpkg.com/webextensions-emulator/-/webextensions-emulator-1.2.2.tgz#3b1f8d2f7d5b23ff4642aa7a008e3a2ec1dad8d7"
-  integrity sha512-3Ir3lTmCZX4j8ztpr+b4nKeOIn/N5tUiCEsSB3luK8MWFrps06sqpXuu3EXubmyInLqcizh1SbJ536SyU1nRdQ==
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/webextensions-emulator/-/webextensions-emulator-1.2.3.tgz#e327a18f9fc225d7756256da3245797e59309ef3"
+  integrity sha512-tDji5Qh4CwHtnl5E5jiTaIQIDomorebTPi11b2Dy9g8SKfXDfeVdcYQar9+IsVPAJJzsUoRn+0YwsMwfTnH2nw==
   dependencies:
     lodash "^4.17.11"
     sinon-chrome "^2.3.2"

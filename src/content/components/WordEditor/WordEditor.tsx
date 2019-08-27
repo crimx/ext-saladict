@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { WordEditorPanel, WordEditorPanelProps } from './WordEditorPanel'
+import { SALADICT_EXTERNAL } from '@/_helpers/saladict'
 
 export interface WordEditorProps extends WordEditorPanelProps {
   dictPanelWidth: number
@@ -8,7 +9,7 @@ export interface WordEditorProps extends WordEditorPanelProps {
 export const WordEditor: FC<WordEditorProps> = props => {
   const { dictPanelWidth, ...restProps } = props
   return (
-    <div className="wordEditor-Container">
+    <div className={`wordEditor-Container ${SALADICT_EXTERNAL}`}>
       <div
         className="wordEditor-PanelContainer"
         style={{ width: window.innerWidth - dictPanelWidth - 40 }}

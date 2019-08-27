@@ -23,7 +23,9 @@ import { isBlacklisted } from './helper'
 export function createMousedownStream() {
   return merge(
     fromEvent<MouseEvent>(window, 'mousedown', { capture: true }),
-    fromEvent<TouchEvent>(window, 'touchstart', { capture: true }),
+    fromEvent<TouchEvent>(window, 'touchstart', { capture: true }).pipe(
+      map(e => e.changedTouches[0])
+    ),
     of(null)
   ).pipe(
     // returns the last mousedown immediately when subscribe
@@ -38,7 +40,10 @@ export function createMousedownStream() {
  * 2. Event target is not a Saladict exposed element.
  * 3. Site url is not blacked.
  */
-export function createValidMouseupStream(config$: Observable<AppConfig>) {
+export function createValidMouseupStream(
+  config$: Observable<AppConfig>,
+  mousedown$: Observable<MouseEvent | Touch | null>
+) {
   return merge(
     fromEvent<MouseEvent>(window, 'mouseup', { capture: true }).pipe(
       filter(e => e.button === 0)
@@ -47,9 +52,10 @@ export function createValidMouseupStream(config$: Observable<AppConfig>) {
       map(e => e.changedTouches[0])
     )
   ).pipe(
-    withLatestFrom(config$),
-    filter(([event, config]) => {
-      if (isInSaladictExternal(event.target)) {
+    withLatestFrom(config$, mousedown$),
+    filter(([, config, mousedown]) => {
+      // check mousedown target instead of mouseup
+      if (mousedown && isInSaladictExternal(mousedown.target)) {
         return false
       }
       if (isBlacklisted(config)) {

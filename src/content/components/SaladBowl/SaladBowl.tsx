@@ -4,6 +4,7 @@ import {
   useObservableCallback
 } from 'observable-hooks'
 import { hover } from '@/_helpers/observables'
+import { SALADICT_EXTERNAL } from '@/_helpers/saladict'
 
 export interface SaladBowlProps {
   /** Viewport based coordinate. */
@@ -57,7 +58,7 @@ export const SaladBowl: FC<SaladBowlProps> = props => {
     <div
       role="img"
       className={
-        'saladbowl' +
+        `saladbowl ${SALADICT_EXTERNAL}` +
         (props.withAnimation ? ' isAnimate' : '') +
         (props.enableHover ? ' enableHover' : '')
       }

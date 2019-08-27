@@ -4,6 +4,7 @@ import CSSTransition, {
   CSSTransitionProps
 } from 'react-transition-group/CSSTransition'
 import root from 'react-shadow'
+import { SALADICT_EXTERNAL } from '@/_helpers/saladict'
 
 export const defaultTimeout = { enter: 400, exit: 100, appear: 400 }
 
@@ -14,6 +15,7 @@ export interface ShadowPortalProps extends Partial<CSSTransitionProps> {
   id: string
   /** Static content before the children  */
   head?: ReactNode
+  shadowRootClassName?: string
 }
 
 /**
@@ -22,7 +24,14 @@ export interface ShadowPortalProps extends Partial<CSSTransitionProps> {
  * Remove the element from DOM when the Component unmounts.
  */
 export const ShadowPortal = (props: ShadowPortalProps) => {
-  const { id, head, onEnter, onExited, ...restProps } = props
+  const {
+    id,
+    head,
+    shadowRootClassName,
+    onEnter,
+    onExited,
+    ...restProps
+  } = props
 
   const $root = useMemo(() => {
     let $root = document.getElementById(id)
@@ -45,7 +54,12 @@ export const ShadowPortal = (props: ShadowPortalProps) => {
   )
 
   return ReactDOM.createPortal(
-    <root.div>
+    <root.div
+      className={
+        SALADICT_EXTERNAL +
+        (shadowRootClassName ? ` ${shadowRootClassName}` : '')
+      }
+    >
       {head}
       <CSSTransition
         classNames={defaultClassNames}

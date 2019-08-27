@@ -15,3 +15,43 @@ export const isStandalonePage = () => isPopupPage() || isQuickSearchPage()
 /** do not record search history on these pages */
 export const isNoSearchHistoryPage = () =>
   isInternalPage() && !isStandalonePage()
+
+export const SALADICT_EXTERNAL = 'saladict-external'
+
+export const SALADICT_PANEL = 'saladict-panel'
+
+/**
+ * Is element in a Saladict external element
+ */
+export function isInSaladictExternal(
+  element: Element | EventTarget | null
+): boolean {
+  if (!element || !element['classList']) {
+    return false
+  }
+
+  for (let el: Element | null = element as Element; el; el = el.parentElement) {
+    if (el.classList.contains(SALADICT_EXTERNAL)) {
+      return true
+    }
+  }
+
+  return false
+}
+
+/**
+ * Is element in Saladict Dict Panel
+ */
+export function isInDictPanel(element: Element | EventTarget | null): boolean {
+  if (!element || !element['classList']) {
+    return false
+  }
+
+  for (let el: Element | null = element as Element; el; el = el.parentElement) {
+    if (el.classList.contains(SALADICT_PANEL)) {
+      return true
+    }
+  }
+
+  return false
+}
