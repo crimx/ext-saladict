@@ -45,11 +45,9 @@ message
     if (event) {
       const text = getText()
       if (text) {
-        const { clientX, clientY } =
-          event instanceof MouseEvent ? event : event.changedTouches[0]
         sendMessage({
-          mouseX: clientX,
-          mouseY: clientY,
+          mouseX: event.clientX,
+          mouseY: event.clientY,
           instant: true,
           self: isInDictPanel(event.target),
           word: newWord({ text, context: getSentence() }),

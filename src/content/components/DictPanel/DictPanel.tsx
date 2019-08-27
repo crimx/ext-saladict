@@ -1,5 +1,6 @@
 import React, { FC, ReactNode, useState, useEffect } from 'react'
 import ResizeReporter from 'react-resize-reporter'
+import { SALADICT_EXTERNAL, SALADICT_PANEL } from '@/_helpers/saladict'
 
 export interface DictPanelProps {
   x: number
@@ -28,12 +29,15 @@ export const DictPanel: FC<DictPanelProps> = props => {
   }, [props.x, props.y])
 
   useEffect(() => {
-    setCord(reconcile(props.width, height, cord.x, cord.y))
+    setCord(cord => reconcile(props.width, height, cord.x, cord.y))
   }, [props.width, height])
 
   return (
     <div
-      className={`dictPanel-Root${props.withAnimation ? ' isAnimate' : ''}`}
+      className={
+        `dictPanel-Root ${SALADICT_EXTERNAL} ${SALADICT_PANEL}` +
+        (props.withAnimation ? ' isAnimate' : '')
+      }
       style={{
         left: cord.x,
         top: cord.y,

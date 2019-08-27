@@ -37,7 +37,7 @@ export function whenKeyPressed(
 // common editors
 const editorTester = /CodeMirror|ace_editor|monaco-editor/
 
-export function isTypeField(event: MouseEvent | TouchEvent | null): boolean {
+export function isTypeField(event: MouseEvent | Touch | null): boolean {
   if (event && event.target) {
     const target = event.target as Element
     if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') {

@@ -1,11 +1,14 @@
 import React, { useState } from 'react'
 import CSSTransition from 'react-transition-group/CSSTransition'
+import { SALADICT_EXTERNAL } from '@/_helpers/saladict'
 
 export const WaveformBox = () => {
   const [expand, setExpand] = useState(false)
 
   return (
-    <div className={`waveformBox${expand ? ' isExpand' : ''}`}>
+    <div
+      className={`waveformBox ${SALADICT_EXTERNAL}${expand ? ' isExpand' : ''}`}
+    >
       <button
         className="waveformBox-DrawerBtn"
         onClick={() => setExpand(!expand)}

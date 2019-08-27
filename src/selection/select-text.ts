@@ -12,18 +12,18 @@ import { checkSupportedLangs } from '@/_helpers/lang-check'
 
 export function createSelectTextStream(
   config$: Observable<AppConfig>,
-  lastMousedown$: Observable<MouseEvent | TouchEvent | null>
+  lastMousedown$: Observable<MouseEvent | Touch | null>
 ) {
   if (isStandalonePage()) {
     return empty()
   }
 
-  const validMouseup$$ = createValidMouseupStream(config$)
+  const validMouseup$$ = createValidMouseupStream(config$, lastMousedown$)
   const clickPeriodCount$ = createClickPeriodCountStream(validMouseup$$)
 
   return validMouseup$$.pipe(
-    withLatestFrom(lastMousedown$, clickPeriodCount$),
-    mergeMap(([[mouseup, config], mousedown, clickCount]) => {
+    withLatestFrom(clickPeriodCount$),
+    mergeMap(([[mouseup, config, mousedown], clickCount]) => {
       const self = isInDictPanel(mousedown && mousedown.target)
 
       if (config.noTypeField && isTypeField(mousedown)) {
