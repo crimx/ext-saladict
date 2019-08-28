@@ -76,7 +76,7 @@ function DictRenderError() {
       <a
         href="https://github.com/crimx/ext-saladict/issues"
         target="_blank"
-        rel="nofollow onopener noreferrer"
+        rel="nofollow noopener noreferrer"
       >
         report issue
       </a>

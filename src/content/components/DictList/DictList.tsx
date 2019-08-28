@@ -18,7 +18,7 @@ export const DictList: FC<DictListProps> = props => {
   const { dicts, ...restProps } = props
   return (
     <div className="dictList">
-      {props.dicts.map(data => (
+      {dicts.map(data => (
         <MemoDictItem key={data.dictID} {...restProps} {...data} />
       ))}
     </div>

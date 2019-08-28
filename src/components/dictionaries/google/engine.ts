@@ -238,7 +238,7 @@ function getAudioLink(
   return url.toString()
 }
 
-/* tslint:disable */
+/* eslint-disable */
 // prettier-ignore
 function getTK (a, b, c) {
   b = Number(b) || 0
@@ -274,4 +274,4 @@ function _magic (a, b) {
   return a
 }
 
-/* tslint:enable */
+/* eslint-enable */
