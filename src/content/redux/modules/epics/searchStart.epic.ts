@@ -58,39 +58,47 @@ export const searchStartEpic: Epic = (action$, state$) =>
         )
       ).pipe(share())
 
-      const playAudio$ = searchResults$$.pipe(
-        filter(({ id, audio, result }) => {
-          if (!audio) return false
-          if (id === cn.dict && audio.py) return true
-          if (id === en.dict && (audio.uk || audio.us)) return true
-          return (
-            id === machine.dict &&
-            !!(result as MachineTranslateResult<DictID>)[machine.src].audio
-          )
-        }),
-        take(1),
-        tap(({ id, audio, result }) => {
-          if (id === cn.dict) {
-            return message.send({ type: 'PLAY_AUDIO', payload: audio!.py! })
-          }
+      const playAudio$ =
+        payload && payload.id
+          ? empty()
+          : searchResults$$.pipe(
+              filter(({ id, audio, result }) => {
+                if (!audio) return false
+                if (id === cn.dict && audio.py) return true
+                if (id === en.dict && (audio.uk || audio.us)) return true
+                return (
+                  id === machine.dict &&
+                  !!(result as MachineTranslateResult<DictID>)[machine.src]
+                    .audio
+                )
+              }),
+              take(1),
+              tap(({ id, audio, result }) => {
+                if (id === cn.dict) {
+                  return message.send({
+                    type: 'PLAY_AUDIO',
+                    payload: audio!.py!
+                  })
+                }
 
-          if (id === en.dict) {
-            const src =
-              en.accent === 'us'
-                ? audio!.us || audio!.uk
-                : audio!.uk || audio!.us
-            return message.send({ type: 'PLAY_AUDIO', payload: src! })
-          }
+                if (id === en.dict) {
+                  const src =
+                    en.accent === 'us'
+                      ? audio!.us || audio!.uk
+                      : audio!.uk || audio!.us
+                  return message.send({ type: 'PLAY_AUDIO', payload: src! })
+                }
 
-          message.send({
-            type: 'PLAY_AUDIO',
-            payload: (result as MachineTranslateResult<DictID>)[machine.src]
-              .audio!
-          })
-        }),
-        // never pass to down stream
-        switchMapTo(empty())
-      )
+                message.send({
+                  type: 'PLAY_AUDIO',
+                  payload: (result as MachineTranslateResult<DictID>)[
+                    machine.src
+                  ].audio!
+                })
+              }),
+              // never pass to down stream
+              switchMapTo(empty())
+            )
 
       return merge(
         from(isInNotebook(word).catch(() => false)).pipe(
