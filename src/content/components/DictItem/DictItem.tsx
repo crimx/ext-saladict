@@ -1,4 +1,4 @@
-import React, { ComponentType, FC, useState, useRef, useEffect } from 'react'
+import React, { ComponentType, FC, useState, useEffect } from 'react'
 import { message } from '@/_helpers/browser-api'
 import { newWord } from '@/_helpers/record-manager'
 import { ViewPorps } from '@/components/dictionaries/helpers'

@@ -27,12 +27,21 @@ module.exports = {
       }
     ],
     'standard/no-callback-literal': 'off',
+    'standard/computed-property-even-spacing': 'off',
     yoda: 'off',
     'react/display-name': 'off',
     'react/prop-types': 'off',
     'import/first': 'off',
+    'import/no-webpack-loader-syntax': 'off',
+    camelcase: 'off',
     'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      {
+        args: 'none',
+        ignoreRestSiblings: true
+      }
+    ],
     'no-dupe-class-members': 'off'
   },
   globals: {

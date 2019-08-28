@@ -11,7 +11,6 @@ import {
   DictSearchResult,
   getFullLink
 } from '../helpers'
-import axios from 'axios'
 import { getStaticSpeaker } from '@/components/Speaker'
 import { fetchPlainText } from '@/_helpers/fetch-dom'
 
