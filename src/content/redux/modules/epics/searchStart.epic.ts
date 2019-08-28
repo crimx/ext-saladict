@@ -1,5 +1,13 @@
-import { switchMap, map, share, take, filter, tap } from 'rxjs/operators'
-import { merge, from } from 'rxjs'
+import {
+  switchMap,
+  map,
+  share,
+  take,
+  filter,
+  tap,
+  switchMapTo
+} from 'rxjs/operators'
+import { merge, from, empty } from 'rxjs'
 import { StoreAction } from '../'
 import { Epic, ofType } from '../../utils/operators'
 import { isInNotebook } from '@/_helpers/record-manager'
@@ -81,7 +89,7 @@ export const searchStartEpic: Epic = (action$, state$) =>
           })
         }),
         // never pass to down stream
-        filter((value): value is never => false)
+        switchMapTo(empty())
       )
 
       return merge(

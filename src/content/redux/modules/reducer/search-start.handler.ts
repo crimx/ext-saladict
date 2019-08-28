@@ -18,10 +18,12 @@ export const searchStart: StoreActionHandler<'SEARCH_START'> = (
   const shouldAddHistory =
     payload &&
     payload.word &&
-    (payload.word.text !== searchHistory[0].text ||
-      payload.word.context !== searchHistory[0].context)
+    (searchHistory.length < 1 ||
+      payload.word.text !== searchHistory[searchHistory.length - 1].text ||
+      payload.word.context !== searchHistory[searchHistory.length - 1].context)
 
-  const word = (payload && payload.word) || searchHistory[0]
+  const word =
+    (payload && payload.word) || searchHistory[searchHistory.length - 1]
 
   return {
     ...state,

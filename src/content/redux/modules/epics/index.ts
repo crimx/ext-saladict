@@ -1,5 +1,5 @@
 import { combineEpics } from 'redux-observable'
-import { mapTo, mergeMap, filter } from 'rxjs/operators'
+import { map, mapTo, mergeMap, filter } from 'rxjs/operators'
 
 import { saveWord } from '@/_helpers/record-manager'
 
@@ -11,10 +11,18 @@ import newSelectionEpic from './newSelection.epic'
 
 export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
   /** Start searching text. This will also send to Redux. */
-  action$ =>
+  (action$, state$) =>
     action$.pipe(
       ofType('BOWL_ACTIVATED'),
-      mapTo({ type: 'SEARCH_START' })
+      map(
+        () =>
+          state$.value.selection.word
+            ? {
+                type: 'SEARCH_START',
+                payload: { word: state$.value.selection.word }
+              }
+            : { type: 'SEARCH_START' } // this should never be reached
+      )
     ),
   (action$, state$) =>
     action$.pipe(
