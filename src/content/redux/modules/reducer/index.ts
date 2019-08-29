@@ -19,7 +19,7 @@ export const reducer = createReducer<
     return {
       ...state,
       config: payload,
-      panelMaxHeight: payload.panelMaxHeightRatio * window.innerHeight,
+      panelMaxHeight: (window.innerHeight * payload.panelMaxHeightRatio) / 100,
       isTempDisabled:
         payload.blacklist.some(([r]) => new RegExp(r).test(url)) &&
         payload.whitelist.every(([r]) => !new RegExp(r).test(url))
