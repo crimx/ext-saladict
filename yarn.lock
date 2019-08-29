@@ -10664,9 +10664,9 @@ react-resize-detector@^4.0.5:
     resize-observer-polyfill "^1.5.1"
 
 react-resize-reporter@^0.1.4:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/react-resize-reporter/-/react-resize-reporter-0.1.5.tgz#7aba9054f52d6e5e3fb74f42281730fa4b112829"
-  integrity sha512-8p5HYN5jpDWk61E4OFwyP1V2fP1Hd30izIBXQmXhEDmWXu+C8cQgZTGhMaoI3EjATYHyCsgS7db1ypmV6kufQw==
+  version "0.1.7"
+  resolved "https://registry.yarnpkg.com/react-resize-reporter/-/react-resize-reporter-0.1.7.tgz#4c13d9c0e223582fa8f94f91c55eea8a7a2f0ae9"
+  integrity sha512-QcEVc53wUJUpRyP6r9hhIYrYNl0EEVXgD3RM//pZFXG3wPIZ5ftN9qoJ2vU0JtJ6AFgw0/PwulYssFzLSUQisA==
 
 react-select@^2.2.0:
   version "2.4.4"
