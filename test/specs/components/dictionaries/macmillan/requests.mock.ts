@@ -4,7 +4,7 @@ export const mockSearchTexts = ['love', 'jumblish']
 
 export const mockRequest: MockRequest = mock => {
   mock.onGet(/macmillan/).reply(info => {
-    const wordMatch = /[^\/]+$/.exec(info.url || '')
+    const wordMatch = /[^/]+$/.exec(info.url || '')
     return wordMatch
       ? [
           200,

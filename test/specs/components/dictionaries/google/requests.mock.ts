@@ -6,10 +6,10 @@ export const mockSearchTexts = [
 
 export const mockRequest: MockRequest = mock => {
   mock
-    .onGet(/translate_a/)
-    .reply(200, require('raw-loader!./response/f.txt').default)
+    .onGet(/translate\.google.+translate_a/)
+    .reply(200, require('!raw-loader!./response/f.txt').default)
 
   mock
-    .onGet(/google/)
-    .reply(200, require('raw-loader!./response/homepage.html').default)
+    .onGet(/translate\.google.+google/)
+    .reply(200, require('!raw-loader!./response/homepage.html').default)
 }

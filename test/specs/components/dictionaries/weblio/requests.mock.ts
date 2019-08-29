@@ -4,7 +4,7 @@ export const mockSearchTexts = ['love', '吐く', '当たる']
 
 export const mockRequest: MockRequest = mock => {
   mock
-    .onGet(/love/)
+    .onGet(/www\.weblio\.jp.+love/)
     .reply(
       200,
       new DOMParser().parseFromString(
@@ -14,7 +14,7 @@ export const mockRequest: MockRequest = mock => {
     )
 
   mock
-    .onGet(new RegExp(encodeURIComponent('吐く')))
+    .onGet(new RegExp('www\\.weblio\\.jp.+' + encodeURIComponent('吐く')))
     .reply(
       200,
       new DOMParser().parseFromString(
@@ -24,7 +24,7 @@ export const mockRequest: MockRequest = mock => {
     )
 
   mock
-    .onGet(new RegExp(encodeURIComponent('当たる')))
+    .onGet(new RegExp('www\\.weblio\\.jp.+' + encodeURIComponent('当たる')))
     .reply(
       200,
       new DOMParser().parseFromString(

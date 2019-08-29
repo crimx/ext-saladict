@@ -8,7 +8,7 @@ export const mockRequest: MockRequest = mock => {
     .reply(
       200,
       new DOMParser().parseFromString(
-        require('raw-loader!./response/how.html').default,
+        require('!raw-loader!./response/how.html').default,
         'text/html'
       )
     )
@@ -18,7 +18,7 @@ export const mockRequest: MockRequest = mock => {
     .reply(
       200,
       new DOMParser().parseFromString(
-        require('raw-loader!./response/love.html').default,
+        require('!raw-loader!./response/love.html').default,
         'text/html'
       )
     )
