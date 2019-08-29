@@ -4,7 +4,7 @@ export const mockSearchTexts = ['沙拉', '爱']
 
 export const mockRequest: MockRequest = mock => {
   mock.onGet(/zdic/).reply(info => {
-    const wordMatch = /[^\/]+$/.exec(info.url || '')
+    const wordMatch = /[^/]+$/.exec(info.url || '')
     return wordMatch
       ? [
           200,

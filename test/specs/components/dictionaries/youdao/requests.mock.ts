@@ -4,7 +4,7 @@ export const mockSearchTexts = ['love', 'translation', 'jumblish']
 
 export const mockRequest: MockRequest = mock => {
   mock.onGet(/youdao/).reply(info => {
-    const wordMatch = /[^\/]+$/.exec(info.url || '')
+    const wordMatch = /[^/]+$/.exec(info.url || '')
     return wordMatch
       ? [
           200,

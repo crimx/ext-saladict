@@ -55,7 +55,8 @@ module.exports = {
       background: {
         entry: 'background',
         webext: {
-          type: 'background'
+          type: 'background',
+          setup: 'background/__fake__/env.ts'
         }
       }
     }

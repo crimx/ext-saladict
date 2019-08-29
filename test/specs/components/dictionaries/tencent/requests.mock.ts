@@ -13,5 +13,5 @@ export const mockRequest: MockRequest = mock => {
     </script>`
   )
 
-  mock.onPost(/qq/).reply(200, require('./response/i-love-you.json'))
+  mock.onPost(/qq\.com/).reply(200, require('./response/i-love-you.json'))
 }

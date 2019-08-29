@@ -4,7 +4,7 @@ export const mockSearchTexts = ['love', '爱', 'henr']
 
 export const mockRequest: MockRequest = mock => {
   mock.onGet(/hjdict/).reply(info => {
-    const wordMatch = /[^\/]+$/.exec(info.url || '')
+    const wordMatch = /[^/]+$/.exec(info.url || '')
     return wordMatch
       ? [
           200,
