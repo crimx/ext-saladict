@@ -1,10 +1,10 @@
-import React, { ComponentType, FC, useState, useEffect } from 'react'
+import React, { ComponentType, FC, useState, useEffect, useRef } from 'react'
 import { message } from '@/_helpers/browser-api'
 import { newWord } from '@/_helpers/record-manager'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import { DictItemHead, DictItemHeadProps } from './DictItemHead'
 import { DictItemBody, DictItemBodyProps } from './DictItemBody'
-import { ResizeReporter } from 'react-resize-reporter'
+import ReactResizeDetector from 'react-resize-detector'
 
 export interface DictItemProps extends DictItemBodyProps {
   /** default height when search result is received */
@@ -20,7 +20,10 @@ export const DictItem: FC<DictItemProps> = props => {
     'COLLAPSE'
   )
   /** Rendered height */
-  const [offsetHeight, setOffsetHeight] = useState(0)
+  const [offsetHeight, _setOffsetHeight] = useState(10)
+  const setOffsetHeight = useRef((width: number, height: number) =>
+    _setOffsetHeight(height)
+  )
 
   const visibleHeight = Math.max(
     10,
@@ -56,7 +59,10 @@ export const DictItem: FC<DictItemProps> = props => {
         onClick={searchLinkText}
       >
         <article className="dictItem-BodyMesure">
-          <ResizeReporter reportInit onHeightChanged={setOffsetHeight} />
+          <ReactResizeDetector
+            handleHeight
+            onResize={setOffsetHeight.current}
+          />
           {props.dictComp ? (
             props.searchStatus === 'FINISH' &&
             props.searchResult &&
