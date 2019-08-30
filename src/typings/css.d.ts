@@ -6,7 +6,6 @@ declare module 'csstype' {
     '--panel-color'?: string
     '--panel-background-color'?: string
     '--panel-width'?: string
-    '--panel-height'?: string
     '--panel-max-height'?: string
   }
 }

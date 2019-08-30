@@ -20,10 +20,7 @@ export interface DictPanelProps {
 }
 
 export const DictPanel: FC<DictPanelProps> = props => {
-  const [height, _setHeight] = useState(50)
-  const updateHeightRef = useRef((width: number, height: number) => {
-    _setHeight(height)
-  })
+  const heightRef = useRef(50)
 
   const [x, setX] = useState(props.x)
   const [y, setY] = useState(props.y)
@@ -33,13 +30,19 @@ export const DictPanel: FC<DictPanelProps> = props => {
   }, [props.x])
 
   useEffect(() => {
-    setY(reconcileY(height, props.y))
+    setY(reconcileY(heightRef.current, props.y))
   }, [props.y])
 
   useUpdateEffect(() => {
     setX(x => reconcileX(props.width, x))
-    setY(y => reconcileY(height, y))
-  }, [props.width, height])
+    setY(y => reconcileY(heightRef.current, y))
+  }, [props.width])
+
+  const updateHeightRef = useRef((width: number, height: number) => {
+    heightRef.current = height
+    setX(x => reconcileX(props.width, x))
+    setY(y => reconcileY(heightRef.current, y))
+  })
 
   return (
     <div
@@ -58,11 +61,15 @@ export const DictPanel: FC<DictPanelProps> = props => {
         '--panel-background-color': '#fff',
         '--panel-color': '#333',
         '--panel-width': props.width + 'px',
-        '--panel-height': height + 'px',
         '--panel-max-height': props.maxHeight + 'px'
       }}
     >
-      <ReactResizeDetector handleHeight onResize={updateHeightRef.current} />
+      <ReactResizeDetector
+        handleHeight
+        refreshMode="debounce"
+        refreshRate={100}
+        onResize={updateHeightRef.current}
+      />
       <div className="dictPanel-Head">{props.menuBar}</div>
       <div className="dictPanel-Body">
         {props.mtaBox}
@@ -76,8 +83,9 @@ export const DictPanel: FC<DictPanelProps> = props => {
 function reconcileX(width: number, x: number): number {
   const winWidth = window.innerWidth
 
-  if (x + width + 10 > winWidth) {
-    x = winWidth - 10 - width
+  // also counted scrollbar width
+  if (x + width + 25 > winWidth) {
+    x = winWidth - 25 - width
   }
 
   if (x < 10) {
@@ -90,12 +98,12 @@ function reconcileX(width: number, x: number): number {
 function reconcileY(height: number, y: number): number {
   const winHeight = window.innerHeight
 
-  if (y + height + 10 > winHeight) {
-    y = winHeight - 10 - height
+  if (y + height + 15 > winHeight) {
+    y = winHeight - 15 - height
   }
 
-  if (y < 10) {
-    y = 10
+  if (y < 15) {
+    y = 15
   }
 
   return y
