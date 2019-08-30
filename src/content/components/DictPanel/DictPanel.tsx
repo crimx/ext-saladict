@@ -1,6 +1,7 @@
-import React, { FC, ReactNode, useState, useEffect } from 'react'
-import ResizeReporter from 'react-resize-reporter'
+import React, { FC, ReactNode, useState, useEffect, useRef } from 'react'
+import { useUpdateEffect } from 'react-use'
 import { SALADICT_EXTERNAL, SALADICT_PANEL } from '@/_helpers/saladict'
+import ReactResizeDetector from 'react-resize-detector'
 
 export interface DictPanelProps {
   x: number
@@ -8,6 +9,7 @@ export interface DictPanelProps {
 
   width: number
   maxHeight: number
+  minHeight: number
 
   withAnimation: boolean
 
@@ -18,18 +20,25 @@ export interface DictPanelProps {
 }
 
 export const DictPanel: FC<DictPanelProps> = props => {
-  const [height, setHeight] = useState(40)
+  const [height, _setHeight] = useState(50)
+  const updateHeightRef = useRef((width: number, height: number) => {
+    _setHeight(height)
+  })
 
-  const [cord, setCord] = useState(() =>
-    reconcile(props.width, height, props.x, props.y)
-  )
-
-  useEffect(() => {
-    setCord(reconcile(props.width, height, props.x, props.y))
-  }, [props.x, props.y])
+  const [x, setX] = useState(props.x)
+  const [y, setY] = useState(props.y)
 
   useEffect(() => {
-    setCord(cord => reconcile(props.width, height, cord.x, cord.y))
+    setX(reconcileX(props.width, props.x))
+  }, [props.x])
+
+  useEffect(() => {
+    setY(reconcileY(height, props.y))
+  }, [props.y])
+
+  useUpdateEffect(() => {
+    setX(x => reconcileX(props.width, x))
+    setY(y => reconcileY(height, y))
   }, [props.width, height])
 
   return (
@@ -39,10 +48,11 @@ export const DictPanel: FC<DictPanelProps> = props => {
         (props.withAnimation ? ' isAnimate' : '')
       }
       style={{
-        left: cord.x,
-        top: cord.y,
+        left: x,
+        top: y,
         width: props.width,
         maxHeight: props.maxHeight,
+        minHeight: props.minHeight,
         backgroundColor: '#fff',
         color: '#333',
         '--panel-background-color': '#fff',
@@ -51,7 +61,7 @@ export const DictPanel: FC<DictPanelProps> = props => {
         '--panel-height': height + 'px'
       }}
     >
-      <ResizeReporter onHeightChanged={setHeight} reportInit debounce={50} />
+      <ReactResizeDetector handleHeight onResize={updateHeightRef.current} />
       <div className="dictPanel-Head">{props.menuBar}</div>
       <div className="dictPanel-Body">
         {props.mtaBox}
@@ -62,14 +72,8 @@ export const DictPanel: FC<DictPanelProps> = props => {
   )
 }
 
-function reconcile(
-  width: number,
-  height: number,
-  x: number,
-  y: number
-): { x: number; y: number } {
+function reconcileX(width: number, x: number): number {
   const winWidth = window.innerWidth
-  const winHeight = window.innerHeight
 
   if (x + width + 10 > winWidth) {
     x = winWidth - 10 - width
@@ -79,6 +83,12 @@ function reconcile(
     x = 10
   }
 
+  return x
+}
+
+function reconcileY(height: number, y: number): number {
+  const winHeight = window.innerHeight
+
   if (y + height + 10 > winHeight) {
     y = winHeight - 10 - height
   }
@@ -87,5 +97,5 @@ function reconcile(
     y = 10
   }
 
-  return { x, y }
+  return y
 }

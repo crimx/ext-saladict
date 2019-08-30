@@ -42,6 +42,7 @@ export const initState = () => ({
     mouseY: 0
   },
   panelMaxHeight: window.innerHeight * 0.8,
+  panelMinHeight: 0,
   /** Dicts that will be rendered to dict panel */
   renderedDicts: [] as {
     readonly id: DictID

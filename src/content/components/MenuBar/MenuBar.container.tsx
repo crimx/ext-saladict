@@ -14,15 +14,14 @@ type Dispatchers =
   | 'onClose'
   | 'onDragAreaMouseDown'
   | 'onDragAreaTouchStart'
+  | 'onHeightChanged'
 
 const mapStateToProps = (
   state: StoreState
 ): Omit<MenuBarProps, Dispatchers> => ({
   text: state.text,
   isInNotebook: state.isFav,
-  shouldFocus:
-    !state.isExpandMtaBox &&
-    (state.isQSPanel || state.renderedDicts.length <= 0 || isStandalonePage()),
+  shouldFocus: !state.isExpandMtaBox && (state.isQSPanel || isStandalonePage()),
   enableSuggest: state.config.searchSuggests,
   histories: state.searchHistory,
   historyIndex: state.historyIndex,
@@ -60,6 +59,12 @@ const mapDispatchToProps = (
   },
   onClose: () => {
     dispatch({ type: 'CLOSE_PANEL' })
+  },
+  onHeightChanged: (height: number) => {
+    dispatch({
+      type: 'PANEL_MIN_HEIGHT',
+      payload: Math.floor(height)
+    })
   },
   onDragAreaMouseDown: () => {},
   onDragAreaTouchStart: () => {}

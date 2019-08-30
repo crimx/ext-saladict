@@ -1,4 +1,4 @@
-import React, { FC, useRef, useEffect, useCallback } from 'react'
+import React, { FC, useRef, useEffect } from 'react'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import i18next from 'i18next'
 import {
@@ -24,6 +24,8 @@ export interface SearchBoxProps {
   onInput: (text: string) => any
   /** Start searching */
   onSearch: (text: string) => any
+
+  onHeightChanged: (height: number) => void
 }
 
 /**
@@ -134,6 +136,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
           timeout={100}
           mountOnEnter={true}
           unmountOnExit={true}
+          onExited={() => props.onHeightChanged(0)}
         >
           {() => (
             <div className="menuBar-SearchBox_Suggests">
@@ -145,6 +148,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
                 onBlur={onSuggestFocusBlur}
                 onArrowUpFirst={focusInput}
                 onClose={focusInput}
+                onHeightChanged={props.onHeightChanged}
               />
             </div>
           )}

@@ -22,7 +22,13 @@ export type SuggestProps = {
   text: string
 } & Pick<
   FloatBoxProps,
-  'ref' | 'onFocus' | 'onBlur' | 'onSelect' | 'onArrowUpFirst' | 'onClose'
+  | 'ref'
+  | 'onFocus'
+  | 'onBlur'
+  | 'onSelect'
+  | 'onArrowUpFirst'
+  | 'onClose'
+  | 'onHeightChanged'
 >
 
 /**
