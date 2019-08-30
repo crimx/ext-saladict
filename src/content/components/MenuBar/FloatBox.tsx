@@ -1,5 +1,5 @@
-import React, { FC, Ref } from 'react'
-import AnimateHeight from 'react-animate-height'
+import React, { FC, Ref, useState, useCallback } from 'react'
+import ReactResizeDetector from 'react-resize-detector'
 
 interface FloatBoxPropsBase {
   /** Box container */
@@ -20,6 +20,8 @@ interface FloatBoxPropsBase {
   onArrowDownLast?: (container: HTMLDivElement) => any
   /** When the panel is about to close */
   onClose?: (container: HTMLDivElement) => any
+  /** When box height is changed */
+  onHeightChanged?: (height: number) => any
 }
 
 interface FloatBoxPropsWithList extends FloatBoxPropsBase {
@@ -38,13 +40,32 @@ export type FloatBoxProps = FloatBoxPropsWithList | FloatBoxPropsLoading
  */
 export const FloatBox: FC<FloatBoxProps> = React.forwardRef(
   (props: FloatBoxProps, containerRef: React.Ref<HTMLDivElement>) => {
+    const [height, _setHeight] = useState(0)
+    const [width, _setWidth] = useState(0)
+    const updateHeight = useCallback(
+      (newWidth: number, newHeight: number) => {
+        _setWidth(newWidth)
+        _setHeight(newHeight)
+        if (props.onHeightChanged && newHeight !== height) {
+          props.onHeightChanged(newHeight + 20) // plus paddings
+        }
+      },
+      [props.onHeightChanged]
+    )
+
     return (
       <div
         className="menuBar-FloatBoxContainer"
+        style={{ width, height }}
         onMouseOver={props.onMouseOver}
         onMouseOut={props.onMouseOut}
       >
-        <AnimateHeight height={props.isLoading ? 32 : 'auto'}>
+        <div className="menuBar-FloatBoxMeasure">
+          <ReactResizeDetector
+            handleWidth
+            handleHeight
+            onResize={updateHeight}
+          />
           {props.isLoading ? (
             <div className="lds-ellipsis">
               <div></div>
@@ -99,7 +120,7 @@ export const FloatBox: FC<FloatBoxProps> = React.forwardRef(
               ))}
             </div>
           )}
-        </AnimateHeight>
+        </div>
       </div>
     )
   }
