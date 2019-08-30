@@ -58,7 +58,8 @@ export const DictPanel: FC<DictPanelProps> = props => {
         '--panel-background-color': '#fff',
         '--panel-color': '#333',
         '--panel-width': props.width + 'px',
-        '--panel-height': height + 'px'
+        '--panel-height': height + 'px',
+        '--panel-max-height': props.maxHeight + 'px'
       }}
     >
       <ReactResizeDetector handleHeight onResize={updateHeightRef.current} />

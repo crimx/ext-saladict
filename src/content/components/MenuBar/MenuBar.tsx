@@ -1,4 +1,4 @@
-import React, { FC, useRef, useCallback } from 'react'
+import React, { FC } from 'react'
 import { Word } from '@/_helpers/record-manager'
 import { useTranslate } from '@/_helpers/i18n'
 import {
@@ -12,6 +12,13 @@ import {
 import { SearchBox, SearchBoxProps } from './SearchBox'
 import { Profiles, ProfilesProps } from './Profiles'
 import { message } from '@/_helpers/browser-api'
+import {
+  useObservableCallback,
+  useObservable,
+  useSubscription
+} from 'observable-hooks'
+import { Observable, combineLatest } from 'rxjs'
+import { startWith, debounceTime, map } from 'rxjs/operators'
 
 const ProfilesMemo = React.memo(Profiles)
 
@@ -52,27 +59,27 @@ export interface MenuBarProps {
 export const MenuBar: FC<MenuBarProps> = props => {
   const { t } = useTranslate(['content', 'common'])
 
-  const profileHeightRef = useRef(0)
-  const searchBoxHeightRef = useRef(0)
-
-  const onProfileHeightChanged = useCallback(
-    (height: number) => {
-      profileHeightRef.current = height === 0 ? 30 : height + 42 + 30
-      props.onHeightChanged(
-        Math.max(searchBoxHeightRef.current, profileHeightRef.current)
-      )
-    },
-    [props.onHeightChanged]
+  const [updateProfileHeight, profileHeight$] = useObservableCallback<number>(
+    heightChangeTransform
   )
 
-  const onSearchBoxHeightChanged = useCallback(
-    (height: number) => {
-      searchBoxHeightRef.current = height === 0 ? 30 : height + 42 + 30
-      props.onHeightChanged(
-        Math.max(searchBoxHeightRef.current, profileHeightRef.current)
+  const [updateSBHeight, searchBoxHeight$] = useObservableCallback<number>(
+    heightChangeTransform
+  )
+
+  // update panel min height
+  useSubscription(
+    useObservable(() =>
+      combineLatest(profileHeight$, searchBoxHeight$).pipe(
+        // a little delay for organic feeling
+        debounceTime(100),
+        map(heights => {
+          const max = Math.max(...heights)
+          return max > 0 ? max + 72 : 0
+        })
       )
-    },
-    [props.onHeightChanged]
+    ),
+    props.onHeightChanged
   )
 
   return (
@@ -94,7 +101,7 @@ export const MenuBar: FC<MenuBarProps> = props => {
         enableSuggest={props.enableSuggest}
         onInput={props.updateText}
         onSearch={props.searchText}
-        onHeightChanged={onSearchBoxHeightChanged}
+        onHeightChanged={updateSBHeight}
       />
       <div
         className={`menuBar-DragArea${isStandalonePage ? '' : ' isActive'}`}
@@ -105,7 +112,7 @@ export const MenuBar: FC<MenuBarProps> = props => {
         t={t}
         profiles={props.profiles}
         activeProfileId={props.activeProfileId}
-        onHeightChanged={onProfileHeightChanged}
+        onHeightChanged={updateProfileHeight}
       />
       <FavBtn t={t} isFav={props.isInNotebook} onClick={props.addToNoteBook} />
       <HistoryBtn
@@ -121,4 +128,10 @@ export const MenuBar: FC<MenuBarProps> = props => {
       <CloseBtn t={t} onClick={props.onClose} />
     </header>
   )
+}
+
+function heightChangeTransform(
+  height$: Observable<number>
+): Observable<number> {
+  return startWith<number>(0)(height$)
 }

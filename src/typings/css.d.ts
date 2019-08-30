@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import * as CSS from 'csstype'
 
 declare module 'csstype' {
@@ -6,5 +7,6 @@ declare module 'csstype' {
     '--panel-background-color'?: string
     '--panel-width'?: string
     '--panel-height'?: string
+    '--panel-max-height'?: string
   }
 }
