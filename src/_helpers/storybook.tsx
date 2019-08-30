@@ -130,7 +130,10 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
             color,
             backgroundColor,
             '--panel-width': `${width}px`,
-            '--panel-height': `${height}px`,
+            '--panel-max-height': `${number(
+              'Panel Max Hegiht',
+              window.innerHeight
+            )}px`,
             '--panel-color': color,
             '--panel-background-color': backgroundColor
           }}
