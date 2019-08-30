@@ -23,7 +23,7 @@
 }
 
 .menuBar-FloatBox {
-  max-height: calc(var(--panel-height) * 0.75);
+  max-height: calc(var(--panel-max-height) * 0.75);
   overflow: hidden;
 }
 
