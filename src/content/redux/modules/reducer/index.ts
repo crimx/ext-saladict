@@ -132,6 +132,11 @@ export const reducer = createReducer<
     }
   },
 
+  PANEL_MIN_HEIGHT: (state, { payload }) => ({
+    ...state,
+    panelMinHeight: payload
+  }),
+
   SUMMONED_PANEL_INIT: (state, { payload }) => ({
     ...state,
     text: payload,

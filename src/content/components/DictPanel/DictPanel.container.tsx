@@ -34,6 +34,7 @@ const mapStateToProps = (
     y: mouseY < 0 ? -mouseY : mouseY - 20 - 30,
     width: state.config.panelWidth,
     maxHeight: state.panelMaxHeight,
+    minHeight: state.panelMinHeight,
     withAnimation: state.config.animation,
     menuBar,
     mtaBox,

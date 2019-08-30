@@ -81,6 +81,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
         )}
         onDragAreaMouseDown={action('Darg Area Mousedown')}
         onDragAreaTouchStart={action('Darg Area Touchstart')}
+        onHeightChanged={action('Height Changed')}
       />
     )
   })

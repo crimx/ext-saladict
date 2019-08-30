@@ -72,6 +72,13 @@ export type ActionCatalog = {
     }
   }
 
+  /**
+   * Keep panel heighter than absolutely positioned boxes
+   */
+  PANEL_MIN_HEIGHT: {
+    payload: number
+  }
+
   /* ------------------------------------------------ *\
     Quick Search Dict Panel
   \* ------------------------------------------------ */

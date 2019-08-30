@@ -112,7 +112,8 @@ function useDictPanelProps(): DictPanelProps {
     x: number('x', (window.innerWidth - 450) / 2),
     y: number('y', 10),
     width: number('Width', 450),
-    maxHeight: number('Max Height', window.innerHeight - 50),
+    maxHeight: number('Max Height', 50),
+    minHeight: number('Min Height', 50),
     withAnimation: withAnimation,
     menuBar: (
       <MenuBar
@@ -138,6 +139,9 @@ function useDictPanelProps(): DictPanelProps {
           profilesOption,
           profiles[0].id
         )}
+        onHeightChanged={newHeight => {
+          action('MenuBar Height Changed')(newHeight)
+        }}
         onDragAreaMouseDown={action('Darg Area Mousedown')}
         onDragAreaTouchStart={action('Darg Area Touchstart')}
       />
@@ -160,15 +164,14 @@ function useDictPanelProps(): DictPanelProps {
     ),
     dictList: (
       <DictList
-        text="love"
         fontSize={number('Font Size', 13)}
         withAnimation={withAnimation}
         dicts={randomDicts}
         searchText={action('Search Text')}
+        openDictSrcPage={action('Open Source Page')}
       />
     ),
-    waveformBox: <WaveformBox />,
-    onHeightChanged: action('Height Changed')
+    waveformBox: <WaveformBox />
   }
 }
 

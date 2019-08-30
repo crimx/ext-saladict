@@ -14,6 +14,7 @@ import {
   updateActiveProfileID,
   getProfileName
 } from '@/_helpers/profile-manager'
+import { isOptionsPage } from '@/_helpers/saladict'
 import { FloatBox } from './FloatBox'
 import { OptionsBtn } from './MenubarBtns'
 
@@ -21,6 +22,7 @@ export interface ProfilesProps {
   t: i18next.TFunction
   profiles: Array<{ id: string; name: string }>
   activeProfileId: string
+  onHeightChanged: (height: number) => void
 }
 
 /**
@@ -69,7 +71,7 @@ export const Profiles: FC<ProfilesProps> = props => {
     <div className="menuBar-ProfileContainer">
       <OptionsBtn
         t={props.t}
-        disabled={window.__SALADICT_OPTIONS_PAGE__}
+        disabled={isOptionsPage()}
         onKeyDown={e => {
           if (e.key === 'ArrowDown') {
             e.preventDefault()
@@ -80,13 +82,14 @@ export const Profiles: FC<ProfilesProps> = props => {
         onMouseOver={onMouseOverOutDelay}
         onMouseOut={onMouseOverOutDelay}
       />
-      {!window.__SALADICT_OPTIONS_PAGE__ && (
+      {!isOptionsPage() && (
         <CSSTransition
           classNames="menuBar-Profiles"
           in={isShowProfiles}
           timeout={100}
           mountOnEnter={true}
           unmountOnExit={true}
+          onExited={() => props.onHeightChanged(0)}
         >
           {() => (
             <div className="menuBar-ProfileBox">
@@ -103,6 +106,7 @@ export const Profiles: FC<ProfilesProps> = props => {
                   (container.firstElementChild as HTMLButtonElement).focus()
                 }
                 onSelect={updateActiveProfileID}
+                onHeightChanged={props.onHeightChanged}
               />
             </div>
           )}

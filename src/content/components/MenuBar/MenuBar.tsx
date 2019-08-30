@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useRef, useCallback } from 'react'
 import { Word } from '@/_helpers/record-manager'
 import { useTranslate } from '@/_helpers/i18n'
 import {
@@ -43,12 +43,38 @@ export interface MenuBarProps {
 
   onClose: () => any
 
+  onHeightChanged: (height: number) => void
+
   onDragAreaMouseDown: (e: React.MouseEvent<HTMLDivElement>) => any
   onDragAreaTouchStart: (e: React.TouchEvent<HTMLDivElement>) => any
 }
 
 export const MenuBar: FC<MenuBarProps> = props => {
   const { t } = useTranslate(['content', 'common'])
+
+  const profileHeightRef = useRef(0)
+  const searchBoxHeightRef = useRef(0)
+
+  const onProfileHeightChanged = useCallback(
+    (height: number) => {
+      profileHeightRef.current = height === 0 ? 30 : height + 42 + 30
+      props.onHeightChanged(
+        Math.max(searchBoxHeightRef.current, profileHeightRef.current)
+      )
+    },
+    [props.onHeightChanged]
+  )
+
+  const onSearchBoxHeightChanged = useCallback(
+    (height: number) => {
+      searchBoxHeightRef.current = height === 0 ? 30 : height + 42 + 30
+      props.onHeightChanged(
+        Math.max(searchBoxHeightRef.current, profileHeightRef.current)
+      )
+    },
+    [props.onHeightChanged]
+  )
+
   return (
     <header className="menuBar">
       <HistoryBackBtn
@@ -68,6 +94,7 @@ export const MenuBar: FC<MenuBarProps> = props => {
         enableSuggest={props.enableSuggest}
         onInput={props.updateText}
         onSearch={props.searchText}
+        onHeightChanged={onSearchBoxHeightChanged}
       />
       <div
         className={`menuBar-DragArea${isStandalonePage ? '' : ' isActive'}`}
@@ -78,6 +105,7 @@ export const MenuBar: FC<MenuBarProps> = props => {
         t={t}
         profiles={props.profiles}
         activeProfileId={props.activeProfileId}
+        onHeightChanged={onProfileHeightChanged}
       />
       <FavBtn t={t} isFav={props.isInNotebook} onClick={props.addToNoteBook} />
       <HistoryBtn
