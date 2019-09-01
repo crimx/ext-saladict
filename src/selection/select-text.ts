@@ -1,65 +1,103 @@
-import { Observable, empty, of } from 'rxjs'
-import { withLatestFrom, distinctUntilChanged, mergeMap } from 'rxjs/operators'
+import { empty, fromEvent, merge, timer } from 'rxjs'
+import {
+  withLatestFrom,
+  filter,
+  map,
+  mapTo,
+  debounce,
+  switchMap,
+  scan,
+  startWith
+} from 'rxjs/operators'
 import { AppConfig } from '@/app-config'
 import {
-  createValidMouseupStream,
-  createClickPeriodCountStream
-} from './mouse-events'
-import { isTypeField } from './helper'
-import { isInDictPanel, isStandalonePage } from '@/_helpers/saladict'
-import { getText, getSentence } from 'get-selection-more'
+  isInDictPanel,
+  isStandalonePage,
+  isInSaladictExternal
+} from '@/_helpers/saladict'
+import {
+  getTextFromSelection,
+  getSentenceFromSelection
+} from 'get-selection-more'
 import { checkSupportedLangs } from '@/_helpers/lang-check'
+import { newWord } from '@/_helpers/record-manager'
+import { isTypeField } from './helper'
 
-export function createSelectTextStream(
-  config$: Observable<AppConfig>,
-  lastMousedown$: Observable<MouseEvent | Touch | null>
-) {
-  if (isStandalonePage()) {
+export function createSelectTextStream(config: AppConfig | null) {
+  if (!config || isStandalonePage()) {
     return empty()
   }
 
-  const validMouseup$$ = createValidMouseupStream(config$, lastMousedown$)
-  const clickPeriodCount$ = createClickPeriodCountStream(validMouseup$$)
+  const mousedown$ = merge(
+    fromEvent<MouseEvent>(window, 'mousedown', { capture: true }),
+    fromEvent<TouchEvent>(window, 'touchstart', { capture: true }).pipe(
+      map(e => e.changedTouches[0])
+    )
+  )
 
-  return validMouseup$$.pipe(
-    withLatestFrom(clickPeriodCount$),
-    mergeMap(([[mouseup, config, mousedown], clickCount]) => {
-      const self = isInDictPanel(mousedown && mousedown.target)
+  const mouseup$ = merge(
+    fromEvent<MouseEvent>(window, 'mouseup', { capture: true }),
+    fromEvent<TouchEvent>(window, 'touchend', { capture: true }).pipe(
+      map(e => e.changedTouches[0])
+    )
+  )
 
-      if (config.noTypeField && isTypeField(mousedown)) {
-        return of(self)
+  const clickPeriodCount$ = mouseup$.pipe(
+    switchMap(() =>
+      timer(config.doubleClickDelay).pipe(
+        mapTo(false),
+        startWith(true)
+      )
+    ),
+    scan((sum: number, flag: boolean) => (flag ? sum + 1 : 0), 0)
+  )
+
+  const isMouseDown$ = merge(mapTo(true)(mousedown$), mapTo(false)(mouseup$))
+
+  return fromEvent(document, 'selectionchange').pipe(
+    withLatestFrom(isMouseDown$),
+    debounce(([, isWithMouse]) => (isWithMouse ? mouseup$ : timer(400))),
+    map(([, isWithMouse]) => [window.getSelection(), isWithMouse] as const),
+    filter(
+      (args): args is [Selection, boolean] =>
+        !!args[0] && !isInSaladictExternal(args[0].anchorNode)
+    ),
+    withLatestFrom(mouseup$, clickPeriodCount$),
+    map(([[selection, isWithMouse], mouseup, clickPeriodCount]) => {
+      const self = isInDictPanel(selection.anchorNode)
+
+      if (config.noTypeField && isTypeField(selection.anchorNode)) {
+        return self
       }
 
-      const text = getText()
+      const text = getTextFromSelection(selection)
 
       if (!checkSupportedLangs(config.language, text)) {
-        return of(self)
+        return self
       }
 
-      return of({
-        text,
-        context: getSentence(),
-        clickCount,
-        event: mouseup,
-        self
-      })
-    }),
-    distinctUntilChanged((oldVal, newVal) =>
-      Boolean(
-        // Always different if selection no valid
-        typeof oldVal !== 'boolean' &&
-          typeof newVal !== 'boolean' &&
-          // Always different if double click.
-          newVal.clickCount < 2 &&
-          // Always different if no selection
-          oldVal.text &&
-          oldVal.context &&
-          // Same selection. This could be caused by other widget on the page
-          // that uses preventDefault which stops selection being cleared when clicked.
-          // Ignore it so that the panel won't follow.
-          oldVal.text === newVal.text &&
-          oldVal.context === newVal.context
-      )
-    )
+      if (isWithMouse) {
+        return {
+          word: newWord({ text, context: getSentenceFromSelection(selection) }),
+          self,
+          dbClick: clickPeriodCount >= 2,
+          mouseX: mouseup.clientX,
+          mouseY: mouseup.clientY,
+          shiftKey: !!mouseup['shiftKey'],
+          ctrlKey: !!mouseup['ctrlKey'],
+          metaKey: !!mouseup['metaKey']
+        }
+      }
+
+      const rect = selection.getRangeAt(0).getBoundingClientRect()
+
+      return {
+        word: newWord({ text, context: getSentenceFromSelection(selection) }),
+        self,
+        dbClick: clickPeriodCount >= 2,
+        mouseX: rect.right,
+        mouseY: rect.top
+      }
+    })
   )
 }

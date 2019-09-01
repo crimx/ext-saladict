@@ -26,12 +26,12 @@ export const SALADICT_PANEL = 'saladict-panel'
 export function isInSaladictExternal(
   element: Element | EventTarget | null
 ): boolean {
-  if (!element || !element['classList']) {
+  if (!element) {
     return false
   }
 
   for (let el: Element | null = element as Element; el; el = el.parentElement) {
-    if (el.classList.contains(SALADICT_EXTERNAL)) {
+    if (el.classList && el.classList.contains(SALADICT_EXTERNAL)) {
       return true
     }
   }
@@ -42,13 +42,13 @@ export function isInSaladictExternal(
 /**
  * Is element in Saladict Dict Panel
  */
-export function isInDictPanel(element: Element | EventTarget | null): boolean {
-  if (!element || !element['classList']) {
+export function isInDictPanel(element: Node | EventTarget | null): boolean {
+  if (!element) {
     return false
   }
 
   for (let el: Element | null = element as Element; el; el = el.parentElement) {
-    if (el.classList.contains(SALADICT_PANEL)) {
+    if (el.classList && el.classList.contains(SALADICT_PANEL)) {
       return true
     }
   }

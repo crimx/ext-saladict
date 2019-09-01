@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useEffect, useRef } from 'react'
-import { SALADICT_EXTERNAL, SALADICT_PANEL } from '@/_helpers/saladict'
+import { SALADICT_PANEL } from '@/_helpers/saladict'
 import ReactResizeDetector from 'react-resize-detector'
 import {
   useObservableCallback,
@@ -126,7 +126,7 @@ export const DictPanel: FC<DictPanelProps> = props => {
   return (
     <div
       className={
-        `dictPanel-Root ${SALADICT_EXTERNAL} ${SALADICT_PANEL}` +
+        `dictPanel-Root ${SALADICT_PANEL}` +
         (props.withAnimation ? ' isAnimate' : '') +
         (props.dragStartCoord ? ' isDragging' : '')
       }

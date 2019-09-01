@@ -1,22 +1,26 @@
-import { getText, getSentence } from 'get-selection-more'
-import { AppConfig } from '@/app-config'
+import {
+  getText,
+  getSentence,
+  getTextFromSelection,
+  getSentenceFromSelection
+} from 'get-selection-more'
 import { message } from '@/_helpers/browser-api'
 import { newWord } from '@/_helpers/record-manager'
 import { createConfigStream } from '@/_helpers/config-manager'
 import { isInDictPanel } from '@/_helpers/saladict'
 
-import { merge, from } from 'rxjs'
-import { share, pluck, startWith, withLatestFrom } from 'rxjs/operators'
+import { share, map, switchMap } from 'rxjs/operators'
 
 import { postMessageHandler, sendMessage, sendEmptyMessage } from './message'
-import { isEscapeKey, whenKeyPressed } from './helper'
+import { isEscapeKey, whenKeyPressed, isBlacklisted } from './helper'
 import { createIntantCaptureStream } from './instant-capture'
 import { createQuickSearchStream } from './quick-search'
 import { createSelectTextStream } from './select-text'
-import { createMousedownStream } from './mouse-events'
 
-const config$$ = share<AppConfig>()(createConfigStream())
-const mousedown$$ = createMousedownStream()
+const config$$ = createConfigStream().pipe(
+  map(config => (isBlacklisted(config) ? null : config)),
+  share()
+)
 
 /**
  * Send selection to standalone page
@@ -38,28 +42,27 @@ message.addListener('PRELOAD_SELECTION', () => {
  * Manualy emit selection
  * Beware that this is run on every frame.
  */
-message
-  .createStream('EMIT_SELECTION')
-  .pipe(withLatestFrom(mousedown$$))
-  .subscribe(([, event]) => {
-    if (event) {
-      const text = getText()
-      if (text) {
-        sendMessage({
-          mouseX: event.clientX,
-          mouseY: event.clientY,
-          instant: true,
-          self: isInDictPanel(event.target),
-          word: newWord({ text, context: getSentence() }),
-          dbClick: false,
-          shiftKey: Boolean(event['shiftKey']),
-          ctrlKey: Boolean(event['ctrlKey']),
-          metaKey: Boolean(event['metaKey']),
-          force: false
-        })
-      }
+message.createStream('EMIT_SELECTION').subscribe(() => {
+  const selection = window.getSelection()
+  if (selection) {
+    const text = getTextFromSelection(selection)
+    const rect = selection.getRangeAt(0).getBoundingClientRect()
+    if (text) {
+      sendMessage({
+        mouseX: rect.right,
+        mouseY: rect.top,
+        instant: true,
+        self: isInDictPanel(selection.anchorNode),
+        word: newWord({ text, context: getSentenceFromSelection(selection) }),
+        dbClick: false,
+        shiftKey: false,
+        ctrlKey: false,
+        metaKey: false,
+        force: false
+      })
     }
-  })
+  }
+})
 
 /** Pass through message from iframes */
 window.addEventListener('message', postMessageHandler)
@@ -71,54 +74,40 @@ whenKeyPressed(isEscapeKey).subscribe(() =>
   message.self.send({ type: 'ESCAPE_KEY' })
 )
 
-createQuickSearchStream(config$$).subscribe(() => {
+config$$.pipe(switchMap(createQuickSearchStream)).subscribe(() => {
   message.self.send({ type: 'TRIPLE_CTRL' })
 })
 
-createSelectTextStream(config$$, mousedown$$).subscribe(result => {
+config$$.pipe(switchMap(createSelectTextStream)).subscribe(result => {
   if (typeof result === 'boolean') {
     sendEmptyMessage(result)
   } else {
     sendMessage({
-      mouseX: result.event.clientX,
-      mouseY: result.event.clientY,
-      dbClick: result.clickCount >= 2,
-      shiftKey: Boolean(result.event['shiftKey']),
-      ctrlKey: Boolean(result.event['ctrlKey']),
-      metaKey: Boolean(result.event['metaKey']),
-      self: result.self,
-      word: newWord({ text: result.text, context: result.context }),
+      dbClick: false,
+      shiftKey: false,
+      ctrlKey: false,
+      metaKey: false,
+      self: false,
       instant: false,
-      force: false
+      force: false,
+      ...result
     })
   }
 })
 
-createIntantCaptureStream(
-  config$$,
-  message.self.createStream('PIN_STATE').pipe(
-    pluck('payload'),
-    startWith(false)
-  ),
-  merge(
-    // When Quick Search Panel show and hide
-    from(message.send<'QUERY_QS_PANEL'>({ type: 'QUERY_QS_PANEL' })),
-    message.createStream('QS_PANEL_CHANGED').pipe(
-      pluck('payload'),
-      startWith(false)
-    )
-  )
-).subscribe(({ word, event, self }) => {
-  sendMessage({
-    word,
-    shiftKey: event.shiftKey,
-    ctrlKey: event.ctrlKey,
-    metaKey: event.metaKey,
-    dbClick: false,
-    force: false,
-    instant: true,
-    mouseX: event.clientX,
-    mouseY: event.clientY,
-    self
+config$$
+  .pipe(switchMap(createIntantCaptureStream))
+  .subscribe(({ word, event, self }) => {
+    sendMessage({
+      word,
+      shiftKey: event.shiftKey,
+      ctrlKey: event.ctrlKey,
+      metaKey: event.metaKey,
+      dbClick: false,
+      force: false,
+      instant: true,
+      mouseX: event.clientX,
+      mouseY: event.clientY,
+      self
+    })
   })
-})
