@@ -24,10 +24,5 @@ if (window.parent === window && !window.__SALADICT_PANEL_LOADED__) {
     </ProviderRedux>
   )
 
-  const rootEl = document.createElement('div')
-  if (process.env.NODE_ENV === 'development') {
-    document.body.appendChild(rootEl)
-  }
-
-  ReactDOM.render(<App />, rootEl)
+  ReactDOM.render(<App />, document.createElement('div'))
 }
