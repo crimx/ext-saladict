@@ -1,34 +1,47 @@
-import { getText, getSentence } from 'get-selection-more'
-import { DeepNonNullable } from 'utility-types'
+import {
+  getTextFromSelection,
+  getSentenceFromSelection
+} from 'get-selection-more'
 import { AppConfig } from '@/app-config'
 import { isStandalonePage, isInDictPanel } from '@/_helpers/saladict'
 import { checkSupportedLangs } from '@/_helpers/lang-check'
 import { Word, newWord } from '@/_helpers/record-manager'
+import { message } from '@/_helpers/browser-api'
 
-import { fromEvent, merge, of, Observable, timer, combineLatest } from 'rxjs'
+import { fromEvent, merge, of, timer, combineLatest, empty, from } from 'rxjs'
 import {
   map,
   mapTo,
   filter,
   switchMap,
   distinctUntilChanged,
-  debounce
+  debounce,
+  pluck,
+  startWith
 } from 'rxjs/operators'
-
-import { isBlacklisted } from './helper'
 
 /**
  * Create an instant capture Observable
  */
-export function createIntantCaptureStream(
-  config$: Observable<AppConfig>,
-  isPinned$: Observable<boolean>,
-  withQSPanel$: Observable<boolean>
-) {
-  return combineLatest(config$, isPinned$, withQSPanel$).pipe(
-    switchMap(([config, isPinned, withQSPanel]) => {
-      if (isBlacklisted(config)) return of(null)
+export function createIntantCaptureStream(config: AppConfig | null) {
+  if (!config) return empty()
 
+  const isPinned$ = message.self.createStream('PIN_STATE').pipe(
+    pluck('payload'),
+    startWith(false)
+  )
+
+  const withQSPanel$ = merge(
+    // When Quick Search Panel show and hide
+    from(message.send<'QUERY_QS_PANEL'>({ type: 'QUERY_QS_PANEL' })),
+    message.createStream('QS_PANEL_CHANGED').pipe(
+      pluck('payload'),
+      startWith(false)
+    )
+  )
+
+  return combineLatest(isPinned$, withQSPanel$).pipe(
+    switchMap(([isPinned, withQSPanel]) => {
       const { instant: panelInstant } = config.panelMode
       const { instant: otherInstant } = config[
         withQSPanel ? 'qsPanelMode' : isPinned ? 'pinMode' : 'mode'
@@ -42,7 +55,6 @@ export function createIntantCaptureStream(
       // Only the latest result is used so it's safe to reuse the object
       const reuseObj = ({} as unknown) as {
         event: MouseEvent
-        config: AppConfig
         self: boolean
       }
 
@@ -63,7 +75,6 @@ export function createIntantCaptureStream(
                   !(event.ctrlKey || event.metaKey || event.altKey))
               ) {
                 reuseObj.event = event
-                reuseObj.config = config
                 reuseObj.self = self
                 return reuseObj
               }
@@ -85,9 +96,7 @@ export function createIntantCaptureStream(
       self: boolean
     } =>
       Boolean(
-        obj &&
-          obj.word &&
-          checkSupportedLangs(obj.config.language, obj.word.text)
+        obj && obj.word && checkSupportedLangs(config.language, obj.word.text)
       )
     ),
     distinctUntilChanged(
@@ -157,8 +166,8 @@ function getCursorWord(event: MouseEvent): Word | null {
       }
     }
 
-    const text = getText()
-    const context = getSentence()
+    const text = getTextFromSelection(sel)
+    const context = getSentenceFromSelection(sel)
 
     sel.removeAllRanges()
     if (originRange) {

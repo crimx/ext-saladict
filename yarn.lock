@@ -6328,9 +6328,9 @@ get-pkg-repo@^1.0.0:
     through2 "^2.0.0"
 
 get-selection-more@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/get-selection-more/-/get-selection-more-1.0.2.tgz#6da521e5181b78370a4ece8cd2a6c8c13a28724b"
-  integrity sha512-24nle8gqdyZUgXhOmixqD9vB5dORTYh01MSzJIYdXP4oVCRKUz7C6BNTop2S/wtWTCmLM6QoNrgZfl6g7HsrFg==
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/get-selection-more/-/get-selection-more-1.1.0.tgz#d315f9dbc2e31c22648160867806c11e783cbebd"
+  integrity sha512-UbDYXviVZvePCcF3MoCbaislXg4jIvcMxi+VlgruYQT64Y6jezgTuwfZleWIktzodHyIh5NNRjsSYxPmaFNRMQ==
 
 get-stdin@7.0.0, get-stdin@^7.0.0:
   version "7.0.0"

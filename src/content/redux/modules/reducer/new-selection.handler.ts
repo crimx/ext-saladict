@@ -6,6 +6,9 @@ export const newSelection: StoreActionHandler<'NEW_SELECTION'> = (
   state,
   { payload: selection }
 ) => {
+  // Skip selection inside panel
+  if (selection.self) return state
+
   const { config, selection: lastSelection } = state
 
   const newState: Mutable<typeof state> = {
@@ -31,7 +34,6 @@ export const newSelection: StoreActionHandler<'NEW_SELECTION'> = (
   }
 
   if (
-    selection.self ||
     (state.withQSPanel && config.tripleCtrlPageSel) ||
     isStandalonePage() ||
     isOptionsPage()

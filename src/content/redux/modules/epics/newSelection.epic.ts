@@ -8,17 +8,12 @@ import { isStandalonePage, isOptionsPage } from '@/_helpers/saladict'
 export const newSelectionEpic: Epic = (action$, state$) =>
   action$.pipe(
     ofType('NEW_SELECTION'),
-    switchMap(() => {
-      const {
-        config,
-        selection,
-        withQSPanel,
-        isShowDictPanel,
-        isPinned
-      } = state$.value
+    // Selection may be skipped in state, use payload instead.
+    switchMap(({ payload: selection }) => {
+      const { config, withQSPanel, isShowDictPanel, isPinned } = state$.value
 
       if (selection.self) {
-        // inside dict panel
+        // Selection inside dict panel.
         return selectionInsideDictPanel(config, selection)
       }
 

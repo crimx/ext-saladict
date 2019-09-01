@@ -38,10 +38,10 @@ export const ShadowPortal = (props: ShadowPortalProps) => {
     if (!$root) {
       $root = document.createElement('div')
       $root.id = id
-      $root.className = 'saladict-div'
+      $root.className = `saladict-div ${shadowRootClassName}`
     }
     return $root
-  }, [])
+  }, [shadowRootClassName])
 
   // unmout element when React node unmounts
   useEffect(
@@ -54,12 +54,7 @@ export const ShadowPortal = (props: ShadowPortalProps) => {
   )
 
   return ReactDOM.createPortal(
-    <root.div
-      className={
-        SALADICT_EXTERNAL +
-        (shadowRootClassName ? ` ${shadowRootClassName}` : '')
-      }
-    >
+    <root.div className={shadowRootClassName || SALADICT_EXTERNAL}>
       {head}
       <CSSTransition
         classNames={defaultClassNames}
