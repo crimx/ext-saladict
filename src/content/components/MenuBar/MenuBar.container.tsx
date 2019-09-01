@@ -66,8 +66,24 @@ const mapDispatchToProps = (
       payload: Math.floor(height)
     })
   },
-  onDragAreaMouseDown: () => {},
-  onDragAreaTouchStart: () => {}
+  onDragAreaMouseDown: event => {
+    dispatch({
+      type: 'DRAG_START_COORD',
+      payload: {
+        x: event.clientX,
+        y: event.clientY
+      }
+    })
+  },
+  onDragAreaTouchStart: event => {
+    dispatch({
+      type: 'DRAG_START_COORD',
+      payload: {
+        x: event.changedTouches[0].clientX,
+        y: event.changedTouches[0].clientY
+      }
+    })
+  }
 })
 
 export const MenuBarContainer = connect(

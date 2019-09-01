@@ -24,6 +24,20 @@
   font-size: 0; // remove whitespace
 }
 
+.dictPanel-DragMask {
+  position: fixed;
+  z-index: $global-zindex-dictpanel;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  background: rgba(225, 225, 225, 0.01);
+  cursor: grabbing;
+  cursor: -moz-grabbing;
+  cursor: -webkit-grabbing;
+}
+
 @import '../MenuBar/MenuBar.scss';
 @import '../MtaBox/MtaBox.scss';
 @import '../DictList/DictList.scss';
@@ -34,5 +48,9 @@
     transition: width 0.4s, min-height 0.4s, opacity 0.4s,
       top 0.4s cubic-bezier(0.55, 0.82, 0.63, 0.95),
       left 0.4s cubic-bezier(0.4, 0.9, 0.71, 1.02);
+  }
+
+  &.dictPanel-Root.isDragging {
+    transition: width 0.4s, min-height 0.4s, opacity 0.4s;
   }
 }
