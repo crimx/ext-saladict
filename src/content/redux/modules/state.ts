@@ -54,7 +54,9 @@ export const initState = () => ({
   /** 0 is the oldest */
   searchHistory: [] as Word[],
   /** User can view back search history */
-  historyIndex: 0
+  historyIndex: 0,
+  /** Record init coordinate on dragstart */
+  dragStartCoord: null as null | { x: number; y: number }
 })
 
 export default initState

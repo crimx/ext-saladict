@@ -132,9 +132,18 @@ export const reducer = createReducer<
     }
   },
 
-  PANEL_MIN_HEIGHT: (state, { payload }) => ({
+  PANEL_MIN_HEIGHT: (state, { payload }) => {
+    return payload === state.panelMinHeight
+      ? state
+      : {
+          ...state,
+          panelMinHeight: payload
+        }
+  },
+
+  DRAG_START_COORD: (state, { payload }) => ({
     ...state,
-    panelMinHeight: payload
+    dragStartCoord: payload
   }),
 
   SUMMONED_PANEL_INIT: (state, { payload }) => ({

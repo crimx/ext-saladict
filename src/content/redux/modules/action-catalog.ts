@@ -79,6 +79,13 @@ export type ActionCatalog = {
     payload: number
   }
 
+  DRAG_START_COORD: {
+    payload: null | {
+      x: number
+      y: number
+    }
+  }
+
   /* ------------------------------------------------ *\
     Quick Search Dict Panel
   \* ------------------------------------------------ */

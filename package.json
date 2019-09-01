@@ -59,7 +59,7 @@
     "md5": "^2.2.1",
     "memoize-one": "^5.1.0",
     "normalize-scss": "^7.0.1",
-    "observable-hooks": "^2.0.1",
+    "observable-hooks": "^2.1.0",
     "pako": "^1.0.10",
     "react": "^16",
     "react-dom": "^16",

@@ -66,6 +66,10 @@ function useDictPanelProps(): DictPanelProps {
   const [text, setText] = useState('saladict')
   const [expandMta, setExpandMta] = useState(false)
   const withAnimation = boolean('Enable Animation', true)
+  const [dragStartCoord, setDragStartCoord] = useState<null | {
+    x: number
+    y: number
+  }>(null)
 
   const dictsNum = number(
     'Dict Item Count',
@@ -112,7 +116,7 @@ function useDictPanelProps(): DictPanelProps {
     x: number('x', (window.innerWidth - 450) / 2),
     y: number('y', 10),
     width: number('Width', 450),
-    maxHeight: number('Max Height', 50),
+    maxHeight: number('Max Height', window.innerHeight - 40),
     minHeight: number('Min Height', 50),
     withAnimation: withAnimation,
     menuBar: (
@@ -142,8 +146,15 @@ function useDictPanelProps(): DictPanelProps {
         onHeightChanged={newHeight => {
           action('MenuBar Height Changed')(newHeight)
         }}
-        onDragAreaMouseDown={action('Darg Area Mousedown')}
-        onDragAreaTouchStart={action('Darg Area Touchstart')}
+        onDragAreaMouseDown={e =>
+          setDragStartCoord({ x: e.clientX, y: e.clientY })
+        }
+        onDragAreaTouchStart={e =>
+          setDragStartCoord({
+            x: e.changedTouches[0].clientX,
+            y: e.changedTouches[0].clientY
+          })
+        }
       />
     ),
     mtaBox: (
@@ -171,7 +182,9 @@ function useDictPanelProps(): DictPanelProps {
         openDictSrcPage={action('Open Source Page')}
       />
     ),
-    waveformBox: <WaveformBox />
+    waveformBox: <WaveformBox />,
+    dragStartCoord,
+    onDragEnd: () => setDragStartCoord(null)
   }
 }
 
