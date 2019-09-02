@@ -1,6 +1,6 @@
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react'
 import { useUpdateEffect } from 'react-use'
-import ReactResizeDetector from 'react-resize-detector'
+import { ResizeReporter } from 'react-resize-reporter/scroll'
 import { SALADICT_PANEL } from '@/_helpers/saladict'
 
 export interface DictPanelProps {
@@ -111,11 +111,10 @@ export const DictPanel: FC<DictPanelProps> = props => {
         '--panel-max-height': props.maxHeight + 'px'
       }}
     >
-      <ReactResizeDetector
-        handleHeight
-        refreshMode="debounce"
-        refreshRate={100}
-        onResize={setHeightRef.current}
+      <ResizeReporter
+        reportInit
+        debounce={100}
+        onSizeChanged={setHeightRef.current}
       />
       <div className="dictPanel-Head">{props.menuBar}</div>
       <div className="dictPanel-Body">

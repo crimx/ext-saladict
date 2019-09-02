@@ -67,7 +67,7 @@
     "react-i18next": "^10.11.4",
     "react-number-editor": "^4.0.3",
     "react-redux": "^7.1.0",
-    "react-resize-detector": "^4.2.0",
+    "react-resize-reporter": "^1.0.0",
     "react-shadow": "^17.1.1",
     "react-textarea-autosize": "^7.1.0",
     "react-transition-group": "^4.2.1",

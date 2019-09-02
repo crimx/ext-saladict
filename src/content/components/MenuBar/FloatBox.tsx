@@ -1,5 +1,5 @@
 import React, { FC, Ref, useState, useCallback } from 'react'
-import ReactResizeDetector from 'react-resize-detector'
+import { ResizeReporter } from 'react-resize-reporter/scroll'
 
 interface FloatBoxPropsBase {
   /** Box container */
@@ -61,11 +61,8 @@ export const FloatBox: FC<FloatBoxProps> = React.forwardRef(
         onMouseOut={props.onMouseOut}
       >
         <div className="menuBar-FloatBoxMeasure">
-          <ReactResizeDetector
-            handleWidth
-            handleHeight
-            onResize={updateHeight}
-          />
+          <ResizeReporter reportInit onSizeChanged={updateHeight} />
+
           {props.isLoading ? (
             <div className="lds-ellipsis">
               <div></div>
