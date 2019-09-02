@@ -1,8 +1,5 @@
 import React, { FC } from 'react'
-import {
-  useObservablePropsCallback,
-  useObservableCallback
-} from 'observable-hooks'
+import { useSubscription, useObservableCallback } from 'observable-hooks'
 import { hover } from '@/_helpers/observables'
 import { SALADICT_EXTERNAL } from '@/_helpers/saladict'
 
@@ -15,8 +12,9 @@ export interface SaladBowlProps {
   readonly withAnimation: boolean
   /** React on hover. */
   readonly enableHover: boolean
-  /** When bowl is activated or deactivated via mouse. */
-  readonly onChange: (active: boolean) => void
+  /** When bowl is activated via mouse. */
+  readonly onActive: () => void
+  readonly onHover: (isHover: boolean) => void
 }
 
 /**
@@ -52,7 +50,12 @@ export const SaladBowl: FC<SaladBowlProps> = props => {
     React.MouseEvent<HTMLDivElement>
   >(hover)
 
-  useObservablePropsCallback(mouseOverOut$, props.onChange)
+  useSubscription(mouseOverOut$, active => {
+    props.onHover(active)
+    if (active) {
+      props.onActive()
+    }
+  })
 
   return (
     <div
@@ -65,7 +68,7 @@ export const SaladBowl: FC<SaladBowlProps> = props => {
       style={{ transform: `translate(${x}px, ${y}px)` }}
       onMouseOver={props.enableHover ? onMouseOverOut : undefined}
       onMouseOut={onMouseOverOut}
-      onClick={() => props.onChange(true)}
+      onClick={() => props.onActive()}
     >
       {/* prettier-ignore */}
       <svg viewBox='0 0 612 612' width='30' height='30'>
