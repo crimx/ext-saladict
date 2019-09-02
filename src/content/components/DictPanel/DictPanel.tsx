@@ -1,14 +1,7 @@
-import React, { FC, ReactNode, useEffect, useRef } from 'react'
-import { SALADICT_PANEL } from '@/_helpers/saladict'
+import React, { FC, ReactNode, useEffect, useRef, useState } from 'react'
+import { useUpdateEffect } from 'react-use'
 import ReactResizeDetector from 'react-resize-detector'
-import {
-  useObservableCallback,
-  useObservable,
-  pluckFirst,
-  useObservableState
-} from 'observable-hooks'
-import { startWith, map, switchMap } from 'rxjs/operators'
-import { Observable, combineLatest, merge, empty, fromEvent } from 'rxjs'
+import { SALADICT_PANEL } from '@/_helpers/saladict'
 
 export interface DictPanelProps {
   x: number
@@ -30,73 +23,47 @@ export interface DictPanelProps {
 }
 
 export const DictPanel: FC<DictPanelProps> = props => {
-  const [updateHeight, height$] = useObservableCallback<
-    number,
-    number,
-    [number, number]
-  >(height$ => height$.pipe(startWith(50)), args => args[1])
+  const heightRef = useRef(50)
 
-  const propsY$ = useObservable(pluckFirst, [props.y])
+  const [x, setX] = useState(() => reconcileX(props.width, props.x))
+  const [y, setY] = useState(() => reconcileY(heightRef.current, props.y))
 
-  const reconciledX$ = useObservable(reconcileX, [props.width, props.x])
-  const reconciledY$ = useObservable(() =>
-    reconcileY(combineLatest(height$, propsY$))
-  )
-  const reconciledCoord$ = useObservable(() =>
-    combineLatest(reconciledX$, reconciledY$)
-  )
+  useUpdateEffect(() => {
+    setX(reconcileX(props.width, props.x))
+  }, [props.x])
 
-  const dragStartCoordRef = useRef<{
-    panelX: number
-    panelY: number
-    mouseX: number
-    mouseY: number
-  }>()
+  useUpdateEffect(() => {
+    setY(reconcileY(heightRef.current, props.y))
+  }, [props.y])
 
-  const dragCoord$ = useObservable(
-    inputs$ =>
-      inputs$.pipe(
-        switchMap(([dragStartCoord]) => {
-          if (!dragStartCoord) return empty()
-          return merge(
-            fromEvent<MouseEvent>(window, 'mousemove').pipe(
-              map(event => {
-                event.preventDefault()
-                event.stopPropagation()
-                return { x: event.clientX, y: event.clientY }
-              })
-            ),
-            fromEvent<TouchEvent>(window, 'touchmove').pipe(
-              map(event => {
-                event.preventDefault()
-                event.stopPropagation()
-                const touch = event.touches[0]
-                return { x: touch.clientX, y: touch.clientY }
-              })
-            )
-          ).pipe(
-            map(coord => {
-              const startCoord = dragStartCoordRef.current
-              return startCoord
-                ? [
-                    coord.x - startCoord.mouseX + startCoord.panelX,
-                    coord.y - startCoord.mouseY + startCoord.panelY
-                  ]
-                : [0, 0]
-            })
-          )
-        })
-      ),
-    [props.dragStartCoord]
-  )
+  useUpdateEffect(() => {
+    setX(x => reconcileX(props.width, x))
+  }, [props.width])
+
+  const setHeightRef = useRef((width: number, height: number) => {
+    heightRef.current = height
+    setY(y => reconcileY(heightRef.current, y))
+  })
 
   useEffect(() => {
     if (props.dragStartCoord) {
-      dragStartCoordRef.current = {
-        panelX: x,
-        panelY: y,
-        mouseX: props.dragStartCoord.x,
-        mouseY: props.dragStartCoord.y
+      const startPanelX = x
+      const startPanelY = y
+      const startMouseX = props.dragStartCoord.x
+      const startMouseY = props.dragStartCoord.y
+
+      const mousemoveHandler = (e: MouseEvent) => {
+        e.stopPropagation()
+        e.preventDefault()
+        setX(e.clientX - startMouseX + startPanelX)
+        setY(e.clientY - startMouseY + startPanelY)
+      }
+
+      const touchmoveHandler = (e: TouchEvent) => {
+        e.stopPropagation()
+        e.preventDefault()
+        setX(e.changedTouches[0].clientX - startMouseX + startPanelX)
+        setY(e.changedTouches[0].clientY - startMouseY + startPanelY)
       }
 
       const mouseoutHandler = (e: MouseEvent) => {
@@ -107,21 +74,21 @@ export const DictPanel: FC<DictPanelProps> = props => {
 
       const dragEndHandler = props.onDragEnd
 
+      window.addEventListener('mousemove', mousemoveHandler)
+      window.addEventListener('touchmove', touchmoveHandler)
       window.addEventListener('mouseout', mouseoutHandler)
       window.addEventListener('mouseup', dragEndHandler)
       window.addEventListener('touchend', dragEndHandler)
 
       return () => {
+        window.removeEventListener('mousemove', mousemoveHandler)
+        window.removeEventListener('touchmove', touchmoveHandler)
         window.removeEventListener('mouseout', mouseoutHandler)
         window.removeEventListener('mouseup', dragEndHandler)
         window.removeEventListener('touchend', dragEndHandler)
       }
     }
   }, [props.dragStartCoord, props.onDragEnd])
-
-  const coord$ = useObservable(() => merge(reconciledCoord$, dragCoord$))
-
-  const [x, y] = useObservableState(coord$)!
 
   return (
     <div
@@ -148,7 +115,7 @@ export const DictPanel: FC<DictPanelProps> = props => {
         handleHeight
         refreshMode="debounce"
         refreshRate={100}
-        onResize={updateHeight}
+        onResize={setHeightRef.current}
       />
       <div className="dictPanel-Head">{props.menuBar}</div>
       <div className="dictPanel-Body">
@@ -161,39 +128,31 @@ export const DictPanel: FC<DictPanelProps> = props => {
   )
 }
 
-function reconcileX(inputs$: Observable<[number, number]>): Observable<number> {
-  return inputs$.pipe(
-    map(([width, x]) => {
-      const winWidth = window.innerWidth
+function reconcileX(width: number, x: number): number {
+  const winWidth = window.innerWidth
 
-      // also counted scrollbar width
-      if (x + width + 25 > winWidth) {
-        x = winWidth - 25 - width
-      }
+  // also counted scrollbar width
+  if (x + width + 25 > winWidth) {
+    x = winWidth - 25 - width
+  }
 
-      if (x < 10) {
-        x = 10
-      }
+  if (x < 10) {
+    x = 10
+  }
 
-      return x
-    })
-  )
+  return x
 }
 
-function reconcileY(inputs$: Observable<[number, number]>): Observable<number> {
-  return inputs$.pipe(
-    map(([height, y]) => {
-      const winHeight = window.innerHeight
+function reconcileY(height: number, y: number): number {
+  const winHeight = window.innerHeight
 
-      if (y + height + 15 > winHeight) {
-        y = winHeight - 15 - height
-      }
+  if (y + height + 15 > winHeight) {
+    y = winHeight - 15 - height
+  }
 
-      if (y < 15) {
-        y = 15
-      }
+  if (y < 15) {
+    y = 15
+  }
 
-      return y
-    })
-  )
+  return y
 }
