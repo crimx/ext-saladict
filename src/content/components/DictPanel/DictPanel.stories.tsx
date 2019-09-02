@@ -129,7 +129,7 @@ function useDictPanelProps(): DictPanelProps {
         searchText={action('Search Text')}
         isInNotebook={boolean('Is In Notebook', false)}
         addToNoteBook={action('Add to Notebook')}
-        shouldFocus={true}
+        shouldFocus={!expandMta}
         enableSuggest={boolean('Enable Suggest', true)}
         histories={histories}
         historyIndex={number('History Index', 0)}

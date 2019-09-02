@@ -60,6 +60,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
           setText(text)
           action('Search')(text)
         }}
+        onHeightChanged={action('Height Changed')}
       />
     )
   })
