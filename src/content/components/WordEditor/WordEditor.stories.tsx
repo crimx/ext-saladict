@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { jsxDecorator } from 'storybook-addon-jsx'
@@ -32,7 +32,7 @@ storiesOf('Content Scripts|WordEditor', module)
       const config = getDefaultConfig()
       return (
         <WordEditor
-          dictPanelWidth={number('Dict Panel Width', 450)}
+          width={number('Dict Panel Width', 450)}
           word={newWord({
             date: faker.date.past().valueOf(),
             text: faker.random.word(),
@@ -44,7 +44,6 @@ storiesOf('Content Scripts|WordEditor', module)
             note: faker.lorem.sentences()
           })}
           ctxTrans={config.ctxTrans}
-          onWordChanged={action('Word Changed')}
           onClose={action('Close')}
         />
       )
@@ -60,7 +59,7 @@ storiesOf('Content Scripts|WordEditor', module)
       <WordEditorPortal
         show={boolean('Show', true)}
         withAnimation={boolean('With Animation', true)}
-        dictPanelWidth={number('Dict Panel Width', 450)}
+        width={number('Dict Panel Width', 450)}
         word={newWord({
           date: faker.date.past().valueOf(),
           text: faker.random.word(),
@@ -72,7 +71,6 @@ storiesOf('Content Scripts|WordEditor', module)
           note: faker.lorem.sentences()
         })}
         ctxTrans={config.ctxTrans}
-        onWordChanged={action('Word Changed')}
         onClose={action('Close')}
       />
     )

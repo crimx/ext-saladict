@@ -5,9 +5,9 @@ import { SALADICT_EXTERNAL } from '@/_helpers/saladict'
 
 export interface SaladBowlProps {
   /** Viewport based coordinate. */
-  readonly mouseX: number
+  readonly x: number
   /** Viewport based coordinate. */
-  readonly mouseY: number
+  readonly y: number
   /** Play animation. */
   readonly withAnimation: boolean
   /** React on hover. */
@@ -21,30 +21,6 @@ export interface SaladBowlProps {
  * Cute little icon that pops up near the selection.
  */
 export const SaladBowl: FC<SaladBowlProps> = props => {
-  // icon position
-  //           +-------+
-  //           |       |
-  //           |       | 30px
-  //      50px +-------+
-  //           |  30px
-  //     20px  |
-  //     +-----+
-  // cursor
-  const iconWidth = 30
-  const gap = 20
-  const scrollbarWidth = 10
-
-  // no need to cache since x and y are almost always the changed props
-  const x =
-    props.mouseX + gap + iconWidth > window.innerWidth - scrollbarWidth // right overflow
-      ? props.mouseX - gap - iconWidth // switch to left
-      : props.mouseX + gap
-
-  const y =
-    props.mouseY < iconWidth + gap // top overflow
-      ? props.mouseY + gap // switch to bottom
-      : props.mouseY - iconWidth - gap
-
   const [onMouseOverOut, mouseOverOut$] = useObservableCallback<
     boolean,
     React.MouseEvent<HTMLDivElement>
@@ -65,7 +41,7 @@ export const SaladBowl: FC<SaladBowlProps> = props => {
         (props.withAnimation ? ' isAnimate' : '') +
         (props.enableHover ? ' enableHover' : '')
       }
-      style={{ transform: `translate(${x}px, ${y}px)` }}
+      style={{ transform: `translate(${props.x}px, ${props.y}px)` }}
       onMouseOver={props.enableHover ? onMouseOverOut : undefined}
       onMouseOut={onMouseOverOut}
       onClick={() => props.onActive()}

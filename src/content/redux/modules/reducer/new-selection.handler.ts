@@ -9,27 +9,53 @@ export const newSelection: StoreActionHandler<'NEW_SELECTION'> = (
   // Skip selection inside panel
   if (selection.self) return state
 
-  const { config, selection: lastSelection } = state
+  const { config } = state
 
   const newState: Mutable<typeof state> = {
     ...state,
-    selection: selection.word
-      ? selection
-      : {
-          ...selection,
-          // keep in same position so that
-          // hide animation won't float around
-          mouseX: lastSelection.mouseX,
-          mouseY: lastSelection.mouseY
-        }
+    selection
   }
 
   if (selection.word) {
     newState.text = selection.word.text
 
+    // icon position       10px  panel position
+    //           +-------+      +------------------------+
+    //           |       |      |                        |
+    //           |       | 30px |                        |
+    //      50px +-------+      |                        |
+    //           |  30px        |                        |
+    //     20px  |              |                        |
+    //     +-----+              |                        |
+    // cursor
+    const iconWidth = 30
+    const iconGap = 15
+    const scrollbarWidth = 10
+
+    newState.bowlCoord = {
+      x:
+        selection.mouseX + iconGap + iconWidth >
+        window.innerWidth - scrollbarWidth // right overflow
+          ? selection.mouseX - iconGap - iconWidth // switch to left
+          : selection.mouseX + iconGap,
+      y:
+        selection.mouseY < iconWidth + iconGap // top overflow
+          ? selection.mouseY + iconGap // switch to bottom
+          : selection.mouseY - iconWidth - iconGap
+    }
+
     newState.dictPanelCoord = {
-      mouseX: selection.mouseX,
-      mouseY: selection.mouseY
+      x: newState.bowlCoord.x + iconWidth + 10,
+      y: newState.bowlCoord.y
+    }
+
+    if (
+      newState.dictPanelCoord.x + newState.config.panelWidth + 20 >
+      window.innerWidth
+    ) {
+      // right overflow
+      newState.dictPanelCoord.x =
+        newState.bowlCoord.x - 10 - newState.config.panelWidth
     }
   }
 

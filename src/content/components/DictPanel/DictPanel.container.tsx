@@ -18,21 +18,10 @@ type Dispatchers = 'onDragEnd'
 const mapStateToProps = (
   state: StoreState
 ): Omit<DictPanelPortalProps, Dispatchers> => {
-  const { mouseX, mouseY } = state.dictPanelCoord
   return {
     show: state.isShowDictPanel,
-    // icon position       10px  panel position
-    //           +-------+      +------------------------+
-    //           |       |      |                        |
-    //           |       | 30px |                        |
-    //      50px +-------+      |                        |
-    //           |  30px        |                        |
-    //     20px  |              |                        |
-    //     +-----+              |                        |
-    // cursor
-    // negative number for skipping offset
-    x: mouseX < 0 ? -mouseX : mouseX + 20 + 30 + 10,
-    y: mouseY < 0 ? -mouseY : mouseY - 20 - 30,
+    x: state.dictPanelCoord.x,
+    y: state.dictPanelCoord.y,
     width: state.config.panelWidth,
     maxHeight: state.panelMaxHeight,
     minHeight: state.panelMinHeight,

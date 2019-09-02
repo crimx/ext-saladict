@@ -16,8 +16,8 @@ storiesOf('Content Scripts|SaladBowl', module)
     'SaladBowl',
     () => (
       <SaladBowl
-        mouseX={number('mouseX', 0)}
-        mouseY={number('mouseY', 0)}
+        x={number('mouseX', 30)}
+        y={number('mouseY', 30)}
         withAnimation={boolean('Animation', true)}
         enableHover={boolean('Enable hover', true)}
         onActive={action('onActive')}
@@ -32,8 +32,8 @@ storiesOf('Content Scripts|SaladBowl', module)
   .add('SaladBowlPortal', () => (
     <SaladBowlPortal
       show={boolean('Show', true)}
-      mouseX={number('mouseX', 0)}
-      mouseY={number('mouseY', 0)}
+      x={number('mouseX', 30)}
+      y={number('mouseY', 30)}
       withAnimation={boolean('Animation', true)}
       enableHover={boolean('Enable hover', true)}
       onActive={action('onActive')}
@@ -41,17 +41,26 @@ storiesOf('Content Scripts|SaladBowl', module)
   ))
   .add('Bowl Playground', () =>
     React.createElement(() => {
-      const [{ mouseX, mouseY }, setCoord] = useState({
-        mouseX: 0,
-        mouseY: 0
-      })
+      const [{ x, y }, setCoord] = useState({ x: 0, y: 0 })
+
+      const iconWidth = 30
+      const iconGap = 15
+      const scrollbarWidth = 10
+
       return (
         <div
           style={{ height: '100vh', background: '#5caf9e', overflow: 'hidden' }}
           onClick={e =>
             setCoord({
-              mouseX: e.clientX,
-              mouseY: e.clientY
+              x:
+                e.clientX + iconGap + iconWidth >
+                window.innerWidth - scrollbarWidth // right overflow
+                  ? e.clientX - iconGap - iconWidth // switch to left
+                  : e.clientX + iconGap,
+              y:
+                e.clientY < iconWidth + iconGap // top overflow
+                  ? e.clientY + iconGap // switch to bottom
+                  : e.clientY - iconWidth - iconGap
             })
           }
         >
@@ -60,8 +69,8 @@ storiesOf('Content Scripts|SaladBowl', module)
           </p>
           <SaladBowlPortal
             show
-            mouseX={mouseX}
-            mouseY={mouseY}
+            x={x}
+            y={y}
             withAnimation={boolean('Animation', true)}
             enableHover={boolean('Enable hover', true)}
             onActive={action('onActive')}
