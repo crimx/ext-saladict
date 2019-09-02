@@ -6,6 +6,7 @@ import { withPropsTable } from 'storybook-addon-react-docgen'
 import { withKnobs, select } from '@storybook/addon-knobs'
 import { withi18nNS, withSaladictPanel } from '@/_helpers/storybook'
 import { Profiles } from './Profiles'
+import { action } from '@storybook/addon-actions'
 
 storiesOf('Content Scripts|Dict Panel/Menubar', module)
   .addParameters({
@@ -44,6 +45,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
           profilesOption,
           profiles[0].id
         )}
+        onHeightChanged={action('Height Changed')}
       />
     )
   })

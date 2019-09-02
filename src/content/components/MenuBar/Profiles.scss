@@ -13,7 +13,8 @@
   &.isActive::before {
     content: '';
     position: absolute;
-    top: 1px;
+    top: 50%;
+    transform: translateY(-55%);
     left: -5px;
     width: 0;
     height: 0;
