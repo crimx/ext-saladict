@@ -3,7 +3,7 @@ import { SaladBowlPortal, SaladBowlPortalProps } from './SaladBowl.portal'
 import { StoreState, StoreAction } from '@/content/redux/modules'
 import { Dispatch } from 'redux'
 
-type Dispatchers = 'onChange'
+type Dispatchers = 'onActive'
 
 const mapStateToProps = (
   state: StoreState
@@ -18,10 +18,8 @@ const mapStateToProps = (
 const mapDispatchToProps = (
   dispatch: Dispatch<StoreAction>
 ): Pick<SaladBowlPortalProps, Dispatchers> => ({
-  onChange: active => {
-    if (active) {
-      dispatch({ type: 'BOWL_ACTIVATED' })
-    }
+  onActive: () => {
+    dispatch({ type: 'BOWL_ACTIVATED' })
   }
 })
 

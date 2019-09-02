@@ -20,7 +20,8 @@ storiesOf('Content Scripts|SaladBowl', module)
         mouseY={number('mouseY', 0)}
         withAnimation={boolean('Animation', true)}
         enableHover={boolean('Enable hover', true)}
-        onChange={action('onChange')}
+        onActive={action('onActive')}
+        onHover={action('onActive')}
       />
     ),
     {
@@ -35,7 +36,7 @@ storiesOf('Content Scripts|SaladBowl', module)
       mouseY={number('mouseY', 0)}
       withAnimation={boolean('Animation', true)}
       enableHover={boolean('Enable hover', true)}
-      onChange={action('onChange')}
+      onActive={action('onActive')}
     />
   ))
   .add('Bowl Playground', () =>
@@ -63,7 +64,7 @@ storiesOf('Content Scripts|SaladBowl', module)
             mouseY={mouseY}
             withAnimation={boolean('Animation', true)}
             enableHover={boolean('Enable hover', true)}
-            onChange={action('onChange')}
+            onActive={action('onActive')}
           />
         </div>
       )
