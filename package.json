@@ -4,7 +4,7 @@
   "description": "Chrome extension and Firefox WebExtension, inline translator powered by mutiple online dictionaries",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --host 192.168.0.101 --mode development --open",
+    "start": "webpack-dev-server --mode development --open",
     "storybook": "start-storybook",
     "build": "webpack --mode production",
     "devbuild": "node scripts/build.js --devbuild",
