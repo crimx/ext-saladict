@@ -1,20 +1,9 @@
 import React, { FC, useState } from 'react'
 import {
-  Word,
-  getWordsByText,
-  deleteWords,
-  saveWord,
-  newWord
-} from '@/_helpers/record-manager'
-import { AppConfig } from '@/app-config'
-import { translateCtx } from '@/_helpers/translateCtx'
-import { useTranslate } from '@/_helpers/i18n'
-import WordCards from './WordCards'
-import { message } from '@/_helpers/browser-api'
-import {
   useObservable,
   useObservableState,
-  useObservableCallback
+  useObservableCallback,
+  useSubscription
 } from 'observable-hooks'
 import { merge, of } from 'rxjs'
 import {
@@ -26,6 +15,19 @@ import {
   switchMap,
   debounceTime
 } from 'rxjs/operators'
+import {
+  Word,
+  getWordsByText,
+  deleteWords,
+  saveWord,
+  newWord
+} from '@/_helpers/record-manager'
+import { AppConfig } from '@/app-config'
+import { translateCtx } from '@/_helpers/translateCtx'
+import { useTranslate } from '@/_helpers/i18n'
+import { message } from '@/_helpers/browser-api'
+import { isInternalPage } from '@/_helpers/saladict'
+import WordCards from './WordCards'
 
 export interface WordEditorPanelProps {
   word: Word | null
@@ -40,28 +42,27 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
   const { t } = useTranslate(['common', 'content'])
   const [isDirty, setDirty] = useState(false)
 
-  const propsWord$$ = useObservable(
+  const propsWord$ = useObservable(
     inputs$ =>
       inputs$.pipe(
         pluck(0),
         filter((word): word is Word => !!word),
-        startWith(newWord()),
-        share()
+        startWith(newWord())
       ),
     [props.word] as const
   )
 
-  const [setWord, word$] = useObservableCallback<Word>(word$ =>
-    merge(propsWord$$, word$)
+  const [setWord, word$$] = useObservableCallback<Word>(word$ =>
+    share<Word>()(merge(propsWord$, word$))
   )
 
-  const word = useObservableState(word$)!
+  const word = useObservableState(word$$)!
 
   const [relatedWords, getRelatedWords] = useObservableState<Word[], void>(
     event$ =>
       event$.pipe(
         debounceTime(200),
-        withLatestFrom(propsWord$$),
+        withLatestFrom(word$$),
         switchMap(([, word]) => {
           if (!word.text) {
             return of([])
@@ -74,6 +75,22 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
       ),
     []
   )
+
+  const [onTranslateCtx, translateCtx$] = useObservableCallback(event$ =>
+    event$.pipe(
+      withLatestFrom(word$$),
+      switchMap(([, word]) =>
+        translateCtx(word.context || word.text, props.ctxTrans)
+      )
+    )
+  )
+
+  useSubscription(translateCtx$, trans => {
+    setWord({
+      ...word,
+      trans: word.trans ? word.trans + '\n\n' + trans : trans
+    })
+  })
 
   return (
     <div className="wordEditor-Panel">
@@ -180,20 +197,11 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
         <button
           type="button"
           className="wordEditor-Note_Btn"
-          onClick={() => {
-            translateCtx(word.context || word.text, props.ctxTrans)
-              .then(trans => {
-                setWord({
-                  ...word,
-                  trans: word.trans ? word.trans + '\n\n' + trans : trans
-                })
-              })
-              .catch(console.error)
-          }}
+          onClick={onTranslateCtx}
         >
           {t('content:transContext')}
         </button>
-        {!window.__SALADICT_INTERNAL_PAGE__ && (
+        {!isInternalPage() && (
           <button
             type="button"
             className="wordEditor-Note_Btn"
