@@ -27,7 +27,7 @@ export const newSelection: StoreActionHandler<'NEW_SELECTION'> = (
   if (selection.word) {
     newState.text = selection.word.text
 
-    newState.dictPanelCord = {
+    newState.dictPanelCoord = {
       mouseX: selection.mouseX,
       mouseY: selection.mouseY
     }

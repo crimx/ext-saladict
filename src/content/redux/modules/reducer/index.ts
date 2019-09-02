@@ -104,11 +104,14 @@ export const reducer = createReducer<
     isFav: payload
   }),
 
-  ADD_TO_NOTEBOOK: state => ({
-    ...state,
-    // epic will set this back to false if transation failed
-    isFav: true
-  }),
+  ADD_TO_NOTEBOOK: state =>
+    state.config.editOnFav
+      ? state
+      : {
+          ...state,
+          // epic will set this back to false if transation failed
+          isFav: true
+        },
 
   SEARCH_START: searchStart,
 
@@ -177,7 +180,23 @@ export const reducer = createReducer<
         }
   },
 
-  OPEN_QS_PANEL: openQSPanel
+  OPEN_QS_PANEL: openQSPanel,
+
+  WORD_EDITOR_STATUS: (state, { payload }) =>
+    payload
+      ? {
+          ...state,
+          isShowWordEditor: true,
+          dictPanelCoord: {
+            // negative value to force position
+            mouseX: -50,
+            mouseY: -(window.innerHeight * 0.2)
+          }
+        }
+      : {
+          ...state,
+          isShowWordEditor: false
+        }
 })
 
 export default reducer

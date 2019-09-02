@@ -37,7 +37,7 @@ export const initState = () => ({
   /** Is current word in Notebook */
   isFav: false,
   /** Pass negative value to skip the reconciliation */
-  dictPanelCord: {
+  dictPanelCoord: {
     mouseX: 0,
     mouseY: 0
   },

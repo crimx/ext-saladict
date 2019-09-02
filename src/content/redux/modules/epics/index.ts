@@ -1,4 +1,5 @@
 import { combineEpics } from 'redux-observable'
+import { from, of } from 'rxjs'
 import { map, mapTo, mergeMap, filter } from 'rxjs/operators'
 
 import { saveWord } from '@/_helpers/record-manager'
@@ -27,22 +28,32 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
   (action$, state$) =>
     action$.pipe(
       ofType('ADD_TO_NOTEBOOK'),
-      mergeMap(async () => {
-        const word =
-          state$.value.searchHistory[state$.value.searchHistory.length - 1]
-        if (word) {
-          try {
-            await saveWord('notebook', word)
-            return true
-          } catch (e) {
-            return false
-          }
+      mergeMap(() => {
+        if (state$.value.config.editOnFav) {
+          return of({
+            type: 'WORD_EDITOR_STATUS',
+            payload: true
+          } as const)
         }
-        return false
-      }),
-      // dim icon if failed
-      filter(isSuccess => !isSuccess),
-      mapTo({ type: 'WORD_IN_NOTEBOOK', payload: false })
+
+        return from(async () => {
+          const word =
+            state$.value.searchHistory[state$.value.searchHistory.length - 1]
+          if (word) {
+            try {
+              await saveWord('notebook', word)
+              return true
+            } catch (e) {
+              return false
+            }
+          }
+          return false
+        }).pipe(
+          // dim icon if failed
+          filter(isSuccess => !isSuccess),
+          mapTo({ type: 'WORD_IN_NOTEBOOK', payload: false } as const)
+        )
+      })
     ),
   newSelectionEpic,
   searchStartEpic

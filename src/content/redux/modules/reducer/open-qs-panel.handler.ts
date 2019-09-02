@@ -54,7 +54,7 @@ export const openQSPanel: StoreActionHandler<'OPEN_QS_PANEL'> = state => {
     isQSPanel: true,
     isShowDictPanel: true,
     // skip reconciliation with negative values
-    dictPanelCord: {
+    dictPanelCoord: {
       mouseX: -x,
       mouseY: -y
     }
