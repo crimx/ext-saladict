@@ -24,22 +24,12 @@ export const MtaBox: FC<MtaBoxProps> = props => {
 
   const [isTyping, onKeyDown] = useObservableState(transformTyping, false)
 
-  const [hasTyped, setHasTyped] = useState(false)
-
   useEffect(() => {
-    if (!props.expand) {
-      setHasTyped(false)
-    } else if (isTyping) {
-      setHasTyped(true)
-    }
-  }, [props.expand, isTyping])
-
-  useEffect(() => {
-    if (!isTyping && !hasTyped && props.expand && textareaRef.current) {
+    if (props.expand && textareaRef.current) {
       textareaRef.current.focus()
       textareaRef.current.select()
     }
-  }) // run on every update
+  }, [props.expand])
 
   return (
     <div>
@@ -66,6 +56,11 @@ export const MtaBox: FC<MtaBoxProps> = props => {
               value={props.text}
               onChange={e => props.onInput(e.currentTarget.value)}
               onKeyDown={onKeyDown}
+              onKeyUp={e => {
+                if (e.key === 'Enter' && e.ctrlKey) {
+                  props.searchText(props.text)
+                }
+              }}
               minRows={2}
               onHeightChange={height => setHeight(height)}
             />
