@@ -9527,9 +9527,9 @@ object.values@^1.1.0:
     has "^1.0.3"
 
 observable-hooks@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/observable-hooks/-/observable-hooks-2.1.0.tgz#64896b72fa7f95af1032dd97e38f9a68dead3bb5"
-  integrity sha512-TjK4w0mISy/8Gwi3xA9rtZRvAQavQxbOmNLTus6BGHtJpbBKl/8X4ook9PP2ZYVN9LNrHmrsBSkqduixHSaKuA==
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/observable-hooks/-/observable-hooks-2.1.1.tgz#971aa1983936ff8071a223e60991c8aeedb06ccc"
+  integrity sha512-7gy4rPWP/1ezwAzhyGsrI55XFPnSYBkHwSOSe+fZvuDDBbBZzN8rpIf5AHgLflT95+vqapR05FsofPDlPcxX/g==
 
 obuf@^1.0.0, obuf@^1.1.2:
   version "1.1.2"
