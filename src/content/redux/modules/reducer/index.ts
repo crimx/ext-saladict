@@ -188,9 +188,8 @@ export const reducer = createReducer<
           ...state,
           isShowWordEditor: true,
           dictPanelCoord: {
-            // negative value to force position
-            mouseX: -50,
-            mouseY: -(window.innerHeight * 0.2)
+            x: 50,
+            y: window.innerHeight * 0.2
           }
         }
       : {

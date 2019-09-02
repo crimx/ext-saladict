@@ -36,11 +36,9 @@ export const initState = () => ({
   isPinned: isOptionsPage(),
   /** Is current word in Notebook */
   isFav: false,
-  /** Pass negative value to skip the reconciliation */
-  dictPanelCoord: {
-    mouseX: 0,
-    mouseY: 0
-  },
+  bowlCoord: { x: 0, y: 0 },
+  /** The actual coord of dict panel might be different */
+  dictPanelCoord: { x: 0, y: 0 },
   panelMaxHeight: window.innerHeight * 0.8,
   panelMinHeight: 0,
   /** Dicts that will be rendered to dict panel */

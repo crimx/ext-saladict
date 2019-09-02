@@ -40,10 +40,10 @@ export const DictPanel: FC<DictPanelProps> = props => {
     setX(x => reconcileX(props.width, x))
   }, [props.width])
 
-  const setHeightRef = useRef((width: number, height: number) => {
+  const setHeight = useRef((height: number) => {
     heightRef.current = height
     setY(y => reconcileY(heightRef.current, y))
-  })
+  }).current
 
   useEffect(() => {
     if (props.dragStartCoord) {
@@ -111,11 +111,7 @@ export const DictPanel: FC<DictPanelProps> = props => {
         '--panel-max-height': props.maxHeight + 'px'
       }}
     >
-      <ResizeReporter
-        reportInit
-        debounce={100}
-        onSizeChanged={setHeightRef.current}
-      />
+      <ResizeReporter reportInit debounce={200} onHeightChanged={setHeight} />
       <div className="dictPanel-Head">{props.menuBar}</div>
       <div className="dictPanel-Body">
         {props.mtaBox}
