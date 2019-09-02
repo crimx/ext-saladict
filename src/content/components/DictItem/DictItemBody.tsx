@@ -4,6 +4,7 @@ import { Word } from '@/_helpers/record-manager'
 import { DictID } from '@/app-config'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { SALADICT_PANEL } from '@/_helpers/saladict'
 
 export interface DictItemBodyProps {
   dictID: DictID
@@ -56,9 +57,10 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
                 }`}
             </style>
             <div
-              className={`d-${props.dictID} dictRoot${
-                props.withAnimation ? ' isAnimate' : ''
-              }`}
+              className={
+                `d-${props.dictID} dictRoot ${SALADICT_PANEL}` +
+                (props.withAnimation ? ' isAnimate' : '')
+              }
             >
               <Dict result={props.searchResult} searchText={props.searchText} />
             </div>

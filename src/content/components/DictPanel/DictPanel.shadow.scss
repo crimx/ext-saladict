@@ -22,6 +22,7 @@
   overflow-x: hidden;
   overflow-y: scroll;
   font-size: 0; // remove whitespace
+  -webkit-overflow-scrolling: touch;
 }
 
 .dictPanel-DragMask {
