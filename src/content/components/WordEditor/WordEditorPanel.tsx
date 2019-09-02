@@ -1,31 +1,79 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState } from 'react'
 import {
   Word,
   getWordsByText,
   deleteWords,
-  saveWord
+  saveWord,
+  newWord
 } from '@/_helpers/record-manager'
 import { AppConfig } from '@/app-config'
 import { translateCtx } from '@/_helpers/translateCtx'
 import { useTranslate } from '@/_helpers/i18n'
 import WordCards from './WordCards'
 import { message } from '@/_helpers/browser-api'
+import {
+  useObservable,
+  useObservableState,
+  useObservableCallback
+} from 'observable-hooks'
+import { merge, of } from 'rxjs'
+import {
+  filter,
+  pluck,
+  startWith,
+  withLatestFrom,
+  share,
+  switchMap,
+  debounceTime
+} from 'rxjs/operators'
 
 export interface WordEditorPanelProps {
-  word: Word
+  word: Word | null
   /** dicts to translate context */
   ctxTrans: AppConfig['ctxTrans']
 
-  onWordChanged: (newWord: Word) => void
+  // onWordChanged: (newWord: Word) => void
   onClose: () => void
 }
 
 export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
   const { t } = useTranslate(['common', 'content'])
   const [isDirty, setDirty] = useState(false)
-  const [relatedWords, setRelatedWords] = useState<Word[]>([])
 
-  useEffect(getRelatedWords, [props.word.text])
+  const propsWord$$ = useObservable(
+    inputs$ =>
+      inputs$.pipe(
+        pluck(0),
+        filter((word): word is Word => !!word),
+        startWith(newWord()),
+        share()
+      ),
+    [props.word] as const
+  )
+
+  const [setWord, word$] = useObservableCallback<Word>(word$ =>
+    merge(propsWord$$, word$)
+  )
+
+  const word = useObservableState(word$)!
+
+  const [relatedWords, getRelatedWords] = useObservableState<Word[], void>(
+    event$ =>
+      event$.pipe(
+        debounceTime(200),
+        withLatestFrom(propsWord$$),
+        switchMap(([, word]) => {
+          if (!word.text) {
+            return of([])
+          }
+
+          return getWordsByText('notebook', word.text)
+            .then(words => words.filter(({ date }) => date !== word.date))
+            .catch(() => [])
+        })
+      ),
+    []
+  )
 
   return (
     <div className="wordEditor-Panel">
@@ -46,7 +94,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             type="text"
             name="text"
             id="wordEditor-Note_Word"
-            value={props.word.text}
+            value={word.text}
             onChange={formChanged}
           />
           <label htmlFor="wordEditor-Note_Trans">
@@ -64,7 +112,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             rows={5}
             name="trans"
             id="wordEditor-Note_Trans"
-            value={props.word.trans}
+            value={word.trans}
             onChange={formChanged}
           />
           <label htmlFor="wordEditor-Note_Note">{t('note.note')}</label>
@@ -72,7 +120,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             rows={5}
             name="note"
             id="wordEditor-Note_Note"
-            value={props.word.note}
+            value={word.note}
             onChange={formChanged}
           />
           <label htmlFor="wordEditor-Note_Context">{t('note.context')}</label>
@@ -80,7 +128,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             rows={5}
             name="context"
             id="wordEditor-Note_Context"
-            value={props.word.context}
+            value={word.context}
             onChange={formChanged}
           />
           <label htmlFor="wordEditor-Note_SrcTitle">{t('note.srcTitle')}</label>
@@ -88,7 +136,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             type="text"
             name="title"
             id="wordEditor-Note_SrcTitle"
-            value={props.word.title}
+            value={word.title}
             onChange={formChanged}
           />
           <label htmlFor="wordEditor-Note_SrcLink">{t('note.srcLink')}</label>
@@ -96,15 +144,15 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             type="text"
             name="url"
             id="wordEditor-Note_SrcLink"
-            value={props.word.url}
+            value={word.url}
             onChange={formChanged}
           />
           <label htmlFor="wordEditor-Note_SrcFavicon">
             {t('note.srcFavicon')}
-            {props.word.favicon ? (
+            {word.favicon ? (
               <img
                 className="wordEditor-Note_SrcFavicon"
-                src={props.word.favicon}
+                src={word.favicon}
                 alt={t('note.srcTitle')}
               />
             ) : null}
@@ -113,7 +161,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             type="text"
             name="favicon"
             id="wordEditor-Note_SrcFavicon"
-            value={props.word.favicon}
+            value={word.favicon}
             onChange={formChanged}
           />
         </form>
@@ -133,13 +181,11 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
           type="button"
           className="wordEditor-Note_Btn"
           onClick={() => {
-            translateCtx(props.word.context || props.word.text, props.ctxTrans)
+            translateCtx(word.context || word.text, props.ctxTrans)
               .then(trans => {
-                props.onWordChanged({
-                  ...props.word,
-                  trans: props.word.trans
-                    ? props.word.trans + '\n\n' + trans
-                    : trans
+                setWord({
+                  ...word,
+                  trans: word.trans ? word.trans + '\n\n' + trans : trans
                 })
               })
               .catch(console.error)
@@ -175,7 +221,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
           type="button"
           className="wordEditor-Note_BtnSave"
           onClick={() =>
-            saveWord('notebook', props.word)
+            saveWord('notebook', word)
               .then(closeEditor)
               .catch(console.error)
           }
@@ -197,21 +243,10 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
   }: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     setDirty(true)
 
-    props.onWordChanged({
-      ...props.word,
+    setWord({
+      ...word,
       [currentTarget.name]: currentTarget.value
     })
-  }
-
-  function getRelatedWords() {
-    if (!props.word.text) {
-      setRelatedWords([])
-    }
-    getWordsByText('notebook', props.word.text)
-      .then(words => {
-        setRelatedWords(words.filter(({ date }) => date !== props.word.date))
-      })
-      .catch(() => {})
   }
 }
 

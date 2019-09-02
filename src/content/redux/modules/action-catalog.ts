@@ -100,4 +100,12 @@ export type ActionCatalog = {
   }
 
   OPEN_QS_PANEL: {}
+
+  /* ------------------------------------------------ *\
+     Word Editor Panel
+  \* ------------------------------------------------ */
+
+  WORD_EDITOR_STATUS: {
+    payload: boolean
+  }
 }

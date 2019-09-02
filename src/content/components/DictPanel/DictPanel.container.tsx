@@ -18,7 +18,7 @@ type Dispatchers = 'onDragEnd'
 const mapStateToProps = (
   state: StoreState
 ): Omit<DictPanelPortalProps, Dispatchers> => {
-  const { mouseX, mouseY } = state.dictPanelCord
+  const { mouseX, mouseY } = state.dictPanelCoord
   return {
     show: state.isShowDictPanel,
     // icon position       10px  panel position
