@@ -20,8 +20,8 @@ const mapStateToProps = (
 ): Omit<DictPanelPortalProps, Dispatchers> => {
   return {
     show: state.isShowDictPanel,
-    x: state.dictPanelCoord.x,
-    y: state.dictPanelCoord.y,
+    coord: state.dictPanelCoord,
+    takeCoordSnapshot: state.isShowWordEditor,
     width: state.config.panelWidth,
     maxHeight: state.panelMaxHeight,
     minHeight: state.panelMinHeight,
