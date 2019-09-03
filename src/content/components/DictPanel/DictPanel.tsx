@@ -4,8 +4,13 @@ import { ResizeReporter } from 'react-resize-reporter/scroll'
 import { SALADICT_PANEL } from '@/_helpers/saladict'
 
 export interface DictPanelProps {
-  x: number
-  y: number
+  /** Update position command from uptream */
+  coord: {
+    x: number
+    y: number
+  }
+  /** Take or restore position snaphot when this value changes */
+  takeCoordSnapshot: boolean
 
   width: number
   maxHeight: number
@@ -25,16 +30,26 @@ export interface DictPanelProps {
 export const DictPanel: FC<DictPanelProps> = props => {
   const heightRef = useRef(50)
 
-  const [x, setX] = useState(() => reconcileX(props.width, props.x))
-  const [y, setY] = useState(() => reconcileY(heightRef.current, props.y))
+  const [x, setX] = useState(() => reconcileX(props.width, props.coord.x))
+  const [y, setY] = useState(() => reconcileY(heightRef.current, props.coord.y))
+
+  const coordSnapshotRef = useRef<{ x: number; y: number }>()
 
   useUpdateEffect(() => {
-    setX(reconcileX(props.width, props.x))
-  }, [props.x])
+    if (props.takeCoordSnapshot) {
+      coordSnapshotRef.current = { x, y }
+    } else {
+      if (coordSnapshotRef.current) {
+        setX(reconcileX(props.width, coordSnapshotRef.current.x))
+        setY(reconcileY(heightRef.current, coordSnapshotRef.current.y))
+      }
+    }
+  }, [props.takeCoordSnapshot])
 
   useUpdateEffect(() => {
-    setY(reconcileY(heightRef.current, props.y))
-  }, [props.y])
+    setX(reconcileX(props.width, props.coord.x))
+    setY(reconcileY(heightRef.current, props.coord.y))
+  }, [props.coord])
 
   useUpdateEffect(() => {
     setX(x => reconcileX(props.width, x))
@@ -111,7 +126,7 @@ export const DictPanel: FC<DictPanelProps> = props => {
         '--panel-max-height': props.maxHeight + 'px'
       }}
     >
-      <ResizeReporter reportInit debounce={200} onHeightChanged={setHeight} />
+      <ResizeReporter reportInit debounce={250} onHeightChanged={setHeight} />
       <div className="dictPanel-Head">{props.menuBar}</div>
       <div className="dictPanel-Body">
         {props.mtaBox}
