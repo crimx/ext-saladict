@@ -282,6 +282,19 @@ export type MessageConfig = {
   }
 
   /* ------------------------------------------------ *\
+     Context Menus
+  \* ------------------------------------------------ */
+
+  /** Manually trigger context menus click */
+  CONTEXT_MENUS_CLICK: {
+    payload: {
+      menuItemId: string
+      selectionText?: string
+      linkUrl?: string
+    }
+  }
+
+  /* ------------------------------------------------ *\
      Third-party Scripts
   \* ------------------------------------------------ */
 
@@ -317,28 +330,10 @@ export type MessageResponse<T extends MsgType> = Readonly<
 //   /** Default */
 //   Default,
 
-//   CloseQSPanel,
-
-//   /** Response the pageInfo of a page */
-//   PageInfo,
-
-//   /** Background to a dict panel on one page */
-//   PlayWaveform,
-//   /** Request background proxy for current selection */
-
 //   RequestCSS,
-
-//   /** Query panel state */
-//   QueryPanelState,
 
 //   /** Manually trigger context menus click */
 //   ContextMenusClick,
-
-//   /**
-//    * Background proxy sends back underlyingly
-//    */
-//   __PageInfo__
-// }
 
 /** iframe messaging */
 // export enum PostMsgType {
