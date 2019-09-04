@@ -1,7 +1,7 @@
 import { DeepReadonly } from '@/typings/helpers'
 import { getAllDicts } from './dicts'
 import { getAllContextMenus } from './context-menus'
-import { MtaAutoUnfold as _MtaAutoUnfold, _getDefaultProfile } from './profiles'
+import { MtaAutoUnfold as _MtaAutoUnfold } from './profiles'
 import { SupportedLangs } from '@/_helpers/lang-check'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'

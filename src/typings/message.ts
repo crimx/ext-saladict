@@ -200,6 +200,7 @@ export type MessageConfig = {
   QUERY_PANEL_STATE: {
     /** object path, default returns the whole state */
     payload?: string
+    response?: any
   }
 
   /** request searching */

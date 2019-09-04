@@ -2,7 +2,7 @@ import {
   NotebookFile,
   AddConfig,
   DownloadConfig,
-  SyncService,
+  SyncService
 } from '../interface'
 import {
   getNotebook,
@@ -11,7 +11,7 @@ import {
   setMeta,
   getMeta,
   setSyncConfig,
-  getSyncConfig,
+  getSyncConfig
 } from '../helpers'
 
 import { Mutable } from '@/typings/helpers'
@@ -35,34 +35,35 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
   static readonly id = 'webdav'
 
   static readonly title = {
-    'en': 'WebDAV',
+    en: 'WebDAV',
     'zh-CN': 'WebDAV',
-    'zh-TW': 'WebDAV',
+    'zh-TW': 'WebDAV'
   }
 
   config = Service.getDefaultConfig()
 
   meta: SyncMeta = {}
 
-  static getDefaultConfig (): SyncConfig {
+  static getDefaultConfig(): SyncConfig {
     return {
       url: '',
       user: '',
       passwd: '',
-      duration: 15,
+      duration: 15
     }
   }
 
-  async startInterval () {
-    this.meta = await getMeta(Service.id) || this.meta
+  async startInterval() {
+    this.meta = (await getMeta(Service.id)) || this.meta
 
     browser.alarms.onAlarm.addListener(this.handleSyncAlarm.bind(this))
 
-    createSyncConfigStream<SyncConfig>(Service.id)
-      .subscribe(this.handleInterval.bind(this))
+    createSyncConfigStream<SyncConfig>(Service.id).subscribe(
+      this.handleInterval.bind(this)
+    )
   }
 
-  async handleInterval (newConfig: SyncConfig | null) {
+  async handleInterval(newConfig: SyncConfig | null) {
     await browser.alarms.clear('webdav')
 
     if (!newConfig) {
@@ -71,7 +72,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     }
 
     if (typeof newConfig.url === 'string' && !newConfig.url.endsWith('/')) {
-      (newConfig as Mutable<SyncConfig>).url += '/'
+      ;(newConfig as Mutable<SyncConfig>).url += '/'
     }
 
     this.config = newConfig
@@ -79,45 +80,55 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     if (newConfig.url) {
       const duration = +newConfig.duration || 15
       const now = Date.now()
-      let nextInterval: number = +(await storage.local.get('webdavInterval')).webdavInterval
-      if (!nextInterval || nextInterval < now || now + duration * 60000 < nextInterval) {
+      let nextInterval: number = +(await storage.local.get('webdavInterval'))
+        .webdavInterval
+      if (
+        !nextInterval ||
+        nextInterval < now ||
+        now + duration * 60000 < nextInterval
+      ) {
         nextInterval = now + 1000
       }
-      await storage.local.set({ 'webdavInterval': nextInterval })
+      await storage.local.set({ webdavInterval: nextInterval })
       browser.alarms.create('webdav', {
         when: nextInterval,
-        periodInMinutes: duration,
+        periodInMinutes: duration
       })
     } else {
-      await storage.local.set({ 'webdavInterval': 0 })
+      await storage.local.set({ webdavInterval: 0 })
     }
   }
 
-  async handleSyncAlarm (alarm: browser.alarms.Alarm) {
-    if (alarm.name !== 'webdav') { return }
+  async handleSyncAlarm(alarm: browser.alarms.Alarm) {
+    if (alarm.name !== 'webdav') {
+      return
+    }
 
     if (process.env.DEV_BUILD) {
       console.log('WebDAV Alarm Interval')
     }
 
-    await this.download({}).catch(() => {/* nothing */})
+    await this.download({}).catch(() => {
+      /* nothing */
+    })
 
     const duration = this.config.duration * 60000 || 15 * 60000
-    await storage.local.set({ 'webdavInterval': Date.now() + duration })
+    await storage.local.set({ webdavInterval: Date.now() + duration })
   }
 
   /**
    * Check server and create a Saladict Directory if not exist.
    */
-  async init (config: Readonly<SyncConfig>) {
+  async init(config: Readonly<SyncConfig>) {
     try {
       const response = await fetch(config.url, {
         method: 'PROPFIND',
         headers: {
-          'Authorization': 'Basic ' + window.btoa(`${config.user}:${config.passwd}`),
+          Authorization:
+            'Basic ' + window.btoa(`${config.user}:${config.passwd}`),
           'Content-Type': 'application/xml; charset="utf-8"',
-          'Depth': '1',
-        },
+          Depth: '1'
+        }
       })
       if (!response.ok) {
         if (response.status === 401) {
@@ -131,9 +142,13 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     }
 
     try {
-      if (!text) { throw new Error() }
+      if (!text) {
+        throw new Error()
+      }
       var doc = new DOMParser().parseFromString(text, 'text/xml')
-      if (!doc) { throw new Error() }
+      if (!doc) {
+        throw new Error()
+      }
     } catch (e) {
       return Promise.reject('parse')
     }
@@ -172,11 +187,13 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
         // An old file exists on server.
         // Let user decide whether to upload.
         return Promise.reject('exist')
-      } catch (e) {/* nothing */}
+      } catch (e) {
+        /* nothing */
+      }
     }
   }
 
-  async add ({ force }: AddConfig) {
+  async add({ force }: AddConfig) {
     if (!this.config.url) {
       if (process.env.DEV_BUILD) {
         console.warn(`sync service ${Service.id} upload: empty url`)
@@ -189,7 +206,9 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     }
 
     const words = await getNotebook()
-    if (!words || words.length <= 0) { return }
+    if (!words || words.length <= 0) {
+      return
+    }
 
     const timestamp = Date.now()
 
@@ -206,9 +225,10 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       const response = await fetch(this.config.url + 'Saladict/notebook.json', {
         method: 'PUT',
         headers: {
-          'Authorization': 'Basic ' + window.btoa(`${this.config.user}:${this.config.passwd}`),
+          Authorization:
+            'Basic ' + window.btoa(`${this.config.user}:${this.config.passwd}`)
         },
-        body,
+        body
       })
       if (!response.ok) {
         throw new Error()
@@ -223,12 +243,12 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     await this.setMeta({ timestamp, etag: '' })
   }
 
-  delete ({ force }) {
+  delete({ force }) {
     // full sync anyway
     return this.add({ force })
   }
 
-  async download ({ testConfig, noCache }: DownloadConfig) {
+  async download({ testConfig, noCache }: DownloadConfig) {
     const config = testConfig || this.config
 
     if (!config.url) {
@@ -239,7 +259,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     }
 
     const headers = {
-      'Authorization': 'Basic ' + window.btoa(`${config.user}:${config.passwd}`),
+      Authorization: 'Basic ' + window.btoa(`${config.user}:${config.passwd}`)
     }
     if (!testConfig && !noCache && this.meta.etag != null) {
       headers['If-None-Match'] = this.meta.etag
@@ -248,10 +268,12 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
 
     try {
       var response = await fetch(
-        config.url + (config.url.endsWith('/') ? '' : '/') + 'Saladict/notebook.json',
+        config.url +
+          (config.url.endsWith('/') ? '' : '/') +
+          'Saladict/notebook.json',
         {
           method: 'GET',
-          headers,
+          headers
         }
       )
 
@@ -294,7 +316,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
         if (json.timestamp === this.meta.timestamp && !this.meta.etag) {
           await this.setMeta({
             timestamp: json.timestamp,
-            etag: response.headers.get('ETag') || '',
+            etag: response.headers.get('ETag') || ''
           })
         }
       }
@@ -303,7 +325,6 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
         // older file
         return
       }
-
     }
 
     if (process.env.DEV_BUILD) {
@@ -315,29 +336,29 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     if (!testConfig) {
       await this.setMeta({
         timestamp: json.timestamp,
-        etag: response.headers.get('ETag') || '',
+        etag: response.headers.get('ETag') || ''
       })
 
       await setNotebook(json.words)
     }
   }
 
-  setMeta (meta: SyncMeta) {
+  setMeta(meta: SyncMeta) {
     this.meta = meta
     return setMeta(Service.id, meta)
   }
 
-  async getMeta () {
+  async getMeta() {
     const meta = await getMeta<SyncMeta>(Service.id)
-    this.meta = meta || {} as SyncMeta
+    this.meta = meta || ({} as SyncMeta)
   }
 
-  setConfig (config: SyncConfig) {
+  setConfig(config: SyncConfig) {
     this.config = config
     return setSyncConfig(Service.id, config)
   }
 
-  async getConfig () {
+  async getConfig() {
     this.config = (await getSyncConfig<SyncConfig>(Service.id)) || this.config
     return this.config
   }

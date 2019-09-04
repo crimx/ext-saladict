@@ -8,7 +8,7 @@ import { addConfigListener } from '@/_helpers/config-manager'
 let blacklist: AppConfig['pdfBlacklist'] = []
 let whitelist: AppConfig['pdfWhitelist'] = []
 
-export function init (config: AppConfig) {
+export function init(config: AppConfig) {
   if (browser.webRequest.onBeforeRequest.hasListener(otherPdfListener)) {
     return
   }
@@ -36,7 +36,7 @@ export function init (config: AppConfig) {
   })
 }
 
-function startListening () {
+function startListening() {
   if (!browser.webRequest.onBeforeRequest.hasListener(otherPdfListener)) {
     browser.webRequest.onBeforeRequest.addListener(
       otherPdfListener,
@@ -57,12 +57,7 @@ function startListening () {
     browser.webRequest.onHeadersReceived.addListener(
       httpPdfListener,
       {
-        urls: [
-          'https://*/*',
-          'https://*/*',
-          'http://*/*',
-          'http://*/*'
-        ],
+        urls: ['https://*/*', 'https://*/*', 'http://*/*', 'http://*/*'],
         types: ['main_frame', 'sub_frame']
       },
       ['blocking', 'responseHeaders']
@@ -70,30 +65,46 @@ function startListening () {
   }
 }
 
-function stopListening () {
+function stopListening() {
   browser.webRequest.onBeforeRequest.removeListener(otherPdfListener)
   browser.webRequest.onHeadersReceived.removeListener(httpPdfListener)
 }
 
-function otherPdfListener ({ url }) {
-  if (blacklist.some(([r]) => new RegExp(r).test(url)) &&
-      whitelist.every(([r]) => !new RegExp(r).test(url))) {
+function otherPdfListener({ url }) {
+  if (
+    blacklist.some(([r]) => new RegExp(r).test(url)) &&
+    whitelist.every(([r]) => !new RegExp(r).test(url))
+  ) {
     return
   }
 
   return {
-    redirectUrl: browser.runtime.getURL(`static/pdf/web/viewer.html?file=${encodeURIComponent(url)}`)
+    redirectUrl: browser.runtime.getURL(
+      `static/pdf/web/viewer.html?file=${encodeURIComponent(url)}`
+    )
   }
 }
 
-function httpPdfListener ({ responseHeaders, url }: { responseHeaders?: browser.webRequest.HttpHeaders, url: string }) {
-  if (!responseHeaders) { return }
-  if (blacklist.some(([r]) => new RegExp(r).test(url)) &&
-      whitelist.every(([r]) => !new RegExp(r).test(url))) {
+function httpPdfListener({
+  responseHeaders,
+  url
+}: {
+  responseHeaders?: browser.webRequest.HttpHeaders
+  url: string
+}) {
+  if (!responseHeaders) {
+    return
+  }
+  if (
+    blacklist.some(([r]) => new RegExp(r).test(url)) &&
+    whitelist.every(([r]) => !new RegExp(r).test(url))
+  ) {
     return
   }
 
-  const contentTypeHeader = responseHeaders.find(({ name }) => name.toLowerCase() === 'content-type')
+  const contentTypeHeader = responseHeaders.find(
+    ({ name }) => name.toLowerCase() === 'content-type'
+  )
   if (contentTypeHeader && contentTypeHeader.value) {
     const contentType = contentTypeHeader.value.toLowerCase()
     if (
@@ -101,7 +112,9 @@ function httpPdfListener ({ responseHeaders, url }: { responseHeaders?: browser.
       (contentType === 'application/octet-stream' && url.endsWith('.pdf'))
     ) {
       return {
-        redirectUrl: browser.runtime.getURL(`static/pdf/web/viewer.html?file=${encodeURIComponent(url)}`)
+        redirectUrl: browser.runtime.getURL(
+          `static/pdf/web/viewer.html?file=${encodeURIComponent(url)}`
+        )
       }
     }
   }
