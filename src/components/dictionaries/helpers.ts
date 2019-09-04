@@ -58,11 +58,11 @@ export interface ViewPorps<T> {
 export type SearchErrorType = 'NO_RESULT' | 'NETWORK_ERROR'
 
 export function handleNoResult<T = any>(): Promise<T> {
-  return Promise.reject('NO_RESULT')
+  return Promise.reject(new Error('NO_RESULT'))
 }
 
 export function handleNetWorkError(): Promise<never> {
-  return Promise.reject('NETWORK_ERROR')
+  return Promise.reject(new Error('NETWORK_ERROR'))
 }
 
 export interface MachineTranslatePayload {
@@ -162,7 +162,7 @@ export function getHTML(
   }
 
   if (host) {
-    function fillLink(el: HTMLElement) {
+    const fillLink = (el: HTMLElement) => {
       el.setAttribute('href', getFullLink(host!, el, 'href'))
       el.setAttribute('src', getFullLink(host!, el, 'src'))
     }

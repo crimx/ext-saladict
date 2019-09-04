@@ -28,7 +28,9 @@ export class ImportExport extends React.Component<Props> {
         try {
           const json = JSON.parse(fr.result as string)
           resolve(json)
-        } catch (err) {/* */}
+        } catch (err) {
+          /* */
+        }
         resolve()
       }
       fr.onerror = () => resolve()
@@ -45,10 +47,11 @@ export class ImportExport extends React.Component<Props> {
       activeProfileID,
       hasInstructionsShown,
       profileIDList,
-      syncConfig,
+      syncConfig
     } = result
 
-    if (!baseconfig &&
+    if (
+      !baseconfig &&
       !activeProfileID &&
       !profileIDList &&
       hasInstructionsShown == null
@@ -77,7 +80,8 @@ export class ImportExport extends React.Component<Props> {
         for (const { id } of profileIDList) {
           await updateProfile(mergeProfile(result[id] as Profile))
         }
-        if (!activeProfileID ||
+        if (
+          !activeProfileID ||
           profileIDList.every(({ id }) => id !== activeProfileID)
         ) {
           // use first item instead
@@ -98,7 +102,8 @@ export class ImportExport extends React.Component<Props> {
 
     result.baseconfig = await getConfig()
 
-    if (!result.baseconfig ||
+    if (
+      !result.baseconfig ||
       !result.activeProfileID ||
       !result.profileIDList
     ) {
@@ -127,31 +132,38 @@ export class ImportExport extends React.Component<Props> {
       a.click()
     } catch (err) {
       message.error('opt_config_import_error')
-      return
     }
   }
 
-  render () {
+  render() {
     const { t } = this.props
     return (
       <Row>
         <Col span={12}>
           <Row gutter={10}>
             <Col span={12}>
-              <Upload.Dragger beforeUpload={file => (this.importConfig(file), false)}>
-                <p className='ant-upload-drag-icon'>
-                  <Icon type='download' />
+              <Upload.Dragger
+                beforeUpload={file => {
+                  this.importConfig(file)
+                  return false
+                }}
+              >
+                <p className="ant-upload-drag-icon">
+                  <Icon type="download" />
                 </p>
-                <p className='ant-upload-text'>{t('opt_config_import')}</p>
+                <p className="ant-upload-text">{t('opt_config_import')}</p>
               </Upload.Dragger>
             </Col>
             <Col span={12}>
-              <button className='ant-upload ant-upload-drag' onClick={this.exportConfig}>
-                <div className='ant-upload ant-upload-btn'>
-                  <p className='ant-upload-drag-icon'>
-                    <Icon type='upload' />
+              <button
+                className="ant-upload ant-upload-drag"
+                onClick={this.exportConfig}
+              >
+                <div className="ant-upload ant-upload-btn">
+                  <p className="ant-upload-drag-icon">
+                    <Icon type="upload" />
                   </p>
-                  <p className='ant-upload-text'>{t('opt_config_export')}</p>
+                  <p className="ant-upload-text">{t('opt_config_export')}</p>
                 </div>
               </button>
             </Col>

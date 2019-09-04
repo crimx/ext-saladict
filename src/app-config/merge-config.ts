@@ -1,5 +1,5 @@
 import { getDefaultConfig, AppConfig, AppConfigMutable } from '@/app-config'
-import { getALlDicts } from './dicts'
+import { getAllDicts } from './dicts'
 
 import forEach from 'lodash/forEach'
 import isNumber from 'lodash/isNumber'
@@ -8,11 +8,14 @@ import isBoolean from 'lodash/isBoolean'
 import get from 'lodash/get'
 import set from 'lodash/set'
 
-const defaultAllDicts = getALlDicts()
+const defaultAllDicts = getAllDicts()
 
 export default mergeConfig
 
-export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppConfig {
+export function mergeConfig(
+  oldConfig: AppConfig,
+  baseConfig?: AppConfig
+): AppConfig {
   const base: AppConfigMutable = baseConfig
     ? JSON.parse(JSON.stringify(baseConfig))
     : getDefaultConfig()
@@ -92,7 +95,10 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   mergeNumber('doubleClickDelay')
 
   mergeBoolean('tripleCtrl')
-  merge('tripleCtrlPreload', val => val === '' || val === 'clipboard' || val === 'selection')
+  merge(
+    'tripleCtrlPreload',
+    val => val === '' || val === 'clipboard' || val === 'selection'
+  )
   mergeBoolean('tripleCtrlAuto')
   merge('tripleCtrlLocation', val => val >= 0 && val <= 8)
   mergeBoolean('tripleCtrlStandalone')
@@ -100,7 +106,10 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   mergeString('tripleCtrlSidebar')
   mergeBoolean('tripleCtrlPageSel')
 
-  merge('baPreload', val => val === '' || val === 'clipboard' || val === 'selection')
+  merge(
+    'baPreload',
+    val => val === '' || val === 'clipboard' || val === 'selection'
+  )
   mergeBoolean('baAuto')
   mergeString('baOpen')
 
@@ -149,9 +158,10 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
   }
   if (oldVersion <= 11) {
     oldVersion = 12
-    base.blacklist.push(
-      ['^https://stackedit\.io(/.*)?$', 'https://stackedit.io/*']
-    )
+    base.blacklist.push([
+      '^https://stackedit.io(/.*)?$',
+      'https://stackedit.io/*'
+    ])
   }
 
   if (oldConfig.language['minor'] === false) {
@@ -169,7 +179,7 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
 
   return base
 
-  function mergeSelectedContextMenus (path: string): void {
+  function mergeSelectedContextMenus(path: string): void {
     const selected = get(oldConfig, [path, 'selected'])
     if (Array.isArray(selected)) {
       if (selected.length === 0) {
@@ -184,19 +194,19 @@ export function mergeConfig (oldConfig: AppConfig, baseConfig?: AppConfig): AppC
     }
   }
 
-  function mergeNumber (path: string): void {
+  function mergeNumber(path: string): void {
     return merge(path, isNumber)
   }
 
-  function mergeString (path: string): void {
+  function mergeString(path: string): void {
     return merge(path, isString)
   }
 
-  function mergeBoolean (path: string): void {
+  function mergeBoolean(path: string): void {
     return merge(path, isBoolean)
   }
 
-  function merge (path: string, predicate: (val) => boolean): void {
+  function merge(path: string, predicate: (val) => boolean): void {
     const val = get(oldConfig, path)
     if (predicate(val)) {
       set(base, path, val)

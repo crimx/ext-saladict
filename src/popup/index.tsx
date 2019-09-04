@@ -6,18 +6,15 @@ import { injectAnalytics } from '@/_helpers/analytics'
 import { AppConfig } from '@/app-config'
 import { getConfig, addConfigListener } from '@/_helpers/config-manager'
 import { message, openURL } from '@/_helpers/browser-api'
-import { MsgContextMenusClick, MsgType } from '@/typings/message'
-import { Mutable } from '@/typings/helpers'
-import { SelectionInfo } from '@/_helpers/selection'
-import { saveWord } from '@/_helpers/record-manager'
+import { saveWord, Word } from '@/_helpers/record-manager'
 import Notebook from './Notebook'
 import { translateCtx } from '@/_helpers/translateCtx'
 
 import { I18nextProvider as ProviderI18next } from 'react-i18next'
-import i18nLoader from '@/_helpers/i18n'
-import popupLocles from '@/_locales/popup'
+import { i18nLoader } from '@/_helpers/i18n'
 
 import './_style.scss'
+import { Message } from '@/typings/message'
 
 // inject panel AFTER flags are set
 window.__SALADICT_INTERNAL_PAGE__ = true
@@ -37,18 +34,18 @@ class App extends React.Component<AppProps, AppState> {
     config: this.props.config
   }
 
-  componentDidMount () {
+  componentDidMount() {
     addConfigListener(({ newConfig }) => {
       document.body.style.width = newConfig.panelWidth + 'px'
       this.setState({ config: newConfig })
     })
   }
 
-  render () {
+  render() {
     return (
       <ProviderI18next i18n={this.props.i18n}>
         <Popup config={this.state.config} />
-      </ ProviderI18next>
+      </ProviderI18next>
     )
   }
 }
@@ -72,7 +69,7 @@ getConfig().then(config => {
   }
 })
 
-function showPanel (config: AppConfig) {
+function showPanel(config: AppConfig) {
   document.body.classList.add('panel')
   injectSaladictInternal(true)
 
@@ -80,32 +77,34 @@ function showPanel (config: AppConfig) {
     injectAnalytics('/popup')
   }
 
-  const i18n = i18nLoader({ popup: popupLocles }, 'popup')
+  const i18n = i18nLoader()
+  i18n.loadNamespaces('popup')
+  i18n.setDefaultNamespace('popup')
+
   ReactDOM.render(
     <App config={config} i18n={i18n} />,
-    document.getElementById('root'),
+    document.getElementById('root')
   )
 }
 
-async function addNotebook () {
+async function addNotebook() {
   let hasError = false
-  let info: Mutable<SelectionInfo> | undefined
+  let word: Word | undefined
 
   const tabs = await browser.tabs.query({ active: true, currentWindow: true })
   const tab = tabs[0]
   if (tab && tab.id) {
     try {
-      info = await message.send(
-        tab.id,
-        { type: MsgType.PreloadSelection }
-      )
+      word = await message.send<'PRELOAD_SELECTION'>(tab.id, {
+        type: 'PRELOAD_SELECTION'
+      })
     } catch (err) {
       hasError = true
     }
 
-    if (info && info.text) {
+    if (word && word.text) {
       try {
-        await saveWord('notebook', info)
+        await saveWord('notebook', word)
       } catch (err) {
         hasError = true
       }
@@ -114,50 +113,60 @@ async function addNotebook () {
     hasError = true
   }
 
-  const i18n = i18nLoader({ popup: popupLocles }, 'popup')
+  const i18n = i18nLoader()
+  i18n.loadNamespaces('popup')
+  i18n.setDefaultNamespace('popup')
+
   ReactDOM.render(
     <ProviderI18next i18n={i18n}>
-      <Notebook info={info} hasError={hasError}/>
-    </ ProviderI18next>,
-    document.getElementById('root'),
+      <Notebook word={word} hasError={hasError} />
+    </ProviderI18next>,
+    document.getElementById('root')
   )
 
   // async get translations
-  if (info && info.context) {
+  if (word && word.context) {
     const config = await getConfig()
-    info.trans = await translateCtx(info.context || info.title, config.ctxTrans)
+    word.trans = await translateCtx(word.context || word.title, config.ctxTrans)
     try {
-      await saveWord('notebook', info)
-    } catch (err) {/* */}
+      await saveWord('notebook', word)
+    } catch (err) {
+      /* */
+    }
   }
 }
 
-function openOptions () {
+function openOptions() {
   openURL('options.html', true)
 }
 
-async function sendContextMenusClick (menuItemId: string) {
-  const msg: Mutable<MsgContextMenusClick> = {
-    type: MsgType.ContextMenusClick,
-    menuItemId,
+async function sendContextMenusClick(menuItemId: string) {
+  const payload: Message<'CONTEXT_MENUS_CLICK'>['payload'] = {
+    menuItemId
   }
   try {
     const tabs = await browser.tabs.query({ active: true, currentWindow: true })
     const tab = tabs[0]
     if (tab && tab.url) {
-      msg.linkUrl = tab.url
+      payload.linkUrl = tab.url
       if (tab.id) {
         try {
-          const info: SelectionInfo = await message.send(
-            tab.id,
-            { type: MsgType.PreloadSelection }
-          )
-          if (info && info.text) {
-            msg.selectionText = info.text
+          const word = await message.send<'PRELOAD_SELECTION'>(tab.id, {
+            type: 'PRELOAD_SELECTION'
+          })
+          if (word && word.text) {
+            payload.selectionText = word.text
           }
-        } catch (e) {/* */}
+        } catch (e) {
+          /* */
+        }
       }
     }
-  } catch (e) {/* */}
-  message.send(msg)
+  } catch (e) {
+    /* */
+  }
+  message.send({
+    type: 'CONTEXT_MENUS_CLICK',
+    payload
+  })
 }

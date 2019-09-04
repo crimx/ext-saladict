@@ -176,7 +176,7 @@ export async function openQSPanel(): Promise<void> {
       try {
         url += '?info=' + encodeURIComponent(JSON.stringify(info))
       } catch (e) {
-        if (process.env.DEV_BUILD) {
+        if (process.env.NODE_ENV === 'development') {
           console.warn(e)
         }
       }
@@ -196,7 +196,7 @@ export async function openQSPanel(): Promise<void> {
     top: Math.round(qsPanelTop)
   })
 
-  if (qsPanelWin.id) {
+  if (qsPanelWin && qsPanelWin.id) {
     qsPanelID = qsPanelWin.id
     // notify all tabs
     ;(await browser.tabs.query({})).forEach(tab => {
@@ -305,22 +305,21 @@ function fetchDictResult(
 
   const payload = data.payload || {}
 
-  return timeout(
+  const pSearch = timeout(
     search(data.text, window.appConfig, window.activeProfile, payload),
     25000
   )
-    .catch(err => {
-      if (process.env.DEV_BUILD) {
+    .catch(async (err: Error) => {
+      if (process.env.NODE_ENV === 'development') {
         console.warn(data.id, err)
       }
 
-      if (err === 'NETWORK_ERROR') {
+      if (err.message === 'NETWORK_ERROR') {
         // retry once
-        return timer(500).then(() =>
-          timeout(
-            search(data.text, window.appConfig, window.activeProfile, payload),
-            25000
-          )
+        await timer(500)
+        return timeout(
+          search(data.text, window.appConfig, window.activeProfile, payload),
+          25000
         )
       }
 
@@ -328,11 +327,16 @@ function fetchDictResult(
     })
     .then(response => ({ ...response, id: data.id }))
     .catch(err => {
-      if (process.env.DEV_BUILD) {
+      if (process.env.NODE_ENV === 'development') {
         console.warn(data.id, err)
       }
       return { result: null, id: data.id }
     })
+
+  // Random delay for more organic feeling
+  return Promise.all([pSearch, timer(Math.random() * 1000 + 500)]).then(
+    ([response]) => response
+  )
 }
 
 async function callDictEngineMethod(

@@ -28,7 +28,7 @@ export type StorageListenerCb<T = any, K extends string = string> = (
   changes: {
     [field in K]: StorageChange<T>
   },
-  areaName: 'sync' | 'local'
+  areaName: string
 ) => void
 
 type onMessageEvent<T extends Message = Message> = (
@@ -155,7 +155,7 @@ export async function openURL(url: string, self?: boolean): Promise<void> {
       // Only Chrome supports tab.highlight for now
       await browser.tabs['highlight']({ tabs: index, windowId })
     }
-    await browser.windows.update(windowId, { focused: true })
+    await browser.windows.update(windowId!, { focused: true })
   } else {
     await browser.tabs.create({ url })
   }

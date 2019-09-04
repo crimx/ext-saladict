@@ -42,7 +42,8 @@ module.exports = {
         ignoreRestSiblings: true
       }
     ],
-    'no-dupe-class-members': 'off'
+    'no-dupe-class-members': 'off',
+    'prefer-promise-reject-errors': 'off'
   },
   globals: {
     browser: true
