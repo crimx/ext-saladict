@@ -21,11 +21,7 @@
     "paths": {
       "@/*": ["src/*"]
     },
-    "typeRoots": [
-      "node_modules/@types",
-      "node_modules/web-ext-types",
-      "src/typings"
-    ],
+    "typeRoots": ["node_modules/@types", "src/typings"],
     "lib": ["esnext", "dom", "dom.iterable"]
   },
   "include": ["src", ".storybook"]
