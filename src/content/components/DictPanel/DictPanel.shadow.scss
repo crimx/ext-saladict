@@ -21,7 +21,7 @@
   flex: 1;
   overflow-x: hidden;
   overflow-y: scroll;
-  font-size: 0; // remove whitespace
+  // font-size: 0; // https://bugzilla.mozilla.org/show_bug.cgi?id=1573030
   -webkit-overflow-scrolling: touch;
 }
 
