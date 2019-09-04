@@ -1,31 +1,31 @@
 import { message, openURL } from '@/_helpers/browser-api'
-import { MsgType, MsgContextMenusClick } from '@/typings/message'
 import { AppConfig } from '@/app-config'
-import i18nLoader from '@/_helpers/i18n'
-import { TranslationFunction } from 'i18next'
-import contextLocles from '@/_locales/context'
+import { i18nLoader } from '@/_helpers/i18n'
+import { TFunction } from 'i18next'
 import isEqual from 'lodash/isEqual'
 import { addConfigListener, AppConfigChanged } from '@/_helpers/config-manager'
 import './types'
 
-// import { Observable, ReplaySubject, combineLatest } from 'rxjs'
-// import { mergeMap, filter, map, audit, mapTo, share, startWith } from 'rxjs/operators'
-import { Observable } from 'rxjs/Observable'
-import { ReplaySubject } from 'rxjs/ReplaySubject'
-import { combineLatest } from 'rxjs/observable/combineLatest'
-import { mergeMap } from 'rxjs/operators/mergeMap'
-import { filter } from 'rxjs/operators/filter'
-import { map } from 'rxjs/operators/map'
-import { audit } from 'rxjs/operators/audit'
-import { mapTo } from 'rxjs/operators/mapTo'
-import { share } from 'rxjs/operators/share'
-import { startWith } from 'rxjs/operators/startWith'
-import { fromEventPattern } from 'rxjs/observable/fromEventPattern'
+import {
+  Observable,
+  combineLatest,
+  fromEventPattern,
+  BehaviorSubject
+} from 'rxjs'
+import {
+  mergeMap,
+  filter,
+  map,
+  audit,
+  mapTo,
+  share,
+  startWith
+} from 'rxjs/operators'
 
 type ContextMenusConfig = AppConfig['contextMenus']
 
 interface CreateMenuOptions {
-  type?: browser.contextMenus.ItemType,
+  type?: browser.contextMenus.ItemType
   id?: string
   parentId?: string
   title?: string
@@ -35,49 +35,63 @@ interface CreateMenuOptions {
 // singleton
 let setMenus$$: Observable<void>
 
-const i18n$$ = new ReplaySubject<TranslationFunction>(1)
-const i18n = i18nLoader({ context: contextLocles }, 'context', (_, t) => i18n$$.next(t))
-i18n.on('languageChanged', () => i18n$$.next(i18n.t.bind(i18n)))
+const i18n = i18nLoader()
+i18n.loadNamespaces('context')
+
+const i18n$$ = new BehaviorSubject<TFunction>(
+  i18n.getFixedT(i18n.language, 'context')
+)
+
+i18n.on('languageChanged', () =>
+  i18n$$.next(i18n.getFixedT(i18n.language, 'context'))
+)
 
 browser.contextMenus.onClicked.addListener(handleContextMenusClick)
-message.addListener<MsgContextMenusClick>(MsgType.ContextMenusClick, handleContextMenusClick)
+message.addListener('CONTEXT_MENUS_CLICK', ({ payload }) =>
+  handleContextMenusClick(payload)
+)
 
-export function init (initConfig: ContextMenusConfig): Observable<void> {
-  if (setMenus$$) { return setMenus$$ }
+export function init(initConfig: ContextMenusConfig): Observable<void> {
+  if (setMenus$$) {
+    return setMenus$$
+  }
   // when context menus config changes
-  const contextMenusChanged$ =
-      fromEventPattern<AppConfigChanged[] | AppConfigChanged>(addConfigListener as any).pipe(
-    map(args => Array.isArray(args) ? args[0] : args),
+  const contextMenusChanged$ = fromEventPattern<
+    AppConfigChanged[] | AppConfigChanged
+  >(addConfigListener as any).pipe(
+    map(args => (Array.isArray(args) ? args[0] : args)),
     filter(({ newConfig, oldConfig }) => {
-      if (!newConfig) { return false }
-      if (!oldConfig) { return true }
+      if (!newConfig) {
+        return false
+      }
+
+      if (!oldConfig) {
+        return true
+      }
 
       return !isEqual(
         oldConfig.contextMenus.selected,
-        newConfig.contextMenus.selected,
+        newConfig.contextMenus.selected
       )
     }),
     map(({ newConfig }) => newConfig.contextMenus),
-    startWith(initConfig),
+    startWith(initConfig)
   )
 
   let signal$: Observable<boolean>
 
-  setMenus$$ = combineLatest(
-    contextMenusChanged$,
-    i18n$$,
-  ).pipe(
+  setMenus$$ = combineLatest(contextMenusChanged$, i18n$$).pipe(
     // ignore values while setContextMenus is running
     // if source emits any value during setContextMenus,
     // retrieve the latest after setContextMenus is completed
     audit(() => signal$),
     mergeMap(([contextMenus, t]) => setContextMenus(contextMenus, t)),
-    share(),
+    share()
   )
 
   signal$ = setMenus$$.pipe(
     mapTo(true), // last setContextMenus is completed
-    startWith(true),
+    startWith(true)
   )
 
   setMenus$$.subscribe()
@@ -89,7 +103,7 @@ export function init (initConfig: ContextMenusConfig): Observable<void> {
  * @param url provide a url
  * @param force load the current tab anyway
  */
-export async function openPDF (url?: string, force?: boolean) {
+export async function openPDF(url?: string, force?: boolean) {
   const pdfURL = browser.runtime.getURL('static/pdf/web/viewer.html')
   if (url) {
     // open link as pdf
@@ -98,13 +112,15 @@ export async function openPDF (url?: string, force?: boolean) {
   const tabs = await browser.tabs.query({ active: true, currentWindow: true })
   if (tabs.length > 0 && tabs[0].url) {
     if (/pdf$/i.test(tabs[0].url as string) || force) {
-      return openURL(pdfURL + '?file=' + encodeURIComponent((tabs[0].url as string)))
+      return openURL(
+        pdfURL + '?file=' + encodeURIComponent(tabs[0].url as string)
+      )
     }
   }
   return openURL(pdfURL)
 }
 
-export function openGoogle () {
+export function openGoogle() {
   browser.tabs.executeScript({ file: '/static/google-page-trans.js' })
   // browser.tabs.query({ active: true, currentWindow: true })
   //   .then(tabs => {
@@ -114,83 +130,100 @@ export function openGoogle () {
   //   })
 }
 
-export function openYoudao () {
+export function openYoudao() {
   // inject youdao script, defaults to the active tab of the current window.
-  browser.tabs.executeScript({ file: '/static/fanyi.youdao.2.0/main.js' })
-  .then(result => {
-    if (!result || (result as any !== 1 && result[0] !== 1)) {
-      throw new Error()
-    }
-  })
-  .catch(() => {
-    // error msg
-    browser.notifications.create({
-      type: 'basic',
-      eventTime: Date.now() + 4000,
-      iconUrl: browser.runtime.getURL(`static/icon-128.png`),
-      title: 'Saladict',
-      message: i18n.t('notification_youdao_err')
+  browser.tabs
+    .executeScript({ file: '/static/fanyi.youdao.2.0/main.js' })
+    .then(result => {
+      if (!result || ((result as any) !== 1 && result[0] !== 1)) {
+        throw new Error()
+      }
     })
-  })
+    .catch(() => {
+      // error msg
+      browser.notifications.create({
+        type: 'basic',
+        eventTime: Date.now() + 4000,
+        iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+        title: 'Saladict',
+        message: i18n.t('notification_youdao_err')
+      })
+    })
 }
 
-export function openBaiduPage () {
-  browser.tabs.query({ active: true, currentWindow: true })
-    .then(tabs => {
-      if (tabs.length > 0 && tabs[0].url) {
-        const langCode = window.appConfig.langCode === 'zh-CN'
+export function openBaiduPage() {
+  browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+    if (tabs.length > 0 && tabs[0].url) {
+      const langCode =
+        window.appConfig.langCode === 'zh-CN'
           ? 'zh'
           : window.appConfig.langCode === 'zh-TW'
-            ? 'cht'
-            : 'en'
-        openURL(`https://fanyi.baidu.com/transpage?query=${encodeURIComponent(tabs[0].url as string)}&from=auto&to=${langCode}&source=url&render=1`)
-      }
-    })
+          ? 'cht'
+          : 'en'
+      openURL(
+        `https://fanyi.baidu.com/transpage?query=${encodeURIComponent(tabs[0]
+          .url as string)}&from=auto&to=${langCode}&source=url&render=1`
+      )
+    }
+  })
 }
 
-export function openSogouPage () {
-  browser.tabs.query({ active: true, currentWindow: true })
-    .then(tabs => {
-      if (tabs.length > 0 && tabs[0].url) {
-        const langCode = window.appConfig.langCode === 'zh-CN' ? 'zh-CHS' : 'en'
-        openURL(`https://translate.sogoucdn.com/pcvtsnapshot?from=auto&to=${langCode}&tfr=translatepc&url=${encodeURIComponent(tabs[0].url as string)}&domainType=sogou`)
-      }
-    })
+export function openSogouPage() {
+  browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+    if (tabs.length > 0 && tabs[0].url) {
+      const langCode = window.appConfig.langCode === 'zh-CN' ? 'zh-CHS' : 'en'
+      openURL(
+        `https://translate.sogoucdn.com/pcvtsnapshot?from=auto&to=${langCode}&tfr=translatepc&url=${encodeURIComponent(
+          tabs[0].url as string
+        )}&domainType=sogou`
+      )
+    }
+  })
 }
 
-export function openMicrosoftPage () {
-  browser.tabs.query({ active: true, currentWindow: true })
-    .then(tabs => {
-      if (tabs.length > 0 && tabs[0].url) {
-        const langCode = window.appConfig.langCode === 'zh-CN'
+export function openMicrosoftPage() {
+  browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+    if (tabs.length > 0 && tabs[0].url) {
+      const langCode =
+        window.appConfig.langCode === 'zh-CN'
           ? 'zh-CHS'
           : window.appConfig.langCode === 'zh-TW'
-            ? 'zh-CHT'
-            : 'en'
-        openURL(`https://www.microsofttranslator.com/bv.aspx?from=auto&to=${langCode}&r=true&a=${encodeURIComponent(tabs[0].url as string)}`)
-      }
-    })
+          ? 'zh-CHT'
+          : 'en'
+      openURL(
+        `https://www.microsofttranslator.com/bv.aspx?from=auto&to=${langCode}&r=true&a=${encodeURIComponent(
+          tabs[0].url as string
+        )}`
+      )
+    }
+  })
 }
 
-function requestSelection () {
-  browser.tabs.query({ active: true, currentWindow: true })
-    .then(tabs => {
-      if (tabs.length > 0 && tabs[0].id != null) {
-        message.send(tabs[0].id as number, { type: MsgType.EmitSelection })
-      }
-    })
+function requestSelection() {
+  browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+    if (tabs.length > 0 && tabs[0].id != null) {
+      message.send(tabs[0].id as number, { type: 'EMIT_SELECTION' })
+    }
+  })
 }
 
-async function setContextMenus (
+async function setContextMenus(
   contextMenus: ContextMenusConfig,
-  t: TranslationFunction
+  t: TFunction
 ): Promise<void> {
   if (!browser.extension.inIncognitoContext) {
     // In 'split' incognito mode, this will also remove the items on normal mode windows
     await browser.contextMenus.removeAll()
   }
   const ctx: browser.contextMenus.ContextType[] = [
-    'audio', 'editable', 'frame', 'image', 'link', 'selection', 'page', 'video'
+    'audio',
+    'editable',
+    'frame',
+    'image',
+    'link',
+    'selection',
+    'page',
+    'video'
   ]
 
   const containerCtx = new Set<browser.contextMenus.ContextType>(['selection'])
@@ -309,13 +342,13 @@ async function setContextMenus (
     contexts: ['browser_action']
   })
 
-  function getTitle (id: string): string {
+  function getTitle(id: string): string {
     const item = contextMenus.all[id]
     return !item || typeof item === 'string' ? t(id) : item.name
   }
 }
 
-function createContextMenu (createProperties: CreateMenuOptions): Promise<void> {
+function createContextMenu(createProperties: CreateMenuOptions): Promise<void> {
   return new Promise(resolve => {
     browser.contextMenus.create(createProperties, () => {
       if (browser.runtime.lastError && process.env.DEV_BUILD) {
@@ -332,7 +365,7 @@ interface ContextMenusClickInfo {
   linkUrl?: string
 }
 
-function handleContextMenusClick (info: ContextMenusClickInfo) {
+function handleContextMenusClick(info: ContextMenusClickInfo) {
   const menuItemId = String(info.menuItemId).replace(/_ba$/, '')
   const selectionText = info.selectionText || ''
   const linkUrl = info.linkUrl || ''
