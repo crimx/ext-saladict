@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import mapValues from 'lodash/mapValues'
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-// import { createConfigStream } from '@/_helpers/config-manager'
+import { createConfigStream } from '@/_helpers/config-manager'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 export type Namespace =
@@ -77,11 +77,11 @@ export function i18nLoader() {
       }
     })
 
-  // createConfigStream().subscribe(config => {
-  //   if (i18n.language !== config.langCode) {
-  //     i18n.changeLanguage(config.langCode)
-  //   }
-  // })
+  createConfigStream().subscribe(config => {
+    if (i18n.language !== config.langCode) {
+      i18n.changeLanguage(config.langCode)
+    }
+  })
 
   return i18n
 }
