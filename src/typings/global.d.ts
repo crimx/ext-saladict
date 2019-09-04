@@ -1,5 +1,3 @@
-/// <reference types="web-ext-types"/>
-
 interface Window {
   browser: typeof browser
 

@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "@types/dompurify": "0.0.32",
+    "@types/firefox-webext-browser": "^67.0.2",
     "@types/i18next": "^12.1.0",
     "@types/lodash": "^4.14.136",
     "@types/react": "^16.8.23",
@@ -79,7 +80,6 @@
     "soundtouchjs": "^0.1.5",
     "utility-types": "^3.7.0",
     "wavesurfer.js": "^3.0.0",
-    "web-ext-types": "^3.2.1",
     "webextension-polyfill": "latest"
   },
   "devDependencies": {
@@ -97,14 +97,14 @@
     "@types/sinon-chrome": "^2.2.6",
     "@types/storybook__addon-knobs": "^5.0.2",
     "@types/storybook__react": "^4.0.2",
-    "@typescript-eslint/eslint-plugin": "^1.11.0",
-    "@typescript-eslint/parser": "^1.11.0",
+    "@typescript-eslint/eslint-plugin": "^2.1.0",
+    "@typescript-eslint/parser": "^2.1.0",
     "autoprefixer": "^9.6.1",
     "axios-mock-adapter": "^1.17.0",
     "clean-css-loader": "^2.0.0",
     "commitizen": "^3.1.1",
     "cz-conventional-changelog": "^2.1.0",
-    "eslint": "^6.0.1",
+    "eslint": "^6.3.0",
     "eslint-config-prettier": "^6.0.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.18.0",
