@@ -302,13 +302,13 @@ function storageCreateStream<T = any>(
 \* --------------------------------------- */
 type MessageThis = typeof message | typeof message.self
 
-function messageSend<T extends MsgType>(
+function messageSend<T extends MsgType, R = MessageResponse<T>>(
   message: Message<T>
-): Promise<MessageResponse<T>>
-function messageSend<T extends MsgType>(
+): Promise<R>
+function messageSend<T extends MsgType, R = MessageResponse<T>>(
   tabId: number,
   message: Message<T>
-): Promise<MessageResponse<T>>
+): Promise<R>
 function messageSend<T extends MsgType>(
   ...args: [Message<T>] | [number, Message<T>]
 ): Promise<any> {
