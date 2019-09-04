@@ -113,8 +113,11 @@ function useDictPanelProps(): DictPanelProps {
   }, {})
 
   return {
-    x: number('x', (window.innerWidth - 450) / 2),
-    y: number('y', 10),
+    coord: {
+      x: number('x', (window.innerWidth - 450) / 2),
+      y: number('y', 10)
+    },
+    takeCoordSnapshot: boolean('Take Coord Snapshot', false),
     width: number('Width', 450),
     maxHeight: number('Max Height', window.innerHeight - 40),
     minHeight: number('Min Height', 50),
