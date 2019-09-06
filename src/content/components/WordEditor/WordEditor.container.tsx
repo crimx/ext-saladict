@@ -12,14 +12,14 @@ const mapStateToProps = (
   withAnimation: state.config.animation,
   width: window.innerWidth - state.config.panelWidth - 100,
   ctxTrans: state.config.ctxTrans,
-  word: state.selection.word
+  word: state.wordEditorWord
 })
 
 const mapDispatchToProps = (
   dispatch: Dispatch<StoreAction>
 ): Pick<WordEditorPortalProps, Dispatchers> => ({
   onClose: () => {
-    dispatch({ type: 'WORD_EDITOR_STATUS', payload: false })
+    dispatch({ type: 'WORD_EDITOR_STATUS', payload: null })
   }
 })
 

@@ -187,6 +187,7 @@ export const reducer = createReducer<
       ? {
           ...state,
           isShowWordEditor: true,
+          wordEditorWord: payload,
           dictPanelCoord: {
             x: 50,
             y: window.innerHeight * 0.2
