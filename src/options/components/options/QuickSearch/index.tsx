@@ -7,11 +7,22 @@ import {
 } from '../helpers'
 import SearchMode from '../SearchModes/SearchMode'
 import { InputNumberGroup } from '../../InputNumberGroup'
+import { TCDirection } from '@/app-config'
 
 import { FormComponentProps } from 'antd/lib/form'
 import { Form, Select, Switch, Card, Row, Col } from 'antd'
 
-const locLocale = [...Array(9)].map((_, i) => `quickSearch.locations.${i}`)
+const locLocale: Readonly<TCDirection[]> = [
+  'CENTER',
+  'TOP',
+  'RIGHT',
+  'BOTTOM',
+  'LEFT',
+  'TOP_LEFT',
+  'TOP_RIGHT',
+  'BOTTOM_LEFT',
+  'BOTTOM_RIGHT'
+]
 
 type QuickSearchProps = Props & FormComponentProps
 
@@ -43,9 +54,9 @@ export class QuickSearch extends React.Component<QuickSearchProps> {
             initialValue: config.tripleCtrlLocation
           })(
             <Select>
-              {locLocale.map((locale, i) => (
-                <Select.Option key={i} value={i}>
-                  {t(locale)}
+              {locLocale.map(locale => (
+                <Select.Option key={locale} value={locale}>
+                  {t(`quickSearch.locations.${locale}`)}
                 </Select.Option>
               ))}
             </Select>
@@ -113,10 +124,10 @@ export class QuickSearch extends React.Component<QuickSearchProps> {
                     <Select>
                       <Select.Option value="">{t('common:none')}</Select.Option>
                       <Select.Option value="left">
-                        {t('quickSearch.locations.4')}
+                        {t('quickSearch.locations.LEFT')}
                       </Select.Option>
                       <Select.Option value="right">
-                        {t('quickSearch.locations.2')}
+                        {t('quickSearch.locations.RIGHT')}
                       </Select.Option>
                     </Select>
                   )}

@@ -183,18 +183,18 @@ export const locale: typeof _locale = {
     sidebar_help: '並排顯示視窗以達到類似側邊欄的配置。',
     standalone: '獨立視窗',
     standalone_help:
-      '顯示為獨立的視窗（需配合 <a href="https://getquicker.net/Sharedaction?code=42abae81-ed41-4f16-269a-08d668af12c8" target="_blank">Quicker</a> 響應瀏覽器以外的滑鼠選字）。',
-    locations: [
-      '居中',
-      '上方',
-      '右方',
-      '下方',
-      '左方',
-      '左上',
-      '右上',
-      '左下',
-      '右下'
-    ]
+      '顯示為獨立的視窗（響應瀏覽器以外的滑鼠選字見 <a href="https://github.com/crimx/ext-saladict/wiki#%E6%94%AF%E6%8C%81%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%93%8D%E4%BD%9C" target="_blank">這裡</a>）。',
+    locations: {
+      CENTER: '居中',
+      TOP: '上方',
+      RIGHT: '右方',
+      BOTTOM: '下方',
+      LEFT: '左方',
+      TOP_LEFT: '左上',
+      TOP_RIGHT: '右上',
+      BOTTOM_LEFT: '左下',
+      BOTTOM_RIGHT: '右下'
+    }
   },
 
   preload: {

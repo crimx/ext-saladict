@@ -190,18 +190,18 @@ export const locale: typeof _locale = {
     sidebar_help: 'Rearrange windows to sidebar-like layout.',
     standalone: 'Standalone',
     standalone_help:
-      'Render dict panel in a standalone window (Need <a href="https://getquicker.net/Sharedaction?code=42abae81-ed41-4f16-269a-08d668af12c8" target="_blank">Quicker</a> to work with text selection outside browser).',
-    locations: [
-      'Center',
-      'Top',
-      'Right',
-      'Bottom',
-      'Left',
-      'Top Left',
-      'Top Right',
-      'Bottom Left',
-      'Bottom Right'
-    ]
+      'Render dict panel in a standalone window (See <a href="https://github.com/crimx/ext-saladict/wiki#%E6%94%AF%E6%8C%81%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%93%8D%E4%BD%9C" target="_blank">here</a> on how to work with text selection outside browser).',
+    locations: {
+      CENTER: 'Center',
+      TOP: 'Top',
+      RIGHT: 'Right',
+      BOTTOM: 'Bottom',
+      LEFT: 'Left',
+      TOP_LEFT: 'Top Left',
+      TOP_RIGHT: 'Top Right',
+      BOTTOM_LEFT: 'Bottom Left',
+      BOTTOM_RIGHT: 'Bottom Right'
+    }
   },
 
   preload: {
