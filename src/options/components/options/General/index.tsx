@@ -20,7 +20,7 @@ export class General extends React.Component<Props & FormComponentProps> {
   }
 
   resetConfigs = async () => {
-    if (confirm(this.props.t('opt_config_reset_confirm'))) {
+    if (confirm(this.props.t('opt.config.reset_confirm'))) {
       await resetConfig()
       this.isReseted = true
       await resetAllProfiles()
@@ -28,7 +28,7 @@ export class General extends React.Component<Props & FormComponentProps> {
     }
   }
 
-  componentDidUpdate () {
+  componentDidUpdate() {
     if (this.isReseted) {
       this.isReseted = false
       const { form, config } = this.props
@@ -36,76 +36,63 @@ export class General extends React.Component<Props & FormComponentProps> {
         'config#active': config.active,
         'config#animation': config.animation,
         'config#analytics': config.analytics,
-        'config#langCode': config.langCode,
+        'config#langCode': config.langCode
       })
     }
   }
 
-  render () {
+  render() {
     const { t, config } = this.props
     const { getFieldDecorator } = this.props.form
 
     return (
       <Form>
-        <Button onClick={this.openShortcuts}>{t('opt_shortcuts')}</Button>
+        <Button onClick={this.openShortcuts}>{t('opt.shortcuts')}</Button>
         <Form.Item
           {...formItemLayout}
-          label={t('opt_active')}
-          help={t('opt_app_active_help')}
-        >{
-          getFieldDecorator('config#active', {
+          label={t('opt.active')}
+          help={t('opt.app_active_help')}
+        >
+          {getFieldDecorator('config#active', {
             initialValue: config.active,
-            valuePropName: 'checked',
-          })(
-            <Switch />
-          )
-        }</Form.Item>
+            valuePropName: 'checked'
+          })(<Switch />)}
+        </Form.Item>
         <Form.Item
           {...formItemLayout}
-          label={t('opt_animation')}
-          help={t('opt_animation_help')}
-        >{
-          getFieldDecorator('config#animation', {
+          label={t('opt.animation')}
+          help={t('opt.animation_help')}
+        >
+          {getFieldDecorator('config#animation', {
             initialValue: config.animation,
-            valuePropName: 'checked',
-          })(
-            <Switch />
-          )
-        }</Form.Item>
+            valuePropName: 'checked'
+          })(<Switch />)}
+        </Form.Item>
         <Form.Item
           {...formItemLayout}
-          label={t('opt_analytics')}
-          help={t('opt_analytics_help')}
-        >{
-          getFieldDecorator('config#analytics', {
+          label={t('opt.analytics')}
+          help={t('opt.analytics_help')}
+        >
+          {getFieldDecorator('config#analytics', {
             initialValue: config.analytics,
-            valuePropName: 'checked',
-          })(
-            <Switch />
-          )
-        }</Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label={t('opt_language')}
-        >{
-          getFieldDecorator('config#langCode', {
-            initialValue: config.langCode,
+            valuePropName: 'checked'
+          })(<Switch />)}
+        </Form.Item>
+        <Form.Item {...formItemLayout} label={t('opt.language')}>
+          {getFieldDecorator('config#langCode', {
+            initialValue: config.langCode
           })(
             <Select>
-              <Select.Option value='zh-CN'>简体中文</Select.Option>
-              <Select.Option value='zh-TW'>繁體中文</Select.Option>
-              <Select.Option value='en'>English</Select.Option>
+              <Select.Option value="zh-CN">简体中文</Select.Option>
+              <Select.Option value="zh-TW">繁體中文</Select.Option>
+              <Select.Option value="en">English</Select.Option>
             </Select>
-          )
-        }</Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label={t('opt_config_reset')}
-        >
-          <Button
-            type='danger'
-            onClick={this.resetConfigs}
-          >{t('opt_config_reset')}</Button>
+          )}
+        </Form.Item>
+        <Form.Item {...formItemLayout} label={t('opt.config.reset')}>
+          <Button type="danger" onClick={this.resetConfigs}>
+            {t('opt.config.reset')}
+          </Button>
         </Form.Item>
       </Form>
     )

@@ -23,15 +23,19 @@ export class AddDictModal extends React.Component<AddDictModalProps> {
 
     return (
       <List.Item>
-        <div className='sortable-list-item'>
-          <DictTitle t={t} dictID={dictID} lang={profile.dicts.all[dictID].lang} />
+        <div className="sortable-list-item">
+          <DictTitle
+            t={t}
+            dictID={dictID}
+            lang={profile.dicts.all[dictID].lang}
+          />
           <div>
             <Button
               title={t('common:add')}
-              className='sortable-list-item-btn'
-              shape='circle'
-              size='small'
-              icon='check'
+              className="sortable-list-item-btn"
+              shape="circle"
+              size="small"
+              icon="check"
               onClick={() => this.addDict(dictID)}
             />
           </div>
@@ -40,15 +44,17 @@ export class AddDictModal extends React.Component<AddDictModalProps> {
     )
   }
 
-  render () {
+  render() {
     const { onClose, show, t, profile } = this.props
     const selectedSet = new Set(profile.dicts.selected as string[])
-    const unselected = Object.keys(profile.dicts.all).filter(id => !selectedSet.has(id))
+    const unselected = Object.keys(profile.dicts.all).filter(
+      (id): id is DictID => !selectedSet.has(id)
+    )
 
     return (
       <Modal
         visible={show}
-        title={t('dict_add')}
+        title={t('dict.add')}
         destroyOnClose
         onOk={onClose}
         onCancel={onClose}
@@ -56,7 +62,7 @@ export class AddDictModal extends React.Component<AddDictModalProps> {
       >
         <Card>
           <List
-            size='large'
+            size="large"
             dataSource={unselected}
             renderItem={this.renderItem}
           />

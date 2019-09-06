@@ -1,5 +1,5 @@
 import React from 'react'
-import { TranslationFunction } from 'i18next'
+import { TFunction } from 'i18next'
 import { AppConfig } from '@/app-config'
 import { updateConfig } from '@/_helpers/config-manager'
 import { matchPatternToRegExpStr } from '@/_helpers/matchPatternToRegExpStr'
@@ -7,8 +7,8 @@ import { matchPatternToRegExpStr } from '@/_helpers/matchPatternToRegExpStr'
 import { FormComponentProps } from 'antd/lib/form'
 import { Form, Input, Modal, Button, Icon } from 'antd'
 
-export type MatchPatternModalProps = FormComponentProps & {
-  t: TranslationFunction
+export interface MatchPatternModalProps extends FormComponentProps {
+  t: TFunction
   config: AppConfig
   area: '' | 'pdfWhitelist' | 'pdfBlacklist' | 'whitelist' | 'blacklist'
   onClose: () => void
@@ -22,7 +22,10 @@ const itemStyle: React.CSSProperties = {
   marginBottom: 0
 }
 
-export class MatchPatternModal extends React.Component<MatchPatternModalProps, MatchPatternModalState> {
+export class MatchPatternModal extends React.Component<
+  MatchPatternModalProps,
+  MatchPatternModalState
+> {
   tainted = false
 
   state = {
@@ -53,7 +56,7 @@ export class MatchPatternModal extends React.Component<MatchPatternModalProps, M
           list.push([matchPatternToRegExpStr(pattern), pattern])
         }
       }
-      (config[area] as [string, string][]) = list
+      ;(config[area] as [string, string][]) = list
       updateConfig(config)
     }
     this.colsePanel()
@@ -73,15 +76,17 @@ export class MatchPatternModal extends React.Component<MatchPatternModalProps, M
     callback('incorrect pattern')
   }
 
-  render () {
+  render() {
     const { area, t, config } = this.props
 
     const { getFieldDecorator, getFieldsError } = this.props.form
-    const title = (area.startsWith('pdf') ? 'PDF ' : '') +
+    const title =
+      (area.startsWith('pdf') ? 'PDF ' : '') +
       t(area.endsWith('hitelist') ? 'common:whitelist' : 'common:blacklist')
 
-    const hasErrors = Object.values(getFieldsError())
-      .some(errs => errs && errs.length > 0)
+    const hasErrors = Object.values(getFieldsError()).some(
+      errs => errs && errs.length > 0
+    )
 
     return (
       <Modal
@@ -92,41 +97,45 @@ export class MatchPatternModal extends React.Component<MatchPatternModalProps, M
         onOk={this.handleOk}
         onCancel={this.handleCancel}
       >
-        <p dangerouslySetInnerHTML={{ __html: t('match_pattern_description') }} />
-        {area &&
+        <p
+          dangerouslySetInnerHTML={{
+            __html: t('options:match_pattern_description')
+          }}
+        />
+        {area && (
           <Form>
             {config[area].map(([reg, src], index) => (
-              <Form.Item key={index} help='' style={itemStyle}>{
-                getFieldDecorator(`${index}`, {
+              <Form.Item key={index} help="" style={itemStyle}>
+                {getFieldDecorator(`${index}`, {
                   initialValue: src,
-                  rules: [{ validator: this.validator }],
-                })(
-                  <Input />
-                )
-              }</Form.Item>
+                  rules: [{ validator: this.validator }]
+                })(<Input />)}
+              </Form.Item>
             ))}
             {this.state.additionalItems.map(([reg, src], index) => (
-              <Form.Item key={index + config[area].length} help='' style={itemStyle}>{
-                getFieldDecorator(`${index + config[area].length}`, {
+              <Form.Item
+                key={index + config[area].length}
+                help=""
+                style={itemStyle}
+              >
+                {getFieldDecorator(`${index + config[area].length}`, {
                   initialValue: src,
-                  rules: [{ validator: this.validator }],
-                })(
-                  <Input />
-                )
-              }</Form.Item>
+                  rules: [{ validator: this.validator }]
+                })(<Input />)}
+              </Form.Item>
             ))}
           </Form>
-        }
+        )}
         <Button
-          type='dashed'
+          type="dashed"
           style={{ width: '100%', marginTop: 10 }}
           onClick={this.addItem}
         >
-          <Icon type='plus' /> {t('common:add')}
+          <Icon type="plus" /> {t('common:add')}
         </Button>
       </Modal>
     )
   }
 }
 
-export default Form.create()(MatchPatternModal)
+export default Form.create<MatchPatternModalProps>()(MatchPatternModal)

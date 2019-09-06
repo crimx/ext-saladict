@@ -276,7 +276,8 @@ export type MessageConfig = {
           op: 'ADD'
           /** If not provided, call all services */
           serviceID?: string
-          words: Word[]
+          /** If not provided, upload all words */
+          words?: Word[]
           /** full sync anyway */
           force?: boolean
         }

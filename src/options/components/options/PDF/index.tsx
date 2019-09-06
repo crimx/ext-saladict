@@ -13,7 +13,7 @@ interface PDFState {
 }
 
 export class PDF extends React.Component<PDFProps, PDFState> {
-  constructor (props: PDFProps) {
+  constructor(props: PDFProps) {
     super(props)
 
     this.state = {
@@ -25,7 +25,7 @@ export class PDF extends React.Component<PDFProps, PDFState> {
     this.setState({ editingArea: '' })
   }
 
-  render () {
+  render() {
     const { t, config } = this.props
     const { getFieldDecorator } = this.props.form
 
@@ -33,28 +33,30 @@ export class PDF extends React.Component<PDFProps, PDFState> {
       <Form>
         <Form.Item
           {...formItemLayout}
-          label={t('opt_pdf_sniff')}
-          help={t('opt_pdf_sniff_help')}
-        >{
-          getFieldDecorator('config#pdfSniff', {
+          label={t('opt.pdf_sniff')}
+          help={t('opt.pdf_sniff_help')}
+        >
+          {getFieldDecorator('config#pdfSniff', {
             initialValue: config.pdfSniff,
-            valuePropName: 'checked',
-          })(
-            <Switch />
-          )
-        }</Form.Item>
+            valuePropName: 'checked'
+          })(<Switch />)}
+        </Form.Item>
         <Form.Item
           {...formItemLayout}
-          label={t('nav_BlackWhiteList')}
-          help={t('opt_pdf_blackwhitelist_help')}
+          label={t('nav.BlackWhiteList')}
+          help={t('opt.pdf_blackwhitelist_help')}
         >
           <Button
             style={{ marginRight: 10 }}
             onClick={() => this.setState({ editingArea: 'pdfBlacklist' })}
-          >PDF {t('common:blacklist')}</Button>
+          >
+            PDF {t('common:blacklist')}
+          </Button>
           <Button
             onClick={() => this.setState({ editingArea: 'pdfWhitelist' })}
-          >PDF {t('common:whitelist')}</Button>
+          >
+            PDF {t('common:whitelist')}
+          </Button>
         </Form.Item>
         <MatchPatternModal
           t={t}

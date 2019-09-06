@@ -2,16 +2,15 @@ import React from 'react'
 import { Service, SyncConfig } from '@/background/sync-manager/services/shanbay'
 import { setSyncConfig } from '@/background/sync-manager/helpers'
 import { formItemModalLayout } from '../helpers'
-import { MsgSyncServiceInit, MsgType, MsgSyncServiceUpload, SyncServiceUploadOp } from '@/typings/message'
 import { message } from '@/_helpers/browser-api'
-import { TranslationFunction } from 'i18next'
+import { TFunction } from 'i18next'
 import { getWords } from '@/_helpers/record-manager'
 
 import { Form, Modal, Button, Switch, message as AntdMessage } from 'antd'
 
 export interface WebdavModalProps {
   syncConfig?: SyncConfig
-  t: TranslationFunction
+  t: TFunction
   show: boolean
   onClose: () => void
 }
@@ -20,9 +19,12 @@ export interface ShanbayModalState {
   syncConfig: SyncConfig
 }
 
-export default class ShanbayModal extends React.Component<WebdavModalProps, ShanbayModalState> {
+export default class ShanbayModal extends React.Component<
+  WebdavModalProps,
+  ShanbayModalState
+> {
   state: ShanbayModalState = {
-    syncConfig: this.props.syncConfig || Service.getDefaultConfig(),
+    syncConfig: this.props.syncConfig || Service.getDefaultConfig()
   }
 
   closeSyncService = () => {
@@ -31,28 +33,32 @@ export default class ShanbayModal extends React.Component<WebdavModalProps, Shan
 
   handleEnableChanged = async (checked: boolean) => {
     if (checked) {
-      const response = await message.send<MsgSyncServiceInit<SyncConfig>>({
-        type: MsgType.SyncServiceInit,
-        serviceID: Service.id,
-        config: this.state.syncConfig,
-      }).catch((e) => ({ error: e }))
+      const response = await message
+        .send<'SYNC_SERVICE_INIT', SyncConfig>({
+          type: 'SYNC_SERVICE_INIT',
+          payload: {
+            serviceID: Service.id,
+            config: this.state.syncConfig
+          }
+        })
+        .catch(e => ({ error: e }))
 
-      if (response && response.error) {
-        alert(this.props.t('sync_shanbay_login'))
+      if (response && response['error']) {
+        alert(this.props.t('sync.shanbay.login'))
         Service.openLogin()
         return
       }
     } else {
       setSyncConfig('shanbay', {
         ...this.state.syncConfig,
-        enable: false,
+        enable: false
       })
     }
 
     this.setState(prevState => ({
       syncConfig: {
         ...prevState.syncConfig,
-        enable: checked,
+        enable: checked
       }
     }))
   }
@@ -61,85 +67,92 @@ export default class ShanbayModal extends React.Component<WebdavModalProps, Shan
     const { t } = this.props
     const { total } = await getWords('notebook', {
       itemsPerPage: 1,
-      filters: {},
+      filters: {}
     })
-    if (total > 50 && !confirm(t('sync_shanbay_sync_all_confirm'))) {
+    if (total > 50 && !confirm(t('sync.shanbay.sync_all_confirm'))) {
       return
     }
 
-    AntdMessage.success(t('sync_start'))
+    AntdMessage.success(t('sync.start'))
 
-    await message.send<MsgSyncServiceUpload>({
-      type: MsgType.SyncServiceUpload,
-      op: SyncServiceUploadOp.Add,
-      serviceID: Service.id,
-      force: true,
-    })
-    .catch(() => ({ error: 'unknown' }))
-    .then(e => {
-      if (e && e.error) {
-        AntdMessage.success(t('sync_failed'))
-      }
-    })
+    await message
+      .send<'SYNC_SERVICE_UPLOAD'>({
+        type: 'SYNC_SERVICE_UPLOAD',
+        payload: {
+          op: 'ADD',
+          serviceID: Service.id,
+          force: true
+        }
+      })
+      .catch(() => ({ error: 'unknown' }))
+      .then(e => {
+        if (e && e.error) {
+          AntdMessage.success(t('sync.failed'))
+        }
+      })
 
-    AntdMessage.success(t('sync_success'))
+    AntdMessage.success(t('sync.success'))
   }
 
   handleSyncLast = async () => {
     const { t } = this.props
     const { words } = await getWords('notebook', {
       itemsPerPage: 1,
-      filters: {},
+      filters: {}
     })
     if (!words || words.length <= 0) {
       return
     }
 
-    AntdMessage.success(t('sync_start'))
+    AntdMessage.success(t('sync.start'))
 
-    await message.send<MsgSyncServiceUpload>({
-      type: MsgType.SyncServiceUpload,
-      op: SyncServiceUploadOp.Add,
-      serviceID: Service.id,
-      force: true,
-      words,
-    })
-    .catch(() => ({ error: 'unknown' }))
-    .then(e => {
-      if (e && e.error) {
-        AntdMessage.success(t('sync_failed'))
-      }
-    })
+    await message
+      .send({
+        type: 'SYNC_SERVICE_UPLOAD',
+        payload: {
+          op: 'ADD',
+          serviceID: Service.id,
+          force: true,
+          words
+        }
+      })
+      .catch(() => ({ error: 'unknown' }))
+      .then(e => {
+        if (e && e.error) {
+          AntdMessage.success(t('sync.failed'))
+        }
+      })
 
-    AntdMessage.success(t('sync_success'))
+    AntdMessage.success(t('sync.success'))
   }
 
-  render () {
+  render() {
     const { t, show } = this.props
 
     return (
       <Modal
         visible={show}
-        title={t('sync_shanbay_title')}
+        title={t('sync.shanbay.title')}
         destroyOnClose
         onCancel={this.closeSyncService}
         footer={[]}
       >
         <Form>
-          <p>{t('sync_shanbay_description')}</p>
-          <Form.Item
-            {...formItemModalLayout}
-            label={t('common:enable')}
-          >
-            <Switch checked={this.state.syncConfig.enable} onChange={this.handleEnableChanged} />
+          <p>{t('sync.shanbay.description')}</p>
+          <Form.Item {...formItemModalLayout} label={t('common:enable')}>
+            <Switch
+              checked={this.state.syncConfig.enable}
+              onChange={this.handleEnableChanged}
+            />
           </Form.Item>
           {this.state.syncConfig.enable && (
             <div style={{ textAlign: 'center' }}>
-              <Button
-                onClick={this.handleSyncAll}
-                style={{ marginRight: 10 }}
-              >{t('sync_shanbay_sync_all')}</Button>
-              <Button onClick={this.handleSyncLast}>{t('sync_shanbay_sync_last')}</Button>
+              <Button onClick={this.handleSyncAll} style={{ marginRight: 10 }}>
+                {t('sync.shanbay.sync_all')}
+              </Button>
+              <Button onClick={this.handleSyncLast}>
+                {t('sync.shanbay.sync_last')}
+              </Button>
             </div>
           )}
         </Form>
