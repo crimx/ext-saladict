@@ -11,7 +11,7 @@ export interface EditNameModalProps extends FormComponentProps {
 }
 
 export class EditNameModal extends React.Component<EditNameModalProps> {
-  render () {
+  render() {
     const { title, onClose, name, show } = this.props
     const { getFieldDecorator, getFieldValue } = this.props.form
 
@@ -24,17 +24,15 @@ export class EditNameModal extends React.Component<EditNameModalProps> {
         onCancel={() => onClose()}
       >
         <Form>
-          <Form.Item>{
-            getFieldDecorator('profile_name', {
-              initialValue: name,
-            })(
-              <Input autoFocus />
-            )
-          }</Form.Item>
+          <Form.Item>
+            {getFieldDecorator('profile_name', {
+              initialValue: name
+            })(<Input autoFocus />)}
+          </Form.Item>
         </Form>
       </Modal>
     )
   }
 }
 
-export default Form.create()(EditNameModal)
+export default Form.create<EditNameModalProps>()(EditNameModal)

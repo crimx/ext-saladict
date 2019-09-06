@@ -98,6 +98,7 @@ export const locale = {
     },
     context_description:
       '有道网页翻译已经多年没有更新，我做了些维护，将其内置到 Saladict 并支持 https 网页，其它网页翻译扩展可以安装 Google 翻译和彩云小译。',
+    context_menus_title: '添加右键菜单项目',
     context_menus_add_rules: '链接中的 %s 会被替换为选词。',
     ctx_trans: '上下文翻译引擎',
     ctx_trans_help: '单词被添加进生词本前会自动翻译上下文。',
@@ -208,7 +209,7 @@ export const locale = {
     delete_confirm: '「{{name}}」将被删除，确认？',
     edit_name: '更改情景模式名称',
     help:
-      '一些选项（带 <span style="color:#f5222d">*</span>）会随着情景模式变化。鼠标悬浮在查词面板的菜单图标上可快速切换，或者焦点选中菜单图标然后按<kbd>↓</kbd>。'
+      '每个情景模式相当于一套独立的设置，一些选项（带 <span style="color:#f5222d">*</span>）会随着情景模式变化。鼠标悬浮在查词面板的菜单图标上可快速切换，或者焦点选中菜单图标然后按<kbd>↓</kbd>。'
   },
 
   sync: {

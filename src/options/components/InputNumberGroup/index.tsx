@@ -9,14 +9,16 @@ export interface InputNumberGroupProps extends InputNumberProps {
 }
 
 export class InputNumberGroup extends React.Component<InputNumberGroupProps> {
-  render () {
+  render() {
     return (
-      <span className='input-number-group-wrapper'>
-        <span className='input-number-group'>
+      <span className="input-number-group-wrapper">
+        <span className="input-number-group">
           <InputNumber {...this.props} />
-          {!!this.props.suffix &&
-            <span className='input-number-group-addon'>{this.props.suffix}</span>
-          }
+          {!!this.props.suffix && (
+            <span className="input-number-group-addon">
+              {this.props.suffix}
+            </span>
+          )}
         </span>
       </span>
     )

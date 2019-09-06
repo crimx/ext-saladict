@@ -1,10 +1,7 @@
 import React from 'react'
 import { Props } from '../typings'
 import { arrayMove } from '../helpers'
-import {
-  ProfileID,
-  getDefaultProfileID,
-} from '@/app-config/profiles'
+import { ProfileID, getDefaultProfileID } from '@/app-config/profiles'
 import {
   getProfileName,
   addProfile,
@@ -12,7 +9,7 @@ import {
   getActiveProfileID,
   updateActiveProfileID,
   removeProfile,
-  updateProfileIDList,
+  updateProfileIDList
 } from '@/_helpers/profile-manager'
 import EditNameModal from './EditNameModal'
 import SortableList, { SortEnd } from '../../SortableList'
@@ -23,7 +20,7 @@ import { RadioChangeEvent } from 'antd/lib/radio'
 export type ProfilesProps = Props
 
 interface ProfilesState {
-  selected: string,
+  selected: string
   list: ProfileID[]
   editingProfileID: ProfileID | null
   showEditNameModal: boolean
@@ -36,7 +33,7 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
     list: [],
     editingProfileID: null,
     showEditNameModal: false,
-    showAddProfileModal: false,
+    showAddProfileModal: false
   }
 
   openAddProfileModal = () => {
@@ -46,7 +43,7 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
   editProfileName = (index: number) => {
     this.setState({
       showEditNameModal: true,
-      editingProfileID: this.state.list[index],
+      editingProfileID: this.state.list[index]
     })
   }
 
@@ -60,10 +57,12 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
   deleteItem = async (index: number) => {
     const { t } = this.props
     const { name, id } = this.state.list[index]
-    if (confirm(t('profiles_delete_confirm', { name: getProfileName(name, t) }))) {
+    if (
+      confirm(t('profiles.delete_confirm', { name: getProfileName(name, t) }))
+    ) {
       await removeProfile(id)
       this.setState(({ list }) => ({
-        list: list.filter(profileID => profileID.id !== id),
+        list: list.filter(profileID => profileID.id !== id)
       }))
       message.destroy()
       message.success(t('msg_updated'))
@@ -78,7 +77,7 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
       await addProfile(profileID)
       this.setState(({ list }) => ({
         list: [...list, profileID],
-        showAddProfileModal: false,
+        showAddProfileModal: false
       }))
       message.destroy()
       message.success(this.props.t('msg_updated'))
@@ -92,7 +91,7 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
     if (name && editingProfileID) {
       const newProfileID = {
         ...editingProfileID,
-        name,
+        name
       }
       const newList = list.map(profile =>
         profile.id === newProfileID.id ? newProfileID : profile
@@ -101,7 +100,7 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
       this.setState({
         list: newList,
         editingProfileID: null,
-        showEditNameModal: false,
+        showEditNameModal: false
       })
       if (newProfileID.id !== selected) {
         // active config alert is handled by global
@@ -111,25 +110,26 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
     } else {
       this.setState({
         editingProfileID: null,
-        showEditNameModal: false,
+        showEditNameModal: false
       })
     }
   }
 
   handleSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
-    if (oldIndex === newIndex) { return }
+    if (oldIndex === newIndex) {
+      return
+    }
     this.setState(({ list }) => {
       const newList = arrayMove(list.slice(), oldIndex, newIndex)
-      updateProfileIDList(newList)
-        .then(() => {
-          message.destroy()
-          message.success(this.props.t('msg_updated'))
-        })
+      updateProfileIDList(newList).then(() => {
+        message.destroy()
+        message.success(this.props.t('msg_updated'))
+      })
       return { list: newList }
     })
   }
 
-  componentDidMount () {
+  componentDidMount() {
     getProfileIDList().then(async idList => {
       this.setState({
         list: idList.filter(Boolean)
@@ -140,14 +140,14 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
     })
   }
 
-  render () {
+  render() {
     const { t } = this.props
     const {
       selected,
       list,
       editingProfileID,
       showEditNameModal,
-      showAddProfileModal,
+      showAddProfileModal
     } = this.state
 
     return (
@@ -155,9 +155,9 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
         <Col span={12}>
           <SortableList
             t={t}
-            title={t('nav_Profiles')}
+            title={t('nav.Profiles')}
             description={
-              <p dangerouslySetInnerHTML={{ __html: t('profiles_help') }} />
+              <p dangerouslySetInnerHTML={{ __html: t('profiles.help') }} />
             }
             list={list.map(profileID => ({
               value: profileID.id,
@@ -171,15 +171,17 @@ export class Profiles extends React.Component<ProfilesProps, ProfilesState> {
             onSortEnd={this.handleSortEnd}
           />
           <EditNameModal
-            title={t('profiles_add_name')}
+            title={t('profiles.add_name')}
             show={showAddProfileModal}
-            name=''
+            name=""
             onClose={this.handleAddProfileClose}
           />
           <EditNameModal
-            title={t('profiles_edit_name')}
+            title={t('profiles.edit_name')}
             show={showEditNameModal}
-            name={editingProfileID ? getProfileName(editingProfileID.name, t) : ''}
+            name={
+              editingProfileID ? getProfileName(editingProfileID.name, t) : ''
+            }
             onClose={this.handleEditNameClose}
           />
         </Col>

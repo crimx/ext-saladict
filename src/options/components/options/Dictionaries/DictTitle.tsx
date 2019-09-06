@@ -1,10 +1,10 @@
 import React from 'react'
 import { DictID } from '@/app-config'
-import { TranslationFunction } from 'i18next'
+import { TFunction } from 'i18next'
 import LangCodeList from './LangCodeList'
 
 interface DictTitleProps {
-  t: TranslationFunction
+  t: TFunction
   dictID: DictID
   lang: string
 }
@@ -13,13 +13,13 @@ const iconStyle: React.CSSProperties = {
   width: '1.3em',
   height: '1.3em',
   marginRight: 5,
-  verticalAlign: 'text-bottom',
+  verticalAlign: 'text-bottom'
 }
 
 export default class DictTitle extends React.PureComponent<DictTitleProps> {
-  render () {
+  render() {
     const { t, dictID, lang } = this.props
-    const title = t(`dict:${dictID}`)
+    const title = t(`dicts:${dictID}.name`)
     return (
       <span>
         <img

@@ -12,8 +12,11 @@ interface BlackWhiteListState {
   editingArea: '' | 'pdfWhitelist' | 'pdfBlacklist' | 'whitelist' | 'blacklist'
 }
 
-export class BlackWhiteList extends React.Component<BlackWhiteListProps, BlackWhiteListState> {
-  constructor (props: BlackWhiteListProps) {
+export class BlackWhiteList extends React.Component<
+  BlackWhiteListProps,
+  BlackWhiteListState
+> {
+  constructor(props: BlackWhiteListProps) {
     super(props)
     this.state = {
       editingArea: ''
@@ -24,36 +27,42 @@ export class BlackWhiteList extends React.Component<BlackWhiteListProps, BlackWh
     this.setState({ editingArea: '' })
   }
 
-  render () {
+  render() {
     const { t, config } = this.props
 
     return (
       <Form>
         <Form.Item
           {...formItemLayout}
-          label={t('opt_sel_blackwhitelist')}
-          help={t('opt_sel_blackwhitelist_help')}
+          label={t('opt.sel_blackwhitelist')}
+          help={t('opt.sel_blackwhitelist_help')}
         >
           <Button
             style={{ marginRight: 10 }}
             onClick={() => this.setState({ editingArea: 'blacklist' })}
-          >{t('common:blacklist')}</Button>
-          <Button
-            onClick={() => this.setState({ editingArea: 'whitelist' })}
-          >{t('common:whitelist')}</Button>
+          >
+            {t('common:blacklist')}
+          </Button>
+          <Button onClick={() => this.setState({ editingArea: 'whitelist' })}>
+            {t('common:whitelist')}
+          </Button>
         </Form.Item>
         <Form.Item
           {...formItemLayout}
-          label={`PDF ${t('nav_BlackWhiteList')}`}
-          help={t('opt_pdf_blackwhitelist_help')}
+          label={`PDF ${t('nav.BlackWhiteList')}`}
+          help={t('opt.pdf_blackwhitelist_help')}
         >
           <Button
             style={{ marginRight: 10 }}
             onClick={() => this.setState({ editingArea: 'pdfBlacklist' })}
-          >PDF {t('common:blacklist')}</Button>
+          >
+            PDF {t('common:blacklist')}
+          </Button>
           <Button
             onClick={() => this.setState({ editingArea: 'pdfWhitelist' })}
-          >PDF {t('common:whitelist')}</Button>
+          >
+            PDF {t('common:whitelist')}
+          </Button>
         </Form.Item>
         <MatchPatternModal
           t={t}

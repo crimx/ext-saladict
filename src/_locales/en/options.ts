@@ -105,6 +105,7 @@ export const locale: typeof _locale = {
     },
     context_description:
       'Integration efforts are mostly made to 有道网页翻译, which has been deserted for years, to let it support https web pages. Other page translation extensions such as Google Translate and Lingocloud Interpreter are available in Web Store.',
+    context_menus_title: 'Add Context Menus Item',
     context_menus_add_rules: 'URL with %s in place of query.',
     ctx_trans: 'Context Translate Engines',
     ctx_trans_help:
@@ -217,7 +218,7 @@ export const locale: typeof _locale = {
     delete_confirm: 'Delete Profile "{{name}}". Confirm?',
     edit_name: 'Change Profile Name',
     help:
-      'Some of the settings (with <span style="color:#f5222d">*</span> prefix) change according to profile. One may switch profiles by hovering on the menu icon on Dict Panel, or focus on the icon then hit <kbd>↓</kbd>.'
+      'Each profile represents an independent set of settings. Some of the settings (with <span style="color:#f5222d">*</span> prefix) change according to profile. One may switch profiles by hovering on the menu icon on Dict Panel, or focus on the icon then hit <kbd>↓</kbd>.'
   },
 
   sync: {

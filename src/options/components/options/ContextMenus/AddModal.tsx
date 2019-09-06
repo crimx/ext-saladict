@@ -1,5 +1,5 @@
 import React from 'react'
-import { TranslationFunction } from 'i18next'
+import { TFunction } from 'i18next'
 import { AppConfig, AppConfigMutable } from '@/app-config'
 import { updateConfig } from '@/_helpers/config-manager'
 import AddNewItem from './AddNewItem'
@@ -7,7 +7,7 @@ import AddNewItem from './AddNewItem'
 import { Modal, List, Card, Button } from 'antd'
 
 export type AddModalProps = {
-  t: TranslationFunction
+  t: TFunction
   config: AppConfig
   show: boolean
   onClose?: () => void
@@ -34,23 +34,23 @@ export class AddModal extends React.Component<AddModalProps> {
 
     return (
       <List.Item>
-        <div className='sortable-list-item'>
-          {typeof item === 'string' ? t(`ctx:${id}`) : item.name}
+        <div className="sortable-list-item">
+          {typeof item === 'string' ? t(`menus:${id}`) : item.name}
           <div>
             <Button
               title={t('common:add')}
-              className='sortable-list-item-btn'
-              shape='circle'
-              size='small'
-              icon='check'
+              className="sortable-list-item-btn"
+              shape="circle"
+              size="small"
+              icon="check"
               onClick={() => this.addItem(id)}
             />
             <Button
               title={t('common:delete')}
-              className='sortable-list-item-btn'
-              shape='circle'
-              size='small'
-              icon='close'
+              className="sortable-list-item-btn"
+              shape="circle"
+              size="small"
+              icon="close"
               onClick={() => this.deleteItem(id)}
             />
           </div>
@@ -59,11 +59,12 @@ export class AddModal extends React.Component<AddModalProps> {
     )
   }
 
-  render () {
+  render() {
     const { onClose, show, t, config } = this.props
     const selectedSet = new Set(config.contextMenus.selected as string[])
-    const unselected = Object.keys(config.contextMenus.all)
-      .filter(id => !selectedSet.has(id))
+    const unselected = Object.keys(config.contextMenus.all).filter(
+      id => !selectedSet.has(id)
+    )
 
     return (
       <Modal
@@ -76,7 +77,7 @@ export class AddModal extends React.Component<AddModalProps> {
       >
         <Card>
           <List
-            size='large'
+            size="large"
             dataSource={unselected}
             renderItem={this.renderItem}
           />

@@ -18,14 +18,13 @@ interface DictionariesState {
   editingDictID: DictID | ''
 }
 
-export class Dictionaries extends React.Component<DictionariesProps, DictionariesState> {
+export class Dictionaries extends React.Component<
+  DictionariesProps,
+  DictionariesState
+> {
   state: DictionariesState = {
     isShowAddDictModal: false,
-    editingDictID: '',
-  }
-
-  constructor (props: DictionariesProps) {
-    super(props)
+    editingDictID: ''
   }
 
   openAddDictModal = () => {
@@ -47,7 +46,9 @@ export class Dictionaries extends React.Component<DictionariesProps, Dictionarie
   }
 
   handleSortEnd = ({ oldIndex, newIndex }: SortEnd) => {
-    if (oldIndex === newIndex) { return }
+    if (oldIndex === newIndex) {
+      return
+    }
     const { profile } = this.props
     ;(profile.dicts.selected as DictID[]) = arrayMove(
       profile.dicts.selected as DictID[],
@@ -57,7 +58,7 @@ export class Dictionaries extends React.Component<DictionariesProps, Dictionarie
     updateProfile(profile)
   }
 
-  render () {
+  render() {
     const { t, profile } = this.props
     const { selected } = profile.dicts
 
@@ -70,14 +71,20 @@ export class Dictionaries extends React.Component<DictionariesProps, Dictionarie
           <SortableList
             t={t}
             title={
-              <Tooltip title={t('opt_profile_change')}>
-                <Icon type='question-circle-o' /> {t('opt_dict_selected')}
+              <Tooltip title={t('opt.profile_change')}>
+                <Icon type="question-circle-o" /> {t('opt.dict_selected')}
               </Tooltip>
             }
             list={selected.map(id => {
               return {
                 value: id,
-                title: (<DictTitle t={t} dictID={id} lang={profile.dicts.all[id].lang} />)
+                title: (
+                  <DictTitle
+                    t={t}
+                    dictID={id}
+                    lang={profile.dicts.all[id].lang}
+                  />
+                )
               }
             })}
             onAdd={this.openAddDictModal}

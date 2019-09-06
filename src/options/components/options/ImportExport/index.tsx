@@ -22,6 +22,8 @@ export type ConfigStorage = {
 
 export class ImportExport extends React.Component<Props> {
   importConfig = async (file: RcFile) => {
+    const { t } = this.props
+
     const result = await new Promise<Partial<ConfigStorage> | null>(resolve => {
       const fr = new FileReader()
       fr.onload = () => {
@@ -38,7 +40,7 @@ export class ImportExport extends React.Component<Props> {
     })
 
     if (!result) {
-      message.error('opt_config_import_error')
+      message.error(t('opt.config.import_error'))
       return
     }
 
@@ -56,7 +58,7 @@ export class ImportExport extends React.Component<Props> {
       !profileIDList &&
       hasInstructionsShown == null
     ) {
-      message.error('opt_config_import_error')
+      message.error(t('opt.config.import_error'))
       return
     }
 
@@ -93,6 +95,8 @@ export class ImportExport extends React.Component<Props> {
   }
 
   exportConfig = async () => {
+    const { t } = this.props
+
     const result = await storage.sync.get([
       'activeProfileID',
       'hasInstructionsShown',
@@ -107,7 +111,7 @@ export class ImportExport extends React.Component<Props> {
       !result.activeProfileID ||
       !result.profileIDList
     ) {
-      message.error('opt_config_import_error')
+      message.error(t('opt.config.import_error'))
       return
     }
 
@@ -131,7 +135,7 @@ export class ImportExport extends React.Component<Props> {
 
       a.click()
     } catch (err) {
-      message.error('opt_config_import_error')
+      message.error(t('opt.config.import_error'))
     }
   }
 
@@ -151,7 +155,7 @@ export class ImportExport extends React.Component<Props> {
                 <p className="ant-upload-drag-icon">
                   <Icon type="download" />
                 </p>
-                <p className="ant-upload-text">{t('opt_config_import')}</p>
+                <p className="ant-upload-text">{t('opt.config.import')}</p>
               </Upload.Dragger>
             </Col>
             <Col span={12}>
@@ -163,7 +167,7 @@ export class ImportExport extends React.Component<Props> {
                   <p className="ant-upload-drag-icon">
                     <Icon type="upload" />
                   </p>
-                  <p className="ant-upload-text">{t('opt_config_export')}</p>
+                  <p className="ant-upload-text">{t('opt.config.export')}</p>
                 </div>
               </button>
             </Col>

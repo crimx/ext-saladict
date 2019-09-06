@@ -35,12 +35,12 @@ export class Notebook extends React.Component<NotebookProps, NotebookState> {
   state: NotebookState = {
     isShowSyncServiceModal: {
       [WebDAVService.id]: false,
-      [ShanbayService.id]: false,
+      [ShanbayService.id]: false
     },
-    syncConfigs: null,
+    syncConfigs: null
   }
 
-  constructor (props: NotebookProps) {
+  constructor(props: NotebookProps) {
     super(props)
 
     storage.sync.get('syncConfig').then(({ syncConfig }) => {
@@ -51,16 +51,19 @@ export class Notebook extends React.Component<NotebookProps, NotebookState> {
     })
   }
 
-  showSyncServiceModal = (id: keyof NotebookState['isShowSyncServiceModal'], isShow: boolean) => {
+  showSyncServiceModal = (
+    id: keyof NotebookState['isShowSyncServiceModal'],
+    isShow: boolean
+  ) => {
     this.setState(prevState => ({
       isShowSyncServiceModal: {
         ...prevState.isShowSyncServiceModal,
-        [id]: isShow,
+        [id]: isShow
       }
     }))
   }
 
-  render () {
+  render() {
     const { t, config } = this.props
     const { getFieldDecorator } = this.props.form
     const { syncConfigs, isShowSyncServiceModal } = this.state
@@ -69,80 +72,67 @@ export class Notebook extends React.Component<NotebookProps, NotebookState> {
       <Form>
         <Form.Item
           {...formItemLayout}
-          label={t('opt_edit_on_fav')}
-          help={t('opt_edit_on_fav_help')}
-        >{
-          getFieldDecorator('config#editOnFav', {
+          label={t('opt.edit_on_fav')}
+          help={t('opt.edit_on_fav_help')}
+        >
+          {getFieldDecorator('config#editOnFav', {
             initialValue: config.editOnFav,
-            valuePropName: 'checked',
-          })(
-            <Switch />
-          )
-        }</Form.Item>
+            valuePropName: 'checked'
+          })(<Switch />)}
+        </Form.Item>
         <Form.Item
           {...formItemLayout}
-          label={t('opt_history')}
-          help={t('opt_history_help')}
-        >{
-          getFieldDecorator('config#searhHistory', {
+          label={t('opt.history')}
+          help={t('opt.history_help')}
+        >
+          {getFieldDecorator('config#searhHistory', {
             initialValue: config.searhHistory,
-            valuePropName: 'checked',
-          })(
-            <Switch />
-          )
-        }</Form.Item>
-        {config.searhHistory &&
-          <Form.Item
-            {...formItemLayout}
-            label={t('opt_history_inco')}
-          >{
-            getFieldDecorator('config#searhHistoryInco', {
+            valuePropName: 'checked'
+          })(<Switch />)}
+        </Form.Item>
+        {config.searhHistory && (
+          <Form.Item {...formItemLayout} label={t('opt.history_inco')}>
+            {getFieldDecorator('config#searhHistoryInco', {
               initialValue: config.searhHistoryInco,
-              valuePropName: 'checked',
-            })(
-              <Switch />
-            )
-          }</Form.Item>
-        }
+              valuePropName: 'checked'
+            })(<Switch />)}
+          </Form.Item>
+        )}
         <Form.Item
           {...formItemLayout}
-          label={t('opt_ctx_trans')}
-          help={t('opt_ctx_trans_help')}
+          label={t('opt.ctx_trans')}
+          help={t('opt.ctx_trans_help')}
         >
           {Object.keys(config.ctxTrans).map(id => (
-            <Form.Item key={id} style={{ marginBottom: 0 }}>{
-              getFieldDecorator(`config#ctxTrans#${id}`, {
+            <Form.Item key={id} style={{ marginBottom: 0 }}>
+              {getFieldDecorator(`config#ctxTrans#${id}`, {
                 initialValue: config.ctxTrans[id],
-                valuePropName: 'checked',
-              })(
-                <Checkbox>{t(`dict:${id}`)}</Checkbox>
-              )
-            }</Form.Item>
+                valuePropName: 'checked'
+              })(<Checkbox>{t(`dicts:${id}.name`)}</Checkbox>)}
+            </Form.Item>
           ))}
         </Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label={t('opt_sync_webdav')}
-        >
-          <Button onClick={() => this.showSyncServiceModal(WebDAVService.id, true)}>{
-            `${t('opt_sync_webdav')} (${t(
-              syncConfigs && syncConfigs[WebDAVService.id] && syncConfigs[WebDAVService.id]!.url
-                ? 'common:enabled'
-                : 'common:disabled'
-            )})`
-          }</Button>
+        <Form.Item {...formItemLayout} label={t('sync.webdav.title')}>
+          <Button
+            onClick={() => this.showSyncServiceModal(WebDAVService.id, true)}
+          >{`${t('sync.webdav.title')} (${t(
+            syncConfigs &&
+              syncConfigs[WebDAVService.id] &&
+              syncConfigs[WebDAVService.id]!.url
+              ? 'common:enabled'
+              : 'common:disabled'
+          )})`}</Button>
         </Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label={t('opt_sync_shanbay')}
-        >
-          <Button onClick={() => this.showSyncServiceModal(ShanbayService.id, true)}>{
-            `${t('opt_sync_shanbay')} (${t(
-              syncConfigs && syncConfigs[ShanbayService.id] && syncConfigs[ShanbayService.id]!.enable
-                ? 'common:enabled'
-                : 'common:disabled'
-            )})`
-          }</Button>
+        <Form.Item {...formItemLayout} label={t('sync.shanbay.title')}>
+          <Button
+            onClick={() => this.showSyncServiceModal(ShanbayService.id, true)}
+          >{`${t('sync.shanbay.title')} (${t(
+            syncConfigs &&
+              syncConfigs[ShanbayService.id] &&
+              syncConfigs[ShanbayService.id]!.enable
+              ? 'common:enabled'
+              : 'common:disabled'
+          )})`}</Button>
         </Form.Item>
         {syncConfigs && (
           <>
@@ -156,7 +146,9 @@ export class Notebook extends React.Component<NotebookProps, NotebookState> {
               syncConfig={syncConfigs[ShanbayService.id]}
               t={t}
               show={isShowSyncServiceModal[ShanbayService.id]}
-              onClose={() => this.showSyncServiceModal(ShanbayService.id, false)}
+              onClose={() =>
+                this.showSyncServiceModal(ShanbayService.id, false)
+              }
             />
           </>
         )}
@@ -165,6 +157,6 @@ export class Notebook extends React.Component<NotebookProps, NotebookState> {
   }
 }
 
-export default Form.create({
+export default Form.create<NotebookProps>({
   onFieldsChange: updateConfigOrProfile as any
 })(Notebook)

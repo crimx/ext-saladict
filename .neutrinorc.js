@@ -48,7 +48,8 @@ module.exports = {
           type: 'options_ui',
           manifest: {
             open_in_tab: true
-          }
+          },
+          setup: 'options/__fake__/env.ts'
         }
       },
 

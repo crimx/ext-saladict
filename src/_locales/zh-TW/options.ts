@@ -100,6 +100,7 @@ export const locale: typeof _locale = {
     },
     context_description:
       '有道網頁翻譯已經多年沒有更新，我做了些維護，將其內建到 Saladict 並支援 https 網頁，其它網頁翻譯擴充套件可以安裝 Google 翻譯和彩雲小譯。',
+    context_menus_title: '新增右鍵選單項目',
     context_menus_add_rules: '連結中的 %s 會被取代為選詞。',
     ctx_trans: '上下文翻譯引擎',
     ctx_trans_help: '單字加入生字本前會自動翻譯上下文。',
@@ -210,7 +211,7 @@ export const locale: typeof _locale = {
     delete_confirm: '「{{name}}」將被刪除，確認？',
     edit_name: '變更情景模式名稱',
     help:
-      '一些選項（帶有 <span style="color:#f5222d">*</span>）會隨著情景模式變化。滑鼠懸浮在字典介面的選單圖示上可快速切換，或者焦點選中選單圖示然後按<kbd>↓</kbd>。'
+      '每個情景模式相當於一套獨立的設定，一些選項（帶有 <span style="color:#f5222d">*</span>）會隨著情景模式變化。滑鼠懸浮在字典介面的選單圖示上可快速切換，或者焦點選中選單圖示然後按<kbd>↓</kbd>。'
   },
 
   sync: {

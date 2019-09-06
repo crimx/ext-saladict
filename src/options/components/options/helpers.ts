@@ -14,17 +14,17 @@ interface FormItemLayout {
 
 export const formItemLayout: FormItemLayout = {
   labelCol: { span: 5 },
-  wrapperCol: { span: 8 },
+  wrapperCol: { span: 8 }
 }
 
 export const formSubItemLayout: FormItemLayout = {
   labelCol: { span: 7 },
-  wrapperCol: { span: 17 },
+  wrapperCol: { span: 17 }
 }
 
 export const formItemModalLayout: FormItemLayout = {
   labelCol: { span: 7 },
-  wrapperCol: { span: 17 },
+  wrapperCol: { span: 17 }
 }
 
 let updateConfigTimeout: any = null
@@ -42,10 +42,13 @@ export interface FormItemField {
   }
 }
 
-export function updateConfigOrProfile (
-  props: Props, fields: { [index: string]: FormItemField }
+export function updateConfigOrProfile(
+  props: Props,
+  fields: { [index: string]: FormItemField }
 ): void {
-  if (!fields) { return }
+  if (!fields) {
+    return
+  }
 
   const path = Object.keys(fields)[0]
   if (!path) {
@@ -87,15 +90,17 @@ export function updateConfigOrProfile (
     case 'config':
       clearTimeout(updateConfigTimeout)
       updateConfigTimeout = setTimeout(() => {
-        updateConfig(props.config)
-          .catch(() => message.error(props.t('msg_update_error')))
+        updateConfig(props.config).catch(() =>
+          message.error(props.t('msg_update_error'))
+        )
       }, delay)
       break
     case 'profile':
       clearTimeout(updateProfileTimeout)
       updateProfileTimeout = setTimeout(() => {
-        updateProfile(props.profile)
-          .catch(() => message.error(props.t('msg_update_error')))
+        updateProfile(props.profile).catch(() =>
+          message.error(props.t('msg_update_error'))
+        )
       }, delay)
       break
     default:
@@ -106,7 +111,11 @@ export function updateConfigOrProfile (
 /**
  * Changes the contents of an array by moving an element to a different position
  */
-export function arrayMove<T extends any[]> (arr: T, from: number, to: number): T {
-  arr.splice((to < 0 ? arr.length + to : to), 0, arr.splice(from, 1)[0])
+export function arrayMove<T extends any[]>(
+  arr: T,
+  from: number,
+  to: number
+): T {
+  arr.splice(to < 0 ? arr.length + to : to, 0, arr.splice(from, 1)[0])
   return arr
 }

@@ -8,7 +8,7 @@ import { Form, Select, Switch } from 'antd'
 export type DictFormProps = Props & FormComponentProps
 
 export class DictForm extends React.Component<DictFormProps> {
-  render () {
+  render() {
     const { t, config, profile } = this.props
     const { getFieldDecorator } = this.props.form
 
@@ -18,101 +18,92 @@ export class DictForm extends React.Component<DictFormProps> {
 
     return (
       <Form>
-        <Form.Item
-          {...formItemLayout}
-          label={t('opt_autopron_cn')}
-        >{
-          getFieldDecorator('config#autopron#cn#dict', {
-            initialValue: config.autopron.cn.dict,
+        <Form.Item {...formItemLayout} label={t('opt.autopron.cn')}>
+          {getFieldDecorator('config#autopron#cn#dict', {
+            initialValue: config.autopron.cn.dict
           })(
             <Select>
-              <Select.Option value=''>{t('common:none')}</Select.Option>
+              <Select.Option value="">{t('common:none')}</Select.Option>
               {autopronCnList.map(id => (
-                <Select.Option key={id} value={id}>{
-                  t(`dict:${id}`)
-                }</Select.Option>
+                <Select.Option key={id} value={id}>
+                  {t(`dicts:${id}.name`)}
+                </Select.Option>
               ))}
             </Select>
-          )
-        }</Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label={t('opt_autopron_en')}
-        >{
-          getFieldDecorator('config#autopron#en#dict', {
-            initialValue: config.autopron.en.dict,
+          )}
+        </Form.Item>
+        <Form.Item {...formItemLayout} label={t('opt.autopron.en')}>
+          {getFieldDecorator('config#autopron#en#dict', {
+            initialValue: config.autopron.en.dict
           })(
             <Select>
-              <Select.Option value=''>{t('common:none')}</Select.Option>
+              <Select.Option value="">{t('common:none')}</Select.Option>
               {config.autopron.en.list.map(id => (
-                <Select.Option key={id} value={id}>{
-                  t(`dict:${id}`)
-                }</Select.Option>
+                <Select.Option key={id} value={id}>
+                  {t(`dicts:${id}.name`)}
+                </Select.Option>
               ))}
             </Select>
-          )
-        }</Form.Item>
+          )}
+        </Form.Item>
         {config.autopron.en.dict && (
-          <Form.Item
-            {...formItemLayout}
-            label={t('opt_autopron_accent')}
-          >{
-            getFieldDecorator('config#autopron#en#accent', {
-              initialValue: config.autopron.en.accent,
+          <Form.Item {...formItemLayout} label={t('opt.autopron.accent')}>
+            {getFieldDecorator('config#autopron#en#accent', {
+              initialValue: config.autopron.en.accent
             })(
               <Select>
-                <Select.Option value='uk'>{t('opt_autopron_accent_uk')}</Select.Option>
-                <Select.Option value='us'>{t('opt_autopron_accent_us')}</Select.Option>
+                <Select.Option value="uk">
+                  {t('opt.autopron.accent_uk')}
+                </Select.Option>
+                <Select.Option value="us">
+                  {t('opt.autopron.accent_us')}
+                </Select.Option>
               </Select>
-            )
-          }</Form.Item>
+            )}
+          </Form.Item>
         )}
-        <Form.Item
-          {...formItemLayout}
-          label={t('opt_autopron_machine')}
-        >{
-          getFieldDecorator('config#autopron#machine#dict', {
-            initialValue: config.autopron.machine.dict,
+        <Form.Item {...formItemLayout} label={t('opt.autopron.machine')}>
+          {getFieldDecorator('config#autopron#machine#dict', {
+            initialValue: config.autopron.machine.dict
           })(
             <Select>
-              <Select.Option value=''>{t('common:none')}</Select.Option>
+              <Select.Option value="">{t('common:none')}</Select.Option>
               {config.autopron.machine.list.map(id => (
-                <Select.Option key={id} value={id}>{
-                  t(`dict:${id}`)
-                }</Select.Option>
+                <Select.Option key={id} value={id}>
+                  {t(`dicts:${id}.name`)}
+                </Select.Option>
               ))}
             </Select>
-          )
-        }</Form.Item>
+          )}
+        </Form.Item>
         {config.autopron.machine.dict && (
-          <Form.Item
-            {...formItemLayout}
-            label={t('opt_autopron_machine_src')}
-          >{
-            getFieldDecorator('config#autopron#machine#src', {
-              initialValue: config.autopron.machine.src,
+          <Form.Item {...formItemLayout} label={t('opt.autopron.machine_src')}>
+            {getFieldDecorator('config#autopron#machine#src', {
+              initialValue: config.autopron.machine.src
             })(
               <Select>
-                <Select.Option value='trans'>{t('opt_autopron_machine_src_trans')}</Select.Option>
-                <Select.Option value='searchText'>{t('opt_autopron_machine_src_search')}</Select.Option>
+                <Select.Option value="trans">
+                  {t('opt.autopron.machine_src_trans')}
+                </Select.Option>
+                <Select.Option value="searchText">
+                  {t('opt.autopron.machine_src_search')}
+                </Select.Option>
               </Select>
-            )
-          }</Form.Item>
+            )}
+          </Form.Item>
         )}
         <Form.Item
           {...formItemLayout}
-          label={t('opt_waveform')}
-          help={t('opt_waveform_help')}
-          extra={t('opt_profile_change')}
+          label={t('opt.waveform')}
+          help={t('opt.waveform_help')}
+          extra={t('opt.profile_change')}
           required
-        >{
-          getFieldDecorator('profile#waveform', {
+        >
+          {getFieldDecorator('profile#waveform', {
             initialValue: profile.waveform,
-            valuePropName: 'checked',
-          })(
-            <Switch />
-          )
-        }</Form.Item>
+            valuePropName: 'checked'
+          })(<Switch />)}
+        </Form.Item>
       </Form>
     )
   }

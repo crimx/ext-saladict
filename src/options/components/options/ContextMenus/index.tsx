@@ -16,10 +16,13 @@ interface ContextMenusState {
   editingItem: EditModalItem | null
 }
 
-export class ContextMenus extends React.Component<ContextMenusProps, ContextMenusState> {
+export class ContextMenus extends React.Component<
+  ContextMenusProps,
+  ContextMenusState
+> {
   state: ContextMenusState = {
     showAddModal: false,
-    editingItem: null,
+    editingItem: null
   }
 
   openAddModal = () => {
@@ -41,16 +44,17 @@ export class ContextMenus extends React.Component<ContextMenusProps, ContextMenu
       return
     }
     this.setState({
-      editingItem: typeof item === 'string'
-        ? {
-          name: this.props.t(`ctx:${id}`),
-          url: item,
-          id,
-        }
-        : {
-          ...item,
-          id,
-        }
+      editingItem:
+        typeof item === 'string'
+          ? {
+              name: this.props.t(`menus:${id}`),
+              url: item,
+              id
+            }
+          : {
+              ...item,
+              id
+            }
     })
   }
 
@@ -71,7 +75,7 @@ export class ContextMenus extends React.Component<ContextMenusProps, ContextMenu
       const config = this.props.config as AppConfigMutable
       config.contextMenus.all[item.id] = {
         name: item.name,
-        url: item.url,
+        url: item.url
       }
       await updateConfig(config)
     }
@@ -79,7 +83,9 @@ export class ContextMenus extends React.Component<ContextMenusProps, ContextMenu
   }
 
   handleSortEnd = async ({ oldIndex, newIndex }: SortEnd) => {
-    if (oldIndex === newIndex) { return }
+    if (oldIndex === newIndex) {
+      return
+    }
     const { t, config } = this.props
     const contextMenus = (config as AppConfigMutable).contextMenus
     contextMenus.selected = arrayMove(contextMenus.selected, oldIndex, newIndex)
@@ -88,7 +94,7 @@ export class ContextMenus extends React.Component<ContextMenusProps, ContextMenu
     message.success(t('msg_updated'))
   }
 
-  render () {
+  render() {
     const { t, config } = this.props
     const { editingItem, showAddModal } = this.state
     const allMenus = config.contextMenus.all
@@ -98,15 +104,13 @@ export class ContextMenus extends React.Component<ContextMenusProps, ContextMenu
         <Col span={12}>
           <SortableList
             t={t}
-            title={t('nav_ContextMenus')}
-            description={<p>{t('opt_context_description')}</p>}
+            title={t('nav.ContextMenus')}
+            description={<p>{t('opt.context_description')}</p>}
             list={config.contextMenus.selected.map(id => {
               const item = allMenus[id]
               return {
                 value: id,
-                title: typeof item === 'string'
-                  ? t(`ctx:${id}`)
-                  : item.name
+                title: typeof item === 'string' ? t(`menus:${id}`) : item.name
               }
             })}
             disableEdit={this.disableEdit}
@@ -123,7 +127,7 @@ export class ContextMenus extends React.Component<ContextMenusProps, ContextMenu
           />
           <EditModal
             t={t}
-            title={t('profiles_add_name')}
+            title={t('opt.context_menus_title')}
             item={editingItem}
             onClose={this.handleEditModalClose}
           />
