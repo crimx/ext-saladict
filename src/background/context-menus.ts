@@ -36,14 +36,14 @@ interface CreateMenuOptions {
 let setMenus$$: Observable<void>
 
 const i18n = i18nLoader()
-i18n.loadNamespaces('context')
+i18n.loadNamespaces('menus')
 
 const i18n$$ = new BehaviorSubject<TFunction>(
-  i18n.getFixedT(i18n.language, 'context')
+  i18n.getFixedT(i18n.language, 'menus')
 )
 
 i18n.on('languageChanged', () =>
-  i18n$$.next(i18n.getFixedT(i18n.language, 'context'))
+  i18n$$.next(i18n.getFixedT(i18n.language, 'menus'))
 )
 
 browser.contextMenus.onClicked.addListener(handleContextMenusClick)
