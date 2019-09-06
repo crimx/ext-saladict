@@ -103,6 +103,7 @@
     "@typescript-eslint/parser": "^2.1.0",
     "autoprefixer": "^9.6.1",
     "axios-mock-adapter": "^1.17.0",
+    "babel-plugin-import": "^1.12.1",
     "clean-css-loader": "^2.0.0",
     "commitizen": "^3.1.1",
     "cz-conventional-changelog": "^2.1.0",
