@@ -30,6 +30,7 @@ export const initState = () => ({
   /** is a standalone quick search panel running */
   withQSPanel: false,
   isShowWordEditor: false,
+  wordEditorWord: newWord(),
   isShowBowl: false,
   isShowDictPanel: isStandalonePage() || isOptionsPage(),
   isExpandMtaBox: false,

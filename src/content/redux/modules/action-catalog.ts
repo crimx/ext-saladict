@@ -106,6 +106,6 @@ export type ActionCatalog = {
   \* ------------------------------------------------ */
 
   WORD_EDITOR_STATUS: {
-    payload: boolean
+    payload: Word | null
   }
 }

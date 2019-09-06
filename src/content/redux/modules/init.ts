@@ -92,6 +92,11 @@ export const init: Init<StoreActionCatalog, StoreState> = (
           }
         }
         return Promise.resolve()
+
+      case 'UPDATE_WORD_EDITOR_WORD':
+        dispatch({ type: 'WORD_EDITOR_STATUS', payload: msg.payload })
+        dispatch({ type: 'SEARCH_START', payload: { word: msg.payload } })
+        return Promise.resolve()
     }
   })
 

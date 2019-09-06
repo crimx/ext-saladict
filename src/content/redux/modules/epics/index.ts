@@ -32,7 +32,7 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
         if (state$.value.config.editOnFav) {
           return of({
             type: 'WORD_EDITOR_STATUS',
-            payload: true
+            payload: state$.value.selection.word
           } as const)
         }
 
