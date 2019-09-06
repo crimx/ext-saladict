@@ -58,6 +58,14 @@ module.exports = {
           type: 'background',
           setup: 'background/__fake__/env.ts'
         }
+      },
+
+      notebook: {
+        entry: 'notebook'
+      },
+
+      history: {
+        entry: 'history'
       }
     }
   },
@@ -96,6 +104,15 @@ module.exports = {
             {
               isTSX: true,
               allExtensions: true
+            }
+          ]
+        ],
+        plugins: [
+          [
+            'import',
+            {
+              libraryName: 'antd',
+              style: 'css'
             }
           ]
         ]

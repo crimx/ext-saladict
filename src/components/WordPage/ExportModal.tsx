@@ -73,28 +73,28 @@ export class ExportModalBody extends React.Component<
 
     this.tplTableCols = [
       {
-        title: t('export_placeholder'),
+        title: t('export.placeholder'),
         dataIndex: 'plcholderL',
         key: 'plcholderL',
         width: '25%',
         align: 'center'
       },
       {
-        title: t('export_gencontent'),
+        title: t('export.gencontent'),
         dataIndex: 'contentL',
         key: 'contentL',
         width: '25%',
         align: 'center'
       },
       {
-        title: t('export_placeholder'),
+        title: t('export.placeholder'),
         dataIndex: 'plcholderR',
         key: 'plcholderR',
         width: '25%',
         align: 'center'
       },
       {
-        title: t('export_gencontent'),
+        title: t('export.gencontent'),
         dataIndex: 'contentR',
         key: 'contentR',
         width: '25%',
@@ -181,13 +181,13 @@ export class ExportModalBody extends React.Component<
           }}
         >
           <p className="export-Description">
-            {t('export_description')}
+            {t('export.description')}
             <a
               href="https://github.com/crimx/ext-saladict/wiki/ANKI#wiki-content"
               target="_blank"
               rel="nofollow noopener noreferrer"
             >
-              {t('export_explain')}
+              {t('export.explain')}
             </a>
           </p>
           <Table
@@ -234,7 +234,7 @@ export class ExportModal extends React.PureComponent<
 
     return (
       <Modal
-        title={title ? t(`export_${title}`) : ' '}
+        title={title ? t(`export.${title}`) : ' '}
         visible={!!title}
         destroyOnClose={true}
         onOk={this.exportWords}
