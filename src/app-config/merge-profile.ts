@@ -7,7 +7,10 @@ import isBoolean from 'lodash/isBoolean'
 import get from 'lodash/get'
 import set from 'lodash/set'
 
-export function mergeProfile (oldProfile: Profile, baseProfile?: Profile): Profile {
+export function mergeProfile(
+  oldProfile: Profile,
+  baseProfile?: Profile
+): Profile {
   const base: ProfileMutable = baseProfile
     ? JSON.parse(JSON.stringify(baseProfile))
     : getDefaultProfile(oldProfile.id)
@@ -30,7 +33,7 @@ export function mergeProfile (oldProfile: Profile, baseProfile?: Profile): Profi
         french: unfold,
         spanish: unfold,
         deutsch: unfold,
-        others: unfold,
+        others: unfold
       })
     } else {
       mergeBoolean(`dicts.all.${id}.defaultUnfold.chinese`)
@@ -80,17 +83,17 @@ export function mergeProfile (oldProfile: Profile, baseProfile?: Profile): Profi
     }
   })
 
-  /*-----------------------------------------------*\
+  /* ----------------------------------------------- *\
       Patch
-  \*-----------------------------------------------*/
+  \* ----------------------------------------------- */
   // hjdict changed korean location
-  if (base.dicts.all.hjdict.options.chsas as string === 'kor') {
+  if ((base.dicts.all.hjdict.options.chsas as string) === 'kor') {
     base.dicts.all.hjdict.options.chsas = 'kr'
   }
 
   return base
 
-  function mergeSelectedDicts (path: string): void {
+  function mergeSelectedDicts(path: string): void {
     const selected = get(oldProfile, [path, 'selected'])
     if (Array.isArray(selected)) {
       if (selected.length === 0) {
@@ -105,20 +108,19 @@ export function mergeProfile (oldProfile: Profile, baseProfile?: Profile): Profi
     }
   }
 
-  function mergeNumber (path: string): void {
+  function mergeNumber(path: string): void {
     return merge(path, isNumber)
-
   }
 
-  function mergeString (path: string): void {
+  function mergeString(path: string): void {
     return merge(path, isString)
   }
 
-  function mergeBoolean (path: string): void {
+  function mergeBoolean(path: string): void {
     return merge(path, isBoolean)
   }
 
-  function merge (path: string, predicate: (val) => boolean): void {
+  function merge(path: string, predicate: (val) => boolean): void {
     const val = get(oldProfile, path)
     if (predicate(val)) {
       set(base, path, val)
