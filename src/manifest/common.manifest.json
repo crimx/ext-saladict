@@ -12,9 +12,9 @@
   "default_locale": "zh_CN",
 
   "icons": {
-    "16": "static/icon-16.png",
-    "48": "static/icon-48.png",
-    "128": "static/icon-128.png"
+    "16": "assets/icon-16.png",
+    "48": "assets/icon-48.png",
+    "128": "assets/icon-128.png"
   },
 
   "commands": {
@@ -38,9 +38,7 @@
     }
   },
 
-  "web_accessible_resources": [
-    "assets/*"
-  ],
+  "web_accessible_resources": ["assets/*"],
 
   "permissions": [
     "<all_urls>",
@@ -56,10 +54,7 @@
     "webRequestBlocking"
   ],
 
-  "optional_permissions": [
-    "clipboardWrite"
-  ],
+  "optional_permissions": ["clipboardWrite"],
 
   "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.google-analytics.com; object-src 'self'"
-
 }
