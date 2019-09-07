@@ -10,7 +10,7 @@ import { message } from '@/_helpers/browser-api'
 import { getConfig } from '@/_helpers/config-manager'
 import { getActiveProfile } from '@/_helpers/profile-manager'
 
-import { rootReducer, StoreState, StoreAction } from './modules'
+import { createRootReducer, StoreState, StoreAction } from './modules'
 import { init } from './modules/init'
 import { epics } from './modules/epics'
 
@@ -25,7 +25,7 @@ export default () => {
     window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
 
   const store = createStore(
-    rootReducer,
+    createRootReducer(),
     composeEnhancers(applyMiddleware(thunkMiddleware, epicMiddleware))
   )
 

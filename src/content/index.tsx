@@ -13,12 +13,9 @@ import { i18nLoader } from '@/_helpers/i18n'
 if (window.parent === window && !window.__SALADICT_PANEL_LOADED__) {
   window.__SALADICT_PANEL_LOADED__ = true
 
-  const i18n = i18nLoader()
-  const store = createStore()
-
   const App = () => (
-    <ProviderRedux store={store}>
-      <ProviderI18next i18n={i18n}>
+    <ProviderRedux store={createStore()}>
+      <ProviderI18next i18n={i18nLoader()}>
         <SaladBowlContainer />
         <DictPanelContainer />
         <WordEditorContainer />

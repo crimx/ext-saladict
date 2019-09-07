@@ -2,7 +2,7 @@ import { Dispatch } from 'redux'
 import { initState } from './state'
 import { ActionCatalog } from './action-catalog'
 import { Action, ActionType, ActionHandler } from '../utils/types'
-import { reducer } from './reducer'
+export { createRootReducer } from './reducer'
 
 export type StoreState = ReturnType<typeof initState>
 
@@ -19,7 +19,3 @@ export type StoreActionHandler<T extends StoreActionType> = ActionHandler<
 >
 
 export type StoreDispatch = Dispatch<StoreAction>
-
-export const rootReducer = reducer
-
-export default rootReducer
