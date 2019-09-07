@@ -1,19 +1,18 @@
 import React, { FC, useState } from 'react'
+import { useUpdateEffect } from 'react-use'
 import {
   useObservable,
   useObservableState,
   useObservableCallback,
-  useSubscription
+  useSubscription,
+  pluckFirst
 } from 'observable-hooks'
-import { merge, of } from 'rxjs'
+import { of } from 'rxjs'
 import {
-  filter,
-  pluck,
-  startWith,
   withLatestFrom,
-  share,
   switchMap,
-  debounceTime
+  debounceTime,
+  startWith
 } from 'rxjs/operators'
 import {
   Word,
@@ -42,27 +41,20 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
   const { t } = useTranslate(['common', 'content'])
   const [isDirty, setDirty] = useState(false)
 
-  const propsWord$ = useObservable(
-    inputs$ =>
-      inputs$.pipe(
-        pluck(0),
-        filter((word): word is Word => !!word),
-        startWith(newWord())
-      ),
-    [props.word] as const
-  )
+  const [word, setWord] = useState(() => props.word || newWord())
+  useUpdateEffect(() => {
+    if (props.word) {
+      setWord(props.word)
+    }
+  }, [props.word])
 
-  const [setWord, word$$] = useObservableCallback<Word>(word$ =>
-    share<Word>()(merge(propsWord$, word$))
-  )
-
-  const word = useObservableState(word$$)!
+  const word$ = useObservable(pluckFirst, [word])
 
   const [relatedWords, getRelatedWords] = useObservableState<Word[], void>(
     event$ =>
       event$.pipe(
         debounceTime(200),
-        withLatestFrom(word$$),
+        withLatestFrom(word$),
         switchMap(([, word]) => {
           if (!word.text) {
             return of([])
@@ -76,13 +68,15 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
     []
   )
 
-  const [onTranslateCtx, translateCtx$] = useObservableCallback(event$ =>
-    event$.pipe(
-      withLatestFrom(word$$),
-      switchMap(([, word]) =>
-        translateCtx(word.context || word.text, props.ctxTrans)
+  const [onTranslateCtx, translateCtx$] = useObservableCallback<string, any>(
+    event$ =>
+      event$.pipe(
+        startWith(null),
+        withLatestFrom(word$),
+        switchMap(([, word]) => {
+          return translateCtx(word.context || word.text, props.ctxTrans)
+        })
       )
-    )
   )
 
   useSubscription(translateCtx$, trans => {

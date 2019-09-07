@@ -2,6 +2,7 @@ import { DictID, AppConfig } from '@/app-config'
 import { MachineTranslateResult } from '@/components/dictionaries/helpers'
 import { reflect } from './promise-more'
 import { message } from './browser-api'
+import { isPDFPage } from './saladict'
 
 /**
  * translate selection context with selected machine translatiors
@@ -29,7 +30,7 @@ export async function translateCtx(
         payload: {
           id,
           text,
-          payload: { isPDF: !!window.__SALADICT_PDF_PAGE__ }
+          payload: { isPDF: isPDFPage() }
         }
       })
     )
@@ -45,8 +46,8 @@ export async function translateCtx(
     )
     .map((response, i, arr) =>
       arr.length > 1
-        ? `${ids[i]}: ${response!.result.trans}`
-        : response!.result.trans
+        ? `${ids[i]}: ${response!.result.trans.text}`
+        : response!.result.trans.text
     )
     .join('\n')
 }
