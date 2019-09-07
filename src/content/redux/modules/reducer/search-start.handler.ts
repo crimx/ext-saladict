@@ -27,6 +27,7 @@ export const searchStart: StoreActionHandler<'SEARCH_START'> = (
 
   return {
     ...state,
+    text: word.text,
     isExpandMtaBox:
       activeProfile.mtaAutoUnfold === 'always' ||
       (activeProfile.mtaAutoUnfold === 'popup' && isPopupPage()),
