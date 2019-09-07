@@ -57,6 +57,11 @@ const langcodes: ReadonlyArray<string> = [
 
 type BaiduSearchResult = DictSearchResult<BaiduResult>
 
+const headers =
+  process.env.NODE_ENV === 'test'
+    ? { cookie: 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;' }
+    : {}
+
 export const search: SearchFunction<
   BaiduResult,
   MachineTranslatePayload
@@ -85,14 +90,10 @@ export const search: SearchFunction<
   return (
     getToken()
       .then(({ gtk, token }) =>
-        axios.post<BaiduRawResult>('https://fanyi.baidu.com/v2transapi', {
+        axios('https://fanyi.baidu.com/v2transapi', {
+          method: 'post',
           withCredentials: true,
-          headers: {
-            cookie:
-              process.env.NODE_ENV === 'test'
-                ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
-                : ''
-          },
+          headers,
           data: new URLSearchParams({
             from: sl,
             to: tl,
@@ -170,13 +171,13 @@ function handleJSON(
 }
 
 function remoteLangCheck(text: string): Promise<string> {
-  return axios
-    .post('https://fanyi.baidu.com/langdetect', {
-      withCredentials: false,
-      body: new URLSearchParams({
-        query: encodeURIComponent(text)
-      })
+  return axios('https://fanyi.baidu.com/langdetect', {
+    method: 'post',
+    withCredentials: false,
+    data: new URLSearchParams({
+      query: encodeURIComponent(text)
     })
+  })
     .then(({ data }) => (data && data.lan) || Promise.reject(data))
     .catch(() => 'auto')
 }
@@ -184,12 +185,7 @@ function remoteLangCheck(text: string): Promise<string> {
 async function getToken(): Promise<{ gtk: string; token: string }> {
   const homepage = await fetchPlainText('https://fanyi.baidu.com', {
     withCredentials: true,
-    headers: {
-      cookie:
-        process.env.NODE_ENV === 'test'
-          ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
-          : ''
-    }
+    headers
   })
 
   return {
@@ -198,14 +194,16 @@ async function getToken(): Promise<{ gtk: string; token: string }> {
   }
 }
 
-function sign(text: string, gtk: string) {
+/* eslint-disable */
+// prettier-ignore
+function sign (text: string, gtk: string) {
   let o = text.length
-  o > 30 &&
-    (text =
-      '' +
-      text.substr(0, 10) +
-      text.substr(Math.floor(o / 2) - 5, 10) +
-      text.substr(-10, 10))
+  o > 30 && (text =
+    '' +
+    text.substr(0, 10) +
+    text.substr(Math.floor(o / 2) - 5, 10) +
+    text.substr(-10, 10)
+  )
   let t = gtk || ''
 
   let e = t.split('.')
@@ -257,3 +255,4 @@ function sign(text: string, gtk: string) {
     return r
   }
 }
+/* eslint-enable */
