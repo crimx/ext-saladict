@@ -144,7 +144,7 @@ async function fetchWithToken(
     params.append('sl', sl)
     params.append('tl', tl)
     params.append('tk', tk)
-    params.append('q', encodeURIComponent(text))
+    params.append('q', text)
 
     const json = await fetchPlainText(`${base}/translate_a/single`, {
       params
@@ -169,7 +169,7 @@ async function fetchWithoutToken(
         dt: 't',
         sl,
         tl,
-        q: encodeURIComponent(text)
+        q: text
       })
     }
   ).catch(handleNetWorkError)
