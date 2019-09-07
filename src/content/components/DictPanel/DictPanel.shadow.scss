@@ -1,29 +1,6 @@
 @import '@/_sass_global/_z-indices.scss';
 @import '@/components/ShadowPortal/ShadowPortal.scss';
-
-.dictPanel-Root {
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  position: fixed;
-  z-index: $global-zindex-dictpanel;
-  top: 0;
-  left: 0;
-  overflow: hidden;
-  box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
-}
-
-.dictPanel-Head {
-  flex-shrink: 0;
-}
-
-.dictPanel-Body {
-  flex: 1;
-  overflow-x: hidden;
-  overflow-y: scroll;
-  // font-size: 0; // https://bugzilla.mozilla.org/show_bug.cgi?id=1573030
-  -webkit-overflow-scrolling: touch;
-}
+@import './DictPanel.scss';
 
 .dictPanel-DragMask {
   position: fixed;
@@ -38,11 +15,6 @@
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
 }
-
-@import '../MenuBar/MenuBar.scss';
-@import '../MtaBox/MtaBox.scss';
-@import '../DictList/DictList.scss';
-@import '../WaveformBox/WaveformBox.scss';
 
 .isAnimate {
   &.dictPanel-Root {
