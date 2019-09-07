@@ -77,7 +77,7 @@
   &::after {
     content: '';
     position: absolute;
-    top: 100%;
+    top: 0;
     left: 0;
     width: 100%;
     height: 100%;
@@ -86,18 +86,14 @@
       rgba(225, 225, 225, 0.2) 60%,
       rgba(225, 225, 225, 0.7) 100%
     );
+    opacity: 0;
   }
 
   &:hover {
     outline: none;
 
     &::after {
-      /**
-       * use top instead of opacity to avoid GUP acceleration
-       * which might casue iframe flickering in Chrome 66
-       * @todo add back after Chrome 68
-       */
-      top: 0;
+      opacity: 1;
     }
   }
 }
@@ -143,7 +139,8 @@
   }
 
   .dictItem-FoldMask::after {
-    transition: top 400ms;
+    will-change: opacity;
+    transition: opacity 400ms;
   }
 
   .dictItem-BodyMesure {
