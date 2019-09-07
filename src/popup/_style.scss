@@ -12,55 +12,23 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+  font-family: 'Helvetica Neue', Helvetica, Arial, 'Hiragino Sans GB',
+    'Hiragino Sans GB W3', 'Microsoft YaHei UI', 'Microsoft YaHei', sans-serif;
 }
 
-#frame-root {
-  position: relative;
-  z-index: 100;
-  height: 0;
+/*------------------------------------*\
+   Components
+\*------------------------------------*/
 
-  // hide white spaces
-  font-size: 0;
+@import '@/content/components/DictPanel/DictPanelStandalone.scss';
 
-  &::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    height: 10px;
-    box-shadow: inset 0 10px 6px -6px rgba(0,0,0,.13);
-    pointer-events: none;
-  }
-}
-
-body.panel {
+.popup-root {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column-reverse;
   width: 450px;
   height: 550px;
   font-size: 14px;
-
-  #frame-root {
-    height: 500px;
-    transition: height 0.5s;
-  }
-
-  #root {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
-}
-
-.saladict-DIV {
-  height: 100%;
-}
-
-.saladict-DictPanel {
-  position: static;
-  overflow: hidden;
-  height: 100%;
-  transition: height 0.5s;
 }
 
 .qrcode-panel {
@@ -193,10 +161,10 @@ $switch-button-height: 35px;
 
 .fade-enter {
   opacity: 0;
-  transition: opacity .5s;
+  transition: opacity 0.5s;
 }
 
 .fade-enter-active {
   opacity: 1;
-  transition: opacity .5s;
+  transition: opacity 0.5s;
 }

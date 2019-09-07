@@ -1,54 +1,26 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Popup from './Popup'
-import { injectSaladictInternal } from '@/_helpers/injectSaladictInternal'
-import { injectAnalytics } from '@/_helpers/analytics'
 import { AppConfig } from '@/app-config'
-import { getConfig, addConfigListener } from '@/_helpers/config-manager'
+import { injectAnalytics } from '@/_helpers/analytics'
+import { getConfig } from '@/_helpers/config-manager'
 import { message, openURL } from '@/_helpers/browser-api'
 import { saveWord, Word } from '@/_helpers/record-manager'
-import Notebook from './Notebook'
 import { translateCtx } from '@/_helpers/translateCtx'
+import { Message } from '@/typings/message'
+
+import { Provider as ProviderRedux } from 'react-redux'
+import createStore from '@/content/redux/create'
 
 import { I18nextProvider as ProviderI18next } from 'react-i18next'
 import { i18nLoader } from '@/_helpers/i18n'
 
+import Popup from './Popup'
+import Notebook from './Notebook'
 import './_style.scss'
-import { Message } from '@/typings/message'
 
 // inject panel AFTER flags are set
 window.__SALADICT_INTERNAL_PAGE__ = true
 window.__SALADICT_POPUP_PAGE__ = true
-
-interface AppProps {
-  i18n: ReturnType<typeof i18nLoader>
-  config: AppConfig
-}
-
-interface AppState {
-  config: AppConfig
-}
-
-class App extends React.Component<AppProps, AppState> {
-  state: AppState = {
-    config: this.props.config
-  }
-
-  componentDidMount() {
-    addConfigListener(({ newConfig }) => {
-      document.body.style.width = newConfig.panelWidth + 'px'
-      this.setState({ config: newConfig })
-    })
-  }
-
-  render() {
-    return (
-      <ProviderI18next i18n={this.props.i18n}>
-        <Popup config={this.state.config} />
-      </ProviderI18next>
-    )
-  }
-}
 
 getConfig().then(config => {
   document.body.style.width = config.panelWidth + 'px'
@@ -70,19 +42,16 @@ getConfig().then(config => {
 })
 
 function showPanel(config: AppConfig) {
-  document.body.classList.add('panel')
-  injectSaladictInternal(true)
-
   if (config.analytics) {
     injectAnalytics('/popup')
   }
 
-  const i18n = i18nLoader()
-  i18n.loadNamespaces('popup')
-  i18n.setDefaultNamespace('popup')
-
   ReactDOM.render(
-    <App config={config} i18n={i18n} />,
+    <ProviderRedux store={createStore()}>
+      <ProviderI18next i18n={i18nLoader()}>
+        <Popup config={config} />
+      </ProviderI18next>
+    </ProviderRedux>,
     document.getElementById('root')
   )
 }
@@ -113,12 +82,8 @@ async function addNotebook() {
     hasError = true
   }
 
-  const i18n = i18nLoader()
-  i18n.loadNamespaces('popup')
-  i18n.setDefaultNamespace('popup')
-
   ReactDOM.render(
-    <ProviderI18next i18n={i18n}>
+    <ProviderI18next i18n={i18nLoader()}>
       <Notebook word={word} hasError={hasError} />
     </ProviderI18next>,
     document.getElementById('root')

@@ -1,160 +1,41 @@
-import React from 'react'
+import React, { FC, useState, useRef, useEffect } from 'react'
 import QRCode from 'qrcode.react'
 import CSSTransition from 'react-transition-group/CSSTransition'
-import { withTranslation, WithTranslation } from 'react-i18next'
 import { AppConfig } from '@/app-config'
-import { updateConfig } from '@/_helpers/config-manager'
+import { updateConfig, addConfigListener } from '@/_helpers/config-manager'
 import { message } from '@/_helpers/browser-api'
+import { useTranslate } from '@/_helpers/i18n'
+import { DictPanelStandaloneContainer } from '@/content/components/DictPanel/DictPanelStandalone.container'
 
 interface PopupProps {
   config: AppConfig
 }
 
-interface PopupState {
-  currentTabUrl: string
-  isShowUrlBox: boolean
-  tempOff: boolean
-  showPageNoResponse: boolean
-  insCapMode: 'mode' | 'pinMode'
-}
+export const Popup: FC<PopupProps> = props => {
+  const { t } = useTranslate('popup')
 
-export class Popup extends React.Component<
-  PopupProps & WithTranslation,
-  PopupState
-> {
-  state: PopupState = {
-    currentTabUrl: '',
-    isShowUrlBox: false,
-    tempOff: false,
-    showPageNoResponse: false,
-    insCapMode: 'mode' as 'mode' | 'pinMode'
-  }
+  const [config, setConfig] = useState(props.config)
 
-  activeContainer = () => {
-    const $frameRoot = document.querySelector<HTMLDivElement>('#frame-root')
-    if ($frameRoot) {
-      $frameRoot.style.height = '400px'
-    }
-  }
+  /** URL box with QR code */
+  const [isShowUrlBox, setIsShowUrlBox] = useState(false)
+  const [currentTabUrl, setCurrentTabUrl] = useState('')
 
-  hideContainer = () => {
-    const $frameRoot = document.querySelector<HTMLDivElement>('#frame-root')
-    if ($frameRoot) {
-      $frameRoot.style.height = '500px'
-      this.setState({ currentTabUrl: '' })
-    }
-  }
+  const [isExpandDictPanel, setDictPanel] = useState(false)
+  const expandDictPanel = useRef(() => setDictPanel(true)).current
+  const shrinkDictPanel = useRef(() => setDictPanel(false)).current
 
-  changeTempOff = () => {
-    const oldTempOff = this.state.tempOff
-    const newTempOff = !oldTempOff
+  /** Instant Capture Mode */
+  const [insCapMode, setInsCapMode] = useState<'mode' | 'pinMode'>('mode')
 
-    this.setState({ tempOff: newTempOff })
+  const [isTempOff, setTempOff] = useState(false)
 
-    browser.tabs
-      .query({ active: true, currentWindow: true })
-      .then(tabs => {
-        if (tabs.length > 0 && tabs[0].id != null) {
-          return message.send<'TEMP_DISABLED_STATE'>(tabs[0].id, {
-            type: 'TEMP_DISABLED_STATE',
-            payload: {
-              op: 'set',
-              value: newTempOff
-            }
-          })
-        }
-        return false
-      })
-      .then(isSuccess => {
-        if (!isSuccess) {
-          this.setState({ tempOff: oldTempOff })
-          throw new Error('Set tempOff failed')
-        }
-      })
-      .catch(() => this.setState({ showPageNoResponse: true }))
-  }
+  const [isShowPageNoResponse, setShowPageNoResponse] = useState(false)
 
-  changeInsCap = () => {
-    const { config } = this.props
-    const { insCapMode } = this.state
-    const newConfig: AppConfig = {
-      ...config,
-      [insCapMode]: {
-        ...config[insCapMode],
-        instant: {
-          ...config[insCapMode].instant,
-          enable: !config[insCapMode].instant.enable
-        }
-      }
-    }
-    updateConfig(newConfig)
-  }
+  useEffect(() => {
+    addConfigListener(({ newConfig }) => {
+      setConfig(newConfig)
+    })
 
-  showQRcode = async () => {
-    const tabs = await browser.tabs.query({ active: true, currentWindow: true })
-    if (tabs.length > 0) {
-      const url = tabs[0].url
-      if (url) {
-        if (!url.startsWith('http')) {
-          const match = /static\/pdf\/web\/viewer\.html\?file=(.*)$/.exec(url)
-          if (match) {
-            this.setState({
-              isShowUrlBox: true,
-              currentTabUrl: decodeURIComponent(match[1])
-            })
-            return
-          }
-        }
-        this.setState({
-          isShowUrlBox: false,
-          currentTabUrl: url
-        })
-      }
-    }
-  }
-
-  changeActive = () => {
-    const { config } = this.props
-    const newConfig = {
-      ...config,
-      active: !config.active
-    }
-    updateConfig(newConfig)
-  }
-
-  clearCurrentTabUrl = () => {
-    this.setState({ currentTabUrl: '' })
-  }
-
-  renderQRPanel = () => {
-    const { t } = this.props
-    const { isShowUrlBox, currentTabUrl, showPageNoResponse } = this.state
-    return (
-      <div className="qrcode-panel" onMouseLeave={this.clearCurrentTabUrl}>
-        <QRCode value={currentTabUrl} size={250} />
-        <p className="qrcode-panel-title">
-          {isShowUrlBox ? (
-            <input
-              type="text"
-              autoFocus
-              readOnly
-              value={currentTabUrl}
-              onFocus={e => e.currentTarget.select()}
-            />
-          ) : (
-            <span>{t('qrcode_title')}</span>
-          )}
-        </p>
-        {showPageNoResponse && (
-          <div className="page-no-response-panel">
-            <p className="page-no-response-title">{t('page_no_response')}</p>
-          </div>
-        )}
-      </div>
-    )
-  }
-
-  componentDidMount() {
     browser.tabs
       .query({ active: true, currentWindow: true })
       .then(tabs => {
@@ -165,7 +46,7 @@ export class Popup extends React.Component<
               payload: { op: 'get' }
             })
             .then(flag => {
-              this.setState({ tempOff: flag })
+              setTempOff(flag)
             })
 
           message
@@ -174,24 +55,25 @@ export class Popup extends React.Component<
               payload: 'widget.isPinned'
             })
             .then(isPinned => {
-              this.setState({ insCapMode: isPinned ? 'pinMode' : 'mode' })
+              setInsCapMode(isPinned ? 'pinMode' : 'mode')
             })
         }
       })
       .catch(err =>
         console.warn('Error when receiving MsgTempDisabled response', err)
       )
-  }
+  }, [])
 
-  render() {
-    const { t, config } = this.props
-    const { currentTabUrl, tempOff, insCapMode } = this.state
-
-    return (
+  return (
+    <div className="popup-root">
+      <DictPanelStandaloneContainer
+        width={450}
+        height={isExpandDictPanel ? 500 : 400}
+      />
       <div
         className="switch-container"
-        onMouseEnter={this.activeContainer}
-        onMouseLeave={this.hideContainer}
+        onMouseEnter={shrinkDictPanel}
+        onMouseLeave={expandDictPanel}
       >
         <div className="active-switch">
           <span className="switch-title">{t('app_temp_active_title')}</span>
@@ -199,9 +81,9 @@ export class Popup extends React.Component<
             type="checkbox"
             id="opt-temp-active"
             className="btn-switch"
-            checked={tempOff}
-            onClick={this.changeTempOff}
-            onFocus={this.activeContainer}
+            checked={isTempOff}
+            onChange={toggleTempOff}
+            onFocus={shrinkDictPanel}
           />
           <label htmlFor="opt-temp-active"></label>
         </div>
@@ -215,15 +97,15 @@ export class Popup extends React.Component<
             id="opt-instant-capture"
             className="btn-switch"
             checked={config[insCapMode].instant.enable}
-            onClick={this.changeInsCap}
-            onFocus={this.activeContainer}
+            onChange={toggleInsCap}
+            onFocus={shrinkDictPanel}
           />
           <label htmlFor="opt-instant-capture"></label>
         </div>
         <div className="active-switch">
           <svg
             className="icon-qrcode"
-            onMouseEnter={this.showQRcode}
+            onMouseEnter={showQRcode}
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 612 612"
           >
@@ -241,8 +123,8 @@ export class Popup extends React.Component<
             id="opt-active"
             className="btn-switch"
             checked={config.active}
-            onClick={this.changeActive}
-            onFocus={this.activeContainer}
+            onChange={toggleAppActive}
+            onFocus={shrinkDictPanel}
           />
           <label htmlFor="opt-active"></label>
         </div>
@@ -254,11 +136,105 @@ export class Popup extends React.Component<
           mountOnEnter
           unmountOnExit
         >
-          {this.renderQRPanel}
+          {() => (
+            <div
+              className="qrcode-panel"
+              onMouseLeave={() => setCurrentTabUrl('')}
+            >
+              <QRCode value={currentTabUrl} size={250} />
+              <p className="qrcode-panel-title">
+                {isShowUrlBox ? (
+                  <input
+                    type="text"
+                    autoFocus
+                    readOnly
+                    value={currentTabUrl}
+                    onFocus={e => e.currentTarget.select()}
+                  />
+                ) : (
+                  <span>{t('qrcode_title')}</span>
+                )}
+              </p>
+              {isShowPageNoResponse && (
+                <div className="page-no-response-panel">
+                  <p className="page-no-response-title">
+                    {t('page_no_response')}
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </CSSTransition>
       </div>
-    )
+    </div>
+  )
+
+  function toggleTempOff() {
+    const newTempOff = !isTempOff
+
+    setTempOff(newTempOff)
+
+    browser.tabs
+      .query({ active: true, currentWindow: true })
+      .then(tabs => {
+        if (tabs.length > 0 && tabs[0].id != null) {
+          return message.send<'TEMP_DISABLED_STATE'>(tabs[0].id, {
+            type: 'TEMP_DISABLED_STATE',
+            payload: {
+              op: 'set',
+              value: newTempOff
+            }
+          })
+        }
+        return false
+      })
+      .then(isSuccess => {
+        if (!isSuccess) {
+          setTempOff(!newTempOff)
+          throw new Error('Set tempOff failed')
+        }
+      })
+      .catch(() => setShowPageNoResponse(true))
+  }
+
+  function toggleInsCap() {
+    updateConfig({
+      ...config,
+      [insCapMode]: {
+        ...config[insCapMode],
+        instant: {
+          ...config[insCapMode].instant,
+          enable: !config[insCapMode].instant.enable
+        }
+      }
+    })
+  }
+
+  function toggleAppActive() {
+    updateConfig({
+      ...config,
+      active: !config.active
+    })
+  }
+
+  async function showQRcode() {
+    const tabs = await browser.tabs.query({ active: true, currentWindow: true })
+    if (tabs.length > 0) {
+      const url = tabs[0].url
+      if (url) {
+        if (!url.startsWith('http')) {
+          const match = /pdf\/web\/viewer\.html\?file=(.*)$/.exec(url)
+          if (match) {
+            setIsShowUrlBox(true)
+            setCurrentTabUrl(decodeURIComponent(match[1]))
+            return
+          }
+        }
+        setIsShowUrlBox(false)
+        setCurrentTabUrl(url)
+      }
+    }
   }
 }
 
-export default withTranslation()(Popup)
+export default Popup
