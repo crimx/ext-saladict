@@ -1,6 +1,15 @@
 import React, { FC } from 'react'
+import {
+  useObservableCallback,
+  useObservable,
+  useSubscription
+} from 'observable-hooks'
+import { Observable, combineLatest } from 'rxjs'
+import { startWith, debounceTime, map } from 'rxjs/operators'
 import { Word } from '@/_helpers/record-manager'
 import { useTranslate } from '@/_helpers/i18n'
+import { message } from '@/_helpers/browser-api'
+import { isStandalonePage } from '@/_helpers/saladict'
 import {
   HistoryBackBtn,
   HistoryNextBtn,
@@ -11,20 +20,8 @@ import {
 } from './MenubarBtns'
 import { SearchBox, SearchBoxProps } from './SearchBox'
 import { Profiles, ProfilesProps } from './Profiles'
-import { message } from '@/_helpers/browser-api'
-import {
-  useObservableCallback,
-  useObservable,
-  useSubscription
-} from 'observable-hooks'
-import { Observable, combineLatest } from 'rxjs'
-import { startWith, debounceTime, map } from 'rxjs/operators'
 
 const ProfilesMemo = React.memo(Profiles)
-
-const isSaladictPopupPage = !!window.__SALADICT_POPUP_PAGE__
-const isSaladictQuickSearchPage = !!window.__SALADICT_QUICK_SEARCH_PAGE__
-const isStandalonePage = isSaladictPopupPage || isSaladictQuickSearchPage
 
 export interface MenuBarProps {
   text: string
@@ -104,7 +101,7 @@ export const MenuBar: FC<MenuBarProps> = props => {
         onHeightChanged={updateSBHeight}
       />
       <div
-        className={`menuBar-DragArea${isStandalonePage ? '' : ' isActive'}`}
+        className={`menuBar-DragArea${isStandalonePage() ? '' : ' isActive'}`}
         onMouseDown={props.onDragAreaMouseDown}
         onTouchStart={props.onDragAreaTouchStart}
       />
