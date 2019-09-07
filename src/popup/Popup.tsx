@@ -20,7 +20,7 @@ export const Popup: FC<PopupProps> = props => {
   const [isShowUrlBox, setIsShowUrlBox] = useState(false)
   const [currentTabUrl, setCurrentTabUrl] = useState('')
 
-  const [isExpandDictPanel, setDictPanel] = useState(false)
+  const [isExpandDictPanel, setDictPanel] = useState(true)
   const expandDictPanel = useRef(() => setDictPanel(true)).current
   const shrinkDictPanel = useRef(() => setDictPanel(false)).current
 
