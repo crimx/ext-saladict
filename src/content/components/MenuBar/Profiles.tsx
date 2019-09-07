@@ -17,6 +17,7 @@ import {
 import { isOptionsPage } from '@/_helpers/saladict'
 import { FloatBox } from './FloatBox'
 import { OptionsBtn } from './MenubarBtns'
+import { message } from '@/_helpers/browser-api'
 
 export interface ProfilesProps {
   t: i18next.TFunction
@@ -81,6 +82,12 @@ export const Profiles: FC<ProfilesProps> = props => {
         }}
         onMouseOver={onMouseOverOutDelay}
         onMouseOut={onMouseOverOutDelay}
+        onClick={() =>
+          message.send({
+            type: 'OPEN_URL',
+            payload: { url: 'options.html', self: true }
+          })
+        }
       />
       {!isOptionsPage() && (
         <CSSTransition
