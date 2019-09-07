@@ -175,7 +175,7 @@ function remoteLangCheck(text: string): Promise<string> {
     method: 'post',
     withCredentials: false,
     data: new URLSearchParams({
-      query: encodeURIComponent(text)
+      query: text
     })
   })
     .then(({ data }) => (data && data.lan) || Promise.reject(data))

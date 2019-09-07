@@ -87,9 +87,9 @@ export const search: SearchFunction<TencentResult, MachineTranslatePayload> = (
           data: new URLSearchParams({
             source: sl,
             target: tl,
-            sourceText: encodeURIComponent(text),
-            qtv: encodeURIComponent(qtv),
-            qtk: encodeURIComponent(qtk),
+            sourceText: text,
+            qtv,
+            qtk,
             sessionUuid: `translate_uuid${Date.now()}`
           })
         })
