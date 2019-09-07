@@ -26,10 +26,13 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
   const Dict = useMemo(
     () =>
       React.lazy<ComponentType<ViewPorps<any>>>(() =>
+        // due to browser extension limitation
+        // jsonp needs a little hack to work
+        // disable dynamic chunks for now
         import(
           /* webpackInclude: /View\.tsx$/ */
           /* webpackChunkName: "dicts/[request]" */
-          /* webpackMode: "lazy" */
+          /* webpackMode: "eager" */
           /* webpackPrefetch: true */
           /* webpackPreload: true */
           `@/components/dictionaries/${props.dictID}/View.tsx`
