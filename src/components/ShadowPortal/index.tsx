@@ -60,6 +60,7 @@ export const ShadowPortal = (props: ShadowPortalProps) => {
       <CSSTransition
         classNames={defaultClassNames}
         mountOnEnter
+        unmountOnExit
         appear
         timeout={defaultTimeout}
         {...restProps}

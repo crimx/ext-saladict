@@ -76,7 +76,9 @@ export const search: SearchFunction<TencentResult, MachineTranslatePayload> = (
   return (
     getToken()
       .then(({ qtv, qtk }) =>
-        axios.post('https://fanyi.qq.com/api/translate', {
+        axios('https://fanyi.qq.com/api/translate', {
+          method: 'post',
+          withCredentials: false,
           headers: {
             Accept: 'application/json, text/javascript, */*; q=0.01',
             'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',

@@ -70,26 +70,26 @@ export const search: SearchFunction<
   }
 
   return (
-    axios
-      .post('https://api.interpreter.caiyunai.com/v1/translator', {
-        headers: {
-          Accept: 'application/json, text/plain, */*',
-          'Content-Type': 'application/json;charset=UTF-8',
-          DNT: '1',
-          Origin: 'https://fanyi.caiyunapp.com',
-          Referer: 'https://fanyi.caiyunapp.com/',
-          'X-Authorization': await getToken()
-        },
-        withCredentials: false,
-        responseType: 'json',
-        data: JSON.stringify({
-          media: 'text',
-          os_type: 'web',
-          request_id: 'web_fanyi',
-          source: text,
-          trans_type: `${sl}2${tl}`
-        })
+    axios('https://api.interpreter.caiyunai.com/v1/translator', {
+      method: 'post',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json;charset=UTF-8',
+        DNT: '1',
+        Origin: 'https://fanyi.caiyunapp.com',
+        Referer: 'https://fanyi.caiyunapp.com/',
+        'X-Authorization': await getToken()
+      },
+      withCredentials: false,
+      responseType: 'json',
+      data: JSON.stringify({
+        media: 'text',
+        os_type: 'web',
+        request_id: 'web_fanyi',
+        source: text,
+        trans_type: `${sl}2${tl}`
       })
+    })
       .then(({ data }) => handleJSON(data, sl, tl, text))
       // return empty result so that user can still toggle language
       .catch(

@@ -76,27 +76,27 @@ export const search: SearchFunction<
   }
 
   return (
-    axios
-      .post('https://fanyi.sogou.com/reventondc/translate', {
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        data: new URLSearchParams({
-          from: sl,
-          to: tl,
-          text: encodeURIComponent(text).replace(/%20/g, '+'),
-          uuid: getUUID(),
-          s: md5('' + sl + tl + text + (await getSogouToken())),
-          client: 'pc',
-          fr: 'browser_pc',
-          useDetect: 'on',
-          useDetectResult: 'on',
-          needQc: '1',
-          oxford: 'on',
-          isReturnSugg: 'on'
-        })
+    axios('https://fanyi.sogou.com/reventondc/translate', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      data: new URLSearchParams({
+        from: sl,
+        to: tl,
+        text: encodeURIComponent(text).replace(/%20/g, '+'),
+        uuid: getUUID(),
+        s: md5('' + sl + tl + text + (await getSogouToken())),
+        client: 'pc',
+        fr: 'browser_pc',
+        useDetect: 'on',
+        useDetectResult: 'on',
+        needQc: '1',
+        oxford: 'on',
+        isReturnSugg: 'on'
       })
+    })
       .then(({ data: { data } }) => handleJSON(data, sl, tl))
       // return empty result so that user can still toggle language
       .catch(
