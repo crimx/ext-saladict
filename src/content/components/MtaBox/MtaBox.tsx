@@ -85,11 +85,12 @@ export default MtaBox
 
 function transformTyping(event$: Observable<React.KeyboardEvent>) {
   return event$.pipe(
-    switchMap(() =>
-      timer(1000).pipe(
+    switchMap(event => {
+      event.stopPropagation()
+      return timer(1000).pipe(
         mapTo(false),
         startWith(true)
       )
-    )
+    })
   )
 }
