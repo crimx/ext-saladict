@@ -1,6 +1,13 @@
 import React, { FC, useState, useEffect } from 'react'
 import App from './App'
 
+import { Provider as ProviderRedux } from 'react-redux'
+import createStore from '@/content/redux/create'
+
+import SaladBowlContainer from '@/content/components/SaladBowl/SaladBowl.container'
+import DictPanelContainer from '@/content/components/DictPanel/DictPanel.container'
+import WordEditorContainer from '@/content/components/WordEditor/WordEditor.container'
+
 import { I18nextProvider as ProviderI18next } from 'react-i18next'
 import { i18nLoader } from '@/_helpers/i18n'
 
@@ -16,6 +23,8 @@ import { injectAnalytics } from '@/_helpers/analytics'
 const i18n = i18nLoader()
 i18n.loadNamespaces(['wordpage', 'content'])
 i18n.setDefaultNamespace('wordpage')
+
+const reduxStore = createStore()
 
 const antdLocales = {
   'zh-CN': zh_CN,
@@ -46,6 +55,11 @@ export const WordPage: FC<WordPageProps> = props => {
       <ProviderAntdConfig locale={antdLocales[locale]}>
         <App area={props.area} locale={locale} />
       </ProviderAntdConfig>
+      <ProviderRedux store={reduxStore}>
+        <SaladBowlContainer />
+        <DictPanelContainer />
+        <WordEditorContainer />
+      </ProviderRedux>
     </ProviderI18next>
   )
 }
