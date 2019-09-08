@@ -5,6 +5,7 @@ import { withPropsTable } from 'storybook-addon-react-docgen'
 import { withKnobs } from '@storybook/addon-knobs'
 import { withSaladictPanel } from '@/_helpers/storybook'
 import { WaveformBox } from './WaveformBox'
+import { action } from '@storybook/addon-actions'
 
 storiesOf('Content Scripts|Dict Panel', module)
   .addParameters({
@@ -32,4 +33,6 @@ storiesOf('Content Scripts|Dict Panel', module)
       head: <style>{require('./WaveformBox.scss').toString()}</style>
     })
   )
-  .add('WaveformBox', () => <WaveformBox />)
+  .add('WaveformBox', () => (
+    <WaveformBox onHeightChanged={action('Height Changed')} />
+  ))

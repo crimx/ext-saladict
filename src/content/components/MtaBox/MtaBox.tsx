@@ -13,6 +13,7 @@ export interface MtaBoxProps {
   onInput: (text: string) => void
   /** Expand or Shrink */
   onDrawerToggle: () => void
+  onHeightChanged: (height: number) => void
 }
 
 /**
@@ -30,6 +31,10 @@ export const MtaBox: FC<MtaBoxProps> = props => {
       textareaRef.current.select()
     }
   }, [props.expand])
+
+  useEffect(() => {
+    props.onHeightChanged((props.expand ? height : 0) + 12)
+  }, [height])
 
   return (
     <div>
@@ -50,6 +55,7 @@ export const MtaBox: FC<MtaBoxProps> = props => {
         >
           {() => (
             <AutosizeTextarea
+              autoFocus
               inputRef={textareaRef}
               className="mtaBox-TextArea"
               style={{ maxHeight: props.maxHeight }}

@@ -40,8 +40,17 @@ export const initState = () => ({
   bowlCoord: { x: 0, y: 0 },
   /** The actual coord of dict panel might be different */
   dictPanelCoord: { x: 0, y: 0 },
+  panelHeight: 30,
+  _panelHeightCache: {
+    menubar: 30,
+    mtabox: 0,
+    dictlist: 0,
+    waveformbox: 0,
+    sum: 30,
+    /** independent layer */
+    floatHeight: 0
+  },
   panelMaxHeight: window.innerHeight * 0.8,
-  panelMinHeight: 0,
   /** Dicts that will be rendered to dict panel */
   renderedDicts: [] as {
     readonly id: DictID

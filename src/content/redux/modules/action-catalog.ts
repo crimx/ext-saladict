@@ -72,11 +72,13 @@ export type ActionCatalog = {
     }
   }
 
-  /**
-   * Keep panel heighter than absolutely positioned boxes
-   */
-  PANEL_MIN_HEIGHT: {
-    payload: number
+  UPDATE_PANEL_HEIGHT: {
+    payload: {
+      area: 'menubar' | 'mtabox' | 'dictlist' | 'waveformbox'
+      height: number
+      /** independent layer */
+      floatHeight?: number
+    }
   }
 
   DRAG_START_COORD: {

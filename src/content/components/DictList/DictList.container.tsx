@@ -18,7 +18,7 @@ const memoizedDicts = memoizeOne(
     }))
 )
 
-type Dispatchers = 'searchText' | 'openDictSrcPage'
+type Dispatchers = 'searchText' | 'openDictSrcPage' | 'onHeightChanged'
 
 const mapStateToProps = (
   state: StoreState
@@ -45,6 +45,12 @@ const mapDispatchToProps = (
           text: word && word.text ? word.text : ''
         }
       })
+    })
+  },
+  onHeightChanged: height => {
+    dispatch({
+      type: 'UPDATE_PANEL_HEIGHT',
+      payload: { area: 'dictlist', height }
     })
   }
 })

@@ -39,7 +39,6 @@ storiesOf('Content Scripts|Dict Panel', module)
   )
   .add('DictList', () => (
     <DictList
-      text="love"
       fontSize={number('Font Size', 13)}
       withAnimation={boolean('Enable Animation', true)}
       dicts={[...Array(faker.random.number({ min: 3, max: 10 }))].map(() => ({
@@ -53,6 +52,8 @@ storiesOf('Content Scripts|Dict Panel', module)
         dictComp: TestComp
       }))}
       searchText={action('Search Text')}
+      openDictSrcPage={action('Open Dict Source Page')}
+      onHeightChanged={action('Height Changed')}
     />
   ))
 
