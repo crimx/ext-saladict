@@ -14,7 +14,6 @@ import {
 import { storage } from '@/_helpers/browser-api'
 import md5 from 'md5'
 import axios from 'axios'
-import { fetchPlainText } from '@/_helpers/fetch-dom'
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   const lang =
@@ -50,10 +49,17 @@ const langcodes: ReadonlyArray<string> = [
   'uk', 'ur', 'vi', 'yua', 'yue',
 ]
 
+let isSetupHeaderModifier = false
+
 export const search: SearchFunction<
   SogouResult,
   MachineTranslatePayload
 > = async (text, config, profile, payload) => {
+  if (!isSetupHeaderModifier) {
+    setupHeaderModifier()
+    isSetupHeaderModifier = true
+  }
+
   const options = profile.dicts.all.sogou.options
 
   const sl: string = payload.sl || 'auto'
@@ -76,25 +82,26 @@ export const search: SearchFunction<
   }
 
   return (
-    axios('https://fanyi.sogou.com/reventondc/translate', {
+    axios('https://fanyi.sogou.com/reventondc/translateV2', {
       method: 'post',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,zh-TW;q=0.7',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
         'X-Requested-With': 'XMLHttpRequest'
       },
       data: new URLSearchParams({
         from: sl,
         to: tl,
-        text: encodeURIComponent(text).replace(/%20/g, '+'),
-        uuid: getUUID(),
-        s: md5('' + sl + tl + text + (await getSogouToken())),
+        text: text,
         client: 'pc',
         fr: 'browser_pc',
-        useDetect: 'on',
-        useDetectResult: 'on',
+        pid: 'sogou-dict-vr',
+        dict: 'true',
+        word_group: 'true',
+        second_query: 'true',
+        uuid: getUUID(),
         needQc: '1',
-        oxford: 'on',
-        isReturnSugg: 'on'
+        s: md5('' + sl + tl + text + (await getSogouToken()))
       })
     })
       .then(({ data: { data } }) => handleJSON(data, sl, tl))
@@ -181,18 +188,13 @@ async function getSogouToken(): Promise<string> {
     'dict_sogou'
   )
   if (!dict_sogou || Date.now() - dict_sogou.tokenDate > 5 * 60000) {
-    let token = '72da1dc662daf182c4f7671ec884074b'
+    let token = '8511813095151'
     try {
-      const homepage = await fetchPlainText('https://fanyi.sogou.com')
-
-      const appjsMatcher = /dlweb\.sogoucdn\.com\/translate\/pc\/static\/js\/app\.\S+\.js/
-      const appjsPath = (homepage.match(appjsMatcher) || [''])[0]
-      if (appjsPath) {
-        const appjs = await fetchPlainText('https://' + appjsPath)
-        const matchRes = appjs.match(/"(\w{32})"/)
-        if (matchRes) {
-          token = matchRes[1]
-        }
+      const response = await axios.get(
+        'https://github.com/crimx/ext-saladict/blob/dev/src/components/dictionaries/sogou/seccode.json'
+      )
+      if (response.data && response.data.seccode) {
+        token = response.data.seccode
       }
     } catch (e) {
       /* nothing */
@@ -205,4 +207,38 @@ async function getSogouToken(): Promise<string> {
   }
 
   return dict_sogou.token
+}
+
+function setupHeaderModifier() {
+  const extraInfoSpec = ['blocking', 'requestHeaders']
+  // https://developer.chrome.com/extensions/webRequest#life_cycle_footnote
+  if (
+    browser.webRequest['OnBeforeSendHeadersOptions'] &&
+    browser.webRequest['OnBeforeSendHeadersOptions'].hasOwnProperty(
+      'EXTRA_HEADERS'
+    )
+  ) {
+    extraInfoSpec.push('extraHeaders')
+  }
+
+  browser.webRequest.onBeforeSendHeaders.addListener(
+    details => {
+      if (details && details.requestHeaders) {
+        const headers = details.requestHeaders.filter(
+          header => !/^(Origin|Referer|Host)$/.test(header.name)
+        )
+
+        headers.push(
+          { name: 'Origin', value: 'https://fanyi.sogou.com' },
+          { name: 'Referer', value: 'https://fanyi.sogou.com/' },
+          { name: 'Host', value: 'fanyi.sogou.com' }
+        )
+
+        return { requestHeaders: headers }
+      }
+      return { requestHeaders: details.requestHeaders }
+    },
+    { urls: ['https://fanyi.sogou.com/reventondc/translateV2'] },
+    extraInfoSpec as any
+  )
 }
