@@ -1,8 +1,8 @@
+@import '@/content/components/DictPanel/DictPanelStandalone.scss';
+
 html,
 body,
-#frame-root,
-.saladict-DIV,
-.saladict-DictPanel {
+#root {
   position: static;
   height: 100%;
   margin: 0;
@@ -11,6 +11,15 @@ body,
   font-size: 0;
 }
 
-#frame-root {
+#root {
   overflow: hidden;
+}
+
+.popup-root {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column-reverse;
+  width: 450px;
+  height: 550px;
+  font-size: 14px;
 }

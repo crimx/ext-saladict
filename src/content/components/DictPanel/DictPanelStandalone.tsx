@@ -2,8 +2,8 @@ import React, { FC, ReactNode } from 'react'
 import { SALADICT_PANEL } from '@/_helpers/saladict'
 
 export interface DictPanelStandaloneProps {
-  width: number
-  height: number
+  width: number | string
+  height: number | string
 
   withAnimation: boolean
 

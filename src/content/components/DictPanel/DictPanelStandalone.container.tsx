@@ -8,12 +8,12 @@ import { StoreState } from '@/content/redux/modules'
 import { MenuBarContainer } from '../MenuBar/MenuBar.container'
 import { MtaBoxContainer } from '../MtaBox/MtaBox.container'
 import { DictListContainer } from '../DictList/DictList.container'
-import { WaveformBox } from '../WaveformBox/WaveformBox'
+import { WaveformBoxContainer } from '../WaveformBox/WaveformBox.container'
 
 const menuBar = <MenuBarContainer />
 const mtaBox = <MtaBoxContainer />
 const dictList = <DictListContainer />
-const waveformBox = <WaveformBox />
+const waveformBox = <WaveformBoxContainer />
 
 type OwnProps = 'height' | 'width'
 

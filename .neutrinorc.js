@@ -67,6 +67,10 @@ module.exports = {
 
       history: {
         entry: 'history'
+      },
+
+      'quick-search': {
+        entry: 'quick-search'
       }
     }
   },

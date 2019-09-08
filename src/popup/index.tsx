@@ -1,3 +1,5 @@
+import './env'
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppConfig } from '@/app-config'
@@ -17,10 +19,6 @@ import { i18nLoader } from '@/_helpers/i18n'
 import Popup from './Popup'
 import Notebook from './Notebook'
 import './_style.scss'
-
-// inject panel AFTER flags are set
-window.__SALADICT_INTERNAL_PAGE__ = true
-window.__SALADICT_POPUP_PAGE__ = true
 
 getConfig().then(config => {
   document.body.style.width = config.panelWidth + 'px'
