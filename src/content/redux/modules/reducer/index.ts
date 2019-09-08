@@ -14,11 +14,13 @@ export const createRootReducer = () =>
   createReducer<ReturnType<typeof initState>, ActionCatalog>(initState(), {
     NEW_CONFIG: (state, { payload }) => {
       const url = window.location.href
+      const panelMaxHeight =
+        (window.innerHeight * payload.panelMaxHeightRatio) / 100
       return {
         ...state,
         config: payload,
-        panelMaxHeight:
-          (window.innerHeight * payload.panelMaxHeightRatio) / 100,
+        panelHeight: Math.min(state.panelHeight, panelMaxHeight),
+        panelMaxHeight,
         isTempDisabled:
           payload.blacklist.some(([r]) => new RegExp(r).test(url)) &&
           payload.whitelist.every(([r]) => !new RegExp(r).test(url))
@@ -134,13 +136,25 @@ export const createRootReducer = () =>
       }
     },
 
-    PANEL_MIN_HEIGHT: (state, { payload }) => {
-      return payload === state.panelMinHeight
-        ? state
-        : {
-            ...state,
-            panelMinHeight: payload
-          }
+    UPDATE_PANEL_HEIGHT: (state, { payload }) => {
+      const { _panelHeightCache } = state
+      const sum =
+        _panelHeightCache.sum - _panelHeightCache[payload.area] + payload.height
+      const floatHeight =
+        payload.floatHeight == null
+          ? _panelHeightCache.floatHeight
+          : payload.floatHeight
+
+      return {
+        ...state,
+        panelHeight: Math.min(Math.max(sum, floatHeight), state.panelMaxHeight),
+        _panelHeightCache: {
+          ..._panelHeightCache,
+          [payload.area]: payload.height,
+          sum,
+          floatHeight
+        }
+      }
     },
 
     DRAG_START_COORD: (state, { payload }) => ({

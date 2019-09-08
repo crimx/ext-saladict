@@ -1,6 +1,5 @@
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react'
 import { useUpdateEffect } from 'react-use'
-import { ResizeReporter } from 'react-resize-reporter/scroll'
 import { SALADICT_PANEL } from '@/_helpers/saladict'
 
 export interface DictPanelProps {
@@ -13,8 +12,8 @@ export interface DictPanelProps {
   takeCoordSnapshot: boolean
 
   width: number
+  height: number
   maxHeight: number
-  minHeight: number
 
   withAnimation: boolean
 
@@ -28,10 +27,8 @@ export interface DictPanelProps {
 }
 
 export const DictPanel: FC<DictPanelProps> = props => {
-  const heightRef = useRef(50)
-
   const [x, setX] = useState(() => reconcileX(props.width, props.coord.x))
-  const [y, setY] = useState(() => reconcileY(heightRef.current, props.coord.y))
+  const [y, setY] = useState(() => reconcileY(props.height, props.coord.y))
 
   const coordSnapshotRef = useRef<{ x: number; y: number }>()
 
@@ -41,24 +38,20 @@ export const DictPanel: FC<DictPanelProps> = props => {
     } else {
       if (coordSnapshotRef.current) {
         setX(reconcileX(props.width, coordSnapshotRef.current.x))
-        setY(reconcileY(heightRef.current, coordSnapshotRef.current.y))
+        setY(reconcileY(props.height, coordSnapshotRef.current.y))
       }
     }
   }, [props.takeCoordSnapshot])
 
   useUpdateEffect(() => {
     setX(reconcileX(props.width, props.coord.x))
-    setY(reconcileY(heightRef.current, props.coord.y))
+    setY(reconcileY(props.height, props.coord.y))
   }, [props.coord])
 
   useUpdateEffect(() => {
     setX(x => reconcileX(props.width, x))
-  }, [props.width])
-
-  const setHeight = useRef((height: number) => {
-    heightRef.current = height
-    setY(y => reconcileY(heightRef.current, y))
-  }).current
+    setY(y => reconcileY(props.height, y))
+  }, [props.width, props.height])
 
   useEffect(() => {
     if (props.dragStartCoord) {
@@ -116,8 +109,7 @@ export const DictPanel: FC<DictPanelProps> = props => {
         left: x,
         top: y,
         width: props.width,
-        maxHeight: props.maxHeight,
-        minHeight: props.minHeight,
+        height: props.height,
         backgroundColor: '#fff',
         color: '#333',
         '--panel-background-color': '#fff',
@@ -126,7 +118,6 @@ export const DictPanel: FC<DictPanelProps> = props => {
         '--panel-max-height': props.maxHeight + 'px'
       }}
     >
-      <ResizeReporter reportInit debounce={250} onHeightChanged={setHeight} />
       <div className="dictPanel-Head">{props.menuBar}</div>
       <div className="dictPanel-Body">
         {props.mtaBox}

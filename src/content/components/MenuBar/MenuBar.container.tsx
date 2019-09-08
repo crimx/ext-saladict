@@ -62,8 +62,12 @@ const mapDispatchToProps = (
   },
   onHeightChanged: (height: number) => {
     dispatch({
-      type: 'PANEL_MIN_HEIGHT',
-      payload: Math.floor(height)
+      type: 'UPDATE_PANEL_HEIGHT',
+      payload: {
+        area: 'menubar',
+        height: 30,
+        floatHeight: height
+      }
     })
   },
   onDragAreaMouseDown: event => {

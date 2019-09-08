@@ -94,7 +94,10 @@ function Dict(props: {
     mockSearchTexts.length > 1
       ? select(
           'Search Text',
-          mockSearchTexts.reduce((o, t) => ((o[t] = t), o), {}),
+          mockSearchTexts.reduce((o, t) => {
+            o[t] = t
+            return o
+          }, {}),
           mockSearchTexts[0]
         )
       : mockSearchTexts[0]
@@ -118,12 +121,10 @@ function Dict(props: {
           profiles.dicts.all[props.dictID]['options_sel'][key]
         return select(
           name,
-          values.reduce(
-            (o, k) => (
-              (o[locales.options[`${key}-${k}`][i18n.language]] = k), o
-            ),
-            {}
-          ),
+          values.reduce((o, k) => {
+            o[locales.options[`${key}-${k}`][i18n.language]] = k
+            return o
+          }, {}),
           options[key]
         )
       default:
@@ -165,13 +166,14 @@ function Dict(props: {
   return (
     <DictItem
       dictID={props.dictID}
-      text={searchText}
       fontSize={props.fontSize}
       withAnimation={props.withAnimation}
       preferredHeight={number('Preferred Height', 256)}
       searchStatus={status}
       searchResult={result}
       searchText={action('Search Text')}
+      openDictSrcPage={action('Open Dict Source Page')}
+      onHeightChanged={action('Height Changed')}
     />
   )
 }

@@ -1,9 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, FC } from 'react'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import { SALADICT_EXTERNAL } from '@/_helpers/saladict'
 
-export const WaveformBox = () => {
+export interface WaveformBoxProps {
+  onHeightChanged: (height: number) => void
+}
+
+export const WaveformBox: FC<WaveformBoxProps> = props => {
   const [expand, setExpand] = useState(false)
+
+  useEffect(() => {
+    props.onHeightChanged((expand ? 165 : 0) + 12)
+  }, [expand])
 
   return (
     <div

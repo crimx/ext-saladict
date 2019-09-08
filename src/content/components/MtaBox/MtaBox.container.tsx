@@ -4,7 +4,11 @@ import { StoreState, StoreAction } from '@/content/redux/modules'
 import { Dispatch } from 'redux'
 import { newWord } from '@/_helpers/record-manager'
 
-type Dispatchers = 'searchText' | 'onInput' | 'onDrawerToggle'
+type Dispatchers =
+  | 'searchText'
+  | 'onInput'
+  | 'onDrawerToggle'
+  | 'onHeightChanged'
 
 const mapStateToProps = (
   state: StoreState
@@ -25,6 +29,12 @@ const mapDispatchToProps = (
   },
   onDrawerToggle: () => {
     dispatch({ type: 'TOGGLE_MTA_BOX' })
+  },
+  onHeightChanged: height => {
+    dispatch({
+      type: 'UPDATE_PANEL_HEIGHT',
+      payload: { area: 'mtabox', height }
+    })
   }
 })
 

@@ -4,7 +4,8 @@ import { newWord } from '@/_helpers/record-manager'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import { DictItemHead, DictItemHeadProps } from './DictItemHead'
 import { DictItemBody, DictItemBodyProps } from './DictItemBody'
-import { ResizeReporter } from 'react-resize-reporter/object'
+import { ResizeReporter } from 'react-resize-reporter/scroll'
+import { DictID } from '@/app-config'
 
 export interface DictItemProps extends DictItemBodyProps {
   /** default height when search result is received */
@@ -13,6 +14,8 @@ export interface DictItemProps extends DictItemBodyProps {
   dictComp?: ComponentType<ViewPorps<any>>
 
   openDictSrcPage: DictItemHeadProps['openDictSrcPage']
+
+  onHeightChanged: (id: DictID, height: number) => void
 }
 
 export const DictItem: FC<DictItemProps> = props => {
@@ -38,6 +41,10 @@ export const DictItem: FC<DictItemProps> = props => {
       setFoldState('COLLAPSE')
     }
   }, [props.searchStatus])
+
+  useEffect(() => {
+    props.onHeightChanged(props.dictID, visibleHeight + 21)
+  }, [visibleHeight])
 
   return (
     <section

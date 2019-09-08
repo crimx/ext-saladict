@@ -50,6 +50,7 @@ storiesOf('Content Scripts|Dict Panel', module)
         )}
         searchText={action('Search Text')}
         openDictSrcPage={action('Open Dict Source Page')}
+        onHeightChanged={action('Height Changed')}
       />
     )
   })
