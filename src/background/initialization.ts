@@ -1,3 +1,4 @@
+import mapValues from 'lodash/mapValues'
 import { message, storage, openURL } from '@/_helpers/browser-api'
 import { isExtTainted } from '@/_helpers/integrity'
 import checkUpdate from '@/_helpers/check-update'
@@ -94,7 +95,13 @@ async function onInstalled({
   window.appConfig = await initConfig()
   window.activeProfile = await initProfiles()
 
-  await storage.local.set({ lastCheckUpdate: Date.now() })
+  await storage.local.set(
+    mapValues(await storage.local.get(null), (value, key) => {
+      if (key.startsWith('dict_')) return null
+      if (key === 'lastCheckUpdate') return Date.now()
+      return value
+    })
+  )
 
   if (reason === 'install') {
     if (
