@@ -34,7 +34,7 @@ export const MtaBox: FC<MtaBoxProps> = props => {
 
   useEffect(() => {
     props.onHeightChanged((props.expand ? height : 0) + 12)
-  }, [height])
+  }, [height, props.expand])
 
   return (
     <div>
