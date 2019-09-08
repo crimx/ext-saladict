@@ -187,7 +187,7 @@ async function getSogouToken(): Promise<string> {
   let { dict_sogou } = await storage.local.get<{ dict_sogou: SogouStorage }>(
     'dict_sogou'
   )
-  if (!dict_sogou || Date.now() - dict_sogou.tokenDate > 5 * 60000) {
+  if (!dict_sogou || Date.now() - dict_sogou.tokenDate > 6 * 3600000) {
     let token = '8511813095151'
     try {
       const response = await axios.get(
