@@ -3,7 +3,7 @@ import { empty, of } from 'rxjs'
 import { StoreAction, StoreState } from '../'
 import { Epic, ofType } from '../../utils/operators'
 import { message } from '@/_helpers/browser-api'
-import { isStandalonePage, isOptionsPage } from '@/_helpers/saladict'
+import { isStandalonePage } from '@/_helpers/saladict'
 
 export const newSelectionEpic: Epic = (action$, state$) =>
   action$.pipe(
@@ -22,7 +22,7 @@ export const newSelectionEpic: Epic = (action$, state$) =>
         return selectionToQSPanel(config, selection)
       }
 
-      if (isStandalonePage() || isOptionsPage()) {
+      if (isStandalonePage()) {
         return empty()
       }
 

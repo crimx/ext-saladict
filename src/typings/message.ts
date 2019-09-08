@@ -77,6 +77,9 @@ export type MessageConfig = {
     response: any
   }
 
+  /** Inject dict panel to any page */
+  INJECT_DICTPANEL: {}
+
   /* ------------------------------------------------ *\
      Backend IndexedDB: Notebook or History
   \* ------------------------------------------------ */

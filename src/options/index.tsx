@@ -10,7 +10,6 @@ import {
   ProfileIDList
 } from '@/app-config/profiles'
 import { getConfig, addConfigListener } from '@/_helpers/config-manager'
-import { injectSaladictInternal } from '@/_helpers/injectSaladictInternal'
 import { getWordOfTheDay } from '@/_helpers/wordoftheday'
 import { message as browserMessage } from '@/_helpers/browser-api'
 import { timer } from '@/_helpers/promise-more'
@@ -20,6 +19,13 @@ import {
   getProfileIDList,
   addProfileIDListListener
 } from '@/_helpers/profile-manager'
+
+import { Provider as ProviderRedux } from 'react-redux'
+import createStore from '@/content/redux/create'
+
+import SaladBowlContainer from '@/content/components/SaladBowl/SaladBowl.container'
+import DictPanelContainer from '@/content/components/DictPanel/DictPanel.container'
+import WordEditorContainer from '@/content/components/WordEditor/WordEditor.container'
 
 import { I18nextProvider as ProviderI18next } from 'react-i18next'
 import { i18nLoader } from '@/_helpers/i18n'
@@ -52,6 +58,8 @@ export interface OptionsState {
 }
 
 export class Options extends React.Component<OptionsProps, OptionsState> {
+  reduxStore = createStore()
+
   state: OptionsState = {
     config: getDefaultConfig(),
     profile: getDefaultProfile(),
@@ -79,33 +87,21 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
 
         if (process.env.NODE_ENV !== 'development') {
           if (window.innerWidth > 1024) {
-            injectSaladictInternal()
-
             await timer(500)
-            const text = await getWordOfTheDay()
-            const $container = document.querySelector('.xmain-container')
-
-            let mouseX: number
-            if ($container) {
-              const { left, width } = $container.getBoundingClientRect()
-              mouseX = left + width / 2
-            } else {
-              mouseX = window.innerWidth - config.panelWidth - 150
-            }
 
             browserMessage.self.send({
               type: 'SELECTION',
               payload: {
-                word: newWord({ text }),
-                self: true,
+                word: newWord({ text: await getWordOfTheDay() }),
+                self: false,
                 instant: true,
-                mouseX,
-                mouseY: 250,
-                dbClick: false,
-                shiftKey: false,
-                ctrlKey: false,
-                metaKey: false,
-                force: false
+                mouseX: window.innerWidth - config.panelWidth - 50,
+                mouseY: 80,
+                dbClick: true,
+                shiftKey: true,
+                ctrlKey: true,
+                metaKey: true,
+                force: true
               }
             })
           }
@@ -141,8 +137,15 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
         <ProviderAntdConfig
           locale={antdLocales[this.state.config.langCode] || zh_CN}
         >
-          {React.createElement(App, { ...this.state })}
+          <App {...this.state} />
         </ProviderAntdConfig>
+        {window.innerWidth > 1024 && (
+          <ProviderRedux store={this.reduxStore}>
+            <SaladBowlContainer />
+            <DictPanelContainer />
+            <WordEditorContainer />
+          </ProviderRedux>
+        )}
       </ProviderI18next>
     )
   }
