@@ -7,6 +7,7 @@ export function fetchDOM(
 ): Promise<DocumentFragment> {
   return axios(url, {
     ...config,
+    transformResponse: [data => data],
     responseType: 'document'
   }).then(({ data }) => DOMPurify.sanitize(data, { RETURN_DOM_FRAGMENT: true }))
 }
@@ -19,6 +20,7 @@ export function fetchDirtyDOM(
   return axios(url, {
     withCredentials: false,
     ...config,
+    transformResponse: [data => data],
     responseType: 'document'
   }).then(({ data }) => data)
 }
