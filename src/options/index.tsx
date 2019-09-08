@@ -1,3 +1,5 @@
+import './env'
+
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
@@ -29,10 +31,6 @@ import en_US from 'antd/lib/locale-provider/en_US'
 
 import './_style.scss'
 import { newWord } from '@/_helpers/record-manager'
-
-window.__SALADICT_INTERNAL_PAGE__ = true
-window.__SALADICT_OPTIONS_PAGE__ = true
-window.__SALADICT_LAST_SEARCH__ = ''
 
 const i18n = i18nLoader()
 i18n.loadNamespaces(['common', 'options', 'dicts', 'menus'])
