@@ -4,6 +4,7 @@ import { isExtTainted } from '@/_helpers/integrity'
 import checkUpdate from '@/_helpers/check-update'
 import { updateConfig, initConfig } from '@/_helpers/config-manager'
 import { initProfiles } from '@/_helpers/profile-manager'
+import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
 import { openPDF, openGoogle, openYoudao } from './context-menus'
 import { openQSPanel } from './server'
 import './types'
@@ -112,16 +113,11 @@ async function onInstalled({
       )
       storage.sync.set({ hasInstructionsShown: true })
     }
-    ;(await browser.tabs.query({})).forEach(tab => {
-      if (tab.id) {
-        browser.tabs
-          .executeScript(tab.id, { file: '/content.js' })
-          .catch(() => {
-            /**/
-          })
-        browser.tabs.insertCSS(tab.id, { file: '/content.css' }).catch(() => {
-          /**/
-        })
+    ;(await browser.tabs.query({})).forEach(async tab => {
+      try {
+        await injectDictPanel(tab)
+      } catch (e) {
+        console.warn(e)
       }
     })
   } else if (reason === 'update') {
