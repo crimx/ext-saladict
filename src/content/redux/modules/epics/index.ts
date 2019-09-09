@@ -2,6 +2,7 @@ import { combineEpics } from 'redux-observable'
 import { from, of } from 'rxjs'
 import { map, mapTo, mergeMap, filter } from 'rxjs/operators'
 
+import { isStandalonePage } from '@/_helpers/saladict'
 import { saveWord } from '@/_helpers/record-manager'
 
 import { StoreAction, StoreState } from '../'
@@ -29,7 +30,7 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
     action$.pipe(
       ofType('ADD_TO_NOTEBOOK'),
       mergeMap(() => {
-        if (state$.value.config.editOnFav) {
+        if (state$.value.config.editOnFav && !isStandalonePage()) {
           return of({
             type: 'WORD_EDITOR_STATUS',
             payload:
