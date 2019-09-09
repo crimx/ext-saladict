@@ -24,6 +24,8 @@ export interface ProfilesProps {
   profiles: Array<{ id: string; name: string }>
   activeProfileId: string
   onHeightChanged: (height: number) => void
+
+  onProfileChanged: (id: string) => void
 }
 
 /**
@@ -112,7 +114,10 @@ export const Profiles: FC<ProfilesProps> = props => {
                 onArrowDownLast={container =>
                   (container.firstElementChild as HTMLButtonElement).focus()
                 }
-                onSelect={updateActiveProfileID}
+                onSelect={id => {
+                  updateActiveProfileID(id)
+                  props.onProfileChanged(id)
+                }}
                 onHeightChanged={props.onHeightChanged}
               />
             </div>
