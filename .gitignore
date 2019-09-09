@@ -86,3 +86,5 @@ jspm_packages/
 
 # Neutrino build directory
 build
+
+assets/pdf

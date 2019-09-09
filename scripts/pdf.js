@@ -12,48 +12,44 @@ if (!shell.which('git')) {
 }
 
 const repoRoot = 'pdf'
-const publicPDFRoot = path.join(__dirname, '../public/static/pdf')
+const publicPDFRoot = path.join(__dirname, '../assets/pdf')
 const pdfFiles = [
   'build/pdf.js',
   'build/pdf.worker.js',
   'web/debugger.js',
   'web/viewer.js',
   'web/viewer.html',
-  'web/viewer.css',
+  'web/viewer.css'
 ]
-const pdfDirs = [
-  'web/cmaps',
-  'web/images',
-  'web/locale',
-]
+const pdfDirs = ['web/cmaps', 'web/images', 'web/locale']
 const files = [...pdfFiles, ...pdfDirs]
 
 shell.cd(path.resolve(__dirname))
 
 shell.rm('-rf', repoRoot)
 
-exec( // single brach cloning turns out much slower
-  `git clone https://github.com/mozilla/pdf.js.git ${repoRoot} --progress --verbose`,
-  'Error: Git clone failed',
+exec(
+  `git clone https://github.com/mozilla/pdf.js.git ${repoRoot} --single-branch --branch gh-pages --depth 1 --progress --verbose`,
+  'Error: Git clone failed'
 )
 
 shell.cd('./' + repoRoot)
 
-exec('git checkout gh-pages')
-
 startUpgrade()
 
-async function startUpgrade () {
+async function startUpgrade() {
   shell.echo('\nChecking files.')
   await Promise.all(files.map(p => exists(path.join(__dirname, repoRoot, p))))
 
   shell.echo('\nModifying files.')
   await Promise.all([modifyViewrJS(), modifyViewerHTML()])
 
+  await fs.ensureDir(publicPDFRoot)
+
   shell.echo('\nCloning files.')
-  removeDirs()
-  cloneFiles('build')
-  cloneFiles('web')
+  cleanInit()
+
+  await cloneFiles()
 
   shell.echo('\nCleaning files.')
   shell.cd(path.resolve(__dirname))
@@ -62,8 +58,8 @@ async function startUpgrade () {
   shell.echo('\ndone.')
 }
 
-async function modifyViewrJS () {
-  const viewerPath = path.join(__dirname, repoRoot,'web/viewer.js')
+async function modifyViewrJS() {
+  const viewerPath = path.join(__dirname, repoRoot, 'web/viewer.js')
   let file = await fs.readFile(viewerPath, 'utf8')
 
   file = '/* saladict */ window.__SALADICT_PDF_PAGE__ = true;\n' + file
@@ -74,7 +70,9 @@ async function modifyViewrJS () {
     shell.echo('Could not locate default pdf in viewer.js')
     shell.exit(1)
   }
-  file = file.replace(defaultPDFTester, (m, p1) => m.replace(p1, "/* saladict */'/static/pdf/default.pdf'"))
+  file = file.replace(defaultPDFTester, (m, p1) =>
+    m.replace(p1, "/* saladict */'/assets/default.pdf'")
+  )
 
   // disable url check
   const validateTester = /var validateFileURL[^\n]*\n+^{$[\s\S]+?^}$/m
@@ -82,13 +80,16 @@ async function modifyViewrJS () {
     shell.echo('Could not locate validateFileURL in viewer.js')
     shell.exit(1)
   }
-  file = file.replace(validateTester, '/* saladict */var validateFileURL = () => {};')
+  file = file.replace(
+    validateTester,
+    '/* saladict */var validateFileURL = () => {};'
+  )
 
   await fs.writeFile(viewerPath, file)
 }
 
-async function modifyViewerHTML () {
-  const viewerPath = path.join(__dirname, repoRoot,'web/viewer.html')
+async function modifyViewerHTML() {
+  const viewerPath = path.join(__dirname, repoRoot, 'web/viewer.html')
   let file = await fs.readFile(viewerPath, 'utf8')
 
   if (!file.includes(`</body>`)) {
@@ -96,13 +97,12 @@ async function modifyViewerHTML () {
     shell.exit(1)
   }
 
-  file = file.replace(`</body>`,
-`
+  file = file.replace(
+    `</body>`,
+    `
     <!-- Saladict -->
-    <link rel="stylesheet" href="/content.css">
-    <script src="/static/browser-polyfill.min.js"></script>
-    <script src="/selection.js"></script>
-    <script src="/content.js"></script>
+    <script src="/assets/browser-polyfill.min.js"></script>
+    <script src="/assets/inject-dict-panel.js"></script>
   </body>
 `
   )
@@ -110,29 +110,13 @@ async function modifyViewerHTML () {
   await fs.writeFile(viewerPath, file)
 }
 
-function removeDirs () {
+function cleanInit() {
   pdfDirs.forEach(name => {
     shell.rm('-rf', path.join(publicPDFRoot, name))
   })
 }
 
-function cloneFiles (subdir) {
-  const execResult = shell.cp(
-    '-R',
-    files
-      .filter(name => name.startsWith(subdir))
-      .map(name => path.join(__dirname, repoRoot, name)),
-    path.join(publicPDFRoot, subdir),
-  )
-
-  if (execResult.code !== 0) {
-    shell.echo(execResult.stdout)
-    shell.echo(execResult.stderr)
-    shell.exit(1)
-  }
-}
-
-async function exists (path) {
+async function exists(path) {
   try {
     await fs.access(path)
   } catch (e) {
@@ -141,13 +125,49 @@ async function exists (path) {
   }
 }
 
-function exec (command, errorMsg) {
+function exec(command, errorMsg) {
   const execResult = shell.exec(command)
 
   if (execResult.code !== 0) {
-    if (errorMsg) { shell.echo(errorMsg) }
+    if (errorMsg) {
+      shell.echo(errorMsg)
+    }
     shell.echo(execResult.stdout)
     shell.echo(execResult.stderr)
     shell.exit(1)
+  }
+}
+
+async function cloneFiles() {
+  for (const pdfFile of pdfFiles) {
+    const targetPath = path.join(publicPDFRoot, pdfFile)
+    await fs.ensureFile(targetPath)
+    await fs.copy(path.join(__dirname, repoRoot, pdfFile), targetPath)
+  }
+
+  const restPdfDirs = pdfDirs.filter(name => name !== 'web/locale')
+
+  for (const pdfDir of restPdfDirs) {
+    const targetPath = path.join(publicPDFRoot, pdfDir)
+    await fs.ensureDir(targetPath)
+    await fs.copy(path.join(__dirname, repoRoot, pdfDir), targetPath)
+  }
+
+  const locales = (await fs.readdir(
+    path.join(__dirname, repoRoot, 'web/locale')
+  )).filter(
+    name =>
+      name.startsWith('en') ||
+      name.startsWith('zh') ||
+      /^(ja|ko|uk)$/.test(name)
+  )
+
+  for (const locale of locales) {
+    const targetPath = path.join(publicPDFRoot, 'web/locale', locale)
+    await fs.ensureDir(targetPath)
+    await fs.copy(
+      path.join(__dirname, repoRoot, 'web/locale', locale),
+      targetPath
+    )
   }
 }
