@@ -97,7 +97,7 @@ export const search: SearchFunction<
           data: new URLSearchParams({
             from: sl,
             to: tl,
-            query: encodeURIComponent(text).replace(/%20/g, '+'),
+            query: text,
             token: token,
             sign: sign(text, gtk),
             transtype: 'translang',
