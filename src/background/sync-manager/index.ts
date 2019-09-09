@@ -62,7 +62,7 @@ export async function syncServiceUpload(
         const errMsg = typeof e === 'string' ? e : 'unknown'
         browser.notifications.create({
           type: 'basic',
-          iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+          iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
           title: `Saladict Sync Service ${title}`,
           message: `Error '${errMsg}' occurs during sync service ${title} uploading.`,
           eventTime: Date.now() + 20000,

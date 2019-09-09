@@ -170,7 +170,7 @@ function onStartup(): void {
           if (isAvailable) {
             browser.notifications.create('update', {
               type: 'basic',
-              iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+              iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
               title: decodeURI('%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D'),
               message: `可更新至【${info.tag_name}】`,
               buttons: [{ title: '查看更新' }]
@@ -185,7 +185,7 @@ function onStartup(): void {
         if (diff > 0 && diff % 7 === 0) {
           browser.notifications.create('update', {
             type: 'basic',
-            iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+            iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
             title: decodeURI('%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D'),
             message: decodeURI(
               '%E6%AD%A4%E3%80%8C%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D%E3%80%8D%E6%89%A9%E5%B1%95%E5%B7%B2%E8%A2%AB%E4%BA%8C%E6%AC%A1%E6%89%93%E5%8C%85%EF%BC%8C%E8%AF%B7%E5%9C%A8%E5%AE%98%E6%96%B9%E5%BB%BA%E8%AE%AE%E7%9A%84%E5%B9%B3%E5%8F%B0%E5%AE%89%E8%A3%85%E3%80%82'
@@ -248,7 +248,7 @@ function showNews(data: UpdateData) {
     if (data.tag_name) {
       const options = {
         type: 'basic',
-        iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+        iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
         title: isZh
           ? `沙拉查词已更新到 ${data.tag_name}`
           : `Saladict has updated to ${data.tag_name}`,

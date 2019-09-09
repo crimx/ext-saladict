@@ -526,8 +526,7 @@ function _getPageInfo(sender: browser.runtime.MessageSender) {
     // FRAGILE: Assume only browser action page is tabless
     result.pageId = 'popup'
     if (sender.url && !sender.url.startsWith('http')) {
-      result.faviconURL =
-        'https://raw.githubusercontent.com/crimx/ext-saladict/2ba9d2e85ad4ac2e4bb16ee43498ac4b58ed21a6/public/static/icon-16.png'
+      result.faviconURL = 'https://saladict.crimx.com/favicon.ico'
     }
   }
   return result
