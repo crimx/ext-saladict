@@ -125,7 +125,7 @@ export const MenuBar: FC<MenuBarProps> = props => {
         t={t}
         isPinned={props.isPinned}
         onClick={props.togglePin}
-        disabled={isOptionsPage()}
+        disabled={isOptionsPage() || isStandalonePage()}
       />
       <CloseBtn t={t} onClick={props.onClose} />
     </header>
