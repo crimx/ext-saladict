@@ -110,6 +110,11 @@ export const MenuBar: FC<MenuBarProps> = props => {
         profiles={props.profiles}
         activeProfileId={props.activeProfileId}
         onHeightChanged={updateProfileHeight}
+        onProfileChanged={() => {
+          setTimeout(() => {
+            props.searchText(props.text)
+          }, 500)
+        }}
       />
       <FavBtn t={t} isFav={props.isInNotebook} onClick={props.addToNoteBook} />
       <HistoryBtn
