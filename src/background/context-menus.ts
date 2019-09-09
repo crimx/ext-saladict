@@ -104,7 +104,7 @@ export function init(initConfig: ContextMenusConfig): Observable<void> {
  * @param force load the current tab anyway
  */
 export async function openPDF(url?: string, force?: boolean) {
-  const pdfURL = browser.runtime.getURL('static/pdf/web/viewer.html')
+  const pdfURL = browser.runtime.getURL('assets/pdf/web/viewer.html')
   if (url) {
     // open link as pdf
     return openURL(pdfURL + '?file=' + encodeURIComponent(url))
@@ -121,7 +121,7 @@ export async function openPDF(url?: string, force?: boolean) {
 }
 
 export function openGoogle() {
-  browser.tabs.executeScript({ file: '/static/google-page-trans.js' })
+  browser.tabs.executeScript({ file: '/assets/google-page-trans.js' })
   // browser.tabs.query({ active: true, currentWindow: true })
   //   .then(tabs => {
   //     if (tabs.length > 0 && tabs[0].url) {
@@ -133,7 +133,7 @@ export function openGoogle() {
 export function openYoudao() {
   // inject youdao script, defaults to the active tab of the current window.
   browser.tabs
-    .executeScript({ file: '/static/fanyi.youdao.2.0/main.js' })
+    .executeScript({ file: '/assets/fanyi.youdao.2.0/main.js' })
     .then(result => {
       if (!result || ((result as any) !== 1 && result[0] !== 1)) {
         throw new Error()
@@ -144,7 +144,7 @@ export function openYoudao() {
       browser.notifications.create({
         type: 'basic',
         eventTime: Date.now() + 4000,
-        iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+        iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
         title: 'Saladict',
         message: i18n.t('notification_youdao_err')
       })

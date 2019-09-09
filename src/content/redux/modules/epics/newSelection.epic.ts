@@ -74,8 +74,7 @@ function selectionInsideDictPanel(
         word: {
           ...selection.word,
           title: 'Saladict Panel',
-          favicon:
-            'https://raw.githubusercontent.com/crimx/ext-saladict/dev/public/static/icon-16.png'
+          favicon: 'https://saladict.crimx.com/favicon.ico'
         }
       }
     })

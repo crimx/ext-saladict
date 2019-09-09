@@ -80,7 +80,7 @@ function otherPdfListener({ url }) {
 
   return {
     redirectUrl: browser.runtime.getURL(
-      `static/pdf/web/viewer.html?file=${encodeURIComponent(url)}`
+      `assets/pdf/web/viewer.html?file=${encodeURIComponent(url)}`
     )
   }
 }
@@ -113,7 +113,7 @@ function httpPdfListener({
     ) {
       return {
         redirectUrl: browser.runtime.getURL(
-          `static/pdf/web/viewer.html?file=${encodeURIComponent(url)}`
+          `assets/pdf/web/viewer.html?file=${encodeURIComponent(url)}`
         )
       }
     }

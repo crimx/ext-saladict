@@ -170,7 +170,7 @@ export class Service extends SyncService<SyncConfig> {
 
     browser.notifications.create({
       type: 'basic',
-      iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+      iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
       title: `Saladict Sync Service ${Service.title[langCode]}`,
       message: `「${text}」${locales[locale][langCode]}`,
       eventTime: Date.now() + 10000,
@@ -183,7 +183,7 @@ export class Service extends SyncService<SyncConfig> {
 
     browser.notifications.create('shanbay-login', {
       type: 'basic',
-      iconUrl: browser.runtime.getURL(`static/icon-128.png`),
+      iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
       title: `Saladict Sync Service ${Service.title[langCode]}`,
       message: locales.loginCheckFailed[langCode],
       buttons: [{ title: locales.open[langCode] }],

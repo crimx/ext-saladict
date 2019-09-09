@@ -211,7 +211,7 @@ db.on('ready', () => {
           title: oldWord.title || '',
           favicon: oldWord.favicon
             ? oldWord.favicon.startsWith('chrome')
-              ? 'https://raw.githubusercontent.com/crimx/ext-saladict/2ba9d2e85ad4ac2e4bb16ee43498ac4b58ed21a6/public/static/icon-16.png'
+              ? 'https://saladict.crimx.com/favicon.ico'
               : oldWord.favicon
             : '',
           url: oldWord.url || '',
