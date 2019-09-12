@@ -38,7 +38,7 @@ message.addListener((msg, sender: browser.runtime.MessageSender) => {
     case 'OPEN_URL':
       return openURL(msg.payload.url, msg.payload.self)
     case 'PLAY_AUDIO':
-      return playAudio(msg.payload, sender)
+      return play(msg.payload)
     case 'FETCH_DICT_RESULT':
       return fetchDictResult(msg.payload)
     case 'DICT_ENGINE_METHOD':
@@ -264,33 +264,6 @@ function openSrcPage({
     return Promise.reject(err)
   }
   return openURL(getSrcPage(text, window.appConfig, window.activeProfile))
-}
-
-function playAudio(src: string, sender: browser.runtime.MessageSender) {
-  if (window.activeProfile.waveform) {
-    return playWaveform(src, sender)
-  }
-  return play(src)
-}
-
-function playWaveform(src: string, sender: browser.runtime.MessageSender) {
-  if (sender.tab && sender.tab.id) {
-    return message.send(sender.tab.id, {
-      type: 'WAVEFORM_PLAY_AUDIO',
-      payload: {
-        src,
-        tabId: sender.tab.id
-      }
-    })
-  }
-
-  return message.send({
-    type: 'WAVEFORM_PLAY_AUDIO',
-    payload: {
-      src,
-      tabId: 'popup'
-    }
-  })
 }
 
 function fetchDictResult(

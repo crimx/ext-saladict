@@ -254,18 +254,17 @@ export class Waveform extends React.PureComponent<{}, WaveformState> {
   }
 
   async componentDidMount() {
-    message.self.addListener(
-      'WAVEFORM_PLAY_AUDIO',
-      async ({ payload: src }) => {
-        this.load(src)
-      }
-    )
-
-    message.self.send({ type: 'LAST_PLAY_AUDIO' }).then(src => {
-      if (src) {
-        this.load(src)
-      }
+    message.self.addListener('PLAY_AUDIO', async ({ payload: src }) => {
+      this.load(src)
     })
+
+    message.self
+      .send<'LAST_PLAY_AUDIO'>({ type: 'LAST_PLAY_AUDIO' })
+      .then(response => {
+        if (response && response.timestamp - Date.now() < 10000) {
+          this.load(response.src)
+        }
+      })
 
     storage.local.get('waveform_pitch').then(({ waveform_pitch }) => {
       if (waveform_pitch != null) {

@@ -38,7 +38,7 @@
     }
   },
 
-  "web_accessible_resources": ["assets/*"],
+  "web_accessible_resources": ["assets/*", "audio-control.html"],
 
   "permissions": [
     "<all_urls>",

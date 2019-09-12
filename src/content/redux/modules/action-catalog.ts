@@ -38,6 +38,8 @@ export type ActionCatalog = {
 
   TOGGLE_MTA_BOX: {}
 
+  TOGGLE_WAVEFORM_BOX: {}
+
   TOGGLE_PIN: {}
 
   CLOSE_PANEL: {}
@@ -109,5 +111,16 @@ export type ActionCatalog = {
 
   WORD_EDITOR_STATUS: {
     payload: Word | null
+  }
+
+  /* ------------------------------------------------ *\
+     Others
+  \* ------------------------------------------------ */
+
+  PLAY_AUDIO: {
+    payload: {
+      src: string
+      timestamp: number
+    }
   }
 }

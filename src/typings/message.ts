@@ -140,18 +140,8 @@ export type MessageConfig = {
     payload: string
   }
 
-  WAVEFORM_PLAY_AUDIO: {
-    payload: {
-      /** url: to waveform */
-      src: string
-      tabId: string | number
-    }
-  }
-
-  /** waveform to panel */
   LAST_PLAY_AUDIO: {
-    /** url */
-    response?: string
+    response?: null | { src: string; timestamp: number }
   }
 
   /* ------------------------------------------------ *\

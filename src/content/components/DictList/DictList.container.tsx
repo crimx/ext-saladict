@@ -18,7 +18,11 @@ const memoizedDicts = memoizeOne(
     }))
 )
 
-type Dispatchers = 'searchText' | 'openDictSrcPage' | 'onHeightChanged'
+type Dispatchers =
+  | 'searchText'
+  | 'openDictSrcPage'
+  | 'onHeightChanged'
+  | 'onSpeakerPlay'
 
 const mapStateToProps = (
   state: StoreState
@@ -51,6 +55,21 @@ const mapDispatchToProps = (
     dispatch({
       type: 'UPDATE_PANEL_HEIGHT',
       payload: { area: 'dictlist', height }
+    })
+  },
+  onSpeakerPlay: src => {
+    return new Promise(resolve => {
+      dispatch((dispatch, getState) => {
+        if (getState().isExpandWaveformBox) {
+          message.self.send({ type: 'PLAY_AUDIO', payload: src }).then(resolve)
+        } else {
+          message.send({ type: 'PLAY_AUDIO', payload: src }).then(resolve)
+        }
+        dispatch({
+          type: 'PLAY_AUDIO',
+          payload: { src, timestamp: Date.now() }
+        })
+      })
     })
   }
 })

@@ -75,7 +75,7 @@ export const DictPanel: FC<DictPanelProps> = props => {
       }
 
       const mouseoutHandler = (e: MouseEvent) => {
-        if (!e.relatedTarget && !e.toElement) {
+        if (!e.relatedTarget) {
           props.onDragEnd()
         }
       }

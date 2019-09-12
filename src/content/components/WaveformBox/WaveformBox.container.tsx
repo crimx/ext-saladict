@@ -1,9 +1,17 @@
 import { connect } from 'react-redux'
 import { WaveformBox, WaveformBoxProps } from './WaveformBox'
-import { StoreAction } from '@/content/redux/modules'
+import { StoreAction, StoreState } from '@/content/redux/modules'
 import { Dispatch } from 'redux'
 
-type Dispatchers = 'onHeightChanged'
+type Dispatchers = 'onHeightChanged' | 'toggleExpand'
+
+const mapStateToProps = (
+  state: StoreState
+): Omit<WaveformBoxProps, Dispatchers> => {
+  return {
+    isExpand: state.isExpandWaveformBox
+  }
+}
 
 const mapDispatchToProps = (
   dispatch: Dispatch<StoreAction>
@@ -13,11 +21,14 @@ const mapDispatchToProps = (
       type: 'UPDATE_PANEL_HEIGHT',
       payload: { area: 'waveformbox', height }
     })
+  },
+  toggleExpand: () => {
+    dispatch({ type: 'TOGGLE_WAVEFORM_BOX' })
   }
 })
 
 export const WaveformBoxContainer = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(WaveformBox)
 

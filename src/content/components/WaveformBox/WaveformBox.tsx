@@ -1,26 +1,25 @@
-import React, { useState, useEffect, FC } from 'react'
+import React, { useEffect, FC } from 'react'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import { SALADICT_EXTERNAL } from '@/_helpers/saladict'
 
 export interface WaveformBoxProps {
+  isExpand: boolean
+  toggleExpand: () => void
   onHeightChanged: (height: number) => void
 }
 
 export const WaveformBox: FC<WaveformBoxProps> = props => {
-  const [expand, setExpand] = useState(false)
-
   useEffect(() => {
-    props.onHeightChanged((expand ? 165 : 0) + 12)
-  }, [expand])
+    props.onHeightChanged((props.isExpand ? 165 : 0) + 12)
+  }, [props.isExpand])
 
   return (
     <div
-      className={`waveformBox ${SALADICT_EXTERNAL}${expand ? ' isExpand' : ''}`}
+      className={`waveformBox ${SALADICT_EXTERNAL}${
+        props.isExpand ? ' isExpand' : ''
+      }`}
     >
-      <button
-        className="waveformBox-DrawerBtn"
-        onClick={() => setExpand(!expand)}
-      >
+      <button className="waveformBox-DrawerBtn" onClick={props.toggleExpand}>
         <svg
           width="10"
           height="10"
@@ -34,7 +33,7 @@ export const WaveformBox: FC<WaveformBoxProps> = props => {
       <div className="waveformBox-FrameWrap">
         <CSSTransition
           timeout={400}
-          in={expand}
+          in={props.isExpand}
           classNames="waveformBox-Frame"
           mountOnEnter
           unmountOnExit
