@@ -97,6 +97,9 @@ export const init: Init<StoreActionCatalog, StoreState> = (
         dispatch({ type: 'WORD_EDITOR_STATUS', payload: msg.payload })
         dispatch({ type: 'SEARCH_START', payload: { word: msg.payload } })
         return Promise.resolve()
+
+      case 'LAST_PLAY_AUDIO':
+        return Promise.resolve(getState().lastPlayAudio)
     }
   })
 

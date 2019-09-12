@@ -36,6 +36,7 @@ export const initState = () => {
     isShowBowl: false,
     isShowDictPanel: isStandalonePage() || isOptionsPage(),
     isExpandMtaBox: false,
+    isExpandWaveformBox: false,
     isPinned: false,
     /** Is current word in Notebook */
     isFav: false,
@@ -68,7 +69,8 @@ export const initState = () => {
     /** User can view back search history */
     historyIndex: 0,
     /** Record init coordinate on dragstart */
-    dragStartCoord: null as null | { x: number; y: number }
+    dragStartCoord: null as null | { x: number; y: number },
+    lastPlayAudio: null as null | { src: string; timestamp: number }
   }
 }
 export default initState

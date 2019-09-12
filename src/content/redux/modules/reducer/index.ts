@@ -84,6 +84,11 @@ export const createRootReducer = () =>
       isPinned: !state.isPinned
     }),
 
+    TOGGLE_WAVEFORM_BOX: state => ({
+      ...state,
+      isExpandWaveformBox: !state.isExpandWaveformBox
+    }),
+
     CLOSE_PANEL: state =>
       isStandalonePage()
         ? state
@@ -209,7 +214,12 @@ export const createRootReducer = () =>
         : {
             ...state,
             isShowWordEditor: false
-          }
+          },
+
+    PLAY_AUDIO: (state, { payload }) => ({
+      ...state,
+      lastPlayAudio: payload
+    })
   })
 
 export default createRootReducer
