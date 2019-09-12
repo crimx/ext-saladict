@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import Speaker, { StaticSpeakerContainer } from '@/components/Speaker'
+import Speaker from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
 import {
   LongmanResult,
@@ -9,15 +9,12 @@ import {
 } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 
-export const DictLongman: FC<ViewPorps<LongmanResult>> = ({ result }) => (
-  <StaticSpeakerContainer>
-    {result.type === 'lex'
-      ? renderLex(result)
-      : result.type === 'related'
-      ? renderRelated(result)
-      : null}
-  </StaticSpeakerContainer>
-)
+export const DictLongman: FC<ViewPorps<LongmanResult>> = ({ result }) =>
+  result.type === 'lex'
+    ? renderLex(result)
+    : result.type === 'related'
+    ? renderRelated(result)
+    : null
 
 export default DictLongman
 

@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { Speaker, StaticSpeakerContainer } from '@/components/Speaker'
+import { Speaker } from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
 import { COBUILDResult, COBUILDCibaResult, COBUILDColResult } from './engine'
 import { ViewPorps, useVerticalScroll } from '@/components/dictionaries/helpers'
@@ -56,7 +56,7 @@ function renderCol(result: COBUILDColResult) {
   const tabsRef = useVerticalScroll<HTMLDivElement>()
 
   return (
-    <StaticSpeakerContainer className="dictCOBUILD-ColEntry">
+    <div className="dictCOBUILD-ColEntry">
       <div className="dictionary">
         <div className="dc">
           <div className="navigation">
@@ -102,6 +102,6 @@ function renderCol(result: COBUILDColResult) {
           </div>
         </div>
       </div>
-    </StaticSpeakerContainer>
+    </div>
   )
 }

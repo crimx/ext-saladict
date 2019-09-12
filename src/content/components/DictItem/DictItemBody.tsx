@@ -1,10 +1,13 @@
 import React, { ComponentType, FC, useMemo, Suspense } from 'react'
 import root from 'react-shadow'
-import { Word } from '@/_helpers/record-manager'
 import { DictID } from '@/app-config'
+import { Word } from '@/_helpers/record-manager'
+import { SALADICT_PANEL } from '@/_helpers/saladict'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { SALADICT_PANEL } from '@/_helpers/saladict'
+import { StaticSpeakerContainer } from '@/components/Speaker'
+
+const dictContentStyles = require('./DictItemContent.shadow.scss').toString()
 
 export interface DictItemBodyProps {
   dictID: DictID
@@ -20,6 +23,8 @@ export interface DictItemBodyProps {
     word?: Word
     payload?: { [index: string]: any }
   }) => any
+
+  onSpeakerPlay: (src: string) => Promise<void>
 }
 
 export const DictItemBody: FC<DictItemBodyProps> = props => {
@@ -41,16 +46,21 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
     [props.dictID]
   )
 
+  const dictStyles = useMemo(
+    () =>
+      require('@/components/dictionaries/' +
+        props.dictID +
+        '/_style.shadow.scss').toString(),
+    [props.dictID]
+  )
+
   return (
     <ErrorBoundary error={DictRenderError}>
       <Suspense fallback={null}>
         {props.searchStatus === 'FINISH' && props.searchResult && (
           <root.div>
-            <style>
-              {require('@/components/dictionaries/' +
-                props.dictID +
-                '/_style.shadow.scss').toString()}
-            </style>
+            <style>{dictContentStyles}</style>
+            <style>{dictStyles}</style>
             <style>
               {`.dictRoot {
                   font-size: ${props.fontSize}px;
@@ -59,14 +69,15 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
                   font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
                 }`}
             </style>
-            <div
+            <StaticSpeakerContainer
               className={
                 `d-${props.dictID} dictRoot ${SALADICT_PANEL}` +
                 (props.withAnimation ? ' isAnimate' : '')
               }
+              onPlayStart={props.onSpeakerPlay}
             >
               <Dict result={props.searchResult} searchText={props.searchText} />
-            </div>
+            </StaticSpeakerContainer>
           </root.div>
         )}
       </Suspense>
