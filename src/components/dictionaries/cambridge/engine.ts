@@ -9,6 +9,7 @@ import {
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
+  removeChildren,
 } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 
@@ -68,12 +69,12 @@ function handleDOM (
 
     const $posHeader = $entry.querySelector('.pos-header')
     if ($posHeader) {
-      $posHeader.querySelectorAll('.region').forEach($region => {
-        const $pron = $region.parentElement as HTMLElement
-        const $btn = $pron.querySelector<HTMLSpanElement>('.audio_play_button')
-        if (!$btn) { return }
-        if ($btn.dataset.srcMp3) {
-          const pron = $btn.dataset.srcMp3.replace(/^\//, 'https://dictionary.cambridge.org/')
+      $posHeader.querySelectorAll('.dpron-i').forEach($pron => {
+        const $source = $pron.querySelector<HTMLSourceElement>('source[type="audio/mpeg"]')
+        if (!$source) { return }
+        if ($source.src) {
+          const pron = 'https://dictionary.cambridge.org/' + $source.src.replace(/^\//, '')
+          removeChildren($pron, '[fallback]')
           const phsym = getText($pron).trim()
           entry.prons.push({ phsym, pron })
 

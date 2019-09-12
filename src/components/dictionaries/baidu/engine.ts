@@ -81,7 +81,15 @@ export const search: SearchFunction<BaiduSearchResult, MachineTranslatePayload> 
             ? 'BAIDUID=8971CB398A02E6B27F50DFF1DE3164BF:FG=1;'
             : '',
         },
-        body: `from=${sl}&to=${tl}&query=${encodeURIComponent(text).replace(/%20/g, '+')}&token=${token}&sign=${sign(text, gtk)}&transtype=translang&simple_means_flag=3`
+        body: new URLSearchParams({
+          from: sl,
+          to: tl,
+          query: text,
+          token: token,
+          sign: sign(text, gtk),
+          transtype: 'translang',
+          simple_means_flag: '3'
+        }).toString()
       }
     ))
     .then(r => r.json())

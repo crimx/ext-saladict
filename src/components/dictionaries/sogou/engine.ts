@@ -7,7 +7,6 @@ import {
 } from '../helpers'
 import { DictSearchResult } from '@/typings/server'
 import { isContainChinese, isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
-import { storage } from '@/_helpers/browser-api'
 import md5 from 'md5'
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
@@ -42,9 +41,16 @@ const langcodes: ReadonlyArray<string> = [
   'uk', 'ur', 'vi', 'yua', 'yue',
 ]
 
+let isSetupHeaderModifier = false
+
 export const search: SearchFunction<SogouSearchResult, MachineTranslatePayload> = async (
   text, config, profile, payload
 ) => {
+  if (!isSetupHeaderModifier) {
+    setupHeaderModifier()
+    isSetupHeaderModifier = true
+  }
+
   const options = profile.dicts.all.sogou.options
 
   const sl: string = payload.sl || 'auto'
@@ -62,13 +68,27 @@ export const search: SearchFunction<SogouSearchResult, MachineTranslatePayload> 
     text = text.replace(/\n+/g, ' ')
   }
 
-  return fetch('https://fanyi.sogou.com/reventondc/translate', {
+  return fetch('https://fanyi.sogou.com/reventondc/translateV2', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8,zh-TW;q=0.7',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
       'X-Requested-With': 'XMLHttpRequest',
     },
-    body: `from=${sl}&to=${tl}&text=${encodeURIComponent(text).replace(/%20/g, '+')}&uuid=${getUUID()}&s=${md5('' + sl + tl + text + await getSogouToken())}&client=pc&fr=browser_pc&useDetect=on&useDetectResult=on&needQc=1&oxford=on&isReturnSugg=on`
+    body: new URLSearchParams({
+      from: sl,
+      to: tl,
+      text: text,
+      client: 'pc',
+      fr: 'browser_pc',
+      pid: 'sogou-dict-vr',
+      dict: 'true',
+      word_group: 'true',
+      second_query: 'true',
+      uuid: getUUID(),
+      needQc: '1',
+      s: md5('' + sl + tl + text + (await getSogouToken()))
+    }).toString()
   })
   .then(r => r.json())
   .then(json => handleJSON(json, sl, tl))
@@ -84,7 +104,7 @@ export const search: SearchFunction<SogouSearchResult, MachineTranslatePayload> 
 }
 
 function handleJSON (json: any, sl: string, tl: string): SogouSearchResult | Promise<SogouSearchResult> {
-  const tr = json.translate as undefined | {
+  const tr = json.data ? json.data.translate : json.translate as undefined | {
     errorCode: string // "0"
     from: string
     to: string
@@ -133,28 +153,63 @@ function getUUID () {
 }
 
 async function getSogouToken (): Promise<string> {
-  let { dict_sogou } = await storage.local.get<{'dict_sogou': SogouStorage}>('dict_sogou')
-  if (!dict_sogou || (Date.now() - dict_sogou.tokenDate > 5 * 60000)) {
-    let token = '72da1dc662daf182c4f7671ec884074b'
-    try {
-      const homepage = await fetch('https://fanyi.sogou.com').then(r => r.text())
+  // let { dict_sogou } = await storage.local.get<{'dict_sogou': SogouStorage}>('dict_sogou')
+  // if (!dict_sogou || (Date.now() - dict_sogou.tokenDate > 5 * 60000)) {
+  //   let token = '72da1dc662daf182c4f7671ec884074b'
+  //   try {
+  //     const homepage = await fetch('https://fanyi.sogou.com').then(r => r.text())
 
-      const appjsMatcher = /dlweb\.sogoucdn\.com\/translate\/pc\/static\/js\/app\.\S+\.js/
-      const appjsPath = (homepage.match(appjsMatcher) || [''])[0]
-      if (appjsPath) {
-        const appjs = await fetch('https://' + appjsPath).then(r => r.text())
-        const matchRes = appjs.match(/"(\w{32})"/)
-        if (matchRes) {
-          token = matchRes[1]
-        }
-      }
-    } catch (e) {/* nothing */}
-    dict_sogou = {
-      token,
-      tokenDate: Date.now()
-    }
-    storage.local.set({ dict_sogou })
+  //     const appjsMatcher = /dlweb\.sogoucdn\.com\/translate\/pc\/static\/js\/app\.\S+\.js/
+  //     const appjsPath = (homepage.match(appjsMatcher) || [''])[0]
+  //     if (appjsPath) {
+  //       const appjs = await fetch('https://' + appjsPath).then(r => r.text())
+  //       const matchRes = appjs.match(/"(\w{32})"/)
+  //       if (matchRes) {
+  //         token = matchRes[1]
+  //       }
+  //     }
+  //   } catch (e) {/* nothing */}
+  //   dict_sogou = {
+  //     token,
+  //     tokenDate: Date.now()
+  //   }
+  //   storage.local.set({ dict_sogou })
+  // }
+
+  // return dict_sogou.token
+  return '8511813095151'
+}
+
+function setupHeaderModifier() {
+  const extraInfoSpec = ['blocking', 'requestHeaders']
+  // https://developer.chrome.com/extensions/webRequest#life_cycle_footnote
+  if (
+    browser.webRequest['OnBeforeSendHeadersOptions'] &&
+    browser.webRequest['OnBeforeSendHeadersOptions'].hasOwnProperty(
+      'EXTRA_HEADERS'
+    )
+  ) {
+    extraInfoSpec.push('extraHeaders')
   }
 
-  return dict_sogou.token
+  browser.webRequest.onBeforeSendHeaders.addListener(
+    details => {
+      if (details && details.requestHeaders) {
+        const headers = details.requestHeaders.filter(
+          header => !/^(Origin|Referer|Host)$/.test(header.name)
+        )
+
+        headers.push(
+          { name: 'Origin', value: 'https://fanyi.sogou.com' },
+          { name: 'Referer', value: 'https://fanyi.sogou.com/' },
+          { name: 'Host', value: 'fanyi.sogou.com' }
+        )
+
+        return { requestHeaders: headers }
+      }
+      return { requestHeaders: details.requestHeaders }
+    },
+    { urls: ['https://fanyi.sogou.com/reventondc/translateV2'] },
+    extraInfoSpec as any
+  )
 }
