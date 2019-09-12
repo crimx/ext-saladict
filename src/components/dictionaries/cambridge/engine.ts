@@ -1,5 +1,6 @@
 import { chsToChz } from '@/_helpers/chs-to-chz'
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
+import { getStaticSpeaker } from '@/components/Speaker'
 import {
   HTMLString,
   getInnerHTML,
@@ -9,7 +10,8 @@ import {
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
-  DictSearchResult
+  DictSearchResult,
+  getFullLink
 } from '../helpers'
 
 export const getSrcPage: GetSrcPageFunction = (text, config) => {
@@ -30,15 +32,7 @@ export const getSrcPage: GetSrcPageFunction = (text, config) => {
 
 const HOST = 'https://dictionary.cambridge.org'
 
-interface CambridgeResultItem {
-  title: HTMLString
-  pos: HTMLString
-  prons: Array<{
-    phsym: string
-    pron: string
-  }>
-  defs: HTMLString
-}
+type CambridgeResultItem = HTMLString
 
 export type CambridgeResult = CambridgeResultItem[]
 
@@ -71,55 +65,42 @@ function handleDOM(
   const audio: { us?: string; uk?: string } = {}
 
   doc.querySelectorAll('.entry-body__el').forEach($entry => {
-    const entry: CambridgeResultItem = {
-      title: getText($entry, '.headword'),
-      pos: '',
-      prons: [],
-      defs: ''
-    }
-
-    if (!entry.title) {
+    if (!getText($entry, '.headword')) {
       return
     }
 
     const $posHeader = $entry.querySelector('.pos-header')
     if ($posHeader) {
-      $posHeader.querySelectorAll('.region').forEach($region => {
-        const $pron = $region.parentElement as HTMLElement
-        const $btn = $pron.querySelector<HTMLSpanElement>('.audio_play_button')
-        if (!$btn) {
-          return
-        }
-        if ($btn.dataset.srcMp3) {
-          const pron = $btn.dataset.srcMp3.replace(
-            /^\//,
-            'https://dictionary.cambridge.org/'
-          )
-          const phsym = getText($pron).trim()
-          entry.prons.push({ phsym, pron })
+      $posHeader.querySelectorAll('.dpron-i').forEach($pron => {
+        const $daud = $pron.querySelector<HTMLSpanElement>('.daud')
+        if (!$daud) return
+        const $source = $daud.querySelector<HTMLSourceElement>(
+          'source[type="audio/mpeg"]'
+        )
+        if (!$source) return
 
-          if (!audio.uk && phsym.includes('uk')) {
-            audio.uk = pron
+        const src = getFullLink(
+          'https://dictionary.cambridge.org',
+          $source,
+          'src'
+        )
+
+        if (src) {
+          $daud.replaceWith(getStaticSpeaker(src))
+
+          if (!audio.uk && $pron.classList.contains('uk')) {
+            audio.uk = src
           }
 
-          if (!audio.us && phsym.includes('us')) {
-            audio.us = pron
+          if (!audio.us && $pron.classList.contains('us')) {
+            audio.us = src
           }
         }
-        $pron.remove()
       })
-      removeChild($posHeader, '.headword')
       removeChild($posHeader, '.share')
-      entry.pos = getInnerHTML(HOST, $posHeader)
-      $posHeader.remove()
     }
 
-    entry.defs = getInnerHTML(HOST, $entry)
-    if (!entry.defs) {
-      return
-    }
-
-    result.push(entry)
+    result.push(getInnerHTML(HOST, $entry))
   })
 
   if (result.length > 0) {

@@ -174,6 +174,10 @@ function Dict(props: {
       searchText={action('Search Text')}
       openDictSrcPage={action('Open Dict Source Page')}
       onHeightChanged={action('Height Changed')}
+      onSpeakerPlay={src => {
+        action('Speaker Play')(src)
+        return Promise.resolve()
+      }}
     />
   )
 }
