@@ -3,8 +3,6 @@
 
   "homepage_url": "https://saladict.crimx.com/",
 
-  "minimum_chrome_version": "55",
-
   "name": "__MSG_extension_name__",
   "short_name": "__MSG_extension_short_name__",
   "description": "__MSG_extension_description__",
@@ -26,12 +24,12 @@
       "all_frames": true
     },
     {
-      "js": ["content.js"],
+      "js": ["static/browser-polyfill.min.js", "content.js"],
       "css": ["content.css"],
       "matches": ["<all_urls>"]
     },
     {
-      "js": ["selection.js"],
+      "js": ["static/browser-polyfill.min.js", "selection.js"],
       "matches": ["<all_urls>"],
       "match_about_blank": true,
       "all_frames": true

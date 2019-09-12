@@ -2,6 +2,46 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="6.33.6"></a>
+## [6.33.6](https://github.com/crimx/ext-saladict/compare/v6.33.5...v6.33.6) (2019-09-12)
+
+
+### Bug Fixes
+
+* update dicts ([4492cd0](https://github.com/crimx/ext-saladict/commit/4492cd0))
+
+
+
+<a name="6.33.5"></a>
+## [6.33.5](https://github.com/crimx/ext-saladict/compare/v6.33.4...v6.33.5) (2019-08-11)
+
+
+### Bug Fixes
+
+* change the checksums of panel.css ([e2ed394](https://github.com/crimx/ext-saladict/commit/e2ed394))
+
+
+
+<a name="6.33.4"></a>
+## [6.33.4](https://github.com/crimx/ext-saladict/compare/v6.33.3...v6.33.4) (2019-08-09)
+
+
+### Bug Fixes
+
+* **manifest:** fix chrome 67 bug ([bca3b56](https://github.com/crimx/ext-saladict/commit/bca3b56))
+
+
+
+<a name="6.33.3"></a>
+## 6.33.3 (2019-08-08)
+
+
+### Bug Fixes
+
+* **manifest:** remvoe update url ([f83a485](https://github.com/crimx/ext-saladict/commit/f83a485))
+
+
+
 <a name="6.33.2"></a>
 ## [6.33.2](https://github.com/crimx/ext-saladict/compare/v6.33.1...v6.33.2) (2019-06-27)
 
