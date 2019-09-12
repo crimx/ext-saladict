@@ -2,17 +2,13 @@ import React, { FC } from 'react'
 import { HjdictResult, HjdictResultLex, HjdictResultRelated } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import { useTranslate } from '@/_helpers/i18n'
-import { StaticSpeakerContainer } from '@/components/Speaker'
 
-export const DictHjDict: FC<ViewPorps<HjdictResult>> = props => (
-  <StaticSpeakerContainer>
-    {props.result.type === 'lex' ? (
-      <Lex {...props} />
-    ) : props.result.type === 'related' ? (
-      <Related {...props} />
-    ) : null}
-  </StaticSpeakerContainer>
-)
+export const DictHjDict: FC<ViewPorps<HjdictResult>> = props =>
+  props.result.type === 'lex' ? (
+    <Lex {...props} />
+  ) : props.result.type === 'related' ? (
+    <Related {...props} />
+  ) : null
 
 export default DictHjDict
 

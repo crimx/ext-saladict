@@ -2,10 +2,9 @@ import React, { FC } from 'react'
 import { WeblioejjeResult } from './engine'
 import EntryBox from '@/components/EntryBox'
 import { ViewPorps } from '@/components/dictionaries/helpers'
-import { StaticSpeakerContainer } from '@/components/Speaker'
 
 export const DictWeblioejje: FC<ViewPorps<WeblioejjeResult>> = ({ result }) => (
-  <StaticSpeakerContainer>
+  <div>
     {result.map((entry, i) =>
       entry.title ? (
         <EntryBox key={entry.title + i} title={entry.title}>
@@ -19,7 +18,7 @@ export const DictWeblioejje: FC<ViewPorps<WeblioejjeResult>> = ({ result }) => (
         />
       )
     )}
-  </StaticSpeakerContainer>
+  </div>
 )
 
 export default DictWeblioejje
