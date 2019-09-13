@@ -126,7 +126,7 @@ function handleJSON(
   sl: string,
   tl: string
 ): SogouSearchResult | Promise<SogouSearchResult> {
-  const tr = json.translate as
+  const tr = (json.data ? json.data.translate : json.translate) as
     | undefined
     | {
         errorCode: string // "0"
