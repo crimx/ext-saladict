@@ -37,7 +37,7 @@ export const initState = () => {
     isShowDictPanel: isStandalonePage() || isOptionsPage(),
     isExpandMtaBox: false,
     isExpandWaveformBox: false,
-    isPinned: false,
+    isPinned: isQuickSearchPage(),
     /** Is current word in Notebook */
     isFav: false,
     bowlCoord: { x: 0, y: 0 },
