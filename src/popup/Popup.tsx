@@ -20,9 +20,9 @@ export const Popup: FC<PopupProps> = props => {
   const [isShowUrlBox, setIsShowUrlBox] = useState(false)
   const [currentTabUrl, setCurrentTabUrl] = useState('')
 
-  const [isExpandDictPanel, setDictPanel] = useState(false)
-  const expandDictPanel = useRef(() => setDictPanel(true)).current
-  const shrinkDictPanel = useRef(() => setDictPanel(false)).current
+  const [dictPanelHeight, setDictPanelHeight] = useState(30)
+  const expandDictPanel = useRef(() => setDictPanelHeight(499)).current
+  const shrinkDictPanel = useRef(() => setDictPanelHeight(399)).current
 
   /** Instant Capture Mode */
   const [insCapMode, setInsCapMode] = useState<'mode' | 'pinMode'>('mode')
@@ -32,7 +32,7 @@ export const Popup: FC<PopupProps> = props => {
   const [isShowPageNoResponse, setShowPageNoResponse] = useState(false)
 
   useEffect(() => {
-    setTimeout(expandDictPanel, 1000)
+    expandDictPanel()
 
     addConfigListener(({ newConfig }) => {
       setConfig(newConfig)
@@ -68,10 +68,7 @@ export const Popup: FC<PopupProps> = props => {
 
   return (
     <div className="popup-root">
-      <DictPanelStandaloneContainer
-        width={450}
-        height={isExpandDictPanel ? 500 : 400}
-      />
+      <DictPanelStandaloneContainer width={450} height={dictPanelHeight} />
       <div
         className="switch-container"
         onMouseEnter={shrinkDictPanel}
