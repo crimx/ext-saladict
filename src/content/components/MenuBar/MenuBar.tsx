@@ -9,7 +9,11 @@ import { startWith, debounceTime, map } from 'rxjs/operators'
 import { Word } from '@/_helpers/record-manager'
 import { useTranslate } from '@/_helpers/i18n'
 import { message } from '@/_helpers/browser-api'
-import { isStandalonePage, isOptionsPage } from '@/_helpers/saladict'
+import {
+  isStandalonePage,
+  isOptionsPage,
+  isPopupPage
+} from '@/_helpers/saladict'
 import {
   HistoryBackBtn,
   HistoryNextBtn,
@@ -130,7 +134,7 @@ export const MenuBar: FC<MenuBarProps> = props => {
         t={t}
         isPinned={props.isPinned}
         onClick={props.togglePin}
-        disabled={isOptionsPage() || isStandalonePage()}
+        disabled={isOptionsPage() || isPopupPage()}
       />
       <CloseBtn t={t} onClick={props.onClose} />
     </header>

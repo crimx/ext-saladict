@@ -45,8 +45,11 @@ export const init: Init<StoreActionCatalog, StoreState> = (
         if (isQuickSearchPage()) {
           // request searching text, from other tabs
           dispatch({ type: 'SEARCH_START', payload: { word: msg.payload } })
-          // focus standalone panel
-          message.send({ type: 'OPEN_QS_PANEL' })
+
+          if (getState().isPinned) {
+            // focus standalone panel
+            message.send({ type: 'OPEN_QS_PANEL' })
+          }
         }
         return Promise.resolve()
 

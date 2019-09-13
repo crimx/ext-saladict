@@ -38,7 +38,11 @@
     }
   },
 
-  "web_accessible_resources": ["assets/*", "audio-control.html"],
+  "web_accessible_resources": [
+    "assets/*",
+    "audio-control.html",
+    "quick-search.html"
+  ],
 
   "permissions": [
     "<all_urls>",
