@@ -14,6 +14,8 @@ export interface SpeakerProps {
  * Speaker for playing audio files
  */
 export const Speaker: FC<SpeakerProps> = props => {
+  if (!props.src) return null
+
   const width = props.width || props.height || '1.2em'
   const height = props.height || width
 
