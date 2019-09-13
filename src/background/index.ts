@@ -9,9 +9,8 @@ import { injectAnalytics } from '@/_helpers/analytics'
 import { startSyncServiceInterval } from './sync-manager'
 import { init as initMenus } from './context-menus'
 import { init as initPdf } from './pdf-sniffer'
+import { updateBadge, initBadge } from './badge'
 import './types'
-
-browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B' })
 
 startSyncServiceInterval()
 
@@ -21,13 +20,12 @@ getConfig().then(async config => {
   initPdf(config)
   injectAnalytics('/background')
 
-  browser.browserAction.setBadgeText({
-    text: window.appConfig.active ? '' : 'off'
-  })
+  updateBadge()
+  initBadge()
 
   addConfigListener(({ newConfig }) => {
     window.appConfig = newConfig
-    browser.browserAction.setBadgeText({ text: newConfig.active ? '' : 'off' })
+    updateBadge()
   })
 })
 

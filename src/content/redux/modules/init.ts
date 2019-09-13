@@ -7,7 +7,8 @@ import {
 import {
   isPopupPage,
   isQuickSearchPage,
-  isOptionsPage
+  isOptionsPage,
+  isStandalonePage
 } from '@/_helpers/saladict'
 import { StoreActionCatalog, StoreAction, StoreState } from '.'
 import { message } from '@/_helpers/browser-api'
@@ -19,6 +20,14 @@ export const init: Init<StoreActionCatalog, StoreState> = (
   dispatch,
   getState
 ) => {
+  message.send({
+    type: 'SEND_TAB_BADGE_INFO',
+    payload: {
+      tempDisable: getState().isTempDisabled,
+      unsupported: isStandalonePage() ? false : document.body.tagName !== 'BODY'
+    }
+  })
+
   addConfigListener(({ newConfig }) => {
     dispatch({ type: 'NEW_CONFIG', payload: newConfig })
   })
@@ -36,6 +45,17 @@ export const init: Init<StoreActionCatalog, StoreState> = (
       case 'TEMP_DISABLED_STATE':
         if (msg.payload.op === 'set') {
           dispatch({ type: 'TEMP_DISABLED_STATE', payload: msg.payload.value })
+          setTimeout(() => {
+            message.send({
+              type: 'SEND_TAB_BADGE_INFO',
+              payload: {
+                tempDisable: getState().isTempDisabled,
+                unsupported: isStandalonePage()
+                  ? false
+                  : document.body.tagName !== 'BODY'
+              }
+            })
+          }, 0)
           return Promise.resolve(true)
         } else {
           return Promise.resolve(getState().isTempDisabled)
@@ -58,6 +78,14 @@ export const init: Init<StoreActionCatalog, StoreState> = (
           dispatch({ type: 'QS_PANEL_CHANGED', payload: msg.payload })
         }
         return Promise.resolve()
+
+      case 'GET_TAB_BADGE_INFO':
+        return Promise.resolve({
+          tempDisable: getState().isTempDisabled,
+          unsupported: isStandalonePage()
+            ? false
+            : document.body.tagName !== 'BODY'
+        })
     }
   })
 

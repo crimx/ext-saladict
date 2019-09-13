@@ -213,6 +213,22 @@ export type MessageConfig = {
     response: boolean
   }
 
+  /** Info for brwoser action badge. From background to content. */
+  GET_TAB_BADGE_INFO: {
+    response: {
+      tempDisable: boolean
+      unsupported: boolean
+    }
+  }
+
+  /** Info for brwoser action badge. From content to background. */
+  SEND_TAB_BADGE_INFO: {
+    payload: {
+      tempDisable: boolean
+      unsupported: boolean
+    }
+  }
+
   /* ------------------------------------------------ *\
     Quick Search Dict Panel
   \* ------------------------------------------------ */
@@ -326,190 +342,3 @@ export type MessageResponse<T extends MsgType> = Readonly<
     ? MessageConfig[T][Extract<'response', keyof MessageConfig[T]>]
     : void
 >
-
-// export enum MsgType {
-//   /** Nothing */
-//   Null,
-//   /** Default */
-//   Default,
-
-//   RequestCSS,
-
-//   /** Manually trigger context menus click */
-//   ContextMenusClick,
-
-/** iframe messaging */
-// export enum PostMsgType {
-//   Selection = 'SALADICT_SELECTION'
-// }
-
-// export interface MsgSelection {
-//   readonly type: MsgType.Selection
-//   readonly selectionInfo: SelectionInfo
-//   readonly mouseX: number
-//   readonly mouseY: number
-//   /** inside panel? */
-//   readonly self: boolean
-//   readonly dbClick: boolean
-//   readonly shiftKey: boolean
-//   readonly ctrlKey: boolean
-//   readonly metaKey: boolean
-//   /** skip salad bowl and show panel directly */
-//   readonly instant: boolean
-//   /** force panel to skip reconciling position */
-//   readonly force: boolean
-// }
-
-// export interface PostMsgSelection extends Omit<MsgSelection, 'type'> {
-//   readonly type: PostMsgType.Selection
-// }
-
-// export interface MsgOpenUrl {
-//   readonly type: MsgType.OpenURL
-//   readonly url: string
-//   /** use browser.runtime.getURL? */
-//   readonly self?: boolean
-// }
-
-// export interface MsgOpenSrcPage {
-//   readonly type: MsgType.OpenSrcPage
-//   readonly text: string
-//   readonly id: DictID
-// }
-
-// export interface MsgAudioPlay {
-//   readonly type: MsgType.PlayAudio
-//   /** empty string for stoping */
-//   readonly src: string
-// }
-
-// export interface MsgWaveFormPlay {
-//   readonly type: MsgType.PlayWaveform
-//   readonly src: string
-//   readonly tabId: string | number
-// }
-
-// export interface MsgFetchDictResult {
-//   readonly type: MsgType.FetchDictResult
-//   readonly id: DictID
-//   readonly text: string
-//   /** pass to engine search function as the third argument */
-//   readonly payload: {
-//     isPDF: boolean
-//     [index: string]: any
-//   }
-// }
-
-// export interface MsgFetchDictResultResponse<R = any> {
-//   id: DictID
-//   result: R | null
-//   audio?: DictSearchResult<R>['audio']
-// }
-
-// export interface MsgDictEngineMethod {
-//   readonly type: MsgType.DictEngineMethod
-//   readonly id: DictID
-//   readonly method: string
-//   readonly args?: any[]
-// }
-
-// export interface MsgIsInNotebook {
-//   readonly type: MsgType.IsInNotebook
-//   readonly info: SelectionInfo
-// }
-
-// export interface MsgSaveWord {
-//   readonly type: MsgType.SaveWord
-//   readonly area: DBArea
-//   readonly info: SelectionInfo & { readonly date?: number }
-// }
-
-// export interface MsgDeleteWords {
-//   readonly type: MsgType.DeleteWords
-//   readonly area: DBArea
-//   readonly dates?: number[]
-// }
-
-// export interface MsgGetWordsByText {
-//   readonly type: MsgType.GetWordsByText
-//   readonly area: DBArea
-//   readonly text: string
-// }
-
-// export interface MsgGetWords {
-//   readonly type: MsgType.GetWords
-//   readonly area: DBArea
-//   readonly itemsPerPage?: number
-//   readonly pageNum?: number
-//   readonly filters?: { [field: string]: string[] | undefined }
-//   readonly sortField?: string
-//   readonly sortOrder?: 'ascend' | 'descend' | false
-//   readonly searchText?: string
-// }
-
-// export interface MsgGetSuggests {
-//   readonly type: MsgType.GetSuggests
-//   readonly text: string
-// }
-
-// export interface MsgGetWordsResponse {
-//   readonly total: number
-//   readonly words: Word[]
-// }
-
-// export interface MsgIsPinned {
-//   readonly type: MsgType.IsPinned
-//   readonly isPinned: boolean
-// }
-
-// export interface MsgQSPanelIDChanged {
-//   readonly type: MsgType.QSPanelIDChanged
-//   readonly flag: boolean
-// }
-
-// export interface MsgQueryQSPanel {
-//   readonly type: MsgType.QueryQSPanel
-// }
-
-// export type MsgQueryQSPanelResponse = boolean
-
-// export interface MsgQueryPanelState {
-//   readonly type: MsgType.QueryPanelState
-//   /** object path, default returns the whole state */
-//   readonly path?: string
-// }
-
-// export interface MsgSyncServiceInit<C = any> {
-//   readonly type: MsgType.SyncServiceInit
-//   readonly serviceID: string
-//   readonly config: C
-// }
-
-// export interface MsgSyncServiceDownload {
-//   readonly type: MsgType.SyncServiceDownload
-//   readonly serviceID: string
-//   readonly noCache?: boolean
-// }
-
-// export const enum SyncServiceUploadOp {
-//   Add,
-//   Delete
-// }
-
-// export interface MsgSyncServiceUpload {
-//   readonly type: MsgType.SyncServiceUpload
-//   readonly op: SyncServiceUploadOp
-//   readonly serviceID?: string
-//   /** When op is Add */
-//   readonly words?: Word[]
-//   /** When op is Delete */
-//   readonly dates?: number[]
-//   readonly force?: boolean
-// }
-
-// export interface MsgContextMenusClick {
-//   readonly type: MsgType.ContextMenusClick
-//   readonly menuItemId: string
-//   readonly selectionText?: string
-//   readonly linkUrl?: string
-// }
