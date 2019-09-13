@@ -75,20 +75,7 @@ export const search: SearchFunction<SogouSearchResult, MachineTranslatePayload> 
       'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
       'X-Requested-With': 'XMLHttpRequest',
     },
-    body: new URLSearchParams({
-      from: sl,
-      to: tl,
-      text: text,
-      client: 'pc',
-      fr: 'browser_pc',
-      pid: 'sogou-dict-vr',
-      dict: 'true',
-      word_group: 'true',
-      second_query: 'true',
-      uuid: getUUID(),
-      needQc: '1',
-      s: md5('' + sl + tl + text + (await getSogouToken()))
-    }).toString()
+    body: `from=${sl}&to=${tl}&text=${encodeURIComponent(text).replace(/%20/g, '+')}&client=pc&fr=browser_pc&pid=sogou-dict-vr&dict=true&word_group=true&second_query=true&needQc=1&uuid=${getUUID()}&s=${encodeURIComponent(md5('' + sl + tl + text + (await getSogouToken())))}`
   })
   .then(r => r.json())
   .then(json => handleJSON(json, sl, tl))
