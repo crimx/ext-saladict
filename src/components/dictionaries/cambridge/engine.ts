@@ -73,7 +73,7 @@ function handleDOM (
         const $source = $pron.querySelector<HTMLSourceElement>('source[type="audio/mpeg"]')
         if (!$source) { return }
         if ($source.src) {
-          const pron = 'https://dictionary.cambridge.org/' + $source.src.replace(/^\//, '')
+          const pron = 'https://dictionary.cambridge.org' + $source.getAttribute('src')
           removeChildren($pron, '[fallback]')
           const phsym = getText($pron).trim()
           entry.prons.push({ phsym, pron })

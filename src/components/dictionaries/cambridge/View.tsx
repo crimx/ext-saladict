@@ -6,8 +6,8 @@ import { ViewPorps } from '@/components/dictionaries/helpers'
 export default class DictCambridge extends React.PureComponent<ViewPorps<CambridgeResult>> {
   handleEntryClick = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.nativeEvent.target as HTMLDivElement
-    if (target.classList && target.classList.contains('js-accord')) {
-      target.classList.toggle('open')
+    if (target.classList && target.classList.contains('daccord_h')) {
+      target.parentElement!.classList.toggle('open')
       this.props.recalcBodyHeight()
     }
   }
