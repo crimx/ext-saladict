@@ -113,13 +113,6 @@ async function onInstalled({
       )
       storage.sync.set({ hasInstructionsShown: true })
     }
-    ;(await browser.tabs.query({})).forEach(async tab => {
-      try {
-        await injectDictPanel(tab)
-      } catch (e) {
-        console.warn(e)
-      }
-    })
   } else if (reason === 'update') {
     let data: UpdateData | undefined
     if (!process.env.DEV_BUILD) {
@@ -149,6 +142,14 @@ async function onInstalled({
       }
     }
   }
+
+  ;(await browser.tabs.query({})).forEach(async tab => {
+    try {
+      await injectDictPanel(tab)
+    } catch (e) {
+      console.warn(e)
+    }
+  })
 }
 
 function onStartup(): void {
