@@ -1,14 +1,15 @@
 module.exports = {
   env: {
     browser: true,
-    node: true
+    node: true,
+    'jest/globals': true
   },
   extends: [
     'standard',
     'plugin:prettier/recommended',
     'plugin:react/recommended'
   ],
-  plugins: ['@typescript-eslint'],
+  plugins: ['@typescript-eslint', 'jest'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     sourceType: 'module',

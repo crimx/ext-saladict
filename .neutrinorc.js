@@ -1,6 +1,7 @@
 const path = require('path')
 const react = require('@neutrinojs/react')
 const copy = require('@neutrinojs/copy')
+const jest = require('@neutrinojs/jest')
 const wext = require('neutrino-webextension')
 
 module.exports = {
@@ -194,6 +195,18 @@ module.exports = {
           .end()
       /* eslint-enable indent */
     },
+    jest({
+      testRegex: ['test/specs/.*\\.spec\\.(ts|tsx|js|jsx)'],
+      setupFilesAfterEnv: ['<rootDir>/config/jest/setupTests.js'],
+      moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/src/$1'
+      },
+      transform: {
+        '\\.(mjs|jsx|js|ts|tsx)$': require.resolve(
+          '@neutrinojs/jest/src/transformer'
+        )
+      }
+    }),
     wext({
       polyfill: true
     })
