@@ -64,7 +64,7 @@ export function createSelectTextStream(config: AppConfig | null) {
     ),
     withLatestFrom(mouseup$, clickPeriodCount$),
     map(([[selection, isWithMouse], mouseup, clickPeriodCount]) => {
-      const self = isInDictPanel(selection.anchorNode)
+      const self = isInDictPanel(selection.anchorNode || mouseup.target)
 
       if (config.noTypeField && isTypeField(selection.anchorNode)) {
         return self
