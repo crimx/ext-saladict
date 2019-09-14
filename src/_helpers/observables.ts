@@ -27,7 +27,7 @@ export function hover<N extends Node>(
         (!(e.relatedTarget instanceof Node) ||
           !e.currentTarget.contains(e.relatedTarget))
     ),
-    map(e => e.type === 'mouseover'),
+    map(e => e.type === 'mouseover')
   )
 }
 
