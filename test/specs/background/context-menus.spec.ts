@@ -5,6 +5,7 @@ import '@/background/types'
 import { timer } from '@/_helpers/promise-more'
 import * as configManagerMock from '@/_helpers/__mocks__/config-manager'
 import { openURL as openURLMock } from '@/_helpers/__mocks__/browser-api'
+import { browser } from '../../helper'
 
 window.appConfig = getDefaultConfig()
 
@@ -14,7 +15,7 @@ jest.mock('@/_helpers/browser-api')
 let configManager: typeof configManagerMock
 let openURL: typeof openURLMock
 
-function specialConfig () {
+function specialConfig() {
   const config = getDefaultConfig() as AppConfigMutable
   config.contextMenus.selected = ['youdao', 'dictcn']
   return config
@@ -38,8 +39,10 @@ describe('Context Menus', () => {
       browser.tabs.query.flush()
       browser.runtime.getURL.callsFake(s => s)
       browser.tabs.query
-        .onFirstCall().returns(Promise.resolve([{ url: 'test-url' }]))
-        .onSecondCall().returns(Promise.resolve([]))
+        .onFirstCall()
+        .returns(Promise.resolve([{ url: 'test-url' }]))
+        .onSecondCall()
+        .returns(Promise.resolve([]))
     })
 
     it('init', () => {
@@ -49,14 +52,20 @@ describe('Context Menus', () => {
     it('google_page_translate', async () => {
       browser.tabs.executeScript.flush()
       browser.tabs.executeScript.callsFake(() => Promise.resolve())
-      browser.contextMenus.onClicked.dispatch({ menuItemId: 'google_page_translate' })
+      browser.contextMenus.onClicked.dispatch({
+        menuItemId: 'google_page_translate'
+      })
       expect(browser.tabs.executeScript.calledOnce).toBeTruthy()
     })
     it('youdao_page_translate', () => {
       browser.tabs.executeScript.flush()
       browser.tabs.executeScript.callsFake(() => Promise.resolve())
-      browser.contextMenus.onClicked.dispatch({ menuItemId: 'youdao_page_translate' })
-      expect(browser.tabs.executeScript.calledWith({ file: sinon.match('youdao') })).toBeTruthy()
+      browser.contextMenus.onClicked.dispatch({
+        menuItemId: 'youdao_page_translate'
+      })
+      expect(
+        browser.tabs.executeScript.calledWith({ file: sinon.match('youdao') })
+      ).toBeTruthy()
     })
     it('view_as_pdf', async () => {
       browser.tabs.query.onFirstCall().returns(Promise.resolve([]))
@@ -105,8 +114,18 @@ describe('Context Menus', () => {
       const { init } = require('@/background/context-menus')
       take(1)(init(config.contextMenus)).subscribe(() => {
         expect(browser.contextMenus.removeAll.calledOnce).toBeTruthy()
-        expect(browser.contextMenus.create.calledWithMatch({ id: 'youdao' }, sinon.match.func)).toBeTruthy()
-        expect(browser.contextMenus.create.calledWithMatch({ id: 'dictcn' }, sinon.match.func)).toBeTruthy()
+        expect(
+          browser.contextMenus.create.calledWithMatch(
+            { id: 'youdao' },
+            sinon.match.func
+          )
+        ).toBeTruthy()
+        expect(
+          browser.contextMenus.create.calledWithMatch(
+            { id: 'dictcn' },
+            sinon.match.func
+          )
+        ).toBeTruthy()
         done()
       })
     })
@@ -126,7 +145,7 @@ describe('Context Menus', () => {
       })
     })
 
-    it('should do nothing when contex menus config didn\'t change', done => {
+    it("should do nothing when contex menus config didn't change", done => {
       const newConfig = specialConfig()
       newConfig.active = !newConfig.active
 
@@ -195,13 +214,32 @@ describe('Context Menus', () => {
 
         setTimeout(() => {
           expect(browser.contextMenus.removeAll.calledThrice).toBeTruthy()
-          expect(browser.contextMenus.create.calledWithMatch({ id: 'bing_dict' }, sinon.match.func)).toBeTruthy()
-          expect(browser.contextMenus.create.calledWithMatch({ id: 'iciba' }, sinon.match.func)).toBeFalsy()
-          expect(browser.contextMenus.create.calledWithMatch({ id: 'oxford' }, sinon.match.func)).toBeFalsy()
-          expect(browser.contextMenus.create.calledWithMatch({ id: 'youdao' }, sinon.match.func)).toBeTruthy()
+          expect(
+            browser.contextMenus.create.calledWithMatch(
+              { id: 'bing_dict' },
+              sinon.match.func
+            )
+          ).toBeTruthy()
+          expect(
+            browser.contextMenus.create.calledWithMatch(
+              { id: 'iciba' },
+              sinon.match.func
+            )
+          ).toBeFalsy()
+          expect(
+            browser.contextMenus.create.calledWithMatch(
+              { id: 'oxford' },
+              sinon.match.func
+            )
+          ).toBeFalsy()
+          expect(
+            browser.contextMenus.create.calledWithMatch(
+              { id: 'youdao' },
+              sinon.match.func
+            )
+          ).toBeTruthy()
           done()
         }, 0)
-
       })
     })
   })
