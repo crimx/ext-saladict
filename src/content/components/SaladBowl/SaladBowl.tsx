@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { useSubscription, useObservableCallback } from 'observable-hooks'
-import { hover } from '@/_helpers/observables'
+import { hoverWithDelay } from '@/_helpers/observables'
 import { SALADICT_EXTERNAL } from '@/_helpers/saladict'
 
 export interface SaladBowlProps {
@@ -24,7 +24,7 @@ export const SaladBowl: FC<SaladBowlProps> = props => {
   const [onMouseOverOut, mouseOverOut$] = useObservableCallback<
     boolean,
     React.MouseEvent<HTMLDivElement>
-  >(hover)
+  >(hoverWithDelay)
 
   useSubscription(mouseOverOut$, active => {
     props.onHover(active)
