@@ -52,11 +52,7 @@ export const search: SearchFunction<GuoYuResult> = (
   profile,
   payload
 ) => {
-  return moedictSearch<GuoYuResult>(
-    'a',
-    encodeURIComponent(text.replace(/\s+/g, '')),
-    config
-  )
+  return moedictSearch<GuoYuResult>('a', text, config)
 }
 
 export function moedictSearch<R extends GuoYuResult>(
@@ -65,7 +61,11 @@ export function moedictSearch<R extends GuoYuResult>(
   config: AppConfig
 ): Promise<DictSearchResult<R>> {
   return axios
-    .get<R>(`https://www.moedict.tw/${moedictID}/${chsToChz(text)}.json`)
+    .get<R>(
+      `https://www.moedict.tw/${moedictID}/${encodeURIComponent(
+        chsToChz(text.replace(/\s+/g, ''))
+      )}.json`
+    )
     .catch(handleNetWorkError)
     .then<DictSearchResult<R>>(({ data }) => {
       if (!data || !data.h) {

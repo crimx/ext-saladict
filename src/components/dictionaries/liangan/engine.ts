@@ -1,8 +1,4 @@
-import {
-  SearchFunction,
-  GetSrcPageFunction,
-  DictSearchResult
-} from '../helpers'
+import { SearchFunction, GetSrcPageFunction } from '../helpers'
 import chsToChz from '@/_helpers/chs-to-chz'
 import { moedictSearch, GuoYuResult } from '../guoyu/engine'
 
@@ -18,11 +14,7 @@ export const search: SearchFunction<LiangAnResult> = (
   profile,
   payload
 ) => {
-  return moedictSearch<LiangAnResult>(
-    'c',
-    encodeURIComponent(text.replace(/\s+/g, '')),
-    config
-  ).then(result => {
+  return moedictSearch<LiangAnResult>('c', text, config).then(result => {
     if (result.result.h) {
       result.result.h.forEach(h => {
         if (h.p) {
