@@ -29,7 +29,7 @@ const mapStateToProps = (
     menuBar,
     mtaBox,
     dictList,
-    waveformBox,
+    waveformBox: state.activeProfile.waveform ? waveformBox : null,
     dragStartCoord: state.dragStartCoord
   }
 }

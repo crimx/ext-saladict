@@ -26,7 +26,7 @@ export function _getDefaultProfile(id?: string) {
     mtaAutoUnfold: '' as MtaAutoUnfold,
 
     /** show waveform control panel */
-    waveform: false,
+    waveform: true,
 
     dicts: {
       /** default selected dictionaries */
