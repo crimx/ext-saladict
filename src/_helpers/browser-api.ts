@@ -48,29 +48,29 @@ const noop = () => {
  * key: {function} user's callback function
  * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
-const messageListeners: Map<
+const messageListeners: WeakMap<
   Function,
   Map<MsgType | '__DEFAULT_MSGTYPE__', Function>
-> = new Map()
+> = new WeakMap()
 
 /**
  * For self page messaging
  * key: {function} user's callback function
  * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
-const messageSelfListeners: Map<
+const messageSelfListeners: WeakMap<
   Function,
   Map<MsgType | '__DEFAULT_MSGTYPE__', Function>
-> = new Map()
+> = new WeakMap()
 
 /**
  * key: {function} user's callback function
  * values: {Map} listeners, key: message type, values: generated or user's callback functions
  */
-const storageListeners: Map<
+const storageListeners: WeakMap<
   StorageListenerCb,
   Map<string, StorageListenerCb>
-> = new Map()
+> = new WeakMap()
 
 /* --------------------------------------- *\
  * #Exports
