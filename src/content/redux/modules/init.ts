@@ -89,9 +89,20 @@ export const init: Init<StoreActionCatalog, StoreState> = (
     }
   })
 
+  /**
+   * Date of last instant capture.
+   * To skip extra event after resuming selection
+   */
+  let lastInstantDate = 0
+
   message.self.addListener(msg => {
     switch (msg.type) {
       case 'SELECTION':
+        if (msg.payload.instant) {
+          lastInstantDate = Date.now()
+        } else if (Date.now() - lastInstantDate < 500) {
+          return Promise.resolve()
+        }
         dispatch({ type: 'NEW_SELECTION', payload: msg.payload })
         return Promise.resolve()
 
