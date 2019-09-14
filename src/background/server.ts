@@ -2,6 +2,7 @@ import { message, openURL } from '@/_helpers/browser-api'
 import { timeout, timer } from '@/_helpers/promise-more'
 import { getSuggests } from '@/_helpers/getSuggests'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
+import { Message, MessageResponse } from '@/typings/message'
 import {
   SearchFunction,
   GetSrcPageFunction,
@@ -21,7 +22,6 @@ import {
 } from './database'
 import { play } from './audio-manager'
 import './types'
-import { Message, MessageResponse } from '@/typings/message'
 
 /** is a standalone panel running */
 let qsPanelID: number | false = false
@@ -282,7 +282,7 @@ function fetchDictResult(
 
   const payload = data.payload || {}
 
-  const pSearch = timeout(
+  return timeout(
     search(data.text, window.appConfig, window.activeProfile, payload),
     25000
   )
@@ -309,11 +309,6 @@ function fetchDictResult(
       }
       return { result: null, id: data.id }
     })
-
-  // Random delay for more organic feeling
-  return Promise.all([pSearch, timer(Math.random() * 1000 + 500)]).then(
-    ([response]) => response
-  )
 }
 
 async function callDictEngineMethod(
