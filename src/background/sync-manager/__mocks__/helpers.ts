@@ -1,17 +1,19 @@
-import { empty } from 'rxjs/observable/empty'
+import { empty, Observable } from 'rxjs'
 
-export const setSyncConfig = jest.fn(() => Promise.resolve())
+const emptyPromise = (): Promise<any> => Promise.resolve()
 
-export const getSyncConfig = jest.fn(() => Promise.resolve())
+export const setSyncConfig = jest.fn(emptyPromise)
 
-export const createSyncConfigStream = jest.fn(() => empty())
+export const getSyncConfig = jest.fn(emptyPromise)
 
-export const setMeta = jest.fn(() => Promise.resolve())
+export const createSyncConfigStream = jest.fn((): Observable<any> => empty())
 
-export const getMeta = jest.fn(() => Promise.resolve())
+export const setMeta = jest.fn(emptyPromise)
 
-export const deleteMeta = jest.fn(() => Promise.resolve())
+export const getMeta = jest.fn(emptyPromise)
 
-export const setNotebook = jest.fn(() => Promise.resolve())
+export const deleteMeta = jest.fn(emptyPromise)
 
-export const getNotebook = jest.fn(() => Promise.resolve())
+export const setNotebook = jest.fn(emptyPromise)
+
+export const getNotebook = jest.fn(emptyPromise)

@@ -5,26 +5,33 @@ import { getDefaultConfig } from '@/app-config'
 import getDefaultProfile from '@/app-config/profiles'
 import { timer } from '@/_helpers/promise-more'
 import '@/background/types'
+import { browser } from '../../helper'
 
 window.appConfig = getDefaultConfig()
 window.activeProfile = getDefaultProfile()
 
-window.fetch = jest.fn(() => Promise.resolve({
-  ok: true,
-  json: () => ''
-}))
+window.fetch = jest.fn(() =>
+  Promise.resolve({
+    ok: true,
+    json: () => ''
+  })
+) as any
 
 jest.mock('@/app-config/merge-config', () => {
   const { getDefaultConfig } = require('@/app-config')
   return {
-    mergeConfig: jest.fn(config => Promise.resolve(config || getDefaultConfig()))
+    mergeConfig: jest.fn(config =>
+      Promise.resolve(config || getDefaultConfig())
+    )
   }
 })
 
 jest.mock('@/app-config/merge-profile', () => {
   const { getDefaultProfile } = require('@/app-config/profiles')
   return {
-    mergeProfile: jest.fn(profile => Promise.resolve(profile || getDefaultProfile()))
+    mergeProfile: jest.fn(profile =>
+      Promise.resolve(profile || getDefaultProfile())
+    )
   }
 })
 
@@ -52,16 +59,13 @@ jest.doMock('@/_helpers/browser-api', () => {
   return {
     message,
     storage,
-    openURL: jest.fn(() => Promise.resolve()),
+    openURL: jest.fn(() => Promise.resolve())
   }
 })
 
 describe('Initialization', () => {
   let initMenus: jest.Mock
   let initPdf: jest.Mock
-  let openURL: jest.Mock
-  let mergeConfig: jest.Mock
-  let mergeProfile: jest.Mock
 
   beforeAll(() => {
     browser.runtime.sendMessage.callsFake(() => Promise.resolve({}))
@@ -74,14 +78,8 @@ describe('Initialization', () => {
 
     const contextMenus = require('@/background/context-menus')
     const pdfSniffer = require('@/background/pdf-sniffer')
-    const browserApi = require('@/_helpers/browser-api')
-    const _mergeConfig = require('@/app-config/merge-config')
-    const _mergeProfile = require('@/app-config/merge-profile')
     initMenus = contextMenus.init
     initPdf = pdfSniffer.init
-    openURL = browserApi.openURL
-    mergeConfig = _mergeConfig.mergeConfig
-    mergeProfile = _mergeProfile.mergeProfile
 
     browser.storage.sync.get.callsFake(() => Promise.resolve({}))
     browser.storage.sync.set.callsFake(() => Promise.resolve())
@@ -98,7 +96,9 @@ describe('Initialization', () => {
     expect(browser.runtime.onInstalled.addListener.calledOnce).toBeTruthy()
     expect(browser.runtime.onStartup.addListener.calledOnce).toBeTruthy()
     expect(browser.notifications.onClicked.addListener.calledOnce).toBeTruthy()
-    expect(browser.notifications.onButtonClicked.addListener.calledOnce).toBeTruthy()
+    expect(
+      browser.notifications.onButtonClicked.addListener.calledOnce
+    ).toBeTruthy()
     expect(initMenus).toHaveBeenCalledTimes(0)
     expect(initPdf).toHaveBeenCalledTimes(0)
   })
@@ -110,9 +110,11 @@ describe('Initialization', () => {
     })
 
     it('should not check update if last check was just now', async () => {
-      browser.storage.local.get.onFirstCall().returns(Promise.resolve({
-        lastCheckUpdate: Date.now()
-      }))
+      browser.storage.local.get.onFirstCall().returns(
+        Promise.resolve({
+          lastCheckUpdate: Date.now()
+        })
+      )
       browser.runtime.onStartup.dispatch()
 
       await timer(0)
@@ -120,17 +122,23 @@ describe('Initialization', () => {
     })
 
     it('should check update when last check was 7 days ago', async () => {
-      browser.storage.local.get.onFirstCall().returns(Promise.resolve({
-        lastCheckUpdate: 0
-      }))
-      checkUpdate.mockReturnValueOnce(Promise.resolve({ isAvailable: true, info: {} }))
+      browser.storage.local.get.onFirstCall().returns(
+        Promise.resolve({
+          lastCheckUpdate: 0
+        })
+      )
+      checkUpdate.mockReturnValueOnce(
+        Promise.resolve({ isAvailable: true, info: {} })
+      )
       browser.runtime.onStartup.dispatch()
 
       await timer(0)
       expect(checkUpdate).toHaveBeenCalledTimes(1)
-      expect(browser.storage.local.set.calledWith({
-        lastCheckUpdate: sinon.match.number
-      })).toBeTruthy()
+      expect(
+        browser.storage.local.set.calledWith({
+          lastCheckUpdate: sinon.match.number
+        })
+      ).toBeTruthy()
       expect(browser.notifications.create.calledOnce).toBeTruthy()
     })
   })

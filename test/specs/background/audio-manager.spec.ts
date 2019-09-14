@@ -7,16 +7,16 @@ describe('Audio Manager', () => {
     const instance = {
       play: jest.fn(() => Promise.resolve()),
       pause: jest.fn(),
-      addEventListener: jest.fn(),
+      addEventListener: jest.fn()
     }
     mockAudioInstances.push(instance)
     return instance
   })
   beforeAll(() => {
-    (window as any).Audio = mockAudio
+    ;(window as any).Audio = mockAudio
   })
   afterAll(() => {
-    (window as any).Audio = bakAudio
+    ;(window as any).Audio = bakAudio
   })
   beforeEach(() => {
     delete window.__audio_manager__

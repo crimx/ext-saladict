@@ -3,12 +3,13 @@ import { matchPatternToRegExpStr } from '@/_helpers/matchPatternToRegExpStr'
 import { init as initPdfOrigin } from '@/background/pdf-sniffer'
 import { timer } from '@/_helpers/promise-more'
 import * as configManagerMock from '@/_helpers/__mocks__/config-manager'
+import { browser } from '../../helper'
 
 jest.mock('@/_helpers/config-manager')
 
 let configManager: typeof configManagerMock
 
-function hasListenerPatch (fn) {
+function hasListenerPatch(fn) {
   // @ts-ignore
   if (this._listeners) {
     // @ts-ignore
@@ -42,8 +43,12 @@ describe('PDF Sniffer', () => {
     config.pdfSniff = false
     initPdf(config)
     await timer(0)
-    expect(browser.webRequest.onBeforeRequest.addListener.notCalled).toBeTruthy()
-    expect(browser.webRequest.onHeadersReceived.addListener.notCalled).toBeTruthy()
+    expect(
+      browser.webRequest.onBeforeRequest.addListener.notCalled
+    ).toBeTruthy()
+    expect(
+      browser.webRequest.onHeadersReceived.addListener.notCalled
+    ).toBeTruthy()
     expect(configManager.addConfigListener).toHaveBeenCalledTimes(1)
   })
 
@@ -52,8 +57,12 @@ describe('PDF Sniffer', () => {
     config.pdfSniff = true
     initPdf(config)
     await timer(0)
-    expect(browser.webRequest.onBeforeRequest.addListener.calledOnce).toBeTruthy()
-    expect(browser.webRequest.onHeadersReceived.addListener.calledOnce).toBeTruthy()
+    expect(
+      browser.webRequest.onBeforeRequest.addListener.calledOnce
+    ).toBeTruthy()
+    expect(
+      browser.webRequest.onHeadersReceived.addListener.calledOnce
+    ).toBeTruthy()
     expect(configManager.addConfigListener).toHaveBeenCalledTimes(1)
   })
 
@@ -64,13 +73,21 @@ describe('PDF Sniffer', () => {
     await timer(0)
     configManager.dispatchConfigChangedEvent(
       { ...config, pdfSniff: false },
-      { ...config, pdfSniff: true },
+      { ...config, pdfSniff: true }
     )
     await timer(0)
-    expect(browser.webRequest.onBeforeRequest.addListener.calledOnce).toBeTruthy()
-    expect(browser.webRequest.onHeadersReceived.addListener.calledOnce).toBeTruthy()
-    expect(browser.webRequest.onBeforeRequest.removeListener.calledOnce).toBeTruthy()
-    expect(browser.webRequest.onHeadersReceived.removeListener.calledOnce).toBeTruthy()
+    expect(
+      browser.webRequest.onBeforeRequest.addListener.calledOnce
+    ).toBeTruthy()
+    expect(
+      browser.webRequest.onHeadersReceived.addListener.calledOnce
+    ).toBeTruthy()
+    expect(
+      browser.webRequest.onBeforeRequest.removeListener.calledOnce
+    ).toBeTruthy()
+    expect(
+      browser.webRequest.onHeadersReceived.removeListener.calledOnce
+    ).toBeTruthy()
     expect(configManager.addConfigListener).toHaveBeenCalledTimes(1)
   })
 
@@ -82,8 +99,12 @@ describe('PDF Sniffer', () => {
     initPdf(config)
     initPdf(config)
     await timer(0)
-    expect(browser.webRequest.onBeforeRequest.addListener.calledOnce).toBeTruthy()
-    expect(browser.webRequest.onHeadersReceived.addListener.calledOnce).toBeTruthy()
+    expect(
+      browser.webRequest.onBeforeRequest.addListener.calledOnce
+    ).toBeTruthy()
+    expect(
+      browser.webRequest.onHeadersReceived.addListener.calledOnce
+    ).toBeTruthy()
     expect(configManager.addConfigListener).toHaveBeenCalledTimes(1)
   })
 
@@ -94,15 +115,19 @@ describe('PDF Sniffer', () => {
     await timer(0)
     configManager.dispatchConfigChangedEvent(
       { ...config, pdfSniff: true },
-      { ...config, pdfSniff: false },
+      { ...config, pdfSniff: false }
     )
     configManager.dispatchConfigChangedEvent(
       { ...config, pdfSniff: true },
-      { ...config, pdfSniff: false },
+      { ...config, pdfSniff: false }
     )
     await timer(0)
-    expect(browser.webRequest.onBeforeRequest.addListener.calledOnce).toBeTruthy()
-    expect(browser.webRequest.onHeadersReceived.addListener.calledOnce).toBeTruthy()
+    expect(
+      browser.webRequest.onBeforeRequest.addListener.calledOnce
+    ).toBeTruthy()
+    expect(
+      browser.webRequest.onHeadersReceived.addListener.calledOnce
+    ).toBeTruthy()
     expect(configManager.addConfigListener).toHaveBeenCalledTimes(1)
   })
 
@@ -174,7 +199,9 @@ describe('PDF Sniffer', () => {
       expect(handler({ resposeHeaders: [], url: urlPdf })).toBeUndefined()
 
       const otherResponseHeaders = [{ name: 'content-type', value: 'other' }]
-      expect(handler({ responseHeaders: otherResponseHeaders, url: urlPdf })).toBeUndefined()
+      expect(
+        handler({ responseHeaders: otherResponseHeaders, url: urlPdf })
+      ).toBeUndefined()
     })
 
     it('With PDF Content Type', async () => {
@@ -183,11 +210,13 @@ describe('PDF Sniffer', () => {
       initPdf(config)
       await timer(0)
       const handler = browser.webRequest.onHeadersReceived['_listeners'][0]
-      const responseHeaders = [{ name: 'content-type', value: 'application/pdf' }]
-      expect(handler({ responseHeaders , url: urlPdf })).toEqual({
+      const responseHeaders = [
+        { name: 'content-type', value: 'application/pdf' }
+      ]
+      expect(handler({ responseHeaders, url: urlPdf })).toEqual({
         redirectUrl: expect.stringMatching(urlPdfEncoded)
       })
-      expect(handler({ responseHeaders , url: urlTxt })).toEqual({
+      expect(handler({ responseHeaders, url: urlTxt })).toEqual({
         redirectUrl: expect.stringMatching(urlTxtEncoded)
       })
     })
@@ -198,8 +227,10 @@ describe('PDF Sniffer', () => {
       initPdf(config)
       await timer(0)
       const handler = browser.webRequest.onHeadersReceived['_listeners'][0]
-      const responseHeaders = [{ name: 'content-type', value: 'application/octet-stream' }]
-      expect(handler({ responseHeaders , url: urlPdf })).toEqual({
+      const responseHeaders = [
+        { name: 'content-type', value: 'application/octet-stream' }
+      ]
+      expect(handler({ responseHeaders, url: urlPdf })).toEqual({
         redirectUrl: expect.stringMatching(urlPdfEncoded)
       })
       expect(handler({ responseHeaders, url: urlTxt })).toBeUndefined()
@@ -211,9 +242,11 @@ describe('PDF Sniffer', () => {
       config.pdfBlacklist = [[matchPatternToRegExpStr(urlPdf), urlPdf]]
       initPdf(config)
       const handler = browser.webRequest.onHeadersReceived['_listeners'][0]
-      const responseHeaders = [{ name: 'content-type', value: 'application/pdf' }]
-      expect(handler({ responseHeaders , url: urlPdf })).toBeUndefined()
-      expect(handler({ responseHeaders , url: urlTxt })).toEqual({
+      const responseHeaders = [
+        { name: 'content-type', value: 'application/pdf' }
+      ]
+      expect(handler({ responseHeaders, url: urlPdf })).toBeUndefined()
+      expect(handler({ responseHeaders, url: urlTxt })).toEqual({
         redirectUrl: expect.stringMatching(urlTxtEncoded)
       })
     })
@@ -225,11 +258,13 @@ describe('PDF Sniffer', () => {
       initPdf(config)
       await timer(0)
       const handler = browser.webRequest.onHeadersReceived['_listeners'][0]
-      const responseHeaders = [{ name: 'content-type', value: 'application/pdf' }]
-      expect(handler({ responseHeaders , url: urlPdf })).toEqual({
+      const responseHeaders = [
+        { name: 'content-type', value: 'application/pdf' }
+      ]
+      expect(handler({ responseHeaders, url: urlPdf })).toEqual({
         redirectUrl: expect.stringMatching(urlPdfEncoded)
       })
-      expect(handler({ responseHeaders , url: urlTxt })).toEqual({
+      expect(handler({ responseHeaders, url: urlTxt })).toEqual({
         redirectUrl: expect.stringMatching(urlTxtEncoded)
       })
     })
@@ -242,11 +277,13 @@ describe('PDF Sniffer', () => {
       initPdf(config)
       await timer(0)
       const handler = browser.webRequest.onHeadersReceived['_listeners'][0]
-      const responseHeaders = [{ name: 'content-type', value: 'application/pdf' }]
-      expect(handler({ responseHeaders , url: urlPdf })).toEqual({
+      const responseHeaders = [
+        { name: 'content-type', value: 'application/pdf' }
+      ]
+      expect(handler({ responseHeaders, url: urlPdf })).toEqual({
         redirectUrl: expect.stringMatching(urlPdfEncoded)
       })
-      expect(handler({ responseHeaders , url: urlTxt })).toEqual({
+      expect(handler({ responseHeaders, url: urlTxt })).toEqual({
         redirectUrl: expect.stringMatching(urlTxtEncoded)
       })
     })

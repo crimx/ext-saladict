@@ -1,7 +1,7 @@
 import { getDefaultConfig } from '@/app-config'
 import { getDefaultProfile } from '@/app-config/profiles'
 import * as browserWrap from '@/_helpers/browser-api'
-import { MsgType } from '@/typings/message'
+import { browser } from '../../helper'
 import { timer } from '@/_helpers/promise-more'
 import '@/background/types'
 
@@ -16,7 +16,7 @@ describe('Server', () => {
   const initServer = jest.fn()
   const openURL = jest.fn()
   const bingSearch = jest.fn()
-  browserWrap.message.self.initServer = initServer
+  ;(browserWrap.message.self as any).initServer = initServer
   // @ts-ignore
   browserWrap.openURL = openURL
 
@@ -53,14 +53,18 @@ describe('Server', () => {
     jest.doMock('@/_helpers/config-manager', () => {
       return {
         createConfigStream: () => ({
-          subscribe: () => {/* noop */}
+          subscribe: () => {
+            /* noop */
+          }
         })
       }
     })
     jest.doMock('@/_helpers/profile-manager', () => {
       return {
         createActiveProfileStream: () => ({
-          subscribe: () => {/* noop */}
+          subscribe: () => {
+            /* noop */
+          }
         })
       }
     })
@@ -96,9 +100,11 @@ describe('Server', () => {
 
   it('Open url', () => {
     browser.runtime.onMessage.dispatch({
-      type: MsgType.OpenURL,
-      url: 'https://test.com/',
-      text: 'test',
+      type: 'OPEN_URL',
+      payload: {
+        url: 'https://test.com/',
+        text: 'test'
+      }
     })
     expect(chsToChz).toHaveBeenCalledTimes(0)
     expect(openURL).toHaveBeenCalledTimes(1)
@@ -111,10 +117,11 @@ describe('Server', () => {
       const rejectStub = jest.fn()
       browser.runtime.onMessage['_listeners'].forEach(f =>
         f({
-          type: MsgType.FetchDictResult,
-          text: 'test',
-        })
-        .then(resolveStub, rejectStub)
+          type: 'FETCH_DICT_RESULT',
+          payload: {
+            text: 'test'
+          }
+        }).then(resolveStub, rejectStub)
       )
       await timer(0)
       expect(bingSearch).toHaveBeenCalledTimes(0)
@@ -124,10 +131,12 @@ describe('Server', () => {
 
     it('should search text', () => {
       browser.runtime.onMessage.dispatch({
-        type: MsgType.FetchDictResult,
-        id: 'bing',
-        text: 'test',
-        payload: { field: 'any' },
+        type: 'FETCH_DICT_RESULT',
+        payload: {
+          id: 'bing',
+          text: 'test',
+          payload: { field: 'any' }
+        }
       })
       expect(bingSearch).toHaveBeenCalledTimes(1)
       expect(bingSearch).toHaveBeenCalledWith(
