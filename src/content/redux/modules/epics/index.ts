@@ -10,6 +10,7 @@ import { ofType } from '../../utils/operators'
 
 import searchStartEpic from './searchStart.epic'
 import newSelectionEpic from './newSelection.epic'
+import { translateCtx } from '@/_helpers/translateCtx'
 
 export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
   /** Start searching text. This will also send to Redux. */
@@ -38,19 +39,27 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
           } as const)
         }
 
-        return from(async () => {
-          const word =
-            state$.value.searchHistory[state$.value.searchHistory.length - 1]
-          if (word) {
-            try {
-              await saveWord('notebook', word)
-              return true
-            } catch (e) {
-              return false
+        return from(
+          (async () => {
+            const word =
+              state$.value.searchHistory[state$.value.searchHistory.length - 1]
+            if (word) {
+              try {
+                const trans = await translateCtx(
+                  word.context || word.text,
+                  state$.value.config.ctxTrans
+                )
+                word.trans = word.trans ? word.trans + '\n\n' + trans : trans
+                await saveWord('notebook', word)
+                return true
+              } catch (e) {
+                console.warn(e)
+                return false
+              }
             }
-          }
-          return false
-        }).pipe(
+            return false
+          })()
+        ).pipe(
           // dim icon if failed
           filter(isSuccess => !isSuccess),
           mapTo({ type: 'WORD_IN_NOTEBOOK', payload: false } as const)
