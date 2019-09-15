@@ -10,9 +10,13 @@ import {
 import { merge, from, empty } from 'rxjs'
 import { StoreAction } from '../'
 import { Epic, ofType } from '../../utils/operators'
-import { isInNotebook } from '@/_helpers/record-manager'
+import { isInNotebook, saveWord } from '@/_helpers/record-manager'
 import { message } from '@/_helpers/browser-api'
-import { isPDFPage } from '@/_helpers/saladict'
+import {
+  isPDFPage,
+  isInternalPage,
+  isStandalonePage
+} from '@/_helpers/saladict'
 import { DictID } from '@/app-config'
 import { MachineTranslateResult } from '@/components/dictionaries/helpers'
 
@@ -27,6 +31,17 @@ export const searchStartEpic: Epic = (action$, state$) =>
         renderedDicts
       } = state$.value
       const word = searchHistory[historyIndex]
+
+      if (
+        config.searhHistory &&
+        (!isInternalPage() || isStandalonePage()) &&
+        (!browser.extension.inIncognitoContext || config.searhHistoryInco) &&
+        (historyIndex <= 0 ||
+          searchHistory[historyIndex - 1].text !== word.text ||
+          searchHistory[historyIndex - 1].context !== word.context)
+      ) {
+        saveWord('history', word)
+      }
 
       const toStart = new Set<DictID>()
       for (const d of renderedDicts) {
