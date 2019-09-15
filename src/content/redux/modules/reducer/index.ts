@@ -111,7 +111,7 @@ export const createRootReducer = () =>
     }),
 
     ADD_TO_NOTEBOOK: state =>
-      state.config.editOnFav
+      state.config.editOnFav && !isStandalonePage()
         ? state
         : {
             ...state,
