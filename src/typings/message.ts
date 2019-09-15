@@ -273,7 +273,7 @@ export type MessageConfig = {
   }
 
   SYNC_SERVICE_DOWNLOAD: {
-    payload: {
+    payload?: {
       serviceID: string
       noCache?: boolean
     }
