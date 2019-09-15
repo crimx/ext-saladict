@@ -1,3 +1,5 @@
+@import '@/_sass_global/_z-indices.scss';
+
 /*------------------------------------*\
    Base
 \*------------------------------------*/
@@ -33,7 +35,7 @@ body {
 
 .qrcode-panel {
   position: fixed;
-  z-index: 100;
+  z-index: $global-zindex-dictpanel;
   bottom: 10px;
   left: 10px;
   padding: 20px;
