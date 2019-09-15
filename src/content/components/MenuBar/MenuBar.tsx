@@ -120,7 +120,25 @@ export const MenuBar: FC<MenuBarProps> = props => {
           }, 500)
         }}
       />
-      <FavBtn t={t} isFav={props.isInNotebook} onClick={props.addToNoteBook} />
+      <FavBtn
+        t={t}
+        isFav={props.isInNotebook}
+        onClick={props.addToNoteBook}
+        onMouseDown={e => {
+          if (e.button === 2) {
+            e.preventDefault()
+            e.stopPropagation()
+            e.currentTarget.blur()
+            message.send({
+              type: 'OPEN_URL',
+              payload: {
+                url: 'notebook.html',
+                self: true
+              }
+            })
+          }
+        }}
+      />
       <HistoryBtn
         t={t}
         onClick={() =>
