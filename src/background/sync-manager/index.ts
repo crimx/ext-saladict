@@ -1,5 +1,6 @@
 import { SyncService } from './interface'
 import { Message } from '@/typings/message'
+import { reflect } from '@/_helpers/promise-more'
 
 const reqServices = require.context('./services', false, /./)
 
@@ -73,21 +74,24 @@ export async function syncServiceUpload(
   )
 }
 
-export async function syncServiceDownload({
-  serviceID,
-  noCache
-}: Message<'SYNC_SERVICE_DOWNLOAD'>['payload']) {
-  const service = services.get(serviceID)
-  if (!service) {
-    if (process.env.DEV_BUILD) {
-      console.error(
-        `Sync service download error: wrong service id ${serviceID}`
-      )
+export async function syncServiceDownload(
+  payload: Message<'SYNC_SERVICE_DOWNLOAD'>['payload']
+) {
+  if (payload) {
+    const service = services.get(payload.serviceID)
+    if (!service) {
+      if (process.env.DEV_BUILD) {
+        console.error(
+          `Sync service download error: wrong service id ${payload.serviceID}`
+        )
+      }
+      return wrapError('wrong service id')
     }
-    return wrapError('wrong service id')
+
+    return service.download({ noCache: payload.noCache }).catch(wrapError)
   }
 
-  return service.download({ noCache }).catch(wrapError)
+  return reflect([...services.values()].map(service => service.download({})))
 }
 
 function wrapError(e: string | Error) {
