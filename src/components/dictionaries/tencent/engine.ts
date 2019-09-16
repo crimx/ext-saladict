@@ -20,7 +20,7 @@ export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
         : 'en'
       : profile.dicts.all.tencent.options.tl
 
-  return `https://fanyi.tencent.com/#auto/${lang}/${text}`
+  return `https://fanyi.qq.com/#auto/${lang}/${text}`
 }
 
 interface TencentToken {
@@ -45,7 +45,7 @@ const langcodes: ReadonlyArray<string> = [
   'de', 'tr', 'ru', 'pt', 'vi', 'id', 'th', 'ms'
 ]
 
-let isSetupOriginModifier = false
+let isSetupHeaderModifier = false
 
 export const search: SearchFunction<TencentResult, MachineTranslatePayload> = (
   text,
@@ -53,9 +53,9 @@ export const search: SearchFunction<TencentResult, MachineTranslatePayload> = (
   profile,
   payload
 ) => {
-  if (!isSetupOriginModifier) {
-    setupOriginModifier()
-    isSetupOriginModifier = true
+  if (!isSetupHeaderModifier) {
+    setupHeaderModifier()
+    isSetupHeaderModifier = true
   }
 
   const options = profile.dicts.all.tencent.options
@@ -195,19 +195,36 @@ async function getToken(): Promise<TencentToken> {
   return dict_tencent.token
 }
 
-function setupOriginModifier() {
+function setupHeaderModifier() {
+  const extraInfoSpec = ['blocking', 'requestHeaders']
+  // https://developer.chrome.com/extensions/webRequest#life_cycle_footnote
+  if (
+    browser.webRequest['OnBeforeSendHeadersOptions'] &&
+    browser.webRequest['OnBeforeSendHeadersOptions'].hasOwnProperty(
+      'EXTRA_HEADERS'
+    )
+  ) {
+    extraInfoSpec.push('extraHeaders')
+  }
+
   browser.webRequest.onBeforeSendHeaders.addListener(
     details => {
       if (details && details.requestHeaders) {
-        for (var i = 0; i < details.requestHeaders.length; ++i) {
-          if (details.requestHeaders[i].name === 'Origin') {
-            details.requestHeaders[i].value = 'https://fanyi.qq.com'
-          }
-        }
+        const headers = details.requestHeaders.filter(
+          header => !/^(Origin|Referer|Host)$/.test(header.name)
+        )
+
+        headers.push(
+          { name: 'Origin', value: 'https://fanyi.qq.com' },
+          { name: 'Referer', value: 'https://fanyi.qq.com/' },
+          { name: 'Host', value: 'fanyi.qq.com' }
+        )
+
+        return { requestHeaders: headers }
       }
       return { requestHeaders: details.requestHeaders }
     },
     { urls: ['https://fanyi.qq.com/api/translate'] },
-    ['blocking', 'requestHeaders']
+    extraInfoSpec as any
   )
 }
