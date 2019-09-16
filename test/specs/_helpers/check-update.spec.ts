@@ -1,5 +1,8 @@
 import checkUpdate from '@/_helpers/check-update'
-import fetchMock from 'jest-fetch-mock'
+import _fetchMock, { FetchMock } from 'jest-fetch-mock'
+import { browser } from '../../helper'
+
+const fetchMock = _fetchMock as FetchMock
 
 describe('Check Update', () => {
   beforeAll(() => {
@@ -29,19 +32,18 @@ describe('Check Update', () => {
         expect(catchSpy).toHaveBeenCalledTimes(0)
         expect(resolveSpy).toBeCalledWith(
           expect.objectContaining({
-            isAvailable: false,
+            isAvailable: false
           })
         )
       })
     expect(fetchMock).toHaveBeenCalledTimes(1)
     return p
   })
-
   ;[
     ['Patch', 'v1.1.2', 'v1.1.0'],
     ['Minor', 'v1.2.1', 'v1.0.1'],
-    ['Major', 'v2.1.1', 'v0.1.1'],
-  ].forEach(([ title, newerVersion, olderVersion ]) => {
+    ['Major', 'v2.1.1', 'v0.1.1']
+  ].forEach(([title, newerVersion, olderVersion]) => {
     describe(title, () => {
       it('New Version Available', () => {
         const responseObj = { tag_name: newerVersion }
@@ -60,7 +62,7 @@ describe('Check Update', () => {
             expect(catchSpy).toHaveBeenCalledTimes(0)
             expect(resolveSpy).toBeCalledWith({
               isAvailable: true,
-              info: responseObj,
+              info: responseObj
             })
           })
         expect(fetchMock).toHaveBeenCalledTimes(1)
@@ -84,7 +86,7 @@ describe('Check Update', () => {
             expect(catchSpy).toHaveBeenCalledTimes(0)
             expect(resolveSpy).toBeCalledWith(
               expect.objectContaining({
-                isAvailable: false,
+                isAvailable: false
               })
             )
           })

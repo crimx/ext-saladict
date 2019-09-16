@@ -13,7 +13,8 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.reflect([1, 2, 3])
+      return pm
+        .reflect([1, 2, 3])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -26,7 +27,8 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.reflect([1, 2, Promise.reject(null)])
+      return pm
+        .reflect([1, 2, Promise.reject(null)])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -39,7 +41,12 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.reflect([Promise.reject(null), Promise.reject(null), Promise.reject(null)])
+      return pm
+        .reflect([
+          Promise.reject(null),
+          Promise.reject(null),
+          Promise.reject(null)
+        ])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -55,7 +62,8 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.any([1, 2, 3])
+      return pm
+        .any([1, 2, 3])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -68,7 +76,8 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.any([1, 2, Promise.reject(null)])
+      return pm
+        .any([1, 2, Promise.reject(null)])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -81,7 +90,8 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.any([Promise.reject(null), Promise.reject(null), Promise.reject(null)])
+      return pm
+        .any([Promise.reject(null), Promise.reject(null), Promise.reject(null)])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -97,7 +107,8 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.first([1, 2, 3])
+      return pm
+        .first([1, 2, 3])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -110,7 +121,8 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.first([Promise.reject(null), 2, 3])
+      return pm
+        .first([Promise.reject(null), 2, 3])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -123,7 +135,12 @@ describe('Promise More', () => {
       const resolveSpy = jest.fn()
       const rejectSpy = jest.fn()
       const catchSpy = jest.fn()
-      return pm.first([Promise.reject(null), Promise.reject(null), Promise.reject(null)])
+      return pm
+        .first([
+          Promise.reject(null),
+          Promise.reject(null),
+          Promise.reject(null)
+        ])
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
         .then(() => {
@@ -139,7 +156,8 @@ describe('Promise More', () => {
     const rejectSpy = jest.fn()
     const catchSpy = jest.fn()
 
-    const p = pm.timer(10)
+    const p = pm
+      .timer(10)
       .then(resolveSpy, rejectSpy)
       .catch(catchSpy)
 
@@ -162,7 +180,8 @@ describe('Promise More', () => {
         setTimeout(() => resolve('job'), 10)
       })
 
-      const p = pm.timeout(job, 100)
+      const p = pm
+        .timeout(job, 100)
         .then(resolveSpy, rejectSpy)
         .catch(catchSpy)
 
