@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
-import { withKnobs } from '@storybook/addon-knobs'
+import { withKnobs, boolean } from '@storybook/addon-knobs'
 import {
   withSaladictPanel,
   withSideEffect,
@@ -42,4 +42,28 @@ storiesOf('Content Scripts|Dict Panel', module)
       })
     )
   )
-  .add('Waveform', () => <Waveform />)
+  .add('Waveform', () => {
+    const darkMode = boolean('Dark Mode', true)
+
+    const rootStyles: React.CSSProperties = darkMode
+      ? {
+          backgroundColor: '#222',
+          color: '#ddd',
+          '--color-brand': '#218c74',
+          '--color-background': '#222',
+          '--color-rgb-background': '34, 34, 34',
+          '--color-font': '#ddd',
+          '--color-divider': '#4d4748'
+        }
+      : {
+          backgroundColor: '#fff',
+          color: '#333',
+          '--color-brand': '#5caf9e',
+          '--color-background': '#fff',
+          '--color-rgb-background': '255, 255, 255',
+          '--color-font': '#333',
+          '--color-divider': '#ddd'
+        }
+
+    return <Waveform darkMode={darkMode} rootStyles={rootStyles} />
+  })

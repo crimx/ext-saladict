@@ -1,5 +1,6 @@
 #waveform-container {
   min-height: 128px;
+  background: var(--color-background);
 }
 
 .saladict-waveformWrap {
@@ -25,7 +26,7 @@ $halfWaveformPlayWidth: $waveformPlayWidth / 2;
   height: 0;
   border: $halfWaveformPlayWidth solid transparent;
   border-width: $halfWaveformPlayWidth $waveformPlayWidth;
-  border-left-color: #333;
+  border-left-color: var(--color-font);
   transition-property: border, height, right;
   transition-duration: 0.25s;
   transition-timing-function: ease;
