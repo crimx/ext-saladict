@@ -23,6 +23,8 @@ const mapStateToProps = (
 ): DictPanelStandaloneProps => {
   return {
     withAnimation: state.config.animation,
+    darkMode: state.config.darkMode,
+    colors: state.colors,
     menuBar,
     mtaBox,
     dictList,
