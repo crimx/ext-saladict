@@ -15,6 +15,8 @@ export interface DictItemBodyProps {
   fontSize: number
   withAnimation: boolean
 
+  panelCSS: string
+
   searchStatus: 'IDLE' | 'SEARCHING' | 'FINISH'
   searchResult?: object | null
 
@@ -69,6 +71,7 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
                   font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
                 }`}
             </style>
+            {props.panelCSS ? <style>{props.panelCSS}</style> : null}
             <StaticSpeakerContainer
               className={
                 `d-${props.dictID} dictRoot ${SALADICT_PANEL}` +

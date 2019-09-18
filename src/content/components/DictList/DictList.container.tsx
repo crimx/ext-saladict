@@ -29,6 +29,7 @@ const mapStateToProps = (
 ): Omit<DictListProps, Dispatchers> => ({
   fontSize: state.config.fontSize,
   withAnimation: state.config.animation,
+  panelCSS: state.config.panelCSS,
   dicts: memoizedDicts(state.renderedDicts, state.activeProfile.dicts.all)
 })
 

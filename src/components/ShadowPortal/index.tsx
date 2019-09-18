@@ -16,6 +16,7 @@ export interface ShadowPortalProps extends Partial<CSSTransitionProps> {
   /** Static content before the children  */
   head?: ReactNode
   shadowRootClassName?: string
+  panelCSS: string
 }
 
 /**
@@ -28,6 +29,7 @@ export const ShadowPortal = (props: ShadowPortalProps) => {
     id,
     head,
     shadowRootClassName,
+    panelCSS,
     onEnter,
     onExited,
     ...restProps
@@ -57,6 +59,7 @@ export const ShadowPortal = (props: ShadowPortalProps) => {
   return ReactDOM.createPortal(
     <root.div className={shadowRootClassName || SALADICT_EXTERNAL}>
       {head}
+      {panelCSS ? <style>{panelCSS}</style> : null}
       <CSSTransition
         classNames={defaultClassNames}
         mountOnEnter
