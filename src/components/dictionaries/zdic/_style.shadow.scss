@@ -568,7 +568,6 @@
 
 .page .zdict .re .pos {
   font-style: italic;
-  color: black;
 }
 
 .page .zdict .b {
@@ -706,7 +705,7 @@
 }
 
 .page .zdict a:hover {
-  color: #d51f30;
+  color: #f9690e;
 }
 
 .page .zdict .var {
@@ -1813,7 +1812,7 @@ main > .suggested_word_wrapper {
 
 .dicpy {
   font-family: Arial;
-  color: #660000;
+  color: #f9690e;
   font-weight: normal;
 }
 
@@ -1869,7 +1868,7 @@ span.z_ts3,
 span.z_ts4 {
   height: 18px;
   line-height: 18px;
-  color: #660000;
+  color: #f9690e;
   font-size: 12px;
   text-align: center;
   display: inline-block;
@@ -1896,15 +1895,11 @@ span.z_ts4 {
 .dicpy {
   font-size: 1.3em;
   font-family: Arial;
-  color: #660000;
+  color: #f9690e;
 }
 
 .diczx1 {
-  color: #660000;
-}
-
-.diczx2 {
-  color: #330;
+  color: #f9690e;
 }
 
 .cino {
@@ -1917,11 +1912,11 @@ span.z_ts4 {
 
 .smcs {
   font-weight: bold;
-  color: #660000;
+  color: #f9690e;
 }
 
 .yhcs {
-  color: #990000;
+  color: #f9690e;
   font-weight: bold;
 }
 
@@ -1932,9 +1927,9 @@ span.z_ts4 {
 
 .enbox {
   padding: 10px 0 5px 0;
-  border-top: 1px solid #efe3e3;
+  border-top: 1px solid rgba(133, 133, 133, 0.28);
   margin: 5px;
-  background: #fef9f9;
+  background: rgba(254, 249, 249, 0.2);
 }
 
 @media screen and (max-width: 761px) {
@@ -2092,7 +2087,7 @@ p {
 }
 
 a:hover {
-  color: #d51f30;
+  color: #f9690e;
 }
 
 a {
@@ -2103,7 +2098,7 @@ a {
 }
 
 .gnr .pz {
-  border-bottom: 1px dashed #f1e9e7;
+  border-bottom: 1px dashed rgba(133, 133, 133, 0.28);
 }
 .gnr .pz ruby {
   margin-left: 20px;
@@ -2123,7 +2118,7 @@ a {
   line-height: 1.6em;
 }
 .pz {
-  border-bottom: 1px dashed #f1e9e7;
+  border-bottom: 1px dashed rgba(133, 133, 133, 0.28);
   padding-bottom: 5px;
 }
 .pz ruby {
@@ -2183,4 +2178,8 @@ rtc > rt[rbspan] {
 }
 rp {
   display: none;
+}
+
+.dichr {
+  border-color: rgba(133, 133, 133, 0.28);
 }

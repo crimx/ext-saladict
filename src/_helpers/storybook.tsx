@@ -1,7 +1,7 @@
 import React, { FC, useState, useEffect } from 'react'
 import root from 'react-shadow'
 import i18next from 'i18next'
-import { number, boolean, color as colorKnob } from '@storybook/addon-knobs'
+import { number, boolean } from '@storybook/addon-knobs'
 import SinonChrome from 'sinon-chrome'
 import { Message } from '@/typings/message'
 
@@ -110,13 +110,37 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
         ? options.fontSize
         : number('Panel Font Size', 13)
 
-    const color =
-      options.color != null ? options.color : colorKnob('Panel Color', '#333')
+    const darkMode = boolean('Dark Mode', false)
 
-    const backgroundColor =
-      options.backgroundColor != null
-        ? options.backgroundColor
-        : colorKnob('Panel Background Color', '#fff')
+    const rootStyles: React.CSSProperties = darkMode
+      ? {
+          backgroundColor: '#222',
+          color: '#ddd',
+          '--color-brand': '#218c74',
+          '--color-background': '#222',
+          '--color-rgb-background': '34, 34, 34',
+          '--color-font': '#ddd',
+          '--color-divider': '#4d4748'
+        }
+      : {
+          backgroundColor: '#fff',
+          color: '#333',
+          '--color-brand': '#5caf9e',
+          '--color-background': '#fff',
+          '--color-rgb-background': '255, 255, 255',
+          '--color-font': '#333',
+          '--color-divider': '#ddd'
+        }
+
+    if (options.color) {
+      rootStyles.color = options.color
+      rootStyles['--color-font'] = '#333'
+    }
+
+    if (options.backgroundColor) {
+      rootStyles.backgroundColor = options.backgroundColor
+      rootStyles['--color-background'] = options.backgroundColor
+    }
 
     return (
       <root.div style={{ width, margin: '10px auto' }}>
@@ -124,18 +148,15 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
         <div
           className={withAnimation ? 'isAnimate' : ''}
           style={{
+            ...rootStyles,
             fontSize,
             width,
             height,
-            color,
-            backgroundColor,
             '--panel-width': `${width}px`,
             '--panel-max-height': `${number(
               'Panel Max Hegiht',
               window.innerHeight
-            )}px`,
-            '--panel-color': color,
-            '--panel-background-color': backgroundColor
+            )}px`
           }}
           // bug https://github.com/storybookjs/storybook/issues/6569
           onKeyDown={e => e.stopPropagation()}

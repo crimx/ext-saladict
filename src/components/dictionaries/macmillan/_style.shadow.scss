@@ -30,7 +30,7 @@
 
   a:link,
   a:visited {
-    color: #333;
+    color: currentColor;
     text-decoration: none;
   }
 
@@ -56,7 +56,7 @@
     margin-bottom: 5px;
     padding-left: 10px;
     color: #666;
-    border-left: #ddd solid 2px;
+    border-left: #666 solid 1px;
     font-style: italic;
 
     strong {
