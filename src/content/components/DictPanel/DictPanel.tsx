@@ -17,13 +17,7 @@ export interface DictPanelProps {
 
   withAnimation: boolean
   darkMode: boolean
-  colors: {
-    brand: string
-    background: string
-    backgroundRGB: string
-    font: string
-    divider: string
-  }
+  colors: React.CSSProperties
 
   menuBar: ReactNode
   mtaBox: ReactNode
@@ -114,17 +108,11 @@ export const DictPanel: FC<DictPanelProps> = props => {
         (props.dragStartCoord ? ' isDragging' : '')
       }
       style={{
+        ...props.colors,
         left: x,
         top: y,
         width: props.width,
         height: props.height,
-        backgroundColor: props.colors.background,
-        color: props.colors.font,
-        '--color-brand': props.colors.brand,
-        '--color-background': props.colors.background,
-        '--color-rgb-background': props.colors.backgroundRGB,
-        '--color-font': props.colors.font,
-        '--color-divider': props.colors.divider,
         '--panel-width': props.width + 'px',
         '--panel-max-height': props.maxHeight + 'px'
       }}

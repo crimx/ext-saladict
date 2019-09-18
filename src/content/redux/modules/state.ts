@@ -72,12 +72,14 @@ export const initState = () => {
     dragStartCoord: null as null | { x: number; y: number },
     lastPlayAudio: null as null | { src: string; timestamp: number },
     colors: {
-      brand: '#5caf9e',
-      background: '#fff',
-      backgroundRGB: '255, 255, 255',
-      font: '#333',
-      divider: '#ddd'
-    }
+      backgroundColor: '#fff',
+      color: '#333',
+      '--color-brand': '#5caf9e',
+      '--color-background': '#fff',
+      '--color-rgb-background': '255, 255, 255',
+      '--color-font': '#333',
+      '--color-divider': '#ddd'
+    } as React.CSSProperties
   }
 }
 export default initState

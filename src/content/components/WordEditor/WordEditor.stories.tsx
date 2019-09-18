@@ -30,9 +30,32 @@ storiesOf('Content Scripts|WordEditor', module)
     'WordEditor',
     () => {
       const config = getDefaultConfig()
+      const darkMode = boolean('Dark Mode', false)
+      const colors = darkMode
+        ? {
+            backgroundColor: '#222',
+            color: '#ddd',
+            '--color-brand': '#218c74',
+            '--color-background': '#222',
+            '--color-rgb-background': '34, 34, 34',
+            '--color-font': '#ddd',
+            '--color-divider': '#4d4748'
+          }
+        : {
+            backgroundColor: '#fff',
+            color: '#333',
+            '--color-brand': '#5caf9e',
+            '--color-background': '#fff',
+            '--color-rgb-background': '255, 255, 255',
+            '--color-font': '#333',
+            '--color-divider': '#ddd'
+          }
+
       return (
         <WordEditor
           width={number('Dict Panel Width', 450)}
+          darkMode={darkMode}
+          colors={colors}
           word={newWord({
             date: faker.date.past().valueOf(),
             text: faker.random.word(),
@@ -55,10 +78,32 @@ storiesOf('Content Scripts|WordEditor', module)
   )
   .add('WordEditorPortal', () => {
     const config = getDefaultConfig()
+    const darkMode = boolean('Dark Mode', false)
+    const colors = darkMode
+      ? {
+          backgroundColor: '#222',
+          color: '#ddd',
+          '--color-brand': '#218c74',
+          '--color-background': '#222',
+          '--color-rgb-background': '34, 34, 34',
+          '--color-font': '#ddd',
+          '--color-divider': '#4d4748'
+        }
+      : {
+          backgroundColor: '#fff',
+          color: '#333',
+          '--color-brand': '#5caf9e',
+          '--color-background': '#fff',
+          '--color-rgb-background': '255, 255, 255',
+          '--color-font': '#333',
+          '--color-divider': '#ddd'
+        }
     return (
       <WordEditorPortal
         show={boolean('Show', true)}
+        darkMode={darkMode}
         withAnimation={boolean('With Animation', true)}
+        colors={colors}
         width={number('Dict Panel Width', 450)}
         word={newWord({
           date: faker.date.past().valueOf(),

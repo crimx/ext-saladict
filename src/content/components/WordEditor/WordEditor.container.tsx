@@ -9,8 +9,9 @@ const mapStateToProps = (
   state: StoreState
 ): Omit<WordEditorPortalProps, Dispatchers> => ({
   show: state.isShowWordEditor,
+  darkMode: state.config.darkMode,
   withAnimation: state.config.animation,
-  panelCSS: state.config.panelCSS,
+  colors: state.colors,
   width: window.innerWidth - state.config.panelWidth - 100,
   ctxTrans: state.config.ctxTrans,
   word: state.wordEditorWord

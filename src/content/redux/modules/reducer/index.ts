@@ -21,18 +21,22 @@ export const createRootReducer = () =>
           ? state.colors
           : payload.darkMode
           ? {
-              brand: '#218c74',
-              background: '#222',
-              backgroundRGB: '34, 34, 34',
-              font: '#ddd',
-              divider: '#4d4748'
+              backgroundColor: '#222',
+              color: '#ddd',
+              '--color-brand': '#218c74',
+              '--color-background': '#222',
+              '--color-rgb-background': '34, 34, 34',
+              '--color-font': '#ddd',
+              '--color-divider': '#4d4748'
             }
           : {
-              brand: '#5caf9e',
-              background: '#fff',
-              backgroundRGB: '255, 255, 255',
-              font: '#333',
-              divider: '#ddd'
+              backgroundColor: '#fff',
+              color: '#333',
+              '--color-brand': '#5caf9e',
+              '--color-background': '#fff',
+              '--color-rgb-background': '255, 255, 255',
+              '--color-font': '#333',
+              '--color-divider': '#ddd'
             }
 
       return {

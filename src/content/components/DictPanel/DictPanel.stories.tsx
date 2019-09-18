@@ -3,7 +3,13 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
-import { withKnobs, number, boolean, select } from '@storybook/addon-knobs'
+import {
+  withKnobs,
+  number,
+  boolean,
+  select,
+  text
+} from '@storybook/addon-knobs'
 import {
   withLocalStyle,
   withSideEffect,
@@ -59,7 +65,11 @@ storiesOf('Content Scripts|Dict Panel', module)
   .addDecorator(Story => <Story />)
   .add('DictPanel', () => <DictPanel {...useDictPanelProps()} />)
   .add('DictPanelPortal', () => (
-    <DictPanelPortal show={boolean('Show', true)} {...useDictPanelProps()} />
+    <DictPanelPortal
+      show={boolean('Show', true)}
+      panelCSS={text('Panel CSS', '')}
+      {...useDictPanelProps()}
+    />
   ))
 
 function useDictPanelProps(): DictPanelProps {
@@ -116,18 +126,22 @@ function useDictPanelProps(): DictPanelProps {
   const darkMode = boolean('Dark Mode', false)
   const colors = darkMode
     ? {
-        brand: '#218c74',
-        background: '#222',
-        backgroundRGB: '34, 34, 34',
-        font: '#ddd',
-        divider: '#4d4748'
+        backgroundColor: '#222',
+        color: '#ddd',
+        '--color-brand': '#218c74',
+        '--color-background': '#222',
+        '--color-rgb-background': '34, 34, 34',
+        '--color-font': '#ddd',
+        '--color-divider': '#4d4748'
       }
     : {
-        brand: '#5caf9e',
-        background: '#fff',
-        backgroundRGB: '255, 255, 255',
-        font: '#333',
-        divider: '#ddd'
+        backgroundColor: '#fff',
+        color: '#333',
+        '--color-brand': '#5caf9e',
+        '--color-background': '#fff',
+        '--color-rgb-background': '255, 255, 255',
+        '--color-font': '#333',
+        '--color-divider': '#ddd'
       }
 
   return {
@@ -201,6 +215,7 @@ function useDictPanelProps(): DictPanelProps {
       <DictList
         fontSize={number('Font Size', 13)}
         withAnimation={withAnimation}
+        panelCSS={''}
         dicts={randomDicts}
         searchText={action('Search Text')}
         openDictSrcPage={action('Open Source Page')}
@@ -211,6 +226,7 @@ function useDictPanelProps(): DictPanelProps {
     waveformBox: (
       <WaveformBox
         isExpand={expandWavform}
+        darkMode={darkMode}
         toggleExpand={() => setExpandWavform(flag => !flag)}
         onHeightChanged={action('Dict Waveform Box Height Changed')}
       />

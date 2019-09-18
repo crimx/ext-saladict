@@ -29,10 +29,10 @@ textarea {
   padding: 6px 12px;
   font-size: 14px;
   line-height: 1.42857;
-  color: #555555;
-  background-color: #fff;
+  color: var(--color-font);
+  background: var(--color-background);
   background-image: none;
-  border: 1px solid #ccc;
+  border: 1px solid #666;
   border-radius: 4px;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
@@ -56,7 +56,6 @@ textarea {
   min-width: 400px;
   max-height: 90vh;
   border-radius: 6px;
-  background: #fff;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   font-size: 13px;
   font-family: 'Helvetica Neue', Helvetica, Arial, 'Hiragino Sans GB',
@@ -65,7 +64,7 @@ textarea {
 
 .wordEditor-Header {
   display: flex;
-  border-bottom: 1px solid #e5e5e5;
+  border-bottom: 1px solid #666;
 }
 
 .wordEditor-Title {
@@ -83,8 +82,8 @@ textarea {
   line-height: 1;
   border: none;
   background: transparent;
-  color: #000;
-  text-shadow: 0 1px 0 #fff;
+  color: var(--color-font);
+  text-shadow: 0 1px 0 var(--color-background);
   opacity: 0.5;
   cursor: pointer;
 
@@ -117,7 +116,7 @@ textarea {
 .wordEditor-Footer {
   padding: 15px;
   text-align: right;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid #666;
 }
 
 %wordEditor-Note_Btn {
@@ -186,6 +185,34 @@ textarea {
     background-color: #204d74;
     border-color: #122b40;
     box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  }
+}
+
+.darkMode {
+  .wordEditor-Note_Btn {
+    @extend %wordEditor-Note_Btn;
+    margin-right: 10px;
+    color: #333;
+    background-color: #ddd;
+    border-color: #ccc;
+
+    &:focus {
+      background-color: #bfbfbf;
+      border-color: #8c8c8c;
+    }
+
+    &:hover {
+      outline: 0;
+      background-color: #bfbfbf;
+      border-color: #adadad;
+    }
+
+    &:active {
+      outline: 0;
+      background-color: #bfbfbf;
+      border-color: #8c8c8c;
+      box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    }
   }
 }
 
