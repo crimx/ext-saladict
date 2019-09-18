@@ -306,7 +306,7 @@ td.item_yomi {
 .Jawik .level2Block b {
   background-color: #eee;
   border: #999 solid 1px;
-  color: #333;
+  color: currentColor;
   font-weight: normal;
   padding: 0 2px;
   margin: 0 5px 0 2px;
@@ -315,9 +315,7 @@ td.item_yomi {
 .Wehgj .wehgjT span,
 .Wehgj .wehgjE span,
 .Wehgj .wehgjR span {
-  background-color: #f0f0f0;
   border: #666 solid 1px;
-  color: #363636;
   font-size: 0.9em;
   line-height: 1em;
   padding: 1px;
@@ -350,7 +348,7 @@ td.item_yomi {
 .Jfwik .level2Block b {
   background-color: #eee;
   border: #999 solid 1px;
-  color: #333;
+  color: currentColor;
   font-weight: normal;
   padding: 0 2px;
   margin: 0 5px 0 2px;
@@ -791,7 +789,7 @@ td.item_yomi {
 }
 
 .highlight-lib .searchHlBtn {
-  background-color: #564c46;
+  background-color: #666;
   box-shadow: 0 2px 0 0 #000;
   font-size: 0.92em;
   height: 25px;
@@ -935,7 +933,7 @@ td.item_yomi {
 .highlight-lib .hl-pagination a:visited,
 .highlight-lib .hl-pagination a:hover,
 .highlight-lib .hl-pagination a:active {
-  color: #534a42 !important;
+  color: currentColor !important;
   display: inline-block;
   text-decoration: none;
 }
@@ -950,7 +948,7 @@ td.item_yomi {
 }
 
 #hl-sticky-menu-library .fa {
-  color: #534a42;
+  color: currentColor;
   font-size: 1.64em;
 }
 
@@ -999,7 +997,7 @@ td.item_yomi {
 
 .pinned-content-header .fa-thumb-tack,
 .pinned-content-header span .fa-square {
-  color: #534a42;
+  color: currentColor;
 }
 
 .fa-rotate-315 {
@@ -1096,7 +1094,7 @@ td.item_yomi {
 .free-member-features-modal
   .modal-message:not(.registered)
   .modal-login-link:hover {
-  color: #534a42;
+  color: currentColor;
   filter: alpha(opacity=70);
   opacity: 0.7;
 }
@@ -1206,7 +1204,7 @@ td.item_yomi {
 }
 
 .free-member-features-modal .free-register .free-register-link:hover {
-  color: #534a42;
+  color: currentColor;
   filter: alpha(opacity=70);
   opacity: 0.7;
 }
@@ -1552,7 +1550,7 @@ td.item_yomi {
 }
 
 .kiji {
-  color: #333;
+  color: currentColor;
   font-size: 1em;
   line-height: 1.8em;
 }
@@ -1575,7 +1573,7 @@ crosslink:hover,
 .crosslink:link,
 .crosslink:visited,
 .crosslink:active {
-  color: #534a42;
+  color: currentColor;
   text-decoration: underline;
 }
 
@@ -1621,9 +1619,8 @@ crosslink:hover,
 
 span.pofsp,
 .KnenjSub {
-  background-color: #564c46;
+  background-color: #666;
   border: none !important;
-  border-radius: 3px;
   color: #fff;
   display: inline;
   font-size: 1.07em !important;
@@ -1674,7 +1671,7 @@ span.pofsp,
 }
 
 .intrst .intrstL {
-  background-color: #f5efe6;
+  background-color: rgba(245, 239, 230, 0.13);
   padding-left: 5px;
   vertical-align: middle;
   width: 80px;
@@ -1710,7 +1707,7 @@ img.weblioMascot {
 #main a:link,
 #main a:visited,
 #main a:active {
-  color: #534a42;
+  color: currentColor;
 }
 
 #main a:hover {
@@ -1808,7 +1805,7 @@ img.weblioMascot {
 }
 
 .summaryM .description {
-  background-color: #564c46;
+  background-color: #666;
   color: #fff;
   font-size: 1.07em;
   font-weight: normal;
@@ -1885,7 +1882,7 @@ b.highlight {
 }
 
 .pin-icon-cell span {
-  color: #564c46;
+  color: #666;
   font-size: 0.71em;
 }
 
@@ -2400,7 +2397,6 @@ td.midashigo {
 }
 
 .Hndmr table#webcatalogue-table p.leadcopy {
-  color: #333;
   font-size: 0.9em;
   font-weight: bold;
   line-height: 18px;
@@ -2440,7 +2436,7 @@ td.midashigo {
 }
 
 .Hndmr table#webcatalogue-table p.safe-midashi {
-  background-color: #333;
+  // background-color: currentColor;
   color: #fff;
   font-size: 0.9em;
   font-weight: bold;
@@ -2599,7 +2595,7 @@ p.caution {
 .KejjeYrM,
 .KejjeYrMS,
 .KejjeYrR {
-  background-color: #f7f7f7;
+  background-color: rgba(247, 247, 247, 0.14);
   font-size: 0.9em;
   vertical-align: top;
 }
@@ -2840,7 +2836,6 @@ p.caution {
 }
 
 .Kejcy .level2 {
-  background-color: #f7f7f7;
   font-size: 0.9em;
   margin: 0 3em 0.5em 3em;
   padding: 0.2em 0.5em 0 0.5em;
@@ -3073,7 +3068,6 @@ p.caution {
 }
 
 .Nwnej .nwnejYr {
-  background-color: #f7f7f7;
   margin: 0 0 0 1.5em;
   padding: 0;
 }
@@ -3081,7 +3075,6 @@ p.caution {
 .Nwnej .nwnejYrL,
 .Nwnej .nwnejYrLS,
 .Nwnej .nwnejYrR {
-  background-color: #f7f7f7;
   font-size: 0.9em;
   vertical-align: top;
 }
@@ -3135,7 +3128,7 @@ p.caution {
 .Nwnej .nwnejThL a:hover,
 .Nwnej .nwnejThL a:link,
 .Nwnej .nwnejThL a:visited {
-  border-bottom: #534a42 dotted 1px;
+  border-bottom: currentColor dotted 1px;
   display: inline-block;
   font-size: 1em;
   line-height: 10px;
@@ -3156,7 +3149,6 @@ p.caution {
 }
 
 .Wejhs .wejhsD {
-  background-color: #f7f7f7;
   margin-left: 20px;
   margin-top: 10px;
   padding: 5px;
@@ -3188,7 +3180,6 @@ p.caution {
 }
 
 .Wkpen .wkpenWrp {
-  background-color: #f7f7f7;
   line-height: 1.3em;
   margin-top: 5px;
   padding: 9px 5px 9px 15px;
@@ -3254,7 +3245,6 @@ p.caution {
 
 .HypejYrL,
 .HypejYrR {
-  background-color: #f7f7f7;
   font-size: 0.9em;
   vertical-align: top;
 }
@@ -3294,7 +3284,7 @@ p.caution {
 .Hypej .HypejLb {
   background-color: #eee;
   border: #999 solid 1px;
-  color: #333;
+  color: currentColor;
   font-size: 1em;
   font-weight: normal;
   margin: 0 2px 0 3px;
@@ -3302,7 +3292,6 @@ p.caution {
 }
 
 .Hypej .HypejB {
-  background-color: #fffcf8;
   border-collapse: collapse;
   width: 80%;
 }
@@ -3349,9 +3338,7 @@ h2.midashigo .cgkgjSm,
 }
 
 .EgtejLb {
-  background-color: #f5efe9;
-  border: #534a42 solid 1px;
-  border-radius: 2px;
+  border: #666 solid 1px;
   font-size: 1em;
   font-weight: bold;
   margin: 2px 0;
@@ -3366,7 +3353,7 @@ h2.midashigo .cgkgjSm,
 
 .EgtejSub,
 .EgtejSubS {
-  background-color: #564c46;
+  background-color: #666;
   border: none !important;
   border-radius: 3px;
   color: #fff;
@@ -3400,7 +3387,7 @@ h2.midashigo .cgkgjSm,
 .EgtejYrAr,
 .EgtejIdxAr {
   margin-top: 3px;
-  background-color: #f7f7f7;
+  background-color: rgba(173, 173, 173, 0.16);
   padding: 5px;
 }
 
@@ -3477,7 +3464,7 @@ h2.midashigo .cgkgjSm,
 }
 
 .EgtejCcl {
-  background-color: #564c46;
+  background-color: #666;
   border-radius: 50%;
   color: #fff;
   display: inline-block;
@@ -3571,7 +3558,7 @@ img {
 }
 
 .CtbdsLb {
-  background-color: #564c46;
+  background-color: #666;
   color: #fff;
   font-size: 15px;
   font-weight: normal;
@@ -3612,7 +3599,7 @@ img {
 }
 
 .CtbdsExAr {
-  background-color: #e8e8e8;
+  background-color: rgba(173, 173, 173, 0.16);
   height: auto;
   margin: 0 5px 5px 5px;
   padding: 5px;
@@ -3679,7 +3666,7 @@ img {
 }
 
 .KejjeIdH {
-  border-left: #564c46 solid 6px;
+  border-left: #666 solid 6px;
   font-size: 1.2em;
   line-height: 1em;
   margin: 10px 0 5px 0;
@@ -3695,13 +3682,11 @@ img {
 }
 
 .qotHS {
-  background-color: #f5efe9;
-  border: #534a42 solid 1px;
+  border: #666 solid 1px;
   padding: 0 2px;
 }
 
 .qotCE {
-  color: #564c46;
   font-weight: bold;
   line-height: 1.2;
   margin: 2px 0 2px 0;
@@ -3709,7 +3694,7 @@ img {
 }
 
 .qotCJ {
-  color: #564c46;
+  color: #666;
   line-height: 1.2em;
   margin: -1px 0 13px 0;
   padding: 0;

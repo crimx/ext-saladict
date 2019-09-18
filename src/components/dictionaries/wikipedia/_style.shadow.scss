@@ -7,7 +7,8 @@
 .dictWikipedia-LangSelectorBtn {
   margin: 0.2em 0 1em;
   padding: 0.1em 0.2em;
-  border: 1px solid #333;
+  color: currentColor;
+  border: 1px solid #666;
   border-radius: 2px;
   cursor: pointer;
 }
@@ -536,15 +537,10 @@ span.mw-ui-icon {
   border-top: 1px solid transparent;
   padding-bottom: 32px;
 }
-.overlay-enabled,
-#content {
-  background-color: #ffffff;
-}
 .header-container {
-  border-bottom: 1px solid #c8ccd1;
+  border-bottom: 1px solid #666;
 }
 .header-container.header-chrome {
-  background-color: #eaecf0;
   border: 0;
   box-shadow: inset 0 -1px 3px rgba(0, 0, 0, 0.08);
 }
@@ -852,7 +848,6 @@ input.search::-webkit-search-results-decoration {
 #mw-mf-page-center {
   width: 100%;
   position: relative;
-  background-color: #eaecf0;
   z-index: 0;
 }
 .minerva-footer {
@@ -865,7 +860,6 @@ footer .hlist li:after {
 }
 footer .last-modified-bar {
   border-bottom: solid 1px #c8ccd1;
-  background-color: #eaecf0;
   display: block;
   color: #54595d;
   line-height: 1.5em;
@@ -1180,20 +1174,14 @@ sup {
   text-align: left;
 }
 table.wikitable {
-  border: 1px solid #54595d;
-  border-color: rgba(84, 89, 93, 0.3);
+  border: 1px solid rgba(133, 133, 133, 0.28);
 }
 table.wikitable > tr > th,
 table.wikitable > tr > td,
 table.wikitable > * > tr > th,
 table.wikitable > * > tr > td {
-  border: 1px solid #54595d;
-  border-color: rgba(84, 89, 93, 0.3);
+  border: 1px solid rgba(133, 133, 133, 0.28);
   padding: 0.2em;
-}
-table.wikitable > tr > th,
-table.wikitable > * > tr > th {
-  background-color: #eaecf0;
 }
 .ambox,
 table.ambox {
@@ -1320,9 +1308,9 @@ table.ambox {
 .content table.infobox {
   font-size: 90%;
   position: relative;
-  border: 1px solid #eaecf0;
+  // border: 1px solid #eaecf0;
   margin-bottom: 2em;
-  background-color: #f8f9fa;
+  // background-color: #f8f9fa;
   display: flex;
   flex: 1 1 100%;
   flex-flow: column nowrap;
@@ -1331,7 +1319,7 @@ table.ambox {
 .content table.infobox td {
   vertical-align: top;
   border: 0;
-  border-bottom: 1px solid #eaecf0;
+  border-bottom: 1px solid rgba(186, 186, 186, 0.44);
   padding: 7px 10px;
 }
 .content table.infobox tbody > tr > td,
@@ -1491,7 +1479,6 @@ a.external {
 .notification-count {
   margin: auto;
   height: 24px;
-  background: #eaecf0;
   color: #54595d;
   cursor: pointer;
 }
@@ -1692,7 +1679,6 @@ a.external {
 .site-link-list li {
   color: #54595d;
   position: relative;
-  border-bottom: 1px solid #eaecf0;
   padding-top: 0.8em;
   padding-bottom: 0.8em;
   margin: -1px 0 0;
@@ -1833,7 +1819,6 @@ a.external {
   font-size: 0.85em;
   padding-top: 0.5em;
   padding-bottom: 0.4em;
-  background-color: #eaecf0;
   color: #72777d;
 }
 .list-thumb {
@@ -1841,7 +1826,6 @@ a.external {
   background-position: center center;
 }
 .list-thumb.list-thumb-none {
-  background-color: #eaecf0;
   background-image: url(https://en.wikipedia.org/w/extensions/MobileFrontend/resources/mobile.pagesummary.styles/noimage.png?537bb);
   background-image: linear-gradient(transparent, transparent),
     url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 56 56%22%3E%3Cpath fill=%22%23eaecf0%22 d=%22M0 0h56v56H0z%22/%3E%3Cpath fill=%22%2372777d%22 d=%22M36.4 13.5H17.8v24.9c0 1.4.9 2.3 2.3 2.3h18.7v-25c.1-1.4-1-2.2-2.4-2.2zM30.2 17h5.1v6.4h-5.1V17zm-8.8 0h6v1.8h-6V17zm0 4.6h6v1.8h-6v-1.8zm0 15.5v-1.8h13.8v1.8H21.4zm13.8-4.5H21.4v-1.8h13.8v1.8zm0-4.7H21.4v-1.8h13.8v1.8z%22/%3E%3C/svg%3E');
@@ -1923,7 +1907,6 @@ a.external {
   transform: rotate(-90deg);
 }
 #bodyContent .panel {
-  background-color: #eaecf0;
   clear: both;
   margin-top: 1em;
   text-align: center;
@@ -2774,7 +2757,6 @@ img.image-lazy-loaded {
   margin-top: 2px;
 }
 .ext-related-articles-card-list .ext-related-articles-card-thumb {
-  background-color: #eaecf0;
   background-image: url(https://en.wikipedia.org/w/extensions/RelatedArticles/resources/ext.relatedArticles.cards/noimage.png?9e3d8);
   background-image: linear-gradient(transparent, transparent),
     url('data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 56 56%22%3E %3Cpath fill=%22%23eaecf0%22 d=%22M0 0h56v56h-56%22/%3E %3Cpath fill=%22%2372777d%22 d=%22M36.4 13.5h-18.6v24.9c0 1.4.9 2.3 2.3 2.3h18.7v-25c.1-1.4-1-2.2-2.4-2.2zm-6.2 3.5h5.1v6.4h-5.1v-6.4zm-8.8 0h6v1.8h-6v-1.8zm0 4.6h6v1.8h-6v-1.8zm0 15.5v-1.8h13.8v1.8h-13.8zm13.8-4.5h-13.8v-1.8h13.8v1.8zm0-4.7h-13.8v-1.8h13.8v1.8z%22/%3E %3C/svg%3E');

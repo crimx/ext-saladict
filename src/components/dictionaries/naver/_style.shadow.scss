@@ -529,7 +529,7 @@
     font-size: 1.54em;
     padding-left: 10px;
     padding-bottom: 18px;
-    color: #000;
+    color: currentColor;
   }
 
   .section_box h6 {
@@ -539,7 +539,7 @@
   }
 
   .section_box h6 .kor_link {
-    color: #000;
+    color: currentColor;
   }
 
   .section_box h6 a {
@@ -783,7 +783,7 @@
   }
 
   .section_example .lst p {
-    color: #000;
+    color: currentColor;
   }
 
   .section_example .lst .jp {
@@ -826,7 +826,7 @@
   }
 
   .section_compound .lst .kor_link,.section_compound .lst_txt a,.section_expression .lst .kor_link,.section_expression .lst_txt a {
-    color: #000;
+    color: currentColor;
   }
 
   .section_proverb .lst p {
@@ -901,7 +901,7 @@
 
   .detail_hj .section.section_phonetic h5 {
     font-size: 1.62em;
-    color: #000;
+    color: currentColor;
   }
 
   .section_phonetic .entry {
@@ -944,7 +944,7 @@
 
   .detail_hj .section.section_ideographic h5 {
     font-size: 1.62em;
-    color: #000;
+    color: currentColor;
   }
 
   .section_ideographic .entry {
@@ -1120,7 +1120,7 @@
   }
 
   .dt li .on {
-    color: #000;
+    color: currentColor;
     font-weight: 700;
   }
 
@@ -1222,7 +1222,7 @@
     padding: 12px 10px;
     border-bottom: 1px solid #f9f9f9;
     font-size: 1.31em;
-    color: #000;
+    color: currentColor;
     font-weight: 400;
   }
 
@@ -1298,7 +1298,7 @@
     margin-top: 3px;
     font-size: 1.15em;
     line-height: 1.13;
-    color: #000;
+    color: currentColor;
   }
 
   .srch_nodata .srch_box .origin2 {
@@ -1401,7 +1401,7 @@
     font-size: 1.15em;
     line-height: 1.13;
     letter-spacing: -.075em;
-    color: #000;
+    color: currentColor;
   }
 
   .tts_wrap .btn_close {
@@ -1462,7 +1462,7 @@
 
   .userentry_word .mean {
     font-weight: 700;
-    color: #000;
+    color: currentColor;
   }
 
   .userentry_word .exam {
@@ -2196,7 +2196,7 @@
   }
 
   .recent_item.added .recent_word a {
-    color: #000;
+    color: currentColor;
     word-wrap: break-word;
   }
 
@@ -2232,7 +2232,7 @@
   }
 
   .tx1 {
-    color: #000;
+    color: currentColor;
   }
 
   .tx2 {
@@ -2729,7 +2729,7 @@
     padding: 0 0 8px;
     font-size: 1.23em;
     line-height: 1.13;
-    color: #000;
+    color: currentColor;
   }
 
   .word_p {
@@ -2758,7 +2758,7 @@
 
   .word_yiti {
     font-size: 1.08em;
-    color: #000;
+    color: currentColor;
   }
 
   .word_w3 {
@@ -2948,7 +2948,7 @@
 
   .more_b {
     font-size: 1.15em;
-    color: #000;
+    color: currentColor;
   }
 
   .more_b2 {
@@ -2991,7 +2991,7 @@
   }
 
   .more_a .txt {
-    color: #000;
+    color: currentColor;
   }
 
   .more_ico {
@@ -3148,7 +3148,7 @@
   }
 
   .col5 {
-    color: #000;
+    color: currentColor;
     word-break: break-all;
   }
 
@@ -3510,7 +3510,7 @@
     height: 33px;
     padding: 0 13px;
     font-size: 1.08em;
-    color: #000;
+    color: currentColor;
     letter-spacing: -1px;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -3519,7 +3519,7 @@
   .atcpsp {
     margin-right: 13px;
     font-size: 1.23em;
-    color: #000;
+    color: currentColor;
     letter-spacing: 0;
   }
 
@@ -3634,7 +3634,7 @@
     line-height: 3.25;
     font-size: 1.43em;
     font-weight: 700;
-    color: #000;
+    color: currentColor;
     text-align: center;
   }
 
@@ -3817,7 +3817,7 @@
   .intru_h2 {
     font-size: 1.38em;
     line-height: 1.50;
-    color: #000;
+    color: currentColor;
   }
 
   .intru_p,.intru_p2 {
@@ -4013,8 +4013,8 @@
     bottom: 0;
     width: 100%;
     height: 86px;
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
+    border-top: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
     background: #3a4555;
   }
 
@@ -4044,7 +4044,7 @@
   .set_lang label {
     padding-right: 12px;
     font-size: 1.00em;
-    color: #000;
+    color: currentColor;
   }
 
   .set_lang .selec_wrap {
@@ -4059,7 +4059,7 @@
     border-radius: 0;
     border-radius: 0;
     font-size: 1.08em;
-    color: #000;
+    color: currentColor;
     line-height: 1.44;
     background-size: 18px 50px;
     background-size: 18px 50px;
@@ -4917,7 +4917,7 @@
   .usen_another {
     padding: 10px 10px 5px 12px;
     margin-bottom: 40px;
-    color: #000;
+    color: currentColor;
     font-size: 1.08em;
     overflow: hidden;
   }
@@ -4994,7 +4994,7 @@
   .userentry_section p.usen_word {
     margin-top: 18px;
     font-size: 1.08em;
-    color: #000;
+    color: currentColor;
   }
 
   .userentry_section p.usen_word a {
@@ -5076,7 +5076,7 @@
   .open_mean {
     margin-top: 18px;
     font-size: 1.08em;
-    color: #000;
+    color: currentColor;
     font-weight: 700;
   }
 
@@ -5208,7 +5208,7 @@
 
   .section_card .home_tit h2 {
     font-size: 1.15em;
-    color: #000;
+    color: currentColor;
     font-weight: 400;
   }
 
@@ -5546,7 +5546,7 @@
   .labg {
     display: inline;
     background-color: #cdff74;
-    color: #000;
+    color: currentColor;
   }
 
   .quiz_cont {
@@ -5942,7 +5942,7 @@
   .exfilterset_list_bctchild .click_text,.exfilterset_list_hskchild .click_text,.exfilterset_list_levelchild .click_text {
     font-size: 1.23em;
     line-height: 1.69;
-    color: #000;
+    color: currentColor;
   }
 
   .exfilterset_list_levelchild {
@@ -6227,7 +6227,7 @@
     box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    color: #000;
+    color: currentColor;
   }
 
   .common_btn_wrap .btn_lst_more_show .ico_arrow {
@@ -6320,7 +6320,7 @@
   }
 
   a {
-    color: #000;
+    color: currentColor;
     text-decoration: none;
     cursor: pointer;
   }
@@ -6507,7 +6507,7 @@
     display: block;
     overflow: hidden;
     padding: .45em .5em .45em .6em;
-    color: #000;
+    color: currentColor;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
@@ -6553,7 +6553,7 @@
     display: block;
     overflow: hidden;
     padding: .45em .5em .45em .8em;
-    color: #000;
+    color: currentColor;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
@@ -6800,7 +6800,7 @@
   .set_lang label {
     padding-right: 12px;
     font-size: 0.81em;
-    color: #000;
+    color: currentColor;
   }
 
   .set_lang .selec_wrap {
@@ -6814,7 +6814,7 @@
     border: solid 1px #dedede;
     border-radius: 0px;
     font-size: 0.88em;
-    color: #000;
+    color: currentColor;
     line-height: 1.44;
     background-size: 18px 50px;
     -webkit-appearance: none;
@@ -7264,7 +7264,7 @@
   }
 
   .srch_box .pin .lst_txt {
-    color: #000;
+    color: currentColor;
   }
 
   .srch_box .pin2 .jp strong {
@@ -7535,7 +7535,7 @@
     padding: 10px 20px 10px 10px;
     text-align: right;
     font-size: 1.00em;
-    color: #000;
+    color: currentColor;
   }
 
   .section2 .nav_sec a.all .tx_lnk {
@@ -7598,7 +7598,7 @@
     margin: 0;
     padding: 0;
     font-size: 0.88em;
-    color: #000;
+    color: currentColor;
   }
 
   .lst2 {
@@ -7802,7 +7802,7 @@
   }
 
   .td_li .td_txt .jp {
-    color: #000;
+    color: currentColor;
   }
 
   .td_li .player {
@@ -8320,7 +8320,7 @@
     font-size: 1.25em;
     padding-left: 10px;
     padding-bottom: 18px;
-    color: #000;
+    color: currentColor;
   }
 
   .section_box h6 {
@@ -8330,7 +8330,7 @@
   }
 
   .section_box h6 .kor_link {
-    color: #000;
+    color: currentColor;
   }
 
   .section_box h6 a {
@@ -8607,7 +8607,7 @@
 
   .section_example .lst p {
     margin: 0;
-    color: #000;
+    color: currentColor;
   }
 
   .section_example .lst .jp {
@@ -8666,7 +8666,7 @@
   }
 
   .section_expression .lst_txt a, .section_expression .lst .kor_link {
-    color: #000;
+    color: currentColor;
   }
 
   .section_compound {
@@ -8678,7 +8678,7 @@
   }
 
   .section_compound .lst_txt a, .section_compound .lst .kor_link {
-    color: #000;
+    color: currentColor;
   }
 
   .section_relhanja {
@@ -8733,7 +8733,7 @@
 
   .detail_hj .section.section_phonetic h5 {
     font-size: 1.31em;
-    color: #000;
+    color: currentColor;
   }
 
   .section_phonetic .entry {
@@ -8781,7 +8781,7 @@
 
   .detail_hj .section.section_ideographic h5 {
     font-size: 1.31em;
-    color: #000;
+    color: currentColor;
   }
 
   .section_ideographic .entry {
@@ -8845,9 +8845,9 @@
   .top_dn dt {
     margin: 0 5px 5px 0;
     padding: 0 4px;
-    border: 1px solid #d8dfef;
+    // border: 1px solid #d8dfef;
     border-radius: 1px;
-    background-color: #fafbfd;
+    // background-color: #fafbfd;
     line-height: 1;
   }
 
@@ -8891,11 +8891,6 @@
 
   .top_dt2 {
     clear: both;
-  }
-
-  .top_dn .top_dt3,.top_dn .top_dt4 {
-    border-color: #ededed;
-    background-color: #fff;
   }
 
   .top_dn .top_dt3 .blind,.top_dn .top_dt4 .blind {
@@ -8973,7 +8968,7 @@
   }
 
   .dt li .on {
-    color: #000;
+    color: currentColor;
     font-weight: bold;
   }
 
@@ -9159,7 +9154,7 @@
     font-size: 0.81em;
     font-weight: normal;
     line-height: 1.13;
-    color: #000;
+    color: currentColor;
     letter-spacing: -1px;
     text-align: left;
   }
@@ -9216,7 +9211,7 @@
   }
 
   .hs .it.sd {
-    color: #000;
+    color: currentColor;
   }
 
   .hs.ki .hssbt {
@@ -9274,7 +9269,7 @@
     background: #e8e9ed -webkit-gradient(linear,0% 0%,0% 70%,from(#fcfdfd),to(#e8e9ed));
     font-family: HiraKakuProN-W6;
     font-size: 1.43em;
-    color: #000;
+    color: currentColor;
     text-align: center;
     text-shadow: 2px 2px 1px #fff;
   }
@@ -9500,7 +9495,7 @@
     background: #f4f4f4;
     font-family: HiraKakuProN-W6;
     font-size: 1.43em;
-    color: #000;
+    color: currentColor;
     text-align: center;
     text-shadow: 2px 2px 1px #fff;
   }
@@ -9743,8 +9738,8 @@
     z-index: 99;
     width: 100%;
     height: 86px;
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
+    border-top: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
     background: #3a4555;
   }
 
@@ -9824,8 +9819,8 @@
     z-index: 99;
     width: 100%;
     height: 95px;
-    border-top: 1px solid #000;
-    border-bottom: 1px solid #000;
+    border-top: 1px solid currentColor;
+    border-bottom: 1px solid currentColor;
     background: #3a4555;
   }
 
@@ -10187,7 +10182,7 @@
     font-size: 0.94em;
     line-height: 1.13;
     letter-spacing: -0.075em;
-    color: #000;
+    color: currentColor;
   }
 
   .tts_wrap .btn_close {
@@ -10240,7 +10235,7 @@
     padding: 7px 0 9px;
     overflow: hidden;
     background-color: #fff;
-    color: #000;
+    color: currentColor;
     display: -ms-flexbox;
     display: -webkit-flex;
     display: flex;

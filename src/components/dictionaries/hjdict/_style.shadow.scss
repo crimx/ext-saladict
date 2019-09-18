@@ -190,22 +190,12 @@ input.ui-button::-moz-focus-inner {
 .ui-widget-content {
   border: 1px solid #ddd;
   background: #fff;
-  color: #333;
-}
-
-.ui-widget-content a {
-  color: #333;
 }
 
 .ui-widget-header {
   border: 1px solid #ddd;
   background: #e9e9e9;
-  color: #333;
   font-weight: 700;
-}
-
-.ui-widget-header a {
-  color: #333;
 }
 
 .ui-button,
@@ -1243,7 +1233,7 @@ a.ui-button:active {
 }
 
 .phrase-def {
-  color: #999;
+  color: #666;
   margin-left: 10px;
 }
 
@@ -1272,7 +1262,6 @@ a.ui-button:active {
 }
 
 .detail-source {
-  color: #333;
   font-size: 1em;
   line-height: 1.2;
   margin-bottom: 0.5em;
@@ -1324,7 +1313,7 @@ a.ui-button:active {
   background-color: #f0f0f0;
   border-radius: 2px;
   text-align: center;
-  color: #999;
+  color: #666;
   float: left;
   font-size: 1em;
   padding: 0 4px;
@@ -1334,7 +1323,6 @@ a.ui-button:active {
 .detail .tags-word {
   font-weight: 700;
   font-size: 1.2em;
-  color: #333;
   line-height: 1.2;
   padding-right: 4px;
 }
@@ -1362,7 +1350,6 @@ a.ui-button:active {
   margin-bottom: 0.8em;
   font-weight: 700;
   line-height: 1.2;
-  color: #333;
 }
 
 .detail-groups dd {
@@ -1385,7 +1372,6 @@ a.ui-button:active {
 }
 
 .detail-groups dd h3 p {
-  color: #333;
   margin: 0 0 0 22px;
 }
 
@@ -1395,7 +1381,6 @@ a.ui-button:active {
 
 .detail-groups dd p {
   margin-left: 22px;
-  color: #999;
 }
 
 .detail-groups dd:first-of-type:last-of-type h3:before {
@@ -1415,7 +1400,7 @@ a.ui-button:active {
 }
 
 .detail-groups ul li {
-  color: #999;
+  color: #666;
   margin-bottom: 0.5em;
 }
 
@@ -1425,17 +1410,8 @@ a.ui-button:active {
 }
 
 .detail-pron {
-  color: #333;
   margin-left: 6px;
   font-family: Lucida Sans Unicode;
-}
-
-.detail .def-sentence-from {
-  color: #333;
-}
-
-.detail .def-sentence-to {
-  color: #333;
 }
 
 .detail .def-sentence-from .def-sentence-to span {
@@ -1475,7 +1451,7 @@ a.ui-button:active {
 }
 
 .analyzes-items li p {
-  color: #999;
+  color: #666;
   margin: 2px 0 0 22px;
 }
 
@@ -1526,13 +1502,13 @@ a.ui-button:active {
 }
 
 .sentences-item-to {
-  color: #999;
+  color: #666;
   padding-left: 22px;
 }
 
 .ant > p,
 .syn > p {
-  color: #999;
+  color: #666;
   margin: 0 0 6px;
 }
 
@@ -1555,15 +1531,11 @@ a.ui-button:active {
 
 .ant-single > span,
 .syn-single > span {
-  color: #999;
+  color: #666;
 }
 
 .synant-content {
   margin-top: 20px;
-}
-
-.synant span {
-  color: #333;
 }
 
 .synant p {
@@ -1768,7 +1740,7 @@ a.ui-button:active {
   margin: 0 0 10px;
   padding-bottom: 5px;
   font-weight: 400;
-  border-bottom: 1px solid #999;
+  border-bottom: 1px solid #666;
 }
 
 .word-details-button-expand {

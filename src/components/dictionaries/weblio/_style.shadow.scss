@@ -71,37 +71,37 @@ h2.midashigo sub {
 }
 
 .Ktiau table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
 }
 
 .Ktiau td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
 }
 
 .Ktiau th {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   text-align: left;
 }
 
 .Ktiau tr {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
 }
 
 .Ktsbm table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   width: 600px;
 }
 
 .Ktsbm table td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   padding-left: 7px;
   text-align: left;
 }
 
 .Ktsbm table th {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   font-weight: normal;
   padding-right: 7px;
   text-align: left;
@@ -514,12 +514,12 @@ div.Zndzk {
 
 .Chkgc table table table {
   border-collapse: collapse;
-  border: 1px #333 solid;
+  border: 1px currentColor solid;
 }
 
 .Chkgc table table table td {
   padding: 5px;
-  border: 1px #333 solid;
+  border: 1px currentColor solid;
 }
 
 .Grnry .grnryInfo {
@@ -641,14 +641,14 @@ td.midashigo {
 
 .Kmkrz table {
   border-collapse: collapse;
-  border-color: #333;
+  border-color: currentColor;
   border-width: 1px;
   border-style: solid;
   margin: 0 auto;
 }
 
 .Kmkrz table td {
-  border-color: #333;
+  border-color: currentColor;
   border-width: 1px;
   border-style: solid;
   padding: 5px;
@@ -1193,13 +1193,13 @@ h2.midashigo rp {
 }
 
 .Gnshk .pale {
-  color: #333;
+  color: currentColor;
   padding: 0 0 0 3px;
   width: 500px;
 }
 
 .Gnshk .pale div {
-  color: #333;
+  color: currentColor;
 }
 
 .Gnshk a.colorChart {
@@ -1266,7 +1266,7 @@ h2.midashigo rp {
   border-bottom: 1px solid #999;
   border-right: 1px solid #999;
   background-color: #F2F2F2;
-  color: #333;
+  color: currentColor;
   text-align: center;
 }
 
@@ -1347,7 +1347,7 @@ h2.midashigo rp {
 }
 
 .Mzdmt .cp1 {
-  color: #333;
+  color: currentColor;
   font-size: 77%;
   margin: 0;
 }
@@ -1652,7 +1652,7 @@ h2.midashigo rp {
 }
 
 .Triph .data table {
-  color: #333;
+  color: currentColor;
   width: 100%;
 }
 
@@ -1777,12 +1777,12 @@ h2.midashigo rp {
 }
 
 .Srjtn table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
 }
 
 .Srjtn table td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   padding: 1px 6px 1px 6px;
 }
 
@@ -1856,7 +1856,7 @@ h2.midashigo rp {
 }
 
 .Rnult td {
-  color: #333;
+  color: currentColor;
   font-size: .9em;
   line-height: 1.2em;
 }
@@ -1871,22 +1871,22 @@ h2.midashigo rp {
 }
 
 .Ukybz table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
 }
 
 .Ukybz table td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   padding: 3px;
 }
 
 .Abrms table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
 }
 
 .Abrms table td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   padding: 3px;
 }
 
@@ -1933,13 +1933,13 @@ h2.midashigo rp {
 }
 
 .Hndmr .autoline-up-table-grade {
-  border: #333 solid;
+  border: currentColor solid;
   border-width: 1px 1px 1px 0;
   font-size: .9em;
 }
 
 .Hndmr .autoline-up-table-grade td {
-  border-left: #333 solid 1px;
+  border-left: currentColor solid 1px;
   border-top: #505050 solid 1px;
 }
 
@@ -1968,7 +1968,7 @@ h2.midashigo rp {
 }
 
 .Hndmr .autoline-up-table-grade td.division-rt {
-  border-left: #333 solid 1px;
+  border-left: currentColor solid 1px;
 }
 
 .Hndmr .autoline-up-table-grade td .star {
@@ -1976,7 +1976,7 @@ h2.midashigo rp {
 }
 
 .Hndmr .autoline-up-table-grade td.layout-bottom-border {
-  border-bottom: #333 solid 1px;
+  border-bottom: currentColor solid 1px;
 }
 
 .Hndmr table#webcatalogue-table td {
@@ -1993,7 +1993,7 @@ h2.midashigo rp {
 }
 
 .Hndmr table#webcatalogue-table p.leadcopy {
-  color: #333;
+  color: currentColor;
   font-size: .9em;
   font-weight: bold;
   line-height: 18px;
@@ -2033,7 +2033,7 @@ h2.midashigo rp {
 }
 
 .Hndmr table#webcatalogue-table p.safe-midashi {
-  background-color: #333;
+  background-color: currentColor;
   color: #fff;
   font-size: .9em;
   font-weight: bold;
@@ -2088,13 +2088,13 @@ h2.midashigo rp {
 }
 
 .Hndmr .autoline-up-table-eqp {
-  border: #333 solid;
+  border: currentColor solid;
   border-width: 0 1px 1px 0;
   font-size: .9em;
 }
 
 .Hndmr .autoline-up-table-eqp td {
-  border-left: #333 solid 1px;
+  border-left: currentColor solid 1px;
   border-top: #505050 solid 1px;
 }
 
@@ -2137,11 +2137,11 @@ h2.midashigo rp {
 }
 
 .Hndmr .autoline-up-table-eqp td.division-rt {
-  border-left: #333 solid 1px;
+  border-left: currentColor solid 1px;
 }
 
 .Hndmr .autoline-up-table-eqp td.layout-bottom-border {
-  border-bottom: #333 solid 1px;
+  border-bottom: currentColor solid 1px;
 }
 
 .Hndmr #auto-line-up-eqp-hosoku {
@@ -2192,13 +2192,13 @@ h2.midashigo rp {
 }
 
 .Hndmr .autoline-up-table-eqp {
-  border: #333 solid;
+  border: currentColor solid;
   border-width: 0 1px 1px 0;
   font-size: .9em;
 }
 
 .Hndmr .autoline-up-table-eqp td {
-  border-left: #333 solid 1px;
+  border-left: currentColor solid 1px;
   border-top: #505050 solid 1px;
 }
 
@@ -2261,11 +2261,11 @@ h2.midashigo rp {
 }
 
 .Hndmr .autoline-up-table-eqp td.division-rt {
-  border-left: #333 solid 1px;
+  border-left: currentColor solid 1px;
 }
 
 .Hndmr .autoline-up-table-eqp td.layout-bottom-border {
-  border-bottom: #333 solid 1px;
+  border-bottom: currentColor solid 1px;
 }
 
 .Hndmr #auto-line-up-eqp-hosoku {
@@ -2331,7 +2331,7 @@ h2.midashigo rp {
 
 .Hndmr table#spec td.data {
   text-align: center;
-  border-left: 1px solid #333;
+  border-left: 1px solid currentColor;
 }
 
 .Hndmr table#spec td.type-name {
@@ -2342,11 +2342,11 @@ h2.midashigo rp {
 }
 
 .Hndmr table#spec td.sikiri-top {
-  border-top: 2px solid #333;
+  border-top: 2px solid currentColor;
 }
 
 .Hndmr table#spec td.sikiri-bottom {
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid currentColor;
 }
 
 .Hndmr p.inspire-spec {
@@ -2381,7 +2381,7 @@ h2.midashigo rp {
 }
 
 .Hndmr #spec-table td.nakasen {
-  background-color: #333;
+  background-color: currentColor;
 }
 
 .Hndmr #spec-table td.nenpi {
@@ -2414,16 +2414,16 @@ h2.midashigo rp {
 }
 
 .Hndmr .block_line {
-  border-bottom: solid 1px #333;
-  border-left: solid 1px #333;
+  border-bottom: solid 1px currentColor;
+  border-left: solid 1px currentColor;
 }
 
 .Hndmr .block_line_top {
-  border-top: solid 1px #333;
+  border-top: solid 1px currentColor;
 }
 
 .Hndmr .block_line_right {
-  border-right: solid 1px #333;
+  border-right: solid 1px currentColor;
 }
 
 .Hndmr .position {
@@ -2437,8 +2437,8 @@ h2.midashigo rp {
 }
 
 .Hndmr table#type-midashi {
-  border: 1px solid #333;
-  border-bottom: 2px solid #333;
+  border: 1px solid currentColor;
+  border-bottom: 2px solid currentColor;
   border-collapse: collapse;
 }
 
@@ -2457,52 +2457,52 @@ h2.midashigo rp {
 }
 
 .Hndmr #type-midashi td.migi {
-  border-right: 1px solid #333;
+  border-right: 1px solid currentColor;
 }
 
 .Hndmr #type-midashi td.sita {
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid currentColor;
 }
 
 .Hndmr table#spec th {
-  border-top: 1px solid #333;
+  border-top: 1px solid currentColor;
 }
 
 .Hndmr table#spec td {
-  border-top: 1px solid #333;
+  border-top: 1px solid currentColor;
 }
 
 .Hndmr table#spec .spec {
-  border-top: 1px solid #333;
+  border-top: 1px solid currentColor;
 }
 
 .Hndmr table#spec td.spec-name {
-  border-right: 1px solid #333;
-  border-bottom: 1px solid #333;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
   padding: 2px 0 2px 2px;
 }
 
 .Hndmr table#spec td.atai {
   text-align: center;
-  border-right: 1px solid #333;
-  border-bottom: 1px solid #333;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
 }
 
 .Hndmr table#spec td.atai2 {
   text-align: center;
-  border-right: 1px solid #333;
-  border-bottom: 1px solid #333;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
   background-color: #FBE6EF;
 }
 
 .Hndmr table#spec td.category-botom {
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid currentColor;
 }
 
 .Hndmr table#spec td.category-name {
   font-weight: bold;
-  border-left: 1px solid #333;
-  border-bottom: 2px solid #333;
+  border-left: 1px solid currentColor;
+  border-bottom: 2px solid currentColor;
 }
 
 .Hndmr table.caution {
@@ -2519,20 +2519,20 @@ h2.midashigo rp {
   border-bottom-width: 1px;
   border-right-style: solid;
   border-bottom-style: solid;
-  border-right-color: #333;
-  border-bottom-color: #333;
+  border-right-color: currentColor;
+  border-bottom-color: currentColor;
 }
 
 .Hndmr #spec-table td.line-migi {
   border-right-width: 1px;
   border-right-style: solid;
-  border-right-color: #333;
+  border-right-color: currentColor;
 }
 
 .Hndmr #spec-table td.line-sita {
   border-bottom-width: 2px;
   border-bottom-style: solid;
-  border-bottom-color: #333;
+  border-bottom-color: currentColor;
 }
 
 .Hndmr #spec-table td.speccontents {
@@ -2557,12 +2557,12 @@ h2.midashigo rp {
   font-size: 80%;
   font-style: normal;
   font-weight: normal;
-  border: #333 solid;
+  border: currentColor solid;
   border-width: 2px 0 0 2px;
 }
 
 .Hndmr #listtable td {
-  border: #333 solid;
+  border: currentColor solid;
   border-width: 0 1px 1px 0;
   padding: 2px;
   text-align: center;
@@ -2709,7 +2709,7 @@ h2.midashigo rp {
   margin-bottom: 5px;
   border-width: 2px 1px 0 2px;
   border-style: solid;
-  border-color: #333;
+  border-color: currentColor;
 }
 
 .Hndmr #specifications th,
@@ -2722,7 +2722,7 @@ h2.midashigo rp {
   text-align: left;
   border-width: 0 1px 1px 0;
   border-style: solid;
-  border-color: #333;
+  border-color: currentColor;
 }
 
 .Hndmr #specifications th.midashi2 {
@@ -2730,13 +2730,13 @@ h2.midashigo rp {
   text-align: left;
   border-width: 0 1px 2px 0;
   border-style: solid;
-  border-color: #333;
+  border-color: currentColor;
 }
 
 .Hndmr #specifications th.midashi3 {
   border-width: 0 0 2px 0;
   border-style: solid;
-  border-color: #333;
+  border-color: currentColor;
 }
 
 .Hndmr #specifications th.car {
@@ -2745,7 +2745,7 @@ h2.midashigo rp {
   background-color: #d9d9d9;
   border-width: 0 1px 1px 0;
   border-style: solid;
-  border-color: #333;
+  border-color: currentColor;
   line-height: 130%;
 }
 
@@ -2758,13 +2758,13 @@ h2.midashigo rp {
   font-weight: bold;
   border-width: 0 1px 2px 0;
   border-style: solid;
-  border-color: #333;
+  border-color: currentColor;
 }
 
 .Hndmr #specifications td.midashi {
   border-width: 0 1px 1px 0;
   border-style: solid;
-  border-color: #333;
+  border-color: currentColor;
   text-align: left;
   vertical-align: top;
 }
@@ -2772,7 +2772,7 @@ h2.midashigo rp {
 .Hndmr #specifications td.midashi2 {
   border-width: 0 1px 2px 0;
   border-style: solid;
-  border-color: #333;
+  border-color: currentColor;
   text-align: left;
   vertical-align: top;
 }
@@ -2780,21 +2780,21 @@ h2.midashigo rp {
 .Hndmr #specifications td.cell {
   border-width: 0 1px 1px 0;
   border-style: solid;
-  border-color: #333;
+  border-color: currentColor;
   text-align: center;
 }
 
 .Hndmr #specifications td.cell2 {
   border-width: 0 1px 2px 0;
   border-style: solid;
-  border-color: #333;
+  border-color: currentColor;
   text-align: center;
 }
 
 .Hndmr #specifications td.cell-fuel {
   border-width: 0 1px 1px 0;
   border-style: solid;
-  border-color: #333;
+  border-color: currentColor;
   background-color: #fadce9;
   text-align: center;
 }
@@ -2802,7 +2802,7 @@ h2.midashigo rp {
 .Hndmr #specifications td.midashi-fuel {
   border-width: 0 1px 1px 0;
   border-style: solid;
-  border-color: #333;
+  border-color: currentColor;
   text-align: left;
   vertical-align: top;
   background-color: #fadce9;
@@ -2817,7 +2817,7 @@ h2.midashigo rp {
 }
 
 .Hndmr #spec {
-  border: #333 solid;
+  border: currentColor solid;
   border-width: 0 0 1px 0;
   font-size: x-small;
   line-height: 130%;
@@ -2826,7 +2826,7 @@ h2.midashigo rp {
 
 .Hndmr #spec th,
 #spec td {
-  border: #333 solid;
+  border: currentColor solid;
   border-width: 1px 0 0 0;
   vertical-align: top;
   padding: 2px 5px 2px 5px;
@@ -2839,7 +2839,7 @@ h2.midashigo rp {
 }
 
 .Hndmr #spec .spec {
-  border: #333 solid;
+  border: currentColor solid;
   border-width: 0 0 0 1px;
   text-align: center;
 }
@@ -2850,7 +2850,7 @@ h2.midashigo rp {
 
 .Hndmr #spec .specfuel {
   background-color: #bccde9;
-  border: #333 solid;
+  border: currentColor solid;
   border-width: 0 0 0 1px;
   text-align: center;
 }
@@ -3139,18 +3139,18 @@ table.specTable td {
 }
 
 .Omtsd table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   text-align: center;
   width: 590px;
 }
 
 .Omtsd table td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
 }
 
 .Omtsd table th {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
 }
 
 .Tnskj img {
@@ -3180,18 +3180,18 @@ table.specTable td {
 }
 
 .Spchk table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   width: 100%;
 }
 
 .Spchk table th {
   background-color: #eee;
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
 }
 
 .Spchk table td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
 }
 
 .Ktmbd table {
@@ -3412,12 +3412,12 @@ table.specTable td {
 }
 
 .Osksk table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
 }
 
 .Osksk table td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   font-size: .9em;
 }
 
@@ -3452,7 +3452,7 @@ table.specTable td {
 }
 
 .Ktskk .KtskkM {
-  border: #333 solid;
+  border: currentColor solid;
   border-width: 0 0 1px 5px;
   font-size: 1.0em;
   font-weight: bold;
@@ -3466,32 +3466,32 @@ table.specTable td {
 .Jagar table#JAGUAR_XF {
   border: #696969 solid 1px;
   border-collapse: collapse;
-  color: #333;
+  color: currentColor;
   text-align: center;
 }
 
 .Tndhs .TndhsC table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
 }
 
 .Tndhs .TndhsC table td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
 }
 
 .Snbkk table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   text-align: center;
 }
 
 .Snbkk td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   text-align: center;
 }
 
 .Snbkk th {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   text-align: center;
 }
 
@@ -3508,18 +3508,18 @@ table.specTable td {
 }
 
 .Oranf table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   text-align: center;
 }
 
 .Oranf td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   text-align: center;
 }
 
 .Oranf th {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   text-align: center;
 }
 
@@ -3595,48 +3595,48 @@ table.specTable td {
 }
 
 .Hknks .HknksT table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   text-align: center;
 }
 
 .Hknks .HknksT td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   text-align: center;
 }
 
 .Okisf .OkisfT table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   text-align: center;
 }
 
 .Okisf .OkisfT td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   padding: 0 5px 0 5px;
   text-align: center;
 }
 
 .Hankf table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   text-align: center;
 }
 
 .Hankf td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   padding: 0 5px 0 5px;
   text-align: center;
 }
 
 .Myzkf table table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   text-align: center;
 }
 
 .Myzkf table table td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   padding: 0 5px 0 5px;
   text-align: center;
 }
@@ -3656,7 +3656,7 @@ table.specTable td {
 }
 
 .Ssimk .SsimkBlackLine {
-  background-color: #333;
+  background-color: currentColor;
 }
 
 .Tkwfr .TkwfrTable td {
@@ -3874,9 +3874,9 @@ table.specTable td {
 .Bsgys h4,
 .Bsgys h5 {
   background-color: inherit;
-  border-bottom: #333 1px solid;
+  border-bottom: currentColor 1px solid;
   clear: left;
-  color: #333;
+  color: currentColor;
   font-size: 100%;
   font-weight: bold;
   margin: 0 0 .5em 0;
@@ -3984,7 +3984,7 @@ table.specTable td {
 }
 
 .Nsrsk dt {
-  border-left: #333 solid 6px;
+  border-left: currentColor solid 6px;
   text-indent: 1ex;
 }
 
@@ -4074,12 +4074,12 @@ table.specTable td {
 }
 
 .Tytmt table td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   padding: 3px;
 }
 
 .Tytmt table tr {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   padding: 3px;
 }
 
@@ -4124,12 +4124,12 @@ table.specTable td {
 }
 
 .Lxsmt table td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   padding: 3px;
 }
 
 .Lxsmt table tr {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   padding: 3px;
 }
 
@@ -4150,27 +4150,27 @@ table.specTable td {
 }
 
 .Ktiem table.KtiemBorder {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   width: 100%;
 }
 
 .Ktiem table.KtiemBorder td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
 }
 
 .Ktiem table.KtiemBorder th {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
 }
 
 .Ktiem table.KtiemBSpec {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   width: 100%;
 }
 
 .Ktiem table.KtiemBSpec td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
 }
 
 .Nkski .NkskiData {
@@ -4304,7 +4304,7 @@ div.Kkirn {
 }
 
 .Hgksi table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
 }
 
@@ -4418,13 +4418,13 @@ div.Kkirn {
 }
 
 .Cryle table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   text-align: center;
 }
 
 .Cryle td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   text-align: center;
 }
 
@@ -4437,13 +4437,13 @@ div.Kkirn {
 }
 
 .Jeepm table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   text-align: center;
 }
 
 .Jeepm td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   text-align: center;
 }
 
@@ -4456,30 +4456,30 @@ div.Kkirn {
 }
 
 .Dodge table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   text-align: center;
 }
 
 .Dodge td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   text-align: center;
 }
 
 .Dprss .tableBorder {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   text-align: center;
 }
 
 .Dprss .tableBorder th {
   background-color: #e6e6e6;
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   text-align: center;
 }
 
 .Dprss .tableBorder td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   text-align: center;
 }
 
@@ -4606,13 +4606,13 @@ div.Kkirn {
 }
 
 .Hinom table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
   width: 100%;
 }
 
 .Hinom td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   text-align: center;
 }
 
@@ -4638,16 +4638,16 @@ div.Kkirn {
 }
 
 .Gztmn .GztmnTh {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
 }
 
 .Gztmn table {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
   border-collapse: collapse;
 }
 
 .Gztmn td {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
 }
 
 .Nhnkz a.NhnkzAnchor {
@@ -4671,7 +4671,7 @@ div.Kkirn {
 .Nhnkz .NhnkzData2 th {
   background-color: #eee;
   border: #ccc solid 2px;
-  color: #333;
+  color: currentColor;
   font-weight: normal;
   padding: 3px;
 }
@@ -4765,7 +4765,7 @@ div.Kkirn {
 }
 
 .Skazy table td {
-  border: 1px #333 solid;
+  border: 1px currentColor solid;
   padding: 4px;
   vertical-align: top;
 }
@@ -4947,7 +4947,7 @@ div.Kkirn {
 }
 
 .Nkbjw .nkbjwI {
-  border: #333 solid 1px;
+  border: currentColor solid 1px;
 }
 
 .Nkbjw .nkbjwD {
@@ -5104,9 +5104,9 @@ div.Kkirn {
 }
 
 .Jajcw .jwjHdC {
-  background-color: #eee;
+  // background-color: #eee;
   border: #666 solid 1px;
-  color: #363636;
+  // color: #363636;
   font-size: .9em;
   font-weight: normal;
   padding: 1px;
@@ -5149,7 +5149,7 @@ div.Kkirn {
 .Nhgkt .nhgktL {
   background-color: #eee;
   border: #999 solid 1px;
-  color: #333;
+  color: currentColor;
   float: left;
   font-size: .9em;
   line-height: 1.0em;
@@ -5272,9 +5272,9 @@ div.Kkirn {
 }
 
 .Ingdj .ingdjL {
-  background-color: #f0f0f0;
+  // background-color: #f0f0f0;
   border: #666 solid 1px;
-  color: #363636;
+  // color: #363636;
   font-size: .9em;
   padding: 1px;
 }
@@ -5300,7 +5300,7 @@ div.Kkirn {
 .Bngkt .bngktL {
   background-color: #eee;
   border: #999 solid 1px;
-  color: #333;
+  color: currentColor;
   float: left;
   font-size: .9em;
   line-height: 1.0em;
@@ -5367,7 +5367,7 @@ div.Kkirn {
   background: none repeat scroll 0 0 #d8d8d8!important;
   border-bottom: 1px solid #A4A4A4;
   border-top: 1px solid #A4A4A4;
-  color: #333;
+  color: currentColor;
   padding: 3px 10px 3px 5px;
   text-align: left;
 }
@@ -5487,9 +5487,9 @@ h2.midashigo .cgkgjSm,
 }
 
 .Gkjyj span {
-  background-color: #f0f0f0;
+  // background-color: #f0f0f0;
   border: #666 solid 1px;
-  color: #363636;
+  // color: #363636;
   font-size: .9em;
   line-height: 1.0em;
   margin-right: 5px;
@@ -5501,9 +5501,9 @@ h2.midashigo .cgkgjSm,
 }
 
 .Tssmj span {
-  background-color: #f0f0f0;
+  // background-color: #f0f0f0;
   border: #666 solid 1px;
-  color: #363636;
+  // color: #363636;
   font-size: .9em;
   line-height: 1.0em;
   margin-right: 5px;
@@ -5516,9 +5516,9 @@ h2.midashigo .cgkgjSm,
 }
 
 .Dshar .DsharC {
-  background-color: #f0f0f0;
+  // background-color: #f0f0f0;
   border: #666 solid 1px;
-  color: #363636;
+  // color: #363636;
   font-size: .9em;
   line-height: 1.0em;
   padding: 1px;
@@ -5773,7 +5773,7 @@ table.shosn td {
 }
 
 .trnsMdlBxTtlL a {
-  color: #333;
+  color: currentColor;
   font-weight: bold;
 }
 
@@ -5894,7 +5894,7 @@ table.shosn td {
 
 h2.midashigo {
   font-size: 1.1em;
-  color: #333;
+  color: currentColor;
 }
 
 .hrDot {
@@ -5938,7 +5938,7 @@ h2.midashigo {
 }
 
 .SsdSmlRK {
-  background-color: #fdd;
+  // background-color: #fdd;
   font-size: 12px;
   padding: 3px 15px;
 }

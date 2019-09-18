@@ -4,9 +4,10 @@
 
 .entryBox {
   position: relative;
-  border: 1px solid var(--color-font);
+  border: 1px solid #c76e06;
+  border-radius: 5px;
   margin-bottom: 1em;
-  padding: 1em 5px 5px 5px;
+  padding: 1em 0.5em 0.5em 0.5em;
 }
 
 .entryBox-Title {

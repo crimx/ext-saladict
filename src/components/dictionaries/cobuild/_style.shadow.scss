@@ -42,15 +42,14 @@
 
   .prep-en {
     display: block;
-    color: #777;
     margin-bottom: 5px;
   }
 
   .text-sentence {
     padding-left: 10px;
     padding-bottom: 5px;
-    color: #333;
-    border-left: #ddd solid 2px;
+    color: #666;
+    border-left: #666 solid 1px;
 
     &:last-child {
       padding-bottom: 0;
@@ -282,7 +281,7 @@
 
   .lgg h2,
   .lgg .margin {
-    color: #333;
+    color: #666;
     text-align: center;
     padding: 21px 5px;
     margin-bottom: 5px;
@@ -703,7 +702,6 @@
   .dc .translation .example {
     display: block;
     font-style: italic;
-    color: #777;
     margin-bottom: 1em;
   }
 
@@ -757,7 +755,7 @@
   }
 
   .dc .dictionary .quote {
-    color: #333;
+    color: #666;
   }
 
   .dc .dictionary .cit.type-translation .quote {
@@ -1212,7 +1210,6 @@
 
   .page .biling .lbl {
     font-style: italic;
-    color: #555;
     font-variant: initial;
     font-weight: initial;
   }
@@ -1563,7 +1560,7 @@
   .page .thesbase hr {
     width: 50%;
     text-align: left;
-    border: 3px inset #777;
+    border: 3px inset #555;
     height: 6px;
     margin: 10px auto 5px 0;
   }
