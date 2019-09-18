@@ -90,6 +90,12 @@ export class DictPanel extends React.Component<DictPanelProps> {
             rules: [{ type: 'number', whitespace: true }]
           })(<InputNumberGroup suffix="px" />)}
         </Form.Item>
+        <Form.Item {...formItemLayout} label={t('opt.dark_mode')}>
+          {getFieldDecorator('config#darkMode', {
+            initialValue: config.darkMode,
+            valuePropName: 'checked'
+          })(<Switch />)}
+        </Form.Item>
         <Form.Item
           {...formItemLayout}
           label={t('opt.dictPanel.custom_css')}

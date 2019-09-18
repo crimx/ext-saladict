@@ -104,6 +104,7 @@ export const locale: typeof _locale = {
     context_menus_add_rules: '連結中的 %s 會被取代為選詞。',
     ctx_trans: '上下文翻譯引擎',
     ctx_trans_help: '單字加入生字本前會自動翻譯上下文。',
+    dark_mode: '黑暗模式',
     dictPanel: {
       custom_css: '自訂查字介面樣式',
       custom_css_help:
