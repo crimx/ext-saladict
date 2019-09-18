@@ -25,8 +25,8 @@ export const DictPanelStandalone: FC<DictPanelStandaloneProps> = props => {
         height: props.height,
         backgroundColor: '#fff',
         color: '#333',
-        '--panel-background-color': '#fff',
-        '--panel-color': '#333',
+        '--color-background': '#fff',
+        '--color-font': '#333',
         '--panel-width': props.width + 'px',
         '--panel-max-height': props.height + 'px'
       }}

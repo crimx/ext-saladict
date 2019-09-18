@@ -67,6 +67,8 @@ function _getDefaultConfig() {
     /** panel max height in percentage, 0 < n < 100 */
     panelMaxHeightRatio: 80,
 
+    darkMode: false,
+
     /** custom panel css */
     panelCSS: '',
 

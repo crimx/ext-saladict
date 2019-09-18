@@ -16,6 +16,25 @@ export const createRootReducer = () =>
       const url = window.location.href
       const panelMaxHeight =
         (window.innerHeight * payload.panelMaxHeightRatio) / 100
+      const colors =
+        payload.darkMode === state.config.darkMode
+          ? state.colors
+          : payload.darkMode
+          ? {
+              brand: '#218c74',
+              background: '#222',
+              backgroundRGB: '34, 34, 34',
+              font: '#ddd',
+              divider: '#4d4748'
+            }
+          : {
+              brand: '#5caf9e',
+              background: '#fff',
+              backgroundRGB: '255, 255, 255',
+              font: '#333',
+              divider: '#ddd'
+            }
+
       return {
         ...state,
         config: payload,
@@ -23,7 +42,8 @@ export const createRootReducer = () =>
         panelMaxHeight,
         isTempDisabled:
           payload.blacklist.some(([r]) => new RegExp(r).test(url)) &&
-          payload.whitelist.every(([r]) => !new RegExp(r).test(url))
+          payload.whitelist.every(([r]) => !new RegExp(r).test(url)),
+        colors
       }
     },
 

@@ -65,6 +65,7 @@ storiesOf('Content Scripts|Dict Panel', module)
 function useDictPanelProps(): DictPanelProps {
   const [text, setText] = useState('saladict')
   const [expandMta, setExpandMta] = useState(false)
+  const [expandWavform, setExpandWavform] = useState(false)
   const withAnimation = boolean('Enable Animation', true)
   const [dragStartCoord, setDragStartCoord] = useState<null | {
     x: number
@@ -112,6 +113,23 @@ function useDictPanelProps(): DictPanelProps {
     return o
   }, {})
 
+  const darkMode = boolean('Dark Mode', false)
+  const colors = darkMode
+    ? {
+        brand: '#218c74',
+        background: '#222',
+        backgroundRGB: '34, 34, 34',
+        font: '#ddd',
+        divider: '#4d4748'
+      }
+    : {
+        brand: '#5caf9e',
+        background: '#fff',
+        backgroundRGB: '255, 255, 255',
+        font: '#333',
+        divider: '#ddd'
+      }
+
   return {
     coord: {
       x: number('x', (window.innerWidth - 450) / 2),
@@ -119,9 +137,11 @@ function useDictPanelProps(): DictPanelProps {
     },
     takeCoordSnapshot: boolean('Take Coord Snapshot', false),
     width: number('Width', 450),
+    height: number('Height', window.innerHeight - 20),
     maxHeight: number('Max Height', window.innerHeight - 40),
-    minHeight: number('Min Height', 50),
     withAnimation: withAnimation,
+    darkMode,
+    colors,
     menuBar: (
       <MenuBar
         text={text}
@@ -174,6 +194,7 @@ function useDictPanelProps(): DictPanelProps {
           action('Drawer Toggle')()
           setExpandMta(!expandMta)
         }}
+        onHeightChanged={action('Dict Mta Box Height Changed')}
       />
     ),
     dictList: (
@@ -183,9 +204,17 @@ function useDictPanelProps(): DictPanelProps {
         dicts={randomDicts}
         searchText={action('Search Text')}
         openDictSrcPage={action('Open Source Page')}
+        onSpeakerPlay={async src => action('Open Source Page')(src)}
+        onHeightChanged={action('Dict List Height Changed')}
       />
     ),
-    waveformBox: <WaveformBox />,
+    waveformBox: (
+      <WaveformBox
+        isExpand={expandWavform}
+        toggleExpand={() => setExpandWavform(flag => !flag)}
+        onHeightChanged={action('Dict Waveform Box Height Changed')}
+      />
+    ),
     dragStartCoord,
     onDragEnd: () => setDragStartCoord(null)
   }

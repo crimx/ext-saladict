@@ -16,6 +16,14 @@ export interface DictPanelProps {
   maxHeight: number
 
   withAnimation: boolean
+  darkMode: boolean
+  colors: {
+    brand: string
+    background: string
+    backgroundRGB: string
+    font: string
+    divider: string
+  }
 
   menuBar: ReactNode
   mtaBox: ReactNode
@@ -110,10 +118,13 @@ export const DictPanel: FC<DictPanelProps> = props => {
         top: y,
         width: props.width,
         height: props.height,
-        backgroundColor: '#fff',
-        color: '#333',
-        '--panel-background-color': '#fff',
-        '--panel-color': '#333',
+        backgroundColor: props.colors.background,
+        color: props.colors.font,
+        '--color-brand': props.colors.brand,
+        '--color-background': props.colors.background,
+        '--color-rgb-background': props.colors.backgroundRGB,
+        '--color-font': props.colors.font,
+        '--color-divider': props.colors.divider,
         '--panel-width': props.width + 'px',
         '--panel-max-height': props.maxHeight + 'px'
       }}
