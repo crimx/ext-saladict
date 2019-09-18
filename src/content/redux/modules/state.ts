@@ -43,7 +43,7 @@ export const initState = () => {
     bowlCoord: { x: 0, y: 0 },
     /** The actual coord of dict panel might be different */
     dictPanelCoord: isOptionsPage()
-      ? { x: window.innerWidth - config.panelWidth - 50, y: 80 }
+      ? { x: window.innerWidth - config.panelWidth - 20, y: 80 }
       : { x: 0, y: 0 },
     panelHeight: 30,
     _panelHeightCache: {
