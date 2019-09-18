@@ -10,6 +10,7 @@ const mapStateToProps = (
 ): Omit<WordEditorPortalProps, Dispatchers> => ({
   show: state.isShowWordEditor,
   withAnimation: state.config.animation,
+  panelCSS: state.config.panelCSS,
   width: window.innerWidth - state.config.panelWidth - 100,
   ctxTrans: state.config.ctxTrans,
   word: state.wordEditorWord

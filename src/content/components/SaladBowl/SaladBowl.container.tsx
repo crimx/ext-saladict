@@ -12,6 +12,7 @@ const mapStateToProps = (
   x: state.bowlCoord.x,
   y: state.bowlCoord.y,
   withAnimation: state.config.animation,
+  panelCSS: state.config.panelCSS,
   enableHover: state.config.bowlHover
 })
 
