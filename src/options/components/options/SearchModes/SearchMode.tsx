@@ -171,10 +171,7 @@ export default class SearchMode extends React.Component<
                   </Select>
                 )}
               </Form.Item>
-
-              <span style={{ marginLeft: 10 }}>
-                {t('opt.searchMode.instantDelay')}:{' '}
-              </span>
+              {t('opt.searchMode.instantDelay')}:{' '}
               <Form.Item className="form-item-inline">
                 {getFieldDecorator(`config#${mode}#instant#delay`, {
                   initialValue: config[mode].instant.delay,
