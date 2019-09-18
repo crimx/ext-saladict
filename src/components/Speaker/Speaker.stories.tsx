@@ -60,7 +60,9 @@ storiesOf('Content Scripts|Components', module)
     const node = getStaticSpeaker(textNode)
 
     return (
-      <StaticSpeakerContainer>
+      <StaticSpeakerContainer
+        onPlayStart={async src => action('On Play Start')(src)}
+      >
         <div
           dangerouslySetInnerHTML={{
             __html: `

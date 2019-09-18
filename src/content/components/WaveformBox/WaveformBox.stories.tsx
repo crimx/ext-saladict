@@ -2,7 +2,7 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
-import { withKnobs } from '@storybook/addon-knobs'
+import { withKnobs, boolean } from '@storybook/addon-knobs'
 import { withSaladictPanel } from '@/_helpers/storybook'
 import { WaveformBox } from './WaveformBox'
 import { action } from '@storybook/addon-actions'
@@ -34,5 +34,10 @@ storiesOf('Content Scripts|Dict Panel', module)
     })
   )
   .add('WaveformBox', () => (
-    <WaveformBox onHeightChanged={action('Height Changed')} />
+    <WaveformBox
+      darkMode={boolean('Dark Mode', false)}
+      isExpand={boolean('Expand', true)}
+      toggleExpand={action('Toggle Expand')}
+      onHeightChanged={action('Height Changed')}
+    />
   ))
