@@ -3,6 +3,7 @@ import CSSTransition from 'react-transition-group/CSSTransition'
 import { SALADICT_EXTERNAL } from '@/_helpers/saladict'
 
 export interface WaveformBoxProps {
+  darkMode: boolean
   isExpand: boolean
   toggleExpand: () => void
   onHeightChanged: (height: number) => void
@@ -38,19 +39,17 @@ export const WaveformBox: FC<WaveformBoxProps> = props => {
           mountOnEnter
           unmountOnExit
         >
-          {renderIframe}
+          {() => (
+            <iframe
+              className="waveformBox-Frame"
+              src={`${browser.runtime.getURL('/audio-control.html')}${
+                props.darkMode ? '?darkmode=true' : ''
+              }`}
+              sandbox="allow-same-origin allow-scripts"
+            />
+          )}
         </CSSTransition>
       </div>
     </div>
-  )
-}
-
-function renderIframe() {
-  return (
-    <iframe
-      className="waveformBox-Frame"
-      src={browser.runtime.getURL('/audio-control.html')}
-      sandbox="allow-same-origin allow-scripts"
-    />
   )
 }

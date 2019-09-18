@@ -9,6 +9,7 @@ const mapStateToProps = (
   state: StoreState
 ): Omit<WaveformBoxProps, Dispatchers> => {
   return {
+    darkMode: state.config.darkMode,
     isExpand: state.isExpandWaveformBox
   }
 }
