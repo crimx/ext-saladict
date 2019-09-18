@@ -67,7 +67,7 @@ export const Popup: FC<PopupProps> = props => {
   }, [])
 
   return (
-    <div className="popup-root">
+    <div className={`popup-root${config.darkMode ? ' dark-mode' : ''}`}>
       <DictPanelStandaloneContainer width={450} height={dictPanelHeight} />
       <div
         className="switch-container"
@@ -140,7 +140,12 @@ export const Popup: FC<PopupProps> = props => {
               className="qrcode-panel"
               onMouseLeave={() => setCurrentTabUrl('')}
             >
-              <QRCode value={currentTabUrl} size={250} />
+              <QRCode
+                value={currentTabUrl}
+                size={250}
+                bgColor={config.darkMode ? '#ddd' : '#fff'}
+                fgColor="#222"
+              />
               <p className="qrcode-panel-title">
                 {isShowUrlBox ? (
                   <input

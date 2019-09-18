@@ -39,7 +39,8 @@ module.exports = {
               '19': 'assets/icon-19.png',
               '38': 'assets/icon-38.png'
             }
-          }
+          },
+          setup: 'popup/__fake__/env.ts'
         }
       },
 
