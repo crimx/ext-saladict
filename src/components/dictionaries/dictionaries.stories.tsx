@@ -168,6 +168,7 @@ function Dict(props: {
       dictID={props.dictID}
       fontSize={props.fontSize}
       withAnimation={props.withAnimation}
+      panelCSS={''}
       preferredHeight={number('Preferred Height', 256)}
       searchStatus={status}
       searchResult={result}

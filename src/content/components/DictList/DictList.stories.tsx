@@ -41,6 +41,7 @@ storiesOf('Content Scripts|Dict Panel', module)
     <DictList
       fontSize={number('Font Size', 13)}
       withAnimation={boolean('Enable Animation', true)}
+      panelCSS={''}
       dicts={[...Array(faker.random.number({ min: 3, max: 10 }))].map(() => ({
         ...faker.random.arrayElement(dicts),
         searchStatus: faker.random.arrayElement(searchStatus),
@@ -54,6 +55,7 @@ storiesOf('Content Scripts|Dict Panel', module)
       searchText={action('Search Text')}
       openDictSrcPage={action('Open Dict Source Page')}
       onHeightChanged={action('Height Changed')}
+      onSpeakerPlay={async src => action('Speaker Play')(src)}
     />
   ))
 

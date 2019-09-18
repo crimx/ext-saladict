@@ -46,6 +46,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
           profiles[0].id
         )}
         onHeightChanged={action('Height Changed')}
+        onProfileChanged={action('Profile Changed')}
       />
     )
   })

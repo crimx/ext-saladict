@@ -32,6 +32,7 @@ storiesOf('Content Scripts|Dict Panel', module)
         dictID="baidu"
         fontSize={fontSize}
         withAnimation={withAnimation}
+        panelCSS={''}
         preferredHeight={number('Preferred Height', 256)}
         searchStatus={select(
           'Search Status',
@@ -51,6 +52,7 @@ storiesOf('Content Scripts|Dict Panel', module)
         searchText={action('Search Text')}
         openDictSrcPage={action('Open Dict Source Page')}
         onHeightChanged={action('Height Changed')}
+        onSpeakerPlay={async src => action('Speaker Play')(src)}
       />
     )
   })
