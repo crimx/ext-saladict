@@ -2,7 +2,7 @@
 
 .dictItem {
   position: relative;
-  background: var(--panel-background-color);
+  background: var(--color-background);
 }
 
 .dictItem-Body {
@@ -12,7 +12,7 @@
   padding-right: 5px;
   font-size: 13px;
   line-height: 1.6;
-  color: var(--panel-color);
+  color: var(--color-font);
 }
 
 .dictItem-BodyMesure {
@@ -68,33 +68,17 @@
   border: none;
   background: linear-gradient(
     transparent 40%,
-    rgba(255, 255, 255, 0.3) 60%,
-    rgba(255, 255, 255, 0.9) 100%
+    rgba(var(--color-rgb-background), 0.5) 60%,
+    var(--color-background) 100%
   );
+  opacity: 0.6;
   cursor: pointer;
   user-select: none;
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      transparent 40%,
-      rgba(225, 225, 225, 0.2) 60%,
-      rgba(225, 225, 225, 0.7) 100%
-    );
-    opacity: 0;
-  }
 
   &:hover {
     outline: none;
 
-    &::after {
-      opacity: 1;
-    }
+    opacity: 1;
   }
 }
 
@@ -107,7 +91,7 @@
   margin: 0 auto;
   width: 15px;
   height: 15px;
-  fill: #000;
+  fill: var(--color-font);
 }
 
 /*-----------------------------------------------*\
@@ -138,8 +122,7 @@
     }
   }
 
-  .dictItem-FoldMask::after {
-    will-change: opacity;
+  .dictItem-FoldMask {
     transition: opacity 400ms;
   }
 

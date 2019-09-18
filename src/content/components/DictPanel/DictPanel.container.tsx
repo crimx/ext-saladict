@@ -26,6 +26,8 @@ const mapStateToProps = (
     height: state.panelHeight,
     maxHeight: state.panelMaxHeight,
     withAnimation: state.config.animation,
+    darkMode: state.config.darkMode,
+    colors: state.colors,
     menuBar,
     mtaBox,
     dictList,

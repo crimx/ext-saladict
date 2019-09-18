@@ -70,7 +70,14 @@ export const initState = () => {
     historyIndex: 0,
     /** Record init coordinate on dragstart */
     dragStartCoord: null as null | { x: number; y: number },
-    lastPlayAudio: null as null | { src: string; timestamp: number }
+    lastPlayAudio: null as null | { src: string; timestamp: number },
+    colors: {
+      brand: '#5caf9e',
+      background: '#fff',
+      backgroundRGB: '255, 255, 255',
+      font: '#333',
+      divider: '#ddd'
+    }
   }
 }
 export default initState
