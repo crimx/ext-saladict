@@ -138,16 +138,29 @@ async function fetchWithToken(
   }
 
   if (tk) {
-    const params = new URLSearchParams(
-      `?client=t&hl=en&dt=at&dt=bd&dt=ex&dt=ld&dt=md&dt=qca&dt=rw&dt=rm&dt=ss&dt=t&ie=UTF-8&oe=UTF-8&otf=1&ssel=0&tsel=0&kc=5`
-    )
-    params.append('sl', sl)
-    params.append('tl', tl)
-    params.append('tk', tk)
-    params.append('q', text)
-
     const json = await fetchPlainText(`${base}/translate_a/single`, {
-      params
+      params: new URLSearchParams([
+        ['client', 'webapp'],
+        ['sl', sl],
+        ['tl', tl],
+        ['hl', 'en'],
+        ['dt', 'at'],
+        ['dt', 'bd'],
+        ['dt', 'ex'],
+        ['dt', 'ld'],
+        ['dt', 'md'],
+        ['dt', 'qca'],
+        ['dt', 'rw'],
+        ['dt', 'rm'],
+        ['dt', 'ss'],
+        ['dt', 't'],
+        ['source', 'bh'],
+        ['ssel', '0'],
+        ['tsel', '0'],
+        ['kc', '1'],
+        ['tk', tk],
+        ['q', text]
+      ])
     })
 
     return { json, base, sl, tl, tk1, tk2, text }
