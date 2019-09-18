@@ -29,6 +29,8 @@ import { isInternalPage } from '@/_helpers/saladict'
 import WordCards from './WordCards'
 
 export interface WordEditorPanelProps {
+  colors: React.CSSProperties
+
   word: Word | null
   /** dicts to translate context */
   ctxTrans: AppConfig['ctxTrans']
@@ -87,7 +89,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
   })
 
   return (
-    <div className="wordEditor-Panel">
+    <div className="wordEditor-Panel" style={props.colors}>
       <header className="wordEditor-Header">
         <h1 className="wordEditor-Title">{t('content:wordEditor.title')}</h1>
         <button

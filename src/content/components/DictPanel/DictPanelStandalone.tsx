@@ -7,13 +7,7 @@ export interface DictPanelStandaloneProps {
 
   withAnimation: boolean
   darkMode: boolean
-  colors: {
-    brand: string
-    background: string
-    backgroundRGB: string
-    font: string
-    divider: string
-  }
+  colors: React.CSSProperties
 
   menuBar: ReactNode
   mtaBox: ReactNode
@@ -29,15 +23,9 @@ export const DictPanelStandalone: FC<DictPanelStandaloneProps> = props => {
         (props.withAnimation ? ' isAnimate' : '')
       }
       style={{
+        ...props.colors,
         width: props.width,
         height: props.height,
-        backgroundColor: props.colors.background,
-        color: props.colors.font,
-        '--color-brand': props.colors.brand,
-        '--color-background': props.colors.background,
-        '--color-rgb-background': props.colors.backgroundRGB,
-        '--color-font': props.colors.font,
-        '--color-divider': props.colors.divider,
         '--panel-width': props.width + 'px',
         '--panel-max-height': props.height + 'px'
       }}

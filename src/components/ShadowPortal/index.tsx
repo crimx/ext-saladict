@@ -16,7 +16,7 @@ export interface ShadowPortalProps extends Partial<CSSTransitionProps> {
   /** Static content before the children  */
   head?: ReactNode
   shadowRootClassName?: string
-  panelCSS: string
+  panelCSS?: string
 }
 
 /**
