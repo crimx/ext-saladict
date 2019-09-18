@@ -170,3 +170,39 @@ $switch-button-height: 35px;
   opacity: 1;
   transition: opacity 0.5s;
 }
+
+.dark-mode {
+  background: #222;
+
+  .switch-container {
+    background: #414141;
+  }
+
+  .active-switch {
+    border-bottom-color: #666;
+  }
+
+  .switch-title {
+    color: #ddd;
+  }
+
+  .icon-qrcode {
+    fill: #ddd;
+  }
+
+  .btn-switch + label:before {
+    background-color: #666;
+  }
+
+  .btn-switch:checked + label:before {
+    background-color: #8ce196;
+  }
+
+  .btn-switch + label:after {
+    background-color: #ddd;
+  }
+
+  .qrcode-panel {
+    background-color: #ddd;
+  }
+}
