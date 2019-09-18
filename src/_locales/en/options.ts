@@ -110,6 +110,7 @@ export const locale: typeof _locale = {
     ctx_trans: 'Context Translate Engines',
     ctx_trans_help:
       'Context sentence will be translated before being added to notebook.',
+    dark_mode: 'Dark Mode',
     dictPanel: {
       custom_css: 'Custom Dict Panel Styles',
       custom_css_help:

@@ -102,6 +102,7 @@ export const locale = {
     context_menus_add_rules: '链接中的 %s 会被替换为选词。',
     ctx_trans: '上下文翻译引擎',
     ctx_trans_help: '单词被添加进生词本前会自动翻译上下文。',
+    dark_mode: '黑暗模式',
     dictPanel: {
       custom_css: '自定义查词面板样式',
       custom_css_help:
