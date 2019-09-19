@@ -495,10 +495,6 @@ div.xpdxpnd > .lr_dct_ent {
   font-size: 22px !important;
 }
 
-.lr_dct_ph > span:first-child:before {
-  content: '/';
-}
-
 .lr_dct_spkr {
   height: 16px;
   width: 16px;
@@ -514,10 +510,6 @@ div.xpdxpnd > .lr_dct_ent {
 
 .lr_dct_spkr_off {
   opacity: 0.55;
-}
-
-.lr_dct_sf_h {
-  padding-top: 10px;
 }
 
 .lr_dct_sf_sen {
@@ -943,7 +935,6 @@ a.aciXEb {
 }
 
 .vk_gy {
-  margin: 5px;
   color: #5a5a5a !important;
 }
 
@@ -958,6 +949,15 @@ a.aciXEb {
   display: none !important;
 }
 
-.saladict-StaticSpeaker {
-  margin: 0 5px;
+.lr_dct_tg_trns {
+  padding-left: 1em;
+}
+
+.lr_dct_sf_h {
+  padding-top: 10px;
+}
+
+.saladict-Speaker {
+  float: left;
+  margin-top: 10px;
 }
