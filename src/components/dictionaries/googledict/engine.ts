@@ -3,7 +3,6 @@ import {
   handleNoResult,
   getInnerHTML,
   removeChild,
-  decodeHEX,
   removeChildren,
   handleNetWorkError,
   SearchFunction,
@@ -15,7 +14,7 @@ import { getStaticSpeaker } from '@/components/Speaker'
 import { fetchPlainText } from '@/_helpers/fetch-dom'
 
 export const getSrcPage: GetSrcPageFunction = text => {
-  return `https://www.google.com.hk/search?q=define+${text}`
+  return `https://www.google.com.hk/search?hl=en&safe=off&q=define:${text}`
 }
 
 export interface GoogleDictResult {
@@ -34,7 +33,7 @@ export const search: SearchFunction<GoogleDictResult> = async (
     ? 'hl=en&gl=en&'
     : ''
   const bodyText = await fetchPlainText(
-    `https://www.google.com/search?${isen}q=define+` +
+    `https://www.google.com/search?hl=en&safe=off&${isen}q=define:` +
       encodeURIComponent(text.replace(/\s+/g, '+'))
   ).catch(handleNetWorkError)
 
@@ -46,7 +45,7 @@ function handleDOM(
 ): GoogleDictSearchResult | Promise<GoogleDictSearchResult> {
   const doc = new DOMParser().parseFromString(bodyText, 'text/html')
 
-  const $obcontainer = doc.querySelector('.obcontainer')
+  const $obcontainer = doc.querySelector('.lr_container')
   if ($obcontainer) {
     $obcontainer.querySelectorAll<HTMLDivElement>('.vkc_np').forEach($block => {
       if (
@@ -59,36 +58,34 @@ function handleDOM(
     })
 
     removeChildren($obcontainer, '.lr_dct_trns_h') // other Translate to blocks
+    removeChildren($obcontainer, '.S5TwIf') // Learn to pronounce
+    removeChildren($obcontainer, '.VZVCid') // From Oxford
+    removeChildren($obcontainer, '.u7XA4b') // footer
+
+    // tts
+    $obcontainer.querySelectorAll('.r3WG9c').forEach($div => {
+      const $source = $div.querySelector('audio source')
+      if ($source) {
+        const src = getFullLink('https://ssl.gstatic.com', $source, 'src')
+        if (src) {
+          $div.replaceWith(getStaticSpeaker(src))
+          return
+        }
+      }
+      $div.remove()
+    })
 
     $obcontainer.querySelectorAll('g-img').forEach($gimg => {
       const $img = $gimg.querySelector('img')
-      const $parent = $gimg.parentElement
-      if (!$parent || !$img) {
-        return
+      if ($img && $img.id) {
+        const srcMatch = bodyText.match(new RegExp(`"${$img.id}":"([^"]+)"`))
+        if (srcMatch) {
+          $img.setAttribute('src', decodeURI(srcMatch[1]))
+          $gimg.replaceWith($img)
+          return
+        }
       }
-
-      $parent.replaceChild($img, $gimg)
-      const id = $img.id
-      if (!id) {
-        return
-      }
-
-      const src = (bodyText.match(
-        new RegExp(`'(data:image[^']+)';[^']+?'${id}'`)
-      ) || ['', ''])[1]
-      if (!src) {
-        return
-      }
-
-      $img.setAttribute('src', decodeHEX(src))
-    })
-
-    $obcontainer.querySelectorAll('.lr_dct_spkr').forEach($speaker => {
-      const $audio = $speaker.querySelector('audio')
-      if ($audio) {
-        const src = getFullLink('https://www.google.com', $audio, 'src')
-        $speaker.replaceWith(getStaticSpeaker(src))
-      }
+      $gimg.remove()
     })
 
     removeChild($obcontainer, '.jFHKNd')
