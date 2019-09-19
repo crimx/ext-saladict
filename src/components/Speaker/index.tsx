@@ -43,6 +43,8 @@ export interface StaticSpeakerContainerProps
 export const StaticSpeakerContainer: FC<
   StaticSpeakerContainerProps
 > = props => {
+  const { onPlayStart, ...restProps } = props
+
   const onClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (
@@ -58,19 +60,15 @@ export const StaticSpeakerContainer: FC<
         const target = e.target as HTMLAnchorElement
         target.classList.add('isActive')
 
-        reflect([timer(1000), props.onPlayStart(target.href)]).then(() => {
+        reflect([timer(1000), onPlayStart(target.href)]).then(() => {
           target.classList.remove('isActive')
         })
       }
     },
-    [props.onPlayStart]
+    [onPlayStart]
   )
 
-  return (
-    <div onClick={onClick} {...props}>
-      {props.children}
-    </div>
-  )
+  return <div onClick={onClick} {...restProps} />
 }
 
 /**
