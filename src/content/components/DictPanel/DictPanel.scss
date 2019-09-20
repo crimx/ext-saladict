@@ -24,6 +24,8 @@
   -webkit-overflow-scrolling: touch;
 }
 
+@import '@/_sass_global/_fancy-scrollbar.scss';
+
 @import '../MenuBar/MenuBar.scss';
 @import '../MtaBox/MtaBox.scss';
 @import '../DictList/DictList.scss';
