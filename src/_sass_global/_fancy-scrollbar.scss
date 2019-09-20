@@ -12,7 +12,8 @@ $scrollbar-color-active: rgba(138, 138, 138, 0.6);
   -webkit-overflow-scrolling: touch;
   -ms-overflow-style: -ms-autohiding-scrollbar;
   scrollbar-width: $scrollbar-ff-width;
-  scrollbar-color: $scrollbar-color $scrollbar-track-color;
+  // Firefox has incorrect track color
+  // scrollbar-color: $scrollbar-color $scrollbar-track-color;
 
   &::-webkit-scrollbar {
     height: $scrollbar-size;
