@@ -134,12 +134,10 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
 
     if (options.color) {
       rootStyles.color = options.color
-      rootStyles['--color-font'] = '#333'
     }
 
     if (options.backgroundColor) {
       rootStyles.backgroundColor = options.backgroundColor
-      rootStyles['--color-background'] = options.backgroundColor
     }
 
     return (

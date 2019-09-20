@@ -17,6 +17,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
   .addParameters({
     backgrounds: [
       { name: 'Saladict', value: '#5caf9e', default: true },
+      { name: 'Dark', value: '#222' },
       { name: 'Black', value: '#000' }
     ]
   })
