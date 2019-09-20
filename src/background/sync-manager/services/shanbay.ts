@@ -181,14 +181,19 @@ export class Service extends SyncService<SyncConfig> {
   notifyLogin() {
     const { langCode } = window.appConfig
 
-    browser.notifications.create('shanbay-login', {
+    const options: browser.notifications.CreateNotificationOptions = {
       type: 'basic',
       iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
       title: `Saladict Sync Service ${Service.title[langCode]}`,
       message: locales.loginCheckFailed[langCode],
-      buttons: [{ title: locales.open[langCode] }],
       eventTime: Date.now() + 10000,
       priority: 2
-    })
+    }
+
+    if (!navigator.userAgent.includes('Firefox')) {
+      options.buttons = [{ title: locales.open[langCode] }]
+    }
+
+    browser.notifications.create('shanbay-login', options)
   }
 }
