@@ -1,0 +1,46 @@
+$scrollbar-size: 8px;
+$scrollbar-ff-width: thin; // FF-only accepts auto, thin, none
+$scrollbar-minlength: 50px; // Minimum length of scrollbar thumb
+$scrollbar-track-color: transparent;
+$scrollbar-color: rgba(138, 138, 138, 0.25);
+$scrollbar-color-hover: rgba(138, 138, 138, 0.35);
+$scrollbar-color-active: rgba(138, 138, 138, 0.6);
+
+.fancy-scrollbar {
+  overscroll-behavior: contain;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+  scrollbar-width: $scrollbar-ff-width;
+  scrollbar-color: $scrollbar-color $scrollbar-track-color;
+
+  &::-webkit-scrollbar {
+    height: $scrollbar-size;
+    width: $scrollbar-size;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $scrollbar-track-color;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $scrollbar-color;
+    border-radius: $scrollbar-size / 2;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: $scrollbar-color-hover;
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background-color: $scrollbar-color-active;
+  }
+
+  &::-webkit-scrollbar-thumb:vertical {
+    min-height: $scrollbar-minlength;
+  }
+
+  &::-webkit-scrollbar-thumb:horizontal {
+    min-width: $scrollbar-minlength;
+  }
+}

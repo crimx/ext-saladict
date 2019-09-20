@@ -1,5 +1,6 @@
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react'
 import { useUpdateEffect } from 'react-use'
+import { getScrollbarWidth } from '@/_helpers/scrollbar-width'
 import { SALADICT_PANEL } from '@/_helpers/saladict'
 
 export interface DictPanelProps {
@@ -118,7 +119,11 @@ export const DictPanel: FC<DictPanelProps> = props => {
       }}
     >
       <div className="dictPanel-Head">{props.menuBar}</div>
-      <div className="dictPanel-Body">
+      <div
+        className={`dictPanel-Body${
+          getScrollbarWidth() > 0 ? ' fancy-scrollbar' : ''
+        }`}
+      >
         {props.mtaBox}
         {props.dictList}
       </div>
