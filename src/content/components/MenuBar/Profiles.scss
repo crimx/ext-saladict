@@ -9,6 +9,7 @@
 .menuBar-ProfileItem {
   position: relative;
   padding-left: 10px;
+  color: var(--color-font);
 
   &.isActive::before {
     content: '';

@@ -5,7 +5,7 @@
   word-break: keep-all;
   white-space: nowrap;
   border-radius: 10px;
-  background: #fff;
+  background: var(--color-background);
   box-shadow: 0px 4px 31px -8px rgba(0, 0, 0, 0.8);
 }
 
@@ -42,13 +42,17 @@
 
   &:hover,
   &:focus {
-    background: #eee;
+    background: rgba(215, 214, 214, 0.25);
   }
 }
 
 .menuBar-FloatBoxEntry {
   margin-right: 1.5em;
   color: #f9690e;
+}
+
+.menuBar-SuggestsExplain {
+  color: var(--color-font);
 }
 
 .isAnimate {
