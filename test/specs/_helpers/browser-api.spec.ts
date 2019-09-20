@@ -1,7 +1,7 @@
 import { message, storage, openURL } from '@/_helpers/browser-api'
-import { AppConfig } from '@/app-config'
 import { take } from 'rxjs/operators'
-import { MsgType } from '@/typings/message'
+import { browser } from '../../helper'
+import { Message } from '@/typings/message'
 
 describe('Browser API Wapper', () => {
   beforeEach(() => {
@@ -37,7 +37,9 @@ describe('Browser API Wapper', () => {
         expect(browser.storage[area].set.calledWith(key)).toBeTruthy()
       })
       describe(`storage.${area}.addListener`, () => {
-        const changes = { key: { newValue: 'new value', oldValue: 'old value' } }
+        const changes = {
+          key: { newValue: 'new value', oldValue: 'old value' }
+        }
         const otherArea = storageArea.find(x => x !== area)
 
         it('with cb', () => {
@@ -71,8 +73,9 @@ describe('Browser API Wapper', () => {
         })
       })
       describe(`storage.${area}.removeListener`, () => {
-        const changes = { key: { newValue: 'new value', oldValue: 'old value' } }
-        const otherArea = storageArea.find(x => x !== area)
+        const changes = {
+          key: { newValue: 'new value', oldValue: 'old value' }
+        }
 
         it('with cb remove addListener with cb', () => {
           const cb = jest.fn()
@@ -81,14 +84,18 @@ describe('Browser API Wapper', () => {
 
           // won't affect cb
           storage[area].removeListener('key', cb)
-          expect(browser.storage.onChanged.removeListener.calledOnce).toBeTruthy()
+          expect(
+            browser.storage.onChanged.removeListener.calledOnce
+          ).toBeTruthy()
 
           browser.storage.onChanged.dispatch(changes, area)
           expect(cb).toHaveBeenCalledTimes(++cbCall)
           expect(cb).toBeCalledWith(changes, area)
 
           storage[area].removeListener(cb)
-          expect(browser.storage.onChanged.removeListener.calledTwice).toBeTruthy()
+          expect(
+            browser.storage.onChanged.removeListener.calledTwice
+          ).toBeTruthy()
 
           browser.storage.onChanged.dispatch(changes, area)
           expect(cb).toHaveBeenCalledTimes(cbCall)
@@ -107,7 +114,9 @@ describe('Browser API Wapper', () => {
           expect(cb).toBeCalledWith(changes, area)
 
           storage[area].removeListener(cb)
-          expect(browser.storage.onChanged.removeListener.calledOnce).toBeTruthy()
+          expect(
+            browser.storage.onChanged.removeListener.calledOnce
+          ).toBeTruthy()
 
           browser.storage.onChanged.dispatch(changes, area)
           expect(cb).toHaveBeenCalledTimes(cbCall)
@@ -123,14 +132,18 @@ describe('Browser API Wapper', () => {
 
           // won't affect key + cb
           storage[area].removeListener('badkey', cb)
-          expect(browser.storage.onChanged.removeListener.calledOnce).toBeTruthy()
+          expect(
+            browser.storage.onChanged.removeListener.calledOnce
+          ).toBeTruthy()
 
           browser.storage.onChanged.dispatch(changes, area)
           expect(cb).toHaveBeenCalledTimes(++cbCall)
           expect(cb).toBeCalledWith(changes, area)
 
           storage[area].removeListener('key', cb)
-          expect(browser.storage.onChanged.removeListener.calledTwice).toBeTruthy()
+          expect(
+            browser.storage.onChanged.removeListener.calledTwice
+          ).toBeTruthy()
 
           browser.storage.onChanged.dispatch(changes, area)
           expect(cb).toHaveBeenCalledTimes(cbCall)
@@ -140,14 +153,17 @@ describe('Browser API Wapper', () => {
         })
       })
       describe(`storage.${area}.createStream`, () => {
-        const changes = { key: { newValue: 'new value', oldValue: 'old value' } }
+        const changes = {
+          key: { newValue: 'new value', oldValue: 'old value' }
+        }
         const otherArea = storageArea.find(x => x !== area)
 
         it('with key', () => {
           const nextStub = jest.fn()
           const errorStub = jest.fn()
           const completeStub = jest.fn()
-          storage[area].createStream<typeof changes.key>('key')
+          storage[area]
+            .createStream<typeof changes.key>('key')
             .pipe(take(1))
             .subscribe(nextStub, errorStub, completeStub)
           expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
@@ -199,7 +215,9 @@ describe('Browser API Wapper', () => {
         expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
         expect(cb).toHaveBeenCalledTimes(cbCall)
 
-        const changes = { key: { newValue: 'new value', oldValue: 'old value' } }
+        const changes = {
+          key: { newValue: 'new value', oldValue: 'old value' }
+        }
         const otherChanges = { otherKey: 'other value' }
         storageArea.forEach(area => {
           browser.storage.onChanged.dispatch(changes, area)
@@ -259,7 +277,9 @@ describe('Browser API Wapper', () => {
         })
 
         storage.removeListener('key', cb)
-        expect(browser.storage.onChanged.removeListener.calledTwice).toBeTruthy()
+        expect(
+          browser.storage.onChanged.removeListener.calledTwice
+        ).toBeTruthy()
 
         storageArea.forEach(area => {
           browser.storage.onChanged.dispatch(changes, area)
@@ -270,14 +290,19 @@ describe('Browser API Wapper', () => {
       })
     })
     describe(`storage.createStream`, () => {
-      const changes1 = { key1: { newValue: 'new value', oldValue: 'old value' } }
-      const changes2 = { key2: { newValue: 'new value', oldValue: 'old value' } }
+      const changes1 = {
+        key1: { newValue: 'new value', oldValue: 'old value' }
+      }
+      const changes2 = {
+        key2: { newValue: 'new value', oldValue: 'old value' }
+      }
 
       it('with key', () => {
         const nextStub = jest.fn()
         const errorStub = jest.fn()
         const completeStub = jest.fn()
-        storage.createStream<typeof changes2.key2>('key2')
+        storage
+          .createStream<typeof changes2.key2>('key2')
           .pipe(take(1))
           .subscribe(nextStub, errorStub, completeStub)
         expect(browser.storage.onChanged.addListener.calledOnce).toBeTruthy()
@@ -302,7 +327,7 @@ describe('Browser API Wapper', () => {
   describe('Message', () => {
     it('message.send', () => {
       const tabId = 1
-      const msg = { type: 1 }
+      const msg: Message = { type: 'OPEN_QS_PANEL' }
 
       message.send(msg)
       expect(browser.runtime.sendMessage.calledWith(msg)).toBeTruthy()
@@ -323,16 +348,16 @@ describe('Browser API Wapper', () => {
       let cb1Call = 0
       let cb2Call = 0
       message.addListener(cb1)
-      message.addListener(1, cb2)
+      message.addListener('OPEN_QS_PANEL', cb2)
       expect(browser.runtime.onMessage.addListener.calledTwice).toBeTruthy()
       expect(cb1).toHaveBeenCalledTimes(cb1Call)
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
 
-      browser.runtime.onMessage.dispatch({ type: 2 })
+      browser.runtime.onMessage.dispatch({ type: 'CLOSE_QS_PANEL' })
       expect(cb1).toHaveBeenCalledTimes(++cb1Call)
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
 
-      browser.runtime.onMessage.dispatch({ type: 1 })
+      browser.runtime.onMessage.dispatch({ type: 'OPEN_QS_PANEL' })
       expect(cb1).toHaveBeenCalledTimes(++cb1Call)
       expect(cb2).toHaveBeenCalledTimes(++cb2Call)
     })
@@ -341,23 +366,23 @@ describe('Browser API Wapper', () => {
       const cb2 = jest.fn()
       let cb1Call = 0
       let cb2Call = 0
-      message.addListener(1, cb1)
-      message.addListener(2, cb2)
-      browser.runtime.onMessage.dispatch({ type: 1 })
+      message.addListener('OPEN_QS_PANEL', cb1)
+      message.addListener('CLOSE_QS_PANEL', cb2)
+      browser.runtime.onMessage.dispatch({ type: 'OPEN_QS_PANEL' })
       expect(cb1).toHaveBeenCalledTimes(++cb1Call)
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
 
-      message.removeListener(-1, cb1)
+      message.removeListener('QUERY_QS_PANEL', cb1)
       message.removeListener(cb2)
       expect(browser.runtime.onMessage.removeListener.calledTwice).toBeTruthy()
 
-      browser.runtime.onMessage.dispatch({ type: 1 })
-      browser.runtime.onMessage.dispatch({ type: 2 })
+      browser.runtime.onMessage.dispatch({ type: 'OPEN_QS_PANEL' })
+      browser.runtime.onMessage.dispatch({ type: 'CLOSE_QS_PANEL' })
       expect(cb1).toHaveBeenCalledTimes(++cb1Call)
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
 
-      message.removeListener(1, cb1)
-      browser.runtime.onMessage.dispatch({ type: 1 })
+      message.removeListener('OPEN_QS_PANEL', cb1)
+      browser.runtime.onMessage.dispatch({ type: 'OPEN_QS_PANEL' })
       expect(cb1).toHaveBeenCalledTimes(cb1Call)
     })
     describe('message.createStream', () => {
@@ -365,7 +390,8 @@ describe('Browser API Wapper', () => {
         const nextStub = jest.fn()
         const errorStub = jest.fn()
         const completeStub = jest.fn()
-        message.createStream()
+        message
+          .createStream()
           .pipe(take(2))
           .subscribe(nextStub, errorStub, completeStub)
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
@@ -390,7 +416,8 @@ describe('Browser API Wapper', () => {
         const nextStub = jest.fn()
         const errorStub = jest.fn()
         const completeStub = jest.fn()
-        message.createStream(1)
+        message
+          .createStream('OPEN_QS_PANEL')
           .pipe(take(1))
           .subscribe(nextStub, errorStub, completeStub)
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
@@ -398,58 +425,59 @@ describe('Browser API Wapper', () => {
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 2 })
+        browser.runtime.onMessage.dispatch({ type: 'CLOSE_QS_PANEL' })
         expect(nextStub).toHaveBeenCalledTimes(0)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 1 })
+        browser.runtime.onMessage.dispatch({ type: 'OPEN_QS_PANEL' })
         expect(nextStub).toHaveBeenCalledTimes(1)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(1)
-        expect(nextStub).toBeCalledWith({ type: 1 })
+        expect(nextStub).toBeCalledWith({ type: 'OPEN_QS_PANEL' })
       })
     })
 
     it('message.self.initClient', () => {
-      browser.runtime.sendMessage
-        .withArgs({ type: MsgType.__PageInfo__ })
-        .returns(Promise.resolve({
+      browser.runtime.sendMessage.withArgs({ type: 'PAGE_INFO' }).returns(
+        Promise.resolve({
           pageId: 'pageId',
           faviconURL: 'faviconURL',
           pageTitle: 'pageTitle',
-          pageURL: 'pageURL',
-        }))
-      return message.self.initClient()
-        .then(() => {
-          expect(browser.runtime.sendMessage.calledWith({ type: MsgType.__PageInfo__ })).toBeTruthy()
-          expect(window.pageId).toBe('pageId')
-          expect(window.faviconURL).toBe('faviconURL')
-          expect(window.pageTitle).toBe('pageTitle')
-          expect(window.pageURL).toBe('pageURL')
+          pageURL: 'pageURL'
         })
+      )
+      return message.self.initClient().then(() => {
+        expect(
+          browser.runtime.sendMessage.calledWith({ type: 'PAGE_INFO' })
+        ).toBeTruthy()
+        expect(window.pageId).toBe('pageId')
+        expect(window.faviconURL).toBe('faviconURL')
+        expect(window.pageTitle).toBe('pageTitle')
+        expect(window.pageURL).toBe('pageURL')
+      })
     })
     describe('message.self.initServer', () => {
       const tab = {
         id: 1,
         favIconUrl: 'https://example.com/favIconUrl',
         url: 'https://example.com/url',
-        title: 'title',
+        title: 'title'
       }
 
       it('From tab', done => {
         message.self.initServer()
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
 
-        const sendResponse = jest.fn()
-        browser.runtime.onMessage['_listeners'][0]({ type: MsgType.__PageInfo__ }, { tab })
+        browser.runtime.onMessage['_listeners']
+          [0]({ type: 'PAGE_INFO' }, { tab })
           .then(response => {
-            expect(response).toEqual(({
+            expect(response).toEqual({
               pageId: tab.id,
               faviconURL: tab.favIconUrl,
               pageTitle: tab.title,
-              pageURL: tab.url,
-            }))
+              pageURL: tab.url
+            })
             done()
           })
       })
@@ -459,11 +487,12 @@ describe('Browser API Wapper', () => {
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
 
         const sendResponse = jest.fn()
-        browser.runtime.onMessage['_listeners'][0]({ type: MsgType.__PageInfo__ }, {}, sendResponse)
-        .then(response => {
-          expect(response).toHaveProperty('pageId', 'popup')
-          done()
-        })
+        browser.runtime.onMessage['_listeners']
+          [0]({ type: 'PAGE_INFO' }, {}, sendResponse)
+          .then(response => {
+            expect(response).toHaveProperty('pageId', 'popup')
+            done()
+          })
       })
 
       it('Self page message transmission', () => {
@@ -471,24 +500,36 @@ describe('Browser API Wapper', () => {
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
 
         browser.runtime.onMessage.dispatch({ type: '[[1]]', __pageId__: 1 }, {})
-        expect(browser.runtime.sendMessage.calledWith({ type: 1, __pageId__: 1 })).toBeTruthy()
+        expect(
+          browser.runtime.sendMessage.calledWith({ type: '1', __pageId__: 1 })
+        ).toBeTruthy()
         browser.runtime.sendMessage.resetHistory()
 
-        browser.runtime.onMessage.dispatch({ type: '[[1]]', __pageId__: 1 }, { tab })
-        expect(browser.tabs.sendMessage.calledWith(tab.id, { type: 1, __pageId__: 1 })).toBeTruthy()
+        browser.runtime.onMessage.dispatch(
+          { type: '[[1]]', __pageId__: 1 },
+          { tab }
+        )
+        expect(
+          browser.tabs.sendMessage.calledWith(tab.id, {
+            type: '1',
+            __pageId__: 1
+          })
+        ).toBeTruthy()
       })
     })
     it('message.self.send', () => {
       window.pageId = 1
       message.self.send({
-        type: 1,
-        prop: 'value',
+        type: 'QUERY_PANEL_STATE',
+        payload: 'value'
       })
-      expect(browser.runtime.sendMessage.calledWith({
-        type: '[[1]]',
-        __pageId__: window.pageId,
-        prop: 'value',
-      })).toBeTruthy()
+      expect(
+        browser.runtime.sendMessage.calledWith({
+          type: '[[QUERY_PANEL_STATE]]',
+          __pageId__: window.pageId,
+          payload: 'value'
+        })
+      ).toBeTruthy()
     })
     it('message.self.addListener', () => {
       window.pageId = 1
@@ -510,7 +551,10 @@ describe('Browser API Wapper', () => {
       expect(cb1).toHaveBeenCalledTimes(cb1Call)
       expect(cb2).toHaveBeenCalledTimes(++cb2Call)
 
-      browser.runtime.onMessage.dispatch({ type: 1, __pageId__: window.pageId + 2 })
+      browser.runtime.onMessage.dispatch({
+        type: 1,
+        __pageId__: window.pageId + 2
+      })
       expect(cb1).toHaveBeenCalledTimes(cb1Call)
       expect(cb2).toHaveBeenCalledTimes(cb2Call)
     })
@@ -534,7 +578,8 @@ describe('Browser API Wapper', () => {
         const nextStub = jest.fn()
         const errorStub = jest.fn()
         const completeStub = jest.fn()
-        message.self.createStream()
+        message.self
+          .createStream()
           .pipe(take(2))
           .subscribe(nextStub, errorStub, completeStub)
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
@@ -542,13 +587,19 @@ describe('Browser API Wapper', () => {
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 1, __pageId__: window.pageId })
+        browser.runtime.onMessage.dispatch({
+          type: 1,
+          __pageId__: window.pageId
+        })
         expect(nextStub).toHaveBeenCalledTimes(1)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
         expect(nextStub).toBeCalledWith({ type: 1, __pageId__: window.pageId })
 
-        browser.runtime.onMessage.dispatch({ type: 2, __pageId__: window.pageId })
+        browser.runtime.onMessage.dispatch({
+          type: 2,
+          __pageId__: window.pageId
+        })
         expect(nextStub).toHaveBeenCalledTimes(2)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(1)
@@ -560,7 +611,8 @@ describe('Browser API Wapper', () => {
         const nextStub = jest.fn()
         const errorStub = jest.fn()
         const completeStub = jest.fn()
-        message.self.createStream(1)
+        message.self
+          .createStream('OPEN_QS_PANEL')
           .pipe(take(1))
           .subscribe(nextStub, errorStub, completeStub)
         expect(browser.runtime.onMessage.addListener.calledOnce).toBeTruthy()
@@ -568,16 +620,25 @@ describe('Browser API Wapper', () => {
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 2, __pageId__: window.pageId })
+        browser.runtime.onMessage.dispatch({
+          type: 'CLOSE_QS_PANEL',
+          __pageId__: window.pageId
+        })
         expect(nextStub).toHaveBeenCalledTimes(0)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(0)
 
-        browser.runtime.onMessage.dispatch({ type: 1, __pageId__: window.pageId })
+        browser.runtime.onMessage.dispatch({
+          type: 'OPEN_QS_PANEL',
+          __pageId__: window.pageId
+        })
         expect(nextStub).toHaveBeenCalledTimes(1)
         expect(errorStub).toHaveBeenCalledTimes(0)
         expect(completeStub).toHaveBeenCalledTimes(1)
-        expect(nextStub.mock.calls[0][0]).toEqual({ type: 1, __pageId__: window.pageId })
+        expect(nextStub.mock.calls[0][0]).toEqual({
+          type: 'OPEN_QS_PANEL',
+          __pageId__: window.pageId
+        })
       })
     })
   })
@@ -585,36 +646,37 @@ describe('Browser API Wapper', () => {
     const url = 'https://example.com'
 
     it('Existing tab', () => {
-      browser.tabs.query.returns(Promise.resolve(
-        [{
-          windowId: 10,
-          index: 1
-        }]
-      ))
-      return openURL(url)
-        .then(() => {
-          expect(browser.tabs.query.calledWith({ url })).toBeTruthy()
-          expect(browser.tabs.highlight.calledWith({ tabs: 1, windowId: 10 })).toBeTruthy()
-          expect(browser.tabs.create.notCalled).toBeTruthy()
-        })
+      browser.tabs.query.returns(
+        Promise.resolve([
+          {
+            windowId: 10,
+            index: 1
+          }
+        ])
+      )
+      return openURL(url).then(() => {
+        expect(browser.tabs.query.calledWith({ url })).toBeTruthy()
+        expect(
+          browser.tabs.highlight.calledWith({ tabs: 1, windowId: 10 })
+        ).toBeTruthy()
+        expect(browser.tabs.create.notCalled).toBeTruthy()
+      })
     })
     it('New tab', () => {
       browser.tabs.query.returns(Promise.resolve([]))
-      return openURL(url)
-        .then(() => {
-          expect(browser.tabs.query.calledWith({ url })).toBeTruthy()
-          expect(browser.tabs.highlight.notCalled).toBeTruthy()
-          expect(browser.tabs.create.calledWith({ url })).toBeTruthy()
-        })
+      return openURL(url).then(() => {
+        expect(browser.tabs.query.calledWith({ url })).toBeTruthy()
+        expect(browser.tabs.highlight.notCalled).toBeTruthy()
+        expect(browser.tabs.create.calledWith({ url })).toBeTruthy()
+      })
     })
     it('Concat extension base url', () => {
       browser.tabs.query.returns(Promise.resolve([]))
       browser.runtime.getURL.returns('test')
-      return openURL(url, true)
-        .then(() => {
-          expect(browser.runtime.getURL.calledWith(url)).toBeTruthy()
-          expect(browser.tabs.create.calledWith({ url: 'test' })).toBeTruthy()
-        })
+      return openURL(url, true).then(() => {
+        expect(browser.runtime.getURL.calledWith(url)).toBeTruthy()
+        expect(browser.tabs.create.calledWith({ url: 'test' })).toBeTruthy()
+      })
     })
   })
 })
