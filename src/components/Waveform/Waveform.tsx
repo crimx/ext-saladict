@@ -240,7 +240,7 @@ export class Waveform extends React.PureComponent<
     this.shouldSTSync = false
   }
 
-  load = (src: string) => {
+  load = (src: string, playOnLoad = true) => {
     if (src) {
       if (this.wavesurfer) {
         this.reset()
@@ -251,7 +251,7 @@ export class Waveform extends React.PureComponent<
       if (this.wavesurfer) {
         this.wavesurfer.load(src)
         // https://github.com/katspaugh/wavesurfer.js/issues/1657
-        if (this.wavesurfer.backend.ac.state === 'suspended') {
+        if (this.wavesurfer.backend.ac.state === 'suspended' && playOnLoad) {
           // fallback
           new Audio(src).play()
         }
@@ -269,8 +269,18 @@ export class Waveform extends React.PureComponent<
     message.self
       .send<'LAST_PLAY_AUDIO'>({ type: 'LAST_PLAY_AUDIO' })
       .then(response => {
-        if (response && response.timestamp - Date.now() < 10000) {
+        if (
+          response &&
+          response.src &&
+          response.timestamp - Date.now() < 10000
+        ) {
           this.load(response.src)
+        } else {
+          this.load(
+            // Nothing to play
+            `https://fanyi.sogou.com/reventondc/synthesis?text=Nothing%20to%20play&speed=1&lang=en&from=translateweb`,
+            false
+          )
         }
       })
 
