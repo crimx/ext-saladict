@@ -90,7 +90,8 @@ export const locale: typeof _locale = {
       openFav: 'Add to Notebook',
       openHelp:
         'When clicking the browser action icon in toolbar (next to the address bar). Items are same as Context Menus, which can be added or edited on the Context Menus config page.',
-      openOptions: 'Open Saladict Options'
+      openOptions: 'Open Saladict Options',
+      openStandalone: 'Open Saladict Standalone Panel'
     },
     bowl_hover: 'Mouse Hover',
     bowl_hover_help:

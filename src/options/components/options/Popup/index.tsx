@@ -30,6 +30,9 @@ export class Popup extends React.Component<Props & FormComponentProps> {
               <Select.Option value="popup_options">
                 {t('opt.browserAction.openOptions')}
               </Select.Option>
+              <Select.Option value="popup_standalone">
+                {t('opt.browserAction.openStandalone')}
+              </Select.Option>
               {Object.keys(config.contextMenus.all).map(id => (
                 <Select.Option key={id} value={id}>
                   {t(`menus:${id}`)}

@@ -33,6 +33,9 @@ getConfig().then(config => {
     case 'popup_options':
       openOptions()
       break
+    case 'popup_standalone':
+      message.send({ type: 'OPEN_QS_PANEL' })
+      break
     default:
       sendContextMenusClick(config.baOpen)
       break

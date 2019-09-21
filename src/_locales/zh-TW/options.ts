@@ -86,7 +86,8 @@ export const locale: typeof _locale = {
       openFav: '新增選詞到生字本',
       openHelp:
         '點選網址列旁 Saladict 圖示時發生的操作。沿用了「右鍵選單」的條目，可以前往該設定頁面增加或編輯。',
-      openOptions: '進入 Saladict 設定'
+      openOptions: '進入 Saladict 設定',
+      openStandalone: '開啟快捷查詞獨立視窗'
     },
     bowl_hover: '滑鼠查字',
     bowl_hover_help: '滑鼠暫留在沙拉圖示上開啟字典介面，否則需要點選。',

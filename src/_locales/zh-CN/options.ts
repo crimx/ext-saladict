@@ -84,7 +84,8 @@ export const locale = {
       openFav: '添加选词到生词本',
       openHelp:
         '点击地址栏旁 Saladict 图标时发生的操作。沿用了「右键菜单」的项目，可以前往该设置页面进行增加或编辑。',
-      openOptions: '打开 Saladict 设置'
+      openOptions: '打开 Saladict 设置',
+      openStandalone: '打开快捷查词独立窗口'
     },
     bowl_hover: '悬停查词',
     bowl_hover_help: '鼠标悬停在沙拉图标上触发查词，否则需要点击。',

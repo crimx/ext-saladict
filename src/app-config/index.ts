@@ -219,6 +219,7 @@ function _getDefaultConfig() {
      * 'popup_panel' - show dict panel
      * 'popup_fav' - add selection to notebook
      * 'popup_options' - opten options
+     * 'popup_standalone' - open standalone panel
      * others are same as context menus
      */
     baOpen: 'popup_panel',
