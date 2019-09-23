@@ -260,13 +260,13 @@ function showNews(data: UpdateData) {
           ? `沙拉查词已更新到 ${data.tag_name}`
           : `Saladict has updated to ${data.tag_name}`,
         message,
-        buttons: [{ title: isZh ? '查看更新介绍' : 'More Info' }],
         priority: 2
       } as any
 
       if (window.navigator.userAgent.includes('Firefox')) {
         options.eventTime = Date.now() + 10000
       } else {
+        options.buttons = [{ title: isZh ? '查看更新介绍' : 'More Info' }]
         options.requireInteraction = true
         options.silent = true
       }
