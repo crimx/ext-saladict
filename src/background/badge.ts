@@ -17,30 +17,29 @@ export function initBadge() {
   })
 
   browser.tabs.onActivated.addListener(async ({ tabId }) => {
-    if (tabId) {
-      currentTabInfo.tabId = tabId
-
-      try {
-        const response = await message.send<'GET_TAB_BADGE_INFO'>(tabId, {
-          type: 'GET_TAB_BADGE_INFO'
-        })
-
-        // response is empty if tab is just created
-        if (response) {
-          currentTabInfo.tempDisable = response.tempDisable
-          currentTabInfo.unsupported = response.unsupported
-          updateBadge()
-        }
-
-        return
-      } catch (e) {
-        console.warn(e)
-      }
+    if (!tabId) {
+      currentTabInfo.tempDisable = false
+      currentTabInfo.unsupported = false
+      updateBadge()
+      return
     }
 
-    currentTabInfo.tabId = null
-    currentTabInfo.tempDisable = false
-    currentTabInfo.unsupported = false
+    currentTabInfo.tabId = tabId
+
+    const response = await message
+      .send<'GET_TAB_BADGE_INFO'>(tabId, {
+        type: 'GET_TAB_BADGE_INFO'
+      })
+      .catch(console.warn)
+
+    if (response) {
+      currentTabInfo.tempDisable = response.tempDisable
+      currentTabInfo.unsupported = response.unsupported
+    } else {
+      currentTabInfo.tempDisable = false
+      currentTabInfo.unsupported = true
+    }
+
     updateBadge()
   })
 }
