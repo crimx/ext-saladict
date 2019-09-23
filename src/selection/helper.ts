@@ -37,19 +37,19 @@ export function whenKeyPressed(
 // common editors
 const editorTester = /CodeMirror|ace_editor|monaco-editor/
 
-export function isTypeField(element: Node | null): boolean {
+export function isTypeField(element: Node | EventTarget | null): boolean {
   if (!element || !element['tagName']) {
     return false
   }
 
-  for (let el: Node | null = element; el; el = el.parentElement) {
-    if (el['tagName'] === 'INPUT' || el['tagName'] === 'TEXTAREA') {
+  for (let el: Element | null = element as Element; el; el = el.parentElement) {
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
       return true
     }
 
     // With CodeMirror the `pre.CodeMirror-line` somehow got detached when the event
     // triggerd. So el will never reach the root `.CodeMirror`.
-    if (editorTester.test(String(el['className']))) {
+    if (editorTester.test(String(el.className))) {
       return true
     }
   }
