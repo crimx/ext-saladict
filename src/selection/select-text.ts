@@ -52,7 +52,12 @@ export function createSelectTextStream(config: AppConfig | null) {
     scan((sum: number, flag: boolean) => (flag ? sum + 1 : 0), 0)
   )
 
-  const isMouseDown$ = merge(mapTo(true)(mousedown$), mapTo(false)(mouseup$))
+  const isMouseDown$ = merge(
+    mapTo(true)(mousedown$),
+    mapTo(false)(mouseup$),
+    mapTo(false)(fromEvent(window, 'mouseout', { capture: true })),
+    mapTo(false)(fromEvent(window, 'blur', { capture: true }))
+  )
 
   return fromEvent(document, 'selectionchange').pipe(
     withLatestFrom(isMouseDown$),
@@ -62,11 +67,14 @@ export function createSelectTextStream(config: AppConfig | null) {
       (args): args is [Selection, boolean] =>
         !!args[0] && !isInSaladictExternal(args[0].anchorNode)
     ),
-    withLatestFrom(mouseup$, clickPeriodCount$),
-    map(([[selection, isWithMouse], mouseup, clickPeriodCount]) => {
-      const self = isInDictPanel(selection.anchorNode || mouseup.target)
+    withLatestFrom(mouseup$, mousedown$, clickPeriodCount$),
+    map(([[selection, isWithMouse], mouseup, mousedown, clickPeriodCount]) => {
+      const self = isInDictPanel(selection.anchorNode || mousedown.target)
 
-      if (config.noTypeField && isTypeField(selection.anchorNode)) {
+      if (
+        config.noTypeField &&
+        isTypeField(isWithMouse ? mousedown.target : selection.anchorNode)
+      ) {
         return self
       }
 
@@ -90,6 +98,16 @@ export function createSelectTextStream(config: AppConfig | null) {
       }
 
       const rect = selection.getRangeAt(0).getBoundingClientRect()
+
+      if (
+        rect.top === 0 &&
+        rect.left === 0 &&
+        rect.width === 0 &&
+        rect.height === 0
+      ) {
+        // Selection is made inside textarea with keyborad. Ignore.
+        return self
+      }
 
       return {
         word: newWord({ text, context: getSentenceFromSelection(selection) }),
