@@ -224,7 +224,7 @@ function setupHeaderModifier() {
       }
       return { requestHeaders: details.requestHeaders }
     },
-    { urls: ['https://fanyi.qq.com/api/translate'] },
+    { urls: ['https://fanyi.qq.com/api/*'] },
     extraInfoSpec as any
   )
 }
