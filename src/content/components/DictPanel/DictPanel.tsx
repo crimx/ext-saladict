@@ -1,7 +1,7 @@
 import React, { FC, ReactNode, useEffect, useRef, useState } from 'react'
 import { useUpdateEffect } from 'react-use'
 import { getScrollbarWidth } from '@/_helpers/scrollbar-width'
-import { SALADICT_PANEL } from '@/_helpers/saladict'
+import { SALADICT_PANEL, isInternalPage } from '@/_helpers/saladict'
 
 export interface DictPanelProps {
   /** Update position command from uptream */
@@ -112,6 +112,7 @@ export const DictPanel: FC<DictPanelProps> = props => {
         ...props.colors,
         left: x,
         top: y,
+        zIndex: isInternalPage() ? 2147483646 : 2147483647, // for popups on options page
         width: props.width,
         height: props.height,
         '--panel-width': props.width + 'px',

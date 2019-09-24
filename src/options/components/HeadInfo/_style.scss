@@ -1,3 +1,5 @@
+@import '@/_sass_global/_z-indices.scss';
+
 .head-info {
   display: flex;
   align-items: flex-end;
@@ -15,7 +17,7 @@
 
       &:hover,
       &:active,
-      &:focus, {
+      &:focus {
         opacity: 1;
       }
     }
@@ -28,14 +30,14 @@
 
 .head-info-bubble {
   position: absolute;
-  z-index: 99999;
+  z-index: $global-zindex-tooltip;
   top: 105%;
   right: 0;
   padding: 8px 8px;
   line-height: 1.6;
   background-color: #fff;
   border-radius: 15px;
-  box-shadow: 3px 4px 31px -8px rgba(0,0,0,0.8);
+  box-shadow: 3px 4px 31px -8px rgba(0, 0, 0, 0.8);
 
   & > ol {
     margin: 0;
@@ -66,15 +68,16 @@
 
 .head-info-fade-enter {
   opacity: 0;
-  transition: opacity .5s;
+  transition: opacity 0.5s;
 }
 
-.head-info-fade-enter-active, .head-info-fade-exit {
+.head-info-fade-enter-active,
+.head-info-fade-exit {
   opacity: 1;
-  transition: opacity .5s;
+  transition: opacity 0.5s;
 }
 
 .head-info-fade-exit-active {
   opacity: 0;
-  transition: opacity .5s;
+  transition: opacity 0.5s;
 }
