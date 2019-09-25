@@ -13,15 +13,15 @@ export const testKorean = /[\u3131-\u4dff\u9fa6-\uD79D]/
 export const testFrench = /[\u00e0\u00e2\u00e4\u00e8\u00e9\u00ea\u00eb\u00ee\u00ef\u00f4\u0153\u00f9\u00fb\u00fc\u00ff\u00e7]/i
 
 /** Deutsch, no English äöüÄÖÜß */
-export const testDeutsch = /\u00E4\u00F6\u00FC\u00C4\u00D6\u00DC\u00df/i
+export const testDeutsch = /[\u00E4\u00F6\u00FC\u00C4\u00D6\u00DC\u00df]/i
 
 /** Spanish, no English áéíóúñü¡¿ */
-export const testSpanish = /\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1\u00fc\u00a1\u00bf/i
+export const testSpanish = /[\u00e1\u00e9\u00ed\u00f3\u00fa\u00f1\u00fc\u00a1\u00bf]/i
 
 /** Languages excpet Chinese and English */
-export const testerMinor = /[^\u4e00-\u9fa5a-zA-Z0-9\s\u200b\/\[\]\{\}\$\^\*\+\|\?\.\-~!@#%&()_='";:><,。？！，、；：“”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
+export const testerMinor = /[^\u4e00-\u9fa5a-zA-Z0-9\s\u200b/[\]{}$^*+|?.\-~!@#%&()_='";:><,。？！，、；：“”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
 
-export const testerPunct = /[\/\[\]\{\}\$\^\*\+\|\?\.\-~!@#%&()_='";:><,。？！，、；：“”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
+export const testerPunct = /[/[\]{}$^*+|?.\-~!@#%&()_='";:><,。？！，、；：“”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
 
 export const isContainChinese = memoizeOne((text: string): boolean => {
   return testerChinese.test(text)
@@ -64,11 +64,16 @@ export const isContainMinor = memoizeOne((text: string): boolean => {
 export const countWords = memoizeOne((text: string): number => {
   return (
     text
-    .replace(new RegExp(testerPunct, 'g'), ' ')
-    .replace(new RegExp(`${testerChinese.source}|${testJapanese.source}|${testKorean.source}`, 'g'), ' x ')
-    .match(/\S+/g) || ''
-  )
-  .length
+      .replace(new RegExp(testerPunct, 'g'), ' ')
+      .replace(
+        new RegExp(
+          `${testerChinese.source}|${testJapanese.source}|${testKorean.source}`,
+          'g'
+        ),
+        ' x '
+      )
+      .match(/\S+/g) || ''
+  ).length
 })
 
 export interface SupportedLangs {
@@ -90,11 +95,16 @@ export const supportedLangs: ReadonlyArray<keyof SupportedLangs> = [
   'french',
   'spanish',
   'deutsch',
-  'others',
+  'others'
 ]
 
-export function checkSupportedLangs (langs: SupportedLangs, text: string): boolean {
-  if (!text) { return false }
+export function checkSupportedLangs(
+  langs: SupportedLangs,
+  text: string
+): boolean {
+  if (!text) {
+    return false
+  }
 
   const isContainEng = langs.english && isContainEnglish(text)
   if (isContainEng) {
@@ -107,18 +117,18 @@ export function checkSupportedLangs (langs: SupportedLangs, text: string): boole
   }
 
   return (
-    langs.japanese && (isContainJapanese(text) || isContainChs) ||
-    langs.korean && (isContainKorean(text) || isContainChs) ||
-    langs.french && (isContainFrench(text) || isContainEng) ||
-    langs.spanish && (isContainSpanish(text) || isContainEng) ||
-    langs.deutsch && (isContainDeutsch(text) || isContainEng) ||
-    langs.others &&
+    (langs.japanese && (isContainJapanese(text) || isContainChs)) ||
+    (langs.korean && (isContainKorean(text) || isContainChs)) ||
+    (langs.french && (isContainFrench(text) || isContainEng)) ||
+    (langs.spanish && (isContainSpanish(text) || isContainEng)) ||
+    (langs.deutsch && (isContainDeutsch(text) || isContainEng)) ||
+    (langs.others &&
       !isContainChinese(text) &&
       !isContainEnglish(text) &&
       !isContainJapanese(text) &&
       !isContainKorean(text) &&
       !isContainFrench(text) &&
       !isContainSpanish(text) &&
-      !isContainDeutsch(text)
+      !isContainDeutsch(text))
   )
 }
