@@ -126,7 +126,10 @@ export const createRootReducer = () =>
 
     UPDATE_HISTORY_INDEX: (state, { payload }) => ({
       ...state,
-      historyIndex: payload
+      historyIndex: payload,
+      text: state.searchHistory[payload]
+        ? state.searchHistory[payload].text
+        : state.text
     }),
 
     WORD_IN_NOTEBOOK: (state, { payload }) => ({
