@@ -1,29 +1,35 @@
 import { StoreActionHandler } from '..'
 import { checkSupportedLangs, countWords } from '@/_helpers/lang-check'
 import { isPopupPage } from '@/_helpers/saladict'
+import { Word } from '@/_helpers/record-manager'
 
 export const searchStart: StoreActionHandler<'SEARCH_START'> = (
   state,
   { payload }
 ) => {
-  const { activeProfile, searchHistory } = state
-  if ((!payload || !payload.word) && searchHistory.length <= 0) {
+  const { activeProfile, searchHistory, historyIndex } = state
+
+  let word: Word
+  let newSearchHistory: Word[] = searchHistory.slice(0, historyIndex + 1)
+
+  if (payload && payload.word) {
+    word = payload.word
+    const lastWord = searchHistory[historyIndex]
+    console.log(word, lastWord)
+
+    if (!lastWord || lastWord.text !== word.text) {
+      newSearchHistory.push(word)
+    }
+  } else {
+    word = searchHistory[historyIndex]
+  }
+
+  if (!word) {
     if (process.env.NODE_ENV !== 'production') {
       console.warn(`SEARCH_START: Empty word on first search`, payload)
     }
     return state
   }
-
-  // is the new word equal to the last word in history
-  const shouldAddHistory =
-    payload &&
-    payload.word &&
-    (searchHistory.length < 1 ||
-      payload.word.text !== searchHistory[searchHistory.length - 1].text ||
-      payload.word.context !== searchHistory[searchHistory.length - 1].context)
-
-  const word =
-    (payload && payload.word) || searchHistory[searchHistory.length - 1]
 
   return {
     ...state,
@@ -31,10 +37,8 @@ export const searchStart: StoreActionHandler<'SEARCH_START'> = (
     isExpandMtaBox:
       activeProfile.mtaAutoUnfold === 'always' ||
       (activeProfile.mtaAutoUnfold === 'popup' && isPopupPage()),
-    searchHistory: shouldAddHistory
-      ? [...searchHistory, payload!.word!]
-      : searchHistory,
-    historyIndex: shouldAddHistory ? searchHistory.length : state.historyIndex,
+    searchHistory: newSearchHistory,
+    historyIndex: newSearchHistory.length - 1,
     renderedDicts:
       payload && payload.id
         ? // expand an folded dict item
