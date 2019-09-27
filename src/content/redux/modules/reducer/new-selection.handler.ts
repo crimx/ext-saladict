@@ -22,7 +22,7 @@ export const newSelection: StoreActionHandler<'NEW_SELECTION'> = (
         x: selection.mouseX,
         y: selection.mouseY
       }
-    } else {
+    } else if (!state.isPinned) {
       newState.text = selection.word.text
 
       // icon position       10px  panel position
