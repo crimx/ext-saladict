@@ -187,22 +187,44 @@ async function getSogouToken(): Promise<string> {
   let { dict_sogou } = await storage.local.get<{ dict_sogou: SogouStorage }>(
     'dict_sogou'
   )
-  if (!dict_sogou || Date.now() - dict_sogou.tokenDate > 6 * 3600000) {
-    let token = '8511813095151'
+  if (!dict_sogou || Date.now() - dict_sogou.tokenDate > 3600000) {
+    let token = '8511813095152'
+
     try {
-      const response = await axios.get(
-        'https://github.com/crimx/ext-saladict/blob/dev/src/components/dictionaries/sogou/seccode.json'
-      )
-      if (response.data && response.data.seccode) {
-        token = response.data.seccode
+      const { data } = await axios.get('https://fanyi.sogou.com/logtrace', {
+        headers: {
+          Referer: 'https://fanyi.sogou.com',
+          Origin: 'https://fanyi.sogou.com'
+        },
+        withCredentials: false,
+        transformResponse: [(data: string): string => data],
+        responseType: 'text'
+      })
+
+      if (data) {
+        const matchSeccode = /window\.seccode=(\d+)/.exec(data)
+        if (matchSeccode) {
+          token = matchSeccode[1]
+        }
       }
-    } catch (e) {
-      /* nothing */
+    } catch (e) {}
+
+    if (!token) {
+      try {
+        const { data } = await axios.get(
+          'https://raw.githubusercontent.com/OpenTranslate/OpenTranslate/master/packages/service-sogou/src/seccode.json'
+        )
+        if (data && data.seccode) {
+          token = data.seccode
+        }
+      } catch (e) {}
     }
+
     dict_sogou = {
       token,
       tokenDate: Date.now()
     }
+
     storage.local.set({ dict_sogou })
   }
 
