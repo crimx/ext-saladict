@@ -10,11 +10,7 @@ import {
   startWith
 } from 'rxjs/operators'
 import { AppConfig } from '@/app-config'
-import {
-  isInDictPanel,
-  isStandalonePage,
-  isInSaladictExternal
-} from '@/_helpers/saladict'
+import { isInDictPanel, isInSaladictExternal } from '@/_helpers/saladict'
 import {
   getTextFromSelection,
   getSentenceFromSelection
@@ -24,7 +20,7 @@ import { newWord } from '@/_helpers/record-manager'
 import { isTypeField } from './helper'
 
 export function createSelectTextStream(config: AppConfig | null) {
-  if (!config || isStandalonePage()) {
+  if (!config) {
     return empty()
   }
 
