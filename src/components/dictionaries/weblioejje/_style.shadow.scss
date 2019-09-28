@@ -3538,6 +3538,14 @@ h2.midashigo .cgkgjSm,
 .summaryHead {
   display: flex;
   align-items: center;
+
+  h1 {
+    font-size: 1.3rem;
+  }
+
+  .h1keywords {
+    display: none;
+  }
 }
 
 img {
