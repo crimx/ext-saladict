@@ -97,8 +97,7 @@ export const locale = {
       reset: '重置设定',
       reset_confirm: '所有设定将还原到默认值，确定？'
     },
-    context_description:
-      '有道网页翻译已经多年没有更新，我做了些维护，将其内置到 Saladict 并支持 https 网页，其它网页翻译扩展可以安装 Google 翻译和彩云小译。',
+    context_description: '设置右键菜单，可添加可自定义链接。',
     context_menus_title: '添加右键菜单项目',
     context_menus_add_rules: '链接中的 %s 会被替换为选词。',
     ctx_trans: '上下文翻译引擎',
@@ -107,7 +106,7 @@ export const locale = {
     dictPanel: {
       custom_css: '自定义查词面板样式',
       custom_css_help:
-        '为查词面板添加自定义 CSS 。请使用 .saladict-DictPanel 作为根。',
+        '为查词面板添加自定义 CSS 。词典面板使用 .dictPanel-Root 作为根，词典使用 .dictRoot 或者 .d-词典ID 作为根。',
       font_size: '词典内容字体大小',
       height_ratio: '查词面板最高占屏幕比例',
       width: '查词面板宽度'
@@ -167,9 +166,9 @@ export const locale = {
     },
     syncShanbay: '添加扇贝生词本同步',
     syncWebdav: '添加 WebDAV 同步',
-    waveform: '波形控制',
+    waveform: '波形控制按钮',
     waveform_help:
-      '显示音频波形控制面板。关闭依然可以播放音频，并减少性能消耗。'
+      '在词典面板下方显示音频控制面板展开按钮。关闭依然可以播放音频。'
   },
 
   quickSearch: {
