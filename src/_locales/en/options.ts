@@ -104,9 +104,8 @@ export const locale: typeof _locale = {
       reset: 'Reset Configs',
       reset_confirm: 'Reset to default settings. Confirm？'
     },
-    context_description:
-      'Integration efforts are mostly made to 有道网页翻译, which has been deserted for years, to let it support https web pages. Other page translation extensions such as Google Translate and Lingocloud Interpreter are available in Web Store.',
-    context_menus_title: 'Add Context Menus Item',
+    context_description: 'Each context menus item can also be customized.',
+    context_menus_title: 'Add Context Menus Items',
     context_menus_add_rules: 'URL with %s in place of query.',
     ctx_trans: 'Context Translate Engines',
     ctx_trans_help:
@@ -115,7 +114,7 @@ export const locale: typeof _locale = {
     dictPanel: {
       custom_css: 'Custom Dict Panel Styles',
       custom_css_help:
-        'Add Custom CSS for Dict Panel. Should use `.saladict-DictPanel` as root',
+        'Custom CSS. For Dict Panel use .dictPanel-Root as root. For dictionaries use .dictRoot or .d-{id} as root',
       font_size: 'Font size for search reasults',
       height_ratio: 'Panel max height ratio',
       width: 'Panel width'
@@ -178,7 +177,7 @@ export const locale: typeof _locale = {
     syncWebdav: 'WebDAV Sync Service',
     waveform: 'Waveform Control',
     waveform_help:
-      'Display Waveform Control Panel which may have impact on performance. Audio files can still be played if turned off.'
+      'Display a button at the bottom of the Dict Panel for expanding the Waveform Control Panel. Audio files can still be played if turned off.'
   },
 
   quickSearch: {

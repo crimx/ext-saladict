@@ -114,7 +114,7 @@ export class DictPanel extends React.Component<DictPanelProps> {
             initialValue: config.panelCSS
           })(
             <Input.TextArea
-              placeholder=".saladict-DictPanel .panel-DictContainer { }"
+              placeholder=".dictPanel-Root { }"
               autosize={{ minRows: 4, maxRows: 15 }}
             />
           )}

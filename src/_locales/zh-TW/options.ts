@@ -99,8 +99,7 @@ export const locale: typeof _locale = {
       reset: '重設設定',
       reset_confirm: '所有設定將還原至預設值，確定？'
     },
-    context_description:
-      '有道網頁翻譯已經多年沒有更新，我做了些維護，將其內建到 Saladict 並支援 https 網頁，其它網頁翻譯擴充套件可以安裝 Google 翻譯和彩雲小譯。',
+    context_description: '設定右鍵選單，可新增可自定義連結。',
     context_menus_title: '新增右鍵選單項目',
     context_menus_add_rules: '連結中的 %s 會被取代為選詞。',
     ctx_trans: '上下文翻譯引擎',
@@ -109,7 +108,7 @@ export const locale: typeof _locale = {
     dictPanel: {
       custom_css: '自訂查字介面樣式',
       custom_css_help:
-        '為查字介面自訂 CSS 。請使用 .saladict-DictPanel 作為根。',
+        '為查詞面板新增自定義 CSS 。詞典面板使用 .dictPanel-Root 作為根，詞典使用 .dictRoot 或者 .d-詞典ID 作為根。',
       font_size: '字典內容字型大小',
       height_ratio: '字典介面最高占螢幕高度比例',
       width: '查字典介面寬度'
@@ -171,7 +170,7 @@ export const locale: typeof _locale = {
     syncWebdav: '新增 WebDAV 同步',
     waveform: '波形控制',
     waveform_help:
-      '顯示音訊波形控制面板。關閉依然可以播放音訊，并減少效能消耗。'
+      '在字典介面下方顯示音訊控制面板展開按鈕。關閉依然可以播放音訊。'
   },
 
   quickSearch: {
