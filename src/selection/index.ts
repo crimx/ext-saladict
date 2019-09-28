@@ -5,14 +5,18 @@ import {
   getSentenceFromSelection
 } from 'get-selection-more'
 import { message } from '@/_helpers/browser-api'
-import { newWord } from '@/_helpers/record-manager'
 import { createConfigStream } from '@/_helpers/config-manager'
 import { isInDictPanel } from '@/_helpers/saladict'
 
 import { share, map, switchMap } from 'rxjs/operators'
 
 import { postMessageHandler, sendMessage, sendEmptyMessage } from './message'
-import { isEscapeKey, whenKeyPressed, isBlacklisted } from './helper'
+import {
+  isEscapeKey,
+  whenKeyPressed,
+  isBlacklisted,
+  newSelectionWord
+} from './helper'
 import { createIntantCaptureStream } from './instant-capture'
 import { createQuickSearchStream } from './quick-search'
 import { createSelectTextStream } from './select-text'
@@ -30,7 +34,7 @@ message.addListener('PRELOAD_SELECTION', () => {
   const text = getText()
   if (text) {
     return Promise.resolve(
-      newWord({
+      newSelectionWord({
         text,
         context: getSentence()
       })
@@ -53,7 +57,10 @@ message.createStream('EMIT_SELECTION').subscribe(() => {
         mouseY: rect.top,
         instant: true,
         self: isInDictPanel(selection.anchorNode),
-        word: newWord({ text, context: getSentenceFromSelection(selection) }),
+        word: newSelectionWord({
+          text,
+          context: getSentenceFromSelection(selection)
+        }),
         dbClick: false,
         shiftKey: false,
         ctrlKey: false,

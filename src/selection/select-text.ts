@@ -17,8 +17,7 @@ import {
   getSentenceFromSelection
 } from 'get-selection-more'
 import { checkSupportedLangs } from '@/_helpers/lang-check'
-import { newWord } from '@/_helpers/record-manager'
-import { isTypeField } from './helper'
+import { isTypeField, newSelectionWord } from './helper'
 
 const isFirefox = navigator.userAgent.includes('Firefox')
 
@@ -85,7 +84,10 @@ export function createSelectTextStream(config: AppConfig | null) {
 
       if (isWithMouse) {
         return {
-          word: newWord({ text, context: getSentenceFromSelection(selection) }),
+          word: newSelectionWord({
+            text,
+            context: getSentenceFromSelection(selection)
+          }),
           self,
           dbClick: clickPeriodCount >= 2,
           mouseX: mouseup.clientX,
@@ -109,7 +111,10 @@ export function createSelectTextStream(config: AppConfig | null) {
       }
 
       return {
-        word: newWord({ text, context: getSentenceFromSelection(selection) }),
+        word: newSelectionWord({
+          text,
+          context: getSentenceFromSelection(selection)
+        }),
         self,
         dbClick: clickPeriodCount >= 2,
         mouseX: rect.right,

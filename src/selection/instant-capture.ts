@@ -5,7 +5,7 @@ import {
 import { AppConfig } from '@/app-config'
 import { isStandalonePage, isInDictPanel } from '@/_helpers/saladict'
 import { checkSupportedLangs } from '@/_helpers/lang-check'
-import { Word, newWord } from '@/_helpers/record-manager'
+import { Word } from '@/_helpers/record-manager'
 import { message } from '@/_helpers/browser-api'
 
 import { fromEvent, merge, of, timer, combineLatest, empty, from } from 'rxjs'
@@ -19,6 +19,7 @@ import {
   pluck,
   startWith
 } from 'rxjs/operators'
+import { newSelectionWord } from './helper'
 
 /**
  * Create an instant capture Observable
@@ -175,7 +176,7 @@ function getCursorWord(event: MouseEvent): Word | null {
     }
     range.detach()
 
-    return text ? newWord({ text, context }) : null
+    return text ? newSelectionWord({ text, context }) : null
   }
 
   return null
