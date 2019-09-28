@@ -2315,3 +2315,41 @@ ul.daccord_b {
 li.dexamp {
   list-style-type: disc;
 }
+
+.amp-accordion {
+  > .daccord_h {
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  & > :last-child {
+    display: none;
+    padding: 1em;
+
+    ul {
+      padding-left: 1em;
+    }
+
+    li {
+      list-style-type: disc;
+    }
+  }
+
+  .i-plus:before {
+    content: '+';
+  }
+
+  &.open {
+    .i-plus:before {
+      content: '-';
+    }
+
+    & > :last-child {
+      display: block;
+    }
+  }
+}
+
+.dphrase-block {
+  display: none;
+}

@@ -20,7 +20,13 @@ export default DictCambridge
 
 function handleEntryClick(e: React.MouseEvent<HTMLElement>) {
   const target = e.nativeEvent.target as HTMLDivElement
-  if (target && target.classList && target.classList.contains('js-accord')) {
-    target.classList.toggle('open')
+  if (target && target.classList) {
+    if (target.classList.contains('js-accord')) {
+      target.classList.toggle('open')
+    }
+
+    if (target.classList.contains('daccord_h')) {
+      target.parentElement!.classList.toggle('open')
+    }
   }
 }
