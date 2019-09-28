@@ -36,6 +36,8 @@ export class Waveform extends React.PureComponent<
   soundTouchNode: AnyObject | null | undefined
   /** Sync Wavesurfer & SoundTouch position */
   shouldSTSync: boolean = false
+  /** play when file is loaded */
+  playOnLoad = true
   src?: string
 
   state: WaveformState = {
@@ -106,9 +108,17 @@ export class Waveform extends React.PureComponent<
       this.shouldSTSync = true
     })
 
-    wavesurfer.on('ready', this.play)
+    wavesurfer.on('ready', this.onLoad)
 
     wavesurfer.on('finish', this.onPlayEnd)
+  }
+
+  onLoad = () => {
+    if (this.playOnLoad) {
+      this.play()
+    }
+    // reset state
+    this.playOnLoad = true
   }
 
   play = () => {
@@ -240,7 +250,7 @@ export class Waveform extends React.PureComponent<
     this.shouldSTSync = false
   }
 
-  load = (src: string, playOnLoad = true) => {
+  load = (src: string) => {
     if (src) {
       if (this.wavesurfer) {
         this.reset()
@@ -251,7 +261,10 @@ export class Waveform extends React.PureComponent<
       if (this.wavesurfer) {
         this.wavesurfer.load(src)
         // https://github.com/katspaugh/wavesurfer.js/issues/1657
-        if (this.wavesurfer.backend.ac.state === 'suspended' && playOnLoad) {
+        if (
+          this.wavesurfer.backend.ac.state === 'suspended' &&
+          this.playOnLoad
+        ) {
           // fallback
           new Audio(src).play()
         }
@@ -276,10 +289,10 @@ export class Waveform extends React.PureComponent<
         ) {
           this.load(response.src)
         } else {
+          this.playOnLoad = false
           this.load(
             // Nothing to play
-            `https://fanyi.sogou.com/reventondc/synthesis?text=Nothing%20to%20play&speed=1&lang=en&from=translateweb`,
-            false
+            `https://fanyi.sogou.com/reventondc/synthesis?text=Nothing%20to%20play&speed=1&lang=en&from=translateweb`
           )
         }
       })
