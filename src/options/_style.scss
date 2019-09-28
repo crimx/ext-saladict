@@ -34,7 +34,8 @@ body {
   border: none;
 }
 
-.ant-tooltip {
+.ant-tooltip,
+.ant-modal-wrap {
   z-index: 2147483647 !important;
 }
 
