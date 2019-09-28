@@ -1,6 +1,7 @@
 import { AppConfig } from '@/app-config'
 import { Observable, fromEvent, merge, of } from 'rxjs'
 import { map, mapTo, filter, distinctUntilChanged } from 'rxjs/operators'
+import { newWord } from '@/_helpers/record-manager'
 
 const isMac = /mac/i.test(navigator.platform)
 
@@ -66,4 +67,13 @@ export function isBlacklisted(config: AppConfig): boolean {
     config.blacklist.some(([r]) => new RegExp(r).test(url)) &&
     config.whitelist.every(([r]) => !new RegExp(r).test(url))
   )
+}
+
+export const newSelectionWord: typeof newWord = (word = {}) => {
+  return newWord({
+    title: window.pageTitle || document.title || '',
+    url: window.pageURL || document.URL || '',
+    favicon: window.faviconURL || '',
+    ...word
+  })
 }
