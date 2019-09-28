@@ -44,6 +44,10 @@
   &:focus {
     background: rgba(215, 214, 214, 0.25);
   }
+
+  &::-moz-focus-inner {
+    border: 0;
+  }
 }
 
 .menuBar-FloatBoxEntry {
