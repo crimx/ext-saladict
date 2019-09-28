@@ -63,6 +63,7 @@ export const locale: typeof _locale = {
     sentence: '句庫模式',
     default: '預設模式',
     scholar: '學術模式',
-    translation: '翻譯模式'
+    translation: '翻譯模式',
+    nihongo: '日語模式'
   }
 }

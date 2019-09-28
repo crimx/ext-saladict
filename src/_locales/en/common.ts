@@ -63,6 +63,7 @@ export const locale: typeof _locale = {
     sentence: 'Sentence Mode',
     default: 'Default Mode',
     scholar: 'Scholar Mode',
-    translation: 'Translation Mode'
+    translation: 'Translation Mode',
+    nihongo: 'Japanese Mode'
   }
 }
