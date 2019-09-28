@@ -16,6 +16,10 @@ export const newSelection: StoreActionHandler<'NEW_SELECTION'> = (
     selection
   }
 
+  if (isOptionsPage()) {
+    return newState
+  }
+
   if (selection.word) {
     if (selection.force) {
       newState.dictPanelCoord = {
@@ -66,11 +70,7 @@ export const newSelection: StoreActionHandler<'NEW_SELECTION'> = (
     }
   }
 
-  if (
-    (state.withQSPanel && config.tripleCtrlPageSel) ||
-    isStandalonePage() ||
-    isOptionsPage()
-  ) {
+  if ((state.withQSPanel && config.tripleCtrlPageSel) || isStandalonePage()) {
     return newState
   }
 
