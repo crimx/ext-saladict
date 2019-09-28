@@ -61,6 +61,7 @@ export const locale = {
     sentence: '句库模式',
     default: '默认模式',
     scholar: '学术模式',
-    translation: '翻译模式'
+    translation: '翻译模式',
+    nihongo: '日语模式'
   }
 }
