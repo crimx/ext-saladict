@@ -15,7 +15,6 @@ export const searchStart: StoreActionHandler<'SEARCH_START'> = (
   if (payload && payload.word) {
     word = payload.word
     const lastWord = searchHistory[historyIndex]
-    console.log(word, lastWord)
 
     if (!lastWord || lastWord.text !== word.text) {
       newSearchHistory.push(word)
