@@ -7,7 +7,8 @@ import {
   debounce,
   switchMap,
   scan,
-  startWith
+  startWith,
+  throttle
 } from 'rxjs/operators'
 import { AppConfig } from '@/app-config'
 import { isInDictPanel, isInSaladictExternal } from '@/_helpers/saladict'
@@ -18,6 +19,8 @@ import {
 import { checkSupportedLangs } from '@/_helpers/lang-check'
 import { newWord } from '@/_helpers/record-manager'
 import { isTypeField } from './helper'
+
+const isFirefox = navigator.userAgent.includes('Firefox')
 
 export function createSelectTextStream(config: AppConfig | null) {
   if (!config) {
@@ -112,6 +115,32 @@ export function createSelectTextStream(config: AppConfig | null) {
         mouseX: rect.right,
         mouseY: rect.top
       }
+    }),
+    throttle(result => {
+      // Firefox will fire an extra selectionchange event
+      // when selection is made inside dict panel and
+      // continute search is triggered.
+      // Need to skip this event otherwise the panel is
+      // closed unexpectedly.
+      if (
+        isFirefox &&
+        typeof result !== 'boolean' &&
+        result.self &&
+        result.word &&
+        result.word.text
+      ) {
+        const { direct, double, holding } = config.panelMode
+        if (
+          direct ||
+          (double && result.dbClick) ||
+          (holding.shift && result.shiftKey) ||
+          (holding.ctrl && result.ctrlKey) ||
+          (holding.meta && result.metaKey)
+        ) {
+          return timer(500)
+        }
+      }
+      return timer(0)
     })
   )
 }
