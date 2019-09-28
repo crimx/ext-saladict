@@ -3,7 +3,7 @@ import { empty, of } from 'rxjs'
 import { StoreAction, StoreState } from '../'
 import { Epic, ofType } from '../../utils/operators'
 import { message } from '@/_helpers/browser-api'
-import { isStandalonePage } from '@/_helpers/saladict'
+import { isStandalonePage, isOptionsPage } from '@/_helpers/saladict'
 
 export const newSelectionEpic: Epic = (action$, state$) =>
   action$.pipe(
@@ -15,6 +15,10 @@ export const newSelectionEpic: Epic = (action$, state$) =>
       if (selection.self) {
         // Selection inside dict panel.
         return selectionInsideDictPanel(config, selection)
+      }
+
+      if (isOptionsPage()) {
+        return empty()
       }
 
       if (withQSPanel && config.tripleCtrlPageSel) {

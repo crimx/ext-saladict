@@ -94,7 +94,7 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
               type: 'SELECTION',
               payload: {
                 word: newWord({ text: await getWordOfTheDay() }),
-                self: false,
+                self: true, // selection inside dict panel is always avaliable
                 instant: true,
                 mouseX: window.innerWidth - config.panelWidth - 50,
                 mouseY: 80,
