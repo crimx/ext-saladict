@@ -15,7 +15,11 @@
   top: 0;
   left: 1em;
   transform: translateY(-50%);
+  max-width: 90%;
+  overflow: hidden;
   padding: 0 5px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
   font-size: 1.2em;
   background: var(--color-background);
 }
