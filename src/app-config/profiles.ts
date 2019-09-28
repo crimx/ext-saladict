@@ -71,19 +71,22 @@ export function genProfilesStorage(): {
   const sentenceStorage = sentence()
   const translationStorage = translation()
   const scholarStorage = scholar()
+  const nihongoStorage = nihongo()
 
   return {
     profileIDList: [
       defaultID,
       sentenceStorage.idItem,
       translationStorage.idItem,
-      scholarStorage.idItem
+      scholarStorage.idItem,
+      nihongoStorage.idItem
     ],
     profiles: [
       defaultProfile,
       sentenceStorage.profile,
       translationStorage.profile,
-      scholarStorage.profile
+      scholarStorage.profile,
+      nihongoStorage.profile
     ]
   }
 }
@@ -199,6 +202,27 @@ export function translation(): ProfileStorage {
     'liangan'
   ]
   profile.mtaAutoUnfold = 'always'
+
+  return { idItem, profile }
+}
+
+export function nihongo(): ProfileStorage {
+  const idItem = getDefaultProfileID()
+  idItem.name = '%%_nihongo_%%'
+
+  const profile = getDefaultProfile(idItem.id) as ProfileMutable
+  profile.dicts.selected = [
+    'hjdict',
+    'weblioejje',
+    'weblio',
+    'google',
+    'tencent',
+    'caiyun',
+    'googledict',
+    'wikipedia'
+  ]
+  profile.dicts.all.wikipedia.options.lang = 'ja'
+  profile.waveform = false
 
   return { idItem, profile }
 }
