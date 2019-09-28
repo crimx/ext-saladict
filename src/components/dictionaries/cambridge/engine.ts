@@ -11,7 +11,8 @@ import {
   SearchFunction,
   GetSrcPageFunction,
   DictSearchResult,
-  getFullLink
+  getFullLink,
+  externalLink
 } from '../helpers'
 
 export const getSrcPage: GetSrcPageFunction = (text, config) => {
@@ -99,6 +100,14 @@ function handleDOM(
       })
       removeChild($posHeader, '.share')
     }
+
+    // expand button
+    $entry.querySelectorAll('.daccord_h').forEach($btn => {
+      $btn.parentElement!.classList.add('amp-accordion')
+    })
+
+    // See more results
+    $entry.querySelectorAll<HTMLAnchorElement>('a.had').forEach(externalLink)
 
     result.push(getInnerHTML(HOST, $entry))
   })
