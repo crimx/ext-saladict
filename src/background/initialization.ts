@@ -143,13 +143,7 @@ async function onInstalled({
     }
   }
 
-  ;(await browser.tabs.query({})).forEach(async tab => {
-    try {
-      await injectDictPanel(tab)
-    } catch (e) {
-      console.warn(e)
-    }
-  })
+  loadDictPanelToAllTabs()
 }
 
 function onStartup(): void {
@@ -212,18 +206,7 @@ function onStartup(): void {
   // Chrome fails to inject css via manifest if the page is loaded
   // as "last opened tabs" when browser opens.
   setTimeout(() => {
-    browser.tabs.query({}).then(tabs => {
-      tabs.forEach(({ id, url }) => {
-        if (id && url && url.startsWith('http')) {
-          browser.tabs.insertCSS(id, { file: '/content.css' }).catch(() => {
-            /* noop */
-          })
-          browser.tabs.executeScript(id, { file: '/content.js' }).catch(() => {
-            /* noop */
-          })
-        }
-      })
-    })
+    loadDictPanelToAllTabs()
   }, 1000)
 }
 
@@ -274,4 +257,16 @@ function showNews(data: UpdateData) {
       browser.notifications.create('oninstall', options)
     }
   }, 5000)
+}
+
+async function loadDictPanelToAllTabs() {
+  ;(await browser.tabs.query({})).forEach(async tab => {
+    if (tab.id && tab.url && tab.url.startsWith('http')) {
+      try {
+        await injectDictPanel(tab)
+      } catch (e) {
+        console.warn(e)
+      }
+    }
+  })
 }
