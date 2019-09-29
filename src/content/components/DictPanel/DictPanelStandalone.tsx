@@ -2,8 +2,8 @@ import React, { FC, ReactNode } from 'react'
 import { SALADICT_PANEL } from '@/_helpers/saladict'
 
 export interface DictPanelStandaloneProps {
-  width: number | string
-  height: number | string
+  width: string
+  height: string
 
   withAnimation: boolean
   darkMode: boolean
@@ -26,8 +26,8 @@ export const DictPanelStandalone: FC<DictPanelStandaloneProps> = props => {
         ...props.colors,
         width: props.width,
         height: props.height,
-        '--panel-width': props.width + 'px',
-        '--panel-max-height': props.height + 'px'
+        '--panel-width': props.width,
+        '--panel-max-height': props.height
       }}
     >
       <div className="dictPanel-Head">{props.menuBar}</div>

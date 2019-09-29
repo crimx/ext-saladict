@@ -68,7 +68,10 @@ export const Popup: FC<PopupProps> = props => {
 
   return (
     <div className={`popup-root${config.darkMode ? ' dark-mode' : ''}`}>
-      <DictPanelStandaloneContainer width={450} height={dictPanelHeight} />
+      <DictPanelStandaloneContainer
+        width="450px"
+        height={dictPanelHeight + 'px'}
+      />
       <div
         className="switch-container"
         onMouseEnter={shrinkDictPanel}

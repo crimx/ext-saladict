@@ -17,7 +17,7 @@ import './quick-search.scss'
 ReactDOM.render(
   <ProviderRedux store={createStore()}>
     <ProviderI18next i18n={i18nLoader()}>
-      <DictPanelStandaloneContainer width="100%" height="100%" />
+      <DictPanelStandaloneContainer width="100vw" height="100vh" />
     </ProviderI18next>
   </ProviderRedux>,
   document.getElementById('root')
