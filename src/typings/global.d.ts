@@ -2,6 +2,7 @@ interface Window {
   browser: typeof browser
 
   __SALADICT_PANEL_LOADED__?: boolean
+  __SALADICT_SELECTION_LOADED__?: boolean
 
   // For self page messaging
   pageId?: number | string

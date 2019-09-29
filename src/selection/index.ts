@@ -21,100 +21,105 @@ import { createIntantCaptureStream } from './instant-capture'
 import { createQuickSearchStream } from './quick-search'
 import { createSelectTextStream } from './select-text'
 
-const config$$ = createConfigStream().pipe(
-  map(config => (isBlacklisted(config) ? null : config)),
-  share()
-)
+// Firefox somehow loads it two times
+if (!window.__SALADICT_SELECTION_LOADED__) {
+  window.__SALADICT_SELECTION_LOADED__ = true
 
-/**
- * Send selection to standalone page
- * Beware that this is run on every frame.
- */
-message.addListener('PRELOAD_SELECTION', () => {
-  const text = getText()
-  if (text) {
-    return Promise.resolve(
-      newSelectionWord({
-        text,
-        context: getSentence()
-      })
-    )
-  }
-})
+  const config$$ = createConfigStream().pipe(
+    map(config => (isBlacklisted(config) ? null : config)),
+    share()
+  )
 
-/**
- * Manualy emit selection
- * Beware that this is run on every frame.
- */
-message.createStream('EMIT_SELECTION').subscribe(() => {
-  const selection = window.getSelection()
-  if (selection) {
-    const text = getTextFromSelection(selection)
-    const rect = selection.getRangeAt(0).getBoundingClientRect()
+  /**
+   * Send selection to standalone page
+   * Beware that this is run on every frame.
+   */
+  message.addListener('PRELOAD_SELECTION', () => {
+    const text = getText()
     if (text) {
-      sendMessage({
-        mouseX: rect.right,
-        mouseY: rect.top,
-        instant: true,
-        self: isInDictPanel(selection.anchorNode),
-        word: newSelectionWord({
+      return Promise.resolve(
+        newSelectionWord({
           text,
-          context: getSentenceFromSelection(selection)
-        }),
+          context: getSentence()
+        })
+      )
+    }
+  })
+
+  /**
+   * Manualy emit selection
+   * Beware that this is run on every frame.
+   */
+  message.createStream('EMIT_SELECTION').subscribe(() => {
+    const selection = window.getSelection()
+    if (selection) {
+      const text = getTextFromSelection(selection)
+      const rect = selection.getRangeAt(0).getBoundingClientRect()
+      if (text) {
+        sendMessage({
+          mouseX: rect.right,
+          mouseY: rect.top,
+          instant: true,
+          self: isInDictPanel(selection.anchorNode),
+          word: newSelectionWord({
+            text,
+            context: getSentenceFromSelection(selection)
+          }),
+          dbClick: false,
+          shiftKey: false,
+          ctrlKey: false,
+          metaKey: false,
+          force: false
+        })
+      }
+    }
+  })
+
+  /** Pass through message from iframes */
+  window.addEventListener('message', postMessageHandler)
+
+  /**
+   * Escape key pressed
+   */
+  whenKeyPressed(isEscapeKey).subscribe(() =>
+    message.self.send({ type: 'ESCAPE_KEY' })
+  )
+
+  config$$.pipe(switchMap(createQuickSearchStream)).subscribe(() => {
+    message.self.send({ type: 'TRIPLE_CTRL' })
+  })
+
+  config$$.pipe(switchMap(createSelectTextStream)).subscribe(result => {
+    if (typeof result === 'boolean') {
+      sendEmptyMessage(result)
+    } else {
+      sendMessage({
         dbClick: false,
         shiftKey: false,
         ctrlKey: false,
         metaKey: false,
-        force: false
+        self: false,
+        instant: false,
+        force: false,
+        ...result
       })
     }
-  }
-})
-
-/** Pass through message from iframes */
-window.addEventListener('message', postMessageHandler)
-
-/**
- * Escape key pressed
- */
-whenKeyPressed(isEscapeKey).subscribe(() =>
-  message.self.send({ type: 'ESCAPE_KEY' })
-)
-
-config$$.pipe(switchMap(createQuickSearchStream)).subscribe(() => {
-  message.self.send({ type: 'TRIPLE_CTRL' })
-})
-
-config$$.pipe(switchMap(createSelectTextStream)).subscribe(result => {
-  if (typeof result === 'boolean') {
-    sendEmptyMessage(result)
-  } else {
-    sendMessage({
-      dbClick: false,
-      shiftKey: false,
-      ctrlKey: false,
-      metaKey: false,
-      self: false,
-      instant: false,
-      force: false,
-      ...result
-    })
-  }
-})
-
-config$$
-  .pipe(switchMap(createIntantCaptureStream))
-  .subscribe(({ word, event, self }) => {
-    sendMessage({
-      word,
-      shiftKey: event.shiftKey,
-      ctrlKey: event.ctrlKey,
-      metaKey: event.metaKey,
-      dbClick: false,
-      force: false,
-      instant: true,
-      mouseX: event.clientX,
-      mouseY: event.clientY,
-      self
-    })
   })
+
+  config$$
+    .pipe(switchMap(createIntantCaptureStream))
+    .subscribe(({ word, event, self }) => {
+      sendMessage({
+        word,
+        shiftKey: event.shiftKey,
+        ctrlKey: event.ctrlKey,
+        metaKey: event.metaKey,
+        dbClick: false,
+        force: false,
+        instant: true,
+        mouseX: event.clientX,
+        mouseY: event.clientY,
+        self
+      })
+    })
+}
