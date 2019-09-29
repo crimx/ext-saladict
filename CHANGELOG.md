@@ -1,6 +1,124 @@
-# Change Log
+# Changelog
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
+
+## [7.0.0](https://github.com/crimx/ext-saladict/compare/v6.33.2...v7.0.0) (2019-09-29)
+
+
+### Bug Fixes
+
+* **background:** show unsupported badge on internal tabs ([fe06a06](https://github.com/crimx/ext-saladict/commit/fe06a06))
+* **content:** correct history index ([bb94e87](https://github.com/crimx/ext-saladict/commit/bb94e87))
+* **dicts:** convert chs to chz on guoyu and liangan ([5e5a058](https://github.com/crimx/ext-saladict/commit/5e5a058))
+* **dicts:** correct text color on dark mode ([7484469](https://github.com/crimx/ext-saladict/commit/7484469))
+* **dicts:** fix tencent referer ([9c7b0de](https://github.com/crimx/ext-saladict/commit/9c7b0de))
+* **dicts:** params encoding ([c689e69](https://github.com/crimx/ext-saladict/commit/c689e69))
+* **dicts:** update sogou ([c0dffa1](https://github.com/crimx/ext-saladict/commit/c0dffa1))
+* **dicts:** update sogou api ([04a1e74](https://github.com/crimx/ext-saladict/commit/04a1e74))
+* **dicts:** update sogou api ([055f24e](https://github.com/crimx/ext-saladict/commit/055f24e))
+* **dicts:** update tencent api ([f13039f](https://github.com/crimx/ext-saladict/commit/f13039f))
+* **dicts:** url params encode ([3db28ff](https://github.com/crimx/ext-saladict/commit/3db28ff))
+* **options:** disable selection outside panel on options page ([491a791](https://github.com/crimx/ext-saladict/commit/491a791))
+* **options:** increase ant modal mask z-index ([337e92a](https://github.com/crimx/ext-saladict/commit/337e92a))
+* **options:** z-index on tooltips ([c94e340](https://github.com/crimx/ext-saladict/commit/c94e340))
+* **panel:** add to notebook on standalone panel ([c7b00e5](https://github.com/crimx/ext-saladict/commit/c7b00e5))
+* **panel:** calc hight changes on expand ([f6f335e](https://github.com/crimx/ext-saladict/commit/f6f335e))
+* **panel:** correct standalone css variables ([f0e087c](https://github.com/crimx/ext-saladict/commit/f0e087c))
+* **panel:** fancy scrollbar on standalone panel ([4734ab8](https://github.com/crimx/ext-saladict/commit/4734ab8))
+* **panel:** keep panel showing on options page ([d43ac1f](https://github.com/crimx/ext-saladict/commit/d43ac1f))
+* **panel:** normal scrollbar width on firefox ([a0385a8](https://github.com/crimx/ext-saladict/commit/a0385a8))
+* **panel:** remove Firefox button inner border ([00a069f](https://github.com/crimx/ext-saladict/commit/00a069f))
+* **selection:** add page info in selection ([b64e85e](https://github.com/crimx/ext-saladict/commit/b64e85e))
+* **selection:** check mouse target when anchor node is null ([1a2487f](https://github.com/crimx/ext-saladict/commit/1a2487f))
+* **selection:** keep panel coords when pinned ([7648247](https://github.com/crimx/ext-saladict/commit/7648247))
+* **selection:** skip extra selection change on Firefox ([754db43](https://github.com/crimx/ext-saladict/commit/754db43))
+* firefox ext api ([b8efad0](https://github.com/crimx/ext-saladict/commit/b8efad0))
+* lang check ([a8bfe92](https://github.com/crimx/ext-saladict/commit/a8bfe92))
+* **selection:** text field selection ([a8628b6](https://github.com/crimx/ext-saladict/commit/a8628b6))
+* remove buttons option on filrefox ([970b921](https://github.com/crimx/ext-saladict/commit/970b921))
+* remove scrollbar color on firefox ([a00214c](https://github.com/crimx/ext-saladict/commit/a00214c))
+* skip empty src for speaker ([65ff654](https://github.com/crimx/ext-saladict/commit/65ff654))
+* sync service download ([af05e51](https://github.com/crimx/ext-saladict/commit/af05e51))
+* **components:** add appear styles for shadow portal ([b84a8e8](https://github.com/crimx/ext-saladict/commit/b84a8e8))
+* **content:** max panel height calculation ([de30946](https://github.com/crimx/ext-saladict/commit/de30946))
+* **content:** search on bowl hover ([d7e126d](https://github.com/crimx/ext-saladict/commit/d7e126d))
+* **dicts:** axios api ([dda444d](https://github.com/crimx/ext-saladict/commit/dda444d))
+* **dicts:** encode uri component ([101ae50](https://github.com/crimx/ext-saladict/commit/101ae50))
+* **dicts:** update new speaker classname ([ad19c84](https://github.com/crimx/ext-saladict/commit/ad19c84))
+* **i18n:** sync init ([3aedb2d](https://github.com/crimx/ext-saladict/commit/3aedb2d))
+* **manifest:** new assets path ([67e3421](https://github.com/crimx/ext-saladict/commit/67e3421))
+* **options:** new quick search locations ([667dc13](https://github.com/crimx/ext-saladict/commit/667dc13))
+* **panel:** add dict item key ([e85f949](https://github.com/crimx/ext-saladict/commit/e85f949))
+* **panel:** env detection ([7817f54](https://github.com/crimx/ext-saladict/commit/7817f54))
+* **panel:** firefox detect height change ([9016d81](https://github.com/crimx/ext-saladict/commit/9016d81))
+* **panel:** fix sluggish scroll on Firefox ([d054f81](https://github.com/crimx/ext-saladict/commit/d054f81))
+* **panel:** open options page when clicking icon ([6e2dc5e](https://github.com/crimx/ext-saladict/commit/6e2dc5e))
+* **panel:** prevent textarea input event propagation ([36285ff](https://github.com/crimx/ext-saladict/commit/36285ff))
+* **popup:** qrcode panel z-index ([0234943](https://github.com/crimx/ext-saladict/commit/0234943))
+* **selection:** skip extra event after instant capture ([1a01ac5](https://github.com/crimx/ext-saladict/commit/1a01ac5))
+* **storybook:** add width for panel wrapper ([276139c](https://github.com/crimx/ext-saladict/commit/276139c))
+* **wordpage:** context translation ([3f01b81](https://github.com/crimx/ext-saladict/commit/3f01b81))
+* context menus locale name ([2617939](https://github.com/crimx/ext-saladict/commit/2617939))
+* correctly made payload and meta optional ([9ac6fb3](https://github.com/crimx/ext-saladict/commit/9ac6fb3))
+* css type ([de9b809](https://github.com/crimx/ext-saladict/commit/de9b809))
+* firefox bugs ([efab253](https://github.com/crimx/ext-saladict/commit/efab253))
+* **panel:** fix menu bar shrinking ([2e0c8fc](https://github.com/crimx/ext-saladict/commit/2e0c8fc))
+* **panel:** panel opcaity transition ([673ce82](https://github.com/crimx/ext-saladict/commit/673ce82))
+* **panel:** typo ([9f7626d](https://github.com/crimx/ext-saladict/commit/9f7626d))
+* dom purify parse innerHTML ([6af3120](https://github.com/crimx/ext-saladict/commit/6af3120))
+* getFullLink supports other protocols ([6b08d5f](https://github.com/crimx/ext-saladict/commit/6b08d5f))
+* locale format ([3439005](https://github.com/crimx/ext-saladict/commit/3439005))
+* nested p tags ([fb69f55](https://github.com/crimx/ext-saladict/commit/fb69f55))
+* prevent dict panel being closed ([9c3fd0b](https://github.com/crimx/ext-saladict/commit/9c3fd0b))
+* relative url ([2a565a6](https://github.com/crimx/ext-saladict/commit/2a565a6))
+* reove style global reset ([5d89ebd](https://github.com/crimx/ext-saladict/commit/5d89ebd))
+* union hack ([d0d3cdd](https://github.com/crimx/ext-saladict/commit/d0d3cdd))
+* **storybook:** disable storybook shortcuts ([6da3254](https://github.com/crimx/ext-saladict/commit/6da3254))
+* **storybook:** prevent full rerender ([fe996dd](https://github.com/crimx/ext-saladict/commit/fe996dd))
+* **storybook:** skip wrapper components ([cd370c9](https://github.com/crimx/ext-saladict/commit/cd370c9))
+* update namespace ([9f1e253](https://github.com/crimx/ext-saladict/commit/9f1e253))
+
+
+### Build System
+
+* add shadow dom css support and storybook addons ([211986a](https://github.com/crimx/ext-saladict/commit/211986a))
+* add storybook ([5e1e88e](https://github.com/crimx/ext-saladict/commit/5e1e88e))
+* fix mjs type ([d76f6c7](https://github.com/crimx/ext-saladict/commit/d76f6c7))
+* new pack script ([78ee6aa](https://github.com/crimx/ext-saladict/commit/78ee6aa))
+* remove style loader on development ([e4bd588](https://github.com/crimx/ext-saladict/commit/e4bd588))
+* rename jsonp function ([5d4941c](https://github.com/crimx/ext-saladict/commit/5d4941c))
+* split webpack chunks ([ad90c96](https://github.com/crimx/ext-saladict/commit/ad90c96))
+* update build system to neutrino and babel-ts ([b3b05c3](https://github.com/crimx/ext-saladict/commit/b3b05c3))
+
+
+### Features
+
+* **panel:** add fancy scrollbar ([4be6ac1](https://github.com/crimx/ext-saladict/commit/4be6ac1))
+* **popup:** add options for opening standalone panel [#470](https://github.com/crimx/ext-saladict/issues/470) ([2f0be7e](https://github.com/crimx/ext-saladict/commit/2f0be7e))
+* **profile:** add nihongo profile ([285b08b](https://github.com/crimx/ext-saladict/commit/285b08b))
+* add dark mode ([a9c9407](https://github.com/crimx/ext-saladict/commit/a9c9407))
+* add shadow portal ([3d3e025](https://github.com/crimx/ext-saladict/commit/3d3e025))
+
+
+### Tests
+
+* update browser api specs ([768ce07](https://github.com/crimx/ext-saladict/commit/768ce07))
+* update mocks ([cefd766](https://github.com/crimx/ext-saladict/commit/cefd766))
+* **dicts:** add bing mock requests ([641d9db](https://github.com/crimx/ext-saladict/commit/641d9db))
+* **dicts:** remove mock text ([3d57c20](https://github.com/crimx/ext-saladict/commit/3d57c20))
+* **dicts:** udapte googledict html ([c5c6b80](https://github.com/crimx/ext-saladict/commit/c5c6b80))
+* **storybook:** update stories ([780fade](https://github.com/crimx/ext-saladict/commit/780fade))
+* added jest ([99484c7](https://github.com/crimx/ext-saladict/commit/99484c7))
+* clean old test ([074f058](https://github.com/crimx/ext-saladict/commit/074f058))
+* refactor background ([938aeea](https://github.com/crimx/ext-saladict/commit/938aeea))
+* **storybook:** add dictionaries stories ([0714aed](https://github.com/crimx/ext-saladict/commit/0714aed))
+
+
+### BREAKING CHANGES
+
+* No compatible with the old build system
+
+
 
 <a name="6.33.2"></a>
 ## [6.33.2](https://github.com/crimx/ext-saladict/compare/v6.33.1...v6.33.2) (2019-06-27)
