@@ -31,7 +31,7 @@ export const DictPanelStandalone: FC<DictPanelStandaloneProps> = props => {
       }}
     >
       <div className="dictPanel-Head">{props.menuBar}</div>
-      <div className="dictPanel-Body">
+      <div className="dictPanel-Body fancy-scrollbar">
         {props.mtaBox}
         {props.dictList}
       </div>
