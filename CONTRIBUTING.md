@@ -16,11 +16,9 @@ Clone the repo and run `yarn install`.
 
 ## UI Tweaking
 
-Run `yarn start --main=[entry id]` to view a certain entry with WDS in a fake WebExtension environment.
+Run `yarn storybook` to view all the components.
 
-Entry ids are generally directory names in `src`.
-
-`index.[html/js(x)/ts(x)` in `[entry id]/__fake__` has higher priority.
+Run `yarn start --wextentry [entry id]` to view a certain entry with WDS in a fake WebExtension environment.
 
 ## Testing
 
@@ -28,13 +26,10 @@ Run `yarn test` to run Jest. Supports all the Jest [options](https://jestjs.io/d
 
 ## Building
 
-Run `yarn devbuild` to start a quick build without compression.
-
 Run `yarn build` to start a full build.
 
 Toggle:
 
-- `--notypecheck`: Skip TypeScript full check.
 - `--analyze`: Show detailed Webpack bundle analyzer.
 
 ## Releasing
@@ -48,20 +43,20 @@ Run `yarn zip` to pack zibballs to `./dist/`.
 ## How to add a dictionary
 
 1. Create a directory at [`src/components/dictionaries/`](./src/components/dictionaries/), with the name of the dict ID.
-  1. Use any existing dictionary as guidance, e.g. [Bing](./src/components/dictionaries/bing). Copy files to the new directory.
-  1. Replace the favicon with a new LOGO.
-  1. Edit `config.ts` to change default options. See the `DictItem` type and explanation for more details. Register the dictionary in [app config](./src/app-config/dicts.ts) so that TypeScript generates the correct typings. Dict ID **MUST** follow alphabetical order.
-  1. Update `_locales.json` with the new dictionary name. Add locales for options, if any.
-  1. `engine.ts` **MUST** export at least two functions:
-     1. `getSrcPage` function which is responsible for generating source page url base on search text and app config. Source page url is opened when user clicks the dictionary title.
-     1. `search` function which is responsible for fetching, parsing and returning dictionary results. See the typings for more detail.
-        - Extracting information from a webpage **MUST** use helper functions in [../helpers.ts](./components/dictionaries/helpers.ts) for data cleansing.
-        - If the dictionary supports pronunciation:
-          1. Register the ID at [`config.autopron`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/app-config/index.ts#L202-L223).
-          1. Include an [`audio`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/typings/server.ts#L5-L9) field in the object which search engine returns.
+   1. Use any existing dictionary as guidance, e.g. [Bing](./src/components/dictionaries/bing). Copy files to the new directory.
+   1. Replace the favicon with a new LOGO.
+   1. Edit `config.ts` to change default options. See the `DictItem` type and explanation for more details. Register the dictionary in [app config](./src/app-config/dicts.ts) so that TypeScript generates the correct typings. Dict ID **MUST** follow alphabetical order.
+   1. Update `_locales.json` with the new dictionary name. Add locales for options, if any.
+   1. `engine.ts` **MUST** export at least two functions:
+      1. `getSrcPage` function which is responsible for generating source page url base on search text and app config. Source page url is opened when user clicks the dictionary title.
+      1. `search` function which is responsible for fetching, parsing and returning dictionary results. See the typings for more detail.
+         - Extracting information from a webpage **MUST** use helper functions in [../helpers.ts](./components/dictionaries/helpers.ts) for data cleansing.
+         - If the dictionary supports pronunciation:
+         1. Register the ID at [`config.autopron`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/app-config/index.ts#L202-L223).
+         1. Include an [`audio`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/typings/server.ts#L5-L9) field in the object which search engine returns.
       1. Other exported functions can be called from `View.tsx` via `DictEngineMethod` message channel, see `src/typings/message` for typing details (also don't use the native `sendMessage` function, import `{ message }` from `'@/_helpers/browser-api'`).
-  1. Search result will ultimately be passed to a React PureComponent in `View.tsx`, which **SHOULD** be a dumb component that renders the result accordingly.
-  1. Scope the styles in `_style.scss` following [ECSS](http://ecss.io/chapter5.html#anatomy-of-the-ecss-naming-convention)-ish naming convention.
+   1. Search result will ultimately be passed to a React PureComponent in `View.tsx`, which **SHOULD** be a dumb component that renders the result accordingly.
+   1. Scope the styles in `_style.scss` following [ECSS](http://ecss.io/chapter5.html#anatomy-of-the-ecss-naming-convention)-ish naming convention.
 
 Add Testing
 
@@ -70,9 +65,8 @@ Add Testing
 
 Develop the dictionary UI live
 
-1. Intercept ajax calls in [`config/fake-env/fake-ajax.js`](./config/fake-env/fake-ajax.js). Use the testing response samples.
-1. Edit [`src/components/__fake__/index.tsx`](./src/components/__fake__/index.tsx).
-1. Run `yarn start --main=components`.
+1. Edit `test/specs/components/dictionaries/[dictID]/request.mock.ts`.
+1. Run `yarn storybook`.
 
 ## Code Style
 
