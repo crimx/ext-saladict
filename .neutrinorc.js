@@ -3,6 +3,9 @@ const react = require('@neutrinojs/react')
 const copy = require('@neutrinojs/copy')
 const jest = require('@neutrinojs/jest')
 const wext = require('neutrino-webextension')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
+const argv = require('yargs').argv
 
 module.exports = {
   options: {
@@ -122,8 +125,7 @@ module.exports = {
           [
             'import',
             {
-              libraryName: 'antd',
-              style: 'css'
+              libraryName: 'antd'
             }
           ]
         ]
@@ -180,9 +182,6 @@ module.exports = {
 
       // prettier-ignore
       neutrino.config
-        .performance
-          .hints(false)
-          .end()
         .module
           .rule('compile') // add ts extensions for babel ect
             .test(/\.(mjs|jsx|js|ts|tsx)$/)
@@ -198,6 +197,47 @@ module.exports = {
             .end()
           .end()
       /* eslint-enable indent */
+
+      if (argv.mode === 'production') {
+        // prettier-ignore
+        neutrino.config
+          .performance
+            .hints(false)
+            .end()
+          .plugin('momentjs')
+            .use(MomentLocalesPlugin, [{ localesToKeep: ['zh-cn', 'zh-tw'] }])
+            .end()
+          .optimization
+            .merge({
+              splitChunks: {
+                cacheGroups: {
+                  react: {
+                    test: /[\\/]node_modules[\\/](react|i18next)/,
+                    name: 'react',
+                    chunks: 'all'
+                  },
+                  dictpanel: {
+                    test: /[\\/](src[\\/]content)|(components[\\/]dictionaries)[\\/]/,
+                    name: 'dictpanel',
+                    chunks: 'all'
+                  },
+                  antd: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'antd',
+                    chunks: ({ name }) => /^(notebook|options|history)$/.test(name),
+                    reuseExistingChunk: true
+                  }
+                }
+              },
+            })
+      }
+
+      if (argv.analyze || argv.analyse) {
+        // prettier-ignore
+        neutrino.config
+          .plugin('bundle-analyze')
+          .use(BundleAnalyzerPlugin);
+      }
     },
     jest({
       testRegex: ['test/specs/.*\\.spec\\.(ts|tsx|js|jsx)'],
