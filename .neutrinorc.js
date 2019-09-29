@@ -211,15 +211,10 @@ module.exports = {
             .merge({
               splitChunks: {
                 cacheGroups: {
-                  react: {
-                    test: /[\\/]node_modules[\\/](react|i18next)/,
-                    name: 'react',
-                    chunks: 'all'
-                  },
                   dictpanel: {
-                    test: /[\\/](src[\\/]content)|(components[\\/]dictionaries)[\\/]/,
+                    test: /([\\/]src[\\/]content[\\/])|([\\/]components[\\/]dictionaries[\\/])|([\\/]node_modules[\\/]react)/,
                     name: 'dictpanel',
-                    chunks: 'all'
+                    chunks: ({ name }) => !/^(selection|audio-control|background)$/.test(name)
                   },
                   antd: {
                     test: /[\\/]node_modules[\\/]/,
