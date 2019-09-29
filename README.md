@@ -12,11 +12,7 @@
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?maxAge=2592000)](https://standardjs.com/)
 [![License](https://img.shields.io/github/license/crimx/ext-saladict.svg?colorB=44cc11?maxAge=2592000)](https://github.com/crimx/ext-saladict/blob/dev/LICENSE)
 
-Chrome/Firefox WebExtension. Feature-rich inline translator with PDF support. Vimium compatible.
-
-:rotating_light: :rotating_light: :rotating_light: :rotating_light: :rotating_light: :rotating_light:   
-The core engine of Saladict is under rewriting right now. PRs are not encouraged unless there are critical bugs. Adding new dictionaries is not affected though. Please follow [contribution guide](./CONTRIBUTING.md) and make WIP PR before writing any code.   
-:rotating_light: :rotating_light: :rotating_light: :rotating_light: :rotating_light: :rotating_light: 
+Chrome/Firefox WebExtension. Feature-rich inline translator with PDF support.
 
 [【中文】](https://www.crimx.com/ext-saladict/)Chrome/Firefox 浏览器插件，网页划词翻译。
 
@@ -28,7 +24,7 @@ The core engine of Saladict is under rewriting right now. PRs are not encouraged
 
 [Chrome Web Store](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en) / [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/ext-saladict/)
 
-Saladict 6 is a complete rewrite in React Typescript for both Chrome & Firefox. Built for speed, stability and customization.
+Saladict 7 is a complete rewrite with sophisticated interaction and buttery smooth experience. Built for speed, stability and customization.
 
 ## Change Log
 

@@ -37,7 +37,6 @@ Chrome/Firefox 浏览器插件，网页划词翻译。
   - [每个情境模式下设置相互独立，快速切换](https://github.com/crimx/ext-saladict/wiki#profile)
 - 全键盘操作亦可
   - [支持设置浏览器快捷键](https://github.com/crimx/ext-saladict/wiki#shortcuts)
-  - [兼容 Vimium 全键盘操作](https://github.com/crimx/ext-saladict/wiki#vimium)
   - [三按 ctrl 打开快捷查词](https://github.com/crimx/ext-saladict/wiki#triple-ctrl)
   - [点击地址栏图标快速查词（可设置快捷键）](https://github.com/crimx/ext-saladict/wiki#popup-icon)
 - 单词管理
