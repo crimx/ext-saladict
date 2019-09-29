@@ -167,7 +167,9 @@ export async function openQSPanel(): Promise<void> {
     }
   }
 
-  let url = browser.runtime.getURL('quick-search.html')
+  let url = browser.runtime.getURL(
+    `quick-search.html?sidebar=${tripleCtrlSidebar}`
+  )
   if (window.appConfig.tripleCtrlPreload === 'selection') {
     const tab = (await browser.tabs.query({
       active: true,
@@ -178,7 +180,7 @@ export async function openQSPanel(): Promise<void> {
         type: 'PRELOAD_SELECTION'
       })
       try {
-        url += '?info=' + encodeURIComponent(JSON.stringify(info))
+        url += '&info=' + encodeURIComponent(JSON.stringify(info))
       } catch (e) {
         if (process.env.NODE_ENV === 'development') {
           console.warn(e)

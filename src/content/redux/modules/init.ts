@@ -192,6 +192,13 @@ async function summonedPanelInit(
     return
   }
 
+  const { searchParams } = new URL(document.URL)
+
+  if (isQuickSearchPage() && !searchParams.get('sidebar')) {
+    // pin panel if not sidebar mode
+    dispatch({ type: 'TOGGLE_PIN' })
+  }
+
   try {
     if (preload === 'selection') {
       if (standalone === 'popup') {
@@ -205,7 +212,7 @@ async function summonedPanelInit(
           })
         }
       } else if (standalone === 'quick-search') {
-        const infoText = new URL(document.URL).searchParams.get('info')
+        const infoText = searchParams.get('info')
         if (infoText) {
           try {
             word = JSON.parse(decodeURIComponent(infoText))
