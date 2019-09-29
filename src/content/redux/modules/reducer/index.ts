@@ -1,7 +1,8 @@
 import {
   isStandalonePage,
   isPopupPage,
-  isQuickSearchPage
+  isQuickSearchPage,
+  isOptionsPage
 } from '@/_helpers/saladict'
 import { createReducer } from '../../utils/createReducer'
 import { initState } from '../state'
@@ -214,7 +215,7 @@ export const createRootReducer = () =>
             withQSPanel: payload,
             isPinned: false,
             // no hiding if it's browser action page
-            isShowDictPanel: isPopupPage(),
+            isShowDictPanel: isPopupPage() || isOptionsPage(),
             isShowBowl: false,
             isQSPanel: false
           }
