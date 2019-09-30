@@ -130,7 +130,7 @@ export function mergeConfig(
             mergeBoolean(key)
             break
           case 'number':
-            mergeBoolean(key)
+            mergeNumber(key)
             break
           default:
             console.error(
