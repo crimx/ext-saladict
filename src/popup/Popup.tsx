@@ -69,7 +69,7 @@ export const Popup: FC<PopupProps> = props => {
   return (
     <div className={`popup-root${config.darkMode ? ' dark-mode' : ''}`}>
       <DictPanelStandaloneContainer
-        width="450px"
+        width="100vw"
         height={dictPanelHeight + 'px'}
       />
       <div
