@@ -2,6 +2,61 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.0.1](https://github.com/crimx/ext-saladict/compare/v7.0.0...v7.0.1) (2019-09-30)
+
+
+### Bug Fixes
+
+* **config:** number merging ([569f69c](https://github.com/crimx/ext-saladict/commit/569f69c))
+* **config:** update quick search location ([34a6a07](https://github.com/crimx/ext-saladict/commit/34a6a07)), closes [#479](https://github.com/crimx/ext-saladict/issues/479)
+* **dicts:** include cambridge dphrase block ([807923f](https://github.com/crimx/ext-saladict/commit/807923f)), closes [#480](https://github.com/crimx/ext-saladict/issues/480)
+* **pdf:** inject panel on firefox close [#477](https://github.com/crimx/ext-saladict/issues/477) ([745bb75](https://github.com/crimx/ext-saladict/commit/745bb75))
+* **popup:** correct popup width ([6f14ba2](https://github.com/crimx/ext-saladict/commit/6f14ba2)), closes [#481](https://github.com/crimx/ext-saladict/issues/481)
+* **sync:** update mkcol authorzation close [#475](https://github.com/crimx/ext-saladict/issues/475) ([ddd6b77](https://github.com/crimx/ext-saladict/commit/ddd6b77))
+
+
+
+### [6.33.7](https://github.com/crimx/ext-saladict/compare/v6.33.6...v6.33.7) (2019-09-13)
+
+
+
+### [6.33.6](https://github.com/crimx/ext-saladict/compare/v6.33.5...v6.33.6) (2019-09-12)
+
+
+### Bug Fixes
+
+* fit the outdated typings ([f019572](https://github.com/crimx/ext-saladict/commit/f019572))
+* update dicts ([4492cd0](https://github.com/crimx/ext-saladict/commit/4492cd0))
+
+
+
+### [6.33.5](https://github.com/crimx/ext-saladict/compare/v6.33.4...v6.33.5) (2019-08-11)
+
+
+### Bug Fixes
+
+* change the checksums of panel.css ([e2ed394](https://github.com/crimx/ext-saladict/commit/e2ed394))
+
+
+
+### [6.33.4](https://github.com/crimx/ext-saladict/compare/v6.33.3...v6.33.4) (2019-08-09)
+
+
+### Bug Fixes
+
+* **manifest:** fix chrome 67 bug ([bca3b56](https://github.com/crimx/ext-saladict/commit/bca3b56))
+
+
+
+### [6.33.3](https://github.com/crimx/ext-saladict/compare/v6.33.2...v6.33.3) (2019-08-08)
+
+
+### Bug Fixes
+
+* **manifest:** remvoe update url ([f83a485](https://github.com/crimx/ext-saladict/commit/f83a485))
+
+
+
 ## [7.0.0](https://github.com/crimx/ext-saladict/compare/v6.33.2...v7.0.0) (2019-09-29)
 
 
