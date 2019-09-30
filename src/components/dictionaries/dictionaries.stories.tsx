@@ -24,7 +24,6 @@ const stories = storiesOf('Content Scripts|Dictionaries', module)
       { name: 'Black', value: '#000' }
     ]
   })
-  .addDecorator(withKnobs)
   .addDecorator(
     withSideEffect(
       mockRuntimeMessage(async message => {
@@ -52,6 +51,7 @@ const stories = storiesOf('Content Scripts|Dictionaries', module)
       height: 'auto'
     })
   )
+  .addDecorator(withKnobs)
 
 Object.keys(getAllDicts()).forEach(id => {
   // @ts-ignore: wrong storybook typing
