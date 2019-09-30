@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.0.3](https://github.com/crimx/ext-saladict/compare/v7.0.2...v7.0.3) (2019-09-30)
+
+
+### Bug Fixes
+
+* **panel:** fix mta box init focus with clipboard content [#487](https://github.com/crimx/ext-saladict/issues/487) ([789270d](https://github.com/crimx/ext-saladict/commit/789270d))
+* **qs:** selection on quick search panel ([3ede289](https://github.com/crimx/ext-saladict/commit/3ede289)), closes [#487](https://github.com/crimx/ext-saladict/issues/487)
+
+
+
 ### [7.0.2](https://github.com/crimx/ext-saladict/compare/v7.0.0...v7.0.2) (2019-09-30)
 
 
