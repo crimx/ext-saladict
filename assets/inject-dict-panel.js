@@ -5,7 +5,7 @@ if (manifest.content_scripts) {
       for (const js of script.js) {
         const $script = document.createElement('script')
         $script.type = 'text/javascript'
-        $script.src = js[0] === '/' ? js : `/${js}`
+        $script.src = /^\/|([a-z-]+:\/\/)/i.test(js) ? js : `/${js}`
         document.body.appendChild($script)
       }
     }
@@ -13,7 +13,7 @@ if (manifest.content_scripts) {
       for (const css of script.css) {
         const $link = document.createElement('link')
         $link.rel = 'stylesheet'
-        $link.href = css[0] === '/' ? css : `/${css}`
+        $link.href = /^\/|([a-z-]+:\/\/)/i.test(css) ? css : `/${css}`
         document.head.appendChild($link)
       }
     }
