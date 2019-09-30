@@ -5,6 +5,7 @@ const jest = require('@neutrinojs/jest')
 const wext = require('neutrino-webextension')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
+const DotenvPlugin = require('dotenv-webpack')
 const argv = require('yargs').argv
 
 module.exports = {
@@ -206,6 +207,7 @@ module.exports = {
             .end()
           .plugin('momentjs')
             .use(MomentLocalesPlugin, [{ localesToKeep: ['zh-cn', 'zh-tw'] }])
+            .use(DotenvPlugin)
             .end()
           .optimization
             .merge({
