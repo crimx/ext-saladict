@@ -1,4 +1,5 @@
 import './env'
+import '@/selection'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -13,6 +14,8 @@ import { i18nLoader } from '@/_helpers/i18n'
 import { DictPanelStandaloneContainer } from '@/content/components/DictPanel/DictPanelStandalone.container'
 
 import './quick-search.scss'
+
+document.title = 'Saladict Dict Panel'
 
 ReactDOM.render(
   <ProviderRedux store={createStore()}>
