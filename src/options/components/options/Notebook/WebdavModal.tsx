@@ -138,7 +138,7 @@ export default class WebdavModal extends React.Component<
     }
 
     if (error === 'exist') {
-      if (confirm(t('sync_webdav_err_exist'))) {
+      if (confirm(t('sync.webdav_err_exist'))) {
         await message
           .send<'SYNC_SERVICE_DOWNLOAD'>({
             type: 'SYNC_SERVICE_DOWNLOAD',

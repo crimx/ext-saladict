@@ -171,7 +171,13 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
 
     if (!dir) {
       // create directory
-      const response = await fetch(config.url + 'Saladict', { method: 'MKCOL' })
+      const response = await fetch(config.url + 'Saladict', {
+        method: 'MKCOL',
+        headers: {
+          Authorization:
+            'Basic ' + window.btoa(`${config.user}:${config.passwd}`)
+        }
+      })
       if (!response.ok) {
         // cannot create directory
         return Promise.reject('mkcol')
