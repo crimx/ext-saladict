@@ -20,6 +20,7 @@ export interface MtaBoxProps {
  * Multiline Textarea Drawer. With animation on Expanding and Shrinking.
  */
 export const MtaBox: FC<MtaBoxProps> = props => {
+  const isTypedRef = useRef(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [height, setHeight] = useState(0)
 
@@ -31,6 +32,14 @@ export const MtaBox: FC<MtaBoxProps> = props => {
       textareaRef.current.select()
     }
   }, [props.expand])
+
+  useEffect(() => {
+    // could be from clipboard with delay
+    if (!isTypedRef.current && props.expand && textareaRef.current) {
+      textareaRef.current.focus()
+      textareaRef.current.select()
+    }
+  }, [props.text])
 
   useEffect(() => {
     props.onHeightChanged((props.expand ? height : 0) + 12)
@@ -60,7 +69,10 @@ export const MtaBox: FC<MtaBoxProps> = props => {
               className="mtaBox-TextArea"
               style={{ maxHeight: props.maxHeight }}
               value={props.text}
-              onChange={e => props.onInput(e.currentTarget.value)}
+              onChange={e => {
+                isTypedRef.current = true
+                props.onInput(e.currentTarget.value)
+              }}
               onKeyDown={onKeyDown}
               onKeyUp={e => {
                 if (e.key === 'Enter' && e.ctrlKey) {
