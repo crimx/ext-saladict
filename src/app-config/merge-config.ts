@@ -70,7 +70,19 @@ export function mergeConfig(
         )
         break
       case 'tripleCtrlLocation':
-        merge('tripleCtrlLocation', val => val >= 0 && val <= 8)
+        merge(
+          'tripleCtrlLocation',
+          val =>
+            val === 'CENTER' ||
+            val === 'TOP' ||
+            val === 'RIGHT' ||
+            val === 'BOTTOM' ||
+            val === 'LEFT' ||
+            val === 'TOP_LEFT' ||
+            val === 'TOP_RIGHT' ||
+            val === 'BOTTOM_LEFT' ||
+            val === 'BOTTOM_RIGHT'
+        )
         break
       case 'baPreload':
         merge(
