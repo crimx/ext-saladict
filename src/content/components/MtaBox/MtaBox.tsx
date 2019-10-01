@@ -85,11 +85,15 @@ export const MtaBox: FC<MtaBoxProps> = props => {
                 isTypedRef.current = true
                 props.onInput(e.currentTarget.value)
               }}
-              onKeyDown={onKeyDown}
-              onKeyUp={e => {
+              onKeyDown={e => {
+                // prevent page shortkeys
+                e.nativeEvent.stopPropagation()
+
                 if (e.key === 'Enter' && e.ctrlKey) {
                   props.searchText(props.text)
                 }
+
+                onKeyDown(e)
               }}
               minRows={2}
               onHeightChange={height => setHeight(height)}
