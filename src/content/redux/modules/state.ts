@@ -27,7 +27,10 @@ export const initState = () => {
     },
     /** Temporary disable Saladict */
     isTempDisabled: false,
-    /** Is current panel a Quick Search Panel */
+    /**
+     * Is current panel a Quick Search Panel,
+     * which could be in a standalone window or in-page element.
+     */
     isQSPanel: isQuickSearchPage(),
     /** is a standalone quick search panel running */
     withQSPanel: false,
