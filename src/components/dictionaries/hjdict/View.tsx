@@ -52,6 +52,7 @@ function LangSelect(props: ViewPorps<HjdictResult>) {
   return (
     <select
       style={{ width: '100%' }}
+      value={langCode}
       onChange={e =>
         props.searchText({
           id: 'hjdict',
@@ -60,7 +61,7 @@ function LangSelect(props: ViewPorps<HjdictResult>) {
       }
     >
       {langSelectList.map(lang => (
-        <option key={lang} value={lang} selected={lang === langCode}>
+        <option key={lang} value={lang}>
           {t(`hjdict.options.chsas-${lang}`)}
         </option>
       ))}
@@ -74,13 +75,13 @@ function handleClick(e: React.MouseEvent<HTMLElement>): void {
     if ($tab.classList.contains('word-details-tab-active')) {
       return
     }
-    const doc = $tab.ownerDocument
-    if (doc) {
+    const container = e.currentTarget
+    if (container) {
       const index = +($tab.dataset.categories || '0')
 
-      const $panes = doc.querySelectorAll('.word-details-pane')
+      const $panes = container.querySelectorAll('.word-details-pane')
 
-      doc.querySelectorAll('.word-details-tab').forEach(($tab, i) => {
+      container.querySelectorAll('.word-details-tab').forEach(($tab, i) => {
         if (i === index) {
           $tab.classList.add('word-details-tab-active')
           $panes[i].classList.add('word-details-pane-active')

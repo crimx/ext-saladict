@@ -1,6 +1,6 @@
 import { MockRequest } from '@/components/dictionaries/helpers'
 
-export const mockSearchTexts = ['love', '爱', 'henr']
+export const mockSearchTexts = ['爱', 'love', 'henr']
 
 export const mockRequest: MockRequest = mock => {
   mock.onGet(/hjdict/).reply(info => {

@@ -9,6 +9,7 @@ export interface MtaBoxProps {
   expand: boolean
   maxHeight: number
   text: string
+  shouldFocus: boolean
   searchText: (text: string) => any
   onInput: (text: string) => void
   /** Expand or Shrink */
@@ -26,16 +27,27 @@ export const MtaBox: FC<MtaBoxProps> = props => {
 
   const [isTyping, onKeyDown] = useObservableState(transformTyping, false)
 
+  const firstExpandRef = useRef(true)
   useEffect(() => {
-    if (props.expand && textareaRef.current) {
-      textareaRef.current.focus()
-      textareaRef.current.select()
+    if (props.expand) {
+      if (!firstExpandRef.current || props.shouldFocus) {
+        if (textareaRef.current) {
+          textareaRef.current.focus()
+          textareaRef.current.select()
+        }
+      }
+      firstExpandRef.current = false
     }
   }, [props.expand])
 
   useEffect(() => {
     // could be from clipboard with delay
-    if (!isTypedRef.current && props.expand && textareaRef.current) {
+    if (
+      props.shouldFocus &&
+      !isTypedRef.current &&
+      props.expand &&
+      textareaRef.current
+    ) {
       textareaRef.current.focus()
       textareaRef.current.select()
     }

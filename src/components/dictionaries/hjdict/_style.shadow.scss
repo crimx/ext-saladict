@@ -1613,7 +1613,7 @@ a.ui-button:active {
 }
 
 .word-details-header {
-  padding: 5px;
+  padding-top: 5px;
 }
 
 .word-details-header > p {
@@ -1640,6 +1640,7 @@ a.ui-button:active {
   padding: 8px 10px;
   white-space: nowrap;
   word-break: keep-all;
+  color: #333;
   background: #f5f8ff;
 }
 

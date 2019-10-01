@@ -3,6 +3,7 @@ import { MtaBox, MtaBoxProps } from './MtaBox'
 import { StoreState, StoreAction } from '@/content/redux/modules'
 import { Dispatch } from 'redux'
 import { newWord } from '@/_helpers/record-manager'
+import { isStandalonePage } from '@/_helpers/saladict'
 
 type Dispatchers =
   | 'searchText'
@@ -15,7 +16,8 @@ const mapStateToProps = (
 ): Omit<MtaBoxProps, Dispatchers> => ({
   expand: state.isExpandMtaBox,
   maxHeight: state.panelMaxHeight,
-  text: state.text
+  text: state.text,
+  shouldFocus: state.isQSPanel || isStandalonePage()
 })
 
 const mapDispatchToProps = (

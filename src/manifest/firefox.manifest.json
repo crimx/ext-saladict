@@ -5,7 +5,7 @@
   "applications": {
     "gecko": {
       "id": "saladict@crimx.com",
-      "strict_min_version": "56.0"
+      "strict_min_version": "65.0"
     }
   }
 }

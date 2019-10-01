@@ -31,9 +31,10 @@ storiesOf('Content Scripts|Dict Panel', module)
 
     return (
       <MtaBox
-        text={text}
         expand={expand}
         maxHeight={number('Max Height', 100)}
+        text={text}
+        shouldFocus={true}
         searchText={action('Search Text')}
         onInput={text => {
           action('Input')(text)

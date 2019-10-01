@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.0.4](https://github.com/crimx/ext-saladict/compare/v7.0.3...v7.0.4) (2019-10-01)
+
+
+### Bug Fixes
+
+* **dicts:** hjdict switch buttons. close [#489](https://github.com/crimx/ext-saladict/issues/489) ([a2718d4](https://github.com/crimx/ext-saladict/commit/a2718d4))
+* youdao translate ([02381da](https://github.com/crimx/ext-saladict/commit/02381da))
+
+
+
 ### [7.0.3](https://github.com/crimx/ext-saladict/compare/v7.0.2...v7.0.3) (2019-09-30)
 
 

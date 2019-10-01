@@ -253,6 +253,9 @@ export type MessageConfig = {
     payload: boolean
   }
 
+  /** Focus standalone quick search panel */
+  QS_PANEL_FOCUSED: {}
+
   /* ------------------------------------------------ *\
      Word Editor
   \* ------------------------------------------------ */
