@@ -79,6 +79,22 @@ export const init: Init<StoreActionCatalog, StoreState> = (
         }
         return Promise.resolve()
 
+      case 'QS_PANEL_FOCUSED':
+        if (isQuickSearchPage()) {
+          const input = document.querySelector<
+            HTMLTextAreaElement | HTMLInputElement
+          >(
+            getState().isExpandMtaBox
+              ? '.mtaBox-TextArea'
+              : '.menuBar-SearchBox'
+          )
+          if (input) {
+            input.focus()
+            input.select()
+          }
+        }
+        return Promise.resolve()
+
       case 'GET_TAB_BADGE_INFO':
         return Promise.resolve({
           tempDisable: getState().isTempDisabled,

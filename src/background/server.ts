@@ -104,6 +104,10 @@ browser.windows.onRemoved.addListener(async winID => {
 export async function openQSPanel(): Promise<void> {
   if (qsPanelID !== false) {
     await browser.windows.update(qsPanelID, { focused: true })
+    const [tab] = await browser.tabs.query({ windowId: qsPanelID })
+    if (tab && tab.id) {
+      await message.send(tab.id, { type: 'QS_PANEL_FOCUSED' })
+    }
     return
   }
 
