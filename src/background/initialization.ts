@@ -6,7 +6,7 @@ import { updateConfig, initConfig } from '@/_helpers/config-manager'
 import { initProfiles } from '@/_helpers/profile-manager'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
 import { openPDF, openGoogle, openYoudao } from './context-menus'
-import { openQSPanel } from './server'
+import { openQSPanel, searchClipboard } from './server'
 import './types'
 
 interface UpdateData {
@@ -82,6 +82,9 @@ function onCommand(command: string) {
       break
     case 'open-pdf':
       openPDF()
+      break
+    case 'search-clipboard':
+      searchClipboard()
       break
   }
 }

@@ -28,5 +28,8 @@
   },
   "command_open_pdf": {
     "message": "Open current PDF in Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Search clipboard content in Standalone Panel"
   }
 }

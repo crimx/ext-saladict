@@ -28,5 +28,8 @@
   },
   "command_open_pdf": {
     "message": "在 Saladict 中浏览此 PDF"
+  },
+  "command_search_clipboard": {
+    "message": "在独立窗口中搜索剪贴板内容"
   }
 }

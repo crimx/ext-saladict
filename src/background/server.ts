@@ -2,6 +2,7 @@ import { message, openURL } from '@/_helpers/browser-api'
 import { timeout, timer } from '@/_helpers/promise-more'
 import { getSuggests } from '@/_helpers/getSuggests'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
+import { newWord } from '@/_helpers/record-manager'
 import { Message, MessageResponse } from '@/typings/message'
 import {
   SearchFunction,
@@ -239,6 +240,21 @@ export async function openQSPanel(): Promise<void> {
       }
     }
   }
+}
+
+export async function searchClipboard(): Promise<void> {
+  const text = await getClipboard()
+  if (!text) return
+
+  if (!qsPanelID) {
+    await openQSPanel()
+    await timer(1000)
+  }
+
+  await message.send({
+    type: 'QS_PANEL_SEARCH_TEXT',
+    payload: newWord({ text })
+  })
 }
 
 async function closeQSPanel(): Promise<void> {
