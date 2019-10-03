@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.1.0](https://github.com/crimx/ext-saladict/compare/v7.0.4...v7.1.0) (2019-10-03)
+
+
+### Bug Fixes
+
+* **panel:** always focus mta box on expand ([57840eb](https://github.com/crimx/ext-saladict/commit/57840eb))
+* **panel:** prevent page shortkeys when typing ([ba9a37a](https://github.com/crimx/ext-saladict/commit/ba9a37a)), closes [#490](https://github.com/crimx/ext-saladict/issues/490)
+
+
+### Features
+
+* **panel:** add new shortcut for searching clipboard ([e5f279d](https://github.com/crimx/ext-saladict/commit/e5f279d)), closes [#485](https://github.com/crimx/ext-saladict/issues/485)
+* **panel:** add touch mode close [#492](https://github.com/crimx/ext-saladict/issues/492) ([c86e6e8](https://github.com/crimx/ext-saladict/commit/c86e6e8))
+
+
+
 ### [7.0.4](https://github.com/crimx/ext-saladict/compare/v7.0.3...v7.0.4) (2019-10-01)
 
 

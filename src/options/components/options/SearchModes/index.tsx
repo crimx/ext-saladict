@@ -29,6 +29,16 @@ export class SearchModes extends React.Component<SearchModesProps> {
         </Form.Item>
         <Form.Item
           {...formItemLayout}
+          label={t('opt.touch_mode')}
+          help={t('opt.touch_mode_help')}
+        >
+          {getFieldDecorator('config#touchMode', {
+            initialValue: config.touchMode,
+            valuePropName: 'checked'
+          })(<Switch />)}
+        </Form.Item>
+        <Form.Item
+          {...formItemLayout}
           label={t('opt.sel_lang')}
           help={t('opt.sel_lang_help')}
           extra={

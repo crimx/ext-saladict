@@ -35,6 +35,9 @@
     },
     "open-google": {
       "description": "__MSG_command_open_google__"
+    },
+    "search-clipboard": {
+      "description": "__MSG_command_search_clipboard__"
     }
   },
 

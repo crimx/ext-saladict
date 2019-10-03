@@ -168,6 +168,8 @@ export const locale: typeof _locale = {
     },
     syncShanbay: '新增扇貝生詞本同步',
     syncWebdav: '新增 WebDAV 同步',
+    touch_mode: '觸控模式',
+    touch_mode_help: '支援觸控相關選字',
     waveform: '波形控制',
     waveform_help:
       '在字典介面下方顯示音訊控制面板展開按鈕。關閉依然可以播放音訊。'

@@ -216,6 +216,7 @@ export type MessageConfig = {
   /** Info for brwoser action badge. From background to content. */
   GET_TAB_BADGE_INFO: {
     response: {
+      active: boolean
       tempDisable: boolean
       unsupported: boolean
     }
@@ -224,6 +225,7 @@ export type MessageConfig = {
   /** Info for brwoser action badge. From content to background. */
   SEND_TAB_BADGE_INFO: {
     payload: {
+      active: boolean
       tempDisable: boolean
       unsupported: boolean
     }

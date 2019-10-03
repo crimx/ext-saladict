@@ -15,20 +15,26 @@ import { message } from '@/_helpers/browser-api'
 import { PreloadSource } from '@/app-config'
 import { Dispatch } from 'redux'
 import { Word, newWord } from '@/_helpers/record-manager'
+import { MessageResponse } from '@/typings/message'
 
 export const init: Init<StoreActionCatalog, StoreState> = (
   dispatch,
   getState
 ) => {
-  message.send({
-    type: 'SEND_TAB_BADGE_INFO',
-    payload: {
-      tempDisable: getState().isTempDisabled,
-      unsupported: isStandalonePage() ? false : document.body.tagName !== 'BODY'
-    }
-  })
-
   addConfigListener(({ newConfig }) => {
+    if (newConfig.active !== getState().config.active) {
+      message.send({
+        type: 'SEND_TAB_BADGE_INFO',
+        payload: {
+          active: newConfig.active,
+          tempDisable: getState().isTempDisabled,
+          unsupported: isStandalonePage()
+            ? false
+            : document.body.tagName !== 'BODY'
+        }
+      })
+    }
+
     dispatch({ type: 'NEW_CONFIG', payload: newConfig })
   })
 
@@ -46,10 +52,12 @@ export const init: Init<StoreActionCatalog, StoreState> = (
         if (msg.payload.op === 'set') {
           dispatch({ type: 'TEMP_DISABLED_STATE', payload: msg.payload.value })
           setTimeout(() => {
+            const state = getState()
             message.send({
               type: 'SEND_TAB_BADGE_INFO',
               payload: {
-                tempDisable: getState().isTempDisabled,
+                active: state.config.active,
+                tempDisable: state.isTempDisabled,
                 unsupported: isStandalonePage()
                   ? false
                   : document.body.tagName !== 'BODY'
@@ -95,13 +103,16 @@ export const init: Init<StoreActionCatalog, StoreState> = (
         }
         return Promise.resolve()
 
-      case 'GET_TAB_BADGE_INFO':
-        return Promise.resolve({
-          tempDisable: getState().isTempDisabled,
+      case 'GET_TAB_BADGE_INFO': {
+        const state = getState()
+        return Promise.resolve<MessageResponse<'GET_TAB_BADGE_INFO'>>({
+          active: state.config.active,
+          tempDisable: state.isTempDisabled,
           unsupported: isStandalonePage()
             ? false
             : document.body.tagName !== 'BODY'
         })
+      }
     }
   })
 

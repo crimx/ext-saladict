@@ -166,6 +166,8 @@ export const locale = {
     },
     syncShanbay: '添加扇贝生词本同步',
     syncWebdav: '添加 WebDAV 同步',
+    touch_mode: '触摸模式',
+    touch_mode_help: '支持触摸相关选词',
     waveform: '波形控制按钮',
     waveform_help:
       '在词典面板下方显示音频控制面板展开按钮。关闭依然可以播放音频。'

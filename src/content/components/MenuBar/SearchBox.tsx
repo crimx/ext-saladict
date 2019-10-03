@@ -106,12 +106,10 @@ export const SearchBox: FC<SearchBoxProps> = props => {
             props.onInput(e.currentTarget.value)
             onShowSugget(true)
           }}
-          onKeyUp={e => {
-            if (e.key === 'Enter') {
-              searchText(props.text)
-            }
-          }}
           onKeyDown={e => {
+            // prevent page shortkeys
+            e.nativeEvent.stopPropagation()
+
             hasTypedRef.current = true
             if (e.key === 'ArrowDown') {
               const firstSuggestBtn =
@@ -123,6 +121,8 @@ export const SearchBox: FC<SearchBoxProps> = props => {
               }
               e.preventDefault()
               e.stopPropagation()
+            } else if (e.key === 'Enter') {
+              searchText(props.text)
             }
           }}
           onFocus={onSearchBoxFocusBlur}

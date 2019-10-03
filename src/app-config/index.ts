@@ -96,6 +96,9 @@ function _getDefaultConfig() {
     /** Show suggestions when typing on search box */
     searchSuggests: true,
 
+    /** Enable touch related support */
+    touchMode: false,
+
     /** when and how to search text */
     mode: {
       /** show pop icon first */
