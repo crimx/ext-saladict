@@ -9,7 +9,7 @@ import { injectAnalytics } from '@/_helpers/analytics'
 import { startSyncServiceInterval } from './sync-manager'
 import { init as initMenus } from './context-menus'
 import { init as initPdf } from './pdf-sniffer'
-import { updateBadge, initBadge } from './badge'
+import { initBadge } from './badge'
 import './types'
 
 startSyncServiceInterval()
