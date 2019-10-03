@@ -1,84 +1,62 @@
 import { message } from '@/_helpers/browser-api'
 
-const currentTabInfo = {
-  tabId: null as null | number,
-  tempDisable: false,
-  unsupported: false
-}
-
 export function initBadge() {
   /** Sent when content script loaded */
   message.addListener('SEND_TAB_BADGE_INFO', ({ payload }, sender) => {
-    if (sender.tab && sender.tab.id === currentTabInfo.tabId) {
-      currentTabInfo.tempDisable = payload.tempDisable
-      currentTabInfo.unsupported = payload.unsupported
-      updateBadge()
+    if (sender.tab && sender.tab.id) {
+      updateBadge(sender.tab.id, payload)
     }
   })
 
-  browser.tabs.onActivated.addListener(async ({ tabId }) => {
-    if (!tabId) {
-      currentTabInfo.tempDisable = false
-      currentTabInfo.unsupported = false
-      updateBadge()
-      return
+  browser.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
+    if (changeInfo.status === 'complete') {
+      try {
+        const response = await message.send<'GET_TAB_BADGE_INFO'>(tabId, {
+          type: 'GET_TAB_BADGE_INFO'
+        })
+        updateBadge(tabId, response)
+      } catch (e) {
+        updateBadge(tabId, {
+          active: window.appConfig.active,
+          tempDisable: false,
+          unsupported: true
+        })
+      }
     }
-
-    currentTabInfo.tabId = tabId
-
-    const response = await message
-      .send<'GET_TAB_BADGE_INFO'>(tabId, {
-        type: 'GET_TAB_BADGE_INFO'
-      })
-      .catch(console.warn)
-
-    if (response) {
-      currentTabInfo.tempDisable = response.tempDisable
-      currentTabInfo.unsupported = response.unsupported
-    } else {
-      currentTabInfo.tempDisable = false
-      currentTabInfo.unsupported = true
-    }
-
-    updateBadge()
   })
 }
 
-export function updateBadge() {
-  if (!window.appConfig.active) {
-    return setOff(currentTabInfo.tabId)
+export function updateBadge(
+  tabId: number,
+  options: {
+    active: boolean
+    tempDisable: boolean
+    unsupported: boolean
+  }
+) {
+  if (!options.active) {
+    return setOff(tabId)
   }
 
-  if (currentTabInfo.tabId) {
-    if (currentTabInfo.tempDisable) {
-      return setTempOff(currentTabInfo.tabId)
-    }
-
-    if (currentTabInfo.unsupported) {
-      return setUnsupported(currentTabInfo.tabId)
-    }
+  if (options.tempDisable) {
+    return setTempOff(tabId)
   }
 
-  return setEmpty(currentTabInfo.tabId)
+  if (options.unsupported) {
+    return setUnsupported(tabId)
+  }
+
+  return setEmpty(tabId)
 }
 
-function setOff(tabId: number | null) {
-  if (tabId) {
-    browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B', tabId })
-    browser.browserAction.setBadgeText({ text: 'off', tabId })
-    browser.browserAction.setTitle({
-      title: require('@/_locales/' + window.appConfig.langCode + '/background')
-        .locale.app.off,
-      tabId
-    })
-  } else {
-    browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B' })
-    browser.browserAction.setBadgeText({ text: 'off' })
-    browser.browserAction.setTitle({
-      title: require('@/_locales/' + window.appConfig.langCode + '/background')
-        .locale.app.off
-    })
-  }
+function setOff(tabId: number) {
+  browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B', tabId })
+  browser.browserAction.setBadgeText({ text: 'off', tabId })
+  browser.browserAction.setTitle({
+    title: require('@/_locales/' + window.appConfig.langCode + '/background')
+      .locale.app.off,
+    tabId
+  })
 }
 
 function setTempOff(tabId: number) {
@@ -101,12 +79,7 @@ function setUnsupported(tabId: number) {
   })
 }
 
-function setEmpty(tabId: number | null) {
-  if (tabId) {
-    browser.browserAction.setBadgeText({ text: '', tabId })
-    browser.browserAction.setTitle({ title: '', tabId })
-  } else {
-    browser.browserAction.setBadgeText({ text: '' })
-    browser.browserAction.setTitle({ title: '' })
-  }
+function setEmpty(tabId: number) {
+  browser.browserAction.setBadgeText({ text: '', tabId })
+  browser.browserAction.setTitle({ title: '', tabId })
 }

@@ -19,13 +19,10 @@ getConfig().then(async config => {
   initMenus(config.contextMenus)
   initPdf(config)
   injectAnalytics('/background')
-
-  updateBadge()
   initBadge()
 
   addConfigListener(({ newConfig }) => {
     window.appConfig = newConfig
-    updateBadge()
   })
 })
 
