@@ -90,9 +90,7 @@ if (!window.__SALADICT_SELECTION_LOADED__) {
   })
 
   config$$.pipe(switchMap(createSelectTextStream)).subscribe(result => {
-    if (typeof result === 'boolean') {
-      sendEmptyMessage(result)
-    } else {
+    if (result.word) {
       sendMessage({
         dbClick: false,
         shiftKey: false,
@@ -103,6 +101,8 @@ if (!window.__SALADICT_SELECTION_LOADED__) {
         force: false,
         ...result
       })
+    } else {
+      sendEmptyMessage(result.self)
     }
   })
 
