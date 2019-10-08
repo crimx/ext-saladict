@@ -63,6 +63,12 @@ export const StaticSpeakerContainer: FC<
         reflect([timer(1000), onPlayStart(target.href)]).then(() => {
           target.classList.remove('isActive')
         })
+
+        const selection = window.getSelection()
+        if (selection) {
+          // prevent searching words
+          selection.removeAllRanges()
+        }
       }
     },
     [onPlayStart]

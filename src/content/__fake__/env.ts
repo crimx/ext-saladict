@@ -11,8 +11,10 @@ browser.runtime.sendMessage['_sender'].callsFake(() => ({
   }
 }))
 
-initConfig().then(config => {
-  ;(config as AppConfigMutable).mode.instant.enable = true
+initConfig().then(_config => {
+  const config = _config as AppConfigMutable
+  config.mode.instant.enable = true
+  config.panelMode.direct = true
   updateConfig(config)
 })
 initProfiles().then(profile => {

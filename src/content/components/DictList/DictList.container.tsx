@@ -23,15 +23,22 @@ type Dispatchers =
   | 'openDictSrcPage'
   | 'onHeightChanged'
   | 'onSpeakerPlay'
+  | 'newSelection'
 
 const mapStateToProps = (
   state: StoreState
-): Omit<DictListProps, Dispatchers> => ({
-  fontSize: state.config.fontSize,
-  withAnimation: state.config.animation,
-  panelCSS: state.config.panelCSS,
-  dicts: memoizedDicts(state.renderedDicts, state.activeProfile.dicts.all)
-})
+): Omit<DictListProps, Dispatchers> => {
+  const { config } = state
+  return {
+    fontSize: config.fontSize,
+    withAnimation: config.animation,
+    panelCSS: config.panelCSS,
+    touchMode: config.touchMode,
+    language: config.language,
+    doubleClickDelay: config.doubleClickDelay,
+    dicts: memoizedDicts(state.renderedDicts, state.activeProfile.dicts.all)
+  }
+}
 
 const mapDispatchToProps = (
   dispatch: ThunkDispatch<StoreState, {}, StoreAction>
@@ -72,6 +79,9 @@ const mapDispatchToProps = (
         })
       })
     })
+  },
+  newSelection: (payload: StoreState['selection']) => {
+    dispatch({ type: 'NEW_SELECTION', payload })
   }
 })
 

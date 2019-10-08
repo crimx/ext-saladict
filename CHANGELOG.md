@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.1.1](https://github.com/crimx/ext-saladict/compare/v7.1.0...v7.1.1) (2019-10-08)
+
+
+### Bug Fixes
+
+* **panel:** save word without confirm ([#500](https://github.com/crimx/ext-saladict/issues/500)) ([3d77d97](https://github.com/crimx/ext-saladict/commit/3d77d97))
+* **selection:** only detect left click ([fc3797d](https://github.com/crimx/ext-saladict/commit/fc3797d)), closes [#502](https://github.com/crimx/ext-saladict/issues/502)
+* **selection:** prevent unexpected in-panel selection ([3c057ce](https://github.com/crimx/ext-saladict/commit/3c057ce)), closes [#498](https://github.com/crimx/ext-saladict/issues/498)
+
+
+
 ## [7.1.0](https://github.com/crimx/ext-saladict/compare/v7.0.4...v7.1.0) (2019-10-03)
 
 

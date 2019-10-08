@@ -58,7 +58,11 @@ const mapDispatchToProps = (
     dispatch({ type: 'TOGGLE_PIN' })
   },
   onClose: () => {
-    dispatch({ type: 'CLOSE_PANEL' })
+    if (isStandalonePage()) {
+      window.close()
+    } else {
+      dispatch({ type: 'CLOSE_PANEL' })
+    }
   },
   onHeightChanged: (height: number) => {
     dispatch({

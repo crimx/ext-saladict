@@ -226,7 +226,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
           className="wordEditor-Note_BtnSave"
           onClick={() =>
             saveWord('notebook', word)
-              .then(closeEditor)
+              .then(props.onClose)
               .catch(console.error)
           }
         >

@@ -1,8 +1,10 @@
 import React, { FC, useEffect, useRef } from 'react'
 import { DictItem, DictItemProps } from '../DictItem/DictItem'
-import { DictID } from '@/app-config'
+import { DictID, AppConfig } from '@/app-config'
 import { useObservableCallback, useSubscription } from 'observable-hooks'
 import { debounceTime } from 'rxjs/operators'
+import { useInPanelSelect } from '@/selection/select-text'
+import { Word } from '@/_helpers/record-manager'
 
 const MemoDictItem = React.memo(DictItem)
 
@@ -17,6 +19,22 @@ export interface DictListProps
   extends Omit<DictItemProps, DictListItemKeys | 'onHeightChanged'> {
   dicts: Pick<DictItemProps, DictListItemKeys>[]
   onHeightChanged: (height: number) => void
+
+  touchMode: AppConfig['touchMode']
+  language: AppConfig['language']
+  doubleClickDelay: AppConfig['doubleClickDelay']
+  newSelection: (payload: {
+    word: Word | null
+    mouseX: number
+    mouseY: number
+    dbClick: boolean
+    shiftKey: boolean
+    ctrlKey: boolean
+    metaKey: boolean
+    self: boolean
+    instant: boolean
+    force: boolean
+  }) => void
 }
 
 type Height = {
@@ -25,7 +43,15 @@ type Height = {
 }
 
 export const DictList: FC<DictListProps> = props => {
-  const { dicts, onHeightChanged, ...restProps } = props
+  const {
+    dicts,
+    onHeightChanged,
+    touchMode,
+    language,
+    doubleClickDelay,
+    newSelection,
+    ...restProps
+  } = props
 
   const heightRef = useRef<Height>({ dicts: {}, sum: 0 })
 
@@ -55,8 +81,15 @@ export const DictList: FC<DictListProps> = props => {
     updateHeight(heightRef.current.sum)
   }, [dicts.reduce((str, d) => str + d.dictID + ',', '')])
 
+  const onMouseUp = useInPanelSelect(
+    touchMode,
+    language,
+    doubleClickDelay,
+    newSelection
+  )
+
   return (
-    <div className="dictList">
+    <div className="dictList" onMouseUp={onMouseUp}>
       {dicts.map(data => (
         <MemoDictItem
           key={data.dictID}

@@ -1,4 +1,4 @@
-import { empty, fromEvent, merge, timer } from 'rxjs'
+import { empty, fromEvent, merge, timer, Observable } from 'rxjs'
 import {
   withLatestFrom,
   filter,
@@ -12,6 +12,12 @@ import {
   delay,
   distinctUntilChanged
 } from 'rxjs/operators'
+import {
+  useObservable,
+  useObservableCallback,
+  identity,
+  useSubscription
+} from 'observable-hooks'
 import { AppConfig } from '@/app-config'
 import { isInDictPanel, isInSaladictExternal } from '@/_helpers/saladict'
 import {
@@ -19,6 +25,7 @@ import {
   getSentenceFromSelection
 } from 'get-selection-more'
 import { checkSupportedLangs } from '@/_helpers/lang-check'
+import { Message } from '@/typings/message'
 import { isTypeField, newSelectionWord } from './helper'
 
 const isFirefox = navigator.userAgent.includes('Firefox')
@@ -28,81 +35,32 @@ export function createSelectTextStream(config: AppConfig | null) {
     return empty()
   }
 
+  return config.touchMode ? withTouchMode(config) : withoutTouchMode(config)
+}
+
+function withTouchMode(config: AppConfig) {
   const mousedown$ = merge(
-    fromEvent<MouseEvent>(window, 'mousedown', { capture: true }),
+    fromEvent<MouseEvent>(window, 'mousedown', { capture: true }).pipe(
+      filter(e => e.button === 0)
+    ),
     fromEvent<TouchEvent>(window, 'touchstart', { capture: true }).pipe(
       map(e => e.changedTouches[0])
     )
   )
 
   const mouseup$ = merge(
-    fromEvent<MouseEvent>(window, 'mouseup', { capture: true }),
+    fromEvent<MouseEvent>(window, 'mouseup', { capture: true }).pipe(
+      filter(e => e.button === 0)
+    ),
     fromEvent<TouchEvent>(window, 'touchend', { capture: true }).pipe(
       map(e => e.changedTouches[0])
     )
   )
 
-  const clickPeriodCount$ = mouseup$.pipe(
-    switchMap(() =>
-      timer(config.doubleClickDelay).pipe(
-        mapTo(false),
-        startWith(true)
-      )
-    ),
-    scan((sum: number, flag: boolean) => (flag ? sum + 1 : 0), 0)
+  const clickPeriodCount$ = clickPeriodCountStream(
+    mouseup$,
+    config.doubleClickDelay
   )
-
-  if (!config.touchMode) {
-    return mouseup$.pipe(
-      filter(e => !isInSaladictExternal(e.target)),
-      // if user click on a selected text,
-      // getSelection would reture the text before the highlight disappears
-      // delay to wait for selection get cleared
-      delay(10),
-      withLatestFrom(mousedown$, clickPeriodCount$),
-      map(([mouseup, mousedown, clickPeriodCount]) => {
-        const self = isInDictPanel(mousedown.target)
-
-        if (config.noTypeField && isTypeField(mouseup.target)) {
-          return self
-        }
-
-        const selection = window.getSelection()
-        const text = getTextFromSelection(selection)
-
-        if (!checkSupportedLangs(config.language, text)) {
-          return self
-        }
-
-        return {
-          word: newSelectionWord({
-            text,
-            context: getSentenceFromSelection(selection)
-          }),
-          self,
-          dbClick: clickPeriodCount >= 2,
-          mouseX: mouseup.clientX,
-          mouseY: mouseup.clientY,
-          shiftKey: !!mouseup['shiftKey'],
-          ctrlKey: !!mouseup['ctrlKey'],
-          metaKey: !!mouseup['metaKey']
-        }
-      }),
-      distinctUntilChanged((oldVal, newVal) => {
-        // (Ignore this rule if it is a double click.)
-        // Same selection. This could be caused by other widget on the page
-        // that uses preventDefault which stops selection being cleared when clicked.
-        // Ignore it so that the panel won't follow.
-        return (
-          typeof newVal !== 'boolean' &&
-          typeof oldVal !== 'boolean' &&
-          !newVal.dbClick &&
-          oldVal.word.text === newVal.word.text &&
-          oldVal.word.context === newVal.word.context
-        )
-      })
-    )
-  }
 
   const isMouseDown$ = merge(
     mapTo(true)(mousedown$),
@@ -127,13 +85,13 @@ export function createSelectTextStream(config: AppConfig | null) {
         config.noTypeField &&
         isTypeField(isWithMouse ? mousedown.target : selection.anchorNode)
       ) {
-        return self
+        return { self }
       }
 
       const text = getTextFromSelection(selection)
 
       if (!checkSupportedLangs(config.language, text)) {
-        return self
+        return { self }
       }
 
       if (isWithMouse) {
@@ -161,7 +119,7 @@ export function createSelectTextStream(config: AppConfig | null) {
         rect.height === 0
       ) {
         // Selection is made inside textarea with keyborad. Ignore.
-        return self
+        return { self }
       }
 
       return {
@@ -181,13 +139,7 @@ export function createSelectTextStream(config: AppConfig | null) {
       // continute search is triggered.
       // Need to skip this event otherwise the panel is
       // closed unexpectedly.
-      if (
-        isFirefox &&
-        typeof result !== 'boolean' &&
-        result.self &&
-        result.word &&
-        result.word.text
-      ) {
+      if (isFirefox && result.self && result.word && result.word.text) {
         const { direct, double, holding } = config.panelMode
         if (
           direct ||
@@ -201,5 +153,168 @@ export function createSelectTextStream(config: AppConfig | null) {
       }
       return timer(0)
     })
+  )
+}
+
+function withoutTouchMode(config: AppConfig) {
+  const mousedown$ = fromEvent<MouseEvent>(window, 'mousedown').pipe(
+    filter(e => e.button === 0)
+  )
+
+  const mouseup$ = fromEvent<MouseEvent>(window, 'mouseup').pipe(
+    filter(e => e.button === 0)
+  )
+
+  const clickPeriodCount$ = clickPeriodCountStream(
+    mouseup$,
+    config.doubleClickDelay
+  )
+
+  return mouseup$.pipe(
+    filter(e => !isInSaladictExternal(e.target)),
+    // if user click on a selected text,
+    // getSelection would reture the text before the highlight disappears
+    // delay to wait for selection get cleared
+    delay(10),
+    withLatestFrom(mousedown$, clickPeriodCount$),
+    // handle in-panel search separately
+    // due to tricky shadow dom event retarget
+    filter(([, mousedown]) => !isInDictPanel(mousedown.target)),
+    map(([mouseup, mousedown, clickPeriodCount]) => {
+      if (config.noTypeField && isTypeField(mousedown.target)) {
+        return { self: false }
+      }
+
+      const selection = window.getSelection()
+      const text = getTextFromSelection(selection)
+
+      if (!checkSupportedLangs(config.language, text)) {
+        return { self: false }
+      }
+
+      return {
+        word: newSelectionWord({
+          text,
+          context: getSentenceFromSelection(selection)
+        }),
+        self: false,
+        dbClick: clickPeriodCount >= 2,
+        mouseX: mouseup.clientX,
+        mouseY: mouseup.clientY,
+        shiftKey: mouseup.shiftKey,
+        ctrlKey: mouseup.ctrlKey,
+        metaKey: mouseup.metaKey
+      }
+    }),
+    distinctUntilChanged((oldVal, newVal) => {
+      // (Ignore this rule if it is a double click.)
+      // Same selection. This could be caused by other widget on the page
+      // that uses preventDefault which stops selection being cleared when clicked.
+      // Ignore it so that the panel won't follow.
+      return (
+        !newVal.dbClick &&
+        !!oldVal.word &&
+        !!newVal.word &&
+        oldVal.word.text === newVal.word.text &&
+        oldVal.word.context === newVal.word.context
+      )
+    })
+  )
+}
+
+export function useInPanelSelect(
+  touchMode: AppConfig['touchMode'],
+  language: AppConfig['language'],
+  doubleClickDelay: AppConfig['doubleClickDelay'],
+  newSelection: (payload: Message<'SELECTION'>['payload']) => void
+) {
+  const [onMouseUp, mouseUp$] = useObservableCallback<React.MouseEvent>(
+    event$ => event$.pipe(filter(e => e.button === 0))
+  )
+
+  const config$ = useObservable(identity, [touchMode, language] as const)
+
+  const clickPeriodCount$ = useObservable(
+    inputs$ =>
+      inputs$.pipe(
+        switchMap(([doubleClickDelay]) =>
+          clickPeriodCountStream(mouseUp$, doubleClickDelay)
+        )
+      ),
+    [doubleClickDelay] as const
+  )
+
+  const output$ = useObservable(() =>
+    mouseUp$.pipe(
+      withLatestFrom(config$),
+      filter(([, [touchMode]]) => !touchMode),
+      map(([mouseup, [, language]]) => ({
+        mouseup: mouseup.nativeEvent,
+        language
+      })),
+      delay(10),
+      withLatestFrom(clickPeriodCount$),
+      map(([{ mouseup, language }, clickPeriodCount]) => {
+        const selection = window.getSelection()
+        const text = getTextFromSelection(selection)
+
+        return checkSupportedLangs(language, text)
+          ? {
+              word: newSelectionWord({
+                text,
+                context: getSentenceFromSelection(selection)
+              }),
+              dbClick: clickPeriodCount >= 2,
+              mouseX: mouseup.clientX,
+              mouseY: mouseup.clientY,
+              shiftKey: mouseup.shiftKey,
+              ctrlKey: mouseup.ctrlKey,
+              metaKey: mouseup.metaKey,
+              self: true,
+              instant: false,
+              force: false
+            }
+          : {
+              word: null,
+              self: true,
+              mouseX: 0,
+              mouseY: 0,
+              dbClick: false,
+              shiftKey: false,
+              ctrlKey: false,
+              metaKey: false,
+              instant: false,
+              force: false
+            }
+      }),
+      distinctUntilChanged((oldVal, newVal) => {
+        return (
+          !newVal.dbClick &&
+          !!oldVal.word &&
+          !!newVal.word &&
+          oldVal.word.text === newVal.word.text &&
+          oldVal.word.context === newVal.word.context
+        )
+      })
+    )
+  )
+
+  useSubscription(output$, newSelection)
+
+  return onMouseUp
+}
+
+function clickPeriodCountStream(
+  mouseup$: Observable<MouseEvent | Touch | React.MouseEvent>,
+  doubleClickDelay: number
+) {
+  return mouseup$.pipe(
+    switchMap(() =>
+      timer(doubleClickDelay).pipe(
+        mapTo(false),
+        startWith(true)
+      )
+    ),
+    scan((sum: number, flag: boolean) => (flag ? sum + 1 : 0), 0)
   )
 }
