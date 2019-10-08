@@ -40,14 +40,18 @@ export function createSelectTextStream(config: AppConfig | null) {
 
 function withTouchMode(config: AppConfig) {
   const mousedown$ = merge(
-    fromEvent<MouseEvent>(window, 'mousedown', { capture: true }),
+    fromEvent<MouseEvent>(window, 'mousedown', { capture: true }).pipe(
+      filter(e => e.button === 0)
+    ),
     fromEvent<TouchEvent>(window, 'touchstart', { capture: true }).pipe(
       map(e => e.changedTouches[0])
     )
   )
 
   const mouseup$ = merge(
-    fromEvent<MouseEvent>(window, 'mouseup', { capture: true }),
+    fromEvent<MouseEvent>(window, 'mouseup', { capture: true }).pipe(
+      filter(e => e.button === 0)
+    ),
     fromEvent<TouchEvent>(window, 'touchend', { capture: true }).pipe(
       map(e => e.changedTouches[0])
     )
@@ -153,9 +157,13 @@ function withTouchMode(config: AppConfig) {
 }
 
 function withoutTouchMode(config: AppConfig) {
-  const mousedown$ = fromEvent<MouseEvent>(window, 'mousedown')
+  const mousedown$ = fromEvent<MouseEvent>(window, 'mousedown').pipe(
+    filter(e => e.button === 0)
+  )
 
-  const mouseup$ = fromEvent<MouseEvent>(window, 'mouseup')
+  const mouseup$ = fromEvent<MouseEvent>(window, 'mouseup').pipe(
+    filter(e => e.button === 0)
+  )
 
   const clickPeriodCount$ = clickPeriodCountStream(
     mouseup$,
@@ -221,7 +229,7 @@ export function useInPanelSelect(
   newSelection: (payload: Message<'SELECTION'>['payload']) => void
 ) {
   const [onMouseUp, mouseUp$] = useObservableCallback<React.MouseEvent>(
-    identity
+    event$ => event$.pipe(filter(e => e.button === 0))
   )
 
   const config$ = useObservable(identity, [touchMode, language] as const)
