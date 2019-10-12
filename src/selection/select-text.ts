@@ -247,7 +247,13 @@ export function useInPanelSelect(
   const output$ = useObservable(() =>
     mouseUp$.pipe(
       withLatestFrom(config$),
-      filter(([, [touchMode]]) => !touchMode),
+      filter(([mouseup, [touchMode]]) => {
+        if (touchMode) {
+          return false
+        }
+        const target = mouseup.target as HTMLElement
+        return target && target.tagName !== 'A' && target.tagName !== 'BUTTON'
+      }),
       map(([mouseup, [, language]]) => ({
         mouseup: mouseup.nativeEvent,
         language
