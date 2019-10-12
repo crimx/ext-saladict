@@ -37,6 +37,7 @@ export const locale: typeof _locale = {
     japanese: '日文',
     korean: '韓文',
     minor: '其它語言',
+    matchAll: '所有的字元都必須匹配',
     others: '其它字元',
     spanish: '西班牙文'
   },

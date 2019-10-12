@@ -2,7 +2,16 @@ import { DictItem } from '@/app-config/dicts'
 
 export type WikipediaConfig = DictItem<
   {
-    lang: 'auto' | 'zh' | 'zh-cn' | 'zh-tw' | 'zh-hk' | 'en' | 'ja' | 'fr' | 'de'
+    lang:
+      | 'auto'
+      | 'zh'
+      | 'zh-cn'
+      | 'zh-tw'
+      | 'zh-hk'
+      | 'en'
+      | 'ja'
+      | 'fr'
+      | 'de'
   },
   'lang'
 >
@@ -18,6 +27,7 @@ export default (): WikipediaConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   defaultUnfold: {
     english: true,
@@ -28,16 +38,17 @@ export default (): WikipediaConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   preferredHeight: 420,
   selectionWC: {
     min: 1,
-    max: 999999999999999,
+    max: 999999999999999
   },
   options: {
-    lang: 'auto',
+    lang: 'auto'
   },
   options_sel: {
-    lang: ['auto', 'zh', 'zh-cn', 'zh-tw', 'zh-hk', 'en', 'ja', 'fr', 'de'],
-  },
+    lang: ['auto', 'zh', 'zh-cn', 'zh-tw', 'zh-hk', 'en', 'ja', 'fr', 'de']
+  }
 })

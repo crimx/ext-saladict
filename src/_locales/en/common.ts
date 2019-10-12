@@ -36,6 +36,7 @@ export const locale: typeof _locale = {
     french: 'French',
     japanese: 'Japanese',
     korean: 'Korean',
+    matchAll: 'Match every character',
     minor: 'Minor',
     others: 'Others',
     spanish: 'Spanish'

@@ -20,6 +20,7 @@ export default (): YoudaoConfig => ({
     spanish: false,
     deutsch: false,
     others: false,
+    matchAll: false
   },
   defaultUnfold: {
     english: true,
@@ -30,11 +31,12 @@ export default (): YoudaoConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   preferredHeight: 265,
   selectionWC: {
     min: 1,
-    max: 999999999999999,
+    max: 999999999999999
   },
   options: {
     basic: true,
@@ -42,6 +44,6 @@ export default (): YoudaoConfig => ({
     discrimination: true,
     sentence: true,
     translation: true,
-    related: true,
+    related: true
   }
 })

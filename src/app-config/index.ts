@@ -245,7 +245,8 @@ function _getDefaultConfig() {
       french: true,
       spanish: true,
       deutsch: true,
-      others: false
+      others: false,
+      matchAll: false
     } as SupportedLangs,
 
     /** auto pronunciation */

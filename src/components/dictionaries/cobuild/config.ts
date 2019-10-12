@@ -15,6 +15,7 @@ export default (): CobuildConfig => ({
     spanish: false,
     deutsch: false,
     others: false,
+    matchAll: false
   },
   defaultUnfold: {
     english: true,
@@ -25,13 +26,14 @@ export default (): CobuildConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   preferredHeight: 300,
   selectionWC: {
     min: 1,
-    max: 5,
+    max: 5
   },
   options: {
-    cibaFirst: true,
+    cibaFirst: true
   }
 })

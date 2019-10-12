@@ -15,6 +15,7 @@ export default (): ZdicConfig => ({
     spanish: false,
     deutsch: false,
     others: false,
+    matchAll: false
   },
   defaultUnfold: {
     english: true,
@@ -25,11 +26,12 @@ export default (): ZdicConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   preferredHeight: 400,
   selectionWC: {
     min: 1,
-    max: 5,
+    max: 5
   },
   options: {
     audio: false

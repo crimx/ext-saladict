@@ -17,6 +17,7 @@ export default (): CnkiConfig => ({
     spanish: false,
     deutsch: false,
     others: false,
+    matchAll: false
   },
   defaultUnfold: {
     english: true,
@@ -27,16 +28,17 @@ export default (): CnkiConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   preferredHeight: 300,
   selectionWC: {
     min: 1,
-    max: 100,
+    max: 100
   },
   options: {
     dict: true,
     senbi: true,
-    seneng: true,
+    seneng: true
     // digests: true,
   }
 })

@@ -23,6 +23,7 @@ export default (): HjdictConfig => ({
     spanish: true,
     deutsch: true,
     others: false,
+    matchAll: false
   },
   defaultUnfold: {
     english: true,
@@ -33,11 +34,12 @@ export default (): HjdictConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   preferredHeight: 265,
   selectionWC: {
     min: 1,
-    max: 10,
+    max: 10
   },
   options: {
     related: true,
@@ -45,13 +47,13 @@ export default (): HjdictConfig => ({
     engas: 'w',
     uas: 'fr',
     aas: 'fr',
-    eas: 'fr',
+    eas: 'fr'
   },
   options_sel: {
     chsas: ['jp/cj', 'jp/jc', 'kr', 'w', 'fr', 'de', 'es'],
     engas: ['w', 'fr', 'de', 'es'],
     uas: ['fr', 'de', 'es'],
     aas: ['fr', 'de'],
-    eas: ['fr', 'es'],
-  },
+    eas: ['fr', 'es']
+  }
 })
