@@ -53,6 +53,7 @@ const mapDispatchToProps = (
   },
   updateHistoryIndex: index => {
     dispatch({ type: 'UPDATE_HISTORY_INDEX', payload: index })
+    dispatch({ type: 'SEARCH_START', payload: { noHistory: true } })
   },
   togglePin: () => {
     dispatch({ type: 'TOGGLE_PIN' })
