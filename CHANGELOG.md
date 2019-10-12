@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.2.0](https://github.com/crimx/ext-saladict/compare/v7.1.1...v7.2.0) (2019-10-12)
+
+
+### Bug Fixes
+
+* **selection:** ignore anchor and button click on panel ([904445c](https://github.com/crimx/ext-saladict/commit/904445c)), closes [#512](https://github.com/crimx/ext-saladict/issues/512)
+
+
+### Features
+
+* match all characters ([59c8183](https://github.com/crimx/ext-saladict/commit/59c8183)), closes [#434](https://github.com/crimx/ext-saladict/issues/434)
+
+
+
 ### [7.1.1](https://github.com/crimx/ext-saladict/compare/v7.1.0...v7.1.1) (2019-10-08)
 
 
