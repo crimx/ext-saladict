@@ -4,7 +4,17 @@ export type GoogleConfig = DictItem<
   {
     pdfNewline: boolean
     cnfirst: boolean
-    tl: 'default' | 'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'ru'
+    tl:
+      | 'default'
+      | 'zh-CN'
+      | 'zh-TW'
+      | 'en'
+      | 'ja'
+      | 'ko'
+      | 'fr'
+      | 'de'
+      | 'es'
+      | 'ru'
   },
   'tl'
 >
@@ -20,6 +30,7 @@ export default (): GoogleConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   defaultUnfold: {
     english: true,
@@ -30,19 +41,20 @@ export default (): GoogleConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   preferredHeight: 320,
   selectionWC: {
     min: 1,
-    max: 999999999999999,
+    max: 999999999999999
   },
   options: {
     /** Keep linebreaks on PDF */
     pdfNewline: false,
     cnfirst: true,
-    tl: 'default',
+    tl: 'default'
   },
   options_sel: {
-    tl: ['default', 'zh-CN', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru'],
-  },
+    tl: ['default', 'zh-CN', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru']
+  }
 })

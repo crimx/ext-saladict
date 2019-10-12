@@ -146,7 +146,7 @@ export function openYoudao() {
         eventTime: Date.now() + 4000,
         iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
         title: 'Saladict',
-        message: i18n.t('notification_youdao_err')
+        message: i18n.t('menus:notification_youdao_err')
       })
     })
 }

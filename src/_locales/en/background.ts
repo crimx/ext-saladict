@@ -6,6 +6,6 @@ export const locale: typeof _locale = {
     tempOff:
       'Saladict disabled on current tab. (Quick Search Panel is still available)',
     unsupported:
-      'Embedded panel is unsupported for current tab. Use Standable panel instead.'
+      'Embedded Saladict panel is unsupported for current tab. Use Standable Saladict panel instead.'
   }
 }

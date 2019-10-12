@@ -19,6 +19,7 @@ export default (): TencentConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   defaultUnfold: {
     english: true,
@@ -29,18 +30,19 @@ export default (): TencentConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   preferredHeight: 320,
   selectionWC: {
     min: 1,
-    max: 999999999999999,
+    max: 999999999999999
   },
   options: {
     /** Keep linebreaks on PDF */
     pdfNewline: false,
-    tl: 'default',
+    tl: 'default'
   },
   options_sel: {
-    tl: ['default', 'zh', 'en', 'jp', 'kr', 'fr', 'de', 'es', 'ru'],
-  },
+    tl: ['default', 'zh', 'en', 'jp', 'kr', 'fr', 'de', 'es', 'ru']
+  }
 })

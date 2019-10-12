@@ -18,6 +18,7 @@ export default (): JukuuConfig => ({
     spanish: true,
     deutsch: true,
     others: false,
+    matchAll: false
   },
   defaultUnfold: {
     english: true,
@@ -28,16 +29,17 @@ export default (): JukuuConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   preferredHeight: 300,
   selectionWC: {
     min: 1,
-    max: 99999,
+    max: 99999
   },
   options: {
-    lang: 'zheng',
+    lang: 'zheng'
   },
   options_sel: {
     lang: ['zheng', 'engjp', 'zhjp']
-  },
+  }
 })

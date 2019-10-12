@@ -16,6 +16,7 @@ export default (): NaverConfig => ({
     spanish: false,
     deutsch: false,
     others: false,
+    matchAll: false
   },
   defaultUnfold: {
     english: true,
@@ -26,14 +27,15 @@ export default (): NaverConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   preferredHeight: 465,
   selectionWC: {
     min: 1,
-    max: 10,
+    max: 10
   },
   options: {
     hanAsJa: false,
-    korAsJa: false,
-  },
+    korAsJa: false
+  }
 })

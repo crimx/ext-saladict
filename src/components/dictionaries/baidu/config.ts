@@ -3,7 +3,17 @@ import { DictItem } from '@/app-config/dicts'
 export type BaiduConfig = DictItem<
   {
     pdfNewline: boolean
-    tl: 'default' | 'zh' | 'cht' | 'en' | 'jp' | 'kor' | 'fra' | 'de' | 'spa' | 'ru'
+    tl:
+      | 'default'
+      | 'zh'
+      | 'cht'
+      | 'en'
+      | 'jp'
+      | 'kor'
+      | 'fra'
+      | 'de'
+      | 'spa'
+      | 'ru'
   },
   'tl'
 >
@@ -19,6 +29,7 @@ export default (): BaiduConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   defaultUnfold: {
     english: true,
@@ -29,18 +40,19 @@ export default (): BaiduConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   preferredHeight: 320,
   selectionWC: {
     min: 1,
-    max: 999999999999999,
+    max: 999999999999999
   },
   options: {
     /** Keep linebreaks on PDF */
     pdfNewline: false,
-    tl: 'default',
+    tl: 'default'
   },
   options_sel: {
-    tl: ['default', 'zh', 'cht', 'en', 'jp', 'kor', 'fra', 'de', 'spa', 'ru'],
-  },
+    tl: ['default', 'zh', 'cht', 'en', 'jp', 'kor', 'fra', 'de', 'spa', 'ru']
+  }
 })

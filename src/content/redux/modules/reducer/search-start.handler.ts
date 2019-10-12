@@ -10,14 +10,19 @@ export const searchStart: StoreActionHandler<'SEARCH_START'> = (
   const { activeProfile, searchHistory, historyIndex } = state
 
   let word: Word
-  let newSearchHistory: Word[] = searchHistory.slice(0, historyIndex + 1)
+  let newSearchHistory: Word[] =
+    payload && payload.noHistory
+      ? searchHistory
+      : searchHistory.slice(0, historyIndex + 1)
+  let newHistoryIndex = historyIndex
 
   if (payload && payload.word) {
     word = payload.word
     const lastWord = searchHistory[historyIndex]
 
-    if (!lastWord || lastWord.text !== word.text) {
+    if (!payload.noHistory && (!lastWord || lastWord.text !== word.text)) {
       newSearchHistory.push(word)
+      newHistoryIndex = newSearchHistory.length - 1
     }
   } else {
     word = searchHistory[historyIndex]
@@ -37,7 +42,7 @@ export const searchStart: StoreActionHandler<'SEARCH_START'> = (
       activeProfile.mtaAutoUnfold === 'always' ||
       (activeProfile.mtaAutoUnfold === 'popup' && isPopupPage()),
     searchHistory: newSearchHistory,
-    historyIndex: newSearchHistory.length - 1,
+    historyIndex: newHistoryIndex,
     renderedDicts:
       payload && payload.id
         ? // expand an folded dict item

@@ -13,6 +13,7 @@ export default (): GuoyuConfig => ({
     spanish: false,
     deutsch: false,
     others: false,
+    matchAll: false
   },
   defaultUnfold: {
     english: true,
@@ -23,10 +24,11 @@ export default (): GuoyuConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   preferredHeight: 265,
   selectionWC: {
     min: 1,
-    max: 5,
-  },
+    max: 5
+  }
 })

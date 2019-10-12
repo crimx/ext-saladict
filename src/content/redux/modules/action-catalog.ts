@@ -64,6 +64,8 @@ export type ActionCatalog = {
       word?: Word
       /** Additional payload passed to search engine */
       payload?: any
+      /** Do not update search history */
+      noHistory?: boolean
     }
   }
 

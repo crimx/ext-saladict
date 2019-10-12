@@ -23,43 +23,75 @@ export const testerMinor = /[^\u4e00-\u9fa5a-zA-Z0-9\s\u200b/[\]{}$^*+|?.\-~!@#%
 
 export const testerPunct = /[/[\]{}$^*+|?.\-~!@#%&()_='";:><,。？！，、；：“”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
 
-export const isContainChinese = memoizeOne((text: string): boolean => {
-  return testerChinese.test(text)
-})
+export const isContainChinese = memoizeOne(
+  (text: string, matchAll?: boolean): boolean => {
+    return matchAll
+      ? new RegExp(`^${testerChinese.source}+$`).test(text)
+      : testerChinese.test(text)
+  }
+)
 
-export const isContainEnglish = memoizeOne((text: string): boolean => {
-  return testerEnglish.test(text)
-})
+export const isContainEnglish = memoizeOne(
+  (text: string, matchAll?: boolean): boolean => {
+    return matchAll
+      ? new RegExp(`^${testerEnglish.source}+$`).test(text)
+      : testerEnglish.test(text)
+  }
+)
 
 /** Hiragana & Katakana, no Chinese */
-export const isContainJapanese = memoizeOne((text: string): boolean => {
-  return testJapanese.test(text)
-})
+export const isContainJapanese = memoizeOne(
+  (text: string, matchAll?: boolean): boolean => {
+    return matchAll
+      ? new RegExp(`^${testJapanese.source}+$`).test(text)
+      : testJapanese.test(text)
+  }
+)
 
 /** Korean Hangul, no Chinese */
-export const isContainKorean = memoizeOne((text: string): boolean => {
-  return testKorean.test(text)
-})
+export const isContainKorean = memoizeOne(
+  (text: string, matchAll?: boolean): boolean => {
+    return matchAll
+      ? new RegExp(`^${testKorean.source}+$`).test(text)
+      : testKorean.test(text)
+  }
+)
 
 /** French, no English àâäèéêëîïôœùûüÿç */
-export const isContainFrench = memoizeOne((text: string): boolean => {
-  return testFrench.test(text)
-})
+export const isContainFrench = memoizeOne(
+  (text: string, matchAll?: boolean): boolean => {
+    return matchAll
+      ? new RegExp(`^${testFrench.source}+$`).test(text)
+      : testFrench.test(text)
+  }
+)
 
 /** Deutsch, no English äöüÄÖÜß */
-export const isContainDeutsch = memoizeOne((text: string): boolean => {
-  return testDeutsch.test(text)
-})
+export const isContainDeutsch = memoizeOne(
+  (text: string, matchAll?: boolean): boolean => {
+    return matchAll
+      ? new RegExp(`^${testDeutsch.source}+$`).test(text)
+      : testDeutsch.test(text)
+  }
+)
 
 /** Spanish, no English áéíóúñü¡¿ */
-export const isContainSpanish = memoizeOne((text: string): boolean => {
-  return testSpanish.test(text)
-})
+export const isContainSpanish = memoizeOne(
+  (text: string, matchAll?: boolean): boolean => {
+    return matchAll
+      ? new RegExp(`^${testSpanish.source}+$`).test(text)
+      : testSpanish.test(text)
+  }
+)
 
 /** Languages excpet Chinese and English */
-export const isContainMinor = memoizeOne((text: string): boolean => {
-  return testerMinor.test(text)
-})
+export const isContainMinor = memoizeOne(
+  (text: string, matchAll?: boolean): boolean => {
+    return matchAll
+      ? new RegExp(`^${testerMinor.source}+$`).test(text)
+      : testerMinor.test(text)
+  }
+)
 
 export const countWords = memoizeOne((text: string): number => {
   return (
@@ -85,6 +117,7 @@ export interface SupportedLangs {
   spanish: boolean
   deutsch: boolean
   others: boolean
+  matchAll: boolean
 }
 
 export const supportedLangs: ReadonlyArray<keyof SupportedLangs> = [
@@ -95,7 +128,8 @@ export const supportedLangs: ReadonlyArray<keyof SupportedLangs> = [
   'french',
   'spanish',
   'deutsch',
-  'others'
+  'others',
+  'matchAll'
 ]
 
 export function checkSupportedLangs(

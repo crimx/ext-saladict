@@ -16,6 +16,7 @@ export default (): ShanbayConfig => ({
     spanish: false,
     deutsch: false,
     others: false,
+    matchAll: false
   },
   defaultUnfold: {
     english: true,
@@ -26,14 +27,15 @@ export default (): ShanbayConfig => ({
     spanish: true,
     deutsch: true,
     others: true,
+    matchAll: false
   },
   preferredHeight: 150,
   selectionWC: {
     min: 1,
-    max: 30,
+    max: 30
   },
   options: {
     basic: true,
-    sentence: true,
+    sentence: true
   }
 })
