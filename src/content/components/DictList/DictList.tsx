@@ -81,7 +81,7 @@ export const DictList: FC<DictListProps> = props => {
     updateHeight(heightRef.current.sum)
   }, [dicts.reduce((str, d) => str + d.dictID + ',', '')])
 
-  const onMouseUp = useInPanelSelect(
+  const onInPanelSelect = useInPanelSelect(
     touchMode,
     language,
     doubleClickDelay,
@@ -89,12 +89,13 @@ export const DictList: FC<DictListProps> = props => {
   )
 
   return (
-    <div className="dictList" onMouseUp={onMouseUp}>
+    <div className="dictList">
       {dicts.map(data => (
         <MemoDictItem
           key={data.dictID}
           {...restProps}
           {...data}
+          onInPanelSelect={onInPanelSelect}
           onHeightChanged={onItemHeightChanged}
         />
       ))}
