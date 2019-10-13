@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.2.1](https://github.com/crimx/ext-saladict/compare/v7.2.0...v7.2.1) (2019-10-13)
+
+
+### Bug Fixes
+
+* **selection:** in-panel selection ([507581a](https://github.com/crimx/ext-saladict/commit/507581a)), closes [#513](https://github.com/crimx/ext-saladict/issues/513)
+
+
+
 ## [7.2.0](https://github.com/crimx/ext-saladict/compare/v7.1.1...v7.2.0) (2019-10-12)
 
 
