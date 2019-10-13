@@ -27,6 +27,8 @@ export interface DictItemBodyProps {
   }) => any
 
   onSpeakerPlay: (src: string) => Promise<void>
+
+  onInPanelSelect: (e: React.MouseEvent<HTMLElement>) => void
 }
 
 export const DictItemBody: FC<DictItemBodyProps> = props => {
@@ -78,6 +80,7 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
                 (props.withAnimation ? ' isAnimate' : '')
               }
               onPlayStart={props.onSpeakerPlay}
+              onMouseUp={props.onInPanelSelect}
             >
               <Dict result={props.searchResult} searchText={props.searchText} />
             </StaticSpeakerContainer>

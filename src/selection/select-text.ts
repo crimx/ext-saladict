@@ -251,8 +251,18 @@ export function useInPanelSelect(
         if (touchMode) {
           return false
         }
-        const target = mouseup.target as HTMLElement
-        return target && target.tagName !== 'A' && target.tagName !== 'BUTTON'
+
+        for (
+          let el = mouseup.target as HTMLElement | null;
+          el;
+          el = el.parentElement
+        ) {
+          if (el.tagName === 'A' || el.tagName === 'BUTTON') {
+            return false
+          }
+        }
+
+        return true
       }),
       map(([mouseup, [, language]]) => ({
         mouseup: mouseup.nativeEvent,
