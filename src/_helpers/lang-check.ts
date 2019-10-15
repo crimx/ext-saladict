@@ -53,11 +53,6 @@ export const isContainDeutsch = (text: string): boolean =>
 export const isContainSpanish = (text: string): boolean =>
   matchers.spanish.test(text)
 
-/** Languages excpet Chinese and English */
-export const isContainMinor = memoizeOne((text: string): boolean =>
-  matcherMinor.test(text)
-)
-
 const isContain: { [key in Languages]: (text: string) => boolean } = {
   chinese: memoizeOne(isContainChinese),
   english: memoizeOne(isContainEnglish),
@@ -73,10 +68,8 @@ const isContain: { [key in Languages]: (text: string) => boolean } = {
   deutsch: memoizeOne(isContainDeutsch)
 }
 
-/** Languages excpet Chinese and English */
-const matcherMinor = /[^\u4e00-\u9fa5a-zA-Z0-9\s\u200b/[\]{}$^*+|?.\-~!@#%&()_='";:><,。？！，、；：“”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
-
 const matcherPunct = /[/[\]{}$^*+|?.\-~!@#%&()_='";:><,。？！，、；：“”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
+const matchAllPunct = new RegExp(`^${matcherPunct.source}+$`)
 
 const matcherCJK = new RegExp(
   `${matchers.chinese.source}|${matchers.japanese.source}|${matchers.korean.source}`
@@ -110,21 +103,67 @@ export function checkSupportedLangs(
   }
 
   if (langs.matchAll) {
+    if (matchAllPunct.test(text)) {
+      return false
+    }
+
     if (langs.others) {
-      return languages.every(l => langs[l] || !isContain[l](text))
-    } else {
-      const tickedLanguages = languages.filter(l => langs[l])
-      if (tickedLanguages.length <= 0) {
-        return false
+      let checkedMatchers: RegExp[] = [/-|\.|\d|\s/]
+      let uncheckedMatchers: RegExp[] = []
+
+      for (let i = languages.length - 1; i >= 0; i--) {
+        const l = languages[i]
+        if (langs[l]) {
+          checkedMatchers.push(matchers[l])
+        } else {
+          uncheckedMatchers.push(matchers[l])
+        }
       }
-      return new RegExp(
-        `^(${tickedLanguages.map(l => matchers[l].source).join('|')})+$`
-      ).test(text)
+
+      for (let i = 0; i < text.length; i++) {
+        // characters of latin languages may overlap
+        if (
+          checkedMatchers.every(m => !m.test(text[i])) &&
+          uncheckedMatchers.some(m => m.test(text[i]))
+        ) {
+          return false
+        }
+      }
+      return true
+    } else {
+      const checkedMatchers = languages
+        .filter(l => langs[l])
+        .map(l => matchers[l])
+
+      checkedMatchers.push(/-|\.|\d|\s/)
+
+      for (let i = text.length - 1; i >= 0; i--) {
+        if (checkedMatchers.every(m => !m.test(text[i]))) {
+          return false
+        }
+      }
+      return true
     }
   } /* !langs.matchAll */ else {
     if (languages.some(l => langs[l] && isContain[l](text))) {
       return true
     }
-    return langs.others && languages.every(l => !isContain[l](text))
+
+    if (!langs.others || matchAllPunct.test(text)) {
+      return false
+    }
+
+    const uncheckedMatchers = languages
+      .filter(l => !langs[l])
+      .map(l => matchers[l])
+
+    uncheckedMatchers.push(new RegExp(`${matcherPunct.source}|\\d|\\s`))
+
+    for (let i = text.length - 1; i >= 0; i--) {
+      if (uncheckedMatchers.every(m => !m.test(text[i]))) {
+        return true
+      }
+    }
+    return false
   }
 }
