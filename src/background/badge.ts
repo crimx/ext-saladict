@@ -1,52 +1,64 @@
 import { message } from '@/_helpers/browser-api'
+import { Subject } from 'rxjs'
+import { debounceTime, switchMap } from 'rxjs/operators'
+
+interface UpdateBadgeOptions {
+  active: boolean
+  tempDisable: boolean
+  unsupported: boolean
+}
+
+const onUpdated$ = new Subject<[number, UpdateBadgeOptions | null]>()
+
+onUpdated$
+  .pipe(
+    debounceTime(1000),
+    switchMap(async ([tabId, options]) =>
+      options
+        ? ([tabId, options] as const)
+        : ([
+            tabId,
+            (await message
+              .send<'GET_TAB_BADGE_INFO'>(tabId, {
+                type: 'GET_TAB_BADGE_INFO'
+              })
+              .catch(() => {})) || {
+              active: window.appConfig.active,
+              tempDisable: false,
+              unsupported: true
+            }
+          ] as const)
+    )
+  )
+  .subscribe(([tabId, options]) => {
+    if (!options.active) {
+      return setOff(tabId)
+    }
+
+    if (options.tempDisable) {
+      return setTempOff(tabId)
+    }
+
+    if (options.unsupported) {
+      return setUnsupported(tabId)
+    }
+
+    return setEmpty(tabId)
+  })
 
 export function initBadge() {
   /** Sent when content script loaded */
   message.addListener('SEND_TAB_BADGE_INFO', ({ payload }, sender) => {
     if (sender.tab && sender.tab.id) {
-      updateBadge(sender.tab.id, payload)
+      onUpdated$.next([sender.tab.id, payload])
     }
   })
 
   browser.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
     if (changeInfo.status === 'complete') {
-      try {
-        const response = await message.send<'GET_TAB_BADGE_INFO'>(tabId, {
-          type: 'GET_TAB_BADGE_INFO'
-        })
-        updateBadge(tabId, response)
-      } catch (e) {
-        updateBadge(tabId, {
-          active: window.appConfig.active,
-          tempDisable: false,
-          unsupported: true
-        })
-      }
+      onUpdated$.next([tabId, null])
     }
   })
-}
-
-export function updateBadge(
-  tabId: number,
-  options: {
-    active: boolean
-    tempDisable: boolean
-    unsupported: boolean
-  }
-) {
-  if (!options.active) {
-    return setOff(tabId)
-  }
-
-  if (options.tempDisable) {
-    return setTempOff(tabId)
-  }
-
-  if (options.unsupported) {
-    return setUnsupported(tabId)
-  }
-
-  return setEmpty(tabId)
 }
 
 function setOff(tabId: number) {
