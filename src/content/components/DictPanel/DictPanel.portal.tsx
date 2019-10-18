@@ -1,7 +1,8 @@
-import React, { FC } from 'react'
+import React, { FC, useRef, useState } from 'react'
 import { ShadowPortal, defaultTimeout } from '@/components/ShadowPortal'
 import { DictPanel, DictPanelProps } from './DictPanel'
 import { SALADICT_PANEL } from '@/_helpers/saladict'
+import { useUpdateEffect } from 'react-use'
 
 export interface DictPanelPortalProps extends DictPanelProps {
   show: boolean
@@ -10,7 +11,22 @@ export interface DictPanelPortalProps extends DictPanelProps {
 }
 
 export const DictPanelPortal: FC<DictPanelPortalProps> = props => {
-  const { withAnimation, show, panelCSS, ...restProps } = props
+  const { show: showProps, panelCSS, ...restProps } = props
+  const showRef = useRef(showProps)
+  const [show, setShow] = useState(showProps)
+
+  useUpdateEffect(() => {
+    setShow(showProps)
+  }, [showProps])
+
+  useUpdateEffect(() => {
+    if (props.takeCoordSnapshot) {
+      showRef.current = show
+    } else {
+      setShow(showRef.current)
+    }
+  }, [props.takeCoordSnapshot])
+
   return (
     <ShadowPortal
       id="saladict-dictpanel-root"
@@ -18,9 +34,9 @@ export const DictPanelPortal: FC<DictPanelPortalProps> = props => {
       shadowRootClassName={SALADICT_PANEL}
       panelCSS={panelCSS}
       in={show}
-      timeout={withAnimation ? defaultTimeout : 0}
+      timeout={props.withAnimation ? defaultTimeout : 0}
     >
-      {() => <DictPanel withAnimation={withAnimation} {...restProps} />}
+      {() => <DictPanel {...restProps} />}
     </ShadowPortal>
   )
 }

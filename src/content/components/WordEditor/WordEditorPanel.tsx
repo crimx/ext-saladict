@@ -8,12 +8,7 @@ import {
   pluckFirst
 } from 'observable-hooks'
 import { of } from 'rxjs'
-import {
-  withLatestFrom,
-  switchMap,
-  debounceTime,
-  startWith
-} from 'rxjs/operators'
+import { withLatestFrom, switchMap, debounceTime } from 'rxjs/operators'
 import {
   Word,
   getWordsByText,
@@ -73,7 +68,6 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
   const [onTranslateCtx, translateCtx$] = useObservableCallback<string, any>(
     event$ =>
       event$.pipe(
-        startWith(null),
         withLatestFrom(word$),
         switchMap(([, word]) => {
           return translateCtx(word.context || word.text, props.ctxTrans)

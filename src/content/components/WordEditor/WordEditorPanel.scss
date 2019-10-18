@@ -96,6 +96,7 @@ textarea {
   flex: 1;
   overflow-x: hidden;
   overflow-y: scroll;
+  overscroll-behavior: contain;
 }
 
 .wordEditor-Note {

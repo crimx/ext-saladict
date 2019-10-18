@@ -37,17 +37,14 @@ export async function translateCtx(
   )
 
   return responses
-    .filter(
+    .map(
       response =>
         response &&
         response.result &&
         response.result.trans &&
-        response.result.trans.text
+        response.result.trans.paragraphs.join('\n')
     )
-    .map((response, i, arr) =>
-      arr.length > 1
-        ? `${ids[i]}: ${response!.result.trans.text}`
-        : response!.result.trans.text
-    )
+    .filter(Boolean)
+    .map((text, i, arr) => (arr.length > 1 ? `${ids[i]}: ${text}` : text))
     .join('\n')
 }

@@ -348,7 +348,13 @@ export class WordPageMain extends React.Component<
             // give it a new date if it's from history
             date: area === 'notebook' ? record.date : Date.now()
           }
-          message.self.send({ type: 'UPDATE_WORD_EDITOR_WORD', payload: word })
+          // wait till selection ends
+          setTimeout(() => {
+            message.self.send({
+              type: 'UPDATE_WORD_EDITOR_WORD',
+              payload: word
+            })
+          }, 500)
         }}
       >
         {t(`column.${area === 'notebook' ? 'edit' : 'add'}`)}

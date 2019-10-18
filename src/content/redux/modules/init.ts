@@ -16,6 +16,7 @@ import { PreloadSource } from '@/app-config'
 import { Dispatch } from 'redux'
 import { Word, newWord } from '@/_helpers/record-manager'
 import { MessageResponse } from '@/typings/message'
+import { timer } from '@/_helpers/promise-more'
 
 export const init: Init<StoreActionCatalog, StoreState> = (
   dispatch,
@@ -164,8 +165,10 @@ export const init: Init<StoreActionCatalog, StoreState> = (
 
       case 'UPDATE_WORD_EDITOR_WORD':
         dispatch({ type: 'WORD_EDITOR_STATUS', payload: msg.payload })
-        dispatch({ type: 'SEARCH_START', payload: { word: msg.payload } })
-        return Promise.resolve()
+        return timer(100).then(() => {
+          // wait till snapshot is taken
+          dispatch({ type: 'SEARCH_START', payload: { word: msg.payload } })
+        })
 
       case 'LAST_PLAY_AUDIO':
         return Promise.resolve(getState().lastPlayAudio)
