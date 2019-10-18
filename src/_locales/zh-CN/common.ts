@@ -25,6 +25,9 @@ export const locale = {
   blacklist: '黑名单',
   whitelist: '白名单',
 
+  import: '导入',
+  export: '导出',
+
   lang: {
     chinese: '中文',
     chs: '中文',

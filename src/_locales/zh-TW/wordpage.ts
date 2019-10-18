@@ -30,6 +30,12 @@ export const locale: typeof _locale = {
     description: '編寫產生的範本，描述每條記錄產生的樣子：',
     explain: '如何配合 ANKI 等工具',
     gencontent: '代表的內容',
+    linebreak: {
+      default: '保留換行',
+      n: '換行替換為 \\n',
+      br: '換行替換為 <br>',
+      p: '換行替換為 <p>'
+    },
     page: '輸出本頁單字',
     placeholder: '預留位置',
     selected: '輸出選中單字'
