@@ -107,18 +107,29 @@ type DictItemWithOptions<
   : DictItemBase & { options: Options }
 
 /**
- * SelKeys is a subset of keyof Options for `string` type options.
- * For example:
- * Options = { lang: 'zh' | 'en', isFoo: boolean }
- * SelKeys should be 'lang'
+ * If an option is of `string` type there will be an array
+ * of options in `options_sel` field.
  */
 export type DictItem<
   Options extends
     | { [option: string]: number | boolean | string }
     | undefined = undefined,
-  SelKeys extends string | number | undefined = undefined
-> = SelKeys extends keyof Options
-  ? DictItemWithOptions<Options> & {
-      options_sel: { [key in SelKeys]: Options[key][] }
-    }
-  : DictItemWithOptions<Options>
+  Key extends keyof Options = Options extends undefined ? never : keyof Options
+> = Options extends undefined
+  ? DictItemWithOptions
+  : DictItemWithOptions<Options> &
+      ((Key extends any
+        ? Options[Key] extends string
+          ? Key
+          : never
+        : never) extends never
+        ? {}
+        : {
+            options_sel: {
+              [opt in Key extends any
+                ? Options[Key] extends string
+                  ? Key
+                  : never
+                : never]: Options[opt][]
+            }
+          })

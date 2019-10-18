@@ -1,11 +1,8 @@
 import { DictItem } from '@/app-config/dicts'
 
-export type JukuuConfig = DictItem<
-  {
-    lang: 'zheng' | 'engjp' | 'zhjp'
-  },
-  'lang'
->
+export type JukuuConfig = DictItem<{
+  lang: 'zheng' | 'engjp' | 'zhjp'
+}>
 
 export default (): JukuuConfig => ({
   lang: '11010000',
