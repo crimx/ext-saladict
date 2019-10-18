@@ -1,12 +1,16 @@
 import { DictItem } from '@/app-config/dicts'
+import { Language } from '@opentranslate/translator'
+import { Subunion } from '@/typings/helpers'
 
-export type TencentConfig = DictItem<
-  {
-    pdfNewline: boolean
-    tl: 'default' | 'zh' | 'en' | 'jp' | 'kr' | 'fr' | 'de' | 'es' | 'ru'
-  },
-  'tl'
+export type TencentLanguage = Subunion<
+  Language,
+  'zh-CN' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'ru'
 >
+
+export type TencentConfig = DictItem<{
+  pdfNewline: boolean
+  tl: 'default' | TencentLanguage
+}>
 
 export default (): TencentConfig => ({
   lang: '11011111',
@@ -43,6 +47,6 @@ export default (): TencentConfig => ({
     tl: 'default'
   },
   options_sel: {
-    tl: ['default', 'zh', 'en', 'jp', 'kr', 'fr', 'de', 'es', 'ru']
+    tl: ['default', 'zh-CN', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru']
   }
 })

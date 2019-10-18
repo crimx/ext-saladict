@@ -41,6 +41,13 @@
     }
   },
   "dependencies": {
+    "@opentranslate/baidu": "^1.0.4",
+    "@opentranslate/caiyun": "^1.0.4",
+    "@opentranslate/google": "^1.0.4",
+    "@opentranslate/sogou": "^1.0.4",
+    "@opentranslate/tencent": "^1.0.4",
+    "@opentranslate/translator": "^1.0.4",
+    "@opentranslate/youdao": "^1.0.4",
     "@types/dompurify": "0.0.32",
     "@types/firefox-webext-browser": "^67.0.2",
     "@types/i18next": "^12.1.0",

@@ -1,23 +1,18 @@
 import { DictItem } from '@/app-config/dicts'
+import { Language } from '@opentranslate/translator'
+import { Subunion } from '@/typings/helpers'
 
-export type GoogleConfig = DictItem<
-  {
-    pdfNewline: boolean
-    cnfirst: boolean
-    tl:
-      | 'default'
-      | 'zh-CN'
-      | 'zh-TW'
-      | 'en'
-      | 'ja'
-      | 'ko'
-      | 'fr'
-      | 'de'
-      | 'es'
-      | 'ru'
-  },
-  'tl'
+export type GoogleLanguage = Subunion<
+  Language,
+  'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'ru'
 >
+
+export type GoogleConfig = DictItem<{
+  pdfNewline: boolean
+  cnfirst: boolean
+  concurrent: boolean
+  tl: 'default' | GoogleLanguage
+}>
 
 export default (): GoogleConfig => ({
   lang: '11111111',
@@ -52,6 +47,7 @@ export default (): GoogleConfig => ({
     /** Keep linebreaks on PDF */
     pdfNewline: false,
     cnfirst: true,
+    concurrent: false,
     tl: 'default'
   },
   options_sel: {

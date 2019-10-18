@@ -65,9 +65,9 @@ export function handleNetWorkError(): Promise<never> {
   return Promise.reject(new Error('NETWORK_ERROR'))
 }
 
-export interface MachineTranslatePayload {
-  sl?: string
-  tl?: string
+export interface MachineTranslatePayload<Lang = string> {
+  sl?: Lang
+  tl?: Lang
 }
 
 export interface MachineTranslateResult<ID extends DictID> {
@@ -79,12 +79,12 @@ export interface MachineTranslateResult<ID extends DictID> {
   /** All supported languages */
   langcodes: ReadonlyArray<string>
   searchText: {
-    text: string
-    audio?: string
+    paragraphs: string[]
+    tts?: string
   }
   trans: {
-    text: string
-    audio?: string
+    paragraphs: string[]
+    tts?: string
   }
 }
 

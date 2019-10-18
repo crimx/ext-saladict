@@ -2,18 +2,18 @@ import { DictItem } from '@/app-config/dicts'
 import { Language } from '@opentranslate/translator'
 import { Subunion } from '@/typings/helpers'
 
-export type SogouLanguage = Subunion<
+export type YoudaotransLanguage = Subunion<
   Language,
-  'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'ru'
+  'zh-CN' | 'en' | 'pt' | 'es' | 'ja' | 'ko' | 'fr' | 'ru'
 >
 
-export type SogouConfig = DictItem<{
+export type YoudaotransConfig = DictItem<{
   pdfNewline: boolean
-  tl: 'default' | SogouLanguage
+  tl: 'default' | YoudaotransLanguage
 }>
 
-export default (): SogouConfig => ({
-  lang: '11111111',
+export default (): YoudaotransConfig => ({
+  lang: '11011111',
   selectionLang: {
     english: true,
     chinese: true,
@@ -47,6 +47,6 @@ export default (): SogouConfig => ({
     tl: 'default'
   },
   options_sel: {
-    tl: ['default', 'zh-CN', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru']
+    tl: ['default', 'zh-CN', 'en', 'pt', 'es', 'ja', 'ko', 'fr', 'ru']
   }
 })

@@ -1,6 +1,8 @@
 import { locale as _locale } from '../zh-CN/langcode'
 
 export const locale: typeof _locale = {
+  auto: '偵測語言',
+  default: '同介面語言',
   af: '南非荷蘭語',
   am: '阿姆哈拉語',
   ar: '阿拉伯語',

@@ -28,6 +28,7 @@ import weblioejje from '@/components/dictionaries/weblioejje/config'
 import websterlearner from '@/components/dictionaries/websterlearner/config'
 import wikipedia from '@/components/dictionaries/wikipedia/config'
 import youdao from '@/components/dictionaries/youdao/config'
+import youdaotrans from '@/components/dictionaries/youdaotrans/config'
 import zdic from '@/components/dictionaries/zdic/config'
 
 export function getAllDicts() {
@@ -62,6 +63,7 @@ export function getAllDicts() {
     websterlearner: websterlearner(),
     wikipedia: wikipedia(),
     youdao: youdao(),
+    youdaotrans: youdaotrans(),
     zdic: zdic()
   }
 }

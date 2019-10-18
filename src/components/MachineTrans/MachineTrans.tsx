@@ -18,15 +18,14 @@ type TTextSource =
   | MachineTranslateResult<DictID>['trans']
 
 /** text with a speaker at the beginning */
-const TText: FC<{ source: TTextSource }> = ({ source }) =>
-  source.text ? (
-    <div className="MachineTrans-Lines">
-      <Speaker src={source.audio} />
-      {source.text.split('\n').map((line, i) => (
-        <p key={i}>{line}</p>
-      ))}
-    </div>
-  ) : null
+const TText: FC<{ source: TTextSource }> = ({ source }) => (
+  <div className="MachineTrans-Lines">
+    <Speaker src={source.tts} />
+    {source.paragraphs.map((line, i) => (
+      <p key={i}>{line}</p>
+    ))}
+  </div>
+)
 
 /** Template for machine translations */
 export const MachineTrans: FC<
@@ -48,7 +47,7 @@ export const MachineTrans: FC<
     <div>
       <div className="MachineTrans-Text">
         <TText source={trans} />
-        {searchText.text.length <= 100 ? (
+        {searchText.paragraphs.join('').length <= 100 ? (
           <TText source={searchText} />
         ) : (
           <div>

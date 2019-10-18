@@ -1,4 +1,6 @@
 export const locale = {
+  auto: '检测语言',
+  default: '随扩展语言',
   af: '南非荷兰语',
   am: '阿姆哈拉语',
   ar: '阿拉伯语',

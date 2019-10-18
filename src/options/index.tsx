@@ -41,7 +41,7 @@ import './_style.scss'
 import { newWord } from '@/_helpers/record-manager'
 
 const i18n = i18nLoader()
-i18n.loadNamespaces(['common', 'options', 'dicts', 'menus'])
+i18n.loadNamespaces(['common', 'options', 'dicts', 'menus', 'langcode'])
 i18n.setDefaultNamespace('options')
 
 const antdLocales = {
