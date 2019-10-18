@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.3.0](https://github.com/crimx/ext-saladict/compare/v7.2.2...v7.3.0) (2019-10-18)
+
+
+### Features
+
+* **wordpage:** support replacing linebreaks ([c112de5](https://github.com/crimx/ext-saladict/commit/c112de5))
+
+
+
 ### [7.2.2](https://github.com/crimx/ext-saladict/compare/v7.2.1...v7.2.2) (2019-10-15)
 
 
