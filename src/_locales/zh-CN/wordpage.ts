@@ -28,6 +28,12 @@ export const locale = {
     description: '编写生成模板，描述每条记录生成的样子：',
     explain: '如何配合 ANKI 等工具',
     gencontent: '代表的内容',
+    linebreak: {
+      default: '保留换行',
+      n: '换行替换为 \\n',
+      br: '换行替换为 <br>',
+      p: '换行替换为 <p>'
+    },
     page: '导出本页单词',
     placeholder: '替换符',
     selected: '导出选中单词'

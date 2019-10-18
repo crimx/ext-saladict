@@ -1,22 +1,16 @@
 import { DictItem } from '@/app-config/dicts'
+import { Language } from '@opentranslate/translator'
+import { Subunion } from '@/typings/helpers'
 
-export type BaiduConfig = DictItem<
-  {
-    pdfNewline: boolean
-    tl:
-      | 'default'
-      | 'zh'
-      | 'cht'
-      | 'en'
-      | 'jp'
-      | 'kor'
-      | 'fra'
-      | 'de'
-      | 'spa'
-      | 'ru'
-  },
-  'tl'
+export type BaiduLanguage = Subunion<
+  Language,
+  'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'ru'
 >
+
+export type BaiduConfig = DictItem<{
+  pdfNewline: boolean
+  tl: 'default' | BaiduLanguage
+}>
 
 export default (): BaiduConfig => ({
   lang: '11111111',
@@ -53,6 +47,6 @@ export default (): BaiduConfig => ({
     tl: 'default'
   },
   options_sel: {
-    tl: ['default', 'zh', 'cht', 'en', 'jp', 'kor', 'fra', 'de', 'spa', 'ru']
+    tl: ['default', 'zh-CN', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru']
   }
 })

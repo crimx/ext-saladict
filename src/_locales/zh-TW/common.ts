@@ -27,6 +27,9 @@ export const locale: typeof _locale = {
   blacklist: '黑名單',
   whitelist: '白名單',
 
+  import: '匯入',
+  export: '匯出',
+
   lang: {
     chinese: '漢字',
     chs: '漢字',

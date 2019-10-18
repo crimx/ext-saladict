@@ -1,6 +1,8 @@
 import { locale as _locale } from '../zh-CN/langcode'
 
 export const locale: typeof _locale = {
+  auto: 'Detect language',
+  default: 'Default',
   af: 'Afrikaans',
   am: 'Amharic',
   ar: 'Arabic',

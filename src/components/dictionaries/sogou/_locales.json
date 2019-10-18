@@ -14,56 +14,6 @@
       "en": "Target language",
       "zh-CN": "目标语言",
       "zh-TW": "目標語言"
-    },
-    "tl-default": {
-      "en": "Default",
-      "zh-CN": "随扩展语言",
-      "zh-TW": "同介面語言"
-    },
-    "tl-zh-CHS": {
-      "en": "简体中文",
-      "zh-CN": "简体中文",
-      "zh-TW": "简体中文"
-    },
-    "tl-zh-CHT": {
-      "en": "繁體中文",
-      "zh-CN": "繁體中文",
-      "zh-TW": "繁體中文"
-    },
-    "tl-en": {
-      "en": "English",
-      "zh-CN": "English",
-      "zh-TW": "English"
-    },
-    "tl-ja": {
-      "en": "Japanese",
-      "zh-CN": "日文",
-      "zh-TW": "日文"
-    },
-    "tl-ko": {
-      "en": "Korean",
-      "zh-CN": "韩文",
-      "zh-TW": "韓文"
-    },
-    "tl-fr": {
-      "en": "French",
-      "zh-CN": "法文",
-      "zh-TW": "法文"
-    },
-    "tl-de": {
-      "en": "Deutsch",
-      "zh-CN": "德文",
-      "zh-TW": "德文"
-    },
-    "tl-es": {
-      "en": "Spanish",
-      "zh-CN": "西班牙文",
-      "zh-TW": "西班牙文"
-    },
-    "tl-ru": {
-      "en": "Russian",
-      "zh-CN": "俄语",
-      "zh-TW": "俄語"
     }
   }
 }

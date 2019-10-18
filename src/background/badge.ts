@@ -50,8 +50,7 @@ export function updateBadge(
 }
 
 function setOff(tabId: number) {
-  browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B', tabId })
-  browser.browserAction.setBadgeText({ text: 'off', tabId })
+  setIcon(true, tabId)
   browser.browserAction.setTitle({
     title: require('@/_locales/' + window.appConfig.langCode + '/background')
       .locale.app.off,
@@ -60,8 +59,7 @@ function setOff(tabId: number) {
 }
 
 function setTempOff(tabId: number) {
-  browser.browserAction.setBadgeBackgroundColor({ color: '#F39C12', tabId })
-  browser.browserAction.setBadgeText({ text: 'off', tabId })
+  setIcon(true, tabId)
   browser.browserAction.setTitle({
     title: require('@/_locales/' + window.appConfig.langCode + '/background')
       .locale.app.tempOff,
@@ -70,8 +68,7 @@ function setTempOff(tabId: number) {
 }
 
 function setUnsupported(tabId: number) {
-  browser.browserAction.setBadgeBackgroundColor({ color: '#F39C12', tabId })
-  browser.browserAction.setBadgeText({ text: 'off', tabId })
+  setIcon(true, tabId)
   browser.browserAction.setTitle({
     title: require('@/_locales/' + window.appConfig.langCode + '/background')
       .locale.app.unsupported,
@@ -80,6 +77,29 @@ function setUnsupported(tabId: number) {
 }
 
 function setEmpty(tabId: number) {
-  browser.browserAction.setBadgeText({ text: '', tabId })
+  setIcon(false, tabId)
   browser.browserAction.setTitle({ title: '', tabId })
+}
+
+function setIcon(gray: boolean, tabId: number) {
+  browser.browserAction.setIcon({
+    tabId,
+    path: gray
+      ? {
+          16: 'assets/icon-gray-16.png',
+          19: 'assets/icon-gray-19.png',
+          24: 'assets/icon-gray-24.png',
+          38: 'assets/icon-gray-38.png',
+          48: 'assets/icon-gray-48.png',
+          128: 'assets/icon-gray-128.png'
+        }
+      : {
+          16: 'assets/icon-16.png',
+          19: 'assets/icon-19.png',
+          24: 'assets/icon-24.png',
+          38: 'assets/icon-38.png',
+          48: 'assets/icon-48.png',
+          128: 'assets/icon-128.png'
+        }
+  })
 }

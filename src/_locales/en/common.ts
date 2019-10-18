@@ -27,6 +27,9 @@ export const locale: typeof _locale = {
   blacklist: 'Blacklist',
   whitelist: 'Whitelist',
 
+  import: 'Import',
+  export: 'Export',
+
   lang: {
     chinese: 'Chinese',
     chs: 'Chinese',

@@ -4,38 +4,24 @@ import {
   SearchFunction,
   GetSrcPageFunction
 } from '../helpers'
-import {
-  isContainChinese,
-  isContainJapanese,
-  isContainKorean
-} from '@/_helpers/lang-check'
-import { Sogou } from '@opentranslate/sogou'
-import { SogouLanguage } from './config'
+import { Youdao } from '@opentranslate/youdao'
+import { YoudaotransLanguage } from './config'
 
-let _translator: Sogou | undefined
+let _translator: Youdao | undefined
 const getTranslator = () =>
-  (_translator = _translator || new Sogou({ env: 'ext' }))
+  (_translator = _translator || new Youdao({ env: 'ext' }))
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
-  const lang =
-    profile.dicts.all.sogou.options.tl === 'default'
-      ? config.langCode === 'zh-CN'
-        ? 'zh-CHS'
-        : config.langCode === 'zh-TW'
-        ? 'zh-CHT'
-        : 'en'
-      : profile.dicts.all.sogou.options.tl
-
-  return `https://fanyi.sogou.com/#auto/${lang}/${text}`
+  return `http://fanyi.youdao.com`
 }
 
-export type SogouResult = MachineTranslateResult<'sogou'>
+export type YoudaotransResult = MachineTranslateResult<'youdaotrans'>
 
 export const search: SearchFunction<
-  SogouResult,
-  MachineTranslatePayload<SogouLanguage>
+  YoudaotransResult,
+  MachineTranslatePayload<YoudaotransLanguage>
 > = async (text, config, profile, payload) => {
-  const options = profile.dicts.all.sogou.options
+  const options = profile.dicts.all.youdaotrans.options
 
   const sl = payload.sl || 'auto'
   const tl =
@@ -43,13 +29,7 @@ export const search: SearchFunction<
     (options.tl === 'default'
       ? config.langCode === 'en'
         ? 'en'
-        : !isContainChinese(text) ||
-          isContainJapanese(text) ||
-          isContainKorean(text)
-        ? config.langCode === 'zh-TW'
-          ? 'zh-TW'
-          : 'zh-CN'
-        : 'en'
+        : 'zh-CN'
       : options.tl)
 
   if (payload.isPDF && !options.pdfNewline) {
@@ -62,7 +42,7 @@ export const search: SearchFunction<
     const result = await translator.translate(text, sl, tl)
     return {
       result: {
-        id: 'sogou',
+        id: 'youdaotrans',
         sl: result.from,
         tl: result.to,
         langcodes: translator.getSupportLanguages(),
@@ -76,7 +56,7 @@ export const search: SearchFunction<
   } catch (e) {
     return {
       result: {
-        id: 'sogou',
+        id: 'youdaotrans',
         sl,
         tl,
         langcodes: translator.getSupportLanguages(),

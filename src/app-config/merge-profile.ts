@@ -77,7 +77,13 @@ export function mergeProfile(
         } else if (isBoolean(value)) {
           mergeBoolean(`dicts.all.${id}.options.${opt}`)
         } else if (isString(value)) {
-          mergeString(`dicts.all.${id}.options.${opt}`)
+          const choice = get(oldProfile, `dicts.all.${id}.options.${opt}`)
+          const options = get(base, `dicts.all.${id}.options_sel.${opt}`)
+          set(
+            base,
+            `dicts.all.${id}.options.${opt}`,
+            options.includes(choice) ? choice : options[0]
+          )
         }
       })
     }

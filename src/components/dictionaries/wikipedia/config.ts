@@ -1,20 +1,8 @@
 import { DictItem } from '@/app-config/dicts'
 
-export type WikipediaConfig = DictItem<
-  {
-    lang:
-      | 'auto'
-      | 'zh'
-      | 'zh-cn'
-      | 'zh-tw'
-      | 'zh-hk'
-      | 'en'
-      | 'ja'
-      | 'fr'
-      | 'de'
-  },
-  'lang'
->
+export type WikipediaConfig = DictItem<{
+  lang: 'auto' | 'zh' | 'zh-cn' | 'zh-tw' | 'zh-hk' | 'en' | 'ja' | 'fr' | 'de'
+}>
 
 export default (): WikipediaConfig => ({
   lang: '11110000',

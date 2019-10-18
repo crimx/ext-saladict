@@ -1,9 +1,10 @@
 import React from 'react'
 import { withTranslation, WithTranslation } from 'react-i18next'
-import { Layout, Modal, Table } from 'antd'
+import { Layout, Modal, Table, Select } from 'antd'
 import { ColumnProps } from 'antd/lib/table/interface'
 import { Word, newWord } from '@/_helpers/record-manager'
 import { storage } from '@/_helpers/browser-api'
+import escapeHTML from 'lodash/escape'
 
 const { Content, Sider } = Layout
 
@@ -17,8 +18,8 @@ export interface ExportModalProps {
 type ExportModalInnerProps = ExportModalProps & WithTranslation
 
 interface ExportModalState {
+  lineBreak: '' | 'n' | 'p' | 'br'
   template: string
-  processedWords: string
 }
 
 interface TemplateData {
@@ -34,6 +35,7 @@ export class ExportModalBody extends React.Component<
 > {
   readonly tplTableData: TemplateData[]
   readonly tplTableCols: ColumnProps<TemplateData>[]
+  proccessedText = ''
 
   constructor(props) {
     super(props)
@@ -41,33 +43,33 @@ export class ExportModalBody extends React.Component<
 
     this.state = {
       template: '',
-      processedWords: ''
+      lineBreak: ''
     }
 
     this.tplTableData = [
       {
         plcholderL: '%text%',
-        contentL: t('content:wordEditorNoteWord'),
+        contentL: t('common:note.word'),
         plcholderR: '%title%',
-        contentR: t('content:wordEditorNoteSrcTitle')
+        contentR: t('common:note.srcTitle')
       },
       {
         plcholderL: '%context%',
-        contentL: t('content:wordEditorNoteContext'),
+        contentL: t('common:note.context'),
         plcholderR: '%url%',
-        contentR: t('content:wordEditorNoteSrcLink')
+        contentR: t('common:note.srcLink')
       },
       {
         plcholderL: '%note%',
-        contentL: t('content:wordEditorNoteNote'),
+        contentL: t('common:note.note'),
         plcholderR: '%favicon%',
-        contentR: t('content:wordEditorNoteSrcFavicon')
+        contentR: t('common:note.srcFavicon')
       },
       {
         plcholderL: '%trans%',
-        contentL: t('content:wordEditorNoteTrans'),
+        contentL: t('common:note.trans'),
         plcholderR: '%date%',
-        contentR: t('content:wordEditorNoteDate')
+        contentR: t('common:note.date')
       }
     ]
 
@@ -107,8 +109,8 @@ export class ExportModalBody extends React.Component<
     browser.runtime.getPlatformInfo().then(({ os }) => {
       const content =
         os === 'win'
-          ? this.state.processedWords.replace(/\r\n|\n/g, '\r\n')
-          : this.state.processedWords
+          ? this.proccessedText.replace(/\r\n|\n/g, '\r\n')
+          : this.proccessedText
       const file = new Blob([content], { type: 'text/plain;charset=utf-8' })
       const a = document.createElement('a')
       a.style.display = 'none'
@@ -124,23 +126,43 @@ export class ExportModalBody extends React.Component<
 
   handleTemplateChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const template = e.currentTarget.value
-    this.setState({
-      template,
-      processedWords: this.processWords(template)
-    })
+    this.setState({ template })
     storage.sync.set({ wordpageTemplate: template })
   }
 
-  processWords = (template: string): string => {
+  handleLinebreakChange = (value: ExportModalState['lineBreak']) => {
+    this.setState({ lineBreak: value })
+    storage.sync.set({ wordpageLineBreak: value })
+  }
+
+  processWords = (): string => {
     const keys = Object.keys(newWord())
     return this.props.rawWords
       .map(word =>
-        template.replace(/%(\S+)%/g, (match, k) => {
+        this.state.template.replace(/%(\S+)%/g, (match, k) => {
           if (keys.includes(k)) {
-            if (k === 'date') {
-              return new Date(word.date).toLocaleDateString(this.props.locale)
+            switch (k) {
+              case 'date':
+                return new Date(word.date).toLocaleDateString(this.props.locale)
+              case 'trans':
+              case 'note':
+              case 'context':
+                switch (this.state.lineBreak) {
+                  case 'n':
+                    return (word[k] || '').replace(/\n|\r\n/g, '\\n')
+                  case 'br':
+                    return escapeHTML(word[k] || '').replace(/\n|\r\n/g, '<br>')
+                  case 'p':
+                    return escapeHTML(word[k] || '')
+                      .split(/\n|\r\n/)
+                      .map(line => `<p>${line}</p>`)
+                      .join('')
+                  default:
+                    return word[k] || ''
+                }
+              default:
+                return word[k] || ''
             }
-            return word[k] || ''
           }
           return match
         })
@@ -152,16 +174,19 @@ export class ExportModalBody extends React.Component<
     const { t } = this.props
 
     storage.sync
-      .get<{ wordpageTemplate: string }>('wordpageTemplate')
-      .then(({ wordpageTemplate }) => {
+      .get<{
+        wordpageTemplate: string
+        wordpageLineBreak: ExportModalState['lineBreak']
+      }>(['wordpageTemplate', 'wordpageLineBreak'])
+      .then(({ wordpageTemplate, wordpageLineBreak }) => {
         const template =
           wordpageTemplate ||
-          `${t('content:wordEditorNoteWord')}: %text%\n%trans%\n${t(
-            'content:wordEditorNoteContext'
+          `${t('common:note.word')}: %text%\n%trans%\n${t(
+            'common:note.context'
           )}: %context%\n`
         this.setState({
           template,
-          processedWords: this.processWords(template)
+          lineBreak: wordpageLineBreak || ''
         })
       })
   }
@@ -169,7 +194,9 @@ export class ExportModalBody extends React.Component<
   render() {
     const { t } = this.props
 
-    const { template, processedWords } = this.state
+    const { template } = this.state
+
+    this.proccessedText = this.processWords()
 
     return (
       <Layout style={{ height: '70vh', maxHeight: 1000 }}>
@@ -197,8 +224,24 @@ export class ExportModalBody extends React.Component<
             pagination={false}
             size="small"
             bordered={true}
-            style={{ marginBottom: 24 }}
+            style={{ marginBottom: '1em' }}
           />
+          <div style={{ marginBottom: '1em' }}>
+            <Select
+              value={this.state.lineBreak}
+              style={{ width: 210 }}
+              onChange={this.handleLinebreakChange}
+            >
+              <Select.Option value="">
+                {t('export.linebreak.default')}
+              </Select.Option>
+              <Select.Option value="n">{t('export.linebreak.n')}</Select.Option>
+              <Select.Option value="br">
+                {t('export.linebreak.br')}
+              </Select.Option>
+              <Select.Option value="p">{t('export.linebreak.p')}</Select.Option>
+            </Select>
+          </div>
           <textarea
             style={{ flex: 1, width: '100%' }}
             value={template}
@@ -209,7 +252,7 @@ export class ExportModalBody extends React.Component<
           <textarea
             style={{ width: '100%', height: '100%' }}
             readOnly={true}
-            value={processedWords}
+            value={this.proccessedText}
           />
         </Sider>
       </Layout>
@@ -239,7 +282,7 @@ export class ExportModal extends React.PureComponent<
         destroyOnClose={true}
         onOk={this.exportWords}
         onCancel={onCancel}
-        okText={t('export')}
+        okText={t('common:export')}
         style={{ width: '90vw', maxWidth: 1200, top: 24 }}
         width="90vw"
       >

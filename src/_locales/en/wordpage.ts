@@ -30,6 +30,12 @@ export const locale: typeof _locale = {
     description: 'Describe the shape of each record: ',
     explain: 'How to export to ANKI and other tools',
     gencontent: 'Generated Content',
+    linebreak: {
+      default: 'Keep default linebreaks',
+      n: 'replace linebreaks with \\n',
+      br: 'replace linebreaks with <br>',
+      p: 'replace linebreaks with <p>'
+    },
     page: 'Export page',
     placeholder: 'Placeholder',
     selected: 'Export selected'

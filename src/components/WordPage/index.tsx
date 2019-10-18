@@ -22,7 +22,7 @@ import { createConfigStream } from '@/_helpers/config-manager'
 import { injectAnalytics } from '@/_helpers/analytics'
 
 const i18n = i18nLoader()
-i18n.loadNamespaces(['wordpage', 'content'])
+i18n.loadNamespaces(['common', 'wordpage', 'content'])
 i18n.setDefaultNamespace('wordpage')
 
 const reduxStore = createStore()

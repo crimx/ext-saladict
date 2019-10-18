@@ -1,12 +1,13 @@
 import { DictItem } from '@/app-config/dicts'
+import { Language } from '@opentranslate/translator'
+import { Subunion } from '@/typings/helpers'
 
-export type CaiyunConfig = DictItem<
-  {
-    pdfNewline: boolean
-    tl: 'default' | 'zh' | 'en' | 'ja'
-  },
-  'tl'
->
+export type CaiyunLanguage = Subunion<Language, 'zh-CN' | 'en' | 'ja'>
+
+export type CaiyunConfig = DictItem<{
+  pdfNewline: boolean
+  tl: 'default' | CaiyunLanguage
+}>
 
 export default (): CaiyunConfig => ({
   lang: '11010000',
@@ -43,6 +44,6 @@ export default (): CaiyunConfig => ({
     tl: 'default'
   },
   options_sel: {
-    tl: ['default', 'zh', 'en', 'ja']
+    tl: ['default', 'zh-CN', 'en', 'ja']
   }
 })

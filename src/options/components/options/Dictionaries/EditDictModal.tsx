@@ -93,7 +93,9 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
                     <Radio.Group>
                       {dict['options_sel'][optKey].map(option => (
                         <Radio value={option} key={option}>
-                          {t(`dicts:${dictID}.options.${optKey}-${option}`)}
+                          {optKey === 'tl'
+                            ? t(`langcode:${option}`)
+                            : t(`dicts:${dictID}.options.${optKey}-${option}`)}
                         </Radio>
                       ))}
                     </Radio.Group>

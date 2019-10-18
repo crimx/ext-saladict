@@ -38,6 +38,7 @@ export const searchStart: StoreActionHandler<'SEARCH_START'> = (
   return {
     ...state,
     text: word.text,
+    isShowDictPanel: true,
     isExpandMtaBox:
       activeProfile.mtaAutoUnfold === 'always' ||
       (activeProfile.mtaAutoUnfold === 'popup' && isPopupPage()),

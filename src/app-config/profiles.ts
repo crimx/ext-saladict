@@ -150,6 +150,7 @@ export function scholar(): ProfileStorage {
 
   const allDict = profile.dicts.all
   allDict.macmillan.defaultUnfold = {
+    matchAll: false,
     english: false,
     chinese: false,
     japanese: false,
@@ -160,6 +161,7 @@ export function scholar(): ProfileStorage {
     others: false
   }
   allDict.oald.defaultUnfold = {
+    matchAll: false,
     english: false,
     chinese: false,
     japanese: false,
@@ -170,6 +172,7 @@ export function scholar(): ProfileStorage {
     others: false
   }
   allDict.websterlearner.defaultUnfold = {
+    matchAll: false,
     english: false,
     chinese: false,
     japanese: false,
@@ -196,7 +199,7 @@ export function translation(): ProfileStorage {
     'sogou',
     'baidu',
     'caiyun',
-    'youdao',
+    'youdaotrans',
     'zdic',
     'guoyu',
     'liangan'

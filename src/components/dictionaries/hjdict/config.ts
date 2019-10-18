@@ -1,16 +1,13 @@
 import { DictItem } from '@/app-config/dicts'
 
-export type HjdictConfig = DictItem<
-  {
-    related: boolean
-    chsas: 'jp/cj' | 'jp/jc' | 'kr' | 'w' | 'fr' | 'de' | 'es'
-    engas: 'w' | 'fr' | 'de' | 'es'
-    uas: 'fr' | 'de' | 'es'
-    aas: 'fr' | 'de'
-    eas: 'fr' | 'es'
-  },
-  'chsas' | 'engas' | 'uas' | 'aas' | 'eas'
->
+export type HjdictConfig = DictItem<{
+  related: boolean
+  chsas: 'jp/cj' | 'jp/jc' | 'kr' | 'w' | 'fr' | 'de' | 'es'
+  engas: 'w' | 'fr' | 'de' | 'es'
+  uas: 'fr' | 'de' | 'es'
+  aas: 'fr' | 'de'
+  eas: 'fr' | 'es'
+}>
 
 export default (): HjdictConfig => ({
   lang: '10011111',
