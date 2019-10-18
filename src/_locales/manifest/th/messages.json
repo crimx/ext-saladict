@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict,ความสามารถของคุณสมบัติพวกที่รวยกย่อในบรรทัดเอกสารล่าม. Chrome/ไฟร์ฟอกซ์ Name เลื่อนเวลาออกไปหน่อย"
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict เป็นมืออาชีพคำพูด-การแปลภาษาส่วนขยาย,สร้างมาเพื่อแข่งอ่านอยู่ มันใหญ่จำนวนของ authoritative พจนานุกรมปกปิดภาษาอังกฤษ,ภาษาฝรั่งเศสเป็นภาษาญี่ปุ่นและภาษาสเปนและการสนับสนุนซับซ้อนคำพูดการประมวลผล,หน้าเว็บแปลความหมายคำหนังสือและเอกสาร PDF เรียกดูหน้าเว็บด้วย."
+  },
+  "command_toggle_active": {
+    "message": "แสดง/ซ่อนกย่อในบรรทัดเอกสารล่าม"
+  },
+  "command_toggle_instant": {
+    "message": "เปิด/ปิดการแสดงช่วงเวลาแวบเดียวถูกจับ"
+  },
+  "command_open_quick_search": {
+    "message": "เปิดหรือการทำตัวเน้น standalone dict พาเนล"
+  },
+  "command_open_google": {
+    "message": "เปิดกูเกิ้ลแปล"
+  },
+  "command_open_youdao": {
+    "message": "เปิด Youdao แปล"
+  },
+  "command_open_pdf": {
+    "message": "เปิดปัจจุบันเอกสาร PDF ใน Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "การค้นหาเนื้อหาคลิปบอร์ดใน Standalone พาเนล"
+  }
+}

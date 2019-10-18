@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, ಒಂದು ವೈಶಿಷ್ಟ್ಯ ಭರಿತ ಇನ್ಲೈನ್ ಅನುವಾದಕ. ಕ್ರೋಮ್ / ಫೈರ್ಫಾಕ್ಸ್ ವಿಸ್ತರಣೆ."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict ವೃತ್ತಿಪರ ಪದ-ಅನುವಾದ ವಿಸ್ತರಣೆ, ದಾಖಲಿಸಿದವರು ಕ್ರಾಸ್-ಓದುವ. ಇದು ದೊಡ್ಡ ಸಂಖ್ಯೆ, ಅಧಿಕೃತ ಭಾಷೆಗಳ ರಕ್ಷಣೆ ಇಂಗ್ಲೀಷ್, ಫ್ರೆಂಚ್, ಜಪಾನೀಸ್, ಮತ್ತು ಸ್ಪ್ಯಾನಿಷ್, ಮತ್ತು ಬೆಂಬಲ ಸಂಕೀರ್ಣ ಪದ ಸಂಸ್ಕರಣೆ, ವೆಬ್ ಪುಟ ಭಾಷಾಂತರ, ಪದ ಪುಸ್ತಕಗಳು, ಮತ್ತು ಪಿಡಿಎಫ್ ಬ್ರೌಸಿಂಗ್."
+  },
+  "command_toggle_active": {
+    "message": "ಟಾಗಲ್ ಇನ್ಲೈನ್ ಅನುವಾದಕ"
+  },
+  "command_toggle_instant": {
+    "message": "ತ್ವರಿತ ಟಾಗಲ್ ಕ್ಯಾಪ್ಚರ್"
+  },
+  "command_open_quick_search": {
+    "message": "ತೆರೆಯಲು ಅಥವಾ ಹೈಲೈಟ್ ಸ್ವತಂತ್ರ dict ಫಲಕ"
+  },
+  "command_open_google": {
+    "message": "ಓಪನ್ ಗೂಗಲ್ ಭಾಷಾಂತರಿಸಿ"
+  },
+  "command_open_youdao": {
+    "message": "ಓಪನ್ Youdao ಭಾಷಾಂತರಿಸಿ"
+  },
+  "command_open_pdf": {
+    "message": "ಓಪನ್ ಪ್ರಸ್ತುತ PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "ಹುಡುಕಾಟ ಕ್ಲಿಪ್ಬೋರ್ಡ್ ವಿಷಯವನ್ನು ಸ್ವತಂತ್ರ ಸಮಿತಿ"
+  }
+}

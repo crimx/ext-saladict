@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, көп функциялы кірістірілген аудармашы. Кеңейту Хром / Firefox."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict кәсіби сөз аудару кеңейту үшін құрылған, тоғыспалы оқулары. Бұл үлкен саны беделді сөздіктер мұқабасы ағылшын, француз, жапон және испан, және қолдау кешенді өңдеу мәтіндерді аудару, веб-бет, сөз, кітап және pdf қараған."
+  },
+  "command_toggle_active": {
+    "message": "Тумблеры кірістірілген аудармашы"
+  },
+  "command_toggle_instant": {
+    "message": "Жылдам басып алу қосқышы "
+  },
+  "command_open_quick_search": {
+    "message": "Ашу немесе бөлектеу жеке тобының дикт "
+  },
+  "command_open_google": {
+    "message": "Ашып, \"Google\" Аудармашы"
+  },
+  "command_open_youdao": {
+    "message": "Ашу Youdao Аудару"
+  },
+  "command_open_pdf": {
+    "message": "Ашу PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Іздеу мазмұнды буфер алмасу автономды панельдер"
+  }
+}

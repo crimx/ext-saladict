@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Kipengele-Tajiri Inline Translator. Chrome / Firefox Ugani."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict ni mtaalamu wa neno-tafsiri ugani, kuundwa kwa ajili ya msalaba-kusoma. Ni idadi kubwa ya mamlaka ya kamusi cover kiingereza, kifaransa, Kijapani, na kihispania, na msaada tata neno usindikaji, mtandao ukurasa tafsiri, neno vitabu, na PDF ya kuvinjari."
+  },
+  "command_toggle_active": {
+    "message": "Kugeuza inline translator"
+  },
+  "command_toggle_instant": {
+    "message": "Kugeuza kukamata papo"
+  },
+  "command_open_quick_search": {
+    "message": "Wazi au kuonyesha ilio dict jopo"
+  },
+  "command_open_google": {
+    "message": "Open Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Open Youdao Kutafsiri"
+  },
+  "command_open_pdf": {
+    "message": "Wazi sasa PDF katika Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Search clipboard maudhui katika Ilio Jopo"
+  }
+}

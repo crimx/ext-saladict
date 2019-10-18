@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, a-Fitur-Sugih Apik Translator. Chrome / Firefox Extension."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict profesional tembung-terjemahan extension, digawe kanggo salib-maca. Iku gedhe nomer saka kuoso dictionaries nutupi boso inggris, prancis, Jepang, lan spanyol, lan support komplek tembung processing, kaca web terjemahan, tembung buku-buku, lan PDF browsing."
+  },
+  "command_toggle_active": {
+    "message": "Pilihan apik translator"
+  },
+  "command_toggle_instant": {
+    "message": "Pilihan dijupuk cepet"
+  },
+  "command_open_quick_search": {
+    "message": "Mbukak utawa nyorot dewekan dict panel"
+  },
+  "command_open_google": {
+    "message": "Mbukak Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Mbukak Youdao Basa"
+  },
+  "command_open_pdf": {
+    "message": "Mbukak saiki PDF ing Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Telusuri isi clipboard ing Dewekan Panel"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, një Tipar i Pasur ne linje Përkthyes. Chrome / Firefox Extension."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict është një profesionist i fjalës-përkthimi zgjerim, krijuar për ndër-lexim. Është i madh numri i autoritative fjalorë të mbuluar anglisht, frëngjisht, Japonisht, dhe spanjoll, dhe mbështetje komplekse të përpunimit të fjalës, web faqe të përkthimit, fjalën e librave, dhe PDF në shfletim."
+  },
+  "command_toggle_active": {
+    "message": "Toggle inline translator"
+  },
+  "command_toggle_instant": {
+    "message": "Toggle të menjëhershme të kapur"
+  },
+  "command_open_quick_search": {
+    "message": "Të hapur ose përshenjuar të pavarur dict panel"
+  },
+  "command_open_google": {
+    "message": "Hapni Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Hapur Youdao Përkthyer"
+  },
+  "command_open_pdf": {
+    "message": "Të hapur PDF aktuale në Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Kërkoni përmbajtjen e clipboard në Panel të Pavarur"
+  }
+}

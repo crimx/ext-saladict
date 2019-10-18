@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, විශේෂාංගයක් පොහොසත් පේළිගත භාෂා පරිවර්තක. Chrome / Firefox දීර්ඝ."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict වෘත්තීය වචනය-පරිවර්තනය දීර්ඝ නිර්මාණය සඳහා හරස් කියවීම. ඒක විශාල සංඛ්යාවක් බලාධිකාරී ශබ්ද කෝෂ ආවරණය ඉංග්රීසි, ප්රංශ, ජපන්, හා ස්පාඤ්ඤ, සහ සහාය සංකීර්ණ වදන් සැකසුම්, වෙබ් පිටුව පරිවර්තනය, වචනය පොත්, හා පී. ඩී. එෆ් බ්රවුසින්."
+  },
+  "command_toggle_active": {
+    "message": "වමා පේළිගත භාෂා පරිවර්තක"
+  },
+  "command_toggle_instant": {
+    "message": "වමා ක්ෂණික අල්ලා"
+  },
+  "command_open_quick_search": {
+    "message": "විවෘත හෝ ඉස්මතු නවීන dict මණ්ඩලයක්"
+  },
+  "command_open_google": {
+    "message": "විවෘත ගූගල් පරිවර්තකය"
+  },
+  "command_open_youdao": {
+    "message": "විවෘත Youdao පරිවර්තනය"
+  },
+  "command_open_pdf": {
+    "message": "විවෘත වත්මන් පී. ඩී. එෆ් දී Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "සෙවුම් අලවයි අන්තර්ගතය තුළ නවීන මණ්ඩලයක්"
+  }
+}

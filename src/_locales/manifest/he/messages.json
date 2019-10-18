@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, תכונה עשיר מוטבע מתרגם. Chrome / Firefox."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict הוא מקצועי המילה-תרגום הרחבה, שנוצרה עבור קרוס-קריאה. זה מספר גדול של הסמכותי מילונים לכסות אנגלית, צרפתית, יפנית, ספרדית, ותמיכה מורכבות עיבוד תמלילים, דף אינטרנט, תרגום המילה ספרים, ו-PDF גלישה."
+  },
+  "command_toggle_active": {
+    "message": "להחליף בוכנות מתרגם"
+  },
+  "command_toggle_instant": {
+    "message": "לעבור מיידית ללכוד"
+  },
+  "command_open_quick_search": {
+    "message": "פתח או לסמן עצמאי לוח דיקט"
+  },
+  "command_open_google": {
+    "message": "פתח את Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "פתח Youdao תרגום"
+  },
+  "command_open_pdf": {
+    "message": "פתח הנוכחי PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "חיפוש לוח תוכן עצמאי לוח"
+  }
+}

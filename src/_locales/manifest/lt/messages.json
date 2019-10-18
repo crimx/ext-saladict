@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Funkcija Turtingas Inline Vertėjas. Chrome / Firefox Plėtinys."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict yra profesionalus tekstų vertimas pratęsimo, sukurtas kryžius-skaitymas. Tai daug autoritetingų žodynai apima anglų, prancūzų, Japonų ir ispanų, ir paramos sudėtingų tekstų apdorojimo, interneto puslapių vertimas, tekstų knygas, ir PDF internetą."
+  },
+  "command_toggle_active": {
+    "message": "Perjungti inline vertėjas"
+  },
+  "command_toggle_instant": {
+    "message": "Perjungti akimirksniu užfiksuoti"
+  },
+  "command_open_quick_search": {
+    "message": "Atidarymas arba išryškinimas atskiras dict skydelis"
+  },
+  "command_open_google": {
+    "message": "Atidarykite \" Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Atidaryti Youdao Išversti"
+  },
+  "command_open_pdf": {
+    "message": "Atidaryti esamą PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Paieškos mainų srities turinį pagal Atskiras Pultas"
+  }
+}

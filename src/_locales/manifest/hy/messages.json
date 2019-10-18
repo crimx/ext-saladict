@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, ունիվերսալ ներկառուցված թարգմանիչ ։ Ընդլայնումը, Քրոմ / Firefox."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict մասնագիտական խոսքը թարգմանությունը ընդլայնման համար ստեղծված խաչաձեւ կարդալ. Սա թվով հեղինակավոր բառարաններ ընդգրկում է անգլերեն, ֆրանսերեն, ճապոներեն, եւ իսպաներեն, եւ աջակցություն համալիրի տեքստերի մշակման, թարգմանության վեբ-էջեր, խոսքը գրքի, եւ pdf դիտելու."
+  },
+  "command_toggle_active": {
+    "message": "Тумблеры ներկառուցված թարգմանիչ"
+  },
+  "command_toggle_instant": {
+    "message": "Ակնթարթային գրավումը անջատիչ "
+  },
+  "command_open_quick_search": {
+    "message": "Բացումը կամ հատկացումը առանձին խմբի дикт "
+  },
+  "command_open_google": {
+    "message": "Բացեք Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Բացել Youdao Թարգմանությունը"
+  },
+  "command_open_pdf": {
+    "message": "Բացել PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Որոնում բովանդակության clipboard ցանցից վահանակներ"
+  }
+}

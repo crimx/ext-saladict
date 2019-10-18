@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, una Rica en Línia Traductor. Chrome / Extensió De Firefox."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict és un professional de la paraula-traducció extensió, creat per la lectura creuada. És gran nombre de autoritzada diccionaris cobrir l'anglès, el francès, el Japonès i espanyol, i el suport complex de tractament de textos, traducció de pàgines web, llibres paraula, i PDF de navegació."
+  },
+  "command_toggle_active": {
+    "message": "Canviar de línia traductor"
+  },
+  "command_toggle_instant": {
+    "message": "Canviar instant de captura"
+  },
+  "command_open_quick_search": {
+    "message": "Obrir o ressaltar independent dict tauler"
+  },
+  "command_open_google": {
+    "message": "Obriu Google Traductor"
+  },
+  "command_open_youdao": {
+    "message": "Obert Youdao Traduir"
+  },
+  "command_open_pdf": {
+    "message": "Obrir actual PDF en Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Cerca de contingut del porta-retalls en el Panell Independent"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, yon Karakteristik ki Rich Inline Tradiktè. Chrome / Firefox Ekstansyon."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict se yon pwofesyonèl mo-tradiksyon ekstansyon, ki te kreye pou kwa-lekti. Li nan gwo kantite autorité diksyonè kouvri angle, franse, Japonè, ak panyòl, ak sipò konplèks pwosesis mo, paj wèb tradiksyon, pawòl bondye a nan liv yo, ak PDF navigasyon."
+  },
+  "command_toggle_active": {
+    "message": "Aktive inline tradiktè"
+  },
+  "command_toggle_instant": {
+    "message": "Aktive enstantane pran"
+  },
+  "command_open_quick_search": {
+    "message": "Louvri oswa mete aksan sou otonòm dikt panèl"
+  },
+  "command_open_google": {
+    "message": "Louvri Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Louvri Youdao Tradui"
+  },
+  "command_open_pdf": {
+    "message": "Louvri aktyèl PDF nan Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Rechèch kontni clipboard nan Otonòm Panèl"
+  }
+}

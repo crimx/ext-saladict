@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Trajto-Riĉa Surlinia Tradukisto. Chrome / Firefox Extension."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict estas profesia vorto-traduko etendo, kreita por kruco-legado. Ĝi estas granda nombro de aŭtoritataj vortaroj kovri la angla, la franca, la Japana kaj la hispana, kaj subteno kompleksa word processing, web page translation, word books, kaj en PDF navigacio."
+  },
+  "command_toggle_active": {
+    "message": "Baskuligi inline tradukisto"
+  },
+  "command_toggle_instant": {
+    "message": "Baskuligi tuja kapto"
+  },
+  "command_open_quick_search": {
+    "message": "Turniro # a? reliefigi # a? tonoma dict panelo"
+  },
+  "command_open_google": {
+    "message": "Malfermu Google Tradukas"
+  },
+  "command_open_youdao": {
+    "message": "Malferma Youdao Traduki"
+  },
+  "command_open_pdf": {
+    "message": "Malferma nuna PDF en Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Serĉo tondujo enhavon en Sendependa Panelo"
+  }
+}

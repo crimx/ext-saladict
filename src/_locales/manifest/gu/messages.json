@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, એક લક્ષણ સમૃદ્ધ ઇનલાઇન અનુવાદક. ક્રોમ / ફાયરફોક્સ એક્સટેન્સન છે."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict એક વ્યાવસાયિક શબ્દ-અનુવાદ વિસ્તરણ, માટે બનાવવામાં ક્રોસ-વાંચન. તે મોટી સંખ્યામાં અધિકૃત શબ્દકોશો કવર અંગ્રેજી, ફ્રેન્ચ, જાપાનીઝ, અને સ્પેનિશ છે, અને આધાર જટિલ શબ્દ પ્રક્રિયા, વેબ પૃષ્ઠ અનુવાદ, શબ્દ પુસ્તકો, અને પીડીએફ બ્રાઉઝિંગ."
+  },
+  "command_toggle_active": {
+    "message": "ટૉગલ ઇનલાઇન અનુવાદક"
+  },
+  "command_toggle_instant": {
+    "message": "ટૉગલ ઇન્સ્ટન્ટ કેપ્ચર"
+  },
+  "command_open_quick_search": {
+    "message": "ખોલો અથવા હાઇલાઇટ એકલ dict પેનલ"
+  },
+  "command_open_google": {
+    "message": "ઓપન ગૂગલ અનુવાદ"
+  },
+  "command_open_youdao": {
+    "message": "ઓપન Youdao અનુવાદ"
+  },
+  "command_open_pdf": {
+    "message": "ઓપન વર્તમાન પીડીએફ માં Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "શોધ ક્લિપબોર્ડ માં સામગ્રી એકલ પેનલ"
+  }
+}

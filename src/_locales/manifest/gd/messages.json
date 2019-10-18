@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, a Feature-Rich Inline Translator. Chrome / Firefox A Leudachadh."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict a tha proifeiseanta am facal-eadar-theangachadh an leudachan, a chaidh a chruthachadh airson tar-leughaidh. 'S e mòr àireamh cinnteach againn faclairean cover English, French, Japanese, agus' s e, agus an taic a tha am facal a ' giollachd, duilleag-lìn air an eadar-theangachadh, facal leabhraichean, agus a PDF brabhsadh."
+  },
+  "command_toggle_active": {
+    "message": "Toglaich inline translator"
+  },
+  "command_toggle_instant": {
+    "message": "Toglaich-lannan a ghlacadh"
+  },
+  "command_open_quick_search": {
+    "message": "Fosgail no soillsich standalone dict panel"
+  },
+  "command_open_google": {
+    "message": "Fosgail Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Fosgail Youdao Eadar-Theangachadh"
+  },
+  "command_open_pdf": {
+    "message": "Fosgail an-dràsta PDF ann Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Lorg an stòr-bhòrd content in Standalone Panel"
+  }
+}

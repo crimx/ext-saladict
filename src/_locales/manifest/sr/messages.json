@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, мултифункционални уграђен преводилац. Цхроме / Фирефок."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict стручно реч-превод додатка, креиране за унакрсне читање. То је велики број угледних речника корица енглески, француски, јапански, шпански, и подршка комплекса обраду текста, превод веб странице, реч књиге и пдф гледате."
+  },
+  "command_toggle_active": {
+    "message": "Смењивање уграђен преводилац"
+  },
+  "command_toggle_instant": {
+    "message": "Инстант хватање прекидач "
+  },
+  "command_open_quick_search": {
+    "message": "Отварање или истицање посебном групе дикт "
+  },
+  "command_open_google": {
+    "message": "Отворите Гоогле Преводилац"
+  },
+  "command_open_youdao": {
+    "message": "Отворите Youdao Превод"
+  },
+  "command_open_pdf": {
+    "message": "Отворите ПДФ у Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Претрага садржаја оставе ван плоче"
+  }
+}

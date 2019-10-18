@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, çox funksiyalı daxili tərcüməçi. Genişləndirilməsi, Xrom / Firefox."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict peşə söz tərcümə genişləndirilməsi üçün yaradılan çarpaz oxu. Bu, çox sayda nüfuzlu lüğətlərin örtüyü ingilis, fransız, yapon və ispan və dəstək kompleksinin emal mətnləri tərcümə veb-səhifə, söz, kitab və pdf dayanır."
+  },
+  "command_toggle_active": {
+    "message": "Buz dolu nepalese daxili tərcüməçi"
+  },
+  "command_toggle_instant": {
+    "message": "Ani ələ keçid "
+  },
+  "command_open_quick_search": {
+    "message": "Açılış ya ayrılması ayrı-ayrı qruplar дикт "
+  },
+  "command_open_google": {
+    "message": "Açın Google Tərcüməçi"
+  },
+  "command_open_youdao": {
+    "message": "Açıq Youdao Tərcümə"
+  },
+  "command_open_pdf": {
+    "message": "Açıq PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Axtarış məzmunu pano offline panel"
+  }
+}

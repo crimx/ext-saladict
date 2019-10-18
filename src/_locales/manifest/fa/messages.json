@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict یک از ویژگی های غنی خطی مترجم. Chrome / فایرفاکس فرمت."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict حرفه ای کلمه و ترجمه با فرمت ایجاد شده برای عبور خواندن. آن تعداد زیادی از معتبر لغت نامه جلد انگلیسی, فرانسوی, ژاپنی و اسپانیایی و پشتیبانی مجتمع پردازش کلمه, وب, صفحه, ترجمه, ورد, کتاب ها و PDF ها و فیلم ها."
+  },
+  "command_toggle_active": {
+    "message": "ضامن خطی مترجم"
+  },
+  "command_toggle_instant": {
+    "message": "ضامن فوری ضبط"
+  },
+  "command_open_quick_search": {
+    "message": "باز کردن و یا برجسته مستقل dict پنل"
+  },
+  "command_open_google": {
+    "message": "باز Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "باز Youdao ترجمه"
+  },
+  "command_open_pdf": {
+    "message": "باز کردن PDF کنونی در Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "جستجو در محتوای کلیپ بورد در پنل مستقل"
+  }
+}

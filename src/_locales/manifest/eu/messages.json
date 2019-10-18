@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Ezaugarri bat-Aberatsa Inline Itzultzaileak. Chrome / Firefox Luzapena."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict profesionala da hitza-itzulpen luzapena, sortu gurutze-irakurketa. Da kopuru handi autoritario hiztegiak estaltzeko English, frantziako, Japoniako, espainiako, eta laguntza konplexua hitza prozesatzeko, web orrien itzulpena, testu-liburuak, eta PDF arakatzen."
+  },
+  "command_toggle_active": {
+    "message": "Toggle inline itzultzailea"
+  },
+  "command_toggle_instant": {
+    "message": "Toggle berehalako harrapatzeko"
+  },
+  "command_open_quick_search": {
+    "message": "Ireki edo nabarmendu bakarka dict panel"
+  },
+  "command_open_google": {
+    "message": "Ireki Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Ireki Youdao Itzuli"
+  },
+  "command_open_pdf": {
+    "message": "Ireki uneko PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Bilaketa arbelaren edukia Bakarka Panel"
+  }
+}

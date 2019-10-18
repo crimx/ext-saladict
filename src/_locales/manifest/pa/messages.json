@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, ਇੱਕ ਫੀਚਰ-ਅਮੀਰ ਇਨਲਾਈਨ ਅਨੁਵਾਦਕ. ਕਰੋਮ / ਫਾਇਰਫਾਕਸ ਦੀ ਐਕਟੇਸ਼ਨ."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict ਹੈ, ਇੱਕ ਪੇਸ਼ੇਵਰ ਸ਼ਬਦ-ਅਨੁਵਾਦ ਦੀ ਐਕਟੇਸ਼ਨ, ਲਈ ਬਣਾਇਆ ਕਰਾਸ-ਪੜ੍ਹਨ. ਇਸ ਦੇ ਵੱਡੀ ਗਿਣਤੀ ਦੇ ਪ੍ਰਮਾਣਿਕ ਕੋਸ਼ ਕਵਰ ਅੰਗਰੇਜ਼ੀ, ਹੈ French, ਜਪਾਨੀ, ਅਤੇ ਸਪੇਨੀ, ਅਤੇ ਸਹਿਯੋਗ ਨੂੰ ਗੁੰਝਲਦਾਰ ਸ਼ਬਦ ਨੂੰ ਕਾਰਵਾਈ ਕਰਨ, ਵੈੱਬ ਸਫ਼ੇ ਅਨੁਵਾਦ ਬਚਨ, ਿ ਕਤਾਬ, ਅਤੇ PDF ਬਰਾਊਜ਼ਿੰਗ ਹੈ."
+  },
+  "command_toggle_active": {
+    "message": "ਬਦਲੋ ਇਨਲਾਈਨ ਅਨੁਵਾਦਕ"
+  },
+  "command_toggle_instant": {
+    "message": "ਬਦਲੋ ਤੁਰੰਤ ਕੈਪਚਰ"
+  },
+  "command_open_quick_search": {
+    "message": "ਨੂੰ ਖੋਲ੍ਹਣ ਜ ਹਾਈਲਾਈਟ ਇੱਕਲੇ dict ਪੈਨਲ"
+  },
+  "command_open_google": {
+    "message": "ਓਪਨ ਗੂਗਲ ਅਨੁਵਾਦ"
+  },
+  "command_open_youdao": {
+    "message": "ਓਪਨ Youdao ਅਨੁਵਾਦ"
+  },
+  "command_open_pdf": {
+    "message": "ਓਪਨ ਮੌਜੂਦਾ PDF ਵਿੱਚ Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "ਖੋਜ ਕਲਿੱਪਬੋਰਡ ਸਮੱਗਰੀ ਵਿੱਚ ਇੱਕਲੇ ਪੈਨਲ"
+  }
+}

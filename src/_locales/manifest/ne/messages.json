@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, सुविधा-धनी इनलाइन अनुवादक. Chrome / फायरफक्स विस्तार । "
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict छ एक पेशेवर शब्द-अनुवाद विस्तार सिर्जना लागि क्रस-पढाइ । यो ठूलो संख्या को प्रामाणिक शब्दकोश कवर अंग्रेजी, फ्रान्सेली, जापानी, र स्पेनिश र समर्थन जटिल शब्द संसाधन, वेब पृष्ठ अनुवाद, शब्द पुस्तकहरू, र पीडीएफ ब्राउजिङ । "
+  },
+  "command_toggle_active": {
+    "message": "टगल इनलाइन अनुवादक"
+  },
+  "command_toggle_instant": {
+    "message": "टगल तत्काल कब्जा"
+  },
+  "command_open_quick_search": {
+    "message": "खुला वा जोड स्वसंपूर्ण dict प्यानल"
+  },
+  "command_open_google": {
+    "message": "खुला गुगल अनुवाद"
+  },
+  "command_open_youdao": {
+    "message": "खुला Youdao अनुवाद"
+  },
+  "command_open_pdf": {
+    "message": "खुला हालको PDF मा Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "खोज क्लिपबोर्ड सामग्री मा स्वसंपूर्ण प्यानल"
+  }
+}

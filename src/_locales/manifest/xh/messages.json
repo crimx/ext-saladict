@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, i-Msebenzi-Otyebileyo Kumgca Umguquleli. Ye-Chrome / I-Firefox I-Extension."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict yi elinolwazi ilizwi-uguqulelo ulwandiso, wadalelwa emnqamlezweni-ukufunda. Ke enkulu inani authoritative isichazi-magama ichaphazela isingesi, isifrentshi, Isijapanese, kwaye isispanish, kwaye inkxaso complex ilizwi ukuqhubela, iphepha le web-lwimi, ilizwi iincwadi, kwaye PDF yokukhangela."
+  },
+  "command_toggle_active": {
+    "message": "Qhoboshela kumgca umguquleli"
+  },
+  "command_toggle_instant": {
+    "message": "Qhoboshela ekhawulezileyo gcina"
+  },
+  "command_open_quick_search": {
+    "message": "Vula okanye yenza uphawu standalone dict yolawulo"
+  },
+  "command_open_google": {
+    "message": "Vula Google Guqulela"
+  },
+  "command_open_youdao": {
+    "message": "Vula Youdao Guqulela"
+  },
+  "command_open_pdf": {
+    "message": "Vula ekhoyo kwi-PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Khangela eqhotyoshwayo isiqulatho kwi-Standalone Yolawulo"
+  }
+}

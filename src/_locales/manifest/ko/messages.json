@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict,기능이 풍부한 인라인 번역가. Chrome/Firefox Extension."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict 은 직업적인 단어로 번역 확장을 위해 만들어진 십자가 읽고 있습니다. 그것의 큰 숫자의 권위있는 사전 커버 영어,프랑스어,일본어,스페인 및 지원을 복잡한 단어를 처리,웹 페이지 번역,word 책 PDF 합니다."
+  },
+  "command_toggle_active": {
+    "message": "토글 인라인 번역기"
+  },
+  "command_toggle_instant": {
+    "message": "Toggle 인스턴트 캡처"
+  },
+  "command_open_quick_search": {
+    "message": "열기 또는 하이라이트는 독립 dict 판"
+  },
+  "command_open_google": {
+    "message": "열린 구글 번역"
+  },
+  "command_open_youdao": {
+    "message": "열 Youdao 번역"
+  },
+  "command_open_pdf": {
+    "message": "오픈 현재 PDF 에 Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "검색 클립보드 내용에서 독립 위원회"
+  }
+}

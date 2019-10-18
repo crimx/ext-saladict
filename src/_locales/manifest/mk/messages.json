@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, на Функција Богата Внатрешно Преведувач. Chrome / Firefox Екстензија."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict е професионална збор-превод проширување, создадени за крос-читање. Тоа е голем број на веродостојни речници покрие англиски, француски, Јапонски, и на шпански јазик, како и поддршка за сложен збор обработка, веб-страница на превод, зборот книги, и PDF пребарување."
+  },
+  "command_toggle_active": {
+    "message": "За да се префрлате внатрешно преведувач"
+  },
+  "command_toggle_instant": {
+    "message": "За да се префрлате инстант фаќање"
+  },
+  "command_open_quick_search": {
+    "message": "Се отвори или означи самостоен dict panel"
+  },
+  "command_open_google": {
+    "message": "Отворете Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Отворете Youdao Превод"
+  },
+  "command_open_pdf": {
+    "message": "Отворете тековна PDF во Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Пребарување на содржината во клипбордот на Самостојни Panel"
+  }
+}

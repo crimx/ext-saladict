@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, een Feature-Rijke Inline Vertaler. Chrome / Firefox-Extensie."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict is een professionele word-vertaling uitbreiding, gemaakt voor cross-lezing. Het grote aantal gezaghebbende woordenboeken cover engels, frans, Japans en spaans, en de ondersteuning van complexe tekstverwerking, web pagina vertaling, word boeken en PDF-bestanden te bladeren."
+  },
+  "command_toggle_active": {
+    "message": "Schakelen inline vertaler"
+  },
+  "command_toggle_instant": {
+    "message": "Schakelen instant capture"
+  },
+  "command_open_quick_search": {
+    "message": "Openen of markeren zelfstandige dict paneel"
+  },
+  "command_open_google": {
+    "message": "Open Google Vertalen"
+  },
+  "command_open_youdao": {
+    "message": "Open Youdao Vertalen"
+  },
+  "command_open_pdf": {
+    "message": "Open de huidige PDF in Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Zoeken op de inhoud van het klembord in de Zelfstandige Paneel"
+  }
+}

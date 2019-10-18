@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, một Giàu tính Năng Kiểm Dịch. Crôm Hại Mở Rộng."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict là một chuyên nghiệp từ dịch mở rộng, được tạo ra để xuyên đọc sách. Đó là số lượng lớn từ điển có thẩm quyền bìa anh, pháp, Nhật, và tây ban nha, và hỗ trợ từ phức tạp xử lý trang web dịch, từ những cuốn sách, và PDF duyệt."
+  },
+  "command_toggle_active": {
+    "message": "Chuyển kiểm dịch"
+  },
+  "command_toggle_instant": {
+    "message": "Chuyển chụp ngay lập tức"
+  },
+  "command_open_quick_search": {
+    "message": "Mở hay làm nổi bật độc lập từ điển bảng điều khiển"
+  },
+  "command_open_google": {
+    "message": "Mở Google Dịch"
+  },
+  "command_open_youdao": {
+    "message": "Mở Youdao Dịch"
+  },
+  "command_open_pdf": {
+    "message": "Mở hiện tại dung Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Tìm kiếm tạm nội dung trong Độc lập Bảng điều khiển"
+  }
+}

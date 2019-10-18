@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, en funksjonsrik Inline Oversetter. Chrome / Firefox-Utvidelsen."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict er en profesjonell ord-oversettelse extension, opprettet for cross-leser. Det er stort antall av autoritative ordbøker dekke engelsk, fransk, Japansk og spansk, og støtter komplekse tekstbehandling oversettelse web-side, word-bøker og PDF-leser."
+  },
+  "command_toggle_active": {
+    "message": "Veksle inline oversetter"
+  },
+  "command_toggle_instant": {
+    "message": "Veksle instant capture"
+  },
+  "command_open_quick_search": {
+    "message": "Åpner eller merker du et frittstående dict-panelet"
+  },
+  "command_open_google": {
+    "message": "Åpne Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Åpne Youdao Oversett"
+  },
+  "command_open_pdf": {
+    "message": "Åpne gjeldende PDF-fil i Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Søk utklippstavle innholdet i Frittstående Panel"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Боломж Ихтэй Шугамын Орчуулагч. Chrome / Firefox Өргөтгөл."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict мэргэжлийн үг-орчуулга өргөтгөл, бий хөндлөн унших. Энэ нь олон тооны эрх мэдэл бүхий толь бичиг хамарч, англи, франц, Япон, испани, дэмжлэг цогцолбор үг боловсруулах, вэб хуудас орчуулга, үгийн ном, болон PDF үзэх."
+  },
+  "command_toggle_active": {
+    "message": "Toggle шугамын орчуулагч"
+  },
+  "command_toggle_instant": {
+    "message": "Toggle шуурхай авах"
+  },
+  "command_open_quick_search": {
+    "message": "Нээлттэй буюу онцлон дан dict самбар"
+  },
+  "command_open_google": {
+    "message": "Нээлттэй Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Нээлттэй Youdao Орчуулах"
+  },
+  "command_open_pdf": {
+    "message": "Нээлттэй одоогийн PDF-д Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Хайлт материалд хуулж оруулж агуулга нь Дан Самбар"
+  }
+}

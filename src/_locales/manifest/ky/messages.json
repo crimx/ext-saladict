@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, многофункциональный встроенный котормочу. Кеңейтүү Хром / Firefox."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict кесиптик деген сөз-которуу кеңейтүү үчүн түзүлгөн кайчылаш окуу. Бул көп сандагы кадыр-барктуу сөздүктөрдү мукабасы англис, француз, япон, жана испан жана колдоо комплексин иштеп чыгуу тексттерди которуу веб-беттер, сөз китептер жана pdf просмотре."
+  },
+  "command_toggle_active": {
+    "message": "Тумблеры встроенный переводчик"
+  },
+  "command_toggle_instant": {
+    "message": "Мгновенный басып алуу которгуч "
+  },
+  "command_open_quick_search": {
+    "message": "Ачуу бөлүү же өзүнчө топтун дикт "
+  },
+  "command_open_google": {
+    "message": "Откройте Google Котормочу"
+  },
+  "command_open_youdao": {
+    "message": "Ачуу Youdao Которуу"
+  },
+  "command_open_pdf": {
+    "message": "Ачуу PDF в Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Издөө мазмун буфера алмашуу автономном панелдер"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Gné-Saibhir Inlíne Aistritheoir. Chrome / Firefox Síneadh."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict is mó focal-aistriúchán síneadh, a cruthaíodh le haghaidh tras-léamh. Tá sé líon mór de na údarásach foclóirí béarla, an fhraincis, Seapáinis, agus i spáinnis, agus tacaíocht a thabhairt casta próiseáil focal, gréasáin leathanach aistriúcháin, an focal leabhair, agus PDF brabhsála."
+  },
+  "command_toggle_active": {
+    "message": "Scoránaigh inlíne translator"
+  },
+  "command_toggle_instant": {
+    "message": "Scoránaigh an toirt a ghabháil"
+  },
+  "command_open_quick_search": {
+    "message": "A oscailt nó a aird a tharraingt ar standalone dict painéal"
+  },
+  "command_open_google": {
+    "message": "Oscailte Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Oscailte Youdao Aistriú"
+  },
+  "command_open_pdf": {
+    "message": "Oscailt reatha PDF i Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Cuardaigh inneachar na gearrthaisce i Standalone Painéal"
+  }
+}

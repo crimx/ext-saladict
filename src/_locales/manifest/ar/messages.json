@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, ميزة الغنية مضمنة المترجم. كروم / فايرفوكس التمديد."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict مهنية كلمة-ترجمة التمديد ، إنشاؤها عبر القراءة. إنه عدد كبير من حجية القواميس تغطي الإنجليزية, الفرنسية, اليابانية, الإسبانية, و دعم مجمع معالجة النصوص, ترجمة صفحة ويب word كتب PDF التصفح."
+  },
+  "command_toggle_active": {
+    "message": "تبديل مضمنة مترجم"
+  },
+  "command_toggle_instant": {
+    "message": "تبديل لحظة القبض على"
+  },
+  "command_open_quick_search": {
+    "message": "فتح أو تسليط الضوء مستقل ديكت الفريق"
+  },
+  "command_open_google": {
+    "message": "فتح جوجل ترجمة"
+  },
+  "command_open_youdao": {
+    "message": "فتح Youdao ترجمة"
+  },
+  "command_open_pdf": {
+    "message": "فتح PDF الحالي في Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "البحث عن محتويات الحافظة في مستقل الفريق"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Ominaisuus-Rikas Inline Kääntäjä. Chrome / Firefox Laajennus."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict on ammatillinen sana-käännös-tiedostotunnistetta, luotu rajat käsittelyssä. Se on suuri määrä arvovaltainen sanakirjoja kattaa englanti, ranska, Japani ja espanja, ja tukea monimutkaisia tekstinkäsittely, web-sivun kääntäminen, sana kirjoja, ja PDF-selailu."
+  },
+  "command_toggle_active": {
+    "message": "Toggle inline kääntäjä"
+  },
+  "command_toggle_instant": {
+    "message": "Toggle instant kaapata"
+  },
+  "command_open_quick_search": {
+    "message": "Avaa tai korosta itsenäinen dict paneeli"
+  },
+  "command_open_google": {
+    "message": "Avaa Google Kääntää"
+  },
+  "command_open_youdao": {
+    "message": "Avaa Youdao Kääntää"
+  },
+  "command_open_pdf": {
+    "message": "Avaa nykyisen PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Haku leikepöydän sisällön Itsenäinen Paneeli"
+  }
+}

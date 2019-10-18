@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, ფუნქცია-მდიდარი Inline მთარგმნელი. Chrome / Firefox-ის გაფართოება."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict არის პროფესიონალური სიტყვა-თარგმანი გაფართოება, შექმნილი ჯვარი-კითხვა. ეს დიდი რაოდენობით ავტორიტეტული ლექსიკონები საფარი ინგლისური, ფრანგული, იაპონური, ესპანური, და მხარდაჭერა კომპლექსური სიტყვა დამუშავება, ვებ-გვერდი თარგმანი, სიტყვა წიგნები, და PDF დათვალიერება."
+  },
+  "command_toggle_active": {
+    "message": "თემა inline მთარგმნელი"
+  },
+  "command_toggle_instant": {
+    "message": "თემა მყისიერი ხელში"
+  },
+  "command_open_quick_search": {
+    "message": "ღია ან მონიშნეთ standalone dict პანელი"
+  },
+  "command_open_google": {
+    "message": "გახსენით Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "ღია Youdao თარგმნა"
+  },
+  "command_open_pdf": {
+    "message": "ღია მიმდინარე PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "საძიებო ბუფერში შინაარსი Standalone პანელი"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Ciri-Kaya Sebaris Penterjemah. Krom / Firefox Lanjutan."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict adalah profesional kata-terjemahan lanjutan, dicipta untuk salib-membaca. Itu jumlah besar yang berwibawa kamus tutup inggris, perancis, Jepang, dan bahasa spanyol, dan sokongan kompleks perkataan memproses, halaman web terjemahan, kata buku-buku, dan PDF pelayaran."
+  },
+  "command_toggle_active": {
+    "message": "Bertukar-tukar sebaris penterjemah"
+  },
+  "command_toggle_instant": {
+    "message": "Bertukar-tukar menangkap segera"
+  },
+  "command_open_quick_search": {
+    "message": "Buka atau sorotan berdiri kamus panel"
+  },
+  "command_open_google": {
+    "message": "Buka Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Buka Youdao Menterjemahkan"
+  },
+  "command_open_pdf": {
+    "message": "Buka semasa PDF di Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Cari clipboard kandungan di Panel Berdiri sendiri"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Osobinu-Bogati Inline Prevodilac. Hroma / Firefox Produženje."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict je profesionalac riječ-prijevod produženje, stvorio za krst-čitanje. To je veliki broj autoritativna rečnike pokriti engleskom, francuskom, Japanski, i španski, i podršku kompleksu za obradu, web stranica prijevod, riječ knjige, i PDF pretraživanje."
+  },
+  "command_toggle_active": {
+    "message": "Preklopi inline prevodilac"
+  },
+  "command_toggle_instant": {
+    "message": "Preklopi instant hvatanje"
+  },
+  "command_open_quick_search": {
+    "message": "Otvori ili vrhunac samostalne dict vijeće"
+  },
+  "command_open_google": {
+    "message": "Otvori Google Prevesti"
+  },
+  "command_open_youdao": {
+    "message": "Otvori Youdao Prevesti"
+  },
+  "command_open_pdf": {
+    "message": "Otvori tekući PDF u Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Potrazi tablu sadržaja u Samostalne Vijeće"
+  }
+}

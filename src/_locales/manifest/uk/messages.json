@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, багатофункціональний вбудований перекладач. Розширення Хром / Firefox."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict професійне слово-переклад розширення, створені для перехресного читання. Це велика кількість авторитетних словників обкладинка англійська, французька, японська, іспанська, і підтримка комплексу обробки текстів, переклад веб-сторінки, слово книги і pdf перегляді."
+  },
+  "command_toggle_active": {
+    "message": "Тумблери вбудований перекладач"
+  },
+  "command_toggle_instant": {
+    "message": "Миттєвий захоплення перемикач "
+  },
+  "command_open_quick_search": {
+    "message": "Відкриття або виділення окремої групи дикт "
+  },
+  "command_open_google": {
+    "message": "Відкрийте Google Перекладач"
+  },
+  "command_open_youdao": {
+    "message": "Відкрити Youdao Перекладу"
+  },
+  "command_open_pdf": {
+    "message": "Відкрити PDF в Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Пошук вмісту буфера обміну в автономному панелі"
+  }
+}

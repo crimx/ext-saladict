@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Zengin İçi Çevirmen. Chrome / Firefox Uzantısı."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict profesyonel bir kelime-çeviri uzantısı, çapraz için oluşturulan okuyor. Yetkili sözlükler kapak İngilizce, Fransızca, Japonca, İspanyolca ve çok sayıda ve karmaşık kelime işleme, web sayfası çeviri, kelime kitap ve PDF tarama desteği."
+  },
+  "command_toggle_active": {
+    "message": "Toggle içi çevirmen"
+  },
+  "command_toggle_instant": {
+    "message": "Geçiş anında yakalama"
+  },
+  "command_open_quick_search": {
+    "message": "Tek başına dict paneli açmak veya vurgulamak "
+  },
+  "command_open_google": {
+    "message": "Aç Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Açık Youdao Tercüme"
+  },
+  "command_open_pdf": {
+    "message": "Saladict açık mevcut PDF "
+  },
+  "command_search_clipboard": {
+    "message": "Tek Başına Panelde arama pano içeriği "
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict、多彩な機能を備えたインライン翻訳家。 Chrome/Firefoxいます。"
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict専門語の翻訳に拡張のために作られたクロスです。 その数々の権威ある辞書をカバー英語、日本語、フランス語、スペイン、複合語処理のwebページの翻訳、単語の図書、PDF閲覧できます。"
+  },
+  "command_toggle_active": {
+    "message": "切り替えるインライン翻訳"
+  },
+  "command_toggle_instant": {
+    "message": "切り替える瞬間を捕"
+  },
+  "command_open_quick_search": {
+    "message": "開いたイン辞書名またを設定パネル"
+  },
+  "command_open_google": {
+    "message": "開きグーグル翻訳"
+  },
+  "command_open_youdao": {
+    "message": "開Youdao翻訳"
+  },
+  "command_open_pdf": {
+    "message": "開現在のPDFファイルをSaladict"
+  },
+  "command_search_clipboard": {
+    "message": "検索クリップボードコンテンツスタンドアロンパネル"
+  }
+}

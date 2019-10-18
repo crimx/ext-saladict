@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, a Pluma-Dives Inline Interpres. Chrome / Incendia Tractus."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict est a professio verbum-translatio tractus, creavit, pro crux crucis-lectio. Suus numerus auctoritate dictionaries cover anglica, gallica, Italica, hispanica, et firmamentum complexu verbum processus, web page translationem, verbum libros, et PDF pasco."
+  },
+  "command_toggle_active": {
+    "message": "Toggle inline translator"
+  },
+  "command_toggle_instant": {
+    "message": "Toggle instant capere"
+  },
+  "command_open_quick_search": {
+    "message": "Aperiam aut highlight standalone dict panel"
+  },
+  "command_open_google": {
+    "message": "Aperta Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Aperta Youdao Cicero"
+  },
+  "command_open_pdf": {
+    "message": "Aperta current PDF in Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Quaero clipboard contentus in Standalone Panel"
+  }
+}

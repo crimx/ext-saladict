@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, ένα Χαρακτηριστικό-Πλούσια Inline Μεταφραστής. Το Chrome / Firefox Extension."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict είναι μια επαγγελματική λέξη-μετάφραση επέκταση, που δημιουργήθηκε για την πολλαπλή ανάγνωση. Είναι μεγάλο αριθμό των έγκυρων λεξικών κάλυψη αγγλικά, γαλλικά, Ιαπωνικά και ισπανικά, και την υποστήριξη συγκρότημα επεξεργασίας κειμένου, web σελίδα, μετάφραση, λέξη βιβλία και PDF περιήγηση."
+  },
+  "command_toggle_active": {
+    "message": "Εναλλαγή inline μεταφραστής"
+  },
+  "command_toggle_instant": {
+    "message": "Εναλλαγή άμεση σύλληψη"
+  },
+  "command_open_quick_search": {
+    "message": "Ανοίξετε ή να επισημάνετε αυτόνομη dict πίνακα"
+  },
+  "command_open_google": {
+    "message": "Ανοίξτε Το Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Ανοίξτε Youdao Μετάφραση"
+  },
+  "command_open_pdf": {
+    "message": "Ανοίξτε τα τρέχοντα PDF σε Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Αναζητήστε το περιεχόμενο πρόχειρο σε Αυτόνομο Πίνακα"
+  }
+}

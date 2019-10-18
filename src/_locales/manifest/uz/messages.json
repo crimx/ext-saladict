@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Xususiyati-Boy Inline Tarjimon. Chrome / Kengaytmasi Firefox."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict so'z tarjima kasb-bir kengaytmasi, ko'ndalang o'qish uchun yaratilgan. Nufuzli lug'atlar hamda u yirik ingliz, frantsuz, Yapon, va ispan va qo'llab-quvvatlash murakkab so'z qayta ishlash, veb-sahifani tarjima, so'z kitoblar va PDF ko'rish qamrab oladi."
+  },
+  "command_toggle_active": {
+    "message": "Toggle inline tarjimon"
+  },
+  "command_toggle_instant": {
+    "message": "Toggle bir zumda qo'lga"
+  },
+  "command_open_quick_search": {
+    "message": "Ochiq yoki dict paneli ta'kidlash mustaqil "
+  },
+  "command_open_google": {
+    "message": "Ochiq Google Tarjima"
+  },
+  "command_open_youdao": {
+    "message": "Ochiq Youdao Tarjima"
+  },
+  "command_open_pdf": {
+    "message": "Saladict ochiq joriy PDF "
+  },
+  "command_search_clipboard": {
+    "message": "Qidiruv Mustaqil Panelini buferga tarkib "
+  }
+}

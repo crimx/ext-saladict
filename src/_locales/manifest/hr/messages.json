@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, multifunkcionalni ugrađeni prevoditelj. Proširenje Krom / Firefox."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict stručni riječ-prijevod za proširenje, stvorene za unakrsno čitanje. To je veliki broj uglednih rječnika cover engleski, francuski, japanski i španjolski, a podrška kompleksa za obradu teksta, prijevod web-stranici, riječ knjige i pdf gledanja."
+  },
+  "command_toggle_active": {
+    "message": "Toggle ugrađeni prevoditelj"
+  },
+  "command_toggle_instant": {
+    "message": "Instant hvatanje prekidač "
+  },
+  "command_open_quick_search": {
+    "message": "Otvaranje ili isticanje određene skupine дикт "
+  },
+  "command_open_google": {
+    "message": "Otvorite Google Prevoditelj"
+  },
+  "command_open_youdao": {
+    "message": "Otvaranje Youdao Prijevod"
+  },
+  "command_open_pdf": {
+    "message": "Otvoriti PDF u Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Pretraživanje sadržaja međuspremnika u offline ploče"
+  }
+}

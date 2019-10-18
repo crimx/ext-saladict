@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, eng Films-Rich-Inline-Iwwersetzer. Chrome / Firefox-Erweiderung."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict ass eng professionell word-iwwersetzung-Erweiderung, opgestallt fir cross-reading. Déi grouss Zuel vun de maßgeblichen Hawaianesch duerchgesat Englesch, Franséisch, Japanesch a Spuenesch, an ënnerstëtzt komplex Ëmzegon, web-Säit iwwersetzung, word-Bicher a PDF-browsing."
+  },
+  "command_toggle_active": {
+    "message": "Toggle inline-iwwersetzer"
+  },
+  "command_toggle_instant": {
+    "message": "Toggle instant-capture"
+  },
+  "command_open_quick_search": {
+    "message": "Ureegung oder markéieren standalone-dict-panel"
+  },
+  "command_open_google": {
+    "message": "Ureegung Si Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Woch Youdao Iwwersetzen"
+  },
+  "command_open_pdf": {
+    "message": "Ureegung Si déi aktuell PDF an Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Sichen Dir den Inhalt vun der Tëschentablag an Standalone-Panel"
+  }
+}

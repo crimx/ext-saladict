@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, egy funkciókban Gazdag Inline Fordító. Chrome / Firefox Kiterjesztés."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict egy professzionális szó-fordítás kiterjesztését, létre a cross-olvasás. Ez a nagy szám a mérvadó szótárak borító angol, francia, Japán, spanyol, valamint támogatják a komplex szövegszerkesztő, web oldal, fordítás, szó könyvek, PDF-böngészés."
+  },
+  "command_toggle_active": {
+    "message": "Váltás inline fordító"
+  },
+  "command_toggle_instant": {
+    "message": "Váltás azonnali rögzítés"
+  },
+  "command_open_quick_search": {
+    "message": "Nyissa ki vagy jelölje ki az önálló dict panel"
+  },
+  "command_open_google": {
+    "message": "Nyissa Meg A Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Nyitva Youdao Fordítás"
+  },
+  "command_open_pdf": {
+    "message": "Nyitva jelenlegi PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Keresés a vágólap tartalmát Önálló Panel"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Rys-Bohatý Inline Translator. Chrome / Firefox Rozšíření."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict je profesionální slovo-překlad rozšíření, vytvořené pro cross-čtení. Je to velké množství autoritativní slovníky pokrytí angličtině, francouzštině, Japonštině a španělštině, a podporovat komplexní zpracování textu, webové stránky, překlad, slovo knihy, a PDF prohlížení."
+  },
+  "command_toggle_active": {
+    "message": "Přepnout inline translator"
+  },
+  "command_toggle_instant": {
+    "message": "Přepínač okamžité zachycení"
+  },
+  "command_open_quick_search": {
+    "message": "Otevření nebo zvýraznění samostatná dict panel"
+  },
+  "command_open_google": {
+    "message": "Otevřít Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Otevřete Youdao Přeložit"
+  },
+  "command_open_pdf": {
+    "message": "Otevřít aktuální PDF v Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Vyhledávání v obsahu schránky v Samostatném Panelu"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, күпфункцияле встроенный тәрҗемәче. Киңәйтү, Хром / Firefox."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict һөнәри әйтү-тәрҗемә киңәйтү өчен булдырылган перекрестного укулары. Бу бик күп абруйлы словарей обложка инглиз теле, француз теле, япон теле, испан теле һәм хуплау комплексын эшкәртү текстлары, тәрҗемә веб-битләрне, әйтү китаплар һәм pdf карау."
+  },
+  "command_toggle_active": {
+    "message": "Тумблеры встроенный тәрҗемәче"
+  },
+  "command_toggle_instant": {
+    "message": "Мгновенный киев переключатель "
+  },
+  "command_open_quick_search": {
+    "message": "Ачу яки бүлеп бирү аерым төркем дикт "
+  },
+  "command_open_google": {
+    "message": "Откройте Google Тәрҗемәче"
+  },
+  "command_open_youdao": {
+    "message": "Ачарга Youdao Тәрҗемә Итү"
+  },
+  "command_open_pdf": {
+    "message": "Ачарга PDF бу Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Эзләү содержимого буфера алмашу татарстан автономияле панельләр"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, אַ שטריך-רייַך ינלינע טראַנסלאַטאָר. קראָום / פירעפאָקס געשפּרייט."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict איז אַ פאַכמאַן וואָרט-איבערזעצונג געשפּרייט, באשאפן פֿאַר קרייַז-לייענען. עס ס גרויס נומער פון אַטאָראַטייטיוו דיקשאַנעריז דעקן ענגליש, פראנצויזיש, יאַפּאַניש, און שפּאַניש, און שטיצן קאָמפּלעקס וואָרט פּראַסעסינג, וועב בלאַט איבערזעצונג, וואָרט ביכער, און PDF בראַוזינג."
+  },
+  "command_toggle_active": {
+    "message": "טאַגאַל ינלינע טראַנסלאַטאָר"
+  },
+  "command_toggle_instant": {
+    "message": "טאַגאַל רעגע כאַפּן"
+  },
+  "command_open_quick_search": {
+    "message": "עפענען אָדער הויכפּונקט סטאַנדאַלאָנע דיקט טאַפליע"
+  },
+  "command_open_google": {
+    "message": "עפענען Google איבערזעצן"
+  },
+  "command_open_youdao": {
+    "message": "עפענען Youdao איבערזעצן"
+  },
+  "command_open_pdf": {
+    "message": "עפענען קראַנט PDF אין Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "זוכן קליפּבאָרד צופרידן אין סטאַנדאַלאָנע טאַפליע"
+  }
+}

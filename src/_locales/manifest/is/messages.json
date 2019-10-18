@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Lögun-Ríkur Inni Þýðandi. Króm / Eldur Eftirnafn."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict er menntuð orð-þýðing eftirnafn, búin að fara yfir-að lesa. Það er mikill fjöldi opinber orðabækur ná ensku, frönsku, Japanskar og spænska, og styðja flókið orð vinnslu, vefsíðu þýðingu, orð bækur, og PDF beit."
+  },
+  "command_toggle_active": {
+    "message": "Skipta inni þýðandi"
+  },
+  "command_toggle_instant": {
+    "message": "Skipta augnablik handtaka"
+  },
+  "command_open_quick_search": {
+    "message": "Opnaðu eða varpa ljósi sjálfstæða orðabók spjaldið"
+  },
+  "command_open_google": {
+    "message": "Opna Google Þýða"
+  },
+  "command_open_youdao": {
+    "message": "Opna Youdao Þýða"
+  },
+  "command_open_pdf": {
+    "message": "Opna núverandi PDF í Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Leita klemmuspjald efni í Sjálfstæða Spjaldið"
+  }
+}

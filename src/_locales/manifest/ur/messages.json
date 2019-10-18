@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict ، ایک خصوصیت امیر ان لائن مترجم. کروم / فائر فاکس کی توسیع."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict ہے ایک پیشہ ورانہ لفظ ترجمہ توسیع کے لئے پیدا کراس پڑھنے. یہ بڑی تعداد کی مستند لغات کا احاطہ انگریزی, فرانسیسی, جاپانی, اور ہسپانوی, اور حمایت پیچیدہ لفظ پروسیسنگ ، ویب صفحے کے ترجمہ لفظ کتابیں ، اور پی ڈی ایف براؤزنگ."
+  },
+  "command_toggle_active": {
+    "message": "ٹوگل ان لائن مترجم"
+  },
+  "command_toggle_instant": {
+    "message": "ٹوگل فوری گرفتاری"
+  },
+  "command_open_quick_search": {
+    "message": "کھلی یا خاص اسٹینڈ dict پینل"
+  },
+  "command_open_google": {
+    "message": "کھولیں گوگل ترجمہ"
+  },
+  "command_open_youdao": {
+    "message": "کھلی Youdao ترجمہ"
+  },
+  "command_open_pdf": {
+    "message": "کھلی موجودہ پی ڈی ایف میں Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "تلاش کے کلپ بورڈ کے مواد میں اسٹینڈ پینل"
+  }
+}

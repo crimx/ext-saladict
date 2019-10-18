@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, he Āhuatanga-Taonga Rōraina Translator. Chrome / Firefox Toronga."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict ko te ngaio kupu-translation toronga, i hanga mo te ripeka-te tai'oraa. Te reira i te maha nui o te mana papakupu te taupoki ana i te reo ingarihi, French, Japanese, me te pāniora, me te tautoko i te matatini tukatuka kupu, whārangi tukutuku translation, kupu i te pukapuka, me te PDF tirotiro."
+  },
+  "command_toggle_active": {
+    "message": "Takahuri rōraina translator"
+  },
+  "command_toggle_instant": {
+    "message": "Takahuri tonu te hopu i"
+  },
+  "command_open_quick_search": {
+    "message": "Tuwhera ranei te whakanui i tūkotahi dict te paewhiri"
+  },
+  "command_open_google": {
+    "message": "Open Google Whakamāoritia"
+  },
+  "command_open_youdao": {
+    "message": "Open Youdao Whakamāoritia"
+  },
+  "command_open_pdf": {
+    "message": "Tuwhera o nāianei i roto i te PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Rapu papatopenga ihirangi i roto i te Standalone te Paewhiri"
+  }
+}

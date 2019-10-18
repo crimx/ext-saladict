@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, isang Rich Tampok-Inline na mga Tagasalin. Sa Chrome / Firefox Extension."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict ay isang propesyonal na salita-pagsasalin extension na ito, na nilikha para sa cross-pagbabasa. Ito ay malaking bilang ng mga makapangyarihan mga dictionaries cover ingles, pranses, Hapon, at mga espanyol, at sa suporta ng mga kumplikadong word processing, web pahina ng pagsasalin, ang mga salita ng aklat, at ang mga PDF sa pag-browse."
+  },
+  "command_toggle_active": {
+    "message": "I-Toggle ang mga inline na tagasalin"
+  },
+  "command_toggle_instant": {
+    "message": "I-Toggle ang instant makuha"
+  },
+  "command_open_quick_search": {
+    "message": "Magbukas o i-highlight ang mga nakapag-iisang dict panel"
+  },
+  "command_open_google": {
+    "message": "Buksan Ang Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Bukas Youdao Isalin"
+  },
+  "command_open_pdf": {
+    "message": "Buksan ang kasalukuyang PDF sa Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Maghanap ng clipboard nilalaman sa nakapag-iisang Panel"
+  }
+}

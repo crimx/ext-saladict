@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, ఒక చలన గొప్ప ఇన్లైన్ అనువాదకుడు. Chrome / ఫైర్ఫాక్స్ పొడిగింపు."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict ఒక ప్రొఫెషనల్ పదం-అనువాద పొడిగింపు, రూపొందించినవారు క్రాస్ పఠనం. అది పెద్ద సంఖ్యలో అధీకృత నిఘంటువులు కవర్ ఇంగ్లీష్, ఫ్రెంచ్, జపనీస్, మరియు స్పానిష్, మరియు మద్దతు క్లిష్టమైన వర్డ్ ప్రాసెసింగ్, వెబ్ పేజీ అనువాద మాట, పుస్తకాలు, మరియు PDF బ్రౌజింగ్."
+  },
+  "command_toggle_active": {
+    "message": "టోగుల్ ఇన్లైన్ అనువాదకుడు"
+  },
+  "command_toggle_instant": {
+    "message": "టోగుల్ తక్షణ సంగ్రహ"
+  },
+  "command_open_quick_search": {
+    "message": "ఓపెన్ లేదా హైలైట్ స్వతంత్ర dict ప్యానెల్"
+  },
+  "command_open_google": {
+    "message": "ఓపెన్ Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "ఓపెన్ యూడో అనువదించు"
+  },
+  "command_open_pdf": {
+    "message": "ఓపెన్ ప్రస్తుత PDF లో Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "శోధన క్లిప్బోర్డ్కు కంటెంట్ లో స్వతంత్ర ప్యానెల్"
+  }
+}

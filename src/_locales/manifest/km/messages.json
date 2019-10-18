@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict,លក្ខណៈពិសេសសម្បូរតួកប្រែ។ Chrome/Firefox ផ្នែកបន្ថែម។"
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict គឺជាពាក្យបកប្រែផ្នែកបន្ថែម,បង្កើតឡើងសម្រាប់ឆ្លងកាត់ការអាន។ វាជាចំនួនធំនៃផ្លូវនានុក្រមគ្របដណ្តអង់គ្លេស,បារាំង,ជប៉ុន,និងស្ប៉ាញ,និងការគាំទ្រស្មុគស្មាញពាក្យដំណើរការបណ្ដាញទំព័របកប្រែពាក្យសៀវភៅ,នាងមើល។"
+  },
+  "command_toggle_active": {
+    "message": "បិទបើតួកប្រែ"
+  },
+  "command_toggle_instant": {
+    "message": "បិទបើកបន្ទាន់ចាប់យក"
+  },
+  "command_open_quick_search": {
+    "message": "បើកឬបន្លិចឯង dict ន្ទះ"
+  },
+  "command_open_google": {
+    "message": "បើក Google បកប្រែ"
+  },
+  "command_open_youdao": {
+    "message": "បើ Youdao បកប្រែ"
+  },
+  "command_open_pdf": {
+    "message": "បើបច្ចុប្បន្ន PDF នៅក្នុង Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "ស្វែងរតម្បៀតខ្ទាស់មាតិកានៅក្នុងឯបន្ទះ"
+  }
+}

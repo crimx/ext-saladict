@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Funkcija Bogati Inline Prevajalec. Chrome / Firefox Razširitev."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict je strokovno besedo-prevajanje razširitev, ustvarjena za navzkrižno branje. To je veliko število veljavnih slovarji kritje angleščina, francoščina, Japonščina, španščina, in podporo kompleksno obdelavo besedil, spletnih strani, prevajanje, besedo knjige, in PDF brskanja."
+  },
+  "command_toggle_active": {
+    "message": "Preklop inline prevajalec"
+  },
+  "command_toggle_instant": {
+    "message": "Preklop takojšen zajem"
+  },
+  "command_open_quick_search": {
+    "message": "Odpiranje ali označevanje samostojna dict plošča"
+  },
+  "command_open_google": {
+    "message": "Odprite Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Odprite Youdao Prevajanje"
+  },
+  "command_open_pdf": {
+    "message": "Odprite trenutno PDF v Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Iskanje vsebino v odložišče Samostojna Plošča"
+  }
+}

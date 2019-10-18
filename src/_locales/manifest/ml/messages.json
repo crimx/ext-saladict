@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, a Feature-Rich ഇൻലൈൻ വിവർത്തനം. ക്രോം / ഫയര്ഫോക്സ് എക്സ്റ്റന്ഷന്."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict ഒരു പ്രൊഫഷണൽ വാക്ക്-പരിഭാഷ വിപുലീകരണം, created for cross-reading. It ' s large number of ആധികാരിക നിഘണ്ടുക്കൾ കവർ ഇംഗ്ലീഷ്, ഫ്രഞ്ച്, ജാപ്പനീസ്, സ്പാനിഷ്, പിന്തുണ സങ്കീർണ്ണമായ വേഡ് പ്രോസസിങ്, വെബ് പേജ് വിവർത്തനം, വചനം ബുക്സ്, പിഡിഎഫ് browsing."
+  },
+  "command_toggle_active": {
+    "message": "Toggle ഇൻലൈൻ വിവർത്തനം"
+  },
+  "command_toggle_instant": {
+    "message": "Toggle തൽക്ഷണ capture"
+  },
+  "command_open_quick_search": {
+    "message": "ഓപ്പൺ അല്ലെങ്കിൽ ഹൈലൈറ്റ് ഏകമായി dict പാനൽ"
+  },
+  "command_open_google": {
+    "message": "തുറക്കുക Google വിവർത്തനം"
+  },
+  "command_open_youdao": {
+    "message": "Open Youdao വിവർത്തനം"
+  },
+  "command_open_pdf": {
+    "message": "Open നിലവിലുള്ള പി. ഡി. എഫ് in Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Search സ്ഥാനത്ത് ക്ലിപ്ബോര്ഡിലെ ഉള്ളടക്കം ഏകമായി പാനൽ"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, ny endri-Javatra-Karena Inline Mpandika teny. Chrome / Firefox Fanitarana."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict dia professional teny-fandikan-teny fanitarana, namorona ny hazo fijaliana-famakiana. Fa maro ny manam-pahefana rakibolana manarona amin'ny teny anglisy, frantsay, Japoney, ary espaniola, sy ny fanohanana sarotra teny fanodinana, tranonkala pejy fandikan-teny, teny boky, sy PDF variana."
+  },
+  "command_toggle_active": {
+    "message": "Toggle inline mpandika teny"
+  },
+  "command_toggle_instant": {
+    "message": "Toggle indray mipi-maso hisambotra"
+  },
+  "command_open_quick_search": {
+    "message": "Misokatra na manasongadina ny standalone dict tontonana"
+  },
+  "command_open_google": {
+    "message": "Nisokatra Ny Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Misokatra Youdao Mandika"
+  },
+  "command_open_pdf": {
+    "message": "Misokatra amin'izao fotoana izao PDF ao Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Fikarohana ao anatin'ny fanindri-taratasy afa-po amin'ny Standalone Tontonana"
+  }
+}

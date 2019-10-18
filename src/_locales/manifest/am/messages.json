@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, ነገሮቹን-ሀብታም Inline የታዘዘ. ክሮም / Firefox ቅጥያ."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict ነው ባለሞያ ቃል-ትርጉም ቅጥያ, የሚሰጡዋቸውን መስቀል-ንባብ. ደረጃ ትልቅ ቁጥር ሥልጣናዊ መዝገበ ቃላት ቅድሚያ እንግሊዝኛ, ፈረንሳይኛ, ጃፓንኛ, እና ስፓኒሽ እና ውስብስብ ቃል ማቀነባበሪያ የድር ገጽ ትርጉም ነው ቃል መጽሐፍት እና ትዊተር የአሰሳ."
+  },
+  "command_toggle_active": {
+    "message": "ቅድሚያ inline የታዘዘ"
+  },
+  "command_toggle_instant": {
+    "message": "ቅድሚያ ቅድሚያ የታዘዘ"
+  },
+  "command_open_quick_search": {
+    "message": "ክፍት መገለጫዎ ተጠቃሚ dict የሚሰጡዋቸውን"
+  },
+  "command_open_google": {
+    "message": "አዳዲስ ግምገማዎች ላይ"
+  },
+  "command_open_youdao": {
+    "message": "ክፍት Youdao ቀጥል"
+  },
+  "command_open_pdf": {
+    "message": "ክፍት የአሁኑ ሆላንድ ውስጥ Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "የፍለጋ ቅድሚያ የሚሰጡዋቸውን ሰዎች ይታያል የሚሰጡዋቸውን"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict၊အဂၤါ-ကြွယ်ဝသောဟဘာသာပြန်ဆိုသည်။ Chrome/မြေခွေး။"
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict အတတ္ပနှုတ်ကပတ်-ဘာသာျပန္ခ်က္၊ဖန်တီး-။ ကြီးမားသောအရေအဘိဓာန်အဖုံးအဂၤလိပ္၊ျပင္သစ္၊ဂ်ပန္၊ျပင္သစ္၊နှင့်အထောက်အပံ့ရှုပ်ထွေးစကားလုံးအပြောင်းအလဲများ၊ဝဘ်စာမျက်နှာဘာသာျပန္ခ်က္၊စကားစာအုပ္မ်ား၊ႏပဳႏိုင္ရန္ေထာက္ပံ့ေပးသည္။"
+  },
+  "command_toggle_active": {
+    "message": "ပိတ်ရှာဘာသာပြန်"
+  },
+  "command_toggle_instant": {
+    "message": "ပိတ်ချက်ချင်းလက်ငင်းဖမ်းဆီး"
+  },
+  "command_open_quick_search": {
+    "message": "ဖွင့်လှစ်သို့မဟုတ်ကိုမီးမောင်းထိုးသက္သက္အျ dict ဘာင္ကြက္"
+  },
+  "command_open_google": {
+    "message": "ပွင့်လင်းဂူဂယ်လ်ဘာသာပြန်"
+  },
+  "command_open_youdao": {
+    "message": "ပွင့်လင်း Youdao ဘာသာပြန်"
+  },
+  "command_open_pdf": {
+    "message": "ပွင့်လင်းလက်ရှိရေးသားသာ Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "ရှာ clipboard အကြောင်းအရာသက္သက္အျဘာင္ကြက္"
+  }
+}

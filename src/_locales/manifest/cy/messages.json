@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Nodwedd-Gyfoethog Inline Cyfieithydd. Chrome / Firefox Estyniad."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict proffesiynol gair-cyfieithu estyniad, a grëwyd ar gyfer traws-darllen. Mae nifer fawr o awdurdodol geiriaduron cwmpasu saesneg, ffrangeg, Japaneg, sbaeneg, a chymorth cymhleth prosesu geiriau, tudalen we, cyfieithu, gair llyfrau, ac PDF pori."
+  },
+  "command_toggle_active": {
+    "message": "Toggle inline cyfieithydd"
+  },
+  "command_toggle_instant": {
+    "message": "Toggle ar unwaith yn cipio"
+  },
+  "command_open_quick_search": {
+    "message": "Ar agor neu yn tynnu sylw at annibynnol dict panel"
+  },
+  "command_open_google": {
+    "message": "Agored Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Ar Agor Youdao Cyfieithu"
+  },
+  "command_open_pdf": {
+    "message": "Ar agor presennol PDF yn Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Chwilio clipfwrdd cynnwys yn Annibynnol Panel"
+  }
+}

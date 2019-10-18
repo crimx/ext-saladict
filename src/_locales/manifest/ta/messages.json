@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, ஒரு அம்சம் நிறைந்த இன்லைன் மொழிபெயர்ப்பாளர். குரோம் / பயர்பாக்ஸ் நீட்டிப்பு உள்ளது."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict ஒரு தொழில்முறை சொல்-மொழிபெயர்ப்பு நீட்டிப்பு, உருவாக்கப்பட்ட குறுக்கு வாசிப்பு. அது பெரிய எண், அதிகார அகராதிகள் கவர் ஆங்கிலம், பிரஞ்சு, ஜப்பனீஸ், மற்றும் ஸ்பானிஷ், மற்றும் ஆதரவு சிக்கலான சொல் செயலாக்க, வலை பக்கம் மொழிபெயர்ப்பு, வார்த்தை புத்தகங்கள், மற்றும் PDF உலாவுதல்."
+  },
+  "command_toggle_active": {
+    "message": "மாற்று இன்லைன் மொழிபெயர்ப்பாளர்"
+  },
+  "command_toggle_instant": {
+    "message": "மாற்று உடனடி பிடிப்பு"
+  },
+  "command_open_quick_search": {
+    "message": "திறந்த அல்லது சிறப்பம்சமாக முழுமையான dict குழு"
+  },
+  "command_open_google": {
+    "message": "திறந்த Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "திறந்த Youdao மொழிபெயர்க்க"
+  },
+  "command_open_pdf": {
+    "message": "திறந்த தற்போதைய PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "தேடல் கிளிப்போர்டு உள்ளடக்கத்தை முழுமையான குழு"
+  }
+}

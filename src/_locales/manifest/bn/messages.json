@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict একটি বৈশিষ্ট্য সমৃদ্ধ ইনলাইন অনুবাদক. ক্রোম / ফায়ারফক্স এক্সটেনশন."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict হয় একটি পেশাদারী শব্দ-অনুবাদ এক্সটেনশন জন্য নির্মিত ক্রস-পড়া. এটা বড় সংখ্যা প্রামাণিক অভিধান কভার, ইংরেজি, ফরাসি, জাপানি, এবং স্প্যানিশ, এবং সমর্থন জটিল ওয়ার্ড প্রসেসিং, ওয়েব পেজ অনুবাদ, শব্দ বই, এবং পিডিএফ ব্রাউজিং."
+  },
+  "command_toggle_active": {
+    "message": "টগল ইনলাইন অনুবাদক"
+  },
+  "command_toggle_instant": {
+    "message": "টগল তাত্ক্ষণিক ক্যাপচার"
+  },
+  "command_open_quick_search": {
+    "message": "খোলা বা হাইলাইট স্বতন্ত্র অভি প্যানেল"
+  },
+  "command_open_google": {
+    "message": "ওপেন গুগল অনুবাদ"
+  },
+  "command_open_youdao": {
+    "message": "এমন Youdao অনুবাদ"
+  },
+  "command_open_pdf": {
+    "message": "খোলা বর্তমান পিডিএফ মধ্যে Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "অনুসন্ধান ক্লিপবোর্ড বিষয়বস্তু মধ্যে স্বতন্ত্র প্যানেল"
+  }
+}

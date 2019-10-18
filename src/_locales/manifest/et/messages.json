@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Omadus-Rikas Inline Tõlkija. Chrome / Firefox Laiendamine."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict on professionaalne sõna-tõlge pikendamine, mis on loodud piiriüleste lugemine. See on suur arv autoriteetne sõnaraamatud kate inglise, prantsuse, Jaapani ja hispaania keeles ning toetada keeruline tekstitöötlus, veebilehe tõlkimine, sõna raamatuid ja PDF-sirvimine."
+  },
+  "command_toggle_active": {
+    "message": "Lülitab inline tõlkija"
+  },
+  "command_toggle_instant": {
+    "message": "Lülitab vahetu lüüa"
+  },
+  "command_open_quick_search": {
+    "message": "Avamine ja esiletõstmine, autonoomne dict paneel"
+  },
+  "command_open_google": {
+    "message": "Ava Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Avatud Youdao Tõlkida"
+  },
+  "command_open_pdf": {
+    "message": "Avatud praeguse PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Otsingu lõikepuhvri sisu Standalone Paneel"
+  }
+}

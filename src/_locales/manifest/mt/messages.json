@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Karatteristika-Sinjuri Inlinja Traduttur. Kromju / Internet Explorer Estensjoni."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict huwa professjonali kelma-traduzzjoni estensjoni, maħluqa għall-cross-qari. Huwa n-numru kbir ta'awtorevoli dizzjunarji tkopri l-ingliż, il-franċiż, Ġappuniżi, u l-ispanjol, u l-appoġġ tal-kumpless tal-word processing, paġna tal-web tat-traduzzjoni, il-kelma kotba, u PDF sistema."
+  },
+  "command_toggle_active": {
+    "message": "Aqleb inlinja traduttur"
+  },
+  "command_toggle_instant": {
+    "message": "Aqleb instant-qbid"
+  },
+  "command_open_quick_search": {
+    "message": "Miftuħ jew jenfasizzaw waħedha talja panel"
+  },
+  "command_open_google": {
+    "message": "Miftuħ Tittraduċi"
+  },
+  "command_open_youdao": {
+    "message": "Miftuħ Youdao Tittraduċi"
+  },
+  "command_open_pdf": {
+    "message": "Miftuħ attwali PDF fil-Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Fittex qarrej-kontenut Awtonomu tal-Panel"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Kaya Fitur Inline Translator. Chrome / Firefox Extension."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict adalah kata profesional-penerjemahan ekstensi, dibuat untuk cross-membaca. Itu sejumlah besar otoritatif kamus penutup bahasa inggris, perancis, Jepang, dan spanyol, dan dukungan yang kompleks pengolah kata, terjemahan halaman web, buku word, dan PDF browsing."
+  },
+  "command_toggle_active": {
+    "message": "Beralih inline translator"
+  },
+  "command_toggle_instant": {
+    "message": "Beralih menangkap instan"
+  },
+  "command_open_quick_search": {
+    "message": "Membuka atau menyorot mandiri dict panel"
+  },
+  "command_open_google": {
+    "message": "Buka Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Buka Youdao Menerjemahkan"
+  },
+  "command_open_pdf": {
+    "message": "Buka PDF saat ini di Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Pencarian konten clipboard di Mandiri Panel"
+  }
+}

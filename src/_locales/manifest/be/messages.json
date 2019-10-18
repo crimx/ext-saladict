@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, шматфункцыянальны убудаваны перакладчык. Пашырэнне Chrome / Firefox."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict прафесійнае слова-пераклад пашырэння, створаныя для перакрыжаванага чытання. Гэта вялікая колькасць аўтарытэтных слоўнікаў вокладка англійская, французская, японскі, і іспанская, і падтрымка комплексу апрацоўкі тэкстаў, пераклад вэб-старонкі, слова кнігі і pdf праглядзе."
+  },
+  "command_toggle_active": {
+    "message": "Тумблеры убудаваны перакладчык"
+  },
+  "command_toggle_instant": {
+    "message": "Імгненны захоп перамыкач "
+  },
+  "command_open_quick_search": {
+    "message": "Адкрыццё або вылучэнне асобнай групы дыктуе "
+  },
+  "command_open_google": {
+    "message": "Адкрыйце Google Перакладчык"
+  },
+  "command_open_youdao": {
+    "message": "Адкрыць Youdao Перакладу"
+  },
+  "command_open_pdf": {
+    "message": "Адкрыць PDF ў Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Пошук змесціва буфера абмену ў аўтаномным панэлі"
+  }
+}

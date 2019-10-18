@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, Iezīme Bagāts Inline Tulkotājs. Chrome / Firefox Paplašinājumu."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict ir profesionāla teksta tulkojumu paplašināšana, izveidoti pārrobežu lasījumā. Tas ir liels skaits autoritatīvu vārdnīcas vāciņu, angļu, franču, Japāņu un spāņu valodā, un atbalstu sarežģītu vārdu apstrādi, web lapu tulkošana, vārdu grāmatas, un PDF pārlūkošanu."
+  },
+  "command_toggle_active": {
+    "message": "Pārslēgt inline tulkotājs"
+  },
+  "command_toggle_instant": {
+    "message": "Pārslēgt tērzēšanas uzņemšanas"
+  },
+  "command_open_quick_search": {
+    "message": "Atvērtu vai iezīmētu standalone dict panelis"
+  },
+  "command_open_google": {
+    "message": "Atveriet Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Atvērt Youdao Tulkot"
+  },
+  "command_open_pdf": {
+    "message": "Atvērt norēķinu PDF Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Meklēšanas starpliktuves saturu Standalone Panelis"
+  }
+}

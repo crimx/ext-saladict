@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict,ດົມສົມບູນເສັ້ນການແປພາສາ. Chrome/Firefox ຂະຫຍາຍ."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict ເປັນມືອາຊີບຄໍາວ່າ-ການແປພາສາຂະຫຍາຍ,ສ້າງຕັ້ງຂື້ນສໍາລັບການກາ-ອ່ານ. ມັນເປັນຂະຫນາດໃຫຍ່ຈໍານວນຂອງອໍານານຸກົມປົກຫຸ້ມຂອງພາສາອັງກິດ,ຝຣັ່ງ,ຍີ່ປຸ່ນ,ແລະແອສປາໂຍນ,ແລະນັບສະຫນູນສະລັບສັບຊ້ປຸງແຕ່ງຄໍາ,ຫນ້າເວັບແປພາສາ,ຄໍາສັບຫນັງສື,ແລະ PDF ຜົນການຊອກຫາ."
+  },
+  "command_toggle_active": {
+    "message": "ຫຼັບເສັ້ນແປພາສາ"
+  },
+  "command_toggle_instant": {
+    "message": "ສະຫຼັບເກັບຕ"
+  },
+  "command_open_quick_search": {
+    "message": "ເປີດຫຼືຈຸດເດັ່ນຕ່າ dict ກະດານ"
+  },
+  "command_open_google": {
+    "message": "ເປີດກູໂກແປພາສາ"
+  },
+  "command_open_youdao": {
+    "message": "ເປີດ Youdao ແປ"
+  },
+  "command_open_pdf": {
+    "message": "ເປີດປະຈຸບັນ PDF ໃນ Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "ຫນ້າຫນູນເນື້ອໃນຢູ່ໃນກະຕ່າ"
+  }
+}

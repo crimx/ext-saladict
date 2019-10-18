@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, a-Pitur Beunghar Inline Penerjemah. Chrome / Firefox Extension."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict is a professional kecap-panarjamahan extension, dijieun pikeun cross-maca. Eta teh nu gede ngarupakeun nulis kamus nutupan inggris, perancis, Jepang, jeung spanyol, jeung ngarojong kompleks processing kecap, kaca web tarjamahan, kecap buku, jeung PDF browsing."
+  },
+  "command_toggle_active": {
+    "message": "Togel inline penerjemah"
+  },
+  "command_toggle_instant": {
+    "message": "Togel instan candak"
+  },
+  "command_open_quick_search": {
+    "message": "Ngabuka atawa nyorot mandiri dict panel"
+  },
+  "command_open_google": {
+    "message": "Muka Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Muka Youdao Narjamahkeun"
+  },
+  "command_open_pdf": {
+    "message": "Muka kiwari PDF di Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Search clipboard eusi nu aya dina Panel Mandiri"
+  }
+}

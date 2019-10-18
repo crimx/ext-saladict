@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, un Ricco di Funzionalità Inline Traduttore. Chrome / Firefox Estensione."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict è un professionista della parola-traduzione estensione, creato per la lettura trasversale. Il grande numero di autorevoli dizionari copertina inglese, francese, Giapponese e spagnolo, e il supporto complessa elaborazione di testi, la traduzione di pagine web, libri di parola, e PDF di navigazione."
+  },
+  "command_toggle_active": {
+    "message": "Alterna inline traduttore"
+  },
+  "command_toggle_instant": {
+    "message": "Alterna immediata cattura"
+  },
+  "command_open_quick_search": {
+    "message": "Aprire o selezionare autonomo dict pannello"
+  },
+  "command_open_google": {
+    "message": "Aprire Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Aprire Youdao Tradurre"
+  },
+  "command_open_pdf": {
+    "message": "Apri PDF in Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Ricerca il contenuto degli appunti in Standalone Pannello"
+  }
+}

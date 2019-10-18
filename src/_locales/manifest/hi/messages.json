@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, एक सुविधा अमीर इनलाइन अनुवादक. क्रोम / फ़ायरफ़ॉक्स एक्सटेंशन."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict है एक पेशेवर शब्द-अनुवाद एक्सटेंशन, के लिए बनाया क्रॉस-पढ़ने के लिए है । यह बड़ी संख्या के आधिकारिक शब्दकोशों कवर, अंग्रेजी, फ्रेंच, जापानी, और स्पेनिश, और समर्थन जटिल शब्द संसाधन, वेब पृष्ठ अनुवाद, शब्द किताबें, और पीडीएफ ब्राउज़िंग."
+  },
+  "command_toggle_active": {
+    "message": "टॉगल इनलाइन अनुवादक"
+  },
+  "command_toggle_instant": {
+    "message": "टॉगल त्वरित कब्जा"
+  },
+  "command_open_quick_search": {
+    "message": "खुला या उजागर स्टैंडअलोन शब्दावली पैनल"
+  },
+  "command_open_google": {
+    "message": "खुला गूगल अनुवाद"
+  },
+  "command_open_youdao": {
+    "message": "खुला अनुवाद Youdao"
+  },
+  "command_open_pdf": {
+    "message": "खुले वर्तमान में पीडीएफ Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "खोज क्लिपबोर्ड सामग्री में स्टैंडअलोन पैनल"
+  }
+}

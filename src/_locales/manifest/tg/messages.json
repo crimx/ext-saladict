@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, бисерсоҳавӣ сохта тарҷумони. Тавсеаи; Ie / Firefox."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict касбӣ калима-тарҷумаи васеъ, таъсис ефта, барои перекрестного хондан. Ин шумораи зиеди амркунандагон ба словарей cover english, фаронса, ҷопон, ва испанӣ ва дастгирии комплекси коркарди матнҳои, тарҷумаи веб-саҳифа, калимаи китобҳо ва pdf тамошои."
+  },
+  "command_toggle_active": {
+    "message": "Тумблеры сохта тарҷумони"
+  },
+  "command_toggle_instant": {
+    "message": "Фаврӣ забти калиди "
+  },
+  "command_open_quick_search": {
+    "message": "Ифтитоҳи е ҷудо алоҳида гурӯҳи dict "
+  },
+  "command_open_google": {
+    "message": "Кушодани Тарҷумони Google"
+  },
+  "command_open_youdao": {
+    "message": "Кушодани Youdao Тарҷума"
+  },
+  "command_open_pdf": {
+    "message": "Кушодани PDF дар Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Ҷустуҷӯ кардани буфери иваз дар автономном панели"
+  }
+}

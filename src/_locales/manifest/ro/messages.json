@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, o Caracteristică-Bogat Inline Traducător. Chrome / Firefox Extension."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict este un profesionist cuvânt-traducere extensie, creat pentru cross-lectură. E mare număr de autoritate dicționare acoperi engleză, franceză, Japoneză, și spaniolă, și sprijin complex de procesare de text, pagini web traducere, cuvânt carti si PDF, de navigare."
+  },
+  "command_toggle_active": {
+    "message": "Comutare linie traducator"
+  },
+  "command_toggle_instant": {
+    "message": "Comuta instant de captare"
+  },
+  "command_open_quick_search": {
+    "message": "A deschide sau a evidenția independent dict panou"
+  },
+  "command_open_google": {
+    "message": "Deschide Google Translate"
+  },
+  "command_open_youdao": {
+    "message": "Deschide Youdao Traduce"
+  },
+  "command_open_pdf": {
+    "message": "Deschide PDF-ul curent în Saladict"
+  },
+  "command_search_clipboard": {
+    "message": "Căutare conținutul clipboard-ului în Independent Panou"
+  }
+}

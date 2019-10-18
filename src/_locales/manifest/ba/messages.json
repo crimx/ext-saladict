@@ -1,0 +1,35 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "Saladict, тәржемәсе, сылбыр функциялары. Хром Киңәйтә / Firefox."
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "Saladict"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "Saladict профессиональ һүҙҙәр-тәржемә киңәйтеү, уҡыу ситтән өсөн булдырылған. Тышта был һүҙлек бик күп абруйлы инглиз, француз, япон, испан һәм, үҙгәртергә һәм эшкәртеү комплексына ярҙамға, тәржемә веб-биттәр, китапты pdf һәм һүҙҙәр ҡарай."
+  },
+  "command_toggle_active": {
+    "message": "Тәржемәсе сылбыр тумблерҙы"
+  },
+  "command_toggle_instant": {
+    "message": "Етеҙ баҫып переключатель "
+  },
+  "command_open_quick_search": {
+    "message": "Дикт. айырып йәки айырым төркөм асыу "
+  },
+  "command_open_google": {
+    "message": "Google Тәржемәсе Асылды"
+  },
+  "command_open_youdao": {
+    "message": "Youdao Тәржемә Асылды"
+  },
+  "command_open_pdf": {
+    "message": "Был Saladict асыу PDF"
+  },
+  "command_search_clipboard": {
+    "message": "Автономиялы эсендә эҙләү панелдәр алмашыу буфер"
+  }
+}
