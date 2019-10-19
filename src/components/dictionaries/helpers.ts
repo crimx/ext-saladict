@@ -8,6 +8,7 @@ import { useEffect, useRef } from 'react'
 import { useSubscription, useObservableCallback } from 'observable-hooks'
 import { debounceTime, map, tap } from 'rxjs/operators'
 import { Observable } from 'rxjs'
+import { Language } from '@opentranslate/languages'
 
 /** Fetch and parse dictionary search result */
 export interface SearchFunction<Result, Payload = {}> {
@@ -86,6 +87,24 @@ export interface MachineTranslateResult<ID extends DictID> {
     paragraphs: string[]
     tts?: string
   }
+}
+
+export function getMachineTranslateTl(
+  sl: Language,
+  tlOption: 'default' | Language,
+  config: AppConfig
+) {
+  const tl = tlOption === 'default' ? config.langCode : tlOption
+
+  if (sl === tl) {
+    if (!tl.startsWith('en')) {
+      return 'en'
+    }
+
+    return config.langCode.startsWith('zh') ? config.langCode : 'zh-CN'
+  }
+
+  return tl
 }
 
 /**

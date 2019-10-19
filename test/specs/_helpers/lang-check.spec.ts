@@ -49,11 +49,14 @@ describe('Language Check', () => {
     describe('with matchAll on', () => {
       const tl = tlHelper(true)
 
-      it('should return false with all punctuation', () => {
+      it('should return false with all meaningless characters', () => {
         expect(tl('。「')).toBe(false)
         expect(tl('。「', 'chinese')).toBe(false)
         expect(tl('。「', 'english')).toBe(false)
         expect(tl('。「', 'others')).toBe(false)
+        expect(tl('1234')).toBe(false)
+        expect(tl('1234', 'chinese')).toBe(false)
+        expect(tl('1234', 'others')).toBe(false)
       })
 
       it('should work with CJK', () => {
@@ -96,11 +99,14 @@ describe('Language Check', () => {
     describe('with matchAll off', () => {
       const tl = tlHelper(false)
 
-      it('should return false with all punctuation', () => {
+      it('should return false with all meaningless characters', () => {
         expect(tl('。「')).toBe(false)
         expect(tl('。「', 'chinese')).toBe(false)
         expect(tl('。「', 'english')).toBe(false)
         expect(tl('。「', 'others')).toBe(false)
+        expect(tl('1')).toBe(false)
+        expect(tl('1', 'english')).toBe(false)
+        expect(tl('1', 'others')).toBe(false)
       })
 
       it('should work with CJK', () => {

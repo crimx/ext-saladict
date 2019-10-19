@@ -2,7 +2,8 @@ import {
   MachineTranslateResult,
   SearchFunction,
   MachineTranslatePayload,
-  GetSrcPageFunction
+  GetSrcPageFunction,
+  getMachineTranslateTl
 } from '../helpers'
 import { isContainChinese, isContainJapanese } from '@/_helpers/lang-check'
 import { Caiyun } from '@opentranslate/caiyun'
@@ -24,17 +25,10 @@ export const search: SearchFunction<
 > = async (text, config, profile, payload) => {
   const options = profile.dicts.all.caiyun.options
 
-  let sl =
-    payload.sl ||
-    (isContainJapanese(text) ? 'ja' : isContainChinese(text) ? 'zh-CN' : 'en')
+  const translator = getTranslator()
 
-  let tl =
-    payload.tl ||
-    (options.tl === 'default'
-      ? config.langCode.startsWith('zh')
-        ? 'zh-CN'
-        : 'en'
-      : options.tl)
+  let sl = payload.sl || (await translator.detect(text))
+  let tl = payload.tl || getMachineTranslateTl(sl, options.tl, config)
 
   if (sl === tl) {
     if (isContainJapanese(text)) {
@@ -58,8 +52,6 @@ export const search: SearchFunction<
   if (payload.isPDF && !options.pdfNewline) {
     text = text.replace(/\n+/g, ' ')
   }
-
-  const translator = getTranslator()
 
   try {
     const result = await translator.translate(text, sl, tl)

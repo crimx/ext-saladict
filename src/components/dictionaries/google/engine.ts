@@ -2,13 +2,9 @@ import {
   MachineTranslateResult,
   SearchFunction,
   MachineTranslatePayload,
-  GetSrcPageFunction
+  GetSrcPageFunction,
+  getMachineTranslateTl
 } from '../helpers'
-import {
-  isContainChinese,
-  isContainJapanese,
-  isContainKorean
-} from '@/_helpers/lang-check'
 import { Google } from '@opentranslate/google'
 import { GoogleLanguage } from './config'
 
@@ -34,26 +30,14 @@ export const search: SearchFunction<
 > = async (text, config, profile, payload) => {
   const options = profile.dicts.all.google.options
 
-  const sl = payload.sl || 'auto'
-  const tl =
-    payload.tl ||
-    (options.tl === 'default'
-      ? config.langCode === 'en'
-        ? 'en'
-        : !isContainChinese(text) ||
-          isContainJapanese(text) ||
-          isContainKorean(text)
-        ? config.langCode === 'zh-TW'
-          ? 'zh-TW'
-          : 'zh-CN'
-        : 'en'
-      : options.tl)
+  const translator = getTranslator()
+
+  const sl = payload.sl || (await translator.detect(text))
+  const tl = payload.tl || getMachineTranslateTl(sl, options.tl, config)
 
   if (payload.isPDF && !options.pdfNewline) {
     text = text.replace(/\n+/g, ' ')
   }
-
-  const translator = getTranslator()
 
   try {
     const result = await translator.translate(text, sl, tl, {
