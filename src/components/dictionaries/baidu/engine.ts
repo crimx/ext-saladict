@@ -2,13 +2,9 @@ import {
   MachineTranslateResult,
   SearchFunction,
   MachineTranslatePayload,
-  GetSrcPageFunction
+  GetSrcPageFunction,
+  getMachineTranslateTl
 } from '../helpers'
-import {
-  isContainChinese,
-  isContainJapanese,
-  isContainKorean
-} from '@/_helpers/lang-check'
 import { Baidu } from '@opentranslate/baidu'
 import { BaiduLanguage } from './config'
 
@@ -40,19 +36,7 @@ export const search: SearchFunction<
   const translator = getTranslator()
 
   let sl = payload.sl || (await translator.detect(text))
-  const tl =
-    payload.tl ||
-    (options.tl === 'default'
-      ? config.langCode === 'en'
-        ? 'en'
-        : !isContainChinese(text) ||
-          isContainJapanese(text) ||
-          isContainKorean(text)
-        ? config.langCode === 'zh-TW'
-          ? 'zh-TW'
-          : 'zh-CN'
-        : 'en'
-      : options.tl)
+  const tl = payload.tl || getMachineTranslateTl(sl, options.tl, config)
 
   if (payload.isPDF && !options.pdfNewline) {
     text = text.replace(/\n+/g, ' ')
