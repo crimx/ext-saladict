@@ -69,7 +69,7 @@ const isContain: { [key in Languages]: (text: string) => boolean } = {
 }
 
 const matcherPunct = /[/[\]{}$^*+|?.\-~!@#%&()_='";:><,。？！，、；：“”﹃﹄「」﹁﹂‘’『』（）—［］〔〕【】…－～·‧《》〈〉﹏＿]/
-const matchAllPunct = new RegExp(`^${matcherPunct.source}+$`)
+const matchAllMeaningless = new RegExp(`^(\\d|\\s|${matcherPunct.source})+$`)
 
 const matcherCJK = new RegExp(
   `${matchers.chinese.source}|${matchers.japanese.source}|${matchers.korean.source}`
@@ -103,7 +103,7 @@ export function checkSupportedLangs(
   }
 
   if (langs.matchAll) {
-    if (matchAllPunct.test(text)) {
+    if (matchAllMeaningless.test(text)) {
       return false
     }
 
@@ -149,7 +149,7 @@ export function checkSupportedLangs(
       return true
     }
 
-    if (!langs.others || matchAllPunct.test(text)) {
+    if (!langs.others || matchAllMeaningless.test(text)) {
       return false
     }
 
