@@ -36,7 +36,8 @@ export const search: SearchFunction<
   const translator = getTranslator()
 
   const sl = payload.sl || (await translator.detect(text))
-  const tl = payload.tl || getMachineTranslateTl(sl, options.tl, config)
+  const tl =
+    payload.tl || getMachineTranslateTl(sl, profile.dicts.all.tencent, config)
 
   if (payload.isPDF && !options.pdfNewline) {
     text = text.replace(/\n+/g, ' ')
