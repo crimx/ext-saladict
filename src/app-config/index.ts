@@ -231,6 +231,7 @@ function _getDefaultConfig() {
     ctxTrans: {
       google: true,
       sogou: true,
+      youdaotrans: true,
       baidu: true,
       tencent: false,
       caiyun: false
