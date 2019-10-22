@@ -157,13 +157,13 @@ function withTouchMode(config: AppConfig) {
 }
 
 function withoutTouchMode(config: AppConfig) {
-  const mousedown$ = fromEvent<MouseEvent>(window, 'mousedown').pipe(
-    filter(e => e.button === 0)
-  )
+  const mousedown$ = fromEvent<MouseEvent>(window, 'mousedown', {
+    capture: true
+  }).pipe(filter(e => e.button === 0))
 
-  const mouseup$ = fromEvent<MouseEvent>(window, 'mouseup').pipe(
-    filter(e => e.button === 0)
-  )
+  const mouseup$ = fromEvent<MouseEvent>(window, 'mouseup', {
+    capture: true
+  }).pipe(filter(e => e.button === 0))
 
   const clickPeriodCount$ = clickPeriodCountStream(
     mouseup$,
