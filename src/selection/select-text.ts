@@ -96,10 +96,10 @@ function withTouchMode(config: AppConfig) {
 
       if (isWithMouse) {
         return {
-          word: newSelectionWord({
+          word: {
             text,
             context: getSentenceFromSelection(selection)
-          }),
+          },
           self,
           dbClick: clickPeriodCount >= 2,
           mouseX: mouseup.clientX,
@@ -123,10 +123,10 @@ function withTouchMode(config: AppConfig) {
       }
 
       return {
-        word: newSelectionWord({
+        word: {
           text,
           context: getSentenceFromSelection(selection)
-        }),
+        },
         self,
         dbClick: clickPeriodCount >= 2,
         mouseX: rect.right,
@@ -193,10 +193,10 @@ function withoutTouchMode(config: AppConfig) {
       }
 
       return {
-        word: newSelectionWord({
+        word: {
           text,
           context: getSentenceFromSelection(selection)
-        }),
+        },
         self: false,
         dbClick: clickPeriodCount >= 2,
         mouseX: mouseup.clientX,
@@ -276,10 +276,10 @@ export function useInPanelSelect(
 
         return checkSupportedLangs(language, text)
           ? {
-              word: newSelectionWord({
+              word: {
                 text,
                 context: getSentenceFromSelection(selection)
-              }),
+              },
               dbClick: clickPeriodCount >= 2,
               mouseX: mouseup.clientX,
               mouseY: mouseup.clientY,
@@ -315,7 +315,12 @@ export function useInPanelSelect(
     )
   )
 
-  useSubscription(output$, newSelection)
+  useSubscription(output$, async result => {
+    if (result.word) {
+      result.word = await newSelectionWord(result.word)
+    }
+    newSelection(result as Message<'SELECTION'>['payload'])
+  })
 
   return onMouseUp
 }
