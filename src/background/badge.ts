@@ -10,6 +10,7 @@ interface UpdateBadgeOptions {
 }
 
 const onUpdated$ = new Subject<{
+  delay?: boolean
   tabId: number
   options?: UpdateBadgeOptions
 }>()
@@ -20,7 +21,11 @@ onUpdated$
       if (o.options) {
         return o as Required<typeof o>
       }
-      await timer(1000)
+
+      if (o.delay) {
+        await timer(1000)
+      }
+
       return {
         tabId: o.tabId,
         options: (await message
@@ -61,13 +66,15 @@ export function initBadge() {
 
   browser.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
     if (changeInfo.status === 'complete') {
-      onUpdated$.next({ tabId })
+      onUpdated$.next({ tabId, delay: true })
     }
   })
 }
 
 function setOff(tabId: number) {
-  setIcon(true, tabId)
+  setIcon(false, tabId)
+  browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B', tabId })
+  browser.browserAction.setBadgeText({ text: 'off', tabId })
   browser.browserAction.setTitle({
     title: require('@/_locales/' + window.appConfig.langCode + '/background')
       .locale.app.off,
@@ -76,7 +83,9 @@ function setOff(tabId: number) {
 }
 
 function setTempOff(tabId: number) {
-  setIcon(true, tabId)
+  setIcon(false, tabId)
+  browser.browserAction.setBadgeBackgroundColor({ color: '#F39C12', tabId })
+  browser.browserAction.setBadgeText({ text: 'off', tabId })
   browser.browserAction.setTitle({
     title: require('@/_locales/' + window.appConfig.langCode + '/background')
       .locale.app.tempOff,
@@ -95,6 +104,7 @@ function setUnsupported(tabId: number) {
 
 function setEmpty(tabId: number) {
   setIcon(false, tabId)
+  browser.browserAction.setBadgeText({ text: '', tabId })
   browser.browserAction.setTitle({ title: '', tabId })
 }
 
