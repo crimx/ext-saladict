@@ -28,7 +28,8 @@ export const search: SearchFunction<
   const translator = getTranslator()
 
   let sl = payload.sl || (await translator.detect(text))
-  let tl = payload.tl || getMachineTranslateTl(sl, options.tl, config)
+  let tl =
+    payload.tl || getMachineTranslateTl(sl, profile.dicts.all.caiyun, config)
 
   if (sl === tl) {
     if (isContainJapanese(text)) {

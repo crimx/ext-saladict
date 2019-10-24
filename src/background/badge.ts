@@ -1,6 +1,7 @@
 import { message } from '@/_helpers/browser-api'
 import { Subject } from 'rxjs'
-import { debounceTime, switchMap } from 'rxjs/operators'
+import { switchMapBy } from '@/_helpers/observables'
+import { timer } from '@/_helpers/promise-more'
 
 interface UpdateBadgeOptions {
   active: boolean
@@ -8,29 +9,38 @@ interface UpdateBadgeOptions {
   unsupported: boolean
 }
 
-const onUpdated$ = new Subject<[number, UpdateBadgeOptions | null]>()
+const onUpdated$ = new Subject<{
+  delay?: boolean
+  tabId: number
+  options?: UpdateBadgeOptions
+}>()
 
 onUpdated$
   .pipe(
-    debounceTime(1000),
-    switchMap(async ([tabId, options]) =>
-      options
-        ? ([tabId, options] as const)
-        : ([
-            tabId,
-            (await message
-              .send<'GET_TAB_BADGE_INFO'>(tabId, {
-                type: 'GET_TAB_BADGE_INFO'
-              })
-              .catch(() => {})) || {
-              active: window.appConfig.active,
-              tempDisable: false,
-              unsupported: true
-            }
-          ] as const)
-    )
+    switchMapBy('tabId', async o => {
+      if (o.options) {
+        return o as Required<typeof o>
+      }
+
+      if (o.delay) {
+        await timer(1000)
+      }
+
+      return {
+        tabId: o.tabId,
+        options: (await message
+          .send<'GET_TAB_BADGE_INFO'>(o.tabId, {
+            type: 'GET_TAB_BADGE_INFO'
+          })
+          .catch(() => {})) || {
+          active: window.appConfig.active,
+          tempDisable: false,
+          unsupported: true
+        }
+      }
+    })
   )
-  .subscribe(([tabId, options]) => {
+  .subscribe(({ tabId, options }) => {
     if (!options.active) {
       return setOff(tabId)
     }
@@ -50,19 +60,21 @@ export function initBadge() {
   /** Sent when content script loaded */
   message.addListener('SEND_TAB_BADGE_INFO', ({ payload }, sender) => {
     if (sender.tab && sender.tab.id) {
-      onUpdated$.next([sender.tab.id, payload])
+      onUpdated$.next({ tabId: sender.tab.id, options: payload })
     }
   })
 
   browser.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
     if (changeInfo.status === 'complete') {
-      onUpdated$.next([tabId, null])
+      onUpdated$.next({ tabId, delay: true })
     }
   })
 }
 
 function setOff(tabId: number) {
-  setIcon(true, tabId)
+  setIcon(false, tabId)
+  browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B', tabId })
+  browser.browserAction.setBadgeText({ text: 'off', tabId })
   browser.browserAction.setTitle({
     title: require('@/_locales/' + window.appConfig.langCode + '/background')
       .locale.app.off,
@@ -71,7 +83,9 @@ function setOff(tabId: number) {
 }
 
 function setTempOff(tabId: number) {
-  setIcon(true, tabId)
+  setIcon(false, tabId)
+  browser.browserAction.setBadgeBackgroundColor({ color: '#F39C12', tabId })
+  browser.browserAction.setBadgeText({ text: 'off', tabId })
   browser.browserAction.setTitle({
     title: require('@/_locales/' + window.appConfig.langCode + '/background')
       .locale.app.tempOff,
@@ -90,6 +104,7 @@ function setUnsupported(tabId: number) {
 
 function setEmpty(tabId: number) {
   setIcon(false, tabId)
+  browser.browserAction.setBadgeText({ text: '', tabId })
   browser.browserAction.setTitle({ title: '', tabId })
 }
 

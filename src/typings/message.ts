@@ -2,7 +2,13 @@ import { Word, DBArea } from '@/_helpers/record-manager'
 import { DictID } from '@/app-config'
 import { DictSearchResult } from '@/components/dictionaries/helpers'
 
-export type MessageConfig = {
+type MessageConfigType<
+  T extends {
+    [type in string]: { [key in 'payload' | 'response']?: any }
+  }
+> = T
+
+export type MessageConfig = MessageConfigType<{
   /* ------------------------------------------------ *\
      Backend - From other pages to background script
   \* ------------------------------------------------ */
@@ -326,7 +332,7 @@ export type MessageConfig = {
     payload: any
     response: any
   }
-}
+}>
 
 export type MsgType = keyof MessageConfig
 

@@ -5,7 +5,6 @@ import {
 import { AppConfig } from '@/app-config'
 import { isStandalonePage, isInDictPanel } from '@/_helpers/saladict'
 import { checkSupportedLangs } from '@/_helpers/lang-check'
-import { Word } from '@/_helpers/record-manager'
 import { message } from '@/_helpers/browser-api'
 
 import { fromEvent, merge, of, timer, combineLatest, empty, from } from 'rxjs'
@@ -19,7 +18,6 @@ import {
   pluck,
   startWith
 } from 'rxjs/operators'
-import { newSelectionWord } from './helper'
 
 /**
  * Create an instant capture Observable
@@ -91,7 +89,7 @@ export function createIntantCaptureStream(config: AppConfig | null) {
     }),
     map(obj => obj && { word: getCursorWord(obj.event), ...obj }),
     filter((obj): obj is {
-      word: Word
+      word: { text: string; context: string }
       event: MouseEvent
       config: AppConfig
       self: boolean
@@ -108,7 +106,9 @@ export function createIntantCaptureStream(config: AppConfig | null) {
   )
 }
 
-function getCursorWord(event: MouseEvent): Word | null {
+function getCursorWord(
+  event: MouseEvent
+): { text: string; context: string } | null {
   const x = event.clientX
   const y = event.clientY
 
@@ -176,7 +176,7 @@ function getCursorWord(event: MouseEvent): Word | null {
     }
     range.detach()
 
-    return text ? newSelectionWord({ text, context }) : null
+    return text ? { text, context } : null
   }
 
   return null

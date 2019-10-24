@@ -33,7 +33,7 @@ export interface DictSearchResult<R> {
 
 /** Return a dictionary source page url for the dictionary header */
 export interface GetSrcPageFunction {
-  (text: string, config: AppConfig, profile: Profile): string
+  (text: string, config: AppConfig, profile: Profile): string | Promise<string>
 }
 
 /**
@@ -91,12 +91,30 @@ export interface MachineTranslateResult<ID extends DictID> {
 
 export function getMachineTranslateTl(
   sl: Language,
-  tlOption: 'default' | Language,
+  {
+    options,
+    options_sel
+  }: {
+    options: { tl: 'default' | Language }
+    options_sel: { tl: ReadonlyArray<'default' | Language> }
+  },
   config: AppConfig
-) {
-  const tl = tlOption === 'default' ? config.langCode : tlOption
+): Language {
+  let tl: Language | '' = ''
 
-  if (sl === tl) {
+  if (options.tl === 'default') {
+    if (options_sel.tl.includes(config.langCode)) {
+      tl = config.langCode
+    } else {
+      tl =
+        options_sel.tl.find((lang): lang is Language => lang !== 'default') ||
+        ''
+    }
+  } else {
+    tl = options.tl
+  }
+
+  if (!tl || sl === tl) {
     if (!tl.startsWith('en')) {
       return 'en'
     }

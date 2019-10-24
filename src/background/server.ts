@@ -274,18 +274,15 @@ async function closeQSPanel(): Promise<void> {
   lastQsMainWindow = void 0
 }
 
-function openSrcPage({
+async function openSrcPage({
   id,
   text
 }: Message<'OPEN_DICT_SRC_PAGE'>['payload']): Promise<void> {
-  let getSrcPage: GetSrcPageFunction
-  try {
-    getSrcPage = require('@/components/dictionaries/' + id + '/engine')
-      .getSrcPage
-  } catch (err) {
-    return Promise.reject(err)
-  }
-  return openURL(getSrcPage(text, window.appConfig, window.activeProfile))
+  const getSrcPage: GetSrcPageFunction = require('@/components/dictionaries/' +
+    id +
+    '/engine').getSrcPage
+
+  return openURL(await getSrcPage(text, window.appConfig, window.activeProfile))
 }
 
 function fetchDictResult(

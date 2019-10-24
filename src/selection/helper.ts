@@ -1,7 +1,8 @@
 import { AppConfig } from '@/app-config'
 import { Observable, fromEvent, merge, of } from 'rxjs'
 import { map, mapTo, filter, distinctUntilChanged } from 'rxjs/operators'
-import { newWord } from '@/_helpers/record-manager'
+import { newWord, Word } from '@/_helpers/record-manager'
+import { message } from '@/_helpers/browser-api'
 
 const isMac = /mac/i.test(navigator.platform)
 
@@ -69,11 +70,21 @@ export function isBlacklisted(config: AppConfig): boolean {
   )
 }
 
-export const newSelectionWord: typeof newWord = (word = {}) => {
+export async function newSelectionWord(
+  word: Partial<Word> = {}
+): Promise<Word> {
+  const info = await message.send<'PAGE_INFO'>({ type: 'PAGE_INFO' })
+  window.faviconURL = info.faviconURL
+  if (info.pageTitle) {
+    window.pageTitle = info.pageTitle
+  }
+  if (info.pageURL) {
+    window.pageURL = info.pageURL
+  }
   return newWord({
-    title: window.pageTitle || document.title || '',
-    url: window.pageURL || document.URL || '',
-    favicon: window.faviconURL || '',
+    title: info.pageTitle || document.title || '',
+    url: info.pageURL || document.URL || '',
+    favicon: info.faviconURL || '',
     ...word
   })
 }

@@ -37,12 +37,10 @@ if (!window.__SALADICT_SELECTION_LOADED__) {
   message.addListener('PRELOAD_SELECTION', () => {
     const text = getText()
     if (text) {
-      return Promise.resolve(
-        newSelectionWord({
-          text,
-          context: getSentence()
-        })
-      )
+      return newSelectionWord({
+        text,
+        context: getSentence()
+      })
     }
   })
 
@@ -50,7 +48,7 @@ if (!window.__SALADICT_SELECTION_LOADED__) {
    * Manualy emit selection
    * Beware that this is run on every frame.
    */
-  message.createStream('EMIT_SELECTION').subscribe(() => {
+  message.createStream('EMIT_SELECTION').subscribe(async () => {
     const selection = window.getSelection()
     if (selection) {
       const text = getTextFromSelection(selection)
@@ -61,7 +59,7 @@ if (!window.__SALADICT_SELECTION_LOADED__) {
           mouseY: rect.top,
           instant: true,
           self: isInDictPanel(selection.anchorNode),
-          word: newSelectionWord({
+          word: await newSelectionWord({
             text,
             context: getSentenceFromSelection(selection)
           }),
@@ -89,7 +87,7 @@ if (!window.__SALADICT_SELECTION_LOADED__) {
     message.self.send({ type: 'TRIPLE_CTRL' })
   })
 
-  config$$.pipe(switchMap(createSelectTextStream)).subscribe(result => {
+  config$$.pipe(switchMap(createSelectTextStream)).subscribe(async result => {
     if (result.word) {
       sendMessage({
         dbClick: false,
@@ -99,7 +97,8 @@ if (!window.__SALADICT_SELECTION_LOADED__) {
         self: false,
         instant: false,
         force: false,
-        ...result
+        ...result,
+        word: await newSelectionWord(result.word)
       })
     } else {
       sendEmptyMessage(result.self)
@@ -108,9 +107,9 @@ if (!window.__SALADICT_SELECTION_LOADED__) {
 
   config$$
     .pipe(switchMap(createIntantCaptureStream))
-    .subscribe(({ word, event, self }) => {
+    .subscribe(async ({ word, event, self }) => {
       sendMessage({
-        word,
+        word: await newSelectionWord(word),
         shiftKey: event.shiftKey,
         ctrlKey: event.ctrlKey,
         metaKey: event.metaKey,

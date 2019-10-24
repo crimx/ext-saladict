@@ -1,5 +1,13 @@
-import { filter, map, switchMap, delay, debounceTime } from 'rxjs/operators'
-import { of, Observable } from 'rxjs'
+import {
+  filter,
+  map,
+  switchMap,
+  delay,
+  debounceTime,
+  mergeMap,
+  takeUntil
+} from 'rxjs/operators'
+import { of, Observable, OperatorFunction, from } from 'rxjs'
 import { MouseEvent } from 'react'
 
 /**
@@ -51,4 +59,23 @@ export function focusBlur(event$: Observable<{ type: string }>) {
     map(e => e.type !== 'blur'),
     debounceTime(100)
   )
+}
+
+/**
+ *
+ * SwitchMap when value on specific key changes.
+ */
+export function switchMapBy<T, R>(
+  key: keyof T,
+  mapFn: (val: T) => Observable<R> | Promise<R>
+): OperatorFunction<T, R> {
+  return input$ => {
+    return input$.pipe(
+      mergeMap(val =>
+        from(mapFn(val)).pipe(
+          takeUntil(input$.pipe(filter(input => input[key] === val[key])))
+        )
+      )
+    )
+  }
 }

@@ -1,0 +1,467 @@
+{
+  "result": {
+    "word": {
+      "excerpt": "[名·惯用语] 心，心里。（気持ち。） 心地，心田，心肠；居心；心术。（心根；おもわく；心に思うところ。） ",
+      "spell": "心",
+      "accent": "③②",
+      "pron": "こころ",
+      "romaji": "kokoro",
+      "createdAt": "2019-05-07T03:50:30.605Z",
+      "updatedAt": "2019-10-24T12:50:35.172Z",
+      "converted": true,
+      "objectId": "198970803"
+    },
+    "details": [
+      {
+        "title": "名",
+        "index": 0,
+        "createdAt": "2019-05-07T03:50:32.667Z",
+        "updatedAt": "2019-10-24T12:55:11.498Z",
+        "wordId": "198970803",
+        "converted": true,
+        "objectId": "59038"
+      },
+      {
+        "title": "惯用语",
+        "index": 1,
+        "createdAt": "2019-05-07T03:50:32.707Z",
+        "updatedAt": "2019-10-24T12:55:11.549Z",
+        "wordId": "198970803",
+        "converted": true,
+        "objectId": "59039"
+      }
+    ],
+    "subdetails": [
+      {
+        "title": "心，心里。（気持ち。）",
+        "index": 0,
+        "createdAt": "2019-05-07T03:50:33.623Z",
+        "updatedAt": "2019-10-24T13:01:12.316Z",
+        "wordId": "198970803",
+        "detailsId": "59038",
+        "converted": true,
+        "objectId": "82233"
+      },
+      {
+        "title": "心内にあれば色外に現る。/诚于中，形于外。",
+        "index": 0,
+        "createdAt": "2019-05-07T03:50:34.380Z",
+        "updatedAt": "2019-10-24T13:01:13.401Z",
+        "wordId": "198970803",
+        "detailsId": "59039",
+        "converted": true,
+        "objectId": "82244"
+      },
+      {
+        "title": "心地，心田，心肠；居心；心术。（心根；おもわく；心に思うところ。）",
+        "index": 1,
+        "createdAt": "2019-05-07T03:50:34.800Z",
+        "updatedAt": "2019-10-24T13:01:20.535Z",
+        "wordId": "198970803",
+        "detailsId": "59038",
+        "converted": true,
+        "objectId": "82234"
+      },
+      {
+        "title": "度量，心胸，胸怀，气度。（度量。）",
+        "index": 2,
+        "createdAt": "2019-05-07T03:50:34.727Z",
+        "updatedAt": "2019-10-24T13:01:20.505Z",
+        "wordId": "198970803",
+        "detailsId": "59038",
+        "converted": true,
+        "objectId": "82235"
+      },
+      {
+        "title": "精神；灵魂，心灵。（精神；霊魂。）",
+        "index": 3,
+        "createdAt": "2019-05-07T03:50:34.322Z",
+        "updatedAt": "2019-10-24T13:01:13.284Z",
+        "wordId": "198970803",
+        "detailsId": "59038",
+        "converted": true,
+        "objectId": "82236"
+      },
+      {
+        "title": "心情，心绪，情绪。（心情。）",
+        "index": 4,
+        "createdAt": "2019-05-07T03:50:34.037Z",
+        "updatedAt": "2019-10-24T13:01:12.917Z",
+        "wordId": "198970803",
+        "detailsId": "59038",
+        "converted": true,
+        "objectId": "82237"
+      },
+      {
+        "title": "衷心，内心。（まごころ。）",
+        "index": 5,
+        "createdAt": "2019-05-07T03:50:33.856Z",
+        "updatedAt": "2019-10-24T13:01:12.630Z",
+        "wordId": "198970803",
+        "detailsId": "59038",
+        "converted": true,
+        "objectId": "82238"
+      },
+      {
+        "title": "心思，想法；念头。（考え；多く悪い考え。）",
+        "index": 6,
+        "createdAt": "2019-05-07T03:50:34.718Z",
+        "updatedAt": "2019-10-24T13:01:13.804Z",
+        "wordId": "198970803",
+        "detailsId": "59038",
+        "converted": true,
+        "objectId": "82239"
+      },
+      {
+        "title": "意志；心愿；意图；打算。（意志；希望；意図；心づもり。）",
+        "index": 7,
+        "createdAt": "2019-05-07T03:50:34.577Z",
+        "updatedAt": "2019-10-24T13:01:13.617Z",
+        "wordId": "198970803",
+        "detailsId": "59038",
+        "converted": true,
+        "objectId": "82240"
+      },
+      {
+        "title": "兴致，情趣；爱好。（興味；好み。）",
+        "index": 8,
+        "createdAt": "2019-05-07T03:50:33.823Z",
+        "updatedAt": "2019-10-24T13:01:12.581Z",
+        "wordId": "198970803",
+        "detailsId": "59038",
+        "converted": true,
+        "objectId": "82241"
+      },
+      {
+        "title": "意义，含意，意境。（芸術作品などの意義。）",
+        "index": 9,
+        "createdAt": "2019-05-07T03:50:33.508Z",
+        "updatedAt": "2019-10-24T13:01:12.167Z",
+        "wordId": "198970803",
+        "detailsId": "59038",
+        "converted": true,
+        "objectId": "82242"
+      },
+      {
+        "title": "感情；关怀。（なさけ。）",
+        "index": 10,
+        "createdAt": "2019-05-07T03:50:34.365Z",
+        "updatedAt": "2019-10-24T13:01:13.372Z",
+        "wordId": "198970803",
+        "detailsId": "59038",
+        "converted": true,
+        "objectId": "82243"
+      }
+    ],
+    "examples": [
+      {
+        "title": "歌の心。",
+        "index": 0,
+        "trans": "和歌的主题思想。",
+        "createdAt": "2019-05-07T03:50:35.885Z",
+        "updatedAt": "2019-10-24T13:08:15.370Z",
+        "wordId": "198970803",
+        "subdetailsId": "82242",
+        "converted": true,
+        "objectId": "59923"
+      },
+      {
+        "title": "心のままにふるまう。",
+        "index": 0,
+        "trans": "想怎样就怎样；任性。",
+        "createdAt": "2019-05-07T03:50:36.090Z",
+        "updatedAt": "2019-10-24T13:08:15.523Z",
+        "wordId": "198970803",
+        "subdetailsId": "82239",
+        "converted": true,
+        "objectId": "59916"
+      },
+      {
+        "title": "悲しみで心が乱れる。",
+        "index": 0,
+        "trans": "悲伤得心烦意乱。",
+        "createdAt": "2019-05-07T03:50:36.189Z",
+        "updatedAt": "2019-10-24T13:08:15.607Z",
+        "wordId": "198970803",
+        "subdetailsId": "82237",
+        "converted": true,
+        "objectId": "59909"
+      },
+      {
+        "title": "心が大きい。",
+        "index": 0,
+        "trans": "心胸宽；度量大。",
+        "createdAt": "2019-05-07T03:50:36.249Z",
+        "updatedAt": "2019-10-24T13:08:15.669Z",
+        "wordId": "198970803",
+        "subdetailsId": "82235",
+        "converted": true,
+        "objectId": "59905"
+      },
+      {
+        "title": "温かい心。",
+        "index": 0,
+        "trans": "温暖的心；热情。",
+        "createdAt": "2019-05-07T03:50:36.313Z",
+        "updatedAt": "2019-10-24T13:08:23.225Z",
+        "wordId": "198970803",
+        "subdetailsId": "82233",
+        "converted": true,
+        "objectId": "59899"
+      },
+      {
+        "title": "これが一番わたしの心にかなった品だ",
+        "index": 0,
+        "trans": "这是最合我意的东西。",
+        "createdAt": "2019-05-07T03:50:36.570Z",
+        "updatedAt": "2019-10-24T13:08:23.486Z",
+        "wordId": "198970803",
+        "subdetailsId": "82241",
+        "converted": true,
+        "objectId": "59922"
+      },
+      {
+        "title": "心ないしうち。",
+        "index": 0,
+        "trans": "不通人情的作法。",
+        "createdAt": "2019-05-07T03:50:36.640Z",
+        "updatedAt": "2019-10-24T13:08:23.555Z",
+        "wordId": "198970803",
+        "subdetailsId": "82243",
+        "converted": true,
+        "objectId": "59926"
+      },
+      {
+        "title": "心の糧。",
+        "index": 0,
+        "trans": "精神食粮。",
+        "createdAt": "2019-05-07T03:50:37.067Z",
+        "updatedAt": "2019-10-24T13:08:23.846Z",
+        "wordId": "198970803",
+        "subdetailsId": "82236",
+        "converted": true,
+        "objectId": "59907"
+      },
+      {
+        "title": "心の優しい人。",
+        "index": 0,
+        "trans": "心肠好的人。",
+        "createdAt": "2019-05-07T03:50:37.107Z",
+        "updatedAt": "2019-10-24T13:08:23.846Z",
+        "wordId": "198970803",
+        "subdetailsId": "82234",
+        "converted": true,
+        "objectId": "59903"
+      },
+      {
+        "title": "心を決める。",
+        "index": 0,
+        "trans": "下决心。",
+        "createdAt": "2019-05-07T03:50:37.337Z",
+        "updatedAt": "2019-10-24T13:08:24.135Z",
+        "wordId": "198970803",
+        "subdetailsId": "82240",
+        "converted": true,
+        "objectId": "59919"
+      },
+      {
+        "title": "心を打ち明ける。",
+        "index": 0,
+        "trans": "吐露衷曲zhongqu；表明心迹。",
+        "createdAt": "2019-05-07T03:50:37.456Z",
+        "updatedAt": "2019-10-24T13:08:24.256Z",
+        "wordId": "198970803",
+        "subdetailsId": "82238",
+        "converted": true,
+        "objectId": "59912"
+      },
+      {
+        "title": "人の心をうごかす。",
+        "index": 1,
+        "trans": "感动人；激动人心。",
+        "createdAt": "2019-05-07T03:50:35.868Z",
+        "updatedAt": "2019-10-24T13:08:15.349Z",
+        "wordId": "198970803",
+        "subdetailsId": "82237",
+        "converted": true,
+        "objectId": "59910"
+      },
+      {
+        "title": "心から感謝する。",
+        "index": 1,
+        "trans": "从心里表示感谢；衷心感谢；由衷感谢。",
+        "createdAt": "2019-05-07T03:50:35.901Z",
+        "updatedAt": "2019-10-24T13:08:15.408Z",
+        "wordId": "198970803",
+        "subdetailsId": "82238",
+        "converted": true,
+        "objectId": "59913"
+      },
+      {
+        "title": "これは彼の心から出たものではない。",
+        "index": 1,
+        "trans": "这不是出自他的心愿。",
+        "createdAt": "2019-05-07T03:50:36.313Z",
+        "updatedAt": "2019-10-24T13:08:15.700Z",
+        "wordId": "198970803",
+        "subdetailsId": "82240",
+        "converted": true,
+        "objectId": "59920"
+      },
+      {
+        "title": "詩の心。",
+        "index": 1,
+        "trans": "诗的意境。",
+        "createdAt": "2019-05-07T03:50:36.417Z",
+        "updatedAt": "2019-10-24T13:08:23.299Z",
+        "wordId": "198970803",
+        "subdetailsId": "82242",
+        "converted": true,
+        "objectId": "59924"
+      },
+      {
+        "title": "君の心はわかっていた。",
+        "index": 1,
+        "trans": "我早已明白你的心思。",
+        "createdAt": "2019-05-07T03:50:36.427Z",
+        "updatedAt": "2019-10-24T13:08:23.305Z",
+        "wordId": "198970803",
+        "subdetailsId": "82239",
+        "converted": true,
+        "objectId": "59917"
+      },
+      {
+        "title": "心があせる。",
+        "index": 1,
+        "trans": "心慌；着急。",
+        "createdAt": "2019-05-07T03:50:36.513Z",
+        "updatedAt": "2019-10-24T13:08:23.376Z",
+        "wordId": "198970803",
+        "subdetailsId": "82233",
+        "converted": true,
+        "objectId": "59900"
+      },
+      {
+        "title": "心はいたってよい男だ。",
+        "index": 1,
+        "trans": "是个心田极其善良的人。",
+        "createdAt": "2019-05-07T03:50:36.753Z",
+        "updatedAt": "2019-10-24T13:08:23.640Z",
+        "wordId": "198970803",
+        "subdetailsId": "82234",
+        "converted": true,
+        "objectId": "59904"
+      },
+      {
+        "title": "心をひとつにする。",
+        "index": 1,
+        "trans": "一条心；同心协力。",
+        "createdAt": "2019-05-07T03:50:36.933Z",
+        "updatedAt": "2019-10-24T13:08:23.697Z",
+        "wordId": "198970803",
+        "subdetailsId": "82236",
+        "converted": true,
+        "objectId": "59908"
+      },
+      {
+        "title": "心が小さい。",
+        "index": 1,
+        "trans": "心胸窄zhai；度量小。",
+        "createdAt": "2019-05-07T03:50:37.185Z",
+        "updatedAt": "2019-10-24T13:08:23.984Z",
+        "wordId": "198970803",
+        "subdetailsId": "82235",
+        "converted": true,
+        "objectId": "59906"
+      },
+      {
+        "title": "心ひそかに考える。",
+        "index": 2,
+        "trans": "心中暗想。",
+        "createdAt": "2019-05-07T03:50:35.822Z",
+        "updatedAt": "2019-10-24T13:08:15.330Z",
+        "wordId": "198970803",
+        "subdetailsId": "82238",
+        "converted": true,
+        "objectId": "59914"
+      },
+      {
+        "title": "わたしにはあの人の心がわからない。",
+        "index": 2,
+        "trans": "我不了解那个人的心理。",
+        "createdAt": "2019-05-07T03:50:36.202Z",
+        "updatedAt": "2019-10-24T13:08:15.638Z",
+        "wordId": "198970803",
+        "subdetailsId": "82239",
+        "converted": true,
+        "objectId": "59918"
+      },
+      {
+        "title": "その知らせを聞いてわたしはひどく心を痛めた。",
+        "index": 2,
+        "trans": "听了那个消息使我非常痛心。",
+        "createdAt": "2019-05-07T03:50:36.204Z",
+        "updatedAt": "2019-10-24T13:08:15.658Z",
+        "wordId": "198970803",
+        "subdetailsId": "82237",
+        "converted": true,
+        "objectId": "59911"
+      },
+      {
+        "title": "絵心。",
+        "index": 2,
+        "trans": "画意；绘画欣赏力。",
+        "createdAt": "2019-05-07T03:50:36.734Z",
+        "updatedAt": "2019-10-24T13:08:23.621Z",
+        "wordId": "198970803",
+        "subdetailsId": "82242",
+        "converted": true,
+        "objectId": "59925"
+      },
+      {
+        "title": "心に留める。",
+        "index": 2,
+        "trans": "放在心上；介意；记在心里；记住。",
+        "createdAt": "2019-05-07T03:50:37.128Z",
+        "updatedAt": "2019-10-24T13:08:23.899Z",
+        "wordId": "198970803",
+        "subdetailsId": "82233",
+        "converted": true,
+        "objectId": "59901"
+      },
+      {
+        "title": "わたしの心がおわかりでしょう。",
+        "index": 2,
+        "trans": "你明白我的意图了吧。",
+        "createdAt": "2019-05-07T03:50:37.337Z",
+        "updatedAt": "2019-10-24T13:08:24.128Z",
+        "wordId": "198970803",
+        "subdetailsId": "82240",
+        "converted": true,
+        "objectId": "59921"
+      },
+      {
+        "title": "心を落ち着ける。",
+        "index": 3,
+        "trans": "沉下心去；镇静。",
+        "createdAt": "2019-05-07T03:50:36.417Z",
+        "updatedAt": "2019-10-24T13:08:23.292Z",
+        "wordId": "198970803",
+        "subdetailsId": "82233",
+        "converted": true,
+        "objectId": "59902"
+      },
+      {
+        "title": "心をこめた贈り物。",
+        "index": 3,
+        "trans": "真诚的礼物。",
+        "createdAt": "2019-05-07T03:50:37.128Z",
+        "updatedAt": "2019-10-24T13:08:23.893Z",
+        "wordId": "198970803",
+        "subdetailsId": "82238",
+        "converted": true,
+        "objectId": "59915"
+      }
+    ]
+  }
+}
