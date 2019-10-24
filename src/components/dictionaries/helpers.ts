@@ -33,7 +33,7 @@ export interface DictSearchResult<R> {
 
 /** Return a dictionary source page url for the dictionary header */
 export interface GetSrcPageFunction {
-  (text: string, config: AppConfig, profile: Profile): string
+  (text: string, config: AppConfig, profile: Profile): string | Promise<string>
 }
 
 /**
