@@ -106,8 +106,6 @@ export function mergeConfig(
         merge('autopron.en.accent', val => val === 'us' || val === 'uk')
         break
       case 'contextMenus':
-        mergeSelectedContextMenus('contextMenus')
-
         forEach(oldConfig.contextMenus.all, (dict, id) => {
           if (typeof dict === 'string') {
             // default menus
@@ -120,6 +118,7 @@ export function mergeConfig(
             mergeString(`contextMenus.all.${id}.url`)
           }
         })
+        mergeSelectedContextMenus('contextMenus')
         break
       default:
         switch (typeof base[key]) {
