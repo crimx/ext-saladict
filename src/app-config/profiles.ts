@@ -215,6 +215,7 @@ export function nihongo(): ProfileStorage {
 
   const profile = getDefaultProfile(idItem.id) as ProfileMutable
   profile.dicts.selected = [
+    'mojidict',
     'hjdict',
     'weblioejje',
     'weblio',

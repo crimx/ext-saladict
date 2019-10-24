@@ -1,0 +1,30 @@
+{
+  "result": {
+    "originalSearchText": "心",
+    "searchResults": [
+      {
+        "searchText": "心",
+        "count": 1011,
+        "tarId": "198970803",
+        "title": "",
+        "type": 0,
+        "createdAt": "2019-05-07T03:29:26.749Z",
+        "updatedAt": "2019-05-07T03:29:26.749Z",
+        "objectId": "RMWk8WCsp2"
+      }
+    ],
+    "words": [
+      {
+        "excerpt": "[名·惯用语] 心，心里。（気持ち。） 心地，心田，心肠；居心；心术。（心根；おもわく；心に思うところ。） ",
+        "spell": "心",
+        "accent": "③②",
+        "pron": "こころ",
+        "romaji": "kokoro",
+        "createdAt": "2019-05-07T03:50:30.605Z",
+        "updatedAt": "2019-10-24T12:50:35.172Z",
+        "converted": true,
+        "objectId": "198970803"
+      }
+    ]
+  }
+}

@@ -16,6 +16,7 @@ import jukuu from '@/components/dictionaries/jukuu/config'
 import liangan from '@/components/dictionaries/liangan/config'
 import longman from '@/components/dictionaries/longman/config'
 import macmillan from '@/components/dictionaries/macmillan/config'
+import mojidict from '@/components/dictionaries/mojidict/config'
 import naver from '@/components/dictionaries/naver/config'
 import oald from '@/components/dictionaries/oald/config'
 import shanbay from '@/components/dictionaries/shanbay/config'
@@ -51,6 +52,7 @@ export function getAllDicts() {
     liangan: liangan(),
     longman: longman(),
     macmillan: macmillan(),
+    mojidict: mojidict(),
     naver: naver(),
     oald: oald(),
     shanbay: shanbay(),
