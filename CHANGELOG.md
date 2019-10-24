@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.4.0](https://github.com/crimx/ext-saladict/compare/v7.3.2...v7.4.0) (2019-10-24)
+
+
+### Bug Fixes
+
+* **dicts:** fix custom tl ([1156c5e](https://github.com/crimx/ext-saladict/commit/1156c5e))
+* **menus:** update all menus before selected Closes [#533](https://github.com/crimx/ext-saladict/issues/533) ([076e072](https://github.com/crimx/ext-saladict/commit/076e072))
+* **selection:** get page info on selection ([972a9aa](https://github.com/crimx/ext-saladict/commit/972a9aa)), closes [#531](https://github.com/crimx/ext-saladict/issues/531)
+* **selection:** prevent mouseup being cancelled ([0485244](https://github.com/crimx/ext-saladict/commit/0485244))
+
+
+### Features
+
+* **dicts:** add mojidict ([2ec91ef](https://github.com/crimx/ext-saladict/commit/2ec91ef))
+
+
+
 ### [7.3.2](https://github.com/crimx/ext-saladict/compare/v7.3.1...v7.3.2) (2019-10-19)
 
 
