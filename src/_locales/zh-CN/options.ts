@@ -184,7 +184,7 @@ export const locale = {
     sidebar_help: '并排显示窗口以达到类似侧边栏的布局。',
     standalone: '独立窗口',
     standalone_help:
-      '显示为单独的窗口（响应浏览器以外的划词见<a href="https://github.com/crimx/ext-saladict/wiki#%E6%94%AF%E6%8C%81%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%93%8D%E4%BD%9C" target="_blank">这里</a>）。',
+      '显示为单独的窗口（响应浏览器以外的划词见<a href="https://saladict.crimx.com/manual.html#shortcuts" target="_blank">这里</a>）。',
     locations: {
       CENTER: '居中',
       TOP: '上方',

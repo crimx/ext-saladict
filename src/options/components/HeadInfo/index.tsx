@@ -117,7 +117,7 @@ export class OptMenu extends React.PureComponent<
         </li>
         <li>
           <a
-            href="https://github.com/crimx/ext-saladict/wiki#wiki-content"
+            href="https://saladict.crimx.com/"
             target="_blank"
             rel="nofollow noopener noreferrer"
           >
@@ -153,7 +153,7 @@ export class OptMenu extends React.PureComponent<
         </li>
         <li className="head-info-bubble-wrap">
           <a
-            href="https://github.com/crimx/ext-saladict/wiki#user-content-reward"
+            href="https://saladict.crimx.com/support/"
             onMouseEnter={this.showDonate}
             onMouseLeave={this.hideDonate}
             onClick={this.preventDefault}

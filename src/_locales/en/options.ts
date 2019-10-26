@@ -193,7 +193,7 @@ export const locale: typeof _locale = {
     sidebar_help: 'Rearrange windows to sidebar-like layout.',
     standalone: 'Standalone',
     standalone_help:
-      'Render dict panel in a standalone window (See <a href="https://github.com/crimx/ext-saladict/wiki#%E6%94%AF%E6%8C%81%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%93%8D%E4%BD%9C" target="_blank">here</a> on how to work with text selection outside browser).',
+      'Render dict panel in a standalone window (See <a href="https://saladict.crimx.com/manual.html#shortcuts" target="_blank">here</a> on how to work with text selection outside browser).',
     locations: {
       CENTER: 'Center',
       TOP: 'Top',
