@@ -153,6 +153,13 @@ async function cloneFiles() {
     await fs.copy(path.join(__dirname, repoRoot, pdfDir), targetPath)
   }
 
+  // copy locale.properties
+  await fs.ensureDir(path.join(publicPDFRoot, 'web/locale'))
+  await fs.copy(
+    path.join(__dirname, repoRoot, 'web/locale/locale.properties'),
+    path.join(publicPDFRoot, 'web/locale/locale.properties')
+  )
+
   const locales = (await fs.readdir(
     path.join(__dirname, repoRoot, 'web/locale')
   )).filter(
