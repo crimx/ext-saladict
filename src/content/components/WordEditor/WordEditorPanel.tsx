@@ -103,6 +103,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             id="wordEditor-Note_Word"
             value={word.text}
             onChange={formChanged}
+            onKeyDown={stopPropagation}
           />
           <label htmlFor="wordEditor-Note_Trans">
             {t('note.trans')}
@@ -121,6 +122,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             id="wordEditor-Note_Trans"
             value={word.trans}
             onChange={formChanged}
+            onKeyDown={stopPropagation}
           />
           <label htmlFor="wordEditor-Note_Note">{t('note.note')}</label>
           <textarea
@@ -129,6 +131,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             id="wordEditor-Note_Note"
             value={word.note}
             onChange={formChanged}
+            onKeyDown={stopPropagation}
           />
           <label htmlFor="wordEditor-Note_Context">{t('note.context')}</label>
           <textarea
@@ -137,6 +140,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             id="wordEditor-Note_Context"
             value={word.context}
             onChange={formChanged}
+            onKeyDown={stopPropagation}
           />
           <label htmlFor="wordEditor-Note_SrcTitle">{t('note.srcTitle')}</label>
           <input
@@ -145,6 +149,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             id="wordEditor-Note_SrcTitle"
             value={word.title}
             onChange={formChanged}
+            onKeyDown={stopPropagation}
           />
           <label htmlFor="wordEditor-Note_SrcLink">{t('note.srcLink')}</label>
           <input
@@ -153,6 +158,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             id="wordEditor-Note_SrcLink"
             value={word.url}
             onChange={formChanged}
+            onKeyDown={stopPropagation}
           />
           <label htmlFor="wordEditor-Note_SrcFavicon">
             {t('note.srcFavicon')}
@@ -170,6 +176,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             id="wordEditor-Note_SrcFavicon"
             value={word.favicon}
             onChange={formChanged}
+            onKeyDown={stopPropagation}
           />
         </form>
         {relatedWords.length > 0 && (
@@ -246,6 +253,11 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
       [currentTarget.name]: currentTarget.value
     })
   }
+}
+
+function stopPropagation(e: React.KeyboardEvent<HTMLElement>) {
+  e.stopPropagation()
+  e.nativeEvent.stopPropagation()
 }
 
 export default WordEditorPanel
