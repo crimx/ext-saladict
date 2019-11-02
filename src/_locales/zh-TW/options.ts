@@ -89,8 +89,12 @@ export const locale: typeof _locale = {
       openOptions: '進入 Saladict 設定',
       openStandalone: '開啟快捷查詞獨立視窗'
     },
-    bowl_hover: '滑鼠查字',
+    bowl_hover: '圖示暫留查字',
     bowl_hover_help: '滑鼠暫留在沙拉圖示上開啟字典介面，否則需要點選。',
+    bowl_offset: {
+      x: '圖示水平偏移',
+      y: '圖示垂直偏移'
+    },
     config: {
       export: '匯出設定',
       help: '設定已通過瀏覽器自動同步，也可以手動匯入匯出。',

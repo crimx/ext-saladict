@@ -87,8 +87,12 @@ export const locale = {
       openOptions: '打开 Saladict 设置',
       openStandalone: '打开快捷查词独立窗口'
     },
-    bowl_hover: '悬停查词',
+    bowl_hover: '图标悬停查词',
     bowl_hover_help: '鼠标悬停在沙拉图标上触发查词，否则需要点击。',
+    bowl_offset: {
+      x: '图标水平偏移',
+      y: '图标垂直偏移'
+    },
     config: {
       export: '导出设定',
       help: '设定已通过浏览器自动同步，也可以手动导入导出。',

@@ -93,9 +93,13 @@ export const locale: typeof _locale = {
       openOptions: 'Open Saladict Options',
       openStandalone: 'Open Saladict Standalone Panel'
     },
-    bowl_hover: 'Mouse Hover',
+    bowl_hover: 'Icon Mouse Hover',
     bowl_hover_help:
       'Hover on the bowl icon to trigger searching instead of clicking.',
+    bowl_offset: {
+      x: 'Icon Offset X',
+      y: 'Icon Offset Y'
+    },
     config: {
       export: 'Export Configs',
       help: 'Configs are synced automatically via browser.',

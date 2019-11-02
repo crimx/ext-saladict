@@ -39,19 +39,27 @@ export const newSelection: StoreActionHandler<'NEW_SELECTION'> = (
       //     +-----+              |                        |
       // cursor
       const iconWidth = 30
-      const iconGap = 15
       const scrollbarWidth = 10
 
       newState.bowlCoord = {
-        x:
-          selection.mouseX + iconGap + iconWidth >
-          window.innerWidth - scrollbarWidth // right overflow
-            ? selection.mouseX - iconGap - iconWidth // switch to left
-            : selection.mouseX + iconGap,
-        y:
-          selection.mouseY < iconWidth + iconGap // top overflow
-            ? selection.mouseY + iconGap // switch to bottom
-            : selection.mouseY - iconWidth - iconGap
+        x: selection.mouseX + config.bowlOffsetX,
+        y: selection.mouseY + config.bowlOffsetY
+      }
+
+      if (newState.bowlCoord.x < 30) {
+        newState.bowlCoord.x = 30
+      } else if (
+        newState.bowlCoord.x + iconWidth + 30 + scrollbarWidth >
+        window.innerWidth
+      ) {
+        newState.bowlCoord.x =
+          window.innerWidth - iconWidth - scrollbarWidth - 30
+      }
+
+      if (newState.bowlCoord.y < 30) {
+        newState.bowlCoord.y = 30
+      } else if (newState.bowlCoord.y + iconWidth + 30 > window.innerHeight) {
+        newState.bowlCoord.y = window.innerHeight - iconWidth - 30
       }
 
       newState.dictPanelCoord = {
