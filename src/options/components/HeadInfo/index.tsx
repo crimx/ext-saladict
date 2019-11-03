@@ -117,7 +117,7 @@ export class OptMenu extends React.PureComponent<
         </li>
         <li>
           <a
-            href="https://github.com/crimx/ext-saladict/wiki#wiki-content"
+            href="https://saladict.crimx.com/manual.html"
             target="_blank"
             rel="nofollow noopener noreferrer"
           >
@@ -151,50 +151,14 @@ export class OptMenu extends React.PureComponent<
             )}
           </CSSTransition>
         </li>
-        <li className="head-info-bubble-wrap">
+        <li>
           <a
-            href="https://github.com/crimx/ext-saladict/wiki#user-content-reward"
-            onMouseEnter={this.showDonate}
-            onMouseLeave={this.hideDonate}
-            onClick={this.preventDefault}
+            href="https://saladict.crimx.com/support.html"
+            target="_blank"
+            rel="nofollow noopener noreferrer"
           >
-            {t('headInfo.donate')}
+            ❤️{t('headInfo.donate')}
           </a>
-          <CSSTransition
-            classNames="head-info-fade"
-            in={this.state.isShowDonate}
-            timeout={500}
-            mountOnEnter
-            unmountOnExit
-          >
-            {() => (
-              <div
-                className="head-info-bubble"
-                onMouseEnter={this.showDonate}
-                onMouseLeave={this.hideDonate}
-              >
-                <div className="head-info-donate">
-                  <img
-                    src={atob(
-                      'aHR0cHM6Ly9naXRodWIuY29tL2NyaW14L2NyeC1zYWxhZGljdC93aWtpL2ltYWdlcy93ZWNoYXQucG5n'
-                    )}
-                    alt="wechat"
-                  />
-                  <img
-                    src={atob(
-                      'aHR0cHM6Ly9naXRodWIuY29tL2NyaW14L2NyeC1zYWxhZGljdC93aWtpL2ltYWdlcy9hbGlwYXkucG5n'
-                    )}
-                    alt="alipay"
-                  />
-                </div>
-                <p>
-                  {decodeURI(
-                    '%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%BC%80%E5%8F%91%E6%9C%AC%E6%89%A9%E5%B1%95%E5%9D%87%E7%94%B1%E4%BD%9C%E8%80%85%E4%B8%80%E4%BA%BA%E8%8A%B1%E8%B4%B9%E5%A4%A7%E9%87%8F%E7%A7%81%E4%BA%BA%E6%97%B6%E9%97%B4%E4%B8%8E%E7%B2%BE%E5%8A%9B%E5%AE%8C%E6%88%90%EF%BC%8C%E5%B9%B6%E6%89%BF%E8%AF%BA%E4%B8%80%E7%9B%B4%E5%BC%80%E6%BA%90%E5%85%8D%E8%B4%B9%E6%97%A0%E5%B9%BF%E5%91%8A%EF%BC%8C%E6%AC%A2%E8%BF%8E%E9%9A%8F%E5%96%9C%E6%89%93%E8%B5%8F%E4%BB%A5%E6%94%AF%E6%8C%81%E6%8C%81%E7%BB%AD%E5%BC%80%E5%8F%91%E3%80%82'
-                  )}
-                </p>
-              </div>
-            )}
-          </CSSTransition>
         </li>
         <li>
           <a

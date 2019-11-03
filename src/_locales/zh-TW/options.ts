@@ -89,8 +89,12 @@ export const locale: typeof _locale = {
       openOptions: '進入 Saladict 設定',
       openStandalone: '開啟快捷查詞獨立視窗'
     },
-    bowl_hover: '滑鼠查字',
+    bowl_hover: '圖示暫留查字',
     bowl_hover_help: '滑鼠暫留在沙拉圖示上開啟字典介面，否則需要點選。',
+    bowl_offset: {
+      x: '圖示水平偏移',
+      y: '圖示垂直偏移'
+    },
     config: {
       export: '匯出設定',
       help: '設定已通過瀏覽器自動同步，也可以手動匯入匯出。',
@@ -186,7 +190,7 @@ export const locale: typeof _locale = {
     sidebar_help: '並排顯示視窗以達到類似側邊欄的配置。',
     standalone: '獨立視窗',
     standalone_help:
-      '顯示為獨立的視窗（響應瀏覽器以外的滑鼠選字見 <a href="https://github.com/crimx/ext-saladict/wiki#%E6%94%AF%E6%8C%81%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%93%8D%E4%BD%9C" target="_blank">這裡</a>）。',
+      '顯示為獨立的視窗（響應瀏覽器以外的滑鼠選字見 <a href="https://saladict.crimx.com/manual.html#shortcuts" target="_blank">這裡</a>）。',
     locations: {
       CENTER: '居中',
       TOP: '上方',

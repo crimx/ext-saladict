@@ -210,7 +210,7 @@ export class ExportModalBody extends React.Component<
           <p className="export-Description">
             {t('export.description')}
             <a
-              href="https://github.com/crimx/ext-saladict/wiki/ANKI#wiki-content"
+              href="https://saladict.crimx.com/anki.html"
               target="_blank"
               rel="nofollow noopener noreferrer"
             >

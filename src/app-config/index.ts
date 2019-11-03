@@ -67,6 +67,10 @@ function _getDefaultConfig() {
     /** panel max height in percentage, 0 < n < 100 */
     panelMaxHeightRatio: 80,
 
+    bowlOffsetX: 15,
+
+    bowlOffsetY: -45,
+
     darkMode: false,
 
     /** custom panel css */

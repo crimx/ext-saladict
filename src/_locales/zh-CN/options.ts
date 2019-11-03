@@ -87,8 +87,12 @@ export const locale = {
       openOptions: '打开 Saladict 设置',
       openStandalone: '打开快捷查词独立窗口'
     },
-    bowl_hover: '悬停查词',
+    bowl_hover: '图标悬停查词',
     bowl_hover_help: '鼠标悬停在沙拉图标上触发查词，否则需要点击。',
+    bowl_offset: {
+      x: '图标水平偏移',
+      y: '图标垂直偏移'
+    },
     config: {
       export: '导出设定',
       help: '设定已通过浏览器自动同步，也可以手动导入导出。',
@@ -184,7 +188,7 @@ export const locale = {
     sidebar_help: '并排显示窗口以达到类似侧边栏的布局。',
     standalone: '独立窗口',
     standalone_help:
-      '显示为单独的窗口（响应浏览器以外的划词见<a href="https://github.com/crimx/ext-saladict/wiki#%E6%94%AF%E6%8C%81%E5%BF%AB%E6%8D%B7%E9%94%AE%E6%93%8D%E4%BD%9C" target="_blank">这里</a>）。',
+      '显示为单独的窗口（响应浏览器以外的划词见<a href="https://saladict.crimx.com/manual.html#shortcuts" target="_blank">这里</a>）。',
     locations: {
       CENTER: '居中',
       TOP: '上方',

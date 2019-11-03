@@ -16,21 +16,21 @@ export const DictMojidict: FC<ViewPorps<MojidictResult>> = ({ result }) => (
       result.details.map(detail => (
         <EntryBox key={detail.title} title={detail.title}>
           {detail.subdetails && (
-            <ul className="dictMojidict-Subdetails">
+            <ul className="dictMojidict-List">
               {detail.subdetails.map(subdetail => (
                 <li
                   key={subdetail.title}
-                  className="dictMojidict-Subdetails_Item"
+                  className="dictMojidict-ListItem_Disc"
                 >
                   <p>{subdetail.title}</p>
                   {subdetail.examples && (
-                    <ul className="dictMojidict-Examples">
+                    <ul className="dictMojidict-Sublist">
                       {subdetail.examples.map(example => (
                         <li key={example.title}>
-                          <p className="dictMojidict-Examples_Title">
+                          <p className="dictMojidict-Word_Title">
                             {example.title}
                           </p>
-                          <p className="dictMojidict-Examples_Trans">
+                          <p className="dictMojidict-Word_Trans">
                             {example.trans}
                           </p>
                         </li>
@@ -43,6 +43,18 @@ export const DictMojidict: FC<ViewPorps<MojidictResult>> = ({ result }) => (
           )}
         </EntryBox>
       ))}
+    {result.releated && (
+      <EntryBox title="関連用語">
+        <ul className="dictMojidict-List">
+          {result.releated.map(word => (
+            <li key={word.title}>
+              <p className="dictMojidict-Word_Title">{word.title}</p>
+              <p className="dictMojidict-Word_Trans">{word.excerpt}</p>
+            </li>
+          ))}
+        </ul>
+      </EntryBox>
+    )}
   </>
 )
 

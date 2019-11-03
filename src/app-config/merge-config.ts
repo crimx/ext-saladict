@@ -104,6 +104,11 @@ export function mergeConfig(
         merge('autopron.cn.dict', id => defaultAllDicts[id])
         merge('autopron.en.dict', id => defaultAllDicts[id])
         merge('autopron.en.accent', val => val === 'us' || val === 'uk')
+        merge('autopron.machine.dict', id => defaultAllDicts[id])
+        merge(
+          'autopron.machine.src',
+          val => val === 'trans' || val === 'searchText'
+        )
         break
       case 'contextMenus':
         forEach(oldConfig.contextMenus.all, (dict, id) => {

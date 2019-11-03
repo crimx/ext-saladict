@@ -103,11 +103,12 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             id="wordEditor-Note_Word"
             value={word.text}
             onChange={formChanged}
+            onKeyDown={stopPropagation}
           />
           <label htmlFor="wordEditor-Note_Trans">
             {t('note.trans')}
             <a
-              href="https://github.com/crimx/ext-saladict/wiki/Q&A#%E9%97%AE%E6%B7%BB%E5%8A%A0%E7%94%9F%E8%AF%8D%E5%8F%AF%E4%B8%8D%E5%8F%AF%E4%BB%A5%E5%8A%A0%E5%85%A5%E5%8D%95%E8%AF%8D%E7%BF%BB%E8%AF%91%E8%80%8C%E4%B8%8D%E6%98%AF%E7%BF%BB%E8%AF%91%E6%95%B4%E5%8F%A5%E4%B8%8A%E4%B8%8B%E6%96%87"
+              href="https://saladict.crimx.com/q&a.html#%E9%97%AE%EF%BC%9A%E6%B7%BB%E5%8A%A0%E7%94%9F%E8%AF%8D%E5%8F%AF%E4%B8%8D%E5%8F%AF%E4%BB%A5%E5%8A%A0%E5%85%A5%E5%8D%95%E8%AF%8D%E7%BF%BB%E8%AF%91%EF%BC%88%E8%80%8C%E4%B8%8D%E6%98%AF%E7%BF%BB%E8%AF%91%E6%95%B4%E5%8F%A5%E4%B8%8A%E4%B8%8B%E6%96%87%EF%BC%89%E3%80%82"
               target="_blank"
               rel="nofollow noopener noreferrer"
             >
@@ -121,6 +122,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             id="wordEditor-Note_Trans"
             value={word.trans}
             onChange={formChanged}
+            onKeyDown={stopPropagation}
           />
           <label htmlFor="wordEditor-Note_Note">{t('note.note')}</label>
           <textarea
@@ -129,6 +131,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             id="wordEditor-Note_Note"
             value={word.note}
             onChange={formChanged}
+            onKeyDown={stopPropagation}
           />
           <label htmlFor="wordEditor-Note_Context">{t('note.context')}</label>
           <textarea
@@ -137,6 +140,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             id="wordEditor-Note_Context"
             value={word.context}
             onChange={formChanged}
+            onKeyDown={stopPropagation}
           />
           <label htmlFor="wordEditor-Note_SrcTitle">{t('note.srcTitle')}</label>
           <input
@@ -145,6 +149,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             id="wordEditor-Note_SrcTitle"
             value={word.title}
             onChange={formChanged}
+            onKeyDown={stopPropagation}
           />
           <label htmlFor="wordEditor-Note_SrcLink">{t('note.srcLink')}</label>
           <input
@@ -153,6 +158,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             id="wordEditor-Note_SrcLink"
             value={word.url}
             onChange={formChanged}
+            onKeyDown={stopPropagation}
           />
           <label htmlFor="wordEditor-Note_SrcFavicon">
             {t('note.srcFavicon')}
@@ -170,6 +176,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             id="wordEditor-Note_SrcFavicon"
             value={word.favicon}
             onChange={formChanged}
+            onKeyDown={stopPropagation}
           />
         </form>
         {relatedWords.length > 0 && (
@@ -246,6 +253,11 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
       [currentTarget.name]: currentTarget.value
     })
   }
+}
+
+function stopPropagation(e: React.KeyboardEvent<HTMLElement>) {
+  e.stopPropagation()
+  e.nativeEvent.stopPropagation()
 }
 
 export default WordEditorPanel

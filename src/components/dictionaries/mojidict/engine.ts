@@ -9,7 +9,14 @@ import axios from 'axios'
 const APPLICATION_ID = 'E62VyFVLMiW7kvbtVq3p'
 
 export const getSrcPage: GetSrcPageFunction = async text => {
-  return `https://www.mojidict.com/details/${await getTarId(text)}`
+  const suggests = await getSuggests(text)
+  const tarId =
+    suggests.searchResults &&
+    suggests.searchResults[0] &&
+    suggests.searchResults[0].tarId
+  return tarId
+    ? `https://www.mojidict.com/details/${tarId}`
+    : 'https://www.mojidict.com'
 }
 
 interface FetchWordResult {
@@ -40,6 +47,23 @@ interface FetchWordResult {
   }
 }
 
+interface SuggestsResult {
+  originalSearchText: string
+  searchResults?: Array<{
+    objectId: string
+    searchText: string
+    tarId: string
+  }>
+  words?: Array<{
+    accent: string
+    excerpt: string
+    objectId: string
+    pron: string
+    romaji: string
+    spell: string
+  }>
+}
+
 export interface MojidictResult {
   word?: {
     spell: string
@@ -56,6 +80,10 @@ export interface MojidictResult {
       }>
     }>
   }>
+  releated?: Array<{
+    title: string
+    excerpt: string
+  }>
 }
 
 export const search: SearchFunction<MojidictResult> = async (
@@ -64,80 +92,94 @@ export const search: SearchFunction<MojidictResult> = async (
   profile,
   payload
 ) => {
-  const response = await axios({
-    method: 'post',
-    url: 'https://api.mojidict.com/parse/functions/fetchWord_v2',
-    data: {
-      wordId: await getTarId(text),
-      _ApplicationId: APPLICATION_ID,
-      _ClientVersion: 'js2.7.1',
-      _InstallationId: getInstallationId()
+  const suggests = await getSuggests(text)
+
+  const wordId =
+    suggests.searchResults &&
+    suggests.searchResults[0] &&
+    suggests.searchResults[0].tarId
+  if (!wordId) {
+    return handleNoResult()
+  }
+
+  const {
+    data: { result: wordResult }
+  } = await axios.post<{ result: FetchWordResult }>(
+    'https://api.mojidict.com/parse/functions/fetchWord_v2',
+    {
+      data: {
+        wordId,
+        _ApplicationId: APPLICATION_ID,
+        _ClientVersion: 'js2.7.1',
+        _InstallationId: getInstallationId()
+      }
     }
-  })
+  )
 
-  const result: FetchWordResult = response.data.result
+  const result: MojidictResult = {}
 
-  if (result && (result.details || result.word)) {
-    let word: MojidictResult['word']
-    if (result.word) {
-      word = {
-        spell: result.word.spell,
-        pron: `${result.word.pron || ''} ${result.word.accent || ''}`,
-        tts: await getTTS(result.word.spell, result.word.objectId)
+  if (wordResult && (wordResult.details || wordResult.word)) {
+    if (wordResult.word) {
+      result.word = {
+        spell: wordResult.word.spell,
+        pron: `${wordResult.word.pron || ''} ${wordResult.word.accent || ''}`,
+        tts: await getTTS(wordResult.word.spell, wordResult.word.objectId)
       }
     }
 
-    let details: MojidictResult['details']
-    if (result.details) {
-      details = result.details.map(detail => ({
+    if (wordResult.details) {
+      result.details = wordResult.details.map(detail => ({
         title: detail.title,
         subdetails:
-          result.subdetails &&
-          result.subdetails
+          wordResult.subdetails &&
+          wordResult.subdetails
             .filter(subdetail => subdetail.detailsId === detail.objectId)
             .map(subdetail => ({
               title: subdetail.title,
               examples:
-                result.examples &&
-                result.examples.filter(
+                wordResult.examples &&
+                wordResult.examples.filter(
                   example => example.subdetailsId === subdetail.objectId
                 )
             }))
       }))
     }
 
-    return word && word.tts
-      ? { result: { word, details }, audio: { py: word.tts } }
-      : { result: { word, details } }
+    if (suggests.words && suggests.words.length > 1) {
+      result.releated = suggests.words
+        .map(word => ({
+          title: `${word.spell} | ${word.pron || ''} ${word.accent || ''}`,
+          excerpt: word.excerpt
+        }))
+        .slice(1)
+    }
+
+    return result.word && result.word.tts
+      ? { result, audio: { py: result.word.tts } }
+      : { result }
   }
 
   return handleNoResult()
 }
 
-async function getTarId(text: string): Promise<string> {
+async function getSuggests(text: string): Promise<SuggestsResult> {
   try {
-    const { data } = await axios({
-      method: 'post',
-      url: 'https://api.mojidict.com/parse/functions/search_v2',
-      data: {
-        needWords: true,
-        searchText: text,
-        _ApplicationId: APPLICATION_ID,
-        _ClientVersion: 'js2.7.1',
-        _InstallationId: getInstallationId()
+    const {
+      data: { result }
+    } = await axios.post<{ result?: SuggestsResult }>(
+      'https://api.mojidict.com/parse/functions/search_v2',
+      {
+        data: {
+          needWords: true,
+          searchText: text,
+          _ApplicationId: APPLICATION_ID,
+          _ClientVersion: 'js2.7.1',
+          _InstallationId: getInstallationId()
+        }
       }
-    })
+    )
 
-    if (
-      data.result &&
-      data.result.searchResults &&
-      data.result.searchResults[0] &&
-      data.result.searchResults[0].tarId
-    ) {
-      return String(data.result.searchResults[0].tarId)
-    }
-
-    return handleNoResult()
+    return result || handleNoResult()
   } catch (e) {
     return handleNetWorkError()
   }

@@ -89,12 +89,32 @@ export default class SearchMode extends React.Component<
               })(<Checkbox>{t('opt.searchMode.icon')}</Checkbox>)}
             </Form.Item>
             {config.mode.icon && (
-              <Form.Item help={t('opt.bowl_hover_help')}>
-                {getFieldDecorator(`config#bowlHover`, {
-                  initialValue: config.bowlHover,
-                  valuePropName: 'checked'
-                })(<Checkbox>{t('opt.bowl_hover')}</Checkbox>)}
-              </Form.Item>
+              <>
+                <Form.Item help={t('opt.bowl_hover_help')}>
+                  {getFieldDecorator(`config#bowlHover`, {
+                    initialValue: config.bowlHover,
+                    valuePropName: 'checked'
+                  })(<Checkbox>{t('opt.bowl_hover')}</Checkbox>)}
+                </Form.Item>
+                <div>
+                  <span>{t('opt.bowl_offset.x')}: </span>
+                  <Form.Item className="form-item-inline">
+                    {getFieldDecorator(`config#bowlOffsetX`, {
+                      initialValue: config.bowlOffsetX,
+                      rules: [{ type: 'number', whitespace: true }]
+                    })(<InputNumberGroup style={{ width: 80 }} suffix="px" />)}
+                  </Form.Item>
+                </div>
+                <div>
+                  <span>{t('opt.bowl_offset.y')}: </span>
+                  <Form.Item className="form-item-inline">
+                    {getFieldDecorator(`config#bowlOffsetY`, {
+                      initialValue: config.bowlOffsetY,
+                      rules: [{ type: 'number', whitespace: true }]
+                    })(<InputNumberGroup style={{ width: 80 }} suffix="px" />)}
+                  </Form.Item>
+                </div>
+              </>
             )}
           </>
         )}

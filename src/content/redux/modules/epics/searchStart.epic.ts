@@ -83,8 +83,7 @@ export const searchStartEpic: Epic = (action$, state$) =>
                 if (id === en.dict && (audio.uk || audio.us)) return true
                 return (
                   id === machine.dict &&
-                  !!(result as MachineTranslateResult<DictID>)[machine.src]
-                    .audio
+                  !!(result as MachineTranslateResult<DictID>)[machine.src].tts
                 )
               }),
               take(1),
@@ -108,7 +107,7 @@ export const searchStartEpic: Epic = (action$, state$) =>
                   type: 'PLAY_AUDIO',
                   payload: (result as MachineTranslateResult<DictID>)[
                     machine.src
-                  ].audio!
+                  ].tts!
                 })
               }),
               // never pass to down stream

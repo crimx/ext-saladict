@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.5.0](https://github.com/crimx/ext-saladict/compare/v7.4.0...v7.5.0) (2019-11-03)
+
+
+### Bug Fixes
+
+* update homepage url ([102ff19](https://github.com/crimx/ext-saladict/commit/102ff19))
+* **config:** merge machine pronounce config ([1c37346](https://github.com/crimx/ext-saladict/commit/1c37346)), closes [#540](https://github.com/crimx/ext-saladict/issues/540)
+* **content:** prevent triggering page key events ([a74b255](https://github.com/crimx/ext-saladict/commit/a74b255))
+* **panel:** reset text align ([3b38d19](https://github.com/crimx/ext-saladict/commit/3b38d19)), closes [#537](https://github.com/crimx/ext-saladict/issues/537)
+* missing pdf locale properties ([10e9636](https://github.com/crimx/ext-saladict/commit/10e9636)), closes [#548](https://github.com/crimx/ext-saladict/issues/548)
+
+
+### Features
+
+* **content:** add bowl offset config ([3a1327f](https://github.com/crimx/ext-saladict/commit/3a1327f)), closes [#535](https://github.com/crimx/ext-saladict/issues/535)
+
+
+
 ## [7.4.0](https://github.com/crimx/ext-saladict/compare/v7.3.2...v7.4.0) (2019-10-24)
 
 
