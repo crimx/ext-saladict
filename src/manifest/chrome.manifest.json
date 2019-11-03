@@ -6,7 +6,6 @@
     "chrome_style": false
   },
   "incognito": "split",
-  "homepage_url": "https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en",
   "update_url": "https://clients2.google.com/service/update2/crx",
   "minimum_chrome_version": "60"
 }

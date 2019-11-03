@@ -111,7 +111,7 @@ async function onInstalled({
     if (
       !(await storage.sync.get('hasInstructionsShown')).hasInstructionsShown
     ) {
-      openURL('https://saladict.crimx.com/notice/')
+      openURL('https://saladict.crimx.com/notice.html')
       storage.sync.set({ hasInstructionsShown: true })
     }
   } else if (reason === 'update') {
