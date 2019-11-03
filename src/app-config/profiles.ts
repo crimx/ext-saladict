@@ -38,7 +38,7 @@ export function _getDefaultProfile(id?: string) {
         'urban',
         'vocabulary',
         'google',
-        'sogou',
+        'youdaotrans',
         'zdic',
         'guoyu',
         'liangan',
@@ -142,7 +142,7 @@ export function scholar(): ProfileStorage {
     'oald',
     'websterlearner',
     'google',
-    'sogou',
+    'youdaotrans',
     'zdic',
     'guoyu',
     'liangan'
@@ -183,7 +183,7 @@ export function scholar(): ProfileStorage {
     others: false
   }
   allDict.google.selectionWC.min = 5
-  allDict.sogou.selectionWC.min = 5
+  allDict.youdaotrans.selectionWC.min = 5
 
   return { idItem, profile }
 }
@@ -196,7 +196,6 @@ export function translation(): ProfileStorage {
   profile.dicts.selected = [
     'google',
     'tencent',
-    'sogou',
     'baidu',
     'caiyun',
     'youdaotrans',
