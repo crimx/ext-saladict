@@ -1,5 +1,5 @@
 import { combineEpics } from 'redux-observable'
-import { from, of } from 'rxjs'
+import { from, of, concat } from 'rxjs'
 import { map, mapTo, mergeMap, filter } from 'rxjs/operators'
 
 import { isStandalonePage } from '@/_helpers/saladict'
@@ -32,11 +32,31 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
       ofType('ADD_TO_NOTEBOOK'),
       mergeMap(() => {
         if (state$.value.config.editOnFav && !isStandalonePage()) {
-          return of({
-            type: 'WORD_EDITOR_STATUS',
-            payload:
-              state$.value.searchHistory[state$.value.searchHistory.length - 1]
-          } as const)
+          const word =
+            state$.value.searchHistory[state$.value.searchHistory.length - 1]
+          return concat(
+            of({
+              type: 'WORD_EDITOR_STATUS',
+              payload: word
+            } as const),
+            from(
+              translateCtx(
+                word.context || word.text,
+                state$.value.config.ctxTrans
+              ).then(trans => ({
+                ...word,
+                trans: word.trans ? word.trans + '\n\n' + trans : trans
+              }))
+            ).pipe(
+              map(
+                newWord =>
+                  ({
+                    type: 'WORD_EDITOR_STATUS',
+                    payload: newWord
+                  } as const)
+              )
+            )
+          )
         }
 
         return from(
