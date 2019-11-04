@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.5.1](https://github.com/crimx/ext-saladict/compare/v7.5.0...v7.5.1) (2019-11-04)
+
+
+### Bug Fixes
+
+* translate context before editing ([5c92445](https://github.com/crimx/ext-saladict/commit/5c92445)), closes [#550](https://github.com/crimx/ext-saladict/issues/550)
+
+
+
 ## [7.5.0](https://github.com/crimx/ext-saladict/compare/v7.4.0...v7.5.0) (2019-11-03)
 
 
