@@ -12,8 +12,8 @@ assignees: ''
 反馈前请确保已阅读
 反馈前请确保已阅读
 
-- 使用说明：https://github.com/crimx/ext-saladict/wiki
-- 常见问题以及答复：https://github.com/crimx/ext-saladict/wiki/Q&A
+- 使用说明： https://saladict.crimx.com/manual.html
+- 常见问题以及答复： https://saladict.crimx.com/q&a.html
 
 请根据模板描述问题，以便别人理解、定位和解决问题。
 请根据模板描述问题，以便别人理解、定位和解决问题。
