@@ -239,7 +239,7 @@ export const locale: typeof _locale = {
     shanbay: {
       title: 'Shanbay Sync',
       description:
-        "Use the account that has logged in shanbay.com. Note that it's a one-way sync(from Saladict to Shanbay). Only the new added words are synced. Words also need to be existed on Shanbay's database.",
+        "Go to shanbay.com and log in first(must stay logged in). Note that it's a one-way sync(from Saladict to Shanbay). Only the new added words are synced. Words also need to be supported by Shanbay's database.",
       login:
         'Will open shanbay.com. Please log in then come back and enable again.',
       sync_all: 'Upload all existing new words',
