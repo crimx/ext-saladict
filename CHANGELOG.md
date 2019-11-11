@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.5.2](https://github.com/crimx/ext-saladict/compare/v7.5.1...v7.5.2) (2019-11-11)
+
+
+### Bug Fixes
+
+* **sync:** webdav url ending ([5dc51a8](https://github.com/crimx/ext-saladict/commit/5dc51a8)), closes [#562](https://github.com/crimx/ext-saladict/issues/562)
+
+
+
 ### [7.5.1](https://github.com/crimx/ext-saladict/compare/v7.5.0...v7.5.1) (2019-11-04)
 
 

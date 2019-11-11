@@ -138,7 +138,7 @@ export default class WebdavModal extends React.Component<
     }
 
     if (error === 'exist') {
-      if (confirm(t('sync.webdav_err_exist'))) {
+      if (confirm(t('sync.webdav.err_exist'))) {
         await message
           .send<'SYNC_SERVICE_DOWNLOAD'>({
             type: 'SYNC_SERVICE_DOWNLOAD',
@@ -263,6 +263,9 @@ function wrapFromItems(config: SyncConfig): SyncConfigFormItem {
 function stripFromItems(configFormItems: SyncConfigFormItem): SyncConfig {
   return Object.keys(configFormItems).reduce((o, k) => {
     o[k] = configFormItems[k].value
+    if (k === 'url' && o[k] && !o[k].endsWith('/')) {
+      o[k] += '/'
+    }
     return o
   }, {}) as SyncConfig
 }

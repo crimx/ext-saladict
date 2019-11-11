@@ -297,16 +297,12 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     try {
       var json: NotebookFile = await response.json()
     } catch (e) {
-      if (process.env.DEV_BUILD) {
-        console.error('Fetch webdav notebook.json error', response)
-      }
+      console.error('Fetch webdav notebook.json error', response)
       return Promise.reject('parse')
     }
 
     if (!Array.isArray(json.words) || json.words.some(w => !w.date)) {
-      if (process.env.DEV_BUILD) {
-        console.error('Parse webdav notebook.json error: incorrect words', json)
-      }
+      console.error('Parse webdav notebook.json error: incorrect words', json)
       return Promise.reject('format')
     }
 
