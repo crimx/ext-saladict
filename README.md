@@ -38,7 +38,7 @@ cd ext-saladict
 yarn install
 ```
 
-add a `.env` file following the `.env.example` format.
+Add a `.env` file following the `.env.example` format(leave empty if you don't use these dictionaries).
 
 ```bash
 yarn build
