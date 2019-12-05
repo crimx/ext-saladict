@@ -10,7 +10,18 @@ import { YoudaotransLanguage } from './config'
 
 let _translator: Youdao | undefined
 const getTranslator = () =>
-  (_translator = _translator || new Youdao({ env: 'ext' }))
+  (_translator =
+    _translator ||
+    new Youdao({
+      env: 'ext',
+      config:
+        process.env.YOUDAO_APPKEY && process.env.YOUDAO_KEY
+          ? {
+              appKey: process.env.YOUDAO_APPKEY,
+              key: process.env.YOUDAO_KEY
+            }
+          : undefined
+    }))
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   return `http://fanyi.youdao.com`

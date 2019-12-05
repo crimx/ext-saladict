@@ -10,7 +10,18 @@ import { SogouLanguage } from './config'
 
 let _translator: Sogou | undefined
 const getTranslator = () =>
-  (_translator = _translator || new Sogou({ env: 'ext' }))
+  (_translator =
+    _translator ||
+    new Sogou({
+      env: 'ext',
+      config:
+        process.env.SOGOU_PID && process.env.SOGOU_KEY
+          ? {
+              pid: process.env.SOGOU_PID,
+              key: process.env.SOGOU_KEY
+            }
+          : undefined
+    }))
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   const lang =

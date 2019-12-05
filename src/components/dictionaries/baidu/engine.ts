@@ -10,7 +10,18 @@ import { BaiduLanguage } from './config'
 
 let _translator: Baidu | undefined
 const getTranslator = () =>
-  (_translator = _translator || new Baidu({ env: 'ext' }))
+  (_translator =
+    _translator ||
+    new Baidu({
+      env: 'ext',
+      config:
+        process.env.BAIDU_APPID && process.env.BAIDU_KEY
+          ? {
+              appid: process.env.BAIDU_APPID,
+              key: process.env.BAIDU_KEY
+            }
+          : undefined
+    }))
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   const lang =

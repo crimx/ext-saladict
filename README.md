@@ -30,7 +30,25 @@ Saladict 7 is a complete rewrite with sophisticated interaction and buttery smoo
 
 [CHANGELOG.md](./CHANGELOG.md)
 
-## How can I contribute / build from source?
+## build from source
+
+```bash
+git clone git@github.com:crimx/ext-saladict.git
+cd ext-saladict
+yarn install
+```
+
+add a `.env` file following the `.env.example` format.
+
+```bash
+yarn build
+```
+
+Artifacts can be found in `build/`
+
+If you want to add a dictionary, follow the [contribution guide](./CONTRIBUTING.md).
+
+## How can I contribute / ?
 
 [CONTRIBUTING.md](./CONTRIBUTING.md)
 

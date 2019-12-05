@@ -11,7 +11,16 @@ import { CaiyunLanguage } from './config'
 
 let _translator: Caiyun | undefined
 const getTranslator = () =>
-  (_translator = _translator || new Caiyun({ env: 'ext' }))
+  (_translator =
+    _translator ||
+    new Caiyun({
+      env: 'ext',
+      config: process.env.CAIYUN_TOKEN
+        ? {
+            token: process.env.CAIYUN_TOKEN
+          }
+        : undefined
+    }))
 
 export const getSrcPage: GetSrcPageFunction = () => {
   return 'https://fanyi.caiyunapp.com/'

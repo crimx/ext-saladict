@@ -10,7 +10,18 @@ import { TencentLanguage } from './config'
 
 let _translator: Tencent | undefined
 const getTranslator = () =>
-  (_translator = _translator || new Tencent({ env: 'ext' }))
+  (_translator =
+    _translator ||
+    new Tencent({
+      env: 'ext',
+      config:
+        process.env.TENCENT_SECRETID && process.env.TENCENT_SECRETKEY
+          ? {
+              secretId: process.env.TENCENT_SECRETID,
+              secretKey: process.env.TENCENT_SECRETKEY
+            }
+          : undefined
+    }))
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   const lang =
