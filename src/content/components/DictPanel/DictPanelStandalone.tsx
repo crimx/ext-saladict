@@ -8,6 +8,7 @@ export interface DictPanelStandaloneProps {
   withAnimation: boolean
   darkMode: boolean
   colors: React.CSSProperties
+  panelCSS?: string
 
   menuBar: ReactNode
   mtaBox: ReactNode
@@ -17,26 +18,29 @@ export interface DictPanelStandaloneProps {
 
 export const DictPanelStandalone: FC<DictPanelStandaloneProps> = props => {
   return (
-    <div
-      className={
-        `dictPanel-Root ${SALADICT_PANEL}` +
-        (props.withAnimation ? ' isAnimate' : '')
-      }
-      style={{
-        ...props.colors,
-        width: props.width,
-        height: props.height,
-        '--panel-width': props.width,
-        '--panel-max-height': props.height
-      }}
-    >
-      <div className="dictPanel-Head">{props.menuBar}</div>
-      <div className="dictPanel-Body fancy-scrollbar">
-        {props.mtaBox}
-        {props.dictList}
+    <React.Fragment>
+      {props.panelCSS ? <style>{props.panelCSS}</style> : null}
+      <div
+        className={
+          `dictPanel-Root ${SALADICT_PANEL}` +
+          (props.withAnimation ? ' isAnimate' : '')
+        }
+        style={{
+          ...props.colors,
+          width: props.width,
+          height: props.height,
+          '--panel-width': props.width,
+          '--panel-max-height': props.height
+        }}
+      >
+        <div className="dictPanel-Head">{props.menuBar}</div>
+        <div className="dictPanel-Body fancy-scrollbar">
+          {props.mtaBox}
+          {props.dictList}
+        </div>
+        {props.waveformBox}
       </div>
-      {props.waveformBox}
-    </div>
+    </React.Fragment>
   )
 }
 
