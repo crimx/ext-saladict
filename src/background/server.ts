@@ -2,7 +2,7 @@ import { message, openURL } from '@/_helpers/browser-api'
 import { timeout, timer } from '@/_helpers/promise-more'
 import { getSuggests } from '@/_helpers/getSuggests'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
-import { newWord } from '@/_helpers/record-manager'
+import { newWord, Word } from '@/_helpers/record-manager'
 import { Message, MessageResponse } from '@/typings/message'
 import {
   SearchFunction,
@@ -22,12 +22,11 @@ import {
   getWords
 } from './database'
 import { play } from './audio-manager'
+import { MainWindowsManager, QsPanelManager } from './windows-manager'
 import './types'
 
-/** is a standalone panel running */
-let qsPanelID: number | false = false
-/** last focused window before standalone panel showing */
-let lastQsMainWindow: browser.windows.Window | undefined
+const mainWindowsManager = new MainWindowsManager()
+const qsPanelManager = new QsPanelManager()
 
 message.self.initServer()
 
@@ -51,11 +50,13 @@ message.addListener((msg, sender: browser.runtime.MessageSender) => {
       return injectDictPanel(sender.tab)
 
     case 'QUERY_QS_PANEL':
-      return Promise.resolve(qsPanelID !== false)
+      return Promise.resolve(qsPanelManager.hasCreated())
     case 'OPEN_QS_PANEL':
       return openQSPanel()
     case 'CLOSE_QS_PANEL':
       return closeQSPanel()
+    case 'QS_SWITCH_SIDEBAR':
+      return switchSidebar()
 
     case 'IS_IN_NOTEBOOK':
       return isInNotebook(msg.payload)
@@ -88,14 +89,15 @@ message.addListener((msg, sender: browser.runtime.MessageSender) => {
   }
 })
 
-browser.windows.onRemoved.addListener(async winID => {
-  if (winID === qsPanelID) {
-    qsPanelID = false
+browser.windows.onRemoved.addListener(async winId => {
+  if (qsPanelManager.isQsPanel(winId)) {
+    qsPanelManager.destroy()
+    mainWindowsManager.destroySnapshot()
     ;(await browser.tabs.query({})).forEach(tab => {
-      if (tab.id && tab.windowId !== winID) {
+      if (tab.id && tab.windowId !== winId) {
         message.send(tab.id, {
           type: 'QS_PANEL_CHANGED',
-          payload: qsPanelID !== false
+          payload: false
         })
       }
     })
@@ -103,12 +105,8 @@ browser.windows.onRemoved.addListener(async winID => {
 })
 
 export async function openQSPanel(): Promise<void> {
-  if (qsPanelID !== false) {
-    await browser.windows.update(qsPanelID, { focused: true })
-    const [tab] = await browser.tabs.query({ windowId: qsPanelID })
-    if (tab && tab.id) {
-      await message.send(tab.id, { type: 'QS_PANEL_FOCUSED' })
-    }
+  if (qsPanelManager.hasCreated()) {
+    qsPanelManager.focus()
     return
   }
 
@@ -172,73 +170,39 @@ export async function openQSPanel(): Promise<void> {
     }
   }
 
-  let url = browser.runtime.getURL(
-    `quick-search.html?sidebar=${tripleCtrlSidebar}`
-  )
+  if (tripleCtrlSidebar) {
+    await mainWindowsManager.takeSnapshot()
+  } else {
+    mainWindowsManager.destroySnapshot()
+  }
+
+  let word: Word | undefined
+
   if (window.appConfig.tripleCtrlPreload === 'selection') {
     const tab = (await browser.tabs.query({
       active: true,
       lastFocusedWindow: true
     }))[0]
     if (tab && tab.id) {
-      const info = await message.send(tab.id, {
+      word = await message.send<'PRELOAD_SELECTION'>(tab.id, {
         type: 'PRELOAD_SELECTION'
       })
-      try {
-        url += '&info=' + encodeURIComponent(JSON.stringify(info))
-      } catch (e) {
-        if (process.env.NODE_ENV === 'development') {
-          console.warn(e)
-        }
-      }
     }
   }
 
-  lastQsMainWindow = tripleCtrlSidebar
-    ? await browser.windows.getLastFocused()
-    : void 0
+  await qsPanelManager.create(
+    {
+      width: qsPanelWidth,
+      height: qsPanelHeight,
+      left: Math.round(qsPanelLeft),
+      top: Math.round(qsPanelTop)
+    },
+    tripleCtrlSidebar,
+    word
+  )
 
-  const qsPanelWin = await browser.windows.create({
-    type: 'popup',
-    url,
-    width: qsPanelWidth,
-    height: qsPanelHeight,
-    left: Math.round(qsPanelLeft),
-    top: Math.round(qsPanelTop)
-  })
-
-  if (qsPanelWin && qsPanelWin.id) {
-    qsPanelID = qsPanelWin.id
-    // notify all tabs
-    ;(await browser.tabs.query({})).forEach(tab => {
-      if (tab.id && tab.windowId !== qsPanelID) {
-        message.send(tab.id, {
-          type: 'QS_PANEL_CHANGED',
-          payload: qsPanelID !== false
-        })
-      }
-    })
-
-    if (lastQsMainWindow && lastQsMainWindow.id) {
-      await browser.windows.update(lastQsMainWindow.id, {
-        state: 'normal',
-        top: 0,
-        left: tripleCtrlSidebar === 'left' ? qsPanelWidth : 1,
-        width: window.screen.availWidth - qsPanelWidth,
-        height: window.screen.availHeight
-      })
-
-      // fix a chrome bugs by moving 1 extra pixal then to 0
-      if (tripleCtrlSidebar === 'right') {
-        await browser.windows.update(lastQsMainWindow.id, {
-          state: 'normal',
-          top: 0,
-          left: 0,
-          width: window.screen.availWidth - qsPanelWidth,
-          height: window.screen.availHeight
-        })
-      }
-    }
+  if (qsPanelManager.hasCreated()) {
+    await mainWindowsManager.makeRoomForSidebar(tripleCtrlSidebar, qsPanelWidth)
   }
 }
 
@@ -246,7 +210,7 @@ export async function searchClipboard(): Promise<void> {
   const text = await getClipboard()
   if (!text) return
 
-  if (!qsPanelID) {
+  if (!qsPanelManager.hasCreated()) {
     await openQSPanel()
     await timer(1000)
   }
@@ -258,20 +222,20 @@ export async function searchClipboard(): Promise<void> {
 }
 
 async function closeQSPanel(): Promise<void> {
-  if (
-    window.appConfig.tripleCtrlSidebar &&
-    lastQsMainWindow &&
-    lastQsMainWindow.id
-  ) {
-    await browser.windows.update(lastQsMainWindow.id, {
-      state: lastQsMainWindow.state,
-      top: lastQsMainWindow.top,
-      left: lastQsMainWindow.left,
-      width: lastQsMainWindow.width,
-      height: lastQsMainWindow.height
-    })
+  await mainWindowsManager.restoreSnapshot()
+  mainWindowsManager.destroySnapshot()
+}
+
+async function switchSidebar(): Promise<void> {
+  if (!qsPanelManager.hasCreated()) {
+    return
   }
-  lastQsMainWindow = void 0
+
+  if (qsPanelManager.isSidebar()) {
+    // @TODO
+  } else {
+    qsPanelManager.takeSnapshot()
+  }
 }
 
 async function openSrcPage({
