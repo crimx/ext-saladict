@@ -264,6 +264,9 @@ export type MessageConfig = MessageConfigType<{
   /** Focus standalone quick search panel */
   QS_PANEL_FOCUSED: {}
 
+  /** Switch to Sidebar */
+  QS_SWITCH_SIDEBAR: {}
+
   /* ------------------------------------------------ *\
      Word Editor
   \* ------------------------------------------------ */

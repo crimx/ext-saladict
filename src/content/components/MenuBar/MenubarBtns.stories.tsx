@@ -14,7 +14,8 @@ import {
   FavBtn,
   HistoryBtn,
   PinBtn,
-  CloseBtn
+  CloseBtn,
+  SidebarBtn
 } from './MenubarBtns'
 
 storiesOf('Content Scripts|Dict Panel/Menubar', module)
@@ -106,6 +107,15 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
   .add('CloseBtn', () => {
     return (
       <CloseBtn
+        t={i18next.getFixedT(i18next.language, 'content')}
+        disabled={boolean('Disabled', false)}
+        onClick={action('onClick')}
+      />
+    )
+  })
+  .add('SidebarBtn', () => {
+    return (
+      <SidebarBtn
         t={i18next.getFixedT(i18next.language, 'content')}
         disabled={boolean('Disabled', false)}
         onClick={action('onClick')}

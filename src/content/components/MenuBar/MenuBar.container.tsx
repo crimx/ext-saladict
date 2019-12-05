@@ -4,6 +4,7 @@ import { StoreState, StoreAction } from '@/content/redux/modules'
 import { Dispatch } from 'redux'
 import { isStandalonePage } from '@/_helpers/saladict'
 import { newWord } from '@/_helpers/record-manager'
+import { message } from '@/_helpers/browser-api'
 
 type Dispatchers =
   | 'searchText'
@@ -12,6 +13,7 @@ type Dispatchers =
   | 'updateHistoryIndex'
   | 'togglePin'
   | 'onClose'
+  | 'onSwitchSidebar'
   | 'onDragAreaMouseDown'
   | 'onDragAreaTouchStart'
   | 'onHeightChanged'
@@ -64,6 +66,9 @@ const mapDispatchToProps = (
     } else {
       dispatch({ type: 'CLOSE_PANEL' })
     }
+  },
+  onSwitchSidebar: () => {
+    message.send({ type: 'QS_SWITCH_SIDEBAR' })
   },
   onHeightChanged: (height: number) => {
     dispatch({

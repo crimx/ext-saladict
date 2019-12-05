@@ -16,7 +16,8 @@ export const locale: typeof _locale = {
     openHistory: 'Open History',
     shareImg: 'Share as image',
     pinPanel: 'Pin the panel',
-    closePanel: 'Close the panel'
+    closePanel: 'Close the panel',
+    sidebar: 'Switch to sidebar'
   },
   wordEditor: {
     title: 'Add to Notebook',

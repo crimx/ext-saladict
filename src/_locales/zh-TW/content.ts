@@ -16,7 +16,8 @@ export const locale: typeof _locale = {
     openHistory: '開啟查單字記錄',
     shareImg: '以圖片方式分享查單字結果',
     pinPanel: '釘選字典視窗',
-    closePanel: '關閉字典視窗'
+    closePanel: '關閉字典視窗',
+    sidebar: '切換側邊欄'
   },
   wordEditor: {
     title: '儲存到單字本',

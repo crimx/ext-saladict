@@ -242,10 +242,10 @@ async function summonedPanelInit(
           })
         }
       } else if (standalone === 'quick-search') {
-        const infoText = searchParams.get('info')
-        if (infoText) {
+        const wordString = searchParams.get('word')
+        if (wordString) {
           try {
-            word = JSON.parse(decodeURIComponent(infoText))
+            word = JSON.parse(decodeURIComponent(wordString))
           } catch (err) {
             word = null
           }

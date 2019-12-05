@@ -14,7 +14,8 @@ export const locale = {
     openHistory: '打开查词记录',
     shareImg: '以图片方式分享查词结果',
     pinPanel: '钉住查词面板',
-    closePanel: '关闭查词面板'
+    closePanel: '关闭查词面板',
+    sidebar: '切换侧边栏'
   },
   wordEditor: {
     title: '保存到生词本',

@@ -194,3 +194,20 @@ export const CloseBtn: FC<MenubarBtnProps> = props => {
     </button>
   )
 }
+
+export const SidebarBtn: FC<MenubarBtnProps> = props => {
+  const { t, ...restProps } = props
+  return (
+    <button className="menuBar-Btn" title={t('tip.sidebar')} {...restProps}>
+      <svg
+        className="menuBar-Btn_Icon"
+        width="30"
+        height="30"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 30 30"
+      >
+        <path d="M 29.318 0 L 0.682 0 C 0.305 0 0 0.305 0 0.682 L 0 29.318 C 0 29.695 0.305 30 0.682 30 L 29.318 30 C 29.695 30 30 29.695 30 29.318 L 30 0.682 C 30 0.305 29.695 0 29.318 0 Z M 9.545 28.636 L 1.364 28.636 L 1.364 1.364 L 9.545 1.364 L 9.545 28.636 Z M 28.636 28.636 L 10.909 28.636 L 10.909 1.364 L 28.636 1.364 L 28.636 28.636 Z" />
+      </svg>
+    </button>
+  )
+}

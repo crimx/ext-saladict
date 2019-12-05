@@ -12,7 +12,8 @@ import { message } from '@/_helpers/browser-api'
 import {
   isStandalonePage,
   isOptionsPage,
-  isPopupPage
+  isPopupPage,
+  isQuickSearchPage
 } from '@/_helpers/saladict'
 import {
   HistoryBackBtn,
@@ -20,7 +21,8 @@ import {
   FavBtn,
   HistoryBtn,
   PinBtn,
-  CloseBtn
+  CloseBtn,
+  SidebarBtn
 } from './MenubarBtns'
 import { SearchBox, SearchBoxProps } from './SearchBox'
 import { Profiles, ProfilesProps } from './Profiles'
@@ -50,6 +52,7 @@ export interface MenuBarProps {
   togglePin: () => any
 
   onClose: () => any
+  onSwitchSidebar: () => any
 
   onHeightChanged: (height: number) => void
 
@@ -104,11 +107,13 @@ export const MenuBar: FC<MenuBarProps> = props => {
         onSearch={props.searchText}
         onHeightChanged={updateSBHeight}
       />
-      <div
-        className={`menuBar-DragArea${isStandalonePage() ? '' : ' isActive'}`}
-        onMouseDown={props.onDragAreaMouseDown}
-        onTouchStart={props.onDragAreaTouchStart}
-      />
+      {isStandalonePage() || (
+        <div
+          className="menuBar-DragArea"
+          onMouseDown={props.onDragAreaMouseDown}
+          onTouchStart={props.onDragAreaTouchStart}
+        />
+      )}
       <ProfilesMemo
         t={t}
         profiles={props.profiles}
@@ -154,7 +159,11 @@ export const MenuBar: FC<MenuBarProps> = props => {
         onClick={props.togglePin}
         disabled={isOptionsPage() || isPopupPage()}
       />
-      <CloseBtn t={t} onClick={props.onClose} />
+      {isQuickSearchPage() ? (
+        <SidebarBtn t={t} onClick={props.onSwitchSidebar} />
+      ) : (
+        <CloseBtn t={t} onClick={props.onClose} />
+      )}
     </header>
   )
 }
