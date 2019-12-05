@@ -80,7 +80,7 @@ function _getDefaultConfig() {
     fontSize: 13,
 
     /** sniff pdf request */
-    pdfSniff: true,
+    pdfSniff: false,
     /** URLs, [regexp.source, match_pattern] */
     pdfWhitelist: [] as [string, string][],
     /** URLs, [regexp.source, match_pattern] */
