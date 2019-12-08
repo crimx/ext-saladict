@@ -36,6 +36,7 @@ module.exports = {
     'import/no-webpack-loader-syntax': 'off',
     camelcase: 'off',
     'no-unused-vars': 'off',
+    'no-useless-return': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
