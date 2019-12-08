@@ -86,7 +86,11 @@ function _getDefaultConfig() {
     /** URLs, [regexp.source, match_pattern] */
     // tslint:disable-next-line: no-unnecessary-type-assertion
     pdfBlacklist: [
-      ['^(http|https)://[^/]*?cnki.net(/.*)?$', '*://*.cnki.net/*']
+      ['^(http|https)://[^/]*?cnki\\.net(/.*)?$', '*://*.cnki.net/*'],
+      [
+        '^(http|https)://[^/]*?googleusercontent\\.com(/.*)?$',
+        '*://*.googleusercontent.com/*'
+      ]
     ] as [string, string][],
 
     /** track search history */
@@ -288,10 +292,10 @@ function _getDefaultConfig() {
     whitelist: [] as [string, string][],
     /** URLs, [regexp.source, match_pattern] */
     // tslint:disable-next-line: no-unnecessary-type-assertion
-    blacklist: [['^https://stackedit.io(/.*)?$', 'https://stackedit.io/*']] as [
-      string,
-      string
-    ][],
+    blacklist: [
+      ['^https://stackedit\\.io(/.*)?$', 'https://stackedit.io/*'],
+      ['^https://docs\\.google\\.com(/.*)?$', 'https://docs.google.com/*']
+    ] as [string, string][],
 
     contextMenus: {
       selected: [
