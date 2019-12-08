@@ -99,6 +99,7 @@ export const MenuBar: FC<MenuBarProps> = props => {
         onClick={() => props.updateHistoryIndex(props.historyIndex + 1)}
       />
       <SearchBox
+        key="searchbox"
         t={t}
         text={props.text}
         shouldFocus={props.shouldFocus}

@@ -2,7 +2,7 @@ import { message, openURL } from '@/_helpers/browser-api'
 import { timeout, timer } from '@/_helpers/promise-more'
 import { getSuggests } from '@/_helpers/getSuggests'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
-import { newWord, Word } from '@/_helpers/record-manager'
+import { newWord } from '@/_helpers/record-manager'
 import { Message, MessageResponse } from '@/typings/message'
 import {
   SearchFunction,
@@ -110,99 +110,14 @@ export async function openQSPanel(): Promise<void> {
     return
   }
 
-  const {
-    tripleCtrlLocation,
-    panelWidth,
-    tripleCtrlHeight,
-    tripleCtrlSidebar
-  } = window.appConfig
-  let qsPanelLeft = 10
-  let qsPanelTop = 30
-  let qsPanelWidth = window.appConfig.panelWidth
-  let qsPanelHeight = window.appConfig.tripleCtrlHeight
+  await mainWindowsManager.takeSnapshot()
 
-  if (tripleCtrlSidebar === 'left') {
-    qsPanelLeft = 0
-    qsPanelTop = 0
-    qsPanelHeight = window.screen.availHeight
-  } else if (tripleCtrlSidebar === 'right') {
-    qsPanelLeft = window.screen.availWidth - qsPanelWidth
-    qsPanelTop = 0
-    qsPanelHeight = window.screen.availHeight
-  } else {
-    switch (tripleCtrlLocation) {
-      case 'CENTER':
-        qsPanelLeft = (screen.width - panelWidth) / 2
-        qsPanelTop = (screen.height - tripleCtrlHeight) / 2
-        break
-      case 'TOP':
-        qsPanelLeft = (screen.width - panelWidth) / 2
-        qsPanelTop = 30
-        break
-      case 'RIGHT':
-        qsPanelLeft = screen.width - panelWidth - 30
-        qsPanelTop = (screen.height - tripleCtrlHeight) / 2
-        break
-      case 'BOTTOM':
-        qsPanelLeft = (screen.width - panelWidth) / 2
-        qsPanelTop = screen.height - 10
-        break
-      case 'LEFT':
-        qsPanelLeft = 10
-        qsPanelTop = (screen.height - tripleCtrlHeight) / 2
-        break
-      case 'TOP_LEFT':
-        qsPanelLeft = 10
-        qsPanelTop = 30
-        break
-      case 'TOP_RIGHT':
-        qsPanelLeft = screen.width - panelWidth - 30
-        qsPanelTop = 30
-        break
-      case 'BOTTOM_LEFT':
-        qsPanelLeft = 10
-        qsPanelTop = screen.height - 10
-        break
-      case 'BOTTOM_RIGHT':
-        qsPanelLeft = screen.width - panelWidth - 30
-        qsPanelTop = screen.height - 10
-        break
-    }
-  }
-
-  if (tripleCtrlSidebar) {
-    await mainWindowsManager.takeSnapshot()
-  } else {
-    mainWindowsManager.destroySnapshot()
-  }
-
-  let word: Word | undefined
-
-  if (window.appConfig.tripleCtrlPreload === 'selection') {
-    const tab = (await browser.tabs.query({
-      active: true,
-      lastFocusedWindow: true
-    }))[0]
-    if (tab && tab.id) {
-      word = await message.send<'PRELOAD_SELECTION'>(tab.id, {
-        type: 'PRELOAD_SELECTION'
-      })
-    }
-  }
-
-  await qsPanelManager.create(
-    {
-      width: qsPanelWidth,
-      height: qsPanelHeight,
-      left: Math.round(qsPanelLeft),
-      top: Math.round(qsPanelTop)
-    },
-    tripleCtrlSidebar,
-    word
-  )
+  await qsPanelManager.create()
 
   if (qsPanelManager.hasCreated()) {
-    await mainWindowsManager.makeRoomForSidebar(tripleCtrlSidebar, qsPanelWidth)
+    if (window.appConfig.tripleCtrlSidebar) {
+      await mainWindowsManager.makeRoomForSidebar()
+    }
   }
 }
 
@@ -231,10 +146,13 @@ async function switchSidebar(): Promise<void> {
     return
   }
 
-  if (qsPanelManager.isSidebar()) {
-    // @TODO
+  if (await qsPanelManager.isSidebar()) {
+    await qsPanelManager.restoreSnapshot()
+    await mainWindowsManager.restoreSnapshot()
   } else {
-    qsPanelManager.takeSnapshot()
+    await qsPanelManager.takeSnapshot()
+    await qsPanelManager.moveToSidebar()
+    await mainWindowsManager.makeRoomForSidebar()
   }
 }
 
