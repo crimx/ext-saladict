@@ -14,6 +14,7 @@ import {
   FavBtn,
   HistoryBtn,
   PinBtn,
+  FocusBtn,
   CloseBtn,
   SidebarBtn
 } from './MenubarBtns'
@@ -97,6 +98,16 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
   .add('PinBtn', () => {
     return (
       <PinBtn
+        t={i18next.getFixedT(i18next.language, 'content')}
+        disabled={boolean('Disabled', false)}
+        isPinned={boolean('Is pinned', false)}
+        onClick={action('onClick')}
+      />
+    )
+  })
+  .add('FocusBtn', () => {
+    return (
+      <FocusBtn
         t={i18next.getFixedT(i18next.language, 'content')}
         disabled={boolean('Disabled', false)}
         isPinned={boolean('Is pinned', false)}

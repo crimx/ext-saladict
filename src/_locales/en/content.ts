@@ -17,7 +17,9 @@ export const locale: typeof _locale = {
     shareImg: 'Share as image',
     pinPanel: 'Pin the panel',
     closePanel: 'Close the panel',
-    sidebar: 'Switch to sidebar'
+    sidebar: 'Switch to sidebar mode',
+    focusPanel: 'Panel gains focus when searching',
+    unfocusPanel: 'Panel does not gain focus when searching'
   },
   wordEditor: {
     title: 'Add to Notebook',

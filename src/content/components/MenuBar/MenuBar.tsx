@@ -22,7 +22,8 @@ import {
   HistoryBtn,
   PinBtn,
   CloseBtn,
-  SidebarBtn
+  SidebarBtn,
+  FocusBtn
 } from './MenubarBtns'
 import { SearchBox, SearchBoxProps } from './SearchBox'
 import { Profiles, ProfilesProps } from './Profiles'
@@ -154,16 +155,26 @@ export const MenuBar: FC<MenuBarProps> = props => {
           })
         }
       />
-      <PinBtn
-        t={t}
-        isPinned={props.isPinned}
-        onClick={props.togglePin}
-        disabled={isOptionsPage() || isPopupPage()}
-      />
       {isQuickSearchPage() ? (
-        <SidebarBtn t={t} onClick={props.onSwitchSidebar} />
+        <>
+          <FocusBtn
+            t={t}
+            isPinned={props.isPinned}
+            onClick={props.togglePin}
+            disabled={isOptionsPage() || isPopupPage()}
+          />
+          <SidebarBtn t={t} onClick={props.onSwitchSidebar} />
+        </>
       ) : (
-        <CloseBtn t={t} onClick={props.onClose} />
+        <>
+          <PinBtn
+            t={t}
+            isPinned={props.isPinned}
+            onClick={props.togglePin}
+            disabled={isOptionsPage() || isPopupPage()}
+          />
+          <CloseBtn t={t} onClick={props.onClose} />
+        </>
       )}
     </header>
   )
