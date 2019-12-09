@@ -21,7 +21,7 @@ import {
   getWordsByText,
   getWords
 } from './database'
-import { play } from './audio-manager'
+import { AudioManager } from './audio-manager'
 import { MainWindowsManager, QsPanelManager } from './windows-manager'
 import './types'
 
@@ -38,7 +38,7 @@ message.addListener((msg, sender: browser.runtime.MessageSender) => {
     case 'OPEN_URL':
       return openURL(msg.payload.url, msg.payload.self)
     case 'PLAY_AUDIO':
-      return play(msg.payload)
+      return AudioManager.getInstance().play(msg.payload)
     case 'FETCH_DICT_RESULT':
       return fetchDictResult(msg.payload)
     case 'DICT_ENGINE_METHOD':
