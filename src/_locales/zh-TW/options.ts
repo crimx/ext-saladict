@@ -92,8 +92,8 @@ export const locale: typeof _locale = {
     bowl_hover: '圖示暫留查字',
     bowl_hover_help: '滑鼠暫留在沙拉圖示上開啟字典介面，否則需要點選。',
     bowl_offset: {
-      x: '圖示水平偏移',
-      y: '圖示垂直偏移'
+      x: '沙拉圖示水平偏移',
+      y: '沙拉圖示垂直偏移'
     },
     config: {
       export: '匯出設定',

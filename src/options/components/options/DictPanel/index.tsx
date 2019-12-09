@@ -72,6 +72,12 @@ export class DictPanel extends React.Component<DictPanelProps> {
             valuePropName: 'checked'
           })(<Switch />)}
         </Form.Item>
+        <Form.Item {...formItemLayout} label={t('opt.dark_mode')}>
+          {getFieldDecorator('config#darkMode', {
+            initialValue: config.darkMode,
+            valuePropName: 'checked'
+          })(<Switch />)}
+        </Form.Item>
         <Form.Item {...formItemLayout} label={t('opt.dictPanel.height_ratio')}>
           {getFieldDecorator('config#panelMaxHeightRatio', {
             initialValue: config.panelMaxHeightRatio,
@@ -90,11 +96,17 @@ export class DictPanel extends React.Component<DictPanelProps> {
             rules: [{ type: 'number', whitespace: true }]
           })(<InputNumberGroup suffix="px" />)}
         </Form.Item>
-        <Form.Item {...formItemLayout} label={t('opt.dark_mode')}>
-          {getFieldDecorator('config#darkMode', {
-            initialValue: config.darkMode,
-            valuePropName: 'checked'
-          })(<Switch />)}
+        <Form.Item {...formItemLayout} label={t('opt.bowl_offset.x')}>
+          {getFieldDecorator(`config#bowlOffsetX`, {
+            initialValue: config.bowlOffsetX,
+            rules: [{ type: 'number', whitespace: true }]
+          })(<InputNumberGroup style={{ width: 80 }} suffix="px" />)}
+        </Form.Item>
+        <Form.Item {...formItemLayout} label={t('opt.bowl_offset.y')}>
+          {getFieldDecorator(`config#bowlOffsetY`, {
+            initialValue: config.bowlOffsetY,
+            rules: [{ type: 'number', whitespace: true }]
+          })(<InputNumberGroup style={{ width: 80 }} suffix="px" />)}
         </Form.Item>
         <Form.Item
           {...formItemLayout}

@@ -97,8 +97,8 @@ export const locale: typeof _locale = {
     bowl_hover_help:
       'Hover on the bowl icon to trigger searching instead of clicking.',
     bowl_offset: {
-      x: 'Icon Offset X',
-      y: 'Icon Offset Y'
+      x: 'Saladict icon Offset X',
+      y: 'Saladict icon Offset Y'
     },
     config: {
       export: 'Export Configs',

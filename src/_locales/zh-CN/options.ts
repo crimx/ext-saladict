@@ -90,8 +90,8 @@ export const locale = {
     bowl_hover: '图标悬停查词',
     bowl_hover_help: '鼠标悬停在沙拉图标上触发查词，否则需要点击。',
     bowl_offset: {
-      x: '图标水平偏移',
-      y: '图标垂直偏移'
+      x: '沙拉图标水平偏移',
+      y: '沙拉图标垂直偏移'
     },
     config: {
       export: '导出设定',
