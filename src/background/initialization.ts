@@ -5,7 +5,7 @@ import checkUpdate from '@/_helpers/check-update'
 import { updateConfig, initConfig } from '@/_helpers/config-manager'
 import { initProfiles } from '@/_helpers/profile-manager'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
-import { openPDF, openGoogle, openYoudao } from './context-menus'
+import { ContextMenus } from './context-menus'
 import { openQSPanel, searchClipboard } from './server'
 import './types'
 
@@ -75,13 +75,13 @@ function onCommand(command: string) {
       openQSPanel()
       break
     case 'open-google':
-      openGoogle()
+      ContextMenus.openGoogle()
       break
     case 'open-youdao':
-      openYoudao()
+      ContextMenus.openYoudao()
       break
     case 'open-pdf':
-      openPDF()
+      ContextMenus.openPDF()
       break
     case 'search-clipboard':
       searchClipboard()
