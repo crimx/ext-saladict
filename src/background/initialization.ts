@@ -6,7 +6,7 @@ import { updateConfig, initConfig } from '@/_helpers/config-manager'
 import { initProfiles } from '@/_helpers/profile-manager'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
 import { ContextMenus } from './context-menus'
-import { openQSPanel, searchClipboard } from './server'
+import { BackgroundServer } from './server'
 import './types'
 
 interface UpdateData {
@@ -72,7 +72,7 @@ function onCommand(command: string) {
       })
       break
     case 'open-quick-search':
-      openQSPanel()
+      BackgroundServer.getInstance().openQSPanel()
       break
     case 'open-google':
       ContextMenus.openGoogle()
@@ -84,7 +84,7 @@ function onCommand(command: string) {
       ContextMenus.openPDF()
       break
     case 'search-clipboard':
-      searchClipboard()
+      BackgroundServer.getInstance().searchClipboard()
       break
   }
 }

@@ -1,4 +1,4 @@
-import './server'
+import { BackgroundServer } from './server'
 import './initialization'
 import { getConfig, addConfigListener } from '@/_helpers/config-manager'
 import {
@@ -15,6 +15,7 @@ import './types'
 startSyncServiceInterval()
 
 ContextMenus.init()
+BackgroundServer.init()
 
 getConfig().then(async config => {
   window.appConfig = config
