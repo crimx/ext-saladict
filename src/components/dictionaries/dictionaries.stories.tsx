@@ -53,17 +53,28 @@ const stories = storiesOf('Content Scripts|Dictionaries', module)
   )
   .addDecorator(withKnobs)
 
-Object.keys(getAllDicts()).forEach(id => {
-  // @ts-ignore: wrong storybook typing
-  stories.add(id, ({ fontSize, withAnimation }) => (
-    <Dict
-      key={id}
-      dictID={id as DictID}
-      fontSize={fontSize}
-      withAnimation={withAnimation}
-    />
-  ))
-})
+Object.keys(getAllDicts())
+  .filter(
+    // opentranslate
+    id =>
+      id !== 'baidu' &&
+      id !== 'caiyun' &&
+      id !== 'google' &&
+      id !== 'sogou' &&
+      id !== 'tencent' &&
+      id !== 'youdaotrans'
+  )
+  .forEach(id => {
+    // @ts-ignore: wrong storybook typing
+    stories.add(id, ({ fontSize, withAnimation }) => (
+      <Dict
+        key={id}
+        dictID={id as DictID}
+        fontSize={fontSize}
+        withAnimation={withAnimation}
+      />
+    ))
+  })
 
 function Dict(props: {
   dictID: DictID
@@ -179,6 +190,7 @@ function Dict(props: {
         action('Speaker Play')(src)
         return Promise.resolve()
       }}
+      onInPanelSelect={action('Inpanel Select')}
     />
   )
 }
