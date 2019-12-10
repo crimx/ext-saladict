@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.5.3](https://github.com/crimx/ext-saladict/compare/v7.5.2...v7.5.3) (2019-12-10)
+
+
+### Bug Fixes
+
+* **dicts:** update moji ([fb528b1](https://github.com/crimx/ext-saladict/commit/fb528b1))
+* self messaging server init order ([8473faa](https://github.com/crimx/ext-saladict/commit/8473faa))
+* 自定义 css 对独立面板不生效 ([#579](https://github.com/crimx/ext-saladict/issues/579)) ([1db0c5a](https://github.com/crimx/ext-saladict/commit/1db0c5a))
+
+
+### Tests
+
+* remove opentranslate ([d655258](https://github.com/crimx/ext-saladict/commit/d655258))
+* update api ([34535ea](https://github.com/crimx/ext-saladict/commit/34535ea))
+* update webdav testing ([782f288](https://github.com/crimx/ext-saladict/commit/782f288))
+
+
+
 ### [7.5.2](https://github.com/crimx/ext-saladict/compare/v7.5.1...v7.5.2) (2019-11-11)
 
 
