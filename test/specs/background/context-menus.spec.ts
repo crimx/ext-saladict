@@ -21,7 +21,7 @@ function specialConfig() {
   return config
 }
 
-describe('Context Menus', () => {
+describe.skip('Context Menus', () => {
   beforeAll(() => {
     // Order matters. Do not change.
     browser.flush()

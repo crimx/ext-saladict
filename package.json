@@ -9,7 +9,7 @@
     "build": "webpack --mode production",
     "devbuild": "webpack --mode development",
     "type-check": "tsc --noEmit",
-    "test": "jest",
+    "test": "jest --testTimeout 20000",
     "test:watch": "jest --watch",
     "zip": "yarn neutrino-webextension-zip",
     "commit": "git-cz",
