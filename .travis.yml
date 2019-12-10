@@ -1,13 +1,6 @@
 language: node_js
 node_js:
-  - "12"
-before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 1.16.0
-  - export PATH=$HOME/.yarn/bin:$PATH
-cache:
-  yarn: true
-  directories:
-    - node_modules
+  - 'stable'
 script:
-  - yarn test
   - yarn build
+  - yarn test
