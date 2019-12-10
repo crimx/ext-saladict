@@ -10,7 +10,6 @@ import {
 import {
   HTMLString,
   getInnerHTML,
-  handleNoResult,
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
@@ -101,7 +100,7 @@ function handleDOM(
   langCode: string
 ): HjdictSearchResult | Promise<HjdictSearchResult> {
   if (doc.querySelector('.word-notfound')) {
-    return handleNoResult()
+    return wrapNoResult(langCode)
   }
 
   const $suggests = doc.querySelector('.word-suggestions')
@@ -115,7 +114,7 @@ function handleDOM(
         }
       }
     }
-    return handleNoResult()
+    return wrapNoResult(langCode)
   }
 
   let header = ''
@@ -152,7 +151,17 @@ function handleDOM(
 
   return entries.length > 0
     ? { result: { type: 'lex', header, entries, langCode } }
-    : handleNoResult()
+    : wrapNoResult(langCode)
+}
+
+function wrapNoResult(langCode: string): DictSearchResult<HjdictResultRelated> {
+  return {
+    result: {
+      type: 'related',
+      langCode,
+      content: '<p style="text-align:center;">No Result</p>'
+    }
+  }
 }
 
 /**
