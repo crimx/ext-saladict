@@ -49,8 +49,6 @@ export class BackgroundServer {
     this.mainWindowsManager = new MainWindowsManager()
     this.qsPanelManager = new QsPanelManager()
 
-    message.self.initServer()
-
     message.addListener((msg, sender: browser.runtime.MessageSender) => {
       switch (msg.type) {
         case 'OPEN_DICT_SRC_PAGE':
