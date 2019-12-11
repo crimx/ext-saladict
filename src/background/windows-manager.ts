@@ -52,14 +52,12 @@ export class MainWindowsManager {
       mainWin.width != null &&
       mainWin.height != null
         ? {
-            state: 'normal' as 'normal',
             top: mainWin.top,
             left: side === 'right' ? mainWin.left : mainWin.left + sidebarWidth,
             width: mainWin.width - sidebarWidth,
             height: mainWin.height
           }
         : {
-            state: 'normal' as 'normal',
             top: 0,
             left: side === 'right' ? 0 : sidebarWidth,
             width: window.screen.availWidth - sidebarWidth,
@@ -80,7 +78,6 @@ export class MainWindowsManager {
   async restoreSnapshot(): Promise<void> {
     if (this.snapshot && this.snapshot.id != null) {
       await safeUpdateWindow(this.snapshot.id, {
-        state: this.snapshot.state,
         top: this.snapshot.top,
         left: this.snapshot.left,
         width: this.snapshot.width,
@@ -207,7 +204,6 @@ export class QsPanelManager {
     await this.mainWindowsManager.restoreSnapshot()
     if (this.snapshot != null && this.snapshot.id != null) {
       await safeUpdateWindow(this.snapshot.id, {
-        state: this.snapshot.state,
         top: this.snapshot.top,
         left: this.snapshot.left,
         width: this.snapshot.width,
