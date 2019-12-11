@@ -22,7 +22,7 @@ import {
   getWords
 } from './database'
 import { AudioManager } from './audio-manager'
-import { MainWindowsManager, QsPanelManager } from './windows-manager'
+import { QsPanelManager } from './windows-manager'
 import './types'
 
 /**
@@ -40,13 +40,10 @@ export class BackgroundServer {
 
   static init = BackgroundServer.getInstance
 
-  private mainWindowsManager: MainWindowsManager
-
   private qsPanelManager: QsPanelManager
 
   // singleton
   private constructor() {
-    this.mainWindowsManager = new MainWindowsManager()
     this.qsPanelManager = new QsPanelManager()
 
     message.addListener((msg, sender: browser.runtime.MessageSender) => {
@@ -72,9 +69,9 @@ export class BackgroundServer {
         case 'OPEN_QS_PANEL':
           return this.openQSPanel()
         case 'CLOSE_QS_PANEL':
-          return this.closeQSPanel()
+          return this.qsPanelManager.destroy()
         case 'QS_SWITCH_SIDEBAR':
-          return this.switchSidebar()
+          return this.qsPanelManager.toggleSidebar()
 
         case 'IS_IN_NOTEBOOK':
           return isInNotebook(msg.payload)
@@ -110,7 +107,6 @@ export class BackgroundServer {
     browser.windows.onRemoved.addListener(async winId => {
       if (this.qsPanelManager.isQsPanel(winId)) {
         this.qsPanelManager.destroy()
-        this.mainWindowsManager.destroySnapshot()
         ;(await browser.tabs.query({})).forEach(tab => {
           if (tab.id && tab.windowId !== winId) {
             message.send(tab.id, {
@@ -128,16 +124,7 @@ export class BackgroundServer {
       this.qsPanelManager.focus()
       return
     }
-
-    await this.mainWindowsManager.takeSnapshot()
-
     await this.qsPanelManager.create()
-
-    if (await this.qsPanelManager.hasCreated()) {
-      if (window.appConfig.tripleCtrlSidebar) {
-        await this.mainWindowsManager.makeRoomForSidebar()
-      }
-    }
   }
 
   async searchClipboard(): Promise<void> {
@@ -153,26 +140,6 @@ export class BackgroundServer {
       type: 'QS_PANEL_SEARCH_TEXT',
       payload: newWord({ text })
     })
-  }
-
-  async closeQSPanel(): Promise<void> {
-    await this.mainWindowsManager.restoreSnapshot()
-    this.mainWindowsManager.destroySnapshot()
-  }
-
-  async switchSidebar(): Promise<void> {
-    if (!(await this.qsPanelManager.hasCreated())) {
-      return
-    }
-
-    if (await this.qsPanelManager.isSidebar()) {
-      await this.qsPanelManager.restoreSnapshot()
-      await this.mainWindowsManager.restoreSnapshot()
-    } else {
-      await this.qsPanelManager.takeSnapshot()
-      await this.qsPanelManager.moveToSidebar()
-      await this.mainWindowsManager.makeRoomForSidebar()
-    }
   }
 
   async openSrcPage({

@@ -7,6 +7,9 @@ interface WinRect {
   top: number
 }
 
+const safeUpdateWindow: typeof browser.windows.update = (...args) =>
+  browser.windows.update(...args).catch(console.warn as (m: any) => undefined)
+
 /**
  * Manipulate main window
  */
@@ -14,55 +17,79 @@ export class MainWindowsManager {
   /** Main window snapshot */
   private snapshot: browser.windows.Window | null = null
 
-  async takeSnapshot(): Promise<void> {
-    this.snapshot = await browser.windows.getLastFocused()
+  async takeSnapshot(): Promise<browser.windows.Window | null> {
+    try {
+      return (this.snapshot = await browser.windows.getLastFocused({
+        windowTypes: ['normal']
+      }))
+    } catch (e) {
+      console.warn(e)
+    }
+
+    return (this.snapshot = null)
   }
 
   destroySnapshot(): void {
     this.snapshot = null
   }
 
-  async makeRoomForSidebar(): Promise<void> {
-    if (!this.snapshot || this.snapshot.id == null) {
+  async makeRoomForSidebar(
+    sidebarSnapshot: browser.windows.Window | null
+  ): Promise<void> {
+    const mainWin = this.snapshot
+
+    if (!mainWin || mainWin.id == null) {
       return
     }
 
-    await browser.windows.update(this.snapshot.id, {
-      state: 'normal',
-      top: 0,
-      // fix a chrome bug by moving 1 extra pixal then to 0
-      left:
-        window.appConfig.tripleCtrlSidebar === 'right'
-          ? 1
-          : window.appConfig.panelWidth,
-      width: window.screen.availWidth - window.appConfig.panelWidth,
-      height: window.screen.availHeight
-    })
+    const sidebarWidth =
+      (sidebarSnapshot && sidebarSnapshot.width) || window.appConfig.panelWidth
 
-    // fix a chrome bug by moving 1 extra pixal then to 0
+    const updateInfo =
+      mainWin.top != null &&
+      mainWin.left != null &&
+      mainWin.width != null &&
+      mainWin.height != null
+        ? {
+            state: 'normal' as 'normal',
+            top: mainWin.top,
+            left:
+              window.appConfig.tripleCtrlSidebar === 'right'
+                ? mainWin.left
+                : mainWin.left + sidebarWidth,
+            width: mainWin.width - sidebarWidth,
+            height: mainWin.height
+          }
+        : {
+            state: 'normal' as 'normal',
+            top: 0,
+            left:
+              window.appConfig.tripleCtrlSidebar === 'right' ? 0 : sidebarWidth,
+            width: window.screen.availWidth - sidebarWidth,
+            height: window.screen.availHeight
+          }
+
     if (window.appConfig.tripleCtrlSidebar === 'right') {
-      await browser.windows.update(this.snapshot.id, {
-        state: 'normal',
-        top: 0,
-        left: 0,
-        width: window.screen.availWidth - window.appConfig.panelWidth,
-        height: window.screen.availHeight
+      // fix a chrome bug by moving 1 extra pixal then to 0
+      await safeUpdateWindow(mainWin.id, {
+        ...updateInfo,
+        left: updateInfo.left + 1
       })
     }
+
+    await safeUpdateWindow(mainWin.id, updateInfo)
   }
 
   async restoreSnapshot(): Promise<void> {
-    if (!this.snapshot || this.snapshot.id == null) {
-      return
+    if (this.snapshot && this.snapshot.id != null) {
+      await safeUpdateWindow(this.snapshot.id, {
+        state: this.snapshot.state,
+        top: this.snapshot.top,
+        left: this.snapshot.left,
+        width: this.snapshot.width,
+        height: this.snapshot.height
+      })
     }
-
-    await browser.windows.update(this.snapshot.id, {
-      state: this.snapshot.state,
-      top: this.snapshot.top,
-      left: this.snapshot.left,
-      width: this.snapshot.width,
-      height: this.snapshot.height
-    })
   }
 }
 
@@ -72,8 +99,12 @@ export class MainWindowsManager {
 export class QsPanelManager {
   private qsPanelId: number | null = null
   private snapshot: browser.windows.Window | null = null
+  private isSidebar: boolean = false
+  private mainWindowsManager = new MainWindowsManager()
 
   async create(): Promise<void> {
+    this.isSidebar = false
+
     let wordString = ''
     if (window.appConfig.tripleCtrlPreload === 'selection') {
       const tab = (await browser.tabs.query({
@@ -94,7 +125,7 @@ export class QsPanelManager {
 
     const qsPanelWin = await browser.windows.create({
       ...(window.appConfig.tripleCtrlSidebar
-        ? this.getSidebarRect()
+        ? await this.getSidebarRect()
         : this.getDefaultRect()),
       type: 'popup',
       url: browser.runtime.getURL(
@@ -104,6 +135,12 @@ export class QsPanelManager {
 
     if (qsPanelWin && qsPanelWin.id) {
       this.qsPanelId = qsPanelWin.id
+
+      if (window.appConfig.tripleCtrlSidebar) {
+        this.isSidebar = true
+        await this.mainWindowsManager.makeRoomForSidebar(qsPanelWin)
+      }
+
       // notify all tabs
       ;(await browser.tabs.query({})).forEach(tab => {
         if (tab.id && tab.windowId !== this.qsPanelId) {
@@ -123,9 +160,12 @@ export class QsPanelManager {
     return browser.windows.get(this.qsPanelId).catch(() => null)
   }
 
-  destroy(): void {
+  async destroy(): Promise<void> {
     this.qsPanelId = null
+    this.isSidebar = false
     this.destroySnapshot()
+    await this.mainWindowsManager.restoreSnapshot()
+    this.mainWindowsManager.destroySnapshot()
   }
 
   isQsPanel(winId?: number): boolean {
@@ -142,7 +182,7 @@ export class QsPanelManager {
 
   async focus(): Promise<void> {
     if (this.qsPanelId != null) {
-      await browser.windows.update(this.qsPanelId, { focused: true })
+      await safeUpdateWindow(this.qsPanelId, { focused: true })
       const [tab] = await browser.tabs.query({ windowId: this.qsPanelId })
       if (tab && tab.id) {
         await message.send(tab.id, { type: 'QS_PANEL_FOCUSED' })
@@ -152,7 +192,9 @@ export class QsPanelManager {
 
   async takeSnapshot(): Promise<void> {
     if (this.qsPanelId != null) {
-      this.snapshot = await browser.windows.get(this.qsPanelId)
+      this.snapshot = await browser.windows
+        .get(this.qsPanelId)
+        .catch(() => null)
     }
   }
 
@@ -161,9 +203,10 @@ export class QsPanelManager {
   }
 
   async restoreSnapshot(): Promise<void> {
+    // restore main window first so that it will be at the bottom
+    await this.mainWindowsManager.restoreSnapshot()
     if (this.snapshot != null && this.snapshot.id != null) {
-      await browser.windows.update(this.snapshot.id, {
-        focused: true,
+      await safeUpdateWindow(this.snapshot.id, {
         state: this.snapshot.state,
         top: this.snapshot.top,
         left: this.snapshot.left,
@@ -171,44 +214,34 @@ export class QsPanelManager {
         height: this.snapshot.height
       })
     } else if (this.qsPanelId != null) {
-      await browser.windows.update(this.qsPanelId, {
-        state: 'normal',
+      await safeUpdateWindow(this.qsPanelId, {
         focused: true,
         ...this.getDefaultRect()
       })
     }
+    this.destroySnapshot()
   }
 
   async moveToSidebar(): Promise<void> {
     if (this.qsPanelId != null) {
-      await browser.windows.update(this.qsPanelId, {
-        state: 'normal',
-        focused: true,
-        ...this.getSidebarRect()
-      })
+      await this.takeSnapshot()
+      await safeUpdateWindow(this.qsPanelId, await this.getSidebarRect())
+      await this.mainWindowsManager.makeRoomForSidebar(this.snapshot)
     }
   }
 
-  /**
-   * Rough matching win rect
-   */
-  async isSidebar(): Promise<boolean> {
-    if (this.qsPanelId == null) {
-      return false
+  async toggleSidebar(): Promise<void> {
+    if (!(await this.hasCreated())) {
+      return
     }
 
-    const win = await this.getWin()
-
-    if (!win) {
-      return false
+    if (this.isSidebar) {
+      await this.restoreSnapshot()
+    } else {
+      await this.moveToSidebar()
     }
 
-    // Reverse comparing in case undefined
-    return !(
-      Math.abs(win.top!) > 50 || // include menu bar height
-      (Math.abs(win.left!) > 5 &&
-        Math.abs(win.left! + win.width! - window.screen.availWidth) > 5)
-    )
+    this.isSidebar = !this.isSidebar
   }
 
   getDefaultRect(): WinRect {
@@ -266,15 +299,32 @@ export class QsPanelManager {
     }
   }
 
-  getSidebarRect(): WinRect {
-    return {
-      top: 0,
-      left:
-        window.appConfig.tripleCtrlSidebar === 'right'
-          ? window.screen.availWidth - window.appConfig.panelWidth
-          : 0,
-      width: window.appConfig.panelWidth,
-      height: window.screen.availHeight
-    }
+  async getSidebarRect(): Promise<WinRect> {
+    const panelWidth =
+      (this.snapshot && this.snapshot.width) || window.appConfig.panelWidth
+    const mainWin = await this.mainWindowsManager.takeSnapshot()
+    return mainWin &&
+      mainWin.top != null &&
+      mainWin.left != null &&
+      mainWin.width != null &&
+      mainWin.height != null
+      ? {
+          top: mainWin.top,
+          left:
+            window.appConfig.tripleCtrlSidebar === 'right'
+              ? Math.max(mainWin.width - panelWidth, panelWidth)
+              : mainWin.left,
+          width: panelWidth,
+          height: mainWin.height
+        }
+      : {
+          top: 0,
+          left:
+            window.appConfig.tripleCtrlSidebar === 'right'
+              ? window.screen.availWidth - panelWidth
+              : 0,
+          width: panelWidth,
+          height: window.screen.availHeight
+        }
   }
 }
