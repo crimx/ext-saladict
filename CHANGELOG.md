@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.5.4](https://github.com/crimx/ext-saladict/compare/v7.5.3...v7.5.4) (2019-12-11)
+
+
+### Bug Fixes
+
+* dual screen windows management ([8196a6d](https://github.com/crimx/ext-saladict/commit/8196a6d)), closes [#587](https://github.com/crimx/ext-saladict/issues/587)
+
+
+
 ### [7.5.3](https://github.com/crimx/ext-saladict/compare/v7.5.2...v7.5.3) (2019-12-10)
 
 
