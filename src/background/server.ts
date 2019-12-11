@@ -68,7 +68,7 @@ export class BackgroundServer {
           return injectDictPanel(sender.tab)
 
         case 'QUERY_QS_PANEL':
-          return Promise.resolve(this.qsPanelManager.hasCreated())
+          return this.qsPanelManager.hasCreated()
         case 'OPEN_QS_PANEL':
           return this.openQSPanel()
         case 'CLOSE_QS_PANEL':
@@ -124,7 +124,7 @@ export class BackgroundServer {
   }
 
   async openQSPanel(): Promise<void> {
-    if (this.qsPanelManager.hasCreated()) {
+    if (await this.qsPanelManager.hasCreated()) {
       this.qsPanelManager.focus()
       return
     }
@@ -133,7 +133,7 @@ export class BackgroundServer {
 
     await this.qsPanelManager.create()
 
-    if (this.qsPanelManager.hasCreated()) {
+    if (await this.qsPanelManager.hasCreated()) {
       if (window.appConfig.tripleCtrlSidebar) {
         await this.mainWindowsManager.makeRoomForSidebar()
       }
@@ -144,7 +144,7 @@ export class BackgroundServer {
     const text = await this.getClipboard()
     if (!text) return
 
-    if (!this.qsPanelManager.hasCreated()) {
+    if (!(await this.qsPanelManager.hasCreated())) {
       await this.openQSPanel()
       await timer(1000)
     }
@@ -161,7 +161,7 @@ export class BackgroundServer {
   }
 
   async switchSidebar(): Promise<void> {
-    if (!this.qsPanelManager.hasCreated()) {
+    if (!(await this.qsPanelManager.hasCreated())) {
       return
     }
 

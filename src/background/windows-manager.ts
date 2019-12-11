@@ -116,6 +116,13 @@ export class QsPanelManager {
     }
   }
 
+  async getWin(): Promise<browser.windows.Window | null> {
+    if (!this.qsPanelId) {
+      return null
+    }
+    return browser.windows.get(this.qsPanelId).catch(() => null)
+  }
+
   destroy(): void {
     this.qsPanelId = null
     this.destroySnapshot()
@@ -125,8 +132,12 @@ export class QsPanelManager {
     return winId != null && winId === this.qsPanelId
   }
 
-  hasCreated(): boolean {
-    return this.qsPanelId != null
+  async hasCreated(): Promise<boolean> {
+    const win = await this.getWin()
+    if (!win) {
+      this.qsPanelId = null
+    }
+    return !!win
   }
 
   async focus(): Promise<void> {
@@ -186,7 +197,11 @@ export class QsPanelManager {
       return false
     }
 
-    const win = await browser.windows.get(this.qsPanelId)
+    const win = await this.getWin()
+
+    if (!win) {
+      return false
+    }
 
     // Reverse comparing in case undefined
     return !(
