@@ -17,7 +17,7 @@ export const locale: typeof _locale = {
     shareImg: 'Share as image',
     pinPanel: 'Pin the panel',
     closePanel: 'Close the panel',
-    sidebar: 'Switch to sidebar mode',
+    sidebar: 'Switch to sidebar mode. Right click to right side.',
     focusPanel: 'Panel gains focus when searching',
     unfocusPanel: 'Panel does not gain focus when searching'
   },

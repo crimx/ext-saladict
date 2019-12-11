@@ -17,7 +17,7 @@ export const locale: typeof _locale = {
     shareImg: '以圖片方式分享查單字結果',
     pinPanel: '釘選字典視窗',
     closePanel: '關閉字典視窗',
-    sidebar: '切換側邊欄模式',
+    sidebar: '切換側邊欄模式，右點選切換右側',
     focusPanel: '查詞時面板獲取焦點',
     unfocusPanel: '查詞時面板不獲取焦點'
   },

@@ -34,6 +34,7 @@ export class MainWindowsManager {
   }
 
   async makeRoomForSidebar(
+    side: 'left' | 'right',
     sidebarSnapshot: browser.windows.Window | null
   ): Promise<void> {
     const mainWin = this.snapshot
@@ -53,23 +54,19 @@ export class MainWindowsManager {
         ? {
             state: 'normal' as 'normal',
             top: mainWin.top,
-            left:
-              window.appConfig.tripleCtrlSidebar === 'right'
-                ? mainWin.left
-                : mainWin.left + sidebarWidth,
+            left: side === 'right' ? mainWin.left : mainWin.left + sidebarWidth,
             width: mainWin.width - sidebarWidth,
             height: mainWin.height
           }
         : {
             state: 'normal' as 'normal',
             top: 0,
-            left:
-              window.appConfig.tripleCtrlSidebar === 'right' ? 0 : sidebarWidth,
+            left: side === 'right' ? 0 : sidebarWidth,
             width: window.screen.availWidth - sidebarWidth,
             height: window.screen.availHeight
           }
 
-    if (window.appConfig.tripleCtrlSidebar === 'right') {
+    if (side === 'right') {
       // fix a chrome bug by moving 1 extra pixal then to 0
       await safeUpdateWindow(mainWin.id, {
         ...updateInfo,
@@ -125,7 +122,7 @@ export class QsPanelManager {
 
     const qsPanelWin = await browser.windows.create({
       ...(window.appConfig.tripleCtrlSidebar
-        ? await this.getSidebarRect()
+        ? await this.getSidebarRect(window.appConfig.tripleCtrlSidebar)
         : this.getDefaultRect()),
       type: 'popup',
       url: browser.runtime.getURL(
@@ -138,7 +135,10 @@ export class QsPanelManager {
 
       if (window.appConfig.tripleCtrlSidebar) {
         this.isSidebar = true
-        await this.mainWindowsManager.makeRoomForSidebar(qsPanelWin)
+        await this.mainWindowsManager.makeRoomForSidebar(
+          window.appConfig.tripleCtrlSidebar,
+          qsPanelWin
+        )
       }
 
       // notify all tabs
@@ -222,15 +222,15 @@ export class QsPanelManager {
     this.destroySnapshot()
   }
 
-  async moveToSidebar(): Promise<void> {
+  async moveToSidebar(side: 'left' | 'right'): Promise<void> {
     if (this.qsPanelId != null) {
       await this.takeSnapshot()
-      await safeUpdateWindow(this.qsPanelId, await this.getSidebarRect())
-      await this.mainWindowsManager.makeRoomForSidebar(this.snapshot)
+      await safeUpdateWindow(this.qsPanelId, await this.getSidebarRect(side))
+      await this.mainWindowsManager.makeRoomForSidebar(side, this.snapshot)
     }
   }
 
-  async toggleSidebar(): Promise<void> {
+  async toggleSidebar(side: 'left' | 'right'): Promise<void> {
     if (!(await this.hasCreated())) {
       return
     }
@@ -238,7 +238,7 @@ export class QsPanelManager {
     if (this.isSidebar) {
       await this.restoreSnapshot()
     } else {
-      await this.moveToSidebar()
+      await this.moveToSidebar(side)
     }
 
     this.isSidebar = !this.isSidebar
@@ -299,7 +299,7 @@ export class QsPanelManager {
     }
   }
 
-  async getSidebarRect(): Promise<WinRect> {
+  async getSidebarRect(side: 'left' | 'right'): Promise<WinRect> {
     const panelWidth =
       (this.snapshot && this.snapshot.width) || window.appConfig.panelWidth
     const mainWin = await this.mainWindowsManager.takeSnapshot()
@@ -311,7 +311,7 @@ export class QsPanelManager {
       ? {
           top: mainWin.top,
           left:
-            window.appConfig.tripleCtrlSidebar === 'right'
+            side === 'right'
               ? Math.max(mainWin.width - panelWidth, panelWidth)
               : mainWin.left,
           width: panelWidth,
@@ -319,10 +319,7 @@ export class QsPanelManager {
         }
       : {
           top: 0,
-          left:
-            window.appConfig.tripleCtrlSidebar === 'right'
-              ? window.screen.availWidth - panelWidth
-              : 0,
+          left: side === 'right' ? window.screen.availWidth - panelWidth : 0,
           width: panelWidth,
           height: window.screen.availHeight
         }

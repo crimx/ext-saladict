@@ -67,8 +67,8 @@ const mapDispatchToProps = (
       dispatch({ type: 'CLOSE_PANEL' })
     }
   },
-  onSwitchSidebar: () => {
-    message.send({ type: 'QS_SWITCH_SIDEBAR' })
+  onSwitchSidebar: (side: 'left' | 'right') => {
+    message.send({ type: 'QS_SWITCH_SIDEBAR', payload: side })
   },
   onHeightChanged: (height: number) => {
     dispatch({

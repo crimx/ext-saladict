@@ -15,7 +15,7 @@ export const locale = {
     shareImg: '以图片方式分享查词结果',
     pinPanel: '钉住查词面板',
     closePanel: '关闭查词面板',
-    sidebar: '切换侧边栏模式',
+    sidebar: '切换侧边栏模式，右键切换右侧',
     focusPanel: '查词时面板获取焦点',
     unfocusPanel: '查词时面板不获取焦点'
   },

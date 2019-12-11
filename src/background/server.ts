@@ -71,7 +71,7 @@ export class BackgroundServer {
         case 'CLOSE_QS_PANEL':
           return this.qsPanelManager.destroy()
         case 'QS_SWITCH_SIDEBAR':
-          return this.qsPanelManager.toggleSidebar()
+          return this.qsPanelManager.toggleSidebar(msg.payload)
 
         case 'IS_IN_NOTEBOOK':
           return isInNotebook(msg.payload)

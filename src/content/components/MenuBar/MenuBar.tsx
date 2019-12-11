@@ -53,7 +53,7 @@ export interface MenuBarProps {
   togglePin: () => any
 
   onClose: () => any
-  onSwitchSidebar: () => any
+  onSwitchSidebar: (side: 'left' | 'right') => any
 
   onHeightChanged: (height: number) => void
 
@@ -163,7 +163,13 @@ export const MenuBar: FC<MenuBarProps> = props => {
             onClick={props.togglePin}
             disabled={isOptionsPage() || isPopupPage()}
           />
-          <SidebarBtn t={t} onClick={props.onSwitchSidebar} />
+          <SidebarBtn
+            t={t}
+            onMouseDown={e => {
+              e.preventDefault()
+              props.onSwitchSidebar(e.button === 0 ? 'left' : 'right')
+            }}
+          />
         </>
       ) : (
         <>
