@@ -54,9 +54,9 @@ Run `yarn zip` to pack zibballs to `./dist/`.
          - If the dictionary supports pronunciation:
          1. Register the ID at [`config.autopron`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/app-config/index.ts#L202-L223).
          1. Include an [`audio`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/typings/server.ts#L5-L9) field in the object which search engine returns.
-      1. Other exported functions can be called from `View.tsx` via `DictEngineMethod` message channel, see `src/typings/message` for typing details (also don't use the native `sendMessage` function, import `{ message }` from `'@/_helpers/browser-api'`).
+      1. Other exported functions can be called from `View.tsx` via `'DICT_ENGINE_METHOD'` message channel. See `src/typings/message` for typing details and search `DICT_ENGINE_METHOD` project-wise for examples. Messages **MUST** be sent via `message` from `'@/_helpers/browser-api'` instead of the native `sendMessage` function.
    1. Search result will ultimately be passed to a React PureComponent in `View.tsx`, which **SHOULD** be a dumb component that renders the result accordingly.
-   1. Scope the styles in `_style.scss` following [ECSS](http://ecss.io/chapter5.html#anatomy-of-the-ecss-naming-convention)-ish naming convention.
+   1. Selectors in `_style.scss` **SHOULD** follow [ECSS](http://ecss.io/chapter5.html#anatomy-of-the-ecss-naming-convention)-ish naming convention.
 
 Add Testing
 
@@ -72,7 +72,7 @@ Develop the dictionary UI live
 
 This project follows the TypeScript variation of [Standard](https://standardjs.com) JavaScript code style.
 
-If you are using IDEs like VSCode, make sure TSLint related plugins are installed. Or you can just run [building command](#building) to perform a TypeScript full check.
+If you are using IDEs like VSCode, make sure *eslint* and *prettier* plugins are installed. Or you can just run [building command](#building) to perform a TypeScript full check.
 
 ## Commit Style
 
