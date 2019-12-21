@@ -17,7 +17,7 @@ import {
   newWord
 } from '@/_helpers/record-manager'
 import { AppConfig } from '@/app-config'
-import { translateCtx } from '@/_helpers/translateCtx'
+import { translateCtxs, genCtxText } from '@/_helpers/translateCtx'
 import { useTranslate } from '@/_helpers/i18n'
 import { message } from '@/_helpers/browser-api'
 import { isInternalPage } from '@/_helpers/saladict'
@@ -65,20 +65,19 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
     []
   )
 
-  const [onTranslateCtx, translateCtx$] = useObservableCallback<string, any>(
-    event$ =>
-      event$.pipe(
-        withLatestFrom(word$),
-        switchMap(([, word]) => {
-          return translateCtx(word.context || word.text, props.ctxTrans)
-        })
-      )
+  const [onTranslateCtx, translateCtx$] = useObservableCallback(event$ =>
+    event$.pipe(
+      withLatestFrom(word$),
+      switchMap(([, word]) => {
+        return translateCtxs(word.context || word.text, props.ctxTrans)
+      })
+    )
   )
 
   useSubscription(translateCtx$, trans => {
     setWord({
       ...word,
-      trans: word.trans ? word.trans + '\n\n' + trans : trans
+      trans: genCtxText(word.trans, trans)
     })
   })
 

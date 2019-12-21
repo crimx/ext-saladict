@@ -10,7 +10,7 @@ import { ofType } from '../../utils/operators'
 
 import searchStartEpic from './searchStart.epic'
 import newSelectionEpic from './newSelection.epic'
-import { translateCtx } from '@/_helpers/translateCtx'
+import { translateCtxs, genCtxText } from '@/_helpers/translateCtx'
 
 export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
   /** Start searching text. This will also send to Redux. */
@@ -40,12 +40,12 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
               payload: word
             } as const),
             from(
-              translateCtx(
+              translateCtxs(
                 word.context || word.text,
                 state$.value.config.ctxTrans
               ).then(trans => ({
                 ...word,
-                trans: word.trans ? word.trans + '\n\n' + trans : trans
+                trans: genCtxText(word.trans, trans)
               }))
             ).pipe(
               map(
@@ -65,11 +65,11 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
               state$.value.searchHistory[state$.value.searchHistory.length - 1]
             if (word) {
               try {
-                const trans = await translateCtx(
+                const trans = await translateCtxs(
                   word.context || word.text,
                   state$.value.config.ctxTrans
                 )
-                word.trans = word.trans ? word.trans + '\n\n' + trans : trans
+                word.trans = genCtxText(word.trans, trans)
                 await saveWord('notebook', word)
                 return true
               } catch (e) {
