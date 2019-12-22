@@ -93,7 +93,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
           ×
         </button>
       </header>
-      <div className="wordEditor-Main">
+      <div className="wordEditor-Main fancy-scrollbar">
         <form className="wordEditor-Note">
           <label htmlFor="wordEditor-Note_Word">{t('note.word')}</label>
           <input
@@ -116,7 +116,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
             </a>
           </label>
           <textarea
-            rows={5}
+            rows={10}
             name="trans"
             id="wordEditor-Note_Trans"
             value={word.trans}
