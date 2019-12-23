@@ -13,7 +13,8 @@ import {
 import {
   withLocalStyle,
   withSideEffect,
-  mockRuntimeMessage
+  mockRuntimeMessage,
+  getThemeStyles
 } from '@/_helpers/storybook'
 import faker from 'faker'
 import { DictPanel, DictPanelProps } from './DictPanel'
@@ -124,25 +125,7 @@ function useDictPanelProps(): DictPanelProps {
   }, {})
 
   const darkMode = boolean('Dark Mode', false)
-  const colors = darkMode
-    ? {
-        backgroundColor: '#222',
-        color: '#ddd',
-        '--color-brand': '#218c74',
-        '--color-background': '#222',
-        '--color-rgb-background': '34, 34, 34',
-        '--color-font': '#ddd',
-        '--color-divider': '#4d4748'
-      }
-    : {
-        backgroundColor: '#fff',
-        color: '#333',
-        '--color-brand': '#5caf9e',
-        '--color-background': '#fff',
-        '--color-rgb-background': '255, 255, 255',
-        '--color-font': '#333',
-        '--color-divider': '#ddd'
-      }
+  const colors = getThemeStyles(darkMode)
 
   return {
     coord: {
