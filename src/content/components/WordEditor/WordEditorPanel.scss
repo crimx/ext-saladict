@@ -10,7 +10,6 @@
   bottom: 0;
   margin: auto;
   display: flex;
-  justify-content: center;
   align-items: center;
   text-align: initial;
   background: rgba(0, 0, 0, 0.4);
@@ -32,7 +31,7 @@
 
 .wordEditorPanel-Header {
   display: flex;
-  border-bottom: 1px solid #666;
+  border-bottom: 1px solid #ccc;
 }
 
 .wordEditorPanel-Title {
@@ -70,7 +69,7 @@
 .wordEditorPanel-Footer {
   padding: 15px;
   text-align: right;
-  border-top: 1px solid #666;
+  border-top: 1px solid #ccc;
 }
 
 %wordEditorPanel-Btn {
@@ -147,6 +146,11 @@
 }
 
 .darkMode {
+  .wordEditorPanel-Header,
+  .wordEditorPanel-Footer {
+    border-color: #8b8b8b;
+  }
+
   .wordEditorPanel-Btn {
     @extend %wordEditorPanel-Btn;
     margin-right: 10px;

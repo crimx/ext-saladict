@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 
 export interface WordEditorPanelProps {
-  width: number
+  panelX: number
   colors: React.CSSProperties
   title: React.ReactNode
   btns?: Array<{
@@ -15,7 +15,7 @@ export interface WordEditorPanelProps {
 export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
   return (
     <div className="wordEditorPanel-Container">
-      <div style={{ width: props.width }}>
+      <div style={{ marginLeft: props.panelX }}>
         <div className="wordEditorPanel" style={props.colors}>
           <header className="wordEditorPanel-Header">
             <h1 className="wordEditorPanel-Title">{props.title}</h1>

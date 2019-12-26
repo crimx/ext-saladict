@@ -32,6 +32,7 @@ storiesOf('Content Scripts|WordEditor', module)
 
       return (
         <div
+          className={darkMode ? 'darkMode' : ''}
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -39,7 +40,7 @@ storiesOf('Content Scripts|WordEditor', module)
           }}
         >
           <WordEditorPanel
-            width={number('Panel Width', 450)}
+            panelX={number('Panel X', 450 + 100)}
             colors={colors}
             btns={
               boolean('With Buttons', true)
