@@ -3,11 +3,11 @@ import { MachineTranslateResult } from '@/components/dictionaries/helpers'
 import { message } from './browser-api'
 import { isPDFPage } from './saladict'
 
-type CtxTranslatorId = keyof AppConfig['ctxTrans']
+export type CtxTranslatorId = keyof AppConfig['ctxTrans']
 
-type CtxTranslateResults = Array<{ name: string; content: string }>
+export type CtxTranslateResults = Array<{ name: DictID; content: string }>
 
-interface FetchDictResultResponse {
+export interface FetchDictResultResponse {
   id: DictID
   result: MachineTranslateResult<DictID>
 }
@@ -58,7 +58,10 @@ export async function translateCtxs(
   const ids = Object.keys(ctxTrans) as Array<CtxTranslatorId>
 
   if (ids.length <= 0) {
-    return []
+    return ids.map(id => ({
+      name: id,
+      content: ''
+    }))
   }
 
   return Promise.all(
@@ -73,12 +76,12 @@ export async function translateCtxs(
  * get translator result from text
  */
 export function parseCtxText(text: string): CtxTranslateResults {
-  const matcher = />>>>>:: (\w+) ::<+\n([\s\S]+?)(?=(?:>>>>>:: \w+ ::<+)|(?:-{40}))/g
+  const matcher = />>:: (\w+) ::<<\n([\s\S]+?)(?=(?:>>:: \w+ ::<<)|(?:-{15}))/g
   let matchResult: RegExpExecArray | null
   const result: CtxTranslateResults = []
   while ((matchResult = matcher.exec(text)) !== null) {
     result.push({
-      name: matchResult[1],
+      name: matchResult[1] as DictID,
       content: matchResult[2].replace(/\n+$/g, '')
     })
   }
@@ -93,18 +96,14 @@ export function genCtxText(text: string, arr: CtxTranslateResults): string {
   const ctxResults =
     arr
       .filter(({ content }) => content)
-      .map(
-        ({ name, content }) =>
-          `>>>>>:: ${name} ::${''.padEnd(40 - 5 - 6 - name.length, '<')}\n` +
-          content
-      )
-      .join('\n\n') + `\n${''.padEnd(40, '-')}\n`
+      .map(({ name, content }) => `>>:: ${name} ::<<\n` + content)
+      .join('\n\n') + `\n${''.padEnd(15, '-')}\n`
 
   if (!text) {
     return ctxResults
   }
 
-  const matcher = />>>>>:: (\w+) ::<+\n([\s\S]+?)-{40}/
+  const matcher = />>:: (\w+) ::<<\n([\s\S]+?)-{15}/
 
   if (matcher.test(text)) {
     return text.replace(matcher, ctxResults)
