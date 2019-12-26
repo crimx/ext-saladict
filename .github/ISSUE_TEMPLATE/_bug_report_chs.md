@@ -14,6 +14,7 @@ assignees: ''
 
 - 使用说明： https://saladict.crimx.com/manual.html
 - 常见问题以及答复： https://saladict.crimx.com/q&a.html
+- 在 issues 页面搜索你的问题，很可能已被解决。
 
 请根据模板描述问题，以便别人理解、定位和解决问题。
 请根据模板描述问题，以便别人理解、定位和解决问题。
