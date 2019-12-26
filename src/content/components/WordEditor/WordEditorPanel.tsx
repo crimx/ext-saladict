@@ -1,10 +1,10 @@
 import React, { FC } from 'react'
 
 export interface WordEditorPanelProps {
-  panelX: number
+  containerWidth: number
   colors: React.CSSProperties
   title: React.ReactNode
-  btns?: Array<{
+  btns?: ReadonlyArray<{
     type?: 'normal' | 'primary'
     title: React.ReactNode
     onClick: () => void
@@ -14,8 +14,11 @@ export interface WordEditorPanelProps {
 
 export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
   return (
-    <div className="wordEditorPanel-Container">
-      <div style={{ marginLeft: props.panelX }}>
+    <div className="wordEditorPanel-Background">
+      <div
+        className="wordEditorPanel-Container"
+        style={{ width: props.containerWidth }}
+      >
         <div className="wordEditorPanel" style={props.colors}>
           <header className="wordEditorPanel-Header">
             <h1 className="wordEditorPanel-Title">{props.title}</h1>

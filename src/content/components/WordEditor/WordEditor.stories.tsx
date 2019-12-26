@@ -36,7 +36,7 @@ storiesOf('Content Scripts|WordEditor', module)
 
       return (
         <WordEditor
-          width={number('Dict Panel Width', 450)}
+          containerWidth={number('Panel X', 450 + 100)}
           darkMode={darkMode}
           colors={colors}
           word={newWord({
@@ -70,7 +70,7 @@ storiesOf('Content Scripts|WordEditor', module)
         darkMode={darkMode}
         withAnimation={boolean('With Animation', true)}
         colors={colors}
-        width={number('Dict Panel Width', 450)}
+        containerWidth={number('Panel X', 450 + 100)}
         word={newWord({
           date: faker.date.past().valueOf(),
           text: faker.random.word(),

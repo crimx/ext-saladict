@@ -1,7 +1,7 @@
 @import '../../../_sass_global/z-indices';
 @import '@/_sass_global/_fancy-scrollbar.scss';
 
-.wordEditorPanel-Container {
+.wordEditorPanel-Background {
   position: fixed;
   z-index: $global-zindex-dicteditor;
   top: 0;
@@ -13,6 +13,14 @@
   align-items: center;
   text-align: initial;
   background: rgba(0, 0, 0, 0.4);
+}
+
+.wordEditorPanel-Container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-width: 440px;
+  margin-left: auto;
 }
 
 .wordEditorPanel {

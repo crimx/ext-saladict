@@ -12,7 +12,7 @@ const mapStateToProps = (
   darkMode: state.config.darkMode,
   withAnimation: state.config.animation,
   colors: state.colors,
-  width: window.innerWidth - state.config.panelWidth - 100,
+  containerWidth: window.innerWidth - state.config.panelWidth - 100,
   ctxTrans: state.config.ctxTrans,
   word: state.wordEditorWord
 })

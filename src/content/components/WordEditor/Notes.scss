@@ -1,0 +1,34 @@
+@import './WordEditorPanel.scss';
+@import './WordCards.scss';
+
+.wordEditorNote {
+  padding: 15px;
+
+  a {
+    text-decoration: none;
+    color: #1890ff;
+  }
+}
+
+.wordEditorNote_SrcFavicon {
+  height: 16px;
+  margin-left: 5px;
+  vertical-align: text-bottom;
+}
+
+.wordEditorNote_LabelWithBtn {
+  & > label {
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  & > button {
+    padding: 1px 5px;
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 90%;
+    color: var(--color-font);
+    cursor: pointer;
+  }
+}

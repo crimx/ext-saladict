@@ -40,7 +40,7 @@ storiesOf('Content Scripts|WordEditor', module)
           }}
         >
           <WordEditorPanel
-            panelX={number('Panel X', 450 + 100)}
+            containerWidth={number('Panel X', 450 + 100)}
             colors={colors}
             btns={
               boolean('With Buttons', true)
