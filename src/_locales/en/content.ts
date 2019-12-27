@@ -25,7 +25,8 @@ export const locale: typeof _locale = {
     title: 'Add to Notebook',
     wordCardsTitle: 'Other results from Notebook',
     deleteConfirm: 'Delete from Notebook?',
-    closeConfirm: 'Changes will not be saved. Are you sure to close?'
+    closeConfirm: 'Changes will not be saved. Are you sure to close?',
+    chooseCtxTitle: 'Pick translated results'
   },
   machineTrans: {
     switch: 'Switch Language',

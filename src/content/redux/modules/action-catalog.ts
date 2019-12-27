@@ -112,7 +112,11 @@ export type ActionCatalog = {
   \* ------------------------------------------------ */
 
   WORD_EDITOR_STATUS: {
-    payload: Word | null
+    payload: {
+      word: Word | null
+      /** translate context when word editor shows */
+      translateCtx?: boolean
+    }
   }
 
   /* ------------------------------------------------ *\

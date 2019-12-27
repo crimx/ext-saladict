@@ -1,0 +1,70 @@
+.ctxTransList {
+  margin-top: 0;
+}
+
+.ctxTransItem {
+  list-style-type: none;
+  border-top: 1px #ccc dashed;
+
+  &:first-of-type {
+    border-top: none;
+  }
+}
+
+.ctxTransItem-Head {
+  display: flex;
+  align-items: center;
+}
+
+.ctxTrans-Title {
+  position: relative;
+  margin: 5px 5px 5px 0;
+  font-size: 16px;
+
+  input {
+    position: absolute;
+    top: 3px;
+    left: -25px;
+  }
+}
+
+.ctxTrans-Content {
+  margin: 0 0 5px 0;
+}
+
+.ctxTrans-Loader {
+  display: flex;
+  align-items: center;
+  width: 54px;
+  height: 20px;
+
+  & > div {
+    width: 8px;
+    height: 8px;
+    margin: 2px;
+    background: #f9690e;
+    border-radius: 100%;
+
+    animation: ctxTrans-Loader 1.5s infinite ease-in-out;
+
+    $ctxTrans-LoaderNum: 5;
+    @for $i from 1 through $ctxTrans-LoaderNum {
+      &:nth-child(#{$ctxTrans-LoaderNum + 1 - $i}) {
+        animation-delay: -0.1s * ($i - 1);
+      }
+    }
+  }
+}
+
+@keyframes ctxTrans-Loader {
+  0%,
+  30%,
+  70%,
+  100% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+}

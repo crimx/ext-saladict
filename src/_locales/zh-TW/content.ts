@@ -25,7 +25,8 @@ export const locale: typeof _locale = {
     title: '儲存到單字本',
     wordCardsTitle: '單字本其它記錄',
     deleteConfirm: '從單字本中移除？',
-    closeConfirm: '記錄尚未儲存，確定關閉？'
+    closeConfirm: '記錄尚未儲存，確定關閉？',
+    chooseCtxTitle: '選擇翻譯結果'
   },
   machineTrans: {
     switch: '變更語言',

@@ -21,7 +21,7 @@ const mapStateToProps = (
   return {
     show: state.isShowDictPanel,
     coord: state.dictPanelCoord,
-    takeCoordSnapshot: state.isShowWordEditor,
+    takeCoordSnapshot: state.wordEditor.isShow,
     width: state.config.panelWidth,
     height: state.panelHeight,
     maxHeight: state.panelMaxHeight,

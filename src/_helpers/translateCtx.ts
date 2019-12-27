@@ -5,7 +5,9 @@ import { isPDFPage } from './saladict'
 
 export type CtxTranslatorId = keyof AppConfig['ctxTrans']
 
-export type CtxTranslateResults = Array<{ name: DictID; content: string }>
+export type CtxTranslateResults = {
+  [id in CtxTranslatorId]: string
+}
 
 export interface FetchDictResultResponse {
   id: DictID
@@ -55,20 +57,19 @@ export async function translateCtxs(
   text: string,
   ctxTrans: AppConfig['ctxTrans']
 ): Promise<CtxTranslateResults> {
-  const ids = Object.keys(ctxTrans) as Array<CtxTranslatorId>
-
-  if (ids.length <= 0) {
-    return ids.map(id => ({
-      name: id,
-      content: ''
+  return (await Promise.all(
+    Object.keys(ctxTrans).map(async id => ({
+      id,
+      content: ctxTrans[id]
+        ? await translateCtx(text, id as CtxTranslatorId)
+        : ''
     }))
-  }
-
-  return Promise.all(
-    ids.map(async id => ({
-      name: id,
-      content: ctxTrans[id] ? await translateCtx(text, id) : ''
-    }))
+  )).reduce(
+    (result, { id, content }) => {
+      result[id] = content
+      return result
+    },
+    {} as CtxTranslateResults
   )
 }
 
@@ -78,12 +79,12 @@ export async function translateCtxs(
 export function parseCtxText(text: string): CtxTranslateResults {
   const matcher = />>:: (\w+) ::<<\n([\s\S]+?)(?=(?:>>:: \w+ ::<<)|(?:-{15}))/g
   let matchResult: RegExpExecArray | null
-  const result: CtxTranslateResults = []
+  const result = {} as CtxTranslateResults
   while ((matchResult = matcher.exec(text)) !== null) {
-    result.push({
-      name: matchResult[1] as DictID,
-      content: matchResult[2].replace(/\n+$/g, '')
-    })
+    result[matchResult[1] as CtxTranslatorId] = matchResult[2].replace(
+      /\n+$/g,
+      ''
+    )
   }
   return result
 }
@@ -92,11 +93,21 @@ export function parseCtxText(text: string): CtxTranslateResults {
  * Add Context translate result to text
  * @param text original text
  */
-export function genCtxText(text: string, arr: CtxTranslateResults): string {
+export function genCtxText(
+  text: string,
+  ctxTransResult: CtxTranslateResults
+): string {
+  const enginesWithResult = Object.keys(ctxTransResult).filter(
+    id => ctxTransResult[id]
+  )
+
+  if (enginesWithResult.length <= 0) {
+    return text
+  }
+
   const ctxResults =
-    arr
-      .filter(({ content }) => content)
-      .map(({ name, content }) => `>>:: ${name} ::<<\n` + content)
+    enginesWithResult
+      .map(id => `>>:: ${id} ::<<\n` + ctxTransResult[id])
       .join('\n\n') + `\n${''.padEnd(15, '-')}\n`
 
   if (!text) {

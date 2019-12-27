@@ -1,5 +1,5 @@
 import { combineEpics } from 'redux-observable'
-import { from, of, concat } from 'rxjs'
+import { from, of } from 'rxjs'
 import { map, mapTo, mergeMap, filter } from 'rxjs/operators'
 
 import { isStandalonePage } from '@/_helpers/saladict'
@@ -34,29 +34,10 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
         if (state$.value.config.editOnFav && !isStandalonePage()) {
           const word =
             state$.value.searchHistory[state$.value.searchHistory.length - 1]
-          return concat(
-            of({
-              type: 'WORD_EDITOR_STATUS',
-              payload: word
-            } as const),
-            from(
-              translateCtxs(
-                word.context || word.text,
-                state$.value.config.ctxTrans
-              ).then(trans => ({
-                ...word,
-                trans: genCtxText(word.trans, trans)
-              }))
-            ).pipe(
-              map(
-                newWord =>
-                  ({
-                    type: 'WORD_EDITOR_STATUS',
-                    payload: newWord
-                  } as const)
-              )
-            )
-          )
+          return of({
+            type: 'WORD_EDITOR_STATUS',
+            payload: { word, translateCtx: true }
+          } as const)
         }
 
         return from(
@@ -65,11 +46,13 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
               state$.value.searchHistory[state$.value.searchHistory.length - 1]
             if (word) {
               try {
-                const trans = await translateCtxs(
-                  word.context || word.text,
-                  state$.value.config.ctxTrans
+                word.trans = genCtxText(
+                  word.trans,
+                  await translateCtxs(
+                    word.context || word.text,
+                    state$.value.config.ctxTrans
+                  )
                 )
-                word.trans = genCtxText(word.trans, trans)
                 await saveWord('notebook', word)
                 return true
               } catch (e) {

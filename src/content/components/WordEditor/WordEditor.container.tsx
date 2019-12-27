@@ -8,20 +8,20 @@ type Dispatchers = 'onClose'
 const mapStateToProps = (
   state: StoreState
 ): Omit<WordEditorPortalProps, Dispatchers> => ({
-  show: state.isShowWordEditor,
+  show: state.wordEditor.isShow,
   darkMode: state.config.darkMode,
   withAnimation: state.config.animation,
   colors: state.colors,
   containerWidth: window.innerWidth - state.config.panelWidth - 100,
   ctxTrans: state.config.ctxTrans,
-  word: state.wordEditorWord
+  wordEditor: state.wordEditor
 })
 
 const mapDispatchToProps = (
   dispatch: Dispatch<StoreAction>
 ): Pick<WordEditorPortalProps, Dispatchers> => ({
   onClose: () => {
-    dispatch({ type: 'WORD_EDITOR_STATUS', payload: null })
+    dispatch({ type: 'WORD_EDITOR_STATUS', payload: { word: null } })
   }
 })
 

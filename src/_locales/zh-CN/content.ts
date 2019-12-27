@@ -23,7 +23,8 @@ export const locale = {
     title: '保存到生词本',
     wordCardsTitle: '生词本其它记录',
     deleteConfirm: '从单词本中移除？',
-    closeConfirm: '记录尚未保存，确认关闭？'
+    closeConfirm: '记录尚未保存，确认关闭？',
+    chooseCtxTitle: '选择翻译结果'
   },
   machineTrans: {
     switch: '更改语言',

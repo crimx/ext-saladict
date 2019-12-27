@@ -39,16 +39,19 @@ storiesOf('Content Scripts|WordEditor', module)
           containerWidth={number('Panel X', 450 + 100)}
           darkMode={darkMode}
           colors={colors}
-          word={newWord({
-            date: faker.date.past().valueOf(),
-            text: faker.random.word(),
-            context: faker.lorem.sentence(),
-            title: faker.random.word(),
-            url: faker.internet.url(),
-            favicon: faker.image.imageUrl(),
-            trans: faker.lorem.sentence(),
-            note: faker.lorem.sentences()
-          })}
+          wordEditor={{
+            word: newWord({
+              date: faker.date.past().valueOf(),
+              text: faker.random.word(),
+              context: faker.lorem.sentence(),
+              title: faker.random.word(),
+              url: faker.internet.url(),
+              favicon: faker.image.imageUrl(),
+              trans: faker.lorem.sentence(),
+              note: faker.lorem.sentences()
+            }),
+            translateCtx: false
+          }}
           ctxTrans={config.ctxTrans}
           onClose={action('Close')}
         />
@@ -71,16 +74,19 @@ storiesOf('Content Scripts|WordEditor', module)
         withAnimation={boolean('With Animation', true)}
         colors={colors}
         containerWidth={number('Panel X', 450 + 100)}
-        word={newWord({
-          date: faker.date.past().valueOf(),
-          text: faker.random.word(),
-          context: faker.lorem.sentence(),
-          title: faker.random.word(),
-          url: faker.internet.url(),
-          favicon: faker.image.imageUrl(),
-          trans: faker.lorem.sentence(),
-          note: faker.lorem.sentences()
-        })}
+        wordEditor={{
+          word: newWord({
+            date: faker.date.past().valueOf(),
+            text: faker.random.word(),
+            context: faker.lorem.sentence(),
+            title: faker.random.word(),
+            url: faker.internet.url(),
+            favicon: faker.image.imageUrl(),
+            trans: faker.lorem.sentence(),
+            note: faker.lorem.sentences()
+          }),
+          translateCtx: false
+        }}
         ctxTrans={config.ctxTrans}
         onClose={action('Close')}
       />

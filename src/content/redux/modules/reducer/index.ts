@@ -228,12 +228,15 @@ export const createRootReducer = () =>
 
     OPEN_QS_PANEL: openQSPanel,
 
-    WORD_EDITOR_STATUS: (state, { payload }) =>
-      payload
+    WORD_EDITOR_STATUS: (state, { payload: { word, translateCtx } }) =>
+      word
         ? {
             ...state,
-            isShowWordEditor: true,
-            wordEditorWord: payload,
+            wordEditor: {
+              isShow: true,
+              word,
+              translateCtx: !!translateCtx
+            },
             dictPanelCoord: {
               x: 50,
               y: window.innerHeight * 0.2
@@ -241,7 +244,11 @@ export const createRootReducer = () =>
           }
         : {
             ...state,
-            isShowWordEditor: false
+            wordEditor: {
+              isShow: false,
+              word: state.wordEditor.word,
+              translateCtx: false
+            }
           },
 
     PLAY_AUDIO: (state, { payload }) => ({

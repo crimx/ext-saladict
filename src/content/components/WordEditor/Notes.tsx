@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { useUpdateEffect } from 'react-use'
 import {
   useObservable,
@@ -14,8 +14,7 @@ import {
   Word,
   getWordsByText,
   deleteWords,
-  saveWord,
-  newWord
+  saveWord
 } from '@/_helpers/record-manager'
 import { AppConfig } from '@/app-config'
 import {
@@ -29,28 +28,45 @@ import { isOptionsPage } from '@/_helpers/saladict'
 
 import { WordCards } from './WordCards'
 import { WordEditorPanel, WordEditorPanelProps } from './WordEditorPanel'
+import { CSSTransition } from 'react-transition-group'
+import { CtxTransList } from './CtxTransList'
 
 export interface NotesProps
   extends Pick<WordEditorPanelProps, 'containerWidth' | 'colors'> {
-  word: Word | null
+  wordEditor: {
+    word: Word
+    translateCtx: boolean
+  }
   /** dicts to translate context */
   ctxTrans: AppConfig['ctxTrans']
 
   onClose: () => void
 }
 
+const notesFadeTimeout = { enter: 400, exit: 100, appear: 400 }
+
 export const Notes: FC<NotesProps> = props => {
   const { t } = useTranslate(['common', 'content'])
   const [isDirty, setDirty] = useState(false)
+  const [isShowCtxTransList, setShowCtxTransList] = useState(false)
 
-  const [word, setWord] = useState(() => props.word || newWord())
-  useUpdateEffect(() => {
-    if (props.word) {
-      setWord(props.word)
-    }
-  }, [props.word])
-
+  const [word, setWord] = useState(props.wordEditor.word)
   const word$ = useObservable(pluckFirst, [word])
+
+  const [ctxTransConfig, setCtxTransConfig] = useState(props.ctxTrans)
+  useUpdateEffect(() => {
+    setCtxTransConfig(props.ctxTrans)
+  }, [props.ctxTrans])
+
+  const [ctxTransResult, setCtxTransResult] = useState(() =>
+    Object.keys(props.ctxTrans).reduce(
+      (result, id) => {
+        result[id] = ''
+        return result
+      },
+      {} as CtxTranslateResults
+    )
+  )
 
   const [relatedWords, getRelatedWords] = useObservableState<Word[], void>(
     event$ =>
@@ -72,23 +88,29 @@ export const Notes: FC<NotesProps> = props => {
 
   const [onTranslateCtx, translateCtx$] = useObservableCallback<
     CtxTranslateResults,
-    never,
-    []
+    typeof ctxTransConfig
   >(event$ =>
     event$.pipe(
       withLatestFrom(word$),
-      switchMap(([, word]) => {
-        return translateCtxs(word.context || word.text, props.ctxTrans)
+      switchMap(([ctxTransConfig, word]) => {
+        return translateCtxs(word.context || word.text, ctxTransConfig)
       })
     )
   )
+  useSubscription(translateCtx$, setCtxTransResult)
 
-  useSubscription(translateCtx$, trans => {
+  useEffect(() => {
+    if (props.wordEditor.translateCtx) {
+      onTranslateCtx(ctxTransConfig)
+    }
+  }, [])
+
+  useUpdateEffect(() => {
     setWord({
       ...word,
-      trans: genCtxText(word.trans, trans)
+      trans: genCtxText(word.trans, ctxTransResult)
     })
-  })
+  }, [ctxTransResult])
 
   const closeEditor = () => {
     if (!isDirty || confirm(t('content:wordEditor.closeConfirm'))) {
@@ -110,7 +132,7 @@ export const Notes: FC<NotesProps> = props => {
     {
       type: 'normal',
       title: t('content:transContext'),
-      onClick: onTranslateCtx
+      onClick: () => onTranslateCtx(ctxTransConfig)
     },
     {
       type: 'normal',
@@ -144,110 +166,150 @@ export const Notes: FC<NotesProps> = props => {
   ] as const
 
   return (
-    <WordEditorPanel
-      containerWidth={props.containerWidth}
-      colors={props.colors}
-      title={t('content:wordEditor.title')}
-      btns={panelBtns}
-      onClose={closeEditor}
-    >
-      <form className="wordEditorNote">
-        <label htmlFor="wordEditorNote_Word">{t('note.word')}</label>
-        <input
-          type="text"
-          name="text"
-          id="wordEditorNote_Word"
-          value={word.text}
-          onChange={formChanged}
-          onKeyDown={stopPropagation}
-        />
-        <div className="wordEditorNote_LabelWithBtn">
-          <label htmlFor="wordEditorNote_Trans">
-            {t('note.trans')}
-            <a
-              href="https://saladict.crimx.com/q&a.html#%E9%97%AE%EF%BC%9A%E6%B7%BB%E5%8A%A0%E7%94%9F%E8%AF%8D%E5%8F%AF%E4%B8%8D%E5%8F%AF%E4%BB%A5%E5%8A%A0%E5%85%A5%E5%8D%95%E8%AF%8D%E7%BF%BB%E8%AF%91%EF%BC%88%E8%80%8C%E4%B8%8D%E6%98%AF%E7%BF%BB%E8%AF%91%E6%95%B4%E5%8F%A5%E4%B8%8A%E4%B8%8B%E6%96%87%EF%BC%89%E3%80%82"
-              target="_blank"
-              rel="nofollow noopener noreferrer"
-            >
-              {' '}
-              Why?
-            </a>
+    <>
+      <WordEditorPanel
+        containerWidth={props.containerWidth}
+        colors={props.colors}
+        title={t('content:wordEditor.title')}
+        btns={panelBtns}
+        onClose={closeEditor}
+      >
+        <div className="wordEditorNote">
+          <label htmlFor="wordEditorNote_Word">{t('note.word')}</label>
+          <input
+            type="text"
+            name="text"
+            id="wordEditorNote_Word"
+            value={word.text}
+            onChange={formChanged}
+            onKeyDown={stopPropagation}
+          />
+          <div className="wordEditorNote_LabelWithBtn">
+            <label htmlFor="wordEditorNote_Trans">
+              {t('note.trans')}
+              <a
+                href="https://saladict.crimx.com/q&a.html#%E9%97%AE%EF%BC%9A%E6%B7%BB%E5%8A%A0%E7%94%9F%E8%AF%8D%E5%8F%AF%E4%B8%8D%E5%8F%AF%E4%BB%A5%E5%8A%A0%E5%85%A5%E5%8D%95%E8%AF%8D%E7%BF%BB%E8%AF%91%EF%BC%88%E8%80%8C%E4%B8%8D%E6%98%AF%E7%BF%BB%E8%AF%91%E6%95%B4%E5%8F%A5%E4%B8%8A%E4%B8%8B%E6%96%87%EF%BC%89%E3%80%82"
+                target="_blank"
+                rel="nofollow noopener noreferrer"
+              >
+                {' '}
+                Why?
+              </a>
+            </label>
+            <button onClick={() => setShowCtxTransList(true)}>
+              {t('content:wordEditor.chooseCtxTitle')}
+            </button>
+          </div>
+          <textarea
+            rows={10}
+            name="trans"
+            id="wordEditorNote_Trans"
+            value={word.trans}
+            onChange={formChanged}
+            onKeyDown={stopPropagation}
+          />
+          <label htmlFor="wordEditorNote_Note">{t('note.note')}</label>
+          <textarea
+            rows={5}
+            name="note"
+            id="wordEditorNote_Note"
+            value={word.note}
+            onChange={formChanged}
+            onKeyDown={stopPropagation}
+          />
+          <label htmlFor="wordEditorNote_Context">{t('note.context')}</label>
+          <textarea
+            rows={5}
+            name="context"
+            id="wordEditorNote_Context"
+            value={word.context}
+            onChange={formChanged}
+            onKeyDown={stopPropagation}
+          />
+          <label htmlFor="wordEditorNote_SrcTitle">{t('note.srcTitle')}</label>
+          <input
+            type="text"
+            name="title"
+            id="wordEditorNote_SrcTitle"
+            value={word.title}
+            onChange={formChanged}
+            onKeyDown={stopPropagation}
+          />
+          <label htmlFor="wordEditorNote_SrcLink">{t('note.srcLink')}</label>
+          <input
+            type="text"
+            name="url"
+            id="wordEditorNote_SrcLink"
+            value={word.url}
+            onChange={formChanged}
+            onKeyDown={stopPropagation}
+          />
+          <label htmlFor="wordEditorNote_SrcFavicon">
+            {t('note.srcFavicon')}
+            {word.favicon ? (
+              <img
+                className="wordEditorNote_SrcFavicon"
+                src={word.favicon}
+                alt={t('note.srcTitle')}
+              />
+            ) : null}
           </label>
+          <input
+            type="text"
+            name="favicon"
+            id="wordEditorNote_SrcFavicon"
+            value={word.favicon}
+            onChange={formChanged}
+            onKeyDown={stopPropagation}
+          />
         </div>
-        <textarea
-          rows={10}
-          name="trans"
-          id="wordEditorNote_Trans"
-          value={word.trans}
-          onChange={formChanged}
-          onKeyDown={stopPropagation}
-        />
-        <label htmlFor="wordEditorNote_Note">{t('note.note')}</label>
-        <textarea
-          rows={5}
-          name="note"
-          id="wordEditorNote_Note"
-          value={word.note}
-          onChange={formChanged}
-          onKeyDown={stopPropagation}
-        />
-        <label htmlFor="wordEditorNote_Context">{t('note.context')}</label>
-        <textarea
-          rows={5}
-          name="context"
-          id="wordEditorNote_Context"
-          value={word.context}
-          onChange={formChanged}
-          onKeyDown={stopPropagation}
-        />
-        <label htmlFor="wordEditorNote_SrcTitle">{t('note.srcTitle')}</label>
-        <input
-          type="text"
-          name="title"
-          id="wordEditorNote_SrcTitle"
-          value={word.title}
-          onChange={formChanged}
-          onKeyDown={stopPropagation}
-        />
-        <label htmlFor="wordEditorNote_SrcLink">{t('note.srcLink')}</label>
-        <input
-          type="text"
-          name="url"
-          id="wordEditorNote_SrcLink"
-          value={word.url}
-          onChange={formChanged}
-          onKeyDown={stopPropagation}
-        />
-        <label htmlFor="wordEditorNote_SrcFavicon">
-          {t('note.srcFavicon')}
-          {word.favicon ? (
-            <img
-              className="wordEditorNote_SrcFavicon"
-              src={word.favicon}
-              alt={t('note.srcTitle')}
+        {relatedWords.length > 0 && (
+          <WordCards
+            words={relatedWords}
+            onCardDelete={word => {
+              if (window.confirm(t('content:wordEditor.deleteConfirm'))) {
+                deleteWords('notebook', [word.date]).then(getRelatedWords)
+              }
+            }}
+          />
+        )}
+      </WordEditorPanel>
+
+      <CSSTransition
+        classNames="notes-fade"
+        mountOnEnter
+        unmountOnExit
+        timeout={notesFadeTimeout}
+        in={isShowCtxTransList}
+      >
+        {() => (
+          <WordEditorPanel
+            containerWidth={props.containerWidth}
+            colors={props.colors}
+            title={t('content:wordEditor.chooseCtxTitle')}
+            onClose={() => setShowCtxTransList(false)}
+          >
+            <CtxTransList
+              word={word}
+              ctxTransConfig={ctxTransConfig}
+              ctxTransResult={ctxTransResult}
+              onNewCtxTransConfig={(id, enabled) => {
+                setCtxTransConfig(ctxTransConfig => ({
+                  ...ctxTransConfig,
+                  [id]: enabled
+                }))
+              }}
+              onNewCtxTransResult={(id, content) => {
+                setCtxTransResult(ctxTransResult => ({
+                  ...ctxTransResult,
+                  [id]: content
+                }))
+              }}
             />
-          ) : null}
-        </label>
-        <input
-          type="text"
-          name="favicon"
-          id="wordEditorNote_SrcFavicon"
-          value={word.favicon}
-          onChange={formChanged}
-          onKeyDown={stopPropagation}
-        />
-      </form>
-      {relatedWords.length > 0 && (
-        <WordCards
-          words={relatedWords}
-          onCardDelete={word => {
-            if (window.confirm(t('content:wordEditor.deleteConfirm'))) {
-              deleteWords('notebook', [word.date]).then(getRelatedWords)
-            }
-          }}
-        />
-      )}
-    </WordEditorPanel>
+          </WordEditorPanel>
+        )}
+      </CSSTransition>
+    </>
   )
 }
 
