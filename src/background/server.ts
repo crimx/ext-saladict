@@ -132,7 +132,7 @@ export class BackgroundServer {
     if (!text) return
 
     if (!(await this.qsPanelManager.hasCreated())) {
-      await this.openQSPanel()
+      await this.qsPanelManager.create()
       await timer(1000)
     }
 

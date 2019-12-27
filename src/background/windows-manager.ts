@@ -100,32 +100,43 @@ export class QsPanelManager {
     this.isSidebar = false
 
     let wordString = ''
-    if (window.appConfig.tripleCtrlPreload === 'selection') {
-      const tab = (await browser.tabs.query({
-        active: true,
-        lastFocusedWindow: true
-      }))[0]
-      if (tab && tab.id) {
-        const word = await message.send<'PRELOAD_SELECTION'>(tab.id, {
-          type: 'PRELOAD_SELECTION'
-        })
-        if (word) {
-          try {
+    try {
+      if (window.appConfig.tripleCtrlPreload === 'selection') {
+        const tab = (await browser.tabs.query({
+          active: true,
+          lastFocusedWindow: true
+        }))[0]
+        if (tab && tab.id) {
+          const word = await message.send<'PRELOAD_SELECTION'>(tab.id, {
+            type: 'PRELOAD_SELECTION'
+          })
+          if (word) {
             wordString = '&word=' + encodeURIComponent(JSON.stringify(word))
-          } catch (e) {}
+          }
         }
       }
-    }
+    } catch (e) {}
 
-    const qsPanelWin = await browser.windows.create({
-      ...(window.appConfig.tripleCtrlSidebar
-        ? await this.getSidebarRect(window.appConfig.tripleCtrlSidebar)
-        : this.getDefaultRect()),
-      type: 'popup',
-      url: browser.runtime.getURL(
-        `quick-search.html?sidebar=${window.appConfig.tripleCtrlSidebar}${wordString}`
-      )
-    })
+    const qsPanelWin = await browser.windows
+      .create({
+        ...(window.appConfig.tripleCtrlSidebar
+          ? await this.getSidebarRect(window.appConfig.tripleCtrlSidebar)
+          : this.getDefaultRect()),
+        type: 'popup',
+        url: browser.runtime.getURL(
+          `quick-search.html?sidebar=${window.appConfig.tripleCtrlSidebar}${wordString}`
+        )
+      })
+      .catch((err: Error) => {
+        browser.notifications.create({
+          type: 'basic',
+          iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
+          title: `Saladict`,
+          message: err.message,
+          priority: 2,
+          eventTime: Date.now() + 5000
+        })
+      })
 
     if (qsPanelWin && qsPanelWin.id) {
       this.qsPanelId = qsPanelWin.id
@@ -287,11 +298,12 @@ export class QsPanelManager {
         break
     }
 
+    // coords must be integer
     return {
-      top: qsPanelTop,
-      left: qsPanelLeft,
-      width: qsPanelWidth,
-      height: qsPanelHeight
+      top: Math.round(qsPanelTop),
+      left: Math.round(qsPanelLeft),
+      width: Math.round(qsPanelWidth),
+      height: Math.round(qsPanelHeight)
     }
   }
 
@@ -304,20 +316,24 @@ export class QsPanelManager {
       mainWin.left != null &&
       mainWin.width != null &&
       mainWin.height != null
-      ? {
-          top: mainWin.top,
-          left:
+      ? // coords must be integer
+        {
+          top: Math.round(mainWin.top),
+          left: Math.round(
             side === 'right'
               ? Math.max(mainWin.width - panelWidth, panelWidth)
-              : mainWin.left,
-          width: panelWidth,
-          height: mainWin.height
+              : mainWin.left
+          ),
+          width: Math.round(panelWidth),
+          height: Math.round(mainWin.height)
         }
       : {
           top: 0,
-          left: side === 'right' ? window.screen.availWidth - panelWidth : 0,
-          width: panelWidth,
-          height: window.screen.availHeight
+          left: Math.round(
+            side === 'right' ? window.screen.availWidth - panelWidth : 0
+          ),
+          width: Math.round(panelWidth),
+          height: Math.round(window.screen.availHeight)
         }
   }
 }
