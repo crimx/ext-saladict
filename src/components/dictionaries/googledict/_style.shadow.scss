@@ -957,6 +957,15 @@ a.aciXEb {
   padding-top: 10px;
 }
 
+[role='listitem'] {
+  display: inline-block;
+  color: #f9690e;
+  border: 1px dashed var(--color-divider);
+  margin: 2px;
+  padding: 0 5px;
+  border-radius: 4px;
+}
+
 .saladict-Speaker {
   float: left;
   margin-top: 10px;
