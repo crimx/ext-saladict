@@ -77,7 +77,7 @@ export async function translateCtxs(
  * get translator result from text
  */
 export function parseCtxText(text: string): CtxTranslateResults {
-  const matcher = />>:: (\w+) ::<<\n([\s\S]+?)(?=(?:>>:: \w+ ::<<)|(?:-{15}))/g
+  const matcher = /\[:: (\w+) ::\]\n([\s\S]+?)(?=(?:\[:: \w+ ::\])|(?:-{15}))/g
   let matchResult: RegExpExecArray | null
   const result = {} as CtxTranslateResults
   while ((matchResult = matcher.exec(text)) !== null) {
@@ -107,14 +107,14 @@ export function genCtxText(
 
   const ctxResults =
     enginesWithResult
-      .map(id => `>>:: ${id} ::<<\n` + ctxTransResult[id])
+      .map(id => `[:: ${id} ::]\n` + ctxTransResult[id])
       .join('\n\n') + `\n${''.padEnd(15, '-')}\n`
 
   if (!text) {
     return ctxResults
   }
 
-  const matcher = />>:: (\w+) ::<<\n([\s\S]+?)-{15}/
+  const matcher = /\[:: (\w+) ::\]\n([\s\S]+?)-{15}/
 
   if (matcher.test(text)) {
     return text.replace(matcher, ctxResults)
