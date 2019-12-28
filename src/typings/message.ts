@@ -274,7 +274,10 @@ export type MessageConfig = MessageConfigType<{
   \* ------------------------------------------------ */
 
   UPDATE_WORD_EDITOR_WORD: {
-    payload: Word
+    payload: {
+      word: Word
+      translateCtx?: boolean
+    }
   }
 
   /* ------------------------------------------------ *\

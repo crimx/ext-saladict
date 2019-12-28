@@ -316,7 +316,10 @@ export class WordPageMain extends React.Component<
       try {
         const word = JSON.parse(decodeURIComponent(infoText)) as Word
         setTimeout(() => {
-          message.self.send({ type: 'UPDATE_WORD_EDITOR_WORD', payload: word })
+          message.self.send({
+            type: 'UPDATE_WORD_EDITOR_WORD',
+            payload: { word, translateCtx: true }
+          })
         }, 1000)
       } catch (err) {
         console.warn(err)
@@ -352,7 +355,7 @@ export class WordPageMain extends React.Component<
           setTimeout(() => {
             message.self.send({
               type: 'UPDATE_WORD_EDITOR_WORD',
-              payload: word
+              payload: { word }
             })
           }, 500)
         }}

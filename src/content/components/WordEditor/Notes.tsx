@@ -284,7 +284,7 @@ export const Notes: FC<NotesProps> = props => {
       >
         {() => (
           <WordEditorPanel
-            containerWidth={props.containerWidth}
+            containerWidth={props.containerWidth - 100}
             colors={props.colors}
             title={t('content:wordEditor.chooseCtxTitle')}
             onClose={() => setShowCtxTransList(false)}

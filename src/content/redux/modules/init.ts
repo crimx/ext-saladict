@@ -167,7 +167,10 @@ export const init: Init<StoreActionCatalog, StoreState> = (
         dispatch({ type: 'WORD_EDITOR_STATUS', payload: msg.payload })
         return timer(100).then(() => {
           // wait till snapshot is taken
-          dispatch({ type: 'SEARCH_START', payload: { word: msg.payload } })
+          dispatch({
+            type: 'SEARCH_START',
+            payload: { word: msg.payload.word }
+          })
         })
 
       case 'LAST_PLAY_AUDIO':
