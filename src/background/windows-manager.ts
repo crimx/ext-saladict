@@ -18,15 +18,20 @@ export class MainWindowsManager {
   private snapshot: browser.windows.Window | null = null
 
   async takeSnapshot(): Promise<browser.windows.Window | null> {
+    this.snapshot = null
+
     try {
-      return (this.snapshot = await browser.windows.getLastFocused({
+      const win = await browser.windows.getLastFocused({
         windowTypes: ['normal']
-      }))
+      })
+      if (win.state !== 'minimized') {
+        this.snapshot = win
+      }
     } catch (e) {
       console.warn(e)
     }
 
-    return (this.snapshot = null)
+    return this.snapshot
   }
 
   destroySnapshot(): void {
