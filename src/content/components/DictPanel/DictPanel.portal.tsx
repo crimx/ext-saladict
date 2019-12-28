@@ -19,11 +19,13 @@ export const DictPanelPortal: FC<DictPanelPortalProps> = props => {
     setShow(showProps)
   }, [showProps])
 
+  // Restore if panel was hidden before snapshot,
+  // otherwise ignore.
   useUpdateEffect(() => {
     if (props.takeCoordSnapshot) {
       showRef.current = show
-    } else {
-      setShow(showRef.current)
+    } else if (!showRef.current) {
+      setShow(false)
     }
   }, [props.takeCoordSnapshot])
 

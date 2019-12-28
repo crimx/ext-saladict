@@ -21,7 +21,7 @@ import { DictPanel, DictPanelProps } from './DictPanel'
 import { DictPanelPortal } from './DictPanel.portal'
 import { newWord } from '@/_helpers/record-manager'
 import { getAllDicts } from '@/app-config/dicts'
-import { DictID } from '@/app-config'
+import { getDefaultConfig, DictID } from '@/app-config'
 import { MenuBar } from '../MenuBar/MenuBar'
 import { MtaBox } from '../MtaBox/MtaBox'
 import { DictList } from '../DictList/DictList'
@@ -82,6 +82,8 @@ function useDictPanelProps(): DictPanelProps {
     x: number
     y: number
   }>(null)
+
+  const config = getDefaultConfig()
 
   const dictsNum = number(
     'Dict Item Count',
@@ -175,6 +177,7 @@ function useDictPanelProps(): DictPanelProps {
             y: e.changedTouches[0].clientY
           })
         }
+        onSwitchSidebar={action('onSwitchSidebar')}
       />
     ),
     mtaBox: (
@@ -192,10 +195,14 @@ function useDictPanelProps(): DictPanelProps {
           setExpandMta(!expandMta)
         }}
         onHeightChanged={action('Dict Mta Box Height Changed')}
+        shouldFocus={boolean('Should Focus', true)}
       />
     ),
     dictList: (
       <DictList
+        touchMode={config.touchMode}
+        language={config.language}
+        doubleClickDelay={config.doubleClickDelay}
         fontSize={number('Font Size', 13)}
         withAnimation={withAnimation}
         panelCSS={''}
@@ -204,6 +211,8 @@ function useDictPanelProps(): DictPanelProps {
         openDictSrcPage={action('Open Source Page')}
         onSpeakerPlay={async src => action('Open Source Page')(src)}
         onHeightChanged={action('Dict List Height Changed')}
+        newSelection={action('New Selection')}
+        onInPanelSelect={action('onInPanelSelect')}
       />
     ),
     waveformBox: (
