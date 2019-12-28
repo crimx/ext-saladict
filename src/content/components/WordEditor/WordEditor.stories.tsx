@@ -24,6 +24,23 @@ storiesOf('Content Scripts|WordEditor', module)
     withSideEffect(
       mockRuntimeMessage(async message => {
         action(message.type)(message['payload'])
+        switch (message.type) {
+          case 'GET_WORDS_BY_TEXT':
+            return faker.random.boolean
+              ? [
+                  newWord({
+                    date: faker.date.past().valueOf(),
+                    text: message.payload.text,
+                    context: faker.lorem.sentence(),
+                    title: faker.random.word(),
+                    url: faker.internet.url(),
+                    favicon: faker.image.imageUrl(),
+                    trans: faker.lorem.sentence(),
+                    note: faker.lorem.sentences()
+                  })
+                ]
+              : []
+        }
       })
     )
   )

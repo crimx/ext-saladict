@@ -2,7 +2,12 @@
 @import './WordCards.scss';
 @import './CtxTransList.scss';
 
+.wordEditorNote-Container {
+  display: flex;
+}
+
 .wordEditorNote {
+  flex: 3;
   padding: 15px;
 
   a {

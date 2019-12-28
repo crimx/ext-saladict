@@ -1,5 +1,5 @@
 .wordCards {
-  flex: 1;
+  flex: 2;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -58,6 +58,12 @@
   overflow: visible;
   margin-bottom: 0.5em;
   padding: 0 0 0 25px;
+}
+
+.wordCards-CardItem_Cont {
+  p {
+    margin: 0;
+  }
 }
 
 .wordCards-CardItem_Icon {
