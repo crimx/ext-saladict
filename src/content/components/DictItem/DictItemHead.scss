@@ -5,7 +5,7 @@
   top: 0;
   z-index: 100;
   height: 20px;
-  border-top: 1px var(--color-divider) solid;
+  border-top: 1px var(--color-divider) dashed;
   // sticky header to cover content
   background: var(--color-background);
 }
