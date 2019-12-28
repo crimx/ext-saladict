@@ -288,6 +288,13 @@ export const Notes: FC<NotesProps> = props => {
             colors={props.colors}
             title={t('content:wordEditor.chooseCtxTitle')}
             onClose={() => setShowCtxTransList(false)}
+            btns={[
+              {
+                type: 'normal',
+                title: t('content:transContext'),
+                onClick: () => onTranslateCtx(ctxTransConfig)
+              }
+            ]}
           >
             <CtxTransList
               word={word}
