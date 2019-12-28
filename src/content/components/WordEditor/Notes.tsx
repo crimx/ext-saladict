@@ -184,6 +184,15 @@ export const Notes: FC<NotesProps> = props => {
             onChange={formChanged}
             onKeyDown={stopPropagation}
           />
+          <label htmlFor="wordEditorNote_Context">{t('note.context')}</label>
+          <textarea
+            rows={3}
+            name="context"
+            id="wordEditorNote_Context"
+            value={word.context}
+            onChange={formChanged}
+            onKeyDown={stopPropagation}
+          />
           <div className="wordEditorNote_LabelWithBtn">
             <label htmlFor="wordEditorNote_Trans">
               {t('note.trans')}
@@ -214,15 +223,6 @@ export const Notes: FC<NotesProps> = props => {
             name="note"
             id="wordEditorNote_Note"
             value={word.note}
-            onChange={formChanged}
-            onKeyDown={stopPropagation}
-          />
-          <label htmlFor="wordEditorNote_Context">{t('note.context')}</label>
-          <textarea
-            rows={5}
-            name="context"
-            id="wordEditorNote_Context"
-            value={word.context}
             onChange={formChanged}
             onKeyDown={stopPropagation}
           />
