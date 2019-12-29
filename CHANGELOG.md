@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.6.0](https://github.com/crimx/ext-saladict/compare/v7.5.4...v7.6.0) (2019-12-29)
+
+
+### Bug Fixes
+
+* **panel:** ignore snapshot if the panel was hidden ([ae9a538](https://github.com/crimx/ext-saladict/commit/ae9a538))
+* **panel:** open word editor on wordpage ([dbb9b58](https://github.com/crimx/ext-saladict/commit/dbb9b58)), closes [#590](https://github.com/crimx/ext-saladict/issues/590)
+* **selection:** detect mouseup in panel ([989a9f6](https://github.com/crimx/ext-saladict/commit/989a9f6))
+* remove invalid window state ([c258de2](https://github.com/crimx/ext-saladict/commit/c258de2))
+* round window positions ([fa3d264](https://github.com/crimx/ext-saladict/commit/fa3d264)), closes [#607](https://github.com/crimx/ext-saladict/issues/607)
+
+
+### Features
+
+* **content:** add picker for ctx translated results ([6c0c4b8](https://github.com/crimx/ext-saladict/commit/6c0c4b8))
+* **menus:** add copu pdf url to clipboard ([cfe6d9d](https://github.com/crimx/ext-saladict/commit/cfe6d9d)), closes [#571](https://github.com/crimx/ext-saladict/issues/571)
+
+
+
 ### [7.5.4](https://github.com/crimx/ext-saladict/compare/v7.5.3...v7.5.4) (2019-12-11)
 
 
