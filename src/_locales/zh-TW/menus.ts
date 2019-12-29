@@ -6,6 +6,7 @@ export const locale: typeof _locale = {
   bing_dict: 'Bing 字典',
   bing_search: 'Bing 搜尋',
   cambridge: '劍橋字典',
+  copy_pdf_url: '複製PDF連結到剪貼簿',
   dictcn: '海詞字典',
   etymonline: '培根字根',
   google_cn_page_translate: 'Google cn 網頁翻譯',

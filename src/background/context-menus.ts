@@ -9,6 +9,8 @@ import { I18nManager } from './i18n-manager'
 
 import { combineLatest } from 'rxjs'
 import { concatMap, filter, distinctUntilChanged } from 'rxjs/operators'
+import { openPDF, extractPDFUrl } from './pdf-sniffer'
+import { copyTextToClipboard } from './clipboard-manager'
 
 interface CreateMenuOptions {
   type?: browser.contextMenus.ItemType
@@ -18,11 +20,10 @@ interface CreateMenuOptions {
   contexts?: browser.contextMenus.ContextType[]
 }
 
-interface ContextMenusClickInfo {
-  menuItemId: string | number
-  selectionText?: string
-  linkUrl?: string
-}
+type ContextMenusClickInfo = Pick<
+  browser.contextMenus.OnClickData,
+  'menuItemId' | 'selectionText' | 'linkUrl' | 'pageUrl'
+>
 
 export class ContextMenus {
   static getInstance() {
@@ -30,27 +31,6 @@ export class ContextMenus {
   }
 
   static init = ContextMenus.getInstance
-
-  /**
-   * @param url provide a url
-   * @param force load the current tab anyway
-   */
-  static async openPDF(url?: string, force?: boolean) {
-    const pdfURL = browser.runtime.getURL('assets/pdf/web/viewer.html')
-    if (url) {
-      // open link as pdf
-      return openURL(pdfURL + '?file=' + encodeURIComponent(url))
-    }
-    const tabs = await browser.tabs.query({ active: true, currentWindow: true })
-    if (tabs.length > 0 && tabs[0].url) {
-      if (/pdf$/i.test(tabs[0].url as string) || force) {
-        return openURL(
-          pdfURL + '?file=' + encodeURIComponent(tabs[0].url as string)
-        )
-      }
-    }
-    return openURL(pdfURL)
-  }
 
   static openGoogle() {
     browser.tabs.executeScript({ file: '/assets/google-page-trans.js' })
@@ -165,8 +145,15 @@ export class ContextMenus {
         ContextMenus.openMicrosoftPage()
         break
       case 'view_as_pdf':
-        ContextMenus.openPDF(linkUrl, info.menuItemId !== 'view_as_pdf_ba')
+        openPDF(linkUrl, info.menuItemId !== 'view_as_pdf_ba')
         break
+      case 'copy_pdf_url': {
+        const url = extractPDFUrl(info.pageUrl)
+        if (url) {
+          copyTextToClipboard(url)
+        }
+        break
+      }
       case 'saladict':
         ContextMenus.requestSelection()
         break
@@ -239,6 +226,7 @@ export class ContextMenus {
       'video'
     ]
 
+    // top level context menus item
     const containerCtx = new Set<browser.contextMenus.ContextType>([
       'selection'
     ])
@@ -264,6 +252,10 @@ export class ContextMenus {
           containerCtx.add('link')
           containerCtx.add('page')
           contexts = ['link', 'page']
+          break
+        case 'copy_pdf_url':
+          containerCtx.add('page')
+          contexts = ['page']
           break
         default:
           contexts = ['selection']

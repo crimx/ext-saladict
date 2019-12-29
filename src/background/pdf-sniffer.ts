@@ -4,6 +4,7 @@
 
 import { AppConfig } from '@/app-config'
 import { addConfigListener } from '@/_helpers/config-manager'
+import { openURL } from '@/_helpers/browser-api'
 
 let blacklist: AppConfig['pdfBlacklist'] = []
 let whitelist: AppConfig['pdfWhitelist'] = []
@@ -34,6 +35,35 @@ export function init(config: AppConfig) {
       }
     }
   })
+}
+
+/**
+ * @param url provide a url
+ * @param force load the current tab anyway
+ */
+export async function openPDF(url?: string, force?: boolean) {
+  const pdfURL = browser.runtime.getURL('assets/pdf/web/viewer.html')
+  if (url) {
+    // open link as pdf
+    return openURL(pdfURL + '?file=' + encodeURIComponent(url))
+  }
+  const tabs = await browser.tabs.query({ active: true, currentWindow: true })
+  if (tabs.length > 0 && tabs[0].url) {
+    if (/pdf$/i.test(tabs[0].url as string) || force) {
+      return openURL(
+        pdfURL + '?file=' + encodeURIComponent(tabs[0].url as string)
+      )
+    }
+  }
+  return openURL(pdfURL)
+}
+
+export function extractPDFUrl(fullurl?: string): string | void {
+  if (!fullurl) {
+    return
+  }
+  const searchURL = new URL(fullurl)
+  return decodeURIComponent(searchURL.searchParams.get('file') || '')
 }
 
 function startListening() {

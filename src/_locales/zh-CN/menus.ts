@@ -4,6 +4,7 @@ export const locale = {
   bing_dict: '必应词典',
   bing_search: '必应搜索',
   cambridge: '剑桥词典',
+  copy_pdf_url: '复制PDF链接到剪贴板',
   dictcn: '海词词典',
   etymonline: '培根词源',
   google_cn_page_translate: '谷歌cn网页翻译',

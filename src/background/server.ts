@@ -23,6 +23,7 @@ import {
 } from './database'
 import { AudioManager } from './audio-manager'
 import { QsPanelManager } from './windows-manager'
+import { getTextFromClipboard } from './clipboard-manager'
 import './types'
 
 /**
@@ -59,7 +60,7 @@ export class BackgroundServer {
         case 'DICT_ENGINE_METHOD':
           return this.callDictEngineMethod(msg.payload)
         case 'GET_CLIPBOARD':
-          return this.getClipboard()
+          return Promise.resolve(getTextFromClipboard())
 
         case 'INJECT_DICTPANEL':
           return injectDictPanel(sender.tab)
@@ -128,7 +129,7 @@ export class BackgroundServer {
   }
 
   async searchClipboard(): Promise<void> {
-    const text = await this.getClipboard()
+    const text = getTextFromClipboard()
     if (!text) return
 
     if (!(await this.qsPanelManager.hasCreated())) {
@@ -205,25 +206,6 @@ export class BackgroundServer {
     return require(`@/components/dictionaries/${data.id}/engine`)[data.method](
       ...(data.args || [])
     )
-  }
-
-  getClipboard(): Promise<string> {
-    if (process.env.NODE_ENV === 'development') {
-      return Promise.resolve('clipboard content')
-    } else {
-      let el = document.getElementById(
-        'saladict-paste'
-      ) as HTMLTextAreaElement | null
-      if (!el) {
-        el = document.createElement('textarea')
-        el.id = 'saladict-paste'
-        document.body.appendChild(el)
-      }
-      el.value = ''
-      el.focus()
-      document.execCommand('paste')
-      return Promise.resolve(el.value || '')
-    }
   }
 
   /** Bypass http restriction */
