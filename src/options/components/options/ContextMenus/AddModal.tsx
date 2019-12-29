@@ -47,6 +47,7 @@ export class AddModal extends React.Component<AddModalProps> {
             />
             <Button
               title={t('common:delete')}
+              disabled={item === 'x' /** internal options */}
               className="sortable-list-item-btn"
               shape="circle"
               size="small"
