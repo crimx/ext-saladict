@@ -311,10 +311,10 @@ export class WordPageMain extends React.Component<
 
     // From popup page
     const searchURL = new URL(document.URL)
-    const infoText = searchURL.searchParams.get('info')
-    if (infoText) {
+    const wordString = searchURL.searchParams.get('word')
+    if (wordString) {
       try {
-        const word = JSON.parse(decodeURIComponent(infoText)) as Word
+        const word = JSON.parse(decodeURIComponent(wordString)) as Word
         setTimeout(() => {
           message.self.send({
             type: 'UPDATE_WORD_EDITOR_WORD',

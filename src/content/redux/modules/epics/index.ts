@@ -1,8 +1,8 @@
 import { combineEpics } from 'redux-observable'
-import { from, of } from 'rxjs'
+import { from, of, empty } from 'rxjs'
 import { map, mapTo, mergeMap, filter } from 'rxjs/operators'
 
-import { isStandalonePage } from '@/_helpers/saladict'
+import { isPopupPage, isStandalonePage } from '@/_helpers/saladict'
 import { saveWord } from '@/_helpers/record-manager'
 
 import { StoreAction, StoreState } from '../'
@@ -11,6 +11,7 @@ import { ofType } from '../../utils/operators'
 import searchStartEpic from './searchStart.epic'
 import newSelectionEpic from './newSelection.epic'
 import { translateCtxs, genCtxText } from '@/_helpers/translateCtx'
+import { message } from '@/_helpers/browser-api'
 
 export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
   /** Start searching text. This will also send to Redux. */
@@ -31,9 +32,25 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
     action$.pipe(
       ofType('ADD_TO_NOTEBOOK'),
       mergeMap(() => {
-        if (state$.value.config.editOnFav && !isStandalonePage()) {
+        if (state$.value.config.editOnFav) {
           const word =
             state$.value.searchHistory[state$.value.searchHistory.length - 1]
+
+          if (isPopupPage() || isStandalonePage()) {
+            try {
+              message.send({
+                type: 'OPEN_URL',
+                payload: {
+                  url: `notebook.html?word=${encodeURIComponent(
+                    JSON.stringify(word)
+                  )}`,
+                  self: true
+                }
+              })
+              return empty()
+            } catch (e) {}
+          }
+
           return of({
             type: 'WORD_EDITOR_STATUS',
             payload: { word, translateCtx: true }
