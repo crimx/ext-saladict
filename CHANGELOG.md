@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.6.1](https://github.com/crimx/ext-saladict/compare/v7.6.0...v7.6.1) (2020-01-06)
+
+
+### Bug Fixes
+
+* **background:** remove duplicated qs panel onclose response ([b9d209b](https://github.com/crimx/ext-saladict/commit/b9d209b)), closes [#618](https://github.com/crimx/ext-saladict/issues/618)
+* **selection:** respect qs panel selection settings ([4990479](https://github.com/crimx/ext-saladict/commit/4990479))
+
+
+
 ## [7.6.0](https://github.com/crimx/ext-saladict/compare/v7.5.4...v7.6.0) (2019-12-29)
 
 
