@@ -104,20 +104,6 @@ export class BackgroundServer {
           return this.youdaoTranslateAjax(msg.payload)
       }
     })
-
-    browser.windows.onRemoved.addListener(async winId => {
-      if (this.qsPanelManager.isQsPanel(winId)) {
-        this.qsPanelManager.destroy()
-        ;(await browser.tabs.query({})).forEach(tab => {
-          if (tab.id && tab.windowId !== winId) {
-            message.send(tab.id, {
-              type: 'QS_PANEL_CHANGED',
-              payload: false
-            })
-          }
-        })
-      }
-    })
   }
 
   async openQSPanel(): Promise<void> {

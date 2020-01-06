@@ -174,6 +174,15 @@ export class QsPanelManager {
   }
 
   async destroy(): Promise<void> {
+    ;(await browser.tabs.query({})).forEach(tab => {
+      if (tab.id && tab.windowId !== this.qsPanelId) {
+        message.send(tab.id, {
+          type: 'QS_PANEL_CHANGED',
+          payload: false
+        })
+      }
+    })
+
     this.qsPanelId = null
     this.isSidebar = false
     this.destroySnapshot()
