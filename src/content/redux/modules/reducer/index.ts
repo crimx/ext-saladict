@@ -209,7 +209,7 @@ export const createRootReducer = () =>
       }
 
       // hide panel on otehr pages and leave just quick search panel
-      return payload
+      return payload && state.config.tripleCtrlPageSel
         ? {
             ...state,
             withQSPanel: payload,
