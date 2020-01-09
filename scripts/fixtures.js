@@ -51,10 +51,13 @@ async function main() {
   await Promise.all(fixturesPath.map(fetchDictFixtures))
 
   if (errors.length > 0) {
-    console.log('\nErrors:\n\n', errors.map(([name]) => name).join('\n'))
     await fs.outputFile(
       path.join(__dirname, 'fixtures.log'),
       errors.map(([name, error]) => name + '\n' + error).join('\n\n')
+    )
+    console.log(
+      '\nErrors:\n\n',
+      errors.map(([name, e, url]) => `${name}\n${url}\n`).join('\n')
     )
   }
 
@@ -63,7 +66,9 @@ async function main() {
 
     const fetched = []
 
-    for (const [filename, fetchUrl] of fixture.files) {
+    for (const index in fixture.files) {
+      const [filename, fetchUrl] = fixture.files[index]
+
       const destPath = fixturePath.replace(
         /fixtures.js$/,
         `response/${filename}`
@@ -77,7 +82,7 @@ async function main() {
       const dictname = /[\\/]+([^\\/]+)[\\/]+fixtures.js$/.exec(fixturePath)[1]
 
       const pgBar = progressBars.create(100, 0, {
-        file: `${dictname}/${filename}`,
+        file: `${dictname}/fixture${index + 1}`,
         status: 'downloading'
       })
 
@@ -136,7 +141,7 @@ async function main() {
         pgBar.update(100, { status: 'success' })
         pgBar.stop()
       } catch (e) {
-        errors.push([`${dictname}/${filename}`, e])
+        errors.push([`${dictname}/${filename}`, e, axiosConfig.url])
 
         pgBar.update(null, { status: 'failed' })
         pgBar.stop()

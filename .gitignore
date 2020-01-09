@@ -88,3 +88,5 @@ jspm_packages/
 build
 
 assets/pdf
+
+test/**/response
