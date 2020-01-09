@@ -36,6 +36,7 @@ Saladict 7 is a complete rewrite with sophisticated interaction and buttery smoo
 git clone git@github.com:crimx/ext-saladict.git
 cd ext-saladict
 yarn install
+yarn pdf
 ```
 
 Add a `.env` file following the `.env.example` format(leave empty if you don't use these dictionaries).

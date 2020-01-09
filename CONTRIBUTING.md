@@ -16,6 +16,8 @@ Clone the repo and run `yarn install`.
 
 ## UI Tweaking
 
+Run `yarn fixtures` to download fixtures(only need to run once).
+
 Run `yarn storybook` to view all the components.
 
 Run `yarn start --wextentry [entry id]` to view a certain entry with WDS in a fake WebExtension environment.
