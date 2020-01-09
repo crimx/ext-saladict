@@ -1,6 +1,6 @@
 import { MockRequest } from '@/components/dictionaries/helpers'
 
-export const mockSearchTexts = ['test']
+export const mockSearchTexts = ['love']
 
 export const mockRequest: MockRequest = mock => {
   mock
@@ -8,7 +8,7 @@ export const mockRequest: MockRequest = mock => {
     .reply(
       200,
       new DOMParser().parseFromString(
-        require(`raw-loader!./response/test.html`).default,
+        require(`raw-loader!./response/love.html`).default,
         'text/html'
       )
     )

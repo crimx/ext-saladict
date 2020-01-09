@@ -6,8 +6,6 @@ import {
 } from '../helpers'
 import axios, { AxiosResponse } from 'axios'
 
-const APPLICATION_ID = 'E62VyFVLMiW7kvbtVq3p'
-
 export const getSrcPage: GetSrcPageFunction = async text => {
   const suggests = await getSuggests(text).catch(() => null)
   if (suggests) {
@@ -115,7 +113,7 @@ export const search: SearchFunction<MojidictResult> = async (
     },
     data: JSON.stringify({
       wordId,
-      _ApplicationId: APPLICATION_ID,
+      _ApplicationId: process.env.MOJI_ID,
       _ClientVersion: 'js2.7.1',
       _InstallationId: getInstallationId()
     })
@@ -181,7 +179,7 @@ async function getSuggests(text: string): Promise<SuggestsResult> {
         langEnv: 'zh-CN_ja',
         needWords: true,
         searchText: text,
-        _ApplicationId: APPLICATION_ID,
+        _ApplicationId: process.env.MOJI_ID,
         _ClientVersion: 'js2.7.1',
         _InstallationId: getInstallationId()
       })
@@ -204,7 +202,7 @@ async function getTTS(text: string, wordId: string): Promise<string> {
       data: JSON.stringify({
         identity: wordId,
         text,
-        _ApplicationId: APPLICATION_ID,
+        _ApplicationId: process.env.MOJI_ID,
         _ClientVersion: 'js2.7.1',
         _InstallationId: getInstallationId()
       })
