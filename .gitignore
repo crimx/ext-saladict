@@ -87,6 +87,7 @@ jspm_packages/
 # Neutrino build directory
 build
 
-assets/pdf
+assets/pdf/
+deps/
 
 test/**/response
