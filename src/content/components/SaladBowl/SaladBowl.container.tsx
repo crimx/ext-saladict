@@ -9,6 +9,7 @@ const mapStateToProps = (
   state: StoreState
 ): Omit<SaladBowlPortalProps, Dispatchers> => ({
   show: state.isShowBowl,
+  panelCSS: state.config.panelCSS,
   x: state.bowlCoord.x,
   y: state.bowlCoord.y,
   withAnimation: state.config.animation,
