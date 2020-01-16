@@ -34,7 +34,8 @@ export const locale: typeof _locale = {
       default: 'Keep default linebreaks',
       n: 'replace linebreaks with \\n',
       br: 'replace linebreaks with <br>',
-      p: 'replace linebreaks with <p>'
+      p: 'replace linebreaks with <p>',
+      space: 'replace linebreaks with space'
     },
     page: 'Export page',
     placeholder: 'Placeholder',

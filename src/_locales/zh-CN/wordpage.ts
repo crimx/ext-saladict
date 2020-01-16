@@ -32,7 +32,8 @@ export const locale = {
       default: '保留换行',
       n: '换行替换为 \\n',
       br: '换行替换为 <br>',
-      p: '换行替换为 <p>'
+      p: '换行替换为 <p>',
+      space: '换行替换为空格'
     },
     page: '导出本页单词',
     placeholder: '替换符',

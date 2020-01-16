@@ -18,7 +18,7 @@ export interface ExportModalProps {
 type ExportModalInnerProps = ExportModalProps & WithTranslation
 
 interface ExportModalState {
-  lineBreak: '' | 'n' | 'p' | 'br'
+  lineBreak: '' | 'n' | 'p' | 'br' | 'space'
   template: string
 }
 
@@ -157,6 +157,8 @@ export class ExportModalBody extends React.Component<
                       .split(/\n|\r\n/)
                       .map(line => `<p>${line}</p>`)
                       .join('')
+                  case 'space':
+                    return (word[k] || '').replace(/\n|\r\n/g, ' ')
                   default:
                     return word[k] || ''
                 }
@@ -240,6 +242,9 @@ export class ExportModalBody extends React.Component<
                 {t('export.linebreak.br')}
               </Select.Option>
               <Select.Option value="p">{t('export.linebreak.p')}</Select.Option>
+              <Select.Option value="space">
+                {t('export.linebreak.space')}
+              </Select.Option>
             </Select>
           </div>
           <textarea

@@ -34,7 +34,8 @@ export const locale: typeof _locale = {
       default: '保留換行',
       n: '換行替換為 \\n',
       br: '換行替換為 <br>',
-      p: '換行替換為 <p>'
+      p: '換行替換為 <p>',
+      space: '換行替換為空格'
     },
     page: '輸出本頁單字',
     placeholder: '預留位置',
