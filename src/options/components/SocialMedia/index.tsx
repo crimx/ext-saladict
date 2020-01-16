@@ -9,16 +9,6 @@ const socialMedia = [
     url: 'mailto:straybugs@gmail.com'
   },
   {
-    title: '豆瓣',
-    icon: 'icon-douban-circle',
-    url: 'https://www.douban.com/people/jaward'
-  },
-  {
-    title: '网易云音乐',
-    icon: 'icon-netease-music-circle',
-    url: 'https://music.163.com/#/user/home?id=44711994'
-  },
-  {
     title: '知乎',
     icon: 'icon-zhihu-circle',
     url: 'https://www.zhihu.com/people/straybugs/answers'
