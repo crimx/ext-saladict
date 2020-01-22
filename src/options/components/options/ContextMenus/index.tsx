@@ -9,6 +9,8 @@ import AddModal from './AddModal'
 
 import { Row, Col, message } from 'antd'
 
+const isFirefox = navigator.userAgent.includes('Firefox')
+
 export type ContextMenusProps = Props
 
 interface ContextMenusState {
@@ -106,13 +108,21 @@ export class ContextMenus extends React.Component<
             t={t}
             title={t('nav.ContextMenus')}
             description={<p>{t('opt.context_description')}</p>}
-            list={config.contextMenus.selected.map(id => {
-              const item = allMenus[id]
-              return {
-                value: id,
-                title: typeof item === 'string' ? t(`menus:${id}`) : item.name
-              }
-            })}
+            list={config.contextMenus.selected
+              .filter(id => {
+                // FF policy
+                if (isFirefox && id === 'youdao_page_translate') {
+                  return false
+                }
+                return true
+              })
+              .map(id => {
+                const item = allMenus[id]
+                return {
+                  value: id,
+                  title: typeof item === 'string' ? t(`menus:${id}`) : item.name
+                }
+              })}
             disableEdit={this.disableEdit}
             onAdd={this.openAddModal}
             onEdit={this.openEditModal}

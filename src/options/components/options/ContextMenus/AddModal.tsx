@@ -6,6 +6,8 @@ import AddNewItem from './AddNewItem'
 
 import { Modal, List, Card, Button } from 'antd'
 
+const isFirefox = navigator.userAgent.includes('Firefox')
+
 export type AddModalProps = {
   t: TFunction
   config: AppConfig
@@ -63,9 +65,13 @@ export class AddModal extends React.Component<AddModalProps> {
   render() {
     const { onClose, show, t, config } = this.props
     const selectedSet = new Set(config.contextMenus.selected as string[])
-    const unselected = Object.keys(config.contextMenus.all).filter(
-      id => !selectedSet.has(id)
-    )
+    const unselected = Object.keys(config.contextMenus.all).filter(id => {
+      // FF policy
+      if (isFirefox && id === 'youdao_page_translate') {
+        return false
+      }
+      return !selectedSet.has(id)
+    })
 
     return (
       <Modal

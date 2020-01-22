@@ -12,6 +12,8 @@ import { concatMap, filter, distinctUntilChanged } from 'rxjs/operators'
 import { openPDF, extractPDFUrl } from './pdf-sniffer'
 import { copyTextToClipboard } from './clipboard-manager'
 
+const isFirefox = navigator.userAgent.includes('Firefox')
+
 interface CreateMenuOptions {
   type?: browser.contextMenus.ItemType
   id?: string
@@ -43,6 +45,8 @@ export class ContextMenus {
   }
 
   static openYoudao() {
+    // FF policy
+    if (isFirefox) return
     // inject youdao script, defaults to the active tab of the current window.
     browser.tabs
       .executeScript({ file: '/assets/fanyi.youdao.2.0/main.js' })
@@ -236,6 +240,11 @@ export class ContextMenus {
     const browserActionItems: string[] = []
 
     for (const id of contextMenus.selected) {
+      if (isFirefox && id === 'youdao_page_translate') {
+        // FF policy
+        continue
+      }
+
       let contexts: browser.contextMenus.ContextType[]
       switch (id) {
         case 'google_page_translate':
