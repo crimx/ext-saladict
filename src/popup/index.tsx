@@ -4,7 +4,7 @@ import '@/selection'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppConfig } from '@/app-config'
-import { injectAnalytics } from '@/_helpers/analytics'
+import { reportGA } from '@/_helpers/analytics'
 import { getConfig } from '@/_helpers/config-manager'
 import { message, openURL } from '@/_helpers/browser-api'
 import { saveWord, Word } from '@/_helpers/record-manager'
@@ -45,7 +45,7 @@ getConfig().then(config => {
 
 function showPanel(config: AppConfig) {
   if (config.analytics) {
-    injectAnalytics('/popup')
+    reportGA('/popup')
   }
 
   ReactDOM.render(

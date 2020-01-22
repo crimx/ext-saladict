@@ -4,7 +4,7 @@ import {
   getActiveProfile,
   addActiveProfileListener
 } from '@/_helpers/profile-manager'
-import { injectAnalytics } from '@/_helpers/analytics'
+import { reportGA } from '@/_helpers/analytics'
 import { message } from '@/_helpers/browser-api'
 import { startSyncServiceInterval } from './sync-manager'
 import { init as initPdf } from './pdf-sniffer'
@@ -24,7 +24,7 @@ BackgroundServer.init()
 getConfig().then(async config => {
   window.appConfig = config
   initPdf(config)
-  injectAnalytics('/background')
+  reportGA('/background')
   initBadge()
 
   addConfigListener(({ newConfig }) => {

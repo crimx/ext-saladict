@@ -19,7 +19,7 @@ import en_US from 'antd/lib/locale-provider/en_US'
 
 import { DBArea } from '@/_helpers/record-manager'
 import { createConfigStream } from '@/_helpers/config-manager'
-import { injectAnalytics } from '@/_helpers/analytics'
+import { reportGA } from '@/_helpers/analytics'
 
 const i18n = i18nLoader()
 i18n.loadNamespaces(['common', 'wordpage', 'content'])
@@ -46,7 +46,7 @@ export const WordPage: FC<WordPageProps> = props => {
         setLocale(config.langCode)
       }
       if (config.analytics) {
-        injectAnalytics(`/wordpage/${props.area}`)
+        reportGA(`/wordpage/${props.area}`)
       }
     })
   }, [])

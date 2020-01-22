@@ -5,7 +5,7 @@ import { withTranslation, WithTranslation } from 'react-i18next'
 import { Layout, Menu, Icon } from 'antd'
 import HeadInfo from './components/HeadInfo'
 import { getProfileName } from '@/_helpers/profile-manager'
-import { injectAnalytics } from '@/_helpers/analytics'
+import { reportGA } from '@/_helpers/analytics'
 
 const { Header, Content, Sider } = Layout
 
@@ -43,9 +43,7 @@ export class OptionsMain extends React.Component<
     const { protocol, host, pathname } = window.location
     const newurl = `${protocol}//${host}${pathname}?menuselected=${key}`
     window.history.pushState({ key }, '', newurl)
-    if (window.ga) {
-      window.ga('send', 'pageview', `/options/${key}`)
-    }
+    reportGA(`/options/${key}`)
   }
 
   setTitle = (key: string) => {
@@ -56,7 +54,7 @@ export class OptionsMain extends React.Component<
   componentDidMount() {
     this.setTitle(this.state.selectedKey)
 
-    injectAnalytics(`/options/${this.state.selectedKey}`)
+    reportGA(`/options/${this.state.selectedKey}`)
 
     window.addEventListener('popstate', e => {
       this.setState({ selectedKey: e.state.key || 'General' })
