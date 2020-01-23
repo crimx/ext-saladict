@@ -7,6 +7,7 @@ import { initProfiles } from '@/_helpers/profile-manager'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
 import { ContextMenus } from './context-menus'
 import { BackgroundServer } from './server'
+import { openPDF } from './pdf-sniffer'
 import './types'
 
 interface UpdateData {
@@ -81,7 +82,7 @@ function onCommand(command: string) {
       ContextMenus.openYoudao()
       break
     case 'open-pdf':
-      ContextMenus.openPDF()
+      openPDF()
       break
     case 'search-clipboard':
       BackgroundServer.getInstance().searchClipboard()
@@ -116,7 +117,7 @@ async function onInstalled({
     }
   } else if (reason === 'update') {
     let data: UpdateData | undefined
-    if (!process.env.DEV_BUILD) {
+    if (!process.env.DEV_BUILD && window.appConfig.updateCheck) {
       try {
         const response = await fetch(
           'https://api.github.com/repos/crimx/ext-saladict/releases/latest'

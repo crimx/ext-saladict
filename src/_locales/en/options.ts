@@ -188,6 +188,8 @@ export const locale: typeof _locale = {
     syncWebdav: 'WebDAV Sync Service',
     touch_mode: 'Touch Mode',
     touch_mode_help: 'Enable touch related selection',
+    update_check: 'Check Update',
+    update_check_help: 'Automatically check update from Github',
     waveform: 'Waveform Control',
     waveform_help:
       'Display a button at the bottom of the Dict Panel for expanding the Waveform Control Panel. Audio files can still be played if turned off.'

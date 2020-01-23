@@ -14,6 +14,16 @@ export class Privacy extends React.Component<Props & FormComponentProps> {
       <Form>
         <Form.Item
           {...formItemLayout}
+          label={t('opt.update_check')}
+          help={t('opt.update_check_help')}
+        >
+          {getFieldDecorator('config#updateCheck', {
+            initialValue: config.updateCheck,
+            valuePropName: 'checked'
+          })(<Switch />)}
+        </Form.Item>
+        <Form.Item
+          {...formItemLayout}
           label={t('opt.analytics')}
           help={t('opt.analytics_help')}
         >

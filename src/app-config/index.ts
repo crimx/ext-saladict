@@ -52,6 +52,9 @@ function _getDefaultConfig() {
     /** enable Google analytics */
     analytics: true,
 
+    /** enable update check */
+    updateCheck: true,
+
     /** disable selection on type fields, like input and textarea */
     noTypeField: false,
 

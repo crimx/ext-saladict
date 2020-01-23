@@ -178,6 +178,8 @@ export const locale = {
     syncWebdav: '添加 WebDAV 同步',
     touch_mode: '触摸模式',
     touch_mode_help: '支持触摸相关选词',
+    update_check: '检查更新',
+    update_check_help: '自动检查 Github 更新',
     waveform: '波形控制按钮',
     waveform_help:
       '在词典面板下方显示音频控制面板展开按钮。关闭依然可以播放音频。'
