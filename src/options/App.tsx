@@ -43,7 +43,9 @@ export class OptionsMain extends React.Component<
     const { protocol, host, pathname } = window.location
     const newurl = `${protocol}//${host}${pathname}?menuselected=${key}`
     window.history.pushState({ key }, '', newurl)
-    reportGA(`/options/${key}`)
+    if (this.props.config.analytics) {
+      reportGA(`/options/${key}`)
+    }
   }
 
   setTitle = (key: string) => {
@@ -54,7 +56,9 @@ export class OptionsMain extends React.Component<
   componentDidMount() {
     this.setTitle(this.state.selectedKey)
 
-    reportGA(`/options/${this.state.selectedKey}`)
+    if (this.props.config.analytics) {
+      reportGA(`/options/${this.state.selectedKey}`)
+    }
 
     window.addEventListener('popstate', e => {
       this.setState({ selectedKey: e.state.key || 'General' })
@@ -119,6 +123,9 @@ export class OptionsMain extends React.Component<
               </Menu.Item>
               <Menu.Item key="ImportExport">
                 <Icon type="swap" /> {t('nav.ImportExport')}
+              </Menu.Item>
+              <Menu.Item key="Privacy">
+                <Icon type="lock" /> {t('nav.Privacy')}
               </Menu.Item>
             </Menu>
           </Sider>

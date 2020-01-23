@@ -58,13 +58,15 @@ export const locale: typeof _locale = {
     Popup: '右上彈出式視窗',
     Profiles: '情景模式',
     QuickSearch: '迅速查字',
-    SearchModes: '查字習慣'
+    SearchModes: '查字習慣',
+    Privacy: '隱私設定'
   },
 
   opt: {
     active: '啟用滑鼠選字翻譯',
-    analytics: '使用者體驗改進計劃',
-    analytics_help: '啟用 Google Analytics 服務協助開發者改進 Saladict',
+    analytics: '啟用 Google Analytics',
+    analytics_help:
+      '提供匿名裝置瀏覽器版本資訊。沙拉查詞作者會優先支援使用者更多的裝置和瀏覽器。',
     animation: '啟用轉換動畫',
     animation_help: '在低效能裝置上關閉過渡動畫可減少渲染負擔。',
     app_active_help: '關閉後「迅速查字」功能依然可用。',
@@ -138,6 +140,10 @@ export const locale: typeof _locale = {
     pdf_sniff: '使用本應用程式瀏覽 PDF',
     pdf_sniff_help:
       '開啟後所有 PDF 連結將自動跳至本套件開啟（包括本機，如果在套件管理頁面勾選了允許）。',
+    third_party_privacy: '第三方隱私',
+    third_party_privacy_help:
+      '沙拉查詞不會收集更多資料，但在查詞時單詞以及相關 cookies 資料會發送給第三方詞典服務（與在該網站上查詞一樣），如果你不希望被該服務獲取資料，請在「詞典設定」中關閉相應詞典。',
+    third_party_privacy_extra: '本特性為沙拉查詞核心功能，無法關閉。',
     profile_change: '此選項會因「情景模式」而改變。',
     quick_search: '啟用快速鍵',
     search_suggests: '輸入時顯示候選',

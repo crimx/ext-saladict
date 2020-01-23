@@ -56,13 +56,15 @@ export const locale = {
     Popup: '右上弹框',
     Profiles: '情景模式',
     QuickSearch: '快捷查词',
-    SearchModes: '查词习惯'
+    SearchModes: '查词习惯',
+    Privacy: '隐私设置'
   },
 
   opt: {
     active: '启用划词翻译',
-    analytics: '用户体验改进计划',
-    analytics_help: '启用 Google Analytics 服务协助开发者改进 Saladict',
+    analytics: '启用 Google Analytics',
+    analytics_help:
+      '提供匿名设备浏览器版本信息。沙拉查词作者会优先支持用户量更多的设备和浏览器。',
     animation: '开启动画过渡',
     animation_help: '在低性能设备上关闭过渡动画可减少渲染负担。',
     app_active_help: '关闭后「快捷查词」功能依然可用。',
@@ -137,6 +139,10 @@ export const locale = {
     pdf_sniff: '默认用本扩展浏览 PDF',
     pdf_sniff_help:
       '开启后所有 PDF 链接将自动跳转到本扩展打开（包括本地，如果在扩展管理页面勾选了允许）。',
+    third_party_privacy: '第三方隐私',
+    third_party_privacy_help:
+      '沙拉查词不会收集更多数据，但在查词时单词以及相关 cookies 数据会发送给第三方词典服务（与在该网站上查词一样），如果你不希望被该服务获取数据，请在「词典设置」中关闭相应词典。',
+    third_party_privacy_extra: '本特性为沙拉查词核心功能，无法关闭。',
     profile_change: '此选项会因「情景模式」而改变。',
     quick_search: '启用快捷键',
     search_suggests: '输入时显示候选',

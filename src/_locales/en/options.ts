@@ -60,13 +60,15 @@ export const locale: typeof _locale = {
     Popup: 'Popup Panel',
     Profiles: 'Profiles',
     QuickSearch: 'Quick Search',
-    SearchModes: 'Search Modes'
+    SearchModes: 'Search Modes',
+    Privacy: 'Privacy'
   },
 
   opt: {
     active: 'Enable Inline Translator',
-    analytics: 'UX Improvement Program',
-    analytics_help: 'Enable Google Analytics to help me improve Saladict',
+    analytics: 'Enable Google Analytics',
+    analytics_help:
+      'Share anonymous device browser version information. Saladict author will offer prioritized support to popular devices and browsers.',
     animation: 'Animation transitions',
     animation_help: 'Switch off animation transitions to reduce runtime cost.',
     app_active_help:
@@ -145,6 +147,11 @@ export const locale: typeof _locale = {
       'Blacklisted PDF links will not jump to Saladict PDF Viewer.',
     pdf_sniff: 'Enable PDF Sniffer',
     pdf_sniff_help: 'If turned on， PDF links will be automatically captured.',
+    third_party_privacy: 'Third Party Privacy',
+    third_party_privacy_help:
+      'Saladict will not collect further information but search text and releated cookies will be sent to third party dictionary services(just like how you would search on their websites). If you do not want third party services to collect you data, remove the dictionaries at "Dictionaries" settings.',
+    third_party_privacy_extra:
+      'Cannot be turned off as it is the core functionality of Saladict.',
     profile_change: 'This option may change base on "Profile".',
     quick_search: 'Enable',
     search_suggests: 'Search suggests',
