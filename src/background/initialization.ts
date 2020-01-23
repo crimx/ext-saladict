@@ -112,7 +112,12 @@ async function onInstalled({
     if (
       !(await storage.sync.get('hasInstructionsShown')).hasInstructionsShown
     ) {
-      openURL('https://saladict.crimx.com/notice.html')
+      openURL('options.html?menuselected=Privacy&nopanel=true', true)
+      if (window.appConfig.langCode.startsWith('zh')) {
+        openURL('https://saladict.crimx.com/notice.html')
+      } else {
+        openURL('https://saladict.crimx.com/en/notice.html')
+      }
       storage.sync.set({ hasInstructionsShown: true })
     }
   } else if (reason === 'update') {

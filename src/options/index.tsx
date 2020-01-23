@@ -134,6 +134,10 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
   }
 
   render() {
+    const isShowPanel =
+      window.innerWidth > 1024 &&
+      !new URL(document.URL).searchParams.get('nopanel')
+
     return (
       <ProviderI18next i18n={i18n}>
         <ProviderAntdConfig
@@ -141,7 +145,7 @@ export class Options extends React.Component<OptionsProps, OptionsState> {
         >
           <App {...this.state} />
         </ProviderAntdConfig>
-        {window.innerWidth > 1024 && (
+        {isShowPanel && (
           <ProviderRedux store={this.reduxStore}>
             <SaladBowlContainer />
             <DictPanelContainer />
