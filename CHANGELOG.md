@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.7.1](https://github.com/crimx/ext-saladict/compare/v7.7.0...v7.7.1) (2020-01-24)
+
+
+### Bug Fixes
+
+* pdf.js requires unsafe-eval csp ([533a66d](https://github.com/crimx/ext-saladict/commit/533a66d)), closes [#630](https://github.com/crimx/ext-saladict/issues/630)
+
+
+
 ## [7.7.0](https://github.com/crimx/ext-saladict/compare/v7.6.2...v7.7.0) (2020-01-24)
 
 
