@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.7.0](https://github.com/crimx/ext-saladict/compare/v7.6.2...v7.7.0) (2020-01-24)
+
+
+### Bug Fixes
+
+* **pdf:** match double quotes ([46060bd](https://github.com/crimx/ext-saladict/commit/46060bd))
+
+
+### Features
+
+* **options:** add privacy settings ([9408002](https://github.com/crimx/ext-saladict/commit/9408002))
+
+
+
 ### [7.6.2](https://github.com/crimx/ext-saladict/compare/v7.6.1...v7.6.2) (2020-01-16)
 
 
