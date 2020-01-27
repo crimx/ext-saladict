@@ -7,6 +7,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
 const DotenvPlugin = require('dotenv-webpack')
 const argv = require('yargs').argv
+const AfterBuildPlugin = require('./scripts/after-build')
 
 module.exports = {
   options: {
@@ -254,6 +255,12 @@ module.exports = {
     }),
     wext({
       polyfill: true
-    })
+    }),
+    neutrino => {
+      // prettier-ignore
+      neutrino.config
+        .plugin('after-build')
+        .use(AfterBuildPlugin);
+    }
   ]
 }

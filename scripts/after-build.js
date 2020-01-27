@@ -1,9 +1,18 @@
 const fs = require('fs-extra')
 const path = require('path')
 
-main()
+module.exports = class AfterBuildPlugin {
+  apply(compiler) {
+    compiler.hooks.done.tapAsync(
+      'AfterBuildPlugin',
+      (compilation, callback) => {
+        removeYoudaoFanyi().then(callback)
+      }
+    )
+  }
+}
 
-async function main() {
+async function removeYoudaoFanyi() {
   // FF policy
   await fs.remove(
     path.join(__dirname, '../build/firefox/assets/fanyi.youdao.2.0')
