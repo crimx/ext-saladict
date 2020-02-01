@@ -37,6 +37,10 @@ export const locale = {
     },
     page: '导出本页单词',
     placeholder: '替换符',
+    htmlescape: {
+      title: '对笔记内容中的 HTML 字符进行转义',
+      text: '转义 HTML 字符'
+    },
     selected: '导出选中单词'
   },
 

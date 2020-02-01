@@ -39,6 +39,10 @@ export const locale: typeof _locale = {
     },
     page: 'Export page',
     placeholder: 'Placeholder',
+    htmlescape: {
+      title: 'Escape HTML characters in notes',
+      text: 'Escape HTML'
+    },
     selected: 'Export selected'
   },
 

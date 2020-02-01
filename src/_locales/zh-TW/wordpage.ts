@@ -39,6 +39,10 @@ export const locale: typeof _locale = {
     },
     page: '輸出本頁單字',
     placeholder: '預留位置',
+    htmlescape: {
+      title: '對筆記內容中的 HTML 字元進行轉義',
+      text: '轉義 HTML 字元'
+    },
     selected: '輸出選中單字'
   },
 
