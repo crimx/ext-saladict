@@ -7,25 +7,28 @@ import get from 'lodash/get'
 
 import { message } from 'antd'
 
-interface FormItemLayout {
-  readonly labelCol: { readonly span: number }
-  readonly wrapperCol: { readonly span: number }
-}
+export const formItemLayout = {
+  labelCol: {
+    xs: { span: 9 },
+    sm: { span: 9 },
+    lg: { span: 5 }
+  },
+  wrapperCol: {
+    xs: { span: 15 },
+    sm: { span: 15 },
+    lg: { span: 8 }
+  }
+} as const
 
-export const formItemLayout: FormItemLayout = {
-  labelCol: { span: 5 },
-  wrapperCol: { span: 8 }
-}
-
-export const formSubItemLayout: FormItemLayout = {
+export const formSubItemLayout = {
   labelCol: { span: 7 },
   wrapperCol: { span: 17 }
-}
+} as const
 
-export const formItemModalLayout: FormItemLayout = {
+export const formItemModalLayout = {
   labelCol: { span: 7 },
   wrapperCol: { span: 17 }
-}
+} as const
 
 let updateConfigTimeout: any = null
 let updateProfileTimeout: any = null
