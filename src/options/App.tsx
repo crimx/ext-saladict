@@ -131,6 +131,7 @@ export class OptionsMain extends React.Component<
           </Sider>
           <Layout style={{ padding: '24px', minHeight: innerHeight - 64 }}>
             <Content
+              data-option-content={this.state.selectedKey}
               style={{
                 background: '#fff',
                 padding: 24,
