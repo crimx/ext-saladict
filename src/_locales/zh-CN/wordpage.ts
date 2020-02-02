@@ -54,9 +54,9 @@ export const locale = {
   },
 
   wordCount: {
-    selected: '已选中 {{count}} 个单词',
-    selected_plural: '已选中 {{count}} 个单词',
-    total: '共有 {{count}} 个单词',
-    total_plural: '共有 {{count}} 个单词'
+    selected: '已选 {{count}} 项',
+    selected_plural: '已选 {{count}} 项',
+    total: '共 {{count}} 项',
+    total_plural: '共 {{count}} 项'
   }
 }

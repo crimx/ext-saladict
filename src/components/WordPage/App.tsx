@@ -424,10 +424,13 @@ export class WordPageMain extends React.Component<
         <Layout className="wordpage-Container">
           <Header className="wordpage-Header">
             <div className="wordpage-Title">
-              <h1>
-                {t(`title.${area}`)} <small>({t('localonly')})</small>
+              <h1 className="wordpage-Title_head">
+                {t(`title.${area}`)}{' '}
+                <small className="wordpage-Title_small">
+                  ({t('localonly')})
+                </small>
               </h1>
-              <div>
+              <div style={{ whiteSpace: 'nowrap' }}>
                 {(pagination.total as number) > 0 && (
                   <span className="wordpage-Wordcount">
                     {t(`wordCount.total`, { count: pagination.total })}
@@ -440,7 +443,7 @@ export class WordPageMain extends React.Component<
                 )}
               </div>
             </div>
-            <div style={{ marginLeft: 'auto' }}>
+            <div style={{ marginLeft: 'auto', whiteSpace: 'nowrap' }}>
               <Input
                 style={{ width: '15em' }}
                 placeholder="Search"

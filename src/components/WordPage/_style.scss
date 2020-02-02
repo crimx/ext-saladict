@@ -32,15 +32,19 @@ textarea {
   align-items: center;
   line-height: 1;
   color: #fff;
+}
 
-  h1 {
-    margin-bottom: 5px;
-    color: #fff;
+.wordpage-Title_head {
+  margin-bottom: 5px;
+  color: #fff;
+}
 
-    small {
-      font-size: 0.6em;
-      vertical-align: middle;
-    }
+.wordpage-Title_small {
+  font-size: 0.6em;
+  vertical-align: middle;
+
+  @media screen and (max-width: 720px) {
+    display: none !important;
   }
 }
 
