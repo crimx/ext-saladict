@@ -1,8 +1,10 @@
 export const locale = {
   title: {
-    history: 'Saladict 查词记录（仅本地保存）',
-    notebook: 'Saladict 生词本（仅本地保存）'
+    history: 'Saladict 查词记录',
+    notebook: 'Saladict 生词本'
   },
+
+  localonly: '仅本地保存',
 
   column: {
     add: '添加',

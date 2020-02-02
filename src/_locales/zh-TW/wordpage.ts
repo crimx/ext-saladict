@@ -2,9 +2,11 @@ import { locale as _locale } from '../zh-CN/wordpage'
 
 export const locale: typeof _locale = {
   title: {
-    history: 'Saladict 查單字紀錄（僅本機儲存）',
-    notebook: 'Saladict 生字本（僅本機儲存）'
+    history: 'Saladict 查單字紀錄',
+    notebook: 'Saladict 生字本'
   },
+
+  localonly: '僅本機儲存',
 
   column: {
     add: '新增',

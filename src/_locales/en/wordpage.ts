@@ -2,9 +2,11 @@ import { locale as _locale } from '../zh-CN/wordpage'
 
 export const locale: typeof _locale = {
   title: {
-    history: 'Saladict Search History (local)',
-    notebook: 'Saladict Notebook (local)'
+    history: 'Saladict Search History',
+    notebook: 'Saladict Notebook'
   },
+
+  localonly: 'local only',
 
   column: {
     add: 'Add',
@@ -17,7 +19,7 @@ export const locale: typeof _locale = {
   },
 
   delete: {
-    title: 'Delete words',
+    title: 'Delete',
     all: 'Delete all',
     confirm: '. Confirm?',
     page: 'Delete page',
@@ -25,7 +27,7 @@ export const locale: typeof _locale = {
   },
 
   export: {
-    title: 'Export as text',
+    title: 'Export',
     all: 'Export all',
     description: 'Describe the shape of each record: ',
     explain: 'How to export to ANKI and other tools',

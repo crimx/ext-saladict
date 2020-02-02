@@ -19,11 +19,32 @@ textarea {
   top: 0;
   left: 0;
   width: 100%;
+
+  @media screen and (max-width: 800px) {
+    padding: 0 5px !important;
+  }
+}
+
+.wordpage-Title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  line-height: 1;
+  color: #fff;
+
+  h1 {
+    margin-bottom: 5px;
+    color: #fff;
+
+    small {
+      font-size: 0.6em;
+      vertical-align: middle;
+    }
+  }
 }
 
 .wordpage-Wordcount {
-  align-self: flex-end;
-  line-height: 3.3;
   margin-left: 10px;
   color: #fff;
 }

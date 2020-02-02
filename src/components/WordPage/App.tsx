@@ -423,17 +423,23 @@ export class WordPageMain extends React.Component<
       <>
         <Layout className="wordpage-Container">
           <Header className="wordpage-Header">
-            <h1 style={{ color: '#fff' }}>{t(`title.${area}`)}</h1>
-            {(pagination.total as number) > 0 && (
-              <span className="wordpage-Wordcount">
-                {t(`wordCount.total`, { count: pagination.total })}
-              </span>
-            )}
-            {selectedRows.length > 0 && (
-              <span className="wordpage-Wordcount">
-                {t(`wordCount.selected`, { count: selectedRows.length })}
-              </span>
-            )}
+            <div className="wordpage-Title">
+              <h1>
+                {t(`title.${area}`)} <small>({t('localonly')})</small>
+              </h1>
+              <div>
+                {(pagination.total as number) > 0 && (
+                  <span className="wordpage-Wordcount">
+                    {t(`wordCount.total`, { count: pagination.total })}
+                  </span>
+                )}
+                {selectedRows.length > 0 && (
+                  <span className="wordpage-Wordcount">
+                    {t(`wordCount.selected`, { count: selectedRows.length })}
+                  </span>
+                )}
+              </div>
+            </div>
             <div style={{ marginLeft: 'auto' }}>
               <Input
                 style={{ width: '15em' }}
