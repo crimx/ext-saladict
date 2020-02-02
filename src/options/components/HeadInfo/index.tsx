@@ -75,7 +75,7 @@ export class OptMenu extends React.PureComponent<
             </Tooltip>
           </li>
         )}
-        <li className="head-info-bubble-wrap">
+        <li className="head-info-bubble-wrap head-info-unin">
           <a
             href="https://github.com/crimx/ext-saladict/wiki#acknowledgement"
             onMouseEnter={this.showAcknowledgement}
