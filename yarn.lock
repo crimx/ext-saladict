@@ -12102,6 +12102,11 @@ react-resize-reporter@^1.0.0:
   resolved "https://registry.yarnpkg.com/react-resize-reporter/-/react-resize-reporter-1.0.0.tgz#d572a66eea1e8bc22c7ce86d6a184557729601e4"
   integrity sha512-/Qx3zH/0IXVxHY8FCsKgxOq2hCjPRFolD6PAqiWvkwFlmIwVlB8RQbcXq2gQOnpO8fm1fODLKnoOnb9l2fDsag==
 
+react-retux@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-retux/-/react-retux-0.1.0.tgz#613e9fc3a6756f77f0d1505ac4230eaba547fd69"
+  integrity sha512-aMxhn2B5W2ojXDdY6ScSq7p6Prl0iMoii7VVqTcyC2+EskOEJ5sMNbzBCj3K78KWXWb2f/Hke1d1CzJpahZiCg==
+
 react-select@^2.2.0:
   version "2.4.4"
   resolved "https://registry.yarnpkg.com/react-select/-/react-select-2.4.4.tgz#ba72468ef1060c7d46fbb862b0748f96491f1f73"
@@ -12711,6 +12716,11 @@ retry@^0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/retry/-/retry-0.12.0.tgz#1b42a6266a21f07421d1b0b54b7dc167b01c013b"
   integrity sha1-G0KmJmoh8HQh0bC1S33BZ7AcATs=
+
+retux@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/retux/-/retux-0.1.0.tgz#12b71fcbe94fac0e025726659529eb7f1e2aa4b5"
+  integrity sha512-jZhaGLlOD7sk24PqVGwFP0PYxo0iqtdMMMOwSrlNVf2ayX9nFGWX4MgT0X1ovXG/OmTTLb+lthfDPQA3DUXEWQ==
 
 reusify@^1.0.0:
   version "1.0.4"

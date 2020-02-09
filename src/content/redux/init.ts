@@ -1,4 +1,3 @@
-import { Init } from '../utils/types'
 import { addConfigListener } from '@/_helpers/config-manager'
 import {
   addActiveProfileListener,
@@ -10,17 +9,17 @@ import {
   isOptionsPage,
   isStandalonePage
 } from '@/_helpers/saladict'
-import { StoreActionCatalog, StoreAction, StoreState } from '.'
 import { message } from '@/_helpers/browser-api'
 import { PreloadSource } from '@/app-config'
 import { Dispatch } from 'redux'
 import { Word, newWord } from '@/_helpers/record-manager'
 import { MessageResponse } from '@/typings/message'
 import { timer } from '@/_helpers/promise-more'
+import { StoreAction, StoreState } from './modules'
 
-export const init: Init<StoreActionCatalog, StoreState> = (
-  dispatch,
-  getState
+export const init = (
+  dispatch: Dispatch<StoreAction>,
+  getState: () => StoreState
 ) => {
   addConfigListener(({ newConfig }) => {
     if (newConfig.active !== getState().config.active) {

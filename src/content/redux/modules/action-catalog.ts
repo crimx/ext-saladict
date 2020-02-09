@@ -1,9 +1,10 @@
+import { CreateActionCatalog } from 'retux'
 import { AppConfig, DictID } from '@/app-config'
 import { Profile, ProfileIDList } from '@/app-config/profiles'
 import { Message } from '@/typings/message'
 import { Word } from '@/_helpers/record-manager'
 
-export type ActionCatalog = {
+export type ActionCatalog = CreateActionCatalog<{
   NEW_CONFIG: {
     payload: AppConfig
   }
@@ -129,4 +130,4 @@ export type ActionCatalog = {
       timestamp: number
     }
   }
-}
+}>

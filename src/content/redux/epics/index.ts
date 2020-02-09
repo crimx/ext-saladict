@@ -5,8 +5,8 @@ import { map, mapTo, mergeMap, filter } from 'rxjs/operators'
 import { isPopupPage, isStandalonePage } from '@/_helpers/saladict'
 import { saveWord } from '@/_helpers/record-manager'
 
-import { StoreAction, StoreState } from '../'
-import { ofType } from '../../utils/operators'
+import { StoreAction, StoreState } from '../modules'
+import { ofType } from './utils'
 
 import searchStartEpic from './searchStart.epic'
 import newSelectionEpic from './newSelection.epic'

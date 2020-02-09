@@ -1,11 +1,14 @@
-import { StoreActionHandler } from '..'
+import { ActionHandler } from 'retux'
 import { isStandalonePage, isOptionsPage } from '@/_helpers/saladict'
 import { Mutable } from '@/typings/helpers'
+import { State } from '../state'
+import { ActionCatalog } from '../action-catalog'
 
-export const newSelection: StoreActionHandler<'NEW_SELECTION'> = (
-  state,
-  { payload: selection }
-) => {
+export const newSelection: ActionHandler<
+  State,
+  ActionCatalog,
+  'NEW_SELECTION'
+> = (state, { payload: selection }) => {
   // Skip selection inside panel
   if (selection.self) return state
 

@@ -1,21 +1,35 @@
-import { Dispatch } from 'redux'
-import { initState } from './state'
+import { Action, ActionType, createReducer } from 'retux'
+import {
+  ThunkAction as CreateThunkAction,
+  ThunkDispatch as CreateThunkDispatch
+} from 'redux-thunk'
+import { initState, State } from './state'
 import { ActionCatalog } from './action-catalog'
-import { Action, ActionType, ActionHandler } from '../utils/types'
-export { createRootReducer } from './reducer'
+import { actionHandlers } from './action-handlers'
 
-export type StoreState = ReturnType<typeof initState>
+export type StoreState = State
 
 export type StoreActionCatalog = ActionCatalog
 
-export type StoreAction = Action<ActionCatalog>
+export type StoreActionType = ActionType<StoreActionCatalog>
 
-export type StoreActionType = ActionType<ActionCatalog>
-
-export type StoreActionHandler<T extends StoreActionType> = ActionHandler<
-  ActionCatalog,
-  StoreState,
+export type StoreAction<T extends StoreActionType = StoreActionType> = Action<
+  StoreActionCatalog,
   T
 >
 
-export type StoreDispatch = Dispatch<StoreAction>
+export type ThunkAction<
+  Type extends StoreActionType = StoreActionType,
+  Result = void
+> = CreateThunkAction<
+  Result,
+  StoreState,
+  never,
+  Action<StoreActionCatalog, Type>
+>
+
+export type StoreDispatch<
+  Type extends StoreActionType = StoreActionType
+> = CreateThunkDispatch<StoreState, never, StoreAction<Type>>
+
+export const rootReducer = createReducer(initState(), actionHandlers)

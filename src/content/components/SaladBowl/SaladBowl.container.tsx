@@ -1,13 +1,19 @@
 import { connect } from 'react-redux'
-import { SaladBowlPortal, SaladBowlPortalProps } from './SaladBowl.portal'
+import {
+  ExtractDispatchers,
+  MapStateToProps,
+  MapDispatchToProps
+} from 'react-retux'
 import { StoreState, StoreAction } from '@/content/redux/modules'
-import { Dispatch } from 'redux'
+import { SaladBowlPortal, SaladBowlPortalProps } from './SaladBowl.portal'
 
-type Dispatchers = 'onActive'
+type Dispatchers = ExtractDispatchers<SaladBowlPortalProps, 'onActive'>
 
-const mapStateToProps = (
-  state: StoreState
-): Omit<SaladBowlPortalProps, Dispatchers> => ({
+const mapStateToProps: MapStateToProps<
+  StoreState,
+  SaladBowlPortalProps,
+  Dispatchers
+> = state => ({
   show: state.isShowBowl,
   panelCSS: state.config.panelCSS,
   x: state.bowlCoord.x,
@@ -16,9 +22,11 @@ const mapStateToProps = (
   enableHover: state.config.bowlHover
 })
 
-const mapDispatchToProps = (
-  dispatch: Dispatch<StoreAction>
-): Pick<SaladBowlPortalProps, Dispatchers> => ({
+const mapDispatchToProps: MapDispatchToProps<
+  StoreAction,
+  SaladBowlPortalProps,
+  Dispatchers
+> = dispatch => ({
   onActive: () => {
     dispatch({ type: 'BOWL_ACTIVATED' })
   }

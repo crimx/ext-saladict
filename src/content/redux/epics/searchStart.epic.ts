@@ -8,8 +8,8 @@ import {
   switchMapTo
 } from 'rxjs/operators'
 import { merge, from, empty } from 'rxjs'
-import { StoreAction } from '../'
-import { Epic, ofType } from '../../utils/operators'
+import { StoreAction } from '../modules'
+import { Epic, ofType } from './utils'
 import { isInNotebook, saveWord } from '@/_helpers/record-manager'
 import { message } from '@/_helpers/browser-api'
 import {

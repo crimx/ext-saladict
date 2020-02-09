@@ -11,13 +11,6 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint', 'jest'],
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    sourceType: 'module',
-    project: './tsconfig.json',
-    ecmaFeatures: {
-      jsx: true
-    }
-  },
   rules: {
     '@typescript-eslint/adjacent-overload-signatures': 'error',
     'prettier/prettier': [

@@ -1,12 +1,15 @@
-import { StoreActionHandler } from '..'
+import { ActionHandler } from 'retux'
 import { checkSupportedLangs, countWords } from '@/_helpers/lang-check'
 import { isPopupPage } from '@/_helpers/saladict'
 import { Word } from '@/_helpers/record-manager'
+import { State } from '../state'
+import { ActionCatalog } from '../action-catalog'
 
-export const searchStart: StoreActionHandler<'SEARCH_START'> = (
-  state,
-  { payload }
-) => {
+export const searchStart: ActionHandler<
+  State,
+  ActionCatalog,
+  'SEARCH_START'
+> = (state, { payload }) => {
   const { activeProfile, searchHistory, historyIndex } = state
 
   let word: Word

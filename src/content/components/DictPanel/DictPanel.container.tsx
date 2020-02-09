@@ -1,8 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { DictPanelPortal, DictPanelPortalProps } from './DictPanel.portal'
+import {
+  ExtractDispatchers,
+  MapStateToProps,
+  MapDispatchToProps
+} from 'react-retux'
 import { StoreState, StoreAction } from '@/content/redux/modules'
-import { Dispatch } from 'redux'
+import { DictPanelPortal, DictPanelPortalProps } from './DictPanel.portal'
 import { MenuBarContainer } from '../MenuBar/MenuBar.container'
 import { MtaBoxContainer } from '../MtaBox/MtaBox.container'
 import { DictListContainer } from '../DictList/DictList.container'
@@ -13,33 +17,35 @@ const mtaBox = <MtaBoxContainer />
 const dictList = <DictListContainer />
 const waveformBox = <WaveformBoxContainer />
 
-type Dispatchers = 'onDragEnd'
+type Dispatchers = ExtractDispatchers<DictPanelPortalProps, 'onDragEnd'>
 
-const mapStateToProps = (
-  state: StoreState
-): Omit<DictPanelPortalProps, Dispatchers> => {
-  return {
-    show: state.isShowDictPanel,
-    coord: state.dictPanelCoord,
-    takeCoordSnapshot: state.wordEditor.isShow,
-    width: state.config.panelWidth,
-    height: state.panelHeight,
-    maxHeight: state.panelMaxHeight,
-    withAnimation: state.config.animation,
-    panelCSS: state.config.panelCSS,
-    darkMode: state.config.darkMode,
-    colors: state.colors,
-    menuBar,
-    mtaBox,
-    dictList,
-    waveformBox: state.activeProfile.waveform ? waveformBox : null,
-    dragStartCoord: state.dragStartCoord
-  }
-}
+const mapStateToProps: MapStateToProps<
+  StoreState,
+  DictPanelPortalProps,
+  Dispatchers
+> = state => ({
+  show: state.isShowDictPanel,
+  coord: state.dictPanelCoord,
+  takeCoordSnapshot: state.wordEditor.isShow,
+  width: state.config.panelWidth,
+  height: state.panelHeight,
+  maxHeight: state.panelMaxHeight,
+  withAnimation: state.config.animation,
+  panelCSS: state.config.panelCSS,
+  darkMode: state.config.darkMode,
+  colors: state.colors,
+  menuBar,
+  mtaBox,
+  dictList,
+  waveformBox: state.activeProfile.waveform ? waveformBox : null,
+  dragStartCoord: state.dragStartCoord
+})
 
-const mapDispatchToProps = (
-  dispatch: Dispatch<StoreAction>
-): Pick<DictPanelPortalProps, Dispatchers> => ({
+const mapDispatchToProps: MapDispatchToProps<
+  StoreAction,
+  DictPanelPortalProps,
+  Dispatchers
+> = dispatch => ({
   onDragEnd: () => {
     dispatch({ type: 'DRAG_START_COORD', payload: null })
   }

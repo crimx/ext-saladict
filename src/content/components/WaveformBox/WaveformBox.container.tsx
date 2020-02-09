@@ -1,22 +1,33 @@
 import { connect } from 'react-redux'
-import { WaveformBox, WaveformBoxProps } from './WaveformBox'
+import {
+  ExtractDispatchers,
+  MapStateToProps,
+  MapDispatchToProps
+} from 'react-retux'
 import { StoreAction, StoreState } from '@/content/redux/modules'
-import { Dispatch } from 'redux'
+import { WaveformBox, WaveformBoxProps } from './WaveformBox'
 
-type Dispatchers = 'onHeightChanged' | 'toggleExpand'
+type Dispatchers = ExtractDispatchers<
+  WaveformBoxProps,
+  'onHeightChanged' | 'toggleExpand'
+>
 
-const mapStateToProps = (
-  state: StoreState
-): Omit<WaveformBoxProps, Dispatchers> => {
+const mapStateToProps: MapStateToProps<
+  StoreState,
+  WaveformBoxProps,
+  Dispatchers
+> = state => {
   return {
     darkMode: state.config.darkMode,
     isExpand: state.isExpandWaveformBox
   }
 }
 
-const mapDispatchToProps = (
-  dispatch: Dispatch<StoreAction>
-): Pick<WaveformBoxProps, Dispatchers> => ({
+const mapDispatchToProps: MapDispatchToProps<
+  StoreAction,
+  WaveformBoxProps,
+  Dispatchers
+> = dispatch => ({
   onHeightChanged: height => {
     dispatch({
       type: 'UPDATE_PANEL_HEIGHT',

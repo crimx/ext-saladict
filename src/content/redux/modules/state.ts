@@ -86,7 +86,10 @@ export const initState = () => {
       '--color-rgb-background': '255, 255, 255',
       '--color-font': '#333',
       '--color-divider': '#ddd'
-    } as React.CSSProperties
+    } as Readonly<React.CSSProperties>
   }
 }
+
+export type State = ReturnType<typeof initState>
+
 export default initState
