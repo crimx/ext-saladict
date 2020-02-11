@@ -45,11 +45,13 @@ Add a `.env` file following the `.env.example` format(leave empty if you don't u
 yarn build
 ```
 
-Artifacts can be found in `build/`
+Artifacts can be found in `build/`.
 
-If you want to add a dictionary, follow the [contribution guide](./CONTRIBUTING.md).
+## Development
 
-## How can I contribute / ?
+See the [contributing guide](./CONTRIBUTING.md).
+
+## How can I contribute?
 
 [CONTRIBUTING.md](./CONTRIBUTING.md)
 
