@@ -25,6 +25,7 @@ Chrome/Firefox WebExtension. Feature-rich inline translator with PDF support.
 - [Chrome Web Store](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en)
 - [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/ext-saladict/)
 - [Microsoft Edge Addons](https://microsoftedge.microsoft.com/addons/detail/idghocbbahafpfhjnfhpbfbmpegphmmp)(Uploaded by @rumosky)
+- See [releases](https://github.com/crimx/ext-saladict/releases) for more.
 
 Saladict 7 is a complete rewrite with sophisticated interaction and buttery smooth experience. Built for speed, stability and customization.
 
