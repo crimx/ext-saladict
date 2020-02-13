@@ -13,7 +13,10 @@ import {
 import { getStaticSpeaker } from '@/components/Speaker'
 
 export const getSrcPage: GetSrcPageFunction = text => {
-  return `https://www.collinsdictionary.com/dictionary/english/${text}`
+  return (
+    `https://www.collinsdictionary.com/dictionary/english/` +
+    encodeURIComponent(text.replace(/\s+/g, '-'))
+  )
 }
 
 export interface COBUILDCibaResult {
@@ -48,7 +51,7 @@ export const search: SearchFunction<COBUILDResult> = (
   profile,
   payload
 ) => {
-  text = encodeURIComponent(text.replace(/\s+/g, ' '))
+  text = encodeURIComponent(text.replace(/\s+/g, '-'))
   const isChz = config.langCode === 'zh-TW'
   const { options } = profile.dicts.all.cobuild
   const sources:
