@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.8.0](https://github.com/crimx/ext-saladict/compare/v7.7.6...v7.8.0) (2020-02-13)
+
+
+### Bug Fixes
+
+* remove extra clipboard search on command ([0b7166e](https://github.com/crimx/ext-saladict/commit/0b7166e)), closes [#647](https://github.com/crimx/ext-saladict/issues/647)
+* space escape ([2c31562](https://github.com/crimx/ext-saladict/commit/2c31562)), closes [#635](https://github.com/crimx/ext-saladict/issues/635)
+
+
+### Features
+
+* add standalone word editor ([24d487a](https://github.com/crimx/ext-saladict/commit/24d487a)), closes [#608](https://github.com/crimx/ext-saladict/issues/608)
+
+
+
 ### [7.7.6](https://github.com/crimx/ext-saladict/compare/v7.7.5...v7.7.6) (2020-02-03)
 
 
