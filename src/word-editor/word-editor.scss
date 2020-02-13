@@ -1,0 +1,33 @@
+@import '@/content/components/WordEditor/WordEditor.scss';
+
+html,
+body,
+#root {
+  position: static;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  // hide white spaces
+  font-size: 0;
+}
+
+#root {
+  overflow: hidden;
+}
+
+.wordEditorPanel-Background {
+  position: relative;
+}
+
+.wordEditorPanel-Container {
+  width: 100% !important;
+}
+
+.wordEditorPanel {
+  width: 100% !important;
+  height: 100vh !important;
+  max-width: unset;
+  max-height: unset;
+  border-radius: 0;
+  box-shadow: none;
+}

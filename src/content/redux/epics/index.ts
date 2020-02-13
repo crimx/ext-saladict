@@ -11,7 +11,6 @@ import { ofType } from './utils'
 import searchStartEpic from './searchStart.epic'
 import newSelectionEpic from './newSelection.epic'
 import { translateCtxs, genCtxText } from '@/_helpers/translateCtx'
-import { message } from '@/_helpers/browser-api'
 
 export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
   /** Start searching text. This will also send to Redux. */
@@ -37,18 +36,33 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
             state$.value.searchHistory[state$.value.searchHistory.length - 1]
 
           if (isPopupPage() || isStandalonePage()) {
+            const { width: screenWidth, height: screenHeight } = window.screen
+            const width = Math.round(Math.min(Math.max(screenWidth, 440), 640))
+            const height = Math.round(Math.min(screenHeight - 150, 800))
+
+            let wordString = ''
             try {
-              message.send({
-                type: 'OPEN_URL',
-                payload: {
-                  url: `notebook.html?word=${encodeURIComponent(
-                    JSON.stringify(word)
-                  )}`,
-                  self: true
-                }
+              wordString = encodeURIComponent(JSON.stringify(word))
+            } catch (e) {
+              console.warn(e)
+            }
+
+            browser.windows
+              .create({
+                type: 'popup',
+                url: browser.runtime.getURL(
+                  `word-editor.html?word=${wordString}`
+                ),
+                top: Math.round((screenHeight - height) / 2),
+                left: Math.round((screenWidth - width) / 2),
+                width,
+                height
               })
-              return empty()
-            } catch (e) {}
+              .catch(e => {
+                console.warn(e)
+              })
+
+            return empty()
           }
 
           return of({

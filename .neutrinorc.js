@@ -84,6 +84,10 @@ module.exports = {
         entry: 'quick-search'
       },
 
+      'word-editor': {
+        entry: 'word-editor'
+      },
+
       'audio-control': {
         entry: 'audio-control'
       }

@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 
 export interface WordEditorPanelProps {
-  containerWidth: number
+  containerWidth: number | string
   colors: React.CSSProperties
   title: React.ReactNode
   btns?: ReadonlyArray<{
