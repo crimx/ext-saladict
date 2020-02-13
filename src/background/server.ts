@@ -118,15 +118,25 @@ export class BackgroundServer {
     const text = getTextFromClipboard()
     if (!text) return
 
-    if (!(await this.qsPanelManager.hasCreated())) {
-      await this.qsPanelManager.create()
-      await timer(1000)
+    const word = newWord({ text })
+
+    if (await this.qsPanelManager.hasCreated()) {
+      await message.send({
+        type: 'QS_PANEL_SEARCH_TEXT',
+        payload: word
+      })
+      return
     }
 
-    await message.send({
-      type: 'QS_PANEL_SEARCH_TEXT',
-      payload: newWord({ text })
-    })
+    await this.qsPanelManager.create(word)
+
+    if (!window.appConfig.tripleCtrlAuto) {
+      await timer(1000)
+      await message.send({
+        type: 'QS_PANEL_SEARCH_TEXT',
+        payload: word
+      })
+    }
   }
 
   async openSrcPage({

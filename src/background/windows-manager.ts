@@ -1,4 +1,5 @@
 import { message } from '@/_helpers/browser-api'
+import { Word } from '@/_helpers/record-manager'
 
 interface WinRect {
   width: number
@@ -101,24 +102,26 @@ export class QsPanelManager {
   private isSidebar: boolean = false
   private mainWindowsManager = new MainWindowsManager()
 
-  async create(): Promise<void> {
+  async create(preload?: Word): Promise<void> {
     this.isSidebar = false
 
     let wordString = ''
     try {
-      if (window.appConfig.tripleCtrlPreload === 'selection') {
-        const tab = (await browser.tabs.query({
-          active: true,
-          lastFocusedWindow: true
-        }))[0]
-        if (tab && tab.id) {
-          const word = await message.send<'PRELOAD_SELECTION'>(tab.id, {
-            type: 'PRELOAD_SELECTION'
-          })
-          if (word) {
-            wordString = '&word=' + encodeURIComponent(JSON.stringify(word))
+      if (!preload) {
+        if (window.appConfig.tripleCtrlPreload === 'selection') {
+          const tab = (await browser.tabs.query({
+            active: true,
+            lastFocusedWindow: true
+          }))[0]
+          if (tab && tab.id) {
+            preload = await message.send<'PRELOAD_SELECTION'>(tab.id, {
+              type: 'PRELOAD_SELECTION'
+            })
           }
         }
+      }
+      if (preload) {
+        wordString = '&word=' + encodeURIComponent(JSON.stringify(preload))
       }
     } catch (e) {}
 
