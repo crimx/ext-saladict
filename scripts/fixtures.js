@@ -42,11 +42,16 @@ async function main() {
 
   const errors = []
 
-  const fixturesPath = await fglob(['**/fixtures.js'], {
+  let fixturesPath = await fglob(['**/fixtures.js'], {
     cwd: path.join(__dirname, '../test'),
     absolute: true,
     onlyFiles: true
   })
+
+  if (argv.fileMatchPattern) {
+    const matcher = new RegExp(argv.fileMatchPattern)
+    fixturesPath = fixturesPath.filter(filePath => matcher.test(filePath))
+  }
 
   await Promise.all(fixturesPath.map(fetchDictFixtures))
 
