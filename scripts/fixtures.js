@@ -87,7 +87,7 @@ async function main() {
       const dictname = /[\\/]+([^\\/]+)[\\/]+fixtures.js$/.exec(fixturePath)[1]
 
       const pgBar = progressBars.create(100, 0, {
-        file: `${dictname}/fixture${index + 1}`,
+        file: `${dictname}/fixture${index * 1 + 1}`,
         status: 'downloading'
       })
 
