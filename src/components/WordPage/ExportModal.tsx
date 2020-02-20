@@ -30,6 +30,8 @@ interface TemplateData {
   contentR: string
 }
 
+const keywordMatchStr = `%(${Object.keys(newWord()).join('|')})%`
+
 export class ExportModalBody extends React.Component<
   ExportModalInnerProps,
   ExportModalState
@@ -145,11 +147,11 @@ export class ExportModalBody extends React.Component<
   }
 
   processWords = (): string => {
-    const keys = Object.keys(newWord())
     return this.props.rawWords
       .map(word =>
-        this.state.template.replace(/%(\S+)%/g, (match, k) => {
-          if (keys.includes(k)) {
+        this.state.template.replace(
+          new RegExp(keywordMatchStr, 'g'),
+          (match, k) => {
             switch (k) {
               case 'date':
                 return new Date(word.date).toLocaleDateString(this.props.locale)
@@ -179,8 +181,7 @@ export class ExportModalBody extends React.Component<
                 return word[k] || ''
             }
           }
-          return match
-        })
+        )
       )
       .join('\n')
   }
