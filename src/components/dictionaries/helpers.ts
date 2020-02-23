@@ -156,12 +156,14 @@ export function getText(
     }
   }
 
-  const child = selector ? parent.querySelector(selector) : parent
+  const child = selector
+    ? parent.querySelector(selector)
+    : (parent as HTMLElement)
   if (!child) {
     return ''
   }
 
-  const textContent = child['textContent'] || ''
+  const textContent = child.textContent || ''
   return toChz ? chsToChz(textContent) : textContent
 }
 
@@ -193,7 +195,9 @@ export function getHTML(
     config = defaultDOMPurifyConfig
   }: GetHTMLConfig = {}
 ): string {
-  const node = selector ? parent.querySelector<HTMLElement>(selector) : parent
+  const node = selector
+    ? parent.querySelector<HTMLElement>(selector)
+    : (parent as HTMLElement)
   if (!node) {
     return ''
   }
@@ -204,14 +208,14 @@ export function getHTML(
       el.setAttribute('src', getFullLink(host!, el, 'src'))
     }
 
-    if (node['tagName'] === 'A' || node['tagName'] === 'IMG') {
-      fillLink(node as HTMLElement)
+    if (node.tagName === 'A' || node.tagName === 'IMG') {
+      fillLink(node)
     }
     node.querySelectorAll('a').forEach(fillLink)
     node.querySelectorAll('img').forEach(fillLink)
   }
 
-  const fragment = DOMPurify.sanitize((node as unknown) as Node, {
+  const fragment = DOMPurify.sanitize(node, {
     ...config,
     RETURN_DOM_FRAGMENT: true
   })
