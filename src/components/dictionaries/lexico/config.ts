@@ -1,10 +1,10 @@
 import { DictItem } from '@/app-config/dicts'
 
-export type OaldConfig = DictItem<{
+export type LexicoConfig = DictItem<{
   related: boolean
 }>
 
-export default (): OaldConfig => ({
+export default (): LexicoConfig => ({
   lang: '10000000',
   selectionLang: {
     english: true,

@@ -418,7 +418,7 @@ a,
 
 .dictLexico-Lex > section {
   margin: 0 0 1em;
-  border-top: 2px solid #888;
+  border-top: 1px solid var(--color-divider);
   padding-top: 4px;
 }
 
@@ -635,7 +635,6 @@ a,
 
 .gramb .ps .pos-inflections .languageGroup {
   font-style: italic;
-  color: #304e70;
   text-transform: uppercase;
 }
 
@@ -671,7 +670,7 @@ a,
 .gramb .semb > p .cnt {
   text-transform: uppercase;
   font-size: 0.9em;
-  color: #27a058;
+  color: var(--color-brand);
   line-height: 1.2;
   position: relative;
   cursor: default;
@@ -810,7 +809,7 @@ a,
 .trg > p .cs,
 .trg > p .ind {
   font-size: 1em;
-  color: #27a058;
+  color: var(--color-brand);
 }
 
 .trg .tr > span + .headwordAudio,
@@ -1023,10 +1022,6 @@ a,
   left: 0;
 }
 
-.subsenseIteration + .no-definition + .trg {
-  margin-top: -25px;
-}
-
 .etym h2 {
   padding: 4px 0;
   margin-bottom: 8px;
@@ -1062,14 +1057,6 @@ a,
   margin-top: -10px;
   margin-bottom: 20px;
   font-size: 1em;
-}
-
-.desktop .sharing ul li a.ico-fb:hover svg {
-  fill: #3b5998;
-}
-
-.desktop .sharing ul li a.ico-tw:hover svg {
-  fill: #55acee;
 }
 
 .desktop .posts section a:hover h4,
@@ -1269,7 +1256,7 @@ a,
 }
 
 .grammatical_note {
-  color: #27a058;
+  color: var(--color-brand);
   font-style: italic;
   font-weight: normal;
   font-size: 1em;
@@ -1349,7 +1336,6 @@ span.transitivity {
   margin-right: 3.6px;
   font-size: 1em;
   text-transform: uppercase;
-  color: #304e70;
 }
 
 .trg span.transitivity {
@@ -1360,12 +1346,12 @@ span.transitivity {
 .sense-regions,
 .sense-registers {
   font-style: italic;
-  color: #27a058;
+  color: #f15a24;
   font-size: 1em;
 }
 
 .domain_labels {
-  color: #27a058;
+  color: var(--color-brand);
   font-size: 1em;
 }
 
@@ -1395,7 +1381,7 @@ a.ipaLink {
 }
 
 .indicators {
-  color: #27a058;
+  color: var(--color-brand);
   line-height: 1.2;
   font-style: normal;
   font-size: 1em;
@@ -1405,14 +1391,9 @@ a.ipaLink {
   font-style: italic !important;
 }
 
-.no-definition + .trg {
-  margin-top: 25px;
-}
-
 .spanish_label {
   margin-top: -7px;
   margin-right: 0px;
-  color: #27a058 !important;
   font-style: italic !important;
   font-weight: normal !important;
   font-size: 16px !important;
@@ -1426,7 +1407,7 @@ span.hw.head-translation {
 .collocations,
 .indicator_tags {
   font-style: normal;
-  color: #27a058 !important;
+  color: var(--color-brand) !important;
   font-size: 16px !important;
   font-weight: 400 !important;
   font-family: 'Open Sans', sans-serif;
@@ -1569,7 +1550,7 @@ section.etymology.etym.usage {
 }
 
 .controller__thesaurus .grammatical_note {
-  color: #27a058;
+  color: var(--color-brand);
   font-style: italic;
   font-weight: normal;
   font-size: 1em;
@@ -1653,6 +1634,15 @@ section.etymology.etym.usage {
 .word_type.pos {
   text-transform: uppercase;
   margin-bottom: 5px;
+}
+
+.form-groups {
+  margin-right: 0.5em;
+}
+
+a[data-value='view synonyms'] {
+  display: inline-block;
+  margin-bottom: 0.5em;
 }
 
 @media screen and (max-width: 1290px) {

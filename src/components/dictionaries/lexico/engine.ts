@@ -83,6 +83,12 @@ function handleDOM(
     removeChildren($entry, '.socials')
     removeChildren($entry, '.homographs')
 
+    $entry.querySelectorAll('.entryHead header > h1').forEach($h1 => {
+      if ($h1.textContent?.trim().startsWith('Meaning of')) {
+        $h1.remove()
+      }
+    })
+
     let mp3: string | undefined
 
     $entry
