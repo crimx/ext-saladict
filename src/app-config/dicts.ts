@@ -19,7 +19,6 @@ import longman from '@/components/dictionaries/longman/config'
 import macmillan from '@/components/dictionaries/macmillan/config'
 import mojidict from '@/components/dictionaries/mojidict/config'
 import naver from '@/components/dictionaries/naver/config'
-import oald from '@/components/dictionaries/oald/config'
 import shanbay from '@/components/dictionaries/shanbay/config'
 import sogou from '@/components/dictionaries/sogou/config'
 import tencent from '@/components/dictionaries/tencent/config'
@@ -56,7 +55,6 @@ export function getAllDicts() {
     macmillan: macmillan(),
     mojidict: mojidict(),
     naver: naver(),
-    oald: oald(),
     shanbay: shanbay(),
     sogou: sogou(),
     tencent: tencent(),
@@ -125,10 +123,10 @@ export type DictItem<
   ? DictItemWithOptions
   : DictItemWithOptions<Options> &
       ((Key extends any
-        ? Options[Key] extends string
-          ? Key
-          : never
-        : never) extends never
+      ? Options[Key] extends string
+        ? Key
+        : never
+      : never) extends never
         ? {}
         : {
             options_sel: {

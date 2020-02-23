@@ -106,7 +106,9 @@ export function mergeProfile(
         set(base, [path, 'selected'], [])
       } else {
         const allDict = get(base, [path, 'all'])
-        const arr = selected.filter(id => allDict[id])
+        const arr = selected
+          .map(id => (id === 'olad' ? 'lexico' : id))
+          .filter(id => allDict[id])
         if (arr.length > 0) {
           set(base, [path, 'selected'], arr)
         }

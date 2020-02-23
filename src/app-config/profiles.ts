@@ -139,7 +139,7 @@ export function scholar(): ProfileStorage {
     'etymonline',
     'cnki',
     'macmillan',
-    'oald',
+    'lexico',
     'websterlearner',
     'google',
     'youdaotrans',
@@ -160,7 +160,7 @@ export function scholar(): ProfileStorage {
     deutsch: false,
     others: false
   }
-  allDict.oald.defaultUnfold = {
+  allDict.lexico.defaultUnfold = {
     matchAll: false,
     english: false,
     chinese: false,

@@ -276,7 +276,7 @@ function _getDefaultConfig() {
           'eudic',
           'longman',
           'macmillan',
-          'oald',
+          'lexico',
           'urban',
           'websterlearner',
           'youdao'
