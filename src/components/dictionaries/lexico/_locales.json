@@ -1,0 +1,14 @@
+{
+  "name": {
+    "en": "Lexico",
+    "zh-CN": "Lexico",
+    "zh-TW": "Lexico"
+  },
+  "options": {
+    "related": {
+      "en": "Show related results",
+      "zh-CN": "失败时显示备选",
+      "zh-TW": "失敗時顯示備選"
+    }
+  }
+}

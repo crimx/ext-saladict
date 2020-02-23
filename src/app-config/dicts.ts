@@ -13,6 +13,7 @@ import googledict from '@/components/dictionaries/googledict/config'
 import guoyu from '@/components/dictionaries/guoyu/config'
 import hjdict from '@/components/dictionaries/hjdict/config'
 import jukuu from '@/components/dictionaries/jukuu/config'
+import lexico from '@/components/dictionaries/lexico/config'
 import liangan from '@/components/dictionaries/liangan/config'
 import longman from '@/components/dictionaries/longman/config'
 import macmillan from '@/components/dictionaries/macmillan/config'
@@ -49,6 +50,7 @@ export function getAllDicts() {
     guoyu: guoyu(),
     hjdict: hjdict(),
     jukuu: jukuu(),
+    lexico: lexico(),
     liangan: liangan(),
     longman: longman(),
     macmillan: macmillan(),
