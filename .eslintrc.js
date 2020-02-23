@@ -13,32 +13,24 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   rules: {
     '@typescript-eslint/adjacent-overload-signatures': 'error',
-    'prettier/prettier': [
-      'error',
-      {
-        singleQuote: true,
-        semi: false
-      }
-    ],
-    'standard/no-callback-literal': 'off',
-    'standard/computed-property-even-spacing': 'off',
-    yoda: 'off',
-    'react/display-name': 'off',
-    'react/prop-types': 'off',
-    'import/first': 'off',
-    'import/no-webpack-loader-syntax': 'off',
-    camelcase: 'off',
-    'no-unused-vars': 'off',
-    'no-useless-return': 'off',
     '@typescript-eslint/no-unused-vars': [
       'error',
-      {
-        args: 'none',
-        ignoreRestSiblings: true
-      }
+      { args: 'none', ignoreRestSiblings: true }
     ],
+    'dot-notation': 'off',
+    'import/first': 'off',
+    'import/no-webpack-loader-syntax': 'off',
     'no-dupe-class-members': 'off',
-    'prefer-promise-reject-errors': 'off'
+    'no-unused-vars': 'off',
+    'no-useless-return': 'off',
+    'prefer-promise-reject-errors': 'off',
+    'prettier/prettier': ['error', { singleQuote: true, semi: false }],
+    'react/display-name': 'off',
+    'react/prop-types': 'off',
+    'standard/computed-property-even-spacing': 'off',
+    'standard/no-callback-literal': 'off',
+    camelcase: 'off',
+    yoda: 'off'
   },
   globals: {
     browser: true
