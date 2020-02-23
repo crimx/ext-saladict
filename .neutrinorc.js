@@ -95,6 +95,11 @@ module.exports = {
   },
   use: [
     react({
+      image: {
+        // remove `default` when `require` image
+        // due to legacy code
+        esModule: false
+      },
       style: {
         test: /\.(css|scss)$/,
         modulesTest: /\.module\.(css|scss)$/,
