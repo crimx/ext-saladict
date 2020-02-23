@@ -10,15 +10,25 @@ const env = require('dotenv').config({
 }).parsed
 
 // download fixtures
+// default only download non-existed files
 // --delete remove all fixtures
+// --update remove then download all fixtures
+// --fileMatchPattern filter file path with regex
 
-if (argv.delete) {
-  deletion()
-} else {
-  main().catch(console.log)
-}
+main().catch(console.log)
 
 async function main() {
+  if (argv.delete) {
+    deletion()
+  } else {
+    if (argv.update) {
+      await deletion()
+    }
+    add()
+  }
+}
+
+async function add() {
   const proxyConfig = env.PROXY_HOST
     ? {
         proxy: {
@@ -156,13 +166,16 @@ async function main() {
 }
 
 async function deletion() {
-  const fixturesPath = await fglob(['**/response'], {
+  let fixturesPath = await fglob(['**/response'], {
     cwd: path.join(__dirname, '../test'),
     absolute: true,
     onlyDirectories: true
   })
 
-  fixturesPath.forEach(fixturePath => {
-    fs.remove(fixturePath)
-  })
+  if (argv.fileMatchPattern) {
+    const matcher = new RegExp(argv.fileMatchPattern)
+    fixturesPath = fixturesPath.filter(filePath => matcher.test(filePath))
+  }
+
+  await Promise.all(fixturesPath.map(fixturePath => fs.remove(fixturePath)))
 }
