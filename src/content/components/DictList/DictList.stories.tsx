@@ -3,12 +3,14 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
-import { withKnobs, number, boolean } from '@storybook/addon-knobs'
+import { withKnobs, number, boolean, object } from '@storybook/addon-knobs'
 import { withSaladictPanel } from '@/_helpers/storybook'
 import faker from 'faker'
 import { DictList } from './DictList'
 import { getAllDicts } from '@/app-config/dicts'
-import { DictID } from '@/app-config'
+import { getDefaultConfig, DictID } from '@/app-config'
+
+const defaultLanguage = getDefaultConfig().language
 
 const allDicts = getAllDicts()
 const dicts = Object.keys(allDicts).map(id => ({
@@ -39,6 +41,10 @@ storiesOf('Content Scripts|Dict Panel', module)
   )
   .add('DictList', () => (
     <DictList
+      touchMode={boolean('Touch Mode', false)}
+      language={object('Language', defaultLanguage)}
+      doubleClickDelay={number('Double Click Delay', 200)}
+      newSelection={action('New Selection')}
       fontSize={number('Font Size', 13)}
       withAnimation={boolean('Enable Animation', true)}
       panelCSS={''}
