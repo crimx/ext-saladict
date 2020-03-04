@@ -297,7 +297,8 @@ function _getDefaultConfig() {
     // tslint:disable-next-line: no-unnecessary-type-assertion
     blacklist: [
       ['^https://stackedit\\.io(/.*)?$', 'https://stackedit.io/*'],
-      ['^https://docs\\.google\\.com(/.*)?$', 'https://docs.google.com/*']
+      ['^https://docs\\.google\\.com(/.*)?$', 'https://docs.google.com/*'],
+      ['^https://docs\\.qq\\.com(/.*)?$', 'https://docs.qq.com/*']
     ] as [string, string][],
 
     contextMenus: {
