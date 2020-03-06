@@ -3,7 +3,7 @@ import {
   SearchFunction,
   MachineTranslatePayload,
   GetSrcPageFunction,
-  getMachineTranslateTl
+  getMTArgs
 } from '../helpers'
 import { Google } from '@opentranslate/google'
 import { GoogleLanguage } from './config'
@@ -27,18 +27,18 @@ export type GoogleResult = MachineTranslateResult<'google'>
 export const search: SearchFunction<
   GoogleResult,
   MachineTranslatePayload<GoogleLanguage>
-> = async (text, config, profile, payload) => {
+> = async (rawText, config, profile, payload) => {
   const options = profile.dicts.all.google.options
 
   const translator = getTranslator()
 
-  const sl = payload.sl || (await translator.detect(text))
-  const tl =
-    payload.tl || getMachineTranslateTl(sl, profile.dicts.all.google, config)
-
-  if (payload.isPDF && !options.pdfNewline) {
-    text = text.replace(/\n+/g, ' ')
-  }
+  const { sl, tl, text } = await getMTArgs(
+    translator,
+    rawText,
+    profile.dicts.all.baidu,
+    config,
+    payload
+  )
 
   try {
     const result = await translator.translate(text, sl, tl, {

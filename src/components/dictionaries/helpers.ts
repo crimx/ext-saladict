@@ -9,6 +9,7 @@ import { useSubscription, useObservableCallback } from 'observable-hooks'
 import { debounceTime, map, tap } from 'rxjs/operators'
 import { Observable } from 'rxjs'
 import { Language } from '@opentranslate/languages'
+import { Translator } from '@opentranslate/translator'
 
 /** Fetch and parse dictionary search result */
 export interface SearchFunction<Result, Payload = {}> {
@@ -89,40 +90,54 @@ export interface MachineTranslateResult<ID extends DictID> {
   }
 }
 
-export function getMachineTranslateTl(
-  sl: Language,
+/**
+ * Get Machine Translate arguments
+ */
+export async function getMTArgs(
+  translator: Translator,
+  text: string,
   {
     options,
     options_sel
   }: {
-    options: { tl: 'default' | Language }
+    options: { tl: 'default' | Language; pdfNewline?: boolean }
     options_sel: { tl: ReadonlyArray<'default' | Language> }
   },
-  config: AppConfig
-): Language {
+  config: AppConfig,
+  payload: {
+    sl?: Language
+    tl?: Language
+    isPDF?: boolean
+  }
+): Promise<{ sl: Language; tl: Language; text: string }> {
+  if (payload.isPDF && !options.pdfNewline) {
+    text = text.replace(/\n+/g, ' ')
+  }
+
+  let sl = payload.sl || (await translator.detect(text))
   let tl: Language | '' = ''
 
-  if (options.tl === 'default') {
+  if (payload.tl) {
+    tl = payload.tl
+  } else if (options.tl === 'default') {
     if (options_sel.tl.includes(config.langCode)) {
       tl = config.langCode
-    } else {
-      tl =
-        options_sel.tl.find((lang): lang is Language => lang !== 'default') ||
-        ''
     }
   } else {
     tl = options.tl
   }
 
-  if (!tl || sl === tl) {
-    if (!tl.startsWith('en')) {
-      return 'en'
-    }
-
-    return config.langCode.startsWith('zh') ? config.langCode : 'zh-CN'
+  if (!tl) {
+    tl =
+      options_sel.tl.find((lang): lang is Language => lang !== 'default') ||
+      'en'
   }
 
-  return tl
+  if (sl === tl && !payload.sl) {
+    sl = 'auto'
+  }
+
+  return { sl, tl, text }
 }
 
 /**

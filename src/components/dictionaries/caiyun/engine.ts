@@ -3,7 +3,7 @@ import {
   SearchFunction,
   MachineTranslatePayload,
   GetSrcPageFunction,
-  getMachineTranslateTl
+  getMTArgs
 } from '../helpers'
 import { isContainChinese, isContainJapanese } from '@/_helpers/lang-check'
 import { Caiyun } from '@opentranslate/caiyun'
@@ -31,37 +31,16 @@ export type CaiyunResult = MachineTranslateResult<'caiyun'>
 export const search: SearchFunction<
   CaiyunResult,
   MachineTranslatePayload<CaiyunLanguage>
-> = async (text, config, profile, payload) => {
-  const options = profile.dicts.all.caiyun.options
-
+> = async (rawText, config, profile, payload) => {
   const translator = getTranslator()
 
-  let sl = payload.sl || (await translator.detect(text))
-  let tl =
-    payload.tl || getMachineTranslateTl(sl, profile.dicts.all.caiyun, config)
-
-  if (sl === tl) {
-    if (isContainJapanese(text)) {
-      sl = 'ja'
-      if (tl === 'ja') {
-        tl = config.langCode.startsWith('zh') ? 'zh-CN' : 'en'
-      }
-    } else if (isContainChinese(text)) {
-      sl = 'zh-CN'
-      if (tl === 'zh-CN') {
-        tl = 'en'
-      }
-    } else {
-      sl = 'en'
-      if (tl === 'en') {
-        tl = 'zh-CN'
-      }
-    }
-  }
-
-  if (payload.isPDF && !options.pdfNewline) {
-    text = text.replace(/\n+/g, ' ')
-  }
+  const { sl, tl, text } = await getMTArgs(
+    translator,
+    rawText,
+    profile.dicts.all.caiyun,
+    config,
+    payload
+  )
 
   try {
     const result = await translator.translate(text, sl, tl)

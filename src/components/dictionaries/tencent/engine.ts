@@ -3,7 +3,7 @@ import {
   MachineTranslateResult,
   SearchFunction,
   GetSrcPageFunction,
-  getMachineTranslateTl
+  getMTArgs
 } from '../helpers'
 import { Tencent } from '@opentranslate/tencent'
 import { TencentLanguage } from './config'
@@ -41,18 +41,16 @@ export type TencentResult = MachineTranslateResult<'tencent'>
 export const search: SearchFunction<
   TencentResult,
   MachineTranslatePayload<TencentLanguage>
-> = async (text, config, profile, payload) => {
-  const options = profile.dicts.all.tencent.options
-
+> = async (rawText, config, profile, payload) => {
   const translator = getTranslator()
 
-  const sl = payload.sl || (await translator.detect(text))
-  const tl =
-    payload.tl || getMachineTranslateTl(sl, profile.dicts.all.tencent, config)
-
-  if (payload.isPDF && !options.pdfNewline) {
-    text = text.replace(/\n+/g, ' ')
-  }
+  const { sl, tl, text } = await getMTArgs(
+    translator,
+    rawText,
+    profile.dicts.all.baidu,
+    config,
+    payload
+  )
 
   try {
     const result = await translator.translate(text, sl, tl)
