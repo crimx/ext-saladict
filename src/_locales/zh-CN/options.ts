@@ -103,7 +103,8 @@ export const locale = {
       reset: '重置设定',
       reset_confirm: '所有设定将还原到默认值，确定？'
     },
-    context_description: '设置右键菜单，可添加可自定义链接。',
+    context_description:
+      '设置右键菜单，可添加可自定义链接。网页翻译其实不需要沙拉查词，故已有的有道和谷歌网页翻译目前处于维护状态，没有计划添加新功能，请用其它官方扩展如彩云小译和谷歌翻译。',
     context_menus_title: '添加右键菜单项目',
     context_menus_add_rules: '链接中的 %s 会被替换为选词。',
     ctx_trans: '上下文翻译引擎',

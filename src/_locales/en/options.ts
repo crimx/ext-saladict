@@ -110,7 +110,8 @@ export const locale: typeof _locale = {
       reset: 'Reset Configs',
       reset_confirm: 'Reset to default settings. Confirm？'
     },
-    context_description: 'Each context menus item can also be customized.',
+    context_description:
+      'Each context menus item can also be customized. Youdao and Google page translate are deprecated in favor of the official extensions.',
     context_menus_title: 'Add Context Menus Items',
     context_menus_add_rules: 'URL with %s in place of query.',
     ctx_trans: 'Context Translate Engines',

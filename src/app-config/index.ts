@@ -306,8 +306,7 @@ function _getDefaultConfig() {
         'view_as_pdf',
         'google_translate',
         'google_search',
-        'google_page_translate',
-        'youdao_page_translate'
+        'saladict'
       ],
       all: getAllContextMenus()
     }

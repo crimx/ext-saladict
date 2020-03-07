@@ -105,7 +105,8 @@ export const locale: typeof _locale = {
       reset: '重設設定',
       reset_confirm: '所有設定將還原至預設值，確定？'
     },
-    context_description: '設定右鍵選單，可新增可自定義連結。',
+    context_description:
+      '設定右鍵選單，可新增可自定義連結。網頁翻譯其實不需要沙拉查詞，故已有的有道和谷歌網頁翻譯目前處於維護狀態，沒有計劃新增新功能，請用其它官方擴充套件如彩雲小譯和谷歌翻譯。',
     context_menus_title: '新增右鍵選單項目',
     context_menus_add_rules: '連結中的 %s 會被取代為選詞。',
     ctx_trans: '上下文翻譯引擎',
