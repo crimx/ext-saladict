@@ -5,13 +5,12 @@ import {
   GetSrcPageFunction,
   getMTArgs
 } from '../helpers'
+import memoizeOne from 'memoize-one'
 import { Sogou } from '@opentranslate/sogou'
 import { SogouLanguage } from './config'
 
-let _translator: Sogou | undefined
-const getTranslator = () =>
-  (_translator =
-    _translator ||
+const getTranslator = memoizeOne(
+  () =>
     new Sogou({
       env: 'ext',
       config:
@@ -21,7 +20,8 @@ const getTranslator = () =>
               key: process.env.SOGOU_KEY
             }
           : undefined
-    }))
+    })
+)
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   const lang =
@@ -64,6 +64,7 @@ export const search: SearchFunction<
         trans: result.trans
       },
       audio: {
+        py: result.trans.tts,
         us: result.trans.tts
       }
     }

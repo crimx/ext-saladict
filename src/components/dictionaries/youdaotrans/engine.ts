@@ -5,13 +5,12 @@ import {
   GetSrcPageFunction,
   getMTArgs
 } from '../helpers'
+import memoizeOne from 'memoize-one'
 import { Youdao } from '@opentranslate/youdao'
 import { YoudaotransLanguage } from './config'
 
-let _translator: Youdao | undefined
-const getTranslator = () =>
-  (_translator =
-    _translator ||
+const getTranslator = memoizeOne(
+  () =>
     new Youdao({
       env: 'ext',
       config:
@@ -21,7 +20,8 @@ const getTranslator = () =>
               key: process.env.YOUDAO_KEY
             }
           : undefined
-    }))
+    })
+)
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   return `http://fanyi.youdao.com`
@@ -55,6 +55,7 @@ export const search: SearchFunction<
         trans: result.trans
       },
       audio: {
+        py: result.trans.tts,
         us: result.trans.tts
       }
     }

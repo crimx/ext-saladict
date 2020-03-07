@@ -5,14 +5,13 @@ import {
   GetSrcPageFunction,
   getMTArgs
 } from '../helpers'
-import { isContainChinese, isContainJapanese } from '@/_helpers/lang-check'
+import memoizeOne from 'memoize-one'
 import { Caiyun } from '@opentranslate/caiyun'
 import { CaiyunLanguage } from './config'
+import { translate as baiduTranslate } from '../baidu/engine'
 
-let _translator: Caiyun | undefined
-const getTranslator = () =>
-  (_translator =
-    _translator ||
+const getTranslator = memoizeOne(
+  () =>
     new Caiyun({
       env: 'ext',
       config: process.env.CAIYUN_TOKEN
@@ -20,7 +19,8 @@ const getTranslator = () =>
             token: process.env.CAIYUN_TOKEN
           }
         : undefined
-    }))
+    })
+)
 
 export const getSrcPage: GetSrcPageFunction = () => {
   return 'https://fanyi.caiyunapp.com/'
@@ -33,8 +33,9 @@ export const search: SearchFunction<
   MachineTranslatePayload<CaiyunLanguage>
 > = async (rawText, config, profile, payload) => {
   const translator = getTranslator()
+  const langcodes = translator.getSupportLanguages()
 
-  const { sl, tl, text } = await getMTArgs(
+  let { sl, tl, text } = await getMTArgs(
     translator,
     rawText,
     profile.dicts.all.caiyun,
@@ -42,18 +43,27 @@ export const search: SearchFunction<
     payload
   )
 
+  const baiduResult = await baiduTranslate(text, sl, tl)
+
+  if (langcodes.includes(baiduResult.from)) {
+    sl = baiduResult.from
+  }
+
   try {
     const result = await translator.translate(text, sl, tl)
+    result.origin.tts = baiduResult.origin.tts
+    result.trans.tts = baiduResult.trans.tts
     return {
       result: {
         id: 'caiyun',
         sl: result.from,
         tl: result.to,
-        langcodes: translator.getSupportLanguages(),
+        langcodes,
         searchText: result.origin,
         trans: result.trans
       },
       audio: {
+        py: result.trans.tts,
         us: result.trans.tts
       }
     }

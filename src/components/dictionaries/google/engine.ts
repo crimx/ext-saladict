@@ -5,12 +5,24 @@ import {
   GetSrcPageFunction,
   getMTArgs
 } from '../helpers'
+import memoizeOne from 'memoize-one'
 import { Google } from '@opentranslate/google'
 import { GoogleLanguage } from './config'
 
-let _translator: Google | undefined
-const getTranslator = () =>
-  (_translator = _translator || new Google({ env: 'ext' }))
+const getTranslator = memoizeOne(
+  () =>
+    new Google({
+      env: 'ext',
+      config: process.env.GOOGLE_TOKEN
+        ? {
+            token: process.env.GOOGLE_TOKEN,
+            order: ['com', 'cn'],
+            concurrent: true,
+            apiAsFallback: true
+          }
+        : undefined
+    })
+)
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   const domain = profile.dicts.all.google.options.cnfirst ? 'cn' : 'com'
@@ -57,6 +69,7 @@ export const search: SearchFunction<
         trans: result.trans
       },
       audio: {
+        py: result.trans.tts,
         us: result.trans.tts
       }
     }

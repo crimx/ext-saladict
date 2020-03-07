@@ -5,13 +5,12 @@ import {
   GetSrcPageFunction,
   getMTArgs
 } from '../helpers'
+import memoizeOne from 'memoize-one'
 import { Tencent } from '@opentranslate/tencent'
 import { TencentLanguage } from './config'
 
-let _translator: Tencent | undefined
-const getTranslator = () =>
-  (_translator =
-    _translator ||
+const getTranslator = memoizeOne(
+  () =>
     new Tencent({
       env: 'ext',
       config:
@@ -21,7 +20,8 @@ const getTranslator = () =>
               secretKey: process.env.TENCENT_SECRETKEY
             }
           : undefined
-    }))
+    })
+)
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   const lang =
@@ -64,6 +64,7 @@ export const search: SearchFunction<
         trans: result.trans
       },
       audio: {
+        py: result.trans.tts,
         us: result.trans.tts
       }
     }
