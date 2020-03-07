@@ -4,7 +4,7 @@ import { Subunion } from '@/typings/helpers'
 
 export type GoogleLanguage = Subunion<
   Language,
-  'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'ru'
+  'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'ru' | 'nl'
 >
 
 export type GoogleConfig = DictItem<{
@@ -51,6 +51,18 @@ export default (): GoogleConfig => ({
     tl: 'default'
   },
   options_sel: {
-    tl: ['default', 'zh-CN', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru']
+    tl: [
+      'default',
+      'zh-CN',
+      'zh-TW',
+      'en',
+      'ja',
+      'ko',
+      'fr',
+      'de',
+      'es',
+      'ru',
+      'nl'
+    ]
   }
 })
