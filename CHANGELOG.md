@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.9.0](https://github.com/crimx/ext-saladict/compare/v7.8.0...v7.9.0) (2020-03-09)
+
+
+### Features
+
+* **dicts:** add lexico ([a86fc7d](https://github.com/crimx/ext-saladict/commit/a86fc7db85f8646f6326b6e1dbbd235ce930c7d6))
+* **dicts:** add renren ([b4dc38d](https://github.com/crimx/ext-saladict/commit/b4dc38da25e838f1c9869d66d6cb2b9ecfbf3fb5))
+
+
+### Bug Fixes
+
+* **dicts:** correct tts language ([76eb34d](https://github.com/crimx/ext-saladict/commit/76eb34d70fe802b3117a5c31a2e8f1d732f2f34e)), closes [#659](https://github.com/crimx/ext-saladict/issues/659)
+* **renren:** prevent detail click event being captured by panel ([921d102](https://github.com/crimx/ext-saladict/commit/921d102deac23ec19196a41512883d645c73ae13))
+* **wordpage:** keyword matching ([b9a1a3e](https://github.com/crimx/ext-saladict/commit/b9a1a3e211a405595724a9e466ffc8d9a2c7ec1d))
+
+
+### Tests
+
+* fix bing fixtures ([a7731a2](https://github.com/crimx/ext-saladict/commit/a7731a22131dc358c3036b14d59b9a3d33344a53))
+
 ## [7.8.0](https://github.com/crimx/ext-saladict/compare/v7.7.6...v7.8.0) (2020-02-13)
 
 
