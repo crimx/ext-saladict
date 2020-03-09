@@ -34,6 +34,7 @@ export function _getDefaultProfile(id?: string) {
         'bing',
         'cobuild',
         'cambridge',
+        'renren',
         'youdao',
         'urban',
         'vocabulary',
