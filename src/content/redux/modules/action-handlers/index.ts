@@ -70,6 +70,12 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
 
   NEW_SELECTION: newSelection,
 
+  WINDOW_RESIZE: state => ({
+    ...state,
+    panelMaxHeight:
+      (window.innerHeight * state.config.panelMaxHeightRatio) / 100
+  }),
+
   TEMP_DISABLED_STATE: (state, { payload }) =>
     payload
       ? {

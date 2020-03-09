@@ -21,6 +21,10 @@ export const init = (
   dispatch: Dispatch<StoreAction>,
   getState: () => StoreState
 ) => {
+  window.addEventListener('resize', () => {
+    dispatch({ type: 'WINDOW_RESIZE' })
+  })
+
   addConfigListener(({ newConfig }) => {
     if (newConfig.active !== getState().config.active) {
       message.send({
@@ -234,10 +238,12 @@ async function summonedPanelInit(
   try {
     if (preload === 'selection') {
       if (standalone === 'popup') {
-        const tab = (await browser.tabs.query({
-          active: true,
-          currentWindow: true
-        }))[0]
+        const tab = (
+          await browser.tabs.query({
+            active: true,
+            currentWindow: true
+          })
+        )[0]
         if (tab && tab.id != null) {
           word = await message.send<'PRELOAD_SELECTION'>(tab.id, {
             type: 'PRELOAD_SELECTION'

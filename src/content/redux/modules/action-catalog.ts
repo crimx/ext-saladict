@@ -21,6 +21,8 @@ export type ActionCatalog = CreateActionCatalog<{
     payload: Message<'SELECTION'>['payload']
   }
 
+  WINDOW_RESIZE: {}
+
   /** Is App temporary disabled */
   TEMP_DISABLED_STATE: {
     payload: boolean
