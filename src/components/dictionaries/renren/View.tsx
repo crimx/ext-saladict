@@ -52,6 +52,7 @@ export const DictRenren: FC<ViewPorps<RenrenResult>> = ({ result }) => {
 
   const handleDetailClick = async (e: React.MouseEvent) => {
     e.preventDefault()
+    e.stopPropagation()
 
     const selectedSlide = result[slide]
     const detail = await message.send<'DICT_ENGINE_METHOD', RenrenSlide[]>({
