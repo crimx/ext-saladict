@@ -127,7 +127,7 @@ function Dict(props: {
         return boolean(name, options[key])
       case 'number':
         return number(name, options[key])
-      case 'string':
+      case 'string': {
         const values: string[] =
           profiles.dicts.all[props.dictID]['options_sel'][key]
         return select(
@@ -138,6 +138,7 @@ function Dict(props: {
           }, {}),
           options[key]
         )
+      }
       default:
         return options[key]
     }
@@ -168,7 +169,6 @@ function Dict(props: {
     search(searchText, getDefaultConfig(), profiles, {
       isPDF: false
     }).then(async ({ result }) => {
-      await timer(Math.random() * 3000)
       setStatus('FINISH')
       setResult(result)
     })
