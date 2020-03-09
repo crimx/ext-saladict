@@ -42,6 +42,8 @@ export const ShadowPortal = (props: ShadowPortalProps) => {
       $root.id = id
       $root.className = `saladict-div ${shadowRootClassName ||
         SALADICT_EXTERNAL}`
+      // prevent styles in shadow dom from inheriting outside rules
+      $root.style.setProperty('all', 'initial')
     }
     return $root
   }, [shadowRootClassName])
