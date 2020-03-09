@@ -3,6 +3,7 @@
 }
 
 .dictRenren-Slide {
+  overflow: hidden;
   position: relative;
   margin-bottom: 5px;
   background: var(--color-divider);
@@ -12,14 +13,12 @@
     min-height: 200px;
     margin: 0;
     padding: 0;
-  }
-
-  img {
-    max-width: 100%;
+    transition: height 0.4s;
   }
 
   figcaption {
     position: absolute;
+    z-index: 2;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -33,8 +32,21 @@
   }
 }
 
+.dictRenren-Slide_Cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 100%;
+  opacity: 0;
+
+  &.isLoaded {
+    opacity: 1;
+  }
+}
+
 .dictRenren-Slide_Speaker {
   position: absolute;
+  z-index: 2;
   top: 5px;
   left: 5px;
   padding: 3px;
@@ -85,4 +97,16 @@
 .dictRenren-Ctx_Subtitles {
   display: table-cell;
   padding-left: 1em;
+}
+
+.isAnimate {
+  .dictRenren-Slide {
+    figure {
+      transition: height 0.4s;
+    }
+  }
+
+  .dictRenren-Slide_Cover {
+    transition: opacity 0.4s;
+  }
 }

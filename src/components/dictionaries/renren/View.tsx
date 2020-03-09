@@ -4,27 +4,43 @@ import { RenrenResult, RenrenSlide } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import { message } from '@/_helpers/browser-api'
 
-const renderRenrenSlide = (slide: RenrenSlide) => (
-  <div key={slide.cover + slide.mp3} className="dictRenren-Slide">
-    <div className="dictRenren-Slide_Speaker">
-      <Speaker src={slide.mp3} width={20} />
-    </div>
-    <figure>
-      <img
-        src={slide.cover}
-        alt={slide.en}
-        className="dictRenren-Slide_Cover"
-      />
-      <figcaption>
-        <p
-          dangerouslySetInnerHTML={{ __html: slide.en }}
-          className="dictRenren-Slide_En"
+interface RenrenSlideProps {
+  slide: RenrenSlide
+}
+
+const Slide: FC<RenrenSlideProps> = ({ slide }) => {
+  const [imgHeight, setImgHeight] = useState(240)
+  const [isImgLoaded, setImgLoaded] = useState(false)
+  useEffect(() => {
+    setImgLoaded(false)
+  }, [slide.cover])
+
+  return (
+    <div className="dictRenren-Slide">
+      <div className="dictRenren-Slide_Speaker">
+        <Speaker src={slide.mp3} width={20} />
+      </div>
+      <figure style={{ height: imgHeight }}>
+        <img
+          src={slide.cover}
+          alt={slide.en}
+          className={`dictRenren-Slide_Cover${isImgLoaded ? ' isLoaded' : ''}`}
+          onLoad={e => {
+            setImgHeight(e.currentTarget.height)
+            setImgLoaded(true)
+          }}
         />
-        <p className="dictRenren-Slide_Chs">{slide.chs}</p>
-      </figcaption>
-    </figure>
-  </div>
-)
+        <figcaption>
+          <p
+            dangerouslySetInnerHTML={{ __html: slide.en }}
+            className="dictRenren-Slide_En"
+          />
+          <p className="dictRenren-Slide_Chs">{slide.chs}</p>
+        </figcaption>
+      </figure>
+    </div>
+  )
+}
 
 export const DictRenren: FC<ViewPorps<RenrenResult>> = ({ result }) => {
   const [slide, setSlide] = useState(0)
@@ -69,10 +85,12 @@ export const DictRenren: FC<ViewPorps<RenrenResult>> = ({ result }) => {
         ))}
       </select>
       {details[result[slide].key] ? (
-        details[result[slide].key].map(renderRenrenSlide)
+        details[result[slide].key].map(slide => (
+          <Slide key={slide.cover + slide.mp3} slide={slide} />
+        ))
       ) : (
         <>
-          {renderRenrenSlide(result[slide].slide)}
+          <Slide slide={result[slide].slide} />
           <a
             className="dictRenren-Detail"
             href={result[slide].detail}
