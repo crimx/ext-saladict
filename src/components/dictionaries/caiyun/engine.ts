@@ -8,7 +8,7 @@ import {
 import memoizeOne from 'memoize-one'
 import { Caiyun } from '@opentranslate/caiyun'
 import { CaiyunLanguage } from './config'
-import { translate as baiduTranslate } from '../baidu/engine'
+import { getTranslator as getBaiduTranslator } from '../baidu/engine'
 
 const getTranslator = memoizeOne(
   () =>
@@ -43,7 +43,7 @@ export const search: SearchFunction<
     payload
   )
 
-  const baiduResult = await baiduTranslate(text, sl, tl)
+  const baiduResult = await getBaiduTranslator().translate(text, sl, tl)
 
   if (langcodes.includes(baiduResult.from)) {
     sl = baiduResult.from

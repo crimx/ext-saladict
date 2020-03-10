@@ -6,11 +6,10 @@ import {
   getMTArgs
 } from '../helpers'
 import memoizeOne from 'memoize-one'
-import { Language } from '@opentranslate/languages'
 import { Baidu } from '@opentranslate/baidu'
 import { BaiduLanguage } from './config'
 
-const getTranslator = memoizeOne(
+export const getTranslator = memoizeOne(
   () =>
     new Baidu({
       env: 'ext',
@@ -22,12 +21,6 @@ const getTranslator = memoizeOne(
             }
           : undefined
     })
-)
-
-// Cache as Baidu will be used by other machine transtors as fallback
-export const translate = memoizeOne(
-  (text: string, sl: Language, tl: Language) =>
-    getTranslator().translate(text, sl, tl)
 )
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
@@ -60,7 +53,7 @@ export const search: SearchFunction<
   )
 
   try {
-    const result = await translate(text, sl, tl)
+    const result = await translator.translate(text, sl, tl)
     return {
       result: {
         id: 'baidu',
