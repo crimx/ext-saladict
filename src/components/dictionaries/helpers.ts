@@ -10,6 +10,7 @@ import { debounceTime, map, tap } from 'rxjs/operators'
 import { Observable } from 'rxjs'
 import { Language } from '@opentranslate/languages'
 import { Translator } from '@opentranslate/translator'
+import { isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 
 /** Fetch and parse dictionary search result */
 export interface SearchFunction<Result, Payload = {}> {
@@ -121,7 +122,20 @@ export async function getMTArgs(
     text = text.replace(/\n+/g, ' ')
   }
 
-  let sl = payload.sl || (await translator.detect(text))
+  let sl = payload.sl
+
+  if (!sl) {
+    if (isContainJapanese(text)) {
+      sl = 'ja'
+    } else if (isContainKorean(text)) {
+      sl = 'ko'
+    }
+  }
+
+  if (!sl) {
+    sl = await translator.detect(text)
+  }
+
   let tl: Language | '' = ''
 
   if (payload.tl) {
