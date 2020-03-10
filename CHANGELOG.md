@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.9.1](https://github.com/crimx/ext-saladict/compare/v7.9.0...v7.9.1) (2020-03-10)
+
+
+### Bug Fixes
+
+* **dicts:** add fallback language for machine translate ([60b10da](https://github.com/crimx/ext-saladict/commit/60b10da2dbb890270965de7b24a6672ced4ce579)), closes [#674](https://github.com/crimx/ext-saladict/issues/674)
+* **dicts:** enhance cjk detection ([8311d9e](https://github.com/crimx/ext-saladict/commit/8311d9e30d01740930725cd9a83adfa5a92bf26e))
+* **dicts:** remove caching async function ([03d7866](https://github.com/crimx/ext-saladict/commit/03d78669dacece312ba7bf2a5d8763d9b760730b))
+
 ## [7.9.0](https://github.com/crimx/ext-saladict/compare/v7.8.0...v7.9.0) (2020-03-09)
 
 
