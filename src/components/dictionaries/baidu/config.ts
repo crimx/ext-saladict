@@ -12,6 +12,7 @@ export type BaiduLanguage = Subunion<
 export type BaiduConfig = DictItem<{
   pdfNewline: boolean
   tl: 'default' | BaiduLanguage
+  tl2: 'default' | BaiduLanguage
 }>
 
 export default (): BaiduConfig => ({
@@ -46,10 +47,24 @@ export default (): BaiduConfig => ({
   options: {
     /** Keep linebreaks on PDF */
     pdfNewline: false,
-    tl: 'default'
+    tl: 'default',
+    tl2: 'default'
   },
   options_sel: {
     tl: [
+      'default',
+      'zh-CN',
+      'zh-TW',
+      'en',
+      'ja',
+      'ko',
+      'fr',
+      'de',
+      'es',
+      'ru',
+      'nl'
+    ],
+    tl2: [
       'default',
       'zh-CN',
       'zh-TW',

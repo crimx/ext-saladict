@@ -41,8 +41,8 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
                   key={optKey}
                   label={t(`dicts:${dictID}.options.${optKey}`)}
                   help={
-                    i18n.exists(`dicts:${dictID}.helpers.${optKey}`)
-                      ? t(`dicts:${dictID}.helpers.${optKey}`)
+                    i18n.exists(`dicts:${dictID}.helps.${optKey}`)
+                      ? t(`dicts:${dictID}.helps.${optKey}`)
                       : null
                   }
                 >
@@ -63,8 +63,8 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
                   key={optKey}
                   label={t(`dicts:${dictID}.options.${optKey}`)}
                   help={
-                    i18n.exists(`dicts:${dictID}.helpers.${optKey}`)
-                      ? t(`dicts:${dictID}.helpers.${optKey}`)
+                    i18n.exists(`dicts:${dictID}.helps.${optKey}`)
+                      ? t(`dicts:${dictID}.helps.${optKey}`)
                       : null
                   }
                 >
@@ -81,8 +81,8 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
                   key={optKey}
                   label={t(`dicts:${dictID}.options.${optKey}`)}
                   help={
-                    i18n.exists(`dicts:${dictID}.helpers.${optKey}`)
-                      ? t(`dicts:${dictID}.helpers.${optKey}`)
+                    i18n.exists(`dicts:${dictID}.helps.${optKey}`)
+                      ? t(`dicts:${dictID}.helps.${optKey}`)
                       : null
                   }
                   style={{ marginBottom: 0 }}
@@ -93,7 +93,7 @@ export class EditDictModal extends React.Component<EditDictModalProps> {
                     <Radio.Group>
                       {dict['options_sel'][optKey].map(option => (
                         <Radio value={option} key={option}>
-                          {optKey === 'tl'
+                          {optKey === 'tl' || optKey === 'tl2'
                             ? t(`langcode:${option}`)
                             : t(`dicts:${dictID}.options.${optKey}-${option}`)}
                         </Radio>

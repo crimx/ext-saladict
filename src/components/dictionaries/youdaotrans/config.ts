@@ -10,6 +10,7 @@ export type YoudaotransLanguage = Subunion<
 export type YoudaotransConfig = DictItem<{
   pdfNewline: boolean
   tl: 'default' | YoudaotransLanguage
+  tl2: 'default' | YoudaotransLanguage
 }>
 
 export default (): YoudaotransConfig => ({
@@ -44,9 +45,11 @@ export default (): YoudaotransConfig => ({
   options: {
     /** Keep linebreaks on PDF */
     pdfNewline: false,
-    tl: 'default'
+    tl: 'default',
+    tl2: 'default'
   },
   options_sel: {
-    tl: ['default', 'zh-CN', 'en', 'pt', 'es', 'ja', 'ko', 'fr', 'ru']
+    tl: ['default', 'zh-CN', 'en', 'pt', 'es', 'ja', 'ko', 'fr', 'ru'],
+    tl2: ['default', 'zh-CN', 'en', 'pt', 'es', 'ja', 'ko', 'fr', 'ru']
   }
 })

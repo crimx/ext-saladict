@@ -7,6 +7,7 @@ export type CaiyunLanguage = Subunion<Language, 'zh-CN' | 'en' | 'ja'>
 export type CaiyunConfig = DictItem<{
   pdfNewline: boolean
   tl: 'default' | CaiyunLanguage
+  tl2: 'default' | CaiyunLanguage
 }>
 
 export default (): CaiyunConfig => ({
@@ -41,9 +42,11 @@ export default (): CaiyunConfig => ({
   options: {
     /** Keep linebreaks on PDF */
     pdfNewline: false,
-    tl: 'default'
+    tl: 'default',
+    tl2: 'default'
   },
   options_sel: {
-    tl: ['default', 'zh-CN', 'en', 'ja']
+    tl: ['default', 'zh-CN', 'en', 'ja'],
+    tl2: ['default', 'zh-CN', 'en', 'ja']
   }
 })

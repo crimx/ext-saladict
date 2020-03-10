@@ -12,6 +12,7 @@ export type GoogleConfig = DictItem<{
   cnfirst: boolean
   concurrent: boolean
   tl: 'default' | GoogleLanguage
+  tl2: 'default' | GoogleLanguage
 }>
 
 export default (): GoogleConfig => ({
@@ -48,10 +49,24 @@ export default (): GoogleConfig => ({
     pdfNewline: false,
     cnfirst: true,
     concurrent: false,
-    tl: 'default'
+    tl: 'default',
+    tl2: 'default'
   },
   options_sel: {
     tl: [
+      'default',
+      'zh-CN',
+      'zh-TW',
+      'en',
+      'ja',
+      'ko',
+      'fr',
+      'de',
+      'es',
+      'ru',
+      'nl'
+    ],
+    tl2: [
       'default',
       'zh-CN',
       'zh-TW',

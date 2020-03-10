@@ -93,9 +93,11 @@ function Dict(props: {
     mockRequest: MockRequest
   }
 
-  const locales = require('@/components/dictionaries/' +
+  const localesModule = require('@/components/dictionaries/' +
     props.dictID +
-    '/_locales.json')
+    '/_locales')
+
+  const locales = localesModule.locales || localesModule
 
   const { search } = require('@/components/dictionaries/' +
     props.dictID +

@@ -100,8 +100,15 @@ export async function getMTArgs(
     options,
     options_sel
   }: {
-    options: { tl: 'default' | Language; pdfNewline?: boolean }
-    options_sel: { tl: ReadonlyArray<'default' | Language> }
+    options: {
+      tl: 'default' | Language
+      tl2: 'default' | Language
+      pdfNewline?: boolean
+    }
+    options_sel: {
+      tl: ReadonlyArray<'default' | Language>
+      tl2: ReadonlyArray<'default' | Language>
+    }
   },
   config: AppConfig,
   payload: {
@@ -133,8 +140,25 @@ export async function getMTArgs(
       'en'
   }
 
-  if (sl === tl && !payload.sl) {
-    sl = 'auto'
+  if (sl === tl) {
+    if (!payload.tl) {
+      if (options.tl2 === 'default') {
+        if (tl !== config.langCode) {
+          tl = config.langCode
+        } else if (tl !== 'en') {
+          tl = 'en'
+        } else {
+          tl =
+            options_sel.tl.find(
+              (lang): lang is Language => lang !== 'default' && lang !== tl
+            ) || 'en'
+        }
+      } else {
+        tl = options.tl2
+      }
+    } else if (!payload.sl) {
+      sl = 'auto'
+    }
   }
 
   return { sl, tl, text }

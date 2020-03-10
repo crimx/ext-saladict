@@ -10,6 +10,7 @@ export type TencentLanguage = Subunion<
 export type TencentConfig = DictItem<{
   pdfNewline: boolean
   tl: 'default' | TencentLanguage
+  tl2: 'default' | TencentLanguage
 }>
 
 export default (): TencentConfig => ({
@@ -44,9 +45,11 @@ export default (): TencentConfig => ({
   options: {
     /** Keep linebreaks on PDF */
     pdfNewline: false,
-    tl: 'default'
+    tl: 'default',
+    tl2: 'default'
   },
   options_sel: {
-    tl: ['default', 'zh-CN', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru']
+    tl: ['default', 'zh-CN', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru'],
+    tl2: ['default', 'zh-CN', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru']
   }
 })
