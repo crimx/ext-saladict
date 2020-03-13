@@ -10218,10 +10218,10 @@ nested-object-assign@^1.0.3:
   resolved "https://registry.yarnpkg.com/nested-object-assign/-/nested-object-assign-1.0.3.tgz#5aca69390d9affe5a612152b5f0843ae399ac597"
   integrity sha512-kgq1CuvLyUcbcIuTiCA93cQ2IJFSlRwXcN+hLcb2qLJwC2qrePHGZZa7IipyWqaWF6tQjdax2pQnVxdq19Zzwg==
 
-neutrino-webextension@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/neutrino-webextension/-/neutrino-webextension-1.0.2.tgz#89944e13299d7a38681bf41462d97870fbc73152"
-  integrity sha512-fzNWf295Me/2IY2Cszip2X38z6CQU1Y3gM9anZUsFZtx2ooLLwd1gzrRuMKOg+SOBhUbq7H4EejF1luWIfxr9w==
+neutrino-webextension@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/neutrino-webextension/-/neutrino-webextension-1.0.3.tgz#c2b5b5afbb917d4119193e43d0d4ecaa30c90143"
+  integrity sha512-vdpruG6pDgD22jhTZZWVw4Ekh9sO1D9j7BxDQQPu2VghKoy3z627Xx5Dimpt8w+01BNblwZs2/A+Vt5al6Rs3A==
   dependencies:
     archiver "^3.0.0"
     deepmerge "^3.3.0"
@@ -10229,7 +10229,7 @@ neutrino-webextension@^1.0.2:
     globby "^10.0.1"
     sinon-chrome "^3.0.1"
     webextensions-emulator "^1.2.4"
-    yargs-parser "^15.0.0"
+    yargs-parser "^18.1.0"
 
 neutrino@^9.1.0:
   version "9.1.0"
@@ -15299,6 +15299,14 @@ yargs-parser@^16.1.0:
   version "16.1.0"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-16.1.0.tgz#73747d53ae187e7b8dbe333f95714c76ea00ecf1"
   integrity sha512-H/V41UNZQPkUMIT5h5hiwg4QKIY1RPvoBV4XcjUbRM8Bk2oKqqyZ0DIEbTFZB0XjbtSPG8SAa/0DxCQmiRgzKg==
+  dependencies:
+    camelcase "^5.0.0"
+    decamelize "^1.2.0"
+
+yargs-parser@^18.1.0:
+  version "18.1.0"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-18.1.0.tgz#1b0ab1118ebd41f68bb30e729f4c83df36ae84c3"
+  integrity sha512-o/Jr6JBOv6Yx3pL+5naWSoIA2jJ+ZkMYQG/ie9qFbukBe4uzmBatlXFOiu/tNKRWEtyf+n5w7jc/O16ufqOTdQ==
   dependencies:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
