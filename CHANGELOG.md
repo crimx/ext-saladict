@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.9.2](https://github.com/crimx/ext-saladict/compare/v7.9.1...v7.9.2) (2020-03-14)
+
+
+### Bug Fixes
+
+* **dicts:** wrong dict config ([551a0b3](https://github.com/crimx/ext-saladict/commit/551a0b30db29c14dd093d33f01c440d669846fc4))
+
 ### [7.9.1](https://github.com/crimx/ext-saladict/compare/v7.9.0...v7.9.1) (2020-03-10)
 
 
