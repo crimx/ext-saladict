@@ -47,7 +47,7 @@ export const search: SearchFunction<
   const { sl, tl, text } = await getMTArgs(
     translator,
     rawText,
-    profile.dicts.all.baidu,
+    profile.dicts.all.tencent,
     config,
     payload
   )
