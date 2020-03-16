@@ -89,7 +89,7 @@ export function timer<T = any>(delay: number, payload?: T): Promise<T>
 export function timer(...args) {
   return new Promise<any>(resolve => {
     setTimeout(
-      () => (args.length > 0 ? resolve(args[1]) : resolve()),
+      () => (args.length > 1 ? resolve(args[1]) : resolve()),
       Number(args[0]) || 0
     )
   })
