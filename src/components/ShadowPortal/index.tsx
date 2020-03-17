@@ -10,7 +10,10 @@ export const defaultTimeout = { enter: 400, exit: 100, appear: 400 }
 
 export const defaultClassNames = 'shadowPortal'
 
-export interface ShadowPortalProps extends Partial<CSSTransitionProps> {
+// prevent styles in shadow dom from inheriting outside rules
+const styleResetBoundary: React.CSSProperties = { all: 'initial' }
+
+export interface ShadowPortalOwnProps {
   /** Unique id for the injected element */
   id: string
   /** Static content before the children  */
@@ -18,6 +21,8 @@ export interface ShadowPortalProps extends Partial<CSSTransitionProps> {
   shadowRootClassName?: string
   panelCSS?: string
 }
+
+export type ShadowPortalProps = ShadowPortalOwnProps & CSSTransitionProps
 
 /**
  * Render a shadow DOM on Portal to a removable element with transition.
@@ -42,8 +47,6 @@ export const ShadowPortal = (props: ShadowPortalProps) => {
       $root.id = id
       $root.className = `saladict-div ${shadowRootClassName ||
         SALADICT_EXTERNAL}`
-      // prevent styles in shadow dom from inheriting outside rules
-      $root.style.setProperty('all', 'initial')
     }
     return $root
   }, [shadowRootClassName])
@@ -60,32 +63,34 @@ export const ShadowPortal = (props: ShadowPortalProps) => {
 
   return ReactDOM.createPortal(
     <root.div className={shadowRootClassName || SALADICT_EXTERNAL}>
-      {head}
-      {panelCSS ? <style>{panelCSS}</style> : null}
-      <CSSTransition
-        classNames={defaultClassNames}
-        mountOnEnter
-        unmountOnExit
-        appear
-        timeout={defaultTimeout}
-        {...restProps}
-        onEnter={(...args) => {
-          if (!$root.parentNode) {
-            document.body.appendChild($root)
-          }
-          if (onEnter) {
-            return onEnter(...args)
-          }
-        }}
-        onExited={(...args) => {
-          if ($root.parentNode) {
-            $root.remove()
-          }
-          if (onExited) {
-            return onExited(...args)
-          }
-        }}
-      />
+      <div style={styleResetBoundary}>
+        {head}
+        {panelCSS ? <style>{panelCSS}</style> : null}
+        <CSSTransition
+          classNames={defaultClassNames}
+          mountOnEnter
+          unmountOnExit
+          appear
+          timeout={defaultTimeout}
+          {...restProps}
+          onEnter={(...args) => {
+            if (!$root.parentNode) {
+              document.body.appendChild($root)
+            }
+            if (onEnter) {
+              return onEnter(...args)
+            }
+          }}
+          onExited={(...args) => {
+            if ($root.parentNode) {
+              $root.remove()
+            }
+            if (onExited) {
+              return onExited(...args)
+            }
+          }}
+        />
+      </div>
     </root.div>,
     $root
   )
