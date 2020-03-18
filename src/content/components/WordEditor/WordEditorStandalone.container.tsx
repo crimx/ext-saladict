@@ -13,7 +13,7 @@ const mapStateToProps: MapStateToProps<
 > = state => ({
   darkMode: state.config.darkMode,
   colors: state.colors,
-  containerWidth: '100vw',
+  containerWidth: window.innerWidth,
   ctxTrans: state.config.ctxTrans,
   wordEditor: state.wordEditor,
   onClose

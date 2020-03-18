@@ -64,13 +64,10 @@ export const Notes: FC<NotesProps> = props => {
   }, [props.ctxTrans])
 
   const [ctxTransResult, setCtxTransResult] = useState(() =>
-    Object.keys(props.ctxTrans).reduce(
-      (result, id) => {
-        result[id] = ''
-        return result
-      },
-      {} as CtxTranslateResults
-    )
+    Object.keys(props.ctxTrans).reduce((result, id) => {
+      result[id] = ''
+      return result
+    }, {} as CtxTranslateResults)
   )
 
   const [getRelatedWords, relatedWords$] = useObservableCallback<
@@ -87,10 +84,6 @@ export const Notes: FC<NotesProps> = props => {
         }
 
         return getWordsByText('notebook', word.text)
-          .then(date => {
-            console.log(date, 'z>>')
-            return date
-          })
           .then(words => words.filter(({ date }) => date !== word.date))
           .catch(() => [])
       }),
