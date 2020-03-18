@@ -86,6 +86,16 @@ export function mergeProfile(
           )
         }
       })
+
+      // legacy
+      const pdfNewline = get(oldProfile, `dicts.all.${id}.options.pdfNewline`)
+      if (isBoolean(pdfNewline)) {
+        set(
+          base,
+          `dicts.all.${id}.options.keepLF`,
+          pdfNewline ? 'all' : 'webpage'
+        )
+      }
     }
   })
 
@@ -96,6 +106,8 @@ export function mergeProfile(
   if ((base.dicts.all.hjdict.options.chsas as string) === 'kor') {
     base.dicts.all.hjdict.options.chsas = 'kr'
   }
+
+  console.log(base)
 
   return base
 

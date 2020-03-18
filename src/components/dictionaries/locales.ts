@@ -20,10 +20,30 @@ export function getMachineLocales(
   return {
     name,
     options: {
-      pdfNewline: {
-        en: 'Keep linebreaks on PDF',
-        'zh-CN': 'PDF 保持换行',
-        'zh-TW': 'PDF 保持換行'
+      keepLF: {
+        en: 'Keep linebreaks',
+        'zh-CN': '保留换行',
+        'zh-TW': '保留換行'
+      },
+      'keepLF-none': {
+        en: 'None',
+        'zh-CN': '不保留',
+        'zh-TW': '不保留'
+      },
+      'keepLF-all': {
+        en: 'All',
+        'zh-CN': '全保留',
+        'zh-TW': '全保留'
+      },
+      'keepLF-pdf': {
+        en: 'PDF',
+        'zh-CN': '保留 PDF 换行',
+        'zh-TW': '保留 PDF 換行'
+      },
+      'keepLF-webpage': {
+        en: 'Webpage',
+        'zh-CN': '保留网页换行',
+        'zh-TW': '保留網頁換行'
       },
       tl: {
         en: 'Target language',

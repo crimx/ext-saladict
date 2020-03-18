@@ -104,7 +104,7 @@ export async function getMTArgs(
     options: {
       tl: 'default' | Language
       tl2: 'default' | Language
-      pdfNewline?: boolean
+      keepLF: 'none' | 'all' | 'webpage' | 'pdf'
     }
     options_sel: {
       tl: ReadonlyArray<'default' | Language>
@@ -118,7 +118,11 @@ export async function getMTArgs(
     isPDF?: boolean
   }
 ): Promise<{ sl: Language; tl: Language; text: string }> {
-  if (payload.isPDF && !options.pdfNewline) {
+  if (
+    options.keepLF === 'none' ||
+    (options.keepLF === 'pdf' && !payload.isPDF) ||
+    (options.keepLF === 'webpage' && payload.isPDF)
+  ) {
     text = text.replace(/\n+/g, ' ')
   }
 

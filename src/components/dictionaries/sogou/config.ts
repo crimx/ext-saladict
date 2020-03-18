@@ -8,7 +8,7 @@ export type SogouLanguage = Subunion<
 >
 
 export type SogouConfig = DictItem<{
-  pdfNewline: boolean
+  keepLF: 'none' | 'all' | 'webpage' | 'pdf'
   tl: 'default' | SogouLanguage
   tl2: 'default' | SogouLanguage
 }>
@@ -43,12 +43,12 @@ export default (): SogouConfig => ({
     max: 999999999999999
   },
   options: {
-    /** Keep linebreaks on PDF */
-    pdfNewline: false,
+    keepLF: 'webpage',
     tl: 'default',
     tl2: 'default'
   },
   options_sel: {
+    keepLF: ['none', 'all', 'webpage', 'pdf'],
     tl: ['default', 'zh-CN', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru'],
     tl2: ['default', 'zh-CN', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru']
   }

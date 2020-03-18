@@ -8,7 +8,7 @@ export type GoogleLanguage = Subunion<
 >
 
 export type GoogleConfig = DictItem<{
-  pdfNewline: boolean
+  keepLF: 'none' | 'all' | 'webpage' | 'pdf'
   cnfirst: boolean
   concurrent: boolean
   tl: 'default' | GoogleLanguage
@@ -45,14 +45,14 @@ export default (): GoogleConfig => ({
     max: 999999999999999
   },
   options: {
-    /** Keep linebreaks on PDF */
-    pdfNewline: false,
+    keepLF: 'webpage',
     cnfirst: true,
     concurrent: false,
     tl: 'default',
     tl2: 'default'
   },
   options_sel: {
+    keepLF: ['none', 'all', 'webpage', 'pdf'],
     tl: [
       'default',
       'zh-CN',
