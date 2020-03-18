@@ -367,11 +367,11 @@ export function getFullLink(host: string, el: Element, attr: string): string {
 }
 
 /**
- * Vertically scroll a list of items
+ * Horizontally scroll a list of items
  * React event listener doesn't support passive arguemnt.
  */
-export const useVerticalScroll = <T extends HTMLElement>() => {
-  const [onWheel, onWHeel$] = useObservableCallback(_useVerticalScrollOnWheel)
+export const useHorizontalScroll = <T extends HTMLElement>() => {
+  const [onWheel, onWHeel$] = useObservableCallback(_useHorizontalScrollOnWheel)
   useSubscription(onWHeel$)
 
   const tabsRef = useRef<T>(null)
@@ -388,7 +388,7 @@ export const useVerticalScroll = <T extends HTMLElement>() => {
 
   return tabsRef
 }
-function _useVerticalScrollOnWheel(event$: Observable<WheelEvent>) {
+function _useHorizontalScrollOnWheel(event$: Observable<WheelEvent>) {
   return event$.pipe(
     map(e => {
       e.stopPropagation()

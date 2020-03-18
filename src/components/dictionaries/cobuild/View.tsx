@@ -2,7 +2,10 @@ import React, { FC, useState } from 'react'
 import { Speaker } from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
 import { COBUILDResult, COBUILDCibaResult, COBUILDColResult } from './engine'
-import { ViewPorps, useVerticalScroll } from '@/components/dictionaries/helpers'
+import {
+  ViewPorps,
+  useHorizontalScroll
+} from '@/components/dictionaries/helpers'
 
 export const DictCOBUILD: FC<ViewPorps<COBUILDResult>> = ({ result }) => {
   switch (result.type) {
@@ -53,7 +56,7 @@ function renderCiba(result: COBUILDCibaResult) {
 
 function renderCol(result: COBUILDColResult) {
   const [curSection, setCurSection] = useState(result.sections[0])
-  const tabsRef = useVerticalScroll<HTMLDivElement>()
+  const tabsRef = useHorizontalScroll<HTMLDivElement>()
 
   return (
     <div className="dictCOBUILD-ColEntry">
