@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.9.3](https://github.com/crimx/ext-saladict/compare/v7.9.2...v7.9.3) (2020-03-19)
+
+
+### Bug Fixes
+
+* **panel:** prevent ff flash ([#691](https://github.com/crimx/ext-saladict/issues/691)) ([d18df80](https://github.com/crimx/ext-saladict/commit/d18df80956e8423d808e9a8ac64458ddc73b3b22))
+* **word-editor:** inner panel not showing up ([b8c6064](https://github.com/crimx/ext-saladict/commit/b8c606486d69fc00c1babe5d6569bcb61f26a801)), closes [#694](https://github.com/crimx/ext-saladict/issues/694)
+
 ### [7.9.2](https://github.com/crimx/ext-saladict/compare/v7.9.1...v7.9.2) (2020-03-14)
 
 
