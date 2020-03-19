@@ -16,13 +16,17 @@ export const locale: typeof _locale = {
     openHistory: 'Open History',
     shareImg: 'Share as image',
     pinPanel: 'Pin the panel',
-    closePanel: 'Close the panel'
+    closePanel: 'Close the panel',
+    sidebar: 'Switch to sidebar mode. Right click to right side.',
+    focusPanel: 'Panel gains focus when searching',
+    unfocusPanel: 'Panel does not gain focus when searching'
   },
   wordEditor: {
     title: 'Add to Notebook',
     wordCardsTitle: 'Other results from Notebook',
     deleteConfirm: 'Delete from Notebook?',
-    closeConfirm: 'Changes will not be saved. Are you sure to close?'
+    closeConfirm: 'Changes will not be saved. Are you sure to close?',
+    chooseCtxTitle: 'Pick translated results'
   },
   machineTrans: {
     switch: 'Switch Language',

@@ -1,4 +1,5 @@
-const postcss  = require('postcss')
+/* eslint-disable @typescript-eslint/no-unused-vars */
+const postcss = require('postcss')
 const fs = require('fs')
 const path = require('path')
 
@@ -7,15 +8,22 @@ const path = require('path')
  * Use in console.
  * @param {HTMLElement} root
  */
-function getIdsAndClassNames (root) {
+function getIdsAndClassNames(root) {
   const result = new Set()
   _fn(root)
-  return Array.from(result).map(x => `'${x}',`).join('\n')
+  return Array.from(result)
+    .map(x => `'${x}',`)
+    .join('\n')
 
-  function _fn (node) {
-    if  (!node) { return }
-    if (node.className) {
-      node.className.split(/\s+/).filter(Boolean).reduce((r, n) => r.add('.' + n), result)
+  function _fn(node) {
+    if (!node) {
+      return
+    }
+    if (typeof node.className === 'string') {
+      node.className
+        .split(/\s+/)
+        .filter(Boolean)
+        .reduce((r, n) => r.add('.' + n), result)
     }
     if (node.id) {
       result.add('#' + node.id)
@@ -30,12 +38,16 @@ function getIdsAndClassNames (root) {
  * @param {string} from - css path
  * @param {string} to - css path
  */
-function getStylesByAttrs (attrs, from, to) {
+function getStylesByAttrs(attrs, from, to) {
   let result = ''
 
   const lattrs = attrs.map(name => name.toLocaleLowerCase())
 
   fs.readFile(from, (err, source) => {
+    if (err) {
+      console.error(err)
+      process.exit(1)
+    }
     const root = postcss.parse(source, { from, to })
     root.walkRules(rule => {
       const selector = rule.selector.toLowerCase()

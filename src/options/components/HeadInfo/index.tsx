@@ -2,7 +2,7 @@ import React from 'react'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import { withTranslation, WithTranslation } from 'react-i18next'
 import { Tooltip, Icon } from 'antd'
-import SocialMedia from '../SocialMedia'
+// import SocialMedia from '../SocialMedia'
 import acknowledgement from '@/options/acknowledgement'
 
 import './_style.scss'
@@ -75,7 +75,7 @@ export class OptMenu extends React.PureComponent<
             </Tooltip>
           </li>
         )}
-        <li className="head-info-bubble-wrap">
+        <li className="head-info-bubble-wrap head-info-unin">
           <a
             href="https://github.com/crimx/ext-saladict/wiki#acknowledgement"
             onMouseEnter={this.showAcknowledgement}
@@ -124,7 +124,7 @@ export class OptMenu extends React.PureComponent<
             {t('headInfo.instructions')}
           </a>
         </li>
-        <li className="head-info-bubble-wrap">
+        {/* <li className="head-info-bubble-wrap">
           <a
             href="mailto:straybugsgmail.com"
             onMouseEnter={this.showSocialMedia}
@@ -150,7 +150,7 @@ export class OptMenu extends React.PureComponent<
               </div>
             )}
           </CSSTransition>
-        </li>
+        </li> */}
         <li>
           <a
             href="https://saladict.crimx.com/support.html"

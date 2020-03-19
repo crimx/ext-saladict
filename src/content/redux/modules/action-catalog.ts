@@ -1,9 +1,10 @@
+import { CreateActionCatalog } from 'retux'
 import { AppConfig, DictID } from '@/app-config'
 import { Profile, ProfileIDList } from '@/app-config/profiles'
 import { Message } from '@/typings/message'
 import { Word } from '@/_helpers/record-manager'
 
-export type ActionCatalog = {
+export type ActionCatalog = CreateActionCatalog<{
   NEW_CONFIG: {
     payload: AppConfig
   }
@@ -19,6 +20,8 @@ export type ActionCatalog = {
   NEW_SELECTION: {
     payload: Message<'SELECTION'>['payload']
   }
+
+  WINDOW_RESIZE: {}
 
   /** Is App temporary disabled */
   TEMP_DISABLED_STATE: {
@@ -112,7 +115,11 @@ export type ActionCatalog = {
   \* ------------------------------------------------ */
 
   WORD_EDITOR_STATUS: {
-    payload: Word | null
+    payload: {
+      word: Word | null
+      /** translate context when word editor shows */
+      translateCtx?: boolean
+    }
   }
 
   /* ------------------------------------------------ *\
@@ -125,4 +132,4 @@ export type ActionCatalog = {
       timestamp: number
     }
   }
-}
+}>

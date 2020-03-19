@@ -3,14 +3,25 @@ import {
   SearchFunction,
   MachineTranslatePayload,
   GetSrcPageFunction,
-  getMachineTranslateTl
+  getMTArgs
 } from '../helpers'
+import memoizeOne from 'memoize-one'
 import { Baidu } from '@opentranslate/baidu'
 import { BaiduLanguage } from './config'
 
-let _translator: Baidu | undefined
-const getTranslator = () =>
-  (_translator = _translator || new Baidu({ env: 'ext' }))
+export const getTranslator = memoizeOne(
+  () =>
+    new Baidu({
+      env: 'ext',
+      config:
+        process.env.BAIDU_APPID && process.env.BAIDU_KEY
+          ? {
+              appid: process.env.BAIDU_APPID,
+              key: process.env.BAIDU_KEY
+            }
+          : undefined
+    })
+)
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   const lang =
@@ -30,18 +41,16 @@ export type BaiduResult = MachineTranslateResult<'baidu'>
 export const search: SearchFunction<
   BaiduResult,
   MachineTranslatePayload<BaiduLanguage>
-> = async (text, config, profile, payload) => {
-  const options = profile.dicts.all.baidu.options
-
+> = async (rawText, config, profile, payload) => {
   const translator = getTranslator()
 
-  let sl = payload.sl || (await translator.detect(text))
-  const tl =
-    payload.tl || getMachineTranslateTl(sl, profile.dicts.all.baidu, config)
-
-  if (payload.isPDF && !options.pdfNewline) {
-    text = text.replace(/\n+/g, ' ')
-  }
+  const { sl, tl, text } = await getMTArgs(
+    translator,
+    rawText,
+    profile.dicts.all.baidu,
+    config,
+    payload
+  )
 
   try {
     const result = await translator.translate(text, sl, tl)
@@ -55,6 +64,7 @@ export const search: SearchFunction<
         trans: result.trans
       },
       audio: {
+        py: result.trans.tts,
         us: result.trans.tts
       }
     }

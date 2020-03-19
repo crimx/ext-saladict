@@ -6,6 +6,7 @@ export const locale: typeof _locale = {
   bing_dict: 'Bing Dict',
   bing_search: 'Bing Search',
   cambridge: 'Cambridge',
+  copy_pdf_url: 'Copy PDF URL to Clipboard',
   dictcn: 'Dictcn',
   etymonline: 'Etymonline',
   google_cn_page_translate: 'Google cn Page Translate',

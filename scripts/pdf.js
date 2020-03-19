@@ -65,7 +65,7 @@ async function modifyViewrJS() {
   file = '/* saladict */ window.__SALADICT_PDF_PAGE__ = true;\n' + file
 
   // change default pdf
-  const defaultPDFTester = /defaultUrl: {[\s\S]*?value: ('\S+?.pdf'),[\s\S]*?kind: OptionKind.VIEWER/
+  const defaultPDFTester = /defaultUrl: {[\s\S]*?value: (['"]\S+?.pdf['"]),[\s\S]*?kind: OptionKind\.VIEWER/
   if (!defaultPDFTester.test(file)) {
     shell.echo('Could not locate default pdf in viewer.js')
     shell.exit(1)
@@ -93,10 +93,11 @@ async function modifyViewerHTML() {
   let file = await fs.readFile(viewerPath, 'utf8')
 
   if (!file.includes(`</body>`)) {
-    shell.echo('Could not locate </body> in viewer.js')
+    shell.echo('Could not locate </body> in viewer.html')
     shell.exit(1)
   }
 
+  // Load Saladict dict panel
   file = file.replace(
     `</body>`,
     `

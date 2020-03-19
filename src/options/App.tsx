@@ -5,7 +5,7 @@ import { withTranslation, WithTranslation } from 'react-i18next'
 import { Layout, Menu, Icon } from 'antd'
 import HeadInfo from './components/HeadInfo'
 import { getProfileName } from '@/_helpers/profile-manager'
-import { injectAnalytics } from '@/_helpers/analytics'
+import { reportGA } from '@/_helpers/analytics'
 
 const { Header, Content, Sider } = Layout
 
@@ -43,8 +43,8 @@ export class OptionsMain extends React.Component<
     const { protocol, host, pathname } = window.location
     const newurl = `${protocol}//${host}${pathname}?menuselected=${key}`
     window.history.pushState({ key }, '', newurl)
-    if (window.ga) {
-      window.ga('send', 'pageview', `/options/${key}`)
+    if (this.props.config.analytics) {
+      reportGA(`/options/${key}`)
     }
   }
 
@@ -56,7 +56,9 @@ export class OptionsMain extends React.Component<
   componentDidMount() {
     this.setTitle(this.state.selectedKey)
 
-    injectAnalytics(`/options/${this.state.selectedKey}`)
+    if (this.props.config.analytics) {
+      reportGA(`/options/${this.state.selectedKey}`)
+    }
 
     window.addEventListener('popstate', e => {
       this.setState({ selectedKey: e.state.key || 'General' })
@@ -71,7 +73,7 @@ export class OptionsMain extends React.Component<
         className="xmain-container"
         style={{ maxWidth: 1400, margin: '0 auto' }}
       >
-        <Header style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Header className="options-header">
           <h1 style={{ color: '#fff' }}>{t('title')}</h1>
           <span style={{ color: '#fff' }}>
             「 {getProfileName(rawProfileName, t)} 」
@@ -122,10 +124,14 @@ export class OptionsMain extends React.Component<
               <Menu.Item key="ImportExport">
                 <Icon type="swap" /> {t('nav.ImportExport')}
               </Menu.Item>
+              <Menu.Item key="Privacy">
+                <Icon type="lock" /> {t('nav.Privacy')}
+              </Menu.Item>
             </Menu>
           </Sider>
           <Layout style={{ padding: '24px', minHeight: innerHeight - 64 }}>
             <Content
+              data-option-content={this.state.selectedKey}
               style={{
                 background: '#fff',
                 padding: 24,

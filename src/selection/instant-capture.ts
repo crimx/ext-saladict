@@ -30,20 +30,20 @@ export function createIntantCaptureStream(config: AppConfig | null) {
     startWith(false)
   )
 
-  const withQSPanel$ = merge(
+  const responseToQSPanel$ = merge(
     // When Quick Search Panel show and hide
     from(message.send<'QUERY_QS_PANEL'>({ type: 'QUERY_QS_PANEL' })),
-    message.createStream('QS_PANEL_CHANGED').pipe(
-      pluck('payload'),
-      startWith(false)
-    )
+    message.createStream('QS_PANEL_CHANGED').pipe(pluck('payload'))
+  ).pipe(
+    map(withQSPanel => withQSPanel && config.tripleCtrlPageSel),
+    startWith(false)
   )
 
-  return combineLatest(isPinned$, withQSPanel$).pipe(
-    switchMap(([isPinned, withQSPanel]) => {
+  return combineLatest(isPinned$, responseToQSPanel$).pipe(
+    switchMap(([isPinned, responseToQSPanel]) => {
       const { instant: panelInstant } = config.panelMode
       const { instant: otherInstant } = config[
-        withQSPanel ? 'qsPanelMode' : isPinned ? 'pinMode' : 'mode'
+        responseToQSPanel ? 'qsPanelMode' : isPinned ? 'pinMode' : 'mode'
       ]
 
       if (!panelInstant.enable && !otherInstant.enable) {

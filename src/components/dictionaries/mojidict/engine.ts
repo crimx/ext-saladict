@@ -4,19 +4,20 @@ import {
   handleNoResult,
   handleNetWorkError
 } from '../helpers'
-import axios from 'axios'
-
-const APPLICATION_ID = 'E62VyFVLMiW7kvbtVq3p'
+import axios, { AxiosResponse } from 'axios'
 
 export const getSrcPage: GetSrcPageFunction = async text => {
-  const suggests = await getSuggests(text)
-  const tarId =
-    suggests.searchResults &&
-    suggests.searchResults[0] &&
-    suggests.searchResults[0].tarId
-  return tarId
-    ? `https://www.mojidict.com/details/${tarId}`
-    : 'https://www.mojidict.com'
+  const suggests = await getSuggests(text).catch(() => null)
+  if (suggests) {
+    const tarId =
+      suggests.searchResults &&
+      suggests.searchResults[0] &&
+      suggests.searchResults[0].tarId
+    if (tarId) {
+      return `https://www.mojidict.com/details/${tarId}`
+    }
+  }
+  return 'https://www.mojidict.com'
 }
 
 interface FetchWordResult {
@@ -104,17 +105,19 @@ export const search: SearchFunction<MojidictResult> = async (
 
   const {
     data: { result: wordResult }
-  } = await axios.post<{ result: FetchWordResult }>(
-    'https://api.mojidict.com/parse/functions/fetchWord_v2',
-    {
-      data: {
-        wordId,
-        _ApplicationId: APPLICATION_ID,
-        _ClientVersion: 'js2.7.1',
-        _InstallationId: getInstallationId()
-      }
-    }
-  )
+  }: AxiosResponse<{ result: FetchWordResult }> = await axios({
+    method: 'post',
+    url: 'https://api.mojidict.com/parse/functions/fetchWord_v2',
+    headers: {
+      'content-type': 'text/plain'
+    },
+    data: JSON.stringify({
+      wordId,
+      _ApplicationId: process.env.MOJI_ID,
+      _ClientVersion: 'js2.7.1',
+      _InstallationId: getInstallationId()
+    })
+  })
 
   const result: MojidictResult = {}
 
@@ -166,18 +169,21 @@ async function getSuggests(text: string): Promise<SuggestsResult> {
   try {
     const {
       data: { result }
-    } = await axios.post<{ result?: SuggestsResult }>(
-      'https://api.mojidict.com/parse/functions/search_v2',
-      {
-        data: {
-          needWords: true,
-          searchText: text,
-          _ApplicationId: APPLICATION_ID,
-          _ClientVersion: 'js2.7.1',
-          _InstallationId: getInstallationId()
-        }
-      }
-    )
+    }: AxiosResponse<{ result?: SuggestsResult }> = await axios({
+      method: 'post',
+      url: 'https://api.mojidict.com/parse/functions/search_v3',
+      headers: {
+        'content-type': 'text/plain'
+      },
+      data: JSON.stringify({
+        langEnv: 'zh-CN_ja',
+        needWords: true,
+        searchText: text,
+        _ApplicationId: process.env.MOJI_ID,
+        _ClientVersion: 'js2.7.1',
+        _InstallationId: getInstallationId()
+      })
+    })
 
     return result || handleNoResult()
   } catch (e) {
@@ -190,13 +196,16 @@ async function getTTS(text: string, wordId: string): Promise<string> {
     const { data } = await axios({
       method: 'post',
       url: 'https://api.mojidict.com/parse/functions/fetchTts',
-      data: {
+      headers: {
+        'content-type': 'text/plain'
+      },
+      data: JSON.stringify({
         identity: wordId,
         text,
-        _ApplicationId: APPLICATION_ID,
+        _ApplicationId: process.env.MOJI_ID,
         _ClientVersion: 'js2.7.1',
         _InstallationId: getInstallationId()
-      }
+      })
     })
 
     if (data.result && data.result.url) {

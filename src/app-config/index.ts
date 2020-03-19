@@ -52,6 +52,9 @@ function _getDefaultConfig() {
     /** enable Google analytics */
     analytics: true,
 
+    /** enable update check */
+    updateCheck: true,
+
     /** disable selection on type fields, like input and textarea */
     noTypeField: false,
 
@@ -80,13 +83,17 @@ function _getDefaultConfig() {
     fontSize: 13,
 
     /** sniff pdf request */
-    pdfSniff: true,
+    pdfSniff: false,
     /** URLs, [regexp.source, match_pattern] */
     pdfWhitelist: [] as [string, string][],
     /** URLs, [regexp.source, match_pattern] */
     // tslint:disable-next-line: no-unnecessary-type-assertion
     pdfBlacklist: [
-      ['^(http|https)://[^/]*?cnki.net(/.*)?$', '*://*.cnki.net/*']
+      ['^(http|https)://[^/]*?cnki\\.net(/.*)?$', '*://*.cnki.net/*'],
+      [
+        '^(http|https)://[^/]*?googleusercontent\\.com(/.*)?$',
+        '*://*.googleusercontent.com/*'
+      ]
     ] as [string, string][],
 
     /** track search history */
@@ -269,7 +276,7 @@ function _getDefaultConfig() {
           'eudic',
           'longman',
           'macmillan',
-          'oald',
+          'lexico',
           'urban',
           'websterlearner',
           'youdao'
@@ -288,18 +295,18 @@ function _getDefaultConfig() {
     whitelist: [] as [string, string][],
     /** URLs, [regexp.source, match_pattern] */
     // tslint:disable-next-line: no-unnecessary-type-assertion
-    blacklist: [['^https://stackedit.io(/.*)?$', 'https://stackedit.io/*']] as [
-      string,
-      string
-    ][],
+    blacklist: [
+      ['^https://stackedit\\.io(/.*)?$', 'https://stackedit.io/*'],
+      ['^https://docs\\.google\\.com(/.*)?$', 'https://docs.google.com/*'],
+      ['^https://docs\\.qq\\.com(/.*)?$', 'https://docs.qq.com/*']
+    ] as [string, string][],
 
     contextMenus: {
       selected: [
         'view_as_pdf',
         'google_translate',
         'google_search',
-        'google_page_translate',
-        'youdao_page_translate'
+        'saladict'
       ],
       all: getAllContextMenus()
     }

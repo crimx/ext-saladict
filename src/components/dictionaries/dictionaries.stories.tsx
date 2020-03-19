@@ -53,17 +53,28 @@ const stories = storiesOf('Content Scripts|Dictionaries', module)
   )
   .addDecorator(withKnobs)
 
-Object.keys(getAllDicts()).forEach(id => {
-  // @ts-ignore: wrong storybook typing
-  stories.add(id, ({ fontSize, withAnimation }) => (
-    <Dict
-      key={id}
-      dictID={id as DictID}
-      fontSize={fontSize}
-      withAnimation={withAnimation}
-    />
-  ))
-})
+Object.keys(getAllDicts())
+  .filter(
+    // opentranslate
+    id =>
+      id !== 'baidu' &&
+      id !== 'caiyun' &&
+      id !== 'google' &&
+      id !== 'sogou' &&
+      id !== 'tencent' &&
+      id !== 'youdaotrans'
+  )
+  .forEach(id => {
+    // @ts-ignore: wrong storybook typing
+    stories.add(id, ({ fontSize, withAnimation }) => (
+      <Dict
+        key={id}
+        dictID={id as DictID}
+        fontSize={fontSize}
+        withAnimation={withAnimation}
+      />
+    ))
+  })
 
 function Dict(props: {
   dictID: DictID
@@ -82,9 +93,11 @@ function Dict(props: {
     mockRequest: MockRequest
   }
 
-  const locales = require('@/components/dictionaries/' +
+  const localesModule = require('@/components/dictionaries/' +
     props.dictID +
-    '/_locales.json')
+    '/_locales')
+
+  const locales = localesModule.locales || localesModule
 
   const { search } = require('@/components/dictionaries/' +
     props.dictID +
@@ -116,7 +129,7 @@ function Dict(props: {
         return boolean(name, options[key])
       case 'number':
         return number(name, options[key])
-      case 'string':
+      case 'string': {
         const values: string[] =
           profiles.dicts.all[props.dictID]['options_sel'][key]
         return select(
@@ -127,6 +140,7 @@ function Dict(props: {
           }, {}),
           options[key]
         )
+      }
       default:
         return options[key]
     }
@@ -157,7 +171,6 @@ function Dict(props: {
     search(searchText, getDefaultConfig(), profiles, {
       isPDF: false
     }).then(async ({ result }) => {
-      await timer(Math.random() * 3000)
       setStatus('FINISH')
       setResult(result)
     })
@@ -179,6 +192,7 @@ function Dict(props: {
         action('Speaker Play')(src)
         return Promise.resolve()
       }}
+      onInPanelSelect={action('Inpanel Select')}
     />
   )
 }

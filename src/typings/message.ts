@@ -264,12 +264,20 @@ export type MessageConfig = MessageConfigType<{
   /** Focus standalone quick search panel */
   QS_PANEL_FOCUSED: {}
 
+  /** Switch to Sidebar */
+  QS_SWITCH_SIDEBAR: {
+    payload: 'left' | 'right'
+  }
+
   /* ------------------------------------------------ *\
      Word Editor
   \* ------------------------------------------------ */
 
   UPDATE_WORD_EDITOR_WORD: {
-    payload: Word
+    payload: {
+      word: Word
+      translateCtx?: boolean
+    }
   }
 
   /* ------------------------------------------------ *\

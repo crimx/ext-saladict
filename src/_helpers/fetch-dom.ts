@@ -22,7 +22,11 @@ export function fetchDirtyDOM(
     ...config,
     transformResponse: [data => data],
     responseType: 'document'
-  }).then(({ data }) => data)
+  }).then(({ data }) =>
+    process.env.NODE_ENV === 'test'
+      ? new DOMParser().parseFromString(data, 'text/html')
+      : data
+  )
 }
 
 export function fetchPlainText(

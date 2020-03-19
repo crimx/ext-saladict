@@ -1,6 +1,6 @@
 import React from 'react'
 import { withTranslation, WithTranslation } from 'react-i18next'
-import { Layout, Modal, Table, Select } from 'antd'
+import { Layout, Modal, Table, Select, Switch } from 'antd'
 import { ColumnProps } from 'antd/lib/table/interface'
 import { Word, newWord } from '@/_helpers/record-manager'
 import { storage } from '@/_helpers/browser-api'
@@ -18,8 +18,9 @@ export interface ExportModalProps {
 type ExportModalInnerProps = ExportModalProps & WithTranslation
 
 interface ExportModalState {
-  lineBreak: '' | 'n' | 'p' | 'br'
+  lineBreak: '' | 'n' | 'p' | 'br' | 'space'
   template: string
+  escape: boolean
 }
 
 interface TemplateData {
@@ -28,6 +29,8 @@ interface TemplateData {
   plcholderR: string
   contentR: string
 }
+
+const keywordMatchStr = `%(${Object.keys(newWord()).join('|')})%`
 
 export class ExportModalBody extends React.Component<
   ExportModalInnerProps,
@@ -43,7 +46,8 @@ export class ExportModalBody extends React.Component<
 
     this.state = {
       template: '',
-      lineBreak: ''
+      lineBreak: '',
+      escape: false
     }
 
     this.tplTableData = [
@@ -131,41 +135,53 @@ export class ExportModalBody extends React.Component<
   }
 
   handleLinebreakChange = (value: ExportModalState['lineBreak']) => {
-    this.setState({ lineBreak: value })
+    const escape = value === 'br' || value === 'p' ? true : this.state.escape
+    this.setState({ lineBreak: value, escape })
     storage.sync.set({ wordpageLineBreak: value })
+    storage.local.set({ wordpageHTMLEscape: escape })
+  }
+
+  handleHTMLEscapeChange = (checked: boolean) => {
+    this.setState({ escape: checked })
+    storage.local.set({ wordpageHTMLEscape: checked })
   }
 
   processWords = (): string => {
-    const keys = Object.keys(newWord())
     return this.props.rawWords
       .map(word =>
-        this.state.template.replace(/%(\S+)%/g, (match, k) => {
-          if (keys.includes(k)) {
+        this.state.template.replace(
+          new RegExp(keywordMatchStr, 'g'),
+          (match, k) => {
             switch (k) {
               case 'date':
                 return new Date(word.date).toLocaleDateString(this.props.locale)
               case 'trans':
               case 'note':
-              case 'context':
+              case 'context': {
+                const text: string = this.state.escape
+                  ? escapeHTML(word[k] || '')
+                  : word[k] || ''
                 switch (this.state.lineBreak) {
                   case 'n':
-                    return (word[k] || '').replace(/\n|\r\n/g, '\\n')
+                    return text.replace(/\n|\r\n/g, '\\n')
                   case 'br':
-                    return escapeHTML(word[k] || '').replace(/\n|\r\n/g, '<br>')
+                    return text.replace(/\n|\r\n/g, '<br>')
                   case 'p':
-                    return escapeHTML(word[k] || '')
+                    return text
                       .split(/\n|\r\n/)
                       .map(line => `<p>${line}</p>`)
                       .join('')
+                  case 'space':
+                    return text.replace(/\n|\r\n/g, ' ')
                   default:
-                    return word[k] || ''
+                    return text
                 }
+              }
               default:
                 return word[k] || ''
             }
           }
-          return match
-        })
+        )
       )
       .join('\n')
   }
@@ -188,6 +204,16 @@ export class ExportModalBody extends React.Component<
           template,
           lineBreak: wordpageLineBreak || ''
         })
+      })
+
+    storage.local
+      .get<{
+        wordpageHTMLEscape: boolean
+      }>('wordpageHTMLEscape')
+      .then(({ wordpageHTMLEscape }) => {
+        if (wordpageHTMLEscape != null) {
+          this.setState({ escape: wordpageHTMLEscape })
+        }
       })
   }
 
@@ -226,7 +252,14 @@ export class ExportModalBody extends React.Component<
             bordered={true}
             style={{ marginBottom: '1em' }}
           />
-          <div style={{ marginBottom: '1em' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              marginBottom: '1em'
+            }}
+          >
             <Select
               value={this.state.lineBreak}
               style={{ width: 210 }}
@@ -240,7 +273,17 @@ export class ExportModalBody extends React.Component<
                 {t('export.linebreak.br')}
               </Select.Option>
               <Select.Option value="p">{t('export.linebreak.p')}</Select.Option>
+              <Select.Option value="space">
+                {t('export.linebreak.space')}
+              </Select.Option>
             </Select>
+            <Switch
+              title={t('export.htmlescape.title')}
+              checked={this.state.escape}
+              onChange={this.handleHTMLEscapeChange}
+              checkedChildren={t('export.htmlescape.text')}
+              unCheckedChildren={t('export.htmlescape.text')}
+            />
           </div>
           <textarea
             style={{ flex: 1, width: '100%' }}

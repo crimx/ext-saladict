@@ -5,8 +5,9 @@ import checkUpdate from '@/_helpers/check-update'
 import { updateConfig, initConfig } from '@/_helpers/config-manager'
 import { initProfiles } from '@/_helpers/profile-manager'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
-import { openPDF, openGoogle, openYoudao } from './context-menus'
-import { openQSPanel, searchClipboard } from './server'
+import { ContextMenus } from './context-menus'
+import { BackgroundServer } from './server'
+import { openPDF } from './pdf-sniffer'
 import './types'
 
 interface UpdateData {
@@ -72,19 +73,19 @@ function onCommand(command: string) {
       })
       break
     case 'open-quick-search':
-      openQSPanel()
+      BackgroundServer.getInstance().openQSPanel()
       break
     case 'open-google':
-      openGoogle()
+      ContextMenus.openGoogle()
       break
     case 'open-youdao':
-      openYoudao()
+      ContextMenus.openYoudao()
       break
     case 'open-pdf':
       openPDF()
       break
     case 'search-clipboard':
-      searchClipboard()
+      BackgroundServer.getInstance().searchClipboard()
       break
   }
 }
@@ -111,12 +112,17 @@ async function onInstalled({
     if (
       !(await storage.sync.get('hasInstructionsShown')).hasInstructionsShown
     ) {
-      openURL('https://saladict.crimx.com/notice.html')
+      openURL('options.html?menuselected=Privacy&nopanel=true', true)
+      if (window.appConfig.langCode.startsWith('zh')) {
+        openURL('https://saladict.crimx.com/notice.html')
+      } else {
+        openURL('https://saladict.crimx.com/en/notice.html')
+      }
       storage.sync.set({ hasInstructionsShown: true })
     }
   } else if (reason === 'update') {
     let data: UpdateData | undefined
-    if (!process.env.DEV_BUILD) {
+    if (!process.env.DEV_BUILD && window.appConfig.updateCheck) {
       try {
         const response = await fetch(
           'https://api.github.com/repos/crimx/ext-saladict/releases/latest'

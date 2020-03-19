@@ -13,14 +13,15 @@ import {
 import {
   withLocalStyle,
   withSideEffect,
-  mockRuntimeMessage
+  mockRuntimeMessage,
+  getThemeStyles
 } from '@/_helpers/storybook'
 import faker from 'faker'
 import { DictPanel, DictPanelProps } from './DictPanel'
 import { DictPanelPortal } from './DictPanel.portal'
 import { newWord } from '@/_helpers/record-manager'
 import { getAllDicts } from '@/app-config/dicts'
-import { DictID } from '@/app-config'
+import { getDefaultConfig, DictID } from '@/app-config'
 import { MenuBar } from '../MenuBar/MenuBar'
 import { MtaBox } from '../MtaBox/MtaBox'
 import { DictList } from '../DictList/DictList'
@@ -82,6 +83,8 @@ function useDictPanelProps(): DictPanelProps {
     y: number
   }>(null)
 
+  const config = getDefaultConfig()
+
   const dictsNum = number(
     'Dict Item Count',
     faker.random.number({ min: 3, max: 10 })
@@ -124,25 +127,7 @@ function useDictPanelProps(): DictPanelProps {
   }, {})
 
   const darkMode = boolean('Dark Mode', false)
-  const colors = darkMode
-    ? {
-        backgroundColor: '#222',
-        color: '#ddd',
-        '--color-brand': '#218c74',
-        '--color-background': '#222',
-        '--color-rgb-background': '34, 34, 34',
-        '--color-font': '#ddd',
-        '--color-divider': '#4d4748'
-      }
-    : {
-        backgroundColor: '#fff',
-        color: '#333',
-        '--color-brand': '#5caf9e',
-        '--color-background': '#fff',
-        '--color-rgb-background': '255, 255, 255',
-        '--color-font': '#333',
-        '--color-divider': '#ddd'
-      }
+  const colors = getThemeStyles(darkMode)
 
   return {
     coord: {
@@ -192,6 +177,7 @@ function useDictPanelProps(): DictPanelProps {
             y: e.changedTouches[0].clientY
           })
         }
+        onSwitchSidebar={action('onSwitchSidebar')}
       />
     ),
     mtaBox: (
@@ -209,10 +195,14 @@ function useDictPanelProps(): DictPanelProps {
           setExpandMta(!expandMta)
         }}
         onHeightChanged={action('Dict Mta Box Height Changed')}
+        shouldFocus={boolean('Should Focus', true)}
       />
     ),
     dictList: (
       <DictList
+        touchMode={config.touchMode}
+        language={config.language}
+        doubleClickDelay={config.doubleClickDelay}
         fontSize={number('Font Size', 13)}
         withAnimation={withAnimation}
         panelCSS={''}
@@ -221,6 +211,8 @@ function useDictPanelProps(): DictPanelProps {
         openDictSrcPage={action('Open Source Page')}
         onSpeakerPlay={async src => action('Open Source Page')(src)}
         onHeightChanged={action('Dict List Height Changed')}
+        newSelection={action('New Selection')}
+        onInPanelSelect={action('onInPanelSelect')}
       />
     ),
     waveformBox: (

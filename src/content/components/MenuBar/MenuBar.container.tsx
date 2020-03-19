@@ -1,24 +1,34 @@
 import { connect } from 'react-redux'
-import { MenuBar, MenuBarProps } from './MenuBar'
+import {
+  ExtractDispatchers,
+  MapStateToProps,
+  MapDispatchToProps
+} from 'react-retux'
 import { StoreState, StoreAction } from '@/content/redux/modules'
-import { Dispatch } from 'redux'
 import { isStandalonePage } from '@/_helpers/saladict'
 import { newWord } from '@/_helpers/record-manager'
+import { message } from '@/_helpers/browser-api'
+import { MenuBar, MenuBarProps } from './MenuBar'
 
-type Dispatchers =
+type Dispatchers = ExtractDispatchers<
+  MenuBarProps,
   | 'searchText'
   | 'updateText'
   | 'addToNoteBook'
   | 'updateHistoryIndex'
   | 'togglePin'
   | 'onClose'
+  | 'onSwitchSidebar'
   | 'onDragAreaMouseDown'
   | 'onDragAreaTouchStart'
   | 'onHeightChanged'
+>
 
-const mapStateToProps = (
-  state: StoreState
-): Omit<MenuBarProps, Dispatchers> => ({
+const mapStateToProps: MapStateToProps<
+  StoreState,
+  MenuBarProps,
+  Dispatchers
+> = state => ({
   text: state.text,
   isInNotebook: state.isFav,
   shouldFocus: !state.isExpandMtaBox && (state.isQSPanel || isStandalonePage()),
@@ -30,9 +40,11 @@ const mapStateToProps = (
   isPinned: state.isPinned
 })
 
-const mapDispatchToProps = (
-  dispatch: Dispatch<StoreAction>
-): Pick<MenuBarProps, Dispatchers> => ({
+const mapDispatchToProps: MapDispatchToProps<
+  StoreAction,
+  MenuBarProps,
+  Dispatchers
+> = dispatch => ({
   searchText: text => {
     dispatch({
       type: 'SEARCH_START',
@@ -64,6 +76,9 @@ const mapDispatchToProps = (
     } else {
       dispatch({ type: 'CLOSE_PANEL' })
     }
+  },
+  onSwitchSidebar: (side: 'left' | 'right') => {
+    message.send({ type: 'QS_SWITCH_SIDEBAR', payload: side })
   },
   onHeightChanged: (height: number) => {
     dispatch({

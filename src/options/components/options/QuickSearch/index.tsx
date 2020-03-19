@@ -111,7 +111,11 @@ export class QuickSearch extends React.Component<QuickSearchProps> {
         </Form.Item>
         {config.tripleCtrlStandalone && (
           <Row>
-            <Col span={11} offset={2}>
+            <Col
+              xs={{ span: 24 }}
+              md={{ span: 20, offset: 2 }}
+              lg={{ span: 11, offset: 2 }}
+            >
               <Card title={t('quickSearch.standalone')}>
                 <Form.Item
                   {...formSubItemLayout}

@@ -1,54 +1,29 @@
-/*-----------------------------------------------*\
-    Variables
-\*-----------------------------------------------*/
-@import '../../../_sass_global/variables';
 @import '../../../_sass_global/z-indices';
-@import '../../../_sass_global/interfaces';
+@import '@/_sass_global/_fancy-scrollbar.scss';
 
-/*-----------------------------------------------*\
-    Libs
-\*-----------------------------------------------*/
-@import '~normalize-scss';
-
-/*-----------------------------------------------*\
-    Base
-\*-----------------------------------------------*/
-label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+.wordEditorPanel-Background {
+  position: fixed;
+  z-index: $global-zindex-dicteditor;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  text-align: initial;
+  background: rgba(0, 0, 0, 0.4);
 }
 
-input,
-textarea {
-  box-sizing: border-box;
-  display: block;
-  resize: vertical;
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 6px 12px;
-  font-size: 14px;
-  line-height: 1.42857;
-  color: var(--color-font);
-  background: var(--color-background);
-  background-image: none;
-  border: 1px solid #666;
-  border-radius: 4px;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-
-  &:focus {
-    border-color: #66afe9;
-    outline: 0;
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
-      0 0 8px rgba(102, 175, 233, 0.6);
-  }
+.wordEditorPanel-Container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  min-width: 440px;
+  margin-left: auto;
 }
 
-/*-----------------------------------------------*\
-    Components
-\*-----------------------------------------------*/
-.wordEditor-Panel {
+.wordEditorPanel {
   display: flex;
   flex-direction: column;
   width: 80%;
@@ -62,18 +37,18 @@ textarea {
     'Hiragino Sans GB W3', 'Microsoft YaHei UI', 'Microsoft YaHei', sans-serif;
 }
 
-.wordEditor-Header {
+.wordEditorPanel-Header {
   display: flex;
-  border-bottom: 1px solid #666;
+  border-bottom: 1px solid #ccc;
 }
 
-.wordEditor-Title {
+.wordEditorPanel-Title {
   margin: 0;
   font-size: 18px;
   padding: 15px;
 }
 
-.wordEditor-Note_BtnClose {
+.wordEditorPanel-BtnClose {
   text-decoration: none;
   margin-left: auto;
   padding: 15px;
@@ -92,35 +67,20 @@ textarea {
   }
 }
 
-.wordEditor-Main {
+.wordEditorPanel-Main {
   flex: 1;
   overflow-x: hidden;
   overflow-y: scroll;
   overscroll-behavior: contain;
 }
 
-.wordEditor-Note {
-  padding: 15px;
-
-  a {
-    text-decoration: none;
-    color: #1890ff;
-  }
-}
-
-.wordEditor-Note_SrcFavicon {
-  height: 16px;
-  margin-left: 5px;
-  vertical-align: text-bottom;
-}
-
-.wordEditor-Footer {
+.wordEditorPanel-Footer {
   padding: 15px;
   text-align: right;
-  border-top: 1px solid #666;
+  border-top: 1px solid #ccc;
 }
 
-%wordEditor-Note_Btn {
+%wordEditorPanel-Btn {
   display: inline-block;
   margin-bottom: 0;
   font-weight: normal;
@@ -138,8 +98,8 @@ textarea {
   user-select: none;
 }
 
-.wordEditor-Note_Btn {
-  @extend %wordEditor-Note_Btn;
+.wordEditorPanel-Btn {
+  @extend %wordEditorPanel-Btn;
   margin-right: 10px;
   color: #333;
   background-color: #fff;
@@ -164,8 +124,12 @@ textarea {
   }
 }
 
-.wordEditor-Note_BtnSave {
-  @extend %wordEditor-Note_Btn;
+.wordEditorPanel-Btn_normal {
+  @extend .wordEditorPanel-Btn;
+}
+
+.wordEditorPanel-Btn_primary {
+  @extend %wordEditorPanel-Btn;
   color: #fff;
   background-color: #337ab7;
   border-color: #2e6da4;
@@ -190,8 +154,13 @@ textarea {
 }
 
 .darkMode {
-  .wordEditor-Note_Btn {
-    @extend %wordEditor-Note_Btn;
+  .wordEditorPanel-Header,
+  .wordEditorPanel-Footer {
+    border-color: #8b8b8b;
+  }
+
+  .wordEditorPanel-Btn {
+    @extend %wordEditorPanel-Btn;
     margin-right: 10px;
     color: #333;
     background-color: #ddd;
@@ -216,5 +185,3 @@ textarea {
     }
   }
 }
-
-@import './WordCards.scss';

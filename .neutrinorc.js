@@ -7,6 +7,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
 const DotenvPlugin = require('dotenv-webpack')
 const argv = require('yargs').argv
+const AfterBuildPlugin = require('./scripts/after-build')
 
 module.exports = {
   options: {
@@ -83,6 +84,10 @@ module.exports = {
         entry: 'quick-search'
       },
 
+      'word-editor': {
+        entry: 'word-editor'
+      },
+
       'audio-control': {
         entry: 'audio-control'
       }
@@ -90,6 +95,11 @@ module.exports = {
   },
   use: [
     react({
+      image: {
+        // remove `default` when `require` image
+        // due to legacy code
+        esModule: false
+      },
       style: {
         test: /\.(css|scss)$/,
         modulesTest: /\.module\.(css|scss)$/,
@@ -254,6 +264,12 @@ module.exports = {
     }),
     wext({
       polyfill: true
-    })
+    }),
+    neutrino => {
+      // prettier-ignore
+      neutrino.config
+        .plugin('after-build')
+        .use(AfterBuildPlugin);
+    }
   ]
 }

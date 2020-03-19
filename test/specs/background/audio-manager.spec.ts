@@ -1,4 +1,6 @@
-import * as audio from '@/background/audio-manager'
+import { AudioManager } from '@/background/audio-manager'
+
+const audioManager = AudioManager.getInstance()
 
 describe('Audio Manager', () => {
   const bakAudio = (window as any).Audio
@@ -19,20 +21,20 @@ describe('Audio Manager', () => {
     ;(window as any).Audio = bakAudio
   })
   beforeEach(() => {
-    delete window.__audio_manager__
+    audioManager.reset()
     mockAudio.mockClear()
     mockAudioInstances.length = 0
   })
 
   it('load', () => {
     const url = 'https://e.a/load.mp3'
-    expect(audio.load(url)).toBe(mockAudioInstances[0])
+    expect(audioManager.load(url)).toBe(mockAudioInstances[0])
     expect(mockAudio).toBeCalledWith(url)
   })
 
   it('play', () => {
     const url = 'https://e.b/play.mp3'
-    expect(audio.play(url)).toBeInstanceOf(Promise)
+    expect(audioManager.play(url)).toBeInstanceOf(Promise)
     expect(mockAudio).toBeCalledWith(url)
     expect(mockAudioInstances.length).toBe(1)
     expect(mockAudioInstances[0].play).toHaveBeenCalledTimes(1)
@@ -41,9 +43,9 @@ describe('Audio Manager', () => {
   it('play x 2 interrupted', () => {
     const url1 = 'https://e.b/play1.mp3'
     const url2 = 'https://e.b/play2.mp3'
-    expect(audio.load(url1)).toBe(mockAudioInstances[0])
+    expect(audioManager.load(url1)).toBe(mockAudioInstances[0])
     expect(mockAudio).toBeCalledWith(url1)
-    expect(audio.play(url2)).toBeInstanceOf(Promise)
+    expect(audioManager.play(url2)).toBeInstanceOf(Promise)
     expect(mockAudio).toBeCalledWith(url2)
     expect(mockAudioInstances.length).toBe(2)
     expect(mockAudioInstances[0].play).toHaveBeenCalledTimes(0)

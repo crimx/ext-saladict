@@ -1,0 +1,101 @@
+@import './WordEditorPanel.scss';
+@import './WordCards.scss';
+@import './CtxTransList.scss';
+
+.wordEditorNote-Container {
+  display: flex;
+}
+
+.wordEditorNote {
+  flex: 3;
+  padding: 15px;
+
+  a {
+    text-decoration: none;
+    color: #1890ff;
+  }
+
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  input,
+  textarea {
+    box-sizing: border-box;
+    display: block;
+    resize: vertical;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1.42857;
+    color: var(--color-font);
+    background: var(--color-background);
+    background-image: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+
+    &:focus {
+      border-color: #66afe9;
+      outline: 0;
+      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075),
+        0 0 8px rgba(102, 175, 233, 0.6);
+    }
+  }
+}
+
+.wordEditorNote_SrcFavicon {
+  height: 16px;
+  margin-left: 5px;
+  vertical-align: text-bottom;
+}
+
+.wordEditorNote_LabelWithBtn {
+  & > label {
+    display: inline-block;
+    margin-right: 5px;
+  }
+
+  & > button {
+    position: relative;
+    top: -1px;
+    padding: 1px 5px;
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 90%;
+    color: var(--color-font);
+    cursor: pointer;
+  }
+}
+
+.darkMode {
+  .wordEditorNote {
+    input,
+    textarea {
+      border-color: #8b8b8b;
+    }
+  }
+}
+
+.notes-fade-appear,
+.notes-fade-enter {
+  opacity: 0;
+}
+.notes-fade-appear-active,
+.notes-fade-enter-active {
+  opacity: 1;
+  transition: opacity 0.4s;
+}
+
+.notes-fade-exit {
+  opacity: 1;
+}
+.notes-fade-exit-active {
+  opacity: 0;
+  transition: opacity 0.1s;
+}

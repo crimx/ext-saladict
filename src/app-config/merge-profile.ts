@@ -86,6 +86,16 @@ export function mergeProfile(
           )
         }
       })
+
+      // legacy
+      const pdfNewline = get(oldProfile, `dicts.all.${id}.options.pdfNewline`)
+      if (isBoolean(pdfNewline)) {
+        set(
+          base,
+          `dicts.all.${id}.options.keepLF`,
+          pdfNewline ? 'all' : 'webpage'
+        )
+      }
     }
   })
 
@@ -97,6 +107,8 @@ export function mergeProfile(
     base.dicts.all.hjdict.options.chsas = 'kr'
   }
 
+  console.log(base)
+
   return base
 
   function mergeSelectedDicts(path: string): void {
@@ -106,7 +118,9 @@ export function mergeProfile(
         set(base, [path, 'selected'], [])
       } else {
         const allDict = get(base, [path, 'all'])
-        const arr = selected.filter(id => allDict[id])
+        const arr = selected
+          .map(id => (id === 'olad' ? 'lexico' : id))
+          .filter(id => allDict[id])
         if (arr.length > 0) {
           set(base, [path, 'selected'], arr)
         }

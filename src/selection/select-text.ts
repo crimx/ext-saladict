@@ -179,7 +179,10 @@ function withoutTouchMode(config: AppConfig) {
     withLatestFrom(mousedown$, clickPeriodCount$),
     // handle in-panel search separately
     // due to tricky shadow dom event retarget
-    filter(([, mousedown]) => !isInDictPanel(mousedown.target)),
+    filter(
+      ([mouseup, mousedown]) =>
+        !isInDictPanel(mouseup.target) && !isInDictPanel(mousedown.target)
+    ),
     map(([mouseup, mousedown, clickPeriodCount]) => {
       if (config.noTypeField && isTypeField(mousedown.target)) {
         return { self: false }

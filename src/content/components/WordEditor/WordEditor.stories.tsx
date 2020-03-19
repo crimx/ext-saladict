@@ -8,7 +8,8 @@ import { WordEditor } from './WordEditor'
 import {
   withLocalStyle,
   withSideEffect,
-  mockRuntimeMessage
+  mockRuntimeMessage,
+  getThemeStyles
 } from '@/_helpers/storybook'
 import faker from 'faker'
 import { newWord } from '@/_helpers/record-manager'
@@ -23,6 +24,23 @@ storiesOf('Content Scripts|WordEditor', module)
     withSideEffect(
       mockRuntimeMessage(async message => {
         action(message.type)(message['payload'])
+        switch (message.type) {
+          case 'GET_WORDS_BY_TEXT':
+            return faker.random.boolean
+              ? [
+                  newWord({
+                    date: faker.date.past().valueOf(),
+                    text: message.payload.text,
+                    context: faker.lorem.sentence(),
+                    title: faker.random.word(),
+                    url: faker.internet.url(),
+                    favicon: faker.image.imageUrl(),
+                    trans: faker.lorem.sentence(),
+                    note: faker.lorem.sentences()
+                  })
+                ]
+              : []
+        }
       })
     )
   )
@@ -31,41 +49,26 @@ storiesOf('Content Scripts|WordEditor', module)
     () => {
       const config = getDefaultConfig()
       const darkMode = boolean('Dark Mode', false)
-      const colors = darkMode
-        ? {
-            backgroundColor: '#222',
-            color: '#ddd',
-            '--color-brand': '#218c74',
-            '--color-background': '#222',
-            '--color-rgb-background': '34, 34, 34',
-            '--color-font': '#ddd',
-            '--color-divider': '#4d4748'
-          }
-        : {
-            backgroundColor: '#fff',
-            color: '#333',
-            '--color-brand': '#5caf9e',
-            '--color-background': '#fff',
-            '--color-rgb-background': '255, 255, 255',
-            '--color-font': '#333',
-            '--color-divider': '#ddd'
-          }
+      const colors = getThemeStyles(darkMode)
 
       return (
         <WordEditor
-          width={number('Dict Panel Width', 450)}
+          containerWidth={number('Panel X', 450 + 100)}
           darkMode={darkMode}
           colors={colors}
-          word={newWord({
-            date: faker.date.past().valueOf(),
-            text: faker.random.word(),
-            context: faker.lorem.sentence(),
-            title: faker.random.word(),
-            url: faker.internet.url(),
-            favicon: faker.image.imageUrl(),
-            trans: faker.lorem.sentence(),
-            note: faker.lorem.sentences()
-          })}
+          wordEditor={{
+            word: newWord({
+              date: faker.date.past().valueOf(),
+              text: faker.random.word(),
+              context: faker.lorem.sentence(),
+              title: faker.random.word(),
+              url: faker.internet.url(),
+              favicon: faker.image.imageUrl(),
+              trans: faker.lorem.sentence(),
+              note: faker.lorem.sentences()
+            }),
+            translateCtx: false
+          }}
           ctxTrans={config.ctxTrans}
           onClose={action('Close')}
         />
@@ -79,42 +82,28 @@ storiesOf('Content Scripts|WordEditor', module)
   .add('WordEditorPortal', () => {
     const config = getDefaultConfig()
     const darkMode = boolean('Dark Mode', false)
-    const colors = darkMode
-      ? {
-          backgroundColor: '#222',
-          color: '#ddd',
-          '--color-brand': '#218c74',
-          '--color-background': '#222',
-          '--color-rgb-background': '34, 34, 34',
-          '--color-font': '#ddd',
-          '--color-divider': '#4d4748'
-        }
-      : {
-          backgroundColor: '#fff',
-          color: '#333',
-          '--color-brand': '#5caf9e',
-          '--color-background': '#fff',
-          '--color-rgb-background': '255, 255, 255',
-          '--color-font': '#333',
-          '--color-divider': '#ddd'
-        }
+    const colors = getThemeStyles(darkMode)
+
     return (
       <WordEditorPortal
         show={boolean('Show', true)}
         darkMode={darkMode}
         withAnimation={boolean('With Animation', true)}
         colors={colors}
-        width={number('Dict Panel Width', 450)}
-        word={newWord({
-          date: faker.date.past().valueOf(),
-          text: faker.random.word(),
-          context: faker.lorem.sentence(),
-          title: faker.random.word(),
-          url: faker.internet.url(),
-          favicon: faker.image.imageUrl(),
-          trans: faker.lorem.sentence(),
-          note: faker.lorem.sentences()
-        })}
+        containerWidth={number('Panel X', 450 + 100)}
+        wordEditor={{
+          word: newWord({
+            date: faker.date.past().valueOf(),
+            text: faker.random.word(),
+            context: faker.lorem.sentence(),
+            title: faker.random.word(),
+            url: faker.internet.url(),
+            favicon: faker.image.imageUrl(),
+            trans: faker.lorem.sentence(),
+            note: faker.lorem.sentences()
+          }),
+          translateCtx: false
+        }}
         ctxTrans={config.ctxTrans}
         onClose={action('Close')}
       />

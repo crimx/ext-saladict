@@ -1,0 +1,112 @@
+.dictRenren-Selector {
+  width: 100%;
+}
+
+.dictRenren-Slide {
+  overflow: hidden;
+  position: relative;
+  margin-bottom: 5px;
+  background: var(--color-divider);
+
+  figure {
+    width: 100%;
+    min-height: 200px;
+    margin: 0;
+    padding: 0;
+    transition: height 0.4s;
+  }
+
+  figcaption {
+    position: absolute;
+    z-index: 2;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+
+    p {
+      text-align: center;
+      padding: 0 0.3em;
+      line-height: 1.2;
+      color: #fff;
+    }
+  }
+}
+
+.dictRenren-Slide_Cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  max-width: 100%;
+  opacity: 0;
+
+  &.isLoaded {
+    opacity: 1;
+  }
+}
+
+.dictRenren-Slide_Speaker {
+  position: absolute;
+  z-index: 2;
+  top: 5px;
+  left: 5px;
+  padding: 3px;
+  border-radius: 2px;
+  font-size: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+
+  .saladict-Speaker {
+    margin: 0;
+  }
+}
+
+.dictRenren-Slide_En {
+  text-shadow: #005177 1px 0 0, #005177 0 1px 0, #005177 -1px 0 0,
+    #005177 0 -1px 0;
+
+  em {
+    color: #ffa800;
+  }
+}
+
+.dictRenren-Slide_Chs {
+  text-shadow: #00080a 1px 0 0, #00080a 0 1px 0, #00080a -1px 0 0,
+    #00080a 0 -1px 0;
+}
+
+.dictRenren-Detail {
+  display: block;
+  border: none;
+  width: 100%;
+  text-align: center;
+  font-size: 0.95em;
+  color: #5caf9e;
+  text-decoration: none !important;
+}
+
+.dictRenren-Ctx {
+  display: table;
+}
+
+.dictRenren-Ctx_Title {
+  display: table-cell;
+  width: 3em;
+  font-weight: 700;
+  text-align: right;
+}
+
+.dictRenren-Ctx_Subtitles {
+  display: table-cell;
+  padding-left: 1em;
+}
+
+.isAnimate {
+  .dictRenren-Slide {
+    figure {
+      transition: height 0.4s;
+    }
+  }
+
+  .dictRenren-Slide_Cover {
+    transition: opacity 0.4s;
+  }
+}

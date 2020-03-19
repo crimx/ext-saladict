@@ -107,11 +107,12 @@ function extractDictLocales(lang: LangCode) {
   const req = require.context(
     '@/components/dictionaries',
     true,
-    /_locales\.json$/
+    /_locales\.(json|ts)$/
   )
   return req.keys().reduce<{ [id: string]: DictLocales }>((o, filename) => {
-    const json: RawDictLocales = req(filename)
-    const dictId = /([^/]+)\/_locales\.json$/.exec(filename)![1]
+    const localeModule = req(filename)
+    const json: RawDictLocales = localeModule.locales || localeModule
+    const dictId = /([^/]+)\/_locales\.(json|ts)$/.exec(filename)![1]
     o[dictId] = {
       name: json.name[lang]
     }

@@ -1,45 +1,50 @@
+import { timeout } from '@/_helpers/promise-more'
+
 /**
  * To make sure only one audio plays at a time
  */
+export class AudioManager {
+  private static instance: AudioManager
 
-import { timeout } from '@/_helpers/promise-more'
-
-declare global {
-  interface Window {
-    /** Singleton audio playing */
-    __audio_manager__?: HTMLAudioElement
-  }
-}
-
-function noop () {/* empty */}
-
-export function reset () {
-  if (window.__audio_manager__) {
-    window.__audio_manager__.pause()
-    window.__audio_manager__.currentTime = 0
-    window.__audio_manager__.src = ''
-    window.__audio_manager__.onended = null
-  }
-}
-
-export function load (src: string): HTMLAudioElement {
-  reset()
-  window.__audio_manager__ = new Audio(src)
-  return window.__audio_manager__
-}
-
-export function play (src?: string): Promise<any> {
-  if (!src) {
-    reset()
-    return Promise.resolve()
+  static getInstance() {
+    return AudioManager.instance || (AudioManager.instance = new AudioManager())
   }
 
-  const audio = load(src)
+  // singleton
+  // eslint-disable-next-line no-useless-constructor
+  private constructor() {}
 
-  const onEnd = new Promise(resolve => {
-    audio.onended = resolve
-  })
+  private audio?: HTMLAudioElement
 
-  return audio.play().then(() => timeout(onEnd, 4000))
-    .catch(noop)
+  reset() {
+    if (this.audio) {
+      this.audio.pause()
+      this.audio.currentTime = 0
+      this.audio.src = ''
+      this.audio.onended = null
+    }
+  }
+
+  load(src: string): HTMLAudioElement {
+    this.reset()
+    return (this.audio = new Audio(src))
+  }
+
+  async play(src?: string): Promise<void> {
+    if (!src) {
+      this.reset()
+      return
+    }
+
+    const audio = this.load(src)
+
+    const onEnd = new Promise(resolve => {
+      audio.onended = resolve
+    })
+
+    await audio
+      .play()
+      .then(() => timeout(onEnd, 4000))
+      .catch(() => {})
+  }
 }

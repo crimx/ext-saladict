@@ -2,9 +2,11 @@ import { locale as _locale } from '../zh-CN/wordpage'
 
 export const locale: typeof _locale = {
   title: {
-    history: 'Saladict 查單字紀錄（僅本機儲存）',
-    notebook: 'Saladict 生字本（僅本機儲存）'
+    history: 'Saladict 查單字紀錄',
+    notebook: 'Saladict 生字本'
   },
+
+  localonly: '僅本機儲存',
 
   column: {
     add: '新增',
@@ -34,10 +36,15 @@ export const locale: typeof _locale = {
       default: '保留換行',
       n: '換行替換為 \\n',
       br: '換行替換為 <br>',
-      p: '換行替換為 <p>'
+      p: '換行替換為 <p>',
+      space: '換行替換為空格'
     },
     page: '輸出本頁單字',
     placeholder: '預留位置',
+    htmlescape: {
+      title: '對筆記內容中的 HTML 字元進行轉義',
+      text: '轉義 HTML 字元'
+    },
     selected: '輸出選中單字'
   },
 
@@ -49,9 +56,9 @@ export const locale: typeof _locale = {
   },
 
   wordCount: {
-    selected: '已選中 {{count}} 個單字',
-    selected_plural: '已選中 {{count}} 個單字',
-    total: '共有 {{count}} 個單字',
-    total_plural: '共有 {{count}} 個單字'
+    selected: '選中 {{count}} 個',
+    selected_plural: '選中 {{count}} 個',
+    total: '共 {{count}} 個',
+    total_plural: '共 {{count}} 個'
   }
 }

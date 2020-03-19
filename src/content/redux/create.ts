@@ -1,4 +1,8 @@
-import { createStore, applyMiddleware, compose } from 'redux'
+import {
+  createStore as createReduxStore,
+  applyMiddleware,
+  compose
+} from 'redux'
 import thunkMiddleware from 'redux-thunk'
 import { createEpicMiddleware } from 'redux-observable'
 import { Observable } from 'rxjs'
@@ -10,9 +14,9 @@ import { message } from '@/_helpers/browser-api'
 import { getConfig } from '@/_helpers/config-manager'
 import { getActiveProfile } from '@/_helpers/profile-manager'
 
-import { createRootReducer, StoreState, StoreAction } from './modules'
-import { init } from './modules/init'
-import { epics } from './modules/epics'
+import { rootReducer, StoreState, StoreAction } from './modules'
+import { init } from './init'
+import { epics } from './epics'
 
 const epicMiddleware = createEpicMiddleware<
   StoreAction,
@@ -20,12 +24,12 @@ const epicMiddleware = createEpicMiddleware<
   StoreState
 >()
 
-export default () => {
+export const createStore = () => {
   const composeEnhancers: typeof compose =
     window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
 
-  const store = createStore(
-    createRootReducer(),
+  const store = createReduxStore(
+    rootReducer,
     composeEnhancers(applyMiddleware(thunkMiddleware, epicMiddleware))
   )
 
@@ -67,3 +71,5 @@ export default () => {
 
   return store
 }
+
+export default createStore

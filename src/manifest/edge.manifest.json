@@ -1,0 +1,10 @@
+{
+  "background": {
+    "persistent": true
+  },
+  "options_ui": {
+    "chrome_style": false
+  },
+  "incognito": "split",
+  "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx"
+}

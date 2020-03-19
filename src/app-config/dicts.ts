@@ -13,12 +13,13 @@ import googledict from '@/components/dictionaries/googledict/config'
 import guoyu from '@/components/dictionaries/guoyu/config'
 import hjdict from '@/components/dictionaries/hjdict/config'
 import jukuu from '@/components/dictionaries/jukuu/config'
+import lexico from '@/components/dictionaries/lexico/config'
 import liangan from '@/components/dictionaries/liangan/config'
 import longman from '@/components/dictionaries/longman/config'
 import macmillan from '@/components/dictionaries/macmillan/config'
 import mojidict from '@/components/dictionaries/mojidict/config'
 import naver from '@/components/dictionaries/naver/config'
-import oald from '@/components/dictionaries/oald/config'
+import renren from '@/components/dictionaries/renren/config'
 import shanbay from '@/components/dictionaries/shanbay/config'
 import sogou from '@/components/dictionaries/sogou/config'
 import tencent from '@/components/dictionaries/tencent/config'
@@ -49,12 +50,13 @@ export function getAllDicts() {
     guoyu: guoyu(),
     hjdict: hjdict(),
     jukuu: jukuu(),
+    lexico: lexico(),
     liangan: liangan(),
     longman: longman(),
     macmillan: macmillan(),
     mojidict: mojidict(),
     naver: naver(),
-    oald: oald(),
+    renren: renren(),
     shanbay: shanbay(),
     sogou: sogou(),
     tencent: tencent(),
@@ -123,10 +125,10 @@ export type DictItem<
   ? DictItemWithOptions
   : DictItemWithOptions<Options> &
       ((Key extends any
-        ? Options[Key] extends string
-          ? Key
-          : never
-        : never) extends never
+      ? Options[Key] extends string
+        ? Key
+        : never
+      : never) extends never
         ? {}
         : {
             options_sel: {

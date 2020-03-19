@@ -1,32 +1,13 @@
 import { retry } from '../helpers'
-import { search, LongmanResultLex, LongmanResultRelated } from '@/components/dictionaries/longman/engine'
+import {
+  search,
+  LongmanResultLex,
+  LongmanResultRelated
+} from '@/components/dictionaries/longman/engine'
 import { getDefaultConfig } from '@/app-config'
 import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
-import fs from 'fs'
-import path from 'path'
 
 describe('Dict/Longman/engine', () => {
-  beforeAll(() => {
-    if (!process.env.CI) {
-      const response = {
-        love: fs.readFileSync(path.join(__dirname, 'response/love.html'), 'utf8'),
-        profit: fs.readFileSync(path.join(__dirname, 'response/profit.html'), 'utf8'),
-        jumblish: fs.readFileSync(path.join(__dirname, 'response/jumblish.html'), 'utf8'),
-      }
-
-      window.fetch = jest.fn((url: string) => {
-        const key = Object.keys(response).find(keyword => url.endsWith(keyword))
-        if (key) {
-          return Promise.resolve({
-            ok: true,
-            text: () => response[key]
-          })
-        }
-        return Promise.reject(new Error(`Missing Response file for ${url}`))
-      })
-    }
-  })
-
   it('should parse lex result (love) correctly', () => {
     const profile = getDefaultProfile() as ProfileMutable
     profile.dicts.all.longman.options = {
@@ -36,14 +17,18 @@ describe('Dict/Longman/engine', () => {
       thesaurus: true,
       examples: true,
       bussinessFirst: true,
-      related: true,
+      related: true
     }
 
     return retry(() =>
-      search('love', getDefaultConfig(), profile, { isPDF: false })
-        .then(searchResult => {
-          expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
-          expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
+      search('love', getDefaultConfig(), profile, { isPDF: false }).then(
+        searchResult => {
+          expect(searchResult.audio && typeof searchResult.audio.uk).toBe(
+            'string'
+          )
+          expect(searchResult.audio && typeof searchResult.audio.us).toBe(
+            'string'
+          )
 
           const result = searchResult.result as LongmanResultLex
           expect(result.type).toBe('lex')
@@ -74,7 +59,8 @@ describe('Dict/Longman/engine', () => {
           expect(typeof result.contemporary[0].collocations).toBe('string')
           expect(typeof result.contemporary[0].thesaurus).toBe('string')
           expect(result.contemporary[1].examples).toHaveLength(4)
-        })
+        }
+      )
     )
   })
 
@@ -87,14 +73,18 @@ describe('Dict/Longman/engine', () => {
       thesaurus: true,
       examples: true,
       bussinessFirst: false,
-      related: true,
+      related: true
     }
 
     return retry(() =>
-      search('profit', getDefaultConfig(), profile, { isPDF: false })
-        .then(searchResult => {
-          expect(searchResult.audio && typeof searchResult.audio.uk).toBe('string')
-          expect(searchResult.audio && typeof searchResult.audio.us).toBe('string')
+      search('profit', getDefaultConfig(), profile, { isPDF: false }).then(
+        searchResult => {
+          expect(searchResult.audio && typeof searchResult.audio.uk).toBe(
+            'string'
+          )
+          expect(searchResult.audio && typeof searchResult.audio.us).toBe(
+            'string'
+          )
 
           const result = searchResult.result as LongmanResultLex
           expect(result.type).toBe('lex')
@@ -138,20 +128,22 @@ describe('Dict/Longman/engine', () => {
           expect(result.contemporary[1].examples).toHaveLength(3)
           expect(result.contemporary[1].level).toBeDefined()
           expect((result.contemporary[1].level as any).rate).toBe(1)
-        })
+        }
+      )
     )
   })
 
   it('should parse related result correctly', () => {
     return retry(() =>
-      search('jumblish', getDefaultConfig(), getDefaultProfile(), { isPDF: false })
-        .then(searchResult => {
-          expect(searchResult.audio).toBeUndefined()
+      search('jumblish', getDefaultConfig(), getDefaultProfile(), {
+        isPDF: false
+      }).then(searchResult => {
+        expect(searchResult.audio).toBeUndefined()
 
-          const result = searchResult.result as LongmanResultRelated
-          expect(result.type).toBe('related')
-          expect(typeof result.list).toBe('string')
-        })
+        const result = searchResult.result as LongmanResultRelated
+        expect(result.type).toBe('related')
+        expect(typeof result.list).toBe('string')
+      })
     )
   })
 })

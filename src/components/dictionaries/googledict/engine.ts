@@ -89,6 +89,7 @@ function handleDOM(
     })
 
     removeChild($obcontainer, '.jFHKNd')
+    removeChildren($obcontainer, '[aria-hidden="true"]')
 
     const cleanText = getInnerHTML('https://www.google.com', $obcontainer, {
       config: {}

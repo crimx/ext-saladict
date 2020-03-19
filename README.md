@@ -6,7 +6,7 @@
 [![Mozilla Add-on](https://img.shields.io/amo/users/ext-saladict.svg?label=Firefoxe%20users)](https://addons.mozilla.org/firefox/addon/ext-saladict/)
 [![Mozilla Add-on](https://img.shields.io/amo/stars/ext-saladict.svg?label=Firefoxe%20stars)](https://addons.mozilla.org/firefox/addon/ext-saladict/)
 
-[![Build Status](https://travis-ci.org/crimx/ext-saladict.svg)](https://travis-ci.org/crimx/ext-saladict)
+[![Build Status](https://travis-ci.com/crimx/ext-saladict.svg)](https://travis-ci.com/crimx/ext-saladict)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?maxAge=2592000)](http://commitizen.github.io/cz-cli/)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-brightgreen.svg?maxAge=2592000)](https://conventionalcommits.org)
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?maxAge=2592000)](https://standardjs.com/)
@@ -22,7 +22,10 @@ Chrome/Firefox WebExtension. Feature-rich inline translator with PDF support.
 
 ## Downloads
 
-[Chrome Web Store](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en) / [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/ext-saladict/)
+- [Chrome Web Store](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en)
+- [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/ext-saladict/)
+- [Microsoft Edge Addons](https://microsoftedge.microsoft.com/addons/detail/idghocbbahafpfhjnfhpbfbmpegphmmp)(Uploaded by @rumosky)
+- See [releases](https://github.com/crimx/ext-saladict/releases) for more.
 
 Saladict 7 is a complete rewrite with sophisticated interaction and buttery smooth experience. Built for speed, stability and customization.
 
@@ -30,7 +33,28 @@ Saladict 7 is a complete rewrite with sophisticated interaction and buttery smoo
 
 [CHANGELOG.md](./CHANGELOG.md)
 
-## How can I contribute / build from source?
+## build from source
+
+```bash
+git clone git@github.com:crimx/ext-saladict.git
+cd ext-saladict
+yarn install
+yarn pdf
+```
+
+Add a `.env` file following the `.env.example` format(leave empty if you don't use these dictionaries).
+
+```bash
+yarn build
+```
+
+Artifacts can be found in `build/`.
+
+## Development
+
+See the [contributing guide](./CONTRIBUTING.md).
+
+## How can I contribute?
 
 [CONTRIBUTING.md](./CONTRIBUTING.md)
 

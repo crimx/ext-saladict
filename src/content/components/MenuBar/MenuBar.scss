@@ -17,8 +17,5 @@
   user-select: none;
   // prevent scrolling
   touch-action: none;
-
-  &.isActive {
-    cursor: move;
-  }
+  cursor: move;
 }

@@ -311,12 +311,15 @@ export class WordPageMain extends React.Component<
 
     // From popup page
     const searchURL = new URL(document.URL)
-    const infoText = searchURL.searchParams.get('info')
-    if (infoText) {
+    const wordString = searchURL.searchParams.get('word')
+    if (wordString) {
       try {
-        const word = JSON.parse(decodeURIComponent(infoText)) as Word
+        const word = JSON.parse(decodeURIComponent(wordString)) as Word
         setTimeout(() => {
-          message.self.send({ type: 'UPDATE_WORD_EDITOR_WORD', payload: word })
+          message.self.send({
+            type: 'UPDATE_WORD_EDITOR_WORD',
+            payload: { word, translateCtx: true }
+          })
         }, 1000)
       } catch (err) {
         console.warn(err)
@@ -352,7 +355,7 @@ export class WordPageMain extends React.Component<
           setTimeout(() => {
             message.self.send({
               type: 'UPDATE_WORD_EDITOR_WORD',
-              payload: word
+              payload: { word }
             })
           }, 500)
         }}
@@ -420,18 +423,27 @@ export class WordPageMain extends React.Component<
       <>
         <Layout className="wordpage-Container">
           <Header className="wordpage-Header">
-            <h1 style={{ color: '#fff' }}>{t(`title.${area}`)}</h1>
-            {(pagination.total as number) > 0 && (
-              <span className="wordpage-Wordcount">
-                {t(`wordCount.total`, { count: pagination.total })}
-              </span>
-            )}
-            {selectedRows.length > 0 && (
-              <span className="wordpage-Wordcount">
-                {t(`wordCount.selected`, { count: selectedRows.length })}
-              </span>
-            )}
-            <div style={{ marginLeft: 'auto' }}>
+            <div className="wordpage-Title">
+              <h1 className="wordpage-Title_head">
+                {t(`title.${area}`)}{' '}
+                <small className="wordpage-Title_small">
+                  ({t('localonly')})
+                </small>
+              </h1>
+              <div style={{ whiteSpace: 'nowrap' }}>
+                {(pagination.total as number) > 0 && (
+                  <span className="wordpage-Wordcount">
+                    {t(`wordCount.total`, { count: pagination.total })}
+                  </span>
+                )}
+                {selectedRows.length > 0 && (
+                  <span className="wordpage-Wordcount">
+                    {t(`wordCount.selected`, { count: selectedRows.length })}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div style={{ marginLeft: 'auto', whiteSpace: 'nowrap' }}>
               <Input
                 style={{ width: '15em' }}
                 placeholder="Search"

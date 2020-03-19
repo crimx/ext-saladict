@@ -28,7 +28,16 @@ const fetchArgs = {
   },
 
   createDir(config: SyncConfig) {
-    return [config.url + 'Saladict', { method: 'MKCOL' }]
+    return [
+      config.url + 'Saladict',
+      {
+        method: 'MKCOL',
+        headers: {
+          Authorization:
+            'Basic ' + window.btoa(`${config.user}:${config.passwd}`)
+        }
+      }
+    ]
   },
 
   upload(config: SyncConfig, body: any = '') {

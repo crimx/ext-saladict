@@ -60,13 +60,15 @@ export const locale: typeof _locale = {
     Popup: 'Popup Panel',
     Profiles: 'Profiles',
     QuickSearch: 'Quick Search',
-    SearchModes: 'Search Modes'
+    SearchModes: 'Search Modes',
+    Privacy: 'Privacy'
   },
 
   opt: {
     active: 'Enable Inline Translator',
-    analytics: 'UX Improvement Program',
-    analytics_help: 'Enable Google Analytics to help me improve Saladict',
+    analytics: 'Enable Google Analytics',
+    analytics_help:
+      'Share anonymous device browser version information. Saladict author will offer prioritized support to popular devices and browsers.',
     animation: 'Animation transitions',
     animation_help: 'Switch off animation transitions to reduce runtime cost.',
     app_active_help:
@@ -97,8 +99,8 @@ export const locale: typeof _locale = {
     bowl_hover_help:
       'Hover on the bowl icon to trigger searching instead of clicking.',
     bowl_offset: {
-      x: 'Icon Offset X',
-      y: 'Icon Offset Y'
+      x: 'Saladict icon Offset X',
+      y: 'Saladict icon Offset Y'
     },
     config: {
       export: 'Export Configs',
@@ -108,7 +110,8 @@ export const locale: typeof _locale = {
       reset: 'Reset Configs',
       reset_confirm: 'Reset to default settings. Confirm？'
     },
-    context_description: 'Each context menus item can also be customized.',
+    context_description:
+      'Each context menus item can also be customized. Youdao and Google page translate are deprecated in favor of the official extensions.',
     context_menus_title: 'Add Context Menus Items',
     context_menus_add_rules: 'URL with %s in place of query.',
     ctx_trans: 'Context Translate Engines',
@@ -145,6 +148,11 @@ export const locale: typeof _locale = {
       'Blacklisted PDF links will not jump to Saladict PDF Viewer.',
     pdf_sniff: 'Enable PDF Sniffer',
     pdf_sniff_help: 'If turned on， PDF links will be automatically captured.',
+    third_party_privacy: 'Third Party Privacy',
+    third_party_privacy_help:
+      'Saladict will not collect further information but search text and releated cookies will be sent to third party dictionary services(just like how you would search on their websites). If you do not want third party services to collect you data, remove the dictionaries at "Dictionaries" settings.',
+    third_party_privacy_extra:
+      'Cannot be turned off as it is the core functionality of Saladict.',
     profile_change: 'This option may change base on "Profile".',
     quick_search: 'Enable',
     search_suggests: 'Search suggests',
@@ -181,6 +189,8 @@ export const locale: typeof _locale = {
     syncWebdav: 'WebDAV Sync Service',
     touch_mode: 'Touch Mode',
     touch_mode_help: 'Enable touch related selection',
+    update_check: 'Check Update',
+    update_check_help: 'Automatically check update from Github',
     waveform: 'Waveform Control',
     waveform_help:
       'Display a button at the bottom of the Dict Panel for expanding the Waveform Control Panel. Audio files can still be played if turned off.'

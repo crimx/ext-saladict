@@ -13,6 +13,7 @@ export function getAllContextMenus() {
     bing_search: 'https://www.bing.com/search?q=%s',
     cambridge:
       'http://dictionary.cambridge.org/spellcheck/english-chinese-simplified/?q=%s',
+    copy_pdf_url: 'x',
     dictcn: 'https://dict.eudic.net/dicts/en/%s',
     etymonline: 'http://www.etymonline.com/index.php?search=%s',
     google_cn_page_translate: 'x',

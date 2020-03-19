@@ -12,7 +12,8 @@ import { message } from '@/_helpers/browser-api'
 import {
   isStandalonePage,
   isOptionsPage,
-  isPopupPage
+  isPopupPage,
+  isQuickSearchPage
 } from '@/_helpers/saladict'
 import {
   HistoryBackBtn,
@@ -20,7 +21,9 @@ import {
   FavBtn,
   HistoryBtn,
   PinBtn,
-  CloseBtn
+  CloseBtn,
+  SidebarBtn,
+  FocusBtn
 } from './MenubarBtns'
 import { SearchBox, SearchBoxProps } from './SearchBox'
 import { Profiles, ProfilesProps } from './Profiles'
@@ -50,6 +53,7 @@ export interface MenuBarProps {
   togglePin: () => any
 
   onClose: () => any
+  onSwitchSidebar: (side: 'left' | 'right') => any
 
   onHeightChanged: (height: number) => void
 
@@ -96,6 +100,7 @@ export const MenuBar: FC<MenuBarProps> = props => {
         onClick={() => props.updateHistoryIndex(props.historyIndex + 1)}
       />
       <SearchBox
+        key="searchbox"
         t={t}
         text={props.text}
         shouldFocus={props.shouldFocus}
@@ -104,11 +109,13 @@ export const MenuBar: FC<MenuBarProps> = props => {
         onSearch={props.searchText}
         onHeightChanged={updateSBHeight}
       />
-      <div
-        className={`menuBar-DragArea${isStandalonePage() ? '' : ' isActive'}`}
-        onMouseDown={props.onDragAreaMouseDown}
-        onTouchStart={props.onDragAreaTouchStart}
-      />
+      {isStandalonePage() || (
+        <div
+          className="menuBar-DragArea"
+          onMouseDown={props.onDragAreaMouseDown}
+          onTouchStart={props.onDragAreaTouchStart}
+        />
+      )}
       <ProfilesMemo
         t={t}
         profiles={props.profiles}
@@ -148,13 +155,33 @@ export const MenuBar: FC<MenuBarProps> = props => {
           })
         }
       />
-      <PinBtn
-        t={t}
-        isPinned={props.isPinned}
-        onClick={props.togglePin}
-        disabled={isOptionsPage() || isPopupPage()}
-      />
-      <CloseBtn t={t} onClick={props.onClose} />
+      {isQuickSearchPage() ? (
+        <>
+          <FocusBtn
+            t={t}
+            isPinned={props.isPinned}
+            onClick={props.togglePin}
+            disabled={isOptionsPage() || isPopupPage()}
+          />
+          <SidebarBtn
+            t={t}
+            onMouseDown={e => {
+              e.preventDefault()
+              props.onSwitchSidebar(e.button === 0 ? 'left' : 'right')
+            }}
+          />
+        </>
+      ) : (
+        <>
+          <PinBtn
+            t={t}
+            isPinned={props.isPinned}
+            onClick={props.togglePin}
+            disabled={isOptionsPage() || isPopupPage()}
+          />
+          <CloseBtn t={t} onClick={props.onClose} />
+        </>
+      )}
     </header>
   )
 }

@@ -14,13 +14,17 @@ export const locale = {
     openHistory: '打开查词记录',
     shareImg: '以图片方式分享查词结果',
     pinPanel: '钉住查词面板',
-    closePanel: '关闭查词面板'
+    closePanel: '关闭查词面板',
+    sidebar: '切换侧边栏模式，右键切换右侧',
+    focusPanel: '查词时面板获取焦点',
+    unfocusPanel: '查词时面板不获取焦点'
   },
   wordEditor: {
     title: '保存到生词本',
     wordCardsTitle: '生词本其它记录',
     deleteConfirm: '从单词本中移除？',
-    closeConfirm: '记录尚未保存，确认关闭？'
+    closeConfirm: '记录尚未保存，确认关闭？',
+    chooseCtxTitle: '选择翻译结果'
   },
   machineTrans: {
     switch: '更改语言',

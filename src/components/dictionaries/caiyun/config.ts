@@ -5,8 +5,9 @@ import { Subunion } from '@/typings/helpers'
 export type CaiyunLanguage = Subunion<Language, 'zh-CN' | 'en' | 'ja'>
 
 export type CaiyunConfig = DictItem<{
-  pdfNewline: boolean
+  keepLF: 'none' | 'all' | 'webpage' | 'pdf'
   tl: 'default' | CaiyunLanguage
+  tl2: 'default' | CaiyunLanguage
 }>
 
 export default (): CaiyunConfig => ({
@@ -39,11 +40,13 @@ export default (): CaiyunConfig => ({
     max: 999999999999999
   },
   options: {
-    /** Keep linebreaks on PDF */
-    pdfNewline: false,
-    tl: 'default'
+    keepLF: 'webpage',
+    tl: 'default',
+    tl2: 'default'
   },
   options_sel: {
-    tl: ['default', 'zh-CN', 'en', 'ja']
+    keepLF: ['none', 'all', 'webpage', 'pdf'],
+    tl: ['default', 'zh-CN', 'en', 'ja'],
+    tl2: ['default', 'zh-CN', 'en', 'ja']
   }
 })

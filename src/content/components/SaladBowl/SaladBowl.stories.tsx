@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
-import { withKnobs, boolean, number } from '@storybook/addon-knobs'
+import { withKnobs, boolean, number, text } from '@storybook/addon-knobs'
 import { SaladBowl } from './SaladBowl'
 import { SaladBowlPortal } from './SaladBowl.portal'
 import { withLocalStyle } from '@/_helpers/storybook'
@@ -32,6 +32,7 @@ storiesOf('Content Scripts|SaladBowl', module)
   .add('SaladBowlPortal', () => (
     <SaladBowlPortal
       show={boolean('Show', true)}
+      panelCSS={text('Panel CSS', '')}
       x={number('mouseX', 30)}
       y={number('mouseY', 30)}
       withAnimation={boolean('Animation', true)}
@@ -69,6 +70,7 @@ storiesOf('Content Scripts|SaladBowl', module)
           </p>
           <SaladBowlPortal
             show
+            panelCSS={text('Panel CSS', '')}
             x={x}
             y={y}
             withAnimation={boolean('Animation', true)}

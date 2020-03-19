@@ -1,27 +1,35 @@
 import { connect } from 'react-redux'
-import { WordEditorPortal, WordEditorPortalProps } from './WordEditor.portal'
+import {
+  ExtractDispatchers,
+  MapStateToProps,
+  MapDispatchToProps
+} from 'react-retux'
 import { StoreState, StoreAction } from '@/content/redux/modules'
-import { Dispatch } from 'redux'
+import { WordEditorPortal, WordEditorPortalProps } from './WordEditor.portal'
 
-type Dispatchers = 'onClose'
+type Dispatchers = ExtractDispatchers<WordEditorPortalProps, 'onClose'>
 
-const mapStateToProps = (
-  state: StoreState
-): Omit<WordEditorPortalProps, Dispatchers> => ({
-  show: state.isShowWordEditor,
+const mapStateToProps: MapStateToProps<
+  StoreState,
+  WordEditorPortalProps,
+  Dispatchers
+> = state => ({
+  show: state.wordEditor.isShow,
   darkMode: state.config.darkMode,
   withAnimation: state.config.animation,
   colors: state.colors,
-  width: window.innerWidth - state.config.panelWidth - 100,
+  containerWidth: window.innerWidth - state.config.panelWidth - 100,
   ctxTrans: state.config.ctxTrans,
-  word: state.wordEditorWord
+  wordEditor: state.wordEditor
 })
 
-const mapDispatchToProps = (
-  dispatch: Dispatch<StoreAction>
-): Pick<WordEditorPortalProps, Dispatchers> => ({
+const mapDispatchToProps: MapDispatchToProps<
+  StoreAction,
+  WordEditorPortalProps,
+  Dispatchers
+> = dispatch => ({
   onClose: () => {
-    dispatch({ type: 'WORD_EDITOR_STATUS', payload: null })
+    dispatch({ type: 'WORD_EDITOR_STATUS', payload: { word: null } })
   }
 })
 

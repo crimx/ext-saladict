@@ -73,6 +73,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
         isPinned={boolean('Is Pinned', false)}
         togglePin={action('Toggle Pin')}
         onClose={action('Close Panel')}
+        onSwitchSidebar={action('Switch Sidebar')}
         profiles={profiles}
         activeProfileId={select(
           'Active Profile',

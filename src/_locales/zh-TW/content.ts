@@ -16,13 +16,17 @@ export const locale: typeof _locale = {
     openHistory: '開啟查單字記錄',
     shareImg: '以圖片方式分享查單字結果',
     pinPanel: '釘選字典視窗',
-    closePanel: '關閉字典視窗'
+    closePanel: '關閉字典視窗',
+    sidebar: '切換側邊欄模式，右點選切換右側',
+    focusPanel: '查詞時面板獲取焦點',
+    unfocusPanel: '查詞時面板不獲取焦點'
   },
   wordEditor: {
     title: '儲存到單字本',
     wordCardsTitle: '單字本其它記錄',
     deleteConfirm: '從單字本中移除？',
-    closeConfirm: '記錄尚未儲存，確定關閉？'
+    closeConfirm: '記錄尚未儲存，確定關閉？',
+    chooseCtxTitle: '選擇翻譯結果'
   },
   machineTrans: {
     switch: '變更語言',

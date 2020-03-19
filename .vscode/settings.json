@@ -4,5 +4,12 @@
       "fileMatch": ["src/components/dictionaries/**/_locales.json"],
       "url": ".vscode/locales.schema.json"
     }
-  ]
+  ],
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true,
+    "**/build/*/**": true,
+    "**/assets/*/**": true
+  }
 }

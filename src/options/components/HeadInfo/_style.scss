@@ -81,3 +81,9 @@
   opacity: 0;
   transition: opacity 0.5s;
 }
+
+.head-info-unin {
+  @media screen and (max-width: 800px) {
+    display: none !important;
+  }
+}

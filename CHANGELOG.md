@@ -2,6 +2,173 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.9.3](https://github.com/crimx/ext-saladict/compare/v7.9.2...v7.9.3) (2020-03-19)
+
+
+### Bug Fixes
+
+* **panel:** prevent ff flash ([#691](https://github.com/crimx/ext-saladict/issues/691)) ([d18df80](https://github.com/crimx/ext-saladict/commit/d18df80956e8423d808e9a8ac64458ddc73b3b22))
+* **word-editor:** inner panel not showing up ([b8c6064](https://github.com/crimx/ext-saladict/commit/b8c606486d69fc00c1babe5d6569bcb61f26a801)), closes [#694](https://github.com/crimx/ext-saladict/issues/694)
+
+### [7.9.2](https://github.com/crimx/ext-saladict/compare/v7.9.1...v7.9.2) (2020-03-14)
+
+
+### Bug Fixes
+
+* **dicts:** wrong dict config ([551a0b3](https://github.com/crimx/ext-saladict/commit/551a0b30db29c14dd093d33f01c440d669846fc4))
+
+### [7.9.1](https://github.com/crimx/ext-saladict/compare/v7.9.0...v7.9.1) (2020-03-10)
+
+
+### Bug Fixes
+
+* **dicts:** add fallback language for machine translate ([60b10da](https://github.com/crimx/ext-saladict/commit/60b10da2dbb890270965de7b24a6672ced4ce579)), closes [#674](https://github.com/crimx/ext-saladict/issues/674)
+* **dicts:** enhance cjk detection ([8311d9e](https://github.com/crimx/ext-saladict/commit/8311d9e30d01740930725cd9a83adfa5a92bf26e))
+* **dicts:** remove caching async function ([03d7866](https://github.com/crimx/ext-saladict/commit/03d78669dacece312ba7bf2a5d8763d9b760730b))
+
+## [7.9.0](https://github.com/crimx/ext-saladict/compare/v7.8.0...v7.9.0) (2020-03-09)
+
+
+### Features
+
+* **dicts:** add lexico ([a86fc7d](https://github.com/crimx/ext-saladict/commit/a86fc7db85f8646f6326b6e1dbbd235ce930c7d6))
+* **dicts:** add renren ([b4dc38d](https://github.com/crimx/ext-saladict/commit/b4dc38da25e838f1c9869d66d6cb2b9ecfbf3fb5))
+
+
+### Bug Fixes
+
+* **dicts:** correct tts language ([76eb34d](https://github.com/crimx/ext-saladict/commit/76eb34d70fe802b3117a5c31a2e8f1d732f2f34e)), closes [#659](https://github.com/crimx/ext-saladict/issues/659)
+* **renren:** prevent detail click event being captured by panel ([921d102](https://github.com/crimx/ext-saladict/commit/921d102deac23ec19196a41512883d645c73ae13))
+* **wordpage:** keyword matching ([b9a1a3e](https://github.com/crimx/ext-saladict/commit/b9a1a3e211a405595724a9e466ffc8d9a2c7ec1d))
+
+
+### Tests
+
+* fix bing fixtures ([a7731a2](https://github.com/crimx/ext-saladict/commit/a7731a22131dc358c3036b14d59b9a3d33344a53))
+
+## [7.8.0](https://github.com/crimx/ext-saladict/compare/v7.7.6...v7.8.0) (2020-02-13)
+
+
+### Bug Fixes
+
+* remove extra clipboard search on command ([0b7166e](https://github.com/crimx/ext-saladict/commit/0b7166e)), closes [#647](https://github.com/crimx/ext-saladict/issues/647)
+* space escape ([2c31562](https://github.com/crimx/ext-saladict/commit/2c31562)), closes [#635](https://github.com/crimx/ext-saladict/issues/635)
+
+
+### Features
+
+* add standalone word editor ([24d487a](https://github.com/crimx/ext-saladict/commit/24d487a)), closes [#608](https://github.com/crimx/ext-saladict/issues/608)
+
+
+
+### [7.7.6](https://github.com/crimx/ext-saladict/compare/v7.7.5...v7.7.6) (2020-02-03)
+
+
+
+### [7.7.5](https://github.com/crimx/ext-saladict/compare/v7.7.4...v7.7.5) (2020-02-03)
+
+
+
+### [7.7.4](https://github.com/crimx/ext-saladict/compare/v7.7.3...v7.7.4) (2020-02-03)
+
+
+
+### [7.7.3](https://github.com/crimx/ext-saladict/compare/v7.7.2...v7.7.3) (2020-02-02)
+
+
+
+### [7.7.2](https://github.com/crimx/ext-saladict/compare/v7.7.1...v7.7.2) (2020-01-27)
+
+
+
+### [7.7.1](https://github.com/crimx/ext-saladict/compare/v7.7.0...v7.7.1) (2020-01-24)
+
+
+### Bug Fixes
+
+* pdf.js requires unsafe-eval csp ([533a66d](https://github.com/crimx/ext-saladict/commit/533a66d)), closes [#630](https://github.com/crimx/ext-saladict/issues/630)
+
+
+
+## [7.7.0](https://github.com/crimx/ext-saladict/compare/v7.6.2...v7.7.0) (2020-01-24)
+
+
+### Bug Fixes
+
+* **pdf:** match double quotes ([46060bd](https://github.com/crimx/ext-saladict/commit/46060bd))
+
+
+### Features
+
+* **options:** add privacy settings ([9408002](https://github.com/crimx/ext-saladict/commit/9408002))
+
+
+
+### [7.6.2](https://github.com/crimx/ext-saladict/compare/v7.6.1...v7.6.2) (2020-01-16)
+
+
+### Tests
+
+* remove fixtures ([eca13a3](https://github.com/crimx/ext-saladict/commit/eca13a3))
+
+
+
+### [7.6.1](https://github.com/crimx/ext-saladict/compare/v7.6.0...v7.6.1) (2020-01-06)
+
+
+### Bug Fixes
+
+* **background:** remove duplicated qs panel onclose response ([b9d209b](https://github.com/crimx/ext-saladict/commit/b9d209b)), closes [#618](https://github.com/crimx/ext-saladict/issues/618)
+* **selection:** respect qs panel selection settings ([4990479](https://github.com/crimx/ext-saladict/commit/4990479))
+
+
+
+## [7.6.0](https://github.com/crimx/ext-saladict/compare/v7.5.4...v7.6.0) (2019-12-29)
+
+
+### Bug Fixes
+
+* **panel:** ignore snapshot if the panel was hidden ([ae9a538](https://github.com/crimx/ext-saladict/commit/ae9a538))
+* **panel:** open word editor on wordpage ([dbb9b58](https://github.com/crimx/ext-saladict/commit/dbb9b58)), closes [#590](https://github.com/crimx/ext-saladict/issues/590)
+* **selection:** detect mouseup in panel ([989a9f6](https://github.com/crimx/ext-saladict/commit/989a9f6))
+* remove invalid window state ([c258de2](https://github.com/crimx/ext-saladict/commit/c258de2))
+* round window positions ([fa3d264](https://github.com/crimx/ext-saladict/commit/fa3d264)), closes [#607](https://github.com/crimx/ext-saladict/issues/607)
+
+
+### Features
+
+* **content:** add picker for ctx translated results ([6c0c4b8](https://github.com/crimx/ext-saladict/commit/6c0c4b8))
+* **menus:** add copu pdf url to clipboard ([cfe6d9d](https://github.com/crimx/ext-saladict/commit/cfe6d9d)), closes [#571](https://github.com/crimx/ext-saladict/issues/571)
+
+
+
+### [7.5.4](https://github.com/crimx/ext-saladict/compare/v7.5.3...v7.5.4) (2019-12-11)
+
+
+### Bug Fixes
+
+* dual screen windows management ([8196a6d](https://github.com/crimx/ext-saladict/commit/8196a6d)), closes [#587](https://github.com/crimx/ext-saladict/issues/587)
+
+
+
+### [7.5.3](https://github.com/crimx/ext-saladict/compare/v7.5.2...v7.5.3) (2019-12-10)
+
+
+### Bug Fixes
+
+* **dicts:** update moji ([fb528b1](https://github.com/crimx/ext-saladict/commit/fb528b1))
+* self messaging server init order ([8473faa](https://github.com/crimx/ext-saladict/commit/8473faa))
+* 自定义 css 对独立面板不生效 ([#579](https://github.com/crimx/ext-saladict/issues/579)) ([1db0c5a](https://github.com/crimx/ext-saladict/commit/1db0c5a))
+
+
+### Tests
+
+* remove opentranslate ([d655258](https://github.com/crimx/ext-saladict/commit/d655258))
+* update api ([34535ea](https://github.com/crimx/ext-saladict/commit/34535ea))
+* update webdav testing ([782f288](https://github.com/crimx/ext-saladict/commit/782f288))
+
+
+
 ### [7.5.2](https://github.com/crimx/ext-saladict/compare/v7.5.1...v7.5.2) (2019-11-11)
 
 

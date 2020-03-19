@@ -1,8 +1,10 @@
 export const locale = {
   title: {
-    history: 'Saladict 查词记录（仅本地保存）',
-    notebook: 'Saladict 生词本（仅本地保存）'
+    history: 'Saladict 查词记录',
+    notebook: 'Saladict 生词本'
   },
+
+  localonly: '仅本地保存',
 
   column: {
     add: '添加',
@@ -32,10 +34,15 @@ export const locale = {
       default: '保留换行',
       n: '换行替换为 \\n',
       br: '换行替换为 <br>',
-      p: '换行替换为 <p>'
+      p: '换行替换为 <p>',
+      space: '换行替换为空格'
     },
     page: '导出本页单词',
     placeholder: '替换符',
+    htmlescape: {
+      title: '对笔记内容中的 HTML 字符进行转义',
+      text: '转义 HTML 字符'
+    },
     selected: '导出选中单词'
   },
 
@@ -47,9 +54,9 @@ export const locale = {
   },
 
   wordCount: {
-    selected: '已选中 {{count}} 个单词',
-    selected_plural: '已选中 {{count}} 个单词',
-    total: '共有 {{count}} 个单词',
-    total_plural: '共有 {{count}} 个单词'
+    selected: '已选 {{count}} 项',
+    selected_plural: '已选 {{count}} 项',
+    total: '共 {{count}} 项',
+    total_plural: '共 {{count}} 项'
   }
 }

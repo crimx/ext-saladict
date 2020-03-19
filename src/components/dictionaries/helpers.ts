@@ -9,6 +9,8 @@ import { useSubscription, useObservableCallback } from 'observable-hooks'
 import { debounceTime, map, tap } from 'rxjs/operators'
 import { Observable } from 'rxjs'
 import { Language } from '@opentranslate/languages'
+import { Translator } from '@opentranslate/translator'
+import { isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 
 /** Fetch and parse dictionary search result */
 export interface SearchFunction<Result, Payload = {}> {
@@ -89,40 +91,95 @@ export interface MachineTranslateResult<ID extends DictID> {
   }
 }
 
-export function getMachineTranslateTl(
-  sl: Language,
+/**
+ * Get Machine Translate arguments
+ */
+export async function getMTArgs(
+  translator: Translator,
+  text: string,
   {
     options,
     options_sel
   }: {
-    options: { tl: 'default' | Language }
-    options_sel: { tl: ReadonlyArray<'default' | Language> }
+    options: {
+      tl: 'default' | Language
+      tl2: 'default' | Language
+      keepLF: 'none' | 'all' | 'webpage' | 'pdf'
+    }
+    options_sel: {
+      tl: ReadonlyArray<'default' | Language>
+      tl2: ReadonlyArray<'default' | Language>
+    }
   },
-  config: AppConfig
-): Language {
+  config: AppConfig,
+  payload: {
+    sl?: Language
+    tl?: Language
+    isPDF?: boolean
+  }
+): Promise<{ sl: Language; tl: Language; text: string }> {
+  if (
+    options.keepLF === 'none' ||
+    (options.keepLF === 'pdf' && !payload.isPDF) ||
+    (options.keepLF === 'webpage' && payload.isPDF)
+  ) {
+    text = text.replace(/\n+/g, ' ')
+  }
+
+  let sl = payload.sl
+
+  if (!sl) {
+    if (isContainJapanese(text)) {
+      sl = 'ja'
+    } else if (isContainKorean(text)) {
+      sl = 'ko'
+    }
+  }
+
+  if (!sl) {
+    sl = await translator.detect(text)
+  }
+
   let tl: Language | '' = ''
 
-  if (options.tl === 'default') {
+  if (payload.tl) {
+    tl = payload.tl
+  } else if (options.tl === 'default') {
     if (options_sel.tl.includes(config.langCode)) {
       tl = config.langCode
-    } else {
-      tl =
-        options_sel.tl.find((lang): lang is Language => lang !== 'default') ||
-        ''
     }
   } else {
     tl = options.tl
   }
 
-  if (!tl || sl === tl) {
-    if (!tl.startsWith('en')) {
-      return 'en'
-    }
-
-    return config.langCode.startsWith('zh') ? config.langCode : 'zh-CN'
+  if (!tl) {
+    tl =
+      options_sel.tl.find((lang): lang is Language => lang !== 'default') ||
+      'en'
   }
 
-  return tl
+  if (sl === tl) {
+    if (!payload.tl) {
+      if (options.tl2 === 'default') {
+        if (tl !== config.langCode) {
+          tl = config.langCode
+        } else if (tl !== 'en') {
+          tl = 'en'
+        } else {
+          tl =
+            options_sel.tl.find(
+              (lang): lang is Language => lang !== 'default' && lang !== tl
+            ) || 'en'
+        }
+      } else {
+        tl = options.tl2
+      }
+    } else if (!payload.sl) {
+      sl = 'auto'
+    }
+  }
+
+  return { sl, tl, text }
 }
 
 /**
@@ -156,12 +213,14 @@ export function getText(
     }
   }
 
-  const child = selector ? parent.querySelector(selector) : parent
+  const child = selector
+    ? parent.querySelector(selector)
+    : (parent as HTMLElement)
   if (!child) {
     return ''
   }
 
-  const textContent = child['textContent'] || ''
+  const textContent = child.textContent || ''
   return toChz ? chsToChz(textContent) : textContent
 }
 
@@ -193,7 +252,9 @@ export function getHTML(
     config = defaultDOMPurifyConfig
   }: GetHTMLConfig = {}
 ): string {
-  const node = selector ? parent.querySelector<HTMLElement>(selector) : parent
+  const node = selector
+    ? parent.querySelector<HTMLElement>(selector)
+    : (parent as HTMLElement)
   if (!node) {
     return ''
   }
@@ -204,14 +265,14 @@ export function getHTML(
       el.setAttribute('src', getFullLink(host!, el, 'src'))
     }
 
-    if (node['tagName'] === 'A' || node['tagName'] === 'IMG') {
-      fillLink(node as HTMLElement)
+    if (node.tagName === 'A' || node.tagName === 'IMG') {
+      fillLink(node)
     }
     node.querySelectorAll('a').forEach(fillLink)
     node.querySelectorAll('img').forEach(fillLink)
   }
 
-  const fragment = DOMPurify.sanitize((node as unknown) as Node, {
+  const fragment = DOMPurify.sanitize(node, {
     ...config,
     RETURN_DOM_FRAGMENT: true
   })
@@ -310,11 +371,11 @@ export function getFullLink(host: string, el: Element, attr: string): string {
 }
 
 /**
- * Vertically scroll a list of items
+ * Horizontally scroll a list of items
  * React event listener doesn't support passive arguemnt.
  */
-export const useVerticalScroll = <T extends HTMLElement>() => {
-  const [onWheel, onWHeel$] = useObservableCallback(_useVerticalScrollOnWheel)
+export const useHorizontalScroll = <T extends HTMLElement>() => {
+  const [onWheel, onWHeel$] = useObservableCallback(_useHorizontalScrollOnWheel)
   useSubscription(onWHeel$)
 
   const tabsRef = useRef<T>(null)
@@ -331,7 +392,7 @@ export const useVerticalScroll = <T extends HTMLElement>() => {
 
   return tabsRef
 }
-function _useVerticalScrollOnWheel(event$: Observable<WheelEvent>) {
+function _useHorizontalScrollOnWheel(event$: Observable<WheelEvent>) {
   return event$.pipe(
     map(e => {
       e.stopPropagation()

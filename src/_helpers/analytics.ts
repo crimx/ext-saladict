@@ -1,51 +1,62 @@
 import UAParser from 'ua-parser-js'
+import axios from 'axios'
+import uuid from 'uuid/v4'
+import { storage } from './browser-api'
+import { genUniqueKey } from './uniqueKey'
 
-interface Ga {
-  (...args: any[]): void
-  l: number
-  q: any[]
-}
-
-declare global {
-  interface Window {
-    ga?: Ga
-  }
-}
-
-export function injectAnalytics (page: string, win = window as Window & { ga?: Ga }) {
-  if (process.env.DEV_BUILD ||
-      process.env.NODE_ENV === 'test' ||
-      !process.env.SDAPP_ANALYTICS ||
-      win.ga
+export async function reportGA(page: string): Promise<void> {
+  if (
+    process.env.DEV_BUILD ||
+    process.env.NODE_ENV === 'test' ||
+    !process.env.SDAPP_ANALYTICS
   ) {
     return
+  }
+
+  let cid = (await storage.sync.get<{ gacid: string }>('gacid')).gacid
+  if (!cid) {
+    cid = uuid()
+    storage.sync.set({ gacid: cid })
   }
 
   const ua = new UAParser()
   const browser = ua.getBrowser()
   const os = ua.getOS()
 
-  win.ga = win.ga || function () {
-    (win.ga!.q = win.ga!.q || []).push(arguments)
-  } as Ga
-  win.ga.l = Date.now()
-
-  win.ga('create', process.env.SDAPP_ANALYTICS, 'auto')
-
-  win.ga('set', 'checkProtocolTask', null)
-  win.ga('set', 'transport', 'beacon')
-
-  win.ga('set', 'dimension1', browser.name || 'None')
-  win.ga('set', 'dimension2', (browser.version || '0.0').split('.').slice(0, 3).join('.'))
-
-  win.ga('set', 'dimension3', os.name || 'None')
-  win.ga('set', 'dimension4', os.version || '0.0')
-
-  win.ga('send', 'pageview', page)
-
-  const $ga = win.document.createElement('script')
-  $ga.type = 'text/javascript'
-  $ga.async = true
-  $ga.src = `https://www.google-analytics.com/analytics.js`
-  win.document.body.appendChild($ga)
+  try {
+    await axios({
+      url: 'https://www.google-analytics.com/collect',
+      method: 'post',
+      headers: {
+        'content-type': 'text/plain;charset=UTF-8'
+      },
+      data: new URLSearchParams({
+        // required
+        v: '1',
+        tid: 'UA-49163616-4',
+        cid,
+        t: 'pageview',
+        // required by pageview
+        dp: page,
+        // Dimensions
+        cd1: browser.name || 'None',
+        cd2: (browser.version || '0.0')
+          .split('.')
+          .slice(0, 3)
+          .join('.'),
+        cd3: os.name || 'None',
+        cd4: os.version || '0.0',
+        // others
+        de: 'UTF-8',
+        dl: document.location.href,
+        sd: screen.colorDepth + '-bit',
+        sr: screen.width + 'x' + screen.height,
+        ul: 'zh-cn',
+        // final
+        z: genUniqueKey()
+      })
+    })
+  } catch (e) {
+    console.log('ga report failed')
+  }
 }

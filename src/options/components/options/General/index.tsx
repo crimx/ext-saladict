@@ -68,16 +68,6 @@ export class General extends React.Component<Props & FormComponentProps> {
             valuePropName: 'checked'
           })(<Switch />)}
         </Form.Item>
-        <Form.Item
-          {...formItemLayout}
-          label={t('opt.analytics')}
-          help={t('opt.analytics_help')}
-        >
-          {getFieldDecorator('config#analytics', {
-            initialValue: config.analytics,
-            valuePropName: 'checked'
-          })(<Switch />)}
-        </Form.Item>
         <Form.Item {...formItemLayout} label={t('opt.language')}>
           {getFieldDecorator('config#langCode', {
             initialValue: config.langCode

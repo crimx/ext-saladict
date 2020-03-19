@@ -4,11 +4,11 @@ import '@/selection'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppConfig } from '@/app-config'
-import { injectAnalytics } from '@/_helpers/analytics'
+import { reportGA } from '@/_helpers/analytics'
 import { getConfig } from '@/_helpers/config-manager'
 import { message, openURL } from '@/_helpers/browser-api'
 import { saveWord, Word } from '@/_helpers/record-manager'
-import { translateCtx } from '@/_helpers/translateCtx'
+import { translateCtxs, genCtxText } from '@/_helpers/translateCtx'
 import { Message } from '@/typings/message'
 
 import { Provider as ProviderRedux } from 'react-redux'
@@ -45,7 +45,7 @@ getConfig().then(config => {
 
 function showPanel(config: AppConfig) {
   if (config.analytics) {
-    injectAnalytics('/popup')
+    reportGA('/popup')
   }
 
   ReactDOM.render(
@@ -94,7 +94,10 @@ async function addNotebook() {
   // async get translations
   if (word && word.context) {
     const config = await getConfig()
-    word.trans = await translateCtx(word.context || word.title, config.ctxTrans)
+    word.trans = genCtxText(
+      word.trans,
+      await translateCtxs(word.context || word.title, config.ctxTrans)
+    )
     try {
       await saveWord('notebook', word)
     } catch (err) {

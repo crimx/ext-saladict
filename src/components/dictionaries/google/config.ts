@@ -4,14 +4,15 @@ import { Subunion } from '@/typings/helpers'
 
 export type GoogleLanguage = Subunion<
   Language,
-  'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'ru'
+  'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'ru' | 'nl'
 >
 
 export type GoogleConfig = DictItem<{
-  pdfNewline: boolean
+  keepLF: 'none' | 'all' | 'webpage' | 'pdf'
   cnfirst: boolean
   concurrent: boolean
   tl: 'default' | GoogleLanguage
+  tl2: 'default' | GoogleLanguage
 }>
 
 export default (): GoogleConfig => ({
@@ -44,13 +45,39 @@ export default (): GoogleConfig => ({
     max: 999999999999999
   },
   options: {
-    /** Keep linebreaks on PDF */
-    pdfNewline: false,
+    keepLF: 'webpage',
     cnfirst: true,
     concurrent: false,
-    tl: 'default'
+    tl: 'default',
+    tl2: 'default'
   },
   options_sel: {
-    tl: ['default', 'zh-CN', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru']
+    keepLF: ['none', 'all', 'webpage', 'pdf'],
+    tl: [
+      'default',
+      'zh-CN',
+      'zh-TW',
+      'en',
+      'ja',
+      'ko',
+      'fr',
+      'de',
+      'es',
+      'ru',
+      'nl'
+    ],
+    tl2: [
+      'default',
+      'zh-CN',
+      'zh-TW',
+      'en',
+      'ja',
+      'ko',
+      'fr',
+      'de',
+      'es',
+      'ru',
+      'nl'
+    ]
   }
 })

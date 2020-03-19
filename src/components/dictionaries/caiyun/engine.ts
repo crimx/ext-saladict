@@ -3,15 +3,24 @@ import {
   SearchFunction,
   MachineTranslatePayload,
   GetSrcPageFunction,
-  getMachineTranslateTl
+  getMTArgs
 } from '../helpers'
-import { isContainChinese, isContainJapanese } from '@/_helpers/lang-check'
+import memoizeOne from 'memoize-one'
 import { Caiyun } from '@opentranslate/caiyun'
 import { CaiyunLanguage } from './config'
+import { getTranslator as getBaiduTranslator } from '../baidu/engine'
 
-let _translator: Caiyun | undefined
-const getTranslator = () =>
-  (_translator = _translator || new Caiyun({ env: 'ext' }))
+const getTranslator = memoizeOne(
+  () =>
+    new Caiyun({
+      env: 'ext',
+      config: process.env.CAIYUN_TOKEN
+        ? {
+            token: process.env.CAIYUN_TOKEN
+          }
+        : undefined
+    })
+)
 
 export const getSrcPage: GetSrcPageFunction = () => {
   return 'https://fanyi.caiyunapp.com/'
@@ -22,50 +31,39 @@ export type CaiyunResult = MachineTranslateResult<'caiyun'>
 export const search: SearchFunction<
   CaiyunResult,
   MachineTranslatePayload<CaiyunLanguage>
-> = async (text, config, profile, payload) => {
-  const options = profile.dicts.all.caiyun.options
-
+> = async (rawText, config, profile, payload) => {
   const translator = getTranslator()
+  const langcodes = translator.getSupportLanguages()
 
-  let sl = payload.sl || (await translator.detect(text))
-  let tl =
-    payload.tl || getMachineTranslateTl(sl, profile.dicts.all.caiyun, config)
+  let { sl, tl, text } = await getMTArgs(
+    translator,
+    rawText,
+    profile.dicts.all.caiyun,
+    config,
+    payload
+  )
 
-  if (sl === tl) {
-    if (isContainJapanese(text)) {
-      sl = 'ja'
-      if (tl === 'ja') {
-        tl = config.langCode.startsWith('zh') ? 'zh-CN' : 'en'
-      }
-    } else if (isContainChinese(text)) {
-      sl = 'zh-CN'
-      if (tl === 'zh-CN') {
-        tl = 'en'
-      }
-    } else {
-      sl = 'en'
-      if (tl === 'en') {
-        tl = 'zh-CN'
-      }
-    }
-  }
+  const baiduResult = await getBaiduTranslator().translate(text, sl, tl)
 
-  if (payload.isPDF && !options.pdfNewline) {
-    text = text.replace(/\n+/g, ' ')
+  if (langcodes.includes(baiduResult.from)) {
+    sl = baiduResult.from
   }
 
   try {
     const result = await translator.translate(text, sl, tl)
+    result.origin.tts = baiduResult.origin.tts
+    result.trans.tts = baiduResult.trans.tts
     return {
       result: {
         id: 'caiyun',
         sl: result.from,
         tl: result.to,
-        langcodes: translator.getSupportLanguages(),
+        langcodes,
         searchText: result.origin,
         trans: result.trans
       },
       audio: {
+        py: result.trans.tts,
         us: result.trans.tts
       }
     }

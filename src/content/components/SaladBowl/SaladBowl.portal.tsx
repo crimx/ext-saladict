@@ -6,6 +6,7 @@ const animationTimeout = { enter: 1000, exit: 100, appear: 1000 }
 
 export interface SaladBowlPortalProps extends Omit<SaladBowlProps, 'onHover'> {
   show: boolean
+  panelCSS: string
 }
 
 /**
@@ -13,7 +14,7 @@ export interface SaladBowlPortalProps extends Omit<SaladBowlProps, 'onHover'> {
  * Detach from DOM when not visible.
  */
 export const SaladBowlPortal: FC<SaladBowlPortalProps> = props => {
-  const { show, ...restProps } = props
+  const { show, panelCSS, ...restProps } = props
   const [isHover, setHover] = useState(false)
 
   return (
@@ -21,6 +22,7 @@ export const SaladBowlPortal: FC<SaladBowlPortalProps> = props => {
       id="saladict-saladbowl-root"
       head={<style>{require('./SaladBowl.shadow.scss').toString()}</style>}
       classNames="saladbowl"
+      panelCSS={panelCSS}
       in={show || isHover}
       timeout={props.withAnimation ? animationTimeout : 0}
     >

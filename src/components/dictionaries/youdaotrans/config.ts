@@ -8,8 +8,9 @@ export type YoudaotransLanguage = Subunion<
 >
 
 export type YoudaotransConfig = DictItem<{
-  pdfNewline: boolean
+  keepLF: 'none' | 'all' | 'webpage' | 'pdf'
   tl: 'default' | YoudaotransLanguage
+  tl2: 'default' | YoudaotransLanguage
 }>
 
 export default (): YoudaotransConfig => ({
@@ -42,11 +43,13 @@ export default (): YoudaotransConfig => ({
     max: 999999999999999
   },
   options: {
-    /** Keep linebreaks on PDF */
-    pdfNewline: false,
-    tl: 'default'
+    keepLF: 'webpage',
+    tl: 'default',
+    tl2: 'default'
   },
   options_sel: {
-    tl: ['default', 'zh-CN', 'en', 'pt', 'es', 'ja', 'ko', 'fr', 'ru']
+    keepLF: ['none', 'all', 'webpage', 'pdf'],
+    tl: ['default', 'zh-CN', 'en', 'pt', 'es', 'ja', 'ko', 'fr', 'ru'],
+    tl2: ['default', 'zh-CN', 'en', 'pt', 'es', 'ja', 'ko', 'fr', 'ru']
   }
 })
