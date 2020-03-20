@@ -1,6 +1,7 @@
 const path = require('path')
 const fs = require('fs-extra')
 const axios = require('axios')
+const SocksProxyAgent = require('socks-proxy-agent')
 const fglob = require('fast-glob')
 const cliProgress = require('cli-progress')
 const randomMua = require('random-mua')
@@ -29,16 +30,31 @@ async function main() {
 }
 
 async function add() {
-  const proxyConfig = env.PROXY_HOST
-    ? {
+  let proxyConfig = {}
+
+  if (env.PROXY_HOST) {
+    if (env.PROXY_PROTOCAL && env.PROXY_PROTOCAL.startsWith('socks')) {
+      const httpsAgent = new SocksProxyAgent(
+        `socks5://${env.PROXY_HOST}:${env.PROXY_PORT}`
+      )
+      proxyConfig = {
+        httpsAgent,
+        httpAgent: httpsAgent
+      }
+    } else {
+      proxyConfig = {
         proxy: {
           host: env.PROXY_HOST,
           port: env.PROXY_PORT
         }
       }
-    : {}
+    }
+  }
+
   if (env.PROXY_HOST) {
-    console.log(`with proxy:${env.PROXY_HOST}:${env.PROXY_PORT}`)
+    console.log(
+      `with proxy: ${env.PROXY_PROTOCAL}://${env.PROXY_HOST}:${env.PROXY_PORT}`
+    )
   }
 
   const progressBars = new cliProgress.MultiBar({
