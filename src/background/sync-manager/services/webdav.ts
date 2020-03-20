@@ -155,7 +155,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
 
     let dir = false
     const $responses = Array.from(doc.querySelectorAll('response'))
-    for (let i in $responses) {
+    for (const i in $responses) {
       const href = $responses[i].querySelector('href')
       if (href && href.textContent && href.textContent.endsWith('/Saladict/')) {
         // is Saladict

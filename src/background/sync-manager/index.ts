@@ -32,7 +32,7 @@ export async function syncServiceInit({
 export async function syncServiceUpload(
   payload: Message<'SYNC_SERVICE_UPLOAD'>['payload']
 ) {
-  let selectedServices: SyncService[] = []
+  const selectedServices: SyncService[] = []
   if (payload.serviceID) {
     const service = services.get(payload.serviceID)
     if (!service) {

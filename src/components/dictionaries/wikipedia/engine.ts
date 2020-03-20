@@ -53,7 +53,7 @@ export const search: SearchFunction<WikipediaResult, WikipediaPayload> = (
 
   let url = payload.url
   if (url) {
-    const matchSubdomain = url.match(/([^\/\.]+)\.m\.wikipedia\.org/)
+    const matchSubdomain = url.match(/([^/.]+)\.m\.wikipedia\.org/)
     if (matchSubdomain) {
       subdomain = matchSubdomain[1]
     } else {

@@ -1,11 +1,8 @@
 import { createIntantCaptureStream } from '@/selection/instant-capture'
-import getDefaultConfig, { AppConfigMutable, AppConfig } from '@/app-config'
-import { of } from 'rxjs'
+import getDefaultConfig, { AppConfigMutable } from '@/app-config'
 
 const config = getDefaultConfig() as AppConfigMutable
 config.mode.instant.enable = true
 config.mode.instant.key = 'ctrl'
 
-createIntantCaptureStream(of(config), of(false), of(false)).subscribe(
-  console.log
-)
+createIntantCaptureStream(config).subscribe(console.log)

@@ -24,7 +24,7 @@ export class AddNewItem extends React.Component<AddNewItemProps> {
       return
     }
 
-    let { name, url } = form.getFieldsValue() as CustomContextItem
+    const { name, url } = form.getFieldsValue() as CustomContextItem
     if (name && url) {
       const { contextMenus } = config as AppConfigMutable
       const id = `c_${genUniqueKey()}`

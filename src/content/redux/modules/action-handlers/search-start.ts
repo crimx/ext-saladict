@@ -13,7 +13,7 @@ export const searchStart: ActionHandler<
   const { activeProfile, searchHistory, historyIndex } = state
 
   let word: Word
-  let newSearchHistory: Word[] =
+  const newSearchHistory: Word[] =
     payload && payload.noHistory
       ? searchHistory
       : searchHistory.slice(0, historyIndex + 1)

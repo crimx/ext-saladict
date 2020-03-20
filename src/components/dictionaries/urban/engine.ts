@@ -60,10 +60,10 @@ function handleDOM(
   doc: Document,
   { resultnum }: { resultnum: number }
 ): UrbanSearchResult | Promise<UrbanSearchResult> {
-  let result: UrbanResult = []
-  let audio: { us?: string } = {}
+  const result: UrbanResult = []
+  const audio: { us?: string } = {}
 
-  let defPanels = Array.from(doc.querySelectorAll('.def-panel'))
+  const defPanels = Array.from(doc.querySelectorAll('.def-panel'))
 
   if (defPanels.length <= 0) {
     return handleNoResult()
@@ -72,14 +72,14 @@ function handleDOM(
   for (let i = 0; i < defPanels.length && result.length < resultnum; i++) {
     const $panel = defPanels[i]
 
-    let resultItem: UrbanResultItem = { title: '' }
+    const resultItem: UrbanResultItem = { title: '' }
 
     resultItem.title = getText($panel, '.word')
     if (!resultItem.title) {
       continue
     }
 
-    let $pron = $panel.querySelector('.play-sound') as HTMLElement
+    const $pron = $panel.querySelector('.play-sound') as HTMLElement
     if ($pron && $pron.dataset.urls) {
       try {
         const pron = JSON.parse($pron.dataset.urls)[0]
@@ -99,7 +99,7 @@ function handleDOM(
 
     resultItem.example = getInnerHTML(HOST, $panel, '.example')
 
-    let $gif = $panel.querySelector('.gif > img') as HTMLImageElement
+    const $gif = $panel.querySelector('.gif > img') as HTMLImageElement
     if ($gif) {
       const $attr = $gif.nextElementSibling
       resultItem.gif = {
@@ -108,7 +108,7 @@ function handleDOM(
       }
     }
 
-    let $tags = Array.from($panel.querySelectorAll('.tags a'))
+    const $tags = Array.from($panel.querySelectorAll('.tags a'))
     if ($tags && $tags.length > 0) {
       resultItem.tags = $tags.map($tag => ($tag.textContent || ' ').slice(1))
     }

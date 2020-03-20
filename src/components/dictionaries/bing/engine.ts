@@ -114,7 +114,7 @@ function handleLexResult(
   options: BingConfig['options'],
   isChz: boolean
 ): BingSearchResultLex | Promise<BingSearchResultLex> {
-  let searchResult: DictSearchResult<BingResultLex> = {
+  const searchResult: DictSearchResult<BingResultLex> = {
     result: {
       type: 'lex',
       title: getText(doc, '.client_def_hd_hd', isChz)
@@ -123,11 +123,11 @@ function handleLexResult(
 
   // pronunciation
   if (options.phsym) {
-    let $prons = Array.from(doc.querySelectorAll('.client_def_hd_pn_list'))
+    const $prons = Array.from(doc.querySelectorAll('.client_def_hd_pn_list'))
     if ($prons.length > 0) {
       searchResult.result.phsym = $prons.map(el => {
         let pron = ''
-        let $audio = el.querySelector('.client_aud_o')
+        const $audio = el.querySelector('.client_aud_o')
         if ($audio) {
           pron = (($audio.getAttribute('onclick') || '').match(
             /https.*\.mp3/
@@ -155,9 +155,9 @@ function handleLexResult(
 
   // definitions
   if (options.cdef) {
-    let $container = doc.querySelector('.client_def_container')
+    const $container = doc.querySelector('.client_def_container')
     if ($container) {
-      let $defs = Array.from($container.querySelectorAll('.client_def_bar'))
+      const $defs = Array.from($container.querySelectorAll('.client_def_bar'))
       if ($defs.length > 0) {
         searchResult.result.cdef = $defs.map(el => ({
           pos: getText(el, '.client_def_title_bar', isChz),
@@ -169,14 +169,14 @@ function handleLexResult(
 
   // tense
   if (options.tense) {
-    let $infs = Array.from(doc.querySelectorAll('.client_word_change_word'))
+    const $infs = Array.from(doc.querySelectorAll('.client_word_change_word'))
     if ($infs.length > 0) {
       searchResult.result.infs = $infs.map(el => (el.textContent || '').trim())
     }
   }
 
   if (options.sentence > 0) {
-    let $sens = doc.querySelectorAll('.client_sentence_list')
+    const $sens = doc.querySelectorAll('.client_sentence_list')
     const sentences: typeof searchResult.result.sentences = []
     for (
       let i = 0;

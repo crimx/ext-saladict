@@ -121,10 +121,7 @@ function transformTyping(event$: Observable<React.KeyboardEvent>) {
   return event$.pipe(
     switchMap(event => {
       event.stopPropagation()
-      return timer(1000).pipe(
-        mapTo(false),
-        startWith(true)
-      )
+      return timer(1000).pipe(mapTo(false), startWith(true))
     })
   )
 }

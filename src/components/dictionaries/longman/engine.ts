@@ -229,9 +229,9 @@ function handleDOMLex(
     }
 
     if (options.examples) {
-      entry.examples = Array.from($entry.querySelectorAll('.exaGroup')).map(
-        $exa => getInnerHTML(HOST, $exa)
-      )
+      entry.examples = Array.from(
+        $entry.querySelectorAll('.exaGroup')
+      ).map($exa => getInnerHTML(HOST, $exa))
     }
 
     result[currentDict].push(entry)

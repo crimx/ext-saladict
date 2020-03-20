@@ -17,13 +17,10 @@ export interface CtxTransListProps {
 
 export const CtxTransList: FC<CtxTransListProps> = props => {
   const [isLoading, setIsLoading] = useState(() =>
-    Object.keys(props.ctxTransConfig).reduce(
-      (result, id) => {
-        result[id] = false
-        return result
-      },
-      {} as { [id in keyof AppConfig['ctxTrans']]: boolean }
-    )
+    Object.keys(props.ctxTransConfig).reduce((result, id) => {
+      result[id] = false
+      return result
+    }, {} as { [id in keyof AppConfig['ctxTrans']]: boolean })
   )
 
   const onTicked = async (evt: React.ChangeEvent<HTMLInputElement>) => {

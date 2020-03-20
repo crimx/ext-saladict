@@ -28,9 +28,9 @@ const TText: FC<{ source: TTextSource }> = ({ source }) => (
 )
 
 /** Template for machine translations */
-export const MachineTrans: FC<
-  ViewPorps<MachineTranslateResult<DictID>>
-> = props => {
+export const MachineTrans: FC<ViewPorps<
+  MachineTranslateResult<DictID>
+>> = props => {
   const { trans, searchText, langcodes, tl, sl } = props.result
   const { t } = useTranslate(['content', 'langcode'])
 

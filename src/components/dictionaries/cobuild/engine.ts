@@ -92,15 +92,15 @@ async function handleCibaDOM(
 
   result.level = getText(doc, '.base-level')
 
-  let $star = doc.querySelector('.word-rate [class^="star"]')
+  const $star = doc.querySelector('.word-rate [class^="star"]')
   if ($star) {
-    let star = Number($star.className[$star.className.length - 1])
+    const star = Number($star.className[$star.className.length - 1])
     if (!isNaN(star)) {
       result.star = star
     }
   }
 
-  let $pron = doc.querySelector('.base-speak')
+  const $pron = doc.querySelector('.base-speak')
   if ($pron) {
     result.prons = Array.from($pron.children).map(el => {
       const phsym = (el.textContent || '').trim()
@@ -119,7 +119,7 @@ async function handleCibaDOM(
     })
   }
 
-  let $article = Array.from(doc.querySelectorAll('.info-article')).find(x =>
+  const $article = Array.from(doc.querySelectorAll('.info-article')).find(x =>
     /柯林斯高阶英汉双解学习词典/.test(x.textContent || '')
   )
   if ($article) {

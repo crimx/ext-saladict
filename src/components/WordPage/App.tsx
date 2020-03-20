@@ -86,6 +86,7 @@ export class WordPageMain extends React.Component<
     super(props)
     const { t, area } = props
 
+    // eslint-disable-next-line prefer-const
     let signal$: Observable<boolean>
     this.fetchData$$ = new Subject<FetchDataConfig>()
     const fetchData$$ = this.fetchData$$.pipe(
