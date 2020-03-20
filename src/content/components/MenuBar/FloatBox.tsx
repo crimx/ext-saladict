@@ -1,7 +1,8 @@
 import React, { FC, Ref, useState, useCallback } from 'react'
 import { ResizeReporter } from 'react-resize-reporter/scroll'
 
-interface FloatBoxPropsBase {
+interface FloatBoxProps {
+  list?: Array<{ key: string; content: React.ReactNode }>
   /** Box container */
   ref?: Ref<HTMLDivElement>
   /** When a item is selected */
@@ -23,17 +24,6 @@ interface FloatBoxPropsBase {
   /** When box height is changed */
   onHeightChanged?: (height: number) => any
 }
-
-interface FloatBoxPropsWithList extends FloatBoxPropsBase {
-  list: Array<{ key: string; content: React.ReactNode }>
-  isLoading?: false
-}
-
-interface FloatBoxPropsLoading extends FloatBoxPropsBase {
-  isLoading: true
-}
-
-export type FloatBoxProps = FloatBoxPropsWithList | FloatBoxPropsLoading
 
 /**
  * A white box
@@ -63,7 +53,7 @@ export const FloatBox: FC<FloatBoxProps> = React.forwardRef(
         <div className="menuBar-FloatBoxMeasure">
           <ResizeReporter reportInit onSizeChanged={updateHeight} />
 
-          {props.isLoading ? (
+          {!props.list ? (
             <div className="lds-ellipsis">
               <div></div>
               <div></div>
@@ -87,8 +77,9 @@ export const FloatBox: FC<FloatBoxProps> = React.forwardRef(
                       if ($nextLi) {
                         ;($nextLi as HTMLButtonElement).focus()
                       } else if (props.onArrowDownLast) {
-                        props.onArrowDownLast(e.currentTarget
-                          .parentElement as HTMLDivElement)
+                        props.onArrowDownLast(
+                          e.currentTarget.parentElement as HTMLDivElement
+                        )
                       }
                     } else if (e.key === 'ArrowUp') {
                       e.preventDefault()
@@ -97,16 +88,18 @@ export const FloatBox: FC<FloatBoxProps> = React.forwardRef(
                       if ($prevLi) {
                         ;($prevLi as HTMLButtonElement).focus()
                       } else if (props.onArrowUpFirst) {
-                        props.onArrowUpFirst(e.currentTarget
-                          .parentElement as HTMLDivElement)
+                        props.onArrowUpFirst(
+                          e.currentTarget.parentElement as HTMLDivElement
+                        )
                       }
                     } else if (e.key === 'Escape') {
                       // prevent the dict panel being closed
                       e.preventDefault()
                       e.stopPropagation()
                       if (props.onClose) {
-                        props.onClose(e.currentTarget
-                          .parentElement as HTMLDivElement)
+                        props.onClose(
+                          e.currentTarget.parentElement as HTMLDivElement
+                        )
                       }
                     }
                   }}
