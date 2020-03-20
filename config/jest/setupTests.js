@@ -3,6 +3,10 @@ import browser from 'sinon-chrome/extensions'
 // import Adapter from 'enzyme-adapter-react-16'
 import raf from 'raf'
 import fetch from 'node-fetch'
+import axios from 'axios'
+
+// force http in jsdom
+axios.defaults.adapter = require('axios/lib/adapters/http')
 
 window.browser = browser
 window.Request = fetch.Request
