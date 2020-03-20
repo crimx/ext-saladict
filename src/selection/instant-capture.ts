@@ -25,14 +25,15 @@ import {
 export function createIntantCaptureStream(config: AppConfig | null) {
   if (!config) return empty()
 
-  const isPinned$ = message.self.createStream('PIN_STATE').pipe(
-    pluck('payload'),
-    startWith(false)
-  )
+  const isPinned$ = message.self
+    .createStream('PIN_STATE')
+    .pipe(pluck('payload'), startWith(false))
 
   const responseToQSPanel$ = merge(
     // When Quick Search Panel show and hide
-    from(message.send<'QUERY_QS_PANEL'>({ type: 'QUERY_QS_PANEL' })),
+    from(
+      message.send<'QUERY_QS_PANEL'>({ type: 'QUERY_QS_PANEL' })
+    ),
     message.createStream('QS_PANEL_CHANGED').pipe(pluck('payload'))
   ).pipe(
     map(withQSPanel => withQSPanel && config.tripleCtrlPageSel),

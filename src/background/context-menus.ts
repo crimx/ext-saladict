@@ -79,8 +79,9 @@ export class ContextMenus {
             ? 'cht'
             : 'en'
         openURL(
-          `https://fanyi.baidu.com/transpage?query=${encodeURIComponent(tabs[0]
-            .url as string)}&from=auto&to=${langCode}&source=url&render=1`
+          `https://fanyi.baidu.com/transpage?query=${encodeURIComponent(
+            tabs[0].url as string
+          )}&from=auto&to=${langCode}&source=url&render=1`
         )
       }
     })
@@ -168,11 +169,13 @@ export class ContextMenus {
         openURL(browser.runtime.getURL('notebook.html'))
         break
       default:
-        const item = window.appConfig.contextMenus.all[menuItemId]
-        if (item) {
-          const url = typeof item === 'string' ? item : item.url
-          if (url) {
-            openURL(url.replace('%s', selectionText))
+        {
+          const item = window.appConfig.contextMenus.all[menuItemId]
+          if (item) {
+            const url = typeof item === 'string' ? item : item.url
+            if (url) {
+              openURL(url.replace('%s', selectionText))
+            }
           }
         }
         break

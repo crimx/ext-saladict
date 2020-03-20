@@ -157,7 +157,7 @@ export class BackgroundServer {
   ): Promise<MessageResponse<'FETCH_DICT_RESULT'>> {
     let search: SearchFunction<
       DictSearchResult<any>,
-      NonNullable<(typeof data)['payload']>
+      NonNullable<typeof data['payload']>
     >
 
     try {

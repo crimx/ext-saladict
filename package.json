@@ -16,6 +16,7 @@
     "commit": "git-cz",
     "release": "standard-version",
     "fixtures": "node scripts/fixtures.js",
+    "lint": "eslint src/**/*.{js,ts,tsx}",
     "pdf": "node scripts/pdf.js"
   },
   "husky": {

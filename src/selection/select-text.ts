@@ -334,10 +334,7 @@ function clickPeriodCountStream(
 ) {
   return mouseup$.pipe(
     switchMap(() =>
-      timer(doubleClickDelay).pipe(
-        mapTo(false),
-        startWith(true)
-      )
+      timer(doubleClickDelay).pipe(mapTo(false), startWith(true))
     ),
     scan((sum: number, flag: boolean) => (flag ? sum + 1 : 0), 0)
   )

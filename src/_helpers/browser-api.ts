@@ -292,7 +292,12 @@ function storageCreateStream<T = any>(
     handler => this.addListener(key, handler as StorageListenerCb),
     handler => this.removeListener(key, handler as StorageListenerCb)
   ).pipe(
-    filter(args => (Array.isArray(args) ? args[0] : args).hasOwnProperty(key)),
+    filter(args =>
+      Object.prototype.hasOwnProperty.call(
+        Array.isArray(args) ? args[0] : args,
+        key
+      )
+    ),
     map(args => (Array.isArray(args) ? args[0][key] : args[key]))
   )
 }

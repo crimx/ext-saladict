@@ -108,8 +108,8 @@ export function checkSupportedLangs(
     }
 
     if (langs.others) {
-      let checkedMatchers: RegExp[] = [/-|\.|\d|\s/]
-      let uncheckedMatchers: RegExp[] = []
+      const checkedMatchers: RegExp[] = [/-|\.|\d|\s/]
+      const uncheckedMatchers: RegExp[] = []
 
       for (let i = languages.length - 1; i >= 0; i--) {
         const l = languages[i]

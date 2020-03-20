@@ -34,5 +34,10 @@ module.exports = {
   },
   globals: {
     browser: true
+  },
+  settings: {
+    react: {
+      version: 'detect'
+    }
   }
 }
