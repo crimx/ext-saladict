@@ -280,47 +280,48 @@ export class QsPanelManager {
 
     switch (tripleCtrlLocation) {
       case 'CENTER':
-        qsPanelLeft = (window.screen.width - qsPanelWidth) / 2
-        qsPanelTop = (window.screen.height - tripleCtrlHeight) / 2
+        qsPanelLeft = (window.screen.availWidth - qsPanelWidth) / 2
+        qsPanelTop = (window.screen.availHeight - tripleCtrlHeight) / 2
         break
       case 'TOP':
-        qsPanelLeft = (window.screen.width - qsPanelWidth) / 2
+        qsPanelLeft = (window.screen.availWidth - qsPanelWidth) / 2
         qsPanelTop = 30
         break
       case 'RIGHT':
-        qsPanelLeft = window.screen.width - qsPanelWidth - 30
-        qsPanelTop = (window.screen.height - tripleCtrlHeight) / 2
+        qsPanelLeft = window.screen.availWidth - qsPanelWidth - 30
+        qsPanelTop = (window.screen.availHeight - tripleCtrlHeight) / 2
         break
       case 'BOTTOM':
-        qsPanelLeft = (window.screen.width - qsPanelWidth) / 2
-        qsPanelTop = window.screen.height - qsPanelHeight - 10
+        qsPanelLeft = (window.screen.availWidth - qsPanelWidth) / 2
+        qsPanelTop = window.screen.availHeight - qsPanelHeight - 10
         break
       case 'LEFT':
         qsPanelLeft = 10
-        qsPanelTop = (window.screen.height - tripleCtrlHeight) / 2
+        qsPanelTop = (window.screen.availHeight - tripleCtrlHeight) / 2
         break
       case 'TOP_LEFT':
         qsPanelLeft = 10
         qsPanelTop = 30
         break
       case 'TOP_RIGHT':
-        qsPanelLeft = window.screen.width - qsPanelWidth - 30
+        qsPanelLeft = window.screen.availWidth - qsPanelWidth - 30
         qsPanelTop = 30
         break
       case 'BOTTOM_LEFT':
         qsPanelLeft = 10
-        qsPanelTop = window.screen.height - qsPanelHeight - 10
+        qsPanelTop = window.screen.availHeight - qsPanelHeight - 10
         break
       case 'BOTTOM_RIGHT':
-        qsPanelLeft = window.screen.width - qsPanelWidth - 30
-        qsPanelTop = window.screen.height - qsPanelHeight - 10
+        qsPanelLeft = window.screen.availWidth - qsPanelWidth - 30
+        qsPanelTop = window.screen.availHeight - qsPanelHeight - 10
         break
     }
 
     // coords must be integer
+    // plus offset of other screen
     return {
-      top: Math.round(qsPanelTop),
-      left: Math.round(qsPanelLeft),
+      top: Math.round(qsPanelTop + (window.screen['availTop'] || 0)),
+      left: Math.round(qsPanelLeft + (window.screen['availLeft'] || 0)),
       width: Math.round(qsPanelWidth),
       height: Math.round(qsPanelHeight)
     }
