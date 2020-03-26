@@ -174,7 +174,7 @@ export class ContextMenus {
           if (item) {
             const url = typeof item === 'string' ? item : item.url
             if (url) {
-              openURL(url.replace('%s', selectionText))
+              openURL(url.replace('%s', encodeURIComponent(selectionText)))
             }
           }
         }
