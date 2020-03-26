@@ -9,6 +9,8 @@ import createStore from './redux/create'
 import { I18nextProvider as ProviderI18next } from 'react-i18next'
 import { i18nLoader } from '@/_helpers/i18n'
 
+import './content.scss'
+
 // Only load on top frame
 if (window.parent === window && !window.__SALADICT_PANEL_LOADED__) {
   window.__SALADICT_PANEL_LOADED__ = true
