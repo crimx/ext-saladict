@@ -211,6 +211,21 @@ module.exports = {
             .set('@', path.join(__dirname, 'src'))
             .end()
           .end()
+
+      // remove dynamic import transformation
+      // prettier-ignore
+      neutrino.config
+        .module
+          .rule('compile')
+          .use('babel')
+          .tap(options => {
+            options.plugins = options.plugins.filter(
+              plugin => !(Array.isArray(plugin) ? plugin[0] : plugin).includes(
+                '@babel/plugin-syntax-dynamic-import'
+              )
+            )
+            return options
+          })
       /* eslint-enable indent */
 
       if (argv.mode === 'production') {
