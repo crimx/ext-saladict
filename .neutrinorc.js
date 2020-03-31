@@ -18,6 +18,7 @@ module.exports = {
         webext: {
           type: 'content_scripts',
           manifest: {
+            css: ['assets/content.css'],
             matches: ['<all_urls>']
           },
           setup: 'content/__fake__/env.ts'
