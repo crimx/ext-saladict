@@ -35,26 +35,31 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
   const Dict = useMemo(
     () =>
       React.lazy<ComponentType<ViewPorps<any>>>(() =>
-        // due to browser extension limitation
-        // jsonp needs a little hack to work
-        // disable dynamic chunks for now
         import(
           /* webpackInclude: /View\.tsx$/ */
           /* webpackChunkName: "dicts/[request]" */
-          /* webpackMode: "eager" */
-          /* webpackPrefetch: true */
-          /* webpackPreload: true */
+          /* webpackMode: "lazy" */
           `@/components/dictionaries/${props.dictID}/View.tsx`
         )
       ),
     [props.dictID]
   )
 
-  const dictStyles = useMemo(
+  const DictStyle = useMemo(
     () =>
-      require('@/components/dictionaries/' +
-        props.dictID +
-        '/_style.shadow.scss').toString(),
+      React.lazy(async () => {
+        const styleModule = await import(
+          /* webpackInclude: /_style\.shadow\.scss$/ */
+          /* webpackChunkName: "dicts/[request]" */
+          /* webpackMode: "lazy" */
+          `@/components/dictionaries/${props.dictID}/_style.shadow.scss`
+        )
+        return {
+          default: () => (
+            <style>{(styleModule.default || styleModule).toString()}</style>
+          )
+        }
+      }),
     [props.dictID]
   )
 
@@ -64,7 +69,7 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
         {props.searchStatus === 'FINISH' && props.searchResult && (
           <root.div>
             <style>{dictContentStyles}</style>
-            <style>{dictStyles}</style>
+            <DictStyle />
             <style>
               {`.dictRoot {
                   font-size: ${props.fontSize}px;

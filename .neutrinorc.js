@@ -238,7 +238,7 @@ module.exports = {
               splitChunks: {
                 cacheGroups: {
                   dictpanel: {
-                    test: /([\\/]src[\\/]content[\\/])|([\\/]components[\\/]dictionaries[\\/])|([\\/]node_modules[\\/]react)/,
+                    test: /([\\/]src[\\/]content[\\/])|([\\/]node_modules[\\/]react)/,
                     name: 'dictpanel',
                     chunks: ({ name }) => !/^(selection|audio-control|background)$/.test(name)
                   },
