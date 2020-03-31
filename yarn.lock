@@ -5937,7 +5937,7 @@ dotenv@^6.2.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
   integrity sha512-HygQCKUBSFl8wKQZBSemMywRWcEDNidvNbjGVyZu3nbZ8qq9ubiPoGLMdRDpfSrpkkm9BXYFkpKxxFX38o/76w==
 
-dotenv@^8.0.0:
+dotenv@^8.0.0, dotenv@^8.2.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
   integrity sha512-8sJ78ElpbDJBHNeBzUbUVLsqKdccaa/BXF1uPTw3GrvQTBgrQrtObr2mUrE38vzYd8cEv+m/JBfDLioYcfXoaw==
@@ -10232,17 +10232,17 @@ nested-object-assign@^1.0.3:
   resolved "https://registry.yarnpkg.com/nested-object-assign/-/nested-object-assign-1.0.3.tgz#5aca69390d9affe5a612152b5f0843ae399ac597"
   integrity sha512-kgq1CuvLyUcbcIuTiCA93cQ2IJFSlRwXcN+hLcb2qLJwC2qrePHGZZa7IipyWqaWF6tQjdax2pQnVxdq19Zzwg==
 
-neutrino-webextension@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/neutrino-webextension/-/neutrino-webextension-1.1.1.tgz#e11a69953f93bcf32ab7e934697f0d68425371fd"
-  integrity sha512-xTDhKMlF/FQvFUW414ExIqKe6lfjb7SFfs1PVb/kAsJa9fXH8017geXFQwUSDs15oN1jPiEscE9tv5aseeyxnw==
+neutrino-webextension@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/neutrino-webextension/-/neutrino-webextension-1.1.2.tgz#0f423c47b0a41e8426a66d30313c678b876469d4"
+  integrity sha512-KhMNKX6lOUhPlmxrbGB9K86aUrdc+WWc3ujUNQfwUZzXTamIN0cTEwgRUIM86rFbRuqHzyPIivJeSXrDuLzYIQ==
   dependencies:
     archiver "^3.0.0"
     deepmerge "^3.3.0"
     fs-extra "^9.0.0"
     globby "^10.0.1"
     webextensions-emulator "^1.2.5"
-    webpack-target-webextension "^0.1.0"
+    webpack-target-webextension "^0.1.1"
     yargs-parser "^18.1.0"
 
 neutrino@^9.1.0:
@@ -15034,10 +15034,10 @@ webpack-sources@^1.1.0, webpack-sources@^1.4.0, webpack-sources@^1.4.1:
     source-list-map "^2.0.0"
     source-map "~0.6.1"
 
-webpack-target-webextension@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/webpack-target-webextension/-/webpack-target-webextension-0.1.0.tgz#d975b73cf5e42638f3bfe711f327125c99d7036d"
-  integrity sha512-RK9EdsecmwRyHfICFydmeW3jW7EOAmF2O1S3gsVrAiakYd0GsD73TAe8frHJ9psCD9cTt5phwIrDll12HJPPYg==
+webpack-target-webextension@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/webpack-target-webextension/-/webpack-target-webextension-0.1.1.tgz#bb9051e188bc22d2fe9cb7d917a03eaac85c100c"
+  integrity sha512-U+SYw54LpZCz5Z0jB1pIZpU8fuNUHJSzXIFs+p9hW/w1TcKRta0oqYxLm2VHn+Df/dZ/Vm++9kC93guRvwBiQg==
 
 webpack@^4, webpack@^4.33.0, webpack@^4.38.0:
   version "4.42.0"
