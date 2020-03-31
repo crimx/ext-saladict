@@ -1,11 +1,12 @@
 const path = require('path')
+const webpack = require('webpack')
 const react = require('@neutrinojs/react')
 const copy = require('@neutrinojs/copy')
 const jest = require('@neutrinojs/jest')
 const wext = require('neutrino-webextension')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
-const DotenvPlugin = require('dotenv-webpack')
+const dotenv = require('dotenv')
 const argv = require('yargs').argv
 const AfterBuildPlugin = require('./scripts/after-build')
 
@@ -212,20 +213,15 @@ module.exports = {
             .end()
           .end()
 
-      // remove dynamic import transformation
       // prettier-ignore
       neutrino.config
-        .module
-          .rule('compile')
-          .use('babel')
-          .tap(options => {
-            options.plugins = options.plugins.filter(
-              plugin => !(Array.isArray(plugin) ? plugin[0] : plugin).includes(
-                '@babel/plugin-syntax-dynamic-import'
-              )
-            )
-            return options
-          })
+        .plugin('process.env')
+          .use(webpack.DefinePlugin, [{
+            'process.env': JSON.stringify(Object.assign(
+                { DEV_BUILD: !!argv.devbuild },
+                dotenv.config().parsed
+              ))
+          }])
       /* eslint-enable indent */
 
       if (argv.mode === 'production') {
@@ -236,7 +232,6 @@ module.exports = {
             .end()
           .plugin('momentjs')
             .use(MomentLocalesPlugin, [{ localesToKeep: ['zh-cn', 'zh-tw'] }])
-            .use(DotenvPlugin)
             .end()
           .optimization
             .merge({
