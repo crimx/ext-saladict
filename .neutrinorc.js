@@ -98,6 +98,22 @@ module.exports = {
   use: [
     react({
       image: {
+        // dev-server image name collision
+        name: resourcePath => {
+          if (process.env.NODE_ENV === 'development') {
+            return '[path]/[name].[ext]'
+          }
+
+          const dictMatch = /\/dictionaries\/([^/]+)\/favicon.png/.exec(
+            resourcePath
+          )
+          if (dictMatch) {
+            return `assets/favicon-${dictMatch[1]}.[contenthash:8].[ext]`
+          }
+
+          return 'assets/[name].[contenthash:8].[ext]'
+        },
+        // alway emits image files
         limit: 0,
         // remove `default` when `require` image
         // due to legacy code
