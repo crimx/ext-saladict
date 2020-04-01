@@ -3,14 +3,15 @@ import {
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
-  DictSearchResult
+  DictSearchResult,
+  getChsToChz
 } from '../helpers'
-import chsToChz from '@/_helpers/chs-to-chz'
 import { AppConfig } from '@/app-config'
 import axios from 'axios'
 
-export const getSrcPage: GetSrcPageFunction = text => {
-  return `https://www.moedict.tw/${chsToChz(text)}`
+export const getSrcPage: GetSrcPageFunction = async text => {
+  const transform = await getChsToChz()
+  return `https://www.moedict.tw/${transform(text)}`
 }
 
 /** @see https://github.com/audreyt/moedict-webkit#4-國語-a */
@@ -55,11 +56,12 @@ export const search: SearchFunction<GuoYuResult> = (
   return moedictSearch<GuoYuResult>('a', text, config)
 }
 
-export function moedictSearch<R extends GuoYuResult>(
+export async function moedictSearch<R extends GuoYuResult>(
   moedictID: string,
   text: string,
   config: AppConfig
 ): Promise<DictSearchResult<R>> {
+  const chsToChz = await getChsToChz()
   return axios
     .get<R>(
       `https://www.moedict.tw/${moedictID}/${encodeURIComponent(

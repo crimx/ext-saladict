@@ -7,7 +7,8 @@ import {
   handleNetWorkError,
   SearchFunction,
   GetSrcPageFunction,
-  DictSearchResult
+  DictSearchResult,
+  getChsToChz
 } from '../helpers'
 import { DictConfigs } from '@/app-config'
 
@@ -43,35 +44,35 @@ export type YoudaoResult = YoudaoResultLex | YoudaoResultRelated
 
 type YoudaoSearchResult = DictSearchResult<YoudaoResult>
 
-export const search: SearchFunction<YoudaoResult> = (
+export const search: SearchFunction<YoudaoResult> = async (
   text,
   config,
   profile,
   payload
 ) => {
   const options = profile.dicts.all.youdao.options
-  const isChz = config.langCode === 'zh-TW'
+  const transform = await getChsToChz(config.langCode)
 
   return fetchDirtyDOM(
     'https://dict.youdao.com/w/' + encodeURIComponent(text.replace(/\s+/g, ' '))
   )
     .catch(handleNetWorkError)
-    .then(doc => checkResult(doc, options, isChz))
+    .then(doc => checkResult(doc, options, transform))
 }
 
 function checkResult(
   doc: Document,
   options: DictConfigs['youdao']['options'],
-  isChz: boolean
+  transform: null | ((text: string) => string)
 ): YoudaoSearchResult | Promise<YoudaoSearchResult> {
   const $typo = doc.querySelector('.error-typo')
   if (!$typo) {
-    return handleDOM(doc, options, isChz)
+    return handleDOM(doc, options, transform)
   } else if (options.related) {
     return {
       result: {
         type: 'related',
-        list: getInnerHTML(HOST, $typo, { toChz: isChz })
+        list: getInnerHTML(HOST, $typo, { transform })
       }
     }
   }
@@ -81,14 +82,14 @@ function checkResult(
 function handleDOM(
   doc: Document,
   options: DictConfigs['youdao']['options'],
-  isChz: boolean
+  transform: null | ((text: string) => string)
 ): YoudaoSearchResult | Promise<YoudaoSearchResult> {
   const result: YoudaoResult = {
     type: 'lex',
-    title: getText(doc, '.keyword', isChz),
+    title: getText(doc, '.keyword', transform),
     stars: 0,
     rank: getText(doc, '.rank'),
-    pattern: getText(doc, '.pattern', isChz),
+    pattern: getText(doc, '.pattern', transform),
     prons: []
   }
 
@@ -119,35 +120,35 @@ function handleDOM(
   if (options.basic) {
     result.basic = getInnerHTML(HOST, doc, {
       selector: '#phrsListTab .trans-container',
-      toChz: isChz
+      transform
     })
   }
 
   if (options.collins) {
     result.collins = getInnerHTML(HOST, doc, {
       selector: '#collinsResult .ol',
-      toChz: isChz
+      transform
     })
   }
 
   if (options.discrimination) {
     result.discrimination = getInnerHTML(HOST, doc, {
       selector: '#discriminate',
-      toChz: isChz
+      transform
     })
   }
 
   if (options.sentence) {
     result.sentence = getInnerHTML(HOST, doc, {
       selector: '#authority .ol',
-      toChz: isChz
+      transform
     })
   }
 
   if (options.translation) {
     result.translation = getInnerHTML(HOST, doc, {
       selector: '#fanyiToggle .trans-container',
-      toChz: isChz
+      transform
     })
   }
 

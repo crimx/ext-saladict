@@ -3,7 +3,6 @@ import AxiosMockAdapter from 'axios-mock-adapter'
 import { DictID, AppConfig } from '@/app-config'
 import { Profile } from '@/app-config/profiles'
 import { Word } from '@/_helpers/record-manager'
-import { chsToChz } from '@/_helpers/chs-to-chz'
 import { useEffect, useRef } from 'react'
 import { useSubscription, useObservableCallback } from 'observable-hooks'
 import { debounceTime, map, tap } from 'rxjs/operators'
@@ -183,33 +182,52 @@ export async function getMTArgs(
 }
 
 /**
+ * Get chs-chz transform function on-demand.
+ * The dict object is huge.
+ * @param langCode
+ */
+export async function getChsToChz(): Promise<(text: string) => string>
+export async function getChsToChz(
+  langCode: string
+): Promise<null | ((text: string) => string)>
+export async function getChsToChz(
+  langCode?: string
+): Promise<null | ((text: string) => string)> {
+  return langCode == null || /zh-TW|zh-HK/i.test(langCode)
+    ? (await import('@/_helpers/chs-to-chz')).chsToChz
+    : null
+}
+
+/**
  * Get the textContent of a node or its child.
  */
 export function getText(
   parent: ParentNode | null,
   selector?: string,
-  toChz?: boolean
+  transform?: null | ((text: string) => string)
 ): string
 export function getText(
   parent: ParentNode | null,
-  toChz?: boolean,
+  transform?: null | ((text: string) => string),
   selector?: string
 ): string
 export function getText(
   parent: ParentNode | null,
-  ...args: [string?, boolean?] | [boolean?, string?]
+  ...args:
+    | [string?, (null | ((text: string) => string))?]
+    | [(null | ((text: string) => string))?, string?]
 ): string {
   if (!parent) {
     return ''
   }
 
   let selector = ''
-  let toChz = false
+  let transform: null | ((text: string) => string) = null
   for (let i = args.length - 1; i >= 0; i--) {
     if (typeof args[i] === 'string') {
       selector = args[i] as string
-    } else if (typeof args[i] === 'boolean') {
-      toChz = args[i] as boolean
+    } else if (typeof args[i] === 'function') {
+      transform = args[i] as (text: string) => string
     }
   }
 
@@ -221,7 +239,7 @@ export function getText(
   }
 
   const textContent = child.textContent || ''
-  return toChz ? chsToChz(textContent) : textContent
+  return transform ? transform(textContent) : textContent
 }
 
 export interface GetHTMLConfig {
@@ -229,8 +247,8 @@ export interface GetHTMLConfig {
   mode?: 'innerHTML' | 'outerHTML'
   /** Select child node */
   selector?: string
-  /** to traditional Chinese */
-  toChz?: boolean
+  /** transform text */
+  transform?: null | ((text: string) => string)
   /** Give url and src a host */
   host?: string
   /** DOM Purify config */
@@ -247,7 +265,7 @@ export function getHTML(
   {
     mode = 'innerHTML',
     selector,
-    toChz,
+    transform,
     host,
     config = defaultDOMPurifyConfig
   }: GetHTMLConfig = {}
@@ -279,7 +297,7 @@ export function getHTML(
 
   const content = fragment.firstChild ? fragment.firstChild[mode] : ''
 
-  return toChz ? chsToChz(content) : content
+  return transform ? transform(content) : content
 }
 
 export function getInnerHTML(

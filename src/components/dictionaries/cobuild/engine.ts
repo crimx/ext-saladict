@@ -8,7 +8,8 @@ import {
   SearchFunction,
   GetSrcPageFunction,
   externalLink,
-  DictSearchResult
+  DictSearchResult,
+  getChsToChz
 } from '../helpers'
 import { getStaticSpeaker } from '@/components/Speaker'
 
@@ -45,14 +46,14 @@ export interface COBUILDColResult {
 
 export type COBUILDResult = COBUILDCibaResult | COBUILDColResult
 
-export const search: SearchFunction<COBUILDResult> = (
+export const search: SearchFunction<COBUILDResult> = async (
   text,
   config,
   profile,
   payload
 ) => {
   text = encodeURIComponent(text.replace(/\s+/g, '-'))
-  const isChz = config.langCode === 'zh-TW'
+  const transform = await getChsToChz(config.langCode)
   const { options } = profile.dicts.all.cobuild
   const sources:
     | [[string, typeof handleCibaDOM], [string, typeof handleColDOM]]
@@ -66,17 +67,17 @@ export const search: SearchFunction<COBUILDResult> = (
   }
 
   return fetchDirtyDOM(sources[0][0] + text)
-    .then(doc => sources[0][1](doc, isChz))
+    .then(doc => sources[0][1](doc, transform))
     .catch(() => {
       return fetchDirtyDOM(sources[1][0] + text)
         .catch(handleNetWorkError)
-        .then(doc => sources[1][1](doc, isChz))
+        .then(doc => sources[1][1](doc, transform))
     })
 }
 
 async function handleCibaDOM(
   doc: Document,
-  isChz: boolean
+  transform: null | ((text: string) => string)
 ): Promise<DictSearchResult<COBUILDCibaResult>> {
   const result: COBUILDCibaResult = {
     type: 'ciba',
@@ -85,7 +86,7 @@ async function handleCibaDOM(
   }
   const audio: { uk?: string; us?: string } = {}
 
-  result.title = getText(doc, '.keyword', isChz)
+  result.title = getText(doc, '.keyword', transform)
   if (!result.title) {
     return handleNoResult()
   }
@@ -124,7 +125,7 @@ async function handleCibaDOM(
   )
   if ($article) {
     result.defs = Array.from($article.querySelectorAll('.prep-order')).map(d =>
-      getInnerHTML('http://www.iciba.com', d, { toChz: isChz })
+      getInnerHTML('http://www.iciba.com', d, { transform })
     )
   }
 
@@ -137,7 +138,7 @@ async function handleCibaDOM(
 
 async function handleColDOM(
   doc: Document,
-  toChz: boolean
+  transform: null | ((text: string) => string)
 ): Promise<DictSearchResult<COBUILDColResult>> {
   const result: COBUILDColResult = {
     type: 'collins',
@@ -195,7 +196,7 @@ async function handleColDOM(
         title,
         num,
         content: getInnerHTML('https://www.collinsdictionary.com', $section, {
-          toChz
+          transform
         })
       }
     })
