@@ -10232,10 +10232,10 @@ nested-object-assign@^1.0.3:
   resolved "https://registry.yarnpkg.com/nested-object-assign/-/nested-object-assign-1.0.3.tgz#5aca69390d9affe5a612152b5f0843ae399ac597"
   integrity sha512-kgq1CuvLyUcbcIuTiCA93cQ2IJFSlRwXcN+hLcb2qLJwC2qrePHGZZa7IipyWqaWF6tQjdax2pQnVxdq19Zzwg==
 
-neutrino-webextension@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/neutrino-webextension/-/neutrino-webextension-1.1.2.tgz#0f423c47b0a41e8426a66d30313c678b876469d4"
-  integrity sha512-KhMNKX6lOUhPlmxrbGB9K86aUrdc+WWc3ujUNQfwUZzXTamIN0cTEwgRUIM86rFbRuqHzyPIivJeSXrDuLzYIQ==
+neutrino-webextension@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/neutrino-webextension/-/neutrino-webextension-1.1.3.tgz#4193f000d6dee79aa7a7d444eb64384f46469665"
+  integrity sha512-ciLI+wVZcWgFqHn+5yuNtMEqKadhAeiz4367Qb3MOaq49tOUo45fMeFrE3zNM4YUY3/nR9VqtvQGhz7629B7aA==
   dependencies:
     archiver "^3.0.0"
     deepmerge "^3.3.0"
