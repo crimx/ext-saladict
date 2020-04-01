@@ -6,17 +6,24 @@ import { map } from 'rxjs/operators'
 export class I18nManager {
   private static instance: I18nManager
 
-  static getInstance() {
-    return I18nManager.instance || (I18nManager.instance = new I18nManager())
+  static async getInstance() {
+    if (!I18nManager.instance) {
+      const instance = new I18nManager()
+      I18nManager.instance = instance
+
+      instance.i18n = await i18nLoader()
+      instance.i18n$$.next(instance.i18n)
+    }
+    return I18nManager.instance
   }
 
-  readonly i18n: i18next.i18n
+  i18n: i18next.i18n
 
   readonly i18n$$: BehaviorSubject<i18next.i18n>
 
   // singleton
   private constructor() {
-    this.i18n = i18nLoader()
+    this.i18n = i18next
 
     this.i18n$$ = new BehaviorSubject(this.i18n)
 

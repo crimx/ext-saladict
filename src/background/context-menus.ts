@@ -28,8 +28,32 @@ type ContextMenusClickInfo = Pick<
 >
 
 export class ContextMenus {
-  static getInstance() {
-    return ContextMenus.instance || (ContextMenus.instance = new ContextMenus())
+  static async getInstance() {
+    if (!ContextMenus.instance) {
+      const instance = new ContextMenus()
+      ContextMenus.instance = instance
+
+      const i18nManager = await I18nManager.getInstance()
+
+      const contextMenusChanged$ = createConfigStream().pipe(
+        distinctUntilChanged(
+          (config1, config2) =>
+            config1 &&
+            config2 &&
+            isEqual(
+              config1.contextMenus.selected,
+              config2.contextMenus.selected
+            )
+        ),
+        filter(config => !!config)
+      )
+
+      combineLatest(contextMenusChanged$, i18nManager.getFixedT$$('menus'))
+        .pipe(concatMap(instance.setContextMenus))
+        .subscribe()
+    }
+
+    return ContextMenus.instance
   }
 
   static init = ContextMenus.getInstance
@@ -55,14 +79,14 @@ export class ContextMenus {
           throw new Error()
         }
       })
-      .catch(() => {
+      .catch(async () => {
         // error msg
         browser.notifications.create({
           type: 'basic',
           eventTime: Date.now() + 4000,
           iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
           title: 'Saladict',
-          message: I18nManager.getInstance().i18n.t(
+          message: (await I18nManager.getInstance()).i18n.t(
             'menus:notification_youdao_err'
           )
         })
@@ -184,26 +208,8 @@ export class ContextMenus {
 
   private static instance: ContextMenus
 
-  private i18nManager: I18nManager
-
   // singleton
   private constructor() {
-    this.i18nManager = I18nManager.getInstance()
-
-    const contextMenusChanged$ = createConfigStream().pipe(
-      distinctUntilChanged(
-        (config1, config2) =>
-          config1 &&
-          config2 &&
-          isEqual(config1.contextMenus.selected, config2.contextMenus.selected)
-      ),
-      filter(config => !!config)
-    )
-
-    combineLatest(contextMenusChanged$, this.i18nManager.getFixedT$$('menus'))
-      .pipe(concatMap(this.setContextMenus))
-      .subscribe()
-
     browser.contextMenus.onClicked.addListener(payload =>
       this.handleContextMenusClick(payload)
     )

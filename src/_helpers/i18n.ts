@@ -1,8 +1,9 @@
-import { useMemo } from 'react'
+import React, { useState, useEffect, FC, useContext } from 'react'
 import mapValues from 'lodash/mapValues'
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import { createConfigStream } from '@/_helpers/config-manager'
+import { useUpdateEffect } from 'react-use'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 export type Namespace =
@@ -41,18 +42,31 @@ export interface DictLocales {
   }
 }
 
-export function i18nLoader() {
-  i18n
+export async function i18nLoader() {
+  await i18n
     .use({
       type: 'backend',
       init: () => {},
       create: () => {},
-      read: (lang: LangCode, ns: Namespace, cb: Function) => {
-        if (ns === 'dicts') {
-          cb(null, extractDictLocales(lang))
-          return
+      read: async (lang: LangCode, ns: Namespace, cb: Function) => {
+        try {
+          if (ns === 'dicts') {
+            const dictLocals = extractDictLocales(lang)
+            cb(null, dictLocals)
+            return dictLocals
+          }
+
+          const { locale } = await import(
+            /* webpackInclude: /_locales\/[^/]+\/[^/]+\.ts$/ */
+            /* webpackChunkName: "locales/[request]" */
+            /* webpackMode: "lazy" */
+            `@/_locales/${lang}/${ns}.ts`
+          )
+          cb(null, locale)
+          return locale
+        } catch (err) {
+          cb(err)
         }
-        cb(null, require(`@/_locales/${lang}/${ns}.ts`).locale)
       }
     })
     .use(initReactI18next as any)
@@ -70,8 +84,6 @@ export function i18nLoader() {
       ns: 'common',
       defaultNS: 'common',
 
-      initImmediate: false, // sync init
-
       interpolation: {
         escapeValue: false // not needed for react as it escapes by default
       }
@@ -86,21 +98,86 @@ export function i18nLoader() {
   return i18n
 }
 
+const defaultT: i18n.TFunction = () => ''
+
+export const I18nContext = React.createContext('')
+
+export const I18nContextProvider: FC = ({ children }) => {
+  const [lang, setLang] = useState(i18n.language)
+
+  useEffect(() => {
+    const setLangCallback = () => {
+      setLang(i18n.language)
+    }
+    i18n.on('initialized', setLangCallback)
+    i18n.on('languageChanged', setLangCallback)
+
+    return () => {
+      i18n.off('initialized', setLangCallback)
+      i18n.off('languageChanged', setLangCallback)
+    }
+  }, [])
+
+  return React.createElement(I18nContext.Provider, { value: lang }, children)
+}
+
 /**
  * Tailored for this project.
  * The official `useTranslation` is too heavy.
- * @param namespaces Should be fixed.
+ * @param namespaces MUST be fixed.
  */
 export function useTranslate(namespaces?: Namespace | Namespace[]) {
-  return {
-    t: useMemo(() => {
-      if (namespaces) {
-        i18n.loadNamespaces(namespaces)
-      }
-      return i18n.getFixedT(i18n.language, namespaces)
-    }, [i18n.language]),
-    i18n
-  }
+  const lang = useContext(I18nContext)
+
+  const [result, setResult] = useState(() => {
+    if (!lang) {
+      return { t: defaultT, i18n }
+    }
+
+    if (!namespaces) {
+      return { t: i18n.t, i18n }
+    }
+
+    if (
+      Array.isArray(namespaces)
+        ? namespaces.every(ns => i18n.hasResourceBundle(lang, ns))
+        : i18n.hasResourceBundle(lang, namespaces)
+    ) {
+      return { t: i18n.getFixedT(lang, namespaces), i18n }
+    }
+
+    return { t: defaultT, i18n }
+  })
+
+  useEffect(() => {
+    let isEffectRunning = true
+
+    if (
+      namespaces &&
+      (Array.isArray(namespaces)
+        ? namespaces.some(ns => !i18n.hasResourceBundle(lang, ns))
+        : !i18n.hasResourceBundle(lang, namespaces))
+    ) {
+      i18n.loadNamespaces(namespaces).then(() => {
+        if (isEffectRunning) {
+          setResult({ t: i18n.getFixedT(lang, namespaces), i18n })
+        }
+      })
+    }
+
+    return () => {
+      isEffectRunning = false
+    }
+  }, [])
+
+  useUpdateEffect(() => {
+    setResult({
+      t: namespaces ? i18n.getFixedT(lang, namespaces) : i18n.t,
+      i18n
+    })
+  }, [lang])
+
+  return result
 }
 
 function extractDictLocales(lang: LangCode) {

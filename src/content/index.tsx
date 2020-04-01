@@ -6,20 +6,26 @@ import DictPanelContainer from './components/DictPanel/DictPanel.container'
 import WordEditorContainer from './components/WordEditor/WordEditor.container'
 import createStore from './redux/create'
 
-import { I18nextProvider as ProviderI18next } from 'react-i18next'
-import { i18nLoader } from '@/_helpers/i18n'
+import { i18nLoader, I18nContextProvider } from '@/_helpers/i18n'
 
 // Only load on top frame
 if (window.parent === window && !window.__SALADICT_PANEL_LOADED__) {
   window.__SALADICT_PANEL_LOADED__ = true
 
+  main()
+}
+
+async function main() {
+  const store = createStore()
+  await i18nLoader()
+
   const App = () => (
-    <ProviderRedux store={createStore()}>
-      <ProviderI18next i18n={i18nLoader()}>
+    <ProviderRedux store={store}>
+      <I18nContextProvider>
         <SaladBowlContainer />
         <DictPanelContainer />
         <WordEditorContainer />
-      </ProviderI18next>
+      </I18nContextProvider>
     </ProviderRedux>
   )
 

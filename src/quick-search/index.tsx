@@ -8,8 +8,7 @@ import { message } from '@/_helpers/browser-api'
 import { Provider as ProviderRedux } from 'react-redux'
 import createStore from '@/content/redux/create'
 
-import { I18nextProvider as ProviderI18next } from 'react-i18next'
-import { i18nLoader } from '@/_helpers/i18n'
+import { i18nLoader, I18nContextProvider } from '@/_helpers/i18n'
 
 import { DictPanelStandaloneContainer } from '@/content/components/DictPanel/DictPanelStandalone.container'
 
@@ -17,15 +16,22 @@ import './quick-search.scss'
 
 document.title = 'Saladict Dict Panel'
 
-ReactDOM.render(
-  <ProviderRedux store={createStore()}>
-    <ProviderI18next i18n={i18nLoader()}>
-      <DictPanelStandaloneContainer width="100vw" height="100vh" />
-    </ProviderI18next>
-  </ProviderRedux>,
-  document.getElementById('root')
-)
+main()
 
-window.addEventListener('unload', () => {
-  message.send({ type: 'CLOSE_QS_PANEL' })
-})
+async function main() {
+  const store = createStore()
+  await i18nLoader()
+
+  ReactDOM.render(
+    <ProviderRedux store={store}>
+      <I18nContextProvider>
+        <DictPanelStandaloneContainer width="100vw" height="100vh" />
+      </I18nContextProvider>
+    </ProviderRedux>,
+    document.getElementById('root')
+  )
+
+  window.addEventListener('unload', () => {
+    message.send({ type: 'CLOSE_QS_PANEL' })
+  })
+}

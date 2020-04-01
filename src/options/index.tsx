@@ -30,7 +30,7 @@ import DictPanelContainer from '@/content/components/DictPanel/DictPanel.contain
 import WordEditorContainer from '@/content/components/WordEditor/WordEditor.container'
 
 import { I18nextProvider as ProviderI18next } from 'react-i18next'
-import { i18nLoader } from '@/_helpers/i18n'
+import { i18nLoader, I18nContextProvider } from '@/_helpers/i18n'
 
 import { ConfigProvider as ProviderAntdConfig, message } from 'antd'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
@@ -40,121 +40,127 @@ import en_US from 'antd/lib/locale-provider/en_US'
 import './_style.scss'
 import { newWord } from '@/_helpers/record-manager'
 
-const i18n = i18nLoader()
-i18n.loadNamespaces(['common', 'options', 'dicts', 'menus', 'langcode'])
-i18n.setDefaultNamespace('options')
+main()
 
-const antdLocales = {
-  'zh-CN': zh_CN,
-  'zh-TW': zh_TW,
-  en: en_US
-}
+async function main() {
+  const i18n = await i18nLoader()
+  i18n.loadNamespaces(['common', 'options', 'dicts', 'menus', 'langcode'])
+  i18n.setDefaultNamespace('options')
 
-export interface OptionsProps {}
-
-export interface OptionsState {
-  config: AppConfig
-  profile: Profile
-  profileIDList: ProfileIDList
-  rawProfileName: string
-}
-
-export class Options extends React.Component<OptionsProps, OptionsState> {
-  reduxStore = createStore()
-
-  state: OptionsState = {
-    config: getDefaultConfig(),
-    profile: getDefaultProfile(),
-    profileIDList: [],
-    rawProfileName: ''
+  const antdLocales = {
+    'zh-CN': zh_CN,
+    'zh-TW': zh_TW,
+    en: en_US
   }
 
-  getActiveProfileName = (
-    activeID: string,
-    profileIDList = this.state.profileIDList
-  ): string => {
-    const activeProfileID = profileIDList.find(({ id }) => id === activeID)
-    return activeProfileID ? activeProfileID.name : ''
+  interface OptionsProps {}
+
+  interface OptionsState {
+    config: AppConfig
+    profile: Profile
+    profileIDList: ProfileIDList
+    rawProfileName: string
   }
 
-  componentDidMount() {
-    Promise.all([getConfig(), getActiveProfile(), getProfileIDList()]).then(
-      async ([config, profile, profileIDList]) => {
-        this.setState({
-          config,
-          profile,
-          profileIDList,
-          rawProfileName: this.getActiveProfileName(profile.id, profileIDList)
-        })
+  class Options extends React.Component<OptionsProps, OptionsState> {
+    reduxStore = createStore()
 
-        if (process.env.NODE_ENV !== 'development') {
-          if (window.innerWidth > 1024) {
-            await timer(500)
+    state: OptionsState = {
+      config: getDefaultConfig(),
+      profile: getDefaultProfile(),
+      profileIDList: [],
+      rawProfileName: ''
+    }
 
-            browserMessage.self.send({
-              type: 'SELECTION',
-              payload: {
-                word: newWord({ text: await getWordOfTheDay() }),
-                self: true, // selection inside dict panel is always avaliable
-                instant: true,
-                mouseX: window.innerWidth - config.panelWidth - 50,
-                mouseY: 80,
-                dbClick: true,
-                shiftKey: true,
-                ctrlKey: true,
-                metaKey: true,
-                force: true
-              }
-            })
+    getActiveProfileName = (
+      activeID: string,
+      profileIDList = this.state.profileIDList
+    ): string => {
+      const activeProfileID = profileIDList.find(({ id }) => id === activeID)
+      return activeProfileID ? activeProfileID.name : ''
+    }
+
+    componentDidMount() {
+      Promise.all([getConfig(), getActiveProfile(), getProfileIDList()]).then(
+        async ([config, profile, profileIDList]) => {
+          this.setState({
+            config,
+            profile,
+            profileIDList,
+            rawProfileName: this.getActiveProfileName(profile.id, profileIDList)
+          })
+
+          if (process.env.NODE_ENV !== 'development') {
+            if (window.innerWidth > 1024) {
+              await timer(500)
+
+              browserMessage.self.send({
+                type: 'SELECTION',
+                payload: {
+                  word: newWord({ text: await getWordOfTheDay() }),
+                  self: true, // selection inside dict panel is always avaliable
+                  instant: true,
+                  mouseX: window.innerWidth - config.panelWidth - 50,
+                  mouseY: 80,
+                  dbClick: true,
+                  shiftKey: true,
+                  ctrlKey: true,
+                  metaKey: true,
+                  force: true
+                }
+              })
+            }
           }
         }
-      }
-    )
+      )
 
-    addConfigListener(({ newConfig }) => {
-      this.setState({ config: newConfig })
-      message.destroy()
-      message.success(i18n.t('msg_updated'))
-    })
-
-    addActiveProfileListener(({ newProfile }) => {
-      this.setState({
-        profile: newProfile,
-        rawProfileName: this.getActiveProfileName(newProfile.id)
+      addConfigListener(({ newConfig }) => {
+        this.setState({ config: newConfig })
+        message.destroy()
+        message.success(i18n.t('msg_updated'))
       })
-      message.destroy()
-      message.success(i18n.t('msg_updated'))
-    })
 
-    addProfileIDListListener(({ newValue }) => {
-      this.setState({ profileIDList: newValue })
-      message.destroy()
-      message.success(i18n.t('msg_updated'))
-    })
+      addActiveProfileListener(({ newProfile }) => {
+        this.setState({
+          profile: newProfile,
+          rawProfileName: this.getActiveProfileName(newProfile.id)
+        })
+        message.destroy()
+        message.success(i18n.t('msg_updated'))
+      })
+
+      addProfileIDListListener(({ newValue }) => {
+        this.setState({ profileIDList: newValue })
+        message.destroy()
+        message.success(i18n.t('msg_updated'))
+      })
+    }
+
+    render() {
+      const isShowPanel =
+        window.innerWidth > 1024 &&
+        !new URL(document.URL).searchParams.get('nopanel')
+
+      return (
+        <ProviderI18next i18n={i18n}>
+          <I18nContextProvider>
+            <ProviderAntdConfig
+              locale={antdLocales[this.state.config.langCode] || zh_CN}
+            >
+              <App {...this.state} />
+            </ProviderAntdConfig>
+            {isShowPanel && (
+              <ProviderRedux store={this.reduxStore}>
+                <SaladBowlContainer />
+                <DictPanelContainer />
+                <WordEditorContainer />
+              </ProviderRedux>
+            )}
+          </I18nContextProvider>
+        </ProviderI18next>
+      )
+    }
   }
 
-  render() {
-    const isShowPanel =
-      window.innerWidth > 1024 &&
-      !new URL(document.URL).searchParams.get('nopanel')
-
-    return (
-      <ProviderI18next i18n={i18n}>
-        <ProviderAntdConfig
-          locale={antdLocales[this.state.config.langCode] || zh_CN}
-        >
-          <App {...this.state} />
-        </ProviderAntdConfig>
-        {isShowPanel && (
-          <ProviderRedux store={this.reduxStore}>
-            <SaladBowlContainer />
-            <DictPanelContainer />
-            <WordEditorContainer />
-          </ProviderRedux>
-        )}
-      </ProviderI18next>
-    )
-  }
+  ReactDOM.render(<Options />, document.getElementById('root'))
 }
-
-ReactDOM.render(<Options />, document.getElementById('root'))

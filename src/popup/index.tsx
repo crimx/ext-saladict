@@ -14,8 +14,7 @@ import { Message } from '@/typings/message'
 import { Provider as ProviderRedux } from 'react-redux'
 import createStore from '@/content/redux/create'
 
-import { I18nextProvider as ProviderI18next } from 'react-i18next'
-import { i18nLoader } from '@/_helpers/i18n'
+import { i18nLoader, I18nContextProvider } from '@/_helpers/i18n'
 
 import Popup from './Popup'
 import Notebook from './Notebook'
@@ -43,16 +42,21 @@ getConfig().then(config => {
   }
 })
 
-function showPanel(config: AppConfig) {
+async function showPanel(config: AppConfig) {
   if (config.analytics) {
     reportGA('/popup')
   }
 
+  const store = createStore()
+  await i18nLoader()
+
   ReactDOM.render(
-    <ProviderRedux store={createStore()}>
-      <ProviderI18next i18n={i18nLoader()}>
-        <Popup config={config} />
-      </ProviderI18next>
+    <ProviderRedux store={store}>
+      <I18nContextProvider>
+        <I18nContextProvider>
+          <Popup config={config} />
+        </I18nContextProvider>
+      </I18nContextProvider>
     </ProviderRedux>,
     document.getElementById('root')
   )
@@ -84,10 +88,12 @@ async function addNotebook() {
     hasError = true
   }
 
+  await i18nLoader()
+
   ReactDOM.render(
-    <ProviderI18next i18n={i18nLoader()}>
+    <I18nContextProvider>
       <Notebook word={word} hasError={hasError} />
-    </ProviderI18next>,
+    </I18nContextProvider>,
     document.getElementById('root')
   )
 

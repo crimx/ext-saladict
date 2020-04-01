@@ -9,8 +9,9 @@ import SaladBowlContainer from '@/content/components/SaladBowl/SaladBowl.contain
 import DictPanelContainer from '@/content/components/DictPanel/DictPanel.container'
 import WordEditorContainer from '@/content/components/WordEditor/WordEditor.container'
 
+import i18next from 'i18next'
 import { I18nextProvider as ProviderI18next } from 'react-i18next'
-import { i18nLoader } from '@/_helpers/i18n'
+import { i18nLoader, I18nContextProvider } from '@/_helpers/i18n'
 
 import { ConfigProvider as ProviderAntdConfig } from 'antd'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
@@ -20,10 +21,6 @@ import en_US from 'antd/lib/locale-provider/en_US'
 import { DBArea } from '@/_helpers/record-manager'
 import { createConfigStream } from '@/_helpers/config-manager'
 import { reportGA } from '@/_helpers/analytics'
-
-const i18n = i18nLoader()
-i18n.loadNamespaces(['common', 'wordpage', 'content'])
-i18n.setDefaultNamespace('wordpage')
 
 const reduxStore = createStore()
 
@@ -52,17 +49,31 @@ export const WordPage: FC<WordPageProps> = props => {
   }, [])
 
   return (
-    <ProviderI18next i18n={i18n}>
-      <ProviderAntdConfig locale={antdLocales[locale]}>
-        <App area={props.area} locale={locale} />
-      </ProviderAntdConfig>
+    <I18nContextProvider>
+      <ProviderI18next i18n={i18next}>
+        <ProviderAntdConfig locale={antdLocales[locale]}>
+          <App area={props.area} locale={locale} />
+        </ProviderAntdConfig>
+      </ProviderI18next>
       <ProviderRedux store={reduxStore}>
         <SaladBowlContainer />
         <DictPanelContainer />
         <WordEditorContainer />
       </ProviderRedux>
-    </ProviderI18next>
+    </I18nContextProvider>
   )
 }
 
 export default WordPage
+
+export async function getLocaledWordPage(area: DBArea) {
+  const i18n = await i18nLoader()
+  i18n.loadNamespaces(['common', 'wordpage', 'content'])
+  i18n.setDefaultNamespace('wordpage')
+
+  return (
+    <I18nContextProvider>
+      <WordPage area={area} />
+    </I18nContextProvider>
+  )
+}
