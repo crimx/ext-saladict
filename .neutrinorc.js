@@ -98,6 +98,7 @@ module.exports = {
   use: [
     react({
       image: {
+        limit: 0,
         // remove `default` when `require` image
         // due to legacy code
         esModule: false
