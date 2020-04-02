@@ -93,8 +93,11 @@ export async function deleteMeta(serviceID: string): Promise<void> {
   await deleteSyncMeta(serviceID)
 }
 
-export async function setNotebook(words: Word[]): Promise<void> {
-  await saveWords({ area: 'notebook', words })
+export async function setNotebook(
+  words: Word[],
+  fromSync?: boolean
+): Promise<void> {
+  await saveWords({ area: 'notebook', words, fromSync })
 }
 
 export async function getNotebook(): Promise<Word[]> {

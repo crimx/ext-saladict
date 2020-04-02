@@ -264,7 +264,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       return
     }
 
-    const headers = {
+    const headers: { [name: string]: string } = {
       Authorization: 'Basic ' + window.btoa(`${config.user}:${config.passwd}`)
     }
     if (!testConfig && !noCache && this.meta.etag != null) {
@@ -297,40 +297,10 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     try {
       var json: NotebookFile = await response.json()
     } catch (e) {
-      if (process.env.NODE_ENV !== 'test') {
+      if (process.env.DEV_BUILD) {
         console.error('Fetch webdav notebook.json error', response)
       }
       return Promise.reject('parse')
-    }
-
-    if (!Array.isArray(json.words) || json.words.some(w => !w.date)) {
-      if (process.env.NODE_ENV !== 'test') {
-        console.error('Parse webdav notebook.json error: incorrect words', json)
-      }
-      return Promise.reject('format')
-    }
-
-    if (!noCache && this.meta.timestamp) {
-      if (!json.timestamp) {
-        if (process.env.NODE_ENV !== 'test') {
-          console.error('webdav notebook.json no timestamp', json)
-        }
-        return Promise.reject('timestamp')
-      }
-
-      if (!testConfig) {
-        if (json.timestamp === this.meta.timestamp && !this.meta.etag) {
-          await this.setMeta({
-            timestamp: json.timestamp,
-            etag: response.headers.get('ETag') || ''
-          })
-        }
-      }
-
-      if (json.timestamp <= this.meta.timestamp!) {
-        // older file
-        return
-      }
     }
 
     if (process.env.DEV_BUILD) {
@@ -339,13 +309,43 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       }
     }
 
-    if (!testConfig) {
+    if (!Array.isArray(json.words) || json.words.some(w => !w.date)) {
+      if (process.env.DEV_BUILD) {
+        console.error('Parse webdav notebook.json error: incorrect words', json)
+      }
+      return Promise.reject('format')
+    }
+
+    if (!json.timestamp) {
+      if (process.env.DEV_BUILD) {
+        console.error('webdav notebook.json no timestamp', json)
+      }
+      return Promise.reject('timestamp')
+    }
+
+    if (testConfig) {
+      // connectivity is ok
+      return
+    }
+
+    const oldMeta = this.meta
+
+    if (!oldMeta.timestamp || json.timestamp >= oldMeta.timestamp) {
       await this.setMeta({
         timestamp: json.timestamp,
-        etag: response.headers.get('ETag') || ''
+        etag: response.headers.get('ETag') || oldMeta.etag || ''
       })
+    }
 
-      await setNotebook(json.words)
+    if (!noCache && oldMeta.timestamp && json.timestamp <= oldMeta.timestamp) {
+      // older file
+      return
+    }
+
+    await setNotebook(json.words, true)
+
+    if (process.env.DEV_BUILD) {
+      console.log('Webdav download', json)
     }
   }
 

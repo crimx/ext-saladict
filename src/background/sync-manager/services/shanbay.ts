@@ -28,11 +28,6 @@ const locales = {
       "Unable to add to Shanbay notebook. This word is not in Shanbay's vocabulary database.",
     'zh-CN': '无法添加到扇贝生词本，扇贝单词库没有收录此单词。',
     'zh-TW': '無法新增到扇貝生字本，扇貝單字庫沒有收錄此單字。'
-  },
-  errLearning: {
-    en: 'Unable to add to Shanbay notebook.',
-    'zh-CN': '无法添加到扇贝生词本。',
-    'zh-TW': '無法新增到扇貝生字本。'
   }
 }
 
@@ -145,7 +140,7 @@ export class Service extends SyncService<SyncConfig> {
     }
 
     if (!resLearning || resLearning.status_code !== 0) {
-      this.notifyError('errLearning', text)
+      this.notifyError('errWord', text)
       return Promise.reject('learning')
     }
   }

@@ -101,6 +101,8 @@ export type MessageConfig = MessageConfigType<{
     payload: {
       area: DBArea
       word: Word
+      /** From sync services */
+      fromSync?: boolean
     }
   }
 
