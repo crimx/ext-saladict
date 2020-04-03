@@ -34,6 +34,7 @@ export class ContextMenus {
       ContextMenus.instance = instance
 
       const i18nManager = await I18nManager.getInstance()
+      await i18nManager.i18n.loadNamespaces('menus')
 
       const contextMenusChanged$ = createConfigStream().pipe(
         distinctUntilChanged(
