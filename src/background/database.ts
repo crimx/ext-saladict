@@ -140,9 +140,15 @@ export async function getWords({
   sortOrder = 'descend',
   searchText
 }: Message<'GET_WORDS'>['payload']): Promise<MessageResponse<'GET_WORDS'>> {
-  const collection = db[area].orderBy(sortField)
+  const collection = db[area].orderBy(
+    sortField
+      ? Array.isArray(sortField)
+        ? sortField.map(str => String(str))
+        : String(sortField)
+      : 'date'
+  )
 
-  if (sortOrder === 'descend') {
+  if (!sortOrder || sortOrder === 'descend') {
     collection.reverse()
   }
 

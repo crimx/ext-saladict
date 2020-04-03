@@ -1,33 +1,35 @@
-import React, { FC, useState, useEffect } from 'react'
-import App from './App'
-import 'antd/dist/antd.css'
+import React, { FC, useState } from 'react'
+import { Layout } from 'antd'
+import { from } from 'rxjs'
+import { scan, switchMap, startWith, debounceTime } from 'rxjs/operators'
+import { useObservableCallback, useSubscription } from 'observable-hooks'
+import { DBArea, getWords, Word, deleteWords } from '@/_helpers/record-manager'
+import { Header } from './Header'
+import { WordTableProps, colSelectionWidth, WordTable } from './WordTable'
 
-import { Provider as ProviderRedux } from 'react-redux'
-import createStore from '@/content/redux/create'
+import './_style.scss'
 
-import SaladBowlContainer from '@/content/components/SaladBowl/SaladBowl.container'
-import DictPanelContainer from '@/content/components/DictPanel/DictPanel.container'
-import WordEditorContainer from '@/content/components/WordEditor/WordEditor.container'
+const ITEMS_PER_PAGE = 200
 
-import i18next from 'i18next'
-import { I18nextProvider as ProviderI18next } from 'react-i18next'
-import { i18nLoader, I18nContextProvider } from '@/_helpers/i18n'
+type TableInfo = Pick<
+  WordTableProps,
+  'dataSource' | 'pagination' | 'rowSelection' | 'loading'
+>
 
-import { ConfigProvider as ProviderAntdConfig } from 'antd'
-import zh_CN from 'antd/lib/locale-provider/zh_CN'
-import zh_TW from 'antd/lib/locale-provider/zh_TW'
-import en_US from 'antd/lib/locale-provider/en_US'
+interface FetchWordsConfig {
+  itemsPerPage?: number
+  pageNum?: number
+  filters: { [field: string]: (string | number)[] | null | undefined }
+  sortField?: string | number | (string | number)[]
+  sortOrder?: 'ascend' | 'descend' | false | null
+  searchText: string
+}
 
-import { DBArea } from '@/_helpers/record-manager'
-import { createConfigStream } from '@/_helpers/config-manager'
-import { reportGA } from '@/_helpers/analytics'
-
-const reduxStore = createStore()
-
-const antdLocales = {
-  'zh-CN': zh_CN,
-  'zh-TW': zh_TW,
-  en: en_US
+const initialFetchWordsConfig: Readonly<FetchWordsConfig> = {
+  searchText: '',
+  itemsPerPage: ITEMS_PER_PAGE,
+  pageNum: 1,
+  filters: {}
 }
 
 export interface WordPageProps {
@@ -35,45 +37,120 @@ export interface WordPageProps {
 }
 
 export const WordPage: FC<WordPageProps> = props => {
-  const [locale, setLocale] = useState('zh-CN')
-
-  useEffect(() => {
-    createConfigStream().subscribe(config => {
-      if (locale !== config.langCode && antdLocales[config.langCode]) {
-        setLocale(config.langCode)
+  const [searchText, setSearchText] = useState('')
+  const [tableInfo, setTableInfo] = useState<TableInfo>(() => ({
+    dataSource: [],
+    pagination: {
+      current: 1,
+      pageSize: ITEMS_PER_PAGE,
+      defaultPageSize: ITEMS_PER_PAGE,
+      total: 0
+    },
+    rowSelection: {
+      selectedRowKeys: [],
+      columnWidth: colSelectionWidth,
+      onChange: (selectedRowKeys, selectedRows) => {
+        setTableInfo(lastInfo => ({
+          rowSelection: {
+            ...lastInfo.rowSelection,
+            selectedRowKeys
+          },
+          selectedRows
+        }))
       }
-      if (config.analytics) {
-        reportGA(`/wordpage/${props.area}`)
-      }
-    })
-  }, [])
+    },
+    loading: false
+  }))
 
-  return (
-    <I18nContextProvider>
-      <ProviderI18next i18n={i18next}>
-        <ProviderAntdConfig locale={antdLocales[locale]}>
-          <App area={props.area} locale={locale} />
-        </ProviderAntdConfig>
-      </ProviderI18next>
-      <ProviderRedux store={reduxStore}>
-        <SaladBowlContainer />
-        <DictPanelContainer />
-        <WordEditorContainer />
-      </ProviderRedux>
-    </I18nContextProvider>
+  const [fetchWords, fetchWords$] = useObservableCallback<
+    { total: number; words: Word[] } | null,
+    Partial<FetchWordsConfig>
+  >(config$ =>
+    config$.pipe(
+      scan(
+        (lastConfig, config) => ({ ...lastConfig, ...config }),
+        initialFetchWordsConfig
+      ),
+      debounceTime(200),
+      switchMap(config =>
+        from(
+          getWords(props.area, config).catch(e => {
+            console.error(e)
+            return { total: 0, words: [] }
+          })
+        ).pipe(startWith(null))
+      ),
+      startWith(null)
+    )
   )
-}
 
-export default WordPage
-
-export async function getLocaledWordPage(area: DBArea) {
-  const i18n = await i18nLoader()
-  i18n.loadNamespaces(['common', 'wordpage', 'content'])
-  i18n.setDefaultNamespace('wordpage')
+  useSubscription(fetchWords$, response => {
+    setTableInfo(lastInfo => ({
+      ...lastInfo,
+      ...(response
+        ? {
+            pagination: {
+              ...lastInfo.pagination,
+              total: response.total
+            },
+            dataSource: response.words,
+            loading: false
+          }
+        : { loading: true })
+    }))
+  })
 
   return (
-    <I18nContextProvider>
-      <WordPage area={area} />
-    </I18nContextProvider>
+    <Layout className="wordpage-Container">
+      <Header
+        area={props.area}
+        searchText={searchText}
+        totalCount={10}
+        selectedCount={12}
+        onSearchTextChanged={text => {
+          setSearchText(text)
+          fetchWords({ searchText: text })
+        }}
+        onExport={() => {}}
+        onDelete={key => {
+          const keys =
+            key === 'selected'
+              ? tableInfo.rowSelection?.selectedRowKeys?.map(date =>
+                  Number(date)
+                )
+              : key === 'page'
+              ? tableInfo.dataSource?.map(({ date }) => date)
+              : undefined
+          deleteWords(props.area, keys).then(() => fetchWords({}))
+        }}
+      />
+      <Layout.Content>
+        <WordTable
+          area={props.area}
+          {...tableInfo}
+          onChange={(pagination, filters, sorter) => {
+            window.scrollTo(0, 0)
+
+            setTableInfo(lastInfo => ({
+              pagination: {
+                ...lastInfo.pagination,
+                current: pagination.current || 1
+              }
+            }))
+
+            const realSorter = Array.isArray(sorter) ? sorter[0] : sorter
+
+            fetchWords({
+              itemsPerPage: pagination?.pageSize || ITEMS_PER_PAGE,
+              pageNum: pagination?.current || 1,
+              filters: filters,
+              sortField: realSorter?.field,
+              sortOrder: realSorter?.order,
+              searchText
+            })
+          }}
+        />
+      </Layout.Content>
+    </Layout>
   )
 }

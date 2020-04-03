@@ -85,9 +85,9 @@ export function getWords(
   config: {
     itemsPerPage?: number
     pageNum?: number
-    filters: { [field: string]: string[] | undefined }
-    sortField?: string
-    sortOrder?: 'ascend' | 'descend' | false
+    filters: { [field: string]: (string | number)[] | null | undefined }
+    sortField?: string | number | (string | number)[]
+    sortOrder?: 'ascend' | 'descend' | false | null
     searchText?: string
   }
 ) {
