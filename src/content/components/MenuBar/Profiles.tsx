@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import i18next from 'i18next'
+import { TFunction } from 'i18next'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import {
   useObservable,
@@ -20,7 +20,7 @@ import { OptionsBtn } from './MenubarBtns'
 import { message } from '@/_helpers/browser-api'
 
 export interface ProfilesProps {
-  t: i18next.TFunction
+  t: TFunction
   profiles: Array<{ id: string; name: string }>
   activeProfileId: string
   onHeightChanged: (height: number) => void

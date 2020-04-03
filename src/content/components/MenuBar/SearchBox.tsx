@@ -1,6 +1,6 @@
 import React, { FC, useRef, useEffect } from 'react'
 import CSSTransition from 'react-transition-group/CSSTransition'
-import i18next from 'i18next'
+import { TFunction } from 'i18next'
 import {
   useObservableCallback,
   useObservableState,
@@ -14,7 +14,7 @@ import { Suggest } from './Suggest'
 import { SearchBtn } from './MenubarBtns'
 
 export interface SearchBoxProps {
-  t: i18next.TFunction
+  t: TFunction
   /** Search box text */
   text: string
   /** Focus search box */
