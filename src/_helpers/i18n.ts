@@ -1,7 +1,6 @@
 import React, { useState, useEffect, FC, useContext } from 'react'
 import mapValues from 'lodash/mapValues'
 import i18n from 'i18next'
-import { initReactI18next } from 'react-i18next'
 import { createConfigStream } from '@/_helpers/config-manager'
 import { useUpdateEffect } from 'react-use'
 
@@ -69,7 +68,6 @@ export async function i18nLoader() {
         }
       }
     })
-    .use(initReactI18next as any)
     .init({
       lng: (/^(en|zh-CN|zh-TW)$/.exec(browser.i18n.getUILanguage()) || [
         'en'
