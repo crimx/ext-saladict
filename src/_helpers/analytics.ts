@@ -8,6 +8,7 @@ export async function reportGA(page: string): Promise<void> {
   if (
     process.env.DEV_BUILD ||
     process.env.NODE_ENV === 'test' ||
+    process.env.NODE_ENV === 'development' ||
     !process.env.SDAPP_ANALYTICS
   ) {
     return
