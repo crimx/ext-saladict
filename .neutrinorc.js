@@ -160,7 +160,18 @@ module.exports = {
             'import',
             {
               libraryName: 'antd'
-            }
+            },
+            'antd'
+          ],
+          [
+            'import',
+            {
+              libraryName: '@ant-design/icons',
+              libraryDirectory: '',
+              camel2DashComponentName: false,
+              style: false
+            },
+            '@ant-design/icons'
           ]
         ]
       }
