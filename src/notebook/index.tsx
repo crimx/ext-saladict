@@ -1,11 +1,18 @@
 import './env'
 import '@/selection'
 
+import React from 'react'
 import ReactDOM from 'react-dom'
-import { getLocaledWordPage } from '@/components/WordPage'
+import { WordPage } from '@/components/WordPage'
+import { AntdRoot } from '@/_helpers/antd'
 
-document.title = 'Saladict Notebook'
-
-getLocaledWordPage('notebook').then(wordPage => {
-  ReactDOM.render(wordPage, document.getElementById('root'))
-})
+ReactDOM.render(
+  <AntdRoot
+    path="/wordpage/notebook"
+    titleKey="title.notebook"
+    titleNS="wordpage"
+  >
+    <WordPage area="notebook" />
+  </AntdRoot>,
+  document.getElementById('root')
+)

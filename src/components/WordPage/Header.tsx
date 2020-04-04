@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { Layout, Input, Dropdown, Menu, Button, Modal } from 'antd'
+import { ClickParam } from 'antd/lib/menu'
 import { DownOutlined } from '@ant-design/icons'
 import { DBArea } from '@/_helpers/record-manager'
 import { useTranslate } from '@/_helpers/i18n'
@@ -10,7 +11,7 @@ export interface WordPageProps {
   totalCount: number
   selectedCount: number
   onSearchTextChanged: (text: string) => void
-  onExport: () => void
+  onExport: (param: ClickParam) => void
   onDelete: (key: string) => void
 }
 

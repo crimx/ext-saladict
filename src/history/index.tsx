@@ -1,11 +1,18 @@
 import './env'
 import '@/selection'
 
+import React from 'react'
 import ReactDOM from 'react-dom'
-import { getLocaledWordPage } from '@/components/WordPage'
+import { WordPage } from '@/components/WordPage'
+import { AntdRoot } from '@/_helpers/antd'
 
-document.title = 'Saladict History'
-
-getLocaledWordPage('history').then(wordPage => {
-  ReactDOM.render(wordPage, document.getElementById('root'))
-})
+ReactDOM.render(
+  <AntdRoot
+    path="/wordpage/history"
+    titleKey="title.history"
+    titleNS="wordpage"
+  >
+    <WordPage area="history" />
+  </AntdRoot>,
+  document.getElementById('root')
+)
