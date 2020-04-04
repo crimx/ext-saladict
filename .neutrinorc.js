@@ -178,11 +178,17 @@ module.exports = {
     }),
     copy({
       patterns: [
-        { context: 'assets', from: '**/*', to: 'assets', toType: 'dir' },
+        { context: 'assets', from: '**/*', to: 'assets/', toType: 'dir' },
         {
           context: 'src/_locales/manifest',
           from: '**/*',
-          to: '_locales',
+          to: '_locales/',
+          toType: 'dir'
+        },
+        {
+          context: 'node_modules/antd/dist/',
+          from: '+(antd|antd.dark).min.css',
+          to: 'assets/',
           toType: 'dir'
         }
       ]
@@ -280,6 +286,14 @@ module.exports = {
                 }
               },
             })
+      }
+
+      if (argv.devbuild) {
+        // prettier-ignore
+        neutrino.config
+          .devtool('inline-source-map')
+          .optimization
+            .minimize(false)
       }
 
       if (argv.analyze || argv.analyse) {

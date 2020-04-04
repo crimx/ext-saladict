@@ -2,7 +2,6 @@ import React, { useState, useEffect, FC, useContext } from 'react'
 import mapValues from 'lodash/mapValues'
 import i18n from 'i18next'
 import { createConfigStream } from '@/_helpers/config-manager'
-import { useUpdateEffect } from 'react-use'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 export type Namespace =
@@ -98,17 +97,22 @@ export async function i18nLoader() {
 
 const defaultT: i18n.TFunction = () => ''
 
-export const I18nContext = React.createContext('')
+export const I18nContext = React.createContext<string | undefined>(undefined)
 
 export const I18nContextProvider: FC = ({ children }) => {
-  const [lang, setLang] = useState(i18n.language)
+  const [lang, setLang] = useState<string | undefined>(undefined)
 
   useEffect(() => {
     const setLangCallback = () => {
       setLang(i18n.language)
     }
+
     i18n.on('initialized', setLangCallback)
     i18n.on('languageChanged', setLangCallback)
+
+    if (!i18n.language) {
+      i18nLoader()
+    }
 
     return () => {
       i18n.off('initialized', setLangCallback)
@@ -119,21 +123,29 @@ export const I18nContextProvider: FC = ({ children }) => {
   return React.createElement(I18nContext.Provider, { value: lang }, children)
 }
 
+export interface UseTranslateResult {
+  t: i18n.TFunction
+  i18n: i18n.i18n
+  ready: boolean
+}
+
 /**
  * Tailored for this project.
  * The official `useTranslation` is too heavy.
- * @param namespaces MUST be fixed.
+ * @param namespaces will not monitor namespace changes.
  */
-export function useTranslate(namespaces?: Namespace | Namespace[]) {
+export function useTranslate(
+  namespaces?: Namespace | Namespace[]
+): UseTranslateResult {
   const lang = useContext(I18nContext)
 
-  const [result, setResult] = useState(() => {
+  const [result, setResult] = useState<UseTranslateResult>(() => {
     if (!lang) {
-      return { t: defaultT, i18n }
+      return { t: defaultT, i18n, ready: false }
     }
 
     if (!namespaces) {
-      return { t: i18n.t, i18n }
+      return { t: i18n.t, i18n, ready: true }
     }
 
     if (
@@ -141,38 +153,49 @@ export function useTranslate(namespaces?: Namespace | Namespace[]) {
         ? namespaces.every(ns => i18n.hasResourceBundle(lang, ns))
         : i18n.hasResourceBundle(lang, namespaces)
     ) {
-      return { t: i18n.getFixedT(lang, namespaces), i18n }
+      return { t: i18n.getFixedT(lang, namespaces), i18n, ready: true }
     }
 
-    return { t: defaultT, i18n }
+    return { t: defaultT, i18n, ready: false }
   })
 
   useEffect(() => {
     let isEffectRunning = true
 
-    if (
-      namespaces &&
-      (Array.isArray(namespaces)
-        ? namespaces.some(ns => !i18n.hasResourceBundle(lang, ns))
-        : !i18n.hasResourceBundle(lang, namespaces))
-    ) {
-      i18n.loadNamespaces(namespaces).then(() => {
-        if (isEffectRunning) {
-          setResult({ t: i18n.getFixedT(lang, namespaces), i18n })
+    if (lang) {
+      if (namespaces) {
+        if (
+          Array.isArray(namespaces)
+            ? namespaces.every(ns => i18n.hasResourceBundle(lang, ns))
+            : i18n.hasResourceBundle(lang, namespaces)
+        ) {
+          setResult({
+            t: i18n.getFixedT(lang, namespaces),
+            i18n,
+            ready: true
+          })
+        } else {
+          // keep the old t while marking not ready
+          setResult(result => ({ ...result, ready: false }))
+
+          i18n.loadNamespaces(namespaces).then(() => {
+            if (isEffectRunning) {
+              setResult({
+                t: i18n.getFixedT(lang, namespaces),
+                i18n,
+                ready: true
+              })
+            }
+          })
         }
-      })
+      } else {
+        setResult({ t: i18n.t, i18n, ready: true })
+      }
     }
 
     return () => {
       isEffectRunning = false
     }
-  }, [])
-
-  useUpdateEffect(() => {
-    setResult({
-      t: namespaces ? i18n.getFixedT(lang, namespaces) : i18n.t,
-      i18n
-    })
   }, [lang])
 
   return result

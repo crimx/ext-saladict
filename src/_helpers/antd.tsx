@@ -7,7 +7,7 @@ import SaladBowlContainer from '@/content/components/SaladBowl/SaladBowl.contain
 import DictPanelContainer from '@/content/components/DictPanel/DictPanel.container'
 import WordEditorContainer from '@/content/components/WordEditor/WordEditor.container'
 
-import { i18nLoader, I18nContextProvider } from '@/_helpers/i18n'
+import { I18nContextProvider, Namespace, useTranslate } from '@/_helpers/i18n'
 
 import { ConfigProvider as AntdConfigProvider } from 'antd'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
@@ -17,66 +17,84 @@ import en_US from 'antd/lib/locale-provider/en_US'
 import { createConfigStream } from '@/_helpers/config-manager'
 import { reportGA } from '@/_helpers/analytics'
 
+import 'antd/dist/antd.css'
+import { useRefFn } from 'observable-hooks'
+
 const antdLocales = {
   'zh-CN': zh_CN,
   'zh-TW': zh_TW,
   en: en_US
 }
 
-export interface LocaledRoot {
-  /** analytics path */
-  path: string
-  title: string
+const darkTheme =
+  process.env.NODE_ENV === 'development'
+    ? `https://cdnjs.cloudflare.com/ajax/libs/antd/4.1.0/antd.dark.min.css`
+    : `/assets/antd.dark.min.css`
+
+interface AntdTitleProps {
+  darkMode: boolean
+  /** i18n key */
+  titleKey: string
+  /** i18n namespace */
+  titleNS: Namespace
 }
 
-export async function getLocaledRoot() {
-  const reduxStore = createStore()
-  await i18nLoader()
+const AntdTitle: FC<AntdTitleProps> = props => {
+  const { t } = useTranslate(props.titleNS)
+  return (
+    <Helmet>
+      <title>{t(props.titleKey)}</title>
+      {props.darkMode && <link rel="stylesheet" href={darkTheme} />}
+    </Helmet>
+  )
+}
 
-  const LocaledRoot: FC<LocaledRoot> = props => {
-    const [locale, setLocale] = useState('zh-CN')
-    const [darkMode, setDarkMode] = useState(false)
+export interface AntdRootProps {
+  /** analytics path */
+  path: string
+  /** i18n key */
+  titleKey: string
+  /** i18n namespace */
+  titleNS: Namespace
+}
 
-    useEffect(() => {
-      createConfigStream().subscribe(config => {
-        if (locale !== config.langCode && antdLocales[config.langCode]) {
-          setLocale(config.langCode)
-        }
+export const AntdRoot: FC<AntdRootProps> = props => {
+  const storeRef = useRefFn(createStore)
 
-        if (darkMode !== config.darkMode) {
-          setDarkMode(config.darkMode)
-        }
+  const [locale, setLocale] = useState('zh-CN')
+  const [darkMode, setDarkMode] = useState(false)
 
-        if (config.analytics) {
-          reportGA(props.path)
-        }
-      })
-    }, [])
+  useEffect(() => {
+    createConfigStream().subscribe(config => {
+      if (locale !== config.langCode && antdLocales[config.langCode]) {
+        setLocale(config.langCode)
+      }
 
-    const theme =
-      process.env.NODE_ENV === 'development'
-        ? `https://cdnjs.cloudflare.com/ajax/libs/antd/4.1.0/antd${
-            darkMode ? '.dark' : ''
-          }.min.css`
-        : `/assets/antd${darkMode ? '.dark' : ''}.min.css`
+      if (darkMode !== config.darkMode) {
+        setDarkMode(config.darkMode)
+      }
 
-    return (
-      <I18nContextProvider>
-        <Helmet>
-          <title>{props.title}</title>
-          <link rel="stylesheet" href={theme} />
-        </Helmet>
-        <AntdConfigProvider locale={antdLocales[locale]}>
-          {props.children}
-        </AntdConfigProvider>
-        <ProviderRedux store={reduxStore}>
-          <SaladBowlContainer />
-          <DictPanelContainer />
-          <WordEditorContainer />
-        </ProviderRedux>
-      </I18nContextProvider>
-    )
-  }
+      if (config.analytics) {
+        reportGA(props.path)
+      }
+    })
+  }, [])
 
-  return LocaledRoot
+  return (
+    <I18nContextProvider>
+      <AntdTitle
+        titleKey={props.titleKey}
+        titleNS={props.titleNS}
+        darkMode={darkMode}
+      />
+      <AntdConfigProvider locale={antdLocales[locale]}>
+        {props.children}
+      </AntdConfigProvider>
+      <ProviderRedux store={storeRef.current}>
+        <SaladBowlContainer />
+        <DictPanelContainer />
+        <WordEditorContainer />
+      </ProviderRedux>
+    </I18nContextProvider>
+  )
 }
