@@ -97,6 +97,9 @@ module.exports = {
   },
   use: [
     react({
+      html: {
+        title: 'Saladict'
+      },
       image: {
         // dev-server image name collision
         name: resourcePath => {

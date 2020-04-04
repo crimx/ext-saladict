@@ -1,8 +1,9 @@
 import './env'
 import '@/selection'
 
-import React from 'react'
+import React, { FC } from 'react'
 import ReactDOM from 'react-dom'
+import { Helmet } from 'react-helmet'
 import { AppConfig } from '@/app-config'
 import { reportGA } from '@/_helpers/analytics'
 import { getConfig } from '@/_helpers/config-manager'
@@ -14,11 +15,20 @@ import { Message } from '@/typings/message'
 import { Provider as ProviderRedux } from 'react-redux'
 import createStore from '@/content/redux/create'
 
-import { i18nLoader, I18nContextProvider } from '@/_helpers/i18n'
+import { I18nContextProvider, useTranslate } from '@/_helpers/i18n'
 
 import Popup from './Popup'
 import Notebook from './Notebook'
 import './_style.scss'
+
+const Title: FC = () => {
+  const { t } = useTranslate('popup')
+  return (
+    <Helmet>
+      <title>{t('title')}</title>
+    </Helmet>
+  )
+}
 
 getConfig().then(config => {
   document.body.style.width = config.panelWidth + 'px'
@@ -48,16 +58,14 @@ async function showPanel(config: AppConfig) {
   }
 
   const store = createStore()
-  await i18nLoader()
 
   ReactDOM.render(
-    <ProviderRedux store={store}>
-      <I18nContextProvider>
-        <I18nContextProvider>
-          <Popup config={config} />
-        </I18nContextProvider>
-      </I18nContextProvider>
-    </ProviderRedux>,
+    <I18nContextProvider>
+      <Title />
+      <ProviderRedux store={store}>
+        <Popup config={config} />
+      </ProviderRedux>
+    </I18nContextProvider>,
     document.getElementById('root')
   )
 }
@@ -87,8 +95,6 @@ async function addNotebook() {
   } else {
     hasError = true
   }
-
-  await i18nLoader()
 
   ReactDOM.render(
     <I18nContextProvider>

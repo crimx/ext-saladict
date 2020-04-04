@@ -2,8 +2,8 @@ import { locale as _locale } from '../zh-CN/wordpage'
 
 export const locale: typeof _locale = {
   title: {
-    history: 'Saladict 查單字紀錄',
-    notebook: 'Saladict 生字本'
+    history: '沙拉查詞-查單字紀錄',
+    notebook: '沙拉查詞-生字本'
   },
 
   localonly: '僅本機儲存',

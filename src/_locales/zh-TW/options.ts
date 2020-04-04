@@ -1,7 +1,7 @@
 import { locale as _locale } from '../zh-CN/options'
 
 export const locale: typeof _locale = {
-  title: 'Saladict 設定',
+  title: '沙拉查詞-設定',
   dict: {
     add: '新增字典',
     default_height: '字典預設高度',

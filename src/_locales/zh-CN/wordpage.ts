@@ -1,7 +1,7 @@
 export const locale = {
   title: {
-    history: 'Saladict 查词记录',
-    notebook: 'Saladict 生词本'
+    history: '沙拉查词-查词记录',
+    notebook: '沙拉查词-生词本'
   },
 
   localonly: '仅本地保存',

@@ -1,5 +1,5 @@
 export const locale = {
-  title: 'Saladict 设置',
+  title: '沙拉查词-设置',
   dict: {
     add: '添加词典',
     default_height: '词典默认高度',

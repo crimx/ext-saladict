@@ -1,6 +1,7 @@
 import { locale as _locale } from '../zh-CN/popup'
 
 export const locale: typeof _locale = {
+  title: '沙拉查詞-右上彈框',
   app_active_title: '啟用滑鼠選字',
   app_temp_active_title: '對目前頁面暫時關閉滑鼠選字',
   instant_capture_pinned: '（釘選）',

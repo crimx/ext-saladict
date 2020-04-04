@@ -1,6 +1,7 @@
 import { locale as _locale } from '../zh-CN/popup'
 
 export const locale: typeof _locale = {
+  title: 'Saladict Browser Action Panel',
   app_active_title: 'Enable Inline Translator',
   app_temp_active_title: 'Temporary disabled to the page',
   instant_capture_pinned: ' (pinned) ',

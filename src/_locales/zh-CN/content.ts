@@ -1,5 +1,6 @@
 export const locale = {
   chooseLang: '-选择其它语言-',
+  standalone: '沙拉查词-独立查词窗口',
   fetchLangList: '获取全部语言列表',
   transContext: '重新翻译',
   neverShow: '不再弹出',
