@@ -47,7 +47,7 @@ export function hoverWithDelay<N extends Node>(
 ): Observable<boolean> {
   return hover(event$).pipe(
     // delay enter but not leave
-    switchMap(isEnter => of(isEnter).pipe(delay(isEnter ? 500 : 0)))
+    switchMap(isEnter => of(isEnter).pipe(delay(isEnter ? 500 : 100)))
   )
 }
 
