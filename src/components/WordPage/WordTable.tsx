@@ -22,7 +22,7 @@ export interface WordTableProps
 }
 
 export const WordTable: FC<WordTableProps> = props => {
-  const { t } = useTranslate('wordpage')
+  const { t, ready } = useTranslate('wordpage')
 
   const tableColumns = useMemo<ColumnsType<Word>>(
     () => [
@@ -78,7 +78,7 @@ export const WordTable: FC<WordTableProps> = props => {
         render: (_, record) => renderEdit(t, props.area, record)
       }
     ],
-    [t, props.area]
+    [ready, props.area]
   )
 
   return (

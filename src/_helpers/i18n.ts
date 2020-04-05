@@ -1,6 +1,6 @@
-import React, { useState, useEffect, FC, useContext } from 'react'
+import React, { useState, useEffect, FC, useContext, useRef } from 'react'
 import mapValues from 'lodash/mapValues'
-import i18n from 'i18next'
+import i18n, { TFunction } from 'i18next'
 import { createConfigStream } from '@/_helpers/config-manager'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
@@ -98,6 +98,9 @@ export async function i18nLoader() {
 const defaultT: i18n.TFunction = () => ''
 
 export const I18nContext = React.createContext<string | undefined>(undefined)
+if (process.env.NODE_ENV === 'development') {
+  I18nContext.displayName = 'I18nContext'
+}
 
 export const I18nContextProvider: FC = ({ children }) => {
   const [lang, setLang] = useState<string | undefined>(undefined)
@@ -124,8 +127,14 @@ export const I18nContextProvider: FC = ({ children }) => {
 }
 
 export interface UseTranslateResult {
+  /**
+   * fixedT with the first namespace as default.
+   * It is a wrapper of the original fixedT, which
+   * keeps the same reference even after namespaces are loaded
+   */
   t: i18n.TFunction
   i18n: i18n.i18n
+  /** Are namespaces loaded? */
   ready: boolean
 }
 
@@ -137,15 +146,27 @@ export interface UseTranslateResult {
 export function useTranslate(
   namespaces?: Namespace | Namespace[]
 ): UseTranslateResult {
+  const innerTRef = useRef<TFunction>(defaultT)
+  // keep the exposed t function always the same
+  const tRef = useRef<TFunction>((...args: Parameters<TFunction>) =>
+    innerTRef.current(...args)
+  )
   const lang = useContext(I18nContext)
+
+  const genResult = (t: TFunction | null, ready: boolean) => {
+    if (t) {
+      innerTRef.current = t
+    }
+    return { t: tRef.current, i18n, ready }
+  }
 
   const [result, setResult] = useState<UseTranslateResult>(() => {
     if (!lang) {
-      return { t: defaultT, i18n, ready: false }
+      return genResult(defaultT, false)
     }
 
     if (!namespaces) {
-      return { t: i18n.t, i18n, ready: true }
+      return genResult(i18n.t, true)
     }
 
     if (
@@ -153,10 +174,10 @@ export function useTranslate(
         ? namespaces.every(ns => i18n.hasResourceBundle(lang, ns))
         : i18n.hasResourceBundle(lang, namespaces)
     ) {
-      return { t: i18n.getFixedT(lang, namespaces), i18n, ready: true }
+      return genResult(i18n.getFixedT(lang, namespaces), true)
     }
 
-    return { t: defaultT, i18n, ready: false }
+    return genResult(defaultT, false)
   })
 
   useEffect(() => {
@@ -169,27 +190,19 @@ export function useTranslate(
             ? namespaces.every(ns => i18n.hasResourceBundle(lang, ns))
             : i18n.hasResourceBundle(lang, namespaces)
         ) {
-          setResult({
-            t: i18n.getFixedT(lang, namespaces),
-            i18n,
-            ready: true
-          })
+          setResult(genResult(i18n.getFixedT(lang, namespaces), true))
         } else {
           // keep the old t while marking not ready
-          setResult(result => ({ ...result, ready: false }))
+          setResult(result => genResult(null, false))
 
           i18n.loadNamespaces(namespaces).then(() => {
             if (isEffectRunning) {
-              setResult({
-                t: i18n.getFixedT(lang, namespaces),
-                i18n,
-                ready: true
-              })
+              setResult(genResult(i18n.getFixedT(lang, namespaces), true))
             }
           })
         }
       } else {
-        setResult({ t: i18n.t, i18n, ready: true })
+        setResult(genResult(i18n.t, true))
       }
     }
 
