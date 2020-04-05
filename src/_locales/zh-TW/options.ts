@@ -1,7 +1,7 @@
 import { locale as _locale } from '../zh-CN/options'
 
 export const locale: typeof _locale = {
-  title: '沙拉查詞-設定',
+  title: '沙拉查詞設定',
   dict: {
     add: '新增字典',
     default_height: '字典預設高度',
@@ -37,7 +37,7 @@ export const locale: typeof _locale = {
       weblio: '協助新增 Weblio 辭書'
     },
     contact_author: '聯絡作者',
-    donate: '隨喜捐贈',
+    donate: '支援項目',
     instructions: '使用說明',
     report_issue: '軟體使用疑問和建言'
   },

@@ -6,7 +6,8 @@ import {
   SortableElement,
   SortEnd as _SortEnd
 } from 'react-sortable-hoc'
-import { Icon, List, Radio, Button, Card } from 'antd'
+import { List, Radio, Button, Card } from 'antd'
+import { PlusOutlined, BarsOutlined } from '@ant-design/icons'
 import { RadioChangeEvent } from 'antd/lib/radio'
 import { Omit } from '@/typings/helpers'
 
@@ -42,11 +43,19 @@ export interface SortableListProps
 }
 
 const DragHandle = SortableHandle<{ t: TFunction }>(({ t }) => (
-  <Icon title={t('common:sort')} style={{ cursor: 'move' }} type="bars" />
+  <BarsOutlined title={t('common:sort')} style={{ cursor: 'move' }} />
 ))
 
-const ProfileListItem = SortableElement<SortableListItemProps>(
-  ({ t, selected, item, disableEdit, onEdit, onDelete, indexCopy }) => {
+const ProfileListItem = SortableElement(
+  ({
+    t,
+    selected,
+    item,
+    disableEdit,
+    onEdit,
+    onDelete,
+    indexCopy
+  }: SortableListItemProps) => {
     return (
       <List.Item>
         <div className="sortable-list-item">
@@ -98,7 +107,7 @@ export function SortableList(props: SortableListProps) {
       title={props.title}
       extra={
         <Button type="dashed" size="small" onClick={props.onAdd}>
-          <Icon type="plus" />
+          <PlusOutlined />
           {props.t('common:add')}
         </Button>
       }
@@ -113,7 +122,7 @@ export function SortableList(props: SortableListProps) {
       </Radio.Group>
       {(props.isShowAdd == null || props.isShowAdd) && (
         <Button type="dashed" style={{ width: '100%' }} onClick={props.onAdd}>
-          <Icon type="plus" /> {props.t('common:add')}
+          <PlusOutlined /> {props.t('common:add')}
         </Button>
       )}
     </Card>

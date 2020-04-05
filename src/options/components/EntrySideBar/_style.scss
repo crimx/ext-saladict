@@ -1,0 +1,11 @@
+.entry-sidebar {
+  height: 100vh;
+
+  @media (hover: hover) {
+    overflow-y: hidden;
+
+    &:hover {
+      overflow-y: auto;
+    }
+  }
+}

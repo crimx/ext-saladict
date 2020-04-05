@@ -1,5 +1,5 @@
 export const locale = {
-  title: '沙拉查词-设置',
+  title: '沙拉查词设置',
   dict: {
     add: '添加词典',
     default_height: '词典默认高度',
@@ -35,7 +35,7 @@ export const locale = {
       weblio: '协助添加 Weblio 辞書'
     },
     contact_author: '联系作者',
-    donate: '随喜捐赠',
+    donate: '支持项目',
     instructions: '使用说明',
     report_issue: '反馈问题'
   },
