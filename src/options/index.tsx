@@ -42,8 +42,8 @@ import { newWord } from '@/_helpers/record-manager'
 
 main()
 
-async function main() {
-  const i18n = await i18nLoader()
+function main() {
+  const i18n = i18nLoader()
   i18n.loadNamespaces(['common', 'options', 'dicts', 'menus', 'langcode'])
   i18n.setDefaultNamespace('options')
 

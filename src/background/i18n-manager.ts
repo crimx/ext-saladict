@@ -6,12 +6,12 @@ import { map } from 'rxjs/operators'
 export class I18nManager {
   private static instance: I18nManager
 
-  static async getInstance() {
+  static getInstance() {
     if (!I18nManager.instance) {
       const instance = new I18nManager()
       I18nManager.instance = instance
 
-      instance.i18n = await i18nLoader()
+      instance.i18n = i18nLoader()
       instance.i18n$$.next(instance.i18n)
     }
     return I18nManager.instance

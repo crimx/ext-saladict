@@ -40,8 +40,8 @@ export interface DictLocales {
   }
 }
 
-export async function i18nLoader() {
-  await i18n
+export function i18nLoader() {
+  i18n
     .use({
       type: 'backend',
       init: () => {},
