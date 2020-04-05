@@ -34,7 +34,6 @@ export class ContextMenus {
       ContextMenus.instance = instance
 
       const i18nManager = await I18nManager.getInstance()
-      await i18nManager.i18n.loadNamespaces('menus')
 
       const contextMenusChanged$ = createConfigStream().pipe(
         distinctUntilChanged(
@@ -49,7 +48,7 @@ export class ContextMenus {
         filter(config => !!config)
       )
 
-      combineLatest(contextMenusChanged$, i18nManager.getFixedT$$('menus'))
+      combineLatest(contextMenusChanged$, i18nManager.getFixedT$('menus'))
         .pipe(concatMap(instance.setContextMenus))
         .subscribe()
     }

@@ -1,7 +1,7 @@
 import i18next, { TFunction } from 'i18next'
 import { i18nLoader, Namespace } from '@/_helpers/i18n'
 import { BehaviorSubject, Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { switchMap } from 'rxjs/operators'
 
 export class I18nManager {
   private static instance: I18nManager
@@ -32,8 +32,12 @@ export class I18nManager {
     })
   }
 
-  getFixedT$$(ns: Namespace | Namespace[]): Observable<TFunction> {
-    this.i18n.loadNamespaces(ns)
-    return this.i18n$$.pipe(map(i18n => i18n.getFixedT(i18n.language, ns)))
+  getFixedT$(ns: Namespace | Namespace[]): Observable<TFunction> {
+    return this.i18n$$.pipe(
+      switchMap(async i18n => {
+        await this.i18n.loadNamespaces(ns)
+        return i18n.getFixedT(i18n.language, ns)
+      })
+    )
   }
 }
