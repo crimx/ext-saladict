@@ -4,6 +4,8 @@ import { from } from 'rxjs'
 import { switchMap, startWith, debounceTime } from 'rxjs/operators'
 import { useObservable, useSubscription } from 'observable-hooks'
 import { DBArea, getWords, Word, deleteWords } from '@/_helpers/record-manager'
+import { useTranslate } from '@/_helpers/i18n'
+import { Helmet } from 'react-helmet'
 import { Header } from './Header'
 import { WordTableProps, colSelectionWidth, WordTable } from './WordTable'
 import { ExportModal, ExportModalTitle } from './ExportModal'
@@ -38,6 +40,7 @@ export interface WordPageProps {
 }
 
 export const WordPage: FC<WordPageProps> = props => {
+  const { t } = useTranslate('wordpage')
   const [searchText, setSearchText] = useState('')
   const [selectedRows, setSelectedRows] = useState<Word[]>([])
   const [tableInfo, setTableInfo] = useState<TableInfo>(() => ({
@@ -115,7 +118,11 @@ export const WordPage: FC<WordPageProps> = props => {
 
   return (
     <Layout className="wordpage-Container">
+      <Helmet>
+        <title>{t(`title.${props.area}`)}</title>
+      </Helmet>
       <Header
+        t={t}
         area={props.area}
         searchText={searchText}
         totalCount={(tableInfo.pagination && tableInfo.pagination.total) || 0}

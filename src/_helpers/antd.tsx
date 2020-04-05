@@ -10,7 +10,7 @@ import WordEditorContainer from '@/content/components/WordEditor/WordEditor.cont
 
 import { createConfigStream } from '@/_helpers/config-manager'
 import { reportGA } from '@/_helpers/analytics'
-import { I18nContextProvider, Namespace, useTranslate } from '@/_helpers/i18n'
+import { I18nContextProvider } from '@/_helpers/i18n'
 
 import { ConfigProvider as AntdConfigProvider } from 'antd'
 import zh_CN from 'antd/lib/locale-provider/zh_CN'
@@ -30,31 +30,9 @@ const darkTheme =
     ? `https://cdnjs.cloudflare.com/ajax/libs/antd/4.1.0/antd.dark.min.css`
     : `/assets/antd.dark.min.css`
 
-interface AntdTitleProps {
-  darkMode: boolean
-  /** i18n key */
-  titleKey: string
-  /** i18n namespace */
-  titleNS: Namespace
-}
-
-const AntdTitle: FC<AntdTitleProps> = props => {
-  const { t } = useTranslate(props.titleNS)
-  return (
-    <Helmet>
-      <title>{t(props.titleKey)}</title>
-      {props.darkMode && <link rel="stylesheet" href={darkTheme} />}
-    </Helmet>
-  )
-}
-
 export interface AntdRootProps {
   /** analytics path */
   path?: string
-  /** i18n key */
-  titleKey: string
-  /** i18n namespace */
-  titleNS: Namespace
 }
 
 export const AntdRoot: FC<AntdRootProps> = props => {
@@ -86,11 +64,9 @@ export const AntdRoot: FC<AntdRootProps> = props => {
 
   return (
     <I18nContextProvider>
-      <AntdTitle
-        titleKey={props.titleKey}
-        titleNS={props.titleNS}
-        darkMode={darkMode}
-      />
+      {darkMode && (
+        <Helmet>{<link rel="stylesheet" href={darkTheme} />}</Helmet>
+      )}
       <AntdConfigProvider locale={antdLocales[locale]}>
         {props.children}
       </AntdConfigProvider>

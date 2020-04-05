@@ -1,11 +1,12 @@
 import React, { FC } from 'react'
+import { TFunction } from 'i18next'
 import { Layout, Input, Dropdown, Menu, Button, Modal } from 'antd'
 import { ClickParam } from 'antd/lib/menu'
 import { DownOutlined } from '@ant-design/icons'
 import { DBArea } from '@/_helpers/record-manager'
-import { useTranslate } from '@/_helpers/i18n'
 
 export interface WordPageProps {
+  t: TFunction
   area: DBArea
   searchText: string
   totalCount: number
@@ -16,7 +17,7 @@ export interface WordPageProps {
 }
 
 export const Header: FC<WordPageProps> = props => {
-  const { t } = useTranslate('wordpage')
+  const { t } = props
 
   return (
     <Layout.Header className="wordpage-Header">

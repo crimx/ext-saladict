@@ -9,11 +9,7 @@ import { AntdRoot } from '@/_helpers/antd'
 document.title = 'Saladict Notebook'
 
 ReactDOM.render(
-  <AntdRoot
-    path="/wordpage/notebook"
-    titleKey="title.notebook"
-    titleNS="wordpage"
-  >
+  <AntdRoot path="/wordpage/notebook">
     <WordPage area="notebook" />
   </AntdRoot>,
   document.getElementById('root')
