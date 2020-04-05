@@ -1,23 +1,34 @@
-import React, { FC } from 'react'
-import { i18nLoader } from '../../src/_helpers/i18n'
-
-const i18n = i18nLoader()
-
-// add to story
-// import { withContexts } from '@storybook/addon-contexts/react'
-// import { contexts } from '...../configs/contexts'
-// .addDecorator(withContexts(contexts))
+import React, { FC, useContext, useEffect } from 'react'
+import {
+  I18nContextProvider,
+  I18nContext,
+  i18nLoader
+} from '../../src/_helpers/i18n'
+import i18next from 'i18next'
 
 interface I18nWrapProps {
   lang: string
 }
 
-const I18nWrap: FC<I18nWrapProps> = props => {
-  if (props.lang !== i18n.language) {
-    i18n.changeLanguage(props.lang)
-  }
+const I18nWrapInner: FC<I18nWrapProps> = props => {
+  const lang = useContext(I18nContext)
+  useEffect(() => {
+    if (lang) {
+      if (lang && props.lang !== lang) {
+        i18next.changeLanguage(props.lang)
+      }
+    } else {
+      i18nLoader()
+    }
+  }, [lang, props.lang])
   return <>{props.children}</>
 }
+
+const I18nWrap: FC<I18nWrapProps> = props => (
+  <I18nContextProvider>
+    <I18nWrapInner {...props}>{props.children}</I18nWrapInner>
+  </I18nContextProvider>
+)
 
 export const i18nContexts = [
   {
