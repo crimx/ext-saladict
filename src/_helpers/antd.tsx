@@ -1,12 +1,15 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, useMemo } from 'react'
 import { Helmet } from 'react-helmet'
-import { Provider as ProviderRedux } from 'react-redux'
+import { Provider as ReduxProvider } from 'react-redux'
 import createStore from '@/content/redux/create'
+import { useRefFn } from 'observable-hooks'
 
 import SaladBowlContainer from '@/content/components/SaladBowl/SaladBowl.container'
 import DictPanelContainer from '@/content/components/DictPanel/DictPanel.container'
 import WordEditorContainer from '@/content/components/WordEditor/WordEditor.container'
 
+import { createConfigStream } from '@/_helpers/config-manager'
+import { reportGA } from '@/_helpers/analytics'
 import { I18nContextProvider, Namespace, useTranslate } from '@/_helpers/i18n'
 
 import { ConfigProvider as AntdConfigProvider } from 'antd'
@@ -14,11 +17,7 @@ import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import zh_TW from 'antd/lib/locale-provider/zh_TW'
 import en_US from 'antd/lib/locale-provider/en_US'
 
-import { createConfigStream } from '@/_helpers/config-manager'
-import { reportGA } from '@/_helpers/analytics'
-
 import 'antd/dist/antd.css'
-import { useRefFn } from 'observable-hooks'
 
 const antdLocales = {
   'zh-CN': zh_CN,
@@ -51,7 +50,7 @@ const AntdTitle: FC<AntdTitleProps> = props => {
 
 export interface AntdRootProps {
   /** analytics path */
-  path: string
+  path?: string
   /** i18n key */
   titleKey: string
   /** i18n namespace */
@@ -74,11 +73,16 @@ export const AntdRoot: FC<AntdRootProps> = props => {
         setDarkMode(config.darkMode)
       }
 
-      if (config.analytics) {
+      if (config.analytics && props.path) {
         reportGA(props.path)
       }
     })
   }, [])
+
+  const isShowPanel = useMemo(
+    () => !new URL(document.URL).searchParams.get('nopanel'),
+    [document.URL]
+  )
 
   return (
     <I18nContextProvider>
@@ -90,11 +94,13 @@ export const AntdRoot: FC<AntdRootProps> = props => {
       <AntdConfigProvider locale={antdLocales[locale]}>
         {props.children}
       </AntdConfigProvider>
-      <ProviderRedux store={storeRef.current}>
-        <SaladBowlContainer />
-        <DictPanelContainer />
-        <WordEditorContainer />
-      </ProviderRedux>
+      {isShowPanel && (
+        <ReduxProvider store={storeRef.current}>
+          <SaladBowlContainer />
+          <DictPanelContainer />
+          <WordEditorContainer />
+        </ReduxProvider>
+      )}
     </I18nContextProvider>
   )
 }
