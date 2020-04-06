@@ -1,8 +1,9 @@
-import React, { FC, useContext, useMemo } from 'react'
+import React, { FC, useMemo } from 'react'
 import { Layout } from 'antd'
+import { useObservableState, useObservableGetState } from 'observable-hooks'
 import { useTranslate } from '@/_helpers/i18n'
 import { getProfileName } from '@/_helpers/profile-manager'
-import { ProfileContext, ProfileIDListContext } from '../Contexts'
+import { profile$$, profileIDList$$ } from '@/options/data'
 import { HeadInfoMemo } from './HeadInfo'
 
 import './_style.scss'
@@ -13,18 +14,18 @@ export interface HeaderProps {
 
 export const Header: FC<HeaderProps> = props => {
   const { t, ready } = useTranslate(['options', 'common'])
-  const profile = useContext(ProfileContext)
-  const profileIDList = useContext(ProfileIDListContext)
+  const profileId = useObservableGetState(profile$$, 'id')!
+  const profileIDList = useObservableState(profileIDList$$)!
 
   const profileName = useMemo(
     () =>
       ready
         ? `「 ${getProfileName(
-            profileIDList.find(({ id }) => id === profile.id)?.name || '',
+            profileIDList.find(({ id }) => id === profileId)?.name || '',
             t
           )} 」`
         : '',
-    [profile.id, profileIDList, ready]
+    [profileId, profileIDList, ready]
   )
 
   return (
