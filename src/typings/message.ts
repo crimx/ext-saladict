@@ -209,6 +209,9 @@ export type MessageConfig = MessageConfigType<{
     payload: Word
   }
 
+  /** request closing panel */
+  CLOSE_PANEL: {}
+
   TEMP_DISABLED_STATE: {
     payload:
       | {

@@ -41,7 +41,7 @@ export const initState = () => {
       translateCtx: false
     },
     isShowBowl: false,
-    isShowDictPanel: isStandalonePage() || isOptionsPage(),
+    isShowDictPanel: isStandalonePage(),
     isExpandMtaBox: false,
     isExpandWaveformBox: false,
     isPinned: false,

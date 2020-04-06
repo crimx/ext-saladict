@@ -145,6 +145,10 @@ export const init = (
         dispatch({ type: 'SEARCH_START', payload: { word: msg.payload } })
         return Promise.resolve()
 
+      case 'CLOSE_PANEL':
+        dispatch({ type: 'CLOSE_PANEL' })
+        return Promise.resolve()
+
       case 'TRIPLE_CTRL':
         if (!isPopupPage() && !isOptionsPage()) {
           const { isShowDictPanel, config, selection } = getState()
