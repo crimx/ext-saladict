@@ -15,6 +15,8 @@ import {
   SwapOutlined,
   LockOutlined
 } from '@ant-design/icons'
+import { useObservableState } from 'observable-hooks'
+import { debounceTime, scan, distinctUntilChanged } from 'rxjs/operators'
 import { useTranslate } from '@/_helpers/i18n'
 
 import './_style.scss'
@@ -26,8 +28,17 @@ export interface EntrySideBarProps {
 
 export const EntrySideBar: FC<EntrySideBarProps> = props => {
   const { t } = useTranslate('options')
+  // trigger affix rerendering on collapse state changes to update width
+  const [affixKey, onCollapse] = useObservableState<number, boolean>(event$ =>
+    event$.pipe(
+      distinctUntilChanged(), // onCollapse will be triggered on initial collapsed state
+      debounceTime(500), // wait for transition
+      scan(id => (id + 1) % 10000, 0) // unique id
+    )
+  )
+
   return (
-    <Affix>
+    <Affix key={affixKey}>
       <Layout>
         <Layout.Sider
           className="entry-sidebar"
@@ -35,6 +46,7 @@ export const EntrySideBar: FC<EntrySideBarProps> = props => {
           breakpoint="lg"
           collapsible
           trigger={null}
+          onCollapse={onCollapse}
         >
           <Menu
             mode="inline"

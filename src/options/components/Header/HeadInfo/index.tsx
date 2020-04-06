@@ -1,11 +1,13 @@
 import React, { FC } from 'react'
 import CSSTransition from 'react-transition-group/CSSTransition'
+import { of } from 'rxjs'
+import { switchMap, delay } from 'rxjs/operators'
 import { useObservableState, useObservableCallback } from 'observable-hooks'
 import { Tooltip } from 'antd'
 import { WarningOutlined } from '@ant-design/icons'
 import acknowledgement from '@/options/acknowledgement'
 import { useTranslate } from '@/_helpers/i18n'
-import { hoverWithDelay } from '@/_helpers/observables'
+import { hover } from '@/_helpers/observables'
 
 import './_style.scss'
 
@@ -15,7 +17,11 @@ export const HeadInfo: FC = () => {
   const [onMouseOverOut, mouseOverOut$] = useObservableCallback<
     boolean,
     React.MouseEvent
-  >(hoverWithDelay)
+  >(event$ =>
+    hover(event$).pipe(
+      switchMap(isEnter => of(isEnter).pipe(delay(isEnter ? 500 : 400)))
+    )
+  )
 
   const isShowAck = useObservableState(mouseOverOut$)
 
@@ -59,8 +65,8 @@ export const HeadInfo: FC = () => {
               onMouseOut={onMouseOverOut}
             >
               <ol>
-                {acknowledgement.map(ack => (
-                  <li key={ack.locale}>
+                {acknowledgement.map((ack, i) => (
+                  <li key={i}>
                     <a
                       href={ack.href}
                       rel="nofollow noopener noreferrer"

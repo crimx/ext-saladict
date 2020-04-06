@@ -1,11 +1,17 @@
 import React, { FC, useState, useContext, useEffect } from 'react'
 import { Helmet } from 'react-helmet'
-import { Layout } from 'antd'
+import { Layout, Row, Col } from 'antd'
 import { reportGA } from '@/_helpers/analytics'
+import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { useTranslate } from '@/_helpers/i18n'
 import { ConfigContext } from './Contexts'
 import { EntrySideBarMemo } from './EntrySideBar'
 import { HeaderMemo } from './Header'
+import { EntryError } from './EntryError'
+
+const EntryComponent = React.memo(({ entry }: { entry: string }) =>
+  React.createElement(require(`./Entries/${entry}`)[entry])
+)
 
 export const MainEntry: FC = () => {
   const { t } = useTranslate('options')
@@ -31,8 +37,26 @@ export const MainEntry: FC = () => {
       <Helmet>
         <title>{`${t('title')} - ${t('nav.' + entry)}`}</title>
       </Helmet>
-      <HeaderMemo />
-      <EntrySideBarMemo entry={entry} onChange={setEntry} />
+      <HeaderMemo openProfilesTab={setEntry} />
+      <Row>
+        <Col>
+          <EntrySideBarMemo entry={entry} onChange={setEntry} />
+        </Col>
+        <Col style={{ flex: '1' }}>
+          <Layout style={{ padding: 24 }}>
+            <Layout.Content
+              style={{
+                padding: 24,
+                backgroundColor: 'var(--opt-background-color)'
+              }}
+            >
+              <ErrorBoundary error={EntryError}>
+                <EntryComponent entry={entry} />
+              </ErrorBoundary>
+            </Layout.Content>
+          </Layout>
+        </Col>
+      </Row>
     </Layout>
   )
 }

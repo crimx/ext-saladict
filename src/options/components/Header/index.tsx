@@ -7,7 +7,11 @@ import { HeadInfoMemo } from './HeadInfo'
 
 import './_style.scss'
 
-export const Header: FC = () => {
+export interface HeaderProps {
+  openProfilesTab: (entry: 'Profiles') => void
+}
+
+export const Header: FC<HeaderProps> = props => {
   const { t, ready } = useTranslate(['options', 'common'])
   const profile = useContext(ProfileContext)
   const profileIDList = useContext(ProfileIDListContext)
@@ -20,13 +24,22 @@ export const Header: FC = () => {
             t
           )} 」`
         : '',
-    [profile, profileIDList, ready]
+    [profile.id, profileIDList, ready]
   )
 
   return (
     <Layout.Header className="options-header">
-      <h1 style={{ color: '#fff' }}>{t('title')}</h1>
-      <span style={{ color: '#fff' }}>{profileName}</span>
+      <h1>{t('title')}</h1>
+      <a
+        href="/?menuselected=Profiles"
+        onClick={e => {
+          e.preventDefault()
+          e.stopPropagation()
+          props.openProfilesTab('Profiles')
+        }}
+      >
+        {profileName}
+      </a>
       <HeadInfoMemo />
     </Layout.Header>
   )
