@@ -2,6 +2,7 @@ import { locale as _locale } from '../zh-CN/options'
 
 export const locale: typeof _locale = {
   title: '沙拉查詞設定',
+  previewPanel: '預覽字典介面',
   dict: {
     add: '新增字典',
     default_height: '字典預設高度',

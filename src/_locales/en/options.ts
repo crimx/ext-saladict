@@ -2,6 +2,7 @@ import { locale as _locale } from '../zh-CN/options'
 
 export const locale: typeof _locale = {
   title: 'Saladict Options',
+  previewPanel: 'Preview Dict Panel',
   dict: {
     add: 'Add dicts',
     default_height: 'Default Panel Height',

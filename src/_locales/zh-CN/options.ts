@@ -1,5 +1,6 @@
 export const locale = {
   title: '沙拉查词设置',
+  previewPanel: '预览查词面板',
   dict: {
     add: '添加词典',
     default_height: '词典默认高度',
