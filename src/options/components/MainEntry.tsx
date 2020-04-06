@@ -24,7 +24,10 @@ export const MainEntry: FC = () => {
   }, [entry, config.analytics])
 
   return (
-    <Layout style={{ maxWidth: 1400, margin: '0 auto' }}>
+    <Layout
+      style={{ maxWidth: 1400, margin: '0 auto' }}
+      className={`main-entry${config.darkMode ? ' dark-mode' : ''}`}
+    >
       <Helmet>
         <title>{`${t('title')} - ${t('nav.' + entry)}`}</title>
       </Helmet>

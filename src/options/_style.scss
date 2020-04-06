@@ -65,6 +65,7 @@ kbd {
   box-shadow: 0 2px 0 #ccc, 0 3px 1px #999, inset 0 1px 1px #fff;
 }
 
+.dark-mode kbd,
 .dark kbd,
 kbd.dark {
   color: #fdfdfd;
@@ -146,4 +147,18 @@ kbd[data-key='delete']:after {
 
 kbd[data-key='eject']:after {
   content: ' ⏏';
+}
+
+/* ======================================= *\
+ * Components
+\* ======================================= */
+
+.main-entry {
+  --opt-color: rgba(0, 0, 0, 0.65);
+  --opt-background-color: #fff;
+
+  &.dark-mode {
+    --opt-color: hsla(0, 0%, 100%, 0.65);
+    --opt-background-color: #141414;
+  }
 }
