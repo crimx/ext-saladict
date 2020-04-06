@@ -50,7 +50,7 @@ export const MainEntry: FC = () => {
                 backgroundColor: 'var(--opt-background-color)'
               }}
             >
-              <ErrorBoundary error={EntryError}>
+              <ErrorBoundary key={entry} error={EntryError}>
                 <EntryComponent entry={entry} />
               </ErrorBoundary>
             </Layout.Content>
