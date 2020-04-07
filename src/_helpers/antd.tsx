@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useMemo } from 'react'
+import React, { FC, useState, useLayoutEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { Provider as ReduxProvider } from 'react-redux'
 import createStore from '@/content/redux/create'
@@ -41,7 +41,7 @@ export const AntdRoot: FC<AntdRootProps> = props => {
   const [locale, setLocale] = useState('zh-CN')
   const [darkMode, setDarkMode] = useState(false)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     createConfigStream().subscribe(config => {
       if (locale !== config.langCode && antdLocales[config.langCode]) {
         setLocale(config.langCode)
@@ -57,26 +57,19 @@ export const AntdRoot: FC<AntdRootProps> = props => {
     })
   }, [])
 
-  const isShowPanel = useMemo(
-    () => !new URL(document.URL).searchParams.get('nopanel'),
-    [document.URL]
-  )
-
   return (
     <I18nContextProvider>
       {darkMode && (
         <Helmet>{<link rel="stylesheet" href={darkTheme} />}</Helmet>
       )}
-      <AntdConfigProvider locale={antdLocales[locale]}>
-        {props.children}
-      </AntdConfigProvider>
-      {isShowPanel && (
-        <ReduxProvider store={storeRef.current}>
-          <SaladBowlContainer />
-          <DictPanelContainer />
-          <WordEditorContainer />
-        </ReduxProvider>
-      )}
+      <ReduxProvider store={storeRef.current}>
+        <AntdConfigProvider locale={antdLocales[locale]}>
+          {props.children}
+        </AntdConfigProvider>
+        <SaladBowlContainer />
+        <DictPanelContainer />
+        <WordEditorContainer />
+      </ReduxProvider>
     </I18nContextProvider>
   )
 }

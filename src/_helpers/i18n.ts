@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC, useContext, useRef } from 'react'
+import React, { useState, useLayoutEffect, FC, useContext, useRef } from 'react'
 import mapValues from 'lodash/mapValues'
 import i18n, { TFunction } from 'i18next'
 import { createConfigStream } from '@/_helpers/config-manager'
@@ -105,7 +105,7 @@ if (process.env.NODE_ENV === 'development') {
 export const I18nContextProvider: FC = ({ children }) => {
   const [lang, setLang] = useState<string | undefined>(undefined)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const setLangCallback = () => {
       setLang(i18n.language)
     }
@@ -180,7 +180,7 @@ export function useTranslate(
     return genResult(defaultT, false)
   })
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let isEffectRunning = true
 
     if (lang) {
