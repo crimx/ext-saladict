@@ -10,9 +10,6 @@ import {
 import { reportGA } from '@/_helpers/analytics'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { useTranslate } from '@/_helpers/i18n'
-import { message } from '@/_helpers/browser-api'
-import { newWord } from '@/_helpers/record-manager'
-import { getWordOfTheDay } from '@/_helpers/wordoftheday'
 import { EntrySideBarMemo } from './EntrySideBar'
 import { HeaderMemo } from './Header'
 import { EntryError } from './EntryError'
@@ -82,29 +79,11 @@ export const MainEntry: FC = () => {
           </Layout>
         </Col>
       </Row>
-      <BtnPreviewMemo show={true} onClick={openDictPanel} />
+      <BtnPreviewMemo />
     </Layout>
   )
 }
 
 function getEntry(): string {
   return new URL(document.URL).searchParams.get('menuselected') || 'General'
-}
-
-async function openDictPanel() {
-  message.self.send({
-    type: 'SELECTION',
-    payload: {
-      word: newWord({ text: await getWordOfTheDay() }),
-      self: true, // selection inside dict panel is always avaliable
-      instant: true,
-      mouseX: window.innerWidth - 250,
-      mouseY: 80,
-      dbClick: true,
-      shiftKey: true,
-      ctrlKey: true,
-      metaKey: true,
-      force: true
-    }
-  })
 }
