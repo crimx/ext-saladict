@@ -22,7 +22,7 @@ const EntryComponent = React.memo(({ entry }: { entry: string }) =>
 )
 
 export const MainEntry: FC = () => {
-  const { t } = useTranslate('options')
+  const { t, ready } = useTranslate('options')
   const [entry, setEntry] = useState(getEntry)
   const { analytics, darkMode } = useObservablePickState(
     config$$,
@@ -57,7 +57,7 @@ export const MainEntry: FC = () => {
       className={`main-entry${darkMode ? ' dark-mode' : ''}`}
     >
       <Helmet>
-        <title>{`${t('title')} - ${t('nav.' + entry)}`}</title>
+        {ready && <title>{`${t('title')} - ${t('nav.' + entry)}`}</title>}
       </Helmet>
       <HeaderMemo openProfilesTab={setEntry} />
       <Row>
