@@ -104,7 +104,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       return
     }
 
-    if (process.env.DEV_BUILD) {
+    if (process.env.DEBUG) {
       console.log('WebDAV Alarm Interval')
     }
 
@@ -201,7 +201,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
 
   async add({ force }: AddConfig) {
     if (!this.config.url) {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.warn(`sync service ${Service.id} upload: empty url`)
       }
       return
@@ -221,7 +221,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     try {
       var body = JSON.stringify({ timestamp, words } as NotebookFile)
     } catch (e) {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.error('WebDAV: Stringify notebook failed', words)
       }
       return Promise.reject('parse')
@@ -240,7 +240,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
         throw new Error()
       }
     } catch (e) {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.error('WebDAV: upload failed', e)
       }
       return Promise.reject('network')
@@ -258,7 +258,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     const config = testConfig || this.config
 
     if (!config.url) {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.warn(`sync service ${Service.id} download: empty url`)
       }
       return
@@ -297,27 +297,27 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     try {
       var json: NotebookFile = await response.json()
     } catch (e) {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.error('Fetch webdav notebook.json error', response)
       }
       return Promise.reject('parse')
     }
 
-    if (process.env.DEV_BUILD) {
+    if (process.env.DEBUG) {
       if (!response.headers.get('ETag')) {
         console.warn('webdav notebook.json no etag', response)
       }
     }
 
     if (!Array.isArray(json.words) || json.words.some(w => !w.date)) {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.error('Parse webdav notebook.json error: incorrect words', json)
       }
       return Promise.reject('format')
     }
 
     if (!json.timestamp) {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.error('webdav notebook.json no timestamp', json)
       }
       return Promise.reject('timestamp')
@@ -344,7 +344,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
 
     await setNotebook(json.words, true)
 
-    if (process.env.DEV_BUILD) {
+    if (process.env.DEBUG) {
       console.log('Webdav download', json)
     }
   }

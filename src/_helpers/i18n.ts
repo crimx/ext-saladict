@@ -98,7 +98,7 @@ export async function i18nLoader() {
 const defaultT: i18n.TFunction = () => ''
 
 export const I18nContext = React.createContext<string | undefined>(undefined)
-if (process.env.NODE_ENV === 'development') {
+if (process.env.DEBUG) {
   I18nContext.displayName = 'I18nContext'
 }
 

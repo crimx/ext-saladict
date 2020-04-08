@@ -145,7 +145,7 @@ export async function getProfile(id: string): Promise<Profile | undefined> {
  * Update profile
  */
 export async function updateProfile(profile: Profile): Promise<void> {
-  if (process.env.DEV_BUILD) {
+  if (process.env.DEBUG) {
     const profileIDList = await getProfileIDList()
     if (!profileIDList.find(item => item.id === profile.id)) {
       console.error(`Update Profile: profile ${profile.id} does not exist`)
@@ -157,7 +157,7 @@ export async function updateProfile(profile: Profile): Promise<void> {
 export async function addProfile(profileID: ProfileID): Promise<void> {
   const id = profileID.id
   const profileIDList = await getProfileIDList()
-  if (process.env.DEV_BUILD) {
+  if (process.env.DEBUG) {
     if (profileIDList.find(item => item.id === id) || (await getProfile(id))) {
       console.warn(`Add profile: profile ${id} exists`)
     }
@@ -172,7 +172,7 @@ export async function addProfile(profileID: ProfileID): Promise<void> {
 export async function removeProfile(id: string): Promise<void> {
   const activeProfileID = await getActiveProfileID()
   let profileIDList = await getProfileIDList()
-  if (process.env.DEV_BUILD) {
+  if (process.env.DEBUG) {
     if (
       !profileIDList.find(item => item.id === id) ||
       !(await getProfile(id))

@@ -42,7 +42,7 @@ export const SaladictForm: FC<SaladictFormProps> = props => {
               const value = get(data, item.name, data)
               if (value !== data) {
                 o[item.name] = value
-              } else if (process.env.NODE_ENV !== 'production') {
+              } else if (process.env.DEBUG) {
                 console.warn(
                   new Error('Missing value for form key: ' + item.name)
                 )

@@ -122,7 +122,7 @@ async function onInstalled({
     }
   } else if (reason === 'update') {
     let data: UpdateData | undefined
-    if (!process.env.DEV_BUILD && window.appConfig.updateCheck) {
+    if (!process.env.DEBUG && window.appConfig.updateCheck) {
       try {
         const response = await fetch(
           'https://api.github.com/repos/crimx/ext-saladict/releases/latest'
@@ -183,7 +183,7 @@ function onStartup(): void {
       }
 
       // anti piracy
-      if (!process.env.DEV_BUILD && lastCheckUpdate && isExtTainted) {
+      if (!process.env.DEBUG && lastCheckUpdate && isExtTainted) {
         const diff = Math.floor((today - lastCheckUpdate) / 24 / 60 / 60 / 1000)
         if (diff > 0 && diff % 7 === 0) {
           const options: browser.notifications.CreateNotificationOptions = {

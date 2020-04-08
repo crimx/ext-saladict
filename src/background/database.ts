@@ -41,7 +41,7 @@ export function getSyncMeta(serviceID: string) {
     .equals(serviceID)
     .first(record => record && record.json)
     .catch(e => {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.error(e)
       }
     })
@@ -53,7 +53,7 @@ export function setSyncMeta(serviceID: string, text: string) {
 
 export function deleteSyncMeta(serviceID: string) {
   return db.syncmeta.delete(serviceID).catch(e => {
-    if (process.env.DEV_BUILD) {
+    if (process.env.DEBUG) {
       console.error(e)
     }
   })
@@ -90,7 +90,7 @@ export function saveWords({
   words: Word[]
   fromSync?: boolean // sync services
 }) {
-  if (process.env.DEV_BUILD) {
+  if (process.env.DEBUG) {
     if (words.length !== new Set(words.map(w => w.date)).size) {
       console.error('save Words: duplicate records')
     }

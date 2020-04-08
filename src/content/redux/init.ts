@@ -270,7 +270,7 @@ async function summonedPanelInit(
       word = newWord({ text, title: 'From Clipboard' })
     }
   } catch (e) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.DEBUG) {
       console.warn(e)
     }
   }

@@ -38,7 +38,7 @@ export function postMessageHandler({ data, source }: PostMessageEvent) {
 export function sendMessage(payload: Message<'SELECTION'>['payload']) {
   if (window.parent === window) {
     // top
-    if (process.env.NODE_ENV === 'development') {
+    if (process.env.DEBUG) {
       console.log('New selection', payload)
     }
 
@@ -79,7 +79,7 @@ export function sendEmptyMessage(isDictPanel: boolean) {
     }
   }
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.DEBUG) {
     console.log('New selection', msg.payload)
   }
 

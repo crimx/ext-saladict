@@ -256,7 +256,7 @@ module.exports = {
         .plugin('process.env')
           .use(webpack.DefinePlugin, [{
             'process.env': JSON.stringify(Object.assign(
-                { DEV_BUILD: !!argv.devbuild },
+                { DEBUG: !!argv.debug },
                 dotenv.config().parsed
               ))
           }])

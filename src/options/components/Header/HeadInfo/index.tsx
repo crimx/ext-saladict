@@ -27,7 +27,7 @@ export const HeadInfo: FC = () => {
 
   return (
     <ul className="head-info">
-      {process.env.DEV_BUILD || process.env.SDAPP_VETTED ? null : (
+      {process.env.DEBUG || process.env.SDAPP_VETTED ? null : (
         <li className="head-info-bubble-wrap">
           <Tooltip
             placement="bottom"

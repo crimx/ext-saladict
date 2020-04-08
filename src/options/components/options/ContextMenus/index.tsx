@@ -40,7 +40,7 @@ export class ContextMenus extends React.Component<
     const id = contextMenus.selected[index]
     const item = contextMenus.all[id]
     if (!item) {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.error('menu not found', index, id)
       }
       return

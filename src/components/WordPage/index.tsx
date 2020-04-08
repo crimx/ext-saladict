@@ -138,7 +138,7 @@ export const WordPage: FC<WordPageProps> = props => {
               itemsPerPage: undefined,
               pageNum: undefined
             })
-            if (process.env.NODE_ENV !== 'production') {
+            if (process.env.DEBUG) {
               console.assert(words.length === total, 'get all words')
             }
             setExportModalTitle(key)

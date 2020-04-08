@@ -17,7 +17,7 @@ export const uploadResult$$ = upload$.pipe(
     let profileChanged = false
 
     const paths = Object.keys(values)
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.DEBUG) {
       if (paths.length <= 0) {
         console.warn('Saving empty fields.', values)
       }

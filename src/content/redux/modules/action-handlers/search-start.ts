@@ -32,7 +32,7 @@ export const searchStart: ActionHandler<
   }
 
   if (!word) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.DEBUG) {
       console.warn(`SEARCH_START: Empty word on first search`, payload)
     }
     return state
