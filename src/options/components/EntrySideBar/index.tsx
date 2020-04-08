@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
-import { Layout, Menu, Affix } from 'antd'
+import React, { FC, useContext } from 'react'
+import { Layout, Menu, Affix, Modal } from 'antd'
 import {
   SettingOutlined,
   TagsOutlined,
@@ -13,11 +13,13 @@ import {
   FlagOutlined,
   ExceptionOutlined,
   SwapOutlined,
-  LockOutlined
+  LockOutlined,
+  ExclamationCircleOutlined
 } from '@ant-design/icons'
 import { useObservableState } from 'observable-hooks'
 import { debounceTime, scan, distinctUntilChanged } from 'rxjs/operators'
 import { useTranslate } from '@/_helpers/i18n'
+import { FormDirtyContext } from '@/options/data'
 
 import './_style.scss'
 
@@ -28,6 +30,7 @@ export interface EntrySideBarProps {
 
 export const EntrySideBar: FC<EntrySideBarProps> = props => {
   const { t } = useTranslate('options')
+  const dirtyRef = useContext(FormDirtyContext)
   // trigger affix rerendering on collapse state changes to update width
   const [affixKey, onCollapse] = useObservableState<number, boolean>(event$ =>
     event$.pipe(
@@ -51,7 +54,22 @@ export const EntrySideBar: FC<EntrySideBarProps> = props => {
           <Menu
             mode="inline"
             selectedKeys={[props.entry]}
-            onSelect={({ key }) => props.onChange(key)}
+            onSelect={({ key }) => {
+              const switchTab = () => {
+                props.onChange(key)
+                dirtyRef.current = false
+              }
+              if (dirtyRef.current) {
+                Modal.confirm({
+                  title: t('unsave_confirm'),
+                  icon: <ExclamationCircleOutlined />,
+                  okType: 'danger',
+                  onOk: switchTab
+                })
+              } else {
+                switchTab()
+              }
+            }}
           >
             <Menu.Item key="General">
               <SettingOutlined />

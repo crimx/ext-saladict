@@ -1,12 +1,8 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, useContext } from 'react'
 import { Helmet } from 'react-helmet'
-import { Layout, Row, Col, message as antMsg } from 'antd'
-import { merge } from 'rxjs'
-import {
-  useObservablePickState,
-  useSubscription,
-  useObservable
-} from 'observable-hooks'
+import { Layout, Row, Col, message as antMsg, notification } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
+import { useObservablePickState, useSubscription } from 'observable-hooks'
 import { reportGA } from '@/_helpers/analytics'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { useTranslate } from '@/_helpers/i18n'
@@ -14,8 +10,8 @@ import { EntrySideBarMemo } from './EntrySideBar'
 import { HeaderMemo } from './Header'
 import { EntryError } from './EntryError'
 import { BtnPreviewMemo } from './BtnPreview'
-import { config$$, profile$$, profileIDList$$ } from '../data'
-import { skip } from 'rxjs/operators'
+import { config$$, FormDirtyContext } from '../data'
+import { uploadResult$$ } from '../helpers/upload'
 
 const EntryComponent = React.memo(({ entry }: { entry: string }) =>
   React.createElement(require(`./Entries/${entry}`)[entry])
@@ -23,6 +19,7 @@ const EntryComponent = React.memo(({ entry }: { entry: string }) =>
 
 export const MainEntry: FC = () => {
   const { t, ready } = useTranslate('options')
+  const dirtyRef = useContext(FormDirtyContext)
   const [entry, setEntry] = useState(getEntry)
   const { analytics, darkMode } = useObservablePickState(
     config$$,
@@ -41,15 +38,35 @@ export const MainEntry: FC = () => {
     }
   }, [entry, analytics])
 
-  useSubscription(
-    useObservable(() =>
-      merge(skip(1)(config$$), skip(1)(profile$$), skip(1)(profileIDList$$))
-    ),
-    () => {
+  // settings saving status
+  useSubscription(uploadResult$$, result => {
+    if (result.error) {
+      notification.info({
+        icon: <ExclamationCircleOutlined />,
+        message: t('config.opt.upload_error'),
+        description: result.error.message
+      })
+    } else if (!result.loading) {
+      // success
+      dirtyRef.current = false
       antMsg.destroy()
       antMsg.success(t('msg_updated'))
     }
-  )
+  })
+
+  // Warn about unsaved settings before closing window
+  useEffect(() => {
+    window.addEventListener('beforeunload', e => {
+      if (dirtyRef.current) {
+        var message = t('unsave_confirm')
+        e = e || window.event
+        if (e) {
+          e.returnValue = message
+        }
+        return message
+      }
+    })
+  }, [])
 
   return (
     <Layout
@@ -73,7 +90,7 @@ export const MainEntry: FC = () => {
               }}
             >
               <ErrorBoundary key={entry} error={EntryError}>
-                <EntryComponent entry={entry} />
+                {ready && <EntryComponent entry={entry} />}
               </ErrorBoundary>
             </Layout.Content>
           </Layout>
