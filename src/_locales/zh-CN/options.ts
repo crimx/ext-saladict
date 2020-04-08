@@ -1,6 +1,29 @@
 export const locale = {
   title: '沙拉查词设置',
   previewPanel: '预览查词面板',
+
+  config: {
+    active: '启用划词翻译',
+    active_help: '关闭后「快捷查词」功能依然可用。',
+    animation: '开启动画过渡',
+    animation_help: '在低性能设备上关闭过渡动画可减少渲染负担。',
+    darkMode: '黑暗模式',
+    langCode: '界面语言',
+
+    opt: {
+      export: '导出设定',
+      help: '设定已通过浏览器自动同步，也可以手动导入导出。',
+      import: '导入设定',
+      import_error: '导入设定失败',
+      reset: '重置设定',
+      reset_confirm: '所有设定将还原到默认值，确定？',
+      upload_error: '设置保存失败'
+    }
+  },
+
+  shortcuts: '设置快捷键',
+  unsave_confirm: '修改尚未保存，确定放弃？',
+
   dict: {
     add: '添加词典',
     default_height: '词典默认高度',
@@ -67,8 +90,6 @@ export const locale = {
     analytics_help:
       '提供匿名设备浏览器版本信息。沙拉查词作者会优先支持用户量更多的设备和浏览器。',
     animation: '开启动画过渡',
-    animation_help: '在低性能设备上关闭过渡动画可减少渲染负担。',
-    app_active_help: '关闭后「快捷查词」功能依然可用。',
     autopron: {
       accent: '优先口音',
       accent_uk: '英式',
@@ -154,7 +175,7 @@ export const locale = {
     sel_lang_help: '当选中的文字包含相应的语言时才进行查找。',
     sel_lang_warning:
       '注意日语与韩语也包含了汉字。法语、德语和西语也包含了英文。若取消了中文或英语而勾选了其它语言，则只匹配那些语言独有的部分，如日语只匹配假名。',
-    shortcuts: '设置快捷键',
+
     searchMode: {
       direct: '直接搜索',
       direct_help: '直接显示词典面板。',
