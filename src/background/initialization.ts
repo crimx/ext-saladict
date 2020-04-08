@@ -5,6 +5,7 @@ import checkUpdate from '@/_helpers/check-update'
 import { updateConfig, initConfig } from '@/_helpers/config-manager'
 import { initProfiles } from '@/_helpers/profile-manager'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
+import { isFirefox } from '@/_helpers/saladict'
 import { ContextMenus } from './context-menus'
 import { BackgroundServer } from './server'
 import { openPDF } from './pdf-sniffer'
@@ -173,7 +174,7 @@ function onStartup(): void {
               message: `可更新至【${info.tag_name}】`
             }
 
-            if (!navigator.userAgent.includes('Firefox')) {
+            if (!isFirefox) {
               options.buttons = [{ title: '查看更新' }]
             }
 
@@ -195,7 +196,7 @@ function onStartup(): void {
             )
           }
 
-          if (!navigator.userAgent.includes('Firefox')) {
+          if (!isFirefox) {
             options.buttons = [
               {
                 title: decodeURI(
@@ -254,7 +255,7 @@ function showNews(data: UpdateData) {
         eventTime: Date.now() + 5000
       } as any
 
-      if (!window.navigator.userAgent.includes('Firefox')) {
+      if (!isFirefox) {
         options.buttons = [{ title: isZh ? '查看更新介绍' : 'More Info' }]
         options.silent = true
       }

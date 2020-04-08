@@ -19,7 +19,11 @@ import {
   useSubscription
 } from 'observable-hooks'
 import { AppConfig } from '@/app-config'
-import { isInDictPanel, isInSaladictExternal } from '@/_helpers/saladict'
+import {
+  isInDictPanel,
+  isInSaladictExternal,
+  isFirefox
+} from '@/_helpers/saladict'
 import {
   getTextFromSelection,
   getSentenceFromSelection
@@ -27,8 +31,6 @@ import {
 import { checkSupportedLangs } from '@/_helpers/lang-check'
 import { Message } from '@/typings/message'
 import { isTypeField, newSelectionWord } from './helper'
-
-const isFirefox = navigator.userAgent.includes('Firefox')
 
 export function createSelectTextStream(config: AppConfig | null) {
   if (!config) {

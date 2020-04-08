@@ -2,6 +2,7 @@ import { AddConfig, SyncService } from '../interface'
 import { getNotebook, getSyncConfig, setSyncConfig } from '../helpers'
 import { openURL } from '@/_helpers/browser-api'
 import { timer } from '@/_helpers/promise-more'
+import { isFirefox } from '@/_helpers/saladict'
 
 export interface SyncConfig {
   enable: boolean
@@ -185,7 +186,7 @@ export class Service extends SyncService<SyncConfig> {
       priority: 2
     }
 
-    if (!navigator.userAgent.includes('Firefox')) {
+    if (!isFirefox) {
       options.buttons = [{ title: locales.open[langCode] }]
     }
 

@@ -2,6 +2,7 @@ import { message, openURL } from '@/_helpers/browser-api'
 import { AppConfig } from '@/app-config'
 import isEqual from 'lodash/isEqual'
 import { createConfigStream } from '@/_helpers/config-manager'
+import { isFirefox } from '@/_helpers/saladict'
 import './types'
 
 import { TFunction } from 'i18next'
@@ -11,8 +12,6 @@ import { combineLatest } from 'rxjs'
 import { concatMap, filter, distinctUntilChanged } from 'rxjs/operators'
 import { openPDF, extractPDFUrl } from './pdf-sniffer'
 import { copyTextToClipboard } from './clipboard-manager'
-
-const isFirefox = navigator.userAgent.includes('Firefox')
 
 interface CreateMenuOptions {
   type?: browser.contextMenus.ItemType

@@ -179,7 +179,7 @@ export class BackgroundServer {
       25000
     )
       .catch(async (err: Error) => {
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.DEBUG) {
           console.warn(data.id, err)
         }
 
@@ -196,7 +196,7 @@ export class BackgroundServer {
       })
       .then(response => ({ ...response, id: data.id }))
       .catch(err => {
-        if (process.env.NODE_ENV === 'development') {
+        if (process.env.DEBUG) {
           console.warn(data.id, err)
         }
         return { result: null, id: data.id }
