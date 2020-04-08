@@ -3,7 +3,7 @@ import '@/selection'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { AntdRoot } from '@/_helpers/antd'
+import { AntdRoot } from '@/components/AntdRoot'
 import { MainEntry } from './components/MainEntry'
 
 import './_style.scss'
