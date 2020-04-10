@@ -1,5 +1,4 @@
 import React from 'react'
-import { TFunction } from 'i18next'
 import {
   SortableContainer,
   SortableHandle,
@@ -7,16 +6,23 @@ import {
   SortEnd as _SortEnd
 } from 'react-sortable-hoc'
 import { List, Radio, Button, Card } from 'antd'
-import { PlusOutlined, BarsOutlined } from '@ant-design/icons'
+import {
+  PlusOutlined,
+  SwapOutlined,
+  EditOutlined,
+  CloseOutlined
+} from '@ant-design/icons'
 import { RadioChangeEvent } from 'antd/lib/radio'
 import { Omit } from '@/typings/helpers'
+import { useTranslate } from '@/_helpers/i18n'
+
+import './_style.scss'
 
 export type SortEnd = _SortEnd
 
 export type SortableListItem = { value: string; title: React.ReactNode }
 
 export interface SortableListItemProps {
-  t: TFunction
   indexCopy: number
   selected?: string
   item: SortableListItem
@@ -27,7 +33,6 @@ export interface SortableListItemProps {
 
 export interface SortableListProps
   extends Omit<SortableListItemProps, 'item' | 'indexCopy'> {
-  t: TFunction
   /** List title */
   title: React.ReactNode
   description?: React.ReactNode
@@ -42,13 +47,17 @@ export interface SortableListProps
   onSortEnd?: (end: SortEnd) => void
 }
 
-const DragHandle = SortableHandle<{ t: TFunction }>(({ t }) => (
-  <BarsOutlined title={t('common:sort')} style={{ cursor: 'move' }} />
-))
+const DragHandle = React.memo(
+  SortableHandle(() => {
+    const { t } = useTranslate('common')
+    return (
+      <SwapOutlined rotate={90} title={t('sort')} style={{ cursor: 'move' }} />
+    )
+  })
+)
 
 const ProfileListItem = SortableElement(
   ({
-    t,
     selected,
     item,
     disableEdit,
@@ -56,6 +65,8 @@ const ProfileListItem = SortableElement(
     onDelete,
     indexCopy
   }: SortableListItemProps) => {
+    const { t } = useTranslate('options')
+
     return (
       <List.Item>
         <div className="sortable-list-item">
@@ -65,13 +76,13 @@ const ProfileListItem = SortableElement(
             <Radio value={item.value}>{item.title}</Radio>
           )}
           <div>
-            <DragHandle t={t} />
+            <DragHandle />
             <Button
               className="sortable-list-item-btn"
               title={t('common:edit')}
               shape="circle"
               size="small"
-              icon="edit"
+              icon={<EditOutlined />}
               disabled={disableEdit != null && disableEdit(indexCopy, item)}
               onClick={onEdit && (() => onEdit(indexCopy, item))}
             />
@@ -80,7 +91,7 @@ const ProfileListItem = SortableElement(
               className="sortable-list-item-btn"
               shape="circle"
               size="small"
-              icon="close"
+              icon={<CloseOutlined />}
               disabled={selected != null && item.value === selected}
               onClick={onDelete && (() => onDelete(indexCopy, item))}
             />
@@ -91,7 +102,7 @@ const ProfileListItem = SortableElement(
   }
 )
 
-const SortableListContainer = SortableContainer<SortableListProps>(props => (
+const SortableListContainer = SortableContainer((props: SortableListProps) => (
   <List
     size="large"
     dataSource={props.list}
@@ -102,13 +113,15 @@ const SortableListContainer = SortableContainer<SortableListProps>(props => (
 ))
 
 export function SortableList(props: SortableListProps) {
+  const { t } = useTranslate('common')
+
   return (
     <Card
       title={props.title}
       extra={
         <Button type="dashed" size="small" onClick={props.onAdd}>
           <PlusOutlined />
-          {props.t('common:add')}
+          {t('add')}
         </Button>
       }
     >
@@ -122,11 +135,21 @@ export function SortableList(props: SortableListProps) {
       </Radio.Group>
       {(props.isShowAdd == null || props.isShowAdd) && (
         <Button type="dashed" style={{ width: '100%' }} onClick={props.onAdd}>
-          <PlusOutlined /> {props.t('common:add')}
+          <PlusOutlined /> {t('add')}
         </Button>
       )}
     </Card>
   )
 }
 
-export default SortableList
+/**
+ * Changes the contents of an array by moving an element to a different position
+ */
+export function arrayMove<T extends any[]>(
+  arr: T,
+  from: number,
+  to: number
+): T {
+  arr.splice(to < 0 ? arr.length + to : to, 0, arr.splice(from, 1)[0])
+  return arr
+}
