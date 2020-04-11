@@ -1,7 +1,6 @@
 import React, { FC, useState, useEffect, useContext } from 'react'
 import { Helmet } from 'react-helmet'
 import { Layout, Row, Col, message as antMsg, notification } from 'antd'
-import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useObservablePickState, useSubscription } from 'observable-hooks'
 import { reportGA } from '@/_helpers/analytics'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
@@ -41,8 +40,7 @@ export const MainEntry: FC = () => {
   // settings saving status
   useSubscription(uploadResult$$, result => {
     if (result.error) {
-      notification.info({
-        icon: <ExclamationCircleOutlined />,
+      notification.error({
         message: t('config.opt.upload_error'),
         description: result.error.message
       })
@@ -58,12 +56,8 @@ export const MainEntry: FC = () => {
   useEffect(() => {
     window.addEventListener('beforeunload', e => {
       if (dirtyRef.current) {
-        var message = t('unsave_confirm')
-        e = e || window.event
-        if (e) {
-          e.returnValue = message
-        }
-        return message
+        e.preventDefault()
+        e.returnValue = t('unsave_confirm')
       }
     })
   }, [])
