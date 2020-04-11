@@ -10599,9 +10599,9 @@ object.values@^1.1.0, object.values@^1.1.1:
     has "^1.0.3"
 
 observable-hooks@^2.1.2:
-  version "2.3.2"
-  resolved "https://registry.yarnpkg.com/observable-hooks/-/observable-hooks-2.3.2.tgz#ac43fdef6f38e91ef308400aa6cf27190a178faf"
-  integrity sha512-kFt6hKnbIm/8loBUznuE1lzjCGeb5wZGkSrObfCmNyh21TQc7oe/ZLYIArHts5cmUTMYMXbuuJcDLsPxFJ4VGg==
+  version "2.3.4"
+  resolved "https://registry.yarnpkg.com/observable-hooks/-/observable-hooks-2.3.4.tgz#48eb43ed52d0fe513a8dcb610c234a332a1e0540"
+  integrity sha512-3RzdzuzH869aU+6v4QMgWh8w9SM9l3iqNfLLo8g86Whu8hkkqQqt6wcqbjd7uwQ5nvyn1fxS9rn+Kt3PrBmQvg==
 
 obuf@^1.0.0, obuf@^1.1.2:
   version "1.1.2"
