@@ -21,6 +21,16 @@ export const locale = {
     }
   },
 
+  profiles: {
+    opt: {
+      add_name: '新增情景模式名称',
+      delete_confirm: '「{{name}}」将被删除，确认？',
+      edit_name: '更改情景模式名称',
+      help:
+        '每个情景模式相当于一套独立的设置，一些选项（带 {*}）会随着情景模式变化。鼠标悬浮在查词面板的菜单图标上可快速切换，或者焦点选中菜单图标然后按{↓}。'
+    }
+  },
+
   shortcuts: '设置快捷键',
   unsave_confirm: '修改尚未保存，确定放弃？',
 
@@ -240,14 +250,6 @@ export const locale = {
     clipboard: '剪贴板',
     help: '查词面板出现时预先加载内容到搜索框。',
     selection: '页面划词'
-  },
-
-  profiles: {
-    add_name: '新增情景模式名称',
-    delete_confirm: '「{{name}}」将被删除，确认？',
-    edit_name: '更改情景模式名称',
-    help:
-      '每个情景模式相当于一套独立的设置，一些选项（带 <span style="color:#f5222d">*</span>）会随着情景模式变化。鼠标悬浮在查词面板的菜单图标上可快速切换，或者焦点选中菜单图标然后按<kbd>↓</kbd>。'
   },
 
   sync: {
