@@ -9,7 +9,7 @@ import React, {
 } from 'react'
 import mapValues from 'lodash/mapValues'
 import i18n, { TFunction } from 'i18next'
-import { createConfigStream } from '@/_helpers/config-manager'
+import { getConfig, addConfigListener } from '@/_helpers/config-manager'
 import zip from 'lodash/zip'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
@@ -50,6 +50,8 @@ export interface DictLocales {
 }
 
 export async function i18nLoader() {
+  const { langCode } = await getConfig()
+
   await i18n
     .use({
       type: 'backend',
@@ -77,9 +79,7 @@ export async function i18nLoader() {
       }
     })
     .init({
-      lng: (/^(en|zh-CN|zh-TW)$/.exec(browser.i18n.getUILanguage()) || [
-        'en'
-      ])[0],
+      lng: langCode,
       fallbackLng: false,
       whitelist: ['en', 'zh-CN', 'zh-TW'],
 
@@ -95,9 +95,9 @@ export async function i18nLoader() {
       }
     })
 
-  createConfigStream().subscribe(config => {
-    if (i18n.language !== config.langCode) {
-      i18n.changeLanguage(config.langCode)
+  addConfigListener(({ newConfig }) => {
+    if (i18n.language !== newConfig.langCode) {
+      i18n.changeLanguage(newConfig.langCode)
     }
   })
 
@@ -119,15 +119,14 @@ export const I18nContextProvider: FC = ({ children }) => {
       setLang(i18n.language)
     }
 
-    i18n.on('initialized', setLangCallback)
-    i18n.on('languageChanged', setLangCallback)
-
     if (!i18n.language) {
-      i18nLoader()
+      i18nLoader().then(() => {
+        setLang(i18n.language)
+        i18n.on('languageChanged', setLangCallback)
+      })
     }
 
     return () => {
-      i18n.off('initialized', setLangCallback)
       i18n.off('languageChanged', setLangCallback)
     }
   }, [])
@@ -202,7 +201,7 @@ export function useTranslate(
           setResult(genResult(i18n.getFixedT(lang, namespaces), true))
         } else {
           // keep the old t while marking not ready
-          setResult(result => genResult(null, false))
+          setResult(genResult(null, false))
 
           i18n.loadNamespaces(namespaces).then(() => {
             if (isEffectRunning) {
