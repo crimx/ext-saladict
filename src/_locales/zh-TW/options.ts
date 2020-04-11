@@ -3,6 +3,45 @@ import { locale as _locale } from '../zh-CN/options'
 export const locale: typeof _locale = {
   title: '沙拉查詞設定',
   previewPanel: '預覽字典介面',
+
+  config: {
+    active: '啟用滑鼠選字翻譯',
+    active_help: '關閉後「迅速查字」功能依然可用。',
+    animation: '啟用轉換動畫',
+    animation_help: '在低效能裝置上關閉過渡動畫可減少渲染負擔。',
+    darkMode: '黑暗模式',
+    langCode: '介面語言',
+
+    opt: {
+      export: '匯出設定',
+      help: '設定已通過瀏覽器自動同步，也可以手動匯入匯出。',
+      import: '匯入設定',
+      import_error: '匯入設定失敗',
+      reset: '重設設定',
+      reset_confirm: '所有設定將還原至預設值，確定？',
+      upload_error: '設定儲存失敗'
+    }
+  },
+
+  profiles: {
+    opt: {
+      add_name: '新增情景模式名稱',
+      delete_confirm: '「{{name}}」將被刪除，確認？',
+      edit_name: '變更情景模式名稱',
+      help:
+        '每個情景模式相當於一套獨立的設定，一些選項（帶有 <span style="color:#f5222d">*</span>）會隨著情景模式變化。滑鼠懸浮在字典介面的選單圖示上可快速切換，或者焦點選中選單圖示然後按<kbd>↓</kbd>。'
+    }
+  },
+
+  profile: {
+    opt: {
+      item_extra: '此選項會因「情景模式」而改變。'
+    }
+  },
+
+  shortcuts: '設定快速鍵',
+  unsave_confirm: '修改尚未儲存，確定放棄？',
+
   dict: {
     add: '新增字典',
     default_height: '字典預設高度',
@@ -69,8 +108,6 @@ export const locale: typeof _locale = {
     analytics_help:
       '提供匿名裝置瀏覽器版本資訊。沙拉查詞作者會優先支援使用者更多的裝置和瀏覽器。',
     animation: '啟用轉換動畫',
-    animation_help: '在低效能裝置上關閉過渡動畫可減少渲染負擔。',
-    app_active_help: '關閉後「迅速查字」功能依然可用。',
     autopron: {
       accent: '優先口音',
       accent_uk: '英式',
@@ -155,7 +192,6 @@ export const locale: typeof _locale = {
     sel_lang_help: '當選取的文字包含相對應的語言時，才進行尋找。',
     sel_lang_warning:
       '注意日語與韓語也包含了漢字。法語、德語和西語也包含了英文。若取消了中文或英語而勾選了其它語言，則只翻譯那些語言獨有的部分，如日語只翻譯假名。',
-    shortcuts: '設定快速鍵',
     searchMode: {
       direct: '直接搜尋',
       direct_help: '直接顯示字典視窗介面。',
@@ -221,14 +257,6 @@ export const locale: typeof _locale = {
     clipboard: '剪貼簿',
     help: '字典介面出現時預先載入內容到搜尋框。',
     selection: '滑鼠選字'
-  },
-
-  profiles: {
-    add_name: '新增情景模式名稱',
-    delete_confirm: '「{{name}}」將被刪除，確認？',
-    edit_name: '變更情景模式名稱',
-    help:
-      '每個情景模式相當於一套獨立的設定，一些選項（帶有 <span style="color:#f5222d">*</span>）會隨著情景模式變化。滑鼠懸浮在字典介面的選單圖示上可快速切換，或者焦點選中選單圖示然後按<kbd>↓</kbd>。'
   },
 
   sync: {

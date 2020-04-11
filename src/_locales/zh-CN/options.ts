@@ -31,6 +31,12 @@ export const locale = {
     }
   },
 
+  profile: {
+    opt: {
+      item_extra: '此选项会因「情景模式」而改变。'
+    }
+  },
+
   shortcuts: '设置快捷键',
   unsave_confirm: '修改尚未保存，确定放弃？',
 

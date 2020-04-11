@@ -3,6 +3,46 @@ import { locale as _locale } from '../zh-CN/options'
 export const locale: typeof _locale = {
   title: 'Saladict Options',
   previewPanel: 'Preview Dict Panel',
+
+  config: {
+    active: 'Enable Inline Translator',
+    active_help:
+      '"Quick Search" is still available even if Inline translation is turned off.',
+    animation: 'Animation transitions',
+    animation_help: 'Switch off animation transitions to reduce runtime cost.',
+    darkMode: 'Dark Mode',
+    langCode: 'App Language',
+
+    opt: {
+      export: 'Export Configs',
+      help: 'Configs are synced automatically via browser.',
+      import: 'Import Configs',
+      import_error: 'Import Configs failed',
+      reset: 'Reset Configs',
+      reset_confirm: 'Reset to default settings. Confirm？',
+      upload_error: 'Unable to save settings.'
+    }
+  },
+
+  profiles: {
+    opt: {
+      add_name: 'Add Profile Name',
+      delete_confirm: 'Delete Profile "{{name}}". Confirm?',
+      edit_name: 'Change Profile Name',
+      help:
+        'Each profile represents an independent set of settings. Some of the settings (with <span style="color:#f5222d">*</span> prefix) change according to profile. One may switch profiles by hovering on the menu icon on Dict Panel, or focus on the icon then hit <kbd>↓</kbd>.'
+    }
+  },
+
+  profile: {
+    opt: {
+      item_extra: 'This option may change base on "Profile".'
+    }
+  },
+
+  shortcuts: 'Set Shortcuts',
+  unsave_confirm: 'Settings not saved. Sure to leave?',
+
   dict: {
     add: 'Add dicts',
     default_height: 'Default Panel Height',
@@ -71,9 +111,6 @@ export const locale: typeof _locale = {
     analytics_help:
       'Share anonymous device browser version information. Saladict author will offer prioritized support to popular devices and browsers.',
     animation: 'Animation transitions',
-    animation_help: 'Switch off animation transitions to reduce runtime cost.',
-    app_active_help:
-      '"Quick Search" is still available even if Inline translation is turned off.',
     autopron: {
       accent: 'Accent Preference',
       accent_uk: 'UK',
@@ -165,7 +202,6 @@ export const locale: typeof _locale = {
       'Search when selection contains words in the chosen languages.',
     sel_lang_warning:
       'Note that Japanese and Korean also include Chinese. French, Deutsch and Spanish also include English. If Chinese or English is cancelled while others are selected, only the exclusive parts of those languages are tested. E.g. kana characters in Japanese.',
-    shortcuts: 'Set Shortcuts',
     searchMode: {
       direct: 'Direct Search',
       direct_help: 'Show dict panel directly.',
@@ -229,14 +265,6 @@ export const locale: typeof _locale = {
     clipboard: 'Clipboard',
     help: 'Preload content in search box when panel shows up.',
     selection: 'Page Selection'
-  },
-
-  profiles: {
-    add_name: 'Add Profile Name',
-    delete_confirm: 'Delete Profile "{{name}}". Confirm?',
-    edit_name: 'Change Profile Name',
-    help:
-      'Each profile represents an independent set of settings. Some of the settings (with <span style="color:#f5222d">*</span> prefix) change according to profile. One may switch profiles by hovering on the menu icon on Dict Panel, or focus on the icon then hit <kbd>↓</kbd>.'
   },
 
   sync: {
