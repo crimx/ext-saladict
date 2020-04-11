@@ -1,8 +1,9 @@
-import React, { FC, useState, useLayoutEffect } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Helmet } from 'react-helmet'
 import { Provider as ReduxProvider } from 'react-redux'
 import createStore from '@/content/redux/create'
-import { useRefFn } from 'observable-hooks'
+import { useRefFn, useObservableState, useObservable } from 'observable-hooks'
+import { distinctUntilChanged, map, startWith } from 'rxjs/operators'
 
 import SaladBowlContainer from '@/content/components/SaladBowl/SaladBowl.container'
 import DictPanelContainer from '@/content/components/DictPanel/DictPanel.container'
@@ -38,24 +39,34 @@ export interface AntdRootProps {
 export const AntdRoot: FC<AntdRootProps> = props => {
   const storeRef = useRefFn(createStore)
 
-  const [locale, setLocale] = useState('zh-CN')
-  const [darkMode, setDarkMode] = useState(false)
+  const { locale, darkMode, analytics } = useObservableState(
+    useObservable(() =>
+      createConfigStream().pipe(
+        distinctUntilChanged(
+          (oldConfig, newConfig) =>
+            oldConfig.langCode === newConfig.langCode &&
+            oldConfig.darkMode === newConfig.darkMode &&
+            oldConfig.analytics === newConfig.analytics
+        ),
+        map(config => ({
+          locale: antdLocales[config.langCode] || en_US,
+          darkMode: config.darkMode,
+          analytics: config.analytics
+        })),
+        startWith({
+          locale: zh_CN,
+          darkMode: false,
+          analytics: false
+        })
+      )
+    )
+  )!
 
-  useLayoutEffect(() => {
-    createConfigStream().subscribe(config => {
-      if (locale !== config.langCode && antdLocales[config.langCode]) {
-        setLocale(config.langCode)
-      }
-
-      if (darkMode !== config.darkMode) {
-        setDarkMode(config.darkMode)
-      }
-
-      if (config.analytics && props.path) {
-        reportGA(props.path)
-      }
-    })
-  }, [])
+  useEffect(() => {
+    if (analytics && props.path) {
+      reportGA(props.path)
+    }
+  }, [analytics, props.path])
 
   return (
     <I18nContextProvider>
@@ -63,7 +74,7 @@ export const AntdRoot: FC<AntdRootProps> = props => {
         <Helmet>{<link rel="stylesheet" href={darkTheme} />}</Helmet>
       )}
       <ReduxProvider store={storeRef.current}>
-        <AntdConfigProvider locale={antdLocales[locale]}>
+        <AntdConfigProvider locale={locale}>
           {props.children}
         </AntdConfigProvider>
         <SaladBowlContainer />
