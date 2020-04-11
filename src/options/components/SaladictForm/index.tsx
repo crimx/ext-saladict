@@ -1,7 +1,7 @@
 import React, { FC, useContext } from 'react'
 import { Form, Button, Modal } from 'antd'
 import { FormItemProps } from 'antd/lib/form'
-import { ExclamationCircleOutlined } from '@ant-design/icons'
+import { ExclamationCircleOutlined, BlockOutlined } from '@ant-design/icons'
 import get from 'lodash/get'
 import { map, withLatestFrom } from 'rxjs/operators'
 import { useObservableState, useObservable } from 'observable-hooks'
@@ -63,15 +63,31 @@ export const SaladictForm: FC<SaladictFormProps> = props => {
       onValuesChange={() => (dirtyRef.current = true)}
     >
       {props.items.map(item => {
-        item.label = t(item.name)
+        const isProfile = item.name.startsWith('profile.')
+
+        item.label = isProfile ? (
+          <>
+            <BlockOutlined style={{ color: '#f5222d', marginRight: '0.5em' }} />
+            {t(item.name)}
+          </>
+        ) : (
+          t(item.name)
+        )
+
         const help = `options:${item.name}_help`
         if (ready && i18n.exists(help)) {
           item.help = t(help)
         }
+
         const extra = `options:${item.name}_extra`
-        if (ready && i18n.exists(extra)) {
-          item.extra = t(extra)
+        if (ready) {
+          if (i18n.exists(extra)) {
+            item.extra = t(extra)
+          } else if (isProfile) {
+            item.extra = t('profile.opt.item_extra')
+          }
         }
+
         return <Form.Item key={item.name} {...item} />
       })}
       <Form.Item {...formItemHeadLayout} className="saladict-form-btns">
