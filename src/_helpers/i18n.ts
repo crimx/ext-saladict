@@ -1,7 +1,16 @@
-import React, { useState, useLayoutEffect, FC, useContext, useRef } from 'react'
+import React, {
+  useState,
+  useLayoutEffect,
+  FC,
+  useContext,
+  useRef,
+  Fragment,
+  PropsWithChildren
+} from 'react'
 import mapValues from 'lodash/mapValues'
 import i18n, { TFunction } from 'i18next'
 import { createConfigStream } from '@/_helpers/config-manager'
+import zip from 'lodash/zip'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 export type Namespace =
@@ -213,6 +222,35 @@ export function useTranslate(
 
   return result
 }
+
+/**
+ * <Trans message="a{b}c{d}e">
+ *   <h1>b</h1>
+ *   <p>d</p>
+ * </Trans>
+ *  ↓
+ * [
+ *   "a",
+ *   <h1>b</h1>,
+ *   "c",
+ *   <p>d</p>,
+ *   "e"
+ * ]
+ */
+export const Trans = React.memo<PropsWithChildren<{ message?: string }>>(
+  ({ message, children }) => {
+    if (!message) return null
+
+    return React.createElement(
+      Fragment,
+      null,
+      zip(
+        message.split(/{[^}]*?}/),
+        Array.isArray(children) ? children : [children]
+      )
+    )
+  }
+)
 
 function extractDictLocales(lang: LangCode) {
   const req = require.context(
