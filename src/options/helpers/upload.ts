@@ -12,9 +12,7 @@ export const upload = (values: { [path: string]: any }) => upload$.next(values)
 export const uploadResult$$ = upload$.pipe(
   withLatestFrom(config$$, profile$$),
   switchMap(([values, config, profile]) => {
-    const data = { config, profile }
-    let configChanged = false
-    let profileChanged = false
+    const data: { config?: typeof config; profile?: typeof profile } = {}
 
     const paths = Object.keys(values)
     if (process.env.DEBUG) {
@@ -25,10 +23,14 @@ export const uploadResult$$ = upload$.pipe(
 
     for (const path of paths) {
       if (path.startsWith('config.')) {
-        configChanged = true
+        if (!data.config) {
+          data.config = JSON.parse(JSON.stringify(config))
+        }
         set(data, path, values[path])
       } else if (path.startsWith('profile.')) {
-        profileChanged = true
+        if (!data.profile) {
+          data.profile = JSON.parse(JSON.stringify(profile))
+        }
         set(data, path, values[path])
       } else {
         console.error(new Error(`Saving unknown path: ${path}`))
@@ -37,12 +39,12 @@ export const uploadResult$$ = upload$.pipe(
 
     const requests: Promise<void>[] = []
 
-    if (configChanged) {
-      requests.push(updateConfig(config))
+    if (data.config) {
+      requests.push(updateConfig(data.config))
     }
 
-    if (profileChanged) {
-      requests.push(updateProfile(profile))
+    if (data.profile) {
+      requests.push(updateProfile(data.profile))
     }
 
     const pRequests = Promise.all(requests)
