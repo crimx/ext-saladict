@@ -60,7 +60,10 @@ export const SaladictForm: FC<SaladictFormProps> = props => {
       {...formItemLayout}
       onFinish={upload}
       initialValues={initialValues}
-      onValuesChange={() => (dirtyRef.current = true)}
+      onValuesChange={(_, values) => {
+        ;(globals as GlobalsContext).dirty = true
+        setShowFields(genShowFields(values))
+      }}
     >
       {props.items.map(item => {
         const isProfile = item.name.startsWith('profile.')
@@ -105,7 +108,7 @@ export const SaladictForm: FC<SaladictFormProps> = props => {
               onOk: async () => {
                 await resetConfig()
                 await resetAllProfiles()
-                dirtyRef.current = false
+                ;(globals as GlobalsContext).dirty = false
               }
             })
           }}

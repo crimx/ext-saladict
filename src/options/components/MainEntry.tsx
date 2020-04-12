@@ -9,7 +9,7 @@ import { EntrySideBarMemo } from './EntrySideBar'
 import { HeaderMemo } from './Header'
 import { EntryError } from './EntryError'
 import { BtnPreviewMemo } from './BtnPreview'
-import { config$$, FormDirtyContext } from '../data'
+import { config$$, GlobalsContext } from '../data'
 import { uploadResult$$ } from '../helpers/upload'
 
 const EntryComponent = React.memo(({ entry }: { entry: string }) =>
@@ -18,7 +18,7 @@ const EntryComponent = React.memo(({ entry }: { entry: string }) =>
 
 export const MainEntry: FC = () => {
   const { t, ready } = useTranslate('options')
-  const dirtyRef = useContext(FormDirtyContext)
+  const globals = useContext(GlobalsContext)
   const [entry, setEntry] = useState(getEntry)
   const { analytics, darkMode } = useObservablePickState(
     config$$,
@@ -46,7 +46,7 @@ export const MainEntry: FC = () => {
       })
     } else if (!result.loading) {
       // success
-      dirtyRef.current = false
+      ;(globals as GlobalsContext).dirty = false
       antMsg.destroy()
       antMsg.success(t('msg_updated'))
     }
@@ -55,7 +55,7 @@ export const MainEntry: FC = () => {
   // Warn about unsaved settings before closing window
   useEffect(() => {
     window.addEventListener('beforeunload', e => {
-      if (dirtyRef.current) {
+      if (globals.dirty) {
         e.preventDefault()
         e.returnValue = t('unsave_confirm')
       }

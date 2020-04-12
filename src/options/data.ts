@@ -20,5 +20,14 @@ export const profileIDList$$ = createProfileIDListStream().pipe(
 )
 ;(profileIDList$$ as ConnectableObservable<ProfileIDList>).connect()
 
-/** Unsaved form? */
-export const FormDirtyContext = createContext({ current: false })
+export interface GlobalsContext {
+  /** Unsaved form? */
+  dirty: boolean
+  config: AppConfig
+  profile: Profile
+  profileIDList: ProfileIDList
+}
+
+export const GlobalsContext = createContext(
+  (null as unknown) as Readonly<GlobalsContext>
+)

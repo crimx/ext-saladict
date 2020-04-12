@@ -19,7 +19,7 @@ import {
 import { useObservableState } from 'observable-hooks'
 import { debounceTime, scan, distinctUntilChanged } from 'rxjs/operators'
 import { useTranslate } from '@/_helpers/i18n'
-import { FormDirtyContext } from '@/options/data'
+import { GlobalsContext } from '@/options/data'
 
 import './_style.scss'
 
@@ -30,7 +30,7 @@ export interface EntrySideBarProps {
 
 export const EntrySideBar: FC<EntrySideBarProps> = props => {
   const { t } = useTranslate('options')
-  const dirtyRef = useContext(FormDirtyContext)
+  const globals = useContext(GlobalsContext)
   // trigger affix rerendering on collapse state changes to update width
   const [affixKey, onCollapse] = useObservableState<number, boolean>(event$ =>
     event$.pipe(
@@ -57,9 +57,9 @@ export const EntrySideBar: FC<EntrySideBarProps> = props => {
             onSelect={({ key }) => {
               const switchTab = () => {
                 props.onChange(key)
-                dirtyRef.current = false
+                ;(globals as GlobalsContext).dirty = false
               }
-              if (dirtyRef.current) {
+              if (globals.dirty) {
                 Modal.confirm({
                   title: t('unsave_confirm'),
                   icon: <ExclamationCircleOutlined />,
