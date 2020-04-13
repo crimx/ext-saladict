@@ -62,17 +62,17 @@ export const SaladictForm: FC<SaladictFormProps> = props => {
       if (item.items) {
         extractInitial(item.items, result)
       } else {
-        const name = (item.key || item.name)!
-
         if (item.hide) {
-          result.hideFieldFns[name] = item.hide
+          result.hideFieldFns[(item.key || item.name)!] = item.hide
         }
 
-        const value = get(globals, name, globals)
-        if (value !== globals) {
-          result.initialValues[name] = value
-        } else if (process.env.DEBUG) {
-          console.warn(new Error('Missing value for form key: ' + item.name))
+        if (item.name) {
+          const value = get(globals, item.name, globals)
+          if (value !== globals) {
+            result.initialValues[item.name] = value
+          } else if (process.env.DEBUG) {
+            console.warn(new Error('Missing value for form key: ' + item.name))
+          }
         }
       }
     }
