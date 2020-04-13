@@ -9,6 +9,14 @@ export const locale = {
     animation_help: '在低性能设备上关闭过渡动画可减少渲染负担。',
     darkMode: '黑暗模式',
     langCode: '界面语言',
+    editOnFav: '红心单词时弹出编辑面板',
+    editOnFav_help:
+      '关闭后，点击红心生词将自动添加到生词本，上下文翻译亦会自动获取。',
+    searhHistory: '记录查词历史',
+    searhHistory_help: '查词记录可能会泄漏您的浏览痕迹。',
+    searhHistoryInco: '在私隐模式中记录',
+    ctxTrans: '上下文翻译引擎',
+    ctxTrans_help: '单词被添加进生词本前会自动翻译上下文。',
 
     opt: {
       export: '导出设定',
@@ -37,8 +45,70 @@ export const locale = {
     }
   },
 
+  syncService: {
+    description: '数据同步设置。',
+    start: '同步已在后台开始',
+    success: '同步成功',
+    failed: '同步失败',
+    close_confirm: '设置未保存，关闭？',
+    delete_confirm: '清空同步设置？',
+    error_url: '不正确的超链接格式。',
+
+    btn: {
+      shanbay: '添加扇贝生词本同步',
+      webdav: '添加 WebDAV 同步'
+    },
+
+    shanbay: {
+      title: '扇贝生词本同步',
+      description:
+        '先去 shanbay.com 登录扇贝（退出后将失效）。开启后每次添加生词将自动单向同步到扇贝生词本（只从沙拉查词到扇贝），只同步新增单词（删除不同步），只同步单词本身（上下文等均不能同步）。生词需要扇贝单词库支持才能被添加。',
+      login: '将打开扇贝官网，请登录再回来重新开启。',
+      sync_all: '上传现有的所有生词',
+      sync_all_confirm:
+        '生词本存在较多单词，将分批上传。注意短时间上传太多有可能会导致封号，且不可恢复，确定继续？',
+      sync_last: '上传最近的一个生词'
+    },
+
+    webdav: {
+      title: 'WebDAV 同步',
+      description:
+        '应用设置（包括本设置）已通过浏览器自动同步。生词本可通过本设置实现 WebDAV 同步。',
+      jianguo: '参考坚果云设置',
+      checking: '连接中...',
+      duration: '同步周期',
+      duration_help:
+        '添加生词后会马上上传，数据会在上传前保证同步，所以如果不需要多个浏览器实时查看更新，可将更新检测周期调大些以减少资源占用及避免服务器拒绝响应。',
+      err_exist: '服务器上 Saladict 目录下的文件将被替换。先下载合并到本地？',
+      err_mkcol: '无法在服务器创建“Saladict”目录。请手动在服务器上创建。',
+      err_network: '连接服务器失败。',
+      err_parse: '服务器返回 XML 格式不正确。',
+      err_unauthorized: '账户或密码不正确。',
+      err_unknown: '未知错误 「{{error}}」。',
+      passwd: '密码',
+      url: '服务器地址',
+      user: '账户'
+    }
+  },
+
   shortcuts: '设置快捷键',
+  msg_update_error: '设置更新失败',
+  msg_updated: '设置已更新',
   unsave_confirm: '修改尚未保存，确定放弃？',
+
+  headInfo: {
+    acknowledgement: {
+      title: '特别鸣谢',
+      naver: '协助添加 Naver 韩国语词典',
+      shanbay: '编写扇贝词典模块',
+      trans_tw: '提供部分繁体中文翻译',
+      weblio: '协助添加 Weblio 辞書'
+    },
+    contact_author: '联系作者',
+    donate: '支持项目',
+    instructions: '使用说明',
+    report_issue: '反馈问题'
+  },
 
   dict: {
     add: '添加词典',
@@ -66,24 +136,8 @@ export const locale = {
     sel_word_count_help: '当选中文字的字数符合条件时才显示该词典。'
   },
 
-  headInfo: {
-    acknowledgement: {
-      title: '特别鸣谢',
-      naver: '协助添加 Naver 韩国语词典',
-      shanbay: '编写扇贝词典模块',
-      trans_tw: '提供部分繁体中文翻译',
-      weblio: '协助添加 Weblio 辞書'
-    },
-    contact_author: '联系作者',
-    donate: '支持项目',
-    instructions: '使用说明',
-    report_issue: '反馈问题'
-  },
-
   match_pattern_description:
     '网址支持匹配模式（<a href="https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例" target="_blank">例子</a>）。留空保存即可清除。',
-  msg_update_error: '设置更新失败',
-  msg_updated: '设置已更新',
   nav: {
     BlackWhiteList: '黑白名单',
     ContextMenus: '右键菜单',
@@ -101,11 +155,9 @@ export const locale = {
   },
 
   opt: {
-    active: '启用划词翻译',
     analytics: '启用 Google Analytics',
     analytics_help:
       '提供匿名设备浏览器版本信息。沙拉查词作者会优先支持用户量更多的设备和浏览器。',
-    animation: '开启动画过渡',
     autopron: {
       accent: '优先口音',
       accent_uk: '英式',
@@ -133,21 +185,10 @@ export const locale = {
       x: '沙拉图标水平偏移',
       y: '沙拉图标垂直偏移'
     },
-    config: {
-      export: '导出设定',
-      help: '设定已通过浏览器自动同步，也可以手动导入导出。',
-      import: '导入设定',
-      import_error: '导入设定失败',
-      reset: '重置设定',
-      reset_confirm: '所有设定将还原到默认值，确定？'
-    },
     context_description:
       '设置右键菜单，可添加可自定义链接。网页翻译其实不需要沙拉查词，故已有的有道和谷歌网页翻译目前处于维护状态，没有计划添加新功能，请用其它官方扩展如彩云小译和谷歌翻译。',
     context_menus_title: '添加右键菜单项目',
     context_menus_add_rules: '链接中的 %s 会被替换为选词。',
-    ctx_trans: '上下文翻译引擎',
-    ctx_trans_help: '单词被添加进生词本前会自动翻译上下文。',
-    dark_mode: '黑暗模式',
     dictPanel: {
       custom_css: '自定义查词面板样式',
       custom_css_help:
@@ -158,13 +199,6 @@ export const locale = {
     },
     dict_selected: '已选词典',
     double_click_delay: '双击间隔',
-    edit_on_fav: '红心单词时弹出编辑面板',
-    edit_on_fav_help:
-      '关闭后，点击红心生词将自动添加到生词本，上下文翻译亦会自动获取。',
-    history: '记录查词历史',
-    history_help: '查词记录可能会泄漏您的浏览痕迹。',
-    history_inco: '在私隐模式中记录',
-    language: '界面语言',
     mta: '自动展开多行搜索框',
     mta_always: '保持展开',
     mta_never: '从不展开',
@@ -213,8 +247,6 @@ export const locale = {
       pinMode: '查词面板钉住后划词',
       qsPanelMode: '页面划词'
     },
-    syncShanbay: '添加扇贝生词本同步',
-    syncWebdav: '添加 WebDAV 同步',
     touch_mode: '触摸模式',
     touch_mode_help: '支持触摸相关选词',
     update_check: '检查更新',
@@ -256,44 +288,5 @@ export const locale = {
     clipboard: '剪贴板',
     help: '查词面板出现时预先加载内容到搜索框。',
     selection: '页面划词'
-  },
-
-  sync: {
-    description: '数据同步设置。',
-    start: '同步已在后台开始',
-    success: '同步成功',
-    failed: '同步失败',
-    close_confirm: '设置未保存，关闭？',
-    delete_confirm: '清空同步设置？',
-    error_url: '不正确的超链接格式。',
-    shanbay: {
-      title: '扇贝生词本同步',
-      description:
-        '先去 shanbay.com 登录扇贝（退出后将失效）。开启后将单向同步到扇贝生词本（只从沙拉查词到扇贝），只同步新增单词（删除不同步），只同步单词本身（上下文等均不能同步）。生词需要扇贝单词库支持才能被添加。',
-      login: '将打开扇贝官网，请登录再回来重新开启。',
-      sync_all: '上传现有的所有生词',
-      sync_all_confirm:
-        '生词本存在较多单词，将分批上传。注意短时间上传太多有可能会导致封号，且不可恢复，确定继续？',
-      sync_last: '上传最近的一个生词'
-    },
-
-    webdav: {
-      checking: '连接中...',
-      duration: '同步周期',
-      duration_help:
-        '添加生词后会马上上传，数据会在上传前保证同步，所以如果不需要多个浏览器实时查看更新，可将更新检测周期调大些以减少资源占用及避免服务器拒绝响应。',
-      err_exist: '服务器上 Saladict 目录下的文件将被替换。先下载合并到本地？',
-      err_mkcol: '无法在服务器创建“Saladict”目录。请手动在服务器上创建。',
-      err_network: '连接服务器失败。',
-      err_parse: '服务器返回 XML 格式不正确。',
-      err_unauthorized: '账户或密码不正确。',
-      err_unknown: '未知错误 「{{error}}」。',
-      explain:
-        '应用设置（包括本设置）已通过浏览器自动同步。生词本可通过本设置实现 WebDAV 同步。<a href="http://help.jianguoyun.com/?p=2064" target="_blank">参考坚果云设置</a>。',
-      passwd: '密码',
-      title: 'WebDAV 同步',
-      url: '服务器地址',
-      user: '账户'
-    }
   }
 }

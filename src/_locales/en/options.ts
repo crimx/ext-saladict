@@ -12,6 +12,16 @@ export const locale: typeof _locale = {
     animation_help: 'Switch off animation transitions to reduce runtime cost.',
     darkMode: 'Dark Mode',
     langCode: 'App Language',
+    editOnFav: 'Open WordEditor when saving',
+    editOnFav_help:
+      'When turned off, new words will be added to notebook directly.',
+    searhHistory: 'Keep search history',
+    searhHistory_help:
+      'Search histry might unintentionally reveal your browsing history.',
+    searhHistoryInco: 'Also in incognito mode',
+    ctxTrans: 'Context Translate Engines',
+    ctxTrans_help:
+      'Context sentence will be translated before being added to notebook.',
 
     opt: {
       export: 'Export Configs',
@@ -30,7 +40,7 @@ export const locale: typeof _locale = {
       delete_confirm: 'Delete Profile "{{name}}". Confirm?',
       edit_name: 'Change Profile Name',
       help:
-        'Each profile represents an independent set of settings. Some of the settings (with <span style="color:#f5222d">*</span> prefix) change according to profile. One may switch profiles by hovering on the menu icon on Dict Panel, or focus on the icon then hit <kbd>↓</kbd>.'
+        'Each profile represents an independent set of settings. Some of the settings (with {*} prefix) change according to profile. One may switch profiles by hovering on the menu icon on Dict Panel, or focus on the icon then hit {↓}.'
     }
   },
 
@@ -40,8 +50,73 @@ export const locale: typeof _locale = {
     }
   },
 
+  syncService: {
+    description: 'Sync settings.',
+    start: 'Syncing started in background',
+    success: 'Syncing success',
+    failed: 'Syncing failed',
+    close_confirm: 'Settings not saved. Close?',
+    delete_confirm: 'Delete?',
+    error_url: 'Not a valid url.',
+
+    btn: {
+      shanbay: 'Shanbay Sync Service',
+      webdav: 'WebDAV Sync Service'
+    },
+
+    shanbay: {
+      title: 'Shanbay Sync',
+      description:
+        "Go to shanbay.com and log in first(must stay logged in). Note that it's a one-way sync(from Saladict to Shanbay). Only the new added words are synced. Words also need to be supported by Shanbay's database.",
+      login:
+        'Will open shanbay.com. Please log in then come back and enable again.',
+      sync_all: 'Upload all existing new words',
+      sync_all_confirm:
+        'Too many new words in notebook. Saladict will upload in batches. Note that uploading too many words in short period would cause account banning which is unrecoverable. Confirm?',
+      sync_last: 'Upload the last new word'
+    },
+
+    webdav: {
+      title: 'WebDAV Sync',
+      description:
+        'Extension settings (including this) are synced via browser. New words notebook can be synced via WebDAV through settings here.',
+      jianguo: 'See Jianguoyun for example',
+      checking: 'Connecting...',
+      duration: 'Duration',
+      duration_help:
+        'Data is guaranteed to be updated before upload. If you do not need real-time syncing across browsers, set a longer polling cycle to reduce CPU and memory footprint.',
+      err_exist:
+        'Files under Saladict directory on server will be overwritten. Download and merge with local files first?',
+      err_mkcol:
+        'Cannot create "Saladict" directory on server. Please create the directory manualy on server.',
+      err_network: 'Network error. Cannot connect to server.',
+      err_parse: 'Incorrect response XML from server.',
+      err_unauthorized: 'Incorrect account or password.',
+      err_unknown: 'Unknown error 「{{error}}」.',
+      passwd: 'Password',
+      url: 'Server Address',
+      user: 'User Account'
+    }
+  },
+
   shortcuts: 'Set Shortcuts',
+  msg_update_error: 'Unable to update',
+  msg_updated: 'Successfully updated',
   unsave_confirm: 'Settings not saved. Sure to leave?',
+
+  headInfo: {
+    acknowledgement: {
+      title: 'Acknowledgement',
+      naver: 'for helping add Naver dict',
+      shanbay: 'for adding Shanbay dict',
+      trans_tw: 'for traditional Chinese translation',
+      weblio: 'for helping add Weblio dict'
+    },
+    contact_author: 'Contact Author',
+    donate: 'Donate',
+    instructions: 'Instructions',
+    report_issue: 'Report Issue'
+  },
 
   dict: {
     add: 'Add dicts',
@@ -71,24 +146,9 @@ export const locale: typeof _locale = {
       'Show this dictionary when selection word count meets the requirements.'
   },
 
-  headInfo: {
-    acknowledgement: {
-      title: 'Acknowledgement',
-      naver: 'for helping add Naver dict',
-      shanbay: 'for adding Shanbay dict',
-      trans_tw: 'for traditional Chinese translation',
-      weblio: 'for helping add Weblio dict'
-    },
-    contact_author: 'Contact Author',
-    donate: 'Donate',
-    instructions: 'Instructions',
-    report_issue: 'Report Issue'
-  },
-
   match_pattern_description:
     'Specify URLs as match patterns. <a href="https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Match_patterns#Examples" target="_blank">Examples</a>. Empty fields will be removed.',
-  msg_update_error: 'Unable to update',
-  msg_updated: 'Successfully updated',
+
   nav: {
     BlackWhiteList: 'Black/White List',
     ContextMenus: 'Context Menus',
@@ -106,11 +166,9 @@ export const locale: typeof _locale = {
   },
 
   opt: {
-    active: 'Enable Inline Translator',
     analytics: 'Enable Google Analytics',
     analytics_help:
       'Share anonymous device browser version information. Saladict author will offer prioritized support to popular devices and browsers.',
-    animation: 'Animation transitions',
     autopron: {
       accent: 'Accent Preference',
       accent_uk: 'UK',
@@ -140,22 +198,10 @@ export const locale: typeof _locale = {
       x: 'Saladict icon Offset X',
       y: 'Saladict icon Offset Y'
     },
-    config: {
-      export: 'Export Configs',
-      help: 'Configs are synced automatically via browser.',
-      import: 'Import Configs',
-      import_error: 'Import Configs failed',
-      reset: 'Reset Configs',
-      reset_confirm: 'Reset to default settings. Confirm？'
-    },
     context_description:
       'Each context menus item can also be customized. Youdao and Google page translate are deprecated in favor of the official extensions.',
     context_menus_title: 'Add Context Menus Items',
     context_menus_add_rules: 'URL with %s in place of query.',
-    ctx_trans: 'Context Translate Engines',
-    ctx_trans_help:
-      'Context sentence will be translated before being added to notebook.',
-    dark_mode: 'Dark Mode',
     dictPanel: {
       custom_css: 'Custom Dict Panel Styles',
       custom_css_help:
@@ -166,14 +212,6 @@ export const locale: typeof _locale = {
     },
     dict_selected: 'Selected Dicts',
     double_click_delay: 'Double Click Delay',
-    edit_on_fav: 'Open WordEditor when saving',
-    edit_on_fav_help:
-      'When turned off, new words will be added to notebook directly.',
-    history: 'Keep search history',
-    history_help:
-      'Search histry might unintentionally reveal your browsing history.',
-    history_inco: 'Also in incognito mode',
-    language: 'App Language',
     mta: 'Auto unfold multiline search box',
     mta_always: 'Keep Unfolding',
     mta_never: 'Never Unfold',
@@ -222,8 +260,7 @@ export const locale: typeof _locale = {
       pinMode: 'When Panel Is Pinned',
       qsPanelMode: 'Page Selection'
     },
-    syncShanbay: 'Shanbay Sync Service',
-    syncWebdav: 'WebDAV Sync Service',
+
     touch_mode: 'Touch Mode',
     touch_mode_help: 'Enable touch related selection',
     update_check: 'Check Update',
@@ -265,47 +302,5 @@ export const locale: typeof _locale = {
     clipboard: 'Clipboard',
     help: 'Preload content in search box when panel shows up.',
     selection: 'Page Selection'
-  },
-
-  sync: {
-    description: 'Sync settings.',
-    start: 'Syncing started in background',
-    success: 'Syncing success',
-    failed: 'Syncing failed',
-    close_confirm: 'Settings not saved. Close?',
-    delete_confirm: 'Delete?',
-    error_url: 'Not a valid url.',
-    shanbay: {
-      title: 'Shanbay Sync',
-      description:
-        "Go to shanbay.com and log in first(must stay logged in). Note that it's a one-way sync(from Saladict to Shanbay). Only the new added words are synced. Words also need to be supported by Shanbay's database.",
-      login:
-        'Will open shanbay.com. Please log in then come back and enable again.',
-      sync_all: 'Upload all existing new words',
-      sync_all_confirm:
-        'Too many new words in notebook. Saladict will upload in batches. Note that uploading too many words in short period would cause account banning which is unrecoverable. Confirm?',
-      sync_last: 'Upload the last new word'
-    },
-
-    webdav: {
-      checking: 'Connecting...',
-      duration: 'Duration',
-      duration_help:
-        'Data is guaranteed to be updated before upload. If you do not need real-time syncing across browsers, set a longer polling cycle to reduce CPU and memory footprint.',
-      err_exist:
-        'Files under Saladict directory on server will be overwritten. Download and merge with local files first?',
-      err_mkcol:
-        'Cannot create "Saladict" directory on server. Please create the directory manualy on server.',
-      err_network: 'Network error. Cannot connect to server.',
-      err_parse: 'Incorrect response XML from server.',
-      err_unauthorized: 'Incorrect account or password.',
-      err_unknown: 'Unknown error 「{{error}}」.',
-      explain:
-        'Extension settings (including this) are synced via browser. New words notebook can be synced via WebDAV through settings here. <a href="http://help.jianguoyun.com/?p=2064" target="_blank">See Jianguoyun for example</a>.',
-      passwd: 'Password',
-      title: 'WebDAV Sync',
-      url: 'Server Address',
-      user: 'User Account'
-    }
   }
 }

@@ -24,3 +24,5 @@ export type UnionPick<T, K extends UnionKeys<T>> = T extends any
   : never
 
 export type Subunion<T, U extends T> = U
+
+export const objectKeys = Object.keys as <T>(o: T) => Extract<keyof T, string>[]

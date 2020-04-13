@@ -11,6 +11,14 @@ export const locale: typeof _locale = {
     animation_help: '在低效能裝置上關閉過渡動畫可減少渲染負擔。',
     darkMode: '黑暗模式',
     langCode: '介面語言',
+    editOnFav: '紅心單字時彈出編輯介面',
+    editOnFav_help:
+      '關閉後，點選紅心生詞將自動新增到生詞本，上下文翻譯亦會自動獲取。',
+    searhHistory: '記錄查字歷史',
+    searhHistory_help: '查字典記錄可能會泄漏您的瀏覽痕跡。',
+    searhHistoryInco: '在無痕模式中記錄',
+    ctxTrans: '上下文翻譯引擎',
+    ctxTrans_help: '單字加入生字本前會自動翻譯上下文。',
 
     opt: {
       export: '匯出設定',
@@ -29,7 +37,7 @@ export const locale: typeof _locale = {
       delete_confirm: '「{{name}}」將被刪除，確認？',
       edit_name: '變更情景模式名稱',
       help:
-        '每個情景模式相當於一套獨立的設定，一些選項（帶有 <span style="color:#f5222d">*</span>）會隨著情景模式變化。滑鼠懸浮在字典介面的選單圖示上可快速切換，或者焦點選中選單圖示然後按<kbd>↓</kbd>。'
+        '每個情景模式相當於一套獨立的設定，一些選項（帶有 {*}）會隨著情景模式變化。滑鼠懸浮在字典介面的選單圖示上可快速切換，或者焦點選中選單圖示然後按{↓}。'
     }
   },
 
@@ -39,8 +47,70 @@ export const locale: typeof _locale = {
     }
   },
 
+  syncService: {
+    description: '資料同步設定。',
+    start: '同步已在背景開始',
+    success: '同步成功',
+    failed: '同步失敗',
+    close_confirm: '設定未儲存，關閉？',
+    delete_confirm: '清空同步設定？',
+    error_url: '不正確的超連結格式。',
+
+    btn: {
+      shanbay: '新增扇貝生詞本同步',
+      webdav: '新增 WebDAV 同步'
+    },
+
+    shanbay: {
+      title: '扇貝生詞本同步',
+      description:
+        '先去 shanbay.com 登入扇貝（退出後將失效）。開啟後將單向同步到扇貝生詞本（只從沙拉查詞到扇貝），只同步新增單詞（刪除不同步），只同步單詞本身（上下文等均不能同步）。生詞需要扇貝單詞庫支援才能被新增。',
+      login: '將開啟扇貝官網，請登入再回來重新開啟。',
+      sync_all: '上傳現有的所有生字',
+      sync_all_confirm:
+        '生詞本存在較多單詞，將分批上傳。注意短時間上傳太多有可能會導致封號，且不可恢復，確定繼續？',
+      sync_last: '上傳最近的一個生字'
+    },
+
+    webdav: {
+      description:
+        '應用設定（包括本設定）已通過瀏覽器自動同步。生詞本可通過本設定實現 WebDAV 同步。',
+      title: 'WebDAV 同步',
+      jianguo: '參考堅果雲設定',
+      checking: '連線中...',
+      duration: '同步頻率',
+      duration_help:
+        '新增生字後會馬上上傳，資料會在上傳前保證同步，所以如果不需要多個瀏覽器即時檢視更新，可將更新檢查週期調大些以減少資源佔用及避免伺服器拒絕回應。',
+      err_exist: '伺服器上 Saladict 目錄下的檔案將被替換。先下載合併到本機？',
+      err_mkcol: '無法在伺服器建立“Saladict”目錄。請手動在伺服器上建立。',
+      err_network: '連線伺服器失敗。',
+      err_parse: '伺服器返回 XML 格式不正確。',
+      err_unauthorized: '帳戶或密碼不正確。',
+      err_unknown: '不詳錯誤 「{{error}}」。',
+      passwd: '密碼',
+      url: '伺服器位址',
+      user: '帳戶'
+    }
+  },
+
   shortcuts: '設定快速鍵',
+  msg_update_error: '設定更新失敗',
+  msg_updated: '設定已更新',
   unsave_confirm: '修改尚未儲存，確定放棄？',
+
+  headInfo: {
+    acknowledgement: {
+      title: '特別鳴謝',
+      naver: '協助新增 Naver 韓國語字典',
+      shanbay: '編寫扇貝詞典模組',
+      trans_tw: '提供部分繁體中文翻譯',
+      weblio: '協助新增 Weblio 辭書'
+    },
+    contact_author: '聯絡作者',
+    donate: '支援項目',
+    instructions: '使用說明',
+    report_issue: '軟體使用疑問和建言'
+  },
 
   dict: {
     add: '新增字典',
@@ -68,24 +138,9 @@ export const locale: typeof _locale = {
     sel_word_count_help: '當選中文字的字數符合條件時才顯示該詞典。'
   },
 
-  headInfo: {
-    acknowledgement: {
-      title: '特別鳴謝',
-      naver: '協助新增 Naver 韓國語字典',
-      shanbay: '編寫扇貝詞典模組',
-      trans_tw: '提供部分繁體中文翻譯',
-      weblio: '協助新增 Weblio 辭書'
-    },
-    contact_author: '聯絡作者',
-    donate: '支援項目',
-    instructions: '使用說明',
-    report_issue: '軟體使用疑問和建言'
-  },
-
   match_pattern_description:
     '網址支援比對模式（<a href="https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#範例" target="_blank">例子</a>）。留空儲存即可清除。',
-  msg_update_error: '設定更新失敗',
-  msg_updated: '設定已更新',
+
   nav: {
     BlackWhiteList: '黑白名單',
     ContextMenus: '右鍵選單',
@@ -103,11 +158,9 @@ export const locale: typeof _locale = {
   },
 
   opt: {
-    active: '啟用滑鼠選字翻譯',
     analytics: '啟用 Google Analytics',
     analytics_help:
       '提供匿名裝置瀏覽器版本資訊。沙拉查詞作者會優先支援使用者更多的裝置和瀏覽器。',
-    animation: '啟用轉換動畫',
     autopron: {
       accent: '優先口音',
       accent_uk: '英式',
@@ -135,21 +188,11 @@ export const locale: typeof _locale = {
       x: '沙拉圖示水平偏移',
       y: '沙拉圖示垂直偏移'
     },
-    config: {
-      export: '匯出設定',
-      help: '設定已通過瀏覽器自動同步，也可以手動匯入匯出。',
-      import: '匯入設定',
-      import_error: '匯入設定失敗',
-      reset: '重設設定',
-      reset_confirm: '所有設定將還原至預設值，確定？'
-    },
     context_description:
       '設定右鍵選單，可新增可自定義連結。網頁翻譯其實不需要沙拉查詞，故已有的有道和谷歌網頁翻譯目前處於維護狀態，沒有計劃新增新功能，請用其它官方擴充套件如彩雲小譯和谷歌翻譯。',
     context_menus_title: '新增右鍵選單項目',
     context_menus_add_rules: '連結中的 %s 會被取代為選詞。',
-    ctx_trans: '上下文翻譯引擎',
-    ctx_trans_help: '單字加入生字本前會自動翻譯上下文。',
-    dark_mode: '黑暗模式',
+
     dictPanel: {
       custom_css: '自訂查字介面樣式',
       custom_css_help:
@@ -160,13 +203,7 @@ export const locale: typeof _locale = {
     },
     dict_selected: '已選字典',
     double_click_delay: '滑鼠按兩下間隔',
-    edit_on_fav: '紅心單字時彈出編輯介面',
-    edit_on_fav_help:
-      '關閉後，點選紅心生詞將自動新增到生詞本，上下文翻譯亦會自動獲取。',
-    history: '記錄查字歷史',
-    history_help: '查字典記錄可能會泄漏您的瀏覽痕跡。',
-    history_inco: '在無痕模式中記錄',
-    language: '介面語言',
+
     mta: '自動展開多行搜尋框',
     mta_always: '保持展開',
     mta_never: '永遠不展開',
@@ -214,8 +251,6 @@ export const locale: typeof _locale = {
       pinMode: '字典視窗介面釘住后選詞',
       qsPanelMode: '滑鼠選字'
     },
-    syncShanbay: '新增扇貝生詞本同步',
-    syncWebdav: '新增 WebDAV 同步',
     touch_mode: '觸控模式',
     touch_mode_help: '支援觸控相關選字',
     update_check: '檢查更新',
@@ -257,44 +292,5 @@ export const locale: typeof _locale = {
     clipboard: '剪貼簿',
     help: '字典介面出現時預先載入內容到搜尋框。',
     selection: '滑鼠選字'
-  },
-
-  sync: {
-    description: '資料同步設定。',
-    start: '同步已在背景開始',
-    success: '同步成功',
-    failed: '同步失敗',
-    close_confirm: '設定未儲存，關閉？',
-    delete_confirm: '清空同步設定？',
-    error_url: '不正確的超連結格式。',
-    shanbay: {
-      title: '扇貝生詞本同步',
-      description:
-        '先去 shanbay.com 登入扇貝（退出後將失效）。開啟後將單向同步到扇貝生詞本（只從沙拉查詞到扇貝），只同步新增單詞（刪除不同步），只同步單詞本身（上下文等均不能同步）。生詞需要扇貝單詞庫支援才能被新增。',
-      login: '將開啟扇貝官網，請登入再回來重新開啟。',
-      sync_all: '上傳現有的所有生字',
-      sync_all_confirm:
-        '生詞本存在較多單詞，將分批上傳。注意短時間上傳太多有可能會導致封號，且不可恢復，確定繼續？',
-      sync_last: '上傳最近的一個生字'
-    },
-
-    webdav: {
-      checking: '連線中...',
-      duration: '同步頻率',
-      duration_help:
-        '新增生字後會馬上上傳，資料會在上傳前保證同步，所以如果不需要多個瀏覽器即時檢視更新，可將更新檢查週期調大些以減少資源佔用及避免伺服器拒絕回應。',
-      err_exist: '伺服器上 Saladict 目錄下的檔案將被替換。先下載合併到本機？',
-      err_mkcol: '無法在伺服器建立“Saladict”目錄。請手動在伺服器上建立。',
-      err_network: '連線伺服器失敗。',
-      err_parse: '伺服器返回 XML 格式不正確。',
-      err_unauthorized: '帳戶或密碼不正確。',
-      err_unknown: '不詳錯誤 「{{error}}」。',
-      explain:
-        '應用設定（包括本設定）已通過瀏覽器自動同步。生詞本可通過本設定實現 WebDAV 同步。<a href="http://help.jianguoyun.com/?p=2064" target="_blank">參考堅果雲設定</a>。',
-      passwd: '密碼',
-      title: 'WebDAV 同步',
-      url: '伺服器位址',
-      user: '帳戶'
-    }
   }
 }
