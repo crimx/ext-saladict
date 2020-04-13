@@ -112,7 +112,7 @@ export const DictPanel: FC<DictPanelProps> = props => {
         ...props.colors,
         left: x,
         top: y,
-        zIndex: isInternalPage() ? 2147483646 : 2147483647, // for popups on options page
+        zIndex: isInternalPage() ? 999 : 2147483647, // for popups on options page
         width: props.width,
         height: props.height,
         '--panel-width': props.width + 'px',
