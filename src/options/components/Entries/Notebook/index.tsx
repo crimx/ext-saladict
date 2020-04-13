@@ -50,13 +50,13 @@ export const Notebook: FC = () => {
               children: <Switch />
             },
             {
-              name: getConfigPath('searhHistory'),
+              name: getConfigPath('searchHistory'),
               valuePropName: 'checked',
               children: <Switch />
             },
             {
-              name: getConfigPath('searhHistoryInco'),
-              hide: values => !values[getConfigPath('searhHistory')],
+              name: getConfigPath('searchHistoryInco'),
+              hide: values => !values[getConfigPath('searchHistory')],
               valuePropName: 'checked',
               children: <Switch />
             },

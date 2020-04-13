@@ -12,9 +12,9 @@ export const locale = {
     editOnFav: '红心单词时弹出编辑面板',
     editOnFav_help:
       '关闭后，点击红心生词将自动添加到生词本，上下文翻译亦会自动获取。',
-    searhHistory: '记录查词历史',
-    searhHistory_help: '查词记录可能会泄漏您的浏览痕迹。',
-    searhHistoryInco: '在私隐模式中记录',
+    searchHistory: '记录查词历史',
+    searchHistory_help: '查词记录可能会泄漏您的浏览痕迹。',
+    searchHistoryInco: '在私隐模式中记录',
     ctxTrans: '上下文翻译引擎',
     ctxTrans_help: '单词被添加进生词本前会自动翻译上下文。',
 

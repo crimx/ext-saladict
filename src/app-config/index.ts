@@ -97,9 +97,9 @@ function _getDefaultConfig() {
     ] as [string, string][],
 
     /** track search history */
-    searhHistory: false,
+    searchHistory: false,
     /** incognito mode */
-    searhHistoryInco: false,
+    searchHistoryInco: false,
 
     /** open word editor when adding a word to notebook */
     editOnFav: true,

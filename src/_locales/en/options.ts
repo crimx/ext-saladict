@@ -15,10 +15,10 @@ export const locale: typeof _locale = {
     editOnFav: 'Open WordEditor when saving',
     editOnFav_help:
       'When turned off, new words will be added to notebook directly.',
-    searhHistory: 'Keep search history',
-    searhHistory_help:
+    searchHistory: 'Keep search history',
+    searchHistory_help:
       'Search histry might unintentionally reveal your browsing history.',
-    searhHistoryInco: 'Also in incognito mode',
+    searchHistoryInco: 'Also in incognito mode',
     ctxTrans: 'Context Translate Engines',
     ctxTrans_help:
       'Context sentence will be translated before being added to notebook.',

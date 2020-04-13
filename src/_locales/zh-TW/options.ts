@@ -14,9 +14,9 @@ export const locale: typeof _locale = {
     editOnFav: '紅心單字時彈出編輯介面',
     editOnFav_help:
       '關閉後，點選紅心生詞將自動新增到生詞本，上下文翻譯亦會自動獲取。',
-    searhHistory: '記錄查字歷史',
-    searhHistory_help: '查字典記錄可能會泄漏您的瀏覽痕跡。',
-    searhHistoryInco: '在無痕模式中記錄',
+    searchHistory: '記錄查字歷史',
+    searchHistory_help: '查字典記錄可能會泄漏您的瀏覽痕跡。',
+    searchHistoryInco: '在無痕模式中記錄',
     ctxTrans: '上下文翻譯引擎',
     ctxTrans_help: '單字加入生字本前會自動翻譯上下文。',
 

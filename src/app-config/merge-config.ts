@@ -45,6 +45,14 @@ export function mergeConfig(
       case 'blacklist':
         merge(key, val => Array.isArray(val))
         break
+      case 'searhHistory':
+      case 'searchHistory':
+        base.searchHistory = oldConfig[key]
+        break
+      case 'searhHistoryInco':
+      case 'searchHistoryInco':
+        base.searchHistoryInco = oldConfig[key]
+        break
       case 'mode':
       case 'pinMode':
       case 'panelMode':
