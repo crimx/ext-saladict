@@ -19,6 +19,15 @@ export const locale: typeof _locale = {
     searchHistoryInco: '在無痕模式中記錄',
     ctxTrans: '上下文翻譯引擎',
     ctxTrans_help: '單字加入生字本前會自動翻譯上下文。',
+    searchSuggests: '輸入時顯示候選',
+    panelMaxHeightRatio: '字典介面最高占螢幕高度比例',
+    panelWidth: '查字典介面寬度',
+    fontSize: '字典內容字型大小',
+    bowlOffsetX: '沙拉圖示水平偏移',
+    bowlOffsetY: '沙拉圖示垂直偏移',
+    panelCSS: '自訂查字介面樣式',
+    panelCSS_help:
+      '為查詞面板新增自定義 CSS 。詞典面板使用 .dictPanel-Root 作為根，詞典使用 .dictRoot 或者 .d-詞典ID 作為根。',
 
     opt: {
       export: '匯出設定',
@@ -42,8 +51,19 @@ export const locale: typeof _locale = {
   },
 
   profile: {
+    mtaAutoUnfold: '自動展開多行搜尋框',
+    waveform: '波形控制',
+    waveform_help:
+      '在字典介面下方顯示音訊控制面板展開按鈕。關閉依然可以播放音訊。',
+
     opt: {
-      item_extra: '此選項會因「情景模式」而改變。'
+      item_extra: '此選項會因「情景模式」而改變。',
+      mtaAutoUnfold: {
+        always: '保持展開',
+        never: '永遠不展開',
+        once: '展開一次',
+        popup: '只在右上彈框展開'
+      }
     }
   },
 
@@ -184,31 +204,15 @@ export const locale: typeof _locale = {
     },
     bowl_hover: '圖示暫留查字',
     bowl_hover_help: '滑鼠暫留在沙拉圖示上開啟字典介面，否則需要點選。',
-    bowl_offset: {
-      x: '沙拉圖示水平偏移',
-      y: '沙拉圖示垂直偏移'
-    },
+
     context_description:
       '設定右鍵選單，可新增可自定義連結。網頁翻譯其實不需要沙拉查詞，故已有的有道和谷歌網頁翻譯目前處於維護狀態，沒有計劃新增新功能，請用其它官方擴充套件如彩雲小譯和谷歌翻譯。',
     context_menus_title: '新增右鍵選單項目',
     context_menus_add_rules: '連結中的 %s 會被取代為選詞。',
 
-    dictPanel: {
-      custom_css: '自訂查字介面樣式',
-      custom_css_help:
-        '為查詞面板新增自定義 CSS 。詞典面板使用 .dictPanel-Root 作為根，詞典使用 .dictRoot 或者 .d-詞典ID 作為根。',
-      font_size: '字典內容字型大小',
-      height_ratio: '字典介面最高占螢幕高度比例',
-      width: '查字典介面寬度'
-    },
     dict_selected: '已選字典',
     double_click_delay: '滑鼠按兩下間隔',
 
-    mta: '自動展開多行搜尋框',
-    mta_always: '保持展開',
-    mta_never: '永遠不展開',
-    mta_once: '展開一次',
-    mta_popup: '只在右上彈框展開',
     no_type_field: '不在輸入框滑鼠滑字',
     no_type_field_help:
       '開啟後，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror、ACE 和 Monaco。',
@@ -222,7 +226,7 @@ export const locale: typeof _locale = {
     third_party_privacy_extra: '本特性為沙拉查詞核心功能，無法關閉。',
     profile_change: '此選項會因「情景模式」而改變。',
     quick_search: '啟用快速鍵',
-    search_suggests: '輸入時顯示候選',
+
     sel_blackwhitelist: '選詞黑白名單',
     sel_blackwhitelist_help: '黑名單相符的頁面 Saladict 將不會響應滑鼠劃詞。',
     sel_lang: '選詞語言',
@@ -254,10 +258,7 @@ export const locale: typeof _locale = {
     touch_mode: '觸控模式',
     touch_mode_help: '支援觸控相關選字',
     update_check: '檢查更新',
-    update_check_help: '自動檢查 Github 更新',
-    waveform: '波形控制',
-    waveform_help:
-      '在字典介面下方顯示音訊控制面板展開按鈕。關閉依然可以播放音訊。'
+    update_check_help: '自動檢查 Github 更新'
   },
 
   quickSearch: {

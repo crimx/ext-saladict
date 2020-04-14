@@ -22,6 +22,15 @@ export const locale: typeof _locale = {
     ctxTrans: 'Context Translate Engines',
     ctxTrans_help:
       'Context sentence will be translated before being added to notebook.',
+    searchSuggests: 'Search suggests',
+    panelMaxHeightRatio: 'Panel max height ratio',
+    panelWidth: 'Panel width',
+    fontSize: 'Font size for search reasults',
+    bowlOffsetX: 'Saladict icon Offset X',
+    bowlOffsetY: 'Saladict icon Offset Y',
+    panelCSS: 'Custom Dict Panel Styles',
+    panelCSS_help:
+      'Custom CSS. For Dict Panel use .dictPanel-Root as root. For dictionaries use .dictRoot or .d-{id} as root',
 
     opt: {
       export: 'Export Configs',
@@ -45,8 +54,19 @@ export const locale: typeof _locale = {
   },
 
   profile: {
+    mtaAutoUnfold: 'Auto unfold multiline search box',
+    waveform: 'Waveform Control',
+    waveform_help:
+      'Display a button at the bottom of the Dict Panel for expanding the Waveform Control Panel. Audio files can still be played if turned off.',
+
     opt: {
-      item_extra: 'This option may change base on "Profile".'
+      item_extra: 'This option may change base on "Profile".',
+      mtaAutoUnfold: {
+        always: 'Keep Unfolding',
+        never: 'Never Unfold',
+        once: 'Unfold Once',
+        popup: 'Only On Browser Action'
+      }
     }
   },
 
@@ -194,29 +214,15 @@ export const locale: typeof _locale = {
     bowl_hover: 'Icon Mouse Hover',
     bowl_hover_help:
       'Hover on the bowl icon to trigger searching instead of clicking.',
-    bowl_offset: {
-      x: 'Saladict icon Offset X',
-      y: 'Saladict icon Offset Y'
-    },
+
     context_description:
       'Each context menus item can also be customized. Youdao and Google page translate are deprecated in favor of the official extensions.',
     context_menus_title: 'Add Context Menus Items',
     context_menus_add_rules: 'URL with %s in place of query.',
-    dictPanel: {
-      custom_css: 'Custom Dict Panel Styles',
-      custom_css_help:
-        'Custom CSS. For Dict Panel use .dictPanel-Root as root. For dictionaries use .dictRoot or .d-{id} as root',
-      font_size: 'Font size for search reasults',
-      height_ratio: 'Panel max height ratio',
-      width: 'Panel width'
-    },
+
     dict_selected: 'Selected Dicts',
     double_click_delay: 'Double Click Delay',
-    mta: 'Auto unfold multiline search box',
-    mta_always: 'Keep Unfolding',
-    mta_never: 'Never Unfold',
-    mta_once: 'Unfold Once',
-    mta_popup: 'Only On Browser Action',
+
     no_type_field: 'No selection on editable regions',
     no_type_field_help:
       'If selection making in editable regions is banned, the extension will identify Input Boxes, TextAreas and other common text editors like CodeMirror, ACE and Monaco.',
@@ -231,7 +237,7 @@ export const locale: typeof _locale = {
       'Cannot be turned off as it is the core functionality of Saladict.',
     profile_change: 'This option may change base on "Profile".',
     quick_search: 'Enable',
-    search_suggests: 'Search suggests',
+
     sel_blackwhitelist: 'Selection Black/White List',
     sel_blackwhitelist_help:
       'Saladict will not react to selection in blacklisted pages.',
@@ -264,10 +270,7 @@ export const locale: typeof _locale = {
     touch_mode: 'Touch Mode',
     touch_mode_help: 'Enable touch related selection',
     update_check: 'Check Update',
-    update_check_help: 'Automatically check update from Github',
-    waveform: 'Waveform Control',
-    waveform_help:
-      'Display a button at the bottom of the Dict Panel for expanding the Waveform Control Panel. Audio files can still be played if turned off.'
+    update_check_help: 'Automatically check update from Github'
   },
 
   quickSearch: {

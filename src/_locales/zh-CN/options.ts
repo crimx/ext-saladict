@@ -17,6 +17,15 @@ export const locale = {
     searchHistoryInco: '在私隐模式中记录',
     ctxTrans: '上下文翻译引擎',
     ctxTrans_help: '单词被添加进生词本前会自动翻译上下文。',
+    searchSuggests: '输入时显示候选',
+    panelMaxHeightRatio: '查词面板最高占屏幕比例',
+    panelWidth: '查词面板宽度',
+    fontSize: '词典内容字体大小',
+    bowlOffsetX: '沙拉图标水平偏移',
+    bowlOffsetY: '沙拉图标垂直偏移',
+    panelCSS: '自定义查词面板样式',
+    panelCSS_help:
+      '为查词面板添加自定义 CSS 。词典面板使用 .dictPanel-Root 作为根，词典使用 .dictRoot 或者 .d-词典ID 作为根。',
 
     opt: {
       export: '导出设定',
@@ -40,8 +49,19 @@ export const locale = {
   },
 
   profile: {
+    mtaAutoUnfold: '自动展开多行搜索框',
+    waveform: '波形控制按钮',
+    waveform_help:
+      '在词典面板下方显示音频控制面板展开按钮。关闭依然可以播放音频。',
+
     opt: {
-      item_extra: '此选项会因「情景模式」而改变。'
+      item_extra: '此选项会因「情景模式」而改变。',
+      mtaAutoUnfold: {
+        always: '保持展开',
+        never: '从不展开',
+        once: '展开一次',
+        popup: '只在右上弹框展开'
+      }
     }
   },
 
@@ -181,29 +201,12 @@ export const locale = {
     },
     bowl_hover: '图标悬停查词',
     bowl_hover_help: '鼠标悬停在沙拉图标上触发查词，否则需要点击。',
-    bowl_offset: {
-      x: '沙拉图标水平偏移',
-      y: '沙拉图标垂直偏移'
-    },
     context_description:
       '设置右键菜单，可添加可自定义链接。网页翻译其实不需要沙拉查词，故已有的有道和谷歌网页翻译目前处于维护状态，没有计划添加新功能，请用其它官方扩展如彩云小译和谷歌翻译。',
     context_menus_title: '添加右键菜单项目',
     context_menus_add_rules: '链接中的 %s 会被替换为选词。',
-    dictPanel: {
-      custom_css: '自定义查词面板样式',
-      custom_css_help:
-        '为查词面板添加自定义 CSS 。词典面板使用 .dictPanel-Root 作为根，词典使用 .dictRoot 或者 .d-词典ID 作为根。',
-      font_size: '词典内容字体大小',
-      height_ratio: '查词面板最高占屏幕比例',
-      width: '查词面板宽度'
-    },
     dict_selected: '已选词典',
     double_click_delay: '双击间隔',
-    mta: '自动展开多行搜索框',
-    mta_always: '保持展开',
-    mta_never: '从不展开',
-    mta_once: '展开一次',
-    mta_popup: '只在右上弹框展开',
     no_type_field: '不在输入框划词',
     no_type_field_help:
       '开启后，本扩展会自动识别输入框以及常见编辑器，如 CodeMirror、ACE 和 Monaco。',
@@ -218,7 +221,7 @@ export const locale = {
     third_party_privacy_extra: '本特性为沙拉查词核心功能，无法关闭。',
     profile_change: '此选项会因「情景模式」而改变。',
     quick_search: '启用快捷键',
-    search_suggests: '输入时显示候选',
+
     sel_blackwhitelist: '划词黑白名单',
     sel_blackwhitelist_help: '黑名单匹配的页面 Saladict 将不会响应鼠标划词。',
     sel_lang: '划词语言',
@@ -250,10 +253,7 @@ export const locale = {
     touch_mode: '触摸模式',
     touch_mode_help: '支持触摸相关选词',
     update_check: '检查更新',
-    update_check_help: '自动检查 Github 更新',
-    waveform: '波形控制按钮',
-    waveform_help:
-      '在词典面板下方显示音频控制面板展开按钮。关闭依然可以播放音频。'
+    update_check_help: '自动检查 Github 更新'
   },
 
   quickSearch: {

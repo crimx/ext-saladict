@@ -1,6 +1,6 @@
 import React, { FC, useContext, ReactNode, useMemo } from 'react'
-import { Form, Button, Modal } from 'antd'
-import { FormItemProps } from 'antd/lib/form'
+import { Form, Button, Modal, Tooltip } from 'antd'
+import { FormItemProps, Rule } from 'antd/lib/form'
 import { ExclamationCircleOutlined, BlockOutlined } from '@ant-design/icons'
 import get from 'lodash/get'
 import mapValues from 'lodash/mapValues'
@@ -103,26 +103,31 @@ export const SaladictForm: FC<SaladictFormProps> = props => {
 
       if (ready && i18n.exists(`options:${name}`)) {
         item.label = isProfile ? (
-          <>
-            <BlockOutlined style={{ color: '#f5222d', marginRight: '0.5em' }} />
-            {t(name)}
-          </>
+          <Tooltip
+            title={t('profile.opt.item_extra')}
+            className="saladict-form-profile-title"
+          >
+            <span>
+              <BlockOutlined />
+              {t(name)}
+            </span>
+          </Tooltip>
         ) : (
           t(name)
         )
       }
 
-      const help = `options:${name}_help`
-      if (ready && i18n.exists(help)) {
-        item.help = t(help)
+      if (!item.help) {
+        const help = `options:${name}_help`
+        if (ready && i18n.exists(help)) {
+          item.help = t(help)
+        }
       }
 
-      const extra = `options:${name}_extra`
-      if (ready) {
-        if (i18n.exists(extra)) {
+      if (!item.extra) {
+        const extra = `options:${name}_extra`
+        if (ready && i18n.exists(extra)) {
           item.extra = t(extra)
-        } else if (isProfile) {
-          item.extra = t('profile.opt.item_extra')
         }
       }
 
@@ -183,6 +188,14 @@ export const SaladictForm: FC<SaladictFormProps> = props => {
     </Form>
   )
 }
+
+export const NUMBER_RULES: Rule[] = [
+  { type: 'number', whitespace: true, required: true }
+]
+
+export const percentageSlideFormatter = (v: number) => `${v}%`
+
+export const pixelSlideFormatter = (v: number) => `${v}px`
 
 function openShortcuts() {
   if (isFirefox) {
