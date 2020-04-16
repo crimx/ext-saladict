@@ -28,6 +28,22 @@ export const locale: typeof _locale = {
     panelCSS: '自訂查字介面樣式',
     panelCSS_help:
       '為查詞面板新增自定義 CSS 。詞典面板使用 .dictPanel-Root 作為根，詞典使用 .dictRoot 或者 .d-詞典ID 作為根。',
+    noTypeField: '不在輸入框滑鼠滑字',
+    noTypeField_help:
+      '開啟後，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror、ACE 和 Monaco。',
+    touchMode: '觸控模式',
+    touchMode_help: '支援觸控相關選字',
+    language: '選詞語言',
+    language_help: '當選取的文字包含相對應的語言時，才進行尋找。',
+    language_extra:
+      '注意日語與韓語也包含了漢字。法語、德語和西語也包含了英文。若取消了中文或英語而勾選了其它語言，則只翻譯那些語言獨有的部分，如日語只翻譯假名。',
+    doubleClickDelay: '滑鼠按兩下間隔',
+    mode: '普通選詞',
+    panelMode: '字典視窗介面內部選詞',
+    pinMode: '字典視窗介面釘住后選詞',
+    qsPanelMode: '滑鼠選字',
+    bowlHover: '圖示暫留查字',
+    bowlHover_help: '滑鼠暫留在沙拉圖示上開啟字典介面，否則需要點選。',
 
     opt: {
       export: '匯出設定',
@@ -38,6 +54,26 @@ export const locale: typeof _locale = {
       reset_confirm: '所有設定將還原至預設值，確定？',
       upload_error: '設定儲存失敗'
     }
+  },
+
+  searchMode: {
+    icon: '顯示圖示',
+    icon_help:
+      '在滑鼠附近顯示一個圖示，滑鼠移動到圖示後，會顯示出字典的視窗介面。',
+    direct: '直接搜尋',
+    direct_help: '直接顯示字典視窗介面。',
+    double: '滑鼠按兩下',
+    double_help: '滑鼠按兩下所選擇的句子或單字後，會直接顯示字典視窗介面。',
+    holding: '按住按键',
+    holding_help:
+      '在放開滑鼠之前，需按住選擇的按鍵才顯示字典視窗介面（Meta 鍵為 macOS 上的「⌘ Command」鍵以及其它鍵盤的「⊞ Windows」鍵）。',
+    instant: '滑鼠懸浮取詞',
+    instant_help: '自動選取滑鼠附近的單字。',
+    instantDirect: '直接取詞',
+    instantKey: '按鍵',
+    instantKey_help:
+      '因技術限制，懸浮取詞通過自動選擇滑鼠附近單字實現，不設定按鍵直接取詞可能導致滑鼠無法選字，建議配合快速鍵開啟關閉。',
+    instantDelay: '取詞等待'
   },
 
   profiles: {
@@ -202,8 +238,6 @@ export const locale: typeof _locale = {
       openOptions: '進入 Saladict 設定',
       openStandalone: '開啟快捷查詞獨立視窗'
     },
-    bowl_hover: '圖示暫留查字',
-    bowl_hover_help: '滑鼠暫留在沙拉圖示上開啟字典介面，否則需要點選。',
 
     context_description:
       '設定右鍵選單，可新增可自定義連結。網頁翻譯其實不需要沙拉查詞，故已有的有道和谷歌網頁翻譯目前處於維護狀態，沒有計劃新增新功能，請用其它官方擴充套件如彩雲小譯和谷歌翻譯。',
@@ -211,11 +245,7 @@ export const locale: typeof _locale = {
     context_menus_add_rules: '連結中的 %s 會被取代為選詞。',
 
     dict_selected: '已選字典',
-    double_click_delay: '滑鼠按兩下間隔',
 
-    no_type_field: '不在輸入框滑鼠滑字',
-    no_type_field_help:
-      '開啟後，本程式會自動識別輸入框以及常見編輯器，如 CodeMirror、ACE 和 Monaco。',
     pdf_blackwhitelist_help: '黑名單相符的 PDF 連結將不會跳至 Saladict 開啟。',
     pdf_sniff: '使用本應用程式瀏覽 PDF',
     pdf_sniff_help:
@@ -229,34 +259,7 @@ export const locale: typeof _locale = {
 
     sel_blackwhitelist: '選詞黑白名單',
     sel_blackwhitelist_help: '黑名單相符的頁面 Saladict 將不會響應滑鼠劃詞。',
-    sel_lang: '選詞語言',
-    sel_lang_help: '當選取的文字包含相對應的語言時，才進行尋找。',
-    sel_lang_warning:
-      '注意日語與韓語也包含了漢字。法語、德語和西語也包含了英文。若取消了中文或英語而勾選了其它語言，則只翻譯那些語言獨有的部分，如日語只翻譯假名。',
-    searchMode: {
-      direct: '直接搜尋',
-      direct_help: '直接顯示字典視窗介面。',
-      double: '滑鼠按兩下',
-      double_help: '滑鼠按兩下所選擇的句子或單字後，會直接顯示字典視窗介面。',
-      holding: '按住按键',
-      holding_help:
-        '在放開滑鼠之前，需按住選擇的按鍵才顯示字典視窗介面（Meta 鍵為 Mac 上的「⌘ Command」鍵以及其它鍵盤的「⊞ Windows」鍵）。',
-      icon: '顯示圖示',
-      iconHelp:
-        '在滑鼠附近顯示一個圖示，滑鼠移動到圖示後，會顯示出字典的視窗介面。',
-      instant: '滑鼠懸浮取詞',
-      instantDelay: '取詞等待',
-      instantDirect: '直接取詞',
-      instantHelp:
-        '自動選取滑鼠附近的單字，自動選取滑鼠附近的單詞，因技術限制，懸浮取詞通過自動選擇滑鼠附近單字實現，不設定按鍵直接取詞可能導致滑鼠無法選字，建議配合快速鍵開啟關閉。',
-      instantKey: '按鍵',
-      mode: '普通選詞',
-      panelMode: '字典視窗介面內部選詞',
-      pinMode: '字典視窗介面釘住后選詞',
-      qsPanelMode: '滑鼠選字'
-    },
-    touch_mode: '觸控模式',
-    touch_mode_help: '支援觸控相關選字',
+
     update_check: '檢查更新',
     update_check_help: '自動檢查 Github 更新'
   },
@@ -264,7 +267,7 @@ export const locale: typeof _locale = {
   quickSearch: {
     height: '視窗高度',
     help:
-      '連續按三次<kbd>⌘ Command</kbd>（Mac）或者<kbd>Ctrl</kbd>（其它鍵盤）（或設定瀏覽器快速鍵），將會彈出字典視窗介面。',
+      '連續按三次<kbd>⌘ Command</kbd>（macOS）或者<kbd>Ctrl</kbd>（其它鍵盤）（或設定瀏覽器快速鍵），將會彈出字典視窗介面。',
     loc: '出現位置',
     page_sel: '響應滑字',
     page_sel_help: '對網頁滑鼠滑字作出反應。',

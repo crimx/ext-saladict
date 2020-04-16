@@ -48,6 +48,7 @@ export const locale: typeof _locale = {
   unit: {
     mins: '分鐘',
     ms: '毫秒',
+    s: '秒',
     word: '个'
   },
 

@@ -26,6 +26,22 @@ export const locale = {
     panelCSS: '自定义查词面板样式',
     panelCSS_help:
       '为查词面板添加自定义 CSS 。词典面板使用 .dictPanel-Root 作为根，词典使用 .dictRoot 或者 .d-词典ID 作为根。',
+    noTypeField: '不在输入框划词',
+    noTypeField_help:
+      '开启后，本扩展会自动识别输入框以及常见编辑器，如 CodeMirror、ACE 和 Monaco。',
+    touchMode: '触摸模式',
+    touchMode_help: '支持触摸相关选词。',
+    language: '划词语言',
+    language_help: '当选中的文字包含相应的语言时才进行查找。',
+    language_extra:
+      '注意日语与韩语也包含了汉字。法语、德语和西语也包含了英文。若取消了中文或英语而勾选了其它语言，则只匹配那些语言独有的部分，如日语只匹配假名。',
+    doubleClickDelay: '双击间隔',
+    mode: '普通划词',
+    panelMode: '查词面板内部划词',
+    pinMode: '查词面板钉住后划词',
+    qsPanelMode: '页面划词',
+    bowlHover: '图标悬停查词',
+    bowlHover_help: '鼠标悬停在沙拉图标上触发查词，否则需要点击。',
 
     opt: {
       export: '导出设定',
@@ -36,6 +52,25 @@ export const locale = {
       reset_confirm: '所有设定将还原到默认值，确定？',
       upload_error: '设置保存失败'
     }
+  },
+
+  searchMode: {
+    icon: '显示图标',
+    icon_help: '在鼠标附近显示一个图标，鼠标移上去后才显示词典面板。',
+    direct: '直接搜索',
+    direct_help: '直接显示词典面板。',
+    double: '双击搜索',
+    double_help: '双击选择文本之后直接显示词典面板。',
+    holding: '按住按键',
+    holding_help:
+      '在放开鼠标之前按住选择的按键才显示词典面板（Meta 键为 macOS 上的「⌘ Command」键以及其它键盘的「⊞ Windows」键）。',
+    instant: '鼠标悬浮取词',
+    instant_help: '自动选取鼠标附近的单词。',
+    instantDirect: '直接取词',
+    instantKey: '按键',
+    instantKey_help:
+      '因技术限制，悬浮取词通过自动选择鼠标附近单词实现，不设置按键直接取词可导致无法选词，建议配合快捷键开启关闭。',
+    instantDelay: '取词延时'
   },
 
   profiles: {
@@ -199,17 +234,12 @@ export const locale = {
       openOptions: '打开 Saladict 设置',
       openStandalone: '打开快捷查词独立窗口'
     },
-    bowl_hover: '图标悬停查词',
-    bowl_hover_help: '鼠标悬停在沙拉图标上触发查词，否则需要点击。',
     context_description:
       '设置右键菜单，可添加可自定义链接。网页翻译其实不需要沙拉查词，故已有的有道和谷歌网页翻译目前处于维护状态，没有计划添加新功能，请用其它官方扩展如彩云小译和谷歌翻译。',
     context_menus_title: '添加右键菜单项目',
     context_menus_add_rules: '链接中的 %s 会被替换为选词。',
     dict_selected: '已选词典',
-    double_click_delay: '双击间隔',
-    no_type_field: '不在输入框划词',
-    no_type_field_help:
-      '开启后，本扩展会自动识别输入框以及常见编辑器，如 CodeMirror、ACE 和 Monaco。',
+
     pdf_blackwhitelist_help:
       '黑名单匹配的 PDF 链接将不会跳转到 Saladict 打开。',
     pdf_sniff: '默认用本扩展浏览 PDF',
@@ -224,34 +254,6 @@ export const locale = {
 
     sel_blackwhitelist: '划词黑白名单',
     sel_blackwhitelist_help: '黑名单匹配的页面 Saladict 将不会响应鼠标划词。',
-    sel_lang: '划词语言',
-    sel_lang_help: '当选中的文字包含相应的语言时才进行查找。',
-    sel_lang_warning:
-      '注意日语与韩语也包含了汉字。法语、德语和西语也包含了英文。若取消了中文或英语而勾选了其它语言，则只匹配那些语言独有的部分，如日语只匹配假名。',
-
-    searchMode: {
-      direct: '直接搜索',
-      direct_help: '直接显示词典面板。',
-      double: '双击搜索',
-      double_help: '双击选择文本之后直接显示词典面板。',
-      holding: '按住按键',
-      holding_help:
-        '在放开鼠标之前按住选择的按键才显示词典面板（Meta 键为 Mac 上的「⌘ Command」键以及其它键盘的「⊞ Windows」键）。',
-      icon: '显示图标',
-      iconHelp: '在鼠标附近显示一个图标，鼠标移上去后才显示词典面板。',
-      instant: '鼠标悬浮取词',
-      instantDelay: '取词延时',
-      instantDirect: '直接取词',
-      instantHelp:
-        '自动选取鼠标附近的单词，因技术限制，悬浮取词通过自动选择鼠标附近单词实现，不设置按键直接取词可导致无法选词，建议配合快捷键开启关闭。',
-      instantKey: '按键',
-      mode: '普通划词',
-      panelMode: '查词面板内部划词',
-      pinMode: '查词面板钉住后划词',
-      qsPanelMode: '页面划词'
-    },
-    touch_mode: '触摸模式',
-    touch_mode_help: '支持触摸相关选词',
     update_check: '检查更新',
     update_check_help: '自动检查 Github 更新'
   },

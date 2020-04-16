@@ -46,6 +46,7 @@ export const locale = {
   unit: {
     mins: '分钟',
     ms: '毫秒',
+    s: '秒',
     word: '个'
   },
 

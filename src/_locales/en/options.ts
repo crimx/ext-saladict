@@ -31,6 +31,24 @@ export const locale: typeof _locale = {
     panelCSS: 'Custom Dict Panel Styles',
     panelCSS_help:
       'Custom CSS. For Dict Panel use .dictPanel-Root as root. For dictionaries use .dictRoot or .d-{id} as root',
+    noTypeField: 'No selection on editable regions',
+    noTypeField_help:
+      'If selection making in editable regions is banned, the extension will identify Input Boxes, TextAreas and other common text editors like CodeMirror, ACE and Monaco.',
+    touchMode: 'Touch Mode',
+    touchMode_help: 'Enable touch related selection',
+    language: 'Selection Languages',
+    language_help:
+      'Search when selection contains words in the chosen languages.',
+    language_extra:
+      'Note that Japanese and Korean also include Chinese. French, Deutsch and Spanish also include English. If Chinese or English is cancelled while others are selected, only the exclusive parts of those languages are tested. E.g. kana characters in Japanese.',
+    doubleClickDelay: 'Double Click Delay',
+    mode: 'Normal Selection',
+    panelMode: 'Inside Dict Panel',
+    pinMode: 'When Panel Is Pinned',
+    qsPanelMode: 'Page Selection',
+    bowlHover: 'Icon Mouse Hover',
+    bowlHover_help:
+      'Hover on the bowl icon to trigger searching instead of clicking.',
 
     opt: {
       export: 'Export Configs',
@@ -41,6 +59,25 @@ export const locale: typeof _locale = {
       reset_confirm: 'Reset to default settings. Confirm？',
       upload_error: 'Unable to save settings.'
     }
+  },
+
+  searchMode: {
+    icon: 'Show Icon',
+    icon_help: 'A cute little icon pops up nearby the cursor.',
+    direct: 'Direct Search',
+    direct_help: 'Show dict panel directly.',
+    double: 'Double Click',
+    double_help: 'Show dict panel after double click selection.',
+    holding: 'Hold a key',
+    holding_help:
+      'After a selection is made, the selected key must be pressing when releasing mouse (Meta key is "⌘ Command" on macOS and "⊞ Windows" for others).',
+    instant: 'Instant Capture',
+    instant_help: 'Selection is automatically made near by the cursor.',
+    instantDirect: 'Direct',
+    instantKey: 'Key',
+    instantKey_help:
+      'If "Direct" is chosen it is also recommeded setting browser shortkey to toggle Instant Capture. Otherwise browser text selection could be unable to perform.',
+    instantDelay: 'Capture delay'
   },
 
   profiles: {
@@ -211,9 +248,6 @@ export const locale: typeof _locale = {
       openOptions: 'Open Saladict Options',
       openStandalone: 'Open Saladict Standalone Panel'
     },
-    bowl_hover: 'Icon Mouse Hover',
-    bowl_hover_help:
-      'Hover on the bowl icon to trigger searching instead of clicking.',
 
     context_description:
       'Each context menus item can also be customized. Youdao and Google page translate are deprecated in favor of the official extensions.',
@@ -221,11 +255,7 @@ export const locale: typeof _locale = {
     context_menus_add_rules: 'URL with %s in place of query.',
 
     dict_selected: 'Selected Dicts',
-    double_click_delay: 'Double Click Delay',
 
-    no_type_field: 'No selection on editable regions',
-    no_type_field_help:
-      'If selection making in editable regions is banned, the extension will identify Input Boxes, TextAreas and other common text editors like CodeMirror, ACE and Monaco.',
     pdf_blackwhitelist_help:
       'Blacklisted PDF links will not jump to Saladict PDF Viewer.',
     pdf_sniff: 'Enable PDF Sniffer',
@@ -241,34 +271,7 @@ export const locale: typeof _locale = {
     sel_blackwhitelist: 'Selection Black/White List',
     sel_blackwhitelist_help:
       'Saladict will not react to selection in blacklisted pages.',
-    sel_lang: 'Selection Languages',
-    sel_lang_help:
-      'Search when selection contains words in the chosen languages.',
-    sel_lang_warning:
-      'Note that Japanese and Korean also include Chinese. French, Deutsch and Spanish also include English. If Chinese or English is cancelled while others are selected, only the exclusive parts of those languages are tested. E.g. kana characters in Japanese.',
-    searchMode: {
-      direct: 'Direct Search',
-      direct_help: 'Show dict panel directly.',
-      double: 'Double Click',
-      double_help: 'Show dict panel after double click selection.',
-      holding: 'Hold a key',
-      holding_help:
-        'After a selection is made, the selected key must be pressing when releasing mouse (Meta key is "⌘ Command" on Mac and "⊞ Windows" for others).',
-      icon: 'Show Icon',
-      iconHelp: 'A cute little icon pops up nearby the cursor.',
-      instant: 'Instant Capture',
-      instantDelay: 'Capture delay',
-      instantDirect: 'Direct',
-      instantHelp: 'Selection is automatically made near by the cursor.',
-      instantKey: 'Key',
-      mode: 'Normal Selection',
-      panelMode: 'Inside Dict Panel',
-      pinMode: 'When Panel Is Pinned',
-      qsPanelMode: 'Page Selection'
-    },
 
-    touch_mode: 'Touch Mode',
-    touch_mode_help: 'Enable touch related selection',
     update_check: 'Check Update',
     update_check_help: 'Automatically check update from Github'
   },
@@ -276,7 +279,7 @@ export const locale: typeof _locale = {
   quickSearch: {
     height: 'Window Height',
     help:
-      'Press <kbd>⌘ Command</kbd>(Mac) or <kbd>Ctrl</kbd>(Others) three times (or with browser shortkey) to summon the dictionary panel. ',
+      'Press <kbd>⌘ Command</kbd>(macOS) or <kbd>Ctrl</kbd>(Others) three times (or with browser shortkey) to summon the dictionary panel. ',
     loc: 'Location',
     page_sel: 'Selection Response',
     page_sel_help: 'Response to page selection.',

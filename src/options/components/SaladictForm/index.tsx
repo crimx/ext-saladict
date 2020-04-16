@@ -101,7 +101,7 @@ export const SaladictForm: FC<SaladictFormProps> = props => {
       const name = (item.key || item.name)!
       const isProfile = name.startsWith('profile.')
 
-      if (ready && i18n.exists(`options:${name}`)) {
+      if (item.label === undefined && ready && i18n.exists(`options:${name}`)) {
         item.label = isProfile ? (
           <Tooltip
             title={t('profile.opt.item_extra')}
@@ -117,14 +117,14 @@ export const SaladictForm: FC<SaladictFormProps> = props => {
         )
       }
 
-      if (!item.help) {
+      if (item.help === undefined) {
         const help = `options:${name}_help`
         if (ready && i18n.exists(help)) {
           item.help = t(help)
         }
       }
 
-      if (!item.extra) {
+      if (item.extra === undefined) {
         const extra = `options:${name}_extra`
         if (ready && i18n.exists(extra)) {
           item.extra = t(extra)
