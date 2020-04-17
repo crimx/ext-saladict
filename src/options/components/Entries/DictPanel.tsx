@@ -59,9 +59,9 @@ export const DictPanel: FC = () => {
             children: (
               <Slider
                 tipFormatter={percentageSlideFormatter}
-                min={30}
-                max={95}
-                marks={{ 30: '30%', 95: '95%' }}
+                min={0}
+                max={100}
+                marks={{ 0: '0%', 100: '100%' }}
               />
             )
           },
