@@ -59,6 +59,22 @@ export const locale = {
     qsPanelMode: '页面划词',
     bowlHover: '图标悬停查词',
     bowlHover_help: '鼠标悬停在沙拉图标上触发查词，否则需要点击。',
+    autopron: {
+      cn: {
+        dict: '中文自动发音'
+      },
+      en: {
+        dict: '英文自动发音',
+        accent: '优先口音'
+      },
+      machine: {
+        dict: '机器自动发音',
+        src: '机器发音部分',
+        src_help: '机器翻译词典需要在下方添加并启用才会自动发音。',
+        src_search: '朗读原文',
+        src_trans: '朗读翻译'
+      }
+    },
 
     opt: {
       export: '导出设定',
@@ -67,7 +83,11 @@ export const locale = {
       import_error: '导入设定失败',
       reset: '重置设定',
       reset_confirm: '所有设定将还原到默认值，确定？',
-      upload_error: '设置保存失败'
+      upload_error: '设置保存失败',
+      accent: {
+        uk: '英式',
+        us: '美式'
+      }
     }
   },
 
@@ -104,7 +124,7 @@ export const locale = {
     mtaAutoUnfold: '自动展开多行搜索框',
     waveform: '波形控制按钮',
     waveform_help:
-      '在词典面板下方显示音频控制面板展开按钮。关闭依然可以播放音频。',
+      '在词典面板下方显示音频控制面板展开按钮。控制面板只會在展開時才載入。',
 
     opt: {
       item_extra: '此选项会因「情景模式」而改变。',
@@ -114,6 +134,34 @@ export const locale = {
         once: '展开一次',
         popup: '只在右上弹框展开'
       }
+    }
+  },
+
+  dict: {
+    add: '添加词典',
+    more_options: '更多设置',
+
+    selectionLang: '划词语言',
+    selectionLang_help: '当选中的文字包含相应的语言时才显示该词典。',
+    defaultUnfold: '默认展开',
+    defaultUnfold_help:
+      '关闭后该词典将不会自动搜索，除非点击「展开」箭头。适合一些需要时再深入了解的词典，以加快初次查词速度。',
+    selectionWC: '划词字数',
+    selectionWC_help:
+      '当选中文字的字数符合条件时才显示该词典。可设置 999999 如果不希望限制字数。',
+    preferredHeight: '词典默认高度',
+    preferredHeight_help:
+      '词典初次出现的最大高度。超出此高度的内容将被隐藏并显示下箭头。可设置 999999 如果不希望限制高度。',
+
+    lang: {
+      de: '德',
+      en: '英',
+      es: '西',
+      fr: '法',
+      ja: '日',
+      kor: '韩',
+      zhs: '简',
+      zht: '繁'
     }
   },
 
@@ -182,32 +230,6 @@ export const locale = {
     report_issue: '反馈问题'
   },
 
-  dict: {
-    add: '添加词典',
-    default_height: '词典默认高度',
-    default_height_help:
-      '词典初次出现的最大高度。超出此高度的内容将被隐藏并显示下箭头。',
-    default_unfold: '默认展开',
-    default_unfold_help:
-      '关闭后该词典将不会自动搜索，除非点击「展开」箭头。适合一些需要时再深入了解的词典，以加快初次查词速度。',
-    lang: {
-      de: '德',
-      en: '英',
-      es: '西',
-      fr: '法',
-      ja: '日',
-      kor: '韩',
-      zhs: '简',
-      zht: '繁'
-    },
-
-    more_options: '更多设置',
-    sel_lang: '划词语言',
-    sel_lang_help: '当选中的文字包含相应的语言时才显示该词典。',
-    sel_word_count: '划词字数',
-    sel_word_count_help: '当选中文字的字数符合条件时才显示该词典。'
-  },
-
   match_pattern_description:
     '网址支持匹配模式（<a href="https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例" target="_blank">例子</a>）。留空保存即可清除。',
 
@@ -215,18 +237,6 @@ export const locale = {
     analytics: '启用 Google Analytics',
     analytics_help:
       '提供匿名设备浏览器版本信息。沙拉查词作者会优先支持用户量更多的设备和浏览器。',
-    autopron: {
-      accent: '优先口音',
-      accent_uk: '英式',
-      accent_us: '美式',
-      cn: '中文自动发音',
-      en: '英文自动发音',
-      machine: '机器自动发音',
-      machine_src: '机器发音部分',
-      machine_src_help: '机器翻译词典需要在下方添加并启用才会自动发音。',
-      machine_src_search: '朗读原文',
-      machine_src_trans: '朗读翻译'
-    },
     browserAction: {
       open: '点击地址栏旁图标',
       openDictPanel: '显示查词面板',

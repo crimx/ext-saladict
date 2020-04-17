@@ -11,7 +11,7 @@ export const formItemLayout = {
   }
 } as const
 
-export const formItemHeadLayout = {
+export const formItemFooterLayout = {
   wrapperCol: { offset: 6, span: 18 }
 } as const
 
@@ -21,6 +21,6 @@ export const formSubItemLayout = {
 } as const
 
 export const formItemModalLayout = {
-  labelCol: { span: 7 },
-  wrapperCol: { span: 17 }
+  labelCol: { span: 6 },
+  wrapperCol: { span: 18 }
 } as const

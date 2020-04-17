@@ -156,3 +156,12 @@ kbd[data-key='eject']:after {
     --opt-background-color: #141414;
   }
 }
+
+.saladict-form-profile-title {
+  cursor: help;
+
+  .anticon {
+    color: #f5222d;
+    margin-right: 0.5em;
+  }
+}

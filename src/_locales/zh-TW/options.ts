@@ -61,6 +61,22 @@ export const locale: typeof _locale = {
     qsPanelMode: '滑鼠選字',
     bowlHover: '圖示暫留查字',
     bowlHover_help: '滑鼠暫留在沙拉圖示上開啟字典介面，否則需要點選。',
+    autopron: {
+      cn: {
+        dict: '中文自動發音'
+      },
+      en: {
+        dict: '英文自動發音',
+        accent: '優先口音'
+      },
+      machine: {
+        dict: '機器自動發音',
+        src: '機器發音部分',
+        src_help: '機器翻譯字典需要在下方新增並啟用才會自動發音。',
+        src_search: '朗讀原文',
+        src_trans: '朗讀翻譯'
+      }
+    },
 
     opt: {
       export: '匯出設定',
@@ -69,7 +85,11 @@ export const locale: typeof _locale = {
       import_error: '匯入設定失敗',
       reset: '重設設定',
       reset_confirm: '所有設定將還原至預設值，確定？',
-      upload_error: '設定儲存失敗'
+      upload_error: '設定儲存失敗',
+      accent: {
+        uk: '英式',
+        us: '美式'
+      }
     }
   },
 
@@ -117,6 +137,34 @@ export const locale: typeof _locale = {
         once: '展開一次',
         popup: '只在右上彈框展開'
       }
+    }
+  },
+
+  dict: {
+    add: '新增字典',
+    more_options: '更多設定',
+
+    selectionLang: '選詞語言',
+    selectionLang_help: '當選中的文字包含相對應的語言時才顯示這個字典。',
+    defaultUnfold: '自動展開',
+    defaultUnfold_help:
+      '關閉後此字典將不會自動搜尋，除非點選「展開」箭頭。適合一些需要時再深入瞭解的字典，以加快初次查字典速度。',
+    selectionWC: '選詞字數',
+    selectionWC_help:
+      '當選中文字的字數符合條件時才顯示該詞典。可設定 999999 如果不希望限制字數。',
+    preferredHeight: '字典預設高度',
+    preferredHeight_help:
+      '字典初次出現的最大高度。超出此高度的內容將被隱藏並顯示下箭頭。可設定 999999 如果不希望限制高度。',
+
+    lang: {
+      de: '德',
+      en: '英',
+      es: '西',
+      fr: '法',
+      ja: '日',
+      kor: '韓',
+      zhs: '简',
+      zht: '繁'
     }
   },
 
@@ -185,32 +233,6 @@ export const locale: typeof _locale = {
     report_issue: '軟體使用疑問和建言'
   },
 
-  dict: {
-    add: '新增字典',
-    default_height: '字典預設高度',
-    default_height_help:
-      '字典初次出現的最大高度。超出此高度的內容將被隱藏並顯示下箭頭。',
-    default_unfold: '自動展開',
-    default_unfold_help:
-      '關閉後此字典將不會自動搜尋，除非點選「展開」箭頭。適合一些需要時再深入瞭解的字典，以加快初次查字典速度。',
-    lang: {
-      de: '德',
-      en: '英',
-      es: '西',
-      fr: '法',
-      ja: '日',
-      kor: '韓',
-      zhs: '简',
-      zht: '繁'
-    },
-
-    more_options: '更多設定',
-    sel_lang: '選詞語言',
-    sel_lang_help: '當選中的文字包含相對應的語言時才顯示這個字典。',
-    sel_word_count: '選詞字數',
-    sel_word_count_help: '當選中文字的字數符合條件時才顯示該詞典。'
-  },
-
   match_pattern_description:
     '網址支援比對模式（<a href="https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#範例" target="_blank">例子</a>）。留空儲存即可清除。',
 
@@ -218,18 +240,7 @@ export const locale: typeof _locale = {
     analytics: '啟用 Google Analytics',
     analytics_help:
       '提供匿名裝置瀏覽器版本資訊。沙拉查詞作者會優先支援使用者更多的裝置和瀏覽器。',
-    autopron: {
-      accent: '優先口音',
-      accent_uk: '英式',
-      accent_us: '美式',
-      cn: '中文自動發音',
-      en: '英文自動發音',
-      machine: '機器自動發音',
-      machine_src: '機器發音部分',
-      machine_src_help: '機器翻譯字典需要在下方新增並啟用才會自動發音。',
-      machine_src_search: '朗讀原文',
-      machine_src_trans: '朗讀翻譯'
-    },
+
     browserAction: {
       open: '點選網址列旁圖示',
       openDictPanel: '開啟字典介面',

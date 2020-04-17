@@ -66,6 +66,23 @@ export const locale: typeof _locale = {
     bowlHover: 'Icon Mouse Hover',
     bowlHover_help:
       'Hover on the bowl icon to trigger searching instead of clicking.',
+    autopron: {
+      cn: {
+        dict: 'Chinese Auto-Pronounce'
+      },
+      en: {
+        dict: 'English Auto-Pronounce',
+        accent: 'Accent Preference'
+      },
+      machine: {
+        dict: 'Machine Auto-Pronounce',
+        src: 'Machine Pronounce',
+        src_help:
+          'Machine Translation Dictionary needs to be added and enabled on the list below to enable auto-pronunciation.',
+        src_search: 'Read Source Text',
+        src_trans: 'Read Translation Text'
+      }
+    },
 
     opt: {
       export: 'Export Configs',
@@ -74,7 +91,11 @@ export const locale: typeof _locale = {
       import_error: 'Import Configs failed',
       reset: 'Reset Configs',
       reset_confirm: 'Reset to default settings. Confirm？',
-      upload_error: 'Unable to save settings.'
+      upload_error: 'Unable to save settings.',
+      accent: {
+        uk: 'UK',
+        us: 'US'
+      }
     }
   },
 
@@ -111,7 +132,7 @@ export const locale: typeof _locale = {
     mtaAutoUnfold: 'Auto unfold multiline search box',
     waveform: 'Waveform Control',
     waveform_help:
-      'Display a button at the bottom of the Dict Panel for expanding the Waveform Control Panel. Audio files can still be played if turned off.',
+      'Display a button at the bottom of the Dict Panel for expanding the Waveform Control Panel which is only loaded after expansion.',
 
     opt: {
       item_extra: 'This option may change base on "Profile".',
@@ -121,6 +142,35 @@ export const locale: typeof _locale = {
         once: 'Unfold Once',
         popup: 'Only On Browser Action'
       }
+    }
+  },
+
+  dict: {
+    add: 'Add dicts',
+    more_options: 'More Options',
+
+    selectionLang: 'Selection Languages',
+    selectionLang_help:
+      'Show this dictionary when selection contains words in the chosen languages.',
+    defaultUnfold: 'Default Unfold',
+    defaultUnfold_help:
+      "If turned off, this dictionary won't start searching unless it's title bar is clicked.",
+    selectionWC: 'Selection Word Count',
+    selectionWC_help:
+      'Show this dictionary when selection word count meets the requirements. Set 999999 for unlimited words.',
+    preferredHeight: 'Default Panel Height',
+    preferredHeight_help:
+      'Maximum height on first appearance. Contents exceeding this height will be hidden. Set 999999 for unlimited height.',
+
+    lang: {
+      de: 'De',
+      en: 'En',
+      es: 'Es',
+      fr: 'Fr',
+      ja: 'Ja',
+      kor: 'Kor',
+      zhs: 'Zhs',
+      zht: 'Zht'
     }
   },
 
@@ -192,34 +242,6 @@ export const locale: typeof _locale = {
     report_issue: 'Report Issue'
   },
 
-  dict: {
-    add: 'Add dicts',
-    default_height: 'Default Panel Height',
-    default_height_help:
-      'Maximum height on first appearance. Contents exceeding this height will be hidden.',
-    default_unfold: 'Default Unfold',
-    default_unfold_help:
-      "If turned off, this dictionary won't start searching unless it's title bar is clicked.",
-    lang: {
-      de: 'De',
-      en: 'En',
-      es: 'Es',
-      fr: 'Fr',
-      ja: 'Ja',
-      kor: 'Kor',
-      zhs: 'Zhs',
-      zht: 'Zht'
-    },
-
-    more_options: 'More Options',
-    sel_lang: 'Selection Languages',
-    sel_lang_help:
-      'Show this dictionary when selection contains words in the chosen languages.',
-    sel_word_count: 'Selection Word Count',
-    sel_word_count_help:
-      'Show this dictionary when selection word count meets the requirements.'
-  },
-
   match_pattern_description:
     'Specify URLs as match patterns. <a href="https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Match_patterns#Examples" target="_blank">Examples</a>. Empty fields will be removed.',
 
@@ -227,19 +249,6 @@ export const locale: typeof _locale = {
     analytics: 'Enable Google Analytics',
     analytics_help:
       'Share anonymous device browser version information. Saladict author will offer prioritized support to popular devices and browsers.',
-    autopron: {
-      accent: 'Accent Preference',
-      accent_uk: 'UK',
-      accent_us: 'US',
-      cn: 'Chinese Auto-Pronounce',
-      en: 'English Auto-Pronounce',
-      machine: 'Machine Auto-Pronounce',
-      machine_src: 'Machine Pronounce',
-      machine_src_help:
-        'Machine Translation Dictionary needs to be added and enabled on the list below to enable auto-pronunciation.',
-      machine_src_search: 'Read Source Text',
-      machine_src_trans: 'Read Translation Text'
-    },
     browserAction: {
       open: 'Browser Action',
       openDictPanel: 'Dict Panel',
