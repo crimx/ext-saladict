@@ -17,8 +17,14 @@
   > label {
     align-items: flex-start !important;
     height: auto !important;
+
+    &.ant-form-item-required::before {
+      display: none !important;
+      line-height: unset !important;
+    }
   }
 }
+
 
 .sortable-list-item {
   width: 100%;

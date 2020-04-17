@@ -1,21 +1,16 @@
-import React, { FC, useContext, useRef } from 'react'
-import { Switch, Select, Modal, Checkbox } from 'antd'
-import { FormInstance } from 'antd/lib/form'
-import { ExclamationCircleOutlined } from '@ant-design/icons'
-import { useSubscription } from 'observable-hooks'
+import React, { FC, useContext } from 'react'
+import { Switch, Select, Checkbox } from 'antd'
 import { DictID } from '@/app-config'
 import { useTranslate } from '@/_helpers/i18n'
 import { supportedLangs } from '@/_helpers/lang-check'
 import { getProfilePath } from '@/options/helpers/path-joiner'
 import {
-  SaladictForm,
   NUMBER_RULES,
   SaladictFormItem
 } from '@/options/components/SaladictForm'
 import { GlobalsContext } from '@/options/data'
 import { InputNumberGroup } from '@/options/components/InputNumberGroup'
-import { formItemModalLayout } from '@/options/helpers/layout'
-import { uploadResult$$ } from '@/options/helpers/upload'
+import { SaladictModalForm } from '@/options/components/SaladictModalForm'
 
 export interface EditModalProps {
   dictID?: DictID | null
@@ -25,15 +20,7 @@ export interface EditModalProps {
 export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
   const { t, i18n } = useTranslate(['options', 'dicts', 'common', 'langcode'])
   const globals = useContext(GlobalsContext)
-  const formRef = useRef<FormInstance>(null)
   const formItems: SaladictFormItem[] = []
-
-  useSubscription(uploadResult$$, result => {
-    // successfully saved
-    if (dictID && !result.loading && !result.error) {
-      onClose()
-    }
-  })
 
   if (dictID) {
     formItems.push(
@@ -97,10 +84,6 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
     const options = globals.profile.dicts.all[dictID]['options']
     if (options) {
       formItems.push(
-        {
-          key: 'dict.more_options',
-          items: []
-        },
         ...Object.keys(options).map(optKey => {
           // can be number | boolean | string(select)
           const value = options[optKey]
@@ -148,40 +131,11 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
   }
 
   return (
-    <Modal
+    <SaladictModalForm
       visible={!!dictID}
       title={t(`dicts:${dictID}.name`)}
-      width={600}
-      destroyOnClose
-      onOk={() => {
-        if (formRef.current) {
-          formRef.current.submit()
-        }
-      }}
-      onCancel={() => {
-        if (globals.dirty) {
-          Modal.confirm({
-            title: t('unsave_confirm'),
-            icon: <ExclamationCircleOutlined />,
-            okType: 'danger',
-            onOk: () => {
-              ;(globals as GlobalsContext).dirty = false
-              onClose()
-            }
-          })
-        } else {
-          onClose()
-        }
-      }}
-    >
-      {dictID && (
-        <SaladictForm
-          {...formItemModalLayout}
-          ref={formRef}
-          items={formItems}
-          hideFooter
-        />
-      )}
-    </Modal>
+      items={formItems}
+      onClose={onClose}
+    />
   )
 }
