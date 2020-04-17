@@ -11,6 +11,15 @@
   }
 }
 
+.ant-form-item-label {
+  white-space: normal !important;
+
+  > label {
+    align-items: flex-start !important;
+    height: auto !important;
+  }
+}
+
 .sortable-list-item {
   width: 100%;
   display: flex;

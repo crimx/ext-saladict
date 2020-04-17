@@ -96,9 +96,12 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
     // custom options
     const options = globals.profile.dicts.all[dictID]['options']
     if (options) {
-      formItems.push({
-        key: 'dict.more_options',
-        items: Object.keys(options).map(optKey => {
+      formItems.push(
+        {
+          key: 'dict.more_options',
+          items: []
+        },
+        ...Object.keys(options).map(optKey => {
           // can be number | boolean | string(select)
           const value = options[optKey]
 
@@ -140,7 +143,7 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
           }
           return item
         })
-      })
+      )
     }
   }
 
@@ -148,6 +151,7 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
     <Modal
       visible={!!dictID}
       title={t(`dicts:${dictID}.name`)}
+      width={600}
       destroyOnClose
       onOk={() => {
         if (formRef.current) {
