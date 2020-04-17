@@ -4,6 +4,23 @@ export const locale: typeof _locale = {
   title: '沙拉查詞設定',
   previewPanel: '預覽字典介面',
 
+  nav: {
+    General: '基本選項',
+    Notebook: '單字管理',
+    Profiles: '情景模式',
+    DictPanel: '字典介面',
+    SearchModes: '查字習慣',
+    Dictionaries: '字典設定',
+    Popup: '右上彈出式視窗',
+    QuickSearch: '迅速查字',
+    Pronunciation: '朗讀設定',
+    PDF: 'PDF 設定',
+    ContextMenus: '右鍵選單',
+    BlackWhiteList: '黑白名單',
+    ImportExport: '匯入匯出',
+    Privacy: '隱私設定'
+  },
+
   config: {
     active: '啟用滑鼠選字翻譯',
     active_help: '關閉後「迅速查字」功能依然可用。',
@@ -196,22 +213,6 @@ export const locale: typeof _locale = {
 
   match_pattern_description:
     '網址支援比對模式（<a href="https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#範例" target="_blank">例子</a>）。留空儲存即可清除。',
-
-  nav: {
-    BlackWhiteList: '黑白名單',
-    ContextMenus: '右鍵選單',
-    Dictionaries: '字典設定',
-    DictPanel: '字典介面',
-    General: '基本選項',
-    ImportExport: '匯入匯出',
-    Notebook: '單字管理',
-    PDF: 'PDF 設定',
-    Popup: '右上彈出式視窗',
-    Profiles: '情景模式',
-    QuickSearch: '迅速查字',
-    SearchModes: '查字習慣',
-    Privacy: '隱私設定'
-  },
 
   opt: {
     analytics: '啟用 Google Analytics',

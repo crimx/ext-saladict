@@ -4,6 +4,23 @@ export const locale: typeof _locale = {
   title: 'Saladict Options',
   previewPanel: 'Preview Dict Panel',
 
+  nav: {
+    General: 'General',
+    Notebook: 'Notebook',
+    Profiles: 'Profiles',
+    DictPanel: 'Dict Panel',
+    SearchModes: 'Search Modes',
+    Dictionaries: 'Dictionaries',
+    Popup: 'Popup Panel',
+    QuickSearch: 'Quick Search',
+    Pronunciation: 'Pronunciation',
+    PDF: 'PDF',
+    ContextMenus: 'Context Menus',
+    BlackWhiteList: 'Black/White List',
+    ImportExport: 'Import/Export',
+    Privacy: 'Privacy'
+  },
+
   config: {
     active: 'Enable Inline Translator',
     active_help:
@@ -205,22 +222,6 @@ export const locale: typeof _locale = {
 
   match_pattern_description:
     'Specify URLs as match patterns. <a href="https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Match_patterns#Examples" target="_blank">Examples</a>. Empty fields will be removed.',
-
-  nav: {
-    BlackWhiteList: 'Black/White List',
-    ContextMenus: 'Context Menus',
-    Dictionaries: 'Dictionaries',
-    DictPanel: 'Dict Panel',
-    General: 'General',
-    ImportExport: 'Import/Export',
-    Notebook: 'Notebook',
-    PDF: 'PDF',
-    Popup: 'Popup Panel',
-    Profiles: 'Profiles',
-    QuickSearch: 'Quick Search',
-    SearchModes: 'Search Modes',
-    Privacy: 'Privacy'
-  },
 
   opt: {
     analytics: 'Enable Google Analytics',

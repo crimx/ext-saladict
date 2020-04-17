@@ -2,6 +2,23 @@ export const locale = {
   title: '沙拉查词设置',
   previewPanel: '预览查词面板',
 
+  nav: {
+    General: '基本选项',
+    Notebook: '单词管理',
+    Profiles: '情景模式',
+    DictPanel: '查词面板',
+    SearchModes: '查词习惯',
+    Dictionaries: '词典设置',
+    Popup: '右上弹框',
+    QuickSearch: '快捷查词',
+    Pronunciation: '发音设置',
+    PDF: 'PDF 设置',
+    ContextMenus: '右键菜单',
+    BlackWhiteList: '黑白名单',
+    ImportExport: '导入导出',
+    Privacy: '隐私设置'
+  },
+
   config: {
     active: '启用划词翻译',
     active_help: '关闭后「快捷查词」功能依然可用。',
@@ -193,21 +210,6 @@ export const locale = {
 
   match_pattern_description:
     '网址支持匹配模式（<a href="https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例" target="_blank">例子</a>）。留空保存即可清除。',
-  nav: {
-    BlackWhiteList: '黑白名单',
-    ContextMenus: '右键菜单',
-    Dictionaries: '词典设置',
-    DictPanel: '查词面板',
-    General: '基本选项',
-    ImportExport: '导入导出',
-    Notebook: '单词管理',
-    PDF: 'PDF 设置',
-    Popup: '右上弹框',
-    Profiles: '情景模式',
-    QuickSearch: '快捷查词',
-    SearchModes: '查词习惯',
-    Privacy: '隐私设置'
-  },
 
   opt: {
     analytics: '启用 Google Analytics',

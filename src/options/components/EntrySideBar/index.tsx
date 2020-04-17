@@ -7,6 +7,7 @@ import {
   ProfileOutlined,
   SelectOutlined,
   BookOutlined,
+  SoundOutlined,
   FilePdfOutlined,
   DatabaseOutlined,
   LayoutOutlined,
@@ -95,14 +96,6 @@ export const EntrySideBar: FC<EntrySideBarProps> = props => {
               <BookOutlined />
               <span>{t('nav.Dictionaries')}</span>
             </Menu.Item>
-            <Menu.Item key="PDF">
-              <FilePdfOutlined />
-              <span>{t('nav.PDF')}</span>
-            </Menu.Item>
-            <Menu.Item key="ContextMenus">
-              <DatabaseOutlined />
-              <span>{t('nav.ContextMenus')}</span>
-            </Menu.Item>
             <Menu.Item key="Popup">
               <LayoutOutlined />
               <span>{t('nav.Popup')}</span>
@@ -110,6 +103,18 @@ export const EntrySideBar: FC<EntrySideBarProps> = props => {
             <Menu.Item key="QuickSearch">
               <FlagOutlined />
               <span>{t('nav.QuickSearch')}</span>
+            </Menu.Item>
+            <Menu.Item key="Pronunciation">
+              <SoundOutlined />
+              <span>{t('nav.Pronunciation')}</span>
+            </Menu.Item>
+            <Menu.Item key="PDF">
+              <FilePdfOutlined />
+              <span>{t('nav.PDF')}</span>
+            </Menu.Item>
+            <Menu.Item key="ContextMenus">
+              <DatabaseOutlined />
+              <span>{t('nav.ContextMenus')}</span>
             </Menu.Item>
             <Menu.Item key="BlackWhiteList">
               <ExceptionOutlined />
