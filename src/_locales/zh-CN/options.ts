@@ -1,6 +1,11 @@
 export const locale = {
   title: '沙拉查词设置',
   previewPanel: '预览查词面板',
+  shortcuts: '设置快捷键',
+  msg_update_error: '设置更新失败',
+  msg_updated: '设置已更新',
+  unsave_confirm: '修改尚未保存，确定放弃？',
+  nativeSearch: '浏览器外划词',
 
   nav: {
     General: '基本选项',
@@ -75,6 +80,10 @@ export const locale = {
         src_trans: '朗读翻译'
       }
     },
+    pdfSniff: '默认用本扩展浏览 PDF',
+    pdfSniff_help:
+      '开启后所有 PDF 链接将自动跳转到本扩展打开（包括本地，如果在扩展管理页面勾选了允许）。',
+    pdfSniff_extra: '现在更推荐使用自己喜欢的本地阅读器搭配{浏览器外划词}。',
 
     opt: {
       export: '导出设定',
@@ -87,8 +96,18 @@ export const locale = {
       accent: {
         uk: '英式',
         us: '美式'
-      }
+      },
+      pdf_blackwhitelist_help:
+        '黑名单匹配的 PDF 链接将不会跳转到 Saladict 打开。'
     }
+  },
+
+  matchPattern: {
+    description: '网址支持{超链匹配}和{正则匹配}。留空保存即可清除。',
+    url: '超链匹配',
+    url_error: '不正确的超链接模式表达式。',
+    regex: '正则匹配',
+    regex_error: '不正确的正则表达式。'
   },
 
   searchMode: {
@@ -172,7 +191,6 @@ export const locale = {
     failed: '同步失败',
     close_confirm: '设置未保存，关闭？',
     delete_confirm: '清空同步设置？',
-    error_url: '不正确的超链接格式。',
 
     btn: {
       shanbay: '添加扇贝生词本同步',
@@ -205,16 +223,12 @@ export const locale = {
       err_parse: '服务器返回 XML 格式不正确。',
       err_unauthorized: '账户或密码不正确。',
       err_unknown: '未知错误 「{{error}}」。',
+      err_internal: '无法保存。',
       passwd: '密码',
       url: '服务器地址',
       user: '账户'
     }
   },
-
-  shortcuts: '设置快捷键',
-  msg_update_error: '设置更新失败',
-  msg_updated: '设置已更新',
-  unsave_confirm: '修改尚未保存，确定放弃？',
 
   headInfo: {
     acknowledgement: {
@@ -230,8 +244,10 @@ export const locale = {
     report_issue: '反馈问题'
   },
 
-  match_pattern_description:
-    '网址支持匹配模式（<a href="https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#范例" target="_blank">例子</a>）。留空保存即可清除。',
+  form: {
+    url_error: '不正确的超链接格式。',
+    number_error: '不正确的数字'
+  },
 
   opt: {
     analytics: '启用 Google Analytics',
@@ -252,11 +268,6 @@ export const locale = {
     context_menus_add_rules: '链接中的 %s 会被替换为选词。',
     dict_selected: '已选词典',
 
-    pdf_blackwhitelist_help:
-      '黑名单匹配的 PDF 链接将不会跳转到 Saladict 打开。',
-    pdf_sniff: '默认用本扩展浏览 PDF',
-    pdf_sniff_help:
-      '开启后所有 PDF 链接将自动跳转到本扩展打开（包括本地，如果在扩展管理页面勾选了允许）。',
     third_party_privacy: '第三方隐私',
     third_party_privacy_help:
       '沙拉查词不会收集更多数据，但在查词时单词以及相关 cookies 数据会发送给第三方词典服务（与在该网站上查词一样），如果你不希望被该服务获取数据，请在「词典设置」中关闭相应词典。',

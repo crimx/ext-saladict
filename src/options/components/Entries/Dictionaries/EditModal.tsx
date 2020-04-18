@@ -1,13 +1,11 @@
 import React, { FC, useContext } from 'react'
 import { Switch, Select, Checkbox } from 'antd'
+import { Rule } from 'antd/lib/form'
 import { DictID } from '@/app-config'
 import { useTranslate } from '@/_helpers/i18n'
 import { supportedLangs } from '@/_helpers/lang-check'
 import { getProfilePath } from '@/options/helpers/path-joiner'
-import {
-  NUMBER_RULES,
-  SaladictFormItem
-} from '@/options/components/SaladictForm'
+import { SaladictFormItem } from '@/options/components/SaladictForm'
 import { GlobalsContext } from '@/options/data'
 import { InputNumberGroup } from '@/options/components/InputNumberGroup'
 import { SaladictModalForm } from '@/options/components/SaladictModalForm'
@@ -21,6 +19,10 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
   const { t, i18n } = useTranslate(['options', 'dicts', 'common', 'langcode'])
   const globals = useContext(GlobalsContext)
   const formItems: SaladictFormItem[] = []
+
+  const NUMBER_RULES: Rule[] = [
+    { type: 'number', message: t('form.number_error'), required: true }
+  ]
 
   if (dictID) {
     formItems.push(

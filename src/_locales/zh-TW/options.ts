@@ -3,6 +3,11 @@ import { locale as _locale } from '../zh-CN/options'
 export const locale: typeof _locale = {
   title: '沙拉查詞設定',
   previewPanel: '預覽字典介面',
+  shortcuts: '設定快速鍵',
+  msg_update_error: '設定更新失敗',
+  msg_updated: '設定已更新',
+  unsave_confirm: '修改尚未儲存，確定放棄？',
+  nativeSearch: '瀏覽器外選字翻譯',
 
   nav: {
     General: '基本選項',
@@ -77,6 +82,11 @@ export const locale: typeof _locale = {
         src_trans: '朗讀翻譯'
       }
     },
+    pdfSniff: '使用本應用程式瀏覽 PDF',
+    pdfSniff_help:
+      '開啟後所有 PDF 連結將自動跳至本套件開啟（包括本機，如果在套件管理頁面勾選了允許）。',
+    pdfSniff_extra:
+      '現在更推薦使用自己喜歡的本地閱讀器搭配{瀏覽器外選字翻譯}。',
 
     opt: {
       export: '匯出設定',
@@ -89,8 +99,17 @@ export const locale: typeof _locale = {
       accent: {
         uk: '英式',
         us: '美式'
-      }
+      },
+      pdf_blackwhitelist_help: '黑名單相符的 PDF 連結將不會跳至 Saladict 開啟。'
     }
+  },
+
+  matchPattern: {
+    description: '網址支援{超鏈匹配}和{正則匹配}。留空儲存即可清除。',
+    url: '連結匹配',
+    url_error: '不正確的超連結模式匹配表示式。',
+    regex: '正則匹配',
+    regex_error: '不正確的正則表示式。'
   },
 
   searchMode: {
@@ -175,7 +194,6 @@ export const locale: typeof _locale = {
     failed: '同步失敗',
     close_confirm: '設定未儲存，關閉？',
     delete_confirm: '清空同步設定？',
-    error_url: '不正確的超連結格式。',
 
     btn: {
       shanbay: '新增扇貝生詞本同步',
@@ -208,16 +226,12 @@ export const locale: typeof _locale = {
       err_parse: '伺服器返回 XML 格式不正確。',
       err_unauthorized: '帳戶或密碼不正確。',
       err_unknown: '不詳錯誤 「{{error}}」。',
+      err_internal: '無法儲存。',
       passwd: '密碼',
       url: '伺服器位址',
       user: '帳戶'
     }
   },
-
-  shortcuts: '設定快速鍵',
-  msg_update_error: '設定更新失敗',
-  msg_updated: '設定已更新',
-  unsave_confirm: '修改尚未儲存，確定放棄？',
 
   headInfo: {
     acknowledgement: {
@@ -233,8 +247,10 @@ export const locale: typeof _locale = {
     report_issue: '軟體使用疑問和建言'
   },
 
-  match_pattern_description:
-    '網址支援比對模式（<a href="https://developer.mozilla.org/zh-CN/Add-ons/WebExtensions/Match_patterns#範例" target="_blank">例子</a>）。留空儲存即可清除。',
+  form: {
+    url_error: '不正確的超連結格式。',
+    number_error: '不正確的數字'
+  },
 
   opt: {
     analytics: '啟用 Google Analytics',
@@ -258,10 +274,6 @@ export const locale: typeof _locale = {
 
     dict_selected: '已選字典',
 
-    pdf_blackwhitelist_help: '黑名單相符的 PDF 連結將不會跳至 Saladict 開啟。',
-    pdf_sniff: '使用本應用程式瀏覽 PDF',
-    pdf_sniff_help:
-      '開啟後所有 PDF 連結將自動跳至本套件開啟（包括本機，如果在套件管理頁面勾選了允許）。',
     third_party_privacy: '第三方隱私',
     third_party_privacy_help:
       '沙拉查詞不會收集更多資料，但在查詞時單詞以及相關 cookies 資料會發送給第三方詞典服務（與在該網站上查詞一樣），如果你不希望被該服務獲取資料，請在「詞典設定」中關閉相應詞典。',

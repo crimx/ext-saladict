@@ -3,6 +3,11 @@ import { locale as _locale } from '../zh-CN/options'
 export const locale: typeof _locale = {
   title: 'Saladict Options',
   previewPanel: 'Preview Dict Panel',
+  shortcuts: 'Set Shortcuts',
+  msg_update_error: 'Unable to update',
+  msg_updated: 'Successfully updated',
+  unsave_confirm: 'Settings not saved. Sure to leave?',
+  nativeSearch: 'search native selected text',
 
   nav: {
     General: 'General',
@@ -83,6 +88,10 @@ export const locale: typeof _locale = {
         src_trans: 'Read Translation Text'
       }
     },
+    pdfSniff: 'Enable PDF Sniffer',
+    pdfSniff_help: 'If turned on， PDF links will be automatically captured.',
+    pdfSniff_extra:
+      'It is recommended to {search native selected text} on your own favorite local reader.',
 
     opt: {
       export: 'Export Configs',
@@ -95,8 +104,19 @@ export const locale: typeof _locale = {
       accent: {
         uk: 'UK',
         us: 'US'
-      }
+      },
+      pdf_blackwhitelist_help:
+        'Blacklisted PDF links will not jump to Saladict PDF Viewer.'
     }
+  },
+
+  matchPattern: {
+    description:
+      'Specify URL as {URL Match Pattern} or {Regular Expression}. Empty fields will be removed.',
+    url: 'URL Match Pattern',
+    url_error: 'Incorrect URL Match Pattern.',
+    regex: 'Regular Expression',
+    regex_error: 'Incorrect Regular Expression.'
   },
 
   searchMode: {
@@ -181,7 +201,6 @@ export const locale: typeof _locale = {
     failed: 'Syncing failed',
     close_confirm: 'Settings not saved. Close?',
     delete_confirm: 'Delete?',
-    error_url: 'Not a valid url.',
 
     btn: {
       shanbay: 'Shanbay Sync Service',
@@ -217,16 +236,12 @@ export const locale: typeof _locale = {
       err_parse: 'Incorrect response XML from server.',
       err_unauthorized: 'Incorrect account or password.',
       err_unknown: 'Unknown error 「{{error}}」.',
+      err_internal: 'Unable to save settings.',
       passwd: 'Password',
       url: 'Server Address',
       user: 'User Account'
     }
   },
-
-  shortcuts: 'Set Shortcuts',
-  msg_update_error: 'Unable to update',
-  msg_updated: 'Successfully updated',
-  unsave_confirm: 'Settings not saved. Sure to leave?',
 
   headInfo: {
     acknowledgement: {
@@ -242,8 +257,10 @@ export const locale: typeof _locale = {
     report_issue: 'Report Issue'
   },
 
-  match_pattern_description:
-    'Specify URLs as match patterns. <a href="https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Match_patterns#Examples" target="_blank">Examples</a>. Empty fields will be removed.',
+  form: {
+    url_error: 'Incorrect URL.',
+    number_error: 'Incorrect number.'
+  },
 
   opt: {
     analytics: 'Enable Google Analytics',
@@ -266,10 +283,6 @@ export const locale: typeof _locale = {
 
     dict_selected: 'Selected Dicts',
 
-    pdf_blackwhitelist_help:
-      'Blacklisted PDF links will not jump to Saladict PDF Viewer.',
-    pdf_sniff: 'Enable PDF Sniffer',
-    pdf_sniff_help: 'If turned on， PDF links will be automatically captured.',
     third_party_privacy: 'Third Party Privacy',
     third_party_privacy_help:
       'Saladict will not collect further information but search text and releated cookies will be sent to third party dictionary services(just like how you would search on their websites). If you do not want third party services to collect you data, remove the dictionaries at "Dictionaries" settings.',
