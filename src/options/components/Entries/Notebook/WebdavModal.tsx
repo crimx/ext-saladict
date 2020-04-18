@@ -1,5 +1,5 @@
 /* eslint-disable no-throw-literal */
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useRef } from 'react'
 import {
   Form,
   Input,
@@ -8,6 +8,8 @@ import {
   message as antdMsg,
   notification
 } from 'antd'
+import { FormInstance } from 'antd/lib/form'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { Service, SyncConfig } from '@/background/sync-manager/services/webdav'
 import { removeSyncConfig } from '@/background/sync-manager/helpers'
 import { message } from '@/_helpers/browser-api'
@@ -25,16 +27,7 @@ type ServiceResponse = undefined | { error: string }
 export const WebdavModal: FC<WebdavModalProps> = props => {
   const { t } = useTranslate(['options', 'common'])
   const [serviceChecking, setServiceChecking] = useState(false)
-  const [form] = Form.useForm()
-
-  // useEffect(() => {
-  //   if (props.show) {
-  //     setTimeout(() => {
-  //       form.setFieldsValue(props.syncConfig || { duration: 15 })
-  //     }, 0)
-  //     setServiceChecking(false)
-  //   }
-  // }, [props.show])
+  const formRef = useRef<FormInstance>(null)
 
   return (
     <Modal
@@ -62,7 +55,7 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
       ]}
     >
       <Form
-        form={form}
+        ref={formRef}
         initialValues={props.syncConfig || { duration: 15 }}
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 18 }}
@@ -83,7 +76,7 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
           label={t('syncService.webdav.url')}
           hasFeedback
           rules={[
-            { type: 'url', message: t('syncService.error_url'), required: true }
+            { type: 'url', message: t('form.url_error'), required: true }
           ]}
         >
           <Input />
@@ -98,7 +91,9 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
           name="duration"
           label={t('syncService.webdav.duration')}
           extra={t('syncService.webdav.duration_help')}
-          rules={[{ type: 'number', required: true }]}
+          rules={[
+            { type: 'number', message: t('form.number_error'), required: true }
+          ]}
         >
           <InputNumberGroup suffix={t('common:unit.mins')} />
         </Form.Item>
@@ -107,12 +102,20 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
   )
 
   function submitForm() {
-    form.submit()
+    if (formRef.current) {
+      formRef.current.submit()
+    }
   }
 
   function closeModal() {
-    if (!form.isFieldsTouched() || confirm(t('syncService.close_confirm'))) {
-      form.resetFields()
+    if (formRef.current && formRef.current.isFieldsTouched()) {
+      Modal.confirm({
+        title: t('syncService.close_confirm'),
+        icon: <ExclamationCircleOutlined />,
+        okType: 'danger',
+        onOk: props.onClose
+      })
+    } else {
       props.onClose()
     }
   }
@@ -123,16 +126,26 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
       onOk: () =>
         tryTo(async () => {
           await removeSyncConfig(Service.id)
-          form.resetFields()
           props.onClose()
         })
     })
   }
 
   async function saveService() {
+    if (!formRef.current) {
+      if (process.env.DEBUG) {
+        console.error(new Error('Missing form ref when saving service'))
+      }
+      notification.error({
+        message: 'Error',
+        description: t('syncService.webdav.err_internal')
+      })
+      return
+    }
+
     setServiceChecking(true)
 
-    const values = form.getFieldsValue()
+    const values = formRef.current.getFieldsValue()
     if (values.url && !values.url.endsWith('/')) {
       values.url += '/'
     }
@@ -183,7 +196,6 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
         throw uploadRes?.error
       }
 
-      form.resetFields()
       props.onClose()
     } catch (error) {
       const text = typeof error === 'string' ? error : String(error)
