@@ -87,6 +87,17 @@ export const locale = {
     baOpen: '点击地址栏旁图标',
     baOpen_help:
       '点击地址栏旁 Saladict 图标时发生的操作。沿用了「右键菜单」的项目，可以前往该设置页面进行增加或编辑。',
+    tripleCtrl: '启用 Ctrl 快捷键',
+    tripleCtrl_help:
+      '连续按三次{⌘ Command}（Mac）或者{Ctrl}（其它键盘）（或设置浏览器快捷键）将弹出词典界面。',
+    tripleCtrlLocation: '出现位置',
+    tripleCtrlStandalone: '独立窗口',
+    tripleCtrlStandalone_help: '显示为单独的窗口，支持响应{浏览器以外划词}。',
+    tripleCtrlSidebar: '类侧边栏',
+    tripleCtrlSidebar_help: '并排显示窗口以达到类似侧边栏的布局。',
+    tripleCtrlHeight: '窗口高度',
+    tripleCtrlPageSel: '响应划词',
+    tripleCtrlPageSel_help: '响应网页划词。',
 
     opt: {
       export: '导出设定',
@@ -111,7 +122,8 @@ export const locale = {
         popup_fav: '添加选词到生词本',
         popup_options: '打开 Saladict 设置',
         popup_standalone: '打开快捷查词独立窗口'
-      }
+      },
+      openTripleCtrlStandalone: '打开独立窗口设置'
     }
   },
 
@@ -272,6 +284,18 @@ export const locale = {
     selection: '页面划词'
   },
 
+  locations: {
+    CENTER: '居中',
+    TOP: '上方',
+    RIGHT: '右方',
+    BOTTOM: '下方',
+    LEFT: '左方',
+    TOP_LEFT: '左上',
+    TOP_RIGHT: '右上',
+    BOTTOM_LEFT: '左下',
+    BOTTOM_RIGHT: '右下'
+  },
+
   opt: {
     analytics: '启用 Google Analytics',
     analytics_help:
@@ -282,36 +306,10 @@ export const locale = {
       '沙拉查词不会收集更多数据，但在查词时单词以及相关 cookies 数据会发送给第三方词典服务（与在该网站上查词一样），如果你不希望被该服务获取数据，请在「词典设置」中关闭相应词典。',
     third_party_privacy_extra: '本特性为沙拉查词核心功能，无法关闭。',
     profile_change: '此选项会因「情景模式」而改变。',
-    quick_search: '启用快捷键',
 
     sel_blackwhitelist: '划词黑白名单',
     sel_blackwhitelist_help: '黑名单匹配的页面 Saladict 将不会响应鼠标划词。',
     update_check: '检查更新',
     update_check_help: '自动检查 Github 更新'
-  },
-
-  quickSearch: {
-    height: '窗口高度',
-    help:
-      '连续按三次<kbd>⌘ Command</kbd>（Mac）或者<kbd>Ctrl</kbd>（其它键盘）（或设置浏览器快捷键）将弹出词典界面。',
-    loc: '出现位置',
-    page_sel: '响应划词',
-    page_sel_help: '响应网页划词。',
-    sidebar: '类侧边栏',
-    sidebar_help: '并排显示窗口以达到类似侧边栏的布局。',
-    standalone: '独立窗口',
-    standalone_help:
-      '显示为单独的窗口（响应浏览器以外的划词见<a href="https://saladict.crimx.com/manual.html#shortcuts" target="_blank">这里</a>）。',
-    locations: {
-      CENTER: '居中',
-      TOP: '上方',
-      RIGHT: '右方',
-      BOTTOM: '下方',
-      LEFT: '左方',
-      TOP_LEFT: '左上',
-      TOP_RIGHT: '右上',
-      BOTTOM_LEFT: '左下',
-      BOTTOM_RIGHT: '右下'
-    }
   }
 }

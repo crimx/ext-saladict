@@ -7,7 +7,7 @@ export const locale: typeof _locale = {
   msg_update_error: 'Unable to update',
   msg_updated: 'Successfully updated',
   unsave_confirm: 'Settings not saved. Sure to leave?',
-  nativeSearch: 'search native selected text',
+  nativeSearch: 'search selected text outside of browser',
 
   nav: {
     General: 'General',
@@ -91,10 +91,22 @@ export const locale: typeof _locale = {
     pdfSniff: 'Enable PDF Sniffer',
     pdfSniff_help: 'If turned on， PDF links will be automatically captured.',
     pdfSniff_extra:
-      'It is recommended to {search native selected text} on your own favorite local reader.',
+      'It is recommended to {search selected text outside of browser} with your own favorite local reader.',
     baOpen: 'Browser Action',
     baOpen_help:
       'When clicking the browser action icon in toolbar (next to the address bar). Items are same as Context Menus, which can be added or edited on the Context Menus config page.',
+    tripleCtrl: 'Enable Ctrl Shortkey',
+    tripleCtrl_help:
+      'Press {⌘ Command}(macOS) or {Ctrl}(Others) three times (or with browser shortkey) to summon the dictionary panel. ',
+    tripleCtrlLocation: 'Location',
+    tripleCtrlStandalone: 'Standalone',
+    tripleCtrlStandalone_help:
+      'Render dict panel in a standalone window. You can {search selected text outside of browser}.',
+    tripleCtrlSidebar: 'Sidebar Layout',
+    tripleCtrlSidebar_help: 'Rearrange windows to sidebar-like layout.',
+    tripleCtrlHeight: 'Window Height',
+    tripleCtrlPageSel: 'Selection Response',
+    tripleCtrlPageSel_help: 'Response to page selection.',
 
     opt: {
       export: 'Export Configs',
@@ -119,7 +131,8 @@ export const locale: typeof _locale = {
         popup_fav: 'Add to Notebook',
         popup_options: 'Open Saladict Options',
         popup_standalone: 'Open Saladict Standalone Panel'
-      }
+      },
+      openTripleCtrlStandalone: 'Standalone Panel Options'
     }
   },
 
@@ -285,6 +298,18 @@ export const locale: typeof _locale = {
     selection: 'Page Selection'
   },
 
+  locations: {
+    CENTER: 'Center',
+    TOP: 'Top',
+    RIGHT: 'Right',
+    BOTTOM: 'Bottom',
+    LEFT: 'Left',
+    TOP_LEFT: 'Top Left',
+    TOP_RIGHT: 'Top Right',
+    BOTTOM_LEFT: 'Bottom Left',
+    BOTTOM_RIGHT: 'Bottom Right'
+  },
+
   opt: {
     analytics: 'Enable Google Analytics',
     analytics_help:
@@ -296,7 +321,6 @@ export const locale: typeof _locale = {
     third_party_privacy_extra:
       'Cannot be turned off as it is the core functionality of Saladict.',
     profile_change: 'This option may change base on "Profile".',
-    quick_search: 'Enable',
 
     sel_blackwhitelist: 'Selection Black/White List',
     sel_blackwhitelist_help:
@@ -304,30 +328,5 @@ export const locale: typeof _locale = {
 
     update_check: 'Check Update',
     update_check_help: 'Automatically check update from Github'
-  },
-
-  quickSearch: {
-    height: 'Window Height',
-    help:
-      'Press <kbd>⌘ Command</kbd>(macOS) or <kbd>Ctrl</kbd>(Others) three times (or with browser shortkey) to summon the dictionary panel. ',
-    loc: 'Location',
-    page_sel: 'Selection Response',
-    page_sel_help: 'Response to page selection.',
-    sidebar: 'Sidebar Layout',
-    sidebar_help: 'Rearrange windows to sidebar-like layout.',
-    standalone: 'Standalone',
-    standalone_help:
-      'Render dict panel in a standalone window (See <a href="https://saladict.crimx.com/manual.html#shortcuts" target="_blank">here</a> on how to work with text selection outside browser).',
-    locations: {
-      CENTER: 'Center',
-      TOP: 'Top',
-      RIGHT: 'Right',
-      BOTTOM: 'Bottom',
-      LEFT: 'Left',
-      TOP_LEFT: 'Top Left',
-      TOP_RIGHT: 'Top Right',
-      BOTTOM_LEFT: 'Bottom Left',
-      BOTTOM_RIGHT: 'Bottom Right'
-    }
   }
 }

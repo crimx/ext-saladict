@@ -90,6 +90,17 @@ export const locale: typeof _locale = {
     baOpen: '點選網址列旁圖示',
     baOpen_help:
       '點選網址列旁 Saladict 圖示時發生的操作。沿用了「右鍵選單」的條目，可以前往該設定頁面增加或編輯。',
+    tripleCtrl: '啟用 Ctrl 快速鍵',
+    tripleCtrl_help:
+      '連續按三次{⌘ Command}（macOS）或者{Ctrl}（其它鍵盤）（或設定瀏覽器快速鍵），將會彈出字典視窗介面。',
+    tripleCtrlLocation: '出現位置',
+    tripleCtrlStandalone: '獨立視窗',
+    tripleCtrlStandalone_help: '顯示為獨立的視窗，支援{瀏覽器外選字翻譯}。',
+    tripleCtrlSidebar: '類側邊欄',
+    tripleCtrlSidebar_help: '並排顯示視窗以達到類似側邊欄的配置。',
+    tripleCtrlHeight: '視窗高度',
+    tripleCtrlPageSel: '響應滑字',
+    tripleCtrlPageSel_help: '對網頁滑鼠滑字作出反應。',
 
     opt: {
       export: '匯出設定',
@@ -114,7 +125,8 @@ export const locale: typeof _locale = {
         popup_fav: '新增選詞到生字本',
         popup_options: '進入 Saladict 設定',
         popup_standalone: '開啟快捷查詞獨立視窗'
-      }
+      },
+      openTripleCtrlStandalone: '獨立視窗設定'
     }
   },
 
@@ -274,7 +286,19 @@ export const locale: typeof _locale = {
     clipboard: '剪貼簿',
     help: '字典介面出現時預先載入內容到搜尋框。',
     selection: '滑鼠選字'
-  }
+  },
+
+  locations: {
+    CENTER: '居中',
+    TOP: '上方',
+    RIGHT: '右方',
+    BOTTOM: '下方',
+    LEFT: '左方',
+    TOP_LEFT: '左上',
+    TOP_RIGHT: '右上',
+    BOTTOM_LEFT: '左下',
+    BOTTOM_RIGHT: '右下'
+  },
 
   opt: {
     analytics: '啟用 Google Analytics',
@@ -285,37 +309,10 @@ export const locale: typeof _locale = {
       '沙拉查詞不會收集更多資料，但在查詞時單詞以及相關 cookies 資料會發送給第三方詞典服務（與在該網站上查詞一樣），如果你不希望被該服務獲取資料，請在「詞典設定」中關閉相應詞典。',
     third_party_privacy_extra: '本特性為沙拉查詞核心功能，無法關閉。',
     profile_change: '此選項會因「情景模式」而改變。',
-    quick_search: '啟用快速鍵',
-
     sel_blackwhitelist: '選詞黑白名單',
     sel_blackwhitelist_help: '黑名單相符的頁面 Saladict 將不會響應滑鼠劃詞。',
 
     update_check: '檢查更新',
     update_check_help: '自動檢查 Github 更新'
-  },
-
-  quickSearch: {
-    height: '視窗高度',
-    help:
-      '連續按三次<kbd>⌘ Command</kbd>（macOS）或者<kbd>Ctrl</kbd>（其它鍵盤）（或設定瀏覽器快速鍵），將會彈出字典視窗介面。',
-    loc: '出現位置',
-    page_sel: '響應滑字',
-    page_sel_help: '對網頁滑鼠滑字作出反應。',
-    sidebar: '類側邊欄',
-    sidebar_help: '並排顯示視窗以達到類似側邊欄的配置。',
-    standalone: '獨立視窗',
-    standalone_help:
-      '顯示為獨立的視窗（響應瀏覽器以外的滑鼠選字見 <a href="https://saladict.crimx.com/manual.html#shortcuts" target="_blank">這裡</a>）。',
-    locations: {
-      CENTER: '居中',
-      TOP: '上方',
-      RIGHT: '右方',
-      BOTTOM: '下方',
-      LEFT: '左方',
-      TOP_LEFT: '左上',
-      TOP_RIGHT: '右上',
-      BOTTOM_LEFT: '左下',
-      BOTTOM_RIGHT: '右下'
-    }
-  },
+  }
 }
