@@ -84,6 +84,9 @@ export const locale = {
     pdfSniff_help:
       '开启后所有 PDF 链接将自动跳转到本扩展打开（包括本地，如果在扩展管理页面勾选了允许）。',
     pdfSniff_extra: '现在更推荐使用自己喜欢的本地阅读器搭配{浏览器外划词}。',
+    baOpen: '点击地址栏旁图标',
+    baOpen_help:
+      '点击地址栏旁 Saladict 图标时发生的操作。沿用了「右键菜单」的项目，可以前往该设置页面进行增加或编辑。',
 
     opt: {
       export: '导出设定',
@@ -102,7 +105,13 @@ export const locale = {
       contextMenus_description:
         '设置右键菜单，可添加可自定义链接。网页翻译其实不需要沙拉查词，故已有的有道和谷歌网页翻译目前处于维护状态，没有计划添加新功能，请用其它官方扩展如彩云小译和谷歌翻译。',
       contextMenus_edit: '编辑右键菜单项目',
-      contextMenus_url_rules: '链接中的 %s 会被替换为选词。'
+      contextMenus_url_rules: '链接中的 %s 会被替换为选词。',
+      baOpen: {
+        popup_panel: '显示查词面板',
+        popup_fav: '添加选词到生词本',
+        popup_options: '打开 Saladict 设置',
+        popup_standalone: '打开快捷查词独立窗口'
+      }
     }
   },
 
@@ -254,19 +263,19 @@ export const locale = {
     number_error: '不正确的数字'
   },
 
+  preload: {
+    title: '预先加载',
+    auto: '自动查词',
+    auto_help: '查词面板出现时自动搜索预加载内容。',
+    clipboard: '剪贴板',
+    help: '查词面板出现时预先加载内容到搜索框。',
+    selection: '页面划词'
+  },
+
   opt: {
     analytics: '启用 Google Analytics',
     analytics_help:
       '提供匿名设备浏览器版本信息。沙拉查词作者会优先支持用户量更多的设备和浏览器。',
-    browserAction: {
-      open: '点击地址栏旁图标',
-      openDictPanel: '显示查词面板',
-      openFav: '添加选词到生词本',
-      openHelp:
-        '点击地址栏旁 Saladict 图标时发生的操作。沿用了「右键菜单」的项目，可以前往该设置页面进行增加或编辑。',
-      openOptions: '打开 Saladict 设置',
-      openStandalone: '打开快捷查词独立窗口'
-    },
 
     third_party_privacy: '第三方隐私',
     third_party_privacy_help:
@@ -304,14 +313,5 @@ export const locale = {
       BOTTOM_LEFT: '左下',
       BOTTOM_RIGHT: '右下'
     }
-  },
-
-  preload: {
-    title: '预先加载',
-    auto: '自动查词',
-    auto_help: '查词面板出现时自动搜索预加载内容。',
-    clipboard: '剪贴板',
-    help: '查词面板出现时预先加载内容到搜索框。',
-    selection: '页面划词'
   }
 }

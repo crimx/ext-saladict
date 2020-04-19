@@ -87,6 +87,9 @@ export const locale: typeof _locale = {
       '開啟後所有 PDF 連結將自動跳至本套件開啟（包括本機，如果在套件管理頁面勾選了允許）。',
     pdfSniff_extra:
       '現在更推薦使用自己喜歡的本地閱讀器搭配{瀏覽器外選字翻譯}。',
+    baOpen: '點選網址列旁圖示',
+    baOpen_help:
+      '點選網址列旁 Saladict 圖示時發生的操作。沿用了「右鍵選單」的條目，可以前往該設定頁面增加或編輯。',
 
     opt: {
       export: '匯出設定',
@@ -105,7 +108,13 @@ export const locale: typeof _locale = {
       contextMenus_description:
         '設定右鍵選單，可新增可自定義連結。網頁翻譯其實不需要沙拉查詞，故已有的有道和谷歌網頁翻譯目前處於維護狀態，沒有計劃新增新功能，請用其它官方擴充套件如彩雲小譯和谷歌翻譯。',
       contextMenus_edit: '編輯右鍵選單項目',
-      contextMenus_url_rules: '連結中的 %s 會被取代為選詞。'
+      contextMenus_url_rules: '連結中的 %s 會被取代為選詞。',
+      baOpen: {
+        popup_panel: '開啟字典介面',
+        popup_fav: '新增選詞到生字本',
+        popup_options: '進入 Saladict 設定',
+        popup_standalone: '開啟快捷查詞獨立視窗'
+      }
     }
   },
 
@@ -258,20 +267,19 @@ export const locale: typeof _locale = {
     number_error: '不正確的數字'
   },
 
+  preload: {
+    title: '預先下載',
+    auto: '自動查字',
+    auto_help: '字典介面出現時自動搜尋預先載入內容。',
+    clipboard: '剪貼簿',
+    help: '字典介面出現時預先載入內容到搜尋框。',
+    selection: '滑鼠選字'
+  }
+
   opt: {
     analytics: '啟用 Google Analytics',
     analytics_help:
       '提供匿名裝置瀏覽器版本資訊。沙拉查詞作者會優先支援使用者更多的裝置和瀏覽器。',
-
-    browserAction: {
-      open: '點選網址列旁圖示',
-      openDictPanel: '開啟字典介面',
-      openFav: '新增選詞到生字本',
-      openHelp:
-        '點選網址列旁 Saladict 圖示時發生的操作。沿用了「右鍵選單」的條目，可以前往該設定頁面增加或編輯。',
-      openOptions: '進入 Saladict 設定',
-      openStandalone: '開啟快捷查詞獨立視窗'
-    },
     third_party_privacy: '第三方隱私',
     third_party_privacy_help:
       '沙拉查詞不會收集更多資料，但在查詞時單詞以及相關 cookies 資料會發送給第三方詞典服務（與在該網站上查詞一樣），如果你不希望被該服務獲取資料，請在「詞典設定」中關閉相應詞典。',
@@ -310,13 +318,4 @@ export const locale: typeof _locale = {
       BOTTOM_RIGHT: '右下'
     }
   },
-
-  preload: {
-    title: '預先下載',
-    auto: '自動查字',
-    auto_help: '字典介面出現時自動搜尋預先載入內容。',
-    clipboard: '剪貼簿',
-    help: '字典介面出現時預先載入內容到搜尋框。',
-    selection: '滑鼠選字'
-  }
 }

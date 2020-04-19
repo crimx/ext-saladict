@@ -92,6 +92,9 @@ export const locale: typeof _locale = {
     pdfSniff_help: 'If turned on， PDF links will be automatically captured.',
     pdfSniff_extra:
       'It is recommended to {search native selected text} on your own favorite local reader.',
+    baOpen: 'Browser Action',
+    baOpen_help:
+      'When clicking the browser action icon in toolbar (next to the address bar). Items are same as Context Menus, which can be added or edited on the Context Menus config page.',
 
     opt: {
       export: 'Export Configs',
@@ -110,7 +113,13 @@ export const locale: typeof _locale = {
       contextMenus_description:
         'Each context menus item can also be customized. Youdao and Google page translate are deprecated in favor of the official extensions.',
       contextMenus_edit: 'Edit Context Menus Items',
-      contextMenus_url_rules: 'URL with %s in place of query.'
+      contextMenus_url_rules: 'URL with %s in place of query.',
+      baOpen: {
+        popup_panel: 'Dict Panel',
+        popup_fav: 'Add to Notebook',
+        popup_options: 'Open Saladict Options',
+        popup_standalone: 'Open Saladict Standalone Panel'
+      }
     }
   },
 
@@ -267,19 +276,19 @@ export const locale: typeof _locale = {
     number_error: 'Incorrect number.'
   },
 
+  preload: {
+    title: 'Preload',
+    auto: 'Auto search',
+    auto_help: 'Search automatically when panel shows up.',
+    clipboard: 'Clipboard',
+    help: 'Preload content in search box when panel shows up.',
+    selection: 'Page Selection'
+  },
+
   opt: {
     analytics: 'Enable Google Analytics',
     analytics_help:
       'Share anonymous device browser version information. Saladict author will offer prioritized support to popular devices and browsers.',
-    browserAction: {
-      open: 'Browser Action',
-      openDictPanel: 'Dict Panel',
-      openFav: 'Add to Notebook',
-      openHelp:
-        'When clicking the browser action icon in toolbar (next to the address bar). Items are same as Context Menus, which can be added or edited on the Context Menus config page.',
-      openOptions: 'Open Saladict Options',
-      openStandalone: 'Open Saladict Standalone Panel'
-    },
 
     third_party_privacy: 'Third Party Privacy',
     third_party_privacy_help:
@@ -320,14 +329,5 @@ export const locale: typeof _locale = {
       BOTTOM_LEFT: 'Bottom Left',
       BOTTOM_RIGHT: 'Bottom Right'
     }
-  },
-
-  preload: {
-    title: 'Preload',
-    auto: 'Auto search',
-    auto_help: 'Search automatically when panel shows up.',
-    clipboard: 'Clipboard',
-    help: 'Preload content in search box when panel shows up.',
-    selection: 'Page Selection'
   }
 }
