@@ -1,9 +1,13 @@
 import React, { FC, useState } from 'react'
 import { Row, Col, Modal, notification, message as antdMsg } from 'antd'
-import { SortableList, arrayMove } from '../../SortableList'
-import { useTranslate, Trans } from '@/_helpers/i18n'
+import { BlockOutlined } from '@ant-design/icons'
 import { useObservableGetState, useSubscription } from 'observable-hooks'
-import { profile$$, profileIDList$$ } from '@/options/data'
+import { useTranslate, Trans } from '@/_helpers/i18n'
+import {
+  ProfileID,
+  ProfileIDList,
+  getDefaultProfileID
+} from '@/app-config/profiles'
 import {
   getProfileName,
   updateActiveProfileID,
@@ -11,14 +15,11 @@ import {
   updateProfileIDList,
   addProfile
 } from '@/_helpers/profile-manager'
-import {
-  ProfileID,
-  ProfileIDList,
-  getDefaultProfileID
-} from '@/app-config/profiles'
 import { useFixedCallback } from '@/_helpers/hooks'
+import { SortableList, arrayMove } from '@/options/components/SortableList'
+import { profile$$, profileIDList$$ } from '@/options/data'
+import { useListLayout } from '@/options/helpers/layout'
 import { EditNameModal } from './EditNameModal'
-import { BlockOutlined } from '@ant-design/icons'
 
 export const Profiles: FC = () => {
   const { t } = useTranslate('options')
@@ -28,6 +29,7 @@ export const Profiles: FC = () => {
   const [editingProfileID, setEditingProfileID] = useState<ProfileID | null>(
     null
   )
+  const listLayout = useListLayout()
 
   // make a local copy to avoid flickering on drag end
   const [profileIDList, setProfileIDList] = useState<ProfileIDList>([])
@@ -66,7 +68,7 @@ export const Profiles: FC = () => {
 
   return (
     <Row>
-      <Col span={12}>
+      <Col {...listLayout}>
         <SortableList
           title={t('nav.Profiles')}
           description={

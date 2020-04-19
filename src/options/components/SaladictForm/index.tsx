@@ -12,7 +12,10 @@ import { useTranslate } from '@/_helpers/i18n'
 import { isFirefox } from '@/_helpers/saladict'
 import { openURL } from '@/_helpers/browser-api'
 import { GlobalsContext } from '@/options/data'
-import { formItemLayout, formItemFooterLayout } from '@/options/helpers/layout'
+import {
+  useFormItemLayout,
+  formItemFooterLayout
+} from '@/options/helpers/layout'
 import { uploadResult$$, upload } from '@/options/helpers/upload'
 import shallowEqual from 'shallowequal'
 
@@ -53,6 +56,7 @@ export const SaladictForm = React.forwardRef(
     const { loading: uploading } = useObservableState(uploadResult$$, {
       loading: false
     })
+    const formItemLayout = useFormItemLayout()
 
     function extractInitial(
       items: SaladictFormItem[],

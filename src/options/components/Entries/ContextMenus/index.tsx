@@ -7,6 +7,7 @@ import { GlobalsContext, config$$ } from '@/options/data'
 import { SortableList, arrayMove } from '@/options/components/SortableList'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import { upload } from '@/options/helpers/upload'
+import { useListLayout } from '@/options/helpers/layout'
 import { AddModal } from './AddModal'
 import { EditModal } from './EditeModal'
 
@@ -15,6 +16,7 @@ export const ContextMenus: FC = () => {
   const globals = useContext(GlobalsContext)
   const [showAddModal, setShowAddModal] = useState(false)
   const [editingMenu, setEditingMenu] = useState<string | null>(null)
+  const listLayout = useListLayout()
 
   // make a local copy to avoid flickering on drag end
   const [selectedMenus, setSelectedMenus] = useState<ReadonlyArray<string>>([])
@@ -24,7 +26,7 @@ export const ContextMenus: FC = () => {
 
   return (
     <Row>
-      <Col span={14}>
+      <Col {...listLayout}>
         <SortableList
           title={t('nav.ContextMenus')}
           description={<p>{t('config.opt.contextMenus_description')}</p>}

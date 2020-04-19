@@ -1,19 +1,20 @@
 import React, { FC } from 'react'
 import { Dispatch } from 'redux'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { CSSTransition } from 'react-transition-group'
 import { Button } from 'antd'
+import { StoreAction } from '@/content/redux/modules'
 import { useTranslate } from '@/_helpers/i18n'
 import { newWord } from '@/_helpers/record-manager'
 import { getWordOfTheDay } from '@/_helpers/wordoftheday'
-import { StoreState, StoreAction } from '@/content/redux/modules'
+import { useIsShowDictPanel } from '@/options/helpers/panel-store'
 import { PreviewIcon } from './PreviewIcon'
 
 import './_style.scss'
 
 export const BtnPreview: FC = () => {
   const { t } = useTranslate('options')
-  const show = !useSelector(pickIsShowDictPanel)
+  const show = !useIsShowDictPanel()
   const dispatch = useDispatch<Dispatch<StoreAction>>()
 
   return (
@@ -51,7 +52,3 @@ export const BtnPreview: FC = () => {
 }
 
 export const BtnPreviewMemo = React.memo(BtnPreview)
-
-function pickIsShowDictPanel(state: StoreState): boolean {
-  return state.isShowDictPanel
-}

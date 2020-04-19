@@ -9,6 +9,7 @@ import { SortableList, arrayMove } from '@/options/components/SortableList'
 import { SaladictModalForm } from '@/options/components/SaladictModalForm'
 import { getProfilePath } from '@/options/helpers/path-joiner'
 import { upload } from '@/options/helpers/upload'
+import { useListLayout } from '@/options/helpers/layout'
 import { DictTitleMemo } from './DictTitle'
 import { EditModal } from './EditModal'
 import { AllDicts } from './AllDicts'
@@ -18,6 +19,7 @@ export const Dictionaries: FC = () => {
   const globals = useContext(GlobalsContext)
   const [editingDict, setEditingDict] = useState<DictID | null>(null)
   const [showAddModal, setShowAddModal] = useState(false)
+  const listLayout = useListLayout()
 
   // make a local copy to avoid flickering on drag end
   const [selectedDicts, setSelectedDicts] = useState<ReadonlyArray<DictID>>([])
@@ -27,7 +29,7 @@ export const Dictionaries: FC = () => {
 
   return (
     <Row>
-      <Col span={14}>
+      <Col {...listLayout}>
         <SortableList
           title={
             <Tooltip
