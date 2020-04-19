@@ -51,6 +51,10 @@ export const uploadResult$$ = upload$.pipe(
       .then(() => ({ loading: false }))
       .catch(error => ({ loading: false, error }))
 
+    if (process.env.DEBUG) {
+      console.log('saved setting', data)
+    }
+
     return from(pRequests).pipe(startWith({ loading: true }))
   }),
   share<{ loading: boolean; error?: Error }>()

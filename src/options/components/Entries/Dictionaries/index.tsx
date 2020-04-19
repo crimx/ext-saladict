@@ -36,7 +36,7 @@ export const Dictionaries: FC = () => {
             >
               <span>
                 <BlockOutlined />
-                {t('opt.dict_selected')}
+                {t('profile.opt.dict_selected')}
               </span>
             </Tooltip>
           }

@@ -106,7 +106,11 @@ export const locale: typeof _locale = {
         us: 'US'
       },
       pdf_blackwhitelist_help:
-        'Blacklisted PDF links will not jump to Saladict PDF Viewer.'
+        'Blacklisted PDF links will not jump to Saladict PDF Viewer.',
+      contextMenus_description:
+        'Each context menus item can also be customized. Youdao and Google page translate are deprecated in favor of the official extensions.',
+      contextMenus_edit: 'Edit Context Menus Items',
+      contextMenus_url_rules: 'URL with %s in place of query.'
     }
   },
 
@@ -161,7 +165,8 @@ export const locale: typeof _locale = {
         never: 'Never Unfold',
         once: 'Unfold Once',
         popup: 'Only On Browser Action'
-      }
+      },
+      dict_selected: 'Selected Dicts'
     }
   },
 
@@ -275,13 +280,6 @@ export const locale: typeof _locale = {
       openOptions: 'Open Saladict Options',
       openStandalone: 'Open Saladict Standalone Panel'
     },
-
-    context_description:
-      'Each context menus item can also be customized. Youdao and Google page translate are deprecated in favor of the official extensions.',
-    context_menus_title: 'Add Context Menus Items',
-    context_menus_add_rules: 'URL with %s in place of query.',
-
-    dict_selected: 'Selected Dicts',
 
     third_party_privacy: 'Third Party Privacy',
     third_party_privacy_help:

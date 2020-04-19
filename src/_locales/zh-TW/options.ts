@@ -100,7 +100,12 @@ export const locale: typeof _locale = {
         uk: '英式',
         us: '美式'
       },
-      pdf_blackwhitelist_help: '黑名單相符的 PDF 連結將不會跳至 Saladict 開啟。'
+      pdf_blackwhitelist_help:
+        '黑名單相符的 PDF 連結將不會跳至 Saladict 開啟。',
+      contextMenus_description:
+        '設定右鍵選單，可新增可自定義連結。網頁翻譯其實不需要沙拉查詞，故已有的有道和谷歌網頁翻譯目前處於維護狀態，沒有計劃新增新功能，請用其它官方擴充套件如彩雲小譯和谷歌翻譯。',
+      contextMenus_edit: '編輯右鍵選單項目',
+      contextMenus_url_rules: '連結中的 %s 會被取代為選詞。'
     }
   },
 
@@ -155,7 +160,8 @@ export const locale: typeof _locale = {
         never: '永遠不展開',
         once: '展開一次',
         popup: '只在右上彈框展開'
-      }
+      },
+      dict_selected: '已選字典'
     }
   },
 
@@ -266,14 +272,6 @@ export const locale: typeof _locale = {
       openOptions: '進入 Saladict 設定',
       openStandalone: '開啟快捷查詞獨立視窗'
     },
-
-    context_description:
-      '設定右鍵選單，可新增可自定義連結。網頁翻譯其實不需要沙拉查詞，故已有的有道和谷歌網頁翻譯目前處於維護狀態，沒有計劃新增新功能，請用其它官方擴充套件如彩雲小譯和谷歌翻譯。',
-    context_menus_title: '新增右鍵選單項目',
-    context_menus_add_rules: '連結中的 %s 會被取代為選詞。',
-
-    dict_selected: '已選字典',
-
     third_party_privacy: '第三方隱私',
     third_party_privacy_help:
       '沙拉查詞不會收集更多資料，但在查詞時單詞以及相關 cookies 資料會發送給第三方詞典服務（與在該網站上查詞一樣），如果你不希望被該服務獲取資料，請在「詞典設定」中關閉相應詞典。',

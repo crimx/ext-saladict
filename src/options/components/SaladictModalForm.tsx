@@ -17,12 +17,13 @@ export interface SaladictModalFormProps
   extends Omit<SaladictFormProps, 'title'> {
   visible: boolean
   title: ReactNode
+  zIndex?: number
   items: SaladictFormItem[]
   onClose: () => void
 }
 
 export const SaladictModalForm: FC<SaladictModalFormProps> = props => {
-  const { visible, title, onClose, ...restProps } = props
+  const { visible, title, zIndex, onClose, ...restProps } = props
   const { t } = useTranslate('options')
   const globals = useContext(GlobalsContext)
   const formRef = useRef<FormInstance>(null)
@@ -38,6 +39,7 @@ export const SaladictModalForm: FC<SaladictModalFormProps> = props => {
     <Modal
       visible={visible}
       title={title}
+      zIndex={zIndex}
       width={600}
       destroyOnClose
       onOk={() => {

@@ -98,7 +98,11 @@ export const locale = {
         us: '美式'
       },
       pdf_blackwhitelist_help:
-        '黑名单匹配的 PDF 链接将不会跳转到 Saladict 打开。'
+        '黑名单匹配的 PDF 链接将不会跳转到 Saladict 打开。',
+      contextMenus_description:
+        '设置右键菜单，可添加可自定义链接。网页翻译其实不需要沙拉查词，故已有的有道和谷歌网页翻译目前处于维护状态，没有计划添加新功能，请用其它官方扩展如彩云小译和谷歌翻译。',
+      contextMenus_edit: '编辑右键菜单项目',
+      contextMenus_url_rules: '链接中的 %s 会被替换为选词。'
     }
   },
 
@@ -152,7 +156,8 @@ export const locale = {
         never: '从不展开',
         once: '展开一次',
         popup: '只在右上弹框展开'
-      }
+      },
+      dict_selected: '已选词典'
     }
   },
 
@@ -262,11 +267,6 @@ export const locale = {
       openOptions: '打开 Saladict 设置',
       openStandalone: '打开快捷查词独立窗口'
     },
-    context_description:
-      '设置右键菜单，可添加可自定义链接。网页翻译其实不需要沙拉查词，故已有的有道和谷歌网页翻译目前处于维护状态，没有计划添加新功能，请用其它官方扩展如彩云小译和谷歌翻译。',
-    context_menus_title: '添加右键菜单项目',
-    context_menus_add_rules: '链接中的 %s 会被替换为选词。',
-    dict_selected: '已选词典',
 
     third_party_privacy: '第三方隐私',
     third_party_privacy_help:
