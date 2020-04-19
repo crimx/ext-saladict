@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { useTranslate } from '@/_helpers/i18n'
+import { message } from '@/_helpers/browser-api'
 import { DictID } from '@/app-config'
 
 import './_style.scss'
@@ -23,7 +24,17 @@ export const DictTitle: FC<DictTitleProps> = ({ dictID, dictLangs }) => {
         src={require('@/components/dictionaries/' + dictID + '/favicon.png')}
         alt={`logo ${title}`}
       />
-      {title}
+      <a
+        className="saladict-dict-title"
+        href="#"
+        onClick={e => {
+          e.stopPropagation()
+          e.preventDefault()
+          openDictSrcPage(dictID, dictLangs)
+        }}
+      >
+        {title}
+      </a>
       {dictLangs.split('').map((c, i) =>
         +c ? (
           <span className="saladict-dict-langs-char" key={langCodes[i]}>
@@ -36,3 +47,23 @@ export const DictTitle: FC<DictTitleProps> = ({ dictID, dictLangs }) => {
 }
 
 export const DictTitleMemo = React.memo(DictTitle)
+
+function openDictSrcPage(dictID: DictID, dictLangs: string) {
+  const text = +dictLangs[0]
+    ? 'salad'
+    : +dictLangs[1] || +dictLangs[2]
+    ? '沙拉'
+    : +dictLangs[3]
+    ? 'サラダ'
+    : +dictLangs[4]
+    ? '샐러드'
+    : 'salad'
+
+  message.send({
+    type: 'OPEN_DICT_SRC_PAGE',
+    payload: {
+      id: dictID,
+      text
+    }
+  })
+}
