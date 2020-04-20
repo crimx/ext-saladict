@@ -101,6 +101,11 @@ export const locale: typeof _locale = {
     tripleCtrlHeight: '視窗高度',
     tripleCtrlPageSel: '響應滑字',
     tripleCtrlPageSel_help: '對網頁滑鼠滑字作出反應。',
+    updateCheck: '檢查更新',
+    updateCheck_help: '自動檢查 Github 更新',
+    analytics: '啟用 Google Analytics',
+    analytics_help:
+      '提供匿名裝置瀏覽器版本資訊。因精力有限，沙拉查詞作者會盡可能支援使用者量更多的裝置和瀏覽器。',
 
     opt: {
       reset: '重設設定',
@@ -320,17 +325,8 @@ export const locale: typeof _locale = {
     }
   },
 
-  opt: {
-    analytics: '啟用 Google Analytics',
-    analytics_help:
-      '提供匿名裝置瀏覽器版本資訊。沙拉查詞作者會優先支援使用者更多的裝置和瀏覽器。',
-    third_party_privacy: '第三方隱私',
-    third_party_privacy_help:
-      '沙拉查詞不會收集更多資料，但在查詞時單詞以及相關 cookies 資料會發送給第三方詞典服務（與在該網站上查詞一樣），如果你不希望被該服務獲取資料，請在「詞典設定」中關閉相應詞典。',
-    third_party_privacy_extra: '本特性為沙拉查詞核心功能，無法關閉。',
-    profile_change: '此選項會因「情景模式」而改變。',
-
-    update_check: '檢查更新',
-    update_check_help: '自動檢查 Github 更新'
-  }
+  third_party_privacy: '第三方隱私',
+  third_party_privacy_help:
+    '沙拉查詞不會收集更多資料，但在查詞時單詞以及相關 cookies 資料會發送給第三方詞典服務（與在該網站上查詞一樣），如果你不希望被該服務獲取資料，請在「詞典設定」中關閉相應詞典。',
+  third_party_privacy_extra: '本特性為沙拉查詞核心功能，無法關閉。'
 }

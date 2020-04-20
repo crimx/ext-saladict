@@ -107,6 +107,11 @@ export const locale: typeof _locale = {
     tripleCtrlHeight: 'Window Height',
     tripleCtrlPageSel: 'Selection Response',
     tripleCtrlPageSel_help: 'Response to page selection.',
+    updateCheck: 'Check Update',
+    updateCheck_help: 'Automatically check update from Github',
+    analytics: 'Enable Google Analytics',
+    analytics_help:
+      'Share anonymous device browser version information. Saladict author will offer prioritized support to popular devices and browsers.',
 
     opt: {
       reset: 'Reset Configs',
@@ -331,19 +336,9 @@ export const locale: typeof _locale = {
     }
   },
 
-  opt: {
-    analytics: 'Enable Google Analytics',
-    analytics_help:
-      'Share anonymous device browser version information. Saladict author will offer prioritized support to popular devices and browsers.',
-
-    third_party_privacy: 'Third Party Privacy',
-    third_party_privacy_help:
-      'Saladict will not collect further information but search text and releated cookies will be sent to third party dictionary services(just like how you would search on their websites). If you do not want third party services to collect you data, remove the dictionaries at "Dictionaries" settings.',
-    third_party_privacy_extra:
-      'Cannot be turned off as it is the core functionality of Saladict.',
-    profile_change: 'This option may change base on "Profile".',
-
-    update_check: 'Check Update',
-    update_check_help: 'Automatically check update from Github'
-  }
+  third_party_privacy: 'Third Party Privacy',
+  third_party_privacy_help:
+    'Saladict will not collect further information but search text and releated cookies will be sent to third party dictionary services(just like how you would search on their websites). If you do not want third party services to collect you data, remove the dictionaries at "Dictionaries" settings.',
+  third_party_privacy_extra:
+    'Cannot be turned off as it is the core functionality of Saladict.'
 }

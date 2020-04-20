@@ -98,6 +98,11 @@ export const locale = {
     tripleCtrlHeight: '窗口高度',
     tripleCtrlPageSel: '响应划词',
     tripleCtrlPageSel_help: '响应网页划词。',
+    updateCheck: '检查更新',
+    updateCheck_help: '自动检查 Github 更新',
+    analytics: '启用 Google Analytics',
+    analytics_help:
+      '提供匿名设备浏览器版本信息。因精力有限，沙拉查词作者会尽可能支持用户量更多的设备和浏览器。',
 
     opt: {
       reset: '重置设定',
@@ -316,18 +321,8 @@ export const locale = {
     }
   },
 
-  opt: {
-    analytics: '启用 Google Analytics',
-    analytics_help:
-      '提供匿名设备浏览器版本信息。沙拉查词作者会优先支持用户量更多的设备和浏览器。',
-
-    third_party_privacy: '第三方隐私',
-    third_party_privacy_help:
-      '沙拉查词不会收集更多数据，但在查词时单词以及相关 cookies 数据会发送给第三方词典服务（与在该网站上查词一样），如果你不希望被该服务获取数据，请在「词典设置」中关闭相应词典。',
-    third_party_privacy_extra: '本特性为沙拉查词核心功能，无法关闭。',
-    profile_change: '此选项会因「情景模式」而改变。',
-
-    update_check: '检查更新',
-    update_check_help: '自动检查 Github 更新'
-  }
+  third_party_privacy: '第三方隐私',
+  third_party_privacy_help:
+    '沙拉查词不会收集更多数据，但在查词时单词以及相关 cookies 数据会发送给第三方词典服务（与在该网站上查词一样），如果你不希望被该服务获取数据，请在「词典设置」中关闭相应词典。',
+  third_party_privacy_extra: '本特性为沙拉查词核心功能，无法关闭。'
 }
