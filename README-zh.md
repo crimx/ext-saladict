@@ -1,4 +1,4 @@
-# Saladict 沙拉查词
+# 沙拉查词 Saladict
 
 [![Version](https://img.shields.io/github/release/crimx/ext-saladict.svg?label=version)](https://github.com/crimx/ext-saladict/releases)
 [![Chrome Web Store](https://img.shields.io/chrome-web-store/users/cdonnmffkdaoajfknoeeecmchibpmkmg.svg?label=Chrome%20users)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en)
@@ -12,28 +12,26 @@
 [![Standard - JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?maxAge=2592000)](https://standardjs.com/)
 [![License](https://img.shields.io/github/license/crimx/ext-saladict.svg?colorB=44cc11?maxAge=2592000)](https://github.com/crimx/ext-saladict/blob/dev/LICENSE)
 
-Chrome/Firefox WebExtension. Feature-rich inline translator with PDF support.
-
-[【中文说明】](./RAEDME-zh.md)Chrome/Firefox 浏览器插件，网页划词翻译。
+[【官网】](https://www.crimx.com/ext-saladict/)Chrome/Firefox 浏览器插件，网页划词翻译。
 
 <p align="center">
   <a href="https://github.com/crimx/ext-saladict/releases/" target="_blank"><img src="https://raw.githubusercontent.com/wiki/crimx/ext-saladict/images/notebook.gif" /></a>
 </p>
 
-## Downloads
+## 下载
 
-- [Chrome Web Store](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en)
-- [Firefox Add-ons](https://addons.mozilla.org/firefox/addon/ext-saladict/)
-- [Microsoft Edge Addons](https://microsoftedge.microsoft.com/addons/detail/idghocbbahafpfhjnfhpbfbmpegphmmp)(Uploaded by @rumosky)
-- See [releases](https://github.com/crimx/ext-saladict/releases) for more.
+- [谷歌应用商店](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en)
+- [火狐应用商店](https://addons.mozilla.org/firefox/addon/ext-saladict/)
+- [微软 Edge 商店](https://microsoftedge.microsoft.com/addons/detail/idghocbbahafpfhjnfhpbfbmpegphmmp)(由 @rumosky 上传)
+- 其它途径见本项目[发布页面](https://github.com/crimx/ext-saladict/releases)。
 
-Saladict 7 is a complete rewrite with sophisticated interaction and buttery smooth experience. Built for speed, stability and customization.
+沙拉查词 7 为完全重写的版本。增加了更多细腻的动效与流畅的交互，更快速更稳定更多自定义设置。
 
-## Change Log
+## 改动日志
 
 [CHANGELOG.md](./CHANGELOG.md)
 
-## build from source
+## 从源码构建
 
 ```bash
 git clone git@github.com:crimx/ext-saladict.git
@@ -42,23 +40,23 @@ yarn install
 yarn pdf
 ```
 
-Add a `.env` file following the `.env.example` format(leave empty if you don't use these dictionaries).
+在项目跟添加 `.env` 文件，参考 `.env.example` 格式（可留空如果你不要这些词典）。
 
 ```bash
 yarn build
 ```
 
-Artifacts can be found in `build/`.
+在 `build/` 目录下可查看针对各个浏览器打包好的扩展包。
 
-## Development
+## 开发
 
-See the [contributing guide](./CONTRIBUTING.md).
+见[项目贡献指南](./CONTRIBUTING-zh.md)。
 
-## How can I contribute?
+## 如何向本项目贡献代码
 
-[CONTRIBUTING.md](./CONTRIBUTING.md)
+见[项目贡献指南](./CONTRIBUTING-zh.md)。
 
-## More screenshots:
+## 更多截图
 
 <p align="center">
   <a href="https://github.com/crimx/ext-saladict/releases/" target="_blank"><img src="https://github.com/crimx/ext-saladict/wiki/images/youdao-page.gif" /></a>
