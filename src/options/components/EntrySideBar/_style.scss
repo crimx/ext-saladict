@@ -1,5 +1,8 @@
+@import '@/_sass_global/_fancy-scrollbar.scss';
+
 .entry-sidebar {
   height: 100vh;
+  background: transparent;
 
   @media (hover: hover) {
     overflow-y: hidden;

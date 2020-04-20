@@ -45,7 +45,7 @@ export const EntrySideBar: FC<EntrySideBarProps> = props => {
     <Affix key={affixKey}>
       <Layout>
         <Layout.Sider
-          className="entry-sidebar"
+          className="entry-sidebar fancy-scrollbar"
           width={180}
           breakpoint="lg"
           collapsible
