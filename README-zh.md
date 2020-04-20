@@ -56,6 +56,12 @@ yarn build
 
 见[项目贡献指南](./CONTRIBUTING-zh.md)。
 
+## 声明
+
+沙拉查词为自由开源项目，仅做学习交流之用，每个用户均可免费下载使用，如果认为你的合法权益收到侵犯请马上联系[作者](https://github.com/crimx)。
+
+沙拉查词项目为 [MIT](https://github.com/crimx/ext-saladict/blob/dev/LICENSE) 许可，你可以随意使用源码，但必须附带该许可与版权声明。请勿用于任何违法犯罪行为，沙拉查词强烈谴责并会尽可能配合追究责任。对于照搬源码二次发布的套壳项目沙拉查词有责任对平台和用户发出相应的举报和提醒。
+
 ## 更多截图
 
 <p align="center">

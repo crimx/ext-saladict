@@ -58,6 +58,16 @@ See the [contributing guide](./CONTRIBUTING.md).
 
 [CONTRIBUTING.md](./CONTRIBUTING.md)
 
+## Notic
+
+Saladict is a free and open-sourced project for study purpose only. Anyone can obtain a copy of Saladict free of charge. If you believe your legal rights have been violated please contact the [author](https://github.com/crimx) immediately.
+
+Saladict is licensed under [MIT](https://github.com/crimx/ext-saladict/blob/dev/LICENSE). You can use the source code freely as long as including a copy of license and copyright notice of Saladict.
+
+DO NOT use Saladict for any illegal or criminal activity. Saladict strongly condemns this behavior and will cooperate to the fullest extent possible in holding it accountable.
+
+As for copy-and-paste clone products Saladict has the responsibility to send corresponding reports and warnings to platforms and users.
+
 ## More screenshots:
 
 <p align="center">
