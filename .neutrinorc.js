@@ -316,7 +316,8 @@ module.exports = {
         '\\.(mjs|jsx|js|ts|tsx)$': require.resolve(
           '@neutrinojs/jest/src/transformer'
         )
-      }
+      },
+      testTimeout: 20000
     }),
     wext({
       polyfill: true
