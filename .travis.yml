@@ -4,4 +4,5 @@ node_js:
 script:
   - yarn lint
   - yarn build
-  - yarn test
+  # remove agnostic tests
+  - yarn test --testPathIgnorePatterns 'components/dictionaries'
