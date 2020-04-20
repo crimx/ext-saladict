@@ -100,10 +100,6 @@ export const locale = {
     tripleCtrlPageSel_help: '响应网页划词。',
 
     opt: {
-      export: '导出设定',
-      help: '设定已通过浏览器自动同步，也可以手动导入导出。',
-      import: '导入设定',
-      import_error: '导入设定失败',
       reset: '重置设定',
       reset_confirm: '所有设定将还原到默认值，确定？',
       upload_error: '设置保存失败',
@@ -296,6 +292,28 @@ export const locale = {
     TOP_RIGHT: '右上',
     BOTTOM_LEFT: '左下',
     BOTTOM_RIGHT: '右下'
+  },
+
+  import_export_help:
+    '设定已通过浏览器自动同步，也可以手动导入导出。备份为明文保存，对安全性有要求的请自行加密。',
+
+  import: {
+    title: '导入设定',
+    error: {
+      title: '导入失败',
+      parse: '备份解析失败，格式不正确。',
+      load: '备份加载失败，浏览器无法获得本地备份。',
+      empty: '备份中没有发现有效数据。'
+    }
+  },
+
+  export: {
+    title: '导出设定',
+    error: {
+      title: '导出失败',
+      empty: '没有设置可以导出。',
+      parse: '设置解析失败，无法导出。'
+    }
   },
 
   opt: {

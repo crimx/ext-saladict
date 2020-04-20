@@ -103,10 +103,6 @@ export const locale: typeof _locale = {
     tripleCtrlPageSel_help: '對網頁滑鼠滑字作出反應。',
 
     opt: {
-      export: '匯出設定',
-      help: '設定已通過瀏覽器自動同步，也可以手動匯入匯出。',
-      import: '匯入設定',
-      import_error: '匯入設定失敗',
       reset: '重設設定',
       reset_confirm: '所有設定將還原至預設值，確定？',
       upload_error: '設定儲存失敗',
@@ -300,6 +296,28 @@ export const locale: typeof _locale = {
     TOP_RIGHT: '右上',
     BOTTOM_LEFT: '左下',
     BOTTOM_RIGHT: '右下'
+  },
+
+  import_export_help:
+    '設定已通過瀏覽器自動同步，也可以手動匯入匯出。備份為明文儲存，對安全性有要求的請自行加密。',
+
+  import: {
+    title: '匯入設定',
+    error: {
+      title: '匯入失敗',
+      parse: '備份解析失敗，格式不正確。',
+      load: '備份載入失敗，瀏覽器無法獲得本地備份。',
+      empty: '備份中沒有發現有效資料。'
+    }
+  },
+
+  export: {
+    title: '匯出設定',
+    error: {
+      title: '匯出失敗',
+      empty: '沒有設定可以匯出。',
+      parse: '設定解析失敗，無法匯出。'
+    }
   },
 
   opt: {

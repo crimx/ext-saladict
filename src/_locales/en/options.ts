@@ -109,10 +109,6 @@ export const locale: typeof _locale = {
     tripleCtrlPageSel_help: 'Response to page selection.',
 
     opt: {
-      export: 'Export Configs',
-      help: 'Configs are synced automatically via browser.',
-      import: 'Import Configs',
-      import_error: 'Import Configs failed',
       reset: 'Reset Configs',
       reset_confirm: 'Reset to default settings. Confirm？',
       upload_error: 'Unable to save settings.',
@@ -311,6 +307,28 @@ export const locale: typeof _locale = {
     TOP_RIGHT: 'Top Right',
     BOTTOM_LEFT: 'Bottom Left',
     BOTTOM_RIGHT: 'Bottom Right'
+  },
+
+  import_export_help:
+    'Configs are auto-synced via browser. Here you can also import/export manually. Backups are exported as plain text files. Please encrypt it yourself if needed.',
+
+  import: {
+    title: 'Import Configs',
+    error: {
+      title: 'Import Error',
+      parse: 'Unable to parse backup. Incorrect format.',
+      load: 'Unable to load backup. Browser cannot obtain the local file.',
+      empty: 'No valid data found in the backup.'
+    }
+  },
+
+  export: {
+    title: 'Export Configs',
+    error: {
+      title: 'Export Error',
+      empty: 'No config to export.',
+      parse: 'Unable to parse configs.'
+    }
   },
 
   opt: {
