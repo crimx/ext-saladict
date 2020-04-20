@@ -120,6 +120,9 @@ export const locale: typeof _locale = {
         uk: 'UK',
         us: 'US'
       },
+      sel_blackwhitelist: 'Selection Black/White List',
+      sel_blackwhitelist_help:
+        'Saladict will not react to selection in blacklisted pages.',
       pdf_blackwhitelist_help:
         'Blacklisted PDF links will not jump to Saladict PDF Viewer.',
       contextMenus_description:
@@ -321,10 +324,6 @@ export const locale: typeof _locale = {
     third_party_privacy_extra:
       'Cannot be turned off as it is the core functionality of Saladict.',
     profile_change: 'This option may change base on "Profile".',
-
-    sel_blackwhitelist: 'Selection Black/White List',
-    sel_blackwhitelist_help:
-      'Saladict will not react to selection in blacklisted pages.',
 
     update_check: 'Check Update',
     update_check_help: 'Automatically check update from Github'

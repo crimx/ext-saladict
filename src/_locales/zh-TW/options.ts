@@ -114,6 +114,8 @@ export const locale: typeof _locale = {
         uk: '英式',
         us: '美式'
       },
+      sel_blackwhitelist: '選詞黑白名單',
+      sel_blackwhitelist_help: '黑名單相符的頁面 Saladict 將不會響應滑鼠劃詞。',
       pdf_blackwhitelist_help:
         '黑名單相符的 PDF 連結將不會跳至 Saladict 開啟。',
       contextMenus_description:
@@ -309,8 +311,6 @@ export const locale: typeof _locale = {
       '沙拉查詞不會收集更多資料，但在查詞時單詞以及相關 cookies 資料會發送給第三方詞典服務（與在該網站上查詞一樣），如果你不希望被該服務獲取資料，請在「詞典設定」中關閉相應詞典。',
     third_party_privacy_extra: '本特性為沙拉查詞核心功能，無法關閉。',
     profile_change: '此選項會因「情景模式」而改變。',
-    sel_blackwhitelist: '選詞黑白名單',
-    sel_blackwhitelist_help: '黑名單相符的頁面 Saladict 將不會響應滑鼠劃詞。',
 
     update_check: '檢查更新',
     update_check_help: '自動檢查 Github 更新'

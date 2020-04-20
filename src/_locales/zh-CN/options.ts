@@ -111,6 +111,8 @@ export const locale = {
         uk: '英式',
         us: '美式'
       },
+      sel_blackwhitelist: '划词黑白名单',
+      sel_blackwhitelist_help: '黑名单匹配的页面 Saladict 将不会响应鼠标划词。',
       pdf_blackwhitelist_help:
         '黑名单匹配的 PDF 链接将不会跳转到 Saladict 打开。',
       contextMenus_description:
@@ -307,8 +309,6 @@ export const locale = {
     third_party_privacy_extra: '本特性为沙拉查词核心功能，无法关闭。',
     profile_change: '此选项会因「情景模式」而改变。',
 
-    sel_blackwhitelist: '划词黑白名单',
-    sel_blackwhitelist_help: '黑名单匹配的页面 Saladict 将不会响应鼠标划词。',
     update_check: '检查更新',
     update_check_help: '自动检查 Github 更新'
   }
