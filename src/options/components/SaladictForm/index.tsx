@@ -2,9 +2,10 @@ import React, { useContext, ReactNode, useMemo, Ref } from 'react'
 import { Form, Button, Modal, Tooltip } from 'antd'
 import { FormItemProps, Rule, FormProps, FormInstance } from 'antd/lib/form'
 import { ExclamationCircleOutlined, BlockOutlined } from '@ant-design/icons'
+import { startWith, map, distinctUntilChanged } from 'rxjs/operators'
 import get from 'lodash/get'
 import mapValues from 'lodash/mapValues'
-import { startWith, map, distinctUntilChanged } from 'rxjs/operators'
+import shallowEqual from 'shallowequal'
 import { useObservableState } from 'observable-hooks'
 import { resetConfig } from '@/_helpers/config-manager'
 import { resetAllProfiles } from '@/_helpers/profile-manager'
@@ -16,8 +17,8 @@ import {
   useFormItemLayout,
   formItemFooterLayout
 } from '@/options/helpers/layout'
-import { uploadResult$$, upload } from '@/options/helpers/upload'
-import shallowEqual from 'shallowequal'
+import { upload } from '@/options/helpers/upload'
+import { SaveBtn } from './SaveBtn'
 
 import './_style.scss'
 
@@ -53,9 +54,6 @@ export const SaladictForm = React.forwardRef(
     const { items, hideFooter, ...restProps } = props
     const { t, i18n, ready } = useTranslate(['options', 'common'])
     const globals = useContext(GlobalsContext)
-    const { loading: uploading } = useObservableState(uploadResult$$, {
-      loading: false
-    })
     const formItemLayout = useFormItemLayout()
 
     function extractInitial(
@@ -179,9 +177,7 @@ export const SaladictForm = React.forwardRef(
         {formItems}
         {!hideFooter && (
           <Form.Item {...formItemFooterLayout} className="saladict-form-btns">
-            <Button type="primary" htmlType="submit" disabled={uploading}>
-              {t('common:save')}
-            </Button>
+            <SaveBtn />
             <Button onClick={openShortcuts}>{t('shortcuts')}</Button>
             <Button
               type="danger"
