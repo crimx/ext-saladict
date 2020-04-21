@@ -40,8 +40,7 @@ export const BtnPreview: FC = () => {
             dispatch({
               type: 'SEARCH_START',
               payload: {
-                word: newWord({ text: await getWordOfTheDay() }),
-                noHistory: true
+                word: newWord({ text: await getWordOfTheDay() })
               }
             })
           }}
