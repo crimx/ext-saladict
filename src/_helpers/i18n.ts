@@ -141,8 +141,13 @@ export interface UseTranslateResult {
    */
   t: i18n.TFunction
   i18n: i18n.i18n
-  /** Are namespaces loaded? */
-  ready: boolean
+  /**
+   * Are namespaces loaded?
+   * false not ready
+   * otherwise it is a non-zero positive number
+   * that changes everytime when new namespaces are loaded.
+   */
+  ready: false | number
 }
 
 /**
@@ -153,6 +158,7 @@ export interface UseTranslateResult {
 export function useTranslate(
   namespaces?: Namespace | Namespace[]
 ): UseTranslateResult {
+  const ticketRef = useRef(0)
   const innerTRef = useRef<TFunction>(defaultT)
   // keep the exposed t function always the same
   const tRef = useRef<TFunction>((...args: Parameters<TFunction>) =>
@@ -164,7 +170,15 @@ export function useTranslate(
     if (t) {
       innerTRef.current = t
     }
-    return { t: tRef.current, i18n, ready }
+    if (ready) {
+      ticketRef.current = (ticketRef.current + 1) % 100000
+    }
+    const result: UseTranslateResult = {
+      t: tRef.current,
+      i18n,
+      ready: ready ? ticketRef.current : false
+    }
+    return result
   }
 
   const [result, setResult] = useState<UseTranslateResult>(() => {
