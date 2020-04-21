@@ -291,7 +291,7 @@ module.exports = {
             })
       }
 
-      if (argv.devbuild) {
+      if (argv.debug) {
         // prettier-ignore
         neutrino.config
           .devtool('inline-source-map')
