@@ -1,13 +1,12 @@
 import React, { FC } from 'react'
 import { Switch, Select } from 'antd'
-import { useFixedMemo } from '@/_helpers/hooks'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import { SaladictForm } from '@/options/components/SaladictForm'
 
 export const General: FC = () => {
   return (
     <SaladictForm
-      items={useFixedMemo(() => [
+      items={[
         {
           name: getConfigPath('active'),
           valuePropName: 'checked',
@@ -33,7 +32,7 @@ export const General: FC = () => {
             </Select>
           )
         }
-      ])}
+      ]}
     />
   )
 }

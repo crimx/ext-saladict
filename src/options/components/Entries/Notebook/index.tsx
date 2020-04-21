@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useContext, useState } from 'react'
+import React, { FC, useContext, useState } from 'react'
 import { Switch, Checkbox, Button } from 'antd'
 import { concat, from } from 'rxjs'
 import { pluck } from 'rxjs/operators'
@@ -26,7 +26,7 @@ interface SyncConfigs {
 }
 
 export const Notebook: FC = () => {
-  const { t, i18n, ready } = useTranslate(['options', 'dicts', 'common'])
+  const { t } = useTranslate(['options', 'dicts', 'common'])
   const globals = useContext(GlobalsContext)
   const [showWebdav, setShowWebdav] = useState(false)
   const [showShanbay, setShowshanbay] = useState(false)
@@ -42,62 +42,59 @@ export const Notebook: FC = () => {
   return (
     <>
       <SaladictForm
-        items={useMemo(
-          () => [
-            {
-              name: getConfigPath('editOnFav'),
+        items={[
+          {
+            name: getConfigPath('editOnFav'),
+            valuePropName: 'checked',
+            children: <Switch />
+          },
+          {
+            name: getConfigPath('searchHistory'),
+            valuePropName: 'checked',
+            children: <Switch />
+          },
+          {
+            name: getConfigPath('searchHistoryInco'),
+            hide: values => !values[getConfigPath('searchHistory')],
+            valuePropName: 'checked',
+            children: <Switch />
+          },
+          {
+            key: getConfigPath('ctxTrans'),
+            style: { marginBottom: 10 },
+            items: objectKeys(globals.config.ctxTrans).map(id => ({
+              name: getConfigPath('ctxTrans', id),
               valuePropName: 'checked',
-              children: <Switch />
-            },
-            {
-              name: getConfigPath('searchHistory'),
-              valuePropName: 'checked',
-              children: <Switch />
-            },
-            {
-              name: getConfigPath('searchHistoryInco'),
-              hide: values => !values[getConfigPath('searchHistory')],
-              valuePropName: 'checked',
-              children: <Switch />
-            },
-            {
-              key: getConfigPath('ctxTrans'),
-              style: { marginBottom: 10 },
-              items: objectKeys(globals.config.ctxTrans).map(id => ({
-                name: getConfigPath('ctxTrans', id),
-                valuePropName: 'checked',
-                style: { marginBottom: 0 },
-                children: <Checkbox>{t(`dicts:${id}.name`)}</Checkbox>
-              }))
-            },
-            {
-              key: 'syncService.btn.webdav',
-              style: { marginBottom: 15 },
-              children: (
-                <Button onClick={() => setShowWebdav(true)}>{`${t(
-                  'syncService.btn.webdav'
-                )} (${t(
-                  syncConfigs?.[WebDAVService.id]?.url
-                    ? 'common:enabled'
-                    : 'common:disabled'
-                )})`}</Button>
-              )
-            },
-            {
-              key: 'syncService.btn.shanbay',
-              children: (
-                <Button onClick={() => setShowshanbay(true)}>{`${t(
-                  'syncService.btn.shanbay'
-                )} (${t(
-                  syncConfigs?.[ShanbayService.id]?.enable
-                    ? 'common:enabled'
-                    : 'common:disabled'
-                )})`}</Button>
-              )
-            }
-          ],
-          [syncConfigs, ready, i18n.language]
-        )}
+              style: { marginBottom: 0 },
+              children: <Checkbox>{t(`dicts:${id}.name`)}</Checkbox>
+            }))
+          },
+          {
+            key: 'syncService.btn.webdav',
+            style: { marginBottom: 15 },
+            children: (
+              <Button onClick={() => setShowWebdav(true)}>{`${t(
+                'syncService.btn.webdav'
+              )} (${t(
+                syncConfigs?.[WebDAVService.id]?.url
+                  ? 'common:enabled'
+                  : 'common:disabled'
+              )})`}</Button>
+            )
+          },
+          {
+            key: 'syncService.btn.shanbay',
+            children: (
+              <Button onClick={() => setShowshanbay(true)}>{`${t(
+                'syncService.btn.shanbay'
+              )} (${t(
+                syncConfigs?.[ShanbayService.id]?.enable
+                  ? 'common:enabled'
+                  : 'common:disabled'
+              )})`}</Button>
+            )
+          }
+        ]}
       />
       <ShanbayModal
         syncConfig={syncConfigs?.[ShanbayService.id]}

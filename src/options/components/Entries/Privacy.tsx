@@ -1,13 +1,12 @@
 import React, { FC } from 'react'
 import { Switch } from 'antd'
-import { useFixedMemo } from '@/_helpers/hooks'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import { SaladictForm } from '@/options/components/SaladictForm'
 
 export const Privacy: FC = () => {
   return (
     <SaladictForm
-      items={useFixedMemo(() => [
+      items={[
         {
           name: getConfigPath('updateCheck'),
           valuePropName: 'checked',
@@ -33,7 +32,7 @@ export const Privacy: FC = () => {
           key: 'third_party_privacy',
           children: <Switch disabled checked />
         }
-      ])}
+      ]}
     />
   )
 }

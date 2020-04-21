@@ -1,11 +1,11 @@
-import React, { FC, useMemo, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { Button } from 'antd'
 import { SaladictForm } from '@/options/components/SaladictForm'
 import { useTranslate } from '@/_helpers/i18n'
 import { MatchPatternModal } from '../MatchPatternModal'
 
 export const BlackWhiteList: FC = () => {
-  const { t, i18n, ready } = useTranslate(['options', 'common'])
+  const { t } = useTranslate(['options', 'common'])
   const [editingArea, setEditingArea] = useState<
     'pdfWhitelist' | 'pdfBlacklist' | 'whitelist' | 'blacklist' | null
   >(null)
@@ -14,47 +14,44 @@ export const BlackWhiteList: FC = () => {
     <>
       <SaladictForm
         hideFooter
-        items={useMemo(
-          () => [
-            {
-              key: 'BlackWhiteList',
-              label: t('config.opt.sel_blackwhitelist'),
-              help: t('config.opt.sel_blackwhitelist_help'),
-              children: (
-                <>
-                  <Button
-                    style={{ marginRight: 10 }}
-                    onClick={() => setEditingArea('blacklist')}
-                  >
-                    {t('common:blacklist')}
-                  </Button>
-                  <Button onClick={() => setEditingArea('whitelist')}>
-                    {t('common:whitelist')}
-                  </Button>
-                </>
-              )
-            },
-            {
-              key: 'PDFBlackWhiteList',
-              label: 'PDF ' + t('nav.BlackWhiteList'),
-              help: t('config.opt.pdf_blackwhitelist_help'),
-              children: (
-                <>
-                  <Button
-                    style={{ marginRight: 10 }}
-                    onClick={() => setEditingArea('pdfBlacklist')}
-                  >
-                    PDF {t('common:blacklist')}
-                  </Button>
-                  <Button onClick={() => setEditingArea('pdfWhitelist')}>
-                    PDF {t('common:whitelist')}
-                  </Button>
-                </>
-              )
-            }
-          ],
-          [ready, i18n.language]
-        )}
+        items={[
+          {
+            key: 'BlackWhiteList',
+            label: t('config.opt.sel_blackwhitelist'),
+            help: t('config.opt.sel_blackwhitelist_help'),
+            children: (
+              <>
+                <Button
+                  style={{ marginRight: 10 }}
+                  onClick={() => setEditingArea('blacklist')}
+                >
+                  {t('common:blacklist')}
+                </Button>
+                <Button onClick={() => setEditingArea('whitelist')}>
+                  {t('common:whitelist')}
+                </Button>
+              </>
+            )
+          },
+          {
+            key: 'PDFBlackWhiteList',
+            label: 'PDF ' + t('nav.BlackWhiteList'),
+            help: t('config.opt.pdf_blackwhitelist_help'),
+            children: (
+              <>
+                <Button
+                  style={{ marginRight: 10 }}
+                  onClick={() => setEditingArea('pdfBlacklist')}
+                >
+                  PDF {t('common:blacklist')}
+                </Button>
+                <Button onClick={() => setEditingArea('pdfWhitelist')}>
+                  PDF {t('common:whitelist')}
+                </Button>
+              </>
+            )
+          }
+        ]}
       />
       <MatchPatternModal
         area={editingArea}
