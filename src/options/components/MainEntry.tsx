@@ -4,7 +4,7 @@ import { Layout, Row, Col, message as antMsg, notification } from 'antd'
 import { useObservablePickState, useSubscription } from 'observable-hooks'
 import { reportGA } from '@/_helpers/analytics'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
-import { useTranslate } from '@/_helpers/i18n'
+import { useTranslate, I18nContext } from '@/_helpers/i18n'
 import { EntrySideBarMemo } from './EntrySideBar'
 import { HeaderMemo } from './Header'
 import { EntryError } from './EntryError'
@@ -17,6 +17,7 @@ const EntryComponent = React.memo(({ entry }: { entry: string }) =>
 )
 
 export const MainEntry: FC = () => {
+  const lang = useContext(I18nContext)
   const { t, ready } = useTranslate('options')
   const globals = useContext(GlobalsContext)
   const [entry, setEntry] = useState(getEntry)
@@ -83,7 +84,7 @@ export const MainEntry: FC = () => {
                 backgroundColor: 'var(--opt-background-color)'
               }}
             >
-              <ErrorBoundary key={entry} error={EntryError}>
+              <ErrorBoundary key={entry + lang} error={EntryError}>
                 {ready && <EntryComponent entry={entry} />}
               </ErrorBoundary>
             </Layout.Content>
