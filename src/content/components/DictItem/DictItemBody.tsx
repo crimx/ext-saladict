@@ -37,7 +37,6 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
       React.lazy<ComponentType<ViewPorps<any>>>(() =>
         import(
           /* webpackInclude: /View\.tsx$/ */
-          /* webpackChunkName: "dicts/[request]" */
           /* webpackMode: "lazy" */
           `@/components/dictionaries/${props.dictID}/View.tsx`
         )
@@ -50,7 +49,6 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
       React.lazy(async () => {
         const styleModule = await import(
           /* webpackInclude: /_style\.shadow\.scss$/ */
-          /* webpackChunkName: "dicts/[request]" */
           /* webpackMode: "lazy" */
           `@/components/dictionaries/${props.dictID}/_style.shadow.scss`
         )

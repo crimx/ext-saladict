@@ -44,7 +44,6 @@ export class BackgroundServer {
   static getDictEngine(id: DictID) {
     return import(
       /* webpackInclude: /engine\.ts$/ */
-      /* webpackChunkName: "dicts/[request]" */
       /* webpackMode: "lazy" */
       `@/components/dictionaries/${id}/engine.ts`
     )

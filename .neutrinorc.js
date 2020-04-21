@@ -9,6 +9,7 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
 const dotenv = require('dotenv')
 const argv = require('yargs').argv
 const AfterBuildPlugin = require('./scripts/after-build')
+const isAnalyze = argv.analyze || argv.analyse
 
 module.exports = {
   options: {
@@ -275,16 +276,35 @@ module.exports = {
             .merge({
               splitChunks: {
                 cacheGroups: {
-                  dictpanel: {
-                    test: /([\\/]src[\\/]content[\\/])|([\\/]node_modules[\\/]react)/,
-                    name: 'dictpanel',
-                    chunks: ({ name }) => !/^(selection|audio-control|background)$/.test(name)
+                  react: {
+                    test: /[\\/]node_modules[\\/](react|react-dom|i18next)[\\/]/,
+                    name: 'view-vendor',
+                    chunks: 'all',
+                    priority: 100
+                  },
+                  franc: {
+                    test: /[\\/]node_modules[\\/]franc/,
+                    name: 'franc',
+                    chunks: 'all',
+                    priority: 100
+                  },
+                  dexie: {
+                    test: /[\\/]node_modules[\\/]dexie/,
+                    name: 'dexie',
+                    chunks: 'all',
+                    priority: 100
+                  },
+                  wordpage: {
+                    test: (module, chunks) => module.resource &&
+                      module.resource.includes(`${path.sep}src${path.sep}`) &&
+                      !module.resource.includes(`${path.sep}node_modules${path.sep}`),
+                    name: 'wordpage',
+                    chunks: ({ name }) => /^(notebook|history)$/.test(name),
                   },
                   antd: {
                     test: /[\\/]node_modules[\\/]/,
                     name: 'antd',
-                    chunks: ({ name }) => /^(notebook|options|history)$/.test(name),
-                    reuseExistingChunk: true
+                    chunks: ({ name }) => /^(options|notebook|history)$/.test(name),
                   }
                 }
               },
@@ -299,7 +319,7 @@ module.exports = {
             .minimize(false)
       }
 
-      if (argv.analyze || argv.analyse) {
+      if (isAnalyze) {
         // prettier-ignore
         neutrino.config
           .plugin('bundle-analyze')
