@@ -16,6 +16,7 @@ export const locale: typeof _locale = {
     DictPanel: 'Dict Panel',
     SearchModes: 'Search Modes',
     Dictionaries: 'Dictionaries',
+    DictAuths: 'Access Tokens',
     Popup: 'Popup Panel',
     QuickSearch: 'Quick Search',
     Pronunciation: 'Pronunciation',
@@ -334,6 +335,12 @@ export const locale: typeof _locale = {
       empty: 'No config to export.',
       parse: 'Unable to parse configs.'
     }
+  },
+
+  dictAuth: {
+    description:
+      'Shared keys could be unstable from time to time as the number of Saladict users grows. If you heavily use machine translation services it is recommended to register an account for better accuracy and stability.',
+    dictHelp: 'See the official website of {dict}.'
   },
 
   third_party_privacy: 'Third Party Privacy',

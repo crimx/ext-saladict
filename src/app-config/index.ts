@@ -1,8 +1,9 @@
 import { DeepReadonly } from '@/typings/helpers'
+import { SupportedLangs } from '@/_helpers/lang-check'
 import { getAllDicts } from './dicts'
 import { getAllContextMenus } from './context-menus'
 import { MtaAutoUnfold as _MtaAutoUnfold } from './profiles'
-import { SupportedLangs } from '@/_helpers/lang-check'
+import { getDefaultDictAuths } from './auth'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 
@@ -309,6 +310,8 @@ function _getDefaultConfig() {
         'saladict'
       ],
       all: getAllContextMenus()
-    }
+    },
+
+    dictAuth: getDefaultDictAuths()
   }
 }

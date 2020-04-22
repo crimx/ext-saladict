@@ -14,6 +14,7 @@ export const locale = {
     DictPanel: '查词面板',
     SearchModes: '查词习惯',
     Dictionaries: '词典设置',
+    DictAuths: '词典帐号',
     Popup: '右上弹框',
     QuickSearch: '快捷查词',
     Pronunciation: '发音设置',
@@ -319,6 +320,12 @@ export const locale = {
       empty: '没有设置可以导出。',
       parse: '设置解析失败，无法导出。'
     }
+  },
+
+  dictAuth: {
+    description:
+      '随着沙拉查词用户增多，共用 key 可能不太稳定。如经常使用机器翻译，需要更准确的结果以及更稳定的体验建议到官网申请帐号。',
+    dictHelp: '见{词典}官网。'
   },
 
   third_party_privacy: '第三方隐私',

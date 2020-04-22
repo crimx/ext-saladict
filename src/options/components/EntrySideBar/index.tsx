@@ -15,7 +15,8 @@ import {
   ExceptionOutlined,
   SwapOutlined,
   LockOutlined,
-  ExclamationCircleOutlined
+  ExclamationCircleOutlined,
+  KeyOutlined
 } from '@ant-design/icons'
 import { useObservableState } from 'observable-hooks'
 import { debounceTime, scan, distinctUntilChanged } from 'rxjs/operators'
@@ -95,6 +96,10 @@ export const EntrySideBar: FC<EntrySideBarProps> = props => {
             <Menu.Item key="Dictionaries">
               <BookOutlined />
               <span>{t('nav.Dictionaries')}</span>
+            </Menu.Item>
+            <Menu.Item key="DictAuths">
+              <KeyOutlined />
+              <span>{t('nav.DictAuths')}</span>
             </Menu.Item>
             <Menu.Item key="Popup">
               <LayoutOutlined />

@@ -16,6 +16,7 @@ export const locale: typeof _locale = {
     DictPanel: '字典介面',
     SearchModes: '查字習慣',
     Dictionaries: '字典設定',
+    DictAuths: '詞典帳號',
     Popup: '右上彈出式視窗',
     QuickSearch: '迅速查字',
     Pronunciation: '朗讀設定',
@@ -323,6 +324,12 @@ export const locale: typeof _locale = {
       empty: '沒有設定可以匯出。',
       parse: '設定解析失敗，無法匯出。'
     }
+  },
+
+  dictAuth: {
+    description:
+      '隨著沙拉查詞使用者增多，共用 key 可能不太穩定。如經常使用機器翻譯，需要更準確的結果以及更穩定的體驗建議到官網申請帳號。',
+    dictHelp: '見{詞典}官網。'
   },
 
   third_party_privacy: '第三方隱私',
