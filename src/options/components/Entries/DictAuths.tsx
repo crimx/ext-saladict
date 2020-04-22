@@ -29,28 +29,26 @@ export const DictAuths: FC = () => {
     const configPath = getConfigPath('dictAuth', dictID)
     const title = t(`dicts:${dictID}.name`)
 
-    objectKeys(auth)
-      .filter(key => key !== 'url')
-      .forEach((key, i, keys) => {
-        const isLast = i + 1 === keys.length
-        formItems.push({
-          name: configPath + '.' + key,
-          label: i === 0 ? title + ' ' + key : key,
-          help: isLast ? (
-            <Trans message={t('dictAuth.dictHelp')}>
-              <a
-                href={auth.url}
-                target="_blank"
-                rel="nofollow noopener noreferrer"
-              >
-                {title}
-              </a>
-            </Trans>
-          ) : null,
-          style: { marginBottom: isLast ? 10 : 5 },
-          children: <Input />
-        })
+    objectKeys(auth).forEach((key, i, keys) => {
+      const isLast = i + 1 === keys.length
+      formItems.push({
+        name: configPath + '.' + key,
+        label: i === 0 ? title + ' ' + key : key,
+        help: isLast ? (
+          <Trans message={t('dictAuth.dictHelp')}>
+            <a
+              href={require(`@/components/dictionaries/${dictID}/auth.ts`).url}
+              target="_blank"
+              rel="nofollow noopener noreferrer"
+            >
+              {title}
+            </a>
+          </Trans>
+        ) : null,
+        style: { marginBottom: isLast ? 10 : 5 },
+        children: <Input />
       })
+    })
   })
 
   return <SaladictForm items={formItems} />
