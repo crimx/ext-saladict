@@ -2,8 +2,6 @@ import { DictItem } from '@/app-config/dicts'
 import { Language } from '@opentranslate/translator'
 import { Subunion } from '@/typings/helpers'
 
-import {} from '@opentranslate/baidu'
-
 export type BaiduLanguage = Subunion<
   Language,
   'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko' | 'fr' | 'de' | 'es' | 'ru' | 'nl'
