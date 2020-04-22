@@ -9,6 +9,7 @@ const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
 const dotenv = require('dotenv')
 const argv = require('yargs').argv
 const AfterBuildPlugin = require('./scripts/after-build')
+const svgToMiniDataURI = require('mini-svg-data-uri')
 const isAnalyze = argv.analyze || argv.analyse
 
 module.exports = {
@@ -101,28 +102,7 @@ module.exports = {
       html: {
         title: 'Saladict'
       },
-      image: {
-        // dev-server image name collision
-        name: resourcePath => {
-          if (process.env.NODE_ENV === 'development') {
-            return '[path]/[name].[ext]'
-          }
-
-          const dictMatch = /\/dictionaries\/([^/]+)\/favicon.png/.exec(
-            resourcePath
-          )
-          if (dictMatch) {
-            return `assets/favicon-${dictMatch[1]}.[contenthash:8].[ext]`
-          }
-
-          return 'assets/[name].[contenthash:8].[ext]'
-        },
-        // alway emits image files
-        limit: 0,
-        // remove `default` when `require` image
-        // due to legacy code
-        esModule: false
-      },
+      image: false,
       style: {
         test: /\.(css|scss)$/,
         modulesTest: /\.module\.(css|scss)$/,
@@ -199,6 +179,48 @@ module.exports = {
     }),
     neutrino => {
       /* eslint-disable indent */
+
+      // images
+      neutrino.config.module
+        .rules.delete('image')
+        .end()
+        .rule('svg')
+          .test(/\.(svg)(\?v=\d+\.\d+\.\d+)?$/)
+          .use('svg-url')
+            .loader(require.resolve('url-loader'))
+            .options({
+              limit: 8192,
+              // remove `default` when `require` image
+              // due to legacy code
+              esModule: false,
+              generator: content => svgToMiniDataURI(content.toString())
+            })
+            .end()
+          .end()
+        .rule('pixel')
+          .test(/\.(ico|png|jpg|jpeg|gif|webp)(\?v=\d+\.\d+\.\d+)?$/)
+          .use('img-url')
+            .loader(require.resolve('file-loader'))
+            .options({
+              // dev-server image name collision
+              name: resourcePath => {
+                if (process.env.NODE_ENV === 'development') {
+                  return '[path]/[name].[ext]'
+                }
+
+                const dictMatch = /\/dictionaries\/([^/]+)\/favicon.png/.exec(
+                  resourcePath
+                )
+                if (dictMatch) {
+                  return `assets/favicon-${dictMatch[1]}.[contenthash:8].[ext]`
+                }
+
+                return 'assets/[name].[contenthash:8].[ext]'
+              },
+              limit: 0,
+              esModule: false
+            })
+
 
       // avoid collision
       neutrino.config.output.jsonpFunction('saladictEntry')
