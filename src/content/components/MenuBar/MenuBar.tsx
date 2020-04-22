@@ -28,8 +28,6 @@ import {
 import { SearchBox, SearchBoxProps } from './SearchBox'
 import { Profiles, ProfilesProps } from './Profiles'
 
-const ProfilesMemo = React.memo(Profiles)
-
 export interface MenuBarProps {
   text: string
   updateText: SearchBoxProps['onInput']
@@ -116,7 +114,7 @@ export const MenuBar: FC<MenuBarProps> = props => {
           onTouchStart={props.onDragAreaTouchStart}
         />
       )}
-      <ProfilesMemo
+      <Profiles
         t={t}
         profiles={props.profiles}
         activeProfileId={props.activeProfileId}
