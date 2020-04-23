@@ -45,7 +45,7 @@ export default getDefaultConfig
 
 function _getDefaultConfig() {
   return {
-    version: 12,
+    version: 13,
 
     /** activate app, won't affect triple-ctrl setting */
     active: true,
@@ -312,6 +312,8 @@ function _getDefaultConfig() {
       all: getAllContextMenus()
     },
 
+    /** Open settings on first switching "translation" profile */
+    showedDictAuth: false,
     dictAuth: getDefaultDictAuths()
   }
 }

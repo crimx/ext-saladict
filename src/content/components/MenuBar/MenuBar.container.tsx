@@ -2,13 +2,17 @@ import { connect } from 'react-redux'
 import {
   ExtractDispatchers,
   MapStateToProps,
-  MapDispatchToProps
+  MapDispatchToPropsFunction
 } from 'react-retux'
-import { StoreState, StoreAction } from '@/content/redux/modules'
+import { StoreState, StoreDispatch } from '@/content/redux/modules'
+import { updateActiveProfileID } from '@/_helpers/profile-manager'
 import { isStandalonePage } from '@/_helpers/saladict'
 import { newWord } from '@/_helpers/record-manager'
 import { message } from '@/_helpers/browser-api'
 import { MenuBar, MenuBarProps } from './MenuBar'
+import { updateConfig } from '@/_helpers/config-manager'
+import { timer } from '@/_helpers/promise-more'
+import { objectKeys } from '@/typings/helpers'
 
 type Dispatchers = ExtractDispatchers<
   MenuBarProps,
@@ -19,6 +23,7 @@ type Dispatchers = ExtractDispatchers<
   | 'togglePin'
   | 'onClose'
   | 'onSwitchSidebar'
+  | 'onSelectProfile'
   | 'onDragAreaMouseDown'
   | 'onDragAreaTouchStart'
   | 'onHeightChanged'
@@ -35,13 +40,14 @@ const mapStateToProps: MapStateToProps<
   enableSuggest: state.config.searchSuggests,
   histories: state.searchHistory,
   historyIndex: state.historyIndex,
+  showedDictAuth: state.config.showedDictAuth,
   profiles: state.profiles,
   activeProfileId: state.activeProfile.id,
   isPinned: state.isPinned
 })
 
-const mapDispatchToProps: MapDispatchToProps<
-  StoreAction,
+const mapDispatchToProps: MapDispatchToPropsFunction<
+  StoreDispatch,
   MenuBarProps,
   Dispatchers
 > = dispatch => ({
@@ -106,6 +112,48 @@ const mapDispatchToProps: MapDispatchToProps<
         x: event.changedTouches[0].clientX,
         y: event.changedTouches[0].clientY
       }
+    })
+  },
+  onSelectProfile: id => {
+    dispatch(async (dispatch, getState) => {
+      const state = getState()
+      const { showedDictAuth, dictAuth } = state.config
+
+      if (!showedDictAuth) {
+        await updateConfig({
+          ...state.config,
+          showedDictAuth: true
+        })
+
+        if (
+          state.profiles.find(p => p.id === id)?.name === '%%_translation_%%' &&
+          objectKeys(dictAuth).every(id =>
+            objectKeys(dictAuth[id]).every(k => !dictAuth[id]?.[k])
+          )
+        ) {
+          message.send({
+            type: 'OPEN_URL',
+            payload: {
+              url: 'options.html?menuselected=DictAuths',
+              self: true
+            }
+          })
+          return
+        }
+      }
+
+      updateActiveProfileID(id)
+      await timer(500)
+      dispatch({
+        type: 'SEARCH_START',
+        payload: {
+          word: newWord({
+            text: state.text,
+            title: 'Saladict',
+            favicon: 'https://saladict.crimx.com/favicon.ico'
+          })
+        }
+      })
     })
   }
 })

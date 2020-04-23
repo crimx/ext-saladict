@@ -37,8 +37,6 @@ export function _getDefaultProfile(id?: string) {
         'youdao',
         'urban',
         'vocabulary',
-        'google',
-        'youdaotrans',
         'zdic',
         'guoyu',
         'liangan',

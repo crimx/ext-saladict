@@ -9,10 +9,7 @@ import {
 } from 'observable-hooks'
 import { merge } from 'rxjs'
 import { hover, hoverWithDelay, focusBlur } from '@/_helpers/observables'
-import {
-  updateActiveProfileID,
-  getProfileName
-} from '@/_helpers/profile-manager'
+import { getProfileName } from '@/_helpers/profile-manager'
 import { isOptionsPage } from '@/_helpers/saladict'
 import { FloatBox } from './FloatBox'
 import { OptionsBtn } from './MenubarBtns'
@@ -23,9 +20,8 @@ export interface ProfilesProps {
   t: TFunction
   profiles: Array<{ id: string; name: string }>
   activeProfileId: string
+  onSelectProfile: (id: string) => void
   onHeightChanged: (height: number) => void
-
-  onProfileChanged: (id: string) => void
 }
 
 /**
@@ -117,10 +113,7 @@ export const Profiles: FC<ProfilesProps> = props => {
                 onArrowDownLast={container =>
                   (container.firstElementChild as HTMLButtonElement).focus()
                 }
-                onSelect={id => {
-                  updateActiveProfileID(id)
-                  props.onProfileChanged(id)
-                }}
+                onSelect={props.onSelectProfile}
                 onHeightChanged={props.onHeightChanged}
               />
             </div>

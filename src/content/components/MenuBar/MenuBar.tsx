@@ -44,6 +44,7 @@ export interface MenuBarProps {
   historyIndex: number
   updateHistoryIndex: (index: number) => any
 
+  onSelectProfile: (id: string) => void
   profiles: ProfilesProps['profiles']
   activeProfileId: ProfilesProps['activeProfileId']
 
@@ -118,12 +119,8 @@ export const MenuBar: FC<MenuBarProps> = props => {
         t={t}
         profiles={props.profiles}
         activeProfileId={props.activeProfileId}
+        onSelectProfile={props.onSelectProfile}
         onHeightChanged={updateProfileHeight}
-        onProfileChanged={() => {
-          setTimeout(() => {
-            props.searchText(props.text)
-          }, 500)
-        }}
       />
       <FavBtn
         t={t}
