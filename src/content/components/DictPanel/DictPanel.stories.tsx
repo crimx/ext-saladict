@@ -165,6 +165,7 @@ function useDictPanelProps(): DictPanelProps {
           profilesOption,
           profiles[0].id
         )}
+        onSelectProfile={action('Select Profile')}
         onHeightChanged={newHeight => {
           action('MenuBar Height Changed')(newHeight)
         }}
@@ -184,6 +185,7 @@ function useDictPanelProps(): DictPanelProps {
       <MtaBox
         text={text}
         expand={expandMta}
+        fontSize={number('Font size')}
         maxHeight={number('Mta Max Height', 100)}
         searchText={action('Search Text')}
         onInput={text => {
@@ -212,7 +214,6 @@ function useDictPanelProps(): DictPanelProps {
         onSpeakerPlay={async src => action('Open Source Page')(src)}
         onHeightChanged={action('Dict List Height Changed')}
         newSelection={action('New Selection')}
-        onInPanelSelect={action('onInPanelSelect')}
       />
     ),
     waveformBox: (
