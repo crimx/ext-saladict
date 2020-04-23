@@ -11,6 +11,7 @@ import { EntryError } from './EntryError'
 import { BtnPreviewMemo } from './BtnPreview'
 import { config$$, GlobalsContext } from '../data'
 import { uploadResult$$ } from '../helpers/upload'
+import { ChangeEntryContext } from '../helpers/change-entry'
 
 const EntryComponent = React.memo(({ entry }: { entry: string }) =>
   React.createElement(require(`./Entries/${entry}`)[entry])
@@ -84,9 +85,11 @@ export const MainEntry: FC = () => {
                 backgroundColor: 'var(--opt-background-color)'
               }}
             >
-              <ErrorBoundary key={entry + lang} error={EntryError}>
-                {ready && <EntryComponent entry={entry} />}
-              </ErrorBoundary>
+              <ChangeEntryContext.Provider value={setEntry}>
+                <ErrorBoundary key={entry + lang} error={EntryError}>
+                  {ready && <EntryComponent entry={entry} />}
+                </ErrorBoundary>
+              </ChangeEntryContext.Provider>
             </Layout.Content>
           </Layout>
         </Col>

@@ -329,7 +329,8 @@ export const locale: typeof _locale = {
   dictAuth: {
     description:
       '隨著沙拉查詞使用者增多，共用 key 可能不太穩定。如經常使用機器翻譯，需要更準確的結果以及更穩定的體驗建議到官網申請帳號。',
-    dictHelp: '見{詞典}官網。'
+    dictHelp: '見{詞典}官網。',
+    manage: '管理私用帳號'
   },
 
   third_party_privacy: '第三方隱私',

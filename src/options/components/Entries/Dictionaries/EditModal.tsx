@@ -1,5 +1,6 @@
 import React, { FC, useContext } from 'react'
-import { Switch, Select, Checkbox } from 'antd'
+import { Switch, Select, Checkbox, Button, Modal } from 'antd'
+import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { Rule } from 'antd/lib/form'
 import { DictID } from '@/app-config'
 import { useTranslate } from '@/_helpers/i18n'
@@ -9,6 +10,7 @@ import { SaladictFormItem } from '@/options/components/SaladictForm'
 import { GlobalsContext } from '@/options/data'
 import { InputNumberGroup } from '@/options/components/InputNumberGroup'
 import { SaladictModalForm } from '@/options/components/SaladictModalForm'
+import { ChangeEntryContext } from '@/options/helpers/change-entry'
 
 export interface EditModalProps {
   dictID?: DictID | null
@@ -18,6 +20,7 @@ export interface EditModalProps {
 export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
   const { t, i18n } = useTranslate(['options', 'dicts', 'common', 'langcode'])
   const globals = useContext(GlobalsContext)
+  const changeEntry = useContext(ChangeEntryContext)
   const formItems: SaladictFormItem[] = []
 
   const NUMBER_RULES: Rule[] = [
@@ -81,6 +84,38 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
         children: <InputNumberGroup suffix={t('common:max')} />
       }
     )
+
+    // Dict Auth for Machine Translators
+    if (globals.config.dictAuth[dictID]) {
+      formItems.push({
+        key: dictID + '_auth',
+        label: t('nav.DictAuths'),
+        children: (
+          <Button
+            href="./?menuselected=DictAuths"
+            onClick={e => {
+              e.preventDefault()
+              e.stopPropagation()
+              if (globals.dirty) {
+                Modal.confirm({
+                  title: t('unsave_confirm'),
+                  icon: <ExclamationCircleOutlined />,
+                  okType: 'danger',
+                  onOk: () => {
+                    ;(globals as GlobalsContext).dirty = false
+                    changeEntry('DictAuths')
+                  }
+                })
+              } else {
+                changeEntry('DictAuths')
+              }
+            }}
+          >
+            {t('dictAuth.manage')}
+          </Button>
+        )
+      })
+    }
 
     // custom options
     const options = globals.profile.dicts.all[dictID]['options']

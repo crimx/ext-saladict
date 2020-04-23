@@ -325,7 +325,8 @@ export const locale = {
   dictAuth: {
     description:
       '随着沙拉查词用户增多，共用 key 可能不太稳定。如经常使用机器翻译，需要更准确的结果以及更稳定的体验建议到官网申请帐号。',
-    dictHelp: '见{词典}官网。'
+    dictHelp: '见{词典}官网。',
+    manage: '管理私用帐号'
   },
 
   third_party_privacy: '第三方隐私',
