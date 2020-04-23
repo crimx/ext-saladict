@@ -6,7 +6,7 @@ import {
 } from 'react-retux'
 import { StoreState, StoreDispatch } from '@/content/redux/modules'
 import { updateActiveProfileID } from '@/_helpers/profile-manager'
-import { isStandalonePage } from '@/_helpers/saladict'
+import { isStandalonePage, isPopupPage } from '@/_helpers/saladict'
 import { newWord } from '@/_helpers/record-manager'
 import { message } from '@/_helpers/browser-api'
 import { MenuBar, MenuBarProps } from './MenuBar'
@@ -119,7 +119,8 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
       const state = getState()
       const { showedDictAuth, dictAuth } = state.config
 
-      if (!showedDictAuth) {
+      // no jumping on popup page which breaks user flow
+      if (!showedDictAuth && !isPopupPage()) {
         await updateConfig({
           ...state.config,
           showedDictAuth: true
