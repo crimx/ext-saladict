@@ -207,6 +207,9 @@ export type MessageConfig = MessageConfigType<{
     payload: Word
   }
 
+  /** request searching text box text from other pages */
+  SEARCH_TEXT_BOX: {}
+
   /** request closing panel */
   CLOSE_PANEL: {}
 

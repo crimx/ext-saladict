@@ -3,9 +3,10 @@ import { message, storage, openURL } from '@/_helpers/browser-api'
 import { isExtTainted } from '@/_helpers/integrity'
 import checkUpdate from '@/_helpers/check-update'
 import { updateConfig, initConfig } from '@/_helpers/config-manager'
-import { initProfiles } from '@/_helpers/profile-manager'
+import { initProfiles, updateActiveProfileID } from '@/_helpers/profile-manager'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
 import { isFirefox } from '@/_helpers/saladict'
+import { timer } from '@/_helpers/promise-more'
 import { ContextMenus } from './context-menus'
 import { BackgroundServer } from './server'
 import { openPDF } from './pdf-sniffer'
@@ -86,6 +87,28 @@ function onCommand(command: string) {
       break
     case 'search-clipboard':
       BackgroundServer.getInstance().searchClipboard()
+      break
+    case 'next-profile':
+    case 'prev-profile':
+      browser.tabs
+        .query({ active: true, currentWindow: true })
+        .then(async tabs => {
+          if (tabs.length <= 0 || tabs[0].id == null) {
+            return
+          }
+
+          const curID = window.activeProfile.id
+          const curIndex = window.profileIDList.findIndex(
+            ({ id }) => id === curID
+          )
+          const offset = command === 'next-profile' ? 1 : -1
+          const nextIndex =
+            curIndex < 0 ? 0 : (curIndex + offset) % window.profileIDList.length
+
+          await updateActiveProfileID(window.profileIDList[nextIndex].id)
+          await timer(10)
+          message.send(tabs[0].id, { type: 'SEARCH_TEXT_BOX' })
+        })
       break
   }
 }

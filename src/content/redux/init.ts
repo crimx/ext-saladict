@@ -73,6 +73,24 @@ export const init = (
           return Promise.resolve(getState().isTempDisabled)
         }
 
+      case 'SEARCH_TEXT_BOX': {
+        const { searchHistory, historyIndex, text } = getState()
+        dispatch({
+          type: 'SEARCH_START',
+          payload: {
+            word:
+              searchHistory[historyIndex]?.text === text
+                ? searchHistory[historyIndex]
+                : newWord({
+                    text,
+                    title: 'Saladict',
+                    favicon: 'https://saladict.crimx.com/favicon.ico'
+                  })
+          }
+        })
+        return Promise.resolve()
+      }
+
       case 'QS_PANEL_SEARCH_TEXT':
         if (isQuickSearchPage()) {
           // request searching text, from other tabs

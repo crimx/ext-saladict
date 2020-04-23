@@ -143,16 +143,19 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
         }
       }
 
-      updateActiveProfileID(id)
-      await timer(500)
+      await updateActiveProfileID(id)
+      await timer(10)
       dispatch({
         type: 'SEARCH_START',
         payload: {
-          word: newWord({
-            text: state.text,
-            title: 'Saladict',
-            favicon: 'https://saladict.crimx.com/favicon.ico'
-          })
+          word:
+            state.searchHistory[state.historyIndex]?.text === state.text
+              ? state.searchHistory[state.historyIndex]
+              : newWord({
+                  text: state.text,
+                  title: 'Saladict',
+                  favicon: 'https://saladict.crimx.com/favicon.ico'
+                })
         }
       })
     })

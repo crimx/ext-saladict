@@ -31,5 +31,11 @@
   },
   "command_search_clipboard": {
     "message": "Search clipboard content in Standalone Panel"
+  },
+  "command_next_profile": {
+    "message": "Next Profile"
+  },
+  "command_prev_profile": {
+    "message": "Previous Profile"
   }
 }

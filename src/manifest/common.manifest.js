@@ -24,11 +24,14 @@ module.exports = {
     'toggle-instant': {
       description: '__MSG_command_toggle_instant__'
     },
-    'open-quick-search': {
-      description: '__MSG_command_open_quick_search__'
+    'search-clipboard': {
+      description: '__MSG_command_search_clipboard__'
     },
     'open-pdf': {
       description: '__MSG_command_open_pdf__'
+    },
+    'open-quick-search': {
+      description: '__MSG_command_open_quick_search__'
     },
     'open-youdao': {
       description: '__MSG_command_open_youdao__'
@@ -36,8 +39,11 @@ module.exports = {
     'open-google': {
       description: '__MSG_command_open_google__'
     },
-    'search-clipboard': {
-      description: '__MSG_command_search_clipboard__'
+    'next-profile': {
+      description: '__MSG_command_next_profile__'
+    },
+    'prev-profile': {
+      description: '__MSG_command_prev_profile__'
     }
   },
 

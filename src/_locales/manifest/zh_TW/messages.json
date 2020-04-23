@@ -31,5 +31,11 @@
   },
   "command_search_clipboard": {
     "message": "在獨立視窗中搜尋剪貼簿內容"
+  },
+  "command_next_profile": {
+    "message": "下一個情景模式"
+  },
+  "command_prev_profile": {
+    "message": "上一個情景模式"
   }
 }

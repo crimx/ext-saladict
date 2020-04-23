@@ -1,8 +1,8 @@
 import './initialization'
 import { getConfig, addConfigListener } from '@/_helpers/config-manager'
 import {
-  getActiveProfile,
-  addActiveProfileListener
+  createActiveProfileStream,
+  createProfileIDListStream
 } from '@/_helpers/profile-manager'
 import { reportGA } from '@/_helpers/analytics'
 import { message } from '@/_helpers/browser-api'
@@ -32,10 +32,10 @@ getConfig().then(async config => {
   })
 })
 
-getActiveProfile().then(async profile => {
+createActiveProfileStream().subscribe(profile => {
   window.activeProfile = profile
+})
 
-  addActiveProfileListener(({ newProfile }) => {
-    window.activeProfile = newProfile
-  })
+createProfileIDListStream().subscribe(list => {
+  window.profileIDList = list
 })
