@@ -1,6 +1,4 @@
-import { DictAuth } from '@/app-config/auth'
-
-export const auth: DictAuth = {
+export const auth = {
   token: ''
 }
 

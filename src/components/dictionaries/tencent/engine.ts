@@ -52,8 +52,8 @@ export const search: SearchFunction<
     payload
   )
 
-  const secretId = config.dictAuth.tencent?.secretId
-  const secretKey = config.dictAuth.tencent?.secretKey
+  const secretId = config.dictAuth.tencent.secretId
+  const secretKey = config.dictAuth.tencent.secretKey
   const translatorConfig =
     secretId && secretKey ? { secretId, secretKey } : undefined
 

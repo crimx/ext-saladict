@@ -52,8 +52,8 @@ export const search: SearchFunction<
     payload
   )
 
-  const pid = config.dictAuth.sogou?.pid
-  const key = config.dictAuth.sogou?.key
+  const pid = config.dictAuth.sogou.pid
+  const key = config.dictAuth.sogou.key
   const translatorConfig = pid && key ? { pid, key } : undefined
 
   try {

@@ -43,8 +43,8 @@ export const search: SearchFunction<
     payload
   )
 
-  const baiduAppid = config.dictAuth.baidu?.appid
-  const baiduKey = config.dictAuth.baidu?.key
+  const baiduAppid = config.dictAuth.baidu.appid
+  const baiduKey = config.dictAuth.baidu.key
   const baiduConfig =
     baiduAppid && baiduKey ? { appid: baiduAppid, key: baiduKey } : undefined
 
@@ -59,7 +59,7 @@ export const search: SearchFunction<
     sl = baiduResult.from
   }
 
-  const caiYunToken = config.dictAuth.caiyun?.token
+  const caiYunToken = config.dictAuth.caiyun.token
   const caiYunConfig = caiYunToken ? { token: caiYunToken } : undefined
 
   try {

@@ -43,8 +43,8 @@ export const search: SearchFunction<
     payload
   )
 
-  const appKey = config.dictAuth.youdaotrans?.appKey
-  const key = config.dictAuth.youdaotrans?.key
+  const appKey = config.dictAuth.youdaotrans.appKey
+  const key = config.dictAuth.youdaotrans.key
   const translatorConfig = appKey && key ? { appKey, key } : undefined
 
   try {

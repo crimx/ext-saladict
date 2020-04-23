@@ -52,8 +52,8 @@ export const search: SearchFunction<
     payload
   )
 
-  const appid = config.dictAuth.baidu?.appid
-  const key = config.dictAuth.baidu?.key
+  const appid = config.dictAuth.baidu.appid
+  const key = config.dictAuth.baidu.key
   const translatorConfig = appid && key ? { appid, key } : undefined
 
   try {
