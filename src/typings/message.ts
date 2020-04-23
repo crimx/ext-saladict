@@ -197,11 +197,9 @@ export type MessageConfig = MessageConfigType<{
     payload: boolean
   }
 
-  /** Other pages or frames query for panel state */
-  QUERY_PANEL_STATE: {
-    /** object path, default returns the whole state */
-    payload?: string
-    response?: any
+  /** From other pages or frames query for active panel pin state */
+  QUERY_PIN_STATE: {
+    response: boolean
   }
 
   /** request searching */

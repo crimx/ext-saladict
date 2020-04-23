@@ -8,8 +8,6 @@ import { createEpicMiddleware } from 'redux-observable'
 import { Observable } from 'rxjs'
 import { map, distinctUntilChanged } from 'rxjs/operators'
 
-import get from 'lodash/get'
-
 import { message } from '@/_helpers/browser-api'
 import { getConfig } from '@/_helpers/config-manager'
 import { getActiveProfile } from '@/_helpers/profile-manager'
@@ -58,15 +56,11 @@ export const createStore = () => {
       })
     })
 
-  message.addListener('QUERY_PANEL_STATE', queryStoreState)
-  message.self.addListener('QUERY_PANEL_STATE', queryStoreState)
+  message.addListener('QUERY_PIN_STATE', queryStoreState)
+  message.self.addListener('QUERY_PIN_STATE', queryStoreState)
 
-  function queryStoreState({ payload: path }: { payload?: string }) {
-    return Promise.resolve(
-      path && typeof path === 'string'
-        ? get(store.getState(), path)
-        : store.getState()
-    )
+  async function queryStoreState() {
+    return store.getState().isPinned
   }
 
   return store

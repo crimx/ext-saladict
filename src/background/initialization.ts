@@ -45,9 +45,8 @@ function onCommand(command: string) {
           return
         }
         message
-          .send<'QUERY_PANEL_STATE', boolean>(tabs[0].id, {
-            type: 'QUERY_PANEL_STATE',
-            payload: 'widget.isPinned'
+          .send<'QUERY_PIN_STATE', boolean>(tabs[0].id, {
+            type: 'QUERY_PIN_STATE'
           })
           .then(isPinned => {
             const config = window.appConfig
