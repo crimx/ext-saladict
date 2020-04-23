@@ -9,6 +9,7 @@ export interface MtaBoxProps {
   expand: boolean
   maxHeight: number
   text: string
+  fontSize: number
   shouldFocus: boolean
   searchText: (text: string) => any
   onInput: (text: string) => void
@@ -79,7 +80,7 @@ export const MtaBox: FC<MtaBoxProps> = props => {
               autoFocus
               inputRef={textareaRef}
               className="mtaBox-TextArea"
-              style={{ maxHeight: props.maxHeight }}
+              style={{ maxHeight: props.maxHeight, fontSize: props.fontSize }}
               value={props.text}
               onChange={e => {
                 isTypedRef.current = true
