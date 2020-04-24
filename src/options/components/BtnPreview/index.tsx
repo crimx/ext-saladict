@@ -12,6 +12,9 @@ import { PreviewIcon } from './PreviewIcon'
 
 import './_style.scss'
 
+// pre-fetch the word
+const pWordOfTheDay = getWordOfTheDay()
+
 export const BtnPreview: FC = () => {
   const { t } = useTranslate('options')
   const show = !useIsShowDictPanel()
@@ -40,7 +43,7 @@ export const BtnPreview: FC = () => {
             dispatch({
               type: 'SEARCH_START',
               payload: {
-                word: newWord({ text: await getWordOfTheDay() })
+                word: newWord({ text: await pWordOfTheDay })
               }
             })
           }}
