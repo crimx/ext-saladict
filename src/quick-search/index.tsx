@@ -1,28 +1,40 @@
 import './env'
 import '@/selection'
 
-import React from 'react'
+import React, { FC } from 'react'
 import ReactDOM from 'react-dom'
+import { Helmet } from 'react-helmet'
 import { message } from '@/_helpers/browser-api'
 
 import { Provider as ProviderRedux } from 'react-redux'
 import createStore from '@/content/redux/create'
 
-import { I18nextProvider as ProviderI18next } from 'react-i18next'
-import { i18nLoader } from '@/_helpers/i18n'
+import { I18nContextProvider, useTranslate } from '@/_helpers/i18n'
 
 import { DictPanelStandaloneContainer } from '@/content/components/DictPanel/DictPanelStandalone.container'
 
 import './quick-search.scss'
 
-document.title = 'Saladict Dict Panel'
+document.title = 'Saladict Standalone Panel'
+
+const Title: FC = () => {
+  const { t } = useTranslate('content')
+  return (
+    <Helmet>
+      <title>{t('standalone')}</title>
+    </Helmet>
+  )
+}
+
+const store = createStore()
 
 ReactDOM.render(
-  <ProviderRedux store={createStore()}>
-    <ProviderI18next i18n={i18nLoader()}>
+  <I18nContextProvider>
+    <Title />
+    <ProviderRedux store={store}>
       <DictPanelStandaloneContainer width="100vw" height="100vh" />
-    </ProviderI18next>
-  </ProviderRedux>,
+    </ProviderRedux>
+  </I18nContextProvider>,
   document.getElementById('root')
 )
 

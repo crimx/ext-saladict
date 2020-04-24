@@ -20,6 +20,8 @@ export const SALADICT_EXTERNAL = 'saladict-external'
 
 export const SALADICT_PANEL = 'saladict-panel'
 
+export const isFirefox = navigator.userAgent.includes('Firefox')
+
 /**
  * Is element in a Saladict external element
  */

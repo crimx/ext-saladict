@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import i18next from 'i18next'
+import { TFunction } from 'i18next'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import {
   useObservable,
@@ -8,36 +8,33 @@ import {
   identity
 } from 'observable-hooks'
 import { merge } from 'rxjs'
-import { debounceTime } from 'rxjs/operators'
 import { hover, hoverWithDelay, focusBlur } from '@/_helpers/observables'
-import {
-  updateActiveProfileID,
-  getProfileName
-} from '@/_helpers/profile-manager'
+import { getProfileName } from '@/_helpers/profile-manager'
 import { isOptionsPage } from '@/_helpers/saladict'
 import { FloatBox } from './FloatBox'
 import { OptionsBtn } from './MenubarBtns'
 import { message } from '@/_helpers/browser-api'
+import { useTranslate } from '@/_helpers/i18n'
 
 export interface ProfilesProps {
-  t: i18next.TFunction
+  t: TFunction
   profiles: Array<{ id: string; name: string }>
   activeProfileId: string
+  onSelectProfile: (id: string) => void
   onHeightChanged: (height: number) => void
-
-  onProfileChanged: (id: string) => void
 }
 
 /**
  * Pick and choose profiles
  */
 export const Profiles: FC<ProfilesProps> = props => {
-  const [onMouseOverOutDelay, mouseOverOutDelay$] = useObservableCallback<
+  const { t } = useTranslate(['content', 'common'])
+  const [onHoverBtn, onHoverBtn$] = useObservableCallback<
     boolean,
     React.MouseEvent<Element>
   >(hoverWithDelay)
 
-  const [onMouseOverOut, mouseOverOut$] = useObservableCallback<
+  const [onHoverBox, onHoverBox$] = useObservableCallback<
     boolean,
     React.MouseEvent<Element>
   >(hover)
@@ -48,12 +45,14 @@ export const Profiles: FC<ProfilesProps> = props => {
     identity
   )
 
-  const isShowProfiles = useObservableState(
-    useObservable(() =>
-      merge(mouseOverOut$, mouseOverOutDelay$, focusBlur$, showHideProfiles$)
-    ).pipe(debounceTime(100)),
+  const isOnBtn = useObservableState(onHoverBtn$, false)
+
+  const isOnBox = useObservableState(
+    useObservable(() => merge(onHoverBox$, focusBlur$, showHideProfiles$)),
     false
   )
+
+  const isShowProfiles = isOnBtn || isOnBox
 
   const listItem = props.profiles.map(p => {
     return {
@@ -64,7 +63,7 @@ export const Profiles: FC<ProfilesProps> = props => {
             p.id === props.activeProfileId ? ' isActive' : ''
           }`}
         >
-          {getProfileName(p.name, props.t)}
+          {getProfileName(p.name, t)}
         </span>
       )
     }
@@ -73,7 +72,7 @@ export const Profiles: FC<ProfilesProps> = props => {
   return (
     <div className="menuBar-ProfileContainer">
       <OptionsBtn
-        t={props.t}
+        t={t}
         disabled={isOptionsPage()}
         onKeyDown={e => {
           if (e.key === 'ArrowDown') {
@@ -82,8 +81,8 @@ export const Profiles: FC<ProfilesProps> = props => {
             showHideProfiles(true)
           }
         }}
-        onMouseOver={onMouseOverOutDelay}
-        onMouseOut={onMouseOverOutDelay}
+        onMouseOver={onHoverBtn}
+        onMouseOut={onHoverBtn}
         onClick={() =>
           message.send({
             type: 'OPEN_URL',
@@ -106,18 +105,15 @@ export const Profiles: FC<ProfilesProps> = props => {
                 list={listItem}
                 onFocus={onFocusBlur}
                 onBlur={onFocusBlur}
-                onMouseOver={onMouseOverOut}
-                onMouseOut={onMouseOverOut}
+                onMouseOver={onHoverBox}
+                onMouseOut={onHoverBox}
                 onArrowUpFirst={container =>
                   (container.lastElementChild as HTMLButtonElement).focus()
                 }
                 onArrowDownLast={container =>
                   (container.firstElementChild as HTMLButtonElement).focus()
                 }
-                onSelect={id => {
-                  updateActiveProfileID(id)
-                  props.onProfileChanged(id)
-                }}
+                onSelect={props.onSelectProfile}
                 onHeightChanged={props.onHeightChanged}
               />
             </div>

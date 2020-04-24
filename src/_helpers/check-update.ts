@@ -11,12 +11,12 @@ export default function checkUpdate(): Promise<UpdateInfo> {
     .then(r => r.json())
     .then(data => {
       if (data && data.tag_name) {
-        let vGithub = /\d+\.\d+\.\d+/.exec(data.tag_name)
+        const vGithub = /\d+\.\d+\.\d+/.exec(data.tag_name)
         if (!vGithub) {
           return { isAvailable: false }
         }
-        let gits = vGithub[0].split('.').map(v => Number(v))
-        let curs = browser.runtime
+        const gits = vGithub[0].split('.').map(v => Number(v))
+        const curs = browser.runtime
           .getManifest()
           .version.split('.')
           .map(v => Number(v))

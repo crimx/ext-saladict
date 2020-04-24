@@ -9,7 +9,7 @@ import memoizeOne from 'memoize-one'
 import { Tencent } from '@opentranslate/tencent'
 import { TencentLanguage } from './config'
 
-const getTranslator = memoizeOne(
+export const getTranslator = memoizeOne(
   () =>
     new Tencent({
       env: 'ext',
@@ -52,8 +52,13 @@ export const search: SearchFunction<
     payload
   )
 
+  const secretId = config.dictAuth.tencent.secretId
+  const secretKey = config.dictAuth.tencent.secretKey
+  const translatorConfig =
+    secretId && secretKey ? { secretId, secretKey } : undefined
+
   try {
-    const result = await translator.translate(text, sl, tl)
+    const result = await translator.translate(text, sl, tl, translatorConfig)
     return {
       result: {
         id: 'tencent',

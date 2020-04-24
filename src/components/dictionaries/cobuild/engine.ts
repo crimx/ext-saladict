@@ -8,7 +8,8 @@ import {
   SearchFunction,
   GetSrcPageFunction,
   externalLink,
-  DictSearchResult
+  DictSearchResult,
+  getChsToChz
 } from '../helpers'
 import { getStaticSpeaker } from '@/components/Speaker'
 
@@ -45,14 +46,14 @@ export interface COBUILDColResult {
 
 export type COBUILDResult = COBUILDCibaResult | COBUILDColResult
 
-export const search: SearchFunction<COBUILDResult> = (
+export const search: SearchFunction<COBUILDResult> = async (
   text,
   config,
   profile,
   payload
 ) => {
   text = encodeURIComponent(text.replace(/\s+/g, '-'))
-  const isChz = config.langCode === 'zh-TW'
+  const transform = await getChsToChz(config.langCode)
   const { options } = profile.dicts.all.cobuild
   const sources:
     | [[string, typeof handleCibaDOM], [string, typeof handleColDOM]]
@@ -66,17 +67,17 @@ export const search: SearchFunction<COBUILDResult> = (
   }
 
   return fetchDirtyDOM(sources[0][0] + text)
-    .then(doc => sources[0][1](doc, isChz))
+    .then(doc => sources[0][1](doc, transform))
     .catch(() => {
       return fetchDirtyDOM(sources[1][0] + text)
         .catch(handleNetWorkError)
-        .then(doc => sources[1][1](doc, isChz))
+        .then(doc => sources[1][1](doc, transform))
     })
 }
 
 async function handleCibaDOM(
   doc: Document,
-  isChz: boolean
+  transform: null | ((text: string) => string)
 ): Promise<DictSearchResult<COBUILDCibaResult>> {
   const result: COBUILDCibaResult = {
     type: 'ciba',
@@ -85,22 +86,22 @@ async function handleCibaDOM(
   }
   const audio: { uk?: string; us?: string } = {}
 
-  result.title = getText(doc, '.keyword', isChz)
+  result.title = getText(doc, '.keyword', transform)
   if (!result.title) {
     return handleNoResult()
   }
 
   result.level = getText(doc, '.base-level')
 
-  let $star = doc.querySelector('.word-rate [class^="star"]')
+  const $star = doc.querySelector('.word-rate [class^="star"]')
   if ($star) {
-    let star = Number($star.className[$star.className.length - 1])
+    const star = Number($star.className[$star.className.length - 1])
     if (!isNaN(star)) {
       result.star = star
     }
   }
 
-  let $pron = doc.querySelector('.base-speak')
+  const $pron = doc.querySelector('.base-speak')
   if ($pron) {
     result.prons = Array.from($pron.children).map(el => {
       const phsym = (el.textContent || '').trim()
@@ -119,12 +120,12 @@ async function handleCibaDOM(
     })
   }
 
-  let $article = Array.from(doc.querySelectorAll('.info-article')).find(x =>
+  const $article = Array.from(doc.querySelectorAll('.info-article')).find(x =>
     /柯林斯高阶英汉双解学习词典/.test(x.textContent || '')
   )
   if ($article) {
     result.defs = Array.from($article.querySelectorAll('.prep-order')).map(d =>
-      getInnerHTML('http://www.iciba.com', d, { toChz: isChz })
+      getInnerHTML('http://www.iciba.com', d, { transform })
     )
   }
 
@@ -137,7 +138,7 @@ async function handleCibaDOM(
 
 async function handleColDOM(
   doc: Document,
-  toChz: boolean
+  transform: null | ((text: string) => string)
 ): Promise<DictSearchResult<COBUILDColResult>> {
   const result: COBUILDColResult = {
     type: 'collins',
@@ -195,7 +196,7 @@ async function handleColDOM(
         title,
         num,
         content: getInnerHTML('https://www.collinsdictionary.com', $section, {
-          toChz
+          transform
         })
       }
     })

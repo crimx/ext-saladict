@@ -1,0 +1,17 @@
+.sortable-list-item {
+  button,
+  .ant-radio-inner,
+  .ant-radio-inner::after {
+    transition: none !important;
+  }
+
+  .ant-btn-icon-only.ant-btn-sm {
+    > * {
+      font-size: 16px;
+    }
+
+    .anticon svg {
+      display: block;
+    }
+  }
+}

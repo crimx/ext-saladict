@@ -31,5 +31,11 @@
   },
   "command_search_clipboard": {
     "message": "在独立窗口中搜索剪贴板内容"
+  },
+  "command_next_profile": {
+    "message": "下一个情景模式"
+  },
+  "command_prev_profile": {
+    "message": "上一个情景模式"
   }
 }

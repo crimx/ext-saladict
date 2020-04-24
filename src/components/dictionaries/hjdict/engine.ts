@@ -235,11 +235,11 @@ function getLangCode(text: string, profile: Profile): string {
 }
 
 function getUUID(e?: number): string {
-  let t = arguments.length > 1 && void 0 !== arguments[1] ? arguments[1] : 16
+  let t = arguments.length > 1 && undefined !== arguments[1] ? arguments[1] : 16
   let n = ''
   if ('number' === typeof e) {
     for (let i = 0; i < e; i++) {
-      let r = Math.floor(10 * Math.random())
+      const r = Math.floor(10 * Math.random())
       n += r % 2 === 0 ? 'x' : 'y'
     }
   } else {
@@ -248,7 +248,7 @@ function getUUID(e?: number): string {
   return (
     ('number' !== typeof t || t < 2 || t > 36) && (t = 16),
     n.replace(/[xy]/g, function(e) {
-      let n = (Math.random() * t) | 0
+      const n = (Math.random() * t) | 0
       return ('x' === e ? n : (3 & n) | 8).toString(t)
     })
   )

@@ -85,9 +85,9 @@ export function getWords(
   config: {
     itemsPerPage?: number
     pageNum?: number
-    filters: { [field: string]: string[] | undefined }
-    sortField?: string
-    sortOrder?: 'ascend' | 'descend' | false
+    filters: { [field: string]: (string | number)[] | null | undefined }
+    sortField?: string | number | (string | number)[]
+    sortOrder?: 'ascend' | 'descend' | false | null
     searchText?: string
   }
 ) {
@@ -102,7 +102,7 @@ export function getWords(
 
 function logError<T = any>(valPassThrough: T): (x: any) => T {
   return err => {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.DEBUG) {
       console.error(err)
     }
     return valPassThrough

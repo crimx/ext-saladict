@@ -80,6 +80,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
           profilesOption,
           profiles[0].id
         )}
+        onSelectProfile={action('Select Profile')}
         onDragAreaMouseDown={action('Darg Area Mousedown')}
         onDragAreaTouchStart={action('Darg Area Touchstart')}
         onHeightChanged={action('Height Changed')}

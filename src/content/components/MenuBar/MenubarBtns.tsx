@@ -1,9 +1,9 @@
 import React, { FC } from 'react'
-import i18next from 'i18next'
+import { TFunction } from 'i18next'
 
 export interface MenubarBtnProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  t: i18next.TFunction
+  t: TFunction
 }
 
 /**

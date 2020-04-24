@@ -3,6 +3,7 @@ import WaveSurfer from 'wavesurfer.js'
 import RegionsPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.regions.min.js'
 import NumberEditor from 'react-number-editor'
 import { message, storage } from '@/_helpers/browser-api'
+import { isFirefox } from '@/_helpers/saladict'
 import { SoundTouch, SimpleFilter, getWebAudioNode } from 'soundtouchjs'
 
 interface AnyObject {
@@ -22,8 +23,6 @@ interface WaveformState {
   /** use pitch stretcher */
   pitchStretch: boolean
 }
-
-const isFirefox = navigator.userAgent.includes('Firefox')
 
 export class Waveform extends React.PureComponent<
   WaveformProps,

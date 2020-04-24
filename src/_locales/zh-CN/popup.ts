@@ -1,4 +1,5 @@
 export const locale = {
+  title: '沙拉查词-右上弹框',
   app_active_title: '启用划词',
   app_temp_active_title: '对当前页暂时关闭划词',
   instant_capture_pinned: '（钉住）',

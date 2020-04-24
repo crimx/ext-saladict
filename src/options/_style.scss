@@ -2,10 +2,6 @@
  * Antd Patch
 \* ======================================= */
 
-body {
-  background: #f0f2f5;
-}
-
 .ant-form-item.form-item-inline {
   display: inline-block;
   margin: 0 10px 0 0;
@@ -14,6 +10,22 @@ body {
     margin-right: 0;
   }
 }
+
+.ant-form-item-label {
+  white-space: normal !important;
+
+  > label {
+    margin-top: 3px !important;
+    align-items: flex-start !important;
+    height: auto !important;
+
+    &.ant-form-item-required::before {
+      display: none !important;
+      line-height: unset !important;
+    }
+  }
+}
+
 
 .sortable-list-item {
   width: 100%;
@@ -32,12 +44,6 @@ body {
   padding: 0;
   line-height: 1;
   border: none;
-}
-
-.ant-tooltip,
-.ant-modal-mask,
-.ant-modal-wrap {
-  z-index: 2147483647 !important;
 }
 
 /* ======================================= *\
@@ -69,6 +75,7 @@ kbd {
   box-shadow: 0 2px 0 #ccc, 0 3px 1px #999, inset 0 1px 1px #fff;
 }
 
+.dark-mode kbd,
 .dark kbd,
 kbd.dark {
   color: #fdfdfd;
@@ -152,11 +159,25 @@ kbd[data-key='eject']:after {
   content: ' ⏏';
 }
 
-.options-header {
-  display: flex;
-  justify-content: space-between;
+/* ======================================= *\
+ * Components
+\* ======================================= */
 
-  @media screen and (max-width: 800px) {
-    padding: 0 5px !important;
+.main-entry {
+  --opt-color: rgba(0, 0, 0, 0.65);
+  --opt-background-color: #fff;
+
+  &.dark-mode {
+    --opt-color: hsla(0, 0%, 100%, 0.65);
+    --opt-background-color: #141414;
+  }
+}
+
+.saladict-form-profile-title {
+  cursor: help;
+
+  .anticon {
+    color: #f5222d;
+    margin-right: 0.5em;
   }
 }

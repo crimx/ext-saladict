@@ -1,0 +1,49 @@
+import React, { FC, useMemo } from 'react'
+import { Layout } from 'antd'
+import { useObservableState, useObservableGetState } from 'observable-hooks'
+import { useTranslate } from '@/_helpers/i18n'
+import { getProfileName } from '@/_helpers/profile-manager'
+import { profile$$, profileIDList$$ } from '@/options/data'
+import { HeadInfoMemo } from './HeadInfo'
+
+import './_style.scss'
+
+export interface HeaderProps {
+  openProfilesTab: (entry: 'Profiles') => void
+}
+
+export const Header: FC<HeaderProps> = props => {
+  const { t, ready } = useTranslate(['options', 'common'])
+  const profileId = useObservableGetState(profile$$, 'id')!
+  const profileIDList = useObservableState(profileIDList$$)!
+
+  const profileName = useMemo(
+    () =>
+      ready
+        ? `「 ${getProfileName(
+            profileIDList.find(({ id }) => id === profileId)?.name || '',
+            t
+          )} 」`
+        : '',
+    [profileId, profileIDList, ready]
+  )
+
+  return (
+    <Layout.Header className="options-header">
+      <h1>{t('title')}</h1>
+      <a
+        href="/?menuselected=Profiles"
+        onClick={e => {
+          e.preventDefault()
+          e.stopPropagation()
+          props.openProfilesTab('Profiles')
+        }}
+      >
+        {profileName}
+      </a>
+      <HeadInfoMemo />
+    </Layout.Header>
+  )
+}
+
+export const HeaderMemo = React.memo(Header)

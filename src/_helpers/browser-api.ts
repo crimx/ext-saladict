@@ -292,7 +292,12 @@ function storageCreateStream<T = any>(
     handler => this.addListener(key, handler as StorageListenerCb),
     handler => this.removeListener(key, handler as StorageListenerCb)
   ).pipe(
-    filter(args => (Array.isArray(args) ? args[0] : args).hasOwnProperty(key)),
+    filter(args =>
+      Object.prototype.hasOwnProperty.call(
+        Array.isArray(args) ? args[0] : args,
+        key
+      )
+    ),
     map(args => (Array.isArray(args) ? args[0][key] : args[key]))
   )
 }
@@ -316,7 +321,7 @@ function messageSend<T extends MsgType>(
     ? browser.runtime.sendMessage(args[0])
     : browser.tabs.sendMessage(args[0], args[1])
   ).catch(err => {
-    if (process.env.DEV_BUILD) {
+    if (process.env.DEBUG) {
       console.warn(err, ...args)
     } else if (process.env.NODE_ENV !== 'production') {
       return Promise.reject(err) as any
@@ -338,7 +343,7 @@ async function messageSendSelf<T extends MsgType, R = undefined>(
       })
     )
     .catch(err => {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.warn(err, message)
       } else if (process.env.NODE_ENV !== 'production') {
         return Promise.reject(err) as any

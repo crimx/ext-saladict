@@ -6,8 +6,7 @@ import ReactDOM from 'react-dom'
 import { Provider as ProviderRedux } from 'react-redux'
 import createStore from '@/content/redux/create'
 
-import { I18nextProvider as ProviderI18next } from 'react-i18next'
-import { i18nLoader } from '@/_helpers/i18n'
+import { I18nContextProvider } from '@/_helpers/i18n'
 
 import { WordEditorStandaloneContainer } from '@/content/components/WordEditor/WordEditorStandalone.container'
 
@@ -16,8 +15,6 @@ import './word-editor.scss'
 document.title = 'Saladict Word Editor'
 
 const store = createStore()
-const i18n = i18nLoader()
-
 const searchParams = new URL(document.URL).searchParams
 
 const wordString = searchParams.get('word')
@@ -33,10 +30,10 @@ if (wordString) {
 }
 
 ReactDOM.render(
-  <ProviderRedux store={store}>
-    <ProviderI18next i18n={i18n}>
+  <I18nContextProvider>
+    <ProviderRedux store={store}>
       <WordEditorStandaloneContainer />
-    </ProviderI18next>
-  </ProviderRedux>,
+    </ProviderRedux>
+  </I18nContextProvider>,
   document.getElementById('root')
 )

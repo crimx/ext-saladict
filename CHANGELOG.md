@@ -2,6 +2,51 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.10.0](https://github.com/crimx/ext-saladict/compare/v7.9.3...v7.10.0) (2020-04-24)
+
+
+### Features
+
+* add token settings ([df2924f](https://github.com/crimx/ext-saladict/commit/df2924f7f1a88ce50c21e6019ddf63c73f3a2ae1))
+
+
+### Bug Fixes
+
+* **context-menus:** encode selection text ([0da9e84](https://github.com/crimx/ext-saladict/commit/0da9e84fd2c5805d66af637f8977340408b2d21a))
+* **context-menus:** load locale ([e1981b1](https://github.com/crimx/ext-saladict/commit/e1981b145680a7b2fbce86be5a93e50e0266beac))
+* **googledict:** audio link ([407fa9b](https://github.com/crimx/ext-saladict/commit/407fa9b669800bde3ccc29b217e8515d810f022d))
+* **i18n:** make ready changes every time ([2a03730](https://github.com/crimx/ext-saladict/commit/2a0373045d343c77782ca327bce3d6bdf40b7c0c))
+* **i18n:** proper init language without reloading ([bca03cb](https://github.com/crimx/ext-saladict/commit/bca03cb2f3c0d3fb7258b594e69661512606877d))
+* **options:** avoid stale values ([d98b53a](https://github.com/crimx/ext-saladict/commit/d98b53a7973edca8da7274f7fc774da532e30e5e))
+* **options:** layout adjustment ([84496e6](https://github.com/crimx/ext-saladict/commit/84496e698cba7656ea0a46b8dd959fee00f1faaf))
+* **options:** make data immutable ([fc967db](https://github.com/crimx/ext-saladict/commit/fc967db6cb3eed729c9bb3dfd1b3ba9545d0c917))
+* **options:** only get values from item name ([fea31ab](https://github.com/crimx/ext-saladict/commit/fea31abd5ade22c9ff44a0a8115519a5586ff1c3))
+* **options:** reduce re-rendering of the whole form ([02f61a9](https://github.com/crimx/ext-saladict/commit/02f61a9105b0adbf87a17b4170e6522bcc5de370))
+* **options:** rerender error boundary on entry change ([7450057](https://github.com/crimx/ext-saladict/commit/7450057896ce10bd52f5c0602353e2532563d999))
+* **options:** search words on options page ([4bfc211](https://github.com/crimx/ext-saladict/commit/4bfc211d26286d71b178ffcecf9145d7ec222b15))
+* **panel:** correct standalone position on multi-screen ([f2f152f](https://github.com/crimx/ext-saladict/commit/f2f152ff604260e6e65a05b7dfea7d84f8d07e96))
+* **panel:** disable external style reset on standalone panel ([c2f26be](https://github.com/crimx/ext-saladict/commit/c2f26bec4ae533b3f22610fe5ce7ad722e15d446))
+* **panel:** hide external divs ([d584e31](https://github.com/crimx/ext-saladict/commit/d584e313e4cbf6370a8d8c397ce32f4fb9659976)), closes [#703](https://github.com/crimx/ext-saladict/issues/703)
+* **panel:** more robust dargging ([e5a876b](https://github.com/crimx/ext-saladict/commit/e5a876b5475e29538874834ed985cde21a7a5ae2)), closes [#747](https://github.com/crimx/ext-saladict/issues/747)
+* **panel:** mta font size ([0b261fd](https://github.com/crimx/ext-saladict/commit/0b261fd23d9ea9512ffc59d3adafdd14967b69c7)), closes [#721](https://github.com/crimx/ext-saladict/issues/721)
+* **panel:** profiles float box ([7b59fb3](https://github.com/crimx/ext-saladict/commit/7b59fb3246bca4c99acd8129ddb981c913affd56))
+* **pdf:** update pdf script ([f419402](https://github.com/crimx/ext-saladict/commit/f419402bfe96e9759076f865c0ea813a8dc011d1))
+* **selection:** instant selection ([85d43a0](https://github.com/crimx/ext-saladict/commit/85d43a0a03519985828362c99556719c86761f84)), closes [#742](https://github.com/crimx/ext-saladict/issues/742)
+* **sync-services:** ignore word addition from sync services ([685cd02](https://github.com/crimx/ext-saladict/commit/685cd02e09adb11bf508ef9ae3033d4d4591763c)), closes [#717](https://github.com/crimx/ext-saladict/issues/717)
+* content style origin ([230275d](https://github.com/crimx/ext-saladict/commit/230275d5db56e65de9570d27d62ceed1f0618a32))
+
+
+### Build System
+
+* better chunk naming for dict favicons ([d1f65fd](https://github.com/crimx/ext-saladict/commit/d1f65fde14b23992ce7a1969a0a3b778a4caef70))
+* control split chunks ([858ea64](https://github.com/crimx/ext-saladict/commit/858ea644d19016218b2b4481fbd63e80e8345f65))
+* fix dotenv ([07c7fc6](https://github.com/crimx/ext-saladict/commit/07c7fc6b78c1acc84607a0946775d2332f875ffb))
+
+
+### Tests
+
+* **panel:** update storybook ([657da12](https://github.com/crimx/ext-saladict/commit/657da12dd418a99a5d13f83158ed9f1d51fe3c33))
+
 ### [7.9.3](https://github.com/crimx/ext-saladict/compare/v7.9.2...v7.9.3) (2020-03-19)
 
 

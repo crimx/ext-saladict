@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, useMemo } from 'react'
 import { DictID } from '@/app-config'
 import { useTranslate } from '@/_helpers/i18n'
 
@@ -24,18 +24,20 @@ export const DictItemHead: FC<DictItemHeadProps> = props => {
     }
   }, [props.isSearching])
 
+  const icon = useMemo(
+    () =>
+      browser.runtime.getURL(
+        require('@/components/dictionaries/' + props.dictID + '/favicon.png')
+      ),
+    [props.dictID]
+  )
+
   return (
     <header
       className={`dictItemHead${props.isSearching ? ' isSearching' : ''}`}
       onClick={props.toggleFold}
     >
-      <img
-        className="dictItemHead-Logo"
-        src={require('@/components/dictionaries/' +
-          props.dictID +
-          '/favicon.png')}
-        alt="dict logo"
-      />
+      <img className="dictItemHead-Logo" src={icon} alt="dict logo" />
       <h1 className="dictItemHead-Title">
         <a
           href="#"

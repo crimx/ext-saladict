@@ -1,6 +1,6 @@
-export function matchPatternToRegExpStr (pattern: string): string {
+export function matchPatternToRegExpStr(pattern: string): string {
   if (pattern === '') {
-    return '^(?:http|https|file|ftp|app):\/\/'
+    return '^(?:http|https|file|ftp|app)://'
   }
 
   const schemeSegment = '(\\*|http|https|ws|wss|file|ftp)'
@@ -10,7 +10,7 @@ export function matchPatternToRegExpStr (pattern: string): string {
     `^${schemeSegment}://${hostSegment}/${pathSegment}$`
   )
 
-  let match = matchPatternRegExp.exec(pattern)
+  const match = matchPatternRegExp.exec(pattern)
   if (!match) {
     return ''
   }

@@ -32,24 +32,35 @@ export interface DownloadConfig<Config = any> {
 export abstract class SyncService<Config = any, Meta = any> {
   static readonly id: string
   static readonly title: {
-    readonly 'en': string,
-    readonly 'zh-CN': string,
+    readonly en: string
+    readonly 'zh-CN': string
     readonly 'zh-TW': string
   }
+
   /** service config that is saved with browser sync storage */
   abstract config: Config
   /** service data that is saved with the database */
   meta?: Meta
 
-  static getDefaultConfig () {
+  static getDefaultConfig() {
     return {}
   }
-  static getDefaultMeta () {
+
+  static getDefaultMeta() {
     return {}
   }
-  abstract init (config: Readonly<Config>): Promise<void>
-  abstract add (config: AddConfig): Promise<void>
-  async delete (config: DeleteConfig): Promise<void> {/* nothing */}
-  async download (config: DownloadConfig): Promise<void> {/* nothing */}
-  startInterval () {/* nothing */}
+
+  abstract init(config: Readonly<Config>): Promise<void>
+  abstract add(config: AddConfig): Promise<void>
+  async delete(config: DeleteConfig): Promise<void> {
+    /* nothing */
+  }
+
+  async download(config: DownloadConfig): Promise<void> {
+    /* nothing */
+  }
+
+  startInterval() {
+    /* nothing */
+  }
 }

@@ -32,17 +32,14 @@ Run `yarn build` to start a full build.
 
 Toggle:
 
+- `--debug`: Remove compression and generate sourcemaps.
 - `--analyze`: Show detailed Webpack bundle analyzer.
 
-## Releasing
-
-Run `yarn release` to bump version and generate [CHANGELOG](./CHANGELOG.md).
-
-## Zipball
-
-Run `yarn zip` to pack zibballs to `./dist/`.
-
 ## How to add a dictionary
+
+For safety and maintainability reason, Saladict will not support adding dictionaries on the fly. All dictionaries must be merged to this project via pull requests.
+
+If dictionary implementation makes use of private API please move it to an independent project, release on NPM, then import it to Saladict.
 
 1. Create a directory at [`src/components/dictionaries/`](./src/components/dictionaries/), with the name of the dict ID.
    1. Use any existing dictionary as guidance, e.g. [Bing](./src/components/dictionaries/bing). Copy files to the new directory.
@@ -54,21 +51,26 @@ Run `yarn zip` to pack zibballs to `./dist/`.
       1. `search` function which is responsible for fetching, parsing and returning dictionary results. See the typings for more detail.
          - Extracting information from a webpage **MUST** use helper functions in [../helpers.ts](./components/dictionaries/helpers.ts) for data cleansing.
          - If the dictionary supports pronunciation:
-         1. Register the ID at [`config.autopron`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/app-config/index.ts#L202-L223).
-         1. Include an [`audio`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/typings/server.ts#L5-L9) field in the object which search engine returns.
+           1. Register the ID at [`config.autopron`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/app-config/index.ts#L202-L223).
+           1. Include an [`audio`](https://github.com/crimx/ext-saladict/blob/a88cfed84129418b65914351ca14b86d7b1b758b/src/typings/server.ts#L5-L9) field in the object which search engine returns.
       1. Other exported functions can be called from `View.tsx` via `'DICT_ENGINE_METHOD'` message channel. See `src/typings/message` for typing details and search `DICT_ENGINE_METHOD` project-wise for examples. Messages **MUST** be sent via `message` from `'@/_helpers/browser-api'` instead of the native `sendMessage` function.
    1. Search result will ultimately be passed to a React PureComponent in `View.tsx`, which **SHOULD** be a dumb component that renders the result accordingly.
    1. Selectors in `_style.scss` **SHOULD** follow [ECSS](http://ecss.io/chapter5.html#anatomy-of-the-ecss-naming-convention)-ish naming convention.
 
-Add Testing
+### Develop the dictionary UI live
 
-1. Add response samples at `test/specs/components/dictionaries/[dictID]/response`.
-1. Add `engine.spec.ts` to test the engine.
+To develop the component in Storybook we need to intercept http requests from dictionary engines and replace with the downloaded results.
 
-Develop the dictionary UI live
-
-1. Edit `test/specs/components/dictionaries/[dictID]/request.mock.ts`.
+1. Add `fixtures.js` at `test/specs/components/dictionaries/[dictID]`.
+   - See other dictionaries for example.
+   - You can offer url or axios config (See `mojidict` dictionary). All results from previous requests will be passed to the next request as array.
+1. Run `yarn fixtures` to download fixtures.
+1. Edit `test/specs/components/dictionaries/[dictID]/request.mock.ts`. It will intercept requests and return the downloaded fixtures.
 1. Run `yarn storybook`.
+
+### Add Testing
+
+1. Add `engine.spec.ts` to test the engine.
 
 ## Code Style
 

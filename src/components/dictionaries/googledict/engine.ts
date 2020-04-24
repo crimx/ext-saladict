@@ -63,16 +63,16 @@ function handleDOM(
     removeChildren($obcontainer, '.u7XA4b') // footer
 
     // tts
-    $obcontainer.querySelectorAll('.r3WG9c').forEach($div => {
-      const $source = $div.querySelector('audio source')
+    $obcontainer.querySelectorAll('audio').forEach($audio => {
+      const $source = $audio.querySelector('source')
       if ($source) {
         const src = getFullLink('https://ssl.gstatic.com', $source, 'src')
         if (src) {
-          $div.replaceWith(getStaticSpeaker(src))
+          $audio.replaceWith(getStaticSpeaker(src))
           return
         }
       }
-      $div.remove()
+      $audio.remove()
     })
 
     $obcontainer.querySelectorAll('g-img').forEach($gimg => {

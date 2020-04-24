@@ -89,7 +89,8 @@ function modifyReferer() {
   // https://developer.chrome.com/extensions/webRequest#life_cycle_footnote
   if (
     browser.webRequest['OnBeforeSendHeadersOptions'] &&
-    browser.webRequest['OnBeforeSendHeadersOptions'].hasOwnProperty(
+    Object.prototype.hasOwnProperty.call(
+      browser.webRequest['OnBeforeSendHeadersOptions'],
       'EXTRA_HEADERS'
     )
   ) {

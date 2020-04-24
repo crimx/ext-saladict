@@ -1,8 +1,9 @@
 import './env'
 import '@/selection'
 
-import React from 'react'
+import React, { FC } from 'react'
 import ReactDOM from 'react-dom'
+import { Helmet } from 'react-helmet'
 import { AppConfig } from '@/app-config'
 import { reportGA } from '@/_helpers/analytics'
 import { getConfig } from '@/_helpers/config-manager'
@@ -14,12 +15,20 @@ import { Message } from '@/typings/message'
 import { Provider as ProviderRedux } from 'react-redux'
 import createStore from '@/content/redux/create'
 
-import { I18nextProvider as ProviderI18next } from 'react-i18next'
-import { i18nLoader } from '@/_helpers/i18n'
+import { I18nContextProvider, useTranslate } from '@/_helpers/i18n'
 
 import Popup from './Popup'
 import Notebook from './Notebook'
 import './_style.scss'
+
+const Title: FC = () => {
+  const { t } = useTranslate('popup')
+  return (
+    <Helmet>
+      <title>{t('title')}</title>
+    </Helmet>
+  )
+}
 
 getConfig().then(config => {
   document.body.style.width = config.panelWidth + 'px'
@@ -43,17 +52,20 @@ getConfig().then(config => {
   }
 })
 
-function showPanel(config: AppConfig) {
+async function showPanel(config: AppConfig) {
   if (config.analytics) {
     reportGA('/popup')
   }
 
+  const store = createStore()
+
   ReactDOM.render(
-    <ProviderRedux store={createStore()}>
-      <ProviderI18next i18n={i18nLoader()}>
+    <I18nContextProvider>
+      <Title />
+      <ProviderRedux store={store}>
         <Popup config={config} />
-      </ProviderI18next>
-    </ProviderRedux>,
+      </ProviderRedux>
+    </I18nContextProvider>,
     document.getElementById('root')
   )
 }
@@ -85,9 +97,9 @@ async function addNotebook() {
   }
 
   ReactDOM.render(
-    <ProviderI18next i18n={i18nLoader()}>
+    <I18nContextProvider>
       <Notebook word={word} hasError={hasError} />
-    </ProviderI18next>,
+    </I18nContextProvider>,
     document.getElementById('root')
   )
 

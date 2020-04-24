@@ -1,22 +1,29 @@
 import i18next, { TFunction } from 'i18next'
 import { i18nLoader, Namespace } from '@/_helpers/i18n'
 import { BehaviorSubject, Observable } from 'rxjs'
-import { map } from 'rxjs/operators'
+import { switchMap } from 'rxjs/operators'
 
 export class I18nManager {
   private static instance: I18nManager
 
-  static getInstance() {
-    return I18nManager.instance || (I18nManager.instance = new I18nManager())
+  static async getInstance() {
+    if (!I18nManager.instance) {
+      const instance = new I18nManager()
+      I18nManager.instance = instance
+
+      instance.i18n = await i18nLoader()
+      instance.i18n$$.next(instance.i18n)
+    }
+    return I18nManager.instance
   }
 
-  readonly i18n: i18next.i18n
+  i18n: i18next.i18n
 
   readonly i18n$$: BehaviorSubject<i18next.i18n>
 
   // singleton
   private constructor() {
-    this.i18n = i18nLoader()
+    this.i18n = i18next
 
     this.i18n$$ = new BehaviorSubject(this.i18n)
 
@@ -25,8 +32,12 @@ export class I18nManager {
     })
   }
 
-  getFixedT$$(ns: Namespace | Namespace[]): Observable<TFunction> {
-    this.i18n.loadNamespaces(ns)
-    return this.i18n$$.pipe(map(i18n => i18n.getFixedT(i18n.language, ns)))
+  getFixedT$(ns: Namespace | Namespace[]): Observable<TFunction> {
+    return this.i18n$$.pipe(
+      switchMap(async i18n => {
+        await this.i18n.loadNamespaces(ns)
+        return i18n.getFixedT(i18n.language, ns)
+      })
+    )
   }
 }

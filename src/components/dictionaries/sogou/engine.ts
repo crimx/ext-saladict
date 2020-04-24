@@ -9,7 +9,7 @@ import memoizeOne from 'memoize-one'
 import { Sogou } from '@opentranslate/sogou'
 import { SogouLanguage } from './config'
 
-const getTranslator = memoizeOne(
+export const getTranslator = memoizeOne(
   () =>
     new Sogou({
       env: 'ext',
@@ -52,8 +52,12 @@ export const search: SearchFunction<
     payload
   )
 
+  const pid = config.dictAuth.sogou.pid
+  const key = config.dictAuth.sogou.key
+  const translatorConfig = pid && key ? { pid, key } : undefined
+
   try {
-    const result = await translator.translate(text, sl, tl)
+    const result = await translator.translate(text, sl, tl, translatorConfig)
     return {
       result: {
         id: 'sogou',

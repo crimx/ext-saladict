@@ -21,7 +21,7 @@ export async function syncServiceInit({
 }: Message<'SYNC_SERVICE_INIT'>['payload']) {
   const service = services.get(serviceID)
   if (!service) {
-    if (process.env.DEV_BUILD) {
+    if (process.env.DEBUG) {
       console.error(`Sync service init error: wrong service id ${serviceID}`)
     }
     return wrapError('wrong service id')
@@ -32,7 +32,7 @@ export async function syncServiceInit({
 export async function syncServiceUpload(
   payload: Message<'SYNC_SERVICE_UPLOAD'>['payload']
 ) {
-  let selectedServices: SyncService[] = []
+  const selectedServices: SyncService[] = []
   if (payload.serviceID) {
     const service = services.get(payload.serviceID)
     if (!service) {
@@ -80,7 +80,7 @@ export async function syncServiceDownload(
   if (payload) {
     const service = services.get(payload.serviceID)
     if (!service) {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.error(
           `Sync service download error: wrong service id ${payload.serviceID}`
         )

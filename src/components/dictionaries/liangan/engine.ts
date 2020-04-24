@@ -1,8 +1,8 @@
-import { SearchFunction, GetSrcPageFunction } from '../helpers'
-import chsToChz from '@/_helpers/chs-to-chz'
+import { SearchFunction, GetSrcPageFunction, getChsToChz } from '../helpers'
 import { moedictSearch, GuoYuResult } from '../guoyu/engine'
 
-export const getSrcPage: GetSrcPageFunction = text => {
+export const getSrcPage: GetSrcPageFunction = async text => {
+  const chsToChz = await getChsToChz()
   return `https://www.moedict.tw/~${chsToChz(text)}`
 }
 

@@ -17,20 +17,36 @@ type TTextSource =
   | MachineTranslateResult<DictID>['searchText']
   | MachineTranslateResult<DictID>['trans']
 
+const rtlLangs = new Set([
+  'ar', // Arabic
+  'ara', // Arabic
+  'az', // Azerbaijani
+  'fa', // Persian
+  'he', // Hebrew
+  'iw', // Hebrew
+  'ku', // Kurdish
+  'ug', // Uighur
+  'ur' // Urdu
+])
+
 /** text with a speaker at the beginning */
-const TText: FC<{ source: TTextSource }> = ({ source }) => (
-  <div className="MachineTrans-Lines">
-    <Speaker src={source.tts} />
-    {source.paragraphs.map((line, i) => (
-      <p key={i}>{line}</p>
-    ))}
-  </div>
+const TText = React.memo(
+  ({ source, lang }: { source: TTextSource; lang: string }) => (
+    <div className={'MachineTrans-Lines'}>
+      <Speaker src={source.tts} />
+      {source.paragraphs.map((line, i) => (
+        <p key={i} className={`MachineTrans-lang-${lang}`}>
+          {line}
+        </p>
+      ))}
+    </div>
+  )
 )
 
 /** Template for machine translations */
-export const MachineTrans: FC<
-  ViewPorps<MachineTranslateResult<DictID>>
-> = props => {
+export const MachineTrans: FC<ViewPorps<
+  MachineTranslateResult<DictID>
+>> = props => {
   const { trans, searchText, langcodes, tl, sl } = props.result
   const { t } = useTranslate(['content', 'langcode'])
 
@@ -44,16 +60,22 @@ export const MachineTrans: FC<
   useSubscription(isShowLang$, setShowLang)
 
   return (
-    <div>
+    <div
+      className={
+        rtlLangs.has(sl) || rtlLangs.has(tl)
+          ? 'MachineTrans-has-rtl'
+          : undefined
+      }
+    >
       <div className="MachineTrans-Text">
-        <TText source={trans} />
+        <TText source={trans} lang={tl} />
         {searchText.paragraphs.join('').length <= 100 ? (
-          <TText source={searchText} />
+          <TText source={searchText} lang={sl} />
         ) : (
           <div>
             <details>
               <summary>{t('machineTrans.stext')}</summary>
-              <TText source={searchText} />
+              <TText source={searchText} lang={sl} />
             </details>
           </div>
         )}

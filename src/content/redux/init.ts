@@ -73,6 +73,24 @@ export const init = (
           return Promise.resolve(getState().isTempDisabled)
         }
 
+      case 'SEARCH_TEXT_BOX': {
+        const { searchHistory, historyIndex, text } = getState()
+        dispatch({
+          type: 'SEARCH_START',
+          payload: {
+            word:
+              searchHistory[historyIndex]?.text === text
+                ? searchHistory[historyIndex]
+                : newWord({
+                    text,
+                    title: 'Saladict',
+                    favicon: 'https://saladict.crimx.com/favicon.ico'
+                  })
+          }
+        })
+        return Promise.resolve()
+      }
+
       case 'QS_PANEL_SEARCH_TEXT':
         if (isQuickSearchPage()) {
           // request searching text, from other tabs
@@ -143,6 +161,10 @@ export const init = (
 
       case 'SEARCH_TEXT':
         dispatch({ type: 'SEARCH_START', payload: { word: msg.payload } })
+        return Promise.resolve()
+
+      case 'CLOSE_PANEL':
+        dispatch({ type: 'CLOSE_PANEL' })
         return Promise.resolve()
 
       case 'TRIPLE_CTRL':
@@ -266,7 +288,7 @@ async function summonedPanelInit(
       word = newWord({ text, title: 'From Clipboard' })
     }
   } catch (e) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (process.env.DEBUG) {
       console.warn(e)
     }
   }

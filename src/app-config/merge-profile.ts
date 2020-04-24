@@ -107,8 +107,6 @@ export function mergeProfile(
     base.dicts.all.hjdict.options.chsas = 'kr'
   }
 
-  console.log(base)
-
   return base
 
   function mergeSelectedDicts(path: string): void {

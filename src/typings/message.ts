@@ -101,6 +101,8 @@ export type MessageConfig = MessageConfigType<{
     payload: {
       area: DBArea
       word: Word
+      /** From sync services */
+      fromSync?: boolean
     }
   }
 
@@ -126,9 +128,9 @@ export type MessageConfig = MessageConfigType<{
       area: DBArea
       itemsPerPage?: number
       pageNum?: number
-      filters?: { [field: string]: string[] | undefined }
-      sortField?: string
-      sortOrder?: 'ascend' | 'descend' | false
+      filters?: { [field: string]: (string | number)[] | null | undefined }
+      sortField?: string | number | (string | number)[]
+      sortOrder?: 'ascend' | 'descend' | false | null
       searchText?: string
     }
     response: {
@@ -195,17 +197,21 @@ export type MessageConfig = MessageConfigType<{
     payload: boolean
   }
 
-  /** Other pages or frames query for panel state */
-  QUERY_PANEL_STATE: {
-    /** object path, default returns the whole state */
-    payload?: string
-    response?: any
+  /** From other pages or frames query for active panel pin state */
+  QUERY_PIN_STATE: {
+    response: boolean
   }
 
   /** request searching */
   SEARCH_TEXT: {
     payload: Word
   }
+
+  /** request searching text box text from other pages */
+  SEARCH_TEXT_BOX: {}
+
+  /** request closing panel */
+  CLOSE_PANEL: {}
 
   TEMP_DISABLED_STATE: {
     payload:

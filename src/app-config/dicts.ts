@@ -33,44 +33,47 @@ import youdao from '@/components/dictionaries/youdao/config'
 import youdaotrans from '@/components/dictionaries/youdaotrans/config'
 import zdic from '@/components/dictionaries/zdic/config'
 
-export function getAllDicts() {
-  // For TypeScript to generate typings
-  // Follow alphabetical order for easy reading
-  return {
-    baidu: baidu(),
-    bing: bing(),
-    caiyun: caiyun(),
-    cambridge: cambridge(),
-    cnki: cnki(),
-    cobuild: cobuild(),
-    etymonline: etymonline(),
-    eudic: eudic(),
-    google: google(),
-    googledict: googledict(),
-    guoyu: guoyu(),
-    hjdict: hjdict(),
-    jukuu: jukuu(),
-    lexico: lexico(),
-    liangan: liangan(),
-    longman: longman(),
-    macmillan: macmillan(),
-    mojidict: mojidict(),
-    naver: naver(),
-    renren: renren(),
-    shanbay: shanbay(),
-    sogou: sogou(),
-    tencent: tencent(),
-    urban: urban(),
-    vocabulary: vocabulary(),
-    weblio: weblio(),
-    weblioejje: weblioejje(),
-    websterlearner: websterlearner(),
-    wikipedia: wikipedia(),
-    youdao: youdao(),
-    youdaotrans: youdaotrans(),
-    zdic: zdic()
-  }
+// For TypeScript to generate typings
+// Follow alphabetical order for easy reading
+export const defaultAllDicts = {
+  baidu: baidu(),
+  bing: bing(),
+  caiyun: caiyun(),
+  cambridge: cambridge(),
+  cnki: cnki(),
+  cobuild: cobuild(),
+  etymonline: etymonline(),
+  eudic: eudic(),
+  google: google(),
+  googledict: googledict(),
+  guoyu: guoyu(),
+  hjdict: hjdict(),
+  jukuu: jukuu(),
+  lexico: lexico(),
+  liangan: liangan(),
+  longman: longman(),
+  macmillan: macmillan(),
+  mojidict: mojidict(),
+  naver: naver(),
+  renren: renren(),
+  shanbay: shanbay(),
+  sogou: sogou(),
+  tencent: tencent(),
+  urban: urban(),
+  vocabulary: vocabulary(),
+  weblio: weblio(),
+  weblioejje: weblioejje(),
+  websterlearner: websterlearner(),
+  wikipedia: wikipedia(),
+  youdao: youdao(),
+  youdaotrans: youdaotrans(),
+  zdic: zdic()
 }
+
+export type AllDicts = typeof defaultAllDicts
+
+export const getAllDicts = (): AllDicts =>
+  JSON.parse(JSON.stringify(defaultAllDicts))
 
 interface DictItemBase {
   /**

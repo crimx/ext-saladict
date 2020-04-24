@@ -9,7 +9,7 @@ import memoizeOne from 'memoize-one'
 import { Youdao } from '@opentranslate/youdao'
 import { YoudaotransLanguage } from './config'
 
-const getTranslator = memoizeOne(
+export const getTranslator = memoizeOne(
   () =>
     new Youdao({
       env: 'ext',
@@ -43,8 +43,12 @@ export const search: SearchFunction<
     payload
   )
 
+  const appKey = config.dictAuth.youdaotrans.appKey
+  const key = config.dictAuth.youdaotrans.key
+  const translatorConfig = appKey && key ? { appKey, key } : undefined
+
   try {
-    const result = await translator.translate(text, sl, tl)
+    const result = await translator.translate(text, sl, tl, translatorConfig)
     return {
       result: {
         id: 'youdaotrans',

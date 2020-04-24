@@ -22,6 +22,7 @@ const mapStateToProps: MapStateToProps<
   expand: state.isExpandMtaBox,
   maxHeight: state.panelMaxHeight,
   text: state.text,
+  fontSize: state.config.fontSize,
   shouldFocus:
     !state.activeProfile.mtaAutoUnfold || state.isQSPanel || isStandalonePage()
 })

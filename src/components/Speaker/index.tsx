@@ -40,9 +40,7 @@ export interface StaticSpeakerContainerProps
 /**
  * Listens to HTML injected Speakers in childern
  */
-export const StaticSpeakerContainer: FC<
-  StaticSpeakerContainerProps
-> = props => {
+export const StaticSpeakerContainer: FC<StaticSpeakerContainerProps> = props => {
   const { onPlayStart, ...restProps } = props
 
   const onClick = useCallback(

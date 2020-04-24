@@ -1,5 +1,4 @@
 import Dexie from 'dexie'
-import { storage } from '@/_helpers/browser-api'
 import { isContainChinese, isContainEnglish } from '@/_helpers/lang-check'
 import { Word, DBArea } from '@/_helpers/record-manager'
 import { syncServiceUpload } from './sync-manager'
@@ -42,7 +41,7 @@ export function getSyncMeta(serviceID: string) {
     .equals(serviceID)
     .first(record => record && record.json)
     .catch(e => {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.error(e)
       }
     })
@@ -54,7 +53,7 @@ export function setSyncMeta(serviceID: string, text: string) {
 
 export function deleteSyncMeta(serviceID: string) {
   return db.syncmeta.delete(serviceID).catch(e => {
-    if (process.env.DEV_BUILD) {
+    if (process.env.DEBUG) {
       console.error(e)
     }
   })
@@ -68,8 +67,12 @@ export function isInNotebook(word: Message<'IS_IN_NOTEBOOK'>['payload']) {
     .then(count => count > 0)
 }
 
-export function saveWord({ area, word }: Message<'SAVE_WORD'>['payload']) {
-  if (area === 'notebook') {
+export function saveWord({
+  area,
+  word,
+  fromSync
+}: Message<'SAVE_WORD'>['payload']) {
+  if (!fromSync && area === 'notebook') {
     syncServiceUpload({
       op: 'ADD',
       words: [word]
@@ -78,13 +81,21 @@ export function saveWord({ area, word }: Message<'SAVE_WORD'>['payload']) {
   return db[area].put(word)
 }
 
-export function saveWords({ area, words }: { area: DBArea; words: Word[] }) {
-  if (process.env.DEV_BUILD) {
+export function saveWords({
+  area,
+  words,
+  fromSync
+}: {
+  area: DBArea
+  words: Word[]
+  fromSync?: boolean // sync services
+}) {
+  if (process.env.DEBUG) {
     if (words.length !== new Set(words.map(w => w.date)).size) {
       console.error('save Words: duplicate records')
     }
   }
-  if (area === 'notebook') {
+  if (!fromSync && area === 'notebook') {
     syncServiceUpload({
       op: 'ADD',
       words
@@ -129,9 +140,15 @@ export async function getWords({
   sortOrder = 'descend',
   searchText
 }: Message<'GET_WORDS'>['payload']): Promise<MessageResponse<'GET_WORDS'>> {
-  const collection = db[area].orderBy(sortField)
+  const collection = db[area].orderBy(
+    sortField
+      ? Array.isArray(sortField)
+        ? sortField.map(str => String(str))
+        : String(sortField)
+      : 'date'
+  )
 
-  if (sortOrder === 'descend') {
+  if (!sortOrder || sortOrder === 'descend') {
     collection.reverse()
   }
 
@@ -173,61 +190,5 @@ export async function getWords({
 
   return { total, words }
 }
-
-/* ----------------------------------------------- *\
-    Init
-\* ----------------------------------------------- */
-
-// Populate data from old non-indexed db version
-db.on('ready', () => {
-  return db.notebook.count(async count => {
-    if (count > 0) {
-      return
-    }
-
-    const { notebookCat } = await storage.local.get('notebookCat')
-    if (!notebookCat || !Array.isArray(notebookCat.data)) {
-      return
-    }
-    const sliceIDs = notebookCat.data
-
-    const dbSlices = await storage.local.get(sliceIDs)
-    const words: Word[] = []
-
-    sliceIDs.forEach(sliceID => {
-      const slice = dbSlices[sliceID]
-      if (!slice || !Array.isArray(slice.data)) {
-        return
-      }
-      slice.data.forEach(wordsGroupByDate => {
-        const { date, data } = wordsGroupByDate
-        const dateNum = new Date(
-          `${date.slice(0, 2)}/${date.slice(2, 4)}/${date.slice(4)}`
-        ).getTime()
-        const oldWords = data.map((oldWord, i) => ({
-          date: dateNum + i,
-          text: oldWord.text || '',
-          context: oldWord.context || '',
-          title: oldWord.title || '',
-          favicon: oldWord.favicon
-            ? oldWord.favicon.startsWith('chrome')
-              ? 'https://saladict.crimx.com/favicon.ico'
-              : oldWord.favicon
-            : '',
-          url: oldWord.url || '',
-          trans: oldWord.trans || '',
-          note: oldWord.note || ''
-        }))
-        words.push(...oldWords)
-      })
-    })
-
-    browser.storage.local.clear()
-
-    return db.transaction('rw', db.notebook, () => {
-      return db.notebook.bulkAdd(words)
-    })
-  })
-})
 
 db.open()

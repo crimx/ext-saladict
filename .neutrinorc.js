@@ -1,13 +1,16 @@
 const path = require('path')
+const webpack = require('webpack')
 const react = require('@neutrinojs/react')
 const copy = require('@neutrinojs/copy')
 const jest = require('@neutrinojs/jest')
 const wext = require('neutrino-webextension')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
-const DotenvPlugin = require('dotenv-webpack')
+const dotenv = require('dotenv')
 const argv = require('yargs').argv
 const AfterBuildPlugin = require('./scripts/after-build')
+const svgToMiniDataURI = require('mini-svg-data-uri')
+const isAnalyze = argv.analyze || argv.analyse
 
 module.exports = {
   options: {
@@ -17,6 +20,7 @@ module.exports = {
         webext: {
           type: 'content_scripts',
           manifest: {
+            css: ['assets/content.css'],
             matches: ['<all_urls>']
           },
           setup: 'content/__fake__/env.ts'
@@ -95,11 +99,10 @@ module.exports = {
   },
   use: [
     react({
-      image: {
-        // remove `default` when `require` image
-        // due to legacy code
-        esModule: false
+      html: {
+        title: 'Saladict'
       },
+      image: false,
       style: {
         test: /\.(css|scss)$/,
         modulesTest: /\.module\.(css|scss)$/,
@@ -141,18 +144,35 @@ module.exports = {
             'import',
             {
               libraryName: 'antd'
-            }
+            },
+            'antd'
+          ],
+          [
+            'import',
+            {
+              libraryName: '@ant-design/icons',
+              libraryDirectory: '',
+              camel2DashComponentName: false,
+              style: false
+            },
+            '@ant-design/icons'
           ]
         ]
       }
     }),
     copy({
       patterns: [
-        { context: 'assets', from: '**/*', to: 'assets', toType: 'dir' },
+        { context: 'assets', from: '**/*', to: 'assets/', toType: 'dir' },
         {
           context: 'src/_locales/manifest',
           from: '**/*',
-          to: '_locales',
+          to: '_locales/',
+          toType: 'dir'
+        },
+        {
+          context: 'node_modules/antd/dist/',
+          from: '+(antd|antd.dark).min.css',
+          to: 'assets/',
           toType: 'dir'
         }
       ]
@@ -160,8 +180,50 @@ module.exports = {
     neutrino => {
       /* eslint-disable indent */
 
+      // images
+      neutrino.config.module
+        .rules.delete('image')
+        .end()
+        .rule('svg')
+          .test(/\.(svg)(\?v=\d+\.\d+\.\d+)?$/)
+          .use('svg-url')
+            .loader(require.resolve('url-loader'))
+            .options({
+              limit: 8192,
+              // remove `default` when `require` image
+              // due to legacy code
+              esModule: false,
+              generator: content => svgToMiniDataURI(content.toString())
+            })
+            .end()
+          .end()
+        .rule('pixel')
+          .test(/\.(ico|png|jpg|jpeg|gif|webp)(\?v=\d+\.\d+\.\d+)?$/)
+          .use('img-url')
+            .loader(require.resolve('file-loader'))
+            .options({
+              // dev-server image name collision
+              name: resourcePath => {
+                if (process.env.NODE_ENV === 'development') {
+                  return '[path]/[name].[ext]'
+                }
+
+                const dictMatch = /\/dictionaries\/([^/]+)\/favicon.png/.exec(
+                  resourcePath
+                )
+                if (dictMatch) {
+                  return `assets/favicon-${dictMatch[1]}.[contenthash:8].[ext]`
+                }
+
+                return 'assets/[name].[contenthash:8].[ext]'
+              },
+              limit: 0,
+              esModule: false
+            })
+
+
       // avoid collision
-      neutrino.config.output.jsonpFunction('saladictJSONP')
+      neutrino.config.output.jsonpFunction('saladictEntry')
 
       // transform *.shadow.(css|scss) to string
       // this will be injected into shadow-dom style tag
@@ -211,6 +273,16 @@ module.exports = {
             .set('@', path.join(__dirname, 'src'))
             .end()
           .end()
+
+      // prettier-ignore
+      neutrino.config
+        .plugin('process.env')
+          .use(webpack.DefinePlugin, [{
+            'process.env': JSON.stringify(Object.assign(
+                { DEBUG: !!argv.debug },
+                dotenv.config().parsed
+              ))
+          }])
       /* eslint-enable indent */
 
       if (argv.mode === 'production') {
@@ -221,29 +293,55 @@ module.exports = {
             .end()
           .plugin('momentjs')
             .use(MomentLocalesPlugin, [{ localesToKeep: ['zh-cn', 'zh-tw'] }])
-            .use(DotenvPlugin)
             .end()
           .optimization
             .merge({
               splitChunks: {
                 cacheGroups: {
-                  dictpanel: {
-                    test: /([\\/]src[\\/]content[\\/])|([\\/]components[\\/]dictionaries[\\/])|([\\/]node_modules[\\/]react)/,
-                    name: 'dictpanel',
-                    chunks: ({ name }) => !/^(selection|audio-control|background)$/.test(name)
+                  react: {
+                    test: /[\\/]node_modules[\\/](react|react-dom|i18next)[\\/]/,
+                    name: 'view-vendor',
+                    chunks: 'all',
+                    priority: 100
+                  },
+                  franc: {
+                    test: /[\\/]node_modules[\\/]franc/,
+                    name: 'franc',
+                    chunks: 'all',
+                    priority: 100
+                  },
+                  dexie: {
+                    test: /[\\/]node_modules[\\/]dexie/,
+                    name: 'dexie',
+                    chunks: 'all',
+                    priority: 100
+                  },
+                  wordpage: {
+                    test: (module, chunks) => module.resource &&
+                      module.resource.includes(`${path.sep}src${path.sep}`) &&
+                      !module.resource.includes(`${path.sep}node_modules${path.sep}`),
+                    name: 'wordpage',
+                    chunks: ({ name }) => /^(notebook|history)$/.test(name),
                   },
                   antd: {
                     test: /[\\/]node_modules[\\/]/,
                     name: 'antd',
-                    chunks: ({ name }) => /^(notebook|options|history)$/.test(name),
-                    reuseExistingChunk: true
+                    chunks: ({ name }) => /^(options|notebook|history)$/.test(name),
                   }
                 }
               },
             })
       }
 
-      if (argv.analyze || argv.analyse) {
+      if (argv.debug) {
+        // prettier-ignore
+        neutrino.config
+          .devtool('inline-source-map')
+          .optimization
+            .minimize(false)
+      }
+
+      if (isAnalyze) {
         // prettier-ignore
         neutrino.config
           .plugin('bundle-analyze')
@@ -260,7 +358,8 @@ module.exports = {
         '\\.(mjs|jsx|js|ts|tsx)$': require.resolve(
           '@neutrinojs/jest/src/transformer'
         )
-      }
+      },
+      testTimeout: 20000
     }),
     wext({
       polyfill: true

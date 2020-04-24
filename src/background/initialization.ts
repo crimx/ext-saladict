@@ -3,8 +3,10 @@ import { message, storage, openURL } from '@/_helpers/browser-api'
 import { isExtTainted } from '@/_helpers/integrity'
 import checkUpdate from '@/_helpers/check-update'
 import { updateConfig, initConfig } from '@/_helpers/config-manager'
-import { initProfiles } from '@/_helpers/profile-manager'
+import { initProfiles, updateActiveProfileID } from '@/_helpers/profile-manager'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
+import { isFirefox } from '@/_helpers/saladict'
+import { timer } from '@/_helpers/promise-more'
 import { ContextMenus } from './context-menus'
 import { BackgroundServer } from './server'
 import { openPDF } from './pdf-sniffer'
@@ -44,9 +46,8 @@ function onCommand(command: string) {
           return
         }
         message
-          .send<'QUERY_PANEL_STATE', boolean>(tabs[0].id, {
-            type: 'QUERY_PANEL_STATE',
-            payload: 'widget.isPinned'
+          .send<'QUERY_PIN_STATE', boolean>(tabs[0].id, {
+            type: 'QUERY_PIN_STATE'
           })
           .then(isPinned => {
             const config = window.appConfig
@@ -87,6 +88,28 @@ function onCommand(command: string) {
     case 'search-clipboard':
       BackgroundServer.getInstance().searchClipboard()
       break
+    case 'next-profile':
+    case 'prev-profile':
+      browser.tabs
+        .query({ active: true, currentWindow: true })
+        .then(async tabs => {
+          if (tabs.length <= 0 || tabs[0].id == null) {
+            return
+          }
+
+          const curID = window.activeProfile.id
+          const curIndex = window.profileIDList.findIndex(
+            ({ id }) => id === curID
+          )
+          const offset = command === 'next-profile' ? 1 : -1
+          const nextIndex =
+            curIndex < 0 ? 0 : (curIndex + offset) % window.profileIDList.length
+
+          await updateActiveProfileID(window.profileIDList[nextIndex].id)
+          await timer(10)
+          message.send(tabs[0].id, { type: 'SEARCH_TEXT_BOX' })
+        })
+      break
   }
 }
 
@@ -122,7 +145,7 @@ async function onInstalled({
     }
   } else if (reason === 'update') {
     let data: UpdateData | undefined
-    if (!process.env.DEV_BUILD && window.appConfig.updateCheck) {
+    if (!process.env.DEBUG && window.appConfig.updateCheck) {
       try {
         const response = await fetch(
           'https://api.github.com/repos/crimx/ext-saladict/releases/latest'
@@ -173,7 +196,7 @@ function onStartup(): void {
               message: `可更新至【${info.tag_name}】`
             }
 
-            if (!navigator.userAgent.includes('Firefox')) {
+            if (!isFirefox) {
               options.buttons = [{ title: '查看更新' }]
             }
 
@@ -183,7 +206,7 @@ function onStartup(): void {
       }
 
       // anti piracy
-      if (!process.env.DEV_BUILD && lastCheckUpdate && isExtTainted) {
+      if (!process.env.DEBUG && lastCheckUpdate && isExtTainted) {
         const diff = Math.floor((today - lastCheckUpdate) / 24 / 60 / 60 / 1000)
         if (diff > 0 && diff % 7 === 0) {
           const options: browser.notifications.CreateNotificationOptions = {
@@ -195,7 +218,7 @@ function onStartup(): void {
             )
           }
 
-          if (!navigator.userAgent.includes('Firefox')) {
+          if (!isFirefox) {
             options.buttons = [
               {
                 title: decodeURI(
@@ -254,7 +277,7 @@ function showNews(data: UpdateData) {
         eventTime: Date.now() + 5000
       } as any
 
-      if (!window.navigator.userAgent.includes('Firefox')) {
+      if (!isFirefox) {
         options.buttons = [{ title: isZh ? '查看更新介绍' : 'More Info' }]
         options.silent = true
       }

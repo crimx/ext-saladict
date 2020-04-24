@@ -1,8 +1,9 @@
 import { DeepReadonly } from '@/typings/helpers'
+import { SupportedLangs } from '@/_helpers/lang-check'
 import { getAllDicts } from './dicts'
 import { getAllContextMenus } from './context-menus'
 import { MtaAutoUnfold as _MtaAutoUnfold } from './profiles'
-import { SupportedLangs } from '@/_helpers/lang-check'
+import { getDefaultDictAuths } from './auth'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 
@@ -44,7 +45,7 @@ export default getDefaultConfig
 
 function _getDefaultConfig() {
   return {
-    version: 12,
+    version: 13,
 
     /** activate app, won't affect triple-ctrl setting */
     active: true,
@@ -97,9 +98,9 @@ function _getDefaultConfig() {
     ] as [string, string][],
 
     /** track search history */
-    searhHistory: false,
+    searchHistory: false,
     /** incognito mode */
-    searhHistoryInco: false,
+    searchHistoryInco: false,
 
     /** open word editor when adding a word to notebook */
     editOnFav: true,
@@ -309,6 +310,10 @@ function _getDefaultConfig() {
         'saladict'
       ],
       all: getAllContextMenus()
-    }
+    },
+
+    /** Open settings on first switching "translation" profile */
+    showedDictAuth: false,
+    dictAuth: getDefaultDictAuths()
   }
 }

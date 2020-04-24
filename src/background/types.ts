@@ -1,9 +1,10 @@
 import { AppConfig } from '@/app-config'
-import { Profile } from '@/app-config/profiles'
+import { Profile, ProfileIDList } from '@/app-config/profiles'
 
 declare global {
   interface Window {
     appConfig: AppConfig
     activeProfile: Profile
+    profileIDList: ProfileIDList
   }
 }

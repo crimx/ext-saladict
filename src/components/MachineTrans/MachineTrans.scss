@@ -2,7 +2,7 @@
   .saladict-Speaker {
     position: absolute;
     left: 0;
-    top: 0;
+    top: 2px;
     margin: 0;
   }
 
@@ -83,4 +83,49 @@
   .MachineTrans-LangSwitch-exit-active {
     opacity: 0;
   }
+}
+
+.MachineTrans-lang-ar, // Arabic
+.MachineTrans-lang-ara, // Arabic
+.MachineTrans-lang-az, // Azerbaijani
+.MachineTrans-lang-fa, // Persian
+.MachineTrans-lang-he, // Hebrew
+.MachineTrans-lang-iw, // Hebrew
+.MachineTrans-lang-ku, // Kurdish
+.MachineTrans-lang-ug, // Uighur
+.MachineTrans-lang-ur // Urdu
+{
+  direction: rtl !important;
+}
+
+.MachineTrans-has-rtl {
+  text-align: right;
+
+  .MachineTrans-Lines {
+    padding-left: 0;
+    padding-right: 1.5em;
+  }
+
+  .saladict-Speaker,
+  .MachineTrans-LangSwitchBtn {
+    left: auto;
+    right: 0;
+  }
+}
+
+@font-face {
+  font-family: "UKIJ Tuz Basma";
+  src: url("https://ws-image-cdn.subat.cn/fonts/ukij-tuz-basma-bold/UKIJTuzBasma-Bold.woff2")
+      format("woff2"),
+    url("https://ws-image-cdn.subat.cn/fonts/ukij-tuz-basma-bold/UKIJTuzBasma-Bold.woff")
+      format("woff"),
+    url("https://ws-image-cdn.subat.cn/fonts/ukij-tuz-basma-bold/UKIJTuzBasma-Bold.ttf")
+      format("truetype"),
+    url("https://ws-image-cdn.subat.cn/fonts/ukij-tuz-basma-bold/UKIJTuzBasma-Bold.svg#UKIJTuzBasma-Bold")
+      format("svg");
+  font-style: normal;
+}
+
+.MachineTrans-lang-ug {
+  font-family: "UKIJ Tuz Basma" !important;
 }

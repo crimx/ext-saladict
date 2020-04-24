@@ -1,4 +1,4 @@
-import React, { FC, ReactNode, useEffect, useRef, useState } from 'react'
+import React, { FC, ReactNode, useRef, useState, useMemo } from 'react'
 import { useUpdateEffect } from 'react-use'
 import { getScrollbarWidth } from '@/_helpers/scrollbar-width'
 import { SALADICT_PANEL, isInternalPage } from '@/_helpers/saladict'
@@ -56,50 +56,10 @@ export const DictPanel: FC<DictPanelProps> = props => {
     setY(y => reconcileY(props.height, y))
   }, [props.width, props.height])
 
-  useEffect(() => {
-    if (props.dragStartCoord) {
-      const startPanelX = x
-      const startPanelY = y
-      const startMouseX = props.dragStartCoord.x
-      const startMouseY = props.dragStartCoord.y
-
-      const mousemoveHandler = (e: MouseEvent) => {
-        e.stopPropagation()
-        e.preventDefault()
-        setX(e.clientX - startMouseX + startPanelX)
-        setY(e.clientY - startMouseY + startPanelY)
-      }
-
-      const touchmoveHandler = (e: TouchEvent) => {
-        e.stopPropagation()
-        e.preventDefault()
-        setX(e.changedTouches[0].clientX - startMouseX + startPanelX)
-        setY(e.changedTouches[0].clientY - startMouseY + startPanelY)
-      }
-
-      const mouseoutHandler = (e: MouseEvent) => {
-        if (!e.relatedTarget) {
-          props.onDragEnd()
-        }
-      }
-
-      const dragEndHandler = props.onDragEnd
-
-      window.addEventListener('mousemove', mousemoveHandler)
-      window.addEventListener('touchmove', touchmoveHandler)
-      window.addEventListener('mouseout', mouseoutHandler)
-      window.addEventListener('mouseup', dragEndHandler)
-      window.addEventListener('touchend', dragEndHandler)
-
-      return () => {
-        window.removeEventListener('mousemove', mousemoveHandler)
-        window.removeEventListener('touchmove', touchmoveHandler)
-        window.removeEventListener('mouseout', mouseoutHandler)
-        window.removeEventListener('mouseup', dragEndHandler)
-        window.removeEventListener('touchend', dragEndHandler)
-      }
-    }
-  }, [props.dragStartCoord, props.onDragEnd])
+  const dragStartPanelCoord = useMemo(
+    () => (props.dragStartCoord ? { x, y } : null),
+    [props.dragStartCoord]
+  )
 
   return (
     <div
@@ -112,7 +72,7 @@ export const DictPanel: FC<DictPanelProps> = props => {
         ...props.colors,
         left: x,
         top: y,
-        zIndex: isInternalPage() ? 2147483646 : 2147483647, // for popups on options page
+        zIndex: isInternalPage() ? 999 : 2147483647, // for popups on options page
         width: props.width,
         height: props.height,
         '--panel-width': props.width + 'px',
@@ -129,7 +89,43 @@ export const DictPanel: FC<DictPanelProps> = props => {
         {props.dictList}
       </div>
       {props.waveformBox}
-      {props.dragStartCoord && <div className="dictPanel-DragMask" />}
+      {props.dragStartCoord && (
+        <div
+          className="dictPanel-DragMask"
+          onMouseMove={e => {
+            if (dragStartPanelCoord && props.dragStartCoord) {
+              e.stopPropagation()
+              e.preventDefault()
+              setX(e.clientX - props.dragStartCoord.x + dragStartPanelCoord.x)
+              setY(e.clientY - props.dragStartCoord.y + dragStartPanelCoord.y)
+            }
+          }}
+          onTouchMove={e => {
+            if (dragStartPanelCoord && props.dragStartCoord) {
+              e.stopPropagation()
+              e.preventDefault()
+              setX(
+                e.changedTouches[0].clientX -
+                  props.dragStartCoord.x +
+                  dragStartPanelCoord.x
+              )
+              setY(
+                e.changedTouches[0].clientY -
+                  props.dragStartCoord.y +
+                  dragStartPanelCoord.y
+              )
+            }
+          }}
+          onMouseOut={e => {
+            if (!e.relatedTarget) {
+              props.onDragEnd()
+            }
+          }}
+          onMouseUp={props.onDragEnd}
+          onTouchCancel={props.onDragEnd}
+          onTouchEnd={props.onDragEnd}
+        />
+      )}
     </div>
   )
 }

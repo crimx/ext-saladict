@@ -104,7 +104,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       return
     }
 
-    if (process.env.DEV_BUILD) {
+    if (process.env.DEBUG) {
       console.log('WebDAV Alarm Interval')
     }
 
@@ -155,7 +155,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
 
     let dir = false
     const $responses = Array.from(doc.querySelectorAll('response'))
-    for (let i in $responses) {
+    for (const i in $responses) {
       const href = $responses[i].querySelector('href')
       if (href && href.textContent && href.textContent.endsWith('/Saladict/')) {
         // is Saladict
@@ -201,7 +201,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
 
   async add({ force }: AddConfig) {
     if (!this.config.url) {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.warn(`sync service ${Service.id} upload: empty url`)
       }
       return
@@ -221,7 +221,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     try {
       var body = JSON.stringify({ timestamp, words } as NotebookFile)
     } catch (e) {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.error('WebDAV: Stringify notebook failed', words)
       }
       return Promise.reject('parse')
@@ -240,7 +240,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
         throw new Error()
       }
     } catch (e) {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.error('WebDAV: upload failed', e)
       }
       return Promise.reject('network')
@@ -258,13 +258,13 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     const config = testConfig || this.config
 
     if (!config.url) {
-      if (process.env.DEV_BUILD) {
+      if (process.env.DEBUG) {
         console.warn(`sync service ${Service.id} download: empty url`)
       }
       return
     }
 
-    const headers = {
+    const headers: { [name: string]: string } = {
       Authorization: 'Basic ' + window.btoa(`${config.user}:${config.passwd}`)
     }
     if (!testConfig && !noCache && this.meta.etag != null) {
@@ -297,55 +297,55 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     try {
       var json: NotebookFile = await response.json()
     } catch (e) {
-      if (process.env.NODE_ENV !== 'test') {
+      if (process.env.DEBUG) {
         console.error('Fetch webdav notebook.json error', response)
       }
       return Promise.reject('parse')
     }
 
-    if (!Array.isArray(json.words) || json.words.some(w => !w.date)) {
-      if (process.env.NODE_ENV !== 'test') {
-        console.error('Parse webdav notebook.json error: incorrect words', json)
-      }
-      return Promise.reject('format')
-    }
-
-    if (!noCache && this.meta.timestamp) {
-      if (!json.timestamp) {
-        if (process.env.NODE_ENV !== 'test') {
-          console.error('webdav notebook.json no timestamp', json)
-        }
-        return Promise.reject('timestamp')
-      }
-
-      if (!testConfig) {
-        if (json.timestamp === this.meta.timestamp && !this.meta.etag) {
-          await this.setMeta({
-            timestamp: json.timestamp,
-            etag: response.headers.get('ETag') || ''
-          })
-        }
-      }
-
-      if (json.timestamp <= this.meta.timestamp!) {
-        // older file
-        return
-      }
-    }
-
-    if (process.env.DEV_BUILD) {
+    if (process.env.DEBUG) {
       if (!response.headers.get('ETag')) {
         console.warn('webdav notebook.json no etag', response)
       }
     }
 
-    if (!testConfig) {
+    if (!Array.isArray(json.words) || json.words.some(w => !w.date)) {
+      if (process.env.DEBUG) {
+        console.error('Parse webdav notebook.json error: incorrect words', json)
+      }
+      return Promise.reject('format')
+    }
+
+    if (!json.timestamp) {
+      if (process.env.DEBUG) {
+        console.error('webdav notebook.json no timestamp', json)
+      }
+      return Promise.reject('timestamp')
+    }
+
+    if (testConfig) {
+      // connectivity is ok
+      return
+    }
+
+    const oldMeta = this.meta
+
+    if (!oldMeta.timestamp || json.timestamp >= oldMeta.timestamp) {
       await this.setMeta({
         timestamp: json.timestamp,
-        etag: response.headers.get('ETag') || ''
+        etag: response.headers.get('ETag') || oldMeta.etag || ''
       })
+    }
 
-      await setNotebook(json.words)
+    if (!noCache && oldMeta.timestamp && json.timestamp <= oldMeta.timestamp) {
+      // older file
+      return
+    }
+
+    await setNotebook(json.words, true)
+
+    if (process.env.DEBUG) {
+      console.log('Webdav download', json)
     }
   }
 

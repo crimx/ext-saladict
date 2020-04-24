@@ -119,6 +119,18 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
     isExpandWaveformBox: !state.isExpandWaveformBox
   }),
 
+  OPEN_PANEL: (state, { payload }) =>
+    isStandalonePage()
+      ? state
+      : {
+          ...state,
+          isShowDictPanel: true,
+          dictPanelCoord: {
+            x: payload.x,
+            y: payload.y
+          }
+        },
+
   CLOSE_PANEL: state =>
     isStandalonePage()
       ? state

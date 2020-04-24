@@ -116,7 +116,7 @@ function getAllResults(doc: Document): Document[] | Promise<Document[]> {
 function handleAllDOMs(
   docs: Document[]
 ): MacmillanSearchResult | Promise<MacmillanSearchResult> {
-  let results = docs
+  const results = docs
     .map(handleDOM)
     .filter(
       (result): result is DictSearchResult<MacmillanResultItem> => !!result

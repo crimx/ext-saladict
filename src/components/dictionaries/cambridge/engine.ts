@@ -1,4 +1,3 @@
-import { chsToChz } from '@/_helpers/chs-to-chz'
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { getStaticSpeaker } from '@/components/Speaker'
 import {
@@ -12,10 +11,11 @@ import {
   GetSrcPageFunction,
   DictSearchResult,
   getFullLink,
-  externalLink
+  externalLink,
+  getChsToChz
 } from '../helpers'
 
-export const getSrcPage: GetSrcPageFunction = (text, config) => {
+export const getSrcPage: GetSrcPageFunction = async (text, config) => {
   switch (config.langCode) {
     case 'en':
       return `https://dictionary.cambridge.org/search/english/direct/?q=${text
@@ -24,10 +24,12 @@ export const getSrcPage: GetSrcPageFunction = (text, config) => {
         .join('-')}`
     case 'zh-CN':
       return `https://dictionary.cambridge.org/zhs/搜索/英语-汉语-简体/direct/?q=${text}`
-    case 'zh-TW':
+    case 'zh-TW': {
+      const chsToChz = await getChsToChz()
       return `https://dictionary.cambridge.org/zht/搜索/英語-漢語-繁體/direct/?q=${chsToChz(
         text
       )}`
+    }
   }
 }
 

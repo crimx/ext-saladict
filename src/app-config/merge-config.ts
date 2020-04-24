@@ -1,5 +1,5 @@
 import { getDefaultConfig, AppConfig, AppConfigMutable } from '@/app-config'
-import { getAllDicts } from './dicts'
+import { defaultAllDicts } from './dicts'
 
 import forEach from 'lodash/forEach'
 import isNumber from 'lodash/isNumber'
@@ -7,8 +7,6 @@ import isString from 'lodash/isString'
 import isBoolean from 'lodash/isBoolean'
 import get from 'lodash/get'
 import set from 'lodash/set'
-
-const defaultAllDicts = getAllDicts()
 
 export default mergeConfig
 
@@ -23,6 +21,10 @@ export function mergeConfig(
   // pre-merge patch start
   let oldVersion = oldConfig.version
 
+  if (oldVersion < 13) {
+    ;(oldConfig as AppConfigMutable).showedDictAuth = true
+  }
+
   if (oldVersion <= 9) {
     oldVersion = 10
     ;['mode', 'pinMode', 'panelMode', 'qsPanelMode'].forEach(mode => {
@@ -32,6 +34,7 @@ export function mergeConfig(
       delete oldConfig[mode]['ctrl']
     })
   }
+
   // pre-merge patch end
 
   Object.keys(base).forEach(key => {
@@ -44,6 +47,14 @@ export function mergeConfig(
       case 'whitelist':
       case 'blacklist':
         merge(key, val => Array.isArray(val))
+        break
+      case 'searhHistory':
+      case 'searchHistory':
+        base.searchHistory = oldConfig[key]
+        break
+      case 'searhHistoryInco':
+      case 'searchHistoryInco':
+        base.searchHistoryInco = oldConfig[key]
         break
       case 'mode':
       case 'pinMode':
@@ -124,6 +135,9 @@ export function mergeConfig(
           }
         })
         mergeSelectedContextMenus('contextMenus')
+        break
+      case 'dictAuth':
+        merge('dictAuth', Boolean)
         break
       default:
         switch (typeof base[key]) {

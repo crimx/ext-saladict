@@ -33,9 +33,9 @@ export const searchStartEpic: Epic = (action$, state$) =>
       const word = searchHistory[historyIndex]
 
       if (
-        config.searhHistory &&
+        config.searchHistory &&
         (!isInternalPage() || isStandalonePage()) &&
-        (!browser.extension.inIncognitoContext || config.searhHistoryInco) &&
+        (!browser.extension.inIncognitoContext || config.searchHistoryInco) &&
         (historyIndex <= 0 ||
           searchHistory[historyIndex - 1].text !== word.text ||
           searchHistory[historyIndex - 1].context !== word.context)

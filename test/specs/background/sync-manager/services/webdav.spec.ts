@@ -174,7 +174,7 @@ describe('Sync service WebDAV', () => {
 
       await service.download({})
 
-      expect(helpers.setNotebook).lastCalledWith(words)
+      expect(helpers.setNotebook).lastCalledWith(words, true)
       expect(helpers.setMeta).lastCalledWith('webdav', { timestamp, etag })
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(...fetchArgs.download(config))
@@ -219,7 +219,7 @@ describe('Sync service WebDAV', () => {
 
       await service.download({})
 
-      expect(helpers.setNotebook).lastCalledWith(words)
+      expect(helpers.setNotebook).lastCalledWith(words, true)
       expect(helpers.setMeta).lastCalledWith('webdav', { timestamp, etag })
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(
@@ -315,7 +315,7 @@ describe('Sync service WebDAV', () => {
       await service.download({})
 
       expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
-      expect(helpers.setMeta).toHaveBeenCalledTimes(0)
+      expect(helpers.setMeta).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(
         ...fetchArgs.download(config, {
@@ -369,7 +369,7 @@ describe('Sync service WebDAV', () => {
       await service.download({})
 
       expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
-      expect(helpers.setMeta).toHaveBeenCalledTimes(0)
+      expect(helpers.setMeta).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(
         ...fetchArgs.download(config, {

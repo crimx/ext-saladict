@@ -43,14 +43,27 @@ export const search: SearchFunction<
     payload
   )
 
-  const baiduResult = await getBaiduTranslator().translate(text, sl, tl)
+  const baiduAppid = config.dictAuth.baidu.appid
+  const baiduKey = config.dictAuth.baidu.key
+  const baiduConfig =
+    baiduAppid && baiduKey ? { appid: baiduAppid, key: baiduKey } : undefined
+
+  const baiduResult = await getBaiduTranslator().translate(
+    text,
+    sl,
+    tl,
+    baiduConfig
+  )
 
   if (langcodes.includes(baiduResult.from)) {
     sl = baiduResult.from
   }
 
+  const caiYunToken = config.dictAuth.caiyun.token
+  const caiYunConfig = caiYunToken ? { token: caiYunToken } : undefined
+
   try {
-    const result = await translator.translate(text, sl, tl)
+    const result = await translator.translate(text, sl, tl, caiYunConfig)
     result.origin.tts = baiduResult.origin.tts
     result.trans.tts = baiduResult.trans.tts
     return {

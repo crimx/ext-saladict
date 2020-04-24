@@ -3,8 +3,14 @@ import '@/selection'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import WordPage from '@/components/WordPage'
+import { WordPage } from '@/components/WordPage'
+import { AntdRoot } from '@/components/AntdRoot'
 
 document.title = 'Saladict Notebook'
 
-ReactDOM.render(<WordPage area="notebook" />, document.getElementById('root'))
+ReactDOM.render(
+  <AntdRoot path="/wordpage/notebook">
+    <WordPage area="notebook" />
+  </AntdRoot>,
+  document.getElementById('root')
+)

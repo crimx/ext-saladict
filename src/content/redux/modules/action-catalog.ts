@@ -45,6 +45,13 @@ export type ActionCatalog = CreateActionCatalog<{
 
   TOGGLE_PIN: {}
 
+  OPEN_PANEL: {
+    payload: {
+      x: number
+      y: number
+    }
+  }
+
   CLOSE_PANEL: {}
 
   UPDATE_HISTORY_INDEX: {

@@ -11,11 +11,15 @@ import {
 import { Observable, concat, from } from 'rxjs'
 import { map, filter, distinctUntilChanged } from 'rxjs/operators'
 
+interface StorageSyncConfig {
+  syncConfig: { [id: string]: any }
+}
+
 export async function setSyncConfig<T = any>(
   serviceID: string,
   config: T
 ): Promise<void> {
-  let { syncConfig } = await storage.sync.get('syncConfig')
+  let { syncConfig } = await storage.sync.get<StorageSyncConfig>('syncConfig')
   if (!syncConfig) {
     syncConfig = {}
   }
@@ -26,7 +30,7 @@ export async function setSyncConfig<T = any>(
 export async function getSyncConfig<T>(
   serviceID: string
 ): Promise<T | undefined> {
-  const { syncConfig } = await storage.sync.get('syncConfig')
+  const { syncConfig } = await storage.sync.get<StorageSyncConfig>('syncConfig')
   if (syncConfig !== undefined) {
     return syncConfig[serviceID]
   }
@@ -89,8 +93,11 @@ export async function deleteMeta(serviceID: string): Promise<void> {
   await deleteSyncMeta(serviceID)
 }
 
-export async function setNotebook(words: Word[]): Promise<void> {
-  await saveWords({ area: 'notebook', words })
+export async function setNotebook(
+  words: Word[],
+  fromSync?: boolean
+): Promise<void> {
+  await saveWords({ area: 'notebook', words, fromSync })
 }
 
 export async function getNotebook(): Promise<Word[]> {

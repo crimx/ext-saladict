@@ -2,6 +2,7 @@ import { locale as _locale } from '../zh-CN/content'
 
 export const locale: typeof _locale = {
   chooseLang: 'Choose another language',
+  standalone: 'Saladict Standalone Panel',
   fetchLangList: 'Fetch full language list',
   transContext: 'Retranslate',
   neverShow: 'Stop showing',

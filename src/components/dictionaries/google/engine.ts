@@ -9,7 +9,7 @@ import memoizeOne from 'memoize-one'
 import { Google } from '@opentranslate/google'
 import { GoogleLanguage } from './config'
 
-const getTranslator = memoizeOne(
+export const getTranslator = memoizeOne(
   () =>
     new Google({
       env: 'ext',

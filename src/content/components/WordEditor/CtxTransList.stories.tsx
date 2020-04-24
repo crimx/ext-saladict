@@ -44,15 +44,10 @@ storiesOf('Content Scripts|WordEditor', module)
             note: faker.lorem.sentences()
           })}
           ctxTransConfig={config.ctxTrans}
-          ctxTransResult={Object.keys(config.ctxTrans).reduce(
-            (result, id) => {
-              result[id] = faker.random.boolean()
-                ? faker.lorem.paragraphs()
-                : ''
-              return result
-            },
-            {} as CtxTranslateResults
-          )}
+          ctxTransResult={Object.keys(config.ctxTrans).reduce((result, id) => {
+            result[id] = faker.random.boolean() ? faker.lorem.paragraphs() : ''
+            return result
+          }, {} as CtxTranslateResults)}
           onNewCtxTransConfig={action('onNewCtxTransConfig')}
           onNewCtxTransResult={action('onNewCtxTransResult')}
         />

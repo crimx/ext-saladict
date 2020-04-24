@@ -5,8 +5,8 @@ export interface CustomContextItem {
 
 export type ContextItem = string | CustomContextItem
 
-export function getAllContextMenus() {
-  const allContextMenus = {
+export function getAllContextMenus(): { [id: string]: ContextItem } {
+  return {
     baidu_page_translate: 'x',
     baidu_search: 'https://www.baidu.com/s?ie=utf-8&wd=%s',
     bing_dict: 'https://cn.bing.com/dict/?q=%s',
@@ -34,13 +34,5 @@ export function getAllContextMenus() {
     youdao_page_translate: 'x',
     youdao: 'http://dict.youdao.com/w/%s',
     youglish: 'https://youglish.com/search/%s'
-  }
-
-  // Just for type check. Keys in allContextMenus are useful so no actual assertion
-  // eslint-disable-next-line no-unused-expressions
-  allContextMenus as { [id: string]: string }
-
-  return allContextMenus as typeof allContextMenus & {
-    [index: string]: ContextItem
   }
 }
