@@ -75,14 +75,14 @@ async function modifyViewrJS() {
   )
 
   // disable url check
-  const validateTester = /var validateFileURL[^\n]*\n+^{$[\s\S]+?^}$/m
+  const validateTester = /(let|var) validateFileURL[^\n]*\n+^{$[\s\S]+?^}$/m
   if (!validateTester.test(file)) {
     shell.echo('Could not locate validateFileURL in viewer.js')
     shell.exit(1)
   }
   file = file.replace(
     validateTester,
-    '/* saladict */var validateFileURL = () => {};'
+    '/* saladict */let validateFileURL = () => {};'
   )
 
   await fs.writeFile(viewerPath, file)
