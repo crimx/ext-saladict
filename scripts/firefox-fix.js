@@ -22,7 +22,8 @@ async function main() {
   )
 
   const staticChunkIds = await getStaticChunks(htmlTexts)
-  const dynamicChunks = (await fs.readdir(path.join(ffPath, 'assets')))
+  const allChunks = await fs.readdir(path.join(ffPath, 'assets'))
+  const dynamicChunks = allChunks
     .filter(name => {
       const m = /^([^.]+)\.[^.]+\.js$/.exec(name)
       if (m) {
@@ -73,6 +74,18 @@ async function main() {
         dom.window.document.documentElement.outerHTML
       )
     })
+  )
+
+  // urgh
+  // https://github.com/mozilla/addons-linter/issues/2498
+  const runtime = allChunks.find(filename => filename.startsWith('runtime.'))
+  const runtimePath = path.join(ffPath, 'assets', runtime)
+  await fs.outputFile(
+    runtimePath,
+    (await fs.readFile(runtimePath, 'utf8')).replace(
+      /import\(/g,
+      'saladictImport('
+    )
   )
 }
 
