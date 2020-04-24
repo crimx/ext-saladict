@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.10.1](https://github.com/crimx/ext-saladict/compare/v7.10.0...v7.10.1) (2020-04-24)
+
+
+### Bug Fixes
+
+* **wordpage:** firefox layout ([7165fda](https://github.com/crimx/ext-saladict/commit/7165fda9101b24a229e15a64396ef39ef1c7fb85))
+
 ## [7.10.0](https://github.com/crimx/ext-saladict/compare/v7.9.3...v7.10.0) (2020-04-24)
 
 
