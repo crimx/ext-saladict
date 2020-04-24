@@ -15,7 +15,7 @@ textarea {
 .wordpage-Header {
   display: flex;
   position: fixed;
-  z-index: 1000;
+  z-index: 100;
   top: 0;
   left: 0;
   width: 100%;
@@ -53,6 +53,13 @@ textarea {
   color: #fff;
 }
 
+.wordpage-BtnGroup {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
 .wordpage-Content {
   background: #fff;
 }
@@ -77,4 +84,8 @@ textarea {
 .wordpage-Record_Title {
   font-size: 12px;
   color: #aaa;
+}
+
+.wordEditorPanel-Background {
+  z-index: 998 !important;
 }

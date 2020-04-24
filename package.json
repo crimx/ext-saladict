@@ -1,12 +1,12 @@
 {
   "name": "saladict",
-  "version": "7.10.0",
+  "version": "7.10.1",
   "description": "Chrome extension and Firefox WebExtension, inline translator powered by mutiple online dictionaries",
   "private": true,
   "scripts": {
     "start": "webpack-dev-server --mode development --open --debug",
     "storybook": "start-storybook",
-    "build": "webpack --mode production",
+    "build": "webpack --mode production && node scripts/firefox-fix.js",
     "devbuild": "webpack --mode development",
     "type-check": "tsc --noEmit",
     "test": "jest --testTimeout 20000",
