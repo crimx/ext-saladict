@@ -9,7 +9,7 @@ import memoizeOne from 'memoize-one'
 import { Tencent } from '@opentranslate/tencent'
 import { TencentLanguage } from './config'
 
-const getTranslator = memoizeOne(
+export const getTranslator = memoizeOne(
   () =>
     new Tencent({
       env: 'ext',

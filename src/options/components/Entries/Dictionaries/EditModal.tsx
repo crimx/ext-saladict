@@ -11,6 +11,7 @@ import { GlobalsContext } from '@/options/data'
 import { InputNumberGroup } from '@/options/components/InputNumberGroup'
 import { SaladictModalForm } from '@/options/components/SaladictModalForm'
 import { ChangeEntryContext } from '@/options/helpers/change-entry'
+import { Translator } from '@opentranslate/translator'
 
 export interface EditModalProps {
   dictID?: DictID | null
@@ -143,19 +144,41 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
               )
               break
             case 'string':
-              item.children = (
-                <Select>
-                  {globals.profile.dicts.all[dictID]['options_sel'][optKey].map(
-                    (option: string) => (
+              if (optKey === 'tl' || optKey === 'tl2') {
+                const getTranslator:
+                  | undefined
+                  | (() => Translator) = require(`@/components/dictionaries/${dictID}/engine`)
+                  .getTranslator
+
+                const langs = getTranslator
+                  ? getTranslator()
+                      .getSupportLanguages()
+                      .map(lang => (lang === 'auto' ? 'default' : lang))
+                  : globals.profile.dicts.all[dictID]['options_sel'][optKey]
+
+                item.children = (
+                  <Select>
+                    {langs.map((option: string) => (
                       <Select.Option value={option} key={option}>
-                        {optKey === 'tl' || optKey === 'tl2'
-                          ? t(`langcode:${option}`)
-                          : t(`dicts:${dictID}.options.${optKey}-${option}`)}
+                        {option === 'default' ? '' : options + ' '}
+                        {t(`langcode:${option}`)}
                       </Select.Option>
-                    )
-                  )}
-                </Select>
-              )
+                    ))}
+                  </Select>
+                )
+              } else {
+                item.children = (
+                  <Select>
+                    {globals.profile.dicts.all[dictID]['options_sel'][
+                      optKey
+                    ].map((option: string) => (
+                      <Select.Option value={option} key={option}>
+                        {t(`dicts:${dictID}.options.${optKey}-${option}`)}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                )
+              }
               break
             default:
               item.valuePropName = 'checked'

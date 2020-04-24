@@ -9,7 +9,7 @@ import memoizeOne from 'memoize-one'
 import { Sogou } from '@opentranslate/sogou'
 import { SogouLanguage } from './config'
 
-const getTranslator = memoizeOne(
+export const getTranslator = memoizeOne(
   () =>
     new Sogou({
       env: 'ext',

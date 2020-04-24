@@ -9,7 +9,7 @@ import memoizeOne from 'memoize-one'
 import { Youdao } from '@opentranslate/youdao'
 import { YoudaotransLanguage } from './config'
 
-const getTranslator = memoizeOne(
+export const getTranslator = memoizeOne(
   () =>
     new Youdao({
       env: 'ext',
