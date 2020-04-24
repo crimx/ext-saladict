@@ -39,7 +39,7 @@ export const Header: FC<WordPageProps> = props => {
           )}
         </div>
       </div>
-      <div style={{ marginLeft: 'auto', whiteSpace: 'nowrap' }}>
+      <div className="wordpage-BtnGroup">
         <Input
           style={{ width: '15em' }}
           placeholder="Search"
