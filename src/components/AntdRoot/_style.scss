@@ -1,0 +1,36 @@
+html {
+  background-color: #888;
+}
+
+#root {
+  &::after {
+    content: '';
+    position: fixed;
+    z-index: 2147483647;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: auto;
+    background-color: #888;
+    transition: background-color 0.3s;
+    pointer-events: none;
+  }
+
+  &.saladict-theme-dark::after {
+    background-color: #000;
+  }
+
+  &.saladict-theme-bright::after {
+    background-color: #fff;
+  }
+
+  &.saladict-theme-loaded::after {
+    transition: opacity 0.4s;
+    opacity: 0;
+  }
+
+  &.saladict-theme-loading::after {
+    opacity: 1;
+  }
+}
