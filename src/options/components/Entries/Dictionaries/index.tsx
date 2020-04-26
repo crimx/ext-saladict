@@ -9,6 +9,7 @@ import { SortableList, arrayMove } from '@/options/components/SortableList'
 import { SaladictModalForm } from '@/options/components/SaladictModalForm'
 import { getProfilePath } from '@/options/helpers/path-joiner'
 import { upload } from '@/options/helpers/upload'
+import { useCheckDictAuth } from '@/options/helpers/use-check-dict-auth'
 import { useListLayout } from '@/options/helpers/layout'
 import { DictTitleMemo } from './DictTitle'
 import { EditModal } from './EditModal'
@@ -16,6 +17,7 @@ import { AllDicts } from './AllDicts'
 
 export const Dictionaries: FC = () => {
   const { t } = useTranslate(['options', 'common', 'dicts'])
+  const checkDictAuth = useCheckDictAuth()
   const globals = useContext(GlobalsContext)
   const [editingDict, setEditingDict] = useState<DictID | null>(null)
   const [showAddModal, setShowAddModal] = useState(false)
@@ -53,7 +55,11 @@ export const Dictionaries: FC = () => {
               )
             }
           })}
-          onAdd={() => setShowAddModal(true)}
+          onAdd={async () => {
+            if (await checkDictAuth()) {
+              setShowAddModal(true)
+            }
+          }}
           onEdit={index => {
             setEditingDict(selectedDicts[index])
           }}
