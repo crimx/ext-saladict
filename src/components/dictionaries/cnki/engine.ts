@@ -67,8 +67,8 @@ function handleDOM(
 
   const result: CNKIResult = {
     dict: [],
-    senbi: extractSens($entries, 'img[src="images/word.jpg"]', 'showjd_'),
-    seneng: extractSens($entries, 'img[src="images/dian_ywlj.gif"]', 'showlj_')
+    senbi: [],
+    seneng: []
   }
 
   if (options.dict) {
@@ -93,6 +93,21 @@ function handleDOM(
     }
   }
 
+  if (options.senbi) {
+    result.senbi = extractSens(
+      $entries,
+      'img[src="images/word.jpg"]',
+      'showjd_'
+    )
+  }
+
+  if (options.seneng) {
+    result.seneng = extractSens(
+      $entries,
+      'img[src="images/dian_ywlj.gif"]',
+      'showlj_'
+    )
+  }
   // if (options.digests) {
   //   const $digests = $entries.find($e => Boolean($e.querySelector('img[src="images/04.gif"]')))
   //   if ($digests) {
