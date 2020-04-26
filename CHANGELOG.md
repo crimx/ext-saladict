@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.10.2](https://github.com/crimx/ext-saladict/compare/v7.10.1...v7.10.2) (2020-04-26)
+
+
+### Bug Fixes
+
+* **dicts:** cnki should respect options ([c78d2d7](https://github.com/crimx/ext-saladict/commit/c78d2d7ae41dc08d1c7a8a3900613392825c3527)), closes [#752](https://github.com/crimx/ext-saladict/issues/752)
+* **options:** smooth dark/bright transition ([5433cac](https://github.com/crimx/ext-saladict/commit/5433cac8f074e00a597e91c6804cf3fc8acf3bef))
+* **options:** typo ([c66ed05](https://github.com/crimx/ext-saladict/commit/c66ed0586a1662d2a9c4611f8ef8e2c4c7099b60))
+* **selection:** cancel instant capture on keyup ([c6dbaa7](https://github.com/crimx/ext-saladict/commit/c6dbaa7ef92c29827b6a35db7bc6824c8696843f)), closes [#756](https://github.com/crimx/ext-saladict/issues/756)
+
 ### [7.10.1](https://github.com/crimx/ext-saladict/compare/v7.10.0...v7.10.1) (2020-04-24)
 
 
