@@ -15,14 +15,15 @@ import {
   updateProfileIDList,
   addProfile
 } from '@/_helpers/profile-manager'
-import { useFixedCallback } from '@/_helpers/hooks'
 import { SortableList, arrayMove } from '@/options/components/SortableList'
 import { profile$$, profileIDList$$ } from '@/options/data'
 import { useListLayout } from '@/options/helpers/layout'
+import { useCheckDictAuth } from '@/options/helpers/use-check-dict-auth'
 import { EditNameModal } from './EditNameModal'
 
 export const Profiles: FC = () => {
   const { t } = useTranslate('options')
+  const checkDictAuth = useCheckDictAuth()
   const activeProfileID = useObservableGetState(profile$$, 'id')!
   const [showAddProfileModal, setShowAddProfileModal] = useState(false)
   const [showEditNameModal, setShowEditNameModal] = useState(false)
@@ -82,16 +83,18 @@ export const Profiles: FC = () => {
             value: id,
             title: getProfileName(name, t)
           }))}
-          onSelect={useFixedCallback(({ target: { value } }) =>
-            tryTo(() => updateActiveProfileID(value))
-          )}
-          onAdd={useFixedCallback(() => {
+          onSelect={async ({ target: { value } }) => {
+            if (await checkDictAuth()) {
+              tryTo(() => updateActiveProfileID(value))
+            }
+          }}
+          onAdd={() => {
             setEditingProfileID({
               ...getDefaultProfileID(),
               name: ''
             })
             setShowAddProfileModal(true)
-          })}
+          }}
           onEdit={index => {
             setEditingProfileID(
               profileIDList[index]

@@ -4,6 +4,7 @@ export const locale = {
   shortcuts: '设置快捷键',
   msg_update_error: '设置更新失败',
   msg_updated: '设置已更新',
+  msg_first_time_notice: '初次使用注意',
   unsave_confirm: '修改尚未保存，确定放弃？',
   nativeSearch: '浏览器外划词',
 
@@ -324,7 +325,7 @@ export const locale = {
 
   dictAuth: {
     description:
-      '随着沙拉查词用户增多，共用 key 可能不太稳定。如经常使用机器翻译，需要更准确的结果以及更稳定的体验建议到官网申请帐号。',
+      '随着沙拉查词用户增多，如经常使用机器翻译，建议到官网申请帐号以获得更稳定的体验以及更准确的结果。',
     dictHelp: '见{词典}官网。',
     manage: '管理私用帐号'
   },

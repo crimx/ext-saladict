@@ -127,7 +127,6 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
         })
 
         if (
-          state.profiles.find(p => p.id === id)?.name === '%%_translation_%%' &&
           objectKeys(dictAuth).every(id =>
             objectKeys(dictAuth[id]).every(k => !dictAuth[id]?.[k])
           )

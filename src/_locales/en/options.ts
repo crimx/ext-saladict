@@ -6,6 +6,7 @@ export const locale: typeof _locale = {
   shortcuts: 'Set Shortcuts',
   msg_update_error: 'Unable to update',
   msg_updated: 'Successfully updated',
+  msg_first_time_notice: 'First time notice',
   unsave_confirm: 'Settings not saved. Sure to leave?',
   nativeSearch: 'search selected text outside of browser',
 
@@ -339,7 +340,7 @@ export const locale: typeof _locale = {
 
   dictAuth: {
     description:
-      'Shared keys could be unstable from time to time as the number of Saladict users grows. If you heavily use machine translation services it is recommended to register an account for better accuracy and stability.',
+      'As the number of Saladict users grows, if you make heavily use of machine translation services it is recommended to register an account for better stability and accuracy.',
     dictHelp: 'See the official website of {dict}.',
     manage: 'Manage Translator Accounts'
   },

@@ -29,19 +29,21 @@ export const Header: FC<HeaderProps> = props => {
   )
 
   return (
-    <Layout.Header className="options-header">
-      <h1>{t('title')}</h1>
-      <a
-        href="/?menuselected=Profiles"
-        onClick={e => {
-          e.preventDefault()
-          e.stopPropagation()
-          props.openProfilesTab('Profiles')
-        }}
-      >
-        {profileName}
-      </a>
-      <HeadInfoMemo />
+    <Layout.Header>
+      <div className="options-header">
+        <h1>{t('title')}</h1>
+        <a
+          href="/?menuselected=Profiles"
+          onClick={e => {
+            e.preventDefault()
+            e.stopPropagation()
+            props.openProfilesTab('Profiles')
+          }}
+        >
+          {profileName}
+        </a>
+        <HeadInfoMemo />
+      </div>
     </Layout.Header>
   )
 }
