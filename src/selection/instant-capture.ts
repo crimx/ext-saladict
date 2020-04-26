@@ -61,6 +61,7 @@ export function createIntantCaptureStream(config: AppConfig | null) {
       return merge(
         mapTo(null)(fromEvent(window, 'mouseup', { capture: true })),
         mapTo(null)(fromEvent(window, 'mouseout', { capture: true })),
+        mapTo(null)(fromEvent(window, 'keyup', { capture: true })),
         fromEvent<MouseEvent>(window, 'mousemove', { capture: true }).pipe(
           map(event => {
             const self = isInDictPanel(event.target)
