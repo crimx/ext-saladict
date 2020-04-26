@@ -160,7 +160,7 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
                   <Select>
                     {langs.map((option: string) => (
                       <Select.Option value={option} key={option}>
-                        {option === 'default' ? '' : options + ' '}
+                        {option === 'default' ? '' : option + ' '}
                         {t(`langcode:${option}`)}
                       </Select.Option>
                     ))}

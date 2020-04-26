@@ -6,7 +6,7 @@ import ReactDOM from 'react-dom'
 import { combineLatest } from 'rxjs'
 import { filter } from 'rxjs/operators'
 
-import { AntdRoot } from '@/components/AntdRoot'
+import { AntdRoot, switchAntdTheme } from '@/components/AntdRoot'
 import { config$$, profile$$, profileIDList$$, GlobalsContext } from './data'
 import { MainEntry } from './components/MainEntry'
 
@@ -21,10 +21,12 @@ const globals = {} as GlobalsContext
 // we don't have to worry about Form initial state.
 combineLatest(config$$, profile$$, profileIDList$$)
   .pipe(filter(arr => arr.every(Boolean)))
-  .subscribe(([config, profile, profileIDList]) => {
+  .subscribe(async ([config, profile, profileIDList]) => {
     globals.config = config
     globals.profile = profile
     globals.profileIDList = profileIDList
+
+    await switchAntdTheme(config.darkMode)
 
     if (!rendered) {
       globals.dirty = false
