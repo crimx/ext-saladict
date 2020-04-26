@@ -76,9 +76,6 @@ export const AntdRoot: FC<AntdRootProps> = props => {
 
 export async function switchAntdTheme(darkMode: boolean): Promise<void> {
   const $root = document.querySelector('#root')!
-  $root.classList.toggle('saladict-theme-dark', darkMode)
-  $root.classList.toggle('saladict-theme-bright', !darkMode)
-  $root.classList.toggle('saladict-theme-loading', true)
 
   await new Promise(resolve => {
     const filename = `antd${darkMode ? '.dark' : ''}.min.css`
@@ -94,6 +91,11 @@ export async function switchAntdTheme(darkMode: boolean): Promise<void> {
       resolve()
       return
     }
+
+    // smooth dark/bright transition
+    $root.classList.toggle('saladict-theme-dark', darkMode)
+    $root.classList.toggle('saladict-theme-bright', !darkMode)
+    $root.classList.toggle('saladict-theme-loading', true)
 
     if ($link) {
       $link.setAttribute('href', href)
