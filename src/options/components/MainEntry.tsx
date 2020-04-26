@@ -65,37 +65,39 @@ export const MainEntry: FC = () => {
   }, [])
 
   return (
-    <Layout
-      style={{ maxWidth: 1400, margin: '0 auto' }}
-      className={`main-entry${darkMode ? ' dark-mode' : ''}`}
-    >
+    <>
       <Helmet>
         {ready && <title>{`${t('title')} - ${t('nav.' + entry)}`}</title>}
       </Helmet>
       <HeaderMemo openProfilesTab={setEntry} />
-      <Row>
-        <Col>
-          <EntrySideBarMemo entry={entry} onChange={setEntry} />
-        </Col>
-        <Col style={{ flex: '1' }}>
-          <Layout style={{ padding: 24 }}>
-            <Layout.Content
-              style={{
-                padding: 24,
-                backgroundColor: 'var(--opt-background-color)'
-              }}
-            >
-              <ChangeEntryContext.Provider value={setEntry}>
-                <ErrorBoundary key={entry + lang} error={EntryError}>
-                  {ready && <EntryComponent entry={entry} />}
-                </ErrorBoundary>
-              </ChangeEntryContext.Provider>
-            </Layout.Content>
-          </Layout>
-        </Col>
-      </Row>
-      <BtnPreviewMemo />
-    </Layout>
+      <Layout
+        style={{ maxWidth: 1400, margin: '0 auto' }}
+        className={`main-entry${darkMode ? ' dark-mode' : ''}`}
+      >
+        <Row>
+          <Col>
+            <EntrySideBarMemo entry={entry} onChange={setEntry} />
+          </Col>
+          <Col style={{ flex: '1' }}>
+            <Layout style={{ padding: 24 }}>
+              <Layout.Content
+                style={{
+                  padding: 24,
+                  backgroundColor: 'var(--opt-background-color)'
+                }}
+              >
+                <ChangeEntryContext.Provider value={setEntry}>
+                  <ErrorBoundary key={entry + lang} error={EntryError}>
+                    {ready && <EntryComponent entry={entry} />}
+                  </ErrorBoundary>
+                </ChangeEntryContext.Provider>
+              </Layout.Content>
+            </Layout>
+          </Col>
+        </Row>
+        <BtnPreviewMemo />
+      </Layout>
+    </>
   )
 }
 

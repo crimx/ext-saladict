@@ -34,20 +34,23 @@ export interface AntdRootProps {
 export const AntdRoot: FC<AntdRootProps> = props => {
   const storeRef = useRefFn(createStore)
 
-  const { locale, analytics } = useObservableState(
+  const { locale, bgStyle, analytics } = useObservableState(
     useObservable(() =>
       createConfigStream().pipe(
         distinctUntilChanged(
           (oldConfig, newConfig) =>
             oldConfig.langCode === newConfig.langCode &&
+            oldConfig.darkMode === newConfig.darkMode &&
             oldConfig.analytics === newConfig.analytics
         ),
         map(config => ({
           locale: antdLocales[config.langCode] || en_US,
+          bgStyle: { backgroundColor: config.darkMode ? '#000' : '#f0f2f5' },
           analytics: config.analytics
         })),
         startWith({
           locale: zh_CN,
+          bgStyle: { backgroundColor: '#f0f2f5' },
           analytics: false
         })
       )
@@ -64,7 +67,7 @@ export const AntdRoot: FC<AntdRootProps> = props => {
     <I18nContextProvider>
       <ReduxProvider store={storeRef.current}>
         <AntdConfigProvider locale={locale}>
-          {props.children}
+          <div style={bgStyle}>{props.children}</div>
         </AntdConfigProvider>
         <SaladBowlContainer />
         <DictPanelContainer />
@@ -81,7 +84,7 @@ export async function switchAntdTheme(darkMode: boolean): Promise<void> {
     const filename = `antd${darkMode ? '.dark' : ''}.min.css`
     const href =
       process.env.NODE_ENV === 'development'
-        ? `https://cdnjs.cloudflare.com/ajax/libs/antd/4.1.0/filename`
+        ? `https://cdnjs.cloudflare.com/ajax/libs/antd/4.1.0/${filename}`
         : `/assets/${filename}`
     let $link = document.head.querySelector<HTMLLinkElement>(
       'link#saladict-antd-theme'
