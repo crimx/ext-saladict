@@ -1,4 +1,4 @@
-/**!
+/** !
  * Upgrade PDF.js
  */
 
@@ -11,7 +11,8 @@ if (!shell.which('git')) {
   shell.exit(1)
 }
 
-const repoRoot = 'pdf'
+const cacheDir = 'pdf'
+const repoRoot = 'pdf/es5'
 const publicPDFRoot = path.join(__dirname, '../assets/pdf')
 const pdfFiles = [
   'build/pdf.js',
@@ -26,14 +27,14 @@ const files = [...pdfFiles, ...pdfDirs]
 
 shell.cd(path.resolve(__dirname))
 
-shell.rm('-rf', repoRoot)
+shell.rm('-rf', cacheDir)
 
 exec(
-  `git clone https://github.com/mozilla/pdf.js.git ${repoRoot} --single-branch --branch gh-pages --depth 1 --progress --verbose`,
+  `git clone https://github.com/mozilla/pdf.js.git ${cacheDir} --single-branch --branch gh-pages --depth 1 --progress --verbose`,
   'Error: Git clone failed'
 )
 
-shell.cd('./' + repoRoot)
+shell.cd('./' + cacheDir)
 
 startUpgrade()
 
@@ -161,9 +162,9 @@ async function cloneFiles() {
     path.join(publicPDFRoot, 'web/locale/locale.properties')
   )
 
-  const locales = (await fs.readdir(
-    path.join(__dirname, repoRoot, 'web/locale')
-  )).filter(
+  const locales = (
+    await fs.readdir(path.join(__dirname, repoRoot, 'web/locale'))
+  ).filter(
     name =>
       name.startsWith('en') ||
       name.startsWith('zh') ||
