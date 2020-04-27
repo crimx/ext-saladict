@@ -1,39 +1,62 @@
-type UpdateInfo = {
-  isAvailable: boolean
-  info?: any
+export interface ReleaseData {
+  version: string
+  data: string[]
 }
 
-export default function checkUpdate(): Promise<UpdateInfo> {
-  // check new version
-  return fetch(
-    'https://api.github.com/repos/crimx/ext-saladict/releases/latest'
-  )
-    .then(r => r.json())
-    .then(data => {
-      if (data && data.tag_name) {
-        const vGithub = /\d+\.\d+\.\d+/.exec(data.tag_name)
-        if (!vGithub) {
-          return { isAvailable: false }
-        }
-        const gits = vGithub[0].split('.').map(v => Number(v))
-        const curs = browser.runtime
-          .getManifest()
-          .version.split('.')
-          .map(v => Number(v))
-        return {
-          info: data,
-          isAvailable:
-            gits[0] !== curs[0]
-              ? gits[0] > curs[0]
-              : gits[1] !== curs[1]
-              ? gits[1] > curs[1]
-              : gits[2] > curs[2]
-        }
-      }
-      return { isAvailable: false }
-    })
-    .catch(() => {
-      console.warn('version check failed')
-      return { isAvailable: false }
-    })
+/**
+ * 3 major newer
+ * 2 minor newer
+ * 1 patch newer
+ * 0 same version
+ * -1 patch older
+ * -2 minor older
+ * -3 major older
+ */
+export type VersionDiff = number
+
+export type ReleaseResponse = {
+  diff: VersionDiff
+  data?: ReleaseData
+}
+
+export async function checkUpdate(
+  compareVersion?: string,
+  data?: ReleaseData
+): Promise<ReleaseResponse> {
+  if (!data) {
+    try {
+      const isZh = window.appConfig.langCode.startsWith('zh')
+      const response = await fetch(
+        `https://saladict.crimx.com/releases/${isZh ? 'chs' : 'eng'}.json`
+      )
+      data = await response.json()
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  if (!data) {
+    return { diff: 0 }
+  }
+
+  if (!compareVersion) {
+    return { diff: 3, data }
+  }
+
+  const prev = compareVersion.split('.').map(Number)
+  const curr = data.version
+    .slice(1)
+    .split('.')
+    .map(Number)
+
+  for (let i = 0; i < 3; i++) {
+    if (curr[i] > prev[i]) {
+      return { diff: 3 - i, data }
+    }
+    if (curr[i] < prev[i]) {
+      return { diff: i - 3, data }
+    }
+  }
+
+  return { diff: 0, data }
 }

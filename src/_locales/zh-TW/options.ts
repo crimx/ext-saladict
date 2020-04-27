@@ -104,7 +104,7 @@ export const locale: typeof _locale = {
     tripleCtrlPageSel: '響應滑字',
     tripleCtrlPageSel_help: '對網頁滑鼠滑字作出反應。',
     updateCheck: '檢查更新',
-    updateCheck_help: '自動檢查 Github 更新',
+    updateCheck_help: '自動檢查更新',
     analytics: '啟用 Google Analytics',
     analytics_help:
       '提供匿名裝置瀏覽器版本資訊。因精力有限，沙拉查詞作者會盡可能支援使用者量更多的裝置和瀏覽器。',
