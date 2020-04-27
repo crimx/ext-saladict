@@ -110,7 +110,7 @@ export const locale: typeof _locale = {
     tripleCtrlPageSel: 'Selection Response',
     tripleCtrlPageSel_help: 'Response to page selection.',
     updateCheck: 'Check Update',
-    updateCheck_help: 'Automatically check update from Github',
+    updateCheck_help: 'Check update automatically.',
     analytics: 'Enable Google Analytics',
     analytics_help:
       'Share anonymous device browser version information. Saladict author will offer prioritized support to popular devices and browsers.',

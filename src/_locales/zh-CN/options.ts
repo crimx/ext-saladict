@@ -101,7 +101,7 @@ export const locale = {
     tripleCtrlPageSel: '响应划词',
     tripleCtrlPageSel_help: '响应网页划词。',
     updateCheck: '检查更新',
-    updateCheck_help: '自动检查 Github 更新',
+    updateCheck_help: '自动检查更新',
     analytics: '启用 Google Analytics',
     analytics_help:
       '提供匿名设备浏览器版本信息。因精力有限，沙拉查词作者会尽可能支持用户量更多的设备和浏览器。',
