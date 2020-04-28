@@ -14,7 +14,7 @@
 
 Chrome/Firefox WebExtension. Feature-rich inline translator with PDF support.
 
-[【中文说明】](./RAEDME-zh.md)Chrome/Firefox 浏览器插件，网页划词翻译。
+[【中文说明】](./README-zh.md)Chrome/Firefox 浏览器插件，网页划词翻译。
 
 <p align="center">
   <a href="https://github.com/crimx/ext-saladict/releases/" target="_blank"><img src="https://raw.githubusercontent.com/wiki/crimx/ext-saladict/images/notebook.gif" /></a>
