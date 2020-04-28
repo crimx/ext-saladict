@@ -12,7 +12,12 @@
 
 ## How to get started
 
-Clone the repo and run `yarn install`.
+```bash
+git clone git@github.com:crimx/ext-saladict.git
+cd ext-saladict
+yarn install
+yarn pdf
+```
 
 ## UI Tweaking
 
@@ -70,7 +75,7 @@ To develop the component in Storybook we need to intercept http requests from di
 
 ### Add Testing
 
-1. Add `engine.spec.ts` to test the engine.
+1. Add `[dictID]/engine.spec.ts` to test the engine.
 
 ## Code Style
 

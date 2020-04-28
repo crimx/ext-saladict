@@ -37,7 +37,7 @@ yarn install
 yarn pdf
 ```
 
-在项目跟添加 `.env` 文件，参考 `.env.example` 格式（可留空如果你不要这些词典）。
+在项目根添加 `.env` 文件，参考 `.env.example` 格式（可留空如果你不需要这些词典）。
 
 ```bash
 yarn build
