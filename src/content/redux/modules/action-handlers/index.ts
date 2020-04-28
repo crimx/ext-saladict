@@ -221,7 +221,7 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
   }),
 
   QS_PANEL_CHANGED: (state, { payload }) => {
-    if (state.withQSPanel === payload) {
+    if (state.withQssaPanel === payload) {
       return state
     }
 
@@ -229,7 +229,7 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
     return payload && state.config.qssaPageSel
       ? {
           ...state,
-          withQSPanel: payload,
+          withQssaPanel: payload,
           isPinned: false,
           // no hiding if it's browser action page
           isShowDictPanel: isPopupPage() || isOptionsPage(),
@@ -238,7 +238,7 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
         }
       : {
           ...state,
-          withQSPanel: payload,
+          withQssaPanel: payload,
           isQSPanel: isQuickSearchPage()
         }
   },

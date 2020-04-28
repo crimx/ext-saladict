@@ -33,7 +33,7 @@ export const initState = () => {
      */
     isQSPanel: isQuickSearchPage(),
     /** is a standalone quick search panel running */
-    withQSPanel: false,
+    withQssaPanel: false,
     wordEditor: {
       isShow: false,
       word: newWord(),

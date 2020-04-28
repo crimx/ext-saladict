@@ -36,7 +36,7 @@ export function createIntantCaptureStream(config: AppConfig | null) {
     ),
     message.createStream('QS_PANEL_CHANGED').pipe(pluck('payload'))
   ).pipe(
-    map(withQSPanel => withQSPanel && config.qssaPageSel),
+    map(withQssaPanel => withQssaPanel && config.qssaPageSel),
     startWith(false)
   )
 
