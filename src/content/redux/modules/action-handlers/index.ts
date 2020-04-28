@@ -226,7 +226,7 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
     }
 
     // hide panel on otehr pages and leave just quick search panel
-    return payload && state.config.tripleCtrlPageSel
+    return payload && state.config.qssaPageSel
       ? {
           ...state,
           withQSPanel: payload,

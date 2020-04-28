@@ -100,15 +100,15 @@ export const locale: typeof _locale = {
     tripleCtrl: 'Enable Ctrl Shortkey',
     tripleCtrl_help:
       'Press {⌘ Command}(macOS) or {Ctrl}(Others) three times (or with browser shortkey) to summon the dictionary panel. ',
-    tripleCtrlLocation: 'Location',
-    tripleCtrlStandalone: 'Standalone',
-    tripleCtrlStandalone_help:
+    qsLocation: 'Location',
+    qsStandalone: 'Standalone',
+    qsStandalone_help:
       'Render dict panel in a standalone window. You can {search selected text outside of browser}.',
-    tripleCtrlSidebar: 'Sidebar Layout',
-    tripleCtrlSidebar_help: 'Rearrange windows to sidebar-like layout.',
-    tripleCtrlHeight: 'Window Height',
-    tripleCtrlPageSel: 'Selection Response',
-    tripleCtrlPageSel_help: 'Response to page selection.',
+    qssaSidebar: 'Sidebar Layout',
+    qssaSidebar_help: 'Rearrange windows to sidebar-like layout.',
+    qssaHeight: 'Window Height',
+    qssaPageSel: 'Selection Response',
+    qssaPageSel_help: 'Response to page selection.',
     updateCheck: 'Check Update',
     updateCheck_help: 'Check update automatically.',
     analytics: 'Enable Google Analytics',
@@ -138,7 +138,7 @@ export const locale: typeof _locale = {
         popup_options: 'Open Saladict Options',
         popup_standalone: 'Open Saladict Standalone Panel'
       },
-      openTripleCtrlStandalone: 'Standalone Panel Options'
+      openQsStandalone: 'Standalone Panel Options'
     }
   },
 

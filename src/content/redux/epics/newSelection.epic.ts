@@ -21,7 +21,7 @@ export const newSelectionEpic: Epic = (action$, state$) =>
         return empty()
       }
 
-      if (withQSPanel && config.tripleCtrlPageSel) {
+      if (withQSPanel && config.qssaPageSel) {
         // standalone panel takes control
         return selectionToQSPanel(config, selection)
       }

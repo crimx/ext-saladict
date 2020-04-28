@@ -171,7 +171,7 @@ export const init = (
         if (!isPopupPage() && !isOptionsPage()) {
           const { isShowDictPanel, config, selection } = getState()
           if (config.tripleCtrl) {
-            if (config.tripleCtrlStandalone) {
+            if (config.qsStandalone) {
               // focus if the standalone panel is already opened
               message.send({ type: 'OPEN_QS_PANEL' })
             } else if (!isShowDictPanel) {
@@ -179,8 +179,8 @@ export const init = (
               summonedPanelInit(
                 dispatch,
                 selection.word,
-                config.tripleCtrlPreload,
-                config.tripleCtrlAuto,
+                config.qsPreload,
+                config.qsAuto,
                 ''
               )
             }
@@ -219,8 +219,8 @@ export const init = (
     summonedPanelInit(
       dispatch,
       selection.word,
-      config.tripleCtrlPreload,
-      config.tripleCtrlAuto,
+      config.qsPreload,
+      config.qsAuto,
       'quick-search'
     )
   } else {

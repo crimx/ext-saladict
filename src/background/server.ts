@@ -138,7 +138,7 @@ export class BackgroundServer {
 
     await this.qsPanelManager.create(word)
 
-    if (!window.appConfig.tripleCtrlAuto) {
+    if (!window.appConfig.qsAuto) {
       await timer(1000)
       await message.send({
         type: 'QS_PANEL_SEARCH_TEXT',

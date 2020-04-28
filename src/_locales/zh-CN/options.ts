@@ -92,14 +92,14 @@ export const locale = {
     tripleCtrl: '启用 Ctrl 快捷键',
     tripleCtrl_help:
       '连续按三次{⌘ Command}（Mac）或者{Ctrl}（其它键盘）（或设置浏览器快捷键）将弹出词典界面。',
-    tripleCtrlLocation: '出现位置',
-    tripleCtrlStandalone: '独立窗口',
-    tripleCtrlStandalone_help: '显示为单独的窗口，支持响应{浏览器以外划词}。',
-    tripleCtrlSidebar: '类侧边栏',
-    tripleCtrlSidebar_help: '并排显示窗口以达到类似侧边栏的布局。',
-    tripleCtrlHeight: '窗口高度',
-    tripleCtrlPageSel: '响应划词',
-    tripleCtrlPageSel_help: '响应网页划词。',
+    qsLocation: '出现位置',
+    qsStandalone: '独立窗口',
+    qsStandalone_help: '显示为单独的窗口，支持响应{浏览器以外划词}。',
+    qssaSidebar: '类侧边栏',
+    qssaSidebar_help: '并排显示窗口以达到类似侧边栏的布局。',
+    qssaHeight: '窗口高度',
+    qssaPageSel: '响应划词',
+    qssaPageSel_help: '响应网页划词。',
     updateCheck: '检查更新',
     updateCheck_help: '自动检查更新',
     analytics: '启用 Google Analytics',
@@ -128,7 +128,7 @@ export const locale = {
         popup_options: '打开 Saladict 设置',
         popup_standalone: '打开快捷查词独立窗口'
       },
-      openTripleCtrlStandalone: '打开独立窗口设置'
+      openQsStandalone: '打开独立窗口设置'
     }
   },
 

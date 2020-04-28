@@ -95,14 +95,14 @@ export const locale: typeof _locale = {
     tripleCtrl: '啟用 Ctrl 快速鍵',
     tripleCtrl_help:
       '連續按三次{⌘ Command}（macOS）或者{Ctrl}（其它鍵盤）（或設定瀏覽器快速鍵），將會彈出字典視窗介面。',
-    tripleCtrlLocation: '出現位置',
-    tripleCtrlStandalone: '獨立視窗',
-    tripleCtrlStandalone_help: '顯示為獨立的視窗，支援{瀏覽器外選字翻譯}。',
-    tripleCtrlSidebar: '類側邊欄',
-    tripleCtrlSidebar_help: '並排顯示視窗以達到類似側邊欄的配置。',
-    tripleCtrlHeight: '視窗高度',
-    tripleCtrlPageSel: '響應滑字',
-    tripleCtrlPageSel_help: '對網頁滑鼠滑字作出反應。',
+    qsLocation: '出現位置',
+    qsStandalone: '獨立視窗',
+    qsStandalone_help: '顯示為獨立的視窗，支援{瀏覽器外選字翻譯}。',
+    qssaSidebar: '類側邊欄',
+    qssaSidebar_help: '並排顯示視窗以達到類似側邊欄的配置。',
+    qssaHeight: '視窗高度',
+    qssaPageSel: '響應滑字',
+    qssaPageSel_help: '對網頁滑鼠滑字作出反應。',
     updateCheck: '檢查更新',
     updateCheck_help: '自動檢查更新',
     analytics: '啟用 Google Analytics',
@@ -131,7 +131,7 @@ export const locale: typeof _locale = {
         popup_options: '進入 Saladict 設定',
         popup_standalone: '開啟快捷查詞獨立視窗'
       },
-      openTripleCtrlStandalone: '獨立視窗設定'
+      openQsStandalone: '獨立視窗設定'
     }
   },
 

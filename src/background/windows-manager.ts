@@ -108,7 +108,7 @@ export class QsPanelManager {
     let wordString = ''
     try {
       if (!preload) {
-        if (window.appConfig.tripleCtrlPreload === 'selection') {
+        if (window.appConfig.qsPreload === 'selection') {
           const tab = (
             await browser.tabs.query({
               active: true,
@@ -129,12 +129,12 @@ export class QsPanelManager {
 
     const qsPanelWin = await browser.windows
       .create({
-        ...(window.appConfig.tripleCtrlSidebar
-          ? await this.getSidebarRect(window.appConfig.tripleCtrlSidebar)
+        ...(window.appConfig.qssaSidebar
+          ? await this.getSidebarRect(window.appConfig.qssaSidebar)
           : this.getDefaultRect()),
         type: 'popup',
         url: browser.runtime.getURL(
-          `quick-search.html?sidebar=${window.appConfig.tripleCtrlSidebar}${wordString}`
+          `quick-search.html?sidebar=${window.appConfig.qssaSidebar}${wordString}`
         )
       })
       .catch((err: Error) => {
@@ -151,10 +151,10 @@ export class QsPanelManager {
     if (qsPanelWin && qsPanelWin.id) {
       this.qsPanelId = qsPanelWin.id
 
-      if (window.appConfig.tripleCtrlSidebar) {
+      if (window.appConfig.qssaSidebar) {
         this.isSidebar = true
         await this.mainWindowsManager.makeRoomForSidebar(
-          window.appConfig.tripleCtrlSidebar,
+          window.appConfig.qssaSidebar,
           qsPanelWin
         )
       }
@@ -271,17 +271,17 @@ export class QsPanelManager {
   }
 
   getDefaultRect(): WinRect {
-    const { tripleCtrlLocation, tripleCtrlHeight } = window.appConfig
+    const { qsLocation, qssaHeight } = window.appConfig
 
     let qsPanelLeft = 10
     let qsPanelTop = 30
     const qsPanelWidth = window.appConfig.panelWidth
-    const qsPanelHeight = window.appConfig.tripleCtrlHeight
+    const qsPanelHeight = window.appConfig.qssaHeight
 
-    switch (tripleCtrlLocation) {
+    switch (qsLocation) {
       case 'CENTER':
         qsPanelLeft = (window.screen.availWidth - qsPanelWidth) / 2
-        qsPanelTop = (window.screen.availHeight - tripleCtrlHeight) / 2
+        qsPanelTop = (window.screen.availHeight - qssaHeight) / 2
         break
       case 'TOP':
         qsPanelLeft = (window.screen.availWidth - qsPanelWidth) / 2
@@ -289,7 +289,7 @@ export class QsPanelManager {
         break
       case 'RIGHT':
         qsPanelLeft = window.screen.availWidth - qsPanelWidth - 30
-        qsPanelTop = (window.screen.availHeight - tripleCtrlHeight) / 2
+        qsPanelTop = (window.screen.availHeight - qssaHeight) / 2
         break
       case 'BOTTOM':
         qsPanelLeft = (window.screen.availWidth - qsPanelWidth) / 2
@@ -297,7 +297,7 @@ export class QsPanelManager {
         break
       case 'LEFT':
         qsPanelLeft = 10
-        qsPanelTop = (window.screen.availHeight - tripleCtrlHeight) / 2
+        qsPanelTop = (window.screen.availHeight - qssaHeight) / 2
         break
       case 'TOP_LEFT':
         qsPanelLeft = 10

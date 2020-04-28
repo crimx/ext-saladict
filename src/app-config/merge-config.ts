@@ -35,6 +35,14 @@ export function mergeConfig(
     })
   }
 
+  rename('tripleCtrlPreload', 'qsPreload')
+  rename('tripleCtrlAuto', 'qsAuto')
+  rename('tripleCtrlLocation', 'qsLocation')
+  rename('tripleCtrlStandalone', 'qsStandalone')
+  rename('tripleCtrlHeight', 'qssaHeight')
+  rename('tripleCtrlSidebar', 'qssaSidebar')
+  rename('tripleCtrlPageSel', 'qssaPageSel')
+
   // pre-merge patch end
 
   Object.keys(base).forEach(key => {
@@ -74,15 +82,15 @@ export function mergeConfig(
         )
         mergeNumber(`${key}.instant.delay`)
         break
-      case 'tripleCtrlPreload':
+      case 'qsPreload':
         merge(
-          'tripleCtrlPreload',
+          'qsPreload',
           val => val === '' || val === 'clipboard' || val === 'selection'
         )
         break
-      case 'tripleCtrlLocation':
+      case 'qsLocation':
         merge(
-          'tripleCtrlLocation',
+          'qsLocation',
           val =>
             val === 'CENTER' ||
             val === 'TOP' ||
@@ -188,6 +196,15 @@ export function mergeConfig(
   // post-merge patch end
 
   return base
+
+  function rename(oldName: string, newName: string): void {
+    if (
+      !Object.prototype.hasOwnProperty.call(oldConfig, newName) &&
+      Object.prototype.hasOwnProperty.call(oldConfig, oldName)
+    ) {
+      ;(oldConfig as AppConfigMutable)[newName] = oldConfig[oldName]
+    }
+  }
 
   function mergeSelectedContextMenus(path: string): void {
     const selected = get(oldConfig, [path, 'selected'])

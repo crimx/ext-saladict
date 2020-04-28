@@ -81,7 +81,7 @@ export const newSelection: ActionHandler<
     }
   }
 
-  if ((state.withQSPanel && config.tripleCtrlPageSel) || isStandalonePage()) {
+  if ((state.withQSPanel && config.qssaPageSel) || isStandalonePage()) {
     return newState
   }
 

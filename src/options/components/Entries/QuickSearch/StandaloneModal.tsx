@@ -20,12 +20,12 @@ export const StandaloneModal: FC<StandaloneModalProps> = ({
 
   return (
     <SaladictModalForm
-      title={t(getConfigPath('tripleCtrlStandalone'))}
+      title={t(getConfigPath('qsStandalone'))}
       visible={show}
       onClose={onClose}
       items={[
         {
-          name: getConfigPath('tripleCtrlSidebar'),
+          name: getConfigPath('qssaSidebar'),
           children: (
             <Select>
               <Select.Option value="">{t('common:none')}</Select.Option>
@@ -37,8 +37,8 @@ export const StandaloneModal: FC<StandaloneModalProps> = ({
           )
         },
         {
-          name: getConfigPath('tripleCtrlHeight'),
-          hide: values => values[getConfigPath('tripleCtrlSidebar')],
+          name: getConfigPath('qssaHeight'),
+          hide: values => values[getConfigPath('qssaSidebar')],
           children: (
             <Slider
               tipFormatter={pixelSlideFormatter}
@@ -49,7 +49,7 @@ export const StandaloneModal: FC<StandaloneModalProps> = ({
           )
         },
         {
-          name: getConfigPath('tripleCtrlPageSel'),
+          name: getConfigPath('qssaPageSel'),
           valuePropName: 'checked',
           children: <Switch />
         },
