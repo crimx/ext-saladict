@@ -6,7 +6,8 @@
   "scripts": {
     "start": "webpack-dev-server --mode development --open --debug",
     "storybook": "start-storybook",
-    "build": "webpack --mode production && node scripts/firefox-fix.js",
+    "build": "webpack --mode production",
+    "postbuild": "node scripts/firefox-fix.js",
     "devbuild": "webpack --mode development",
     "type-check": "tsc --noEmit",
     "test": "jest --testTimeout 20000",
