@@ -281,7 +281,7 @@ async function summonedPanelInit(
           }
         }
       }
-    } /* preload === clipboard */ else {
+    } else if (preload === 'clipboard') {
       const text = await message.send<'GET_CLIPBOARD'>({
         type: 'GET_CLIPBOARD'
       })

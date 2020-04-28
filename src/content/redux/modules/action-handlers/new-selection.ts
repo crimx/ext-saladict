@@ -30,8 +30,6 @@ export const newSelection: ActionHandler<
         y: selection.mouseY
       }
     } else if (!state.isPinned) {
-      newState.text = selection.word.text
-
       // icon position       10px  panel position
       //           +-------+      +------------------------+
       //           |       |      |                        |
