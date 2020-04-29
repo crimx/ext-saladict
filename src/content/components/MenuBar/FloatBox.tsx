@@ -1,7 +1,7 @@
 import React, { FC, Ref, useState, useCallback } from 'react'
 import { ResizeReporter } from 'react-resize-reporter/scroll'
 
-interface FloatBoxProps {
+export interface FloatBoxProps {
   list?: Array<{ key: string; content: React.ReactNode }>
   /** Box container */
   ref?: Ref<HTMLDivElement>
