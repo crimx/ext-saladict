@@ -44,6 +44,21 @@ module.exports = {
     },
     'prev-profile': {
       description: '__MSG_command_prev_profile__'
+    },
+    'profile-1': {
+      description: '__MSG_command_profile_1__'
+    },
+    'profile-2': {
+      description: '__MSG_command_profile_2__'
+    },
+    'profile-3': {
+      description: '__MSG_command_profile_3__'
+    },
+    'profile-4': {
+      description: '__MSG_command_profile_4__'
+    },
+    'profile-5': {
+      description: '__MSG_command_profile_5__'
     }
   },
 
@@ -69,5 +84,5 @@ module.exports = {
 
   optional_permissions: ['clipboardWrite'],
 
-  content_security_policy: "script-src 'self'; object-src 'self'"
+  content_security_policy: "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }

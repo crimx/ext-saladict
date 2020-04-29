@@ -37,5 +37,20 @@
   },
   "command_prev_profile": {
     "message": "上一个情景模式"
+  },
+  "command_profile_1": {
+    "message": "第一个情景模式"
+  },
+  "command_profile_2": {
+    "message": "第二个情景模式"
+  },
+  "command_profile_3": {
+    "message": "第三个情景模式"
+  },
+  "command_profile_4": {
+    "message": "第四个情景模式"
+  },
+  "command_profile_5": {
+    "message": "第五个情景模式"
   }
 }

@@ -86,25 +86,36 @@ function onCommand(command: string) {
       break
     case 'next-profile':
     case 'prev-profile':
-      browser.tabs
-        .query({ active: true, currentWindow: true })
-        .then(async tabs => {
-          if (tabs.length <= 0 || tabs[0].id == null) {
-            return
-          }
+      {
+        const curID = window.activeProfile.id
+        const curIndex = window.profileIDList.findIndex(
+          ({ id }) => id === curID
+        )
+        const offset = command === 'next-profile' ? 1 : -1
+        const nextIndex =
+          curIndex < 0 ? 0 : (curIndex + offset) % window.profileIDList.length
 
-          const curID = window.activeProfile.id
-          const curIndex = window.profileIDList.findIndex(
-            ({ id }) => id === curID
+        updateActiveProfileID(window.profileIDList[nextIndex].id).then(
+          searchTextBox
+        )
+      }
+      break
+    case 'profile-1':
+    case 'profile-2':
+    case 'profile-3':
+    case 'profile-4':
+    case 'profile-5':
+      {
+        const index = +command.slice(-1)
+        if (
+          index < window.profileIDList.length &&
+          window.profileIDList[index].id !== window.activeProfile.id
+        ) {
+          updateActiveProfileID(window.profileIDList[index].id).then(
+            searchTextBox
           )
-          const offset = command === 'next-profile' ? 1 : -1
-          const nextIndex =
-            curIndex < 0 ? 0 : (curIndex + offset) % window.profileIDList.length
-
-          await updateActiveProfileID(window.profileIDList[nextIndex].id)
-          await timer(10)
-          message.send(tabs[0].id, { type: 'SEARCH_TEXT_BOX' })
-        })
+        }
+      }
       break
   }
 }
@@ -177,37 +188,40 @@ async function onInstalled({
 }
 
 function onStartup(): void {
-  if (!process.env.DEBUG && window.appConfig.updateCheck) {
-    storage.local
-      .get<{ lastCheckUpdate: number }>('lastCheckUpdate')
-      .then(async ({ lastCheckUpdate }) => {
-        const today = Date.now()
-        if (!lastCheckUpdate) {
-          storage.local.set({ lastCheckUpdate: today })
-        } else if (today - lastCheckUpdate > 7 * 24 * 60 * 60 * 1000) {
-          storage.local.set({ lastCheckUpdate: today })
-          const { data, diff } = await checkUpdate(
-            browser.runtime.getManifest().version
-          )
-          if (data && diff > 0) {
-            const options: browser.notifications.CreateNotificationOptions = {
-              type: 'basic',
-              iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
-              title: getText('%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D'),
-              message: `${getText('%E5%8F%AF%E6%9B%B4%E6%96%B0%E8%87%B3')}【${
-                data.version
-              }】`
+  setTimeout(() => {
+    // wait for appConfig being loaded
+    if (!process.env.DEBUG && window.appConfig.updateCheck) {
+      storage.local
+        .get<{ lastCheckUpdate: number }>('lastCheckUpdate')
+        .then(async ({ lastCheckUpdate }) => {
+          const today = Date.now()
+          if (!lastCheckUpdate) {
+            storage.local.set({ lastCheckUpdate: today })
+          } else if (today - lastCheckUpdate > 7 * 24 * 60 * 60 * 1000) {
+            storage.local.set({ lastCheckUpdate: today })
+            const { data, diff } = await checkUpdate(
+              browser.runtime.getManifest().version
+            )
+            if (data && diff > 0) {
+              const options: browser.notifications.CreateNotificationOptions = {
+                type: 'basic',
+                iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
+                title: getText('%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D'),
+                message: `${getText('%E5%8F%AF%E6%9B%B4%E6%96%B0%E8%87%B3')}【${
+                  data.version
+                }】`
+              }
+              if (!isFirefox) {
+                options.buttons = [
+                  { title: getText('%E6%9F%A5%E7%9C%8B%E6%9B%B4%E6%96%B0') }
+                ]
+              }
+              browser.notifications.create('update', options)
             }
-            if (!isFirefox) {
-              options.buttons = [
-                { title: getText('%E6%9F%A5%E7%9C%8B%E6%9B%B4%E6%96%B0') }
-              ]
-            }
-            browser.notifications.create('update', options)
           }
-        }
-      })
-  }
+        })
+    }
+  }, 1000)
 
   if (!process.env.DEBUG && isExtTainted) {
     storage.local.get<{ swat: number }>('swat').then(({ swat }) => {
@@ -272,4 +286,17 @@ async function loadDictPanelToAllTabs() {
       }
     }
   })
+}
+
+/** Search text box text on active tab */
+async function searchTextBox() {
+  const tabs = await browser.tabs.query({
+    active: true,
+    currentWindow: true
+  })
+  if (tabs.length <= 0 || tabs[0].id == null) {
+    return
+  }
+  await timer(10)
+  message.send(tabs[0].id, { type: 'SEARCH_TEXT_BOX' })
 }
