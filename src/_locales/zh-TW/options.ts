@@ -9,6 +9,8 @@ export const locale: typeof _locale = {
   msg_first_time_notice: '初次使用注意',
   unsave_confirm: '修改尚未儲存，確定放棄？',
   nativeSearch: '瀏覽器外選字翻譯',
+  firefox_shortcuts:
+    '位址列跳轉到 about:addons，點選右上方的齒輪，選擇最後一項管理擴充套件快捷鍵',
 
   nav: {
     General: '基本選項',

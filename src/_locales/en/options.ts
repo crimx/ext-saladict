@@ -9,6 +9,8 @@ export const locale: typeof _locale = {
   msg_first_time_notice: 'First time notice',
   unsave_confirm: 'Settings not saved. Sure to leave?',
   nativeSearch: 'search selected text outside of browser',
+  firefox_shortcuts:
+    'Open about:addons, click the top right "gear" button, choose the last "Manage extension shortcuts".',
 
   nav: {
     General: 'General',

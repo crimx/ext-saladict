@@ -7,6 +7,8 @@ export const locale = {
   msg_first_time_notice: '初次使用注意',
   unsave_confirm: '修改尚未保存，确定放弃？',
   nativeSearch: '浏览器外划词',
+  firefox_shortcuts:
+    '地址栏输入 about:addons 打开，点击右上方的齿轮，选择最后一项管理扩展快捷键。',
 
   nav: {
     General: '基本选项',
