@@ -37,3 +37,13 @@ html {
     opacity: 1;
   }
 }
+
+// Fix incorrect antd pagination arrow position on Firefox
+@-moz-document url-prefix() {
+  .ant-pagination-item-link > .anticon {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
