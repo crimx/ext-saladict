@@ -1,5 +1,6 @@
 import { message } from '@/_helpers/browser-api'
 import { Word } from '@/_helpers/record-manager'
+import { isFirefox } from '@/_helpers/saladict'
 
 interface WinRect {
   width: number
@@ -141,28 +142,38 @@ export class QsPanelManager {
       }
     } catch (e) {}
 
-    const qsPanelWin = await browser.windows
-      .create({
-        ...(window.appConfig.qssaSidebar
-          ? await this.getSidebarRect(window.appConfig.qssaSidebar)
-          : this.getDefaultRect()),
+    const qsPanelRect = window.appConfig.qssaSidebar
+      ? await this.getSidebarRect(window.appConfig.qssaSidebar)
+      : this.getDefaultRect()
+
+    let qsPanelWin: browser.windows.Window | undefined
+
+    try {
+      qsPanelWin = await browser.windows.create({
+        ...qsPanelRect,
         type: 'popup',
         url: browser.runtime.getURL(
           `quick-search.html?sidebar=${window.appConfig.qssaSidebar}${wordString}`
         )
       })
-      .catch((err: Error) => {
-        browser.notifications.create({
-          type: 'basic',
-          iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
-          title: `Saladict`,
-          message: err.message,
-          priority: 2,
-          eventTime: Date.now() + 5000
-        })
+    } catch (err) {
+      browser.notifications.create({
+        type: 'basic',
+        iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
+        title: `Saladict`,
+        message: err.message,
+        priority: 2,
+        eventTime: Date.now() + 5000
       })
+    }
 
     if (qsPanelWin && qsPanelWin.id) {
+      if (isFirefox) {
+        // Yet another bug on Firefox
+        // https://bugzilla.mozilla.org/show_bug.cgi?id=1271047
+        await safeUpdateWindow(qsPanelWin.id, qsPanelRect)
+      }
+
       this.qsPanelId = qsPanelWin.id
 
       if (window.appConfig.qssaSidebar) {

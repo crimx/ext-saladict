@@ -38,6 +38,7 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
-window.addEventListener('unload', () => {
+// Firefox cannot fire 'unload' event.
+window.addEventListener('beforeunload', () => {
   message.send({ type: 'CLOSE_QS_PANEL' })
 })
