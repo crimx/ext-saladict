@@ -58,16 +58,18 @@ export class MainWindowsManager {
       mainWin.width != null &&
       mainWin.height != null
         ? {
-            top: mainWin.top,
+            top: mainWin.top > 30 ? mainWin.top : 0, // bug: incorrect top when toolbar is shown
             left: side === 'right' ? mainWin.left : mainWin.left + sidebarWidth,
             width: mainWin.width - sidebarWidth,
-            height: mainWin.height
+            height: mainWin.height,
+            state: 'normal' as 'normal'
           }
         : {
             top: 0,
             left: side === 'right' ? 0 : sidebarWidth,
             width: window.screen.availWidth - sidebarWidth,
-            height: window.screen.availHeight
+            height: window.screen.availHeight,
+            state: 'normal' as 'normal'
           }
 
     if (side === 'right') {
@@ -79,16 +81,28 @@ export class MainWindowsManager {
     }
 
     await safeUpdateWindow(mainWin.id, updateInfo)
+
+    if (
+      !window.appConfig.qsFocus &&
+      (!window.appConfig.qsPreload || !window.appConfig.qsAuto)
+    ) {
+      await safeUpdateWindow(mainWin.id, { focused: true })
+    }
   }
 
   async restoreSnapshot(): Promise<void> {
     if (this.snapshot && this.snapshot.id != null) {
-      await safeUpdateWindow(this.snapshot.id, {
-        top: this.snapshot.top,
-        left: this.snapshot.left,
-        width: this.snapshot.width,
-        height: this.snapshot.height
-      })
+      await safeUpdateWindow(
+        this.snapshot.id,
+        this.snapshot.state === 'normal'
+          ? {
+              top: this.snapshot.top,
+              left: this.snapshot.left,
+              width: this.snapshot.width,
+              height: this.snapshot.height
+            }
+          : { state: this.snapshot.state }
+      )
     }
   }
 }

@@ -74,6 +74,11 @@ export const QuickSearch: FC = () => {
             children: <Switch />
           },
           {
+            name: getConfigPath('qsFocus'),
+            valuePropName: 'checked',
+            children: <Switch />
+          },
+          {
             name: getConfigPath('qsStandalone'),
             help: (
               <Trans message={t(getConfigPath('qsStandalone') + '_help')}>

@@ -96,6 +96,9 @@ export const locale: typeof _locale = {
     tripleCtrl_help:
       '連續按三次{⌘ Command}（macOS）或者{Ctrl}（其它鍵盤）（或設定瀏覽器快速鍵），將會彈出字典視窗介面。',
     qsLocation: '出現位置',
+    qsFocus: '出現時獲取焦點',
+    qsFocus_help:
+      '注意即便不啟用，查字典介面依然會在合適的情況下選擇獲取焦點。',
     qsStandalone: '獨立視窗',
     qsStandalone_help: '顯示為獨立的視窗，支援{瀏覽器外選字翻譯}。',
     qssaSidebar: '類側邊欄',

@@ -101,6 +101,9 @@ export const locale: typeof _locale = {
     tripleCtrl_help:
       'Press {⌘ Command}(macOS) or {Ctrl}(Others) three times (or with browser shortkey) to summon the dictionary panel. ',
     qsLocation: 'Location',
+    qsFocus: 'Focus when shows up',
+    qsFocus_help:
+      'Note that even it is disabled the panel may still try to focus under appropriate situations',
     qsStandalone: 'Standalone',
     qsStandalone_help:
       'Render dict panel in a standalone window. You can {search selected text outside of browser}.',

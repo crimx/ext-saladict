@@ -44,6 +44,7 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
       config: payload,
       panelHeight: Math.min(state.panelHeight, panelMaxHeight),
       panelMaxHeight,
+      isPinned: isQuickSearchPage() ? payload.qsFocus : state.isPinned,
       isTempDisabled:
         payload.blacklist.some(([r]) => new RegExp(r).test(url)) &&
         payload.whitelist.every(([r]) => !new RegExp(r).test(url)),

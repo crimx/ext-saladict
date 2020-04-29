@@ -211,6 +211,9 @@ function _getDefaultConfig() {
     /** where should the dict appears */
     qsLocation: 'CENTER' as TCDirection,
 
+    /** focus quick search panel when shows up */
+    qsFocus: true,
+
     /** should panel be in a standalone window */
     qsStandalone: true,
 

@@ -6,7 +6,11 @@ import {
 } from 'react-retux'
 import { StoreState, StoreDispatch } from '@/content/redux/modules'
 import { updateActiveProfileID } from '@/_helpers/profile-manager'
-import { isStandalonePage, isPopupPage } from '@/_helpers/saladict'
+import {
+  isStandalonePage,
+  isPopupPage,
+  isQuickSearchPage
+} from '@/_helpers/saladict'
 import { newWord } from '@/_helpers/record-manager'
 import { message } from '@/_helpers/browser-api'
 import { MenuBar, MenuBarProps } from './MenuBar'
@@ -36,7 +40,12 @@ const mapStateToProps: MapStateToProps<
 > = state => ({
   text: state.text,
   isInNotebook: state.isFav,
-  shouldFocus: !state.isExpandMtaBox && (state.isQSPanel || isStandalonePage()),
+  shouldFocus:
+    !state.isExpandMtaBox && // multiline search box must be folded
+    (((state.isQSPanel || isQuickSearchPage()) && // is quick search panel
+      (state.config.qsFocus ||
+        (!state.text && (!state.config.qsPreload || !state.config.qsAuto)))) ||
+      isPopupPage()), // or popup page
   enableSuggest: state.config.searchSuggests,
   histories: state.searchHistory,
   historyIndex: state.historyIndex,
