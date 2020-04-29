@@ -208,7 +208,10 @@ export type MessageConfig = MessageConfigType<{
   }
 
   /** request searching text box text from other pages */
-  SEARCH_TEXT_BOX: {}
+  SEARCH_TEXT_BOX: {
+    /** is popup received */
+    response?: boolean
+  }
 
   /** request closing panel */
   CLOSE_PANEL: {}

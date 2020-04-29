@@ -88,7 +88,7 @@ export const init = (
                   })
           }
         })
-        return Promise.resolve()
+        return isPopupPage() ? Promise.resolve(true) : Promise.resolve()
       }
 
       case 'QS_PANEL_SEARCH_TEXT':

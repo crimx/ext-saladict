@@ -1,9 +1,9 @@
 import { combineEpics } from 'redux-observable'
 import { from, of, empty } from 'rxjs'
-import { map, mapTo, mergeMap, filter, skip } from 'rxjs/operators'
+import { map, mapTo, mergeMap, filter } from 'rxjs/operators'
 
 import { isPopupPage, isStandalonePage } from '@/_helpers/saladict'
-import { saveWord, newWord } from '@/_helpers/record-manager'
+import { saveWord } from '@/_helpers/record-manager'
 
 import { StoreAction, StoreState } from '../modules'
 import { ofType } from './utils'
@@ -98,30 +98,6 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
           filter(isSuccess => !isSuccess),
           mapTo({ type: 'WORD_IN_NOTEBOOK', payload: false } as const)
         )
-      })
-    ),
-  // could not find a way to query browser action page from background
-  // here we listen active profile changes and trigger searching
-  (action$, state$) =>
-    action$.pipe(
-      filter(() => isPopupPage()),
-      ofType('NEW_ACTIVE_PROFILE'),
-      skip(1), // skip the initial data
-      map(() => {
-        const { searchHistory, historyIndex, text } = state$.value
-        return {
-          type: 'SEARCH_START',
-          payload: {
-            word:
-              searchHistory[historyIndex]?.text === text
-                ? searchHistory[historyIndex]
-                : newWord({
-                    text,
-                    title: 'Saladict',
-                    favicon: 'https://saladict.crimx.com/favicon.ico'
-                  })
-          }
-        }
       })
     ),
   newSelectionEpic,

@@ -290,6 +290,12 @@ async function loadDictPanelToAllTabs() {
 
 /** Search text box text on active tab */
 async function searchTextBox() {
+  await timer(10)
+
+  if (await message.send<'SEARCH_TEXT_BOX'>({ type: 'SEARCH_TEXT_BOX' })) {
+    return // popup page received
+  }
+
   const tabs = await browser.tabs.query({
     active: true,
     currentWindow: true
@@ -297,6 +303,5 @@ async function searchTextBox() {
   if (tabs.length <= 0 || tabs[0].id == null) {
     return
   }
-  await timer(10)
   message.send(tabs[0].id, { type: 'SEARCH_TEXT_BOX' })
 }
