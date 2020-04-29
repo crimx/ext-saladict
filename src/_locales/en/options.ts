@@ -188,6 +188,9 @@ export const locale: typeof _locale = {
     waveform: 'Waveform Control',
     waveform_help:
       'Display a button at the bottom of the Dict Panel for expanding the Waveform Control Panel which is only loaded after expansion.',
+    stickyFold: 'Sticky Folding',
+    stickyFold_help:
+      'Remembers manual dictionary folding/unfolding states when searching. Only last on the same page.',
 
     opt: {
       item_extra: 'This option may change base on "Profile".',

@@ -15,89 +15,112 @@ export function mergeProfile(
     ? JSON.parse(JSON.stringify(baseProfile))
     : getDefaultProfile(oldProfile.id)
 
-  mergeString('name')
-  mergeString('mtaAutoUnfold')
-  mergeBoolean('waveform')
-
-  mergeSelectedDicts('dicts')
-
-  forEach(base.dicts.all, (dict, id) => {
-    // legacy
-    const unfold = get(oldProfile, `dicts.all.${id}.defaultUnfold`)
-    if (isBoolean(unfold)) {
-      set(base, `dicts.all.${id}.defaultUnfold`, {
-        chinese: unfold,
-        english: unfold,
-        japanese: unfold,
-        korean: unfold,
-        french: unfold,
-        spanish: unfold,
-        deutsch: unfold,
-        others: unfold
-      })
-    } else {
-      mergeBoolean(`dicts.all.${id}.defaultUnfold.chinese`)
-      mergeBoolean(`dicts.all.${id}.defaultUnfold.english`)
-      mergeBoolean(`dicts.all.${id}.defaultUnfold.japanese`)
-      mergeBoolean(`dicts.all.${id}.defaultUnfold.korean`)
-      mergeBoolean(`dicts.all.${id}.defaultUnfold.french`)
-      mergeBoolean(`dicts.all.${id}.defaultUnfold.spanish`)
-      mergeBoolean(`dicts.all.${id}.defaultUnfold.deutsch`)
-      mergeBoolean(`dicts.all.${id}.defaultUnfold.others`)
-    }
-
-    // legacy
-    const chs = get(oldProfile, `dicts.all.${id}.selectionLang.chs`)
-    if (isBoolean(chs)) {
-      set(base, `dicts.all.${id}.selectionLang.chinese`, chs)
-    } else {
-      mergeBoolean(`dicts.all.${id}.selectionLang.chinese`)
-    }
-    const eng = get(oldProfile, `dicts.all.${id}.selectionLang.eng`)
-    if (isBoolean(eng)) {
-      set(base, `dicts.all.${id}.selectionLang.english`, eng)
-    } else {
-      mergeBoolean(`dicts.all.${id}.selectionLang.english`)
-    }
-    mergeBoolean(`dicts.all.${id}.selectionLang.japanese`)
-    mergeBoolean(`dicts.all.${id}.selectionLang.korean`)
-    mergeBoolean(`dicts.all.${id}.selectionLang.french`)
-    mergeBoolean(`dicts.all.${id}.selectionLang.spanish`)
-    mergeBoolean(`dicts.all.${id}.selectionLang.deutsch`)
-    mergeBoolean(`dicts.all.${id}.selectionLang.others`)
-
-    mergeNumber(`dicts.all.${id}.preferredHeight`)
-    mergeNumber(`dicts.all.${id}.selectionWC.min`)
-    mergeNumber(`dicts.all.${id}.selectionWC.max`)
-
-    if (dict['options']) {
-      forEach(dict['options'], (value, opt) => {
-        if (isNumber(value)) {
-          mergeNumber(`dicts.all.${id}.options.${opt}`)
-        } else if (isBoolean(value)) {
-          mergeBoolean(`dicts.all.${id}.options.${opt}`)
-        } else if (isString(value)) {
-          const choice = get(oldProfile, `dicts.all.${id}.options.${opt}`)
-          const options = get(base, `dicts.all.${id}.options_sel.${opt}`)
-          set(
-            base,
-            `dicts.all.${id}.options.${opt}`,
-            options.includes(choice) ? choice : options[0]
-          )
+  Object.keys(base).forEach(key => {
+    switch (key) {
+      case 'dicts':
+        mergeDicts()
+        break
+      default:
+        switch (typeof base[key]) {
+          case 'string':
+            mergeString(key)
+            break
+          case 'boolean':
+            mergeBoolean(key)
+            break
+          case 'number':
+            mergeNumber(key)
+            break
+          default:
+            console.error(
+              new Error(`merge profile: missing handler for '${key}'`)
+            )
         }
-      })
-
-      // legacy
-      const pdfNewline = get(oldProfile, `dicts.all.${id}.options.pdfNewline`)
-      if (isBoolean(pdfNewline)) {
-        set(
-          base,
-          `dicts.all.${id}.options.keepLF`,
-          pdfNewline ? 'all' : 'webpage'
-        )
-      }
+        break
     }
   })
+
+  function mergeDicts() {
+    mergeSelectedDicts('dicts')
+
+    forEach(base.dicts.all, (dict, id) => {
+      // legacy
+      const unfold = get(oldProfile, `dicts.all.${id}.defaultUnfold`)
+      if (isBoolean(unfold)) {
+        set(base, `dicts.all.${id}.defaultUnfold`, {
+          chinese: unfold,
+          english: unfold,
+          japanese: unfold,
+          korean: unfold,
+          french: unfold,
+          spanish: unfold,
+          deutsch: unfold,
+          others: unfold
+        })
+      } else {
+        mergeBoolean(`dicts.all.${id}.defaultUnfold.chinese`)
+        mergeBoolean(`dicts.all.${id}.defaultUnfold.english`)
+        mergeBoolean(`dicts.all.${id}.defaultUnfold.japanese`)
+        mergeBoolean(`dicts.all.${id}.defaultUnfold.korean`)
+        mergeBoolean(`dicts.all.${id}.defaultUnfold.french`)
+        mergeBoolean(`dicts.all.${id}.defaultUnfold.spanish`)
+        mergeBoolean(`dicts.all.${id}.defaultUnfold.deutsch`)
+        mergeBoolean(`dicts.all.${id}.defaultUnfold.others`)
+      }
+
+      // legacy
+      const chs = get(oldProfile, `dicts.all.${id}.selectionLang.chs`)
+      if (isBoolean(chs)) {
+        set(base, `dicts.all.${id}.selectionLang.chinese`, chs)
+      } else {
+        mergeBoolean(`dicts.all.${id}.selectionLang.chinese`)
+      }
+      const eng = get(oldProfile, `dicts.all.${id}.selectionLang.eng`)
+      if (isBoolean(eng)) {
+        set(base, `dicts.all.${id}.selectionLang.english`, eng)
+      } else {
+        mergeBoolean(`dicts.all.${id}.selectionLang.english`)
+      }
+      mergeBoolean(`dicts.all.${id}.selectionLang.japanese`)
+      mergeBoolean(`dicts.all.${id}.selectionLang.korean`)
+      mergeBoolean(`dicts.all.${id}.selectionLang.french`)
+      mergeBoolean(`dicts.all.${id}.selectionLang.spanish`)
+      mergeBoolean(`dicts.all.${id}.selectionLang.deutsch`)
+      mergeBoolean(`dicts.all.${id}.selectionLang.others`)
+
+      mergeNumber(`dicts.all.${id}.preferredHeight`)
+      mergeNumber(`dicts.all.${id}.selectionWC.min`)
+      mergeNumber(`dicts.all.${id}.selectionWC.max`)
+
+      if (dict['options']) {
+        forEach(dict['options'], (value, opt) => {
+          if (isNumber(value)) {
+            mergeNumber(`dicts.all.${id}.options.${opt}`)
+          } else if (isBoolean(value)) {
+            mergeBoolean(`dicts.all.${id}.options.${opt}`)
+          } else if (isString(value)) {
+            const choice = get(oldProfile, `dicts.all.${id}.options.${opt}`)
+            const options = get(base, `dicts.all.${id}.options_sel.${opt}`)
+            set(
+              base,
+              `dicts.all.${id}.options.${opt}`,
+              options.includes(choice) ? choice : options[0]
+            )
+          }
+        })
+
+        // legacy
+        const pdfNewline = get(oldProfile, `dicts.all.${id}.options.pdfNewline`)
+        if (isBoolean(pdfNewline)) {
+          set(
+            base,
+            `dicts.all.${id}.options.keepLF`,
+            pdfNewline ? 'all' : 'webpage'
+          )
+        }
+      }
+    })
+  }
 
   /* ----------------------------------------------- *\
       Patch

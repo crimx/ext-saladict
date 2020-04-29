@@ -16,6 +16,9 @@ export interface DictItemProps extends DictItemBodyProps {
   openDictSrcPage: DictItemHeadProps['openDictSrcPage']
 
   onHeightChanged: (id: DictID, height: number) => void
+
+  /** User manually folds or unfolds */
+  onUserFold: (id: DictID, fold: boolean) => void
 }
 
 export const DictItem: FC<DictItemProps> = props => {
@@ -148,7 +151,13 @@ export const DictItem: FC<DictItemProps> = props => {
 
     if (foldState !== 'COLLAPSE') {
       setFoldState('COLLAPSE')
-    } else if (props.searchResult) {
+      props.onUserFold(props.dictID, true)
+      return
+    }
+
+    props.onUserFold(props.dictID, false)
+
+    if (props.searchResult) {
       setFoldState('HALF')
     } else {
       props.searchText({ id: props.dictID })

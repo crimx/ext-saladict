@@ -69,6 +69,8 @@ export const initState = () => {
       readonly searchStatus: 'IDLE' | 'SEARCHING' | 'FINISH'
       readonly searchResult: any
     }[],
+    /** User manually folded or unfolded */
+    userFoldedDicts: {} as { [id in DictID]?: boolean },
     /** Search text */
     text: '',
     /** 0 is the oldest */

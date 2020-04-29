@@ -74,12 +74,15 @@ export const searchStart: ActionHandler<
               // fold or unfold
               return {
                 id,
-                searchStatus: checkSupportedLangs(
-                  activeProfile.dicts.all[id].defaultUnfold,
-                  word.text
-                )
-                  ? 'SEARCHING'
-                  : 'IDLE',
+                searchStatus:
+                  checkSupportedLangs(
+                    activeProfile.dicts.all[id].defaultUnfold,
+                    word.text
+                  ) &&
+                  (!state.activeProfile.stickyFold ||
+                    !state.userFoldedDicts[id])
+                    ? 'SEARCHING'
+                    : 'IDLE',
                 searchResult: null
               }
             })

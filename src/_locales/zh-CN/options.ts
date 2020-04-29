@@ -176,6 +176,9 @@ export const locale = {
     waveform: '波形控制按钮',
     waveform_help:
       '在词典面板下方显示音频控制面板展开按钮。控制面板只會在展開時才載入。',
+    stickyFold: '记忆折叠',
+    stickyFold_help:
+      '查词时记住之前手动展开与折叠词典的状态，仅在同个页面生效。',
 
     opt: {
       item_extra: '此选项会因「情景模式」而改变。',

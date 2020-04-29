@@ -208,6 +208,14 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
     }
   },
 
+  USER_FOLD_DICT: (state, { payload }) => ({
+    ...state,
+    userFoldedDicts: {
+      ...state.userFoldedDicts,
+      [payload.id]: payload.fold
+    }
+  }),
+
   DRAG_START_COORD: (state, { payload }) => ({
     ...state,
     dragStartCoord: payload

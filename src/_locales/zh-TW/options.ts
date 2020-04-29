@@ -181,6 +181,9 @@ export const locale: typeof _locale = {
     waveform: '波形控制',
     waveform_help:
       '在字典介面下方顯示音訊控制面板展開按鈕。關閉依然可以播放音訊。',
+    stickyFold: '記憶摺疊',
+    stickyFold_help:
+      '查字時記住之前手動展開和收起字典的狀態，只在同個頁面生效。',
 
     opt: {
       item_extra: '此選項會因「情景模式」而改變。',
