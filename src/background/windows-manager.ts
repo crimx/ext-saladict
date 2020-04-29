@@ -1,4 +1,4 @@
-import { message } from '@/_helpers/browser-api'
+import { message, storage } from '@/_helpers/browser-api'
 import { Word } from '@/_helpers/record-manager'
 import { isFirefox } from '@/_helpers/saladict'
 
@@ -12,12 +12,53 @@ interface WinRect {
 const safeUpdateWindow: typeof browser.windows.update = (...args) =>
   browser.windows.update(...args).catch(console.warn as (m: any) => undefined)
 
+/** sometimes the top property does not include title bar in Chrome */
+const titlebarOffset = async (
+  type: browser.windows.CreateType
+): Promise<number> => {
+  if (isFirefox) return 0
+
+  let top = 0
+  try {
+    const initWin = await browser.windows.create({
+      top: 0,
+      left: -10,
+      height: window.screen.availHeight,
+      width: 1,
+      focused: false,
+      type
+    })
+
+    if (initWin && initWin.id != null) {
+      const testWin = await browser.windows.get(initWin.id)
+      if (testWin) {
+        top = testWin.top || 0
+        await browser.windows.remove(initWin.id)
+      }
+    }
+  } catch (e) {
+    console.warn(e)
+  }
+
+  return top
+}
+
 /**
  * Manipulate main window
  */
 export class MainWindowsManager {
   /** Main window snapshot */
   private snapshot: browser.windows.Window | null = null
+
+  private _titlebar: number | undefined
+  async correctTop(originTop?: number) {
+    if (!originTop) return originTop
+    const offset =
+      this._titlebar == null
+        ? (this._titlebar = await titlebarOffset('normal'))
+        : this._titlebar
+    return originTop - offset
+  }
 
   async takeSnapshot(): Promise<browser.windows.Window | null> {
     this.snapshot = null
@@ -26,8 +67,21 @@ export class MainWindowsManager {
       const win = await browser.windows.getLastFocused({
         windowTypes: ['normal']
       })
-      if (win.state !== 'minimized') {
+      if (win.type === 'normal' && win.state !== 'minimized') {
         this.snapshot = win
+      } else if (isFirefox) {
+        // Firefox does not support windowTypes in getLastFocused
+        const wins = (await browser.windows.getAll()).filter(
+          win => win.type === 'normal' && win.state !== 'minimized'
+        )
+        if (wins.length === 1) {
+          this.snapshot = wins[0]
+        } else {
+          const focusedWins = wins.filter(win => win.focused)
+          if (focusedWins.length === 1) {
+            this.snapshot = focusedWins[0]
+          }
+        }
       }
     } catch (e) {
       console.warn(e)
@@ -59,7 +113,7 @@ export class MainWindowsManager {
       mainWin.width != null &&
       mainWin.height != null
         ? {
-            top: mainWin.top > 30 ? mainWin.top : 0, // bug: incorrect top when toolbar is shown
+            top: await this.correctTop(mainWin.top),
             left: side === 'right' ? mainWin.left : mainWin.left + sidebarWidth,
             width: mainWin.width - sidebarWidth,
             height: mainWin.height,
@@ -97,7 +151,7 @@ export class MainWindowsManager {
         this.snapshot.id,
         this.snapshot.state === 'normal'
           ? {
-              top: this.snapshot.top,
+              top: await this.correctTop(this.snapshot.top),
               left: this.snapshot.left,
               width: this.snapshot.width,
               height: this.snapshot.height
@@ -116,6 +170,16 @@ export class QsPanelManager {
   private snapshot: browser.windows.Window | null = null
   private isSidebar: boolean = false
   private mainWindowsManager = new MainWindowsManager()
+
+  private _titlebar: number | undefined
+  async correctTop(originTop?: number) {
+    if (!originTop) return originTop
+    const offset =
+      this._titlebar == null
+        ? (this._titlebar = await titlebarOffset('popup'))
+        : this._titlebar
+    return originTop - offset
+  }
 
   async create(preload?: Word): Promise<void> {
     this.isSidebar = false
@@ -144,7 +208,7 @@ export class QsPanelManager {
 
     const qsPanelRect = window.appConfig.qssaSidebar
       ? await this.getSidebarRect(window.appConfig.qssaSidebar)
-      : this.getDefaultRect()
+      : (await this.getStorageRect()) || this.getDefaultRect()
 
     let qsPanelWin: browser.windows.Window | undefined
 
@@ -169,9 +233,8 @@ export class QsPanelManager {
 
     if (qsPanelWin && qsPanelWin.id) {
       if (isFirefox) {
-        // Yet another bug on Firefox
-        // https://bugzilla.mozilla.org/show_bug.cgi?id=1271047
-        await safeUpdateWindow(qsPanelWin.id, qsPanelRect)
+        // Firefox needs an extra push
+        safeUpdateWindow(qsPanelWin.id, qsPanelRect)
       }
 
       this.qsPanelId = qsPanelWin.id
@@ -259,7 +322,7 @@ export class QsPanelManager {
     await this.mainWindowsManager.restoreSnapshot()
     if (this.snapshot != null && this.snapshot.id != null) {
       await safeUpdateWindow(this.snapshot.id, {
-        top: this.snapshot.top,
+        top: await this.correctTop(this.snapshot.top),
         left: this.snapshot.left,
         width: this.snapshot.width,
         height: this.snapshot.height
@@ -352,18 +415,33 @@ export class QsPanelManager {
     }
   }
 
+  /** get saved panel rect */
+  async getStorageRect(): Promise<WinRect | null> {
+    const { qssaRect } = await storage.local.get<{ qssaRect: WinRect }>(
+      'qssaRect'
+    )
+    if (!qssaRect) return null
+    return {
+      ...qssaRect,
+      top: (await this.correctTop(qssaRect.top)) || 0
+    }
+  }
+
   async getSidebarRect(side: 'left' | 'right'): Promise<WinRect> {
     const panelWidth =
       (this.snapshot && this.snapshot.width) || window.appConfig.panelWidth
     const mainWin = await this.mainWindowsManager.takeSnapshot()
     return mainWin &&
+      mainWin.state === 'normal' &&
       mainWin.top != null &&
       mainWin.left != null &&
       mainWin.width != null &&
       mainWin.height != null
       ? // coords must be integer
         {
-          top: Math.round(mainWin.top),
+          top: Math.round(
+            (await this.mainWindowsManager.correctTop(mainWin.top)) || 0
+          ),
           left: Math.round(
             side === 'right'
               ? Math.max(mainWin.width - panelWidth, panelWidth)
