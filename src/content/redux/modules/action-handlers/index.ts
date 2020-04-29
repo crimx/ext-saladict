@@ -233,7 +233,8 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
           withQssaPanel: payload,
           isPinned: false,
           // no hiding if it's browser action page
-          isShowDictPanel: isPopupPage() || isOptionsPage(),
+          isShowDictPanel:
+            isPopupPage() || (isOptionsPage() ? state.isShowDictPanel : false),
           isShowBowl: false,
           isQSPanel: false
         }
