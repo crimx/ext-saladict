@@ -8,7 +8,7 @@ export function fetchDOM(
   return axios(url, {
     ...config,
     transformResponse: [data => data],
-    responseType: 'document'
+    responseType: 'text'
   }).then(({ data }) => DOMPurify.sanitize(data, { RETURN_DOM_FRAGMENT: true }))
 }
 
@@ -23,7 +23,7 @@ export function fetchDirtyDOM(
     transformResponse: [data => data],
     responseType: 'document'
   }).then(({ data }) =>
-    process.env.NODE_ENV === 'test'
+    process.env.NODE_ENV !== 'production'
       ? new DOMParser().parseFromString(data, 'text/html')
       : data
   )

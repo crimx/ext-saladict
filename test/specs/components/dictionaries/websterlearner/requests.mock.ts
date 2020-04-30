@@ -8,12 +8,9 @@ export const mockRequest: MockRequest = mock => {
     return wordMatch
       ? [
           200,
-          new DOMParser().parseFromString(
-            require(`raw-loader!./response/${decodeURIComponent(
-              wordMatch[0]
-            )}.html`).default,
-            'text/html'
-          )
+          require(`raw-loader!./response/${decodeURIComponent(
+            wordMatch[0]
+          )}.html`).default
         ]
       : [404]
   })
