@@ -43,7 +43,12 @@ addDecorator(withContexts(i18nContexts) as StoryDecorator)
 
 function loadStories() {
   const req = require.context('../src', true, /\.stories\.tsx$/)
-  req.keys().forEach(filename => req(filename))
+  let files = req.keys()
+  if (process.env.STORYBOOK_PATH_PATTERN) {
+    const tester = new RegExp(process.env.STORYBOOK_PATH_PATTERN)
+    files = files.filter(filename => tester.test(filename))
+  }
+  files.forEach(filename => req(filename))
 }
 
 configure(loadStories, module)
