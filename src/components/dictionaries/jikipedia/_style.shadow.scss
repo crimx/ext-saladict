@@ -1,0 +1,83 @@
+.brax-render {
+  display: block
+}
+
+.brax-node {
+  word-wrap: break-word
+}
+
+.brax-bold,.braxParse-b {
+  font-weight: 700
+}
+
+.brax-strikethrough {
+  text-decoration: line-through
+}
+
+.brax-redact {
+  color: #000;
+  background-color: #000;
+  transition: .2s
+}
+
+.brax-redact:active,.brax-redact:hover {
+  color: auto;
+  background-color: transparent
+}
+
+.brax-italic,.braxParse-i {
+  font-style: italic
+}
+
+.brax-underline,.braxParse-u {
+  text-decoration: underline
+}
+
+.brax-underline-through {
+  text-decoration: underline line-through
+}
+
+.dictJikipedia-Title {
+  font-size: 1.2em;
+
+  a {
+    color: currentColor;
+  }
+}
+
+.dictJikipedia-Item {
+  margin-bottom: 10px;
+}
+
+.dictJikipedia-Content {
+  margin: 0 0 3px 0;
+}
+
+.dictJikipedia-Image {
+  text-align: center;
+
+  > img {
+    max-width: 80%;
+    max-height: 200px;
+  }
+}
+
+.dictJikipedia-Footer {
+  color: #666;
+}
+
+.dictJikipedia-Author {
+  color: #5caf9e;
+  margin-right: 1em;
+}
+
+.dictJikipedia-Thumbs {
+  margin-right: 5px;
+}
+
+.dictJikipedia-IconThumbsUp {
+  width: 0.9em;
+  height: 0.9em;
+  fill: #666;
+  margin-right: 2px;
+}

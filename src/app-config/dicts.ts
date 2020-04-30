@@ -12,6 +12,7 @@ import google from '@/components/dictionaries/google/config'
 import googledict from '@/components/dictionaries/googledict/config'
 import guoyu from '@/components/dictionaries/guoyu/config'
 import hjdict from '@/components/dictionaries/hjdict/config'
+import jikipedia from '@/components/dictionaries/jikipedia/config'
 import jukuu from '@/components/dictionaries/jukuu/config'
 import lexico from '@/components/dictionaries/lexico/config'
 import liangan from '@/components/dictionaries/liangan/config'
@@ -48,6 +49,7 @@ export const defaultAllDicts = {
   googledict: googledict(),
   guoyu: guoyu(),
   hjdict: hjdict(),
+  jikipedia: jikipedia(),
   jukuu: jukuu(),
   lexico: lexico(),
   liangan: liangan(),

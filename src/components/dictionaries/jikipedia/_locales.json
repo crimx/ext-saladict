@@ -1,0 +1,19 @@
+{
+  "name": {
+    "en": "Jikipedia",
+    "zh-CN": "小鸡词典",
+    "zh-TW": "小雞詞典"
+  },
+  "options": {
+    "resultnum": {
+      "en": "Show",
+      "zh-CN": "结果数量",
+      "zh-TW": "結果數量"
+    },
+    "resultnum_unit": {
+      "en": "results",
+      "zh-CN": "个",
+      "zh-TW": "個"
+    }
+  }
+}
