@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.11.0](https://github.com/crimx/ext-saladict/compare/v7.10.4...v7.11.0) (2020-05-01)
+
+
+### Features
+
+* **dicts:** add jikipedia ([046b850](https://github.com/crimx/ext-saladict/commit/046b850c83516c43022773bdd2ab6cacbb7696fa))
+* fix buggy axios ([9eb8172](https://github.com/crimx/ext-saladict/commit/9eb817242365961cd940bd5e54547b601678c7ce))
+* **panel:** add sticky folding ([7b2c352](https://github.com/crimx/ext-saladict/commit/7b2c3524b452925d126d6bd15770649a353e2068)), closes [#765](https://github.com/crimx/ext-saladict/issues/765)
+* **panel:** remember last standalone window position ([3d25428](https://github.com/crimx/ext-saladict/commit/3d254280e6c2a16a7bd5de99eace55090c04cc88)), closes [#766](https://github.com/crimx/ext-saladict/issues/766)
+* **profiles:** add shortcuts for top profiles ([de9ca07](https://github.com/crimx/ext-saladict/commit/de9ca077c23147859ebc648b3202faa5b25bca15))
+* added option qsFocus ([51e59f9](https://github.com/crimx/ext-saladict/commit/51e59f91fb27ed3c942d2f9c4aa88e31f78eef84)), closes [#764](https://github.com/crimx/ext-saladict/issues/764)
+
+
+### Bug Fixes
+
+* **badge:** remove badge text ([873b1c7](https://github.com/crimx/ext-saladict/commit/873b1c77d3655e4b10dcb389108aabf9c9e31b4c)), closes [#770](https://github.com/crimx/ext-saladict/issues/770)
+* **options:** prevent panel being opened accidentally ([a673c9f](https://github.com/crimx/ext-saladict/commit/a673c9f94f46d19121058b0f534a5aaa750d8453)), closes [#769](https://github.com/crimx/ext-saladict/issues/769)
+* **panel:** do not update search box text on selection ([b104405](https://github.com/crimx/ext-saladict/commit/b1044050d92ee4fb5a2f4bd594d2bd9ca44eca12))
+* **pdf:** remove 'unsafe-eval' CSP ([eaea459](https://github.com/crimx/ext-saladict/commit/eaea459ae500cf84cea3f65e59c573d6816d222d))
+
+
+### Build System
+
+* fix script arguments ([df78f19](https://github.com/crimx/ext-saladict/commit/df78f199b71fd4b018903fd57e00c39928986c1c))
+
+
+### Tests
+
+* **background:** remove update check ([1f1b5ff](https://github.com/crimx/ext-saladict/commit/1f1b5ffa7ed8fb99773f645eb20555a00b12bacd))
+* **storybook:** add path pattern ([61a883a](https://github.com/crimx/ext-saladict/commit/61a883a928aaa7c640194592ceb42a650e6d2647))
+
 ### [7.10.4](https://github.com/crimx/ext-saladict/compare/v7.10.3...v7.10.4) (2020-04-27)
 
 ### [7.10.3](https://github.com/crimx/ext-saladict/compare/v7.10.2...v7.10.3) (2020-04-26)
