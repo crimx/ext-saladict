@@ -199,29 +199,32 @@ function _getDefaultConfig() {
     /** double click delay, in ms */
     doubleClickDelay: 450,
 
-    /** show panel when triple press ctrl */
+    /** show quick search panel when triple press ctrl */
     tripleCtrl: true,
 
-    /** preload source */
-    tripleCtrlPreload: 'clipboard' as PreloadSource,
+    /** preload content on quick search panel */
+    qsPreload: 'clipboard' as PreloadSource,
 
-    /** auto search when triple hit ctrl */
-    tripleCtrlAuto: false,
+    /** auto search when quick search panel opens */
+    qsAuto: false,
 
     /** where should the dict appears */
-    tripleCtrlLocation: 'CENTER' as TCDirection,
+    qsLocation: 'CENTER' as TCDirection,
+
+    /** focus quick search panel when shows up */
+    qsFocus: true,
 
     /** should panel be in a standalone window */
-    tripleCtrlStandalone: true,
+    qsStandalone: true,
 
     /** standalone panel height */
-    tripleCtrlHeight: 600,
+    qssaHeight: 600,
 
     /** resize main widnow to leave space to standalone window */
-    tripleCtrlSidebar: '' as '' | 'left' | 'right',
+    qssaSidebar: '' as '' | 'left' | 'right',
 
     /** should standalone panel response to page selection */
-    tripleCtrlPageSel: true,
+    qssaPageSel: true,
 
     /** browser action panel preload source */
     baPreload: 'clipboard' as PreloadSource,

@@ -53,7 +53,7 @@ onUpdated$
       return setUnsupported(tabId)
     }
 
-    return setEmpty(tabId)
+    return setDefault(tabId)
   })
 
 export function initBadge() {
@@ -72,9 +72,9 @@ export function initBadge() {
 }
 
 function setOff(tabId: number) {
-  setIcon(false, tabId)
-  browser.browserAction.setBadgeBackgroundColor({ color: '#C0392B', tabId })
-  browser.browserAction.setBadgeText({ text: 'off', tabId })
+  setIcon(true, tabId)
+  // browser.browserAction.setBadgeBackgroundColor({ color: '#E74C3C', tabId })
+  // browser.browserAction.setBadgeText({ text: 'off', tabId })
   browser.browserAction.setTitle({
     title: require('@/_locales/' + window.appConfig.langCode + '/background')
       .locale.app.off,
@@ -83,9 +83,9 @@ function setOff(tabId: number) {
 }
 
 function setTempOff(tabId: number) {
-  setIcon(false, tabId)
-  browser.browserAction.setBadgeBackgroundColor({ color: '#F39C12', tabId })
-  browser.browserAction.setBadgeText({ text: 'off', tabId })
+  setIcon(true, tabId)
+  // browser.browserAction.setBadgeBackgroundColor({ color: '#F39C12', tabId })
+  // browser.browserAction.setBadgeText({ text: 'off', tabId })
   browser.browserAction.setTitle({
     title: require('@/_locales/' + window.appConfig.langCode + '/background')
       .locale.app.tempOff,
@@ -102,10 +102,10 @@ function setUnsupported(tabId: number) {
   })
 }
 
-function setEmpty(tabId: number) {
+function setDefault(tabId: number) {
   setIcon(false, tabId)
-  browser.browserAction.setBadgeText({ text: '', tabId })
-  browser.browserAction.setTitle({ title: '', tabId })
+  // browser.browserAction.setBadgeText({ text: '', tabId })
+  // browser.browserAction.setTitle({ title: '', tabId })
 }
 
 function setIcon(gray: boolean, tabId: number) {

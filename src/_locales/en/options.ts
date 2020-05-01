@@ -9,6 +9,8 @@ export const locale: typeof _locale = {
   msg_first_time_notice: 'First time notice',
   unsave_confirm: 'Settings not saved. Sure to leave?',
   nativeSearch: 'search selected text outside of browser',
+  firefox_shortcuts:
+    'Open about:addons, click the top right "gear" button, choose the last "Manage extension shortcuts".',
 
   nav: {
     General: 'General',
@@ -100,15 +102,18 @@ export const locale: typeof _locale = {
     tripleCtrl: 'Enable Ctrl Shortkey',
     tripleCtrl_help:
       'Press {⌘ Command}(macOS) or {Ctrl}(Others) three times (or with browser shortkey) to summon the dictionary panel. ',
-    tripleCtrlLocation: 'Location',
-    tripleCtrlStandalone: 'Standalone',
-    tripleCtrlStandalone_help:
+    qsLocation: 'Location',
+    qsFocus: 'Focus when shows up',
+    qsFocus_help:
+      'Note that even it is disabled the panel may still try to focus under appropriate situations',
+    qsStandalone: 'Standalone',
+    qsStandalone_help:
       'Render dict panel in a standalone window. You can {search selected text outside of browser}.',
-    tripleCtrlSidebar: 'Sidebar Layout',
-    tripleCtrlSidebar_help: 'Rearrange windows to sidebar-like layout.',
-    tripleCtrlHeight: 'Window Height',
-    tripleCtrlPageSel: 'Selection Response',
-    tripleCtrlPageSel_help: 'Response to page selection.',
+    qssaSidebar: 'Sidebar Layout',
+    qssaSidebar_help: 'Rearrange windows to sidebar-like layout.',
+    qssaHeight: 'Window Height',
+    qssaPageSel: 'Selection Response',
+    qssaPageSel_help: 'Response to page selection.',
     updateCheck: 'Check Update',
     updateCheck_help: 'Check update automatically.',
     analytics: 'Enable Google Analytics',
@@ -138,7 +143,7 @@ export const locale: typeof _locale = {
         popup_options: 'Open Saladict Options',
         popup_standalone: 'Open Saladict Standalone Panel'
       },
-      openTripleCtrlStandalone: 'Standalone Panel Options'
+      openQsStandalone: 'Standalone Panel Options'
     }
   },
 
@@ -185,6 +190,9 @@ export const locale: typeof _locale = {
     waveform: 'Waveform Control',
     waveform_help:
       'Display a button at the bottom of the Dict Panel for expanding the Waveform Control Panel which is only loaded after expansion.',
+    stickyFold: 'Sticky Folding',
+    stickyFold_help:
+      'Remembers manual dictionary folding/unfolding states when searching. Only last on the same page.',
 
     opt: {
       item_extra: 'This option may change base on "Profile".',

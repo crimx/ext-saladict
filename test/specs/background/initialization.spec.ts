@@ -1,5 +1,3 @@
-import sinon from 'sinon'
-
 import { message, storage } from '@/_helpers/browser-api'
 import { getDefaultConfig } from '@/app-config'
 import getDefaultProfile from '@/app-config/profiles'
@@ -119,27 +117,6 @@ describe('Initialization', () => {
 
       await timer(0)
       expect(checkUpdate).toHaveBeenCalledTimes(0)
-    })
-
-    it('should check update when last check was 7 days ago', async () => {
-      browser.storage.local.get.onFirstCall().returns(
-        Promise.resolve({
-          lastCheckUpdate: 0
-        })
-      )
-      checkUpdate.mockReturnValueOnce(
-        Promise.resolve({ isAvailable: true, info: {} })
-      )
-      browser.runtime.onStartup.dispatch()
-
-      await timer(0)
-      expect(checkUpdate).toHaveBeenCalledTimes(1)
-      expect(
-        browser.storage.local.set.calledWith({
-          lastCheckUpdate: sinon.match.number
-        })
-      ).toBeTruthy()
-      expect(browser.notifications.create.calledOnce).toBeTruthy()
     })
   })
 })

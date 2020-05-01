@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { Switch, Checkbox, Slider } from 'antd'
 import { useTranslate } from '@/_helpers/i18n'
-import { getConfigPath } from '@/options/helpers/path-joiner'
+import { getConfigPath, getProfilePath } from '@/options/helpers/path-joiner'
 import { SaladictForm } from '@/options/components/SaladictForm'
 import { supportedLangs } from '@/_helpers/lang-check'
 import { searchMode } from './searchMode'
@@ -30,6 +30,11 @@ export const SearchModes: FC = () => {
             valuePropName: 'checked',
             children: <Checkbox>{t(`common:lang.${lang}`)}</Checkbox>
           }))
+        },
+        {
+          name: getProfilePath('stickyFold'),
+          valuePropName: 'checked',
+          children: <Switch />
         },
         {
           name: getConfigPath('doubleClickDelay'),

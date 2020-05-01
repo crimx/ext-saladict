@@ -33,7 +33,7 @@ export const initState = () => {
      */
     isQSPanel: isQuickSearchPage(),
     /** is a standalone quick search panel running */
-    withQSPanel: false,
+    withQssaPanel: false,
     wordEditor: {
       isShow: false,
       word: newWord(),
@@ -44,7 +44,7 @@ export const initState = () => {
     isShowDictPanel: isStandalonePage(),
     isExpandMtaBox: false,
     isExpandWaveformBox: false,
-    isPinned: false,
+    isPinned: isQuickSearchPage() ? config.qsFocus : false,
     /** Is current word in Notebook */
     isFav: false,
     bowlCoord: { x: 0, y: 0 },
@@ -69,6 +69,8 @@ export const initState = () => {
       readonly searchStatus: 'IDLE' | 'SEARCHING' | 'FINISH'
       readonly searchResult: any
     }[],
+    /** User manually folded or unfolded */
+    userFoldedDicts: {} as { [id in DictID]?: boolean },
     /** Search text */
     text: '',
     /** 0 is the oldest */

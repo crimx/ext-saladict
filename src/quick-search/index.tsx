@@ -4,7 +4,7 @@ import '@/selection'
 import React, { FC } from 'react'
 import ReactDOM from 'react-dom'
 import { Helmet } from 'react-helmet'
-import { message } from '@/_helpers/browser-api'
+import { message, storage } from '@/_helpers/browser-api'
 
 import { Provider as ProviderRedux } from 'react-redux'
 import createStore from '@/content/redux/create'
@@ -38,6 +38,18 @@ ReactDOM.render(
   document.getElementById('root')
 )
 
-window.addEventListener('unload', () => {
+// Firefox cannot fire 'unload' event.
+window.addEventListener('beforeunload', () => {
   message.send({ type: 'CLOSE_QS_PANEL' })
+
+  if (!store.getState().config.qssaSidebar) {
+    storage.local.set({
+      qssaRect: {
+        top: window.screenY,
+        left: window.screenX,
+        width: window.outerWidth,
+        height: window.outerHeight
+      }
+    })
+  }
 })

@@ -27,6 +27,7 @@ type Dispatchers = ExtractDispatchers<
   | 'searchText'
   | 'openDictSrcPage'
   | 'onHeightChanged'
+  | 'onUserFold'
   | 'onSpeakerPlay'
   | 'newSelection'
 >
@@ -74,6 +75,9 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
       type: 'UPDATE_PANEL_HEIGHT',
       payload: { area: 'dictlist', height }
     })
+  },
+  onUserFold: (id, fold) => {
+    dispatch({ type: 'USER_FOLD_DICT', payload: { id, fold } })
   },
   onSpeakerPlay: src => {
     return new Promise(resolve => {

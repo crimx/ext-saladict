@@ -178,7 +178,17 @@ export const SaladictForm = React.forwardRef(
         {!hideFooter && (
           <Form.Item {...formItemFooterLayout} className="saladict-form-btns">
             <SaveBtn />
-            <Button onClick={openShortcuts}>{t('shortcuts')}</Button>
+            <Button
+              onClick={() => {
+                if (isFirefox) {
+                  Modal.info({ content: t('firefox_shortcuts') })
+                } else {
+                  openURL('chrome://extensions/shortcuts')
+                }
+              }}
+            >
+              {t('shortcuts')}
+            </Button>
             <Button
               type="danger"
               onClick={() => {
@@ -210,11 +220,3 @@ export const NUMBER_RULES: Rule[] = [
 export const percentageSlideFormatter = (v: number) => `${v}%`
 
 export const pixelSlideFormatter = (v: number) => `${v}px`
-
-function openShortcuts() {
-  if (isFirefox) {
-    openURL('about:addons')
-  } else {
-    openURL('chrome://extensions/shortcuts')
-  }
-}

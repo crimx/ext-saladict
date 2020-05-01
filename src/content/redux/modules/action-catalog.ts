@@ -95,6 +95,14 @@ export type ActionCatalog = CreateActionCatalog<{
     }
   }
 
+  /** User manually folds or unfolds dict item */
+  USER_FOLD_DICT: {
+    payload: {
+      id: DictID
+      fold: boolean
+    }
+  }
+
   DRAG_START_COORD: {
     payload: null | {
       x: number

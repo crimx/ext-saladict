@@ -4,19 +4,24 @@
 
 ## 贡献前注意
 
-:warning: 除非是小的修复，在动手前建议新开一个 WIP（施工中）issue 或 PR 阐述你要做的东西以及将要如何实现，以保证大家达成一致认识，而不白白浪费大家的时间和精力。
+:warning: 除非是小的修复，在动手前建议新开一个 WIP（施工中）issue 或 PR 阐述你要做的东西以及将要如何实现，以保证大家达成一致认识，而不白白浪费互相的时间与精力。
 
 - 先阅读 [如何开始](#如何开始).
-- 遵循[代码格式](#代码格式)以及[commit格式](#commit格式).
+- 遵循[代码格式](#代码格式)以及 [commit 格式](#commit格式).
 - 提交前先本地跑[测试](#测试)以及[构建](#构建)。也可以交给 CI 处理。
 
 ## 如何开始
 
-克隆仓库安装 `yarn install`。
+```bash
+git clone git@github.com:crimx/ext-saladict.git
+cd ext-saladict
+yarn install
+yarn pdf
+```
 
 ## 修改 UI
 
-运行 `yarn fixtures` 下载测试文件（下载完成不必再运行）。
+运行 `yarn fixtures` 下载测试文件（下载完成以后不必再运行）。
 
 运行 `yarn storybook` 查看所有 UI 组件。
 
@@ -37,7 +42,7 @@
 
 ## 如何添加词典
 
-由于安全性和可维护性，沙拉查词不提供热添加词典的功能，所有的词典添加必须向本项目提交 PR 合并。如果词典使用了未公开接口请另起项目发布到 NPM 再引用进来。
+出于安全性和可维护性，沙拉查词不提供热添加词典的功能，所有的词典添加必须向本项目提交 PR 合并。如果词典使用了未公开接口请另起项目发布到 NPM 再引用进来。
 
 1. 在 [`src/components/dictionaries/`](./src/components/dictionaries/) 下以词典 id 新建一个目录。
    1. 可参考已有的词典如[必应](./src/components/dictionaries/bing)，复制文件到新建的目录中。
@@ -61,14 +66,14 @@
 
 1. 新建 `fixtures.js` 在 `test/specs/components/dictionaries/[dictID]` 下。
    - 格式可参考其它词典。
-   - 每个结果你可以提供页面链接或者 axios 设置（见 `mojidict` 词典）。所以之前的请求结果会保存为数组传给下个请求。
+   - 每个请求可以提供页面链接或者 axios 设置（见 `mojidict` 词典）。如果后面的请求依赖前面请求的结果，可以通过参数获得。
 1. 运行 `yarn fixtures` 下载结果。
 1. 编辑 `test/specs/components/dictionaries/[dictID]/request.mock.ts`。它会在开发时拦截词典请求并返回下载好的结果。
 1. 运行 `yarn storybook`。
 
 ### 添加测试
 
-1. 添加 `engine.spec.ts` 测试引擎。
+1. 添加 `[dictID]/engine.spec.ts` 测试引擎。
 
 ## 代码格式
 

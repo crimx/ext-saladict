@@ -18,14 +18,11 @@
   <a href="https://github.com/crimx/ext-saladict/releases/" target="_blank"><img src="https://raw.githubusercontent.com/wiki/crimx/ext-saladict/images/notebook.gif" /></a>
 </p>
 
+沙拉查词 7 为完全重写的版本。增加了更多细腻的动效与流畅的交互，更快速更稳定更多自定义设置。
+
 ## 下载
 
-- [谷歌应用商店](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en)
-- [火狐应用商店](https://addons.mozilla.org/firefox/addon/ext-saladict/)
-- [微软 Edge 商店](https://microsoftedge.microsoft.com/addons/detail/idghocbbahafpfhjnfhpbfbmpegphmmp)(由 @rumosky 上传)
-- 其它途径见本项目[发布页面](https://github.com/crimx/ext-saladict/releases)。
-
-沙拉查词 7 为完全重写的版本。增加了更多细腻的动效与流畅的交互，更快速更稳定更多自定义设置。
+见[下载页面](https://saladict.crimx.com/download.html)。
 
 ## 改动日志
 
@@ -40,7 +37,7 @@ yarn install
 yarn pdf
 ```
 
-在项目跟添加 `.env` 文件，参考 `.env.example` 格式（可留空如果你不要这些词典）。
+在项目根添加 `.env` 文件，参考 `.env.example` 格式（可留空如果你不需要这些词典）。
 
 ```bash
 yarn build

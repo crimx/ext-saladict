@@ -5,11 +5,5 @@ export const mockSearchTexts = ['love']
 export const mockRequest: MockRequest = mock => {
   mock
     .onGet(/jukuu/)
-    .reply(
-      200,
-      new DOMParser().parseFromString(
-        require(`raw-loader!./response/love.html`).default,
-        'text/html'
-      )
-    )
+    .reply(200, require(`raw-loader!./response/love.html`).default)
 }

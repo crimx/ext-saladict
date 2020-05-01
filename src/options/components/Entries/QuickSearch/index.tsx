@@ -38,7 +38,7 @@ export const QuickSearch: FC = () => {
             children: <Switch />
           },
           {
-            name: getConfigPath('tripleCtrlLocation'),
+            name: getConfigPath('qsLocation'),
             children: (
               <Select>
                 {locLocale.map(locale => (
@@ -50,7 +50,7 @@ export const QuickSearch: FC = () => {
             )
           },
           {
-            name: getConfigPath('tripleCtrlPreload'),
+            name: getConfigPath('qsPreload'),
             label: t('preload.title'),
             help: t('preload.help'),
             children: (
@@ -66,19 +66,22 @@ export const QuickSearch: FC = () => {
             )
           },
           {
-            name: getConfigPath('tripleCtrlAuto'),
+            name: getConfigPath('qsAuto'),
             label: t('preload.auto'),
             help: t('preload.auto_help'),
-            hide: values => !values[getConfigPath('tripleCtrlPreload')],
+            hide: values => !values[getConfigPath('qsPreload')],
             valuePropName: 'checked',
             children: <Switch />
           },
           {
-            name: getConfigPath('tripleCtrlStandalone'),
+            name: getConfigPath('qsFocus'),
+            valuePropName: 'checked',
+            children: <Switch />
+          },
+          {
+            name: getConfigPath('qsStandalone'),
             help: (
-              <Trans
-                message={t(getConfigPath('tripleCtrlStandalone') + '_help')}
-              >
+              <Trans message={t(getConfigPath('qsStandalone') + '_help')}>
                 <a
                   href="https://saladict.crimx.com/native.html"
                   target="_blank"
@@ -92,10 +95,10 @@ export const QuickSearch: FC = () => {
             children: <Switch />
           },
           {
-            key: 'config.opt.openTripleCtrlStandalone',
+            key: 'config.opt.openQsStandalone',
             children: (
               <Button onClick={() => setShowStandaloneModal(true)}>
-                {t('config.opt.openTripleCtrlStandalone')}
+                {t('config.opt.openQsStandalone')}
               </Button>
             )
           }

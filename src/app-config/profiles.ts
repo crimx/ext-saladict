@@ -28,6 +28,9 @@ export function _getDefaultProfile(id?: string) {
     /** show waveform control panel */
     waveform: true,
 
+    /** remember user manual dict folding on the same page */
+    stickyFold: false,
+
     dicts: {
       /** default selected dictionaries */
       selected: [

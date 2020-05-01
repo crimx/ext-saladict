@@ -10,7 +10,7 @@ export const newSelectionEpic: Epic = (action$, state$) =>
     ofType('NEW_SELECTION'),
     // Selection may be skipped in state, use payload instead.
     switchMap(({ payload: selection }) => {
-      const { config, withQSPanel, isShowDictPanel, isPinned } = state$.value
+      const { config, withQssaPanel, isShowDictPanel, isPinned } = state$.value
 
       if (selection.self) {
         // Selection inside dict panel.
@@ -21,7 +21,7 @@ export const newSelectionEpic: Epic = (action$, state$) =>
         return empty()
       }
 
-      if (withQSPanel && config.tripleCtrlPageSel) {
+      if (withQssaPanel && config.qssaPageSel) {
         // standalone panel takes control
         return selectionToQSPanel(config, selection)
       }

@@ -7,7 +7,7 @@ export const openQSPanel: ActionHandler<
   ActionCatalog,
   'OPEN_QS_PANEL'
 > = state => {
-  const { panelWidth, tripleCtrl, tripleCtrlLocation } = state.config
+  const { panelWidth, tripleCtrl, qsLocation } = state.config
 
   if (!tripleCtrl || state.isShowDictPanel) {
     return state
@@ -16,7 +16,7 @@ export const openQSPanel: ActionHandler<
   let x = 10
   let y = 10
 
-  switch (tripleCtrlLocation) {
+  switch (qsLocation) {
     case 'CENTER':
       x = (window.innerWidth - panelWidth) / 2
       y = window.innerHeight * 0.3

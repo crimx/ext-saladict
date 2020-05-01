@@ -7,6 +7,8 @@ export const locale = {
   msg_first_time_notice: '初次使用注意',
   unsave_confirm: '修改尚未保存，确定放弃？',
   nativeSearch: '浏览器外划词',
+  firefox_shortcuts:
+    '地址栏输入 about:addons 打开，点击右上方的齿轮，选择最后一项管理扩展快捷键。',
 
   nav: {
     General: '基本选项',
@@ -92,14 +94,16 @@ export const locale = {
     tripleCtrl: '启用 Ctrl 快捷键',
     tripleCtrl_help:
       '连续按三次{⌘ Command}（Mac）或者{Ctrl}（其它键盘）（或设置浏览器快捷键）将弹出词典界面。',
-    tripleCtrlLocation: '出现位置',
-    tripleCtrlStandalone: '独立窗口',
-    tripleCtrlStandalone_help: '显示为单独的窗口，支持响应{浏览器以外划词}。',
-    tripleCtrlSidebar: '类侧边栏',
-    tripleCtrlSidebar_help: '并排显示窗口以达到类似侧边栏的布局。',
-    tripleCtrlHeight: '窗口高度',
-    tripleCtrlPageSel: '响应划词',
-    tripleCtrlPageSel_help: '响应网页划词。',
+    qsLocation: '出现位置',
+    qsFocus: '出现时获取焦点',
+    qsFocus_help: '注意即便关闭了，查词面板依然会在合适的情况下选择获取焦点。',
+    qsStandalone: '独立窗口',
+    qsStandalone_help: '显示为单独的窗口，支持响应{浏览器以外划词}。',
+    qssaSidebar: '类侧边栏',
+    qssaSidebar_help: '并排显示窗口以达到类似侧边栏的布局。',
+    qssaHeight: '窗口高度',
+    qssaPageSel: '响应划词',
+    qssaPageSel_help: '响应网页划词。',
     updateCheck: '检查更新',
     updateCheck_help: '自动检查更新',
     analytics: '启用 Google Analytics',
@@ -128,7 +132,7 @@ export const locale = {
         popup_options: '打开 Saladict 设置',
         popup_standalone: '打开快捷查词独立窗口'
       },
-      openTripleCtrlStandalone: '打开独立窗口设置'
+      openQsStandalone: '打开独立窗口设置'
     }
   },
 
@@ -174,6 +178,9 @@ export const locale = {
     waveform: '波形控制按钮',
     waveform_help:
       '在词典面板下方显示音频控制面板展开按钮。控制面板只會在展開時才載入。',
+    stickyFold: '记忆折叠',
+    stickyFold_help:
+      '查词时记住之前手动展开与折叠词典的状态，仅在同个页面生效。',
 
     opt: {
       item_extra: '此选项会因「情景模式」而改变。',

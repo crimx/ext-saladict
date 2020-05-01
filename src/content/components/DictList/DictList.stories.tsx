@@ -61,6 +61,7 @@ storiesOf('Content Scripts|Dict Panel', module)
       searchText={action('Search Text')}
       openDictSrcPage={action('Open Dict Source Page')}
       onHeightChanged={action('Height Changed')}
+      onUserFold={action('User fold')}
       onSpeakerPlay={async src => action('Speaker Play')(src)}
     />
   ))

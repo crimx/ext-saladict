@@ -9,6 +9,8 @@ export const locale: typeof _locale = {
   msg_first_time_notice: '初次使用注意',
   unsave_confirm: '修改尚未儲存，確定放棄？',
   nativeSearch: '瀏覽器外選字翻譯',
+  firefox_shortcuts:
+    '位址列跳轉到 about:addons，點選右上方的齒輪，選擇最後一項管理擴充套件快捷鍵',
 
   nav: {
     General: '基本選項',
@@ -95,14 +97,17 @@ export const locale: typeof _locale = {
     tripleCtrl: '啟用 Ctrl 快速鍵',
     tripleCtrl_help:
       '連續按三次{⌘ Command}（macOS）或者{Ctrl}（其它鍵盤）（或設定瀏覽器快速鍵），將會彈出字典視窗介面。',
-    tripleCtrlLocation: '出現位置',
-    tripleCtrlStandalone: '獨立視窗',
-    tripleCtrlStandalone_help: '顯示為獨立的視窗，支援{瀏覽器外選字翻譯}。',
-    tripleCtrlSidebar: '類側邊欄',
-    tripleCtrlSidebar_help: '並排顯示視窗以達到類似側邊欄的配置。',
-    tripleCtrlHeight: '視窗高度',
-    tripleCtrlPageSel: '響應滑字',
-    tripleCtrlPageSel_help: '對網頁滑鼠滑字作出反應。',
+    qsLocation: '出現位置',
+    qsFocus: '出現時獲取焦點',
+    qsFocus_help:
+      '注意即便不啟用，查字典介面依然會在合適的情況下選擇獲取焦點。',
+    qsStandalone: '獨立視窗',
+    qsStandalone_help: '顯示為獨立的視窗，支援{瀏覽器外選字翻譯}。',
+    qssaSidebar: '類側邊欄',
+    qssaSidebar_help: '並排顯示視窗以達到類似側邊欄的配置。',
+    qssaHeight: '視窗高度',
+    qssaPageSel: '響應滑字',
+    qssaPageSel_help: '對網頁滑鼠滑字作出反應。',
     updateCheck: '檢查更新',
     updateCheck_help: '自動檢查更新',
     analytics: '啟用 Google Analytics',
@@ -131,7 +136,7 @@ export const locale: typeof _locale = {
         popup_options: '進入 Saladict 設定',
         popup_standalone: '開啟快捷查詞獨立視窗'
       },
-      openTripleCtrlStandalone: '獨立視窗設定'
+      openQsStandalone: '獨立視窗設定'
     }
   },
 
@@ -178,6 +183,9 @@ export const locale: typeof _locale = {
     waveform: '波形控制',
     waveform_help:
       '在字典介面下方顯示音訊控制面板展開按鈕。關閉依然可以播放音訊。',
+    stickyFold: '記憶摺疊',
+    stickyFold_help:
+      '查字時記住之前手動展開和收起字典的狀態，只在同個頁面生效。',
 
     opt: {
       item_extra: '此選項會因「情景模式」而改變。',

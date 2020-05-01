@@ -46,6 +46,9 @@ export const WordPage: FC<WordPageProps> = props => {
   const [tableInfo, setTableInfo] = useState<TableInfo>(() => ({
     dataSource: [],
     pagination: {
+      showSizeChanger: true,
+      showQuickJumper: true,
+      hideOnSinglePage: true,
       current: 1,
       pageSize: ITEMS_PER_PAGE,
       defaultPageSize: ITEMS_PER_PAGE,

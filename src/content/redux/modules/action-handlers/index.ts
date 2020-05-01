@@ -44,6 +44,7 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
       config: payload,
       panelHeight: Math.min(state.panelHeight, panelMaxHeight),
       panelMaxHeight,
+      isPinned: isQuickSearchPage() ? payload.qsFocus : state.isPinned,
       isTempDisabled:
         payload.blacklist.some(([r]) => new RegExp(r).test(url)) &&
         payload.whitelist.every(([r]) => !new RegExp(r).test(url)),
@@ -207,6 +208,14 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
     }
   },
 
+  USER_FOLD_DICT: (state, { payload }) => ({
+    ...state,
+    userFoldedDicts: {
+      ...state.userFoldedDicts,
+      [payload.id]: payload.fold
+    }
+  }),
+
   DRAG_START_COORD: (state, { payload }) => ({
     ...state,
     dragStartCoord: payload
@@ -221,24 +230,25 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
   }),
 
   QS_PANEL_CHANGED: (state, { payload }) => {
-    if (state.withQSPanel === payload) {
+    if (state.withQssaPanel === payload) {
       return state
     }
 
     // hide panel on otehr pages and leave just quick search panel
-    return payload && state.config.tripleCtrlPageSel
+    return payload && state.config.qssaPageSel
       ? {
           ...state,
-          withQSPanel: payload,
+          withQssaPanel: payload,
           isPinned: false,
           // no hiding if it's browser action page
-          isShowDictPanel: isPopupPage() || isOptionsPage(),
+          isShowDictPanel:
+            isPopupPage() || (isOptionsPage() ? state.isShowDictPanel : false),
           isShowBowl: false,
           isQSPanel: false
         }
       : {
           ...state,
-          withQSPanel: payload,
+          withQssaPanel: payload,
           isQSPanel: isQuickSearchPage()
         }
   },

@@ -33,6 +33,7 @@ storiesOf('Content Scripts|Dict Panel', module)
       <MtaBox
         expand={expand}
         maxHeight={number('Max Height', 100)}
+        fontSize={number('Font size')}
         text={text}
         shouldFocus={true}
         searchText={action('Search Text')}

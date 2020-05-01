@@ -5,21 +5,9 @@ export const mockSearchTexts = ['test']
 export const mockRequest: MockRequest = mock => {
   mock
     .onGet(/collinsdictionary/)
-    .reply(
-      200,
-      new DOMParser().parseFromString(
-        require('!raw-loader!./response/how.html').default,
-        'text/html'
-      )
-    )
+    .reply(200, require('!raw-loader!./response/how.html').default)
 
   mock
     .onGet(/iciba/)
-    .reply(
-      200,
-      new DOMParser().parseFromString(
-        require('!raw-loader!./response/love.html').default,
-        'text/html'
-      )
-    )
+    .reply(200, require('!raw-loader!./response/love.html').default)
 }

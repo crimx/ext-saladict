@@ -1,9 +1,17 @@
 body {
   overflow-y: scroll;
+  // Firefox table will always overflow
+  overflow-x: hidden;
 }
 
 textarea {
   resize: none;
+}
+
+.ant-pagination {
+  float: none !important;
+  display: flex;
+  justify-content: center;
 }
 
 .wordpage-Container {

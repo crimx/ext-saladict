@@ -30,8 +30,6 @@ export const newSelection: ActionHandler<
         y: selection.mouseY
       }
     } else if (!state.isPinned) {
-      newState.text = selection.word.text
-
       // icon position       10px  panel position
       //           +-------+      +------------------------+
       //           |       |      |                        |
@@ -81,7 +79,7 @@ export const newSelection: ActionHandler<
     }
   }
 
-  if ((state.withQSPanel && config.tripleCtrlPageSel) || isStandalonePage()) {
+  if ((state.withQssaPanel && config.qssaPageSel) || isStandalonePage()) {
     return newState
   }
 

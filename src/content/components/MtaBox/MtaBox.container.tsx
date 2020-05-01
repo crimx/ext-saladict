@@ -6,7 +6,7 @@ import {
 } from 'react-retux'
 import { StoreState, StoreAction } from '@/content/redux/modules'
 import { newWord } from '@/_helpers/record-manager'
-import { isStandalonePage } from '@/_helpers/saladict'
+import { isQuickSearchPage, isPopupPage } from '@/_helpers/saladict'
 import { MtaBox, MtaBoxProps } from './MtaBox'
 
 type Dispatchers = ExtractDispatchers<
@@ -24,7 +24,11 @@ const mapStateToProps: MapStateToProps<
   text: state.text,
   fontSize: state.config.fontSize,
   shouldFocus:
-    !state.activeProfile.mtaAutoUnfold || state.isQSPanel || isStandalonePage()
+    !state.activeProfile.mtaAutoUnfold ||
+    ((state.isQSPanel || isQuickSearchPage()) &&
+      (state.config.qsFocus ||
+        (!state.text && (!state.config.qsPreload || !state.config.qsAuto)))) ||
+    isPopupPage()
 })
 
 const mapDispatchToProps: MapDispatchToProps<
