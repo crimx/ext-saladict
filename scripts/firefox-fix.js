@@ -119,5 +119,7 @@ async function getStaticChunks(htmls) {
     }
   })
 
+  staticChunks.delete('franc')
+
   return staticChunks
 }
