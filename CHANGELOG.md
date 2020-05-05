@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.11.1](https://github.com/crimx/ext-saladict/compare/v7.11.0...v7.11.1) (2020-05-05)
+
+
+### Bug Fixes
+
+* **firefox:** add franc to dynamic chunks ([61580b1](https://github.com/crimx/ext-saladict/commit/61580b1217bd293885b854ad061d55b082b5be2b)), closes [#778](https://github.com/crimx/ext-saladict/issues/778)
+* **wordeditor:** fix z-index on internal page ([5c80ebb](https://github.com/crimx/ext-saladict/commit/5c80ebb186c782c0c4747fca3de97e035a334cb6))
+
+
+### Tests
+
+* update check-update ([6582938](https://github.com/crimx/ext-saladict/commit/6582938c814a92b5ab36a8ae20b4ebdf6a77cc98))
+
 ## [7.11.0](https://github.com/crimx/ext-saladict/compare/v7.10.4...v7.11.0) (2020-05-01)
 
 
