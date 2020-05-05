@@ -14,7 +14,7 @@ export default (): UrbanConfig => ({
     french: false,
     spanish: false,
     deutsch: false,
-    others: false,
+    others: true,
     matchAll: false
   },
   defaultUnfold: {

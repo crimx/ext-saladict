@@ -1,4 +1,5 @@
 import React, { FC } from 'react'
+import { isInternalPage } from '@/_helpers/saladict'
 
 export interface WordEditorPanelProps {
   containerWidth: number
@@ -14,7 +15,12 @@ export interface WordEditorPanelProps {
 
 export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
   return (
-    <div className="wordEditorPanel-Background">
+    <div
+      className="wordEditorPanel-Background"
+      style={{
+        zIndex: isInternalPage() ? 998 : 2147483647 // for popups on options page
+      }}
+    >
       <div
         className="wordEditorPanel-Container"
         style={{ width: props.containerWidth }}
