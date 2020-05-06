@@ -1,11 +1,12 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { Layout } from 'antd'
 import { from } from 'rxjs'
 import { switchMap, startWith, debounceTime } from 'rxjs/operators'
 import { useObservable, useSubscription } from 'observable-hooks'
+import { Helmet } from 'react-helmet'
 import { DBArea, getWords, Word, deleteWords } from '@/_helpers/record-manager'
 import { useTranslate } from '@/_helpers/i18n'
-import { Helmet } from 'react-helmet'
+import { message } from '@/_helpers/browser-api'
 import { Header } from './Header'
 import { WordTableProps, colSelectionWidth, WordTable } from './WordTable'
 import { ExportModal, ExportModalTitle } from './ExportModal'
@@ -118,6 +119,15 @@ export const WordPage: FC<WordPageProps> = props => {
     }))
     setSelectedRows([])
   })
+
+  useEffect(() => {
+    const handler = (): void => {
+      fetchWords({})
+    }
+    message.addListener('WORD_SAVED', handler)
+
+    return () => message.removeListener('WORD_SAVED', handler)
+  }, [])
 
   return (
     <Layout className="wordpage-Container">

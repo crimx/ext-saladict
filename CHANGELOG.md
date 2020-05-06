@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.11.2](https://github.com/crimx/ext-saladict/compare/v7.11.1...v7.11.2) (2020-05-06)
+
+
+### Bug Fixes
+
+* **wordeditor:** incorrect z-index ([3701084](https://github.com/crimx/ext-saladict/commit/3701084299cc3902a2e55e9e14d472fba9bcdf27)), closes [#780](https://github.com/crimx/ext-saladict/issues/780)
+* **wordpage:** refresh table on word changes ([5520feb](https://github.com/crimx/ext-saladict/commit/5520feb1b28eb73e689f5881cc07d9855c11fac9)), closes [#780](https://github.com/crimx/ext-saladict/issues/780)
+
 ### [7.11.1](https://github.com/crimx/ext-saladict/compare/v7.11.0...v7.11.1) (2020-05-05)
 
 
