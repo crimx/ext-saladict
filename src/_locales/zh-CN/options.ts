@@ -96,7 +96,6 @@ export const locale = {
       '连续按三次{⌘ Command}（Mac）或者{Ctrl}（其它键盘）（或设置浏览器快捷键）将弹出词典界面。',
     qsLocation: '出现位置',
     qsFocus: '出现时获取焦点',
-    qsFocus_help: '注意即便关闭了，查词面板依然会在合适的情况下选择获取焦点。',
     qsStandalone: '独立窗口',
     qsStandalone_help: '显示为单独的窗口，支持响应{浏览器以外划词}。',
     qssaSidebar: '类侧边栏',

@@ -32,6 +32,7 @@ export const initState = () => {
      * which could be in a standalone window or in-page element.
      */
     isQSPanel: isQuickSearchPage(),
+    isQSFocus: config.qsFocus,
     /** is a standalone quick search panel running */
     withQssaPanel: false,
     wordEditor: {
@@ -44,7 +45,7 @@ export const initState = () => {
     isShowDictPanel: isStandalonePage(),
     isExpandMtaBox: false,
     isExpandWaveformBox: false,
-    isPinned: isQuickSearchPage() ? config.qsFocus : false,
+    isPinned: false,
     /** Is current word in Notebook */
     isFav: false,
     bowlCoord: { x: 0, y: 0 },

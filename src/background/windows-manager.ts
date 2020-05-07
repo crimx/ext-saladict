@@ -48,7 +48,7 @@ const titlebarOffset = async (
  */
 export class MainWindowsManager {
   /** Main window snapshot */
-  private snapshot: browser.windows.Window | null = null
+  snapshot: browser.windows.Window | null = null
 
   private _titlebar: number | undefined
   async correctTop(originTop?: number) {
@@ -60,6 +60,12 @@ export class MainWindowsManager {
     return originTop - offset
   }
 
+  async focus(): Promise<void> {
+    if (this.snapshot && this.snapshot.id != null) {
+      await safeUpdateWindow(this.snapshot.id, { focused: true })
+    }
+  }
+
   async takeSnapshot(): Promise<browser.windows.Window | null> {
     this.snapshot = null
 
@@ -67,12 +73,13 @@ export class MainWindowsManager {
       const win = await browser.windows.getLastFocused({
         windowTypes: ['normal']
       })
-      if (win.type === 'normal' && win.state !== 'minimized') {
+      if (win.focused && win.type === 'normal' && win.state !== 'minimized') {
         this.snapshot = win
       } else if (isFirefox) {
         // Firefox does not support windowTypes in getLastFocused
         const wins = (await browser.windows.getAll()).filter(
-          win => win.type === 'normal' && win.state !== 'minimized'
+          win =>
+            win.focused && win.type === 'normal' && win.state !== 'minimized'
         )
         if (wins.length === 1) {
           this.snapshot = wins[0]
@@ -136,13 +143,6 @@ export class MainWindowsManager {
     }
 
     await safeUpdateWindow(mainWin.id, updateInfo)
-
-    if (
-      !window.appConfig.qsFocus &&
-      (!window.appConfig.qsPreload || !window.appConfig.qsAuto)
-    ) {
-      await safeUpdateWindow(mainWin.id, { focused: true })
-    }
   }
 
   async restoreSnapshot(): Promise<void> {
@@ -206,6 +206,8 @@ export class QsPanelManager {
       }
     } catch (e) {}
 
+    await this.mainWindowsManager.takeSnapshot()
+
     const qsPanelRect = window.appConfig.qssaSidebar
       ? await this.getSidebarRect(window.appConfig.qssaSidebar)
       : (await this.getStorageRect()) || this.getDefaultRect()
@@ -245,6 +247,10 @@ export class QsPanelManager {
           window.appConfig.qssaSidebar,
           qsPanelWin
         )
+      }
+
+      if (!window.appConfig.qsFocus) {
+        await this.mainWindowsManager.focus()
       }
 
       // notify all tabs
@@ -430,7 +436,7 @@ export class QsPanelManager {
   async getSidebarRect(side: 'left' | 'right'): Promise<WinRect> {
     const panelWidth =
       (this.snapshot && this.snapshot.width) || window.appConfig.panelWidth
-    const mainWin = await this.mainWindowsManager.takeSnapshot()
+    const mainWin = this.mainWindowsManager.snapshot
     return mainWin &&
       mainWin.state === 'normal' &&
       mainWin.top != null &&

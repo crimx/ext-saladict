@@ -175,15 +175,20 @@ export const PinBtn: FC<PinBtnProps> = props => {
   )
 }
 
+export interface FocusBtnProps extends MenubarBtnProps {
+  /** Dict panel focus */
+  isFocus: boolean
+}
+
 /**
  * Focus standalone panel when searching
  */
-export const FocusBtn: FC<PinBtnProps> = props => {
-  const { t, isPinned, ...restProps } = props
+export const FocusBtn: FC<FocusBtnProps> = props => {
+  const { t, isFocus, ...restProps } = props
   return (
     <button
       className="menuBar-Btn"
-      title={t(`tip.${isPinned ? 'focusPanel' : 'unfocusPanel'}`)}
+      title={t(`tip.${isFocus ? 'focusPanel' : 'unfocusPanel'}`)}
       {...restProps}
     >
       <svg
@@ -193,7 +198,7 @@ export const FocusBtn: FC<PinBtnProps> = props => {
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 53 53"
       >
-        {isPinned ? (
+        {isFocus ? (
           <>
             <path d="M 36.414 35 L 46 35 C 46.553 35 47 34.552 47 34 C 47 33.448 46.553 33 46 33 L 34 33 C 33.87 33 33.74 33.027 33.618 33.077 C 33.374 33.178 33.179 33.373 33.077 33.618 C 33.026 33.74 33 33.869 33 34 L 33 46 C 33 46.552 33.448 47 34 47 C 34.552 47 35 46.552 35 46 L 35 36.414 L 51.293 52.707 C 51.488 52.902 51.744 53 52 53 C 52.256 53 52.512 52.902 52.707 52.707 C 53.098 52.316 53.098 51.684 52.707 51.293 L 36.414 35 Z" />
             <path d="M 16.584 17.999 L 6.999 17.999 C 6.447 17.999 5.999 18.447 5.999 18.999 C 5.999 19.551 6.447 19.999 6.999 19.999 L 18.999 19.999 C 19.129 19.999 19.259 19.972 19.381 19.922 C 19.625 19.821 19.82 19.626 19.922 19.381 C 19.973 19.259 19.999 19.129 19.999 18.999 L 19.999 6.999 C 19.999 6.447 19.551 5.999 18.999 5.999 C 18.447 5.999 17.999 6.447 17.999 6.999 L 17.999 16.585 L 1.707 0.293 C 1.316 -0.098 0.684 -0.098 0.293 0.293 C -0.098 0.684 -0.098 1.316 0.293 1.707 L 16.584 17.999 Z" />

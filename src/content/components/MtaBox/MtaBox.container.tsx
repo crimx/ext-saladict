@@ -25,9 +25,7 @@ const mapStateToProps: MapStateToProps<
   fontSize: state.config.fontSize,
   shouldFocus:
     !state.activeProfile.mtaAutoUnfold ||
-    ((state.isQSPanel || isQuickSearchPage()) &&
-      (state.config.qsFocus ||
-        (!state.text && (!state.config.qsPreload || !state.config.qsAuto)))) ||
+    ((state.isQSPanel || isQuickSearchPage()) && state.config.qsFocus) ||
     isPopupPage()
 })
 

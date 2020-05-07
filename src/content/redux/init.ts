@@ -96,7 +96,7 @@ export const init = (
           // request searching text, from other tabs
           dispatch({ type: 'SEARCH_START', payload: { word: msg.payload } })
 
-          if (getState().isPinned) {
+          if (getState().isQSFocus) {
             // focus standalone panel
             message.send({ type: 'OPEN_QS_PANEL' })
           }

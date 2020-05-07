@@ -51,6 +51,9 @@ export interface MenuBarProps {
   isPinned: boolean
   togglePin: () => any
 
+  isQSFocus: boolean
+  toggleQSFocus: () => any
+
   onClose: () => any
   onSwitchSidebar: (side: 'left' | 'right') => any
 
@@ -154,8 +157,8 @@ export const MenuBar: FC<MenuBarProps> = props => {
         <>
           <FocusBtn
             t={t}
-            isPinned={props.isPinned}
-            onClick={props.togglePin}
+            isFocus={props.isQSFocus}
+            onClick={props.toggleQSFocus}
             disabled={isOptionsPage() || isPopupPage()}
           />
           <SidebarBtn

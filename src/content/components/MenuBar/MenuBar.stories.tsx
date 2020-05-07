@@ -72,6 +72,8 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
         updateHistoryIndex={action('Update History Index')}
         isPinned={boolean('Is Pinned', false)}
         togglePin={action('Toggle Pin')}
+        isQSFocus={boolean('Is Quick Search Focus', false)}
+        toggleQSFocus={action('Toggle Quick Search Focus')}
         onClose={action('Close Panel')}
         onSwitchSidebar={action('Switch Sidebar')}
         profiles={profiles}
