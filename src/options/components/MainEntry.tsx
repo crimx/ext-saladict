@@ -81,6 +81,7 @@ export const MainEntry: FC = () => {
           <Col style={{ flex: '1' }}>
             <Layout style={{ padding: 24 }}>
               <Layout.Content
+                data-option-content={entry} // for utools hiding unused options
                 style={{
                   padding: 24,
                   backgroundColor: 'var(--opt-background-color)'
