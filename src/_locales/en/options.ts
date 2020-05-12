@@ -96,6 +96,8 @@ export const locale: typeof _locale = {
     pdfSniff_help: 'If turned on， PDF links will be automatically captured.',
     pdfSniff_extra:
       'It is recommended to {search selected text outside of browser} with your own favorite local reader.',
+    pdfStandalone: 'Standalone Panel',
+    pdfStandalone_help: 'Open PDF viewer in standalone panel.',
     baOpen: 'Browser Action',
     baOpen_help:
       'When clicking the browser action icon in toolbar (next to the address bar). Items are same as Context Menus, which can be added or edited on the Context Menus config page.',
@@ -141,7 +143,12 @@ export const locale: typeof _locale = {
         popup_options: 'Open Saladict Options',
         popup_standalone: 'Open Saladict Standalone Panel'
       },
-      openQsStandalone: 'Standalone Panel Options'
+      openQsStandalone: 'Standalone Panel Options',
+      pdfStandalone: {
+        default: 'Never',
+        always: 'Always',
+        manual: 'Manual'
+      }
     }
   },
 

@@ -86,11 +86,14 @@ export const locale: typeof _locale = {
         src_trans: '朗讀翻譯'
       }
     },
-    pdfSniff: '使用本應用程式瀏覽 PDF',
+    pdfSniff: '嗅探 PDF 連結',
     pdfSniff_help:
       '開啟後所有 PDF 連結將自動跳至本套件開啟（包括本機，如果在套件管理頁面勾選了允許）。',
     pdfSniff_extra:
       '現在更推薦使用自己喜歡的本地閱讀器搭配{瀏覽器外選字翻譯}。',
+    pdfStandalone: '獨立視窗',
+    pdfStandalone_help:
+      '在獨立視窗中開啟 PDF 閱讀器。獨立視窗只有標題欄，佔用更少空間，但不能複製連結等操作。',
     baOpen: '點選網址列旁圖示',
     baOpen_help:
       '點選網址列旁 Saladict 圖示時發生的操作。沿用了「右鍵選單」的條目，可以前往該設定頁面增加或編輯。',
@@ -134,7 +137,12 @@ export const locale: typeof _locale = {
         popup_options: '進入 Saladict 設定',
         popup_standalone: '開啟快捷查詞獨立視窗'
       },
-      openQsStandalone: '獨立視窗設定'
+      openQsStandalone: '獨立視窗設定',
+      pdfStandalone: {
+        default: '從不',
+        always: '總是',
+        manual: '手動'
+      }
     }
   },
 

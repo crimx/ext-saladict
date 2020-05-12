@@ -84,10 +84,13 @@ export const locale = {
         src_trans: '朗读翻译'
       }
     },
-    pdfSniff: '默认用本扩展浏览 PDF',
+    pdfSniff: '嗅探 PDF 链接',
     pdfSniff_help:
       '开启后所有 PDF 链接将自动跳转到本扩展打开（包括本地，如果在扩展管理页面勾选了允许）。',
     pdfSniff_extra: '现在更推荐使用自己喜欢的本地阅读器搭配{浏览器外划词}。',
+    pdfStandalone: '独立窗口',
+    pdfStandalone_help:
+      '在独立窗口中打开 PDF 阅读器。独立窗口只有标题栏，占用更少空间，但不能复制链接等操作。',
     baOpen: '点击地址栏旁图标',
     baOpen_help:
       '点击地址栏旁 Saladict 图标时发生的操作。沿用了「右键菜单」的项目，可以前往该设置页面进行增加或编辑。',
@@ -131,7 +134,12 @@ export const locale = {
         popup_options: '打开 Saladict 设置',
         popup_standalone: '打开快捷查词独立窗口'
       },
-      openQsStandalone: '打开独立窗口设置'
+      openQsStandalone: '打开独立窗口设置',
+      pdfStandalone: {
+        default: '从不',
+        always: '总是',
+        manual: '手动'
+      }
     }
   },
 
