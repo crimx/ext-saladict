@@ -6,16 +6,10 @@ import { AppConfig } from '@/app-config'
 import { addConfigListener } from '@/_helpers/config-manager'
 import { openURL } from '@/_helpers/browser-api'
 
-let blacklist: AppConfig['pdfBlacklist'] = []
-let whitelist: AppConfig['pdfWhitelist'] = []
-
 export function init(config: AppConfig) {
   if (browser.webRequest.onBeforeRequest.hasListener(otherPdfListener)) {
     return
   }
-
-  blacklist = config.pdfBlacklist
-  whitelist = config.pdfWhitelist
 
   if (config.pdfSniff) {
     startListening()
@@ -23,9 +17,6 @@ export function init(config: AppConfig) {
 
   addConfigListener(({ newConfig, oldConfig }) => {
     if (newConfig) {
-      blacklist = newConfig.pdfBlacklist
-      whitelist = newConfig.pdfWhitelist
-
       if (!oldConfig || newConfig.pdfSniff !== oldConfig.pdfSniff) {
         if (newConfig.pdfSniff) {
           startListening()
@@ -118,9 +109,10 @@ function otherPdfListener({
 }: Parameters<
   Parameters<typeof browser.webRequest.onBeforeRequest.removeListener>[0]
 >[0]) {
+  const matchURL = ([r]: ReadonlyArray<string>) => new RegExp(r).test(url)
   if (
-    blacklist.some(([r]) => new RegExp(r).test(url)) &&
-    whitelist.every(([r]) => !new RegExp(r).test(url))
+    window.appConfig.pdfBlacklist.some(matchURL) &&
+    !window.appConfig.pdfWhitelist.some(matchURL)
   ) {
     return
   }
@@ -148,9 +140,10 @@ function httpPdfListener({
   if (!responseHeaders) {
     return
   }
+  const matchURL = ([r]: ReadonlyArray<string>) => new RegExp(r).test(url)
   if (
-    blacklist.some(([r]) => new RegExp(r).test(url)) &&
-    whitelist.every(([r]) => !new RegExp(r).test(url))
+    window.appConfig.pdfBlacklist.some(matchURL) &&
+    !window.appConfig.pdfWhitelist.some(matchURL)
   ) {
     return
   }

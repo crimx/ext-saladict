@@ -1,4 +1,4 @@
-import { getDefaultConfig, AppConfigMutable } from '@/app-config'
+import { getDefaultConfig, AppConfigMutable, AppConfig } from '@/app-config'
 import { matchPatternToRegExpStr } from '@/_helpers/matchPatternToRegExpStr'
 import { init as initPdfOrigin } from '@/background/pdf-sniffer'
 import { timer } from '@/_helpers/promise-more'
@@ -18,6 +18,11 @@ function hasListenerPatch(fn) {
   return false
 }
 
+function changeConfig(newConfig: AppConfig, oldConfig: AppConfig) {
+  window.appConfig = newConfig
+  configManager.dispatchConfigChangedEvent(newConfig, oldConfig)
+}
+
 let initPdf: typeof initPdfOrigin
 
 describe('PDF Sniffer', () => {
@@ -31,6 +36,7 @@ describe('PDF Sniffer', () => {
     browser.webRequest.onBeforeRequest.hasListener = hasListenerPatch
     // @ts-ignore
     browser.webRequest.onHeadersReceived.hasListener = hasListenerPatch
+    window.appConfig = getDefaultConfig()
   })
 
   const urlPdf = 'https://test.com/c.pdf'
@@ -39,9 +45,8 @@ describe('PDF Sniffer', () => {
   const urlTxtEncoded = encodeURIComponent(urlTxt)
 
   it('should not start sniffing if sniff config is off', async () => {
-    const config = getDefaultConfig() as AppConfigMutable
-    config.pdfSniff = false
-    initPdf(config)
+    ;(window.appConfig as AppConfigMutable).pdfSniff = false
+    initPdf(window.appConfig)
     await timer(0)
     expect(
       browser.webRequest.onBeforeRequest.addListener.notCalled
@@ -53,9 +58,8 @@ describe('PDF Sniffer', () => {
   })
 
   it('should start snifffing if sniff config is on', async () => {
-    const config = getDefaultConfig() as AppConfigMutable
-    config.pdfSniff = true
-    initPdf(config)
+    ;(window.appConfig as AppConfigMutable).pdfSniff = true
+    initPdf(window.appConfig)
     await timer(0)
     expect(
       browser.webRequest.onBeforeRequest.addListener.calledOnce
@@ -67,13 +71,12 @@ describe('PDF Sniffer', () => {
   })
 
   it('should stop sniffing if sniff config is turned off', async () => {
-    const config = getDefaultConfig() as AppConfigMutable
-    config.pdfSniff = true
-    initPdf(config)
+    ;(window.appConfig as AppConfigMutable).pdfSniff = true
+    initPdf(window.appConfig)
     await timer(0)
-    configManager.dispatchConfigChangedEvent(
-      { ...config, pdfSniff: false },
-      { ...config, pdfSniff: true }
+    changeConfig(
+      { ...window.appConfig, pdfSniff: false },
+      { ...window.appConfig, pdfSniff: true }
     )
     await timer(0)
     expect(
@@ -92,12 +95,11 @@ describe('PDF Sniffer', () => {
   })
 
   it('should start snifffing only once if init multiple times', async () => {
-    const config = getDefaultConfig() as AppConfigMutable
-    config.pdfSniff = true
-    initPdf(config)
-    initPdf(config)
-    initPdf(config)
-    initPdf(config)
+    ;(window.appConfig as AppConfigMutable).pdfSniff = true
+    initPdf(window.appConfig)
+    initPdf(window.appConfig)
+    initPdf(window.appConfig)
+    initPdf(window.appConfig)
     await timer(0)
     expect(
       browser.webRequest.onBeforeRequest.addListener.calledOnce
@@ -109,17 +111,16 @@ describe('PDF Sniffer', () => {
   })
 
   it('should start snifffing only once if being turned on multiple times', async () => {
-    const config = getDefaultConfig() as AppConfigMutable
-    config.pdfSniff = false
-    initPdf(config)
+    ;(window.appConfig as AppConfigMutable).pdfSniff = false
+    initPdf(window.appConfig)
     await timer(0)
-    configManager.dispatchConfigChangedEvent(
-      { ...config, pdfSniff: true },
-      { ...config, pdfSniff: false }
+    changeConfig(
+      { ...window.appConfig, pdfSniff: true },
+      { ...window.appConfig, pdfSniff: false }
     )
-    configManager.dispatchConfigChangedEvent(
-      { ...config, pdfSniff: true },
-      { ...config, pdfSniff: false }
+    changeConfig(
+      { ...window.appConfig, pdfSniff: true },
+      { ...window.appConfig, pdfSniff: false }
     )
     await timer(0)
     expect(
@@ -132,9 +133,8 @@ describe('PDF Sniffer', () => {
   })
 
   it('should intercept ftp/file pdf request and redirect to pdf.js', async () => {
-    const config = getDefaultConfig() as AppConfigMutable
-    config.pdfSniff = true
-    initPdf(config)
+    ;(window.appConfig as AppConfigMutable).pdfSniff = true
+    initPdf(window.appConfig)
     await timer(0)
     const handler = browser.webRequest.onBeforeRequest['_listeners'][0]
     expect(handler({ url: urlPdf })).toEqual({
@@ -146,10 +146,11 @@ describe('PDF Sniffer', () => {
   })
 
   it('should not intercept ftp/file pdf request if the url matches blacklist', async () => {
-    const config = getDefaultConfig() as AppConfigMutable
-    config.pdfSniff = true
-    config.pdfBlacklist = [[matchPatternToRegExpStr(urlPdf), urlPdf]]
-    initPdf(config)
+    ;(window.appConfig as AppConfigMutable).pdfSniff = true
+    ;(window.appConfig as AppConfigMutable).pdfBlacklist = [
+      [matchPatternToRegExpStr(urlPdf), urlPdf]
+    ]
+    initPdf(window.appConfig)
     await timer(0)
     const handler = browser.webRequest.onBeforeRequest['_listeners'][0]
     expect(handler({ url: urlPdf })).toBeUndefined()
@@ -159,10 +160,11 @@ describe('PDF Sniffer', () => {
   })
 
   it('should intercept ftp/file pdf request if the url matches whitelist', async () => {
-    const config = getDefaultConfig() as AppConfigMutable
-    config.pdfSniff = true
-    config.pdfWhitelist = [[matchPatternToRegExpStr(urlPdf), urlPdf]]
-    initPdf(config)
+    ;(window.appConfig as AppConfigMutable).pdfSniff = true
+    ;(window.appConfig as AppConfigMutable).pdfWhitelist = [
+      [matchPatternToRegExpStr(urlPdf), urlPdf]
+    ]
+    initPdf(window.appConfig)
     await timer(0)
     const handler = browser.webRequest.onBeforeRequest['_listeners'][0]
     expect(handler({ url: urlPdf })).toEqual({
@@ -174,11 +176,14 @@ describe('PDF Sniffer', () => {
   })
 
   it('should intercept ftp/file pdf request if the url matches both blacklist and whitelist', async () => {
-    const config = getDefaultConfig() as AppConfigMutable
-    config.pdfSniff = true
-    config.pdfBlacklist = [[matchPatternToRegExpStr(urlPdf), urlPdf]]
-    config.pdfWhitelist = [[matchPatternToRegExpStr(urlPdf), urlPdf]]
-    initPdf(config)
+    ;(window.appConfig as AppConfigMutable).pdfSniff = true
+    ;(window.appConfig as AppConfigMutable).pdfBlacklist = [
+      [matchPatternToRegExpStr(urlPdf), urlPdf]
+    ]
+    ;(window.appConfig as AppConfigMutable).pdfWhitelist = [
+      [matchPatternToRegExpStr(urlPdf), urlPdf]
+    ]
+    initPdf(window.appConfig)
     await timer(0)
     const handler = browser.webRequest.onBeforeRequest['_listeners'][0]
     expect(handler({ url: urlPdf })).toEqual({
@@ -191,9 +196,8 @@ describe('PDF Sniffer', () => {
 
   describe('intercept http/https pdf request and redirect to pdf.js', () => {
     it('No PDF Content', async () => {
-      const config = getDefaultConfig() as AppConfigMutable
-      config.pdfSniff = true
-      initPdf(config)
+      ;(window.appConfig as AppConfigMutable).pdfSniff = true
+      initPdf(window.appConfig)
       await timer(0)
       const handler = browser.webRequest.onHeadersReceived['_listeners'][0]
       expect(handler({ resposeHeaders: [], url: urlPdf })).toBeUndefined()
@@ -205,9 +209,8 @@ describe('PDF Sniffer', () => {
     })
 
     it('With PDF Content Type', async () => {
-      const config = getDefaultConfig() as AppConfigMutable
-      config.pdfSniff = true
-      initPdf(config)
+      ;(window.appConfig as AppConfigMutable).pdfSniff = true
+      initPdf(window.appConfig)
       await timer(0)
       const handler = browser.webRequest.onHeadersReceived['_listeners'][0]
       const responseHeaders = [
@@ -222,9 +225,8 @@ describe('PDF Sniffer', () => {
     })
 
     it('PDF url with octet-stream Content Type', async () => {
-      const config = getDefaultConfig() as AppConfigMutable
-      config.pdfSniff = true
-      initPdf(config)
+      ;(window.appConfig as AppConfigMutable).pdfSniff = true
+      initPdf(window.appConfig)
       await timer(0)
       const handler = browser.webRequest.onHeadersReceived['_listeners'][0]
       const responseHeaders = [
@@ -237,10 +239,11 @@ describe('PDF Sniffer', () => {
     })
 
     it('should not intercept if the url matches blacklist', () => {
-      const config = getDefaultConfig() as AppConfigMutable
-      config.pdfSniff = true
-      config.pdfBlacklist = [[matchPatternToRegExpStr(urlPdf), urlPdf]]
-      initPdf(config)
+      ;(window.appConfig as AppConfigMutable).pdfSniff = true
+      ;(window.appConfig as AppConfigMutable).pdfBlacklist = [
+        [matchPatternToRegExpStr(urlPdf), urlPdf]
+      ]
+      initPdf(window.appConfig)
       const handler = browser.webRequest.onHeadersReceived['_listeners'][0]
       const responseHeaders = [
         { name: 'content-type', value: 'application/pdf' }
@@ -252,10 +255,11 @@ describe('PDF Sniffer', () => {
     })
 
     it('should intercept if the url matches whitelist', async () => {
-      const config = getDefaultConfig() as AppConfigMutable
-      config.pdfSniff = true
-      config.pdfWhitelist = [[matchPatternToRegExpStr(urlPdf), urlPdf]]
-      initPdf(config)
+      ;(window.appConfig as AppConfigMutable).pdfSniff = true
+      ;(window.appConfig as AppConfigMutable).pdfWhitelist = [
+        [matchPatternToRegExpStr(urlPdf), urlPdf]
+      ]
+      initPdf(window.appConfig)
       await timer(0)
       const handler = browser.webRequest.onHeadersReceived['_listeners'][0]
       const responseHeaders = [
@@ -270,11 +274,14 @@ describe('PDF Sniffer', () => {
     })
 
     it('should intercept if the url matches both blacklist and whitelist', async () => {
-      const config = getDefaultConfig() as AppConfigMutable
-      config.pdfSniff = true
-      config.pdfBlacklist = [[matchPatternToRegExpStr(urlPdf), urlPdf]]
-      config.pdfWhitelist = [[matchPatternToRegExpStr(urlPdf), urlPdf]]
-      initPdf(config)
+      ;(window.appConfig as AppConfigMutable).pdfSniff = true
+      ;(window.appConfig as AppConfigMutable).pdfBlacklist = [
+        [matchPatternToRegExpStr(urlPdf), urlPdf]
+      ]
+      ;(window.appConfig as AppConfigMutable).pdfWhitelist = [
+        [matchPatternToRegExpStr(urlPdf), urlPdf]
+      ]
+      initPdf(window.appConfig)
       await timer(0)
       const handler = browser.webRequest.onHeadersReceived['_listeners'][0]
       const responseHeaders = [
