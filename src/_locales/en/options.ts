@@ -170,7 +170,7 @@ export const locale: typeof _locale = {
     double_help: 'Show dict panel after double click selection.',
     holding: 'Hold a key',
     holding_help:
-      'After a selection is made, the selected key must be pressing when releasing mouse (Meta key is "⌘ Command" on macOS and "⊞ Windows" for others).',
+      'After a selection is made, the selected key must be pressing when releasing mouse (Alt is "⌥ Option" on macOS. Meta key is "⌘ Command" on macOS and "⊞ Windows" for others.).',
     instant: 'Instant Capture',
     instant_help: 'Selection is automatically made near by the cursor.',
     instantDirect: 'Direct',

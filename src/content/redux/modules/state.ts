@@ -19,6 +19,7 @@ export const initState = () => {
       mouseY: 0,
       self: false,
       dbClick: false,
+      altKey: false,
       shiftKey: false,
       ctrlKey: false,
       metaKey: false,

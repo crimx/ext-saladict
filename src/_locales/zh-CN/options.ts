@@ -160,7 +160,7 @@ export const locale = {
     double_help: '双击选择文本之后直接显示词典面板。',
     holding: '按住按键',
     holding_help:
-      '在放开鼠标之前按住选择的按键才显示词典面板（Meta 键为 macOS 上的「⌘ Command」键以及其它键盘的「⊞ Windows」键）。',
+      '在放开鼠标之前按住选择的按键才显示词典面板（Alt 为 macOS 上的 "⌥ Option"键。 Meta 键为 macOS 上的「⌘ Command」键以及其它键盘的「⊞ Windows」键）。',
     instant: '鼠标悬浮取词',
     instant_help: '自动选取鼠标附近的单词。',
     instantDirect: '直接取词',

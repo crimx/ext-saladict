@@ -126,6 +126,7 @@ function _getDefaultConfig() {
       double: false,
       /** holding a key */
       holding: {
+        alt: false,
         shift: false,
         ctrl: false,
         meta: false
@@ -146,6 +147,7 @@ function _getDefaultConfig() {
       double: false,
       /** holding a key */
       holding: {
+        alt: false,
         shift: false,
         ctrl: false,
         meta: false
@@ -166,6 +168,7 @@ function _getDefaultConfig() {
       double: false,
       /** holding a key */
       holding: {
+        alt: false,
         shift: false,
         ctrl: false,
         meta: false
@@ -186,6 +189,7 @@ function _getDefaultConfig() {
       double: false,
       /** holding a key */
       holding: {
+        alt: false,
         shift: false,
         ctrl: true,
         meta: false

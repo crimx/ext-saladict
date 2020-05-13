@@ -31,6 +31,7 @@ export interface DictListProps
     mouseX: number
     mouseY: number
     dbClick: boolean
+    altKey: boolean
     shiftKey: boolean
     ctrlKey: boolean
     metaKey: boolean

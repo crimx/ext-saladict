@@ -73,6 +73,7 @@ export function mergeConfig(
         }
         mergeBoolean(`${key}.direct`)
         mergeBoolean(`${key}.double`)
+        mergeBoolean(`${key}.holding.alt`)
         mergeBoolean(`${key}.holding.shift`)
         mergeBoolean(`${key}.holding.ctrl`)
         mergeBoolean(`${key}.holding.meta`)

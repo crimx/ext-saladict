@@ -164,7 +164,7 @@ export const locale: typeof _locale = {
     double_help: '滑鼠按兩下所選擇的句子或單字後，會直接顯示字典視窗介面。',
     holding: '按住按键',
     holding_help:
-      '在放開滑鼠之前，需按住選擇的按鍵才顯示字典視窗介面（Meta 鍵為 macOS 上的「⌘ Command」鍵以及其它鍵盤的「⊞ Windows」鍵）。',
+      '在放開滑鼠之前，需按住選擇的按鍵才顯示字典視窗介面（Alt 為 macOS 上的 "⌥ Option"鍵。Meta 鍵為 macOS 上的「⌘ Command」鍵以及其它鍵盤的「⊞ Windows」鍵）。',
     instant: '滑鼠懸浮取詞',
     instant_help: '自動選取滑鼠附近的單字。',
     instantDirect: '直接取詞',
