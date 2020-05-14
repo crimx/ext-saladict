@@ -2,6 +2,7 @@ import { DictItem } from '@/app-config/dicts'
 
 export type MacmillanConfig = DictItem<{
   related: boolean
+  locale: 'uk' | 'us'
 }>
 
 export default (): MacmillanConfig => ({
@@ -28,12 +29,16 @@ export default (): MacmillanConfig => ({
     others: true,
     matchAll: false
   },
-  preferredHeight: 265,
+  preferredHeight: 465,
   selectionWC: {
     min: 1,
     max: 5
   },
   options: {
-    related: true
+    related: true,
+    locale: 'uk'
+  },
+  options_sel: {
+    locale: ['uk', 'us']
   }
 })

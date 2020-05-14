@@ -1,5 +1,4 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
-import { reflect } from '@/_helpers/promise-more'
 import {
   HTMLString,
   getInnerHTML,
@@ -8,7 +7,12 @@ import {
   SearchFunction,
   GetSrcPageFunction,
   externalLink,
-  DictSearchResult
+  DictSearchResult,
+  removeChildren,
+  getText,
+  removeChild,
+  getFullLink,
+  getOuterHTML
 } from '../helpers'
 import { DictConfigs } from '@/app-config'
 
@@ -21,21 +25,22 @@ export const getSrcPage: GetSrcPageFunction = text => {
 
 const HOST = 'http://www.macmillandictionary.com'
 
-interface MacmillanResultItem {
+export interface MacmillanResultLex {
+  type: 'lex'
   title: string
   senses: HTMLString
   /** part of speech */
-  pos: string
+  pos?: string
   /** syntax coding */
-  sc: string
-  phsym: string
+  sc?: string
+  phsym?: string
   pron?: string
   ratting?: number
-}
-
-export interface MacmillanResultLex {
-  type: 'lex'
-  items: MacmillanResultItem[]
+  toggleables: HTMLString[]
+  relatedEntries: Array<{
+    title: string
+    href: string
+  }>
 }
 
 export interface MacmillanResultRelated {
@@ -47,7 +52,11 @@ export type MacmillanResult = MacmillanResultLex | MacmillanResultRelated
 
 type MacmillanSearchResult = DictSearchResult<MacmillanResult>
 
-export const search: SearchFunction<MacmillanResult> = (
+export interface MacmillanPayload {
+  href?: string
+}
+
+export const search: SearchFunction<MacmillanResult, MacmillanPayload> = (
   text,
   config,
   profile,
@@ -55,22 +64,21 @@ export const search: SearchFunction<MacmillanResult> = (
 ) => {
   const options = profile.dicts.all.macmillan.options
 
-  return fetchDirtyDOM(
-    'http://www.macmillandictionary.com/dictionary/british/' +
-      text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-')
+  return fetchMacmillanDom(
+    payload.href ||
+      'http://www.macmillandictionary.com/dictionary/british/' +
+        text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-')
   )
     .catch(handleNetWorkError)
     .then(doc => checkResult(doc, options))
 }
 
-function checkResult(
+async function checkResult(
   doc: Document,
   options: DictConfigs['macmillan']['options']
-): MacmillanSearchResult | Promise<MacmillanSearchResult> {
-  if (doc.querySelector('.senses .SENSE')) {
-    return Promise.resolve(doc)
-      .then(getAllResults)
-      .then(handleAllDOMs)
+): Promise<MacmillanSearchResult> {
+  if (doc.querySelector('.senses')) {
+    return handleDOM(doc)
   } else if (options.related) {
     const $alternative = doc.querySelector<HTMLAnchorElement>(
       '#search-results ul'
@@ -87,117 +95,76 @@ function checkResult(
   return handleNoResult()
 }
 
-/** Find all results of the same word */
-function getAllResults(doc: Document): Document[] | Promise<Document[]> {
-  const $link = doc.querySelector<HTMLLinkElement>('link[rel="canonical"]')
-  if (!$link) {
-    return [doc]
-  }
-
-  const keyword = (/[^/]+(?=_\d+$)/.exec($link.href) || [''])[0]
-  if (!keyword) {
-    return [doc]
-  }
-
-  const keywordTester = new RegExp(keyword + '_\\d+$')
-  const $related = Array.from(
-    doc.querySelectorAll<HTMLAnchorElement>('#relatedentries li a')
-  ).filter(a => keywordTester.test(a.href))
-  if ($related.length <= 0) {
-    return [doc]
-  }
-
-  return reflect($related.map(a => fetchDirtyDOM(a.href))).then(docs => [
-    doc,
-    ...docs.filter((d): d is Document => !!d)
-  ])
-}
-
-function handleAllDOMs(
-  docs: Document[]
-): MacmillanSearchResult | Promise<MacmillanSearchResult> {
-  const results = docs
-    .map(handleDOM)
-    .filter(
-      (result): result is DictSearchResult<MacmillanResultItem> => !!result
-    )
-  if (results.length > 0) {
-    const resultWithAudio = results.find(({ audio }) => audio && audio.uk)
-    const audio = resultWithAudio ? resultWithAudio.audio : undefined
-    return {
-      result: {
-        type: 'lex',
-        items: results.map(({ result }) => result)
-      },
-      audio
-    }
-  }
-  return handleNoResult()
-}
-
 function handleDOM(
   doc: Document
-): null | DictSearchResult<MacmillanResultItem> {
-  const result: MacmillanResultItem = {
-    title: '',
-    senses: '',
-    /** part of speech */
-    pos: '',
-    /** syntax coding */
-    sc: '',
-    phsym: ''
+): MacmillanSearchResult | Promise<MacmillanSearchResult> {
+  const $entry = doc.querySelector('#entryContent .left-content')
+  if (!$entry) {
+    return handleNoResult()
   }
+
+  const result: MacmillanResultLex = {
+    type: 'lex',
+    title: getText($entry, '.big-title .BASE'),
+    senses: '',
+    toggleables: [],
+    relatedEntries: []
+  }
+
+  if (!result.title) {
+    return handleNoResult()
+  }
+
+  $entry
+    .querySelectorAll<HTMLAnchorElement>('a.moreButton')
+    .forEach(externalLink)
+
+  result.senses = getInnerHTML(HOST, $entry, '.senses')
+
+  if (!result.senses) {
+    return handleNoResult()
+  }
+
+  removeChild($entry, '.senses')
+
+  result.pos = getText($entry, '.entry-pron-head .PART-OF-SPEECH')
+  result.sc = getText($entry, '.entry-pron-head .SYNTAX-CODING')
+  result.phsym = getText($entry, '.entry-pron-head .PRON')
+  result.ratting = $entry.querySelectorAll('.entry-red-star').length
+
+  $entry.querySelectorAll('.toggleable').forEach($toggleable => {
+    result.toggleables.push(getOuterHTML(HOST, $toggleable))
+  })
+
+  doc
+    .querySelectorAll<HTMLAnchorElement>('.related-entries-item a')
+    .forEach($a => {
+      const $pos = $a.querySelector('.PART-OF-SPEECH')
+      if ($pos) {
+        $pos.textContent = getText($pos).toUpperCase()
+      }
+
+      result.relatedEntries.push({
+        title: getText($a),
+        href: getFullLink(HOST, $a, 'href')
+      })
+    })
 
   const audio: { uk?: string } = {}
 
-  const $title = doc.querySelector('#headword .BASE')
-  if (!$title) {
-    return null
-  }
-  result.title = $title.textContent || ''
-  if (!result.title) {
-    return null
-  }
-
-  const $headbar = doc.querySelector('#headbar')
-
-  if ($headbar) {
-    const $pos = $headbar.querySelector('.PART-OF-SPEECH')
-    if ($pos) {
-      result.pos = ($pos.textContent || '').toUpperCase()
-    }
-
-    const $sc = $headbar.querySelector('.SYNTAX-CODING')
-    if ($sc) {
-      result.sc = $sc.textContent || ''
-    }
-
-    const $pron = $headbar.querySelector('.PRON')
-    if ($pron) {
-      result.phsym = $pron.textContent || ''
-    }
-
-    const $sound = $headbar.querySelector<HTMLDivElement>('.PRONS .sound')
-    if ($sound && $sound.dataset.srcMp3) {
-      result.pron = $sound.dataset.srcMp3
-      audio.uk = result.pron
-    }
-  }
-
-  const $rate = doc.querySelector('.stars_grp')
-  if ($rate) {
-    result.ratting = $rate.querySelectorAll('.icon_star').length
-  }
-
-  const $senses = doc.querySelector('.senses')
-  if ($senses && $senses.querySelectorAll('.SENSE').length > 0) {
-    $senses
-      .querySelectorAll<HTMLAnchorElement>('a.moreButton')
-      .forEach(externalLink)
-    result.senses = getInnerHTML(HOST, $senses)
-  } else {
-    return null
+  const $sound = $entry.querySelector<HTMLDivElement>(
+    '.entry-pron-head .PRONS .sound'
+  )
+  if ($sound && $sound.dataset.srcMp3) {
+    result.pron = $sound.dataset.srcMp3
+    audio.uk = result.pron
   }
 
   return { result, audio }
+}
+
+async function fetchMacmillanDom(url: string): Promise<Document> {
+  const doc = await fetchDirtyDOM(url)
+  removeChildren(doc, '.visible-xs')
+  return doc
 }

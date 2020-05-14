@@ -9,6 +9,21 @@
       "en": "Show related results",
       "zh-CN": "失败时显示备选",
       "zh-TW": "失敗時顯示備選"
+    },
+    "locale": {
+      "en": "Locale",
+      "zh-CN": "方言",
+      "zh-TW": "方言"
+    },
+    "locale-uk": {
+      "en": "UK",
+      "zh-CN": "英式",
+      "zh-TW": "英式"
+    },
+    "locale-us": {
+      "en": "US",
+      "zh-CN": "美式",
+      "zh-TW": "美式"
     }
   }
 }
