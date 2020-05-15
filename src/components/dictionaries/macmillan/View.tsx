@@ -79,10 +79,13 @@ function renderRelated(result: MacmillanResultRelated) {
   return (
     <>
       <p>Did you mean:</p>
-      <ul
-        className="dictMacmillan-Related"
-        dangerouslySetInnerHTML={{ __html: result.list }}
-      />
+      <ul className="dictMacmillan-Related">
+        {result.list.map(({ title, href }) => (
+          <li key={href}>
+            <a href={href}>{title}</a>
+          </li>
+        ))}
+      </ul>
     </>
   )
 }

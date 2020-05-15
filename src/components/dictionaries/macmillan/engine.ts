@@ -45,7 +45,10 @@ export interface MacmillanResultLex {
 
 export interface MacmillanResultRelated {
   type: 'related'
-  list: HTMLString
+  list: Array<{
+    title: string
+    href: string
+  }>
 }
 
 export type MacmillanResult = MacmillanResultLex | MacmillanResultRelated
@@ -80,14 +83,17 @@ async function checkResult(
   if (doc.querySelector('.senses')) {
     return handleDOM(doc)
   } else if (options.related) {
-    const $alternative = doc.querySelector<HTMLAnchorElement>(
-      '#search-results ul'
-    )
-    if ($alternative) {
+    const alternatives = [
+      ...doc.querySelectorAll<HTMLAnchorElement>('.display-list li a')
+    ].map($a => ({
+      title: getText($a),
+      href: getFullLink(HOST, $a, 'href')
+    }))
+    if (alternatives.length > 0) {
       return {
         result: {
           type: 'related',
-          list: getInnerHTML(HOST, $alternative)
+          list: alternatives
         }
       }
     }
