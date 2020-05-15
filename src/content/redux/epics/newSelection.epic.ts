@@ -39,6 +39,7 @@ export const newSelectionEpic: Epic = (action$, state$) =>
         (!isPinned ||
           pinMode.direct ||
           (pinMode.double && selection.dbClick) ||
+          (pinMode.holding.alt && selection.altKey) ||
           (pinMode.holding.shift && selection.shiftKey) ||
           (pinMode.holding.ctrl && selection.ctrlKey) ||
           (pinMode.holding.meta && selection.metaKey))
@@ -68,6 +69,7 @@ function selectionInsideDictPanel(
     (selection.instant ||
       direct ||
       (double && selection.dbClick) ||
+      (holding.alt && selection.altKey) ||
       (holding.shift && selection.shiftKey) ||
       (holding.ctrl && selection.ctrlKey) ||
       (holding.meta && selection.metaKey))
@@ -98,6 +100,7 @@ function selectionToQSPanel(
     (selection.instant ||
       direct ||
       (double && selection.dbClick) ||
+      (holding.alt && selection.altKey) ||
       (holding.shift && selection.shiftKey) ||
       (holding.ctrl && selection.ctrlKey) ||
       (holding.meta && selection.metaKey))

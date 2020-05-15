@@ -85,6 +85,11 @@ function _getDefaultConfig() {
 
     /** sniff pdf request */
     pdfSniff: false,
+    /**
+     * Open PDF viewer in standalone panel.
+     * 'manual': do not redirect on web requests
+     */
+    pdfStandalone: '' as '' | 'always' | 'manual',
     /** URLs, [regexp.source, match_pattern] */
     pdfWhitelist: [] as [string, string][],
     /** URLs, [regexp.source, match_pattern] */
@@ -121,6 +126,7 @@ function _getDefaultConfig() {
       double: false,
       /** holding a key */
       holding: {
+        alt: false,
         shift: false,
         ctrl: false,
         meta: false
@@ -141,6 +147,7 @@ function _getDefaultConfig() {
       double: false,
       /** holding a key */
       holding: {
+        alt: false,
         shift: false,
         ctrl: false,
         meta: false
@@ -161,6 +168,7 @@ function _getDefaultConfig() {
       double: false,
       /** holding a key */
       holding: {
+        alt: false,
         shift: false,
         ctrl: false,
         meta: false
@@ -181,6 +189,7 @@ function _getDefaultConfig() {
       double: false,
       /** holding a key */
       holding: {
+        alt: false,
         shift: false,
         ctrl: true,
         meta: false

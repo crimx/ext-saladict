@@ -19,17 +19,13 @@ describe('Dict/Macmillan/engine', () => {
 
         const result = searchResult.result as MacmillanResultLex
         expect(result.type).toBe('lex')
-        expect(result.items).toHaveLength(2)
-
-        result.items.forEach(item => {
-          expect(typeof item.title).toBe('string')
-          expect(typeof item.senses).toBe('string')
-          expect(typeof item.pos).toBe('string')
-          expect(typeof item.sc).toBe('string')
-          expect(typeof item.phsym).toBe('string')
-          expect(typeof item.pron).toBe('string')
-          expect(typeof item.ratting).toBe('number')
-        })
+        expect(typeof result.title).toBe('string')
+        expect(typeof result.senses).toBe('string')
+        expect(typeof result.pos).toBe('string')
+        expect(typeof result.sc).toBe('string')
+        expect(typeof result.phsym).toBe('string')
+        expect(typeof result.pron).toBe('string')
+        expect(typeof result.ratting).toBe('number')
       })
     )
   })

@@ -17,8 +17,14 @@
 }
 
 .dictMacmillan-Sences {
+  list-style-type: none;
+  padding-left: 0;
   margin: 0;
-  padding-left: 15px;
+
+  ol {
+    list-style-type: none;
+    padding-left: 0;
+  }
 
   > li {
     margin-bottom: 15px;
@@ -39,112 +45,245 @@
     color: #16a085;
     border-bottom: thin dotted #16a085;
   }
-
-  .SENSE-VARIANT,
-  h3.SENSE-ENTRY,
-  h2.MULTIWORD,
-  h2.PHRASE-VARIANT {
-    display: inline;
-  }
-
-  .SENSE-NUM,
-  .foldimage {
-    display: none;
-  }
-
-  .EXAMPLES {
-    margin-bottom: 5px;
-    padding-left: 10px;
-    color: #666;
-    border-left: #666 solid 1px;
-    font-style: italic;
-
-    strong {
-      font-style: normal;
-    }
-
-    a:link,
-    a:visited {
-      color: #666;
-      text-decoration: none;
-    }
-
-    a:hover,
-    a:active {
-      color: #16a085;
-      border-bottom: thin dotted #16a085;
-    }
-  }
-
-  .EXAMPLES + .EXAMPLES {
-    margin-top: -5px;
-    padding-top: 3px;
-  }
-
-  .DEFINITION + .EXAMPLES {
-    margin-top: 5px;
-  }
-
-  .THES {
-    margin-bottom: 5px;
-  }
-
-  .icon_thesaurus_small_bullet {
-    font-weight: bold;
-    color: #f9690e;
-  }
-
-  .thessnippet {
-    margin-left: 10px;
-  }
-
-  .SYNTAX-CODING {
-    margin-right: 0.5em;
-  }
-
-  .h2 {
-    margin-right: 3px;
-    font-weight: bold;
-  }
-
-  .centred {
-    &::before {
-      content: '>';
-      color: #ccc8c8;
-    }
-  }
-
-  .moreButton {
-    &:link,
-    &:visited {
-      color: #ccc8c8;
-    }
-  }
-
-  .ONEBOX-HEAD {
-    font-weight: bold;
-    color: #f9690e;
-  }
-
-  .sideboxbody {
-    margin-left: 10px;
-  }
-
-  .SUB-SENSES {
-    padding-left: 16px;
-  }
-
-  .sound,
-  .audio_play_button {
-    width: 16px;
-    vertical-align: text-bottom;
-    cursor: pointer;
-  }
 }
 
 .dictMacmillan-Related {
   a {
     margin-left: 2em;
     color: #16a085;
+  }
+}
+
+.flex-extend {
+  flex-grow: 2;
+}
+
+.dflex {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: nowrap;
+}
+
+.between-xs {
+  justify-content: space-between;
+}
+
+.middle-xs {
+  align-items: center;
+}
+
+.toggleable {
+  margin-bottom: 5px;
+  padding: 1em 1.5em;
+  background: rgba(191, 191, 191, 0.08);
+
+  &:not(.closed) .visible-closed,
+  &.closed .hidden-closed {
+    display: none;
+  }
+}
+
+.toggle-toggle, .toggle-open, .toggle-close {
+  cursor: pointer;
+}
+
+.toggle-open, .toggle-close {
+  font-family: Martel, serif;
+  line-height: 1em;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: currentColor;
+}
+
+.thes-color {
+  float: right;
+}
+
+.SENSE-VARIANT,
+h3.SENSE-ENTRY,
+h2.MULTIWORD,
+h2.PHRASE-VARIANT {
+  display: inline;
+}
+
+.foldimage {
+  display: none;
+}
+
+.gray-divider.mini {
+  width: 5em;
+  margin-top: 0;
+  margin-left: 0;
+  margin-right: 100%;
+}
+
+.EXAMPLES {
+  margin-bottom: 5px;
+  padding-left: 10px;
+  color: #777;
+  border-left: #777 solid 1px;
+  font-style: italic;
+
+  strong {
+    font-style: normal;
+  }
+
+  a:link,
+  a:visited {
+    color: #777;
+    text-decoration: none;
+  }
+
+  a:hover,
+  a:active {
+    color: #16a085;
+    border-bottom: thin dotted #16a085;
+  }
+}
+
+.EXAMPLES + .EXAMPLES {
+  margin-top: -5px;
+  padding-top: 3px;
+}
+
+.DEFINITION + .EXAMPLES {
+  margin-top: 5px;
+}
+
+.THES {
+  margin-bottom: 5px;
+}
+
+.openSense .DEFINITION,
+.openDef {
+  font-weight: bold;
+  word-break: break-word;
+}
+
+.SENSE-NUM {
+  font-weight: bold;
+  height: 1.2em;
+  padding: .2em;
+  margin-right: .2em;
+  display: inline-block;
+  line-height: 1.2em;
+  text-align: center;
+
+  &::after {
+    content: '.';
+  }
+}
+
+.PATTERNS-COLLOCATIONS, .VOCAB-XREF, .BOLD, .KEY-REF {
+  font-weight: bold;
+}
+
+.icon_thesaurus_small_bullet {
+  font-weight: bold;
+  color: #f9690e;
+}
+
+.thessnippet {
+  margin-left: 10px;
+}
+
+.SYNTAX-CODING {
+  margin-right: 0.5em;
+}
+
+.h2 {
+  margin-right: 3px;
+  font-weight: bold;
+}
+
+.centred {
+  &::before {
+    content: '>';
+    color: #ccc8c8;
+  }
+}
+
+.moreButton {
+  &:link,
+  &:visited {
+    color: #ccc8c8;
+  }
+}
+
+.ONEBOX-HEAD {
+  font-weight: bold;
+  color: #f9690e;
+}
+
+.sideboxbody {
+  margin-left: 10px;
+}
+
+.SUB-SENSES {
+  padding-left: 16px;
+}
+
+.sound,
+.audio_play_button {
+  width: 16px;
+  vertical-align: text-bottom;
+  cursor: pointer;
+}
+
+.openEntry {
+  margin: 1em;
+  padding: 0 1em;
+  border: 1px #ababab solid;
+}
+
+.entry-od-sense {
+  display: flex;
+  flex: 1 0 auto;
+
+  .openEntry {
+    margin: 0;
+    margin-left: .2em;
+  }
+}
+
+.openDETAIL {
+  font-style: italic;
+  text-align: right;
+  text-align: end;
+  display: block;
+  font-size: .9em;
+  margin: 1.5em -1rem 1em;
+  padding-right: 1em;
+  color: gray;
+}
+
+.open-footer-content {
+  font-size: .7em;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.open-footer-logo {
+  display: inline-block;
+  height: .8em;
+  vertical-align: middle;
+  margin-bottom: .2em;
+  margin-right: .3em;
+}
+
+.entry-bold {
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: .9em;
+}
+
+.line-box-content {
+  ul {
+    padding-left: 2em;
+  }
+
+  li {
+    list-style-type: disc;
   }
 }

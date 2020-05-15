@@ -95,6 +95,7 @@ export const newSelection: ActionHandler<
         (state.isShowDictPanel ||
           direct ||
           (double && selection.dbClick) ||
+          (holding.alt && selection.altKey) ||
           (holding.shift && selection.shiftKey) ||
           (holding.ctrl && selection.ctrlKey) ||
           (holding.meta && selection.metaKey) ||
@@ -110,6 +111,7 @@ export const newSelection: ActionHandler<
       !newState.isShowDictPanel &&
       !direct &&
       !(double && selection.dbClick) &&
+      !(holding.alt && selection.altKey) &&
       !(holding.shift && selection.shiftKey) &&
       !(holding.ctrl && selection.ctrlKey) &&
       !(holding.meta && selection.metaKey) &&

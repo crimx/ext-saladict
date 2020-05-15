@@ -86,11 +86,14 @@ export const locale: typeof _locale = {
         src_trans: '朗讀翻譯'
       }
     },
-    pdfSniff: '使用本應用程式瀏覽 PDF',
+    pdfSniff: '嗅探 PDF 連結',
     pdfSniff_help:
       '開啟後所有 PDF 連結將自動跳至本套件開啟（包括本機，如果在套件管理頁面勾選了允許）。',
     pdfSniff_extra:
       '現在更推薦使用自己喜歡的本地閱讀器搭配{瀏覽器外選字翻譯}。',
+    pdfStandalone: '獨立視窗',
+    pdfStandalone_help:
+      '在獨立視窗中開啟 PDF 閱讀器。獨立視窗只有標題欄，佔用更少空間，但不能複製連結等操作。',
     baOpen: '點選網址列旁圖示',
     baOpen_help:
       '點選網址列旁 Saladict 圖示時發生的操作。沿用了「右鍵選單」的條目，可以前往該設定頁面增加或編輯。',
@@ -99,8 +102,6 @@ export const locale: typeof _locale = {
       '連續按三次{⌘ Command}（macOS）或者{Ctrl}（其它鍵盤）（或設定瀏覽器快速鍵），將會彈出字典視窗介面。',
     qsLocation: '出現位置',
     qsFocus: '出現時獲取焦點',
-    qsFocus_help:
-      '注意即便不啟用，查字典介面依然會在合適的情況下選擇獲取焦點。',
     qsStandalone: '獨立視窗',
     qsStandalone_help: '顯示為獨立的視窗，支援{瀏覽器外選字翻譯}。',
     qssaSidebar: '類側邊欄',
@@ -136,7 +137,12 @@ export const locale: typeof _locale = {
         popup_options: '進入 Saladict 設定',
         popup_standalone: '開啟快捷查詞獨立視窗'
       },
-      openQsStandalone: '獨立視窗設定'
+      openQsStandalone: '獨立視窗設定',
+      pdfStandalone: {
+        default: '從不',
+        always: '總是',
+        manual: '手動'
+      }
     }
   },
 
@@ -158,7 +164,7 @@ export const locale: typeof _locale = {
     double_help: '滑鼠按兩下所選擇的句子或單字後，會直接顯示字典視窗介面。',
     holding: '按住按键',
     holding_help:
-      '在放開滑鼠之前，需按住選擇的按鍵才顯示字典視窗介面（Meta 鍵為 macOS 上的「⌘ Command」鍵以及其它鍵盤的「⊞ Windows」鍵）。',
+      '在放開滑鼠之前，需按住選擇的按鍵才顯示字典視窗介面（Alt 為 macOS 上的 "⌥ Option"鍵。Meta 鍵為 macOS 上的「⌘ Command」鍵以及其它鍵盤的「⊞ Windows」鍵）。',
     instant: '滑鼠懸浮取詞',
     instant_help: '自動選取滑鼠附近的單字。',
     instantDirect: '直接取詞',

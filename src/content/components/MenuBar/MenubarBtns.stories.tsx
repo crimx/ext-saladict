@@ -110,7 +110,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
       <FocusBtn
         t={i18next.getFixedT(i18next.language, 'content')}
         disabled={boolean('Disabled', false)}
-        isPinned={boolean('Is pinned', false)}
+        isFocus={boolean('Is pinned', false)}
         onClick={action('onClick')}
       />
     )

@@ -71,6 +71,7 @@ export function sendEmptyMessage(isDictPanel: boolean) {
       mouseX: 0,
       mouseY: 0,
       dbClick: false,
+      altKey: false,
       shiftKey: false,
       ctrlKey: false,
       metaKey: false,

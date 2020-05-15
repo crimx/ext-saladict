@@ -84,10 +84,13 @@ export const locale = {
         src_trans: '朗读翻译'
       }
     },
-    pdfSniff: '默认用本扩展浏览 PDF',
+    pdfSniff: '嗅探 PDF 链接',
     pdfSniff_help:
       '开启后所有 PDF 链接将自动跳转到本扩展打开（包括本地，如果在扩展管理页面勾选了允许）。',
     pdfSniff_extra: '现在更推荐使用自己喜欢的本地阅读器搭配{浏览器外划词}。',
+    pdfStandalone: '独立窗口',
+    pdfStandalone_help:
+      '在独立窗口中打开 PDF 阅读器。独立窗口只有标题栏，占用更少空间，但不能复制链接等操作。',
     baOpen: '点击地址栏旁图标',
     baOpen_help:
       '点击地址栏旁 Saladict 图标时发生的操作。沿用了「右键菜单」的项目，可以前往该设置页面进行增加或编辑。',
@@ -96,7 +99,6 @@ export const locale = {
       '连续按三次{⌘ Command}（Mac）或者{Ctrl}（其它键盘）（或设置浏览器快捷键）将弹出词典界面。',
     qsLocation: '出现位置',
     qsFocus: '出现时获取焦点',
-    qsFocus_help: '注意即便关闭了，查词面板依然会在合适的情况下选择获取焦点。',
     qsStandalone: '独立窗口',
     qsStandalone_help: '显示为单独的窗口，支持响应{浏览器以外划词}。',
     qssaSidebar: '类侧边栏',
@@ -132,7 +134,12 @@ export const locale = {
         popup_options: '打开 Saladict 设置',
         popup_standalone: '打开快捷查词独立窗口'
       },
-      openQsStandalone: '打开独立窗口设置'
+      openQsStandalone: '打开独立窗口设置',
+      pdfStandalone: {
+        default: '从不',
+        always: '总是',
+        manual: '手动'
+      }
     }
   },
 
@@ -153,7 +160,7 @@ export const locale = {
     double_help: '双击选择文本之后直接显示词典面板。',
     holding: '按住按键',
     holding_help:
-      '在放开鼠标之前按住选择的按键才显示词典面板（Meta 键为 macOS 上的「⌘ Command」键以及其它键盘的「⊞ Windows」键）。',
+      '在放开鼠标之前按住选择的按键才显示词典面板（Alt 为 macOS 上的 "⌥ Option"键。 Meta 键为 macOS 上的「⌘ Command」键以及其它键盘的「⊞ Windows」键）。',
     instant: '鼠标悬浮取词',
     instant_help: '自动选取鼠标附近的单词。',
     instantDirect: '直接取词',

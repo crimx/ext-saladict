@@ -45,6 +45,9 @@ export type ActionCatalog = CreateActionCatalog<{
 
   TOGGLE_PIN: {}
 
+  /** Focus button on quick search panel */
+  TOGGLE_QS_FOCUS: {}
+
   OPEN_PANEL: {
     payload: {
       x: number

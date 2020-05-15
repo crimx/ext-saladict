@@ -25,6 +25,7 @@ type Dispatchers = ExtractDispatchers<
   | 'addToNoteBook'
   | 'updateHistoryIndex'
   | 'togglePin'
+  | 'toggleQSFocus'
   | 'onClose'
   | 'onSwitchSidebar'
   | 'onSelectProfile'
@@ -43,8 +44,7 @@ const mapStateToProps: MapStateToProps<
   shouldFocus:
     !state.isExpandMtaBox && // multiline search box must be folded
     (((state.isQSPanel || isQuickSearchPage()) && // is quick search panel
-      (state.config.qsFocus ||
-        (!state.text && (!state.config.qsPreload || !state.config.qsAuto)))) ||
+      state.config.qsFocus) ||
       isPopupPage()), // or popup page
   enableSuggest: state.config.searchSuggests,
   histories: state.searchHistory,
@@ -52,7 +52,8 @@ const mapStateToProps: MapStateToProps<
   showedDictAuth: state.config.showedDictAuth,
   profiles: state.profiles,
   activeProfileId: state.activeProfile.id,
-  isPinned: state.isPinned
+  isPinned: state.isPinned,
+  isQSFocus: state.isQSFocus
 })
 
 const mapDispatchToProps: MapDispatchToPropsFunction<
@@ -84,6 +85,9 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
   },
   togglePin: () => {
     dispatch({ type: 'TOGGLE_PIN' })
+  },
+  toggleQSFocus: () => {
+    dispatch({ type: 'TOGGLE_QS_FOCUS' })
   },
   onClose: () => {
     if (isStandalonePage()) {

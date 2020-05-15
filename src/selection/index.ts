@@ -64,6 +64,7 @@ if (!window.__SALADICT_SELECTION_LOADED__) {
             context: getSentenceFromSelection(selection)
           }),
           dbClick: false,
+          altKey: false,
           shiftKey: false,
           ctrlKey: false,
           metaKey: false,
@@ -91,6 +92,7 @@ if (!window.__SALADICT_SELECTION_LOADED__) {
     if (result.word) {
       sendMessage({
         dbClick: false,
+        altKey: false,
         shiftKey: false,
         ctrlKey: false,
         metaKey: false,
@@ -110,6 +112,7 @@ if (!window.__SALADICT_SELECTION_LOADED__) {
     .subscribe(async ({ word, event, self }) => {
       sendMessage({
         word: await newSelectionWord(word),
+        altKey: event.altKey,
         shiftKey: event.shiftKey,
         ctrlKey: event.ctrlKey,
         metaKey: event.metaKey,

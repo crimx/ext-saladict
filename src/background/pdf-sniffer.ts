@@ -6,16 +6,10 @@ import { AppConfig } from '@/app-config'
 import { addConfigListener } from '@/_helpers/config-manager'
 import { openURL } from '@/_helpers/browser-api'
 
-let blacklist: AppConfig['pdfBlacklist'] = []
-let whitelist: AppConfig['pdfWhitelist'] = []
-
 export function init(config: AppConfig) {
   if (browser.webRequest.onBeforeRequest.hasListener(otherPdfListener)) {
     return
   }
-
-  blacklist = config.pdfBlacklist
-  whitelist = config.pdfWhitelist
 
   if (config.pdfSniff) {
     startListening()
@@ -23,9 +17,6 @@ export function init(config: AppConfig) {
 
   addConfigListener(({ newConfig, oldConfig }) => {
     if (newConfig) {
-      blacklist = newConfig.pdfBlacklist
-      whitelist = newConfig.pdfWhitelist
-
       if (!oldConfig || newConfig.pdfSniff !== oldConfig.pdfSniff) {
         if (newConfig.pdfSniff) {
           startListening()
@@ -42,20 +33,32 @@ export function init(config: AppConfig) {
  * @param force load the current tab anyway
  */
 export async function openPDF(url?: string, force?: boolean) {
-  const pdfURL = browser.runtime.getURL('assets/pdf/web/viewer.html')
+  let pdfURL = browser.runtime.getURL('assets/pdf/web/viewer.html')
+
   if (url) {
-    // open link as pdf
-    return openURL(pdfURL + '?file=' + encodeURIComponent(url))
-  }
-  const tabs = await browser.tabs.query({ active: true, currentWindow: true })
-  if (tabs.length > 0 && tabs[0].url) {
-    if (/pdf$/i.test(tabs[0].url as string) || force) {
-      return openURL(
-        pdfURL + '?file=' + encodeURIComponent(tabs[0].url as string)
-      )
+    pdfURL += '?file=' + encodeURIComponent(url)
+  } else {
+    const tabs = await browser.tabs.query({ active: true, currentWindow: true })
+    if (tabs.length > 0 && tabs[0].url) {
+      const curURL = tabs[0].url
+      if (curURL.startsWith(pdfURL)) {
+        if (window.appConfig.pdfStandalone) {
+          if (tabs[0].id != null) {
+            await browser.tabs.remove(tabs[0].id)
+          }
+          pdfURL = curURL
+        } else {
+          return // ignore pdf viewer url
+        }
+      } else if (force || curURL.endsWith('pdf')) {
+        pdfURL += '?file=' + encodeURIComponent(curURL)
+      }
     }
   }
-  return openURL(pdfURL)
+
+  return window.appConfig.pdfStandalone
+    ? openPDFStandalone(pdfURL)
+    : openURL(pdfURL)
 }
 
 export function extractPDFUrl(fullurl?: string): string | void {
@@ -100,34 +103,47 @@ function stopListening() {
   browser.webRequest.onHeadersReceived.removeListener(httpPdfListener)
 }
 
-function otherPdfListener({ url }) {
+function otherPdfListener({
+  tabId,
+  url
+}: Parameters<
+  Parameters<typeof browser.webRequest.onBeforeRequest.removeListener>[0]
+>[0]) {
+  const matchURL = ([r]: ReadonlyArray<string>) => new RegExp(r).test(url)
   if (
-    blacklist.some(([r]) => new RegExp(r).test(url)) &&
-    whitelist.every(([r]) => !new RegExp(r).test(url))
+    window.appConfig.pdfBlacklist.some(matchURL) &&
+    !window.appConfig.pdfWhitelist.some(matchURL)
   ) {
     return
   }
 
-  return {
-    redirectUrl: browser.runtime.getURL(
-      `assets/pdf/web/viewer.html?file=${encodeURIComponent(url)}`
-    )
+  const redirectUrl = browser.runtime.getURL(
+    `assets/pdf/web/viewer.html?file=${encodeURIComponent(url)}`
+  )
+
+  if (tabId !== -1 && window.appConfig.pdfStandalone === 'always') {
+    browser.tabs.remove(tabId)
+    openPDFStandalone(redirectUrl)
+    return { cancel: true }
   }
+
+  return { redirectUrl }
 }
 
 function httpPdfListener({
+  tabId,
   responseHeaders,
   url
-}: {
-  responseHeaders?: browser.webRequest.HttpHeaders
-  url: string
-}) {
+}: Parameters<
+  Parameters<typeof browser.webRequest.onHeadersReceived.removeListener>[0]
+>[0]) {
   if (!responseHeaders) {
     return
   }
+  const matchURL = ([r]: ReadonlyArray<string>) => new RegExp(r).test(url)
   if (
-    blacklist.some(([r]) => new RegExp(r).test(url)) &&
-    whitelist.every(([r]) => !new RegExp(r).test(url))
+    window.appConfig.pdfBlacklist.some(matchURL) &&
+    !window.appConfig.pdfWhitelist.some(matchURL)
   ) {
     return
   }
@@ -141,11 +157,21 @@ function httpPdfListener({
       contentType.endsWith('pdf') ||
       (contentType === 'application/octet-stream' && url.endsWith('.pdf'))
     ) {
-      return {
-        redirectUrl: browser.runtime.getURL(
-          `assets/pdf/web/viewer.html?file=${encodeURIComponent(url)}`
-        )
+      const redirectUrl = browser.runtime.getURL(
+        `assets/pdf/web/viewer.html?file=${encodeURIComponent(url)}`
+      )
+
+      if (tabId !== -1 && window.appConfig.pdfStandalone === 'always') {
+        browser.tabs.remove(tabId)
+        openPDFStandalone(redirectUrl)
+        return { cancel: true }
       }
+
+      return { redirectUrl }
     }
   }
+}
+
+function openPDFStandalone(url: string) {
+  return browser.windows.create({ type: 'popup', url })
 }

@@ -163,6 +163,7 @@ export type MessageConfig = MessageConfigType<{
       mouseX: number
       mouseY: number
       dbClick: boolean
+      altKey: boolean
       shiftKey: boolean
       ctrlKey: boolean
       metaKey: boolean
@@ -173,6 +174,16 @@ export type MessageConfig = MessageConfigType<{
       /** force panel to skip reconciling position */
       force: boolean
     }
+  }
+
+  /** From backend to active panel */
+  ADD_NOTEBOOK: {
+    payload: {
+      /** to browser action page */
+      popup: boolean
+    }
+    /** is received */
+    response?: boolean
   }
 
   /** send to the current active tab for selection */

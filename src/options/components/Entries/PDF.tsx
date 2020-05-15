@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react'
-import { Switch, Button } from 'antd'
+import { Switch, Button, Select } from 'antd'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import { SaladictForm } from '@/options/components/SaladictForm'
 import { useTranslate, Trans } from '@/_helpers/i18n'
@@ -30,6 +30,22 @@ export const PDF: FC = () => {
               </Trans>
             ),
             children: <Switch />
+          },
+          {
+            name: getConfigPath('pdfStandalone'),
+            children: (
+              <Select>
+                <Select.Option value="">
+                  {t('config.opt.pdfStandalone.default')}
+                </Select.Option>
+                <Select.Option value="always">
+                  {t('config.opt.pdfStandalone.always')}
+                </Select.Option>
+                <Select.Option value="manual">
+                  {t('config.opt.pdfStandalone.manual')}
+                </Select.Option>
+              </Select>
+            )
           },
           {
             key: 'BlackWhiteList',

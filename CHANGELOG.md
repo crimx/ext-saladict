@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.12.0](https://github.com/crimx/ext-saladict/compare/v7.11.2...v7.12.0) (2020-05-15)
+
+
+### Features
+
+* **command:** add shortcut for adding notebook ([524dd6c](https://github.com/crimx/ext-saladict/commit/524dd6c7a250c415a865f1587c79b09bef7cbc7c)), closes [#785](https://github.com/crimx/ext-saladict/issues/785)
+* **pdf:** open pdf viewer in standalone panel ([07f8c71](https://github.com/crimx/ext-saladict/commit/07f8c71195d1c0cf41f0592115921d226bebef07))
+* **selection:** add altKey for search modes ([fdc2ba5](https://github.com/crimx/ext-saladict/commit/fdc2ba56ad63d278668633c507a1e0c3a11070eb)), closes [#729](https://github.com/crimx/ext-saladict/issues/729)
+
+
+### Bug Fixes
+
+* respect qsFocus option ([2a9cf06](https://github.com/crimx/ext-saladict/commit/2a9cf062a29aea60aa15f473ba3b5a543f9dea49)), closes [#784](https://github.com/crimx/ext-saladict/issues/784)
+* upgrade neutrino-webextension ([5c1c48d](https://github.com/crimx/ext-saladict/commit/5c1c48d0b58a22ad172196e3106e00383b133eaa)), closes [#790](https://github.com/crimx/ext-saladict/issues/790)
+
+
+### Tests
+
+* **dicts:** update macmillan ([70150fd](https://github.com/crimx/ext-saladict/commit/70150fd41a34de85c24418932ba33d4cb8ce84d8))
+* **pdf:** update pdf tests ([6890c6d](https://github.com/crimx/ext-saladict/commit/6890c6d030415fa53adb741e7cfc0650fe43e044))
+
 ### [7.11.2](https://github.com/crimx/ext-saladict/compare/v7.11.1...v7.11.2) (2020-05-06)
 
 

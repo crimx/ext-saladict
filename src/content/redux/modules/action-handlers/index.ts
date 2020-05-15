@@ -44,7 +44,7 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
       config: payload,
       panelHeight: Math.min(state.panelHeight, panelMaxHeight),
       panelMaxHeight,
-      isPinned: isQuickSearchPage() ? payload.qsFocus : state.isPinned,
+      isQSFocus: payload.qsFocus,
       isTempDisabled:
         payload.blacklist.some(([r]) => new RegExp(r).test(url)) &&
         payload.whitelist.every(([r]) => !new RegExp(r).test(url)),
@@ -113,6 +113,11 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
   TOGGLE_PIN: state => ({
     ...state,
     isPinned: !state.isPinned
+  }),
+
+  TOGGLE_QS_FOCUS: state => ({
+    ...state,
+    isQSFocus: !state.isQSFocus
   }),
 
   TOGGLE_WAVEFORM_BOX: state => ({

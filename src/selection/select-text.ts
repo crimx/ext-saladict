@@ -106,6 +106,7 @@ function withTouchMode(config: AppConfig) {
           dbClick: clickPeriodCount >= 2,
           mouseX: mouseup.clientX,
           mouseY: mouseup.clientY,
+          altKey: !!mouseup['altKey'],
           shiftKey: !!mouseup['shiftKey'],
           ctrlKey: !!mouseup['ctrlKey'],
           metaKey: !!mouseup['metaKey']
@@ -146,6 +147,7 @@ function withTouchMode(config: AppConfig) {
         if (
           direct ||
           (double && result.dbClick) ||
+          (holding.alt && result.altKey) ||
           (holding.shift && result.shiftKey) ||
           (holding.ctrl && result.ctrlKey) ||
           (holding.meta && result.metaKey)
@@ -206,6 +208,7 @@ function withoutTouchMode(config: AppConfig) {
         dbClick: clickPeriodCount >= 2,
         mouseX: mouseup.clientX,
         mouseY: mouseup.clientY,
+        altKey: mouseup.altKey,
         shiftKey: mouseup.shiftKey,
         ctrlKey: mouseup.ctrlKey,
         metaKey: mouseup.metaKey
@@ -288,6 +291,7 @@ export function useInPanelSelect(
               dbClick: clickPeriodCount >= 2,
               mouseX: mouseup.clientX,
               mouseY: mouseup.clientY,
+              altKey: mouseup.altKey,
               shiftKey: mouseup.shiftKey,
               ctrlKey: mouseup.ctrlKey,
               metaKey: mouseup.metaKey,
@@ -301,6 +305,7 @@ export function useInPanelSelect(
               mouseX: 0,
               mouseY: 0,
               dbClick: false,
+              altKey: false,
               shiftKey: false,
               ctrlKey: false,
               metaKey: false,

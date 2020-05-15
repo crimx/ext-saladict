@@ -87,6 +87,17 @@ export const searchMode = (mode: Mode, t: TFunction): SaladictFormItem => {
           )
         },
         {
+          name: getConfigPath(mode, 'holding', 'alt'),
+          label: null,
+          className: 'form-item-inline',
+          valuePropName: 'checked',
+          children: (
+            <Checkbox>
+              <kbd>Alt</kbd>
+            </Checkbox>
+          )
+        },
+        {
           name: getConfigPath(mode, 'holding', 'shift'),
           label: null,
           className: 'form-item-inline',

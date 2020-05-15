@@ -117,6 +117,9 @@ function onCommand(command: string) {
         }
       }
       break
+    case 'add-notebook':
+      addNotebook()
+      break
   }
 }
 
@@ -304,4 +307,24 @@ async function searchTextBox() {
     return
   }
   message.send(tabs[0].id, { type: 'SEARCH_TEXT_BOX' })
+}
+
+async function addNotebook() {
+  if (
+    await message.send<'ADD_NOTEBOOK'>({
+      type: 'ADD_NOTEBOOK',
+      payload: { popup: true }
+    })
+  ) {
+    return // popup page received
+  }
+
+  const tabs = await browser.tabs.query({
+    active: true,
+    currentWindow: true
+  })
+  if (tabs.length <= 0 || tabs[0].id == null) {
+    return
+  }
+  message.send(tabs[0].id, { type: 'ADD_NOTEBOOK', payload: { popup: false } })
 }

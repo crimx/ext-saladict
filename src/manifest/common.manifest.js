@@ -59,6 +59,9 @@ module.exports = {
     },
     'profile-5': {
       description: '__MSG_command_profile_5__'
+    },
+    'add-notebook': {
+      description: '__MSG_command_add_notebook__'
     }
   },
 

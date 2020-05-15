@@ -96,6 +96,8 @@ export const locale: typeof _locale = {
     pdfSniff_help: 'If turned on， PDF links will be automatically captured.',
     pdfSniff_extra:
       'It is recommended to {search selected text outside of browser} with your own favorite local reader.',
+    pdfStandalone: 'Standalone Panel',
+    pdfStandalone_help: 'Open PDF viewer in standalone panel.',
     baOpen: 'Browser Action',
     baOpen_help:
       'When clicking the browser action icon in toolbar (next to the address bar). Items are same as Context Menus, which can be added or edited on the Context Menus config page.',
@@ -104,8 +106,6 @@ export const locale: typeof _locale = {
       'Press {⌘ Command}(macOS) or {Ctrl}(Others) three times (or with browser shortkey) to summon the dictionary panel. ',
     qsLocation: 'Location',
     qsFocus: 'Focus when shows up',
-    qsFocus_help:
-      'Note that even it is disabled the panel may still try to focus under appropriate situations',
     qsStandalone: 'Standalone',
     qsStandalone_help:
       'Render dict panel in a standalone window. You can {search selected text outside of browser}.',
@@ -143,7 +143,12 @@ export const locale: typeof _locale = {
         popup_options: 'Open Saladict Options',
         popup_standalone: 'Open Saladict Standalone Panel'
       },
-      openQsStandalone: 'Standalone Panel Options'
+      openQsStandalone: 'Standalone Panel Options',
+      pdfStandalone: {
+        default: 'Never',
+        always: 'Always',
+        manual: 'Manual'
+      }
     }
   },
 
@@ -165,7 +170,7 @@ export const locale: typeof _locale = {
     double_help: 'Show dict panel after double click selection.',
     holding: 'Hold a key',
     holding_help:
-      'After a selection is made, the selected key must be pressing when releasing mouse (Meta key is "⌘ Command" on macOS and "⊞ Windows" for others).',
+      'After a selection is made, the selected key must be pressing when releasing mouse (Alt is "⌥ Option" on macOS. Meta key is "⌘ Command" on macOS and "⊞ Windows" for others.).',
     instant: 'Instant Capture',
     instant_help: 'Selection is automatically made near by the cursor.',
     instantDirect: 'Direct',

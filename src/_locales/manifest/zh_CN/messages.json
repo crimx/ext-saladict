@@ -52,5 +52,8 @@
   },
   "command_profile_5": {
     "message": "第五个情景模式"
+  },
+  "command_add_notebook": {
+    "message": "加入生词本"
   }
 }
