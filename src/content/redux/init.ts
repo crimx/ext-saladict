@@ -91,6 +91,14 @@ export const init = (
         return isPopupPage() ? Promise.resolve(true) : Promise.resolve()
       }
 
+      case 'ADD_NOTEBOOK': {
+        if (msg.payload.popup === isPopupPage()) {
+          dispatch({ type: 'ADD_TO_NOTEBOOK' })
+          return Promise.resolve(true)
+        }
+        return
+      }
+
       case 'QS_PANEL_SEARCH_TEXT':
         if (isQuickSearchPage()) {
           // request searching text, from other tabs
