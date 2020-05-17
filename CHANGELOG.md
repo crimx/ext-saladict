@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.12.1](https://github.com/crimx/ext-saladict/compare/v7.12.0...v7.12.1) (2020-05-17)
+
+
+### Bug Fixes
+
+* **dicts:** update googledict style ([52e66df](https://github.com/crimx/ext-saladict/commit/52e66dfe282b74bc21a7bec4e91bf8a66a34f0cf))
+* **macmillan:** add styles on labels ([768ba78](https://github.com/crimx/ext-saladict/commit/768ba7851d7e22517a3d4a23dad135c103f229ab)), closes [#803](https://github.com/crimx/ext-saladict/issues/803)
+
 ## [7.12.0](https://github.com/crimx/ext-saladict/compare/v7.11.2...v7.12.0) (2020-05-15)
 
 
