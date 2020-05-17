@@ -136,6 +136,7 @@ function useDictPanelProps(): DictPanelProps {
     width: number('Width', 450),
     height: number('Height', window.innerHeight - 20),
     maxHeight: number('Max Height', window.innerHeight - 40),
+    fontSize: number('Font Size', 13),
     withAnimation: withAnimation,
     darkMode,
     menuBar: (
@@ -184,8 +185,6 @@ function useDictPanelProps(): DictPanelProps {
       <MtaBox
         text={text}
         expand={expandMta}
-        fontSize={number('Font size')}
-        maxHeight={number('Mta Max Height', 100)}
         searchText={action('Search Text')}
         onInput={text => {
           action('Input')(text)
@@ -204,7 +203,6 @@ function useDictPanelProps(): DictPanelProps {
         touchMode={config.touchMode}
         language={config.language}
         doubleClickDelay={config.doubleClickDelay}
-        fontSize={number('Font Size', 13)}
         withAnimation={withAnimation}
         panelCSS={''}
         dicts={randomDicts}

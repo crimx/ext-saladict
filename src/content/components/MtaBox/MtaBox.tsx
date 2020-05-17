@@ -8,9 +8,7 @@ import { timer, Observable } from 'rxjs'
 
 export interface MtaBoxProps {
   expand: boolean
-  maxHeight: number
   text: string
-  fontSize: number
   shouldFocus: boolean
   searchText: (text: string) => any
   onInput: (text: string) => void
@@ -63,10 +61,7 @@ export const MtaBox: FC<MtaBoxProps> = props => {
     <div>
       <div
         className={classNames('mtaBox-TextArea-Wrap', { isTyping })}
-        style={{
-          height: props.expand ? height : 0,
-          maxHeight: props.maxHeight
-        }}
+        style={{ height: props.expand ? height : 0 }}
       >
         <CSSTransition
           in={props.expand}
@@ -81,7 +76,6 @@ export const MtaBox: FC<MtaBoxProps> = props => {
               autoFocus
               inputRef={textareaRef}
               className="mtaBox-TextArea"
-              style={{ maxHeight: props.maxHeight, fontSize: props.fontSize }}
               value={props.text}
               onChange={e => {
                 isTypedRef.current = true

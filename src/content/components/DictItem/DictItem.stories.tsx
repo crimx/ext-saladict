@@ -26,11 +26,10 @@ storiesOf('Content Scripts|Dict Panel', module)
     })
   )
   // @ts-ignore: wrong storybook typing
-  .add('DictItem', ({ fontSize, withAnimation }) => {
+  .add('DictItem', ({ withAnimation }) => {
     return (
       <DictItem
         dictID="baidu"
-        fontSize={fontSize}
         withAnimation={withAnimation}
         panelCSS={''}
         preferredHeight={number('Preferred Height', 256)}

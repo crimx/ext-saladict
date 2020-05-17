@@ -45,7 +45,6 @@ storiesOf('Content Scripts|Dict Panel', module)
       language={object('Language', defaultLanguage)}
       doubleClickDelay={number('Double Click Delay', 200)}
       newSelection={action('New Selection')}
-      fontSize={number('Font Size', 13)}
       withAnimation={boolean('Enable Animation', true)}
       panelCSS={''}
       dicts={[...Array(faker.random.number({ min: 3, max: 10 }))].map(() => ({

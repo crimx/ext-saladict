@@ -16,6 +16,7 @@ export interface DictPanelProps {
   width: number
   height: number
   maxHeight: number
+  fontSize: number
 
   withAnimation: boolean
   darkMode: boolean
@@ -79,7 +80,8 @@ export const DictPanel: FC<DictPanelProps> = props => {
         width: props.width,
         height: props.height,
         '--panel-width': props.width + 'px',
-        '--panel-max-height': props.maxHeight + 'px'
+        '--panel-max-height': props.maxHeight + 'px',
+        '--panel-font-size': props.fontSize + 'px'
       }}
     >
       <div className="dictPanel-Head">{props.menuBar}</div>

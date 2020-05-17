@@ -109,28 +109,18 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
         ? options.fontSize
         : number('Panel Font Size', 13)
 
-    const darkMode = boolean('Dark Mode', false)
-
-    const rootStyles: React.CSSProperties = getThemeStyles(darkMode)
-
-    if (options.color) {
-      rootStyles.color = options.color
-    }
-
-    if (options.backgroundColor) {
-      rootStyles.backgroundColor = options.backgroundColor
-    }
-
     return (
       <root.div style={{ width, margin: '10px auto' }}>
         <style>{require('@/_sass_global/_reset.scss').toString()}</style>
         <div
           className={withAnimation ? 'isAnimate' : ''}
           style={{
-            ...rootStyles,
+            color: options.color,
+            backgroundColor: options.backgroundColor,
             fontSize,
             width,
             height,
+            '--panel-font-size': fontSize + 'px',
             '--panel-width': `${width}px`,
             '--panel-max-height': `${number(
               'Panel Max Hegiht',

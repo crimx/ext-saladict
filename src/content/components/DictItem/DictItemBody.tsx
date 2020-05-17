@@ -12,7 +12,6 @@ const dictContentStyles = require('./DictItemContent.shadow.scss').toString()
 export interface DictItemBodyProps {
   dictID: DictID
 
-  fontSize: number
   withAnimation: boolean
 
   panelCSS: string
@@ -70,7 +69,7 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
             <DictStyle />
             <style>
               {`.dictRoot {
-                  font-size: ${props.fontSize}px;
+                  font-size: var(--panel-font-size);
                   -webkit-font-smoothing: antialiased;
                   text-rendering: optimizelegibility;
                   font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;

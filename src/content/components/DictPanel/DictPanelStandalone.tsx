@@ -5,6 +5,7 @@ import { SALADICT_PANEL } from '@/_helpers/saladict'
 export interface DictPanelStandaloneProps {
   width: string
   height: string
+  fontSize: number
 
   withAnimation: boolean
   darkMode: boolean
@@ -34,7 +35,8 @@ export const DictPanelStandalone: FC<DictPanelStandaloneProps> = props => {
           width: props.width,
           height: props.height,
           '--panel-width': props.width,
-          '--panel-max-height': props.height
+          '--panel-max-height': props.height,
+          '--panel-font-size': props.fontSize + 'px'
         }}
       >
         <div className="dictPanel-Head">{props.menuBar}</div>

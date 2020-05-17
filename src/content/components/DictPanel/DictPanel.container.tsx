@@ -30,6 +30,7 @@ const mapStateToProps: MapStateToProps<
   width: state.config.panelWidth,
   height: state.panelHeight,
   maxHeight: state.panelMaxHeight,
+  fontSize: state.config.fontSize,
   withAnimation: state.config.animation,
   panelCSS: state.config.panelCSS,
   darkMode: state.config.darkMode,
