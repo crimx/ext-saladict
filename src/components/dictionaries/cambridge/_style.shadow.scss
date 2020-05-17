@@ -1009,7 +1009,7 @@ input.text {
 .form div em {
   display: block;
   margin: 5px 0 20px;
-  color: #666;
+  color: var(--color-font-grey);
 }
 
 .form > div {
@@ -2097,7 +2097,7 @@ h1.cdo-hero__title span {
 .entry-body.british-grammar blockquote {
   font-size: inherit;
   font-style: inherit;
-  color: #666;
+  color: var(--color-font-grey);
 }
 
 .entry-body.british-grammar blockquote .utterance {
@@ -2237,6 +2237,7 @@ h1.cdo-hero__title span {
     display: block;
     margin: 0 0 5px 0;
     font-style: normal;
+    color: var(--color-font-grey);
 
     &:first-child {
       font-weight: bold;

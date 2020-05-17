@@ -789,7 +789,7 @@ td.item_yomi {
 }
 
 .highlight-lib .searchHlBtn {
-  background-color: #666;
+  background-color: var(--color-font-grey);
   box-shadow: 0 2px 0 0 #000;
   font-size: 0.92em;
   height: 25px;
@@ -1619,7 +1619,7 @@ crosslink:hover,
 
 span.pofsp,
 .KnenjSub {
-  background-color: #666;
+  background-color: var(--color-font-grey);
   border: none !important;
   color: #fff;
   display: inline;
@@ -1805,7 +1805,7 @@ img.weblioMascot {
 }
 
 .summaryM .description {
-  background-color: #666;
+  background-color: var(--color-font-grey);
   color: #fff;
   font-size: 1.07em;
   font-weight: normal;
@@ -1882,7 +1882,7 @@ b.highlight {
 }
 
 .pin-icon-cell span {
-  color: #666;
+  color: var(--color-font-grey);
   font-size: 0.71em;
 }
 
@@ -2384,7 +2384,7 @@ td.midashigo {
 }
 
 .Hndmr table#webcatalogue-table td {
-  color: #666;
+  color: var(--color-font-grey);
 }
 
 .Hndmr table#webcatalogue-table img {
@@ -3353,7 +3353,7 @@ h2.midashigo .cgkgjSm,
 
 .EgtejSub,
 .EgtejSubS {
-  background-color: #666;
+  background-color: var(--color-font-grey);
   border: none !important;
   border-radius: 3px;
   color: #fff;
@@ -3464,7 +3464,7 @@ h2.midashigo .cgkgjSm,
 }
 
 .EgtejCcl {
-  background-color: #666;
+  background-color: var(--color-font-grey);
   border-radius: 50%;
   color: #fff;
   display: inline-block;
@@ -3566,7 +3566,7 @@ img {
 }
 
 .CtbdsLb {
-  background-color: #666;
+  background-color: var(--color-font-grey);
   color: #fff;
   font-size: 15px;
   font-weight: normal;
@@ -3702,7 +3702,7 @@ img {
 }
 
 .qotCJ {
-  color: #666;
+  color: var(--color-font-grey);
   line-height: 1.2em;
   margin: -1px 0 13px 0;
   padding: 0;

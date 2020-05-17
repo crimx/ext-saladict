@@ -48,8 +48,8 @@
   .text-sentence {
     padding-left: 10px;
     padding-bottom: 5px;
-    color: #666;
-    border-left: #666 solid 1px;
+    color: var(--color-font-grey);
+    border-left: var(--color-font-grey) solid 1px;
 
     &:last-child {
       padding-bottom: 0;
@@ -281,7 +281,7 @@
 
   .lgg h2,
   .lgg .margin {
-    color: #666;
+    color: var(--color-font-grey);
     text-align: center;
     padding: 21px 5px;
     margin-bottom: 5px;
@@ -629,7 +629,7 @@
 
   .dc .lbl.type-syntax {
     font-size: 0.8em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .dc ol {
@@ -755,7 +755,7 @@
   }
 
   .dc .dictionary .quote {
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .dc .dictionary .cit.type-translation .quote {

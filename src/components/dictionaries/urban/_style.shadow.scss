@@ -13,7 +13,7 @@
 .dictUrban-Example {
   margin: 0 0 8px 0.5em;
   padding-left: 5px;
-  color: #666;
+  color: var(--color-font-grey);
   border-left: 1px solid #666;
 }
 
@@ -33,7 +33,7 @@
 }
 
 .dictUrban-Footer {
-  color: #666;
+  color: var(--color-font-grey);
 }
 
 .dictUrban-Contributor {
