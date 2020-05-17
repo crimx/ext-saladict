@@ -154,7 +154,7 @@ async function onInstalled({
       storage.sync.set({ hasInstructionsShown: true })
     }
   } else if (reason === 'update') {
-    if (!process.env.DEBUG && window.appConfig.updateCheck) {
+    if (!process.env.DEBUG) {
       const curr = await checkUpdate(browser.runtime.getManifest().version)
       // same version as server
       if (curr.data && curr.diff === 0) {
@@ -180,7 +180,7 @@ async function onInstalled({
               options.silent = true
             }
 
-            browser.notifications.create('oninstall', options)
+            browser.notifications.create('sd-install', options)
           }, 5000)
         }
       }
@@ -219,7 +219,7 @@ function onStartup(): void {
                   { title: getText('%E6%9F%A5%E7%9C%8B%E6%9B%B4%E6%96%B0') }
                 ]
               }
-              browser.notifications.create('update', options)
+              browser.notifications.create('sd-update', options)
             }
           }
         })
@@ -255,7 +255,7 @@ function onStartup(): void {
             }
           ]
         }
-        browser.notifications.create('update', options)
+        browser.notifications.create('sd-update', options)
       }
     })
   }
@@ -269,13 +269,17 @@ function onStartup(): void {
 
 function genClickListener(url: string) {
   return function clickListener(notificationId: string) {
-    if (!/^(oninstall|update)$/.test(notificationId)) {
-      return
+    switch (notificationId) {
+      case 'sd-install':
+      case 'sd-update':
+        openURL(url)
+        browser.notifications.getAll().then(notifications => {
+          Object.keys(notifications).forEach(id =>
+            browser.notifications.clear(id)
+          )
+        })
+        break
     }
-    openURL(url)
-    browser.notifications.getAll().then(notifications => {
-      Object.keys(notifications).forEach(id => browser.notifications.clear(id))
-    })
   }
 }
 
