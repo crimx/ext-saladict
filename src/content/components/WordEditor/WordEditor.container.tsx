@@ -17,7 +17,6 @@ const mapStateToProps: MapStateToProps<
   show: state.wordEditor.isShow,
   darkMode: state.config.darkMode,
   withAnimation: state.config.animation,
-  colors: state.colors,
   containerWidth: window.innerWidth - state.config.panelWidth - 100,
   ctxTrans: state.config.ctxTrans,
   wordEditor: state.wordEditor

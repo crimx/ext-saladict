@@ -33,7 +33,6 @@ const mapStateToProps: MapStateToProps<
   withAnimation: state.config.animation,
   panelCSS: state.config.panelCSS,
   darkMode: state.config.darkMode,
-  colors: state.colors,
   menuBar,
   mtaBox,
   dictList,

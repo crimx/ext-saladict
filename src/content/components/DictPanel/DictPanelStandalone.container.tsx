@@ -25,7 +25,6 @@ const mapStateToProps = (
     withAnimation: state.config.animation,
     darkMode: state.config.darkMode,
     panelCSS: state.config.panelCSS,
-    colors: state.colors,
     menuBar,
     mtaBox,
     dictList,

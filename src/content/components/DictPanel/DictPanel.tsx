@@ -1,4 +1,5 @@
 import React, { FC, ReactNode, useRef, useState, useMemo } from 'react'
+import classNames from 'classnames'
 import { useUpdateEffect } from 'react-use'
 import { getScrollbarWidth } from '@/_helpers/scrollbar-width'
 import { SALADICT_PANEL, isInternalPage } from '@/_helpers/saladict'
@@ -18,7 +19,6 @@ export interface DictPanelProps {
 
   withAnimation: boolean
   darkMode: boolean
-  colors: React.CSSProperties
 
   menuBar: ReactNode
   mtaBox: ReactNode
@@ -63,13 +63,16 @@ export const DictPanel: FC<DictPanelProps> = props => {
 
   return (
     <div
-      className={
-        `dictPanel-Root ${SALADICT_PANEL}` +
-        (props.withAnimation ? ' isAnimate' : '') +
-        (props.dragStartCoord ? ' isDragging' : '')
-      }
+      className={classNames(
+        `dictPanel-Root ${SALADICT_PANEL}`,
+        'saladict-theme',
+        {
+          isAnimate: props.withAnimation,
+          isDragging: props.dragStartCoord,
+          darkMode: props.darkMode
+        }
+      )}
       style={{
-        ...props.colors,
         left: x,
         top: y,
         zIndex: isInternalPage() ? 999 : 2147483647, // for popups on options page

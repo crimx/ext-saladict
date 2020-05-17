@@ -8,8 +8,7 @@ import { WordEditorPanel } from './WordEditorPanel'
 import {
   withLocalStyle,
   withSideEffect,
-  mockRuntimeMessage,
-  getThemeStyles
+  mockRuntimeMessage
 } from '@/_helpers/storybook'
 import faker from 'faker'
 
@@ -28,7 +27,6 @@ storiesOf('Content Scripts|WordEditor', module)
     'WordEditorPanel',
     () => {
       const darkMode = boolean('Dark Mode', false)
-      const colors = getThemeStyles(darkMode)
 
       return (
         <div
@@ -41,7 +39,6 @@ storiesOf('Content Scripts|WordEditor', module)
         >
           <WordEditorPanel
             containerWidth={number('Panel X', 450 + 100)}
-            colors={colors}
             btns={
               boolean('With Buttons', true)
                 ? [

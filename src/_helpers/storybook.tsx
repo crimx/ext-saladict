@@ -75,29 +75,6 @@ export function mockRuntimeMessage(fn: (message: Message) => Promise<any>) {
     }
   }
 }
-
-export function getThemeStyles(darkMode?: boolean) {
-  return darkMode
-    ? {
-        backgroundColor: '#222',
-        color: '#ddd',
-        '--color-brand': '#218c74',
-        '--color-background': '#222',
-        '--color-rgb-background': '34, 34, 34',
-        '--color-font': '#ddd',
-        '--color-divider': '#4d4748'
-      }
-    : {
-        backgroundColor: '#fff',
-        color: '#333',
-        '--color-brand': '#5caf9e',
-        '--color-background': '#fff',
-        '--color-rgb-background': '255, 255, 255',
-        '--color-font': '#333',
-        '--color-divider': '#ddd'
-      }
-}
-
 export interface WithSaladictPanelOptions {
   /** before the story component */
   head?: React.ReactNode

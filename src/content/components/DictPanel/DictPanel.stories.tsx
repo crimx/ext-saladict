@@ -13,8 +13,7 @@ import {
 import {
   withLocalStyle,
   withSideEffect,
-  mockRuntimeMessage,
-  getThemeStyles
+  mockRuntimeMessage
 } from '@/_helpers/storybook'
 import faker from 'faker'
 import { DictPanel, DictPanelProps } from './DictPanel'
@@ -127,7 +126,6 @@ function useDictPanelProps(): DictPanelProps {
   }, {})
 
   const darkMode = boolean('Dark Mode', false)
-  const colors = getThemeStyles(darkMode)
 
   return {
     coord: {
@@ -140,7 +138,6 @@ function useDictPanelProps(): DictPanelProps {
     maxHeight: number('Max Height', window.innerHeight - 40),
     withAnimation: withAnimation,
     darkMode,
-    colors,
     menuBar: (
       <MenuBar
         text={text}
@@ -158,6 +155,8 @@ function useDictPanelProps(): DictPanelProps {
         updateHistoryIndex={action('Update History Index')}
         isPinned={boolean('Is Pinned', false)}
         togglePin={action('Toggle Pin')}
+        isQSFocus={boolean('Is Quick Search Panel Focus', false)}
+        toggleQSFocus={action('Toggle Quick Search Panel Focus')}
         onClose={action('Close Panel')}
         profiles={profiles}
         activeProfileId={select(
@@ -213,6 +212,7 @@ function useDictPanelProps(): DictPanelProps {
         openDictSrcPage={action('Open Source Page')}
         onSpeakerPlay={async src => action('Open Source Page')(src)}
         onHeightChanged={action('Dict List Height Changed')}
+        onUserFold={action('User Fold')}
         newSelection={action('New Selection')}
       />
     ),
