@@ -8,7 +8,8 @@ import { WordEditor } from './WordEditor'
 import {
   withLocalStyle,
   withSideEffect,
-  mockRuntimeMessage
+  mockRuntimeMessage,
+  withi18nNS
 } from '@/_helpers/storybook'
 import faker from 'faker'
 import { newWord } from '@/_helpers/record-manager'
@@ -43,6 +44,7 @@ storiesOf('Content Scripts|WordEditor', module)
       })
     )
   )
+  .addDecorator(withi18nNS(['common', 'content']))
   .add(
     'WordEditor',
     () => {

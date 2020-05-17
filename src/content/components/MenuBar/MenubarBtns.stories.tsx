@@ -18,6 +18,7 @@ import {
   CloseBtn,
   SidebarBtn
 } from './MenubarBtns'
+import { useTranslate } from '@/_helpers/i18n'
 
 storiesOf('Content Scripts|Dict Panel/Menubar', module)
   .addParameters({
@@ -29,6 +30,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
   .addDecorator(withPropsTable)
   .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
+  .addDecorator(story => <BtnsParent story={story} />)
   .addDecorator(
     withSaladictPanel({
       head: <style>{require('./MenubarBtns.scss').toString()}</style>,
@@ -133,3 +135,8 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
       />
     )
   })
+
+function BtnsParent(props: { story: any }) {
+  const { t } = useTranslate('content')
+  return <>{props.story(t)}</>
+}

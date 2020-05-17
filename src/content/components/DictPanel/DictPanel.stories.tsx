@@ -13,7 +13,8 @@ import {
 import {
   withLocalStyle,
   withSideEffect,
-  mockRuntimeMessage
+  mockRuntimeMessage,
+  withi18nNS
 } from '@/_helpers/storybook'
 import faker from 'faker'
 import { DictPanel, DictPanelProps } from './DictPanel'
@@ -61,6 +62,7 @@ storiesOf('Content Scripts|Dict Panel', module)
     )
   )
   .addDecorator(withLocalStyle(require('./DictPanel.shadow.scss').toString()))
+  .addDecorator(withi18nNS(['content', 'dicts']))
   // @ts-ignore
   .addDecorator(Story => <Story />)
   .add('DictPanel', () => <DictPanel {...useDictPanelProps()} />)

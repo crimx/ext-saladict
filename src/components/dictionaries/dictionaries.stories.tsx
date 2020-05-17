@@ -7,7 +7,8 @@ import { withKnobs, select, number, boolean } from '@storybook/addon-knobs'
 import {
   withSaladictPanel,
   withSideEffect,
-  mockRuntimeMessage
+  mockRuntimeMessage,
+  withi18nNS
 } from '@/_helpers/storybook'
 import { DictItem } from '@/content/components/DictItem/DictItem'
 import { getDefaultConfig, DictID } from '@/app-config'
@@ -51,6 +52,7 @@ const stories = storiesOf('Content Scripts|Dictionaries', module)
       height: 'auto'
     })
   )
+  .addDecorator(withi18nNS(['content', 'dicts']))
   .addDecorator(withKnobs)
 
 Object.keys(getAllDicts())
@@ -179,7 +181,6 @@ function Dict(props: {
   return (
     <DictItem
       dictID={props.dictID}
-      fontSize={props.fontSize}
       withAnimation={props.withAnimation}
       panelCSS={''}
       preferredHeight={number('Preferred Height', 256)}
@@ -188,6 +189,7 @@ function Dict(props: {
       searchText={action('Search Text')}
       openDictSrcPage={action('Open Dict Source Page')}
       onHeightChanged={action('Height Changed')}
+      onUserFold={action('User Fold')}
       onSpeakerPlay={src => {
         action('Speaker Play')(src)
         return Promise.resolve()

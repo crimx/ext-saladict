@@ -13,7 +13,8 @@ import {
 import {
   withSaladictPanel,
   withSideEffect,
-  mockRuntimeMessage
+  mockRuntimeMessage,
+  withi18nNS
 } from '@/_helpers/storybook'
 import { newWord } from '@/_helpers/record-manager'
 import { MenuBar } from './MenuBar'
@@ -40,6 +41,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
       })
     )
   )
+  .addDecorator(withi18nNS(['common', 'content']))
   .add('MenuBar', () => {
     const histories = Array.from(Array(5)).map((_, i) =>
       newWord({

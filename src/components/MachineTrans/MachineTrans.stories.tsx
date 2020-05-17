@@ -4,7 +4,7 @@ import { action } from '@storybook/addon-actions'
 import { withKnobs } from '@storybook/addon-knobs'
 import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
-import { withSaladictPanel } from '@/_helpers/storybook'
+import { withSaladictPanel, withi18nNS } from '@/_helpers/storybook'
 import { MachineTrans } from './MachineTrans'
 
 storiesOf('Content Scripts|Components', module)
@@ -16,6 +16,7 @@ storiesOf('Content Scripts|Components', module)
       head: <style>{require('./MachineTrans.scss').toString()}</style>
     })
   )
+  .addDecorator(withi18nNS(['content', 'langcode']))
   .add('MachineTrans', () => {
     return (
       <MachineTrans
@@ -25,13 +26,15 @@ storiesOf('Content Scripts|Components', module)
           tl: 'zh',
           langcodes: ['zh', 'cht', 'en'],
           searchText: {
-            text:
-              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quo necessitatibus voluptatem nobis, autem minima? Praesentium at est, eos reprehenderit, voluptatem obcaecati id quasi natus rem voluptatum temporibus pariatur omnis.',
-            audio: 'https://example.com'
+            paragraphs: [
+              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quo necessitatibus voluptatem nobis, autem minima? Praesentium at est, eos reprehenderit, voluptatem obcaecati id quasi natus rem voluptatum temporibus pariatur omnis.'
+            ],
+            tts: 'https://example.com'
           },
           trans: {
-            text:
+            paragraphs: [
               'Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quo necessitatibus voluptatem nobis, autem minima? Praesentium at est, eos reprehenderit, voluptatem obcaecati id quasi natus rem voluptatum temporibus pariatur omnis.'
+            ]
           }
         }}
         searchText={action('Search Text')}

@@ -40,44 +40,48 @@ storiesOf('Content Scripts|SaladBowl', module)
       onActive={action('onActive')}
     />
   ))
-  .add('Bowl Playground', () =>
-    React.createElement(() => {
-      const [{ x, y }, setCoord] = useState({ x: 0, y: 0 })
+  .add('Bowl Playground', () => React.createElement(BowlBackground))
 
-      const iconWidth = 30
-      const iconGap = 15
-      const scrollbarWidth = 10
+function BowlBackground() {
+  const [{ x, y }, setCoord] = useState({ x: 0, y: 0 })
 
-      return (
-        <div
-          style={{ height: '100vh', background: '#5caf9e', overflow: 'hidden' }}
-          onClick={e =>
-            setCoord({
-              x:
-                e.clientX + iconGap + iconWidth >
-                window.innerWidth - scrollbarWidth // right overflow
-                  ? e.clientX - iconGap - iconWidth // switch to left
-                  : e.clientX + iconGap,
-              y:
-                e.clientY < iconWidth + iconGap // top overflow
-                  ? e.clientY + iconGap // switch to bottom
-                  : e.clientY - iconWidth - iconGap
-            })
-          }
-        >
-          <p style={{ textAlign: 'center', color: '#fff', userSelect: 'none' }}>
-            CLICK AROUND AND SEE THE BOWL FOLLOWS
-          </p>
-          <SaladBowlPortal
-            show
-            panelCSS={text('Panel CSS', '')}
-            x={x}
-            y={y}
-            withAnimation={boolean('Animation', true)}
-            enableHover={boolean('Enable hover', true)}
-            onActive={action('onActive')}
-          />
-        </div>
-      )
-    })
+  const iconWidth = 30
+  const iconGap = 15
+  const scrollbarWidth = 10
+
+  return (
+    <div
+      style={{
+        width: '100vw',
+        height: '100vh',
+        background: '#5caf9e',
+        overflow: 'hidden'
+      }}
+      onClick={e =>
+        setCoord({
+          x:
+            e.clientX + iconGap + iconWidth > window.innerWidth - scrollbarWidth // right overflow
+              ? e.clientX - iconGap - iconWidth // switch to left
+              : e.clientX + iconGap,
+          y:
+            e.clientY < iconWidth + iconGap // top overflow
+              ? e.clientY + iconGap // switch to bottom
+              : e.clientY - iconWidth - iconGap
+        })
+      }
+    >
+      <p style={{ textAlign: 'center', color: '#fff', userSelect: 'none' }}>
+        CLICK AROUND AND SEE THE BOWL FOLLOWS
+      </p>
+      <SaladBowlPortal
+        show
+        panelCSS={text('Panel CSS', '')}
+        x={x}
+        y={y}
+        withAnimation={boolean('Animation', true)}
+        enableHover={boolean('Enable hover', true)}
+        onActive={action('onActive')}
+      />
+    </div>
   )
+}
