@@ -39,7 +39,6 @@ const mapStateToProps: MapStateToProps<
 > = state => {
   const { config } = state
   return {
-    fontSize: config.fontSize,
     withAnimation: config.animation,
     panelCSS: config.panelCSS,
     touchMode: config.touchMode,

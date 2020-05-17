@@ -152,7 +152,7 @@
   .EXAMPLE {
     margin-bottom: 0.4em;
     padding-left: 0.8em;
-    color: #666;
+    color: var(--color-font-grey);
     position: relative;
 
     &:before {
@@ -245,8 +245,8 @@
 .dictLongman-Box {
   position: relative;
   margin: 1.4em 0.8em 0.6em 0.4em;
-  padding: 0.8em 0.4em 0.4em;
-  border: 1px solid #333;
+  padding: 0.8em 0.5em 0.5em;
+  border: 1px solid #f9690e;
   border-radius: 3px;
 
   .heading {
@@ -256,7 +256,7 @@
     transform: translateY(-50%);
     padding: 0 0.4em;
     font-size: 1.3em;
-    background: #fff;
+    background: var(--color-background);
   }
 
   .CROSS,

@@ -1,9 +1,11 @@
 import React, { FC, useState, useEffect } from 'react'
+import classNames from 'classnames'
 import root from 'react-shadow'
 import i18next from 'i18next'
 import { number, boolean } from '@storybook/addon-knobs'
 import SinonChrome from 'sinon-chrome'
 import { Message } from '@/typings/message'
+import { I18nContext, Namespace } from './i18n'
 
 interface StyleWrapProps {
   style: string
@@ -30,7 +32,7 @@ export function withLocalStyle(style: object | string) {
 }
 
 export const I18nNS: FC<{ story: Function }> = props => {
-  const [, setLang] = useState(i18next.language)
+  const [lang, setLang] = useState(i18next.language)
 
   useEffect(() => {
     const onLangChanged = (lang: string) => {
@@ -42,10 +44,12 @@ export const I18nNS: FC<{ story: Function }> = props => {
     return () => i18next.off('languageChanged', onLangChanged)
   }, [])
 
-  return <>{props.story()}</>
+  return (
+    <I18nContext.Provider value={lang}>{props.story()}</I18nContext.Provider>
+  )
 }
 
-export function withi18nNS(ns: string | string[]) {
+export function withi18nNS(ns: Namespace | Namespace[]) {
   // eslint-disable-next-line react/display-name
   return fn => {
     i18next.loadNamespaces(ns)
@@ -75,29 +79,6 @@ export function mockRuntimeMessage(fn: (message: Message) => Promise<any>) {
     }
   }
 }
-
-export function getThemeStyles(darkMode?: boolean) {
-  return darkMode
-    ? {
-        backgroundColor: '#222',
-        color: '#ddd',
-        '--color-brand': '#218c74',
-        '--color-background': '#222',
-        '--color-rgb-background': '34, 34, 34',
-        '--color-font': '#ddd',
-        '--color-divider': '#4d4748'
-      }
-    : {
-        backgroundColor: '#fff',
-        color: '#333',
-        '--color-brand': '#5caf9e',
-        '--color-background': '#fff',
-        '--color-rgb-background': '255, 255, 255',
-        '--color-font': '#333',
-        '--color-divider': '#ddd'
-      }
-}
-
 export interface WithSaladictPanelOptions {
   /** before the story component */
   head?: React.ReactNode
@@ -122,6 +103,8 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
         ? options.height
         : number('Panel Height', window.innerHeight - 50)
 
+    const darkMode = boolean('Dark Mode', false)
+
     const withAnimation =
       options.withAnimation != null
         ? options.withAnimation
@@ -132,28 +115,22 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
         ? options.fontSize
         : number('Panel Font Size', 13)
 
-    const darkMode = boolean('Dark Mode', false)
-
-    const rootStyles: React.CSSProperties = getThemeStyles(darkMode)
-
-    if (options.color) {
-      rootStyles.color = options.color
-    }
-
-    if (options.backgroundColor) {
-      rootStyles.backgroundColor = options.backgroundColor
-    }
-
     return (
       <root.div style={{ width, margin: '10px auto' }}>
         <style>{require('@/_sass_global/_reset.scss').toString()}</style>
+        <style>{require('@/_sass_global/_theme.scss').toString()}</style>
         <div
-          className={withAnimation ? 'isAnimate' : ''}
+          className={classNames('saladict-theme', {
+            isAnimate: withAnimation,
+            darkMode
+          })}
           style={{
-            ...rootStyles,
+            color: options.color,
+            backgroundColor: options.backgroundColor,
             fontSize,
             width,
             height,
+            '--panel-font-size': fontSize + 'px',
             '--panel-width': `${width}px`,
             '--panel-max-height': `${number(
               'Panel Max Hegiht',

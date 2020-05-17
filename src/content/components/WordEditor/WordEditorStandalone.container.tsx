@@ -12,7 +12,6 @@ const mapStateToProps: MapStateToProps<
   WordEditorProps
 > = state => ({
   darkMode: state.config.darkMode,
-  colors: state.colors,
   containerWidth: window.innerWidth,
   ctxTrans: state.config.ctxTrans,
   wordEditor: state.wordEditor,

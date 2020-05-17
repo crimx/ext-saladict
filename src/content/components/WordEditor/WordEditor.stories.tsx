@@ -9,7 +9,7 @@ import {
   withLocalStyle,
   withSideEffect,
   mockRuntimeMessage,
-  getThemeStyles
+  withi18nNS
 } from '@/_helpers/storybook'
 import faker from 'faker'
 import { newWord } from '@/_helpers/record-manager'
@@ -44,18 +44,17 @@ storiesOf('Content Scripts|WordEditor', module)
       })
     )
   )
+  .addDecorator(withi18nNS(['common', 'content']))
   .add(
     'WordEditor',
     () => {
       const config = getDefaultConfig()
       const darkMode = boolean('Dark Mode', false)
-      const colors = getThemeStyles(darkMode)
 
       return (
         <WordEditor
           containerWidth={number('Panel X', 450 + 100)}
           darkMode={darkMode}
-          colors={colors}
           wordEditor={{
             word: newWord({
               date: faker.date.past().valueOf(),
@@ -82,14 +81,12 @@ storiesOf('Content Scripts|WordEditor', module)
   .add('WordEditorPortal', () => {
     const config = getDefaultConfig()
     const darkMode = boolean('Dark Mode', false)
-    const colors = getThemeStyles(darkMode)
 
     return (
       <WordEditorPortal
         show={boolean('Show', true)}
         darkMode={darkMode}
         withAnimation={boolean('With Animation', true)}
-        colors={colors}
         containerWidth={number('Panel X', 450 + 100)}
         wordEditor={{
           word: newWord({

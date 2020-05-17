@@ -634,12 +634,11 @@ a,
 }
 
 .gramb .ps .pos-inflections .languageGroup {
-  font-style: italic;
   text-transform: uppercase;
 }
 
 .gramb .ps .pos-inflections .inflection-type {
-  color: #666666;
+  color: var(--color-font-grey)666;
 }
 
 .gramb .ps .pos-inflections:before {
@@ -809,7 +808,7 @@ a,
 .trg > p .cs,
 .trg > p .ind {
   font-size: 1em;
-  color: var(--color-brand);
+  // color: var(--color-brand);
 }
 
 .trg .tr > span + .headwordAudio,
@@ -872,18 +871,12 @@ a,
   font-size: 1em;
 }
 
-.exg .ex p.translation {
-  font-style: italic;
-}
-
 .exg .ex .u {
   color: #898989;
-  font-style: italic;
 }
 
 .exg .ex .reg {
   color: #2aa850;
-  font-style: italic;
   font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 }
 
@@ -902,7 +895,6 @@ a,
 }
 
 .exg.list-ex ol li {
-  font-style: italic;
   position: relative;
 }
 
@@ -929,7 +921,7 @@ a,
 
 .moreInfo button {
   border: 2px solid var(--color-divider);
-  color: #666666;
+  color: var(--color-font-grey)666;
   padding: 2px 8px 3px;
   -webkit-background-size: 8px 8px;
   background-size: 8px 8px;
@@ -962,8 +954,8 @@ a,
 }
 
 .moreInfo.active button {
-  background-color: #666666;
-  border-color: #666666;
+  background-color: var(--color-font-grey)666;
+  border-color: var(--color-font-grey)666;
   color: #fff;
 }
 
@@ -991,7 +983,7 @@ a,
 }
 
 .sg .posg .listSeparator {
-  color: #666;
+  color: var(--color-font-grey);
 }
 
 .sg .posg .pos-inflections {
@@ -1005,7 +997,7 @@ a,
 }
 
 .sg .posg .pos-inflections .inflection-type {
-  color: #666666;
+  color: var(--color-font-grey)666;
 }
 
 .sg .posg .pos-inflections:before {
@@ -1082,8 +1074,8 @@ a,
 }
 
 .desktop .moreInfo.active button:hover {
-  background-color: #666666;
-  border-color: #666666;
+  background-color: var(--color-font-grey)666;
+  border-color: var(--color-font-grey)666;
 }
 
 .desktop .gramb .uncount > p .cnt:hover {
@@ -1120,7 +1112,6 @@ a,
 .controller__thesaurus .exampleGroup {
   font-family: 'Merriweather', serif;
   font-size: 1em;
-  font-style: italic;
 }
 
 .controller__thesaurus .senseInnerWrapper > p,
@@ -1257,7 +1248,6 @@ a,
 
 .grammatical_note {
   color: var(--color-brand);
-  font-style: italic;
   font-weight: normal;
   font-size: 1em;
 }
@@ -1345,7 +1335,6 @@ span.transitivity {
 
 .sense-regions,
 .sense-registers {
-  font-style: italic;
   color: #f15a24;
   font-size: 1em;
 }
@@ -1394,7 +1383,6 @@ a.ipaLink {
 .spanish_label {
   margin-top: -7px;
   margin-right: 0px;
-  font-style: italic !important;
   font-weight: normal !important;
   font-size: 16px !important;
   line-height: 16px !important;
@@ -1550,8 +1538,6 @@ section.etymology.etym.usage {
 }
 
 .controller__thesaurus .grammatical_note {
-  color: var(--color-brand);
-  font-style: italic;
   font-weight: normal;
   font-size: 1em;
 }
@@ -1643,6 +1629,11 @@ section.etymology.etym.usage {
 a[data-value='view synonyms'] {
   display: inline-block;
   margin-bottom: 0.5em;
+}
+
+.exg {
+  padding-left: 0.5em;
+  border-left: 1px solid var(--color-font-grey);
 }
 
 @media screen and (max-width: 1290px) {
@@ -2269,7 +2260,6 @@ a[data-value='view synonyms'] {
   }
   .news section.mainNews h1 i {
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;
-    font-style: italic;
   }
 }
 

@@ -20,9 +20,7 @@ const mapStateToProps: MapStateToProps<
   Dispatchers
 > = state => ({
   expand: state.isExpandMtaBox,
-  maxHeight: state.panelMaxHeight,
   text: state.text,
-  fontSize: state.config.fontSize,
   shouldFocus:
     !state.activeProfile.mtaAutoUnfold ||
     ((state.isQSPanel || isQuickSearchPage()) && state.config.qsFocus) ||

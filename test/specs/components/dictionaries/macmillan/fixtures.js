@@ -8,6 +8,10 @@ module.exports = {
     [
       'love_2.html',
       'http://www.macmillandictionary.com/dictionary/british/love_2'
+    ],
+    [
+      'viral.html',
+      'http://www.macmillandictionary.com/dictionary/british/viral'
     ]
   ]
 }

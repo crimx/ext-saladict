@@ -1,4 +1,5 @@
 .mtaBox-TextArea-Wrap {
+  max-height: var(--panel-max-height);
   position: relative;
   overflow: hidden;
   height: 0; // init height transition
@@ -7,10 +8,12 @@
 .mtaBox-TextArea {
   display: block;
   width: 100%;
+  max-height: var(--panel-max-height);
   box-sizing: border-box;
   padding: 5px 5px 10px;
   border: none;
   color: var(--color-font);
+  font-size: var(--panel-font-size);
   background: transparent;
 }
 

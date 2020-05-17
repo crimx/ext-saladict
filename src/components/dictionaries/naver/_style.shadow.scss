@@ -91,7 +91,7 @@
     padding-top: 5px;
     font-size: 1.00em;
     font-weight: 400;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .dic_lk .colb2,.info_tit .help_dsc p strong span {
@@ -121,7 +121,7 @@
   .info_box .no_data {
     padding: 12px 0 13px 10px;
     font-size: 1.15em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .info_box .no_data strong {
@@ -197,7 +197,7 @@
   .myw_noti {
     padding: 13px 10px;
     font-size: 1.15em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .ico_x {
@@ -223,12 +223,12 @@
   }
 
   .today_cvr>span:first-child {
-    color: #005fc1;
+    color: var(--color-brand);
   }
 
   .today_cvr .jp {
     font-size: 1.38em;
-    color: #005fc1;
+    color: var(--color-brand);
     letter-spacing: -2px;
   }
 
@@ -383,7 +383,7 @@
     border-radius: 3px;
     background: #f1f1f1;
     background: gradient(linear,0 0,0 100%,from(#fff),color-stop(.05,#fbfbfb),to(#f1f1f1));
-    color: #666;
+    color: var(--color-font-grey);
     vertical-align: 1px;
   }
 
@@ -476,7 +476,7 @@
   }
 
   .dl_list dd a {
-    color: #005fc1;
+    color: var(--color-brand);
     white-space: nowrap;
   }
 
@@ -700,7 +700,7 @@
   .section_word .entry .sw {
     margin-left: 3px;
     font-size: 1.23em;
-    color: #666;
+    color: var(--color-font-grey);
     vertical-align: middle;
   }
 
@@ -737,7 +737,7 @@
   .section_article .entry .sw {
     margin-left: 3px;
     font-size: 1.08em;
-    color: #666;
+    color: var(--color-font-grey);
     vertical-align: middle;
   }
 
@@ -762,11 +762,11 @@
   .detail_hj .section_article .lst p .kor,.detail_jpkr .section_article .lst p .kor,.detail_krjp .section_article .lst p .kor {
     display: block;
     margin-top: -3px;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .detail_hj .section_article .lst p .kor .kor_link,.detail_jpkr .section_article .lst p .kor .kor_link,.detail_krjp .section_article .lst p .kor .kor_link {
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .detail_hj .section_article ul.lst,.detail_jpkr .section_article ul.lst,.detail_krjp .section_article ul.lst {
@@ -818,11 +818,11 @@
 
   .section_proverb .lst .kor {
     display: block;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .section_proverb .lst .kor .kor_link {
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .section_compound .lst .kor_link,.section_compound .lst_txt a,.section_expression .lst .kor_link,.section_expression .lst_txt a {
@@ -911,7 +911,7 @@
 
   .section.section_phonetic .pin {
     margin: 4px 0 4px 10px;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .section_ideographic .lst .lst_txt .pin,.section_phonetic .lst .lst_txt .pin {
@@ -970,7 +970,7 @@
   }
 
   .section_box .section_ideographic .pin {
-    color: #666;
+    color: var(--color-font-grey);
     margin: 1px 0 3px 10px;
   }
 
@@ -1111,7 +1111,7 @@
     display: inline-block;
     width: 100%;
     padding: .6em 0 .5em;
-    color: #666;
+    color: var(--color-font-grey);
     font-size: 1.23em;
   }
 
@@ -1335,7 +1335,7 @@
   }
 
   .srch_nodata .tbl_lst a {
-    color: #005fc1;
+    color: var(--color-brand);
   }
 
   .srch_nodata .tbl_lst .jp {
@@ -1694,7 +1694,7 @@
   .section_box.kor_food .lst li>p .kor {
     display: block;
     margin-top: -3px;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .detail_jpkr .section_box.kor_food ol.lst li .cen_box2 {
@@ -2039,7 +2039,7 @@
     height: 35px;
     padding: 0 10px;
     border-top: 1px solid #e9e9e9;
-    border-bottom: 1px solid #666;
+    border-bottom: 1px solid var(--color-font-grey);
     background-color: #f0f0f0;
     font-size: 1.15em;
     line-height: 2.19;
@@ -2048,7 +2048,7 @@
 
   .write_close {
     padding-right: 13px;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .recent_searches {
@@ -2236,7 +2236,7 @@
   }
 
   .tx2 {
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .tx3 {
@@ -2371,12 +2371,12 @@
     overflow: hidden;
     margin-right: 5px;
     font-size: 1.23em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .h_word_cht {
     font-size: 2.69em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .btn {
@@ -2392,7 +2392,7 @@
     background: #e3e3e3;
     font-size: 0.85em;
     line-height: 0.94;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .p_read {
@@ -2412,7 +2412,7 @@
   .read {
     height: 21px;
     margin-left: 7px;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .ir_v1 {
@@ -2623,7 +2623,7 @@
   .p_read .read_word {
     margin-right: 4px;
     font-size: 1.38em;
-    color: #666;
+    color: var(--color-font-grey);
     vertical-align: middle;
   }
 
@@ -2680,7 +2680,7 @@
     margin-top: 8px;
     font-size: 1.08em;
     line-height: 1.19;
-    color: #666;
+    color: var(--color-font-grey);
     letter-spacing: -1px;
   }
 
@@ -2752,7 +2752,7 @@
   .word_w2 {
     font-size: 1.1em;
     line-height: 1.5;
-    color: #005fc1;
+    color: var(--color-brand);
     vertical-align: baseline;
   }
 
@@ -2787,7 +2787,7 @@
   }
 
   .word_o_lst,.word_otr_h2 {
-    color: #666;
+    color: var(--color-font-grey);
     display: block;
   }
 
@@ -2987,7 +2987,7 @@
   }
 
   .more_d .txt.b {
-    color: #005fc1;
+    color: var(--color-brand);
   }
 
   .more_a .txt {
@@ -3042,7 +3042,7 @@
   .word_h2_h {
     margin-left: 3px;
     font-size: 1.08em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .btnw {
@@ -3080,7 +3080,7 @@
   }
 
   .word_grey {
-    color: #666;
+    color: var(--color-font-grey);
     letter-spacing: -1px;
   }
 
@@ -3104,7 +3104,7 @@
     margin: 0;
     padding-left: 1em;
     font-size: 1em;
-    color: #666;
+    color: var(--color-font-grey);
     line-height: 1.5;
   }
 
@@ -3131,7 +3131,7 @@
   }
 
   .sc_e2_h,.sc_e_p2 {
-    color: #666;
+    color: var(--color-font-grey);
     letter-spacing: -1px;
   }
 
@@ -4093,7 +4093,7 @@
   }
 
   .word_otr_a {
-    color: #0771b3;
+    color: var(--color-brand);
     font-size: 1em;
   }
 
@@ -4220,7 +4220,7 @@
   }
 
   .words,.words a {
-    color: #005fc1;
+    color: var(--color-brand);
     font-family: Helvetica,sans-serif;
     font-size: 1.23em;
   }
@@ -4254,7 +4254,7 @@
   .antonym .mean,.synonym .mean {
     margin-left: 11px;
     font-size: 1.08em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .antonym .t {
@@ -4369,7 +4369,7 @@
     overflow: hidden;
     margin-bottom: 10px;
     font-size: 1.15em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .p_num {
@@ -4750,7 +4750,7 @@
     margin-bottom: 8px;
     padding-left: 2px;
     font-size: 1.29em;
-    color: #666;
+    color: var(--color-font-grey);
     word-break: break-all;
   }
 
@@ -4834,7 +4834,7 @@
     overflow: hidden;
     padding: 5px 0 11px;
     font-weight: 700;
-    color: #005fc1;
+    color: var(--color-brand);
     font-family: Helvetica,sans-serif;
   }
 
@@ -4843,7 +4843,7 @@
     margin: -7px 0 0;
     font-size: 1em;
     line-height: 1.35em;
-    color: #666;
+    color: var(--color-font-grey);
     letter-spacing: -1px;
   }
 
@@ -4998,7 +4998,7 @@
   }
 
   .userentry_section p.usen_word a {
-    color: #005fc1;
+    color: var(--color-brand);
     text-decoration: underline;
   }
 
@@ -5031,7 +5031,7 @@
   }
 
   .openword_none li {
-    color: #666;
+    color: var(--color-font-grey);
     font-size: 1.08em;
     line-height: 1.81;
   }
@@ -5215,7 +5215,7 @@
   .word_level {
     font-size: 1.15em;
     margin: 0 0 0 5px;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .word_mean {
@@ -5245,13 +5245,13 @@
 
   .main .word_w2 {
     font-size: 1.2em;
-    color: #005fc1;
+    color: var(--color-brand);
   }
 
   .main .word_level {
     font-size: 1.2em;
     margin: 0 0 0 5px;
-    color: #666;
+    color: var(--color-font-grey);
     vertical-align: top;
   }
 
@@ -5290,7 +5290,7 @@
     border: 1px solid #e2e2e2;
     background: #fff;
     font-size: 1.08em;
-    color: #666;
+    color: var(--color-font-grey);
     text-align: center;
   }
 
@@ -5355,7 +5355,7 @@
     margin-top: 4px;
     font-size: 1.08em;
     line-height: 1.25;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .banner_area.quizcn a {
@@ -5735,7 +5735,7 @@
   .shortcut_text {
     font-size: 0.85em;
     line-height: 0.81;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .shortcut_text2 {
@@ -6176,7 +6176,7 @@
     margin-top: 1px;
     font-size: 1.08em;
     line-height: 1.13;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   @media all and (min-height:480px) {
@@ -6254,7 +6254,7 @@
     font-weight: 400;
     vertical-align: middle;
     line-height: 2.38;
-    color: #005fc1;
+    color: var(--color-brand);
   }
 
   .common_btn_wrap .btn_lst_more_show .total_num {
@@ -6463,7 +6463,7 @@
   }
 
   .atcpw2 {
-    border: 1px solid #666;
+    border: 1px solid var(--color-font-grey);
     border-top-color: #e8e8e8;
     background: #fff;
   }
@@ -6582,14 +6582,14 @@
     left: 8px;
     padding: .45em .4em .4em;
     font-size: .93em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .atbt .write_txt {
     float: left;
     margin-top: 5px;
     font-size: 0.88em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .atbt button {
@@ -6599,7 +6599,7 @@
     border: none;
     background-position: -140px 4px;
     font-size: .93em;
-    color: #666;
+    color: var(--color-font-grey);
     cursor: pointer;
     -webkit-appearance: none;
   }
@@ -6658,7 +6658,7 @@
   }
 
   .ly_media a {
-    color: #005fc1;
+    color: var(--color-brand);
     text-decoration: underline;
   }
 
@@ -6857,7 +6857,7 @@
 
   .word_otr_a {
     display: inline-block;
-    color: #0771b3;
+    color: var(--color-brand);
     font-size: 0.94em;
     margin-bottom: 5px;
   }
@@ -7045,7 +7045,7 @@
   }
 
   .txt_sch a {
-    color: #005fc1;
+    color: var(--color-brand);
   }
 
   .txt_sch a .jp {
@@ -7093,7 +7093,7 @@
     margin-left: -1px;
     font-weight: normal;
     font-size: 1.00em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .section h4 em span {
@@ -7179,7 +7179,7 @@
 
   .srch_box .srch_top .entry a,.srch_box .srch_top .entry a strong,.srch_box .srch_top .entry a .jp {
     margin-left: 0;
-    color: #005fc1;
+    color: var(--color-brand);
   }
 
   .srch_box .srch_top .entry sup {
@@ -7193,7 +7193,7 @@
   .srch_box .srch_top .entry .subtitle {
     margin-right: 5px;
     font-size: 1.00em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .player {
@@ -7250,7 +7250,7 @@
     display: block;
     overflow: hidden;
     font-size: 1.00em;
-    color: #666;
+    color: var(--color-font-grey);
     white-space: nowrap;
     text-overflow: ellipsis;
   }
@@ -7287,7 +7287,7 @@
   .inner_lst .pin {
     display: inline-block;
     vertical-align: middle;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .inner_lst .pin a,.inner_lst .pin a strong {
@@ -7321,7 +7321,7 @@
     position: static;
     left: auto;
     top: auto;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .top_btn:after {
@@ -7372,7 +7372,7 @@
     padding: 8px 0 5px 0;
     line-height: 1.00;
     font-size: 0.69em;
-    color: #666;
+    color: var(--color-font-grey);
     font-weight: normal;
     border-bottom: 1px solid #efefef;
   }
@@ -7564,7 +7564,7 @@
   }
 
   .cen_box2 p a {
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .cen_box2 .tbl_lst {
@@ -7591,7 +7591,7 @@
     background: #f4f5f5;
     text-indent: 0;
     font-size: 0.88em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .detail_krjp .cen_box2 h6, .detail_jpkr .cen_box2 h6, .detail_hj .cen_box2 h6 {
@@ -7632,7 +7632,7 @@
 
   .lst2 li .lst_txt .lft {
     margin-right: 5px;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .dlst {
@@ -7775,13 +7775,13 @@
     height: 37px;
     font-size: 1.25em;
     line-height: 1.69;
-    color: #005fc1;
+    color: var(--color-brand);
     vertical-align: middle;
     font-weight: normal;
   }
 
   .td_li .jp em {
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .td_li .jp sup {
@@ -7837,7 +7837,7 @@
     display: block;
     margin-top: 5px;
     font-size: 0.81em;
-    color: #666;
+    color: var(--color-font-grey);
     letter-spacing: -1px;
   }
 
@@ -7937,7 +7937,7 @@
     padding-top: 5px;
     font-size: 0.81em;
     font-weight: normal;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .info_tit .help_dsc p strong span {
@@ -7967,7 +7967,7 @@
   .info_box .no_data {
     padding: 12px 0 13px 10px;
     font-size: 0.94em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .info_box .no_data strong {
@@ -8041,7 +8041,7 @@
   .myw_noti {
     padding: 13px 10px;
     font-size: 0.94em;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .ico_x {
@@ -8077,7 +8077,7 @@
     border-radius: 3px;
     background: #f1f1f1;
     background: -webkit-gradient(linear,0 0,0 100%,from(#fff),color-stop(.05,#fbfbfb),to(#f1f1f1));
-    color: #666;
+    color: var(--color-font-grey);
     vertical-align: 1px;
   }
 
@@ -8299,7 +8299,7 @@
   }
 
   .dl_list dd a {
-    color: #005fc1;
+    color: var(--color-brand);
     white-space: nowrap;
     font-size: 0.94em;
   }
@@ -8523,7 +8523,7 @@
   .section_word .entry .sw {
     margin-left: 3px;
     font-size: 1.00em;
-    color: #666;
+    color: var(--color-font-grey);
     vertical-align: middle;
   }
 
@@ -8560,7 +8560,7 @@
   .section_article .entry .sw {
     margin-left: 3px;
     font-size: 0.88em;
-    color: #666;
+    color: var(--color-font-grey);
     vertical-align: middle;
   }
 
@@ -8585,15 +8585,15 @@
   .detail_krjp .section_article .lst p .kor, .detail_jpkr .section_article .lst p .kor, .detail_hj .section_article .lst p .kor {
     display: block;
     margin-top: -3px;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .detail_krjp .section_article .lst p .kor .kor_link, .detail_jpkr .section_article .lst p .kor .kor_link, .detail_hj .section_article .lst p .kor .kor_link {
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .detail_krjp .section_article .lst p .kor .kor_link, .detail_jpkr .section_article .lst p .kor .kor_link, .detail_hj .section_article .lst p .kor .kor_link {
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .detail_krjp .section_article ul.lst, .detail_jpkr .section_article ul.lst, .detail_hj .section_article ul.lst {
@@ -8642,11 +8642,11 @@
 
   .section_proverb .lst .kor {
     display: block;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .section_proverb .lst .kor .kor_link {
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .section_proverb .lst p {
@@ -8743,7 +8743,7 @@
 
   .section.section_phonetic .pin {
     margin: 4px 0 4px 10px;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .section_phonetic .lst.lst_v3 {
@@ -8817,7 +8817,7 @@
   }
 
   .section_box .section_ideographic .pin {
-    color: #666;
+    color: var(--color-font-grey);
     margin: 1px 0 3px 10px;
   }
 
@@ -8958,7 +8958,7 @@
     display: inline-block;
     width: 100%;
     padding: .6em 0 .5em;
-    color: #666;
+    color: var(--color-font-grey);
     text-align: center;
     font-size: 1.00em;
   }
@@ -9884,7 +9884,7 @@
     line-height: 1.63;
     letter-spacing: -1px;
     text-indent: 0;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   h2 .btn_txt_style1 .hc {
@@ -10280,7 +10280,7 @@
     font-size: 0.81em;
     line-height: 1.13;
     white-space: normal;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .section_box.kor_food .section {
@@ -10340,7 +10340,7 @@
   .section_box.kor_food .lst li > p .kor {
     display: block;
     margin-top: -3px;
-    color: #666;
+    color: var(--color-font-grey);
   }
 
   .detail_jpkr .section_box.kor_food ol.lst li .cen_box2 {

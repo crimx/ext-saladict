@@ -1233,7 +1233,7 @@ a.ui-button:active {
 }
 
 .phrase-def {
-  color: #666;
+  color: var(--color-font-grey);
   margin-left: 10px;
 }
 
@@ -1313,7 +1313,7 @@ a.ui-button:active {
   background-color: #f0f0f0;
   border-radius: 2px;
   text-align: center;
-  color: #666;
+  color: var(--color-font-grey);
   float: left;
   font-size: 1em;
   padding: 0 4px;
@@ -1332,7 +1332,7 @@ a.ui-button:active {
 }
 
 .detail-tags-jp i {
-  color: #666;
+  color: var(--color-font-grey);
   padding: 0 4px;
   font-style: normal;
 }
@@ -1400,7 +1400,7 @@ a.ui-button:active {
 }
 
 .detail-groups ul li {
-  color: #666;
+  color: var(--color-font-grey);
   margin-bottom: 0.5em;
 }
 
@@ -1422,7 +1422,7 @@ a.ui-button:active {
 
 .detail .def-tags span {
   border: 1px solid #333;
-  color: #666;
+  color: var(--color-font-grey);
   border-radius: 2px;
   display: inline-block;
   line-height: 1.2em;
@@ -1451,7 +1451,7 @@ a.ui-button:active {
 }
 
 .analyzes-items li p {
-  color: #666;
+  color: var(--color-font-grey);
   margin: 2px 0 0 22px;
 }
 
@@ -1473,7 +1473,7 @@ a.ui-button:active {
 }
 
 .inflections-value {
-  color: #666;
+  color: var(--color-font-grey);
 }
 
 .sentences-items {
@@ -1502,13 +1502,13 @@ a.ui-button:active {
 }
 
 .sentences-item-to {
-  color: #666;
+  color: var(--color-font-grey);
   padding-left: 22px;
 }
 
 .ant > p,
 .syn > p {
-  color: #666;
+  color: var(--color-font-grey);
   margin: 0 0 6px;
 }
 
@@ -1531,7 +1531,7 @@ a.ui-button:active {
 
 .ant-single > span,
 .syn-single > span {
-  color: #666;
+  color: var(--color-font-grey);
 }
 
 .synant-content {
@@ -1539,7 +1539,7 @@ a.ui-button:active {
 }
 
 .synant p {
-  color: #666;
+  color: var(--color-font-grey);
 }
 
 .word-notfound,

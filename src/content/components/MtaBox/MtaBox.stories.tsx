@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
-import { withKnobs, number } from '@storybook/addon-knobs'
+import { withKnobs } from '@storybook/addon-knobs'
 import { withSaladictPanel } from '@/_helpers/storybook'
 import faker from 'faker'
 import { MtaBox } from './MtaBox'
@@ -32,8 +32,6 @@ storiesOf('Content Scripts|Dict Panel', module)
     return (
       <MtaBox
         expand={expand}
-        maxHeight={number('Max Height', 100)}
-        fontSize={number('Font size')}
         text={text}
         shouldFocus={true}
         searchText={action('Search Text')}

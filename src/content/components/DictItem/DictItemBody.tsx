@@ -1,4 +1,5 @@
 import React, { ComponentType, FC, useMemo, Suspense } from 'react'
+import classNames from 'classnames'
 import root from 'react-shadow'
 import { DictID } from '@/app-config'
 import { Word } from '@/_helpers/record-manager'
@@ -12,7 +13,6 @@ const dictContentStyles = require('./DictItemContent.shadow.scss').toString()
 export interface DictItemBodyProps {
   dictID: DictID
 
-  fontSize: number
   withAnimation: boolean
 
   panelCSS: string
@@ -68,20 +68,14 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
           <root.div>
             <style>{dictContentStyles}</style>
             <DictStyle />
-            <style>
-              {`.dictRoot {
-                  font-size: ${props.fontSize}px;
-                  -webkit-font-smoothing: antialiased;
-                  text-rendering: optimizelegibility;
-                  font-family: "Helvetica Neue", Helvetica, Arial, "Hiragino Sans GB", "Hiragino Sans GB W3", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
-                }`}
-            </style>
             {props.panelCSS ? <style>{props.panelCSS}</style> : null}
             <StaticSpeakerContainer
-              className={
-                `d-${props.dictID} dictRoot ${SALADICT_PANEL}` +
-                (props.withAnimation ? ' isAnimate' : '')
-              }
+              className={classNames(
+                `d-${props.dictID}`,
+                'dictRoot',
+                SALADICT_PANEL,
+                { isAnimate: props.withAnimation }
+              )}
               onPlayStart={props.onSpeakerPlay}
               onMouseUp={props.onInPanelSelect}
             >

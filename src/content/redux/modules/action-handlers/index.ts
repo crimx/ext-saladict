@@ -16,28 +16,6 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
     const url = window.location.href
     const panelMaxHeight =
       (window.innerHeight * payload.panelMaxHeightRatio) / 100
-    const colors =
-      payload.darkMode === state.config.darkMode
-        ? state.colors
-        : payload.darkMode
-        ? {
-            backgroundColor: '#222',
-            color: '#ddd',
-            '--color-brand': '#218c74',
-            '--color-background': '#222',
-            '--color-rgb-background': '34, 34, 34',
-            '--color-font': '#ddd',
-            '--color-divider': '#4d4748'
-          }
-        : {
-            backgroundColor: '#fff',
-            color: '#333',
-            '--color-brand': '#5caf9e',
-            '--color-background': '#fff',
-            '--color-rgb-background': '255, 255, 255',
-            '--color-font': '#333',
-            '--color-divider': '#ddd'
-          }
 
     return {
       ...state,
@@ -47,8 +25,7 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
       isQSFocus: payload.qsFocus,
       isTempDisabled:
         payload.blacklist.some(([r]) => new RegExp(r).test(url)) &&
-        payload.whitelist.every(([r]) => !new RegExp(r).test(url)),
-      colors
+        payload.whitelist.every(([r]) => !new RegExp(r).test(url))
     }
   },
 

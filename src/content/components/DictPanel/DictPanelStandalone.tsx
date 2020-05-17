@@ -1,13 +1,14 @@
 import React, { FC, ReactNode } from 'react'
+import classNames from 'classnames'
 import { SALADICT_PANEL } from '@/_helpers/saladict'
 
 export interface DictPanelStandaloneProps {
   width: string
   height: string
+  fontSize: number
 
   withAnimation: boolean
   darkMode: boolean
-  colors: React.CSSProperties
   panelCSS?: string
 
   menuBar: ReactNode
@@ -21,16 +22,21 @@ export const DictPanelStandalone: FC<DictPanelStandaloneProps> = props => {
     <React.Fragment>
       {props.panelCSS ? <style>{props.panelCSS}</style> : null}
       <div
-        className={
-          `dictPanel-Root ${SALADICT_PANEL}` +
-          (props.withAnimation ? ' isAnimate' : '')
-        }
+        className={classNames(
+          SALADICT_PANEL,
+          'dictPanel-Root',
+          'saladict-theme',
+          {
+            isAnimate: props.withAnimation,
+            darkMode: props.darkMode
+          }
+        )}
         style={{
-          ...props.colors,
           width: props.width,
           height: props.height,
           '--panel-width': props.width,
-          '--panel-max-height': props.height
+          '--panel-max-height': props.height,
+          '--panel-font-size': props.fontSize + 'px'
         }}
       >
         <div className="dictPanel-Head">{props.menuBar}</div>

@@ -1,4 +1,5 @@
 import React from 'react'
+import classNames from 'classnames'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { jsxDecorator } from 'storybook-addon-jsx'
@@ -9,7 +10,7 @@ import {
   withLocalStyle,
   withSideEffect,
   mockRuntimeMessage,
-  getThemeStyles
+  withi18nNS
 } from '@/_helpers/storybook'
 import faker from 'faker'
 
@@ -24,15 +25,15 @@ storiesOf('Content Scripts|WordEditor', module)
       })
     )
   )
+  .addDecorator(withi18nNS(['common', 'content']))
   .add(
     'WordEditorPanel',
     () => {
       const darkMode = boolean('Dark Mode', false)
-      const colors = getThemeStyles(darkMode)
 
       return (
         <div
-          className={darkMode ? 'darkMode' : ''}
+          className={classNames('saladict-theme', { darkMode })}
           style={{
             display: 'flex',
             justifyContent: 'center',
@@ -41,7 +42,6 @@ storiesOf('Content Scripts|WordEditor', module)
         >
           <WordEditorPanel
             containerWidth={number('Panel X', 450 + 100)}
-            colors={colors}
             btns={
               boolean('With Buttons', true)
                 ? [
@@ -73,7 +73,10 @@ storiesOf('Content Scripts|WordEditor', module)
       )
     },
     {
-      decorators: [withLocalStyle(require('./WordEditorPanel.scss'))],
+      decorators: [
+        withLocalStyle(require('./WordEditorPanel.scss')),
+        withLocalStyle(require('@/_sass_global/_theme.scss'))
+      ],
       jsx: { skip: 1 }
     }
   )

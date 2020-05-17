@@ -1,4 +1,5 @@
 import React, { FC, ReactNode, useRef, useState, useMemo } from 'react'
+import classNames from 'classnames'
 import { useUpdateEffect } from 'react-use'
 import { getScrollbarWidth } from '@/_helpers/scrollbar-width'
 import { SALADICT_PANEL, isInternalPage } from '@/_helpers/saladict'
@@ -15,10 +16,10 @@ export interface DictPanelProps {
   width: number
   height: number
   maxHeight: number
+  fontSize: number
 
   withAnimation: boolean
   darkMode: boolean
-  colors: React.CSSProperties
 
   menuBar: ReactNode
   mtaBox: ReactNode
@@ -63,20 +64,24 @@ export const DictPanel: FC<DictPanelProps> = props => {
 
   return (
     <div
-      className={
-        `dictPanel-Root ${SALADICT_PANEL}` +
-        (props.withAnimation ? ' isAnimate' : '') +
-        (props.dragStartCoord ? ' isDragging' : '')
-      }
+      className={classNames(
+        `dictPanel-Root ${SALADICT_PANEL}`,
+        'saladict-theme',
+        {
+          isAnimate: props.withAnimation,
+          isDragging: props.dragStartCoord,
+          darkMode: props.darkMode
+        }
+      )}
       style={{
-        ...props.colors,
         left: x,
         top: y,
         zIndex: isInternalPage() ? 999 : 2147483647, // for popups on options page
         width: props.width,
         height: props.height,
         '--panel-width': props.width + 'px',
-        '--panel-max-height': props.maxHeight + 'px'
+        '--panel-max-height': props.maxHeight + 'px',
+        '--panel-font-size': props.fontSize + 'px'
       }}
     >
       <div className="dictPanel-Head">{props.menuBar}</div>

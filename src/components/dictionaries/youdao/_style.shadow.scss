@@ -35,7 +35,7 @@
   .exampleLists {
     position: relative;
     padding-left: 2.5em;
-    color: #666;
+    color: var(--color-font-grey);
     border-left: 1px solid #666;
 
     .collinsOrder {

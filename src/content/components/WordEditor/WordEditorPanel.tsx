@@ -3,7 +3,6 @@ import { isInternalPage } from '@/_helpers/saladict'
 
 export interface WordEditorPanelProps {
   containerWidth: number
-  colors: React.CSSProperties
   title: React.ReactNode
   btns?: ReadonlyArray<{
     type?: 'normal' | 'primary'
@@ -25,7 +24,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
         className="wordEditorPanel-Container"
         style={{ width: props.containerWidth }}
       >
-        <div className="wordEditorPanel" style={props.colors}>
+        <div className="wordEditorPanel">
           <header className="wordEditorPanel-Header">
             <h1 className="wordEditorPanel-Title">{props.title}</h1>
             <button

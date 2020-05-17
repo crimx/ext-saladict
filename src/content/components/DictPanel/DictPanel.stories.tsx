@@ -14,7 +14,7 @@ import {
   withLocalStyle,
   withSideEffect,
   mockRuntimeMessage,
-  getThemeStyles
+  withi18nNS
 } from '@/_helpers/storybook'
 import faker from 'faker'
 import { DictPanel, DictPanelProps } from './DictPanel'
@@ -62,6 +62,7 @@ storiesOf('Content Scripts|Dict Panel', module)
     )
   )
   .addDecorator(withLocalStyle(require('./DictPanel.shadow.scss').toString()))
+  .addDecorator(withi18nNS(['content', 'dicts']))
   // @ts-ignore
   .addDecorator(Story => <Story />)
   .add('DictPanel', () => <DictPanel {...useDictPanelProps()} />)
@@ -127,7 +128,6 @@ function useDictPanelProps(): DictPanelProps {
   }, {})
 
   const darkMode = boolean('Dark Mode', false)
-  const colors = getThemeStyles(darkMode)
 
   return {
     coord: {
@@ -138,9 +138,9 @@ function useDictPanelProps(): DictPanelProps {
     width: number('Width', 450),
     height: number('Height', window.innerHeight - 20),
     maxHeight: number('Max Height', window.innerHeight - 40),
+    fontSize: number('Font Size', 13),
     withAnimation: withAnimation,
     darkMode,
-    colors,
     menuBar: (
       <MenuBar
         text={text}
@@ -158,6 +158,8 @@ function useDictPanelProps(): DictPanelProps {
         updateHistoryIndex={action('Update History Index')}
         isPinned={boolean('Is Pinned', false)}
         togglePin={action('Toggle Pin')}
+        isQSFocus={boolean('Is Quick Search Panel Focus', false)}
+        toggleQSFocus={action('Toggle Quick Search Panel Focus')}
         onClose={action('Close Panel')}
         profiles={profiles}
         activeProfileId={select(
@@ -185,8 +187,6 @@ function useDictPanelProps(): DictPanelProps {
       <MtaBox
         text={text}
         expand={expandMta}
-        fontSize={number('Font size')}
-        maxHeight={number('Mta Max Height', 100)}
         searchText={action('Search Text')}
         onInput={text => {
           action('Input')(text)
@@ -205,7 +205,6 @@ function useDictPanelProps(): DictPanelProps {
         touchMode={config.touchMode}
         language={config.language}
         doubleClickDelay={config.doubleClickDelay}
-        fontSize={number('Font Size', 13)}
         withAnimation={withAnimation}
         panelCSS={''}
         dicts={randomDicts}
@@ -213,6 +212,7 @@ function useDictPanelProps(): DictPanelProps {
         openDictSrcPage={action('Open Source Page')}
         onSpeakerPlay={async src => action('Open Source Page')(src)}
         onHeightChanged={action('Dict List Height Changed')}
+        onUserFold={action('User Fold')}
         newSelection={action('New Selection')}
       />
     ),

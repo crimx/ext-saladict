@@ -81,16 +81,7 @@ export const initState = () => {
     historyIndex: -1,
     /** Record init coordinate on dragstart */
     dragStartCoord: null as null | { x: number; y: number },
-    lastPlayAudio: null as null | { src: string; timestamp: number },
-    colors: {
-      backgroundColor: '#fff',
-      color: '#333',
-      '--color-brand': '#5caf9e',
-      '--color-background': '#fff',
-      '--color-rgb-background': '255, 255, 255',
-      '--color-font': '#333',
-      '--color-divider': '#ddd'
-    } as Readonly<React.CSSProperties>
+    lastPlayAudio: null as null | { src: string; timestamp: number }
   }
 }
 

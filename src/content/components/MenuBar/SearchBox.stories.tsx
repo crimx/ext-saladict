@@ -14,6 +14,7 @@ import {
 import { SuggestItem } from './Suggest'
 import { SearchBox } from './SearchBox'
 import { timer } from '@/_helpers/promise-more'
+import { useTranslate } from '@/_helpers/i18n'
 
 storiesOf('Content Scripts|Dict Panel/Menubar', module)
   .addParameters({
@@ -25,6 +26,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
   .addDecorator(withPropsTable)
   .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
+  .addDecorator(story => <BtnsParent story={story} />)
   .addDecorator(
     withSaladictPanel({
       head: <style>{require('./SearchBox.scss').toString()}</style>,
@@ -70,4 +72,9 @@ function fakeSuggest(text: string): SuggestItem[] {
     explain: `单词 ${text} 的各种相近的建议#${i}`,
     entry: `Word ${text}#${i}`
   }))
+}
+
+function BtnsParent(props: { story: any }) {
+  const { t } = useTranslate('content')
+  return <>{props.story(t)}</>
 }

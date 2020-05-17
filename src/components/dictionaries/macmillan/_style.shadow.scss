@@ -8,7 +8,7 @@
 
 .dictMacmillan-Header_Info {
   margin-left: 10px;
-  color: #aaa;
+  color: var(--color-font-grey);
 }
 
 .dictMacmillan-Title {
@@ -120,8 +120,8 @@ h2.PHRASE-VARIANT {
 .EXAMPLES {
   margin-bottom: 5px;
   padding-left: 10px;
-  color: #777;
-  border-left: #777 solid 1px;
+  color: var(--color-font-grey);
+  border-left: var(--color-divider) solid 1px;
   font-style: italic;
 
   strong {
@@ -130,7 +130,7 @@ h2.PHRASE-VARIANT {
 
   a:link,
   a:visited {
-    color: #777;
+    color: var(--color-font-grey);
     text-decoration: none;
   }
 
@@ -187,8 +187,16 @@ h2.PHRASE-VARIANT {
   margin-left: 10px;
 }
 
+.entry-labels *,
+.DIALECT,
+.RESTRICTION-CLASS,
+.STYLE-LEVEL,
+.SUBJECT-AREA,
 .SYNTAX-CODING {
-  margin-right: 0.5em;
+  margin-right: .4em;
+  text-transform: uppercase;
+  font-size: .8em;
+  color: var(--color-font-grey);
 }
 
 .h2 {
@@ -199,14 +207,14 @@ h2.PHRASE-VARIANT {
 .centred {
   &::before {
     content: '>';
-    color: #ccc8c8;
+    color: var(--color-font-grey);
   }
 }
 
 .moreButton {
   &:link,
   &:visited {
-    color: #ccc8c8;
+    color: var(--color-font-grey);
   }
 }
 
@@ -254,7 +262,7 @@ h2.PHRASE-VARIANT {
   font-size: .9em;
   margin: 1.5em -1rem 1em;
   padding-right: 1em;
-  color: gray;
+  color: var(--color-font-grey);
 }
 
 .open-footer-content {

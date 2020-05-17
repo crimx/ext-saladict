@@ -1,6 +1,6 @@
 import { MockRequest } from '@/components/dictionaries/helpers'
 
-export const mockSearchTexts = ['love', 'jumblish']
+export const mockSearchTexts = ['love', 'viral', 'jumblish']
 
 export const mockRequest: MockRequest = mock => {
   mock.onGet(/macmillan/).reply(info => {

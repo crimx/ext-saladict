@@ -6,8 +6,7 @@ import { withKnobs, boolean } from '@storybook/addon-knobs'
 import {
   withSaladictPanel,
   withSideEffect,
-  mockRuntimeMessage,
-  getThemeStyles
+  mockRuntimeMessage
 } from '@/_helpers/storybook'
 import { Waveform } from './Waveform'
 
@@ -46,7 +45,5 @@ storiesOf('Content Scripts|Dict Panel', module)
   .add('Waveform', () => {
     const darkMode = boolean('Dark Mode', true)
 
-    const rootStyles: React.CSSProperties = getThemeStyles(darkMode)
-
-    return <Waveform darkMode={darkMode} rootStyles={rootStyles} />
+    return <Waveform darkMode={darkMode} />
   })

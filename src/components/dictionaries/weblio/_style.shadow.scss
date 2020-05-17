@@ -324,12 +324,12 @@ h2.midashigo sub {
 }
 
 .Sngsj td.kana {
-  color: #666;
+  color: var(--color-font-grey);
   font-size: 90%;
 }
 
 .Sngsj td.status {
-  color: #666;
+  color: var(--color-font-grey);
 }
 
 .Sngsj td.body {
@@ -986,7 +986,7 @@ h2.midashigo rp {
 }
 
 .Mtsbs .bkspecgray3 {
-  background-color: #666;
+  background-color: var(--color-font-grey);
 }
 
 .Mtsbs .bkspecpink {
@@ -1980,7 +1980,7 @@ h2.midashigo rp {
 }
 
 .Hndmr table#webcatalogue-table td {
-  color: #666;
+  color: var(--color-font-grey);
 }
 
 .Hndmr table#webcatalogue-table img {
@@ -5938,7 +5938,7 @@ h2.midashigo {
 }
 
 .SsdSmlRK {
-  // background-color: #fdd;
+  color: var(--color-font-grey);
   font-size: 12px;
   padding: 3px 15px;
 }
