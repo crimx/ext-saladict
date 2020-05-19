@@ -114,6 +114,8 @@ export const locale: typeof _locale = {
     qssaHeight: 'Window Height',
     qssaPageSel: 'Selection Response',
     qssaPageSel_help: 'Response to page selection.',
+    qssaRectMemo: 'Remember size and position',
+    qssaRectMemo_help: 'Remember standalone panel size and position on close.',
     updateCheck: 'Check Update',
     updateCheck_help: 'Check update automatically.',
     analytics: 'Enable Google Analytics',

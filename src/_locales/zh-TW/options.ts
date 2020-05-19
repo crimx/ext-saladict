@@ -109,6 +109,8 @@ export const locale: typeof _locale = {
     qssaHeight: '視窗高度',
     qssaPageSel: '響應滑字',
     qssaPageSel_help: '對網頁滑鼠滑字作出反應。',
+    qssaRectMemo: '記住位置和大小',
+    qssaRectMemo_help: '獨立視窗關閉時記住位置和大小。',
     updateCheck: '檢查更新',
     updateCheck_help: '自動檢查更新',
     analytics: '啟用 Google Analytics',

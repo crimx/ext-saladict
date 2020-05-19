@@ -106,6 +106,8 @@ export const locale = {
     qssaHeight: '窗口高度',
     qssaPageSel: '响应划词',
     qssaPageSel_help: '响应网页划词。',
+    qssaRectMemo: '记住位置与大小',
+    qssaRectMemo_help: '独立窗口关闭时记住位置与大小。',
     updateCheck: '检查更新',
     updateCheck_help: '自动检查更新',
     analytics: '启用 Google Analytics',

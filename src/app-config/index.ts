@@ -235,6 +235,9 @@ function _getDefaultConfig() {
     /** should standalone panel response to page selection */
     qssaPageSel: true,
 
+    /** should standalone panel memo position and dimension on close */
+    qssaRectMemo: true,
+
     /** browser action panel preload source */
     baPreload: 'clipboard' as PreloadSource,
 
