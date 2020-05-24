@@ -30,7 +30,6 @@ function renderSelect(
 ) {
   return result.relatedEntries.length > 0 ? (
     <select
-      style={{ width: '100%' }}
       value={''}
       onChange={e => {
         if (e.currentTarget.value) {
@@ -57,7 +56,6 @@ function renderLex(result: MacmillanResultLex, select: ReactNode) {
   return (
     <section onClick={onEntryClick}>
       {select}
-      <h1 className="dictMacmillan-Title">{result.title}</h1>
       <header className="dictMacmillan-Header">
         {result.ratting! > 0 && <StarRates rate={result.ratting} />}
         <span className="dictMacmillan-Header_Info">

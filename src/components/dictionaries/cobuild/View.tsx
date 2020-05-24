@@ -58,11 +58,7 @@ function renderCol(result: COBUILDColResult) {
   return (
     <div className="dictCOBUILD-ColEntry">
       {result.sections.length > 0 && (
-        <select
-          style={{ width: '100%', marginBottom: '0.5em' }}
-          value={iSec}
-          onChange={e => setiSec(e.currentTarget.value)}
-        >
+        <select value={iSec} onChange={e => setiSec(e.currentTarget.value)}>
           {result.sections.map((section, i) => (
             <option key={section.id} value={i}>
               {section.type}

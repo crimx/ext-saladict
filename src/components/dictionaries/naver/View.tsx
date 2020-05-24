@@ -5,7 +5,6 @@ import { ViewPorps } from '@/components/dictionaries/helpers'
 export const DictNaver: FC<ViewPorps<NaverResult>> = props => (
   <>
     <select
-      style={{ width: '100%' }}
       onChange={e =>
         props.searchText({
           id: 'naver',

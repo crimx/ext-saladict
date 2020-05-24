@@ -34,11 +34,7 @@ export const DictWikipedia: FC<ViewPorps<WikipediaResult>> = ({
   let langSelector: ReactNode = null
   if (langList && langList.length > 0) {
     langSelector = (
-      <select
-        className="dictWikipedia-LangSelector"
-        onChange={handleSelectChanged}
-        defaultValue={''}
-      >
+      <select onChange={handleSelectChanged} defaultValue={''}>
         <option key="" value="">
           {t('chooseLang')}
         </option>

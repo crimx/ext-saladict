@@ -9,7 +9,6 @@ export const DictJukuu: FC<ViewPorps<JukuuResult>> = props => {
   return (
     <>
       <select
-        style={{ width: '100%' }}
         onChange={e => {
           if (e.target.value) {
             searchText<JukuuPayload>({
