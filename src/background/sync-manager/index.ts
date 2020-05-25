@@ -32,28 +32,24 @@ export function startSyncServiceInterval() {
         return syncConfig
       })
     )
-    .subscribe(syncConfig => {
+    .subscribe(async syncConfig => {
+      try {
+        await Promise.all(
+          [...activeServices.values()].map(service => service.destroy())
+        )
+      } catch (e) {
+        console.error(e)
+      }
+      activeServices.clear()
+
       if (syncConfig) {
         Services.forEach(Service => {
-          const service = activeServices.get(Service.id)
           if (syncConfig[Service.id]?.enable) {
-            if (service) {
-              service.config = syncConfig[Service.id]
-            } else {
-              const newService = new Service(syncConfig[Service.id])
-              activeServices.set(Service.id, newService)
-              newService.startInterval()
-            }
-          } else {
-            if (service) {
-              service.destroy()
-              activeServices.delete(Service.id)
-            }
+            const newService = new Service(syncConfig[Service.id])
+            activeServices.set(Service.id, newService)
+            newService.onStart()
           }
         })
-      } else {
-        activeServices.forEach(service => service.destroy())
-        activeServices.clear()
       }
 
       if (process.env.DEBUG) {
