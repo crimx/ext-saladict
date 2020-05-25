@@ -301,45 +301,6 @@ export type MessageConfig = MessageConfigType<{
   }
 
   /* ------------------------------------------------ *\
-     Sync services
-  \* ------------------------------------------------ */
-
-  SYNC_SERVICE_INIT: {
-    payload: {
-      serviceID: string
-      config: any
-    }
-  }
-
-  SYNC_SERVICE_DOWNLOAD: {
-    payload?: {
-      serviceID: string
-      noCache?: boolean
-    }
-  }
-
-  SYNC_SERVICE_UPLOAD: {
-    payload:
-      | {
-          op: 'ADD'
-          /** If not provided, call all services */
-          serviceID?: string
-          /** If not provided, upload all words */
-          words?: Word[]
-          /** full sync anyway */
-          force?: boolean
-        }
-      | {
-          op: 'DELETE'
-          /** If not provided, call all services */
-          serviceID?: string
-          dates?: number[]
-          /** full sync anyway */
-          force?: boolean
-        }
-  }
-
-  /* ------------------------------------------------ *\
      Context Menus
   \* ------------------------------------------------ */
 

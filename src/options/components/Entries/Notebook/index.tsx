@@ -1,7 +1,7 @@
 import React, { FC, useContext, useState } from 'react'
 import { Switch, Checkbox, Button } from 'antd'
 import { concat, from } from 'rxjs'
-import { pluck } from 'rxjs/operators'
+import { pluck, map } from 'rxjs/operators'
 import { useObservableState, useObservable } from 'observable-hooks'
 import { objectKeys } from '@/typings/helpers'
 import { useTranslate } from '@/_helpers/i18n'
@@ -35,6 +35,17 @@ export const Notebook: FC = () => {
       concat(
         from(storage.sync.get('syncConfig')).pipe(pluck('syncConfig')),
         storage.sync.createStream('syncConfig').pipe(pluck('newValue'))
+      ).pipe(
+        map(syncConfig => {
+          // legacy fix
+          if (
+            syncConfig?.webdav &&
+            !Object.prototype.hasOwnProperty.call(syncConfig.webdav, 'enable')
+          ) {
+            syncConfig.webdav.enable = !!syncConfig.webdav.url
+          }
+          return syncConfig
+        })
       )
     )
   )
@@ -76,7 +87,7 @@ export const Notebook: FC = () => {
               <Button onClick={() => setShowWebdav(true)}>{`${t(
                 'syncService.btn.webdav'
               )} (${t(
-                syncConfigs?.[WebDAVService.id]?.url
+                syncConfigs?.[WebDAVService.id]?.enable
                   ? 'common:enabled'
                   : 'common:disabled'
               )})`}</Button>

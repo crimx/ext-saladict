@@ -273,18 +273,14 @@ export const locale: typeof _locale = {
         'Extension settings (including this) are synced via browser. New words notebook can be synced via WebDAV through settings here.',
       jianguo: 'See Jianguoyun for example',
       checking: 'Connecting...',
+      exist_confirm:
+        'Saladict directory exists on server. Download it and merge with local data?',
+      upload_confirm: 'Upload local data to Server right away?',
+      verify: 'Verify server',
+      verified: 'Server verified',
       duration: 'Duration',
       duration_help:
         'Data is guaranteed to be updated before upload. If you do not need real-time syncing across browsers, set a longer polling cycle to reduce CPU and memory footprint.',
-      err_exist:
-        'Files under Saladict directory on server will be overwritten. Download and merge with local files first?',
-      err_mkcol:
-        'Cannot create "Saladict" directory on server. Please create the directory manualy on server.',
-      err_network: 'Network error. Cannot connect to server.',
-      err_parse: 'Incorrect response XML from server.',
-      err_unauthorized: 'Incorrect account or password.',
-      err_unknown: 'Unknown error 「{{error}}」.',
-      err_internal: 'Unable to save settings.',
       passwd: 'Password',
       url: 'Server Address',
       user: 'User Account'

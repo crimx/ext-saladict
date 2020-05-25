@@ -9,11 +9,6 @@ import {
   DictSearchResult
 } from '@/components/dictionaries/helpers'
 import {
-  syncServiceInit,
-  syncServiceDownload,
-  syncServiceUpload
-} from './sync-manager'
-import {
   isInNotebook,
   saveWord,
   deleteWords,
@@ -100,14 +95,6 @@ export class BackgroundServer {
           return getWords(msg.payload)
         case 'GET_SUGGESTS':
           return getSuggests(msg.payload)
-
-        case 'SYNC_SERVICE_INIT':
-          return syncServiceInit(msg.payload)
-        case 'SYNC_SERVICE_DOWNLOAD':
-          return syncServiceDownload(msg.payload)
-        case 'SYNC_SERVICE_UPLOAD':
-          return syncServiceUpload(msg.payload)
-
         case 'YOUDAO_TRANSLATE_AJAX':
           return this.youdaoTranslateAjax(msg.payload)
       }

@@ -29,16 +29,21 @@ export interface DownloadConfig<Config = any> {
   readonly noCache?: boolean
 }
 
-export abstract class SyncService<Config = any, Meta = any> {
-  static readonly id: string
-  static readonly title: {
-    readonly en: string
-    readonly 'zh-CN': string
-    readonly 'zh-TW': string
-  }
+export interface SyncServiceConfigBase {
+  enable: boolean
+}
 
-  /** service config that is saved with browser sync storage */
-  abstract config: Config
+export abstract class SyncService<
+  Config extends SyncServiceConfigBase = any,
+  Meta = any
+> {
+  static readonly id: string
+
+  /**
+   * Service config that is saved with browser sync storage.
+   * It is updated automatically.
+   */
+  config: Config
   /** service data that is saved with the database */
   meta?: Meta
 
@@ -50,17 +55,23 @@ export abstract class SyncService<Config = any, Meta = any> {
     return {}
   }
 
-  abstract init(config: Readonly<Config>): Promise<void>
+  constructor(config: Config) {
+    this.config = config
+  }
+
+  /** Called when user updates config. Check env, save config etc */
+  abstract init(): Promise<void>
+  /** add words */
   abstract add(config: AddConfig): Promise<void>
-  async delete(config: DeleteConfig): Promise<void> {
-    /* nothing */
-  }
-
-  async download(config: DownloadConfig): Promise<void> {
-    /* nothing */
-  }
-
-  startInterval() {
-    /* nothing */
-  }
+  /** delete words */
+  async delete(config: DeleteConfig): Promise<void> {}
+  /** Clean up side-effects */
+  async destroy() {}
+  /** Download code */
+  async download(config: DownloadConfig): Promise<void> {}
+  /** Called on browser start */
+  startInterval() {}
 }
+
+type SyncServiceAbstractClass = typeof SyncService
+export interface SyncServiceConstructor extends SyncServiceAbstractClass {}

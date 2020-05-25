@@ -2,22 +2,22 @@ import {
   NotebookFile,
   AddConfig,
   DownloadConfig,
-  SyncService
-} from '../interface'
+  SyncService,
+  SyncServiceConfigBase
+} from '../../interface'
 import {
   getNotebook,
   setNotebook,
-  createSyncConfigStream,
   setMeta,
   getMeta,
   setSyncConfig,
-  getSyncConfig
-} from '../helpers'
+  notifyError
+} from '../../helpers'
 
 import { Mutable } from '@/typings/helpers'
 import { storage } from '@/_helpers/browser-api'
 
-export interface SyncConfig {
+export interface SyncConfig extends SyncServiceConfigBase {
   /** Server address. Ends with '/'. */
   readonly url: string
   readonly user: string
@@ -34,18 +34,9 @@ export interface SyncMeta {
 export class Service extends SyncService<SyncConfig, SyncMeta> {
   static readonly id = 'webdav'
 
-  static readonly title = {
-    en: 'WebDAV',
-    'zh-CN': 'WebDAV',
-    'zh-TW': 'WebDAV'
-  }
-
-  config = Service.getDefaultConfig()
-
-  meta: SyncMeta = {}
-
   static getDefaultConfig(): SyncConfig {
     return {
+      enable: false,
       url: '',
       user: '',
       passwd: '',
@@ -53,32 +44,32 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     }
   }
 
+  meta: SyncMeta = {}
+
   async startInterval() {
-    this.meta = (await getMeta(Service.id)) || this.meta
+    if (process.env.DEBUG) {
+      console.log(`Sync Service WebDAV starts interval.`)
+    }
 
-    browser.alarms.onAlarm.addListener(this.handleSyncAlarm.bind(this))
-
-    createSyncConfigStream<SyncConfig>(Service.id).subscribe(
-      this.handleInterval.bind(this)
-    )
-  }
-
-  async handleInterval(newConfig: SyncConfig | null) {
-    await browser.alarms.clear('webdav')
-
-    if (!newConfig) {
-      this.config = Service.getDefaultConfig()
+    if (!this.config.enable) {
+      if (process.env.DEBUG) {
+        console.warn(`Sync Service WebDAV already started.`)
+      }
       return
     }
 
-    if (typeof newConfig.url === 'string' && !newConfig.url.endsWith('/')) {
-      ;(newConfig as Mutable<SyncConfig>).url += '/'
+    this.meta = (await getMeta(Service.id)) || this.meta
+
+    await browser.alarms.clear('webdav')
+
+    browser.alarms.onAlarm.addListener(this.handleSyncAlarm)
+
+    if (typeof this.config.url === 'string' && !this.config.url.endsWith('/')) {
+      ;(this.config as Mutable<SyncConfig>).url += '/'
     }
 
-    this.config = newConfig
-
-    if (newConfig.url) {
-      const duration = +newConfig.duration || 15
+    if (this.config.url) {
+      const duration = +this.config.duration || 15
       const now = Date.now()
       let nextInterval: number = +(await storage.local.get('webdavInterval'))
         .webdavInterval
@@ -99,18 +90,21 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     }
   }
 
-  async handleSyncAlarm(alarm: browser.alarms.Alarm) {
+  handleSyncAlarm = async (alarm: browser.alarms.Alarm) => {
     if (alarm.name !== 'webdav') {
       return
     }
 
     if (process.env.DEBUG) {
-      console.log('WebDAV Alarm Interval')
+      console.log('Sync Service WebDAV Interval Alarm triggered.')
     }
 
-    await this.download({}).catch(() => {
-      /* nothing */
-    })
+    try {
+      await this.download({})
+    } catch (e) {
+      console.error(e)
+      notifyError(Service.id, 'download')
+    }
 
     const duration = this.config.duration * 60000 || 15 * 60000
     await storage.local.set({ webdavInterval: Date.now() + duration })
@@ -119,13 +113,13 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
   /**
    * Check server and create a Saladict Directory if not exist.
    */
-  async init(config: Readonly<SyncConfig>) {
+  async init() {
     try {
-      const response = await fetch(config.url, {
+      const response = await fetch(this.config.url, {
         method: 'PROPFIND',
         headers: {
           Authorization:
-            'Basic ' + window.btoa(`${config.user}:${config.passwd}`),
+            'Basic ' + window.btoa(`${this.config.user}:${this.config.passwd}`),
           'Content-Type': 'application/xml; charset="utf-8"',
           Depth: '1'
         }
@@ -171,11 +165,11 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
 
     if (!dir) {
       // create directory
-      const response = await fetch(config.url + 'Saladict', {
+      const response = await fetch(this.config.url + 'Saladict', {
         method: 'MKCOL',
         headers: {
           Authorization:
-            'Basic ' + window.btoa(`${config.user}:${config.passwd}`)
+            'Basic ' + window.btoa(`${this.config.user}:${this.config.passwd}`)
         }
       })
       if (!response.ok) {
@@ -184,12 +178,12 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       }
     }
 
-    await this.setConfig(config)
+    await setSyncConfig(Service.id, this.config)
     await this.setMeta({})
 
     if (dir) {
       try {
-        await this.download({ testConfig: config, noCache: true })
+        await this.download({ testConfig: this.config, noCache: true })
         // An old file exists on server.
         // Let user decide whether to upload.
         return Promise.reject('exist')
@@ -349,6 +343,11 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     }
   }
 
+  async destroy() {
+    browser.alarms.onAlarm.removeListener(this.handleSyncAlarm)
+    await browser.alarms.clear('webdav')
+  }
+
   setMeta(meta: SyncMeta) {
     this.meta = meta
     return setMeta(Service.id, meta)
@@ -357,15 +356,5 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
   async getMeta() {
     const meta = await getMeta<SyncMeta>(Service.id)
     this.meta = meta || ({} as SyncMeta)
-  }
-
-  setConfig(config: SyncConfig) {
-    this.config = config
-    return setSyncConfig(Service.id, config)
-  }
-
-  async getConfig() {
-    this.config = (await getSyncConfig<SyncConfig>(Service.id)) || this.config
-    return this.config
   }
 }

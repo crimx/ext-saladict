@@ -1,5 +1,5 @@
-import { AddConfig, SyncService } from '../interface'
-import { getNotebook, getSyncConfig, setSyncConfig } from '../helpers'
+import { AddConfig, SyncService } from '../../interface'
+import { getNotebook, getSyncConfig, setSyncConfig } from '../../helpers'
 import { openURL } from '@/_helpers/browser-api'
 import { timer } from '@/_helpers/promise-more'
 import { isFirefox } from '@/_helpers/saladict'
@@ -34,12 +34,6 @@ const locales = {
 
 export class Service extends SyncService<SyncConfig> {
   static readonly id = 'shanbay'
-
-  static readonly title = {
-    en: 'Shanbay',
-    'zh-CN': '扇贝',
-    'zh-TW': '扇贝'
-  }
 
   config = Service.getDefaultConfig()
 
@@ -169,7 +163,7 @@ export class Service extends SyncService<SyncConfig> {
       iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
       title: `Saladict Sync Service ${Service.title[langCode]}`,
       message: `「${text}」${locales[locale][langCode]}`,
-      eventTime: Date.now() + 10000,
+      eventTime: Date.now() + 20000,
       priority: 2
     })
   }
