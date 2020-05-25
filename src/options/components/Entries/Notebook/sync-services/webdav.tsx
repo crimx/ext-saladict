@@ -33,7 +33,7 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
   return (
     <Modal
       visible={props.show}
-      title={t('syncService.webdav.title')}
+      title={t('sync:webdav.title')}
       onOk={submitForm}
       onCancel={closeModal}
       destroyOnClose
@@ -233,3 +233,5 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
     notification.error({ message: 'Error', description })
   }
 }
+
+export default WebdavModal

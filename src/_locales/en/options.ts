@@ -251,13 +251,7 @@ export const locale: typeof _locale = {
     close_confirm: 'Settings not saved. Close?',
     delete_confirm: 'Delete?',
 
-    btn: {
-      shanbay: 'Shanbay Sync Service',
-      webdav: 'WebDAV Sync Service'
-    },
-
     shanbay: {
-      title: 'Shanbay Sync',
       description:
         "Go to shanbay.com and log in first(must stay logged in). Note that it's a one-way sync(from Saladict to Shanbay). Only the new added words are synced. Words also need to be supported by Shanbay's database.",
       login:
@@ -269,7 +263,6 @@ export const locale: typeof _locale = {
     },
 
     webdav: {
-      title: 'WebDAV Sync',
       description:
         'Extension settings (including this) are synced via browser. New words notebook can be synced via WebDAV through settings here.',
       jianguo: 'See Jianguoyun for example',

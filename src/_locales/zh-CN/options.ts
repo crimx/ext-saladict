@@ -240,13 +240,7 @@ export const locale = {
     close_confirm: '设置未保存，关闭？',
     delete_confirm: '清空同步设置？',
 
-    btn: {
-      shanbay: '添加扇贝生词本同步',
-      webdav: '添加 WebDAV 同步'
-    },
-
     shanbay: {
-      title: '扇贝生词本同步',
       description:
         '先去 shanbay.com 登录扇贝（退出后将失效）。开启后每次添加生词将自动单向同步到扇贝生词本（只从沙拉查词到扇贝），只同步新增单词（删除不同步），只同步单词本身（上下文等均不能同步）。生词需要扇贝单词库支持才能被添加。',
       login: '将打开扇贝官网，请登录再回来重新开启。',
@@ -257,7 +251,6 @@ export const locale = {
     },
 
     webdav: {
-      title: 'WebDAV 同步',
       description:
         '应用设置（包括本设置）已通过浏览器自动同步。生词本可通过本设置实现 WebDAV 同步。',
       jianguo: '参考坚果云设置',

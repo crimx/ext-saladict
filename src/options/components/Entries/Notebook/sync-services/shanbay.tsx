@@ -25,7 +25,7 @@ export const ShanbayModal: FC<WebdavModalProps> = props => {
   return (
     <Modal
       visible={props.show}
-      title={t('syncService.shanbay.title')}
+      title={t('sync:shanbay.title')}
       destroyOnClose
       onCancel={props.onClose}
       footer={null}
@@ -130,3 +130,5 @@ export const ShanbayModal: FC<WebdavModalProps> = props => {
     }
   }
 }
+
+export default ShanbayModal

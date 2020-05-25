@@ -244,13 +244,7 @@ export const locale: typeof _locale = {
     close_confirm: '設定未儲存，關閉？',
     delete_confirm: '清空同步設定？',
 
-    btn: {
-      shanbay: '新增扇貝生詞本同步',
-      webdav: '新增 WebDAV 同步'
-    },
-
     shanbay: {
-      title: '扇貝生詞本同步',
       description:
         '先去 shanbay.com 登入扇貝（退出後將失效）。開啟後將單向同步到扇貝生詞本（只從沙拉查詞到扇貝），只同步新增單詞（刪除不同步），只同步單詞本身（上下文等均不能同步）。生詞需要扇貝單詞庫支援才能被新增。',
       login: '將開啟扇貝官網，請登入再回來重新開啟。',
@@ -263,7 +257,6 @@ export const locale: typeof _locale = {
     webdav: {
       description:
         '應用設定（包括本設定）已通過瀏覽器自動同步。生詞本可通過本設定實現 WebDAV 同步。',
-      title: 'WebDAV 同步',
       jianguo: '參考堅果雲設定',
       checking: '連線中...',
       exist_confirm: '伺服器上已存在 Saladict 目錄。是否下載合併到本地？',
