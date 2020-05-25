@@ -50,7 +50,12 @@ export interface DictLocales {
   }
 }
 
-export async function i18nLoader() {
+export async function i18nLoader(): Promise<i18n.i18n> {
+  if (i18n.language) {
+    // singleton
+    return i18n
+  }
+
   const { langCode } = await getConfig()
 
   await i18n
