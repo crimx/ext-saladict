@@ -178,7 +178,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       }
     }
 
-    await setSyncConfig(Service.id, this.config)
+    await setSyncConfig<SyncConfig>(Service.id, this.config)
     await this.setMeta({})
 
     if (dir) {

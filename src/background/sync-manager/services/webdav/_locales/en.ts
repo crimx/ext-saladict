@@ -1,7 +1,7 @@
 import { locale as _locale } from './zh-CN'
 
 export const locale: typeof _locale = {
-  title: 'WebDAV',
+  title: 'WebDAV Word Syncing',
   error: {
     download: 'Download failed. Unable to connect WebDAV Server.',
     internal: 'Unable to save settings.',

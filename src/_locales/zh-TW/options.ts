@@ -237,7 +237,8 @@ export const locale: typeof _locale = {
 
   syncService: {
     description: '資料同步設定。',
-    start: '同步已在背景開始',
+    start: '同步進行中，結束前請勿關閉此頁面。',
+    finished: '同步結束',
     success: '同步成功',
     failed: '同步失敗',
     close_confirm: '設定未儲存，關閉？',

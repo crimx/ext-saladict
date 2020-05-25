@@ -244,7 +244,8 @@ export const locale: typeof _locale = {
 
   syncService: {
     description: 'Sync settings.',
-    start: 'Syncing started in background',
+    start: 'Syncing. Do not close this page until finished.',
+    finished: 'Syncing finished',
     success: 'Syncing success',
     failed: 'Syncing failed',
     close_confirm: 'Settings not saved. Close?',

@@ -1,5 +1,5 @@
 export const locale = {
-  title: 'WebDAV',
+  title: 'WebDAV 单词同步',
   error: {
     download: '下载失败。无法访问 WebDAV 服务器。',
     internal: '无法保存。',

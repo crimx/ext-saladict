@@ -1,9 +1,8 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { Modal, Button, Switch, message as AntdMsg, notification } from 'antd'
 import { Service, SyncConfig } from '@/background/sync-manager/services/shanbay'
 import { setSyncConfig as uploadSyncConfig } from '@/background/sync-manager/helpers'
-import { message } from '@/_helpers/browser-api'
-import { getWords } from '@/_helpers/record-manager'
+import { getWords, Word } from '@/_helpers/record-manager'
 import { useTranslate } from '@/_helpers/i18n'
 
 export interface WebdavModalProps {
@@ -13,10 +12,15 @@ export interface WebdavModalProps {
 }
 
 export const ShanbayModal: FC<WebdavModalProps> = props => {
-  const { t } = useTranslate(['options', 'common'])
+  const { t, i18n } = useTranslate(['options', 'common', 'sync'])
   const [syncConfig, setSyncConfig] = useState<SyncConfig>(
-    props.syncConfig || { enable: false }
+    () => props.syncConfig || Service.getDefaultConfig()
   )
+  useEffect(() => {
+    if (props.syncConfig) {
+      setSyncConfig(props.syncConfig)
+    }
+  }, [props.syncConfig])
 
   return (
     <Modal
@@ -50,14 +54,10 @@ export const ShanbayModal: FC<WebdavModalProps> = props => {
       enable
     }
     if (enable) {
+      const service = new Service(newConfig)
+
       try {
-        await message.send<'SYNC_SERVICE_INIT', SyncConfig>({
-          type: 'SYNC_SERVICE_INIT',
-          payload: {
-            serviceID: Service.id,
-            config: newConfig
-          }
-        })
+        await service.init()
       } catch (e) {
         Modal.confirm({
           title: t('syncService.shanbay.login'),
@@ -77,7 +77,7 @@ export const ShanbayModal: FC<WebdavModalProps> = props => {
     } catch (e) {
       notification.error({
         message: t('config.opt.upload_error'),
-        description: e?.message
+        description: `${e}`
       })
     }
   }
@@ -91,25 +91,7 @@ export const ShanbayModal: FC<WebdavModalProps> = props => {
       return
     }
 
-    AntdMsg.destroy()
-    AntdMsg.success(t('sync.start'))
-
-    try {
-      await message.send<'SYNC_SERVICE_UPLOAD'>({
-        type: 'SYNC_SERVICE_UPLOAD',
-        payload: {
-          op: 'ADD',
-          serviceID: Service.id,
-          force: true
-        }
-      })
-      AntdMsg.success(t('sync.success'))
-    } catch (e) {
-      notification.error({
-        message: t('sync.failed'),
-        description: e?.message
-      })
-    }
+    await syncWords()
   }
 
   async function onSyncLast() {
@@ -121,24 +103,29 @@ export const ShanbayModal: FC<WebdavModalProps> = props => {
       return
     }
 
+    await syncWords(words)
+  }
+
+  async function syncWords(words?: Word[]) {
     AntdMsg.destroy()
-    AntdMsg.success(t('sync.start'))
+    AntdMsg.success(t('syncService.start'), 0)
+
+    const service = new Service(syncConfig)
 
     try {
-      await message.send({
-        type: 'SYNC_SERVICE_UPLOAD',
-        payload: {
-          op: 'ADD',
-          serviceID: Service.id,
-          force: true,
-          words
-        }
-      })
-      AntdMsg.success(t('sync.success'))
-    } catch (e) {
+      const errorCount = await service.addInternal({ words, force: true })
+      AntdMsg.destroy()
+      if (errorCount > 0) {
+        AntdMsg.info(t('syncService.finished'))
+      } else {
+        AntdMsg.success(t('syncService.success'))
+      }
+    } catch (error) {
+      if (error === 'words') return
+      const msgPath = `sync:shanbay.error.${error}`
       notification.error({
-        message: t('sync.failed'),
-        description: e?.message
+        message: t('syncService.failed'),
+        description: i18n.exists(msgPath) ? t(msgPath) : `${error}`
       })
     }
   }

@@ -87,7 +87,7 @@ export async function syncServiceUpload(
         id,
         error,
         options.action === 'ADD' && options.words?.[0]
-          ? `「${options.words?.[0]}」`
+          ? `「${options.words?.[0].text}」`
           : ''
       )
     }

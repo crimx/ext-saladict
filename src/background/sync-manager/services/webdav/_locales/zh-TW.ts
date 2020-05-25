@@ -1,7 +1,7 @@
 import { locale as _locale } from './zh-CN'
 
 export const locale: typeof _locale = {
-  title: 'WebDAV',
+  title: 'WebDAV 單字同步',
   error: {
     download: '下載失敗。無法訪問 WebDAV 伺服器。',
     internal: '無法儲存。',

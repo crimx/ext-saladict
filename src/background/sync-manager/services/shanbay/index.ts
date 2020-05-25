@@ -1,41 +1,16 @@
 import { AddConfig, SyncService } from '../../interface'
-import { getNotebook, getSyncConfig, setSyncConfig } from '../../helpers'
+import { getNotebook, setSyncConfig, notifyError } from '../../helpers'
 import { openURL } from '@/_helpers/browser-api'
 import { timer } from '@/_helpers/promise-more'
 import { isFirefox } from '@/_helpers/saladict'
+import { I18nManager } from '@/background/i18n-manager'
 
 export interface SyncConfig {
   enable: boolean
 }
 
-const locales = {
-  open: {
-    en: 'Open',
-    'zh-CN': '打开',
-    'zh-TW': '開啟'
-  },
-  loginCheckFailed: {
-    en: 'Shanbay login failed. Click to open shanbay.com.',
-    'zh-CN': '扇贝登录已失效，请点击打开官网重新登录。',
-    'zh-TW': '扇貝登入已失效，請點選開啟官網重新登入。'
-  },
-  errNetwork: {
-    en: 'Unable to access shanbay.com. Please check your network connection.',
-    'zh-CN': '无法访问扇贝生词本，请检查网络。',
-    'zh-TW': '無法訪問扇貝生字本，請檢查網路。'
-  },
-  errWord: {
-    en:
-      "Unable to add to Shanbay notebook. This word is not in Shanbay's vocabulary database.",
-    'zh-CN': '无法添加到扇贝生词本，扇贝单词库没有收录此单词。',
-    'zh-TW': '無法新增到扇貝生字本，扇貝單字庫沒有收錄此單字。'
-  }
-}
-
 export class Service extends SyncService<SyncConfig> {
   static readonly id = 'shanbay'
-
-  config = Service.getDefaultConfig()
 
   static getDefaultConfig(): SyncConfig {
     return {
@@ -48,10 +23,7 @@ export class Service extends SyncService<SyncConfig> {
   }
 
   async startInterval() {
-    const config = await getSyncConfig<SyncConfig>(Service.id)
-    if (config) {
-      this.config = config
-    }
+    if (!this.config?.enable) return
 
     browser.notifications.onClicked.addListener(this.handleLoginNotification)
     if (browser.notifications.onButtonClicked) {
@@ -61,23 +33,36 @@ export class Service extends SyncService<SyncConfig> {
     }
   }
 
+  async destroy() {
+    browser.notifications.onClicked.removeListener(this.handleLoginNotification)
+    browser.notifications.onButtonClicked.removeListener(
+      this.handleLoginNotification
+    )
+  }
+
   async init() {
     if (!(await this.isLogin())) {
       return Promise.reject('login')
     }
 
-    this.config.enable = true
     await setSyncConfig<SyncConfig>(Service.id, this.config)
   }
 
-  async add({ words, force }: AddConfig) {
+  async add(config: AddConfig) {
+    await this.addInternal(config)
+  }
+
+  /**
+   * @returns failed words
+   */
+  async addInternal({ words, force }: AddConfig): Promise<number> {
     if (!this.config.enable) {
-      return
+      return 0
     }
 
     if (!(await this.isLogin())) {
       this.notifyLogin()
-      return
+      return 0
     }
 
     if (force) {
@@ -85,21 +70,30 @@ export class Service extends SyncService<SyncConfig> {
     }
 
     if (!words || words.length <= 0) {
-      return
+      return 0
     }
+
+    let errorCount = 0
 
     for (let i = 0; i < words.length; i++) {
       try {
         await this.addWord(words[i].text)
-      } catch (e) {
-        break
+      } catch (error) {
+        if (error !== 'word') {
+          throw error
+        }
+        errorCount += 1
+        notifyError(Service.id, 'word', `「${words[i].text}」`)
       }
+
       if ((i + 1) % 50 === 0) {
         await timer(15 * 60000)
       } else {
         await timer(500)
       }
     }
+
+    return errorCount
   }
 
   async addWord(text: string) {
@@ -109,12 +103,10 @@ export class Service extends SyncService<SyncConfig> {
         encodeURIComponent(text)
       var resSearch = await fetch(url).then(r => r.json())
     } catch (e) {
-      this.notifyError('errNetwork', text)
       return Promise.reject('network')
     }
 
     if (!resSearch || !resSearch.data) {
-      this.notifyError('errWord', text)
       return Promise.reject('word')
     }
 
@@ -130,13 +122,11 @@ export class Service extends SyncService<SyncConfig> {
         }
       ).then(r => r.json())
     } catch (e) {
-      this.notifyError('errNetwork', text)
       return Promise.reject('network')
     }
 
     if (!resLearning || resLearning.status_code !== 0) {
-      this.notifyError('errWord', text)
-      return Promise.reject('learning')
+      return Promise.reject('word')
     }
   }
 
@@ -155,33 +145,21 @@ export class Service extends SyncService<SyncConfig> {
     }
   }
 
-  notifyError(locale: keyof typeof locales, text: string) {
-    const { langCode } = window.appConfig
-
-    browser.notifications.create({
-      type: 'basic',
-      iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
-      title: `Saladict Sync Service ${Service.title[langCode]}`,
-      message: `「${text}」${locales[locale][langCode]}`,
-      eventTime: Date.now() + 20000,
-      priority: 2
-    })
-  }
-
-  notifyLogin() {
-    const { langCode } = window.appConfig
+  async notifyLogin() {
+    const { i18n } = await I18nManager.getInstance()
+    await i18n.loadNamespaces('sync')
 
     const options: browser.notifications.CreateNotificationOptions = {
       type: 'basic',
       iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
-      title: `Saladict Sync Service ${Service.title[langCode]}`,
-      message: locales.loginCheckFailed[langCode],
+      title: `Saladict ${i18n.t(`sync:shanbay.title`)}`,
+      message: i18n.t('shanbay.error.login'),
       eventTime: Date.now() + 10000,
       priority: 2
     }
 
     if (!isFirefox) {
-      options.buttons = [{ title: locales.open[langCode] }]
+      options.buttons = [{ title: i18n.t('shanbay.open') }]
     }
 
     browser.notifications.create('shanbay-login', options)

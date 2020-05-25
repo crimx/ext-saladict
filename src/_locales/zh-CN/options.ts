@@ -233,7 +233,8 @@ export const locale = {
 
   syncService: {
     description: '数据同步设置。',
-    start: '同步已在后台开始',
+    start: '同步进行中，结束前请勿关闭此页面。',
+    finished: '同步结束',
     success: '同步成功',
     failed: '同步失败',
     close_confirm: '设置未保存，关闭？',

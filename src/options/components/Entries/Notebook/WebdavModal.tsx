@@ -64,7 +64,7 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
     >
       <Form
         ref={formRef}
-        initialValues={props.syncConfig || { duration: 15 }}
+        initialValues={props.syncConfig || Service.getDefaultConfig()}
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 18 }}
         onFinish={saveService}
