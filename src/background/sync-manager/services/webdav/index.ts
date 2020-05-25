@@ -336,7 +336,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       return
     }
 
-    await setNotebook(json.words, true)
+    await setNotebook(json.words)
 
     if (process.env.DEBUG) {
       console.log('Webdav download', json)

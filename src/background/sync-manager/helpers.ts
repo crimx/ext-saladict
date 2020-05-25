@@ -1,12 +1,12 @@
 import { storage } from '@/_helpers/browser-api'
 import { Word } from '@/_helpers/record-manager'
+import { getWords } from '@/background/database/read'
+import { saveWords } from '@/background/database/write'
 import {
-  getWords,
-  saveWords,
   getSyncMeta,
   setSyncMeta,
   deleteSyncMeta
-} from '@/background/database'
+} from '@/background/database/sync-meta'
 import { I18nManager } from '../i18n-manager'
 
 export interface StorageSyncConfig {
@@ -72,11 +72,8 @@ export async function deleteMeta(serviceID: string): Promise<void> {
   await deleteSyncMeta(serviceID)
 }
 
-export async function setNotebook(
-  words: Word[],
-  fromSync?: boolean
-): Promise<void> {
-  await saveWords({ area: 'notebook', words, fromSync })
+export async function setNotebook(words: Word[]): Promise<void> {
+  await saveWords({ area: 'notebook', words })
 }
 
 export async function getNotebook(): Promise<Word[]> {
