@@ -22,24 +22,6 @@ export class Service extends SyncService<SyncConfig> {
     return openURL('https://www.shanbay.com/web/account/login')
   }
 
-  async startInterval() {
-    if (!this.config?.enable) return
-
-    browser.notifications.onClicked.addListener(this.handleLoginNotification)
-    if (browser.notifications.onButtonClicked) {
-      browser.notifications.onButtonClicked.addListener(
-        this.handleLoginNotification
-      )
-    }
-  }
-
-  async destroy() {
-    browser.notifications.onClicked.removeListener(this.handleLoginNotification)
-    browser.notifications.onButtonClicked.removeListener(
-      this.handleLoginNotification
-    )
-  }
-
   async init() {
     if (!(await this.isLogin())) {
       return Promise.reject('login')
@@ -139,29 +121,48 @@ export class Service extends SyncService<SyncConfig> {
     )
   }
 
-  handleLoginNotification(id: string) {
-    if (id === 'shanbay-login') {
-      Service.openLogin()
-    }
-  }
-
   async notifyLogin() {
     const { i18n } = await I18nManager.getInstance()
     await i18n.loadNamespaces('sync')
+
+    browser.notifications.onClicked.addListener(handleLoginNotification)
+    browser.notifications.onClosed.removeListener(removeNotificationHandler)
+    if (browser.notifications.onButtonClicked) {
+      browser.notifications.onButtonClicked.addListener(handleLoginNotification)
+    }
 
     const options: browser.notifications.CreateNotificationOptions = {
       type: 'basic',
       iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
       title: `Saladict ${i18n.t(`sync:shanbay.title`)}`,
-      message: i18n.t('shanbay.error.login'),
+      message: i18n.t('sync:shanbay.error.login'),
       eventTime: Date.now() + 10000,
       priority: 2
     }
 
     if (!isFirefox) {
-      options.buttons = [{ title: i18n.t('shanbay.open') }]
+      options.buttons = [{ title: i18n.t('sync:shanbay.open') }]
     }
 
     browser.notifications.create('shanbay-login', options)
+  }
+}
+
+function handleLoginNotification(id: string) {
+  if (id === 'shanbay-login') {
+    Service.openLogin()
+    removeNotificationHandler(id)
+  }
+}
+
+function removeNotificationHandler(id: string) {
+  if (id === 'shanbay-login') {
+    browser.notifications.onClicked.removeListener(handleLoginNotification)
+    browser.notifications.onClosed.removeListener(removeNotificationHandler)
+    if (browser.notifications.onButtonClicked) {
+      browser.notifications.onButtonClicked.removeListener(
+        handleLoginNotification
+      )
+    }
   }
 }
