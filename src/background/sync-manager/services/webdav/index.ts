@@ -46,7 +46,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
 
   meta: SyncMeta = {}
 
-  async startInterval() {
+  async onStart() {
     if (process.env.DEBUG) {
       console.log(`Sync Service WebDAV starts interval.`)
     }

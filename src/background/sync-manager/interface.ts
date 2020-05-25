@@ -69,8 +69,8 @@ export abstract class SyncService<
   async destroy() {}
   /** Download code */
   async download(config: DownloadConfig): Promise<void> {}
-  /** Called on browser start */
-  startInterval() {}
+  /** Called on browser start or config changes */
+  onStart() {}
 }
 
 type SyncServiceAbstractClass = typeof SyncService
