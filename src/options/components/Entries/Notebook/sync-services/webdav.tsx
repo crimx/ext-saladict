@@ -156,12 +156,13 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
 
     try {
       if (!config.url) {
-        throw 'network'
+        throw new Error('network')
       }
       try {
         await service.init()
       } catch (error) {
-        if (error !== 'exist') {
+        const errorText = typeof error === 'string' ? error : error.message
+        if (errorText !== 'exist') {
           throw error
         }
         if (confirm(t('syncService.webdav.exist_confirm'))) {
@@ -182,6 +183,28 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
   async function saveService() {
     const config = extractConfigFromForm()
     if (!config) return
+
+    if (config.enable) {
+      if (!config.url) {
+        return notifyError('network')
+      }
+
+      setServiceChecking(true)
+
+      const service = new Service(config)
+
+      try {
+        const dir = await service.checkDir()
+        if (!dir) {
+          throw new Error('missing')
+        }
+      } catch (e) {
+        setServiceChecking(false)
+        return notifyError(e)
+      }
+
+      setServiceChecking(false)
+    }
 
     try {
       await setSyncConfig(Service.id, config)
@@ -228,8 +251,9 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
   }
 
   function notifyError(error: Error | string) {
-    const msgPath = 'sync:webdav.error.' + error
-    const description = i18n.exists(msgPath) ? t(msgPath) : `${error}`
+    const errorText = typeof error === 'string' ? error : error.message
+    const msgPath = 'sync:webdav.error.' + errorText
+    const description = i18n.exists(msgPath) ? t(msgPath) : errorText
     notification.error({ message: 'Error', description })
   }
 }

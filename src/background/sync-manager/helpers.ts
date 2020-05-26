@@ -88,8 +88,11 @@ export async function notifyError(
 ): Promise<void> {
   const { i18n } = await I18nManager.getInstance()
   await i18n.loadNamespaces('sync')
-  const msgPath = `sync:${id}.error.${error}`
-  const msg = i18n.exists(msgPath) ? i18n.t(msgPath) : `Unknown error: ${error}`
+  const errorText = typeof error === 'string' ? error : error.message
+  const msgPath = `sync:${id}.error.${errorText}`
+  const msg = i18n.exists(msgPath)
+    ? i18n.t(msgPath)
+    : `Unknown error: ${errorText}`
 
   browser.notifications.create({
     type: 'basic',

@@ -110,10 +110,8 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     await storage.local.set({ webdavInterval: Date.now() + duration })
   }
 
-  /**
-   * Check server and create a Saladict Directory if not exist.
-   */
-  async init() {
+  async checkDir(): Promise<boolean> {
+    let text = ''
     try {
       const response = await fetch(this.config.url, {
         method: 'PROPFIND',
@@ -126,28 +124,28 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       })
       if (!response.ok) {
         if (response.status === 401) {
-          return Promise.reject('unauthorized')
+          throw new Error('unauthorized')
         }
-        throw new Error()
+        throw new Error(`Network error: ${response.status}`)
       }
-      var text = await response.text()
+      text = await response.text()
     } catch (e) {
-      return Promise.reject('network')
+      throw new Error('network')
     }
 
+    let doc: Document | undefined
     try {
-      if (!text) {
-        throw new Error()
-      }
-      var doc = new DOMParser().parseFromString(text, 'text/xml')
-      if (!doc) {
-        throw new Error()
+      if (text) {
+        doc = new DOMParser().parseFromString(text, 'text/xml')
       }
     } catch (e) {
-      return Promise.reject('parse')
+      throw new Error('parse')
     }
 
-    let dir = false
+    if (!doc) {
+      throw new Error('parse')
+    }
+
     const $responses = Array.from(doc.querySelectorAll('response'))
     for (const i in $responses) {
       const href = $responses[i].querySelector('href')
@@ -155,13 +153,21 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
         // is Saladict
         if ($responses[i].querySelector('resourcetype collection')) {
           // is collection
-          dir = true
-          break
+          return true
         } else {
-          return Promise.reject('dir')
+          throw new Error('dir')
         }
       }
     }
+
+    return false
+  }
+
+  /**
+   * Check server and create a Saladict Directory if not exist.
+   */
+  async init() {
+    const dir = await this.checkDir()
 
     if (!dir) {
       // create directory
@@ -174,7 +180,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       })
       if (!response.ok) {
         // cannot create directory
-        return Promise.reject('mkcol')
+        throw new Error('mkcol')
       }
     }
 
@@ -184,12 +190,13 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     if (dir) {
       try {
         await this.download({ testConfig: this.config, noCache: true })
-        // An old file exists on server.
-        // Let user decide whether to upload.
-        return Promise.reject('exist')
       } catch (e) {
-        /* nothing */
+        // Download failed, which is desired.
+        return
       }
+      // An old file exists on server.
+      // Let user decide whether to upload.
+      throw new Error('exist')
     }
   }
 
@@ -218,7 +225,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       if (process.env.DEBUG) {
         console.error('WebDAV: Stringify notebook failed', words)
       }
-      return Promise.reject('parse')
+      throw new Error('parse')
     }
 
     try {
@@ -231,13 +238,13 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
         body
       })
       if (!response.ok) {
-        throw new Error()
+        throw new Error('network')
       }
     } catch (e) {
       if (process.env.DEBUG) {
         console.error('WebDAV: upload failed', e)
       }
-      return Promise.reject('network')
+      throw new Error('network')
     }
 
     await this.setMeta({ timestamp, etag: '' })
@@ -285,7 +292,10 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
         throw new Error()
       }
     } catch (e) {
-      return Promise.reject('network')
+      if (process.env.DEBUG) {
+        console.error(e)
+      }
+      throw new Error('network')
     }
 
     try {
@@ -294,7 +304,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       if (process.env.DEBUG) {
         console.error('Fetch webdav notebook.json error', response)
       }
-      return Promise.reject('parse')
+      throw new Error('parse')
     }
 
     if (process.env.DEBUG) {
@@ -307,14 +317,14 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       if (process.env.DEBUG) {
         console.error('Parse webdav notebook.json error: incorrect words', json)
       }
-      return Promise.reject('format')
+      throw new Error('format')
     }
 
     if (!json.timestamp) {
       if (process.env.DEBUG) {
         console.error('webdav notebook.json no timestamp', json)
       }
-      return Promise.reject('timestamp')
+      throw new Error('timestamp')
     }
 
     if (testConfig) {
