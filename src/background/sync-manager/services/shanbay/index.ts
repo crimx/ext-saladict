@@ -24,7 +24,7 @@ export class Service extends SyncService<SyncConfig> {
 
   async init() {
     if (!(await this.isLogin())) {
-      return Promise.reject('login')
+      throw new Error('login')
     }
 
     await setSyncConfig<SyncConfig>(Service.id, this.config)
@@ -85,11 +85,11 @@ export class Service extends SyncService<SyncConfig> {
         encodeURIComponent(text)
       var resSearch = await fetch(url).then(r => r.json())
     } catch (e) {
-      return Promise.reject('network')
+      throw new Error('network')
     }
 
     if (!resSearch || !resSearch.data) {
-      return Promise.reject('word')
+      throw new Error('word')
     }
 
     try {
@@ -104,11 +104,14 @@ export class Service extends SyncService<SyncConfig> {
         }
       ).then(r => r.json())
     } catch (e) {
-      return Promise.reject('network')
+      if (process.env.DEBUG) {
+        console.error(e)
+      }
+      throw new Error('network')
     }
 
     if (!resLearning || resLearning.status_code !== 0) {
-      return Promise.reject('word')
+      throw new Error('word')
     }
   }
 
