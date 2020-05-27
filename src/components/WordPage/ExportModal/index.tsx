@@ -118,14 +118,10 @@ export const ExportModal: FC<ExportModalProps> = props => {
       style={{ width: '90vw', maxWidth: 1200, top: 24 }}
       width="90vw"
     >
-      <Layout style={{ height: '70vh', maxHeight: 1000 }}>
-        <Layout.Content
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            background: '#fff'
-          }}
-        >
+      <Layout
+        style={{ height: '70vh', maxHeight: 1000, background: 'transparent' }}
+      >
+        <Layout.Content style={{ display: 'flex', flexDirection: 'column' }}>
           <p className="export-Description">
             {t('export.description')}
             <a
@@ -177,10 +173,7 @@ export const ExportModal: FC<ExportModalProps> = props => {
             }}
           />
         </Layout.Content>
-        <Layout.Sider
-          width="50%"
-          style={{ paddingLeft: 24, background: '#fff' }}
-        >
+        <Layout.Sider width="50%" style={{ paddingLeft: 24 }}>
           <textarea
             style={{ width: '100%', height: '100%' }}
             readOnly={true}

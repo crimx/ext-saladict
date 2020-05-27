@@ -41,7 +41,7 @@ export const locale = {
     placeholder: '替换符',
     htmlescape: {
       title: '对笔记内容中的 HTML 字符进行转义',
-      text: '转义 HTML 字符'
+      text: '转义 HTML'
     },
     selected: '导出选中单词'
   },
