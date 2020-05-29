@@ -9,6 +9,7 @@ import memoizeOne from 'memoize-one'
 import { Caiyun } from '@opentranslate/caiyun'
 import { CaiyunLanguage } from './config'
 import { getTranslator as getBaiduTranslator } from '../baidu/engine'
+import { TranslateResult } from '@opentranslate/translator'
 
 const getTranslator = memoizeOne(
   () =>
@@ -48,24 +49,30 @@ export const search: SearchFunction<
   const baiduConfig =
     baiduAppid && baiduKey ? { appid: baiduAppid, key: baiduKey } : undefined
 
-  const baiduResult = await getBaiduTranslator().translate(
-    text,
-    sl,
-    tl,
-    baiduConfig
-  )
+  let baiduResult: TranslateResult | undefined
 
-  if (langcodes.includes(baiduResult.from)) {
-    sl = baiduResult.from
-  }
+  try {
+    baiduResult = await getBaiduTranslator().translate(
+      text,
+      sl,
+      tl,
+      baiduConfig
+    )
+
+    if (langcodes.includes(baiduResult.from)) {
+      sl = baiduResult.from
+    }
+  } catch (e) {}
 
   const caiYunToken = config.dictAuth.caiyun.token
   const caiYunConfig = caiYunToken ? { token: caiYunToken } : undefined
 
   try {
     const result = await translator.translate(text, sl, tl, caiYunConfig)
-    result.origin.tts = baiduResult.origin.tts
-    result.trans.tts = baiduResult.trans.tts
+    if (baiduResult) {
+      result.origin.tts = baiduResult.origin.tts
+      result.trans.tts = baiduResult.trans.tts
+    }
     return {
       result: {
         id: 'caiyun',

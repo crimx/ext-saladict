@@ -59,12 +59,17 @@ export async function translateCtxs(
 ): Promise<CtxTranslateResults> {
   return (
     await Promise.all(
-      Object.keys(ctxTrans).map(async id => ({
-        id,
-        content: ctxTrans[id]
-          ? await translateCtx(text, id as CtxTranslatorId)
-          : ''
-      }))
+      Object.keys(ctxTrans).map(async id => {
+        let content = ''
+        if (ctxTrans[id]) {
+          try {
+            content = await translateCtx(text, id as CtxTranslatorId)
+          } catch (e) {
+            console.warn(e)
+          }
+        }
+        return { id, content }
+      })
     )
   ).reduce((result, { id, content }) => {
     result[id] = content

@@ -6,7 +6,8 @@ import { newWord } from '@/_helpers/record-manager'
 import { Message, MessageResponse } from '@/typings/message'
 import {
   SearchFunction,
-  DictSearchResult
+  DictSearchResult,
+  GetSrcPageFunction
 } from '@/components/dictionaries/helpers'
 import {
   isInNotebook,
@@ -36,7 +37,12 @@ export class BackgroundServer {
 
   static init = BackgroundServer.getInstance
 
-  static getDictEngine(id: DictID) {
+  static getDictEngine<P = {}>(
+    id: DictID
+  ): Promise<{
+    search: SearchFunction<DictSearchResult<any>, P>
+    getSrcPage: GetSrcPageFunction
+  }> {
     return import(
       /* webpackInclude: /engine\.ts$/ */
       /* webpackMode: "lazy" */
@@ -147,46 +153,47 @@ export class BackgroundServer {
   async fetchDictResult(
     data: Message<'FETCH_DICT_RESULT'>['payload']
   ): Promise<MessageResponse<'FETCH_DICT_RESULT'>> {
-    let search: SearchFunction<
-      DictSearchResult<any>,
-      NonNullable<typeof data['payload']>
-    >
-
-    try {
-      ;({ search } = await BackgroundServer.getDictEngine(data.id))
-    } catch (err) {
-      return Promise.reject(err)
-    }
-
     const payload = data.payload || {}
 
-    return timeout(
-      search(data.text, window.appConfig, window.activeProfile, payload),
-      25000
-    )
-      .catch(async (err: Error) => {
-        if (process.env.DEBUG) {
-          console.warn(data.id, err)
-        }
+    let response: DictSearchResult<any> | undefined
 
-        if (err.message === 'NETWORK_ERROR') {
+    try {
+      const { search } = await BackgroundServer.getDictEngine<
+        NonNullable<typeof data['payload']>
+      >(data.id)
+
+      try {
+        response = await timeout(
+          search(data.text, window.appConfig, window.activeProfile, payload),
+          25000
+        )
+      } catch (e) {
+        if (e.message === 'NETWORK_ERROR') {
           // retry once
           await timer(500)
-          return timeout(
+          response = await timeout(
             search(data.text, window.appConfig, window.activeProfile, payload),
             25000
           )
+        } else {
+          throw e
         }
+      }
+    } catch (e) {
+      if (process.env.DEBUG) {
+        console.warn(data.id, e)
+      }
+    }
 
-        return Promise.reject(err)
-      })
-      .then(response => ({ ...response, id: data.id }))
-      .catch(err => {
-        if (process.env.DEBUG) {
-          console.warn(data.id, err)
-        }
-        return { result: null, id: data.id }
-      })
+    const result = response
+      ? { ...response, id: data.id }
+      : { result: null, id: data.id }
+
+    if (process.env.DEBUG) {
+      console.log(`Search Engine ${data.id}`, data.text, result)
+    }
+
+    return result
   }
 
   async callDictEngineMethod(data: Message<'DICT_ENGINE_METHOD'>['payload']) {
