@@ -37,5 +37,10 @@ export const locale: typeof _locale = {
     tl: 'Target Language',
     auto: 'Detect language',
     stext: 'Original'
+  },
+  updateAnki: {
+    title: 'Update to Anki',
+    success: 'Successfully update word to Anki.',
+    failed: 'Failed to update word to Anki.'
   }
 }

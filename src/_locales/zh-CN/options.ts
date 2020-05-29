@@ -269,7 +269,7 @@ export const locale = {
 
     ankiconnect: {
       description:
-        '请确保 Anki Connect 插件已安装且 Anki 在后台运行。在单词本页面可以管理 Anki 同步。',
+        '请确保 Anki Connect 插件已安装且 Anki 在后台运行。在单词编辑器中也可以更新单词到 Anki。',
       tutorial: '教程',
       checking: '连接中...',
       deck_confirm: '牌组「{{deck}}」不存在 Anki 中，是否自动添加？',

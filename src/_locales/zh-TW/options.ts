@@ -273,7 +273,7 @@ export const locale: typeof _locale = {
 
     ankiconnect: {
       description:
-        '請確保 Anki Connect 已安裝且 Anki 在執行。在單詞本頁面可以管理 Anki 同步。',
+        '請確保 Anki Connect 已安裝且 Anki 在執行。在單字編輯器中也可以更新單字到 Anki。',
       tutorial: '教程',
       checking: '連線中...',
       deck_confirm: '牌組「{{deck}}」不存在 Anki 中，是否自動新增？',

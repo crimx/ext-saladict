@@ -35,5 +35,10 @@ export const locale = {
     tl: '目标语言',
     auto: '自动检测',
     stext: '原文'
+  },
+  updateAnki: {
+    title: '更新到 Anki',
+    success: '更新到 Anki 成功。',
+    failed: '更新单词到 Anki 失败。'
   }
 }

@@ -3,6 +3,8 @@ import { Word } from '@/_helpers/record-manager'
 import { parseCtxText } from '@/_helpers/translateCtx'
 import { AddConfig, SyncService } from '../../interface'
 import { getNotebook, setSyncConfig } from '../../helpers'
+import { message } from '@/_helpers/browser-api'
+import { Message } from '@/typings/message'
 
 export interface SyncConfig {
   enable: boolean
@@ -65,6 +67,25 @@ export class Service extends SyncService<SyncConfig> {
     }
 
     await setSyncConfig<SyncConfig>(Service.id, this.config)
+  }
+
+  handleMessage = (msg: Message) => {
+    switch (msg.type) {
+      case 'ANKI_CONNECT_FIND_WORD':
+        return this.findNote(msg.payload).catch(() => '')
+      case 'ANKI_CONNECT_UPDATE_WORD':
+        return this.updateWord(msg.payload.cardId, msg.payload.word).catch(e =>
+          Promise.reject(e)
+        )
+    }
+  }
+
+  onStart() {
+    message.addListener(this.handleMessage)
+  }
+
+  async destroy() {
+    message.removeListener(this.handleMessage)
   }
 
   async findNote(date: number): Promise<number | undefined> {
@@ -163,7 +184,7 @@ export class Service extends SyncService<SyncConfig> {
     })
   }
 
-  async request<R = null>(action: string, params?: any): Promise<R> {
+  async request<R = void>(action: string, params?: any): Promise<R> {
     // Very puzzling. It seems axios auto-extracts the result field from response.
     const { data } = await axios({
       method: 'post',
@@ -249,7 +270,7 @@ export class Service extends SyncService<SyncConfig> {
 
   async isServerUp(): Promise<boolean> {
     try {
-      return !!(await this.request('version'))
+      return (await this.request<number>('version')) != null
     } catch (e) {
       if (process.env.DEBUG) {
         console.error(e)

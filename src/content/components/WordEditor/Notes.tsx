@@ -28,13 +28,18 @@ import {
   CtxTranslateResults
 } from '@/_helpers/translateCtx'
 import { useTranslate } from '@/_helpers/i18n'
-import { message } from '@/_helpers/browser-api'
+import { message, storage } from '@/_helpers/browser-api'
 import { isOptionsPage } from '@/_helpers/saladict'
 
 import { WordCards } from './WordCards'
-import { WordEditorPanel, WordEditorPanelProps } from './WordEditorPanel'
+import {
+  WordEditorPanel,
+  WordEditorPanelProps,
+  WordEditorPanelBtns
+} from './WordEditorPanel'
 import { CSSTransition } from 'react-transition-group'
 import { CtxTransList } from './CtxTransList'
+import { StorageSyncConfig } from '@/background/sync-manager/helpers'
 
 export interface NotesProps
   extends Pick<WordEditorPanelProps, 'containerWidth'> {
@@ -137,7 +142,7 @@ export const Notes: FC<NotesProps> = props => {
     })
   }
 
-  const panelBtns = [
+  const panelBtns: WordEditorPanelBtns = [
     {
       type: 'normal',
       title: t('content:transContext'),
@@ -172,7 +177,57 @@ export const Notes: FC<NotesProps> = props => {
           .catch(console.error)
       }
     }
-  ] as const
+  ]
+
+  const [ankiCardId, setAnkiCardId] = useState<number | undefined>()
+
+  useEffect(() => {
+    let isRunning = true
+    storage.sync
+      .get<StorageSyncConfig>('syncConfig')
+      .then(async ({ syncConfig }) => {
+        if (syncConfig?.ankiconnect?.enable) {
+          const cardId = await message.send<'ANKI_CONNECT_FIND_WORD'>({
+            type: 'ANKI_CONNECT_FIND_WORD',
+            payload: word.date
+          })
+          if (isRunning) {
+            setAnkiCardId(cardId)
+          }
+        }
+      })
+    return () => {
+      isRunning = false
+    }
+  }, [])
+
+  if (ankiCardId) {
+    panelBtns.unshift({
+      type: 'normal',
+      title: t('content:updateAnki.title'),
+      onClick: async () => {
+        let status = 'content:updateAnki.success'
+        try {
+          await message.send<'ANKI_CONNECT_UPDATE_WORD'>({
+            type: 'ANKI_CONNECT_UPDATE_WORD',
+            payload: { cardId: ankiCardId, word }
+          })
+        } catch (e) {
+          if (process.env.DEBUG) {
+            console.error(e)
+          }
+          status = 'content:updateAnki.failed'
+        }
+        browser.notifications.create({
+          type: 'basic',
+          eventTime: Date.now() + 2000,
+          iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
+          title: 'Saladict',
+          message: t(status)
+        })
+      }
+    })
+  }
 
   return (
     <>

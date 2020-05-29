@@ -312,6 +312,24 @@ export type MessageConfig = MessageConfigType<{
   }
 
   /* ------------------------------------------------ *\
+     Sync Services
+  \* ------------------------------------------------ */
+
+  ANKI_CONNECT_FIND_WORD: {
+    /** Word Date */
+    payload: number
+    /** Card ID */
+    response: number | undefined
+  }
+
+  ANKI_CONNECT_UPDATE_WORD: {
+    payload: {
+      cardId: number
+      word: Word
+    }
+  }
+
+  /* ------------------------------------------------ *\
      Third-party Scripts
   \* ------------------------------------------------ */
 

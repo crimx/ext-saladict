@@ -182,9 +182,6 @@ export const AnkiConnectModal: FC<AnkiConnectModalProps> = props => {
   async function verify(service: Service) {
     try {
       await service.init()
-      if (confirm(t('syncService.ankiconnect.upload_confirm'))) {
-        await service.add({ force: true })
-      }
       notification.success({ message: t('syncService.ankiconnect.verified') })
     } catch (error) {
       const errorText = typeof error === 'string' ? error : error.message
@@ -238,8 +235,7 @@ export const AnkiConnectModal: FC<AnkiConnectModalProps> = props => {
           }
           break
         default:
-          notifyError(error)
-          break
+          throw error
       }
     }
   }
@@ -249,8 +245,17 @@ export const AnkiConnectModal: FC<AnkiConnectModalProps> = props => {
     if (!config) return
 
     setServiceChecking(true)
+
     const service = new Service(config)
-    await verify(service)
+    try {
+      await verify(service)
+      if (confirm(t('syncService.ankiconnect.upload_confirm'))) {
+        await service.add({ force: true })
+      }
+    } catch (e) {
+      notifyError(e)
+    }
+
     setServiceChecking(false)
   }
 

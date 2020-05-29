@@ -282,7 +282,7 @@ export const locale: typeof _locale = {
 
     ankiconnect: {
       description:
-        'Please make sure Anki Connect plugin is installed and Anki is running. You can also manage words in Notebook page.',
+        'Please make sure Anki Connect plugin is installed and Anki is running. You can also update word to Anki in Word Editor.',
       tutorial: 'Tutorial',
       checking: 'Checking...',
       deck_confirm:

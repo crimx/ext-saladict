@@ -37,5 +37,10 @@ export const locale: typeof _locale = {
     tl: '目標語言',
     auto: '偵測語言',
     stext: '原文'
+  },
+  updateAnki: {
+    title: '更新到 Anki',
+    success: '更新到 Anki 成功。',
+    failed: '更新單詞到 Anki 失敗。'
   }
 }
