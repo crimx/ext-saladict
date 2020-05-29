@@ -265,6 +265,37 @@ export const locale = {
       passwd: '密码',
       url: '服务器地址',
       user: '账户'
+    },
+
+    ankiconnect: {
+      description:
+        '请确保 Anki Connect 插件已安装且 Anki 在后台运行。在单词本页面可以管理 Anki 同步。',
+      tutorial: '教程',
+      checking: '连接中...',
+      deck_confirm: '牌组「{{deck}}」不存在 Anki 中，是否自动添加？',
+      deck_error: '无法创建牌组「{{deck}}」。',
+      notetype_confirm:
+        '笔记类型「{{noteType}}」不存在 Anki 中，是否自动添加？',
+      notetype_error: '无法创建笔记类型「{{noteType}}」。',
+      upload_confirm:
+        '马上同步本地生词到 Anki？重复的单词（相同时间截）会被跳过。',
+      add_yourself: '请在 Anki 中自行添加。',
+      verify: '检查 Anki Connect',
+      verified: '成功检查 Anki Connect',
+      host: '地址',
+      port: '端口',
+      key: 'Key',
+      key_help: '可在 Anki Connect 插件中设置 key 以做简单令牌。',
+      deckName: '牌组',
+      deckName_help:
+        '如果不存在的话可以点下方「检查 Anki Connect」让本设置生成默认牌组。也可以自行在 Anki 中管理。',
+      noteType: '笔记类型',
+      noteType_help:
+        'Anki 笔记类型包括一套字段和卡片类型。如果不存在的话可以点下方「检查 Anki Connect」让本设置生成一套默认的笔记类型。也可以自行在 Anki 中管理。',
+      tags: '标签',
+      tags_help: 'Anki 笔记可以附带标签。以逗号分割。',
+      escapeHTML: '转义 HTML',
+      escapeHTML_help: '对笔记内容中的 HTML 字符进行转义'
     }
   },
 

@@ -269,6 +269,37 @@ export const locale: typeof _locale = {
       passwd: '密碼',
       url: '伺服器位址',
       user: '帳戶'
+    },
+
+    ankiconnect: {
+      description:
+        '請確保 Anki Connect 已安裝且 Anki 在執行。在單詞本頁面可以管理 Anki 同步。',
+      tutorial: '教程',
+      checking: '連線中...',
+      deck_confirm: '牌組「{{deck}}」不存在 Anki 中，是否自動新增？',
+      deck_error: '無法建立牌組「{{deck}}」。',
+      notetype_confirm:
+        '筆記型別「{{noteType}}」不存在 Anki 中，是否自動新增？',
+      notetype_error: '無法建立筆記型別「{{noteType}}」。',
+      upload_confirm:
+        '馬上同步本地生詞到 Anki？重複的單詞（相同時間截）會被跳過。',
+      add_yourself: '請在 Anki 中自行新增。',
+      verify: '檢查 Anki Connect',
+      verified: '成功檢查 Anki Connect',
+      host: '地址',
+      port: '埠',
+      key: 'Key',
+      key_help: '可在 Anki Connect 外掛中設定 key 以做簡單令牌。',
+      deckName: '牌組',
+      deckName_help:
+        '如果不存在的話可以點下方「檢查 Anki Connect」讓本設定生成預設牌組。也可以自行在 Anki 中管理。',
+      noteType: '筆記型別',
+      noteType_help:
+        'Anki 筆記型別包括一套欄位和卡片型別。如果不存在的話可以點下方「檢查 Anki Connect」讓本設定生成一套預設的筆記型別。也可以自行在 Anki 中管理。',
+      tags: '標籤',
+      tags_help: 'Anki 筆記可以附帶標籤。以逗號分割。',
+      escapeHTML: '轉義 HTML',
+      escapeHTML_help: '對筆記內容中的 HTML 字元進行轉義'
     }
   },
 

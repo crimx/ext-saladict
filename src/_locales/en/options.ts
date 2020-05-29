@@ -271,13 +271,46 @@ export const locale: typeof _locale = {
         'Saladict directory exists on server. Download it and merge with local data?',
       upload_confirm: 'Upload local data to Server right away?',
       verify: 'Verify server',
-      verified: 'Server verified',
+      verified: 'Successfully verified WebDAV server.',
       duration: 'Duration',
       duration_help:
         'Data is guaranteed to be updated before upload. If you do not need real-time syncing across browsers, set a longer polling cycle to reduce CPU and memory footprint.',
       passwd: 'Password',
       url: 'Server Address',
       user: 'User Account'
+    },
+
+    ankiconnect: {
+      description:
+        'Please make sure Anki Connect plugin is installed and Anki is running. You can also manage words in Notebook page.',
+      tutorial: 'Tutorial',
+      checking: 'Checking...',
+      deck_confirm:
+        'Deck "{{deck}}" does not exist in Anki. Generate a new deck?',
+      deck_error: 'Unable to create deck "{{deck}}".',
+      notetype_confirm:
+        'Note type "{{noteType}}" does not exist in Anki. Generate a new note type.',
+      notetype_error: 'Unable to create note type "{{noteType}}".',
+      upload_confirm:
+        'Sync local new words to Anki right away? Duplicated words (with same timestamp) will be skipped.',
+      add_yourself: 'Please add it youself in Anki.',
+      verify: 'Verify Anki Connect',
+      verified: 'Successfully verified Anki Connect',
+      host: 'Address',
+      port: 'port',
+      key: 'Key',
+      key_help:
+        'Optional key can be added in Anki Connect config for identification.',
+      deckName: 'Deck',
+      deckName_help:
+        'If deck does not exist you can generate a default one automatically by clicking "Verify Anki Connect" below, or manage in manually Anki.',
+      noteType: 'Note Type',
+      noteType_help:
+        'Anki note type includes a set of fields and card type. If note type does not exist you can generate a default one automatically by clicking "Verify Anki Connect" below, or manage in manually Anki.',
+      tags: 'Tags',
+      tags_help: 'Anki notes can include tags separated with commas.',
+      escapeHTML: 'Escape HTML',
+      escapeHTML_help: 'Escape HTML entities.'
     }
   },
 
