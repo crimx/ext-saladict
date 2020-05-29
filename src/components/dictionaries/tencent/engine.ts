@@ -8,6 +8,7 @@ import {
 import memoizeOne from 'memoize-one'
 import { Tencent } from '@opentranslate/tencent'
 import { TencentLanguage } from './config'
+import { getTranslator as getBaiduTranslator } from '../baidu/engine'
 
 export const getTranslator = memoizeOne(
   () =>
@@ -59,6 +60,22 @@ export const search: SearchFunction<
 
   try {
     const result = await translator.translate(text, sl, tl, translatorConfig)
+    if (!result.origin.tts || !result.trans.tts) {
+      const baidu = getBaiduTranslator()
+      if (!result.origin.tts) {
+        result.origin.tts = await baidu.textToSpeech(
+          result.origin.paragraphs.join('\n'),
+          result.from
+        )
+      }
+      if (!result.trans.tts) {
+        result.trans.tts = await baidu.textToSpeech(
+          result.trans.paragraphs.join('\n'),
+          result.to
+        )
+      }
+    }
+
     return {
       result: {
         id: 'tencent',
