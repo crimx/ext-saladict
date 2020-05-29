@@ -25,7 +25,9 @@ export const locale = {
     wordCardsTitle: '生词本其它记录',
     deleteConfirm: '从单词本中移除？',
     closeConfirm: '记录尚未保存，确认关闭？',
-    chooseCtxTitle: '选择翻译结果'
+    chooseCtxTitle: '选择翻译结果',
+    ctxHelp:
+      '如需兼容选择翻译结果以及 Anki 生成表格请保持 [:: xxx ::] 和 --------------- 格式。'
   },
   machineTrans: {
     switch: '更改语言',

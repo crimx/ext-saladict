@@ -27,7 +27,9 @@ export const locale: typeof _locale = {
     wordCardsTitle: 'Other results from Notebook',
     deleteConfirm: 'Delete from Notebook?',
     closeConfirm: 'Changes will not be saved. Are you sure to close?',
-    chooseCtxTitle: 'Pick translated results'
+    chooseCtxTitle: 'Pick translated results',
+    ctxHelp:
+      'Keep the [:: xxx ::] and --------------- format if you want Saladict to handle translation selection and generate Anki table.'
   },
   machineTrans: {
     switch: 'Switch Language',

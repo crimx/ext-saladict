@@ -226,6 +226,9 @@ export const Notes: FC<NotesProps> = props => {
               onChange={formChanged}
               onKeyDown={stopPropagation}
             />
+            <p className="wordEditorNote_Help">
+              {t('content:wordEditor.ctxHelp')}
+            </p>
             <label htmlFor="wordEditorNote_Note">{t('note.note')}</label>
             <textarea
               rows={5}

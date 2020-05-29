@@ -27,7 +27,9 @@ export const locale: typeof _locale = {
     wordCardsTitle: '單字本其它記錄',
     deleteConfirm: '從單字本中移除？',
     closeConfirm: '記錄尚未儲存，確定關閉？',
-    chooseCtxTitle: '選擇翻譯結果'
+    chooseCtxTitle: '選擇翻譯結果',
+    ctxHelp:
+      '如需相容選擇翻譯結果以及 Anki 生成表格請保持 [:: xxx ::] 和 --------------- 格式。'
   },
   machineTrans: {
     switch: '變更語言',
