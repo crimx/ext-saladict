@@ -99,6 +99,7 @@ export const Notebook: FC = () => {
       <SaladictForm items={formItems} />
       {syncServiceIds.map(id =>
         React.createElement(reqSyncService(`./${id}.tsx`).default, {
+          key: id,
           syncConfig: syncConfigs?.[id],
           show: showSyncServices[id],
           onClose: () =>
