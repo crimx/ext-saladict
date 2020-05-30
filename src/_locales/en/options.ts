@@ -296,6 +296,8 @@ export const locale: typeof _locale = {
       add_yourself: 'Please add it youself in Anki.',
       verify: 'Verify Anki Connect',
       verified: 'Successfully verified Anki Connect',
+      enable_help:
+        'When enabled, each time a new word is added to Notebook it will also be ported to Anki automatically. Words that exist in Anki(with same "Date") can be force-updated in Word Editor.',
       host: 'Address',
       port: 'port',
       key: 'Key',

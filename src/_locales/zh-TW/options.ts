@@ -272,8 +272,7 @@ export const locale: typeof _locale = {
     },
 
     ankiconnect: {
-      description:
-        '請確保 Anki Connect 已安裝且 Anki 在執行。在單字編輯器中也可以更新單字到 Anki。',
+      description: '請確保 Anki Connect 已安裝且 Anki 在執行。',
       tutorial: '教程',
       checking: '連線中...',
       deck_confirm: '牌組「{{deck}}」不存在 Anki 中，是否自動新增？',
@@ -282,10 +281,12 @@ export const locale: typeof _locale = {
         '筆記型別「{{noteType}}」不存在 Anki 中，是否自動新增？',
       notetype_error: '無法建立筆記型別「{{noteType}}」。',
       upload_confirm:
-        '馬上同步本地生詞到 Anki？重複的單詞（相同時間截）會被跳過。',
+        '馬上同步本地生詞到 Anki？重複的單詞（相同“Date”）會被跳過。',
       add_yourself: '請在 Anki 中自行新增。',
       verify: '檢查 Anki Connect',
       verified: '成功檢查 Anki Connect',
+      enable_help:
+        '開啟後每次儲存新單字都會自動同步到 Anki。Anki 上已存在的單字（以“Date”為準）可以在單字編輯器中編輯強制更新覆蓋到 Anki。',
       host: '地址',
       port: '埠',
       key: 'Key',

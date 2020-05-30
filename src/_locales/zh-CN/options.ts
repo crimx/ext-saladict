@@ -268,8 +268,7 @@ export const locale = {
     },
 
     ankiconnect: {
-      description:
-        '请确保 Anki Connect 插件已安装且 Anki 在后台运行。在单词编辑器中也可以更新单词到 Anki。',
+      description: '请确保 Anki Connect 插件已安装且 Anki 在后台运行。',
       tutorial: '教程',
       checking: '连接中...',
       deck_confirm: '牌组「{{deck}}」不存在 Anki 中，是否自动添加？',
@@ -278,10 +277,12 @@ export const locale = {
         '笔记类型「{{noteType}}」不存在 Anki 中，是否自动添加？',
       notetype_error: '无法创建笔记类型「{{noteType}}」。',
       upload_confirm:
-        '马上同步本地生词到 Anki？重复的单词（相同时间截）会被跳过。',
+        '马上同步本地生词到 Anki？重复的单词（相同“Date”）会被跳过。',
       add_yourself: '请在 Anki 中自行添加。',
       verify: '检查 Anki Connect',
       verified: '成功检查 Anki Connect',
+      enable_help:
+        '开启后每次保存新生词都会自动同步到 Anki。Anki 上已存在的单词（以“Date”为准）可以在单词编辑器中编辑强制更新覆盖到 Anki。',
       host: '地址',
       port: '端口',
       key: 'Key',

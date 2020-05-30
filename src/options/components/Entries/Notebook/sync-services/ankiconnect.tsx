@@ -78,6 +78,7 @@ export const AnkiConnectModal: FC<AnkiConnectModalProps> = props => {
         <Form.Item
           name="enable"
           label={t('common:enable')}
+          help={t('syncService.ankiconnect.enable_help')}
           valuePropName="checked"
         >
           <Switch />
