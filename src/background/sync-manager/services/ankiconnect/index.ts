@@ -2,7 +2,7 @@ import axios from 'axios'
 import { Word } from '@/_helpers/record-manager'
 import { parseCtxText } from '@/_helpers/translateCtx'
 import { AddConfig, SyncService } from '../../interface'
-import { getNotebook, setSyncConfig } from '../../helpers'
+import { getNotebook } from '../../helpers'
 import { message } from '@/_helpers/browser-api'
 import { Message } from '@/typings/message'
 
@@ -183,12 +183,12 @@ export class Service extends SyncService<SyncConfig> {
   }
 
   async request<R = void>(action: string, params?: any): Promise<R> {
-    // Very puzzling. It seems axios auto-extracts the result field from response.
     const { data } = await axios({
       method: 'post',
       url: `http://${this.config.host}:${this.config.port}`,
       data: {
         key: this.config.key || null,
+        version: 6,
         action,
         params: params || {}
       }
@@ -198,7 +198,15 @@ export class Service extends SyncService<SyncConfig> {
       console.log(`Anki Connect ${action} response`, data)
     }
 
-    return data
+    if (!data || !Object.prototype.hasOwnProperty.call(data, 'result')) {
+      throw new Error('Deprecated Anki Connect version')
+    }
+
+    if (data.error) {
+      throw new Error(data.error)
+    }
+
+    return data.result
   }
 
   wordToFields(word: Readonly<Word>): NoteFields {
