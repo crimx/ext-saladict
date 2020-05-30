@@ -26,8 +26,6 @@ export class Service extends SyncService<SyncConfig> {
     if (!(await this.isLogin())) {
       throw new Error('login')
     }
-
-    await setSyncConfig<SyncConfig>(Service.id, this.config)
   }
 
   async add(config: AddConfig) {

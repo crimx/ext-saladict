@@ -203,6 +203,7 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
         return notifyError(e)
       }
 
+      service.setMeta({})
       setServiceChecking(false)
     }
 

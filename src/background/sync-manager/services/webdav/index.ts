@@ -10,7 +10,6 @@ import {
   setNotebook,
   setMeta,
   getMeta,
-  setSyncConfig,
   notifyError
 } from '../../helpers'
 
@@ -183,9 +182,6 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
         throw new Error('mkcol')
       }
     }
-
-    await setSyncConfig<SyncConfig>(Service.id, this.config)
-    await this.setMeta({})
 
     if (dir) {
       try {

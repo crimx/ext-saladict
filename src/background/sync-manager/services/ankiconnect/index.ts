@@ -65,8 +65,6 @@ export class Service extends SyncService<SyncConfig> {
     if (!noteTypes?.includes(this.config.noteType)) {
       throw new Error('notetype')
     }
-
-    await setSyncConfig<SyncConfig>(Service.id, this.config)
   }
 
   handleMessage = (msg: Message) => {
