@@ -7,7 +7,7 @@ import {
   tap,
   switchMapTo
 } from 'rxjs/operators'
-import { merge, from, empty } from 'rxjs'
+import { merge, from, EMPTY } from 'rxjs'
 import { StoreAction } from '../modules'
 import { Epic, ofType } from './utils'
 import { isInNotebook, saveWord } from '@/_helpers/record-manager'
@@ -75,7 +75,7 @@ export const searchStartEpic: Epic = (action$, state$) =>
 
       const playAudio$ =
         payload && payload.id
-          ? empty()
+          ? EMPTY
           : searchResults$$.pipe(
               filter(({ id, audio, result }) => {
                 if (!audio) return false
@@ -111,7 +111,7 @@ export const searchStartEpic: Epic = (action$, state$) =>
                 })
               }),
               // never pass to down stream
-              switchMapTo(empty())
+              switchMapTo(EMPTY)
             )
 
       return merge(

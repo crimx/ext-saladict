@@ -7,7 +7,7 @@ import { isStandalonePage, isInDictPanel } from '@/_helpers/saladict'
 import { checkSupportedLangs } from '@/_helpers/lang-check'
 import { message } from '@/_helpers/browser-api'
 
-import { fromEvent, merge, of, timer, combineLatest, empty, from } from 'rxjs'
+import { fromEvent, merge, of, timer, combineLatest, EMPTY, from } from 'rxjs'
 import {
   map,
   mapTo,
@@ -23,7 +23,7 @@ import {
  * Create an instant capture Observable
  */
 export function createIntantCaptureStream(config: AppConfig | null) {
-  if (!config) return empty()
+  if (!config) return EMPTY
 
   const isPinned$ = message.self
     .createStream('PIN_STATE')

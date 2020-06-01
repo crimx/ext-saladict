@@ -1,5 +1,5 @@
 import { combineEpics } from 'redux-observable'
-import { from, of, empty } from 'rxjs'
+import { from, of, EMPTY } from 'rxjs'
 import { map, mapTo, mergeMap, filter } from 'rxjs/operators'
 
 import { isPopupPage, isStandalonePage } from '@/_helpers/saladict'
@@ -62,7 +62,7 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
                 console.warn(e)
               })
 
-            return empty()
+            return EMPTY
           }
 
           return of({

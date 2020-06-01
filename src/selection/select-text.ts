@@ -1,4 +1,4 @@
-import { empty, fromEvent, merge, timer, Observable } from 'rxjs'
+import { EMPTY, fromEvent, merge, timer, Observable } from 'rxjs'
 import {
   withLatestFrom,
   filter,
@@ -34,7 +34,7 @@ import { isTypeField, newSelectionWord } from './helper'
 
 export function createSelectTextStream(config: AppConfig | null) {
   if (!config) {
-    return empty()
+    return EMPTY
   }
 
   return config.touchMode ? withTouchMode(config) : withoutTouchMode(config)
