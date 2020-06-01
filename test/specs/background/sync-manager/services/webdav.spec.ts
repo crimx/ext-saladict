@@ -510,7 +510,7 @@ describe('Sync service WebDAV', () => {
       expect(fetchInit.createDir).lastCalledWith(...fetchArgs.createDir(config))
       expect(fetchInit.upload).toHaveBeenCalledTimes(0)
       expect(fetchInit.download).toHaveBeenCalledTimes(0)
-      expect(helpers.setMeta).toHaveBeenCalledTimes(1)
+      expect(helpers.setMeta).toHaveBeenCalledTimes(0)
       expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
     })
 
@@ -574,7 +574,7 @@ describe('Sync service WebDAV', () => {
       // expect(fetchInit.createDir).toHaveBeenCalledTimes(0)
       expect(fetchInit.upload).toHaveBeenCalledTimes(0)
       expect(fetchInit.download).toHaveBeenCalledTimes(0)
-      expect(helpers.setMeta).toHaveBeenCalledTimes(1)
+      expect(helpers.setMeta).toHaveBeenCalledTimes(0)
       expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
     })
 
