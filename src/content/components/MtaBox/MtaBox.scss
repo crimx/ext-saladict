@@ -41,6 +41,11 @@
   font-size: 0;
   background-color: var(--color-background);
   cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border: 1px solid var(--color-font) !important;
+  }
 }
 
 .mtaBox-DrawerBtn_Arrow {
