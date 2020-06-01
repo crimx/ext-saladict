@@ -47,6 +47,7 @@ const mapStateToProps: MapStateToProps<
       state.config.qsFocus) ||
       isPopupPage()), // or popup page
   enableSuggest: state.config.searchSuggests,
+  isTrackHistory: state.config.searchHistory,
   histories: state.searchHistory,
   historyIndex: state.historyIndex,
   showedDictAuth: state.config.showedDictAuth,

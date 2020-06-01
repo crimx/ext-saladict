@@ -12,7 +12,7 @@ export const locale: typeof _locale = {
     historyNext: '下一個查單字記錄',
     searchText: '查單字',
     openOptions: '開啟設定',
-    addToNotebook: '儲存到單字本，右鍵開啟單字本',
+    addToNotebook: '儲存單字到單字本，右点击開啟單字本',
     openNotebook: '開啟單字本',
     openHistory: '開啟查單字記錄',
     shareImg: '以圖片方式分享查單字結果',

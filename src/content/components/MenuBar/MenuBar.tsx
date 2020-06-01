@@ -20,6 +20,7 @@ import {
   HistoryNextBtn,
   FavBtn,
   HistoryBtn,
+  NotebookBtn,
   PinBtn,
   CloseBtn,
   SidebarBtn,
@@ -40,6 +41,7 @@ export interface MenuBarProps {
   shouldFocus: boolean
   enableSuggest: boolean
 
+  isTrackHistory: boolean
   histories: Word[]
   historyIndex: number
   updateHistoryIndex: (index: number) => any
@@ -144,15 +146,28 @@ export const MenuBar: FC<MenuBarProps> = props => {
           }
         }}
       />
-      <HistoryBtn
-        t={t}
-        onClick={() =>
-          message.send({
-            type: 'OPEN_URL',
-            payload: { url: 'history.html', self: true }
-          })
-        }
-      />
+      {props.isTrackHistory ? (
+        <HistoryBtn
+          t={t}
+          onClick={() =>
+            message.send({
+              type: 'OPEN_URL',
+              payload: { url: 'history.html', self: true }
+            })
+          }
+        />
+      ) : (
+        <NotebookBtn
+          t={t}
+          onClick={() =>
+            message.send({
+              type: 'OPEN_URL',
+              payload: { url: 'notebook.html', self: true }
+            })
+          }
+        />
+      )}
+
       {isQuickSearchPage() ? (
         <>
           <FocusBtn

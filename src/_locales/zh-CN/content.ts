@@ -10,7 +10,7 @@ export const locale = {
     historyNext: '下一个查词记录',
     searchText: '查单词',
     openOptions: '打开设置',
-    addToNotebook: '保存到生词本，右键打开生词本',
+    addToNotebook: '保存单词到生词本，右键打开生词本',
     openNotebook: '打开生词本',
     openHistory: '打开查词记录',
     shareImg: '以图片方式分享查词结果',

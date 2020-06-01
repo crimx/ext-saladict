@@ -69,6 +69,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
         addToNoteBook={action('Add to Notebook')}
         shouldFocus={true}
         enableSuggest={boolean('Enable Suggest', true)}
+        isTrackHistory={boolean('Track History', true)}
         histories={histories}
         historyIndex={number('History Index', 0)}
         updateHistoryIndex={action('Update History Index')}

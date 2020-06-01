@@ -13,6 +13,7 @@ import {
   OptionsBtn,
   FavBtn,
   HistoryBtn,
+  NotebookBtn,
   PinBtn,
   FocusBtn,
   CloseBtn,
@@ -91,6 +92,15 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
   .add('HistoryBtn', () => {
     return (
       <HistoryBtn
+        t={i18next.getFixedT(i18next.language, 'content')}
+        disabled={boolean('Disabled', false)}
+        onClick={action('onClick')}
+      />
+    )
+  })
+  .add('NotebookBtn', () => {
+    return (
+      <NotebookBtn
         t={i18next.getFixedT(i18next.language, 'content')}
         disabled={boolean('Disabled', false)}
         onClick={action('onClick')}
