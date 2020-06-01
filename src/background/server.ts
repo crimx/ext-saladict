@@ -130,10 +130,7 @@ export class BackgroundServer {
   }
 
   async searchClipboard(): Promise<void> {
-    const text = getTextFromClipboard()
-    if (!text) return
-
-    const word = newWord({ text })
+    const word = newWord({ text: getTextFromClipboard() })
 
     if (await this.qsPanelManager.hasCreated()) {
       await message.send({
