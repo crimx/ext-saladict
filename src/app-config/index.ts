@@ -257,11 +257,11 @@ function _getDefaultConfig() {
     /** context tranlate engines */
     ctxTrans: {
       google: true,
-      sogou: true,
       youdaotrans: true,
       baidu: true,
       tencent: false,
-      caiyun: false
+      caiyun: false,
+      sogou: false
     },
 
     /** start searching when source containing the languages */
