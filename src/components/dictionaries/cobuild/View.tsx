@@ -2,10 +2,7 @@ import React, { FC, useState } from 'react'
 import { Speaker } from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
 import { COBUILDResult, COBUILDCibaResult, COBUILDColResult } from './engine'
-import {
-  ViewPorps,
-  useHorizontalScroll
-} from '@/components/dictionaries/helpers'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 
 export const DictCOBUILD: FC<ViewPorps<COBUILDResult>> = ({ result }) => {
   switch (result.type) {
@@ -55,46 +52,31 @@ function renderCiba(result: COBUILDCibaResult) {
 }
 
 function renderCol(result: COBUILDColResult) {
-  const [curSection, setCurSection] = useState(result.sections[0])
-  const tabsRef = useHorizontalScroll<HTMLDivElement>()
+  const [iSec, setiSec] = useState('0')
+  const curSection = result.sections[iSec]
 
   return (
     <div className="dictCOBUILD-ColEntry">
+      {result.sections.length > 0 && (
+        <select value={iSec} onChange={e => setiSec(e.currentTarget.value)}>
+          {result.sections.map((section, i) => (
+            <option key={section.id} value={i}>
+              {section.type}
+              {section.title ? ` :${section.title}` : ''}
+              {section.num ? ` ${section.num}` : ''}
+            </option>
+          ))}
+        </select>
+      )}
       <div className="dictionary">
         <div className="dc">
-          <div className="navigation">
-            <div className="tabsNavigation" ref={tabsRef}>
-              {result.sections.map(section => (
-                <a
-                  key={section.id}
-                  className={`tab${
-                    section.id === curSection.id ? ' current' : ''
-                  }`}
-                  href="#"
-                  onClick={e => {
-                    e.stopPropagation()
-                    e.preventDefault()
-                    setCurSection(section)
-                  }}
-                >
-                  {section.type}
-                  {section.title ? ` :${section.title}` : ''}
-                  {section.num ? (
-                    <span className="expo">{section.num}</span>
-                  ) : (
-                    ''
-                  )}
-                </a>
-              ))}
-            </div>
-          </div>
           <div className="he">
             <div className="page">
               <div className="dictionary">
                 <div className="dictentry">
                   <div className="dictlink">
                     <div
-                      key={curSection.id}
+                      key={curSection}
                       className={curSection.className}
                       dangerouslySetInnerHTML={{ __html: curSection.content }}
                     />

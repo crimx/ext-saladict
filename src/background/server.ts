@@ -6,13 +6,9 @@ import { newWord } from '@/_helpers/record-manager'
 import { Message, MessageResponse } from '@/typings/message'
 import {
   SearchFunction,
-  DictSearchResult
+  DictSearchResult,
+  GetSrcPageFunction
 } from '@/components/dictionaries/helpers'
-import {
-  syncServiceInit,
-  syncServiceDownload,
-  syncServiceUpload
-} from './sync-manager'
 import {
   isInNotebook,
   saveWord,
@@ -41,7 +37,12 @@ export class BackgroundServer {
 
   static init = BackgroundServer.getInstance
 
-  static getDictEngine(id: DictID) {
+  static getDictEngine<P = {}>(
+    id: DictID
+  ): Promise<{
+    search: SearchFunction<DictSearchResult<any>, P>
+    getSrcPage: GetSrcPageFunction
+  }> {
     return import(
       /* webpackInclude: /engine\.ts$/ */
       /* webpackMode: "lazy" */
@@ -63,6 +64,9 @@ export class BackgroundServer {
           return openURL(msg.payload.url, msg.payload.self)
         case 'PLAY_AUDIO':
           return AudioManager.getInstance().play(msg.payload)
+        case 'STOP_AUDIO':
+          AudioManager.getInstance().reset()
+          return
         case 'FETCH_DICT_RESULT':
           return this.fetchDictResult(msg.payload)
         case 'DICT_ENGINE_METHOD':
@@ -78,6 +82,7 @@ export class BackgroundServer {
         case 'OPEN_QS_PANEL':
           return this.openQSPanel()
         case 'CLOSE_QS_PANEL':
+          AudioManager.getInstance().reset()
           return this.qsPanelManager.destroy()
         case 'QS_SWITCH_SIDEBAR':
           return this.qsPanelManager.toggleSidebar(msg.payload)
@@ -86,12 +91,12 @@ export class BackgroundServer {
           return isInNotebook(msg.payload)
         case 'SAVE_WORD':
           return saveWord(msg.payload).then(response => {
-            setTimeout(() => message.send({ type: 'WORD_SAVED' }), 0)
+            this.notifyWordSaved()
             return response
           })
         case 'DELETE_WORDS':
           return deleteWords(msg.payload).then(response => {
-            setTimeout(() => message.send({ type: 'WORD_SAVED' }), 0)
+            this.notifyWordSaved()
             return response
           })
         case 'GET_WORDS_BY_TEXT':
@@ -100,16 +105,18 @@ export class BackgroundServer {
           return getWords(msg.payload)
         case 'GET_SUGGESTS':
           return getSuggests(msg.payload)
-
-        case 'SYNC_SERVICE_INIT':
-          return syncServiceInit(msg.payload)
-        case 'SYNC_SERVICE_DOWNLOAD':
-          return syncServiceDownload(msg.payload)
-        case 'SYNC_SERVICE_UPLOAD':
-          return syncServiceUpload(msg.payload)
-
         case 'YOUDAO_TRANSLATE_AJAX':
           return this.youdaoTranslateAjax(msg.payload)
+      }
+    })
+
+    browser.runtime.onConnect.addListener(port => {
+      if (port.name === 'popup') {
+        // This is a workaround for browser action page
+        // which does not fire beforeunload event
+        port.onDisconnect.addListener(() => {
+          AudioManager.getInstance().reset()
+        })
       }
     })
   }
@@ -123,10 +130,7 @@ export class BackgroundServer {
   }
 
   async searchClipboard(): Promise<void> {
-    const text = getTextFromClipboard()
-    if (!text) return
-
-    const word = newWord({ text })
+    const word = newWord({ text: getTextFromClipboard() })
 
     if (await this.qsPanelManager.hasCreated()) {
       await message.send({
@@ -160,51 +164,66 @@ export class BackgroundServer {
   async fetchDictResult(
     data: Message<'FETCH_DICT_RESULT'>['payload']
   ): Promise<MessageResponse<'FETCH_DICT_RESULT'>> {
-    let search: SearchFunction<
-      DictSearchResult<any>,
-      NonNullable<typeof data['payload']>
-    >
-
-    try {
-      ;({ search } = await BackgroundServer.getDictEngine(data.id))
-    } catch (err) {
-      return Promise.reject(err)
-    }
-
     const payload = data.payload || {}
 
-    return timeout(
-      search(data.text, window.appConfig, window.activeProfile, payload),
-      25000
-    )
-      .catch(async (err: Error) => {
-        if (process.env.DEBUG) {
-          console.warn(data.id, err)
-        }
+    let response: DictSearchResult<any> | undefined
 
-        if (err.message === 'NETWORK_ERROR') {
+    try {
+      const { search } = await BackgroundServer.getDictEngine<
+        NonNullable<typeof data['payload']>
+      >(data.id)
+
+      try {
+        response = await timeout(
+          search(data.text, window.appConfig, window.activeProfile, payload),
+          25000
+        )
+      } catch (e) {
+        if (e.message === 'NETWORK_ERROR') {
           // retry once
           await timer(500)
-          return timeout(
+          response = await timeout(
             search(data.text, window.appConfig, window.activeProfile, payload),
             25000
           )
+        } else {
+          throw e
         }
+      }
+    } catch (e) {
+      if (process.env.DEBUG) {
+        console.warn(data.id, e)
+      }
+    }
 
-        return Promise.reject(err)
-      })
-      .then(response => ({ ...response, id: data.id }))
-      .catch(err => {
-        if (process.env.DEBUG) {
-          console.warn(data.id, err)
-        }
-        return { result: null, id: data.id }
-      })
+    const result = response
+      ? { ...response, id: data.id }
+      : { result: null, id: data.id }
+
+    if (process.env.DEBUG) {
+      console.log(`Search Engine ${data.id}`, data.text, result)
+    }
+
+    return result
   }
 
   async callDictEngineMethod(data: Message<'DICT_ENGINE_METHOD'>['payload']) {
     const engine = await BackgroundServer.getDictEngine(data.id)
     return engine[data.method](...(data.args || []))
+  }
+
+  notifyWordSaved() {
+    browser.tabs.query({}).then(tabs => {
+      tabs.forEach(async tab => {
+        if (tab.id && tab.url) {
+          try {
+            await message.send(tab.id, { type: 'WORD_SAVED' })
+          } catch (e) {
+            console.warn(e)
+          }
+        }
+      })
+    })
   }
 
   /** Bypass http restriction */

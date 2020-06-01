@@ -12,7 +12,7 @@ export const locale: typeof _locale = {
     historyNext: '下一個查單字記錄',
     searchText: '查單字',
     openOptions: '開啟設定',
-    addToNotebook: '儲存到單字本，右鍵開啟單字本',
+    addToNotebook: '儲存單字到單字本，右点击開啟單字本',
     openNotebook: '開啟單字本',
     openHistory: '開啟查單字記錄',
     shareImg: '以圖片方式分享查單字結果',
@@ -27,7 +27,9 @@ export const locale: typeof _locale = {
     wordCardsTitle: '單字本其它記錄',
     deleteConfirm: '從單字本中移除？',
     closeConfirm: '記錄尚未儲存，確定關閉？',
-    chooseCtxTitle: '選擇翻譯結果'
+    chooseCtxTitle: '選擇翻譯結果',
+    ctxHelp:
+      '如需相容選擇翻譯結果以及 Anki 生成表格請保持 [:: xxx ::] 和 --------------- 格式。'
   },
   machineTrans: {
     switch: '變更語言',
@@ -35,5 +37,10 @@ export const locale: typeof _locale = {
     tl: '目標語言',
     auto: '偵測語言',
     stext: '原文'
+  },
+  updateAnki: {
+    title: '更新到 Anki',
+    success: '更新到 Anki 成功。',
+    failed: '更新單詞到 Anki 失敗。'
   }
 }

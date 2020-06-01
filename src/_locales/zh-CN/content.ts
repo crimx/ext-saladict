@@ -10,7 +10,7 @@ export const locale = {
     historyNext: '下一个查词记录',
     searchText: '查单词',
     openOptions: '打开设置',
-    addToNotebook: '保存到生词本，右键打开生词本',
+    addToNotebook: '保存单词到生词本，右键打开生词本',
     openNotebook: '打开生词本',
     openHistory: '打开查词记录',
     shareImg: '以图片方式分享查词结果',
@@ -25,7 +25,9 @@ export const locale = {
     wordCardsTitle: '生词本其它记录',
     deleteConfirm: '从单词本中移除？',
     closeConfirm: '记录尚未保存，确认关闭？',
-    chooseCtxTitle: '选择翻译结果'
+    chooseCtxTitle: '选择翻译结果',
+    ctxHelp:
+      '如需兼容选择翻译结果以及 Anki 生成表格请保持 [:: xxx ::] 和 --------------- 格式。'
   },
   machineTrans: {
     switch: '更改语言',
@@ -33,5 +35,10 @@ export const locale = {
     tl: '目标语言',
     auto: '自动检测',
     stext: '原文'
+  },
+  updateAnki: {
+    title: '更新到 Anki',
+    success: '更新到 Anki 成功。',
+    failed: '更新单词到 Anki 失败。'
   }
 }

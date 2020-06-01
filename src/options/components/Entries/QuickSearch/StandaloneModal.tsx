@@ -49,6 +49,11 @@ export const StandaloneModal: FC<StandaloneModalProps> = ({
           )
         },
         {
+          name: getConfigPath('qssaRectMemo'),
+          valuePropName: 'checked',
+          children: <Switch />
+        },
+        {
           name: getConfigPath('qssaPageSel'),
           valuePropName: 'checked',
           children: <Switch />

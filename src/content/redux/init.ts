@@ -91,6 +91,21 @@ export const init = (
         return isPopupPage() ? Promise.resolve(true) : Promise.resolve()
       }
 
+      case 'WORD_SAVED': {
+        const { text } = getState()
+        if (text) {
+          message
+            .send<'IS_IN_NOTEBOOK'>({
+              type: 'IS_IN_NOTEBOOK',
+              payload: newWord({ text })
+            })
+            .then(isInNotebook => {
+              dispatch({ type: 'WORD_IN_NOTEBOOK', payload: isInNotebook })
+            })
+        }
+        break
+      }
+
       case 'ADD_NOTEBOOK': {
         if (msg.payload.popup === isPopupPage()) {
           dispatch({ type: 'ADD_TO_NOTEBOOK' })

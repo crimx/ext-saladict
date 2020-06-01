@@ -1,4 +1,4 @@
-import { empty, merge } from 'rxjs'
+import { EMPTY, merge } from 'rxjs'
 import { share, buffer, debounceTime, filter } from 'rxjs/operators'
 import { AppConfig } from '@/app-config'
 import { isStandalonePage, isOptionsPage } from '@/_helpers/saladict'
@@ -11,7 +11,7 @@ import { whenKeyPressed, isQSKey } from './helper'
  */
 export function createQuickSearchStream(config: AppConfig | null) {
   if (!config || !config.tripleCtrl || isStandalonePage() || isOptionsPage()) {
-    return empty()
+    return EMPTY
   }
 
   const qsKeyPressed$$ = share<true>()(whenKeyPressed(isQSKey))

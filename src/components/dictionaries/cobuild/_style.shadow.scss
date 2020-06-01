@@ -502,6 +502,7 @@
   }
 
   .dc .h2_entry {
+    display: none;
     font-size: 1.4em;
     margin-bottom: 0.5em;
   }
@@ -886,6 +887,7 @@
   }
 
   .page .copyright {
+    text-align: center;
     color: gray;
     font-size: small;
     margin-top: 10px;

@@ -109,6 +109,8 @@ export const locale: typeof _locale = {
     qssaHeight: '視窗高度',
     qssaPageSel: '響應滑字',
     qssaPageSel_help: '對網頁滑鼠滑字作出反應。',
+    qssaRectMemo: '記住位置和大小',
+    qssaRectMemo_help: '獨立視窗關閉時記住位置和大小。',
     updateCheck: '檢查更新',
     updateCheck_help: '自動檢查更新',
     analytics: '啟用 Google Analytics',
@@ -235,19 +237,14 @@ export const locale: typeof _locale = {
 
   syncService: {
     description: '資料同步設定。',
-    start: '同步已在背景開始',
+    start: '同步進行中，結束前請勿關閉此頁面。',
+    finished: '同步結束',
     success: '同步成功',
     failed: '同步失敗',
     close_confirm: '設定未儲存，關閉？',
     delete_confirm: '清空同步設定？',
 
-    btn: {
-      shanbay: '新增扇貝生詞本同步',
-      webdav: '新增 WebDAV 同步'
-    },
-
     shanbay: {
-      title: '扇貝生詞本同步',
       description:
         '先去 shanbay.com 登入扇貝（退出後將失效）。開啟後將單向同步到扇貝生詞本（只從沙拉查詞到扇貝），只同步新增單詞（刪除不同步），只同步單詞本身（上下文等均不能同步）。生詞需要扇貝單詞庫支援才能被新增。',
       login: '將開啟扇貝官網，請登入再回來重新開啟。',
@@ -260,22 +257,51 @@ export const locale: typeof _locale = {
     webdav: {
       description:
         '應用設定（包括本設定）已通過瀏覽器自動同步。生詞本可通過本設定實現 WebDAV 同步。',
-      title: 'WebDAV 同步',
       jianguo: '參考堅果雲設定',
       checking: '連線中...',
+      exist_confirm: '伺服器上已存在 Saladict 目錄。是否下載合併到本地？',
+      upload_confirm: '馬上上傳本地資料到伺服器？',
+      verify: '驗證伺服器',
+      verified: '成功驗證伺服器',
       duration: '同步頻率',
       duration_help:
         '新增生字後會馬上上傳，資料會在上傳前保證同步，所以如果不需要多個瀏覽器即時檢視更新，可將更新檢查週期調大些以減少資源佔用及避免伺服器拒絕回應。',
-      err_exist: '伺服器上 Saladict 目錄下的檔案將被替換。先下載合併到本機？',
-      err_mkcol: '無法在伺服器建立“Saladict”目錄。請手動在伺服器上建立。',
-      err_network: '連線伺服器失敗。',
-      err_parse: '伺服器返回 XML 格式不正確。',
-      err_unauthorized: '帳戶或密碼不正確。',
-      err_unknown: '不詳錯誤 「{{error}}」。',
-      err_internal: '無法儲存。',
       passwd: '密碼',
       url: '伺服器位址',
       user: '帳戶'
+    },
+
+    ankiconnect: {
+      description: '請確保 Anki Connect 已安裝且 Anki 在執行。',
+      tutorial: '教程',
+      checking: '連線中...',
+      deck_confirm: '牌組「{{deck}}」不存在 Anki 中，是否自動新增？',
+      deck_error: '無法建立牌組「{{deck}}」。',
+      notetype_confirm:
+        '筆記型別「{{noteType}}」不存在 Anki 中，是否自動新增？',
+      notetype_error: '無法建立筆記型別「{{noteType}}」。',
+      upload_confirm:
+        '馬上同步本地生詞到 Anki？重複的單詞（相同“Date”）會被跳過。',
+      add_yourself: '請在 Anki 中自行新增。',
+      verify: '檢查 Anki Connect',
+      verified: '成功檢查 Anki Connect',
+      enable_help:
+        '開啟後每次儲存新單字都會自動同步到 Anki。Anki 上已存在的單字（以“Date”為準）可以在單字編輯器中編輯強制更新覆蓋到 Anki。',
+      host: '地址',
+      port: '埠',
+      key: 'Key',
+      key_help: '可在 Anki Connect 外掛中設定 key 以做簡單令牌。',
+      deckName: '牌組',
+      deckName_help:
+        '如果不存在的話可以點下方「檢查 Anki Connect」讓本設定生成預設牌組。也可以自行在 Anki 中管理。',
+      noteType: '筆記型別',
+      noteType_help:
+        'Anki 筆記型別包括一套欄位和卡片型別。如果不存在的話可以點下方「檢查 Anki Connect」讓本設定生成一套預設的筆記型別。也可以自行在 Anki 中管理。',
+      tags: '標籤',
+      tags_help: 'Anki 筆記可以附帶標籤。以逗號分割。',
+      escapeHTML: '轉義 HTML',
+      escapeHTML_help:
+        '對筆記內容中的 HTML 字元進行轉義。如手動進行 HTML 排版請關閉選項。'
     }
   },
 

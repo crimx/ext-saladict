@@ -1,4 +1,4 @@
-import { empty, Observable } from 'rxjs'
+import { EMPTY, Observable } from 'rxjs'
 
 const emptyPromise = (): Promise<any> => Promise.resolve()
 
@@ -6,7 +6,7 @@ export const setSyncConfig = jest.fn(emptyPromise)
 
 export const getSyncConfig = jest.fn(emptyPromise)
 
-export const createSyncConfigStream = jest.fn((): Observable<any> => empty())
+export const createSyncConfigStream = jest.fn((): Observable<any> => EMPTY)
 
 export const setMeta = jest.fn(emptyPromise)
 

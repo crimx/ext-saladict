@@ -22,7 +22,10 @@ if (wordString) {
   try {
     const word = JSON.parse(decodeURIComponent(wordString))
     if (word) {
-      store.dispatch({ type: 'WORD_EDITOR_STATUS', payload: { word } })
+      store.dispatch({
+        type: 'WORD_EDITOR_STATUS',
+        payload: { word, translateCtx: true }
+      })
     }
   } catch (e) {
     console.warn(e)

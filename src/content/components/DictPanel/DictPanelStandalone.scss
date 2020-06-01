@@ -8,6 +8,7 @@
   height: 500px;
   --panel-width: 450px;
   --panel-max-height: 500px;
+  border-radius: 0;
   box-shadow: rgba(0, 0, 0, 0.8) 0px 5px 20px -12px;
 
   &.isAnimate {

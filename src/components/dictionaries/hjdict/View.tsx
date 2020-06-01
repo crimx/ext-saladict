@@ -51,7 +51,6 @@ function LangSelect(props: ViewPorps<HjdictResult>) {
 
   return (
     <select
-      style={{ width: '100%' }}
       value={langCode}
       onChange={e =>
         props.searchText({

@@ -1,14 +1,16 @@
 import React, { FC } from 'react'
 import { isInternalPage } from '@/_helpers/saladict'
 
+export type WordEditorPanelBtns = Array<{
+  type?: 'normal' | 'primary'
+  title: React.ReactNode
+  onClick: () => void
+}>
+
 export interface WordEditorPanelProps {
   containerWidth: number
   title: React.ReactNode
-  btns?: ReadonlyArray<{
-    type?: 'normal' | 'primary'
-    title: React.ReactNode
-    onClick: () => void
-  }>
+  btns?: WordEditorPanelBtns
   onClose: () => void
 }
 

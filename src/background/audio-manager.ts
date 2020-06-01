@@ -1,4 +1,4 @@
-import { timeout } from '@/_helpers/promise-more'
+import { timer } from '@/_helpers/promise-more'
 
 /**
  * To make sure only one audio plays at a time
@@ -16,6 +16,8 @@ export class AudioManager {
 
   private audio?: HTMLAudioElement
 
+  currentSrc?: string
+
   reset() {
     if (this.audio) {
       this.audio.pause()
@@ -23,28 +25,33 @@ export class AudioManager {
       this.audio.src = ''
       this.audio.onended = null
     }
+    this.currentSrc = ''
   }
 
   load(src: string): HTMLAudioElement {
     this.reset()
+    this.currentSrc = src
     return (this.audio = new Audio(src))
   }
 
   async play(src?: string): Promise<void> {
-    if (!src) {
+    if (!src || src === this.currentSrc) {
       this.reset()
       return
     }
 
     const audio = this.load(src)
 
-    const onEnd = new Promise(resolve => {
-      audio.onended = resolve
-    })
+    const onEnd = Promise.race([
+      new Promise(resolve => {
+        audio.onended = resolve
+      }),
+      timer(20000)
+    ])
 
-    await audio
-      .play()
-      .then(() => timeout(onEnd, 4000))
-      .catch(() => {})
+    await audio.play()
+    await onEnd
+
+    this.currentSrc = ''
   }
 }

@@ -6,13 +6,16 @@ import {
   Modal,
   Button,
   message as antdMsg,
-  notification
+  notification,
+  Switch
 } from 'antd'
 import { FormInstance } from 'antd/lib/form'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { Service, SyncConfig } from '@/background/sync-manager/services/webdav'
-import { removeSyncConfig } from '@/background/sync-manager/helpers'
-import { message } from '@/_helpers/browser-api'
+import {
+  removeSyncConfig,
+  setSyncConfig
+} from '@/background/sync-manager/helpers'
 import { useTranslate } from '@/_helpers/i18n'
 import { InputNumberGroup } from '@/options/components/InputNumberGroup'
 
@@ -22,17 +25,15 @@ export interface WebdavModalProps {
   onClose: () => void
 }
 
-type ServiceResponse = undefined | { error: string }
-
 export const WebdavModal: FC<WebdavModalProps> = props => {
-  const { t } = useTranslate(['options', 'common'])
+  const { t, i18n } = useTranslate(['options', 'common', 'sync'])
   const [serviceChecking, setServiceChecking] = useState(false)
   const formRef = useRef<FormInstance>(null)
 
   return (
     <Modal
       visible={props.show}
-      title={t('syncService.webdav.title')}
+      title={t('sync:webdav.title')}
       onOk={submitForm}
       onCancel={closeModal}
       destroyOnClose
@@ -41,10 +42,17 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
           {t('common:delete')}
         </Button>,
         <Button
+          key="verify"
+          disabled={serviceChecking}
+          loading={serviceChecking}
+          onClick={verifyService}
+        >
+          {t('syncService.webdav.verify')}
+        </Button>,
+        <Button
           key="save"
           type="primary"
-          disabled={false}
-          loading={serviceChecking}
+          disabled={serviceChecking}
           onClick={submitForm}
         >
           {t('common:save')}
@@ -56,7 +64,7 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
     >
       <Form
         ref={formRef}
-        initialValues={props.syncConfig || { duration: 15 }}
+        initialValues={props.syncConfig || Service.getDefaultConfig()}
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 18 }}
         onFinish={saveService}
@@ -71,6 +79,13 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
             {t('syncService.webdav.jianguo')}
           </a>
         </p>
+        <Form.Item
+          name="enable"
+          label={t('common:enable')}
+          valuePropName="checked"
+        >
+          <Switch />
+        </Form.Item>
         <Form.Item
           name="url"
           label={t('syncService.webdav.url')}
@@ -131,81 +146,96 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
     })
   }
 
+  async function verifyService() {
+    const config = extractConfigFromForm()
+    if (!config) return
+
+    setServiceChecking(true)
+
+    const service = new Service(config)
+
+    try {
+      if (!config.url) {
+        throw new Error('network')
+      }
+      try {
+        await service.init()
+      } catch (error) {
+        const errorText = typeof error === 'string' ? error : error.message
+        if (errorText !== 'exist') {
+          throw error
+        }
+        if (confirm(t('syncService.webdav.exist_confirm'))) {
+          await service.download({ noCache: true })
+        }
+      }
+      if (confirm(t('syncService.webdav.upload_confirm'))) {
+        await service.add({ force: true })
+      }
+      notification.success({ message: t('syncService.webdav.verified') })
+    } catch (error) {
+      notifyError(error)
+    }
+
+    setServiceChecking(false)
+  }
+
   async function saveService() {
+    const config = extractConfigFromForm()
+    if (!config) return
+
+    if (config.enable) {
+      if (!config.url) {
+        return notifyError('network')
+      }
+
+      setServiceChecking(true)
+
+      const service = new Service(config)
+
+      try {
+        const dir = await service.checkDir()
+        if (!dir) {
+          throw new Error('missing')
+        }
+      } catch (e) {
+        setServiceChecking(false)
+        return notifyError(e)
+      }
+
+      service.setMeta({})
+      setServiceChecking(false)
+    }
+
+    try {
+      await setSyncConfig(Service.id, config)
+      props.onClose()
+    } catch (error) {
+      notifyError(error)
+    }
+  }
+
+  function extractConfigFromForm(): SyncConfig | undefined {
     if (!formRef.current) {
       if (process.env.DEBUG) {
         console.error(new Error('Missing form ref when saving service'))
       }
       notification.error({
         message: 'Error',
-        description: t('syncService.webdav.err_internal')
+        description: t('sync:webdav.error.internal')
       })
       return
     }
 
-    setServiceChecking(true)
-
     const values = formRef.current.getFieldsValue()
-    if (values.url && !values.url.endsWith('/')) {
-      values.url += '/'
-    }
 
-    try {
-      const initRes = await message.send<'SYNC_SERVICE_INIT', ServiceResponse>({
-        type: 'SYNC_SERVICE_INIT',
-        payload: {
-          serviceID: Service.id,
-          config: values
-        }
-      })
-
-      const initError = initRes?.error
-      if (initError) {
-        if (initError !== 'exist') {
-          throw initError
-        } else if (confirm(t('syncService.webdav.err_exist'))) {
-          const downloadRes = await message.send<
-            'SYNC_SERVICE_DOWNLOAD',
-            ServiceResponse
-          >({
-            type: 'SYNC_SERVICE_DOWNLOAD',
-            payload: {
-              serviceID: Service.id,
-              noCache: true
-            }
-          })
-          if (downloadRes?.error) {
-            throw downloadRes?.error
-          }
-        }
-      }
-
-      const uploadRes = await message.send<
-        'SYNC_SERVICE_UPLOAD',
-        ServiceResponse
-      >({
-        type: 'SYNC_SERVICE_UPLOAD',
-        payload: {
-          op: 'ADD',
-          serviceID: Service.id,
-          force: true
-        }
-      })
-
-      if (uploadRes?.error) {
-        throw uploadRes?.error
-      }
-
-      props.onClose()
-    } catch (error) {
-      const text = typeof error === 'string' ? error : String(error)
-      const description = /^(network|unauthorized|mkcol|parse)$/.test(text)
-        ? t('syncService.webdav.err_' + text)
-        : t('syncService.webdav.err_unknown', { error: text })
-      notification.error({ message: 'Error', description })
-    }
-
-    setServiceChecking(false)
+    return {
+      ...values,
+      url:
+        values.url && !values.url.endsWith('/')
+          ? (values.url += '/')
+          : values.url
+    } as SyncConfig
   }
 
   async function tryTo(action: () => any): Promise<void> {
@@ -220,4 +250,13 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
       })
     }
   }
+
+  function notifyError(error: Error | string) {
+    const errorText = typeof error === 'string' ? error : error.message
+    const msgPath = 'sync:webdav.error.' + errorText
+    const description = i18n.exists(msgPath) ? t(msgPath) : errorText
+    notification.error({ message: 'Error', description })
+  }
 }
+
+export default WebdavModal

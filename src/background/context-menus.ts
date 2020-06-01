@@ -218,7 +218,7 @@ export class ContextMenus {
     )
   }
 
-  private async setContextMenus([{ contextMenus }, t]: [
+  private async setContextMenus([{ searchHistory, contextMenus }, t]: [
     AppConfig,
     TFunction
   ]): Promise<void> {
@@ -354,12 +354,14 @@ export class ContextMenus {
       contexts: ['browser_action']
     })
 
-    // search history
-    await createContextMenu({
-      id: 'search_history',
-      title: t('history_title'),
-      contexts: ['browser_action']
-    })
+    if (searchHistory) {
+      // search history
+      await createContextMenu({
+        id: 'search_history',
+        title: t('history_title'),
+        contexts: ['browser_action']
+      })
+    }
 
     // Manual
     await createContextMenu({

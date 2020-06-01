@@ -75,7 +75,6 @@ export const DictRenren: FC<ViewPorps<RenrenResult>> = ({ result }) => {
   return (
     <>
       <select
-        className="dictRenren-Selector"
         onChange={e => setSlide(Number(e.currentTarget.value) || 0)}
         value={slide}
       >

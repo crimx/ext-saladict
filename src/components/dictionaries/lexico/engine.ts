@@ -82,6 +82,7 @@ function handleDOM(
     removeChild($entry, '.breadcrumbs')
     removeChildren($entry, '.socials')
     removeChildren($entry, '.homographs')
+    removeChildren($entry, '.associatedTranslation')
 
     $entry.querySelectorAll('.entryHead header > h1').forEach($h1 => {
       if ($h1.textContent?.trim().startsWith('Meaning of')) {

@@ -210,7 +210,8 @@ export class QsPanelManager {
 
     const qsPanelRect = window.appConfig.qssaSidebar
       ? await this.getSidebarRect(window.appConfig.qssaSidebar)
-      : (await this.getStorageRect()) || this.getDefaultRect()
+      : (window.appConfig.qssaRectMemo && (await this.getStorageRect())) ||
+        this.getDefaultRect()
 
     let qsPanelWin: browser.windows.Window | undefined
 

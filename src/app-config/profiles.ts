@@ -40,6 +40,7 @@ export function _getDefaultProfile(id?: string) {
         'youdao',
         'urban',
         'vocabulary',
+        'google',
         'zdic',
         'guoyu',
         'liangan',

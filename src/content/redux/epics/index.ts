@@ -1,6 +1,6 @@
 import { combineEpics } from 'redux-observable'
-import { from, of, empty } from 'rxjs'
-import { map, mapTo, mergeMap, filter } from 'rxjs/operators'
+import { from, of, EMPTY } from 'rxjs'
+import { map, mapTo, mergeMap, filter, pairwise } from 'rxjs/operators'
 
 import { isPopupPage, isStandalonePage } from '@/_helpers/saladict'
 import { saveWord } from '@/_helpers/record-manager'
@@ -11,6 +11,7 @@ import { ofType } from './utils'
 import searchStartEpic from './searchStart.epic'
 import newSelectionEpic from './newSelection.epic'
 import { translateCtxs, genCtxText } from '@/_helpers/translateCtx'
+import { message } from '@/_helpers/browser-api'
 
 export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
   /** Start searching text. This will also send to Redux. */
@@ -26,6 +27,17 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
               }
             : { type: 'SEARCH_START' } // this should never be reached
       )
+    ),
+  (action$, state$) =>
+    state$.pipe(
+      map(state => state.isShowDictPanel),
+      pairwise(),
+      mergeMap(([oldShow, newShow]) => {
+        if (oldShow && !newShow) {
+          message.send({ type: 'STOP_AUDIO' })
+        }
+        return EMPTY
+      })
     ),
   (action$, state$) =>
     action$.pipe(
@@ -62,7 +74,7 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
                 console.warn(e)
               })
 
-            return empty()
+            return EMPTY
           }
 
           return of({

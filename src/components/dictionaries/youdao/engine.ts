@@ -8,7 +8,8 @@ import {
   SearchFunction,
   GetSrcPageFunction,
   DictSearchResult,
-  getChsToChz
+  getChsToChz,
+  removeChild
 } from '../helpers'
 import { DictConfigs } from '@/app-config'
 
@@ -29,7 +30,10 @@ export interface YoudaoResultLex {
     url: string
   }>
   basic?: HTMLString
-  collins?: HTMLString
+  collins: Array<{
+    title: string
+    content: HTMLString
+  }>
   discrimination?: HTMLString
   sentence?: HTMLString
   translation?: HTMLString
@@ -90,7 +94,8 @@ function handleDOM(
     stars: 0,
     rank: getText(doc, '.rank'),
     pattern: getText(doc, '.pattern', transform),
-    prons: []
+    prons: [],
+    collins: []
   }
 
   const audio: { uk?: string; us?: string } = {}
@@ -125,9 +130,44 @@ function handleDOM(
   }
 
   if (options.collins) {
-    result.collins = getInnerHTML(HOST, doc, {
-      selector: '#collinsResult .ol',
-      transform
+    doc.querySelectorAll('#collinsResult .wt-container').forEach($container => {
+      const item = { title: '', content: '' }
+
+      const $title = $container.querySelector(':scope > .title.trans-tip')
+      if ($title) {
+        removeChild($title, '.do-detail')
+        item.title = getText($title)
+        $title.remove()
+      }
+
+      const $star = $container.querySelector('.star')
+      if ($star) {
+        const starMatch = /star(\d+)/.exec(String($star.className))
+        if (starMatch) {
+          const rate = +starMatch[1]
+          let stars = ''
+          for (let i = 0; i < 5; i++) {
+            stars += `<svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 426.67 426.67"
+              width="1em"
+              height="1em"
+              style="${i === 4 ? '' : 'margin-right: 1px'}"
+            >
+              <path
+                fill=${i < rate ? '#FAC917' : '#d1d8de'}
+                d="M213.33 10.44l65.92 133.58 147.42 21.42L320 269.4l25.17 146.83-131.84-69.32-131.85 69.34 25.2-146.82L0 165.45l147.4-21.42"
+              />
+            </svg>`
+          }
+          $star.innerHTML = stars
+        }
+      }
+
+      item.content = getInnerHTML(HOST, $container, { transform })
+      if (item.content) {
+        result.collins.push(item)
+      }
     })
   }
 

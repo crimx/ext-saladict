@@ -22,6 +22,7 @@ export type Namespace =
   | 'popup'
   | 'wordpage'
   | 'dicts'
+  | 'sync'
 
 export interface RawLocale {
   'zh-CN': string
@@ -49,7 +50,12 @@ export interface DictLocales {
   }
 }
 
-export async function i18nLoader() {
+export async function i18nLoader(): Promise<i18n.i18n> {
+  if (i18n.language) {
+    // singleton
+    return i18n
+  }
+
   const { langCode } = await getConfig()
 
   await i18n
@@ -63,6 +69,12 @@ export async function i18nLoader() {
             const dictLocals = extractDictLocales(lang)
             cb(null, dictLocals)
             return dictLocals
+          }
+
+          if (ns === 'sync') {
+            const syncLocales = extractSyncServiceLocales(lang)
+            cb(null, syncLocales)
+            return syncLocales
           }
 
           const { locale } = await import(
@@ -282,6 +294,22 @@ function extractDictLocales(lang: LangCode) {
     }
     if (json.helps) {
       o[dictId].helps = mapValues(json.helps, rawLocale => rawLocale[lang])
+    }
+    return o
+  }, {})
+}
+
+function extractSyncServiceLocales(lang: LangCode) {
+  const req = require.context(
+    '@/background/sync-manager/services',
+    true,
+    /_locales\/.+\.ts$/
+  )
+  return req.keys().reduce<{ [id: string]: DictLocales }>((o, filename) => {
+    const idMatch = new RegExp(`/([^/]+)/_locales/${lang}\\.ts$`).exec(filename)
+    if (idMatch) {
+      const localeModule = req(filename)
+      o[idMatch[1]] = localeModule.locale || localeModule
     }
     return o
   }, {})

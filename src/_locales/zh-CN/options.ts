@@ -106,6 +106,8 @@ export const locale = {
     qssaHeight: '窗口高度',
     qssaPageSel: '响应划词',
     qssaPageSel_help: '响应网页划词。',
+    qssaRectMemo: '记住位置与大小',
+    qssaRectMemo_help: '独立窗口关闭时记住位置与大小。',
     updateCheck: '检查更新',
     updateCheck_help: '自动检查更新',
     analytics: '启用 Google Analytics',
@@ -231,19 +233,14 @@ export const locale = {
 
   syncService: {
     description: '数据同步设置。',
-    start: '同步已在后台开始',
+    start: '同步进行中，结束前请勿关闭此页面。',
+    finished: '同步结束',
     success: '同步成功',
     failed: '同步失败',
     close_confirm: '设置未保存，关闭？',
     delete_confirm: '清空同步设置？',
 
-    btn: {
-      shanbay: '添加扇贝生词本同步',
-      webdav: '添加 WebDAV 同步'
-    },
-
     shanbay: {
-      title: '扇贝生词本同步',
       description:
         '先去 shanbay.com 登录扇贝（退出后将失效）。开启后每次添加生词将自动单向同步到扇贝生词本（只从沙拉查词到扇贝），只同步新增单词（删除不同步），只同步单词本身（上下文等均不能同步）。生词需要扇贝单词库支持才能被添加。',
       login: '将打开扇贝官网，请登录再回来重新开启。',
@@ -254,24 +251,53 @@ export const locale = {
     },
 
     webdav: {
-      title: 'WebDAV 同步',
       description:
         '应用设置（包括本设置）已通过浏览器自动同步。生词本可通过本设置实现 WebDAV 同步。',
       jianguo: '参考坚果云设置',
       checking: '连接中...',
+      exist_confirm: '服务器上已存在 Saladict 目录。是否下载合并到本地？',
+      upload_confirm: '马上上传本地数据到服务器？',
+      verify: '验证服务器',
+      verified: '成功验证服务器',
       duration: '同步周期',
       duration_help:
         '添加生词后会马上上传，数据会在上传前保证同步，所以如果不需要多个浏览器实时查看更新，可将更新检测周期调大些以减少资源占用及避免服务器拒绝响应。',
-      err_exist: '服务器上 Saladict 目录下的文件将被替换。先下载合并到本地？',
-      err_mkcol: '无法在服务器创建“Saladict”目录。请手动在服务器上创建。',
-      err_network: '连接服务器失败。',
-      err_parse: '服务器返回 XML 格式不正确。',
-      err_unauthorized: '账户或密码不正确。',
-      err_unknown: '未知错误 「{{error}}」。',
-      err_internal: '无法保存。',
       passwd: '密码',
       url: '服务器地址',
       user: '账户'
+    },
+
+    ankiconnect: {
+      description: '请确保 Anki Connect 插件已安装且 Anki 在后台运行。',
+      tutorial: '教程',
+      checking: '连接中...',
+      deck_confirm: '牌组「{{deck}}」不存在 Anki 中，是否自动添加？',
+      deck_error: '无法创建牌组「{{deck}}」。',
+      notetype_confirm:
+        '笔记类型「{{noteType}}」不存在 Anki 中，是否自动添加？',
+      notetype_error: '无法创建笔记类型「{{noteType}}」。',
+      upload_confirm:
+        '马上同步本地生词到 Anki？重复的单词（相同“Date”）会被跳过。',
+      add_yourself: '请在 Anki 中自行添加。',
+      verify: '检查 Anki Connect',
+      verified: '成功检查 Anki Connect',
+      enable_help:
+        '开启后每次保存新生词都会自动同步到 Anki。Anki 上已存在的单词（以“Date”为准）可以在单词编辑器中编辑强制更新覆盖到 Anki。',
+      host: '地址',
+      port: '端口',
+      key: 'Key',
+      key_help: '可在 Anki Connect 插件中设置 key 以做简单令牌。',
+      deckName: '牌组',
+      deckName_help:
+        '如果不存在的话可以点下方「检查 Anki Connect」让本设置生成默认牌组。也可以自行在 Anki 中管理。',
+      noteType: '笔记类型',
+      noteType_help:
+        'Anki 笔记类型包括一套字段和卡片类型。如果不存在的话可以点下方「检查 Anki Connect」让本设置生成一套默认的笔记类型。也可以自行在 Anki 中管理。',
+      tags: '标签',
+      tags_help: 'Anki 笔记可以附带标签。以逗号分割。',
+      escapeHTML: '转义 HTML',
+      escapeHTML_help:
+        '对笔记内容中的 HTML 字符进行转义。如手动进行 HTML 排版请关闭选项。'
     }
   },
 

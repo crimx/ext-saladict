@@ -1722,74 +1722,74 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@opentranslate/baidu@^1.1.2":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/baidu/-/baidu-1.2.0.tgz#55c13ef2ae336f257943236c61520a0a87f89ec4"
-  integrity sha512-iA0cZRow3qqtRUEOZgz434ie6n6nAEDtyhOT/3ewy7H7n3nbeX+npMsUa72U14AWVtJSgIIk4vOdu+q34KAM3Q==
+"@opentranslate/baidu@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/baidu/-/baidu-1.3.0.tgz#52881861571d457bea9d6662d77bc66c1cf801df"
+  integrity sha512-U8urf2Bi1KXqifpytjFXMz2T2TEZ+m+J0VtNEWImZJZOlGTz34bhoyotY7WdzwGSdMSHvb0ojR2m4ck16DrNkQ==
   dependencies:
-    "@opentranslate/translator" "^1.2.0"
+    "@opentranslate/translator" "^1.3.0"
     "@types/md5" "^2.1.33"
     "@types/qs" "^6.5.3"
     md5 "^2.2.1"
     qs "^6.8.0"
 
-"@opentranslate/caiyun@^1.1.2":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/caiyun/-/caiyun-1.2.0.tgz#a94fbdfd43365cfd0a15d34a80c5b1ecd123d0f4"
-  integrity sha512-8+ZgJRVIOylpU99JiLJ9fOWIEt13uHqSWWR40YZrRiHLPLsyCrLPc+0kcVgiWte6YAp/HvLAMPWmi1MwXGLHJw==
+"@opentranslate/caiyun@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/caiyun/-/caiyun-1.3.0.tgz#15e8ae6e41dcd2592ebf8a3055f722cc02e29eaa"
+  integrity sha512-9IxgODB7XsLU6O0wEqjfvmHcSDMBNnJDcTC48sE0hwA9CP2kNFdxAaVCmrUY0CuxhNu/dpgl1oAxnk2yCQqUoA==
   dependencies:
-    "@opentranslate/translator" "^1.2.0"
+    "@opentranslate/translator" "^1.3.0"
     "@types/node" "^12.11.7"
     "@types/qs" "^6.5.3"
     qs "^6.8.0"
 
-"@opentranslate/google@^1.1.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/google/-/google-1.2.0.tgz#b9c8820190d4b58a1051c55848e9d38e2c0d3286"
-  integrity sha512-ITDktU0yiw3ltq+X1DjtWUyojEP6YezkPX4n5DzwrPFGcV0mcOMCi68VeGgHRKC4cgZyrSmBrp150pvXZroO7Q==
+"@opentranslate/google@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/google/-/google-1.3.0.tgz#d1ea6e6ea09145cf701b6838696bb6e09e8b4083"
+  integrity sha512-Wb26sMqfu1LSX4N2RI/yZMHMNM3jkU7S0fFPCEQSWPO35+cxzrHw2/6LSfWLRrrR0Ww6VJepSZpF5uqaeonccw==
   dependencies:
-    "@opentranslate/translator" "^1.2.0"
+    "@opentranslate/translator" "^1.3.0"
 
-"@opentranslate/languages@^1.1.0", "@opentranslate/languages@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/languages/-/languages-1.2.0.tgz#43d42e9d678d12313932079bf206afe4526123d7"
-  integrity sha512-8e3dSJXDbW6189Pr9rg9gsMXzv//M5OzFjIbZeRKcDy18El5TwuZ8lAdkDeZ74H+T6Cm7CaFWbIfx2mET+LT2w==
+"@opentranslate/languages@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/languages/-/languages-1.3.0.tgz#9f9afdf0dec1d6ebe10121a47b1efcc1b40a69c6"
+  integrity sha512-NEDNiVPFxNxZpdpWK4wCT1woaF1As1bzqTt5W2KO3LAJRPQ59QhIUOiTOZcre+dS5+karIe6f8dtaMwAxSMmlQ==
 
-"@opentranslate/sogou@^1.1.2":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/sogou/-/sogou-1.2.0.tgz#093fc8aab0889bcc952769333e63ec69174c9644"
-  integrity sha512-zzYl417aJVf2R1FheZGWn4iR2gxCp4uixHGRg4qLvD3FQmiAU2aBIaAfA4hPSoJD/2aZL94H6ihLaI8EEw243g==
+"@opentranslate/sogou@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/sogou/-/sogou-1.3.0.tgz#2291f9ebf2777dbef1b49bf52cba83aa49b908d2"
+  integrity sha512-IUTfV0UWXZ3bAmmAb3nTYMYaU/PF9YiBsIGqJDv87iKI9039464+EA/0dodOY0vg5bCH9oFl/+w98HMdrwz4JA==
   dependencies:
-    "@opentranslate/translator" "^1.2.0"
+    "@opentranslate/translator" "^1.3.0"
     "@types/md5" "^2.1.33"
     "@types/qs" "^6.5.3"
     md5 "^2.2.1"
     qs "^6.8.0"
 
-"@opentranslate/tencent@^1.1.2":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/tencent/-/tencent-1.2.0.tgz#bcc13b70432e07e94d5aaf1d9a91b79f1a2ec379"
-  integrity sha512-C5DHMyvXHrGWlUO4Kr0N+pgmzSTIQswubIH3HHzR8ixtPBPhiFwziKCfVD1pqlTyqZMj2FPRdOL8AwGguY6k4g==
+"@opentranslate/tencent@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/tencent/-/tencent-1.3.0.tgz#e3ab16850ae50d550c46e45419b2c1bea3d48a9c"
+  integrity sha512-/riKm6+m5p2sqgm1FAz1eJACE+LkHY1pXKrhduYx5R6gQWNmECJyneng0ua3ViRxHUb33zTNlb3dDBqqW9/gfw==
   dependencies:
-    "@opentranslate/translator" "^1.2.0"
+    "@opentranslate/translator" "^1.3.0"
     "@types/crypto-js" "^3.1.43"
     crypto-js "^3.1.9-1"
 
-"@opentranslate/translator@^1.1.0", "@opentranslate/translator@^1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/translator/-/translator-1.2.0.tgz#ecbe93e866b80a14302c0197ced6efd4ff0131e8"
-  integrity sha512-XaFXWuALi81VvZG0bWV/B+lOJY48ikOrtxDBExeDo/q4CBUapDZ9iLKBjPHM+cFewp7m4KE810GuuRB/zP7LlA==
+"@opentranslate/translator@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/translator/-/translator-1.3.0.tgz#803c3929fc8fdec0b013f6841e784016c5bb3d33"
+  integrity sha512-ykA01Jkoh9IAjC8kHPkAn9ROfG+NkUYh7jSJd7JEy6JTSv/DIuQksDUNPkof3QzEwPB1I76XIx+xGs7nhkXysA==
   dependencies:
-    "@opentranslate/languages" "^1.2.0"
+    "@opentranslate/languages" "^1.3.0"
     axios "^0.19.0"
     franc-min "^4.1.0"
 
-"@opentranslate/youdao@^1.1.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/youdao/-/youdao-1.2.0.tgz#d6899d0b8b00f8b4029b88e6e60be6bda893e5c4"
-  integrity sha512-YdyIC2DuqMUGFxbVKLRKJeFgq78G+NclL8ZvahEQGpbImaNss7WtdvtldjtLUxt8I7SG2y7v3N97YFldCHFfWg==
+"@opentranslate/youdao@^1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/youdao/-/youdao-1.3.0.tgz#5958b4cec019743860e9c00dacece48e7c080300"
+  integrity sha512-X6cEvn010G5z/ZABHUl3O/ftFr7HBhUmC8rU7C+HDRws9rVJqQnPk3hXxhj5Ez1SBNDBQAy8EfUqm/GtN1vlLQ==
   dependencies:
-    "@opentranslate/translator" "^1.2.0"
+    "@opentranslate/translator" "^1.3.0"
     js-sha256 "^0.9.0"
 
 "@reach/router@^1.2.1":

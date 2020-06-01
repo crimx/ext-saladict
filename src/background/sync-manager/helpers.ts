@@ -1,17 +1,15 @@
 import { storage } from '@/_helpers/browser-api'
 import { Word } from '@/_helpers/record-manager'
+import { getWords } from '@/background/database/read'
+import { saveWords } from '@/background/database/write'
 import {
-  getWords,
-  saveWords,
   getSyncMeta,
   setSyncMeta,
   deleteSyncMeta
-} from '@/background/database'
+} from '@/background/database/sync-meta'
+import { I18nManager } from '../i18n-manager'
 
-import { Observable, concat, from } from 'rxjs'
-import { map, filter, distinctUntilChanged } from 'rxjs/operators'
-
-interface StorageSyncConfig {
+export interface StorageSyncConfig {
   syncConfig: { [id: string]: any }
 }
 
@@ -44,25 +42,6 @@ export async function removeSyncConfig(serviceID?: string): Promise<void> {
   }
 }
 
-/** Get a sync config and listen changes */
-export function createSyncConfigStream<C>(
-  serviceID: string
-): Observable<C | null> {
-  return concat(
-    from(getSyncConfig<C | null>(serviceID)),
-    storage.sync
-      .createStream<{ [index: string]: C | null }>('syncConfig')
-      .pipe(map(({ newValue }) => newValue && newValue[serviceID]))
-  ).pipe(
-    filter((v): v is C | null => v !== undefined),
-    distinctUntilChanged(
-      (x, y) =>
-        x === y ||
-        (x != null && y != null && Object.keys(y).every(k => y[k] === x[k]))
-    )
-  )
-}
-
 /**
  * Service meta data is saved with the database
  * so that it can be shared across browser vendors.
@@ -93,13 +72,34 @@ export async function deleteMeta(serviceID: string): Promise<void> {
   await deleteSyncMeta(serviceID)
 }
 
-export async function setNotebook(
-  words: Word[],
-  fromSync?: boolean
-): Promise<void> {
-  await saveWords({ area: 'notebook', words, fromSync })
+export async function setNotebook(words: Word[]): Promise<void> {
+  await saveWords({ area: 'notebook', words })
 }
 
 export async function getNotebook(): Promise<Word[]> {
   return (await getWords({ area: 'notebook' })).words || []
+}
+
+export async function notifyError(
+  id: string,
+  error: Error | string,
+  msgPrefix = '',
+  msgPostfix = ''
+): Promise<void> {
+  const { i18n } = await I18nManager.getInstance()
+  await i18n.loadNamespaces('sync')
+  const errorText = typeof error === 'string' ? error : error.message
+  const msgPath = `sync:${id}.error.${errorText}`
+  const msg = i18n.exists(msgPath)
+    ? i18n.t(msgPath)
+    : `Unknown error: ${errorText}`
+
+  browser.notifications.create({
+    type: 'basic',
+    iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
+    title: `Saladict ${i18n.t(`sync:${id}.title`)}`,
+    message: msgPrefix + msg + msgPostfix,
+    eventTime: Date.now() + 20000,
+    priority: 2
+  })
 }

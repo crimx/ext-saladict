@@ -1,99 +1,91 @@
-import { SyncService } from './interface'
-import { Message } from '@/typings/message'
-import { reflect } from '@/_helpers/promise-more'
+import { SyncService, SyncServiceConstructor } from './interface'
+import { concat, from } from 'rxjs'
+import { filter, pluck, map } from 'rxjs/operators'
+import { storage } from '@/_helpers/browser-api'
+import { Word } from '@/_helpers/record-manager'
+import { notifyError } from './helpers'
 
-const reqServices = require.context('./services', false, /./)
+const reqServices = require.context('./services', true, /index\.ts$/)
 
-let services: Map<string, SyncService> = new Map()
+const Services = reqServices.keys().reduce((map, path) => {
+  const Servicex = reqServices(path).Service
+  return map.set(Servicex.id, Servicex)
+}, new Map<string, SyncServiceConstructor>())
+
+const activeServices: Map<string, SyncService> = new Map()
 
 export function startSyncServiceInterval() {
-  services = reqServices.keys().reduce((map, path) => {
-    const Service = reqServices(path).Service
-    return map.set(Service.id, new Service())
-  }, services)
+  concat(
+    from(storage.sync.get('syncConfig')).pipe(pluck('syncConfig')),
+    storage.sync.createStream('syncConfig').pipe(pluck('newValue'))
+  )
+    .pipe(
+      filter((v): v is { [id: string]: any } => !!v),
+      map(syncConfig => {
+        // legacy fix
+        if (
+          syncConfig.webdav &&
+          !Object.prototype.hasOwnProperty.call(syncConfig.webdav, 'enable')
+        ) {
+          syncConfig.webdav.enable = !!syncConfig.webdav.url
+        }
+        return syncConfig
+      })
+    )
+    .subscribe(async syncConfig => {
+      try {
+        await Promise.all(
+          [...activeServices.values()].map(service => service.destroy())
+        )
+      } catch (e) {
+        console.error(e)
+      }
+      activeServices.clear()
 
-  services.forEach(s => s.startInterval())
-}
+      if (syncConfig) {
+        Services.forEach(Service => {
+          if (syncConfig[Service.id]?.enable) {
+            const newService = new Service(syncConfig[Service.id])
+            activeServices.set(Service.id, newService)
+            newService.onStart()
+          }
+        })
+      }
 
-export async function syncServiceInit({
-  serviceID,
-  config
-}: Message<'SYNC_SERVICE_INIT'>['payload']) {
-  const service = services.get(serviceID)
-  if (!service) {
-    if (process.env.DEBUG) {
-      console.error(`Sync service init error: wrong service id ${serviceID}`)
-    }
-    return wrapError('wrong service id')
-  }
-  return service.init(config).catch(wrapError)
+      if (process.env.DEBUG) {
+        console.log(`Active Sync Services:`, [...activeServices.keys()])
+      }
+    })
 }
 
 export async function syncServiceUpload(
-  payload: Message<'SYNC_SERVICE_UPLOAD'>['payload']
+  options:
+    | {
+        action: 'ADD'
+        words?: Word[]
+        force?: boolean
+      }
+    | {
+        action: 'DELETE'
+        dates?: number[]
+        force?: boolean
+      }
 ) {
-  const selectedServices: SyncService[] = []
-  if (payload.serviceID) {
-    const service = services.get(payload.serviceID)
-    if (!service) {
-      console.error(
-        `Sync service upload error: wrong service id ${payload.serviceID}`
+  activeServices.forEach(async (service, id) => {
+    try {
+      if (options.action === 'ADD') {
+        await service.add({ words: options.words, force: options.force })
+      } else if (options.action === 'DELETE') {
+        await service.delete({ dates: options.dates, force: options.force })
+      }
+    } catch (error) {
+      notifyError(
+        id,
+        error,
+        options.action === 'ADD' && options.words?.[0]
+          ? `「${options.words?.[0].text}」`
+          : ''
       )
-      return
     }
-    selectedServices.push(service)
-  }
-
-  if (selectedServices.length <= 0) {
-    selectedServices.push(...services.values())
-  }
-
-  return Promise.all(
-    selectedServices.map(async service => {
-      try {
-        if (payload.op === 'ADD') {
-          await service.add({ words: payload.words, force: payload.force })
-        } else if (payload.op === 'DELETE') {
-          await service.delete({ dates: payload.dates, force: payload.force })
-        }
-      } catch (e) {
-        const title = (service.constructor as typeof SyncService).title[
-          window.appConfig.langCode
-        ]
-        const errMsg = typeof e === 'string' ? e : 'unknown'
-        browser.notifications.create({
-          type: 'basic',
-          iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
-          title: `Saladict Sync Service ${title}`,
-          message: `Error '${errMsg}' occurs during sync service ${title} uploading.`,
-          eventTime: Date.now() + 20000,
-          priority: 2
-        })
-      }
-    })
-  )
-}
-
-export async function syncServiceDownload(
-  payload: Message<'SYNC_SERVICE_DOWNLOAD'>['payload']
-) {
-  if (payload) {
-    const service = services.get(payload.serviceID)
-    if (!service) {
-      if (process.env.DEBUG) {
-        console.error(
-          `Sync service download error: wrong service id ${payload.serviceID}`
-        )
-      }
-      return wrapError('wrong service id')
-    }
-
-    return service.download({ noCache: payload.noCache }).catch(wrapError)
-  }
-
-  return reflect([...services.values()].map(service => service.download({})))
-}
-
-function wrapError(e: string | Error) {
-  return { error: typeof e === 'string' ? e : 'unknown' }
+  })
 }

@@ -108,6 +108,7 @@ describe('Sync service WebDAV', () => {
 
   it('upload: should success', async () => {
     const config: SyncConfig = {
+      enable: true,
       url: 'https://example.com/dav/',
       user: 'user',
       passwd: 'passwd',
@@ -122,8 +123,7 @@ describe('Sync service WebDAV', () => {
     const words = [getWord(), getWord({ text: 'word' })]
     helpers.getNotebook.mockImplementationOnce(() => Promise.resolve(words))
 
-    const service = new Service()
-    service.config = config
+    const service = new Service(config)
 
     await service.add({ force: true })
 
@@ -139,6 +139,7 @@ describe('Sync service WebDAV', () => {
   describe('download', () => {
     it('should save file on first download', async () => {
       const config: SyncConfig = {
+        enable: true,
         url: 'https://example.com/dav/',
         user: 'user',
         passwd: 'passwd',
@@ -169,12 +170,11 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const service = new Service()
-      service.config = config
+      const service = new Service(config)
 
       await service.download({})
 
-      expect(helpers.setNotebook).lastCalledWith(words, true)
+      expect(helpers.setNotebook).lastCalledWith(words)
       expect(helpers.setMeta).lastCalledWith('webdav', { timestamp, etag })
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(...fetchArgs.download(config))
@@ -182,6 +182,7 @@ describe('Sync service WebDAV', () => {
 
     it('should save file if etag changed', async () => {
       const config: SyncConfig = {
+        enable: true,
         url: 'https://example.com/dav/',
         user: 'user',
         passwd: 'passwd',
@@ -213,13 +214,12 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const service = new Service()
-      service.config = config
+      const service = new Service(config)
       service.meta = { etag: etagOrigin }
 
       await service.download({})
 
-      expect(helpers.setNotebook).lastCalledWith(words, true)
+      expect(helpers.setNotebook).lastCalledWith(words)
       expect(helpers.setMeta).lastCalledWith('webdav', { timestamp, etag })
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(
@@ -232,6 +232,7 @@ describe('Sync service WebDAV', () => {
 
     it('should do nothing if 304 (same etag)', async () => {
       const config: SyncConfig = {
+        enable: true,
         url: 'https://example.com/dav/',
         user: 'user',
         passwd: 'passwd',
@@ -254,8 +255,7 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const service = new Service()
-      service.config = config
+      const service = new Service(config)
       service.meta = { etag }
 
       await service.download({})
@@ -273,6 +273,7 @@ describe('Sync service WebDAV', () => {
 
     it('should do nothing if etags are different but timestamps are identical', async () => {
       const config: SyncConfig = {
+        enable: true,
         url: 'https://example.com/dav/',
         user: 'user',
         passwd: 'passwd',
@@ -305,8 +306,7 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const service = new Service()
-      service.config = config
+      const service = new Service(config)
       service.meta = {
         etag: etagOrigin,
         timestamp: file.timestamp
@@ -327,6 +327,7 @@ describe('Sync service WebDAV', () => {
 
     it('should do nothing if etags are different but timestamps are identical', async () => {
       const config: SyncConfig = {
+        enable: true,
         url: 'https://example.com/dav/',
         user: 'user',
         passwd: 'passwd',
@@ -359,8 +360,7 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const service = new Service()
-      service.config = config
+      const service = new Service(config)
       service.meta = {
         etag: etagOrigin,
         timestamp: file.timestamp
@@ -381,6 +381,7 @@ describe('Sync service WebDAV', () => {
 
     it('should do nothing if words are corrupted', async () => {
       const config: SyncConfig = {
+        enable: true,
         url: 'https://example.com/dav/',
         user: 'user',
         passwd: 'passwd',
@@ -407,13 +408,12 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const service = new Service()
-      service.config = config
+      const service = new Service(config)
 
       try {
         await service.download({})
       } catch (e) {
-        expect(e).toBe('format')
+        expect(e.message).toBe('format')
       }
 
       expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
@@ -424,6 +424,7 @@ describe('Sync service WebDAV', () => {
 
     it('should do nothing if network failed', async () => {
       const config: SyncConfig = {
+        enable: true,
         url: 'https://example.com/dav/',
         user: 'user',
         passwd: 'passwd',
@@ -441,13 +442,12 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const service = new Service()
-      service.config = config
+      const service = new Service(config)
 
       try {
         await service.download({})
       } catch (e) {
-        expect(e).toBe('network')
+        expect(e.message).toBe('network')
       }
 
       expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
@@ -460,6 +460,7 @@ describe('Sync service WebDAV', () => {
   describe('initServer', () => {
     it('should create dir and upload files on first init', async () => {
       const config: SyncConfig = {
+        enable: true,
         url: 'https://example.com/dav/',
         user: 'user',
         passwd: 'passwd',
@@ -495,11 +496,10 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const service = new Service()
-      service.config = config
+      const service = new Service(config)
       service.download = jest.fn(() => Promise.resolve())
 
-      await service.init(config)
+      await service.init()
 
       expect(service.download).toHaveBeenCalledTimes(0)
       expect(fetchInit.checkServer).toHaveBeenCalledTimes(1)
@@ -510,12 +510,13 @@ describe('Sync service WebDAV', () => {
       expect(fetchInit.createDir).lastCalledWith(...fetchArgs.createDir(config))
       expect(fetchInit.upload).toHaveBeenCalledTimes(0)
       expect(fetchInit.download).toHaveBeenCalledTimes(0)
-      expect(helpers.setMeta).toHaveBeenCalledTimes(1)
+      expect(helpers.setMeta).toHaveBeenCalledTimes(0)
       expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
     })
 
     it('should do nothing if local files are older', async () => {
       const config: SyncConfig = {
+        enable: true,
         url: 'https://example.com/dav/',
         user: 'user',
         passwd: 'passwd',
@@ -559,11 +560,10 @@ describe('Sync service WebDAV', () => {
       )
       mockFetch(config, fetchInit)
 
-      const service = new Service()
-      service.config = config
+      const service = new Service(config)
       service.download = jest.fn(() => Promise.resolve())
 
-      await service.init(config)
+      await service.init()
 
       expect(service.download).toHaveBeenCalledTimes(0)
       expect(fetchInit.checkServer).toHaveBeenCalledTimes(1)
@@ -574,12 +574,13 @@ describe('Sync service WebDAV', () => {
       // expect(fetchInit.createDir).toHaveBeenCalledTimes(0)
       expect(fetchInit.upload).toHaveBeenCalledTimes(0)
       expect(fetchInit.download).toHaveBeenCalledTimes(0)
-      expect(helpers.setMeta).toHaveBeenCalledTimes(1)
+      expect(helpers.setMeta).toHaveBeenCalledTimes(0)
       expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
     })
 
     it('should reject with "network" if netword errored', async () => {
       const config: SyncConfig = {
+        enable: true,
         url: 'https://example.com/dav/',
         user: 'user',
         passwd: 'passwd',
@@ -595,14 +596,13 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const service = new Service()
-      service.config = config
+      const service = new Service(config)
       service.download = jest.fn(() => Promise.resolve())
 
       try {
-        await service.init(config)
+        await service.init()
       } catch (e) {
-        expect(e).toBe('network')
+        expect(e.message).toBe('network')
       }
 
       expect(service.download).toHaveBeenCalledTimes(0)
@@ -620,6 +620,7 @@ describe('Sync service WebDAV', () => {
 
     it('should reject with "mkcol" if cannot create dir', async () => {
       const config: SyncConfig = {
+        enable: true,
         url: 'https://example.com/dav/',
         user: 'user',
         passwd: 'passwd',
@@ -635,14 +636,13 @@ describe('Sync service WebDAV', () => {
 
       mockFetch(config, fetchInit)
 
-      const service = new Service()
-      service.config = config
+      const service = new Service(config)
       service.download = jest.fn(() => Promise.resolve())
 
       try {
-        await service.init(config)
+        await service.init()
       } catch (e) {
-        expect(e).toBe('mkcol')
+        expect(e.message).toBe('mkcol')
       }
 
       expect(service.download).toHaveBeenCalledTimes(0)
@@ -661,6 +661,7 @@ describe('Sync service WebDAV', () => {
     // @upstream JSDOM missing namespace selector support
     // it('should reject with "exist" if local has a newer file', async () => {
     //   const config: SyncConfig = {
+    //     enable: true,
     //     url: 'https://example.com/dav/',
     //     user: 'user',
     //     passwd: 'passwd',

@@ -1,5 +1,5 @@
 import { switchMap } from 'rxjs/operators'
-import { empty, of } from 'rxjs'
+import { EMPTY, of } from 'rxjs'
 import { StoreAction, StoreState } from '../modules'
 import { Epic, ofType } from './utils'
 import { message } from '@/_helpers/browser-api'
@@ -18,7 +18,7 @@ export const newSelectionEpic: Epic = (action$, state$) =>
       }
 
       if (isOptionsPage()) {
-        return empty()
+        return EMPTY
       }
 
       if (withQssaPanel && config.qssaPageSel) {
@@ -27,7 +27,7 @@ export const newSelectionEpic: Epic = (action$, state$) =>
       }
 
       if (isStandalonePage()) {
-        return empty()
+        return EMPTY
       }
 
       const { pinMode } = config
@@ -51,7 +51,7 @@ export const newSelectionEpic: Epic = (action$, state$) =>
         })
       }
 
-      return empty()
+      return EMPTY
     })
   )
 
@@ -85,7 +85,7 @@ function selectionInsideDictPanel(
       }
     })
   }
-  return empty()
+  return EMPTY
 }
 
 function selectionToQSPanel(
@@ -110,5 +110,5 @@ function selectionToQSPanel(
       payload: selection.word
     })
   }
-  return empty()
+  return EMPTY
 }

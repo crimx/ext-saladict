@@ -235,6 +235,9 @@ function _getDefaultConfig() {
     /** should standalone panel response to page selection */
     qssaPageSel: true,
 
+    /** should standalone panel memo position and dimension on close */
+    qssaRectMemo: false,
+
     /** browser action panel preload source */
     baPreload: 'clipboard' as PreloadSource,
 
@@ -254,11 +257,11 @@ function _getDefaultConfig() {
     /** context tranlate engines */
     ctxTrans: {
       google: true,
-      sogou: true,
       youdaotrans: true,
       baidu: true,
       tencent: false,
-      caiyun: false
+      caiyun: false,
+      sogou: false
     },
 
     /** start searching when source containing the languages */

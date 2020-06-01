@@ -101,8 +101,6 @@ export type MessageConfig = MessageConfigType<{
     payload: {
       area: DBArea
       word: Word
-      /** From sync services */
-      fromSync?: boolean
     }
   }
 
@@ -147,6 +145,8 @@ export type MessageConfig = MessageConfigType<{
     /** url: to backend */
     payload: string
   }
+
+  STOP_AUDIO: {}
 
   LAST_PLAY_AUDIO: {
     response?: null | { src: string; timestamp: number }
@@ -301,45 +301,6 @@ export type MessageConfig = MessageConfigType<{
   }
 
   /* ------------------------------------------------ *\
-     Sync services
-  \* ------------------------------------------------ */
-
-  SYNC_SERVICE_INIT: {
-    payload: {
-      serviceID: string
-      config: any
-    }
-  }
-
-  SYNC_SERVICE_DOWNLOAD: {
-    payload?: {
-      serviceID: string
-      noCache?: boolean
-    }
-  }
-
-  SYNC_SERVICE_UPLOAD: {
-    payload:
-      | {
-          op: 'ADD'
-          /** If not provided, call all services */
-          serviceID?: string
-          /** If not provided, upload all words */
-          words?: Word[]
-          /** full sync anyway */
-          force?: boolean
-        }
-      | {
-          op: 'DELETE'
-          /** If not provided, call all services */
-          serviceID?: string
-          dates?: number[]
-          /** full sync anyway */
-          force?: boolean
-        }
-  }
-
-  /* ------------------------------------------------ *\
      Context Menus
   \* ------------------------------------------------ */
 
@@ -349,6 +310,24 @@ export type MessageConfig = MessageConfigType<{
       menuItemId: string
       selectionText?: string
       linkUrl?: string
+    }
+  }
+
+  /* ------------------------------------------------ *\
+     Sync Services
+  \* ------------------------------------------------ */
+
+  ANKI_CONNECT_FIND_WORD: {
+    /** Word Date */
+    payload: number
+    /** Card ID */
+    response: number | undefined
+  }
+
+  ANKI_CONNECT_UPDATE_WORD: {
+    payload: {
+      cardId: number
+      word: Word
     }
   }
 

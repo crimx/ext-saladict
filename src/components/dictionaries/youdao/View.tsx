@@ -1,24 +1,22 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import Speaker from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
-import { YoudaoResult, YoudaoResultLex, YoudaoResultRelated } from './engine'
+import { YoudaoResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import EntryBox from '@/components/EntryBox'
 
 export const DictYoudao: FC<ViewPorps<YoudaoResult>> = ({ result }) => {
-  switch (result.type) {
-    case 'lex':
-      return renderLex(result)
-    case 'related':
-      return renderRelated(result)
-    default:
-      return null
+  const [collinsEntry, setCollinsEntry] = useState<string | number>(0)
+
+  if (result.type === 'related') {
+    return (
+      <div
+        className="dictYoudao-Related"
+        dangerouslySetInnerHTML={{ __html: result.list }}
+      />
+    )
   }
-}
 
-export default DictYoudao
-
-function renderLex(result: YoudaoResultLex) {
   return (
     <>
       {result.title && (
@@ -46,11 +44,25 @@ function renderLex(result: YoudaoResultLex) {
           dangerouslySetInnerHTML={{ __html: result.basic }}
         />
       )}
-      {result.collins && (
+      {result.collins.length > 0 && (
         <EntryBox title="柯林斯英汉双解">
-          <ul
+          {result.collins.length > 1 && (
+            <select
+              value={collinsEntry}
+              onChange={e => setCollinsEntry(e.currentTarget.value)}
+            >
+              {result.collins.map((col, i) => (
+                <option key={i} value={i}>
+                  {col.title}
+                </option>
+              ))}
+            </select>
+          )}
+          <div
             className="dictYoudao-Collins"
-            dangerouslySetInnerHTML={{ __html: result.collins }}
+            dangerouslySetInnerHTML={{
+              __html: result.collins[collinsEntry].content
+            }}
           />
         </EntryBox>
       )}
@@ -80,11 +92,4 @@ function renderLex(result: YoudaoResultLex) {
   )
 }
 
-function renderRelated(result: YoudaoResultRelated) {
-  return (
-    <div
-      className="dictYoudao-Related"
-      dangerouslySetInnerHTML={{ __html: result.list }}
-    />
-  )
-}
+export default DictYoudao

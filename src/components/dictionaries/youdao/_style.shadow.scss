@@ -23,7 +23,28 @@
 
 .dictYoudao-Collins {
   position: relative;
-  padding-left: 1.5em;
+
+  ul,
+  ol {
+    padding-left: 1.5em;
+  }
+
+  h4 {
+    padding: 0 0.5em;
+
+    > * {
+      margin-right: 5px;
+    }
+
+    > .title {
+        color: #f9690e;
+      }
+  }
+
+  .additional {
+    font-weight: normal;
+    color: var(--color-font-grey);
+  }
 
   .collinsOrder {
     position: absolute;
