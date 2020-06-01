@@ -91,12 +91,12 @@ export class BackgroundServer {
           return isInNotebook(msg.payload)
         case 'SAVE_WORD':
           return saveWord(msg.payload).then(response => {
-            setTimeout(() => message.send({ type: 'WORD_SAVED' }), 0)
+            this.notifyWordSaved()
             return response
           })
         case 'DELETE_WORDS':
           return deleteWords(msg.payload).then(response => {
-            setTimeout(() => message.send({ type: 'WORD_SAVED' }), 0)
+            this.notifyWordSaved()
             return response
           })
         case 'GET_WORDS_BY_TEXT':
@@ -210,6 +210,20 @@ export class BackgroundServer {
   async callDictEngineMethod(data: Message<'DICT_ENGINE_METHOD'>['payload']) {
     const engine = await BackgroundServer.getDictEngine(data.id)
     return engine[data.method](...(data.args || []))
+  }
+
+  notifyWordSaved() {
+    browser.tabs.query({}).then(tabs => {
+      tabs.forEach(async tab => {
+        if (tab.id && tab.url) {
+          try {
+            await message.send(tab.id, { type: 'WORD_SAVED' })
+          } catch (e) {
+            console.warn(e)
+          }
+        }
+      })
+    })
   }
 
   /** Bypass http restriction */
