@@ -21,6 +21,10 @@ import Popup from './Popup'
 import Notebook from './Notebook'
 import './_style.scss'
 
+// This is a workaround for browser action page
+// which does not fire beforeunload event
+browser.runtime.connect({ name: 'popup' } as any) // wrong typing
+
 const Title: FC = () => {
   const { t } = useTranslate('popup')
   return (

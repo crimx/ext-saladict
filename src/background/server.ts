@@ -64,6 +64,9 @@ export class BackgroundServer {
           return openURL(msg.payload.url, msg.payload.self)
         case 'PLAY_AUDIO':
           return AudioManager.getInstance().play(msg.payload)
+        case 'STOP_AUDIO':
+          AudioManager.getInstance().reset()
+          return
         case 'FETCH_DICT_RESULT':
           return this.fetchDictResult(msg.payload)
         case 'DICT_ENGINE_METHOD':
@@ -79,6 +82,7 @@ export class BackgroundServer {
         case 'OPEN_QS_PANEL':
           return this.openQSPanel()
         case 'CLOSE_QS_PANEL':
+          AudioManager.getInstance().reset()
           return this.qsPanelManager.destroy()
         case 'QS_SWITCH_SIDEBAR':
           return this.qsPanelManager.toggleSidebar(msg.payload)
@@ -103,6 +107,16 @@ export class BackgroundServer {
           return getSuggests(msg.payload)
         case 'YOUDAO_TRANSLATE_AJAX':
           return this.youdaoTranslateAjax(msg.payload)
+      }
+    })
+
+    browser.runtime.onConnect.addListener(port => {
+      if (port.name === 'popup') {
+        // This is a workaround for browser action page
+        // which does not fire beforeunload event
+        port.onDisconnect.addListener(() => {
+          AudioManager.getInstance().reset()
+        })
       }
     })
   }

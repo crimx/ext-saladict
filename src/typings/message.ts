@@ -146,6 +146,8 @@ export type MessageConfig = MessageConfigType<{
     payload: string
   }
 
+  STOP_AUDIO: {}
+
   LAST_PLAY_AUDIO: {
     response?: null | { src: string; timestamp: number }
   }
