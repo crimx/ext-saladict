@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.13.0](https://github.com/crimx/ext-saladict/compare/v7.12.1...v7.13.0) (2020-06-01)
+
+
+### Features
+
+* **panel:** add option for panel size and position memo ([bce3bfb](https://github.com/crimx/ext-saladict/commit/bce3bfbaeee386529232d261025844b187ca43e8)), closes [#812](https://github.com/crimx/ext-saladict/issues/812)
+* **sync-services:** add ankiconnect ([cd12702](https://github.com/crimx/ext-saladict/commit/cd127027a66909903f91c1f17ed7173428a0ecfd))
+
+
+### Bug Fixes
+
+* **dicts:** remove horizontal scroll ([7ebf09d](https://github.com/crimx/ext-saladict/commit/7ebf09d224e06df08750cdbde6f6cd31034875c3)), closes [#818](https://github.com/crimx/ext-saladict/issues/818)
+* **dicts:** remove lexico associated translation ([81d2cc7](https://github.com/crimx/ext-saladict/commit/81d2cc7a811a249b4ef7350fe9f31e95d1a7ce78)), closes [#818](https://github.com/crimx/ext-saladict/issues/818)
+* **i18n:** make loader singleton ([6539fc7](https://github.com/crimx/ext-saladict/commit/6539fc78debda645c4d3524ac42c146ee20e4d00))
+* **options:** add key to react component ([09a7d32](https://github.com/crimx/ext-saladict/commit/09a7d3277943aafae090e172e5046bca72181ee0))
+* **panel:** open standalone panel anyway ([88259b0](https://github.com/crimx/ext-saladict/commit/88259b0893967a0e993d1c8102043378cd27c9c7)), closes [#832](https://github.com/crimx/ext-saladict/issues/832)
+* **panel:** update fav icon after saving words ([c803998](https://github.com/crimx/ext-saladict/commit/c803998132dbc71f78d4a29730784e9446035f58))
+* **sync-services:** add version on request ([f84f359](https://github.com/crimx/ext-saladict/commit/f84f3590c577b43e67ced19382565692b6cdc67c))
+* **word-editor:** translate context when word editor shows up ([95bf129](https://github.com/crimx/ext-saladict/commit/95bf129dbfc97a9992c62e84cf7be27ce294eecc))
+* stop playing audio on panel close ([97cabf4](https://github.com/crimx/ext-saladict/commit/97cabf49e7aca7754edde247003fbcb4ea42dd59)), closes [#824](https://github.com/crimx/ext-saladict/issues/824)
+* **wordpage:** dark mode ([5921673](https://github.com/crimx/ext-saladict/commit/59216735ab2f88e9bdc9f6b8adae6e4cb4e7d93c))
+
+
+### Tests
+
+* **sync-services:** add Anki Connect ([1fb55e8](https://github.com/crimx/ext-saladict/commit/1fb55e83b58354e8449ed0b6353e591f4c47e779))
+* **sync-services:** update webdav to new architecture ([d98c16c](https://github.com/crimx/ext-saladict/commit/d98c16cdfca16a5f2c0df4a7ed78e75b4441c8cd))
+
 ### [7.12.1](https://github.com/crimx/ext-saladict/compare/v7.12.0...v7.12.1) (2020-05-17)
 
 
