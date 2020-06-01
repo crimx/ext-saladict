@@ -312,7 +312,8 @@ export const locale: typeof _locale = {
       tags: 'Tags',
       tags_help: 'Anki notes can include tags separated with commas.',
       escapeHTML: 'Escape HTML',
-      escapeHTML_help: 'Escape HTML entities.'
+      escapeHTML_help:
+        'Escape HTML entities. Turn off if using HTML for manual layout.'
     }
   },
 

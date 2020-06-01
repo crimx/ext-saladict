@@ -300,7 +300,8 @@ export const locale: typeof _locale = {
       tags: '標籤',
       tags_help: 'Anki 筆記可以附帶標籤。以逗號分割。',
       escapeHTML: '轉義 HTML',
-      escapeHTML_help: '對筆記內容中的 HTML 字元進行轉義'
+      escapeHTML_help:
+        '對筆記內容中的 HTML 字元進行轉義。如手動進行 HTML 排版請關閉選項。'
     }
   },
 

@@ -296,7 +296,8 @@ export const locale = {
       tags: '标签',
       tags_help: 'Anki 笔记可以附带标签。以逗号分割。',
       escapeHTML: '转义 HTML',
-      escapeHTML_help: '对笔记内容中的 HTML 字符进行转义'
+      escapeHTML_help:
+        '对笔记内容中的 HTML 字符进行转义。如手动进行 HTML 排版请关闭选项。'
     }
   },
 
