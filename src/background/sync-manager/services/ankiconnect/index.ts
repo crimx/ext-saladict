@@ -20,19 +20,6 @@ export interface SyncConfig {
   escapeNote: boolean
 }
 
-interface NoteFields {
-  Date: string
-  Text: string
-  Context: string
-  ContextCloze: string
-  Title: string
-  Url: string
-  Favicon: string
-  Translation: string
-  Note: string
-  Audio: string
-}
-
 export class Service extends SyncService<SyncConfig> {
   static readonly id = 'ankiconnect'
 
@@ -50,6 +37,8 @@ export class Service extends SyncService<SyncConfig> {
       escapeNote: true
     }
   }
+
+  noteFileds: string[] | undefined
 
   async init() {
     if (!(await this.isServerUp())) {
@@ -87,9 +76,12 @@ export class Service extends SyncService<SyncConfig> {
   }
 
   async findNote(date: number): Promise<number | undefined> {
+    if (!this.noteFileds) {
+      this.noteFileds = await this.getNotefields()
+    }
     try {
       const notes = await this.request<number[]>('findNotes', {
-        query: `deck:${this.config.deckName} Date:${date}`
+        query: `deck:${this.config.deckName} ${this.noteFileds[0]}:${date}`
       })
       return notes[0]
     } catch (e) {
@@ -138,7 +130,7 @@ export class Service extends SyncService<SyncConfig> {
           duplicateScope: 'deck'
         },
         tags: this.extractTags(),
-        fields: this.wordToFields(word)
+        fields: await this.wordToFields(word)
       }
     })
   }
@@ -147,7 +139,7 @@ export class Service extends SyncService<SyncConfig> {
     return this.request('updateNoteFields', {
       note: {
         id: noteId,
-        fields: this.wordToFields(word)
+        fields: await this.wordToFields(word)
       }
     })
   }
@@ -157,28 +149,45 @@ export class Service extends SyncService<SyncConfig> {
   }
 
   async addNoteType() {
-    return this.request('createModel', {
+    this.noteFileds = [
+      'Date',
+      'Text',
+      'Translation',
+      'Context',
+      'ContextCloze',
+      'Note',
+      'Title',
+      'Url',
+      'Favicon',
+      'Audio'
+    ]
+
+    await this.request('createModel', {
       modelName: this.config.noteType,
-      inOrderFields: [
-        'Date',
-        'Text',
-        'Translation',
-        'Context',
-        'ContextCloze',
-        'Note',
-        'Title',
-        'Url',
-        'Favicon',
-        'Audio'
-      ] as Array<keyof NoteFields>,
+      inOrderFields: [...this.noteFileds],
       css: cardCss(),
       cardTemplates: [
         {
           Name: 'Saladict Cloze',
-          Front: cardText(true),
-          Back: cardText(false)
+          Front: cardText(true, this.noteFileds),
+          Back: cardText(false, this.noteFileds)
         }
       ]
+    })
+
+    // Anki Connect could tranlate the field names
+    // Update again
+    this.noteFileds = await this.getNotefields()
+    await this.request('updateModelTemplates', {
+      model: {
+        name: this.config.noteType,
+        templates: {
+          'Saladict Cloze': {
+            Front: cardText(true, this.noteFileds),
+            Back: cardText(false, this.noteFileds)
+          }
+        }
+      }
     })
   }
 
@@ -209,22 +218,37 @@ export class Service extends SyncService<SyncConfig> {
     return data.result
   }
 
-  wordToFields(word: Readonly<Word>): NoteFields {
+  async wordToFields(word: Readonly<Word>): Promise<{ [k: string]: string }> {
+    if (!this.noteFileds) {
+      this.noteFileds = await this.getNotefields()
+    }
     return {
-      Date: `${word.date}`,
-      Text: word.text || '',
-      Translation: this.parseTrans(word.trans, this.config.escapeTrans),
-      Context: this.multiline(word.context, this.config.escapeContext),
-      ContextCloze: this.multiline(
+      [this.noteFileds[0]]: `${word.date}`,
+      [this.noteFileds[1]]: word.text || '',
+      [this.noteFileds[2]]: this.parseTrans(
+        word.trans,
+        this.config.escapeTrans
+      ),
+      [this.noteFileds[3]]: this.multiline(
+        word.context,
+        this.config.escapeContext
+      ),
+      [this.noteFileds[4]]: this.multiline(
         word.context.split(word.text).join(`{{c1::${word.text}}}`),
         this.config.escapeContext
       ),
-      Note: this.multiline(word.note, this.config.escapeNote),
-      Title: word.title || '',
-      Url: word.url || '',
-      Favicon: word.favicon || '',
-      Audio: '' // @TODO
+      [this.noteFileds[5]]: this.multiline(word.note, this.config.escapeNote),
+      [this.noteFileds[6]]: word.title || '',
+      [this.noteFileds[7]]: word.url || '',
+      [this.noteFileds[8]]: word.favicon || '',
+      [this.noteFileds[9]]: '' // @TODO
     }
+  }
+
+  async getNotefields(): Promise<string[]> {
+    return this.request<string[]>('modelFieldNames', {
+      modelName: this.config.noteType
+    })
   }
 
   multiline(text: string, escape: boolean): string {
@@ -286,82 +310,83 @@ export class Service extends SyncService<SyncConfig> {
   }
 }
 
-function cardText(front: boolean) {
-  return `{{#ContextCloze}}
-<section>{{cloze:ContextCloze}}</section>
-{{#Translation}}
-<section>{{Translation}}</section>
-{{/Translation}}
-{{/ContextCloze}}
+function cardText(front: boolean, nf: string[]) {
+  return `{{#${nf[4]}}}
+<section>{{cloze:${nf[4]}}}</section>
+{{#${nf[2]}}}
+<section>{{${nf[2]}}}</section>
+{{/${nf[2]}}}
+{{/${nf[4]}}}
 
-{{^ContextCloze}}
-<h1>{{Text}}</h1>
-{{#Translation}}
-<section>{{Translation}}</section>
-{{/Translation}}
-{{/ContextCloze}}
+{{^${nf[4]}}}
+<h1>{{${nf[1]}}}</h1>
+{{#${nf[2]}}}
+<section>{{${nf[2]}}}</section>
+{{/${nf[2]}}}
+{{/${nf[4]}}}
 
-{{#Note}}
-<section>{{${front ? 'hint:Note' : 'Note'}}}</section>
-{{/Note}}
+{{#${nf[5]}}}
+<section>{{${(front ? 'hint:' : '') + nf[5]}}}</section>
+{{/${nf[5]}}}
 
-{{#Title}}
+{{#${nf[6]}}}
 <section class="tsource">
 <hr />
-{{#Favicon}}<img src="{{Favicon}}" />{{/Favicon}} <a href="{{Url}}">{{Title}}</a>
+{{#${nf[8]}}}<img src="{{${nf[8]}}}" />{{/${nf[8]}}}
+<a href="{{${nf[7]}}}">{{${nf[6]}}}</a>
 </section>
-{{/Title}}
+{{/${nf[6]}}}
 `
 }
 
 function cardCss() {
   return `.card {
-  font-family: arial;
-  font-size: 20px;
-  text-align: center;
-  color: #333;
-  background-color: white;
+font-family: arial;
+font-size: 20px;
+text-align: center;
+color: #333;
+background-color: white;
 }
 
 a {
-  color: #5caf9e;
+color: #5caf9e;
 }
 
 section {
-  margin: 1em 0;
+margin: 1em 0;
 }
 
 .trans {
-  border: 1px solid #eee;
-  padding: 0.5em;
+border: 1px solid #eee;
+padding: 0.5em;
 }
 
 .trans_title {
-  display: block;
-  font-size: 0.9em;
-  font-weight: bold;
+display: block;
+font-size: 0.9em;
+font-weight: bold;
 }
 
 .trans_content {
-  margin-bottom: 0.5em;
+margin-bottom: 0.5em;
 }
 
 .cloze {
-  font-weight: bold;
-  color: #f9690e;
+font-weight: bold;
+color: #f9690e;
 }
 
 .tsource {
-  position: relative;
-  font-size: .8em;
+position: relative;
+font-size: .8em;
 }
 
 .tsource img {
-  height: .7em;
+height: .7em;
 }
 
 .tsource a {
-  text-decoration: none;
+text-decoration: none;
 }
 `
 }
