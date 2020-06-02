@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.13.1](https://github.com/crimx/ext-saladict/compare/v7.13.0...v7.13.1) (2020-06-02)
+
+
+### Bug Fixes
+
+* **ankiconnect:** compatible with anki localization ([f1ce54c](https://github.com/crimx/ext-saladict/commit/f1ce54c732c4a3ed04b8b881c1df3d4810c65f62))
+* remove unused ([f0d203c](https://github.com/crimx/ext-saladict/commit/f0d203c84f107762d7b753593851d4ffb417c310))
+
 ## [7.13.0](https://github.com/crimx/ext-saladict/compare/v7.12.1...v7.13.0) (2020-06-01)
 
 
