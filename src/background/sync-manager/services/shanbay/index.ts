@@ -1,5 +1,5 @@
 import { AddConfig, SyncService } from '../../interface'
-import { getNotebook, setSyncConfig, notifyError } from '../../helpers'
+import { getNotebook, notifyError } from '../../helpers'
 import { openURL } from '@/_helpers/browser-api'
 import { timer } from '@/_helpers/promise-more'
 import { isFirefox } from '@/_helpers/saladict'
