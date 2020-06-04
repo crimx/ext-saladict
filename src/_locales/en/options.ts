@@ -305,10 +305,10 @@ export const locale: typeof _locale = {
         'Optional key can be added in Anki Connect config for identification.',
       deckName: 'Deck',
       deckName_help:
-        'If deck does not exist you can generate a default one automatically by clicking "Verify Anki Connect" below, or manage in manually Anki.',
+        'If deck does not exist you can generate a default one automatically by clicking "Verify Anki Connect" below.',
       noteType: 'Note Type',
       noteType_help:
-        'Anki note type includes a set of fields and card type. If note type does not exist you can generate a default one automatically by clicking "Verify Anki Connect" below, or manage in manually Anki.',
+        'Anki note type includes a set of fields and card type. If note type does not exist you can generate a default one automatically by clicking "Verify Anki Connect" below. DO NOT change fieled names when editing or adding card templates in Anki',
       tags: 'Tags',
       tags_help: 'Anki notes can include tags separated with commas.',
       escapeHTML: 'Escape HTML',

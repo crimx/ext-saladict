@@ -150,21 +150,21 @@ export class Service extends SyncService<SyncConfig> {
 
   async addNoteType() {
     this.noteFileds = [
-      'Date',
-      'Text',
-      'Translation',
-      'Context',
-      'ContextCloze',
-      'Note',
-      'Title',
-      'Url',
-      'Favicon',
-      'Audio'
+      'Date.',
+      'Text.',
+      'Translation.',
+      'Context.',
+      'ContextCloze.',
+      'Note.',
+      'Title.',
+      'Url.',
+      'Favicon.',
+      'Audio.'
     ]
 
     await this.request('createModel', {
       modelName: this.config.noteType,
-      inOrderFields: [...this.noteFileds],
+      inOrderFields: this.noteFileds,
       css: cardCss(),
       cardTemplates: [
         {
@@ -246,9 +246,49 @@ export class Service extends SyncService<SyncConfig> {
   }
 
   async getNotefields(): Promise<string[]> {
-    return this.request<string[]>('modelFieldNames', {
+    const nf = await this.request<string[]>('modelFieldNames', {
       modelName: this.config.noteType
     })
+
+    // Anki connect bug
+    return nf?.includes('Date')
+      ? [
+          'Date',
+          'Text',
+          'Translation',
+          'Context',
+          'ContextCloze',
+          'Note',
+          'Title',
+          'Url',
+          'Favicon',
+          'Audio'
+        ]
+      : nf?.includes('日期')
+      ? [
+          '日期',
+          '文字',
+          'Translation',
+          'Context',
+          'ContextCloze',
+          '笔记',
+          'Title',
+          'Url',
+          'Favicon',
+          'Audio'
+        ]
+      : [
+          'Date.',
+          'Text.',
+          'Translation.',
+          'Context.',
+          'ContextCloze.',
+          'Note.',
+          'Title.',
+          'Url.',
+          'Favicon.',
+          'Audio.'
+        ]
   }
 
   multiline(text: string, escape: boolean): string {
@@ -387,6 +427,21 @@ height: .7em;
 
 .tsource a {
 text-decoration: none;
+}
+
+.typeGood {
+  color: #fff;
+  background: #1EBC61;
+}
+
+.typeBad {
+  color: #fff;
+  background: #F75C4C;
+}
+
+.typeMissed {
+  color: #fff;
+  background: #7C8A99;
 }
 `
 }
