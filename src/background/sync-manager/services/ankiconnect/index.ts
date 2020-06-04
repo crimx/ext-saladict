@@ -381,52 +381,56 @@ function cardText(front: boolean, nf: string[]) {
 
 function cardCss() {
   return `.card {
-font-family: arial;
-font-size: 20px;
-text-align: center;
-color: #333;
-background-color: white;
+  font-family: arial;
+  font-size: 20px;
+  text-align: center;
+  color: #333;
+  background-color: white;
 }
 
 a {
-color: #5caf9e;
+  color: #5caf9e;
+}
+
+input {
+  border: 1px solid #eee;
 }
 
 section {
-margin: 1em 0;
+  margin: 1em 0;
 }
 
 .trans {
-border: 1px solid #eee;
-padding: 0.5em;
+  border: 1px solid #eee;
+  padding: 0.5em;
 }
 
 .trans_title {
-display: block;
-font-size: 0.9em;
-font-weight: bold;
+  display: block;
+  font-size: 0.9em;
+  font-weight: bold;
 }
 
 .trans_content {
-margin-bottom: 0.5em;
+  margin-bottom: 0.5em;
 }
 
 .cloze {
-font-weight: bold;
-color: #f9690e;
+  font-weight: bold;
+  color: #f9690e;
 }
 
 .tsource {
-position: relative;
-font-size: .8em;
+  position: relative;
+  font-size: .8em;
 }
 
 .tsource img {
-height: .7em;
+  height: .7em;
 }
 
 .tsource a {
-text-decoration: none;
+  text-decoration: none;
 }
 
 .typeGood {
