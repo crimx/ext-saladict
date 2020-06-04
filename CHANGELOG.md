@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.13.2](https://github.com/crimx/ext-saladict/compare/v7.13.1...v7.13.2) (2020-06-04)
+
+
+### Bug Fixes
+
+* **sync-services:** fix anki returning random order of field names ([227089c](https://github.com/crimx/ext-saladict/commit/227089c8f713b32bafd512a74c5423ea0a7b5673))
+
 ### [7.13.1](https://github.com/crimx/ext-saladict/compare/v7.13.0...v7.13.1) (2020-06-02)
 
 
