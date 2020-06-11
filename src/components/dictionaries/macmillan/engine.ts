@@ -16,11 +16,13 @@ import {
 } from '../helpers'
 import { DictConfigs } from '@/app-config'
 
-export const getSrcPage: GetSrcPageFunction = text => {
-  return `http://www.macmillandictionary.com/dictionary/british/${text
-    .trim()
-    .split(/\s+/)
-    .join('-')}`
+export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
+  const lang =
+    profile.dicts.all.macmillan.options.locale === 'us' ? 'american' : 'british'
+  return (
+    `http://www.macmillandictionary.com/dictionary/${lang}/` +
+    encodeURIComponent(text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-'))
+  )
 }
 
 const HOST = 'http://www.macmillandictionary.com'
@@ -59,7 +61,7 @@ export interface MacmillanPayload {
   href?: string
 }
 
-export const search: SearchFunction<MacmillanResult, MacmillanPayload> = (
+export const search: SearchFunction<MacmillanResult, MacmillanPayload> = async (
   text,
   config,
   profile,
@@ -68,9 +70,7 @@ export const search: SearchFunction<MacmillanResult, MacmillanPayload> = (
   const options = profile.dicts.all.macmillan.options
 
   return fetchMacmillanDom(
-    payload.href ||
-      'http://www.macmillandictionary.com/dictionary/british/' +
-        text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-')
+    payload.href || (await getSrcPage(text, config, profile))
   )
     .catch(handleNetWorkError)
     .then(doc => checkResult(doc, options))
