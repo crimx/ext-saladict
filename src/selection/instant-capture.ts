@@ -171,6 +171,11 @@ function getCursorWord(
     range.setEnd(textNode, offset + tail.length)
     const rangeRect = range.getBoundingClientRect()
 
+    // When cursor is pointing at the blank space of
+    // the last line of a paragraph,
+    // caretPositionFromPoint would select the nearest
+    // ending text.
+    // This will make sure the text is truly under cursor.
     if (
       rangeRect.left <= x &&
       rangeRect.right >= x &&
@@ -179,6 +184,7 @@ function getCursorWord(
     ) {
       sel.removeAllRanges()
       sel.addRange(range)
+      // select the whole word(CJK)
       if (sel['modify']) {
         sel['modify']('move', 'backward', 'word')
         sel.collapseToStart()
