@@ -23,7 +23,7 @@ export const HeadInfo: FC = () => {
     )
   )
 
-  const isShowAck = useObservableState(mouseOverOut$)
+  const isShowAck = useObservableState(mouseOverOut$, false)
 
   return (
     <ul className="head-info">

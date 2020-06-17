@@ -24,7 +24,7 @@ import { EditNameModal } from './EditNameModal'
 export const Profiles: FC = () => {
   const { t } = useTranslate('options')
   const checkDictAuth = useCheckDictAuth()
-  const activeProfileID = useObservableGetState(profile$$, 'id')!
+  const activeProfileID = useObservableGetState(profile$$, '', 'id')
   const [showAddProfileModal, setShowAddProfileModal] = useState(false)
   const [showEditNameModal, setShowEditNameModal] = useState(false)
   const [editingProfileID, setEditingProfileID] = useState<ProfileID | null>(

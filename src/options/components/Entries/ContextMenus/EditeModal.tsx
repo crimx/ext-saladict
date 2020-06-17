@@ -15,13 +15,13 @@ export interface EditModalProps {
 export const EditModal: FC<EditModalProps> = ({ menuID, onClose }) => {
   const { t } = useTranslate(['options', 'dicts', 'common', 'langcode'])
   const formRef = useRef<FormInstance>(null)
-  const allMenus = useObservableGetState(config$$, 'contextMenus', 'all')!
+  const allMenus = useObservableGetState(config$$, null, 'contextMenus', 'all')
 
   const namePath = `config.contextMenus.all.${menuID}.name`
   const urlPath = `config.contextMenus.all.${menuID}.url`
 
   const initialValues = useMemo(() => {
-    if (menuID) {
+    if (allMenus && menuID) {
       const item = allMenus[menuID]
       if (typeof item === 'string') {
         return {

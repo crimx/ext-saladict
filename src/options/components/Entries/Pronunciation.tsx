@@ -11,6 +11,7 @@ export const Pronunciation: FC = () => {
   const globals = useContext(GlobalsContext)
   const zdicAudio = useObservableGetState(
     profile$$,
+    false,
     'dicts',
     'all',
     'zdic',

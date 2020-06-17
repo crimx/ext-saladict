@@ -111,6 +111,7 @@ export const MatchPatternModal: FC<MatchPatternModalProps> = ({
             <div>
               {fields.map(field => (
                 <Form.Item
+                  // @ts-ignore
                   key={field.key}
                   {...field}
                   validateTrigger={['onChange', 'onBlur']}

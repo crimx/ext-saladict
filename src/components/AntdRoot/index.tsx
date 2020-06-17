@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
 import createStore from '@/content/redux/create'
 import { useRefFn, useObservableState, useObservable } from 'observable-hooks'
-import { distinctUntilChanged, map, startWith } from 'rxjs/operators'
+import { distinctUntilChanged, map } from 'rxjs/operators'
 
 import SaladBowlContainer from '@/content/components/SaladBowl/SaladBowl.container'
 import DictPanelContainer from '@/content/components/DictPanel/DictPanel.container'
@@ -47,15 +47,15 @@ export const AntdRoot: FC<AntdRootProps> = props => {
           locale: antdLocales[config.langCode] || en_US,
           bgStyle: { backgroundColor: config.darkMode ? '#000' : '#f0f2f5' },
           analytics: config.analytics
-        })),
-        startWith({
-          locale: zh_CN,
-          bgStyle: { backgroundColor: '#f0f2f5' },
-          analytics: false
-        })
+        }))
       )
-    )
-  )!
+    ),
+    () => ({
+      locale: zh_CN,
+      bgStyle: { backgroundColor: '#f0f2f5' },
+      analytics: false
+    })
+  )
 
   useEffect(() => {
     if (analytics && props.path) {

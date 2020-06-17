@@ -74,11 +74,11 @@ export const Suggest: FC<SuggestProps> = React.forwardRef(
                 )),
                 startWith(<FloatBox {...props} />)
               )
-            ),
-            startWith(<FloatBox {...props} />)
+            )
           ),
         [props.text]
-      )
-    )!
+      ),
+      () => <FloatBox {...props} />
+    )
   }
 )

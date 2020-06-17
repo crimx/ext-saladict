@@ -12,7 +12,7 @@ import { objectKeys } from '@/typings/helpers'
 
 export const DictAuths: FC = () => {
   const { t } = useTranslate(['options', 'dicts'])
-  const dictAuths = useObservableGetState(config$$, 'dictAuth')!
+  const dictAuths = useObservableGetState(config$$, null, 'dictAuth')
 
   const formItems: SaladictFormItem[] = [
     {
@@ -24,32 +24,36 @@ export const DictAuths: FC = () => {
     }
   ]
 
-  objectKeys(dictAuths).forEach(dictID => {
-    const auth = dictAuths[dictID]!
-    const configPath = getConfigPath('dictAuth', dictID)
-    const title = t(`dicts:${dictID}.name`)
+  if (dictAuths) {
+    objectKeys(dictAuths).forEach(dictID => {
+      const auth = dictAuths[dictID]!
+      const configPath = getConfigPath('dictAuth', dictID)
+      const title = t(`dicts:${dictID}.name`)
 
-    objectKeys(auth).forEach((key, i, keys) => {
-      const isLast = i + 1 === keys.length
-      formItems.push({
-        name: configPath + '.' + key,
-        label: i === 0 ? title + ' ' + key : key,
-        help: isLast ? (
-          <Trans message={t('dictAuth.dictHelp')}>
-            <a
-              href={require(`@/components/dictionaries/${dictID}/auth.ts`).url}
-              target="_blank"
-              rel="nofollow noopener noreferrer"
-            >
-              {title}
-            </a>
-          </Trans>
-        ) : null,
-        style: { marginBottom: isLast ? 10 : 5 },
-        children: <Input />
+      objectKeys(auth).forEach((key, i, keys) => {
+        const isLast = i + 1 === keys.length
+        formItems.push({
+          name: configPath + '.' + key,
+          label: i === 0 ? title + ' ' + key : key,
+          help: isLast ? (
+            <Trans message={t('dictAuth.dictHelp')}>
+              <a
+                href={
+                  require(`@/components/dictionaries/${dictID}/auth.ts`).url
+                }
+                target="_blank"
+                rel="nofollow noopener noreferrer"
+              >
+                {title}
+              </a>
+            </Trans>
+          ) : null,
+          style: { marginBottom: isLast ? 10 : 5 },
+          children: <Input />
+        })
       })
     })
-  })
+  }
 
   return <SaladictForm items={formItems} />
 }

@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react'
 import { List, Modal, Button } from 'antd'
 import { CheckOutlined, CloseOutlined, EditOutlined } from '@ant-design/icons'
-import { useObservableState } from 'observable-hooks'
+import { useObservableGetState } from 'observable-hooks'
 import omit from 'lodash/omit'
 import { useTranslate } from '@/_helpers/i18n'
 import { isFirefox } from '@/_helpers/saladict'
@@ -18,17 +18,21 @@ export interface AddModalProps {
 
 export const AddModal: FC<AddModalProps> = ({ show, onEdit, onClose }) => {
   const { t } = useTranslate(['common', 'menus'])
-  const config = useObservableState(config$$)!
+  const contextMenus = useObservableGetState(config$$, null, 'contextMenus')
   const unselected = useMemo(() => {
-    const selectedSet = new Set(config.contextMenus.selected as string[])
-    return Object.keys(config.contextMenus.all).filter(id => {
+    if (!contextMenus) {
+      return []
+    }
+
+    const selectedSet = new Set(contextMenus.selected as string[])
+    return Object.keys(contextMenus.all).filter(id => {
       // FF policy
       if (isFirefox && id === 'youdao_page_translate') {
         return false
       }
       return !selectedSet.has(id)
     })
-  }, [config])
+  }, [contextMenus])
 
   return (
     <Modal
@@ -50,7 +54,9 @@ export const AddModal: FC<AddModalProps> = ({ show, onEdit, onClose }) => {
   )
 
   function renderListItem(menuID: string) {
-    const item = config.contextMenus.all[menuID]
+    if (!contextMenus) return null
+
+    const item = contextMenus.all[menuID]
     return (
       <List.Item>
         <div className="sortable-list-item">
@@ -90,27 +96,29 @@ export const AddModal: FC<AddModalProps> = ({ show, onEdit, onClose }) => {
     )
 
     function selectItem() {
+      if (!contextMenus) return
+
       upload({
         [getConfigPath('contextMenus', 'selected')]: [
-          ...config.contextMenus.selected,
+          ...contextMenus.selected,
           menuID
         ]
       })
     }
 
     function deleteItem() {
+      if (!contextMenus) return
+
       Modal.confirm({
         title: t('common:delete_confirm'),
         okType: 'danger',
         onOk: () => {
-          if (config.contextMenus.all[menuID] !== 'x') {
+          if (contextMenus.all[menuID] !== 'x') {
             upload({
               [getConfigPath('contextMenus')]: {
-                ...config.contextMenus,
-                selected: config.contextMenus.selected.filter(
-                  id => id !== menuID
-                ),
-                all: omit(config.contextMenus.all, [menuID])
+                ...contextMenus,
+                selected: contextMenus.selected.filter(id => id !== menuID),
+                all: omit(contextMenus.all, [menuID])
               }
             })
           }

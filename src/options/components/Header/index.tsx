@@ -14,8 +14,8 @@ export interface HeaderProps {
 
 export const Header: FC<HeaderProps> = props => {
   const { t, ready } = useTranslate(['options', 'common'])
-  const profileId = useObservableGetState(profile$$, 'id')!
-  const profileIDList = useObservableState(profileIDList$$)!
+  const profileId = useObservableGetState(profile$$, '', 'id')
+  const profileIDList = useObservableState(profileIDList$$, [])
 
   const profileName = useMemo(
     () =>
