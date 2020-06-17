@@ -1722,74 +1722,74 @@
     "@nodelib/fs.scandir" "2.1.3"
     fastq "^1.6.0"
 
-"@opentranslate/baidu@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/baidu/-/baidu-1.3.0.tgz#52881861571d457bea9d6662d77bc66c1cf801df"
-  integrity sha512-U8urf2Bi1KXqifpytjFXMz2T2TEZ+m+J0VtNEWImZJZOlGTz34bhoyotY7WdzwGSdMSHvb0ojR2m4ck16DrNkQ==
+"@opentranslate/baidu@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/baidu/-/baidu-1.4.0.tgz#25e262ca3c624776c5f22d5006c01754e2dd90d6"
+  integrity sha512-wTuNVdGRIzTLPTDJTFWKD0gtCGK36M0myVzTU50kF+2+nSfJqbvZjLAElGoCNOjp+EcEQG/0gCkchaSw2UVT0g==
   dependencies:
-    "@opentranslate/translator" "^1.3.0"
+    "@opentranslate/translator" "^1.4.0"
     "@types/md5" "^2.1.33"
     "@types/qs" "^6.5.3"
     md5 "^2.2.1"
     qs "^6.8.0"
 
-"@opentranslate/caiyun@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/caiyun/-/caiyun-1.3.0.tgz#15e8ae6e41dcd2592ebf8a3055f722cc02e29eaa"
-  integrity sha512-9IxgODB7XsLU6O0wEqjfvmHcSDMBNnJDcTC48sE0hwA9CP2kNFdxAaVCmrUY0CuxhNu/dpgl1oAxnk2yCQqUoA==
+"@opentranslate/caiyun@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/caiyun/-/caiyun-1.4.0.tgz#803201e72b2db11d693fa267ef1556742b8571b4"
+  integrity sha512-JuhGCgLP4U/02noa4+9TmCxWBdox6ZomiKtzy4CyZgthbL64dX/qyh/Vzt/Rl/Y4ClsVCVgMUxjVqDvJiO7DEA==
   dependencies:
-    "@opentranslate/translator" "^1.3.0"
+    "@opentranslate/translator" "^1.4.0"
     "@types/node" "^12.11.7"
     "@types/qs" "^6.5.3"
     qs "^6.8.0"
 
-"@opentranslate/google@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/google/-/google-1.3.0.tgz#d1ea6e6ea09145cf701b6838696bb6e09e8b4083"
-  integrity sha512-Wb26sMqfu1LSX4N2RI/yZMHMNM3jkU7S0fFPCEQSWPO35+cxzrHw2/6LSfWLRrrR0Ww6VJepSZpF5uqaeonccw==
+"@opentranslate/google@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/google/-/google-1.4.0.tgz#64a67f06585bc87c08d54fdac3faa711c463e5b4"
+  integrity sha512-Y02wZF+oAdcpEG8X0rVJLZc9lm2rou/SXDMvRRdUITDpaMbFWkVDXRCnQYfw/OOADVu+zFzX5g4OS2eQW8w4aA==
   dependencies:
-    "@opentranslate/translator" "^1.3.0"
+    "@opentranslate/translator" "^1.4.0"
 
-"@opentranslate/languages@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/languages/-/languages-1.3.0.tgz#9f9afdf0dec1d6ebe10121a47b1efcc1b40a69c6"
-  integrity sha512-NEDNiVPFxNxZpdpWK4wCT1woaF1As1bzqTt5W2KO3LAJRPQ59QhIUOiTOZcre+dS5+karIe6f8dtaMwAxSMmlQ==
+"@opentranslate/languages@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/languages/-/languages-1.4.0.tgz#24ff6383cf189b03b8d19daacbf0e7c1901e1619"
+  integrity sha512-m8PmwRG3/nTI4F9L03c7139VdnIRnTWGY28aA5wojXbilG2uBK0on7fB/fLwGr+B+2e6KgMEYIQ/3zin+pwPDQ==
 
-"@opentranslate/sogou@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/sogou/-/sogou-1.3.0.tgz#2291f9ebf2777dbef1b49bf52cba83aa49b908d2"
-  integrity sha512-IUTfV0UWXZ3bAmmAb3nTYMYaU/PF9YiBsIGqJDv87iKI9039464+EA/0dodOY0vg5bCH9oFl/+w98HMdrwz4JA==
+"@opentranslate/sogou@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/sogou/-/sogou-1.4.0.tgz#169a998b1952a380c8f9b5fbf03495ef445aa393"
+  integrity sha512-/+/yELxwUE3e01HRCB/x1Lj9iC8zqCf/EJ7Ny5W5H+LH2VOk4jQ7JyoPcS9jQjfMHymGtMzCvSgGTG8cKjAddw==
   dependencies:
-    "@opentranslate/translator" "^1.3.0"
+    "@opentranslate/translator" "^1.4.0"
     "@types/md5" "^2.1.33"
     "@types/qs" "^6.5.3"
     md5 "^2.2.1"
     qs "^6.8.0"
 
-"@opentranslate/tencent@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/tencent/-/tencent-1.3.0.tgz#e3ab16850ae50d550c46e45419b2c1bea3d48a9c"
-  integrity sha512-/riKm6+m5p2sqgm1FAz1eJACE+LkHY1pXKrhduYx5R6gQWNmECJyneng0ua3ViRxHUb33zTNlb3dDBqqW9/gfw==
+"@opentranslate/tencent@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/tencent/-/tencent-1.4.0.tgz#5ec25ffdc78adc937ac43b8ba73cf170dade1e58"
+  integrity sha512-KaJrPnS5OwlKIfBQW+r1gWNN8CYlRK9/th0ipcFLCCKwH1aFzkAd0zUDBOEnLODlv1X4TFIA/zaavGnWO+QH+Q==
   dependencies:
-    "@opentranslate/translator" "^1.3.0"
+    "@opentranslate/translator" "^1.4.0"
     "@types/crypto-js" "^3.1.43"
     crypto-js "^3.1.9-1"
 
-"@opentranslate/translator@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/translator/-/translator-1.3.0.tgz#803c3929fc8fdec0b013f6841e784016c5bb3d33"
-  integrity sha512-ykA01Jkoh9IAjC8kHPkAn9ROfG+NkUYh7jSJd7JEy6JTSv/DIuQksDUNPkof3QzEwPB1I76XIx+xGs7nhkXysA==
+"@opentranslate/translator@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/translator/-/translator-1.4.0.tgz#b60153d993c1d1e46772cca2473a5a61b1d6d932"
+  integrity sha512-1rPpTsiobXNh1JsPlwQpSgd8hIz83ZEpRWbhsqCTAZ++EiTiZESCFMVamIf/sNvdd98zFwtOUHHY/QdCfMXzOQ==
   dependencies:
-    "@opentranslate/languages" "^1.3.0"
+    "@opentranslate/languages" "^1.4.0"
     axios "^0.19.0"
     franc-min "^4.1.0"
 
-"@opentranslate/youdao@^1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@opentranslate/youdao/-/youdao-1.3.0.tgz#5958b4cec019743860e9c00dacece48e7c080300"
-  integrity sha512-X6cEvn010G5z/ZABHUl3O/ftFr7HBhUmC8rU7C+HDRws9rVJqQnPk3hXxhj5Ez1SBNDBQAy8EfUqm/GtN1vlLQ==
+"@opentranslate/youdao@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@opentranslate/youdao/-/youdao-1.4.0.tgz#6988b5106a46974dbedecf17f21815d58803c099"
+  integrity sha512-SS5WZZVG4hSjEq4rp3M8pGcA0cBQa5yxJQRGtu+Zfdf2eVPE6iTcjqmgrKvoLH08jrGf6PmaJ74X7/feFkgStw==
   dependencies:
-    "@opentranslate/translator" "^1.3.0"
+    "@opentranslate/translator" "^1.4.0"
     js-sha256 "^0.9.0"
 
 "@reach/router@^1.2.1":
@@ -10704,10 +10704,10 @@ object.values@^1.1.0, object.values@^1.1.1:
     function-bind "^1.1.1"
     has "^1.0.3"
 
-observable-hooks@^2.1.2:
-  version "2.3.4"
-  resolved "https://registry.yarnpkg.com/observable-hooks/-/observable-hooks-2.3.4.tgz#48eb43ed52d0fe513a8dcb610c234a332a1e0540"
-  integrity sha512-3RzdzuzH869aU+6v4QMgWh8w9SM9l3iqNfLLo8g86Whu8hkkqQqt6wcqbjd7uwQ5nvyn1fxS9rn+Kt3PrBmQvg==
+observable-hooks@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/observable-hooks/-/observable-hooks-3.0.0.tgz#bfe3c9ad268dad4701b7bc48173512f3276d77ac"
+  integrity sha512-NmVWLZNyh6TK3oilHIEKvLOO2Hcub/XmT3F4qIuf6MCBGjsZs1gLdr985vp3EwCH6nTQSJ/+bCj/y+Gl/B/gwQ==
 
 obuf@^1.0.0, obuf@^1.1.2:
   version "1.1.2"
