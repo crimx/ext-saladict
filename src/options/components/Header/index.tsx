@@ -17,6 +17,8 @@ export const Header: FC<HeaderProps> = props => {
   const profileId = useObservableGetState(profile$$, '', 'id')
   const profileIDList = useObservableState(profileIDList$$, [])
 
+  const version = useMemo(() => 'v' + browser.runtime.getManifest().version, [])
+
   const profileName = useMemo(
     () =>
       ready
@@ -31,7 +33,10 @@ export const Header: FC<HeaderProps> = props => {
   return (
     <Layout.Header>
       <div className="options-header">
-        <h1>{t('title')}</h1>
+        <div className="options-header-title">
+          <h1>{t('title')}</h1>
+          <span>{version}</span>
+        </div>
         <a
           href="/?menuselected=Profiles"
           onClick={e => {

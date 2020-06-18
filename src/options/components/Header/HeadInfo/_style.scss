@@ -1,9 +1,10 @@
 @import '@/_sass_global/_z-indices.scss';
 
 .head-info {
+  align-self: flex-end;
   display: flex;
   align-items: flex-end;
-  margin: 0;
+  margin: 0 0 10px 0;
   padding: 0;
 
   & > li {
