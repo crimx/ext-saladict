@@ -34,7 +34,12 @@ export const DictAuths: FC = () => {
         const isLast = i + 1 === keys.length
         formItems.push({
           name: configPath + '.' + key,
-          label: i === 0 ? title + ' ' + key : key,
+          label: (
+            <span>
+              {i === 0 ? title + ' ' : ''}
+              <code>{key}</code>
+            </span>
+          ),
           help: isLast ? (
             <Trans message={t('dictAuth.dictHelp')}>
               <a

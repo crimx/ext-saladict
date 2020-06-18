@@ -3,4 +3,4 @@ export const auth = {
   secretKey: ''
 }
 
-export const url = 'https://cloud.tencent.com/document/api/213/30654'
+export const url = 'https://cloud.tencent.com/product/tmt'
