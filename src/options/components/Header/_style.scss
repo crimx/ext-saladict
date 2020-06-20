@@ -1,14 +1,35 @@
 .options-header {
   max-width: 1440px;
+  height: 100%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  line-height: 1.2;
 
   @media screen and (max-width: 800px) {
-    padding: 0 5px !important;
+    margin: 0 -20px !important;
+  }
+
+  @media screen and (max-width: 600px) {
+    margin: 0 -40px !important;
   }
 
   > * {
     color: #fff;
+  }
+}
+
+.options-header-title {
+  text-align: right;
+
+  h1 {
+    font-size: 1.5em;
+    color: #fff;
+    margin: 0;
+  }
+
+  span {
+    opacity: 0.65;
   }
 }

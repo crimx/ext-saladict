@@ -10,7 +10,7 @@ import { useTranslate } from '@/_helpers/i18n'
  */
 export const SaveBtn: FC = () => {
   const { t } = useTranslate('common')
-  const uploading = useObservableGetState(uploadResult$$, 'loading')
+  const uploading = useObservableGetState(uploadResult$$, false, 'loading')
 
   return (
     <Button type="primary" htmlType="submit" disabled={uploading}>

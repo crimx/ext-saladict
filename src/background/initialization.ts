@@ -11,6 +11,11 @@ import { ContextMenus } from './context-menus'
 import { BackgroundServer } from './server'
 import { openPDF } from './pdf-sniffer'
 import './types'
+import {
+  getTitlebarOffset,
+  setTitlebarOffset,
+  calibrateTitlebarOffset
+} from '@/_helpers/titlebar-offset'
 
 browser.runtime.onInstalled.addListener(onInstalled)
 browser.runtime.onStartup.addListener(onStartup)
@@ -188,6 +193,14 @@ async function onInstalled({
   }
 
   loadDictPanelToAllTabs()
+
+  // firefox users may want to calibrate manually
+  if (!isFirefox && !(await getTitlebarOffset())) {
+    const offset = await calibrateTitlebarOffset()
+    if (offset) {
+      setTitlebarOffset(offset)
+    }
+  }
 }
 
 function onStartup(): void {

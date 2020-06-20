@@ -24,9 +24,10 @@ export const MainEntry: FC = () => {
   const [entry, setEntry] = useState(getEntry)
   const { analytics, darkMode } = useObservablePickState(
     config$$,
+    () => ({ analytics: true, darkMode: false }),
     'analytics',
     'darkMode'
-  )!
+  )
 
   useEffect(() => {
     if (getEntry() !== entry) {

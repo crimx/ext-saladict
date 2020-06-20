@@ -160,6 +160,26 @@ kbd[data-key='eject']:after {
 }
 
 /* ======================================= *\
+ * Base
+\* ======================================= */
+
+code {
+  border: 1px solid #ddd;
+  color: #f14668;
+  background: #f6f6f6;
+  padding: 3px 5px;
+  border-radius: 3px;
+  font-size: 1em;
+}
+
+.saladict-theme-dark {
+  code {
+    border-color: #333;
+    background: #181818;
+  }
+}
+
+/* ======================================= *\
  * Components
 \* ======================================= */
 

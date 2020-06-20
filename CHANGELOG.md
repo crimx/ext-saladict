@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.13.3](https://github.com/crimx/ext-saladict/compare/v7.13.2...v7.13.3) (2020-06-20)
+
+
+### Bug Fixes
+
+* **dicts:** add macmillan american ([0c63217](https://github.com/crimx/ext-saladict/commit/0c632178733dd32cbd0a5aaab2aad31207a237b1)), closes [#837](https://github.com/crimx/ext-saladict/issues/837)
+* **dicts:** update cnki params ([952702c](https://github.com/crimx/ext-saladict/commit/952702c57946c7058291a062163511594b7c5d57)), closes [#852](https://github.com/crimx/ext-saladict/issues/852)
+
+
+### Build System
+
+* upgrade deps ([549983a](https://github.com/crimx/ext-saladict/commit/549983ac77d58de9471c8cf01a29ff95b4616e8f))
+
 ### [7.13.2](https://github.com/crimx/ext-saladict/compare/v7.13.1...v7.13.2) (2020-06-04)
 
 

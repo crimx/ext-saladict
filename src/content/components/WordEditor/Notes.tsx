@@ -96,7 +96,7 @@ export const Notes: FC<NotesProps> = props => {
     )
   )
 
-  const relatedWords = useObservableState(relatedWords$)!
+  const relatedWords = useObservableState(relatedWords$)
 
   const [onTranslateCtx, translateCtx$] = useObservableCallback<
     CtxTranslateResults,
@@ -332,7 +332,7 @@ export const Notes: FC<NotesProps> = props => {
               onKeyDown={stopPropagation}
             />
           </div>
-          {relatedWords.length > 0 && (
+          {relatedWords && relatedWords.length > 0 && (
             <WordCards
               words={relatedWords}
               onCardDelete={word => {

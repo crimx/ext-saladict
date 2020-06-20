@@ -2,7 +2,7 @@ import React, { useContext, ReactNode, useMemo, Ref } from 'react'
 import { Form, Button, Modal, Tooltip } from 'antd'
 import { FormItemProps, Rule, FormProps, FormInstance } from 'antd/lib/form'
 import { ExclamationCircleOutlined, BlockOutlined } from '@ant-design/icons'
-import { startWith, map, distinctUntilChanged } from 'rxjs/operators'
+import { map, distinctUntilChanged } from 'rxjs/operators'
 import get from 'lodash/get'
 import mapValues from 'lodash/mapValues'
 import shallowEqual from 'shallowequal'
@@ -44,7 +44,8 @@ export interface SaladictFormItem
   children?: ReactNode
 }
 
-export interface SaladictFormProps extends FormProps {
+export interface SaladictFormProps
+  extends Omit<FormProps, 'initialValues' | 'onFinish'> {
   items: SaladictFormItem[]
   hideFooter?: boolean
 }
@@ -93,14 +94,14 @@ export const SaladictForm = React.forwardRef(
 
     const [hideFields, setHideFields] = useObservableState<
       FieldShow,
-      FieldValues,
-      true
-    >(input$ =>
-      input$.pipe(
-        map(values => mapValues(hideFieldFns, hide => hide(values))),
-        startWith(mapValues(hideFieldFns, hide => hide(initialValues))),
-        distinctUntilChanged(shallowEqual)
-      )
+      FieldValues
+    >(
+      input$ =>
+        input$.pipe(
+          map(values => mapValues(hideFieldFns, hide => hide(values))),
+          distinctUntilChanged(shallowEqual)
+        ),
+      () => mapValues(hideFieldFns, hide => hide(initialValues))
     )
 
     function genFormItems(items: SaladictFormItem[]) {
@@ -165,13 +166,16 @@ export const SaladictForm = React.forwardRef(
     return (
       <Form
         {...formItemLayout}
+        {...restProps}
         initialValues={initialValues}
         onFinish={upload}
         onValuesChange={(_, values) => {
           ;(globals as GlobalsContext).dirty = true
           setHideFields(values)
+          if (props.onValuesChange) {
+            props.onValuesChange(_, values)
+          }
         }}
-        {...restProps}
         ref={ref}
       >
         {formItems}

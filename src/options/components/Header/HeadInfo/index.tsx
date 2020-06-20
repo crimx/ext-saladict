@@ -1,30 +1,13 @@
 import React, { FC } from 'react'
-import CSSTransition from 'react-transition-group/CSSTransition'
-import { of } from 'rxjs'
-import { switchMap, delay } from 'rxjs/operators'
-import { useObservableState, useObservableCallback } from 'observable-hooks'
-import { Tooltip } from 'antd'
+import { Tooltip, Popover } from 'antd'
 import { WarningOutlined } from '@ant-design/icons'
-import acknowledgement from '@/options/acknowledgement'
 import { useTranslate } from '@/_helpers/i18n'
-import { hover } from '@/_helpers/observables'
+import { AckList } from './AckList'
 
 import './_style.scss'
 
 export const HeadInfo: FC = () => {
   const { t } = useTranslate('options')
-
-  const [onMouseOverOut, mouseOverOut$] = useObservableCallback<
-    boolean,
-    React.MouseEvent
-  >(event$ =>
-    hover(event$).pipe(
-      switchMap(isEnter => of(isEnter).pipe(delay(isEnter ? 500 : 400)))
-    )
-  )
-
-  const isShowAck = useObservableState(mouseOverOut$)
-
   return (
     <ul className="head-info">
       {process.env.DEBUG || process.env.SDAPP_VETTED ? null : (
@@ -43,44 +26,14 @@ export const HeadInfo: FC = () => {
         </li>
       )}
       <li className="head-info-bubble-wrap head-info-unin">
-        <a
-          href="https://github.com/crimx/ext-saladict/wiki#acknowledgement"
-          onMouseOver={onMouseOverOut}
-          onMouseOut={onMouseOverOut}
-          onClick={preventDefault}
-        >
-          {t('headInfo.acknowledgement.title')}
-        </a>
-        <CSSTransition
-          classNames="head-info-fade"
-          in={isShowAck}
-          timeout={500}
-          mountOnEnter
-          unmountOnExit
-        >
-          {() => (
-            <div
-              className="head-info-bubble"
-              onMouseOver={onMouseOverOut}
-              onMouseOut={onMouseOverOut}
-            >
-              <ol>
-                {acknowledgement.map((ack, i) => (
-                  <li key={i}>
-                    <a
-                      href={ack.href}
-                      rel="nofollow noopener noreferrer"
-                      target="_blank"
-                    >
-                      {ack.name}
-                    </a>{' '}
-                    {t(`headInfo.acknowledgement.${ack.locale}`)}
-                  </li>
-                ))}
-              </ol>
-            </div>
-          )}
-        </CSSTransition>
+        <Popover placement="bottomRight" content={<AckList />}>
+          <a
+            href="https://github.com/crimx/ext-saladict/wiki#acknowledgement"
+            onClick={preventDefault}
+          >
+            {t('headInfo.acknowledgement.title')}
+          </a>
+        </Popover>
       </li>
       <li>
         <a
