@@ -305,6 +305,19 @@ export const locale: typeof _locale = {
     }
   },
 
+  titlebarOffset: {
+    title: '校準標題欄高度',
+    help:
+      '不同的系統以及不同的瀏覽器設定會影響標題欄高度，沙拉查詞會嘗試自動校準，如彈出視窗依然出現偏移可自行調整。',
+    main: '普通視窗',
+    main_help: '普通視窗可能沒有標題欄。',
+    panel: '簡化視窗',
+    panel_help: '沙拉查詞的獨立視窗快捷查詞介面為簡化視窗。',
+    calibrate: '自動校準',
+    calibrateSuccess: '自動校準成功',
+    calibrateError: '自動校準失敗'
+  },
+
   headInfo: {
     acknowledgement: {
       title: '特別鳴謝',

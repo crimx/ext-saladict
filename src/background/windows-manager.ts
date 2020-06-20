@@ -1,6 +1,7 @@
 import { message, storage } from '@/_helpers/browser-api'
 import { Word } from '@/_helpers/record-manager'
 import { isFirefox } from '@/_helpers/saladict'
+import { getTitlebarOffset } from '@/_helpers/titlebar-offset'
 
 interface WinRect {
   width: number
@@ -12,37 +13,6 @@ interface WinRect {
 const safeUpdateWindow: typeof browser.windows.update = (...args) =>
   browser.windows.update(...args).catch(console.warn as (m: any) => undefined)
 
-/** sometimes the top property does not include title bar in Chrome */
-const titlebarOffset = async (
-  type: browser.windows.CreateType
-): Promise<number> => {
-  if (isFirefox) return 0
-
-  let top = 0
-  try {
-    const initWin = await browser.windows.create({
-      top: 0,
-      left: -10,
-      height: window.screen.availHeight,
-      width: 1,
-      focused: false,
-      type
-    })
-
-    if (initWin && initWin.id != null) {
-      const testWin = await browser.windows.get(initWin.id)
-      if (testWin) {
-        top = testWin.top || 0
-        await browser.windows.remove(initWin.id)
-      }
-    }
-  } catch (e) {
-    console.warn(e)
-  }
-
-  return top
-}
-
 /**
  * Manipulate main window
  */
@@ -50,14 +20,13 @@ export class MainWindowsManager {
   /** Main window snapshot */
   snapshot: browser.windows.Window | null = null
 
-  private _titlebar: number | undefined
   async correctTop(originTop?: number) {
     if (!originTop) return originTop
-    const offset =
-      this._titlebar == null
-        ? (this._titlebar = await titlebarOffset('normal'))
-        : this._titlebar
-    return originTop - offset
+
+    const offset = await getTitlebarOffset()
+    if (!offset) return originTop
+
+    return originTop - offset.main
   }
 
   async focus(): Promise<void> {
@@ -171,14 +140,13 @@ export class QsPanelManager {
   private isSidebar: boolean = false
   private mainWindowsManager = new MainWindowsManager()
 
-  private _titlebar: number | undefined
   async correctTop(originTop?: number) {
     if (!originTop) return originTop
-    const offset =
-      this._titlebar == null
-        ? (this._titlebar = await titlebarOffset('popup'))
-        : this._titlebar
-    return originTop - offset
+
+    const offset = await getTitlebarOffset()
+    if (!offset) return originTop
+
+    return originTop - offset.panel
   }
 
   async create(preload?: Word): Promise<void> {

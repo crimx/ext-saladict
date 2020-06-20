@@ -301,6 +301,19 @@ export const locale = {
     }
   },
 
+  titlebarOffset: {
+    title: '校准标题栏高度',
+    help:
+      '不同的系统以及不同的浏览器设置会影响标题栏高度，沙拉查词会尝试自动校准，如弹出窗口依然出现偏移可自行调整。',
+    main: '普通窗口',
+    main_help: '普通窗口可能没有标题栏。',
+    panel: '简化窗口',
+    panel_help: '沙拉查词的独立窗口快捷查词面板为简化窗口。',
+    calibrate: '自动校准',
+    calibrateSuccess: '自动校准成功',
+    calibrateError: '自动校准失败'
+  },
+
   headInfo: {
     acknowledgement: {
       title: '特别鸣谢',

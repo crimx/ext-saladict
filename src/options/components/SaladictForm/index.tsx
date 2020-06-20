@@ -44,7 +44,8 @@ export interface SaladictFormItem
   children?: ReactNode
 }
 
-export interface SaladictFormProps extends FormProps {
+export interface SaladictFormProps
+  extends Omit<FormProps, 'initialValues' | 'onFinish'> {
   items: SaladictFormItem[]
   hideFooter?: boolean
 }
@@ -165,13 +166,16 @@ export const SaladictForm = React.forwardRef(
     return (
       <Form
         {...formItemLayout}
+        {...restProps}
         initialValues={initialValues}
         onFinish={upload}
         onValuesChange={(_, values) => {
           ;(globals as GlobalsContext).dirty = true
           setHideFields(values)
+          if (props.onValuesChange) {
+            props.onValuesChange(_, values)
+          }
         }}
-        {...restProps}
         ref={ref}
       >
         {formItems}

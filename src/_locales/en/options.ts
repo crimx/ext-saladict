@@ -317,6 +317,20 @@ export const locale: typeof _locale = {
     }
   },
 
+  titlebarOffset: {
+    title: 'Calibrate Titlebar Height',
+    help:
+      'Different systems or browser settings may result in different titlebar height. Saladict will attempt to calibrate automatically. If you may adjust manually.',
+    main: 'Normal',
+    main_help: 'Normal windows may not have titlebar.',
+    panel: 'Panel',
+    panel_help:
+      'Saladict standalone quick search panel is a type of panel window.',
+    calibrate: 'Auto-calibrate',
+    calibrateSuccess: 'Calibration success',
+    calibrateError: 'Calibration failed'
+  },
+
   headInfo: {
     acknowledgement: {
       title: 'Acknowledgement',
