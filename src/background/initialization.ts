@@ -194,7 +194,8 @@ async function onInstalled({
 
   loadDictPanelToAllTabs()
 
-  if (!(await getTitlebarOffset())) {
+  // firefox users may want to calibrate manually
+  if (!isFirefox && !(await getTitlebarOffset())) {
     const offset = await calibrateTitlebarOffset()
     if (offset) {
       setTitlebarOffset(offset)
