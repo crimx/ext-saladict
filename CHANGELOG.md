@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.13.4](https://github.com/crimx/ext-saladict/compare/v7.13.3...v7.13.4) (2020-06-23)
+
+
+### Bug Fixes
+
+* **options:** entry incorrect initial form state ([f009670](https://github.com/crimx/ext-saladict/commit/f0096707ba14425e3c4a60a9548ddad3adf8f3e0)), closes [#865](https://github.com/crimx/ext-saladict/issues/865)
+
 ### [7.13.3](https://github.com/crimx/ext-saladict/compare/v7.13.2...v7.13.3) (2020-06-20)
 
 

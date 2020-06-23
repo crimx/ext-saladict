@@ -48,6 +48,8 @@ export const EditModal: FC<EditModalProps> = ({ menuID, onClose }) => {
     }
   })
 
+  if (allMenus === null) return null
+
   return (
     <Modal
       visible={!!menuID}
