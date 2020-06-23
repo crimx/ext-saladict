@@ -11,7 +11,7 @@ export const Pronunciation: FC = () => {
   const globals = useContext(GlobalsContext)
   const zdicAudio = useObservableGetState(
     profile$$,
-    false,
+    null,
     'dicts',
     'all',
     'zdic',
@@ -26,6 +26,8 @@ export const Pronunciation: FC = () => {
         : globals.config.autopron.cn.list.filter(id => id !== 'zdic'),
     [zdicAudio]
   )
+
+  if (zdicAudio === null) return null
 
   return (
     <SaladictForm
