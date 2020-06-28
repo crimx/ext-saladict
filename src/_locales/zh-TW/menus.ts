@@ -28,6 +28,7 @@ export const locale: typeof _locale = {
   oxford: '牛津字典',
   page_translations: '網頁翻譯',
   saladict: '沙拉查詞',
+  saladict_standalone: '沙拉查詞獨立視窗',
   sogou: '搜狗翻譯',
   sogou_page_translate: '搜狗網頁翻譯',
   termonline: '術語在線',

@@ -29,6 +29,7 @@ export function getAllContextMenus(): { [id: string]: ContextItem } {
     microsoft_page_translate: 'x',
     oxford: 'http://www.oxforddictionaries.com/us/definition/english/%s',
     saladict: 'x',
+    saladict_standalone: 'x',
     sogou_page_translate: 'x',
     sogou: 'https://fanyi.sogou.com/#auto/zh-CHS/%s',
     termonline: 'https://www.termonline.cn/list.htm?k=%s',

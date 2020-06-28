@@ -12,6 +12,7 @@ import { combineLatest } from 'rxjs'
 import { concatMap, filter, distinctUntilChanged } from 'rxjs/operators'
 import { openPDF, extractPDFUrl } from './pdf-sniffer'
 import { copyTextToClipboard } from './clipboard-manager'
+import { BackgroundServer } from './server'
 
 interface CreateMenuOptions {
   type?: browser.contextMenus.ItemType
@@ -184,6 +185,9 @@ export class ContextMenus {
       }
       case 'saladict':
         ContextMenus.requestSelection()
+        break
+      case 'saladict_standalone':
+        BackgroundServer.getInstance().searchPageSelection()
         break
       case 'search_history':
         openURL(browser.runtime.getURL('history.html'))
