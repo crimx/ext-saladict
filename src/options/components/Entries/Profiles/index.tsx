@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react'
 import { Row, Col, Modal, notification, message as antdMsg } from 'antd'
 import { BlockOutlined } from '@ant-design/icons'
-import { useObservableGetState, useSubscription } from 'observable-hooks'
 import { useTranslate, Trans } from '@/_helpers/i18n'
 import {
   ProfileID,
@@ -16,15 +15,15 @@ import {
   addProfile
 } from '@/_helpers/profile-manager'
 import { SortableList, arrayMove } from '@/options/components/SortableList'
-import { profile$$, profileIDList$$ } from '@/options/data'
 import { useListLayout } from '@/options/helpers/layout'
 import { useCheckDictAuth } from '@/options/helpers/use-check-dict-auth'
 import { EditNameModal } from './EditNameModal'
+import { useSelector } from '@/options/redux/modules'
 
 export const Profiles: FC = () => {
   const { t } = useTranslate('options')
   const checkDictAuth = useCheckDictAuth()
-  const activeProfileID = useObservableGetState(profile$$, '', 'id')
+  const activeProfileID = useSelector(state => state.activeProfile.id)
   const [showAddProfileModal, setShowAddProfileModal] = useState(false)
   const [showEditNameModal, setShowEditNameModal] = useState(false)
   const [editingProfileID, setEditingProfileID] = useState<ProfileID | null>(
@@ -33,8 +32,9 @@ export const Profiles: FC = () => {
   const listLayout = useListLayout()
 
   // make a local copy to avoid flickering on drag end
-  const [profileIDList, setProfileIDList] = useState<ProfileIDList>([])
-  useSubscription(profileIDList$$, setProfileIDList)
+  const [profileIDList, setProfileIDList] = useState<ProfileIDList>(
+    useSelector(state => state.profiles)
+  )
 
   const tryTo = async (action: () => any): Promise<void> => {
     try {

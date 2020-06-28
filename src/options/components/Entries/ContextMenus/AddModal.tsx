@@ -1,14 +1,13 @@
 import React, { FC, useMemo } from 'react'
 import { List, Modal, Button } from 'antd'
 import { CheckOutlined, CloseOutlined, EditOutlined } from '@ant-design/icons'
-import { useObservableGetState } from 'observable-hooks'
 import omit from 'lodash/omit'
 import { useTranslate } from '@/_helpers/i18n'
 import { isFirefox } from '@/_helpers/saladict'
 import { genUniqueKey } from '@/_helpers/uniqueKey'
-import { config$$ } from '@/options/data'
-import { upload } from '@/options/helpers/upload'
 import { getConfigPath } from '@/options/helpers/path-joiner'
+import { useUpload } from '@/options/helpers/upload'
+import { useSelector } from '@/options/redux/modules'
 
 export interface AddModalProps {
   show: boolean
@@ -18,7 +17,7 @@ export interface AddModalProps {
 
 export const AddModal: FC<AddModalProps> = ({ show, onEdit, onClose }) => {
   const { t } = useTranslate(['common', 'menus'])
-  const contextMenus = useObservableGetState(config$$, null, 'contextMenus')
+  const contextMenus = useSelector(state => state.config.contextMenus)
   const unselected = useMemo(() => {
     if (!contextMenus) {
       return []
@@ -33,6 +32,7 @@ export const AddModal: FC<AddModalProps> = ({ show, onEdit, onClose }) => {
       return !selectedSet.has(id)
     })
   }, [contextMenus])
+  const upload = useUpload()
 
   return (
     <Modal
