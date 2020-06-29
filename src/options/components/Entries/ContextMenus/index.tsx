@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useLayoutEffect } from 'react'
 import { Row, Col } from 'antd'
 import { isFirefox } from '@/_helpers/saladict'
 import { useTranslate } from '@/_helpers/i18n'
@@ -12,6 +12,7 @@ import { EditModal } from './EditeModal'
 
 export const ContextMenus: FC = () => {
   const { t } = useTranslate(['options', 'common', 'menus'])
+  const upload = useUpload()
   const [showAddModal, setShowAddModal] = useState(false)
   const [editingMenu, setEditingMenu] = useState<string | null>(null)
   const listLayout = useListLayout()
@@ -20,7 +21,9 @@ export const ContextMenus: FC = () => {
   const [selectedMenus, setSelectedMenus] = useState<ReadonlyArray<string>>(
     contextMenus.selected
   )
-  const upload = useUpload()
+  useLayoutEffect(() => {
+    setSelectedMenus(contextMenus.selected)
+  }, [contextMenus.selected])
 
   return (
     <Row>

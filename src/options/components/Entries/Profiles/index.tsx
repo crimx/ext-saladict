@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useLayoutEffect } from 'react'
 import { Row, Col, Modal, notification, message as antdMsg } from 'antd'
 import { BlockOutlined } from '@ant-design/icons'
 import { useTranslate, Trans } from '@/_helpers/i18n'
@@ -31,10 +31,14 @@ export const Profiles: FC = () => {
   )
   const listLayout = useListLayout()
 
+  const storeProfileIDList = useSelector(state => state.profiles)
   // make a local copy to avoid flickering on drag end
   const [profileIDList, setProfileIDList] = useState<ProfileIDList>(
-    useSelector(state => state.profiles)
+    storeProfileIDList
   )
+  useLayoutEffect(() => {
+    setProfileIDList(storeProfileIDList)
+  }, [storeProfileIDList])
 
   const tryTo = async (action: () => any): Promise<void> => {
     try {

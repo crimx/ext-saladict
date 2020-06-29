@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useState, useLayoutEffect } from 'react'
 import { Tooltip, Row, Col } from 'antd'
 import { BlockOutlined } from '@ant-design/icons'
 import { DictID } from '@/app-config'
@@ -27,6 +27,9 @@ export const Dictionaries: FC = () => {
   const [selectedDicts, setSelectedDicts] = useState<ReadonlyArray<DictID>>(
     dicts.selected
   )
+  useLayoutEffect(() => {
+    setSelectedDicts(dicts.selected)
+  }, [dicts.selected])
 
   return (
     <Row>
