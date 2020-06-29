@@ -44,21 +44,13 @@ export const search: SearchFunction<
     payload
   )
 
-  const baiduAppid = config.dictAuth.baidu.appid
-  const baiduKey = config.dictAuth.baidu.key
-  const baiduConfig =
-    baiduAppid && baiduKey ? { appid: baiduAppid, key: baiduKey } : undefined
+  const baiduTranslator = getBaiduTranslator()
 
   let baiduResult: TranslateResult | undefined
 
   try {
-    baiduResult = await getBaiduTranslator().translate(
-      text,
-      sl,
-      tl,
-      baiduConfig
-    )
-
+    // Caiyun's lang detection is broken
+    baiduResult = await baiduTranslator.translate(text, sl, tl)
     if (langcodes.includes(baiduResult.from)) {
       sl = baiduResult.from
     }
@@ -69,10 +61,14 @@ export const search: SearchFunction<
 
   try {
     const result = await translator.translate(text, sl, tl, caiYunConfig)
-    if (baiduResult) {
-      result.origin.tts = baiduResult.origin.tts
-      result.trans.tts = baiduResult.trans.tts
-    }
+    result.origin.tts = await baiduTranslator.textToSpeech(
+      result.origin.paragraphs.join('\n'),
+      result.from
+    )
+    result.trans.tts = await baiduTranslator.textToSpeech(
+      result.trans.paragraphs.join('\n'),
+      result.to
+    )
     return {
       result: {
         id: 'caiyun',
