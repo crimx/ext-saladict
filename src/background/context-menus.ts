@@ -129,9 +129,9 @@ export class ContextMenus {
       if (tabs.length > 0 && tabs[0].url) {
         const langCode =
           window.appConfig.langCode === 'zh-CN'
-            ? 'zh-CHS'
+            ? 'zh-Hans'
             : window.appConfig.langCode === 'zh-TW'
-            ? 'zh-CHT'
+            ? 'zh-Hant'
             : 'en'
         openURL(
           `https://www.microsofttranslator.com/bv.aspx?from=auto&to=${langCode}&r=true&a=${encodeURIComponent(
