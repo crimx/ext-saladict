@@ -3,6 +3,7 @@ import { TFunction } from 'i18next'
 import { getProfileName } from '@/_helpers/profile-manager'
 import { message } from '@/_helpers/browser-api'
 import { useTranslate } from '@/_helpers/i18n'
+import { isOptionsPage } from '@/_helpers/saladict'
 import { HoverBox } from '@/components/HoverBox'
 import { OptionsBtn } from './MenubarBtns'
 
@@ -53,5 +54,5 @@ export const Profiles: FC<ProfilesProps> = props => {
 
 function ProfilesBtn(props: React.ComponentProps<'button'>) {
   const { t } = useTranslate(['content'])
-  return <OptionsBtn {...props} t={t} />
+  return <OptionsBtn {...props} t={t} disabled={isOptionsPage()} />
 }
