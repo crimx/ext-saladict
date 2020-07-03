@@ -45,12 +45,12 @@ export const FloatBox: FC<FloatBoxProps> = React.forwardRef(
 
     return (
       <div
-        className="menuBar-FloatBoxContainer"
+        className="floatBox-Container"
         style={{ width, height }}
         onMouseOver={props.onMouseOver}
         onMouseOut={props.onMouseOut}
       >
-        <div className="menuBar-FloatBoxMeasure">
+        <div className="floatBox-Measure">
           <ResizeReporter reportInit onSizeChanged={updateHeight} />
 
           {!props.list ? (
@@ -61,11 +61,11 @@ export const FloatBox: FC<FloatBoxProps> = React.forwardRef(
               <div></div>
             </div>
           ) : (
-            <div ref={containerRef} className="menuBar-FloatBox">
+            <div ref={containerRef} className="floatBox">
               {props.list.map(item => (
                 <button
                   key={item.key}
-                  className="menuBar-FloatBoxBtn"
+                  className="floatBox-Btn"
                   onFocus={props.onFocus}
                   onBlur={props.onBlur}
                   onClick={e =>

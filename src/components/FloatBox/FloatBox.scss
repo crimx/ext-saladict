@@ -1,4 +1,4 @@
-.menuBar-FloatBoxContainer {
+.floatBox-Container {
   position: relative;
   overflow: hidden;
   padding: 10px;
@@ -10,24 +10,24 @@
 }
 
 @-moz-document url-prefix() {
-  .menuBar-FloatBoxContainer {
+  .floatBox-Container {
     box-shadow: 0px 4px 20px -8px rgba(0, 0, 0, 0.8);
   }
 }
 
-.menuBar-FloatBoxMeasure {
+.floatBox-Measure {
   position: absolute;
   top: 10;
   left: 10;
   max-width: calc(var(--panel-width) * 0.7);
 }
 
-.menuBar-FloatBox {
+.floatBox {
   max-height: calc(var(--panel-max-height) * 0.75);
   overflow: hidden;
 }
 
-.menuBar-FloatBoxBtn {
+.floatBox-Btn {
   display: block;
   width: 100%;
   overflow: hidden;
@@ -50,17 +50,13 @@
   }
 }
 
-.menuBar-FloatBoxEntry {
+.floatBox-Entry {
   margin-right: 1.5em;
   color: #f9690e;
 }
 
-.menuBar-SuggestsExplain {
-  color: var(--color-font);
-}
-
 .isAnimate {
-  .menuBar-FloatBoxContainer {
+  .floatBox-Container {
     transition: width 0.4s, height 0.4s;
   }
 }
