@@ -10,7 +10,7 @@ import {
   startWith
 } from 'rxjs/operators'
 import { message } from '@/_helpers/browser-api'
-import { FloatBox, FloatBoxProps } from './FloatBox'
+import { FloatBox, FloatBoxProps } from '@/components/FloatBox'
 
 export interface SuggestItem {
   explain: string

@@ -6,7 +6,7 @@ export interface FloatBoxProps {
   /** Box container */
   ref?: Ref<HTMLDivElement>
   /** When a item is selected */
-  onSelect: (key: string) => any
+  onSelect?: (key: string) => any
   /** When a item is focused */
   onFocus?: (e: React.FocusEvent<HTMLButtonElement>) => any
   /** When a item is blur */
@@ -68,7 +68,10 @@ export const FloatBox: FC<FloatBoxProps> = React.forwardRef(
                   className="menuBar-FloatBoxBtn"
                   onFocus={props.onFocus}
                   onBlur={props.onBlur}
-                  onClick={e => props.onSelect(e.currentTarget.dataset.key!)}
+                  onClick={e =>
+                    props.onSelect &&
+                    props.onSelect(e.currentTarget.dataset.key!)
+                  }
                   onKeyDown={e => {
                     if (e.key === 'ArrowDown') {
                       e.preventDefault()

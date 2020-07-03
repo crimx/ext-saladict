@@ -5,7 +5,8 @@ import {
   delay,
   debounceTime,
   mergeMap,
-  takeUntil
+  takeUntil,
+  mapTo
 } from 'rxjs/operators'
 import { of, Observable, OperatorFunction, from } from 'rxjs'
 import { MouseEvent } from 'react'
@@ -78,4 +79,8 @@ export function switchMapBy<T, R>(
       )
     )
   }
+}
+
+export function mapToTrue<T>(input$: Observable<T>) {
+  return mapTo(true)(input$)
 }

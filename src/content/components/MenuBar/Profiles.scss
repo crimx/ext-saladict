@@ -1,10 +1,5 @@
-@import './FloatBox.scss';
+@import '@/components/HoverBox/HoverBox.scss';
 @import './MenubarBtns.scss';
-
-.menuBar-ProfileContainer {
-  display: inline-block;
-  position: relative;
-}
 
 .menuBar-ProfileItem {
   position: relative;
@@ -22,31 +17,5 @@
     border-left: 10px solid currentColor;
     border-top: 5px solid transparent;
     border-bottom: 5px solid transparent;
-  }
-}
-
-.menuBar-ProfileBox {
-  position: absolute;
-  left: 50%;
-  top: 40px;
-  z-index: 1000;
-  transform: translateX(-50%);
-}
-
-.isAnimate {
-  .menuBar-Profiles-enter {
-    opacity: 0;
-    transition: opacity 0.4s;
-  }
-
-  .menuBar-Profiles-enter-active,
-  .menuBar-Profiles-exit {
-    opacity: 1;
-    transition: opacity 0.4s;
-  }
-
-  .menuBar-Profiles-exit-active {
-    opacity: 0;
-    transition: opacity 0.4s;
   }
 }
