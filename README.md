@@ -58,7 +58,7 @@ See the [contributing guide](./CONTRIBUTING.md).
 
 [CONTRIBUTING.md](./CONTRIBUTING.md)
 
-## Notic
+## Notice
 
 Saladict is a free and open-sourced project for study purpose only. Anyone can obtain a copy of Saladict free of charge. If you believe your legal rights have been violated please contact the [author](https://github.com/crimx) immediately.
 
