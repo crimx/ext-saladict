@@ -29,7 +29,8 @@ export interface HoverBoxProps {
   top?: number
   left?: number
   onSelect?: (key: string) => void
-  onBtnClick?: () => void
+  /** return false to prevent showing float box */
+  onBtnClick?: () => boolean
   onHeightChanged?: (height: number) => void
 }
 
@@ -39,6 +40,7 @@ export interface HoverBoxProps {
 export const HoverBox: FC<HoverBoxProps> = props => {
   const portalRootRef = useContext(HoverBoxContext)
   const containerRef = useRef<HTMLDivElement | null>(null)
+  const boxRef = useRef<HTMLDivElement | null>(null)
 
   const [onHoverBtn, onHoverBtn$] = useObservableCallback<
     boolean,
@@ -80,15 +82,42 @@ export const HoverBox: FC<HoverBoxProps> = props => {
     <div className="hoverBox-Container" ref={containerRef}>
       <props.Button
         onKeyDown={e => {
-          if (e.key === 'ArrowDown') {
-            e.preventDefault()
-            e.stopPropagation()
-            showBox()
+          switch (e.key) {
+            case 'ArrowDown':
+              // Show float box or jump focus to the first item
+              e.preventDefault()
+              e.stopPropagation()
+              if (isShowBox) {
+                if (boxRef.current) {
+                  const firstBtn = boxRef.current.querySelector('button')
+                  if (firstBtn) {
+                    firstBtn.focus()
+                  }
+                }
+              } else {
+                showBox(true)
+              }
+              break
+            case 'Tab':
+              // Jump focus to the first item
+              if (!e.shiftKey && isShowBox && boxRef.current) {
+                e.preventDefault()
+                e.stopPropagation()
+                const firstBtn = boxRef.current.querySelector('button')
+                if (firstBtn) {
+                  firstBtn.focus()
+                }
+              }
+              break
           }
         }}
         onMouseOver={onHoverBtn}
         onMouseOut={onHoverBtn}
-        onClick={props.onBtnClick}
+        onClick={() => {
+          if (!props.onBtnClick || props.onBtnClick() !== false) {
+            showBox(true)
+          }
+        }}
       />
       <CSSTransition
         classNames="hoverBox"
@@ -120,6 +149,7 @@ export const HoverBox: FC<HoverBoxProps> = props => {
           const floatBox = (
             <div className="hoverBox-FloatBox" style={floatBoxStyle}>
               <FloatBox
+                ref={boxRef}
                 compact={props.compact}
                 list={props.items}
                 onFocus={onFocusBlur}
