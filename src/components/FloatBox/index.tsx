@@ -1,8 +1,11 @@
 import React, { FC, Ref, useState, useCallback } from 'react'
 import { ResizeReporter } from 'react-resize-reporter/scroll'
+import classnames from 'classnames'
 
 export interface FloatBoxProps {
   list?: Array<{ key: string; content: React.ReactNode }>
+  /** compact layout */
+  compact?: boolean
   /** Box container */
   ref?: Ref<HTMLDivElement>
   /** When a item is selected */
@@ -26,7 +29,7 @@ export interface FloatBoxProps {
 }
 
 /**
- * A white box
+ * A box that is meant to be on top of other elements
  */
 export const FloatBox: FC<FloatBoxProps> = React.forwardRef(
   (props: FloatBoxProps, containerRef: React.Ref<HTMLDivElement>) => {
@@ -45,7 +48,9 @@ export const FloatBox: FC<FloatBoxProps> = React.forwardRef(
 
     return (
       <div
-        className="floatBox-Container"
+        className={classnames('floatBox-Container', {
+          'floatBox-compact': props.compact
+        })}
         style={{ width, height }}
         onMouseOver={props.onMouseOver}
         onMouseOut={props.onMouseOut}
@@ -54,14 +59,14 @@ export const FloatBox: FC<FloatBoxProps> = React.forwardRef(
           <ResizeReporter reportInit onSizeChanged={updateHeight} />
 
           {!props.list ? (
-            <div className="lds-ellipsis">
+            <div key="loading" className="lds-ellipsis">
               <div></div>
               <div></div>
               <div></div>
               <div></div>
             </div>
           ) : (
-            <div ref={containerRef} className="floatBox">
+            <div key="box" ref={containerRef} className="floatBox">
               {props.list.map(item => (
                 <button
                   key={item.key}

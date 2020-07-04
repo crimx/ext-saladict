@@ -28,6 +28,8 @@ export const HoverBoxContext = React.createContext<
 export interface HoverBoxProps {
   Button: React.ComponentType<React.ComponentProps<'button'>>
   items: Array<{ key: string; content: React.ReactNode }>
+  /** Compact float box */
+  compact?: boolean
   top?: number
   left?: number
   onSelect?: (key: string) => void
@@ -122,6 +124,7 @@ export const HoverBox: FC<HoverBoxProps> = props => {
           const floatBox = (
             <div className="hoverBox-FloatBox" style={floatBoxStyle}>
               <FloatBox
+                compact={props.compact}
                 list={props.items}
                 onFocus={onFocusBlur}
                 onBlur={onFocusBlur}
