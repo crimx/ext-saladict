@@ -40,12 +40,13 @@ export const Profiles: FC<ProfilesProps> = props => {
     <HoverBox
       Button={ProfilesBtn}
       items={listItems}
-      onBtnClick={() =>
+      onBtnClick={() => {
         message.send({
           type: 'OPEN_URL',
           payload: { url: 'options.html', self: true }
         })
-      }
+        return false
+      }}
       onSelect={props.onSelectProfile}
       onHeightChanged={props.onHeightChanged}
     />

@@ -3,15 +3,11 @@ import CSSTransition from 'react-transition-group/CSSTransition'
 import {
   useObservable,
   useObservableCallback,
-  useObservableState
+  useObservableState,
+  identity
 } from 'observable-hooks'
 import { merge } from 'rxjs'
-import {
-  hover,
-  hoverWithDelay,
-  focusBlur,
-  mapToTrue
-} from '@/_helpers/observables'
+import { hover, hoverWithDelay, focusBlur } from '@/_helpers/observables'
 import { FloatBox } from '../FloatBox'
 import { createPortal } from 'react-dom'
 
@@ -56,7 +52,7 @@ export const HoverBox: FC<HoverBoxProps> = props => {
 
   const [onFocusBlur, focusBlur$] = useObservableCallback(focusBlur)
 
-  const [showBox, showBox$] = useObservableCallback<boolean, void>(mapToTrue)
+  const [showBox, showBox$] = useObservableCallback<boolean>(identity)
 
   const isOnBtn = useObservableState(onHoverBtn$, false)
 
@@ -138,6 +134,7 @@ export const HoverBox: FC<HoverBoxProps> = props => {
                 }
                 onSelect={props.onSelect}
                 onHeightChanged={props.onHeightChanged}
+                onClose={() => showBox(false)}
               />
             </div>
           )
