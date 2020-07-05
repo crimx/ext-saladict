@@ -8,8 +8,10 @@ import {
 } from 'observable-hooks'
 import { merge } from 'rxjs'
 import { hover, hoverWithDelay, focusBlur } from '@/_helpers/observables'
-import { FloatBox } from '../FloatBox'
+import { FloatBox, FloatBoxItem } from '../FloatBox'
 import { createPortal } from 'react-dom'
+
+export type HoverBoxItem = FloatBoxItem
 
 /**
  * Accept a optional root element via Context which
@@ -23,12 +25,12 @@ export const HoverBoxContext = React.createContext<
 
 export interface HoverBoxProps {
   Button: React.ComponentType<React.ComponentProps<'button'>>
-  items: Array<{ key: string; content: React.ReactNode }>
+  items: HoverBoxItem[]
   /** Compact float box */
   compact?: boolean
   top?: number
   left?: number
-  onSelect?: (key: string) => void
+  onSelect?: (key: string, value: string) => void
   /** return false to prevent showing float box */
   onBtnClick?: () => boolean
   onHeightChanged?: (height: number) => void
@@ -89,9 +91,9 @@ export const HoverBox: FC<HoverBoxProps> = props => {
               e.stopPropagation()
               if (isShowBox) {
                 if (boxRef.current) {
-                  const firstBtn = boxRef.current.querySelector('button')
+                  const firstBtn = boxRef.current.firstElementChild
                   if (firstBtn) {
-                    firstBtn.focus()
+                    ;(firstBtn as HTMLButtonElement | HTMLSelectElement).focus()
                   }
                 }
               } else {
@@ -103,9 +105,9 @@ export const HoverBox: FC<HoverBoxProps> = props => {
               if (!e.shiftKey && isShowBox && boxRef.current) {
                 e.preventDefault()
                 e.stopPropagation()
-                const firstBtn = boxRef.current.querySelector('button')
+                const firstBtn = boxRef.current.firstElementChild
                 if (firstBtn) {
-                  firstBtn.focus()
+                  ;(firstBtn as HTMLButtonElement | HTMLSelectElement).focus()
                 }
               }
               break

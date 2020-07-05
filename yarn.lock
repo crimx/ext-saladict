@@ -12308,10 +12308,10 @@ react-resize-detector@^4.0.5:
     raf-schd "^4.0.2"
     resize-observer-polyfill "^1.5.1"
 
-react-resize-reporter@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/react-resize-reporter/-/react-resize-reporter-1.0.0.tgz#d572a66eea1e8bc22c7ce86d6a184557729601e4"
-  integrity sha512-/Qx3zH/0IXVxHY8FCsKgxOq2hCjPRFolD6PAqiWvkwFlmIwVlB8RQbcXq2gQOnpO8fm1fODLKnoOnb9l2fDsag==
+react-resize-reporter@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/react-resize-reporter/-/react-resize-reporter-1.0.1.tgz#58ee60bd49eccaa48ce945c62bea29c3b2e7d038"
+  integrity sha512-5TStFJqzS2GE9Q4I80P7GS7b2A8BDXhtkFqP0iO9ta98qAZZZWt2mfQYUy4vduyoiiy/niftVawyEIZB7MJPUA==
 
 react-retux@^0.1.0:
   version "0.1.0"

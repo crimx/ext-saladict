@@ -33,14 +33,26 @@ storiesOf('Content Scripts|Components', module)
     return (
       <FloatBox
         list={
-          boolean('Loading', true)
+          boolean('Loading', false)
             ? undefined
-            : Array(faker.random.number(10))
-                .fill(0)
-                .map(() => {
-                  const word = faker.hacker.noun()
-                  return { key: word, content: word }
-                })
+            : uniqueWordList(15).map(word => {
+                return faker.random.boolean()
+                  ? {
+                      key: word,
+                      value: word,
+                      label: word
+                    }
+                  : {
+                      key: word,
+                      value: word,
+                      options: [
+                        { value: word, label: word },
+                        ...uniqueWordList(15).map(word => {
+                          return { value: word, label: word }
+                        })
+                      ]
+                    }
+              })
         }
         compact={boolean('Compact', true)}
         onSelect={action('onSelect')}
@@ -55,3 +67,13 @@ storiesOf('Content Scripts|Components', module)
       />
     )
   })
+
+function uniqueWordList(max: number): string[] {
+  return [
+    ...new Set(
+      Array(faker.random.number(max))
+        .fill(0)
+        .map(() => faker.random.word())
+    )
+  ]
+}

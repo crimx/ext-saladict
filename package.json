@@ -89,7 +89,7 @@
     "react-hot-loader": "^4",
     "react-number-editor": "^4.0.3",
     "react-redux": "^7.1.0",
-    "react-resize-reporter": "^1.0.0",
+    "react-resize-reporter": "^1.0.1",
     "react-retux": "^0.1.0",
     "react-shadow": "17.1.x",
     "react-sortable-hoc": "^1.10.1",
