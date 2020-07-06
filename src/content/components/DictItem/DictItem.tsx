@@ -1,17 +1,27 @@
-import React, { ComponentType, FC, useState, useEffect } from 'react'
+import React, {
+  ComponentType,
+  FC,
+  useState,
+  useEffect,
+  useCallback,
+  useRef
+} from 'react'
+import { useObservableCallback, identity } from 'observable-hooks'
+import classnames from 'classnames'
+import { ResizeReporter } from 'react-resize-reporter/scroll'
+import { DictID } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
 import { newWord } from '@/_helpers/record-manager'
+import { timer } from '@/_helpers/promise-more'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import { DictItemHead, DictItemHeadProps } from './DictItemHead'
 import { DictItemBody, DictItemBodyProps } from './DictItemBody'
-import { ResizeReporter } from 'react-resize-reporter/scroll'
-import { DictID } from '@/app-config'
-import { useObservableCallback, identity } from 'observable-hooks'
 
 export interface DictItemProps
-  extends Omit<DictItemBodyProps, 'catalogSelect$'> {
+  extends Omit<DictItemBodyProps, 'catalogSelect$' | 'dictRootRef'> {
   /** default height when search result is received */
   preferredHeight: number
+  withAnimation: boolean
   /** Inject dict component. Mainly for testing */
   dictComp?: ComponentType<ViewPorps<any>>
 
@@ -29,6 +39,9 @@ export const DictItem: FC<DictItemProps> = props => {
     key: string
     value: string
   }>(identity)
+
+  /** Expand/collapse transition */
+  const [noHeightTransition, setNoHeightTransition] = useState(false)
 
   const [foldState, setFoldState] = useState<'COLLAPSE' | 'HALF' | 'FULL'>(
     'COLLAPSE'
@@ -57,9 +70,59 @@ export const DictItem: FC<DictItemProps> = props => {
     props.onHeightChanged(props.dictID, visibleHeight + 21)
   }, [visibleHeight])
 
+  const dictItemRef = useRef<HTMLDivElement | null>(null)
+  // container element in shadow dom
+  const dictRootRef = useRef<HTMLDivElement | null>(null)
+
+  const preCatalogSelect = useCallback(
+    async (item: { key: string; value: string }) => {
+      if (item.key[0] !== '#') return onCatalogSelect(item)
+
+      // handle anchor jump
+      if (!dictRootRef.current) return
+
+      const anchor = dictRootRef.current.querySelector<HTMLElement>(
+        `#${item.value}`
+      )
+      if (!anchor) return
+
+      if (foldState !== 'FULL') {
+        setNoHeightTransition(true)
+        setFoldState('FULL')
+        await timer(0)
+        setNoHeightTransition(false)
+      }
+
+      if (dictItemRef.current) {
+        const rootNode = dictItemRef.current.getRootNode() as HTMLDivElement
+        if (rootNode.querySelector) {
+          const scrollParent = rootNode.querySelector('.dictPanel-Body')
+          if (scrollParent) {
+            scrollParent.scrollTo({
+              top: anchor.offsetTop,
+              behavior: props.withAnimation ? 'smooth' : 'auto'
+            })
+            return
+          }
+        }
+      }
+
+      // Fallback to scrollIntoView
+      // The topmost area may scroll beyond dict header due to sticky layout
+      anchor.scrollIntoView({
+        behavior: props.withAnimation ? 'smooth' : 'auto'
+      })
+    },
+    [foldState, props.withAnimation]
+  )
+
   return (
     <section
-      className={`dictItem${foldState === 'COLLAPSE' ? '' : ' isUnfold'}`}
+      ref={dictItemRef}
+      className={classnames('dictItem', {
+        isUnfold: foldState !== 'COLLAPSE',
+        noHeightTransition
+      })}
     >
       <DictItemHead
         dictID={props.dictID}
@@ -67,7 +130,7 @@ export const DictItem: FC<DictItemProps> = props => {
         isSearching={props.searchStatus === 'SEARCHING'}
         toggleFold={toggleFold}
         openDictSrcPage={props.openDictSrcPage}
-        onCatalogSelect={onCatalogSelect}
+        onCatalogSelect={preCatalogSelect}
       />
       <div
         className="dictItem-Body"
@@ -86,7 +149,11 @@ export const DictItem: FC<DictItemProps> = props => {
               catalogSelect$: catalogSelect$
             })
           ) : (
-            <DictItemBody {...props} catalogSelect$={catalogSelect$} />
+            <DictItemBody
+              {...props}
+              catalogSelect$={catalogSelect$}
+              dictRootRef={dictRootRef}
+            />
           )}
         </article>
         {foldState === 'HALF' &&
