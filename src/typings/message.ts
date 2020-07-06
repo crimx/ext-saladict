@@ -35,6 +35,10 @@ export type MessageConfig = MessageConfigType<{
     response: string
   }
 
+  SET_CLIPBOARD: {
+    payload: string
+  }
+
   /** Request backend for page info */
   PAGE_INFO: {
     response: {

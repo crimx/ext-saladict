@@ -18,7 +18,7 @@ import {
 } from './database'
 import { AudioManager } from './audio-manager'
 import { QsPanelManager } from './windows-manager'
-import { getTextFromClipboard } from './clipboard-manager'
+import { getTextFromClipboard, copyTextToClipboard } from './clipboard-manager'
 import './types'
 import { DictID } from '@/app-config'
 
@@ -73,6 +73,8 @@ export class BackgroundServer {
           return this.callDictEngineMethod(msg.payload)
         case 'GET_CLIPBOARD':
           return Promise.resolve(getTextFromClipboard())
+        case 'SET_CLIPBOARD':
+          return Promise.resolve(copyTextToClipboard(msg.payload))
 
         case 'INJECT_DICTPANEL':
           return injectDictPanel(sender.tab)
