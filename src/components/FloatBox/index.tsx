@@ -7,7 +7,7 @@ export type FloatBoxItem =
       // <button>
       key: string
       value: string
-      label: string
+      label: React.ReactNode
       options?: undefined
     }
   | {
