@@ -38,6 +38,8 @@ const stories = storiesOf('Content Scripts|Dictionaries', module)
             '/engine.ts')[message.payload.method]
 
           return method(...(message.payload.args || []))
+        } else {
+          action(message.type)(message['payload'])
         }
       })
     )
@@ -119,6 +121,7 @@ function Dict(props: {
 
   const [status, setStatus] = useState<'IDLE' | 'SEARCHING' | 'FINISH'>('IDLE')
   const [result, setResult] = useState<any>(null)
+  const [catalog, setCatalog] = useState<any>()
 
   const [profiles, updateProfiles] = useState(() => getDefaultProfile())
   // custom dict options
@@ -172,15 +175,17 @@ function Dict(props: {
     setStatus('SEARCHING')
     search(searchText, getDefaultConfig(), profiles, {
       isPDF: false
-    }).then(async ({ result }) => {
+    }).then(async ({ result, catalog }) => {
       setStatus('FINISH')
       setResult(result)
+      setCatalog(catalog)
     })
   }, [searchText, profiles])
 
   return (
     <DictItem
       dictID={props.dictID}
+      catalog={catalog}
       withAnimation={props.withAnimation}
       panelCSS={''}
       preferredHeight={number('Preferred Height', 256)}
@@ -194,7 +199,7 @@ function Dict(props: {
         action('Speaker Play')(src)
         return Promise.resolve()
       }}
-      onInPanelSelect={action('Inpanel Select')}
+      onInPanelSelect={() => action('Inpanel Select')()}
     />
   )
 }
