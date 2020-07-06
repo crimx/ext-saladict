@@ -7,7 +7,12 @@ import {
   identity
 } from 'observable-hooks'
 import { merge } from 'rxjs'
-import { hover, hoverWithDelay, focusBlur } from '@/_helpers/observables'
+import {
+  hover,
+  hoverWithDelay,
+  focusBlur,
+  mapToTrue
+} from '@/_helpers/observables'
 import { FloatBox, FloatBoxItem } from '../FloatBox'
 import { createPortal } from 'react-dom'
 
@@ -49,6 +54,10 @@ export const HoverBox: FC<HoverBoxProps> = props => {
     React.MouseEvent<Element>
   >(hoverWithDelay)
 
+  const [onBtnClick, onBtnClick$] = useObservableCallback<boolean, void>(
+    mapToTrue
+  )
+
   const [onHoverBox, onHoverBox$] = useObservableCallback<
     boolean,
     React.MouseEvent<Element>
@@ -58,7 +67,10 @@ export const HoverBox: FC<HoverBoxProps> = props => {
 
   const [showBox, showBox$] = useObservableCallback<boolean>(identity)
 
-  const isOnBtn = useObservableState(onHoverBtn$, false)
+  const isOnBtn = useObservableState(
+    useObservable(() => merge(onHoverBtn$, onBtnClick$)),
+    false
+  )
 
   const isOnBox = useObservableState(
     useObservable(() => merge(onHoverBox$, focusBlur$, showBox$)),
@@ -117,7 +129,7 @@ export const HoverBox: FC<HoverBoxProps> = props => {
         onMouseOut={onHoverBtn}
         onClick={() => {
           if (!props.onBtnClick || props.onBtnClick() !== false) {
-            showBox(true)
+            onBtnClick()
           }
         }}
       />
