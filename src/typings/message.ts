@@ -73,6 +73,7 @@ export type MessageConfig = MessageConfigType<{
     response: {
       id: DictID
       result: any
+      catalog?: DictSearchResult<DictID>['catalog']
       audio?: DictSearchResult<DictID>['audio']
     }
   }

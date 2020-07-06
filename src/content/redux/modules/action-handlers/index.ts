@@ -162,7 +162,8 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
           ? {
               id: d.id,
               searchStatus: 'FINISH',
-              searchResult: payload.result
+              searchResult: payload.result,
+              catalog: payload.catalog
             }
           : d
       )

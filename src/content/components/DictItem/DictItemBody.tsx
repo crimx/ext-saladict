@@ -7,6 +7,7 @@ import { SALADICT_PANEL } from '@/_helpers/saladict'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { StaticSpeakerContainer } from '@/components/Speaker'
+import { Observable } from 'rxjs'
 
 const dictContentStyles = require('./DictItemContent.shadow.scss').toString()
 
@@ -19,6 +20,8 @@ export interface DictItemBodyProps {
 
   searchStatus: 'IDLE' | 'SEARCHING' | 'FINISH'
   searchResult?: object | null
+
+  catalogSelect$: Observable<{ key: string; value: string }>
 
   searchText: (arg?: {
     id?: DictID
@@ -79,7 +82,11 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
               onPlayStart={props.onSpeakerPlay}
               onMouseUp={props.onInPanelSelect}
             >
-              <Dict result={props.searchResult} searchText={props.searchText} />
+              <Dict
+                result={props.searchResult}
+                searchText={props.searchText}
+                catalogSelect$={props.catalogSelect$}
+              />
             </StaticSpeakerContainer>
           </root.div>
         )}

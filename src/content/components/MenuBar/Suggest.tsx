@@ -58,7 +58,8 @@ export const Suggest: FC<SuggestProps> = React.forwardRef(
                     ref={ref}
                     list={suggests.map(s => ({
                       key: s.entry,
-                      content: (
+                      value: s.entry,
+                      label: (
                         <>
                           <span className="menuBar-SuggestsEntry">
                             {s.entry}

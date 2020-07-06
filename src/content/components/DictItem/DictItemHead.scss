@@ -1,3 +1,5 @@
+@import '@/components/HoverBox/HoverBox.scss';
+
 .dictItemHead {
   display: flex;
   align-items: flex-start;
@@ -31,13 +33,42 @@
   }
 }
 
+.dictItemHead-Menus_Btn {
+  width: 18px;
+  height: 18px;
+  margin: 2px 0 0;
+  padding: 0;
+  font-size: 0;
+  border: none;
+  border-radius: 3px;
+  outline: none;
+  background-color: transparent;
+  opacity: 0.7;
+  transition: background-color 0.4s;
+  cursor: pointer;
+
+  svg {
+    fill: var(--color-font);
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    background-color: var(--color-divider);
+  }
+}
+
+.dictItemHead-EmptyArea {
+  flex: 1;
+  align-self: stretch;
+}
+
 .dictItemHead-FoldArrowBtn {
   width: 20px - 1px;
   height: 20px - 1px;
   overflow: hidden;
   background: none;
   border: none;
-  margin: 0 0 0 auto;
   padding: 0;
   cursor: pointer;
   user-select: none;
@@ -87,6 +118,16 @@
 /*-----------------------------------------------*\
     States
 \*-----------------------------------------------*/
+
+.darkMode {
+  .dictItemHead-Menus_Btn {
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: #2d3338;
+    }
+  }
+}
 
 .isUnfold {
   .dictItemHead-FoldArrow {

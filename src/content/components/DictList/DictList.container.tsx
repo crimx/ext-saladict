@@ -18,6 +18,7 @@ const memoizedDicts = memoizeOne(
       dictID: dict.id,
       searchStatus: dict.searchStatus,
       searchResult: dict.searchResult,
+      catalog: dict.catalog,
       preferredHeight: allDict[dict.id].preferredHeight
     }))
 )

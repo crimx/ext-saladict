@@ -6,13 +6,16 @@ import { DictItemHead, DictItemHeadProps } from './DictItemHead'
 import { DictItemBody, DictItemBodyProps } from './DictItemBody'
 import { ResizeReporter } from 'react-resize-reporter/scroll'
 import { DictID } from '@/app-config'
+import { useObservableCallback, identity } from 'observable-hooks'
 
-export interface DictItemProps extends DictItemBodyProps {
+export interface DictItemProps
+  extends Omit<DictItemBodyProps, 'catalogSelect$'> {
   /** default height when search result is received */
   preferredHeight: number
   /** Inject dict component. Mainly for testing */
   dictComp?: ComponentType<ViewPorps<any>>
 
+  catalog?: DictItemHeadProps['catalog']
   openDictSrcPage: DictItemHeadProps['openDictSrcPage']
 
   onHeightChanged: (id: DictID, height: number) => void
@@ -22,6 +25,11 @@ export interface DictItemProps extends DictItemBodyProps {
 }
 
 export const DictItem: FC<DictItemProps> = props => {
+  const [onCatalogSelect, catalogSelect$] = useObservableCallback<{
+    key: string
+    value: string
+  }>(identity)
+
   const [foldState, setFoldState] = useState<'COLLAPSE' | 'HALF' | 'FULL'>(
     'COLLAPSE'
   )
@@ -55,9 +63,11 @@ export const DictItem: FC<DictItemProps> = props => {
     >
       <DictItemHead
         dictID={props.dictID}
+        catalog={props.catalog}
         isSearching={props.searchStatus === 'SEARCHING'}
         toggleFold={toggleFold}
         openDictSrcPage={props.openDictSrcPage}
+        onCatalogSelect={onCatalogSelect}
       />
       <div
         className="dictItem-Body"
@@ -72,10 +82,11 @@ export const DictItem: FC<DictItemProps> = props => {
             props.searchResult &&
             React.createElement(props.dictComp, {
               result: props.searchResult,
-              searchText: props.searchText
+              searchText: props.searchText,
+              catalogSelect$: catalogSelect$
             })
           ) : (
-            <DictItemBody {...props} />
+            <DictItemBody {...props} catalogSelect$={catalogSelect$} />
           )}
         </article>
         {foldState === 'HALF' &&

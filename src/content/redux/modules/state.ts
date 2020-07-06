@@ -6,6 +6,7 @@ import {
   isStandalonePage,
   isOptionsPage
 } from '@/_helpers/saladict'
+import { DictSearchResult } from '@/components/dictionaries/helpers'
 
 export const initState = () => {
   const config = getDefaultConfig()
@@ -70,6 +71,7 @@ export const initState = () => {
       readonly id: DictID
       readonly searchStatus: 'IDLE' | 'SEARCHING' | 'FINISH'
       readonly searchResult: any
+      readonly catalog?: DictSearchResult<DictID>['catalog']
     }[],
     /** User manually folded or unfolded */
     userFoldedDicts: {} as { [id in DictID]?: boolean },

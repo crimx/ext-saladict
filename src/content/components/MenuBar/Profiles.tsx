@@ -4,7 +4,7 @@ import { getProfileName } from '@/_helpers/profile-manager'
 import { message } from '@/_helpers/browser-api'
 import { useTranslate } from '@/_helpers/i18n'
 import { isOptionsPage } from '@/_helpers/saladict'
-import { HoverBox } from '@/components/HoverBox'
+import { HoverBox, HoverBoxItem } from '@/components/HoverBox'
 import { OptionsBtn } from './MenubarBtns'
 
 export interface ProfilesProps {
@@ -21,10 +21,11 @@ export interface ProfilesProps {
 export const Profiles: FC<ProfilesProps> = props => {
   const { t } = useTranslate(['common'])
 
-  const listItems = props.profiles.map(p => {
+  const listItems: HoverBoxItem[] = props.profiles.map(p => {
     return {
       key: p.id,
-      content: (
+      value: p.id,
+      label: (
         <span
           className={`menuBar-ProfileItem${
             p.id === props.activeProfileId ? ' isActive' : ''
