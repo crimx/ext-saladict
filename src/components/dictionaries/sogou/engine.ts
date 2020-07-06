@@ -54,7 +54,7 @@ export const search: SearchFunction<
 
   const pid = config.dictAuth.sogou.pid
   const key = config.dictAuth.sogou.key
-  const translatorConfig = pid && key ? { pid, key } : undefined
+  const translatorConfig = pid || key ? { pid, key } : undefined
 
   try {
     const result = await translator.translate(text, sl, tl, translatorConfig)
