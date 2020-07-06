@@ -167,12 +167,21 @@
   }
 }
 
+// Firefox fix
 @-moz-document url-prefix() {
   .floatBox-Container {
     box-shadow: 0px 4px 20px -8px rgba(0, 0, 0, 0.8);
 
+    .floatBox-Select {
+      padding-left: 6px;
+    }
+
     &.floatBox-compact {
       box-shadow: 0px 1px 13px -7px rgba(0, 0, 0, 0.8);
+
+      .floatBox-Select {
+        padding-left: 3px;
+      }
     }
   }
 }
