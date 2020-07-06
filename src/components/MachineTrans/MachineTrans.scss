@@ -21,70 +21,9 @@
   }
 }
 
-.MachineTrans-LangSwitchWrap {
-  position: relative;
-  min-height: 1.2em;
-}
-
-.MachineTrans-LangSwitchBtn {
-  position: absolute;
-  font-weight: bold;
-  color: #f9690e;
-  cursor: pointer;
-  background: transparent;
-  border: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
-}
-
-.MachineTrans-LangSwitch {
-  display: flex;
-  position: relative;
-  z-index: 100;
-
-  select {
-    background: transparent;
-  }
-}
-
-.MachineTrans-LangSwitch_Titles,
-.MachineTrans-LangSwitch_Selects {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: flex-end;
-  margin: 5px;
-}
-
-.MachineTrans-LangSwitch_Selects {
-  select:first-child {
-    margin-bottom: 5px;
-  }
-}
-
 /*-----------------------------------------------*\
     States
 \*-----------------------------------------------*/
-.isAnimate {
-  .MachineTrans-LangSwitch-enter {
-    opacity: 0;
-    transition: opacity 0.1s;
-  }
-  .MachineTrans-LangSwitch-enter-active {
-    opacity: 1;
-  }
-
-  .MachineTrans-LangSwitch-exit {
-    opacity: 1;
-    transition: opacity 0.1s;
-  }
-  .MachineTrans-LangSwitch-exit-active {
-    opacity: 0;
-  }
-}
-
 .MachineTrans-lang-ar, // Arabic
 .MachineTrans-lang-ara, // Arabic
 .MachineTrans-lang-az, // Azerbaijani

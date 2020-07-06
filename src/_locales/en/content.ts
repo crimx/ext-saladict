@@ -42,5 +42,7 @@ export const locale: typeof _locale = {
     title: 'Update to Anki',
     success: 'Successfully update word to Anki.',
     failed: 'Failed to update word to Anki.'
-  }
+  },
+  copySrc: 'Copy Source',
+  copyTrans: 'Copy Translation'
 }

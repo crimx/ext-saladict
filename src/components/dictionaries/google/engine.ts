@@ -1,12 +1,12 @@
-import {
-  MachineTranslateResult,
-  SearchFunction,
-  MachineTranslatePayload,
-  GetSrcPageFunction,
-  getMTArgs
-} from '../helpers'
+import { SearchFunction, GetSrcPageFunction } from '../helpers'
 import memoizeOne from 'memoize-one'
 import { Google } from '@opentranslate/google'
+import {
+  MachineTranslateResult,
+  MachineTranslatePayload,
+  getMTArgs,
+  machineResult
+} from '@/components/MachineTrans/engine'
 import { GoogleLanguage } from './config'
 
 export const getTranslator = memoizeOne(
@@ -59,30 +59,34 @@ export const search: SearchFunction<
       order: options.cnfirst ? ['cn', 'com'] : ['com', 'cn'],
       apiAsFallback: true
     })
-    return {
-      result: {
-        id: 'google',
-        sl: result.from,
-        tl: result.to,
-        langcodes: translator.getSupportLanguages(),
-        searchText: result.origin,
-        trans: result.trans
+    return machineResult(
+      {
+        result: {
+          id: 'google',
+          sl: result.from,
+          tl: result.to,
+          searchText: result.origin,
+          trans: result.trans
+        },
+        audio: {
+          py: result.trans.tts,
+          us: result.trans.tts
+        }
       },
-      audio: {
-        py: result.trans.tts,
-        us: result.trans.tts
-      }
-    }
+      translator.getSupportLanguages()
+    )
   } catch (e) {
-    return {
-      result: {
-        id: 'google',
-        sl,
-        tl,
-        langcodes: translator.getSupportLanguages(),
-        searchText: { paragraphs: [''] },
-        trans: { paragraphs: [''] }
-      }
-    }
+    return machineResult(
+      {
+        result: {
+          id: 'google',
+          sl,
+          tl,
+          searchText: { paragraphs: [''] },
+          trans: { paragraphs: [''] }
+        }
+      },
+      translator.getSupportLanguages()
+    )
   }
 }

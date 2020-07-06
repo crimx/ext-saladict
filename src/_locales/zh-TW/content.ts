@@ -42,5 +42,7 @@ export const locale: typeof _locale = {
     title: '更新到 Anki',
     success: '更新到 Anki 成功。',
     failed: '更新單詞到 Anki 失敗。'
-  }
+  },
+  copySrc: '複製原文',
+  copyTrans: '複製譯文'
 }

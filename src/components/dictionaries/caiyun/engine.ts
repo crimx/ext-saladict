@@ -1,15 +1,15 @@
-import {
-  MachineTranslateResult,
-  SearchFunction,
-  MachineTranslatePayload,
-  GetSrcPageFunction,
-  getMTArgs
-} from '../helpers'
+import { SearchFunction, GetSrcPageFunction } from '../helpers'
 import memoizeOne from 'memoize-one'
 import { Caiyun } from '@opentranslate/caiyun'
-import { CaiyunLanguage } from './config'
-import { getTranslator as getBaiduTranslator } from '../baidu/engine'
 import { TranslateResult } from '@opentranslate/translator'
+import {
+  MachineTranslateResult,
+  MachineTranslatePayload,
+  getMTArgs,
+  machineResult
+} from '@/components/MachineTrans/engine'
+import { getTranslator as getBaiduTranslator } from '../baidu/engine'
+import { CaiyunLanguage } from './config'
 
 const getTranslator = memoizeOne(
   () =>
@@ -69,30 +69,34 @@ export const search: SearchFunction<
       result.trans.paragraphs.join('\n'),
       result.to
     )
-    return {
-      result: {
-        id: 'caiyun',
-        sl: result.from,
-        tl: result.to,
-        langcodes,
-        searchText: result.origin,
-        trans: result.trans
+    return machineResult(
+      {
+        result: {
+          id: 'caiyun',
+          sl: result.from,
+          tl: result.to,
+          searchText: result.origin,
+          trans: result.trans
+        },
+        audio: {
+          py: result.trans.tts,
+          us: result.trans.tts
+        }
       },
-      audio: {
-        py: result.trans.tts,
-        us: result.trans.tts
-      }
-    }
+      langcodes
+    )
   } catch (e) {
-    return {
-      result: {
-        id: 'caiyun',
-        sl,
-        tl,
-        langcodes: translator.getSupportLanguages(),
-        searchText: { paragraphs: [''] },
-        trans: { paragraphs: [''] }
-      }
-    }
+    return machineResult(
+      {
+        result: {
+          id: 'caiyun',
+          sl,
+          tl,
+          searchText: { paragraphs: [''] },
+          trans: { paragraphs: [''] }
+        }
+      },
+      translator.getSupportLanguages()
+    )
   }
 }
