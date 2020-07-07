@@ -44,6 +44,7 @@ export interface DictSearchResult<Result> {
           value: string
           label: string
         }>
+        title?: string
       }
   >
 }

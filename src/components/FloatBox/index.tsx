@@ -18,6 +18,7 @@ export type FloatBoxItem =
         value: string
         label: string
       }>
+      title?: string
     }
 
 export interface FloatBoxProps {
@@ -104,6 +105,7 @@ export const FloatBox: FC<FloatBoxProps> = React.forwardRef(
             onBlur={props.onBlur}
             onChange={onSelectItemChange}
           >
+            {item.title && <option disabled>{item.title}</option>}
             {item.options.map(opt => (
               <option key={opt.value} value={opt.value}>
                 {opt.label}

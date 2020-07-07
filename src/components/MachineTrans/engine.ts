@@ -222,11 +222,13 @@ export function machineResult<ID extends DictID>(
     {
       key: 'sl',
       value: data.result.sl,
+      title: '%t(content:machineTrans.sl)',
       options: langCodesOptions
     },
     {
       key: 'tl',
       value: data.result.tl,
+      title: '%t(content:machineTrans.tl)',
       options: langCodesOptions
     },
     {

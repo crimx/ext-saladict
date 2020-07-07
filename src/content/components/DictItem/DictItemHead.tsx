@@ -27,6 +27,7 @@ export interface DictItemHeadProps {
           value: string
           label: string
         }>
+        title?: string
       }
   >
 }
@@ -65,6 +66,7 @@ export const DictItemHead: FC<DictItemHeadProps> = props => {
           menuItems.push({
             key: item.key,
             value: item.value,
+            title: item.title && localedLabel(item.title),
             options: item.options.map(opt => ({
               value: opt.value,
               label: localedLabel(opt.label)
