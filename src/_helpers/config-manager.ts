@@ -73,6 +73,9 @@ export async function getConfig(): Promise<AppConfig> {
 }
 
 export function updateConfig(baseconfig: AppConfig): Promise<void> {
+  if (process.env.DEBUG) {
+    console.log(`Saved config`, baseconfig)
+  }
   return storage.sync.set({ baseconfig: deflate(baseconfig) })
 }
 
