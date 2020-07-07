@@ -144,6 +144,7 @@ function useDictPanelProps(): DictPanelProps {
     menuBar: (
       <MenuBar
         text={text}
+        isTrackHistory={false}
         updateText={text => {
           action('Update Text')(text)
           setText(text)

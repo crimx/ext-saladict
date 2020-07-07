@@ -26,7 +26,7 @@ storiesOf('Content Scripts|WordEditor', module)
         action(message.type)(message['payload'])
         switch (message.type) {
           case 'GET_WORDS_BY_TEXT':
-            return faker.random.boolean
+            return faker.random.boolean()
               ? [
                   newWord({
                     date: faker.date.past().valueOf(),
