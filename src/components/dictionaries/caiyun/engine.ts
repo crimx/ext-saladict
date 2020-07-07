@@ -11,7 +11,7 @@ import {
 import { getTranslator as getBaiduTranslator } from '../baidu/engine'
 import { CaiyunLanguage } from './config'
 
-const getTranslator = memoizeOne(
+export const getTranslator = memoizeOne(
   () =>
     new Caiyun({
       env: 'ext',
@@ -75,6 +75,7 @@ export const search: SearchFunction<
           id: 'caiyun',
           sl: result.from,
           tl: result.to,
+          slInitial: profile.dicts.all.caiyun.options.slInitial,
           searchText: result.origin,
           trans: result.trans
         },
@@ -92,6 +93,7 @@ export const search: SearchFunction<
           id: 'caiyun',
           sl,
           tl,
+          slInitial: 'hide',
           searchText: { paragraphs: [''] },
           trans: { paragraphs: [''] }
         }

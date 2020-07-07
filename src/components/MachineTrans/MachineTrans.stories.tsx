@@ -1,8 +1,9 @@
 import React from 'react'
 import { Subject } from 'rxjs'
+import faker from 'faker'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
-import { withKnobs } from '@storybook/addon-knobs'
+import { withKnobs, boolean } from '@storybook/addon-knobs'
 import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
 import {
@@ -39,22 +40,21 @@ storiesOf('Content Scripts|Components', module)
   )
   .addDecorator(withi18nNS(['content', 'langcode']))
   .add('MachineTrans', () => {
+    const rtl = boolean('rtl', true)
     return (
       <MachineTrans
         result={{
           id: 'baidu',
           sl: 'en',
-          tl: 'zh',
+          tl: rtl ? 'ara' : 'zh',
+          slInitial: 'collapse',
           searchText: {
-            paragraphs: [
-              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quo necessitatibus voluptatem nobis, autem minima? Praesentium at est, eos reprehenderit, voluptatem obcaecati id quasi natus rem voluptatum temporibus pariatur omnis.'
-            ],
-            tts: 'https://example.com'
+            paragraphs: [faker.lorem.paragraph()],
+            tts: faker.internet.url()
           },
           trans: {
-            paragraphs: [
-              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quo necessitatibus voluptatem nobis, autem minima? Praesentium at est, eos reprehenderit, voluptatem obcaecati id quasi natus rem voluptatum temporibus pariatur omnis.'
-            ]
+            paragraphs: [faker.lorem.paragraph()],
+            tts: faker.internet.url()
           }
         }}
         searchText={action('Search Text')}
@@ -63,24 +63,23 @@ storiesOf('Content Scripts|Components', module)
     )
   })
   .add('MachineTransCatalog', () => {
+    const rtl = boolean('rtl', false)
     const noop = () => {}
     const catalogSelect$ = new Subject<{ key: string; value: string }>()
     const mt = machineResult(
       {
         result: {
           id: 'google',
-          sl: 'en',
+          sl: rtl ? 'ara' : 'en',
           tl: 'zh',
+          slInitial: 'hide',
           searchText: {
-            paragraphs: [
-              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quo necessitatibus voluptatem nobis, autem minima? Praesentium at est, eos reprehenderit, voluptatem obcaecati id quasi natus rem voluptatum temporibus pariatur omnis.'
-            ],
-            tts: 'https://example.com'
+            paragraphs: [faker.lorem.paragraph()],
+            tts: faker.internet.url()
           },
           trans: {
-            paragraphs: [
-              'Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem quo necessitatibus voluptatem nobis, autem minima? Praesentium at est, eos reprehenderit, voluptatem obcaecati id quasi natus rem voluptatum temporibus pariatur omnis.'
-            ]
+            paragraphs: [faker.lorem.paragraph()],
+            tts: faker.internet.url()
           }
         }
       },

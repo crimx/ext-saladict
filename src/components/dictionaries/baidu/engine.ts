@@ -62,6 +62,7 @@ export const search: SearchFunction<
       {
         result: {
           id: 'baidu',
+          slInitial: profile.dicts.all.baidu.options.slInitial,
           sl: result.from,
           tl: result.to,
           searchText: result.origin,
@@ -79,6 +80,7 @@ export const search: SearchFunction<
       {
         result: {
           id: 'baidu',
+          slInitial: 'hide',
           sl,
           tl,
           searchText: { paragraphs: [''] },

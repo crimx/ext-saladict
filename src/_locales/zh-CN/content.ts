@@ -34,13 +34,14 @@ export const locale = {
     sl: '来源语言',
     tl: '目标语言',
     auto: '自动检测',
-    stext: '原文'
+    stext: '原文',
+    showSl: '显示原文',
+    copySrc: '复制原文',
+    copyTrans: '复制译文'
   },
   updateAnki: {
     title: '更新到 Anki',
     success: '更新到 Anki 成功。',
     failed: '更新单词到 Anki 失败。'
-  },
-  copySrc: '复制原文',
-  copyTrans: '复制译文'
+  }
 }

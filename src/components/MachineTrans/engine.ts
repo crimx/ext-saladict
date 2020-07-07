@@ -1,6 +1,7 @@
 import { DictID, AppConfig } from '@/app-config'
 import { Language } from '@opentranslate/languages'
 import { Translator } from '@opentranslate/translator'
+import { DictItem, SelectOptions } from '@/app-config/dicts'
 import { isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 import { DictSearchResult } from '../dictionaries/helpers'
 
@@ -11,6 +12,7 @@ export interface MachineTranslatePayload<Lang = string> {
 
 export interface MachineTranslateResult<ID extends DictID> {
   id: ID
+  slInitial: 'hide' | 'collapse' | 'full'
   /** Source language */
   sl: string
   /** Target language */
@@ -24,6 +26,34 @@ export interface MachineTranslateResult<ID extends DictID> {
     tts?: string
   }
 }
+
+type DefaultMachineOptions<Lang extends Language> = {
+  /** Keep linebreaks */
+  keepLF: 'none' | 'all' | 'webpage' | 'pdf'
+  /** Source language initial state */
+  slInitial: 'hide' | 'collapse' | 'full'
+  tl: 'default' | Lang
+  tl2: 'default' | Lang
+}
+
+export type MachineDictItem<
+  Lang extends Language,
+  Options extends { [option: string]: number | boolean | string } = {}
+> = DictItem<Options & DefaultMachineOptions<Lang>>
+
+export type ExtractLangFromConfig<Config> = Config extends MachineDictItem<
+  infer Lang,
+  infer Options
+>
+  ? Lang
+  : never
+
+export type ExtractOptionsFromConfig<Config> = Config extends MachineDictItem<
+  infer Lang,
+  infer Options
+>
+  ? Omit<Options, keyof DefaultMachineOptions<Lang>>
+  : never
 
 /**
  * Get Machine Translate arguments
@@ -116,6 +146,60 @@ export async function getMTArgs(
   return { sl, tl, text }
 }
 
+export function machineConfig<Config extends MachineDictItem<Language>>(
+  langs: ExtractLangFromConfig<Config>[],
+  /** overwrite configs */
+  config: Partial<Config>,
+  options: ExtractOptionsFromConfig<Config>,
+  optionsSel: SelectOptions<ExtractOptionsFromConfig<Config>>
+): Config {
+  return {
+    lang: '11111111',
+    selectionLang: {
+      english: true,
+      chinese: true,
+      japanese: true,
+      korean: true,
+      french: true,
+      spanish: true,
+      deutsch: true,
+      others: true,
+      matchAll: false
+    },
+    defaultUnfold: {
+      english: true,
+      chinese: true,
+      japanese: true,
+      korean: true,
+      french: true,
+      spanish: true,
+      deutsch: true,
+      others: true,
+      matchAll: false
+    },
+    preferredHeight: 320,
+    selectionWC: {
+      min: 1,
+      max: 999999999999999
+    },
+    ...config,
+    options: {
+      keepLF: 'webpage',
+      slInitial: 'collapse',
+      tl: 'default',
+      tl2: 'default',
+      ...(options as any)
+    },
+    options_sel: {
+      keepLF: ['none', 'all', 'webpage', 'pdf'],
+      slInitial: ['hide', 'collapse', 'full'],
+      tl: ['default', ...langs],
+      tl2: ['default', ...langs],
+      ...optionsSel
+    }
+  } as Config
+}
+
 /** Generate catalog */
 export function machineResult<ID extends DictID>(
   data: DictSearchResult<MachineTranslateResult<ID>>,
@@ -134,29 +218,39 @@ export function machineResult<ID extends DictID>(
     })
   }
 
+  const catalog: DictSearchResult<MachineTranslateResult<ID>>['catalog'] = [
+    {
+      key: 'sl',
+      value: data.result.sl,
+      options: langCodesOptions
+    },
+    {
+      key: 'tl',
+      value: data.result.tl,
+      options: langCodesOptions
+    },
+    {
+      key: 'copySrc',
+      value: 'copySrc',
+      label: '%t(content:machineTrans.copySrc)'
+    },
+    {
+      key: 'copyTrans',
+      value: 'copyTrans',
+      label: '%t(content:machineTrans.copyTrans)'
+    }
+  ]
+
+  if (data.result.slInitial === 'hide') {
+    catalog.push({
+      key: 'showSl',
+      value: '',
+      label: '%t(content:machineTrans.showSl)'
+    })
+  }
+
   return {
     ...data,
-    catalog: [
-      {
-        key: 'sl',
-        value: data.result.sl,
-        options: langCodesOptions
-      },
-      {
-        key: 'tl',
-        value: data.result.tl,
-        options: langCodesOptions
-      },
-      {
-        key: 'copySrc',
-        value: 'copySrc',
-        label: '%t(content:copySrc)'
-      },
-      {
-        key: 'copyTrans',
-        value: 'copyTrans',
-        label: '%t(content:copyTrans)'
-      }
-    ]
+    catalog
   }
 }

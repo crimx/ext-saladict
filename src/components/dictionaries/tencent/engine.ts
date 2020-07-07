@@ -79,6 +79,7 @@ export const search: SearchFunction<
           id: 'tencent',
           sl: result.from,
           tl: result.to,
+          slInitial: profile.dicts.all.tencent.options.slInitial,
           searchText: result.origin,
           trans: result.trans
         },
@@ -96,6 +97,7 @@ export const search: SearchFunction<
           id: 'tencent',
           sl,
           tl,
+          slInitial: 'hide',
           searchText: { paragraphs: [''] },
           trans: { paragraphs: [''] }
         }

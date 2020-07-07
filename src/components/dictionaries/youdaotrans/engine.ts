@@ -55,6 +55,7 @@ export const search: SearchFunction<
           id: 'youdaotrans',
           sl: result.from,
           tl: result.to,
+          slInitial: profile.dicts.all.youdaotrans.options.slInitial,
           searchText: result.origin,
           trans: result.trans
         },
@@ -72,6 +73,7 @@ export const search: SearchFunction<
           id: 'youdaotrans',
           sl,
           tl,
+          slInitial: 'hide',
           searchText: { paragraphs: [''] },
           trans: { paragraphs: [''] }
         }
