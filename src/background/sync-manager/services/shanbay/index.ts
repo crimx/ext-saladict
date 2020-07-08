@@ -77,28 +77,34 @@ export class Service extends SyncService<SyncConfig> {
   }
 
   async addWord(text: string) {
+    let word: { id: string } | undefined
     try {
       const url =
-        'http://www.shanbay.com/api/v1/bdc/search/?word=' +
+        'https://apiv3.shanbay.com/abc/words/senses?vocabulary_content=' +
         encodeURIComponent(text)
-      var resSearch = await fetch(url).then(r => r.json())
+      word = await fetch(url).then(r => r.json())
     } catch (e) {
       throw new Error('network')
     }
 
-    if (!resSearch || !resSearch.data) {
+    if (!word || !word.id) {
       throw new Error('word')
     }
 
+    let uploadResult
+
     try {
-      var resLearning = await fetch(
-        'http://www.shanbay.com/api/v1/bdc/learning/',
+      uploadResult = await fetch(
+        'https://apiv3.shanbay.com/wordscollection/words',
         {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/x-www-form-urlencoded'
+            'Content-Type': 'application/json'
           },
-          body: `content_type=vocabulary&id=${resSearch.data.id}`
+          body: JSON.stringify({
+            vocab_id: word.id,
+            business_id: 6
+          })
         }
       ).then(r => r.json())
     } catch (e) {
@@ -108,7 +114,7 @@ export class Service extends SyncService<SyncConfig> {
       throw new Error('network')
     }
 
-    if (!resLearning || resLearning.status_code !== 0) {
+    if (!uploadResult || !uploadResult.created_at) {
       throw new Error('word')
     }
   }
