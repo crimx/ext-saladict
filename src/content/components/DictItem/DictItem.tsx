@@ -99,7 +99,10 @@ export const DictItem: FC<DictItemProps> = props => {
           const scrollParent = rootNode.querySelector('.dictPanel-Body')
           if (scrollParent) {
             scrollParent.scrollTo({
-              top: anchor.offsetTop,
+              top:
+                anchor.getBoundingClientRect().y -
+                scrollParent.firstElementChild!.getBoundingClientRect().y -
+                30, // plus the sticky title bar
               behavior: props.withAnimation ? 'smooth' : 'auto'
             })
             return
