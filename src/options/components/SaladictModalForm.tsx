@@ -1,7 +1,8 @@
 import React, { FC, useRef, ReactNode } from 'react'
+import { useUpdateEffect } from 'react-use'
+import { useObservableState } from 'observable-hooks'
 import { Modal } from 'antd'
 import { FormInstance } from 'antd/lib/form'
-import { useUpdateEffect } from 'react-use'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { useTranslate } from '@/_helpers/i18n'
 import {
@@ -10,8 +11,8 @@ import {
   SaladictFormProps
 } from '@/options/components/SaladictForm'
 import { formItemModalLayout } from '@/options/helpers/layout'
-import { useSelector } from '../redux/modules'
-import { useFormDirty, setFormDirty } from '../helpers/use-form-dirty'
+import { useFormDirty, setFormDirty } from '@/options/helpers/use-form-dirty'
+import { uploadStatus$ } from '@/options/helpers/upload'
 
 export interface SaladictModalFormProps
   extends Omit<SaladictFormProps, 'title'> {
@@ -25,7 +26,7 @@ export interface SaladictModalFormProps
 export const SaladictModalForm: FC<SaladictModalFormProps> = props => {
   const { visible, title, zIndex, onClose, ...restProps } = props
   const { t } = useTranslate('options')
-  const uploadStatus = useSelector(state => state.uploadStatus)
+  const uploadStatus = useObservableState(uploadStatus$, 'idle')
   const formDirtyRef = useFormDirty()
   const formRef = useRef<FormInstance>(null)
 

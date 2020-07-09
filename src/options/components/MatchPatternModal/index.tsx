@@ -1,14 +1,15 @@
 import React, { FC, useRef } from 'react'
 import { shallowEqual } from 'react-redux'
 import { useUpdateEffect } from 'react-use'
+import { useObservableState } from 'observable-hooks'
 import { Form, Modal, Button } from 'antd'
 import { FormInstance, Rule } from 'antd/lib/form'
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { useTranslate, Trans } from '@/_helpers/i18n'
 import { matchPatternToRegExpStr } from '@/_helpers/matchPatternToRegExpStr'
-import { useSelector } from '@/options/redux/modules'
+import { useSelector } from '@/content/redux'
 import { getConfigPath } from '@/options/helpers/path-joiner'
-import { useUpload } from '@/options/helpers/upload'
+import { useUpload, uploadStatus$ } from '@/options/helpers/upload'
 import { PatternItem } from './ PatternItem'
 
 export interface MatchPatternModalProps {
@@ -22,7 +23,7 @@ export const MatchPatternModal: FC<MatchPatternModalProps> = ({
 }) => {
   const { t } = useTranslate(['options', 'common'])
   const formRef = useRef<FormInstance>(null)
-  const uploadStatus = useSelector(state => state.uploadStatus)
+  const uploadStatus = useObservableState(uploadStatus$, 'idle')
   const patterns = useSelector(
     state => ({
       pdfWhitelist: state.config.pdfWhitelist,

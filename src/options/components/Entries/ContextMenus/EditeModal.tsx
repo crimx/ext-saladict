@@ -1,11 +1,12 @@
 import React, { FC, useMemo, useRef } from 'react'
 import { useUpdateEffect } from 'react-use'
+import { useObservableState } from 'observable-hooks'
 import { Input, Modal, Form } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { FormInstance } from 'antd/lib/form/Form'
 import { useTranslate } from '@/_helpers/i18n'
-import { useSelector } from '@/options/redux/modules'
-import { useUpload } from '@/options/helpers/upload'
+import { useSelector } from '@/content/redux'
+import { useUpload, uploadStatus$ } from '@/options/helpers/upload'
 
 export interface EditModalProps {
   menuID?: string | null
@@ -16,7 +17,7 @@ export const EditModal: FC<EditModalProps> = ({ menuID, onClose }) => {
   const { t } = useTranslate(['options', 'dicts', 'common', 'langcode'])
   const formRef = useRef<FormInstance>(null)
   const allMenus = useSelector(state => state.config.contextMenus.all)
-  const uploadStatus = useSelector(state => state.uploadStatus)
+  const uploadStatus = useObservableState(uploadStatus$, 'idle')
   const upload = useUpload()
 
   const namePath = `config.contextMenus.all.${menuID}.name`

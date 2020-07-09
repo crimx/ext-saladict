@@ -3,7 +3,7 @@ import { shallowEqual } from 'react-redux'
 import { Layout } from 'antd'
 import { useTranslate } from '@/_helpers/i18n'
 import { getProfileName } from '@/_helpers/profile-manager'
-import { useSelector } from '@/options/redux/modules'
+import { useSelector } from '@/content/redux'
 import { HeadInfoMemo } from './HeadInfo'
 
 import './_style.scss'

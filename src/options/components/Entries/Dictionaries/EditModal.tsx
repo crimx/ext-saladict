@@ -7,13 +7,13 @@ import { Rule } from 'antd/lib/form'
 import { DictID } from '@/app-config'
 import { useTranslate } from '@/_helpers/i18n'
 import { supportedLangs } from '@/_helpers/lang-check'
+import { useSelector } from '@/content/redux'
 import { getProfilePath } from '@/options/helpers/path-joiner'
 import { SaladictFormItem } from '@/options/components/SaladictForm'
 import { InputNumberGroup } from '@/options/components/InputNumberGroup'
 import { SaladictModalForm } from '@/options/components/SaladictModalForm'
 import { ChangeEntryContext } from '@/options/helpers/change-entry'
 import { useFormDirty, setFormDirty } from '@/options/helpers/use-form-dirty'
-import { useSelector } from '@/options/redux/modules'
 
 export interface EditModalProps {
   dictID?: DictID | null

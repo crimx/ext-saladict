@@ -1,83 +1,47 @@
-import React, { FC, useEffect } from 'react'
+import React from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
-import createStore from '@/content/redux/create'
-import { useRefFn, useObservableState, useObservable } from 'observable-hooks'
-import { distinctUntilChanged, map } from 'rxjs/operators'
-
+import ReactDOM from 'react-dom'
+import { createStore } from '@/content/redux'
 import SaladBowlContainer from '@/content/components/SaladBowl/SaladBowl.container'
 import DictPanelContainer from '@/content/components/DictPanel/DictPanel.container'
 import WordEditorContainer from '@/content/components/WordEditor/WordEditor.container'
-
-import { createConfigStream } from '@/_helpers/config-manager'
-import { reportGA } from '@/_helpers/analytics'
 import { I18nContextProvider } from '@/_helpers/i18n'
 import { timer } from '@/_helpers/promise-more'
-
-import { ConfigProvider as AntdConfigProvider } from 'antd'
-import zh_CN from 'antd/lib/locale-provider/zh_CN'
-import zh_TW from 'antd/lib/locale-provider/zh_TW'
-import en_US from 'antd/lib/locale-provider/en_US'
+import { AntdRootContainer } from './AntdRootContainer'
 
 import './_style.scss'
 
-const antdLocales = {
-  'zh-CN': zh_CN,
-  'zh-TW': zh_TW,
-  en: en_US
-}
+export const initAntdRoot = async (
+  render: () => React.ReactNode,
+  gaPath?: string
+): Promise<void> => {
+  const store = await createStore()
 
-export interface AntdRootProps {
-  /** analytics path */
-  path?: string
-}
-
-export const AntdRoot: FC<AntdRootProps> = props => {
-  const storeRef = useRefFn(createStore)
-
-  const { locale, bgStyle, analytics } = useObservableState(
-    useObservable(() =>
-      createConfigStream().pipe(
-        distinctUntilChanged(
-          (oldConfig, newConfig) =>
-            oldConfig.langCode === newConfig.langCode &&
-            oldConfig.darkMode === newConfig.darkMode &&
-            oldConfig.analytics === newConfig.analytics
-        ),
-        map(config => ({
-          locale: antdLocales[config.langCode] || en_US,
-          bgStyle: { backgroundColor: config.darkMode ? '#000' : '#f0f2f5' },
-          analytics: config.analytics
-        }))
-      )
-    ),
-    () => ({
-      locale: zh_CN,
-      bgStyle: { backgroundColor: '#f0f2f5' },
-      analytics: false
-    })
-  )
-
-  useEffect(() => {
-    if (analytics && props.path) {
-      reportGA(props.path)
+  // update theme as quickly as possible
+  let { darkMode } = store.getState().config
+  await switchAntdTheme(darkMode)
+  store.subscribe(() => {
+    const { config } = store.getState()
+    if (config.darkMode !== darkMode) {
+      darkMode = config.darkMode
+      switchAntdTheme(darkMode)
     }
-  }, [analytics, props.path])
+  })
 
-  return (
+  ReactDOM.render(
     <I18nContextProvider>
-      <ReduxProvider store={storeRef.current}>
-        <AntdConfigProvider locale={locale}>
-          <div style={bgStyle}>{props.children}</div>
-        </AntdConfigProvider>
+      <ReduxProvider store={store}>
+        <AntdRootContainer gaPath={gaPath} render={render} />
         <SaladBowlContainer />
         <DictPanelContainer />
         <WordEditorContainer />
       </ReduxProvider>
-    </I18nContextProvider>
+    </I18nContextProvider>,
+    document.getElementById('root')
   )
 }
 
-export async function switchAntdTheme(darkMode: boolean): Promise<void> {
+async function switchAntdTheme(darkMode: boolean): Promise<void> {
   const $root = document.querySelector('#root')!
 
   await new Promise(resolve => {
@@ -140,9 +104,8 @@ export async function switchAntdTheme(darkMode: boolean): Promise<void> {
     img.src = href
   })
 
-  await timer(100)
-  setTimeout(() => {
-    $root.classList.toggle('saladict-theme-loaded', true)
-    $root.classList.toggle('saladict-theme-loading', false)
-  }, 400)
+  await timer(500)
+
+  $root.classList.toggle('saladict-theme-loaded', true)
+  $root.classList.toggle('saladict-theme-loading', false)
 }

@@ -32,4 +32,6 @@ export type StoreDispatch<
   Type extends StoreActionType = StoreActionType
 > = CreateThunkDispatch<StoreState, never, StoreAction<Type>>
 
-export const rootReducer = createReducer(initState(), actionHandlers)
+export const getRootReducer = async () => {
+  return createReducer(await initState(), actionHandlers)
+}

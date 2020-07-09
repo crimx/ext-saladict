@@ -6,8 +6,8 @@ import { useObservableState, useObservable, useRefFn } from 'observable-hooks'
 import { objectKeys } from '@/typings/helpers'
 import { useTranslate } from '@/_helpers/i18n'
 import { storage } from '@/_helpers/browser-api'
+import { useSelector } from '@/content/redux'
 import { getConfigPath } from '@/options/helpers/path-joiner'
-import { useSelector } from '@/options/redux/modules'
 import {
   SaladictForm,
   SaladictFormItem

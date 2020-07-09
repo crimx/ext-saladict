@@ -1,9 +1,9 @@
 import React, { FC } from 'react'
 import { Switch, Select } from 'antd'
 import { useTranslate } from '@/_helpers/i18n'
+import { useSelector } from '@/content/redux'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import { SaladictForm } from '@/options/components/SaladictForm'
-import { useSelector } from '@/options/redux/modules'
 
 export const Popup: FC = () => {
   const { t } = useTranslate(['options', 'menus'])

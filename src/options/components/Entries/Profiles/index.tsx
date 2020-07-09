@@ -14,11 +14,11 @@ import {
   updateProfileIDList,
   addProfile
 } from '@/_helpers/profile-manager'
+import { useSelector } from '@/content/redux'
 import { SortableList, arrayMove } from '@/options/components/SortableList'
 import { useListLayout } from '@/options/helpers/layout'
 import { useCheckDictAuth } from '@/options/helpers/use-check-dict-auth'
 import { EditNameModal } from './EditNameModal'
-import { useSelector } from '@/options/redux/modules'
 
 export const Profiles: FC = () => {
   const { t } = useTranslate('options')

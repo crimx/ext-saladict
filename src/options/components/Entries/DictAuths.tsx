@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import { Input } from 'antd'
+import { useSelector } from '@/content/redux'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import {
   SaladictForm,
@@ -7,7 +8,6 @@ import {
 } from '@/options/components/SaladictForm'
 import { useTranslate, Trans } from '@/_helpers/i18n'
 import { objectKeys } from '@/typings/helpers'
-import { useSelector } from '@/options/redux/modules'
 
 export const DictAuths: FC = () => {
   const { t } = useTranslate(['options', 'dicts'])

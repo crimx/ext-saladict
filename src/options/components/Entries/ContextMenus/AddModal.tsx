@@ -5,9 +5,9 @@ import omit from 'lodash/omit'
 import { useTranslate } from '@/_helpers/i18n'
 import { isFirefox } from '@/_helpers/saladict'
 import { genUniqueKey } from '@/_helpers/uniqueKey'
+import { useSelector } from '@/content/redux'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import { useUpload } from '@/options/helpers/upload'
-import { useSelector } from '@/options/redux/modules'
 
 export interface AddModalProps {
   show: boolean

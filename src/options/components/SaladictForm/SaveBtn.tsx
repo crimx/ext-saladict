@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
 import { Button } from 'antd'
+import { useObservableState } from 'observable-hooks'
 import { useTranslate } from '@/_helpers/i18n'
-import { useSelector } from '@/options/redux/modules'
+import { uploadStatus$ } from '@/options/helpers/upload'
 
 /**
  * Move the button out as independent component to reduce
@@ -9,7 +10,7 @@ import { useSelector } from '@/options/redux/modules'
  */
 export const SaveBtn: FC = () => {
   const { t } = useTranslate('common')
-  const uploadStatus = useSelector(state => state.uploadStatus)
+  const uploadStatus = useObservableState(uploadStatus$, 'idle')
 
   return (
     <Button

@@ -1,3 +1,4 @@
+import { BehaviorSubject } from 'rxjs'
 import { notification, message as antMsg } from 'antd'
 import set from 'lodash/set'
 import { AppConfig } from '@/app-config'
@@ -5,8 +6,12 @@ import { Profile } from '@/app-config/profiles'
 import { useTranslate } from '@/_helpers/i18n'
 import { updateConfig } from '@/_helpers/config-manager'
 import { updateProfile } from '@/_helpers/profile-manager'
-import { useDispatch } from '../redux/modules'
+import { useDispatch } from '@/content/redux'
 import { setFormDirty } from './use-form-dirty'
+
+export const uploadStatus$ = new BehaviorSubject<
+  'idle' | 'uploading' | 'error'
+>('idle')
 
 export const useUpload = () => {
   const { t } = useTranslate('options')
@@ -14,7 +19,7 @@ export const useUpload = () => {
 
   return (values: { [stateObjectPaths: string]: any }) =>
     dispatch(async (dispatch, getState) => {
-      dispatch({ type: 'UPLOAD_STATUS', payload: 'uploading' })
+      uploadStatus$.next('uploading')
 
       const data: { config?: AppConfig; profile?: Profile } = {}
       const paths = Object.keys(values)
@@ -56,13 +61,13 @@ export const useUpload = () => {
         setFormDirty(false)
         antMsg.destroy()
         antMsg.success(t('msg_updated'))
-        dispatch({ type: 'UPLOAD_STATUS', payload: 'idle' })
+        uploadStatus$.next('idle')
       } catch (e) {
         notification.error({
           message: t('config.opt.upload_error'),
           description: e.message
         })
-        dispatch({ type: 'UPLOAD_STATUS', payload: 'error' })
+        uploadStatus$.next('error')
       }
 
       if (process.env.DEBUG) {

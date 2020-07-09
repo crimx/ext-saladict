@@ -12,7 +12,7 @@ import { resetAllProfiles } from '@/_helpers/profile-manager'
 import { useTranslate } from '@/_helpers/i18n'
 import { isFirefox } from '@/_helpers/saladict'
 import { openURL } from '@/_helpers/browser-api'
-import { useSelector } from '@/options/redux/modules'
+import { useSelector } from '@/content/redux'
 import {
   useFormItemLayout,
   formItemFooterLayout

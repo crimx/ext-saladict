@@ -1,7 +1,7 @@
 import React, { FC, useMemo } from 'react'
 import { Card, List, Switch } from 'antd'
 import { DictID } from '@/app-config'
-import { useSelector } from '@/options/redux/modules'
+import { useSelector } from '@/content/redux'
 import { objectKeys } from '@/typings/helpers'
 import { DictTitle } from './DictTitle'
 
