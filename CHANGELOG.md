@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.14.0](https://github.com/crimx/ext-saladict/compare/v7.13.4...v7.14.0) (2020-07-10)
+
+
+### Features
+
+* **background:** add background permission ([9d41e09](https://github.com/crimx/ext-saladict/commit/9d41e0980e17dffbcce2804a66b850f9e33c147e)), closes [#892](https://github.com/crimx/ext-saladict/issues/892)
+* **menus:** add saladict standlone panel ([0d4a732](https://github.com/crimx/ext-saladict/commit/0d4a73278a523405b1ab1d28ade9d514826ecd4a)), closes [#864](https://github.com/crimx/ext-saladict/issues/864)
+* **panel:** add dict item catalog ([f07ea25](https://github.com/crimx/ext-saladict/commit/f07ea25751fcb746363e09b3804da03520b35249))
+
+
+### Bug Fixes
+
+* **components:** fix select padding in firefox ([dd366d3](https://github.com/crimx/ext-saladict/commit/dd366d396e8ca63298aeb70a575dfaad858f75b7))
+* **components:** typo ([0229cc2](https://github.com/crimx/ext-saladict/commit/0229cc28124567cbe6a79c71d474c935da094756))
+* **dicts:** update tts for tencent and caiyun ([afdac41](https://github.com/crimx/ext-saladict/commit/afdac41d4099aef1efa6021c60b741e3ad6fda22))
+* **options:** update sortable list on store changes ([075aef7](https://github.com/crimx/ext-saladict/commit/075aef764d8327f78288e0d6d183ae51f9f82f48))
+* **panel:** correct panel history ([1b2781f](https://github.com/crimx/ext-saladict/commit/1b2781f48e875f07536be14a733e93a901db5958)), closes [#881](https://github.com/crimx/ext-saladict/issues/881)
+* **panel:** fix catalog scrolling ([ded090d](https://github.com/crimx/ext-saladict/commit/ded090d81b7d2bd66b0c12806a1c3fa457257328))
+
+
+### Tests
+
+* **panel:** update dict item stories ([507c638](https://github.com/crimx/ext-saladict/commit/507c638ba34a9b903cbee06b36056ede15c66a2d))
+* update stories ([49b2ad2](https://github.com/crimx/ext-saladict/commit/49b2ad2eb68e0b39117b224ad1c05264b8ed678f))
+* **dicts:** log runtime messages ([5c23327](https://github.com/crimx/ext-saladict/commit/5c23327db3f6b44f25487b3cc0866ab38741adc9))
+
 ### [7.13.4](https://github.com/crimx/ext-saladict/compare/v7.13.3...v7.13.4) (2020-06-23)
 
 
