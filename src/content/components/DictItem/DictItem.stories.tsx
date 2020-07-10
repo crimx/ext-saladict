@@ -1,11 +1,11 @@
 import React from 'react'
+import faker from 'faker'
 import { storiesOf } from '@storybook/react'
 import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
 import { action } from '@storybook/addon-actions'
 import { withKnobs, select, number } from '@storybook/addon-knobs'
 import { withi18nNS, withSaladictPanel } from '@/_helpers/storybook'
-import faker from 'faker'
 import { DictItem } from './DictItem'
 
 storiesOf('Content Scripts|Dict Panel', module)
