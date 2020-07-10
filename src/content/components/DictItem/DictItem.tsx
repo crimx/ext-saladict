@@ -4,7 +4,8 @@ import React, {
   useState,
   useEffect,
   useCallback,
-  useRef
+  useRef,
+  useMemo
 } from 'react'
 import { useObservableCallback, identity } from 'observable-hooks'
 import classnames from 'classnames'
@@ -17,13 +18,15 @@ import { ViewPorps } from '@/components/dictionaries/helpers'
 import { DictItemHead, DictItemHeadProps } from './DictItemHead'
 import { DictItemBody, DictItemBodyProps } from './DictItemBody'
 
+const DICT_ITEM_HEAD_HEIGHT = 20
+
 export interface DictItemProps
   extends Omit<DictItemBodyProps, 'catalogSelect$' | 'dictRootRef'> {
   /** default height when search result is received */
   preferredHeight: number
   withAnimation: boolean
   /** Inject dict component. Mainly for testing */
-  dictComp?: ComponentType<ViewPorps<any>>
+  TestComp?: ComponentType<ViewPorps<any>>
 
   catalog?: DictItemHeadProps['catalog']
   openDictSrcPage: DictItemHeadProps['openDictSrcPage']
@@ -49,13 +52,17 @@ export const DictItem: FC<DictItemProps> = props => {
   /** Rendered height */
   const [offsetHeight, setOffsetHeight] = useState(10)
 
-  const visibleHeight = Math.max(
-    10,
-    foldState === 'COLLAPSE'
-      ? 10
-      : foldState === 'FULL'
-      ? offsetHeight
-      : Math.min(offsetHeight, props.preferredHeight)
+  const visibleHeight = useMemo(
+    () =>
+      Math.max(
+        10,
+        foldState === 'COLLAPSE'
+          ? 10
+          : foldState === 'FULL'
+          ? offsetHeight
+          : Math.min(offsetHeight, props.preferredHeight)
+      ),
+    [foldState, offsetHeight, props.preferredHeight]
   )
 
   useEffect(() => {
@@ -67,7 +74,7 @@ export const DictItem: FC<DictItemProps> = props => {
   }, [props.searchStatus])
 
   useEffect(() => {
-    props.onHeightChanged(props.dictID, visibleHeight + 21)
+    props.onHeightChanged(props.dictID, visibleHeight + DICT_ITEM_HEAD_HEIGHT)
   }, [visibleHeight])
 
   const dictItemRef = useRef<HTMLDivElement | null>(null)
@@ -143,10 +150,10 @@ export const DictItem: FC<DictItemProps> = props => {
       >
         <article className="dictItem-BodyMesure">
           <ResizeReporter reportInit onHeightChanged={setOffsetHeight} />
-          {props.dictComp ? (
+          {props.TestComp ? (
             props.searchStatus === 'FINISH' &&
             props.searchResult &&
-            React.createElement(props.dictComp, {
+            React.createElement(props.TestComp, {
               result: props.searchResult,
               searchText: props.searchText,
               catalogSelect$: catalogSelect$

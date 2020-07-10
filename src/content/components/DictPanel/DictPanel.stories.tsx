@@ -101,7 +101,7 @@ function useDictPanelProps(): DictPanelProps {
             faker.random.number({ min: 1, max: 4 })
           )
         },
-        dictComp: TestComp
+        TestComp: TestComp
       }))
     )
     return shuffledDicts.slice(

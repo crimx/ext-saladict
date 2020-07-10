@@ -41,7 +41,7 @@ storiesOf('Content Scripts|Dict Panel', module)
         searchResult={{
           count: number('Paragraphs', 5)
         }}
-        dictComp={({ result }: { result: { count: number } }) => (
+        TestComp={({ result }: { result: { count: number } }) => (
           <>
             {[...Array(result.count)].map((line, i) => (
               <p key={i}>{faker.lorem.paragraph()}</p>

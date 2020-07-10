@@ -56,7 +56,7 @@ storiesOf('Content Scripts|Dict Panel', module)
             faker.random.number({ min: 1, max: 4 })
           )
         },
-        dictComp: TestComp
+        TestComp
       }))}
       searchText={action('Search Text')}
       openDictSrcPage={action('Open Dict Source Page')}
