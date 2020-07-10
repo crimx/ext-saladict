@@ -1,17 +1,17 @@
 import React, { FC, useState, useEffect, useContext } from 'react'
 import { Helmet } from 'react-helmet'
-import { Layout, Row, Col, message as antMsg, notification } from 'antd'
-import { useObservablePickState, useSubscription } from 'observable-hooks'
+import { shallowEqual } from 'react-redux'
+import { Layout, Row, Col } from 'antd'
+import { useSelector } from '@/content/redux'
 import { reportGA } from '@/_helpers/analytics'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { useTranslate, I18nContext } from '@/_helpers/i18n'
+import { ChangeEntryContext } from '../helpers/change-entry'
+import { useFormDirty } from '../helpers/use-form-dirty'
 import { EntrySideBarMemo } from './EntrySideBar'
 import { HeaderMemo } from './Header'
 import { EntryError } from './EntryError'
 import { BtnPreviewMemo } from './BtnPreview'
-import { config$$, GlobalsContext } from '../data'
-import { uploadResult$$ } from '../helpers/upload'
-import { ChangeEntryContext } from '../helpers/change-entry'
 
 const EntryComponent = React.memo(({ entry }: { entry: string }) =>
   React.createElement(require(`./Entries/${entry}`)[entry])
@@ -20,13 +20,14 @@ const EntryComponent = React.memo(({ entry }: { entry: string }) =>
 export const MainEntry: FC = () => {
   const lang = useContext(I18nContext)
   const { t, ready } = useTranslate('options')
-  const globals = useContext(GlobalsContext)
   const [entry, setEntry] = useState(getEntry)
-  const { analytics, darkMode } = useObservablePickState(
-    config$$,
-    () => ({ analytics: true, darkMode: false }),
-    'analytics',
-    'darkMode'
+  const formDirtyRef = useFormDirty()
+  const { analytics, darkMode } = useSelector(
+    state => ({
+      analytics: state.config.analytics,
+      darkMode: state.config.darkMode
+    }),
+    shallowEqual
   )
 
   useEffect(() => {
@@ -40,25 +41,10 @@ export const MainEntry: FC = () => {
     }
   }, [entry, analytics])
 
-  // settings saving status
-  useSubscription(uploadResult$$, result => {
-    if (result.error) {
-      notification.error({
-        message: t('config.opt.upload_error'),
-        description: result.error.message
-      })
-    } else if (!result.loading) {
-      // success
-      ;(globals as GlobalsContext).dirty = false
-      antMsg.destroy()
-      antMsg.success(t('msg_updated'))
-    }
-  })
-
   // Warn about unsaved settings before closing window
   useEffect(() => {
     window.addEventListener('beforeunload', e => {
-      if (globals.dirty) {
+      if (formDirtyRef.value) {
         e.preventDefault()
         e.returnValue = t('unsave_confirm')
       }

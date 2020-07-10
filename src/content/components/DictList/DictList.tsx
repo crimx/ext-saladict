@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from 'react'
+import React, { FC, useEffect, useRef, useMemo } from 'react'
 import { DictItem, DictItemProps } from '../DictItem/DictItem'
 import { DictID, AppConfig } from '@/app-config'
 import { useObservableCallback, useSubscription } from 'observable-hooks'
@@ -13,7 +13,7 @@ type DictListItemKeys =
   | 'preferredHeight'
   | 'searchStatus'
   | 'searchResult'
-  | 'dictComp'
+  | 'TestComp'
 
 export interface DictListProps
   extends Omit<
@@ -72,18 +72,23 @@ export const DictList: FC<DictListProps> = props => {
     updateHeight(heightRef.current.sum)
   }).current
 
+  const dictIds = useMemo(
+    () => dicts.reduce((idStr, { dictID }) => idStr + dictID + ',', ''),
+    [dicts]
+  )
+
   useEffect(() => {
     const oldHeight = heightRef.current
     heightRef.current = dicts.reduce(
       (height, { dictID }) => {
-        height.dicts[dictID] = oldHeight.dicts[dictID] || 31
-        height.sum += height.dicts[dictID] || 31
+        height.dicts[dictID] = oldHeight.dicts[dictID] || 30
+        height.sum += height.dicts[dictID] || 30
         return height
       },
       { dicts: {}, sum: 0 } as Height
     )
     updateHeight(heightRef.current.sum)
-  }, [dicts.reduce((str, d) => str + d.dictID + ',', '')])
+  }, [dictIds])
 
   const onInPanelSelect = useInPanelSelect(
     touchMode,

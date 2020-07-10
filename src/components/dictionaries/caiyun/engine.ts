@@ -1,17 +1,17 @@
-import {
-  MachineTranslateResult,
-  SearchFunction,
-  MachineTranslatePayload,
-  GetSrcPageFunction,
-  getMTArgs
-} from '../helpers'
+import { SearchFunction, GetSrcPageFunction } from '../helpers'
 import memoizeOne from 'memoize-one'
 import { Caiyun } from '@opentranslate/caiyun'
-import { CaiyunLanguage } from './config'
-import { getTranslator as getBaiduTranslator } from '../baidu/engine'
 import { TranslateResult } from '@opentranslate/translator'
+import {
+  MachineTranslateResult,
+  MachineTranslatePayload,
+  getMTArgs,
+  machineResult
+} from '@/components/MachineTrans/engine'
+import { getTranslator as getBaiduTranslator } from '../baidu/engine'
+import { CaiyunLanguage } from './config'
 
-const getTranslator = memoizeOne(
+export const getTranslator = memoizeOne(
   () =>
     new Caiyun({
       env: 'ext',
@@ -44,21 +44,13 @@ export const search: SearchFunction<
     payload
   )
 
-  const baiduAppid = config.dictAuth.baidu.appid
-  const baiduKey = config.dictAuth.baidu.key
-  const baiduConfig =
-    baiduAppid && baiduKey ? { appid: baiduAppid, key: baiduKey } : undefined
+  const baiduTranslator = getBaiduTranslator()
 
   let baiduResult: TranslateResult | undefined
 
   try {
-    baiduResult = await getBaiduTranslator().translate(
-      text,
-      sl,
-      tl,
-      baiduConfig
-    )
-
+    // Caiyun's lang detection is broken
+    baiduResult = await baiduTranslator.translate(text, sl, tl)
     if (langcodes.includes(baiduResult.from)) {
       sl = baiduResult.from
     }
@@ -69,34 +61,44 @@ export const search: SearchFunction<
 
   try {
     const result = await translator.translate(text, sl, tl, caiYunConfig)
-    if (baiduResult) {
-      result.origin.tts = baiduResult.origin.tts
-      result.trans.tts = baiduResult.trans.tts
-    }
-    return {
-      result: {
-        id: 'caiyun',
-        sl: result.from,
-        tl: result.to,
-        langcodes,
-        searchText: result.origin,
-        trans: result.trans
+    result.origin.tts = await baiduTranslator.textToSpeech(
+      result.origin.paragraphs.join('\n'),
+      result.from
+    )
+    result.trans.tts = await baiduTranslator.textToSpeech(
+      result.trans.paragraphs.join('\n'),
+      result.to
+    )
+    return machineResult(
+      {
+        result: {
+          id: 'caiyun',
+          sl: result.from,
+          tl: result.to,
+          slInitial: profile.dicts.all.caiyun.options.slInitial,
+          searchText: result.origin,
+          trans: result.trans
+        },
+        audio: {
+          py: result.trans.tts,
+          us: result.trans.tts
+        }
       },
-      audio: {
-        py: result.trans.tts,
-        us: result.trans.tts
-      }
-    }
+      langcodes
+    )
   } catch (e) {
-    return {
-      result: {
-        id: 'caiyun',
-        sl,
-        tl,
-        langcodes: translator.getSupportLanguages(),
-        searchText: { paragraphs: [''] },
-        trans: { paragraphs: [''] }
-      }
-    }
+    return machineResult(
+      {
+        result: {
+          id: 'caiyun',
+          sl,
+          tl,
+          slInitial: 'hide',
+          searchText: { paragraphs: [''] },
+          trans: { paragraphs: [''] }
+        }
+      },
+      translator.getSupportLanguages()
+    )
   }
 }

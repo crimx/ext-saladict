@@ -87,4 +87,4 @@ If you are using IDEs like VSCode, make sure *eslint* and *prettier* plugins are
 
 This project follows [conventional](https://conventionalcommits.org/) commit style.
 
-You can run `yarn commit` and follow the instructions, or use [vscode-commitizen](https://github.com/KnisterPeter/vscode-commitizen) extension in VSCode.
+You can run `yarn commit` and follow the instructions, or use [VSCode Conventional Commits](https://github.com/vivaxy/vscode-conventional-commits) extension in VSCode.

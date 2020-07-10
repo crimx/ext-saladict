@@ -1,9 +1,9 @@
 import React, { FC, useMemo } from 'react'
+import { shallowEqual } from 'react-redux'
 import { Layout } from 'antd'
-import { useObservableState, useObservableGetState } from 'observable-hooks'
 import { useTranslate } from '@/_helpers/i18n'
 import { getProfileName } from '@/_helpers/profile-manager'
-import { profile$$, profileIDList$$ } from '@/options/data'
+import { useSelector } from '@/content/redux'
 import { HeadInfoMemo } from './HeadInfo'
 
 import './_style.scss'
@@ -14,8 +14,13 @@ export interface HeaderProps {
 
 export const Header: FC<HeaderProps> = props => {
   const { t, ready } = useTranslate(['options', 'common'])
-  const profileId = useObservableGetState(profile$$, '', 'id')
-  const profileIDList = useObservableState(profileIDList$$, [])
+  const { profileId, profileIDList } = useSelector(
+    state => ({
+      profileId: state.activeProfile.id,
+      profileIDList: state.profiles
+    }),
+    shallowEqual
+  )
 
   const version = useMemo(() => 'v' + browser.runtime.getManifest().version, [])
 

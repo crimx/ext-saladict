@@ -92,3 +92,5 @@ deps/
 
 test/**/response
 .idea
+
+.webext_tmp/*

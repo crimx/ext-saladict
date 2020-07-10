@@ -3,6 +3,7 @@ import classNames from 'classnames'
 import { useUpdateEffect } from 'react-use'
 import { getScrollbarWidth } from '@/_helpers/scrollbar-width'
 import { SALADICT_PANEL, isInternalPage } from '@/_helpers/saladict'
+import { HoverBoxContext } from '@/components/HoverBox'
 
 export interface DictPanelProps {
   /** Update position command from uptream */
@@ -31,6 +32,8 @@ export interface DictPanelProps {
 }
 
 export const DictPanel: FC<DictPanelProps> = props => {
+  const rootElRef = useRef<HTMLDivElement | null>(null)
+
   const [x, setX] = useState(() => reconcileX(props.width, props.coord.x))
   const [y, setY] = useState(() => reconcileY(props.height, props.coord.y))
 
@@ -64,6 +67,7 @@ export const DictPanel: FC<DictPanelProps> = props => {
 
   return (
     <div
+      ref={rootElRef}
       className={classNames(
         `dictPanel-Root ${SALADICT_PANEL}`,
         'saladict-theme',
@@ -85,14 +89,16 @@ export const DictPanel: FC<DictPanelProps> = props => {
       }}
     >
       <div className="dictPanel-Head">{props.menuBar}</div>
-      <div
-        className={`dictPanel-Body${
-          getScrollbarWidth() > 0 ? ' fancy-scrollbar' : ''
-        }`}
-      >
-        {props.mtaBox}
-        {props.dictList}
-      </div>
+      <HoverBoxContext.Provider value={rootElRef}>
+        <div
+          className={`dictPanel-Body${
+            getScrollbarWidth() > 0 ? ' fancy-scrollbar' : ''
+          }`}
+        >
+          {props.mtaBox}
+          {props.dictList}
+        </div>
+      </HoverBoxContext.Provider>
       {props.waveformBox}
       {props.dragStartCoord && (
         <div

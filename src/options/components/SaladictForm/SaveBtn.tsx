@@ -1,8 +1,8 @@
 import React, { FC } from 'react'
-import { useObservableGetState } from 'observable-hooks'
-import { uploadResult$$ } from '@/options/helpers/upload'
 import { Button } from 'antd'
+import { useObservableState } from 'observable-hooks'
 import { useTranslate } from '@/_helpers/i18n'
+import { uploadStatus$ } from '@/options/helpers/upload'
 
 /**
  * Move the button out as independent component to reduce
@@ -10,10 +10,14 @@ import { useTranslate } from '@/_helpers/i18n'
  */
 export const SaveBtn: FC = () => {
   const { t } = useTranslate('common')
-  const uploading = useObservableGetState(uploadResult$$, false, 'loading')
+  const uploadStatus = useObservableState(uploadStatus$, 'idle')
 
   return (
-    <Button type="primary" htmlType="submit" disabled={uploading}>
+    <Button
+      type="primary"
+      htmlType="submit"
+      disabled={uploadStatus === 'uploading'}
+    >
       {t('common:save')}
     </Button>
   )

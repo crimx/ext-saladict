@@ -13,7 +13,7 @@ import { translateCtxs, genCtxText } from '@/_helpers/translateCtx'
 import { Message } from '@/typings/message'
 
 import { Provider as ProviderRedux } from 'react-redux'
-import createStore from '@/content/redux/create'
+import { createStore } from '@/content/redux'
 
 import { I18nContextProvider, useTranslate } from '@/_helpers/i18n'
 
@@ -61,7 +61,7 @@ async function showPanel(config: AppConfig) {
     reportGA('/popup')
   }
 
-  const store = createStore()
+  const store = await createStore()
 
   ReactDOM.render(
     <I18nContextProvider>

@@ -1,17 +1,16 @@
-import React, { FC, useState } from 'react'
-import CSSTransition from 'react-transition-group/CSSTransition'
-import SwitchTransition from 'react-transition-group/SwitchTransition'
-import { debounce } from 'rxjs/operators'
-import { timer } from 'rxjs'
-import { useObservableCallback, useSubscription } from 'observable-hooks'
+import React, {
+  FC,
+  useState,
+  useCallback,
+  useLayoutEffect,
+  useRef
+} from 'react'
+import { useSubscription } from 'observable-hooks'
 import Speaker from '@/components/Speaker'
-import {
-  ViewPorps,
-  MachineTranslateResult
-} from '@/components/dictionaries/helpers'
+import { ViewPorps } from '@/components/dictionaries/helpers'
 import { DictID } from '@/app-config'
-import { useTranslate } from '@/_helpers/i18n'
-import { hover } from '@/_helpers/observables'
+import { message } from '@/_helpers/browser-api'
+import { MachineTranslateResult } from './engine'
 
 type TTextSource =
   | MachineTranslateResult<DictID>['searchText']
@@ -30,34 +29,109 @@ const rtlLangs = new Set([
 ])
 
 /** text with a speaker at the beginning */
-const TText = React.memo(
-  ({ source, lang }: { source: TTextSource; lang: string }) => (
-    <div className={'MachineTrans-Lines'}>
+const TText = React.memo<{
+  source: TTextSource
+  lang: string
+}>(({ source, lang }) => (
+  <div className={'MachineTrans-Lines'}>
+    <Speaker src={source.tts} />
+    {source.paragraphs.map((line, i) => (
+      <p key={i} className={`MachineTrans-lang-${lang}`}>
+        {line}
+      </p>
+    ))}
+  </div>
+))
+
+const TTextCollapsable = React.memo<{
+  source: TTextSource
+  lang: string
+}>(({ source, lang }) => {
+  const [collapse, setCollapse] = useState(false)
+  const expand = useCallback(() => setCollapse(false), [setCollapse])
+
+  const containerRef = useRef<HTMLDivElement | null>(null)
+
+  useLayoutEffect(() => {
+    if (collapse || !containerRef.current) return
+
+    // count lines
+
+    if (containerRef.current.querySelectorAll('p').length > 1) {
+      // multiple paragraphs
+      setCollapse(true)
+      return
+    }
+
+    const text = containerRef.current.querySelector('p span')
+    if (text && text.getClientRects().length > 1) {
+      // multiple lines
+      setCollapse(true)
+      return
+    }
+  }, [])
+
+  return (
+    <div ref={containerRef} className={'MachineTrans-Lines'}>
       <Speaker src={source.tts} />
-      {source.paragraphs.map((line, i) => (
-        <p key={i} className={`MachineTrans-lang-${lang}`}>
-          {line}
-        </p>
-      ))}
+      {collapse ? (
+        <div
+          className={`MachineTrans-Lines-collapse MachineTrans-lang-${lang}`}
+        >
+          <button onClick={expand}>{source.paragraphs.join(' ')}</button>
+        </div>
+      ) : (
+        source.paragraphs.map((line, i) => (
+          <p key={i} className={`MachineTrans-lang-${lang}`}>
+            <span>{line}</span>
+          </p>
+        ))
+      )}
     </div>
   )
-)
+})
+
+export type MachineTransProps = ViewPorps<MachineTranslateResult<DictID>>
 
 /** Template for machine translations */
-export const MachineTrans: FC<ViewPorps<
-  MachineTranslateResult<DictID>
->> = props => {
-  const { trans, searchText, langcodes, tl, sl } = props.result
-  const { t } = useTranslate(['content', 'langcode'])
+export const MachineTrans: FC<MachineTransProps> = props => {
+  const { trans, searchText, tl, sl } = props.result
+  const [slState, setSlState] = useState<
+    MachineTransProps['result']['slInitial']
+  >(props.result.slInitial)
 
-  const [isShowLang, setShowLang] = useState(false)
-  const [onMouseOverOut, isShowLang$] = useObservableCallback<
-    boolean,
-    React.MouseEvent<HTMLElement>
-  >(events$ =>
-    hover(events$).pipe(debounce(isOver => (isOver ? timer(500) : timer(800))))
-  )
-  useSubscription(isShowLang$, setShowLang)
+  useSubscription(props.catalogSelect$, ({ key, value }) => {
+    switch (key) {
+      case 'showSl':
+        setSlState('full')
+        break
+      case 'sl':
+      case 'tl':
+        props.searchText({
+          id: props.result.id,
+          payload: {
+            sl,
+            tl,
+            [key]: value
+          }
+        })
+        break
+      case 'copySrc':
+        message.send({
+          type: 'SET_CLIPBOARD',
+          payload: props.result.searchText.paragraphs.join('\n')
+        })
+        break
+      case 'copyTrans':
+        message.send({
+          type: 'SET_CLIPBOARD',
+          payload: props.result.trans.paragraphs.join('\n')
+        })
+        break
+      default:
+        break
+    }
+  })
 
   return (
     <div
@@ -68,88 +142,13 @@ export const MachineTrans: FC<ViewPorps<
       }
     >
       <div className="MachineTrans-Text">
-        <TText source={trans} lang={tl} />
-        {searchText.paragraphs.join('').length <= 100 ? (
+        {slState === 'full' ? (
           <TText source={searchText} lang={sl} />
-        ) : (
-          <div>
-            <details>
-              <summary>{t('machineTrans.stext')}</summary>
-              <TText source={searchText} lang={sl} />
-            </details>
-          </div>
-        )}
-      </div>
-
-      <div className="MachineTrans-LangSwitchWrap">
-        <SwitchTransition>
-          <CSSTransition
-            key={isShowLang ? 'select' : 'button'}
-            classNames="MachineTrans-LangSwitch"
-            timeout={100}
-          >
-            {isShowLang ? renderLangSwitch : renderLangSwitchBtn}
-          </CSSTransition>
-        </SwitchTransition>
+        ) : slState === 'collapse' ? (
+          <TTextCollapsable source={searchText} lang={sl} />
+        ) : null}
+        <TText source={trans} lang={tl} />
       </div>
     </div>
   )
-
-  function renderLangSwitchBtn() {
-    return (
-      <button
-        className="MachineTrans-LangSwitchBtn"
-        onClick={() => setShowLang(true)}
-        onMouseOver={onMouseOverOut}
-        onMouseLeave={onMouseOverOut}
-      >
-        {t('machineTrans.switch')}
-      </button>
-    )
-  }
-
-  function renderLangSwitch() {
-    return (
-      <div
-        className="MachineTrans-LangSwitch"
-        onMouseOver={onMouseOverOut}
-        onMouseLeave={onMouseOverOut}
-      >
-        <div className="MachineTrans-LangSwitch_Titles">
-          <span>{`${t('machineTrans.tl')}: `}</span>
-          <span>{`${t('machineTrans.sl')}: `}</span>
-        </div>
-        <div className="MachineTrans-LangSwitch_Selects">
-          <select name="tl" value={tl} onChange={handleLangChanged}>
-            {langcodes.map(code => (
-              <option key={code} value={code}>
-                {code} {t('langcode:' + code)}
-              </option>
-            ))}
-          </select>
-          <select name="sl" value={sl} onChange={handleLangChanged}>
-            <option key="auto" value="auto">
-              {t('machineTrans.auto')}
-            </option>
-            {langcodes.map(code => (
-              <option key={code} value={code}>
-                {code} {t('langcode:' + code)}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-    )
-  }
-
-  function handleLangChanged(e: React.ChangeEvent<HTMLSelectElement>) {
-    props.searchText({
-      id: props.result.id,
-      payload: {
-        sl,
-        tl,
-        [e.currentTarget.name]: e.currentTarget.value
-      }
-    })
-  }
 }

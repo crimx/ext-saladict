@@ -1,61 +1,77 @@
-import { config$$, profile$$ } from '../data'
-import { withLatestFrom, switchMap, startWith, share } from 'rxjs/operators'
-import { from, Subject } from 'rxjs'
+import { BehaviorSubject } from 'rxjs'
+import { notification, message as antMsg } from 'antd'
 import set from 'lodash/set'
+import { AppConfig } from '@/app-config'
+import { Profile } from '@/app-config/profiles'
+import { useTranslate } from '@/_helpers/i18n'
 import { updateConfig } from '@/_helpers/config-manager'
 import { updateProfile } from '@/_helpers/profile-manager'
+import { useDispatch } from '@/content/redux'
+import { setFormDirty } from './use-form-dirty'
 
-const upload$ = new Subject<{ [path: string]: any }>()
+export const uploadStatus$ = new BehaviorSubject<
+  'idle' | 'uploading' | 'error'
+>('idle')
 
-export const upload = (values: { [path: string]: any }) => upload$.next(values)
+export const useUpload = () => {
+  const { t } = useTranslate('options')
+  const dispatch = useDispatch()
 
-export const uploadResult$$ = upload$.pipe(
-  withLatestFrom(config$$, profile$$),
-  switchMap(([values, config, profile]) => {
-    const data: { config?: typeof config; profile?: typeof profile } = {}
+  return (values: { [stateObjectPaths: string]: any }) =>
+    dispatch(async (dispatch, getState) => {
+      uploadStatus$.next('uploading')
 
-    const paths = Object.keys(values)
-    if (process.env.DEBUG) {
-      if (paths.length <= 0) {
-        console.warn('Saving empty fields.', values)
-      }
-    }
+      const data: { config?: AppConfig; profile?: Profile } = {}
+      const paths = Object.keys(values)
 
-    for (const path of paths) {
-      if (path.startsWith('config.')) {
-        if (!data.config) {
-          data.config = JSON.parse(JSON.stringify(config))
+      if (process.env.DEBUG) {
+        if (paths.length <= 0) {
+          console.warn('Saving empty fields.', values)
         }
-        set(data, path, values[path])
-      } else if (path.startsWith('profile.')) {
-        if (!data.profile) {
-          data.profile = JSON.parse(JSON.stringify(profile))
-        }
-        set(data, path, values[path])
-      } else {
-        console.error(new Error(`Saving unknown path: ${path}`))
       }
-    }
 
-    const requests: Promise<void>[] = []
+      for (const path of paths) {
+        if (path.startsWith('config.')) {
+          if (!data.config) {
+            data.config = JSON.parse(JSON.stringify(getState().config))
+          }
+          set(data, path, values[path])
+        } else if (path.startsWith('profile.')) {
+          if (!data.profile) {
+            data.profile = JSON.parse(JSON.stringify(getState().activeProfile))
+          }
+          set(data, path, values[path])
+        } else {
+          console.error(new Error(`Saving unknown path: ${path}`))
+        }
+      }
 
-    if (data.config) {
-      requests.push(updateConfig(data.config))
-    }
+      const requests: Promise<void>[] = []
 
-    if (data.profile) {
-      requests.push(updateProfile(data.profile))
-    }
+      if (data.config) {
+        requests.push(updateConfig(data.config))
+      }
 
-    const pRequests = Promise.all(requests)
-      .then(() => ({ loading: false }))
-      .catch(error => ({ loading: false, error }))
+      if (data.profile) {
+        requests.push(updateProfile(data.profile))
+      }
 
-    if (process.env.DEBUG) {
-      console.log('saved setting', data)
-    }
+      try {
+        await Promise.all(requests)
+        setFormDirty(false)
+        antMsg.destroy()
+        antMsg.success(t('msg_updated'))
+        uploadStatus$.next('idle')
+      } catch (e) {
+        notification.error({
+          message: t('config.opt.upload_error'),
+          description: e.message
+        })
+        uploadStatus$.next('error')
+      }
 
-    return from(pRequests).pipe(startWith({ loading: true }))
-  }),
-  share<{ loading: boolean; error?: Error }>()
-)
+      if (process.env.DEBUG) {
+        console.log('saved setting', data)
+      }
+    })
+}

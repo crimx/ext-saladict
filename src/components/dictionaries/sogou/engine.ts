@@ -1,12 +1,12 @@
-import {
-  MachineTranslatePayload,
-  MachineTranslateResult,
-  SearchFunction,
-  GetSrcPageFunction,
-  getMTArgs
-} from '../helpers'
+import { SearchFunction, GetSrcPageFunction } from '../helpers'
 import memoizeOne from 'memoize-one'
 import { Sogou } from '@opentranslate/sogou'
+import {
+  MachineTranslateResult,
+  MachineTranslatePayload,
+  getMTArgs,
+  machineResult
+} from '@/components/MachineTrans/engine'
 import { SogouLanguage } from './config'
 
 export const getTranslator = memoizeOne(
@@ -54,34 +54,38 @@ export const search: SearchFunction<
 
   const pid = config.dictAuth.sogou.pid
   const key = config.dictAuth.sogou.key
-  const translatorConfig = pid && key ? { pid, key } : undefined
+  const translatorConfig = pid || key ? { pid, key } : undefined
 
   try {
     const result = await translator.translate(text, sl, tl, translatorConfig)
-    return {
-      result: {
-        id: 'sogou',
-        sl: result.from,
-        tl: result.to,
-        langcodes: translator.getSupportLanguages(),
-        searchText: result.origin,
-        trans: result.trans
+    return machineResult(
+      {
+        result: {
+          id: 'sogou',
+          sl: result.from,
+          tl: result.to,
+          searchText: result.origin,
+          trans: result.trans
+        },
+        audio: {
+          py: result.trans.tts,
+          us: result.trans.tts
+        }
       },
-      audio: {
-        py: result.trans.tts,
-        us: result.trans.tts
-      }
-    }
+      translator.getSupportLanguages()
+    )
   } catch (e) {
-    return {
-      result: {
-        id: 'sogou',
-        sl,
-        tl,
-        langcodes: translator.getSupportLanguages(),
-        searchText: { paragraphs: [''] },
-        trans: { paragraphs: [''] }
-      }
-    }
+    return machineResult(
+      {
+        result: {
+          id: 'sogou',
+          sl,
+          tl,
+          searchText: { paragraphs: [''] },
+          trans: { paragraphs: [''] }
+        }
+      },
+      translator.getSupportLanguages()
+    )
   }
 }

@@ -6,7 +6,7 @@ export const DictEtymonline: FC<ViewPorps<EtymonlineResult>> = ({ result }) => (
   <ul className="dictEtymonline-List">
     {result.map(item => (
       <li key={item.title} className="dictEtymonline-Item">
-        <h2 className="dictEtymonline-Title">
+        <h2 id={item.id} className="dictEtymonline-Title">
           {item.href ? (
             <a
               href={item.href}

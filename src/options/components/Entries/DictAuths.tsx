@@ -1,18 +1,17 @@
 import React, { FC } from 'react'
 import { Input } from 'antd'
+import { useSelector } from '@/content/redux'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import {
   SaladictForm,
   SaladictFormItem
 } from '@/options/components/SaladictForm'
 import { useTranslate, Trans } from '@/_helpers/i18n'
-import { useObservableGetState } from 'observable-hooks'
-import { config$$ } from '@/options/data'
 import { objectKeys } from '@/typings/helpers'
 
 export const DictAuths: FC = () => {
   const { t } = useTranslate(['options', 'dicts'])
-  const dictAuths = useObservableGetState(config$$, null, 'dictAuth')
+  const dictAuths = useSelector(state => state.config.dictAuth)
 
   if (dictAuths === null) return null
 

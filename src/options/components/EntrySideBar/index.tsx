@@ -1,4 +1,4 @@
-import React, { FC, useContext } from 'react'
+import React, { FC } from 'react'
 import { Layout, Menu, Affix, Modal } from 'antd'
 import {
   SettingOutlined,
@@ -21,7 +21,7 @@ import {
 import { useObservableState } from 'observable-hooks'
 import { debounceTime, scan, distinctUntilChanged } from 'rxjs/operators'
 import { useTranslate } from '@/_helpers/i18n'
-import { GlobalsContext } from '@/options/data'
+import { setFormDirty, useFormDirty } from '@/options/helpers/use-form-dirty'
 
 import './_style.scss'
 
@@ -32,7 +32,7 @@ export interface EntrySideBarProps {
 
 export const EntrySideBar: FC<EntrySideBarProps> = props => {
   const { t } = useTranslate('options')
-  const globals = useContext(GlobalsContext)
+  const formDirtyRef = useFormDirty()
   // trigger affix rerendering on collapse state changes to update width
   const [affixKey, onCollapse] = useObservableState<number, boolean>(event$ =>
     event$.pipe(
@@ -59,9 +59,9 @@ export const EntrySideBar: FC<EntrySideBarProps> = props => {
             onSelect={({ key }) => {
               const switchTab = () => {
                 props.onChange(key)
-                ;(globals as GlobalsContext).dirty = false
+                setFormDirty(false)
               }
-              if (globals.dirty) {
+              if (formDirtyRef.value) {
                 Modal.confirm({
                   title: t('unsave_confirm'),
                   icon: <ExclamationCircleOutlined />,

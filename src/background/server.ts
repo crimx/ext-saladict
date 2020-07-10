@@ -2,7 +2,7 @@ import { message, openURL } from '@/_helpers/browser-api'
 import { timeout, timer } from '@/_helpers/promise-more'
 import { getSuggests } from '@/_helpers/getSuggests'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
-import { newWord } from '@/_helpers/record-manager'
+import { newWord, Word } from '@/_helpers/record-manager'
 import { Message, MessageResponse } from '@/typings/message'
 import {
   SearchFunction,
@@ -18,7 +18,7 @@ import {
 } from './database'
 import { AudioManager } from './audio-manager'
 import { QsPanelManager } from './windows-manager'
-import { getTextFromClipboard } from './clipboard-manager'
+import { getTextFromClipboard, copyTextToClipboard } from './clipboard-manager'
 import './types'
 import { DictID } from '@/app-config'
 
@@ -73,6 +73,8 @@ export class BackgroundServer {
           return this.callDictEngineMethod(msg.payload)
         case 'GET_CLIPBOARD':
           return Promise.resolve(getTextFromClipboard())
+        case 'SET_CLIPBOARD':
+          return Promise.resolve(copyTextToClipboard(msg.payload))
 
         case 'INJECT_DICTPANEL':
           return injectDictPanel(sender.tab)
@@ -123,7 +125,7 @@ export class BackgroundServer {
 
   async openQSPanel(): Promise<void> {
     if (await this.qsPanelManager.hasCreated()) {
-      this.qsPanelManager.focus()
+      await this.qsPanelManager.focus()
       return
     }
     await this.qsPanelManager.create()
@@ -145,6 +147,43 @@ export class BackgroundServer {
     if (!window.appConfig.qsAuto) {
       await timer(1000)
       await message.send({
+        type: 'QS_PANEL_SEARCH_TEXT',
+        payload: word
+      })
+    }
+  }
+
+  async searchPageSelection(): Promise<void> {
+    const tabs = await browser.tabs.query({
+      active: true,
+      lastFocusedWindow: true
+    })
+
+    let word: Word | undefined
+
+    if (tabs.length > 0 && tabs[0].id != null) {
+      word = await message.send<'PRELOAD_SELECTION'>(tabs[0].id, {
+        type: 'PRELOAD_SELECTION'
+      })
+    }
+
+    const hasCreated = await this.qsPanelManager.hasCreated()
+
+    if (hasCreated) {
+      await this.qsPanelManager.focus()
+    } else {
+      await this.qsPanelManager.create(word)
+    }
+
+    if (
+      word &&
+      (!window.appConfig.qsAuto || window.appConfig.qsPreload !== 'selection')
+    ) {
+      if (!hasCreated) {
+        // Panel may not be ready
+        await timer(500)
+      }
+      await message.send<'QS_PANEL_SEARCH_TEXT'>({
         type: 'QS_PANEL_SEARCH_TEXT',
         payload: word
       })

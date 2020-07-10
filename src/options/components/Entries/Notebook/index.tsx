@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from 'react'
+import React, { FC, useState } from 'react'
 import { Switch, Checkbox, Button } from 'antd'
 import { concat, from } from 'rxjs'
 import { pluck, map } from 'rxjs/operators'
@@ -6,18 +6,18 @@ import { useObservableState, useObservable, useRefFn } from 'observable-hooks'
 import { objectKeys } from '@/typings/helpers'
 import { useTranslate } from '@/_helpers/i18n'
 import { storage } from '@/_helpers/browser-api'
+import { useSelector } from '@/content/redux'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import {
   SaladictForm,
   SaladictFormItem
 } from '@/options/components/SaladictForm'
-import { GlobalsContext } from '@/options/data'
 
 const reqSyncService = require.context('./sync-services', false, /\.tsx$/)
 
 export const Notebook: FC = () => {
   const { t } = useTranslate(['options', 'dicts', 'common', 'sync'])
-  const globals = useContext(GlobalsContext)
+  const ctxTrans = useSelector(state => state.config.ctxTrans)
   const syncServiceIds = useRefFn(() =>
     reqSyncService.keys().map(path => /([^/]+)\.tsx$/.exec(path)![1])
   ).current
@@ -64,7 +64,7 @@ export const Notebook: FC = () => {
     {
       key: getConfigPath('ctxTrans'),
       style: { marginBottom: 10 },
-      items: objectKeys(globals.config.ctxTrans).map(id => ({
+      items: objectKeys(ctxTrans).map(id => ({
         name: getConfigPath('ctxTrans', id),
         valuePropName: 'checked',
         style: { marginBottom: 0 },

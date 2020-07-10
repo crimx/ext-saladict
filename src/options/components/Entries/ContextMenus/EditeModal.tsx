@@ -1,11 +1,12 @@
 import React, { FC, useMemo, useRef } from 'react'
+import { useUpdateEffect } from 'react-use'
+import { useObservableState } from 'observable-hooks'
 import { Input, Modal, Form } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { FormInstance } from 'antd/lib/form/Form'
-import { useObservableGetState, useSubscription } from 'observable-hooks'
 import { useTranslate } from '@/_helpers/i18n'
-import { config$$ } from '@/options/data'
-import { upload, uploadResult$$ } from '@/options/helpers/upload'
+import { useSelector } from '@/content/redux'
+import { useUpload, uploadStatus$ } from '@/options/helpers/upload'
 
 export interface EditModalProps {
   menuID?: string | null
@@ -15,7 +16,9 @@ export interface EditModalProps {
 export const EditModal: FC<EditModalProps> = ({ menuID, onClose }) => {
   const { t } = useTranslate(['options', 'dicts', 'common', 'langcode'])
   const formRef = useRef<FormInstance>(null)
-  const allMenus = useObservableGetState(config$$, null, 'contextMenus', 'all')
+  const allMenus = useSelector(state => state.config.contextMenus.all)
+  const uploadStatus = useObservableState(uploadStatus$, 'idle')
+  const upload = useUpload()
 
   const namePath = `config.contextMenus.all.${menuID}.name`
   const urlPath = `config.contextMenus.all.${menuID}.url`
@@ -42,13 +45,11 @@ export const EditModal: FC<EditModalProps> = ({ menuID, onClose }) => {
     }
   }, [allMenus, menuID])
 
-  useSubscription(uploadResult$$, result => {
-    if (menuID && !result.loading && !result.error) {
+  useUpdateEffect(() => {
+    if (menuID && uploadStatus === 'idle') {
       onClose()
     }
-  })
-
-  if (allMenus === null) return null
+  }, [uploadStatus])
 
   return (
     <Modal

@@ -35,7 +35,10 @@ export const getSrcPage: GetSrcPageFunction = async (text, config) => {
 
 const HOST = 'https://dictionary.cambridge.org'
 
-type CambridgeResultItem = HTMLString
+type CambridgeResultItem = {
+  id: string
+  html: HTMLString
+}
 
 export type CambridgeResult = CambridgeResultItem[]
 
@@ -65,9 +68,10 @@ function handleDOM(
   doc: Document
 ): CambridgeSearchResult | Promise<CambridgeSearchResult> {
   const result: CambridgeResult = []
+  const catalog: NonNullable<CambridgeSearchResult['catalog']> = []
   const audio: { us?: string; uk?: string } = {}
 
-  doc.querySelectorAll('.entry-body__el').forEach($entry => {
+  doc.querySelectorAll('.entry-body__el').forEach(($entry, i) => {
     if (!getText($entry, '.headword')) {
       return
     }
@@ -111,11 +115,23 @@ function handleDOM(
     // See more results
     $entry.querySelectorAll<HTMLAnchorElement>('a.had').forEach(externalLink)
 
-    result.push(getInnerHTML(HOST, $entry))
+    const entryId = `d-cambridge-entry${i}`
+
+    result.push({
+      id: entryId,
+      html: getInnerHTML(HOST, $entry)
+    })
+
+    catalog.push({
+      key: `#${i}`,
+      value: entryId,
+      label:
+        '#' + getText($entry, '.di-title') + ' ' + getText($entry, '.posgram')
+    })
   })
 
   if (result.length > 0) {
-    return { result, audio }
+    return { result, audio, catalog }
   }
 
   return handleNoResult()

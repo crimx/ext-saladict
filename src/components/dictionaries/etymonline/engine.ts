@@ -19,6 +19,7 @@ export const getSrcPage: GetSrcPageFunction = text => {
 const HOST = 'https://www.etymonline.com'
 
 type EtymonlineResultItem = {
+  id: string
   title: string
   def: HTMLString
   href?: string
@@ -50,6 +51,7 @@ function handleDOM(
   options: DictConfigs['etymonline']['options']
 ): EtymonlineSearchResult | Promise<EtymonlineSearchResult> {
   const result: EtymonlineResult = []
+  const catalog: NonNullable<EtymonlineSearchResult['catalog']> = []
   const $items = Array.from(doc.querySelectorAll('[class*="word--"]'))
 
   for (let i = 0; i < $items.length && result.length < options.resultnum; i++) {
@@ -91,11 +93,19 @@ function handleDOM(
       }
     }
 
-    result.push({ href, title, def, chart })
+    const id = `d-etymonline-entry${i}`
+
+    result.push({ id, href, title, def, chart })
+
+    catalog.push({
+      key: `#${i}`,
+      value: id,
+      label: `#${title}`
+    })
   }
 
   if (result.length > 0) {
-    return { result }
+    return { result, catalog }
   }
 
   return handleNoResult()

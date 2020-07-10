@@ -1,33 +1,19 @@
-import React, { FC, useContext, useMemo } from 'react'
+import React, { FC } from 'react'
 import { Switch, Select } from 'antd'
-import { useObservableGetState } from 'observable-hooks'
 import { useTranslate } from '@/_helpers/i18n'
-import { GlobalsContext, profile$$ } from '@/options/data'
+import { useSelector } from '@/content/redux'
 import { getConfigPath, getProfilePath } from '@/options/helpers/path-joiner'
 import { SaladictForm } from '@/options/components/SaladictForm'
 
 export const Pronunciation: FC = () => {
   const { t } = useTranslate(['options', 'common', 'dicts'])
-  const globals = useContext(GlobalsContext)
-  const zdicAudio = useObservableGetState(
-    profile$$,
-    null,
-    'dicts',
-    'all',
-    'zdic',
-    'options',
-    'audio'
-  )
-
-  const autopronCNList = useMemo(
-    () =>
-      zdicAudio
-        ? globals.config.autopron.cn.list
-        : globals.config.autopron.cn.list.filter(id => id !== 'zdic'),
-    [zdicAudio]
-  )
-
-  if (zdicAudio === null) return null
+  const autopronLists = useSelector(state => ({
+    cn: state.activeProfile.dicts.all.zdic.options.audio
+      ? state.config.autopron.cn.list
+      : state.config.autopron.cn.list.filter(id => id !== 'zdic'),
+    en: state.config.autopron.en.list,
+    machine: state.config.autopron.machine.list
+  }))
 
   return (
     <SaladictForm
@@ -37,7 +23,7 @@ export const Pronunciation: FC = () => {
           children: (
             <Select>
               <Select.Option value="">{t('common:none')}</Select.Option>
-              {autopronCNList.map(id => (
+              {autopronLists.cn.map(id => (
                 <Select.Option key={id} value={id}>
                   {t(`dicts:${id}.name`)}
                 </Select.Option>
@@ -50,7 +36,7 @@ export const Pronunciation: FC = () => {
           children: (
             <Select>
               <Select.Option value="">{t('common:none')}</Select.Option>
-              {globals.config.autopron.en.list.map(id => (
+              {autopronLists.en.map(id => (
                 <Select.Option key={id} value={id}>
                   {t(`dicts:${id}.name`)}
                 </Select.Option>
@@ -77,7 +63,7 @@ export const Pronunciation: FC = () => {
           children: (
             <Select>
               <Select.Option value="">{t('common:none')}</Select.Option>
-              {globals.config.autopron.machine.list.map(id => (
+              {autopronLists.machine.map(id => (
                 <Select.Option key={id} value={id}>
                   {t(`dicts:${id}.name`)}
                 </Select.Option>

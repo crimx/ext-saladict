@@ -120,7 +120,7 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
         <style>{require('@/_sass_global/_reset.scss').toString()}</style>
         <style>{require('@/_sass_global/_theme.scss').toString()}</style>
         <div
-          className={classNames('saladict-theme', {
+          className={classNames('dictPanel-Root', 'saladict-theme', {
             isAnimate: withAnimation,
             darkMode
           })}

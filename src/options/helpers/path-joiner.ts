@@ -1,6 +1,6 @@
+import { useRefFn } from 'observable-hooks'
 import { AppConfig } from '@/app-config'
 import { Profile } from '@/app-config/profiles'
-import { useRefFn } from 'observable-hooks'
 
 export function getConfigPath<A extends keyof AppConfig>(pA: A): string
 export function getConfigPath<

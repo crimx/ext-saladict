@@ -10,7 +10,7 @@ import {
   startWith
 } from 'rxjs/operators'
 import { message } from '@/_helpers/browser-api'
-import { FloatBox, FloatBoxProps } from './FloatBox'
+import { FloatBox, FloatBoxProps } from '@/components/FloatBox'
 
 export interface SuggestItem {
   explain: string
@@ -58,7 +58,8 @@ export const Suggest: FC<SuggestProps> = React.forwardRef(
                     ref={ref}
                     list={suggests.map(s => ({
                       key: s.entry,
-                      content: (
+                      value: s.entry,
+                      label: (
                         <>
                           <span className="menuBar-SuggestsEntry">
                             {s.entry}

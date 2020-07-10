@@ -1,11 +1,11 @@
 import React from 'react'
+import faker from 'faker'
 import { storiesOf } from '@storybook/react'
 import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
 import { action } from '@storybook/addon-actions'
 import { withKnobs, select, number } from '@storybook/addon-knobs'
 import { withi18nNS, withSaladictPanel } from '@/_helpers/storybook'
-import faker from 'faker'
 import { DictItem } from './DictItem'
 
 storiesOf('Content Scripts|Dict Panel', module)
@@ -41,7 +41,7 @@ storiesOf('Content Scripts|Dict Panel', module)
         searchResult={{
           count: number('Paragraphs', 5)
         }}
-        dictComp={({ result }: { result: { count: number } }) => (
+        TestComp={({ result }: { result: { count: number } }) => (
           <>
             {[...Array(result.count)].map((line, i) => (
               <p key={i}>{faker.lorem.paragraph()}</p>

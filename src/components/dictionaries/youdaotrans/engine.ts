@@ -1,12 +1,12 @@
-import {
-  MachineTranslatePayload,
-  MachineTranslateResult,
-  SearchFunction,
-  GetSrcPageFunction,
-  getMTArgs
-} from '../helpers'
+import { SearchFunction, GetSrcPageFunction } from '../helpers'
 import memoizeOne from 'memoize-one'
 import { Youdao } from '@opentranslate/youdao'
+import {
+  MachineTranslateResult,
+  MachineTranslatePayload,
+  getMTArgs,
+  machineResult
+} from '@/components/MachineTrans/engine'
 import { YoudaotransLanguage } from './config'
 
 export const getTranslator = memoizeOne(
@@ -49,30 +49,36 @@ export const search: SearchFunction<
 
   try {
     const result = await translator.translate(text, sl, tl, translatorConfig)
-    return {
-      result: {
-        id: 'youdaotrans',
-        sl: result.from,
-        tl: result.to,
-        langcodes: translator.getSupportLanguages(),
-        searchText: result.origin,
-        trans: result.trans
+    return machineResult(
+      {
+        result: {
+          id: 'youdaotrans',
+          sl: result.from,
+          tl: result.to,
+          slInitial: profile.dicts.all.youdaotrans.options.slInitial,
+          searchText: result.origin,
+          trans: result.trans
+        },
+        audio: {
+          py: result.trans.tts,
+          us: result.trans.tts
+        }
       },
-      audio: {
-        py: result.trans.tts,
-        us: result.trans.tts
-      }
-    }
+      translator.getSupportLanguages()
+    )
   } catch (e) {
-    return {
-      result: {
-        id: 'youdaotrans',
-        sl,
-        tl,
-        langcodes: translator.getSupportLanguages(),
-        searchText: { paragraphs: [''] },
-        trans: { paragraphs: [''] }
-      }
-    }
+    return machineResult(
+      {
+        result: {
+          id: 'youdaotrans',
+          sl,
+          tl,
+          slInitial: 'hide',
+          searchText: { paragraphs: [''] },
+          trans: { paragraphs: [''] }
+        }
+      },
+      translator.getSupportLanguages()
+    )
   }
 }

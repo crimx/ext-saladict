@@ -43,7 +43,7 @@ export const locale: typeof _locale = {
       'When turned off, new words will be added to notebook directly.',
     searchHistory: 'Keep search history',
     searchHistory_help:
-      'Search histry might unintentionally reveal your browsing history.',
+      'Your browsing history could be unintentionally revealed in Search history.',
     searchHistoryInco: 'Also in incognito mode',
     ctxTrans: 'Context Translate Engines',
     ctxTrans_help:
@@ -402,7 +402,7 @@ export const locale: typeof _locale = {
 
   third_party_privacy: 'Third Party Privacy',
   third_party_privacy_help:
-    'Saladict will not collect further information but search text and releated cookies will be sent to third party dictionary services(just like how you would search on their websites). If you do not want third party services to collect you data, remove the dictionaries at "Dictionaries" settings.',
+    'Saladict will not collect further information but search text and releated cookies will be sent to third party dictionary services(just like how you would search on their websites). If you do not want third party services to collect you data, remove the corresponding dictionaries at "Dictionaries" settings.',
   third_party_privacy_extra:
     'Cannot be turned off as it is the core functionality of Saladict.'
 }

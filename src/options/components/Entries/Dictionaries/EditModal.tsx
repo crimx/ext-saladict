@@ -1,17 +1,19 @@
 import React, { FC, useContext } from 'react'
+import { shallowEqual } from 'react-redux'
+import { Translator } from '@opentranslate/translator'
 import { Switch, Select, Checkbox, Button, Modal } from 'antd'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
 import { Rule } from 'antd/lib/form'
 import { DictID } from '@/app-config'
 import { useTranslate } from '@/_helpers/i18n'
 import { supportedLangs } from '@/_helpers/lang-check'
+import { useSelector } from '@/content/redux'
 import { getProfilePath } from '@/options/helpers/path-joiner'
 import { SaladictFormItem } from '@/options/components/SaladictForm'
-import { GlobalsContext } from '@/options/data'
 import { InputNumberGroup } from '@/options/components/InputNumberGroup'
 import { SaladictModalForm } from '@/options/components/SaladictModalForm'
 import { ChangeEntryContext } from '@/options/helpers/change-entry'
-import { Translator } from '@opentranslate/translator'
+import { useFormDirty, setFormDirty } from '@/options/helpers/use-form-dirty'
 
 export interface EditModalProps {
   dictID?: DictID | null
@@ -20,8 +22,15 @@ export interface EditModalProps {
 
 export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
   const { t, i18n } = useTranslate(['options', 'dicts', 'common', 'langcode'])
-  const globals = useContext(GlobalsContext)
   const changeEntry = useContext(ChangeEntryContext)
+  const formDirtyRef = useFormDirty()
+  const { dictAuth, allDicts } = useSelector(
+    state => ({
+      dictAuth: state.config.dictAuth,
+      allDicts: state.activeProfile.dicts.all
+    }),
+    shallowEqual
+  )
   const formItems: SaladictFormItem[] = []
 
   const NUMBER_RULES: Rule[] = [
@@ -87,7 +96,7 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
     )
 
     // Dict Auth for Machine Translators
-    if (globals.config.dictAuth[dictID]) {
+    if (dictAuth[dictID]) {
       formItems.push({
         key: dictID + '_auth',
         label: t('nav.DictAuths'),
@@ -97,13 +106,13 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
             onClick={e => {
               e.preventDefault()
               e.stopPropagation()
-              if (globals.dirty) {
+              if (formDirtyRef.value) {
                 Modal.confirm({
                   title: t('unsave_confirm'),
                   icon: <ExclamationCircleOutlined />,
                   okType: 'danger',
                   onOk: () => {
-                    ;(globals as GlobalsContext).dirty = false
+                    setFormDirty(false)
                     changeEntry('DictAuths')
                   }
                 })
@@ -119,7 +128,7 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
     }
 
     // custom options
-    const options = globals.profile.dicts.all[dictID]['options']
+    const options = allDicts[dictID]['options']
     if (options) {
       formItems.push(
         ...Object.keys(options).map(optKey => {
@@ -154,7 +163,7 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
                   ? getTranslator()
                       .getSupportLanguages()
                       .map(lang => (lang === 'auto' ? 'default' : lang))
-                  : globals.profile.dicts.all[dictID]['options_sel'][optKey]
+                  : allDicts[dictID]['options_sel'][optKey]
 
                 item.children = (
                   <Select>
@@ -169,13 +178,13 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
               } else {
                 item.children = (
                   <Select>
-                    {globals.profile.dicts.all[dictID]['options_sel'][
-                      optKey
-                    ].map((option: string) => (
-                      <Select.Option value={option} key={option}>
-                        {t(`dicts:${dictID}.options.${optKey}-${option}`)}
-                      </Select.Option>
-                    ))}
+                    {allDicts[dictID]['options_sel'][optKey].map(
+                      (option: string) => (
+                        <Select.Option value={option} key={option}>
+                          {t(`dicts:${dictID}.options.${optKey}-${option}`)}
+                        </Select.Option>
+                      )
+                    )}
                   </Select>
                 )
               }

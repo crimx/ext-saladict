@@ -1,18 +1,26 @@
 import {
   createStore as createReduxStore,
   applyMiddleware,
-  compose
+  compose,
+  Store
 } from 'redux'
 import thunkMiddleware from 'redux-thunk'
+import {
+  useStore as _useStore,
+  useSelector as _useSelector,
+  useDispatch as _useDispatch
+} from 'react-redux'
 import { createEpicMiddleware } from 'redux-observable'
 import { Observable } from 'rxjs'
 import { map, distinctUntilChanged } from 'rxjs/operators'
-
 import { message } from '@/_helpers/browser-api'
-import { getConfig } from '@/_helpers/config-manager'
-import { getActiveProfile } from '@/_helpers/profile-manager'
 
-import { rootReducer, StoreState, StoreAction } from './modules'
+import {
+  getRootReducer,
+  StoreState,
+  StoreAction,
+  StoreDispatch
+} from './modules'
 import { init } from './init'
 import { epics } from './epics'
 
@@ -22,22 +30,27 @@ const epicMiddleware = createEpicMiddleware<
   StoreState
 >()
 
-export const createStore = () => {
+export const useStore: () => Store<StoreState, StoreAction> = _useStore
+
+export const useSelector: <TSelected = unknown>(
+  selector: (state: StoreState) => TSelected,
+  equalityFn?: (left: TSelected, right: TSelected) => boolean
+) => TSelected = _useSelector
+
+export const useDispatch: () => StoreDispatch = _useDispatch
+
+export const createStore = async () => {
   const composeEnhancers: typeof compose =
     window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose
 
   const store = createReduxStore(
-    rootReducer,
+    await getRootReducer(),
     composeEnhancers(applyMiddleware(thunkMiddleware, epicMiddleware))
   )
 
   epicMiddleware.run(epics)
 
-  Promise.all([getConfig(), getActiveProfile()]).then(([config, profile]) => {
-    store.dispatch({ type: 'NEW_CONFIG', payload: config })
-    store.dispatch({ type: 'NEW_ACTIVE_PROFILE', payload: profile })
-    init(store.dispatch, store.getState)
-  })
+  init(store.dispatch, store.getState)
 
   // sync state
   const storeState$ = new Observable<StoreState>(observer => {
@@ -65,5 +78,3 @@ export const createStore = () => {
 
   return store
 }
-
-export default createStore

@@ -1,18 +1,28 @@
+import { PromiseType } from 'utility-types'
 import { newWord, Word } from '@/_helpers/record-manager'
-import { getDefaultConfig, DictID } from '@/app-config'
-import { getDefaultProfile, ProfileIDList } from '@/app-config/profiles'
+import { DictID } from '@/app-config'
+import { getConfig } from '@/_helpers/config-manager'
+import { getProfileIDList, getActiveProfile } from '@/_helpers/profile-manager'
 import {
   isQuickSearchPage,
   isStandalonePage,
   isOptionsPage
 } from '@/_helpers/saladict'
+import { DictSearchResult } from '@/components/dictionaries/helpers'
 
-export const initState = () => {
-  const config = getDefaultConfig()
+export const initState = async () => {
+  const pConfig = getConfig()
+  const pProfiles = getProfileIDList()
+  const pActiveProfile = getActiveProfile()
+
+  const config = await pConfig
+  const profiles = await pProfiles
+  const activeProfile = await pActiveProfile
+
   return {
     config,
-    profiles: [] as ProfileIDList,
-    activeProfile: getDefaultProfile(),
+    profiles,
+    activeProfile,
     selection: {
       word: newWord() as Word | null,
       mouseX: 0,
@@ -70,6 +80,7 @@ export const initState = () => {
       readonly id: DictID
       readonly searchStatus: 'IDLE' | 'SEARCHING' | 'FINISH'
       readonly searchResult: any
+      readonly catalog?: DictSearchResult<DictID>['catalog']
     }[],
     /** User manually folded or unfolded */
     userFoldedDicts: {} as { [id in DictID]?: boolean },
@@ -85,6 +96,6 @@ export const initState = () => {
   }
 }
 
-export type State = ReturnType<typeof initState>
+export type State = PromiseType<ReturnType<typeof initState>>
 
 export default initState

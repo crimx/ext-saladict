@@ -44,8 +44,7 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
       ofType('ADD_TO_NOTEBOOK'),
       mergeMap(() => {
         if (state$.value.config.editOnFav) {
-          const word =
-            state$.value.searchHistory[state$.value.searchHistory.length - 1]
+          const word = state$.value.searchHistory[state$.value.historyIndex]
 
           if (isPopupPage() || isStandalonePage()) {
             const { width: screenWidth, height: screenHeight } = window.screen

@@ -1,14 +1,15 @@
 import React from 'react'
+import faker from 'faker'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
 import { withKnobs, number, boolean, object } from '@storybook/addon-knobs'
 import { withSaladictPanel, withi18nNS } from '@/_helpers/storybook'
-import faker from 'faker'
-import { DictList } from './DictList'
 import { getAllDicts } from '@/app-config/dicts'
 import { getDefaultConfig, DictID } from '@/app-config'
+import { HoverBoxContext } from '@/components/HoverBox'
+import { DictList } from './DictList'
 
 const defaultLanguage = getDefaultConfig().language
 
@@ -33,6 +34,18 @@ storiesOf('Content Scripts|Dict Panel', module)
   .addDecorator(withPropsTable)
   .addDecorator(jsxDecorator)
   .addDecorator(withKnobs)
+  .addDecorator(story => {
+    const rootRef: React.MutableRefObject<HTMLDivElement | null> = {
+      current: null
+    }
+    return (
+      <HoverBoxContext.Provider value={rootRef}>
+        <div ref={rootRef} style={{ position: 'relative' }}>
+          {story()}
+        </div>
+      </HoverBoxContext.Provider>
+    )
+  })
   .addDecorator(
     withSaladictPanel({
       head: <style>{require('./DictList.scss').toString()}</style>,
@@ -56,7 +69,7 @@ storiesOf('Content Scripts|Dict Panel', module)
             faker.random.number({ min: 1, max: 4 })
           )
         },
-        dictComp: TestComp
+        TestComp
       }))}
       searchText={action('Search Text')}
       openDictSrcPage={action('Open Dict Source Page')}

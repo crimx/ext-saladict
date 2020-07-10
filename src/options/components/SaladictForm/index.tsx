@@ -1,4 +1,4 @@
-import React, { useContext, ReactNode, useMemo, Ref } from 'react'
+import React, { ReactNode, useMemo, Ref } from 'react'
 import { Form, Button, Modal, Tooltip } from 'antd'
 import { FormItemProps, Rule, FormProps, FormInstance } from 'antd/lib/form'
 import { ExclamationCircleOutlined, BlockOutlined } from '@ant-design/icons'
@@ -12,12 +12,13 @@ import { resetAllProfiles } from '@/_helpers/profile-manager'
 import { useTranslate } from '@/_helpers/i18n'
 import { isFirefox } from '@/_helpers/saladict'
 import { openURL } from '@/_helpers/browser-api'
-import { GlobalsContext } from '@/options/data'
+import { useSelector } from '@/content/redux'
 import {
   useFormItemLayout,
   formItemFooterLayout
 } from '@/options/helpers/layout'
-import { upload } from '@/options/helpers/upload'
+import { useUpload } from '@/options/helpers/upload'
+import { setFormDirty } from '@/options/helpers/use-form-dirty'
 import { SaveBtn } from './SaveBtn'
 
 import './_style.scss'
@@ -53,9 +54,16 @@ export interface SaladictFormProps
 export const SaladictForm = React.forwardRef(
   (props: SaladictFormProps, ref: Ref<FormInstance>) => {
     const { items, hideFooter, ...restProps } = props
-    const { t, i18n, ready } = useTranslate(['options', 'common'])
-    const globals = useContext(GlobalsContext)
     const formItemLayout = useFormItemLayout()
+    const { t, i18n, ready } = useTranslate(['options', 'common'])
+    const data = useSelector(
+      state => ({
+        config: state.config,
+        profile: state.activeProfile
+      }),
+      shallowEqual
+    )
+    const upload = useUpload()
 
     function extractInitial(
       items: SaladictFormItem[],
@@ -73,8 +81,8 @@ export const SaladictForm = React.forwardRef(
           }
 
           if (item.name) {
-            const value = get(globals, item.name, globals)
-            if (value !== globals) {
+            const value = get(data, item.name, data)
+            if (value !== data) {
               result.initialValues[item.name] = value
             } else if (process.env.DEBUG) {
               console.warn(
@@ -170,7 +178,7 @@ export const SaladictForm = React.forwardRef(
         initialValues={initialValues}
         onFinish={upload}
         onValuesChange={(_, values) => {
-          ;(globals as GlobalsContext).dirty = true
+          setFormDirty(true)
           setHideFields(values)
           if (props.onValuesChange) {
             props.onValuesChange(_, values)
@@ -203,7 +211,7 @@ export const SaladictForm = React.forwardRef(
                   onOk: async () => {
                     await resetConfig()
                     await resetAllProfiles()
-                    ;(globals as GlobalsContext).dirty = false
+                    setFormDirty(false)
                   }
                 })
               }}

@@ -18,7 +18,8 @@ import {
   isStandalonePage
 } from '@/_helpers/saladict'
 import { DictID } from '@/app-config'
-import { MachineTranslateResult } from '@/components/dictionaries/helpers'
+import { MachineTranslateResult } from '@/components/MachineTrans/engine'
+import { MessageResponse } from '@/typings/message'
 
 export const searchStartEpic: Epic = (action$, state$) =>
   action$.pipe(
@@ -56,20 +57,21 @@ export const searchStartEpic: Epic = (action$, state$) =>
       if (machine.dict) toStart.add(machine.dict)
 
       const searchResults$$ = merge(
-        ...[...toStart].map(id =>
-          message
-            .send<'FETCH_DICT_RESULT'>({
-              type: 'FETCH_DICT_RESULT',
-              payload: {
-                id,
-                text: word.text,
-                payload:
-                  payload && payload.payload
-                    ? { isPDF: isPDFPage(), ...payload.payload }
-                    : { isPDF: isPDFPage() }
-              }
-            })
-            .catch(() => ({ id, result: null, audio: null }))
+        ...[...toStart].map(
+          (id): Promise<MessageResponse<'FETCH_DICT_RESULT'>> =>
+            message
+              .send<'FETCH_DICT_RESULT'>({
+                type: 'FETCH_DICT_RESULT',
+                payload: {
+                  id,
+                  text: word.text,
+                  payload:
+                    payload && payload.payload
+                      ? { isPDF: isPDFPage(), ...payload.payload }
+                      : { isPDF: isPDFPage() }
+                }
+              })
+              .catch(() => ({ id, result: null }))
         )
       ).pipe(share())
 
@@ -125,9 +127,9 @@ export const searchStartEpic: Epic = (action$, state$) =>
         ),
         searchResults$$.pipe(
           map(
-            ({ id, result }): StoreAction => ({
+            ({ id, result, catalog }): StoreAction => ({
               type: 'SEARCH_END',
-              payload: { id, result }
+              payload: { id, result, catalog }
             })
           )
         ),

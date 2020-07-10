@@ -3,11 +3,15 @@ import { first } from '@/_helpers/promise-more'
 import { handleNoResult, getText } from '@/components/dictionaries/helpers'
 
 export async function getWordOfTheDay(): Promise<string> {
-  try {
-    return await first([getWebsterWordOfTheDay(), getDictionaryWordOfTheDay()])
-  } catch (e) {
-    return 'salad'
+  if (!process.env.DEBUG) {
+    try {
+      return await first([
+        getWebsterWordOfTheDay(),
+        getDictionaryWordOfTheDay()
+      ])
+    } catch (e) {}
   }
+  return 'salad'
 }
 
 export async function getWebsterWordOfTheDay(): Promise<string> {

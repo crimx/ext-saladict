@@ -5,6 +5,9 @@
   "options_ui": {
     "chrome_style": false
   },
+  "permissions": [
+    "background"
+  ],
   "incognito": "split",
   "update_url": "https://clients2.google.com/service/update2/crx",
   "minimum_chrome_version": "63"

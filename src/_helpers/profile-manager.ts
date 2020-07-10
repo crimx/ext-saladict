@@ -149,6 +149,8 @@ export async function updateProfile(profile: Profile): Promise<void> {
     const profileIDList = await getProfileIDList()
     if (!profileIDList.find(item => item.id === profile.id)) {
       console.error(`Update Profile: profile ${profile.id} does not exist`)
+    } else {
+      console.log('Savedd Profile', profile)
     }
   }
   return storage.sync.set({ [profile.id]: deflate(profile) })

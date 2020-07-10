@@ -1,6 +1,7 @@
-import React, { FC, ReactNode } from 'react'
+import React, { FC, ReactNode, useRef } from 'react'
 import classNames from 'classnames'
 import { SALADICT_PANEL } from '@/_helpers/saladict'
+import { HoverBoxContext } from '@/components/HoverBox'
 
 export interface DictPanelStandaloneProps {
   width: string
@@ -18,10 +19,13 @@ export interface DictPanelStandaloneProps {
 }
 
 export const DictPanelStandalone: FC<DictPanelStandaloneProps> = props => {
+  const rootElRef = useRef<HTMLDivElement | null>(null)
+
   return (
     <React.Fragment>
       {props.panelCSS ? <style>{props.panelCSS}</style> : null}
       <div
+        ref={rootElRef}
         className={classNames(
           SALADICT_PANEL,
           'dictPanel-Root',
@@ -40,10 +44,12 @@ export const DictPanelStandalone: FC<DictPanelStandaloneProps> = props => {
         }}
       >
         <div className="dictPanel-Head">{props.menuBar}</div>
-        <div className="dictPanel-Body fancy-scrollbar">
-          {props.mtaBox}
-          {props.dictList}
-        </div>
+        <HoverBoxContext.Provider value={rootElRef}>
+          <div className="dictPanel-Body fancy-scrollbar">
+            {props.mtaBox}
+            {props.dictList}
+          </div>
+        </HoverBoxContext.Provider>
         {props.waveformBox}
       </div>
     </React.Fragment>

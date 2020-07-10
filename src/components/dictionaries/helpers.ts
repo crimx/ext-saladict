@@ -1,15 +1,12 @@
 import DOMPurify from 'dompurify'
-import AxiosMockAdapter from 'axios-mock-adapter'
-import { DictID, AppConfig } from '@/app-config'
-import { Profile } from '@/app-config/profiles'
-import { Word } from '@/_helpers/record-manager'
 import { useEffect, useRef } from 'react'
 import { useSubscription, useObservableCallback } from 'observable-hooks'
 import { debounceTime, map, tap } from 'rxjs/operators'
 import { Observable } from 'rxjs'
-import { Language } from '@opentranslate/languages'
-import { Translator } from '@opentranslate/translator'
-import { isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
+import AxiosMockAdapter from 'axios-mock-adapter'
+import { DictID, AppConfig } from '@/app-config'
+import { Profile } from '@/app-config/profiles'
+import { Word } from '@/_helpers/record-manager'
 
 /** Fetch and parse dictionary search result */
 export interface SearchFunction<Result, Payload = {}> {
@@ -21,15 +18,35 @@ export interface SearchFunction<Result, Payload = {}> {
   ): Promise<DictSearchResult<Result>>
 }
 
-export interface DictSearchResult<R> {
+export interface DictSearchResult<Result> {
   /** search result */
-  result: R
+  result: Result
   /** auto play sound */
   audio?: {
     uk?: string
     us?: string
     py?: string
   }
+  /** generate menus on dict titlebars */
+  catalog?: Array<
+    | {
+        // <button>
+        key: string
+        value: string
+        label: string
+        options?: undefined
+      }
+    | {
+        // <select>
+        key: string
+        value: string
+        options: Array<{
+          value: string
+          label: string
+        }>
+        title?: string
+      }
+  >
 }
 
 /** Return a dictionary source page url for the dictionary header */
@@ -55,6 +72,8 @@ export interface ViewPorps<T> {
     word?: Word
     payload?: P
   }) => any
+  /** Emit catalog key and value when selected */
+  catalogSelect$: Observable<{ key: string; value: string }>
 }
 
 export type SearchErrorType = 'NO_RESULT' | 'NETWORK_ERROR'
@@ -65,120 +84,6 @@ export function handleNoResult<T = any>(): Promise<T> {
 
 export function handleNetWorkError(): Promise<never> {
   return Promise.reject(new Error('NETWORK_ERROR'))
-}
-
-export interface MachineTranslatePayload<Lang = string> {
-  sl?: Lang
-  tl?: Lang
-}
-
-export interface MachineTranslateResult<ID extends DictID> {
-  id: ID
-  /** Source language */
-  sl: string
-  /** Target language */
-  tl: string
-  /** All supported languages */
-  langcodes: ReadonlyArray<string>
-  searchText: {
-    paragraphs: string[]
-    tts?: string
-  }
-  trans: {
-    paragraphs: string[]
-    tts?: string
-  }
-}
-
-/**
- * Get Machine Translate arguments
- */
-export async function getMTArgs(
-  translator: Translator,
-  text: string,
-  {
-    options,
-    options_sel
-  }: {
-    options: {
-      tl: 'default' | Language
-      tl2: 'default' | Language
-      keepLF: 'none' | 'all' | 'webpage' | 'pdf'
-    }
-    options_sel: {
-      tl: ReadonlyArray<'default' | Language>
-      tl2: ReadonlyArray<'default' | Language>
-    }
-  },
-  config: AppConfig,
-  payload: {
-    sl?: Language
-    tl?: Language
-    isPDF?: boolean
-  }
-): Promise<{ sl: Language; tl: Language; text: string }> {
-  if (
-    options.keepLF === 'none' ||
-    (options.keepLF === 'pdf' && !payload.isPDF) ||
-    (options.keepLF === 'webpage' && payload.isPDF)
-  ) {
-    text = text.replace(/\n+/g, ' ')
-  }
-
-  let sl = payload.sl
-
-  if (!sl) {
-    if (isContainJapanese(text)) {
-      sl = 'ja'
-    } else if (isContainKorean(text)) {
-      sl = 'ko'
-    }
-  }
-
-  if (!sl) {
-    sl = await translator.detect(text)
-  }
-
-  let tl: Language | '' = ''
-
-  if (payload.tl) {
-    tl = payload.tl
-  } else if (options.tl === 'default') {
-    if (options_sel.tl.includes(config.langCode)) {
-      tl = config.langCode
-    }
-  } else {
-    tl = options.tl
-  }
-
-  if (!tl) {
-    tl =
-      options_sel.tl.find((lang): lang is Language => lang !== 'default') ||
-      'en'
-  }
-
-  if (sl === tl) {
-    if (!payload.tl) {
-      if (options.tl2 === 'default') {
-        if (tl !== config.langCode) {
-          tl = config.langCode
-        } else if (tl !== 'en') {
-          tl = 'en'
-        } else {
-          tl =
-            options_sel.tl.find(
-              (lang): lang is Language => lang !== 'default' && lang !== tl
-            ) || 'en'
-        }
-      } else {
-        tl = options.tl2
-      }
-    } else if (!payload.sl) {
-      sl = 'auto'
-    }
-  }
-
-  return { sl, tl, text }
 }
 
 /**

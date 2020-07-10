@@ -132,6 +132,12 @@
   .dictItem-Body {
     transition: height 0.4s, opacity 0.4s;
   }
+
+  .noHeightTransition {
+    .dictItem-Body {
+      transition: height 0s;
+    }
+  }
 }
 
 @keyframes dictItem-Loader-shift {

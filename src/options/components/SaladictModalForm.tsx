@@ -1,17 +1,18 @@
-import React, { FC, useContext, useRef, ReactNode } from 'react'
+import React, { FC, useRef, ReactNode } from 'react'
+import { useUpdateEffect } from 'react-use'
+import { useObservableState } from 'observable-hooks'
 import { Modal } from 'antd'
 import { FormInstance } from 'antd/lib/form'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
-import { useSubscription } from 'observable-hooks'
 import { useTranslate } from '@/_helpers/i18n'
 import {
   SaladictForm,
   SaladictFormItem,
   SaladictFormProps
 } from '@/options/components/SaladictForm'
-import { GlobalsContext } from '@/options/data'
 import { formItemModalLayout } from '@/options/helpers/layout'
-import { uploadResult$$ } from '@/options/helpers/upload'
+import { useFormDirty, setFormDirty } from '@/options/helpers/use-form-dirty'
+import { uploadStatus$ } from '@/options/helpers/upload'
 
 export interface SaladictModalFormProps
   extends Omit<SaladictFormProps, 'title'> {
@@ -25,15 +26,15 @@ export interface SaladictModalFormProps
 export const SaladictModalForm: FC<SaladictModalFormProps> = props => {
   const { visible, title, zIndex, onClose, ...restProps } = props
   const { t } = useTranslate('options')
-  const globals = useContext(GlobalsContext)
+  const uploadStatus = useObservableState(uploadStatus$, 'idle')
+  const formDirtyRef = useFormDirty()
   const formRef = useRef<FormInstance>(null)
 
-  useSubscription(uploadResult$$, result => {
-    // successfully saved
-    if (visible && !result.loading && !result.error) {
+  useUpdateEffect(() => {
+    if (visible && uploadStatus === 'idle') {
       onClose()
     }
-  })
+  }, [uploadStatus])
 
   return (
     <Modal
@@ -48,13 +49,13 @@ export const SaladictModalForm: FC<SaladictModalFormProps> = props => {
         }
       }}
       onCancel={() => {
-        if (globals.dirty) {
+        if (formDirtyRef.value) {
           Modal.confirm({
             title: t('unsave_confirm'),
             icon: <ExclamationCircleOutlined />,
             okType: 'danger',
             onOk: () => {
-              ;(globals as GlobalsContext).dirty = false
+              setFormDirty(false)
               onClose()
             }
           })

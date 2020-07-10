@@ -1,6 +1,7 @@
 import React, { ComponentType, FC, useMemo, Suspense } from 'react'
 import classNames from 'classnames'
 import root from 'react-shadow'
+import { Observable } from 'rxjs'
 import { DictID } from '@/app-config'
 import { Word } from '@/_helpers/record-manager'
 import { SALADICT_PANEL } from '@/_helpers/saladict'
@@ -19,6 +20,10 @@ export interface DictItemBodyProps {
 
   searchStatus: 'IDLE' | 'SEARCHING' | 'FINISH'
   searchResult?: object | null
+
+  catalogSelect$: Observable<{ key: string; value: string }>
+
+  dictRootRef: React.MutableRefObject<HTMLDivElement | null>
 
   searchText: (arg?: {
     id?: DictID
@@ -66,21 +71,27 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
       <Suspense fallback={null}>
         {props.searchStatus === 'FINISH' && props.searchResult && (
           <root.div>
-            <style>{dictContentStyles}</style>
-            <DictStyle />
-            {props.panelCSS ? <style>{props.panelCSS}</style> : null}
-            <StaticSpeakerContainer
-              className={classNames(
-                `d-${props.dictID}`,
-                'dictRoot',
-                SALADICT_PANEL,
-                { isAnimate: props.withAnimation }
-              )}
-              onPlayStart={props.onSpeakerPlay}
-              onMouseUp={props.onInPanelSelect}
-            >
-              <Dict result={props.searchResult} searchText={props.searchText} />
-            </StaticSpeakerContainer>
+            <div ref={props.dictRootRef}>
+              <style>{dictContentStyles}</style>
+              <DictStyle />
+              {props.panelCSS ? <style>{props.panelCSS}</style> : null}
+              <StaticSpeakerContainer
+                className={classNames(
+                  `d-${props.dictID}`,
+                  'dictRoot',
+                  SALADICT_PANEL,
+                  { isAnimate: props.withAnimation }
+                )}
+                onPlayStart={props.onSpeakerPlay}
+                onMouseUp={props.onInPanelSelect}
+              >
+                <Dict
+                  result={props.searchResult}
+                  searchText={props.searchText}
+                  catalogSelect$={props.catalogSelect$}
+                />
+              </StaticSpeakerContainer>
+            </div>
           </root.div>
         )}
       </Suspense>

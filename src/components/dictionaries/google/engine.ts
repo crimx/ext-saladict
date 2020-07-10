@@ -1,28 +1,15 @@
-import {
-  MachineTranslateResult,
-  SearchFunction,
-  MachineTranslatePayload,
-  GetSrcPageFunction,
-  getMTArgs
-} from '../helpers'
+import { SearchFunction, GetSrcPageFunction } from '../helpers'
 import memoizeOne from 'memoize-one'
 import { Google } from '@opentranslate/google'
+import {
+  MachineTranslateResult,
+  MachineTranslatePayload,
+  getMTArgs,
+  machineResult
+} from '@/components/MachineTrans/engine'
 import { GoogleLanguage } from './config'
 
-export const getTranslator = memoizeOne(
-  () =>
-    new Google({
-      env: 'ext',
-      config: process.env.GOOGLE_TOKEN
-        ? {
-            token: process.env.GOOGLE_TOKEN,
-            order: ['com', 'cn'],
-            concurrent: true,
-            apiAsFallback: true
-          }
-        : undefined
-    })
-)
+export const getTranslator = memoizeOne(() => new Google({ env: 'ext' }))
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   const domain = profile.dicts.all.google.options.cnfirst ? 'cn' : 'com'
@@ -54,35 +41,40 @@ export const search: SearchFunction<
 
   try {
     const result = await translator.translate(text, sl, tl, {
-      token: process.env.GOOGLE_TOKEN!,
       concurrent: options.concurrent,
       order: options.cnfirst ? ['cn', 'com'] : ['com', 'cn'],
       apiAsFallback: true
     })
-    return {
-      result: {
-        id: 'google',
-        sl: result.from,
-        tl: result.to,
-        langcodes: translator.getSupportLanguages(),
-        searchText: result.origin,
-        trans: result.trans
+    return machineResult(
+      {
+        result: {
+          id: 'google',
+          sl: result.from,
+          tl: result.to,
+          slInitial: profile.dicts.all.google.options.slInitial,
+          searchText: result.origin,
+          trans: result.trans
+        },
+        audio: {
+          py: result.trans.tts,
+          us: result.trans.tts
+        }
       },
-      audio: {
-        py: result.trans.tts,
-        us: result.trans.tts
-      }
-    }
+      translator.getSupportLanguages()
+    )
   } catch (e) {
-    return {
-      result: {
-        id: 'google',
-        sl,
-        tl,
-        langcodes: translator.getSupportLanguages(),
-        searchText: { paragraphs: [''] },
-        trans: { paragraphs: [''] }
-      }
-    }
+    return machineResult(
+      {
+        result: {
+          id: 'google',
+          sl,
+          tl,
+          slInitial: 'hide',
+          searchText: { paragraphs: [''] },
+          trans: { paragraphs: [''] }
+        }
+      },
+      translator.getSupportLanguages()
+    )
   }
 }

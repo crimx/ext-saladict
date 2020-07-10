@@ -4,13 +4,14 @@ import { ViewPorps } from '@/components/dictionaries/helpers'
 
 export const DictCambridge: FC<ViewPorps<CambridgeResult>> = props => (
   <>
-    {props.result.map((entry, i) => (
+    {props.result.map(entry => (
       <section
-        key={i}
+        key={entry.id}
+        id={entry.id}
         className="dictCambridge-Entry"
         onClick={handleEntryClick}
       >
-        <div dangerouslySetInnerHTML={{ __html: entry }} />
+        <div dangerouslySetInnerHTML={{ __html: entry.html }} />
       </section>
     ))}
   </>

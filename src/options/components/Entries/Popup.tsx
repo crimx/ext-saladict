@@ -1,13 +1,13 @@
-import React, { FC, useContext } from 'react'
+import React, { FC } from 'react'
 import { Switch, Select } from 'antd'
 import { useTranslate } from '@/_helpers/i18n'
+import { useSelector } from '@/content/redux'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import { SaladictForm } from '@/options/components/SaladictForm'
-import { GlobalsContext } from '@/options/data'
 
 export const Popup: FC = () => {
   const { t } = useTranslate(['options', 'menus'])
-  const globals = useContext(GlobalsContext)
+  const contextMenusAll = useSelector(state => state.config.contextMenus.all)
 
   return (
     <SaladictForm
@@ -28,7 +28,7 @@ export const Popup: FC = () => {
               <Select.Option value="popup_standalone">
                 {t('config.opt.baOpen.popup_standalone')}
               </Select.Option>
-              {Object.keys(globals.config.contextMenus.all).map(id => (
+              {Object.keys(contextMenusAll).map(id => (
                 <Select.Option key={id} value={id}>
                   {t(`menus:${id}`)}
                 </Select.Option>

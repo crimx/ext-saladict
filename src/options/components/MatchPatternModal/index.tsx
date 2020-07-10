@@ -1,13 +1,15 @@
-import React, { FC, useContext, useRef } from 'react'
-import { useSubscription } from 'observable-hooks'
+import React, { FC, useRef } from 'react'
+import { shallowEqual } from 'react-redux'
+import { useUpdateEffect } from 'react-use'
+import { useObservableState } from 'observable-hooks'
 import { Form, Modal, Button } from 'antd'
 import { FormInstance, Rule } from 'antd/lib/form'
 import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import { useTranslate, Trans } from '@/_helpers/i18n'
 import { matchPatternToRegExpStr } from '@/_helpers/matchPatternToRegExpStr'
-import { GlobalsContext } from '@/options/data'
-import { uploadResult$$, upload } from '@/options/helpers/upload'
+import { useSelector } from '@/content/redux'
 import { getConfigPath } from '@/options/helpers/path-joiner'
+import { useUpload, uploadStatus$ } from '@/options/helpers/upload'
 import { PatternItem } from './ PatternItem'
 
 export interface MatchPatternModalProps {
@@ -20,15 +22,24 @@ export const MatchPatternModal: FC<MatchPatternModalProps> = ({
   onClose
 }) => {
   const { t } = useTranslate(['options', 'common'])
-  const globals = useContext(GlobalsContext)
   const formRef = useRef<FormInstance>(null)
+  const uploadStatus = useObservableState(uploadStatus$, 'idle')
+  const patterns = useSelector(
+    state => ({
+      pdfWhitelist: state.config.pdfWhitelist,
+      pdfBlacklist: state.config.pdfBlacklist,
+      whitelist: state.config.whitelist,
+      blacklist: state.config.blacklist
+    }),
+    shallowEqual
+  )
+  const upload = useUpload()
 
-  useSubscription(uploadResult$$, result => {
-    // successfully saved
-    if (area && !result.loading && !result.error) {
+  useUpdateEffect(() => {
+    if (area && uploadStatus === 'idle') {
       onClose()
     }
-  })
+  }, [uploadStatus])
 
   const title = area
     ? (area.startsWith('pdf') ? 'PDF ' : '') +
@@ -96,7 +107,7 @@ export const MatchPatternModal: FC<MatchPatternModalProps> = ({
       <Form
         ref={formRef}
         wrapperCol={{ span: 24 }}
-        initialValues={area ? { patterns: globals.config[area] } : {}}
+        initialValues={area ? { patterns: patterns[area] } : {}}
         onFinish={values => {
           if (area) {
             const patterns: [string, string][] | undefined = values.patterns

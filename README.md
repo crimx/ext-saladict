@@ -1,10 +1,10 @@
 # Saladict 沙拉查词
 
 [![Version](https://img.shields.io/github/release/crimx/ext-saladict.svg?label=version)](https://github.com/crimx/ext-saladict/releases)
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/users/cdonnmffkdaoajfknoeeecmchibpmkmg.svg?label=Chrome%20users)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en)
-[![Chrome Web Store](https://img.shields.io/chrome-web-store/stars/cdonnmffkdaoajfknoeeecmchibpmkmg.svg?label=Chrome%20stars)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en)
-[![Mozilla Add-on](https://img.shields.io/amo/users/ext-saladict.svg?label=Firefoxe%20users)](https://addons.mozilla.org/firefox/addon/ext-saladict/)
-[![Mozilla Add-on](https://img.shields.io/amo/stars/ext-saladict.svg?label=Firefoxe%20stars)](https://addons.mozilla.org/firefox/addon/ext-saladict/)
+[![Chrome Web Store](https://badgen.net/chrome-web-store/users/cdonnmffkdaoajfknoeeecmchibpmkmg?icon=chrome&color=0f9d58)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en)
+[![Chrome Web Store](https://badgen.net/chrome-web-store/stars/cdonnmffkdaoajfknoeeecmchibpmkmg?icon=chrome&color=0f9d58)](https://chrome.google.com/webstore/detail/cdonnmffkdaoajfknoeeecmchibpmkmg?hl=en)
+[![Mozilla Add-on](https://badgen.net/amo/users/ext-saladict?icon=firefox&color=ff9500)](https://addons.mozilla.org/firefox/addon/ext-saladict/)
+[![Mozilla Add-on](https://badgen.net/amo/stars/ext-saladict?icon=firefox&color=ff9500)](https://addons.mozilla.org/firefox/addon/ext-saladict/)
 
 [![Build Status](https://travis-ci.com/crimx/ext-saladict.svg)](https://travis-ci.com/crimx/ext-saladict)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg?maxAge=2592000)](http://commitizen.github.io/cz-cli/)
@@ -58,7 +58,7 @@ See the [contributing guide](./CONTRIBUTING.md).
 
 [CONTRIBUTING.md](./CONTRIBUTING.md)
 
-## Notic
+## Notice
 
 Saladict is a free and open-sourced project for study purpose only. Anyone can obtain a copy of Saladict free of charge. If you believe your legal rights have been violated please contact the [author](https://github.com/crimx) immediately.
 

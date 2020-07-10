@@ -1,14 +1,14 @@
-import {
-  MachineTranslatePayload,
-  MachineTranslateResult,
-  SearchFunction,
-  GetSrcPageFunction,
-  getMTArgs
-} from '../helpers'
+import { SearchFunction, GetSrcPageFunction } from '../helpers'
 import memoizeOne from 'memoize-one'
 import { Tencent } from '@opentranslate/tencent'
-import { TencentLanguage } from './config'
+import {
+  MachineTranslateResult,
+  MachineTranslatePayload,
+  getMTArgs,
+  machineResult
+} from '@/components/MachineTrans/engine'
 import { getTranslator as getBaiduTranslator } from '../baidu/engine'
+import { TencentLanguage } from './config'
 
 export const getTranslator = memoizeOne(
   () =>
@@ -60,46 +60,49 @@ export const search: SearchFunction<
 
   try {
     const result = await translator.translate(text, sl, tl, translatorConfig)
-    if (!result.origin.tts || !result.trans.tts) {
-      const baidu = getBaiduTranslator()
-      if (!result.origin.tts) {
-        result.origin.tts = await baidu.textToSpeech(
-          result.origin.paragraphs.join('\n'),
-          result.from
-        )
-      }
-      if (!result.trans.tts) {
-        result.trans.tts = await baidu.textToSpeech(
-          result.trans.paragraphs.join('\n'),
-          result.to
-        )
-      }
-    }
+    // Tencent needs extra api credits for TTS which does
+    // not fit in the current Saladict architecture.
+    // Use Baidu instead.
+    const baidu = getBaiduTranslator()
+    result.origin.tts = await baidu.textToSpeech(
+      result.origin.paragraphs.join('\n'),
+      result.from
+    )
+    result.trans.tts = await baidu.textToSpeech(
+      result.trans.paragraphs.join('\n'),
+      result.to
+    )
 
-    return {
-      result: {
-        id: 'tencent',
-        sl: result.from,
-        tl: result.to,
-        langcodes: translator.getSupportLanguages(),
-        searchText: result.origin,
-        trans: result.trans
+    return machineResult(
+      {
+        result: {
+          id: 'tencent',
+          sl: result.from,
+          tl: result.to,
+          slInitial: profile.dicts.all.tencent.options.slInitial,
+          searchText: result.origin,
+          trans: result.trans
+        },
+        audio: {
+          py: result.trans.tts,
+          us: result.trans.tts
+        }
       },
-      audio: {
-        py: result.trans.tts,
-        us: result.trans.tts
-      }
-    }
+      translator.getSupportLanguages()
+    )
   } catch (e) {
-    return {
-      result: {
-        id: 'tencent',
-        sl,
-        tl,
-        langcodes: translator.getSupportLanguages(),
-        searchText: { paragraphs: [''] },
-        trans: { paragraphs: [''] }
-      }
-    }
+    return machineResult(
+      {
+        result: {
+          id: 'tencent',
+          sl,
+          tl,
+          slInitial: 'hide',
+          searchText: { paragraphs: [''] },
+          trans: { paragraphs: [''] }
+        }
+      },
+      translator.getSupportLanguages()
+    )
   }
 }

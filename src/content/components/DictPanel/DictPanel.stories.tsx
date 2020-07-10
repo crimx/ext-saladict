@@ -101,7 +101,7 @@ function useDictPanelProps(): DictPanelProps {
             faker.random.number({ min: 1, max: 4 })
           )
         },
-        dictComp: TestComp
+        TestComp: TestComp
       }))
     )
     return shuffledDicts.slice(
@@ -144,6 +144,7 @@ function useDictPanelProps(): DictPanelProps {
     menuBar: (
       <MenuBar
         text={text}
+        isTrackHistory={false}
         updateText={text => {
           action('Update Text')(text)
           setText(text)
