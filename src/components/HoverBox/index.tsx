@@ -33,7 +33,9 @@ export interface HoverBoxProps {
   items: HoverBoxItem[]
   /** Compact float box */
   compact?: boolean
+  /** box top offset */
   top?: number
+  /** box left offset */
   left?: number
   onSelect?: (key: string, value: string) => void
   /** return false to prevent showing float box */
