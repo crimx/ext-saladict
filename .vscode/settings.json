@@ -11,5 +11,21 @@
     "**/node_modules/*/**": true,
     "**/build/*/**": true,
     "**/assets/*/**": true
-  }
+  },
+  "conventionalCommits.scopes": [
+    "audio-control",
+    "background",
+    "components",
+    "config",
+    "dicts",
+    "history",
+    "locales",
+    "notebook",
+    "options",
+    "panel",
+    "popup",
+    "selecion",
+    "sync-services",
+    "word-editor"
+  ]
 }
