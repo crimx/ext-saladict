@@ -85,4 +85,4 @@ yarn pdf
 
 本项目遵循 [conventional](https://conventionalcommits.org/) commit 格式。
 
-你可以在 commit 时运行 `yarn commit` 按指示选择。或者在 VSCode 中使用 [vscode-commitizen](https://github.com/KnisterPeter/vscode-commitizen) 插件。
+你可以在 commit 时运行 `yarn commit` 按指示选择。或者在 VSCode 中使用 [VSCode Conventional Commits](https://github.com/vivaxy/vscode-conventional-commits) 插件。
