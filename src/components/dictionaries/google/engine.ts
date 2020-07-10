@@ -9,20 +9,7 @@ import {
 } from '@/components/MachineTrans/engine'
 import { GoogleLanguage } from './config'
 
-export const getTranslator = memoizeOne(
-  () =>
-    new Google({
-      env: 'ext',
-      config: process.env.GOOGLE_TOKEN
-        ? {
-            token: process.env.GOOGLE_TOKEN,
-            order: ['com', 'cn'],
-            concurrent: true,
-            apiAsFallback: true
-          }
-        : undefined
-    })
-)
+export const getTranslator = memoizeOne(() => new Google({ env: 'ext' }))
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
   const domain = profile.dicts.all.google.options.cnfirst ? 'cn' : 'com'
@@ -54,7 +41,6 @@ export const search: SearchFunction<
 
   try {
     const result = await translator.translate(text, sl, tl, {
-      token: process.env.GOOGLE_TOKEN!,
       concurrent: options.concurrent,
       order: options.cnfirst ? ['cn', 'com'] : ['com', 'cn'],
       apiAsFallback: true
