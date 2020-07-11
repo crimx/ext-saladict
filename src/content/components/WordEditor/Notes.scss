@@ -46,6 +46,13 @@
         0 0 8px rgba(102, 175, 233, 0.6);
     }
   }
+
+  @include isDarkMode {
+    input,
+    textarea {
+      border-color: #8b8b8b;
+    }
+  }
 }
 
 .wordEditorNote_Help {
@@ -75,15 +82,6 @@
     font-size: 90%;
     color: var(--color-font);
     cursor: pointer;
-  }
-}
-
-.darkMode {
-  .wordEditorNote {
-    input,
-    textarea {
-      border-color: #8b8b8b;
-    }
   }
 }
 

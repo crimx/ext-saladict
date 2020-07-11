@@ -57,6 +57,14 @@
   &:active {
     background-color: var(--color-divider);
   }
+
+  @include isDarkMode {
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: #2d3338;
+    }
+  }
 }
 
 .dictItemHead-EmptyArea {
@@ -132,19 +140,5 @@
 
   50% {
     transform: scale(1);
-  }
-}
-
-/*-----------------------------------------------*\
-    States
-\*-----------------------------------------------*/
-
-.darkMode {
-  .dictItemHead-Menus_Btn {
-    &:hover,
-    &:focus,
-    &:active {
-      background-color: #2d3338;
-    }
   }
 }
