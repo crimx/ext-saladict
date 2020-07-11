@@ -10,6 +10,10 @@
     margin: 0;
     padding: 0;
     transition: height 0.4s;
+
+    @include isAnimate {
+      transition: height 0.4s;
+    }
   }
 
   figcaption {
@@ -37,6 +41,10 @@
 
   &.isLoaded {
     opacity: 1;
+  }
+
+  @include isAnimate {
+    transition: opacity 0.4s;
   }
 }
 
@@ -93,16 +101,4 @@
 .dictRenren-Ctx_Subtitles {
   display: table-cell;
   padding-left: 1em;
-}
-
-.isAnimate {
-  .dictRenren-Slide {
-    figure {
-      transition: height 0.4s;
-    }
-  }
-
-  .dictRenren-Slide_Cover {
-    transition: opacity 0.4s;
-  }
 }

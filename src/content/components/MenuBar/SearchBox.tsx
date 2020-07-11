@@ -139,7 +139,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
         />
 
         <CSSTransition
-          classNames="menuBar-SearchBox_Suggest"
+          classNames="csst-menuBar-SearchBox_Suggests"
           in={isShowSuggest}
           timeout={100}
           mountOnEnter={true}

@@ -8,6 +8,10 @@
   &.isExpand {
     flex: 7;
   }
+
+  @include isAnimate {
+    transition: flex 0.6s;
+  }
 }
 
 .menuBar-SearchBox {
@@ -27,23 +31,18 @@
   z-index: 1000;
 }
 
-.isAnimate {
-  .menuBar-SearchBox_Wrap {
-    transition: flex 0.6s;
-  }
-
-  .menuBar-SearchBox_Suggest-enter {
+.csst-menuBar-SearchBox_Suggests {
+  @include isAnimate(-enter) {
     opacity: 0;
     transition: opacity 0.4s;
   }
 
-  .menuBar-SearchBox_Suggest-enter-active,
-  .menuBar-SearchBox_Suggest-exit {
+  @include isAnimate(-enter-active, -exit) {
     opacity: 1;
     transition: opacity 0.4s;
   }
 
-  .menuBar-SearchBox_Suggest-exit-active {
+  @include isAnimate(-exit-active) {
     opacity: 0;
     transition: opacity 0.4s;
   }

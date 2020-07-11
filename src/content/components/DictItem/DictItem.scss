@@ -12,6 +12,10 @@
   font-size: 13px;
   line-height: 1.6;
   color: var(--color-font);
+
+  @include isAnimate {
+    transition: height 0.4s, opacity 0.4s;
+  }
 }
 
 .dictItem-BodyMesure {
@@ -28,6 +32,14 @@
 
   > *:last-child {
     margin-bottom: 10px !important;
+  }
+
+  @include isAnimate {
+    transition: opacity 0.4s;
+  }
+
+  @include atRoot(".isUnfold") {
+    opacity: 1;
   }
 }
 
@@ -55,6 +67,23 @@
   &:nth-child(5) {
     transform: translateX(60px);
   }
+
+  @include isAnimate {
+    animation: dictItem-Loader-shift 2s linear infinite;
+
+    &:nth-child(2) {
+      animation-delay: -0.4s;
+    }
+    &:nth-child(3) {
+      animation-delay: -0.8s;
+    }
+    &:nth-child(4) {
+      animation-delay: -1.2s;
+    }
+    &:nth-child(5) {
+      animation-delay: -1.6s;
+    }
+  }
 }
 
 .dictItem-FoldMask {
@@ -79,6 +108,10 @@
 
     opacity: 1;
   }
+
+  @include isAnimate {
+    transition: opacity 400ms;
+  }
 }
 
 .dictItem-FoldMaskArrow {
@@ -97,44 +130,9 @@
     States
 \*-----------------------------------------------*/
 
-.isUnfold {
-  .dictItem-BodyMesure {
-    opacity: 1;
-  }
-}
-
-.isAnimate {
-  .dictItem-Loader_Ball {
-    animation: dictItem-Loader-shift 2s linear infinite;
-
-    &:nth-child(2) {
-      animation-delay: -0.4s;
-    }
-    &:nth-child(3) {
-      animation-delay: -0.8s;
-    }
-    &:nth-child(4) {
-      animation-delay: -1.2s;
-    }
-    &:nth-child(5) {
-      animation-delay: -1.6s;
-    }
-  }
-
-  .dictItem-FoldMask {
-    transition: opacity 400ms;
-  }
-
-  .dictItem-BodyMesure {
-    transition: opacity 0.4s;
-  }
-
+.noHeightTransition {
   .dictItem-Body {
-    transition: height 0.4s, opacity 0.4s;
-  }
-
-  .noHeightTransition {
-    .dictItem-Body {
+    @include isAnimate {
       transition: height 0s;
     }
   }

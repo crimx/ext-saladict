@@ -19,9 +19,6 @@ export interface DictPanelProps {
   maxHeight: number
   fontSize: number
 
-  withAnimation: boolean
-  darkMode: boolean
-
   menuBar: ReactNode
   mtaBox: ReactNode
   dictList: ReactNode
@@ -69,10 +66,7 @@ export const DictPanel: FC<DictPanelProps> = props => {
     // an extra layer for float box
     <div
       ref={rootElRef}
-      className={classnames('dictPanel-FloatBox-Container', 'saladict-theme', {
-        isAnimate: props.withAnimation,
-        darkMode: props.darkMode
-      })}
+      className="dictPanel-FloatBox-Container saladict-theme"
     >
       <div
         className={classnames('dictPanel-Root', SALADICT_PANEL, {

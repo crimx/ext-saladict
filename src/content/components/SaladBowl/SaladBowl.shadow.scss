@@ -9,14 +9,8 @@ $bowl-width: 30px;
   height: $bowl-width;
   user-select: none;
   cursor: pointer;
-}
 
-/*-----------------------------------------------*\
-    States
-\*-----------------------------------------------*/
-
-.isAnimate {
-  &.saladbowl {
+  @include isAnimate {
     will-change: transform;
     transition: transform 0.3s ease-out;
 
@@ -34,23 +28,27 @@ $bowl-width: 30px;
       }
     }
   }
+}
 
-  &.saladbowl-enter-active > svg {
-    animation: saladbowl-jelly 1000ms linear;
+.saladbowl {
+  @include isAnimate(-enter-active) {
+    & > svg {
+      animation: saladbowl-jelly 1000ms linear;
+    }
   }
 
-  &.saladbowl-exit {
+  @include isAnimate(-exit) {
     opacity: 1;
   }
 
-  &.saladbowl-exit-active {
+  @include isAnimate(-exit-active) {
     opacity: 0;
     transition: opacity 0.1s;
   }
-}
 
-.saladbowl-exit-done {
-  display: none;
+  &-exit-done {
+    display: none;
+  }
 }
 
 // prettier-ignore
