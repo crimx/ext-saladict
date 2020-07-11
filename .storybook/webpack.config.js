@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs')
 const Neutrino = require('neutrino/Neutrino')
 const neutrinorc = require('../.neutrinorc.js')
 const neutrino = new Neutrino(neutrinorc.options)
@@ -17,6 +18,10 @@ const babelOptions = neutrino.config.module
 //     exclude: '__mocks__|(\\.stories\\.tsx$)'
 //   }
 // ])
+
+const sassGlobals = fs
+  .readdirSync(path.join(__dirname, '../src/_sass_shared/_global/'))
+  .map(filename => path.join(__dirname, '../src/_sass_shared/_global/', filename))
 
 module.exports = ({ config }) => {
   config.module.rules.push({
@@ -83,7 +88,14 @@ module.exports = ({ config }) => {
               plugins: [require('autoprefixer')]
             }
           },
-          'sass-loader'
+          'sass-loader',
+          {
+            loader: 'sass-resources-loader',
+            options: {
+              sourceMap: true,
+              resources: sassGlobals
+            }
+          }
         ],
         include: path.resolve(__dirname, '../src')
       },
@@ -103,7 +115,14 @@ module.exports = ({ config }) => {
               plugins: [require('autoprefixer')]
             }
           },
-          'sass-loader'
+          'sass-loader',
+          {
+            loader: 'sass-resources-loader',
+            options: {
+              sourceMap: true,
+              resources: sassGlobals
+            }
+          }
         ],
         include: path.resolve(__dirname, '../src')
       }

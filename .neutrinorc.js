@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs')
 const webpack = require('webpack')
 const react = require('@neutrinojs/react')
 const copy = require('@neutrinojs/copy')
@@ -126,12 +127,11 @@ module.exports = {
             useId: 'sass-resources',
             options: {
               sourceMap: process.env.NODE_ENV !== 'production',
-              resources: [
-                path.resolve(__dirname, 'src/_sass_shared/_global/_interfaces.scss'),
-                path.resolve(__dirname, 'src/_sass_shared/_global/_z-indices.scss'),
-                path.resolve(__dirname, 'src/_sass_shared/_global/_variables.scss'),
-                path.resolve(__dirname, 'src/_sass_shared/_global/_mixins.scss'),
-              ]
+              resources: fs
+                .readdirSync(path.join(__dirname, 'src/_sass_shared/_global/'))
+                .map(filename =>
+                  path.join(__dirname, 'src/_sass_shared/_global/', filename)
+                )
             }
           }
         ]
@@ -194,46 +194,45 @@ module.exports = {
       /* eslint-disable indent */
 
       // images
-      neutrino.config.module
-        .rules.delete('image')
+      neutrino.config.module.rules
+        .delete('image')
         .end()
         .rule('svg')
-          .test(/\.(svg)(\?v=\d+\.\d+\.\d+)?$/)
-          .use('svg-url')
-            .loader(require.resolve('url-loader'))
-            .options({
-              limit: 8192,
-              // remove `default` when `require` image
-              // due to legacy code
-              esModule: false,
-              generator: content => svgToMiniDataURI(content.toString())
-            })
-            .end()
-          .end()
+        .test(/\.(svg)(\?v=\d+\.\d+\.\d+)?$/)
+        .use('svg-url')
+        .loader(require.resolve('url-loader'))
+        .options({
+          limit: 8192,
+          // remove `default` when `require` image
+          // due to legacy code
+          esModule: false,
+          generator: content => svgToMiniDataURI(content.toString())
+        })
+        .end()
+        .end()
         .rule('pixel')
-          .test(/\.(ico|png|jpg|jpeg|gif|webp)(\?v=\d+\.\d+\.\d+)?$/)
-          .use('img-url')
-            .loader(require.resolve('file-loader'))
-            .options({
-              // dev-server image name collision
-              name: resourcePath => {
-                if (process.env.NODE_ENV === 'development') {
-                  return '[path]/[name].[ext]'
-                }
+        .test(/\.(ico|png|jpg|jpeg|gif|webp)(\?v=\d+\.\d+\.\d+)?$/)
+        .use('img-url')
+        .loader(require.resolve('file-loader'))
+        .options({
+          // dev-server image name collision
+          name: resourcePath => {
+            if (process.env.NODE_ENV === 'development') {
+              return '[path]/[name].[ext]'
+            }
 
-                const dictMatch = /\/dictionaries\/([^/]+)\/favicon.png/.exec(
-                  resourcePath
-                )
-                if (dictMatch) {
-                  return `assets/favicon-${dictMatch[1]}.[contenthash:8].[ext]`
-                }
+            const dictMatch = /\/dictionaries\/([^/]+)\/favicon.png/.exec(
+              resourcePath
+            )
+            if (dictMatch) {
+              return `assets/favicon-${dictMatch[1]}.[contenthash:8].[ext]`
+            }
 
-                return 'assets/[name].[contenthash:8].[ext]'
-              },
-              limit: 0,
-              esModule: false
-            })
-
+            return 'assets/[name].[contenthash:8].[ext]'
+          },
+          limit: 0,
+          esModule: false
+        })
 
       // avoid collision
       neutrino.config.output.jsonpFunction('saladictEntry')
