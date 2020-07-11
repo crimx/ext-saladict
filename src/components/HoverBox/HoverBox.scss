@@ -1,3 +1,4 @@
+@import '@/_sass_global/_z-indices.scss';
 @import '@/components/FloatBox/FloatBox.scss';
 
 .hoverBox-Container {
@@ -7,7 +8,7 @@
 
 .hoverBox-FloatBox {
   position: absolute;
-  z-index: 1000;
+  z-index: $global-zindex-dictpanel;
 }
 
 .isAnimate {

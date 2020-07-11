@@ -1,7 +1,13 @@
 @import './DictPanel.scss';
 
-.dictPanel-Root {
+.dictPanel-FloatBox-Container {
   position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.dictPanel-Root {
+  position: relative !important;
   top: 0 !important;
   left: 0 !important;
   width: 450px;
@@ -10,8 +16,10 @@
   --panel-max-height: 500px;
   border-radius: 0;
   box-shadow: rgba(0, 0, 0, 0.8) 0px 5px 20px -12px;
+}
 
-  &.isAnimate {
+.isAnimate {
+  .dictPanel-Root {
     transition: height 0.4s;
   }
 }

@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, useRef } from 'react'
-import classNames from 'classnames'
+import classnames from 'classnames'
 import { SALADICT_PANEL } from '@/_helpers/saladict'
 import { HoverBoxContext } from '@/components/HoverBox'
 
@@ -22,19 +22,17 @@ export const DictPanelStandalone: FC<DictPanelStandaloneProps> = props => {
   const rootElRef = useRef<HTMLDivElement | null>(null)
 
   return (
-    <React.Fragment>
+    // an extra layer for float box
+    <div
+      ref={rootElRef}
+      className={classnames('dictPanel-FloatBox-Container', 'saladict-theme', {
+        isAnimate: props.withAnimation,
+        darkMode: props.darkMode
+      })}
+    >
       {props.panelCSS ? <style>{props.panelCSS}</style> : null}
       <div
-        ref={rootElRef}
-        className={classNames(
-          SALADICT_PANEL,
-          'dictPanel-Root',
-          'saladict-theme',
-          {
-            isAnimate: props.withAnimation,
-            darkMode: props.darkMode
-          }
-        )}
+        className={`dictPanel-Root ${SALADICT_PANEL}`}
         style={{
           width: props.width,
           height: props.height,
@@ -52,7 +50,7 @@ export const DictPanelStandalone: FC<DictPanelStandaloneProps> = props => {
         </HoverBoxContext.Provider>
         {props.waveformBox}
       </div>
-    </React.Fragment>
+    </div>
   )
 }
 
