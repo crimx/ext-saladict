@@ -120,6 +120,19 @@ module.exports = {
           {
             loader: 'sass-loader',
             useId: 'scss'
+          },
+          {
+            loader: 'sass-resources-loader',
+            useId: 'sass-resources',
+            options: {
+              sourceMap: process.env.NODE_ENV !== 'production',
+              resources: [
+                path.resolve(__dirname, 'src/_sass_shared/_global/_interfaces.scss'),
+                path.resolve(__dirname, 'src/_sass_shared/_global/_z-indices.scss'),
+                path.resolve(__dirname, 'src/_sass_shared/_global/_variables.scss'),
+                path.resolve(__dirname, 'src/_sass_shared/_global/_mixins.scss'),
+              ]
+            }
           }
         ]
       },

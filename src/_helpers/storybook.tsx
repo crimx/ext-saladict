@@ -117,8 +117,8 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
 
     return (
       <root.div style={{ width, margin: '10px auto' }}>
-        <style>{require('@/_sass_global/_reset.scss').toString()}</style>
-        <style>{require('@/_sass_global/_theme.scss').toString()}</style>
+        <style>{require('@/_sass_shared/_reset.scss').toString()}</style>
+        <style>{require('@/_sass_shared/_theme.scss').toString()}</style>
         <div
           className={classNames('dictPanel-Root', 'saladict-theme', {
             isAnimate: withAnimation,
