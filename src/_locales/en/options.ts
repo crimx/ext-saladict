@@ -12,6 +12,7 @@ export const locale: typeof _locale = {
   nativeSearch: 'search selected text outside of browser',
   firefox_shortcuts:
     'Open about:addons, click the top right "gear" button, choose the last "Manage extension shortcuts".',
+  tutorial: 'Tutorial',
 
   nav: {
     General: 'General',
@@ -288,7 +289,6 @@ export const locale: typeof _locale = {
     ankiconnect: {
       description:
         'Please make sure Anki Connect plugin is installed and Anki is running. You can also update word to Anki in Word Editor.',
-      tutorial: 'Tutorial',
       checking: 'Checking...',
       deck_confirm:
         'Deck "{{deck}}" does not exist in Anki. Generate a new deck?',

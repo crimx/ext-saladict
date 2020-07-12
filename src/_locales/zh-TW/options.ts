@@ -12,6 +12,7 @@ export const locale: typeof _locale = {
   nativeSearch: '瀏覽器外選字翻譯',
   firefox_shortcuts:
     '位址列跳轉到 about:addons，點選右上方的齒輪，選擇最後一項管理擴充套件快捷鍵',
+  tutorial: '教程',
 
   nav: {
     General: '基本選項',
@@ -278,7 +279,6 @@ export const locale: typeof _locale = {
 
     ankiconnect: {
       description: '請確保 Anki Connect 已安裝且 Anki 在執行。',
-      tutorial: '教程',
       checking: '連線中...',
       deck_confirm: '牌組「{{deck}}」不存在 Anki 中，是否自動新增？',
       deck_error: '無法建立牌組「{{deck}}」。',
