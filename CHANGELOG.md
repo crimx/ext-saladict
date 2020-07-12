@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.14.2](https://github.com/crimx/ext-saladict/compare/v7.14.1...v7.14.2) (2020-07-12)
+
+
+### Bug Fixes
+
+* **panel:** move saladict-theme down under darkMode ([52d8fb2](https://github.com/crimx/ext-saladict/commit/52d8fb20dd9d53a83b0c1f807102220977aa9e0d))
+
 ### [7.14.1](https://github.com/crimx/ext-saladict/compare/v7.14.0...v7.14.1) (2020-07-12)
 
 
