@@ -202,7 +202,8 @@ export const SaladictForm = React.forwardRef(
               {t('shortcuts')}
             </Button>
             <Button
-              type="danger"
+              type="primary"
+              danger
               onClick={() => {
                 Modal.confirm({
                   title: t('config.opt.reset_confirm'),
@@ -229,6 +230,6 @@ export const NUMBER_RULES: Rule[] = [
   { type: 'number', whitespace: true, required: true }
 ]
 
-export const percentageSlideFormatter = (v: number) => `${v}%`
+export const percentageSlideFormatter = (v?: number) => `${v || 0}%`
 
-export const pixelSlideFormatter = (v: number) => `${v}px`
+export const pixelSlideFormatter = (v?: number) => `${v || 0}px`

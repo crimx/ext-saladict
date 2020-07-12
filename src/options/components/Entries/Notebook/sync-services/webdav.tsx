@@ -38,7 +38,7 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
       onCancel={closeModal}
       destroyOnClose
       footer={[
-        <Button key="delete" type="danger" onClick={deleteService}>
+        <Button key="delete" type="primary" danger onClick={deleteService}>
           {t('common:delete')}
         </Button>,
         <Button

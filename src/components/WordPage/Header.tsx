@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { TFunction } from 'i18next'
 import { Layout, Input, Dropdown, Menu, Button, Modal } from 'antd'
-import { ClickParam } from 'antd/lib/menu'
+import { MenuProps } from 'antd/lib/menu'
 import { DownOutlined } from '@ant-design/icons'
 import { DBArea } from '@/_helpers/record-manager'
 
@@ -12,7 +12,7 @@ export interface WordPageProps {
   totalCount: number
   selectedCount: number
   onSearchTextChanged: (text: string) => void
-  onExport: (param: ClickParam) => void
+  onExport: MenuProps['onClick']
   onDelete: (key: string) => void
 }
 
@@ -70,7 +70,7 @@ export const Header: FC<WordPageProps> = props => {
                     title: t('delete'),
                     content: t(`delete.${key}`) + t('delete.confirm'),
                     okType: 'danger',
-                    onOk: () => props.onDelete(key)
+                    onOk: () => props.onDelete(`${key}`)
                   })
                 }
               }}
@@ -83,7 +83,7 @@ export const Header: FC<WordPageProps> = props => {
             </Menu>
           }
         >
-          <Button type="danger" style={{ marginLeft: 8 }}>
+          <Button type="primary" danger style={{ marginLeft: 8 }}>
             {t('delete.title')} <DownOutlined />
           </Button>
         </Dropdown>

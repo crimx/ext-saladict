@@ -58,7 +58,7 @@ export const EntrySideBar: FC<EntrySideBarProps> = props => {
             selectedKeys={[props.entry]}
             onSelect={({ key }) => {
               const switchTab = () => {
-                props.onChange(key)
+                props.onChange(`${key}`)
                 setFormDirty(false)
               }
               if (formDirtyRef.value) {
