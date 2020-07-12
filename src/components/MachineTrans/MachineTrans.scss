@@ -33,7 +33,7 @@
     right: 0;
     bottom: 0;
     margin: auto;
-    background: linear-gradient(90deg, rgba(255,255,255,0) 50%, #fff 90%);
+    background: linear-gradient(90deg, rgba(255,255,255,0) 50%, var(--color-background) 90%);
     pointer-events: none;
   }
 
@@ -68,7 +68,7 @@
 
   .MachineTrans-Lines-collapse {
     &::after {
-      background: linear-gradient(270deg, rgba(255,255,255,0) 50%, #fff 90%);
+      background: linear-gradient(270deg, rgba(255,255,255,0) 50%, var(--color-background) 90%);
     }
   }
 }
