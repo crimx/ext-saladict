@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.14.5](https://github.com/crimx/ext-saladict/compare/v7.14.4...v7.14.5) (2020-07-12)
+
+
+### Bug Fixes
+
+* **panel:** set missing initial config ([791cb57](https://github.com/crimx/ext-saladict/commit/791cb57cbd40264b255da03576693af3a15daf24))
+
 ### [7.14.4](https://github.com/crimx/ext-saladict/compare/v7.14.3...v7.14.4) (2020-07-12)
 
 
