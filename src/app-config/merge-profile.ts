@@ -6,6 +6,7 @@ import isString from 'lodash/isString'
 import isBoolean from 'lodash/isBoolean'
 import get from 'lodash/get'
 import set from 'lodash/set'
+import { DictID } from '.'
 
 export function mergeProfile(
   oldProfile: Profile,
@@ -108,6 +109,28 @@ export function mergeProfile(
             )
           }
         })
+
+        // legacy bug
+        // slInitial default to collapse
+        if (!isNumber(oldProfile.version)) {
+          const machineDicts: DictID[] = [
+            'baidu',
+            'caiyun',
+            'google',
+            'sogou',
+            'tencent',
+            'youdaotrans'
+          ]
+          if (
+            machineDicts.every(
+              id => get(base, `dicts.all.${id}.options.slInitial`) === 'hide'
+            )
+          ) {
+            machineDicts.forEach(id => {
+              set(base, `dicts.all.${id}.options.slInitial`, 'collapse')
+            })
+          }
+        }
 
         // legacy
         const pdfNewline = get(oldProfile, `dicts.all.${id}.options.pdfNewline`)
