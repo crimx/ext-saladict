@@ -19,6 +19,7 @@ export interface ShadowPortalOwnProps {
   /** Static content before the children  */
   head?: ReactNode
   shadowRootClassName?: string
+  innerRootClassName?: string
   panelCSS?: string
 }
 
@@ -34,6 +35,7 @@ export const ShadowPortal = (props: ShadowPortalProps) => {
     id,
     head,
     shadowRootClassName,
+    innerRootClassName,
     panelCSS,
     onEnter,
     onExited,
@@ -63,7 +65,7 @@ export const ShadowPortal = (props: ShadowPortalProps) => {
 
   return ReactDOM.createPortal(
     <root.div className={shadowRootClassName || SALADICT_EXTERNAL}>
-      <div style={styleResetBoundary}>
+      <div className={innerRootClassName} style={styleResetBoundary}>
         {head}
         {panelCSS ? <style>{panelCSS}</style> : null}
         <CSSTransition

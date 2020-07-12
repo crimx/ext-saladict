@@ -50,6 +50,9 @@ function _getDefaultConfig() {
     /** activate app, won't affect triple-ctrl setting */
     active: true,
 
+    /** Run extension in background */
+    runInBg: false,
+
     /** enable Google analytics */
     analytics: true,
 

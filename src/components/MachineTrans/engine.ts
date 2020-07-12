@@ -192,7 +192,7 @@ export function machineConfig<Config extends MachineDictItem<Language>>(
     },
     options_sel: {
       keepLF: ['none', 'all', 'webpage', 'pdf'],
-      slInitial: ['hide', 'collapse', 'full'],
+      slInitial: ['collapse', 'hide', 'full'],
       tl: ['default', ...langs],
       tl2: ['default', ...langs],
       ...optionsSel

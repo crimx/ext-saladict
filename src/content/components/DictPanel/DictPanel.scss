@@ -1,5 +1,8 @@
-@import '@/_sass_global/_z-indices.scss';
-@import '@/_sass_global/_theme.scss';
+@import '@/_sass_shared/_theme.scss';
+
+.dictPanel-FloatBox-Container {
+  position: relative;
+}
 
 .dictPanel-Root {
   display: flex;
@@ -12,6 +15,7 @@
   overflow: hidden;
   text-align: initial;
   border-radius: 6px;
+  background-color: inherit;
   box-shadow: rgba(0, 0, 0, 0.8) 0px 4px 23px -6px;
 }
 
@@ -27,7 +31,7 @@
   -webkit-overflow-scrolling: touch;
 }
 
-@import '@/_sass_global/_fancy-scrollbar.scss';
+@import '@/_sass_shared/_fancy-scrollbar.scss';
 
 @import '../MenuBar/MenuBar.scss';
 @import '../MtaBox/MtaBox.scss';

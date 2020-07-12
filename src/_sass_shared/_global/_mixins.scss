@@ -1,0 +1,39 @@
+// Wrapper for @at-root.
+// Emits values with namespace selectors.
+// Usage
+// @include atRoot(.ns) { ... }
+// @include atRoot(.ns2, -enter) { ... }
+// @include atRoot(.ns3, -enter, -exit) { ... }
+@mixin atRoot($nsSelector, $modifiers...) {
+  @if length($modifiers) > 0 {
+    $selectors: ();
+    @each $modifier in $modifiers {
+      $selectors: append($selectors, #{$nsSelector}#{" "}#{&}#{$modifier}, comma);
+    }
+    @at-root #{$selectors} {
+      @content;
+    }
+  } @else {
+    @at-root #{$nsSelector} & {
+      @content;
+    }
+  }
+}
+
+// Usage
+// @include isAnimate { ... }
+// @include isAnimate(-enter) { ... }
+// @include isAnimate(-enter, -exit) { ... }
+@mixin isAnimate($modifiers...) {
+  @include atRoot('.isAnimate', $modifiers...) {
+    @content;
+  }
+}
+
+// Usage
+// @include isDarkMode { ... }
+@mixin isDarkMode($modifiers...) {
+  @include atRoot('.darkMode', $modifiers...) {
+    @content;
+  }
+}

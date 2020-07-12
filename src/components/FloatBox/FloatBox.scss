@@ -8,6 +8,14 @@
   background: #fff;
   box-shadow: 0px 4px 31px -8px rgba(0, 0, 0, 0.8);
   font-size: var(--panel-font-size);
+
+  @include isDarkMode {
+    background: #2d3338;
+  }
+
+  @include isAnimate {
+    transition: width 0.4s, height 0.4s;
+  }
 }
 
 .floatBox-Measure {
@@ -51,6 +59,17 @@
   &:last-child {
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
+  }
+
+  @include isDarkMode {
+    border: 1px solid transparent;
+    border-radius: 5px;
+
+    &:focus,
+    &:hover {
+      border-color: #1abc9c;
+      background-color: #29615a;
+    }
   }
 }
 
@@ -141,29 +160,6 @@
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
     }
-  }
-}
-
-.darkMode {
-  .floatBox-Container {
-    background: #2d3338;
-  }
-
-  .floatBox-Item {
-    border: 1px solid transparent;
-    border-radius: 5px;
-
-    &:focus,
-    &:hover {
-      border-color: #1abc9c;
-      background-color: #29615a;
-    }
-  }
-}
-
-.isAnimate {
-  .floatBox-Container {
-    transition: width 0.4s, height 0.4s;
   }
 }
 

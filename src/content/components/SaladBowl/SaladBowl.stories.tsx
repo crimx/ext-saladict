@@ -18,7 +18,6 @@ storiesOf('Content Scripts|SaladBowl', module)
       <SaladBowl
         x={number('mouseX', 30)}
         y={number('mouseY', 30)}
-        withAnimation={boolean('Animation', true)}
         enableHover={boolean('Enable hover', true)}
         onActive={action('onActive')}
         onHover={action('onActive')}

@@ -57,6 +57,14 @@
   &:active {
     background-color: var(--color-divider);
   }
+
+  @include isDarkMode {
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: #2d3338;
+    }
+  }
 }
 
 .dictItemHead-EmptyArea {
@@ -86,6 +94,14 @@
   height: 18px;
   padding: 3px;
   transform-origin: center;
+
+  @include isAnimate {
+    transition: transform 400ms;
+  }
+
+  @include atRoot(".isUnfold") {
+    transform: rotate(-90deg);
+  }
 }
 
 .dictItemHead-Loader {
@@ -101,6 +117,17 @@
   margin: 2px;
   background: #f9690e;
   border-radius: 100%;
+
+  @include isAnimate {
+    animation: dictItemHead-Loader 1.5s infinite ease-in-out;
+
+    $dictItemHead-LoaderNum: 5;
+    @for $i from 1 through $dictItemHead-LoaderNum {
+      &:nth-child(#{$dictItemHead-LoaderNum + 1 - $i}) {
+        animation-delay: -0.1s * ($i - 1);
+      }
+    }
+  }
 }
 
 @keyframes dictItemHead-Loader {
@@ -113,42 +140,5 @@
 
   50% {
     transform: scale(1);
-  }
-}
-
-/*-----------------------------------------------*\
-    States
-\*-----------------------------------------------*/
-
-.darkMode {
-  .dictItemHead-Menus_Btn {
-    &:hover,
-    &:focus,
-    &:active {
-      background-color: #2d3338;
-    }
-  }
-}
-
-.isUnfold {
-  .dictItemHead-FoldArrow {
-    transform: rotate(-90deg);
-  }
-}
-
-.isAnimate {
-  .dictItemHead-FoldArrow {
-    transition: transform 400ms;
-  }
-
-  .dictItemHead-Loader > div {
-    animation: dictItemHead-Loader 1.5s infinite ease-in-out;
-
-    $dictItemHead-LoaderNum: 5;
-    @for $i from 1 through $dictItemHead-LoaderNum {
-      &:nth-child(#{$dictItemHead-LoaderNum + 1 - $i}) {
-        animation-delay: -0.1s * ($i - 1);
-      }
-    }
   }
 }

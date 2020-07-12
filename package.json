@@ -1,6 +1,6 @@
 {
   "name": "saladict",
-  "version": "7.14.0",
+  "version": "7.14.1",
   "description": "Chrome extension and Firefox WebExtension, inline translator powered by mutiple online dictionaries",
   "private": true,
   "scripts": {
@@ -151,7 +151,7 @@
     "form-data": "^2.5.1",
     "franc-min": "^4.1.1",
     "husky": "^3.0.0",
-    "jest": "^24.9.0",
+    "jest": "^26.1.0",
     "jest-fetch-mock": "^2.1.2",
     "mini-svg-data-uri": "^1.1.3",
     "moment-locales-webpack-plugin": "^1.1.0",
@@ -167,6 +167,7 @@
     "raw-loader": "^3.1.0",
     "react-docgen-typescript-loader": "^3.1.0",
     "sass-loader": "^7.1.0",
+    "sass-resources-loader": "^2.0.3",
     "socks-proxy-agent": "^5.0.0",
     "standard-version": "^6.0.1",
     "storybook-addon-jsx": "7.1.15",

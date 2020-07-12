@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.14.1](https://github.com/crimx/ext-saladict/compare/v7.14.0...v7.14.1) (2020-07-12)
+
+
+### Bug Fixes
+
+* **options:** update antd typings ([2879c4f](https://github.com/crimx/ext-saladict/commit/2879c4fe9e1ef6a5397ac807ce94a2d188d61d30))
+* fixed incorrect options merging ([8e062dc](https://github.com/crimx/ext-saladict/commit/8e062dc7dc87642da282bcceeabbaf86d58770f4))
+* switch default slInitial back to collapse ([524223c](https://github.com/crimx/ext-saladict/commit/524223c4a2cfafd5a0a8d0a2eb6fa494926e5099))
+
+
+### Build System
+
+* add sass globals to storybook ([f44ce5a](https://github.com/crimx/ext-saladict/commit/f44ce5a6bd54b2f3346d63934151db6aa76789d0))
+
 ## [7.14.0](https://github.com/crimx/ext-saladict/compare/v7.13.4...v7.14.0) (2020-07-10)
 
 

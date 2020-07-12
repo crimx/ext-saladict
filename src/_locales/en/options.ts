@@ -7,6 +7,7 @@ export const locale: typeof _locale = {
   msg_update_error: 'Unable to update',
   msg_updated: 'Successfully updated',
   msg_first_time_notice: 'First time notice',
+  msg_err_permission: 'Unable to request "{{permission}}" permission.',
   unsave_confirm: 'Settings not saved. Sure to leave?',
   nativeSearch: 'search selected text outside of browser',
   firefox_shortcuts:
@@ -36,6 +37,9 @@ export const locale: typeof _locale = {
       '"Quick Search" is still available even if Inline translation is turned off.',
     animation: 'Animation transitions',
     animation_help: 'Switch off animation transitions to reduce runtime cost.',
+    runInBg: 'Keep in Background',
+    runInBg_help:
+      'Keep the browser running in background after close so that global shortcuts still work.',
     darkMode: 'Dark Mode',
     langCode: 'App Language',
     editOnFav: 'Open WordEditor when saving',

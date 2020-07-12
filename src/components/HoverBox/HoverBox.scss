@@ -7,22 +7,21 @@
 
 .hoverBox-FloatBox {
   position: absolute;
-  z-index: 1000;
+  z-index: $global-zindex-dictpanel;
 }
 
-.isAnimate {
-  .hoverBox-enter {
+.csst-hoverBox {
+  @include isAnimate(-enter) {
     opacity: 0;
     transition: opacity 0.4s;
   }
 
-  .hoverBox-enter-active,
-  .hoverBox-exit {
+  @include isAnimate(-enter-active, -exit) {
     opacity: 1;
     transition: opacity 0.4s;
   }
 
-  .hoverBox-exit-active {
+  @include isAnimate(-exit-active) {
     opacity: 0;
     transition: opacity 0.4s;
   }

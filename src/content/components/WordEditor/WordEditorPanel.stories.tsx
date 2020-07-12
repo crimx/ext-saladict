@@ -75,7 +75,7 @@ storiesOf('Content Scripts|WordEditor', module)
     {
       decorators: [
         withLocalStyle(require('./WordEditorPanel.scss')),
-        withLocalStyle(require('@/_sass_global/_theme.scss'))
+        withLocalStyle(require('@/_sass_shared/_theme.scss'))
       ],
       jsx: { skip: 1 }
     }

@@ -30,6 +30,10 @@
       background: transparent;
     }
   }
+
+  @include isAnimate {
+    transition: background 0.2s;
+  }
 }
 
 // history back and next
@@ -68,14 +72,8 @@
   &.isActive {
     transform: rotate(45deg);
   }
-}
 
-.isAnimate {
-  .menuBar-Btn {
-    transition: background 0.2s;
-  }
-
-  .menuBar-Btn_Icon-pin {
+  @include isAnimate {
     transition: transform 0.4s;
   }
 }

@@ -5,6 +5,7 @@ export const locale = {
   msg_update_error: '设置更新失败',
   msg_updated: '设置已更新',
   msg_first_time_notice: '初次使用注意',
+  msg_err_permission: '权限“{{permission}}”申请失败。',
   unsave_confirm: '修改尚未保存，确定放弃？',
   nativeSearch: '浏览器外划词',
   firefox_shortcuts:
@@ -33,6 +34,9 @@ export const locale = {
     active_help: '关闭后「快捷查词」功能依然可用。',
     animation: '开启动画过渡',
     animation_help: '在低性能设备上关闭过渡动画可减少渲染负担。',
+    runInBg: '后台保持运行',
+    runInBg_help:
+      '让浏览器关闭后依然保持后台运行，从而继续响应快捷键以及浏览器外划词（见右上角官网使用说明）。',
     darkMode: '黑暗模式',
     langCode: '界面语言',
     editOnFav: '红心单词时弹出编辑面板',

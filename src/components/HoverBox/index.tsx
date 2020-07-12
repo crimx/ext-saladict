@@ -136,7 +136,7 @@ export const HoverBox: FC<HoverBoxProps> = props => {
         }}
       />
       <CSSTransition
-        classNames="hoverBox"
+        classNames="csst-hoverBox"
         in={isShowBox}
         timeout={100}
         mountOnEnter

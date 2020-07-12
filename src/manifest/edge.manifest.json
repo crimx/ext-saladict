@@ -5,7 +5,7 @@
   "options_ui": {
     "chrome_style": false
   },
-  "permissions": [
+  "optional_permissions": [
     "background"
   ],
   "incognito": "split",
