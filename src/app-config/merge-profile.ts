@@ -104,7 +104,7 @@ export function mergeProfile(
             set(
               base,
               `dicts.all.${id}.options.${opt}`,
-              options.includes(choice) ? choice : options[0]
+              options.includes(choice) ? choice : value
             )
           }
         })
