@@ -6,7 +6,8 @@ import { getProfileIDList, getActiveProfile } from '@/_helpers/profile-manager'
 import {
   isQuickSearchPage,
   isStandalonePage,
-  isOptionsPage
+  isOptionsPage,
+  isPopupPage
 } from '@/_helpers/saladict'
 import { DictSearchResult } from '@/components/dictionaries/helpers'
 
@@ -18,6 +19,8 @@ export const initState = async () => {
   const config = await pConfig
   const profiles = await pProfiles
   const activeProfile = await pActiveProfile
+
+  const url = window.location.href
 
   return {
     config,
@@ -37,7 +40,9 @@ export const initState = async () => {
       force: false
     },
     /** Temporary disable Saladict */
-    isTempDisabled: false,
+    isTempDisabled:
+      config.blacklist.some(([r]) => new RegExp(r).test(url)) &&
+      config.whitelist.every(([r]) => !new RegExp(r).test(url)),
     /**
      * Is current panel a Quick Search Panel,
      * which could be in a standalone window or in-page element.
@@ -54,7 +59,10 @@ export const initState = async () => {
     },
     isShowBowl: false,
     isShowDictPanel: isStandalonePage(),
-    isExpandMtaBox: false,
+    isExpandMtaBox:
+      activeProfile.mtaAutoUnfold === 'once' ||
+      activeProfile.mtaAutoUnfold === 'always' ||
+      (activeProfile.mtaAutoUnfold === 'popup' && isPopupPage()),
     isExpandWaveformBox: false,
     isPinned: false,
     /** Is current word in Notebook */
@@ -74,7 +82,7 @@ export const initState = async () => {
       /** independent layer */
       floatHeight: 0
     },
-    panelMaxHeight: window.innerHeight * 0.8,
+    panelMaxHeight: (window.innerHeight * config.panelMaxHeightRatio) / 100,
     /** Dicts that will be rendered to dict panel */
     renderedDicts: [] as {
       readonly id: DictID
