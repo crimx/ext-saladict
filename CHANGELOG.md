@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.14.3](https://github.com/crimx/ext-saladict/compare/v7.14.2...v7.14.3) (2020-07-12)
+
+
+### Bug Fixes
+
+* **panel:** fix machine source text fade color ([b36deb6](https://github.com/crimx/ext-saladict/commit/b36deb68df02254da2577cad4b9eb65722e5155a))
+
 ### [7.14.2](https://github.com/crimx/ext-saladict/compare/v7.14.1...v7.14.2) (2020-07-12)
 
 
