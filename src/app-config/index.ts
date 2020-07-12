@@ -215,7 +215,7 @@ function _getDefaultConfig() {
     tripleCtrl: true,
 
     /** preload content on quick search panel */
-    qsPreload: 'clipboard' as PreloadSource,
+    qsPreload: 'selection' as PreloadSource,
 
     /** auto search when quick search panel opens */
     qsAuto: false,
@@ -242,7 +242,7 @@ function _getDefaultConfig() {
     qssaRectMemo: false,
 
     /** browser action panel preload source */
-    baPreload: 'clipboard' as PreloadSource,
+    baPreload: 'selection' as PreloadSource,
 
     /** auto search when browser action panel shows */
     baAuto: false,
