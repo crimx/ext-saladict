@@ -72,7 +72,7 @@ export class BackgroundServer {
         case 'DICT_ENGINE_METHOD':
           return this.callDictEngineMethod(msg.payload)
         case 'GET_CLIPBOARD':
-          return Promise.resolve(getTextFromClipboard())
+          return getTextFromClipboard()
         case 'SET_CLIPBOARD':
           return Promise.resolve(copyTextToClipboard(msg.payload))
 
@@ -132,7 +132,7 @@ export class BackgroundServer {
   }
 
   async searchClipboard(): Promise<void> {
-    const word = newWord({ text: getTextFromClipboard() })
+    const word = newWord({ text: await getTextFromClipboard() })
 
     if (await this.qsPanelManager.hasCreated()) {
       await message.send({

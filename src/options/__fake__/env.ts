@@ -7,5 +7,8 @@ browser.runtime.getManifest.callsFake(() => ({
   version: packagejson.version
 }))
 
+browser.permissions.contains.callsFake(() => Promise.resolve(true))
+browser.permissions.request.callsFake(() => Promise.resolve(false))
+
 initConfig()
 initProfiles()

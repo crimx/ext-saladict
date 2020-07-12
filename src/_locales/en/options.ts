@@ -28,7 +28,8 @@ export const locale: typeof _locale = {
     ContextMenus: 'Context Menus',
     BlackWhiteList: 'Black/White List',
     ImportExport: 'Import/Export',
-    Privacy: 'Privacy'
+    Privacy: 'Privacy',
+    Permissions: 'Permissions'
   },
 
   config: {
@@ -408,5 +409,17 @@ export const locale: typeof _locale = {
   third_party_privacy_help:
     'Saladict will not collect further information but search text and releated cookies will be sent to third party dictionary services(just like how you would search on their websites). If you do not want third party services to collect you data, remove the corresponding dictionaries at "Dictionaries" settings.',
   third_party_privacy_extra:
-    'Cannot be turned off as it is the core functionality of Saladict.'
+    'Cannot be turned off as it is the core functionality of Saladict.',
+
+  permissions: {
+    success: 'Permission requested',
+    failed: 'Permission request failed',
+    cancelled: 'Permission request cancelled by user',
+    clipboardRead: 'Read Clipboard',
+    clipboardRead_help:
+      'This permission is needed when clipboard preload is enable for popup panel or quick search panel.',
+    clipboardWrite: 'Write Clipboard',
+    clipboardWrite_help:
+      'This permission is needed when using titlebar menus to copy source/target text from machine translator.'
+  }
 }

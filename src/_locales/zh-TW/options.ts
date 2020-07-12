@@ -28,7 +28,8 @@ export const locale: typeof _locale = {
     ContextMenus: '右鍵選單',
     BlackWhiteList: '黑白名單',
     ImportExport: '匯入匯出',
-    Privacy: '隱私設定'
+    Privacy: '隱私設定',
+    Permissions: '許可權管理'
   },
 
   config: {
@@ -394,5 +395,17 @@ export const locale: typeof _locale = {
   third_party_privacy: '第三方隱私',
   third_party_privacy_help:
     '沙拉查詞不會收集更多資料，但在查詞時單詞以及相關 cookies 資料會發送給第三方詞典服務（與在該網站上查詞一樣），如果你不希望被該服務獲取資料，請在「詞典設定」中關閉相應詞典。',
-  third_party_privacy_extra: '本特性為沙拉查詞核心功能，無法關閉。'
+  third_party_privacy_extra: '本特性為沙拉查詞核心功能，無法關閉。',
+
+  permissions: {
+    success: '申請許可權成功',
+    failed: '申請許可權失敗',
+    cancelled: '申請許可權被使用者取消',
+    clipboardRead: '讀取剪貼簿',
+    clipboardRead_help:
+      '快捷查詞或者右上彈框設定預載入剪貼簿時需要讀取剪貼簿許可權。',
+    clipboardWrite: '寫入剪貼簿',
+    clipboardWrite_help:
+      '機器翻譯詞典標題欄選單複製原文譯文或生詞本匯出到剪貼簿需要寫入剪貼簿許可權。'
+  }
 }

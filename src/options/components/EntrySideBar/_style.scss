@@ -1,8 +1,12 @@
 @import '@/_sass_shared/_fancy-scrollbar.scss';
 
 .entry-sidebar {
-  height: 100vh;
+  height: calc(100vh - 64px);
   background: transparent;
+
+  &.isAffixed {
+    height: 100vh;
+  }
 
   @media (hover: hover) {
     overflow-y: hidden;

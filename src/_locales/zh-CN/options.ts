@@ -26,7 +26,8 @@ export const locale = {
     ContextMenus: '右键菜单',
     BlackWhiteList: '黑白名单',
     ImportExport: '导入导出',
-    Privacy: '隐私设置'
+    Privacy: '隐私设置',
+    Permissions: '权限管理'
   },
 
   config: {
@@ -390,5 +391,17 @@ export const locale = {
   third_party_privacy: '第三方隐私',
   third_party_privacy_help:
     '沙拉查词不会收集更多数据，但在查词时单词以及相关 cookies 数据会发送给第三方词典服务（与在该网站上查词一样），如果你不希望被该服务获取数据，请在「词典设置」中关闭相应词典。',
-  third_party_privacy_extra: '本特性为沙拉查词核心功能，无法关闭。'
+  third_party_privacy_extra: '本特性为沙拉查词核心功能，无法关闭。',
+
+  permissions: {
+    success: '申请权限成功',
+    failed: '申请权限失败',
+    cancelled: '申请权限被用户取消',
+    clipboardRead: '读取剪贴板',
+    clipboardRead_help:
+      '快捷查词或者右上弹框设置预加载剪贴板时需要读取剪贴板权限。',
+    clipboardWrite: '写入剪贴板',
+    clipboardWrite_help:
+      '机器翻译词典标题栏菜单复制原文译文或生词本导出到剪贴板需要写入剪贴板权限。'
+  }
 }
