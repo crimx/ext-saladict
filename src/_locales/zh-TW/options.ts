@@ -7,6 +7,7 @@ export const locale: typeof _locale = {
   msg_update_error: '設定更新失敗',
   msg_updated: '設定已更新',
   msg_first_time_notice: '初次使用注意',
+  msg_err_permission: '許可權“{{permission}}”申請失敗。',
   unsave_confirm: '修改尚未儲存，確定放棄？',
   nativeSearch: '瀏覽器外選字翻譯',
   firefox_shortcuts:
@@ -35,6 +36,9 @@ export const locale: typeof _locale = {
     active_help: '關閉後「迅速查字」功能依然可用。',
     animation: '啟用轉換動畫',
     animation_help: '在低效能裝置上關閉過渡動畫可減少渲染負擔。',
+    runInBg: '保持瀏覽器執行',
+    runInBg_help:
+      '讓瀏覽器關閉後依然保持執行，從而繼續響應快捷鍵以及瀏覽器外劃字（見右上角官網使用說明）。',
     darkMode: '黑暗模式',
     langCode: '介面語言',
     editOnFav: '紅心單字時彈出編輯介面',

@@ -75,6 +75,7 @@ module.exports = {
     '<all_urls>',
     'alarms',
     'clipboardRead',
+    'clipboardWrite',
     'contextMenus',
     'cookies',
     'notifications',
@@ -84,8 +85,6 @@ module.exports = {
     'webRequest',
     'webRequestBlocking'
   ],
-
-  optional_permissions: ['clipboardWrite'],
 
   content_security_policy: "script-src 'self' 'unsafe-eval'; object-src 'self'"
 }
