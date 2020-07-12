@@ -117,36 +117,40 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
 
     return (
       <root.div style={{ width, margin: '10px auto' }}>
-        <style>{require('@/_sass_shared/_reset.scss').toString()}</style>
-        <style>{require('@/_sass_shared/_theme.scss').toString()}</style>
         <div
           className={classNames('dictPanel-Root', 'saladict-theme', {
             isAnimate: withAnimation,
             darkMode
           })}
-          style={{
-            color: options.color,
-            backgroundColor: options.backgroundColor,
-            fontSize,
-            width,
-            height,
-            '--panel-font-size': fontSize + 'px',
-            '--panel-width': `${width}px`,
-            '--panel-max-height': `${number(
-              'Panel Max Hegiht',
-              window.innerHeight
-            )}px`
-          }}
-          // bug https://github.com/storybookjs/storybook/issues/6569
-          onKeyDown={e => e.stopPropagation()}
         >
-          {options.head}
-          {story({
-            width,
-            height,
-            fontSize,
-            withAnimation
-          })}
+          <style>{require('@/_sass_shared/_reset.scss').toString()}</style>
+          <style>{require('@/_sass_shared/_theme.scss').toString()}</style>
+          <div
+            className="dictPanel-Root saladict-theme"
+            style={{
+              color: options.color,
+              backgroundColor: options.backgroundColor,
+              fontSize,
+              width,
+              height,
+              '--panel-font-size': fontSize + 'px',
+              '--panel-width': `${width}px`,
+              '--panel-max-height': `${number(
+                'Panel Max Hegiht',
+                window.innerHeight
+              )}px`
+            }}
+            // bug https://github.com/storybookjs/storybook/issues/6569
+            onKeyDown={e => e.stopPropagation()}
+          >
+            {options.head}
+            {story({
+              width,
+              height,
+              fontSize,
+              withAnimation
+            })}
+          </div>
         </div>
       </root.div>
     )

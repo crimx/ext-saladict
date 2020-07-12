@@ -22,33 +22,34 @@ export const DictPanelStandalone: FC<DictPanelStandaloneProps> = props => {
   const rootElRef = useRef<HTMLDivElement | null>(null)
 
   return (
-    // an extra layer for float box
+    // an extra layer as float box offest parent
     <div
-      ref={rootElRef}
-      className={classnames('dictPanel-FloatBox-Container', 'saladict-theme', {
+      className={classnames('dictPanel-FloatBox-Container', {
         isAnimate: props.withAnimation,
         darkMode: props.darkMode
       })}
     >
-      {props.panelCSS ? <style>{props.panelCSS}</style> : null}
-      <div
-        className={`dictPanel-Root ${SALADICT_PANEL}`}
-        style={{
-          width: props.width,
-          height: props.height,
-          '--panel-width': props.width,
-          '--panel-max-height': props.height,
-          '--panel-font-size': props.fontSize + 'px'
-        }}
-      >
-        <div className="dictPanel-Head">{props.menuBar}</div>
-        <HoverBoxContext.Provider value={rootElRef}>
-          <div className="dictPanel-Body fancy-scrollbar">
-            {props.mtaBox}
-            {props.dictList}
-          </div>
-        </HoverBoxContext.Provider>
-        {props.waveformBox}
+      <div ref={rootElRef} className="saladict-theme">
+        {props.panelCSS ? <style>{props.panelCSS}</style> : null}
+        <div
+          className={`dictPanel-Root ${SALADICT_PANEL}`}
+          style={{
+            width: props.width,
+            height: props.height,
+            '--panel-width': props.width,
+            '--panel-max-height': props.height,
+            '--panel-font-size': props.fontSize + 'px'
+          }}
+        >
+          <div className="dictPanel-Head">{props.menuBar}</div>
+          <HoverBoxContext.Provider value={rootElRef}>
+            <div className="dictPanel-Body fancy-scrollbar">
+              {props.mtaBox}
+              {props.dictList}
+            </div>
+          </HoverBoxContext.Provider>
+          {props.waveformBox}
+        </div>
       </div>
     </div>
   )

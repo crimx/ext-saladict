@@ -8,7 +8,7 @@
   --color-font-grey: #666;
   --color-divider: #ddd;
 
-  &.darkMode {
+  @include isDarkMode {
     background-color: #222;
     color: #ddd;
     --color-brand: #1e947e;
