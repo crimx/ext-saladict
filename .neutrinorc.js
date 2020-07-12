@@ -286,6 +286,12 @@ module.exports = {
             .end()
           .end()
 
+      // remove locales
+      neutrino.config
+        .plugin('momentjs')
+          .use(MomentLocalesPlugin, [{ localesToKeep: ['zh-cn', 'zh-tw'] }])
+          .end()
+
       // prettier-ignore
       neutrino.config
         .plugin('process.env')
@@ -302,9 +308,6 @@ module.exports = {
         neutrino.config
           .performance
             .hints(false)
-            .end()
-          .plugin('momentjs')
-            .use(MomentLocalesPlugin, [{ localesToKeep: ['zh-cn', 'zh-tw'] }])
             .end()
           .optimization
             .merge({
