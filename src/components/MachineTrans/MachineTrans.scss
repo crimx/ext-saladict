@@ -66,7 +66,7 @@
 {
   direction: rtl !important;
 
-  .MachineTrans-Lines-collapse {
+  &.MachineTrans-Lines-collapse {
     &::after {
       background: linear-gradient(270deg, rgba(255,255,255,0) 50%, var(--color-background) 90%);
     }
