@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.14.4](https://github.com/crimx/ext-saladict/compare/v7.14.3...v7.14.4) (2020-07-12)
+
+
+### Bug Fixes
+
+* **dicts:** correct machine translator rtl source text collapse fading ([42003e5](https://github.com/crimx/ext-saladict/commit/42003e51c0c3778c3ecbc0d6771142baae720ab9))
+
+
+### Build System
+
+* always strip momentjs locales ([7dbb309](https://github.com/crimx/ext-saladict/commit/7dbb309bbe3caafc70348999ca5e4526fd649618))
+
 ### [7.14.3](https://github.com/crimx/ext-saladict/compare/v7.14.2...v7.14.3) (2020-07-12)
 
 
