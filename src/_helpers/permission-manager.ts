@@ -1,11 +1,11 @@
 import { AppConfig } from '@/app-config'
-import { isFirefox } from './saladict'
+import { isFirefox, isOpera } from './saladict'
 
 export async function checkBackgroundPermission(
   config: AppConfig
 ): Promise<void> {
-  // Firefox does not support 'background' permission.
-  if (isFirefox) return
+  // Firefox and Opera does not support 'background' permission.
+  if (isFirefox || isOpera) return
 
   const backgroundPermissions: browser.permissions.AnyPermissions = {
     permissions: ['background']
@@ -21,9 +21,14 @@ export async function checkBackgroundPermission(
     }
   } else {
     if (hasBackground) {
-      await browser.permissions.remove(
-        backgroundPermissions as browser.permissions.Permissions
-      )
+      try {
+        await browser.permissions.remove(
+          backgroundPermissions as browser.permissions.Permissions
+        )
+      } catch (e) {
+        // failed silently on remove
+        console.error(e)
+      }
     }
   }
 }
