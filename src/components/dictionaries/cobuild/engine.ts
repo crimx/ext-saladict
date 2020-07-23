@@ -1,7 +1,7 @@
+import { AppConfig } from '@/app-config'
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   HTMLString,
-  getText,
   getInnerHTML,
   handleNoResult,
   handleNetWorkError,
@@ -53,93 +53,35 @@ export const search: SearchFunction<COBUILDResult> = async (
   payload
 ) => {
   text = encodeURIComponent(text.replace(/\s+/g, '-'))
-  const transform = await getChsToChz(config.langCode)
   const { options } = profile.dicts.all.cobuild
-  const sources:
-    | [[string, typeof handleCibaDOM], [string, typeof handleColDOM]]
-    | [[string, typeof handleColDOM], [string, typeof handleCibaDOM]] = [
-    ['https://www.collinsdictionary.com/dictionary/english/', handleColDOM],
-    ['http://www.iciba.com/', handleCibaDOM]
+  const sources: string[] = [
+    'https://www.collinsdictionary.com/dictionary/english/',
+    'https://www.collinsdictionary.com/zh/dictionary/english/'
   ]
 
   if (options.cibaFirst) {
     sources.reverse()
   }
 
-  return fetchDirtyDOM(sources[0][0] + text)
-    .then(doc => sources[0][1](doc, transform))
-    .catch(() => {
-      return fetchDirtyDOM(sources[1][0] + text)
-        .catch(handleNetWorkError)
-        .then(doc => sources[1][1](doc, transform))
-    })
-}
-
-async function handleCibaDOM(
-  doc: Document,
-  transform: null | ((text: string) => string)
-): Promise<DictSearchResult<COBUILDCibaResult>> {
-  const result: COBUILDCibaResult = {
-    type: 'ciba',
-    title: '',
-    defs: []
-  }
-  const audio: { uk?: string; us?: string } = {}
-
-  result.title = getText(doc, '.keyword', transform)
-  if (!result.title) {
-    return handleNoResult()
-  }
-
-  result.level = getText(doc, '.base-level')
-
-  const $star = doc.querySelector('.word-rate [class^="star"]')
-  if ($star) {
-    const star = Number($star.className[$star.className.length - 1])
-    if (!isNaN(star)) {
-      result.star = star
+  try {
+    return handleDOM(await fetchDirtyDOM(sources[0] + text), config)
+  } catch (e) {
+    let doc: Document
+    try {
+      doc = await fetchDirtyDOM(sources[1] + text)
+    } catch (e) {
+      return handleNetWorkError()
     }
+    return handleDOM(doc, config)
   }
-
-  const $pron = doc.querySelector('.base-speak')
-  if ($pron) {
-    result.prons = Array.from($pron.children).map(el => {
-      const phsym = (el.textContent || '').trim()
-      const mp3 = (/http\S+.mp3/.exec(el.innerHTML) || [''])[0]
-
-      if (phsym.indexOf('英') !== -1) {
-        audio.uk = mp3
-      } else if (phsym.indexOf('美') !== -1) {
-        audio.us = mp3
-      }
-
-      return {
-        phsym,
-        audio: mp3
-      }
-    })
-  }
-
-  const $article = Array.from(doc.querySelectorAll('.info-article')).find(x =>
-    /柯林斯高阶英汉双解学习词典/.test(x.textContent || '')
-  )
-  if ($article) {
-    result.defs = Array.from($article.querySelectorAll('.prep-order')).map(d =>
-      getInnerHTML('http://www.iciba.com', d, { transform })
-    )
-  }
-
-  if (result.defs.length > 0) {
-    return { result, audio }
-  }
-
-  return handleNoResult()
 }
 
-async function handleColDOM(
+async function handleDOM(
   doc: Document,
-  transform: null | ((text: string) => string)
+  config: AppConfig
 ): Promise<DictSearchResult<COBUILDColResult>> {
+  const transform = await getChsToChz(config.langCode)
+
   const result: COBUILDColResult = {
     type: 'collins',
     sections: []
@@ -151,12 +93,21 @@ async function handleColDOM(
   ]
     .filter($section => {
       const type = $section.dataset.typeBlock || ''
-      return type && type !== 'Video' && type !== 'Trends'
+      console.log(type)
+      return (
+        type &&
+        type !== 'Video' &&
+        type !== 'Trends' &&
+        type !== '英语词汇表' &&
+        type !== '趋势'
+      )
     })
     .map($section => {
       const type = $section.dataset.typeBlock || ''
       const title = $section.dataset.titleBlock || ''
       const num = $section.dataset.numBlock || ''
+      const id = type + title + num
+      const className = $section.className || ''
 
       if (type === 'Learner') {
         //   const $frequency = $section.querySelector<HTMLSpanElement>('.word-frequency-img')
@@ -178,6 +129,25 @@ async function handleColDOM(
         audio.us = getAudio($section)
       }
 
+      const $video = $section.querySelector<HTMLDivElement>('#videos .video')
+      if ($video) {
+        const $youtubeVideo = $video.querySelector<HTMLDivElement>(
+          '.youtube-video'
+        )
+        if ($youtubeVideo && $youtubeVideo.dataset.embed) {
+          const width = config.panelWidth - 25
+          const height = (width / 560) * 315
+          return {
+            id,
+            className,
+            type,
+            title,
+            num,
+            content: `<iframe width="${width}" height="${height}" src="https://www.youtube-nocookie.com/embed/${$youtubeVideo.dataset.embed}" frameborder="0" allow="accelerometer; encrypted-media"></iframe>`
+          }
+        }
+      }
+
       $section
         .querySelectorAll<HTMLAnchorElement>('.audio_play_button')
         .forEach($speaker => {
@@ -190,8 +160,8 @@ async function handleColDOM(
         .forEach(externalLink)
 
       return {
-        id: type + title + num,
-        className: $section.className || '',
+        id,
+        className,
         type,
         title,
         num,
