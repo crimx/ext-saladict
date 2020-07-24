@@ -1,4 +1,4 @@
-import React, { FC, useRef, useLayoutEffect } from 'react'
+import React, { FC, useRef, useLayoutEffect, useMemo, useEffect } from 'react'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import { TFunction } from 'i18next'
 import {
@@ -34,7 +34,7 @@ export interface SearchBoxProps {
  */
 export const SearchBox: FC<SearchBoxProps> = props => {
   // Textarea also shares the text so only replace here
-  const text = props.text.replace(/\s+/g, ' ')
+  const text = useMemo(() => props.text.replace(/\s+/g, ' '), [props.text])
 
   const [onSearchBoxFocusBlur, searchBoxFocusBlur$] = useObservableCallback(
     focusBlur
@@ -92,12 +92,16 @@ export const SearchBox: FC<SearchBoxProps> = props => {
     focusInput()
   }
 
-  // useEffect is not quick enough on popup panel.
-  useLayoutEffect(() => {
+  const checkFocus = () => {
     if (props.shouldFocus && !hasTypedRef.current && !isShowSuggest) {
       focusInput()
     }
-  }, [props.text])
+  }
+
+  // useEffect is not quick enough on popup panel.
+  useLayoutEffect(checkFocus, [])
+  // On in-page panel, layout effect only works on the first time.
+  useEffect(checkFocus, [props.text])
 
   return (
     <>
