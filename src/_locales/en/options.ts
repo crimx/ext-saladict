@@ -13,6 +13,7 @@ export const locale: typeof _locale = {
   firefox_shortcuts:
     'Open about:addons, click the top right "gear" button, choose the last "Manage extension shortcuts".',
   tutorial: 'Tutorial',
+  page_selection: 'Page Selection',
 
   nav: {
     General: 'General',
@@ -76,8 +77,8 @@ export const locale: typeof _locale = {
     doubleClickDelay: 'Double Click Delay',
     mode: 'Normal Selection',
     panelMode: 'Inside Dict Panel',
-    pinMode: 'When Panel Is Pinned',
-    qsPanelMode: 'Page Selection',
+    pinMode: 'When Panel is Pinned',
+    qsPanelMode: 'When Standalone Panel is Opened',
     bowlHover: 'Icon Mouse Hover',
     bowlHover_help:
       'Hover on the bowl icon to trigger searching instead of clicking.',

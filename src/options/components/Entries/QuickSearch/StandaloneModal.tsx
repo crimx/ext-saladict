@@ -73,7 +73,10 @@ export const StandaloneModal: FC<StandaloneModalProps> = ({
             valuePropName: 'checked',
             children: <Switch />
           },
-          searchMode('qsPanelMode', t)
+          {
+            ...searchMode('qsPanelMode', t),
+            label: t('page_selection')
+          }
         ]}
       />
       <TitlebarOffsetModal

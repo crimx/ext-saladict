@@ -11,6 +11,7 @@ export const locale = {
   firefox_shortcuts:
     '地址栏输入 about:addons 打开，点击右上方的齿轮，选择最后一项管理扩展快捷键。',
   tutorial: '教程',
+  page_selection: '网页划词',
 
   nav: {
     General: '基本选项',
@@ -71,7 +72,7 @@ export const locale = {
     mode: '普通划词',
     panelMode: '查词面板内部划词',
     pinMode: '查词面板钉住后划词',
-    qsPanelMode: '页面划词',
+    qsPanelMode: '独立窗口响应页面划词',
     bowlHover: '图标悬停查词',
     bowlHover_help: '鼠标悬停在沙拉图标上触发查词，否则需要点击。',
     autopron: {
