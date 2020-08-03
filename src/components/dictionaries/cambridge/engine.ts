@@ -112,6 +112,23 @@ function handleDOM(
       $btn.parentElement!.classList.add('amp-accordion')
     })
 
+    // replace amp-img
+    $entry.querySelectorAll('amp-img').forEach($ampImg => {
+      const $img = doc.createElement('img')
+
+      $img.setAttribute('src', getFullLink(HOST, $ampImg, 'src'))
+
+      const attrs = ['width', 'height', 'title']
+      for (const attr of attrs) {
+        const val = $ampImg.getAttribute(attr)
+        if (val) {
+          $img.setAttribute(attr, val)
+        }
+      }
+
+      $ampImg.replaceWith($img)
+    })
+
     // See more results
     $entry.querySelectorAll<HTMLAnchorElement>('a.had').forEach(externalLink)
 
