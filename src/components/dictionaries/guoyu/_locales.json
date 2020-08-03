@@ -3,5 +3,19 @@
     "en": "國語辭典",
     "zh-CN": "国语辞典",
     "zh-TW": "國語辭典"
+  },
+  "options": {
+    "trans": {
+      "en": "Show Translation",
+      "zh-CN": "显示翻译",
+      "zh-TW": "顯示翻譯"
+    }
+  },
+  "helps": {
+    "trans": {
+      "en": "Show translation of other languages.",
+      "zh-CN": "显示其它语言的翻译。",
+      "zh-TW": "顯示其它語言的翻譯。"
+    }
   }
 }

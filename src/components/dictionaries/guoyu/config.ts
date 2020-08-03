@@ -1,6 +1,9 @@
 import { DictItem } from '@/app-config/dicts'
 
-export type GuoyuConfig = DictItem
+export type GuoyuConfig = DictItem<{
+  /** show translation */
+  trans: boolean
+}>
 
 export default (): GuoyuConfig => ({
   lang: '00100000',
@@ -30,5 +33,8 @@ export default (): GuoyuConfig => ({
   selectionWC: {
     min: 1,
     max: 5
+  },
+  options: {
+    trans: true
   }
 })
