@@ -86,11 +86,7 @@ function handleDOM(
         )
         if (!$source) return
 
-        const src = getFullLink(
-          'https://dictionary.cambridge.org',
-          $source,
-          'src'
-        )
+        const src = getFullLink(HOST, $source, 'src')
 
         if (src) {
           $daud.replaceWith(getStaticSpeaker(src))
@@ -146,6 +142,27 @@ function handleDOM(
         '#' + getText($entry, '.di-title') + ' ' + getText($entry, '.posgram')
     })
   })
+
+  if (result.length <= 0) {
+    // check idiom
+    const $idiom = doc.querySelector('.idiom-block')
+    if ($idiom) {
+      removeChild($idiom, '.bb.hax')
+
+      // expand button
+      $idiom.querySelectorAll('.daccord_h').forEach($btn => {
+        $btn.parentElement!.classList.add('amp-accordion')
+      })
+
+      // See more results
+      $idiom.querySelectorAll<HTMLAnchorElement>('a.had').forEach(externalLink)
+
+      result.push({
+        id: '`d-cambridge-entry-idiom',
+        html: getInnerHTML(HOST, $idiom)
+      })
+    }
+  }
 
   if (result.length > 0) {
     return { result, audio, catalog }
