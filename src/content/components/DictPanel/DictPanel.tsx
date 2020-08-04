@@ -1,4 +1,11 @@
-import React, { FC, ReactNode, useRef, useState, useMemo } from 'react'
+import React, {
+  FC,
+  ReactNode,
+  useRef,
+  useState,
+  useMemo,
+  useEffect
+} from 'react'
 import classnames from 'classnames'
 import { useUpdateEffect } from 'react-use'
 import { getScrollbarWidth } from '@/_helpers/scrollbar-width'
@@ -34,6 +41,8 @@ export const DictPanel: FC<DictPanelProps> = props => {
   const [x, setX] = useState(() => reconcileX(props.width, props.coord.x))
   const [y, setY] = useState(() => reconcileY(props.height, props.coord.y))
 
+  const userDraggedRef = useRef(false)
+
   const coordSnapshotRef = useRef<{ x: number; y: number }>()
 
   useUpdateEffect(() => {
@@ -53,9 +62,18 @@ export const DictPanel: FC<DictPanelProps> = props => {
   }, [props.coord])
 
   useUpdateEffect(() => {
-    setX(x => reconcileX(props.width, x))
-    setY(y => reconcileY(props.height, y))
+    // only reconcile if never been dragged
+    if (!userDraggedRef.current) {
+      setX(x => reconcileX(props.width, x))
+      setY(y => reconcileY(props.height, y))
+    }
   }, [props.width, props.height])
+
+  useEffect(() => {
+    if (props.dragStartCoord) {
+      userDraggedRef.current = true
+    }
+  }, [props.dragStartCoord])
 
   const dragStartPanelCoord = useMemo(
     () => (props.dragStartCoord ? { x, y } : null),
