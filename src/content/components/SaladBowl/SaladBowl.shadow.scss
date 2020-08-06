@@ -28,6 +28,12 @@ $bowl-width: 30px;
       }
     }
   }
+
+  &,
+  & > svg {
+    // #947 fix Super Dark Mode
+    background-color: transparent !important;
+  }
 }
 
 .saladbowl {
