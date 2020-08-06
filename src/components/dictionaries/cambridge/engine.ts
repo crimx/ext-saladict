@@ -119,30 +119,7 @@ function handleDOM(
       removeChild($posHeader, '.share')
     }
 
-    // expand button
-    $entry.querySelectorAll('.daccord_h').forEach($btn => {
-      $btn.parentElement!.classList.add('amp-accordion')
-    })
-
-    // replace amp-img
-    $entry.querySelectorAll('amp-img').forEach($ampImg => {
-      const $img = doc.createElement('img')
-
-      $img.setAttribute('src', getFullLink(HOST, $ampImg, 'src'))
-
-      const attrs = ['width', 'height', 'title']
-      for (const attr of attrs) {
-        const val = $ampImg.getAttribute(attr)
-        if (val) {
-          $img.setAttribute(attr, val)
-        }
-      }
-
-      $ampImg.replaceWith($img)
-    })
-
-    // See more results
-    $entry.querySelectorAll<HTMLAnchorElement>('a.had').forEach(externalLink)
+    sanitizeEntry($entry)
 
     const entryId = `d-cambridge-entry${i}`
 
@@ -165,13 +142,7 @@ function handleDOM(
     if ($idiom) {
       removeChild($idiom, '.bb.hax')
 
-      // expand button
-      $idiom.querySelectorAll('.daccord_h').forEach($btn => {
-        $btn.parentElement!.classList.add('amp-accordion')
-      })
-
-      // See more results
-      $idiom.querySelectorAll<HTMLAnchorElement>('a.had').forEach(externalLink)
+      sanitizeEntry($idiom)
 
       result.push({
         id: '`d-cambridge-entry-idiom',
@@ -185,4 +156,46 @@ function handleDOM(
   }
 
   return handleNoResult()
+}
+
+function sanitizeEntry<E extends Element>($entry: E): E {
+  // expand button
+  $entry.querySelectorAll('.daccord_h').forEach($btn => {
+    $btn.parentElement!.classList.add('amp-accordion')
+  })
+
+  // replace amp-img
+  $entry.querySelectorAll('amp-img').forEach($ampImg => {
+    const $img = document.createElement('img')
+
+    $img.setAttribute('src', getFullLink(HOST, $ampImg, 'src'))
+
+    const attrs = ['width', 'height', 'title']
+    for (const attr of attrs) {
+      const val = $ampImg.getAttribute(attr)
+      if (val) {
+        $img.setAttribute(attr, val)
+      }
+    }
+
+    $ampImg.replaceWith($img)
+  })
+
+  // replace amp-audio
+  $entry.querySelectorAll('amp-audio').forEach($ampAudio => {
+    const $source = $ampAudio.querySelector('source')
+    if ($source) {
+      const src = getFullLink(HOST, $source, 'src')
+      if (src) {
+        $ampAudio.replaceWith(getStaticSpeaker(src))
+        return
+      }
+    }
+    $ampAudio.remove()
+  })
+
+  // See more results
+  $entry.querySelectorAll<HTMLAnchorElement>('a.had').forEach(externalLink)
+
+  return $entry
 }
