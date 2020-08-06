@@ -319,7 +319,10 @@ export const locale: typeof _locale = {
       tags_help: 'Anki notes can include tags separated with commas.',
       escapeHTML: 'Escape HTML',
       escapeHTML_help:
-        'Escape HTML entities. Turn off if using HTML for manual layout.'
+        'Escape HTML entities. Turn off if using HTML for manual layout.',
+      syncServer: 'Sync Server',
+      syncServer_help:
+        'Sync to server(e.g. AnkiWeb) after new words being added to local Anki.'
     }
   },
 

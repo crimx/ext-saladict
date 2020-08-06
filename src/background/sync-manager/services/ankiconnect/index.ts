@@ -18,6 +18,8 @@ export interface SyncConfig {
   escapeContext: boolean
   escapeTrans: boolean
   escapeNote: boolean
+  /** Sync to AnkiWeb after added */
+  syncServer: boolean
 }
 
 export class Service extends SyncService<SyncConfig> {
@@ -34,7 +36,8 @@ export class Service extends SyncService<SyncConfig> {
       tags: '',
       escapeContext: true,
       escapeTrans: true,
-      escapeNote: true
+      escapeNote: true,
+      syncServer: false
     }
   }
 
@@ -118,6 +121,16 @@ export class Service extends SyncService<SyncConfig> {
         }
       })
     )
+
+    if (this.config.syncServer) {
+      try {
+        await this.request('sync')
+      } catch (e) {
+        if (process.env.DEBUG) {
+          console.warn(e)
+        }
+      }
+    }
   }
 
   async addWord(word: Readonly<Word>) {

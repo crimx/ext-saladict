@@ -157,6 +157,14 @@ export const AnkiConnectModal: FC<AnkiConnectModalProps> = props => {
             <Checkbox>{t('common:note.note')}</Checkbox>
           </Form.Item>
         </Form.Item>
+        <Form.Item
+          name="syncServer"
+          label={t('syncService.ankiconnect.syncServer')}
+          help={t('syncService.ankiconnect.syncServer_help')}
+          valuePropName="checked"
+        >
+          <Switch />
+        </Form.Item>
       </Form>
     </Modal>
   )

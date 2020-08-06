@@ -303,7 +303,9 @@ export const locale = {
       tags_help: 'Anki 笔记可以附带标签。以逗号分割。',
       escapeHTML: '转义 HTML',
       escapeHTML_help:
-        '对笔记内容中的 HTML 字符进行转义。如手动进行 HTML 排版请关闭选项。'
+        '对笔记内容中的 HTML 字符进行转义。如手动进行 HTML 排版请关闭选项。',
+      syncServer: '同步服务器',
+      syncServer_help: '单词添加到本地 Anki 后自动同步到服务器（如 AnkiWeb）。'
     }
   },
 
