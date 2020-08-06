@@ -19,6 +19,8 @@ yarn install
 yarn pdf
 ```
 
+在项目根添加 `.env` 文件，参考 `.env.example` 格式（可留空如果你不需要这些词典）。
+
 ## 修改 UI
 
 运行 `yarn fixtures` 下载测试文件（下载完成以后不必再运行）。
