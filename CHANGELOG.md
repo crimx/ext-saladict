@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.15.0](https://github.com/crimx/ext-saladict/compare/v7.14.5...v7.15.0) (2020-08-07)
+
+
+### Features
+
+* **sync-services:** add sync server to ankiconnect ([b6a7487](https://github.com/crimx/ext-saladict/commit/b6a74873b71282805892e8172961dec1a77e13bb))
+
+
+### Bug Fixes
+
+* **background:** remove background permission on Opera ([151b0a1](https://github.com/crimx/ext-saladict/commit/151b0a16320ff7ab875ad970525b358459f733a3)), closes [#916](https://github.com/crimx/ext-saladict/issues/916)
+* **dicts:** cambridge amp-img replacement ([1aed3f4](https://github.com/crimx/ext-saladict/commit/1aed3f41f24e0b91e5bf9b20ab11a3f38967d8a7)), closes [#939](https://github.com/crimx/ext-saladict/issues/939)
+* **dicts:** cambridge idiom-only entry ([0135b3e](https://github.com/crimx/ext-saladict/commit/0135b3e84ec85af382e2e94470b5c1705e1e830e)), closes [#940](https://github.com/crimx/ext-saladict/issues/940)
+* **dicts:** replace cambridge amp-audio ([aac184c](https://github.com/crimx/ext-saladict/commit/aac184cd9d9ddb035f8331457baf8b0a160a3224)), closes [#943](https://github.com/crimx/ext-saladict/issues/943)
+* **dicts:** same url for src page ([a0696e1](https://github.com/crimx/ext-saladict/commit/a0696e1709dd700d20d182c0f277025090a14608)), closes [#935](https://github.com/crimx/ext-saladict/issues/935)
+* **locales:** typo ([8dcb8e1](https://github.com/crimx/ext-saladict/commit/8dcb8e11cf5f9e40dd424fa332525329d3385ca4))
+* **panel:** reset opacity on root container ([40abbbc](https://github.com/crimx/ext-saladict/commit/40abbbc884f6ac3fba44e9423e9d4887048e91e0)), closes [#904](https://github.com/crimx/ext-saladict/issues/904)
+* **panel:** search box on in-page panel loses focus ([c1d5984](https://github.com/crimx/ext-saladict/commit/c1d598473d02dc247c218d48e183bfa58251def2)), closes [#927](https://github.com/crimx/ext-saladict/issues/927)
+* **panel:** select background color ([2a9c144](https://github.com/crimx/ext-saladict/commit/2a9c14484d56a2815bb9fb09d98f361e41616f52))
+* **panel:** support Super Dark Mode ([6e6164e](https://github.com/crimx/ext-saladict/commit/6e6164eeb9ec1f5eeff80bad3f3b9715a3627447)), closes [#947](https://github.com/crimx/ext-saladict/issues/947)
+* **sync-services:** shanbay batch upload interrupting ([5881389](https://github.com/crimx/ext-saladict/commit/5881389b05823258383ba7448eb836e6cb59bc30)), closes [#932](https://github.com/crimx/ext-saladict/issues/932)
+* **word-editor:** correct container dimension ([0b51e6b](https://github.com/crimx/ext-saladict/commit/0b51e6bb0026d363f728cde758e299219580c791))
+
+
+### Build System
+
+* **deps-dev:** bump standard-version from 6.0.1 to 8.0.1 ([#903](https://github.com/crimx/ext-saladict/issues/903)) ([d1ac2b5](https://github.com/crimx/ext-saladict/commit/d1ac2b57d576f4eaaa94f3a8a6595b44a28b76f1))
+
 ### [7.14.5](https://github.com/crimx/ext-saladict/compare/v7.14.4...v7.14.5) (2020-07-12)
 
 
