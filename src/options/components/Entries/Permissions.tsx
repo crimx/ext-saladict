@@ -72,6 +72,7 @@ export const Permissions: FC = () => {
                 await browser.permissions.remove({
                   permissions: [permission]
                 })
+                antdMsg.success(t('permissions.cancel_success'))
                 setStatus(status => ({
                   ...status,
                   [permission]: false

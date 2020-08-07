@@ -417,8 +417,11 @@ export const locale: typeof _locale = {
 
   permissions: {
     success: 'Permission requested',
+    cancel_success: 'Permission cancelled',
     failed: 'Permission request failed',
     cancelled: 'Permission request cancelled by user',
+    missing:
+      'Missing permission "{{permission}}". Either grant it or disable related functions.',
     clipboardRead: 'Read Clipboard',
     clipboardRead_help:
       'This permission is needed when clipboard preload is enable for popup panel or quick search panel.',

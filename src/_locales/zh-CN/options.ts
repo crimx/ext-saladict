@@ -398,8 +398,10 @@ export const locale = {
 
   permissions: {
     success: '申请权限成功',
+    cancel_success: '取消权限成功',
     failed: '申请权限失败',
     cancelled: '申请权限被用户取消',
+    missing: '缺少权限「{{permission}}」。请给予权限或者关闭相关功能。',
     clipboardRead: '读取剪贴板',
     clipboardRead_help:
       '快捷查词或者右上弹框设置预加载剪贴板时需要读取剪贴板权限。',

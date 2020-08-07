@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.15.1](https://github.com/crimx/ext-saladict/compare/v7.15.0...v7.15.1) (2020-08-07)
+
 ## [7.15.0](https://github.com/crimx/ext-saladict/compare/v7.14.5...v7.15.0) (2020-08-07)
 
 

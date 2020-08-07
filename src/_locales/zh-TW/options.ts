@@ -402,8 +402,10 @@ export const locale: typeof _locale = {
 
   permissions: {
     success: '申請許可權成功',
+    cancel_success: '取消許可權成功',
     failed: '申請許可權失敗',
     cancelled: '申請許可權被使用者取消',
+    missing: '缺少許可權「{{permission}}」。請給予許可權或者關閉相關功能。',
     clipboardRead: '讀取剪貼簿',
     clipboardRead_help:
       '快捷查詞或者右上彈框設定預載入剪貼簿時需要讀取剪貼簿許可權。',
