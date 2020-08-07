@@ -1,6 +1,8 @@
 import { DictItem } from '@/app-config/dicts'
 
-export type LianganConfig = DictItem
+export type LianganConfig = DictItem<{
+  trans: boolean
+}>
 
 export default (): LianganConfig => ({
   lang: '00100000',
@@ -30,5 +32,8 @@ export default (): LianganConfig => ({
   selectionWC: {
     min: 1,
     max: 5
+  },
+  options: {
+    trans: false
   }
 })

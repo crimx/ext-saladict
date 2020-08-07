@@ -59,7 +59,7 @@ export class Service extends SyncService<SyncConfig> {
       try {
         await this.addWord(words[i].text)
       } catch (error) {
-        if (error !== 'word') {
+        if (error.message !== 'word') {
           throw error
         }
         errorCount += 1

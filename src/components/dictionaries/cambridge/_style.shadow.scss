@@ -16,6 +16,14 @@
   }
 }
 
+.dimg {
+  text-align: center;
+
+  img {
+    display: inline-block;
+  }
+}
+
 .inline {
   margin-left: 0;
   list-style: none;
@@ -371,7 +379,7 @@ h1.hw,
 }
 
 .di-title {
-  font-size: 1.5em;
+  font-size: 1.2em;
   font-weight: bold;
   line-height: 1.3;
   // border-bottom: 1px solid currentColor;
@@ -2327,7 +2335,7 @@ li.dexamp {
 
   & > :last-child {
     display: none;
-    padding: 1em;
+    padding: 0 1em 1em;
 
     ul {
       padding-left: 1em;

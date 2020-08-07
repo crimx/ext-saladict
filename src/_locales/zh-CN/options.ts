@@ -10,6 +10,8 @@ export const locale = {
   nativeSearch: '浏览器外划词',
   firefox_shortcuts:
     '地址栏输入 about:addons 打开，点击右上方的齿轮，选择最后一项管理扩展快捷键。',
+  tutorial: '教程',
+  page_selection: '网页划词',
 
   nav: {
     General: '基本选项',
@@ -37,7 +39,7 @@ export const locale = {
     animation_help: '在低性能设备上关闭过渡动画可减少渲染负担。',
     runInBg: '后台保持运行',
     runInBg_help:
-      '让浏览器关闭后依然保持后台运行，从而继续响应快捷键以及浏览器外划词（见右上角官网使用说明）。',
+      '让浏览器关闭后依然保持后台运行，从而继续响应快捷键以及浏览器外划词。',
     darkMode: '黑暗模式',
     langCode: '界面语言',
     editOnFav: '红心单词时弹出编辑面板',
@@ -70,7 +72,7 @@ export const locale = {
     mode: '普通划词',
     panelMode: '查词面板内部划词',
     pinMode: '查词面板钉住后划词',
-    qsPanelMode: '页面划词',
+    qsPanelMode: '独立窗口响应页面划词',
     bowlHover: '图标悬停查词',
     bowlHover_help: '鼠标悬停在沙拉图标上触发查词，否则需要点击。',
     autopron: {
@@ -274,7 +276,6 @@ export const locale = {
 
     ankiconnect: {
       description: '请确保 Anki Connect 插件已安装且 Anki 在后台运行。',
-      tutorial: '教程',
       checking: '连接中...',
       deck_confirm: '牌组「{{deck}}」不存在 Anki 中，是否自动添加？',
       deck_error: '无法创建牌组「{{deck}}」。',
@@ -302,7 +303,9 @@ export const locale = {
       tags_help: 'Anki 笔记可以附带标签。以逗号分割。',
       escapeHTML: '转义 HTML',
       escapeHTML_help:
-        '对笔记内容中的 HTML 字符进行转义。如手动进行 HTML 排版请关闭选项。'
+        '对笔记内容中的 HTML 字符进行转义。如手动进行 HTML 排版请关闭选项。',
+      syncServer: '同步服务器',
+      syncServer_help: '单词添加到本地 Anki 后自动同步到服务器（如 AnkiWeb）。'
     }
   },
 

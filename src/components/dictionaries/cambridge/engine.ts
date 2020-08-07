@@ -15,20 +15,45 @@ import {
   getChsToChz
 } from '../helpers'
 
-export const getSrcPage: GetSrcPageFunction = async (text, config) => {
-  switch (config.langCode) {
+export const getSrcPage: GetSrcPageFunction = async (text, config, profile) => {
+  let { lang } = profile.dicts.all.cambridge.options
+
+  if (lang === 'default') {
+    switch (config.langCode) {
+      case 'zh-CN':
+        lang = 'en-chs'
+        break
+      case 'zh-TW':
+        lang = 'en-chz'
+        break
+      default:
+        lang = 'en'
+        break
+    }
+  }
+
+  switch (lang) {
     case 'en':
-      return `https://dictionary.cambridge.org/search/english/direct/?q=${text
-        .trim()
-        .split(/\s+/)
-        .join('-')}`
-    case 'zh-CN':
-      return `https://dictionary.cambridge.org/zhs/搜索/英语-汉语-简体/direct/?q=${text}`
-    case 'zh-TW': {
+      return (
+        'https://dictionary.cambridge.org/dictionary/english/' +
+        encodeURIComponent(
+          text
+            .trim()
+            .split(/\s+/)
+            .join('-')
+        )
+      )
+    case 'en-chs':
+      return (
+        'https://dictionary.cambridge.org/zhs/%E8%AF%8D%E5%85%B8/%E8%8B%B1%E8%AF%AD-%E6%B1%89%E8%AF%AD-%E7%AE%80%E4%BD%93/' +
+        encodeURIComponent(text)
+      )
+    case 'en-chz': {
       const chsToChz = await getChsToChz()
-      return `https://dictionary.cambridge.org/zht/搜索/英語-漢語-繁體/direct/?q=${chsToChz(
-        text
-      )}`
+      return (
+        'https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/' +
+        encodeURIComponent(chsToChz(text))
+      )
     }
   }
 }
@@ -44,22 +69,13 @@ export type CambridgeResult = CambridgeResultItem[]
 
 type CambridgeSearchResult = DictSearchResult<CambridgeResult>
 
-export const search: SearchFunction<CambridgeResult> = (
+export const search: SearchFunction<CambridgeResult> = async (
   text,
   config,
   profile,
   payload
 ) => {
-  const url =
-    config.langCode === 'zh-CN'
-      ? 'https://dictionary.cambridge.org/zhs/搜索/英语-汉语-简体/direct/?q='
-      : config.langCode === 'zh-TW'
-      ? 'https://dictionary.cambridge.org/zht/搜索/英語-漢語-繁體/direct/?q='
-      : 'https://dictionary.cambridge.org/search/english/direct/?q='
-
-  return fetchDirtyDOM(
-    encodeURI(url) + text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-')
-  )
+  return fetchDirtyDOM(await getSrcPage(text, config, profile))
     .catch(handleNetWorkError)
     .then(handleDOM)
 }
@@ -86,11 +102,7 @@ function handleDOM(
         )
         if (!$source) return
 
-        const src = getFullLink(
-          'https://dictionary.cambridge.org',
-          $source,
-          'src'
-        )
+        const src = getFullLink(HOST, $source, 'src')
 
         if (src) {
           $daud.replaceWith(getStaticSpeaker(src))
@@ -107,13 +119,7 @@ function handleDOM(
       removeChild($posHeader, '.share')
     }
 
-    // expand button
-    $entry.querySelectorAll('.daccord_h').forEach($btn => {
-      $btn.parentElement!.classList.add('amp-accordion')
-    })
-
-    // See more results
-    $entry.querySelectorAll<HTMLAnchorElement>('a.had').forEach(externalLink)
+    sanitizeEntry($entry)
 
     const entryId = `d-cambridge-entry${i}`
 
@@ -130,9 +136,66 @@ function handleDOM(
     })
   })
 
+  if (result.length <= 0) {
+    // check idiom
+    const $idiom = doc.querySelector('.idiom-block')
+    if ($idiom) {
+      removeChild($idiom, '.bb.hax')
+
+      sanitizeEntry($idiom)
+
+      result.push({
+        id: '`d-cambridge-entry-idiom',
+        html: getInnerHTML(HOST, $idiom)
+      })
+    }
+  }
+
   if (result.length > 0) {
     return { result, audio, catalog }
   }
 
   return handleNoResult()
+}
+
+function sanitizeEntry<E extends Element>($entry: E): E {
+  // expand button
+  $entry.querySelectorAll('.daccord_h').forEach($btn => {
+    $btn.parentElement!.classList.add('amp-accordion')
+  })
+
+  // replace amp-img
+  $entry.querySelectorAll('amp-img').forEach($ampImg => {
+    const $img = document.createElement('img')
+
+    $img.setAttribute('src', getFullLink(HOST, $ampImg, 'src'))
+
+    const attrs = ['width', 'height', 'title']
+    for (const attr of attrs) {
+      const val = $ampImg.getAttribute(attr)
+      if (val) {
+        $img.setAttribute(attr, val)
+      }
+    }
+
+    $ampImg.replaceWith($img)
+  })
+
+  // replace amp-audio
+  $entry.querySelectorAll('amp-audio').forEach($ampAudio => {
+    const $source = $ampAudio.querySelector('source')
+    if ($source) {
+      const src = getFullLink(HOST, $source, 'src')
+      if (src) {
+        $ampAudio.replaceWith(getStaticSpeaker(src))
+        return
+      }
+    }
+    $ampAudio.remove()
+  })
+
+  // See more results
+  $entry.querySelectorAll<HTMLAnchorElement>('a.had').forEach(externalLink)
+
+  return $entry
 }

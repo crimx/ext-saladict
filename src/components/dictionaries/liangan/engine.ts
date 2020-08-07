@@ -14,7 +14,12 @@ export const search: SearchFunction<LiangAnResult> = (
   profile,
   payload
 ) => {
-  return moedictSearch<LiangAnResult>('c', text, config).then(result => {
+  return moedictSearch<LiangAnResult>(
+    'c',
+    text,
+    config,
+    profile.dicts.all.liangan.options
+  ).then(result => {
     if (result.result.h) {
       result.result.h.forEach(h => {
         if (h.p) {

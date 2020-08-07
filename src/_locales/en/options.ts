@@ -12,6 +12,8 @@ export const locale: typeof _locale = {
   nativeSearch: 'search selected text outside of browser',
   firefox_shortcuts:
     'Open about:addons, click the top right "gear" button, choose the last "Manage extension shortcuts".',
+  tutorial: 'Tutorial',
+  page_selection: 'Page Selection',
 
   nav: {
     General: 'General',
@@ -75,8 +77,8 @@ export const locale: typeof _locale = {
     doubleClickDelay: 'Double Click Delay',
     mode: 'Normal Selection',
     panelMode: 'Inside Dict Panel',
-    pinMode: 'When Panel Is Pinned',
-    qsPanelMode: 'Page Selection',
+    pinMode: 'When Panel is Pinned',
+    qsPanelMode: 'When Standalone Panel is Opened',
     bowlHover: 'Icon Mouse Hover',
     bowlHover_help:
       'Hover on the bowl icon to trigger searching instead of clicking.',
@@ -288,7 +290,6 @@ export const locale: typeof _locale = {
     ankiconnect: {
       description:
         'Please make sure Anki Connect plugin is installed and Anki is running. You can also update word to Anki in Word Editor.',
-      tutorial: 'Tutorial',
       checking: 'Checking...',
       deck_confirm:
         'Deck "{{deck}}" does not exist in Anki. Generate a new deck?',
@@ -313,12 +314,15 @@ export const locale: typeof _locale = {
         'If deck does not exist you can generate a default one automatically by clicking "Verify Anki Connect" below.',
       noteType: 'Note Type',
       noteType_help:
-        'Anki note type includes a set of fields and card type. If note type does not exist you can generate a default one automatically by clicking "Verify Anki Connect" below. DO NOT change fieled names when editing or adding card templates in Anki',
+        'Anki note type includes a set of fields and card type. If note type does not exist you can generate a default one automatically by clicking "Verify Anki Connect" below. DO NOT change field names when editing or adding card templates in Anki',
       tags: 'Tags',
       tags_help: 'Anki notes can include tags separated with commas.',
       escapeHTML: 'Escape HTML',
       escapeHTML_help:
-        'Escape HTML entities. Turn off if using HTML for manual layout.'
+        'Escape HTML entities. Turn off if using HTML for manual layout.',
+      syncServer: 'Sync Server',
+      syncServer_help:
+        'Sync to server(e.g. AnkiWeb) after new words being added to local Anki.'
     }
   },
 

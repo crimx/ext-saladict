@@ -4,10 +4,10 @@ export const mockSearchTexts = ['test']
 
 export const mockRequest: MockRequest = mock => {
   mock
-    .onGet(/collinsdictionary/)
-    .reply(200, require('!raw-loader!./response/how.html').default)
+    .onGet(/collinsdictionary\.com\/zh/)
+    .reply(200, require('!raw-loader!./response/love.html').default)
 
   mock
-    .onGet(/iciba/)
-    .reply(200, require('!raw-loader!./response/love.html').default)
+    .onGet(/collinsdictionary/)
+    .reply(200, require('!raw-loader!./response/how.html').default)
 }

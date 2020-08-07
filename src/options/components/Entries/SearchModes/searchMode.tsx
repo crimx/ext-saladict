@@ -37,6 +37,7 @@ export const searchMode = (mode: Mode, t: TFunction): SaladictFormItem => {
             min={-100}
             max={100}
             marks={{ '-100': '-100px', 0: '0px', 100: '100px' }}
+            style={{ marginBottom: 0 }}
           />
         )
       },
@@ -49,6 +50,7 @@ export const searchMode = (mode: Mode, t: TFunction): SaladictFormItem => {
             min={-100}
             max={100}
             marks={{ '-100': '-100px', 0: '0px', 100: '100px' }}
+            style={{ marginBottom: 0 }}
           />
         )
       }

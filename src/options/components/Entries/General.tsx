@@ -5,7 +5,7 @@ import {
   SaladictForm,
   SaladictFormItem
 } from '@/options/components/SaladictForm'
-import { isFirefox } from '@/_helpers/saladict'
+import { isFirefox, isOpera } from '@/_helpers/saladict'
 
 export const General: FC = () => {
   const formItems: SaladictFormItem[] = [
@@ -21,7 +21,7 @@ export const General: FC = () => {
     }
   ]
 
-  if (!isFirefox) {
+  if (!(isFirefox || isOpera)) {
     formItems.push({
       name: getConfigPath('runInBg'),
       valuePropName: 'checked',

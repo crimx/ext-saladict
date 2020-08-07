@@ -3,5 +3,32 @@
     "en": "Cambridge Dictionary",
     "zh-CN": "剑桥词典",
     "zh-TW": "劍橋詞典"
+  },
+  "options": {
+    "lang": {
+      "en": "Language",
+      "zh-CN": "语言",
+      "zh-TW": "語言"
+    },
+    "lang-default": {
+      "en": "Default",
+      "zh-CN": "随扩展",
+      "zh-TW": "未設定"
+    },
+    "lang-en": {
+      "en": "English",
+      "zh-CN": "English",
+      "zh-TW": "English"
+    },
+    "lang-en-chs": {
+      "en": "English–Chinese (Simplified)",
+      "zh-CN": "英简",
+      "zh-TW": "英简"
+    },
+    "lang-en-chz": {
+      "en": "English–Chinese (Traditional)",
+      "zh-CN": "英繁",
+      "zh-TW": "英繁"
+    }
   }
 }

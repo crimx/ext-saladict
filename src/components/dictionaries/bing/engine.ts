@@ -11,9 +11,9 @@ import {
 } from '../helpers'
 import { DictConfigs } from '@/app-config'
 
-export const getSrcPage: GetSrcPageFunction = text => {
-  return `https://cn.bing.com/dict/search?q=${text}`
-}
+export const getSrcPage: GetSrcPageFunction = text =>
+  'https://cn.bing.com/dict/search?q=' +
+  encodeURIComponent(text.replace(/\s+/g, ' '))
 
 const HOST = 'https://cn.bing.com'
 

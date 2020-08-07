@@ -13,9 +13,8 @@ import {
 } from '../helpers'
 import { DictConfigs } from '@/app-config'
 
-export const getSrcPage: GetSrcPageFunction = text => {
-  return `https://dict.youdao.com/w/eng/${text}`
-}
+export const getSrcPage: GetSrcPageFunction = text =>
+  'https://dict.youdao.com/w/' + encodeURIComponent(text.replace(/\s+/g, ' '))
 
 const HOST = 'http://www.youdao.com'
 

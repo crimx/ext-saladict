@@ -12,6 +12,8 @@ export const locale: typeof _locale = {
   nativeSearch: '瀏覽器外選字翻譯',
   firefox_shortcuts:
     '位址列跳轉到 about:addons，點選右上方的齒輪，選擇最後一項管理擴充套件快捷鍵',
+  tutorial: '教程',
+  page_selection: '網頁選字',
 
   nav: {
     General: '基本選項',
@@ -69,10 +71,10 @@ export const locale: typeof _locale = {
     language_extra:
       '注意日語與韓語也包含了漢字。法語、德語和西語也包含了英文。若取消了中文或英語而勾選了其它語言，則只翻譯那些語言獨有的部分，如日語只翻譯假名。',
     doubleClickDelay: '滑鼠按兩下間隔',
-    mode: '普通選詞',
-    panelMode: '字典視窗介面內部選詞',
-    pinMode: '字典視窗介面釘住后選詞',
-    qsPanelMode: '滑鼠選字',
+    mode: '普通選字',
+    panelMode: '字典視窗介面內部選字',
+    pinMode: '字典視窗介面釘住后選字',
+    qsPanelMode: '獨立字典視窗介面響應頁面選字',
     bowlHover: '圖示暫留查字',
     bowlHover_help: '滑鼠暫留在沙拉圖示上開啟字典介面，否則需要點選。',
     autopron: {
@@ -278,7 +280,6 @@ export const locale: typeof _locale = {
 
     ankiconnect: {
       description: '請確保 Anki Connect 已安裝且 Anki 在執行。',
-      tutorial: '教程',
       checking: '連線中...',
       deck_confirm: '牌組「{{deck}}」不存在 Anki 中，是否自動新增？',
       deck_error: '無法建立牌組「{{deck}}」。',
@@ -306,7 +307,9 @@ export const locale: typeof _locale = {
       tags_help: 'Anki 筆記可以附帶標籤。以逗號分割。',
       escapeHTML: '轉義 HTML',
       escapeHTML_help:
-        '對筆記內容中的 HTML 字元進行轉義。如手動進行 HTML 排版請關閉選項。'
+        '對筆記內容中的 HTML 字元進行轉義。如手動進行 HTML 排版請關閉選項。',
+      syncServer: '同步伺服器',
+      syncServer_help: '單詞新增到本地 Anki 後自動同步到伺服器（如 AnkiWeb）。'
     }
   },
 

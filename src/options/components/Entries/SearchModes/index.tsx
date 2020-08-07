@@ -52,7 +52,8 @@ export const SearchModes: FC = () => {
         },
         searchMode('mode', t),
         searchMode('pinMode', t),
-        searchMode('panelMode', t)
+        searchMode('panelMode', t),
+        searchMode('qsPanelMode', t)
       ]}
     />
   )

@@ -675,7 +675,7 @@
   .dc .extra-link,
   .dc .content-box-examples .button,
   .verbtable_content .headword_link {
-    background: rgba(229, 237, 247, 0.5);
+    background: rgba(218, 218, 218, 0.5);
     display: inline-block;
     padding: 2px 10px;
     border: 0;
@@ -764,7 +764,7 @@
   }
 
   .dc .dictionary .cit.type-example .quote .emph {
-    color: #1683be;
+    color: var(--color-brand);
   }
 
   .context-english-thesaurus .scbold br {
@@ -837,7 +837,7 @@
   .context-dataset-english-thesaurus .author,
   .dc .rend-b,
   .headwordSense {
-    color: #1683be;
+    color: var(--color-brand);
   }
 
   .dc .minimalunit {
@@ -1101,7 +1101,7 @@
 
   .page .dictionary .cit.type-translation .quote {
     font-style: normal;
-    color: #1683be;
+    color: var(--color-brand);
   }
 
   .page span.bold,
@@ -1122,7 +1122,7 @@
   }
 
   .page .dictionary a:hover {
-    color: #d51f30;
+    color: #f9690e;
   }
 
   .page .dictionary .power {
@@ -1534,8 +1534,8 @@
   }
 
   .cdet .toc-group a {
-    color: #1683be;
-    border-bottom: dashed 1px #1683be;
+    color: var(--color-brand);
+    border-bottom: dashed 1px var(--color-brand);
   }
 
   .cdet .toc {
@@ -1549,7 +1549,7 @@
   }
 
   .cdet .toc-group .orth {
-    color: #1683be;
+    color: var(--color-brand);
   }
 
   .page .thesbase span.QA {
@@ -1927,7 +1927,7 @@
   }
 
   .cdet .headerThes .entry_title + div a {
-    color: #1683be;
+    color: var(--color-brand);
     font-size: 0.9em;
     margin-bottom: 1em;
     display: inline-block;
@@ -2625,14 +2625,12 @@
   }
 
   .dc .word-frequency-container .level {
-    border: 1px solid rgba(0, 0, 0, 0.5);
     border-radius: 50%;
     display: inline-block;
-    background-color: #f2928e;
   }
 
   .dc .word-frequency-container .level.roundRed {
-    background-color: #e52920;
+    background-color: #f9690e;
   }
 
   .dc .word-frequency-container .level1 {

@@ -2,6 +2,11 @@
  * Antd Patch
 \* ======================================= */
 
+body {
+  // prevent layout shaking when switching entries
+  overflow-y: scroll;
+}
+
 .ant-form-item.form-item-inline {
   display: inline-block;
   margin: 0 10px 0 0;
