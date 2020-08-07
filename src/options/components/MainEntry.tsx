@@ -1,7 +1,7 @@
-import React, { FC, useState, useEffect, useContext } from 'react'
+import React, { FC, useState, useEffect, useContext, useRef } from 'react'
 import { Helmet } from 'react-helmet'
 import { shallowEqual } from 'react-redux'
-import { Layout, Row, Col } from 'antd'
+import { Layout, Row, Col, message as antMsg } from 'antd'
 import { useSelector } from '@/content/redux'
 import { reportGA } from '@/_helpers/analytics'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
@@ -22,6 +22,7 @@ export const MainEntry: FC = () => {
   const { t, ready } = useTranslate('options')
   const [entry, setEntry] = useState(getEntry)
   const formDirtyRef = useFormDirty()
+  const warnedMissingPermissionRef = useRef(false)
   const { analytics, darkMode } = useSelector(
     state => ({
       analytics: state.config.analytics,
@@ -41,8 +42,8 @@ export const MainEntry: FC = () => {
     }
   }, [entry, analytics])
 
-  // Warn about unsaved settings before closing window
   useEffect(() => {
+    // Warn about unsaved settings before closing window
     window.addEventListener('beforeunload', e => {
       if (formDirtyRef.value) {
         e.preventDefault()
@@ -50,6 +51,23 @@ export const MainEntry: FC = () => {
       }
     })
   }, [])
+
+  useEffect(() => {
+    if (ready && !warnedMissingPermissionRef.current) {
+      warnedMissingPermissionRef.current = true
+      const permission = new URL(document.URL).searchParams.get(
+        'missing_permission'
+      )
+      if (permission) {
+        antMsg.warn(
+          t('permissions.missing', {
+            permission: t(`permissions.${permission}`)
+          }),
+          20
+        )
+      }
+    }
+  }, [Boolean(ready)])
 
   return (
     <>
