@@ -292,3 +292,29 @@ export class BackgroundServer {
     })
   }
 }
+
+browser.runtime.onMessage.addListener(msg => {
+  if (msg.contentScriptQuery === 'fetchUrl') {
+    const data = {}
+    data['method'] = msg.method || 'GET'
+    data['credentials'] = 'include'
+    data['headers'] = { 'content-type': 'application/json' }
+    if (msg.data) {
+      data['body'] = JSON.stringify(msg.data)
+    }
+    if (msg.headers) {
+      var _header = data['headers']
+      for (var item in msg.headers) {
+        _header[item] = msg.headers[item]
+      }
+      data['headers'] = _header
+    }
+    return fetch(msg.url, data)
+      .then(response => response.text())
+      .then(text => ({ status: 'ok', data: text }))
+      .catch(error => {
+        console.error('requestAuthURL error:', error)
+        return { status: 'error', error: error }
+      })
+  }
+})

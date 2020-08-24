@@ -34,27 +34,29 @@ const Title: FC = () => {
   )
 }
 
-getConfig().then(config => {
-  document.body.style.width = config.panelWidth + 'px'
+browser.tabs.executeScript({ file: '/assets/trs.js' })
 
-  switch (config.baOpen) {
-    case 'popup_panel':
-      showPanel(config)
-      break
-    case 'popup_fav':
-      addNotebook()
-      break
-    case 'popup_options':
-      openOptions()
-      break
-    case 'popup_standalone':
-      message.send({ type: 'OPEN_QS_PANEL' })
-      break
-    default:
-      sendContextMenusClick(config.baOpen)
-      break
-  }
-})
+// getConfig().then(config => {
+//   document.body.style.width = config.panelWidth + 'px'
+
+//   switch (config.baOpen) {
+//     case 'popup_panel':
+//       showPanel(config)
+//       break
+//     case 'popup_fav':
+//       addNotebook()
+//       break
+//     case 'popup_options':
+//       openOptions()
+//       break
+//     case 'popup_standalone':
+//       message.send({ type: 'OPEN_QS_PANEL' })
+//       break
+//     default:
+//       sendContextMenusClick(config.baOpen)
+//       break
+//   }
+// })
 
 async function showPanel(config: AppConfig) {
   if (config.analytics) {
