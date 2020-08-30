@@ -11,6 +11,7 @@ export function getAllContextMenus(): { [id: string]: ContextItem } {
     baidu_search: 'https://www.baidu.com/s?ie=utf-8&wd=%s',
     bing_dict: 'https://cn.bing.com/dict/?q=%s',
     bing_search: 'https://www.bing.com/search?q=%s',
+    caiyuntrs: 'x',
     cambridge:
       'http://dictionary.cambridge.org/spellcheck/english-chinese-simplified/?q=%s',
     copy_pdf_url: 'x',

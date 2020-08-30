@@ -3,6 +3,7 @@ export const locale = {
   baidu_search: '百度搜索',
   bing_dict: '必应词典',
   bing_search: '必应搜索',
+  caiyuntrs: '彩云小译网页翻译',
   cambridge: '剑桥词典',
   copy_pdf_url: '复制PDF链接到剪贴板',
   dictcn: '海词词典',

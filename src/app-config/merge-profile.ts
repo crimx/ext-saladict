@@ -146,12 +146,15 @@ export function mergeProfile(
   }
 
   /* ----------------------------------------------- *\
-      Patch
+      Patch Start
   \* ----------------------------------------------- */
   // hjdict changed korean location
   if ((base.dicts.all.hjdict.options.chsas as string) === 'kor') {
     base.dicts.all.hjdict.options.chsas = 'kr'
   }
+  /* ----------------------------------------------- *\
+      Patch End
+  \* ----------------------------------------------- */
 
   return base
 

@@ -173,6 +173,7 @@
     "storybook-addon-jsx": "7.1.15",
     "storybook-addon-react-docgen": "1.2.32",
     "to-string-loader": "^1.1.5",
+    "trsjs": "caiyunapp/trs.js",
     "typescript": "^3.8.2",
     "webpack": "^4",
     "webpack-bundle-analyzer": "^3.5.2",

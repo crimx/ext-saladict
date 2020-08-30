@@ -14771,6 +14771,10 @@ trim@0.0.1:
   resolved "https://registry.yarnpkg.com/trim/-/trim-0.0.1.tgz#5858547f6b290757ee95cccc666fb50084c460dd"
   integrity sha1-WFhUf2spB1fulczMZm+1AITEYN0=
 
+trsjs@caiyunapp/trs.js:
+  version "0.1.0"
+  resolved "https://codeload.github.com/caiyunapp/trs.js/tar.gz/3dd6611fd49b7daab6f62326e4b15710da7d3486"
+
 "true-case-path@^1.0.2":
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/true-case-path/-/true-case-path-1.0.3.tgz#f813b5a8c86b40da59606722b144e3225799f47d"

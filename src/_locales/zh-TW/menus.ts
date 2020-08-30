@@ -5,6 +5,7 @@ export const locale: typeof _locale = {
   baidu_search: '百度搜尋',
   bing_dict: 'Bing 字典',
   bing_search: 'Bing 搜尋',
+  caiyuntrs: '彩雲小譯網頁翻譯',
   cambridge: '劍橋字典',
   copy_pdf_url: '複製PDF連結到剪貼簿',
   dictcn: '海詞字典',

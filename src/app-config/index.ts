@@ -45,7 +45,7 @@ export default getDefaultConfig
 
 function _getDefaultConfig() {
   return {
-    version: 13,
+    version: 14,
 
     /** activate app, won't affect triple-ctrl setting */
     active: true,
@@ -321,12 +321,7 @@ function _getDefaultConfig() {
     ] as [string, string][],
 
     contextMenus: {
-      selected: [
-        'view_as_pdf',
-        'google_translate',
-        'google_search',
-        'saladict'
-      ],
+      selected: ['view_as_pdf', 'caiyuntrs', 'google_translate', 'saladict'],
       all: getAllContextMenus()
     },
 

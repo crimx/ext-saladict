@@ -11,6 +11,7 @@ import { init as initPdf } from './pdf-sniffer'
 import { ContextMenus } from './context-menus'
 import { BackgroundServer } from './server'
 import { initBadge } from './badge'
+import { setupCaiyunTrsBackend } from './page-translate/caiyun'
 import './types'
 
 // init first to recevice self messaging
@@ -20,6 +21,8 @@ startSyncServiceInterval()
 
 ContextMenus.init()
 BackgroundServer.init()
+
+setupCaiyunTrsBackend()
 
 getConfig().then(async config => {
   window.appConfig = config

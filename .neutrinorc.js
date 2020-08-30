@@ -187,6 +187,13 @@ module.exports = {
           from: '+(antd|antd.dark).min.css',
           to: 'assets/',
           toType: 'dir'
+        },
+        // caiyunapp
+        {
+          context: 'node_modules/trsjs/build/sala',
+          from: 'trs.js',
+          to: 'assets/',
+          toType: 'dir'
         }
       ]
     }),

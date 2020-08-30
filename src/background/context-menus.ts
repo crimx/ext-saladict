@@ -68,6 +68,11 @@ export class ContextMenus {
     //   })
   }
 
+  static openCaiyunTrs() {
+    if (isFirefox) return
+    browser.tabs.executeScript({ file: '/assets/trs.js' })
+  }
+
   static openYoudao() {
     // FF policy
     if (isFirefox) return
@@ -157,6 +162,9 @@ export class ContextMenus {
     switch (menuItemId) {
       case 'google_page_translate':
         ContextMenus.openGoogle()
+        break
+      case 'caiyuntrs':
+        ContextMenus.openCaiyunTrs()
         break
       case 'google_cn_page_translate':
         ContextMenus.openGoogle()
@@ -259,6 +267,7 @@ export class ContextMenus {
 
       let contexts: browser.contextMenus.ContextType[]
       switch (id) {
+        case 'caiyuntrs':
         case 'google_page_translate':
         case 'google_cn_page_translate':
         case 'youdao_page_translate':
