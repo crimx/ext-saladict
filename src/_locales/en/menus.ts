@@ -27,6 +27,7 @@ export const locale: typeof _locale = {
   notification_youdao_err:
     'Youdao Page Translate 2.0 not responding.\nSaladict might not have permission to access this page.\nIgnore this message if Youdao panal is shown.',
   oxford: 'Oxford',
+  page_permission_err: 'Saladict does not have permission to access this page.',
   page_translations: 'Page Translations',
   saladict: 'Saladict',
   saladict_standalone: 'Saladict Standalone Panel',

@@ -1,6 +1,5 @@
 import React, { FC, useState, useLayoutEffect } from 'react'
 import { Row, Col } from 'antd'
-import { isFirefox } from '@/_helpers/saladict'
 import { useTranslate } from '@/_helpers/i18n'
 import { useSelector } from '@/content/redux'
 import { SortableList, arrayMove } from '@/options/components/SortableList'
@@ -31,21 +30,13 @@ export const ContextMenus: FC = () => {
         <SortableList
           title={t('nav.ContextMenus')}
           description={<p>{t('config.opt.contextMenus_description')}</p>}
-          list={selectedMenus
-            .filter(id => {
-              // FF policy
-              if (isFirefox && id === 'youdao_page_translate') {
-                return false
-              }
-              return true
-            })
-            .map(id => {
-              const item = contextMenus.all[id]
-              return {
-                value: id,
-                title: typeof item === 'string' ? t(`menus:${id}`) : item.name
-              }
-            })}
+          list={selectedMenus.map(id => {
+            const item = contextMenus.all[id]
+            return {
+              value: id,
+              title: typeof item === 'string' ? t(`menus:${id}`) : item.name
+            }
+          })}
           disableEdit={(index, item) => contextMenus.all[item.value] === 'x'}
           onAdd={() => setShowAddModal(true)}
           onEdit={index => {

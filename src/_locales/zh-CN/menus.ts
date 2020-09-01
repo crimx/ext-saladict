@@ -25,6 +25,7 @@ export const locale = {
   notification_youdao_err:
     '有道网页翻译2.0 加载无响应，\n可能扩展无权访问该页面，\n如加载成功请忽略本消息。',
   oxford: '牛津词典',
+  page_permission_err: '沙拉查词无权访问此页面。',
   page_translations: '网页翻译',
   saladict: '沙拉查词',
   saladict_standalone: '沙拉查词独立窗口',
