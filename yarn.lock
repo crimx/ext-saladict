@@ -14772,8 +14772,8 @@ trim@0.0.1:
   integrity sha1-WFhUf2spB1fulczMZm+1AITEYN0=
 
 trsjs@caiyunapp/trs.js:
-  version "0.1.0"
-  resolved "https://codeload.github.com/caiyunapp/trs.js/tar.gz/3dd6611fd49b7daab6f62326e4b15710da7d3486"
+  version "0.1.1"
+  resolved "https://codeload.github.com/caiyunapp/trs.js/tar.gz/bdeeca7f81fda944bbd5c7140f0250b807b1ca0a"
 
 "true-case-path@^1.0.2":
   version "1.0.3"
