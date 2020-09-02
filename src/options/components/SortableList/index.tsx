@@ -99,7 +99,7 @@ export function SortableList(props: SortableListProps) {
                               ) : (
                                 <Radio value={item.value}>{item.title}</Radio>
                               )}
-                              <div>
+                              <div className="sortable-list-item-btns">
                                 <SwapOutlined
                                   rotate={90}
                                   title={t('sort')}

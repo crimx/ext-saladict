@@ -18,30 +18,34 @@ export const DictTitle: FC<DictTitleProps> = ({ dictID, dictLangs }) => {
   const title = t(`dicts:${dictID}.name`)
 
   return (
-    <span>
-      <img
-        className="saladict-dict-title-icon"
-        src={require('@/components/dictionaries/' + dictID + '/favicon.png')}
-        alt={`logo ${title}`}
-      />
-      <a
-        className="saladict-dict-title"
-        href="#"
-        onClick={e => {
-          e.stopPropagation()
-          e.preventDefault()
-          openDictSrcPage(dictID, dictLangs)
-        }}
-      >
-        {title}
-      </a>
-      {dictLangs.split('').map((c, i) =>
-        +c ? (
-          <span className="saladict-dict-langs-char" key={langCodes[i]}>
-            {t(`dict.lang.${langCodes[i]}`)}
-          </span>
-        ) : null
-      )}
+    <span className="saladict-dict-title">
+      <span>
+        <img
+          className="saladict-dict-title-icon"
+          src={require('@/components/dictionaries/' + dictID + '/favicon.png')}
+          alt={`logo ${title}`}
+        />
+        <a
+          className="saladict-dict-title-link"
+          href="#"
+          onClick={e => {
+            e.stopPropagation()
+            e.preventDefault()
+            openDictSrcPage(dictID, dictLangs)
+          }}
+        >
+          {title}
+        </a>
+      </span>
+      <span>
+        {dictLangs.split('').map((c, i) =>
+          +c ? (
+            <span className="saladict-dict-langs-char" key={langCodes[i]}>
+              {t(`dict.lang.${langCodes[i]}`)}
+            </span>
+          ) : null
+        )}
+      </span>
     </span>
   )
 }
