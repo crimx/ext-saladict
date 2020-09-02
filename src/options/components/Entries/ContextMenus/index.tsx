@@ -2,7 +2,7 @@ import React, { FC, useState, useLayoutEffect } from 'react'
 import { Row, Col } from 'antd'
 import { useTranslate } from '@/_helpers/i18n'
 import { useSelector } from '@/content/redux'
-import { SortableList, arrayMove } from '@/options/components/SortableList'
+import { SortableList, reorder } from '@/options/components/SortableList'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import { useListLayout } from '@/options/helpers/layout'
 import { useUpload } from '@/options/helpers/upload'
@@ -50,11 +50,8 @@ export const ContextMenus: FC = () => {
             })
             setSelectedMenus(newList)
           }}
-          onSortEnd={({ oldIndex, newIndex }) => {
-            if (oldIndex === newIndex) {
-              return
-            }
-            const newList = arrayMove(selectedMenus.slice(), oldIndex, newIndex)
+          onOrderChanged={(oldIndex, newIndex) => {
+            const newList = reorder(selectedMenus, oldIndex, newIndex)
             upload({
               [getConfigPath('contextMenus', 'selected')]: newList
             })

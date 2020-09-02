@@ -4,7 +4,7 @@ import { BlockOutlined } from '@ant-design/icons'
 import { DictID } from '@/app-config'
 import { useTranslate } from '@/_helpers/i18n'
 import { useSelector } from '@/content/redux'
-import { SortableList, arrayMove } from '@/options/components/SortableList'
+import { SortableList, reorder } from '@/options/components/SortableList'
 import { SaladictModalForm } from '@/options/components/SaladictModalForm'
 import { getProfilePath } from '@/options/helpers/path-joiner'
 import { useCheckDictAuth } from '@/options/helpers/use-check-dict-auth'
@@ -66,9 +66,8 @@ export const Dictionaries: FC = () => {
             })
             setSelectedDicts(newList)
           }}
-          onSortEnd={({ oldIndex, newIndex }) => {
-            if (oldIndex === newIndex) return
-            const newList = arrayMove(selectedDicts.slice(), oldIndex, newIndex)
+          onOrderChanged={(oldIndex, newIndex) => {
+            const newList = reorder(selectedDicts, oldIndex, newIndex)
             upload({
               [getProfilePath('dicts', 'selected')]: newList
             })
