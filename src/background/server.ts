@@ -142,15 +142,7 @@ export class BackgroundServer {
       return
     }
 
-    await this.qsPanelManager.create(word)
-
-    if (!window.appConfig.qsAuto) {
-      await timer(1000)
-      await message.send({
-        type: 'QS_PANEL_SEARCH_TEXT',
-        payload: word
-      })
-    }
+    await this.qsPanelManager.create(word, true)
   }
 
   async searchPageSelection(): Promise<void> {
@@ -172,21 +164,7 @@ export class BackgroundServer {
     if (hasCreated) {
       await this.qsPanelManager.focus()
     } else {
-      await this.qsPanelManager.create(word)
-    }
-
-    if (
-      word &&
-      (!window.appConfig.qsAuto || window.appConfig.qsPreload !== 'selection')
-    ) {
-      if (!hasCreated) {
-        // Panel may not be ready
-        await timer(500)
-      }
-      await message.send<'QS_PANEL_SEARCH_TEXT'>({
-        type: 'QS_PANEL_SEARCH_TEXT',
-        payload: word
-      })
+      await this.qsPanelManager.create(word, true)
     }
   }
 
