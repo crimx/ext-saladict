@@ -93,7 +93,6 @@ async function handleDOM(
   ]
     .filter($section => {
       const type = $section.dataset.typeBlock || ''
-      console.log(type)
       return (
         type &&
         type !== 'Video' &&
