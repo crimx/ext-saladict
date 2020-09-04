@@ -60,22 +60,26 @@ export class ContextMenus {
   static init = ContextMenus.getInstance
 
   static openGoogle() {
-    return tryExecuteScript({ file: '/assets/google-page-trans.js' })
+    return tryExecuteScript(
+      { file: '/assets/google-page-trans.js' },
+      'google_page_translate'
+    )
   }
 
   static openCaiyunTrs() {
     // FF policy
     if (isFirefox) return
-    return tryExecuteScript({ file: '/assets/trs.js' })
+    return tryExecuteScript({ file: '/assets/trs.js' }, 'caiyuntrs')
   }
 
   static async openYoudao() {
     // FF policy
     if (isFirefox) return
     // inject youdao script, defaults to the active tab of the current window.
-    const result = await tryExecuteScript({
-      file: '/assets/fanyi.youdao.2.0/main.js'
-    })
+    const result = await tryExecuteScript(
+      { file: '/assets/fanyi.youdao.2.0/main.js' },
+      'youdao_page_translate'
+    )
     if (!result || ((result as any) !== 1 && result[0] !== 1)) {
       await browser.notifications.create({
         type: 'basic',
@@ -391,18 +395,22 @@ export class ContextMenus {
   }
 }
 
-async function tryExecuteScript(details: browser.extensionTypes.InjectDetails) {
+async function tryExecuteScript(
+  details: browser.extensionTypes.InjectDetails,
+  nameKey: string
+) {
   try {
     return await browser.tabs.executeScript(details)
   } catch (error) {
+    const { i18n } = await I18nManager.getInstance()
     await browser.notifications.create({
       type: 'basic',
       eventTime: Date.now() + 4000,
       iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
       title: 'Saladict',
-      message: (await I18nManager.getInstance()).i18n.t(
-        'menus:page_permission_err'
-      )
+      message: i18n.t('menus:page_permission_err', {
+        name: i18n.t(`menus:${nameKey}`)
+      })
     })
     return error
   }

@@ -27,7 +27,7 @@ export const locale: typeof _locale = {
   notification_youdao_err:
     '有道網頁翻譯2.0 下載後無回應，\n可能是套件無權造訪該網站，\n如果下載成功後，請忽略本訊息。',
   oxford: '牛津字典',
-  page_permission_err: '沙拉查詞無權訪問此頁面。',
+  page_permission_err: '沙拉查詞「{{name}}」無權訪問此頁面。',
   page_translations: '網頁翻譯',
   saladict: '沙拉查詞',
   saladict_standalone: '沙拉查詞獨立視窗',
