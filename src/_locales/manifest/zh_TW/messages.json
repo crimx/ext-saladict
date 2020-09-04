@@ -26,6 +26,9 @@
   "command_open_youdao": {
     "message": "對此頁面使用有道翻譯"
   },
+  "command_open_caiyun": {
+    "message": "對當前頁啟用彩雲小譯"
+  },
   "command_open_pdf": {
     "message": "在 Saladict 中瀏覽此 PDF"
   },

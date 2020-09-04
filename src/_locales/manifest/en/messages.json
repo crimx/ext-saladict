@@ -26,6 +26,9 @@
   "command_open_youdao": {
     "message": "Open Youdao Translate"
   },
+  "command_open_caiyun": {
+    "message": "Open LingoCloud Translate"
+  },
   "command_open_pdf": {
     "message": "Open current PDF in Saladict"
   },
