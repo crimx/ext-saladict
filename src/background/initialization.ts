@@ -7,15 +7,16 @@ import { initProfiles, updateActiveProfileID } from '@/_helpers/profile-manager'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
 import { isFirefox } from '@/_helpers/saladict'
 import { timer } from '@/_helpers/promise-more'
-import { ContextMenus } from './context-menus'
-import { BackgroundServer } from './server'
-import { openPDF } from './pdf-sniffer'
-import './types'
 import {
   getTitlebarOffset,
   setTitlebarOffset,
   calibrateTitlebarOffset
 } from '@/_helpers/titlebar-offset'
+import { reportEvent } from '@/_helpers/analytics'
+import { ContextMenus } from './context-menus'
+import { BackgroundServer } from './server'
+import { openPDF } from './pdf-sniffer'
+import './types'
 
 browser.runtime.onInstalled.addListener(onInstalled)
 browser.runtime.onStartup.addListener(onStartup)
@@ -79,12 +80,35 @@ function onCommand(command: string) {
       break
     case 'open-google':
       ContextMenus.openGoogle()
+      reportEvent({
+        category: 'Page_Translate',
+        action: 'Open_Google',
+        label: 'From_Browser_Shortcut'
+      })
       break
     case 'open-youdao':
       ContextMenus.openYoudao()
+      reportEvent({
+        category: 'Page_Translate',
+        action: 'Open_Youdao',
+        label: 'From_Browser_Shortcut'
+      })
+      break
+    case 'open-caiyun':
+      ContextMenus.openCaiyunTrs()
+      reportEvent({
+        category: 'Page_Translate',
+        action: 'Open_Caiyun',
+        label: 'From_Browser_Shortcut'
+      })
       break
     case 'open-pdf':
       openPDF()
+      reportEvent({
+        category: 'PDF_Viewer',
+        action: 'Open_PDF_Viewer',
+        label: 'From_Browser_Shortcut'
+      })
       break
     case 'search-clipboard':
       BackgroundServer.getInstance().searchClipboard()

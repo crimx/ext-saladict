@@ -5,7 +5,7 @@ import React, { FC } from 'react'
 import ReactDOM from 'react-dom'
 import { Helmet } from 'react-helmet'
 import { AppConfig } from '@/app-config'
-import { reportGA } from '@/_helpers/analytics'
+import { reportPaveview } from '@/_helpers/analytics'
 import { getConfig } from '@/_helpers/config-manager'
 import { message, openURL } from '@/_helpers/browser-api'
 import { saveWord, Word } from '@/_helpers/record-manager'
@@ -60,7 +60,7 @@ getConfig().then(config => {
 
 async function showPanel(config: AppConfig) {
   if (config.analytics) {
-    reportGA('/popup')
+    reportPaveview('/popup')
   }
 
   const store = await createStore()

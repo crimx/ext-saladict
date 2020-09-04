@@ -4,7 +4,7 @@ import {
   createActiveProfileStream,
   createProfileIDListStream
 } from '@/_helpers/profile-manager'
-import { reportGA } from '@/_helpers/analytics'
+import { reportPaveview } from '@/_helpers/analytics'
 import { message } from '@/_helpers/browser-api'
 import { startSyncServiceInterval } from './sync-manager'
 import { init as initPdf } from './pdf-sniffer'
@@ -27,7 +27,7 @@ setupCaiyunTrsBackend()
 getConfig().then(async config => {
   window.appConfig = config
   initPdf(config)
-  reportGA('/background')
+  reportPaveview('/background')
   initBadge()
 
   addConfigListener(({ newConfig }) => {

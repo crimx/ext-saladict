@@ -3,6 +3,7 @@ import { AppConfig } from '@/app-config'
 import isEqual from 'lodash/isEqual'
 import { createConfigStream } from '@/_helpers/config-manager'
 import { isFirefox } from '@/_helpers/saladict'
+import { reportEvent } from '@/_helpers/analytics'
 import './types'
 
 import { TFunction } from 'i18next'
@@ -211,13 +212,15 @@ export class ContextMenus {
 
   // singleton
   private constructor() {
-    browser.contextMenus.onClicked.addListener(payload =>
-      this.handleContextMenusClick(payload)
-    )
+    browser.contextMenus.onClicked.addListener(payload => {
+      reportMenusEvent(payload.menuItemId, 'From_Context_Menus')
+      return this.handleContextMenusClick(payload)
+    })
 
-    message.addListener('CONTEXT_MENUS_CLICK', ({ payload }) =>
-      this.handleContextMenusClick(payload)
-    )
+    message.addListener('CONTEXT_MENUS_CLICK', ({ payload }) => {
+      reportMenusEvent(payload.menuItemId, 'From_Browser_Action')
+      return this.handleContextMenusClick(payload)
+    })
   }
 
   private async setContextMenus([{ searchHistory, contextMenus }, t]: [
@@ -402,5 +405,49 @@ async function tryExecuteScript(details: browser.extensionTypes.InjectDetails) {
       )
     })
     return error
+  }
+}
+
+function reportMenusEvent(
+  menuItemId: string | number,
+  label: 'From_Browser_Action' | 'From_Context_Menus'
+) {
+  menuItemId = String(menuItemId).replace(/_ba$/, '')
+  switch (menuItemId) {
+    case 'google_page_translate':
+      reportEvent({
+        category: 'Page_Translate',
+        action: 'Open_Google',
+        label
+      })
+      break
+    case 'caiyuntrs':
+      reportEvent({
+        category: 'Page_Translate',
+        action: 'Open_Caiyun',
+        label
+      })
+      break
+    case 'google_cn_page_translate':
+      reportEvent({
+        category: 'Page_Translate',
+        action: 'Open_Google',
+        label
+      })
+      break
+    case 'youdao_page_translate':
+      reportEvent({
+        category: 'Page_Translate',
+        action: 'Open_Youdao',
+        label
+      })
+      break
+    case 'view_as_pdf':
+      reportEvent({
+        category: 'PDF_Viewer',
+        action: 'Open_PDF_Viewer',
+        label
+      })
+      break
   }
 }
