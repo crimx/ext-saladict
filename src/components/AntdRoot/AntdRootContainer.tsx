@@ -5,7 +5,7 @@ import zh_CN from 'antd/lib/locale-provider/zh_CN'
 import zh_TW from 'antd/lib/locale-provider/zh_TW'
 import en_US from 'antd/lib/locale-provider/en_US'
 import { useSelector } from '@/content/redux'
-import { reportGA } from '@/_helpers/analytics'
+import { reportPaveview } from '@/_helpers/analytics'
 
 const antdLocales = (saladictLocale: string) => {
   switch (saladictLocale) {
@@ -41,7 +41,7 @@ export const AntdRootContainer: FC<AntdRootContainerProps> = props => {
 
   useEffect(() => {
     if (analytics && props.gaPath) {
-      reportGA(props.gaPath)
+      reportPaveview(props.gaPath)
     }
   }, [analytics, props.gaPath])
 

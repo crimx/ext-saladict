@@ -39,6 +39,9 @@ module.exports = {
     'open-google': {
       description: '__MSG_command_open_google__'
     },
+    'open-caiyun': {
+      description: '__MSG_command_open_caiyun__'
+    },
     'next-profile': {
       description: '__MSG_command_next_profile__'
     },

@@ -3,6 +3,7 @@ export const locale = {
   baidu_search: '百度搜索',
   bing_dict: '必应词典',
   bing_search: '必应搜索',
+  caiyuntrs: '彩云小译网页翻译',
   cambridge: '剑桥词典',
   copy_pdf_url: '复制PDF链接到剪贴板',
   dictcn: '海词词典',
@@ -24,6 +25,7 @@ export const locale = {
   notification_youdao_err:
     '有道网页翻译2.0 加载无响应，\n可能扩展无权访问该页面，\n如加载成功请忽略本消息。',
   oxford: '牛津词典',
+  page_permission_err: '沙拉查词「{{name}}」无权访问此页面。',
   page_translations: '网页翻译',
   saladict: '沙拉查词',
   saladict_standalone: '沙拉查词独立窗口',

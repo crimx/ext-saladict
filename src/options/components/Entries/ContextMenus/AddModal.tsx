@@ -1,5 +1,5 @@
 import React, { FC, useMemo } from 'react'
-import { List, Modal, Button } from 'antd'
+import { List, Modal, Button, Tooltip } from 'antd'
 import { CheckOutlined, CloseOutlined, EditOutlined } from '@ant-design/icons'
 import omit from 'lodash/omit'
 import { useTranslate } from '@/_helpers/i18n'
@@ -9,6 +9,15 @@ import { useSelector } from '@/content/redux'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import { useUpload } from '@/options/helpers/upload'
 
+/**
+ * key: menu id
+ * value: reason
+ */
+const unsupportedFeatures: Readonly<{ [id: string]: 'ff' | '' }> = {
+  caiyuntrs: isFirefox ? 'ff' : '',
+  youdao_page_translate: isFirefox ? 'ff' : ''
+}
+
 export interface AddModalProps {
   show: boolean
   onEdit: (menuID: string) => void
@@ -16,7 +25,7 @@ export interface AddModalProps {
 }
 
 export const AddModal: FC<AddModalProps> = ({ show, onEdit, onClose }) => {
-  const { t } = useTranslate(['common', 'menus'])
+  const { t } = useTranslate(['common', 'menus', 'options'])
   const contextMenus = useSelector(state => state.config.contextMenus)
   const unselected = useMemo(() => {
     if (!contextMenus) {
@@ -24,13 +33,7 @@ export const AddModal: FC<AddModalProps> = ({ show, onEdit, onClose }) => {
     }
 
     const selectedSet = new Set(contextMenus.selected as string[])
-    return Object.keys(contextMenus.all).filter(id => {
-      // FF policy
-      if (isFirefox && id === 'youdao_page_translate') {
-        return false
-      }
-      return !selectedSet.has(id)
-    })
+    return Object.keys(contextMenus.all).filter(id => !selectedSet.has(id))
   }, [contextMenus])
   const upload = useUpload()
 
@@ -57,20 +60,33 @@ export const AddModal: FC<AddModalProps> = ({ show, onEdit, onClose }) => {
     if (!contextMenus) return null
 
     const item = contextMenus.all[menuID]
+    const itemName = typeof item === 'string' ? t(`menus:${menuID}`) : item.name
     return (
       <List.Item>
         <div className="sortable-list-item">
-          {typeof item === 'string' ? t(`menus:${menuID}`) : item.name}
+          {itemName}
           <div>
             <div>
-              <Button
-                title={t('common:add')}
-                className="sortable-list-item-btn"
-                shape="circle"
-                size="small"
-                icon={<CheckOutlined />}
-                onClick={selectItem}
-              />
+              <Tooltip
+                title={
+                  unsupportedFeatures[menuID]
+                    ? t(
+                        `options:unsupportedFeatures.${unsupportedFeatures[menuID]}`,
+                        { feature: itemName }
+                      )
+                    : ''
+                }
+              >
+                <Button
+                  title={t('common:add')}
+                  className="sortable-list-item-btn"
+                  shape="circle"
+                  size="small"
+                  icon={<CheckOutlined />}
+                  disabled={!!unsupportedFeatures[menuID]}
+                  onClick={selectItem}
+                />
+              </Tooltip>
               <Button
                 title={t('common:edit')}
                 className="sortable-list-item-btn"

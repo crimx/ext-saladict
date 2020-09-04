@@ -1,3 +1,12 @@
+.saladict-dict-title {
+  word-break: break-all;
+
+  & > * {
+    word-break: keep-all;
+    white-space: nowrap;
+  }
+}
+
 .saladict-dict-title-icon {
   width: 1.3em;
   height: 1.3em;
@@ -5,7 +14,7 @@
   vertical-align: text-bottom;
 }
 
-.saladict-dict-title {
+.saladict-dict-title-link {
   color: currentColor;
 }
 

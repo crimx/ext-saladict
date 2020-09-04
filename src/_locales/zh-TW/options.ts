@@ -412,5 +412,9 @@ export const locale: typeof _locale = {
     clipboardWrite: '寫入剪貼簿',
     clipboardWrite_help:
       '機器翻譯詞典標題欄選單複製原文譯文或生詞本匯出到剪貼簿需要寫入剪貼簿許可權。'
+  },
+
+  unsupportedFeatures: {
+    ff: '火狐尚不支援「{{feature}}」功能。'
   }
 }

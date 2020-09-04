@@ -149,7 +149,7 @@ export class QsPanelManager {
     return originTop - offset.panel
   }
 
-  async create(preload?: Word): Promise<void> {
+  async create(preload?: Word, autoSearch?: boolean): Promise<void> {
     this.isSidebar = false
 
     let wordString = ''
@@ -174,6 +174,8 @@ export class QsPanelManager {
       }
     } catch (e) {}
 
+    const autoSearchString = autoSearch ? '&autoSearch=true' : ''
+
     await this.mainWindowsManager.takeSnapshot()
 
     const qsPanelRect = window.appConfig.qssaSidebar
@@ -188,7 +190,7 @@ export class QsPanelManager {
         ...qsPanelRect,
         type: 'popup',
         url: browser.runtime.getURL(
-          `quick-search.html?sidebar=${window.appConfig.qssaSidebar}${wordString}`
+          `quick-search.html?sidebar=${window.appConfig.qssaSidebar}${wordString}${autoSearchString}`
         )
       })
     } catch (err) {

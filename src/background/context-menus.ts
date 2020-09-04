@@ -3,6 +3,7 @@ import { AppConfig } from '@/app-config'
 import isEqual from 'lodash/isEqual'
 import { createConfigStream } from '@/_helpers/config-manager'
 import { isFirefox } from '@/_helpers/saladict'
+import { reportEvent } from '@/_helpers/analytics'
 import './types'
 
 import { TFunction } from 'i18next'
@@ -59,38 +60,37 @@ export class ContextMenus {
   static init = ContextMenus.getInstance
 
   static openGoogle() {
-    browser.tabs.executeScript({ file: '/assets/google-page-trans.js' })
-    // browser.tabs.query({ active: true, currentWindow: true })
-    //   .then(tabs => {
-    //     if (tabs.length > 0 && tabs[0].url) {
-    //       openURL(`https://translate.google.${cn ? 'cn' : 'com'}/translate?sl=auto&tl=${window.appConfig.langCode}&js=y&prev=_t&ie=UTF-8&u=${encodeURIComponent(tabs[0].url as string)}&edit-text=&act=url`)
-    //     }
-    //   })
+    return tryExecuteScript(
+      { file: '/assets/google-page-trans.js' },
+      'google_page_translate'
+    )
   }
 
-  static openYoudao() {
+  static openCaiyunTrs() {
+    // FF policy
+    if (isFirefox) return
+    return tryExecuteScript({ file: '/assets/trs.js' }, 'caiyuntrs')
+  }
+
+  static async openYoudao() {
     // FF policy
     if (isFirefox) return
     // inject youdao script, defaults to the active tab of the current window.
-    browser.tabs
-      .executeScript({ file: '/assets/fanyi.youdao.2.0/main.js' })
-      .then(result => {
-        if (!result || ((result as any) !== 1 && result[0] !== 1)) {
-          throw new Error()
-        }
+    const result = await tryExecuteScript(
+      { file: '/assets/fanyi.youdao.2.0/main.js' },
+      'youdao_page_translate'
+    )
+    if (!result || ((result as any) !== 1 && result[0] !== 1)) {
+      await browser.notifications.create({
+        type: 'basic',
+        eventTime: Date.now() + 4000,
+        iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
+        title: 'Saladict',
+        message: (await I18nManager.getInstance()).i18n.t(
+          'menus:notification_youdao_err'
+        )
       })
-      .catch(async () => {
-        // error msg
-        browser.notifications.create({
-          type: 'basic',
-          eventTime: Date.now() + 4000,
-          iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
-          title: 'Saladict',
-          message: (await I18nManager.getInstance()).i18n.t(
-            'menus:notification_youdao_err'
-          )
-        })
-      })
+    }
   }
 
   static openBaiduPage() {
@@ -158,6 +158,9 @@ export class ContextMenus {
       case 'google_page_translate':
         ContextMenus.openGoogle()
         break
+      case 'caiyuntrs':
+        ContextMenus.openCaiyunTrs()
+        break
       case 'google_cn_page_translate':
         ContextMenus.openGoogle()
         break
@@ -213,13 +216,15 @@ export class ContextMenus {
 
   // singleton
   private constructor() {
-    browser.contextMenus.onClicked.addListener(payload =>
-      this.handleContextMenusClick(payload)
-    )
+    browser.contextMenus.onClicked.addListener(payload => {
+      reportMenusEvent(payload.menuItemId, 'From_Context_Menus')
+      return this.handleContextMenusClick(payload)
+    })
 
-    message.addListener('CONTEXT_MENUS_CLICK', ({ payload }) =>
-      this.handleContextMenusClick(payload)
-    )
+    message.addListener('CONTEXT_MENUS_CLICK', ({ payload }) => {
+      reportMenusEvent(payload.menuItemId, 'From_Browser_Action')
+      return this.handleContextMenusClick(payload)
+    })
   }
 
   private async setContextMenus([{ searchHistory, contextMenus }, t]: [
@@ -252,13 +257,9 @@ export class ContextMenus {
     const browserActionItems: string[] = []
 
     for (const id of contextMenus.selected) {
-      if (isFirefox && id === 'youdao_page_translate') {
-        // FF policy
-        continue
-      }
-
       let contexts: browser.contextMenus.ContextType[]
       switch (id) {
+        case 'caiyuntrs':
         case 'google_page_translate':
         case 'google_cn_page_translate':
         case 'youdao_page_translate':
@@ -391,5 +392,70 @@ export class ContextMenus {
         })
       })
     }
+  }
+}
+
+async function tryExecuteScript(
+  details: browser.extensionTypes.InjectDetails,
+  nameKey: string
+) {
+  try {
+    return await browser.tabs.executeScript(details)
+  } catch (error) {
+    const { i18n } = await I18nManager.getInstance()
+    await browser.notifications.create({
+      type: 'basic',
+      eventTime: Date.now() + 4000,
+      iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
+      title: 'Saladict',
+      message: i18n.t('menus:page_permission_err', {
+        name: i18n.t(`menus:${nameKey}`)
+      })
+    })
+    return error
+  }
+}
+
+function reportMenusEvent(
+  menuItemId: string | number,
+  label: 'From_Browser_Action' | 'From_Context_Menus'
+) {
+  menuItemId = String(menuItemId).replace(/_ba$/, '')
+  switch (menuItemId) {
+    case 'google_page_translate':
+      reportEvent({
+        category: 'Page_Translate',
+        action: 'Open_Google',
+        label
+      })
+      break
+    case 'caiyuntrs':
+      reportEvent({
+        category: 'Page_Translate',
+        action: 'Open_Caiyun',
+        label
+      })
+      break
+    case 'google_cn_page_translate':
+      reportEvent({
+        category: 'Page_Translate',
+        action: 'Open_Google',
+        label
+      })
+      break
+    case 'youdao_page_translate':
+      reportEvent({
+        category: 'Page_Translate',
+        action: 'Open_Youdao',
+        label
+      })
+      break
+    case 'view_as_pdf':
+      reportEvent({
+        category: 'PDF_Viewer',
+        action: 'Open_PDF_Viewer',
+        label
+      })
+      break
   }
 }

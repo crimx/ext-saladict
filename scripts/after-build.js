@@ -6,10 +6,15 @@ module.exports = class AfterBuildPlugin {
     compiler.hooks.done.tapAsync(
       'AfterBuildPlugin',
       (compilation, callback) => {
-        removeYoudaoFanyi().then(callback)
+        firefoxFix().then(callback)
       }
     )
   }
+}
+
+async function firefoxFix() {
+  await removeYoudaoFanyi()
+  await removeCaiyun()
 }
 
 async function removeYoudaoFanyi() {
@@ -22,4 +27,10 @@ async function removeYoudaoFanyi() {
     path.join(__dirname, '../build/firefox/assets/fanyi.youdao.2.0/main.js'),
     ''
   )
+}
+
+async function removeCaiyun() {
+  // FF policy
+  // caiyun trs is close-sourced
+  await fs.remove(path.join(__dirname, '../build/firefox/assets/trs.js'))
 }

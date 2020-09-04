@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.16.0](https://github.com/crimx/ext-saladict/compare/v7.15.1...v7.16.0) (2020-09-04)
+
+
+### Features
+
+* add lingocloud browser shortcut ([badd839](https://github.com/crimx/ext-saladict/commit/badd839a0c40602a79337b646a0b6baa6f66f834))
+* add Lingocloud trs ([fe75c7a](https://github.com/crimx/ext-saladict/commit/fe75c7a6c9431aeeaa63138b4fd1c1eff153124f))
+
+
+### Bug Fixes
+
+* **dicts:** add google tts ([bbbe0a1](https://github.com/crimx/ext-saladict/commit/bbbe0a10a6def4608ff850e849005997abb37ad6))
+* **options:** fix dict title overflows on small screens ([54d4fe3](https://github.com/crimx/ext-saladict/commit/54d4fe30ddd0a62f0c41bc7423bf0eb3c3a9309e))
+* **options:** replace react-sortable-hoc with react-beautiful-dnd ([7e3d0c7](https://github.com/crimx/ext-saladict/commit/7e3d0c744f1d1bc18c8778460f811f2a55d029a3)), closes [#966](https://github.com/crimx/ext-saladict/issues/966)
+* **panel:** remove text loading delay on standalone panel ([42827bb](https://github.com/crimx/ext-saladict/commit/42827bb30499c7b5788be9cb10f6c9f4cf191508)), closes [#974](https://github.com/crimx/ext-saladict/issues/974)
+* **popup:** close popup panel after menus being triggered ([931afc2](https://github.com/crimx/ext-saladict/commit/931afc279ce6f9ff1e4ad211eccf2fd86f95f330))
+
 ### [7.15.1](https://github.com/crimx/ext-saladict/compare/v7.15.0...v7.15.1) (2020-08-07)
 
 ## [7.15.0](https://github.com/crimx/ext-saladict/compare/v7.14.5...v7.15.0) (2020-08-07)

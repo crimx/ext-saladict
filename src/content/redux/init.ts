@@ -317,7 +317,7 @@ async function summonedPanelInit(
   }
 
   if (word) {
-    if (autoSearch && word.text) {
+    if (word.text && (autoSearch || searchParams.get('autoSearch'))) {
       dispatch({ type: 'SEARCH_START', payload: { word } })
     } else {
       dispatch({ type: 'SUMMONED_PANEL_INIT', payload: word.text })

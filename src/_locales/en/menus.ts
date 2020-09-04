@@ -5,6 +5,7 @@ export const locale: typeof _locale = {
   baidu_search: 'Baidu Search',
   bing_dict: 'Bing Dict',
   bing_search: 'Bing Search',
+  caiyuntrs: 'Lingocloud Page Translate',
   cambridge: 'Cambridge',
   copy_pdf_url: 'Copy PDF URL to Clipboard',
   dictcn: 'Dictcn',
@@ -24,8 +25,10 @@ export const locale: typeof _locale = {
   microsoft_page_translate: 'Microsoft Page Translate',
   notebook_title: 'New Word List',
   notification_youdao_err:
-    'Youdao Page Translation 2.0 not responding.\nSaladict might not have permission to access this page.\nIgnore this message if Youdao panal is shown.',
+    'Youdao Page Translate 2.0 not responding.\nSaladict might not have permission to access this page.\nIgnore this message if Youdao panal is shown.',
   oxford: 'Oxford',
+  page_permission_err:
+    'Saladict "{{name}}" does not have permission to access this page.',
   page_translations: 'Page Translations',
   saladict: 'Saladict',
   saladict_standalone: 'Saladict Standalone Panel',

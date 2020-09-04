@@ -15,7 +15,7 @@ import {
   addProfile
 } from '@/_helpers/profile-manager'
 import { useSelector } from '@/content/redux'
-import { SortableList, arrayMove } from '@/options/components/SortableList'
+import { SortableList, reorder } from '@/options/components/SortableList'
 import { useListLayout } from '@/options/helpers/layout'
 import { useCheckDictAuth } from '@/options/helpers/use-check-dict-auth'
 import { EditNameModal } from './EditNameModal'
@@ -119,11 +119,8 @@ export const Profiles: FC = () => {
               onOk: () => tryTo(() => removeProfile(id))
             })
           }}
-          onSortEnd={({ oldIndex, newIndex }) => {
-            if (oldIndex === newIndex) {
-              return
-            }
-            const newList = arrayMove(profileIDList.slice(), oldIndex, newIndex)
+          onOrderChanged={(oldIndex, newIndex) => {
+            const newList = reorder(profileIDList, oldIndex, newIndex)
             setProfileIDList(newList)
             tryTo(() => updateProfileIDList(newList))
           }}

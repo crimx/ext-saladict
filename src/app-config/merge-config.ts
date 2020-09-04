@@ -7,6 +7,7 @@ import isString from 'lodash/isString'
 import isBoolean from 'lodash/isBoolean'
 import get from 'lodash/get'
 import set from 'lodash/set'
+import { isFirefox } from '@/_helpers/saladict'
 
 export default mergeConfig
 
@@ -18,7 +19,9 @@ export function mergeConfig(
     ? JSON.parse(JSON.stringify(baseConfig))
     : getDefaultConfig()
 
-  // pre-merge patch start
+  /* ----------------------------------------------- *\
+      Pre-merge Patch Start
+  \* ----------------------------------------------- */
   let oldVersion = oldConfig.version
 
   if (oldVersion < 13) {
@@ -42,8 +45,9 @@ export function mergeConfig(
   rename('tripleCtrlHeight', 'qssaHeight')
   rename('tripleCtrlSidebar', 'qssaSidebar')
   rename('tripleCtrlPageSel', 'qssaPageSel')
-
-  // pre-merge patch end
+  /* ----------------------------------------------- *\
+      Pre-merge Patch End
+  \* ----------------------------------------------- */
 
   Object.keys(base).forEach(key => {
     switch (key) {
@@ -168,7 +172,9 @@ export function mergeConfig(
     }
   })
 
-  // post-merge patch start
+  /* ----------------------------------------------- *\
+      Post-merge Patch Start
+  \* ----------------------------------------------- */
   oldVersion = oldConfig.version
 
   if (oldVersion <= 10) {
@@ -182,6 +188,12 @@ export function mergeConfig(
       'https://stackedit.io/*'
     ])
   }
+  if (oldVersion <= 13) {
+    oldVersion = 14
+    if (!isFirefox && !base.contextMenus.selected.includes('caiyuntrs')) {
+      base.contextMenus.selected.unshift('caiyuntrs')
+    }
+  }
 
   if (oldConfig.language['minor'] === false) {
     base.language.japanese = false
@@ -194,7 +206,9 @@ export function mergeConfig(
   if (base.panelMaxHeightRatio < 1) {
     base.panelMaxHeightRatio = Math.round(base.panelMaxHeightRatio * 100)
   }
-  // post-merge patch end
+  /* ----------------------------------------------- *\
+      Post-merge Patch End
+  \* ----------------------------------------------- */
 
   return base
 

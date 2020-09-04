@@ -4,6 +4,7 @@ import { getAllDicts } from './dicts'
 import { getAllContextMenus } from './context-menus'
 import { MtaAutoUnfold as _MtaAutoUnfold } from './profiles'
 import { getDefaultDictAuths } from './auth'
+import { isFirefox } from '@/_helpers/saladict'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 
@@ -45,7 +46,7 @@ export default getDefaultConfig
 
 function _getDefaultConfig() {
   return {
-    version: 13,
+    version: 14,
 
     /** activate app, won't affect triple-ctrl setting */
     active: true,
@@ -255,7 +256,7 @@ function _getDefaultConfig() {
      * 'popup_standalone' - open standalone panel
      * others are same as context menus
      */
-    baOpen: 'popup_panel',
+    baOpen: isFirefox ? 'popup_panel' : 'caiyuntrs',
 
     /** context tranlate engines */
     ctxTrans: {
@@ -321,12 +322,9 @@ function _getDefaultConfig() {
     ] as [string, string][],
 
     contextMenus: {
-      selected: [
-        'view_as_pdf',
-        'google_translate',
-        'google_search',
-        'saladict'
-      ],
+      selected: isFirefox
+        ? ['view_as_pdf', 'google_translate', 'saladict']
+        : ['view_as_pdf', 'caiyuntrs', 'google_translate', 'saladict'],
       all: getAllContextMenus()
     },
 
