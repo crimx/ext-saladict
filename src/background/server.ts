@@ -142,7 +142,7 @@ export class BackgroundServer {
       return
     }
 
-    await this.qsPanelManager.create(word, true)
+    await this.qsPanelManager.create(word)
   }
 
   async searchPageSelection(): Promise<void> {
@@ -164,7 +164,7 @@ export class BackgroundServer {
     if (hasCreated) {
       await this.qsPanelManager.focus()
     } else {
-      await this.qsPanelManager.create(word, true)
+      await this.qsPanelManager.create(word)
     }
   }
 
