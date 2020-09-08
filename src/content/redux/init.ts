@@ -10,17 +10,12 @@ import {
   isStandalonePage
 } from '@/_helpers/saladict'
 import { message } from '@/_helpers/browser-api'
-import { PreloadSource } from '@/app-config'
-import { Dispatch } from 'redux'
 import { Word, newWord } from '@/_helpers/record-manager'
-import { MessageResponse } from '@/typings/message'
 import { timer } from '@/_helpers/promise-more'
-import { StoreAction, StoreState } from './modules'
+import { MessageResponse } from '@/typings/message'
+import { StoreDispatch, StoreState } from './modules'
 
-export const init = (
-  dispatch: Dispatch<StoreAction>,
-  getState: () => StoreState
-) => {
+export const init = (dispatch: StoreDispatch, getState: () => StoreState) => {
   window.addEventListener('resize', () => {
     dispatch({ type: 'WINDOW_RESIZE' })
   })
@@ -192,20 +187,14 @@ export const init = (
 
       case 'TRIPLE_CTRL':
         if (!isPopupPage() && !isOptionsPage()) {
-          const { isShowDictPanel, config, selection } = getState()
-          if (config.tripleCtrl) {
-            if (config.qsStandalone) {
+          const state = getState()
+          if (state.config.tripleCtrl) {
+            if (state.config.qsStandalone) {
               // focus if the standalone panel is already opened
               message.send({ type: 'OPEN_QS_PANEL' })
-            } else if (!isShowDictPanel) {
+            } else if (!state.isShowDictPanel) {
               dispatch({ type: 'OPEN_QS_PANEL' })
-              summonedPanelInit(
-                dispatch,
-                selection.word,
-                config.qsPreload,
-                config.qsAuto,
-                ''
-              )
+              initTripleCtrl(dispatch, state)
             }
           }
         }
@@ -227,25 +216,9 @@ export const init = (
   })
 
   if (isPopupPage()) {
-    const { config, selection } = getState()
-    summonedPanelInit(
-      dispatch,
-      selection.word,
-      config.baPreload,
-      config.baAuto,
-      'popup'
-    )
-  }
-
-  if (isQuickSearchPage()) {
-    const { config, selection } = getState()
-    summonedPanelInit(
-      dispatch,
-      selection.word,
-      config.qsPreload,
-      config.qsAuto,
-      'quick-search'
-    )
+    initPopup(dispatch, getState())
+  } else if (isQuickSearchPage()) {
+    initStandaloneQuickSearch(dispatch, getState())
   } else {
     message
       .send<'QUERY_QS_PANEL'>({ type: 'QUERY_QS_PANEL' })
@@ -255,69 +228,103 @@ export const init = (
   }
 }
 
-/**
- * Summoned panel could be the dict panel
- * 1. in Standalone Quick Search page.
- * 2. in Popup page (Browser Action).
- * 3. triggered by triple ctrl shortcut.
- */
-async function summonedPanelInit(
-  dispatch: Dispatch<StoreAction>,
-  word: Word | null,
-  preload: PreloadSource,
-  autoSearch: boolean,
-  // quick-search could be turned off so this argument is needed
-  standalone: '' | 'popup' | 'quick-search'
+async function initStandaloneQuickSearch(
+  dispatch: StoreDispatch,
+  state: StoreState
 ) {
-  if (!preload) {
-    return
-  }
+  let word: Word | null = null
 
   const { searchParams } = new URL(document.URL)
 
-  if (isQuickSearchPage() && !searchParams.get('sidebar')) {
+  if (!searchParams.get('sidebar')) {
     // pin panel if not sidebar mode
     dispatch({ type: 'TOGGLE_PIN' })
   }
 
-  try {
-    if (preload === 'selection') {
-      if (standalone === 'popup') {
-        const tab = (
-          await browser.tabs.query({
-            active: true,
-            currentWindow: true
-          })
-        )[0]
-        if (tab && tab.id != null) {
-          word = await message.send<'PRELOAD_SELECTION'>(tab.id, {
-            type: 'PRELOAD_SELECTION'
-          })
-        }
-      } else if (standalone === 'quick-search') {
-        const wordString = searchParams.get('word')
-        if (wordString) {
-          try {
-            word = JSON.parse(decodeURIComponent(wordString))
-          } catch (err) {
-            word = null
-          }
-        }
+  const wordString = searchParams.get('word')
+  if (wordString) {
+    try {
+      word = JSON.parse(decodeURIComponent(wordString))
+    } catch (error) {
+      if (process.env.DEBUG) {
+        console.warn(error)
       }
-    } else if (preload === 'clipboard') {
-      const text = await message.send<'GET_CLIPBOARD'>({
-        type: 'GET_CLIPBOARD'
-      })
-      word = newWord({ text, title: 'From Clipboard' })
+      word = null
     }
-  } catch (e) {
-    if (process.env.DEBUG) {
-      console.warn(e)
+  }
+
+  if (!word) {
+    if (state.config.qsPreload === 'selection') {
+      const lastTab = Number(searchParams.get('lastTab'))
+      if (lastTab) {
+        word = await message.send<'PRELOAD_SELECTION'>(lastTab, {
+          type: 'PRELOAD_SELECTION'
+        })
+      }
+    } else if (state.config.qsPreload === 'clipboard') {
+      word = newWord({
+        text: await message.send<'GET_CLIPBOARD'>({ type: 'GET_CLIPBOARD' }),
+        title: 'From Clipboard'
+      })
     }
   }
 
   if (word) {
-    if (word.text && (autoSearch || searchParams.get('autoSearch'))) {
+    if (word.text && (state.config.qsAuto || wordString)) {
+      dispatch({ type: 'SEARCH_START', payload: { word } })
+    } else {
+      dispatch({ type: 'SUMMONED_PANEL_INIT', payload: word.text })
+    }
+  }
+}
+
+async function initPopup(dispatch: StoreDispatch, state: StoreState) {
+  let word: Word | null = null
+
+  if (state.config.baPreload === 'selection') {
+    const tab = (
+      await browser.tabs.query({
+        active: true,
+        currentWindow: true
+      })
+    )[0]
+    if (tab && tab.id != null) {
+      word = await message.send<'PRELOAD_SELECTION'>(tab.id, {
+        type: 'PRELOAD_SELECTION'
+      })
+    }
+  } else if (state.config.baPreload === 'clipboard') {
+    word = newWord({
+      text: await message.send<'GET_CLIPBOARD'>({ type: 'GET_CLIPBOARD' }),
+      title: 'From Clipboard'
+    })
+  }
+
+  if (word) {
+    if (word.text && state.config.baAuto) {
+      dispatch({ type: 'SEARCH_START', payload: { word } })
+    } else {
+      dispatch({ type: 'SUMMONED_PANEL_INIT', payload: word.text })
+    }
+  }
+}
+
+async function initTripleCtrl(dispatch: StoreDispatch, state: StoreState) {
+  let word: Word | null = null
+
+  if (state.config.qsPreload === 'selection') {
+    if (state.selection.word) {
+      word = state.selection.word
+    }
+  } else if (state.config.qsPreload === 'clipboard') {
+    word = newWord({
+      text: await message.send<'GET_CLIPBOARD'>({ type: 'GET_CLIPBOARD' }),
+      title: 'From Clipboard'
+    })
+  }
+
+  if (word) {
+    if (word.text && state.config.qsAuto) {
       dispatch({ type: 'SEARCH_START', payload: { word } })
     } else {
       dispatch({ type: 'SUMMONED_PANEL_INIT', payload: word.text })
