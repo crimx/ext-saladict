@@ -25,6 +25,9 @@
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
+  "commitlint": {
+    "extends": ["@commitlint/config-conventional"]
+  },
   "engines": {
     "node": ">= 11.0.0",
     "npm": ">= 6.9.0"
