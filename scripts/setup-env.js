@@ -3,17 +3,37 @@ const path = require('path')
 
 main().catch(swallow)
 
+// set-up local testing env
 async function main() {
   const depsPath = path.join(__dirname, '../deps')
   const destPath = path.join(__dirname, '../node_modules')
-  const stat = await fs.stat(depsPath).catch(swallow)
-  if (stat && stat.isDirectory()) {
-    const depsFiles = await fs.readdir(depsPath)
+  if (await isDirectory(depsPath)) {
+    const depsFiles = []
+    const rawDepsFiles = await fs.readdir(depsPath)
+    for (const name of rawDepsFiles) {
+      if (name.startsWith('@')) {
+        const nsFiles = await fs.readdir(path.join(depsPath, name))
+        for (const nsName of nsFiles) {
+          depsFiles.push(path.join(name, nsName))
+        }
+      } else {
+        depsFiles.push(name)
+      }
+    }
     await Promise.all(
-      depsFiles.map(name => fs.remove(path.join(destPath, name)).catch(swallow))
+      depsFiles.map(async name => {
+        const destPkgPath = path.join(destPath, name)
+        await fs.remove(destPkgPath).catch(swallow)
+        await fs.ensureDir(destPkgPath).catch(swallow)
+        await fs.copy(path.join(depsPath, name), destPkgPath).catch(swallow)
+      })
     )
-    fs.copy(path.join(depsPath), destPath).catch(swallow)
   }
+}
+
+async function isDirectory(dirPath) {
+  const dirStat = await fs.stat(dirPath).catch(swallow)
+  return Boolean(dirStat && dirStat.isDirectory())
 }
 
 function swallow() {
