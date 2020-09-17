@@ -42,6 +42,23 @@ export const search: SearchFunction<
   SogouResult,
   MachineTranslatePayload<SogouLanguage>
 > = async (rawText, config, profile, payload) => {
+  if (!config.dictAuth.sogou.pid) {
+    return machineResult(
+      {
+        result: {
+          requireCredential: true,
+          id: 'sogou',
+          sl: 'auto',
+          tl: 'auto',
+          slInitial: 'hide',
+          searchText: { paragraphs: [''] },
+          trans: { paragraphs: [''] }
+        }
+      },
+      []
+    )
+  }
+
   const translator = getTranslator()
 
   const { sl, tl, text } = await getMTArgs(
@@ -52,9 +69,10 @@ export const search: SearchFunction<
     payload
   )
 
-  const pid = config.dictAuth.sogou.pid
-  const key = config.dictAuth.sogou.key
-  const translatorConfig = pid || key ? { pid, key } : undefined
+  const translatorConfig = {
+    pid: config.dictAuth.sogou.pid,
+    key: config.dictAuth.sogou.key
+  }
 
   try {
     const result = await translator.translate(text, sl, tl, translatorConfig)
@@ -64,6 +82,7 @@ export const search: SearchFunction<
           id: 'sogou',
           sl: result.from,
           tl: result.to,
+          slInitial: profile.dicts.all.sogou.options.slInitial,
           searchText: result.origin,
           trans: result.trans
         },
@@ -81,6 +100,7 @@ export const search: SearchFunction<
           id: 'sogou',
           sl,
           tl,
+          slInitial: 'hide',
           searchText: { paragraphs: [''] },
           trans: { paragraphs: [''] }
         }

@@ -11,6 +11,7 @@ import { ViewPorps } from '@/components/dictionaries/helpers'
 import { DictID } from '@/app-config'
 import { message } from '@/_helpers/browser-api'
 import { MachineTranslateResult } from './engine'
+import { Trans, useTranslate } from '@/_helpers/i18n'
 
 type TTextSource =
   | MachineTranslateResult<DictID>['searchText']
@@ -133,6 +134,10 @@ export const MachineTrans: FC<MachineTransProps> = props => {
     }
   })
 
+  if (props.result.requireCredential) {
+    return renderCredential()
+  }
+
   return (
     <div
       className={
@@ -150,5 +155,20 @@ export const MachineTrans: FC<MachineTransProps> = props => {
         <TText source={trans} lang={tl} />
       </div>
     </div>
+  )
+}
+
+function renderCredential() {
+  const { t } = useTranslate('content')
+  return (
+    <Trans message={t('machineTrans.login')}>
+      <a
+        href={browser.runtime.getURL('options.html?menuselected=DictAuths')}
+        target="_blank"
+        rel="nofollow noopener noreferrer"
+      >
+        {t('machineTrans.dictAccount')}
+      </a>
+    </Trans>
   )
 }
