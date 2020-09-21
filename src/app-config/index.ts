@@ -8,12 +8,13 @@ import { isFirefox } from '@/_helpers/saladict'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 
-const langUI = browser.i18n.getUILanguage() || 'en'
-const langCode: LangCode = /^zh-CN|zh-TW|en$/.test(langUI)
-  ? langUI === 'zh-HK'
+const langUI = browser.i18n.getUILanguage()
+const langCode: LangCode =
+  langUI === 'zh-CN'
+    ? 'zh-CN'
+    : langUI === 'zh-TW' || langUI === 'zh-HK'
     ? 'zh-TW'
-    : (langUI as LangCode)
-  : 'en'
+    : 'en'
 
 export type DictConfigsMutable = ReturnType<typeof getAllDicts>
 export type DictConfigs = DeepReadonly<DictConfigsMutable>
