@@ -257,7 +257,8 @@ function _getDefaultConfig() {
      * 'popup_standalone' - open standalone panel
      * others are same as context menus
      */
-    baOpen: isFirefox ? 'popup_panel' : 'caiyuntrs',
+    baOpen:
+      isFirefox || !langCode.startsWith('zh-') ? 'popup_panel' : 'caiyuntrs',
 
     /** context tranlate engines */
     ctxTrans: {
@@ -323,9 +324,10 @@ function _getDefaultConfig() {
     ] as [string, string][],
 
     contextMenus: {
-      selected: isFirefox
-        ? ['view_as_pdf', 'google_translate', 'saladict']
-        : ['view_as_pdf', 'caiyuntrs', 'google_translate', 'saladict'],
+      selected:
+        isFirefox || !langCode.startsWith('zh-')
+          ? ['view_as_pdf', 'google_translate', 'saladict']
+          : ['view_as_pdf', 'caiyuntrs', 'google_translate', 'saladict'],
       all: getAllContextMenus()
     },
 
