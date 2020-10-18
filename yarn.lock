@@ -2846,7 +2846,7 @@
   resolved "https://registry.yarnpkg.com/@types/uuid/-/uuid-3.4.9.tgz#fcf01997bbc9f7c09ae5f91383af076d466594e1"
   integrity sha512-XDwyIlt/47l2kWLTzw/mtrpLdB+GPSskR2n/PIcPn+VYhVO77rGhRncIR5GPU0KRzXuqkDO+J5qqrG0Y8P6jzQ==
 
-"@types/wavesurfer.js@^2.0.2":
+"@types/wavesurfer.js@2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@types/wavesurfer.js/-/wavesurfer.js-2.0.2.tgz#b98a4d57ca24ee2028ae6dd5c2208b568bb73842"
   integrity sha512-078vSMwH9LNVg9oAe7/M27p1MjfJ3ncuj54ROj+nL4vnrvDEV7Ye1v+o/LTR0Z396r6u6DTNkoEq5kKgJkzFrQ==
@@ -13852,10 +13852,10 @@ sort-keys@^1.0.0:
   dependencies:
     is-plain-obj "^1.0.0"
 
-soundtouchjs@^0.1.5:
-  version "0.1.21"
-  resolved "https://registry.yarnpkg.com/soundtouchjs/-/soundtouchjs-0.1.21.tgz#35f4c95f6633b105c029c109ed0c07071a2e0927"
-  integrity sha512-s/iywqZi5lfnk3eORTpfA72TJ/Pyog5PrWeKXZod6diDMb+71TsDdUAwraB2s+EsLROvBOxdZapuXzdFpoxnQg==
+soundtouchjs@^0.1.24:
+  version "0.1.24"
+  resolved "https://registry.yarnpkg.com/soundtouchjs/-/soundtouchjs-0.1.24.tgz#0eba9be95dec785799d688d69285c8fb7192e79b"
+  integrity sha512-z4tNuQ6TH7+g9ciU7OMPh/zq2TUrfRM20F4aBbyCRxUrY674R1+oBMXCyOgU8wTzUGIA8nTILdO9/caQzMPYrA==
 
 source-list-map@^2.0.0:
   version "2.0.1"
@@ -15281,10 +15281,10 @@ watchpack@^1.6.1:
     chokidar "^3.4.0"
     watchpack-chokidar2 "^2.0.0"
 
-wavesurfer.js@^3.0.0:
-  version "3.3.3"
-  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-3.3.3.tgz#9b16a62335c6bd13a3d55deb895a336d027ccb51"
-  integrity sha512-meko20S9in+V5xBLSVV/9uYVBSbx5AsJNkAslZ+a5yYIeFGYwcCo4Yd1sUpSGaiNnyflzrJwC7x7TdJFYrdT8w==
+wavesurfer.js@3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/wavesurfer.js/-/wavesurfer.js-3.0.0.tgz#35f36d76d59c749dca453cf4e10ee0ec49f454f8"
+  integrity sha512-DANu206c6gb9pSUbYFevsSiXMy8+Ri+CNtqm0UsouUdsn9fVQRtYs8uxzBtXK+rUPlIc6FlO54DU8uWeW3lDzw==
 
 wbuf@^1.1.0, wbuf@^1.7.3:
   version "1.7.3"
