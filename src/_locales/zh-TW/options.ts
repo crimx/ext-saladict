@@ -101,6 +101,10 @@ export const locale: typeof _locale = {
     pdfStandalone: '獨立視窗',
     pdfStandalone_help:
       '在獨立視窗中開啟 PDF 閱讀器。獨立視窗只有標題欄，佔用更少空間，但不能複製連結等操作。',
+    baWidth: '彈窗寬度',
+    baWidth_help: '右上彈框面板寬度。若為負數則取查字介面的寬度。',
+    baHeight: '彈窗高度',
+    baHeight_help: '右上彈框面板高度。',
     baOpen: '點選網址列旁圖示',
     baOpen_help:
       '點選網址列旁 Saladict 圖示時發生的操作。沿用了「右鍵選單」的條目，可以前往該設定頁面增加或編輯。',

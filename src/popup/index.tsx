@@ -35,7 +35,10 @@ const Title: FC = () => {
 }
 
 getConfig().then(config => {
-  document.body.style.width = config.panelWidth + 'px'
+  document.body.style.width =
+    config.baOpen === 'popup_panel'
+      ? (config.baWidth >= 0 ? config.baWidth : config.panelWidth) + 'px'
+      : '450px'
 
   switch (config.baOpen) {
     case 'popup_panel':

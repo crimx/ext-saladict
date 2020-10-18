@@ -98,6 +98,10 @@ export const locale = {
     pdfStandalone: '独立窗口',
     pdfStandalone_help:
       '在独立窗口中打开 PDF 阅读器。独立窗口只有标题栏，占用更少空间，但不能复制链接等操作。',
+    baWidth: '弹窗宽度',
+    baWidth_help: '右上弹框面板宽度。若为负数则取查词面板的宽度。',
+    baHeight: '弹窗高度',
+    baHeight_help: '右上弹框面板高度。',
     baOpen: '点击地址栏旁图标',
     baOpen_help:
       '点击地址栏旁 Saladict 图标时发生的操作。沿用了「右键菜单」的项目，可以前往该设置页面进行增加或编辑。',

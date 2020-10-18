@@ -1,13 +1,17 @@
 import React, { FC } from 'react'
-import { Switch, Select } from 'antd'
+import { Switch, Select, Slider } from 'antd'
 import { useTranslate } from '@/_helpers/i18n'
 import { useSelector } from '@/content/redux'
 import { getConfigPath } from '@/options/helpers/path-joiner'
-import { SaladictForm } from '@/options/components/SaladictForm'
+import {
+  SaladictForm,
+  pixelSlideFormatter
+} from '@/options/components/SaladictForm'
 
 export const Popup: FC = () => {
   const { t } = useTranslate(['options', 'menus'])
   const contextMenusAll = useSelector(state => state.config.contextMenus.all)
+  const { availWidth } = window.screen
 
   return (
     <SaladictForm
@@ -34,6 +38,38 @@ export const Popup: FC = () => {
                 </Select.Option>
               ))}
             </Select>
+          )
+        },
+        {
+          name: getConfigPath('baWidth'),
+          hide: values => values[getConfigPath('baOpen')] !== 'popup_panel',
+          children: (
+            <Slider
+              tipFormatter={pixelSlideFormatter}
+              min={-1}
+              max={availWidth}
+              marks={{
+                '-1': '-1',
+                450: '450px',
+                [availWidth]: `${availWidth}px`
+              }}
+            />
+          )
+        },
+        {
+          name: getConfigPath('baHeight'),
+          hide: values => values[getConfigPath('baOpen')] !== 'popup_panel',
+          children: (
+            <Slider
+              tipFormatter={pixelSlideFormatter}
+              min={250}
+              max={availWidth}
+              marks={{
+                250: '250px',
+                550: '550px',
+                [availWidth]: `${availWidth}px`
+              }}
+            />
           )
         },
         {

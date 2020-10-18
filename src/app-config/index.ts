@@ -243,6 +243,11 @@ function _getDefaultConfig() {
     /** should standalone panel memo position and dimension on close */
     qssaRectMemo: false,
 
+    /** browser action panel width defaults to as wide as possible */
+    baWidth: -1,
+
+    baHeight: 550,
+
     /** browser action panel preload source */
     baPreload: 'selection' as PreloadSource,
 
