@@ -170,12 +170,18 @@ export class BackgroundServer {
 
   async openSrcPage({
     id,
-    text
+    text,
+    active
   }: Message<'OPEN_DICT_SRC_PAGE'>['payload']): Promise<void> {
     const engine = await BackgroundServer.getDictEngine(id)
-    return openUrl(
-      await engine.getSrcPage(text, window.appConfig, window.activeProfile)
-    )
+    return openUrl({
+      url: await engine.getSrcPage(
+        text,
+        window.appConfig,
+        window.activeProfile
+      ),
+      active
+    })
   }
 
   async fetchDictResult(

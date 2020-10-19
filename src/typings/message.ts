@@ -24,6 +24,8 @@ export type MessageConfig = MessageConfigType<{
     payload: {
       id: DictID
       text: string
+      /** Focus on the new page? */
+      active?: boolean
     }
   }
 
