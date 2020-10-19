@@ -11,7 +11,7 @@ import { resetConfig } from '@/_helpers/config-manager'
 import { resetAllProfiles } from '@/_helpers/profile-manager'
 import { useTranslate } from '@/_helpers/i18n'
 import { isFirefox } from '@/_helpers/saladict'
-import { openURL } from '@/_helpers/browser-api'
+import { openUrl } from '@/_helpers/browser-api'
 import { useSelector } from '@/content/redux'
 import {
   useFormItemLayout,
@@ -195,7 +195,7 @@ export const SaladictForm = React.forwardRef(
                 if (isFirefox) {
                   Modal.info({ content: t('firefox_shortcuts') })
                 } else {
-                  openURL('chrome://extensions/shortcuts')
+                  openUrl('chrome://extensions/shortcuts')
                 }
               }}
             >

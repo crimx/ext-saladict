@@ -1,5 +1,5 @@
 import mapValues from 'lodash/mapValues'
-import { message, storage, openURL } from '@/_helpers/browser-api'
+import { message, storage, openUrl } from '@/_helpers/browser-api'
 import { isExtTainted } from '@/_helpers/integrity'
 import { checkUpdate } from '@/_helpers/check-update'
 import { updateConfig, initConfig } from '@/_helpers/config-manager'
@@ -174,11 +174,11 @@ async function onInstalled({
     if (
       !(await storage.sync.get('hasInstructionsShown')).hasInstructionsShown
     ) {
-      openURL('options.html?menuselected=Privacy&nopanel=true', true)
+      openUrl('options.html?menuselected=Privacy&nopanel=true', true)
       if (window.appConfig.langCode.startsWith('zh')) {
-        openURL('https://saladict.crimx.com/notice.html')
+        openUrl('https://saladict.crimx.com/notice.html')
       } else {
-        openURL('https://saladict.crimx.com/en/notice.html')
+        openUrl('https://saladict.crimx.com/en/notice.html')
       }
       storage.sync.set({ hasInstructionsShown: true })
     }
@@ -309,7 +309,7 @@ function genClickListener(url: string) {
     switch (notificationId) {
       case 'sd-install':
       case 'sd-update':
-        openURL(url)
+        openUrl(url)
         browser.notifications.getAll().then(notifications => {
           Object.keys(notifications).forEach(id =>
             browser.notifications.clear(id)

@@ -4,7 +4,7 @@
 
 import { AppConfig } from '@/app-config'
 import { addConfigListener } from '@/_helpers/config-manager'
-import { openURL } from '@/_helpers/browser-api'
+import { openUrl } from '@/_helpers/browser-api'
 
 export function init(config: AppConfig) {
   if (browser.webRequest.onBeforeRequest.hasListener(otherPdfListener)) {
@@ -58,7 +58,7 @@ export async function openPDF(url?: string, force?: boolean) {
 
   return window.appConfig.pdfStandalone
     ? openPDFStandalone(pdfURL)
-    : openURL(pdfURL)
+    : openUrl(pdfURL)
 }
 
 export function extractPDFUrl(fullurl?: string): string | void {

@@ -7,7 +7,7 @@ import { Helmet } from 'react-helmet'
 import { AppConfig } from '@/app-config'
 import { reportPaveview } from '@/_helpers/analytics'
 import { getConfig } from '@/_helpers/config-manager'
-import { message, openURL } from '@/_helpers/browser-api'
+import { message, openUrl } from '@/_helpers/browser-api'
 import { saveWord, Word } from '@/_helpers/record-manager'
 import { translateCtxs, genCtxText } from '@/_helpers/translateCtx'
 import { Message } from '@/typings/message'
@@ -128,7 +128,7 @@ async function addNotebook() {
 }
 
 function openOptions() {
-  openURL('options.html', true)
+  openUrl('options.html', true)
 }
 
 async function sendContextMenusClick(menuItemId: string) {

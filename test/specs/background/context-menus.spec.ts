@@ -4,7 +4,7 @@ import { take } from 'rxjs/operators'
 import '@/background/types'
 import { timer } from '@/_helpers/promise-more'
 import * as configManagerMock from '@/_helpers/__mocks__/config-manager'
-import { openURL as openURLMock } from '@/_helpers/__mocks__/browser-api'
+import { openUrl as openUrlMock } from '@/_helpers/__mocks__/browser-api'
 import { browser } from '../../helper'
 
 window.appConfig = getDefaultConfig()
@@ -13,7 +13,7 @@ jest.mock('@/_helpers/config-manager')
 jest.mock('@/_helpers/browser-api')
 
 let configManager: typeof configManagerMock
-let openURL: typeof openURLMock
+let openUrl: typeof openUrlMock
 
 function specialConfig() {
   const config = getDefaultConfig() as AppConfigMutable
@@ -29,13 +29,13 @@ describe.skip('Context Menus', () => {
     jest.resetModules()
     require('@/background/context-menus')
     configManager = require('@/_helpers/config-manager')
-    openURL = require('@/_helpers/browser-api').openURL
+    openUrl = require('@/_helpers/browser-api').openUrl
   })
   afterAll(() => browser.flush())
 
   describe('Context Menus Click', () => {
     beforeEach(() => {
-      openURL.mockClear()
+      openUrl.mockClear()
       browser.tabs.query.flush()
       browser.runtime.getURL.callsFake(s => s)
       browser.tabs.query
@@ -71,28 +71,28 @@ describe.skip('Context Menus', () => {
       browser.tabs.query.onFirstCall().returns(Promise.resolve([]))
       browser.contextMenus.onClicked.dispatch({ menuItemId: 'view_as_pdf' })
       await timer(0)
-      expect(openURL).toHaveBeenCalledTimes(1)
+      expect(openUrl).toHaveBeenCalledTimes(1)
     })
     it('search_history', async () => {
       browser.tabs.query.onFirstCall().returns(Promise.resolve([]))
       browser.contextMenus.onClicked.dispatch({ menuItemId: 'search_history' })
       await timer(0)
-      expect(openURL).toHaveBeenCalledTimes(1)
-      expect(openURL).toBeCalledWith(expect.stringContaining('history'))
+      expect(openUrl).toHaveBeenCalledTimes(1)
+      expect(openUrl).toBeCalledWith(expect.stringContaining('history'))
     })
     it('notebook', async () => {
       browser.tabs.query.onFirstCall().returns(Promise.resolve([]))
       browser.contextMenus.onClicked.dispatch({ menuItemId: 'notebook' })
       await timer(0)
-      expect(openURL).toHaveBeenCalledTimes(1)
-      expect(openURL).toBeCalledWith(expect.stringContaining('notebook'))
+      expect(openUrl).toHaveBeenCalledTimes(1)
+      expect(openUrl).toBeCalledWith(expect.stringContaining('notebook'))
     })
     it('default', async () => {
       browser.tabs.query.onFirstCall().returns(Promise.resolve([]))
       browser.contextMenus.onClicked.dispatch({ menuItemId: 'bing_dict' })
       await timer(0)
-      expect(openURL).toHaveBeenCalledTimes(1)
-      expect(openURL).toBeCalledWith(expect.stringContaining('bing'))
+      expect(openUrl).toHaveBeenCalledTimes(1)
+      expect(openUrl).toBeCalledWith(expect.stringContaining('bing'))
     })
   })
 
