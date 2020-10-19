@@ -1,4 +1,4 @@
-import { message, openURL } from '@/_helpers/browser-api'
+import { message, openUrl } from '@/_helpers/browser-api'
 import { timeout, timer } from '@/_helpers/promise-more'
 import { getSuggests } from '@/_helpers/getSuggests'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
@@ -61,7 +61,7 @@ export class BackgroundServer {
         case 'OPEN_DICT_SRC_PAGE':
           return this.openSrcPage(msg.payload)
         case 'OPEN_URL':
-          return openURL(msg.payload.url, msg.payload.self)
+          return openUrl(msg.payload)
         case 'PLAY_AUDIO':
           return AudioManager.getInstance().play(msg.payload)
         case 'STOP_AUDIO':
@@ -173,7 +173,7 @@ export class BackgroundServer {
     text
   }: Message<'OPEN_DICT_SRC_PAGE'>['payload']): Promise<void> {
     const engine = await BackgroundServer.getDictEngine(id)
-    return openURL(
+    return openUrl(
       await engine.getSrcPage(text, window.appConfig, window.activeProfile)
     )
   }

@@ -1,6 +1,7 @@
 import { Word, DBArea } from '@/_helpers/record-manager'
 import { DictID } from '@/app-config'
 import { DictSearchResult } from '@/components/dictionaries/helpers'
+import { OpenUrlOptions } from '@/_helpers/browser-api'
 
 type MessageConfigType<
   T extends {
@@ -15,11 +16,7 @@ export type MessageConfig = MessageConfigType<{
 
   /** Open url in new tab or update existing tab */
   OPEN_URL: {
-    payload: {
-      url: string
-      /** use browser.runtime.getURL? */
-      self?: boolean
-    }
+    payload: OpenUrlOptions
   }
 
   /** Open the source page of a dictionary */
