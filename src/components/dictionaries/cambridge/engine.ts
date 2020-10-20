@@ -1,5 +1,6 @@
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { getStaticSpeaker } from '@/components/Speaker'
+import { DictConfigs } from '@/app-config'
 import {
   HTMLString,
   getInnerHTML,
@@ -35,7 +36,7 @@ export const getSrcPage: GetSrcPageFunction = async (text, config, profile) => {
   switch (lang) {
     case 'en':
       return (
-        'https://dictionary.cambridge.org/dictionary/english/' +
+        'https://dictionary.cambridge.org/search/direct/?datasetsearch=english&q=' +
         encodeURIComponent(
           text
             .trim()
@@ -45,13 +46,13 @@ export const getSrcPage: GetSrcPageFunction = async (text, config, profile) => {
       )
     case 'en-chs':
       return (
-        'https://dictionary.cambridge.org/zhs/%E8%AF%8D%E5%85%B8/%E8%8B%B1%E8%AF%AD-%E6%B1%89%E8%AF%AD-%E7%AE%80%E4%BD%93/' +
+        'https://dictionary.cambridge.org/zhs/%E6%90%9C%E7%B4%A2/direct/?datasetsearch=english-chinese-simplified&q=' +
         encodeURIComponent(text)
       )
     case 'en-chz': {
       const chsToChz = await getChsToChz()
       return (
-        'https://dictionary.cambridge.org/zht/%E8%A9%9E%E5%85%B8/%E8%8B%B1%E8%AA%9E-%E6%BC%A2%E8%AA%9E-%E7%B9%81%E9%AB%94/' +
+        'https://dictionary.cambridge.org/zht/%E6%90%9C%E7%B4%A2/direct/?datasetsearch=english-chinese-traditional&q=' +
         encodeURIComponent(chsToChz(text))
       )
     }
@@ -77,11 +78,12 @@ export const search: SearchFunction<CambridgeResult> = async (
 ) => {
   return fetchDirtyDOM(await getSrcPage(text, config, profile))
     .catch(handleNetWorkError)
-    .then(handleDOM)
+    .then(doc => handleDOM(doc, profile.dicts.all.cambridge.options))
 }
 
 function handleDOM(
-  doc: Document
+  doc: Document,
+  options: DictConfigs['cambridge']['options']
 ): CambridgeSearchResult | Promise<CambridgeSearchResult> {
   const result: CambridgeResult = []
   const catalog: NonNullable<CambridgeSearchResult['catalog']> = []
@@ -145,9 +147,27 @@ function handleDOM(
       sanitizeEntry($idiom)
 
       result.push({
-        id: '`d-cambridge-entry-idiom',
+        id: 'd-cambridge-entry-idiom',
         html: getInnerHTML(HOST, $idiom)
       })
+    }
+  }
+
+  if (result.length <= 0 && options.related) {
+    const $link = doc.querySelector('link[rel=canonical]')
+    if (
+      $link &&
+      /dictionary\.cambridge\.org\/([^/]+\/)?spellcheck\//.test(
+        $link.getAttribute('href') || ''
+      )
+    ) {
+      const $related = doc.querySelector('.hfl-s.lt2b.lmt-10.lmb-25.lp-s_r-20')
+      if ($related) {
+        result.push({
+          id: 'd-cambridge-entry-related',
+          html: getInnerHTML(HOST, $related)
+        })
+      }
     }
   }
 

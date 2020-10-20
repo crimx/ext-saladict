@@ -1,6 +1,6 @@
 import { MockRequest } from '@/components/dictionaries/helpers'
 
-export const mockSearchTexts = ['catch-zht', 'house-zhs', 'love']
+export const mockSearchTexts = ['jumblish', 'catch-zht', 'house-zhs', 'love']
 
 export const mockRequest: MockRequest = mock => {
   mock.onGet(/cambridge/).reply(info => {

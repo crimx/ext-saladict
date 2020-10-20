@@ -2,6 +2,7 @@ import { DictItem } from '@/app-config/dicts'
 
 export type CambridgeConfig = DictItem<{
   lang: 'default' | 'en' | 'en-chs' | 'en-chz'
+  related: boolean
 }>
 
 export default (): CambridgeConfig => ({
@@ -34,7 +35,8 @@ export default (): CambridgeConfig => ({
     max: 5
   },
   options: {
-    lang: 'default'
+    lang: 'default',
+    related: true
   },
   options_sel: {
     lang: ['default', 'en', 'en-chs', 'en-chz']
