@@ -184,7 +184,7 @@ export const MenuBar: FC<MenuBarProps> = props => {
             }}
           />
         </>
-      ) : (
+      ) : isPopupPage() ? null : (
         <>
           <PinBtn
             t={t}
