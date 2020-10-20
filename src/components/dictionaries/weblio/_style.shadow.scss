@@ -5859,17 +5859,6 @@ table.shosn td {
   padding: 0;
 }
 
-.kijiWrp {
-  border-top: #d1d1d1 solid 4px;
-  margin: 0 0 20px 0;
-  padding-left: 13px;
-}
-
-.kijiWrp .lgDict {
-  float: right;
-  margin: 1px 1px 0 0;
-}
-
 .kiji {
   color: #111;
   font-size: 1.0em;
@@ -5961,4 +5950,102 @@ h2.midashigo {
 
 .fwlAnc b {
   font-weight: normal;
+}
+
+.content-foot-dict-ranking {
+  margin-bottom: 1em;
+
+  .dict-ranking-title {
+    margin-bottom: 5px;
+  }
+
+  .ranking-item {
+    display:flex;
+    flex-wrap:wrap;
+    margin-bottom: 5px;
+  }
+
+  .item{
+    padding-right:2.8em;
+
+    span{
+      padding-right:0.4em;
+    }
+
+    a:hover{
+      text-decoration:underline;
+    }
+  }
+}
+
+.dict-foot-guide{
+  position:relative;
+  // padding:20px 25px;
+  margin-top:1em;
+}
+
+.dict-foot-guide>div{
+  margin-bottom:10px;
+}
+
+.dict-foot-guide>div:last-child{
+  margin-bottom:0;
+}
+
+.dict-foot-guide .title{
+  font-size:1.2em;
+  font-weight:bold;
+  line-height:1.875;
+}
+
+.dict-foot-guide .word-list{
+  display:flex;
+  flex-wrap:wrap;
+  line-height:2.2;
+}
+
+.dict-foot-guide .word-list span{
+  margin-right:1.4em;
+}
+
+.dict-foot-guide .label{
+  line-height:2.14286;
+}
+
+.dict-foot-guide .label a{
+  color: var(--color-font-grey);
+  text-decoration:underline;
+}
+
+.dict-foot-guide .label a:hover{
+  text-decoration:none;
+}
+
+.linker-list>.lists>span.wList,
+.dict-foot-guide .fndAnc{
+  position:relative;
+}
+
+.linker-list>.lists>span.wList>a,
+.dict-foot-guide .fndAnc a{
+  padding-left:0.8em;
+}
+
+.linker-list>.lists>span.wList>a::before,
+.dict-foot-guide .fndAnc a::before{
+  content:'';
+  width:0;
+  height:0;
+  border-top:0.4em solid transparent;
+  border-bottom:0.4em solid transparent;
+  border-left:0.6em solid var(--color-font-grey);
+  position:absolute;
+  left:0;
+  top:0.2em;
+  color:var(--color-font-grey);
+}
+
+.dict-foot-guide .word-list a:hover,
+.dict-foot-guide .fndAnc a:hover{
+  text-decoration:underline;
 }

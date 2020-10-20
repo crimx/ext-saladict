@@ -7,7 +7,9 @@ import {
   getOuterHTML,
   SearchFunction,
   GetSrcPageFunction,
-  DictSearchResult
+  DictSearchResult,
+  getText,
+  removeChild
 } from '../helpers'
 
 export const getSrcPage: GetSrcPageFunction = text => {
@@ -65,6 +67,19 @@ function handleDOM(
         def: getInnerHTML(HOST, $dict, { config: {} })
       })
     })
+
+  if (result.length <= 0) {
+    doc.querySelectorAll('.section-card .basic-card').forEach($card => {
+      const title = getText($card, '.pbarT h2')
+      if (title) {
+        removeChild($card, '.pbarT')
+        result.push({
+          title,
+          def: getInnerHTML(HOST, $card, { config: {} })
+        })
+      }
+    })
+  }
 
   return result.length > 0 ? { result } : handleNoResult()
 }

@@ -1,5 +1,9 @@
 module.exports = {
   files: [
+    [
+      '主催.html',
+      'https://www.weblio.jp/content/' + encodeURIComponent('主催')
+    ],
     ['love.html', 'https://www.weblio.jp/content/love'],
     [
       '吐く.html',
