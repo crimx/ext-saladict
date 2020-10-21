@@ -1,5 +1,6 @@
 import { message, storage, openUrl } from '@/_helpers/browser-api'
 import { take } from 'rxjs/operators'
+import sinon from 'sinon'
 import { browser } from '../../helper'
 import { Message } from '@/typings/message'
 
@@ -667,7 +668,9 @@ describe('Browser API Wapper', () => {
       return openUrl(url).then(() => {
         expect(browser.tabs.query.calledWith({ url })).toBeTruthy()
         expect(browser.tabs.highlight.notCalled).toBeTruthy()
-        expect(browser.tabs.create.calledWith({ url })).toBeTruthy()
+        expect(
+          browser.tabs.create.calledWith(sinon.match({ url }))
+        ).toBeTruthy()
       })
     })
     it('Concat extension base url', () => {
@@ -675,7 +678,9 @@ describe('Browser API Wapper', () => {
       browser.runtime.getURL.returns('test')
       return openUrl(url, true).then(() => {
         expect(browser.runtime.getURL.calledWith(url)).toBeTruthy()
-        expect(browser.tabs.create.calledWith({ url: 'test' })).toBeTruthy()
+        expect(
+          browser.tabs.create.calledWith(sinon.match({ url: 'test' }))
+        ).toBeTruthy()
       })
     })
   })
