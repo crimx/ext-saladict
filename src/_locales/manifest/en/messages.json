@@ -35,6 +35,12 @@
   "command_search_clipboard": {
     "message": "Search clipboard content in Standalone Panel"
   },
+  "command_next_history": {
+    "message": "Next Search History"
+  },
+  "command_prev_history": {
+    "message": "Previous Search History"
+  },
   "command_next_profile": {
     "message": "Next Profile"
   },

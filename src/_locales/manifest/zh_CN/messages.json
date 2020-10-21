@@ -35,6 +35,12 @@
   "command_search_clipboard": {
     "message": "在独立窗口中搜索剪贴板内容"
   },
+  "command_next_history": {
+    "message": "下一个临时查询历史"
+  },
+  "command_prev_history": {
+    "message": "上一个临时查询历史"
+  },
   "command_next_profile": {
     "message": "下一个情景模式"
   },

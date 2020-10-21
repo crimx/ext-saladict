@@ -212,6 +212,13 @@ export type MessageConfig = MessageConfigType<{
     payload: boolean
   }
 
+  /** switch to the next or previous history */
+  SWITCH_HISTORY: {
+    payload: 'prev' | 'next'
+    /** received? */
+    response: boolean
+  }
+
   /** From other pages or frames query for active panel pin state */
   QUERY_PIN_STATE: {
     response: boolean

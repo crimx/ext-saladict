@@ -23,7 +23,7 @@ type Dispatchers = ExtractDispatchers<
   | 'searchText'
   | 'updateText'
   | 'addToNoteBook'
-  | 'updateHistoryIndex'
+  | 'switchHistory'
   | 'togglePin'
   | 'toggleQSFocus'
   | 'onClose'
@@ -80,9 +80,8 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
   addToNoteBook: () => {
     dispatch({ type: 'ADD_TO_NOTEBOOK' })
   },
-  updateHistoryIndex: index => {
-    dispatch({ type: 'UPDATE_HISTORY_INDEX', payload: index })
-    dispatch({ type: 'SEARCH_START', payload: { noHistory: true } })
+  switchHistory: direction => {
+    dispatch({ type: 'SWITCH_HISTORY', payload: direction })
   },
   togglePin: () => {
     dispatch({ type: 'TOGGLE_PIN' })

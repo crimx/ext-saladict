@@ -35,6 +35,12 @@
   "command_search_clipboard": {
     "message": "在獨立視窗中搜尋剪貼簿內容"
   },
+  "command_next_history": {
+    "message": "下一個臨時查詢歷史"
+  },
+  "command_prev_history": {
+    "message": "上一個臨時查詢歷史"
+  },
   "command_next_profile": {
     "message": "下一個情景模式"
   },

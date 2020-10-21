@@ -125,13 +125,20 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
           isQSPanel: isQuickSearchPage()
         },
 
-  UPDATE_HISTORY_INDEX: (state, { payload }) => ({
-    ...state,
-    historyIndex: payload,
-    text: state.searchHistory[payload]
-      ? state.searchHistory[payload].text
-      : state.text
-  }),
+  SWITCH_HISTORY: (state, { payload }) => {
+    const historyIndex = Math.min(
+      Math.max(0, state.historyIndex + (payload === 'prev' ? -1 : 1)),
+      state.searchHistory.length - 1
+    )
+
+    return {
+      ...state,
+      historyIndex,
+      text: state.searchHistory[historyIndex]
+        ? state.searchHistory[historyIndex].text
+        : state.text
+    }
+  },
 
   WORD_IN_NOTEBOOK: (state, { payload }) => ({
     ...state,

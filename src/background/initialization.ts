@@ -113,6 +113,30 @@ function onCommand(command: string) {
     case 'search-clipboard':
       BackgroundServer.getInstance().searchClipboard()
       break
+    case 'next-history':
+    case 'prev-history':
+      // Send to browser action panel first
+      message
+        .send<'SWITCH_HISTORY', boolean>({
+          type: 'SWITCH_HISTORY',
+          payload: command === 'next-history' ? 'next' : 'prev'
+        })
+        .then(received => {
+          if (received) return // browser action panel is opened
+
+          return browser.tabs
+            .query({ active: true, currentWindow: true })
+            .then(tabs => {
+              if (tabs.length <= 0 || tabs[0].id == null) {
+                return
+              }
+              return message.send<'SWITCH_HISTORY', boolean>(tabs[0].id, {
+                type: 'SWITCH_HISTORY',
+                payload: command === 'next-history' ? 'next' : 'prev'
+              })
+            })
+        })
+      break
     case 'next-profile':
     case 'prev-profile':
       {
