@@ -1,15 +1,34 @@
 import React, { FC } from 'react'
+import { PromiseType } from 'utility-types'
 import Speaker from '@/components/Speaker'
 import EntryBox from '@/components/EntryBox'
-import { MojidictResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { message } from '@/_helpers/browser-api'
+import { MojidictResult, GetTTS } from './engine'
 
 export const DictMojidict: FC<ViewPorps<MojidictResult>> = ({ result }) => (
   <>
     {result.word && (
       <div>
         <h1>{result.word.spell}</h1>
-        <span>{result.word.pron}</span> <Speaker src={result.word.tts} />
+        <span>{result.word.pron}</span>{' '}
+        <Speaker
+          src={
+            result.word.tts ||
+            (() =>
+              message.send<
+                'DICT_ENGINE_METHOD',
+                PromiseType<ReturnType<GetTTS>>
+              >({
+                type: 'DICT_ENGINE_METHOD',
+                payload: {
+                  id: 'mojidict',
+                  method: 'getTTS',
+                  args: [result.word?.tarId, 102]
+                }
+              }))
+          }
+        />
       </div>
     )}
     {result.details &&
@@ -29,6 +48,21 @@ export const DictMojidict: FC<ViewPorps<MojidictResult>> = ({ result }) => (
                         <li key={example.title}>
                           <p className="dictMojidict-Word_Title">
                             {example.title}
+                            <Speaker
+                              src={() =>
+                                message.send<
+                                  'DICT_ENGINE_METHOD',
+                                  PromiseType<ReturnType<GetTTS>>
+                                >({
+                                  type: 'DICT_ENGINE_METHOD',
+                                  payload: {
+                                    id: 'mojidict',
+                                    method: 'getTTS',
+                                    args: [example.objectId, 103]
+                                  }
+                                })
+                              }
+                            />
                           </p>
                           <p className="dictMojidict-Word_Trans">
                             {example.trans}
