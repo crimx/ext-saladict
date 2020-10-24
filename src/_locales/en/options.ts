@@ -409,7 +409,7 @@ export const locale: typeof _locale = {
 
   dictAuth: {
     description:
-      'As the number of Saladict users grows, if you make heavily use of machine translation services it is recommended to register an account for better stability and accuracy.',
+      'As the number of Saladict users grows, if you make heavily use of machine translation services it is recommended to register an account for better stability and accuracy. The account data will only be stored in the browser.',
     dictHelp: 'See the official website of {dict}.',
     manage: 'Manage Translator Accounts'
   },
