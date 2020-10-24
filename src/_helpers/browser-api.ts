@@ -164,7 +164,7 @@ export async function openUrl(
       : optionsOrUrl
 
   const url = options.self ? browser.runtime.getURL(options.url) : options.url
-  const tabs = await browser.tabs.query({ url })
+  const tabs = await browser.tabs.query({ url }).catch(() => [])
   if (tabs.length > 0) {
     const { index, windowId } = tabs[0]
     if (typeof browser.tabs['highlight'] === 'function') {
