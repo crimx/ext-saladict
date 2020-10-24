@@ -104,6 +104,10 @@ function _getDefaultConfig() {
       [
         '^(http|https)://[^/]*?googleusercontent\\.com(/.*)?$',
         '*://*.googleusercontent.com/*'
+      ],
+      [
+        '^(http|https)://sh-download\\.weiyun\\.com(/.*)?$',
+        '*://sh-download.weiyun.com/*'
       ]
     ] as [string, string][],
 
