@@ -43,7 +43,7 @@ export default (): YoudaoConfig => ({
     collins: true,
     discrimination: true,
     sentence: true,
-    translation: true,
+    translation: false,
     related: true
   }
 })
