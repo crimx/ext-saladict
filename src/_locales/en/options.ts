@@ -219,7 +219,8 @@ export const locale: typeof _locale = {
         always: 'Keep Unfolding',
         never: 'Never Unfold',
         once: 'Unfold Once',
-        popup: 'Only On Browser Action'
+        popup: 'Only On Browser Action',
+        hide: 'Hide'
       },
       dict_selected: 'Selected Dicts'
     }

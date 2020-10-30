@@ -208,7 +208,8 @@ export const locale = {
         always: '保持展开',
         never: '从不展开',
         once: '展开一次',
-        popup: '只在右上弹框展开'
+        popup: '只在右上弹框展开',
+        hide: '隐藏'
       },
       dict_selected: '已选词典'
     }

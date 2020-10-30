@@ -30,6 +30,9 @@ export const DictPanel: FC = () => {
               <Select.Option value="popup">
                 {t('profile.opt.mtaAutoUnfold.popup')}
               </Select.Option>
+              <Select.Option value="hide">
+                {t('profile.opt.mtaAutoUnfold.hide')}
+              </Select.Option>
             </Select>
           )
         },

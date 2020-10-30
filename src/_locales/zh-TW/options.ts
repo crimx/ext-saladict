@@ -212,7 +212,8 @@ export const locale: typeof _locale = {
         always: '保持展開',
         never: '永遠不展開',
         once: '展開一次',
-        popup: '只在右上彈框展開'
+        popup: '只在右上彈框展開',
+        hide: '隱藏'
       },
       dict_selected: '已選字典'
     }

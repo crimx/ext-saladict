@@ -23,6 +23,7 @@ const mapStateToProps: MapStateToProps<
   text: state.text,
   shouldFocus:
     !state.activeProfile.mtaAutoUnfold ||
+    state.activeProfile.mtaAutoUnfold !== 'hide' ||
     ((state.isQSPanel || isQuickSearchPage()) && state.config.qsFocus) ||
     isPopupPage()
 })

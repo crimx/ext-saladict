@@ -34,17 +34,22 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
     profiles: payload
   }),
 
-  NEW_ACTIVE_PROFILE: (state, { payload }) => ({
-    ...state,
-    activeProfile: payload,
-    isExpandMtaBox:
-      payload.mtaAutoUnfold === 'once' ||
-      payload.mtaAutoUnfold === 'always' ||
-      (payload.mtaAutoUnfold === 'popup' && isPopupPage()),
-    renderedDicts: state.renderedDicts.filter(({ id }) =>
-      payload.dicts.selected.includes(id)
-    )
-  }),
+  NEW_ACTIVE_PROFILE: (state, { payload }) => {
+    const isShowMtaBox = payload.mtaAutoUnfold !== 'hide'
+    return {
+      ...state,
+      activeProfile: payload,
+      isShowMtaBox,
+      isExpandMtaBox:
+        isShowMtaBox &&
+        (payload.mtaAutoUnfold === 'once' ||
+          payload.mtaAutoUnfold === 'always' ||
+          (payload.mtaAutoUnfold === 'popup' && isPopupPage())),
+      renderedDicts: state.renderedDicts.filter(({ id }) =>
+        payload.dicts.selected.includes(id)
+      )
+    }
+  },
 
   NEW_SELECTION: newSelection,
 

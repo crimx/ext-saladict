@@ -11,7 +11,6 @@ import { DictListContainer } from '../DictList/DictList.container'
 import { WaveformBoxContainer } from '../WaveformBox/WaveformBox.container'
 
 const menuBar = <MenuBarContainer />
-const mtaBox = <MtaBoxContainer />
 const dictList = <DictListContainer />
 const waveformBox = <WaveformBoxContainer />
 
@@ -27,7 +26,7 @@ const mapStateToProps = (
     panelCSS: state.config.panelCSS,
     fontSize: state.config.fontSize,
     menuBar,
-    mtaBox,
+    mtaBox: state.isShowMtaBox ? <MtaBoxContainer /> : null,
     dictList,
     waveformBox,
     width: ownProps.width,
