@@ -72,7 +72,7 @@ storiesOf('Content Scripts|Dict Panel/Menubar', module)
         isTrackHistory={boolean('Track History', true)}
         histories={histories}
         historyIndex={number('History Index', 0)}
-        updateHistoryIndex={action('Update History Index')}
+        switchHistory={action('Switch History')}
         isPinned={boolean('Is Pinned', false)}
         togglePin={action('Toggle Pin')}
         isQSFocus={boolean('Is Quick Search Focus', false)}

@@ -17,8 +17,8 @@ import {
   withi18nNS
 } from '@/_helpers/storybook'
 import faker from 'faker'
-import { DictPanel, DictPanelProps } from './DictPanel'
-import { DictPanelPortal } from './DictPanel.portal'
+import { DictPanel } from './DictPanel'
+import { DictPanelPortal, DictPanelPortalProps } from './DictPanel.portal'
 import { newWord } from '@/_helpers/record-manager'
 import { getAllDicts } from '@/app-config/dicts'
 import { getDefaultConfig, DictID } from '@/app-config'
@@ -66,16 +66,10 @@ storiesOf('Content Scripts|Dict Panel', module)
   // @ts-ignore
   .addDecorator(Story => <Story />)
   .add('DictPanel', () => <DictPanel {...useDictPanelProps()} />)
-  .add('DictPanelPortal', () => (
-    <DictPanelPortal
-      show={boolean('Show', true)}
-      panelCSS={text('Panel CSS', '')}
-      {...useDictPanelProps()}
-    />
-  ))
+  .add('DictPanelPortal', () => <DictPanelPortal {...useDictPanelProps()} />)
 
-function useDictPanelProps(): DictPanelProps {
-  const [text, setText] = useState('saladict')
+function useDictPanelProps(): DictPanelPortalProps {
+  const [searchText, setText] = useState('saladict')
   const [expandMta, setExpandMta] = useState(false)
   const [expandWavform, setExpandWavform] = useState(false)
   const withAnimation = boolean('Enable Animation', true)
@@ -130,6 +124,8 @@ function useDictPanelProps(): DictPanelProps {
   const darkMode = boolean('Dark Mode', false)
 
   return {
+    show: boolean('Show', true),
+    panelCSS: text('Panel CSS', ''),
     coord: {
       x: number('x', (window.innerWidth - 450) / 2),
       y: number('y', 10)
@@ -143,7 +139,7 @@ function useDictPanelProps(): DictPanelProps {
     darkMode,
     menuBar: (
       <MenuBar
-        text={text}
+        text={searchText}
         isTrackHistory={false}
         updateText={text => {
           action('Update Text')(text)
@@ -156,7 +152,7 @@ function useDictPanelProps(): DictPanelProps {
         enableSuggest={boolean('Enable Suggest', true)}
         histories={histories}
         historyIndex={number('History Index', 0)}
-        updateHistoryIndex={action('Update History Index')}
+        switchHistory={action('Switch History')}
         isPinned={boolean('Is Pinned', false)}
         togglePin={action('Toggle Pin')}
         isQSFocus={boolean('Is Quick Search Panel Focus', false)}
@@ -186,7 +182,7 @@ function useDictPanelProps(): DictPanelProps {
     ),
     mtaBox: (
       <MtaBox
-        text={text}
+        text={searchText}
         expand={expandMta}
         searchText={action('Search Text')}
         onInput={text => {

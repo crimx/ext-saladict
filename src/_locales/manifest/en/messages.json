@@ -1,7 +1,7 @@
 {
   "extension_name": {
     "description": "Extension name",
-    "message": "沙拉查词-聚合词典划词翻译"
+    "message": "Saladict - Pop-up Dictionary and Page Translator"
   },
   "extension_short_name": {
     "description": "Extension short name",
@@ -9,7 +9,7 @@
   },
   "extension_description": {
     "description": "Description of extension",
-    "message": "Saladict 沙拉查词是一款专业划词翻译扩展，为交叉阅读而生。大量权威词典涵盖中英日韩法德西语，支持复杂的划词操作、网页翻译、生词本与 PDF 浏览。"
+    "message": "Saladict is an all-in-one professional pop-up dictionary and page translator which supports multiple search modes, page translations, new word notebook and PDF selection searching."
   },
   "command_toggle_active": {
     "message": "Toggle inline translator"
@@ -34,6 +34,12 @@
   },
   "command_search_clipboard": {
     "message": "Search clipboard content in Standalone Panel"
+  },
+  "command_next_history": {
+    "message": "Next Search History"
+  },
+  "command_prev_history": {
+    "message": "Previous Search History"
   },
   "command_next_profile": {
     "message": "Next Profile"

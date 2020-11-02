@@ -25,6 +25,7 @@ export interface MachineTranslateResult<ID extends DictID> {
     paragraphs: string[]
     tts?: string
   }
+  requireCredential?: boolean
 }
 
 type DefaultMachineOptions<Lang extends Language> = {

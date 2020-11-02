@@ -1,4 +1,10 @@
-import React, { FC, useState, useRef, useEffect } from 'react'
+import React, {
+  FC,
+  useState,
+  useEffect,
+  useCallback,
+  useLayoutEffect
+} from 'react'
 import classNames from 'classnames'
 import QRCode from 'qrcode.react'
 import CSSTransition from 'react-transition-group/CSSTransition'
@@ -22,8 +28,14 @@ export const Popup: FC<PopupProps> = props => {
   const [currentTabUrl, setCurrentTabUrl] = useState('')
 
   const [dictPanelHeight, setDictPanelHeight] = useState(30)
-  const expandDictPanel = useRef(() => setDictPanelHeight(499)).current
-  const shrinkDictPanel = useRef(() => setDictPanelHeight(399)).current
+  const expandDictPanel = useCallback(
+    () => setDictPanelHeight(config.baHeight - 51),
+    [config.baHeight]
+  )
+  const shrinkDictPanel = useCallback(
+    () => setDictPanelHeight(config.baHeight - 151),
+    [config.baHeight]
+  )
 
   /** Instant Capture Mode */
   const [insCapMode, setInsCapMode] = useState<'mode' | 'pinMode'>('mode')
@@ -31,6 +43,11 @@ export const Popup: FC<PopupProps> = props => {
   const [isTempOff, setTempOff] = useState(false)
 
   const [isShowPageNoResponse, setShowPageNoResponse] = useState(false)
+
+  useLayoutEffect(() => {
+    document.body.style.width =
+      (config.baWidth >= 0 ? config.baWidth : config.panelWidth) + 'px'
+  }, [config])
 
   useEffect(() => {
     expandDictPanel()
@@ -67,7 +84,10 @@ export const Popup: FC<PopupProps> = props => {
   }, [])
 
   return (
-    <div className={classNames('popup-root', { 'dark-mode': config.darkMode })}>
+    <div
+      className={classNames('popup-root', { 'dark-mode': config.darkMode })}
+      style={{ height: config.baHeight }}
+    >
       <DictPanelStandaloneContainer
         width="100vw"
         height={dictPanelHeight + 'px'}

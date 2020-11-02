@@ -1,5 +1,5 @@
 import mapValues from 'lodash/mapValues'
-import { message, storage, openURL } from '@/_helpers/browser-api'
+import { message, storage, openUrl } from '@/_helpers/browser-api'
 import { isExtTainted } from '@/_helpers/integrity'
 import { checkUpdate } from '@/_helpers/check-update'
 import { updateConfig, initConfig } from '@/_helpers/config-manager'
@@ -113,6 +113,30 @@ function onCommand(command: string) {
     case 'search-clipboard':
       BackgroundServer.getInstance().searchClipboard()
       break
+    case 'next-history':
+    case 'prev-history':
+      // Send to browser action panel first
+      message
+        .send<'SWITCH_HISTORY', boolean>({
+          type: 'SWITCH_HISTORY',
+          payload: command === 'next-history' ? 'next' : 'prev'
+        })
+        .then(received => {
+          if (received) return // browser action panel is opened
+
+          return browser.tabs
+            .query({ active: true, currentWindow: true })
+            .then(tabs => {
+              if (tabs.length <= 0 || tabs[0].id == null) {
+                return
+              }
+              return message.send<'SWITCH_HISTORY', boolean>(tabs[0].id, {
+                type: 'SWITCH_HISTORY',
+                payload: command === 'next-history' ? 'next' : 'prev'
+              })
+            })
+        })
+      break
     case 'next-profile':
     case 'prev-profile':
       {
@@ -174,11 +198,11 @@ async function onInstalled({
     if (
       !(await storage.sync.get('hasInstructionsShown')).hasInstructionsShown
     ) {
-      openURL('options.html?menuselected=Privacy&nopanel=true', true)
+      openUrl('options.html?menuselected=Privacy&nopanel=true', true)
       if (window.appConfig.langCode.startsWith('zh')) {
-        openURL('https://saladict.crimx.com/notice.html')
+        openUrl('https://saladict.crimx.com/notice.html')
       } else {
-        openURL('https://saladict.crimx.com/en/notice.html')
+        openUrl('https://saladict.crimx.com/en/notice.html')
       }
       storage.sync.set({ hasInstructionsShown: true })
     }
@@ -309,7 +333,7 @@ function genClickListener(url: string) {
     switch (notificationId) {
       case 'sd-install':
       case 'sd-update':
-        openURL(url)
+        openUrl(url)
         browser.notifications.getAll().then(notifications => {
           Object.keys(notifications).forEach(id =>
             browser.notifications.clear(id)

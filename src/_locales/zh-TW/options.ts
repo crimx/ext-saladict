@@ -101,6 +101,10 @@ export const locale: typeof _locale = {
     pdfStandalone: '獨立視窗',
     pdfStandalone_help:
       '在獨立視窗中開啟 PDF 閱讀器。獨立視窗只有標題欄，佔用更少空間，但不能複製連結等操作。',
+    baWidth: '彈窗寬度',
+    baWidth_help: '右上彈框面板寬度。若為負數則取查字介面的寬度。',
+    baHeight: '彈窗高度',
+    baHeight_help: '右上彈框面板高度。',
     baOpen: '點選網址列旁圖示',
     baOpen_help:
       '點選網址列旁 Saladict 圖示時發生的操作。沿用了「右鍵選單」的條目，可以前往該設定頁面增加或編輯。',
@@ -208,7 +212,8 @@ export const locale: typeof _locale = {
         always: '保持展開',
         never: '永遠不展開',
         once: '展開一次',
-        popup: '只在右上彈框展開'
+        popup: '只在右上彈框展開',
+        hide: '隱藏'
       },
       dict_selected: '已選字典'
     }
@@ -390,7 +395,7 @@ export const locale: typeof _locale = {
 
   dictAuth: {
     description:
-      '隨著沙拉查詞使用者增多，如經常使用機器翻譯，建議到官網申請帳號以獲得更穩定的體驗以及更準確的結果。',
+      '隨著沙拉查詞使用者增多，如經常使用機器翻譯，建議到官網申請帳號以獲得更穩定的體驗以及更準確的結果。以下帳號資料只會保留在瀏覽器中。',
     dictHelp: '見{詞典}官網。',
     manage: '管理私用帳號'
   },

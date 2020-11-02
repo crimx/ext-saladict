@@ -1,6 +1,6 @@
 import { AddConfig, SyncService } from '../../interface'
 import { getNotebook, notifyError } from '../../helpers'
-import { openURL } from '@/_helpers/browser-api'
+import { openUrl } from '@/_helpers/browser-api'
 import { timer } from '@/_helpers/promise-more'
 import { isFirefox } from '@/_helpers/saladict'
 import { I18nManager } from '@/background/i18n-manager'
@@ -19,7 +19,7 @@ export class Service extends SyncService<SyncConfig> {
   }
 
   static openLogin() {
-    return openURL('https://www.shanbay.com/web/account/login')
+    return openUrl('https://www.shanbay.com/web/account/login')
   }
 
   async init() {

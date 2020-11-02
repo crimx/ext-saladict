@@ -141,14 +141,30 @@ export const message = {
   }
 } as const
 
+export interface OpenUrlOptions {
+  url: string
+  /** use browser.runtime.getURL? */
+  self?: boolean
+  /** focus the new tab? */
+  active?: boolean
+}
+
 /**
  * Open a url on new tab or highlight a existing tab if already opened
  */
-export async function openURL(url: string, self?: boolean): Promise<void> {
-  if (self) {
-    url = browser.runtime.getURL(url)
-  }
-  const tabs = await browser.tabs.query({ url })
+export async function openUrl(url: string, self?: boolean): Promise<void>
+export async function openUrl(options: OpenUrlOptions): Promise<void>
+export async function openUrl(
+  optionsOrUrl: string | OpenUrlOptions,
+  self?: boolean
+): Promise<void> {
+  const options: OpenUrlOptions =
+    typeof optionsOrUrl === 'string'
+      ? { url: optionsOrUrl, self }
+      : optionsOrUrl
+
+  const url = options.self ? browser.runtime.getURL(options.url) : options.url
+  const tabs = await browser.tabs.query({ url }).catch(() => [])
   if (tabs.length > 0) {
     const { index, windowId } = tabs[0]
     if (typeof browser.tabs['highlight'] === 'function') {
@@ -157,7 +173,10 @@ export async function openURL(url: string, self?: boolean): Promise<void> {
     }
     await browser.windows.update(windowId!, { focused: true })
   } else {
-    await browser.tabs.create({ url })
+    await browser.tabs.create({
+      url,
+      active: options.active !== false
+    })
   }
 }
 

@@ -3,4 +3,4 @@ export const auth = {
   secretKey: ''
 }
 
-export const url = 'https://cloud.tencent.com/product/tmt'
+export const url = 'https://curl.qcloud.com/imsowZzT'

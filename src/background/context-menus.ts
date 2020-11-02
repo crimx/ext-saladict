@@ -1,4 +1,4 @@
-import { message, openURL } from '@/_helpers/browser-api'
+import { message, openUrl } from '@/_helpers/browser-api'
 import { AppConfig } from '@/app-config'
 import isEqual from 'lodash/isEqual'
 import { createConfigStream } from '@/_helpers/config-manager'
@@ -102,7 +102,7 @@ export class ContextMenus {
             : window.appConfig.langCode === 'zh-TW'
             ? 'cht'
             : 'en'
-        openURL(
+        openUrl(
           `https://fanyi.baidu.com/transpage?query=${encodeURIComponent(
             tabs[0].url as string
           )}&from=auto&to=${langCode}&source=url&render=1`
@@ -115,7 +115,7 @@ export class ContextMenus {
     browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
         const langCode = window.appConfig.langCode === 'zh-CN' ? 'zh-CHS' : 'en'
-        openURL(
+        openUrl(
           `https://translate.sogoucdn.com/pcvtsnapshot?from=auto&to=${langCode}&tfr=translatepc&url=${encodeURIComponent(
             tabs[0].url as string
           )}&domainType=sogou`
@@ -133,7 +133,7 @@ export class ContextMenus {
             : window.appConfig.langCode === 'zh-TW'
             ? 'zh-Hant'
             : 'en'
-        openURL(
+        openUrl(
           `https://www.microsofttranslator.com/bv.aspx?from=auto&to=${langCode}&r=true&a=${encodeURIComponent(
             tabs[0].url as string
           )}`
@@ -193,10 +193,10 @@ export class ContextMenus {
         BackgroundServer.getInstance().searchPageSelection()
         break
       case 'search_history':
-        openURL(browser.runtime.getURL('history.html'))
+        openUrl(browser.runtime.getURL('history.html'))
         break
       case 'notebook':
-        openURL(browser.runtime.getURL('notebook.html'))
+        openUrl(browser.runtime.getURL('notebook.html'))
         break
       default:
         {
@@ -204,7 +204,7 @@ export class ContextMenus {
           if (item) {
             const url = typeof item === 'string' ? item : item.url
             if (url) {
-              openURL(url.replace('%s', encodeURIComponent(selectionText)))
+              openUrl(url.replace('%s', encodeURIComponent(selectionText)))
             }
           }
         }

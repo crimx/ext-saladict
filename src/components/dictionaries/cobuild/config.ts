@@ -34,6 +34,6 @@ export default (): CobuildConfig => ({
     max: 5
   },
   options: {
-    cibaFirst: true
+    cibaFirst: (browser.i18n.getUILanguage() || 'en').startsWith('zh-')
   }
 })

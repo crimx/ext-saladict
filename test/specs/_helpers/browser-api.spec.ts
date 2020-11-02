@@ -1,5 +1,6 @@
-import { message, storage, openURL } from '@/_helpers/browser-api'
+import { message, storage, openUrl } from '@/_helpers/browser-api'
 import { take } from 'rxjs/operators'
+import sinon from 'sinon'
 import { browser } from '../../helper'
 import { Message } from '@/typings/message'
 
@@ -365,7 +366,7 @@ describe('Browser API Wapper', () => {
       const cb1 = jest.fn()
       const cb2 = jest.fn()
       let cb1Call = 0
-      let cb2Call = 0
+      const cb2Call = 0
       message.addListener('OPEN_QS_PANEL', cb1)
       message.addListener('CLOSE_QS_PANEL', cb2)
       browser.runtime.onMessage.dispatch({ type: 'OPEN_QS_PANEL' })
@@ -642,7 +643,7 @@ describe('Browser API Wapper', () => {
       })
     })
   })
-  describe('openURL', () => {
+  describe('openUrl', () => {
     const url = 'https://example.com'
 
     it('Existing tab', () => {
@@ -654,7 +655,7 @@ describe('Browser API Wapper', () => {
           }
         ])
       )
-      return openURL(url).then(() => {
+      return openUrl(url).then(() => {
         expect(browser.tabs.query.calledWith({ url })).toBeTruthy()
         expect(
           browser.tabs.highlight.calledWith({ tabs: 1, windowId: 10 })
@@ -664,18 +665,22 @@ describe('Browser API Wapper', () => {
     })
     it('New tab', () => {
       browser.tabs.query.returns(Promise.resolve([]))
-      return openURL(url).then(() => {
+      return openUrl(url).then(() => {
         expect(browser.tabs.query.calledWith({ url })).toBeTruthy()
         expect(browser.tabs.highlight.notCalled).toBeTruthy()
-        expect(browser.tabs.create.calledWith({ url })).toBeTruthy()
+        expect(
+          browser.tabs.create.calledWith(sinon.match({ url }))
+        ).toBeTruthy()
       })
     })
     it('Concat extension base url', () => {
       browser.tabs.query.returns(Promise.resolve([]))
       browser.runtime.getURL.returns('test')
-      return openURL(url, true).then(() => {
+      return openUrl(url, true).then(() => {
         expect(browser.runtime.getURL.calledWith(url)).toBeTruthy()
-        expect(browser.tabs.create.calledWith({ url: 'test' })).toBeTruthy()
+        expect(
+          browser.tabs.create.calledWith(sinon.match({ url: 'test' }))
+        ).toBeTruthy()
       })
     })
   })

@@ -57,7 +57,7 @@ jest.doMock('@/_helpers/browser-api', () => {
   return {
     message,
     storage,
-    openURL: jest.fn(() => Promise.resolve())
+    openUrl: jest.fn(() => Promise.resolve())
   }
 })
 

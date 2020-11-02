@@ -22,6 +22,8 @@ export const initState = async () => {
 
   const url = window.location.href
 
+  const isShowMtaBox = activeProfile.mtaAutoUnfold !== 'hide'
+
   return {
     config,
     profiles,
@@ -59,10 +61,12 @@ export const initState = async () => {
     },
     isShowBowl: false,
     isShowDictPanel: isStandalonePage(),
+    isShowMtaBox,
     isExpandMtaBox:
-      activeProfile.mtaAutoUnfold === 'once' ||
-      activeProfile.mtaAutoUnfold === 'always' ||
-      (activeProfile.mtaAutoUnfold === 'popup' && isPopupPage()),
+      isShowMtaBox &&
+      (activeProfile.mtaAutoUnfold === 'once' ||
+        activeProfile.mtaAutoUnfold === 'always' ||
+        (activeProfile.mtaAutoUnfold === 'popup' && isPopupPage())),
     isExpandWaveformBox: false,
     isPinned: false,
     /** Is current word in Notebook */

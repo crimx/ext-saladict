@@ -1,10 +1,10 @@
-import { openURL } from '@/_helpers/browser-api'
+import { openUrl } from '@/_helpers/browser-api'
 
 export async function copyTextToClipboard(text: string): Promise<void> {
   if (
     !(await browser.permissions.contains({ permissions: ['clipboardWrite'] }))
   ) {
-    openURL(
+    openUrl(
       '/options.html?menuselected=Permissions&missing_permission=clipboardWrite',
       true
     )
@@ -24,7 +24,7 @@ export async function getTextFromClipboard(): Promise<string> {
   if (
     !(await browser.permissions.contains({ permissions: ['clipboardRead'] }))
   ) {
-    openURL(
+    openUrl(
       '/options.html?menuselected=Permissions&missing_permission=clipboardRead',
       true
     )

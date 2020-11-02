@@ -109,6 +109,11 @@ export const init = (dispatch: StoreDispatch, getState: () => StoreState) => {
         return
       }
 
+      case 'SWITCH_HISTORY': {
+        dispatch({ type: 'SWITCH_HISTORY', payload: msg.payload })
+        return Promise.resolve(true)
+      }
+
       case 'QS_PANEL_SEARCH_TEXT':
         if (isQuickSearchPage()) {
           // request searching text, from other tabs

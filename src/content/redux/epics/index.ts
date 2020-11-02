@@ -29,6 +29,11 @@ export const epics = combineEpics<StoreAction, StoreAction, StoreState>(
       )
     ),
   (action$, state$) =>
+    action$.pipe(
+      ofType('SWITCH_HISTORY'),
+      mapTo({ type: 'SEARCH_START', payload: { noHistory: true } })
+    ),
+  (action$, state$) =>
     state$.pipe(
       map(state => state.isShowDictPanel),
       pairwise(),

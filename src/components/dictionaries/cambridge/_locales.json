@@ -29,6 +29,11 @@
       "en": "English–Chinese (Traditional)",
       "zh-CN": "英繁",
       "zh-TW": "英繁"
+    },
+    "related": {
+      "en": "Show related results",
+      "zh-CN": "失败时显示备选",
+      "zh-TW": "失敗時顯示備選"
     }
   }
 }

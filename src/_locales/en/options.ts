@@ -105,6 +105,11 @@ export const locale: typeof _locale = {
       'It is recommended to {search selected text outside of browser} with your own favorite local reader.',
     pdfStandalone: 'Standalone Panel',
     pdfStandalone_help: 'Open PDF viewer in standalone panel.',
+    baWidth: 'Width',
+    baWidth_help:
+      'Browser Action Panel wdith. Dict Panel width will be used if a negative value is chosen.',
+    baHeight: 'Height',
+    baHeight_help: 'Browser Action Panel height.',
     baOpen: 'Browser Action',
     baOpen_help:
       'When clicking the browser action icon in toolbar (next to the address bar). Items are same as Context Menus, which can be added or edited on the Context Menus config page.',
@@ -214,7 +219,8 @@ export const locale: typeof _locale = {
         always: 'Keep Unfolding',
         never: 'Never Unfold',
         once: 'Unfold Once',
-        popup: 'Only On Browser Action'
+        popup: 'Only On Browser Action',
+        hide: 'Hide'
       },
       dict_selected: 'Selected Dicts'
     }
@@ -404,7 +410,7 @@ export const locale: typeof _locale = {
 
   dictAuth: {
     description:
-      'As the number of Saladict users grows, if you make heavily use of machine translation services it is recommended to register an account for better stability and accuracy.',
+      'As the number of Saladict users grows, if you make heavily use of machine translation services it is recommended to register an account for better stability and accuracy. The account data will only be stored in the browser.',
     dictHelp: 'See the official website of {dict}.',
     manage: 'Manage Translator Accounts'
   },

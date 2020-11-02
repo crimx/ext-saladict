@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.18.0](https://github.com/crimx/ext-saladict/compare/v7.17.0...v7.18.0) (2020-11-02)
+
+
+### Features
+
+* **panel:** add shortcut for switch search history ([0a61c49](https://github.com/crimx/ext-saladict/commit/0a61c4982a0232daaecf9c9c5573858a2a2cd1a1)), closes [#1063](https://github.com/crimx/ext-saladict/issues/1063)
+* add options for browser action panel width and height ([fab67dd](https://github.com/crimx/ext-saladict/commit/fab67dd5d82a1fc13d15886d92b5e03f518c434f)), closes [#983](https://github.com/crimx/ext-saladict/issues/983)
+
+
+### Bug Fixes
+
+* **background:** query error on http url ([1922c09](https://github.com/crimx/ext-saladict/commit/1922c0914f46c306ce905d87b298b5ccd7e15e5a))
+* **dicts:** sogou access token is required Closes [#1011](https://github.com/crimx/ext-saladict/issues/1011) ([a449119](https://github.com/crimx/ext-saladict/commit/a449119ae1643b2cb19b23e68aa1a998382c6cb9))
+* **options:** hide unsupported features on Firefox ([516e030](https://github.com/crimx/ext-saladict/commit/516e03048525f426ac9145db96866fe4673ee25c)), closes [#1062](https://github.com/crimx/ext-saladict/issues/1062)
+
 ## [7.17.0](https://github.com/crimx/ext-saladict/compare/v7.15.1...v7.17.0) (2020-09-08)
 
 

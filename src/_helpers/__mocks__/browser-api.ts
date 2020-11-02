@@ -138,10 +138,10 @@ message.self.createStream = _messageCreateStream(true)
 /**
  * Open a url on new tab or highlight a existing tab if already opened
  */
-export const openURL = jest.fn(() => Promise.resolve())
+export const openUrl = jest.fn(() => Promise.resolve())
 
 export default {
-  openURL,
+  openUrl,
   storage,
   message
 }

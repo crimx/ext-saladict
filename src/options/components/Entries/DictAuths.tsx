@@ -52,7 +52,7 @@ export const DictAuths: FC = () => {
           </Trans>
         ) : null,
         style: { marginBottom: isLast ? 10 : 5 },
-        children: <Input />
+        children: <Input autoComplete="off" />
       })
     })
   })

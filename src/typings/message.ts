@@ -1,6 +1,7 @@
 import { Word, DBArea } from '@/_helpers/record-manager'
 import { DictID } from '@/app-config'
 import { DictSearchResult } from '@/components/dictionaries/helpers'
+import { OpenUrlOptions } from '@/_helpers/browser-api'
 
 type MessageConfigType<
   T extends {
@@ -15,11 +16,7 @@ export type MessageConfig = MessageConfigType<{
 
   /** Open url in new tab or update existing tab */
   OPEN_URL: {
-    payload: {
-      url: string
-      /** use browser.runtime.getURL? */
-      self?: boolean
-    }
+    payload: OpenUrlOptions
   }
 
   /** Open the source page of a dictionary */
@@ -27,6 +24,8 @@ export type MessageConfig = MessageConfigType<{
     payload: {
       id: DictID
       text: string
+      /** Focus on the new page? */
+      active?: boolean
     }
   }
 
@@ -211,6 +210,13 @@ export type MessageConfig = MessageConfigType<{
   /** From dict panel when it is pinned or unpinned */
   PIN_STATE: {
     payload: boolean
+  }
+
+  /** switch to the next or previous history */
+  SWITCH_HISTORY: {
+    payload: 'prev' | 'next'
+    /** received? */
+    response: boolean
   }
 
   /** From other pages or frames query for active panel pin state */

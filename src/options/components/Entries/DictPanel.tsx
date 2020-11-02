@@ -30,6 +30,9 @@ export const DictPanel: FC = () => {
               <Select.Option value="popup">
                 {t('profile.opt.mtaAutoUnfold.popup')}
               </Select.Option>
+              <Select.Option value="hide">
+                {t('profile.opt.mtaAutoUnfold.hide')}
+              </Select.Option>
             </Select>
           )
         },
@@ -60,7 +63,7 @@ export const DictPanel: FC = () => {
               tipFormatter={percentageSlideFormatter}
               min={0}
               max={100}
-              marks={{ 0: '0%', 100: '100%' }}
+              marks={{ 0: '0%', 80: '80%', 100: '100%' }}
             />
           )
         },
@@ -71,7 +74,11 @@ export const DictPanel: FC = () => {
               tipFormatter={pixelSlideFormatter}
               min={250}
               max={availWidth}
-              marks={{ 250: '250px', [availWidth]: `${availWidth}px` }}
+              marks={{
+                250: '250px',
+                450: '450px',
+                [availWidth]: `${availWidth}px`
+              }}
             />
           )
         },

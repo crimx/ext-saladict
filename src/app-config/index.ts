@@ -8,12 +8,13 @@ import { isFirefox } from '@/_helpers/saladict'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 
-const langUI = browser.i18n.getUILanguage() || 'en'
-const langCode: LangCode = /^zh-CN|zh-TW|en$/.test(langUI)
-  ? langUI === 'zh-HK'
+const langUI = browser.i18n.getUILanguage()
+const langCode: LangCode =
+  langUI === 'zh-CN'
+    ? 'zh-CN'
+    : langUI === 'zh-TW' || langUI === 'zh-HK'
     ? 'zh-TW'
-    : (langUI as LangCode)
-  : 'en'
+    : 'en'
 
 export type DictConfigsMutable = ReturnType<typeof getAllDicts>
 export type DictConfigs = DeepReadonly<DictConfigsMutable>
@@ -103,6 +104,10 @@ function _getDefaultConfig() {
       [
         '^(http|https)://[^/]*?googleusercontent\\.com(/.*)?$',
         '*://*.googleusercontent.com/*'
+      ],
+      [
+        '^(http|https)://sh-download\\.weiyun\\.com(/.*)?$',
+        '*://sh-download.weiyun.com/*'
       ]
     ] as [string, string][],
 
@@ -242,6 +247,11 @@ function _getDefaultConfig() {
     /** should standalone panel memo position and dimension on close */
     qssaRectMemo: false,
 
+    /** browser action panel width defaults to as wide as possible */
+    baWidth: -1,
+
+    baHeight: 550,
+
     /** browser action panel preload source */
     baPreload: 'selection' as PreloadSource,
 
@@ -256,7 +266,8 @@ function _getDefaultConfig() {
      * 'popup_standalone' - open standalone panel
      * others are same as context menus
      */
-    baOpen: isFirefox ? 'popup_panel' : 'caiyuntrs',
+    baOpen:
+      isFirefox || !langCode.startsWith('zh-') ? 'popup_panel' : 'caiyuntrs',
 
     /** context tranlate engines */
     ctxTrans: {
@@ -322,9 +333,10 @@ function _getDefaultConfig() {
     ] as [string, string][],
 
     contextMenus: {
-      selected: isFirefox
-        ? ['view_as_pdf', 'google_translate', 'saladict']
-        : ['view_as_pdf', 'caiyuntrs', 'google_translate', 'saladict'],
+      selected:
+        isFirefox || !langCode.startsWith('zh-')
+          ? ['view_as_pdf', 'google_translate', 'saladict']
+          : ['view_as_pdf', 'caiyuntrs', 'google_translate', 'saladict'],
       all: getAllContextMenus()
     },
 

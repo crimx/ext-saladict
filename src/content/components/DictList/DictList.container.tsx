@@ -57,7 +57,7 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
   searchText: payload => {
     dispatch({ type: 'SEARCH_START', payload })
   },
-  openDictSrcPage: id => {
+  openDictSrcPage: (id, ctrlKey) => {
     dispatch((dispatch, getState) => {
       const { searchHistory } = getState()
       const word = searchHistory[searchHistory.length - 1]
@@ -65,7 +65,8 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
         type: 'OPEN_DICT_SRC_PAGE',
         payload: {
           id,
-          text: word && word.text ? word.text : ''
+          text: word && word.text ? word.text : '',
+          active: !ctrlKey
         }
       })
     })

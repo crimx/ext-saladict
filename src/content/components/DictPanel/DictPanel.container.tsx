@@ -13,7 +13,6 @@ import { DictListContainer } from '../DictList/DictList.container'
 import { WaveformBoxContainer } from '../WaveformBox/WaveformBox.container'
 
 const menuBar = <MenuBarContainer />
-const mtaBox = <MtaBoxContainer />
 const dictList = <DictListContainer />
 const waveformBox = <WaveformBoxContainer />
 
@@ -35,7 +34,7 @@ const mapStateToProps: MapStateToProps<
   panelCSS: state.config.panelCSS,
   darkMode: state.config.darkMode,
   menuBar,
-  mtaBox,
+  mtaBox: state.isShowMtaBox ? <MtaBoxContainer /> : null,
   dictList,
   waveformBox: state.activeProfile.waveform ? waveformBox : null,
   dragStartCoord: state.dragStartCoord

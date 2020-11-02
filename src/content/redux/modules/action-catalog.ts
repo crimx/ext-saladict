@@ -58,8 +58,8 @@ export type ActionCatalog = CreateActionCatalog<{
 
   CLOSE_PANEL: {}
 
-  UPDATE_HISTORY_INDEX: {
-    payload: number
+  SWITCH_HISTORY: {
+    payload: 'prev' | 'next'
   }
 
   /** Is current word in Notebook */

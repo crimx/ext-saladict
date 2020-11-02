@@ -44,7 +44,7 @@ export interface MenuBarProps {
   isTrackHistory: boolean
   histories: Word[]
   historyIndex: number
-  updateHistoryIndex: (index: number) => any
+  switchHistory: (direction: 'prev' | 'next') => void
 
   onSelectProfile: (id: string) => void
   profiles: ProfilesProps['profiles']
@@ -96,12 +96,12 @@ export const MenuBar: FC<MenuBarProps> = props => {
       <HistoryBackBtn
         t={t}
         disabled={props.historyIndex <= 0}
-        onClick={() => props.updateHistoryIndex(props.historyIndex - 1)}
+        onClick={() => props.switchHistory('prev')}
       />
       <HistoryNextBtn
         t={t}
         disabled={props.historyIndex >= props.histories.length - 1}
-        onClick={() => props.updateHistoryIndex(props.historyIndex + 1)}
+        onClick={() => props.switchHistory('next')}
       />
       <SearchBox
         key="searchbox"
@@ -184,7 +184,7 @@ export const MenuBar: FC<MenuBarProps> = props => {
             }}
           />
         </>
-      ) : (
+      ) : isPopupPage() ? null : (
         <>
           <PinBtn
             t={t}

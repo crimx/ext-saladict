@@ -42,6 +42,12 @@ module.exports = {
     'open-caiyun': {
       description: '__MSG_command_open_caiyun__'
     },
+    'next-history': {
+      description: '__MSG_command_next_history__'
+    },
+    'prev-history': {
+      description: '__MSG_command_prev_history__'
+    },
     'next-profile': {
       description: '__MSG_command_next_profile__'
     },

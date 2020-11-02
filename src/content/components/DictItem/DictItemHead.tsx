@@ -9,7 +9,7 @@ export interface DictItemHeadProps {
   dictID: DictID
   isSearching: boolean
   toggleFold: () => void
-  openDictSrcPage: (id: DictID) => void
+  openDictSrcPage: (id: DictID, ctrlKey: boolean) => void
   onCatalogSelect: (item: { key: string; value: string }) => void
   catalog?: Array<
     | {
@@ -104,7 +104,7 @@ export const DictItemHead: FC<DictItemHeadProps> = props => {
           onClick={(e: React.MouseEvent<HTMLElement>) => {
             e.stopPropagation()
             e.preventDefault()
-            props.openDictSrcPage(props.dictID)
+            props.openDictSrcPage(props.dictID, e.ctrlKey)
           }}
         >
           {t(`${props.dictID}.name`)}

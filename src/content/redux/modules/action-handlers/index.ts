@@ -34,17 +34,22 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
     profiles: payload
   }),
 
-  NEW_ACTIVE_PROFILE: (state, { payload }) => ({
-    ...state,
-    activeProfile: payload,
-    isExpandMtaBox:
-      payload.mtaAutoUnfold === 'once' ||
-      payload.mtaAutoUnfold === 'always' ||
-      (payload.mtaAutoUnfold === 'popup' && isPopupPage()),
-    renderedDicts: state.renderedDicts.filter(({ id }) =>
-      payload.dicts.selected.includes(id)
-    )
-  }),
+  NEW_ACTIVE_PROFILE: (state, { payload }) => {
+    const isShowMtaBox = payload.mtaAutoUnfold !== 'hide'
+    return {
+      ...state,
+      activeProfile: payload,
+      isShowMtaBox,
+      isExpandMtaBox:
+        isShowMtaBox &&
+        (payload.mtaAutoUnfold === 'once' ||
+          payload.mtaAutoUnfold === 'always' ||
+          (payload.mtaAutoUnfold === 'popup' && isPopupPage())),
+      renderedDicts: state.renderedDicts.filter(({ id }) =>
+        payload.dicts.selected.includes(id)
+      )
+    }
+  },
 
   NEW_SELECTION: newSelection,
 
@@ -125,13 +130,20 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
           isQSPanel: isQuickSearchPage()
         },
 
-  UPDATE_HISTORY_INDEX: (state, { payload }) => ({
-    ...state,
-    historyIndex: payload,
-    text: state.searchHistory[payload]
-      ? state.searchHistory[payload].text
-      : state.text
-  }),
+  SWITCH_HISTORY: (state, { payload }) => {
+    const historyIndex = Math.min(
+      Math.max(0, state.historyIndex + (payload === 'prev' ? -1 : 1)),
+      state.searchHistory.length - 1
+    )
+
+    return {
+      ...state,
+      historyIndex,
+      text: state.searchHistory[historyIndex]
+        ? state.searchHistory[historyIndex].text
+        : state.text
+    }
+  },
 
   WORD_IN_NOTEBOOK: (state, { payload }) => ({
     ...state,

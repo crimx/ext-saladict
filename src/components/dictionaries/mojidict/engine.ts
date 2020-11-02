@@ -65,17 +65,34 @@ interface SuggestsResult {
   }>
 }
 
+interface FetchTtsResult {
+  result: {
+    code: number
+    result?: {
+      text: string
+      url: string
+      identity: string
+      existed: boolean
+      msg: string
+    }
+  }
+}
+
 export interface MojidictResult {
   word?: {
+    tarId: string
     spell: string
     pron: string
-    tts: string
+    tts?: string
   }
   details?: Array<{
+    objectId: string
     title: string
     subdetails?: Array<{
+      objectId: string
       title: string
       examples?: Array<{
+        objectId: string
         title: string
         trans: string
       }>
@@ -95,11 +112,8 @@ export const search: SearchFunction<MojidictResult> = async (
 ) => {
   const suggests = await getSuggests(text)
 
-  const wordId =
-    suggests.searchResults &&
-    suggests.searchResults[0] &&
-    suggests.searchResults[0].tarId
-  if (!wordId) {
+  const tarId = suggests.searchResults?.[0]?.tarId
+  if (!tarId) {
     return handleNoResult()
   }
 
@@ -111,12 +125,7 @@ export const search: SearchFunction<MojidictResult> = async (
     headers: {
       'content-type': 'text/plain'
     },
-    data: JSON.stringify({
-      wordId,
-      _ApplicationId: process.env.MOJI_ID,
-      _ClientVersion: 'js2.7.1',
-      _InstallationId: getInstallationId()
-    })
+    data: requestPayload({ wordId: tarId })
   })
 
   const result: MojidictResult = {}
@@ -124,31 +133,29 @@ export const search: SearchFunction<MojidictResult> = async (
   if (wordResult && (wordResult.details || wordResult.word)) {
     if (wordResult.word) {
       result.word = {
+        tarId,
         spell: wordResult.word.spell,
-        pron: `${wordResult.word.pron || ''} ${wordResult.word.accent || ''}`,
-        tts: await getTTS(wordResult.word.spell, wordResult.word.objectId)
+        pron: `${wordResult.word.pron || ''} ${wordResult.word.accent || ''}`
       }
     }
 
     if (wordResult.details) {
       result.details = wordResult.details.map(detail => ({
+        objectId: detail.objectId,
         title: detail.title,
-        subdetails:
-          wordResult.subdetails &&
-          wordResult.subdetails
-            .filter(subdetail => subdetail.detailsId === detail.objectId)
-            .map(subdetail => ({
-              title: subdetail.title,
-              examples:
-                wordResult.examples &&
-                wordResult.examples.filter(
-                  example => example.subdetailsId === subdetail.objectId
-                )
-            }))
+        subdetails: wordResult?.subdetails
+          ?.filter(subdetail => subdetail.detailsId === detail.objectId)
+          .map(subdetail => ({
+            objectId: subdetail.objectId,
+            title: subdetail.title,
+            examples: wordResult?.examples?.filter(
+              example => example.subdetailsId === subdetail.objectId
+            )
+          }))
       }))
     }
 
-    if (suggests.words && suggests.words.length > 1) {
+    if (suggests.words && suggests?.words.length > 1) {
       result.releated = suggests.words
         .map(word => ({
           title: `${word.spell} | ${word.pron || ''} ${word.accent || ''}`,
@@ -157,9 +164,12 @@ export const search: SearchFunction<MojidictResult> = async (
         .slice(1)
     }
 
-    return result.word && result.word.tts
-      ? { result, audio: { py: result.word.tts } }
-      : { result }
+    if (result.word && config.autopron.cn.dict === 'mojidict') {
+      result.word.tts = await getTTS(tarId, 102)
+      return { result, audio: { py: result.word.tts } }
+    }
+
+    return { result }
   }
 
   return handleNoResult()
@@ -175,13 +185,10 @@ async function getSuggests(text: string): Promise<SuggestsResult> {
       headers: {
         'content-type': 'text/plain'
       },
-      data: JSON.stringify({
+      data: requestPayload({
         langEnv: 'zh-CN_ja',
         needWords: true,
-        searchText: text,
-        _ApplicationId: process.env.MOJI_ID,
-        _ClientVersion: 'js2.7.1',
-        _InstallationId: getInstallationId()
+        searchText: text
       })
     })
 
@@ -191,28 +198,42 @@ async function getSuggests(text: string): Promise<SuggestsResult> {
   }
 }
 
-async function getTTS(text: string, wordId: string): Promise<string> {
+/**
+ * @param tarId word id
+ * @param tarType 102 word, 103 sentence
+ */
+export async function getTTS(
+  tarId: string,
+  tarType: 102 | 103
+): Promise<string> {
   try {
-    const { data } = await axios({
+    const { data }: AxiosResponse<FetchTtsResult> = await axios({
       method: 'post',
-      url: 'https://api.mojidict.com/parse/functions/fetchTts',
+      url: 'https://api.mojidict.com/parse/functions/fetchTts_v2',
       headers: {
         'content-type': 'text/plain'
       },
-      data: JSON.stringify({
-        identity: wordId,
-        text,
-        _ApplicationId: process.env.MOJI_ID,
-        _ClientVersion: 'js2.7.1',
-        _InstallationId: getInstallationId()
-      })
+      data: requestPayload({ tarId, tarType })
     })
 
-    if (data.result && data.result.url) {
-      return data.result.url
+    return data.result?.result?.url || ''
+  } catch (e) {
+    if (process.env.DEBUG) {
+      console.error(e)
     }
-  } catch (e) {}
+  }
   return ''
+}
+
+export type GetTTS = typeof getTTS
+
+function requestPayload(data: object) {
+  return JSON.stringify({
+    _ApplicationId: process.env.MOJI_ID,
+    _ClientVersion: 'js2.12.0',
+    _InstallationId: getInstallationId(),
+    ...data
+  })
 }
 
 function getInstallationId() {
