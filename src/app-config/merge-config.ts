@@ -7,7 +7,6 @@ import isString from 'lodash/isString'
 import isBoolean from 'lodash/isBoolean'
 import get from 'lodash/get'
 import set from 'lodash/set'
-import { isFirefox } from '@/_helpers/saladict'
 
 export default mergeConfig
 
@@ -187,12 +186,6 @@ export function mergeConfig(
       '^https://stackedit.io(/.*)?$',
       'https://stackedit.io/*'
     ])
-  }
-  if (oldVersion <= 13) {
-    oldVersion = 14
-    if (!isFirefox && !base.contextMenus.selected.includes('caiyuntrs')) {
-      base.contextMenus.selected.unshift('caiyuntrs')
-    }
   }
 
   if (oldConfig.language['minor'] === false) {
