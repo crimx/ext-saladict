@@ -58,7 +58,7 @@ export async function openPDF(url?: string, force?: boolean) {
 
   return window.appConfig.pdfStandalone
     ? openPDFStandalone(pdfURL)
-    : openUrl(pdfURL)
+    : openUrl({ url: pdfURL, unique: false })
 }
 
 export function extractPDFUrl(fullurl?: string): string | void {
