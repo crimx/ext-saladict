@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.18.1](https://github.com/crimx/ext-saladict/compare/v7.18.0...v7.18.1) (2021-01-18)
+
+
+### Bug Fixes
+
+* **fixtures:** read url of undefined ([52e209d](https://github.com/crimx/ext-saladict/commit/52e209d2ca55715bdc5f574ae9f10420ce87306b))
+
 ## [7.18.0](https://github.com/crimx/ext-saladict/compare/v7.17.0...v7.18.0) (2020-11-02)
 
 
