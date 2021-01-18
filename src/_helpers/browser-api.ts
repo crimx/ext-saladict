@@ -145,8 +145,10 @@ export interface OpenUrlOptions {
   url: string
   /** use browser.runtime.getURL? */
   self?: boolean
-  /** focus the new tab? */
+  /** focus the new tab? default true */
   active?: boolean
+  /** ignore existing url? default true */
+  unique?: boolean
 }
 
 /**
@@ -162,22 +164,26 @@ export async function openUrl(
     typeof optionsOrUrl === 'string'
       ? { url: optionsOrUrl, self }
       : optionsOrUrl
-
+  const unique = options.unique !== false
   const url = options.self ? browser.runtime.getURL(options.url) : options.url
-  const tabs = await browser.tabs.query({ url }).catch(() => [])
-  if (tabs.length > 0) {
-    const { index, windowId } = tabs[0]
-    if (typeof browser.tabs['highlight'] === 'function') {
-      // Only Chrome supports tab.highlight for now
-      await browser.tabs['highlight']({ tabs: index, windowId })
+
+  if (unique) {
+    const tabs = await browser.tabs.query({ url }).catch(() => [])
+    if (tabs.length > 0) {
+      const { index, windowId } = tabs[0]
+      if (typeof browser.tabs['highlight'] === 'function') {
+        // Only Chrome supports tab.highlight for now
+        await browser.tabs['highlight']({ tabs: index, windowId })
+      }
+      await browser.windows.update(windowId!, { focused: true })
+      return
     }
-    await browser.windows.update(windowId!, { focused: true })
-  } else {
-    await browser.tabs.create({
-      url,
-      active: options.active !== false
-    })
   }
+
+  await browser.tabs.create({
+    url,
+    active: options.active !== false
+  })
 }
 
 /* --------------------------------------- *\

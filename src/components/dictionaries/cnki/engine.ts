@@ -13,10 +13,12 @@ import {
 import { DictConfigs } from '@/app-config'
 
 export const getSrcPage: GetSrcPageFunction = text => {
-  return 'http://dict.cnki.net/dict_result.aspx?scw=' + encodeURIComponent(text)
+  return (
+    'http://dict.cnki.net/old/dict_result.aspx?scw=' + encodeURIComponent(text)
+  )
 }
 
-const HOST = 'http://dict.cnki.net'
+const HOST = 'http://dict.cnki.net/old'
 
 interface CNKIDictItem {
   word: string
@@ -48,7 +50,7 @@ export const search: SearchFunction<CNKIResult> = (
   payload
 ) => {
   return fetchDirtyDOM(
-    'http://dict.cnki.net/dict_result.aspx?scw=' + encodeURIComponent(text),
+    'http://dict.cnki.net/old/dict_result.aspx?scw=' + encodeURIComponent(text),
     { withCredentials: false }
   )
     .catch(handleNetWorkError)

@@ -130,7 +130,6 @@ async function add() {
         continue
       }
 
-      const { origin, host } = new URL(customConfig.url)
 
       if (!customConfig) {
         pgBar.update(null, { status: 'empty config' })
@@ -138,6 +137,7 @@ async function add() {
         continue
       }
 
+      const { origin, host } = new URL(customConfig.url)
       const axiosConfig = {
         transformResponse: [data => data],
         ...proxyConfig,

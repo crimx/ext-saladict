@@ -266,8 +266,7 @@ function _getDefaultConfig() {
      * 'popup_standalone' - open standalone panel
      * others are same as context menus
      */
-    baOpen:
-      isFirefox || !langCode.startsWith('zh-') ? 'popup_panel' : 'caiyuntrs',
+    baOpen: 'popup_panel',
 
     /** context tranlate engines */
     ctxTrans: {

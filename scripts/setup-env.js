@@ -5,6 +5,7 @@ main().catch(swallow)
 
 // set-up local testing env
 async function main() {
+  fs.ensureDir(path.join(__dirname, '../build'))
   const depsPath = path.join(__dirname, '../deps')
   const destPath = path.join(__dirname, '../node_modules')
   if (await isDirectory(depsPath)) {
