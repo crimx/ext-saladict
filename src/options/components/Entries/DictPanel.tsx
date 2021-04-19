@@ -47,6 +47,11 @@ export const DictPanel: FC = () => {
           children: <Switch />
         },
         {
+          name: getConfigPath('defaultPinned'),
+          valuePropName: 'checked',
+          children: <Switch />
+        },
+        {
           name: getConfigPath('animation'),
           valuePropName: 'checked',
           children: <Switch />
