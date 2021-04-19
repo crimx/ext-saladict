@@ -116,6 +116,7 @@ export const locale: typeof _locale = {
     tripleCtrl: 'Enable Ctrl Shortkey',
     tripleCtrl_help:
       'Press {⌘ Command}(macOS) or {Ctrl}(Others) three times (or with browser shortkey) to summon the dictionary panel. ',
+    defaultPinned: 'Pinned when shows up',
     qsLocation: 'Location',
     qsFocus: 'Focus when shows up',
     qsStandalone: 'Standalone',

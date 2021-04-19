@@ -94,3 +94,6 @@ test/**/response
 .idea
 
 .webext_tmp/*
+
+
+**/.DS_Store
