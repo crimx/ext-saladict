@@ -70,6 +70,7 @@ export const locale = {
       '注意日语与韩语也包含了汉字。法语、德语和西语也包含了英文。若取消了中文或英语而勾选了其它语言，则只匹配那些语言独有的部分，如日语只匹配假名。',
     doubleClickDelay: '双击间隔',
     mode: '普通划词',
+    defaultPinned: '出现时钉住查词面板',
     panelMode: '查词面板内部划词',
     pinMode: '查词面板钉住后划词',
     qsPanelMode: '独立窗口响应页面划词',

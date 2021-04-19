@@ -232,6 +232,9 @@ function _getDefaultConfig() {
     /** focus quick search panel when shows up */
     qsFocus: true,
 
+    /** pin panel when shows up  */
+    defaultPinned: false,
+
     /** should panel be in a standalone window */
     qsStandalone: true,
 

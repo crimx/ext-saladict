@@ -68,7 +68,7 @@ export const initState = async () => {
         activeProfile.mtaAutoUnfold === 'always' ||
         (activeProfile.mtaAutoUnfold === 'popup' && isPopupPage())),
     isExpandWaveformBox: false,
-    isPinned: false,
+    isPinned: config.defaultPinned,
     /** Is current word in Notebook */
     isFav: false,
     bowlCoord: { x: 0, y: 0 },

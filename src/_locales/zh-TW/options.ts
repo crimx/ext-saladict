@@ -73,6 +73,7 @@ export const locale: typeof _locale = {
     doubleClickDelay: '滑鼠按兩下間隔',
     mode: '普通選字',
     panelMode: '字典視窗介面內部選字',
+    defaultPinned: '出現時釘住面板',
     pinMode: '字典視窗介面釘住后選字',
     qsPanelMode: '獨立字典視窗介面響應頁面選字',
     bowlHover: '圖示暫留查字',
