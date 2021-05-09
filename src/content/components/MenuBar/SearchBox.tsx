@@ -8,7 +8,7 @@ import {
   identity
 } from 'observable-hooks'
 import { merge, combineLatest } from 'rxjs'
-import { filter, map, distinctUntilChanged, mapTo } from 'rxjs/operators'
+import { filter, map, distinctUntilChanged, mapTo, delay } from 'rxjs/operators'
 import { focusBlur } from '@/_helpers/observables'
 import { message } from '@/_helpers/browser-api'
 import { Suggest } from './Suggest'
@@ -57,7 +57,7 @@ export const SearchBox: FC<SearchBoxProps> = props => {
             // only show suggest when start typing
             searchBoxFocusBlur$.pipe(filter(isFocus => !isFocus)),
             suggestFocusBlur$,
-            onShowSuggest$,
+            onShowSuggest$.pipe(delay(0)), // Prevent input method conflict on first input #1149
             message.createStream('SEARCH_TEXT_BOX').pipe(mapTo(false))
           )
         ]).pipe(
