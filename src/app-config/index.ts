@@ -193,7 +193,7 @@ function _getDefaultConfig() {
     /** when this is a quick search standalone panel running */
     qsPanelMode: {
       /** direct: on mouseup */
-      direct: false,
+      direct: true,
       /** double: double click */
       double: false,
       /** holding a key */
