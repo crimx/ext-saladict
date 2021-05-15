@@ -77,7 +77,7 @@ export const ShadowPortal = (props: ShadowPortalProps) => {
           {...restProps}
           onEnter={(...args) => {
             if (!$root.parentNode) {
-              document.body.appendChild($root)
+              document.documentElement.appendChild($root)
             }
             if (onEnter) {
               return onEnter(...args)
