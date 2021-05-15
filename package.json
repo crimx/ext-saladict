@@ -138,7 +138,7 @@
     "axios-mock-adapter": "^1.17.0",
     "babel-plugin-import": "^1.12.1",
     "clean-css-loader": "^2.0.0",
-    "cli-progress": "^3.5.0",
+    "cli-progress": "^3.9.0",
     "commitizen": "^4.2.1",
     "cz-conventional-changelog": "^3.3.0",
     "dotenv": "^8.2.0",
