@@ -85,7 +85,7 @@ export const MtaBox: FC<MtaBoxProps> = props => {
                 // prevent page shortkeys
                 e.nativeEvent.stopPropagation()
 
-                if (e.key === 'Enter' && e.ctrlKey) {
+                if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
                   props.searchText(props.text)
                 }
 
