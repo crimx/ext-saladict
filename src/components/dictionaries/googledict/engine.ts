@@ -63,9 +63,13 @@ export const search: SearchFunction<GoogleDictResult> = async (
 
     // mend fragments
     extFragements(bodyText).forEach(({ id, innerHTML }) => {
-      const el = doc.querySelector(`#${id}`)
-      if (el) {
-        el.innerHTML = innerHTML
+      try {
+        const el = doc.querySelector(`#${id}`)
+        if (el) {
+          el.innerHTML = innerHTML
+        }
+      } catch (e) {
+        // ignore
       }
     })
 
@@ -124,6 +128,17 @@ export const search: SearchFunction<GoogleDictResult> = async (
         }
       })
 
+      extractImg(bodyText).forEach(({ id, src }) => {
+        try {
+          const el = $obcontainer.querySelector(`#${id}`)
+          if (el) {
+            el.setAttribute('src', src)
+          }
+        } catch (e) {
+          // ignore
+        }
+      })
+
       const cleanText = getInnerHTML('https://www.google.com', $obcontainer, {
         config: {
           ADD_TAGS: ['g-img'],
@@ -150,7 +165,7 @@ export const search: SearchFunction<GoogleDictResult> = async (
 
 function extFragements(text: string): Array<{ id: string; innerHTML: string }> {
   const result: Array<{ id: string; innerHTML: string }> = []
-  const matcher = /\(function\(\)\{window.jsl.dh\('([^']+)','([^']+)'\);\}\)\(\);/g
+  const matcher = /\(function\(\)\{window\.jsl\.dh\('([^']+)','([^']+)'\);\}\)\(\);/g
   let match: RegExpExecArray | null | undefined
   while ((match = matcher.exec(text))) {
     result.push({
@@ -163,6 +178,19 @@ function extFragements(text: string): Array<{ id: string; innerHTML: string }> {
     })
   }
   return result
+}
+
+function extractImg(text: string): Array<{ id: string; src: string }> {
+  const kvPairMatch = /google.ldi={([^}]+)}/.exec(text)
+  if (kvPairMatch) {
+    try {
+      const json = JSON.parse(`{${kvPairMatch[1]}}`)
+      return Object.keys(json).map(key => ({ id: key, src: json[key] }))
+    } catch (e) {
+      // ignore
+    }
+  }
+  return []
 }
 
 function decodeHex(m: string, code: string): string {
