@@ -10,6 +10,10 @@ const env = require('dotenv').config({
   path: path.join(__dirname, '../.env')
 }).parsed
 
+// prevent hjdict tls error
+// There isn't anything sensitive of the source files so it's ok
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+
 // download fixtures
 // default only download non-existed files
 // --delete remove all fixtures
@@ -88,7 +92,7 @@ async function add() {
     )
     console.log(
       '\nErrors:\n\n',
-      errors.map(([name, e, url]) => `${name}\n${url}\n`).join('\n')
+      errors.map(([name, e, url]) => `${name}, ${e}\n${url}\n`).join('\n')
     )
   }
 
@@ -129,7 +133,6 @@ async function add() {
         pgBar.stop()
         continue
       }
-
 
       if (!customConfig) {
         pgBar.update(null, { status: 'empty config' })
