@@ -1,6 +1,6 @@
 {
   "name": "saladict",
-  "version": "7.18.2",
+  "version": "7.19.0",
   "description": "Chrome extension and Firefox WebExtension, inline translator powered by mutiple online dictionaries",
   "private": true,
   "scripts": {
@@ -76,10 +76,10 @@
     "@types/uuid": "^3.4.6",
     "@types/wavesurfer.js": "2.0.2",
     "antd": "^4.1.0",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "classnames": "^2.2.6",
     "dexie": "^2.0.4",
-    "dompurify": "^2.0.7",
+    "dompurify": "^2.0.17",
     "get-selection-more": "^1.0.2",
     "i18next": "^17.0.6",
     "lodash": "^4.17.14",
