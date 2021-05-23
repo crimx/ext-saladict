@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.19.0](https://github.com/crimx/ext-saladict/compare/v7.18.2...v7.19.0) (2021-05-23)
+
+
+### Features
+
+* **dict-panel:** add a option to pin panel by default ([#1296](https://github.com/crimx/ext-saladict/issues/1296)) ([bbaeb76](https://github.com/crimx/ext-saladict/commit/bbaeb76c77d62e18e3d6a0af52d7bad983dbcd69))
+
+
+### Bug Fixes
+
+* **:fixtures:** cnki url ([0fd0125](https://github.com/crimx/ext-saladict/commit/0fd012596c4e82e5acf7fa91469bdb78209fbbbc))
+
 ### [7.18.2](https://github.com/crimx/ext-saladict/compare/v7.18.1...v7.18.2) (2021-05-23)
 
 
