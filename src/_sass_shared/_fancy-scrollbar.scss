@@ -26,7 +26,7 @@ $scrollbar-color-active: rgba(138, 138, 138, 0.6);
 
   &::-webkit-scrollbar-thumb {
     background-color: $scrollbar-color;
-    border-radius: $scrollbar-size / 2;
+    border-radius: math.div($scrollbar-size, 2);
   }
 
   &::-webkit-scrollbar-thumb:hover {

@@ -19,9 +19,12 @@ const babelOptions = neutrino.config.module
 //   }
 // ])
 
-const sassGlobals = fs
-  .readdirSync(path.join(__dirname, '../src/_sass_shared/_global/'))
-  .map(filename => path.join(__dirname, '../src/_sass_shared/_global/', filename))
+const sassGlobals = [
+  path.join(__dirname, '../src/_sass_shared/_namespace.scss'),
+  ...fs
+    .readdirSync(path.join(__dirname, '../src/_sass_shared/_global/'))
+    .map(filename => path.join(__dirname, '../src/_sass_shared/_global/', filename))
+]
 
 module.exports = ({ config }) => {
   config.module.rules.push({

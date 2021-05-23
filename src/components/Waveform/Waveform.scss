@@ -16,7 +16,7 @@
 }
 
 $waveformPlayWidth: 1.3em;
-$halfWaveformPlayWidth: $waveformPlayWidth / 2;
+$halfWaveformPlayWidth: math.div($waveformPlayWidth, 2);
 
 %palyFGBlock {
   content: '';

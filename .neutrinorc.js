@@ -127,11 +127,14 @@ module.exports = {
             useId: 'sass-resources',
             options: {
               sourceMap: process.env.NODE_ENV !== 'production',
-              resources: fs
+              resources: [
+                path.join(__dirname, 'src/_sass_shared/_namespace.scss'),
+                ...fs
                 .readdirSync(path.join(__dirname, 'src/_sass_shared/_global/'))
                 .map(filename =>
                   path.join(__dirname, 'src/_sass_shared/_global/', filename)
                 )
+              ]
             }
           }
         ]
