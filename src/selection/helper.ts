@@ -49,6 +49,10 @@ export function isTypeField(element: Node | EventTarget | null): boolean {
       return true
     }
 
+    if (el instanceof HTMLElement && el.isContentEditable) {
+      return true
+    }
+
     // With CodeMirror the `pre.CodeMirror-line` somehow got detached when the event
     // triggerd. So el will never reach the root `.CodeMirror`.
     if (editorTester.test(String(el.className))) {
