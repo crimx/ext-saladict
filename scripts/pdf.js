@@ -12,7 +12,7 @@ if (!shell.which('git')) {
 }
 
 const cacheDir = 'pdf'
-const repoRoot = 'pdf/es5'
+const repoRoot = 'pdf'
 const publicPDFRoot = path.join(__dirname, '../assets/pdf')
 const pdfFiles = [
   'build/pdf.js',
