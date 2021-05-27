@@ -44,12 +44,8 @@ export function isTypeField(element: Node | EventTarget | null): boolean {
     return false
   }
 
-  for (let el: Element | null = element as Element; el; el = el.parentElement) {
-    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
-      return true
-    }
-
-    if (el instanceof HTMLElement && el.isContentEditable) {
+  for (let el: HTMLElement | null = element as HTMLElement; el; el = el.parentElement) {
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable) {
       return true
     }
 
