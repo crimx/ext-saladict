@@ -132,26 +132,30 @@ export class Service extends SyncService<SyncConfig> {
     const { i18n } = await I18nManager.getInstance()
     await i18n.loadNamespaces('sync')
 
-    browser.notifications.onClicked.addListener(handleLoginNotification)
-    browser.notifications.onClosed.removeListener(removeNotificationHandler)
-    if (browser.notifications.onButtonClicked) {
-      browser.notifications.onButtonClicked.addListener(handleLoginNotification)
-    }
+    if (browser.notifications) {
+      browser.notifications.onClicked.addListener(handleLoginNotification)
+      browser.notifications.onClosed.removeListener(removeNotificationHandler)
+      if (browser.notifications.onButtonClicked) {
+        browser.notifications.onButtonClicked.addListener(
+          handleLoginNotification
+        )
+      }
 
-    const options: browser.notifications.CreateNotificationOptions = {
-      type: 'basic',
-      iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
-      title: `Saladict ${i18n.t(`sync:shanbay.title`)}`,
-      message: i18n.t('sync:shanbay.error.login'),
-      eventTime: Date.now() + 10000,
-      priority: 2
-    }
+      const options: browser.notifications.CreateNotificationOptions = {
+        type: 'basic',
+        iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
+        title: `Saladict ${i18n.t(`sync:shanbay.title`)}`,
+        message: i18n.t('sync:shanbay.error.login'),
+        eventTime: Date.now() + 10000,
+        priority: 2
+      }
 
-    if (!isFirefox) {
-      options.buttons = [{ title: i18n.t('sync:shanbay.open') }]
-    }
+      if (!isFirefox) {
+        options.buttons = [{ title: i18n.t('sync:shanbay.open') }]
+      }
 
-    browser.notifications.create('shanbay-login', options)
+      browser.notifications.create('shanbay-login', options)
+    }
   }
 }
 
@@ -164,12 +168,14 @@ function handleLoginNotification(id: string) {
 
 function removeNotificationHandler(id: string) {
   if (id === 'shanbay-login') {
-    browser.notifications.onClicked.removeListener(handleLoginNotification)
-    browser.notifications.onClosed.removeListener(removeNotificationHandler)
-    if (browser.notifications.onButtonClicked) {
-      browser.notifications.onButtonClicked.removeListener(
-        handleLoginNotification
-      )
+    if (browser.notifications) {
+      browser.notifications.onClicked.removeListener(handleLoginNotification)
+      browser.notifications.onClosed.removeListener(removeNotificationHandler)
+      if (browser.notifications.onButtonClicked) {
+        browser.notifications.onButtonClicked.removeListener(
+          handleLoginNotification
+        )
+      }
     }
   }
 }
