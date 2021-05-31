@@ -1,0 +1,12 @@
+{
+  "background": {
+    "persistent": true
+  },
+  "options_ui": {
+    "chrome_style": false
+  },
+  "optional_permissions": [
+    "background"
+  ],
+  "incognito": "split"
+}
