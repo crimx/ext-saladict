@@ -1,0 +1,538 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		774E83BB266526B4006B5030 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774E83BA266526B4006B5030 /* AppDelegate.swift */; };
+		774E83BE266526B4006B5030 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 774E83BC266526B4006B5030 /* Main.storyboard */; };
+		774E83C0266526B4006B5030 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774E83BF266526B4006B5030 /* ViewController.swift */; };
+		774E83C2266526B7006B5030 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 774E83C1266526B7006B5030 /* Assets.xcassets */; };
+		774E83C9266526B7006B5030 /* Saladict - Pop-up Dictionary and Page Translator Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 774E83C8266526B7006B5030 /* Saladict - Pop-up Dictionary and Page Translator Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		774E83CE266526B7006B5030 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 774E83CD266526B7006B5030 /* Cocoa.framework */; };
+		774E83D1266526B7006B5030 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 774E83D0266526B7006B5030 /* SafariWebExtensionHandler.swift */; };
+		774E83E8266526B8006B5030 /* popup.html in Resources */ = {isa = PBXBuildFile; fileRef = 774E83DE266526B8006B5030 /* popup.html */; };
+		774E83E9266526B8006B5030 /* word-editor.html in Resources */ = {isa = PBXBuildFile; fileRef = 774E83DF266526B8006B5030 /* word-editor.html */; };
+		774E83EA266526B8006B5030 /* notebook.html in Resources */ = {isa = PBXBuildFile; fileRef = 774E83E0266526B8006B5030 /* notebook.html */; };
+		774E83EB266526B8006B5030 /* quick-search.html in Resources */ = {isa = PBXBuildFile; fileRef = 774E83E1266526B8006B5030 /* quick-search.html */; };
+		774E83EC266526B8006B5030 /* history.html in Resources */ = {isa = PBXBuildFile; fileRef = 774E83E2266526B8006B5030 /* history.html */; };
+		774E83ED266526B8006B5030 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 774E83E3266526B8006B5030 /* manifest.json */; };
+		774E83EE266526B8006B5030 /* options.html in Resources */ = {isa = PBXBuildFile; fileRef = 774E83E4266526B8006B5030 /* options.html */; };
+		774E83EF266526B8006B5030 /* _locales in Resources */ = {isa = PBXBuildFile; fileRef = 774E83E5266526B8006B5030 /* _locales */; };
+		774E83F0266526B8006B5030 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 774E83E6266526B8006B5030 /* assets */; };
+		774E83F1266526B8006B5030 /* audio-control.html in Resources */ = {isa = PBXBuildFile; fileRef = 774E83E7266526B8006B5030 /* audio-control.html */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		774E83CA266526B7006B5030 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 774E83AE266526B4006B5030 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 774E83C7266526B7006B5030;
+			remoteInfo = "Saladict - Pop-up Dictionary and Page Translator Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		774E83D9266526B7006B5030 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				774E83C9266526B7006B5030 /* Saladict - Pop-up Dictionary and Page Translator Extension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		774E83B6266526B4006B5030 /* Saladict - Pop-up Dictionary and Page Translator.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Saladict - Pop-up Dictionary and Page Translator.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		774E83B9266526B4006B5030 /* Saladict___Pop_up_Dictionary_and_Page_Translator.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Saladict___Pop_up_Dictionary_and_Page_Translator.entitlements"; sourceTree = "<group>"; };
+		774E83BA266526B4006B5030 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		774E83BD266526B4006B5030 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		774E83BF266526B4006B5030 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		774E83C1266526B7006B5030 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		774E83C3266526B7006B5030 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		774E83C8266526B7006B5030 /* Saladict - Pop-up Dictionary and Page Translator Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Saladict - Pop-up Dictionary and Page Translator Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		774E83CD266526B7006B5030 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		774E83D0266526B7006B5030 /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		774E83D2266526B7006B5030 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		774E83D3266526B7006B5030 /* Saladict___Pop_up_Dictionary_and_Page_Translator_Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Saladict___Pop_up_Dictionary_and_Page_Translator_Extension.entitlements"; sourceTree = "<group>"; };
+		774E83DE266526B8006B5030 /* popup.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = popup.html; path = ../../../build/safari/popup.html; sourceTree = "<group>"; };
+		774E83DF266526B8006B5030 /* word-editor.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "word-editor.html"; path = "../../../build/safari/word-editor.html"; sourceTree = "<group>"; };
+		774E83E0266526B8006B5030 /* notebook.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = notebook.html; path = ../../../build/safari/notebook.html; sourceTree = "<group>"; };
+		774E83E1266526B8006B5030 /* quick-search.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "quick-search.html"; path = "../../../build/safari/quick-search.html"; sourceTree = "<group>"; };
+		774E83E2266526B8006B5030 /* history.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = history.html; path = ../../../build/safari/history.html; sourceTree = "<group>"; };
+		774E83E3266526B8006B5030 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = ../../../build/safari/manifest.json; sourceTree = "<group>"; };
+		774E83E4266526B8006B5030 /* options.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = options.html; path = ../../../build/safari/options.html; sourceTree = "<group>"; };
+		774E83E5266526B8006B5030 /* _locales */ = {isa = PBXFileReference; lastKnownFileType = folder; name = _locales; path = ../../../build/safari/_locales; sourceTree = "<group>"; };
+		774E83E6266526B8006B5030 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../../build/safari/assets; sourceTree = "<group>"; };
+		774E83E7266526B8006B5030 /* audio-control.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "audio-control.html"; path = "../../../build/safari/audio-control.html"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		774E83B3266526B4006B5030 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		774E83C5266526B7006B5030 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				774E83CE266526B7006B5030 /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		774E83AD266526B4006B5030 = {
+			isa = PBXGroup;
+			children = (
+				774E83B8266526B4006B5030 /* Saladict - Pop-up Dictionary and Page Translator */,
+				774E83CF266526B7006B5030 /* Saladict - Pop-up Dictionary and Page Translator Extension */,
+				774E83CC266526B7006B5030 /* Frameworks */,
+				774E83B7266526B4006B5030 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		774E83B7266526B4006B5030 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				774E83B6266526B4006B5030 /* Saladict - Pop-up Dictionary and Page Translator.app */,
+				774E83C8266526B7006B5030 /* Saladict - Pop-up Dictionary and Page Translator Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		774E83B8266526B4006B5030 /* Saladict - Pop-up Dictionary and Page Translator */ = {
+			isa = PBXGroup;
+			children = (
+				774E83B9266526B4006B5030 /* Saladict___Pop_up_Dictionary_and_Page_Translator.entitlements */,
+				774E83BA266526B4006B5030 /* AppDelegate.swift */,
+				774E83BC266526B4006B5030 /* Main.storyboard */,
+				774E83BF266526B4006B5030 /* ViewController.swift */,
+				774E83C1266526B7006B5030 /* Assets.xcassets */,
+				774E83C3266526B7006B5030 /* Info.plist */,
+			);
+			path = "Saladict - Pop-up Dictionary and Page Translator";
+			sourceTree = "<group>";
+		};
+		774E83CC266526B7006B5030 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				774E83CD266526B7006B5030 /* Cocoa.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		774E83CF266526B7006B5030 /* Saladict - Pop-up Dictionary and Page Translator Extension */ = {
+			isa = PBXGroup;
+			children = (
+				774E83DD266526B8006B5030 /* Resources */,
+				774E83D0266526B7006B5030 /* SafariWebExtensionHandler.swift */,
+				774E83D2266526B7006B5030 /* Info.plist */,
+				774E83D3266526B7006B5030 /* Saladict___Pop_up_Dictionary_and_Page_Translator_Extension.entitlements */,
+			);
+			path = "Saladict - Pop-up Dictionary and Page Translator Extension";
+			sourceTree = "<group>";
+		};
+		774E83DD266526B8006B5030 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				774E83DE266526B8006B5030 /* popup.html */,
+				774E83DF266526B8006B5030 /* word-editor.html */,
+				774E83E0266526B8006B5030 /* notebook.html */,
+				774E83E1266526B8006B5030 /* quick-search.html */,
+				774E83E2266526B8006B5030 /* history.html */,
+				774E83E3266526B8006B5030 /* manifest.json */,
+				774E83E4266526B8006B5030 /* options.html */,
+				774E83E5266526B8006B5030 /* _locales */,
+				774E83E6266526B8006B5030 /* assets */,
+				774E83E7266526B8006B5030 /* audio-control.html */,
+			);
+			name = Resources;
+			path = "Saladict - Pop-up Dictionary and Page Translator Extension";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		774E83B5266526B4006B5030 /* Saladict - Pop-up Dictionary and Page Translator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 774E83DA266526B7006B5030 /* Build configuration list for PBXNativeTarget "Saladict - Pop-up Dictionary and Page Translator" */;
+			buildPhases = (
+				774E83B2266526B4006B5030 /* Sources */,
+				774E83B3266526B4006B5030 /* Frameworks */,
+				774E83B4266526B4006B5030 /* Resources */,
+				774E83D9266526B7006B5030 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				774E83CB266526B7006B5030 /* PBXTargetDependency */,
+			);
+			name = "Saladict - Pop-up Dictionary and Page Translator";
+			productName = "Saladict - Pop-up Dictionary and Page Translator";
+			productReference = 774E83B6266526B4006B5030 /* Saladict - Pop-up Dictionary and Page Translator.app */;
+			productType = "com.apple.product-type.application";
+		};
+		774E83C7266526B7006B5030 /* Saladict - Pop-up Dictionary and Page Translator Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 774E83D6266526B7006B5030 /* Build configuration list for PBXNativeTarget "Saladict - Pop-up Dictionary and Page Translator Extension" */;
+			buildPhases = (
+				774E83C4266526B7006B5030 /* Sources */,
+				774E83C5266526B7006B5030 /* Frameworks */,
+				774E83C6266526B7006B5030 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Saladict - Pop-up Dictionary and Page Translator Extension";
+			productName = "Saladict - Pop-up Dictionary and Page Translator Extension";
+			productReference = 774E83C8266526B7006B5030 /* Saladict - Pop-up Dictionary and Page Translator Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		774E83AE266526B4006B5030 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1240;
+				LastUpgradeCheck = 1240;
+				TargetAttributes = {
+					774E83B5266526B4006B5030 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+					774E83C7266526B7006B5030 = {
+						CreatedOnToolsVersion = 12.4;
+					};
+				};
+			};
+			buildConfigurationList = 774E83B1266526B4006B5030 /* Build configuration list for PBXProject "Saladict - Pop-up Dictionary and Page Translator" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 774E83AD266526B4006B5030;
+			productRefGroup = 774E83B7266526B4006B5030 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				774E83B5266526B4006B5030 /* Saladict - Pop-up Dictionary and Page Translator */,
+				774E83C7266526B7006B5030 /* Saladict - Pop-up Dictionary and Page Translator Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		774E83B4266526B4006B5030 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				774E83C2266526B7006B5030 /* Assets.xcassets in Resources */,
+				774E83BE266526B4006B5030 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		774E83C6266526B7006B5030 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				774E83EE266526B8006B5030 /* options.html in Resources */,
+				774E83EB266526B8006B5030 /* quick-search.html in Resources */,
+				774E83EF266526B8006B5030 /* _locales in Resources */,
+				774E83F0266526B8006B5030 /* assets in Resources */,
+				774E83EC266526B8006B5030 /* history.html in Resources */,
+				774E83F1266526B8006B5030 /* audio-control.html in Resources */,
+				774E83E8266526B8006B5030 /* popup.html in Resources */,
+				774E83E9266526B8006B5030 /* word-editor.html in Resources */,
+				774E83ED266526B8006B5030 /* manifest.json in Resources */,
+				774E83EA266526B8006B5030 /* notebook.html in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		774E83B2266526B4006B5030 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				774E83C0266526B4006B5030 /* ViewController.swift in Sources */,
+				774E83BB266526B4006B5030 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		774E83C4266526B7006B5030 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				774E83D1266526B7006B5030 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		774E83CB266526B7006B5030 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 774E83C7266526B7006B5030 /* Saladict - Pop-up Dictionary and Page Translator Extension */;
+			targetProxy = 774E83CA266526B7006B5030 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		774E83BC266526B4006B5030 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				774E83BD266526B4006B5030 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		774E83D4266526B7006B5030 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		774E83D5266526B7006B5030 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		774E83D7266526B7006B5030 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Saladict - Pop-up Dictionary and Page Translator Extension/Saladict___Pop_up_Dictionary_and_Page_Translator_Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "Saladict - Pop-up Dictionary and Page Translator Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.crimx.saladict.Saladict---Pop-up-Dictionary-and-Page-Translator.Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		774E83D8266526B7006B5030 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "Saladict - Pop-up Dictionary and Page Translator Extension/Saladict___Pop_up_Dictionary_and_Page_Translator_Extension.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = "Saladict - Pop-up Dictionary and Page Translator Extension/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.crimx.saladict.Saladict---Pop-up-Dictionary-and-Page-Translator.Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		774E83DB266526B7006B5030 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Saladict - Pop-up Dictionary and Page Translator/Saladict___Pop_up_Dictionary_and_Page_Translator.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Saladict - Pop-up Dictionary and Page Translator/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.crimx.saladict.Saladict---Pop-up-Dictionary-and-Page-Translator";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		774E83DC266526B7006B5030 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "Saladict - Pop-up Dictionary and Page Translator/Saladict___Pop_up_Dictionary_and_Page_Translator.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				INFOPLIST_FILE = "Saladict - Pop-up Dictionary and Page Translator/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.crimx.saladict.Saladict---Pop-up-Dictionary-and-Page-Translator";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		774E83B1266526B4006B5030 /* Build configuration list for PBXProject "Saladict - Pop-up Dictionary and Page Translator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				774E83D4266526B7006B5030 /* Debug */,
+				774E83D5266526B7006B5030 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		774E83D6266526B7006B5030 /* Build configuration list for PBXNativeTarget "Saladict - Pop-up Dictionary and Page Translator Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				774E83D7266526B7006B5030 /* Debug */,
+				774E83D8266526B7006B5030 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		774E83DA266526B7006B5030 /* Build configuration list for PBXNativeTarget "Saladict - Pop-up Dictionary and Page Translator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				774E83DB266526B7006B5030 /* Debug */,
+				774E83DC266526B7006B5030 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 774E83AE266526B4006B5030 /* Project object */;
+}

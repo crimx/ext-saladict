@@ -94,8 +94,9 @@
   height: 50px;
   padding: 0;
   border: none;
+  // safari doesn't support transparent
   background: linear-gradient(
-    transparent 40%,
+    rgba(var(--color-rgb-background), 0) 40%,
     rgba(var(--color-rgb-background), 0.5) 60%,
     var(--color-background) 100%
   );

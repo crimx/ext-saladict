@@ -20,14 +20,16 @@ import './types'
 
 browser.runtime.onInstalled.addListener(onInstalled)
 browser.runtime.onStartup.addListener(onStartup)
-browser.notifications.onClicked.addListener(
-  genClickListener('https://saladict.crimx.com/releases/')
-)
-if (browser.notifications.onButtonClicked) {
-  // Firefox doesn't support
-  browser.notifications.onButtonClicked.addListener(
+if (browser.notifications) {
+  browser.notifications.onClicked.addListener(
     genClickListener('https://saladict.crimx.com/releases/')
   )
+  if (browser.notifications.onButtonClicked) {
+    // Firefox doesn't support
+    browser.notifications.onButtonClicked.addListener(
+      genClickListener('https://saladict.crimx.com/releases/')
+    )
+  }
 }
 
 browser.commands.onCommand.addListener(onCommand)
@@ -233,7 +235,9 @@ async function onInstalled({
               options.silent = true
             }
 
-            browser.notifications.create('sd-install', options)
+            if (browser.notifications) {
+              browser.notifications.create('sd-install', options)
+            }
           }, 5000)
         }
       }
@@ -280,7 +284,9 @@ function onStartup(): void {
                   { title: getText('%E6%9F%A5%E7%9C%8B%E6%9B%B4%E6%96%B0') }
                 ]
               }
-              browser.notifications.create('sd-update', options)
+              if (browser.notifications) {
+                browser.notifications.create('sd-update', options)
+              }
             }
           }
         })
@@ -316,7 +322,9 @@ function onStartup(): void {
             }
           ]
         }
-        browser.notifications.create('sd-update', options)
+        if (browser.notifications) {
+          browser.notifications.create('sd-update', options)
+        }
       }
     })
   }
@@ -334,11 +342,13 @@ function genClickListener(url: string) {
       case 'sd-install':
       case 'sd-update':
         openUrl(url)
-        browser.notifications.getAll().then(notifications => {
-          Object.keys(notifications).forEach(id =>
-            browser.notifications.clear(id)
-          )
-        })
+        if (browser.notifications) {
+          browser.notifications.getAll().then(notifications => {
+            Object.keys(notifications).forEach(id =>
+              browser.notifications.clear(id)
+            )
+          })
+        }
         break
     }
   }
