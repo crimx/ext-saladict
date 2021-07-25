@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.19.1](https://github.com/crimx/ext-saladict/compare/v7.19.0...v7.19.1) (2021-07-25)
+
+
+### Bug Fixes
+
+* **no-typefield:** add support for content editable ([#1334](https://github.com/crimx/ext-saladict/issues/1334)) ([7984991](https://github.com/crimx/ext-saladict/commit/7984991e0e7adfb0b5fa16d604ffa3da6be65a40))
+* **pdf:** update pdf dir ([a8df19f](https://github.com/crimx/ext-saladict/commit/a8df19f12bcc5000eedaf40f6c0d3e0438386371))
+
 ## [7.19.0](https://github.com/crimx/ext-saladict/compare/v7.18.2...v7.19.0) (2021-05-23)
 
 
