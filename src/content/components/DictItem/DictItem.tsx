@@ -49,6 +49,10 @@ export const DictItem: FC<DictItemProps> = props => {
   const [foldState, setFoldState] = useState<'COLLAPSE' | 'HALF' | 'FULL'>(
     'COLLAPSE'
   )
+  const [filterResult, setFilterResult] = useState<
+    object | null | undefined | Array<any>
+  >(null)
+
   /** Rendered height */
   const [offsetHeight, setOffsetHeight] = useState(10)
 
@@ -72,6 +76,19 @@ export const DictItem: FC<DictItemProps> = props => {
       setFoldState('COLLAPSE')
     }
   }, [props.searchStatus])
+
+  useEffect(() => {
+    /** Remove daily hot words of urban dict */
+    if (
+      props.dictID === 'urban' &&
+      Array.isArray(props.searchResult) &&
+      props.searchResult?.[1]
+    ) {
+      props.searchResult?.splice(1, 1)
+    }
+
+    setFilterResult(props.searchResult)
+  }, [props.searchResult])
 
   useEffect(() => {
     props.onHeightChanged(props.dictID, visibleHeight + DICT_ITEM_HEAD_HEIGHT)
@@ -161,6 +178,7 @@ export const DictItem: FC<DictItemProps> = props => {
           ) : (
             <DictItemBody
               {...props}
+              searchResult={filterResult}
               catalogSelect$={catalogSelect$}
               dictRootRef={dictRootRef}
             />

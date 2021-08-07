@@ -19,7 +19,7 @@ export interface DictItemBodyProps {
   panelCSS: string
 
   searchStatus: 'IDLE' | 'SEARCHING' | 'FINISH'
-  searchResult?: object | null
+  searchResult?: object | null | Array<any>
 
   catalogSelect$: Observable<{ key: string; value: string }>
 
