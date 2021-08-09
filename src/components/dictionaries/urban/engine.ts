@@ -70,6 +70,11 @@ function handleDOM(
   }
 
   for (let i = 0; i < defPanels.length && result.length < resultnum; i++) {
+    // Remove daily hot words of urban dict. It's fixed in second place at list of defPanels.
+    if (i === 1) {
+      continue
+    }
+
     const $panel = defPanels[i]
 
     const resultItem: UrbanResultItem = { title: '' }
