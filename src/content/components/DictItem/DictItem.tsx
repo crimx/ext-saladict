@@ -84,7 +84,7 @@ export const DictItem: FC<DictItemProps> = props => {
       Array.isArray(props.searchResult) &&
       props.searchResult?.[1]
     ) {
-      props.searchResult?.splice(1, 1)
+      props.searchResult.splice(1, 1)
     }
 
     setFilterResult(props.searchResult)
