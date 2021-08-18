@@ -1,0 +1,80 @@
+@font-face {
+  // font-family: 'Minion New';
+  // src: url('https://ahdictionary.com/application/resources/fonts/MININ___.TTF') format('ttf');
+
+  font-family: 'Shine And Tokio';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://fonts.cdnfonts.com/s/19537/ShineAndTokio.woff')
+    format('woff');
+}
+
+.dictAh-WordBox {
+  border-bottom: 1px solid var(--color-font-grey);
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.dictAh-Title {
+  & > span {
+    font-size: 1.2em;
+    font-weight: bold;
+    vertical-align: -1px;
+  }
+  .dictAh-pronSymble {
+    font-family: 'Minion New';
+  }
+}
+
+.dictAh-Meaning {
+  & > i {
+    font-weight: bold;
+  }
+
+  .ds-list,
+  .sds-list {
+    margin-left: 1em;
+  }
+}
+
+.dictAh-idiomTitle {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.dictAh-idiomKeyword {
+  font-style: italic;
+  font-weight: bold;
+  margin-right: 2px;
+}
+
+.dictAh-idiomEg {
+  margin-left: 1em;
+}
+
+.dictAh-Hr {
+  width: 25%;
+  display: flex;
+  clear: both;
+  background-color: #8f8f8f;
+  padding: 0;
+  margin: 2px 0;
+  height: 1px;
+}
+
+.dictAh-UsageNote {
+  border-left: 1px solid;
+  padding-left: 5px;
+  color: var(--color-font-grey);
+}
+
+.dictAh-UseNoteTitle {
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.ds-single {
+  margin-left: 1em;
+}
