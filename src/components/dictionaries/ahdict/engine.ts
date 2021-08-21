@@ -17,25 +17,20 @@ export const getSrcPage: GetSrcPageFunction = text => {
 const HOST = 'https://ahdictionary.com'
 
 interface Idiom {
-  title: string
-  eg: string
+  title?: string
+  eg?: string
   tips?: string
 }
 
 interface AhdictResultItem {
-  /** keyword */
+  /** word */
   title: string
-  /** keyword No */
-  sup?: string
-  /** meaning and eg */
-  meaning?: HTMLString[]
   /** pronunciation */
-  pron?: {
-    title: string
-    src: string
-  }
+  pron?: string
+  /** meaning and eg */
+  meaning: HTMLString[]
   /** idiom and eg */
-  idioms?: Idiom[]
+  idioms: Idiom[]
   origin?: HTMLString
   usageNote?: string
 }
@@ -60,7 +55,10 @@ export const search: SearchFunction<AhdictResult> = (
     .then(doc => handleDOM(doc, options))
 }
 
-function handleDOM(doc: Document, opt) {
+function handleDOM(
+  doc: Document,
+  { resultnum }: { resultnum: number }
+): AhdictSearchResult | Promise<AhdictSearchResult> {
   const result: AhdictResult = []
 
   const tables = Array.from(doc.querySelectorAll('#results>table'))
@@ -69,71 +67,49 @@ function handleDOM(doc: Document, opt) {
     return handleNoResult()
   }
 
-  // console.log(tables, "==");
-
-  for (let i = 0; i < tables.length; i++) {
+  for (let i = 0; i < tables.length && result.length < resultnum; i++) {
     const $panel = tables[i]
     const resultItem: AhdictResultItem = {
       title: '',
-      pron: { title: '', src: '' }
+      meaning: [],
+      idioms: []
     }
 
-    const titleFigure = getText($panel.querySelector('.rtseg font'), 'font')
+    const $rtseg = $panel.querySelector('.rtseg') as HTMLElement
 
-    const $words = $panel.querySelector('.rtseg')
+    if ($rtseg) {
+      const $rtsega = $panel.querySelectorAll('.rtseg>a')
 
-    if ($words && resultItem.pron) {
-      const title = getInnerHTML(HOST, $words)
-        .replace(/<a(.*)[^>]?(.*)<\/a>/g, '')
-        .replace(/<div(.*)[^>]*(.*)<\/div>/g, '')
-      // .replace(/<\/?(font)[^>]*>/g, '')
-
-      resultItem.pron.title = title
-      // 获取音频
-      const voice = $panel.querySelectorAll('.rtseg>a')
-
-      if (voice[1] && voice[1].getAttribute('href')) {
-        // resultItem.pron.src = `${HOST}${voice[1].getAttribute('href')}`
-        resultItem.pron.src = voice[1].getAttribute('href') || ''
+      if ($rtsega[1] && $rtsega[1].getAttribute('href')) {
+        resultItem.pron = `${HOST}${$rtsega[1].getAttribute('href')}`
       }
+
+      resultItem.title = getText($rtsega[0], 'font')
     }
 
-    // 获取title和sup
-    resultItem.title = titleFigure.split(' ')[0]
-    resultItem.sup = titleFigure.split(' ')[1]
-
-    // 获取词条词性和例句
-    resultItem.meaning = []
     const $pseg = Array.from($panel.querySelectorAll('.pseg'))
 
     $pseg.map(item => {
-      resultItem.meaning &&
-        resultItem.meaning.push(
-          getInnerHTML(HOST, item).replace(/<\/?(span|font)[^>]*>/g, '')
-        )
+      resultItem.meaning.push(
+        getInnerHTML(HOST, item).replace(/<\/?(span|font)[^>]*>/g, '')
+      )
     })
 
-    // 获取俗语相关
-    resultItem.idioms = []
-    const $idioms = Array.from($panel.querySelectorAll('.idmseg'))
+    const $idmseg = Array.from($panel.querySelectorAll('.idmseg'))
 
-    if ($idioms.length) {
-      $idioms.map(item => {
+    if ($idmseg.length) {
+      $idmseg.map(item => {
         const idiom = {} as Idiom
         idiom.title = getText(item, 'b')
         idiom.eg = getText(item, '.ds-single')
         idiom.tips = getText(item, 'span+i')
 
-        resultItem.idioms && resultItem.idioms.push(idiom)
+        resultItem.idioms.push(idiom)
       })
     }
 
-    // resultItem.cdef = titleFigure;
-
-    const $defs = Array.from($panel.querySelectorAll('.pseg'))
-
     // 获取该条信息来源
-    const $etyseg = $panel.querySelector('.etyseg')
+    const $etyseg = $panel.querySelector('.etyseg') as HTMLElement
 
     if ($etyseg) {
       resultItem.origin = getInnerHTML(HOST, $etyseg).replace(
@@ -142,11 +118,11 @@ function handleDOM(doc: Document, opt) {
       )
     }
 
-    const $usenote = $panel.querySelector('.usen')
+    // 获取使用说明
+    const $usen = $panel.querySelector('.usen') as HTMLElement
 
-    if ($usenote) {
-      // 获取使用笔记来源
-      resultItem.usageNote = getInnerHTML(HOST, $usenote).replace(
+    if ($usen) {
+      resultItem.usageNote = getInnerHTML(HOST, $usen).replace(
         /<\/?(span|font|i)[^>]*>/g,
         ''
       )

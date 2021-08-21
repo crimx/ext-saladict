@@ -1,14 +1,10 @@
 import { DictItem } from '@/app-config/dicts'
 
-export type BingConfig = DictItem<{
-  tense: boolean
-  phsym: boolean
-  cdef: boolean
-  related: boolean
-  sentence: number
+export type AhdictConfig = DictItem<{
+  resultnum: number
 }>
 
-export default (): BingConfig => ({
+export default (): AhdictConfig => ({
   lang: '11000000',
   selectionLang: {
     english: true,
@@ -38,10 +34,6 @@ export default (): BingConfig => ({
     max: 5
   },
   options: {
-    tense: true,
-    phsym: true,
-    cdef: true,
-    related: true,
-    sentence: 4
+    resultnum: 4
   }
 })
