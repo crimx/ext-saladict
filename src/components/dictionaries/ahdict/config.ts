@@ -5,7 +5,7 @@ export type AhdictConfig = DictItem<{
 }>
 
 export default (): AhdictConfig => ({
-  lang: '11000000',
+  lang: '10000000',
   selectionLang: {
     english: true,
     chinese: false,
