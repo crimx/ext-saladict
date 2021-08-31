@@ -3,6 +3,7 @@ import { SupportedLangs } from '@/_helpers/lang-check'
 import baidu from '@/components/dictionaries/baidu/config'
 import bing from '@/components/dictionaries/bing/config'
 import ahdict from '@/components/dictionaries/ahdict/config'
+import oaldict from '@/components/dictionaries/oaldict/config'
 import caiyun from '@/components/dictionaries/caiyun/config'
 import cambridge from '@/components/dictionaries/cambridge/config'
 import cnki from '@/components/dictionaries/cnki/config'
@@ -41,6 +42,7 @@ export const defaultAllDicts = {
   baidu: baidu(),
   bing: bing(),
   ahdict: ahdict(),
+  oaldict: oaldict(),
   caiyun: caiyun(),
   cambridge: cambridge(),
   cnki: cnki(),
