@@ -5,7 +5,7 @@
      *
      * @argument {number} action_code 1: "initing", 2: "complete", 3: "destroy"
      */
-    const VimiumCHandler = (action_code) => {
+    const lifetimeHandler = (action_code) => {
         if (action_code === 2) {
             // 初始化完成
             const api = window.VApi;
@@ -72,44 +72,53 @@
             channelElement.textContent = [box.scrollLeft, box.scrollTop];
         }
     };
-    const browser_ = typeof browser === "object" && browser && browser.runtime ? browser : chrome
 
-    browser_.storage.sync.get("vimiumExtensionInjector").then((result) => {
+    const IDOnFirefox = "vimium-c@gdh1995.cn";
+    const IDOnEdge = "aibcglbfblnogfjhbcmmpobjhnomhcdo";
+    const IDOnChrome = "hfjbmagddngcpeloejdejnfgbamkjaeg";
+
+    browser.storage.sync.get("vimiumExtensionInjector").then((result) => {
         let injector = result.vimiumExtensionInjector;
         if (injector === "nul" || injector === "/dev/null") {
             return;
         }
+        const IsEdge = /\sEdg\//.test(navigator.appVersion)
+        const IsFirefox = typeof InstallTrigger !== "undefined"
+        const useFixedInjector = !!injector
         if (!injector) {
-            injector = /\sEdg\//.test(navigator.appVersion)
-                ? "aibcglbfblnogfjhbcmmpobjhnomhcdo"
-                : typeof InstallTrigger !== "undefined"
-                ? "vimium-c@gdh1995.cn"
-                : "hfjbmagddngcpeloejdejnfgbamkjaeg";
-            browser_.storage.sync.set({ vimiumExtensionInjector: injector });
+            injector = IsFirefox ? IDOnFirefox : IsEdge ? IDOnEdge : IDOnChrome;
         }
         if (injector.includes("://") && injector.includes("/", injector.indexOf("://") + 3)) {
             inject(injector);
             return;
         }
-        let extId;
+        let expectedExtId;
         try {
             if (injector.includes("://")) {
-                extId = new URL(injector).hostname;
+                expectedExtId = new URL(injector).hostname;
             } else {
-                extId = injector;
+                expectedExtId = injector;
             }
         } catch (_e) {
             return;
         }
-        browser_.runtime.sendMessage(extId, { handler: "id" }).then((response) => {
+        let q = browser.runtime.sendMessage(expectedExtId, { handler: "id" });
+        let extIdInUse = expectedExtId;
+        if (!useFixedInjector && IsEdge) {
+            q = q.catch(() => {
+                extIdInUse = IDOnChrome
+                return browser.runtime.sendMessage(extIdInUse, { handler: "id" })
+            })
+        }
+        q.then((response) => {
             if (!response || !response.injector || typeof response.injector !== "string") {
                 if (response === false) {
-                    console.log("Connection to the extension named %o was refused.", extId);
+                    console.log("Connection to the extension named %o was refused.", expectedExtId);
                 }
                 return;
             }
             console.log(
-                `Successfully connected to ${extId}: %o (version ${response.version}).`,
+                `Successfully connected to ${extIdInUse}: %o (version ${response.version}).`,
                 response.name
             );
             inject(response.injector);
@@ -125,8 +134,8 @@
             const injector = window.VimiumInjector;
             if (injector) {
                 injector.cache
-                    ? VimiumCHandler(2, "complete")
-                    : (injector.callback = VimiumCHandler);
+                    ? lifetimeHandler(2, "complete")
+                    : (injector.callback = lifetimeHandler);
                 window.addEventListener("vimiumMark", onMark, true);
             }
         };
