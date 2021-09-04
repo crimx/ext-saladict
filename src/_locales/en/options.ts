@@ -276,6 +276,24 @@ export const locale: typeof _locale = {
       sync_last: 'Upload the last new word'
     },
 
+    eudic: {
+      description:
+        'Before using Eudic to synchronize words, you must first create a default new word book on Eudic official website (my.eudic.net/home/index) (generally, it will be automatically generated and cannot be deleted after the first manual import). Pay attention not to synchronize frequently in a short time, which may cause temporary lock.',
+      token: 'Authorization information',
+      getToken: 'Get authorization',
+      verify: 'Check authorization information',
+      verified: 'Eudic authorization information checked successfully',
+      enable_help:
+        'After opening, each new word added will be automatically synchronized to the Eudic default word book (salad to Eudic word book) in one direction, and only the new word itself will be synchronized (deleted out of synchronization)',
+      token_help:
+        'Please confirm to set valid personal authorization information, otherwise the synchronization will fail. You can click the button at the bottom to check.',
+      sync_all: 'Synchronize all new words',
+      sync_help:
+        'Synchronize all existing new words in salad word book to the Eudic default word book (turn on the synchronization switch above at the same time and click save)',
+      sync_all_confirm:
+        'Note that frequent synchronization in a short time may lead to lock temporarily. Are you sure to continue?'
+    },
+
     webdav: {
       description:
         'Extension settings (including this) are synced via browser. New words notebook can be synced via WebDAV through settings here.',
