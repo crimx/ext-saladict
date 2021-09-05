@@ -267,6 +267,24 @@ export const locale: typeof _locale = {
       sync_last: '上傳最近的一個生字'
     },
 
+    eudic: {
+      description:
+        '使用歐路詞典同步單詞前，必須先在歐路官網（my.eudic.net/home/index）創建默認生詞本（一般初次手動導入會自動生成且無法删除）。注意短時間內不要頻繁同步，可能會造成暫時封停。',
+      token: '授權資訊',
+      getToken: '獲取授權',
+      verify: '檢查 授權資訊',
+      verified: '成功檢查 歐路授權資訊',
+      enable_help:
+        '開啟後每次添加生詞將自動單向同步到歐路默認生詞本（salad到歐路生詞本），只同步新增單詞本身（删除不同步）',
+      token_help:
+        '請確認設定有效的個人授權資訊，否則將同步失敗。可點擊底部按鈕檢查。',
+      sync_all: '同步全部生詞',
+      sync_help:
+        '將salad單詞本中現有的所有生詞，同步到歐路詞典默認生詞本中（需同時開啟上方同步開關，點擊保存）',
+      sync_all_confirm:
+        '注意短時間內頻繁同步有可能會導致接下來一小段時間的封停，確定繼續？'
+    },
+
     webdav: {
       description:
         '應用設定（包括本設定）已通過瀏覽器自動同步。生詞本可通過本設定實現 WebDAV 同步。',
