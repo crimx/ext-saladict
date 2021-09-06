@@ -8,7 +8,7 @@
   "optional_permissions": [
     "background"
   ],
-  "content_security_policy": "script-src 'self' 'unsafe-eval' chrome-extension://hfjbmagddngcpeloejdejnfgbamkjaeg/ chrome-extension://aibcglbfblnogfjhbcmmpobjhnomhcdo/; object-src 'self'",
+  "content_security_policy": "script-src 'self' chrome-extension://hfjbmagddngcpeloejdejnfgbamkjaeg/ chrome-extension://aibcglbfblnogfjhbcmmpobjhnomhcdo/; object-src 'self'",
   "incognito": "split",
   "update_url": "https://clients2.google.com/service/update2/crx",
   "minimum_chrome_version": "63"
