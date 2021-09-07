@@ -113,6 +113,7 @@ async function modifyViewerHTML() {
     <!-- Saladict -->
     <script src="/assets/browser-polyfill.min.js"></script>
     <script src="/assets/inject-dict-panel.js"></script>
+    <script src="/assets/vimium-c-injector.js"></script>
   </body>
 `
   )
