@@ -1,0 +1,202 @@
+.dictMerriamWebster-TitleBox {
+  .dictMerriamWebster-Sup {
+    font-weight: 700;
+    margin-right: 2px;
+  }
+
+  .dictMerriamWebster-Title {
+    font-size: 1.5em;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+
+  .dictMerriamWebster-Pos {
+    color: #4a7d95;
+    font-weight: 700;
+  }
+}
+
+.dictMerriamWebster-PronBox {
+  .dictMerriamWebster-Break {
+    padding: 0 6px;
+  }
+}
+
+.dictMerriamWebster-Headword {
+  .if {
+    font-weight: 700;
+  }
+
+  .first-slash {
+    padding-left: 3px;
+  }
+
+  .last-slash {
+    padding-right: 3px;
+  }
+
+  .l {
+    font-style: italic;
+  }
+}
+
+.dictMerriamWebster-Meaning {
+  background-image: linear-gradient(180deg, #f5f9fa, #e7f0f4);
+  border-left: 4px solid #97bece;
+  padding: 4px;
+
+  .hword2 {
+    font-weight: 700;
+    font-size: 1.2em;
+    color: #265667;
+    margin: 2px;
+  }
+
+  .vg-header {
+    display: none;
+  }
+
+  .vg {
+    .sb {
+      margin-bottom: 8px;
+      position: relative;
+
+      &.has-num {
+        padding-left: 11px;
+      }
+
+      &.has-subnum,
+      &.has-let {
+        padding-left: 33px;
+      }
+    }
+
+    .t {
+      display: block;
+      padding-top: 2px;
+      color: #225f73;
+
+      &::before {
+        content: '//';
+        font-weight: 700;
+        padding: 0 4px 0 0;
+        color: #4a7d95;
+      }
+    }
+
+    .dt {
+      .show-vis,
+      .hide-vis {
+        display: none;
+      }
+    }
+
+    .num {
+      left: 0;
+      position: absolute;
+      top: 0;
+      font-weight: 700;
+    }
+  }
+}
+
+.dictMerriamWebster-Definition {
+  .vg-header {
+    display: none;
+  }
+
+  .dro {
+    padding-left: 18px;
+
+    .drp {
+      font-weight: 700;
+    }
+  }
+
+  .vg {
+    .sb {
+      margin-bottom: 12px;
+      position: relative;
+
+      &.has-num {
+        padding-left: 18px;
+      }
+
+      &.has-subnum,
+      &.has-let {
+        padding-left: 36px;
+      }
+
+      .sense.has-subnum {
+        display: block;
+        padding: 0 0 6px 11px;
+
+        .sub-num {
+          position: absolute;
+          left: 26px;
+          font-weight: 700;
+        }
+      }
+
+      .sdsense {
+        display: block;
+        padding-top: 4px;
+      }
+
+      &.letter-only span[class^='sb-'] > .has-sn {
+        padding-left: 18px;
+
+        .letter {
+          left: 0;
+          position: absolute;
+        }
+      }
+    }
+
+    span {
+      font-size: 14px;
+      letter-spacing: 0.2px;
+      line-height: 14px;
+
+      &[class^='sb-'] {
+        display: block;
+        margin-top: 6px;
+      }
+    }
+    .auth,
+    .source {
+      color: #525a5b;
+      font-size: 12px;
+    }
+
+    .sb-0 {
+      margin-top: 4px;
+    }
+
+    .num {
+      left: 0;
+      position: absolute;
+      top: 0;
+      font-weight: 700;
+    }
+
+    .letter {
+      left: 16px;
+      position: absolute;
+      font-weight: 700;
+    }
+
+    .t {
+      display: block;
+      padding-top: 4px;
+      color: #225f73;
+
+      &::before {
+        content: '//';
+        font-weight: 700;
+        padding: 0 4px 0 0;
+        color: #4a7d95;
+      }
+    }
+  }
+}

@@ -30,6 +30,7 @@ import urban from '@/components/dictionaries/urban/config'
 import vocabulary from '@/components/dictionaries/vocabulary/config'
 import weblio from '@/components/dictionaries/weblio/config'
 import weblioejje from '@/components/dictionaries/weblioejje/config'
+import merriamwebster from '@/components/dictionaries/merriamwebster/config'
 import websterlearner from '@/components/dictionaries/websterlearner/config'
 import wikipedia from '@/components/dictionaries/wikipedia/config'
 import youdao from '@/components/dictionaries/youdao/config'
@@ -69,6 +70,7 @@ export const defaultAllDicts = {
   vocabulary: vocabulary(),
   weblio: weblio(),
   weblioejje: weblioejje(),
+  merriamwebster: merriamwebster(),
   websterlearner: websterlearner(),
   wikipedia: wikipedia(),
   youdao: youdao(),
