@@ -1,0 +1,19 @@
+{
+  "name": {
+    "en": "Merriam-Webster's Dictionary",
+    "zh-CN": "韦氏词典",
+    "zh-TW": "韋氏字典"
+  },
+  "options": {
+    "resultnum": {
+      "en": "Show",
+      "zh-CN": "结果数量",
+      "zh-TW": "結果數量"
+    },
+    "resultnum_unit": {
+      "en": "results",
+      "zh-CN": "个",
+      "zh-TW": "個"
+    }
+  }
+}
