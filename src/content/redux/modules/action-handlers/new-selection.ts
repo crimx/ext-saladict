@@ -88,7 +88,7 @@ export const newSelection: ActionHandler<
   const { direct, holding, double, icon } = config.mode
 
   newState.isShowDictPanel = Boolean(
-    state.isPinned ||
+    (state.isPinned && state.isShowDictPanel) ||
       (isActive &&
         selection.word &&
         selection.word.text &&
