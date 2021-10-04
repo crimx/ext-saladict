@@ -20,7 +20,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* **:fixtures:** cnki url ([0fd0125](https://github.com/crimx/ext-saladict/commit/0fd012596c4e82e5acf7fa91469bdb78209fbbbc))
+* **fixtures:** cnki url ([0fd0125](https://github.com/crimx/ext-saladict/commit/0fd012596c4e82e5acf7fa91469bdb78209fbbbc))
 
 ### [7.18.2](https://github.com/crimx/ext-saladict/compare/v7.18.1...v7.18.2) (2021-05-23)
 
@@ -30,10 +30,6 @@ All notable changes to this project will be documented in this file. See [standa
 * **dict-panel:** move root el to document element ([aaeae1c](https://github.com/crimx/ext-saladict/commit/aaeae1cc6f4ea9ad43e2042b8b670f8480aaefb1)), closes [#1293](https://github.com/crimx/ext-saladict/issues/1293) [#1190](https://github.com/crimx/ext-saladict/issues/1190) [#474](https://github.com/crimx/ext-saladict/issues/474) [#421](https://github.com/crimx/ext-saladict/issues/421) [#398](https://github.com/crimx/ext-saladict/issues/398) [#278](https://github.com/crimx/ext-saladict/issues/278)
 * **dict-panel:** prevent input method conflict on first input ([e4dda57](https://github.com/crimx/ext-saladict/commit/e4dda573263f77ad9bfbf10c577971b9a9631fb8)), closes [#1149](https://github.com/crimx/ext-saladict/issues/1149)
 * **dicts:** fix zdic icon ([9aea435](https://github.com/crimx/ext-saladict/commit/9aea435fc8f8141d448d2f8309fef3d9872ea75a)), closes [#1244](https://github.com/crimx/ext-saladict/issues/1244)
-
-### [7.16.1](https://github.com/crimx/ext-saladict/compare/v7.16.0...v7.16.1) (2020-09-05)
-
-## [7.16.0](https://github.com/crimx/ext-saladict/compare/v7.15.1...v7.16.0) (2020-09-04)
 
 ### [7.18.1](https://github.com/crimx/ext-saladict/compare/v7.18.0...v7.18.1) (2021-01-18)
 
