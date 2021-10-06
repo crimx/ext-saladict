@@ -28,7 +28,7 @@ const mapStateToProps = (
     menuBar,
     mtaBox: state.isShowMtaBox ? <MtaBoxContainer /> : null,
     dictList,
-    waveformBox,
+    waveformBox: state.activeProfile.waveform ? waveformBox : null,
     width: ownProps.width,
     height: ownProps.height
   }
