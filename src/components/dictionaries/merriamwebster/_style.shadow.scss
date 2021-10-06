@@ -45,6 +45,10 @@
   border-left: 4px solid #97bece;
   padding: 4px;
 
+  @include isDarkMode {
+    background-image: none;
+  }
+
   .hword2 {
     font-weight: 700;
     font-size: 1.2em;

@@ -96,6 +96,10 @@
     font-style: normal;
     color: #333333;
     margin-right: 0.25rem;
+
+    @include isDarkMode {
+      color: #9d9d9d;
+    }
   }
 
   .dictOal-MeanExamples {
@@ -115,6 +119,10 @@
         font-weight: 600;
         font-style: italic;
         color: #333333;
+
+        @include isDarkMode {
+          color: #6f6f6f;
+        }
       }
     }
   }
