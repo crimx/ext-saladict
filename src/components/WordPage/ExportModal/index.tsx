@@ -173,7 +173,10 @@ export const ExportModal: FC<ExportModalProps> = props => {
             }}
           />
         </Layout.Content>
-        <Layout.Sider width="50%" style={{ paddingLeft: 24 }}>
+        <Layout.Sider
+          width="50%"
+          style={{ paddingLeft: 24, background: 'transparent' }}
+        >
           <textarea
             style={{ width: '100%', height: '100%' }}
             readOnly={true}
