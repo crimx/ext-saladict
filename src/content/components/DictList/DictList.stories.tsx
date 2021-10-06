@@ -53,8 +53,10 @@ storiesOf('Content Scripts|Dict Panel', module)
     })
   )
   .addDecorator(withi18nNS(['content', 'dicts']))
-  .add('DictList', () => (
+  // @ts-ignore: wrong storybook typing
+  .add('DictList', ({ darkMode }) => (
     <DictList
+      darkMode={darkMode}
       touchMode={boolean('Touch Mode', false)}
       language={object('Language', defaultLanguage)}
       doubleClickDelay={number('Double Click Delay', 200)}

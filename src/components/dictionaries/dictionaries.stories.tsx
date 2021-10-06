@@ -70,11 +70,12 @@ Object.keys(getAllDicts())
   )
   .forEach(id => {
     // @ts-ignore: wrong storybook typing
-    stories.add(id, ({ fontSize, withAnimation }) => (
+    stories.add(id, ({ fontSize, withAnimation, darkMode }) => (
       <Dict
         key={id}
         dictID={id as DictID}
         fontSize={fontSize}
+        darkMode={darkMode}
         withAnimation={withAnimation}
       />
     ))
@@ -83,6 +84,7 @@ Object.keys(getAllDicts())
 function Dict(props: {
   dictID: DictID
   fontSize: number
+  darkMode: boolean
   withAnimation: boolean
 }) {
   const { i18n } = useTranslate()
@@ -186,6 +188,7 @@ function Dict(props: {
     <DictItem
       dictID={props.dictID}
       catalog={catalog}
+      darkMode={props.darkMode}
       withAnimation={props.withAnimation}
       panelCSS={''}
       preferredHeight={number('Preferred Height', 256)}

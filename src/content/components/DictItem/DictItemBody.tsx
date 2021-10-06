@@ -14,6 +14,7 @@ const dictContentStyles = require('./DictItemContent.shadow.scss').toString()
 export interface DictItemBodyProps {
   dictID: DictID
 
+  darkMode: boolean
   withAnimation: boolean
 
   panelCSS: string
@@ -71,7 +72,10 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
       <Suspense fallback={null}>
         {props.searchStatus === 'FINISH' && props.searchResult && (
           <root.div>
-            <div ref={props.dictRootRef}>
+            <div
+              ref={props.dictRootRef}
+              className={classNames({ darkMode: props.darkMode })}
+            >
               <style>{dictContentStyles}</style>
               <DictStyle />
               {props.panelCSS ? <style>{props.panelCSS}</style> : null}
