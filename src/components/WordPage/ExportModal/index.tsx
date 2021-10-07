@@ -7,7 +7,7 @@ import { storage } from '@/_helpers/browser-api'
 import { LineBreakMemo, LineBreakOption } from './Linebreak'
 import { PlaceholderTableMemo } from './PlaceholderTable'
 
-const keywordMatchStr = `%(${Object.keys(newWord()).join('|')})%`
+const keywordMatchStr = `%(${Object.keys(newWord()).join('|')}|contextCloze)%`
 
 export type ExportModalTitle = 'all' | 'selected' | 'page' | ''
 
@@ -36,25 +36,42 @@ export const ExportModal: FC<ExportModalProps> = props => {
                 return new Date(word.date).toLocaleDateString(lang)
               case 'trans':
               case 'note':
-              case 'context': {
-                const text: string = escape
-                  ? escapeHTML(word[k] || '')
-                  : word[k] || ''
+              case 'context':
+              case 'contextCloze': {
+                let text = word[k === 'contextCloze' ? 'context' : k] || ''
+                if (escape) {
+                  text = escapeHTML(text)
+                }
                 switch (lineBreak) {
                   case 'n':
-                    return text.replace(/\n|\r\n/g, '\\n')
+                    text = text.replace(/\n|\r\n/g, '\\n')
+                    break
                   case 'br':
-                    return text.replace(/\n|\r\n/g, '<br>')
+                    text = text.replace(/\n|\r\n/g, '<br>')
+                    break
                   case 'p':
-                    return text
+                    text = text
                       .split(/\n|\r\n/)
                       .map(line => `<p>${line}</p>`)
                       .join('')
+                    break
                   case 'space':
-                    return text.replace(/\n|\r\n/g, ' ')
+                    text = text.replace(/\n|\r\n/g, ' ')
+                    break
                   default:
-                    return text
+                    break
                 }
+                if (k === 'contextCloze' && word.text) {
+                  const matcher = new RegExp(
+                    word.text.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'),
+                    'gi'
+                  )
+                  text = text.replace(
+                    matcher,
+                    ''.padStart(word.text.length, '_')
+                  )
+                }
+                return text
               }
               default:
                 return word[k] || ''

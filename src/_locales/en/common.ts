@@ -57,6 +57,7 @@ export const locale: typeof _locale = {
     trans: 'Translation',
     note: 'Note',
     context: 'Context',
+    contextCloze: 'Context Cloze',
     date: 'Date',
     srcTitle: 'Source Title',
     srcLink: 'Source Link',

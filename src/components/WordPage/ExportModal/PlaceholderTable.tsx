@@ -37,6 +37,12 @@ export const PlaceholderTable: FC<PlaceholderTableProps> = ({ t }) => (
         contentL: t('common:note.trans'),
         plcholderR: '%date%',
         contentR: t('common:note.date')
+      },
+      {
+        plcholderL: '%contextCloze%',
+        contentL: t('common:note.contextCloze'),
+        plcholderR: '',
+        contentR: ''
       }
     ]}
     columns={[
