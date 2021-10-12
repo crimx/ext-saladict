@@ -46,7 +46,7 @@ export const DictUrban: FC<ViewPorps<UrbanResult>> = ({ result }) => (
           {def.contributor && (
             <span className="dictUrban-Contributor">{def.contributor}</span>
           )}
-          {def.thumbsUp && (
+          {typeof def.thumbsUp === 'number' && (
             <span className="dictUrban-Thumbs">
               <svg
                 className="dictUrban-IconThumbsUp"
@@ -60,7 +60,7 @@ export const DictUrban: FC<ViewPorps<UrbanResult>> = ({ result }) => (
               {def.thumbsUp}
             </span>
           )}
-          {def.thumbsDown && (
+          {typeof def.thumbsDown === 'number' && (
             <span className="dictUrban-Thumbs">
               <svg
                 className="dictUrban-IconThumbsDown"
