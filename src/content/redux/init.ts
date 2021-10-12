@@ -20,6 +20,27 @@ export const init = (dispatch: StoreDispatch, getState: () => StoreState) => {
     dispatch({ type: 'WINDOW_RESIZE' })
   })
 
+  /** delete end of section string(\n) */
+  window.addEventListener('copy', event => {
+    if (!event.target || !event.target.classList.contains('saladict-panel')) {
+      return null
+    }
+    const selection = document.getSelection()?.toString() || ''
+
+    function regularStr(str) {
+      for (let i = str.length - 1; i >= 0; i--) {
+        if (/\n/.test(str[i])) {
+          continue
+        }
+        return str.substring(0, i + 1)
+      }
+    }
+
+    event?.clipboardData?.setData('text/plain', regularStr(selection))
+
+    event.preventDefault()
+  })
+
   addConfigListener(({ newConfig }) => {
     if (newConfig.active !== getState().config.active) {
       message.send({
