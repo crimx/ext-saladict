@@ -29,7 +29,7 @@ export const SaladBowlPortal: FC<SaladBowlPortalProps> = props => {
       classNames="saladbowl"
       innerRootClassName={withAnimation ? 'isAnimate' : ''}
       panelCSS={panelCSS}
-      in={show && isHover}
+      in={show || isHover}
       timeout={withAnimation ? animationTimeout : 0}
     >
       {() => <SaladBowl {...restProps} onHover={setHover} />}
