@@ -77,7 +77,9 @@ function withTouchMode(config: AppConfig) {
     map(([, isWithMouse]) => [window.getSelection(), isWithMouse] as const),
     filter(
       (args): args is [Selection, boolean] =>
-        !!args[0] && !isInSaladictExternal(args[0].anchorNode)
+        !!args[0] &&
+        args[0].rangeCount > 0 &&
+        !isInSaladictExternal(args[0].anchorNode)
     ),
     withLatestFrom(mouseup$, mousedown$, clickPeriodCount$),
     map(([[selection, isWithMouse], mouseup, mousedown, clickPeriodCount]) => {

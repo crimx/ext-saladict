@@ -50,7 +50,7 @@ if (!window.__SALADICT_SELECTION_LOADED__) {
    */
   message.createStream('EMIT_SELECTION').subscribe(async () => {
     const selection = window.getSelection()
-    if (selection) {
+    if (selection && selection.rangeCount > 0) {
       const text = getTextFromSelection(selection)
       const rect = selection.getRangeAt(0).getBoundingClientRect()
       if (text) {
