@@ -7,6 +7,7 @@ import {
   MacmillanResultRelated
 } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictMacmillan: FC<ViewPorps<MacmillanResult>> = ({
   result,
@@ -62,12 +63,9 @@ function renderLex(result: MacmillanResultLex, select: ReactNode) {
           {result.phsym} <Speaker src={result.pron} /> {result.pos} {result.sc}
         </span>
       </header>
-      <ol
-        className="dictMacmillan-Sences"
-        dangerouslySetInnerHTML={{ __html: result.senses }}
-      />
+      <StrElm tag="ol" className="dictMacmillan-Sences" html={result.senses} />
       {result.toggleables.map((toggleable, i) => (
-        <div key={i} dangerouslySetInnerHTML={{ __html: toggleable }} />
+        <StrElm key={i} html={toggleable} />
       ))}
     </section>
   )

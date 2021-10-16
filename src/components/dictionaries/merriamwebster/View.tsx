@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import Speaker from '@/components/Speaker'
 import { MerriamWebsterResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictMerriamWebster: FC<ViewPorps<MerriamWebsterResult>> = ({
   result
@@ -29,25 +30,28 @@ export const DictMerriamWebster: FC<ViewPorps<MerriamWebsterResult>> = ({
 
           {def.headword && (
             <div>
-              <p
+              <StrElm
+                tag="p"
                 className="dictMerriamWebster-Headword"
-                dangerouslySetInnerHTML={{ __html: def.headword }}
+                html={def.headword}
               />
             </div>
           )}
         </div>
 
         {def.meaning && (
-          <p
+          <StrElm
+            tag="p"
             className="dictMerriamWebster-Meaning"
-            dangerouslySetInnerHTML={{ __html: def.meaning }}
+            html={def.meaning}
           />
         )}
 
         {def.definition && (
-          <p
+          <StrElm
+            tag="p"
             className="dictMerriamWebster-Definition"
-            dangerouslySetInnerHTML={{ __html: def.definition }}
+            html={def.definition}
           />
         )}
       </li>

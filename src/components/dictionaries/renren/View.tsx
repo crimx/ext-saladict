@@ -3,6 +3,7 @@ import Speaker from '@/components/Speaker'
 import { RenrenResult, RenrenSlide } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import { message } from '@/_helpers/browser-api'
+import { StrElm } from '@/components/StrElm'
 
 interface RenrenSlideProps {
   slide: RenrenSlide
@@ -31,10 +32,7 @@ const Slide: FC<RenrenSlideProps> = ({ slide }) => {
           }}
         />
         <figcaption>
-          <p
-            dangerouslySetInnerHTML={{ __html: slide.en }}
-            className="dictRenren-Slide_En"
-          />
+          <StrElm tag="p" html={slide.en} className="dictRenren-Slide_En" />
           <p className="dictRenren-Slide_Chs">{slide.chs}</p>
         </figcaption>
       </figure>

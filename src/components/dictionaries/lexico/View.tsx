@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { LexicoResult, LexicoResultLex, LexicoResultRelated } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictLexico: FC<ViewPorps<LexicoResult>> = ({ result }) => {
   switch (result.type) {
@@ -15,10 +16,10 @@ export const DictLexico: FC<ViewPorps<LexicoResult>> = ({ result }) => {
 
 function renderLex(result: LexicoResultLex) {
   return (
-    <div
+    <StrElm
       className="dictLexico-Lex"
-      dangerouslySetInnerHTML={{ __html: result.entry }}
       onClick={onLexClick}
+      html={result.entry}
     />
   )
 }

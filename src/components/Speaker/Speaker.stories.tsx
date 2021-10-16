@@ -16,6 +16,7 @@ import {
   getStaticSpeaker
 } from './index'
 import { timer } from '@/_helpers/promise-more'
+import { StrElm } from '../StrElm'
 
 storiesOf('Content Scripts|Components', module)
   .addDecorator(withPropsTable)
@@ -63,14 +64,12 @@ storiesOf('Content Scripts|Components', module)
       <StaticSpeakerContainer
         onPlayStart={async src => action('On Play Start')(src)}
       >
-        <div
-          dangerouslySetInnerHTML={{
-            __html: `
+        <StrElm
+          html={`
           <p>${getStaticSpeakerString(textStr)} ${textStr}</p>
           <p>${node && node.outerHTML} ${textNode}</p>
-        `
-          }}
-        ></div>
+        `}
+        />
       </StaticSpeakerContainer>
     )
   })

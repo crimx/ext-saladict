@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import Speaker from '@/components/Speaker'
 import { AhdictResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictAh: FC<ViewPorps<AhdictResult>> = ({ result }) => (
   <div>
@@ -17,11 +18,7 @@ export const DictAh: FC<ViewPorps<AhdictResult>> = ({ result }) => (
           {/* meaning and eg */}
           {res.meaning &&
             res.meaning.map((m, mI) => (
-              <div
-                key={mI}
-                className="dictAh-Meaning"
-                dangerouslySetInnerHTML={{ __html: m }}
-              />
+              <StrElm key={mI} className="dictAh-Meaning" html={m} />
             ))}
 
           {/* idioms and eg */}
@@ -46,19 +43,13 @@ export const DictAh: FC<ViewPorps<AhdictResult>> = ({ result }) => (
           {res.origin && (
             <>
               <div className="dictAh-Hr" role="separator" />
-              <p
-                className="dictAh-origin"
-                dangerouslySetInnerHTML={{ __html: res.origin }}
-              />
+              <StrElm tag="p" className="dictAh-origin" html={res.origin} />
             </>
           )}
 
           {/* words usage note */}
           {res.usageNote && (
-            <p
-              className="dictAh-UsageNote"
-              dangerouslySetInnerHTML={{ __html: res.usageNote }}
-            />
+            <StrElm tag="p" className="dictAh-UsageNote" html={res.usageNote} />
           )}
         </div>
       )

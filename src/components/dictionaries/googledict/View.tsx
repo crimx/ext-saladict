@@ -1,17 +1,14 @@
 import React, { FC } from 'react'
 import { GoogleDictResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictGoogleDict: FC<ViewPorps<GoogleDictResult>> = ({ result }) => (
   <div>
     {result.styles.map((style, i) => (
       <style key={i}>{style}</style>
     ))}
-    <div
-      onClick={onEntryClick}
-      className="xpdopen"
-      dangerouslySetInnerHTML={{ __html: result.entry }}
-    />
+    <StrElm onClick={onEntryClick} className="xpdopen" html={result.entry} />
   </div>
 )
 

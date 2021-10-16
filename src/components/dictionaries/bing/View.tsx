@@ -7,6 +7,7 @@ import {
   BingResultRelated
 } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictBing: FC<ViewPorps<BingResult>> = ({ result }) => {
   switch (result.type) {
@@ -66,11 +67,11 @@ function renderLex(result: BingResultLex) {
             <li className="dictBing-SentenceItem" key={sen.en}>
               {sen.en && (
                 <p>
-                  <span dangerouslySetInnerHTML={{ __html: sen.en }} />{' '}
+                  <StrElm tag="span" html={sen.en} />
                   <Speaker src={sen.mp3}></Speaker>
                 </p>
               )}
-              {sen.chs && <p dangerouslySetInnerHTML={{ __html: sen.chs }} />}
+              {sen.chs && <StrElm tag="p" html={sen.chs} />}
               {sen.source && (
                 <footer className="dictBing-SentenceSource">
                   {sen.source}

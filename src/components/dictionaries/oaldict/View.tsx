@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import Speaker from '@/components/Speaker'
 import { OaldictResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictOal: FC<ViewPorps<OaldictResult>> = ({ result }) => (
   <div>
@@ -54,11 +55,10 @@ export const DictOal: FC<ViewPorps<OaldictResult>> = ({ result }) => (
                       </span>
                     )}
                     {mean.variants && !mean.variantsIsBlock && (
-                      <span
+                      <StrElm
+                        tag="span"
                         className="dictOal-SensesVariants"
-                        dangerouslySetInnerHTML={{
-                          __html: mean.variants || ''
-                        }}
+                        html={mean.variants || ''}
                       />
                     )}
                     {mean.grammar && (
@@ -72,11 +72,9 @@ export const DictOal: FC<ViewPorps<OaldictResult>> = ({ result }) => (
                       </span>
                     )}
                     {mean.variants && mean.variantsIsBlock && (
-                      <div
+                      <StrElm
                         className="dictOal-SensesVariants"
-                        dangerouslySetInnerHTML={{
-                          __html: mean.variants || ''
-                        }}
+                        html={mean.variants || ''}
                       />
                     )}
                     {mean.use && <div>{mean.use}</div>}
@@ -85,11 +83,10 @@ export const DictOal: FC<ViewPorps<OaldictResult>> = ({ result }) => (
                       <span className={'dictOal-SensesCf'}>{mean.cf}</span>
                     )}
                     <span>{mean.def}</span>
-                    <p
+                    <StrElm
+                      tag="p"
                       className="dictOal-MeanExamples"
-                      dangerouslySetInnerHTML={{
-                        __html: mean.examples || ''
-                      }}
+                      html={mean.examples || ''}
                     />
                   </li>
                 )
@@ -104,9 +101,10 @@ export const DictOal: FC<ViewPorps<OaldictResult>> = ({ result }) => (
     {result.origin && (
       <div className={'dictOal-Origin'}>
         <span className={'dictOal-OriginTitle'}>Origin</span>
-        <p
+        <StrElm
+          tag="p"
           className="dictOal-OriginMean"
-          dangerouslySetInnerHTML={{ __html: result.origin || '' }}
+          html={result.origin || ''}
         />
       </div>
     )}
@@ -126,9 +124,9 @@ export const DictOal: FC<ViewPorps<OaldictResult>> = ({ result }) => (
               )}
               {idiom.def}
             </div>
-            <div
+            <StrElm
               className="dictOal-IdiomsExamples"
-              dangerouslySetInnerHTML={{ __html: idiom.examples || '' }}
+              html={idiom.examples || ''}
             />
           </div>
         ))}

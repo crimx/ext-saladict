@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { WeblioResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import EntryBox from '@/components/EntryBox'
+import { StrElm } from '@/components/StrElm'
 
 export const DictWeblio: FC<ViewPorps<WeblioResult>> = ({ result }) => (
   <div className="dictWeblio-Container">
@@ -9,9 +10,9 @@ export const DictWeblio: FC<ViewPorps<WeblioResult>> = ({ result }) => (
       <EntryBox
         key={title}
         className="dictWeblio-Entry"
-        title={<span dangerouslySetInnerHTML={{ __html: title }} />}
+        title={<StrElm tag="span" html={title} />}
       >
-        <div dangerouslySetInnerHTML={{ __html: def }} />
+        <StrElm html={def} />
       </EntryBox>
     ))}
   </div>

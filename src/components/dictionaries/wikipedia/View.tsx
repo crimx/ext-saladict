@@ -8,6 +8,7 @@ import {
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import { message } from '@/_helpers/browser-api'
 import { useTranslate } from '@/_helpers/i18n'
+import { StrElm } from '@/components/StrElm'
 
 export const DictWikipedia: FC<ViewPorps<WikipediaResult>> = ({
   result,
@@ -75,10 +76,7 @@ export const DictWikipedia: FC<ViewPorps<WikipediaResult>> = ({
       <h1 className="dictWikipedia-Title">{result.title}</h1>
       {langSelector}
       <div className="dictWikipedia-Content" onClick={handleEntryClick}>
-        <div
-          className="client-js"
-          dangerouslySetInnerHTML={{ __html: result.content }}
-        />
+        <StrElm className="client-js" html={result.content} />
       </div>
     </>
   )

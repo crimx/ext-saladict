@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import Speaker from '@/components/Speaker'
 import { NaverResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictNaver: FC<ViewPorps<NaverResult>> = props => {
   const ListMap = props.result.entry
@@ -33,9 +34,10 @@ export const DictNaver: FC<ViewPorps<NaverResult>> = props => {
           {ListMap.WORD.items.map((word, wordI) => {
             return (
               <div className={'dictNaver-Entry'} key={wordI}>
-                <h3
+                <StrElm
+                  tag="h3"
                   className={'dictNaver-EntryTitle'}
-                  dangerouslySetInnerHTML={{ __html: word.expEntry }}
+                  html={word.expEntry}
                 />
                 {word.expEntrySuperscript && (
                   <sup className={'dictNaver-EntrySup'}>
@@ -45,10 +47,11 @@ export const DictNaver: FC<ViewPorps<NaverResult>> = props => {
                 {word.expKanji && (
                   <>
                     [
-                    <span
+                    <StrElm
+                      tag="span"
                       className={'dictNaver-EntryKanji'}
-                      dangerouslySetInnerHTML={{ __html: word.expKanji }}
-                    ></span>
+                      html={word.expKanji}
+                    />
                     ]
                   </>
                 )}
@@ -99,9 +102,7 @@ export const DictNaver: FC<ViewPorps<NaverResult>> = props => {
                               </span>
                             )}
                             {m.subjectGroup && <span>{m.subjectGroup}</span>}
-                            <span
-                              dangerouslySetInnerHTML={{ __html: m.value }}
-                            ></span>
+                            <StrElm tag="span" html={m.value} />
                           </li>
                         ))}
                       </ul>
@@ -129,9 +130,10 @@ export const DictNaver: FC<ViewPorps<NaverResult>> = props => {
           {ListMap.MEANING.items.map((meaning, meaningI) => {
             return (
               <div className={'dictNaver-Mean'} key={meaningI}>
-                <h3
+                <StrElm
+                  tag="h3"
                   className={'dictNaver-MeanTitle'}
-                  dangerouslySetInnerHTML={{ __html: meaning.expEntry }}
+                  html={meaning.expEntry}
                 />
                 {meaning.expEntrySuperscript && (
                   <sup className={'dictNaver-MeanSup'}>
@@ -140,13 +142,13 @@ export const DictNaver: FC<ViewPorps<NaverResult>> = props => {
                 )}
 
                 {!!meaning?.expAliasGeneralAlwaysList?.length && (
-                  <span
+                  <StrElm
+                    tag="span"
                     className={'dictNaver-MeanAlias'}
-                    dangerouslySetInnerHTML={{
-                      __html:
-                        meaning.expAliasGeneralAlwaysList[0].originLanguageValue
-                    }}
-                  ></span>
+                    html={
+                      meaning.expAliasGeneralAlwaysList[0].originLanguageValue
+                    }
+                  />
                 )}
 
                 <div className={'dictNaver-MeanPron'}>
@@ -182,9 +184,7 @@ export const DictNaver: FC<ViewPorps<NaverResult>> = props => {
                                 {m.languageGroup}
                               </span>
                             )}
-                            <span
-                              dangerouslySetInnerHTML={{ __html: m.value }}
-                            ></span>
+                            <StrElm tag="span" html={m.value} />
                           </li>
                         ))}
                       </ul>
@@ -212,9 +212,10 @@ export const DictNaver: FC<ViewPorps<NaverResult>> = props => {
           {ListMap.EXAMPLE.items.map((example, exampleI) => {
             return (
               <div className={'dictNaver-Example'} key={exampleI}>
-                <h3
+                <StrElm
+                  tag="h3"
                   className={'dictNaver-ExampleTitle'}
-                  dangerouslySetInnerHTML={{ __html: example.expExample1 }}
+                  html={example.expExample1}
                 />
 
                 <div className={'dictNaver-ExamplePron'}>
@@ -231,10 +232,10 @@ export const DictNaver: FC<ViewPorps<NaverResult>> = props => {
                   {example.expExample1Pronun}
                 </div>
 
-                <div
+                <StrElm
                   className={'dictNaver-ExampleExtra'}
-                  dangerouslySetInnerHTML={{ __html: example.expExample2 }}
-                ></div>
+                  html={example.expExample2}
+                />
 
                 <div>
                   <a

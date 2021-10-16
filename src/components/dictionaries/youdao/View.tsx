@@ -4,17 +4,13 @@ import StarRates from '@/components/StarRates'
 import { YoudaoResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import EntryBox from '@/components/EntryBox'
+import { StrElm } from '@/components/StrElm'
 
 export const DictYoudao: FC<ViewPorps<YoudaoResult>> = ({ result }) => {
   const [collinsEntry, setCollinsEntry] = useState<string | number>(0)
 
   if (result.type === 'related') {
-    return (
-      <div
-        className="dictYoudao-Related"
-        dangerouslySetInnerHTML={{ __html: result.list }}
-      />
-    )
+    return <StrElm className="dictYoudao-Related" html={result.list} />
   }
 
   return (
@@ -39,10 +35,7 @@ export const DictYoudao: FC<ViewPorps<YoudaoResult>> = ({ result }) => {
         </div>
       )}
       {result.basic && (
-        <div
-          className="dictYoudao-Basic"
-          dangerouslySetInnerHTML={{ __html: result.basic }}
-        />
+        <StrElm className="dictYoudao-Basic" html={result.basic} />
       )}
       {result.collins.length > 0 && (
         <EntryBox title="柯林斯英汉双解">
@@ -58,33 +51,32 @@ export const DictYoudao: FC<ViewPorps<YoudaoResult>> = ({ result }) => {
               ))}
             </select>
           )}
-          <div
+          <StrElm
             className="dictYoudao-Collins"
-            dangerouslySetInnerHTML={{
-              __html: result.collins[collinsEntry].content
-            }}
+            html={result.collins[collinsEntry].content}
           />
         </EntryBox>
       )}
       {result.discrimination && (
         <div className="dictYoudao-Discrimination">
           <h1 className="dictYoudao-Discrimination_Title">词义辨析</h1>
-          <div dangerouslySetInnerHTML={{ __html: result.discrimination }} />
+          <StrElm html={result.discrimination} />
         </div>
       )}
       {result.sentence && (
         <EntryBox title="权威例句">
-          <ol
+          <StrElm
+            tag="ol"
             className="dictYoudao-Sentence"
-            dangerouslySetInnerHTML={{ __html: result.sentence }}
+            html={result.sentence}
           />
         </EntryBox>
       )}
       {result.translation && (
         <EntryBox title="机器翻译">
-          <div
+          <StrElm
             className="dictYoudao-Translation"
-            dangerouslySetInnerHTML={{ __html: result.translation }}
+            html={result.translation}
           />
         </EntryBox>
       )}

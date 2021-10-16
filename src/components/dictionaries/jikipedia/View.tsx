@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import { JikipediaResult } from './engine'
+import { StrElm } from '@/components/StrElm'
 
 export const Jikipedia: FC<ViewPorps<JikipediaResult>> = ({ result }) => (
   <ul className="dictJikipedia-List">
@@ -12,10 +13,7 @@ export const Jikipedia: FC<ViewPorps<JikipediaResult>> = ({ result }) => (
           </a>
         </h2>
         {item.content && (
-          <div
-            className="dictJikipedia-Content"
-            dangerouslySetInnerHTML={{ __html: item.content }}
-          />
+          <StrElm className="dictJikipedia-Content" html={item.content} />
         )}
         <footer className="dictJikipedia-Footer">
           {item.author && (

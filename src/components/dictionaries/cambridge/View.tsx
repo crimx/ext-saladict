@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { CambridgeResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictCambridge: FC<ViewPorps<CambridgeResult>> = props => (
   <>
@@ -11,7 +12,7 @@ export const DictCambridge: FC<ViewPorps<CambridgeResult>> = props => (
         className="dictCambridge-Entry"
         onClick={handleEntryClick}
       >
-        <div dangerouslySetInnerHTML={{ __html: entry.html }} />
+        <StrElm html={entry.html} />
       </section>
     ))}
   </>

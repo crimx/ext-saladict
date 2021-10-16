@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { HjdictResult, HjdictResultLex, HjdictResultRelated } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import { useTranslate } from '@/_helpers/i18n'
+import { StrElm } from '@/components/StrElm'
 
 export const DictHjDict: FC<ViewPorps<HjdictResult>> = props =>
   props.result.type === 'lex' ? (
@@ -18,13 +19,10 @@ function Lex(props: ViewPorps<HjdictResult>) {
     <div className="dictHjdict-Entry" onClick={handleClick}>
       <LangSelect {...props} />
       {header && (
-        <header
-          className="word-details-header"
-          dangerouslySetInnerHTML={{ __html: header }}
-        />
+        <StrElm tag="header" className="word-details-header" html={header} />
       )}
       {entries.map((entry, i) => (
-        <div dangerouslySetInnerHTML={{ __html: entry }} key={i} />
+        <StrElm key={i} html={entry} />
       ))}
     </div>
   )
@@ -35,10 +33,7 @@ function Related(props: ViewPorps<HjdictResult>) {
   return (
     <div>
       <LangSelect {...props} />
-      <div
-        className="dictHjdict-Entry"
-        dangerouslySetInnerHTML={{ __html: content }}
-      />
+      <StrElm className="dictHjdict-Entry" html={content} />
     </div>
   )
 }
