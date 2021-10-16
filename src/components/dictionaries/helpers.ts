@@ -7,6 +7,7 @@ import AxiosMockAdapter from 'axios-mock-adapter'
 import { DictID, AppConfig } from '@/app-config'
 import { Profile } from '@/app-config/profiles'
 import { Word } from '@/_helpers/record-manager'
+import { isTagName } from '@/_helpers/dom'
 
 /** Fetch and parse dictionary search result */
 export interface SearchFunction<Result, Payload = {}> {
@@ -188,7 +189,7 @@ export function getHTML(
       el.setAttribute('src', getFullLink(host!, el, 'src'))
     }
 
-    if (node.tagName === 'A' || node.tagName === 'IMG') {
+    if (isTagName(node, 'a') || isTagName(node, 'img')) {
       fillLink(node)
     }
     node.querySelectorAll('a').forEach(fillLink)

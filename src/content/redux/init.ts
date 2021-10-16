@@ -14,6 +14,7 @@ import { Word, newWord } from '@/_helpers/record-manager'
 import { timer } from '@/_helpers/promise-more'
 import { MessageResponse } from '@/typings/message'
 import { StoreDispatch, StoreState } from './modules'
+import { isTagName } from '@/_helpers/dom'
 
 export const init = (dispatch: StoreDispatch, getState: () => StoreState) => {
   window.addEventListener('resize', () => {
@@ -29,7 +30,7 @@ export const init = (dispatch: StoreDispatch, getState: () => StoreState) => {
           tempDisable: getState().isTempDisabled,
           unsupported: isStandalonePage()
             ? false
-            : document.body.tagName !== 'BODY'
+            : !isTagName(document.body, 'body')
         }
       })
     }
@@ -59,7 +60,7 @@ export const init = (dispatch: StoreDispatch, getState: () => StoreState) => {
                 tempDisable: state.isTempDisabled,
                 unsupported: isStandalonePage()
                   ? false
-                  : document.body.tagName !== 'BODY'
+                  : !isTagName(document.body, 'body')
               }
             })
           }, 0)
@@ -155,7 +156,7 @@ export const init = (dispatch: StoreDispatch, getState: () => StoreState) => {
           tempDisable: state.isTempDisabled,
           unsupported: isStandalonePage()
             ? false
-            : document.body.tagName !== 'BODY'
+            : !isTagName(document.body, 'body')
         })
       }
     }

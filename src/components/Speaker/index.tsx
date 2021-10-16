@@ -7,6 +7,7 @@ import React, {
 } from 'react'
 import { useUpdateEffect } from 'react-use'
 import { timer, reflect } from '@/_helpers/promise-more'
+import { isTagName } from '@/_helpers/dom'
 
 /** onPlayStart */
 const StaticSpeakerContext = React.createContext<
@@ -78,7 +79,7 @@ export const StaticSpeakerContainer: FC<StaticSpeakerContainerProps> = props => 
     (e: React.MouseEvent<HTMLDivElement>) => {
       if (
         e.target &&
-        e.target['tagName'] === 'A' &&
+        isTagName(e.target, 'a') &&
         e.target['href'] &&
         e.target['href'] !== '#' &&
         e.target['classList'] &&
