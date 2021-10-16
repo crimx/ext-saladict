@@ -77,9 +77,7 @@ function withTouchMode(config: AppConfig) {
     map(([, isWithMouse]) => [window.getSelection(), isWithMouse] as const),
     filter(
       (args): args is [Selection, boolean] =>
-        !!args[0] &&
-        args[0].rangeCount > 0 &&
-        !isInSaladictExternal(args[0].anchorNode)
+        !!args[0] && !isInSaladictExternal(args[0].anchorNode)
     ),
     withLatestFrom(mouseup$, mousedown$, clickPeriodCount$),
     map(([[selection, isWithMouse], mouseup, mousedown, clickPeriodCount]) => {
@@ -113,6 +111,10 @@ function withTouchMode(config: AppConfig) {
           ctrlKey: !!mouseup['ctrlKey'],
           metaKey: !!mouseup['metaKey']
         }
+      }
+
+      if (selection.rangeCount <= 0) {
+        return { self }
       }
 
       const rect = selection.getRangeAt(0).getBoundingClientRect()
