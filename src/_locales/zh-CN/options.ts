@@ -349,6 +349,8 @@ export const locale = {
   headInfo: {
     acknowledgement: {
       title: '特别鸣谢',
+      yipanhuasheng:
+        '添加韦氏词典、美国传统词典、牛津学习词典与欧路生词同步；更新 Urban 词典与 Naver 词典',
       naver: '协助添加 Naver 韩国语词典',
       shanbay: '编写扇贝词典模块',
       trans_tw: '提供部分繁体中文翻译',

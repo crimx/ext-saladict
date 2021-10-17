@@ -353,6 +353,8 @@ export const locale: typeof _locale = {
   headInfo: {
     acknowledgement: {
       title: '特別鳴謝',
+      yipanhuasheng:
+        '新增韋氏詞典、美國傳統詞典、牛津學習詞典與歐路生詞同步；更新 Urban 詞典與 Naver 詞典',
       naver: '協助新增 Naver 韓國語字典',
       shanbay: '編寫扇貝詞典模組',
       trans_tw: '提供部分繁體中文翻譯',

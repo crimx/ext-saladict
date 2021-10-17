@@ -6,6 +6,11 @@ export type Acknowledgement = Array<{
 
 export const acknowledgement: Acknowledgement = [
   {
+    name: 'yipanhuasheng',
+    href: 'https://github.com/crimx/ext-saladict/commits?author=yipanhuasheng',
+    locale: 'yipanhuasheng'
+  },
+  {
     name: 'zhtw2013',
     href: 'https://github.com/crimx/ext-saladict/commits?author=zhtw2013',
     locale: 'trans_tw'

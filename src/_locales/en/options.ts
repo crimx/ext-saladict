@@ -368,6 +368,8 @@ export const locale: typeof _locale = {
   headInfo: {
     acknowledgement: {
       title: 'Acknowledgement',
+      yipanhuasheng:
+        "for adding Merriam Webster's Dict, American Heritage Dict, Oxford Learner's Dict and Eudic Notebook sync service; and updating Urban Dict and Naver Dcit",
       naver: 'for helping add Naver dict',
       shanbay: 'for adding Shanbay dict',
       trans_tw: 'for traditional Chinese translation',
