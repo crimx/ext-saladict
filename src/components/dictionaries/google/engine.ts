@@ -8,6 +8,7 @@ import {
   machineResult
 } from '@/components/MachineTrans/engine'
 import { GoogleLanguage } from './config'
+import { Language } from '@opentranslate/languages'
 
 export const getTranslator = memoizeOne(() => new Google({ env: 'ext' }))
 
@@ -78,4 +79,8 @@ export const search: SearchFunction<
       translator.getSupportLanguages()
     )
   }
+}
+
+export async function getTTS(text: string, lang: Language): Promise<string> {
+  return (await getTranslator().textToSpeech(text, lang)) || ''
 }
