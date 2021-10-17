@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.20.0](https://github.com/crimx/ext-saladict/compare/v7.19.1...v7.20.0) (2021-10-17)
+
+
+### Features
+
+* **pdf:** inject vimium-c ([#1462](https://github.com/crimx/ext-saladict/issues/1462)) ([#1463](https://github.com/crimx/ext-saladict/issues/1463)) ([029c07a](https://github.com/crimx/ext-saladict/commit/029c07a0801177bf9d8137163fc43f70fe1e7a30))
+* **sync-services:** add eudic ([#1467](https://github.com/crimx/ext-saladict/issues/1467)) ([452bf53](https://github.com/crimx/ext-saladict/commit/452bf537a4aee7d1e3d79b7960cd5183cdff88af))
+* **wordpage:** add context cloze ([b910769](https://github.com/crimx/ext-saladict/commit/b91076941940dc82961830f43dcb9ee081596aa4))
+* add Oxford Learner's Dict ([#1458](https://github.com/crimx/ext-saladict/issues/1458)) ([aaffe00](https://github.com/crimx/ext-saladict/commit/aaffe00d760adb44676042142a5ce2af34ce5001)), closes [#1253](https://github.com/crimx/ext-saladict/issues/1253)
+
+
+### Bug Fixes
+
+* **dictpanel:** remove waveform box if option is off ([e979c1c](https://github.com/crimx/ext-saladict/commit/e979c1c62fb022f23e4e3edc600e5d0abee830c1))
+* **dicts:** fix srcset protocol ([21a0032](https://github.com/crimx/ext-saladict/commit/21a0032a3acb6b25cc5444409218b689176a9cb1)), closes [#1366](https://github.com/crimx/ext-saladict/issues/1366)
+* **hot-words:** remove daily hot words of urban dict ([#1428](https://github.com/crimx/ext-saladict/issues/1428)) ([5dc29cd](https://github.com/crimx/ext-saladict/commit/5dc29cd61fc181929804dcf4d1cd4337289a062b))
+* **notebook:** make export panel textarea background transparent ([09bddc0](https://github.com/crimx/ext-saladict/commit/09bddc0579f7844b4688aca4e6e60e409407d292))
+* **panel:** pin panel by default ([e4ee931](https://github.com/crimx/ext-saladict/commit/e4ee931efe04f13946a1883425ced8fca7f52931)), closes [#1505](https://github.com/crimx/ext-saladict/issues/1505)
+* **selecion:** check range count before getting range ([dfc46a0](https://github.com/crimx/ext-saladict/commit/dfc46a0378b3c71bbc9f0febf5d2b0058fdb3826)), closes [#1144](https://github.com/crimx/ext-saladict/issues/1144)
+
 ### [7.19.1](https://github.com/crimx/ext-saladict/compare/v7.19.0...v7.19.1) (2021-07-25)
 
 
