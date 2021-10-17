@@ -1,4 +1,6 @@
 /** Pages with the Saladict extension domain */
+export const isBackgroundPage = () => !!window.__SALADICT_BACKGROUND_PAGE__
+
 export const isInternalPage = () => !!window.__SALADICT_INTERNAL_PAGE__
 
 export const isOptionsPage = () => !!window.__SALADICT_OPTIONS_PAGE__

@@ -1,13 +1,14 @@
 import UAParser from 'ua-parser-js'
 import axios from 'axios'
 import uuid from 'uuid/v4'
-import { storage } from '@/_helpers/browser-api'
+import { message, storage } from '@/_helpers/browser-api'
 import { genUniqueKey } from '@/_helpers/uniqueKey'
 import { GAEvent, GAEventBase } from './events'
+import { isBackgroundPage } from '../saladict'
 
 export type GAParams = { [key: string]: string }
 
-export async function reportPaveview(page: string): Promise<void> {
+export async function reportPageView(page: string): Promise<void> {
   const ua = new UAParser()
   const browser = ua.getBrowser()
   const os = ua.getOS()
@@ -68,11 +69,19 @@ export async function reportEvent(event: GAEvent) {
 }
 
 async function requestGA(extraParams: GAParams) {
+  if (!isBackgroundPage()) {
+    return message.send({
+      type: 'REQUEST_GA',
+      payload: extraParams
+    })
+  }
+
   if (
     process.env.DEBUG ||
     process.env.NODE_ENV === 'test' ||
     process.env.NODE_ENV === 'development'
   ) {
+    console.log('requestGA', extraParams)
     return
   }
 
@@ -97,5 +106,11 @@ async function requestGA(extraParams: GAParams) {
       z: genUniqueKey(),
       ...extraParams
     })
+  })
+}
+
+export function setupRequestGAListener() {
+  message.addListener('REQUEST_GA', ({ payload }) => {
+    requestGA(payload)
   })
 }

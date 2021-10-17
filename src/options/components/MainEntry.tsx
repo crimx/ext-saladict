@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet'
 import { shallowEqual } from 'react-redux'
 import { Layout, Row, Col, message as antMsg } from 'antd'
 import { useSelector } from '@/content/redux'
-import { reportPaveview } from '@/_helpers/analytics'
+import { reportPageView } from '@/_helpers/analytics'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { useTranslate, I18nContext } from '@/_helpers/i18n'
 import { ChangeEntryContext } from '../helpers/change-entry'
@@ -38,7 +38,7 @@ export const MainEntry: FC = () => {
       window.history.pushState({ key: entry }, '', newurl)
     }
     if (analytics) {
-      reportPaveview(`/options/${entry}`)
+      reportPageView(`/options/${entry}`)
     }
   }, [entry, analytics])
 

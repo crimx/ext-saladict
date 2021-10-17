@@ -12,8 +12,10 @@ import {
 } from 'react-redux'
 import { createEpicMiddleware } from 'redux-observable'
 import { Observable } from 'rxjs'
-import { map, distinctUntilChanged } from 'rxjs/operators'
+import { map, distinctUntilChanged, startWith } from 'rxjs/operators'
 import { message } from '@/_helpers/browser-api'
+import { reportPageView } from '@/_helpers/analytics'
+import { isPDFPage, isPopupPage, isStandalonePage } from '@/_helpers/saladict'
 
 import {
   getRootReducer,
@@ -67,6 +69,26 @@ export const createStore = async () => {
         type: 'PIN_STATE',
         payload: isPinned
       })
+    })
+
+  storeState$
+    .pipe(
+      map(state => state.isShowDictPanel),
+      startWith(false),
+      distinctUntilChanged()
+    )
+    .subscribe(isShowDictPanel => {
+      if (isShowDictPanel) {
+        if (isPopupPage()) {
+          reportPageView('/popup')
+        } else if (isPDFPage()) {
+          reportPageView('/pdf-dictpanel')
+        } else if (isStandalonePage()) {
+          reportPageView('/standalone')
+        } else {
+          reportPageView('/dictpanel')
+        }
+      }
     })
 
   message.addListener('QUERY_PIN_STATE', queryStoreState)
