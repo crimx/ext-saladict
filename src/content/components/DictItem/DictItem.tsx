@@ -17,6 +17,7 @@ import { timer } from '@/_helpers/promise-more'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 import { DictItemHead, DictItemHeadProps } from './DictItemHead'
 import { DictItemBody, DictItemBodyProps } from './DictItemBody'
+import { isTagName } from '@/_helpers/dom'
 
 const DICT_ITEM_HEAD_HEIGHT = 20
 
@@ -205,7 +206,7 @@ export const DictItem: FC<DictItemProps> = props => {
       el && el !== $dictItemRoot;
       el = el.parentElement
     ) {
-      if (el.tagName === 'A' || el.getAttribute('role') === 'link') {
+      if (isTagName(el, 'a') || el.getAttribute('role') === 'link') {
         e.preventDefault()
         e.stopPropagation()
 

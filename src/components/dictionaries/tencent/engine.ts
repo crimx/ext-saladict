@@ -58,6 +58,23 @@ export const search: SearchFunction<
   const translatorConfig =
     secretId && secretKey ? { secretId, secretKey } : undefined
 
+  if (!translatorConfig) {
+    return machineResult(
+      {
+        result: {
+          requireCredential: true,
+          id: 'tencent',
+          sl: 'auto',
+          tl: 'auto',
+          slInitial: 'hide',
+          searchText: { paragraphs: [''] },
+          trans: { paragraphs: [''] }
+        }
+      },
+      []
+    )
+  }
+
   try {
     const result = await translator.translate(text, sl, tl, translatorConfig)
     // Tencent needs extra api credits for TTS which does

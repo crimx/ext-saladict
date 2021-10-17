@@ -2,6 +2,8 @@ import { SupportedLangs } from '@/_helpers/lang-check'
 
 import baidu from '@/components/dictionaries/baidu/config'
 import bing from '@/components/dictionaries/bing/config'
+import ahdict from '@/components/dictionaries/ahdict/config'
+import oaldict from '@/components/dictionaries/oaldict/config'
 import caiyun from '@/components/dictionaries/caiyun/config'
 import cambridge from '@/components/dictionaries/cambridge/config'
 import cnki from '@/components/dictionaries/cnki/config'
@@ -28,6 +30,7 @@ import urban from '@/components/dictionaries/urban/config'
 import vocabulary from '@/components/dictionaries/vocabulary/config'
 import weblio from '@/components/dictionaries/weblio/config'
 import weblioejje from '@/components/dictionaries/weblioejje/config'
+import merriamwebster from '@/components/dictionaries/merriamwebster/config'
 import websterlearner from '@/components/dictionaries/websterlearner/config'
 import wikipedia from '@/components/dictionaries/wikipedia/config'
 import youdao from '@/components/dictionaries/youdao/config'
@@ -39,6 +42,8 @@ import zdic from '@/components/dictionaries/zdic/config'
 export const defaultAllDicts = {
   baidu: baidu(),
   bing: bing(),
+  ahdict: ahdict(),
+  oaldict: oaldict(),
   caiyun: caiyun(),
   cambridge: cambridge(),
   cnki: cnki(),
@@ -65,6 +70,7 @@ export const defaultAllDicts = {
   vocabulary: vocabulary(),
   weblio: weblio(),
   weblioejje: weblioejje(),
+  merriamwebster: merriamwebster(),
   websterlearner: websterlearner(),
   wikipedia: wikipedia(),
   youdao: youdao(),

@@ -8,6 +8,7 @@ import {
   LongmanResultEntry
 } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictLongman: FC<ViewPorps<LongmanResult>> = ({ result }) =>
   result.type === 'lex'
@@ -76,32 +77,19 @@ function renderEntry(entry: LongmanResultEntry) {
       </header>
 
       {entry.senses.map(sen => (
-        <div
-          key={sen}
-          className="dictLongman-Sense"
-          dangerouslySetInnerHTML={{ __html: sen }}
-        />
+        <StrElm key={sen} className="dictLongman-Sense" html={sen} />
       ))}
 
       {entry.collocations && (
-        <div
-          className="dictLongman-Box"
-          dangerouslySetInnerHTML={{ __html: entry.collocations }}
-        />
+        <StrElm className="dictLongman-Box" html={entry.collocations} />
       )}
 
       {entry.grammar && (
-        <div
-          className="dictLongman-Box"
-          dangerouslySetInnerHTML={{ __html: entry.grammar }}
-        />
+        <StrElm className="dictLongman-Box" html={entry.grammar} />
       )}
 
       {entry.thesaurus && (
-        <div
-          className="dictLongman-Box"
-          dangerouslySetInnerHTML={{ __html: entry.thesaurus }}
-        />
+        <StrElm className="dictLongman-Box" html={entry.thesaurus} />
       )}
 
       {entry.examples && entry.examples.length > 0 && (
@@ -110,11 +98,7 @@ function renderEntry(entry: LongmanResultEntry) {
             Examples from the Corpus
           </h2>
           {entry.examples.map(exa => (
-            <div
-              key={exa}
-              className="dictLongman-Examples"
-              dangerouslySetInnerHTML={{ __html: exa }}
-            />
+            <StrElm key={exa} className="dictLongman-Examples" html={exa} />
           ))}
         </>
       )}
@@ -135,10 +119,7 @@ function renderLex(result: LongmanResultLex) {
   return (
     <>
       {result.wordfams && (
-        <div
-          className="dictLongman-Wordfams"
-          dangerouslySetInnerHTML={{ __html: result.wordfams }}
-        />
+        <StrElm className="dictLongman-Wordfams" html={result.wordfams} />
       )}
 
       {dicts.map((dict, index) =>
@@ -159,10 +140,7 @@ function renderRelated(result: LongmanResultRelated) {
   return (
     <>
       <p>Did you mean:</p>
-      <ul
-        className="dictLongman-Related"
-        dangerouslySetInnerHTML={{ __html: result.list }}
-      />
+      <StrElm tag="ul" className="dictLongman-Related" html={result.list} />
     </>
   )
 }

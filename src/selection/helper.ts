@@ -3,6 +3,7 @@ import { Observable, fromEvent, merge, of } from 'rxjs'
 import { map, mapTo, filter, distinctUntilChanged } from 'rxjs/operators'
 import { newWord, Word } from '@/_helpers/record-manager'
 import { message } from '@/_helpers/browser-api'
+import { isTagName } from '@/_helpers/dom'
 
 const isMac = /mac/i.test(navigator.platform)
 
@@ -44,8 +45,16 @@ export function isTypeField(element: Node | EventTarget | null): boolean {
     return false
   }
 
-  for (let el: HTMLElement | null = element as HTMLElement; el; el = el.parentElement) {
-    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || el.isContentEditable) {
+  for (
+    let el: HTMLElement | null = element as HTMLElement;
+    el;
+    el = el.parentElement
+  ) {
+    if (
+      isTagName(el, 'input') ||
+      isTagName(el, 'textarea') ||
+      el.isContentEditable
+    ) {
       return true
     }
 

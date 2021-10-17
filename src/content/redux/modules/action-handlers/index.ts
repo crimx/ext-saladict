@@ -79,7 +79,8 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
   BOWL_ACTIVATED: state => ({
     ...state,
     isShowBowl: false,
-    isShowDictPanel: true
+    isShowDictPanel: true,
+    isPinned: state.config.defaultPinned
   }),
 
   UPDATE_TEXT: (state, { payload }) => ({
@@ -112,6 +113,7 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
       ? state
       : {
           ...state,
+          isPinned: state.config.defaultPinned,
           isShowDictPanel: true,
           dictPanelCoord: {
             x: payload.x,
@@ -220,6 +222,7 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
     ...state,
     text: payload,
     historyIndex: 0,
+    isPinned: state.config.defaultPinned,
     isShowDictPanel: true,
     isShowBowl: false
   }),

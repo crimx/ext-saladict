@@ -1,29 +1,27 @@
-import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   handleNoResult,
   handleNetWorkError,
-  getInnerHTML,
   SearchFunction,
   GetSrcPageFunction,
-  HTMLString,
-  removeChildren,
-  DictSearchResult,
-  externalLink
+  DictSearchResult
 } from '../helpers'
 import { isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
+import axios from 'axios'
 
 export const getSrcPage: GetSrcPageFunction = text => {
   return isContainJapanese(text)
-    ? `https://ja.dict.naver.com/search.nhn?range=all&q=${encodeURIComponent(
-        text
-      )}`
+    ? `https://ja.dict.naver.com/#/search?query=${encodeURIComponent(text)}`
     : `https://zh.dict.naver.com/#/search?query=${encodeURIComponent(text)}`
 }
 
 /** Alternate machine translation result */
 export interface NaverResult {
   lang: 'zh' | 'ja'
-  entry: HTMLString
+  entry: {
+    WORD: { items: any[] }
+    MEANING: { items: any[] }
+    EXAMPLE: { items: any[] }
+  }
 }
 
 interface NaverPayload {
@@ -53,72 +51,47 @@ export const search: SearchFunction<NaverResult, NaverPayload> = (
 }
 
 async function zhDict(text: string): Promise<NaverSearchResult> {
-  try {
-    var doc = await fetchDirtyDOM(
-      `http://m.cndic.naver.com/search/all?sLn=zh_CN&fromNewVer&q=${encodeURIComponent(
+  const { data } = await axios
+    .get(
+      `https://zh.dict.naver.com/api3/zhko/search?query=${encodeURIComponent(
         text
-      )}`
+      )}&lang=zh_CN`
     )
-  } catch (e) {
-    return handleNetWorkError()
-  }
+    .catch(handleNetWorkError)
 
-  let $container = doc.querySelector('#ct')
-  if (!$container) {
+  const ListMap = data?.searchResultMap?.searchResultListMap
+
+  if (!ListMap) {
     return handleNoResult()
   }
-
-  $container = $container.querySelector('#ct') || $container
-
-  removeChildren($container, '.recent_searches')
-  removeChildren($container, '.m_tab')
-  removeChildren($container, '.con_clt')
-  removeChildren($container, '.info_userent')
-  removeChildren($container, '.go_register')
-  removeChildren($container, '.section_banner')
-  removeChildren($container, '.spi_area')
-  removeChildren($container, '.word_otr.word_line')
-  removeChildren($container, '.common_btn_wrap.my_vlive_pageBar')
-
-  $container
-    .querySelectorAll<HTMLAnchorElement>('a.more_d')
-    .forEach(externalLink)
 
   return {
     result: {
       lang: 'zh',
-      entry: getInnerHTML('http://m.cndic.naver.com', $container)
+      entry: ListMap
     }
   }
 }
 
 async function jaDict(text: string): Promise<NaverSearchResult> {
-  try {
-    var doc = await fetchDirtyDOM(
-      `https://ja.dict.naver.com/search.nhn?range=all&q=${encodeURIComponent(
+  const { data } = await axios
+    .get(
+      `https://ja.dict.naver.com/api3/jako/search?query=${encodeURIComponent(
         text
       )}`
     )
-  } catch (e) {
-    return handleNetWorkError()
-  }
+    .catch(handleNetWorkError)
 
-  const $container = doc.querySelector('#content')
-  if (!$container) {
+  const ListMap = data?.searchResultMap?.searchResultListMap
+
+  if (!ListMap) {
     return handleNoResult()
   }
-
-  removeChildren($container, '.sorting')
-  removeChildren($container, '.info_userent')
-  removeChildren($container, '.view_ctrl')
-  removeChildren($container, '.go_register')
-  removeChildren($container, '.section_banner')
-  removeChildren($container, '.conjugate')
 
   return {
     result: {
       lang: 'ja',
-      entry: getInnerHTML('https://ja.dict.naver.com', $container)
+      entry: ListMap
     }
   }
 }

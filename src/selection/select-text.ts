@@ -31,6 +31,7 @@ import {
 import { checkSupportedLangs } from '@/_helpers/lang-check'
 import { Message } from '@/typings/message'
 import { isTypeField, newSelectionWord } from './helper'
+import { isTagName } from '@/_helpers/dom'
 
 export function createSelectTextStream(config: AppConfig | null) {
   if (!config) {
@@ -111,6 +112,10 @@ function withTouchMode(config: AppConfig) {
           ctrlKey: !!mouseup['ctrlKey'],
           metaKey: !!mouseup['metaKey']
         }
+      }
+
+      if (selection.rangeCount <= 0) {
+        return { self }
       }
 
       const rect = selection.getRangeAt(0).getBoundingClientRect()
@@ -265,7 +270,7 @@ export function useInPanelSelect(
           el;
           el = el.parentElement
         ) {
-          if (el.tagName === 'A' || el.tagName === 'BUTTON') {
+          if (isTagName(el, 'a') || isTagName(el, 'button')) {
             return false
           }
         }

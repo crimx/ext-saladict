@@ -19,7 +19,7 @@ export function getAllContextMenus(): { [id: string]: ContextItem } {
     etymonline: 'http://www.etymonline.com/index.php?search=%s',
     google_cn_page_translate: 'x',
     google_page_translate: 'x',
-    google_search: 'https://www.google.com/#newwindow=1&q=%s',
+    google_search: 'https://www.google.com/search?safe=off&newwindow=1&q=%s',
     google_translate: 'https://translate.google.com/#auto/zh-CN/%s',
     google_cn_translate: 'https://translate.google.cn/#auto/zh-CN/%s',
     guoyu: 'https://www.moedict.tw/%s',

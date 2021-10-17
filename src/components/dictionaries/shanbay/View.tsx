@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import Speaker from '@/components/Speaker'
 import { ShanbayResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictShanbay: FC<ViewPorps<ShanbayResult>> = ({ result }) => (
   <>
@@ -21,10 +22,7 @@ export const DictShanbay: FC<ViewPorps<ShanbayResult>> = ({ result }) => (
       </div>
     )}
     {result.basic && (
-      <div
-        className="dictShanbay-Basic"
-        dangerouslySetInnerHTML={{ __html: result.basic }}
-      />
+      <StrElm className="dictShanbay-Basic" html={result.basic} />
     )}
     {result.sentences && (
       <div>
@@ -32,11 +30,7 @@ export const DictShanbay: FC<ViewPorps<ShanbayResult>> = ({ result }) => (
         <ol className="dictShanbay-Sentence">
           {result.sentences.map(sentence => (
             <li key={sentence.annotation}>
-              <p
-                dangerouslySetInnerHTML={{
-                  __html: sentence.annotation
-                }}
-              />
+              <StrElm tag="p" html={sentence.annotation} />
               <p>{sentence.translation}</p>
             </li>
           ))}

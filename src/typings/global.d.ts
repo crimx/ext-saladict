@@ -10,6 +10,7 @@ interface Window {
   pageTitle?: string
   pageURL?: string
 
+  __SALADICT_BACKGROUND_PAGE__?: boolean
   __SALADICT_INTERNAL_PAGE__?: boolean
   __SALADICT_OPTIONS_PAGE__?: boolean
   __SALADICT_POPUP_PAGE__?: boolean

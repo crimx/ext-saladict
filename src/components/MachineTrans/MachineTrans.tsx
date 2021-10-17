@@ -13,10 +13,6 @@ import { message } from '@/_helpers/browser-api'
 import { MachineTranslateResult } from './engine'
 import { Trans, useTranslate } from '@/_helpers/i18n'
 
-type TTextSource =
-  | MachineTranslateResult<DictID>['searchText']
-  | MachineTranslateResult<DictID>['trans']
-
 const rtlLangs = new Set([
   'ar', // Arabic
   'ara', // Arabic
@@ -29,14 +25,51 @@ const rtlLangs = new Set([
   'ur' // Urdu
 ])
 
+const TSpeaker = React.memo<{
+  result: MachineTranslateResult<DictID>
+  source: 'searchText' | 'trans'
+}>(({ result, source }) => (
+  <Speaker
+    src={
+      result[source].tts === '#'
+        ? () => {
+            console.log({
+              type: 'DICT_ENGINE_METHOD',
+              payload: {
+                id: result.id,
+                method: 'getTTS',
+                args: [
+                  result[source].paragraphs.join(' '),
+                  source === 'trans' ? result.tl : result.sl
+                ]
+              }
+            })
+            return message.send<'DICT_ENGINE_METHOD', string>({
+              type: 'DICT_ENGINE_METHOD',
+              payload: {
+                id: result.id,
+                method: 'getTTS',
+                args: [
+                  result[source].paragraphs.join(' '),
+                  source === 'trans' ? result.tl : result.sl
+                ]
+              }
+            })
+          }
+        : result[source].tts
+    }
+  />
+))
+
 /** text with a speaker at the beginning */
 const TText = React.memo<{
-  source: TTextSource
+  result: MachineTranslateResult<DictID>
+  source: 'searchText' | 'trans'
   lang: string
-}>(({ source, lang }) => (
+}>(({ result, source, lang }) => (
   <div className={'MachineTrans-Lines'}>
-    <Speaker src={source.tts} />
-    {source.paragraphs.map((line, i) => (
+    <TSpeaker result={result} source={source} />
+    {result[source].paragraphs.map((line, i) => (
       <p key={i} className={`MachineTrans-lang-${lang}`}>
         {line}
       </p>
@@ -45,9 +78,10 @@ const TText = React.memo<{
 ))
 
 const TTextCollapsable = React.memo<{
-  source: TTextSource
+  result: MachineTranslateResult<DictID>
+  source: 'searchText' | 'trans'
   lang: string
-}>(({ source, lang }) => {
+}>(({ result, source, lang }) => {
   const [collapse, setCollapse] = useState(false)
   const expand = useCallback(() => setCollapse(false), [setCollapse])
 
@@ -74,15 +108,17 @@ const TTextCollapsable = React.memo<{
 
   return (
     <div ref={containerRef} className={'MachineTrans-Lines'}>
-      <Speaker src={source.tts} />
+      <TSpeaker result={result} source={source} />
       {collapse ? (
         <div
           className={`MachineTrans-Lines-collapse MachineTrans-lang-${lang}`}
         >
-          <button onClick={expand}>{source.paragraphs.join(' ')}</button>
+          <button onClick={expand}>
+            {result[source].paragraphs.join(' ')}
+          </button>
         </div>
       ) : (
-        source.paragraphs.map((line, i) => (
+        result[source].paragraphs.map((line, i) => (
           <p key={i} className={`MachineTrans-lang-${lang}`}>
             <span>{line}</span>
           </p>
@@ -96,7 +132,7 @@ export type MachineTransProps = ViewPorps<MachineTranslateResult<DictID>>
 
 /** Template for machine translations */
 export const MachineTrans: FC<MachineTransProps> = props => {
-  const { trans, searchText, tl, sl } = props.result
+  const { tl, sl } = props.result
   const [slState, setSlState] = useState<
     MachineTransProps['result']['slInitial']
   >(props.result.slInitial)
@@ -148,11 +184,15 @@ export const MachineTrans: FC<MachineTransProps> = props => {
     >
       <div className="MachineTrans-Text">
         {slState === 'full' ? (
-          <TText source={searchText} lang={sl} />
+          <TText result={props.result} source="searchText" lang={sl} />
         ) : slState === 'collapse' ? (
-          <TTextCollapsable source={searchText} lang={sl} />
+          <TTextCollapsable
+            result={props.result}
+            source="searchText"
+            lang={sl}
+          />
         ) : null}
-        <TText source={trans} lang={tl} />
+        <TText result={props.result} source="trans" lang={tl} />
       </div>
     </div>
   )

@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { CNKIResult } from './engine'
 import EntryBox from '@/components/EntryBox'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictCambridge: FC<ViewPorps<CNKIResult>> = ({ result }) => (
   <div className="dictCNKI">
@@ -26,7 +27,7 @@ export const DictCambridge: FC<ViewPorps<CNKIResult>> = ({ result }) => (
           <React.Fragment key={i}>
             <h2 className="dictCNKI-SensTitle">{title}</h2>
             {sens.map((sen, i) => (
-              <p key={i} dangerouslySetInnerHTML={{ __html: sen }} />
+              <StrElm tag="p" key={i} html={sen} />
             ))}
             <div className="dictCNKI-SensMore">
               <a href={more} target="_blank" rel="nofollow noopener noreferrer">
@@ -43,7 +44,7 @@ export const DictCambridge: FC<ViewPorps<CNKIResult>> = ({ result }) => (
           <React.Fragment key={i}>
             <h2 className="dictCNKI-SensTitle">{title}</h2>
             {sens.map((sen, i) => (
-              <p key={i} dangerouslySetInnerHTML={{ __html: sen }} />
+              <StrElm tag="p" key={i} html={sen} />
             ))}
             <div className="dictCNKI-SensMore">
               <a href={more} target="_blank" rel="nofollow noopener noreferrer">

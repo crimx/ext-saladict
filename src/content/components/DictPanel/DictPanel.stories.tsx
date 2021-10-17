@@ -199,6 +199,7 @@ function useDictPanelProps(): DictPanelPortalProps {
     ),
     dictList: (
       <DictList
+        darkMode={config.darkMode}
         touchMode={config.touchMode}
         language={config.language}
         doubleClickDelay={config.doubleClickDelay}

@@ -55,6 +55,7 @@ export const locale = {
     trans: '翻译',
     note: '笔记',
     context: '上下文',
+    contextCloze: '上下文填空',
     date: '日期',
     srcTitle: '来源标题',
     srcLink: '来源链接',

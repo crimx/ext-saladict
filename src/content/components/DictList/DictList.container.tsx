@@ -40,6 +40,7 @@ const mapStateToProps: MapStateToProps<
 > = state => {
   const { config } = state
   return {
+    darkMode: config.darkMode,
     withAnimation: config.animation,
     panelCSS: config.panelCSS,
     touchMode: config.touchMode,

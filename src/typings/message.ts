@@ -343,6 +343,15 @@ export type MessageConfig = MessageConfigType<{
   }
 
   /* ------------------------------------------------ *\
+    GA
+  \* ------------------------------------------------ */
+
+  /** Send new words to standalone panel */
+  REQUEST_GA: {
+    payload: { [key: string]: string }
+  }
+
+  /* ------------------------------------------------ *\
      Third-party Scripts
   \* ------------------------------------------------ */
 

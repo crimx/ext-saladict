@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { EtymonlineResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictEtymonline: FC<ViewPorps<EtymonlineResult>> = ({ result }) => (
   <ul className="dictEtymonline-List">
@@ -19,10 +20,7 @@ export const DictEtymonline: FC<ViewPorps<EtymonlineResult>> = ({ result }) => (
             item.title
           )}
         </h2>
-        <p
-          className="dictEtymonline-Def"
-          dangerouslySetInnerHTML={{ __html: item.def }}
-        />
+        <StrElm tag="p" className="dictEtymonline-Def" html={item.def} />
         {item.chart ? (
           <img src={item.chart} alt={'Origin of ' + item.title} />
         ) : null}

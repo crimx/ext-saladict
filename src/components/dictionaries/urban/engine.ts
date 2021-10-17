@@ -10,6 +10,8 @@ import {
   DictSearchResult
 } from '../helpers'
 
+import axios from 'axios'
+
 export const getSrcPage: GetSrcPageFunction = text => {
   return `http://www.urbandictionary.com/define.php?term=${text}`
 }
@@ -36,6 +38,26 @@ interface UrbanResultItem {
   thumbsDown?: string
 }
 
+interface thumbItem {
+  current: string
+  defid: number
+  down: number
+  up: number
+}
+
+interface thumbRes {
+  thumbs: thumbItem[]
+}
+
+interface thumbMapItem {
+  up: string
+  down: string
+}
+
+interface thumbMap {
+  [defid: string]: thumbMapItem
+}
+
 export type UrbanResult = UrbanResultItem[]
 
 type UrbanSearchResult = DictSearchResult<UrbanResult>
@@ -56,10 +78,35 @@ export const search: SearchFunction<UrbanResult> = (
     .then(doc => handleDOM(doc, options))
 }
 
-function handleDOM(
+/** get thumbs-up and thumbs-down nums  */
+async function getThumbsNums(ids: string): Promise<thumbMap | null> {
+  const thumbsMap = {}
+
+  const result = await axios
+    .get<thumbRes>(`https://api.urbandictionary.com/v0/uncacheable`, {
+      params: {
+        ids
+      }
+    })
+    .catch(handleNetWorkError)
+
+  if (!result?.data) {
+    return null
+  }
+
+  result?.data?.thumbs?.map(t => {
+    thumbsMap[t.defid] = {
+      up: t.up,
+      down: t.down
+    }
+  })
+  return thumbsMap
+}
+
+async function handleDOM(
   doc: Document,
   { resultnum }: { resultnum: number }
-): UrbanSearchResult | Promise<UrbanSearchResult> {
+): Promise<UrbanSearchResult> {
   const result: UrbanResult = []
   const audio: { us?: string } = {}
 
@@ -69,8 +116,18 @@ function handleDOM(
     return handleNoResult()
   }
 
+  const defIds: string[] = []
+
+  for (let i = 0; i < defPanels.length && result.length < resultnum; i++) {
+    const defId = defPanels[i]?.getAttribute('data-defid')
+
+    defId && defIds.push(defId)
+  }
+  const thumbsMap = await getThumbsNums(defIds.join(','))
+
   for (let i = 0; i < defPanels.length && result.length < resultnum; i++) {
     const $panel = defPanels[i]
+    const defId = defPanels[i]?.getAttribute('data-defid') || ''
 
     const resultItem: UrbanResultItem = { title: '' }
 
@@ -114,8 +171,8 @@ function handleDOM(
     }
 
     resultItem.contributor = getText($panel, '.contributor')
-    resultItem.thumbsUp = getText($panel, '.thumbs .up .count')
-    resultItem.thumbsDown = getText($panel, '.thumbs .down .count')
+    resultItem.thumbsUp = thumbsMap?.[defId]?.up
+    resultItem.thumbsDown = thumbsMap?.[defId]?.down
 
     result.push(resultItem)
   }

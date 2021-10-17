@@ -1,4 +1,6 @@
 /** Pages with the Saladict extension domain */
+export const isBackgroundPage = () => !!window.__SALADICT_BACKGROUND_PAGE__
+
 export const isInternalPage = () => !!window.__SALADICT_INTERNAL_PAGE__
 
 export const isOptionsPage = () => !!window.__SALADICT_OPTIONS_PAGE__
@@ -22,6 +24,7 @@ export const SALADICT_PANEL = 'saladict-panel'
 
 export const isFirefox = navigator.userAgent.includes('Firefox')
 export const isOpera = navigator.userAgent.includes('OPR')
+export const isSafari = /apple/i.test(navigator.vendor)
 
 /**
  * Is element in a Saladict external element

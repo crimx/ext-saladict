@@ -1,0 +1,19 @@
+{
+  "name": {
+    "en": "Amercian Heritage Dict",
+    "zh-CN": "美国传统词典",
+    "zh-TW": "美國傳統詞典"
+  },
+  "options": {
+    "resultnum": {
+      "en": "Show",
+      "zh-CN": "结果数量",
+      "zh-TW": "結果數量"
+    },
+    "resultnum_unit": {
+      "en": "results",
+      "zh-CN": "个",
+      "zh-TW": "個"
+    }
+  }
+}

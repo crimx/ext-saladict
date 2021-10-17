@@ -57,6 +57,7 @@ export const locale: typeof _locale = {
     trans: '翻譯',
     note: '筆記',
     context: '上下文',
+    contextCloze: '上下文填空',
     date: '日期',
     srcTitle: '來源標題',
     srcLink: '來源連結',

@@ -148,6 +148,7 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
               width,
               height,
               fontSize,
+              darkMode,
               withAnimation
             })}
           </div>

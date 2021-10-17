@@ -3,6 +3,7 @@ import { Speaker } from '@/components/Speaker'
 import StarRates from '@/components/StarRates'
 import { COBUILDResult, COBUILDCibaResult, COBUILDColResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictCOBUILD: FC<ViewPorps<COBUILDResult>> = ({ result }) => {
   switch (result.type) {
@@ -39,11 +40,7 @@ function renderCiba(result: COBUILDCibaResult) {
       {result.defs && (
         <ol className="dictCOBUILD-Defs">
           {result.defs.map((def, i) => (
-            <li
-              className="dictCOBUILD-Def"
-              key={i}
-              dangerouslySetInnerHTML={{ __html: def }}
-            />
+            <StrElm tag="li" className="dictCOBUILD-Def" key={i} html={def} />
           ))}
         </ol>
       )}
@@ -75,10 +72,10 @@ function renderCol(result: COBUILDColResult) {
               <div className="dictionary">
                 <div className="dictentry">
                   <div className="dictlink">
-                    <div
+                    <StrElm
                       key={curSection}
                       className={curSection.className}
-                      dangerouslySetInnerHTML={{ __html: curSection.content }}
+                      html={curSection.content}
                     />
                   </div>
                 </div>

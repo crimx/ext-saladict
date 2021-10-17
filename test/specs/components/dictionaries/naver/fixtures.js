@@ -1,14 +1,15 @@
 module.exports = {
   files: [
     [
-      '愛.html',
-      'https://ja.dict.naver.com/search.nhn?range=all&q=' +
+      '愛.json',
+      'https://ja.dict.naver.com/api3/jako/search?query=' +
         encodeURIComponent('愛')
     ],
     [
-      '爱.html',
-      'http://m.cndic.naver.com/search/all?sLn=zh_CN&fromNewVer&q=' +
-        encodeURIComponent('爱')
+      '爱.json',
+      `https://zh.dict.naver.com/api3/zhko/search?query=${encodeURIComponent(
+        '爱'
+      )}&lang=zh_CN`
     ]
   ]
 }

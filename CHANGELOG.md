@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.20.0](https://github.com/crimx/ext-saladict/compare/v7.19.1...v7.20.0) (2021-10-17)
+
+
+### Features
+
+* **pdf:** inject vimium-c ([#1462](https://github.com/crimx/ext-saladict/issues/1462)) ([#1463](https://github.com/crimx/ext-saladict/issues/1463)) ([029c07a](https://github.com/crimx/ext-saladict/commit/029c07a0801177bf9d8137163fc43f70fe1e7a30))
+* **sync-services:** add eudic ([#1467](https://github.com/crimx/ext-saladict/issues/1467)) ([452bf53](https://github.com/crimx/ext-saladict/commit/452bf537a4aee7d1e3d79b7960cd5183cdff88af))
+* **wordpage:** add context cloze ([b910769](https://github.com/crimx/ext-saladict/commit/b91076941940dc82961830f43dcb9ee081596aa4))
+* add Oxford Learner's Dict ([#1458](https://github.com/crimx/ext-saladict/issues/1458)) ([aaffe00](https://github.com/crimx/ext-saladict/commit/aaffe00d760adb44676042142a5ce2af34ce5001)), closes [#1253](https://github.com/crimx/ext-saladict/issues/1253)
+
+
+### Bug Fixes
+
+* **dictpanel:** remove waveform box if option is off ([e979c1c](https://github.com/crimx/ext-saladict/commit/e979c1c62fb022f23e4e3edc600e5d0abee830c1))
+* **dicts:** fix srcset protocol ([21a0032](https://github.com/crimx/ext-saladict/commit/21a0032a3acb6b25cc5444409218b689176a9cb1)), closes [#1366](https://github.com/crimx/ext-saladict/issues/1366)
+* **hot-words:** remove daily hot words of urban dict ([#1428](https://github.com/crimx/ext-saladict/issues/1428)) ([5dc29cd](https://github.com/crimx/ext-saladict/commit/5dc29cd61fc181929804dcf4d1cd4337289a062b))
+* **notebook:** make export panel textarea background transparent ([09bddc0](https://github.com/crimx/ext-saladict/commit/09bddc0579f7844b4688aca4e6e60e409407d292))
+* **panel:** pin panel by default ([e4ee931](https://github.com/crimx/ext-saladict/commit/e4ee931efe04f13946a1883425ced8fca7f52931)), closes [#1505](https://github.com/crimx/ext-saladict/issues/1505)
+* **selecion:** check range count before getting range ([dfc46a0](https://github.com/crimx/ext-saladict/commit/dfc46a0378b3c71bbc9f0febf5d2b0058fdb3826)), closes [#1144](https://github.com/crimx/ext-saladict/issues/1144)
+
 ### [7.19.1](https://github.com/crimx/ext-saladict/compare/v7.19.0...v7.19.1) (2021-07-25)
 
 
@@ -20,7 +40,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* **:fixtures:** cnki url ([0fd0125](https://github.com/crimx/ext-saladict/commit/0fd012596c4e82e5acf7fa91469bdb78209fbbbc))
+* **fixtures:** cnki url ([0fd0125](https://github.com/crimx/ext-saladict/commit/0fd012596c4e82e5acf7fa91469bdb78209fbbbc))
 
 ### [7.18.2](https://github.com/crimx/ext-saladict/compare/v7.18.1...v7.18.2) (2021-05-23)
 
@@ -30,10 +50,6 @@ All notable changes to this project will be documented in this file. See [standa
 * **dict-panel:** move root el to document element ([aaeae1c](https://github.com/crimx/ext-saladict/commit/aaeae1cc6f4ea9ad43e2042b8b670f8480aaefb1)), closes [#1293](https://github.com/crimx/ext-saladict/issues/1293) [#1190](https://github.com/crimx/ext-saladict/issues/1190) [#474](https://github.com/crimx/ext-saladict/issues/474) [#421](https://github.com/crimx/ext-saladict/issues/421) [#398](https://github.com/crimx/ext-saladict/issues/398) [#278](https://github.com/crimx/ext-saladict/issues/278)
 * **dict-panel:** prevent input method conflict on first input ([e4dda57](https://github.com/crimx/ext-saladict/commit/e4dda573263f77ad9bfbf10c577971b9a9631fb8)), closes [#1149](https://github.com/crimx/ext-saladict/issues/1149)
 * **dicts:** fix zdic icon ([9aea435](https://github.com/crimx/ext-saladict/commit/9aea435fc8f8141d448d2f8309fef3d9872ea75a)), closes [#1244](https://github.com/crimx/ext-saladict/issues/1244)
-
-### [7.16.1](https://github.com/crimx/ext-saladict/compare/v7.16.0...v7.16.1) (2020-09-05)
-
-## [7.16.0](https://github.com/crimx/ext-saladict/compare/v7.15.1...v7.16.0) (2020-09-04)
 
 ### [7.18.1](https://github.com/crimx/ext-saladict/compare/v7.18.0...v7.18.1) (2021-01-18)
 
@@ -755,49 +771,6 @@ All notable changes to this project will be documented in this file. See [standa
 * **popup:** correct popup width ([170fe72](https://github.com/crimx/ext-saladict/commit/170fe72)), closes [#481](https://github.com/crimx/ext-saladict/issues/481)
 * **sync:** update mkcol authorzation close [#475](https://github.com/crimx/ext-saladict/issues/475) ([2e433e5](https://github.com/crimx/ext-saladict/commit/2e433e5))
 
-
-
-### [6.33.7](https://github.com/crimx/ext-saladict/compare/v6.33.6...v6.33.7) (2019-09-13)
-
-
-
-### [6.33.6](https://github.com/crimx/ext-saladict/compare/v6.33.5...v6.33.6) (2019-09-12)
-
-
-### Bug Fixes
-
-* fit the outdated typings ([f019572](https://github.com/crimx/ext-saladict/commit/f019572))
-* update dicts ([4492cd0](https://github.com/crimx/ext-saladict/commit/4492cd0))
-
-
-
-### [6.33.5](https://github.com/crimx/ext-saladict/compare/v6.33.4...v6.33.5) (2019-08-11)
-
-
-### Bug Fixes
-
-* change the checksums of panel.css ([e2ed394](https://github.com/crimx/ext-saladict/commit/e2ed394))
-
-
-
-### [6.33.4](https://github.com/crimx/ext-saladict/compare/v6.33.3...v6.33.4) (2019-08-09)
-
-
-### Bug Fixes
-
-* **manifest:** fix chrome 67 bug ([bca3b56](https://github.com/crimx/ext-saladict/commit/bca3b56))
-
-
-
-### [6.33.3](https://github.com/crimx/ext-saladict/compare/v6.33.2...v6.33.3) (2019-08-08)
-
-
-### Bug Fixes
-
-* **manifest:** remvoe update url ([f83a485](https://github.com/crimx/ext-saladict/commit/f83a485))
-
-
-
 ### [7.0.1](https://github.com/crimx/ext-saladict/compare/v7.0.0...v7.0.1) (2019-09-30)
 
 
@@ -809,49 +782,6 @@ All notable changes to this project will be documented in this file. See [standa
 * **pdf:** inject panel on firefox close [#477](https://github.com/crimx/ext-saladict/issues/477) ([745bb75](https://github.com/crimx/ext-saladict/commit/745bb75))
 * **popup:** correct popup width ([6f14ba2](https://github.com/crimx/ext-saladict/commit/6f14ba2)), closes [#481](https://github.com/crimx/ext-saladict/issues/481)
 * **sync:** update mkcol authorzation close [#475](https://github.com/crimx/ext-saladict/issues/475) ([ddd6b77](https://github.com/crimx/ext-saladict/commit/ddd6b77))
-
-
-
-### [6.33.7](https://github.com/crimx/ext-saladict/compare/v6.33.6...v6.33.7) (2019-09-13)
-
-
-
-### [6.33.6](https://github.com/crimx/ext-saladict/compare/v6.33.5...v6.33.6) (2019-09-12)
-
-
-### Bug Fixes
-
-* fit the outdated typings ([f019572](https://github.com/crimx/ext-saladict/commit/f019572))
-* update dicts ([4492cd0](https://github.com/crimx/ext-saladict/commit/4492cd0))
-
-
-
-### [6.33.5](https://github.com/crimx/ext-saladict/compare/v6.33.4...v6.33.5) (2019-08-11)
-
-
-### Bug Fixes
-
-* change the checksums of panel.css ([e2ed394](https://github.com/crimx/ext-saladict/commit/e2ed394))
-
-
-
-### [6.33.4](https://github.com/crimx/ext-saladict/compare/v6.33.3...v6.33.4) (2019-08-09)
-
-
-### Bug Fixes
-
-* **manifest:** fix chrome 67 bug ([bca3b56](https://github.com/crimx/ext-saladict/commit/bca3b56))
-
-
-
-### [6.33.3](https://github.com/crimx/ext-saladict/compare/v6.33.2...v6.33.3) (2019-08-08)
-
-
-### Bug Fixes
-
-* **manifest:** remvoe update url ([f83a485](https://github.com/crimx/ext-saladict/commit/f83a485))
-
-
 
 ## [7.0.0](https://github.com/crimx/ext-saladict/compare/v6.33.2...v7.0.0) (2019-09-29)
 
@@ -969,6 +899,43 @@ All notable changes to this project will be documented in this file. See [standa
 
 * No compatible with the old build system
 
+### [6.33.7](https://github.com/crimx/ext-saladict/compare/v6.33.6...v6.33.7) (2019-09-13)
+
+
+
+### [6.33.6](https://github.com/crimx/ext-saladict/compare/v6.33.5...v6.33.6) (2019-09-12)
+
+
+### Bug Fixes
+
+* fit the outdated typings ([f019572](https://github.com/crimx/ext-saladict/commit/f019572))
+* update dicts ([4492cd0](https://github.com/crimx/ext-saladict/commit/4492cd0))
+
+
+### [6.33.5](https://github.com/crimx/ext-saladict/compare/v6.33.4...v6.33.5) (2019-08-11)
+
+
+### Bug Fixes
+
+* change the checksums of panel.css ([e2ed394](https://github.com/crimx/ext-saladict/commit/e2ed394))
+
+
+
+### [6.33.4](https://github.com/crimx/ext-saladict/compare/v6.33.3...v6.33.4) (2019-08-09)
+
+
+### Bug Fixes
+
+* **manifest:** fix chrome 67 bug ([bca3b56](https://github.com/crimx/ext-saladict/commit/bca3b56))
+
+
+
+### [6.33.3](https://github.com/crimx/ext-saladict/compare/v6.33.2...v6.33.3) (2019-08-08)
+
+
+### Bug Fixes
+
+* **manifest:** remvoe update url ([f83a485](https://github.com/crimx/ext-saladict/commit/f83a485))
 
 
 <a name="6.33.2"></a>
@@ -1700,61 +1667,6 @@ All notable changes to this project will be documented in this file. See [standa
 ### Bug Fixes
 
 * **panel:** dict info could be undefined ([388edc0](https://github.com/crimx/ext-saladict/commit/388edc0))
-
-
-
-<a name="6.5.0"></a>
-# [6.5.0](https://github.com/crimx/ext-saladict/compare/v6.4.1...v6.5.0) (2018-07-08)
-
-
-
-<a name="6.4.1"></a>
-## [6.4.1](https://github.com/crimx/ext-saladict/compare/v6.4.0...v6.4.1) (2018-06-28)
-
-
-
-<a name="6.4.0"></a>
-# [6.4.0](https://github.com/crimx/ext-saladict/compare/v6.3.2...v6.4.0) (2018-06-17)
-
-
-
-<a name="6.3.2"></a>
-## [6.3.2](https://github.com/crimx/ext-saladict/compare/v6.3.1...v6.3.2) (2018-06-13)
-
-
-
-<a name="6.3.1"></a>
-## [6.3.1](https://github.com/crimx/ext-saladict/compare/v6.3.0...v6.3.1) (2018-06-13)
-
-
-
-<a name="6.3.0"></a>
-# [6.3.0](https://github.com/crimx/ext-saladict/compare/v6.2.2...v6.3.0) (2018-06-12)
-
-
-
-<a name="6.2.2"></a>
-## [6.2.2](https://github.com/crimx/ext-saladict/compare/v6.2.1...v6.2.2) (2018-06-08)
-
-
-
-<a name="6.2.1"></a>
-## [6.2.1](https://github.com/crimx/ext-saladict/compare/v6.2.0...v6.2.1) (2018-06-08)
-
-
-
-<a name="6.2.0"></a>
-# [6.2.0](https://github.com/crimx/ext-saladict/compare/v6.1.3...v6.2.0) (2018-06-06)
-
-
-
-<a name="6.1.2"></a>
-## [6.1.2](https://github.com/crimx/ext-saladict/compare/v6.1.1...v6.1.2) (2018-06-06)
-
-
-
-<a name="6.1.1"></a>
-## [6.1.1](https://github.com/crimx/ext-saladict/compare/v6.1.0...v6.1.1) (2018-06-05)
 
 
 

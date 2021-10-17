@@ -6,6 +6,7 @@ import {
   WebsterLearnerResultRelated
 } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictWebsterLearner: FC<ViewPorps<WebsterLearnerResult>> = ({
   result
@@ -26,48 +27,22 @@ function renderLex(result: WebsterLearnerResultLex) {
       {result.items.map(entry => (
         <section key={entry.title} className="dictWebsterLearner-Entry">
           <header className="dictWebsterLearner-Header">
-            <span
-              className="hw_d hw_0"
-              dangerouslySetInnerHTML={{ __html: entry.title }}
-            />
+            <StrElm tag="span" className="hw_d hw_0" html={entry.title} />
             <Speaker src={entry.pron} />
           </header>
           {entry.infs && (
             <div className="dictWebsterLearner-Header">
-              <span
-                className="hw_infs_d"
-                dangerouslySetInnerHTML={{ __html: entry.infs }}
-              />
+              <StrElm tag="span" className="hw_infs_d" html={entry.infs} />
               <Speaker src={entry.infsPron} />
             </div>
           )}
-          {entry.labels && (
-            <div
-              className="labels"
-              dangerouslySetInnerHTML={{ __html: entry.labels }}
-            />
-          )}
-          {entry.senses && (
-            <div
-              className="sblocks"
-              dangerouslySetInnerHTML={{ __html: entry.senses }}
-            />
-          )}
+          {entry.labels && <StrElm className="labels" html={entry.labels} />}
+          {entry.senses && <StrElm className="sblocks" html={entry.senses} />}
           {entry.arts &&
             entry.arts.length > 0 &&
             entry.arts.map(src => <img key={src} src={src} />)}
-          {entry.phrases && (
-            <div
-              className="dros"
-              dangerouslySetInnerHTML={{ __html: entry.phrases }}
-            />
-          )}
-          {entry.derived && (
-            <div
-              className="uros"
-              dangerouslySetInnerHTML={{ __html: entry.derived }}
-            />
-          )}
+          {entry.phrases && <StrElm className="dros" html={entry.phrases} />}
+          {entry.derived && <StrElm className="uros" html={entry.derived} />}
         </section>
       ))}
     </>
@@ -78,9 +53,10 @@ function renderRelated(result: WebsterLearnerResultRelated) {
   return (
     <>
       <p>Did you mean:</p>
-      <ul
+      <StrElm
+        tag="ul"
         className="dictWebsterLearner-Related"
-        dangerouslySetInnerHTML={{ __html: result.list }}
+        html={result.list}
       />
     </>
   )

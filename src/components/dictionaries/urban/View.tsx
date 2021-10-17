@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import Speaker from '@/components/Speaker'
 import { UrbanResult } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
+import { StrElm } from '@/components/StrElm'
 
 export const DictUrban: FC<ViewPorps<UrbanResult>> = ({ result }) => (
   <ul className="dictUrban-List">
@@ -11,16 +12,10 @@ export const DictUrban: FC<ViewPorps<UrbanResult>> = ({ result }) => (
           {def.title} <Speaker src={def.pron} />
         </h2>
         {def.meaning && (
-          <p
-            className="dictUrban-Meaning"
-            dangerouslySetInnerHTML={{ __html: def.meaning }}
-          />
+          <StrElm tag="p" className="dictUrban-Meaning" html={def.meaning} />
         )}
         {def.example && (
-          <p
-            className="dictUrban-Example"
-            dangerouslySetInnerHTML={{ __html: def.example }}
-          />
+          <StrElm tag="p" className="dictUrban-Example" html={def.example} />
         )}
         {def.gif && (
           <figure className="dictUrban-Gif">
@@ -46,7 +41,7 @@ export const DictUrban: FC<ViewPorps<UrbanResult>> = ({ result }) => (
           {def.contributor && (
             <span className="dictUrban-Contributor">{def.contributor}</span>
           )}
-          {def.thumbsUp && (
+          {typeof def.thumbsUp === 'number' && (
             <span className="dictUrban-Thumbs">
               <svg
                 className="dictUrban-IconThumbsUp"
@@ -60,7 +55,7 @@ export const DictUrban: FC<ViewPorps<UrbanResult>> = ({ result }) => (
               {def.thumbsUp}
             </span>
           )}
-          {def.thumbsDown && (
+          {typeof def.thumbsDown === 'number' && (
             <span className="dictUrban-Thumbs">
               <svg
                 className="dictUrban-IconThumbsDown"
