@@ -8,6 +8,7 @@ import { DictID, AppConfig } from '@/app-config'
 import { Profile } from '@/app-config/profiles'
 import { Word } from '@/_helpers/record-manager'
 import { isTagName } from '@/_helpers/dom'
+import { isInternalPage } from '@/_helpers/saladict'
 
 /** Fetch and parse dictionary search result */
 export interface SearchFunction<Result, Payload = {}> {
@@ -185,8 +186,20 @@ export function getHTML(
 
   if (host) {
     const fillLink = (el: HTMLElement) => {
-      el.setAttribute('href', getFullLink(host!, el, 'href'))
-      el.setAttribute('src', getFullLink(host!, el, 'src'))
+      if (el.getAttribute('href')) {
+        el.setAttribute('href', getFullLink(host!, el, 'href'))
+      }
+      if (el.getAttribute('src')) {
+        el.setAttribute('src', getFullLink(host!, el, 'src'))
+      }
+      if (isInternalPage() && el.getAttribute('srcset')) {
+        el.setAttribute(
+          'srcset',
+          el
+            .getAttribute('srcset')!
+            .replace(/(,| |^)\/\//g, (_, head) => head + 'https://')
+        )
+      }
     }
 
     if (isTagName(node, 'a') || isTagName(node, 'img')) {
