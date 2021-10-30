@@ -4,6 +4,10 @@
   margin-top: 1.4em;
   position: relative;
 
+  .dictNaver-Entry {
+    margin-bottom: 4px;
+  }
+
   .dictNaver-EntryBoxTitle {
     position: absolute;
     top: 0;
@@ -32,6 +36,11 @@
 
   .dictNaver-EntryPron {
     display: inline-block;
+
+    .dictNaver-EntryPronVal {
+      margin-right: 4px;
+      color: #666;
+    }
 
     .dictNaver-EntryPronFa {
       display: inline-block;

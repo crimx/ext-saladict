@@ -57,12 +57,18 @@ export const DictNaver: FC<ViewPorps<NaverResult>> = props => {
                 )}
 
                 <div className={'dictNaver-EntryPron'}>
+                  {!!word?.expAliasGeneralAlwaysList?.length && (
+                    <span className={'dictNaver-EntryPronVal'}>
+                      {word?.expAliasGeneralAlwaysList[0].originLanguageValue}
+                    </span>
+                  )}
                   {!!word?.searchPhoneticSymbolList?.length && (
                     <>
                       {word.searchPhoneticSymbolList[0].phoneticSymbol && (
-                        <span>
-                          [{word.searchPhoneticSymbolList[0].phoneticSymbol}]
-                        </span>
+                        <StrElm
+                          tag="span"
+                          html={`[${word.searchPhoneticSymbolList[0].phoneticSymbol}]`}
+                        />
                       )}
                       {word?.searchPhoneticSymbolList[0]
                         ?.phoneticSymbolPath && (
