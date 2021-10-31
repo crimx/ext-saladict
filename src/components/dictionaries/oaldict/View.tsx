@@ -43,9 +43,33 @@ export const DictOal: FC<ViewPorps<OaldictResult>> = ({ result }) => (
         {result.senses.map((sense, senseI) => {
           return (
             <div key={senseI}>
-              {sense.title && (
-                <div className={'dictOal-SensesTitle'}>{sense.title}</div>
-              )}
+              <div>
+                {sense.title &&
+                  (!result.isPhrasal ? (
+                    <div className={'dictOal-SensesTitle'}>{sense.title}</div>
+                  ) : (
+                    <StrElm
+                      tag="span"
+                      className="dictOal-SensesTitle"
+                      html={sense.title || ''}
+                    />
+                  ))}
+
+                {sense.symbol && (
+                  <span className={'dictOal-TitleBoxSymbol'}>
+                    {sense.symbol}
+                  </span>
+                )}
+
+                {sense.variants && (
+                  <StrElm
+                    tag="div"
+                    className="dictOal-SensesVariants"
+                    style={{ marginLeft: '-20px' }}
+                    html={sense.variants}
+                  />
+                )}
+              </div>
               {sense.means.map((mean, meanI) => {
                 return (
                   <li key={meanI}>
@@ -116,7 +140,10 @@ export const DictOal: FC<ViewPorps<OaldictResult>> = ({ result }) => (
         {result.idioms.map((idiom, idiomI) => (
           <div key={idiomI}>
             <div>
-              <span className={'dictOal-IdiomsTitle'}>{idiom.title}</span>
+              <StrElm
+                className="dictOal-IdiomsTitle"
+                html={idiom.title || ''}
+              />
             </div>
             <div>
               {idiom.labels && (
