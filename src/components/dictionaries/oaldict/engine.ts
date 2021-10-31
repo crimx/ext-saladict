@@ -38,6 +38,8 @@ interface Mean {
 
 interface Sense {
   title?: string
+  symbol?: string
+  variants?: string
   means: Mean[]
 }
 
@@ -64,6 +66,8 @@ interface OaldictResultItem {
   origin?: HTMLString
   /** idiom and eg */
   idioms: Idiom[]
+  /** phrasal template */
+  isPhrasal?: boolean
 }
 
 export type OaldictResult = OaldictResultItem
@@ -111,7 +115,7 @@ function handleDOM(
     result.title = getText($title, '.headword')
     result.pos = getText($title, '.pos')
 
-    const $pron = Array.from($title.querySelectorAll('.phonetics>div'))
+    const $pron = Array.from($title.querySelectorAll(':scope>.phonetics>div'))
 
     $pron.map((pr, prI) => {
       const pronKey = prI ? 'us' : 'uk'
@@ -127,10 +131,12 @@ function handleDOM(
     })
   }
 
-  // senses_multiple or senses_single
+  // senses_multiple senses_single and senses_phrasal
   const $senses_li = Array.from(main.querySelectorAll('.entry>ol>.sense'))
 
   const $senses = Array.from(main.querySelectorAll('.senses_multiple .shcut-g'))
+
+  const $senses_phrasal = Array.from(main.querySelectorAll('.entry>.pv-g'))
 
   function handleGetMeans($mean, sense) {
     const mean: Mean = {}
@@ -167,7 +173,43 @@ function handleDOM(
   }
 
   // Judge whether it is wrapped by span label
-  if ($senses_li.length) {
+  if ($senses_phrasal.length) {
+    result.isPhrasal = true
+
+    $senses_phrasal.map($mean => {
+      const sense: Sense = {
+        title: '',
+        means: []
+      }
+
+      const $title = $mean.querySelector('.top-container .pv') as HTMLElement
+
+      if ($title) {
+        sense.symbol = $title.getAttribute('cefr') || ''
+        sense.title = getOuterHTML(HOST, $title)
+      }
+
+      const $variantsType = $mean.querySelector('.variants') as HTMLElement
+
+      if ($variantsType) {
+        sense.variants = getInnerHTML(HOST, $mean, '.variants')
+      }
+
+      const $senses_mul_p = Array.from(
+        $mean.querySelectorAll('.senses_multiple .sense')
+      )
+      const $senses_single_p = Array.from(
+        $mean.querySelectorAll('.sense_single .sense')
+      )
+      ;(
+        ($senses_mul_p.length && $senses_mul_p) ||
+        ($senses_single_p.length && $senses_single_p) ||
+        []
+      ).map($m => handleGetMeans($m, sense))
+
+      result.senses.push(sense)
+    })
+  } else if ($senses_li.length) {
     const sense: Sense = {
       title: '',
       means: []
@@ -203,7 +245,11 @@ function handleDOM(
   $idioms.map($idiom => {
     const idiom: Idiom = {}
 
-    idiom.title = getText($idiom.querySelector('.top-container .webtop'))
+    const $topC = $idiom.querySelector('.top-container')
+
+    if ($topC) {
+      idiom.title = getInnerHTML(HOST, $topC, '.webtop')
+    }
 
     idiom.labels = getText($idiom.querySelector('.labels'))
 

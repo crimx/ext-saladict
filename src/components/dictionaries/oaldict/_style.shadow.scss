@@ -1,3 +1,14 @@
+.dictOal-TitleBoxSymbol {
+  padding: 2px 5px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.8em;
+  min-width: 14px;
+  text-align: center;
+  background-color: #444;
+  border-radius: 8px;
+}
+
 .dictOal-TitleBox {
   .dictOal-TitleBoxT {
     font-size: 1.5em;
@@ -9,17 +20,6 @@
     font-style: italic;
     margin-left: 4px;
     margin-right: 3px;
-  }
-
-  .dictOal-TitleBoxSymbol {
-    padding: 2px 5px;
-    color: #fff;
-    font-weight: 700;
-    font-size: 0.8em;
-    min-width: 14px;
-    text-align: center;
-    background-color: #444;
-    border-radius: 8px;
   }
 }
 
@@ -49,9 +49,13 @@
   .dictOal-SensesTitle {
     font-size: 1.2em;
     font-weight: 700;
-    margin-left: -20px;
     border-bottom: 1px solid var(--color-font-grey);
-    margin-bottom: 4px;
+    margin: auto 4px 4px -20px;
+
+    .pvarr:before {
+      content: '<->';
+      display: inline-block;
+    }
   }
 
   .dictOal-SensesLabels {
