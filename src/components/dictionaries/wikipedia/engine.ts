@@ -104,6 +104,7 @@ function handleDOM(
 
   doc.querySelectorAll('#bodyContent .section-heading').forEach($header => {
     $header.classList.add('collapsible-heading')
+    $header.setAttribute("role", "button")
     const $icon = $header.querySelector('.mw-ui-icon')
     if ($icon) {
       $icon.classList.add('mw-ui-icon-mf-arrow')
