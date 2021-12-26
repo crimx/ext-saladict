@@ -142,8 +142,8 @@ function handleDOM(
       )
     }
 
-    // the main content is before the first script tag
-    if ($el.nodeName === 'SCRIPT') {
+    // the main content is before the anchor list
+    if ($el.className.includes('wgt-incentive-anchors')) {
       result.push(resultItem)
       break
     }
