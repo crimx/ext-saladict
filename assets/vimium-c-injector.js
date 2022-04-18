@@ -13,12 +13,22 @@
             if (typeof oldScroll === "function") {
                 /**
                  * 接管滚动命令，用于全屏模式下立即翻页（忽略平滑滚动）
+                 * @returns { boolean | Promise<boolean> } 是否成功滚动（版本 1.92+）
                  */
-                api.$ = (element, di, amount) => {
-                    if (
-                        element.id === "viewerContainer" &&
-                        element.classList.contains("pdfPresentationMode")
-                    ) {
+                api.$ = function (element, _di, amount) {
+                    if (Math.abs(amount) < 0.1) { return oldScroll.apply(this, arguments); }
+                    const Presentation = ".pdfPresentationMode"
+                    const fullscreenElement = document.fullscreenElement
+                    const topEl = fullscreenElement || document.documentElement
+                    if ((element === topEl || fullscreenElement && !topEl.contains(element))) {
+                        element = fullscreenElement && topEl.matches(Presentation)
+                            ? topEl
+                            : topEl.querySelector(Presentation);
+                    } else {
+                        element = element.closest(Presentation);
+                    }
+                    if (element) {
+                        const oldTop = element.scrollTop, oldPage = PDFViewerApplication.page;
                         element.dispatchEvent(
                             new WheelEvent("wheel", {
                                 bubbles: true,
@@ -27,9 +37,10 @@
                                 deltaY: Math.sign(amount) * 120,
                             })
                         );
-                    } else {
-                        oldScroll.call(this, element, di, amount);
+                        return oldPage !== PDFViewerApplication.page || element.scrollTop !== oldTop;
                     }
+                    // eslint-disable-next-line prefer-rest-params
+                    return oldScroll.apply(this, arguments);
                 };
             }
             /**
@@ -82,8 +93,8 @@
         if (injector === "nul" || injector === "/dev/null") {
             return;
         }
-        const IsEdge = /\sEdg\//.test(navigator.appVersion)
-        const IsFirefox = typeof InstallTrigger !== "undefined"
+        const IsFirefox = location.origin.startsWith("moz")
+        const IsEdge = !IsFirefox && /\sEdg\//.test(navigator.appVersion)
         const useFixedInjector = !!injector
         if (!injector) {
             injector = IsFirefox ? IDOnFirefox : IsEdge ? IDOnEdge : IDOnChrome;
