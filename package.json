@@ -78,7 +78,7 @@
     "antd": "^4.1.0",
     "axios": "^0.21.1",
     "classnames": "^2.2.6",
-    "dexie": "^2.0.4",
+    "dexie": "^3.2.2",
     "dompurify": "^2.0.17",
     "get-selection-more": "^1.0.2",
     "i18next": "^17.0.6",
