@@ -397,7 +397,9 @@ function cardText(front: boolean, nf: string[]) {
 {{#${nf[6]}}}
 <section class="tsource">
 <hr />
-{{#${nf[8]}}}<img src="{{${nf[8]}}}" />{{/${nf[8]}}}
+{{#${nf[8]}}}
+<span class="favicon" style="background-image:url({{${nf[8]}}})"></span>
+{{/${nf[8]}}}
 <a href="{{${nf[7]}}}">{{${nf[6]}}}</a>
 </section>
 {{/${nf[6]}}}
@@ -471,6 +473,13 @@ section {
 .typeMissed {
   color: #fff;
   background: #7C8A99;
+}
+
+.favicon {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  background: center/cover no-repeat;
 }
 `
 }
