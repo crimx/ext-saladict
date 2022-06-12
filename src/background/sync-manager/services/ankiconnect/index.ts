@@ -377,7 +377,7 @@ export class Service extends SyncService<SyncConfig> {
 function cardText(front: boolean, nf: string[]) {
   return `{{#${nf[4]}}}
 <section>{{cloze:${nf[4]}}}</section>
-<section>{{{{type:cloze:${nf[4]}}}</section>
+<section>{{type:cloze:${nf[4]}}}</section>
 {{#${nf[2]}}}
 <section>{{${nf[2]}}}</section>
 {{/${nf[2]}}}
