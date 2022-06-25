@@ -66,7 +66,7 @@ async function modifyViewrJS() {
   file = '/* saladict */ window.__SALADICT_PDF_PAGE__ = true;\n' + file
 
   // change default pdf
-  const defaultPDFTester = /defaultUrl: {[\s\S]*?value: (['"]\S+?.pdf['"]),[\s\S]*?kind: OptionKind\.VIEWER/
+  const defaultPDFTester = /defaultUrl = {[\s\S]*?value: (['"]\S+?.pdf['"]),[\s\S]*?kind: OptionKind\.VIEWER/
   if (!defaultPDFTester.test(file)) {
     shell.echo('Could not locate default pdf in viewer.js')
     shell.exit(1)
