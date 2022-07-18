@@ -19,7 +19,7 @@ export const WordEditorPanel: FC<WordEditorPanelProps> = props => {
     <div
       className="wordEditorPanel-Background"
       style={{
-        zIndex: isInternalPage() ? 998 : 2147483645 // for popups on options page
+        zIndex: isInternalPage() ? 998 : 2147483646 // for popups on options page
       }}
     >
       <div
