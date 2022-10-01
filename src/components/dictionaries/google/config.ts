@@ -13,7 +13,6 @@ export type GoogleLanguage = Subunion<
 export type GoogleConfig = MachineDictItem<
   GoogleLanguage,
   {
-    cnfirst: boolean
     concurrent: boolean
   }
 >
@@ -23,7 +22,6 @@ export default (): GoogleConfig =>
     ['zh-CN', 'zh-TW', 'en', 'ja', 'ko', 'fr', 'de', 'es', 'ru', 'nl'],
     {},
     {
-      cnfirst: true,
       concurrent: false
     },
     {}
