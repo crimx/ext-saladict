@@ -76,15 +76,12 @@ async function modifyViewrJS() {
   )
 
   // disable url check
-  const validateTester = /(let|var) validateFileURL[^\n]*\n+^{$[\s\S]+?^}$/m
+  const validateTester = /validateFileURL\(file\);/
   if (!validateTester.test(file)) {
     shell.echo('Could not locate validateFileURL in viewer.js')
     shell.exit(1)
   }
-  file = file.replace(
-    validateTester,
-    '/* saladict */let validateFileURL = () => {};'
-  )
+  file = file.replace(validateTester, '/* saladict */')
 
   // force dark mode
   const viewCssTester = /"viewerCssTheme": 0,/
