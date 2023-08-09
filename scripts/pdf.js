@@ -30,8 +30,10 @@ shell.cd(path.resolve(__dirname))
 shell.rm('-rf', cacheDir)
 
 exec(
-  `git clone https://github.com/mozilla/pdf.js.git ${cacheDir} --single-branch --branch gh-pages --depth 1 --progress --verbose`,
-  'Error: Git clone failed'
+  `wget https://github.com/mozilla/pdf.js/releases/download/v2.16.105/pdfjs-2.16.105-dist.zip -O pdfjs.tar.gz &&
+  mkdir -p ${cacheDir} &&
+  tar -xzvf pdfjs.tar.gz -C ${cacheDir}`,
+  'Error: download failed'
 )
 
 shell.cd('./' + cacheDir)
