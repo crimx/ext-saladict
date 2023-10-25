@@ -2184,7 +2184,7 @@ document.body.classList.add('cross-dungarees-lite');
               {
                 symbol: 'ˈad',
                 audio:
-                  'https://www.merriam-webster.com/dictionary/add?pronunciation&lang=en_us&dir=a&file=add00001'
+                  'https://media.merriam-webster.com/audio/prons/en/us/mp3/a/add00001.mp3'
               }
             ]
           },
@@ -3917,7 +3917,7 @@ document.body.classList.add('cross-dungarees-lite');
               {
                 symbol: 'ˈtran(t)-sə-tiv',
                 audio:
-                  'https://www.merriam-webster.com/dictionary/transitive?pronunciation&lang=en_us&dir=t&file=transi17'
+                  'https://media.merriam-webster.com/audio/prons/en/us/mp3/t/transi17.mp3'
               },
               {
                 symbol: 'ˈtran-zə-'
