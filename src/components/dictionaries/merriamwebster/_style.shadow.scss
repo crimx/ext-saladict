@@ -48,7 +48,7 @@
 }
 
 .mw-section-title {
-  color: #777;
+  color: #8f8f8f;
   border-bottom: 1px solid;
   margin-bottom: 2px;
 }
@@ -107,4 +107,16 @@
   line-height: 1em;
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+.mw-extra {
+  margin-top: 10px;
+}
+
+.mw-extra-title {
+  padding-left: 5px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  background-color: #777;
+  border-left: 10px solid #575757;
 }

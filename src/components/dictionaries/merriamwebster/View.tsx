@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import React, { FC } from 'react'
 import Speaker from '@/components/Speaker'
 import { MerriamWebsterResultV2 } from './engine'
@@ -87,8 +88,11 @@ export const DictMerriamWebster: FC<ViewPorps<MerriamWebsterResultV2>> = ({
           <div key={'mw-section-' + n} className="mw-section">
             {s.title && <div className="mw-section-title">{s.title}</div>}
             <div>
+
               {s.meaningGroups.map((means, o) => (
+
                 <div key={'mw-mg-' + o} className="mw-mg-area">
+
                   <div className="mw-mg-left">
                     <div className="mw-mg-sign"> {o + 1}</div>
                     <div className="mw-mg-line"></div>
@@ -97,67 +101,61 @@ export const DictMerriamWebster: FC<ViewPorps<MerriamWebsterResultV2>> = ({
                   <div className="mw-mg-right">
                     {means.map((mean, k) => (
                       <div key={'mw-meaning-' + k} className="mw-mean-area">
-                        {(mean.examples || mean.explaining) &&
-                          means.length > 1 && (
-                            <span className="mw-mean-sign">{alphabet[k]}</span>
-                          )}
 
-                        {mean.explaining && (
-                          <div className="mw-mean-text">{mean.explaining}</div>
+                        {(mean.examples || mean.explaining) && means.length > 1 && (
+                          <span className="mw-mean-sign">{alphabet[k]}</span>
                         )}
 
-                        {mean.examples && (
-                          <div className="mw-mean-ex-area">
-                            {mean.examples?.map((ex, m) => (
-                              <div
-                                key={'mw-example-' + m}
-                                className="mw-mean-ex-item"
-                              >
-                                {ex}
-                              </div>
-                            ))}
-                          </div>
-                        )}
+                        {mean.explaining && <div className="mw-mean-text">{mean.explaining}</div>}
+
+                        {mean.examples && <div className="mw-mean-ex-area">
+                          {mean.examples?.map((ex, m) => (
+                            <div
+                              key={'mw-example-' + m}
+                              className="mw-mean-ex-item"
+                            >
+                              {ex}
+                            </div>
+                          ))}
+                        </div>}
+
                       </div>
                     ))}
                   </div>
+
                 </div>
               ))}
+
             </div>
           </div>
         ))}
-        {/* {g.meaning && (
-            <StrElm
-              tag="p"
-              className="mw-Meaning"
-              html={g.meaning}
-            />
-          )}
-
-          {g.definition && (
-            <StrElm
-              tag="p"
-              className="mw-Definition"
-              html={g.definition}
-            />
-          )}
-
-
-
-    {
-                    v.meaningGroups.map((means, o) =>
-                      means.map((mean, k) => (
-                        <span>{mean}</span>
-                          mean.examples.map((ex, m) => (
-                          <span>{ex}</span>)
-                        ))
-                    )
-                  }
-               
-        </li>
-      ))} */}
       </li>
     ))}
+
+    {result.etymology &&
+      <li>
+        <div className="mw-extra mw-title-area">
+          <div className="mw-extra-title mw-title">Etymology</div>
+          {result.etymology?.map((v, i) => (
+            <div key={'mw-etymolog' + i}>
+              {v[0] && <div className="mw-section-title">{v[0]}</div>}
+              <div>{v[1]}</div>
+            </div>)
+          )}
+        </div>
+      </li>}
+
+    {result.synonyms && <li>
+      <div className="mw-extra mw-title-area">
+        <div className="mw-extra-title mw-title">Synonyms</div>
+        {result.synonyms?.map((v, i) => (
+          <div key={'mw-etymolog' + i}>
+            {v[0] && <div className="mw-section-title">{v[0]}</div>}
+            <div>{v[1].join('; ')}</div>
+          </div>)
+        )}
+      </div>
+    </li>}
   </ul>
 )
 
