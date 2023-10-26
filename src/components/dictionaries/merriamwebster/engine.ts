@@ -233,8 +233,10 @@ export function _getMeaningEles(mg: Element): Element[] | undefined {
 }
 
 export function _getExpaining(meaning: Element): string | undefined {
-  const result = meaning.querySelector('span.dtText')?.textContent
-  return result ? result.trim() : undefined
+  return (
+    meaning.querySelector('span.dtText')?.textContent?.trim() ||
+    meaning.querySelector('span.unText')?.textContent?.trim()
+  )
 }
 
 export function _getExamples(meaning: Element): string[] | undefined {
