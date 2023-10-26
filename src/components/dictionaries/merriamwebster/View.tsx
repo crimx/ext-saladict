@@ -1,59 +1,161 @@
 import React, { FC } from 'react'
 import Speaker from '@/components/Speaker'
-import { MerriamWebsterResult } from './engine'
+import { MerriamWebsterResultV2 } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
-import { StrElm } from '@/components/StrElm'
 
-export const DictMerriamWebster: FC<ViewPorps<MerriamWebsterResult>> = ({
+const alphabet = [
+  'a',
+  'b',
+  'c',
+  'd',
+  'e',
+  'f',
+  'g',
+  'h',
+  'i',
+  'j',
+  'k',
+  'l',
+  'm',
+  'n',
+  'o',
+  'p',
+  'q',
+  'r',
+  's',
+  't',
+  'u',
+  'v',
+  'w',
+  'x',
+  'y',
+  'z'
+]
+
+export const DictMerriamWebster: FC<ViewPorps<MerriamWebsterResultV2>> = ({
   result
 }) => (
-  <ul className="dictMerriamWebster-List">
-    {result.map((def, defI) => (
-      <li key={def.meaning} className="dictMerriamWebster-Item">
-        <div className="dictMerriamWebster-TitleBox">
-          <sup className="dictMerriamWebster-Sup">{defI + 1}</sup>
-          <span className="dictMerriamWebster-Title">{def.title}</span>
-          <span className="dictMerriamWebster-Pos">{def.pos}</span>
-          <Speaker src={def.pron} />
+  // <ul className="mw-list">
+  <ul>
+    {result.groups.map((g, i) => (
+      <li key={`${`mw-g`}-${i}`} className="mw-item">
+        <div className="mw-top-container">
+          <div className="mw-title-area">
+            {/* <sup className="mw-Sup">{i + 1}</sup> */}
+            <span className="mw-title">{g.title}</span>
+            <span className="mw-pos">({g.pos})</span>
+          </div>
+          <div className="mw-prs">
+            {g.pr?.syllable && (
+              <span className="mw-syllable">{g.pr?.syllable}</span>
+            )}
+            {g.pr?.phonetics &&
+              g.pr?.phonetics.map((v, j) => (
+                <div
+                  key={'mw-pt-' + j}
+                  className={v.audio ? 'mw-pt' : 'mw-pt-text'}
+                >
+                  {v.symbol}
+                  {v.audio && <Speaker src={v.audio} />}
+                </div>
+              ))}
+          </div>
         </div>
+        {/* <div className="mw-PronBox">
+            {g.syllables && (
+              <>
+                <span className="mw-Syllables">
+                  {g.syllables}
+                </span>
+                <span className="mw-Break">|</span>
+              </>
+            )}
+            {g.pr && <span>\{g.pr}\</span>}
 
-        <div className="dictMerriamWebster-PronBox">
-          {def.syllables && (
-            <>
-              <span className="dictMerriamWebster-Syllables">
-                {def.syllables}
-              </span>
-              <span className="dictMerriamWebster-Break">|</span>
-            </>
-          )}
-          {def.pr && <span>\{def.pr}\</span>}
+            {g.headword && (
+              <div>
+                <StrElm
+                  tag="p"
+                  className="mw-Headword"
+                  html={g.headword}
+                />
+              </div>
+            )}
+          </div> */}
 
-          {def.headword && (
+        {g.sections.map((s, n) => (
+          <div key={'mw-section-' + n} className="mw-section">
+            {s.title && <div className="mw-section-title">{s.title}</div>}
             <div>
-              <StrElm
-                tag="p"
-                className="dictMerriamWebster-Headword"
-                html={def.headword}
-              />
+              {s.meaningGroups.map((means, o) => (
+                <div key={'mw-mg-' + o} className="mw-mg-area">
+                  <div className="mw-mg-left">
+                    <div className="mw-mg-sign"> {o + 1}</div>
+                    <div className="mw-mg-line"></div>
+                  </div>
+
+                  <div className="mw-mg-right">
+                    {means.map((mean, k) => (
+                      <div key={'mw-meaning-' + k} className="mw-mean-area">
+                        {(mean.examples || mean.explaining) &&
+                          means.length > 1 && (
+                            <span className="mw-mean-sign">{alphabet[k]}</span>
+                          )}
+
+                        {mean.explaining && (
+                          <div className="mw-mean-text">{mean.explaining}</div>
+                        )}
+
+                        {mean.examples && (
+                          <div className="mw-mean-ex-area">
+                            {mean.examples?.map((ex, m) => (
+                              <div
+                                key={'mw-example-' + m}
+                                className="mw-mean-ex-item"
+                              >
+                                {ex}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
             </div>
+          </div>
+        ))}
+        {/* {g.meaning && (
+            <StrElm
+              tag="p"
+              className="mw-Meaning"
+              html={g.meaning}
+            />
           )}
-        </div>
 
-        {def.meaning && (
-          <StrElm
-            tag="p"
-            className="dictMerriamWebster-Meaning"
-            html={def.meaning}
-          />
-        )}
+          {g.definition && (
+            <StrElm
+              tag="p"
+              className="mw-Definition"
+              html={g.definition}
+            />
+          )}
 
-        {def.definition && (
-          <StrElm
-            tag="p"
-            className="dictMerriamWebster-Definition"
-            html={def.definition}
-          />
-        )}
+
+
+    {
+                    v.meaningGroups.map((means, o) =>
+                      means.map((mean, k) => (
+                        <span>{mean}</span>
+                          mean.examples.map((ex, m) => (
+                          <span>{ex}</span>)
+                        ))
+                    )
+                  }
+               
+        </li>
+      ))} */}
       </li>
     ))}
   </ul>
