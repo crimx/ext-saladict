@@ -1,13 +1,8 @@
-import { fetchDirtyDOM, fetchDirtyDOMViaFetch } from '@/_helpers/fetch-dom'
+import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
-  HTMLString,
-  getText,
-  getInnerHTML,
-  handleNoResult,
   handleNetWorkError,
   SearchFunction,
-  GetSrcPageFunction,
-  DictSearchResult
+  GetSrcPageFunction
 } from '../helpers'
 
 export const getSrcPage: GetSrcPageFunction = text => {
@@ -58,12 +53,12 @@ export const search: SearchFunction<MerriamWebsterResultV2> = (
   profile,
   payload
 ) => {
-  const options = profile.dicts.all.merriamwebster.options
+  // const options = profile.dicts.all.merriamwebster.options
 
-  return fetchDirtyDOMViaFetch(
+  return fetchDirtyDOM(
     'https://www.merriam-webster.com/dictionary/' +
-    // eslint-disable-next-line prettier/prettier
-    encodeURIComponent(text.replace(/\s+/g, ' ')))
+      encodeURIComponent(text.replace(/\s+/g, ' '))
+  )
     .catch(handleNetWorkError)
     .then(doc => {
       return { result: getResult(doc) }
@@ -186,9 +181,9 @@ export function _getPhoneticAudio(pt: Element): string | undefined {
   const lang = pt.getAttribute('data-lang')
   return dir && fileName && lang
     ? `https://media.merriam-webster.com/audio/prons/${lang.replace(
-      '_',
-      '/'
-    )}/mp3/${dir}/${fileName}.mp3`
+        '_',
+        '/'
+      )}/mp3/${dir}/${fileName}.mp3`
     : undefined
 }
 
@@ -200,9 +195,9 @@ export function _getConjugation(group: Element): string | undefined {
 
   return conjEles
     ? new Array(...conjEles)
-      .map(e => e.textContent)
-      .join()
-      .trim()
+        .map(e => e.textContent)
+        .join()
+        .trim()
     : undefined
 }
 

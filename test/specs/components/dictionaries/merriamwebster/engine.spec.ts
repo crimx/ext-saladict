@@ -19,18 +19,18 @@ import {
   _getTitle
 } from '@/components/dictionaries/merriamwebster/engine'
 import { cases } from './testCases'
-import getDefaultProfile from '@/app-config/profiles'
+// import getDefaultProfile from '@/app-config/profiles'
 
 describe('Dict/MerriamWebster/engine', () => {
-  const profile = getDefaultProfile()
-  const options = profile.dicts.all.merriamwebster.options
+  // const profile = getDefaultProfile()
+  // const options = profile.dicts.all.merriamwebster.options
 
   let multiGroup: Element
   let multiSyllable: Element
 
   beforeAll(() => {
-    multiGroup = _getContentEle(cases.multiGroup.dom)
-    multiSyllable = _getContentEle(cases.multiSyllable.dom)
+    multiGroup = _getContentEle(cases.multiGroup.dom())
+    multiSyllable = _getContentEle(cases.multiSyllable.dom())
   })
 
   it('should return right number of groups', () => {
