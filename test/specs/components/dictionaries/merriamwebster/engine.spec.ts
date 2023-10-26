@@ -1,6 +1,7 @@
 import {
   _getConjugation,
   _getContentEle,
+  _getEtymology,
   _getExamples,
   _getExpaining,
   _getGroupsEles,
@@ -14,6 +15,7 @@ import {
   _getSectionTitle,
   _getSectionsEles,
   _getSyllable,
+  _getSynonyms,
   _getTitle
 } from '@/components/dictionaries/merriamwebster/engine'
 import { cases } from './testCases'
@@ -39,9 +41,21 @@ describe('Dict/MerriamWebster/engine', () => {
     expect(groupEles2.length).toBe(1)
   })
 
-  it.todo('should returns correct synonyms')
+  it('should returns correct synonyms', () => {
+    const synonyms1 = _getSynonyms(multiGroup)
+    expect(synonyms1).toStrictEqual(cases.multiGroup.expect.synonyms)
 
-  it.todo('should returns correct etymology')
+    const synonyms2 = _getSynonyms(multiSyllable)
+    expect(synonyms2).toStrictEqual(cases.multiSyllable.expect.synonyms)
+  })
+
+  it('should returns correct etymology', () => {
+    const etymology1 = _getEtymology(multiGroup)
+    expect(etymology1).toStrictEqual(cases.multiGroup.expect.etymology)
+
+    const etymology2 = _getEtymology(multiSyllable)
+    expect(etymology2).toStrictEqual(cases.multiSyllable.expect.etymology)
+  })
 
   it('should returns correct group title', () => {
     const groupEles1 = _getGroupsEles(multiGroup)

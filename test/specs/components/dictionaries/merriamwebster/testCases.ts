@@ -2275,8 +2275,15 @@ document.body.classList.add('cross-dungarees-lite');
           ]
         }
       ],
-      synonyms: ['adjoin', 'annex', 'append', 'subjoin', 'tack (on)'],
-      etymology: `[verb] Middle English adden, borrowed from Anglo-French adder, borrowed from Latin addere, from ad- ad- + -dere "to put, place," going back to a reduced ablaut grade of Indo-European *dheh1- — more at do entry 1 `
+      synonyms: [
+        ['Verb', ['adjoin', 'annex', 'append', 'subjoin', 'tack (on)']]
+      ],
+      etymology: [
+        [
+          'Verb',
+          `Middle English adden, borrowed from Anglo-French adder, borrowed from Latin addere, from ad- ad- + -dere \"to put, place,\" going back to a reduced ablaut grade of Indo-European *dheh1-  — more at do entry 1`
+        ]
+      ]
     } as MerriamWebsterResultV2
   },
   multiSyllable: {
@@ -3960,8 +3967,12 @@ document.body.classList.add('cross-dungarees-lite');
           ]
         }
       ],
-      etymology:
-        'Late Latin transitivus, from Latin transitus, past participle of transire'
+      etymology: [
+        [
+          '',
+          'Late Latin transitivus, from Latin transitus, past participle of transire'
+        ]
+      ]
     } as MerriamWebsterResultV2
   }
 }

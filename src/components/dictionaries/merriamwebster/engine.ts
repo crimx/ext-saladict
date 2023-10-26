@@ -48,8 +48,8 @@ export interface Group {
 
 export interface MerriamWebsterResultV2 {
   groups: Group[]
-  synonyms?: string[]
-  etymology?: string
+  synonyms?: Array<[string, string[]]>
+  etymology?: Array<[string, string]>
 }
 
 export const search: SearchFunction<MerriamWebsterResultV2> = (
@@ -90,12 +90,53 @@ export function _getGroupsEles(content: Element): Element[] {
   )
 }
 
-export function _getSynonyms(context: Element): string[] {
-  return []
+export function _getSynonyms(
+  content: Element
+): Array<[string, string[]]> | undefined {
+  const synonymsEle = content
+    .querySelector('#synonyms')
+    ?.querySelector('.content-section-body')
+
+  if (!synonymsEle) return undefined
+
+  const functions = [
+    ...synonymsEle?.querySelectorAll('.function-label').values()
+  ]
+  const lists = [
+    ...synonymsEle?.querySelectorAll('ul.synonyms-antonyms-grid-list')?.values()
+  ]
+
+  if (!lists) return undefined
+
+  const words = [...lists].map(l =>
+    [...l.querySelectorAll('a[lang]').values()].map(v => v.textContent)
+  )
+
+  if (functions.length === 0 || words.length === 0) return undefined
+
+  return functions.map((v, i) => [v.textContent, [...words[i]]]) as any
 }
 
-export function _getEtymology(context: Element): string {
-  return ''
+export function _getEtymology(
+  content: Element
+): Array<[string, string]> | undefined {
+  const eles = content
+    .querySelector('#word-history')
+    ?.querySelector('.etymology-content-section')
+
+  if (!eles) return undefined
+
+  const functions = [...eles.querySelectorAll('p.function-label').values()].map(
+    v => v.textContent
+  )
+  const paragraphs = [...eles.querySelectorAll('p.et')].map(v =>
+    v.textContent?.trim()
+  )
+  if (paragraphs.length === 0) return undefined
+
+  return (functions.length > 0
+    ? functions.map((v, i) => [v, paragraphs[i]])
+    : paragraphs.map(v => ['', v])) as any
 }
 
 export function _getTitle(group: Element): string | undefined {
