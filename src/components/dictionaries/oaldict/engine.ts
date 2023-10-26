@@ -1,4 +1,4 @@
-import { fetchDirtyDOMViaFetch } from '@/_helpers/fetch-dom'
+import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import {
   HTMLString,
   getText,
@@ -80,7 +80,7 @@ export const search: SearchFunction<OaldictResult> = (
   profile,
   payload
 ) => {
-  return fetchDirtyDOMViaFetch(
+  return fetchDirtyDOM(
     'https://www.oxfordlearnersdictionaries.com/search/english/direct/?q=' +
       encodeURIComponent(text.replace(/\s+/g, ' '))
   )
