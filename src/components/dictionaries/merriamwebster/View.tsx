@@ -3,35 +3,6 @@ import Speaker from '@/components/Speaker'
 import { MerriamWebsterResultV2 } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
 
-const alphabet = [
-  'a',
-  'b',
-  'c',
-  'd',
-  'e',
-  'f',
-  'g',
-  'h',
-  'i',
-  'j',
-  'k',
-  'l',
-  'm',
-  'n',
-  'o',
-  'p',
-  'q',
-  'r',
-  's',
-  't',
-  'u',
-  'v',
-  'w',
-  'x',
-  'y',
-  'z'
-]
-
 export const DictMerriamWebster: FC<ViewPorps<MerriamWebsterResultV2>> = ({
   result
 }) => (
@@ -78,7 +49,9 @@ export const DictMerriamWebster: FC<ViewPorps<MerriamWebsterResultV2>> = ({
                       <div key={'mw-meaning-' + k} className="mw-mean-area">
                         {(mean.examples || mean.explaining) &&
                           means.length > 1 && (
-                            <span className="mw-mean-sign">{alphabet[k]}</span>
+                            <span className="mw-mean-sign">
+                              {String.fromCharCode(k + 97)}
+                            </span>
                           )}
 
                         {mean.explaining && (
