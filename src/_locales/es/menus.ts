@@ -1,0 +1,42 @@
+import { locale as _locale } from '../zh-CN/menus'
+
+export const locale: typeof _locale = {
+  baidu_page_translate: 'Traductor web de baidu',
+  baidu_search: 'Buscar en baidu',
+  bing_dict: 'Bing diccionario',
+  bing_search: 'Buscar en bing',
+  caiyuntrs: 'Traductor de Lingocloud',
+  cambridge: 'Cambridge',
+  copy_pdf_url: 'Copiar URL de PDF al portapapeles',
+  dictcn: 'Dictcn',
+  etymonline: 'Etymonline',
+  google_cn_page_translate: 'Traductor web de Google.cn',
+  google_page_translate: 'Traductor de Google',
+  google_search: 'Buscar en Google',
+  google_translate: 'Traductor de Google',
+  google_cn_translate: 'Traductor de Google.cn',
+  guoyu: '國語辭典',
+  history_title: 'Historial de búsqueda',
+  iciba: 'iciba',
+  liangan: '兩岸詞典',
+  longman_business: 'Longman Business',
+  manual_title: 'Manual',
+  merriam_webster: 'Merriam Webster',
+  microsoft_page_translate: 'Traductor web de Microsoft',
+  notebook_title: 'Lista de palabras nuevas',
+  notification_youdao_err:
+    'Youdao Page Translate 2.0 no responde.\nSaladict puede que no tenga permiso para acceder a esta página.\nIgnora este mensaje si el panel de Youdao se muestra.',
+  oxford: 'Oxford',
+  page_permission_err:
+    'Saladict "{{name}}" no tiene permiso para acceder a esta página.',
+  page_translations: 'Traducciones de página',
+  saladict: 'Saladict',
+  saladict_standalone: 'Panel Saladict independiente',
+  sogou: 'Traductor de Sogou',
+  sogou_page_translate: 'Traductor web de Sogou',
+  termonline: 'Termonline',
+  view_as_pdf: 'Abrir en el visor de PDF',
+  youdao: 'Youdao',
+  youdao_page_translate: 'Traductor web de Youdao',
+  youglish: 'YouGlish'
+}

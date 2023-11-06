@@ -1,206 +1,123 @@
-.dictMerriamWebster-TitleBox {
-  .dictMerriamWebster-Sup {
-    font-weight: 700;
-    margin-right: 2px;
-  }
-
-  .dictMerriamWebster-Title {
-    font-size: 1.5em;
-    font-weight: 700;
-    margin-right: 4px;
-  }
-
-  .dictMerriamWebster-Pos {
-    color: #4a7d95;
-    font-weight: 700;
-  }
+.mw-title-area {
+  margin-bottom: 2px;
 }
 
-.dictMerriamWebster-PronBox {
-  .dictMerriamWebster-Break {
-    padding: 0 6px;
-  }
+.mw-title {
+  font-size: 1.5em;
+  font-weight: 700;
+  line-height: 1.6;
 }
 
-.dictMerriamWebster-Headword {
-  .if {
-    font-weight: 700;
-  }
-
-  .first-slash {
-    padding-left: 3px;
-  }
-
-  .last-slash {
-    padding-right: 3px;
-  }
-
-  .l {
-    font-style: italic;
-  }
+.mw-pos {
+  font-style: italic;
+  margin-left: 4px;
+  margin-right: 3px;
 }
 
-.dictMerriamWebster-Meaning {
-  background-image: linear-gradient(180deg, #f5f9fa, #e7f0f4);
-  border-left: 4px solid #97bece;
-  padding: 4px;
+.mw-prs {
+  margin-bottom: 3px;
+  border-width: thin;
+}
+
+.mw-syllable {
+  font-weight: bold;
+  margin-right: 2px;
+}
+
+.mw-pt-text {
+  display: inline-block;
+  margin: 2px;
+}
+
+.mw-pt {
+  color: rgb(15, 56, 80);
+  border: 1px solid rgb(15, 56, 80);
+  border-radius: 5px;
+  margin: 2px;
+  padding-left: 10px;
+  display: inline-block;
 
   @include isDarkMode {
-    background-image: none;
-  }
-
-  .hword2 {
-    font-weight: 700;
-    font-size: 1.2em;
-    color: #265667;
-    margin: 2px;
-  }
-
-  .vg-header {
-    display: none;
-  }
-
-  .vg {
-    .sb {
-      margin-bottom: 8px;
-      position: relative;
-
-      &.has-num {
-        padding-left: 11px;
-      }
-
-      &.has-subnum,
-      &.has-let {
-        padding-left: 33px;
-      }
-    }
-
-    .t {
-      display: block;
-      padding-top: 2px;
-      color: #225f73;
-
-      &::before {
-        content: '//';
-        font-weight: 700;
-        padding: 0 4px 0 0;
-        color: #4a7d95;
-      }
-    }
-
-    .dt {
-      .show-vis,
-      .hide-vis {
-        display: none;
-      }
-    }
-
-    .num {
-      left: 0;
-      position: absolute;
-      top: 0;
-      font-weight: 700;
-    }
+    color: #e7f0f4;
+    border: 1px solid #e7f0f4;
   }
 }
 
-.dictMerriamWebster-Definition {
-  .vg-header {
-    display: none;
-  }
+.mw-seciton {
+  margin-bottom: 10px;
+}
 
-  .dro {
-    padding-left: 18px;
+.mw-section-title {
+  color: #8f8f8f;
+  border-bottom: 1px solid;
+  margin-bottom: 2px;
+}
 
-    .drp {
-      font-weight: 700;
-    }
-  }
 
-  .vg {
-    .sb {
-      margin-bottom: 12px;
-      position: relative;
+.mw-mg-area {
+  display: flex;
+  flex-direction: row;
+}
 
-      &.has-num {
-        padding-left: 18px;
-      }
+.mw-mg-left {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  margin-right: 5px;
+  align-items: center;
+}
 
-      &.has-subnum,
-      &.has-let {
-        padding-left: 36px;
-      }
+.mw-mg-sign {
+  font-size: larger;
+  font-weight: bold;
+}
 
-      .sense.has-subnum {
-        display: block;
-        padding: 0 0 6px 11px;
+.mw-mg-line {
+  flex: auto;
+  background: linear-gradient(180deg, #bbd5e0, #deeaef 17.8%, #deeaef 81.87%, #bbd5e0);
+  border-radius: 2px;
+  width: 1px;
+}
 
-        .sub-num {
-          position: absolute;
-          left: 26px;
-          font-weight: 700;
-        }
-      }
+.mw-mg-right {
+  margin-top: 3px;
+}
 
-      .sdsense {
-        display: block;
-        padding-top: 4px;
-      }
+.mw-mean-area {
+  display: block;
+}
 
-      &.letter-only span[class^='sb-'] > .has-sn {
-        padding-left: 18px;
+.mw-mean-text {
+  display: inline-block;
+}
 
-        .letter {
-          left: 0;
-          position: absolute;
-        }
-      }
-    }
+.mw-mean-sign {
+  font-weight: bold;
+  display: inline-block;
+  margin-right: 1px;
+}
 
-    span {
-      font-size: 14px;
-      letter-spacing: 0.2px;
-      line-height: 14px;
+.mw-mean-ex-area {
+  padding-left: 1px;
+}
 
-      &[class^='sb-'] {
-        display: block;
-        margin-top: 6px;
-      }
-    }
-    .auth,
-    .source {
-      color: #525a5b;
-      font-size: 12px;
-    }
+.mw-mean-ex-item {
+  color: #777;
+  border-left: 1.5px solid #777;
+  padding-left: 5px;
+  line-height: 1em;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
 
-    .sb-0 {
-      margin-top: 4px;
-    }
+.mw-extra {
+  margin-top: 10px;
+}
 
-    .num {
-      left: 0;
-      position: absolute;
-      top: 0;
-      font-weight: 700;
-    }
-
-    .letter {
-      left: 16px;
-      position: absolute;
-      font-weight: 700;
-    }
-
-    .t {
-      display: block;
-      padding-top: 4px;
-      color: #225f73;
-
-      &::before {
-        content: '//';
-        font-weight: 700;
-        padding: 0 4px 0 0;
-        color: #4a7d95;
-      }
-    }
-  }
+.mw-extra-title {
+  padding-left: 5px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  background-color: #777;
+  border-left: 10px solid #575757;
 }
