@@ -76,7 +76,7 @@
     "@types/uuid": "^3.4.6",
     "@types/wavesurfer.js": "2.0.2",
     "antd": "^4.1.0",
-    "axios": "^0.21.1",
+    "axios": "^1.6.0",
     "classnames": "^2.2.6",
     "dexie": "^2.0.4",
     "dompurify": "^2.0.17",
