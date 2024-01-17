@@ -1,0 +1,68 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "सलाडिक्ट - पप-अप शब्दकोश र पृष्ठ अनुवादक"
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "सलाडिक्ट"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "सलाडिक्ट एक पेशेवर पप-अप शब्दकोश र पृष्ठ अनुवादक हो जसले बहु भाषा खोज , पृष्ठ अनुवाद, नयाँ शब्द नोटबुक र PDF  खोजीलाई समर्थ छ।"
+  },
+  "command_toggle_active": {
+    "message": "इनलाइन अनुवादक टगल गर्नुहोस्"
+  },
+  "command_toggle_instant": {
+    "message": "तत्काल क्याप्चर टगल गर्नुहोस्"
+  },
+  "command_open_quick_search": {
+    "message": "स्ट्यान्डअलोन डिक्ट प्यानल खोल्नुहोस् वा हाइलाइट गर्नुहोस्"
+  },
+  "command_open_google": {
+    "message": "Google अनुवादक खोल्नुहोस्"
+  },
+  "command_open_youdao": {
+    "message": "Youdao अनुवाद खोल्नुहोस्"
+  },
+  "command_open_caiyun": {
+    "message": "LingoCloud अनुवाद खोल्नुहोस्"
+  },
+  "command_open_pdf": {
+    "message": "हालको PDF सलाडिक्टमा खोल्नुहोस् "
+  },
+  "command_search_clipboard": {
+    "message": "स्ट्यान्डअलोन प्यानलमा क्लिपबोर्ड सामग्री खोज्नुहोस्"
+  },
+  "command_next_history": {
+    "message": "अर्को खोज इतिहास"
+  },
+  "command_prev_history": {
+    "message": "अघिल्लो खोज इतिहास"
+  },
+  "command_next_profile": {
+    "message": "अर्को प्रोफाइल"
+  },
+  "command_prev_profile": {
+    "message": "अघिल्लो प्रोफाइल"
+  },
+  "command_profile_1": {
+    "message": "पहिलो प्रोफाइल"
+  },
+  "command_profile_2": {
+    "message": "दोस्रो प्रोफाइल"
+  },
+  "command_profile_3": {
+    "message": "तेस्रो प्रोफाइल"
+  },
+  "command_profile_4": {
+    "message": "चौथो प्रोफाइल"
+  },
+  "command_profile_5": {
+    "message": "पाँचौं प्रोफाइल"
+  },
+  "command_add_notebook": {
+    "message": "नोटबुकमा थप्नुहोस्"
+  }
+}
