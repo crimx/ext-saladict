@@ -166,7 +166,7 @@
     "node-fetch": "^3.1.1",
     "postcss-loader": "^3.0.0",
     "prettier": "^1.19.1",
-    "qs": "^6.9.1",
+    "qs": "^6.9.7",
     "raf": "^3.4.1",
     "random-mua": "^0.5.0",
     "raw-loader": "^3.1.0",
