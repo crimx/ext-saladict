@@ -113,7 +113,12 @@ export const search: SearchFunction<GoogleDictResult> = async (
         .querySelectorAll('[role=listitem] > [jsname=F457ec]')
         .forEach($word => {
           // let saladict jump into the words
-          $word.innerHTML = `<a>${getText($word)}</a>`
+          const $a = document.createElement('a')
+          $a.textContent = getText($word)
+          Array.from($word.childNodes).forEach($child => {
+            $child.remove()
+          })
+          $word.appendChild($a)
           // always appeared available
           $word.removeAttribute('style')
           $word.classList.add('MR2UAc')
