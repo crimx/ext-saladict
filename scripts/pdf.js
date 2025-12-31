@@ -12,7 +12,7 @@ if (!shell.which('git')) {
 }
 
 const cacheDir = 'pdf'
-const repoRoot = 'pdf'
+let repoRoot = 'pdf'
 const publicPDFRoot = path.join(__dirname, '../assets/pdf')
 const pdfFiles = [
   'build/pdf.js',
@@ -27,22 +27,38 @@ const files = [...pdfFiles, ...pdfDirs]
 
 shell.cd(path.resolve(__dirname))
 
-shell.rm('-rf', cacheDir)
+const distRoot = getPdfDistRoot()
+const useLocalDist =
+  !!distRoot && fs.existsSync(path.join(distRoot, 'web/viewer.js'))
 
-exec(
-  `wget https://github.com/mozilla/pdf.js/releases/download/v2.16.105/pdfjs-2.16.105-dist.zip -O pdfjs.tar.gz &&
-  mkdir -p ${cacheDir} &&
-  tar -xzvf pdfjs.tar.gz -C ${cacheDir}`,
-  'Error: download failed'
-)
+if (useLocalDist) {
+  shell.echo('Using pdfjs-dist from node_modules.')
+  repoRoot = distRoot
+} else {
+  shell.rm('-rf', cacheDir)
 
-shell.cd('./' + cacheDir)
+  shell.mkdir('-p', cacheDir)
+
+  const zipName = 'pdfjs.zip'
+  const zipPath = path.join(__dirname, zipName)
+
+  const downloadCmd =
+    `curl -L --retry 3 --retry-delay 2 --max-time 300 -k https://github.com/mozilla/pdf.js/releases/download/v2.16.105/pdfjs-2.16.105-dist.zip -o "${zipPath}"` +
+    ` || curl -L --retry 3 --retry-delay 2 --max-time 300 -k https://ghproxy.com/https://github.com/mozilla/pdf.js/releases/download/v2.16.105/pdfjs-2.16.105-dist.zip -o "${zipPath}"` +
+    ` || curl -L --retry 3 --retry-delay 2 --max-time 300 -k https://download.fastgit.org/mozilla/pdf.js/releases/download/v2.16.105/pdfjs-2.16.105-dist.zip -o "${zipPath}"`
+
+  exec(downloadCmd, 'Error: download failed')
+
+  exec(`tar -xf "${zipPath}" -C "${cacheDir}"`, 'Error: extraction failed')
+
+  repoRoot = path.join(__dirname, cacheDir)
+}
 
 startUpgrade()
 
 async function startUpgrade() {
   shell.echo('\nChecking files.')
-  await Promise.all(files.map(p => exists(path.join(__dirname, repoRoot, p))))
+  await Promise.all(files.map(p => exists(resolveRepoPath(p))))
 
   shell.echo('\nModifying files.')
   await Promise.all([modifyViewrJS(), modifyViewerHTML()])
@@ -62,7 +78,7 @@ async function startUpgrade() {
 }
 
 async function modifyViewrJS() {
-  const viewerPath = path.join(__dirname, repoRoot, 'web/viewer.js')
+  const viewerPath = resolveRepoPath('web/viewer.js')
   let file = await fs.readFile(viewerPath, 'utf8')
 
   file = '/* saladict */ window.__SALADICT_PDF_PAGE__ = true;\n' + file
@@ -97,7 +113,7 @@ async function modifyViewrJS() {
 }
 
 async function modifyViewerHTML() {
-  const viewerPath = path.join(__dirname, repoRoot, 'web/viewer.html')
+  const viewerPath = resolveRepoPath('web/viewer.html')
   let file = await fs.readFile(viewerPath, 'utf8')
 
   if (!file.includes(`</body>`)) {
@@ -126,6 +142,21 @@ function cleanInit() {
   })
 }
 
+function getPdfDistRoot() {
+  try {
+    return path.dirname(require.resolve('pdfjs-dist/package.json'))
+  } catch (e) {
+    return null
+  }
+}
+
+function resolveRepoPath(subPath) {
+  if (path.isAbsolute(repoRoot)) {
+    return path.join(repoRoot, subPath)
+  }
+  return path.join(__dirname, repoRoot, subPath)
+}
+
 async function exists(path) {
   try {
     await fs.access(path)
@@ -152,7 +183,7 @@ async function cloneFiles() {
   for (const pdfFile of pdfFiles) {
     const targetPath = path.join(publicPDFRoot, pdfFile)
     await fs.ensureFile(targetPath)
-    await fs.copy(path.join(__dirname, repoRoot, pdfFile), targetPath)
+    await fs.copy(resolveRepoPath(pdfFile), targetPath)
   }
 
   const restPdfDirs = pdfDirs.filter(name => name !== 'web/locale')
@@ -160,19 +191,17 @@ async function cloneFiles() {
   for (const pdfDir of restPdfDirs) {
     const targetPath = path.join(publicPDFRoot, pdfDir)
     await fs.ensureDir(targetPath)
-    await fs.copy(path.join(__dirname, repoRoot, pdfDir), targetPath)
+    await fs.copy(resolveRepoPath(pdfDir), targetPath)
   }
 
   // copy locale.properties
   await fs.ensureDir(path.join(publicPDFRoot, 'web/locale'))
   await fs.copy(
-    path.join(__dirname, repoRoot, 'web/locale/locale.properties'),
+    resolveRepoPath('web/locale/locale.properties'),
     path.join(publicPDFRoot, 'web/locale/locale.properties')
   )
 
-  const locales = (
-    await fs.readdir(path.join(__dirname, repoRoot, 'web/locale'))
-  ).filter(
+  const locales = (await fs.readdir(resolveRepoPath('web/locale'))).filter(
     name =>
       name.startsWith('en') ||
       name.startsWith('zh') ||
@@ -182,9 +211,6 @@ async function cloneFiles() {
   for (const locale of locales) {
     const targetPath = path.join(publicPDFRoot, 'web/locale', locale)
     await fs.ensureDir(targetPath)
-    await fs.copy(
-      path.join(__dirname, repoRoot, 'web/locale', locale),
-      targetPath
-    )
+    await fs.copy(resolveRepoPath(path.join('web/locale', locale)), targetPath)
   }
 }

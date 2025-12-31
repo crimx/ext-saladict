@@ -1,27 +1,12 @@
-import { SearchFunction, GetSrcPageFunction } from '../helpers'
-import memoizeOne from 'memoize-one'
-import { Caiyun } from '@opentranslate/caiyun'
-import { TranslateResult } from '@opentranslate/translator'
+import axios from 'axios'
+import { SearchFunction, GetSrcPageFunction, handleNoResult } from '../helpers'
 import {
   MachineTranslateResult,
   MachineTranslatePayload,
-  getMTArgs,
   machineResult
 } from '@/components/MachineTrans/engine'
-import { getTranslator as getBaiduTranslator } from '../baidu/engine'
+import { isContainChinese, isContainJapanese } from '@/_helpers/lang-check'
 import { CaiyunLanguage } from './config'
-
-export const getTranslator = memoizeOne(
-  () =>
-    new Caiyun({
-      env: 'ext',
-      config: process.env.CAIYUN_TOKEN
-        ? {
-            token: process.env.CAIYUN_TOKEN
-          }
-        : undefined
-    })
-)
 
 export const getSrcPage: GetSrcPageFunction = () => {
   return 'https://fanyi.caiyunapp.com/'
@@ -29,64 +14,145 @@ export const getSrcPage: GetSrcPageFunction = () => {
 
 export type CaiyunResult = MachineTranslateResult<'caiyun'>
 
+const langcodes: ReadonlyArray<string> = ['zh-CN', 'ja', 'en']
+
 export const search: SearchFunction<
   CaiyunResult,
   MachineTranslatePayload<CaiyunLanguage>
 > = async (rawText, config, profile, payload) => {
-  const translator = getTranslator()
-  const langcodes = translator.getSupportLanguages()
+  const options = profile.dicts.all.caiyun.options
 
-  let { sl, tl, text } = await getMTArgs(
-    translator,
-    rawText,
-    profile.dicts.all.caiyun,
-    config,
-    payload
-  )
+  let text = rawText
 
-  const baiduTranslator = getBaiduTranslator()
+  if (
+    options.keepLF === 'none' ||
+    (options.keepLF === 'pdf' && !payload.isPDF) ||
+    (options.keepLF === 'webpage' && payload.isPDF)
+  ) {
+    text = text.replace(/\n+/g, ' ')
+  }
 
-  let baiduResult: TranslateResult | undefined
+  let sl: string =
+    payload.sl ||
+    (isContainJapanese(text) ? 'ja' : isContainChinese(text) ? 'zh-CN' : 'en')
 
-  try {
-    // Caiyun's lang detection is broken
-    baiduResult = await baiduTranslator.translate(text, sl, tl)
-    if (langcodes.includes(baiduResult.from)) {
-      sl = baiduResult.from
+  let tl: string =
+    payload.tl ||
+    (options.tl === 'default'
+      ? config.langCode.startsWith('zh')
+        ? 'zh-CN'
+        : 'en'
+      : options.tl)
+
+  if (sl === tl) {
+    if (isContainJapanese(text)) {
+      sl = 'ja'
+      if (tl === 'ja') {
+        tl = config.langCode.startsWith('zh') ? 'zh-CN' : 'en'
+      }
+    } else if (isContainChinese(text)) {
+      sl = 'zh-CN'
+      if (tl === 'zh-CN') {
+        tl = 'en'
+      }
+    } else {
+      sl = 'en'
+      if (tl === 'en') {
+        tl = 'zh-CN'
+      }
     }
-  } catch (e) {}
+  }
 
-  const caiYunToken = config.dictAuth.caiyun.token
-  const caiYunConfig = caiYunToken ? { token: caiYunToken } : undefined
+  // Caiyun API language codes
+  const slCode = sl === 'zh-CN' ? 'zh' : sl
+  const tlCode = tl === 'zh-CN' ? 'zh' : tl
 
-  try {
-    const result = await translator.translate(text, sl, tl, caiYunConfig)
-    result.origin.tts = await baiduTranslator.textToSpeech(
-      result.origin.paragraphs.join('\n'),
-      result.from
-    )
-    result.trans.tts = await baiduTranslator.textToSpeech(
-      result.trans.paragraphs.join('\n'),
-      result.to
-    )
+  // Caiyun requires user API token
+  const userToken = config.dictAuth.caiyun.token
+  if (!userToken) {
     return machineResult(
       {
         result: {
           id: 'caiyun',
-          sl: result.from,
-          tl: result.to,
-          slInitial: profile.dicts.all.caiyun.options.slInitial,
-          searchText: result.origin,
-          trans: result.trans
-        },
-        audio: {
-          py: result.trans.tts,
-          us: result.trans.tts
+          sl,
+          tl,
+          slInitial: 'hide',
+          searchText: { paragraphs: [''] },
+          trans: { paragraphs: [''] },
+          requireCredential: true
         }
       },
       langcodes
     )
+  }
+
+  try {
+    const response = await axios({
+      url: 'https://api.interpreter.caiyunai.com/v1/translator',
+      method: 'POST',
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json;charset=UTF-8',
+        'X-Authorization': userToken
+      },
+      data: {
+        source: text.split(/\n+/),
+        trans_type: `${slCode}2${tlCode}`,
+        detect: sl === 'auto'
+      }
+    })
+
+    const result = response.data
+
+    if (!result || !result.target) {
+      return handleNoResult()
+    }
+
+    const transParagraphs: string[] = result.target
+    const srcParagraphs = text.split(/\n+/)
+
+    const transText = transParagraphs.join('\n')
+    const srcText = srcParagraphs.join('\n')
+
+    return machineResult(
+      {
+        result: {
+          id: 'caiyun',
+          sl,
+          tl,
+          slInitial: options.slInitial,
+          searchText: {
+            paragraphs: srcParagraphs,
+            tts:
+              srcText.length <= 200
+                ? `https://fanyi.baidu.com/gettts?lan=${slCode}&text=${encodeURIComponent(
+                    srcText
+                  )}&spd=3&source=web`
+                : undefined
+          },
+          trans: {
+            paragraphs: transParagraphs,
+            tts:
+              transText.length <= 200
+                ? `https://fanyi.baidu.com/gettts?lan=${tlCode}&text=${encodeURIComponent(
+                    transText
+                  )}&spd=3&source=web`
+                : undefined
+          }
+        },
+        audio:
+          transText.length <= 200
+            ? {
+                us: `https://fanyi.baidu.com/gettts?lan=${tlCode}&text=${encodeURIComponent(
+                  transText
+                )}&spd=3&source=web`
+              }
+            : undefined
+      },
+      langcodes
+    )
   } catch (e) {
+    // Return empty result
     return machineResult(
       {
         result: {
@@ -98,7 +164,7 @@ export const search: SearchFunction<
           trans: { paragraphs: [''] }
         }
       },
-      translator.getSupportLanguages()
+      langcodes
     )
   }
 }

@@ -5,7 +5,8 @@ import {
   MachineTranslateResult,
   MachineTranslatePayload,
   getMTArgs,
-  machineResult
+  machineResult,
+  translateInChunks
 } from '@/components/MachineTrans/engine'
 import { GoogleLanguage } from './config'
 import { Language } from '@opentranslate/languages'
@@ -41,9 +42,10 @@ export const search: SearchFunction<
   )
 
   try {
-    const result = await translator.translate(text, sl, tl, {
+    const result = await translateInChunks(translator, text, sl, tl, {
       token: process.env.GOOGLE_TOKEN || '',
       concurrent: options.concurrent,
+      order: ['api'],
       apiAsFallback: true
     })
     return machineResult(

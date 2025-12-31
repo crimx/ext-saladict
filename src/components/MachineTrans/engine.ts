@@ -1,6 +1,6 @@
 import { DictID, AppConfig } from '@/app-config'
 import { Language } from '@opentranslate/languages'
-import { Translator } from '@opentranslate/translator'
+import { Translator, TranslateResult } from '@opentranslate/translator'
 import { DictItem, SelectOptions } from '@/app-config/dicts'
 import { isContainJapanese, isContainKorean } from '@/_helpers/lang-check'
 import { DictSearchResult } from '../dictionaries/helpers'
@@ -8,6 +8,7 @@ import { DictSearchResult } from '../dictionaries/helpers'
 export interface MachineTranslatePayload<Lang = string> {
   sl?: Lang
   tl?: Lang
+  isPDF?: boolean
 }
 
 export interface MachineTranslateResult<ID extends DictID> {
@@ -256,4 +257,92 @@ export function machineResult<ID extends DictID>(
     ...data,
     catalog
   }
+}
+
+export const MACHINE_TRANSLATE_CHAR_LIMIT = 4500
+
+function chunkText(text: string, limit = MACHINE_TRANSLATE_CHAR_LIMIT) {
+  const chunks: string[] = []
+  let current = ''
+
+  const pushCurrent = () => {
+    if (current) {
+      chunks.push(current)
+      current = ''
+    }
+  }
+
+  for (const raw of text.split(/\n+/)) {
+    const part = raw.trim()
+    if (!part) {
+      continue
+    }
+
+    if (part.length > limit) {
+      pushCurrent()
+      for (let i = 0; i < part.length; i += limit) {
+        chunks.push(part.slice(i, i + limit))
+      }
+      continue
+    }
+
+    const candidate = current ? `${current}\n${part}` : part
+    if (candidate.length > limit) {
+      pushCurrent()
+      current = part
+    } else {
+      current = candidate
+    }
+  }
+
+  pushCurrent()
+
+  return chunks.length ? chunks : ['']
+}
+
+export async function translateInChunks(
+  translator: Translator,
+  text: string,
+  sl: Language,
+  tl: Language,
+  config: Record<string, unknown> | undefined,
+  limit = MACHINE_TRANSLATE_CHAR_LIMIT
+): Promise<TranslateResult> {
+  const segments = chunkText(text, limit)
+
+  const aggregated: TranslateResult = {
+    from: sl,
+    to: tl,
+    origin: { paragraphs: [] },
+    trans: { paragraphs: [] }
+  }
+
+  let currentSl = sl
+  let currentTl = tl
+
+  for (const segment of segments) {
+    const res = await translator.translate(
+      segment,
+      currentSl,
+      currentTl,
+      config
+    )
+
+    aggregated.from = res.from
+    aggregated.to = res.to
+    aggregated.origin.paragraphs.push(...res.origin.paragraphs)
+    aggregated.trans.paragraphs.push(...res.trans.paragraphs)
+
+    if (res.origin.tts && !aggregated.origin.tts) {
+      aggregated.origin.tts = res.origin.tts
+    }
+    if (res.trans.tts && !aggregated.trans.tts) {
+      aggregated.trans.tts = res.trans.tts
+    }
+
+    currentSl = res.from as Language
+    currentTl = res.to as Language
+  }
+
+  return aggregated
 }
