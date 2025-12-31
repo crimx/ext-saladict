@@ -5,7 +5,8 @@ import {
   MachineTranslateResult,
   MachineTranslatePayload,
   getMTArgs,
-  machineResult
+  machineResult,
+  translateInChunks
 } from '@/components/MachineTrans/engine'
 import { BaiduLanguage } from './config'
 
@@ -56,8 +57,31 @@ export const search: SearchFunction<
   const key = config.dictAuth.baidu.key
   const translatorConfig = appid && key ? { appid, key } : undefined
 
+  if (!translatorConfig) {
+    return machineResult(
+      {
+        result: {
+          id: 'baidu',
+          slInitial: 'hide',
+          sl,
+          tl,
+          searchText: { paragraphs: [''] },
+          trans: { paragraphs: [''] },
+          requireCredential: true
+        }
+      },
+      translator.getSupportLanguages()
+    )
+  }
+
   try {
-    const result = await translator.translate(text, sl, tl, translatorConfig)
+    const result = await translateInChunks(
+      translator,
+      text,
+      sl,
+      tl,
+      translatorConfig
+    )
     return machineResult(
       {
         result: {

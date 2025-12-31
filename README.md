@@ -49,6 +49,21 @@ yarn build
 
 Artifacts can be found in `build/`.
 
+### Note for Node.js 17+
+
+If you are using Node.js 17 or later, you may encounter an OpenSSL error. Set this environment variable before building:
+
+```bash
+# Linux/macOS
+export NODE_OPTIONS=--openssl-legacy-provider
+
+# Windows (cmd)
+set NODE_OPTIONS=--openssl-legacy-provider
+
+# Windows (PowerShell)
+$env:NODE_OPTIONS="--openssl-legacy-provider"
+```
+
 ## Development
 
 See the [contributing guide](./CONTRIBUTING.md).

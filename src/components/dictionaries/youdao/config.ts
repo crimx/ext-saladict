@@ -36,7 +36,7 @@ export default (): YoudaoConfig => ({
   preferredHeight: 265,
   selectionWC: {
     min: 1,
-    max: 999999999999999
+    max: 5
   },
   options: {
     basic: true,

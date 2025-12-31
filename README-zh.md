@@ -45,6 +45,21 @@ yarn build
 
 在 `build/` 目录下可查看针对各个浏览器打包好的扩展包。
 
+### Node.js 17+ 用户注意
+
+如果使用 Node.js 17 或更高版本，构建时可能遇到 OpenSSL 错误。请在构建前设置环境变量：
+
+```bash
+# Linux/macOS
+export NODE_OPTIONS=--openssl-legacy-provider
+
+# Windows (cmd)
+set NODE_OPTIONS=--openssl-legacy-provider
+
+# Windows (PowerShell)
+$env:NODE_OPTIONS="--openssl-legacy-provider"
+```
+
 ## 开发
 
 见[项目贡献指南](./CONTRIBUTING-zh.md)。
