@@ -78,7 +78,7 @@ function _getDefaultConfig() {
 
     bowlOffsetX: 15,
 
-    bowlOffsetY: -45,
+    bowlOffsetY: 5,
 
     darkMode: false,
 
