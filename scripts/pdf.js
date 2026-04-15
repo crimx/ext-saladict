@@ -36,6 +36,8 @@ exec(
   'Error: download failed'
 )
 
+shell.rm('-rf', 'pdfjs.tar.gz')
+
 shell.cd('./' + cacheDir)
 
 startUpgrade()

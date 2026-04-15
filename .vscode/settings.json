@@ -27,5 +27,6 @@
     "selecion",
     "sync-services",
     "word-editor"
-  ]
+  ],
+  "js/ts.tsdk.path": "node_modules/typescript/lib"
 }

@@ -1,0 +1,35 @@
+name: build
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 16.20.2
+          cache: yarn
+          cache-dependency-path: yarn.lock
+
+      - name: Setup Yarn v1
+        run: |
+          corepack enable
+          corepack prepare yarn@1.22.22 --activate
+          yarn --version
+
+      - name: Install dependencies 📦
+        run: yarn install --frozen-lockfile
+
+      - name: Lint 🧹
+        run: yarn lint
+
+      - name: Build 🔧
+        run: yarn build
+
+      - name: Test 🧪
+        run: yarn test --testPathIgnorePatterns 'components/dictionaries'
