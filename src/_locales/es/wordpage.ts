@@ -45,14 +45,14 @@ export const locale: typeof _locale = {
       title: 'Caracteres HTML de escape en las notas',
       text: 'Escape HTML'
     },
-    selected: 'Exportar seleccionado',
+    selected: 'Exportar seleccionado'
   },
 
   filterWord: {
     chs: 'Chino',
     eng: 'Inglés',
     word: 'Palabra',
-    phrase: 'Frase',
+    phrase: 'Frase'
   },
 
   wordCount: {

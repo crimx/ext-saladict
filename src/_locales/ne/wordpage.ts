@@ -3,7 +3,7 @@ import { locale as _locale } from '../zh-CN/wordpage'
 export const locale: typeof _locale = {
   title: {
     history: 'सलाडिक्ट खोज इतिहास',
-    notebook: 'सलाडिक्ट नोटबुक',
+    notebook: 'सलाडिक्ट नोटबुक'
   },
 
   localonly: 'स्थानीयमा मात्र',

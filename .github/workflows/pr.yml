@@ -3,7 +3,7 @@ on: ["pull_request"]
 name: Build and Test PR
 
 jobs:
-  build:
+  build-and-test:
     name: Build
     runs-on: ubuntu-latest
     steps:

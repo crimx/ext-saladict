@@ -8,7 +8,8 @@ export const locale: typeof _locale = {
   msg_updated: 'Actualizado',
   msg_first_time_notice: '¡Bienvenido a Saladict!',
   msg_err_permission: 'No se ha podido solicitar el permiso "{{permission}}".',
-  unsave_confirm: 'Hay cambios sin guardar. ¿Estás seguro de que quieres salir?',
+  unsave_confirm:
+    'Hay cambios sin guardar. ¿Estás seguro de que quieres salir?',
   nativeSearch: 'Buscar con el motor de búsqueda nativo',
   firefox_shortcuts:
     'Abra about:addons, haga clic en el botón superior derecho "engranaje", elija la última "Administrar accesos directos de extensión".',
@@ -31,15 +32,16 @@ export const locale: typeof _locale = {
     BlackWhiteList: 'Lista negra/Blanca',
     ImportExport: 'Importar/Exportar',
     Privacy: 'Privacidad',
-    Permissions: 'Permisos',
+    Permissions: 'Permisos'
   },
 
-    config: {
+  config: {
     active: 'Activar el traductor en línea',
     active_help:
       'Si está desactivado, el traductor en línea no se mostrará en el panel de búsqueda rápida.',
     animation: 'Transiciones de animación',
-    animation_help: 'Desactive las transiciones de animación para mejorar el rendimiento.',
+    animation_help:
+      'Desactive las transiciones de animación para mejorar el rendimiento.',
     runInBg: 'Ejecutar en segundo plano',
     runInBg_help:
       'Si está desactivado, Saladict se cerrará cuando se cierre la última ventana.',
@@ -100,7 +102,8 @@ export const locale: typeof _locale = {
       }
     },
     pdfSniff: 'Activar PDF Sniffer',
-    pdfSniff_help: 'Si está activada, los enlaces PDF se capturarán automáticamente.',
+    pdfSniff_help:
+      'Si está activada, los enlaces PDF se capturarán automáticamente.',
     pdfSniff_extra:
       'Se recomienda {search selected text outside of browser} con su propio lector local favorito.',
     pdfStandalone: 'Panel independiente',
@@ -128,7 +131,8 @@ export const locale: typeof _locale = {
     qssaPageSel: 'Selección de página',
     qssaPageSel_help: 'Seleccionar automáticamente el texto de la página.',
     qssaRectMemo: 'Recordar tamaño y posición',
-    qssaRectMemo_help: 'Recuerde el tamaño y la posición del panel independiente al cerrar.',
+    qssaRectMemo_help:
+      'Recuerde el tamaño y la posición del panel independiente al cerrar.',
     updateCheck: 'Comprobar actualizaciones',
     updateCheck_help: 'Compruebe si hay actualizaciones automáticamente.',
     analytics: 'Activar Google Analytics',
@@ -137,7 +141,8 @@ export const locale: typeof _locale = {
 
     opt: {
       reset: 'Restablecer configuración',
-      reset_confirm: '¿Estás seguro de que quieres restablecer la configuración?',
+      reset_confirm:
+        '¿Estás seguro de que quieres restablecer la configuración?',
       upload_error: 'Error al cargar la configuración',
       accent: {
         uk: 'UK',
@@ -191,7 +196,7 @@ export const locale: typeof _locale = {
     instantDirect: 'Directo',
     instantKey: 'Tecla',
     instantKey_help:
-    'Si se elige "Directo", también se recomienda configurar la tecla de acceso directo del navegador para activar la Captura instantánea. De lo contrario, la selección de texto en el navegador podría ser imposible.',
+      'Si se elige "Directo", también se recomienda configurar la tecla de acceso directo del navegador para activar la Captura instantánea. De lo contrario, la selección de texto en el navegador podría ser imposible.',
     instantDelay: 'Retraso de captura'
   },
 
@@ -223,7 +228,7 @@ export const locale: typeof _locale = {
         popup: 'Sólo en la acción del navegador',
         hide: 'Ocultar'
       },
-      dict_selected: 'Seleccionar diccionarios',
+      dict_selected: 'Seleccionar diccionarios'
     }
   },
 
@@ -236,7 +241,7 @@ export const locale: typeof _locale = {
       'Muestra este diccionario cuando la selección contiene palabras en los idiomas elegidos.',
     defaultUnfold: 'Despliegue por defecto',
     defaultUnfold_help:
-      "Si está desactivado, este diccionario no iniciará la búsqueda a menos que se haga clic en su barra de título.",
+      'Si está desactivado, este diccionario no iniciará la búsqueda a menos que se haga clic en su barra de título.',
     selectionWC: 'Selección Número de palabras',
     selectionWC_help:
       'Muestre este diccionario cuando el recuento de palabras de la selección cumpla los requisitos. Establezca 999999 para un número ilimitado de palabras.',
@@ -267,7 +272,7 @@ export const locale: typeof _locale = {
 
     shanbay: {
       description:
-      " Vaya a shanbay.com y conéctese primero(debe permanecer conectado). Tenga en cuenta que se trata de una sincronización unidireccional (de Saladict a Shanbay). Sólo se sincronizan las nuevas palabras añadidas. Las palabras también deben ser compatibles con la base de datos de Shanbay.",
+        ' Vaya a shanbay.com y conéctese primero(debe permanecer conectado). Tenga en cuenta que se trata de una sincronización unidireccional (de Saladict a Shanbay). Sólo se sincronizan las nuevas palabras añadidas. Las palabras también deben ser compatibles con la base de datos de Shanbay.',
       login:
         'Se abrirá shanbay.com. Por favor, inicie sesión y luego volver y habilitar de nuevo.',
       sync_all: 'Cargar todas las palabras nuevas existentes',
@@ -306,10 +311,10 @@ export const locale: typeof _locale = {
       verified: 'Verificado con éxito el servidor WebDAV.',
       duration: 'Duracion',
       duration_help:
-      'Se garantiza que los datos se actualizan antes de cargarlos. Si no necesita sincronización en tiempo real entre navegadores, establezca un ciclo de sondeo más largo para reducir el consumo de CPU y memoria.',
+        'Se garantiza que los datos se actualizan antes de cargarlos. Si no necesita sincronización en tiempo real entre navegadores, establezca un ciclo de sondeo más largo para reducir el consumo de CPU y memoria.',
       passwd: 'Contraseña',
       url: 'Dirección del servidor',
-      user: 'Usuario',
+      user: 'Usuario'
     },
 
     ankiconnect: {
@@ -378,7 +383,7 @@ export const locale: typeof _locale = {
     contact_author: 'Contactar al autor',
     donate: 'Donar',
     instructions: 'Instrucciones',
-    report_issue: 'Informar de un problema',
+    report_issue: 'Informar de un problema'
   },
 
   form: {
@@ -391,7 +396,8 @@ export const locale: typeof _locale = {
     auto: 'Búsqueda automática',
     auto_help: 'Búsqueda automática cuando aparece el panel.',
     clipboard: 'Clipboard',
-    help: 'Precarga de contenido en el cuadro de búsqueda cuando aparece el panel.',
+    help:
+      'Precarga de contenido en el cuadro de búsqueda cuando aparece el panel.',
     selection: 'Selección de página'
   },
 
@@ -414,8 +420,10 @@ export const locale: typeof _locale = {
     title: 'Importar Configuraciones',
     error: {
       title: 'Error de importación',
-      parse: 'No se ha podido analizar la copia de seguridad. Formato incorrecto.',
-      load: 'No se puede cargar la copia de seguridad. El navegador no puede obtener el archivo local.',
+      parse:
+        'No se ha podido analizar la copia de seguridad. Formato incorrecto.',
+      load:
+        'No se puede cargar la copia de seguridad. El navegador no puede obtener el archivo local.',
       empty: 'No se han encontrado datos válidos en la copia de seguridad.'
     }
   },

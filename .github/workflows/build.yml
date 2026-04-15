@@ -4,7 +4,7 @@ on:
     branches:
       - dev
 jobs:
-  build-and-deploy:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️

@@ -22,6 +22,7 @@ module.exports = {
     'import/no-webpack-loader-syntax': 'off',
     'no-dupe-class-members': 'off',
     'no-unused-vars': 'off',
+    'no-unused-expressions': 'off',
     'no-useless-return': 'off',
     'prefer-promise-reject-errors': 'off',
     'prettier/prettier': ['error', { singleQuote: true, semi: false }],

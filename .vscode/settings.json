@@ -1,4 +1,11 @@
 {
+  "eslint.enable": true,
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.addMissingImports": "explicit",
+    "source.organizeImports": "never"
+  },
   "json.schemas": [
     {
       "fileMatch": ["src/components/dictionaries/**/_locales.json"],

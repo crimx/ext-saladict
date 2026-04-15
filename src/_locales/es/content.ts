@@ -12,13 +12,15 @@ export const locale: typeof _locale = {
     historyNext: 'Siguiente historial de búsqueda',
     searchText: 'Buscar texto',
     openOptions: 'Abrir opciones',
-    addToNotebook: 'Agregar al cuaderno. Haga clic derecho para abrir el cuaderno',
+    addToNotebook:
+      'Agregar al cuaderno. Haga clic derecho para abrir el cuaderno',
     openNotebook: 'Abrir cuaderno',
     openHistory: 'Abrir historial',
     shareImg: 'Compartir como imagen',
     pinPanel: 'Fijar el panel',
     closePanel: 'Cerrar el panel',
-    sidebar: 'Cambiar a modo barra lateral. Haga clic derecho para el lado derecho.',
+    sidebar:
+      'Cambiar a modo barra lateral. Haga clic derecho para el lado derecho.',
     focusPanel: 'El panel gana foco al buscar',
     unfocusPanel: 'El panel no gana foco al buscar'
   },
