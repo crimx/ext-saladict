@@ -15,6 +15,7 @@ import {
 
 import { Mutable } from '@/typings/helpers'
 import { storage } from '@/_helpers/browser-api'
+import { createBasicAuthorizationHeader } from '@/_helpers/basic-auth'
 
 export interface SyncConfig extends SyncServiceConfigBase {
   /** Server address. Ends with '/'. */
@@ -44,6 +45,10 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
   }
 
   meta: SyncMeta = {}
+
+  private getAuthorizationHeader(config: Pick<SyncConfig, 'user' | 'passwd'>) {
+    return createBasicAuthorizationHeader(config.user, config.passwd)
+  }
 
   async onStart() {
     if (process.env.DEBUG) {
@@ -115,8 +120,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       const response = await fetch(this.config.url, {
         method: 'PROPFIND',
         headers: {
-          Authorization:
-            'Basic ' + window.btoa(`${this.config.user}:${this.config.passwd}`),
+          Authorization: this.getAuthorizationHeader(this.config),
           'Content-Type': 'application/xml; charset="utf-8"',
           Depth: '1'
         }
@@ -173,8 +177,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       const response = await fetch(this.config.url + 'Saladict', {
         method: 'MKCOL',
         headers: {
-          Authorization:
-            'Basic ' + window.btoa(`${this.config.user}:${this.config.passwd}`)
+          Authorization: this.getAuthorizationHeader(this.config)
         }
       })
       if (!response.ok) {
@@ -228,8 +231,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       const response = await fetch(this.config.url + 'Saladict/notebook.json', {
         method: 'PUT',
         headers: {
-          Authorization:
-            'Basic ' + window.btoa(`${this.config.user}:${this.config.passwd}`)
+          Authorization: this.getAuthorizationHeader(this.config)
         },
         body
       })
@@ -251,7 +253,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     return this.add({ force })
   }
 
-  async download({ testConfig, noCache }: DownloadConfig): Promise<void> {
+  async download({ testConfig, noCache }: DownloadConfig<SyncConfig>): Promise<void> {
     const config = testConfig || this.config
 
     if (!config.url) {
@@ -262,7 +264,7 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     }
 
     const headers: { [name: string]: string } = {
-      Authorization: 'Basic ' + window.btoa(`${config.user}:${config.passwd}`)
+      Authorization: this.getAuthorizationHeader(config)
     }
     if (!testConfig && !noCache && this.meta.etag != null) {
       headers['If-None-Match'] = this.meta.etag

@@ -30,6 +30,28 @@ export async function searchDictInOffscreen(
   })
 }
 
+export async function getDictSrcPageInOffscreen(
+  data: Message<'OPEN_DICT_SRC_PAGE'>['payload'],
+  appConfig: AppConfig,
+  activeProfile: Profile
+): Promise<string> {
+  if (!canUseOffscreenDocument()) {
+    throw new Error('Offscreen document is unavailable.')
+  }
+
+  await ensureOffscreenDocument()
+
+  return sendOffscreenMessage({
+    type: 'SALADICT_OFFSCREEN_DICT_TASK',
+    task: 'GET_DICT_SRC_PAGE',
+    payload: {
+      ...data,
+      appConfig,
+      activeProfile
+    }
+  })
+}
+
 export async function callDictEngineMethodInOffscreen(
   data: Message<'DICT_ENGINE_METHOD'>['payload']
 ) {

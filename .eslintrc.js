@@ -1,5 +1,6 @@
 module.exports = {
   env: {
+    globalThis: true,
     browser: true,
     node: true,
     'jest/globals': true

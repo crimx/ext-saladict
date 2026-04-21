@@ -7,30 +7,30 @@ import { useStore } from '@/content/redux'
 import { ChangeEntryContext } from './change-entry'
 
 export const useCheckDictAuth = () => {
-  const { t } = useTranslate('options')
-  const changeEntry = useContext(ChangeEntryContext)
-  const store = useStore()
+  // const { t } = useTranslate('options')
+  // const changeEntry = useContext(ChangeEntryContext)
+  // const store = useStore()
 
   return async () => {
-    const { config } = store.getState()
+    // const { config } = store.getState()
 
-    if (!config.showedDictAuth) {
-      // opens on Profiles
-      await updateConfig({
-        ...config,
-        showedDictAuth: true
-      })
+    // if (!config.showedDictAuth) {
+    //   // opens on Profiles
+    //   await updateConfig({
+    //     ...config,
+    //     showedDictAuth: true
+    //   })
 
-      if (
-        objectKeys(config.dictAuth).every(id =>
-          objectKeys(config.dictAuth[id]).every(k => !config.dictAuth[id]?.[k])
-        )
-      ) {
-        message.warning(t('msg_first_time_notice'), 10)
-        changeEntry('DictAuths')
-        return false
-      }
-    }
+    //   if (
+    //     objectKeys(config.dictAuth).every(id =>
+    //       objectKeys(config.dictAuth[id]).every(k => !config.dictAuth[id]?.[k])
+    //     )
+    //   ) {
+    //     message.warning(t('msg_first_time_notice'), 10)
+    //     changeEntry('DictAuths')
+    //     return false
+    //   }
+    // }
 
     return true
   }

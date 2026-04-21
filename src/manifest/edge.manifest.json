@@ -1,15 +1,9 @@
 {
   "manifest_version": 3,
-  "background": {
-    "persistent": true
-  },
   "options_ui": {
     "chrome_style": false
   },
-  "optional_permissions": [
-    "background"
-  ],
-  "content_security_policy": "script-src 'self' chrome-extension://hfjbmagddngcpeloejdejnfgbamkjaeg/ chrome-extension://aibcglbfblnogfjhbcmmpobjhnomhcdo/; object-src 'self'",
   "incognito": "split",
-  "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx"
+  "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+  "minimum_chrome_version": "109"
 }

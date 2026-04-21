@@ -69,7 +69,7 @@ function getDictEngine(
 }> {
   return import(
     /* webpackInclude: /engine\.ts$/ */
-    /* webpackMode: "lazy" */
+    /* webpackMode: "eager" */
     `@/components/dictionaries/${id}/engine.ts`
   )
 }
@@ -86,6 +86,19 @@ async function searchDict({
 }) {
   const { search } = await getDictEngine(id)
   return search(text, appConfig, activeProfile, payload || { isPDF: false })
+}
+
+async function getDictSrcPage({
+  id,
+  text,
+  appConfig,
+  activeProfile
+}: Message<'OPEN_DICT_SRC_PAGE'>['payload'] & {
+  appConfig: AppConfig
+  activeProfile: Profile
+}) {
+  const { getSrcPage } = await getDictEngine(id)
+  return getSrcPage(text, appConfig, activeProfile)
 }
 
 async function callDictMethod(data: Message<'DICT_ENGINE_METHOD'>['payload']) {
@@ -119,6 +132,8 @@ browser.runtime.onMessage.addListener(message => {
       switch (message.task) {
         case 'FETCH_DICT_RESULT':
           return searchDict(message.payload)
+        case 'GET_DICT_SRC_PAGE':
+          return getDictSrcPage(message.payload)
         case 'DICT_ENGINE_METHOD':
           return callDictMethod(message.payload)
       }

@@ -7,6 +7,7 @@ import AxiosMockAdapter from 'axios-mock-adapter'
 import { DictID, AppConfig } from '@/app-config'
 import { Profile } from '@/app-config/profiles'
 import { Word } from '@/_helpers/record-manager'
+import { chsToChz } from '@/_helpers/chs-to-chz'
 import { isTagName } from '@/_helpers/dom'
 import { isInternalPage } from '@/_helpers/saladict'
 
@@ -88,11 +89,7 @@ export function handleNetWorkError(): Promise<never> {
   return Promise.reject(new Error('NETWORK_ERROR'))
 }
 
-/**
- * Get chs-chz transform function on-demand.
- * The dict object is huge.
- * @param langCode
- */
+/** Get chs-chz transform function. */
 export async function getChsToChz(): Promise<(text: string) => string>
 export async function getChsToChz(
   langCode: string
@@ -100,9 +97,7 @@ export async function getChsToChz(
 export async function getChsToChz(
   langCode?: string
 ): Promise<null | ((text: string) => string)> {
-  return langCode == null || /zh-TW|zh-HK/i.test(langCode)
-    ? (await import('@/_helpers/chs-to-chz')).chsToChz
-    : null
+  return langCode == null || /zh-TW|zh-HK/i.test(langCode) ? chsToChz : null
 }
 
 /**

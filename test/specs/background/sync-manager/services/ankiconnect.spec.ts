@@ -139,4 +139,12 @@ describe('Sync service Anki Connect', () => {
       expect(error).toBeUndefined()
     })
   })
+
+  it('should escape note content without DOM helpers', () => {
+    const service = new Service(Service.getDefaultConfig())
+
+    expect(service.multiline('<tag>\n"&"', true)).toBe(
+      '&lt;tag&gt;<br/>&quot;&amp;&quot;'
+    )
+  })
 })

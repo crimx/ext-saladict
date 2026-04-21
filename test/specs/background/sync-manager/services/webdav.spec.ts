@@ -6,6 +6,7 @@ import {
   SyncMeta
 } from '@/background/sync-manager/services/webdav'
 import { Word, newWord } from '@/_helpers/record-manager'
+import { createBasicAuthorizationHeader } from '@/_helpers/basic-auth'
 
 jest.mock('@/background/sync-manager/helpers')
 
@@ -18,8 +19,10 @@ const fetchArgs = {
       {
         method: 'PROPFIND',
         headers: {
-          Authorization:
-            'Basic ' + window.btoa(`${config.user}:${config.passwd}`),
+          Authorization: createBasicAuthorizationHeader(
+            config.user,
+            config.passwd
+          ),
           'Content-Type': 'application/xml; charset="utf-8"',
           Depth: '1'
         }
@@ -33,8 +36,10 @@ const fetchArgs = {
       {
         method: 'MKCOL',
         headers: {
-          Authorization:
-            'Basic ' + window.btoa(`${config.user}:${config.passwd}`)
+          Authorization: createBasicAuthorizationHeader(
+            config.user,
+            config.passwd
+          )
         }
       }
     ]
@@ -46,8 +51,10 @@ const fetchArgs = {
       {
         method: 'PUT',
         headers: {
-          Authorization:
-            'Basic ' + window.btoa(`${config.user}:${config.passwd}`)
+          Authorization: createBasicAuthorizationHeader(
+            config.user,
+            config.passwd
+          )
         },
         body
       }
@@ -60,8 +67,10 @@ const fetchArgs = {
       {
         method: 'GET',
         headers: {
-          Authorization:
-            'Basic ' + window.btoa(`${config.user}:${config.passwd}`),
+          Authorization: createBasicAuthorizationHeader(
+            config.user,
+            config.passwd
+          ),
           ...headers
         }
       }

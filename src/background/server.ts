@@ -24,6 +24,7 @@ import { getDomTaskBridge } from './dom-task-bridge'
 import { canUseOffscreenDocument } from './offscreen-document'
 import {
   callDictEngineMethodInOffscreen,
+  getDictSrcPageInOffscreen,
   searchDictInOffscreen
 } from './offscreen-dict-bridge'
 
@@ -50,7 +51,7 @@ export class BackgroundServer {
   }> {
     return import(
       /* webpackInclude: /engine\.ts$/ */
-      /* webpackMode: "lazy" */
+      /* webpackMode: "eager" */
       `@/components/dictionaries/${id}/engine.ts`
     )
   }
@@ -179,9 +180,18 @@ export class BackgroundServer {
     active
   }: Message<'OPEN_DICT_SRC_PAGE'>['payload']): Promise<void> {
     const { appConfig, activeProfile } = await initBackgroundState()
-    const engine = await BackgroundServer.getDictEngine(id)
+    const url = canUseOffscreenDocument()
+      ? await getDictSrcPageInOffscreen(
+          { id, text, active },
+          appConfig,
+          activeProfile
+        )
+      : await BackgroundServer.getDictEngine(id).then(engine =>
+          engine.getSrcPage(text, appConfig, activeProfile)
+        )
+
     return openUrl({
-      url: await engine.getSrcPage(text, appConfig, activeProfile),
+      url,
       active
     })
   }

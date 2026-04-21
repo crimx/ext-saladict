@@ -1,4 +1,5 @@
 import axios from 'axios'
+import escapeHTML from 'lodash/escape'
 import { Word } from '@/_helpers/record-manager'
 import { parseCtxText } from '@/_helpers/translateCtx'
 import { AddConfig, SyncService } from '../../interface'
@@ -319,7 +320,7 @@ export class Service extends SyncService<SyncConfig> {
     text = text.trim()
     if (!text) return ''
     if (escape) {
-      text = this.escapeHTML(text)
+      text = escapeHTML(text)
     }
     return text.trim().replace(/\n/g, '<br/>')
   }
@@ -343,16 +344,6 @@ export class Service extends SyncService<SyncConfig> {
       .split(/\[:: \w+ ::\](?:[\s\S]+?)(?:-{15})/)
       .map(text => this.multiline(text, escape))
       .join(`<div class="trans">${trans}</div>`)
-  }
-
-  private _div: HTMLElement | undefined
-  escapeHTML(text: string): string {
-    if (!this._div) {
-      this._div = document.createElement('div')
-      this._div.appendChild(document.createTextNode(''))
-    }
-    this._div.firstChild!.nodeValue = text
-    return this._div.innerHTML
   }
 
   extractTags(): string[] {
