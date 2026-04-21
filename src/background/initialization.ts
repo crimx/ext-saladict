@@ -220,7 +220,7 @@ async function onInstalled({
     if (
       !(await storage.sync.get('hasInstructionsShown')).hasInstructionsShown
     ) {
-      openUrl('options.html?menuselected=Privacy&nopanel=true', true)
+      // openUrl('options.html?menuselected=Privacy&nopanel=true', true)
       if (appConfig.langCode.startsWith('zh')) {
         openUrl('https://saladict.crimx.com/notice.html')
       } else {

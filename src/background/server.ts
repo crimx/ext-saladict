@@ -28,6 +28,27 @@ import {
   searchDictInOffscreen
 } from './offscreen-dict-bridge'
 
+const mv3BackgroundPreferredDicts = new Set<DictID>([
+  'baidu',
+  'caiyun',
+  'google',
+  'sogou',
+  'tencent',
+  'youdaotrans'
+])
+
+function shouldUseOffscreenDictHost(id: DictID) {
+  if (!canUseOffscreenDocument()) {
+    return false
+  }
+
+  // MV3 offscreen documents only expose runtime APIs.
+  // OpenTranslate-based machine translators need privileged network APIs
+  // such as declarativeNetRequest in Chromium MV3, so keep them in the
+  // background/service worker host instead of routing them to offscreen.
+  return !mv3BackgroundPreferredDicts.has(id)
+}
+
 /**
  * background script as transfer station
  */
@@ -180,7 +201,13 @@ export class BackgroundServer {
     active
   }: Message<'OPEN_DICT_SRC_PAGE'>['payload']): Promise<void> {
     const { appConfig, activeProfile } = await initBackgroundState()
-    const url = canUseOffscreenDocument()
+    const useOffscreenHost = shouldUseOffscreenDictHost(id)
+
+    if (process.env.DEBUG) {
+      console.log(`[dict-host] OPEN_DICT_SRC_PAGE ${id} -> ${useOffscreenHost ? 'offscreen' : 'background'}`)
+    }
+
+    const url = useOffscreenHost
       ? await getDictSrcPageInOffscreen(
           { id, text, active },
           appConfig,
@@ -205,7 +232,13 @@ export class BackgroundServer {
     let response: DictSearchResult<any> | undefined
 
     try {
-      const runSearch = canUseOffscreenDocument()
+      const useOffscreenHost = shouldUseOffscreenDictHost(data.id)
+
+      if (process.env.DEBUG) {
+        console.log(`[dict-host] FETCH_DICT_RESULT ${data.id} -> ${useOffscreenHost ? 'offscreen' : 'background'}`)
+      }
+
+      const runSearch = useOffscreenHost
         ? () => searchDictInOffscreen(data, appConfig, activeProfile)
         : async () => {
             const { search } = await BackgroundServer.getDictEngine<
@@ -244,7 +277,15 @@ export class BackgroundServer {
   }
 
   async callDictEngineMethod(data: Message<'DICT_ENGINE_METHOD'>['payload']) {
-    if (canUseOffscreenDocument()) {
+    const useOffscreenHost = shouldUseOffscreenDictHost(data.id)
+
+    if (process.env.DEBUG) {
+      console.log(
+        `[dict-host] DICT_ENGINE_METHOD ${data.id}.${data.method} -> ${useOffscreenHost ? 'offscreen' : 'background'}`
+      )
+    }
+
+    if (useOffscreenHost) {
       return callDictEngineMethodInOffscreen(data)
     }
 
