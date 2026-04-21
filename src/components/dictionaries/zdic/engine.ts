@@ -33,7 +33,10 @@ export const search: SearchFunction<ZdicResult> = (
   const isAudio = profile.dicts.all.zdic.options.audio
   const ensureAudioReferer = isAudio
     ? ensureZdicAudioReferer().catch(error => {
-        console.error('Failed to enable Zdic audio referer compatibility.', error)
+        console.error(
+          'Failed to enable Zdic audio referer compatibility.',
+          error
+        )
       })
     : Promise.resolve()
 

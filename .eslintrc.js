@@ -1,6 +1,5 @@
 module.exports = {
   env: {
-    globalThis: true,
     browser: true,
     node: true,
     'jest/globals': true
@@ -35,7 +34,8 @@ module.exports = {
     yoda: 'off'
   },
   globals: {
-    browser: true
+    browser: true,
+    globalThis: true
   },
   settings: {
     react: {

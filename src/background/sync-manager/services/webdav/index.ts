@@ -253,7 +253,10 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     return this.add({ force })
   }
 
-  async download({ testConfig, noCache }: DownloadConfig<SyncConfig>): Promise<void> {
+  async download({
+    testConfig,
+    noCache
+  }: DownloadConfig<SyncConfig>): Promise<void> {
     const config = testConfig || this.config
 
     if (!config.url) {

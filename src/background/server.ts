@@ -204,7 +204,11 @@ export class BackgroundServer {
     const useOffscreenHost = shouldUseOffscreenDictHost(id)
 
     if (process.env.DEBUG) {
-      console.log(`[dict-host] OPEN_DICT_SRC_PAGE ${id} -> ${useOffscreenHost ? 'offscreen' : 'background'}`)
+      console.log(
+        `[dict-host] OPEN_DICT_SRC_PAGE ${id} -> ${
+          useOffscreenHost ? 'offscreen' : 'background'
+        }`
+      )
     }
 
     const url = useOffscreenHost
@@ -235,7 +239,11 @@ export class BackgroundServer {
       const useOffscreenHost = shouldUseOffscreenDictHost(data.id)
 
       if (process.env.DEBUG) {
-        console.log(`[dict-host] FETCH_DICT_RESULT ${data.id} -> ${useOffscreenHost ? 'offscreen' : 'background'}`)
+        console.log(
+          `[dict-host] FETCH_DICT_RESULT ${data.id} -> ${
+            useOffscreenHost ? 'offscreen' : 'background'
+          }`
+        )
       }
 
       const runSearch = useOffscreenHost
@@ -281,7 +289,9 @@ export class BackgroundServer {
 
     if (process.env.DEBUG) {
       console.log(
-        `[dict-host] DICT_ENGINE_METHOD ${data.id}.${data.method} -> ${useOffscreenHost ? 'offscreen' : 'background'}`
+        `[dict-host] DICT_ENGINE_METHOD ${data.id}.${data.method} -> ${
+          useOffscreenHost ? 'offscreen' : 'background'
+        }`
       )
     }
 

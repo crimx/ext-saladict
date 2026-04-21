@@ -136,9 +136,7 @@ export const search: SearchFunction<GoogleDictResult> = async (
 
       extractImg(bodyText).forEach(({ id, src }) => {
         try {
-          const el = $obcontainer.querySelector(
-            `#${id}, img[data-iid="${id}"]`
-          )
+          const el = $obcontainer.querySelector(`#${id}, img[data-iid="${id}"]`)
           if (el) {
             el.setAttribute('src', src)
             el.setAttribute('data-deferred', '2')
@@ -205,8 +203,7 @@ function extractImg(text: string): Array<{ id: string; src: string }> {
     }
   }
 
-  const setImageMatcher =
-    /\(function\(\)\{var s='((?:\\.|[^'\\])*)';var ii=\[([^\]]*)\];_setImagesSrc\(ii,s\);\}\)\(\);/g
+  const setImageMatcher = /\(function\(\)\{var s='((?:\\.|[^'\\])*)';var ii=\[([^\]]*)\];_setImagesSrc\(ii,s\);\}\)\(\);/g
   let setImageMatch: RegExpExecArray | null | undefined
   while ((setImageMatch = setImageMatcher.exec(text))) {
     const src = normalizeImgSrc(decodeJSString(setImageMatch[1]))
@@ -226,15 +223,17 @@ function decodeHex(m: string, code: string): string {
 }
 
 function decodeJSString(text: string): string {
-  return text
-    // escape \x
-    .replace(/\\x([\da-f]{2})/gi, decodeHex)
-    // escape \u
-    .replace(/\\u([\da-f]{4})/gi, decodeHex)
-    .replace(/\\([\\/"'])/g, '$1')
-    .replace(/\\n/g, '\n')
-    .replace(/\\r/g, '\r')
-    .replace(/\\t/g, '\t')
+  return (
+    text
+      // escape \x
+      .replace(/\\x([\da-f]{2})/gi, decodeHex)
+      // escape \u
+      .replace(/\\u([\da-f]{4})/gi, decodeHex)
+      .replace(/\\([\\/"'])/g, '$1')
+      .replace(/\\n/g, '\n')
+      .replace(/\\r/g, '\r')
+      .replace(/\\t/g, '\t')
+  )
 }
 
 function normalizeImgSrc(src: string): string {

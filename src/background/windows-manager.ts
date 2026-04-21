@@ -470,7 +470,7 @@ export class QsPanelManager {
           ),
           width: Math.round(panelWidth),
           height: Math.round(screenArea.availHeight)
-    }
+        }
   }
 
   private async notifyQsPanelChanged(payload: boolean): Promise<void> {

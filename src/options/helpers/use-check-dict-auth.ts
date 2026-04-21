@@ -1,10 +1,10 @@
-import { useContext } from 'react'
-import { message } from 'antd'
-import { objectKeys } from '@/typings/helpers'
-import { updateConfig } from '@/_helpers/config-manager'
-import { useTranslate } from '@/_helpers/i18n'
-import { useStore } from '@/content/redux'
-import { ChangeEntryContext } from './change-entry'
+// import { useContext } from 'react'
+// import { message } from 'antd'
+// import { objectKeys } from '@/typings/helpers'
+// import { updateConfig } from '@/_helpers/config-manager'
+// import { useTranslate } from '@/_helpers/i18n'
+// import { useStore } from '@/content/redux'
+// import { ChangeEntryContext } from './change-entry'
 
 export const useCheckDictAuth = () => {
   // const { t } = useTranslate('options')
