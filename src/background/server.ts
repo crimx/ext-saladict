@@ -16,11 +16,16 @@ import {
   getWordsByText,
   getWords
 } from './database'
-import { AudioManager } from './audio-manager'
 import { QsPanelManager } from './windows-manager'
-import { getTextFromClipboard, copyTextToClipboard } from './clipboard-manager'
 import './types'
 import { DictID } from '@/app-config'
+import { initBackgroundState } from './state'
+import { getDomTaskBridge } from './dom-task-bridge'
+import { canUseOffscreenDocument } from './offscreen-document'
+import {
+  callDictEngineMethodInOffscreen,
+  searchDictInOffscreen
+} from './offscreen-dict-bridge'
 
 /**
  * background script as transfer station
@@ -63,18 +68,17 @@ export class BackgroundServer {
         case 'OPEN_URL':
           return openUrl(msg.payload)
         case 'PLAY_AUDIO':
-          return AudioManager.getInstance().play(msg.payload)
+          return getDomTaskBridge().playAudio(msg.payload)
         case 'STOP_AUDIO':
-          AudioManager.getInstance().reset()
-          return
+          return getDomTaskBridge().stopAudio()
         case 'FETCH_DICT_RESULT':
           return this.fetchDictResult(msg.payload)
         case 'DICT_ENGINE_METHOD':
           return this.callDictEngineMethod(msg.payload)
         case 'GET_CLIPBOARD':
-          return getTextFromClipboard()
+          return getDomTaskBridge().readClipboard()
         case 'SET_CLIPBOARD':
-          return Promise.resolve(copyTextToClipboard(msg.payload))
+          return getDomTaskBridge().writeClipboard(msg.payload)
 
         case 'INJECT_DICTPANEL':
           return injectDictPanel(sender.tab)
@@ -84,8 +88,9 @@ export class BackgroundServer {
         case 'OPEN_QS_PANEL':
           return this.openQSPanel()
         case 'CLOSE_QS_PANEL':
-          AudioManager.getInstance().reset()
-          return this.qsPanelManager.destroy()
+          return getDomTaskBridge()
+            .stopAudio()
+            .then(() => this.qsPanelManager.destroy())
         case 'QS_SWITCH_SIDEBAR':
           return this.qsPanelManager.toggleSidebar(msg.payload)
 
@@ -117,7 +122,7 @@ export class BackgroundServer {
         // This is a workaround for browser action page
         // which does not fire beforeunload event
         port.onDisconnect.addListener(() => {
-          AudioManager.getInstance().reset()
+          getDomTaskBridge().stopAudio()
         })
       }
     })
@@ -132,7 +137,7 @@ export class BackgroundServer {
   }
 
   async searchClipboard(): Promise<void> {
-    const word = newWord({ text: await getTextFromClipboard() })
+    const word = newWord({ text: await getDomTaskBridge().readClipboard() })
 
     if (await this.qsPanelManager.hasCreated()) {
       await message.send({
@@ -173,13 +178,10 @@ export class BackgroundServer {
     text,
     active
   }: Message<'OPEN_DICT_SRC_PAGE'>['payload']): Promise<void> {
+    const { appConfig, activeProfile } = await initBackgroundState()
     const engine = await BackgroundServer.getDictEngine(id)
     return openUrl({
-      url: await engine.getSrcPage(
-        text,
-        window.appConfig,
-        window.activeProfile
-      ),
+      url: await engine.getSrcPage(text, appConfig, activeProfile),
       active
     })
   }
@@ -188,27 +190,28 @@ export class BackgroundServer {
     data: Message<'FETCH_DICT_RESULT'>['payload']
   ): Promise<MessageResponse<'FETCH_DICT_RESULT'>> {
     const payload = data.payload || {}
+    const { appConfig, activeProfile } = await initBackgroundState()
 
     let response: DictSearchResult<any> | undefined
 
     try {
-      const { search } = await BackgroundServer.getDictEngine<
-        NonNullable<typeof data['payload']>
-      >(data.id)
+      const runSearch = canUseOffscreenDocument()
+        ? () => searchDictInOffscreen(data, appConfig, activeProfile)
+        : async () => {
+            const { search } = await BackgroundServer.getDictEngine<
+              NonNullable<typeof data['payload']>
+            >(data.id)
+
+            return search(data.text, appConfig, activeProfile, payload)
+          }
 
       try {
-        response = await timeout(
-          search(data.text, window.appConfig, window.activeProfile, payload),
-          25000
-        )
+        response = await timeout(runSearch(), 25000)
       } catch (e) {
         if (e.message === 'NETWORK_ERROR') {
           // retry once
           await timer(500)
-          response = await timeout(
-            search(data.text, window.appConfig, window.activeProfile, payload),
-            25000
-          )
+          response = await timeout(runSearch(), 25000)
         } else {
           throw e
         }
@@ -231,6 +234,10 @@ export class BackgroundServer {
   }
 
   async callDictEngineMethod(data: Message<'DICT_ENGINE_METHOD'>['payload']) {
+    if (canUseOffscreenDocument()) {
+      return callDictEngineMethodInOffscreen(data)
+    }
+
     const engine = await BackgroundServer.getDictEngine(data.id)
     return engine[data.method](...(data.args || []))
   }
@@ -250,29 +257,28 @@ export class BackgroundServer {
   }
 
   /** Bypass http restriction */
-  youdaoTranslateAjax(request: any): Promise<any> {
-    return new Promise(resolve => {
-      const xhr = new XMLHttpRequest()
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          const data = xhr.status === 200 ? xhr.responseText : null
-          resolve({
-            response: data,
-            index: request.index
-          })
-        }
-      }
-      xhr.open(request.type, request.url, true)
+  async youdaoTranslateAjax(request: any): Promise<any> {
+    try {
+      const response = await fetch(request.url, {
+        method: request.type,
+        headers:
+          request.type === 'POST'
+            ? {
+                'Content-Type': 'application/x-www-form-urlencoded'
+              }
+            : undefined,
+        body: request.type === 'POST' ? request.data : undefined
+      })
 
-      if (request.type === 'POST') {
-        xhr.setRequestHeader(
-          'Content-Type',
-          'application/x-www-form-urlencoded'
-        )
-        xhr.send(request.data)
-      } else {
-        xhr.send(null as any)
+      return {
+        response: response.ok ? await response.text() : null,
+        index: request.index
       }
-    })
+    } catch (error) {
+      return {
+        response: null,
+        index: request.index
+      }
+    }
   }
 }

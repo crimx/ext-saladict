@@ -1,10 +1,6 @@
 import './env'
+import '@/_helpers/axios-worker-adapter'
 import './initialization'
-import { getConfig, addConfigListener } from '@/_helpers/config-manager'
-import {
-  createActiveProfileStream,
-  createProfileIDListStream
-} from '@/_helpers/profile-manager'
 import { message } from '@/_helpers/browser-api'
 import { startSyncServiceInterval } from './sync-manager'
 import { init as initPdf } from './pdf-sniffer'
@@ -13,7 +9,7 @@ import { BackgroundServer } from './server'
 import { initBadge } from './badge'
 import { setupCaiyunTrsBackend } from './page-translate/caiyun'
 import { setupRequestGAListener } from '@/_helpers/analytics'
-import './types'
+import { initBackgroundState } from './state'
 
 // init first to recevice self messaging
 message.self.initServer()
@@ -27,20 +23,9 @@ setupCaiyunTrsBackend()
 
 setupRequestGAListener()
 
-getConfig().then(async config => {
-  window.appConfig = config
-  initPdf(config)
-  initBadge()
-
-  addConfigListener(({ newConfig }) => {
-    window.appConfig = newConfig
+initBackgroundState()
+  .then(({ appConfig }) => {
+    initPdf(appConfig)
+    initBadge()
   })
-})
-
-createActiveProfileStream().subscribe(profile => {
-  window.activeProfile = profile
-})
-
-createProfileIDListStream().subscribe(list => {
-  window.profileIDList = list
-})
+  .catch(console.error)

@@ -21,11 +21,12 @@ export type ReleaseResponse = {
 
 export async function checkUpdate(
   compareVersion?: string,
-  data?: ReleaseData
+  data?: ReleaseData,
+  langCode = browser.i18n.getUILanguage()
 ): Promise<ReleaseResponse> {
   if (!data) {
     try {
-      const isZh = window.appConfig.langCode.startsWith('zh')
+      const isZh = langCode.startsWith('zh')
       const response = await fetch(
         `https://saladict.crimx.com/releases/${isZh ? 'chs' : 'eng'}.json`
       )

@@ -1,7 +1,7 @@
 import i18next, { TFunction } from 'i18next'
-import { i18nLoader, Namespace } from '@/_helpers/i18n'
 import { BehaviorSubject, Observable } from 'rxjs'
 import { switchMap } from 'rxjs/operators'
+import { backgroundI18nLoader, BackgroundNamespace } from './i18n-loader'
 
 export class I18nManager {
   private static instance: I18nManager
@@ -11,7 +11,7 @@ export class I18nManager {
       const instance = new I18nManager()
       I18nManager.instance = instance
 
-      instance.i18n = await i18nLoader()
+      instance.i18n = await backgroundI18nLoader()
       instance.i18n$$.next(instance.i18n)
     }
     return I18nManager.instance
@@ -32,7 +32,9 @@ export class I18nManager {
     })
   }
 
-  getFixedT$(ns: Namespace | Namespace[]): Observable<TFunction> {
+  getFixedT$(
+    ns: BackgroundNamespace | BackgroundNamespace[]
+  ): Observable<TFunction> {
     return this.i18n$$.pipe(
       switchMap(async i18n => {
         await this.i18n.loadNamespaces(ns)

@@ -343,6 +343,27 @@ describe('Browser API Wapper', () => {
       expect(browser.tabs.sendMessage.calledWith(tabId, msg)).toBeTruthy()
       expect(browser.runtime.sendMessage.notCalled).toBeTruthy()
     })
+    it('message.send wraps runtime.lastError with call stack', async () => {
+      const runtimeError = new Error(
+        'Could not establish connection. Receiving end does not exist.'
+      )
+      browser.runtime.sendMessage.callsFake(() => Promise.reject(runtimeError))
+
+      try {
+        await message.send({ type: 'OPEN_QS_PANEL' })
+        throw new Error('Expected message.send to reject')
+      } catch (err) {
+        expect(err).toBeInstanceOf(Error)
+        expect(err.name).toBe('MessageRuntimeError')
+        expect(err.message).toContain('runtime.lastError')
+        expect(err.message).toContain('OPEN_QS_PANEL')
+        expect(err.message).toContain('Could not establish connection')
+        expect(err.cause).toBe(runtimeError)
+        expect(err.runtimeLastError).toBe(runtimeError)
+        expect(err.stack).toContain('Message call stack:')
+        expect(err.stack).toContain('message.send')
+      }
+    })
     it('message.addListener', () => {
       const cb1 = jest.fn()
       const cb2 = jest.fn()
@@ -458,6 +479,22 @@ describe('Browser API Wapper', () => {
         expect(window.pageURL).toBe('pageURL')
       })
     })
+    it('message.self.initClient throws wrapped error on invalid PAGE_INFO response', async () => {
+      browser.runtime.sendMessage.withArgs({ type: 'PAGE_INFO' }).returns(
+        Promise.resolve(null)
+      )
+
+      try {
+        await message.self.initClient()
+        throw new Error('Expected message.self.initClient to reject')
+      } catch (err) {
+        expect(err).toBeInstanceOf(Error)
+        expect(err.name).toBe('MessageRuntimeError')
+        expect(err.message).toContain('PAGE_INFO')
+        expect(err.message).toContain('Invalid response')
+        expect(err.stack).not.toContain('Cannot destructure property')
+      }
+    })
     describe('message.self.initServer', () => {
       const tab = {
         id: 1,
@@ -530,6 +567,78 @@ describe('Browser API Wapper', () => {
           __pageId__: window.pageId,
           payload: 'value'
         })
+      ).toBeTruthy()
+    })
+    it('message.self.send wraps runtime.lastError with call stack', async () => {
+      const runtimeError = new Error('The message port closed before a response was received.')
+      window.pageId = 1
+      browser.runtime.sendMessage.callsFake(() => Promise.reject(runtimeError))
+
+      try {
+        await message.self.send({
+          type: 'PLAY_AUDIO',
+          payload: 'value'
+        })
+        throw new Error('Expected message.self.send to reject')
+      } catch (err) {
+        expect(err).toBeInstanceOf(Error)
+        expect(err.name).toBe('MessageRuntimeError')
+        expect(err.message).toContain('runtime.lastError')
+        expect(err.message).toContain('PLAY_AUDIO')
+        expect(err.message).toContain('The message port closed')
+        expect(err.cause).toBe(runtimeError)
+        expect(err.runtimeLastError).toBe(runtimeError)
+        expect(err.stack).toContain('Message call stack:')
+        expect(err.stack).toContain('message.self.send')
+      }
+    })
+    it('message.self.send keeps caller stack when initClient fails', async () => {
+      const runtimeError = new Error(
+        'Could not establish connection. Receiving end does not exist.'
+      )
+      browser.runtime.sendMessage.callsFake(() => Promise.reject(runtimeError))
+
+      try {
+        await message.self.send({
+          type: 'PLAY_AUDIO',
+          payload: 'value'
+        })
+        throw new Error('Expected message.self.send to reject')
+      } catch (err) {
+        expect(err).toBeInstanceOf(Error)
+        expect(err.name).toBe('MessageRuntimeError')
+        expect(err.message).toContain('PLAY_AUDIO')
+        expect(err.cause).toBe(runtimeError)
+        expect(err.runtimeLastError).toBe(runtimeError)
+        expect(err.stack).toContain('message.self.send')
+      }
+
+      expect(browser.runtime.sendMessage.calledOnce).toBeTruthy()
+      expect(
+        browser.runtime.sendMessage.calledWith({ type: 'PAGE_INFO' })
+      ).toBeTruthy()
+    })
+    it('message.self.send keeps caller stack when initClient returns null', async () => {
+      browser.runtime.sendMessage.callsFake(() => Promise.resolve(null))
+
+      try {
+        await message.self.send({
+          type: 'PLAY_AUDIO',
+          payload: 'value'
+        })
+        throw new Error('Expected message.self.send to reject')
+      } catch (err) {
+        expect(err).toBeInstanceOf(Error)
+        expect(err.name).toBe('MessageRuntimeError')
+        expect(err.message).toContain('PLAY_AUDIO')
+        expect(err.message).toContain('Invalid response')
+        expect(err.stack).toContain('message.self.send')
+        expect(err.stack).not.toContain('Cannot destructure property')
+      }
+
+      expect(browser.runtime.sendMessage.calledOnce).toBeTruthy()
+      expect(
+        browser.runtime.sendMessage.calledWith({ type: 'PAGE_INFO' })
       ).toBeTruthy()
     })
     it('message.self.addListener', () => {

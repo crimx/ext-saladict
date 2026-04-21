@@ -2,6 +2,8 @@ import { message } from '@/_helpers/browser-api'
 import { Subject } from 'rxjs'
 import { switchMapBy } from '@/_helpers/observables'
 import { timer } from '@/_helpers/promise-more'
+import { getBackgroundStateSnapshot, initBackgroundState } from './state'
+import { getStaticLocale } from './static-locales'
 
 interface UpdateBadgeOptions {
   active: boolean
@@ -12,6 +14,7 @@ interface UpdateBadgeOptions {
 const onUpdated$ = new Subject<{
   delay?: boolean
   tabId: number
+  tab?: browser.tabs.Tab
   options?: UpdateBadgeOptions
 }>()
 
@@ -26,6 +29,20 @@ onUpdated$
         await timer(1000)
       }
 
+      const tab =
+        o.tab || (await browser.tabs.get(o.tabId).catch(() => undefined))
+
+      if (!canRequestTabBadgeInfo(tab)) {
+        return {
+          tabId: o.tabId,
+          options: {
+            active: (await initBackgroundState()).appConfig.active,
+            tempDisable: false,
+            unsupported: true
+          }
+        }
+      }
+
       return {
         tabId: o.tabId,
         options: (await message
@@ -33,7 +50,7 @@ onUpdated$
             type: 'GET_TAB_BADGE_INFO'
           })
           .catch(() => {})) || {
-          active: window.appConfig.active,
+          active: (await initBackgroundState()).appConfig.active,
           tempDisable: false,
           unsupported: true
         }
@@ -66,38 +83,59 @@ export function initBadge() {
 
   browser.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
     if (changeInfo.status === 'complete') {
-      onUpdated$.next({ tabId, delay: true })
+      const tab = await browser.tabs.get(tabId).catch(() => undefined)
+      onUpdated$.next({ tabId, tab, delay: true })
     }
   })
 }
 
+function canRequestTabBadgeInfo(tab?: browser.tabs.Tab) {
+  if (!tab || !tab.url) {
+    return false
+  }
+
+  const extOrigin = browser.runtime.getURL('')
+
+  return (
+    !/^(about:|chrome:|chrome-extension:|devtools:|edge:|moz-extension:|opera:|vivaldi:|brave:|view-source:)/i.test(
+      tab.url
+    ) && !tab.url.startsWith(extOrigin)
+  )
+}
+
 function setOff(tabId: number) {
+  const {
+    appConfig: { langCode }
+  } = getBackgroundStateSnapshot()
   setIcon(true, tabId)
   // browser.browserAction.setBadgeBackgroundColor({ color: '#E74C3C', tabId })
   // browser.browserAction.setBadgeText({ text: 'off', tabId })
-  browser.browserAction.setTitle({
-    title: require('@/_locales/' + window.appConfig.langCode + '/background')
-      .locale.app.off,
+  toolbarAction.setTitle({
+    title: getStaticLocale(langCode as any, 'background').app.off,
     tabId
   })
 }
 
 function setTempOff(tabId: number) {
+  const {
+    appConfig: { langCode }
+  } = getBackgroundStateSnapshot()
   setIcon(true, tabId)
   // browser.browserAction.setBadgeBackgroundColor({ color: '#F39C12', tabId })
   // browser.browserAction.setBadgeText({ text: 'off', tabId })
-  browser.browserAction.setTitle({
-    title: require('@/_locales/' + window.appConfig.langCode + '/background')
-      .locale.app.tempOff,
+  toolbarAction.setTitle({
+    title: getStaticLocale(langCode as any, 'background').app.tempOff,
     tabId
   })
 }
 
 function setUnsupported(tabId: number) {
+  const {
+    appConfig: { langCode }
+  } = getBackgroundStateSnapshot()
   setIcon(true, tabId)
-  browser.browserAction.setTitle({
-    title: require('@/_locales/' + window.appConfig.langCode + '/background')
-      .locale.app.unsupported,
+  toolbarAction.setTitle({
+    title: getStaticLocale(langCode as any, 'background').app.unsupported,
     tabId
   })
 }
@@ -109,7 +147,7 @@ function setDefault(tabId: number) {
 }
 
 function setIcon(gray: boolean, tabId: number) {
-  browser.browserAction.setIcon({
+  toolbarAction.setIcon({
     tabId,
     path: gray
       ? {
@@ -130,3 +168,4 @@ function setIcon(gray: boolean, tabId: number) {
         }
   })
 }
+const toolbarAction = (browser as any).action || browser.browserAction

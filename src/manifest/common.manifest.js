@@ -1,6 +1,4 @@
 module.exports = {
-  manifest_version: 2,
-
   homepage_url: 'https://saladict.crimx.com/',
 
   minimum_chrome_version: '55',

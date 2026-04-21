@@ -86,6 +86,7 @@ jspm_packages/
 
 # Neutrino build directory
 build
+build-mv3
 
 assets/pdf/
 deps/

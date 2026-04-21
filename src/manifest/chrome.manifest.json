@@ -1,4 +1,5 @@
 {
+  "manifest_version": 3,
   "background": {
     "persistent": true
   },

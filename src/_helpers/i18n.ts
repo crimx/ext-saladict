@@ -77,11 +77,7 @@ export async function i18nLoader(): Promise<i18n.i18n> {
             return syncLocales
           }
 
-          const { locale } = await import(
-            /* webpackInclude: /_locales\/[^/]+\/[^/]+\.ts$/ */
-            /* webpackMode: "lazy" */
-            `@/_locales/${lang}/${ns}.ts`
-          )
+          const locale = await loadBasicLocale(lang, ns)
           cb(null, locale)
           return locale
         } catch (err) {
@@ -113,6 +109,15 @@ export async function i18nLoader(): Promise<i18n.i18n> {
   })
 
   return i18n
+}
+
+async function loadBasicLocale(lang: LangCode, ns: Namespace) {
+  const { locale } = await import(
+    /* webpackInclude: /_locales\/[^/]+\/[^/]+\.ts$/ */
+    /* webpackMode: "lazy" */
+    `@/_locales/${lang}/${ns}.ts`
+  )
+  return locale
 }
 
 const defaultT: i18n.TFunction = () => ''

@@ -36,6 +36,13 @@ type onMessageEvent<T extends Message = Message> = (
   sender: browser.runtime.MessageSender
 ) => Promise<any> | boolean | void
 
+type MessageSendArgs<T extends MsgType = MsgType> =
+  | [Message<T>]
+  | [number, Message<T>]
+
+type MessageSendMethod = 'message.send' | 'message.self.send'
+type PageInfoResponse = MessageResponse<'PAGE_INFO'>
+
 /* --------------------------------------- *\
  * #Globals
 \* --------------------------------------- */
@@ -332,6 +339,94 @@ function storageCreateStream<T = any>(
 \* --------------------------------------- */
 type MessageThis = typeof message | typeof message.self
 
+function createMessageCallContext(
+  method: MessageSendMethod,
+  constructorOpt: Function
+): Error {
+  const callContext = new Error(`[${method}] call stack`)
+  const captureStackTrace = (Error as ErrorConstructor & {
+    captureStackTrace?: (
+      targetObject: object,
+      constructorOpt?: Function
+    ) => void
+  }).captureStackTrace
+
+  if (captureStackTrace) {
+    captureStackTrace(callContext, constructorOpt)
+  }
+
+  return callContext
+}
+
+function wrapMessageError<T extends MsgType>(
+  method: MessageSendMethod,
+  args: MessageSendArgs<T>,
+  error: unknown,
+  callContext: Error
+): Error {
+  const runtimeError =
+    error &&
+    typeof error === 'object' &&
+    error['runtimeLastError'] instanceof Error
+      ? error['runtimeLastError']
+      : error instanceof Error
+      ? error
+      : new Error(String(error || 'Unknown error'))
+  const message = args.length === 1 ? args[0] : args[1]
+  const target = args.length === 1 ? 'runtime' : `tab ${args[0]}`
+  const wrappedError = new Error(
+    `[${method}] runtime.lastError while sending "${message.type}" to ${target}: ${runtimeError.message}`
+  ) as Error & {
+    cause?: Error
+    runtimeLastError?: Error
+    callContext?: Error
+  }
+
+  wrappedError.name = 'MessageRuntimeError'
+  wrappedError.cause = runtimeError
+  wrappedError.runtimeLastError = runtimeError
+  wrappedError.callContext = callContext
+  wrappedError.stack = [
+    `${wrappedError.name}: ${wrappedError.message}`,
+    '',
+    'Runtime error stack:',
+    runtimeError.stack || runtimeError.message,
+    '',
+    'Message call stack:',
+    callContext.stack || callContext.message
+  ].join('\n')
+
+  return wrappedError
+}
+
+function validateMessageResponse<T extends MsgType>(
+  method: MessageSendMethod,
+  args: MessageSendArgs<T>,
+  response: MessageResponse<T>,
+  callContext: Error
+): MessageResponse<T> {
+  const message = args.length === 1 ? args[0] : args[1]
+
+  if (message.type === 'PAGE_INFO') {
+    const pageInfo = (response as unknown) as Partial<PageInfoResponse> | null
+
+    if (!pageInfo || typeof pageInfo !== 'object' || pageInfo.pageId == null) {
+      throw wrapMessageError(
+        method,
+        args,
+        new Error(
+          `Invalid response for "PAGE_INFO": expected an object with pageId, received ${String(
+            response
+          )}`
+        ),
+        callContext
+      )
+    }
+  }
+
+  return response
+}
+
 function messageSend<T extends MsgType, R = MessageResponse<T>>(
   message: Message<T>
 ): Promise<R>
@@ -342,43 +437,50 @@ function messageSend<T extends MsgType, R = MessageResponse<T>>(
 function messageSend<T extends MsgType>(
   ...args: [Message<T>] | [number, Message<T>]
 ): Promise<any> {
-  let callContext: Error
-  if (process.env.DEBUG) {
-    callContext = new Error('Message Call Context')
-  }
+  const callContext = createMessageCallContext('message.send', messageSend)
   return (args.length === 1
     ? browser.runtime.sendMessage(args[0])
     : browser.tabs.sendMessage(args[0], args[1])
-  ).catch(err => {
-    if (process.env.DEBUG) {
-      console.warn(err.message, ...args, callContext)
-    }
-  })
+  )
+    .then(response =>
+      validateMessageResponse('message.send', args, response, callContext)
+    )
+    .catch(err => {
+      throw wrapMessageError('message.send', args, err, callContext)
+    })
 }
 
 async function messageSendSelf<T extends MsgType, R = undefined>(
   message: Message<T>
 ): Promise<R extends undefined ? MessageResponse<T> : R> {
-  let callContext: Error
-  if (process.env.DEBUG) {
-    callContext = new Error('Message Call Context')
-  }
+  const callContext = createMessageCallContext(
+    'message.self.send',
+    messageSendSelf
+  )
 
-  if (window.pageId === undefined) {
-    await initClient()
+  try {
+    if (window.pageId === undefined) {
+      await initClient()
+    }
+    return browser.runtime
+      .sendMessage(
+        Object.assign({}, message, {
+          __pageId__: window.pageId,
+          type: `[[${message.type}]]`
+        })
+      )
+      .then(
+        response =>
+          validateMessageResponse(
+            'message.self.send',
+            [message],
+            response,
+            callContext
+          ) as any
+      )
+  } catch (err) {
+    throw wrapMessageError('message.self.send', [message], err, callContext)
   }
-  return browser.runtime
-    .sendMessage(
-      Object.assign({}, message, {
-        __pageId__: window.pageId,
-        type: `[[${message.type}]]`
-      })
-    )
-    .catch(err => {
-      if (process.env.DEBUG) {
-        console.warn(err.message, message, callContext)
-      }
-    })
 }
 
 function messageAddListener<T extends MsgType>(
@@ -392,8 +494,8 @@ function messageAddListener<T extends MsgType>(
   this: MessageThis,
   ...args: [T, onMessageEvent<Message<T>>] | [onMessageEvent<Message>]
 ): void {
-  if (window.pageId === undefined) {
-    initClient()
+  if (this.__self__ && window.pageId === undefined) {
+    initClient().catch(console.error)
   }
   const allListeners = this.__self__ ? messageSelfListeners : messageListeners
   const messageType = args.length === 1 ? undefined : args[0]
@@ -490,7 +592,8 @@ function initClient(): Promise<typeof window.pageId> {
   if (window.pageId === undefined) {
     return message
       .send<'PAGE_INFO'>({ type: 'PAGE_INFO' })
-      .then(({ pageId, faviconURL, pageTitle, pageURL }) => {
+      .then(pageInfo => {
+        const { pageId, faviconURL, pageTitle, pageURL } = pageInfo
         window.pageId = pageId
         window.faviconURL = faviconURL
         if (pageTitle) {

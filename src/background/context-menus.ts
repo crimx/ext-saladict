@@ -12,15 +12,17 @@ import { I18nManager } from './i18n-manager'
 import { combineLatest } from 'rxjs'
 import { concatMap, filter, distinctUntilChanged } from 'rxjs/operators'
 import { openPDF, extractPDFUrl } from './pdf-sniffer'
-import { copyTextToClipboard } from './clipboard-manager'
 import { BackgroundServer } from './server'
+import { initBackgroundState } from './state'
+import { getDomTaskBridge } from './dom-task-bridge'
+import { executeScriptCompat } from '@/_helpers/scripting'
 
 interface CreateMenuOptions {
   type?: browser.contextMenus.ItemType
   id?: string
   parentId?: string
   title?: string
-  contexts?: browser.contextMenus.ContextType[]
+  contexts?: string[]
 }
 
 type ContextMenusClickInfo = Pick<
@@ -93,13 +95,14 @@ export class ContextMenus {
     }
   }
 
-  static openBaiduPage() {
+  static async openBaiduPage() {
+    const { appConfig } = await initBackgroundState()
     browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
         const langCode =
-          window.appConfig.langCode === 'zh-CN'
+          appConfig.langCode === 'zh-CN'
             ? 'zh'
-            : window.appConfig.langCode === 'zh-TW'
+            : appConfig.langCode === 'zh-TW'
             ? 'cht'
             : 'en'
         openUrl(
@@ -111,10 +114,11 @@ export class ContextMenus {
     })
   }
 
-  static openSogouPage() {
+  static async openSogouPage() {
+    const { appConfig } = await initBackgroundState()
     browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
-        const langCode = window.appConfig.langCode === 'zh-CN' ? 'zh-CHS' : 'en'
+        const langCode = appConfig.langCode === 'zh-CN' ? 'zh-CHS' : 'en'
         openUrl(
           `https://translate.sogoucdn.com/pcvtsnapshot?from=auto&to=${langCode}&tfr=translatepc&url=${encodeURIComponent(
             tabs[0].url as string
@@ -124,13 +128,14 @@ export class ContextMenus {
     })
   }
 
-  static openMicrosoftPage() {
+  static async openMicrosoftPage() {
+    const { appConfig } = await initBackgroundState()
     browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
       if (tabs.length > 0 && tabs[0].url) {
         const langCode =
-          window.appConfig.langCode === 'zh-CN'
+          appConfig.langCode === 'zh-CN'
             ? 'zh-Hans'
-            : window.appConfig.langCode === 'zh-TW'
+            : appConfig.langCode === 'zh-TW'
             ? 'zh-Hant'
             : 'en'
         openUrl(
@@ -150,7 +155,7 @@ export class ContextMenus {
     })
   }
 
-  private handleContextMenusClick(info: ContextMenusClickInfo) {
+  private async handleContextMenusClick(info: ContextMenusClickInfo) {
     const menuItemId = String(info.menuItemId).replace(/_ba$/, '')
     const selectionText = info.selectionText || ''
     const linkUrl = info.linkUrl || ''
@@ -182,7 +187,7 @@ export class ContextMenus {
       case 'copy_pdf_url': {
         const url = extractPDFUrl(info.pageUrl)
         if (url) {
-          copyTextToClipboard(url)
+          getDomTaskBridge().writeClipboard(url)
         }
         break
       }
@@ -200,7 +205,12 @@ export class ContextMenus {
         break
       default:
         {
-          const item = window.appConfig.contextMenus.all[menuItemId]
+          const {
+            appConfig: {
+              contextMenus: { all }
+            }
+          } = await initBackgroundState()
+          const item = all[menuItemId]
           if (item) {
             const url = typeof item === 'string' ? item : item.url
             if (url) {
@@ -231,6 +241,7 @@ export class ContextMenus {
     AppConfig,
     TFunction
   ]): Promise<void> {
+    const actionContexts = getToolbarMenuContexts()
     if (!browser.extension.inIncognitoContext) {
       // In 'split' incognito mode, this will also remove the items on normal mode windows
       await browser.contextMenus.removeAll()
@@ -313,14 +324,14 @@ export class ContextMenus {
     await createContextMenu({
       id: 'view_as_pdf_ba',
       title: t('view_as_pdf'),
-      contexts: ['browser_action', 'page_action']
+      contexts: actionContexts
     })
 
     if (browserActionItems.length > 2) {
       await createContextMenu({
         id: 'saladict_ba_container',
         title: t('page_translations'),
-        contexts: ['browser_action', 'page_action']
+        contexts: actionContexts
       })
 
       for (const id of browserActionItems) {
@@ -328,7 +339,7 @@ export class ContextMenus {
           id: id + '_ba',
           parentId: 'saladict_ba_container',
           title: getTitle(id),
-          contexts: ['browser_action', 'page_action']
+          contexts: actionContexts
         })
       }
     } else if (browserActionItems.length > 0) {
@@ -336,7 +347,7 @@ export class ContextMenus {
         await createContextMenu({
           id: id + '_ba',
           title: getTitle(id),
-          contexts: ['browser_action', 'page_action']
+          contexts: actionContexts
         })
       }
     } else {
@@ -344,19 +355,19 @@ export class ContextMenus {
       await createContextMenu({
         id: 'google_cn_page_translate_ba',
         title: t('google_cn_page_translate'),
-        contexts: ['browser_action', 'page_action']
+        contexts: actionContexts
       })
       await createContextMenu({
         id: 'youdao_page_translate_ba',
         title: t('youdao_page_translate'),
-        contexts: ['browser_action', 'page_action']
+        contexts: actionContexts
       })
     }
 
     await createContextMenu({
       type: 'separator',
       id: Date.now().toString(),
-      contexts: ['browser_action']
+      contexts: getActionOnlyContexts()
     })
 
     if (searchHistory) {
@@ -364,7 +375,7 @@ export class ContextMenus {
       await createContextMenu({
         id: 'search_history',
         title: t('history_title'),
-        contexts: ['browser_action']
+        contexts: getActionOnlyContexts()
       })
     }
 
@@ -372,7 +383,7 @@ export class ContextMenus {
     await createContextMenu({
       id: 'notebook',
       title: t('notebook_title'),
-      contexts: ['browser_action']
+      contexts: getActionOnlyContexts()
     })
 
     function getTitle(id: string): string {
@@ -384,7 +395,7 @@ export class ContextMenus {
       createProperties: CreateMenuOptions
     ): Promise<void> {
       return new Promise(resolve => {
-        browser.contextMenus.create(createProperties, () => {
+        browser.contextMenus.create(createProperties as any, () => {
           if (browser.runtime.lastError) {
             console.error(browser.runtime.lastError)
           }
@@ -400,7 +411,7 @@ async function tryExecuteScript(
   nameKey: string
 ) {
   try {
-    return await browser.tabs.executeScript(details)
+    return await executeScriptCompat(details)
   } catch (error) {
     const { i18n } = await I18nManager.getInstance()
     await browser.notifications.create({
@@ -414,6 +425,18 @@ async function tryExecuteScript(
     })
     return error
   }
+}
+
+function getToolbarMenuContexts() {
+  return browser.runtime.getManifest().manifest_version === 3
+    ? (['action'] as string[])
+    : (['browser_action', 'page_action'] as string[])
+}
+
+function getActionOnlyContexts() {
+  return browser.runtime.getManifest().manifest_version === 3
+    ? (['action'] as string[])
+    : (['browser_action'] as string[])
 }
 
 function reportMenusEvent(

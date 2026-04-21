@@ -10,7 +10,7 @@ import QRCode from 'qrcode.react'
 import CSSTransition from 'react-transition-group/CSSTransition'
 import { AppConfig } from '@/app-config'
 import { updateConfig, addConfigListener } from '@/_helpers/config-manager'
-import { message } from '@/_helpers/browser-api'
+import { trySendMessageToTab } from '@/_helpers/message-tab'
 import { useTranslate } from '@/_helpers/i18n'
 import { DictPanelStandaloneContainer } from '@/content/components/DictPanel/DictPanelStandalone.container'
 
@@ -58,28 +58,29 @@ export const Popup: FC<PopupProps> = props => {
 
     browser.tabs
       .query({ active: true, currentWindow: true })
-      .then(tabs => {
+      .then(async tabs => {
         if (tabs.length > 0 && tabs[0].id != null) {
-          message
-            .send<'TEMP_DISABLED_STATE'>(tabs[0].id, {
+          const [tempOff, isPinned] = await Promise.all([
+            trySendMessageToTab<'TEMP_DISABLED_STATE'>(tabs[0].id, {
               type: 'TEMP_DISABLED_STATE',
               payload: { op: 'get' }
-            })
-            .then(flag => {
-              setTempOff(flag)
-            })
-
-          message
-            .send<'QUERY_PIN_STATE', boolean>(tabs[0].id, {
+            }),
+            trySendMessageToTab<'QUERY_PIN_STATE', boolean>(tabs[0].id, {
               type: 'QUERY_PIN_STATE'
             })
-            .then(isPinned => {
-              setInsCapMode(isPinned ? 'pinMode' : 'mode')
-            })
+          ])
+
+          if (typeof tempOff === 'boolean') {
+            setTempOff(tempOff)
+          }
+
+          if (typeof isPinned === 'boolean') {
+            setInsCapMode(isPinned ? 'pinMode' : 'mode')
+          }
         }
       })
       .catch(err =>
-        console.warn('Error when receiving MsgTempDisabled response', err)
+        console.warn('Error when initializing popup tab state', err)
       )
   }, [])
 
@@ -200,12 +201,13 @@ export const Popup: FC<PopupProps> = props => {
     const newTempOff = !isTempOff
 
     setTempOff(newTempOff)
+    setShowPageNoResponse(false)
 
     browser.tabs
       .query({ active: true, currentWindow: true })
       .then(tabs => {
         if (tabs.length > 0 && tabs[0].id != null) {
-          return message.send<'TEMP_DISABLED_STATE'>(tabs[0].id, {
+          return trySendMessageToTab<'TEMP_DISABLED_STATE'>(tabs[0].id, {
             type: 'TEMP_DISABLED_STATE',
             payload: {
               op: 'set',
@@ -216,12 +218,21 @@ export const Popup: FC<PopupProps> = props => {
         return false
       })
       .then(isSuccess => {
-        if (!isSuccess) {
-          setTempOff(!newTempOff)
-          throw new Error('Set tempOff failed')
+        if (isSuccess) {
+          return
         }
+
+        setTempOff(!newTempOff)
+        setShowPageNoResponse(true)
       })
-      .catch(() => setShowPageNoResponse(true))
+      .catch(err => {
+        if (process.env.DEBUG) {
+          console.warn('Set tempOff failed', err)
+        }
+
+        setTempOff(!newTempOff)
+        setShowPageNoResponse(true)
+      })
   }
 
   function toggleInsCap() {

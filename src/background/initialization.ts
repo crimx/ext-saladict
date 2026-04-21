@@ -3,7 +3,11 @@ import { message, storage, openUrl } from '@/_helpers/browser-api'
 import { isExtTainted } from '@/_helpers/integrity'
 import { checkUpdate } from '@/_helpers/check-update'
 import { updateConfig, initConfig } from '@/_helpers/config-manager'
-import { initProfiles, updateActiveProfileID } from '@/_helpers/profile-manager'
+import {
+  getProfileIDList,
+  initProfiles,
+  updateActiveProfileID
+} from '@/_helpers/profile-manager'
 import { injectDictPanel } from '@/_helpers/injectSaladictInternal'
 import { isFirefox } from '@/_helpers/saladict'
 import { timer } from '@/_helpers/promise-more'
@@ -16,7 +20,11 @@ import { reportEvent } from '@/_helpers/analytics'
 import { ContextMenus } from './context-menus'
 import { BackgroundServer } from './server'
 import { openPDF } from './pdf-sniffer'
-import './types'
+import {
+  getBackgroundStateSnapshot,
+  initBackgroundState,
+  replaceBackgroundState
+} from './state'
 
 browser.runtime.onInstalled.addListener(onInstalled)
 browser.runtime.onStartup.addListener(onStartup)
@@ -36,13 +44,16 @@ browser.commands.onCommand.addListener(onCommand)
 
 const getText = decodeURI
 
-function onCommand(command: string) {
+async function onCommand(command: string) {
   switch (command) {
     case 'toggle-active':
-      updateConfig({
-        ...window.appConfig,
-        active: !window.appConfig.active
-      })
+      {
+        const { appConfig } = await initBackgroundState()
+        await updateConfig({
+          ...appConfig,
+          active: !appConfig.active
+        })
+      }
       break
     case 'toggle-instant':
       browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
@@ -53,11 +64,11 @@ function onCommand(command: string) {
           .send<'QUERY_PIN_STATE', boolean>(tabs[0].id, {
             type: 'QUERY_PIN_STATE'
           })
-          .then(isPinned => {
-            const config = window.appConfig
+          .then(async isPinned => {
+            const { appConfig: config } = await initBackgroundState()
             const { enable } = config[isPinned ? 'pinMode' : 'mode'].instant
 
-            updateConfig({
+            return updateConfig({
               ...config,
               mode: {
                 ...config.mode,
@@ -142,17 +153,19 @@ function onCommand(command: string) {
     case 'next-profile':
     case 'prev-profile':
       {
-        const curID = window.activeProfile.id
-        const curIndex = window.profileIDList.findIndex(
-          ({ id }) => id === curID
-        )
+        const { activeProfile, profileIDList } = await initBackgroundState()
+        if (profileIDList.length <= 0) {
+          return
+        }
+        const curID = activeProfile.id
+        const curIndex = profileIDList.findIndex(({ id }) => id === curID)
         const offset = command === 'next-profile' ? 1 : -1
         const nextIndex =
-          curIndex < 0 ? 0 : (curIndex + offset) % window.profileIDList.length
+          curIndex < 0
+            ? 0
+            : (curIndex + offset + profileIDList.length) % profileIDList.length
 
-        updateActiveProfileID(window.profileIDList[nextIndex].id).then(
-          searchTextBox
-        )
+        updateActiveProfileID(profileIDList[nextIndex].id).then(searchTextBox)
       }
       break
     case 'profile-1':
@@ -162,13 +175,13 @@ function onCommand(command: string) {
     case 'profile-5':
       {
         const index = +command.slice(-1)
+        const { activeProfile, profileIDList } = await initBackgroundState()
         if (
-          index < window.profileIDList.length &&
-          window.profileIDList[index].id !== window.activeProfile.id
+          profileIDList.length > 0 &&
+          index < profileIDList.length &&
+          profileIDList[index].id !== activeProfile.id
         ) {
-          updateActiveProfileID(window.profileIDList[index].id).then(
-            searchTextBox
-          )
+          updateActiveProfileID(profileIDList[index].id).then(searchTextBox)
         }
       }
       break
@@ -185,8 +198,15 @@ async function onInstalled({
   reason: string
   previousVersion?: string
 }) {
-  window.appConfig = await initConfig()
-  window.activeProfile = await initProfiles()
+  const [appConfig, activeProfile] = await Promise.all([
+    initConfig(),
+    initProfiles()
+  ])
+  replaceBackgroundState({
+    appConfig,
+    activeProfile,
+    profileIDList: await getProfileIDList()
+  })
 
   await storage.local.set(
     mapValues(await storage.local.get(null), (value, key) => {
@@ -201,7 +221,7 @@ async function onInstalled({
       !(await storage.sync.get('hasInstructionsShown')).hasInstructionsShown
     ) {
       openUrl('options.html?menuselected=Privacy&nopanel=true', true)
-      if (window.appConfig.langCode.startsWith('zh')) {
+      if (appConfig.langCode.startsWith('zh')) {
         openUrl('https://saladict.crimx.com/notice.html')
       } else {
         openUrl('https://saladict.crimx.com/en/notice.html')
@@ -210,13 +230,22 @@ async function onInstalled({
     }
   } else if (reason === 'update') {
     if (!process.env.DEBUG) {
-      const curr = await checkUpdate(browser.runtime.getManifest().version)
+      const curr = await checkUpdate(
+        browser.runtime.getManifest().version,
+        undefined,
+        appConfig.langCode
+      )
       // same version as server
       if (curr.data && curr.diff === 0) {
-        const { diff, data } = await checkUpdate(previousVersion, curr.data)
+        const { diff, data } = await checkUpdate(
+          previousVersion,
+          curr.data,
+          appConfig.langCode
+        )
         if (data && diff >= 2) {
           setTimeout(() => {
-            const isZh = window.appConfig.langCode.startsWith('zh')
+            const { appConfig } = getBackgroundStateSnapshot()
+            const isZh = appConfig.langCode.startsWith('zh')
             const options = {
               type: 'basic',
               iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
@@ -258,39 +287,45 @@ async function onInstalled({
 function onStartup(): void {
   setTimeout(() => {
     // wait for appConfig being loaded
-    if (!process.env.DEBUG && window.appConfig.updateCheck) {
-      storage.local
-        .get<{ lastCheckUpdate: number }>('lastCheckUpdate')
-        .then(async ({ lastCheckUpdate }) => {
-          const today = Date.now()
-          if (!lastCheckUpdate) {
-            storage.local.set({ lastCheckUpdate: today })
-          } else if (today - lastCheckUpdate > 7 * 24 * 60 * 60 * 1000) {
-            storage.local.set({ lastCheckUpdate: today })
-            const { data, diff } = await checkUpdate(
-              browser.runtime.getManifest().version
-            )
-            if (data && diff > 0) {
-              const options: browser.notifications.CreateNotificationOptions = {
-                type: 'basic',
-                iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
-                title: getText('%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D'),
-                message: `${getText('%E5%8F%AF%E6%9B%B4%E6%96%B0%E8%87%B3')}【${
-                  data.version
-                }】`
+    initBackgroundState()
+      .then(({ appConfig }) => {
+        if (!process.env.DEBUG && appConfig.updateCheck) {
+          storage.local
+            .get<{ lastCheckUpdate: number }>('lastCheckUpdate')
+            .then(async ({ lastCheckUpdate }) => {
+              const today = Date.now()
+              if (!lastCheckUpdate) {
+                storage.local.set({ lastCheckUpdate: today })
+              } else if (today - lastCheckUpdate > 7 * 24 * 60 * 60 * 1000) {
+                storage.local.set({ lastCheckUpdate: today })
+                const { data, diff } = await checkUpdate(
+                  browser.runtime.getManifest().version,
+                  undefined,
+                  appConfig.langCode
+                )
+                if (data && diff > 0) {
+                  const options: browser.notifications.CreateNotificationOptions = {
+                    type: 'basic',
+                    iconUrl: browser.runtime.getURL(`assets/icon-128.png`),
+                    title: getText('%E6%B2%99%E6%8B%89%E6%9F%A5%E8%AF%8D'),
+                    message: `${getText(
+                      '%E5%8F%AF%E6%9B%B4%E6%96%B0%E8%87%B3'
+                    )}【${data.version}】`
+                  }
+                  if (!isFirefox) {
+                    options.buttons = [
+                      { title: getText('%E6%9F%A5%E7%9C%8B%E6%9B%B4%E6%96%B0') }
+                    ]
+                  }
+                  if (browser.notifications) {
+                    browser.notifications.create('sd-update', options)
+                  }
+                }
               }
-              if (!isFirefox) {
-                options.buttons = [
-                  { title: getText('%E6%9F%A5%E7%9C%8B%E6%9B%B4%E6%96%B0') }
-                ]
-              }
-              if (browser.notifications) {
-                browser.notifications.create('sd-update', options)
-              }
-            }
-          }
-        })
-    }
+            })
+        }
+      })
+      .catch(console.error)
   }, 1000)
 
   if (!process.env.DEBUG && isExtTainted) {

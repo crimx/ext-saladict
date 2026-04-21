@@ -10,6 +10,7 @@ import {
   isStandalonePage
 } from '@/_helpers/saladict'
 import { message } from '@/_helpers/browser-api'
+import { trySendMessageToTab } from '@/_helpers/message-tab'
 import { Word, newWord } from '@/_helpers/record-manager'
 import { timer } from '@/_helpers/promise-more'
 import { MessageResponse } from '@/typings/message'
@@ -263,9 +264,10 @@ async function initStandaloneQuickSearch(
     if (state.config.qsPreload === 'selection') {
       const lastTab = Number(searchParams.get('lastTab'))
       if (lastTab) {
-        word = await message.send<'PRELOAD_SELECTION'>(lastTab, {
-          type: 'PRELOAD_SELECTION'
-        })
+        word =
+          (await trySendMessageToTab<'PRELOAD_SELECTION'>(lastTab, {
+            type: 'PRELOAD_SELECTION'
+          })) || null
       }
     } else if (state.config.qsPreload === 'clipboard') {
       word = newWord({
@@ -295,9 +297,10 @@ async function initPopup(dispatch: StoreDispatch, state: StoreState) {
       })
     )[0]
     if (tab && tab.id != null) {
-      word = await message.send<'PRELOAD_SELECTION'>(tab.id, {
-        type: 'PRELOAD_SELECTION'
-      })
+      word =
+        (await trySendMessageToTab<'PRELOAD_SELECTION'>(tab.id, {
+          type: 'PRELOAD_SELECTION'
+        })) || null
     }
   } else if (state.config.baPreload === 'clipboard') {
     word = newWord({

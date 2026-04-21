@@ -6,7 +6,7 @@ module.exports = class AfterBuildPlugin {
     compiler.hooks.done.tapAsync(
       'AfterBuildPlugin',
       (compilation, callback) => {
-        firefoxFix().then(callback)
+        firefoxFix().then(() => callback(), callback)
       }
     )
   }
