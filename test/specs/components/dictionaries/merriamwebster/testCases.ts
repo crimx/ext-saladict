@@ -112,7 +112,19 @@ export const cases = {
         }
       ],
       synonyms: [
-        ['Verb', ['adjoin', 'annex', 'append', 'subjoin', 'tack (on)']]
+        [
+          'Verb',
+          [
+            'attach',
+            'introduce',
+            'insert',
+            'affix',
+            'expand',
+            'append',
+            'annex',
+            'augment'
+          ]
+        ]
       ],
       etymology: [
         [

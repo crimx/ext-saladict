@@ -104,12 +104,14 @@ export function _getSynonyms(
   if (!lists) return undefined
 
   const words = [...lists].map(l =>
-    [...l.querySelectorAll('a[lang]').values()].map(v => v.textContent)
+    [...l.querySelectorAll('a[lang]').values()]
+      .map(v => v.textContent?.replace(/\s+/g, ' ').trim())
+      .filter((v): v is string => !!v)
   )
 
   if (functions.length === 0 || words.length === 0) return undefined
 
-  return functions.map((v, i) => [v.textContent, [...words[i]]]) as any
+  return functions.map((v, i) => [v.textContent?.trim(), [...words[i]]]) as any
 }
 
 export function _getEtymology(

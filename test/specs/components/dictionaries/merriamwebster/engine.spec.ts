@@ -417,7 +417,6 @@ describe('Dict/MerriamWebster/engine', () => {
               const ms = _getMeaningEles(v3)
               if (ms)
                 ms.forEach((v4, o) => {
-                  console.log(`i ${i} j ${j} n ${n} o ${o}`)
                   expect(_getExamples(v4)).toStrictEqual(
                     gexp1.groups[i].sections[j].meaningGroups[n][o].examples
                   )

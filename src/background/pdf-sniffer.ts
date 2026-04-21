@@ -8,7 +8,8 @@ import { openUrl } from '@/_helpers/browser-api'
 import { getBackgroundStateSnapshot, initBackgroundState } from './state'
 
 export function init(config: AppConfig) {
-  if (browser.runtime.getManifest().manifest_version === 3) {
+  const manifest = browser.runtime.getManifest && browser.runtime.getManifest()
+  if (manifest && manifest.manifest_version === 3) {
     return
   }
 

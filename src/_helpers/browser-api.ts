@@ -478,6 +478,9 @@ async function messageSendSelf<T extends MsgType, R = undefined>(
             callContext
           ) as any
       )
+      .catch(err => {
+        throw wrapMessageError('message.self.send', [message], err, callContext)
+      })
   } catch (err) {
     throw wrapMessageError('message.self.send', [message], err, callContext)
   }

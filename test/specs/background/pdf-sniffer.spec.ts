@@ -1,4 +1,5 @@
 import { getDefaultConfig, AppConfigMutable, AppConfig } from '@/app-config'
+import getDefaultProfile, { getDefaultProfileID } from '@/app-config/profiles'
 import { matchPatternToRegExpStr } from '@/_helpers/matchPatternToRegExpStr'
 import { init as initPdfOrigin } from '@/background/pdf-sniffer'
 import { timer } from '@/_helpers/promise-more'
@@ -8,6 +9,7 @@ import { browser } from '../../helper'
 jest.mock('@/_helpers/config-manager')
 
 let configManager: typeof configManagerMock
+let getBackgroundStateSnapshot: typeof import('@/background/state').getBackgroundStateSnapshot
 
 function hasListenerPatch(fn) {
   // @ts-ignore
@@ -20,10 +22,15 @@ function hasListenerPatch(fn) {
 
 function changeConfig(newConfig: AppConfig, oldConfig: AppConfig) {
   window.appConfig = newConfig
+  replaceBackgroundState({
+    ...getBackgroundStateSnapshot(),
+    appConfig: newConfig
+  })
   configManager.dispatchConfigChangedEvent(newConfig, oldConfig)
 }
 
 let initPdf: typeof initPdfOrigin
+let replaceBackgroundState: typeof import('@/background/state').replaceBackgroundState
 
 describe('PDF Sniffer', () => {
   beforeEach(() => {
@@ -32,11 +39,23 @@ describe('PDF Sniffer', () => {
     jest.resetModules()
     initPdf = require('@/background/pdf-sniffer').init
     configManager = require('@/_helpers/config-manager')
+    getBackgroundStateSnapshot = require('@/background/state')
+      .getBackgroundStateSnapshot
+    replaceBackgroundState = require('@/background/state')
+
+    replaceBackgroundState = require('@/background/state')
+      .replaceBackgroundState
     // @ts-ignore
     browser.webRequest.onBeforeRequest.hasListener = hasListenerPatch
     // @ts-ignore
     browser.webRequest.onHeadersReceived.hasListener = hasListenerPatch
     window.appConfig = getDefaultConfig()
+    const defaultProfileID = getDefaultProfileID()
+    replaceBackgroundState({
+      appConfig: window.appConfig,
+      activeProfile: getDefaultProfile(defaultProfileID.id),
+      profileIDList: [defaultProfileID]
+    })
   })
 
   const urlPdf = 'https://test.com/c.pdf'
