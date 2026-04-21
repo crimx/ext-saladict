@@ -1,4 +1,5 @@
 import { message, storage } from '@/_helpers/browser-api'
+import { trySendMessageToTab } from '@/_helpers/message-tab'
 import { Word } from '@/_helpers/record-manager'
 import { isFirefox } from '@/_helpers/saladict'
 import { getTitlebarOffset } from '@/_helpers/titlebar-offset'
@@ -265,15 +266,7 @@ export class QsPanelManager {
         await this.mainWindowsManager.focus()
       }
 
-      // notify all tabs
-      ;(await browser.tabs.query({})).forEach(tab => {
-        if (tab.id && tab.windowId !== this.qsPanelId) {
-          message.send(tab.id, {
-            type: 'QS_PANEL_CHANGED',
-            payload: this.qsPanelId != null
-          })
-        }
-      })
+      await this.notifyQsPanelChanged(this.qsPanelId != null)
     }
   }
 
@@ -285,14 +278,7 @@ export class QsPanelManager {
   }
 
   async destroy(): Promise<void> {
-    ;(await browser.tabs.query({})).forEach(tab => {
-      if (tab.id && tab.windowId !== this.qsPanelId) {
-        message.send(tab.id, {
-          type: 'QS_PANEL_CHANGED',
-          payload: false
-        })
-      }
-    })
+    await this.notifyQsPanelChanged(false)
 
     this.qsPanelId = null
     this.isSidebar = false
@@ -484,6 +470,27 @@ export class QsPanelManager {
           ),
           width: Math.round(panelWidth),
           height: Math.round(screenArea.availHeight)
+    }
+  }
+
+  private async notifyQsPanelChanged(payload: boolean): Promise<void> {
+    const results = await Promise.allSettled(
+      (await browser.tabs.query({}))
+        .filter(tab => tab.id && tab.windowId !== this.qsPanelId)
+        .map(tab =>
+          trySendMessageToTab(tab.id as number, {
+            type: 'QS_PANEL_CHANGED',
+            payload
+          })
+        )
+    )
+
+    if (process.env.DEBUG) {
+      results.forEach(result => {
+        if (result.status === 'rejected') {
+          console.warn(result.reason)
         }
+      })
+    }
   }
 }

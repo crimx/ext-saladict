@@ -49,9 +49,22 @@ export class AudioManager {
       timer(20000)
     ])
 
-    await audio.play()
+    try {
+      await audio.play()
+    } catch (error) {
+      if (process.env.DEBUG) {
+        console.warn('Failed to play audio in background:', error)
+      }
+      if (this.audio === audio) {
+        this.reset()
+      }
+      return
+    }
+
     await onEnd
 
-    this.currentSrc = ''
+    if (this.audio === audio) {
+      this.currentSrc = ''
+    }
   }
 }

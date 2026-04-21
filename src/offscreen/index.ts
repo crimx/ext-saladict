@@ -31,8 +31,19 @@ async function playAudio(src?: string) {
   }
 
   resetAudio()
-  audio = new Audio(src)
-  await audio.play()
+  const nextAudio = new Audio(src)
+  audio = nextAudio
+
+  try {
+    await nextAudio.play()
+  } catch (error) {
+    if (process.env.DEBUG) {
+      console.warn('Failed to play audio in offscreen document:', error)
+    }
+    if (audio === nextAudio) {
+      resetAudio()
+    }
+  }
 }
 
 function copyText(text: string) {

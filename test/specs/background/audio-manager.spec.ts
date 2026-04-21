@@ -40,6 +40,25 @@ describe('Audio Manager', () => {
     expect(mockAudioInstances[0].play).toHaveBeenCalledTimes(1)
   })
 
+  it('swallows play errors', async () => {
+    const url = 'https://e.b/blocked.mp3'
+    mockAudio.mockImplementationOnce(() => {
+      const instance = {
+        play: jest.fn(() => Promise.reject({ message: 'blocked' })),
+        pause: jest.fn(),
+        addEventListener: jest.fn()
+      }
+      mockAudioInstances.push(instance)
+      return instance
+    })
+
+    await expect(audioManager.play(url)).resolves.toBeUndefined()
+    expect(mockAudio).toBeCalledWith(url)
+    expect(mockAudioInstances[0].play).toHaveBeenCalledTimes(1)
+    expect(mockAudioInstances[0].pause).toHaveBeenCalledTimes(1)
+    expect(audioManager.currentSrc).toBe('')
+  })
+
   it('play x 2 interrupted', () => {
     const url1 = 'https://e.b/play1.mp3'
     const url2 = 'https://e.b/play2.mp3'
