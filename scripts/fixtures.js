@@ -98,12 +98,39 @@ async function add() {
 
   async function fetchDictFixtures(fixturePath) {
     const fixture = require(fixturePath)
+    const dictname = /[\\/]+([^\\/]+)[\\/]+fixtures.js$/.exec(fixturePath)[1]
+    const total = fixture.files.length
 
     const fetched = []
+    let completed = 0
+    let pgBar = null
 
-    for (const index in fixture.files) {
-      const [filename, fetchUrl] = fixture.files[index]
+    function ensureProgressBar(filename) {
+      if (!pgBar) {
+        pgBar = progressBars.create(total, completed, {
+          file: `${dictname}/${filename}`,
+          status: 'downloading'
+        })
+      }
+    }
 
+    function updateProgressBar(filename, status) {
+      if (!pgBar) {
+        return
+      }
+
+      pgBar.update(completed, {
+        file: `${dictname}/${filename}`,
+        status
+      })
+    }
+
+    function finishFixture(filename, status) {
+      completed += 1
+      updateProgressBar(filename, status)
+    }
+
+    for (const [filename, fetchUrl] of fixture.files) {
       const destPath = fixturePath.replace(
         /fixtures.js$/,
         `response/${filename}`
@@ -111,15 +138,12 @@ async function add() {
       const stat = await fs.stat(destPath).catch(() => null)
       if (stat && stat.isFile()) {
         fetched.push(await fs.readFile(destPath, 'utf8'))
+        finishFixture(filename, 'cached')
         continue
       }
 
-      const dictname = /[\\/]+([^\\/]+)[\\/]+fixtures.js$/.exec(fixturePath)[1]
-
-      const pgBar = progressBars.create(100, 0, {
-        file: `${dictname}/fixture${index * 1 + 1}`,
-        status: 'downloading'
-      })
+      ensureProgressBar(filename)
+      updateProgressBar(filename, 'downloading')
 
       try {
         var customConfig =
@@ -129,14 +153,12 @@ async function add() {
               }
             : fetchUrl(fetched)
       } catch (e) {
-        pgBar.update(null, { status: 'parse error' })
-        pgBar.stop()
+        finishFixture(filename, 'parse error')
         continue
       }
 
       if (!customConfig) {
-        pgBar.update(null, { status: 'empty config' })
-        pgBar.stop()
+        finishFixture(filename, 'empty config')
         continue
       }
 
@@ -172,14 +194,16 @@ async function add() {
           result
         )
 
-        pgBar.update(100, { status: 'success' })
-        pgBar.stop()
+        finishFixture(filename, 'success')
       } catch (e) {
         errors.push([`${dictname}/${filename}`, e, axiosConfig.url])
 
-        pgBar.update(null, { status: 'failed' })
-        pgBar.stop()
+        finishFixture(filename, 'failed')
       }
+    }
+
+    if (pgBar) {
+      progressBars.remove(pgBar)
     }
   }
 }
