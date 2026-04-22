@@ -1,5 +1,5 @@
 import { DictID, AppConfig } from '@/app-config'
-import { MachineTranslateResult } from '@/components/dictionaries/helpers'
+import { MachineTranslateResult } from '@/components/MachineTrans/engine'
 import { message } from './browser-api'
 import { isPDFPage } from './saladict'
 

@@ -480,9 +480,9 @@ describe('Browser API Wapper', () => {
       })
     })
     it('message.self.initClient throws wrapped error on invalid PAGE_INFO response', async () => {
-      browser.runtime.sendMessage.withArgs({ type: 'PAGE_INFO' }).returns(
-        Promise.resolve(null)
-      )
+      browser.runtime.sendMessage
+        .withArgs({ type: 'PAGE_INFO' })
+        .returns(Promise.resolve(null))
 
       try {
         await message.self.initClient()
@@ -558,19 +558,21 @@ describe('Browser API Wapper', () => {
     it('message.self.send', () => {
       window.pageId = 1
       message.self.send({
-        type: 'QUERY_PANEL_STATE',
+        type: 'PLAY_AUDIO',
         payload: 'value'
       })
       expect(
         browser.runtime.sendMessage.calledWith({
-          type: '[[QUERY_PANEL_STATE]]',
+          type: '[[PLAY_AUDIO]]',
           __pageId__: window.pageId,
           payload: 'value'
         })
       ).toBeTruthy()
     })
     it('message.self.send wraps runtime.lastError with call stack', async () => {
-      const runtimeError = new Error('The message port closed before a response was received.')
+      const runtimeError = new Error(
+        'The message port closed before a response was received.'
+      )
       window.pageId = 1
       browser.runtime.sendMessage.callsFake(() => Promise.reject(runtimeError))
 

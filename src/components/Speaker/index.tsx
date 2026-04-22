@@ -7,7 +7,6 @@ import React, {
 } from 'react'
 import { useUpdateEffect } from 'react-use'
 import { timer, reflect } from '@/_helpers/promise-more'
-import { isTagName } from '@/_helpers/dom'
 
 /** onPlayStart */
 const StaticSpeakerContext = React.createContext<
@@ -77,24 +76,23 @@ export const StaticSpeakerContainer: FC<StaticSpeakerContainerProps> = props => 
 
   const onClick = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
+      const target = e.target
       if (
-        e.target &&
-        isTagName(e.target, 'a') &&
-        e.target['href'] &&
-        e.target['href'] !== '#' &&
-        e.target['classList'] &&
-        e.target['classList'].contains('saladict-Speaker')
+        !(target instanceof HTMLAnchorElement) ||
+        target.href === '#' ||
+        !target.classList.contains('saladict-Speaker')
       ) {
-        e.preventDefault()
-        e.stopPropagation()
-
-        const target = e.target as HTMLAnchorElement
-        target.classList.add('isActive')
-
-        reflect([timer(1000), onPlayStart(target.href)]).then(() => {
-          target.classList.remove('isActive')
-        })
+        return
       }
+
+      e.preventDefault()
+      e.stopPropagation()
+
+      target.classList.add('isActive')
+
+      reflect([timer(1000), onPlayStart(target.href)]).then(() => {
+        target.classList.remove('isActive')
+      })
     },
     [onPlayStart]
   )

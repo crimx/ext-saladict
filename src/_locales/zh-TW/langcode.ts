@@ -4,6 +4,7 @@ import { locale as _locale } from '../zh-CN/langcode'
 export const locale: typeof _locale = {
   ...zhTW,
   default: '同介面語言',
+  ne_NP: '尼泊爾語',
   ara: '阿拉伯語',
   'bs-Latn': '波斯尼亞語',
   bul: '保加利亞語',

@@ -34,7 +34,8 @@ export const search: SearchFunction<WeblioejjeResult> = (
   profile,
   payload
 ) => {
-  return fetchDirtyDOM(getSrcPage(text, config, profile))
+  return Promise.resolve(getSrcPage(text, config, profile))
+    .then(url => fetchDirtyDOM(url))
     .catch(handleNetWorkError)
     .then(handleDOM)
 }

@@ -16,6 +16,8 @@ export interface AppConfigChanged {
   oldConfig?: AppConfig
 }
 
+export const PDF_VIEWER_DARK_MODE_LOCAL_KEY = 'saladict-pdf-viewer-dark-mode'
+
 /** Compressed config data */
 interface AppConfigCompressed {
   /** version */
@@ -76,6 +78,9 @@ export function updateConfig(baseconfig: AppConfig): Promise<void> {
   if (process.env.DEBUG) {
     console.log(`Saved config`, baseconfig)
   }
+
+  syncPdfViewerDarkMode(baseconfig.darkMode)
+
   return storage.sync.set({ baseconfig: deflate(baseconfig) })
 }
 
@@ -107,4 +112,20 @@ export function createConfigStream(): Observable<AppConfig> {
       addConfigListener
     ).pipe(map(args => (Array.isArray(args) ? args[0] : args).newConfig))
   )
+}
+
+function syncPdfViewerDarkMode(darkMode: boolean) {
+  try {
+    if (
+      typeof localStorage !== 'undefined' &&
+      typeof location !== 'undefined' &&
+      /^(chrome-extension|moz-extension|safari-web-extension):$/.test(
+        location.protocol
+      )
+    ) {
+      localStorage.setItem(PDF_VIEWER_DARK_MODE_LOCAL_KEY, darkMode ? '1' : '0')
+    }
+  } catch (error) {
+    // Ignore localStorage failures in non-extension or restricted contexts.
+  }
 }

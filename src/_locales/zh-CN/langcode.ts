@@ -3,6 +3,7 @@ import zhCN from '@opentranslate/languages/locales/zh-CN.json'
 export const locale = {
   ...zhCN,
   default: '随扩展语言',
+  ne_NP: '尼泊尔语',
   ara: '阿拉伯语',
   'bs-Latn': '波斯尼亚语',
   bul: '保加利亚语',

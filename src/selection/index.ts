@@ -91,11 +91,13 @@ if (!window.__SALADICT_SELECTION_LOADED__) {
   config$$.pipe(switchMap(createSelectTextStream)).subscribe(async result => {
     if (result.word) {
       sendMessage({
+        // @ts-ignore
         dbClick: false,
         altKey: false,
         shiftKey: false,
         ctrlKey: false,
         metaKey: false,
+        // @ts-ignore
         self: false,
         instant: false,
         force: false,

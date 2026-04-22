@@ -1,4 +1,5 @@
 import React from 'react'
+import classNames from 'classnames'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 import { jsxDecorator } from 'storybook-addon-jsx'
@@ -52,25 +53,26 @@ storiesOf('Content Scripts|WordEditor', module)
       const darkMode = boolean('Dark Mode', false)
 
       return (
-        <WordEditor
-          containerWidth={number('Panel X', 450 + 100)}
-          darkMode={darkMode}
-          wordEditor={{
-            word: newWord({
-              date: faker.date.past().valueOf(),
-              text: faker.random.word(),
-              context: faker.lorem.sentence(),
-              title: faker.random.word(),
-              url: faker.internet.url(),
-              favicon: faker.image.imageUrl(),
-              trans: faker.lorem.sentence(),
-              note: faker.lorem.sentences()
-            }),
-            translateCtx: false
-          }}
-          ctxTrans={config.ctxTrans}
-          onClose={action('Close')}
-        />
+        <div className={classNames({ darkMode })}>
+          <WordEditor
+            containerWidth={number('Panel X', 450 + 100)}
+            wordEditor={{
+              word: newWord({
+                date: faker.date.past().valueOf(),
+                text: faker.random.word(),
+                context: faker.lorem.sentence(),
+                title: faker.random.word(),
+                url: faker.internet.url(),
+                favicon: faker.image.imageUrl(),
+                trans: faker.lorem.sentence(),
+                note: faker.lorem.sentences()
+              }),
+              translateCtx: false
+            }}
+            ctxTrans={config.ctxTrans}
+            onClose={action('Close')}
+          />
+        </div>
       )
     },
     {

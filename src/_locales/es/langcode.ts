@@ -4,6 +4,7 @@ import { locale as _locale } from '../zh-CN/langcode'
 export const locale: typeof _locale = {
   ...en,
   default: 'Predeterminado',
+  ne_NP: 'Nepalí',
   ara: 'Arabe',
   'bs-Latn': 'Bosnio',
   bul: 'Búlgaro',

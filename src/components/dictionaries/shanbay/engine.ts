@@ -9,9 +9,10 @@ import {
   GetSrcPageFunction,
   DictSearchResult
 } from '../helpers'
-import { DictConfigs } from '@/app-config'
+import { Profile } from '@/app-config/profiles'
 import axios from 'axios'
 import DOMPurify from 'dompurify'
+import getDefaultShanbayConfig, { ShanbayConfig } from './config'
 
 export const getSrcPage: GetSrcPageFunction = text => {
   return `https://www.shanbay.com/bdc/mobile/preview/word?word=${text}`
@@ -41,12 +42,22 @@ export type ShanbayResult = ShanbayResultLex
 
 type ShanbaySearchResult = DictSearchResult<ShanbayResult>
 
+const defaultOptions = getDefaultShanbayConfig().options
+
+function getOptions(profile: Profile): ShanbayConfig['options'] {
+  const shanbayConfig = (profile.dicts.all as Partial<
+    Record<'shanbay', ShanbayConfig>
+  >).shanbay
+
+  return shanbayConfig ? shanbayConfig.options : defaultOptions
+}
+
 export const search: SearchFunction<ShanbayResult> = (
   text,
   config,
   profile
 ) => {
-  const options = profile.dicts.all.shanbay.options
+  const options = getOptions(profile)
   return fetchDirtyDOM(
     'https://www.shanbay.com/bdc/mobile/preview/word?word=' +
       encodeURIComponent(text.replace(/\s+/g, ' '))
@@ -57,7 +68,7 @@ export const search: SearchFunction<ShanbayResult> = (
 
 function checkResult(
   doc: Document,
-  options: DictConfigs['shanbay']['options']
+  options: ShanbayConfig['options']
 ): ShanbaySearchResult | Promise<ShanbaySearchResult> {
   const $typo = doc.querySelector('.error-typo')
   if (!$typo) {
@@ -88,7 +99,7 @@ function loadSentences(id: string) {
 
 async function handleDOM(
   doc: Document,
-  options: DictConfigs['shanbay']['options']
+  options: ShanbayConfig['options']
 ): Promise<ShanbaySearchResult> {
   const word = doc.querySelector('.word-spell')
   const result: ShanbayResult = {

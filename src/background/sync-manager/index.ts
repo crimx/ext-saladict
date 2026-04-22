@@ -89,3 +89,9 @@ export async function syncServiceUpload(
     }
   })
 }
+
+export async function syncServiceDownload(): Promise<void> {
+  await Promise.all(
+    [...activeServices.values()].map(service => service.download({}))
+  )
+}

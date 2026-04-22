@@ -60,12 +60,10 @@ export type MessageConfig = MessageConfigType<{
   }
 
   GET_PDF_SNIFF_PENDING: {
-    response:
-      | null
-      | {
-          action: 'open' | 'bypass'
-          url: string
-        }
+    response: null | {
+      action: 'open' | 'bypass'
+      url: string
+    }
   }
 
   OPEN_PDF_VIEWER_STANDALONE_IF_NEEDED: {
@@ -343,6 +341,8 @@ export type MessageConfig = MessageConfigType<{
   /* ------------------------------------------------ *\
      Sync Services
   \* ------------------------------------------------ */
+
+  SYNC_SERVICE_DOWNLOAD: {}
 
   ANKI_CONNECT_FIND_WORD: {
     /** Word Date */

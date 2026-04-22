@@ -138,6 +138,10 @@ export class BackgroundServer {
           return getWordsByText(msg.payload)
         case 'GET_WORDS':
           return getWords(msg.payload)
+        case 'SYNC_SERVICE_DOWNLOAD':
+          return import('./sync-manager').then(({ syncServiceDownload }) =>
+            syncServiceDownload()
+          )
         case 'GET_SUGGESTS':
           return getSuggests(msg.payload)
         case 'GET_PDF_SNIFF_PENDING':

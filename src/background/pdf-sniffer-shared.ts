@@ -9,8 +9,7 @@ type ResponseHeader = {
 
 export const PDF_VIEWER_PATH = 'assets/pdf/web/viewer.html'
 export const PDF_AUTO_VIEWER_MARKER = 'saladict-pdf'
-export const PDF_URL_REGEX_FILTER =
-  '^https?://.*\\.[Pp][Dd][Ff](?:$|[?#].*)?'
+export const PDF_URL_REGEX_FILTER = '^https?://.*\\.[Pp][Dd][Ff](?:$|[?#].*)?'
 export const HTTP_URL_REGEX_FILTER = '^https?://.*'
 
 const PDF_URL_TESTER = /\.pdf(?:$|[?#].*)?/i
@@ -43,7 +42,8 @@ export function getPdfSniffAction(
   const matchURL = ([regexpSource]: ReadonlyArray<string>) =>
     new RegExp(regexpSource).test(url)
 
-  return config.pdfBlacklist.some(matchURL) && !config.pdfWhitelist.some(matchURL)
+  return config.pdfBlacklist.some(matchURL) &&
+    !config.pdfWhitelist.some(matchURL)
     ? 'bypass'
     : 'open'
 }
