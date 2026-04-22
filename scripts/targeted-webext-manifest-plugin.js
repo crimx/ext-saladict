@@ -194,7 +194,6 @@ function patchChromiumMv3Manifest(manifest) {
     }
   })
 
-  permissions.delete('webRequest')
   permissions.delete('webRequestBlocking')
   permissions.add('scripting')
   permissions.add('offscreen')
@@ -202,7 +201,7 @@ function patchChromiumMv3Manifest(manifest) {
 
   optionalPermissions.delete('background')
 
-  manifest.minimum_chrome_version = '109'
+  manifest.minimum_chrome_version = '128'
   manifest.permissions = [...permissions]
   manifest.optional_permissions = [...optionalPermissions]
   manifest.host_permissions = [...hostPermissions]

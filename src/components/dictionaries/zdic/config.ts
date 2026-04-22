@@ -34,6 +34,6 @@ export default (): ZdicConfig => ({
     max: 5
   },
   options: {
-    audio: false
+    audio: true
   }
 })

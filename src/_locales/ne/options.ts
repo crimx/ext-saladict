@@ -100,7 +100,8 @@ export const locale: typeof _locale = {
       }
     },
     pdfSniff: 'Enable PDF Sniffer',
-    pdfSniff_help: 'If turned on， PDF links will be automatically captured.',
+    pdfSniff_help:
+      'If turned on, PDF links will be automatically captured (including local files, if file URL access is enabled on the extensions page).',
     pdfSniff_extra:
       'It is recommended to {search selected text outside of browser} with your own favorite local reader.',
     pdfStandalone: 'Standalone Panel',

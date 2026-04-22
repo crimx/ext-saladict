@@ -24,6 +24,8 @@ type ChromeDeclarativeNetRequest = {
   }) => Promise<void>
 }
 
+type BrowserWebRequest = typeof browser.webRequest
+
 let ensureRefererPromise: Promise<void> | null = null
 
 export function ensureZdicAudioReferer() {
@@ -38,12 +40,25 @@ export function ensureZdicAudioReferer() {
 }
 
 async function doEnsureZdicAudioReferer() {
-  if (isManifestV3()) {
-    await installMv3RefererRule()
+  const dnr = getChromeDeclarativeNetRequest()
+  if (dnr) {
+    await installMv3RefererRule(dnr)
     return
   }
 
-  installMv2RefererListener()
+  const webRequest = getBrowserWebRequest()
+  if (webRequest && webRequest.onBeforeSendHeaders) {
+    installMv2RefererListener(webRequest)
+    return
+  }
+
+  if (isManifestV3()) {
+    throw new Error(
+      'declarativeNetRequest is unavailable in the current MV3 context.'
+    )
+  }
+
+  throw new Error('webRequest.onBeforeSendHeaders is unavailable.')
 }
 
 function isManifestV3() {
@@ -51,20 +66,22 @@ function isManifestV3() {
   return !!(manifest && manifest.manifest_version === 3)
 }
 
-function installMv2RefererListener() {
+function installMv2RefererListener(webRequest: BrowserWebRequest) {
   const extraInfoSpec = ['blocking', 'requestHeaders']
+  const onBeforeSendHeadersOptions = (webRequest as any)
+    .OnBeforeSendHeadersOptions
   // https://developer.chrome.com/extensions/webRequest#life_cycle_footnote
   if (
-    browser.webRequest['OnBeforeSendHeadersOptions'] &&
+    onBeforeSendHeadersOptions &&
     Object.prototype.hasOwnProperty.call(
-      browser.webRequest['OnBeforeSendHeadersOptions'],
+      onBeforeSendHeadersOptions,
       'EXTRA_HEADERS'
     )
   ) {
     extraInfoSpec.push('extraHeaders')
   }
 
-  browser.webRequest.onBeforeSendHeaders.addListener(
+  webRequest.onBeforeSendHeaders.addListener(
     details => {
       if (details && details.requestHeaders) {
         for (var i = 0; i < details.requestHeaders.length; ++i) {
@@ -88,12 +105,7 @@ function installMv2RefererListener() {
   )
 }
 
-async function installMv3RefererRule() {
-  const dnr = getChromeDeclarativeNetRequest()
-  if (!dnr) {
-    throw new Error('declarativeNetRequest is unavailable in MV3 context.')
-  }
-
+async function installMv3RefererRule(dnr: ChromeDeclarativeNetRequest) {
   await dnr.updateSessionRules({
     removeRuleIds: [ZDIC_AUDIO_RULE_ID],
     addRules: [
@@ -126,4 +138,11 @@ function getChromeDeclarativeNetRequest():
   return chromeApi && chromeApi.declarativeNetRequest
     ? chromeApi.declarativeNetRequest
     : undefined
+}
+
+function getBrowserWebRequest(): BrowserWebRequest | undefined {
+  const browserApi = browser as
+    | typeof browser
+    | { webRequest?: BrowserWebRequest }
+  return browserApi && browserApi.webRequest ? browserApi.webRequest : undefined
 }

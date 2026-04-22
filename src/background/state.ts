@@ -85,23 +85,27 @@ function startBackgroundStateSync() {
   }
   isSyncStarted = true
 
-  addConfigListener(({ newConfig }) => {
-    if (currentState) {
-      currentState = {
-        ...currentState,
-        appConfig: newConfig
+  Promise.resolve(
+    addConfigListener(({ newConfig }) => {
+      if (currentState) {
+        currentState = {
+          ...currentState,
+          appConfig: newConfig
+        }
       }
-    }
-  }).catch(console.error)
+    })
+  ).catch(console.error)
 
-  addActiveProfileListener(({ newProfile }) => {
-    if (currentState) {
-      currentState = {
-        ...currentState,
-        activeProfile: newProfile
+  Promise.resolve(
+    addActiveProfileListener(({ newProfile }) => {
+      if (currentState) {
+        currentState = {
+          ...currentState,
+          activeProfile: newProfile
+        }
       }
-    }
-  }).catch(console.error)
+    })
+  ).catch(console.error)
 
   addProfileIDListListener(({ newValue }) => {
     if (currentState) {

@@ -5,11 +5,23 @@
 import { AppConfig } from '@/app-config'
 import { addConfigListener } from '@/_helpers/config-manager'
 import { openUrl } from '@/_helpers/browser-api'
-import { getBackgroundStateSnapshot, initBackgroundState } from './state'
+import {
+  PDF_VIEWER_PATH,
+  getHttpPdfSniffActionByHeaders,
+  getOtherPdfSniffAction,
+  shouldEnableAutoPdfSniff
+} from './pdf-sniffer-shared'
+import { consumeMv3PendingPdfOpenForViewer, initMv3 } from './pdf-sniffer-mv3'
+import {
+  getBackgroundStateSnapshot,
+  hasBackgroundState,
+  initBackgroundState
+} from './state'
 
 export function init(config: AppConfig) {
   const manifest = browser.runtime.getManifest && browser.runtime.getManifest()
   if (manifest && manifest.manifest_version === 3) {
+    initMv3(config)
     return
   }
 
@@ -17,14 +29,18 @@ export function init(config: AppConfig) {
     return
   }
 
-  if (config.pdfSniff) {
+  if (shouldEnableAutoPdfSniff(config)) {
     startListening()
   }
 
   addConfigListener(({ newConfig, oldConfig }) => {
     if (newConfig) {
-      if (!oldConfig || newConfig.pdfSniff !== oldConfig.pdfSniff) {
-        if (newConfig.pdfSniff) {
+      if (
+        !oldConfig ||
+        shouldEnableAutoPdfSniff(newConfig) !==
+          shouldEnableAutoPdfSniff(oldConfig)
+      ) {
+        if (shouldEnableAutoPdfSniff(newConfig)) {
           startListening()
         } else {
           stopListening()
@@ -42,7 +58,7 @@ export async function openPDF(url?: string, force?: boolean) {
   const {
     appConfig: { pdfStandalone }
   } = await initBackgroundState()
-  let pdfURL = browser.runtime.getURL('assets/pdf/web/viewer.html')
+  let pdfURL = browser.runtime.getURL(PDF_VIEWER_PATH)
 
   if (url) {
     pdfURL += '?file=' + encodeURIComponent(url)
@@ -76,6 +92,45 @@ export function extractPDFUrl(fullurl?: string): string | void {
   }
   const searchURL = new URL(fullurl)
   return decodeURIComponent(searchURL.searchParams.get('file') || '')
+}
+
+export function consumePendingPdfOpenForViewer(
+  sender: browser.runtime.MessageSender
+) {
+  const manifest = browser.runtime.getManifest && browser.runtime.getManifest()
+  if (!manifest || manifest.manifest_version !== 3) {
+    return Promise.resolve(null)
+  }
+
+  return consumeMv3PendingPdfOpenForViewer(sender)
+}
+
+export async function openPdfViewerStandaloneIfNeeded(
+  url: string,
+  sender: browser.runtime.MessageSender
+) {
+  const {
+    appConfig: { pdfStandalone }
+  } = hasBackgroundState()
+    ? getBackgroundStateSnapshot()
+    : await initBackgroundState()
+
+  if (pdfStandalone !== 'always') {
+    return false
+  }
+
+  const viewerUrl = browser.runtime.getURL(
+    `${PDF_VIEWER_PATH}?file=${encodeURIComponent(url)}`
+  )
+
+  await openPDFStandalone(viewerUrl)
+
+  const tabId = sender.tab && sender.tab.id
+  if (typeof tabId === 'number' && tabId >= 0) {
+    await browser.tabs.remove(tabId)
+  }
+
+  return true
 }
 
 function startListening() {
@@ -121,13 +176,18 @@ function otherPdfListener({
   const {
     appConfig: { pdfBlacklist, pdfWhitelist, pdfStandalone }
   } = getBackgroundStateSnapshot()
-  const matchURL = ([r]: ReadonlyArray<string>) => new RegExp(r).test(url)
-  if (pdfBlacklist.some(matchURL) && !pdfWhitelist.some(matchURL)) {
+  const action = getOtherPdfSniffAction(url, {
+    pdfBlacklist,
+    pdfSniff: true,
+    pdfStandalone,
+    pdfWhitelist
+  } as AppConfig)
+  if (action !== 'open') {
     return
   }
 
   const redirectUrl = browser.runtime.getURL(
-    `assets/pdf/web/viewer.html?file=${encodeURIComponent(url)}`
+    `${PDF_VIEWER_PATH}?file=${encodeURIComponent(url)}`
   )
 
   if (tabId !== -1 && pdfStandalone === 'always') {
@@ -149,36 +209,27 @@ function httpPdfListener({
   const {
     appConfig: { pdfBlacklist, pdfWhitelist, pdfStandalone }
   } = getBackgroundStateSnapshot()
-  if (!responseHeaders) {
-    return
-  }
-  const matchURL = ([r]: ReadonlyArray<string>) => new RegExp(r).test(url)
-  if (pdfBlacklist.some(matchURL) && !pdfWhitelist.some(matchURL)) {
+  const action = getHttpPdfSniffActionByHeaders(url, responseHeaders, {
+    pdfBlacklist,
+    pdfSniff: true,
+    pdfStandalone,
+    pdfWhitelist
+  } as AppConfig)
+  if (action !== 'open') {
     return
   }
 
-  const contentTypeHeader = responseHeaders.find(
-    ({ name }) => name.toLowerCase() === 'content-type'
+  const redirectUrl = browser.runtime.getURL(
+    `${PDF_VIEWER_PATH}?file=${encodeURIComponent(url)}`
   )
-  if (contentTypeHeader && contentTypeHeader.value) {
-    const contentType = contentTypeHeader.value.toLowerCase()
-    if (
-      contentType.endsWith('pdf') ||
-      (contentType === 'application/octet-stream' && url.endsWith('.pdf'))
-    ) {
-      const redirectUrl = browser.runtime.getURL(
-        `assets/pdf/web/viewer.html?file=${encodeURIComponent(url)}`
-      )
 
-      if (tabId !== -1 && pdfStandalone === 'always') {
-        browser.tabs.remove(tabId)
-        openPDFStandalone(redirectUrl)
-        return { cancel: true }
-      }
-
-      return { redirectUrl }
-    }
+  if (tabId !== -1 && pdfStandalone === 'always') {
+    browser.tabs.remove(tabId)
+    openPDFStandalone(redirectUrl)
+    return { cancel: true }
   }
+
+  return { redirectUrl }
 }
 
 function openPDFStandalone(url: string) {

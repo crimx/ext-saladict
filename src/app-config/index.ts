@@ -92,7 +92,7 @@ function _getDefaultConfig() {
     pdfSniff: false,
     /**
      * Open PDF viewer in standalone panel.
-     * 'manual': do not redirect on web requests
+     * 'manual': do not redirect on web requests, keep manual opening only
      */
     pdfStandalone: '' as '' | 'always' | 'manual',
     /** URLs, [regexp.source, match_pattern] */

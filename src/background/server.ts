@@ -27,6 +27,10 @@ import {
   getDictSrcPageInOffscreen,
   searchDictInOffscreen
 } from './offscreen-dict-bridge'
+import {
+  consumePendingPdfOpenForViewer,
+  openPdfViewerStandaloneIfNeeded
+} from './pdf-sniffer'
 
 const mv3BackgroundPreferredDicts = new Set<DictID>([
   'baidu',
@@ -34,7 +38,8 @@ const mv3BackgroundPreferredDicts = new Set<DictID>([
   'google',
   'sogou',
   'tencent',
-  'youdaotrans'
+  'youdaotrans',
+  'zdic'
 ])
 
 function shouldUseOffscreenDictHost(id: DictID) {
@@ -44,7 +49,8 @@ function shouldUseOffscreenDictHost(id: DictID) {
 
   // MV3 offscreen documents only expose runtime APIs.
   // OpenTranslate-based machine translators need privileged network APIs
-  // such as declarativeNetRequest in Chromium MV3, so keep them in the
+  // such as declarativeNetRequest in Chromium MV3. Zdic audio referer
+  // compatibility relies on the same class of APIs, so keep them in the
   // background/service worker host instead of routing them to offscreen.
   return !mv3BackgroundPreferredDicts.has(id)
 }
@@ -134,6 +140,10 @@ export class BackgroundServer {
           return getWords(msg.payload)
         case 'GET_SUGGESTS':
           return getSuggests(msg.payload)
+        case 'GET_PDF_SNIFF_PENDING':
+          return consumePendingPdfOpenForViewer(sender)
+        case 'OPEN_PDF_VIEWER_STANDALONE_IF_NEEDED':
+          return openPdfViewerStandaloneIfNeeded(msg.payload.url, sender)
         case 'YOUDAO_TRANSLATE_AJAX':
           return this.youdaoTranslateAjax(msg.payload)
       }

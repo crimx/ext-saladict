@@ -4,6 +4,7 @@ import { browser } from '../../helper'
 
 const mockOpenUrl = jest.fn((...any: any[]) => Promise.resolve())
 const mockCanUseOffscreenDocument = jest.fn()
+const mockSearchDictInOffscreen = jest.fn()
 const mockGetDictSrcPageInOffscreen = jest.fn()
 const mockInitBackgroundState = jest.fn((...any: any[]) =>
   Promise.resolve({
@@ -31,7 +32,7 @@ jest.mock('@/background/offscreen-document', () => ({
 }))
 
 jest.mock('@/background/offscreen-dict-bridge', () => ({
-  searchDictInOffscreen: jest.fn(),
+  searchDictInOffscreen: (...args: any[]) => mockSearchDictInOffscreen(...args),
   callDictEngineMethodInOffscreen: jest.fn(),
   getDictSrcPageInOffscreen: (...args: any[]) =>
     mockGetDictSrcPageInOffscreen(...args)
@@ -129,6 +130,35 @@ describe('BackgroundServer.openSrcPage', () => {
     expect(mockOpenUrl).toHaveBeenCalledWith({
       url: 'https://example.com/fallback',
       active: true
+    })
+  })
+
+  it('keeps zdic searches on the background in MV3', async () => {
+    mockCanUseOffscreenDocument.mockReturnValue(true)
+
+    const { BackgroundServer } = require('@/background/server')
+    const getDictEngine = jest
+      .spyOn(BackgroundServer, 'getDictEngine')
+      .mockResolvedValue({
+        search: jest.fn(() =>
+          Promise.resolve({
+            result: [{ title: '基本解释', content: '沙拉' }]
+          })
+        ),
+        getSrcPage: jest.fn()
+      })
+
+    const result = await BackgroundServer.getInstance().fetchDictResult({
+      id: 'zdic',
+      text: '沙拉',
+      payload: { isPDF: false }
+    })
+
+    expect(mockSearchDictInOffscreen).not.toHaveBeenCalled()
+    expect(getDictEngine).toHaveBeenCalledWith('zdic')
+    expect(result).toEqual({
+      id: 'zdic',
+      result: [{ title: '基本解释', content: '沙拉' }]
     })
   })
 })

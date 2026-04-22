@@ -1,8 +1,11 @@
 import { browser } from '../../../../helper'
 
 describe('Dict/Zdic/referer', () => {
+  let originalWebRequest: typeof browser.webRequest
+
   beforeEach(() => {
     browser.flush()
+    originalWebRequest = browser.webRequest
     browser.runtime.getManifest.callsFake(() => ({
       manifest_version: 2
     }))
@@ -12,6 +15,7 @@ describe('Dict/Zdic/referer', () => {
   })
 
   afterEach(() => {
+    ;(browser as any).webRequest = originalWebRequest
     delete (self as any).chrome
   })
 
@@ -118,5 +122,17 @@ describe('Dict/Zdic/referer', () => {
     await expect(ensureZdicAudioReferer()).rejects.toThrow('boom')
     await expect(ensureZdicAudioReferer()).resolves.toBeUndefined()
     expect(updateSessionRules).toHaveBeenCalledTimes(2)
+  })
+
+  it('should fail gracefully when webRequest is unavailable in MV2', async () => {
+    ;(browser as any).webRequest = undefined
+
+    const { ensureZdicAudioReferer } = require(
+      '@/components/dictionaries/zdic/referer'
+    )
+
+    await expect(ensureZdicAudioReferer()).rejects.toThrow(
+      'webRequest.onBeforeSendHeaders is unavailable.'
+    )
   })
 })

@@ -87,6 +87,17 @@ async function modifyViewrJS() {
   }
   file = file.replace(validateTester, '/* saladict */')
 
+  const autoViewerTester =
+    /file = params\.get\("file"\) \?\? _app_options\.AppOptions\.get\("defaultUrl"\);/
+  if (!autoViewerTester.test(file)) {
+    shell.echo('Could not locate default viewer url in viewer.js')
+    shell.exit(1)
+  }
+  file = file.replace(
+    autoViewerTester,
+    'file = params.get("file") ?? (params.get("saladict-pdf") === "1" ? "" : _app_options.AppOptions.get("defaultUrl")); /* saladict */'
+  )
+
   // force dark mode
   const viewCssTester = /"viewerCssTheme": 0,/
   if (!viewCssTester.test(file)) {
@@ -113,6 +124,7 @@ async function modifyViewerHTML() {
     `
     <!-- Saladict -->
     <script src="/assets/browser-polyfill.min.js"></script>
+    <script src="/assets/pdf-viewer-bridge.js"></script>
     <script src="/assets/inject-dict-panel.js"></script>
     <script src="/assets/vimium-c-injector.js"></script>
   </body>

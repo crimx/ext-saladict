@@ -5,5 +5,5 @@
   },
   "incognito": "split",
   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
-  "minimum_chrome_version": "109"
+  "minimum_chrome_version": "128"
 }

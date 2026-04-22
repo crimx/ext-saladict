@@ -59,6 +59,22 @@ export type MessageConfig = MessageConfigType<{
     }>
   }
 
+  GET_PDF_SNIFF_PENDING: {
+    response:
+      | null
+      | {
+          action: 'open' | 'bypass'
+          url: string
+        }
+  }
+
+  OPEN_PDF_VIEWER_STANDALONE_IF_NEEDED: {
+    payload: {
+      url: string
+    }
+    response: boolean
+  }
+
   FETCH_DICT_RESULT: {
     payload: {
       id: DictID
