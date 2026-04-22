@@ -1,9 +1,9 @@
-;(function () {
+;(function() {
   var AUTO_MARKER = 'saladict-pdf'
   var MAX_ATTEMPTS = 20
 
   function sleep(ms) {
-    return new Promise(function (resolve) {
+    return new Promise(function(resolve) {
       setTimeout(resolve, ms)
     })
   }

@@ -24,6 +24,43 @@ const pdfFiles = [
 ]
 const pdfDirs = ['web/cmaps', 'web/images', 'web/locale']
 const files = [...pdfFiles, ...pdfDirs]
+const pdfViewerThemeBootstrap = `
+    <script>
+      ;(function () {
+        var darkMode = null
+        var prefs = {}
+        var prefsText = null
+
+        try {
+          darkMode = localStorage.getItem('saladict-pdf-viewer-dark-mode')
+          prefsText = localStorage.getItem('pdfjs.preferences')
+        } catch (error) {
+          darkMode = null
+          prefsText = null
+        }
+
+        if (darkMode !== '0' && darkMode !== '1') {
+          return
+        }
+
+        if (prefsText) {
+          try {
+            prefs = JSON.parse(prefsText) || {}
+          } catch (error) {
+            prefs = {}
+          }
+        }
+
+        prefs.viewerCssTheme = darkMode === '1' ? 2 : 1
+
+        try {
+          localStorage.setItem('pdfjs.preferences', JSON.stringify(prefs))
+        } catch (error) {
+          /* ignore localStorage failures */
+        }
+      })()
+    </script>
+`
 
 shell.cd(path.resolve(__dirname))
 
@@ -87,8 +124,7 @@ async function modifyViewrJS() {
   }
   file = file.replace(validateTester, '/* saladict */')
 
-  const autoViewerTester =
-    /file = params\.get\("file"\) \?\? _app_options\.AppOptions\.get\("defaultUrl"\);/
+  const autoViewerTester = /file = params\.get\("file"\) \?\? _app_options\.AppOptions\.get\("defaultUrl"\);/
   if (!autoViewerTester.test(file)) {
     shell.echo('Could not locate default viewer url in viewer.js')
     shell.exit(1)
@@ -98,14 +134,6 @@ async function modifyViewrJS() {
     'file = params.get("file") ?? (params.get("saladict-pdf") === "1" ? "" : _app_options.AppOptions.get("defaultUrl")); /* saladict */'
   )
 
-  // force dark mode
-  const viewCssTester = /"viewerCssTheme": 0,/
-  if (!viewCssTester.test(file)) {
-    shell.echo('Could not locate viewerCssTheme config in viewer.js')
-    shell.exit(1)
-  }
-  file = file.replace(viewCssTester, '"viewerCssTheme": 2, /* saladict */')
-
   await fs.writeFile(viewerPath, file)
 }
 
@@ -113,10 +141,20 @@ async function modifyViewerHTML() {
   const viewerPath = path.join(__dirname, repoRoot, 'web/viewer.html')
   let file = await fs.readFile(viewerPath, 'utf8')
 
+  if (!file.includes(`<link rel="stylesheet" href="viewer.css">`)) {
+    shell.echo('Could not locate viewer.css in viewer.html')
+    shell.exit(1)
+  }
+
   if (!file.includes(`</body>`)) {
     shell.echo('Could not locate </body> in viewer.html')
     shell.exit(1)
   }
+
+  file = file.replace(
+    `<link rel="stylesheet" href="viewer.css">`,
+    `<link rel="stylesheet" href="viewer.css">${pdfViewerThemeBootstrap}`
+  )
 
   // Load Saladict dict panel
   file = file.replace(
