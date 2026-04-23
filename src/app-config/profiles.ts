@@ -102,15 +102,13 @@ export function sentence(): ProfileStorage {
 
   const profile = getDefaultProfile(idItem.id) as ProfileMutable
   profile.dicts.selected = [
-    'jukuu',
     'bing',
     'cnki',
     'renren',
     'eudic',
     'cobuild',
     'cambridge',
-    'longman',
-    'macmillan'
+    'longman'
   ]
 
   const allDict = profile.dicts.all
@@ -121,7 +119,6 @@ export function sentence(): ProfileStorage {
   allDict.bing.options.sentence = 9999
   allDict.cnki.options.dict = false
   allDict.eudic.options.resultnum = 9999
-  allDict.macmillan.options.related = false
   allDict.longman.options.wordfams = false
   allDict.longman.options.collocations = false
   allDict.longman.options.grammar = false
@@ -144,9 +141,6 @@ export function scholar(): ProfileStorage {
     'cobuild',
     'etymonline',
     'cnki',
-    'macmillan',
-    'lexico',
-    'websterlearner',
     'google',
     'youdaotrans',
     'zdic',
@@ -155,39 +149,6 @@ export function scholar(): ProfileStorage {
   ]
 
   const allDict = profile.dicts.all
-  allDict.macmillan.defaultUnfold = {
-    matchAll: false,
-    english: false,
-    chinese: false,
-    japanese: false,
-    korean: false,
-    french: false,
-    spanish: false,
-    deutsch: false,
-    others: false
-  }
-  allDict.lexico.defaultUnfold = {
-    matchAll: false,
-    english: false,
-    chinese: false,
-    japanese: false,
-    korean: false,
-    french: false,
-    spanish: false,
-    deutsch: false,
-    others: false
-  }
-  allDict.websterlearner.defaultUnfold = {
-    matchAll: false,
-    english: false,
-    chinese: false,
-    japanese: false,
-    korean: false,
-    french: false,
-    spanish: false,
-    deutsch: false,
-    others: false
-  }
   allDict.google.selectionWC.min = 5
   allDict.youdaotrans.selectionWC.min = 5
 

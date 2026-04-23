@@ -14,12 +14,8 @@ import google from '@/components/dictionaries/google/config'
 import googledict from '@/components/dictionaries/googledict/config'
 import guoyu from '@/components/dictionaries/guoyu/config'
 import hjdict from '@/components/dictionaries/hjdict/config'
-import jikipedia from '@/components/dictionaries/jikipedia/config'
-import jukuu from '@/components/dictionaries/jukuu/config'
-import lexico from '@/components/dictionaries/lexico/config'
 import liangan from '@/components/dictionaries/liangan/config'
 import longman from '@/components/dictionaries/longman/config'
-import macmillan from '@/components/dictionaries/macmillan/config'
 import mojidict from '@/components/dictionaries/mojidict/config'
 import naver from '@/components/dictionaries/naver/config'
 import renren from '@/components/dictionaries/renren/config'
@@ -31,7 +27,6 @@ import vocabulary from '@/components/dictionaries/vocabulary/config'
 import weblio from '@/components/dictionaries/weblio/config'
 import weblioejje from '@/components/dictionaries/weblioejje/config'
 import merriamwebster from '@/components/dictionaries/merriamwebster/config'
-import websterlearner from '@/components/dictionaries/websterlearner/config'
 import wikipedia from '@/components/dictionaries/wikipedia/config'
 import youdao from '@/components/dictionaries/youdao/config'
 import youdaotrans from '@/components/dictionaries/youdaotrans/config'
@@ -54,12 +49,8 @@ export const defaultAllDicts = {
   googledict: googledict(),
   guoyu: guoyu(),
   hjdict: hjdict(),
-  jikipedia: jikipedia(),
-  jukuu: jukuu(),
-  lexico: lexico(),
   liangan: liangan(),
   longman: longman(),
-  macmillan: macmillan(),
   mojidict: mojidict(),
   naver: naver(),
   renren: renren(),
@@ -71,7 +62,6 @@ export const defaultAllDicts = {
   weblio: weblio(),
   weblioejje: weblioejje(),
   merriamwebster: merriamwebster(),
-  websterlearner: websterlearner(),
   wikipedia: wikipedia(),
   youdao: youdao(),
   youdaotrans: youdaotrans(),

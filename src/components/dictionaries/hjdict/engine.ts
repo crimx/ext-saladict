@@ -21,13 +21,12 @@ import { getStaticSpeaker } from '@/components/Speaker'
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 
 export const getSrcPage: GetSrcPageFunction = (text, config, profile) => {
-  return `https://www.hjdict.com/${getLangCode(
-    text,
-    profile
-  )}/${encodeURIComponent(text)}`
+  return `dict.hujiang.com/${getLangCode(text, profile)}/${encodeURIComponent(
+    text
+  )}`
 }
 
-const HOST = 'https://www.hjdict.com'
+const HOST = 'https://dict.hujiang.com'
 
 export interface HjdictResultLex {
   type: 'lex'
@@ -74,8 +73,8 @@ export const search: SearchFunction<HjdictResult, HjdictPayload> = async (
   await Promise.all(
     Object.keys(cookies).map(name =>
       browser.cookies.set({
-        url: 'https://www.hjdict.com',
-        domain: 'hjdict.com',
+        url: 'https://dict.hujiang.com',
+        domain: 'hujiang.com',
         name,
         value: String(cookies[name])
       })
@@ -85,7 +84,7 @@ export const search: SearchFunction<HjdictResult, HjdictPayload> = async (
   const langCode = payload.langCode || getLangCode(text, profile)
 
   return fetchDirtyDOM(
-    `https://www.hjdict.com/${langCode}/${encodeURIComponent(text)}`,
+    `https://dict.hujiang.com/${langCode}/${encodeURIComponent(text)}`,
     {
       withCredentials: true
     }

@@ -308,10 +308,7 @@ function _getDefaultConfig() {
           'cobuild',
           'eudic',
           'longman',
-          'macmillan',
-          'lexico',
           'urban',
-          'websterlearner',
           'youdao'
         ] as DictID[],
         accent: 'uk' as 'us' | 'uk'
