@@ -6,7 +6,6 @@ import ahdict from '@/components/dictionaries/ahdict/config'
 import oaldict from '@/components/dictionaries/oaldict/config'
 import caiyun from '@/components/dictionaries/caiyun/config'
 import cambridge from '@/components/dictionaries/cambridge/config'
-import cnki from '@/components/dictionaries/cnki/config'
 import cobuild from '@/components/dictionaries/cobuild/config'
 import etymonline from '@/components/dictionaries/etymonline/config'
 import eudic from '@/components/dictionaries/eudic/config'
@@ -41,7 +40,6 @@ export const defaultAllDicts = {
   oaldict: oaldict(),
   caiyun: caiyun(),
   cambridge: cambridge(),
-  cnki: cnki(),
   cobuild: cobuild(),
   etymonline: etymonline(),
   eudic: eudic(),

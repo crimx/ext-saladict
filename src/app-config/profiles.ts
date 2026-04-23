@@ -103,7 +103,6 @@ export function sentence(): ProfileStorage {
   const profile = getDefaultProfile(idItem.id) as ProfileMutable
   profile.dicts.selected = [
     'bing',
-    'cnki',
     'renren',
     'eudic',
     'cobuild',
@@ -117,7 +116,6 @@ export function sentence(): ProfileStorage {
   allDict.bing.options.cdef = false
   allDict.bing.options.related = false
   allDict.bing.options.sentence = 9999
-  allDict.cnki.options.dict = false
   allDict.eudic.options.resultnum = 9999
   allDict.longman.options.wordfams = false
   allDict.longman.options.collocations = false
@@ -140,7 +138,6 @@ export function scholar(): ProfileStorage {
     'cambridge',
     'cobuild',
     'etymonline',
-    'cnki',
     'google',
     'youdaotrans',
     'zdic',

@@ -80,7 +80,7 @@ export const search: SearchFunction<LongmanResult> = (
 ) => {
   const options = profile.dicts.all.longman.options
   return fetchDirtyDOM(
-    'http://www.ldoceonline.com/dictionary/' +
+    'https://www.ldoceonline.com/dictionary/' +
       text.toLocaleLowerCase().replace(/[^A-Za-z0-9]+/g, '-')
   )
     .catch(handleNetWorkError)

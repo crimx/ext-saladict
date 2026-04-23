@@ -175,7 +175,6 @@
     "sass": "^1.34.0",
     "sass-loader": "^7.1.0",
     "sass-resources-loader": "^2.0.3",
-    "socks-proxy-agent": "^5.0.0",
     "standard-version": "^9.0.0",
     "storybook-addon-jsx": "7.1.15",
     "storybook-addon-react-docgen": "1.2.32",
