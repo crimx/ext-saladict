@@ -81,11 +81,17 @@ export interface ViewPorps<T> {
 
 export type SearchErrorType = 'NO_RESULT' | 'NETWORK_ERROR'
 
-export function handleNoResult<T = any>(): Promise<T> {
+export function handleNoResult<T = any>(e?: any): Promise<T> {
+  if (e && process.env.NODE_ENV !== 'production') {
+    console.error(e)
+  }
   return Promise.reject(new Error('NO_RESULT'))
 }
 
-export function handleNetWorkError(): Promise<never> {
+export function handleNetWorkError(e?: any): Promise<never> {
+  if (e && process.env.NODE_ENV !== 'production') {
+    console.error(e)
+  }
   return Promise.reject(new Error('NETWORK_ERROR'))
 }
 
