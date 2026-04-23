@@ -9,6 +9,45 @@ import { getDefaultConfig } from '@/app-config'
 import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
 
 describe('Dict/Bing/engine', () => {
+  it('should parse audio urls from semantic data attributes', async () => {
+    const profile = getDefaultProfile() as ProfileMutable
+    profile.dicts.all.bing.options = {
+      tense: false,
+      phsym: true,
+      cdef: false,
+      related: false,
+      sentence: 1
+    }
+
+    const searchResult = await search('love', getDefaultConfig(), profile, {
+      isPDF: false
+    })
+    const result = searchResult.result as BingResultLex
+
+    expect(searchResult.audio).toHaveProperty(
+      'us',
+      expect.stringContaining('/dict/mediamp3?blob=')
+    )
+    expect(searchResult.audio).toHaveProperty(
+      'uk',
+      expect.stringContaining('/dict/mediamp3?blob=')
+    )
+    expect(result.phsym).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          pron: expect.stringContaining('/dict/mediamp3?blob=')
+        })
+      ])
+    )
+    expect(result.sentences).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          mp3: expect.stringContaining('/dict/mediamp3?blob=')
+        })
+      ])
+    )
+  })
+
   it('should parse lex result correctly', () => {
     const profile = getDefaultProfile() as ProfileMutable
     profile.dicts.all.bing.options = {

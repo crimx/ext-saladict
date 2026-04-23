@@ -4,6 +4,7 @@ import {
   handleNetWorkError,
   getText,
   getInnerHTML,
+  getFullLink,
   SearchFunction,
   GetSrcPageFunction,
   DictSearchResult,
@@ -19,6 +20,12 @@ const HOST = 'https://cn.bing.com'
 
 const DICT_LINK =
   'https://cn.bing.com/dict/clientsearch?mkt=zh-CN&setLang=zh&form=BDVEHC&ClientVer=BDDTV3.5.1.4320&q='
+
+const AUDIO_DATA_ATTRS = [
+  'data-pronunciation',
+  'data-mp3link',
+  'audiomd5'
+] as const
 
 /** Lexical result */
 export interface BingResultLex {
@@ -110,6 +117,52 @@ export const search: SearchFunction<BingResult> = (
     })
 }
 
+function getAudioFromOnclick(el: Element): string {
+  const onclick = el.getAttribute('onclick') || ''
+  const match = onclick.match(
+    /((?:https?:)?\/\/[^'")\s]+\.mp3(?:\?[^'")\s]*)?|\/[^'")\s]+\.mp3(?:\?[^'")\s]*)?)/
+  )
+
+  if (!match) {
+    return ''
+  }
+
+  return new URL(match[1], HOST).href
+}
+
+function getBingAudioURL(parent: ParentNode | null): string {
+  if (!parent) {
+    return ''
+  }
+
+  const candidates: Element[] = []
+  if (parent instanceof Element) {
+    candidates.push(parent)
+  }
+  candidates.push(
+    ...Array.from(
+      parent.querySelectorAll(
+        '[data-pronunciation], [data-mp3link], [audiomd5], [onclick]'
+      )
+    )
+  )
+
+  for (const el of candidates) {
+    for (const attr of AUDIO_DATA_ATTRS) {
+      if (el.hasAttribute(attr)) {
+        return getFullLink(HOST, el, attr)
+      }
+    }
+
+    const audio = getAudioFromOnclick(el)
+    if (audio) {
+      return audio
+    }
+  }
+
+  return ''
+}
+
 function handleLexResult(
   doc: Document,
   options: BingConfig['options'],
@@ -127,16 +180,9 @@ function handleLexResult(
     const $prons = Array.from(doc.querySelectorAll('.client_def_hd_pn_list'))
     if ($prons.length > 0) {
       searchResult.result.phsym = $prons.map(el => {
-        let pron = ''
-        const $audio = el.querySelector('.client_aud_o')
-        if ($audio) {
-          pron = (($audio.getAttribute('onclick') || '').match(
-            /https.*\.mp3/
-          ) || [''])[0]
-        }
         return {
           lang: getText(el, '.client_def_hd_pn'),
-          pron
+          pron: getBingAudioURL(el)
         }
       })
 
@@ -185,13 +231,6 @@ function handleLexResult(
       i++
     ) {
       const el = $sens[i]
-      let mp3 = ''
-      const $audio = el.querySelector('.client_aud_o')
-      if ($audio) {
-        mp3 = (($audio.getAttribute('onclick') || '').match(/https.*\.mp3/) || [
-          ''
-        ])[0]
-      }
       el.querySelectorAll('.client_sen_en_word').forEach($word => {
         $word.outerHTML = getText($word)
       })
@@ -210,7 +249,7 @@ function handleLexResult(
           transform
         }),
         source: getText(el, '.client_sentence_list_link'),
-        mp3
+        mp3: getBingAudioURL(el)
       })
     }
     searchResult.result.sentences = sentences
