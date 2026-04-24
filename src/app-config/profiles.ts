@@ -46,8 +46,7 @@ export function _getDefaultProfile(id?: string) {
         'youdaotrans',
         'zdic',
         'guoyu',
-        'liangan',
-        'googledict'
+        'liangan'
       ] as Array<keyof ReturnType<typeof getAllDicts>>,
       // settings of each dict will be auto-generated
       all: getAllDicts()
@@ -134,7 +133,6 @@ export function scholar(): ProfileStorage {
 
   const profile = getDefaultProfile(idItem.id) as ProfileMutable
   profile.dicts.selected = [
-    'googledict',
     'cambridge',
     'cobuild',
     'etymonline',
@@ -185,7 +183,6 @@ export function nihongo(): ProfileStorage {
     'google',
     'tencent',
     'caiyun',
-    'googledict',
     'wikipedia'
   ]
   profile.dicts.all.wikipedia.options.lang = 'ja'

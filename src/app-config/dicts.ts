@@ -10,7 +10,6 @@ import cobuild from '@/components/dictionaries/cobuild/config'
 import etymonline from '@/components/dictionaries/etymonline/config'
 import eudic from '@/components/dictionaries/eudic/config'
 import google from '@/components/dictionaries/google/config'
-import googledict from '@/components/dictionaries/googledict/config'
 import guoyu from '@/components/dictionaries/guoyu/config'
 import hjdict from '@/components/dictionaries/hjdict/config'
 import liangan from '@/components/dictionaries/liangan/config'
@@ -44,7 +43,6 @@ export const defaultAllDicts = {
   etymonline: etymonline(),
   eudic: eudic(),
   google: google(),
-  googledict: googledict(),
   guoyu: guoyu(),
   hjdict: hjdict(),
   liangan: liangan(),
