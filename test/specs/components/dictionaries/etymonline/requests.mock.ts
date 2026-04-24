@@ -12,6 +12,6 @@ export const mockRequest: MockRequest = mock => {
   mock.onGet(/etymonline.+\/search\?/).reply(info => {
     return /love-word/.test(info.url || '')
       ? [404]
-      : [200, require('!raw-loader!./response/love-word.html').default]
+      : [200, require('!raw-loader!./response/love.html').default]
   })
 }

@@ -20,7 +20,7 @@ export const DictEtymonline: FC<ViewPorps<EtymonlineResult>> = ({ result }) => (
             item.title
           )}
         </h2>
-        <StrElm tag="p" className="dictEtymonline-Def" html={item.def} />
+        <StrElm tag="div" className="dictEtymonline-Def" html={item.def} />
         {item.chart ? (
           <img src={item.chart} alt={'Origin of ' + item.title} />
         ) : null}

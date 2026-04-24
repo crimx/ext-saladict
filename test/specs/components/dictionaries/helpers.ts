@@ -7,9 +7,12 @@ export async function retry(executor: () => Promise<any>, retryTimes = 1) {
     try {
       return await executor()
     } catch (e) {
+      if (e?.message === 'NO_RESULT') {
+        throw e
+      }
       error = e
       await timer(1000)
     }
   }
-  console.error('>>>>> timeout', error)
+  throw error
 }

@@ -11,8 +11,9 @@ export const DictCOBUILD: FC<ViewPorps<COBUILDResult>> = ({ result }) => {
       return renderCiba(result)
     case 'collins':
       return renderCol(result)
+    default:
+      return null
   }
-  return null
 }
 
 export default DictCOBUILD
@@ -57,7 +58,7 @@ function renderCol(result: COBUILDColResult) {
       {result.sections.length > 0 && (
         <select value={iSec} onChange={e => setiSec(e.currentTarget.value)}>
           {result.sections.map((section, i) => (
-            <option key={section.id} value={i}>
+            <option key={section.id + i} value={i}>
               {section.type}
               {section.title ? ` :${section.title}` : ''}
               {section.num ? ` ${section.num}` : ''}

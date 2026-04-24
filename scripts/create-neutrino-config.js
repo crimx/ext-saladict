@@ -408,9 +408,11 @@ module.exports = function createNeutrinoConfig({
         testRegex: ['test/specs/.*\\.spec\\.(ts|tsx|js|jsx)'],
         setupFilesAfterEnv: ['<rootDir>/config/jest/setupTests.js'],
         moduleNameMapper: {
+          '^(?:!raw-loader!|raw-loader!)(.*)$': '$1',
           '^@/(.*)$': '<rootDir>/src/$1'
         },
         transform: {
+          '\\.(html|txt)$': '<rootDir>/config/jest/rawTextTransform.js',
           '\\.(mjs|jsx|js|ts|tsx)$': require.resolve(
             '@neutrinojs/jest/src/transformer'
           )
