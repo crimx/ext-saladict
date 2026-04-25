@@ -1,4 +1,4 @@
-import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
+import { fetchDirtyDOM, fetchPlainText } from '@/_helpers/fetch-dom'
 import {
   getText,
   handleNoResult,
@@ -36,8 +36,9 @@ export const search: SearchFunction<EudicResult> = (
       .join(' ')
   )
   const options = profile.dicts.all.eudic.options
+  const searchUrl = 'https://dict.eudic.net/dicts/en/' + text
 
-  return fetchDirtyDOM('https://dict.eudic.net/dicts/en/' + text, {
+  return fetchDirtyDOM(searchUrl, {
     withCredentials: false
   })
     .catch(handleNetWorkError)
@@ -93,7 +94,7 @@ function handleDOM(
 }
 
 function validator(doc: Document): Document | Promise<Document> {
-  if (doc.querySelector('#TingLiju')) {
+  if (doc.querySelector('#lj_ting .lj_item')) {
     return doc
   }
 
@@ -102,12 +103,16 @@ function validator(doc: Document): Document | Promise<Document> {
     return handleNoResult()
   }
 
-  const formData = new FormData()
-  formData.append('status', status.value)
+  const data = 'status=' + encodeURIComponent(status.value)
 
-  return fetchDirtyDOM('https://dict.eudic.net/Dicts/en/tab-detail/-12', {
+  return fetchPlainText('https://dict.eudic.net/Dicts/en/tab-detail/-12', {
     method: 'POST',
-    data: formData,
+    data,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
     withCredentials: false
   })
+    .then(html => new DOMParser().parseFromString(html, 'text/html'))
+    .catch(handleNetWorkError)
 }
