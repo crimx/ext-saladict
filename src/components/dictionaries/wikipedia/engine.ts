@@ -1,4 +1,4 @@
-import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
+import axios, { AxiosResponse } from 'axios'
 import { isContainJapanese, isContainChinese } from '@/_helpers/lang-check'
 import {
   handleNoResult,
@@ -7,9 +7,7 @@ import {
   SearchFunction,
   HTMLString,
   GetSrcPageFunction,
-  getText,
-  DictSearchResult,
-  getFullLink
+  DictSearchResult
 } from '../helpers'
 import { AllDicts } from '@/app-config'
 
@@ -32,7 +30,7 @@ export type LangList = LangListItem[]
 export interface WikipediaResult {
   title: string
   content: HTMLString
-  langSelector: string
+  langList: LangList
 }
 
 type WikipediaSearchResult = DictSearchResult<WikipediaResult>
@@ -49,91 +47,16 @@ export const search: SearchFunction<WikipediaResult, WikipediaPayload> = (
   payload
 ) => {
   const { lang } = profile.dicts.all.wikipedia.options
-  let subdomain = getSubdomain(text, lang)
+  const target = getSearchTarget(payload.url, text, lang)
 
-  let url = payload.url
-  if (url) {
-    const matchSubdomain = url.match(/([^/.]+)\.m\.wikipedia\.org/)
-    if (matchSubdomain) {
-      subdomain = matchSubdomain[1]
-    } else {
-      url = url.replace(/^\//, `https://${subdomain}.m.wikipedia.org/`)
-    }
-  } else {
-    const path = lang.startsWith('zh-') ? lang : 'wiki'
-    url = `https://${subdomain}.m.wikipedia.org/${path}/${encodeURIComponent(
-      text
-    )}`
-  }
-
-  return fetchDirtyDOM(url)
+  return axios
+    .get<WikipediaApiResponse>(getApiUrl(target.subdomain, target.title), {
+      withCredentials: false
+    })
     .catch(handleNetWorkError)
-    .then(doc => handleDOM(doc, subdomain))
-}
-
-export function fetchLangList(langSelector: string) {
-  return fetchDirtyDOM(langSelector)
-    .then(getLangList)
-    .catch(e => {
-      console.error('dict wikipedia: fetch langlist failed', e)
-      return [] as LangList
-    })
-}
-
-function handleDOM(
-  doc: Document,
-  subdomain: string
-): WikipediaSearchResult | Promise<WikipediaSearchResult> {
-  const $bs = [...doc.querySelectorAll('#mf-section-0 b')]
-  if (
-    $bs.some($b => {
-      const textContent = $b.textContent
-      return (
-        textContent === `The article that you're looking for doesn't exist.` ||
-        textContent === `维基百科目前还没有与上述标题相同的条目。`
-      )
-    })
-  ) {
-    return handleNoResult<WikipediaSearchResult>()
-  }
-
-  const title = getText(doc, '#section_0')
-  if (!title) {
-    return handleNoResult<WikipediaSearchResult>()
-  }
-
-  doc.querySelectorAll('#bodyContent .section-heading').forEach($header => {
-    $header.classList.add('collapsible-heading')
-    $header.setAttribute('role', 'button')
-    const $icon = $header.querySelector('.mw-ui-icon')
-    if ($icon) {
-      $icon.classList.add('mw-ui-icon-mf-arrow')
-      $icon.classList.remove('mf-mw-ui-icon-rotate-flip')
-    }
-  })
-
-  const content = getOuterHTML(`https://${subdomain}.wikipedia.org/`, doc, {
-    selector: '#bodyContent',
-    config: {}
-  })
-  if (!content) {
-    return handleNoResult<WikipediaSearchResult>()
-  }
-
-  let langSelector = ''
-  let $langSelector = doc.querySelector('a.language-selector')
-  if (!$langSelector) {
-    $langSelector = doc.querySelector('.language-selector a')
-  }
-  if ($langSelector) {
-    langSelector = getFullLink(
-      `https://${subdomain}.m.wikipedia.org/`,
-      $langSelector,
-      'href'
+    .then(({ data }: AxiosResponse<WikipediaApiResponse>) =>
+      handleApiResponse(data, target.subdomain)
     )
-  }
-
-  return { result: { title, content, langSelector } }
 }
 
 function getSubdomain(
@@ -151,13 +74,112 @@ function getSubdomain(
   return lang
 }
 
-function getLangList(doc: Document): LangList {
-  return [...doc.querySelectorAll('#mw-content-text li a')]
-    .map<LangListItem | undefined>($a => {
-      const url = $a.getAttribute('href')
-      const title = $a.getAttribute('title')
-      if (url && title) {
-        return { url, title }
+type WikipediaApiResponse = {
+  error?: {
+    code?: string
+    info?: string
+  }
+  parse?: {
+    title?: string
+    displaytitle?: string
+    text?: string
+    langlinks?: WikipediaLangLink[]
+  }
+}
+
+type WikipediaLangLink = {
+  url?: string
+  langname?: string
+  autonym?: string
+  title?: string
+}
+
+function getSearchTarget(
+  url: string | undefined,
+  text: string,
+  lang: AllDicts['wikipedia']['options']['lang']
+): { subdomain: string; title: string } {
+  if (!url) {
+    return { subdomain: getSubdomain(text, lang), title: text }
+  }
+
+  const match = url.match(
+    /^https?:\/\/([^/.]+)\.wikipedia\.org\/(?:wiki|[^/]+)\/([^#?]+)/
+  )
+  if (match) {
+    return {
+      subdomain: match[1],
+      title: decodeURIComponent(match[2]).replace(/_/g, ' ')
+    }
+  }
+
+  return { subdomain: getSubdomain(text, lang), title: url }
+}
+
+function getApiUrl(subdomain: string, title: string): string {
+  return (
+    `https://${subdomain}.wikipedia.org/w/api.php` +
+    '?action=parse' +
+    `&page=${encodeURIComponent(title)}` +
+    '&prop=text|displaytitle|langlinks' +
+    '&format=json' +
+    '&formatversion=2' +
+    '&redirects=1' +
+    '&disableeditsection=1' +
+    '&disabletoc=1'
+  )
+}
+
+function handleApiResponse(
+  data: WikipediaApiResponse,
+  subdomain: string
+): WikipediaSearchResult | Promise<WikipediaSearchResult> {
+  if (data.error || !data.parse || !data.parse.text) {
+    return handleNoResult<WikipediaSearchResult>(data.error)
+  }
+
+  const doc = new DOMParser().parseFromString(data.parse.text, 'text/html')
+  const content = getOuterHTML(`https://${subdomain}.wikipedia.org/`, doc, {
+    selector: '.mw-parser-output'
+  })
+  const title = getDisplayTitle(data.parse.displaytitle) || data.parse.title
+
+  if (!title || !content) {
+    return handleNoResult<WikipediaSearchResult>()
+  }
+
+  return {
+    result: {
+      title,
+      content,
+      langList: getLangList(data.parse.langlinks)
+    }
+  }
+}
+
+function getDisplayTitle(displaytitle?: string): string {
+  if (!displaytitle) {
+    return ''
+  }
+
+  return (
+    new DOMParser().parseFromString(displaytitle, 'text/html').documentElement
+      .textContent || ''
+  )
+}
+
+function getLangList(langlinks: WikipediaLangLink[] = []): LangList {
+  return langlinks
+    .map<LangListItem | undefined>(item => {
+      if (item.url && item.title) {
+        return {
+          url: item.url,
+          title: item.langname
+            ? `${item.langname} - ${item.title}`
+            : item.autonym
+            ? `${item.autonym} - ${item.title}`
+            : item.title
+        }
       }
     })
     .filter((x): x is LangListItem => !!x)

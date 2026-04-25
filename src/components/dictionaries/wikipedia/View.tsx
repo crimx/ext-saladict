@@ -1,12 +1,6 @@
-import React, { FC, useState, ReactNode, useEffect } from 'react'
-import {
-  WikipediaResult,
-  WikipediaPayload,
-  fetchLangList,
-  LangList
-} from './engine'
+import React, { FC, ReactNode, useEffect, useRef } from 'react'
+import { WikipediaResult, WikipediaPayload } from './engine'
 import { ViewPorps } from '@/components/dictionaries/helpers'
-import { message } from '@/_helpers/browser-api'
 import { useTranslate } from '@/_helpers/i18n'
 import { StrElm } from '@/components/StrElm'
 
@@ -14,12 +8,21 @@ export const DictWikipedia: FC<ViewPorps<WikipediaResult>> = ({
   result,
   searchText
 }) => {
-  const [langList, setLangList] = useState<LangList>()
   const { t } = useTranslate('content')
+  const contentRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    setLangList([])
-  }, [result.langSelector])
+    const $content = contentRef.current
+    if (!$content) {
+      return
+    }
+
+    const frame = requestAnimationFrame(() => {
+      initCollapsibleSections($content)
+    })
+
+    return () => cancelAnimationFrame(frame)
+  }, [result.content])
 
   const handleSelectChanged = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value) {
@@ -33,41 +36,18 @@ export const DictWikipedia: FC<ViewPorps<WikipediaResult>> = ({
   }
 
   let langSelector: ReactNode = null
-  if (langList && langList.length > 0) {
+  if (result.langList.length > 0) {
     langSelector = (
       <select onChange={handleSelectChanged} defaultValue={''}>
         <option key="" value="">
           {t('chooseLang')}
         </option>
-        {langList.map(item => (
+        {result.langList.map(item => (
           <option key={item.url} value={item.url}>
             {item.title}
           </option>
         ))}
       </select>
-    )
-  } else if (result.langSelector) {
-    langSelector = (
-      <button
-        className="dictWikipedia-LangSelectorBtn"
-        onClick={async () => {
-          setLangList(
-            await message.send<
-              'DICT_ENGINE_METHOD',
-              ReturnType<typeof fetchLangList>
-            >({
-              type: 'DICT_ENGINE_METHOD',
-              payload: {
-                id: 'wikipedia',
-                method: 'fetchLangList',
-                args: [result.langSelector]
-              }
-            })
-          )
-        }}
-      >
-        {t('fetchLangList')}
-      </button>
     )
   }
 
@@ -75,7 +55,11 @@ export const DictWikipedia: FC<ViewPorps<WikipediaResult>> = ({
     <>
       <h1 className="dictWikipedia-Title">{result.title}</h1>
       {langSelector}
-      <div className="dictWikipedia-Content" onClick={handleEntryClick}>
+      <div
+        className="dictWikipedia-Content"
+        ref={contentRef}
+        onClick={handleEntryClick}
+      >
         <StrElm className="client-js" html={result.content} />
       </div>
     </>
@@ -87,33 +71,86 @@ function handleEntryClick(e: React.MouseEvent<HTMLDivElement>) {
     return
   }
 
-  let $header = e.target as HTMLElement
-  if (!$header.classList.contains('section-heading')) {
-    $header = $header.parentElement as HTMLElement
-    if (!$header || !$header.classList.contains('section-heading')) {
-      return
-    }
+  const $heading = (e.target as HTMLElement).closest('.mw-heading')
+  if (!$heading || !(e.currentTarget as HTMLElement).contains($heading)) {
+    return
+  }
+
+  const level = getHeadingLevel($heading)
+  if (!level) {
+    return
   }
 
   e.stopPropagation()
   e.preventDefault()
 
-  // Toggle titles
+  const collapsed = !$heading.classList.contains('dictWikipedia-Collapsed')
+  collapseSection($heading as HTMLElement, collapsed)
+}
 
-  $header.classList.toggle('open-block')
+function initCollapsibleSections($content: HTMLElement) {
+  const $headings = [
+    ...$content.querySelectorAll<HTMLElement>('.mw-heading')
+  ].filter(
+    $heading =>
+      !$heading.nextElementSibling?.classList.contains(
+        'dictWikipedia-SectionBody'
+      )
+  )
 
-  const $content = $header.nextElementSibling
-  if ($content) {
-    const pressed = $header.classList.contains('open-block').toString()
-    $content.classList.toggle('open-block')
-    $content.setAttribute('aria-pressed', pressed)
-    $content.setAttribute('aria-expanded', pressed)
+  $headings.forEach($heading => {
+    const level = getHeadingLevel($heading)
+    if (!level || !$heading.parentElement) {
+      return
+    }
+
+    const $body = document.createElement('div')
+    $body.className = 'dictWikipedia-SectionBody'
+    $heading.insertAdjacentElement('afterend', $body)
+
+    let $sibling = $body.nextElementSibling
+    while ($sibling) {
+      const siblingLevel = getHeadingLevel($sibling)
+      if (siblingLevel && siblingLevel <= level) {
+        break
+      }
+
+      const $next = $sibling.nextElementSibling
+      $body.appendChild($sibling)
+      $sibling = $next
+    }
+  })
+
+  $content.querySelectorAll<HTMLElement>('.mw-heading').forEach($heading => {
+    collapseSection($heading, true)
+  })
+}
+
+function collapseSection($heading: HTMLElement, collapsed: boolean) {
+  const $body = $heading.nextElementSibling as HTMLElement | null
+  if (!$body || !$body.classList.contains('dictWikipedia-SectionBody')) {
+    return
   }
 
-  const $arrow = $header.querySelector('.mw-ui-icon-mf-arrow')
-  if ($arrow) {
-    $arrow.classList.toggle('mf-mw-ui-icon-rotate-flip')
+  $heading.classList.toggle('dictWikipedia-Collapsed', collapsed)
+  $heading.setAttribute('aria-expanded', (!collapsed).toString())
+  $body.hidden = collapsed
+}
+
+function getHeadingLevel($el: Element): number {
+  const $heading = $el.classList.contains('mw-heading')
+    ? $el
+    : $el.querySelector('.mw-heading')
+  if (!$heading) {
+    return 0
   }
+
+  const $title = $heading.querySelector('h1,h2,h3,h4,h5,h6')
+  if (!$title) {
+    return 0
+  }
+
+  return Number($title.tagName.slice(1))
 }
 
 export default DictWikipedia
