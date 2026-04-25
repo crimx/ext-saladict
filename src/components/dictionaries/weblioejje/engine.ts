@@ -37,6 +37,21 @@ function replaceAudioSpeakers(parent: ParentNode): void {
   })
 }
 
+function replaceWithSummaryHead($target: Element, head: string): void {
+  const $summaryHead = $target.ownerDocument.createElement('div')
+  $summaryHead.className = 'summaryHead'
+  $summaryHead.innerHTML = head
+  $target.replaceWith($summaryHead)
+}
+
+function replaceBrWithDiv($br: HTMLBRElement): void {
+  $br.classList.add('br')
+
+  const $div = $br.ownerDocument.createElement('div')
+  $div.className = $br.className
+  $br.replaceWith($div)
+}
+
 export const search: SearchFunction<WeblioejjeResult> = (
   text,
   config,
@@ -67,7 +82,7 @@ function handleDOM(
           head += getStaticSpeakerString($audio.getAttribute('src'))
         }
 
-        $summaryTbl.outerHTML = `<div class="summaryHead">${head}</div>`
+        replaceWithSummaryHead($summaryTbl, head)
       } else {
         const $summaryTitle = $entry.querySelector('.summary-title h1')
         const $summaryTitleWrp = $entry.querySelector('.summary-title-wrp')
@@ -80,7 +95,7 @@ function handleDOM(
             getOuterHTML(HOST, $summaryTitle) +
             getStaticSpeakerString($audio && $audio.getAttribute('src'))
 
-          $summaryTitleWrp.outerHTML = `<div class="summaryHead">${head}</div>`
+          replaceWithSummaryHead($summaryTitleWrp, head)
         } else {
           replaceAudioSpeakers($entry)
         }
@@ -126,8 +141,7 @@ function handleDOM(
     replaceAudioSpeakers($entry)
 
     $entry.querySelectorAll('br').forEach($br => {
-      $br.classList.add('br')
-      $br.outerHTML = `<div class="${$br.className}"></div>`
+      replaceBrWithDiv($br)
     })
 
     $entry.querySelectorAll('a').forEach($a => {

@@ -163,6 +163,17 @@ function getBingAudioURL(parent: ParentNode | null): string {
   return ''
 }
 
+function replaceWithText($target: Element, text: string): void {
+  $target.replaceWith($target.ownerDocument.createTextNode(text))
+}
+
+function replaceWithHighlightedText($target: Element, text: string): void {
+  const $span = $target.ownerDocument.createElement('span')
+  $span.className = 'dictBing-SentenceItem_HL'
+  $span.textContent = text
+  $target.replaceWith($span)
+}
+
 function handleLexResult(
   doc: Document,
   options: BingConfig['options'],
@@ -232,15 +243,13 @@ function handleLexResult(
     ) {
       const el = $sens[i]
       el.querySelectorAll('.client_sen_en_word').forEach($word => {
-        $word.outerHTML = getText($word)
+        replaceWithText($word, getText($word))
       })
       el.querySelectorAll('.client_sen_cn_word').forEach($word => {
-        $word.outerHTML = getText($word, transform)
+        replaceWithText($word, getText($word, transform))
       })
       el.querySelectorAll('.client_sentence_search').forEach($word => {
-        $word.outerHTML = `<span class="dictBing-SentenceItem_HL">${getText(
-          $word
-        )}</span>`
+        replaceWithHighlightedText($word, getText($word))
       })
       sentences.push({
         en: getInnerHTML(HOST, el, '.client_sen_en'),
