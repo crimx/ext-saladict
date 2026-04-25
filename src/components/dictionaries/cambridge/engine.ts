@@ -8,6 +8,7 @@ import {
   getText,
   removeChild,
   handleNetWorkError,
+  handleManualVerification,
   SearchFunction,
   GetSrcPageFunction,
   DictSearchResult,
@@ -76,9 +77,21 @@ export const search: SearchFunction<CambridgeResult> = async (
   profile,
   payload
 ) => {
-  return fetchDirtyDOM(await getSrcPage(text, config, profile))
-    .catch(handleNetWorkError)
-    .then(doc => handleDOM(doc, profile.dicts.all.cambridge.options))
+  const srcPage = await getSrcPage(text, config, profile)
+
+  try {
+    const doc = await fetchDirtyDOM(srcPage, { withCredentials: true })
+    return handleDOM(doc, profile.dicts.all.cambridge.options)
+  } catch (e) {
+    if (isForbidden(e)) {
+      return handleManualVerification({ text, url: srcPage })
+    }
+    return handleNetWorkError(e)
+  }
+}
+
+function isForbidden(e: any): boolean {
+  return e && e.response && e.response.status === 403
 }
 
 function handleDOM(

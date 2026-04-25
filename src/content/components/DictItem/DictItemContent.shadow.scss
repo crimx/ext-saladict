@@ -49,3 +49,26 @@
     }
   }
 }
+
+.dictManualVerification {
+  padding: 12px;
+  border: 1px solid rgba(133, 133, 133, 0.28);
+  border-radius: 4px;
+  background: var(--color-background);
+  color: var(--color-font);
+
+  h2 {
+    margin: 0 0 8px;
+    font-size: 1.1em;
+  }
+
+  p {
+    margin: 0 0 10px;
+    line-height: 1.5;
+  }
+
+  a {
+    color: #f9690e;
+    font-weight: 700;
+  }
+}

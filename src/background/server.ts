@@ -7,7 +7,9 @@ import { Message, MessageResponse } from '@/typings/message'
 import {
   SearchFunction,
   DictSearchResult,
-  GetSrcPageFunction
+  GetSrcPageFunction,
+  createManualVerificationResult,
+  isManualVerificationError
 } from '@/components/dictionaries/helpers'
 import {
   isInNotebook,
@@ -282,6 +284,9 @@ export class BackgroundServer {
         }
       }
     } catch (e) {
+      if (isManualVerificationError(e)) {
+        response = createManualVerificationResult(e.manualVerification)
+      }
       if (process.env.DEBUG) {
         console.warn(data.id, e)
       }

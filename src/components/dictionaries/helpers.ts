@@ -79,7 +79,26 @@ export interface ViewPorps<T> {
   catalogSelect$: Observable<{ key: string; value: string }>
 }
 
-export type SearchErrorType = 'NO_RESULT' | 'NETWORK_ERROR'
+export type SearchErrorType =
+  | 'NO_RESULT'
+  | 'NETWORK_ERROR'
+  | 'MANUAL_VERIFICATION'
+
+export interface ManualVerificationInfo {
+  url: string
+  text?: string
+}
+
+export interface ManualVerificationResult {
+  type: 'MANUAL_VERIFICATION'
+  url: string
+  text?: string
+}
+
+export interface ManualVerificationError extends Error {
+  message: 'MANUAL_VERIFICATION'
+  manualVerification: ManualVerificationInfo
+}
 
 export function handleNoResult<T = any>(e?: any): Promise<T> {
   if (e && process.env.NODE_ENV !== 'production') {
@@ -93,6 +112,46 @@ export function handleNetWorkError(e?: any): Promise<never> {
     console.error(e)
   }
   return Promise.reject(new Error('NETWORK_ERROR'))
+}
+
+export function handleManualVerification<T = any>(
+  info: ManualVerificationInfo
+): Promise<T> {
+  const error = new Error('MANUAL_VERIFICATION') as ManualVerificationError
+  error.manualVerification = info
+  return Promise.reject(error)
+}
+
+export function isManualVerificationError(
+  e: any
+): e is ManualVerificationError {
+  return (
+    e &&
+    e.message === 'MANUAL_VERIFICATION' &&
+    e.manualVerification &&
+    typeof e.manualVerification.url === 'string'
+  )
+}
+
+export function createManualVerificationResult(
+  info: ManualVerificationInfo
+): DictSearchResult<ManualVerificationResult> {
+  return {
+    result: {
+      type: 'MANUAL_VERIFICATION',
+      ...info
+    }
+  }
+}
+
+export function isManualVerificationResult(
+  result: any
+): result is ManualVerificationResult {
+  return (
+    result &&
+    result.type === 'MANUAL_VERIFICATION' &&
+    typeof result.url === 'string'
+  )
 }
 
 /** Get chs-chz transform function. */

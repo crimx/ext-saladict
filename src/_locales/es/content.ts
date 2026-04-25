@@ -45,6 +45,12 @@ export const locale: typeof _locale = {
     login: 'Proporcione {access token}.',
     dictAccount: 'access token'
   },
+  manualVerification: {
+    title: 'Se requiere verificación manual',
+    message:
+      'Abra la página original del diccionario y complete la verificación humana, luego vuelva a buscar en Saladict.',
+    openPage: 'Abrir página del diccionario'
+  },
   updateAnki: {
     title: 'Actualizar a Anki',
     success: 'Se actualizó correctamente la palabra a Anki.',

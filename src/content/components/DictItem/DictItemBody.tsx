@@ -5,9 +5,13 @@ import { Observable } from 'rxjs'
 import { DictID } from '@/app-config'
 import { Word } from '@/_helpers/record-manager'
 import { SALADICT_PANEL } from '@/_helpers/saladict'
-import { ViewPorps } from '@/components/dictionaries/helpers'
+import {
+  ViewPorps,
+  isManualVerificationResult
+} from '@/components/dictionaries/helpers'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { StaticSpeakerContainer } from '@/components/Speaker'
+import { ManualVerification } from './ManualVerification'
 
 const dictContentStyles = require('./DictItemContent.shadow.scss').toString()
 
@@ -89,11 +93,15 @@ export const DictItemBody: FC<DictItemBodyProps> = props => {
                 onPlayStart={props.onSpeakerPlay}
                 onMouseUp={props.onInPanelSelect}
               >
-                <Dict
-                  result={props.searchResult}
-                  searchText={props.searchText}
-                  catalogSelect$={props.catalogSelect$}
-                />
+                {isManualVerificationResult(props.searchResult) ? (
+                  <ManualVerification result={props.searchResult} />
+                ) : (
+                  <Dict
+                    result={props.searchResult}
+                    searchText={props.searchText}
+                    catalogSelect$={props.catalogSelect$}
+                  />
+                )}
               </StaticSpeakerContainer>
             </div>
           </root.div>

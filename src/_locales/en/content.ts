@@ -43,6 +43,12 @@ export const locale: typeof _locale = {
     login: 'Please provide {access token}.',
     dictAccount: 'access token'
   },
+  manualVerification: {
+    title: 'Manual verification required',
+    message:
+      'Open the original dictionary page and complete the human verification, then try this search again in Saladict.',
+    openPage: 'Open dictionary page'
+  },
   updateAnki: {
     title: 'Update to Anki',
     success: 'Successfully update word to Anki.',

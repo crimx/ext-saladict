@@ -41,6 +41,11 @@ export const locale = {
     login: '请登录{词典帐号}以使用。',
     dictAccount: '词典帐号'
   },
+  manualVerification: {
+    title: '需要手动验证',
+    message: '请打开词典原网页完成人机验证，然后回到沙拉查词重新查询。',
+    openPage: '打开词典网页'
+  },
   updateAnki: {
     title: '更新到 Anki',
     success: '更新到 Anki 成功。',

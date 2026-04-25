@@ -43,6 +43,11 @@ export const locale: typeof _locale = {
     login: '請登入{詞典帳號}以使用。',
     dictAccount: '詞典帳號'
   },
+  manualVerification: {
+    title: '需要手動驗證',
+    message: '請開啟詞典原網頁完成人機驗證，然後回到沙拉查詞重新查詢。',
+    openPage: '開啟詞典網頁'
+  },
   updateAnki: {
     title: '更新到 Anki',
     success: '更新到 Anki 成功。',

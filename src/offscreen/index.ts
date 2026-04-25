@@ -3,7 +3,9 @@ import { Profile } from '@/app-config/profiles'
 import {
   DictSearchResult,
   GetSrcPageFunction,
-  SearchFunction
+  SearchFunction,
+  createManualVerificationResult,
+  isManualVerificationError
 } from '@/components/dictionaries/helpers'
 import { Message } from '@/typings/message'
 
@@ -96,7 +98,16 @@ async function searchDict({
   activeProfile: Profile
 }) {
   const { search } = await getDictEngine(id)
-  return search(text, appConfig, activeProfile, payload || { isPDF: false })
+  try {
+    return await search(text, appConfig, activeProfile, payload || {
+      isPDF: false
+    })
+  } catch (e) {
+    if (isManualVerificationError(e)) {
+      return createManualVerificationResult(e.manualVerification)
+    }
+    throw e
+  }
 }
 
 async function getDictSrcPage({

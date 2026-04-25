@@ -15,10 +15,15 @@ export function fetchDOM(
 /** about 6 time faster as it typically takes less than 5ms to parse a DOM */
 export function fetchDirtyDOM(
   url: string,
-  config: AxiosRequestConfig = {}
+  config?: AxiosRequestConfig
 ): Promise<Document> {
   return axios(url, {
     withCredentials: false,
+    headers: {
+      Accept:
+        'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+      ...config?.headers
+    },
     ...config,
     transformResponse: [data => data],
     responseType: 'document'
@@ -31,7 +36,7 @@ export function fetchDirtyDOM(
 
 export function fetchPlainText(
   url: string,
-  config: AxiosRequestConfig = {}
+  config?: AxiosRequestConfig
 ): Promise<string> {
   return axios(url, {
     withCredentials: false,
