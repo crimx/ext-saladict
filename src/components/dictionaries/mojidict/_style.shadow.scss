@@ -1,22 +1,117 @@
-.dictMojidict-Word_Title {
-  margin-bottom: 0;
+.dictMojidict-Head {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75em;
 }
 
-.dictMojidict-Word_Trans {
+.dictMojidict-Head_Main {
+  flex: 1;
+  min-width: 0;
+}
+
+.dictMojidict-Pron,
+.dictMojidict-Excerpt,
+.dictMojidict-Word_Trans,
+.dictMojidict-Word_Ja,
+.dictMojidict-Source,
+.dictMojidict-Related_Excerpt {
+  color: #777;
+}
+
+.dictMojidict-Excerpt {
+  margin: 0.4em 0 0;
+  line-height: 1.55;
+}
+
+.dictMojidict-Word_Image {
+  flex: 0 0 auto;
+  max-width: 72px;
+  max-height: 72px;
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.dictMojidict-Word_Title {
+  margin-bottom: 0;
+  line-height: 1.55;
+}
+
+.dictMojidict-Word_Title ruby {
+  ruby-align: center;
+}
+
+.dictMojidict-Word_Title rt {
+  color: #999;
+  font-size: 0.68em;
+}
+
+.dictMojidict-Word_Ja,
+.dictMojidict-Word_Trans,
+.dictMojidict-Source {
   margin-top: 0;
   padding-left: 0.5em;
   font-size: 0.9em;
-  color: #999;
+  line-height: 1.45;
+}
+
+.dictMojidict-Source {
+  color: #aaa;
+  font-size: 0.82em;
 }
 
 .dictMojidict-List {
-  padding-left: 1em;
+  padding-left: 1.5em;
+}
+
+.dictMojidict-Plain_List {
+  list-style-type: disc;
 }
 
 .dictMojidict-Sublist {
   padding-left: 0.5em;
+  list-style-type: none;
 }
 
-.dictMojidict-ListItem_Disc {
-  list-style-type: disc;
+.dictMojidict-ListItem {
+  padding-left: 0.2em;
+}
+
+.dictMojidict-Related_List {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em 0.5em;
+  margin: 0.5em 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.dictMojidict-Related_List li {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3em;
+  padding: 0.1em 0.45em;
+  border: 1px solid rgba(128, 128, 128, 0.22);
+  border-radius: 4px;
+}
+
+.dictMojidict-Search_Tag {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.dictMojidict-Search_Tag:hover {
+  text-decoration: underline;
+}
+
+.dictMojidict-Related_Title {
+  font-weight: 500;
+}
+
+.dictMojidict-Related_Excerpt {
+  font-size: 0.86em;
 }

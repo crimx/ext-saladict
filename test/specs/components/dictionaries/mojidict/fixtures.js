@@ -1,65 +1,105 @@
-const path = require('path')
-const env = require('dotenv').config({
-  path: path.join(__dirname, '../../../../../.env')
-}).parsed
+const API_ROOT = 'https://api.mojidict.com/app/mojidict/api/v1'
+const PARSE_ROOT = 'https://api.mojidict.com/parse/functions'
+const WEB_ROOT = 'https://www.mojidict.com'
+const MOJI_APP_VERSION = '4.15.13'
+const MOJI_PARSE_APP_ID = 'E62VyFVLMiW7kvbtVq3p'
+const MOJI_PARSE_CLIENT_VERSION = 'js4.3.1'
 
 module.exports = {
   files: [
     [
-      '心/search.json',
+      '心/all.json',
       () => ({
-        method: 'post',
-        url: 'https://api.mojidict.com/parse/functions/search_v3',
-        headers: {
-          'content-type': 'text/plain'
-        },
-        data: JSON.stringify({
-          langEnv: 'zh-CN_ja',
-          needWords: true,
-          searchText: '心',
-          _ApplicationId: env.MOJI_ID,
-          _ClientVersion: 'js2.7.1',
-          _InstallationId: getInstallationId()
-        })
+        method: 'get',
+        url:
+          `${API_ROOT}/search/all?text=${encodeURIComponent('心')}` +
+          '&types=102&types=106&types=103&types=671&highlight=true',
+        headers: requestHeaders()
       })
     ],
     [
-      '心/fetchWord.json',
-      ([searchResult]) => ({
+      '心/detailInfo.json',
+      ([allResult]) => ({
+        method: 'get',
+        url:
+          `${API_ROOT}/word/detailInfo?wordId=` +
+          JSON.parse(allResult).word.list[0].targetId,
+        headers: requestHeaders()
+      })
+    ],
+    [
+      '心/example.json',
+      ([allResult]) => ({
+        method: 'get',
+        url:
+          `${API_ROOT}/search/example?text=${encodeURIComponent('心')}` +
+          '&limit=3&needNotation=true&onlyJP=true&onlyFull=true' +
+          '&targetTypes=121&wordId=' +
+          JSON.parse(allResult).word.list[0].targetId,
+        headers: requestHeaders()
+      })
+    ],
+    [
+      '心/examQuestion.json',
+      ([allResult]) => ({
+        method: 'get',
+        url:
+          `${API_ROOT}/search/examQuestion?text=${encodeURIComponent('心')}` +
+          '&limit=3&highlight=false&onlyFull=true&wordId=' +
+          JSON.parse(allResult).word.list[0].targetId,
+        headers: requestHeaders()
+      })
+    ],
+    [
+      '心/related.json',
+      ([allResult]) => ({
         method: 'post',
-        url: 'https://api.mojidict.com/parse/functions/fetchWord_v2',
+        url: `${API_ROOT}/word/related`,
         headers: {
-          'content-type': 'text/plain'
+          ...requestHeaders(),
+          'content-type': 'application/json'
         },
-        data: JSON.stringify({
-          wordId: JSON.parse(searchResult).result.searchResults[0].tarId,
-          _ApplicationId: env.MOJI_ID,
-          _ClientVersion: 'js2.7.1',
-          _InstallationId: getInstallationId()
-        })
+        data: {
+          wordIds: [JSON.parse(allResult).word.list[0].targetId]
+        }
       })
     ],
     [
       '心/fetchTts.json',
-      ([searchResult, fetchWordResult]) => {
-        const word = JSON.parse(fetchWordResult).result.word
-        return {
-          method: 'post',
-          url: 'https://api.mojidict.com/parse/functions/fetchTts',
-          headers: {
-            'content-type': 'text/plain'
-          },
-          data: JSON.stringify({
-            identity: word.objectId,
-            text: word.spell,
-            _ApplicationId: env.MOJI_ID,
-            _ClientVersion: 'js2.7.1',
-            _InstallationId: getInstallationId()
-          })
-        }
-      }
+      ([allResult]) => ({
+        method: 'post',
+        url: `${PARSE_ROOT}/tts-fetch`,
+        headers: {
+          accept: '*/*',
+          origin: WEB_ROOT,
+          referer: `${WEB_ROOT}/`,
+          'content-type': 'text/plain'
+        },
+        data: JSON.stringify({
+          tarId: JSON.parse(allResult).word.list[0].targetId,
+          tarType: 102,
+          voiceId: 'f002',
+          _ApplicationId: MOJI_PARSE_APP_ID,
+          _ClientVersion: MOJI_PARSE_CLIENT_VERSION,
+          _InstallationId: getInstallationId(),
+          g_os: 'PCWeb',
+          g_ver: MOJI_APP_VERSION
+        })
+      })
     ]
   ]
+}
+
+function requestHeaders() {
+  return {
+    accept: 'application/json, text/plain, */*',
+    origin: WEB_ROOT,
+    referer: `${WEB_ROOT}/`,
+    'x-moji-app-id': 'com.mojitec.mojidict',
+    'x-moji-app-version': MOJI_APP_VERSION,
+    'x-moji-device-id': getInstallationId(),
+    'x-moji-os': 'PCWeb'
+  }
 }
 
 function getInstallationId() {
