@@ -70,7 +70,7 @@
   `;
 
   const $style = document.createElement('style');
-  $style.innerHTML = `
+  $style.textContent = `
     #google_translate_element {
       position: relative !important;
     }

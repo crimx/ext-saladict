@@ -24,6 +24,6 @@ initProfiles().then(profile => {
 
 for (let i = 0; i < 10; i++) {
   const $p = document.createElement('p')
-  $p.innerHTML = 'love ' + faker.lorem.paragraph()
+  $p.textContent = 'love ' + faker.lorem.paragraph()
   document.body.appendChild($p)
 }

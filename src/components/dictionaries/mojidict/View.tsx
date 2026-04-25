@@ -6,6 +6,7 @@ import { ViewPorps } from '@/components/dictionaries/helpers'
 import { message } from '@/_helpers/browser-api'
 import { newWord } from '@/_helpers/record-manager'
 import { MojidictResult, GetTTS } from './engine'
+import { StrElm } from '@/components/StrElm'
 
 export const DictMojidict: FC<ViewPorps<MojidictResult>> = props => (
   <>
@@ -160,7 +161,7 @@ export const DictMojidict: FC<ViewPorps<MojidictResult>> = props => (
 )
 
 const Notation: FC<{ html?: string }> = ({ html, children }) =>
-  html ? <span dangerouslySetInnerHTML={{ __html: html }} /> : <>{children}</>
+  html ? <StrElm tag="span" html={html} /> : <>{children}</>
 
 const SearchTag: FC<{
   className: string

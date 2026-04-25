@@ -144,22 +144,35 @@ function handleDOM(
         const starMatch = /star(\d+)/.exec(String($star.className))
         if (starMatch) {
           const rate = +starMatch[1]
-          let stars = ''
+          const stars: SVGSVGElement[] = []
           for (let i = 0; i < 5; i++) {
-            stars += `<svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 426.67 426.67"
-              width="1em"
-              height="1em"
-              style="${i === 4 ? '' : 'margin-right: 1px'}"
-            >
-              <path
-                fill=${i < rate ? '#FAC917' : '#d1d8de'}
-                d="M213.33 10.44l65.92 133.58 147.42 21.42L320 269.4l25.17 146.83-131.84-69.32-131.85 69.34 25.2-146.82L0 165.45l147.4-21.42"
-              />
-            </svg>`
+            const $svg = doc.createElementNS(
+              'http://www.w3.org/2000/svg',
+              'svg'
+            )
+            $svg.setAttribute('viewBox', '0 0 426.67 426.67')
+            $svg.setAttribute('width', '1em')
+            $svg.setAttribute('height', '1em')
+            if (i !== 4) {
+              $svg.style.marginRight = '1px'
+            }
+
+            const $path = doc.createElementNS(
+              'http://www.w3.org/2000/svg',
+              'path'
+            )
+            $path.setAttribute('fill', i < rate ? '#FAC917' : '#d1d8de')
+            $path.setAttribute(
+              'd',
+              'M213.33 10.44l65.92 133.58 147.42 21.42L320 269.4l25.17 146.83-131.84-69.32-131.85 69.34 25.2-146.82L0 165.45l147.4-21.42'
+            )
+            $svg.appendChild($path)
+            stars.push($svg)
           }
-          $star.innerHTML = stars
+          while ($star.firstChild) {
+            $star.removeChild($star.firstChild)
+          }
+          stars.forEach($svg => $star.appendChild($svg))
         }
       }
 
