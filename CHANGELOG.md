@@ -2,6 +2,65 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.21.0](https://github.com/crimx/ext-saladict/compare/v7.20.0...v7.21.0) (2026-04-25)
+
+
+### Features
+
+* add GitHub Actions workflows for build and PR testing ([c9d1fb4](https://github.com/crimx/ext-saladict/commit/c9d1fb402cceb874dc5620d4eb747ebe452f114a))
+* add manual verification ([1eb60be](https://github.com/crimx/ext-saladict/commit/1eb60bed96f11d8e33bc5f14a7f4e2788dca1433))
+* **locales:** added nepali translation ([#2153](https://github.com/crimx/ext-saladict/issues/2153)) ([3374ec3](https://github.com/crimx/ext-saladict/commit/3374ec3c1978abb6d0f783566943f7dc0b977a8a))
+
+
+### Bug Fixes
+
+* audio error on standalone panel ([f453335](https://github.com/crimx/ext-saladict/commit/f45333508e76b705afea7a912d656e762de48ba4))
+* bing audio ([c224c8d](https://github.com/crimx/ext-saladict/commit/c224c8d4c10c009de638041e42787c48d4570ada))
+* cobuild styles ([23728dd](https://github.com/crimx/ext-saladict/commit/23728dd6c11a4169ed3ab72107d1c4a402a7cc11))
+* correct regex of locating default pdf ([#1775](https://github.com/crimx/ext-saladict/issues/1775)) ([7dc226c](https://github.com/crimx/ext-saladict/commit/7dc226cefafc4f2f49542b89293e0a70dd932ac6))
+* dictionary mock ([e03423c](https://github.com/crimx/ext-saladict/commit/e03423c6b6e043c4b8b59d29e2da0b63f5f355ff))
+* downgrade `node-fetch` to version 2.6.7 for compatibility ([94a303e](https://github.com/crimx/ext-saladict/commit/94a303ece482975b566ffa6af6dc34882fbef341))
+* eudic ([1c11345](https://github.com/crimx/ext-saladict/commit/1c11345f86db2e3bec9b175ed7193083d78aff22))
+* fixture downloading ([4fe0dab](https://github.com/crimx/ext-saladict/commit/4fe0dab0c61264a0c72645c96f87b181c54a0d50))
+* googledict ([a1fe08b](https://github.com/crimx/ext-saladict/commit/a1fe08beb3cd5def955592993a10aceeabc1fb35))
+* hjdict ([b0b686f](https://github.com/crimx/ext-saladict/commit/b0b686fd42ee4ffafe731e7d4793f5aed0ad871e))
+* implement dark mode context and update stories to use it ([bd880ec](https://github.com/crimx/ext-saladict/commit/bd880ec4c76230fc5953a5db4cd8f4ada2a1dfe2))
+* implement network compatibility ([8f71f3a](https://github.com/crimx/ext-saladict/commit/8f71f3a33dfe0d94f1c533124331fb8eac842437))
+* improve readability ([cd9813f](https://github.com/crimx/ext-saladict/commit/cd9813f74d73f10f9cf063924bcd7877f924c610))
+* lint ([114a8fe](https://github.com/crimx/ext-saladict/commit/114a8fed234ae07a8b7c7ad6a020a1357abc9d0c))
+* modify the z-index of WordEditorPanel ([#1784](https://github.com/crimx/ext-saladict/issues/1784)) ([438d137](https://github.com/crimx/ext-saladict/commit/438d137a4392850411ffbc30c6cc66b2cc3ad66e))
+* mojidict ([b871f07](https://github.com/crimx/ext-saladict/commit/b871f076fd27d01633cd65b115f389a2b70c656b))
+* mv3 request blocking ([2d30c18](https://github.com/crimx/ext-saladict/commit/2d30c182d1646954b7d7f675085c07ec09319737))
+* outdated `caniuse-lite` ([#2166](https://github.com/crimx/ext-saladict/issues/2166)) ([1aaad9d](https://github.com/crimx/ext-saladict/commit/1aaad9dabdb7465b5b24d7166bfa97be4bd9c7c9))
+* pdf viewer color mode ([3a70ff0](https://github.com/crimx/ext-saladict/commit/3a70ff09a2d7a8687c23b990306bce340eb45f29))
+* pdf.js download ([#2077](https://github.com/crimx/ext-saladict/issues/2077)) ([1fe30b8](https://github.com/crimx/ext-saladict/commit/1fe30b8f8aef512a905eef35bdffe35112f3e9be))
+* remove broken dictionaries ([5c010ad](https://github.com/crimx/ext-saladict/commit/5c010ad118bedad5df59dd6d7284331e144c55b7))
+* remove fixtures proxy ([fd0c587](https://github.com/crimx/ext-saladict/commit/fd0c5875634b5a8db78a07e2b0906ffafd25abfc))
+* remove static setting innerHTML ([47a6332](https://github.com/crimx/ext-saladict/commit/47a633234964fd2feaca9e63a5b78dd6a7d8636c))
+* remove unstable googledict ([3355a39](https://github.com/crimx/ext-saladict/commit/3355a39aa500d974333e507861779370505eaf80))
+* remove unused GOOGLE_TOKEN ([1b9404c](https://github.com/crimx/ext-saladict/commit/1b9404c14bc0754fbca016a26d48b19166b65b6b))
+* tests ([28edb7e](https://github.com/crimx/ext-saladict/commit/28edb7e3aeff779f9d9e38a2a685f931da01c265))
+* translators ([bc16fba](https://github.com/crimx/ext-saladict/commit/bc16fba17421ae848151bb539f122b65a17be794))
+* type checking ([5452b7d](https://github.com/crimx/ext-saladict/commit/5452b7d075b106db1a2b37fc16a644153a27d28e))
+* typo in `"description"` in `package.json` ([#2164](https://github.com/crimx/ext-saladict/issues/2164)) ([7cfccc5](https://github.com/crimx/ext-saladict/commit/7cfccc59a5887e8a122f2773fdb608df841afce8))
+* update dicts ([5a99b85](https://github.com/crimx/ext-saladict/commit/5a99b856bf856bad870f5e92afcffd83ce00ae53))
+* update ESLint rules and improve GitHub Actions workflow names ([234ce60](https://github.com/crimx/ext-saladict/commit/234ce6089db47846e571a51ad1460dd69d1e689a))
+* update merriam webster styles ([e3634b1](https://github.com/crimx/ext-saladict/commit/e3634b1235fdfd6da09f5bc43517be1eef8d0062))
+* urban ([5cc52c4](https://github.com/crimx/ext-saladict/commit/5cc52c4fa80d4d781fde46f4bd9e8746864e935d))
+* weblioejje audio ([1713451](https://github.com/crimx/ext-saladict/commit/1713451625629e6658668e14eaead810fc06b503))
+* wikipedia ([1cfbd68](https://github.com/crimx/ext-saladict/commit/1cfbd68b9e4180a0b875acd47560acf16a70f575))
+* **dict:** merriamwebster dict ([#1601](https://github.com/crimx/ext-saladict/issues/1601)) ([41f789c](https://github.com/crimx/ext-saladict/commit/41f789cad6ca43850a8460c3c05b034c8f1b6b9d))
+* **dict:** naver dict ui ([#1545](https://github.com/crimx/ext-saladict/issues/1545)) ([3c3316c](https://github.com/crimx/ext-saladict/commit/3c3316cdc6a80edf1168f2b65abc26c36174cb85))
+* **dicts:** oaldict ui ([#1547](https://github.com/crimx/ext-saladict/issues/1547)) ([062bd0f](https://github.com/crimx/ext-saladict/commit/062bd0f1851fcc519dd12cd6a527d3bf63d15f9e))
+* **dicts:** wiki ui set section headers [role=button] ([#1548](https://github.com/crimx/ext-saladict/issues/1548)) ([1f95e75](https://github.com/crimx/ext-saladict/commit/1f95e7584133406dd66bf61c80ff947d979f0bb9))
+* **locales:** remove missing es locale ([5bde0d3](https://github.com/crimx/ext-saladict/commit/5bde0d3c152cb243cc2f1e786d68e57c6ae1d0ab))
+* **merriamwebster:** update Wester dictionary ([#2118](https://github.com/crimx/ext-saladict/issues/2118)) ([0db7979](https://github.com/crimx/ext-saladict/commit/0db7979df04e752dfe9b4c6b57cca27a4d745f25))
+* **notebook:** remove extra {{ ([5fd68c6](https://github.com/crimx/ext-saladict/commit/5fd68c69885a90d85cabc3acaed383c89bbf1636)), closes [#1763](https://github.com/crimx/ext-saladict/issues/1763)
+* **notebook:** support anki favicon data uri ([663c160](https://github.com/crimx/ext-saladict/commit/663c16025929dd607f88305f80557c5f10975f60)), closes [#1763](https://github.com/crimx/ext-saladict/issues/1763)
+* **options:** typo ([c7a57f7](https://github.com/crimx/ext-saladict/commit/c7a57f78e21da9e14cfdb4f253a5a44c6fd1d9a7))
+* **pdf:** fix the regex of disabling validateFileURL function ([#1961](https://github.com/crimx/ext-saladict/issues/1961)) ([cff2a5b](https://github.com/crimx/ext-saladict/commit/cff2a5b5ada67ec86e9e6122085bf5e65486a750))
+* 移除谷歌翻译cn ([#1860](https://github.com/crimx/ext-saladict/issues/1860)) ([72a97b0](https://github.com/crimx/ext-saladict/commit/72a97b0506b84b61bc6d3ae1183859f4bcf5a976))
+
 ## [7.20.0](https://github.com/crimx/ext-saladict/compare/v7.19.1...v7.20.0) (2021-10-17)
 
 
