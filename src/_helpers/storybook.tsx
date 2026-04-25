@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, useContext } from 'react'
 import classNames from 'classnames'
 import root from 'react-shadow'
 import i18next from 'i18next'
@@ -12,6 +12,12 @@ interface StyleWrapProps {
 }
 
 export const browser: typeof SinonChrome = window.browser as any
+
+export const StorybookThemeContext = React.createContext(false)
+
+export function useStorybookDarkMode() {
+  return useContext(StorybookThemeContext)
+}
 
 export const StyleWrap: FC<StyleWrapProps> = props => {
   return (
@@ -103,8 +109,6 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
         ? options.height
         : number('Panel Height', window.innerHeight - 50)
 
-    const darkMode = boolean('Dark Mode', false)
-
     const withAnimation =
       options.withAnimation != null
         ? options.withAnimation
@@ -116,44 +120,48 @@ export function withSaladictPanel(options: WithSaladictPanelOptions) {
         : number('Panel Font Size', 13)
 
     return (
-      <root.div style={{ width, margin: '10px auto' }}>
-        <div
-          className={classNames('dictPanel-Root', 'saladict-theme', {
-            isAnimate: withAnimation,
-            darkMode
-          })}
-        >
-          <style>{require('@/_sass_shared/_reset.scss').toString()}</style>
-          <style>{require('@/_sass_shared/_theme.scss').toString()}</style>
-          <div
-            className="dictPanel-Root saladict-theme"
-            style={{
-              color: options.color,
-              backgroundColor: options.backgroundColor,
-              fontSize,
-              width,
-              height,
-              '--panel-font-size': fontSize + 'px',
-              '--panel-width': `${width}px`,
-              '--panel-max-height': `${number(
-                'Panel Max Hegiht',
-                window.innerHeight
-              )}px`
-            }}
-            // bug https://github.com/storybookjs/storybook/issues/6569
-            onKeyDown={e => e.stopPropagation()}
-          >
-            {options.head}
-            {story({
-              width,
-              height,
-              fontSize,
-              darkMode,
-              withAnimation
-            })}
-          </div>
-        </div>
-      </root.div>
+      <StorybookThemeContext.Consumer>
+        {darkMode => (
+          <root.div style={{ width, margin: '10px auto' }}>
+            <div
+              className={classNames('dictPanel-Root', 'saladict-theme', {
+                isAnimate: withAnimation,
+                darkMode
+              })}
+            >
+              <style>{require('@/_sass_shared/_reset.scss').toString()}</style>
+              <style>{require('@/_sass_shared/_theme.scss').toString()}</style>
+              <div
+                className="dictPanel-Root saladict-theme"
+                style={{
+                  color: options.color,
+                  backgroundColor: options.backgroundColor,
+                  fontSize,
+                  width,
+                  height,
+                  '--panel-font-size': fontSize + 'px',
+                  '--panel-width': `${width}px`,
+                  '--panel-max-height': `${number(
+                    'Panel Max Hegiht',
+                    window.innerHeight
+                  )}px`
+                }}
+                // bug https://github.com/storybookjs/storybook/issues/6569
+                onKeyDown={e => e.stopPropagation()}
+              >
+                {options.head}
+                {story({
+                  width,
+                  height,
+                  fontSize,
+                  darkMode,
+                  withAnimation
+                })}
+              </div>
+            </div>
+          </root.div>
+        )}
+      </StorybookThemeContext.Consumer>
     )
   }
 }

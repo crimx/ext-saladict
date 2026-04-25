@@ -14,7 +14,8 @@ import {
   withLocalStyle,
   withSideEffect,
   mockRuntimeMessage,
-  withi18nNS
+  withi18nNS,
+  useStorybookDarkMode
 } from '@/_helpers/storybook'
 import faker from 'faker'
 import { DictPanel } from './DictPanel'
@@ -121,7 +122,7 @@ function useDictPanelProps(): DictPanelPortalProps {
     return o
   }, {})
 
-  const darkMode = boolean('Dark Mode', false)
+  const darkMode = useStorybookDarkMode()
 
   return {
     show: boolean('Show', true),
@@ -199,7 +200,7 @@ function useDictPanelProps(): DictPanelPortalProps {
     ),
     dictList: (
       <DictList
-        darkMode={config.darkMode}
+        darkMode={darkMode}
         touchMode={config.touchMode}
         language={config.language}
         doubleClickDelay={config.doubleClickDelay}

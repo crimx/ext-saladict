@@ -10,7 +10,8 @@ import {
   withLocalStyle,
   withSideEffect,
   mockRuntimeMessage,
-  withi18nNS
+  withi18nNS,
+  useStorybookDarkMode
 } from '@/_helpers/storybook'
 import faker from 'faker'
 import { newWord } from '@/_helpers/record-manager'
@@ -50,7 +51,7 @@ storiesOf('Content Scripts|WordEditor', module)
     'WordEditor',
     () => {
       const config = getDefaultConfig()
-      const darkMode = boolean('Dark Mode', false)
+      const darkMode = useStorybookDarkMode()
 
       return (
         <div className={classNames({ darkMode })}>
@@ -82,7 +83,7 @@ storiesOf('Content Scripts|WordEditor', module)
   )
   .add('WordEditorPortal', () => {
     const config = getDefaultConfig()
-    const darkMode = boolean('Dark Mode', false)
+    const darkMode = useStorybookDarkMode()
 
     return (
       <WordEditorPortal

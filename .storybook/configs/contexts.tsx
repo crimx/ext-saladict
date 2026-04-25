@@ -4,6 +4,7 @@ import {
   I18nContext,
   i18nLoader
 } from '../../src/_helpers/i18n'
+import { StorybookThemeContext } from '../../src/_helpers/storybook'
 import i18next from 'i18next'
 
 interface I18nWrapProps {
@@ -30,7 +31,45 @@ const I18nWrap: FC<I18nWrapProps> = props => (
   </I18nContextProvider>
 )
 
-export const i18nContexts = [
+interface ThemeWrapProps {
+  darkMode: boolean
+}
+
+const ThemeWrap: FC<ThemeWrapProps> = props => {
+  useEffect(() => {
+    document.documentElement.classList.toggle('darkMode', props.darkMode)
+    document.body.classList.toggle('darkMode', props.darkMode)
+
+    return () => {
+      document.documentElement.classList.remove('darkMode')
+      document.body.classList.remove('darkMode')
+    }
+  }, [props.darkMode])
+
+  return (
+    <StorybookThemeContext.Provider value={props.darkMode}>
+      {props.children}
+    </StorybookThemeContext.Provider>
+  )
+}
+
+export const globalContexts = [
+  {
+    icon: 'circlehollow',
+    title: 'Theme',
+    components: [ThemeWrap],
+    params: [
+      {
+        name: 'light',
+        props: { darkMode: false },
+        default: true
+      },
+      {
+        name: 'dark',
+        props: { darkMode: true }
+      }
+    ]
+  },
   {
     // https://storybooks-official.netlify.com/?path=/story/basics-icon--labels
     icon: 'globe',

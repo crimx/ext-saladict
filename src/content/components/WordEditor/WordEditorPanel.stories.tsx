@@ -10,7 +10,8 @@ import {
   withLocalStyle,
   withSideEffect,
   mockRuntimeMessage,
-  withi18nNS
+  withi18nNS,
+  useStorybookDarkMode
 } from '@/_helpers/storybook'
 import faker from 'faker'
 
@@ -29,7 +30,7 @@ storiesOf('Content Scripts|WordEditor', module)
   .add(
     'WordEditorPanel',
     () => {
-      const darkMode = boolean('Dark Mode', false)
+      const darkMode = useStorybookDarkMode()
 
       return (
         <div className={classNames({ darkMode })}>

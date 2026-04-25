@@ -5,7 +5,7 @@ import {
   addParameters
 } from '@storybook/react'
 import { withContexts } from '@storybook/addon-contexts/react'
-import { i18nContexts } from './configs/contexts'
+import { globalContexts } from './configs/contexts'
 import { StyleWrap } from '../src/_helpers/storybook'
 
 import './style.css'
@@ -39,7 +39,7 @@ addParameters({
 })
 
 // place after the info addon so that wrappers get removed
-addDecorator(withContexts(i18nContexts) as StoryDecorator)
+addDecorator(withContexts(globalContexts) as StoryDecorator)
 
 function loadStories() {
   const req = require.context('../src', true, /\.stories\.tsx$/)

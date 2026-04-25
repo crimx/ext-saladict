@@ -2,11 +2,12 @@ import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { jsxDecorator } from 'storybook-addon-jsx'
 import { withPropsTable } from 'storybook-addon-react-docgen'
-import { withKnobs, boolean } from '@storybook/addon-knobs'
+import { withKnobs } from '@storybook/addon-knobs'
 import {
   withSaladictPanel,
   withSideEffect,
-  mockRuntimeMessage
+  mockRuntimeMessage,
+  useStorybookDarkMode
 } from '@/_helpers/storybook'
 import { Waveform } from './Waveform'
 
@@ -43,7 +44,7 @@ storiesOf('Content Scripts|Dict Panel', module)
     )
   )
   .add('Waveform', () => {
-    const darkMode = boolean('Dark Mode', true)
+    const darkMode = useStorybookDarkMode()
 
     return <Waveform darkMode={darkMode} />
   })
