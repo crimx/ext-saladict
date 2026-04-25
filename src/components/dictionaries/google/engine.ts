@@ -42,7 +42,6 @@ export const search: SearchFunction<
 
   try {
     const result = await translator.translate(text, sl, tl, {
-      token: process.env.GOOGLE_TOKEN || '',
       concurrent: options.concurrent,
       apiAsFallback: true,
       order: ['cn', 'com']
