@@ -52,9 +52,26 @@ function shouldUseOffscreenDictHost(id: DictID) {
   // MV3 offscreen documents only expose runtime APIs.
   // OpenTranslate-based machine translators need privileged network APIs
   // such as declarativeNetRequest in Chromium MV3. Zdic audio referer
-  // compatibility relies on the same class of APIs, so keep them in the
-  // background/service worker host instead of routing them to offscreen.
+  // compatibility relies on the same class of APIs and parsing is simple, so
+  // keep it in the background/service worker host instead of routing it to
+  // offscreen.
   return !mv3BackgroundPreferredDicts.has(id)
+}
+
+async function ensureDictNetworkCompatibility(id: DictID) {
+  try {
+    const network = await import(
+      /* webpackInclude: /network\.ts$/ */
+      /* webpackMode: "eager" */
+      `@/components/dictionaries/${id}/network.ts`
+    )
+
+    if (network && typeof network.ensureNetworkCompatibility === 'function') {
+      await network.ensureNetworkCompatibility()
+    }
+  } catch (error) {
+    // ignore failed import as most dictionaries do not have network compatibility
+  }
 }
 
 /**
@@ -252,6 +269,8 @@ export class BackgroundServer {
     let response: DictSearchResult<any> | undefined
 
     try {
+      await ensureDictNetworkCompatibility(data.id)
+
       const useOffscreenHost = shouldUseOffscreenDictHost(data.id)
 
       if (process.env.DEBUG) {

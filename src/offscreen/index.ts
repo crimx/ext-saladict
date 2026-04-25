@@ -99,9 +99,14 @@ async function searchDict({
 }) {
   const { search } = await getDictEngine(id)
   try {
-    return await search(text, appConfig, activeProfile, payload || {
-      isPDF: false
-    })
+    return await search(
+      text,
+      appConfig,
+      activeProfile,
+      payload || {
+        isPDF: false
+      }
+    )
   } catch (e) {
     if (isManualVerificationError(e)) {
       return createManualVerificationResult(e.manualVerification)
