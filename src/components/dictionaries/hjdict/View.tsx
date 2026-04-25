@@ -78,10 +78,10 @@ function handleClick(e: React.MouseEvent<HTMLElement>): void {
       container.querySelectorAll('.word-details-tab').forEach(($tab, i) => {
         if (i === index) {
           $tab.classList.add('word-details-tab-active')
-          $panes[i].classList.add('word-details-pane-active')
+          $panes[i] && $panes[i].classList.add('word-details-pane-active')
         } else {
           $tab.classList.remove('word-details-tab-active')
-          $panes[i].classList.remove('word-details-pane-active')
+          $panes[i] && $panes[i].classList.remove('word-details-pane-active')
         }
       })
     }

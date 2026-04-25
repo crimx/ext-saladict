@@ -143,7 +143,9 @@ function parseModernEntries(
   const canonical = doc
     .querySelector('link[rel="canonical"]')
     ?.getAttribute('href')
-  const $sections = Array.from(doc.querySelectorAll<HTMLElement>('section.max-w-none'))
+  const $sections = Array.from(
+    doc.querySelectorAll<HTMLElement>('section.max-w-none')
+  )
 
   for (
     let i = 0;

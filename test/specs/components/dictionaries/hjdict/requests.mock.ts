@@ -3,7 +3,7 @@ import { MockRequest } from '@/components/dictionaries/helpers'
 export const mockSearchTexts = ['爱', 'love', 'henr']
 
 export const mockRequest: MockRequest = mock => {
-  mock.onGet(/hjdict/).reply(info => {
+  mock.onGet(/dict\.hujiang\.com/).reply(info => {
     const wordMatch = /[^/]+$/.exec(info.url || '')
     return wordMatch
       ? [

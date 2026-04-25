@@ -55,28 +55,35 @@ export const search: SearchFunction<HjdictResult, HjdictPayload> = async (
   profile,
   payload
 ) => {
-  const cookies = {
-    HJ_SITEID: 3,
-    HJ_UID: getUUID(),
-    HJ_SID: getUUID(),
-    HJ_SSID: getUUID(),
-    HJID: 0,
-    HJ_VT: 2,
-    HJ_SST: 1,
-    HJ_CSST: 1,
-    HJ_ST: 1,
-    HJ_CST: 1,
-    HJ_T: +new Date(),
-    _: getUUID(16)
-  }
+  const visitorId = getUUID()
+  const cookies: Array<[string, string | number]> = [
+    ['HJ_SITEID', 3],
+    ['HJ_UID', visitorId],
+    ['HJC_USRC', 'uzhi'],
+    ['HJC_NUID', 1],
+    ['TRACKSITEMAP', 3],
+    ['_REF', ''],
+    ['_SREF_3', ''],
+    ['HJ_CST', 0],
+    ['HJ_CSST_3', 0],
+    ['HJ_SID', getSessionId()],
+    ['HJ_SSID_3', getSessionId()],
+    ['_SREG_3', 'direct%7C%7Cdirect%7Cdirect'],
+    ['_REG', 'direct%7C%7Cdirect%7Cdirect'],
+    ['HJID', 0],
+    ['HJ_VT', 2],
+    ['HJ_SST', 1],
+    ['HJ_ST', 1],
+    ['HJ_T', +new Date()],
+    ['_', getUUID(16)]
+  ]
 
   await Promise.all(
-    Object.keys(cookies).map(name =>
+    cookies.map(([name, value]) =>
       browser.cookies.set({
         url: 'https://dict.hujiang.com',
-        domain: 'hujiang.com',
         name,
-        value: String(cookies[name])
+        value: String(value)
       })
     )
   )
@@ -233,8 +240,12 @@ function getLangCode(text: string, profile: Profile): string {
   return 'w'
 }
 
-function getUUID(e?: number): string {
-  let t = arguments.length > 1 && undefined !== arguments[1] ? arguments[1] : 16
+function getSessionId(): string {
+  return `${getUUID(6, 36)}-${getUUID('xxxx-4xxx-yxxx-xxxxxxxxxxxx')}`
+}
+
+function getUUID(e?: number | string, radix?: number): string {
+  let t = radix == null ? 16 : radix
   let n = ''
   if ('number' === typeof e) {
     for (let i = 0; i < e; i++) {

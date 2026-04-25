@@ -1,3 +1,7 @@
+$tab-height: 30px;
+$font-size: 13px;
+$padding: 5px;
+
 .search-logo {
   display: none;
   width: 40px;
@@ -2045,8 +2049,8 @@ a.ui-button:active {
 }
 
 .pronounces {
-  font-size: 14px;
-  line-height: 20px;
+  font-size: $font-size;
+  line-height: $tab-height;
 }
 
 .pronounces .word-audio {
@@ -2072,22 +2076,22 @@ a.ui-button:active {
 }
 
 .simple {
-  margin-top: 20px;
+  margin-top: $padding * 2;
 }
 
 .simple > p {
-  margin: 10px 0;
-  line-height: 20px;
+  margin: $padding 0;
+  line-height: $font-size + $padding;
 }
 
 .simple > h2 {
-  font-size: 14px;
+  font-size: $font-size;
   font-weight: 400;
-  margin: 20px 0 10px -7px;
+  margin: $padding * 2 0 $padding -#{$padding};
 }
 
 .simple > ul > li {
-  margin-bottom: 10px;
+  margin-bottom: $padding;
 }
 
 .simple > ul > li:last-child {
@@ -2097,14 +2101,14 @@ a.ui-button:active {
 .simple > ul > li > span {
   display: inline-block;
   text-align: left;
-  width: 14px;
-  line-height: 20px;
-  margin-right: 8px;
+  width: $font-size;
+  line-height: $font-size + $padding;
+  margin-right: $padding;
 }
 
 .word-details .simple a {
   display: inline-block;
-  margin-right: 16px;
+  margin-right: $padding * 2;
   color: #fff;
 }
 
@@ -2117,15 +2121,15 @@ a.ui-button:active {
 }
 
 .phrase-items li {
-  line-height: 20px;
-  margin-bottom: 14px;
+  line-height: $font-size + $padding;
+  margin-bottom: $padding * 2;
 }
 
 .phrase-items li:before {
   counter-increment: eq;
   content: counter(eq) '.';
   display: inline-block;
-  width: 22px;
+  width: $font-size + $padding;
   float: left;
 }
 
@@ -2135,7 +2139,7 @@ a.ui-button:active {
 
 .phrase-def {
   color: #999;
-  margin-left: 10px;
+  margin-left: $padding;
 }
 
 .enen-groups dl {
@@ -2143,19 +2147,19 @@ a.ui-button:active {
 }
 
 .enen-groups dt {
-  margin-bottom: 20px;
+  margin-bottom: $padding * 2;
 }
 
 .enen-groups dd {
-  line-height: 20px;
-  margin-bottom: 14px;
+  line-height: $font-size + $padding;
+  margin-bottom: $padding * 2;
 }
 
 .enen-groups dd:before {
   counter-increment: eq;
   content: counter(eq) '.';
   display: inline-block;
-  width: 22px;
+  width: $font-size + $padding;
   float: left;
 }
 
@@ -2165,21 +2169,21 @@ a.ui-button:active {
 
 .detail-source {
   color: #333;
-  font-size: 12px;
-  line-height: 17px;
-  margin-bottom: 11px;
+  font-size: $font-size - 1px;
+  line-height: $font-size + $padding;
+  margin-bottom: $padding;
 }
 
 .detail-source span {
-  font-size: 11px;
+  font-size: $font-size - 2px;
   color: #fff;
-  line-height: 16px;
+  line-height: $font-size + 3px;
   display: inline-block;
   width: 40px;
-  height: 16px;
+  height: $font-size + 3px;
   border-radius: 2px;
   text-align: center;
-  margin-left: 7px;
+  margin-left: $padding;
 }
 
 .detail-source .collins-icon {
@@ -2206,86 +2210,87 @@ a.ui-button:active {
 }
 
 .detail-tags-en {
-  margin-bottom: 30px;
+  margin-bottom: $padding * 3;
 }
 
 .detail-tags-en li {
-  height: 16px;
-  line-height: 16px;
+  height: $font-size + 3px;
+  line-height: $font-size + 3px;
   background-color: #f0f0f0;
   border-radius: 2px;
   text-align: center;
   color: #999;
   float: left;
-  font-size: 11px;
-  padding: 0 4px;
-  margin-right: 8px;
+  font-size: $font-size - 2px;
+  padding: 0 $padding;
+  margin-right: $padding;
 }
 
 .detail .tags-word {
   font-weight: 700;
-  font-size: 18px;
+  font-size: $font-size + 2px;
   color: #333;
-  line-height: 16px;
-  padding-right: 4px;
+  line-height: $font-size + 3px;
+  padding-right: $padding;
 }
 
 .detail-tags-jp {
-  margin: 0 0 12px;
+  margin: 0 0 $padding * 2;
 }
 
 .detail-tags-jp i {
   color: #666;
-  padding: 0 4px;
+  padding: 0 $padding;
   font-style: normal;
 }
 
 .detail-groups {
-  margin-top: 30px;
+  margin-top: $padding * 3;
 }
 
 .detail-groups dl {
   counter-reset: eq;
-  margin-bottom: 50px;
+  margin-bottom: $padding * 4;
 }
 
 .detail-groups dt {
-  margin-bottom: 20px;
+  margin-bottom: $padding * 2;
   font-weight: 700;
-  line-height: 20px;
+  line-height: $font-size + $padding;
   color: #333;
 }
 
 .detail-groups dd {
-  margin-bottom: 30px;
+  margin-inline-start: $padding;
+  margin-bottom: $padding * 3;
 }
 
 .detail-groups dd h3 {
-  font-size: 14px;
+  font-size: $font-size;
   font-weight: 400;
-  line-height: 20px;
-  margin: 0 0 14px;
+  line-height: $font-size + $padding;
+  margin: 0 0 $padding * 2;
 }
 
 .detail-groups dd h3:before {
   counter-increment: eq;
   content: counter(eq) '.';
   display: block;
-  width: 22px;
+  width: $font-size + $padding;
   float: left;
 }
 
 .detail-groups dd h3 p {
   color: #333;
-  margin: 0 0 0 22px;
+  margin: 0 0 0 $font-size + $padding;
 }
 
 .detail-groups dd h3 p:first-child {
-  margin-bottom: 6px;
+  margin-bottom: $padding;
 }
 
 .detail-groups dd p {
-  margin-left: 22px;
+  margin-left: $font-size + $padding;
   color: #999;
 }
 
@@ -2302,22 +2307,22 @@ a.ui-button:active {
 }
 
 .detail-groups ul {
-  margin-left: 22px;
+  margin-left: $font-size + $padding;
 }
 
 .detail-groups ul li {
   color: #999;
-  margin-bottom: 14px;
+  margin-bottom: $padding * 2;
 }
 
 .detail-groups ul li p {
-  margin: 0 0 6px;
-  line-height: 20px;
+  margin: 0 0 $padding;
+  line-height: $font-size + $padding;
 }
 
 .detail-pron {
   color: #999;
-  margin-left: 6px;
+  margin-left: $padding;
   font-family: Lucida Sans Unicode;
 }
 
@@ -2340,16 +2345,16 @@ a.ui-button:active {
   color: #666;
   border-radius: 2px;
   display: inline-block;
-  line-height: 16px;
-  font-size: 12px;
-  width: 36px;
+  line-height: $font-size + 3px;
+  font-size: $font-size - 1px;
+  width: $font-size * 2 + $padding * 2;
   text-align: center;
-  margin-right: 8px;
+  margin-right: $padding;
 }
 
 .analyzes-title {
-  line-height: 20px;
-  margin: 30px 0 20px;
+  line-height: $font-size + $padding;
+  margin: $padding * 3 0 $padding * 2;
 }
 
 .analyzes-title:first-of-type {
@@ -2361,31 +2366,31 @@ a.ui-button:active {
 }
 
 .analyzes-items li {
-  margin-bottom: 14px;
-  line-height: 20px;
+  margin-bottom: $padding * 2;
+  line-height: $font-size + $padding;
 }
 
 .analyzes-items li p {
   color: #999;
-  margin: 6px 0 0 22px;
+  margin: $padding 0 0 $font-size + $padding;
 }
 
 .analyzes-items li:before {
   counter-increment: eq;
   content: counter(eq) '.';
   display: inline-block;
-  width: 22px;
+  width: $font-size + $padding;
   float: left;
 }
 
 .inflections li {
-  line-height: 20px;
-  margin-bottom: 14px;
+  line-height: $font-size + $padding;
+  margin-bottom: $padding * 2;
 }
 
 .inflections-item-attr {
   display: inline-block;
-  margin-right: 10px;
+  margin-right: $padding * 2;
 }
 
 .inflections-value {
@@ -2397,53 +2402,53 @@ a.ui-button:active {
 }
 
 .sentences li {
-  margin-bottom: 14px;
+  margin-bottom: $padding * 2;
 }
 
 .sentences li p {
-  line-height: 20px;
-  margin: 0 0 6px;
+  line-height: $font-size + $padding;
+  margin: 0 0 $padding;
 }
 
 .sentences-item-from:before {
   counter-increment: eq;
   content: counter(eq) '.';
   display: inline-block;
-  width: 22px;
+  width: $font-size + $padding;
   float: left;
 }
 
 .sentences-item-from span {
-  line-height: 20px;
+  line-height: $font-size + $padding;
   margin: 1px 0 2px 2px;
 }
 
 .sentences-item-to {
   color: #999;
-  padding-left: 22px;
+  padding-left: $font-size + $padding;
 }
 
 .ant > p,
 .syn > p {
   color: #999;
-  margin: 0 0 6px;
+  margin: 0 0 $padding;
 }
 
 .ant table,
 .syn table {
-  margin-bottom: 14px;
+  margin-bottom: $padding * 2;
 }
 
 .ant td,
 .syn td {
-  line-height: 20px;
-  padding-right: 50px;
+  line-height: $font-size + $padding;
+  padding-right: $padding * 6;
 }
 
 .ant-single,
 .syn-single {
   display: inline-block;
-  margin: 0 50px 14px 0;
+  margin: 0 $padding * 6 $padding * 2 0;
 }
 
 .ant-single > span,
@@ -2452,7 +2457,7 @@ a.ui-button:active {
 }
 
 .synant-content {
-  margin-top: 20px;
+  margin-top: $padding * 2;
 }
 
 .synant span {
@@ -2485,33 +2490,33 @@ body.word .global-info {
   margin: 0 40px 0 100px;
   float: left;
   position: relative;
-  font-size: 14px;
+  font-size: $font-size;
   background: #fff;
   border-radius: 5px;
 }
 
 .word-notfound,
 .word-suggestions {
-  min-height: 800px;
-  padding: 50px 30px;
+  min-height: 240px;
+  padding: $padding * 3 $padding * 2;
 }
 
 .word-notfound h2,
 .word-suggestions h2 {
-  font-size: 20px;
+  font-size: $font-size + 3px;
   font-weight: 400;
 }
 
 .word-suggestions h2 {
-  margin-bottom: 20px;
+  margin-bottom: $padding * 2;
 }
 
 .word-suggestions ul {
-  font-size: 18px;
+  font-size: $font-size;
 }
 
 .word-suggestions ul li {
-  margin-bottom: 14px;
+  margin-bottom: $padding;
 }
 
 .word-suggestions a {
@@ -2530,9 +2535,9 @@ body.word .global-info {
 .word-notfound:before {
   content: '';
   display: inline-block;
-  width: 54px;
-  height: 54px;
-  margin-right: 32px;
+  width: $tab-height;
+  height: $tab-height;
+  margin-right: $padding * 2;
   background: url(https://res.hjfile.cn/tool/dict.hjenglish.com/img/icon-notfound@2x-bbd46.png)
     no-repeat 0/100%;
 }
@@ -2543,7 +2548,7 @@ body.word .global-info {
 }
 
 .word-notfound h2 {
-  margin: 0 0 5px;
+  margin: 0 0 $padding;
 }
 
 .word-notfound p {
@@ -2560,13 +2565,14 @@ body.word .global-info {
   position: relative;
 }
 
-.word-details-header {
-  padding: 40px 30px;
-}
+// .word-details-header {
+//   padding: 40px 30px;
+// }
 
 .word-details-header > p {
-  line-height: 20px;
-  margin: 0 0 20px;
+  margin: 0 0 $padding;
+  font-size: $font-size;
+  line-height: $font-size + $padding;
 }
 
 .word-details-header > p > span {
@@ -2575,25 +2581,25 @@ body.word .global-info {
 
 .word-details .redirection {
   color: #fff;
-  line-height: 20px;
-  margin: 0 0 20px;
+  line-height: $font-size + $padding;
+  margin: 0 0 $padding * 2;
   opacity: 0.8;
 }
 
 .word-details-tab {
   cursor: pointer;
   display: inline-block;
-  margin: 0 15px 15px 0;
-  height: 60px;
+  margin: 0 $padding * 2 $padding * 2 0;
+  height: $tab-height;
   border-radius: 5px;
-  padding: 0 20px;
+  padding: 0 $padding * 2;
   background: #f5f8ff;
 }
 
 .word-details-tab h2 {
-  font-size: 36px;
-  line-height: 60px;
-  height: 50px;
+  font-size: $font-size;
+  line-height: $tab-height;
+  height: $tab-height - $padding;
   margin: 0;
   font-weight: 400;
   display: inline-block;
@@ -2606,22 +2612,22 @@ body.word .global-info {
 
 .word-details-tab .pronounces {
   display: inline-block;
-  line-height: 60px;
-  height: 60px;
+  line-height: $tab-height;
+  height: $tab-height;
   vertical-align: top;
-  margin-left: 20px;
+  margin-left: $padding;
 }
 
 .word-details-pane {
   display: none;
 }
 
-.word-details-pane:first-child {
+.word-details-pane-active {
   display: block;
 }
 
 .word-details-pane-header {
-  padding: 23px 32px;
+  padding: $padding * 1.5 $padding * 2;
   background-image: -webkit-linear-gradient(174deg, #5384fe, #4badff);
   background-image: -o-linear-gradient(174deg, #5384fe, #4badff);
   background-image: linear-gradient(276deg, #5384fe, #4badff);
@@ -2636,7 +2642,7 @@ body.word .global-info {
 }
 
 .word-details-pane-header .word-text {
-  margin-bottom: 10px;
+  margin-bottom: $padding;
 }
 
 .word-details-pane-header .word-text .add-to-scb-loading {
@@ -2652,12 +2658,12 @@ body.word .global-info {
 }
 
 .word-details-pane-header .word-text .word-info {
-  margin-bottom: 20px;
+  margin-bottom: $padding * 2;
 }
 
 .word-details-pane-header .word-text h2 {
-  font-size: 36px;
-  line-height: 50px;
+  font-size: $font-size * 1.75;
+  line-height: 1.2;
   margin: 0;
   font-weight: 400;
   display: inline-block;
@@ -2666,23 +2672,24 @@ body.word .global-info {
 .word-details-pane-header .word-text a,
 .word-details-pane-header .word-text button {
   display: inline-block;
-  width: 20px;
-  height: 20px;
-  line-height: 50px;
-  margin-left: 30px;
+  width: $font-size + $padding;
+  height: $font-size + $padding;
+  line-height: $tab-height;
+  margin-left: $padding * 2;
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAYAAAAehFoBAAAABGdBTUEAALGPC/xhBQAAAp9JREFUWAntWbFOAkEQBbHESipCbOj8DAobEyz9ATqi0UQ/xsBPWNCY+AW2WtIZPkApMFHxvePOm5u7PQbclZAwyYSZ2zcz7/aG2727SgUyn89r0FvoE/QDGlpYg7VYs0YOZmEA9BG6KWFtM+k9nNk1tGM+Q/9A1iYHk5DwuQkZFmTngMsxU71wGJZb9J9pqJoza80qAyW4CpF+KHvdumyJrZId4dCXazfDuxlWM7CvfKerb0NOoGPA1+1y18OOCfZ2eOtm2NzDvnpQTPWLsM3mxvYSZoYKuHUtsXWEzT1svQ+X9TpytHCFz6Cn0Da0CaVMoGPoCHqPHK/4LRYSkVKMijbdEua0i+IBbkIH0E9nYDpADLHJyWRTpriFlR1NPY1z+WnEwgKuC31z4UuOM6ar8/ERPyM5QHwgAypxZDxgl9CvEviyIcZeyJxmwpkgg4NCnNkiss84fgU9htZjpc1jHNPCHOlM61EDl6UQ5GTP6jbgy5M+1Hln4liM0S9zmGvR0zAyspSNAYCE/NNIIYGODJWDtNVYB4c06UGEKQuUSaw28rWg+m7Q1/HL6mKcV0MKc7a89zCS6kLsy1wbSCa0C06I7aF7up9LpAPX8LkoSBliIfiWByx2HDNU2FPzSqcCy1yuYFIe6BTNogTp8XjFjGIFru19t4bC7yhQF0UOUHyqCYnxQpOEEcM8zJfINERLJMmD/IYgzI2MlCPprGjr2EkIwtx1STmhw0ssRQJKxqNYgR2HIMwtopQeenHlOnFMTyaCPQpxHw6+cOgX2g11Viu7mJ2gSzO/5viQu+TMkCzo5ufGB1vk+CVM4vCDbS99ffbKEI5J+9/Ax4l9fFjMERYzrffGlota/IjEpKEF7Lw9hP7LF6NkQkD8z4/5P0eRZrlVgPOgAAAAAElFTkSuQmCC)
     0 0 / contain;
   border: none;
   outline: none;
   cursor: pointer;
+  display: none;
 }
 
 .word-details-pane-content {
-  padding: 50px 32px;
+  padding: $padding * 2 $padding * 2;
 }
 
 .word-details-pane-footer {
-  padding: 0 30px 30px;
+  padding: 0 $padding * 2 $padding * 2;
 }
 
 .word-details-pane mark.highlight {
@@ -2691,7 +2698,7 @@ body.word .global-info {
 }
 
 .word-details-item {
-  margin-bottom: 50px;
+  margin-bottom: $padding * 3;
 }
 
 .word-details-item:last-of-type {
@@ -2699,9 +2706,9 @@ body.word .global-info {
 }
 
 .word-details-item > h2 {
-  font-size: 20px;
-  line-height: 28px;
-  margin: 0 0 20px;
+  font-size: $font-size + 3px;
+  line-height: $font-size + $padding * 2;
+  margin: 0 0 $padding * 2;
   font-weight: 400;
 }
 
@@ -2710,8 +2717,8 @@ body.word .global-info {
 }
 
 .word-details-button-feedback {
-  padding: 10px 25px;
-  font-size: 14px;
+  padding: $padding $padding * 3;
+  font-size: $font-size;
   border-radius: 20px;
   background-color: #fff;
   border: 1px solid #2e94f7;
@@ -2729,8 +2736,8 @@ body.word .global-info {
 .word-details-ads,
 .word-details-ads-placeholder {
   display: none;
-  min-height: 48px;
-  padding: 10px 32px 10px 54px;
+  min-height: $tab-height;
+  padding: $padding * 2 $padding * 3 $padding * 2 $padding * 6;
 }
 
 .word-details-ads {
@@ -2748,9 +2755,8 @@ body.word .global-info {
   width: 16px;
   height: 17px;
   position: absolute;
-  top: 10px;
-  left: 30px;
-  top: 14px;
+  left: $padding * 3;
+  top: $padding * 2;
   background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAiCAYAAAA+stv/AAAAAXNSR0IArs4c6QAABTRJREFUWAm9Vn1oVlUYf851M5vkgixJbEb/hFLuryRNpT8ipGgWtcVmTEVZECV9qcQCZxGVUGF/BVnQh7GSmBgLYuhipUIzyFl/BK0N01n2MXAr53vvPU+/53zc9973vdt436AD9z7nnOfrd37nPOdeRf+hMXfNo9/HP0KIXnXdvneqCRVU4yQ+zE9cQb/+2UNR/ADFarjaOFUBYP5kDp2LP0Xy9aQ1UZ0aqhZATVWOZ/p3EtO9xlfxH6r+jb+qigOnigHwcMetFOku7IHNqdQ/1SYXv4oBYL/3E+u5pJTNy3rqfwPAP3asoShamUmogtrMuMJBZYfwcrSdIlAf4eAZafo3oBwrZ9IBnREAD229n09vWyS2WP1Cihklh+QxEhspQOIaOn2mIW/hfGrLc3xq814AnDbPtAo+uelFKoQ9pKnOBJ8srDLJJLkwYEAIEDxhvCoPABXiNgr1Dvp2pJt/6JqbZ5MLgAfbX0GS5xF8UDXuHzGOYbzSJItim1SkeQAm1PeVBjfMMS23YHUzTQz35oEoA8DH29uAfJehOOK+JHCsAcAlT6QwAABar+eRzfMSW+lMXnoczAQWtDCm76KLP72QscEgA4AHtlxLYfSmTS6B6fvEQevFJliaetOHXcT1dDbc6m15oH0FRbTd2ktyBzTSO3hg4x3eTmT29Oqp10nzNSQlDh84XhAj02Keb+YYAeUOEJltO/n4U+9SOLaWosL7MFiQVZtRAN+30VvudQkD3N+6EPv1sKHZHDLQrUN328A8wtXnD5+XWTYa6O+xSSrwF2BwUT5bWFWkl/GRlnUeQJGBQtgKymvt6mEoqRUt9YY4aGCDb7KrF73DJleyYQSyZEsT39KOCmS7BmQ6YQArbDOo/epEhjh4vsV81upLqkBY8JWRZcTuvYZe5kWaPuLG8UPMzXNKASwzh88EESNx1C38WYe9B2I9WK43Nt5W7B0YJ32ZJlLmzVNHn8dLEgDc11wPVHicgZeRvpoKF3Y7Eo45Zx/ESm8r0jxpUOm+03sWIru9dgvGCw3J3S4rl3veMGACPMsHNzxKTStOYG7MJvHJygA7FtJ6B6L47bDxL+ulsjB7CAMdUgFO0vyB8ofMnpO36OOTTcTqZ5Tf4sQm396EKb4AwDQvZSB9XZCeBTC1YIxoXMbQQSkH3P9wmEnzuse8vc4VQZm90cMy0bu+z+/1NQo5XRWoRw5cBO0T+XUudMLb77GpEkd9ul+pnmp/EQDFeyDSR7HsDQm9fguydZ63RRKn2GazF30QDKvWQ6PiVAQQc48FAAOhS8kLzffd0E54hZeeVxlLX86T2wOJ42OIWgAwH5KutBSA2sOkpiZgfJVVubdxRl+kNJ/LxS9LmCQXELmNwfKHXpPchOqx3nH8cO7NnAPZY6lbL9N9mZNHPs1eJp9p/9l2vqa0vT13q46+78oAmInaK/E1pHPmapVkJqF8lCSQJHKBvfSBvfSg0tLrRMZ8CaR3+uQiEyL9JL925+3Yo35wnv3B8AZle4DAyVxilN8Jglb19JfdaWUZAFHyq+s2YtkfYN/VrFWRjjZTXwV71K6BrlKTXABixC+vfhA333sAMd+ewGlNS2Nmx0rFiPGM6vx6X1ZhRzNG5ZfW4tcqPoCSvGXaKijdAYno54hG0d+mdp84kpdc5pIqyDNQnV8NEd/diIO5CQdxNOdrmV8lzL+hMp4kveTmmZJLzhkZSINiZkV7Vt8GRpowvwYrux7ueDQWEZwHS+cx/gYfq8PUeOMx1XIQJTN7+xcs/bB+XniprgAAAABJRU5ErkJggg==)
     no-repeat 0/100%;
 }
