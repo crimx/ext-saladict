@@ -33,9 +33,9 @@ interface UrbanResultItem {
   /** who write this explanation */
   contributor?: string
   /** numbers of thumbs up */
-  thumbsUp?: string
+  thumbsUp?: number
   /** numbers of thumbs down */
-  thumbsDown?: string
+  thumbsDown?: number
 }
 
 interface thumbItem {
@@ -50,8 +50,8 @@ interface thumbRes {
 }
 
 interface thumbMapItem {
-  up: string
-  down: string
+  up: number
+  down: number
 }
 
 interface thumbMap {
@@ -80,7 +80,7 @@ export const search: SearchFunction<UrbanResult> = (
 
 /** get thumbs-up and thumbs-down nums  */
 async function getThumbsNums(ids: string): Promise<thumbMap | null> {
-  const thumbsMap = {}
+  const thumbsMap: thumbMap = {}
 
   const result = await axios
     .get<thumbRes>(`https://api.urbandictionary.com/v0/uncacheable`, {
@@ -110,7 +110,7 @@ async function handleDOM(
   const result: UrbanResult = []
   const audio: { us?: string } = {}
 
-  const defPanels = Array.from(doc.querySelectorAll('.def-panel'))
+  const defPanels = Array.from(doc.querySelectorAll('.def-panel, .definition'))
 
   if (defPanels.length <= 0) {
     return handleNoResult()
@@ -148,6 +148,11 @@ async function handleDOM(
         /* ignore */
       }
     }
+    const $tts = $panel.querySelector('[data-tts-url]') as HTMLElement
+    if (!resultItem.pron && $tts?.dataset.ttsUrl) {
+      resultItem.pron = $tts.dataset.ttsUrl
+      audio.us = resultItem.pron
+    }
 
     resultItem.meaning = getInnerHTML(HOST, $panel, '.meaning')
     if (/There aren't any definitions for/i.test(resultItem.meaning || '')) {
@@ -171,8 +176,9 @@ async function handleDOM(
     }
 
     resultItem.contributor = getText($panel, '.contributor')
-    resultItem.thumbsUp = thumbsMap?.[defId]?.up
-    resultItem.thumbsDown = thumbsMap?.[defId]?.down
+    resultItem.thumbsUp = thumbsMap?.[defId]?.up ?? getThumbNum($panel, 'up')
+    resultItem.thumbsDown =
+      thumbsMap?.[defId]?.down ?? getThumbNum($panel, 'down')
 
     result.push(resultItem)
   }
@@ -182,4 +188,14 @@ async function handleDOM(
   } else {
     return handleNoResult()
   }
+}
+
+function getThumbNum($panel: Element, direction: 'up' | 'down') {
+  const $button = $panel.querySelector(
+    `input[name="direction"][value="${direction}"] + button`
+  )
+  const text = getText($button, 'span')
+    .replace(/,/g, '')
+    .trim()
+  return text ? Number(text) : undefined
 }
