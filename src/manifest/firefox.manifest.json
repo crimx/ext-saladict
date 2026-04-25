@@ -6,7 +6,7 @@
   "applications": {
     "gecko": {
       "id": "saladict@crimx.com",
-      "strict_min_version": "67.0"
+      "strict_min_version": "100.0"
     }
   },
   "content_security_policy": "script-src 'self'; object-src 'self'"
