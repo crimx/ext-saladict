@@ -28,6 +28,15 @@ export type WeblioejjeResult = Array<{
 
 type WeblioejjeSearchResult = DictSearchResult<WeblioejjeResult>
 
+function replaceAudioSpeakers(parent: ParentNode): void {
+  parent.querySelectorAll('.fa-volume-up').forEach($audio => {
+    const $source = $audio.querySelector('source')
+    if ($source) {
+      $audio.replaceWith(getStaticSpeaker($source.getAttribute('src')))
+    }
+  })
+}
+
 export const search: SearchFunction<WeblioejjeResult> = (
   text,
   config,
@@ -59,6 +68,22 @@ function handleDOM(
         }
 
         $summaryTbl.outerHTML = `<div class="summaryHead">${head}</div>`
+      } else {
+        const $summaryTitle = $entry.querySelector('.summary-title h1')
+        const $summaryTitleWrp = $entry.querySelector('.summary-title-wrp')
+
+        if ($summaryTitle && $summaryTitleWrp) {
+          const $audio = $entry.querySelector(
+            '.contentTopAudioIcon source, .summary-icon-cells audio source'
+          )
+          const head =
+            getOuterHTML(HOST, $summaryTitle) +
+            getStaticSpeakerString($audio && $audio.getAttribute('src'))
+
+          $summaryTitleWrp.outerHTML = `<div class="summaryHead">${head}</div>`
+        } else {
+          replaceAudioSpeakers($entry)
+        }
       }
 
       removeChildren($entry, '#leadBtnWrp')
@@ -98,12 +123,7 @@ function handleDOM(
     removeChildren($entry, '.kijiFoot')
     removeChildren($entry, '.addToSlBtnCntner')
 
-    $entry.querySelectorAll('.fa-volume-up').forEach($audio => {
-      const $source = $audio.querySelector('source')
-      if ($source) {
-        $audio.replaceWith(getStaticSpeaker($source.getAttribute('src')))
-      }
-    })
+    replaceAudioSpeakers($entry)
 
     $entry.querySelectorAll('br').forEach($br => {
       $br.classList.add('br')

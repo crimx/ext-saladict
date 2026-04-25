@@ -19,4 +19,21 @@ describe('Dict/Weblioejje/engine', () => {
       )
     })
   })
+
+  it('should replace audio controls with static speakers', () => {
+    return retry(() =>
+      search('love', getDefaultConfig(), getDefaultProfile(), {
+        isPDF: false
+      }).then(({ result }) => {
+        const content = result.map(({ content }) => content).join('')
+        const audio =
+          'https://cdn.weblio.jp/e7/img/dict/kenej/audio/S-A84EB96_E-A85070C.mp3'
+
+        expect(content).toContain(`href="${audio}"`)
+        expect(content).toContain('class="saladict-Speaker"')
+        expect(content).not.toContain('contentTopAudioIcon')
+        expect(content).not.toContain('<audio')
+      })
+    )
+  })
 })
