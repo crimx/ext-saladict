@@ -55,8 +55,11 @@
   line-height: 1.3;
   margin-bottom: 8px;
   padding-bottom: 3px;
-}
 
+  & + div {
+    margin-bottom: 8px;
+  }
+}
 
 .mw-mg-area {
   display: flex;
@@ -125,12 +128,26 @@
 }
 
 .mw-extra {
-  margin-top: 16px;
+  position: relative;
+  border: 1px solid #c76e06;
+  border-radius: 5px;
+  margin-top: 24px;
+  margin-bottom: 16px;
+  padding: 1.2em 1em 0.5em 1em;
   line-height: 1.55;
 }
 
 .mw-extra-title {
-  border-bottom: 1px solid var(--color-font-grey);
+  position: absolute;
+  top: 0;
+  left: 1em;
+  transform: translateY(-50%);
+  max-width: 90%;
+  overflow: hidden;
+  padding: 0 5px;
+  background: var(--color-background);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-bottom: none;
   font-size: 1.15em;
-  padding-bottom: 3px;
 }

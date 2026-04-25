@@ -1805,10 +1805,8 @@ img.weblioMascot {
 }
 
 .summaryM .description {
-  background-color: var(--color-font-grey);
-  color: #fff;
   font-size: 1.07em;
-  font-weight: normal;
+  font-weight: bolder;
   margin: 0 5px 0 3px;
   padding: 3px 5px !important;
 }
@@ -3710,4 +3708,140 @@ img {
 
 .phraseEjjeT {
   width: 100%;
+}
+
+/*-----------------------------------------------*\
+    Saladict theme alignment
+\*-----------------------------------------------*/
+
+.Jmdct .jmdctL,
+.Stwdj .stwdjHdC,
+.Edrnt .edrntC,
+.Wejty .wejtyT span,
+.Wejty .wejtyE span,
+.Wejty .wejtyR span,
+.Wejty .wejtyL,
+.Wejhs .wejhsL span,
+.KejjeYrC,
+.Hypej .HypejYrC,
+.Hypej .HypejLb,
+.EgtejLb,
+.qotHS,
+.Jawik .level1 b,
+.Jawik .level2 b,
+.Jawik .level2Block b,
+.Jfwik .level1 b,
+.Jfwik .level2 b,
+.Jfwik .level2Block b {
+  background-color: var(--color-surface);
+  border-color: var(--color-divider);
+  color: var(--color-font);
+}
+
+.Jmned table,
+.Jmned table th,
+.Jmned table td,
+.Nekym table,
+.Nekym table th,
+.Nekym table td,
+.Jeepm table,
+.Jeepm td,
+.Hypej .HypejB tr th,
+.Hypej .HypejB tr td,
+.infobox.bordered td,
+.infobox.bordered th,
+.infobox.bordered .mergedtoprow td,
+.infobox.bordered .mergedtoprow th,
+.infobox.bordered .mergedrow td,
+.infobox.bordered .mergedrow th,
+.treeBoxCFoldLi .pl,
+.Mzdmt .cell_center_left,
+.Mzdmt .cell_left_no,
+.Mzdmt .cell_left,
+.free-member-features ul.features li,
+#free-house-ad-on-load-modal-container .features-wrapper .feature,
+.EGateCoreDataWrp table td,
+.descriptionWrp table td {
+  border-color: var(--color-divider);
+}
+
+.Jmned table th,
+.Jmned .jmnedInfo,
+.Nekym table th,
+.Wejty .wejtyInfo,
+.Wwsej .wwsejInfo,
+.Wejhs .wejhsInfo,
+.highlight-menu,
+.highlight-menu table,
+.highlight-lib .highlight-edit table,
+.highlight-lib .hl-item,
+.highlight-lib .hl-pagination > li > a,
+.ad02_center-left_box,
+.ad02_center-right_box,
+.ad02_right_box,
+.Mtsbs table.spec tr.mainheader th,
+.Mtsbs table.spec tr.mainheader th.basic {
+  background-color: var(--color-surface);
+  border-color: var(--color-divider);
+}
+
+.highlight-lib .hl-pagination a:hover,
+.highlight-lib .hl-pagination .active a,
+.ad02_left_box,
+.EgtejYrAr,
+.EgtejIdxAr,
+.CtbdsExAr,
+.summaryM .description {
+  background-color: var(--color-surface-active);
+}
+
+.wrpCmp p a,
+.wrpCmpCom p a,
+.wrpIMCmp p a,
+.wrpIMCmpCom p a,
+.Stwdj .stwdjYr a,
+.KejjeYrHd a,
+.KejjeYrTxt a,
+.pinned-content-button-wrapper > .error a,
+#sideBHPAEjje > .error a,
+.mainb,
+.kijiEx,
+.wrpEx p,
+.wrpEx p a:link,
+.wrpEx p a:visited,
+.wrpEx p a:active,
+.wrpEx p.wrpExFL,
+.wrpAdFTxt p,
+.wrpExE p,
+.wrpExE p a:link,
+.wrpExE p a:visited,
+.wrpExE p a:active,
+.footer_banner ul.features,
+#free-house-ad-on-load-modal-container .features-wrapper .feature span,
+.KejjeYrL,
+.KejjeYrLS {
+  color: var(--color-font);
+}
+
+.wrpEx p span,
+.Hndmr table#webcatalogue-table p.caution,
+.Efref .efrefA,
+.qotCJ {
+  color: var(--color-font-grey);
+}
+
+.ejjeScCnt .chsShwcsTD a:active,
+.ejjeScCnt .chsShwcsTD a:link,
+.ejjeScCnt .chsShwcsTD a:visited,
+.treeBoxC .adIFLeftE,
+#main a:hover,
+.youreilink {
+  color: var(--color-link);
+}
+
+.pinned-content-button-wrapper > .error,
+.summaryR > .error,
+#sideBHPAEjje > .error {
+  background-color: var(--color-surface);
+  color: var(--color-font);
 }

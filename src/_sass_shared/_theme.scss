@@ -1,21 +1,27 @@
 .saladict-theme {
-  background-color: #fff;
-  color: #333;
-  --color-brand: #5caf9e;
-  --color-background: #fff;
+  background-color: #ffffff;
+  color: #24292f;
+  --color-brand: #2f9d8a;
+  --color-background: #ffffff;
   --color-rgb-background: 255, 255, 255;
-  --color-font: #333;
-  --color-font-grey: #666;
-  --color-divider: #ddd;
+  --color-font: #24292f;
+  --color-font-grey: #5d6670;
+  --color-divider: #d9dee3;
+  --color-surface: #f6f8fa;
+  --color-surface-active: #eaeef2;
+  --color-link: #286aa8;
 
   @include isDarkMode {
-    background-color: #222;
-    color: #ddd;
-    --color-brand: #1e947e;
-    --color-background: #222;
-    --color-rgb-background: 34, 34, 34;
-    --color-font: #ddd;
-    --color-font-grey: #aaa;
-    --color-divider: #4d4748;
+    background-color: #282c30;
+    color: #e3e0da;
+    --color-brand: #2b9f8d;
+    --color-background: #282c30;
+    --color-rgb-background: 40, 44, 48;
+    --color-font: #e3e0da;
+    --color-font-grey: #b8b3aa;
+    --color-divider: #555b61;
+    --color-surface: #33383d;
+    --color-surface-active: #3d444a;
+    --color-link: #8eb7e6;
   }
 }
