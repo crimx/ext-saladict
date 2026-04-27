@@ -1,10 +1,10 @@
 import React, { FC, useState, useEffect, useContext, useRef } from 'react'
-import { Helmet } from 'react-helmet'
 import { shallowEqual } from 'react-redux'
 import { Layout, Row, Col, message as antMsg } from 'antd'
 import { useSelector } from '@/content/redux'
 import { reportPageView } from '@/_helpers/analytics'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { DocumentTitle } from '@/components/DocumentTitle'
 import { useTranslate, I18nContext } from '@/_helpers/i18n'
 import { ChangeEntryContext } from '../helpers/change-entry'
 import { useFormDirty } from '../helpers/use-form-dirty'
@@ -71,9 +71,9 @@ export const MainEntry: FC = () => {
 
   return (
     <>
-      <Helmet>
-        {ready && <title>{`${t('title')} - ${t('nav.' + entry)}`}</title>}
-      </Helmet>
+      <DocumentTitle
+        title={ready ? `${t('title')} - ${t('nav.' + entry)}` : undefined}
+      />
       <HeaderMemo openProfilesTab={setEntry} />
       <Layout
         style={{ maxWidth: 1400, margin: '0 auto' }}

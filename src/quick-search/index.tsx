@@ -3,8 +3,8 @@ import '@/selection'
 
 import React, { FC } from 'react'
 import ReactDOM from 'react-dom'
-import { Helmet } from 'react-helmet'
 import { message, storage } from '@/_helpers/browser-api'
+import { DocumentTitle } from '@/components/DocumentTitle'
 
 import { Provider as ProviderRedux } from 'react-redux'
 import { createStore } from '@/content/redux'
@@ -19,11 +19,7 @@ document.title = 'Saladict Standalone Panel'
 
 const Title: FC = () => {
   const { t } = useTranslate('content')
-  return (
-    <Helmet>
-      <title>{t('standalone')}</title>
-    </Helmet>
-  )
+  return <DocumentTitle title={t('standalone')} />
 }
 
 createStore().then(store => {

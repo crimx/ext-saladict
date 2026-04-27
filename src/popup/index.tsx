@@ -3,13 +3,13 @@ import '@/selection'
 
 import React, { FC } from 'react'
 import ReactDOM from 'react-dom'
-import { Helmet } from 'react-helmet'
 import { AppConfig } from '@/app-config'
 import { getConfig } from '@/_helpers/config-manager'
 import { message, openUrl } from '@/_helpers/browser-api'
 import { saveWord, Word } from '@/_helpers/record-manager'
 import { translateCtxs, genCtxText } from '@/_helpers/translateCtx'
 import { Message } from '@/typings/message'
+import { DocumentTitle } from '@/components/DocumentTitle'
 
 import { Provider as ProviderRedux } from 'react-redux'
 import { createStore } from '@/content/redux'
@@ -26,11 +26,7 @@ browser.runtime.connect({ name: 'popup' } as any) // wrong typing
 
 const Title: FC = () => {
   const { t } = useTranslate('popup')
-  return (
-    <Helmet>
-      <title>{t('title')}</title>
-    </Helmet>
-  )
+  return <DocumentTitle title={t('title')} />
 }
 
 getConfig().then(config => {
