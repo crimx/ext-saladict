@@ -4,6 +4,7 @@ import {
   Profile,
   getDefaultProfileID
 } from '@/app-config/profiles'
+import pako from 'pako'
 import sinon from 'sinon'
 import { timer } from '@/_helpers/promise-more'
 import { pick } from 'lodash'
@@ -26,6 +27,19 @@ describe('Profile Manager', () => {
     browser.storage.sync.remove.callsFake(() => Promise.resolve())
     jest.resetModules()
     profileManager = require('@/_helpers/profile-manager')
+  })
+
+  it('should deflate profile as sparse v2 data', () => {
+    const profile = getDefaultProfile()
+    const deflatedProfile = profileManager.deflate(profile)
+    const patch = JSON.parse(pako.inflate(deflatedProfile.d, { to: 'string' }))
+
+    expect(deflatedProfile.v).toBe(2)
+    expect(patch).toEqual({
+      id: profile.id,
+      version: profile.version
+    })
+    expect(profileManager.inflate(deflatedProfile)).toEqual(profile)
   })
 
   it('should init with default profile the first time', async () => {
@@ -73,11 +87,47 @@ describe('Profile Manager', () => {
           [profile1.id]: deflatedProfile1
         })
       )
-    ).toBeTruthy()
+    ).toBeFalsy()
     expect(
       browser.storage.sync.set.calledWith(
         sinon.match({
           [profile2.id]: deflatedProfile2
+        })
+      )
+    ).toBeFalsy()
+  })
+
+  it('should migrate existing full profiles to sparse v2 data when init', async () => {
+    const id1 = getDefaultProfileID()
+    const id2 = getDefaultProfileID()
+    const profile1 = getDefaultProfile(id1.id)
+    const profile2 = getDefaultProfile(id2.id)
+    fakeStorageGet({
+      profileIDList: [id1, id2],
+      activeProfileID: profile2.id,
+      [profile1.id]: {
+        v: 1,
+        d: pako.deflate(JSON.stringify(profile1), { to: 'string' })
+      },
+      [profile2.id]: {
+        v: 1,
+        d: pako.deflate(JSON.stringify(profile2), { to: 'string' })
+      }
+    })
+
+    const profile = await profileManager.initProfiles()
+    expect(profile).toEqual(profile2)
+    expect(
+      browser.storage.sync.set.calledWith(
+        sinon.match({
+          [profile1.id]: sinon.match({ v: 2 })
+        })
+      )
+    ).toBeTruthy()
+    expect(
+      browser.storage.sync.set.calledWith(
+        sinon.match({
+          [profile2.id]: sinon.match({ v: 2 })
         })
       )
     ).toBeTruthy()

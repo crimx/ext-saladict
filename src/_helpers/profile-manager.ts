@@ -5,6 +5,7 @@ import pako from 'pako'
 import {
   getDefaultProfile,
   Profile,
+  ProfileMutable,
   genProfilesStorage,
   ProfileIDList,
   ProfileID
@@ -12,6 +13,7 @@ import {
 import { mergeProfile } from '@/app-config/merge-profile'
 import { storage } from './browser-api'
 import { TFunction } from 'i18next'
+import isEqual from 'lodash/isEqual'
 
 import { Observable, from, concat, fromEventPattern } from 'rxjs'
 import { map } from 'rxjs/operators'
@@ -26,18 +28,32 @@ export interface ProfileChanged {
   oldProfile?: Profile
 }
 
-/** Compressed profile data */
-interface ProfileCompressed {
+/** Compressed full profile data */
+interface ProfileCompressedV1 {
   /** version */
   v: 1
   /** data */
   d: string
 }
 
-export function deflate(profile: Profile): ProfileCompressed {
+/** Compressed sparse profile data */
+interface ProfileCompressedV2 {
+  /** version */
+  v: 2
+  /** data */
+  d: string
+}
+
+type ProfileCompressed = ProfileCompressedV1 | ProfileCompressedV2
+type StoredProfile = Profile | ProfileCompressed
+type ProfilePatch = Partial<ProfileMutable>
+
+export function deflate(profile: Profile): ProfileCompressedV2 {
   return {
-    v: 1,
-    d: pako.deflate(JSON.stringify(profile), { to: 'string' })
+    v: 2,
+    d: pako.deflate(JSON.stringify(createProfilePatch(profile)), {
+      to: 'string'
+    })
   }
 }
 
@@ -51,10 +67,64 @@ export function inflate(
 ): Profile | undefined {
   if (profile && profile['v'] === 1) {
     return JSON.parse(
-      pako.inflate((profile as ProfileCompressed).d, { to: 'string' })
+      pako.inflate((profile as ProfileCompressedV1).d, { to: 'string' })
     )
   }
+  if (profile && profile['v'] === 2) {
+    const patch = JSON.parse(
+      pako.inflate((profile as ProfileCompressedV2).d, { to: 'string' })
+    )
+    return mergeProfile(patch)
+  }
   return profile as Profile | undefined
+}
+
+function createProfilePatch(profile: Profile): ProfilePatch {
+  const patch = diffValue(profile, getDefaultProfile(profile.id)) || {}
+
+  patch.id = profile.id
+  patch.version = profile.version
+
+  return patch
+}
+
+function diffValue(value: any, baseValue: any): any {
+  if (!isPlainObject(value) || !isPlainObject(baseValue)) {
+    return isEqual(value, baseValue) ? undefined : value
+  }
+
+  const result = {}
+  Object.keys(value).forEach(key => {
+    const diff = diffValue(value[key], baseValue[key])
+    if (diff !== undefined) {
+      result[key] = diff
+    }
+  })
+
+  return Object.keys(result).length > 0 ? result : undefined
+}
+
+function isPlainObject(value: any): value is { [key: string]: any } {
+  return Object.prototype.toString.call(value) === '[object Object]'
+}
+
+function isProfileCompressedV2(
+  profile?: StoredProfile
+): profile is ProfileCompressedV2 {
+  return Boolean(
+    profile && profile['v'] === 2 && typeof profile['d'] === 'string'
+  )
+}
+
+function shouldUpdateStoredProfile(
+  storedProfile: StoredProfile | undefined,
+  profile: Profile
+): boolean {
+  if (!isProfileCompressedV2(storedProfile)) {
+    return true
+  }
+
+  return deflate(profile).d !== storedProfile.d
 }
 
 export function getProfileName(name: string, t: TFunction): string {
@@ -68,6 +138,7 @@ export function getProfileName(name: string, t: TFunction): string {
 
 export async function initProfiles(): Promise<Profile> {
   let profiles: Profile[] = []
+  let profilesToUpdate: Profile[] = []
   let profileIDList: ProfileIDList = []
   let activeProfileID = ''
 
@@ -91,11 +162,19 @@ export async function initProfiles(): Promise<Profile> {
   if (profileIDList.length > 0) {
     // quota bytes limit
     for (const { id } of profileIDList) {
-      const profile = await getProfile(id)
-      profiles.push(profile ? mergeProfile(profile) : getDefaultProfile(id))
+      const storedProfile = await getStoredProfile(id)
+      const profile = inflate(storedProfile)
+      const mergedProfile = profile
+        ? mergeProfile(profile)
+        : getDefaultProfile(id)
+      profiles.push(mergedProfile)
+      if (shouldUpdateStoredProfile(storedProfile, mergedProfile)) {
+        profilesToUpdate.push(mergedProfile)
+      }
     }
   } else {
     ;({ profileIDList, profiles } = genProfilesStorage())
+    profilesToUpdate = profiles
     activeProfileID = profileIDList[0].id
   }
 
@@ -112,7 +191,7 @@ export async function initProfiles(): Promise<Profile> {
   await storage.sync.set({ profileIDList, activeProfileID })
 
   // quota bytes per item limit
-  for (const profile of profiles) {
+  for (const profile of profilesToUpdate) {
     await updateProfile(profile)
   }
 
@@ -138,7 +217,14 @@ export async function resetAllProfiles() {
 }
 
 export async function getProfile(id: string): Promise<Profile | undefined> {
-  return inflate((await storage.sync.get(id))[id])
+  return inflate(await getStoredProfile(id))
+}
+
+async function getStoredProfile(
+  id: string
+): Promise<StoredProfile | undefined> {
+  const result = await storage.sync.get<{ [key: string]: StoredProfile }>(id)
+  return result[id]
 }
 
 /**
@@ -286,7 +372,7 @@ export async function addActiveProfileListener(
     // the active profile itself updated
     if (activeID && changes[activeID]) {
       const { newValue, oldValue } = changes[activeID] as StorageChanged<
-        ProfileCompressed
+        StoredProfile
       >
       if (newValue) {
         cb({ newProfile: inflate(newValue), oldProfile: inflate(oldValue) })
