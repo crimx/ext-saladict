@@ -8,6 +8,7 @@ import WordEditorContainer from '@/content/components/WordEditor/WordEditor.cont
 import { I18nContextProvider } from '@/_helpers/i18n'
 import { timer } from '@/_helpers/promise-more'
 import { AntdRootContainer } from './AntdRootContainer'
+import { isDarkMode } from '@/_helpers/dark-mode'
 
 import './_style.scss'
 
@@ -18,12 +19,13 @@ export const initAntdRoot = async (
   const store = await createStore()
 
   // update theme as quickly as possible
-  let { darkMode } = store.getState().config
+  let darkMode = isDarkMode(store.getState().config.darkMode)
   await switchAntdTheme(darkMode)
   store.subscribe(() => {
     const { config } = store.getState()
-    if (config.darkMode !== darkMode) {
-      darkMode = config.darkMode
+    const nextDarkMode = isDarkMode(config.darkMode)
+    if (nextDarkMode !== darkMode) {
+      darkMode = nextDarkMode
       switchAntdTheme(darkMode)
     }
   })

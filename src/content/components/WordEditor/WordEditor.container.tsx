@@ -6,6 +6,7 @@ import {
 } from 'react-retux'
 import { StoreState, StoreAction } from '@/content/redux/modules'
 import { WordEditorPortal, WordEditorPortalProps } from './WordEditor.portal'
+import { isDarkMode } from '@/_helpers/dark-mode'
 
 type Dispatchers = ExtractDispatchers<WordEditorPortalProps, 'onClose'>
 
@@ -15,7 +16,7 @@ const mapStateToProps: MapStateToProps<
   Dispatchers
 > = state => ({
   show: state.wordEditor.isShow,
-  darkMode: state.config.darkMode,
+  darkMode: isDarkMode(state.config.darkMode),
   withAnimation: state.config.animation,
   containerWidth: window.innerWidth - state.config.panelWidth - 100,
   ctxTrans: state.config.ctxTrans,

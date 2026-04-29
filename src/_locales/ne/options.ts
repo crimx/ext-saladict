@@ -43,7 +43,7 @@ export const locale: typeof _locale = {
     runInBg: 'Keep in Background',
     runInBg_help:
       'Keep the browser running in background after close so that global shortcuts still work.',
-    darkMode: 'Dark Mode',
+    darkMode: 'Theme Mode',
     langCode: 'App Language',
     editOnFav: 'Open WordEditor when saving',
     editOnFav_help:
@@ -143,6 +143,11 @@ export const locale: typeof _locale = {
       accent: {
         uk: 'UK',
         us: 'US'
+      },
+      darkMode: {
+        light: 'Light',
+        dark: 'Dark',
+        follow: 'Auto'
       },
       sel_blackwhitelist: 'Selection Black/White List',
       sel_blackwhitelist_help:

@@ -1,4 +1,9 @@
-import { getDefaultConfig, AppConfig, AppConfigMutable } from '@/app-config'
+import {
+  getDefaultConfig,
+  AppConfig,
+  AppConfigMutable,
+  normalizeDarkMode
+} from '@/app-config'
 import { defaultAllDicts } from './dicts'
 
 import forEach from 'lodash/forEach'
@@ -53,6 +58,13 @@ export function mergeConfig(
       case 'langCode':
         merge('langCode', val => /^(zh-CN|zh-TW|en)$/.test(val))
         break
+      case 'darkMode': {
+        const darkMode = normalizeDarkMode(oldConfig.darkMode)
+        if (darkMode) {
+          base.darkMode = darkMode
+        }
+        break
+      }
       case 'pdfWhitelist':
       case 'pdfBlacklist':
       case 'whitelist':

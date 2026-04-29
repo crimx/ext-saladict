@@ -6,6 +6,7 @@ import { reportPageView } from '@/_helpers/analytics'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { DocumentTitle } from '@/components/DocumentTitle'
 import { useTranslate, I18nContext } from '@/_helpers/i18n'
+import { isDarkMode } from '@/_helpers/dark-mode'
 import { ChangeEntryContext } from '../helpers/change-entry'
 import { useFormDirty } from '../helpers/use-form-dirty'
 import { EntrySideBarMemo } from './EntrySideBar'
@@ -26,7 +27,7 @@ export const MainEntry: FC = () => {
   const { analytics, darkMode } = useSelector(
     state => ({
       analytics: state.config.analytics,
-      darkMode: state.config.darkMode
+      darkMode: isDarkMode(state.config.darkMode)
     }),
     shallowEqual
   )

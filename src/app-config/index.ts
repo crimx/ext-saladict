@@ -37,6 +37,25 @@ export type InstantSearchKey = 'direct' | 'ctrl' | 'alt' | 'shift'
 /** '' means no preload */
 export type PreloadSource = '' | 'clipboard' | 'selection'
 
+export type DarkMode = 'light' | 'dark' | 'follow'
+
+export const DARK_MODE_LIGHT: DarkMode = 'light'
+export const DARK_MODE_DARK: DarkMode = 'dark'
+export const DARK_MODE_FOLLOW: DarkMode = 'follow'
+
+export function normalizeDarkMode(darkMode: unknown): DarkMode | undefined {
+  switch (darkMode) {
+    case false:
+    case DARK_MODE_LIGHT:
+      return DARK_MODE_LIGHT
+    case true:
+    case DARK_MODE_DARK:
+      return DARK_MODE_DARK
+    case DARK_MODE_FOLLOW:
+      return DARK_MODE_FOLLOW
+  }
+}
+
 export type AllDicts = ReturnType<typeof getAllDicts>
 
 export type AppConfigMutable = ReturnType<typeof _getDefaultConfig>
@@ -47,7 +66,7 @@ export default getDefaultConfig
 
 function _getDefaultConfig() {
   return {
-    version: 14,
+    version: 15,
 
     /** activate app, won't affect triple-ctrl setting */
     active: true,
@@ -80,7 +99,7 @@ function _getDefaultConfig() {
 
     bowlOffsetY: -45,
 
-    darkMode: false,
+    darkMode: DARK_MODE_FOLLOW as DarkMode,
 
     /** custom panel css */
     panelCSS: '',

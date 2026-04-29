@@ -8,6 +8,7 @@ import memoizeOne from 'memoize-one'
 import { StoreState, StoreDispatch } from '@/content/redux/modules'
 import { message } from '@/_helpers/browser-api'
 import { DictList, DictListProps } from './DictList'
+import { isDarkMode } from '@/_helpers/dark-mode'
 
 const memoizedDicts = memoizeOne(
   (
@@ -40,7 +41,7 @@ const mapStateToProps: MapStateToProps<
 > = state => {
   const { config } = state
   return {
-    darkMode: config.darkMode,
+    darkMode: isDarkMode(config.darkMode),
     withAnimation: config.animation,
     panelCSS: config.panelCSS,
     touchMode: config.touchMode,

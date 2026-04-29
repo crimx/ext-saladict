@@ -42,7 +42,7 @@ export const locale: typeof _locale = {
     runInBg: '保持瀏覽器執行',
     runInBg_help:
       '讓瀏覽器關閉後依然保持執行，從而繼續響應快捷鍵以及瀏覽器外劃字（見右上角官網使用說明）。',
-    darkMode: '黑暗模式',
+    darkMode: '主題模式',
     langCode: '介面語言',
     editOnFav: '紅心單字時彈出編輯介面',
     editOnFav_help:
@@ -136,6 +136,11 @@ export const locale: typeof _locale = {
       accent: {
         uk: '英式',
         us: '美式'
+      },
+      darkMode: {
+        light: '淺色',
+        dark: '深色',
+        follow: '自動'
       },
       sel_blackwhitelist: '選詞黑白名單',
       sel_blackwhitelist_help: '黑名單相符的頁面 Saladict 將不會響應滑鼠劃詞。',

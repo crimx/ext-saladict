@@ -6,6 +6,7 @@ import {
 } from 'react-retux'
 import { StoreAction, StoreState } from '@/content/redux/modules'
 import { WaveformBox, WaveformBoxProps } from './WaveformBox'
+import { isDarkMode } from '@/_helpers/dark-mode'
 
 type Dispatchers = ExtractDispatchers<
   WaveformBoxProps,
@@ -18,7 +19,7 @@ const mapStateToProps: MapStateToProps<
   Dispatchers
 > = state => {
   return {
-    darkMode: state.config.darkMode,
+    darkMode: isDarkMode(state.config.darkMode),
     isExpand: state.isExpandWaveformBox
   }
 }

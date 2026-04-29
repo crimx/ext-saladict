@@ -7,6 +7,7 @@ import {
   percentageSlideFormatter,
   pixelSlideFormatter
 } from '@/options/components/SaladictForm'
+import { DarkModeSelect } from '@/options/components/DarkModeSelect'
 
 export const DictPanel: FC = () => {
   const { t } = useTranslate('options')
@@ -58,8 +59,7 @@ export const DictPanel: FC = () => {
         },
         {
           name: getConfigPath('darkMode'),
-          valuePropName: 'checked',
-          children: <Switch />
+          children: <DarkModeSelect />
         },
         {
           name: getConfigPath('panelMaxHeightRatio'),

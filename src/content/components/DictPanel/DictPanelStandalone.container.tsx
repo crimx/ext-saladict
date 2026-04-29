@@ -9,6 +9,7 @@ import { MenuBarContainer } from '../MenuBar/MenuBar.container'
 import { MtaBoxContainer } from '../MtaBox/MtaBox.container'
 import { DictListContainer } from '../DictList/DictList.container'
 import { WaveformBoxContainer } from '../WaveformBox/WaveformBox.container'
+import { isDarkMode } from '@/_helpers/dark-mode'
 
 const menuBar = <MenuBarContainer />
 const dictList = <DictListContainer />
@@ -22,7 +23,7 @@ const mapStateToProps = (
 ): DictPanelStandaloneProps => {
   return {
     withAnimation: state.config.animation,
-    darkMode: state.config.darkMode,
+    darkMode: isDarkMode(state.config.darkMode),
     panelCSS: state.config.panelCSS,
     fontSize: state.config.fontSize,
     menuBar,

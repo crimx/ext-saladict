@@ -1,5 +1,10 @@
 import pako from 'pako'
-import { getDefaultConfig, AppConfig } from '@/app-config'
+import {
+  getDefaultConfig,
+  AppConfig,
+  DARK_MODE_DARK,
+  DARK_MODE_FOLLOW
+} from '@/app-config'
 import { mergeConfig } from '@/app-config/merge-config'
 import { storage } from './browser-api'
 
@@ -114,7 +119,7 @@ export function createConfigStream(): Observable<AppConfig> {
   )
 }
 
-function syncPdfViewerDarkMode(darkMode: boolean) {
+function syncPdfViewerDarkMode(darkMode: AppConfig['darkMode']) {
   try {
     if (
       typeof localStorage !== 'undefined' &&
@@ -123,7 +128,14 @@ function syncPdfViewerDarkMode(darkMode: boolean) {
         location.protocol
       )
     ) {
-      localStorage.setItem(PDF_VIEWER_DARK_MODE_LOCAL_KEY, darkMode ? '1' : '0')
+      localStorage.setItem(
+        PDF_VIEWER_DARK_MODE_LOCAL_KEY,
+        darkMode === DARK_MODE_FOLLOW
+          ? DARK_MODE_FOLLOW
+          : darkMode === DARK_MODE_DARK
+          ? '1'
+          : '0'
+      )
     }
   } catch (error) {
     // Ignore localStorage failures in non-extension or restricted contexts.

@@ -16,10 +16,19 @@ import { timer } from '@/_helpers/promise-more'
 import { MessageResponse } from '@/typings/message'
 import { StoreDispatch, StoreState } from './modules'
 import { isTagName } from '@/_helpers/dom'
+import { DARK_MODE_FOLLOW } from '@/app-config'
+import { watchSystemDarkMode } from '@/_helpers/dark-mode'
 
 export const init = (dispatch: StoreDispatch, getState: () => StoreState) => {
   window.addEventListener('resize', () => {
     dispatch({ type: 'WINDOW_RESIZE' })
+  })
+
+  watchSystemDarkMode(() => {
+    const { config } = getState()
+    if (config.darkMode === DARK_MODE_FOLLOW) {
+      dispatch({ type: 'NEW_CONFIG', payload: config })
+    }
   })
 
   addConfigListener(({ newConfig }) => {

@@ -11,6 +11,7 @@ import { MenuBarContainer } from '../MenuBar/MenuBar.container'
 import { MtaBoxContainer } from '../MtaBox/MtaBox.container'
 import { DictListContainer } from '../DictList/DictList.container'
 import { WaveformBoxContainer } from '../WaveformBox/WaveformBox.container'
+import { isDarkMode } from '@/_helpers/dark-mode'
 
 const menuBar = <MenuBarContainer />
 const dictList = <DictListContainer />
@@ -32,7 +33,7 @@ const mapStateToProps: MapStateToProps<
   fontSize: state.config.fontSize,
   withAnimation: state.config.animation,
   panelCSS: state.config.panelCSS,
-  darkMode: state.config.darkMode,
+  darkMode: isDarkMode(state.config.darkMode),
   menuBar,
   mtaBox: state.isShowMtaBox ? <MtaBoxContainer /> : null,
   dictList,

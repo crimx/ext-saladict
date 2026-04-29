@@ -54,7 +54,7 @@ const pdfViewerThemeBootstrap = `
     prefsText = null
   }
 
-  if (darkMode !== '0' && darkMode !== '1') {
+  if (darkMode !== '0' && darkMode !== '1' && darkMode !== 'follow') {
     return
   }
 
@@ -66,7 +66,7 @@ const pdfViewerThemeBootstrap = `
     }
   }
 
-  prefs.viewerCssTheme = darkMode === '1' ? 2 : 1
+  prefs.viewerCssTheme = darkMode === 'follow' ? 0 : darkMode === '1' ? 2 : 1
 
   try {
     localStorage.setItem('pdfjs.preferences', JSON.stringify(prefs))

@@ -6,6 +6,7 @@ import zh_TW from 'antd/lib/locale-provider/zh_TW'
 import en_US from 'antd/lib/locale-provider/en_US'
 import { useSelector } from '@/content/redux'
 import { reportPageView } from '@/_helpers/analytics'
+import { isDarkMode } from '@/_helpers/dark-mode'
 
 const antdLocales = (saladictLocale: string) => {
   switch (saladictLocale) {
@@ -29,7 +30,7 @@ export interface AntdRootContainerProps {
 export const AntdRootContainer: FC<AntdRootContainerProps> = props => {
   const { langCode, analytics, darkMode } = useSelector(state => {
     const { langCode, analytics, darkMode } = state.config
-    return { langCode, analytics, darkMode }
+    return { langCode, analytics, darkMode: isDarkMode(darkMode) }
   }, shallowEqual)
 
   const locale = useMemo(() => antdLocales(langCode), [langCode])

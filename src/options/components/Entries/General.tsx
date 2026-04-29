@@ -5,6 +5,7 @@ import {
   SaladictForm,
   SaladictFormItem
 } from '@/options/components/SaladictForm'
+import { DarkModeSelect } from '@/options/components/DarkModeSelect'
 import { isFirefox, isOpera } from '@/_helpers/saladict'
 
 export const General: FC = () => {
@@ -32,8 +33,7 @@ export const General: FC = () => {
   formItems.push(
     {
       name: getConfigPath('darkMode'),
-      valuePropName: 'checked',
-      children: <Switch />
+      children: <DarkModeSelect />
     },
     {
       name: getConfigPath('langCode'),

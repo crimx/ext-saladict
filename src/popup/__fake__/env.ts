@@ -6,7 +6,7 @@ async function main() {
   const config = await initConfig()
   await updateConfig({
     ...config,
-    darkMode: true
+    darkMode: 'dark'
   })
 }
 

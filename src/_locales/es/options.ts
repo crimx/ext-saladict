@@ -45,7 +45,7 @@ export const locale: typeof _locale = {
     runInBg: 'Ejecutar en segundo plano',
     runInBg_help:
       'Si está desactivado, Saladict se cerrará cuando se cierre la última ventana.',
-    darkMode: ' Modo oscuro',
+    darkMode: 'Tema',
     langCode: 'Idioma de Saladict',
     editOnFav: 'Abrir WordEditor al guardar',
     editOnFav_help:
@@ -147,6 +147,11 @@ export const locale: typeof _locale = {
       accent: {
         uk: 'UK',
         us: 'US'
+      },
+      darkMode: {
+        light: 'Claro',
+        dark: 'Oscuro',
+        follow: 'Automático'
       },
       sel_blackwhitelist: 'Lista negra y blanca de selección',
       sel_blackwhitelist_help:

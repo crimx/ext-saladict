@@ -12,6 +12,8 @@ import { AppConfig } from '@/app-config'
 import { updateConfig, addConfigListener } from '@/_helpers/config-manager'
 import { trySendMessageToTab } from '@/_helpers/message-tab'
 import { useTranslate } from '@/_helpers/i18n'
+import { isDarkMode } from '@/_helpers/dark-mode'
+import { useSelector } from '@/content/redux'
 import { DictPanelStandaloneContainer } from '@/content/components/DictPanel/DictPanelStandalone.container'
 
 interface PopupProps {
@@ -22,6 +24,7 @@ export const Popup: FC<PopupProps> = props => {
   const { t } = useTranslate('popup')
 
   const [config, setConfig] = useState(props.config)
+  const darkMode = useSelector(state => isDarkMode(state.config.darkMode))
 
   /** URL box with QR code */
   const [isShowUrlBox, setIsShowUrlBox] = useState(false)
@@ -86,7 +89,7 @@ export const Popup: FC<PopupProps> = props => {
 
   return (
     <div
-      className={classNames('popup-root', { 'dark-mode': config.darkMode })}
+      className={classNames('popup-root', { 'dark-mode': darkMode })}
       style={{ height: config.baHeight }}
     >
       <DictPanelStandaloneContainer
@@ -167,7 +170,7 @@ export const Popup: FC<PopupProps> = props => {
               <QRCode
                 value={currentTabUrl}
                 size={250}
-                bgColor={config.darkMode ? '#ddd' : '#fff'}
+                bgColor={darkMode ? '#ddd' : '#fff'}
                 fgColor="#222"
               />
               <p className="qrcode-panel-title">

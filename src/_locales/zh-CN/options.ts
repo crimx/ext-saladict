@@ -40,7 +40,7 @@ export const locale = {
     runInBg: '后台保持运行',
     runInBg_help:
       '让浏览器关闭后依然保持后台运行，从而继续响应快捷键以及浏览器外划词。',
-    darkMode: '黑暗模式',
+    darkMode: '主题模式',
     langCode: '界面语言',
     editOnFav: '红心单词时弹出编辑面板',
     editOnFav_help:
@@ -133,6 +133,11 @@ export const locale = {
       accent: {
         uk: '英式',
         us: '美式'
+      },
+      darkMode: {
+        light: '浅色',
+        dark: '深色',
+        follow: '自动'
       },
       sel_blackwhitelist: '划词黑白名单',
       sel_blackwhitelist_help: '黑名单匹配的页面 Saladict 将不会响应鼠标划词。',
