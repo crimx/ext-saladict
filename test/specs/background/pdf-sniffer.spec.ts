@@ -517,6 +517,27 @@ describe('PDF Sniffer', () => {
       })
     })
 
+    it('should resolve mv3 pending pdf open from viewer tab payload', async () => {
+      mockMv3Dnr()
+      ;(window.appConfig as AppConfigMutable).pdfSniff = true
+
+      initPdf(window.appConfig)
+      await timer(0)
+
+      const handler = browser.webRequest.onBeforeRequest['_listeners'][0]
+      handler({ frameId: 0, tabId: 7, url: urlPdf })
+      await timer(0)
+
+      await expect(
+        consumePendingPdfOpenForViewer({} as any, {
+          tabId: 7
+        })
+      ).resolves.toEqual({
+        action: 'open',
+        url: urlPdf
+      })
+    })
+
     it('should install a temporary bypass rule for blacklisted mv3 requests', async () => {
       const { updateSessionRules } = mockMv3Dnr()
       ;(window.appConfig as AppConfigMutable).pdfSniff = true
@@ -666,6 +687,21 @@ describe('PDF Sniffer', () => {
         type: 'popup',
         url: expect.stringMatching(urlPdfEncoded)
       })
+      expect(browser.tabs.remove.calledWith(7)).toBeTruthy()
+    })
+
+    it('should close mv3 auto-opened viewer from viewer tab payload', async () => {
+      mockMv3Dnr()
+      ;(window.appConfig as AppConfigMutable).pdfSniff = true
+      ;(window.appConfig as AppConfigMutable).pdfStandalone = 'always'
+
+      await expect(
+        openPdfViewerStandaloneIfNeeded(urlPdf, {} as any, {
+          tabId: 7
+        })
+      ).resolves.toBe(true)
+
+      expect(browser.windows.create.calledOnce).toBeTruthy()
       expect(browser.tabs.remove.calledWith(7)).toBeTruthy()
     })
   })

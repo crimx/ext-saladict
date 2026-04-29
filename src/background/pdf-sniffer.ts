@@ -18,6 +18,11 @@ import {
   initBackgroundState
 } from './state'
 
+type PdfViewerContext = {
+  frameId?: number
+  tabId?: number
+}
+
 export function init(config: AppConfig) {
   const manifest = browser.runtime.getManifest && browser.runtime.getManifest()
   if (manifest && manifest.manifest_version === 3) {
@@ -95,19 +100,21 @@ export function extractPDFUrl(fullurl?: string): string | void {
 }
 
 export function consumePendingPdfOpenForViewer(
-  sender: browser.runtime.MessageSender
+  sender: browser.runtime.MessageSender,
+  viewerContext?: PdfViewerContext
 ) {
   const manifest = browser.runtime.getManifest && browser.runtime.getManifest()
   if (!manifest || manifest.manifest_version !== 3) {
     return Promise.resolve(null)
   }
 
-  return consumeMv3PendingPdfOpenForViewer(sender)
+  return consumeMv3PendingPdfOpenForViewer(sender, viewerContext)
 }
 
 export async function openPdfViewerStandaloneIfNeeded(
   url: string,
-  sender: browser.runtime.MessageSender
+  sender: browser.runtime.MessageSender,
+  viewerContext?: PdfViewerContext
 ) {
   const {
     appConfig: { pdfStandalone }
@@ -125,7 +132,10 @@ export async function openPdfViewerStandaloneIfNeeded(
 
   await openPDFStandalone(viewerUrl)
 
-  const tabId = sender.tab && sender.tab.id
+  const tabId =
+    sender.tab && typeof sender.tab.id === 'number'
+      ? sender.tab.id
+      : viewerContext && viewerContext.tabId
   if (typeof tabId === 'number' && tabId >= 0) {
     await browser.tabs.remove(tabId)
   }

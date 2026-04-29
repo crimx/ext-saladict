@@ -1,6 +1,7 @@
 ;(function() {
   var AUTO_MARKER = 'saladict-pdf'
   var MAX_ATTEMPTS = 20
+  var VIEWER_APP_MAX_ATTEMPTS = 80
 
   function sleep(ms) {
     return new Promise(function(resolve) {
@@ -15,18 +16,49 @@
     return viewerUrl.toString()
   }
 
-  async function fetchPendingPdfOpen() {
+  async function waitForPDFViewerApplication() {
+    for (var attempt = 0; attempt < VIEWER_APP_MAX_ATTEMPTS; attempt++) {
+      if (
+        window.PDFViewerApplication &&
+        window.PDFViewerApplication.initializedPromise
+      ) {
+        return window.PDFViewerApplication
+      }
+
+      await sleep(50)
+    }
+
+    return null
+  }
+
+  async function getViewerTabContext() {
+    var context = {}
+
+    try {
+      if (browser.tabs && browser.tabs.getCurrent) {
+        var tab = await browser.tabs.getCurrent()
+        if (tab && typeof tab.id === 'number') {
+          context.tabId = tab.id
+        }
+      }
+    } catch (error) {
+      /* fall back to the message sender metadata */
+    }
+
+    return context
+  }
+
+  async function fetchPendingPdfOpen(context) {
     return browser.runtime.sendMessage({
-      type: 'GET_PDF_SNIFF_PENDING'
+      type: 'GET_PDF_SNIFF_PENDING',
+      payload: context
     })
   }
 
-  async function openStandaloneIfNeeded(url) {
+  async function openStandaloneIfNeeded(url, context) {
     return browser.runtime.sendMessage({
       type: 'OPEN_PDF_VIEWER_STANDALONE_IF_NEEDED',
-      payload: {
-        url: url
-      }
+      payload: Object.assign({ url: url }, context)
     })
   }
 
@@ -36,20 +68,19 @@
       return
     }
 
-    if (
-      !window.PDFViewerApplication ||
-      !window.PDFViewerApplication.initializedPromise
-    ) {
+    var pdfViewerApplication = await waitForPDFViewerApplication()
+    if (!pdfViewerApplication) {
       return
     }
 
-    await window.PDFViewerApplication.initializedPromise
+    await pdfViewerApplication.initializedPromise
+    var viewerTabContext = await getViewerTabContext()
 
     for (var attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
       var pending = null
 
       try {
-        pending = await fetchPendingPdfOpen()
+        pending = await fetchPendingPdfOpen(viewerTabContext)
       } catch (error) {
         pending = null
       }
@@ -65,7 +96,11 @@
       }
 
       try {
-        if (await openStandaloneIfNeeded(pending.url)) {
+        var openedStandalone = await openStandaloneIfNeeded(
+          pending.url,
+          viewerTabContext
+        )
+        if (openedStandalone) {
           return
         }
       } catch (error) {
@@ -77,7 +112,7 @@
         '',
         buildViewerUrl(pending.url)
       )
-      await window.PDFViewerApplication.open(pending.url)
+      await pdfViewerApplication.open({ url: pending.url })
       return
     }
 

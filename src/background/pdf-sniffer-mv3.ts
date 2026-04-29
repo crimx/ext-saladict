@@ -66,14 +66,26 @@ export function initMv3(config: AppConfig) {
 }
 
 export async function consumeMv3PendingPdfOpenForViewer(
-  sender: browser.runtime.MessageSender
+  sender: browser.runtime.MessageSender,
+  viewerContext?: {
+    frameId?: number
+    tabId?: number
+  }
 ) {
-  const tabId = sender.tab && sender.tab.id
+  const tabId =
+    sender.tab && typeof sender.tab.id === 'number'
+      ? sender.tab.id
+      : viewerContext && viewerContext.tabId
   if (typeof tabId !== 'number' || tabId < 0) {
     return null
   }
 
-  const frameId = typeof sender.frameId === 'number' ? sender.frameId : 0
+  const frameId =
+    typeof sender.frameId === 'number'
+      ? sender.frameId
+      : viewerContext && typeof viewerContext.frameId === 'number'
+      ? viewerContext.frameId
+      : 0
   const entry = await consumePendingPdfOpen(tabId, frameId)
   if (!entry) {
     return null
@@ -303,6 +315,7 @@ async function filePdfTabObserver(
   tab: browser.tabs.Tab
 ) {
   const url = changeInfo.url || tab.url
+
   if (!url || !isLocalFileUrl(url)) {
     return
   }

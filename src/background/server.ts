@@ -164,9 +164,13 @@ export class BackgroundServer {
         case 'GET_SUGGESTS':
           return getSuggests(msg.payload)
         case 'GET_PDF_SNIFF_PENDING':
-          return consumePendingPdfOpenForViewer(sender)
+          return consumePendingPdfOpenForViewer(sender, (msg as any).payload)
         case 'OPEN_PDF_VIEWER_STANDALONE_IF_NEEDED':
-          return openPdfViewerStandaloneIfNeeded(msg.payload.url, sender)
+          return openPdfViewerStandaloneIfNeeded(
+            msg.payload.url,
+            sender,
+            (msg as any).payload
+          )
         case 'YOUDAO_TRANSLATE_AJAX':
           return this.youdaoTranslateAjax(msg.payload)
       }
