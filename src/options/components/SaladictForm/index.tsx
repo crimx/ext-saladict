@@ -1,10 +1,11 @@
-import React, { ReactNode, useMemo, Ref } from 'react'
+import React, { ReactNode, useMemo, Ref, useEffect, useRef } from 'react'
 import { Form, Button, Modal, Tooltip } from 'antd'
 import { FormItemProps, Rule, FormProps, FormInstance } from 'antd/lib/form'
 import { ExclamationCircleOutlined, BlockOutlined } from '@ant-design/icons'
 import { map, distinctUntilChanged } from 'rxjs/operators'
 import get from 'lodash/get'
 import mapValues from 'lodash/mapValues'
+import debounce from 'lodash/debounce'
 import shallowEqual from 'shallowequal'
 import { useObservableState } from 'observable-hooks'
 import { resetConfig } from '@/_helpers/config-manager'
@@ -19,7 +20,7 @@ import {
 } from '@/options/helpers/layout'
 import { useUpload } from '@/options/helpers/upload'
 import { setFormDirty } from '@/options/helpers/use-form-dirty'
-import { SaveBtn } from './SaveBtn'
+// import { SaveBtn } from './SaveBtn'
 
 import './_style.scss'
 
@@ -56,6 +57,7 @@ export const SaladictForm = React.forwardRef(
     const { items, hideFooter, ...restProps } = props
     const formItemLayout = useFormItemLayout()
     const { t, i18n, ready } = useTranslate(['options', 'common'])
+    const [form] = Form.useForm()
     const data = useSelector(
       state => ({
         config: state.config,
@@ -64,6 +66,25 @@ export const SaladictForm = React.forwardRef(
       shallowEqual
     )
     const upload = useUpload()
+    const uploadRef = useRef(upload)
+    uploadRef.current = upload
+
+    const autoSave = useMemo(
+      () =>
+        debounce((values: FieldValues) => {
+          form
+            .validateFields()
+            .then(() => uploadRef.current(values))
+            .catch(() => undefined)
+        }, 500),
+      [form]
+    )
+
+    useEffect(() => {
+      return () => {
+        autoSave.flush()
+      }
+    }, [autoSave])
 
     function extractInitial(
       items: SaladictFormItem[],
@@ -175,13 +196,17 @@ export const SaladictForm = React.forwardRef(
       <Form
         {...formItemLayout}
         {...restProps}
+        form={form}
         initialValues={initialValues}
         onFinish={upload}
-        onValuesChange={(_, values) => {
+        onValuesChange={(changedValues, values) => {
           setFormDirty(true)
           setHideFields(values)
+          if (!hideFooter) {
+            autoSave({ ...values })
+          }
           if (props.onValuesChange) {
-            props.onValuesChange(_, values)
+            props.onValuesChange(changedValues, values)
           }
         }}
         ref={ref}
@@ -189,7 +214,7 @@ export const SaladictForm = React.forwardRef(
         {formItems}
         {!hideFooter && (
           <Form.Item {...formItemFooterLayout} className="saladict-form-btns">
-            <SaveBtn />
+            {/* <SaveBtn /> */}
             <Button
               onClick={() => {
                 if (isFirefox) {
