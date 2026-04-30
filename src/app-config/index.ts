@@ -45,10 +45,8 @@ export const DARK_MODE_FOLLOW: DarkMode = 'follow'
 
 export function normalizeDarkMode(darkMode: unknown): DarkMode | undefined {
   switch (darkMode) {
-    case false:
     case DARK_MODE_LIGHT:
       return DARK_MODE_LIGHT
-    case true:
     case DARK_MODE_DARK:
       return DARK_MODE_DARK
     case DARK_MODE_FOLLOW:
