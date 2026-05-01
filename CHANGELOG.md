@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [7.22.0](https://github.com/crimx/ext-saladict/compare/v7.21.0...v7.22.0) (2026-05-01)
+
+
+### Features
+
+* add utility functions for DOM manipulation ([6340484](https://github.com/crimx/ext-saladict/commit/63404840427eef6181af07717c22c7803f28d6b3))
+* update theme mode ([8af665f](https://github.com/crimx/ext-saladict/commit/8af665f4f1cbc3be6b34620b4deb654a84e906ed))
+* update zip script ([94d8d2c](https://github.com/crimx/ext-saladict/commit/94d8d2c3c0f4500ec9756aeac57607b13c69b2ce))
+
+
+### Bug Fixes
+
+* pdf sniffing ([62653e5](https://github.com/crimx/ext-saladict/commit/62653e58eb1590e7dc5e702a258b84e5c28a2f85))
+* update Firefox strict_min_version ([45cc47d](https://github.com/crimx/ext-saladict/commit/45cc47dfcc6f10b5e62e06b118de4956d974a085))
+
 ## [7.21.0](https://github.com/crimx/ext-saladict/compare/v7.20.0...v7.21.0) (2026-04-25)
 
 
