@@ -40,8 +40,7 @@ const mv3BackgroundPreferredDicts = new Set<DictID>([
   'google',
   'sogou',
   'tencent',
-  'youdaotrans',
-  'zdic'
+  'youdaotrans'
 ])
 
 function shouldUseOffscreenDictHost(id: DictID) {
@@ -49,12 +48,10 @@ function shouldUseOffscreenDictHost(id: DictID) {
     return false
   }
 
-  // MV3 offscreen documents only expose runtime APIs.
-  // OpenTranslate-based machine translators need privileged network APIs
-  // such as declarativeNetRequest in Chromium MV3. Zdic audio referer
-  // compatibility relies on the same class of APIs and parsing is simple, so
-  // keep it in the background/service worker host instead of routing it to
-  // offscreen.
+  // MV3 offscreen documents only expose runtime APIs. OpenTranslate-based
+  // machine translators need privileged network APIs such as
+  // declarativeNetRequest in Chromium MV3. DOM-parsing dictionaries should use
+  // offscreen; their network compatibility hooks run in background first.
   return !mv3BackgroundPreferredDicts.has(id)
 }
 

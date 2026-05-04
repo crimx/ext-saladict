@@ -1,6 +1,6 @@
 import { browser } from '../../../../helper'
 
-describe('Dict/Zdic/referer', () => {
+describe('Dict/Zdic/network', () => {
   let originalWebRequest: typeof browser.webRequest
 
   beforeEach(() => {
@@ -24,18 +24,21 @@ describe('Dict/Zdic/referer', () => {
       EXTRA_HEADERS: 'extraHeaders'
     }
 
-    const { ensureZdicAudioReferer } = require(
-      '@/components/dictionaries/zdic/referer'
-    )
+    const {
+      ensureNetworkCompatibility
+    } = require('@/components/dictionaries/zdic/network')
 
-    await ensureZdicAudioReferer()
+    await ensureNetworkCompatibility()
 
     expect(browser.webRequest.onBeforeSendHeaders.addListener.calledOnce).toBe(
       true
     )
 
-    const [listener, filter, extraInfoSpec] =
-      browser.webRequest.onBeforeSendHeaders.addListener.firstCall.args
+    const [
+      listener,
+      filter,
+      extraInfoSpec
+    ] = browser.webRequest.onBeforeSendHeaders.addListener.firstCall.args
 
     expect(filter).toEqual({ urls: ['https://img.zdic.net/audio/*'] })
     expect(extraInfoSpec).toEqual([
@@ -67,12 +70,12 @@ describe('Dict/Zdic/referer', () => {
       }
     }
 
-    const { ensureZdicAudioReferer } = require(
-      '@/components/dictionaries/zdic/referer'
-    )
+    const {
+      ensureNetworkCompatibility
+    } = require('@/components/dictionaries/zdic/network')
 
-    await ensureZdicAudioReferer()
-    await ensureZdicAudioReferer()
+    await ensureNetworkCompatibility()
+    await ensureNetworkCompatibility()
 
     expect(updateSessionRules).toHaveBeenCalledTimes(1)
     expect(updateSessionRules).toHaveBeenCalledWith({
@@ -115,23 +118,23 @@ describe('Dict/Zdic/referer', () => {
       }
     }
 
-    const { ensureZdicAudioReferer } = require(
-      '@/components/dictionaries/zdic/referer'
-    )
+    const {
+      ensureNetworkCompatibility
+    } = require('@/components/dictionaries/zdic/network')
 
-    await expect(ensureZdicAudioReferer()).rejects.toThrow('boom')
-    await expect(ensureZdicAudioReferer()).resolves.toBeUndefined()
+    await expect(ensureNetworkCompatibility()).rejects.toThrow('boom')
+    await expect(ensureNetworkCompatibility()).resolves.toBeUndefined()
     expect(updateSessionRules).toHaveBeenCalledTimes(2)
   })
 
   it('should fail gracefully when webRequest is unavailable in MV2', async () => {
     ;(browser as any).webRequest = undefined
 
-    const { ensureZdicAudioReferer } = require(
-      '@/components/dictionaries/zdic/referer'
-    )
+    const {
+      ensureNetworkCompatibility
+    } = require('@/components/dictionaries/zdic/network')
 
-    await expect(ensureZdicAudioReferer()).rejects.toThrow(
+    await expect(ensureNetworkCompatibility()).rejects.toThrow(
       'webRequest.onBeforeSendHeaders is unavailable.'
     )
   })

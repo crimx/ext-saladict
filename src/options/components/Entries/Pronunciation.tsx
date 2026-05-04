@@ -8,9 +8,7 @@ import { SaladictForm } from '@/options/components/SaladictForm'
 export const Pronunciation: FC = () => {
   const { t } = useTranslate(['options', 'common', 'dicts'])
   const autopronLists = useSelector(state => ({
-    cn: state.activeProfile.dicts.all.zdic.options.audio
-      ? state.config.autopron.cn.list
-      : state.config.autopron.cn.list.filter(id => id !== 'zdic'),
+    cn: state.config.autopron.cn.list,
     en: state.config.autopron.en.list,
     machine: state.config.autopron.machine.list
   }))

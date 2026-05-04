@@ -9,7 +9,6 @@ import {
   DictSearchResult
 } from '../helpers'
 import { getStaticSpeaker } from '@/components/Speaker'
-import { ensureZdicAudioReferer } from './referer'
 
 export const getSrcPage: GetSrcPageFunction = text => {
   return `https://www.zdic.net/hans/${text}`
@@ -30,29 +29,15 @@ export const search: SearchFunction<ZdicResult> = (
   profile,
   payload
 ) => {
-  const isAudio = profile.dicts.all.zdic.options.audio
-  const ensureAudioReferer = isAudio
-    ? ensureZdicAudioReferer().catch(error => {
-        console.error(
-          'Failed to enable Zdic audio referer compatibility.',
-          error
-        )
-      })
-    : Promise.resolve()
-
-  return ensureAudioReferer.then(() =>
-    fetchDirtyDOM(
-      'https://www.zdic.net/hans/' +
-        encodeURIComponent(text.replace(/\s+/g, ' '))
-    )
-      .catch(handleNetWorkError)
-      .then(doc => handleDOM(doc, isAudio))
+  return fetchDirtyDOM(
+    'https://www.zdic.net/hans/' + encodeURIComponent(text.replace(/\s+/g, ' '))
   )
+    .catch(handleNetWorkError)
+    .then(doc => handleDOM(doc))
 }
 
 function handleDOM(
-  doc: Document,
-  isAudio: boolean
+  doc: Document
 ): ZdicSearchResult | Promise<ZdicSearchResult> {
   const response: ZdicSearchResult = {
     result: []
@@ -69,16 +54,12 @@ function handleDOM(
     for (const $a of $entry.querySelectorAll<HTMLAnchorElement>(
       '[data-src-mp3]'
     )) {
-      if (isAudio) {
-        if (!response.audio) {
-          response.audio = {
-            py: $a.dataset.srcMp3
-          }
+      if (!response.audio) {
+        response.audio = {
+          py: $a.dataset.srcMp3
         }
-        $a.replaceWith(getStaticSpeaker($a.dataset.srcMp3))
-      } else {
-        $a.remove()
       }
+      $a.replaceWith(getStaticSpeaker($a.dataset.srcMp3))
     }
 
     response.result.push({

@@ -27,11 +27,15 @@ export function fetchDirtyDOM(
     ...config,
     transformResponse: [data => data],
     responseType: 'document'
-  }).then(({ data }) =>
-    process.env.NODE_ENV !== 'production'
-      ? new DOMParser().parseFromString(data, 'text/html')
-      : data
-  )
+  }).then(({ data }) => {
+    if (typeof data === 'string') {
+      if (typeof DOMParser === 'undefined') {
+        throw new Error('DOMParser is not available in this environment.')
+      }
+      return new DOMParser().parseFromString(data, 'text/html')
+    }
+    return data
+  })
 }
 
 export function fetchPlainText(

@@ -28,7 +28,7 @@ type BrowserWebRequest = typeof browser.webRequest
 
 let ensureRefererPromise: Promise<void> | null = null
 
-export function ensureZdicAudioReferer() {
+export function ensureNetworkCompatibility() {
   if (!ensureRefererPromise) {
     ensureRefererPromise = doEnsureZdicAudioReferer().catch(error => {
       ensureRefererPromise = null

@@ -24,7 +24,12 @@ class TargetedWebextManifestPlugin {
   apply(compiler) {
     compiler.hooks.done.tapPromise(
       'TargetedWebextManifestPlugin',
-      async ({ compilation }) => {
+      async stats => {
+        if (stats.hasErrors()) {
+          return
+        }
+
+        const { compilation } = stats
         if (!this.options.browsers.length) {
           await fse.remove(this.neutrinoOpts.output)
           return
@@ -37,12 +42,18 @@ class TargetedWebextManifestPlugin {
         )
         const commonManifest = loadCommonManifest()
         const sourceOutput = this.neutrinoOpts.output
+        if (!(await fse.pathExists(sourceOutput))) {
+          throw new Error(
+            `Expected webpack output directory to exist before generating targeted manifests: ${sourceOutput}`
+          )
+        }
 
         for (let i = 0; i < this.options.browsers.length; i++) {
           const browser = this.options.browsers[i]
           const browserManifest =
-            loadManifest(path.join(this.options.manifest, `${browser}.manifest`)) ||
-            {}
+            loadManifest(
+              path.join(this.options.manifest, `${browser}.manifest`)
+            ) || {}
           const output = path.join(this.options.output, browser)
           const finalManifest = merge.all([
             neutrinoManifest,
@@ -60,7 +71,8 @@ class TargetedWebextManifestPlugin {
 
           if (finalManifest.manifest_version === 3) {
             const backgroundScripts =
-              (finalManifest.background && finalManifest.background.scripts) || []
+              (finalManifest.background && finalManifest.background.scripts) ||
+              []
 
             patchChromiumMv3Manifest(finalManifest)
 
@@ -70,9 +82,13 @@ class TargetedWebextManifestPlugin {
             )
           }
 
-          await fse.outputJSON(path.join(output, 'manifest.json'), finalManifest, {
-            spaces: '  '
-          })
+          await fse.outputJSON(
+            path.join(output, 'manifest.json'),
+            finalManifest,
+            {
+              spaces: '  '
+            }
+          )
 
           if (this.options.polyfill) {
             await copyPolyfill(this.options, output)
@@ -174,10 +190,7 @@ async function copyPolyfill(options, output) {
   await fse.outputFile(
     path.join(output, 'assets/browser-polyfill.min.js'),
     options.removePolyfillSourcemap
-      ? polyfill.replace(
-          '//# sourceMappingURL=browser-polyfill.min.js.map',
-          ''
-        )
+      ? polyfill.replace('//# sourceMappingURL=browser-polyfill.min.js.map', '')
       : polyfill
   )
 }

@@ -133,8 +133,11 @@ describe('BackgroundServer.openSrcPage', () => {
     })
   })
 
-  it('keeps zdic searches on the background in MV3', async () => {
+  it('routes zdic searches through offscreen in MV3', async () => {
     mockCanUseOffscreenDocument.mockReturnValue(true)
+    mockSearchDictInOffscreen.mockResolvedValue({
+      result: [{ title: '基本解释', content: '沙拉' }]
+    })
 
     const { BackgroundServer } = require('@/background/server')
     const getDictEngine = jest
@@ -154,8 +157,16 @@ describe('BackgroundServer.openSrcPage', () => {
       payload: { isPDF: false }
     })
 
-    expect(mockSearchDictInOffscreen).not.toHaveBeenCalled()
-    expect(getDictEngine).toHaveBeenCalledWith('zdic')
+    expect(mockSearchDictInOffscreen).toHaveBeenCalledWith(
+      {
+        id: 'zdic',
+        text: '沙拉',
+        payload: { isPDF: false }
+      },
+      expect.anything(),
+      expect.anything()
+    )
+    expect(getDictEngine).not.toHaveBeenCalled()
     expect(result).toEqual({
       id: 'zdic',
       result: [{ title: '基本解释', content: '沙拉' }]
