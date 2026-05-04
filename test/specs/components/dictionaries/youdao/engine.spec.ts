@@ -1,3 +1,5 @@
+import axios from 'axios'
+import AxiosMockAdapter from 'axios-mock-adapter'
 import { retry } from '../helpers'
 import {
   search,
@@ -6,8 +8,20 @@ import {
 } from '@/components/dictionaries/youdao/engine'
 import { getDefaultConfig } from '@/app-config'
 import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
+import { mockRequest } from './requests.mock'
+
+let mock: AxiosMockAdapter
 
 describe('Dict/Youdao/engine', () => {
+  beforeAll(() => {
+    mock = new AxiosMockAdapter(axios)
+    mockRequest(mock)
+  })
+
+  afterAll(() => {
+    mock.restore()
+  })
+
   it('should parse lex result correctly', () => {
     return retry(() =>
       search('love', getDefaultConfig(), getDefaultProfile(), {
@@ -32,8 +46,9 @@ describe('Dict/Youdao/engine', () => {
         expect(result.pattern).toBeTruthy()
         expect(typeof result.basic).toBe('string')
         expect(result.basic).toBeTruthy()
-        expect(typeof result.collins).toBe('string')
-        expect(result.collins).toBeTruthy()
+        expect(result.collins.length).toBeGreaterThan(0)
+        expect(typeof result.collins[0].title).toBe('string')
+        expect(typeof result.collins[0].content).toBe('string')
         expect(typeof result.discrimination).toBe('string')
         expect(result.discrimination).toBeTruthy()
         expect(typeof result.sentence).toBe('string')
@@ -74,7 +89,7 @@ describe('Dict/Youdao/engine', () => {
           expect(typeof result.pattern).toBe('string')
           expect(result.pattern).toBeTruthy()
           expect(result.basic).toBeFalsy()
-          expect(result.collins).toBeFalsy()
+          expect(result.collins).toHaveLength(0)
           expect(result.discrimination).toBeFalsy()
           expect(result.sentence).toBeFalsy()
           expect(result.translation).toBeFalsy()
@@ -86,9 +101,11 @@ describe('Dict/Youdao/engine', () => {
   it('should parse translation result correctly', () => {
     const text =
       'She walks in beauty, like the night Of cloudless climes and starry skies.'
+    const profile = getDefaultProfile() as ProfileMutable
+    profile.dicts.all.youdao.options.translation = true
 
     return retry(() =>
-      search(text, getDefaultConfig(), getDefaultProfile(), {
+      search(text, getDefaultConfig(), profile, {
         isPDF: false
       }).then(searchResult => {
         expect(!searchResult.audio || !searchResult.audio.uk).toBeTruthy()
@@ -102,7 +119,7 @@ describe('Dict/Youdao/engine', () => {
         expect(result.rank).toBeFalsy()
         expect(result.pattern).toBeFalsy()
         expect(result.basic).toBeFalsy()
-        expect(result.collins).toBeFalsy()
+        expect(result.collins).toHaveLength(0)
         expect(result.discrimination).toBeFalsy()
         expect(result.sentence).toBeFalsy()
         expect(result.translation).toBeTruthy()

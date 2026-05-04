@@ -25,10 +25,10 @@ describe('Dict/Cambridge/network', () => {
     }
 
     const {
-      ensureCambridgeNetworkCompatibility
+      ensureNetworkCompatibility
     } = require('@/components/dictionaries/cambridge/network')
 
-    await ensureCambridgeNetworkCompatibility()
+    await ensureNetworkCompatibility()
 
     expect(browser.webRequest.onBeforeSendHeaders.addListener.calledOnce).toBe(
       true
@@ -66,10 +66,10 @@ describe('Dict/Cambridge/network', () => {
     )
 
     const {
-      ensureCambridgeNetworkCompatibility
+      ensureNetworkCompatibility
     } = require('@/components/dictionaries/cambridge/network')
 
-    await ensureCambridgeNetworkCompatibility()
+    await ensureNetworkCompatibility()
 
     const [
       listener
@@ -102,10 +102,10 @@ describe('Dict/Cambridge/network', () => {
     )
 
     const {
-      ensureCambridgeNetworkCompatibility
+      ensureNetworkCompatibility
     } = require('@/components/dictionaries/cambridge/network')
 
-    await ensureCambridgeNetworkCompatibility()
+    await ensureNetworkCompatibility()
 
     expect(browser.cookies.get.secondCall.args[0]).toEqual({
       url: 'https://dictionary.cambridge.org',
@@ -147,11 +147,11 @@ describe('Dict/Cambridge/network', () => {
     }
 
     const {
-      ensureCambridgeNetworkCompatibility
+      ensureNetworkCompatibility
     } = require('@/components/dictionaries/cambridge/network')
 
-    await ensureCambridgeNetworkCompatibility()
-    await ensureCambridgeNetworkCompatibility()
+    await ensureNetworkCompatibility()
+    await ensureNetworkCompatibility()
 
     expect(updateSessionRules).toHaveBeenCalledTimes(1)
     expect(updateSessionRules).toHaveBeenCalledWith({
@@ -195,11 +195,11 @@ describe('Dict/Cambridge/network', () => {
     }
 
     const {
-      ensureCambridgeNetworkCompatibility
+      ensureNetworkCompatibility
     } = require('@/components/dictionaries/cambridge/network')
 
-    await expect(ensureCambridgeNetworkCompatibility()).rejects.toThrow('boom')
-    await expect(ensureCambridgeNetworkCompatibility()).resolves.toBeUndefined()
+    await expect(ensureNetworkCompatibility()).rejects.toThrow('boom')
+    await expect(ensureNetworkCompatibility()).resolves.toBeUndefined()
     expect(updateSessionRules).toHaveBeenCalledTimes(2)
   })
 
@@ -221,10 +221,10 @@ describe('Dict/Cambridge/network', () => {
     }
 
     const {
-      ensureCambridgeNetworkCompatibility
+      ensureNetworkCompatibility
     } = require('@/components/dictionaries/cambridge/network')
 
-    await ensureCambridgeNetworkCompatibility()
+    await ensureNetworkCompatibility()
 
     expect(updateSessionRules).toHaveBeenCalledWith({
       removeRuleIds: [32002],
@@ -272,10 +272,10 @@ describe('Dict/Cambridge/network', () => {
     }
 
     const {
-      ensureCambridgeNetworkCompatibility
+      ensureNetworkCompatibility
     } = require('@/components/dictionaries/cambridge/network')
 
-    await ensureCambridgeNetworkCompatibility()
+    await ensureNetworkCompatibility()
 
     expect(browser.cookies.get.secondCall.args[0]).toEqual({
       url: 'https://dictionary.cambridge.org',

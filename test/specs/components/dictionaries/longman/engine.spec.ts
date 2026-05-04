@@ -1,3 +1,5 @@
+import axios from 'axios'
+import AxiosMockAdapter from 'axios-mock-adapter'
 import { retry } from '../helpers'
 import {
   search,
@@ -6,8 +8,20 @@ import {
 } from '@/components/dictionaries/longman/engine'
 import { getDefaultConfig } from '@/app-config'
 import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
+import { mockRequest } from './requests.mock'
+
+let mock: AxiosMockAdapter
 
 describe('Dict/Longman/engine', () => {
+  beforeAll(() => {
+    mock = new AxiosMockAdapter(axios)
+    mockRequest(mock)
+  })
+
+  afterAll(() => {
+    mock.restore()
+  })
+
   it('should parse lex result (love) correctly', () => {
     const profile = getDefaultProfile() as ProfileMutable
     profile.dicts.all.longman.options = {

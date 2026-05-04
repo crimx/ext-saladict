@@ -1,9 +1,22 @@
+import axios from 'axios'
+import AxiosMockAdapter from 'axios-mock-adapter'
 import { retry } from '../helpers'
 import { search } from '@/components/dictionaries/weblioejje/engine'
 import { getDefaultConfig } from '@/app-config'
 import { getDefaultProfile } from '@/app-config/profiles'
+import { mockRequest } from './requests.mock'
+
+let mock: AxiosMockAdapter
 
 describe('Dict/Weblioejje/engine', () => {
+  beforeAll(() => {
+    mock = new AxiosMockAdapter(axios)
+    mockRequest(mock)
+  })
+
+  afterAll(() => {
+    mock.restore()
+  })
   ;['love', '愛'].forEach(text => {
     it(`should parse result ${text} correctly`, () => {
       return retry(() =>

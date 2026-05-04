@@ -111,8 +111,6 @@ describe('Dict/MerriamWebster/engine', () => {
     })
   })
 
-  it.todo('should returns correct forms')
-
   it('should returns correct syllable', () => {
     const groupEles1 = _getGroupsEles(multiGroup)
     const gexp1 = cases.multiGroup.expect

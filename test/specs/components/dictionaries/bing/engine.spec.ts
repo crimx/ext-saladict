@@ -1,3 +1,5 @@
+import axios from 'axios'
+import AxiosMockAdapter from 'axios-mock-adapter'
 import { retry } from '../helpers'
 import {
   search,
@@ -7,8 +9,20 @@ import {
 } from '@/components/dictionaries/bing/engine'
 import { getDefaultConfig } from '@/app-config'
 import { getDefaultProfile, ProfileMutable } from '@/app-config/profiles'
+import { mockRequest } from './requests.mock'
+
+let mock: AxiosMockAdapter
 
 describe('Dict/Bing/engine', () => {
+  beforeAll(() => {
+    mock = new AxiosMockAdapter(axios)
+    mockRequest(mock)
+  })
+
+  afterAll(() => {
+    mock.restore()
+  })
+
   it('should parse audio urls from semantic data attributes', async () => {
     const profile = getDefaultProfile() as ProfileMutable
     profile.dicts.all.bing.options = {
@@ -82,12 +96,9 @@ describe('Dict/Bing/engine', () => {
 
   it('should parse machine result correctly', () => {
     return retry(() =>
-      search(
-        'lose yourself in the dark',
-        getDefaultConfig(),
-        getDefaultProfile(),
-        { isPDF: false }
-      ).then(searchResult => {
+      search('machine', getDefaultConfig(), getDefaultProfile(), {
+        isPDF: false
+      }).then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
 
         const result = searchResult.result as BingResultMachine
@@ -100,7 +111,7 @@ describe('Dict/Bing/engine', () => {
 
   it('should parse related result correctly', () => {
     return retry(() =>
-      search('lovxx', getDefaultConfig(), getDefaultProfile(), {
+      search('related', getDefaultConfig(), getDefaultProfile(), {
         isPDF: false
       }).then(searchResult => {
         expect(searchResult.audio).toBeUndefined()
