@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.22.1](https://github.com/crimx/ext-saladict/compare/v7.22.0...v7.22.1) (2026-05-05)
+
+
+### Bug Fixes
+
+* dict tests ([33583b6](https://github.com/crimx/ext-saladict/commit/33583b684affd67c4ece8d4e28d70b7882ece61e))
+* zdic no result ([70487d2](https://github.com/crimx/ext-saladict/commit/70487d293e423e8d025575ae2a9708c4bea0ae81)), closes [#2321](https://github.com/crimx/ext-saladict/issues/2321)
+
 ## [7.22.0](https://github.com/crimx/ext-saladict/compare/v7.21.0...v7.22.0) (2026-05-01)
 
 
