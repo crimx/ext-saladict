@@ -1,7 +1,7 @@
 {
   "extension_name": {
     "description": "Extension name",
-    "message": "Saladict - Pop-up Dictionary and Page Translator"
+    "message": "Saladict - Pop-up Dictionary"
   },
   "extension_short_name": {
     "description": "Extension short name",
@@ -9,7 +9,7 @@
   },
   "extension_description": {
     "description": "Description of extension",
-    "message": "Saladict is an all-in-one professional pop-up dictionary and page translator which supports multiple search modes, page translations, new word notebook and PDF selection searching."
+    "message": "Saladict is an all-in-one professional pop-up dictionary which supports multiple search modes, new word notebook and PDF selection searching."
   },
   "command_toggle_active": {
     "message": "Toggle inline translator"
@@ -19,15 +19,6 @@
   },
   "command_open_quick_search": {
     "message": "Open or highlight standalone dict panel"
-  },
-  "command_open_google": {
-    "message": "Open Google Translate"
-  },
-  "command_open_youdao": {
-    "message": "Open Youdao Translate"
-  },
-  "command_open_caiyun": {
-    "message": "Open LingoCloud Translate"
   },
   "command_open_pdf": {
     "message": "Open current PDF in Saladict"

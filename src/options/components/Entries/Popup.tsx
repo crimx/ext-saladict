@@ -1,7 +1,6 @@
 import React, { FC } from 'react'
 import { Switch, Select, Slider } from 'antd'
 import { useTranslate } from '@/_helpers/i18n'
-import { isFirefox } from '@/_helpers/saladict'
 import { useSelector } from '@/content/redux'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import {
@@ -11,20 +10,9 @@ import {
 
 export const Popup: FC = () => {
   const { t } = useTranslate(['options', 'menus'])
-  const menusIds = useSelector(state => {
-    const ids = Object.keys(state.config.contextMenus.all)
-    if (isFirefox) {
-      return ids.filter(id => {
-        switch (id) {
-          case 'youdao_page_translate':
-          case 'caiyuntrs':
-            return false
-        }
-        return true
-      })
-    }
-    return ids
-  })
+  const menusIds = useSelector(state =>
+    Object.keys(state.config.contextMenus.all)
+  )
   const { availWidth } = window.screen
 
   return (

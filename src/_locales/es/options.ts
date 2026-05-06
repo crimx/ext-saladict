@@ -159,7 +159,7 @@ export const locale: typeof _locale = {
       pdf_blackwhitelist_help:
         'Los enlaces PDF de la lista negra no saltarán a Saladict PDF Viewer.',
       contextMenus_description:
-        'Cada elemento del menú contextual también se puede personalizar. Youdao y Google Traductor están obsoletos en favor de las extensiones oficiales.',
+        'Cada elemento del menú contextual también se puede personalizar.',
       contextMenus_edit: 'Editar elementos de menús contextuales',
       contextMenus_url_rules: 'URL con %s en lugar de query.',
       baOpen: {

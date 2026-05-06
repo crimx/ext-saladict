@@ -155,7 +155,7 @@ export const locale: typeof _locale = {
       pdf_blackwhitelist_help:
         'Blacklisted PDF links will not jump to Saladict PDF Viewer.',
       contextMenus_description:
-        'Each context menus item can also be customized. Youdao and Google page translate are deprecated in favor of the official extensions.',
+        'Each context menus item can also be customized.',
       contextMenus_edit: 'Edit Context Menus Items',
       contextMenus_url_rules: 'URL with %s in place of query.',
       baOpen: {

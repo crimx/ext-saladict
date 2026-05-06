@@ -31,15 +31,6 @@ module.exports = {
     'open-quick-search': {
       description: '__MSG_command_open_quick_search__'
     },
-    'open-youdao': {
-      description: '__MSG_command_open_youdao__'
-    },
-    'open-google': {
-      description: '__MSG_command_open_google__'
-    },
-    'open-caiyun': {
-      description: '__MSG_command_open_caiyun__'
-    },
     'next-history': {
       description: '__MSG_command_next_history__'
     },

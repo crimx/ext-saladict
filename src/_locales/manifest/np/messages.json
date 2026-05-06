@@ -1,7 +1,7 @@
 {
   "extension_name": {
     "description": "Extension name",
-    "message": "सलाडिक्ट - पप-अप शब्दकोश र पृष्ठ अनुवादक"
+    "message": "सलाडिक्ट - पप-अप शब्दकोश"
   },
   "extension_short_name": {
     "description": "Extension short name",
@@ -9,7 +9,7 @@
   },
   "extension_description": {
     "description": "Description of extension",
-    "message": "सलाडिक्ट एक पेशेवर पप-अप शब्दकोश र पृष्ठ अनुवादक हो जसले बहु भाषा खोज , पृष्ठ अनुवाद, नयाँ शब्द नोटबुक र PDF  खोजीलाई समर्थ छ।"
+    "message": "सलाडिक्ट एक पेशेवर पप-अप शब्दकोश हो जसले बहु भाषा खोज, नयाँ शब्द नोटबुक र PDF खोजीलाई समर्थन गर्छ।"
   },
   "command_toggle_active": {
     "message": "इनलाइन अनुवादक टगल गर्नुहोस्"
@@ -19,15 +19,6 @@
   },
   "command_open_quick_search": {
     "message": "स्ट्यान्डअलोन डिक्ट प्यानल खोल्नुहोस् वा हाइलाइट गर्नुहोस्"
-  },
-  "command_open_google": {
-    "message": "Google अनुवादक खोल्नुहोस्"
-  },
-  "command_open_youdao": {
-    "message": "Youdao अनुवाद खोल्नुहोस्"
-  },
-  "command_open_caiyun": {
-    "message": "LingoCloud अनुवाद खोल्नुहोस्"
   },
   "command_open_pdf": {
     "message": "हालको PDF सलाडिक्टमा खोल्नुहोस् "

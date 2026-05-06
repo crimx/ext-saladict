@@ -9,7 +9,6 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
 const dotenv = require('dotenv')
 const argv = require('yargs').argv
-const AfterBuildPlugin = require('./after-build')
 const CleanOutputPlugin = require('./clean-output-plugin')
 const TargetedWebextManifestPlugin = require('./targeted-webext-manifest-plugin')
 const { getBrowsersByManifestVersion } = require('./webext-targets')
@@ -221,13 +220,6 @@ module.exports = function createNeutrinoConfig({
             from: '+(antd|antd.dark).min.css',
             to: 'assets/',
             toType: 'dir'
-          },
-          // caiyunapp
-          {
-            context: 'node_modules/trsjs/build/sala',
-            from: 'trs.js',
-            to: 'assets/',
-            toType: 'dir'
           }
         ]
       }),
@@ -330,8 +322,8 @@ module.exports = function createNeutrinoConfig({
         // remove locales
         neutrino.config
           .plugin('momentjs')
-            .use(MomentLocalesPlugin, [{ localesToKeep: ['zh-cn', 'zh-tw'] }])
-            .end()
+          .use(MomentLocalesPlugin, [{ localesToKeep: ['zh-cn', 'zh-tw'] }])
+          .end()
 
         // prettier-ignore
         neutrino.config
@@ -427,9 +419,7 @@ module.exports = function createNeutrinoConfig({
           return
         }
 
-        neutrino.config
-          .plugin('clean-output')
-          .use(CleanOutputPlugin)
+        neutrino.config.plugin('clean-output').use(CleanOutputPlugin)
 
         neutrino.config.plugin('webext').use(TargetedWebextManifestPlugin, [
           {
@@ -448,12 +438,7 @@ module.exports = function createNeutrinoConfig({
 
         if (manifestVersion === 3) {
           neutrino.config.output.globalObject('self')
-          return
         }
-
-        neutrino.config
-          .plugin('after-build')
-          .use(AfterBuildPlugin)
       }
     ]
   }

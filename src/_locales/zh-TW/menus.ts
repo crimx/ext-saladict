@@ -1,17 +1,13 @@
 import { locale as _locale } from '../zh-CN/menus'
 
 export const locale: typeof _locale = {
-  baidu_page_translate: '百度網頁翻譯',
   baidu_search: '百度搜尋',
   bing_dict: 'Bing 字典',
   bing_search: 'Bing 搜尋',
-  caiyuntrs: '彩雲小譯網頁翻譯',
   cambridge: '劍橋字典',
   copy_pdf_url: '複製PDF連結到剪貼簿',
   dictcn: '海詞字典',
   etymonline: '培根字根',
-  google_cn_page_translate: 'Google cn 網頁翻譯',
-  google_page_translate: 'Google 網頁翻譯',
   google_search: 'Google 搜尋',
   google_translate: 'Google 翻譯',
   google_cn_translate: 'Google.cn 翻譯',
@@ -22,20 +18,13 @@ export const locale: typeof _locale = {
   longman_business: '朗文商務',
   manual_title: '詳細使用說明',
   merriam_webster: '韋氏字典',
-  microsoft_page_translate: '微軟網頁翻譯',
   notebook_title: '生字本',
-  notification_youdao_err:
-    '有道網頁翻譯2.0 下載後無回應，\n可能是套件無權造訪該網站，\n如果下載成功後，請忽略本訊息。',
   oxford: '牛津字典',
-  page_permission_err: '沙拉查詞「{{name}}」無權訪問此頁面。',
-  page_translations: '網頁翻譯',
   saladict: '沙拉查詞',
   saladict_standalone: '沙拉查詞獨立視窗',
   sogou: '搜狗翻譯',
-  sogou_page_translate: '搜狗網頁翻譯',
   termonline: '術語在線',
   view_as_pdf: '在 PDF 閱讀器中開啟',
   youdao: '有道字典',
-  youdao_page_translate: '有道網頁翻譯',
   youglish: 'YouGlish'
 }

@@ -9,7 +9,7 @@
   },
   "extension_description": {
     "description": "Description of extension",
-    "message": "Saladict 沙拉查詞是一款專業滑鼠選字翻譯套件，為交叉閱讀而生。大量權威字典涵蓋中英日韓法德西語，支援複雜的選字操作、網頁翻譯、生字本与 PDF 瀏覽。"
+    "message": "Saladict 沙拉查詞是一款專業滑鼠選字翻譯套件，為交叉閱讀而生。大量權威字典涵蓋中英日韓法德西語，支援複雜的選字操作、生字本与 PDF 瀏覽。"
   },
   "command_toggle_active": {
     "message": "滑鼠選字翻譯開關"
@@ -19,15 +19,6 @@
   },
   "command_open_quick_search": {
     "message": "開啟獨立詞典視窗"
-  },
-  "command_open_google": {
-    "message": "對此頁面使用 Google 翻譯"
-  },
-  "command_open_youdao": {
-    "message": "對此頁面使用有道翻譯"
-  },
-  "command_open_caiyun": {
-    "message": "對當前頁啟用彩雲小譯"
   },
   "command_open_pdf": {
     "message": "在 Saladict 中瀏覽此 PDF"

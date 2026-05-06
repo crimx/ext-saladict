@@ -17,7 +17,6 @@ import {
   calibrateTitlebarOffset
 } from '@/_helpers/titlebar-offset'
 import { reportEvent } from '@/_helpers/analytics'
-import { ContextMenus } from './context-menus'
 import { BackgroundServer } from './server'
 import { openPDF } from './pdf-sniffer'
 import {
@@ -90,30 +89,6 @@ async function onCommand(command: string) {
       break
     case 'open-quick-search':
       BackgroundServer.getInstance().openQSPanel()
-      break
-    case 'open-google':
-      ContextMenus.openGoogle()
-      reportEvent({
-        category: 'Page_Translate',
-        action: 'Open_Google',
-        label: 'From_Browser_Shortcut'
-      })
-      break
-    case 'open-youdao':
-      ContextMenus.openYoudao()
-      reportEvent({
-        category: 'Page_Translate',
-        action: 'Open_Youdao',
-        label: 'From_Browser_Shortcut'
-      })
-      break
-    case 'open-caiyun':
-      ContextMenus.openCaiyunTrs()
-      reportEvent({
-        category: 'Page_Translate',
-        action: 'Open_Caiyun',
-        label: 'From_Browser_Shortcut'
-      })
       break
     case 'open-pdf':
       openPDF()

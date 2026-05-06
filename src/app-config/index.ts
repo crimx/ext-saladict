@@ -4,7 +4,6 @@ import { getAllDicts } from './dicts'
 import { getAllContextMenus } from './context-menus'
 import { MtaAutoUnfold as _MtaAutoUnfold } from './profiles'
 import { getDefaultDictAuths } from './auth'
-import { isFirefox } from '@/_helpers/saladict'
 
 export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
 
@@ -349,10 +348,7 @@ function _getDefaultConfig() {
     ] as [string, string][],
 
     contextMenus: {
-      selected:
-        isFirefox || !langCode.startsWith('zh-')
-          ? ['view_as_pdf', 'google_translate', 'saladict']
-          : ['view_as_pdf', 'caiyuntrs', 'google_translate', 'saladict'],
+      selected: ['view_as_pdf', 'google_translate', 'saladict'],
       all: getAllContextMenus()
     },
 

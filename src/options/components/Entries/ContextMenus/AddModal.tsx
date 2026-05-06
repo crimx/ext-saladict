@@ -1,22 +1,12 @@
 import React, { FC, useMemo } from 'react'
-import { List, Modal, Button, Tooltip } from 'antd'
+import { List, Modal, Button } from 'antd'
 import { CheckOutlined, CloseOutlined, EditOutlined } from '@ant-design/icons'
 import omit from 'lodash/omit'
 import { useTranslate } from '@/_helpers/i18n'
-import { isFirefox } from '@/_helpers/saladict'
 import { genUniqueKey } from '@/_helpers/uniqueKey'
 import { useSelector } from '@/content/redux'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import { useUpload } from '@/options/helpers/upload'
-
-/**
- * key: menu id
- * value: reason
- */
-const unsupportedFeatures: Readonly<{ [id: string]: 'ff' | '' }> = {
-  caiyuntrs: isFirefox ? 'ff' : '',
-  youdao_page_translate: isFirefox ? 'ff' : ''
-}
 
 export interface AddModalProps {
   show: boolean
@@ -67,26 +57,14 @@ export const AddModal: FC<AddModalProps> = ({ show, onEdit, onClose }) => {
           {itemName}
           <div>
             <div>
-              <Tooltip
-                title={
-                  unsupportedFeatures[menuID]
-                    ? t(
-                        `options:unsupportedFeatures.${unsupportedFeatures[menuID]}`,
-                        { feature: itemName }
-                      )
-                    : ''
-                }
-              >
-                <Button
-                  title={t('common:add')}
-                  className="sortable-list-item-btn"
-                  shape="circle"
-                  size="small"
-                  icon={<CheckOutlined />}
-                  disabled={!!unsupportedFeatures[menuID]}
-                  onClick={selectItem}
-                />
-              </Tooltip>
+              <Button
+                title={t('common:add')}
+                className="sortable-list-item-btn"
+                shape="circle"
+                size="small"
+                icon={<CheckOutlined />}
+                onClick={selectItem}
+              />
               <Button
                 title={t('common:edit')}
                 className="sortable-list-item-btn"

@@ -123,24 +123,6 @@ describe('Context Menus', () => {
       expect(browser.contextMenus.onClicked.addListener.calledOnce).toBeTruthy()
     })
 
-    it('google_page_translate', async () => {
-      browser.tabs.executeScript.flush()
-      browser.tabs.executeScript.callsFake(() => Promise.resolve())
-      browser.contextMenus.onClicked.dispatch({
-        menuItemId: 'google_page_translate'
-      })
-      expect(browser.tabs.executeScript.calledOnce).toBeTruthy()
-    })
-    it('youdao_page_translate', () => {
-      browser.tabs.executeScript.flush()
-      browser.tabs.executeScript.callsFake(() => Promise.resolve())
-      browser.contextMenus.onClicked.dispatch({
-        menuItemId: 'youdao_page_translate'
-      })
-      expect(
-        browser.tabs.executeScript.calledWith({ file: sinon.match('youdao') })
-      ).toBeTruthy()
-    })
     it('view_as_pdf', async () => {
       browser.tabs.query.onFirstCall().returns(Promise.resolve([]))
       browser.contextMenus.onClicked.dispatch({ menuItemId: 'view_as_pdf' })

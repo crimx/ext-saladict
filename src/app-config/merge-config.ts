@@ -125,6 +125,14 @@ export function mergeConfig(
           val => val === '' || val === 'clipboard' || val === 'selection'
         )
         break
+      case 'baOpen':
+        merge('baOpen', val => {
+          return (
+            isString(val) &&
+            (val.startsWith('popup_') || !!base.contextMenus.all[val])
+          )
+        })
+        break
       case 'ctxTrans':
         forEach(base.ctxTrans, (value, key) => {
           mergeBoolean(`ctxTrans.${key}`)

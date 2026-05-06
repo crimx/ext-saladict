@@ -146,8 +146,7 @@ export const locale: typeof _locale = {
       sel_blackwhitelist_help: '黑名單相符的頁面 Saladict 將不會響應滑鼠劃詞。',
       pdf_blackwhitelist_help:
         '黑名單相符的 PDF 連結將不會跳至 Saladict 開啟。',
-      contextMenus_description:
-        '設定右鍵選單，可新增可自定義連結。網頁翻譯其實不需要沙拉查詞，故已有的有道和谷歌網頁翻譯目前處於維護狀態，沒有計劃新增新功能，請用其它官方擴充套件如彩雲小譯和谷歌翻譯。',
+      contextMenus_description: '設定右鍵選單，可新增可自定義連結。',
       contextMenus_edit: '編輯右鍵選單項目',
       contextMenus_url_rules: '連結中的 %s 會被取代為選詞。',
       baOpen: {

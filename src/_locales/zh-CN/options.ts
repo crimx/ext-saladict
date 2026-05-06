@@ -143,8 +143,7 @@ export const locale = {
       sel_blackwhitelist_help: '黑名单匹配的页面 Saladict 将不会响应鼠标划词。',
       pdf_blackwhitelist_help:
         '黑名单匹配的 PDF 链接将不会跳转到 Saladict 打开。',
-      contextMenus_description:
-        '设置右键菜单，可添加可自定义链接。网页翻译其实不需要沙拉查词，故已有的有道和谷歌网页翻译目前处于维护状态，没有计划添加新功能，请用其它官方扩展如彩云小译和谷歌翻译。',
+      contextMenus_description: '设置右键菜单，可添加可自定义链接。',
       contextMenus_edit: '编辑右键菜单项目',
       contextMenus_url_rules: '链接中的 %s 会被替换为选词。',
       baOpen: {
