@@ -6,7 +6,7 @@ import {
   SaladictFormItem
 } from '@/options/components/SaladictForm'
 import { DarkModeSelect } from '@/options/components/DarkModeSelect'
-import { isFirefox, isOpera } from '@/_helpers/saladict'
+// import { isFirefox, isOpera } from '@/_helpers/saladict'
 
 export const General: FC = () => {
   const formItems: SaladictFormItem[] = [
@@ -22,13 +22,13 @@ export const General: FC = () => {
     }
   ]
 
-  if (!(isFirefox || isOpera)) {
-    formItems.push({
-      name: getConfigPath('runInBg'),
-      valuePropName: 'checked',
-      children: <Switch />
-    })
-  }
+  // if (!(isFirefox || isOpera)) {
+  //   formItems.push({
+  //     name: getConfigPath('runInBg'),
+  //     valuePropName: 'checked',
+  //     children: <Switch />
+  //   })
+  // }
 
   formItems.push(
     {
