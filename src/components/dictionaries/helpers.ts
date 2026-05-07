@@ -322,6 +322,20 @@ export function removeChildren(parent: ParentNode, selector: string) {
   parent.querySelectorAll(selector).forEach(el => el.remove())
 }
 
+export function setSafeHTML<T extends Element>(el: T, html: string): T {
+  const fragment = DOMPurify.sanitize(html, {
+    RETURN_DOM_FRAGMENT: true
+  })
+
+  while (el.firstChild) {
+    el.firstChild.remove()
+  }
+
+  el.appendChild(fragment)
+
+  return el
+}
+
 /**
  * HEX string to normal string
  */

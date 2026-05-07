@@ -9,7 +9,8 @@ import {
   externalLink,
   getText,
   removeChildren,
-  DictSearchResult
+  DictSearchResult,
+  setSafeHTML
 } from '../helpers'
 import { getStaticSpeakerString, getStaticSpeaker } from '@/components/Speaker'
 
@@ -40,7 +41,7 @@ function replaceAudioSpeakers(parent: ParentNode): void {
 function replaceWithSummaryHead($target: Element, head: string): void {
   const $summaryHead = $target.ownerDocument.createElement('div')
   $summaryHead.className = 'summaryHead'
-  $summaryHead.innerHTML = head
+  setSafeHTML($summaryHead, head)
   $target.replaceWith($summaryHead)
 }
 
