@@ -346,11 +346,12 @@ module.exports = function createNeutrinoConfig({
               .merge({
                 splitChunks: {
                   cacheGroups: {
-                    react: {
-                      test: /[\\/]node_modules[\\/](react|react-dom|i18next)[\\/]/,
-                      name: 'view-vendor',
+                    'vendor-react': {
+                      test: /[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types|object-assign|loose-envify|i18next)[\\/]/,
+                      name: 'vendor-react',
                       chunks: 'all',
-                      priority: 100
+                      priority: 100,
+                      enforce: true
                     },
                     franc: {
                       test: /[\\/]node_modules[\\/]franc/,
@@ -358,11 +359,18 @@ module.exports = function createNeutrinoConfig({
                       chunks: 'all',
                       priority: 100
                     },
-                    dexie: {
+                    'vendor-dexie': {
                       test: /[\\/]node_modules[\\/]dexie/,
-                      name: 'dexie',
+                      name: 'vendor-dexie',
                       chunks: 'all',
                       priority: 100
+                    },
+                    'vendor-dompurify': {
+                      test: /[\\/]node_modules[\\/]dompurify[\\/]/,
+                      name: 'vendor-dompurify',
+                      chunks: 'all',
+                      priority: 120,
+                      enforce: true
                     },
                     wordpage: {
                       test: (module, chunks) => module.resource &&
@@ -371,14 +379,34 @@ module.exports = function createNeutrinoConfig({
                       name: 'wordpage',
                       chunks: ({ name }) => /^(notebook|history)$/.test(name),
                     },
-                    antd: {
+                    'vendor-antd': {
                       test: /[\\/]node_modules[\\/]/,
-                      name: 'antd',
+                      name: 'vendor-antd',
                       chunks: ({ name }) => /^(options|notebook|history)$/.test(name),
                     }
                   }
                 },
               })
+
+          neutrino.config.optimization.minimizer('terser').use({
+            apply: compiler => {
+              const TerserPlugin = require('terser-webpack-plugin')
+              const SourceMapDevToolPlugin = require('webpack/lib/SourceMapDevToolPlugin')
+
+              new TerserPlugin({
+                cache: true,
+                parallel: true,
+                sourceMap:
+                  (compiler.options.devtool &&
+                    /source-?map/.test(compiler.options.devtool)) ||
+                  (compiler.options.plugins &&
+                    compiler.options.plugins.some(
+                      plugin => plugin instanceof SourceMapDevToolPlugin
+                    )),
+                exclude: /(?:^|[\\/])assets[\\/](?:vendor-[\da-z-_]+)\.[\da-f]+\.js(?:\?.*)?$/i
+              }).apply(compiler)
+            }
+          })
         }
 
         if (argv.debug) {

@@ -3,10 +3,21 @@
   "options_ui": {
     "browser_style": false
   },
-  "applications": {
+  "browser_specific_settings": {
     "gecko": {
       "id": "saladict@crimx.com",
-      "strict_min_version": "100.0"
+      "strict_min_version": "142.0",
+      "data_collection_permissions": {
+        "required": [
+          "searchTerms",
+          "websiteContent"
+        ],
+        "optional": [
+          "authenticationInfo",
+          "browsingActivity",
+          "technicalAndInteraction"
+        ]
+      }
     }
   },
   "content_security_policy": "script-src 'self'; object-src 'self'"
