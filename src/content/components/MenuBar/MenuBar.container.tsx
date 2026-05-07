@@ -14,9 +14,7 @@ import {
 import { newWord } from '@/_helpers/record-manager'
 import { message } from '@/_helpers/browser-api'
 import { MenuBar, MenuBarProps } from './MenuBar'
-import { updateConfig } from '@/_helpers/config-manager'
 import { timer } from '@/_helpers/promise-more'
-import { objectKeys } from '@/typings/helpers'
 
 type Dispatchers = ExtractDispatchers<
   MenuBarProps,
@@ -50,7 +48,6 @@ const mapStateToProps: MapStateToProps<
   isTrackHistory: state.config.searchHistory,
   histories: state.searchHistory,
   historyIndex: state.historyIndex,
-  showedDictAuth: state.config.showedDictAuth,
   profiles: state.profiles,
   activeProfileId: state.activeProfile.id,
   isPinned: state.isPinned,
@@ -130,30 +127,6 @@ const mapDispatchToProps: MapDispatchToPropsFunction<
   onSelectProfile: id => {
     dispatch(async (dispatch, getState) => {
       const state = getState()
-      const { showedDictAuth, dictAuth } = state.config
-
-      // no jumping on popup page which breaks user flow
-      if (!showedDictAuth && !isPopupPage()) {
-        await updateConfig({
-          ...state.config,
-          showedDictAuth: true
-        })
-
-        if (
-          objectKeys(dictAuth).every(id =>
-            objectKeys(dictAuth[id]).every(k => !dictAuth[id]?.[k])
-          )
-        ) {
-          message.send({
-            type: 'OPEN_URL',
-            payload: {
-              url: 'options.html?menuselected=DictAuths',
-              self: true
-            }
-          })
-          return
-        }
-      }
 
       await updateActiveProfileID(id)
       await timer(10)

@@ -28,10 +28,6 @@ export function mergeConfig(
   \* ----------------------------------------------- */
   let oldVersion = oldConfig.version
 
-  if (oldVersion < 13) {
-    ;(oldConfig as AppConfigMutable).showedDictAuth = true
-  }
-
   if (oldVersion <= 9) {
     oldVersion = 10
     ;['mode', 'pinMode', 'panelMode', 'qsPanelMode'].forEach(mode => {

@@ -17,12 +17,10 @@ import {
 import { useSelector } from '@/content/redux'
 import { SortableList, reorder } from '@/options/components/SortableList'
 import { useListLayout } from '@/options/helpers/layout'
-import { useCheckDictAuth } from '@/options/helpers/use-check-dict-auth'
 import { EditNameModal } from './EditNameModal'
 
 export const Profiles: FC = () => {
   const { t } = useTranslate('options')
-  const checkDictAuth = useCheckDictAuth()
   const activeProfileID = useSelector(state => state.activeProfile.id)
   const [showAddProfileModal, setShowAddProfileModal] = useState(false)
   const [showEditNameModal, setShowEditNameModal] = useState(false)
@@ -88,9 +86,7 @@ export const Profiles: FC = () => {
             title: getProfileName(name, t)
           }))}
           onSelect={async ({ target: { value } }) => {
-            if (await checkDictAuth()) {
-              tryTo(() => updateActiveProfileID(value))
-            }
+            tryTo(() => updateActiveProfileID(value))
           }}
           onAdd={() => {
             setEditingProfileID({

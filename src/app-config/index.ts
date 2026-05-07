@@ -352,8 +352,6 @@ function _getDefaultConfig() {
       all: getAllContextMenus()
     },
 
-    /** Open settings on first switching "translation" profile */
-    showedDictAuth: false,
     dictAuth: getDefaultDictAuths()
   }
 }

@@ -7,7 +7,6 @@ import { useSelector } from '@/content/redux'
 import { SortableList, reorder } from '@/options/components/SortableList'
 import { SaladictModalForm } from '@/options/components/SaladictModalForm'
 import { getProfilePath } from '@/options/helpers/path-joiner'
-import { useCheckDictAuth } from '@/options/helpers/use-check-dict-auth'
 import { useListLayout } from '@/options/helpers/layout'
 import { useUpload } from '@/options/helpers/upload'
 import { DictTitleMemo } from './DictTitle'
@@ -16,7 +15,6 @@ import { AllDicts } from './AllDicts'
 
 export const Dictionaries: FC = () => {
   const { t } = useTranslate(['options', 'common', 'dicts'])
-  const checkDictAuth = useCheckDictAuth()
   const [editingDict, setEditingDict] = useState<DictID | null>(null)
   const [showAddModal, setShowAddModal] = useState(false)
   const listLayout = useListLayout()
@@ -51,9 +49,7 @@ export const Dictionaries: FC = () => {
             title: <DictTitleMemo dictID={id} dictLangs={dicts.all[id].lang} />
           }))}
           onAdd={async () => {
-            if (await checkDictAuth()) {
-              setShowAddModal(true)
-            }
+            setShowAddModal(true)
           }}
           onEdit={index => {
             setEditingDict(selectedDicts[index])
