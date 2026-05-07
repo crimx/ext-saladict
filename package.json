@@ -14,7 +14,7 @@
     "type-check": "tsc --noEmit",
     "test": "jest --testTimeout 20000",
     "test:watch": "jest --watch",
-    "zip": "node scripts/zip.js '!test' '!.git' '.env' 'assets/pdf' 'deps'",
+    "zip": "node scripts/zip.js '!test' '!.git' '.env' 'deps'",
     "postinstall": "node scripts/setup-env.js",
     "commit": "git-cz",
     "release": "standard-version",

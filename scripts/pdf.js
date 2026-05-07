@@ -7,9 +7,17 @@ const fs = require('fs-extra')
 const fetch = require('node-fetch')
 const extractZip = require('extract-zip')
 const randomMua = require('random-mua')
+const dotenv = require('dotenv')
 
+const rootDir = path.join(__dirname, '..')
+const envPath = path.join(rootDir, '.env')
+const pdfJSVersionEnvName = 'PDFJS_VERSION'
 const pdfJSLatestReleaseURL =
   'https://api.github.com/repos/mozilla/pdf.js/releases/latest'
+const pdfJSReleaseURL = tag =>
+  `https://api.github.com/repos/mozilla/pdf.js/releases/tags/${encodeURIComponent(
+    tag
+  )}`
 const pdfJSRequestHeaders = {
   Accept: 'application/vnd.github+json',
   'User-Agent': randomMua()
@@ -17,7 +25,8 @@ const pdfJSRequestHeaders = {
 const cacheDir = path.join(__dirname, 'pdf')
 const archivePath = path.join(__dirname, 'pdfjs-dist.zip')
 const repoRoot = cacheDir
-const publicPDFRoot = path.join(__dirname, '../assets/pdf')
+const publicPDFRoot = path.join(rootDir, 'assets/pdf')
+const forceLatestPDFJS = process.argv.includes('--force')
 const viewerScriptCandidates = ['web/viewer.js', 'web/viewer.mjs']
 const buildScriptCandidates = ['build/pdf.js', 'build/pdf.mjs']
 const workerScriptCandidates = ['build/pdf.worker.js', 'build/pdf.worker.mjs']
@@ -82,7 +91,7 @@ startUpgrade().catch(error => {
 })
 
 async function startUpgrade() {
-  await downloadPDFJS()
+  const pdfJSVersion = await downloadPDFJS()
 
   console.log('\nChecking files.')
   const viewerScriptPath = await findExistingPath(
@@ -107,6 +116,8 @@ async function startUpgrade() {
   console.log('\nCleaning files.')
   await fs.remove(cacheDir)
 
+  await writePDFJSVersion(pdfJSVersion)
+
   console.log('\ndone.')
 }
 
@@ -115,29 +126,40 @@ async function downloadPDFJS() {
   await fs.remove(archivePath)
 
   try {
-    const { asset, releaseName } = await getLatestPDFJSArchive()
+    const lockedVersion = forceLatestPDFJS ? '' : getLockedPDFJSVersion()
+    const { asset, releaseName, version } = await getPDFJSArchive(lockedVersion)
+    const versionLabel = lockedVersion
+      ? `${version} (locked)`
+      : `${version}${forceLatestPDFJS ? ' (forced latest)' : ''}`
 
-    console.log(`Downloading PDF.js ${releaseName} (${asset.name}).`)
+    console.log(
+      `Downloading PDF.js ${versionLabel} from ${releaseName} (${asset.name}).`
+    )
     await downloadFile(asset.browser_download_url, archivePath)
 
     console.log('Extracting PDF.js.')
     await fs.ensureDir(cacheDir)
     await extractZip(archivePath, { dir: cacheDir })
+
+    return version
   } finally {
     await fs.remove(archivePath)
   }
 }
 
-async function getLatestPDFJSArchive() {
-  const response = await fetch(pdfJSLatestReleaseURL, {
-    headers: pdfJSRequestHeaders
-  })
+function getLockedPDFJSVersion() {
+  const env = dotenv.config({ path: envPath }).parsed || {}
+  const version = env[pdfJSVersionEnvName]
 
-  if (!response.ok) {
-    throw new Error(await formatResponseError(response, 'Fetch release failed'))
-  }
+  return typeof version === 'string' && version.trim() ? version.trim() : ''
+}
 
-  const release = await response.json()
+async function getPDFJSArchive(version) {
+  const releaseTag = version ? normalizePDFJSReleaseTag(version) : ''
+  const release = await fetchPDFJSRelease(
+    releaseTag ? pdfJSReleaseURL(releaseTag) : pdfJSLatestReleaseURL,
+    releaseTag || 'latest'
+  )
   const assets = release.assets || []
   const asset =
     assets.find(
@@ -147,14 +169,56 @@ async function getLatestPDFJSArchive() {
     ) || assets.find(asset => /^pdfjs-.+-legacy-dist\.zip$/i.test(asset.name))
 
   if (!asset || !asset.browser_download_url) {
-    const releaseName = release.tag_name || release.name || 'latest'
+    const releaseName =
+      release.tag_name || release.name || releaseTag || 'latest'
     throw new Error(`Could not find PDF.js dist zip in ${releaseName}`)
   }
 
+  const releaseName =
+    release.tag_name || release.name || releaseTag || 'latest release'
+
   return {
     asset,
-    releaseName: release.tag_name || release.name || 'latest release'
+    releaseName,
+    version: getPDFJSArchiveVersion(asset, releaseName)
   }
+}
+
+async function fetchPDFJSRelease(url, releaseName) {
+  const response = await fetch(url, {
+    headers: pdfJSRequestHeaders
+  })
+
+  if (!response.ok) {
+    throw new Error(
+      await formatResponseError(
+        response,
+        `Fetch PDF.js ${releaseName} release failed`
+      )
+    )
+  }
+
+  return response.json()
+}
+
+function normalizePDFJSReleaseTag(version) {
+  return version[0].toLowerCase() === 'v' ? version : `v${version}`
+}
+
+function getPDFJSArchiveVersion(asset, releaseName) {
+  const assetMatch = asset.name.match(/^pdfjs-(.+?)-(?:legacy-)?dist\.zip$/i)
+
+  if (assetMatch) {
+    return trimVersionTag(assetMatch[1])
+  }
+
+  return trimVersionTag(releaseName)
+}
+
+function trimVersionTag(version) {
+  return String(version)
+    .trim()
+    .replace(/^v/i, '')
 }
 
 async function downloadFile(url, targetPath) {
@@ -181,6 +245,55 @@ async function formatResponseError(response, message) {
   return `${message}: ${response.status} ${response.statusText}${
     text ? `\n${text}` : ''
   }`
+}
+
+async function writePDFJSVersion(version) {
+  if (!version) {
+    throw new Error(`Could not determine ${pdfJSVersionEnvName}`)
+  }
+
+  const nextLine = `${pdfJSVersionEnvName}=${trimVersionTag(version)}`
+  const envText = await fs.readFile(envPath, 'utf8').catch(error => {
+    if (error && error.code === 'ENOENT') {
+      return ''
+    }
+
+    throw error
+  })
+  const lineEnding = envText.includes('\r\n') ? '\r\n' : '\n'
+  const lines = envText.split(/\r?\n/)
+  const envLinePattern = new RegExp(
+    `^\\s*(?:export\\s+)?${escapeRegExp(pdfJSVersionEnvName)}\\s*=`
+  )
+  let updated = false
+
+  for (let i = 0; i < lines.length; i++) {
+    if (envLinePattern.test(lines[i])) {
+      lines[i] = nextLine
+      updated = true
+      break
+    }
+  }
+
+  if (updated) {
+    await fs.outputFile(envPath, lines.join(lineEnding))
+    return
+  }
+
+  const separator =
+    envText && !envText.endsWith('\n') && !envText.endsWith('\r')
+      ? lineEnding
+      : ''
+  const sectionBreak = envText ? lineEnding : ''
+
+  await fs.outputFile(
+    envPath,
+    `${envText}${separator}${sectionBreak}${nextLine}${lineEnding}`
+  )
+}
+
+function escapeRegExp(text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
 async function modifyViewerJS(viewerPath) {
