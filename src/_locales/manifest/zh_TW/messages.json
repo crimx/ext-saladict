@@ -9,7 +9,7 @@
   },
   "extension_description": {
     "description": "Description of extension",
-    "message": "Saladict 沙拉查詞是一款專業滑鼠選字翻譯套件，為交叉閱讀而生。大量權威字典涵蓋中英日韓法德西語，支援複雜的選字操作、生字本与 PDF 瀏覽。"
+    "message": "聚合多部字典的滑鼠選字翻譯套件，支援靈活選字方式、生字本、查詞記錄與 PDF 選字。"
   },
   "command_toggle_active": {
     "message": "滑鼠選字翻譯開關"

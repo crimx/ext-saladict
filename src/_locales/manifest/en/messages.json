@@ -9,7 +9,7 @@
   },
   "extension_description": {
     "description": "Description of extension",
-    "message": "Saladict is an all-in-one professional pop-up dictionary which supports multiple search modes, new word notebook and PDF selection searching."
+    "message": "Look up and translate selected text with multiple dictionaries, flexible selection modes, vocabulary notes, and PDF lookup."
   },
   "command_toggle_active": {
     "message": "Toggle inline translator"
