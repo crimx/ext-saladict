@@ -64,7 +64,6 @@ Object.keys(getAllDicts())
       id !== 'baidu' &&
       id !== 'caiyun' &&
       id !== 'google' &&
-      id !== 'sogou' &&
       id !== 'tencent' &&
       id !== 'youdaotrans'
   )

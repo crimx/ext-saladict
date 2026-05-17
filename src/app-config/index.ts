@@ -293,8 +293,7 @@ function _getDefaultConfig() {
       youdaotrans: true,
       baidu: true,
       tencent: false,
-      caiyun: false,
-      sogou: false
+      caiyun: false
     },
 
     /** start searching when source containing the languages */
@@ -331,7 +330,7 @@ function _getDefaultConfig() {
       },
       machine: {
         dict: '' as DictID | '',
-        list: ['google', 'sogou', 'tencent', 'baidu', 'caiyun'],
+        list: ['google', 'tencent', 'baidu', 'caiyun'],
         // play translation or source
         src: 'trans' as 'trans' | 'searchText'
       }

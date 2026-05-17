@@ -22,7 +22,6 @@ export const locale: typeof _locale = {
   oxford: 'Oxford',
   saladict: 'Saladict',
   saladict_standalone: 'Saladict Standalone Panel',
-  sogou: 'Sogou Translate',
   termonline: 'Termonline',
   view_as_pdf: 'Open in PDF Viewer',
   youdao: 'Youdao',

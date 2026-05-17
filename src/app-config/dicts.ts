@@ -18,7 +18,6 @@ import mojidict from '@/components/dictionaries/mojidict/config'
 import naver from '@/components/dictionaries/naver/config'
 import renren from '@/components/dictionaries/renren/config'
 // import shanbay from '@/components/dictionaries/shanbay/config'
-import sogou from '@/components/dictionaries/sogou/config'
 import tencent from '@/components/dictionaries/tencent/config'
 import urban from '@/components/dictionaries/urban/config'
 import vocabulary from '@/components/dictionaries/vocabulary/config'
@@ -51,7 +50,6 @@ export const defaultAllDicts = {
   naver: naver(),
   renren: renren(),
   // shanbay: shanbay(),
-  sogou: sogou(),
   tencent: tencent(),
   urban: urban(),
   vocabulary: vocabulary(),

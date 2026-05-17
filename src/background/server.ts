@@ -38,7 +38,6 @@ const mv3BackgroundPreferredDicts = new Set<DictID>([
   'baidu',
   'caiyun',
   'google',
-  'sogou',
   'tencent',
   'youdaotrans'
 ])

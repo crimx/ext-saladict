@@ -117,7 +117,6 @@ export function mergeProfile(
             'baidu',
             'caiyun',
             'google',
-            'sogou',
             'tencent',
             'youdaotrans'
           ]

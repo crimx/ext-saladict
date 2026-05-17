@@ -426,6 +426,9 @@ module.exports = function createNeutrinoConfig({
       },
       jest({
         testRegex: ['test/specs/.*\\.spec\\.(ts|tsx|js|jsx)'],
+        modulePathIgnorePatterns: ['<rootDir>/build/', '<rootDir>/build-mv3/'],
+        testPathIgnorePatterns: ['<rootDir>/build/', '<rootDir>/build-mv3/'],
+        watchPathIgnorePatterns: ['<rootDir>/build/', '<rootDir>/build-mv3/'],
         setupFilesAfterEnv: ['<rootDir>/config/jest/setupTests.js'],
         moduleNameMapper: {
           '^(?:!raw-loader!|raw-loader!)(.*)$': '$1',

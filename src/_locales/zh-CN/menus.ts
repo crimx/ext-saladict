@@ -20,7 +20,6 @@ export const locale = {
   oxford: '牛津词典',
   saladict: '沙拉查词',
   saladict_standalone: '沙拉查词独立窗口',
-  sogou: '搜狗翻译',
   termonline: '术语在线',
   view_as_pdf: '在 PDF 阅读器中打开',
   youdao: '有道词典',

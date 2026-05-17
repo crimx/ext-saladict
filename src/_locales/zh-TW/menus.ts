@@ -22,7 +22,6 @@ export const locale: typeof _locale = {
   oxford: '牛津字典',
   saladict: '沙拉查詞',
   saladict_standalone: '沙拉查詞獨立視窗',
-  sogou: '搜狗翻譯',
   termonline: '術語在線',
   view_as_pdf: '在 PDF 閱讀器中開啟',
   youdao: '有道字典',

@@ -26,7 +26,6 @@ export function getAllContextMenus(): { [id: string]: ContextItem } {
     oxford: 'http://www.oxforddictionaries.com/us/definition/english/%s',
     saladict: 'x',
     saladict_standalone: 'x',
-    sogou: 'https://fanyi.sogou.com/#auto/zh-CHS/%s',
     termonline: 'https://www.termonline.cn/list.htm?k=%s',
     view_as_pdf: 'x',
     youdao: 'http://dict.youdao.com/w/%s',

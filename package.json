@@ -56,7 +56,6 @@
     "@opentranslate/caiyun": "^1.4.0",
     "@opentranslate/google": "^1.4.0",
     "@opentranslate/languages": "^1.4.0",
-    "@opentranslate/sogou": "^1.4.0",
     "@opentranslate/tencent": "^1.4.0",
     "@opentranslate/translator": "^1.4.0",
     "@opentranslate/youdao": "^1.4.0",
