@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.22.2](https://github.com/crimx/ext-saladict/compare/v7.22.1...v7.22.2) (2026-05-17)
+
+
+### Bug Fixes
+
+* qsPanel not responding ([6b246c7](https://github.com/crimx/ext-saladict/commit/6b246c74790b1774168cb28a176ef0e4894a6e14)), closes [#2327](https://github.com/crimx/ext-saladict/issues/2327)
+* remove remote code ([32b458c](https://github.com/crimx/ext-saladict/commit/32b458cbf5b59256221ab6acfac41101b55389b9))
+* update audio loading for 'nothing to play' scenario ([72af4d5](https://github.com/crimx/ext-saladict/commit/72af4d57bbe979392bd55bd4022924f024ebc309))
+* update google analytics 4 ([fd031ef](https://github.com/crimx/ext-saladict/commit/fd031ef91c68f896618f1eee16d86ba8f5514267))
+
 ### [7.22.1](https://github.com/crimx/ext-saladict/compare/v7.22.0...v7.22.1) (2026-05-05)
 
 
