@@ -362,9 +362,14 @@ export type MessageConfig = MessageConfigType<{
     GA
   \* ------------------------------------------------ */
 
-  /** Send new words to standalone panel */
+  /** Send analytics event to background page */
   REQUEST_GA: {
-    payload: { [key: string]: string }
+    payload: {
+      name: string
+      params?: {
+        [key: string]: string | number | undefined
+      }
+    }
   }
 
   /* ------------------------------------------------ *\

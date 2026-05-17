@@ -1,5 +1,4 @@
 import React, { FC, useState, useEffect, useContext, useRef } from 'react'
-import { shallowEqual } from 'react-redux'
 import { Layout, Row, Col, message as antMsg } from 'antd'
 import { useSelector } from '@/content/redux'
 import { reportPageView } from '@/_helpers/analytics'
@@ -24,13 +23,7 @@ export const MainEntry: FC = () => {
   const [entry, setEntry] = useState(getEntry)
   const formDirtyRef = useFormDirty()
   const warnedMissingPermissionRef = useRef(false)
-  const { analytics, darkMode } = useSelector(
-    state => ({
-      analytics: state.config.analytics,
-      darkMode: isDarkMode(state.config.darkMode)
-    }),
-    shallowEqual
-  )
+  const darkMode = useSelector(state => isDarkMode(state.config.darkMode))
 
   useEffect(() => {
     if (getEntry() !== entry) {
@@ -38,10 +31,8 @@ export const MainEntry: FC = () => {
       const newurl = `${protocol}//${host}${pathname}?menuselected=${entry}`
       window.history.pushState({ key: entry }, '', newurl)
     }
-    if (analytics) {
-      reportPageView(`/options/${entry}`)
-    }
-  }, [entry, analytics])
+    reportPageView(`/options/${entry}`)
+  }, [entry])
 
   useEffect(() => {
     // Warn about unsaved settings before closing window

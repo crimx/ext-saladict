@@ -28,9 +28,9 @@ export interface AntdRootContainerProps {
 
 /** Inner Component so that it can access Redux store */
 export const AntdRootContainer: FC<AntdRootContainerProps> = props => {
-  const { langCode, analytics, darkMode } = useSelector(state => {
-    const { langCode, analytics, darkMode } = state.config
-    return { langCode, analytics, darkMode: isDarkMode(darkMode) }
+  const { langCode, darkMode } = useSelector(state => {
+    const { langCode, darkMode } = state.config
+    return { langCode, darkMode: isDarkMode(darkMode) }
   }, shallowEqual)
 
   const locale = useMemo(() => antdLocales(langCode), [langCode])
@@ -41,10 +41,10 @@ export const AntdRootContainer: FC<AntdRootContainerProps> = props => {
   )
 
   useEffect(() => {
-    if (analytics && props.gaPath) {
+    if (props.gaPath) {
       reportPageView(props.gaPath)
     }
-  }, [analytics, props.gaPath])
+  }, [props.gaPath])
 
   return (
     <AntdConfigProvider locale={locale}>

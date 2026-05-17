@@ -2,11 +2,21 @@ import UAParser from 'ua-parser-js'
 import axios from 'axios'
 import uuid from 'uuid/v4'
 import { message, storage } from '@/_helpers/browser-api'
-import { genUniqueKey } from '@/_helpers/uniqueKey'
+import { getConfig } from '@/_helpers/config-manager'
 import { GAEvent, GAEventBase } from './events'
-import { isBackgroundPage } from '../saladict'
+import { isBackgroundPage, isFirefox } from '../saladict'
 
-export type GAParams = { [key: string]: string }
+export type GAEventParams = { [key: string]: string | number | undefined }
+
+export interface GAEventPayload {
+  name: string
+  params?: GAEventParams
+}
+
+const GA4_MEASUREMENT_ID = process.env.SDAPP_GA4_MEASUREMENT_ID
+const GA4_API_SECRET = process.env.SDAPP_GA4_API_SECRET
+const FIREFOX_TECHNICAL_AND_INTERACTION = 'technicalAndInteraction'
+const GA_SESSION_ID = Date.now()
 
 export async function reportPageView(page: string): Promise<void> {
   const ua = new UAParser()
@@ -15,27 +25,22 @@ export async function reportPageView(page: string): Promise<void> {
 
   try {
     await requestGA({
-      t: 'pageview',
-      // required by pageview
-      dp: page,
-      // Dimensions
-      cd1: browser.name || 'None',
-      cd2: (browser.version || '0.0')
-        .split('.')
-        .slice(0, 3)
-        .join('.'),
-      cd3: os.name || 'None',
-      cd4: os.version || '0.0',
-      // Document Encoding
-      de: 'UTF-8',
-      // Document location URL
-      dl: document.location.href,
-      // Screen Colors
-      sd: screen.colorDepth + '-bit',
-      // Screen Resolution
-      sr: screen.width + 'x' + screen.height,
-      // User Language
-      ul: 'zh-cn'
+      name: 'page_view',
+      params: {
+        page_title: page,
+        page_location: `ext://saladict${page}`,
+        page_path: page,
+        browser_name: browser.name || 'None',
+        browser_version: (browser.version || '0.0')
+          .split('.')
+          .slice(0, 3)
+          .join('.'),
+        os_name: os.name || 'None',
+        os_version: os.version || '0.0',
+        screen_resolution: screen.width + 'x' + screen.height,
+        screen_color_depth: screen.colorDepth + '-bit',
+        language: navigator.language || 'unknown'
+      }
     })
   } catch (error) {
     if (!process.env.DEBUG) {
@@ -45,22 +50,24 @@ export async function reportPageView(page: string): Promise<void> {
 }
 
 export async function reportEvent(event: GAEvent) {
-  const params: GAParams = {
-    t: 'event',
-    ec: event.category,
-    ea: event.action
+  const params: GAEventParams = {
+    category: event.category,
+    action: event.action
   }
 
   if ((event as GAEventBase).label != null) {
-    params.el = (event as GAEventBase).label!
+    params.label = (event as GAEventBase).label!
   }
 
   if ((event as GAEventBase).value != null) {
-    params.ev = (event as GAEventBase).value!
+    params.value = (event as GAEventBase).value!
   }
 
   try {
-    await requestGA(params)
+    await requestGA({
+      name: `${event.category}_${event.action}`.toLowerCase(),
+      params
+    })
   } catch (error) {
     if (!process.env.DEBUG) {
       console.error('Report event error', error)
@@ -68,11 +75,51 @@ export async function reportEvent(event: GAEvent) {
   }
 }
 
-async function requestGA(extraParams: GAParams) {
+export async function canReportGA(): Promise<boolean> {
+  if (!isFirefox) {
+    const config = await getConfig()
+    return config.analytics
+  }
+
+  try {
+    const permissions = (await browser.permissions.getAll()) as {
+      data_collection?: string[]
+    }
+    return (
+      Array.isArray(permissions.data_collection) &&
+      permissions.data_collection.indexOf(FIREFOX_TECHNICAL_AND_INTERACTION) >=
+        0
+    )
+  } catch (error) {
+    if (process.env.DEBUG) {
+      console.error('Check Firefox analytics permission error', error)
+    }
+  }
+
+  return false
+}
+
+export function buildGA4Payload(clientId: string, event: GAEventPayload) {
+  return {
+    client_id: clientId,
+    events: [
+      {
+        name: event.name,
+        params: {
+          engagement_time_msec: 1,
+          session_id: GA_SESSION_ID,
+          ...event.params
+        }
+      }
+    ]
+  }
+}
+
+async function requestGA(event: GAEventPayload) {
   if (!isBackgroundPage()) {
     return message.send({
       type: 'REQUEST_GA',
-      payload: extraParams
+      payload: event
     })
   }
 
@@ -81,7 +128,11 @@ async function requestGA(extraParams: GAParams) {
     process.env.NODE_ENV === 'test' ||
     process.env.NODE_ENV === 'development'
   ) {
-    console.log('requestGA', extraParams)
+    console.log('requestGA', event)
+    return
+  }
+
+  if (!GA4_MEASUREMENT_ID || !GA4_API_SECRET || !(await canReportGA())) {
     return
   }
 
@@ -92,20 +143,16 @@ async function requestGA(extraParams: GAParams) {
   }
 
   return axios({
-    url: 'https://www.google-analytics.com/collect',
+    url: 'https://www.google-analytics.com/mp/collect',
     method: 'post',
     headers: {
-      'content-type': 'text/plain;charset=UTF-8'
+      'content-type': 'application/json'
     },
-    data: new URLSearchParams({
-      // required
-      v: '1',
-      tid: 'UA-49163616-4',
-      cid,
-      // Cache Buster
-      z: genUniqueKey(),
-      ...extraParams
-    })
+    params: {
+      measurement_id: GA4_MEASUREMENT_ID,
+      api_secret: GA4_API_SECRET
+    },
+    data: buildGA4Payload(cid, event)
   })
 }
 

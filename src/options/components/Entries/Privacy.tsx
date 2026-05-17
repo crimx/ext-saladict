@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Switch } from 'antd'
 import { getConfigPath } from '@/options/helpers/path-joiner'
 import { SaladictForm } from '@/options/components/SaladictForm'
+import { isFirefox } from '@/_helpers/saladict'
 
 export const Privacy: FC = () => {
   return (
@@ -14,6 +15,7 @@ export const Privacy: FC = () => {
         },
         {
           name: getConfigPath('analytics'),
+          hide: () => isFirefox,
           valuePropName: 'checked',
           children: <Switch />
         },

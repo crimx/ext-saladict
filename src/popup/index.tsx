@@ -57,9 +57,6 @@ getConfig().then(config => {
 })
 
 async function showPanel(config: AppConfig) {
-  if (config.analytics) {
-  }
-
   const store = await createStore()
 
   ReactDOM.render(
