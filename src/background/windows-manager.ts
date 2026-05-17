@@ -271,10 +271,14 @@ export class QsPanelManager {
   }
 
   async getWin(): Promise<browser.windows.Window | null> {
-    if (!this.qsPanelId) {
-      return null
+    if (this.qsPanelId != null) {
+      const win = await browser.windows.get(this.qsPanelId).catch(() => null)
+      if (win) {
+        return win
+      }
     }
-    return browser.windows.get(this.qsPanelId).catch(() => null)
+
+    return this.findExistingWin()
   }
 
   async destroy(): Promise<void> {
@@ -293,16 +297,14 @@ export class QsPanelManager {
 
   async hasCreated(): Promise<boolean> {
     const win = await this.getWin()
-    if (!win) {
-      this.qsPanelId = null
-    }
     return !!win
   }
 
   async focus(): Promise<void> {
-    if (this.qsPanelId != null) {
-      await safeUpdateWindow(this.qsPanelId, { focused: true })
-      const [tab] = await browser.tabs.query({ windowId: this.qsPanelId })
+    const win = await this.getWin()
+    if (win && win.id != null) {
+      await safeUpdateWindow(win.id, { focused: true })
+      const [tab] = await browser.tabs.query({ windowId: win.id })
       if (tab && tab.id) {
         await message.send(tab.id, { type: 'QS_PANEL_FOCUSED' })
       }
@@ -310,11 +312,7 @@ export class QsPanelManager {
   }
 
   async takeSnapshot(): Promise<void> {
-    if (this.qsPanelId != null) {
-      this.snapshot = await browser.windows
-        .get(this.qsPanelId)
-        .catch(() => null)
-    }
+    this.snapshot = await this.getWin()
   }
 
   destroySnapshot(): void {
@@ -331,19 +329,23 @@ export class QsPanelManager {
         width: this.snapshot.width,
         height: this.snapshot.height
       })
-    } else if (this.qsPanelId != null) {
-      await safeUpdateWindow(this.qsPanelId, {
-        focused: true,
-        ...(await this.getDefaultRect())
-      })
+    } else {
+      const win = await this.getWin()
+      if (win && win.id != null) {
+        await safeUpdateWindow(win.id, {
+          focused: true,
+          ...(await this.getDefaultRect())
+        })
+      }
     }
     this.destroySnapshot()
   }
 
   async moveToSidebar(side: 'left' | 'right'): Promise<void> {
-    if (this.qsPanelId != null) {
+    const win = await this.getWin()
+    if (win && win.id != null) {
       await this.takeSnapshot()
-      await safeUpdateWindow(this.qsPanelId, await this.getSidebarRect(side))
+      await safeUpdateWindow(win.id, await this.getSidebarRect(side))
       await this.mainWindowsManager.makeRoomForSidebar(side, this.snapshot)
     }
   }
@@ -492,5 +494,29 @@ export class QsPanelManager {
         }
       })
     }
+  }
+
+  private async findExistingWin(): Promise<browser.windows.Window | null> {
+    const quickSearchUrl = browser.runtime.getURL('quick-search.html')
+    const tabs = await browser.tabs.query({})
+
+    for (const tab of tabs) {
+      if (
+        tab.windowId != null &&
+        tab.url &&
+        tab.url.startsWith(quickSearchUrl)
+      ) {
+        const win = await browser.windows.get(tab.windowId).catch(() => null)
+        if (win && win.id != null) {
+          // MV3 service workers lose module state after sleeping. Rehydrate the
+          // standalone panel id from the real browser window before creating one.
+          this.qsPanelId = win.id
+          return win
+        }
+      }
+    }
+
+    this.qsPanelId = null
+    return null
   }
 }

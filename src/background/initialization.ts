@@ -55,43 +55,47 @@ async function onCommand(command: string) {
       }
       break
     case 'toggle-instant':
-      browser.tabs.query({ active: true, currentWindow: true }).then(tabs => {
+      {
+        const tabs = await browser.tabs.query({
+          active: true,
+          currentWindow: true
+        })
         if (tabs.length <= 0 || tabs[0].id == null) {
           return
         }
-        message
-          .send<'QUERY_PIN_STATE', boolean>(tabs[0].id, {
+        const isPinned = await message.send<'QUERY_PIN_STATE', boolean>(
+          tabs[0].id,
+          {
             type: 'QUERY_PIN_STATE'
-          })
-          .then(async isPinned => {
-            const { appConfig: config } = await initBackgroundState()
-            const { enable } = config[isPinned ? 'pinMode' : 'mode'].instant
+          }
+        )
+        const { appConfig: config } = await initBackgroundState()
+        const { enable } = config[isPinned ? 'pinMode' : 'mode'].instant
 
-            return updateConfig({
-              ...config,
-              mode: {
-                ...config.mode,
-                instant: {
-                  ...config.mode.instant,
-                  enable: !enable
-                }
-              },
-              pinMode: {
-                ...config.pinMode,
-                instant: {
-                  ...config.pinMode.instant,
-                  enable: !enable
-                }
-              }
-            })
-          })
-      })
+        await updateConfig({
+          ...config,
+          mode: {
+            ...config.mode,
+            instant: {
+              ...config.mode.instant,
+              enable: !enable
+            }
+          },
+          pinMode: {
+            ...config.pinMode,
+            instant: {
+              ...config.pinMode.instant,
+              enable: !enable
+            }
+          }
+        })
+      }
       break
     case 'open-quick-search':
-      BackgroundServer.getInstance().openQSPanel()
+      await BackgroundServer.getInstance().openQSPanel()
       break
     case 'open-pdf':
-      openPDF()
+      await openPDF()
       reportEvent({
         category: 'PDF_Viewer',
         action: 'Open_PDF_Viewer',
@@ -99,31 +103,31 @@ async function onCommand(command: string) {
       })
       break
     case 'search-clipboard':
-      BackgroundServer.getInstance().searchClipboard()
+      await BackgroundServer.getInstance().searchClipboard()
       break
     case 'next-history':
     case 'prev-history':
-      // Send to browser action panel first
-      message
-        .send<'SWITCH_HISTORY', boolean>({
+      {
+        // Send to browser action panel first
+        const direction = command === 'next-history' ? 'next' : 'prev'
+        const received = await message.send<'SWITCH_HISTORY', boolean>({
           type: 'SWITCH_HISTORY',
-          payload: command === 'next-history' ? 'next' : 'prev'
+          payload: direction
         })
-        .then(received => {
-          if (received) return // browser action panel is opened
+        if (received) return // browser action panel is opened
 
-          return browser.tabs
-            .query({ active: true, currentWindow: true })
-            .then(tabs => {
-              if (tabs.length <= 0 || tabs[0].id == null) {
-                return
-              }
-              return message.send<'SWITCH_HISTORY', boolean>(tabs[0].id, {
-                type: 'SWITCH_HISTORY',
-                payload: command === 'next-history' ? 'next' : 'prev'
-              })
-            })
+        const tabs = await browser.tabs.query({
+          active: true,
+          currentWindow: true
         })
+        if (tabs.length <= 0 || tabs[0].id == null) {
+          return
+        }
+        await message.send<'SWITCH_HISTORY', boolean>(tabs[0].id, {
+          type: 'SWITCH_HISTORY',
+          payload: direction
+        })
+      }
       break
     case 'next-profile':
     case 'prev-profile':
@@ -140,7 +144,8 @@ async function onCommand(command: string) {
             ? 0
             : (curIndex + offset + profileIDList.length) % profileIDList.length
 
-        updateActiveProfileID(profileIDList[nextIndex].id).then(searchTextBox)
+        await updateActiveProfileID(profileIDList[nextIndex].id)
+        await searchTextBox()
       }
       break
     case 'profile-1':
@@ -156,12 +161,13 @@ async function onCommand(command: string) {
           index < profileIDList.length &&
           profileIDList[index].id !== activeProfile.id
         ) {
-          updateActiveProfileID(profileIDList[index].id).then(searchTextBox)
+          await updateActiveProfileID(profileIDList[index].id)
+          await searchTextBox()
         }
       }
       break
     case 'add-notebook':
-      addNotebook()
+      await addNotebook()
       break
   }
 }
@@ -391,7 +397,7 @@ async function searchTextBox() {
   if (tabs.length <= 0 || tabs[0].id == null) {
     return
   }
-  message.send(tabs[0].id, { type: 'SEARCH_TEXT_BOX' })
+  await message.send(tabs[0].id, { type: 'SEARCH_TEXT_BOX' })
 }
 
 async function addNotebook() {
@@ -411,5 +417,8 @@ async function addNotebook() {
   if (tabs.length <= 0 || tabs[0].id == null) {
     return
   }
-  message.send(tabs[0].id, { type: 'ADD_NOTEBOOK', payload: { popup: false } })
+  await message.send(tabs[0].id, {
+    type: 'ADD_NOTEBOOK',
+    payload: { popup: false }
+  })
 }
