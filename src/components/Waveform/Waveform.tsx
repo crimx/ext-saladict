@@ -289,10 +289,7 @@ export class Waveform extends React.PureComponent<
           this.load(response.src)
         } else {
           this.playOnLoad = false
-          this.load(
-            // Nothing to play
-            `https://fanyi.sogou.com/reventondc/synthesis?text=Nothing%20to%20play&speed=1&lang=en&from=translateweb`
-          )
+          this.load(browser.runtime.getURL('assets/nothing-to-play.mp3'))
         }
       })
 
