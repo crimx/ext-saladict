@@ -2191,3 +2191,143 @@ rp {
   margin-right: 0.2em;
   vertical-align: text-bottom;
 }
+
+// New zdic detail layout.
+.sense-group {
+  line-height: 1.65;
+}
+
+.jbjs-reading__head,
+.xxjs-reading__head,
+.xxjs-reading-head {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35em 0.55em;
+  margin-bottom: 0.75em;
+}
+
+.jbjs-reading__char,
+.xxjs-reading__char,
+.xxjs-reading__word {
+  font-weight: bold;
+  font-size: 1.15em;
+}
+
+.jbjs-reading__py,
+.xxjs-reading__py {
+  color: #8f6652;
+  font-weight: bold;
+}
+
+.jbjs-reading__zy,
+.xxjs-reading__zy {
+  color: var(--color-font-grey);
+  font-size: 0.92em;
+}
+
+.jbjs-list,
+.xxjs-list,
+.xxjs-citation__list {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.jbjs-list,
+.xxjs-list {
+  padding-left: 1.4em;
+}
+
+.jbjs-item,
+.xxjs-item {
+  margin-bottom: 0.7em;
+}
+
+.xxjs-item--nonum {
+  list-style: none;
+}
+
+.xxjs-item__def {
+  margin-bottom: 0.25em;
+}
+
+.jbjs-item__def,
+.xxjs-item__def {
+  color: var(--color-font);
+}
+
+.jbjs-item__eg-label,
+.xxjs-block-label,
+.xxjs-pos-badge {
+  display: inline-block;
+  border: 1px solid var(--color-divider);
+  border-radius: 2px;
+  background: var(--color-surface);
+  color: var(--color-font-grey);
+  font-size: 0.82em;
+  line-height: 1.45;
+  padding: 0 0.35em;
+  margin-right: 0.35em;
+  vertical-align: 0.08em;
+}
+
+.jbjs-item__eg,
+.xxjs-also__text,
+.xxjs-english__text {
+  color: var(--color-font-grey);
+}
+
+.xxjs-pos-section + .xxjs-pos-section {
+  margin-top: 1em;
+}
+
+.xxjs-pos-badge {
+  border-color: #8f6652;
+  background: #8f6652;
+  color: #fff;
+  font-weight: bold;
+  margin-bottom: 0.45em;
+}
+
+.xxjs-citation,
+.xxjs-also,
+.xxjs-english {
+  margin-top: 0.35em;
+}
+
+.xxjs-citation {
+  border-left: 2px solid var(--color-divider);
+  padding-left: 0.7em;
+}
+
+.xxjs-citation__list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.xxjs-citation__item {
+  margin: 0.25em 0;
+  color: var(--color-font-grey);
+}
+
+.xxjs-citation__text {
+  color: var(--color-font);
+}
+
+.xxjs-citation__dash {
+  margin: 0 0.25em;
+  color: var(--color-font-grey);
+}
+
+.xxjs-citation__source {
+  color: var(--color-font-grey);
+  font-style: normal;
+}
+
+.xxjs-english__text {
+  font-family: Georgia, 'Times New Roman', serif;
+}
+
+.jbjs-quote {
+  color: #8f6652;
+}

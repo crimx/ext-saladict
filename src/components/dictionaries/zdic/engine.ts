@@ -23,6 +23,8 @@ export type ZdicResult = Array<{
 
 type ZdicSearchResult = DictSearchResult<ZdicResult>
 
+const RESULT_TITLE = /基本解释|词语解释|详细解释/
+
 export const search: SearchFunction<ZdicResult> = (
   text,
   config,
@@ -43,30 +45,52 @@ function handleDOM(
     result: []
   }
 
-  for (const $entry of doc.querySelectorAll<HTMLDivElement>(
-    '[data-type-block]'
+  for (const $entry of doc.querySelectorAll<HTMLElement>(
+    '[data-type-block], section.dict-section[data-section]'
   )) {
-    const title = $entry.dataset.typeBlock || ''
-    if (!/基本解释|词语解释|详细解释/.test(title)) {
+    const title = getEntryTitle($entry)
+    if (!RESULT_TITLE.test(title)) {
       continue
     }
 
-    for (const $a of $entry.querySelectorAll<HTMLAnchorElement>(
-      '[data-src-mp3]'
+    removePageActions($entry)
+
+    for (const $audio of $entry.querySelectorAll<HTMLElement>(
+      '[data-src-mp3], [data-audio]'
     )) {
+      const audio = getAudioSrc($audio)
       if (!response.audio) {
         response.audio = {
-          py: $a.dataset.srcMp3
+          py: audio
         }
       }
-      $a.replaceWith(getStaticSpeaker($a.dataset.srcMp3))
+      $audio.replaceWith(getStaticSpeaker(audio))
     }
 
     response.result.push({
       title,
-      content: getInnerHTML(HOST, $entry, '.content')
+      content: getInnerHTML(HOST, $entry, getContentSelector($entry))
     })
   }
 
   return response.result.length > 0 ? response : handleNoResult()
+}
+
+function getEntryTitle($entry: HTMLElement): string {
+  return $entry.dataset.typeBlock || $entry.dataset.section || ''
+}
+
+function getContentSelector($entry: HTMLElement): string {
+  return $entry.dataset.typeBlock ? '.content' : '.dict-section__body'
+}
+
+function getAudioSrc($audio: HTMLElement): string {
+  const src = $audio.dataset.srcMp3 || $audio.dataset.audio || ''
+  return src.split(',')[0].trim()
+}
+
+function removePageActions($entry: HTMLElement) {
+  $entry
+    .querySelectorAll('.dict-section__footer, .feedback-link, script')
+    .forEach($el => $el.remove())
 }
