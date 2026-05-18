@@ -47,11 +47,7 @@ export const DictAuths: FC = () => {
         ),
         help: isLast ? (
           <Trans message={t('dictAuth.dictHelp')}>
-            <a
-              href={url}
-              target="_blank"
-              rel="nofollow noopener noreferrer"
-            >
+            <a href={url} target="_blank" rel="nofollow noopener noreferrer">
               {title}
             </a>
           </Trans>

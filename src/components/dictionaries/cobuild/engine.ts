@@ -5,6 +5,7 @@ import {
   getInnerHTML,
   handleNoResult,
   handleNetWorkError,
+  handleManualVerification,
   SearchFunction,
   GetSrcPageFunction,
   externalLink,
@@ -52,7 +53,8 @@ export const search: SearchFunction<COBUILDResult> = async (
   profile,
   payload
 ) => {
-  text = encodeURIComponent(text.replace(/\s+/g, '-'))
+  const searchText = text
+  const encodedText = encodeURIComponent(text.replace(/\s+/g, '-'))
   const { options } = profile.dicts.all.cobuild
   const sources: string[] = [
     'https://www.collinsdictionary.com/dictionary/english/',
@@ -63,17 +65,41 @@ export const search: SearchFunction<COBUILDResult> = async (
     sources.reverse()
   }
 
+  const primaryUrl = sources[0] + encodedText
+  const secondaryUrl = sources[1] + encodedText
+
   try {
-    return handleDOM(await fetchDirtyDOM(sources[0] + text), config)
-  } catch (e) {
+    return handleDOM(
+      await fetchDirtyDOM(primaryUrl, { withCredentials: true }),
+      config
+    )
+  } catch (firstError) {
     let doc: Document
     try {
-      doc = await fetchDirtyDOM(sources[1] + text)
-    } catch (e) {
+      doc = await fetchDirtyDOM(secondaryUrl, {
+        withCredentials: true
+      })
+    } catch (secondError) {
+      const forbiddenUrl = isForbidden(firstError)
+        ? primaryUrl
+        : isForbidden(secondError)
+        ? secondaryUrl
+        : ''
+
+      if (forbiddenUrl) {
+        return handleManualVerification({
+          text: searchText,
+          url: forbiddenUrl
+        })
+      }
       return handleNetWorkError()
     }
     return handleDOM(doc, config)
   }
+}
+
+function isForbidden(e: any): boolean {
+  return e && e.response && e.response.status === 403
 }
 
 async function handleDOM(
