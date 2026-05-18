@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.22.3](https://github.com/crimx/ext-saladict/compare/v7.22.2...v7.22.3) (2026-05-18)
+
+
+### Bug Fixes
+
+* broken sogou ([d735dab](https://github.com/crimx/ext-saladict/commit/d735dabc41ea175e7e27ce5ea51e524714ef68ce))
+* implement network compatibility for Collins dictionary and enhance error handling ([96e6980](https://github.com/crimx/ext-saladict/commit/96e69802c7d2197a455c037b6e3648f41d8a6364))
+* update word of the day fetching logic to use RSS feeds ([6c06238](https://github.com/crimx/ext-saladict/commit/6c062389117de00bf33223e52781d44f57d57121))
+* update zdic ([4ec70b4](https://github.com/crimx/ext-saladict/commit/4ec70b46437a8b4aead6286a75de6c61d889897d)), closes [#2329](https://github.com/crimx/ext-saladict/issues/2329)
+
 ### [7.22.2](https://github.com/crimx/ext-saladict/compare/v7.22.1...v7.22.2) (2026-05-17)
 
 
