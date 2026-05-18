@@ -59,8 +59,10 @@ describe('Dict/Cambridge/network', () => {
   })
 
   it('should append cf_clearance cookie when available in MV2', async () => {
+    browser.cookies.getAll.callsFake(() => Promise.resolve([]))
     browser.cookies.get.callsFake(() =>
       Promise.resolve({
+        name: 'cf_clearance',
         value: 'clearance-token'
       })
     )
@@ -90,14 +92,21 @@ describe('Dict/Cambridge/network', () => {
     })
   })
 
-  it('should read partitioned cf_clearance cookie in MV2', async () => {
-    browser.cookies.get.callsFake(options =>
+  it('should read partitioned cookies in MV2', async () => {
+    browser.cookies.getAll.callsFake(options =>
       Promise.resolve(
         options.partitionKey
-          ? {
-              value: 'partitioned-clearance-token'
-            }
-          : null
+          ? [
+              {
+                name: 'cf_clearance',
+                value: 'partitioned-clearance-token'
+              },
+              {
+                name: 'cf_chl_rc_ni',
+                value: '1'
+              }
+            ]
+          : []
       )
     )
 
@@ -107,9 +116,8 @@ describe('Dict/Cambridge/network', () => {
 
     await ensureNetworkCompatibility()
 
-    expect(browser.cookies.get.secondCall.args[0]).toEqual({
+    expect(browser.cookies.getAll.thirdCall.args[0]).toEqual({
       url: 'https://dictionary.cambridge.org',
-      name: 'cf_clearance',
       partitionKey: {
         topLevelSite: 'https://cambridge.org'
       }
@@ -128,16 +136,75 @@ describe('Dict/Cambridge/network', () => {
         { name: 'Referer', value: 'https://dictionary.cambridge.org' },
         {
           name: 'Cookie',
-          value: 'cf_clearance=partitioned-clearance-token'
+          value: 'cf_clearance=partitioned-clearance-token; cf_chl_rc_ni=1'
         }
       ]
     })
   })
 
-  it('should install MV3 header session rule once', async () => {
+  it('should replace stale cookies with partitioned cookies in MV2', async () => {
+    browser.cookies.getAll.callsFake(options =>
+      Promise.resolve(
+        options.partitionKey
+          ? [
+              {
+                name: 'cf_clearance',
+                value: 'fresh-clearance-token'
+              },
+              {
+                name: 'cf_chl_rc_ni',
+                value: '1'
+              }
+            ]
+          : [
+              {
+                name: 'XSRF-TOKEN',
+                value: 'xsrf-token'
+              },
+              {
+                name: 'cf_clearance',
+                value: 'stale-clearance-token'
+              }
+            ]
+      )
+    )
+
+    const {
+      ensureNetworkCompatibility
+    } = require('@/components/dictionaries/cambridge/network')
+
+    await ensureNetworkCompatibility()
+
+    const [
+      listener
+    ] = browser.webRequest.onBeforeSendHeaders.addListener.firstCall.args
+
+    expect(
+      listener({
+        requestHeaders: [
+          {
+            name: 'Cookie',
+            value: 'XSRF-TOKEN=xsrf-token; cf_clearance=stale-clearance-token'
+          }
+        ]
+      })
+    ).toEqual({
+      requestHeaders: [
+        {
+          name: 'Cookie',
+          value:
+            'XSRF-TOKEN=xsrf-token; cf_clearance=fresh-clearance-token; cf_chl_rc_ni=1'
+        },
+        { name: 'Referer', value: 'https://dictionary.cambridge.org' }
+      ]
+    })
+  })
+
+  it('should install MV3 header session rule once for unchanged cookies', async () => {
     browser.runtime.getManifest.callsFake(() => ({
       manifest_version: 3
     }))
+    browser.cookies.getAll.callsFake(() => Promise.resolve([]))
 
     const updateSessionRules = jest.fn(() => Promise.resolve())
     ;(self as any).chrome = {
@@ -203,14 +270,22 @@ describe('Dict/Cambridge/network', () => {
     expect(updateSessionRules).toHaveBeenCalledTimes(2)
   })
 
-  it('should append cf_clearance cookie when available in MV3', async () => {
+  it('should refresh MV3 header session rule when partitioned cookies change', async () => {
     browser.runtime.getManifest.callsFake(() => ({
       manifest_version: 3
     }))
-    browser.cookies.get.callsFake(() =>
-      Promise.resolve({
-        value: 'clearance-token'
-      })
+    let token = 'clearance-token'
+    browser.cookies.getAll.callsFake(options =>
+      Promise.resolve(
+        options.partitionKey
+          ? [
+              {
+                name: 'cf_clearance',
+                value: token
+              }
+            ]
+          : []
+      )
     )
 
     const updateSessionRules = jest.fn(() => Promise.resolve())
@@ -225,8 +300,11 @@ describe('Dict/Cambridge/network', () => {
     } = require('@/components/dictionaries/cambridge/network')
 
     await ensureNetworkCompatibility()
+    token = 'next-clearance-token'
+    await ensureNetworkCompatibility()
 
-    expect(updateSessionRules).toHaveBeenCalledWith({
+    expect(updateSessionRules).toHaveBeenCalledTimes(2)
+    expect(updateSessionRules).toHaveBeenLastCalledWith({
       removeRuleIds: [32002],
       addRules: [
         expect.objectContaining({
@@ -240,8 +318,8 @@ describe('Dict/Cambridge/network', () => {
               },
               {
                 header: 'cookie',
-                operation: 'append',
-                value: 'cf_clearance=clearance-token'
+                operation: 'set',
+                value: 'cf_clearance=next-clearance-token'
               }
             ]
           }
@@ -250,17 +328,24 @@ describe('Dict/Cambridge/network', () => {
     })
   })
 
-  it('should read partitioned cf_clearance cookie in MV3', async () => {
+  it('should read partitioned cookies in MV3', async () => {
     browser.runtime.getManifest.callsFake(() => ({
       manifest_version: 3
     }))
-    browser.cookies.get.callsFake(options =>
+    browser.cookies.getAll.callsFake(options =>
       Promise.resolve(
         options.partitionKey
-          ? {
-              value: 'partitioned-clearance-token'
-            }
-          : null
+          ? [
+              {
+                name: 'cf_clearance',
+                value: 'partitioned-clearance-token'
+              },
+              {
+                name: 'cf_chl_rc_ni',
+                value: '1'
+              }
+            ]
+          : []
       )
     )
 
@@ -277,9 +362,8 @@ describe('Dict/Cambridge/network', () => {
 
     await ensureNetworkCompatibility()
 
-    expect(browser.cookies.get.secondCall.args[0]).toEqual({
+    expect(browser.cookies.getAll.thirdCall.args[0]).toEqual({
       url: 'https://dictionary.cambridge.org',
-      name: 'cf_clearance',
       partitionKey: {
         topLevelSite: 'https://cambridge.org'
       }
@@ -298,8 +382,8 @@ describe('Dict/Cambridge/network', () => {
               },
               {
                 header: 'cookie',
-                operation: 'append',
-                value: 'cf_clearance=partitioned-clearance-token'
+                operation: 'set',
+                value: 'cf_clearance=partitioned-clearance-token; cf_chl_rc_ni=1'
               }
             ]
           }
