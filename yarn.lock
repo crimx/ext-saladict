@@ -1887,17 +1887,6 @@
   resolved "https://registry.yarnpkg.com/@opentranslate/languages/-/languages-1.4.1.tgz#83c3c99ee5b257f64a7dfc263a204f1c58fe6556"
   integrity sha512-PWGqlTtt5ygsw0Zh0+2/UbwvIlk3xgbI90F914vhT0Th9h71xn0g4zOvqB9HkLJog4X7fTSawhzHmpduHynEFA==
 
-"@opentranslate/sogou@^1.4.0":
-  version "1.4.1"
-  resolved "https://registry.yarnpkg.com/@opentranslate/sogou/-/sogou-1.4.1.tgz#9efa2c40f6cad6204caf7aceae55d36db8822583"
-  integrity sha512-+mHr1TUj454qhZEAhpsEKUOoJ/qdwy0qhWaLKDZVw+XSAnpYU5/P2CfdW5HgXwH8uJpETtB2cOnoVAIvIEFanw==
-  dependencies:
-    "@opentranslate/translator" "^1.4.1"
-    "@types/md5" "^2.1.33"
-    "@types/qs" "^6.5.3"
-    md5 "^2.2.1"
-    qs "^6.8.0"
-
 "@opentranslate/tencent@^1.4.0":
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@opentranslate/tencent/-/tencent-1.4.1.tgz#13cfbde1a7f9bdc0595af34e2ad8fd650ee540a3"

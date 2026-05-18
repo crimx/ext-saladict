@@ -165,7 +165,11 @@ export function mergeConfig(
         mergeSelectedContextMenus('contextMenus')
         break
       case 'dictAuth':
-        merge('dictAuth', Boolean)
+        forEach(base.dictAuth, (auth, dictID) => {
+          forEach(auth, (_value, authKey) => {
+            mergeString(`dictAuth.${dictID}.${authKey}`)
+          })
+        })
         break
       default:
         switch (typeof base[key]) {

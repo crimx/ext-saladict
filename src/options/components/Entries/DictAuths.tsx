@@ -8,6 +8,7 @@ import {
 } from '@/options/components/SaladictForm'
 import { useTranslate, Trans } from '@/_helpers/i18n'
 import { objectKeys } from '@/typings/helpers'
+import { defaultDictAuthUrls } from '@/app-config/auth'
 
 export const DictAuths: FC = () => {
   const { t } = useTranslate(['options', 'dicts'])
@@ -26,6 +27,10 @@ export const DictAuths: FC = () => {
   ]
 
   objectKeys(dictAuths).forEach(dictID => {
+    const url = defaultDictAuthUrls[dictID]
+
+    if (!url) return
+
     const auth = dictAuths[dictID]!
     const configPath = getConfigPath('dictAuth', dictID)
     const title = t(`dicts:${dictID}.name`)
@@ -43,7 +48,7 @@ export const DictAuths: FC = () => {
         help: isLast ? (
           <Trans message={t('dictAuth.dictHelp')}>
             <a
-              href={require(`@/components/dictionaries/${dictID}/auth.ts`).url}
+              href={url}
               target="_blank"
               rel="nofollow noopener noreferrer"
             >
