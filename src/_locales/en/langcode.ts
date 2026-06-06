@@ -3,7 +3,7 @@ import { locale as _locale } from '../zh-CN/langcode'
 
 export const locale: typeof _locale = {
   ...en,
-  default: 'Default',
+  default: 'Follow extension language',
   ne_NP: 'Nepali',
   ara: 'Arabic',
   'bs-Latn': 'Bosnian',

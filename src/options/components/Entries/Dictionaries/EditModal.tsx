@@ -160,9 +160,14 @@ export const EditModal: FC<EditModalProps> = ({ dictID, onClose }) => {
                   .getTranslator
 
                 const langs = getTranslator
-                  ? getTranslator()
-                      .getSupportLanguages()
-                      .map(lang => (lang === 'auto' ? 'default' : lang))
+                  ? Array.from(
+                      new Set([
+                        ...allDicts[dictID]['options_sel'][optKey],
+                        ...getTranslator()
+                          .getSupportLanguages()
+                          .map(lang => (lang === 'auto' ? 'default' : lang))
+                      ])
+                    )
                   : allDicts[dictID]['options_sel'][optKey]
 
                 item.children = (

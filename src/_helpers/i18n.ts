@@ -112,13 +112,15 @@ export async function i18nLoader(): Promise<i18n.i18n> {
 }
 
 async function loadBasicLocale(lang: LangCode, ns: Namespace) {
-  const { locale } = await import(
-    /* webpackInclude: /_locales\/[^/]+\/[^/]+\.ts$/ */
-    /* webpackMode: "lazy" */
-    `@/_locales/${lang}/${ns}.ts`
-  )
-  return locale
+  const localeModule = basicLocaleReq(`./${lang}/${ns}.ts`)
+  return localeModule.locale || localeModule
 }
+
+const basicLocaleReq = require.context(
+  '@/_locales',
+  true,
+  /\/(common|content|langcode|menus|options|popup|wordpage)\.ts$/
+)
 
 const defaultT: i18n.TFunction = () => ''
 

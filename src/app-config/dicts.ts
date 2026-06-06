@@ -1,5 +1,6 @@
 import { SupportedLangs } from '@/_helpers/lang-check'
 
+import alibaba from '@/components/dictionaries/alibaba/config'
 import baidu from '@/components/dictionaries/baidu/config'
 import bing from '@/components/dictionaries/bing/config'
 import ahdict from '@/components/dictionaries/ahdict/config'
@@ -16,10 +17,12 @@ import liangan from '@/components/dictionaries/liangan/config'
 import longman from '@/components/dictionaries/longman/config'
 import mojidict from '@/components/dictionaries/mojidict/config'
 import naver from '@/components/dictionaries/naver/config'
+import niutrans from '@/components/dictionaries/niutrans/config'
 import renren from '@/components/dictionaries/renren/config'
 // import shanbay from '@/components/dictionaries/shanbay/config'
 import tencent from '@/components/dictionaries/tencent/config'
 import urban from '@/components/dictionaries/urban/config'
+import volc from '@/components/dictionaries/volc/config'
 import vocabulary from '@/components/dictionaries/vocabulary/config'
 import weblio from '@/components/dictionaries/weblio/config'
 import weblioejje from '@/components/dictionaries/weblioejje/config'
@@ -32,6 +35,7 @@ import zdic from '@/components/dictionaries/zdic/config'
 // For TypeScript to generate typings
 // Follow alphabetical order for easy reading
 export const defaultAllDicts = {
+  alibaba: alibaba(),
   baidu: baidu(),
   bing: bing(),
   ahdict: ahdict(),
@@ -48,10 +52,12 @@ export const defaultAllDicts = {
   longman: longman(),
   mojidict: mojidict(),
   naver: naver(),
+  niutrans: niutrans(),
   renren: renren(),
   // shanbay: shanbay(),
   tencent: tencent(),
   urban: urban(),
+  volc: volc(),
   vocabulary: vocabulary(),
   weblio: weblio(),
   weblioejje: weblioejje(),

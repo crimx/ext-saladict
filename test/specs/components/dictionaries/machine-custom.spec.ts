@@ -1,7 +1,12 @@
 const nodeCrypto = require('crypto')
+const { TextEncoder } = require('util')
 
 Object.defineProperty(globalThis, 'crypto', {
   value: nodeCrypto.webcrypto,
+  configurable: true
+})
+Object.defineProperty(globalThis, 'TextEncoder', {
+  value: TextEncoder,
   configurable: true
 })
 

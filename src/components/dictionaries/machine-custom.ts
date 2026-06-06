@@ -1,3 +1,4 @@
+import { DictID } from '@/app-config'
 import { Language } from '@opentranslate/languages'
 import {
   isContainChinese,
@@ -85,10 +86,10 @@ export function normalizeMachineLanguage(lang: string): string {
   }
 }
 
-export function credentialRequiredResult(
-  id: string,
+export function credentialRequiredResult<ID extends DictID>(
+  id: ID,
   langcodes: ReadonlyArray<string>
-): DictSearchResult<MachineTranslateResult<any>> {
+): DictSearchResult<MachineTranslateResult<ID>> {
   return machineResult(
     {
       result: {
@@ -105,12 +106,12 @@ export function credentialRequiredResult(
   )
 }
 
-export function emptyMachineResult(
-  id: string,
+export function emptyMachineResult<ID extends DictID>(
+  id: ID,
   sl: string,
   tl: string,
   langcodes: ReadonlyArray<string>
-): DictSearchResult<MachineTranslateResult<any>> {
+): DictSearchResult<MachineTranslateResult<ID>> {
   return machineResult(
     {
       result: {
@@ -126,7 +127,7 @@ export function emptyMachineResult(
   )
 }
 
-export function successMachineResult({
+export function successMachineResult<ID extends DictID>({
   id,
   sl,
   tl,
@@ -135,14 +136,14 @@ export function successMachineResult({
   translatedText,
   langcodes
 }: {
-  id: string
+  id: ID
   sl: string
   tl: string
-  slInitial: MachineTranslateResult<any>['slInitial']
+  slInitial: MachineTranslateResult<ID>['slInitial']
   sourceText: string
   translatedText: string
   langcodes: ReadonlyArray<string>
-}): DictSearchResult<MachineTranslateResult<any>> {
+}): DictSearchResult<MachineTranslateResult<ID>> {
   return machineResult(
     {
       result: {
