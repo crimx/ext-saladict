@@ -83,7 +83,9 @@ export async function buildAlibabaSignedUrl(
   )}`
 }
 
-export function parseAlibabaTranslatedText(data: any): {
+export function parseAlibabaTranslatedText(
+  data: any
+): {
   translatedText: string
   detectedLanguage?: string
 } {

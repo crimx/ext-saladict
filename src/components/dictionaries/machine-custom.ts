@@ -37,16 +37,25 @@ export interface LocalLanguageHelper<Lang extends Language = Language> {
 export function createLanguageHelper<Lang extends Language>(
   langs: ReadonlyArray<Lang>
 ): LocalLanguageHelper<Lang> {
-  const supported = Array.from(new Set<Lang | 'auto'>(['auto', ...langs]))
+  const supported = Array.from(
+    new Set<Lang | 'auto'>(['auto', ...langs])
+  )
   return {
     detect(text: string): Lang | 'auto' {
       const detected = detectLocalLanguage(text)
-      return supported.includes(detected as Lang | 'auto') ? detected : 'auto'
+      return isSupportedLanguage(detected, supported) ? detected : 'auto'
     },
     getSupportLanguages(): Array<Lang | 'auto'> {
       return supported.slice()
     }
   }
+}
+
+function isSupportedLanguage<Lang extends Language>(
+  lang: Language | 'auto',
+  supported: ReadonlyArray<Lang | 'auto'>
+): lang is Lang | 'auto' {
+  return supported.includes(lang as Lang | 'auto')
 }
 
 export function detectLocalLanguage(
@@ -165,8 +174,13 @@ export function splitParagraphs(text: string): string[] {
 }
 
 export function percentEncodeRFC3986(value: string): string {
-  return encodeURIComponent(value).replace(/[!'()*]/g, char =>
-    `%${char.charCodeAt(0).toString(16).toUpperCase()}`
+  return encodeURIComponent(value).replace(
+    /[!'()*]/g,
+    char =>
+      `%${char
+        .charCodeAt(0)
+        .toString(16)
+        .toUpperCase()}`
   )
 }
 
@@ -174,8 +188,7 @@ export function encodeSortedQuery(params: Record<string, string>): string {
   return Object.keys(params)
     .sort()
     .map(
-      key =>
-        `${percentEncodeRFC3986(key)}=${percentEncodeRFC3986(params[key])}`
+      key => `${percentEncodeRFC3986(key)}=${percentEncodeRFC3986(params[key])}`
     )
     .join('&')
 }

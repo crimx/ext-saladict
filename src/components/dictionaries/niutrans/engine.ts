@@ -54,7 +54,9 @@ export function buildNiuTransPayload(input: {
   return params.toString()
 }
 
-export function parseNiuTransTranslatedText(data: any): {
+export function parseNiuTransTranslatedText(
+  data: any
+): {
   translatedText: string
   detectedLanguage?: string
 } {
@@ -65,7 +67,8 @@ export function parseNiuTransTranslatedText(data: any): {
       data?.translation ||
       data?.translated ||
       '',
-    detectedLanguage: data?.from || data?.sourceLanguage || data?.detectedLanguage
+    detectedLanguage:
+      data?.from || data?.sourceLanguage || data?.detectedLanguage
   }
 }
 

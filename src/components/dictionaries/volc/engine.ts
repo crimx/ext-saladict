@@ -116,7 +116,9 @@ export async function buildVolcSignedRequest(
   }
 }
 
-export function parseVolcTranslatedText(data: any): {
+export function parseVolcTranslatedText(
+  data: any
+): {
   translatedText: string
   detectedLanguage?: string
 } {
