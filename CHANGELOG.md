@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.22.4](https://github.com/crimx/ext-saladict/compare/v7.22.3...v7.22.4) (2026-06-07)
+
+
+### Features
+
+* **dicts:** add alibaba, niutrans, volc ([#2337](https://github.com/crimx/ext-saladict/issues/2337)) ([764521b](https://github.com/crimx/ext-saladict/commit/764521bae30cf76cbac42aeaaf2e6d8017963508))
+
+
+### Bug Fixes
+
+* **dicts:** update volcengine src page ([1dbee34](https://github.com/crimx/ext-saladict/commit/1dbee349ca97edc7e88c619a593b8abad4ffd08e))
+* add normalization for dictionary authentication values ([3c05c43](https://github.com/crimx/ext-saladict/commit/3c05c43c5d0e5b9129d8cfcad4661a29e4a92717))
+* lint ([f279f7c](https://github.com/crimx/ext-saladict/commit/f279f7cfa64b38ec7cccb2b6c8cdd4f32b6a0b82))
+
 ### [7.22.3](https://github.com/crimx/ext-saladict/compare/v7.22.2...v7.22.3) (2026-05-18)
 
 
