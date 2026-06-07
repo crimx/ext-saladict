@@ -379,7 +379,9 @@ export const locale: typeof _locale = {
       naver: 'for helping add Naver dict',
       shanbay: 'for adding Shanbay dict',
       trans_tw: 'for traditional Chinese translation',
-      weblio: 'for helping add Weblio dict'
+      weblio: 'for helping add Weblio dict',
+      machine_translators:
+        'for implementing Alibaba Translate, Niutrans and Volcengine Translate'
     },
     contact_author: 'Contact Author',
     donate: 'Donate',

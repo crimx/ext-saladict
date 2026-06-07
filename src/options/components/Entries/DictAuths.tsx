@@ -10,6 +10,9 @@ import { useTranslate, Trans } from '@/_helpers/i18n'
 import { objectKeys } from '@/typings/helpers'
 import { defaultDictAuthUrls } from '@/app-config/auth'
 
+const trimAuthValue = (value: unknown) =>
+  typeof value === 'string' ? value.trim() : value
+
 export const DictAuths: FC = () => {
   const { t } = useTranslate(['options', 'dicts'])
   const dictAuths = useSelector(state => state.config.dictAuth)
@@ -39,6 +42,7 @@ export const DictAuths: FC = () => {
       const isLast = i + 1 === keys.length
       formItems.push({
         name: configPath + '.' + key,
+        normalize: trimAuthValue,
         label: (
           <span>
             {i === 0 ? title + ' ' : ''}

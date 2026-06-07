@@ -34,6 +34,11 @@ export const acknowledgement: Acknowledgement = [
     name: 'stockyman',
     href: 'https://github.com/stockyman',
     locale: 'trans_tw'
+  },
+  {
+    name: 'shadowxhero',
+    href: 'https://github.com/crimx/ext-saladict/commits?author=shadowxhero',
+    locale: 'machine_translators'
   }
 ]
 

@@ -1,11 +1,10 @@
 import React, { FC, useState, useLayoutEffect } from 'react'
-import { Tooltip, Row, Col } from 'antd'
+import { Tooltip, Row, Col, Modal } from 'antd'
 import { BlockOutlined } from '@ant-design/icons'
 import { DictID } from '@/app-config'
 import { useTranslate } from '@/_helpers/i18n'
 import { useSelector } from '@/content/redux'
 import { SortableList, reorder } from '@/options/components/SortableList'
-import { SaladictModalForm } from '@/options/components/SaladictModalForm'
 import { getProfilePath } from '@/options/helpers/path-joiner'
 import { useListLayout } from '@/options/helpers/layout'
 import { useUpload } from '@/options/helpers/upload'
@@ -71,21 +70,24 @@ export const Dictionaries: FC = () => {
           }}
         />
       </Col>
-      <SaladictModalForm
+      <Modal
         visible={showAddModal}
         title={t('dict.add')}
-        onClose={() => setShowAddModal(false)}
-        wrapperCol={{ span: 24 }}
-        items={[
-          {
-            name: getProfilePath('dicts', 'selected'),
-            label: null,
-            help: null,
-            extra: null,
-            children: <AllDicts />
-          }
-        ]}
-      />
+        width={600}
+        footer={null}
+        destroyOnClose
+        onCancel={() => setShowAddModal(false)}
+      >
+        <AllDicts
+          value={[...selectedDicts]}
+          onChange={newList => {
+            upload({
+              [getProfilePath('dicts', 'selected')]: newList
+            })
+            setSelectedDicts(newList)
+          }}
+        />
+      </Modal>
       <EditModal dictID={editingDict} onClose={() => setEditingDict(null)} />
     </Row>
   )

@@ -35,10 +35,13 @@ import {
 } from './pdf-sniffer'
 
 const mv3BackgroundPreferredDicts = new Set<DictID>([
+  'alibaba',
   'baidu',
   'caiyun',
   'google',
+  'niutrans',
   'tencent',
+  'volc',
   'youdaotrans'
 ])
 
