@@ -110,4 +110,35 @@ describe('Dict/Alibaba/engine', () => {
 
     mock.restore()
   })
+
+  it('uses Alibaba auto source detection by default', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    let requestUrl = ''
+    mock.onGet(new RegExp('^https://mt.aliyuncs.com/')).reply(request => {
+      requestUrl = request.url || ''
+      return [
+        200,
+        {
+          Data: {
+            Translated: '你好',
+            DetectedLanguage: 'en'
+          }
+        }
+      ]
+    })
+
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config as any).dictAuth.alibaba.accessKeyId = 'testid'
+    ;(config as any).dictAuth.alibaba.accessKeySecret = 'testsecret'
+
+    await search('hello', config, profile, {
+      isPDF: false,
+      tl: 'zh-CN'
+    })
+
+    expect(requestUrl).toContain('SourceLanguage=auto')
+
+    mock.restore()
+  })
 })

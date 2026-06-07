@@ -119,6 +119,7 @@ export const search: SearchFunction<
     config,
     payload
   )
+  const sourceLanguage = payload.sl || 'auto'
 
   const auth = (config.dictAuth as any).alibaba || {}
   const accessKeyId = auth.accessKeyId
@@ -132,7 +133,7 @@ export const search: SearchFunction<
       accessKeyId,
       accessKeySecret,
       sourceText: text,
-      sourceLanguage: sl,
+      sourceLanguage,
       targetLanguage: tl
     })
     const response = await axios.get(url)
@@ -142,7 +143,7 @@ export const search: SearchFunction<
     }
     return successMachineResult({
       id: 'alibaba',
-      sl: normalizeMachineLanguage(parsed.detectedLanguage || sl),
+      sl: normalizeMachineLanguage(parsed.detectedLanguage || sourceLanguage),
       tl,
       slInitial: (profile.dicts.all as any).alibaba.options.slInitial,
       sourceText: text,

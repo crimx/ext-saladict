@@ -82,6 +82,7 @@ export const search: SearchFunction<
     config,
     payload
   )
+  const sourceLanguage = payload.sl || 'auto'
 
   const auth = (config.dictAuth as any).niutrans || {}
   const apikey = auth.apikey
@@ -95,7 +96,7 @@ export const search: SearchFunction<
       buildNiuTransPayload({
         apikey,
         sourceText: text,
-        sourceLanguage: sl,
+        sourceLanguage,
         targetLanguage: tl
       }),
       {
@@ -110,7 +111,7 @@ export const search: SearchFunction<
     }
     return successMachineResult({
       id: 'niutrans',
-      sl: normalizeMachineLanguage(parsed.detectedLanguage || sl),
+      sl: normalizeMachineLanguage(parsed.detectedLanguage || sourceLanguage),
       tl,
       slInitial: (profile.dicts.all as any).niutrans.options.slInitial,
       sourceText: text,

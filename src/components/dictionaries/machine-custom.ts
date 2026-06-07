@@ -30,20 +30,20 @@ export const commonMachineLanguages = [
 export type CommonMachineLanguage = typeof commonMachineLanguages[number]
 
 export interface LocalLanguageHelper<Lang extends Language = Language> {
-  detect(text: string): Lang
-  getSupportLanguages(): Lang[]
+  detect(text: string): Lang | 'auto'
+  getSupportLanguages(): Array<Lang | 'auto'>
 }
 
 export function createLanguageHelper<Lang extends Language>(
   langs: ReadonlyArray<Lang>
 ): LocalLanguageHelper<Lang> {
-  const supported = langs.slice()
+  const supported = Array.from(new Set<Lang | 'auto'>(['auto', ...langs]))
   return {
-    detect(text: string): Lang {
+    detect(text: string): Lang | 'auto' {
       const detected = detectLocalLanguage(text)
-      return (supported.includes(detected as Lang) ? detected : 'auto') as Lang
+      return supported.includes(detected as Lang | 'auto') ? detected : 'auto'
     },
-    getSupportLanguages(): Lang[] {
+    getSupportLanguages(): Array<Lang | 'auto'> {
       return supported.slice()
     }
   }

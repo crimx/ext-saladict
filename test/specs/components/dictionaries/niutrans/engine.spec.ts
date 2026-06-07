@@ -30,7 +30,9 @@ describe('Dict/NiuTrans/engine', () => {
   })
 
   it('parses common NiuTrans response shapes', () => {
-    expect(parseNiuTransTranslatedText({ tgt_text: '你好', from: 'en' })).toEqual({
+    expect(
+      parseNiuTransTranslatedText({ tgt_text: '你好', from: 'en' })
+    ).toEqual({
       translatedText: '你好',
       detectedLanguage: 'en'
     })
@@ -52,9 +54,16 @@ describe('Dict/NiuTrans/engine', () => {
 
   it('translates through NiuTrans when credentials exist', async () => {
     const mock = new AxiosMockAdapter(axios)
-    mock.onPost(NIUTRANS_ENDPOINT).reply(200, {
-      tgt_text: '你好',
-      from: 'en'
+    let requestBody = ''
+    mock.onPost(NIUTRANS_ENDPOINT).reply(request => {
+      requestBody = request.data
+      return [
+        200,
+        {
+          tgt_text: '你好',
+          from: 'en'
+        }
+      ]
     })
 
     const config = getDefaultConfig()
@@ -71,6 +80,35 @@ describe('Dict/NiuTrans/engine', () => {
     expect(result.result.sl).toBe('en')
     expect(result.result.tl).toBe('zh-CN')
     expect(result.result.trans.paragraphs).toEqual(['你好'])
+    expect(requestBody).toContain('from=en')
+
+    mock.restore()
+  })
+
+  it('uses NiuTrans auto source detection by default', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    let requestBody = ''
+    mock.onPost(NIUTRANS_ENDPOINT).reply(request => {
+      requestBody = request.data
+      return [
+        200,
+        {
+          tgt_text: '你好',
+          from: 'en'
+        }
+      ]
+    })
+
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config as any).dictAuth.niutrans.apikey = 'key'
+
+    await search('hello', config, profile, {
+      isPDF: false,
+      tl: 'zh-CN'
+    })
+
+    expect(requestBody).toContain('from=auto')
 
     mock.restore()
   })

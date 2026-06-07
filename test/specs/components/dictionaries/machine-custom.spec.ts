@@ -37,9 +37,21 @@ describe('Dict/MachineCustom', () => {
     ])
   })
 
-  it('detects local languages from text', () => {
+  it('supports auto source language and detects local languages from text', () => {
     const helper = createLanguageHelper(commonMachineLanguages)
 
+    expect(helper.getSupportLanguages()).toEqual([
+      'auto',
+      'zh-CN',
+      'zh-TW',
+      'en',
+      'ja',
+      'ko',
+      'fr',
+      'de',
+      'es',
+      'ru'
+    ])
     expect(helper.detect('hello world')).toBe('en')
     expect(helper.detect('中文')).toBe('zh-CN')
     expect(helper.detect('かな')).toBe('ja')

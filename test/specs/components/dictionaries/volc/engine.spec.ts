@@ -122,13 +122,20 @@ describe('Dict/Volc/engine', () => {
 
   it('translates through Volcengine when credentials exist', async () => {
     const mock = new AxiosMockAdapter(axios)
+    let requestBody = ''
     mock
       .onPost(`${VOLC_ENDPOINT}?Action=TranslateText&Version=2020-06-01`)
-      .reply(200, {
-        TranslationList: [
+      .reply(request => {
+        requestBody = request.data
+        return [
+          200,
           {
-            Translation: '你好',
-            DetectedSourceLanguage: 'en'
+            TranslationList: [
+              {
+                Translation: '你好',
+                DetectedSourceLanguage: 'en'
+              }
+            ]
           }
         ]
       })
@@ -148,6 +155,42 @@ describe('Dict/Volc/engine', () => {
     expect(result.result.sl).toBe('en')
     expect(result.result.tl).toBe('zh-CN')
     expect(result.result.trans.paragraphs).toEqual(['你好'])
+    expect(requestBody).toContain('"SourceLanguage":"en"')
+
+    mock.restore()
+  })
+
+  it('uses Volcengine auto source detection by default', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    let requestBody = ''
+    mock
+      .onPost(`${VOLC_ENDPOINT}?Action=TranslateText&Version=2020-06-01`)
+      .reply(request => {
+        requestBody = request.data
+        return [
+          200,
+          {
+            TranslationList: [
+              {
+                Translation: '你好',
+                DetectedSourceLanguage: 'en'
+              }
+            ]
+          }
+        ]
+      })
+
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config as any).dictAuth.volc.accessKeyId = 'ak'
+    ;(config as any).dictAuth.volc.secretAccessKey = 'sk'
+
+    await search('hello', config, profile, {
+      isPDF: false,
+      tl: 'zh-CN'
+    })
+
+    expect(requestBody).not.toContain('SourceLanguage')
 
     mock.restore()
   })

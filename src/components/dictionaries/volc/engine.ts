@@ -180,6 +180,7 @@ export const search: SearchFunction<
     config,
     payload
   )
+  const sourceLanguage = payload.sl || 'auto'
 
   const auth = (config.dictAuth as any).volc || {}
   const accessKeyId = auth.accessKeyId
@@ -193,7 +194,7 @@ export const search: SearchFunction<
       accessKeyId,
       secretAccessKey,
       sourceText: text,
-      sourceLanguage: sl,
+      sourceLanguage,
       targetLanguage: tl
     })
     const response = await axios.post(request.url, request.body, {
@@ -205,7 +206,7 @@ export const search: SearchFunction<
     }
     return successMachineResult({
       id: 'volc',
-      sl: normalizeMachineLanguage(parsed.detectedLanguage || sl),
+      sl: normalizeMachineLanguage(parsed.detectedLanguage || sourceLanguage),
       tl,
       slInitial: (profile.dicts.all as any).volc.options.slInitial,
       sourceText: text,
