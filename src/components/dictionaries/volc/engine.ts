@@ -32,7 +32,7 @@ export const getTranslator = memoizeOne(() =>
 )
 
 export const getSrcPage: GetSrcPageFunction = () =>
-  'https://translate.volcengine.com/'
+  'https://www.volcengine.com/product/machine-translation'
 
 export type VolcResult = MachineTranslateResult<any>
 
