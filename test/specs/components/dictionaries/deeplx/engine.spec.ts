@@ -13,8 +13,8 @@ import {
 describe('deeplx translator', () => {
   it('maps Saladict language codes to DeepLX language codes', () => {
     expect(mapDeepLXLanguage('auto')).toBe('auto')
-    expect(mapDeepLXLanguage('zh-CN')).toBe('ZH')
-    expect(mapDeepLXLanguage('zh-TW')).toBe('ZH')
+    expect(mapDeepLXLanguage('zh-CN')).toBe('ZH-HANS')
+    expect(mapDeepLXLanguage('zh-TW')).toBe('ZH-HANT')
     expect(mapDeepLXLanguage('en')).toBe('EN')
     expect(mapDeepLXLanguage('ja')).toBe('JA')
   })
@@ -59,7 +59,7 @@ describe('deeplx translator', () => {
     ).toEqual({
       text: 'hello',
       source_lang: 'EN',
-      target_lang: 'ZH'
+      target_lang: 'ZH-HANS'
     })
   })
 

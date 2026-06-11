@@ -30,8 +30,9 @@ export type DeepLXResult = MachineTranslateResult<any>
 export function mapDeepLXLanguage(lang: string): string {
   switch (lang) {
     case 'zh-CN':
+      return 'ZH-HANS'
     case 'zh-TW':
-      return 'ZH'
+      return 'ZH-HANT'
     case 'auto':
       return 'auto'
     default:
