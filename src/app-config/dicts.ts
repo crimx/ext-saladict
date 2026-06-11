@@ -8,6 +8,8 @@ import oaldict from '@/components/dictionaries/oaldict/config'
 import caiyun from '@/components/dictionaries/caiyun/config'
 import cambridge from '@/components/dictionaries/cambridge/config'
 import cobuild from '@/components/dictionaries/cobuild/config'
+import deepl from '@/components/dictionaries/deepl/config'
+import deeplx from '@/components/dictionaries/deeplx/config'
 import etymonline from '@/components/dictionaries/etymonline/config'
 import eudic from '@/components/dictionaries/eudic/config'
 import google from '@/components/dictionaries/google/config'
@@ -43,6 +45,8 @@ export const defaultAllDicts = {
   caiyun: caiyun(),
   cambridge: cambridge(),
   cobuild: cobuild(),
+  deepl: deepl(),
+  deeplx: deeplx(),
   etymonline: etymonline(),
   eudic: eudic(),
   google: google(),
