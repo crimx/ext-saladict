@@ -89,6 +89,21 @@ describe('deeplx translator', () => {
     expect(result.result.id).toBe('deeplx')
   })
 
+  it('requires a non-empty API URL before calling DeepLX', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config.dictAuth as any).deeplx.apiUrl = '   '
+
+    const result = await search('hello', config, profile, { isPDF: false })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.id).toBe('deeplx')
+    expect(mock.history.post).toHaveLength(0)
+
+    mock.restore()
+  })
+
   it('translates through DeepLX when the API URL exists', async () => {
     const mock = new AxiosMockAdapter(axios)
     mock.onPost('https://deeplx.example.com/translate').reply(200, {

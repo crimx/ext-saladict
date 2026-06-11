@@ -122,7 +122,7 @@ export const search: SearchFunction<
   const sourceLanguage = payload.sl || 'auto'
 
   const auth = (config.dictAuth as any).deeplx || {}
-  const apiUrl = auth.apiUrl
+  const apiUrl = typeof auth.apiUrl === 'string' ? auth.apiUrl.trim() : ''
   if (!apiUrl) {
     return credentialRequiredResult('deeplx', langcodes)
   }
