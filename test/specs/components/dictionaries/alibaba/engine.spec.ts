@@ -83,6 +83,70 @@ describe('Dict/Alibaba/engine', () => {
     expect(result.result.id).toBe('alibaba')
   })
 
+  it('requires non-empty credentials before calling Alibaba', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config as any).dictAuth.alibaba.accessKeyId = '   '
+    ;(config as any).dictAuth.alibaba.accessKeySecret = 'testsecret'
+
+    const result = await search('hello', config, profile, { isPDF: false })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('missing')
+    expect(mock.history.get).toHaveLength(0)
+
+    mock.restore()
+  })
+
+  it('reports Alibaba credential errors from response bodies', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    mock.onGet(new RegExp('^https://mt.aliyuncs.com/')).reply(200, {
+      Code: 'InvalidAccessKeyId.NotFound',
+      Message: 'specified access key is not found'
+    })
+
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config as any).dictAuth.alibaba.accessKeyId = 'testid'
+    ;(config as any).dictAuth.alibaba.accessKeySecret = 'bad'
+
+    const result = await search('hello', config, profile, {
+      isPDF: false,
+      sl: 'en',
+      tl: 'zh-CN'
+    })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('invalid')
+
+    mock.restore()
+  })
+
+  it('reports Alibaba quota errors from HTTP status', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    mock.onGet(new RegExp('^https://mt.aliyuncs.com/')).reply(429, {
+      Code: 'Throttling.User',
+      Message: 'request was denied due to request throttling'
+    })
+
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config as any).dictAuth.alibaba.accessKeyId = 'testid'
+    ;(config as any).dictAuth.alibaba.accessKeySecret = 'testsecret'
+
+    const result = await search('hello', config, profile, {
+      isPDF: false,
+      sl: 'en',
+      tl: 'zh-CN'
+    })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('quota')
+
+    mock.restore()
+  })
+
   it('translates through Alibaba when credentials exist', async () => {
     const mock = new AxiosMockAdapter(axios)
     mock.onGet(new RegExp('^https://mt.aliyuncs.com/')).reply(200, {

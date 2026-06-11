@@ -19,7 +19,13 @@ import {
   hmacHex,
   hmacBase64,
   credentialRequiredResult,
-  emptyMachineResult
+  credentialErrorResult,
+  emptyMachineResult,
+  getAlibabaCredentialError,
+  getCredentialErrorFromHttpStatus,
+  getNiuTransCredentialError,
+  getTencentCredentialError,
+  getVolcCredentialError
 } from '@/components/dictionaries/machine-custom'
 
 describe('Dict/MachineCustom', () => {
@@ -103,8 +109,61 @@ describe('Dict/MachineCustom', () => {
     const result = credentialRequiredResult('alibaba', commonMachineLanguages)
 
     expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('missing')
     expect(result.result.id).toBe('alibaba')
     expect(result.result.searchText.paragraphs).toEqual([''])
+  })
+
+  it('builds credential error machine result', () => {
+    const result = credentialErrorResult('deepl', 'invalid', commonMachineLanguages)
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('invalid')
+    expect(result.result.id).toBe('deepl')
+  })
+
+  it('maps HTTP status codes to credential errors', () => {
+    expect(getCredentialErrorFromHttpStatus(401)).toBe('invalid')
+    expect(getCredentialErrorFromHttpStatus(403)).toBe('invalid')
+    expect(getCredentialErrorFromHttpStatus(456)).toBe('quota')
+    expect(getCredentialErrorFromHttpStatus(500)).toBeUndefined()
+  })
+
+  it('detects provider credential errors from response bodies', () => {
+    expect(
+      getAlibabaCredentialError({
+        Code: 'InvalidAccessKeyId.NotFound',
+        Message: 'specified access key is not found'
+      })
+    ).toBe('invalid')
+    expect(
+      getVolcCredentialError({
+        ResponseMetadata: {
+          Error: {
+            Code: 'AuthFailure.SignatureFailure',
+            Message: 'signature mismatch'
+          }
+        }
+      })
+    ).toBe('invalid')
+    expect(getNiuTransCredentialError({ error_msg: 'apikey is invalid' })).toBe(
+      'invalid'
+    )
+    expect(
+      getTencentCredentialError({
+        isAxiosError: true,
+        response: {
+          data: {
+            Response: {
+              Error: {
+                Code: 'AuthFailure.InvalidSecretId',
+                Message: 'invalid secret id'
+              }
+            }
+          }
+        }
+      })
+    ).toBe('invalid')
   })
 
   it('builds empty machine result', () => {

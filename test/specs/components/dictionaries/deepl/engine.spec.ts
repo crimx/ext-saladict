@@ -71,6 +71,65 @@ describe('deepl translator', () => {
     expect(result.result.id).toBe('deepl')
   })
 
+  it('requires a non-empty auth key before calling DeepL', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config.dictAuth as any).deepl.authKey = '   '
+
+    const result = await search('hello', config, profile, { isPDF: false })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('missing')
+    expect(mock.history.post).toHaveLength(0)
+
+    mock.restore()
+  })
+
+  it('reports invalid DeepL credentials', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    mock.onPost(DEEPL_FREE_API_ENDPOINT).reply(403, {
+      message: 'Authorization failed'
+    })
+
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config.dictAuth as any).deepl.authKey = 'bad:fx'
+
+    const result = await search('hello', config, profile, {
+      isPDF: false,
+      sl: 'en',
+      tl: 'zh-CN'
+    })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('invalid')
+
+    mock.restore()
+  })
+
+  it('reports DeepL quota errors', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    mock.onPost(DEEPL_FREE_API_ENDPOINT).reply(456, {
+      message: 'Quota exceeded'
+    })
+
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config.dictAuth as any).deepl.authKey = 'test:fx'
+
+    const result = await search('hello', config, profile, {
+      isPDF: false,
+      sl: 'en',
+      tl: 'zh-CN'
+    })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('quota')
+
+    mock.restore()
+  })
+
   it('translates through official DeepL when the auth key exists', async () => {
     const mock = new AxiosMockAdapter(axios)
     mock.onPost(DEEPL_FREE_API_ENDPOINT).reply(200, {

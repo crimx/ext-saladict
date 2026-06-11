@@ -52,6 +52,66 @@ describe('Dict/NiuTrans/engine', () => {
     expect(result.result.id).toBe('niutrans')
   })
 
+  it('requires non-empty credentials before calling NiuTrans', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config as any).dictAuth.niutrans.apikey = '   '
+
+    const result = await search('hello', config, profile, { isPDF: false })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('missing')
+    expect(mock.history.post).toHaveLength(0)
+
+    mock.restore()
+  })
+
+  it('reports NiuTrans credential errors from response bodies', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    mock.onPost(NIUTRANS_ENDPOINT).reply(200, {
+      error_code: '10006',
+      error_msg: 'apikey is invalid'
+    })
+
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config as any).dictAuth.niutrans.apikey = 'bad'
+
+    const result = await search('hello', config, profile, {
+      isPDF: false,
+      sl: 'en',
+      tl: 'zh-CN'
+    })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('invalid')
+
+    mock.restore()
+  })
+
+  it('reports NiuTrans quota errors from HTTP status', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    mock.onPost(NIUTRANS_ENDPOINT).reply(429, {
+      error_msg: 'frequency limit exceeded'
+    })
+
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config as any).dictAuth.niutrans.apikey = 'key'
+
+    const result = await search('hello', config, profile, {
+      isPDF: false,
+      sl: 'en',
+      tl: 'zh-CN'
+    })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('quota')
+
+    mock.restore()
+  })
+
   it('translates through NiuTrans when credentials exist', async () => {
     const mock = new AxiosMockAdapter(axios)
     let requestBody = ''

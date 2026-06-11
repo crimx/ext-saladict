@@ -9,8 +9,10 @@ import {
 import {
   commonMachineLanguages,
   createLanguageHelper,
+  credentialErrorResult,
   credentialRequiredResult,
   emptyMachineResult,
+  getAxiosCredentialError,
   normalizeMachineLanguage,
   successMachineResult
 } from '../machine-custom'
@@ -132,7 +134,7 @@ export const search: SearchFunction<
   const sourceLanguage = payload.sl || 'auto'
 
   const auth = (config.dictAuth as any).deepl || {}
-  const authKey = auth.authKey
+  const authKey = typeof auth.authKey === 'string' ? auth.authKey.trim() : ''
   if (!authKey) {
     return credentialRequiredResult('deepl', langcodes)
   }
@@ -166,6 +168,10 @@ export const search: SearchFunction<
       langcodes
     })
   } catch (e) {
+    const credentialError = getAxiosCredentialError(e)
+    if (credentialError) {
+      return credentialErrorResult('deepl', credentialError, langcodes)
+    }
     return emptyMachineResult('deepl', sl, tl, langcodes)
   }
 }

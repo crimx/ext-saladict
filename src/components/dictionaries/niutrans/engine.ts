@@ -9,8 +9,11 @@ import {
 import {
   commonMachineLanguages,
   createLanguageHelper,
+  credentialErrorResult,
   credentialRequiredResult,
   emptyMachineResult,
+  getAxiosCredentialError,
+  getNiuTransCredentialError,
   normalizeMachineLanguage,
   successMachineResult
 } from '../machine-custom'
@@ -88,7 +91,7 @@ export const search: SearchFunction<
   const sourceLanguage = payload.sl || 'auto'
 
   const auth = (config.dictAuth as any).niutrans || {}
-  const apikey = auth.apikey
+  const apikey = typeof auth.apikey === 'string' ? auth.apikey.trim() : ''
   if (!apikey) {
     return credentialRequiredResult('niutrans', langcodes)
   }
@@ -108,6 +111,10 @@ export const search: SearchFunction<
         }
       }
     )
+    const credentialError = getNiuTransCredentialError(response.data)
+    if (credentialError) {
+      return credentialErrorResult('niutrans', credentialError, langcodes)
+    }
     const parsed = parseNiuTransTranslatedText(response.data)
     if (!parsed.translatedText) {
       return emptyMachineResult('niutrans', sl, tl, langcodes)
@@ -122,6 +129,13 @@ export const search: SearchFunction<
       langcodes
     })
   } catch (e) {
+    const credentialError =
+      (axios.isAxiosError(e)
+        ? getNiuTransCredentialError(e.response?.data)
+        : undefined) || getAxiosCredentialError(e)
+    if (credentialError) {
+      return credentialErrorResult('niutrans', credentialError, langcodes)
+    }
     return emptyMachineResult('niutrans', sl, tl, langcodes)
   }
 }

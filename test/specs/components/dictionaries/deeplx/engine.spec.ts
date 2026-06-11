@@ -89,6 +89,51 @@ describe('deeplx translator', () => {
     expect(result.result.id).toBe('deeplx')
   })
 
+  it('reports invalid DeepLX credentials', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    mock.onPost('https://deeplx.example.com/translate').reply(401, {
+      message: 'unauthorized'
+    })
+
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config.dictAuth as any).deeplx.apiUrl = 'https://deeplx.example.com'
+    ;(config.dictAuth as any).deeplx.token = 'bad'
+
+    const result = await search('hello', config, profile, {
+      isPDF: false,
+      sl: 'en',
+      tl: 'zh-CN'
+    })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('invalid')
+
+    mock.restore()
+  })
+
+  it('reports DeepLX quota errors', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    mock.onPost('https://deeplx.example.com/translate').reply(429, {
+      message: 'too many requests'
+    })
+
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config.dictAuth as any).deeplx.apiUrl = 'https://deeplx.example.com'
+
+    const result = await search('hello', config, profile, {
+      isPDF: false,
+      sl: 'en',
+      tl: 'zh-CN'
+    })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('quota')
+
+    mock.restore()
+  })
+
   it('requires a non-empty API URL before calling DeepLX', async () => {
     const mock = new AxiosMockAdapter(axios)
     const config = getDefaultConfig()

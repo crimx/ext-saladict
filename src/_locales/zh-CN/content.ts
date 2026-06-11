@@ -38,6 +38,11 @@ export const locale = {
     showSl: '显示原文',
     copySrc: '复制原文',
     copyTrans: '复制译文',
+    credential: {
+      missing: '请登录{词典帐号}以使用。',
+      invalid: '词典帐号凭据无效，请检查{词典帐号}。',
+      quota: '词典帐号额度不足或已超限，请检查{词典帐号}。'
+    },
     login: '请登录{词典帐号}以使用。',
     dictAccount: '词典帐号'
   },

@@ -9,8 +9,11 @@ import {
 import {
   commonMachineLanguages,
   createLanguageHelper,
+  credentialErrorResult,
   credentialRequiredResult,
   emptyMachineResult,
+  getAxiosCredentialError,
+  getVolcCredentialError,
   hmacBytes,
   hmacHex,
   normalizeMachineLanguage,
@@ -185,8 +188,10 @@ export const search: SearchFunction<
   const sourceLanguage = payload.sl || 'auto'
 
   const auth = (config.dictAuth as any).volc || {}
-  const accessKeyId = auth.accessKeyId
-  const secretAccessKey = auth.secretAccessKey
+  const accessKeyId =
+    typeof auth.accessKeyId === 'string' ? auth.accessKeyId.trim() : ''
+  const secretAccessKey =
+    typeof auth.secretAccessKey === 'string' ? auth.secretAccessKey.trim() : ''
   if (!accessKeyId || !secretAccessKey) {
     return credentialRequiredResult('volc', langcodes)
   }
@@ -202,6 +207,10 @@ export const search: SearchFunction<
     const response = await axios.post(request.url, request.body, {
       headers: request.headers
     })
+    const credentialError = getVolcCredentialError(response.data)
+    if (credentialError) {
+      return credentialErrorResult('volc', credentialError, langcodes)
+    }
     const parsed = parseVolcTranslatedText(response.data)
     if (!parsed.translatedText) {
       return emptyMachineResult('volc', sl, tl, langcodes)
@@ -216,6 +225,13 @@ export const search: SearchFunction<
       langcodes
     })
   } catch (e) {
+    const credentialError =
+      (axios.isAxiosError(e)
+        ? getVolcCredentialError(e.response?.data)
+        : undefined) || getAxiosCredentialError(e)
+    if (credentialError) {
+      return credentialErrorResult('volc', credentialError, langcodes)
+    }
     return emptyMachineResult('volc', sl, tl, langcodes)
   }
 }

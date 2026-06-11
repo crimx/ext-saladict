@@ -170,8 +170,10 @@ export const MachineTrans: FC<MachineTransProps> = props => {
     }
   })
 
-  if (props.result.requireCredential) {
-    return renderCredential()
+  if (props.result.credentialError || props.result.requireCredential) {
+    return (
+      <CredentialMessage error={props.result.credentialError || 'missing'} />
+    )
   }
 
   return (
@@ -198,10 +200,12 @@ export const MachineTrans: FC<MachineTransProps> = props => {
   )
 }
 
-function renderCredential() {
+const CredentialMessage: FC<{
+  error: MachineTranslateResult<DictID>['credentialError']
+}> = ({ error }) => {
   const { t } = useTranslate('content')
   return (
-    <Trans message={t('machineTrans.login')}>
+    <Trans message={t(`machineTrans.credential.${error || 'missing'}`)}>
       <a
         href={browser.runtime.getURL('options.html?menuselected=DictAuths')}
         target="_blank"

@@ -9,8 +9,10 @@ import {
 import {
   commonMachineLanguages,
   createLanguageHelper,
+  credentialErrorResult,
   credentialRequiredResult,
   emptyMachineResult,
+  getAxiosCredentialError,
   normalizeMachineLanguage,
   successMachineResult
 } from '../machine-custom'
@@ -161,6 +163,10 @@ export const search: SearchFunction<
       langcodes
     })
   } catch (e) {
+    const credentialError = getAxiosCredentialError(e)
+    if (credentialError) {
+      return credentialErrorResult('deeplx', credentialError, langcodes)
+    }
     return emptyMachineResult('deeplx', sl, tl, langcodes)
   }
 }

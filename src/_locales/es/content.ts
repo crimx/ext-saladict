@@ -42,6 +42,11 @@ export const locale: typeof _locale = {
     showSl: 'Mostrar fuente',
     copySrc: 'Copiar fuente',
     copyTrans: 'Copiar traducción',
+    credential: {
+      missing: 'Proporcione {access token}.',
+      invalid: 'El access token no es válido. Revise {access token}.',
+      quota: 'El access token no tiene cuota disponible. Revise {access token}.'
+    },
     login: 'Proporcione {access token}.',
     dictAccount: 'access token'
   },
