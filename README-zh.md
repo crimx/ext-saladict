@@ -69,10 +69,6 @@ Saladict / 沙拉查词名称、Logo、图标和相关品牌标识不随 MIT Lic
 ## 更多截图
 
 <p align="center">
-  <a href="https://github.com/crimx/ext-saladict/releases/" target="_blank"><img src="https://github.com/crimx/ext-saladict/wiki/images/youdao-page.gif" /></a>
-</p>
-
-<p align="center">
   <a href="https://github.com/crimx/ext-saladict/releases/" target="_blank"><img src="https://github.com/crimx/ext-saladict/wiki/images/screen-notebook.png" /></a>
 </p>
 

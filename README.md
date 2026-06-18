@@ -74,10 +74,6 @@ DO NOT use Saladict for any illegal or criminal activity. Saladict strongly cond
 ## More screenshots:
 
 <p align="center">
-  <a href="https://github.com/crimx/ext-saladict/releases/" target="_blank"><img src="https://github.com/crimx/ext-saladict/wiki/images/youdao-page.gif" /></a>
-</p>
-
-<p align="center">
   <a href="https://github.com/crimx/ext-saladict/releases/" target="_blank"><img src="https://github.com/crimx/ext-saladict/wiki/images/screen-notebook.png" /></a>
 </p>
 
