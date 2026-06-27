@@ -23,8 +23,37 @@ describe('Dict/COBUILD/engine', () => {
     const profile = getDefaultProfile() as ProfileMutable
     return retry(() =>
       search('love', getDefaultConfig(), profile, { isPDF: false }).then(
-        searchResult => {
-          expect(searchResult.result).toBeTruthy()
+        ({ result, audio }) => {
+          expect(result).toBeTruthy()
+
+          if (result.type !== 'collins') {
+            throw new Error('Expected Collins result')
+          }
+
+          expect(audio && audio.uk).toBe('https://example.com/ced.mp3')
+          expect(result.sections.map(section => section.type)).toEqual([
+            'COBUILD',
+            'Collins English Dictionary',
+            'Penguin Dictionary',
+            'Examples',
+            'Retail',
+            'Idioms',
+            'Collocations'
+          ])
+          expect(
+            result.sections.find(section => section.type === 'Idioms')!.content
+          ).toContain('pick holes in something')
+          expect(
+            result.sections.find(section => section.type === 'Collocations')!
+              .content
+          ).toContain('pick a favorite')
+          expect(
+            result.sections.some(section =>
+              /definition\.title\.type|Video pronunciation|Word lists|Word usage trends|Translations/.test(
+                section.type + section.title
+              )
+            )
+          ).toBe(false)
         }
       )
     )

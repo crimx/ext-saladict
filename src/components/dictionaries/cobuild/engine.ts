@@ -14,9 +14,43 @@ import {
 } from '../helpers'
 import { getStaticSpeaker } from '@/components/Speaker'
 
+const HOST = 'https://www.collinsdictionary.com'
+const COLLINS_TYPE_PREFIX = 'definition.title.type.'
+
+const SECTION_TYPE_LABELS: { [key: string]: string } = {
+  cobuild: 'COBUILD',
+  ced: 'Collins English Dictionary',
+  english: 'Collins English Dictionary',
+  american: 'American English Dictionary',
+  aed: 'American English Dictionary',
+  learner: 'COBUILD',
+  penguin: 'Penguin Dictionary',
+  esp_ret: 'Retail',
+  examples: 'Examples',
+  idioms: 'Idioms',
+  collos: 'Collocations'
+}
+
+const SKIPPED_SECTION_KEYS = new Set([
+  'video',
+  'trends',
+  'wordlists',
+  'translation',
+  'translations'
+])
+
+const SKIPPED_SECTION_LABELS = new Set([
+  'video pronunciation',
+  'word lists',
+  'word usage trends',
+  'translations',
+  '英语词汇表',
+  '趋势'
+])
+
 export const getSrcPage: GetSrcPageFunction = text => {
   return (
-    `https://www.collinsdictionary.com/dictionary/english/` +
+    `${HOST}/dictionary/english/` +
     encodeURIComponent(text.replace(/\s+/g, '-'))
   )
 }
@@ -114,27 +148,23 @@ async function handleDOM(
   }
   const audio: { uk?: string; us?: string } = {}
 
-  result.sections = [
-    ...doc.querySelectorAll<HTMLDivElement>(`[data-type-block]`)
-  ]
-    .filter($section => {
-      const type = $section.dataset.typeBlock || ''
-      return (
-        type &&
-        type !== 'Video' &&
-        type !== 'Trends' &&
-        type !== '英语词汇表' &&
-        type !== '趋势'
-      )
+  result.sections = getSectionNodes(doc)
+    .filter(({ meta }) => {
+      const type = getCleanLabel(meta.dataset.typeBlock)
+      return !!type && !shouldSkipSectionType(type)
     })
-    .map($section => {
-      const type = $section.dataset.typeBlock || ''
-      const title = $section.dataset.titleBlock || ''
-      const num = $section.dataset.numBlock || ''
+    .map(({ meta, content: $section }, i) => {
+      const rawType = getCleanLabel(meta.dataset.typeBlock)
+      const type = normalizeSectionType(rawType)
+      const title = getSectionTitle(meta, $section, type)
+      const num = getCleanLabel(
+        meta.dataset.numBlock || $section.dataset.numBlock
+      )
       const id = type + title + num
       const className = $section.className || ''
+      const mp3 = getAudio($section)
 
-      if (type === 'Learner') {
+      if (isCobuildSection(rawType)) {
         //   const $frequency = $section.querySelector<HTMLSpanElement>('.word-frequency-img')
         //   if ($frequency) {
         //     const star = Number($frequency.dataset.band)
@@ -142,16 +172,13 @@ async function handleDOM(
         //       result.star = star
         //     }
         //   }
-        if (!audio.uk) {
-          const mp3 = getAudio($section)
-          if (mp3) {
-            audio.uk = mp3
-          }
+        if (!audio.uk && mp3) {
+          audio.uk = mp3
         }
-      } else if (type === 'English') {
-        audio.uk = getAudio($section)
-      } else if (type === 'American') {
-        audio.us = getAudio($section)
+      } else if (isAmericanSection(rawType) && mp3) {
+        audio.us = mp3
+      } else if (mp3 && (isEnglishSection(rawType) || !audio.uk)) {
+        audio.uk = mp3
       }
 
       const $video = $section.querySelector<HTMLDivElement>('#videos .video')
@@ -185,12 +212,12 @@ async function handleDOM(
         .forEach(externalLink)
 
       return {
-        id,
+        id: id || String(i),
         className,
         type,
         title,
         num,
-        content: getInnerHTML('https://www.collinsdictionary.com', $section, {
+        content: getInnerHTML(HOST, $section, {
           transform
         })
       }
@@ -203,6 +230,35 @@ async function handleDOM(
   return handleNoResult()
 }
 
+function getSectionNodes(
+  doc: Document
+): Array<{ meta: HTMLElement; content: HTMLElement }> {
+  const sections: Array<{ meta: HTMLElement; content: HTMLElement }> = []
+  const seen = new Set<HTMLElement>()
+
+  doc.querySelectorAll<HTMLElement>('[data-type-block]').forEach(meta => {
+    const content = getSectionContentNode(meta)
+    if (!seen.has(content)) {
+      seen.add(content)
+      sections.push({ meta, content })
+    }
+  })
+
+  return sections
+}
+
+function getSectionContentNode($node: HTMLElement): HTMLElement {
+  if (!$node.classList.contains('cB-h')) {
+    return $node
+  }
+
+  return (
+    $node.closest<HTMLElement>(
+      '.entry.dictionary.cB, .entry.cB, .asset, .cB'
+    ) || $node
+  )
+}
+
 function getAudio($section: HTMLElement): string | undefined {
   const $audio = $section.querySelector<HTMLAnchorElement>(
     '.pron .audio_play_button'
@@ -213,4 +269,100 @@ function getAudio($section: HTMLElement): string | undefined {
       return src
     }
   }
+}
+
+function shouldSkipSectionType(type: string): boolean {
+  const key = getSectionTypeKey(type)
+  const label = getCleanLabel(type).toLowerCase()
+
+  return (
+    SKIPPED_SECTION_KEYS.has(key) ||
+    SKIPPED_SECTION_LABELS.has(label) ||
+    /^translations?(?:\s+of\b)?/.test(label)
+  )
+}
+
+function normalizeSectionType(type: string): string {
+  const key = getSectionTypeKey(type)
+  if (SECTION_TYPE_LABELS[key]) {
+    return SECTION_TYPE_LABELS[key]
+  }
+
+  if (key !== type.toLowerCase()) {
+    return key
+      .split(/[_\s-]+/)
+      .filter(Boolean)
+      .map(word => word[0].toUpperCase() + word.slice(1))
+      .join(' ')
+  }
+
+  return type
+}
+
+function getSectionTypeKey(type: string): string {
+  const lowerType = type.toLowerCase()
+  return lowerType.startsWith(COLLINS_TYPE_PREFIX)
+    ? lowerType.slice(COLLINS_TYPE_PREFIX.length)
+    : lowerType
+}
+
+function getSectionTitle(
+  $meta: HTMLElement,
+  $section: HTMLElement,
+  type: string
+): string {
+  const title = normalizeSectionTitle(
+    getCleanLabel($meta.dataset.titleBlock) ||
+      getCleanLabel(getTitleElement($meta)) ||
+      getCleanLabel(getTitleElement($section))
+  )
+
+  return title && !title.toLowerCase().startsWith(type.toLowerCase())
+    ? title
+    : ''
+}
+
+function getTitleElement($section: HTMLElement): Element | null {
+  return $section.querySelector(
+    [
+      '.cB-h .entry_title',
+      '.cB-h .h2_entry',
+      '.entry_title',
+      '.h2_entry',
+      '.content-box-header .h2_entry',
+      '.content-box-header h2'
+    ].join(',')
+  )
+}
+
+function normalizeSectionTitle(title: string): string {
+  return getSectionTypeKey(title) !== title.toLowerCase()
+    ? normalizeSectionType(title)
+    : title
+}
+
+function getCleanLabel(input?: string | Element | null): string {
+  const text =
+    typeof input === 'string' ? input : input ? input.textContent || '' : ''
+
+  return text
+    .replace(/<[^>]*>/g, '')
+    .replace(/\{\d+\}/g, '')
+    .replace(/\s+/g, ' ')
+    .trim()
+}
+
+function isCobuildSection(type: string): boolean {
+  const key = getSectionTypeKey(type)
+  return key === 'cobuild' || key === 'learner' || type === 'Learner'
+}
+
+function isEnglishSection(type: string): boolean {
+  const key = getSectionTypeKey(type)
+  return key === 'ced' || key === 'english' || type === 'English'
+}
+
+function isAmericanSection(type: string): boolean {
+  const key = getSectionTypeKey(type)
+  return key === 'american' || key === 'aed' || type === 'American'
 }
