@@ -66,9 +66,9 @@ export function createCookieHeaderNetworkCompatibility(
   }
 
   async function doEnsureNetworkCompatibility() {
+    const dnr = getChromeDeclarativeNetRequest()
     const cookieHeader = await getCookieHeader(options)
 
-    const dnr = getChromeDeclarativeNetRequest()
     if (dnr) {
       if (!mv3RuleInstalled || mv3RuleCookieHeader !== cookieHeader) {
         await installMv3HeaderRule(dnr, options, cookieHeader)
@@ -196,7 +196,7 @@ async function getCookieHeader(
     options,
     partitionKey
   )
-  const cookies = mergeCookies(unpartitionedCookies, partitionedCookies)
+  const cookies = collectCookies(unpartitionedCookies, partitionedCookies)
   if (cookies.length > 0) {
     return stringifyCookies(cookies)
   }
@@ -293,36 +293,23 @@ async function getCookies(cookiesApi: typeof browser.cookies, filter: any) {
 
 function stringifyCookies(cookies: Cookie[]) {
   const cookiePairs: string[] = []
-  const cookieNames = new Set<string>()
   for (const cookie of cookies) {
-    if (!cookie.name || !cookie.value || cookieNames.has(cookie.name)) {
+    if (!cookie.name || !cookie.value) {
       continue
     }
     cookiePairs.push(`${cookie.name}=${cookie.value}`)
-    cookieNames.add(cookie.name)
   }
   return cookiePairs.join('; ')
 }
 
-function mergeCookies(cookies: Cookie[], overrides: Cookie[]) {
+function collectCookies(...cookieLists: Cookie[][]) {
   const result: Cookie[] = []
 
-  for (const cookie of cookies) {
-    if (cookie.name && cookie.value) {
-      result.push({ name: cookie.name, value: cookie.value })
-    }
-  }
-
-  for (const cookie of overrides) {
-    if (!cookie.name || !cookie.value) {
-      continue
-    }
-
-    const existing = result.find(item => item.name === cookie.name)
-    if (existing) {
-      existing.value = cookie.value
-    } else {
-      result.push({ name: cookie.name, value: cookie.value })
+  for (const cookies of cookieLists) {
+    for (const cookie of cookies) {
+      if (cookie.name && cookie.value) {
+        result.push({ name: cookie.name, value: cookie.value })
+      }
     }
   }
 
@@ -355,13 +342,7 @@ function upsertCookieHeader(
   if (cookieHeader) {
     let value = cookieHeader.value || ''
     for (const cookie of cookiePairs) {
-      const name = cookie.slice(0, cookie.indexOf('='))
-      if (hasCookie(value, name)) {
-        value = value.replace(
-          new RegExp(`(^|;\\s*)${escapeRegExp(name)}=[^;]*`),
-          (_match, prefix) => `${prefix}${cookie}`
-        )
-      } else {
+      if (!hasCookiePair(value, cookie)) {
         value = value ? `${value}; ${cookie}` : cookie
       }
     }
@@ -380,8 +361,10 @@ function getRequestHeader(
   return requestHeaders.find(header => header.name.toLowerCase() === target)
 }
 
-function hasCookie(cookieHeader: string, name: string) {
-  return new RegExp(`(?:^|;\\s*)${escapeRegExp(name)}=`).test(cookieHeader)
+function hasCookiePair(cookieHeader: string, cookie: string) {
+  return new RegExp(`(?:^|;\\s*)${escapeRegExp(cookie)}(?:;|$)`).test(
+    cookieHeader
+  )
 }
 
 function escapeRegExp(value: string) {

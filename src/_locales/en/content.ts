@@ -40,6 +40,11 @@ export const locale: typeof _locale = {
     showSl: 'Show Source',
     copySrc: 'Copy Source',
     copyTrans: 'Copy Translation',
+    credential: {
+      missing: 'Please provide {access token}.',
+      invalid: 'The access token is invalid. Check {access token}.',
+      quota: 'The access token is out of quota. Check {access token}.'
+    },
     login: 'Please provide {access token}.',
     dictAccount: 'access token'
   },

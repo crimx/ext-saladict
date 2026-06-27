@@ -1,4 +1,5 @@
 import { DictID } from '@/app-config'
+import axios from 'axios'
 import { Language } from '@opentranslate/languages'
 import {
   isContainChinese,
@@ -11,6 +12,7 @@ import {
 } from '@/_helpers/lang-check'
 import { DictSearchResult } from './helpers'
 import {
+  MachineCredentialError,
   MachineTranslateResult,
   machineResult
 } from '@/components/MachineTrans/engine'
@@ -99,9 +101,18 @@ export function credentialRequiredResult<ID extends DictID>(
   id: ID,
   langcodes: ReadonlyArray<string>
 ): DictSearchResult<MachineTranslateResult<ID>> {
+  return credentialErrorResult(id, 'missing', langcodes)
+}
+
+export function credentialErrorResult<ID extends DictID>(
+  id: ID,
+  error: MachineCredentialError,
+  langcodes: ReadonlyArray<string>
+): DictSearchResult<MachineTranslateResult<ID>> {
   return machineResult(
     {
       result: {
+        credentialError: error,
         requireCredential: true,
         id,
         sl: 'auto',
@@ -113,6 +124,148 @@ export function credentialRequiredResult<ID extends DictID>(
     },
     langcodes
   )
+}
+
+export function getCredentialErrorFromHttpStatus(
+  status?: number
+): MachineCredentialError | undefined {
+  switch (status) {
+    case 401:
+    case 403:
+      return 'invalid'
+    case 402:
+    case 429:
+    case 456:
+      return 'quota'
+    default:
+      return undefined
+  }
+}
+
+export function getAxiosCredentialError(
+  e: unknown
+): MachineCredentialError | undefined {
+  if (!axios.isAxiosError(e)) {
+    return undefined
+  }
+  return getCredentialErrorFromHttpStatus(e.response?.status)
+}
+
+export function getAlibabaCredentialError(
+  data: any
+): MachineCredentialError | undefined {
+  const code = normalizeErrorText(
+    data?.Code || data?.code || data?.Error?.Code || data?.error?.code
+  )
+  const message = normalizeErrorText(
+    data?.Message ||
+      data?.message ||
+      data?.Error?.Message ||
+      data?.error?.message
+  )
+  const combined = `${code} ${message}`
+
+  if (
+    /InvalidAccessKeyId|InvalidAccessKeySecret|SignatureDoesNotMatch|IncompleteSignature|Forbidden|Unauthorized/i.test(
+      combined
+    )
+  ) {
+    return 'invalid'
+  }
+
+  if (/Quota|LimitExceeded|Throttl|Balance|Insufficient/i.test(combined)) {
+    return 'quota'
+  }
+
+  return undefined
+}
+
+export function getVolcCredentialError(
+  data: any
+): MachineCredentialError | undefined {
+  const metadata = data?.ResponseMetadata || data?.responseMetadata || {}
+  const error =
+    metadata.Error || metadata.error || data?.Error || data?.error || {}
+  const code = normalizeErrorText(
+    error.Code || error.code || data?.Code || data?.code
+  )
+  const message = normalizeErrorText(
+    error.Message || error.message || data?.Message || data?.message
+  )
+  const combined = `${code} ${message}`
+
+  if (
+    /AuthFailure|InvalidAccessKey|InvalidSecret|Signature|AccessDenied|Unauthorized|Forbidden/i.test(
+      combined
+    )
+  ) {
+    return 'invalid'
+  }
+
+  if (/Quota|Limit|FlowLimit|Throttl|Balance|Insufficient/i.test(combined)) {
+    return 'quota'
+  }
+
+  return undefined
+}
+
+export function getNiuTransCredentialError(
+  data: any
+): MachineCredentialError | undefined {
+  const code = normalizeErrorText(
+    data?.error_code || data?.errorCode || data?.code || data?.Code
+  )
+  const message = normalizeErrorText(
+    data?.error_msg ||
+      data?.errorMsg ||
+      data?.msg ||
+      data?.message ||
+      data?.Message
+  )
+  const combined = `${code} ${message}`
+
+  if (/apikey|api key|auth|token|unauthorized|forbidden/i.test(combined)) {
+    return 'invalid'
+  }
+
+  if (
+    /quota|balance|limit|frequency|insufficient|arrears|欠费|余额|额度|频率/i.test(
+      combined
+    )
+  ) {
+    return 'quota'
+  }
+
+  return undefined
+}
+
+export function getTencentCredentialError(
+  e: unknown
+): MachineCredentialError | undefined {
+  const error = axios.isAxiosError(e)
+    ? e.response?.data?.Response?.Error || e.response?.data?.response?.error
+    : undefined
+  const code = normalizeErrorText(error?.Code || error?.code)
+  const message = normalizeErrorText(error?.Message || error?.message)
+  const combined = `${code} ${message}`
+
+  if (
+    /AuthFailure|InvalidCredential|InvalidSecret|SignatureFailure|Unauthorized|Forbidden/i.test(
+      combined
+    )
+  ) {
+    return 'invalid'
+  }
+
+  if (
+    /LimitExceeded|ResourceInsufficient|Quota|Balance|Insufficient/i.test(
+      combined
+    )
+  ) {
+    return 'quota'
+  }
+
+  return getAxiosCredentialError(e)
 }
 
 export function emptyMachineResult<ID extends DictID>(
@@ -134,6 +287,10 @@ export function emptyMachineResult<ID extends DictID>(
     },
     langcodes
   )
+}
+
+function normalizeErrorText(value: any): string {
+  return value == null ? '' : String(value)
 }
 
 export function successMachineResult<ID extends DictID>({

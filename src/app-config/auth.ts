@@ -11,6 +11,14 @@ import {
   url as caiyunUrl
 } from '@/components/dictionaries/caiyun/auth'
 import {
+  auth as deepl,
+  url as deeplUrl
+} from '@/components/dictionaries/deepl/auth'
+import {
+  auth as deeplx,
+  url as deeplxUrl
+} from '@/components/dictionaries/deeplx/auth'
+import {
   auth as niutrans,
   url as niutransUrl
 } from '@/components/dictionaries/niutrans/auth'
@@ -31,6 +39,8 @@ export const defaultDictAuths = {
   alibaba,
   baidu,
   caiyun,
+  deepl,
+  deeplx,
   niutrans,
   tencent,
   volc,
@@ -43,6 +53,8 @@ export const defaultDictAuthUrls: { [id in keyof DictAuths]: string } = {
   alibaba: alibabaUrl,
   baidu: baiduUrl,
   caiyun: caiyunUrl,
+  deepl: deeplUrl,
+  deeplx: deeplxUrl,
   niutrans: niutransUrl,
   tencent: tencentUrl,
   volc: volcUrl,

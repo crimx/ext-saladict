@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.22.5](https://github.com/crimx/ext-saladict/compare/v7.22.4...v7.22.5) (2026-06-27)
+
+
+### Features
+
+* add DeepL and DeepLX translators ([#2338](https://github.com/crimx/ext-saladict/issues/2338)) ([a8a2235](https://github.com/crimx/ext-saladict/commit/a8a22352b1b0e0a070c9b8b09f910c1c4ae79587))
+
+
+### Bug Fixes
+
+* keep duplicated cookies ([04d71b0](https://github.com/crimx/ext-saladict/commit/04d71b02cfd92f445022fa416819efd9d4ede402))
+* **dicts:** deeplx lang mapping ([a0e1e25](https://github.com/crimx/ext-saladict/commit/a0e1e25757bc360798d2d07834742c153432c960))
+
 ### [7.22.4](https://github.com/crimx/ext-saladict/compare/v7.22.3...v7.22.4) (2026-06-07)
 
 

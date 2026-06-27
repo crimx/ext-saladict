@@ -120,6 +120,82 @@ describe('Dict/Volc/engine', () => {
     expect(result.result.id).toBe('volc')
   })
 
+  it('requires non-empty credentials before calling Volcengine', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config as any).dictAuth.volc.accessKeyId = 'ak'
+    ;(config as any).dictAuth.volc.secretAccessKey = '   '
+
+    const result = await search('hello', config, profile, { isPDF: false })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('missing')
+    expect(mock.history.post).toHaveLength(0)
+
+    mock.restore()
+  })
+
+  it('reports Volcengine credential errors from response bodies', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    mock
+      .onPost(`${VOLC_ENDPOINT}?Action=TranslateText&Version=2020-06-01`)
+      .reply(200, {
+        ResponseMetadata: {
+          Error: {
+            Code: 'AuthFailure.SignatureFailure',
+            Message: 'signature mismatch'
+          }
+        }
+      })
+
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config as any).dictAuth.volc.accessKeyId = 'ak'
+    ;(config as any).dictAuth.volc.secretAccessKey = 'bad'
+
+    const result = await search('hello', config, profile, {
+      isPDF: false,
+      sl: 'en',
+      tl: 'zh-CN'
+    })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('invalid')
+
+    mock.restore()
+  })
+
+  it('reports Volcengine quota errors from HTTP status', async () => {
+    const mock = new AxiosMockAdapter(axios)
+    mock
+      .onPost(`${VOLC_ENDPOINT}?Action=TranslateText&Version=2020-06-01`)
+      .reply(429, {
+        ResponseMetadata: {
+          Error: {
+            Code: 'LimitExceeded',
+            Message: 'request limit exceeded'
+          }
+        }
+      })
+
+    const config = getDefaultConfig()
+    const profile = getDefaultProfile()
+    ;(config as any).dictAuth.volc.accessKeyId = 'ak'
+    ;(config as any).dictAuth.volc.secretAccessKey = 'sk'
+
+    const result = await search('hello', config, profile, {
+      isPDF: false,
+      sl: 'en',
+      tl: 'zh-CN'
+    })
+
+    expect(result.result.requireCredential).toBe(true)
+    expect(result.result.credentialError).toBe('quota')
+
+    mock.restore()
+  })
+
   it('translates through Volcengine when credentials exist', async () => {
     const mock = new AxiosMockAdapter(axios)
     let requestBody = ''

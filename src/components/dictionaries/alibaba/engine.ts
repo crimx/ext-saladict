@@ -9,9 +9,12 @@ import {
 import {
   commonMachineLanguages,
   createLanguageHelper,
+  credentialErrorResult,
   credentialRequiredResult,
   emptyMachineResult,
   encodeSortedQuery,
+  getAlibabaCredentialError,
+  getAxiosCredentialError,
   hmacBase64,
   normalizeMachineLanguage,
   percentEncodeRFC3986,
@@ -124,8 +127,10 @@ export const search: SearchFunction<
   const sourceLanguage = payload.sl || 'auto'
 
   const auth = (config.dictAuth as any).alibaba || {}
-  const accessKeyId = auth.accessKeyId
-  const accessKeySecret = auth.accessKeySecret
+  const accessKeyId =
+    typeof auth.accessKeyId === 'string' ? auth.accessKeyId.trim() : ''
+  const accessKeySecret =
+    typeof auth.accessKeySecret === 'string' ? auth.accessKeySecret.trim() : ''
   if (!accessKeyId || !accessKeySecret) {
     return credentialRequiredResult('alibaba', langcodes)
   }
@@ -139,6 +144,10 @@ export const search: SearchFunction<
       targetLanguage: tl
     })
     const response = await axios.get(url)
+    const credentialError = getAlibabaCredentialError(response.data)
+    if (credentialError) {
+      return credentialErrorResult('alibaba', credentialError, langcodes)
+    }
     const parsed = parseAlibabaTranslatedText(response.data)
     if (!parsed.translatedText) {
       return emptyMachineResult('alibaba', sl, tl, langcodes)
@@ -153,6 +162,13 @@ export const search: SearchFunction<
       langcodes
     })
   } catch (e) {
+    const credentialError =
+      (axios.isAxiosError(e)
+        ? getAlibabaCredentialError(e.response?.data)
+        : undefined) || getAxiosCredentialError(e)
+    if (credentialError) {
+      return credentialErrorResult('alibaba', credentialError, langcodes)
+    }
     return emptyMachineResult('alibaba', sl, tl, langcodes)
   }
 }

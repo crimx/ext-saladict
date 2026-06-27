@@ -13,6 +13,9 @@ describe('mergeConfig', () => {
     oldConfig.dictAuth.volc.accessKeyId = 'volc-ak'
     oldConfig.dictAuth.volc.secretAccessKey = 'volc-sk'
     oldConfig.dictAuth.niutrans.apikey = 'niu-key'
+    oldConfig.dictAuth.deepl.authKey = 'deepl-key'
+    oldConfig.dictAuth.deeplx.apiUrl = 'https://deeplx.example.com'
+    oldConfig.dictAuth.deeplx.token = 'deeplx-token'
     ;(oldConfig.dictAuth as any).sogou = {
       token: 'legacy'
     }
@@ -35,10 +38,19 @@ describe('mergeConfig', () => {
     expect(mergedConfig.dictAuth.niutrans).toEqual({
       apikey: 'niu-key'
     })
+    expect(mergedConfig.dictAuth.deepl).toEqual({
+      authKey: 'deepl-key'
+    })
+    expect(mergedConfig.dictAuth.deeplx).toEqual({
+      apiUrl: 'https://deeplx.example.com',
+      token: 'deeplx-token'
+    })
     expect(Object.keys(mergedConfig.dictAuth).sort()).toEqual([
       'alibaba',
       'baidu',
       'caiyun',
+      'deepl',
+      'deeplx',
       'niutrans',
       'tencent',
       'volc',
@@ -49,7 +61,13 @@ describe('mergeConfig', () => {
   it('keeps new machine translators aligned with default language behavior', () => {
     const profile = getDefaultProfile()
 
-    for (const id of ['alibaba', 'volc', 'niutrans'] as const) {
+    for (const id of [
+      'alibaba',
+      'volc',
+      'niutrans',
+      'deepl',
+      'deeplx'
+    ] as const) {
       expect(profile.dicts.all[id].options.slInitial).toBe('collapse')
       expect(profile.dicts.all[id].options.tl).toBe('default')
       expect(profile.dicts.all[id].options.tl2).toBe('default')

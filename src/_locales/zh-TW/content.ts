@@ -40,6 +40,11 @@ export const locale: typeof _locale = {
     showSl: '顯示原文',
     copySrc: '複製原文',
     copyTrans: '複製譯文',
+    credential: {
+      missing: '請登入{詞典帳號}以使用。',
+      invalid: '詞典帳號憑據無效，請檢查{詞典帳號}。',
+      quota: '詞典帳號額度不足或已超限，請檢查{詞典帳號}。'
+    },
     login: '請登入{詞典帳號}以使用。',
     dictAccount: '詞典帳號'
   },

@@ -41,6 +41,11 @@ export const locale: typeof _locale = {
     showSl: 'सोर्स देखाउनुहोस्',
     copySrc: 'स्रोत कपि गर्नुहोस्',
     copyTrans: 'अनुवाद कपि गर्नुहोस्',
+    credential: {
+      missing: 'कृपया {एसेस टोकन्} प्रदान गर्नुहोस्।',
+      invalid: 'The access token is invalid. Check {एसेस टोकन्}.',
+      quota: 'The access token is out of quota. Check {एसेस टोकन्}.'
+    },
     login: 'कृपया {एसेस टोकन्} प्रदान गर्नुहोस्।',
     dictAccount: 'एसेस टोकन्'
   },

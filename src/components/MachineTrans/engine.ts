@@ -10,6 +10,8 @@ export interface MachineTranslatePayload<Lang = string> {
   tl?: Lang
 }
 
+export type MachineCredentialError = 'missing' | 'invalid' | 'quota'
+
 export interface MachineTranslateResult<ID extends DictID> {
   id: ID
   slInitial: 'hide' | 'collapse' | 'full'
@@ -25,6 +27,7 @@ export interface MachineTranslateResult<ID extends DictID> {
     paragraphs: string[]
     tts?: string
   }
+  credentialError?: MachineCredentialError
   requireCredential?: boolean
 }
 

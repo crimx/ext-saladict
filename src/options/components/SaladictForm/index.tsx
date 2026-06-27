@@ -20,7 +20,7 @@ import {
 } from '@/options/helpers/layout'
 import { useUpload } from '@/options/helpers/upload'
 import { setFormDirty } from '@/options/helpers/use-form-dirty'
-// import { SaveBtn } from './SaveBtn'
+import { SaveBtn } from './SaveBtn'
 
 import './_style.scss'
 
@@ -50,11 +50,12 @@ export interface SaladictFormProps
   extends Omit<FormProps, 'initialValues' | 'onFinish'> {
   items: SaladictFormItem[]
   hideFooter?: boolean
+  manualSave?: boolean
 }
 
 export const SaladictForm = React.forwardRef(
   (props: SaladictFormProps, ref: Ref<FormInstance>) => {
-    const { items, hideFooter, ...restProps } = props
+    const { items, hideFooter, manualSave, ...restProps } = props
     const formItemLayout = useFormItemLayout()
     const { t, i18n, ready } = useTranslate(['options', 'common'])
     const [form] = Form.useForm()
@@ -202,7 +203,7 @@ export const SaladictForm = React.forwardRef(
         onValuesChange={(changedValues, values) => {
           setFormDirty(true)
           setHideFields(values)
-          if (!hideFooter) {
+          if (!hideFooter && !manualSave) {
             autoSave({ ...values })
           }
           if (props.onValuesChange) {
@@ -214,7 +215,7 @@ export const SaladictForm = React.forwardRef(
         {formItems}
         {!hideFooter && (
           <Form.Item {...formItemFooterLayout} className="saladict-form-btns">
-            {/* <SaveBtn /> */}
+            {manualSave && <SaveBtn />}
             <Button
               onClick={() => {
                 if (isFirefox) {

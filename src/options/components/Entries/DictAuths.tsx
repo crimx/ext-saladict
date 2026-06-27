@@ -62,5 +62,5 @@ export const DictAuths: FC = () => {
     })
   })
 
-  return <SaladictForm items={formItems} />
+  return <SaladictForm items={formItems} manualSave />
 }

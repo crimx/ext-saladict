@@ -142,7 +142,7 @@ describe('Dict/Cambridge/network', () => {
     })
   })
 
-  it('should replace stale cookies with partitioned cookies in MV2', async () => {
+  it('should preserve same-name cookies in MV2', async () => {
     browser.cookies.getAll.callsFake(options =>
       Promise.resolve(
         options.partitionKey
@@ -193,7 +193,7 @@ describe('Dict/Cambridge/network', () => {
         {
           name: 'Cookie',
           value:
-            'XSRF-TOKEN=xsrf-token; cf_clearance=fresh-clearance-token; cf_chl_rc_ni=1'
+            'XSRF-TOKEN=xsrf-token; cf_clearance=stale-clearance-token; cf_clearance=fresh-clearance-token; cf_chl_rc_ni=1'
         },
         { name: 'Referer', value: 'https://dictionary.cambridge.org' }
       ]
@@ -383,7 +383,8 @@ describe('Dict/Cambridge/network', () => {
               {
                 header: 'cookie',
                 operation: 'set',
-                value: 'cf_clearance=partitioned-clearance-token; cf_chl_rc_ni=1'
+                value:
+                  'cf_clearance=partitioned-clearance-token; cf_chl_rc_ni=1'
               }
             ]
           }

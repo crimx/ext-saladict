@@ -1,5 +1,6 @@
 import { SearchFunction, GetSrcPageFunction } from '../helpers'
 import memoizeOne from 'memoize-one'
+import axios from 'axios'
 import { Tencent } from '@opentranslate/tencent'
 import {
   MachineTranslateResult,
@@ -9,11 +10,39 @@ import {
 } from '@/components/MachineTrans/engine'
 import { getTranslator as getBaiduTranslator } from '../baidu/engine'
 import { TencentLanguage } from './config'
+import {
+  credentialErrorResult,
+  credentialRequiredResult,
+  getTencentCredentialError
+} from '../machine-custom'
+
+const tencentAxios = ((url: string, config?: any) =>
+  axios(url, config).then(response => {
+    const error =
+      response?.data?.Response?.Error || response?.data?.response?.error
+    if (error) {
+      const credentialError = new Error(
+        String(
+          error.Message ||
+            error.message ||
+            error.Code ||
+            error.code ||
+            'Tencent API error'
+        )
+      ) as any
+      credentialError.isAxiosError = true
+      credentialError.config = config
+      credentialError.response = response
+      throw credentialError
+    }
+    return response
+  })) as any
 
 export const getTranslator = memoizeOne(
   () =>
     new Tencent({
       env: 'ext',
+      axios: tencentAxios,
       config:
         process.env.TENCENT_SECRETID && process.env.TENCENT_SECRETKEY
           ? {
@@ -53,26 +82,19 @@ export const search: SearchFunction<
     payload
   )
 
-  const secretId = config.dictAuth.tencent.secretId
-  const secretKey = config.dictAuth.tencent.secretKey
+  const secretId =
+    typeof config.dictAuth.tencent.secretId === 'string'
+      ? config.dictAuth.tencent.secretId.trim()
+      : ''
+  const secretKey =
+    typeof config.dictAuth.tencent.secretKey === 'string'
+      ? config.dictAuth.tencent.secretKey.trim()
+      : ''
   const translatorConfig =
     secretId && secretKey ? { secretId, secretKey } : undefined
 
   if (!translatorConfig) {
-    return machineResult(
-      {
-        result: {
-          requireCredential: true,
-          id: 'tencent',
-          sl: 'auto',
-          tl: 'auto',
-          slInitial: 'hide',
-          searchText: { paragraphs: [''] },
-          trans: { paragraphs: [''] }
-        }
-      },
-      []
-    )
+    return credentialRequiredResult('tencent', translator.getSupportLanguages())
   }
 
   try {
@@ -108,6 +130,14 @@ export const search: SearchFunction<
       translator.getSupportLanguages()
     )
   } catch (e) {
+    const credentialError = getTencentCredentialError(e)
+    if (credentialError) {
+      return credentialErrorResult(
+        'tencent',
+        credentialError,
+        translator.getSupportLanguages()
+      )
+    }
     return machineResult(
       {
         result: {
