@@ -155,7 +155,7 @@ async function installMv3HeaderRule(
   if (cookieHeader) {
     requestHeaders.push({
       header: 'cookie',
-      operation: 'set',
+      operation: 'append',
       value: cookieHeader
     })
   }
@@ -190,15 +190,13 @@ async function getCookieHeader(
   const partitionKey = {
     topLevelSite: options.topLevelSite
   }
-  const unpartitionedCookies = await getCookiesForRequest(cookiesApi, options)
   const partitionedCookies = await getCookiesForRequest(
     cookiesApi,
     options,
     partitionKey
   )
-  const cookies = collectCookies(unpartitionedCookies, partitionedCookies)
-  if (cookies.length > 0) {
-    return stringifyCookies(cookies)
+  if (partitionedCookies.length > 0) {
+    return stringifyCookies(partitionedCookies)
   }
 
   return stringifyCookies(
@@ -300,20 +298,6 @@ function stringifyCookies(cookies: Cookie[]) {
     cookiePairs.push(`${cookie.name}=${cookie.value}`)
   }
   return cookiePairs.join('; ')
-}
-
-function collectCookies(...cookieLists: Cookie[][]) {
-  const result: Cookie[] = []
-
-  for (const cookies of cookieLists) {
-    for (const cookie of cookies) {
-      if (cookie.name && cookie.value) {
-        result.push({ name: cookie.name, value: cookie.value })
-      }
-    }
-  }
-
-  return result
 }
 
 function setRequestHeader(
