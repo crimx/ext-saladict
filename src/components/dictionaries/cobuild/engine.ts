@@ -156,6 +156,9 @@ async function handleDOM(
     .map(({ meta, content: $section }, i) => {
       const rawType = getCleanLabel(meta.dataset.typeBlock)
       const type = normalizeSectionType(rawType)
+      const $contentSection = isExamplesSection(rawType)
+        ? cleanupExamplesSection($section)
+        : $section
       const title = getSectionTitle(meta, $section, type)
       const num = getCleanLabel(
         meta.dataset.numBlock || $section.dataset.numBlock
@@ -200,14 +203,14 @@ async function handleDOM(
         }
       }
 
-      $section
+      $contentSection
         .querySelectorAll<HTMLAnchorElement>('.audio_play_button')
         .forEach($speaker => {
           $speaker.replaceWith(getStaticSpeaker($speaker.dataset.srcMp3))
         })
 
       // so that clicking won't trigger in-panel search
-      $section
+      $contentSection
         .querySelectorAll<HTMLAnchorElement>('a.type-thesaurus')
         .forEach(externalLink)
 
@@ -217,7 +220,7 @@ async function handleDOM(
         type,
         title,
         num,
-        content: getInnerHTML(HOST, $section, {
+        content: getInnerHTML(HOST, $contentSection, {
           transform
         })
       }
@@ -269,6 +272,16 @@ function getAudio($section: HTMLElement): string | undefined {
       return src
     }
   }
+}
+
+function cleanupExamplesSection($section: HTMLElement): HTMLElement {
+  const $cleanSection = $section.cloneNode(true) as HTMLElement
+
+  $cleanSection
+    .querySelectorAll<HTMLElement>('.cB-h, .ex-info')
+    .forEach($el => $el.remove())
+
+  return $cleanSection
 }
 
 function shouldSkipSectionType(type: string): boolean {
@@ -365,4 +378,8 @@ function isEnglishSection(type: string): boolean {
 function isAmericanSection(type: string): boolean {
   const key = getSectionTypeKey(type)
   return key === 'american' || key === 'aed' || type === 'American'
+}
+
+function isExamplesSection(type: string): boolean {
+  return getSectionTypeKey(type) === 'examples'
 }
