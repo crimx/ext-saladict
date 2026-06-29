@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.22.6](https://github.com/crimx/ext-saladict/compare/v7.22.5...v7.22.6) (2026-06-29)
+
+
+### Bug Fixes
+
+* append cookies instead ([51549f7](https://github.com/crimx/ext-saladict/commit/51549f73cb50b63b77e7f925599a2270e788f873))
+* **dicts:** correct cobuild select label ([cca333b](https://github.com/crimx/ext-saladict/commit/cca333bf424bf6c6a6cd70eb4bfd1a1d057a475e))
+
 ### [7.22.5](https://github.com/crimx/ext-saladict/compare/v7.22.4...v7.22.5) (2026-06-27)
 
 
