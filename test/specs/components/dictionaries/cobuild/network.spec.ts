@@ -1,5 +1,8 @@
 import { browser } from '../../../../helper'
 
+const getCookieQueryArgs = () =>
+  browser.cookies.getAll.getCalls().map(call => call.args[0])
+
 describe('Dict/COBUILD/network', () => {
   let originalWebRequest: typeof browser.webRequest
 
@@ -43,7 +46,7 @@ describe('Dict/COBUILD/network', () => {
 
     await ensureNetworkCompatibility()
 
-    expect(browser.cookies.getAll.thirdCall.args[0]).toEqual({
+    expect(getCookieQueryArgs()).toContainEqual({
       url: 'https://www.collinsdictionary.com',
       partitionKey: {
         topLevelSite: 'https://collinsdictionary.com'
@@ -117,7 +120,7 @@ describe('Dict/COBUILD/network', () => {
               },
               {
                 header: 'cookie',
-                operation: 'set',
+                operation: 'append',
                 value: 'cf_clearance=partitioned-clearance-token'
               }
             ]

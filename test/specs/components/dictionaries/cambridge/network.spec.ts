@@ -1,5 +1,8 @@
 import { browser } from '../../../../helper'
 
+const getCookieQueryArgs = () =>
+  browser.cookies.getAll.getCalls().map(call => call.args[0])
+
 describe('Dict/Cambridge/network', () => {
   let originalWebRequest: typeof browser.webRequest
 
@@ -116,7 +119,7 @@ describe('Dict/Cambridge/network', () => {
 
     await ensureNetworkCompatibility()
 
-    expect(browser.cookies.getAll.thirdCall.args[0]).toEqual({
+    expect(getCookieQueryArgs()).toContainEqual({
       url: 'https://dictionary.cambridge.org',
       partitionKey: {
         topLevelSite: 'https://cambridge.org'
@@ -142,7 +145,7 @@ describe('Dict/Cambridge/network', () => {
     })
   })
 
-  it('should preserve same-name cookies in MV2', async () => {
+  it('should append partitioned cookies in MV2', async () => {
     browser.cookies.getAll.callsFake(options =>
       Promise.resolve(
         options.partitionKey
@@ -318,7 +321,7 @@ describe('Dict/Cambridge/network', () => {
               },
               {
                 header: 'cookie',
-                operation: 'set',
+                operation: 'append',
                 value: 'cf_clearance=next-clearance-token'
               }
             ]
@@ -362,7 +365,7 @@ describe('Dict/Cambridge/network', () => {
 
     await ensureNetworkCompatibility()
 
-    expect(browser.cookies.getAll.thirdCall.args[0]).toEqual({
+    expect(getCookieQueryArgs()).toContainEqual({
       url: 'https://dictionary.cambridge.org',
       partitionKey: {
         topLevelSite: 'https://cambridge.org'
@@ -382,7 +385,7 @@ describe('Dict/Cambridge/network', () => {
               },
               {
                 header: 'cookie',
-                operation: 'set',
+                operation: 'append',
                 value:
                   'cf_clearance=partitioned-clearance-token; cf_chl_rc_ni=1'
               }

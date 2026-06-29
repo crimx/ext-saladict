@@ -1204,6 +1204,23 @@
     font-style: italic;
   }
 
+  .page .cB-e .credits .author,
+  .page .cB-e .credits .title,
+  .page .cB-e .credits .year {
+    display: inline;
+    font-size: 0.8em;
+  }
+
+  .page .cB-e .credits .author,
+  .page .cB-e .credits .title {
+    font-weight: bold;
+    font-style: italic;
+  }
+
+  .page .cB-e .credits .title {
+    font-variant: small-caps;
+  }
+
   .page .cit.type-example .ref.type-def {
     text-decoration: none;
     color: inherit;
