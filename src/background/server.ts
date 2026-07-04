@@ -37,6 +37,7 @@ import {
 const mv3BackgroundPreferredDicts = new Set<DictID>([
   'alibaba',
   'baidu',
+  'bingtrans',
   'caiyun',
   'google',
   'niutrans',
