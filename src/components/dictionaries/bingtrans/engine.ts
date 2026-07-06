@@ -119,6 +119,18 @@ export function resetBingAuthToken(): void {
   cachedToken = null
 }
 
+function isValidBingAuthToken(token: string): boolean {
+  const segments = token.split('.')
+  return segments.length === 3 && segments.every(Boolean)
+}
+
+function isBingAuthError(e: unknown): boolean {
+  return (
+    axios.isAxiosError(e) &&
+    (e.response?.status === 401 || e.response?.status === 403)
+  )
+}
+
 async function getAuthToken(): Promise<string> {
   if (cachedToken && Date.now() < cachedToken.expiry) {
     return cachedToken.token
@@ -127,8 +139,32 @@ async function getAuthToken(): Promise<string> {
     responseType: 'text'
   })
   const token = typeof response.data === 'string' ? response.data.trim() : ''
+  if (!isValidBingAuthToken(token)) {
+    throw new Error('Invalid Bing Translate auth token.')
+  }
   cachedToken = { token, expiry: Date.now() + AUTH_TOKEN_TTL }
   return token
+}
+
+async function requestBingTranslation(input: {
+  token: string
+  sourceLanguage: string
+  targetLanguage: string
+  text: string
+}) {
+  return axios.post(
+    `${BING_TRANSLATE_ENDPOINT}?${buildBingTranslateParams({
+      sourceLanguage: input.sourceLanguage,
+      targetLanguage: input.targetLanguage
+    })}`,
+    [{ Text: input.text }],
+    {
+      headers: {
+        Authorization: `Bearer ${input.token}`,
+        'Content-Type': 'application/json'
+      }
+    }
+  )
 }
 
 export const search: SearchFunction<
@@ -147,20 +183,28 @@ export const search: SearchFunction<
   const sourceLanguage = payload.sl || 'auto'
 
   try {
-    const token = await getAuthToken()
-    const response = await axios.post(
-      `${BING_TRANSLATE_ENDPOINT}?${buildBingTranslateParams({
+    let token = await getAuthToken()
+    let response
+    try {
+      response = await requestBingTranslation({
+        token,
         sourceLanguage,
-        targetLanguage: tl
-      })}`,
-      [{ Text: text }],
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
+        targetLanguage: tl,
+        text
+      })
+    } catch (e) {
+      if (!isBingAuthError(e)) {
+        throw e
       }
-    )
+      resetBingAuthToken()
+      token = await getAuthToken()
+      response = await requestBingTranslation({
+        token,
+        sourceLanguage,
+        targetLanguage: tl,
+        text
+      })
+    }
     const parsed = parseBingTranslatedText(response.data)
     if (!parsed.translatedText) {
       return emptyMachineResult('bingtrans', sl, tl, langcodes)
