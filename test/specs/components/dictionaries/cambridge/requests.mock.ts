@@ -5,14 +5,16 @@ export const mockSearchTexts = ['catch-zht', 'house-zhs', 'love']
 export const mockRequest: MockRequest = mock => {
   mock.onGet(/cambridge/).reply(info => {
     const url = new URL(info.url!)
-    const query = url.searchParams.get('q')
+    const query =
+      url.searchParams.get('q') ||
+      decodeURIComponent(url.pathname.split('/').filter(Boolean).pop() || '')
     if (query === 'verify') {
       return [403]
     }
 
-    const name = url.pathname.includes('/zhs/')
+    const name = url.pathname.includes('/english-chinese-simplified/')
       ? query + '-zhs'
-      : url.pathname.includes('/zht/')
+      : url.pathname.includes('/english-chinese-traditional/')
       ? query + '-zht'
       : query
 

@@ -80,8 +80,7 @@ describe('Dict/Cambridge/engine', () => {
       expect(e.message).toBe('MANUAL_VERIFICATION')
       expect(e.manualVerification).toEqual({
         text: 'verify',
-        url:
-          'https://dictionary.cambridge.org/search/direct/?datasetsearch=english&q=verify'
+        url: 'https://dictionary.cambridge.org/dictionary/english/verify'
       })
     }
   })
