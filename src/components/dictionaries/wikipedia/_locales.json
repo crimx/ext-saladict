@@ -2,58 +2,69 @@
   "name": {
     "en": "Wikipedia",
     "zh-CN": "维基百科",
-    "zh-TW": "維基百科"
+    "zh-TW": "維基百科",
+    "ko": "위키백과"
   },
   "options": {
     "lang": {
       "en": "Language",
       "zh-CN": "百科语言",
-      "zh-TW": "百科語言"
+      "zh-TW": "百科語言",
+      "ko": "백과사전 언어"
     },
     "lang-auto": {
       "en": "Auto (respect Wiki settings)",
       "zh-CN": "自动（遵循维基账户设定）",
-      "zh-TW": "自动（遵循維基賬戶設定）"
+      "zh-TW": "自动（遵循維基賬戶設定）",
+      "ko": "자동 (위키 계정 설정 따름)"
     },
     "lang-zh": {
       "en": "中文（简繁由维基账户设定）",
       "zh-CN": "中文（简繁由维基账户设定）",
-      "zh-TW": "中文（簡繁由維基賬戶設定）"
+      "zh-TW": "中文（簡繁由維基賬戶設定）",
+      "ko": "중국어 (간체/번체는 위키 계정 설정 따름)"
     },
     "lang-zh-cn": {
       "en": "强制简体中文子页面",
       "zh-CN": "强制简体中文子页面",
-      "zh-TW": "强制简体中文子页面"
+      "zh-TW": "强制简体中文子页面",
+      "ko": "간체 중국어 하위 페이지 강제 사용"
     },
     "lang-zh-tw": {
       "en": "強制台灣正體子頁面",
       "zh-CN": "強制台灣正體子頁面",
-      "zh-TW": "強制台灣正體子頁面"
+      "zh-TW": "強制台灣正體子頁面",
+      "ko": "대만 정체자 하위 페이지 강제 사용"
     },
     "lang-zh-hk": {
       "en": "強制香港繁體子頁面",
       "zh-CN": "強制香港繁體子頁面",
-      "zh-TW": "強制香港繁體子頁面"
+      "zh-TW": "強制香港繁體子頁面",
+      "ko": "홍콩 번체자 하위 페이지 강제 사용"
     },
     "lang-en": {
       "en": "English",
       "zh-CN": "English",
-      "zh-TW": "English"
+      "zh-TW": "English",
+      "ko": "영어"
     },
     "lang-ja": {
       "en": "日本語",
       "zh-CN": "日本語",
-      "zh-TW": "日本語"
+      "zh-TW": "日本語",
+      "ko": "일본어"
     },
     "lang-fr": {
       "en": "Français",
       "zh-CN": "Français",
-      "zh-TW": "Français"
+      "zh-TW": "Français",
+      "ko": "프랑스어"
     },
     "lang-de": {
       "en": "Deutschsprachige",
       "zh-CN": "Deutschsprachige",
-      "zh-TW": "Deutschsprachige"
+      "zh-TW": "Deutschsprachige",
+      "ko": "독일어"
     }
   }
 }

@@ -1,0 +1,59 @@
+{
+  "extension_name": {
+    "description": "Extension name",
+    "message": "샐러딕트 - 팝업 사전"
+  },
+  "extension_short_name": {
+    "description": "Extension short name",
+    "message": "샐러딕트"
+  },
+  "extension_description": {
+    "description": "Description of extension",
+    "message": "여러 사전으로 선택한 텍스트를 검색하고 번역하세요. 다양한 선택 모드, 단어장, PDF 검색을 지원합니다."
+  },
+  "command_toggle_active": {
+    "message": "인라인 번역 켜기/끄기"
+  },
+  "command_toggle_instant": {
+    "message": "즉시 캡처 켜기/끄기"
+  },
+  "command_open_quick_search": {
+    "message": "독립 실행 사전 패널 열기 또는 강조 표시"
+  },
+  "command_open_pdf": {
+    "message": "현재 PDF를 Saladict에서 열기"
+  },
+  "command_search_clipboard": {
+    "message": "독립 실행 패널에서 클립보드 내용 검색"
+  },
+  "command_next_history": {
+    "message": "다음 검색 기록"
+  },
+  "command_prev_history": {
+    "message": "이전 검색 기록"
+  },
+  "command_next_profile": {
+    "message": "다음 프로필"
+  },
+  "command_prev_profile": {
+    "message": "이전 프로필"
+  },
+  "command_profile_1": {
+    "message": "첫 번째 프로필"
+  },
+  "command_profile_2": {
+    "message": "두 번째 프로필"
+  },
+  "command_profile_3": {
+    "message": "세 번째 프로필"
+  },
+  "command_profile_4": {
+    "message": "네 번째 프로필"
+  },
+  "command_profile_5": {
+    "message": "다섯 번째 프로필"
+  },
+  "command_add_notebook": {
+    "message": "단어장에 추가"
+  }
+}

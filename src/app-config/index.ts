@@ -5,7 +5,7 @@ import { getAllContextMenus } from './context-menus'
 import { MtaAutoUnfold as _MtaAutoUnfold } from './profiles'
 import { getDefaultDictAuths } from './auth'
 
-export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
+export type LangCode = 'zh-CN' | 'zh-TW' | 'ko' | 'en'
 
 const langUI = browser.i18n.getUILanguage()
 const langCode: LangCode =
@@ -13,6 +13,8 @@ const langCode: LangCode =
     ? 'zh-CN'
     : langUI === 'zh-TW' || langUI === 'zh-HK'
     ? 'zh-TW'
+    : langUI === 'ko'
+    ? 'ko'
     : 'en'
 
 export type DictConfigsMutable = ReturnType<typeof getAllDicts>
