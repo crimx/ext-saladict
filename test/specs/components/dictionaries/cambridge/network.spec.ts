@@ -51,6 +51,8 @@ describe('Dict/Cambridge/network', () => {
     ])
     expect(
       listener({
+        initiator: 'chrome-extension://test-extension',
+        tabId: -1,
         requestHeaders: [{ name: 'Accept', value: 'text/html' }]
       })
     ).toEqual({
@@ -59,6 +61,39 @@ describe('Dict/Cambridge/network', () => {
         { name: 'Referer', value: 'https://dictionary.cambridge.org' }
       ]
     })
+  })
+
+  it('should ignore requests initiated by the dictionary website in MV2', async () => {
+    const {
+      ensureNetworkCompatibility
+    } = require('@/components/dictionaries/cambridge/network')
+
+    await ensureNetworkCompatibility()
+
+    const [
+      listener
+    ] = browser.webRequest.onBeforeSendHeaders.addListener.firstCall.args
+    const chromeHeaders = [{ name: 'Accept', value: 'text/html' }]
+    const firefoxHeaders = [{ name: 'Cookie', value: 'cf_clearance=website' }]
+
+    expect(
+      listener({
+        initiator: 'https://dictionary.cambridge.org',
+        tabId: 1,
+        requestHeaders: chromeHeaders
+      })
+    ).toEqual({ requestHeaders: chromeHeaders })
+    expect(
+      listener({
+        originUrl: 'https://dictionary.cambridge.org/verify',
+        tabId: -1,
+        requestHeaders: firefoxHeaders
+      })
+    ).toEqual({ requestHeaders: firefoxHeaders })
+    expect(chromeHeaders).toEqual([{ name: 'Accept', value: 'text/html' }])
+    expect(firefoxHeaders).toEqual([
+      { name: 'Cookie', value: 'cf_clearance=website' }
+    ])
   })
 
   it('should append cf_clearance cookie when available in MV2', async () => {
@@ -82,6 +117,7 @@ describe('Dict/Cambridge/network', () => {
 
     expect(
       listener({
+        tabId: -1,
         requestHeaders: [{ name: 'Cookie', value: 'XSRF-TOKEN=xsrf-token' }]
       })
     ).toEqual({
@@ -132,6 +168,7 @@ describe('Dict/Cambridge/network', () => {
 
     expect(
       listener({
+        tabId: -1,
         requestHeaders: []
       })
     ).toEqual({
@@ -184,6 +221,7 @@ describe('Dict/Cambridge/network', () => {
 
     expect(
       listener({
+        tabId: -1,
         requestHeaders: [
           {
             name: 'Cookie',
@@ -242,7 +280,9 @@ describe('Dict/Cambridge/network', () => {
           },
           condition: {
             regexFilter: '^https://dictionary\\.cambridge\\.org/.*',
-            resourceTypes: ['xmlhttprequest', 'media']
+            resourceTypes: ['xmlhttprequest', 'media'],
+            tabIds: [-1],
+            excludedInitiatorDomains: ['cambridge.org']
           }
         }
       ]

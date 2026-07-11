@@ -61,6 +61,7 @@ describe('Dict/COBUILD/network', () => {
     expect(filter).toEqual({ urls: ['https://www.collinsdictionary.com/*'] })
     expect(
       listener({
+        tabId: -1,
         requestHeaders: []
       })
     ).toEqual({
@@ -127,7 +128,9 @@ describe('Dict/COBUILD/network', () => {
           },
           condition: {
             regexFilter: '^https://www\\.collinsdictionary\\.com/.*',
-            resourceTypes: ['xmlhttprequest', 'media']
+            resourceTypes: ['xmlhttprequest', 'media'],
+            tabIds: [-1],
+            excludedInitiatorDomains: ['collinsdictionary.com']
           }
         }
       ]
