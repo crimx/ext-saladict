@@ -2,23 +2,27 @@
   "name": {
     "en": "Etymonline",
     "zh-CN": "Etymonline",
-    "zh-TW": "Etymonline"
+    "zh-TW": "Etymonline",
+    "ko": "Etymonline"
   },
   "options": {
     "resultnum": {
       "en": "Show",
       "zh-CN": "结果数量",
-      "zh-TW": "結果數量"
+      "zh-TW": "結果數量",
+      "ko": "표시 개수"
     },
     "resultnum_unit": {
       "en": "results",
       "zh-CN": "个",
-      "zh-TW": "個"
+      "zh-TW": "個",
+      "ko": "개"
     },
     "chart": {
       "en": "Show Chart",
       "zh-CN": "显示图表",
-      "zh-TW": "顯示圖表"
+      "zh-TW": "顯示圖表",
+      "ko": "차트 표시"
     }
   }
 }

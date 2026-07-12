@@ -20,9 +20,10 @@
       "properties": {
         "en": { "type": "string" },
         "zh-CN": { "type": "string" },
-        "zh-TW": { "type": "string" }
+        "zh-TW": { "type": "string" },
+        "ko": { "type": "string" }
       },
-      "required": ["en", "zh-CN", "zh-TW"],
+      "required": ["en", "zh-CN", "zh-TW", "ko"],
       "additionalProperties": false
     },
     "locales": {

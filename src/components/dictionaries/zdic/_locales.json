@@ -2,20 +2,23 @@
   "name": {
     "en": "汉典",
     "zh-CN": "汉典",
-    "zh-TW": "漢典"
+    "zh-TW": "漢典",
+    "ko": "한전(漢典)"
   },
   "options": {
     "audio": {
       "en": "Enable audio",
       "zh-CN": "开启发音",
-      "zh-TW": "啟用發音"
+      "zh-TW": "啟用發音",
+      "ko": "발음 활성화"
     }
   },
   "helps": {
     "audio": {
       "en": "Referer modification is required, which may slightly impact performance.",
       "zh-CN": "突破外链限制需要改写 Referer，可能会轻微影响性能。",
-      "zh-TW": "突破外鏈限制需要改寫 Referer，可能會輕微影響效能。"
+      "zh-TW": "突破外鏈限制需要改寫 Referer，可能會輕微影響效能。",
+      "ko": "외부 링크 제한을 우회하려면 Referer를 수정해야 하며, 성능에 약간 영향을 줄 수 있습니다."
     }
   }
 }

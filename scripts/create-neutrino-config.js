@@ -322,7 +322,7 @@ module.exports = function createNeutrinoConfig({
         // remove locales
         neutrino.config
           .plugin('momentjs')
-          .use(MomentLocalesPlugin, [{ localesToKeep: ['zh-cn', 'zh-tw'] }])
+          .use(MomentLocalesPlugin, [{ localesToKeep: ['zh-cn', 'zh-tw', 'ko'] }])
           .end()
 
         // prettier-ignore
