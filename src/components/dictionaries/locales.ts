@@ -100,7 +100,7 @@ export function getMachineLocales(
       },
       tl2: {
         en:
-          'Fallback when detected languange and target language are identical.',
+          'Fallback when detected language and target language are identical.',
         'zh-CN': '如果检测的源语言与目标语言相同将自动切换第二目标语言。',
         'zh-TW': '如果檢測的源語言與目標語言相同將自動切換第二目標語言。',
         ko:

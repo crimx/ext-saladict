@@ -9,9 +9,13 @@ export type LangCode = 'zh-CN' | 'zh-TW' | 'ko' | 'en'
 
 const langUI = browser.i18n.getUILanguage()
 const langCode: LangCode =
-  langUI === 'zh-CN'
+  langUI === 'zh-TW' || langUI === 'zh-HK'
+    ? 'zh-TW'
+    : langUI.startsWith('zh-')
     ? 'zh-CN'
     : langUI === 'ko' || langUI.startsWith('ko-')
+    ? 'ko'
+    : 'en'
 
 export type DictConfigsMutable = ReturnType<typeof getAllDicts>
 export type DictConfigs = DeepReadonly<DictConfigsMutable>
