@@ -2,20 +2,23 @@
   "name": {
     "en": "兩岸詞典",
     "zh-CN": "两岸词典",
-    "zh-TW": "兩岸詞典"
+    "zh-TW": "兩岸詞典",
+    "ko": "兩岸詞典(양안사전)"
   },
   "options": {
     "trans": {
       "en": "Show Translation",
       "zh-CN": "显示翻译",
-      "zh-TW": "顯示翻譯"
+      "zh-TW": "顯示翻譯",
+      "ko": "번역 표시"
     }
   },
   "helps": {
     "trans": {
       "en": "Show translation of other languages.",
       "zh-CN": "显示其它语言的翻译。",
-      "zh-TW": "顯示其它語言的翻譯。"
+      "zh-TW": "顯示其它語言的翻譯。",
+      "ko": "다른 언어로의 번역을 표시합니다."
     }
   }
 }

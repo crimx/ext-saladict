@@ -2,43 +2,51 @@
   "name": {
     "en": "Longman Dictionary",
     "zh-CN": "朗文词典",
-    "zh-TW": "朗文詞典"
+    "zh-TW": "朗文詞典",
+    "ko": "롱맨 사전"
   },
   "options": {
     "wordfams": {
       "en": "Show word family",
       "zh-CN": "显示单词家族",
-      "zh-TW": "展示單字家族"
+      "zh-TW": "展示單字家族",
+      "ko": "단어 계열 표시"
     },
     "collocations": {
       "en": "Show collocations",
       "zh-CN": "显示惯用搭配",
-      "zh-TW": "展示慣用搭配"
+      "zh-TW": "展示慣用搭配",
+      "ko": "연어(관용 표현) 표시"
     },
     "grammar": {
       "en": "Show grammar",
       "zh-CN": "显示语法解释",
-      "zh-TW": "展示文法講解"
+      "zh-TW": "展示文法講解",
+      "ko": "문법 설명 표시"
     },
     "thesaurus": {
       "en": "Show thesaurus",
       "zh-CN": "显示同义词",
-      "zh-TW": "展示同義詞"
+      "zh-TW": "展示同義詞",
+      "ko": "유의어 표시"
     },
     "examples": {
       "en": "Show examples",
       "zh-CN": "显示例句",
-      "zh-TW": "展示例句"
+      "zh-TW": "展示例句",
+      "ko": "예문 표시"
     },
     "bussinessFirst": {
       "en": "Show bussiness result first",
       "zh-CN": "优先显示商务词典",
-      "zh-TW": "優先展示商務字典"
+      "zh-TW": "優先展示商務字典",
+      "ko": "비즈니스 사전 우선 표시"
     },
     "related": {
       "en": "Show related results",
       "zh-CN": "失败时显示备选",
-      "zh-TW": "失敗時顯示備選"
+      "zh-TW": "失敗時顯示備選",
+      "ko": "실패 시 대체 결과 표시"
     }
   }
 }

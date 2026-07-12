@@ -359,7 +359,9 @@ export const locale = {
       shanbay: '编写扇贝词典模块',
       trans_tw: '提供部分繁体中文翻译',
       weblio: '协助添加 Weblio 辞書',
-      machine_translators: '实现阿里翻译、小牛翻译与火山翻译'
+      machine_translators: '实现阿里翻译、小牛翻译与火山翻译',
+      bingtrans: '实现必应翻译',
+      trans_ko: '提供韩语翻译'
     },
     contact_author: '联系作者',
     donate: '支持项目',

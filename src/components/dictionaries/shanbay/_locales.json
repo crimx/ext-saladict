@@ -2,18 +2,21 @@
   "name": {
     "en": "Shanbay Dictionary",
     "zh-CN": "扇贝词典",
-    "zh-TW": "扇貝詞典"
+    "zh-TW": "扇貝詞典",
+    "ko": "산베이 사전"
   },
   "options": {
     "basic": {
       "en": "Show basic meaning",
       "zh-CN": "显示简单释义",
-      "zh-TW": "顯示簡單解釋"
+      "zh-TW": "顯示簡單解釋",
+      "ko": "기본 뜻 표시"
     },
     "sentence": {
       "en": "Show sentences",
       "zh-CN": "显示权威例句",
-      "zh-TW": "顯示權威例句"
+      "zh-TW": "顯示權威例句",
+      "ko": "권위 있는 예문 표시"
     }
   }
 }

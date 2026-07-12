@@ -41,6 +41,7 @@ export const General: FC = () => {
         <Select>
           <Select.Option value="zh-CN">简体中文</Select.Option>
           <Select.Option value="zh-TW">繁體中文</Select.Option>
+          <Select.Option value="ko">한국어</Select.Option>
           <Select.Option value="en">English</Select.Option>
         </Select>
       )

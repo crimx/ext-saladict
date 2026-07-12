@@ -10,6 +10,8 @@ type ChromeDeclarativeNetRequest = {
       condition: {
         regexFilter: string
         resourceTypes: string[]
+        tabIds: number[]
+        excludedInitiatorDomains: string[]
       }
     }>
     removeRuleIds?: number[]
@@ -118,7 +120,11 @@ export function createCookieHeaderNetworkCompatibility(
 
     webRequest.onBeforeSendHeaders.addListener(
       details => {
-        if (details && details.requestHeaders) {
+        if (
+          details &&
+          details.requestHeaders &&
+          shouldModifyRequest(details, options.topLevelSite)
+        ) {
           setRequestHeader(
             details.requestHeaders,
             'Referer',
@@ -172,7 +178,9 @@ async function installMv3HeaderRule(
         },
         condition: {
           regexFilter: options.ruleRegexFilter,
-          resourceTypes: options.resourceTypes || ['xmlhttprequest', 'media']
+          resourceTypes: options.resourceTypes || ['xmlhttprequest', 'media'],
+          tabIds: [-1],
+          excludedInitiatorDomains: [getHostname(options.topLevelSite)]
         }
       }
     ]
@@ -298,6 +306,39 @@ function stringifyCookies(cookies: Cookie[]) {
     cookiePairs.push(`${cookie.name}=${cookie.value}`)
   }
   return cookiePairs.join('; ')
+}
+
+function shouldModifyRequest(
+  details: {
+    tabId?: number
+    originUrl?: string
+    initiator?: string
+  },
+  topLevelSite: string
+) {
+  if (details.tabId !== -1) {
+    return false
+  }
+
+  const initiator = details.initiator || details.originUrl
+  if (!initiator) {
+    return true
+  }
+
+  const initiatorHostname = getHostname(initiator)
+  const websiteHostname = getHostname(topLevelSite)
+  return (
+    initiatorHostname !== websiteHostname &&
+    !initiatorHostname.endsWith(`.${websiteHostname}`)
+  )
+}
+
+function getHostname(url: string) {
+  try {
+    return new URL(url).hostname
+  } catch (error) {
+    return ''
+  }
 }
 
 function setRequestHeader(

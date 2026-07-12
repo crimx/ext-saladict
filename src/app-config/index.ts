@@ -5,15 +5,22 @@ import { getAllContextMenus } from './context-menus'
 import { MtaAutoUnfold as _MtaAutoUnfold } from './profiles'
 import { getDefaultDictAuths } from './auth'
 
-export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
+export type LangCode = 'zh-CN' | 'zh-TW' | 'ko' | 'en'
 
-const langUI = browser.i18n.getUILanguage()
-const langCode: LangCode =
-  langUI === 'zh-CN'
-    ? 'zh-CN'
-    : langUI === 'zh-TW' || langUI === 'zh-HK'
-    ? 'zh-TW'
-    : 'en'
+export function resolveLangCode(langUI = ''): LangCode {
+  if (langUI === 'zh-TW' || langUI === 'zh-HK') {
+    return 'zh-TW'
+  }
+  if (langUI === 'zh-CN' || langUI.startsWith('zh-')) {
+    return 'zh-CN'
+  }
+  if (langUI === 'ko' || langUI.startsWith('ko-')) {
+    return 'ko'
+  }
+  return 'en'
+}
+
+const langCode = resolveLangCode(browser.i18n.getUILanguage())
 
 export type DictConfigsMutable = ReturnType<typeof getAllDicts>
 export type DictConfigs = DeepReadonly<DictConfigsMutable>

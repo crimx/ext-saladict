@@ -2,20 +2,23 @@
   "name": {
     "en": "國語辭典",
     "zh-CN": "国语辞典",
-    "zh-TW": "國語辭典"
+    "zh-TW": "國語辭典",
+    "ko": "國語辭典(대만 국어사전)"
   },
   "options": {
     "trans": {
       "en": "Show Translation",
       "zh-CN": "显示翻译",
-      "zh-TW": "顯示翻譯"
+      "zh-TW": "顯示翻譯",
+      "ko": "번역 표시"
     }
   },
   "helps": {
     "trans": {
       "en": "Show translation of other languages.",
       "zh-CN": "显示其它语言的翻译。",
-      "zh-TW": "顯示其它語言的翻譯。"
+      "zh-TW": "顯示其它語言的翻譯。",
+      "ko": "다른 언어로의 번역을 표시합니다."
     }
   }
 }

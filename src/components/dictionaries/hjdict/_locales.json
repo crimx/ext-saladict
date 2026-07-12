@@ -2,128 +2,153 @@
   "name": {
     "en": "Hu Jiang",
     "zh-CN": "沪江小D",
-    "zh-TW": "沪江小D"
+    "zh-TW": "沪江小D",
+    "ko": "후장 샤오디"
   },
   "options": {
     "engas": {
       "en": "Treat English as",
       "zh-CN": "对全英文使用词典",
-      "zh-TW": "對全英文使用字典"
+      "zh-TW": "對全英文使用字典",
+      "ko": "영어를 다음 언어로 처리"
     },
     "chsas": {
       "en": "Treat Chinese as",
       "zh-CN": "对全中文使用词典",
-      "zh-TW": "對全中文使用字典"
+      "zh-TW": "對全中文使用字典",
+      "ko": "중국어를 다음 언어로 처리"
     },
     "uas": {
       "en": "Treat 'ü' as",
       "zh-CN": "将 'ü' 字符当作",
-      "zh-TW": "把 'ü' 字元當成"
+      "zh-TW": "把 'ü' 字元當成",
+      "ko": "'ü' 문자를 다음으로 처리"
     },
     "aas": {
       "en": "Treat 'ä' as",
       "zh-CN": "将 'ä' 字符当作",
-      "zh-TW": "把 'ä' 字元當成"
+      "zh-TW": "把 'ä' 字元當成",
+      "ko": "'ä' 문자를 다음으로 처리"
     },
     "eas": {
       "en": "Treat 'é' as",
       "zh-CN": "将 'é' 字符当作",
-      "zh-TW": "把 'é' 字元當成"
+      "zh-TW": "把 'é' 字元當成",
+      "ko": "'é' 문자를 다음으로 처리"
     },
     "related": {
       "en": "Show related results",
       "zh-CN": "失败时显示备选",
-      "zh-TW": "失敗時顯示備選"
+      "zh-TW": "失敗時顯示備選",
+      "ko": "실패 시 대체 결과 표시"
     },
     "chsas-jp/cj": {
       "en": "中 → 日",
       "zh-CN": "中 → 日",
-      "zh-TW": "中 → 日"
+      "zh-TW": "中 → 日",
+      "ko": "中 → 日"
     },
     "chsas-jp/jc": {
       "en": "日 → 中",
       "zh-CN": "日 → 中",
-      "zh-TW": "日 → 中"
+      "zh-TW": "日 → 中",
+      "ko": "日 → 中"
     },
     "chsas-kr": {
       "en": "Korean",
       "zh-CN": "韩文",
-      "zh-TW": "韓文"
+      "zh-TW": "韓文",
+      "ko": "한국어"
     },
     "chsas-w": {
       "en": "English",
       "zh-CN": "英文",
-      "zh-TW": "英文"
+      "zh-TW": "英文",
+      "ko": "영어"
     },
     "chsas-fr": {
       "en": "French",
       "zh-CN": "法文",
-      "zh-TW": "法文"
+      "zh-TW": "法文",
+      "ko": "프랑스어"
     },
     "chsas-de": {
       "en": "Deutsch",
       "zh-CN": "德文",
-      "zh-TW": "德文"
+      "zh-TW": "德文",
+      "ko": "독일어"
     },
     "chsas-es": {
       "en": "Spanish",
       "zh-CN": "西班牙文",
-      "zh-TW": "西班牙文"
+      "zh-TW": "西班牙文",
+      "ko": "스페인어"
     },
     "engas-w": {
       "en": "English",
       "zh-CN": "英文",
-      "zh-TW": "英文"
+      "zh-TW": "英文",
+      "ko": "영어"
     },
     "engas-fr": {
       "en": "French",
       "zh-CN": "法文",
-      "zh-TW": "法文"
+      "zh-TW": "法文",
+      "ko": "프랑스어"
     },
     "engas-de": {
       "en": "Deutsch",
       "zh-CN": "德文",
-      "zh-TW": "德文"
+      "zh-TW": "德文",
+      "ko": "독일어"
     },
     "engas-es": {
       "en": "Spanish",
       "zh-CN": "西班牙文",
-      "zh-TW": "西班牙文"
+      "zh-TW": "西班牙文",
+      "ko": "스페인어"
     },
     "uas-fr": {
       "en": "French",
       "zh-CN": "法文",
-      "zh-TW": "法文"
+      "zh-TW": "法文",
+      "ko": "프랑스어"
     },
     "uas-de": {
       "en": "Deutsch",
       "zh-CN": "德文",
-      "zh-TW": "德文"
+      "zh-TW": "德文",
+      "ko": "독일어"
     },
     "uas-es": {
       "en": "Spanish",
       "zh-CN": "西班牙文",
-      "zh-TW": "西班牙文"
+      "zh-TW": "西班牙文",
+      "ko": "스페인어"
     },
     "aas-fr": {
       "en": "French",
       "zh-CN": "法文",
-      "zh-TW": "法文"
+      "zh-TW": "法文",
+      "ko": "프랑스어"
     },
     "aas-de": {
       "en": "Deutsch",
       "zh-CN": "德文",
-      "zh-TW": "德文"
+      "zh-TW": "德文",
+      "ko": "독일어"
     },
     "eas-fr": {
       "en": "French",
       "zh-CN": "法文",
-      "zh-TW": "法文"
+      "zh-TW": "法文",
+      "ko": "프랑스어"
     },
     "eas-es": {
       "en": "Spanish",
       "zh-CN": "西班牙文",
-      "zh-TW": "西班牙文"
+      "zh-TW": "西班牙文",
+      "ko": "스페인어"
     }
   }
 }

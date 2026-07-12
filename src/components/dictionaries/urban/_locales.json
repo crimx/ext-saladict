@@ -2,18 +2,21 @@
   "name": {
     "en": "Urban",
     "zh-CN": "Urban",
-    "zh-TW": "Urban"
+    "zh-TW": "Urban",
+    "ko": "Urban"
   },
   "options": {
     "resultnum": {
       "en": "Show",
       "zh-CN": "结果数量",
-      "zh-TW": "結果數量"
+      "zh-TW": "結果數量",
+      "ko": "표시 개수"
     },
     "resultnum_unit": {
       "en": "results",
       "zh-CN": "个",
-      "zh-TW": "個"
+      "zh-TW": "個",
+      "ko": "개"
     }
   }
 }

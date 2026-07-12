@@ -52,7 +52,7 @@ export function mergeConfig(
   Object.keys(base).forEach(key => {
     switch (key) {
       case 'langCode':
-        merge('langCode', val => /^(zh-CN|zh-TW|en)$/.test(val))
+        merge('langCode', val => /^(zh-CN|zh-TW|ko|en)$/.test(val))
         break
       case 'darkMode': {
         const darkMode = normalizeDarkMode(oldConfig.darkMode)

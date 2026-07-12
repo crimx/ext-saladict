@@ -2,18 +2,21 @@
   "name": {
     "en": "Merriam-Webster's Dictionary",
     "zh-CN": "韦氏词典",
-    "zh-TW": "韋氏字典"
+    "zh-TW": "韋氏字典",
+    "ko": "메리엄-웹스터 사전"
   },
   "options": {
     "resultnum": {
       "en": "Show",
       "zh-CN": "结果数量",
-      "zh-TW": "結果數量"
+      "zh-TW": "結果數量",
+      "ko": "표시 개수"
     },
     "resultnum_unit": {
       "en": "results",
       "zh-CN": "个",
-      "zh-TW": "個"
+      "zh-TW": "個",
+      "ko": "개"
     }
   }
 }

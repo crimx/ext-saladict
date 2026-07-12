@@ -19,6 +19,7 @@ import {
 
 export const getSrcPage: GetSrcPageFunction = async (text, config, profile) => {
   let { lang } = profile.dicts.all.cambridge.options
+  const wordPath = encodeWordPath(text)
 
   if (lang === 'default') {
     switch (config.langCode) {
@@ -36,28 +37,25 @@ export const getSrcPage: GetSrcPageFunction = async (text, config, profile) => {
 
   switch (lang) {
     case 'en':
-      return (
-        'https://dictionary.cambridge.org/search/direct/?datasetsearch=english&q=' +
-        encodeURIComponent(
-          text
-            .trim()
-            .split(/\s+/)
-            .join('-')
-        )
-      )
+      return `https://dictionary.cambridge.org/dictionary/english/${wordPath}`
     case 'en-chs':
-      return (
-        'https://dictionary.cambridge.org/zhs/%E6%90%9C%E7%B4%A2/direct/?datasetsearch=english-chinese-simplified&q=' +
-        encodeURIComponent(text)
-      )
+      return `https://dictionary.cambridge.org/dictionary/english-chinese-simplified/${wordPath}`
     case 'en-chz': {
       const chsToChz = await getChsToChz()
-      return (
-        'https://dictionary.cambridge.org/zht/%E6%90%9C%E7%B4%A2/direct/?datasetsearch=english-chinese-traditional&q=' +
-        encodeURIComponent(chsToChz(text))
-      )
+      return `https://dictionary.cambridge.org/dictionary/english-chinese-traditional/${encodeWordPath(
+        chsToChz(text)
+      )}`
     }
   }
+}
+
+function encodeWordPath(text: string): string {
+  return encodeURIComponent(
+    text
+      .trim()
+      .split(/\s+/)
+      .join('-')
+  )
 }
 
 const HOST = 'https://dictionary.cambridge.org'

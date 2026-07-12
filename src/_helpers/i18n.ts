@@ -12,7 +12,7 @@ import i18n, { TFunction } from 'i18next'
 import { getConfig, addConfigListener } from '@/_helpers/config-manager'
 import zip from 'lodash/zip'
 
-export type LangCode = 'zh-CN' | 'zh-TW' | 'en'
+export type LangCode = 'zh-CN' | 'zh-TW' | 'ko' | 'en'
 export type Namespace =
   | 'common'
   | 'content'
@@ -27,6 +27,7 @@ export type Namespace =
 export interface RawLocale {
   'zh-CN': string
   'zh-TW': string
+  ko: string
   en: string
 }
 
@@ -88,7 +89,7 @@ export async function i18nLoader(): Promise<i18n.i18n> {
     .init({
       lng: langCode,
       fallbackLng: false,
-      whitelist: ['en', 'zh-CN', 'zh-TW'],
+      whitelist: ['en', 'zh-CN', 'zh-TW', 'ko'],
 
       debug: process.env.NODE_ENV === 'development',
       saveMissing: false,

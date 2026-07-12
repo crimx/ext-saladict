@@ -7,7 +7,7 @@ module.exports = {
       'catch-zht.html',
       {
         url:
-          'https://dictionary.cambridge.org/zht/%E6%90%9C%E7%B4%A2/direct/?datasetsearch=english-chinese-traditional&q=catch',
+          'https://dictionary.cambridge.org/dictionary/english-chinese-traditional/catch',
         Accept
       }
     ],
@@ -15,23 +15,21 @@ module.exports = {
       'house-zhs.html',
       {
         url:
-          'https://dictionary.cambridge.org/zhs/%E6%90%9C%E7%B4%A2/direct/?datasetsearch=english-chinese-simplified&q=house',
+          'https://dictionary.cambridge.org/dictionary/english-chinese-simplified/house',
         Accept
       }
     ],
     [
       'love.html',
       {
-        url:
-          'https://dictionary.cambridge.org/search/direct/?datasetsearch=english&q=love',
+        url: 'https://dictionary.cambridge.org/dictionary/english/love',
         Accept
       }
     ],
     [
       'jumblish.html',
       {
-        url:
-          'https://dictionary.cambridge.org/search/direct/?datasetsearch=english&q=jumblish',
+        url: 'https://dictionary.cambridge.org/dictionary/english/jumblish',
         Accept
       }
     ]

@@ -363,7 +363,9 @@ export const locale: typeof _locale = {
       shanbay: '編寫扇貝詞典模組',
       trans_tw: '提供部分繁體中文翻譯',
       weblio: '協助新增 Weblio 辭書',
-      machine_translators: '實作阿里翻譯、小牛翻譯與火山翻譯'
+      machine_translators: '實作阿里翻譯、小牛翻譯與火山翻譯',
+      bingtrans: '實作必應翻譯',
+      trans_ko: '提供韓語翻譯'
     },
     contact_author: '聯絡作者',
     donate: '支援項目',

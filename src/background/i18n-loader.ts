@@ -36,7 +36,7 @@ export async function backgroundI18nLoader(): Promise<i18n.i18n> {
     .init({
       lng: langCode,
       fallbackLng: false,
-      whitelist: ['en', 'zh-CN', 'zh-TW'],
+      whitelist: ['en', 'zh-CN', 'zh-TW', 'ko'],
       debug: process.env.NODE_ENV === 'development',
       saveMissing: false,
       load: 'currentOnly',

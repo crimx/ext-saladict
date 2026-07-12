@@ -2,38 +2,45 @@
   "name": {
     "en": "Cambridge Dictionary",
     "zh-CN": "剑桥词典",
-    "zh-TW": "劍橋詞典"
+    "zh-TW": "劍橋詞典",
+    "ko": "케임브리지 사전"
   },
   "options": {
     "lang": {
       "en": "Language",
       "zh-CN": "语言",
-      "zh-TW": "語言"
+      "zh-TW": "語言",
+      "ko": "언어"
     },
     "lang-default": {
       "en": "Default",
       "zh-CN": "随扩展",
-      "zh-TW": "未設定"
+      "zh-TW": "未設定",
+      "ko": "기본값"
     },
     "lang-en": {
       "en": "English",
       "zh-CN": "English",
-      "zh-TW": "English"
+      "zh-TW": "English",
+      "ko": "English"
     },
     "lang-en-chs": {
       "en": "English–Chinese (Simplified)",
       "zh-CN": "英简",
-      "zh-TW": "英简"
+      "zh-TW": "英简",
+      "ko": "영중(간체)"
     },
     "lang-en-chz": {
       "en": "English–Chinese (Traditional)",
       "zh-CN": "英繁",
-      "zh-TW": "英繁"
+      "zh-TW": "英繁",
+      "ko": "영중(번체)"
     },
     "related": {
       "en": "Show related results",
       "zh-CN": "失败时显示备选",
-      "zh-TW": "失敗時顯示備選"
+      "zh-TW": "失敗時顯示備選",
+      "ko": "실패 시 대체 결과 표시"
     }
   }
 }

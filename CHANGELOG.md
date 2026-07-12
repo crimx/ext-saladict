@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.22.7](https://github.com/crimx/ext-saladict/compare/v7.22.6...v7.22.7) (2026-07-12)
+
+
+### Features
+
+* **bingtrans:** add Bing Translate dictionary ([#2341](https://github.com/crimx/ext-saladict/issues/2341)) ([2d130d2](https://github.com/crimx/ext-saladict/commit/2d130d25c9070fb2a645cab415256f25917c9b7b))
+* **i18n:** add Korean translation acknowledgement ([fee5300](https://github.com/crimx/ext-saladict/commit/fee530044a091703f08874ef772c592683b1a0d2))
+
+
+### Bug Fixes
+
+* **bingtrans:** enhance auth token handling and add error management for translations ([6c27e44](https://github.com/crimx/ext-saladict/commit/6c27e449d3e13580866f3d944a1236fd229adb44))
+* **dicts:** cambridge url ([e9543ff](https://github.com/crimx/ext-saladict/commit/e9543ff1b1bb19ea2ec0d4866478d853f9e7b3b1))
+* **dicts:** enhance request ([7b977ca](https://github.com/crimx/ext-saladict/commit/7b977ca59d917e33414f3a5b7bbe981f0f3f1a9d))
+
 ### [7.22.6](https://github.com/crimx/ext-saladict/compare/v7.22.5...v7.22.6) (2026-06-29)
 
 

@@ -385,7 +385,9 @@ export const locale: typeof _locale = {
       trans_tw: 'por la traducción al chino tradicional',
       weblio: 'por ayudar a añadir Weblio dict',
       machine_translators:
-        'por implementar Alibaba Translate, Niutrans y Volcengine Translate'
+        'por implementar Alibaba Translate, Niutrans y Volcengine Translate',
+      bingtrans: 'por implementar Bing Translate',
+      trans_ko: 'por la traducción al coreano'
     },
     contact_author: 'Contactar al autor',
     donate: 'Donar',

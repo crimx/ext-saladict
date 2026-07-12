@@ -3,6 +3,13 @@ import { mergeConfig } from '@/app-config/merge-config'
 import { getDefaultProfile } from '@/app-config/profiles'
 
 describe('mergeConfig', () => {
+  it('preserves Korean as the configured locale', () => {
+    const oldConfig = getDefaultConfig() as AppConfigMutable
+    oldConfig.langCode = 'ko'
+
+    expect(mergeConfig(oldConfig).langCode).toBe('ko')
+  })
+
   it('drops unsupported dictionary auth entries and keeps supported credentials', () => {
     const oldConfig = getDefaultConfig() as AppConfigMutable
 
