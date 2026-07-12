@@ -44,6 +44,11 @@ export const acknowledgement: Acknowledgement = [
     name: 'doraemonkeys',
     href: 'https://github.com/crimx/ext-saladict/commits?author=doraemonkeys',
     locale: 'bingtrans'
+  },
+  {
+    name: 'moduvoice',
+    href: 'https://github.com/crimx/ext-saladict/commits?author=moduvoice',
+    locale: 'trans_ko'
   }
 ]
 

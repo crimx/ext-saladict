@@ -376,7 +376,8 @@ export const locale: typeof _locale = {
       weblio: 'Weblio 사전 추가를 도와주신 것에 감사드립니다',
       machine_translators:
         '알리바바 번역, 니우트랜스(Niutrans), 볼케이노(Volcengine) 번역 구현에 감사드립니다',
-      bingtrans: 'Bing 번역 구현에 감사드립니다'
+      bingtrans: 'Bing 번역 구현에 감사드립니다',
+      trans_ko: '한국어 번역에 감사드립니다'
     },
     contact_author: '개발자에게 연락하기',
     donate: '후원하기',

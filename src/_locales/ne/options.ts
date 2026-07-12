@@ -382,7 +382,8 @@ export const locale: typeof _locale = {
       weblio: 'for helping add Weblio dict',
       machine_translators:
         'for implementing Alibaba Translate, Niutrans and Volcengine Translate',
-      bingtrans: 'for implementing Bing Translate'
+      bingtrans: 'for implementing Bing Translate',
+      trans_ko: 'for the Korean translation'
     },
     contact_author: 'Contact Author',
     donate: 'Donate',
