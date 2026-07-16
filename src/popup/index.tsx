@@ -46,12 +46,10 @@ getConfig().then(config => {
       openOptions()
       break
     case 'popup_standalone':
-      message.send({ type: 'OPEN_QS_PANEL' })
+      message.send({ type: 'OPEN_QS_PANEL' }).finally(() => window.close())
       break
     default:
-      sendContextMenusClick(config.baOpen).then(() => {
-        window.close()
-      })
+      sendContextMenusClick(config.baOpen).finally(() => window.close())
       break
   }
 })
