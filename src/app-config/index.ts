@@ -150,6 +150,8 @@ function _getDefaultConfig() {
 
     /** when and how to search text */
     mode: {
+      /** hide an unpinned panel after the pointer leaves it */
+      autoHide: false,
       /** show pop icon first */
       icon: true,
       /** how panel directly */

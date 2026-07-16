@@ -11,6 +11,15 @@ import { searchStart } from './search-start'
 import { newSelection } from './new-selection'
 import { openQSPanel } from './open-qs-panel'
 
+const hidePanel = (state: State): State => ({
+  ...state,
+  isPinned: false,
+  isShowBowl: false,
+  isShowDictPanel: false,
+  autoHidePanel: false,
+  isQSPanel: isQuickSearchPage()
+})
+
 export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
   NEW_CONFIG: (state, { payload }) => {
     const url = window.location.href
@@ -20,6 +29,7 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
     return {
       ...state,
       config: payload,
+      autoHidePanel: state.autoHidePanel && payload.mode.autoHide,
       panelHeight: Math.min(state.panelHeight, panelMaxHeight),
       panelMaxHeight,
       isQSFocus: payload.qsFocus,
@@ -68,6 +78,7 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
           // keep showing if it's standalone page
           isShowDictPanel: isStandalonePage(),
           isShowBowl: false,
+          autoHidePanel: false,
           // also reset quick search panel state
           isQSPanel: isQuickSearchPage()
         }
@@ -80,7 +91,10 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
     ...state,
     isShowBowl: false,
     isShowDictPanel: true,
-    isPinned: state.config.defaultPinned
+    isPinned: state.config.defaultPinned,
+    autoHidePanel: Boolean(
+      !state.config.defaultPinned && state.config.mode.autoHide
+    )
   }),
 
   UPDATE_TEXT: (state, { payload }) => ({
@@ -95,7 +109,8 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
 
   TOGGLE_PIN: state => ({
     ...state,
-    isPinned: !state.isPinned
+    isPinned: !state.isPinned,
+    autoHidePanel: false
   }),
 
   TOGGLE_QS_FOCUS: state => ({
@@ -115,22 +130,19 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
           ...state,
           isPinned: state.config.defaultPinned,
           isShowDictPanel: true,
+          autoHidePanel: false,
           dictPanelCoord: {
             x: payload.x,
             y: payload.y
           }
         },
 
-  CLOSE_PANEL: state =>
-    isStandalonePage()
-      ? state
-      : {
-          ...state,
-          isPinned: false,
-          isShowBowl: false,
-          isShowDictPanel: false,
-          isQSPanel: isQuickSearchPage()
-        },
+  CLOSE_PANEL: state => (isStandalonePage() ? state : hidePanel(state)),
+
+  AUTO_HIDE_PANEL: state =>
+    state.autoHidePanel && !state.isPinned && !isStandalonePage()
+      ? hidePanel(state)
+      : state,
 
   SWITCH_HISTORY: (state, { payload }) => {
     const historyIndex = Math.min(
@@ -215,7 +227,8 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
 
   DRAG_START_COORD: (state, { payload }) => ({
     ...state,
-    dragStartCoord: payload
+    dragStartCoord: payload,
+    autoHidePanel: payload ? false : state.autoHidePanel
   }),
 
   SUMMONED_PANEL_INIT: (state, { payload }) => ({
@@ -224,7 +237,8 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
     historyIndex: 0,
     isPinned: state.config.defaultPinned,
     isShowDictPanel: true,
-    isShowBowl: false
+    isShowBowl: false,
+    autoHidePanel: false
   }),
 
   QS_PANEL_CHANGED: (state, { payload }) => {
@@ -238,6 +252,7 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
           ...state,
           withQssaPanel: payload,
           isPinned: false,
+          autoHidePanel: false,
           // no hiding if it's browser action page
           isShowDictPanel:
             isPopupPage() || (isOptionsPage() ? state.isShowDictPanel : false),
@@ -247,6 +262,7 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
       : {
           ...state,
           withQssaPanel: payload,
+          autoHidePanel: false,
           isQSPanel: isQuickSearchPage()
         }
   },
@@ -265,7 +281,8 @@ export const actionHandlers: ActionHandlers<State, ActionCatalog> = {
           dictPanelCoord: {
             x: 50,
             y: window.innerHeight * 0.2
-          }
+          },
+          autoHidePanel: false
         }
       : {
           ...state,

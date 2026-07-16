@@ -15,6 +15,13 @@ export const searchMode = (mode: Mode, t: TFunction): SaladictFormItem => {
   if (mode === 'mode') {
     items.push(
       {
+        name: getConfigPath('mode', 'autoHide'),
+        label: null,
+        help: t('searchMode.autoHide_help'),
+        valuePropName: 'checked',
+        children: <Checkbox>{t('searchMode.autoHide')}</Checkbox>
+      },
+      {
         name: getConfigPath('mode', 'icon'),
         label: null,
         help: t('searchMode.icon_help'),

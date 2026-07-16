@@ -183,6 +183,9 @@ export const locale: typeof _locale = {
   },
 
   searchMode: {
+    autoHide: 'Automatically hide the unpinned panel',
+    autoHide_help:
+      'Hide the panel shortly after the pointer leaves it. Re-entering or focusing the panel cancels dismissal.',
     icon: 'Show Icon',
     icon_help: 'A cute little icon pops up nearby the cursor.',
     direct: 'Direct Search',

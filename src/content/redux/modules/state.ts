@@ -61,6 +61,8 @@ export const initState = async () => {
     },
     isShowBowl: false,
     isShowDictPanel: isStandalonePage(),
+    /** Whether the current panel can be dismissed by cursor movement */
+    autoHidePanel: false,
     isShowMtaBox,
     isExpandMtaBox:
       isShowMtaBox &&

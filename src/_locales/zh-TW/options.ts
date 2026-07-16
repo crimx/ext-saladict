@@ -173,6 +173,9 @@ export const locale: typeof _locale = {
   },
 
   searchMode: {
+    autoHide: '自動隱藏未釘住的字典介面',
+    autoHide_help:
+      '滑鼠移出字典介面後，稍後自動隱藏介面。滑鼠重新進入或焦點位於介面內時取消隱藏。',
     icon: '顯示圖示',
     icon_help:
       '在滑鼠附近顯示一個圖示，滑鼠移動到圖示後，會顯示出字典的視窗介面。',

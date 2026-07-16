@@ -12,6 +12,8 @@ import { getScrollbarWidth } from '@/_helpers/scrollbar-width'
 import { SALADICT_PANEL, isInternalPage } from '@/_helpers/saladict'
 import { HoverBoxContext } from '@/components/HoverBox'
 
+const autoHideDelay = 600
+
 export interface DictPanelProps {
   /** Update position command from uptream */
   coord: {
@@ -33,6 +35,10 @@ export interface DictPanelProps {
 
   dragStartCoord: null | { x: number; y: number }
   onDragEnd: () => void
+
+  /** Dismiss a panel opened by normal selection. */
+  autoHide?: boolean
+  onAutoHide?: () => void
 }
 
 export const DictPanel: FC<DictPanelProps> = props => {
@@ -74,6 +80,50 @@ export const DictPanel: FC<DictPanelProps> = props => {
       userDraggedRef.current = true
     }
   }, [props.dragStartCoord])
+
+  useEffect(() => {
+    const root = rootElRef.current
+    const onAutoHide = props.onAutoHide
+    if (!props.autoHide || !root || !onAutoHide) {
+      return
+    }
+
+    let timeout: number | undefined
+
+    const cancelAutoHide = () => {
+      if (timeout !== undefined) {
+        window.clearTimeout(timeout)
+        timeout = undefined
+      }
+    }
+
+    const isPanelActive = () => {
+      const rootNode = root.getRootNode() as Document | ShadowRoot
+      return !!rootNode.activeElement && root.contains(rootNode.activeElement)
+    }
+
+    const scheduleAutoHide = () => {
+      if (timeout === undefined && !isPanelActive()) {
+        timeout = window.setTimeout(() => {
+          timeout = undefined
+          if (!isPanelActive()) {
+            onAutoHide()
+          }
+        }, autoHideDelay)
+      }
+    }
+
+    root.addEventListener('mouseenter', cancelAutoHide)
+    root.addEventListener('mouseleave', scheduleAutoHide)
+    root.addEventListener('focusin', cancelAutoHide)
+
+    return () => {
+      cancelAutoHide()
+      root.removeEventListener('mouseenter', cancelAutoHide)
+      root.removeEventListener('mouseleave', scheduleAutoHide)
+      root.removeEventListener('focusin', cancelAutoHide)
+    }
+  }, [props.autoHide, props.onAutoHide])
 
   const dragStartPanelCoord = useMemo(
     () => (props.dragStartCoord ? { x, y } : null),

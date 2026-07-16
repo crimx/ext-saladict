@@ -80,6 +80,7 @@ export function mergeConfig(
       case 'panelMode':
       case 'qsPanelMode':
         if (key === 'mode') {
+          mergeBoolean('mode.autoHide')
           mergeBoolean('mode.icon')
         }
         mergeBoolean(`${key}.direct`)

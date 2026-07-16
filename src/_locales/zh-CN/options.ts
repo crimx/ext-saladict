@@ -170,6 +170,9 @@ export const locale = {
   },
 
   searchMode: {
+    autoHide: '自动隐藏未钉住的查词面板',
+    autoHide_help:
+      '鼠标移出查词面板后，稍后自动隐藏面板。鼠标重新进入或焦点位于面板内时取消隐藏。',
     icon: '显示图标',
     icon_help: '在鼠标附近显示一个图标，鼠标移上去后才显示词典面板。',
     direct: '直接搜索',
