@@ -1,11 +1,17 @@
 import axios from 'axios'
 import AxiosMockAdapter from 'axios-mock-adapter'
 import { retry } from '../helpers'
-import { search } from '@/components/dictionaries/cambridge/engine'
+import {
+  inlineEntryImages,
+  search
+} from '@/components/dictionaries/cambridge/engine'
 import { getDefaultConfig, AppConfigMutable } from '@/app-config'
 import getDefaultProfile from '@/app-config/profiles'
 import { mockRequest } from './requests.mock'
-import { isManualVerificationError } from '@/components/dictionaries/helpers'
+import {
+  getInnerHTML,
+  isManualVerificationError
+} from '@/components/dictionaries/helpers'
 
 let mock: AxiosMockAdapter
 
@@ -83,5 +89,44 @@ describe('Dict/Cambridge/engine', () => {
         url: 'https://dictionary.cambridge.org/dictionary/english/verify'
       })
     }
+  })
+
+  it('should replace entry images with base64 data URLs', async () => {
+    document.body.innerHTML = `
+      <section>
+        <div class="dimg">
+          <img
+            src="https://dictionary.cambridge.org/images/thumb/test.jpg"
+            srcset="https://dictionary.cambridge.org/images/thumb/test-2x.jpg 2x"
+          >
+        </div>
+      </section>
+    `
+    const entry = document.querySelector('section')!
+
+    await inlineEntryImages([entry])
+
+    const image = entry.querySelector('img')!
+    expect(image.getAttribute('src')).toBe('data:image/jpeg;base64,AQID')
+    expect(image.hasAttribute('srcset')).toBe(false)
+    expect(getInnerHTML('https://dictionary.cambridge.org', entry)).toContain(
+      'src="data:image/jpeg;base64,AQID"'
+    )
+  })
+
+  it('should remove entry images when Cambridge returns a challenge', async () => {
+    document.body.innerHTML = `
+      <section>
+        <div class="dimg">
+          <img src="https://dictionary.cambridge.org/images/thumb/challenge.jpg">
+          <div class="dimg_c">Image credit</div>
+        </div>
+      </section>
+    `
+    const entry = document.querySelector('section')!
+
+    await inlineEntryImages([entry])
+
+    expect(entry.querySelector('.dimg')).toBeNull()
   })
 })
