@@ -61,7 +61,13 @@ See the [contributing guide](./CONTRIBUTING.md).
 
 ## How can I contribute?
 
-[CONTRIBUTING.md](./CONTRIBUTING.md)
+See [CONTRIBUTING.md](./CONTRIBUTING.md).
+
+Thanks to the following contributors for their work on Saladict:
+
+<a href="https://github.com/crimx/ext-saladict/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=crimx/ext-saladict" />
+</a>
 
 ## License and Brand
 
