@@ -8,18 +8,36 @@ interface PostMessageEvent extends MessageEvent {
   }
 }
 
+function findFrameBySource(source: MessageEventSource | null) {
+  const roots: Array<Document | ShadowRoot> = [document]
+
+  while (roots.length) {
+    const root = roots.pop()!
+    const frame = Array.from(
+      root.querySelectorAll<HTMLIFrameElement | HTMLFrameElement>(
+        'iframe, frame'
+      )
+    ).find(({ contentWindow }) => contentWindow === source)
+
+    if (frame) {
+      return frame
+    }
+
+    for (const element of Array.from(root.querySelectorAll('*'))) {
+      if (element.shadowRoot) {
+        roots.push(element.shadowRoot)
+      }
+    }
+  }
+}
+
 export function postMessageHandler({ data, source }: PostMessageEvent) {
   if (!data || data.type !== 'SALADICT_SELECTION') {
     return
   }
 
-  // get the souce iframe
-  const matchSrc = ({ contentWindow }: HTMLIFrameElement | HTMLFrameElement) =>
-    contentWindow === source
-
-  const frame =
-    Array.from(document.querySelectorAll('iframe')).find(matchSrc) ||
-    Array.from(document.querySelectorAll('frame')).find(matchSrc)
+  // Search open shadow roots because reader frames may be nested inside one.
+  const frame = findFrameBySource(source)
 
   if (!frame) {
     return

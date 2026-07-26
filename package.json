@@ -10,7 +10,7 @@
     "build:mv3": "webpack --config webpack.mv3.config.js --mode production",
     "build": "yarn build:mv2 && yarn build:mv3",
     "postbuild": "node scripts/firefox-fix.js",
-    "devbuild": "webpack --mode development",
+    "devbuild:mv3": "webpack --config webpack.mv3.config.js --mode production --debug",
     "type-check": "tsc --noEmit",
     "test": "jest --testTimeout 20000",
     "test:watch": "jest --watch",
