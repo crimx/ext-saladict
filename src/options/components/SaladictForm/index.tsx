@@ -40,6 +40,8 @@ export interface SaladictFormItem
   key?: string
   /** Hide item based on other fields */
   hide?: (values: FieldValues) => boolean
+  /** Save on blur instead of while the value is changing. */
+  autoSave?: 'blur'
   /** Nested items. Must set items or children. */
   items?: SaladictFormItem[]
   /** Must set items or children. */
@@ -69,6 +71,7 @@ export const SaladictForm = React.forwardRef(
     const upload = useUpload()
     const uploadRef = useRef(upload)
     uploadRef.current = upload
+    const committedBlurValues = useRef<FieldValues>({})
 
     const autoSave = useMemo(
       () =>
@@ -80,12 +83,6 @@ export const SaladictForm = React.forwardRef(
         }, 500),
       [form]
     )
-
-    useEffect(() => {
-      return () => {
-        autoSave.flush()
-      }
-    }, [autoSave])
 
     function extractInitial(
       items: SaladictFormItem[],
@@ -121,6 +118,87 @@ export const SaladictForm = React.forwardRef(
       () => extractInitial(items),
       [items]
     )
+
+    const blurAutoSaveFields = useMemo(() => {
+      const fields: string[] = []
+
+      function collect(items: SaladictFormItem[]) {
+        for (const item of items) {
+          if (item.items) {
+            collect(item.items)
+          } else if (item.name && item.autoSave === 'blur') {
+            fields.push(item.name)
+          }
+        }
+      }
+
+      collect(items)
+      return fields
+    }, [items])
+    const blurAutoSaveFieldsRef = useRef(blurAutoSaveFields)
+    blurAutoSaveFieldsRef.current = blurAutoSaveFields
+    const autoSaveEnabledRef = useRef(false)
+    autoSaveEnabledRef.current = !hideFooter && !manualSave
+
+    useEffect(() => {
+      for (const name of blurAutoSaveFields) {
+        committedBlurValues.current[name] = initialValues[name]
+      }
+    }, [blurAutoSaveFields, initialValues])
+
+    function getAutoSaveValues(values: FieldValues): FieldValues {
+      const savedValues = { ...values }
+
+      for (const name of blurAutoSaveFields) {
+        savedValues[name] = committedBlurValues.current[name]
+      }
+
+      return savedValues
+    }
+
+    function commitBlurFields() {
+      if (!autoSaveEnabledRef.current) {
+        return
+      }
+
+      const values = form.getFieldsValue()
+      let hasChanges = false
+
+      for (const name of blurAutoSaveFieldsRef.current) {
+        if (committedBlurValues.current[name] !== values[name]) {
+          committedBlurValues.current[name] = values[name]
+          hasChanges = true
+        }
+      }
+
+      if (hasChanges) {
+        autoSave({ ...values })
+      }
+    }
+
+    function saveBlurField(name: string) {
+      const values = form.getFieldsValue()
+      if (committedBlurValues.current[name] === values[name]) {
+        return
+      }
+
+      committedBlurValues.current[name] = values[name]
+      autoSave({ ...values })
+      autoSave.flush()
+    }
+
+    useEffect(() => {
+      const saveOnExit = () => {
+        commitBlurFields()
+        autoSave.flush()
+      }
+
+      window.addEventListener('pagehide', saveOnExit)
+      return () => {
+        window.removeEventListener('pagehide', saveOnExit)
+        saveOnExit()
+      }
+    }, [autoSave, form])
 
     const [hideFields, setHideFields] = useObservableState<
       FieldShow,
@@ -173,14 +251,36 @@ export const SaladictForm = React.forwardRef(
           }
         }
 
-        let { className, hide, children, items: subItems, ...itemProps } = item
+        let {
+          className,
+          hide,
+          children,
+          items: subItems,
+          autoSave: itemAutoSave,
+          ...itemProps
+        } = item
         if (hideFields[name]) {
           className = className ? className + ' saladict-hide' : 'saladict-hide'
         }
 
         return (
           <Form.Item key={name} {...itemProps} className={className}>
-            {subItems ? genFormItems(subItems) : children!}
+            {subItems
+              ? genFormItems(subItems)
+              : itemAutoSave === 'blur' && React.isValidElement(children)
+              ? React.cloneElement(children, {
+                  onBlur: () => saveBlurField(name),
+                  onKeyDown: event => {
+                    if (
+                      (event.ctrlKey || event.metaKey) &&
+                      event.key === 'Enter'
+                    ) {
+                      event.preventDefault()
+                      saveBlurField(name)
+                    }
+                  }
+                })
+              : children!}
           </Form.Item>
         )
       })
@@ -203,8 +303,12 @@ export const SaladictForm = React.forwardRef(
         onValuesChange={(changedValues, values) => {
           setFormDirty(true)
           setHideFields(values)
-          if (!hideFooter && !manualSave) {
-            autoSave({ ...values })
+          const changedFields = Object.keys(changedValues)
+          const changedBlurField = changedFields.some(name =>
+            blurAutoSaveFields.includes(name)
+          )
+          if (!hideFooter && !manualSave && !changedBlurField) {
+            autoSave(getAutoSaveValues(values))
           }
           if (props.onValuesChange) {
             props.onValuesChange(changedValues, values)

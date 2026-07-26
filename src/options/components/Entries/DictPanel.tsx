@@ -122,6 +122,7 @@ export const DictPanel: FC = () => {
         },
         {
           name: getConfigPath('panelCSS'),
+          autoSave: 'blur',
           extra: (
             <a
               href="https://github.com/crimx/ext-saladict/wiki/PanelCSS#wiki-content"
