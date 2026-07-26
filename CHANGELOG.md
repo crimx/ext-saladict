@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.22.8](https://github.com/crimx/ext-saladict/compare/v7.22.7...v7.22.8) (2026-07-26)
+
+
+### Features
+
+* implement auto-hide for unpinned panels ([9c0d9d7](https://github.com/crimx/ext-saladict/commit/9c0d9d7968dc9532682b87afcdb86a20d217d0a7)), closes [#2339](https://github.com/crimx/ext-saladict/issues/2339) [#2145](https://github.com/crimx/ext-saladict/issues/2145)
+
+
+### Bug Fixes
+
+* implement textarea blur auto-save ([2cabfe0](https://github.com/crimx/ext-saladict/commit/2cabfe0066ad3d2dc75654b70489cf3700bb74c7))
+* locate frame under shadow dom ([41d2d6f](https://github.com/crimx/ext-saladict/commit/41d2d6f2c82f17cb89c6f58587005d0e2db408ec)), closes [#2349](https://github.com/crimx/ext-saladict/issues/2349)
+* **cambridge:** convert img to base64 ([c9a8a9e](https://github.com/crimx/ext-saladict/commit/c9a8a9ece030edd409d25a529a47151ff59b540e)), closes [#2347](https://github.com/crimx/ext-saladict/issues/2347)
+* close empty popup panel ([d053a38](https://github.com/crimx/ext-saladict/commit/d053a38a6395d8f5fe4cc39608d9ff9b5de442a2)), closes [#2345](https://github.com/crimx/ext-saladict/issues/2345)
+
 ### [7.22.7](https://github.com/crimx/ext-saladict/compare/v7.22.6...v7.22.7) (2026-07-12)
 
 
