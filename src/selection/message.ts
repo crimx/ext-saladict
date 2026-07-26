@@ -8,25 +8,59 @@ interface PostMessageEvent extends MessageEvent {
   }
 }
 
+type FrameElement = HTMLIFrameElement | HTMLFrameElement
+
+const frameBySource = new WeakMap<object, FrameElement>()
+
+function isFrameElement(element: Element | null): element is FrameElement {
+  return (
+    element instanceof HTMLIFrameElement || element instanceof HTMLFrameElement
+  )
+}
+
 function findFrameBySource(source: MessageEventSource | null) {
+  if (!source) {
+    return
+  }
+
+  const cachedFrame = frameBySource.get(source)
+  if (
+    cachedFrame &&
+    cachedFrame.isConnected &&
+    cachedFrame.contentWindow === source
+  ) {
+    return cachedFrame
+  }
+
+  // This also works for frames inside closed shadow roots when same-origin.
+  try {
+    const frame = (source as Window).frameElement
+    if (isFrameElement(frame)) {
+      frameBySource.set(source, frame)
+      return frame
+    }
+  } catch {
+    // Accessing frameElement on a cross-origin WindowProxy throws.
+  }
+
   const roots: Array<Document | ShadowRoot> = [document]
 
   while (roots.length) {
     const root = roots.pop()!
-    const frame = Array.from(
-      root.querySelectorAll<HTMLIFrameElement | HTMLFrameElement>(
-        'iframe, frame'
-      )
-    ).find(({ contentWindow }) => contentWindow === source)
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT)
+    let element = walker.nextNode() as Element | null
 
-    if (frame) {
-      return frame
-    }
+    while (element) {
+      if (isFrameElement(element) && element.contentWindow === source) {
+        frameBySource.set(source, element)
+        return element
+      }
 
-    for (const element of Array.from(root.querySelectorAll('*'))) {
       if (element.shadowRoot) {
         roots.push(element.shadowRoot)
       }
+
+      element = walker.nextNode() as Element | null
     }
   }
 }
