@@ -59,6 +59,7 @@ export const openQSPanel: ActionHandler<
     ...state,
     isQSPanel: true,
     isShowDictPanel: true,
+    autoHidePanel: false,
     dictPanelCoord: { x, y }
   }
 }

@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { fetchDirtyDOM } from '@/_helpers/fetch-dom'
 import { getStaticSpeaker } from '@/components/Speaker'
 import { DictConfigs } from '@/app-config'
@@ -92,11 +93,14 @@ function isForbidden(e: any): boolean {
   return e && e.response && e.response.status === 403
 }
 
-function handleDOM(
+async function handleDOM(
   doc: Document,
   options: DictConfigs['cambridge']['options']
-): CambridgeSearchResult | Promise<CambridgeSearchResult> {
-  const result: CambridgeResult = []
+): Promise<CambridgeSearchResult> {
+  const entries: Array<{
+    id: string
+    element: Element
+  }> = []
   const catalog: NonNullable<CambridgeSearchResult['catalog']> = []
   const audio: { us?: string; uk?: string } = {}
 
@@ -136,9 +140,9 @@ function handleDOM(
 
     const entryId = `d-cambridge-entry${i}`
 
-    result.push({
+    entries.push({
       id: entryId,
-      html: getInnerHTML(HOST, $entry)
+      element: $entry
     })
 
     catalog.push({
@@ -149,7 +153,7 @@ function handleDOM(
     })
   })
 
-  if (result.length <= 0) {
+  if (entries.length <= 0) {
     // check idiom
     const $idiom = doc.querySelector('.idiom-block')
     if ($idiom) {
@@ -157,14 +161,14 @@ function handleDOM(
 
       sanitizeEntry($idiom)
 
-      result.push({
+      entries.push({
         id: 'd-cambridge-entry-idiom',
-        html: getInnerHTML(HOST, $idiom)
+        element: $idiom
       })
     }
   }
 
-  if (result.length <= 0 && options.related) {
+  if (entries.length <= 0 && options.related) {
     const $link = doc.querySelector('link[rel=canonical]')
     if (
       $link &&
@@ -174,19 +178,105 @@ function handleDOM(
     ) {
       const $related = doc.querySelector('.hfl-s.lt2b.lmt-10.lmb-25.lp-s_r-20')
       if ($related) {
-        result.push({
+        entries.push({
           id: 'd-cambridge-entry-related',
-          html: getInnerHTML(HOST, $related)
+          element: $related
         })
       }
     }
   }
 
-  if (result.length > 0) {
+  if (entries.length > 0) {
+    await inlineEntryImages(entries.map(entry => entry.element))
+    const result = entries.map(entry => ({
+      id: entry.id,
+      html: getInnerHTML(HOST, entry.element)
+    }))
+
     return { result, audio, catalog }
   }
 
   return handleNoResult()
+}
+
+export async function inlineEntryImages(entries: Element[]): Promise<void> {
+  const imagesByUrl = new Map<string, HTMLImageElement[]>()
+
+  entries.forEach(entry => {
+    entry.querySelectorAll<HTMLImageElement>('.dimg img[src]').forEach($img => {
+      const url = getFullLink(HOST, $img, 'src')
+      if (!url) return
+
+      const images = imagesByUrl.get(url) || []
+      images.push($img)
+      imagesByUrl.set(url, images)
+    })
+  })
+
+  await Promise.all(
+    Array.from(imagesByUrl).map(async ([url, images]) => {
+      try {
+        const dataUrl = await downloadImage(url)
+        images.forEach($img => {
+          $img.setAttribute('src', dataUrl)
+          $img.removeAttribute('srcset')
+        })
+      } catch (error) {
+        images.forEach(removeImageBlock)
+      }
+    })
+  )
+}
+
+async function downloadImage(url: string): Promise<string> {
+  const response = await axios.get<ArrayBuffer>(url, {
+    headers: {
+      Accept: 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
+    },
+    responseType: 'arraybuffer',
+    timeout: 5000,
+    withCredentials: true
+  })
+  const contentType = response.headers['content-type'] || ''
+  const mimeType = contentType
+    .split(';')[0]
+    .trim()
+    .toLowerCase()
+
+  if (!mimeType.startsWith('image/')) {
+    throw new Error(`Unexpected Cambridge image content type: ${contentType}`)
+  }
+
+  return `data:${mimeType};base64,${arrayBufferToBase64(response.data)}`
+}
+
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer)
+  let binary = ''
+
+  for (let offset = 0; offset < bytes.length; offset += 0x8000) {
+    const end = Math.min(offset + 0x8000, bytes.length)
+    let chunk = ''
+    for (let i = offset; i < end; i++) {
+      chunk += String.fromCharCode(bytes[i])
+    }
+    binary += chunk
+  }
+
+  return btoa(binary)
+}
+
+function removeImageBlock($img: HTMLImageElement): void {
+  let parent = $img.parentElement
+  while (parent && !parent.classList.contains('dimg')) {
+    parent = parent.parentElement
+  }
+
+  if (parent) {
+    parent.remove()
+  } else {
+    $img.remove()
+  }
 }
 
 function sanitizeEntry<E extends Element>($entry: E): E {

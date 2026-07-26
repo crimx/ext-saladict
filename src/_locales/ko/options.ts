@@ -179,6 +179,9 @@ export const locale: typeof _locale = {
   },
 
   searchMode: {
+    autoHide: '고정하지 않은 패널 자동 숨기기',
+    autoHide_help:
+      '포인터가 사전 패널을 벗어나면 잠시 후 패널을 숨깁니다. 패널에 다시 진입하거나 포커스가 패널 내에 있으면 숨김이 취소됩니다.',
     icon: '아이콘 표시',
     icon_help: '커서 근처에 작은 아이콘이 나타납니다.',
     direct: '바로 검색',

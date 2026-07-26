@@ -58,6 +58,9 @@ export type ActionCatalog = CreateActionCatalog<{
 
   CLOSE_PANEL: {}
 
+  /** Hide a panel opened by normal selection, if still eligible. */
+  AUTO_HIDE_PANEL: {}
+
   SWITCH_HISTORY: {
     payload: 'prev' | 'next'
   }

@@ -8,18 +8,70 @@ interface PostMessageEvent extends MessageEvent {
   }
 }
 
+type FrameElement = HTMLIFrameElement | HTMLFrameElement
+
+const frameBySource = new WeakMap<object, FrameElement>()
+
+function isFrameElement(element: Element | null): element is FrameElement {
+  return (
+    element instanceof HTMLIFrameElement || element instanceof HTMLFrameElement
+  )
+}
+
+function findFrameBySource(source: MessageEventSource | null) {
+  if (!source) {
+    return
+  }
+
+  const cachedFrame = frameBySource.get(source)
+  if (
+    cachedFrame &&
+    cachedFrame.isConnected &&
+    cachedFrame.contentWindow === source
+  ) {
+    return cachedFrame
+  }
+
+  // This also works for frames inside closed shadow roots when same-origin.
+  try {
+    const frame = (source as Window).frameElement
+    if (isFrameElement(frame)) {
+      frameBySource.set(source, frame)
+      return frame
+    }
+  } catch {
+    // Accessing frameElement on a cross-origin WindowProxy throws.
+  }
+
+  const roots: Array<Document | ShadowRoot> = [document]
+  let root: Document | ShadowRoot | undefined
+
+  while ((root = roots.pop())) {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT)
+    let element = walker.nextNode() as Element | null
+
+    while (element) {
+      if (isFrameElement(element) && element.contentWindow === source) {
+        frameBySource.set(source, element)
+        return element
+      }
+
+      if (element.shadowRoot) {
+        roots.push(element.shadowRoot)
+      }
+
+      element = walker.nextNode() as Element | null
+    }
+  }
+}
+
 export function postMessageHandler({ data, source }: PostMessageEvent) {
   if (!data || data.type !== 'SALADICT_SELECTION') {
     return
   }
 
-  // get the souce iframe
-  const matchSrc = ({ contentWindow }: HTMLIFrameElement | HTMLFrameElement) =>
-    contentWindow === source
-
-  const frame =
-    Array.from(document.querySelectorAll('iframe')).find(matchSrc) ||
-    Array.from(document.querySelectorAll('frame')).find(matchSrc)
+  // Search open shadow roots because reader frames may be nested inside one.
+  const frame = findFrameBySource(source)
 
   if (!frame) {
     return

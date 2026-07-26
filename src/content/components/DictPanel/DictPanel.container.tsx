@@ -17,7 +17,10 @@ const menuBar = <MenuBarContainer />
 const dictList = <DictListContainer />
 const waveformBox = <WaveformBoxContainer />
 
-type Dispatchers = ExtractDispatchers<DictPanelPortalProps, 'onDragEnd'>
+type Dispatchers = ExtractDispatchers<
+  DictPanelPortalProps,
+  'onDragEnd' | 'onAutoHide'
+>
 
 const mapStateToProps: MapStateToProps<
   StoreState,
@@ -38,7 +41,13 @@ const mapStateToProps: MapStateToProps<
   mtaBox: state.isShowMtaBox ? <MtaBoxContainer /> : null,
   dictList,
   waveformBox: state.activeProfile.waveform ? waveformBox : null,
-  dragStartCoord: state.dragStartCoord
+  dragStartCoord: state.dragStartCoord,
+  autoHide:
+    state.autoHidePanel &&
+    state.isShowDictPanel &&
+    !state.isPinned &&
+    !state.wordEditor.isShow &&
+    !state.dragStartCoord
 })
 
 const mapDispatchToProps: MapDispatchToProps<
@@ -48,6 +57,9 @@ const mapDispatchToProps: MapDispatchToProps<
 > = dispatch => ({
   onDragEnd: () => {
     dispatch({ type: 'DRAG_START_COORD', payload: null })
+  },
+  onAutoHide: () => {
+    dispatch({ type: 'AUTO_HIDE_PANEL' })
   }
 })
 

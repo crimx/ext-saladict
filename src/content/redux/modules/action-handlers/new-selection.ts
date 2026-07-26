@@ -16,7 +16,8 @@ export const newSelection: ActionHandler<
 
   const newState: Mutable<typeof state> = {
     ...state,
-    selection
+    selection,
+    autoHidePanel: false
   }
 
   if (isOptionsPage()) {
@@ -117,6 +118,10 @@ export const newSelection: ActionHandler<
       !(holding.meta && selection.metaKey) &&
       !selection.instant &&
       !isStandalonePage()
+  )
+
+  newState.autoHidePanel = Boolean(
+    newState.isShowDictPanel && !state.isPinned && config.mode.autoHide
   )
 
   return newState

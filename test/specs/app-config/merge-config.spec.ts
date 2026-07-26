@@ -10,6 +10,18 @@ describe('mergeConfig', () => {
     expect(mergeConfig(oldConfig).langCode).toBe('ko')
   })
 
+  it('migrates normal selection auto-hide without changing existing behavior', () => {
+    const legacyConfig = getDefaultConfig() as AppConfigMutable
+    delete (legacyConfig.mode as any).autoHide
+
+    expect(mergeConfig(legacyConfig).mode.autoHide).toBe(false)
+
+    const enabledConfig = getDefaultConfig() as AppConfigMutable
+    enabledConfig.mode.autoHide = true
+
+    expect(mergeConfig(enabledConfig).mode.autoHide).toBe(true)
+  })
+
   it('drops unsupported dictionary auth entries and keeps supported credentials', () => {
     const oldConfig = getDefaultConfig() as AppConfigMutable
 

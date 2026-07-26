@@ -58,6 +58,12 @@ yarn build
 
 见[项目贡献指南](./CONTRIBUTING-zh.md)。
 
+感谢以下贡献者为沙拉查词所做的贡献：
+
+<a href="https://github.com/crimx/ext-saladict/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=crimx/ext-saladict" />
+</a>
+
 ## 许可与品牌声明
 
 沙拉查词是自由开源项目，源代码按 [MIT License](./LICENSE) 授权。你可以使用、复制、修改、发布和分发源代码，但必须附带该许可与版权声明。

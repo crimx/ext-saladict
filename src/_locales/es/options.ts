@@ -187,6 +187,9 @@ export const locale: typeof _locale = {
   },
 
   searchMode: {
+    autoHide: 'Ocultar automáticamente el panel no fijado',
+    autoHide_help:
+      'Oculta el panel poco después de que el puntero salga de él. Volver a entrar o enfocar el panel cancela el cierre.',
     icon: 'Mostrar icono',
     icon_help: 'Aparecerá un bonito icono cerca del cursor.',
     direct: 'Busqueda directa',
