@@ -44,9 +44,9 @@ function findFrameBySource(source: MessageEventSource | null) {
   }
 
   const roots: Array<Document | ShadowRoot> = [document]
+  let root: Document | ShadowRoot | undefined
 
-  while (roots.length) {
-    const root = roots.pop()!
+  while ((root = roots.pop())) {
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT)
     let element = walker.nextNode() as Element | null
 
