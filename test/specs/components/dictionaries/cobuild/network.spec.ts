@@ -22,7 +22,7 @@ describe('Dict/COBUILD/network', () => {
     delete (self as any).chrome
   })
 
-  it('should read collins partitioned cookies in MV2', async () => {
+  it('should replace duplicated collins cookie names in MV2', async () => {
     browser.cookies.getAll.callsFake(options =>
       Promise.resolve(
         options.partitionKey
@@ -36,7 +36,16 @@ describe('Dict/COBUILD/network', () => {
                 value: '1'
               }
             ]
-          : []
+          : [
+              {
+                name: 'session',
+                value: 'session-token'
+              },
+              {
+                name: 'cf_clearance',
+                value: 'stale-clearance-token'
+              }
+            ]
       )
     )
 
@@ -62,14 +71,23 @@ describe('Dict/COBUILD/network', () => {
     expect(
       listener({
         tabId: -1,
-        requestHeaders: []
+        requestHeaders: [
+          {
+            name: 'Cookie',
+            value: 'session=session-token; cf_clearance=stale-clearance-token'
+          }
+        ]
       })
     ).toEqual({
       requestHeaders: [
-        { name: 'Referer', value: 'https://www.collinsdictionary.com' },
         {
           name: 'Cookie',
-          value: 'cf_clearance=partitioned-clearance-token; cf_chl_rc_ni=1'
+          value:
+            'session=session-token; cf_clearance=partitioned-clearance-token; cf_chl_rc_ni=1'
+        },
+        {
+          name: 'Referer',
+          value: 'https://www.collinsdictionary.com/dictionary/english/'
         }
       ]
     })
@@ -88,7 +106,16 @@ describe('Dict/COBUILD/network', () => {
                 value: 'partitioned-clearance-token'
               }
             ]
-          : []
+          : [
+              {
+                name: 'session',
+                value: 'session-token'
+              },
+              {
+                name: 'cf_clearance',
+                value: 'stale-clearance-token'
+              }
+            ]
       )
     )
 
@@ -117,12 +144,13 @@ describe('Dict/COBUILD/network', () => {
               {
                 header: 'referer',
                 operation: 'set',
-                value: 'https://www.collinsdictionary.com'
+                value: 'https://www.collinsdictionary.com/dictionary/english/'
               },
               {
                 header: 'cookie',
-                operation: 'append',
-                value: 'cf_clearance=partitioned-clearance-token'
+                operation: 'set',
+                value:
+                  'session=session-token; cf_clearance=partitioned-clearance-token'
               }
             ]
           },
