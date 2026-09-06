@@ -37,8 +37,8 @@ export function _getDefaultProfile(id?: string) {
       /** default selected dictionaries */
       selected: [
         'bing',
-        'cobuild',
         'cambridge',
+        'merriamwebster',
         'youdao',
         'urban',
         'vocabulary',
@@ -134,7 +134,7 @@ export function scholar(): ProfileStorage {
   const profile = getDefaultProfile(idItem.id) as ProfileMutable
   profile.dicts.selected = [
     'cambridge',
-    'cobuild',
+    'merriamwebster',
     'etymonline',
     'google',
     'youdaotrans',
@@ -157,7 +157,6 @@ export function translation(): ProfileStorage {
   const profile = getDefaultProfile(idItem.id) as ProfileMutable
   profile.dicts.selected = [
     'google',
-    'tencent',
     'baidu',
     'caiyun',
     'youdaotrans',
