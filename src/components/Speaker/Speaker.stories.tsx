@@ -18,27 +18,28 @@ import {
 import { timer } from '@/_helpers/promise-more'
 import { StrElm } from '../StrElm'
 
-storiesOf('Content Scripts|Components', module)
-  .addDecorator(withPropsTable)
-  .addDecorator(jsxDecorator)
-  .addDecorator(withKnobs)
-  .addDecorator(
-    withSideEffect(
-      mockRuntimeMessage(async message => {
-        if (message.type === 'PLAY_AUDIO') {
-          action('Play Audio')(message.payload)
-          await timer(Math.random() * 5000)
-          action('Audio End')(message.payload)
-        }
-      })
-    )
-  )
-  .addDecorator(
-    withSaladictPanel({
-      head: <style>{require('./Speaker.scss').toString()}</style>
+const decorators = [
+  withPropsTable,
+  jsxDecorator,
+  withKnobs,
+  withSideEffect(
+    mockRuntimeMessage(async message => {
+      if (message.type === 'PLAY_AUDIO') {
+        action('Play Audio')(message.payload)
+        await timer(Math.random() * 5000)
+        action('Audio End')(message.payload)
+      }
     })
-  )
-  .add('Speaker', () => {
+  ),
+  withSaladictPanel({
+    head: <style>{require('./Speaker.scss').toString()}</style>
+  })
+]
+
+const stories = storiesOf('Content Scripts|Components', module)
+
+decorators.reduce((acc, decorator) => acc.addDecorator(decorator), stories)
+stories.add('Speaker', () => {
     return (
       <Speaker
         width={number('Icon Width', 20)}
@@ -47,7 +48,7 @@ storiesOf('Content Scripts|Components', module)
       ></Speaker>
     )
   })
-  .add('StaticSpeakerContainer', () => {
+stories.add('StaticSpeakerContainer', () => {
     const textStr = text(
       'Audio URL for getStaticSpeakerString',
       'https://example.com/a.mp3'
