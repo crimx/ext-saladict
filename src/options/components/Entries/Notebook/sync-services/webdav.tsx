@@ -11,8 +11,14 @@ import {
 } from 'antd'
 import { FormInstance } from 'antd/lib/form'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
-import { Service, SyncConfig } from '@/background/sync-manager/services/webdav'
 import {
+  Service,
+  SyncConfig,
+  SyncMeta,
+  getWebdavSaveDecision
+} from '@/background/sync-manager/services/webdav'
+import {
+  getMeta,
   removeSyncConfig,
   setSyncConfig
 } from '@/background/sync-manager/helpers'
@@ -64,7 +70,10 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
     >
       <Form
         ref={formRef}
-        initialValues={props.syncConfig || Service.getDefaultConfig()}
+        initialValues={{
+          ...Service.getDefaultConfig(),
+          ...props.syncConfig
+        }}
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 18 }}
         onFinish={saveService}
@@ -111,6 +120,14 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
           ]}
         >
           <InputNumberGroup suffix={t('common:unit.mins')} />
+        </Form.Item>
+        <Form.Item
+          name="fullSync"
+          label={t('syncService.webdav.fullSync')}
+          extra={t('syncService.webdav.fullSync_help')}
+          valuePropName="checked"
+        >
+          <Switch />
         </Form.Item>
       </Form>
     </Modal>
@@ -165,7 +182,10 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
         if (errorText !== 'exist') {
           throw error
         }
-        if (confirm(t('syncService.webdav.exist_confirm'))) {
+        const confirmKey = config.fullSync
+          ? 'syncService.webdav.exist_confirm_fullSync'
+          : 'syncService.webdav.exist_confirm'
+        if (confirm(t(confirmKey))) {
           await service.download({ noCache: true })
         }
       }
@@ -184,34 +204,54 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
     const config = extractConfigFromForm()
     if (!config) return
 
-    if (config.enable) {
-      if (!config.url) {
-        return notifyError('network')
-      }
+    setServiceChecking(true)
 
-      setServiceChecking(true)
+    try {
+      const meta = await getMeta<SyncMeta>(Service.id)
+      const decision = getWebdavSaveDecision({
+        next: config,
+        prev: props.syncConfig,
+        meta
+      })
 
       const service = new Service(config)
 
-      try {
+      if (config.enable) {
+        if (!config.url) {
+          return notifyError('network')
+        }
+
+        if (decision.needsFullSyncConfirm) {
+          const ok = await new Promise<boolean>(resolve => {
+            Modal.confirm({
+              title: t('syncService.webdav.fullSync_confirm'),
+              icon: <ExclamationCircleOutlined />,
+              okType: 'danger',
+              onOk: () => resolve(true),
+              onCancel: () => resolve(false)
+            })
+          })
+          if (!ok) return
+        }
+
         const dir = await service.checkDir()
         if (!dir) {
           throw new Error('missing')
         }
-      } catch (e) {
-        setServiceChecking(false)
-        return notifyError(e)
       }
 
-      service.setMeta({})
-      setServiceChecking(false)
-    }
+      // Reset persisted meta for a new/changed target before saving config so
+      // the storage config stream cannot recreate the service with stale meta.
+      if (decision.isNewTarget) {
+        await service.setMeta({})
+      }
 
-    try {
       await setSyncConfig(Service.id, config)
       props.onClose()
     } catch (error) {
       notifyError(error)
+    } finally {
+      setServiceChecking(false)
     }
   }
 
@@ -231,6 +271,7 @@ export const WebdavModal: FC<WebdavModalProps> = props => {
 
     return {
       ...values,
+      fullSync: !!values.fullSync,
       url:
         values.url && !values.url.endsWith('/')
           ? (values.url += '/')

@@ -8,6 +8,7 @@ import {
 import {
   getNotebook,
   setNotebook,
+  replaceNotebook,
   setMeta,
   getMeta,
   notifyError
@@ -24,11 +25,63 @@ export interface SyncConfig extends SyncServiceConfigBase {
   readonly passwd: string
   /** In min */
   readonly duration: number
+  /**
+   * Mirror (full sync) mode. When enabled and a newer remote notebook is
+   * downloaded, local words absent from the remote are deleted so that the
+   * local notebook matches the remote exactly. Disabled by default to keep
+   * the merge-only behavior and avoid data loss.
+   */
+  readonly fullSync?: boolean
 }
 
 export interface SyncMeta {
   readonly etag?: string
   readonly timestamp?: number
+}
+
+/** Normalize a WebDAV URL so that trailing slashes do not affect identity. */
+export function normalizeWebdavUrl(url: string): string {
+  return (url || '').trim().replace(/\/+$/, '')
+}
+
+/**
+ * A sync target is identified by its normalized URL plus user. Changing only
+ * duration, password, enable or fullSync keeps the same target, while a new
+ * or changed URL/user is treated as a brand new target.
+ */
+export function getWebdavTargetId(
+  config: Pick<SyncConfig, 'url' | 'user'>
+): string {
+  return `${normalizeWebdavUrl(config.url)}\u0000${config.user || ''}`
+}
+
+export interface WebdavSaveDecision {
+  /** Whether the sync target (normalized URL + user) is new or changed. */
+  readonly isNewTarget: boolean
+  /** Whether a persisted timestamp baseline exists. */
+  readonly hasBaseline: boolean
+  /** Whether saving fullSync needs an explicit confirmation first. */
+  readonly needsFullSyncConfirm: boolean
+}
+
+/**
+ * Decide how to handle sync meta when saving a config: `isNewTarget` tells
+ * whether persisted meta belongs to a different target and must be reset,
+ * while `needsFullSyncConfirm` tells whether enabling fullSync requires an
+ * explicit confirmation because the next sync may replace or delete local
+ * words.
+ */
+export function getWebdavSaveDecision(args: {
+  next: Pick<SyncConfig, 'url' | 'user' | 'fullSync'>
+  prev?: Pick<SyncConfig, 'url' | 'user'>
+  meta?: SyncMeta
+}): WebdavSaveDecision {
+  const isNewTarget =
+    !args.prev || getWebdavTargetId(args.next) !== getWebdavTargetId(args.prev)
+  const hasBaseline = !!args.meta?.timestamp
+  const needsFullSyncConfirm =
+    !!args.next.fullSync && (isNewTarget || !hasBaseline)
+  return { isNewTarget, hasBaseline, needsFullSyncConfirm }
 }
 
 export class Service extends SyncService<SyncConfig, SyncMeta> {
@@ -40,7 +93,8 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
       url: '',
       user: '',
       passwd: '',
-      duration: 15
+      duration: 15,
+      fullSync: false
     }
   }
 
@@ -334,20 +388,28 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     }
 
     const oldMeta = this.meta
-
-    if (!oldMeta.timestamp || json.timestamp >= oldMeta.timestamp) {
-      await this.setMeta({
-        timestamp: json.timestamp,
-        etag: response.headers.get('ETag') || oldMeta.etag || ''
-      })
+    const nextMeta = {
+      timestamp: json.timestamp,
+      etag: response.headers.get('ETag') || oldMeta.etag || ''
     }
 
     if (!noCache && oldMeta.timestamp && json.timestamp <= oldMeta.timestamp) {
       // older file
+      if (json.timestamp === oldMeta.timestamp) {
+        await this.setMeta(nextMeta)
+      }
       return
     }
 
-    await setNotebook(json.words)
+    if (config.fullSync) {
+      await replaceNotebook(json.words)
+    } else {
+      await setNotebook(json.words)
+    }
+
+    if (!oldMeta.timestamp || json.timestamp >= oldMeta.timestamp) {
+      await this.setMeta(nextMeta)
+    }
 
     if (process.env.DEBUG) {
       console.log('Webdav download', json)

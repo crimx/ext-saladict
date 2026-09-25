@@ -5,6 +5,7 @@ import AutosizeTextarea from 'react-textarea-autosize'
 import { useObservableState } from 'observable-hooks'
 import { switchMap, mapTo, startWith } from 'rxjs/operators'
 import { timer, Observable } from 'rxjs'
+import { isQuickSearchPage } from '@/_helpers/saladict'
 
 export interface MtaBoxProps {
   expand: boolean
@@ -82,6 +83,10 @@ export const MtaBox: FC<MtaBoxProps> = props => {
                 props.onInput(e.currentTarget.value)
               }}
               onKeyDown={e => {
+                if (isQuickSearchPage() && e.key === 'Escape') {
+                  return
+                }
+
                 // prevent page shortkeys
                 e.nativeEvent.stopPropagation()
 

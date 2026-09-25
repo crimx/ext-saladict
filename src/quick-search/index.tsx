@@ -33,6 +33,21 @@ createStore().then(store => {
     document.getElementById('root')
   )
 
+  window.addEventListener('keydown', event => {
+    if (
+      event.key === 'Escape' &&
+      !event.defaultPrevented &&
+      !event.isComposing &&
+      event.keyCode !== 229 &&
+      !event.altKey &&
+      !event.ctrlKey &&
+      !event.metaKey &&
+      !event.shiftKey
+    ) {
+      window.close()
+    }
+  })
+
   // Firefox cannot fire 'unload' event.
   window.addEventListener('beforeunload', () => {
     message.send({ type: 'CLOSE_QS_PANEL' })

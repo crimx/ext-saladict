@@ -98,3 +98,5 @@ test/**/response
 
 
 **/.DS_Store
+
+AGENTS.md

@@ -41,6 +41,7 @@ export type CookieHeaderNetworkCompatibilityOptions = {
   resourceTypes?: string[]
   referer?: string
   fallbackCookieNames?: string[]
+  deduplicateCookieNames?: boolean
 }
 
 export function createCookieHeaderNetworkCompatibility(
@@ -131,7 +132,11 @@ export function createCookieHeaderNetworkCompatibility(
             options.referer || options.origin
           )
           if (currentCookieHeader) {
-            upsertCookieHeader(details.requestHeaders, currentCookieHeader)
+            upsertCookieHeader(
+              details.requestHeaders,
+              currentCookieHeader,
+              options.deduplicateCookieNames
+            )
           }
         }
         return { requestHeaders: details.requestHeaders }
@@ -161,7 +166,7 @@ async function installMv3HeaderRule(
   if (cookieHeader) {
     requestHeaders.push({
       header: 'cookie',
-      operation: 'append',
+      operation: options.deduplicateCookieNames ? 'set' : 'append',
       value: cookieHeader
     })
   }
@@ -198,6 +203,23 @@ async function getCookieHeader(
   const partitionKey = {
     topLevelSite: options.topLevelSite
   }
+  if (options.deduplicateCookieNames) {
+    const unpartitionedCookies = await getCookiesForRequest(cookiesApi, options)
+    const partitionedCookies = await getCookiesForRequest(
+      cookiesApi,
+      options,
+      partitionKey
+    )
+    const cookies = mergeCookiesByName(unpartitionedCookies, partitionedCookies)
+    if (cookies.length > 0) {
+      return stringifyCookies(cookies)
+    }
+
+    return stringifyCookies(
+      await getFallbackCookies(cookiesApi, options, partitionKey)
+    )
+  }
+
   const partitionedCookies = await getCookiesForRequest(
     cookiesApi,
     options,
@@ -308,6 +330,20 @@ function stringifyCookies(cookies: Cookie[]) {
   return cookiePairs.join('; ')
 }
 
+function mergeCookiesByName(...cookieLists: Cookie[][]) {
+  const cookiesByName = new Map<string, Cookie>()
+
+  for (const cookies of cookieLists) {
+    for (const cookie of cookies) {
+      if (cookie.name && cookie.value) {
+        cookiesByName.set(cookie.name, cookie)
+      }
+    }
+  }
+
+  return Array.from(cookiesByName.values())
+}
+
 function shouldModifyRequest(
   details: {
     tabId?: number
@@ -359,12 +395,21 @@ function setRequestHeader(
 
 function upsertCookieHeader(
   requestHeaders: Array<{ name: string; value?: string }>,
-  cookies: string
+  cookies: string,
+  deduplicateCookieNames = false
 ) {
   const cookieHeader = getRequestHeader(requestHeaders, 'Cookie')
   const cookiePairs = cookies.split(/;\s*/).filter(Boolean)
 
   if (cookieHeader) {
+    if (deduplicateCookieNames) {
+      cookieHeader.value = mergeCookiePairsByName(
+        (cookieHeader.value || '').split(/;\s*/).filter(Boolean),
+        cookiePairs
+      ).join('; ')
+      return
+    }
+
     let value = cookieHeader.value || ''
     for (const cookie of cookiePairs) {
       if (!hasCookiePair(value, cookie)) {
@@ -376,6 +421,22 @@ function upsertCookieHeader(
   }
 
   requestHeaders.push({ name: 'Cookie', value: cookiePairs.join('; ') })
+}
+
+function mergeCookiePairsByName(...cookieLists: string[][]) {
+  const cookiesByName = new Map<string, string>()
+
+  for (const cookies of cookieLists) {
+    for (const cookie of cookies) {
+      const separatorIndex = cookie.indexOf('=')
+      const name = separatorIndex < 0 ? cookie : cookie.slice(0, separatorIndex)
+      if (name) {
+        cookiesByName.set(name, cookie)
+      }
+    }
+  }
+
+  return Array.from(cookiesByName.values())
 }
 
 function getRequestHeader(

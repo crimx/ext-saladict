@@ -3,7 +3,9 @@ import { NotebookFile } from '@/background/sync-manager/interface'
 import {
   Service,
   SyncConfig,
-  SyncMeta
+  SyncMeta,
+  getWebdavTargetId,
+  getWebdavSaveDecision
 } from '@/background/sync-manager/services/webdav'
 import { Word, newWord } from '@/_helpers/record-manager'
 import { createBasicAuthorizationHeader } from '@/_helpers/basic-auth'
@@ -280,13 +282,14 @@ describe('Sync service WebDAV', () => {
       )
     })
 
-    it('should do nothing if etags are different but timestamps are identical', async () => {
+    it('should not mirror if etags differ but timestamps are identical', async () => {
       const config: SyncConfig = {
         enable: true,
         url: 'https://example.com/dav/',
         user: 'user',
         passwd: 'passwd',
-        duration: 0
+        duration: 0,
+        fullSync: true
       }
 
       const file: NotebookFile = {
@@ -324,6 +327,7 @@ describe('Sync service WebDAV', () => {
       await service.download({})
 
       expect(helpers.setNotebook).toHaveBeenCalledTimes(0)
+      expect(helpers.replaceNotebook).toHaveBeenCalledTimes(0)
       expect(helpers.setMeta).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(
@@ -463,6 +467,273 @@ describe('Sync service WebDAV', () => {
       expect(helpers.setMeta).toHaveBeenCalledTimes(0)
       expect(fetchInit.download).toHaveBeenCalledTimes(1)
       expect(fetchInit.download).lastCalledWith(...fetchArgs.download(config))
+    })
+
+    it('should replace the local notebook when fullSync is enabled', async () => {
+      const config: SyncConfig = {
+        enable: true,
+        url: 'https://example.com/dav/',
+        user: 'user',
+        passwd: 'passwd',
+        duration: 0,
+        fullSync: true
+      }
+
+      const remoteWords = [
+        getWord({ ...newWord({ text: 'shared' }), date: 200 }),
+        getWord({ ...newWord({ text: 'remote-new' }), date: 300 })
+      ]
+      const timestamp = Date.now()
+      const file: NotebookFile = { timestamp, words: remoteWords }
+      const etag = 'etag222'
+
+      const fetchInit = {
+        download: jest.fn(
+          () =>
+            new Response(JSON.stringify(file), {
+              headers: {
+                etag
+              }
+            })
+        )
+      }
+
+      mockFetch(config, fetchInit)
+
+      const service = new Service(config)
+
+      await service.download({})
+
+      expect(helpers.replaceNotebook).lastCalledWith(remoteWords)
+      expect(helpers.setNotebook).not.toHaveBeenCalled()
+      expect(helpers.setMeta).lastCalledWith('webdav', { timestamp, etag })
+    })
+
+    it('should not replace the notebook when fullSync downloads an older remote', async () => {
+      const config: SyncConfig = {
+        enable: true,
+        url: 'https://example.com/dav/',
+        user: 'user',
+        passwd: 'passwd',
+        duration: 0,
+        fullSync: true
+      }
+
+      const timestamp = Date.now()
+      const file: NotebookFile = {
+        timestamp: timestamp - 1000,
+        words: [getWord({ ...newWord({ text: 'remote-old' }), date: 200 })]
+      }
+      const etag = 'etag222'
+
+      const fetchInit = {
+        download: jest.fn(
+          () =>
+            new Response(JSON.stringify(file), {
+              headers: {
+                etag
+              }
+            })
+        )
+      }
+
+      mockFetch(config, fetchInit)
+
+      const service = new Service(config)
+      service.meta = { etag: 'etagLocal', timestamp }
+
+      await service.download({})
+
+      expect(helpers.replaceNotebook).not.toHaveBeenCalled()
+      expect(helpers.setNotebook).not.toHaveBeenCalled()
+      expect(helpers.setMeta).not.toHaveBeenCalled()
+    })
+
+    it('should clear the local notebook when fullSync downloads an empty notebook', async () => {
+      const config: SyncConfig = {
+        enable: true,
+        url: 'https://example.com/dav/',
+        user: 'user',
+        passwd: 'passwd',
+        duration: 0,
+        fullSync: true
+      }
+
+      const remoteWords: Word[] = []
+      const timestamp = Date.now()
+      const file: NotebookFile = { timestamp, words: remoteWords }
+      const etag = 'etag222'
+
+      const fetchInit = {
+        download: jest.fn(
+          () =>
+            new Response(JSON.stringify(file), {
+              headers: {
+                etag
+              }
+            })
+        )
+      }
+
+      mockFetch(config, fetchInit)
+
+      const service = new Service(config)
+
+      await service.download({})
+
+      expect(helpers.replaceNotebook).lastCalledWith([])
+      expect(helpers.setNotebook).not.toHaveBeenCalled()
+    })
+
+    it('should retain merge behavior when legacy config omits fullSync', async () => {
+      const config: SyncConfig = {
+        enable: true,
+        url: 'https://example.com/dav/',
+        user: 'user',
+        passwd: 'passwd',
+        duration: 0
+      }
+
+      const remoteWords = [
+        getWord({ ...newWord({ text: 'shared' }), date: 200 }),
+        getWord({ ...newWord({ text: 'remote-new' }), date: 300 })
+      ]
+      const timestamp = Date.now()
+      const file: NotebookFile = { timestamp, words: remoteWords }
+      const etag = 'etag222'
+
+      const fetchInit = {
+        download: jest.fn(
+          () =>
+            new Response(JSON.stringify(file), {
+              headers: {
+                etag
+              }
+            })
+        )
+      }
+
+      mockFetch(config, fetchInit)
+
+      const service = new Service(config)
+
+      await service.download({})
+
+      expect(helpers.setNotebook).lastCalledWith(remoteWords)
+      expect(helpers.replaceNotebook).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('target identity', () => {
+    it('should treat trailing slash differences as the same target', () => {
+      expect(
+        getWebdavTargetId({ url: 'https://example.com/dav/', user: 'user' })
+      ).toBe(
+        getWebdavTargetId({ url: 'https://example.com/dav', user: 'user' })
+      )
+    })
+
+    it('should treat a different user as a different target', () => {
+      expect(
+        getWebdavTargetId({ url: 'https://example.com/dav/', user: 'user1' })
+      ).not.toBe(
+        getWebdavTargetId({ url: 'https://example.com/dav/', user: 'user2' })
+      )
+    })
+
+    it('should treat a different url as a different target', () => {
+      expect(
+        getWebdavTargetId({ url: 'https://example.com/dav/', user: 'user' })
+      ).not.toBe(
+        getWebdavTargetId({ url: 'https://example.com/other/', user: 'user' })
+      )
+    })
+  })
+
+  describe('getWebdavSaveDecision', () => {
+    const prev = { url: 'https://example.com/dav/', user: 'user' }
+
+    it('should preserve meta for the same target with config-only changes', () => {
+      const decision = getWebdavSaveDecision({
+        next: { ...prev, fullSync: true },
+        prev,
+        meta: { timestamp: 123, etag: 'etag' }
+      })
+      expect(decision.isNewTarget).toBe(false)
+      expect(decision.hasBaseline).toBe(true)
+      expect(decision.needsFullSyncConfirm).toBe(false)
+    })
+
+    it('should treat a missing previous config as a new target', () => {
+      const decision = getWebdavSaveDecision({
+        next: { ...prev, fullSync: false },
+        meta: { timestamp: 123 }
+      })
+      expect(decision.isNewTarget).toBe(true)
+    })
+
+    it('should treat a changed url as a new target', () => {
+      const decision = getWebdavSaveDecision({
+        next: { ...prev, fullSync: false },
+        prev: { url: 'https://example.com/other/', user: 'user' },
+        meta: { timestamp: 123 }
+      })
+      expect(decision.isNewTarget).toBe(true)
+    })
+
+    it('should treat a changed user as a new target', () => {
+      const decision = getWebdavSaveDecision({
+        next: { ...prev, fullSync: false },
+        prev: { url: 'https://example.com/dav/', user: 'other' },
+        meta: { timestamp: 123 }
+      })
+      expect(decision.isNewTarget).toBe(true)
+    })
+
+    it('should flag a new target even when the config is saved disabled', () => {
+      const decision = getWebdavSaveDecision({
+        next: {
+          url: 'https://example.com/new/',
+          user: 'user',
+          fullSync: false
+        },
+        prev: { url: 'https://example.com/old/', user: 'user' },
+        meta: { timestamp: 123 }
+      })
+      expect(decision.isNewTarget).toBe(true)
+      expect(decision.needsFullSyncConfirm).toBe(false)
+    })
+
+    it('should not require confirmation when fullSync is disabled', () => {
+      const decision = getWebdavSaveDecision({
+        next: { ...prev, fullSync: false },
+        prev,
+        meta: { timestamp: 123 }
+      })
+      expect(decision.isNewTarget).toBe(false)
+      expect(decision.hasBaseline).toBe(true)
+      expect(decision.needsFullSyncConfirm).toBe(false)
+    })
+
+    it('should require confirmation when enabling fullSync on a new target', () => {
+      const decision = getWebdavSaveDecision({
+        next: { ...prev, fullSync: true },
+        prev: { url: 'https://example.com/dav/', user: 'other' },
+        meta: { timestamp: 123 }
+      })
+      expect(decision.isNewTarget).toBe(true)
+      expect(decision.needsFullSyncConfirm).toBe(true)
+    })
+
+    it('should require confirmation when fullSync has no timestamp baseline', () => {
+      const decision = getWebdavSaveDecision({
+        next: { ...prev, fullSync: true },
+        prev,
+        meta: { etag: 'etag' }
+      })
+      expect(decision.isNewTarget).toBe(false)
+      expect(decision.hasBaseline).toBe(false)
+      expect(decision.needsFullSyncConfirm).toBe(true)
     })
   })
 

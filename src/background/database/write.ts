@@ -26,6 +26,22 @@ export async function saveWords({
   return db[area].bulkPut(words)
 }
 
+export async function replaceWords({
+  area,
+  words
+}: {
+  area: DBArea
+  words: Word[]
+}) {
+  const db = await getDB()
+  return db.transaction('rw', db[area], async () => {
+    await db[area].clear()
+    if (words.length > 0) {
+      await db[area].bulkPut(words)
+    }
+  })
+}
+
 export async function deleteWords({
   area,
   dates

@@ -298,12 +298,19 @@ export const locale: typeof _locale = {
       jianguo: '參考堅果雲設定',
       checking: '連線中...',
       exist_confirm: '伺服器上已存在 Saladict 目錄。是否下載合併到本地？',
+      exist_confirm_fullSync:
+        '伺服器上已存在 Saladict 目錄。是否使用遠端生詞本取代本地生詞本？遠端不存在的本地詞條將被刪除。',
       upload_confirm: '馬上上傳本地資料到伺服器？',
       verify: '驗證伺服器',
       verified: '成功驗證伺服器',
       duration: '同步頻率',
       duration_help:
         '新增生字後會馬上上傳，資料會在上傳前保證同步，所以如果不需要多個瀏覽器即時檢視更新，可將更新檢查週期調大些以減少資源佔用及避免伺服器拒絕回應。',
+      fullSync: '鏡像同步',
+      fullSync_help:
+        '開啟後，當下載到較新的遠端生詞本時，也會刪除本地不存在於遠端中的詞條，使本地生詞本與遠端完全一致。預設關閉（合併模式）以避免資料遺失。',
+      fullSync_confirm:
+        '已開啟鏡像同步。下次同步可能以遠端生詞本取代本地生詞本，並刪除遠端不存在的本地詞條。確定儲存？',
       passwd: '密碼',
       url: '伺服器位址',
       user: '帳戶'

@@ -6,7 +6,7 @@ import {
 } from 'get-selection-more'
 import { message } from '@/_helpers/browser-api'
 import { createConfigStream } from '@/_helpers/config-manager'
-import { isInDictPanel } from '@/_helpers/saladict'
+import { isInDictPanel, isQuickSearchPage } from '@/_helpers/saladict'
 
 import { share, map, switchMap } from 'rxjs/operators'
 
@@ -80,9 +80,11 @@ if (!window.__SALADICT_SELECTION_LOADED__) {
   /**
    * Escape key pressed
    */
-  whenKeyPressed(isEscapeKey).subscribe(() =>
-    message.self.send({ type: 'ESCAPE_KEY' })
-  )
+  if (!isQuickSearchPage()) {
+    whenKeyPressed(isEscapeKey).subscribe(() =>
+      message.self.send({ type: 'ESCAPE_KEY' })
+    )
+  }
 
   config$$.pipe(switchMap(createQuickSearchStream)).subscribe(() => {
     message.self.send({ type: 'TRIPLE_CTRL' })

@@ -16,4 +16,6 @@ export const deleteMeta = jest.fn(emptyPromise)
 
 export const setNotebook = jest.fn(emptyPromise)
 
+export const replaceNotebook = jest.fn(emptyPromise)
+
 export const getNotebook = jest.fn(emptyPromise)

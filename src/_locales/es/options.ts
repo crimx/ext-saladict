@@ -314,12 +314,19 @@ export const locale: typeof _locale = {
       checking: 'Conectando...',
       exist_confirm:
         'El directorio Saladict existe en el servidor. ¿Descargarlo y fusionarlo con los datos locales?',
+      exist_confirm_fullSync:
+        'El directorio Saladict existe en el servidor. ¿Reemplazar el cuaderno local por el remoto? Se eliminarán las palabras locales que no existan en el remoto.',
       upload_confirm: '¿Subir los datos locales al servidor de inmediato?',
       verify: 'Verificar servidor',
       verified: 'Verificado con éxito el servidor WebDAV.',
       duration: 'Duracion',
       duration_help:
         'Se garantiza que los datos se actualizan antes de cargarlos. Si no necesita sincronización en tiempo real entre navegadores, establezca un ciclo de sondeo más largo para reducir el consumo de CPU y memoria.',
+      fullSync: 'Sincronización espejo',
+      fullSync_help:
+        'Cuando está activado, descargar un cuaderno remoto más reciente también elimina las palabras locales que no están en el remoto, para que el cuaderno local coincida exactamente. Desactivado por defecto (modo fusión) para evitar la pérdida de datos.',
+      fullSync_confirm:
+        'La sincronización espejo está activada. La próxima sincronización podría reemplazar el cuaderno local por el remoto y eliminar las palabras locales que no estén en el remoto. ¿Guardar de todos modos?',
       passwd: 'Contraseña',
       url: 'Dirección del servidor',
       user: 'Usuario'

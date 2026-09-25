@@ -8,6 +8,8 @@ export const ensureNetworkCompatibility = createCookieHeaderNetworkCompatibility
     urls: ['https://www.collinsdictionary.com/*'],
     ruleId: 32003,
     ruleRegexFilter: '^https://www\\.collinsdictionary\\.com/.*',
-    fallbackCookieNames: ['cf_clearance']
+    referer: 'https://www.collinsdictionary.com/dictionary/english/',
+    fallbackCookieNames: ['cf_clearance'],
+    deduplicateCookieNames: true
   }
 )

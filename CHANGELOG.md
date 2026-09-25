@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.22.9](https://github.com/crimx/ext-saladict/compare/v7.22.8...v7.22.9) (2026-09-25)
+
+
+### Features
+
+* **search:** add Escape key functionality to close suggestions ([74261a1](https://github.com/crimx/ext-saladict/commit/74261a1b325a3e08806f643a843ec7b352ad0366)), closes [#2358](https://github.com/crimx/ext-saladict/issues/2358)
+* **webDAV:** support mirror sync for remote notebook deletions ([#2357](https://github.com/crimx/ext-saladict/issues/2357)) ([8c11e8c](https://github.com/crimx/ext-saladict/commit/8c11e8c3fe996369e63161eb900dd27fbfa46995))
+
+
+### Bug Fixes
+
+* **network:** deduplicate cookie names for Collins requests ([5424763](https://github.com/crimx/ext-saladict/commit/542476349e181c403cb5b8cf6cc152f0ad364f1d))
+* **profiles:** remove 'tencent' from nihongo dictionary list ([bc7b587](https://github.com/crimx/ext-saladict/commit/bc7b58737c911a9308131b8c692e4712c136050c))
+* **profiles:** update default selected dictionaries ([b93dc3c](https://github.com/crimx/ext-saladict/commit/b93dc3c854aed9898f743109c710f19ababc5369))
+
 ### [7.22.8](https://github.com/crimx/ext-saladict/compare/v7.22.7...v7.22.8) (2026-07-26)
 
 

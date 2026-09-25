@@ -294,12 +294,19 @@ export const locale = {
       jianguo: '参考坚果云设置',
       checking: '连接中...',
       exist_confirm: '服务器上已存在 Saladict 目录。是否下载合并到本地？',
+      exist_confirm_fullSync:
+        '服务器上已存在 Saladict 目录。是否使用远端生词本替换本地生词本？远端不存在的本地词条将被删除。',
       upload_confirm: '马上上传本地数据到服务器？',
       verify: '验证服务器',
       verified: '成功验证服务器',
       duration: '同步周期',
       duration_help:
         '添加生词后会马上上传，数据会在上传前保证同步，所以如果不需要多个浏览器实时查看更新，可将更新检测周期调大些以减少资源占用及避免服务器拒绝响应。',
+      fullSync: '镜像同步',
+      fullSync_help:
+        '开启后，当下载到较新的远端生词本时，也会删除本地不存在于远端中的词条，使本地生词本与远端完全一致。默认关闭（合并模式）以避免数据丢失。',
+      fullSync_confirm:
+        '已开启镜像同步。下次同步可能用远端生词本替换本地生词本，并删除远端不存在的本地词条。确定保存？',
       passwd: '密码',
       url: '服务器地址',
       user: '账户'

@@ -11,6 +11,7 @@ import { merge, combineLatest } from 'rxjs'
 import { filter, map, distinctUntilChanged, mapTo, delay } from 'rxjs/operators'
 import { focusBlur } from '@/_helpers/observables'
 import { message } from '@/_helpers/browser-api'
+import { isQuickSearchPage } from '@/_helpers/saladict'
 import { Suggest } from './Suggest'
 import { SearchBtn } from './MenubarBtns'
 
@@ -118,6 +119,19 @@ export const SearchBox: FC<SearchBoxProps> = props => {
             onShowSuggest(true)
           }}
           onKeyDown={e => {
+            if (
+              isQuickSearchPage() &&
+              e.key === 'Escape' &&
+              !e.nativeEvent.isComposing &&
+              e.nativeEvent.keyCode !== 229
+            ) {
+              if (isShowSuggest) {
+                onShowSuggest(false)
+                e.stopPropagation()
+              }
+              return
+            }
+
             // prevent page hot keys
             e.nativeEvent.stopPropagation()
 

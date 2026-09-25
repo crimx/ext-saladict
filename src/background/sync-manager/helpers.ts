@@ -1,7 +1,7 @@
 import { storage } from '@/_helpers/browser-api'
 import { Word } from '@/_helpers/record-manager'
 import { getWords } from '@/background/database/read'
-import { saveWords } from '@/background/database/write'
+import { saveWords, replaceWords } from '@/background/database/write'
 import {
   getSyncMeta,
   setSyncMeta,
@@ -74,6 +74,10 @@ export async function deleteMeta(serviceID: string): Promise<void> {
 
 export async function setNotebook(words: Word[]): Promise<void> {
   await saveWords({ area: 'notebook', words })
+}
+
+export async function replaceNotebook(words: Word[]): Promise<void> {
+  await replaceWords({ area: 'notebook', words })
 }
 
 export async function getNotebook(): Promise<Word[]> {
