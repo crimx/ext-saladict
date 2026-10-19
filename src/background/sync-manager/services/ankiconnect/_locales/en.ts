@@ -6,6 +6,8 @@ export const locale: typeof _locale = {
     server: 'Cannot connect to Anki Connect. Please make sure Anki is running.',
     deck: 'Deck not found in Anki.',
     notetype: 'Note type not found in Anki.',
+    notetype_cloze:
+      'The note type is not a Cloze note type so Anki will reject new words. Delete or rename it in Anki and verify again to create a new one, or use a Cloze note type instead.',
     add: 'Failed to add word to Anki.'
   }
 }
