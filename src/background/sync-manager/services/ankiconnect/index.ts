@@ -59,11 +59,7 @@ export class Service extends SyncService<SyncConfig> {
       throw new Error('notetype')
     }
 
-    // Cards use `{{cloze:...}}` and words are saved with `{{c1::...}}`,
-    // which recent Anki rejects on non-cloze note types (notClozeNoteType).
-    if ((await this.isClozeNoteType()) === false) {
-      throw new Error('notetype_cloze')
-    }
+    await this.checkNoteType()
   }
 
   handleMessage = (msg: Message) => {
@@ -114,9 +110,10 @@ export class Service extends SyncService<SyncConfig> {
       return
     }
 
-    // Add words one by one. Firing all requests at once overflows the small
-    // listen backlog of Anki Connect, which then refuses connections
-    // (net::ERR_CONNECTION_REFUSED / "Network Error").
+    // Background uploads do not call init(), so check existing configurations too.
+    await this.checkNoteType()
+
+    // Limit concurrent requests during bulk uploads to reduce pressure on Anki Connect.
     for (const word of words) {
       if (!(await this.findNote(word.date))) {
         try {
@@ -186,6 +183,7 @@ export class Service extends SyncService<SyncConfig> {
     const modelParams = {
       modelName: this.config.noteType,
       inOrderFields: this.noteFileds,
+      isCloze: true,
       css: cardCss(),
       cardTemplates: [
         {
@@ -196,16 +194,8 @@ export class Service extends SyncService<SyncConfig> {
       ]
     }
 
-    try {
-      // Card templates use cloze deletions so the note type must be Cloze
-      await this.request('createModel', { ...modelParams, isCloze: true })
-    } catch (e) {
-      // Older Anki Connect does not support `isCloze`
-      if (process.env.DEBUG) {
-        console.warn(e)
-      }
-      await this.request('createModel', modelParams)
-    }
+    // Never retry as a standard type: the templates and fields require Cloze.
+    await this.request('createModel', modelParams)
 
     // Anki Connect could tranlate the field names
     // Update again
@@ -334,24 +324,24 @@ export class Service extends SyncService<SyncConfig> {
         ]
   }
 
-  /**
-   * @returns `undefined` if the note type cannot be inspected,
-   * e.g. older Anki Connect without `findModelsByName`.
-   */
-  async isClozeNoteType(): Promise<boolean | undefined> {
+  async checkNoteType(): Promise<void> {
+    let models: Array<{ type?: number }>
     try {
-      const models = await this.request<Array<{ type?: number }>>(
-        'findModelsByName',
-        { modelNames: [this.config.noteType] }
-      )
-      const type = models?.[0]?.type
-      // Anki model type: 0 = standard, 1 = cloze
-      return type == null ? undefined : type === 1
+      models = await this.request('findModelsByName', {
+        modelNames: [this.config.noteType]
+      })
     } catch (e) {
-      if (process.env.DEBUG) {
-        console.warn(e)
+      // Older Anki Connect may support Cloze creation but not model inspection.
+      if (e instanceof Error && e.message === 'unsupported action') {
+        return
       }
-      return undefined
+      throw e
+    }
+
+    // Anki model type: 0 = standard, 1 = cloze.
+    const type = models?.[0]?.type
+    if (type != null && type !== 1) {
+      throw new Error('notetype_cloze')
     }
   }
 

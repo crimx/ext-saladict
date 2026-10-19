@@ -7,7 +7,7 @@ export const locale: typeof _locale = {
     deck: 'Deck not found in Anki.',
     notetype: 'Note type not found in Anki.',
     notetype_cloze:
-      'The note type is not a Cloze note type so Anki will reject new words. Delete or rename it in Anki and verify again to create a new one, or use a Cloze note type instead.',
+      'This note type is not Cloze, so new words cannot be added. Back up Anki, create a Cloze note type with the fields and templates required by Saladict, and migrate existing notes using Notes → Change Note Type in the Anki Browse window. Check field and card mappings and review progress. Renaming the old type and verifying again only creates a new type; it does not migrate existing notes. Do not delete a type that still contains notes, as this deletes those notes and their review history.',
     add: 'Failed to add word to Anki.'
   }
 }
