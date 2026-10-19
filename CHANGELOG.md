@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.22.10](https://github.com/crimx/ext-saladict/compare/v7.22.9...v7.22.10) (2026-10-19)
+
+
+### Bug Fixes
+
+* **ankiconnect:** create and validate cloze note types ([#2365](https://github.com/crimx/ext-saladict/issues/2365)) ([4bd90b2](https://github.com/crimx/ext-saladict/commit/4bd90b268dfe9b39ed1cc67d1c26cd41babbcdc7)), closes [#2362](https://github.com/crimx/ext-saladict/issues/2362) [#2363](https://github.com/crimx/ext-saladict/issues/2363)
+
 ### [7.22.9](https://github.com/crimx/ext-saladict/compare/v7.22.8...v7.22.9) (2026-09-25)
 
 
