@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.22.11](https://github.com/crimx/ext-saladict/compare/v7.22.10...v7.22.11) (2026-10-20)
+
+
+### Bug Fixes
+
+* add migration for broken Anki note type ([473d6ec](https://github.com/crimx/ext-saladict/commit/473d6ec3de0c68a75e1dc6b7d6dbcc6acec7ad24))
+
 ### [7.22.10](https://github.com/crimx/ext-saladict/compare/v7.22.9...v7.22.10) (2026-10-19)
 
 
