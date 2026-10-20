@@ -6,6 +6,7 @@ import { AddConfig, SyncService } from '../../interface'
 import { getNotebook } from '../../helpers'
 import { message } from '@/_helpers/browser-api'
 import { Message } from '@/typings/message'
+import { prepareClozeMigration, migrateCloze } from './migration'
 
 export interface SyncConfig {
   enable: boolean
@@ -240,6 +241,37 @@ export class Service extends SyncService<SyncConfig> {
     return data.result
   }
 
+  prepareClozeMigration() {
+    return prepareClozeMigration(this)
+  }
+
+  migrateCloze(
+    plan: Parameters<typeof migrateCloze>[1],
+    onBackup?: (paths: string[]) => void
+  ) {
+    return migrateCloze(this, plan, onBackup)
+  }
+
+  async requestV1<R = void>(method: string, params: any = {}): Promise<R> {
+    const { data } = await axios({
+      method: 'post',
+      url: `http://${this.config.host}:${this.config.port}/api/v1`,
+      headers: this.config.key
+        ? { Authorization: `Bearer ${this.config.key}` }
+        : {},
+      data: { jsonrpc: '2.0', id: 1, method, params }
+    })
+    if (data?.error) {
+      throw Object.assign(new Error(data.error.message), {
+        type: data.error.data?.type
+      })
+    }
+    if (!data || !Object.prototype.hasOwnProperty.call(data, 'result')) {
+      throw new Error('migration_unsupported')
+    }
+    return data.result
+  }
+
   async wordToFields(word: Readonly<Word>): Promise<{ [k: string]: string }> {
     if (!this.noteFileds) {
       this.noteFileds = await this.getNotefields()
@@ -394,7 +426,7 @@ export class Service extends SyncService<SyncConfig> {
   }
 }
 
-function cardText(front: boolean, nf: string[]) {
+export function cardText(front: boolean, nf: string[]) {
   return `{{#${nf[4]}}}
 <section>{{cloze:${nf[4]}}}</section>
 <section>{{type:cloze:${nf[4]}}}</section>
