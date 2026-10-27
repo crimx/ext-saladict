@@ -51,7 +51,9 @@ describe('Maimemo sync service', () => {
 
     await expect(service.init()).resolves.toBeUndefined()
     expect(axiosMock.history.post).toHaveLength(1)
-    expect(axiosMock.history.post[0].headers!.Authorization).toBe('token')
+    expect(axiosMock.history.post[0].headers!.Authorization).toBe(
+      'Bearer token'
+    )
     expect(JSON.parse(axiosMock.history.post[0].data)).toEqual({
       spellings: ['apple']
     })
