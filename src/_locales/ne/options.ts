@@ -303,6 +303,20 @@ export const locale: typeof _locale = {
         'Note that frequent synchronization in a short time may lead to lock temporarily. Are you sure to continue?'
     },
 
+    maimemo: {
+      description:
+        'Use the official Maimemo Open API to add words to your study plan. First get an authorization token in Maimemo: Me > More settings > Experimental features > Open API, then enable automatic syncing.',
+      token: 'Authorization token',
+      getToken: 'Get authorization token',
+      verify: 'Check authorization token',
+      verified: 'Maimemo authorization token checked successfully',
+      enable_help:
+        'When enabled, each newly added word is synchronized one-way to the Maimemo study plan. Deletions are not synced and words are not advanced for immediate review.',
+      sync_all: 'Synchronize all new words',
+      sync_all_confirm:
+        'Many words will be added to the Maimemo study plan in batches. Continue?'
+    },
+
     webdav: {
       description:
         'Extension settings (including this) are synced via browser. New words notebook can be synced via WebDAV through settings here.',
