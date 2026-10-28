@@ -78,6 +78,39 @@ describe('Maimemo sync service', () => {
     })
   })
 
+  it('advances review when the option is enabled', async () => {
+    mockApi()
+    const service = new Service({
+      ...Service.getDefaultConfig(),
+      enable: true,
+      token: 'token',
+      advance: true
+    })
+
+    await service.add({ words: [newWord({ text: 'apple' })] })
+
+    expect(JSON.parse(axiosMock.history.post[1].data)).toEqual({
+      words: [{ id: 'id-apple' }],
+      advance: true
+    })
+  })
+
+  it('treats a missing advance option as disabled', async () => {
+    mockApi()
+    const config = Service.getDefaultConfig()
+    config.enable = true
+    config.token = 'token'
+    delete (config as Partial<typeof config>).advance
+    const service = new Service(config)
+
+    await service.add({ words: [newWord({ text: 'apple' })] })
+
+    expect(JSON.parse(axiosMock.history.post[1].data)).toEqual({
+      words: [{ id: 'id-apple' }],
+      advance: false
+    })
+  })
+
   it('uploads the full notebook in batches of 1,000 words', async () => {
     mockApi()
     helpers.getNotebook.mockResolvedValueOnce(
@@ -100,6 +133,27 @@ describe('Maimemo sync service', () => {
     expect(JSON.parse(axiosMock.history.post[2].data).spellings).toEqual([
       'word-1000'
     ])
+  })
+
+  it('respects the advance option when syncing the full notebook', async () => {
+    mockApi()
+    helpers.getNotebook.mockResolvedValueOnce([
+      newWord({ text: 'apple' }),
+      newWord({ text: 'pear' })
+    ])
+    const service = new Service({
+      ...Service.getDefaultConfig(),
+      enable: true,
+      token: 'token',
+      advance: true
+    })
+
+    await service.add({ force: true })
+
+    expect(JSON.parse(axiosMock.history.post[1].data)).toEqual({
+      words: [{ id: 'id-apple' }, { id: 'id-pear' }],
+      advance: true
+    })
   })
 
   it('skips words unavailable in Maimemo and uploads resolved words', async () => {

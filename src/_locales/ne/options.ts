@@ -311,7 +311,10 @@ export const locale: typeof _locale = {
       verify: 'Check authorization token',
       verified: 'Maimemo authorization token checked successfully',
       enable_help:
-        'When enabled, each newly added word is synchronized one-way to the Maimemo study plan. Deletions are not synced and words are not advanced for immediate review.',
+        'When enabled, each newly added word is synchronized one-way to the Maimemo study plan. Deletions are not synced.',
+      advance: 'Advance review',
+      advance_help:
+        'When enabled, synchronized words are immediately added to your review queue. When disabled, they are only added to the study plan without changing the existing review schedule.',
       sync_all: 'Synchronize all new words',
       sync_all_confirm:
         'Many words will be added to the Maimemo study plan in batches. Continue?'

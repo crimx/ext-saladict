@@ -315,7 +315,10 @@ export const locale: typeof _locale = {
       verify: 'Comprobar token de autorización',
       verified: 'Token de autorización de Maimemo comprobado correctamente',
       enable_help:
-        'Al activarlo, cada palabra nueva añadida se sincroniza en un solo sentido con el plan de estudio de Maimemo. Las eliminaciones no se sincronizan y las palabras no se adelantan para repasarlas inmediatamente.',
+        'Al activarlo, cada palabra nueva añadida se sincroniza en un solo sentido con el plan de estudio de Maimemo. Las eliminaciones no se sincronizan.',
+      advance: 'Adelantar repaso',
+      advance_help:
+        'Al activarlo, las palabras sincronizadas se añaden de inmediato a tu cola de repaso. Al desactivarlo, solo se añaden al plan de estudio sin cambiar el calendario de repaso existente.',
       sync_all: 'Sincronizar todas las palabras nuevas',
       sync_all_confirm:
         'Se añadirán muchas palabras al plan de estudio de Maimemo por lotes. ¿Continuar?'

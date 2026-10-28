@@ -78,7 +78,10 @@ export const MaimemoModal: FC<MaimemoModalProps> = props => {
       </p>
       <Form
         ref={formRef}
-        initialValues={props.syncConfig || Service.getDefaultConfig()}
+        initialValues={{
+          ...Service.getDefaultConfig(),
+          ...props.syncConfig
+        }}
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 18 }}
         onFinish={saveService}
@@ -87,6 +90,14 @@ export const MaimemoModal: FC<MaimemoModalProps> = props => {
           name="enable"
           label={t('common:enable')}
           help={t('syncService.maimemo.enable_help')}
+          valuePropName="checked"
+        >
+          <Switch />
+        </Form.Item>
+        <Form.Item
+          name="advance"
+          label={t('syncService.maimemo.advance')}
+          help={t('syncService.maimemo.advance_help')}
           valuePropName="checked"
         >
           <Switch />

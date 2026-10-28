@@ -8,6 +8,7 @@ const BATCH_SIZE = 1000
 export interface SyncConfig {
   enable: boolean
   token: string
+  advance: boolean
 }
 
 interface Vocabulary {
@@ -26,7 +27,8 @@ export class Service extends SyncService<SyncConfig> {
   static getDefaultConfig(): SyncConfig {
     return {
       enable: false,
-      token: ''
+      token: '',
+      advance: false
     }
   }
 
@@ -90,7 +92,7 @@ export class Service extends SyncService<SyncConfig> {
     const response = await this.request<{ added_count: number }>(
       'post',
       '/study/add_words',
-      { words: ids.map(id => ({ id })), advance: true }
+      { words: ids.map(id => ({ id })), advance: Boolean(this.config.advance) }
     )
     if (typeof response.added_count !== 'number') {
       throw new Error('response')
