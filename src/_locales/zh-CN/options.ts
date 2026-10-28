@@ -301,8 +301,10 @@ export const locale = {
       advance_help:
         '开启后，同步到墨墨的生词会立即加入复习；关闭时只加入学习计划，不改变原有复习安排。',
       sync_all: '同步全部生词',
-      sync_all_confirm:
-        '生词较多，将分批加入墨墨背单词学习计划。确定继续？'
+      sync_all_confirm: '生词较多，将分批加入墨墨背单词学习计划。确定继续？',
+      sync_result:
+        '同步完成：实际添加 {{added}} 个单词（查询匹配 {{matched}} 个）。',
+      sync_result_help: '差额可能包含已存在的单词或受单词上限限制。'
     },
 
     webdav: {

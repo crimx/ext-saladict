@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { AddConfig, SyncService } from '../../interface'
+import { AddConfig, AddResult, SyncService } from '../../interface'
 import { getNotebook, notifyError } from '../../helpers'
 
 const API_BASE_URL = 'https://open.maimemo.com/open/api/v1/memo'
@@ -36,9 +36,12 @@ export class Service extends SyncService<SyncConfig> {
     await this.queryVocabulary(['apple'])
   }
 
-  async add(config: AddConfig) {
+  async add(config: AddConfig): Promise<AddResult> {
+    let matched = 0
+    let added = 0
+
     if (!this.config.enable) {
-      return
+      return { matched, added }
     }
 
     let { words } = config
@@ -46,7 +49,7 @@ export class Service extends SyncService<SyncConfig> {
       words = await getNotebook()
     }
     if (!words || words.length === 0) {
-      return
+      return { matched, added }
     }
 
     const spellings = Array.from(
@@ -70,10 +73,13 @@ export class Service extends SyncService<SyncConfig> {
         }
       }
 
+      matched += ids.length
       if (ids.length > 0) {
-        await this.addWords(ids)
+        added += await this.addWords(ids)
       }
     }
+
+    return { matched, added }
   }
 
   private async queryVocabulary(spellings: string[]): Promise<Vocabulary[]> {
@@ -88,7 +94,7 @@ export class Service extends SyncService<SyncConfig> {
     return response.voc
   }
 
-  private async addWords(ids: string[]) {
+  private async addWords(ids: string[]): Promise<number> {
     const response = await this.request<{ added_count: number }>(
       'post',
       '/study/add_words',
@@ -97,6 +103,7 @@ export class Service extends SyncService<SyncConfig> {
     if (typeof response.added_count !== 'number') {
       throw new Error('response')
     }
+    return response.added_count
   }
 
   private async request<T>(

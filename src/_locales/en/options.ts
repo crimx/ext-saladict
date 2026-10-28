@@ -317,7 +317,11 @@ export const locale: typeof _locale = {
         'When enabled, synchronized words are immediately added to your review queue. When disabled, they are only added to the study plan without changing the existing review schedule.',
       sync_all: 'Synchronize all new words',
       sync_all_confirm:
-        'Many words will be added to the Maimemo study plan in batches. Continue?'
+        'Many words will be added to the Maimemo study plan in batches. Continue?',
+      sync_result:
+        'Sync finished: {{added}} word(s) actually added ({{matched}} matched).',
+      sync_result_help:
+        'The difference may be existing words or the word limit being reached.'
     },
 
     webdav: {

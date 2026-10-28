@@ -305,7 +305,10 @@ export const locale: typeof _locale = {
       advance_help:
         '開啟後，同步到墨墨的生字會立即加入複習；關閉時只加入學習計畫，不改變原有複習安排。',
       sync_all: '同步全部生字',
-      sync_all_confirm: '生字較多，將分批加入墨墨背單詞學習計畫。確定繼續？'
+      sync_all_confirm: '生字較多，將分批加入墨墨背單詞學習計畫。確定繼續？',
+      sync_result:
+        '同步完成：實際新增 {{added}} 個單字（查詢匹配 {{matched}} 個）。',
+      sync_result_help: '差額可能包含已存在的單字或受單字上限限制。'
     },
 
     webdav: {

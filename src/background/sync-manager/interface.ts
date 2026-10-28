@@ -29,6 +29,13 @@ export interface DownloadConfig<Config = any> {
   readonly noCache?: boolean
 }
 
+export interface AddResult {
+  /** Number of words that matched entries on the remote service */
+  matched: number
+  /** Number of words the remote service actually added */
+  added: number
+}
+
 export interface SyncServiceConfigBase {
   enable: boolean
 }
@@ -62,7 +69,7 @@ export abstract class SyncService<
   /** Called when user updates config. Check env, save config etc */
   abstract init(): Promise<void>
   /** add words */
-  abstract add(config: AddConfig): Promise<void>
+  abstract add(config: AddConfig): Promise<AddResult | void>
   /** delete words */
   async delete(config: DeleteConfig): Promise<void> {}
   /** Clean up side-effects */

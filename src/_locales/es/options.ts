@@ -321,7 +321,11 @@ export const locale: typeof _locale = {
         'Al activarlo, las palabras sincronizadas se añaden de inmediato a tu cola de repaso. Al desactivarlo, solo se añaden al plan de estudio sin cambiar el calendario de repaso existente.',
       sync_all: 'Sincronizar todas las palabras nuevas',
       sync_all_confirm:
-        'Se añadirán muchas palabras al plan de estudio de Maimemo por lotes. ¿Continuar?'
+        'Se añadirán muchas palabras al plan de estudio de Maimemo por lotes. ¿Continuar?',
+      sync_result:
+        'Sincronización completada: {{added}} palabra(s) añadida(s) realmente ({{matched}} coincidencias).',
+      sync_result_help:
+        'La diferencia puede deberse a palabras ya existentes o a haber alcanzado el límite de palabras.'
     },
 
     webdav: {

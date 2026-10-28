@@ -67,15 +67,43 @@ describe('Maimemo sync service', () => {
       token: 'token'
     })
 
-    await service.add({
+    const result = await service.add({
       words: [newWord({ text: 'apple' }), newWord({ text: 'pear' })]
     })
 
+    expect(result).toEqual({ matched: 2, added: 1 })
     expect(axiosMock.history.post).toHaveLength(2)
     expect(JSON.parse(axiosMock.history.post[1].data)).toEqual({
       words: [{ id: 'id-apple' }, { id: 'id-pear' }],
       advance: false
     })
+  })
+
+  it('reports zero added words when the service adds none', async () => {
+    axiosMock.onPost(/\/vocabulary\/query$/).reply(200, {
+      success: true,
+      errors: [],
+      data: {
+        voc: [
+          { id: 'id-apple', spelling: 'apple' },
+          { id: 'id-pear', spelling: 'pear' }
+        ]
+      }
+    })
+    axiosMock
+      .onPost(/\/study\/add_words$/)
+      .reply(200, { success: true, errors: [], data: { added_count: 0 } })
+    const service = new Service({
+      ...Service.getDefaultConfig(),
+      enable: true,
+      token: 'token'
+    })
+
+    await expect(
+      service.add({
+        words: [newWord({ text: 'apple' }), newWord({ text: 'pear' })]
+      })
+    ).resolves.toEqual({ matched: 2, added: 0 })
   })
 
   it('advances review when the option is enabled', async () => {
@@ -124,8 +152,9 @@ describe('Maimemo sync service', () => {
       token: 'token'
     })
 
-    await service.add({ force: true })
+    const result = await service.add({ force: true })
 
+    expect(result).toEqual({ matched: 1001, added: 2 })
     expect(axiosMock.history.post).toHaveLength(4)
     expect(JSON.parse(axiosMock.history.post[0].data).spellings).toHaveLength(
       1000
@@ -171,10 +200,10 @@ describe('Maimemo sync service', () => {
       token: 'token'
     })
 
-    await service.add({
+    const result = await service.add({
       words: [newWord({ text: 'apple' }), newWord({ text: 'missing' })]
     })
-
+    expect(result).toEqual({ matched: 1, added: 1 })
     expect(helpers.notifyError).toHaveBeenCalledWith(
       Service.id,
       'word',

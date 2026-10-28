@@ -10,10 +10,7 @@ import {
 } from 'antd'
 import { FormInstance } from 'antd/lib/form'
 import { ExclamationCircleOutlined } from '@ant-design/icons'
-import {
-  Service,
-  SyncConfig
-} from '@/background/sync-manager/services/maimemo'
+import { Service, SyncConfig } from '@/background/sync-manager/services/maimemo'
 import { setSyncConfig } from '@/background/sync-manager/helpers'
 import { getWords } from '@/_helpers/record-manager'
 import { useTranslate } from '@/_helpers/i18n'
@@ -45,11 +42,7 @@ export const MaimemoModal: FC<MaimemoModalProps> = props => {
           {t('syncService.maimemo.verify')}
         </Button>,
         props.syncConfig?.enable ? (
-          <Button
-            key="sync-all"
-            disabled={serviceChecking}
-            onClick={syncAll}
-          >
+          <Button key="sync-all" disabled={serviceChecking} onClick={syncAll}>
             {t('syncService.maimemo.sync_all')}
           </Button>
         ) : null,
@@ -184,9 +177,17 @@ export const MaimemoModal: FC<MaimemoModalProps> = props => {
     AntdMsg.destroy()
     AntdMsg.success(t('syncService.start'), 0)
     try {
-      await new Service(config).add({ force: true })
+      const result = await new Service(config).add({ force: true })
+      const resultMsg = t('syncService.maimemo.sync_result', {
+        added: result.added,
+        matched: result.matched
+      })
       AntdMsg.destroy()
-      AntdMsg.success(t('syncService.success'))
+      AntdMsg.success(
+        result.added < result.matched
+          ? `${resultMsg} ${t('syncService.maimemo.sync_result_help')}`
+          : resultMsg
+      )
     } catch (error) {
       AntdMsg.destroy()
       notifyError(error, t('syncService.failed'))

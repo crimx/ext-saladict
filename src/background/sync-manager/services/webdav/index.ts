@@ -1,6 +1,7 @@
 import {
   NotebookFile,
   AddConfig,
+  DeleteConfig,
   DownloadConfig,
   SyncService,
   SyncServiceConfigBase
@@ -302,9 +303,9 @@ export class Service extends SyncService<SyncConfig, SyncMeta> {
     await this.setMeta({ timestamp, etag: '' })
   }
 
-  delete({ force }) {
+  async delete({ force }: DeleteConfig) {
     // full sync anyway
-    return this.add({ force })
+    await this.add({ force })
   }
 
   async download({
