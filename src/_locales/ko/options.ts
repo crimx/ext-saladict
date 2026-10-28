@@ -317,7 +317,9 @@ export const locale: typeof _locale = {
       sync_result:
         '동기화 완료: 실제로 {{added}}개 단어를 추가했습니다 ({{matched}}개 일치).',
       sync_result_help:
-        '차이는 이미 존재하는 단어 또는 단어 한도 제한 때문일 수 있습니다.'
+        '차이는 이미 존재하는 단어 또는 단어 한도 제한 때문일 수 있습니다.',
+      sync_result_partial:
+        '동기화 일시 중지: {{added}}개 단어를 추가했고 ({{matched}}개 일치) {{remaining}}개 단어가 남았습니다. 요청이 너무 많으니 잠시 후 다시 시도하세요.'
     },
 
     webdav: {

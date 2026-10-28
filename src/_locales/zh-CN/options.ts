@@ -304,7 +304,9 @@ export const locale = {
       sync_all_confirm: '生词较多，将分批加入墨墨背单词学习计划。确定继续？',
       sync_result:
         '同步完成：实际添加 {{added}} 个单词（查询匹配 {{matched}} 个）。',
-      sync_result_help: '差额可能包含已存在的单词或受单词上限限制。'
+      sync_result_help: '差额可能包含已存在的单词或受单词上限限制。',
+      sync_result_partial:
+        '同步已暂停：已添加 {{added}} 个单词（查询匹配 {{matched}} 个），还有 {{remaining}} 个单词未同步。请求过于频繁，请稍后再试。'
     },
 
     webdav: {

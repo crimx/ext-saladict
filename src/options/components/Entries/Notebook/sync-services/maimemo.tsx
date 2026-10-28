@@ -178,11 +178,25 @@ export const MaimemoModal: FC<MaimemoModalProps> = props => {
     AntdMsg.success(t('syncService.start'), 0)
     try {
       const result = await new Service(config).add({ force: true })
+
+      AntdMsg.destroy()
+
+      if (result.rateLimited) {
+        AntdMsg.warning(
+          t('syncService.maimemo.sync_result_partial', {
+            added: result.added,
+            matched: result.matched,
+            remaining: result.remaining || 0
+          }),
+          0
+        )
+        return
+      }
+
       const resultMsg = t('syncService.maimemo.sync_result', {
         added: result.added,
         matched: result.matched
       })
-      AntdMsg.destroy()
       AntdMsg.success(
         result.added < result.matched
           ? `${resultMsg} ${t('syncService.maimemo.sync_result_help')}`

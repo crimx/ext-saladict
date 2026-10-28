@@ -34,6 +34,13 @@ export interface AddResult {
   matched: number
   /** Number of words the remote service actually added */
   added: number
+  /**
+   * Set when the upload stopped early because the remote service
+   * is rate limiting requests.
+   */
+  rateLimited?: boolean
+  /** Number of words that were left out because of rate limiting */
+  remaining?: number
 }
 
 export interface SyncServiceConfigBase {

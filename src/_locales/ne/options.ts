@@ -321,7 +321,9 @@ export const locale: typeof _locale = {
       sync_result:
         'Sync finished: {{added}} word(s) actually added ({{matched}} matched).',
       sync_result_help:
-        'The difference may be existing words or the word limit being reached.'
+        'The difference may be existing words or the word limit being reached.',
+      sync_result_partial:
+        'Sync paused: {{added}} word(s) added ({{matched}} matched) and {{remaining}} word(s) left. Too many requests, try again later.'
     },
 
     webdav: {

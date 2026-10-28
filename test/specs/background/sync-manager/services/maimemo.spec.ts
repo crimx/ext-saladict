@@ -2,6 +2,7 @@ import axios from 'axios'
 import AxiosMockAdapter from 'axios-mock-adapter'
 import * as helpersMock from '@/background/sync-manager/__mocks__/helpers'
 import { Service } from '@/background/sync-manager/services/maimemo'
+import { configureRateLimiters } from '@/background/sync-manager/services/maimemo/rate-limiter'
 import { newWord } from '@/_helpers/record-manager'
 
 jest.mock('@/background/sync-manager/helpers')
@@ -14,6 +15,8 @@ describe('Maimemo sync service', () => {
   beforeEach(() => {
     jest.clearAllMocks()
     axiosMock.reset()
+    // Do not slow the suite down with real throttling.
+    configureRateLimiters({ minInterval: 0, retryBaseDelay: 0 })
   })
 
   afterAll(() => {
@@ -237,5 +240,102 @@ describe('Maimemo sync service', () => {
     })
 
     await expect(service.init()).rejects.toThrow('response')
+  })
+
+  it('retries a rate limited query', async () => {
+    axiosMock.onPost(/\/vocabulary\/query$/).replyOnce(429)
+    mockApi()
+    const service = new Service({
+      ...Service.getDefaultConfig(),
+      enable: true,
+      token: 'token'
+    })
+
+    const result = await service.add({ words: [newWord({ text: 'apple' })] })
+
+    expect(result).toEqual({ matched: 1, added: 1 })
+    expect(axiosMock.history.post).toHaveLength(3)
+  })
+
+  it('retries a rate limited upload', async () => {
+    axiosMock
+      .onPost(/\/study\/add_words$/)
+      .replyOnce(429, { 'retry-after': '0' })
+    mockApi()
+    const service = new Service({
+      ...Service.getDefaultConfig(),
+      enable: true,
+      token: 'token'
+    })
+
+    const result = await service.add({ words: [newWord({ text: 'apple' })] })
+
+    expect(result).toEqual({ matched: 1, added: 1 })
+    expect(axiosMock.history.post).toHaveLength(3)
+  })
+
+  it('gives up after the retry budget and reports the remaining words', async () => {
+    axiosMock.onPost(/\/vocabulary\/query$/).reply(429)
+    const service = new Service({
+      ...Service.getDefaultConfig(),
+      enable: true,
+      token: 'token'
+    })
+
+    const result = await service.add({
+      words: [newWord({ text: 'apple' }), newWord({ text: 'pear' })]
+    })
+
+    expect(result).toEqual({
+      matched: 0,
+      added: 0,
+      rateLimited: true,
+      remaining: 2
+    })
+    // 1 initial attempt + 3 retries
+    expect(axiosMock.history.post).toHaveLength(4)
+  })
+
+  it('keeps finished batches when a later batch is rate limited', async () => {
+    helpers.getNotebook.mockResolvedValueOnce(
+      Array.from({ length: 1001 }, (_, index) =>
+        newWord({ text: `word-${index}` })
+      )
+    )
+    axiosMock.onPost(/\/vocabulary\/query$/).replyOnce(config => {
+      const { spellings } = JSON.parse(config.data)
+      return [
+        200,
+        {
+          success: true,
+          errors: [],
+          data: {
+            voc: spellings.map((spelling: string) => ({
+              id: `id-${spelling}`,
+              spelling
+            }))
+          }
+        }
+      ]
+    })
+    axiosMock.onPost(/\/vocabulary\/query$/).reply(429)
+    axiosMock
+      .onPost(/\/study\/add_words$/)
+      .reply(200, { success: true, errors: [], data: { added_count: 1000 } })
+
+    const service = new Service({
+      ...Service.getDefaultConfig(),
+      enable: true,
+      token: 'token'
+    })
+
+    const result = await service.add({ force: true })
+
+    expect(result).toEqual({
+      matched: 1000,
+      added: 1000,
+      rateLimited: true,
+      remaining: 1
+    })
   })
 })

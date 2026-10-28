@@ -1,6 +1,11 @@
 import axios from 'axios'
 import { AddConfig, AddResult, SyncService } from '../../interface'
 import { getNotebook, notifyError } from '../../helpers'
+import {
+  RATE_LIMIT_ERROR,
+  getRateLimiter,
+  isRateLimitError
+} from './rate-limiter'
 
 const API_BASE_URL = 'https://open.maimemo.com/open/api/v1/memo'
 const BATCH_SIZE = 1000
@@ -58,24 +63,40 @@ export class Service extends SyncService<SyncConfig> {
 
     for (let start = 0; start < spellings.length; start += BATCH_SIZE) {
       const batch = spellings.slice(start, start + BATCH_SIZE)
-      const vocabulary = await this.queryVocabulary(batch)
-      const vocabularyBySpelling = new Map(
-        vocabulary.map(word => [word.spelling.toLowerCase(), word.id])
-      )
-      const ids: string[] = []
 
-      for (const spelling of batch) {
-        const id = vocabularyBySpelling.get(spelling.toLowerCase())
-        if (id) {
-          ids.push(id)
-        } else {
-          await notifyError(Service.id, 'word', `「${spelling}」`)
+      try {
+        const vocabulary = await this.queryVocabulary(batch)
+        const vocabularyBySpelling = new Map(
+          vocabulary.map(word => [word.spelling.toLowerCase(), word.id])
+        )
+        const ids: string[] = []
+
+        for (const spelling of batch) {
+          const id = vocabularyBySpelling.get(spelling.toLowerCase())
+          if (id) {
+            ids.push(id)
+          } else {
+            await notifyError(Service.id, 'word', `「${spelling}」`)
+          }
         }
-      }
 
-      matched += ids.length
-      if (ids.length > 0) {
-        added += await this.addWords(ids)
+        matched += ids.length
+        if (ids.length > 0) {
+          added += await this.addWords(ids)
+        }
+      } catch (error) {
+        if (!isRateLimitError(error)) {
+          throw error
+        }
+
+        // Do not throw, otherwise the remaining batches would never be
+        // retried. Report what has been done so far instead.
+        return {
+          matched,
+          added,
+          rateLimited: true,
+          remaining: spellings.length - start
+        }
       }
     }
 
@@ -111,24 +132,46 @@ export class Service extends SyncService<SyncConfig> {
     path: string,
     data: unknown
   ): Promise<T> {
-    let response: { data: ApiResponse<T> }
-    try {
-      response = await axios({
-        method,
-        url: `${API_BASE_URL}${path}`,
-        data,
-        headers: {
-          Authorization: `Bearer ${this.config.token}`
+    const limiter = getRateLimiter()
+    let response: { data: ApiResponse<T> } | undefined
+
+    for (let attempt = 0; !response; attempt++) {
+      try {
+        response = await limiter.enqueue(() =>
+          axios({
+            method,
+            url: `${API_BASE_URL}${path}`,
+            data,
+            headers: {
+              Authorization: `Bearer ${this.config.token}`
+            }
+          })
+        )
+      } catch (error) {
+        if (isRateLimitError(error)) {
+          // the local budget is used up, retrying is pointless
+          throw error
         }
-      })
-    } catch (error) {
-      if (error.response?.status === 401) {
-        throw new Error('illegal_token')
+
+        if (error.response?.status === 401) {
+          throw new Error('illegal_token')
+        }
+
+        if (error.response?.status === 429) {
+          const delay = limiter.getRetryDelay(error, attempt)
+          if (delay < 0) {
+            throw new Error(RATE_LIMIT_ERROR)
+          }
+          if (process.env.DEBUG) {
+            console.log(`Maimemo rate limited, retrying in ${delay}ms`)
+          }
+          // hold back every queued request, not just this one
+          limiter.cooldown(delay)
+          continue
+        }
+
+        throw new Error('network')
       }
-      if (error.response?.status === 429) {
-        throw new Error('rate_limit')
-      }
-      throw new Error('network')
     }
 
     if (!response.data || !response.data.success) {

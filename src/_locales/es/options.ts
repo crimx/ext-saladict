@@ -325,7 +325,9 @@ export const locale: typeof _locale = {
       sync_result:
         'Sincronización completada: {{added}} palabra(s) añadida(s) realmente ({{matched}} coincidencias).',
       sync_result_help:
-        'La diferencia puede deberse a palabras ya existentes o a haber alcanzado el límite de palabras.'
+        'La diferencia puede deberse a palabras ya existentes o a haber alcanzado el límite de palabras.',
+      sync_result_partial:
+        'Sincronización en pausa: {{added}} palabra(s) añadida(s) ({{matched}} coincidencias) y {{remaining}} palabra(s) pendientes. Demasiadas solicitudes, inténtalo más tarde.'
     },
 
     webdav: {

@@ -307,8 +307,10 @@ export const locale: typeof _locale = {
       sync_all: '同步全部生字',
       sync_all_confirm: '生字較多，將分批加入墨墨背單詞學習計畫。確定繼續？',
       sync_result:
-        '同步完成：實際新增 {{added}} 個單字（查詢匹配 {{matched}} 個）。',
-      sync_result_help: '差額可能包含已存在的單字或受單字上限限制。'
+        '同步完成：實際加入 {{added}} 個單詞（查詢符合 {{matched}} 個）。',
+      sync_result_help: '差額可能包含已存在的單詞或受單詞上限限制。',
+      sync_result_partial:
+        '同步已暫停：已加入 {{added}} 個單詞（查詢符合 {{matched}} 個），還有 {{remaining}} 個單詞未同步。請求過於頻繁，請稍後再試。'
     },
 
     webdav: {
