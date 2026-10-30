@@ -307,6 +307,29 @@ export const locale: typeof _locale = {
         'Tenga en cuenta que una sincronización frecuente en poco tiempo puede provocar un bloqueo temporal. ¿Está seguro de continuar?'
     },
 
+    maimemo: {
+      description:
+        'Usa la API abierta oficial de Maimemo para añadir palabras a tu plan de estudio. Primero obtén un token de autorización en Maimemo: Yo > Más ajustes > Funciones experimentales > Open API; después, activa la sincronización automática.',
+      token: 'Token de autorización',
+      getToken: 'Obtener token de autorización',
+      verify: 'Comprobar token de autorización',
+      verified: 'Token de autorización de Maimemo comprobado correctamente',
+      enable_help:
+        'Al activarlo, cada palabra nueva añadida se sincroniza en un solo sentido con el plan de estudio de Maimemo. Las eliminaciones no se sincronizan.',
+      advance: 'Adelantar repaso',
+      advance_help:
+        'Al activarlo, las palabras sincronizadas se añaden de inmediato a tu cola de repaso. Al desactivarlo, solo se añaden al plan de estudio sin cambiar el calendario de repaso existente.',
+      sync_all: 'Sincronizar todas las palabras nuevas',
+      sync_all_confirm:
+        'Se añadirán muchas palabras al plan de estudio de Maimemo por lotes. ¿Continuar?',
+      sync_result:
+        'Sincronización completada: {{added}} palabra(s) añadida(s) realmente ({{matched}} coincidencias).',
+      sync_result_help:
+        'La diferencia puede deberse a palabras ya existentes o a haber alcanzado el límite de palabras.',
+      sync_result_partial:
+        'Sincronización en pausa: {{added}} palabra(s) añadida(s) ({{matched}} coincidencias) y {{remaining}} palabra(s) pendientes. Demasiadas solicitudes, inténtalo más tarde.'
+    },
+
     webdav: {
       description:
         'La configuración de las extensiones (incluida esta) se sincroniza a través del navegador. El cuaderno de nuevas palabras se puede sincronizar mediante WebDAV a través de la configuración aquí.',

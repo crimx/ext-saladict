@@ -292,6 +292,27 @@ export const locale: typeof _locale = {
         '注意短時間內頻繁同步有可能會導致接下來一小段時間的封停，確定繼續？'
     },
 
+    maimemo: {
+      description:
+        '使用墨墨背單詞官方開放 API 將生字加入學習計畫。請先在墨墨背單詞 App 的「我的 → 更多設定 → 實驗功能 → 開放 API」取得請求憑證，並開啟自動同步。',
+      token: '請求憑證',
+      getToken: '取得請求憑證',
+      verify: '檢查請求憑證',
+      verified: '墨墨背單詞請求憑證檢查成功',
+      enable_help:
+        '開啟後，每次新增生字都會自動單向同步到墨墨背單詞學習計畫；只同步新增單字本身，刪除不同步。',
+      advance: '提前複習',
+      advance_help:
+        '開啟後，同步到墨墨的生字會立即加入複習；關閉時只加入學習計畫，不改變原有複習安排。',
+      sync_all: '同步全部生字',
+      sync_all_confirm: '生字較多，將分批加入墨墨背單詞學習計畫。確定繼續？',
+      sync_result:
+        '同步完成：實際加入 {{added}} 個單詞（查詢符合 {{matched}} 個）。',
+      sync_result_help: '差額可能包含已存在的單詞或受單詞上限限制。',
+      sync_result_partial:
+        '同步已暫停：已加入 {{added}} 個單詞（查詢符合 {{matched}} 個），還有 {{remaining}} 個單詞未同步。請求過於頻繁，請稍後再試。'
+    },
+
     webdav: {
       description:
         '應用設定（包括本設定）已通過瀏覽器自動同步。生詞本可通過本設定實現 WebDAV 同步。',
