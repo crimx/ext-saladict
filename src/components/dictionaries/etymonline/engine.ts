@@ -7,16 +7,21 @@ import {
   handleNoResult,
   HTMLString,
   handleNetWorkError,
+  handleManualVerification,
   SearchFunction,
   GetSrcPageFunction,
   DictSearchResult
 } from '../helpers'
 
+const HOST = 'https://www.etymonline.com'
+
 export const getSrcPage: GetSrcPageFunction = text => {
-  return `http://www.etymonline.com/search?q=${text}`
+  return `${HOST}/search?q=${encodeSearchText(text)}`
 }
 
-const HOST = 'https://www.etymonline.com'
+function encodeSearchText(text: string): string {
+  return encodeURIComponent(text.replace(/\s+/g, ' '))
+}
 
 type EtymonlineResultItem = {
   id: string
@@ -30,20 +35,40 @@ export type EtymonlineResult = EtymonlineResultItem[]
 
 type EtymonlineSearchResult = DictSearchResult<EtymonlineResult>
 
-export const search: SearchFunction<EtymonlineResult> = (
+export const search: SearchFunction<EtymonlineResult> = async (
   text,
   config,
   profile,
   payload
 ) => {
   const options = profile.dicts.all.etymonline.options
-  text = encodeURIComponent(text.replace(/\s+/g, ' '))
+  const wordUrl = `${HOST}/word/${encodeSearchText(text)}`
+  const searchUrl = await getSrcPage(text, config, profile)
 
-  // http to bypass the referer checking
-  return fetchDirtyDOM('https://www.etymonline.com/word/' + text)
-    .catch(() => fetchDirtyDOM('https://www.etymonline.com/search?q=' + text))
-    .catch(handleNetWorkError)
-    .then(doc => handleDOM(doc, options))
+  let doc: Document
+  try {
+    doc = await fetchDirtyDOM(wordUrl, { withCredentials: true })
+  } catch (firstError) {
+    try {
+      doc = await fetchDirtyDOM(searchUrl, { withCredentials: true })
+    } catch (secondError) {
+      const forbiddenUrl = isForbidden(firstError)
+        ? wordUrl
+        : isForbidden(secondError)
+        ? searchUrl
+        : ''
+
+      if (forbiddenUrl) {
+        return handleManualVerification({ text, url: forbiddenUrl })
+      }
+      return handleNetWorkError()
+    }
+  }
+  return handleDOM(doc, options)
+}
+
+function isForbidden(e: any): boolean {
+  return e && e.response && e.response.status === 403
 }
 
 function handleDOM(
