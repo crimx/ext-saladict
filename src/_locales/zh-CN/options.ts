@@ -288,6 +288,27 @@ export const locale = {
         '注意短时间内频繁同步有可能会导致接下来一小段时间的封停，确定继续？'
     },
 
+    maimemo: {
+      description:
+        '使用墨墨背单词官方开放 API 将生词加入学习计划。请先在墨墨背单词 App 的「我的 → 更多设置 → 实验功能 → 开放 API」获取请求凭证，并开启自动同步。',
+      token: '请求凭证',
+      getToken: '获取请求凭证',
+      verify: '检查请求凭证',
+      verified: '墨墨背单词请求凭证检查成功',
+      enable_help:
+        '开启后，每次添加生词都会自动单向同步到墨墨背单词学习计划；只同步新增单词本身，删除不同步。',
+      advance: '提前复习',
+      advance_help:
+        '开启后，同步到墨墨的生词会立即加入复习；关闭时只加入学习计划，不改变原有复习安排。',
+      sync_all: '同步全部生词',
+      sync_all_confirm: '生词较多，将分批加入墨墨背单词学习计划。确定继续？',
+      sync_result:
+        '同步完成：实际添加 {{added}} 个单词（查询匹配 {{matched}} 个）。',
+      sync_result_help: '差额可能包含已存在的单词或受单词上限限制。',
+      sync_result_partial:
+        '同步已暂停：已添加 {{added}} 个单词（查询匹配 {{matched}} 个），还有 {{remaining}} 个单词未同步。请求过于频繁，请稍后再试。'
+    },
+
     webdav: {
       description:
         '应用设置（包括本设置）已通过浏览器自动同步。生词本可通过本设置实现 WebDAV 同步。',

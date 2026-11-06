@@ -88,14 +88,15 @@ export async function notifyError(
   id: string,
   error: Error | string,
   msgPrefix = '',
-  msgPostfix = ''
+  msgPostfix = '',
+  interpolation?: Record<string, unknown>
 ): Promise<void> {
   const { i18n } = await I18nManager.getInstance()
   await i18n.loadNamespaces('sync')
   const errorText = typeof error === 'string' ? error : error.message
   const msgPath = `sync:${id}.error.${errorText}`
   const msg = i18n.exists(msgPath)
-    ? i18n.t(msgPath)
+    ? i18n.t(msgPath, interpolation)
     : `Unknown error: ${errorText}`
 
   browser.notifications.create({

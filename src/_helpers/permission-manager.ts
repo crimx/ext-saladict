@@ -7,6 +7,14 @@ export async function checkBackgroundPermission(
   // Firefox, Opera and Safari does not support 'background' permission.
   if (isFirefox || isOpera || isSafari) return
 
+  const manifest = browser.runtime.getManifest()
+  if (
+    !manifest.permissions?.includes('background') &&
+    !manifest.optional_permissions?.includes('background')
+  ) {
+    return
+  }
+
   const backgroundPermissions: browser.permissions.AnyPermissions = {
     permissions: ['background']
   }

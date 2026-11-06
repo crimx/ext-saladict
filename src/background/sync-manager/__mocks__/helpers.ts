@@ -19,3 +19,5 @@ export const setNotebook = jest.fn(emptyPromise)
 export const replaceNotebook = jest.fn(emptyPromise)
 
 export const getNotebook = jest.fn(emptyPromise)
+
+export const notifyError = jest.fn(emptyPromise)

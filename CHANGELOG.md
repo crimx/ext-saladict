@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [7.22.12](https://github.com/crimx/ext-saladict/compare/v7.22.11...v7.22.12) (2026-11-06)
+
+
+### Features
+
+* **maimemo:** add notebook syncing ([#2369](https://github.com/crimx/ext-saladict/issues/2369)) ([c9847f9](https://github.com/crimx/ext-saladict/commit/c9847f91c5bbdc4c6516816fc7baaed02423e529))
+
+
+### Bug Fixes
+
+* **etymonline:** refactor search URL encoding and add network compatibility ([755ead2](https://github.com/crimx/ext-saladict/commit/755ead212a2a7d8d0176862732f517e9f3948642))
+* **permission-manager:** add permission checks for background access ([88a96fe](https://github.com/crimx/ext-saladict/commit/88a96fe3699c996e9372c21474cedc5bd350bf79))
+
 ### [7.22.11](https://github.com/crimx/ext-saladict/compare/v7.22.10...v7.22.11) (2026-10-20)
 
 

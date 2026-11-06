@@ -14,6 +14,20 @@ const Services = reqServices.keys().reduce((map, path) => {
 
 const activeServices: Map<string, SyncService> = new Map()
 
+/** Avoids showing the same rate limit notification over and over. */
+const RATE_LIMIT_NOTIFY_INTERVAL = 60 * 1000
+const rateLimitNotifiedAt: Map<string, number> = new Map()
+
+function notifyRateLimited(id: string, remaining: number) {
+  const now = Date.now()
+  const lastNotifiedAt = rateLimitNotifiedAt.get(id)
+  if (lastNotifiedAt && now - lastNotifiedAt < RATE_LIMIT_NOTIFY_INTERVAL) {
+    return
+  }
+  rateLimitNotifiedAt.set(id, now)
+  notifyError(id, 'rate_limit_partial', '', '', { remaining })
+}
+
 export function startSyncServiceInterval() {
   concat(
     from(storage.sync.get('syncConfig')).pipe(pluck('syncConfig')),
@@ -74,7 +88,13 @@ export async function syncServiceUpload(
   activeServices.forEach(async (service, id) => {
     try {
       if (options.action === 'ADD') {
-        await service.add({ words: options.words, force: options.force })
+        const result = await service.add({
+          words: options.words,
+          force: options.force
+        })
+        if (result && result.rateLimited) {
+          notifyRateLimited(id, result.remaining || 0)
+        }
       } else if (options.action === 'DELETE') {
         await service.delete({ dates: options.dates, force: options.force })
       }
